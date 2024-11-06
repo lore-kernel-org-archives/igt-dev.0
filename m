@@ -4,27 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 719EAD35E5D
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 10:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E3BD43341
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 11:14:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F8D710E7FD;
-	Thu,  7 Nov 2024 10:49:01 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E738010E7FD;
- Thu,  7 Nov 2024 10:48:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9184482896472188231=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE19110E307;
+	Thu,  7 Nov 2024 11:14:56 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; secure) header.d=atlas.cz header.i=@atlas.cz header.b="fLI6BWHU";
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="fLI6BWHU";
+	dkim-atps=neutral
+Received: from gmmr-2.centrum.cz (gmmr-2.centrum.cz [46.255.227.203])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56E7E10E2DE
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 13:53:03 +0000 (UTC)
+Received: from gmmr-1.centrum.cz (envoy-stl.cent [10.32.56.18])
+ by gmmr-2.centrum.cz (Postfix) with ESMTP id 56819200F42B
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 14:53:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+ t=1730901181; bh=FdB5nV6Ql49XBPvdoNqGLCe7cXtNk3daBuHueK3v8uE=;
+ h=Date:From:To:Subject:References:In-Reply-To:From;
+ b=fLI6BWHU+UDL6Fe9wES2TEh65+pYx00uHxfrgPzmtNSjc81WEgN9EEMEaN2tblDwV
+ thhZJG3tLoIow5sMbtt3K4sy0kLSuH7XbVNocOG/5HY90JQjOXcnUYC1oeN+6PwIFI
+ m0SAluQIQTMfv8IzT6nPVds7FhFieSIQrFx3Q7Xk=
+Received: from gmmr-1.centrum.cz (localhost [127.0.0.1])
+ by gmmr-1.centrum.cz (Postfix) with ESMTP id 52DB21AE
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 14:53:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+ t=1730901181; bh=FdB5nV6Ql49XBPvdoNqGLCe7cXtNk3daBuHueK3v8uE=;
+ h=Date:From:To:Subject:References:In-Reply-To:From;
+ b=fLI6BWHU+UDL6Fe9wES2TEh65+pYx00uHxfrgPzmtNSjc81WEgN9EEMEaN2tblDwV
+ thhZJG3tLoIow5sMbtt3K4sy0kLSuH7XbVNocOG/5HY90JQjOXcnUYC1oeN+6PwIFI
+ m0SAluQIQTMfv8IzT6nPVds7FhFieSIQrFx3Q7Xk=
+Received: from antispam62.centrum.cz (antispam62.cent [10.30.208.62])
+ by gmmr-1.centrum.cz (Postfix) with ESMTP id 51B641AD
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 14:53:01 +0100 (CET)
+X-CSE-ConnectionGUID: LKx1YKIfTROwi71biD2iQg==
+X-CSE-MsgGUID: RMqss0wrQP+SPyBem9Jsew==
+X-ThreatScanner-Verdict: Negative
+X-IPAS-Result: =?us-ascii?q?A2HHAwAGdCtn/03h/y5agQkJgUqJe5Fxi3WGNYEghACIS?=
+ =?us-ascii?q?Q8BAQEBAQEBAQEJRAQBAT+ESAKKNic3Bg4BAgQBAQEBAwIDAQEBAQEBAQEBD?=
+ =?us-ascii?q?QEBBgEBAQEBAQYGAQKBHYU1U4JiAYN/AQEBAQIBIw8BOxALCw0LAgImAgJWB?=
+ =?us-ascii?q?gGDE4IwAREjrn16gTIaAmXcbwKBI2KBKoEaLohMAYpgQoINhD8+iB6CaQSCS?=
+ =?us-ascii?q?IUiJYEmhwdol3lSexwDWSABEQFVExcLBwWBKiQsA4F7WH+BOYFRAUKCXUohg?=
+ =?us-ascii?q?xyBXgU3SYJKaUs6Ag0CNoIkJFmCToUdgQsDg2KEaYEjHUADC209NRQbBqZqH?=
+ =?us-ascii?q?bEvlQ+DHIEIhE2dDDODcZN4A5JhLphJIqkAgX2CADMiMDuCaFEZjjwWxVKBM?=
+ =?us-ascii?q?gIHAQoBAQMJgjuPN4FLAQE?=
+IronPort-PHdr: A9a23:1lLB0BPzuQOvem5wYmIl6nZVCxdPi9zP1u491JMrhvp0f7i5+Ny6Z
+ QqDvqwr1AWCANmTq6odzbaN6+a4AS1IyK3CmU5BWaQEbwUCh8QSkl5oK+++Imq/AdjUKgcXJ
+ 4B8bmJj5GyxKkNPGczzNBX4q3y26iMOSF2kbVImbuv6FZTPgMupyuu854PcYxlShDq6fLh+M
+ Ai6oR/eu8QYnIduMLo9xgXGrnZIdOld2GdkKU6Okxrm6cq98oJv/z5Mt/498sJLTLn3cbk/Q
+ bFEAzsqNHw46tf2vhfZVwuP4XUcUmQSkhVWBgXO8Q/3UJTsvCbkr+RxwCaUM9X5QrwtRzms4
+ LplRAfnhykbOTE59nrXitFrg6JAvB2hvR1/zJXKb4yTKfFzY7nSfdIeRWpGQ8ZRSylMCZ6yY
+ ocTE+YMO/tTopLjrFUSsxSxGQisBPvuyjBWgH/2wbY62PklHQ3fwQAsA84CvHHSod7oNqkdT
+ Pq1wbHGwzvDcf1YxDTz6IbHfR89vP6CUrB/fNHNyUQsDQ7JkkmcpZDnMj6Ty+8Ds3Kb7+1lV
+ e+3kWAotR1xoiKyzcgjkIbJgJwQylPZ/ih+2ok1P964R1R+YdG+CptdrDuVN5dyQsw4WGFko
+ jo1y7wftJO9YSMFx4gpyQTFZPybb4iH/AjjVOCJLDp2hHxoZLyyigi8/EWuyeDwStS53VdXo
+ iZZjtTBuG4B2gHO5sWGSfZw8Fms1DeL2g3R6OxJIl04mKnGJpMvxrM9kIcYv0fbHiLul0j7j
+ bWaelsk9+Wo8ejrfKvqq5+GO4J2iAzyKroiltGxDOgiLAQCQXSX9f6i2LDs4UH1WrFHg/wwn
+ 6LEqp7VP94bqbS8AwJN14Yj7AuwACm+3dQDmHkHMEpFeBWaj4j1I13OIO73DfO4g1m0nzdrw
+ unKPqbkApXRNnjPjavtcaxh5EFCzgoz0cpf549RCr0bPP3yW1f9tN3eDhAnLwy52+nqBdRn2
+ o8AWW+CArWVPL3MvVKI/O4iIeuBaJcQuDnnKvgl4/DujWU+mV8YZaSmx4EXaHOiEfRjOUqZe
+ 2Hhjc0dEWcOpAU+V/bmh0GDUDJLfXa9Q7o85i0nCIKhFYrMXJ2igKaA3CihGJ1afGRGBUqWE
+ Xf1coWLQOkDZTmOLc9mljwEUaKuRJQm1RG0rgD20aZoLu3R+iEAr5LsyMB15/HPlRE17TF0D
+ N6S02SMT2FwhG8IRDg23KZ+oUNj1liC0K54gvxDGNxX5vNJVBo6NJHGw+x7DdDyRhzOftOTR
+ Fm6RdWmBCk9TsgtzN8Wf0Z9B9KigwjC3yqlH78ZjqGEC4Iq8q/H23jxJt19y2rd1KU7gVkmW
+ NVAOnO7iaFh7AjTBJLJk0KBl6qwcqQcxiHN+H+FzWWVpE5YShJ/Ub3ZXXADYUvbtdr06lvfQ
+ L+tCLQnNxNMx9aNJKREdNPnkUlLSvH7NNvDZmK+gX2wCgqQy72UdYTkY2oT0D3GCEgcnQAe5
+ W6IOxEmCCmuu27eFyRuFVz3bEPs7+Z+rHS7Q1cswQ+Td0Nv2On9xhlApvWZSvdb/bUCuSoqu
+ TNlVAK+1tfXD5yDoAxgca5OZ8IV5FZByHKftgphM5jmJKdn0BpWcgtr+k/jyT1zC55cio4kt
+ n4nwAdpKr6fyBVGbTzclbn8ILxeLCHW9QqybqTbkgXX3MyX86FJ7P0itlDpsSmiEU4m+n9gy
+ dAT2HyZsMbkFg0XBKr8Tlx/yRF8BLKSNiAn5IrR3GdEOLWwuySE0MB/V7ht8QqpY9oKaPDML
+ wT1CcBPQpH2cIQX
+IronPort-Data: A9a23:roQMgKrVjEn7Ox6ckqd1/4lLERheBmISZBIvgKrLsJaIsI4StFCzt
+ garIBnSa62CNDSgftp2aYnj8UtT65GEzIMyHVBpqC9nQX5A9ePIVI+TRqvSF3jLcpCcFhIPA
+ +Y2N4OcdpBkFhcwgj/3b9ANeFEljfngqoLUUbOCZ2YoA1c5FU/NsDo788YhmIlknNOlNA2Ev
+ NL2sqX3NUSss9JOGjt8B5mr9lU25ZwehBtC5gZiPKkT4geH/5UoJMt3yZ+ZfiaQrrZ8QbbSq
+ 9brlNmR4m7f9hExPdKp+p6TWlEKWLPbIT+VgXNQXaW46jAazsDl+vtT2FI0MC+7uh3R9zxD4
+ IwlWa+YFW/FCpbxdNE1CHG0JQklZPEbp+WXSZSImZf7I0XuKxMAyhj1Za08FdVwFu1fWQmi+
+ RGEQdykg9/qa++emdqGpudQassLCOr7ZbI8m39c9xbGDKl/S5HvGaTz6ooNtNswrpgm8ff2a
+ M9ccj9zdE2YJRZCPEsNFZd4l/XAanvXL2Me8g/I4/Btvi6Mk2Sd05C0WDbRUtWQRsxQl1ywr
+ 37C9n+/CQNy2Nm3lmTUriL11rSncSXTYqcLD6bg6eRTuB6o/n05BRhHd0C2vqzs4qK5c5cFQ
+ 6AOwQInobIz/UrtStDnQhiyrVaPuRoYUtBXCeR84waIooLX6gOYAi4HSThAZdc0st4eQT0sy
+ 0/PntX1CDgpu7qQIVqc+avRoT6sESwUNnMZIyEeQAYJ7sLgvIYryBXVQb5e/LWd0oOzQ2yth
+ WrQ8W5h2N3/kPI26klyxnif6xrEm3QDZlddCtn/No590j5EWQ==
+IronPort-HdrOrdr: A9a23:/mHaS6PmmEmMksBcTtajsMiBIKoaSvp037AO7TESdfUzSL38qy
+ nOpoV56faaslwssR0b9OxofZPwJU80lqQU3WByB9mftWDd0QPCEGgh1+rfKlbbdBEWmNQw6Z
+ td
+X-Talos-CUID: =?us-ascii?q?9a23=3A6Cn5UWkBaEjK6tmAMd5xXPxzbPHXOVn+3C7hAG6?=
+ =?us-ascii?q?2NVxOV7zKEFWR1PllqsU7zg=3D=3D?=
+X-Talos-MUID: 9a23:bXfBAgrJTs/ybn+9IxUezwtHLdxzu7u0MXhOqq0XkcSBZA5rNijI2Q==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.11,262,1725314400"; d="scan'208";a="76948183"
+Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
+ by antispam62.centrum.cz with ESMTP; 06 Nov 2024 14:53:00 +0100
+Received: from arkam (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by gm-smtp10.centrum.cz (Postfix) with ESMTPSA id BC6DF808F87D;
+ Wed,  6 Nov 2024 14:53:00 +0100 (CET)
+Date: Wed, 6 Nov 2024 14:52:59 +0100
+From: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
+Subject: Re: [PATCH i-g-t] lib/igt_profiling: add include for PATH_MAX constant
+Message-ID: <2024116135259-Zyt0u-XsFfIgGtO8-arkamar@atlas.cz>
+References: <20241103171806.10248-1-arkamar@atlas.cz>
+ <202411583120-ZynX2Bpb672E8EEZ-arkamar@atlas.cz>
+ <20241106130143.z7di4t2er6oo56ac@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/chamelium=3A_Reduce_e?=
- =?utf-8?q?did_count_to_avoid_timeout_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 07 Nov 2024 10:48:59 -0000
-Message-ID: <173097653993.1421078.6236938273020554481@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241107095326.1842621-1-pranay.samala@intel.com>
-In-Reply-To: <20241107095326.1842621-1-pranay.samala@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241106130143.z7di4t2er6oo56ac@kamilkon-desk.igk.intel.com>
+X-Mailman-Approved-At: Thu, 07 Nov 2024 11:14:56 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,256 +130,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9184482896472188231==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Kamil,
 
-== Series Details ==
+On Wed, Nov 06, 2024 at 02:01:43PM +0100, Kamil Konieczny wrote:
+> Hi Petr,
+> On 2024-11-05 at 09:31:20 +0100, Petr Vaněk wrote:
+> > ...
+> > Resending the patch as it seems it did not make it to the list last
+> > time.
+> 
+> This could happen if you are not subscribed to igt-dev mailing list,
+> your patch was deliverd to ML with a few days delay.
 
-Series: tests/chamelium: Reduce edid count to avoid timeout (rev6)
-URL   : https://patchwork.freedesktop.org/series/140426/
-State : success
+I thought so, but I wasn't sure about it, therefore I decided to send it
+again after few days.
 
-== Summary ==
+Thank you for reviews.
 
-CI Bug Log - changes from IGT_8100 -> IGTPW_12059
-====================================================
+Cheers,
+Petr
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/index.html
-
-Participating hosts (45 -> 41)
-------------------------------
-
-  Missing    (4): bat-arls-2 bat-arlh-3 bat-arls-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12059 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k:
-    - bat-apl-1:          NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-apl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][2] ([i915#7828])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-rplp-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-arlh-2:         NOTRUN -> [SKIP][3] ([i915#11151] / [i915#11346])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-arlh-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#7828])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-rkl-11600/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg1-7:          NOTRUN -> [SKIP][5] ([i915#7828])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg1-7/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-9:          NOTRUN -> [SKIP][6] ([i915#7828])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-x1275/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][8] ([i915#7828])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlp-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-rpls-4:         NOTRUN -> [SKIP][9] ([i915#7828])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-rpls-4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-cfl-8109u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-7567u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-8809g/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-ilk-650/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][14] ([i915#7828])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-tgl-1115g4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-cfl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][16] ([i915#7828] / [i915#9792])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-mtlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-skl-6600u:       NOTRUN -> [SKIP][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-skl-6600u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg1-6:          NOTRUN -> [SKIP][18] ([i915#12311])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg1-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-twl-2:          NOTRUN -> [SKIP][19] ([i915#11151])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-twl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][20]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-cfl-8700k/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-blb-e6850/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-14:         NOTRUN -> [SKIP][22] ([i915#7828])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-14/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][23]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-bsw-nick/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][24]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-kbl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlp-6:         NOTRUN -> [SKIP][25] ([i915#7828])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-atsm-1:         NOTRUN -> [SKIP][26] ([i915#6078])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-atsm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-jsl-3:          NOTRUN -> [SKIP][27] ([i915#7828])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-jsl-3/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][28] ([i915#7828])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-hsw-4770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][30]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-ivb-3770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-mtlp-8:         NOTRUN -> [SKIP][31] ([i915#7828])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-mtlp-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][32]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-elk-e7500/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-8:          NOTRUN -> [SKIP][33] ([i915#7828])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][34]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlm-1:         NOTRUN -> [SKIP][35] ([i915#7828] / [i915#9900])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][36] ([i915#7828])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-jsl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][37]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-pnv-d510/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][38]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-glk-j4005/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlp-9:         NOTRUN -> [SKIP][39] ([i915#7828])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlp-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-twl-1:          NOTRUN -> [SKIP][40] ([i915#11151])
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-twl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-
-  
-  [i915#11151]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#7828]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
-  [i915#9900]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8100 -> IGTPW_12059
-  * Linux: CI_DRM_15647 -> CI_DRM_15649
-
-  CI-20190529: 20190529
-  CI_DRM_15647: 438ef86a725b59a171dba81fc258bb23a0ff536c @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15649: 6f358787ded211657532e2ee4df2e446b03d860f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12059: 12059
-  IGT_8100: 84e42580f918da926481fd2fb37be01451d6ee9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/index.html
-
---===============9184482896472188231==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/chamelium: Reduce edid count to avoid timeout (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140426/">https://patchwork.freedesktop.org/series/140426/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8100 -&gt; IGTPW_12059</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/index.html</p>
-<h2>Participating hosts (45 -&gt; 41)</h2>
-<p>Missing    (4): bat-arls-2 bat-arlh-3 bat-arls-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12059 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k:<ul>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-apl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-rplp-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-arlh-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>)</li>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-rkl-11600/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg1-7/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-x1275/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlp-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-rpls-4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-cfl-8109u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-7567u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-8809g/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-ilk-650/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-tgl-1115g4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-cfl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-mtlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-skl-6600u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg1-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>)</li>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-twl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a>)</li>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-cfl-8700k/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-blb-e6850/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-14/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-bsw-nick/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-kbl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-atsm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>)</li>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-jsl-3/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-hsw-4770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-ivb-3770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-mtlp-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-elk-e7500/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-dg2-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-kbl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-jsl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-pnv-d510/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/fi-glk-j4005/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-adlp-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12059/bat-twl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8100 -&gt; IGTPW_12059</li>
-<li>Linux: CI_DRM_15647 -&gt; CI_DRM_15649</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15647: 438ef86a725b59a171dba81fc258bb23a0ff536c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15649: 6f358787ded211657532e2ee4df2e446b03d860f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12059: 12059<br />
-  IGT_8100: 84e42580f918da926481fd2fb37be01451d6ee9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============9184482896472188231==--
+> Regards,
+> Kamil
