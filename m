@@ -4,52 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87B27D44D42
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 10:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30384D44D48
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 10:48:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 489F110E199;
-	Wed,  6 Nov 2024 10:35:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K7y8jlN6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 056D710E199
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 10:35:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730889349; x=1762425349;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=g9R3fns4RvbdBcs5ICKS9Qppos1aFq8A3YcjP4GJA18=;
- b=K7y8jlN6OudzoowdScfcLuTByRzfyR7HD0ayz57RutpO5NgiS6TTbT9p
- SncWLH7cBqhs9fdu/SHWhkBnvSwVu4VgafIh1HbNgA8qdBoPb0l53YYdF
- /byQxYUdXdOahuSwlJONIQFwyr8s7Yl5EHx1H8I7Xq7JsScTh0IfzLoKx
- wKcTmOm607ggGsJTPJSGP+f8VOx/sqvF1GvOJ/2j81bIULriW4PZesLqP
- XoR0am2aNSKVClt/qv/GMoGqeNDEAi5cEe6dPl3wJsz4UP6QqJlyu06OR
- 0l14n8IEXBtVwXNvdegSFmgzf4GQOF0MquwnEnyWeWKMRCFoA4/rXKSpC w==;
-X-CSE-ConnectionGUID: q2sRjY4kQ+KfP0PPhIlghA==
-X-CSE-MsgGUID: eHyfAK9QRLWgVJtGy4syxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="34607286"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="34607286"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 02:35:48 -0800
-X-CSE-ConnectionGUID: mKvLCTm7TpqFM28NHLbucw==
-X-CSE-MsgGUID: 9NlZoXtxTte9BkDaCTmiHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="84588259"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa006.jf.intel.com with ESMTP; 06 Nov 2024 02:35:46 -0800
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, bhanuprakash.modem@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t] tests/kms_3d: Add more logs to skips/failure
-Date: Wed,  6 Nov 2024 16:06:22 +0530
-Message-Id: <20241106103622.1840431-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCF0E10E6B8;
+	Wed,  6 Nov 2024 10:48:56 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4547D10E6B8;
+ Wed,  6 Nov 2024 10:48:56 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5497805138079672702=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2Cv2=2C1/2=5D_tests/kms=5Fatomic=5Ftransition=3A_Use_extended_fl?=
+ =?utf-8?q?ag_for_local_execution?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 06 Nov 2024 10:48:56 -0000
+Message-ID: <173089013627.1416205.12308469512889477667@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241106091906.1831538-1-pranay.samala@intel.com>
+In-Reply-To: <20241106091906.1831538-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,60 +38,248 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_3d.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+--===============5497805138079672702==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_3d.c b/tests/kms_3d.c
-index ad6c45e9b..f1726b71e 100644
---- a/tests/kms_3d.c
-+++ b/tests/kms_3d.c
-@@ -55,7 +55,8 @@ igt_simple_main
- 	res = drmModeGetResources(drm_fd);
- 	igt_require(res);
- 
--	igt_assert(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_STEREO_3D, 1) >= 0);
-+	igt_assert_f(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_STEREO_3D, 1) >= 0,
-+		     "Failed to enable STEREO_3D capability.\n");
- 
- 	/* find an hdmi connector */
- 	for (int i = 0; i < res->count_connectors; i++) {
-@@ -65,7 +66,7 @@ igt_simple_main
- 		drmModeFreeConnector(connector);
- 		connector = NULL;
- 	}
--	igt_require(connector);
-+	igt_require_f(connector, "No HDMI connector found.\n");
- 
- 	kmstest_unset_all_crtcs(drm_fd, res);
- 
-@@ -85,7 +86,7 @@ igt_simple_main
- 			mode_count++;
- 	}
- 
--	igt_assert(mode_count);
-+	igt_assert_f(mode_count, "3D modes not detected.\n");
- 
- 	/* set 3D modes */
- 	igt_info("Testing:\n");
-@@ -95,8 +96,12 @@ igt_simple_main
- 		int crtc_mask = -1;
- 		int ret;
- 
--		if (!(connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK))
-+		if (!(connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK)) {
-+			igt_info("%s-%d: Doesn't support 3D MASK.\n",
-+				 kmstest_connector_type_str(connector->connector_type),
-+				 connector->connector_type_id);
- 			continue;
-+		}
- 
- 		/* create a configuration */
- 		ret = kmstest_get_connector_config(drm_fd, connector_id,
--- 
-2.34.1
+== Series Details ==
 
+Series: series starting with [i-g-t,v2,1/2] tests/kms_atomic_transition: Use extended flag for local execution
+URL   : https://patchwork.freedesktop.org/series/140991/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8099_BAT -> XEIGTPW_12045_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_12045_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12045_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-adlp-7 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_12045_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_atomic_transition@modeset-transition-nonblocking:
+    - bat-bmg-2:          NOTRUN -> [SKIP][1] +15 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-bmg-2/igt@kms_atomic_transition@modeset-transition-nonblocking.html
+
+  * igt@kms_atomic_transition@plane-use-after-nonblocking-unbind:
+    - bat-lnl-2:          NOTRUN -> [SKIP][2] +15 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-2/igt@kms_atomic_transition@plane-use-after-nonblocking-unbind.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1:
+    - bat-lnl-1:          [PASS][3] -> [DMESG-WARN][4] +1 other test dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-lnl-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12045_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_atomic_transition@modeset-transition-nonblocking-fencing:
+    - bat-lnl-1:          NOTRUN -> [FAIL][5] ([Intel XE#1701]) +1 other test fail
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_atomic_transition@modeset-transition-nonblocking-fencing.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition:
+    - bat-lnl-1:          NOTRUN -> [SKIP][6] ([Intel XE#3279]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_atomic_transition@plane-all-modeset-transition.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#455]) +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-dg2-oem2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][8] ([Intel XE#2463]) +15 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-adlp-vf/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - bat-lnl-1:          NOTRUN -> [FAIL][9] ([Intel XE#1426]) +1 other test fail
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][10] ([Intel XE#2370]) +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-bmg-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+
+  * igt@kms_atomic_transition@plane-all-transition-fencing:
+    - bat-atsm-2:         NOTRUN -> [SKIP][11] ([Intel XE#1024]) +15 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-atsm-2/igt@kms_atomic_transition@plane-all-transition-fencing.html
+
+  * igt@kms_atomic_transition@plane-all-transition-nonblocking:
+    - bat-pvc-2:          NOTRUN -> [SKIP][12] ([Intel XE#1024]) +15 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-pvc-2/igt@kms_atomic_transition@plane-all-transition-nonblocking.html
+
+  
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#1426]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1426
+  [Intel XE#1701]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1701
+  [Intel XE#2370]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2370
+  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
+  [Intel XE#3279]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3279
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8099 -> IGTPW_12045
+  * Linux: xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a -> xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541
+
+  IGTPW_12045: 12045
+  IGT_8099: 27be46dee80b6b0de80f9fa3cd9bb5f55edccaf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a: 2b31f47649daecf2da6611c70072dfbe4914c22a
+  xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541: e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/index.html
+
+--===============5497805138079672702==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] tests/kms_atomic_transition: Use extended flag for local execution</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140991/">https://patchwork.freedesktop.org/series/140991/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8099_BAT -&gt; XEIGTPW_12045_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12045_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12045_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-adlp-7 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12045_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_atomic_transition@modeset-transition-nonblocking:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-bmg-2/igt@kms_atomic_transition@modeset-transition-nonblocking.html">SKIP</a> +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-use-after-nonblocking-unbind:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-2/igt@kms_atomic_transition@plane-use-after-nonblocking-unbind.html">SKIP</a> +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-lnl-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12045_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_atomic_transition@modeset-transition-nonblocking-fencing:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_atomic_transition@modeset-transition-nonblocking-fencing.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1701">Intel XE#1701</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_atomic_transition@plane-all-modeset-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3279">Intel XE#3279</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-dg2-oem2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-adlp-vf/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>) +15 other tests skip</li>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-lnl-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1426">Intel XE#1426</a>) +1 other test fail</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-bmg-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2370">Intel XE#2370</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition-fencing:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-atsm-2/igt@kms_atomic_transition@plane-all-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition-nonblocking:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12045/bat-pvc-2/igt@kms_atomic_transition@plane-all-transition-nonblocking.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +15 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8099 -&gt; IGTPW_12045</li>
+<li>Linux: xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a -&gt; xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541</li>
+</ul>
+<p>IGTPW_12045: 12045<br />
+  IGT_8099: 27be46dee80b6b0de80f9fa3cd9bb5f55edccaf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a: 2b31f47649daecf2da6611c70072dfbe4914c22a<br />
+  xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541: e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541</p>
+
+</body>
+</html>
+
+--===============5497805138079672702==--
