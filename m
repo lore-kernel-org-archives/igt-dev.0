@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B12FD29FB3
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 08:31:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2359DD29FBE
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 09:07:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E229510E21A;
-	Wed,  6 Nov 2024 08:31:44 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 767E710E21A;
- Wed,  6 Nov 2024 08:31:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0815383051928192699=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D927B10E694;
+	Wed,  6 Nov 2024 09:07:49 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NDCkkk2I";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9BF610E694
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 09:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730884069; x=1762420069;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cc4MrMP+RbYBzuaRiTCLrrGJfZuIHCCgzkzHiAOxCBU=;
+ b=NDCkkk2I95CAjff5KsXKxqZw9RHevwRpnoQZSXmrojrJUbdjI75RA1Dv
+ qa/5G9mfogXA11XZzBeU8kbt4PCMOqYa5hm/nrajGp3i6zqIlA2X9PGqR
+ QVAXDlkwZWrul2uTP/nTF/6A6irP98rMtrS4QFruQJ5MQrLC4J8dGXmSy
+ NQ7km7xea5Wu9vldekL/xPXefK3C/KNkKS3GPHwhzIUeLsy+Ot1t9zbMQ
+ 2pKB2MMVxJmgPVndYTUdM1yeaZTXVOBmangFarOd09FGa/9T2zj/XlZSM
+ NS+k859xAQWgaefgveUPvrcQG1oWuvIYZ06t9CRjFPqvyRnJBl9sR+83K g==;
+X-CSE-ConnectionGUID: r1VeVUjSRA2b0GYufnWCIQ==
+X-CSE-MsgGUID: igv5aE7BSgaQs9Yhtc6/gw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30778098"
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="30778098"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2024 01:07:49 -0800
+X-CSE-ConnectionGUID: /F5/mQJaQNmIjtRJolvi6Q==
+X-CSE-MsgGUID: 0N2zWzlyRVCefsbX+uAr/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="84542556"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by fmviesa008.fm.intel.com with ESMTP; 06 Nov 2024 01:07:46 -0800
+From: Pranay Samala <pranay.samala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com,
+ Mark Yacoub <markyacoub@chromium.org>, Mark Yacoub <markyacoub@google.com>
+Subject: [PATCH i-g-t v7 0/3] tests/chamelium: Reduce edid count to avoid
+ timeout
+Date: Wed,  6 Nov 2024 14:38:17 +0530
+Message-Id: <20241106090820.1831321-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fatomic=5Ftransitio?=
- =?utf-8?q?n=3A_Use_extended_flag_for_local_execution?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 06 Nov 2024 08:31:43 -0000
-Message-ID: <173088190347.1415320.12580501243272545815@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241106073615.1830019-1-pranay.samala@intel.com>
-In-Reply-To: <20241106073615.1830019-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,194 +64,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0815383051928192699==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In kms_chamelium_edid test, it iterates through all the mentioned edids.
+But due to CI timing limitation, the test couldn't iterate through all
+the edids on CI.
 
-== Series Details ==
+This patch series reduces the number of edids when run on CI to avoid
+timeout. This is done by using an extended flag. Hence CI will only run
+some of the edids and when this flag is used then test will iterate
+through all the edids.
 
-Series: tests/kms_atomic_transition: Use extended flag for local execution
-URL   : https://patchwork.freedesktop.org/series/140979/
-State : success
+Also shuffles one of the redundant edid with the non-redundant one to
+cover all configs.
 
-== Summary ==
+Changes in v2: Included HAX patch for CI results (Kunal)
 
-CI Bug Log - changes from XEIGT_8099_BAT -> XEIGTPW_12043_BAT
-====================================================
+Changes in v3: Shuffling of one of the edids (Kunal)
 
-Summary
--------
+Changes in v4: Merging 2 patches into 1 (Kunal)
 
-  **SUCCESS**
+CHanges in v5: Add a condition to check whether its INTEL's
+               driver or not (Kunal)
+               Include TODO to check whether an environment
+               variable is present in the CI (Kunal)
 
-  No regressions found.
+Changes in v6: Split the patches (Kamil)
 
-  
+Cc: Mark Yacoub <markyacoub@chromium.org>
+Cc: Mark Yacoub <markyacoub@google.com>
 
-Participating hosts (9 -> 9)
-------------------------------
+Pranay Samala (3):
+  tests/chamelium/kms_chamelium_edid: Use extended flag to reduce the
+    number of edid
+  HAX: Do not merge
+  lib/monitor_edids/hdmi_edids: Shuffle edid with the redundant one
 
-  No changes in participating hosts
+ lib/monitor_edids/hdmi_edids.h           | 52 ++++++++++++------------
+ tests/chamelium/kms_chamelium_edid.c     | 28 ++++++++++++-
+ tests/intel-ci/fast-feedback.testlist    |  2 +
+ tests/intel-ci/xe-fast-feedback.testlist |  2 +
+ 4 files changed, 57 insertions(+), 27 deletions(-)
 
-Known issues
-------------
+-- 
+2.34.1
 
-  Here are the changes found in XEIGTPW_12043_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small:
-    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_evict@evict-beng-small.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
-    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-dg2-oem2:       [PASS][3] -> [INCOMPLETE][4] ([Intel XE#2874]) +1 other test incomplete
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#2229])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_addfb_basic@bad-pitch-0:
-    - bat-adlp-7:         [DMESG-WARN][6] ([Intel XE#2496]) -> [PASS][7] +31 other tests pass
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-adlp-7:         [INCOMPLETE][8] ([Intel XE#2874]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2496]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-
-
-Build changes
--------------
-
-  * IGT: IGT_8099 -> IGTPW_12043
-  * Linux: xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a -> xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541
-
-  IGTPW_12043: d80b8a6d49eccb20c0be629d48eef26158c960d0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8099: 27be46dee80b6b0de80f9fa3cd9bb5f55edccaf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a: 2b31f47649daecf2da6611c70072dfbe4914c22a
-  xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541: e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/index.html
-
---===============0815383051928192699==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Use extended flag for local execution</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140979/">https://patchwork.freedesktop.org/series/140979/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8099_BAT -&gt; XEIGTPW_12043_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12043_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@bad-pitch-0:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496">Intel XE#2496</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> +31 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8099/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12043/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8099 -&gt; IGTPW_12043</li>
-<li>Linux: xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a -&gt; xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541</li>
-</ul>
-<p>IGTPW_12043: d80b8a6d49eccb20c0be629d48eef26158c960d0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8099: 27be46dee80b6b0de80f9fa3cd9bb5f55edccaf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2170-2b31f47649daecf2da6611c70072dfbe4914c22a: 2b31f47649daecf2da6611c70072dfbe4914c22a<br />
-  xe-2174-e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541: e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541</p>
-
-</body>
-</html>
-
---===============0815383051928192699==--
