@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA96DD44D54
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 12:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F474D44D58
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 13:01:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88E3D10E1D8;
-	Wed,  6 Nov 2024 12:57:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2B38D10E281;
+	Wed,  6 Nov 2024 13:01:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B/6pX6j0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="koarf6UT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A7FC10E1D8;
- Wed,  6 Nov 2024 12:57:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7007D10E281
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 13:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730897858; x=1762433858;
+ t=1730898106; x=1762434106;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Nzgy6VWWrfwQOr//HILUt1pIBP+YaIcOYswWfTxqS1w=;
- b=B/6pX6j0jJcO1Uq5IbdCrKhuV2JpGEV2aQhOUO3ahAJMi97mpRA46bqV
- TwVEqqn7AdM7nj/kgpUWN6yS3ILpjWQbL3c7hs3lgkGTeJR6Fb4QZehvm
- Uar71vTkoFuBkJOCj1KLaEAEEyUOsk014DOGgC8ZhU2WwQQIVvGge4UnJ
- 0QphuhFNcufnqucLoFnao1zbWf1T9YxXcU9aZl051PAqgF7zqfezYwtB3
- TBtGvbfogdz7Q7BYfwDEe4Q+Qj6V9P5+d3mOi+BOM2R2iqXrHehu1oa6y
- gK0dTttNmxvGWKJ5AzwrawfOjx+/ByMPMeNNPzt5w3G/yFJF5Sdiv+Wkv A==;
-X-CSE-ConnectionGUID: MS5UNd+jSfOYjoqvhchUgA==
-X-CSE-MsgGUID: uyAEgWxlQwOe3HGi52DbhA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="30121019"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="30121019"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 04:57:38 -0800
-X-CSE-ConnectionGUID: IANOhEL9T8addhV4p/fqgw==
-X-CSE-MsgGUID: hU0yc51XSviaQZzsxpbvJQ==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=QyaTSlu+oyr8rmimn4J73I/pfuU3KQQka9dvAXi6qss=;
+ b=koarf6UTinWUMHH91exBbcF09Mhv7Zj3XkOYskC2fWndesnm1OlE+mal
+ 3hWK76MqVMRbHE1V05whk8fzYXSHtRRXURkFS5pB34HppUJ8rPea91XMZ
+ 8u71/9GiqmYhulkC718HGpJFJCDlDQ2WMCBkczrhIx9q5ox7dF09RRj34
+ IcaI3ojQqcXzdq+FJbfK4ROCOBTpuMRmLL9kRXhkIKoYaY304PmbtqTxC
+ XytwXcmNUWAwmeqV2u57I2NzMoZmdPo8WTFNL+BdjAuqdaBRrddcqBS2e
+ z0KxLoSA3klUIF4jPTyJfq+g1XhFuJeocBVflJJVcq6ClricSB7L42GZS Q==;
+X-CSE-ConnectionGUID: bZEonyJuRQeVP9GYR/xGmw==
+X-CSE-MsgGUID: 5fG3qY1SQj+mJvW/b48SrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="30579167"
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="30579167"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2024 05:01:46 -0800
+X-CSE-ConnectionGUID: PZ57UJY6SMuNsXYs49ZZHw==
+X-CSE-MsgGUID: sRmS14IVRrCxKgkOc3GW5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="84071450"
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="84165020"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 04:57:36 -0800
-Date: Wed, 6 Nov 2024 13:57:34 +0100
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 05:01:45 -0800
+Date: Wed, 6 Nov 2024 14:01:43 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmbw==?= =?utf-8?Q?r?=
- test/intel/xe_sysfs: Restore sysfs params correctly (rev3)
-Message-ID: <20241106125734.xeqylrf6fc6xvny6@kamilkon-desk.igk.intel.com>
+To: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
+Cc: igt-dev@lists.freedesktop.org,
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
+Subject: Re: [PATCH i-g-t] lib/igt_profiling: add include for PATH_MAX constant
+Message-ID: <20241106130143.z7di4t2er6oo56ac@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>,
  igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20241105201143.159491-1-jonathan.cavitt@intel.com>
- <173084262669.1414276.936554079963907729@2413ebb6fbb6>
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
+References: <20241103171806.10248-1-arkamar@atlas.cz>
+ <202411583120-ZynX2Bpb672E8EEZ-arkamar@atlas.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173084262669.1414276.936554079963907729@2413ebb6fbb6>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <202411583120-ZynX2Bpb672E8EEZ-arkamar@atlas.cz>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,146 +74,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-11-05 at 21:37:06 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Petr,
+On 2024-11-05 at 09:31:20 +0100, Petr Vaněk wrote:
+> PATH_MAX constant is defined in limits.h header file. It needs to be
+> explicitly included in musl environment as it is not transitively
+> available for any of available includes.
 > 
-> Series: test/intel/xe_sysfs: Restore sysfs params correctly (rev3)
-> URL   : https://patchwork.freedesktop.org/series/140780/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_8098 -> IGTPW_12041
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_12041 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12041, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/index.html
-> 
-> Participating hosts (46 -> 44)
-> ------------------------------
-> 
->   Missing    (2): bat-arls-1 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_12041:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_exec_fence@basic-await@bcs0:
->     - bat-arlh-3:         [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-arlh-3/igt@gem_exec_fence@basic-await@bcs0.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-arlh-3/igt@gem_exec_fence@basic-await@bcs0.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_12041 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@gem_exec_fence@basic-await:
->     - bat-arlh-3:         [PASS][3] -> [FAIL][4] ([i915#12660])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-arlh-3/igt@gem_exec_fence@basic-await.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-arlh-3/igt@gem_exec_fence@basic-await.html
-> 
->   * igt@i915_selftest@live:
->     - bat-mtlp-6:         [PASS][5] -> [DMESG-WARN][6] ([i915#12133])
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-mtlp-6/igt@i915_selftest@live.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-mtlp-6/igt@i915_selftest@live.html
-> 
->   * igt@i915_selftest@live@hangcheck:
->     - bat-mtlp-6:         [PASS][7] -> [DMESG-WARN][8] ([i915#11349] / [i915#12133])
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
-> 
->   * igt@kms_chamelium_edid@hdmi-edid-read:
->     - bat-dg2-13:         [PASS][9] -> [DMESG-WARN][10] ([i915#12253])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
-> 
+> Fixes: 9366bee04d16 ("lib: Add DRM driver sysfs profiling knob toggling functions")
+> Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
+> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+> ---
+> Resending the patch as it seems it did not make it to the list last
+> time.
 
-Unrelated to xe test change.
+This could happen if you are not subscribed to igt-dev mailing list,
+your patch was deliverd to ML with a few days delay.
 
 Regards,
 Kamil
 
->   
-> #### Possible fixes ####
 > 
->   * igt@debugfs_test@sysfs:
->     - {bat-mtlp-9}:       [ABORT][11] -> [PASS][12]
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-mtlp-9/igt@debugfs_test@sysfs.html
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-mtlp-9/igt@debugfs_test@sysfs.html
+>  lib/igt_profiling.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
->   * igt@i915_selftest@live:
->     - bat-mtlp-8:         [DMESG-WARN][13] ([i915#12133]) -> [PASS][14]
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-mtlp-8/igt@i915_selftest@live.html
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-mtlp-8/igt@i915_selftest@live.html
+> diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+> index b61506742..e1526ad98 100644
+> --- a/lib/igt_profiling.c
+> +++ b/lib/igt_profiling.c
+> @@ -10,6 +10,7 @@
+>  #include <assert.h>
+>  #include <dirent.h>
+>  #include <fcntl.h>
+> +#include <limits.h>
+>  #include <stdbool.h>
+>  #include <stdio.h>
+>  #include <stdlib.h>
+> -- 
+> 2.45.2
 > 
->   * igt@i915_selftest@live@hangcheck:
->     - bat-mtlp-8:         [DMESG-WARN][15] ([i915#11349] / [i915#12133]) -> [PASS][16]
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8098/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html
-> 
->   
->   {name}: This element is suppressed. This means it is ignored when computing
->           the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
->   [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
->   [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
->   [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
->   [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
->   [i915#12253]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253
->   [i915#12660]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12660
->   [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
->   [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
->   [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
->   [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
->   [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
->   [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
->   [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
->   [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
->   [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
->   [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
->   [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
->   [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
->   [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
->   [i915#9159]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9159
->   [i915#9688]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9688
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8098 -> IGTPW_12041
->   * Linux: CI_DRM_15636 -> CI_DRM_15637
-> 
->   CI-20190529: 20190529
->   CI_DRM_15636: b925cb281e79b763990ed64267ef82a87ace5060 @ git://anongit.freedesktop.org/gfx-ci/linux
->   CI_DRM_15637: 1051f5a468c5531923b01ba67999e502ce47a6b0 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_12041: 12041
->   IGT_8098: 8098
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12041/index.html
+
+
