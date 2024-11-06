@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 313F2D44D77
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 14:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58977D44D77
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Nov 2024 14:20:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E5E2D10E2DF;
-	Wed,  6 Nov 2024 14:17:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B9E810E6F4;
+	Wed,  6 Nov 2024 14:20:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ouo6NA6z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HlNlFTrI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3B3510E2DF
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 14:17:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74BBC10E6F4
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Nov 2024 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730902649; x=1762438649;
+ t=1730902849; x=1762438849;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=HfV3YJx+UmPR07EKhrvDFdIy9il9kmYwx1Xq6rn4Uhw=;
- b=Ouo6NA6zdb5qfTEFQ9mInKkMoRXFBqBgLMLoo2W4ndXeYLC8hNgrHImU
- t1WpV+dScN7CZSBoYZyn/+EBTMku0Oj+ObDWbAjTplcWeZ6ThQe0uErm9
- B+55VDNqg92hJ9TChfCu5XOCDk6ZOUm/O5sFF9glTXzXpCaKgbvRUhnyf
- 7x2WdM/HtO6EOB8WKV4fyHRa6R8MvZzePBqUqNstkGLhUulNC1pxnOYIT
- J9cATYN6DkcQGold5PtAQTUS/LzcJCCRafgRDqqY/qXr2I4kcELqQEh7H
- 35kE1ARihDeAdj1osqf/NNl5dr0JHxce/XN7FdWnP3ii65DFMkuelHMv1 w==;
-X-CSE-ConnectionGUID: BHpq1DWTT4GpwkAB6FAKDA==
-X-CSE-MsgGUID: rnnHWIcWRsa32FxVCB8LGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30472463"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30472463"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 06:17:29 -0800
-X-CSE-ConnectionGUID: C47MfYhrR2ytty1P6HHVMQ==
-X-CSE-MsgGUID: qxj0xXd2SfyzMG/DoZF7VA==
+ bh=tKFdLTELiH6vckZ+HDnUdey9W6oGAzX23ggl87DOGi0=;
+ b=HlNlFTrIe2podfgedNmYdMc4kAHwYt/K/yKHXaexB7i88zSWkuAbqGcR
+ xySAyQGgGtLaAKi9kJvsuzJHBrWlUglyVbIc8a1Kh4q/irkGiru4FpiFZ
+ fpvVS6sCBjt0T0JrT4OSWn24qTeVwUV4c2M0s98Np+LQq9J5e3ju9kPr/
+ PaDjjZud7gTWRrJbitVSJzAKgVi3GFpXw2FWAZ6r82q0Igl/PX1VoMe3r
+ dsTD0T4vaA/xY/RCCkS5CHq5ZVs2MmNDdpsWm867FNYpfocypew9Q/VTx
+ MLZ1D1P85XcQ3r/vVIkg+Ytat4sMQYqhjIvFhhguULVPh7MlmD3HvzgCr g==;
+X-CSE-ConnectionGUID: FW6gReaFTp2Tz+43BlyzPA==
+X-CSE-MsgGUID: EbWtUegIQvaOC9oEgfUHew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="48217999"
+X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; d="scan'208";a="48217999"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2024 06:20:49 -0800
+X-CSE-ConnectionGUID: 26XYpUPJTUCJPp5O/RUA9g==
+X-CSE-MsgGUID: 3X/L+6GgTHOGQGzPViaWMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; d="scan'208";a="122084233"
+X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; d="scan'208";a="115359112"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 06:17:25 -0800
-Date: Wed, 6 Nov 2024 15:17:23 +0100
+ 06 Nov 2024 06:20:46 -0800
+Date: Wed, 6 Nov 2024 15:20:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
@@ -52,9 +52,9 @@ Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  nicolejadeyee@google.com, seanpaul@google.com,
  jeremie.dautheribes@bootlin.com, markyacoub@google.com
-Subject: Re: [PATCH i-g-t v2 2/5] lib/igt_kms: Add helper to wait for a
- specific status on a connector
-Message-ID: <20241106141723.74jwtjujtxxee47m@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 3/5] lib/igt_kms: Add function to list connected
+ connectors
+Message-ID: <20241106142044.4jbxxwd5wqimxpxi@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Louis Chauvet <louis.chauvet@bootlin.com>,
  igt-dev@lists.freedesktop.org,
@@ -67,11 +67,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  nicolejadeyee@google.com, seanpaul@google.com,
  jeremie.dautheribes@bootlin.com, markyacoub@google.com
 References: <20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com>
- <20241022-b4-cv3-01-igt-kms-v2-2-8f654694b513@bootlin.com>
+ <20241022-b4-cv3-01-igt-kms-v2-3-8f654694b513@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241022-b4-cv3-01-igt-kms-v2-2-8f654694b513@bootlin.com>
+In-Reply-To: <20241022-b4-cv3-01-igt-kms-v2-3-8f654694b513@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,86 +88,100 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Louis,
-On 2024-10-22 at 12:28:36 +0200, Louis Chauvet wrote:
-> During testing with chamelium, it is frequent to wait for a specific
-> connector status. This new helper is polling the DRM API to wait for this
-> status. This allows detecting new status without notifier systems (which
-> can fail if hot plug detection is not working properly on the device under
-> test.
+On 2024-10-22 at 12:28:37 +0200, Louis Chauvet wrote:
+> Introduce the igt_get_connected_connectors() function, which returns a
+> list of connector IDs that are currently connected according to DRM.
+> 
+> This function includes a timeout mechanism because connectors can be
+> unplugged at any time. Also, especially with MST, the connector can be
+> listed by drmModeGetResources() but not yet accessible with
+> drmModeGetConnector().
 > 
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > ---
->  lib/igt_kms.c | 38 ++++++++++++++++++++++++++++++++++++++
->  lib/igt_kms.h |  3 +++
->  2 files changed, 41 insertions(+)
+>  lib/igt_kms.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_kms.h |  1 +
+>  2 files changed, 55 insertions(+)
 > 
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 195868646a14..40c0a207cd17 100644
+> index 40c0a207cd17..44b546ae52dc 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -7143,3 +7143,41 @@ float igt_default_detect_timeout(void)
->  
->  	return timeout;
+> @@ -7181,3 +7181,57 @@ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double
+>  		  connector_id);
+>  	return false;
 >  }
 > +
 > +/**
-> + * igt_wait_for_connector_status - Wait for at most @timeout that the connector @connector_id
-> + * status become @drm_mode
+> + * igt_get_connected_connectors - List all connectors reported as CONNECTED by DRM.
 > + *
-> + * @drm_fd: drm file descriptor
-> + * @connector_id: connector to monitor
-> + * @timeout: maximum duration to wait, in second
-> + * @drm_mode: mode to wait for, see enum drmModeConnection
+> + * @drm_fd: DRM file description
+> + * @connector_ids: out pointer for the list of connector ids connected. It must be freed by the
+> + * caller.
 > + *
-> + * Returns: true when the status is reached, false if there is a timeout
+> + * The returns value is the number of connectors
 > + */
-> +bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-> +				   int drm_mode)
+> +int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
 > +{
-> +	drmModeConnector *connector;
+> +	int connected_count = 0;
+> +	drmModeResPtr resources;
 > +	struct timespec start, end;
 > +
-> +	if (timeout == 0.0)
+> +	*connector_ids = NULL;
+> +
+> +	resources = drmModeGetResources(drm_fd);
+> +	for (int j = 0; j < resources->count_connectors; j++) {
+> +		drmModeConnectorPtr connector = NULL;
+> +
+> +		connector = drmModeGetConnector(drm_fd, resources->connectors[j]);
+> +		/*
+> +		 * This time is required as sometimes some id in the connector list are not totally
+> +		 * ready or can disappear
+> +		 */
+> +		clock_gettime(CLOCK_MONOTONIC, &start);
+> +		clock_gettime(CLOCK_MONOTONIC, &end);
+> +		while (!connector &&
+> +		       igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
+> +			connector = drmModeGetConnector(drm_fd, resources->connectors[j]);
+> +			clock_gettime(CLOCK_MONOTONIC, &end);
+> +		}
+> +
+> +		if (igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
+> +			igt_assert(connector);
 
-Floating comparision is tricky, I would suggest something like
-	if (abs(timeout) < epsilon)
-
-> +		timeout = igt_default_detect_timeout();
-
-What if it is still zero here?
+Please try to not assert in lib functions, unless abslutly nessesery.
+Why not just return zero in case no connected connectors are detected.
 
 Regards,
 Kamil
 
 > +
-> +	clock_gettime(CLOCK_MONOTONIC, &start);
-> +	clock_gettime(CLOCK_MONOTONIC, &end);
-> +
-> +	while (igt_time_elapsed(&start, &end) <= timeout) {
-> +		connector = drmModeGetConnector(drm_fd, connector_id);
-> +		if (connector && connector->connection == drm_mode) {
-> +			free(connector);
-> +			return true;
+> +			if (connector->connection == DRM_MODE_CONNECTED) {
+> +				*connector_ids = reallocarray(*connector_ids,
+> +							      connected_count
+> +							      + 1, sizeof(**connector_ids));
+> +				igt_assert(*connector_ids);
+> +				(*connector_ids)[connected_count] = resources->connectors[j];
+> +				connected_count++;
+> +			}
+> +			drmModeFreeConnector(connector);
 > +		}
-> +		free(connector);
-> +		clock_gettime(CLOCK_MONOTONIC, &end);
 > +	}
+> +	drmModeFreeResources(resources);
 > +
-> +	igt_debug("Timeout waiting for connection status %d on connector %d\n", drm_mode,
-> +		  connector_id);
-> +	return false;
+> +	return
+> +	    connected_count;
 > +}
 > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 4f0030264d9f..4cd4a4f65460 100644
+> index 4cd4a4f65460..4674b271638a 100644
 > --- a/lib/igt_kms.h
 > +++ b/lib/igt_kms.h
-> @@ -1263,4 +1263,7 @@ void igt_reset_link_params(int drm_fd, igt_output_t *output);
+> @@ -1265,5 +1265,6 @@ float igt_default_detect_timeout(void);
 >  
->  float igt_default_detect_timeout(void);
+>  bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
+>  				   int drm_mode);
+> +int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
 >  
-> +bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-> +				   int drm_mode);
-> +
 >  #endif /* __IGT_KMS_H__ */
 > 
 > -- 
