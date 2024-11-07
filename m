@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A378D29FBC
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 02:05:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C812D29FA5
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 02:05:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 41F1C10E218;
-	Thu,  7 Nov 2024 02:05:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4138C10E21B;
+	Thu,  7 Nov 2024 02:05:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="SOhwZT9p";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="IOHBiD26";
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2061.outbound.protection.outlook.com [40.107.237.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3D6510E218
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 02:05:39 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 522FD10E21B
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 02:05:41 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FhtMAiz13/qSeKc+IixOx/hyZi17LBYkhtP0LVR9qAYffI7N1BH9BmKWKFqT5VE8b8/h59EQzzuMRA6eVDMNqR36AE/1u/cLiP8yIQDTwviPZeEVZ22FCSruwllnPSFc0OL3qzCHmMtDd/cvvbujEGn3D7SQ74xM4RyKG+k9hGKY7VOY1ONBQEg0Xo8kH/E9ilOZnXOV2o6kIrFNVpPF397fl2cbQ/uOJuRnhTMMGYDSEs4C+g/F5xrR0UB1C7lASkGxKqMQK7kPtysekOhdo3xSI6F+pqJM7Dfgj2LfVGOflaK2cUydSgz0+leEJRdKfws5xAZiOcQO3C9dD773cA==
+ b=TcEZ6aVr3ok3p5lQT8Mx76XgeU8UeIPR1O057aopvukhoz4uy45V8VGbjIArfzLE7QleMly1bVUs6BH2I6bWloiyTc5h5wK0kf2iM2JbVFJbWg2lAVJ5JQxVjfd4/yFeKylS13lSrrMtQSkrqgHa/6PFFBrJgdfx/k/Hgt2eb3R8f0UvxXqPfb7qebX9maqTexs9UOlMIBahqQWgzjKtveA2VXjoz6Vphcp5AZnk/rOZX5YD1c2ynVR2M5BVikvwcOKFms/LRMSHQsEZOvoAy9jB1UpFklZAOCsU32wkvJm8loRj9Zlw60ZSNLbbnaBe7hB1Hg/RR106sT8hNUG3Lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4qByevrLDgW/ABbhiPtd86EwkqGSzsryn99206gYAnU=;
- b=yDs5832NKyWH+LMuYyBzn/RU02d+dipwrFl78iOWW+jEwE4aq5tWLUR7bgOn5k/W8VJ/ToKrbO8Y2vJVrgsVYJV0AgAJDPotso9/GciTM/wjeCnSPDLb8/G69f0r7qXtochO6Z63+iH0r2mcXlirnWcm84jpjgyapa7+rXn0kQQfmeGb0MJldnxGsAym0SwCciYGSbS56CzPENcKyYicex+IoQpFucnD4wu1rAeGaxLchNU3uomYUZQsn868qgwgcHPsxxelA+c4oaCDtTxqAvLYg7YV18MOmJ+GbzCCKHvMyyMSm4MxO78rTNYDd/Jt6OX9Ttyx5Vf/Bm46teI83Q==
+ bh=ZohEJA/7WzZXcwEXHI56i+wilSO13UhR4714fpFYpuw=;
+ b=lXx/IIaSf7oVB796PE5BhRR/7mDjlA6cBOIBh4Wqxxabucb+K8uZZ/BbeRy0z0kTdEXNm6rIa3aLvFzVR8kr74/wL5+VJJLb7lw2bPRfx2AzUIuslIeExnf884RadGuCBnSxkp7dkRyRedc7dW14p56W42SIfn7dmiLl8okQLfbQNfXycIqARIisijXEH8hQInxc8z/78EqXuZMOM6GMI91gZttEyBtaYWrcXtzHk9uqPnQ3GvSkTjjOwgZdTot2gqXuNwJloAxjbTSqCcbFTTYVRjbU6h+daVodmGZw+JrHVIOgBCaXZx2Te9U7pyH0Jf7EQv2QWcivfe47zJ8z/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4qByevrLDgW/ABbhiPtd86EwkqGSzsryn99206gYAnU=;
- b=SOhwZT9pzyY2w4rBX3x6es6eAlT1xWiIW4a0jZj12AZuoz/toSfd80DUZRu0XM/PXP1b0hSGhSrHPDLCckD26IP2NLZZxYTb2SUKWIre2lY7xukzRb/qKUT+mecnziirWvZta9pgo6MmCDdisW1YevbYF/gSbC7WP7LBpPlcB0s=
-Received: from CY8PR12CA0072.namprd12.prod.outlook.com (2603:10b6:930:4c::15)
- by DM3PR12MB9325.namprd12.prod.outlook.com (2603:10b6:0:46::20) with
+ bh=ZohEJA/7WzZXcwEXHI56i+wilSO13UhR4714fpFYpuw=;
+ b=IOHBiD261zCLt88B0xONgc7wGSWopoOSo4aYb7eNhj7vBDHnaXYfs7C3OjfoVCEN9gUJaTFExAEQKxgihhVZIiYlOo6oV+XgCsQe5OPWQbkOztgLE0yfkRDEez3IbqwBquyXXZMASR3FoXAUzeaadQnl+Sjg1a6u1fBevrsSDp0=
+Received: from DM5PR07CA0086.namprd07.prod.outlook.com (2603:10b6:4:ae::15) by
+ LV8PR12MB9084.namprd12.prod.outlook.com (2603:10b6:408:18e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Thu, 7 Nov
- 2024 02:05:36 +0000
-Received: from CY4PEPF0000E9D2.namprd03.prod.outlook.com
- (2603:10b6:930:4c:cafe::d3) by CY8PR12CA0072.outlook.office365.com
- (2603:10b6:930:4c::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20 via Frontend
- Transport; Thu, 7 Nov 2024 02:05:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Thu, 7 Nov
+ 2024 02:05:38 +0000
+Received: from CY4PEPF0000E9D0.namprd03.prod.outlook.com
+ (2603:10b6:4:ae:cafe::56) by DM5PR07CA0086.outlook.office365.com
+ (2603:10b6:4:ae::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18 via Frontend
+ Transport; Thu, 7 Nov 2024 02:05:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,9 +48,9 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000E9D2.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ CY4PEPF0000E9D0.mail.protection.outlook.com (10.167.241.135) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8137.17 via Frontend Transport; Thu, 7 Nov 2024 02:05:35 +0000
+ 15.20.8137.17 via Frontend Transport; Thu, 7 Nov 2024 02:05:37 +0000
 Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 6 Nov
@@ -58,69 +58,71 @@ Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
 Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
  (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 6 Nov
- 2024 20:05:18 -0600
+ 2024 20:05:25 -0600
 Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Wed, 6 Nov 2024 20:05:11 -0600
+ via Frontend Transport; Wed, 6 Nov 2024 20:05:18 -0600
 From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Jesse.zhang@amd.com"
- <jesse.zhang@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t 1/4] lib/amdgpu: add gpu reset check
-Date: Thu, 7 Nov 2024 10:05:07 +0800
-Message-ID: <20241107020510.350132-1-jesse.zhang@amd.com>
+ <Jesse.zhang@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t 2/4] tests/amd_queue_reset: modify the asic filter
+Date: Thu, 7 Nov 2024 10:05:08 +0800
+Message-ID: <20241107020510.350132-2-jesse.zhang@amd.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241107020510.350132-1-jesse.zhang@amd.com>
+References: <20241107020510.350132-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D2:EE_|DM3PR12MB9325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f70c246-065b-4b25-e1b5-08dcfed0ab38
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D0:EE_|LV8PR12MB9084:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca234e61-9a4c-4eff-52ef-08dcfed0ac51
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|36860700013|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?+BL71TDuniIzSPE2CSx153gQzV3wh4Phsygtey01GPCmQ0ilkcJjqCItkY7m?=
- =?us-ascii?Q?rAjjmZr48xvWh+Lv2yFNbKUJ6aL8VftE+HRMAFNzOioafMU1ZZRa9VWEijQF?=
- =?us-ascii?Q?UNhOyHh20npIBvSiz/fAT9txz7s026OzWMMyK7o5YqMUsIDOeEKPI1MxllS7?=
- =?us-ascii?Q?UuRy3Syrl2YA5nKkyoJkUfKVIIK7+QKCZMZgs1MqxaiE58Pfzgeg8keDXf6l?=
- =?us-ascii?Q?W7qMIpYO0W9RY8KtS3JRFQ0MNeUs0+YNB9kRZyBWxVggyXwEw9BkWgNf0SVB?=
- =?us-ascii?Q?VQ15H+CepNdz6G3Mt8de7vnZTObD1+NQxVd9bLqx/pHbpvPU1M30UmGm+xMz?=
- =?us-ascii?Q?zyzvZVK7jj0sznXsoJWwNDAEYj6Psg28d82niyOSLxnspOJY6unKbicqaU6h?=
- =?us-ascii?Q?Yl1Pn0pBKzKhhhxFapEb2mMnh3aQ7FHLCmRS3bMjTkUfl6ucpWOXG4cSrRQI?=
- =?us-ascii?Q?cf04RAqb4qCcKDejy4O14hRHn7EWIH5n8WRjWjo6XJPHrENJ517IbNhdjRIg?=
- =?us-ascii?Q?mXtTqKvbtEn2jmi8zOGiWKOXC3Wtehpeu5RRp9MvmlzZvl+v/NZ5leqQmzc2?=
- =?us-ascii?Q?TzzVsbEtaP6uGGvdZT10V7aKGdKw0wajUepGtcTZCV5vEWR6olJB54HA/e4/?=
- =?us-ascii?Q?sas9U0KU3YYRLKVbAv5aNseAFQVM1K/4XSbbAJ7nsaq3gj6OA3ZuRYIzb2iQ?=
- =?us-ascii?Q?ZV0ZcKMALkZWtJ6llhWjLahrVpkL5TNPEVjmD9/8TCmx5mY/dOoAp1Ydc5mA?=
- =?us-ascii?Q?OQ1oIpzlsPtPNmGnDq2iCID6g/1sj5hGNqMijvby47gd3r0WG4uWBB9TOtUk?=
- =?us-ascii?Q?NKrdZhJd6ICmK7sGCsdE3hAZAhHSSP1SUI64DY6d8d3uegR4I9izb2g3CiI7?=
- =?us-ascii?Q?POMF9mGfhws3n9iNl+eYRDHZvAHKA87M3jbHGu8mfpCCvPbUuxHMoeMfqFGs?=
- =?us-ascii?Q?U5qN29QlrTGruG3WtAr7xbx0GdeK3rFMHqRgn5jd1MbRQaL9dlD0QqtU6fkl?=
- =?us-ascii?Q?ifLluh0eNxthn40ZYHfLr3Vdhh5zZYiviNcGJIuOC0TuibuHfdn4z0anW0HF?=
- =?us-ascii?Q?mzgPtCR8h5eMMs/1Vl1JtSP23DAGF9/lZ2g+2cuXWrWdzN6Y52gY4HXLTmy/?=
- =?us-ascii?Q?Vb0Tw0WZP7Z3QrUyMs98Pf4RjKMpLY21DPRhqaMyX/K8JcF4roP+YhhWxdta?=
- =?us-ascii?Q?HRwolmIyFH2Vkexk3ByZhkAkt5Zy8xgc+B6L8keQCiicyulzcyvv51geUB/5?=
- =?us-ascii?Q?DgZVQD3vdTssEzi6rIN5SgN7AA1iMPMzPho0qXS/90v3gv96zqFTapctKt06?=
- =?us-ascii?Q?V+W+vGD/tXee1H/Jk161j1+l1+un2JHWHOaalHLkmGCsDnw/vGDoJHvrS7ES?=
- =?us-ascii?Q?s+RrXTRZ+tX/0NTJ+4AYvFVmba9KF/ecNiBrZpPcPsPVE6p6cw=3D=3D?=
+ ARA:13230040|376014|82310400026|36860700013|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?lz7mKe9MO44v+YirerWSSqADjS/wkjMm8lYNm/hRAj16x+cOHUjkOSbtaqnL?=
+ =?us-ascii?Q?MQV6ejyIQBbYRPksl2Uhku8bGPYWDbdk7eFHlU9WqFidb7dAY2/bTGbx3dkz?=
+ =?us-ascii?Q?KedLqrvZsksbDsXx+Fk9g/tDrwJGZxyHRnAtWjWx5+5mvRakjdXuAB/lmTo5?=
+ =?us-ascii?Q?1MiP6J/mmtLNb9L7raAz6QU6do1EyHrkuPm98HwdlcXKEmp5b31bSIP5afXD?=
+ =?us-ascii?Q?ATrgiqkA6whuk5auvYYfpRxs4URIRpM4NdmS++lGHTf3zAFMvQt3H3gh70RC?=
+ =?us-ascii?Q?NT0eU12yTVL5mU/yvbCmG0HIS0NktWpoBh9GviS0XXKgtiUZKZcSVam/NHvR?=
+ =?us-ascii?Q?oCrJqOhStuRQFv4ks+sDpPZaq/OlNpYotrQEmA7SsoyjTvT+M6Uc4fO79qw6?=
+ =?us-ascii?Q?jmeedy1GSU2tK1FlkKtdAI9j4+8hT9q/+7WRP9PNKrerHGt3EkNTY1EqTPfR?=
+ =?us-ascii?Q?UvP3AXbo094/LnnjM+vI2UVwmD2IgXi+z4Nd1v4LTk56ysRWXMkdltGrUBT1?=
+ =?us-ascii?Q?p3bjcNGXDsLxiT+2MuhwUZhGw8w5KVU7f5Hqg4Dqhstuc5EnOp9tbXeCi4qC?=
+ =?us-ascii?Q?zfoFvMEKEk8KDqQS1hKkWsMTA9pU2/2vzt8lASXGWydXgbmZ4mzCaylADN7e?=
+ =?us-ascii?Q?qatmm+Feovw0fTA14FP8l2r/aDVZjqyUUE3pHyvylbuhoX53UjGYIa8otJmw?=
+ =?us-ascii?Q?RAVTdabPYv4N2nBtXg+CPqgnpC+5N2akhVhyPjAz1oDQL72+l+whyLPe/EAJ?=
+ =?us-ascii?Q?TvXc2P8j+lF4r89hov3fFU9DmKsBf96cOe9mjME9s7No14goNYITcqlspDli?=
+ =?us-ascii?Q?KHl6XdSkeXdZMDeYgnhw8NsFlYBgZ1/lxvIypsYHIt4J3hMN4tbeGATbWi0a?=
+ =?us-ascii?Q?6sVYz10+iNFTKs35e+GKo48ebZzdVJlL2YhjmPBI1xk7Kt6wkANUOolSwGqg?=
+ =?us-ascii?Q?kl+23P2aQY5FP+mfo4xKuZj7O0njCS2ZCrt1Wz2DxaETtzPM+lq72Hgfspk8?=
+ =?us-ascii?Q?+BSHMdBJkHgJ/TyWx/pdiPGTKk2vcsq2i4iR9Fmo/OUddBusIQocoBnoUyJn?=
+ =?us-ascii?Q?kDTzx3B6hQWXcWly+1yM3IB1NS86XAXgLZ4RYePRfs1x0YpCeWTVnqZeQvw1?=
+ =?us-ascii?Q?LIKapt8lxpTQ8r5fldx27m61oVC9ADFf8BizLaYpZ3wbtWMjvxSlSEsIV6QU?=
+ =?us-ascii?Q?MCbrNvKgDQIa7Z8tyPH7u7cZllVz8NtpeE/Lq9TJtn9WJ6DZ+Y2BMVP1hTlw?=
+ =?us-ascii?Q?8/luc0KnycLXAb7AN1PIveZuVHEg4z0BnooKHlzB4ssiY+CxDDgF6N4pN1x4?=
+ =?us-ascii?Q?3FC3bB2EbcwIejZLOxY2g2xFuZDzpJ25xxAju+VIycRzLFr+mmyGPIZt3rc2?=
+ =?us-ascii?Q?fTWiaDJJIw/ZMmyTG1Etq8cdSId99/VAE6Rqj7pC9+9v81UrXQ=3D=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026); DIR:OUT;
+ SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 02:05:35.7802 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f70c246-065b-4b25-e1b5-08dcfed0ab38
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 02:05:37.5712 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca234e61-9a4c-4eff-52ef-08dcfed0ac51
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D2.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D0.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9325
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9084
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,106 +138,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-GPU reset types include full adapter reset, soft reset,
-queue reset and pipeline reset. It is possible to check
-whether a specific reset is supported via the sysfs interface
-and run special cases for testing.
+From: "Jesse.zhang@amd.com" <Jesse.zhang@amd.com>
+
+Replace the original ASIC filter with the sysfs reset mask. Check
+if a specific reset type is supported before running the subtest.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.c | 57 ++++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_ip_blocks.h |  8 ++++++
- 2 files changed, 65 insertions(+)
+ tests/amdgpu/amd_queue_reset.c | 47 ++++++++--------------------------
+ 1 file changed, 10 insertions(+), 37 deletions(-)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index df603618b..40db28d8d 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -995,3 +995,60 @@ asic_rings_readness(amdgpu_device_handle device_handle, uint32_t mask,
- 		arr[i++] = is_rings_available(device_handle, mask, ip);
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+index 67570251d..87cf665f3 100644
+--- a/tests/amdgpu/amd_queue_reset.c
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -504,37 +504,6 @@ is_queue_reset_tests_enable(const struct amdgpu_gpu_info *gpu_info, uint32_t ver
+ 	return enable;
  }
  
-+/**
-+ * is_reset_enable:
-+ * @ip_type: such as gfx, compute and dma.
-+ * @reset_type: includes full adapter reset, soft reset, queue reset, and pipeline reset
-+ *
-+ * Check if reset supports certain reset types.
-+ */
-+
-+bool
-+is_reset_enable(enum amd_ip_block_type ip_type, uint32_t reset_type)
-+{
-+        char cmd[256];
-+        FILE *fp, *fp2;
-+        char buffer[100];
-+        bool enable = false;
-+        char reset_mask[100];
-+
-+        if(ip_type == AMD_IP_GFX)
-+                snprintf(reset_mask, sizeof(reset_mask) - 1, "gfx_reset_mask");
-+        else if (ip_type == AMD_IP_COMPUTE)
-+                snprintf(reset_mask, sizeof(reset_mask) - 1, "compute_reset_mask");
-+        else if (ip_type == AMD_IP_DMA)
-+                snprintf(reset_mask, sizeof(reset_mask) - 1, "sdma_reset_mask");
-+        else if (ip_type == AMD_IP_VCN_JPEG)
-+                snprintf(reset_mask, sizeof(reset_mask) - 1, "jpeg_reset_mask");
-+        else if (ip_type == AMD_IP_VPE)
-+                snprintf(reset_mask, sizeof(reset_mask) - 1, "vpe_reset_mask");
-+        else
-+                snprintf(reset_mask, sizeof(reset_mask) - 1, "vcn_reset_mask");
-+
-+        snprintf(cmd, sizeof(cmd) - 1, "sudo cat /sys/kernel/debug/dri/0/name |grep -oP '(?<=dev=)[0-9:.]+'");
-+        fp = popen(cmd, "r");
-+        if (fp == NULL)
-+                return false;
-+
-+        if (fgets(buffer, 13, fp) != NULL) {
-+                snprintf(cmd,sizeof(cmd) - 1,"sudo cat /sys/bus/pci/devices/%s/%s | grep -oP '%s'",
-+                        buffer,reset_mask,
-+			reset_type & AMDGPU_RESET_TYPE_FULL ? "full":
-+			reset_type & AMDGPU_RESET_TYPE_SOFT_RESET ? "soft":
-+			reset_type & AMDGPU_RESET_TYPE_PER_QUEUE ? "queue": "pipe");
-+
-+                fp2 = popen(cmd, "r");
-+                if (fp2 == NULL) {
-+                        pclose(fp);
-+                        return false;
-+                }
-+
-+                if (fgets(buffer, 13, fp2) != NULL) {
-+                        enable = true;
-+                }
-+                pclose(fp2);
-+        }
-+        pclose(fp);
-+
-+        return enable;
-+}
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 109d36602..337ef3c25 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -14,6 +14,12 @@
+-static bool
+-is_sub_test_queue_reset_enable(const struct amdgpu_gpu_info *gpu_info,
+-		struct asic_id_filter exclude_filter[_MAX_NUM_ASIC_ID_EXCLUDE_FILTER],
+-		const struct dynamic_test *it)
+-{
+-	int i;
+-	bool enable = true;
+-	int chip_id;
+-	char error_str[128];
+-	bool is_dispatch;
+-
+-	for (i = 0; i < _MAX_NUM_ASIC_ID_EXCLUDE_FILTER; i++) {
+-		if (gpu_info->family_id == exclude_filter[i].family_id) {
+-			chip_id = gpu_info->chip_external_rev - gpu_info->chip_rev;
+-			if (chip_id >= exclude_filter[i].chip_id_begin &&
+-				chip_id < exclude_filter[i].chip_id_end) {
+-				enable = false;
+-				is_dispatch_shader_test(it->test, error_str, &is_dispatch);
+-				igt_info("PID %d SKIP subtest %s CHIP family (%s) %d chip %d, begin end [%d %d] excluded\n",
+-						getpid(), error_str, g_pChip->name,
+-						gpu_info->family_id, chip_id,
+-						exclude_filter[i].chip_id_begin,
+-						exclude_filter[i].chip_id_end);
+-				break;
+-			}
+-		}
+-	}
+-
+-	return enable;
+-}
+-
+ static int
+ amdgpu_write_linear(amdgpu_device_handle device, amdgpu_context_handle context_handle,
+ 		const struct amdgpu_ip_block_version *ip_block,
+@@ -1151,6 +1120,7 @@ igt_main
+ 	int r;
+ 	char shm_name[256] = {0};
+ 	bool arr_cap[AMD_IP_MAX] = {0};
++	uint32_t reset;
+ 	unsigned int ring_id_good;
+ 	unsigned int ring_id_bad;
+ 	unsigned int ring_id_job_good;
+@@ -1164,10 +1134,10 @@ igt_main
+ 	struct dynamic_test arr_err[] = {
+ 			{CMD_STREAM_EXEC_INVALID_PACKET_LENGTH, "CMD_STREAM_EXEC_INVALID_PACKET_LENGTH",
+ 				"Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes",
+-				{ {FAMILY_UNKNOWN, 0x10, 0x20 }, {FAMILY_AI, 0x32, 0xFF }, {FAMILY_AI, 0x3C, 0xFF } }, {-ECANCELED, -ECANCELED, -ECANCELED }, true},
++				{}, {-ECANCELED, -ECANCELED, -ECANCELED }, true},
+ 			{CMD_STREAM_EXEC_INVALID_OPCODE, "CMD_STREAM_EXEC_INVALID_OPCODE",
+ 				"Stressful-and-multiple-cs-of-bad and good opcode-operations-using-multiple-processes",
+-				{ {FAMILY_UNKNOWN, 0x10, 0x20 }, {FAMILY_AI, 0x32, 0xFF }, {FAMILY_AI, 0x3C, 0xFF } }, {-ECANCELED, -ECANCELED, -ECANCELED }, true },
++				{}, {-ECANCELED, -ECANCELED, -ECANCELED }, true },
+ 			//TODO  not job timeout, debug why for n31.
+ 			//{CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC,"CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC",
+ 			//	"Stressful-and-multiple-cs-of-bad and good mem-sync-operations-using-multiple-processes"},
+@@ -1176,16 +1146,16 @@ igt_main
+ 			//	"Stressful-and-multiple-cs-of-bad and good reg-operations-using-multiple-processes"},
+ 			{BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR, "BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR",
+ 				"Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes",
+-				{ {FAMILY_UNKNOWN, 0x10, 0x20 }, {FAMILY_AI, 0x32, 0x3C }, {FAMILY_AI, 0x3C, 0xFF } }, {-ENODATA, -ENODATA, -ENODATA }, false },
++				{}, {-ENODATA, -ENODATA, -ENODATA }, false },
+ 			//TODO  KGQ cannot recover by queue reset, it maybe need a fw bugfix on naiv31
+ 			//{BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING,"BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING",
+ 			//	"Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes"},
+ 			{BACKEND_SE_GC_SHADER_INVALID_USER_DATA, "BACKEND_SE_GC_SHADER_INVALID_USER_DATA",
+ 				"Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes",
+-				{ {FAMILY_UNKNOWN, 0x10, 0x20 }, {FAMILY_AI, 0x32, 0x3C }, {FAMILY_AI, 0x3C, 0xFF } }, {-ENODATA, -ENODATA, -ENODATA }, false },
++				{}, {-ENODATA, -ENODATA, -ENODATA }, false },
+ 			{BACKEND_SE_GC_SHADER_INVALID_SHADER, "BACKEND_SE_GC_SHADER_INVALID_SHADER",
+ 				"Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes",
+-				{ {FAMILY_UNKNOWN, 0x10, 0x20 }, {FAMILY_AI, 0x32, 0x3C }, {FAMILY_AI, 0x3C, 0xFF } }, {-ENODATA, -ENODATA, -ENODATA }, false },
++				{}, {-ENODATA, -ENODATA, -ENODATA }, false },
+ 			{}
+ 	};
  
- #define MAX_CARDS_SUPPORTED 4
- 
-+/* reset mask */
-+#define AMDGPU_RESET_TYPE_FULL (1 << 0) /* full adapter reset, mode1/mode2/BACO/etc. */
-+#define AMDGPU_RESET_TYPE_SOFT_RESET (1 << 1) /* IP level soft reset */
-+#define AMDGPU_RESET_TYPE_PER_QUEUE (1 << 2) /* per queue */
-+#define AMDGPU_RESET_TYPE_PER_PIPE (1 << 3) /* per pipe */
+@@ -1263,7 +1233,10 @@ igt_main
+ 			igt_describe("Stressful-and-multiple-cs-of-bad-and-good-length-operations-using-multiple-processes");
+ 			igt_subtest_with_dynamic_f("amdgpu-%s-%s", ip_tests[i] == AMD_IP_COMPUTE ? "COMPUTE":
+ 					ip_tests[i] == AMD_IP_GFX ? "GFX" : "SDMA", it->name) {
+-				if (arr_cap[ip_tests[i]] && is_sub_test_queue_reset_enable(&gpu_info, it->exclude_filter, it) &&
++				reset = (ip_tests[i] != AMD_IP_DMA) && (it->test == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH) ?
++					AMDGPU_RESET_TYPE_PER_QUEUE : AMDGPU_RESET_TYPE_PER_PIPE;
 +
- enum amd_ip_block_type {
- 	AMD_IP_GFX = 0,
- 	AMD_IP_COMPUTE,
-@@ -212,4 +218,6 @@ amdgpu_open_devices(bool open_render_node, int max_cards_supported, int drm_amdg
- void
- asic_rings_readness(amdgpu_device_handle device_handle, uint32_t mask, bool arr[AMD_IP_MAX]);
- 
-+bool
-+is_reset_enable(enum amd_ip_block_type ip_type, uint32_t reset_type);
- #endif
++				if (arr_cap[ip_tests[i]] && is_reset_enable(ip_tests[i], reset) &&
+ 						get_next_rings(&ring_id_good, &ring_id_bad, info[0].available_rings,
+ 						info[i].available_rings, ip_background != ip_tests[i], &ring_id_job_good, &ring_id_job_bad)) {
+ 					igt_dynamic_f("amdgpu-%s-ring-good-%d-bad-%d-%s", it->name, ring_id_job_good, ring_id_job_bad,
 -- 
 2.25.1
 
