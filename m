@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 844BDD5AE6B
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 07:03:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D70FED5AE6B
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 07:13:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D1A510E7BD;
-	Thu,  7 Nov 2024 07:03:17 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rd6tNbXL";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 130B010E7C6
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 07:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730962996; x=1762498996;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=HPfjGzRDg7XEPJ62kJ422WQLFHQd7f6pLiJBVQvwgKQ=;
- b=Rd6tNbXLeWbh+iPE0kfgevWLPrSFpHKe8c2fNV9JRHFcn1RcByiqVsyk
- u5AqbmM49Li408nQXd26imO6xhuh1QGqbrIekebhMbf9bglrTuMB1aD+W
- l6KK0aGxRUnNjuDwlSIE+qGOGDpZ8ILL6e19GG18vRVJx9kzL+MEcMMNt
- YoQQEXgvdizWDUXkw3+H4ogr3ARH8f2PiyYA+qdTULe2VJKXwIuJ/kqb1
- jg5IxMdmbkquZRapmzEkLVP9f3SS3pUMBsiqq29SKEgUU5vEb9wqQMo4g
- 6j16lBr8Q8AWlOZGrKIDHh8LxXxrL1qPdrKy2mCgMRPNKwjqOuW3Jgp3n A==;
-X-CSE-ConnectionGUID: 4f4i7rroRpSLSXeEQpa5tA==
-X-CSE-MsgGUID: EJT8DcXXQgWvzipG+LJNog==
-X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="34714598"
-X-IronPort-AV: E=Sophos;i="6.11,265,1725346800"; d="scan'208";a="34714598"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 23:03:16 -0800
-X-CSE-ConnectionGUID: 1rQc6mVyQYGd1ZREbJ7jRQ==
-X-CSE-MsgGUID: hMwW8WO/TYemC2GcgEqx3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,265,1725346800"; d="scan'208";a="108236203"
-Received: from ogreene-mobl1.amr.corp.intel.com (HELO [10.213.195.176])
- ([10.213.195.176])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 23:03:14 -0800
-Message-ID: <5d8e05af-292f-47df-8eae-433c48365f96@linux.intel.com>
-Date: Thu, 7 Nov 2024 08:03:12 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 92B1A10E7AC;
+	Thu,  7 Nov 2024 07:13:46 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA8C510E7AC;
+ Thu,  7 Nov 2024 07:13:45 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] igt-runner fact checking
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>, luciano.coelho@intel.com
-References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
- <8c573469-ff48-49bf-a3ab-ddcfaef83e95@linux.intel.com>
- <20241106124413.swtucaj5yjj6o3ou@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20241106124413.swtucaj5yjj6o3ou@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_igt-runner_fact_checkin?=
+ =?utf-8?q?g_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 07 Nov 2024 07:13:45 -0000
+Message-ID: <173096362569.1420466.13850817667044018789@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
+In-Reply-To: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,29 +37,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+== Series Details ==
 
-Thank you for your review. Please see my comment below:
+Series: igt-runner fact checking (rev3)
+URL   : https://patchwork.freedesktop.org/series/140841/
+State : warning
 
-[...]
+== Summary ==
 
->> diff --git a/lib/igt_facts.h b/lib/igt_facts.h
->> new file mode 100644
->> index 000000000..b649f93b3
->> --- /dev/null
->> +++ b/lib/igt_facts.h
->> @@ -0,0 +1,55 @@
->> +// SPDX-License-Identifier: MIT
-> 
-> In headers use /* SPDX-.... */
+Pipeline status: FAILED.
 
-Checkpatch can't decide itself. No matter the format, it complains...
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1305711 for the overview.
 
-WARNING: Improper SPDX comment style for 'lib/igt_facts.c', please use '//' instead
-#70: FILE: lib/igt_facts.c:1:
-+/* SPDX-License-Identifier: MIT */
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66246967):
+  437/441 assembler test/rnde-intsrc              OK       0.01 s 
+  438/441 assembler test/rndz                     OK       0.01 s 
+  439/441 assembler test/lzd                      OK       0.01 s 
+  440/441 assembler test/not                      OK       0.02 s 
+  441/441 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  436
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1730963455:step_script
+  section_start:1730963455:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1730963456:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-[...]
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66246968):
+  437/441 assembler test/rnde-intsrc              OK       0.02 s 
+  438/441 assembler test/rndz                     OK       0.02 s 
+  439/441 assembler test/lzd                      OK       0.01 s 
+  440/441 assembler test/not                      OK       0.02 s 
+  441/441 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  436
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1730963481:step_script
+  section_start:1730963481:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1730963483:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66246966):
+  27/31 lib i915_perf_data_alignment            OK       0.67 s 
+  28/31 lib bad_subtest_type                    EXPECTEDFAIL 0.59 s 
+  29/31 lib igt_no_subtest                      EXPECTEDFAIL 0.27 s 
+  30/31 lib igt_simple_test_subtests            EXPECTEDFAIL 0.27 s 
+  31/31 lib igt_timeout                         EXPECTEDFAIL 1.34 s 
+  
+  Ok:                   26
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1730963421:step_script
+  section_start:1730963421:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1730963422:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1305711
