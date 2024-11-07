@@ -4,59 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5097D5D682
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 18:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A63D5D683
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 18:36:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 41EB610E8B9;
-	Thu,  7 Nov 2024 18:24:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD88410E8C4;
+	Thu,  7 Nov 2024 18:36:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M/C/2HJo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PYNuKArs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A16310E8AF
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 18:24:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63E9410E8C4
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 18:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731003895; x=1762539895;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=3PguDIUuKyWai4C7lvtxlbulv6VSvzAL2N9V9wZNMv0=;
- b=M/C/2HJo3FQX8wSRCbluAxUYB/7OE+9f/oz4kXXx8/9H24CRVyFde0CV
- JbrzEh+Gpc0oLdW+ZqIiJLDxFucRu90TYY0hQGWrVDCXGfO6W7V7Xa8D3
- zoeisSXDiuEnH2LUryOY9km6HpkQGjT9u12cYmuXdlKmPQr/OTD3z6Cjo
- w7Hmp/dWplVtMl5gQFgeUqO3wLkqkIuXDnlq0vPVV/0y4jI97fZFyHZ5g
- 1Oemifd9hIZ9P+xm/GOrrG0xj8l2PXuQyxsnE6k5iaZgx6cY3HYiYlnN4
- gjaQY9LmOvK3lH49cb5oLB8RjIm8iC41rohrqykGvAbBl9kNl2JMaNKVs Q==;
-X-CSE-ConnectionGUID: yNeo7BMiRSuqsBu0/jkClw==
-X-CSE-MsgGUID: h1nJUrwPQ3SNMH7qco9Mwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="42242060"
-X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="42242060"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 10:24:53 -0800
-X-CSE-ConnectionGUID: j/qRp0OvQQ6Kj7lXrmdz4w==
-X-CSE-MsgGUID: HounLY0HQWWPjozl2+vyHA==
+ t=1731004612; x=1762540612;
+ h=date:from:to:subject:message-id:references:in-reply-to:
+ mime-version; bh=IcvNJtxMlDD7zzCw0T+rBqUZZGKE54CkOmGhTYOcUT4=;
+ b=PYNuKArs7+AEFj4zxIw9l1hirLao4sckfc9qJzWUvT5Lmb4GrwRIHlrq
+ 0qz3frz3QDh41bzqXpoNKhPQq0TyFp0JYqAMzlz9JinVUyfQVyLTD3xwv
+ r/Nq9c7OG+N9/TDk3E4jo+sb8c9neOtdCqGY83xN4eQqJSwqTmUqZIpvQ
+ h9Eiyu6mgGyDucxic6a7CnIAsvpXIRnvUouxopiBwB9PmsH3bAInO6fn4
+ 5Fz1siI5Ut4Gziw/sWKiQLKrDewGCIfy4dSiQvCAlEXBfKjI7kLpw2Qz1
+ 8HUIqIYpuXHE72RumlbKGTxblgRSzA3ewqnO3er9GVZMIBxdf2YSFEZ6G g==;
+X-CSE-ConnectionGUID: TeMd8BANSoGtqBVSmnjWbw==
+X-CSE-MsgGUID: XzDHGY9bStmCoVdKVYFDWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="30971140"
+X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="30971140"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2024 10:36:52 -0800
+X-CSE-ConnectionGUID: A0XLWNvdTY+90K2NzW50yA==
+X-CSE-MsgGUID: JSQaw+PvQu2UQ8gSGVgu9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="85512580"
-Received: from nkwan-mobl.amr.corp.intel.com (HELO [10.124.114.229])
- ([10.124.114.229])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 10:24:53 -0800
-Message-ID: <f94e5bda-9e48-4834-8f84-ae2bf8350aca@linux.intel.com>
-Date: Thu, 7 Nov 2024 10:24:52 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib: sync PCI ID macros with kernel
+X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="85987122"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 07 Nov 2024 10:36:52 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 7 Nov 2024 10:36:50 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 7 Nov 2024 10:36:50 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.48) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 7 Nov 2024 10:36:50 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kK14gLlEzwx0ZDSYH13PURP0ZFKJfBoTpP1wIf16+mn4G2BF29zQw45Uhzgb35ErRAUITNcBB4xONkgyP/+TTHVgrHIT1qCdi61JCtt9CEgh54RpbMxDYe2uyGJuohaqWxdkZB9V7B5MbcqpH1/D2oY/pNd3QhHRYQIF+3sXPkafDZvjMBYXEZ9J8vfwgSax3jkROIJtmmqZp9kZ8+FAX/Iqgqz1rG3RNs4LDvgXgzRvv9jT7THjxBQ7uwYFe9F/AhvqdK8BM0Y/x21cycwVE1jFjHq7fnfKBRQwU2zxhbt+WdKRI1wgIJqaK5Zy//CEI5+wsKzthgRF5KzXzj0w8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=11JtidcbTpSyZ+F2MLG6ICt2Ucvl1B0EFXEran8BlcE=;
+ b=wyHoOhkozE07svSmgsp99ESDx0f+tzKlDYXQ4IR2A/BAaDaac6Sa5jkvlC3CHJw526gZrRWVLfA7+pwQfEEkLclfktxWrfq5m+DflWt/D2HPyQiolIasxYHk517rmMB0FMkN1400SQe7Z55U3X+za9nNRk970t/nyDaO6p/aPP2XIHLf9G4ZXEDECVk6NcVt3Tonq22KPL4FYxVzPhxrFseaJD0cx6BBXN0KdoMZkrHbzRnNbvoO+nlDs3+/Puv/vGcVb3LJfeCqFxkKijzqrUOShwMhFsakjGl28HEUt3Jm8o6EKwRedFB7ZWUUts1K6zxTYryRdqcB0DRGuM0v8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by DS7PR11MB8826.namprd11.prod.outlook.com (2603:10b6:8:256::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18; Thu, 7 Nov
+ 2024 18:36:46 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 18:36:46 +0000
+Date: Thu, 7 Nov 2024 12:36:44 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, jani.nikula@intel.com,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20241106185846.1218835-1-ngai-mint.kwan@linux.intel.com>
- <20241107170833.u7e2s6fjpk7qvdks@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
-In-Reply-To: <20241107170833.u7e2s6fjpk7qvdks@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <igt-dev@lists.freedesktop.org>, Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_core: Free log_buffer entries on exit
+Message-ID: <ypjxm3cpvsxvco5nn2wyxrpllmtb7k5pkksehtsve7piyrjal6@hesxrn4iz4ia>
+References: <20241107070208.3143050-1-lucas.demarchi@intel.com>
+ <20241107173145.avmfmvivykerfpz7@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241107173145.avmfmvivykerfpz7@kamilkon-desk.igk.intel.com>
+X-ClientProxiedBy: MW4PR03CA0344.namprd03.prod.outlook.com
+ (2603:10b6:303:dc::19) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DS7PR11MB8826:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98099057-572d-40ac-7327-08dcff5b2262
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?FFqdyy7xJC/nw2eV6EhRbLL37kKTFL+bZkSaAvmV8lzcf3meWu3z4uPc1Pfh?=
+ =?us-ascii?Q?+VwOXxN+jcKwCBeIN2o+aFKpfFVrcW3pQTz4Zw4HkvWE7l4JA5Yf5jvO3uX+?=
+ =?us-ascii?Q?TAdpdJeBEbHZkaFJp4iXitMHrLlEDvN6oaiRFPmk8SGW12yMGTFiNDfDYw1x?=
+ =?us-ascii?Q?eugVYYrxYRFVvwQPwNcJ2uqiaGcNPdBnp19dxTOzQ50yAih1ZTgfN3Zv3dGu?=
+ =?us-ascii?Q?EOsMHteBucmSORtdecCCHe9ZZT4TzAGiM7JLHBE6qvHCGC+wxmXlUazifiuO?=
+ =?us-ascii?Q?K7ziOaoCvr01CjvIv38B84J0zQuyaynpUS01s7n7msmedJiZ8aD1VtKKgXk+?=
+ =?us-ascii?Q?rc4S1w2jkpB+uZOpdsA0z/f/D9UjSmpOapfFe8Sm+vU6DxHgJwk/apmr+YQm?=
+ =?us-ascii?Q?JYAfIvupbtXMXGXNEeQsWwTAPOPRWe1ThB/VkCRYu6ZDxgK0iGKHHVIEqfr/?=
+ =?us-ascii?Q?NuRzs+th/VN93tVm8q+TZOa/xNmtYFu5RHNSwj659yalj8gsvjmlM3zd4CIu?=
+ =?us-ascii?Q?av40XjSYpVXs7OguY/wLW6ITNtU4hT+Axmf5a+FQbk4uf0q+5EeGGToDRjvH?=
+ =?us-ascii?Q?ztm2Lb4ru6QzZxCCABWtZyEka/qd6Dt7lQgskd1/K9CEr9KEhiWMTUKx9qZs?=
+ =?us-ascii?Q?oatzlBJEMyoMh5zlyIHWkKHH2AUj3eKNU8ackFog57UuYA9tcw0DvVDEqycO?=
+ =?us-ascii?Q?rrV260gHa3ysXvppIK6x4I0IB9iHACGxv0SGjfzdS5JI46t1KlKT6QdfRl3d?=
+ =?us-ascii?Q?m2eBaLmWINLA+FFNNz2T3VOmsPO5BE7G8I1gZySfNnaoy/XkPSXLO2sdKpTA?=
+ =?us-ascii?Q?sYPKXCrkWuwoardvKMCw0u3ZCHaQZa74NDK5dOtZ7+ijhqfDCwiX1YcaiRd1?=
+ =?us-ascii?Q?17zoVGiHZ6aQikTy8pwLKsSbem9CsgoLnd6IifEZwY9E0oLB552enzU69bAB?=
+ =?us-ascii?Q?8+CEw/NnhbVnb1MIYdP4XEbC6y8J7BMdk07LHldMIZAJyU1V60DSF3zIB9GZ?=
+ =?us-ascii?Q?r736CwClUMJIBedbC/chWrD538gnXhM16WFYeomgqtxlM6G77rF7ekKaOoew?=
+ =?us-ascii?Q?ftp1rENouuW1UgFy4hHWboarFr5QT2Gk2kz33GqK4RP99B2Dicfi+F487Bn/?=
+ =?us-ascii?Q?zpACztKFzoqXeuRd0wfA5He4k92RXPnRmLHh6L34BZbvUrIwSQDohtdkxSYN?=
+ =?us-ascii?Q?8AlFrcJojGQobjJA4mUPSnbry6Rzk8VQ2BrCiJtSD0AiMeY58Y6PJ39S7F84?=
+ =?us-ascii?Q?EEFuq3t8BPHQm4jfWau7?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ehhO+B0LqYFiCWrjtMwRVxC6qCxOdPZfHgerSGeietFrsdBwqokWRQluIOfC?=
+ =?us-ascii?Q?6K/y15D3TFjmmdLABGQBgMoAta7dqX8lBDyXy7h4ZkFvBR8rf3sCzy/JpPRB?=
+ =?us-ascii?Q?VvgCfUq3Z3fHyv+RKF6e0OlFFGCViWG7dwj3LsL4/eUxuaZuPKcBytS36Dpc?=
+ =?us-ascii?Q?PwAZ09ks+M2sy6rFDRLJ5B3pqT140qvVQXNCix6wsH1lXUPGJ6CCDTio/q4e?=
+ =?us-ascii?Q?tbwwKTiID/80UWrHawcyiAyrqnGFUShZBqLzuTZR1QjLOPsFfyJ+p8Kqtztq?=
+ =?us-ascii?Q?Px5sNzLBIzQRM/WIG5wlrbhfPP0/6Qn3Ie3MNvFm8di7dMzz5GBz4H+Aqo4t?=
+ =?us-ascii?Q?kV82r9MDV0+1x1c8XViPcNUYWXRMKDCTbw/xg+YVony3AnESNVX6xt+AWAjH?=
+ =?us-ascii?Q?TEKpfV3e/jESEYNykDFo/S0xNhe6LM6yQQzAdN34QtMEPLkBhw+6hzX0nCfB?=
+ =?us-ascii?Q?sHcIFzOl32MDgIDVJKQdq0GwX09OJGil0NQsy4MtLF2THdnJ63+62rqmz6Iw?=
+ =?us-ascii?Q?C9gdi88KZj2OC0pXN6RZhjd+P7wwmQYyi53az/fEd4+VbYjdoHodF4nTKcGc?=
+ =?us-ascii?Q?qw09qMEX+FZzXLlXLiVgyTEUW297UJm3xIooWQak0SCL11K8cYzY04mE9HP+?=
+ =?us-ascii?Q?PbE9f6U5mhkl9BDi0W/tU8WgHHLcYiCDrZQpb7STQ9u/uCXDY+GCVRpBWrwQ?=
+ =?us-ascii?Q?Ndgm0azBH0E9If3Z02aEHMTOgwV4eEy6n8ry/RrflPcBtPeJXG8IMSXJPW3X?=
+ =?us-ascii?Q?sVO5STJfjJ4xN8LhGkrqCpXoxvv0r1Xmmdd67lzk6qgRH8c4LiHKN4+Pldaw?=
+ =?us-ascii?Q?0eoWr/c/Zr34PrYA7tmqQLbBbIrkuySWMiIj8vbC6HHo4brZkpR6/8yveIT1?=
+ =?us-ascii?Q?3tjTUl6735wW9sne8DCzPNlEeyL1viV/Hv2vlIptKswsDb1l/qixJ6W9dzDu?=
+ =?us-ascii?Q?k89SAEia8SJDo9vivepUi0kprCdLIpo57/Szc2k9igL5B2pqIhaV18+Y01B/?=
+ =?us-ascii?Q?uQfDHk5yOXzUFAE4M6ZKIPIsS3snWVlyRQLiPo7u0DSAlbyixEtjEKGW46J+?=
+ =?us-ascii?Q?RhP7L9JDhpFZl79ycvGJ+GBFZk5CsOmTKaL9+GYccBcphFNvpJN/DEeQIZNe?=
+ =?us-ascii?Q?u9AdJROzgANw97VZOtVevPtGgQlq1yYtaYhAGyQRcio53cVkuLtjTWu0jizQ?=
+ =?us-ascii?Q?v4nvxrJ6hGPn5coPpXMGspxqR4+TiyCCeJ7VUac+B/YEAAZnsyztBFtfMxAr?=
+ =?us-ascii?Q?Pt8rs2J6BMRlRHgJvfB5VSfLfqKvB1oxuIwe4wNomA2+IPqoZM5dbD3EKIEe?=
+ =?us-ascii?Q?A6k7q2e9VoAltIjDOen//6XZvO6EhtL0aLhJs+RJp44PUrz+InHPa8k8fr4R?=
+ =?us-ascii?Q?3U504BOHiZaMZBkEI+Waco19Bxn52U07KoeWch9bcJmVj7ze4YCe/uZ0uFuR?=
+ =?us-ascii?Q?cCFlDR+5L/gLSDdu6+MVt9Kry82Wk229bra0IMYgNoEeUKw90NLECAdzAgy2?=
+ =?us-ascii?Q?tBXydUS1wqG4OzORX9caRfSfRRZuYIIzrfM6XFIqN2pjfieI5cDiAcvXYdfC?=
+ =?us-ascii?Q?/3TxnkZwOjbW1T7wK5upZfPCD8iKM5NFfihaUmvC7m0eBUcqL97tHdCSv0KS?=
+ =?us-ascii?Q?zw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98099057-572d-40ac-7327-08dcff5b2262
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 18:36:46.6255 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fcKn1RZBph0Lr9j4CiWqSLIbJQnvkIMMdtsK6o8ge6jLtJof3uNWG/bZ3eo+RvftFidaoldNwH1aML+pw64u9firkOQS5RTZXnJ60aQ7IuU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB8826
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,536 +173,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Thu, Nov 07, 2024 at 06:31:45PM +0100, Kamil Konieczny wrote:
+>Hi Lucas,
+>On 2024-11-06 at 23:02:08 -0800, Lucas De Marchi wrote:
+>> Make sure the buffer entries are released, otherwise valgrind output
+>> becomes each used entry as still reachable on exit (up to 256).
+>>
+>> Test:
+>> 	# valgrind --leak-check=full  ./build/tests/xe_live_ktest  --r xe_mocs
+>>
+>> Before:
+>> 	==16082== LEAK SUMMARY:
+>> 	==16082==    definitely lost: 0 bytes in 0 blocks
+>> 	==16082==    indirectly lost: 0 bytes in 0 blocks
+>> 	==16082==      possibly lost: 0 bytes in 0 blocks
+>> 	==16082==    still reachable: 33,473 bytes in 59 blocks
+>>
+>> After:
+>> 	==15992== LEAK SUMMARY:
+>> 	==15992==    definitely lost: 0 bytes in 0 blocks
+>> 	==15992==    indirectly lost: 0 bytes in 0 blocks
+>> 	==15992==      possibly lost: 0 bytes in 0 blocks
+>> 	==15992==    still reachable: 31,083 bytes in 42 blocks
+>
+>Thank you for a patch, there are still some blocks left,
+>maybe because that buffer is a ring? e.g. it could have
+>end < start
 
+no, those blocks are other things.
 
+Note that we are looping with a uint8_t. When we have start == 250
+and end == 2 (impossible due to how we place log messages, but just for
+illustration), it's expected to free the positions [250, 255], [0, 1].
 
-On 2024-11-07 09:08, Kamil Konieczny wrote:
-> Hi Ngai-Mint,
-> On 2024-11-06 at 10:58:46 -0800, Ngai-Mint Kwan wrote:
->> Latest kernel switched to common PCI ID macros.
-> --^^^^^^
-> Please just name at which one this happened, was it 6.12-rc6?
+Some more context explanation of this change.
 
-I'll include the commit ID in next version.
+I sent this because the first leaks I was seeing were related to libkmod
+and as the libkmod maintainer I was curious if it was a leak in libkmod
+that was getting masked by us not releasing its ctx. It was not, and
+just releasing the ctx (see
+https://patchwork.freedesktop.org/patch/623301/?series=140746&rev=3)
+made those go away.  While doing that and running other more log-heavy
+tests, I was getting a flood of these 256 blocks, so I fixed that just
+to get them out of the way of what I was really after.
 
->> Refactor lib to use new macro definitions and pciids.h header file.
-> If there are more patches which changes/adds pci ids maybe last
-> one before rename should go first, then a rename? Up to you.
+Looking back to this patch, not sure there's much value as whatever
+binary using it is already on its way out.
 
-I was actually surprised that there was a rename when initially I just 
-wanted to delete the file.
-I guess the git algorithm decided to do a rename instead?
-
->> Signed-off-by: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
+>
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 >> ---
->>   docs/reference/igt-gpu-tools/meson.build |   3 +-
->>   lib/i915/perf.c                          |   2 +-
->>   lib/i915_pciids_local.h                  |   2 +-
->>   lib/intel_device_info.c                  |   8 +-
->>   lib/{i915_pciids.h => pciids.h}          |  97 +++++++---
->>   lib/xe/xe_oa.c                           |  12 +-
->>   lib/xe_pciids.h                          | 218 -----------------------
->>   7 files changed, 81 insertions(+), 261 deletions(-)
->>   rename lib/{i915_pciids.h => pciids.h} (93%)
->>   delete mode 100644 lib/xe_pciids.h
+>>  lib/igt_core.c | 15 ++++++++++++---
+>>  1 file changed, 12 insertions(+), 3 deletions(-)
 >>
->> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
->> index d5db95e40..0f5434677 100644
->> --- a/docs/reference/igt-gpu-tools/meson.build
->> +++ b/docs/reference/igt-gpu-tools/meson.build
->> @@ -10,7 +10,6 @@ ignore_headers = [
->>   	'gpgpu_fill.h',
->>   	'i830_reg.h',
->>   	'i915_3d.h',
->> -	'i915_pciids.h',
->>   	'i915_reg.h',
->>   	'igt_edid_template.h',
->>   	'intel_reg.h',
->> @@ -22,7 +21,7 @@ ignore_headers = [
->>   	'media_fill_gen9.h',
->>   	'gen9_render.h',
->>   	'version.h',
->> -	'xe_pciids.h',
->> +	'pciids.h',
-> Try to keep it sorted so place before 'version.h'
+>> diff --git a/lib/igt_core.c b/lib/igt_core.c
+>> index 407f7b551..879d1ecd8 100644
+>> --- a/lib/igt_core.c
+>> +++ b/lib/igt_core.c
+>> @@ -469,11 +469,21 @@ static void _igt_log_buffer_append(char *line)
+>>  	pthread_mutex_unlock(&log_buffer_mutex);
+>>  }
+>>
+>> +static void _igt_log_buffer_reset_locked(void)
+>> +{
+>> +	for (; log_buffer.start != log_buffer.end; log_buffer.start++) {
+>> +		free(log_buffer.entries[log_buffer.start]);
+>> +		log_buffer.entries[log_buffer.start] = NULL;
+>> +	}
+>
+>Here you should use the same loop as in _dump, so
+>
+>	i = log_buffer.start;
+>	do {
+>		// do ops here
+>		i++;
+>        } while (i != log_buffer.start && i != log_buffer.end);
 
-Consider it done, but the list was more or less unsorted and I initially 
-thought there was on sorting at all.
+there's an off-by-one bug in this loop that I didn't want to reproduce
+here: if we never ever logged anything, at the beggining start == end == 0,
+and in the first check i == 1. Which means we will print (or free in
+this case) the 256 entries. Oops.  I think we always log at least the
+test name, so it's not a bug we reproduce.
 
 >
->>   ]
->>   
->>   test_groups = [
->> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
->> index ef2f74be8..4ce92b591 100644
->> --- a/lib/i915/perf.c
->> +++ b/lib/i915/perf.c
->> @@ -37,8 +37,8 @@
->>   
->>   #include <i915_drm.h>
->>   
->> -#include "i915_pciids.h"
->>   #include "i915_pciids_local.h"
->> +#include "pciids.h"
->>   
-> This is ok, we want it to be in one place together but
-> place it before _local.h
+>Or even simpler, init with NULLs and then just free all?
 
-Done.
+it's a static variable, it's already zero initialized.
 
->>   #include "intel_chipset.h"
->>   #include "perf.h"
->> diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
->> index c404a51af..b85cfd779 100644
->> --- a/lib/i915_pciids_local.h
->> +++ b/lib/i915_pciids_local.h
->> @@ -5,7 +5,7 @@
->>   #ifndef _I915_PCIIDS_LOCAL_H_
->>   #define _I915_PCIIDS_LOCAL_H_
->>   
->> -#include "i915_pciids.h"
->> +#include "pciids.h"
->>   
->>   /* MTL perf */
->>   #ifndef INTEL_MTL_M_IDS
->> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
->> index 2a118eda6..b077af46c 100644
->> --- a/lib/intel_device_info.c
->> +++ b/lib/intel_device_info.c
->> @@ -1,7 +1,6 @@
->>   #include "intel_chipset.h"
->> -#include "i915_pciids.h"
->>   #include "i915_pciids_local.h"
->> -#include "xe_pciids.h"
->> +#include "pciids.h"
->>   
->>   #include <strings.h> /* ffs() */
->>   
->> @@ -635,12 +634,13 @@ static const struct pci_id_match intel_device_match[] = {
->>   	INTEL_ATS_M_IDS(INTEL_PCI_ID_INIT, &intel_ats_m_info),
->>   
->>   	INTEL_MTL_IDS(INTEL_PCI_ID_INIT, &intel_meteorlake_info),
->> +	INTEL_ARL_IDS(INTEL_PCI_ID_INIT, &intel_meteorlake_info),
->>   
->>   	INTEL_PVC_IDS(INTEL_PCI_ID_INIT, &intel_pontevecchio_info),
->>   
->> -	XE_LNL_IDS(INTEL_PCI_ID_INIT, &intel_lunarlake_info),
->> +	INTEL_LNL_IDS(INTEL_PCI_ID_INIT, &intel_lunarlake_info),
->>   
->> -	XE_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
->> +	INTEL_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
->>   
->>   	INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
->>   };
->> diff --git a/lib/i915_pciids.h b/lib/pciids.h
->> similarity index 93%
->> rename from lib/i915_pciids.h
->> rename to lib/pciids.h
->> index 3e39d644e..7632507af 100644
->> --- a/lib/i915_pciids.h
->> +++ b/lib/pciids.h
->> @@ -22,30 +22,23 @@
->>    * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
->>    * DEALINGS IN THE SOFTWARE.
->>    */
->> -#ifndef _I915_PCIIDS_H
->> -#define _I915_PCIIDS_H
->> -
->> -/*
->> - * A pci_device_id struct {
->> - *	__u32 vendor, device;
->> - *      __u32 subvendor, subdevice;
->> - *	__u32 class, class_mask;
->> - *	kernel_ulong_t driver_data;
->> - * };
->> - * Don't use C99 here because "class" is reserved and we want to
->> - * give userspace flexibility.
->> - */
->> -#define INTEL_VGA_DEVICE(id, info) { \
->> -	0x8086,	id, \
->> -	~0, ~0, \
->> -	0x030000, 0xff0000, \
->> -	(unsigned long) info }
->> -
->> -#define INTEL_QUANTA_VGA_DEVICE(info) { \
->> -	0x8086,	0x16a, \
->> -	0x152d,	0x8990, \
->> -	0x030000, 0xff0000, \
->> -	(unsigned long) info }
->> +#ifndef __PCIIDS_H__
->> +#define __PCIIDS_H__
->> +
->> +#ifdef __KERNEL__
-> I am not sure if we want a kernel defs, this is for userspace
-> so imho this ifdef KERNEL/endif should be deleted. Or write
-> a rationale why you included it here, or make it a comment?
-> +cc Zbigniew
+>For example, if start=2, end=1, there is still a valid pointer
+>at end==1
 
-Ok, let me confer with my colleagues on what to do.
-Otherwise, the kernel defs was included because it was a literal copy 
-form drm-tip.
+no, end marks where the *next* entry will be. At the beginning we have:
 
-Regards,
-Ngai-Mint Kwan
+start == end == 0. There are no entries in the ringbuffer.
 
-> Regards,
-> Kamil
+After the first logged message:
+start == 0, end == 1.
+
+If the ringbuffer ever wraps, then we will always have:
+
+start == x + 1; end == x, or
+start == 0; end == 255
+
+Except for when dumping the contents, this ringbuffer doesn't have any
+consumer incrementing the start AFAICS.
+
 >
->> +#define INTEL_VGA_DEVICE(_id, _info) { \
->> +	PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
->> +	.class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
->> +	.driver_data = (kernel_ulong_t)(_info), \
->> +}
->> +
->> +#define INTEL_QUANTA_VGA_DEVICE(_info) { \
->> +	.vendor = PCI_VENDOR_ID_INTEL, .device = 0x16a, \
->> +	.subvendor = 0x152d, .subdevice = 0x8990, \
->> +	.class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
->> +	.driver_data = (kernel_ulong_t)(_info), \
->> +}
->> +#endif
->>   
->>   #define INTEL_I810_IDS(MACRO__, ...) \
->>   	MACRO__(0x7121, ## __VA_ARGS__), /* I810 */ \
->> @@ -771,16 +764,62 @@
->>   	INTEL_ATS_M150_IDS(MACRO__, ## __VA_ARGS__), \
->>   	INTEL_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
->>   
->> +/* ARL */
->> +#define INTEL_ARL_IDS(MACRO__, ...) \
->> +	MACRO__(0x7D41, ## __VA_ARGS__), \
->> +	MACRO__(0x7D51, ## __VA_ARGS__), \
->> +	MACRO__(0x7D67, ## __VA_ARGS__), \
->> +	MACRO__(0x7DD1, ## __VA_ARGS__), \
->> +	MACRO__(0xB640, ## __VA_ARGS__)
->> +
->>   /* MTL */
->>   #define INTEL_MTL_IDS(MACRO__, ...) \
->>   	MACRO__(0x7D40, ## __VA_ARGS__), \
->> -	MACRO__(0x7D41, ## __VA_ARGS__), \
->>   	MACRO__(0x7D45, ## __VA_ARGS__), \
->> -	MACRO__(0x7D51, ## __VA_ARGS__), \
->>   	MACRO__(0x7D55, ## __VA_ARGS__), \
->>   	MACRO__(0x7D60, ## __VA_ARGS__), \
->> -	MACRO__(0x7D67, ## __VA_ARGS__), \
->> -	MACRO__(0x7DD1, ## __VA_ARGS__), \
->>   	MACRO__(0x7DD5, ## __VA_ARGS__)
->>   
->> -#endif /* _I915_PCIIDS_H */
->> +/* PVC */
->> +#define INTEL_PVC_IDS(MACRO__, ...) \
->> +	MACRO__(0x0B69, ## __VA_ARGS__), \
->> +	MACRO__(0x0B6E, ## __VA_ARGS__), \
->> +	MACRO__(0x0BD4, ## __VA_ARGS__), \
->> +	MACRO__(0x0BD5, ## __VA_ARGS__), \
->> +	MACRO__(0x0BD6, ## __VA_ARGS__), \
->> +	MACRO__(0x0BD7, ## __VA_ARGS__), \
->> +	MACRO__(0x0BD8, ## __VA_ARGS__), \
->> +	MACRO__(0x0BD9, ## __VA_ARGS__), \
->> +	MACRO__(0x0BDA, ## __VA_ARGS__), \
->> +	MACRO__(0x0BDB, ## __VA_ARGS__), \
->> +	MACRO__(0x0BE0, ## __VA_ARGS__), \
->> +	MACRO__(0x0BE1, ## __VA_ARGS__), \
->> +	MACRO__(0x0BE5, ## __VA_ARGS__)
->> +
->> +/* LNL */
->> +#define INTEL_LNL_IDS(MACRO__, ...) \
->> +	MACRO__(0x6420, ## __VA_ARGS__), \
->> +	MACRO__(0x64A0, ## __VA_ARGS__), \
->> +	MACRO__(0x64B0, ## __VA_ARGS__)
->> +
->> +/* BMG */
->> +#define INTEL_BMG_IDS(MACRO__, ...) \
->> +	MACRO__(0xE202, ## __VA_ARGS__), \
->> +	MACRO__(0xE20B, ## __VA_ARGS__), \
->> +	MACRO__(0xE20C, ## __VA_ARGS__), \
->> +	MACRO__(0xE20D, ## __VA_ARGS__), \
->> +	MACRO__(0xE212, ## __VA_ARGS__)
->> +
->> +/* PTL */
->> +#define INTEL_PTL_IDS(MACRO__, ...) \
->> +	MACRO__(0xB080, ## __VA_ARGS__), \
->> +	MACRO__(0xB081, ## __VA_ARGS__), \
->> +	MACRO__(0xB082, ## __VA_ARGS__), \
->> +	MACRO__(0xB090, ## __VA_ARGS__), \
->> +	MACRO__(0xB091, ## __VA_ARGS__), \
->> +	MACRO__(0xB092, ## __VA_ARGS__), \
->> +	MACRO__(0xB0A0, ## __VA_ARGS__), \
->> +	MACRO__(0xB0A1, ## __VA_ARGS__), \
->> +	MACRO__(0xB0A2, ## __VA_ARGS__)
->> +
->> +#endif /* __PCIIDS_H__ */
->> diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
->> index 17abfa454..db614b732 100644
->> --- a/lib/xe/xe_oa.c
->> +++ b/lib/xe/xe_oa.c
->> @@ -21,9 +21,9 @@
->>   #include "intel_hwconfig_types.h"
->>   #include "ioctl_wrappers.h"
->>   #include "linux_scaffold.h"
->> +#include "pciids.h"
->>   #include "xe_ioctl.h"
->>   #include "xe_oa.h"
->> -#include "xe_pciids.h"
->>   #include "xe_query.h"
->>   
->>   #include "xe_oa_metrics_tglgt1.h"
->> @@ -119,8 +119,8 @@ static bool
->>   is_acm_gt1(const struct intel_xe_perf_devinfo *devinfo)
->>   {
->>   	static const uint32_t devids[] = {
->> -		XE_DG2_G11_IDS(DEVID),
->> -		XE_ATS_M75_IDS(DEVID),
->> +		INTEL_DG2_G11_IDS(DEVID),
->> +		INTEL_ATS_M75_IDS(DEVID),
->>   	};
->>   	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
->>   		if (devids[i] == devinfo->devid)
->> @@ -134,7 +134,7 @@ static bool
->>   is_acm_gt2(const struct intel_xe_perf_devinfo *devinfo)
->>   {
->>   	static const uint32_t devids[] = {
->> -		XE_DG2_G12_IDS(DEVID),
->> +		INTEL_DG2_G12_IDS(DEVID),
->>   	};
->>   	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
->>   		if (devids[i] == devinfo->devid)
->> @@ -148,8 +148,8 @@ static bool
->>   is_acm_gt3(const struct intel_xe_perf_devinfo *devinfo)
->>   {
->>   	static const uint32_t devids[] = {
->> -		XE_DG2_G10_IDS(DEVID),
->> -		XE_ATS_M150_IDS(DEVID),
->> +		INTEL_DG2_G10_IDS(DEVID),
->> +		INTEL_ATS_M150_IDS(DEVID),
->>   	};
->>   	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
->>   		if (devids[i] == devinfo->devid)
->> diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
->> deleted file mode 100644
->> index 73d972a8a..000000000
->> --- a/lib/xe_pciids.h
->> +++ /dev/null
->> @@ -1,218 +0,0 @@
->> -/* SPDX-License-Identifier: MIT */
->> -/*
->> - * Copyright © 2022 Intel Corporation
->> - */
->> -
->> -#ifndef _XE_PCIIDS_H_
->> -#define _XE_PCIIDS_H_
->> -
->> -/*
->> - * Lists below can be turned into initializers for a struct pci_device_id
->> - * by defining INTEL_VGA_DEVICE:
->> - *
->> - * #define INTEL_VGA_DEVICE(id, info) { \
->> - *	0x8086, id,			\
->> - *	~0, ~0,				\
->> - *	0x030000, 0xff0000,		\
->> - *	(unsigned long) info }
->> - *
->> - * And then calling like:
->> - *
->> - * XE_TGL_12_GT1_IDS(INTEL_VGA_DEVICE, ## __VA_ARGS__)
->> - *
->> - * To turn them into something else, just provide a different macro passed as
->> - * first argument.
->> - */
->> -
->> -/* TGL */
->> -#define XE_TGL_GT1_IDS(MACRO__, ...)		\
->> -	MACRO__(0x9A60, ## __VA_ARGS__),	\
->> -	MACRO__(0x9A68, ## __VA_ARGS__),	\
->> -	MACRO__(0x9A70, ## __VA_ARGS__)
->> -
->> -#define XE_TGL_GT2_IDS(MACRO__, ...)		\
->> -	MACRO__(0x9A40, ## __VA_ARGS__),	\
->> -	MACRO__(0x9A49, ## __VA_ARGS__),	\
->> -	MACRO__(0x9A59, ## __VA_ARGS__),	\
->> -	MACRO__(0x9A78, ## __VA_ARGS__),	\
->> -	MACRO__(0x9AC0, ## __VA_ARGS__),	\
->> -	MACRO__(0x9AC9, ## __VA_ARGS__),	\
->> -	MACRO__(0x9AD9, ## __VA_ARGS__),	\
->> -	MACRO__(0x9AF8, ## __VA_ARGS__)
->> -
->> -#define XE_TGL_IDS(MACRO__, ...)		\
->> -	XE_TGL_GT1_IDS(MACRO__, ## __VA_ARGS__),\
->> -	XE_TGL_GT2_IDS(MACRO__, ## __VA_ARGS__)
->> -
->> -/* RKL */
->> -#define XE_RKL_IDS(MACRO__, ...)		\
->> -	MACRO__(0x4C80, ## __VA_ARGS__),	\
->> -	MACRO__(0x4C8A, ## __VA_ARGS__),	\
->> -	MACRO__(0x4C8B, ## __VA_ARGS__),	\
->> -	MACRO__(0x4C8C, ## __VA_ARGS__),	\
->> -	MACRO__(0x4C90, ## __VA_ARGS__),	\
->> -	MACRO__(0x4C9A, ## __VA_ARGS__)
->> -
->> -/* DG1 */
->> -#define XE_DG1_IDS(MACRO__, ...)		\
->> -	MACRO__(0x4905, ## __VA_ARGS__),	\
->> -	MACRO__(0x4906, ## __VA_ARGS__),	\
->> -	MACRO__(0x4907, ## __VA_ARGS__),	\
->> -	MACRO__(0x4908, ## __VA_ARGS__),	\
->> -	MACRO__(0x4909, ## __VA_ARGS__)
->> -
->> -/* ADL-S */
->> -#define XE_ADLS_IDS(MACRO__, ...)		\
->> -	MACRO__(0x4680, ## __VA_ARGS__),	\
->> -	MACRO__(0x4682, ## __VA_ARGS__),	\
->> -	MACRO__(0x4688, ## __VA_ARGS__),	\
->> -	MACRO__(0x468A, ## __VA_ARGS__),	\
->> -	MACRO__(0x468B, ## __VA_ARGS__),	\
->> -	MACRO__(0x4690, ## __VA_ARGS__),	\
->> -	MACRO__(0x4692, ## __VA_ARGS__),	\
->> -	MACRO__(0x4693, ## __VA_ARGS__)
->> -
->> -/* ADL-P */
->> -#define XE_ADLP_IDS(MACRO__, ...)		\
->> -	MACRO__(0x46A0, ## __VA_ARGS__),	\
->> -	MACRO__(0x46A1, ## __VA_ARGS__),	\
->> -	MACRO__(0x46A2, ## __VA_ARGS__),	\
->> -	MACRO__(0x46A3, ## __VA_ARGS__),	\
->> -	MACRO__(0x46A6, ## __VA_ARGS__),	\
->> -	MACRO__(0x46A8, ## __VA_ARGS__),	\
->> -	MACRO__(0x46AA, ## __VA_ARGS__),	\
->> -	MACRO__(0x462A, ## __VA_ARGS__),	\
->> -	MACRO__(0x4626, ## __VA_ARGS__),	\
->> -	MACRO__(0x4628, ## __VA_ARGS__),	\
->> -	MACRO__(0x46B0, ## __VA_ARGS__),	\
->> -	MACRO__(0x46B1, ## __VA_ARGS__),	\
->> -	MACRO__(0x46B2, ## __VA_ARGS__),	\
->> -	MACRO__(0x46B3, ## __VA_ARGS__),	\
->> -	MACRO__(0x46C0, ## __VA_ARGS__),	\
->> -	MACRO__(0x46C1, ## __VA_ARGS__),	\
->> -	MACRO__(0x46C2, ## __VA_ARGS__),	\
->> -	MACRO__(0x46C3, ## __VA_ARGS__)
->> -
->> -/* ADL-N */
->> -#define XE_ADLN_IDS(MACRO__, ...)		\
->> -	MACRO__(0x46D0, ## __VA_ARGS__),	\
->> -	MACRO__(0x46D1, ## __VA_ARGS__),	\
->> -	MACRO__(0x46D2, ## __VA_ARGS__)
->> -
->> -/* RPL-S */
->> -#define XE_RPLS_IDS(MACRO__, ...)		\
->> -	MACRO__(0xA780, ## __VA_ARGS__),	\
->> -	MACRO__(0xA781, ## __VA_ARGS__),	\
->> -	MACRO__(0xA782, ## __VA_ARGS__),	\
->> -	MACRO__(0xA783, ## __VA_ARGS__),	\
->> -	MACRO__(0xA788, ## __VA_ARGS__),	\
->> -	MACRO__(0xA789, ## __VA_ARGS__),	\
->> -	MACRO__(0xA78A, ## __VA_ARGS__),	\
->> -	MACRO__(0xA78B, ## __VA_ARGS__)
->> -
->> -/* RPL-U */
->> -#define XE_RPLU_IDS(MACRO__, ...)		\
->> -	MACRO__(0xA721, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7A1, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7A9, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7AC, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7AD, ## __VA_ARGS__)
->> -
->> -/* RPL-P */
->> -#define XE_RPLP_IDS(MACRO__, ...)		\
->> -	XE_RPLU_IDS(MACRO__, ## __VA_ARGS__),	\
->> -	MACRO__(0xA720, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7A0, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7A8, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7AA, ## __VA_ARGS__),	\
->> -	MACRO__(0xA7AB, ## __VA_ARGS__)
->> -
->> -/* DG2 */
->> -#define XE_DG2_G10_IDS(MACRO__, ...)		\
->> -	MACRO__(0x5690, ## __VA_ARGS__),	\
->> -	MACRO__(0x5691, ## __VA_ARGS__),	\
->> -	MACRO__(0x5692, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A0, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A1, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A2, ## __VA_ARGS__),	\
->> -	MACRO__(0x56BE, ## __VA_ARGS__),	\
->> -	MACRO__(0x56BF, ## __VA_ARGS__)
->> -
->> -#define XE_DG2_G11_IDS(MACRO__, ...)		\
->> -	MACRO__(0x5693, ## __VA_ARGS__),	\
->> -	MACRO__(0x5694, ## __VA_ARGS__),	\
->> -	MACRO__(0x5695, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A5, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A6, ## __VA_ARGS__),	\
->> -	MACRO__(0x56B0, ## __VA_ARGS__),	\
->> -	MACRO__(0x56B1, ## __VA_ARGS__),	\
->> -	MACRO__(0x56BA, ## __VA_ARGS__),	\
->> -	MACRO__(0x56BB, ## __VA_ARGS__),	\
->> -	MACRO__(0x56BC, ## __VA_ARGS__),	\
->> -	MACRO__(0x56BD, ## __VA_ARGS__)
->> -
->> -#define XE_DG2_G12_IDS(MACRO__, ...)		\
->> -	MACRO__(0x5696, ## __VA_ARGS__),	\
->> -	MACRO__(0x5697, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A3, ## __VA_ARGS__),	\
->> -	MACRO__(0x56A4, ## __VA_ARGS__),	\
->> -	MACRO__(0x56B2, ## __VA_ARGS__),	\
->> -	MACRO__(0x56B3, ## __VA_ARGS__)
->> -
->> -#define XE_DG2_IDS(MACRO__, ...)		\
->> -	XE_DG2_G10_IDS(MACRO__, ## __VA_ARGS__),\
->> -	XE_DG2_G11_IDS(MACRO__, ## __VA_ARGS__),\
->> -	XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
->> -
->> -#define XE_ATS_M150_IDS(MACRO__, ...)		\
->> -	MACRO__(0x56C0, ## __VA_ARGS__),	\
->> -	MACRO__(0x56C2, ## __VA_ARGS__)
->> -
->> -#define XE_ATS_M75_IDS(MACRO__, ...)		\
->> -	MACRO__(0x56C1, ## __VA_ARGS__)
->> -
->> -#define XE_ATS_M_IDS(MACRO__, ...)		\
->> -	XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
->> -	XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
->> -
->> -/* MTL / ARL */
->> -#define XE_MTL_IDS(MACRO__, ...)		\
->> -	MACRO__(0x7D40, ## __VA_ARGS__),	\
->> -	MACRO__(0x7D41, ## __VA_ARGS__),	\
->> -	MACRO__(0x7D45, ## __VA_ARGS__),	\
->> -	MACRO__(0x7D51, ## __VA_ARGS__),        \
->> -	MACRO__(0x7D55, ## __VA_ARGS__),	\
->> -	MACRO__(0x7D60, ## __VA_ARGS__),	\
->> -	MACRO__(0x7D67, ## __VA_ARGS__),	\
->> -	MACRO__(0x7DD1, ## __VA_ARGS__),        \
->> -	MACRO__(0x7DD5, ## __VA_ARGS__)
->> -
->> -/* PVC */
->> -#define XE_PVC_IDS(MACRO__, ...)		\
->> -	MACRO__(0x0B69, ## __VA_ARGS__),	\
->> -	MACRO__(0x0B6E, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BD4, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BD5, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BD6, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BD7, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BD8, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BD9, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BDA, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BDB, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BE0, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BE1, ## __VA_ARGS__),	\
->> -	MACRO__(0x0BE5, ## __VA_ARGS__)
->> -
->> -#define XE_LNL_IDS(MACRO__, ...) \
->> -	MACRO__(0x6420, ## __VA_ARGS__), \
->> -	MACRO__(0x64A0, ## __VA_ARGS__), \
->> -	MACRO__(0x64B0, ## __VA_ARGS__)
->> -
->> -#define XE_BMG_IDS(MACRO__, ...) \
->> -	MACRO__(0xE202, ## __VA_ARGS__), \
->> -	MACRO__(0xE20B, ## __VA_ARGS__), \
->> -	MACRO__(0xE20C, ## __VA_ARGS__), \
->> -	MACRO__(0xE20D, ## __VA_ARGS__), \
->> -	MACRO__(0xE212, ## __VA_ARGS__)
->> -
->> -#endif
->> -- 
->> 2.34.1
->>
+>Or do one more ops for case 'end < start'
 
+in the wrap case, see above. The key of the implementation is that we
+are using a uint8_t and relying on it wrapping back to 0, so we can just
+increment the head until it reaches the tail.
+
+As said above, there isn't much value in this patch other than "let's
+get it right", so consider it optional.
+
+
+Lucas De Marchi
+
+>
+>Regards,
+>Kamil
+>
+>> +
+>> +	log_buffer.start = log_buffer.end = 0;
+>> +}
+>> +
+>>  static void _igt_log_buffer_reset(void)
+>>  {
+>>  	pthread_mutex_lock(&log_buffer_mutex);
+>>
+>> -	log_buffer.start = log_buffer.end = 0;
+>> +	_igt_log_buffer_reset_locked();
+>>
+>>  	pthread_mutex_unlock(&log_buffer_mutex);
+>>  }
+>> @@ -624,8 +634,7 @@ static void _igt_log_buffer_dump(void)
+>>  		i++;
+>>  	} while (i != log_buffer.start && i != log_buffer.end);
+>>
+>> -	/* reset the buffer */
+>> -	log_buffer.start = log_buffer.end = 0;
+>> +	_igt_log_buffer_reset_locked();
+>>
+>>  	_log_line_fprintf(stderr, "****  END  ****\n");
+>>  	pthread_mutex_unlock(&log_buffer_mutex);
+>> --
+>> 2.47.0
+>>
