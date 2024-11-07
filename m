@@ -4,159 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A63D5D683
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 18:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 211D5D5D686
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 19:29:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD88410E8C4;
-	Thu,  7 Nov 2024 18:36:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D068410E8C4;
+	Thu,  7 Nov 2024 19:29:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PYNuKArs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FObDDEuq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63E9410E8C4
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 18:36:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91A8710E8B9
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2024 19:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731004612; x=1762540612;
- h=date:from:to:subject:message-id:references:in-reply-to:
- mime-version; bh=IcvNJtxMlDD7zzCw0T+rBqUZZGKE54CkOmGhTYOcUT4=;
- b=PYNuKArs7+AEFj4zxIw9l1hirLao4sckfc9qJzWUvT5Lmb4GrwRIHlrq
- 0qz3frz3QDh41bzqXpoNKhPQq0TyFp0JYqAMzlz9JinVUyfQVyLTD3xwv
- r/Nq9c7OG+N9/TDk3E4jo+sb8c9neOtdCqGY83xN4eQqJSwqTmUqZIpvQ
- h9Eiyu6mgGyDucxic6a7CnIAsvpXIRnvUouxopiBwB9PmsH3bAInO6fn4
- 5Fz1siI5Ut4Gziw/sWKiQLKrDewGCIfy4dSiQvCAlEXBfKjI7kLpw2Qz1
- 8HUIqIYpuXHE72RumlbKGTxblgRSzA3ewqnO3er9GVZMIBxdf2YSFEZ6G g==;
-X-CSE-ConnectionGUID: TeMd8BANSoGtqBVSmnjWbw==
-X-CSE-MsgGUID: XzDHGY9bStmCoVdKVYFDWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="30971140"
-X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="30971140"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 10:36:52 -0800
-X-CSE-ConnectionGUID: A0XLWNvdTY+90K2NzW50yA==
-X-CSE-MsgGUID: JSQaw+PvQu2UQ8gSGVgu9w==
+ t=1731007758; x=1762543758;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=eJy8TiPsiRmMzoL5O+VT/PQUK33tj4PLP7ydJDKLplw=;
+ b=FObDDEuqBZvlEc4/UOjeHbQhkAzHGJI/RGUmBMU2ow6HazaaDMF8T5l6
+ afvGsKeZ7tdOipRELxjsM5RIjCee2c6dqJQtKFVIykYyb9O/7mBRuPl7r
+ Kv/zB9ND6F8owTWyxWZrWZQTkhC6XRer+5/yS2uU8X7zR8qlCMwYw4aPQ
+ idUHtoEKlU0Ao97soWk7yPapQTo6QeB6fSXrlxWf+/8G2NEaJuajxTSHa
+ n/lFsdeKIw2XrodwBpr8hazZYLTFKuBecHGWvDNiLJfiBGQNQ9fL5APDx
+ ep9qBwiMQ8TP/AWoBgqZSPDcdzUAt+rY+SuQKGOZRZQepMluIXhBNfp8j w==;
+X-CSE-ConnectionGUID: G8y3WlU1QyWKzjmiIKXaiA==
+X-CSE-MsgGUID: bpnjhVTiSRW1OTrY78jWrA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="34654685"
+X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="34654685"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2024 11:29:17 -0800
+X-CSE-ConnectionGUID: W+Evh+0+RCyGv7j+jT92DQ==
+X-CSE-MsgGUID: jvbOJGyfQuGPVFXZBTr9Tg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="85987122"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 07 Nov 2024 10:36:52 -0800
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; d="scan'208";a="90068797"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 07 Nov 2024 11:29:16 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 7 Nov 2024 10:36:50 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ 15.1.2507.39; Thu, 7 Nov 2024 11:29:16 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 7 Nov 2024 10:36:50 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.48) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Thu, 7 Nov 2024 11:29:16 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.44) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 7 Nov 2024 10:36:50 -0800
+ 15.1.2507.39; Thu, 7 Nov 2024 11:29:16 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kK14gLlEzwx0ZDSYH13PURP0ZFKJfBoTpP1wIf16+mn4G2BF29zQw45Uhzgb35ErRAUITNcBB4xONkgyP/+TTHVgrHIT1qCdi61JCtt9CEgh54RpbMxDYe2uyGJuohaqWxdkZB9V7B5MbcqpH1/D2oY/pNd3QhHRYQIF+3sXPkafDZvjMBYXEZ9J8vfwgSax3jkROIJtmmqZp9kZ8+FAX/Iqgqz1rG3RNs4LDvgXgzRvv9jT7THjxBQ7uwYFe9F/AhvqdK8BM0Y/x21cycwVE1jFjHq7fnfKBRQwU2zxhbt+WdKRI1wgIJqaK5Zy//CEI5+wsKzthgRF5KzXzj0w8g==
+ b=kdRBMIm0SNVQiQ7eEPih36S8VElYJSPctC5E0chdN1M3X+qQ+onZhjn6SL8NTfmSdDgqsJs64CXWMybQbstgm7LGEw0zPli11QXVTClnVi7JLfBcbER2QNC/cq/Ctb8amvjgsQjTLETmIM2j2uYswZ0eMLIUWu4bycFsTPgfB4hiE3pbqNDAq4C+7hCq5WVT6IWcBgdnQQeG06P+47Cu7wW+RSJnQM8ayJa76kywqlB5kgI3ppQlv86+vuE+Arx9isEStbboVgje3nmTrFyEaUI0KAaqoM+4yj8lgvTZdABvDg7DdyEf2+N/8QeweWZXlR+GWAkgZb0+ajPfSdrdBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=11JtidcbTpSyZ+F2MLG6ICt2Ucvl1B0EFXEran8BlcE=;
- b=wyHoOhkozE07svSmgsp99ESDx0f+tzKlDYXQ4IR2A/BAaDaac6Sa5jkvlC3CHJw526gZrRWVLfA7+pwQfEEkLclfktxWrfq5m+DflWt/D2HPyQiolIasxYHk517rmMB0FMkN1400SQe7Z55U3X+za9nNRk970t/nyDaO6p/aPP2XIHLf9G4ZXEDECVk6NcVt3Tonq22KPL4FYxVzPhxrFseaJD0cx6BBXN0KdoMZkrHbzRnNbvoO+nlDs3+/Puv/vGcVb3LJfeCqFxkKijzqrUOShwMhFsakjGl28HEUt3Jm8o6EKwRedFB7ZWUUts1K6zxTYryRdqcB0DRGuM0v8A==
+ bh=IGQFVIhZbbmnwQaH/ypgjdzMirCVd/wOzdxZ+PcSY7k=;
+ b=JjzZb6Owrm1UBlUdohB6riMzS3jJXhDNx4qKtq62yVd3eTWokdmeAMsIZaCLm/OkWo7uvP2TDKAHR01kgtv0XWjZlJcVdEfVa3LyCtVJyU8E19YAN6GeD2Gk6pJnpFYV7deh8kkr/F3mmZTRVsxsI5V2xD2NTSPCVVrDqYtZdWw1bCwGBxS6w8dQJ9rai7cxeX5AO2gvgRDcJKf2foCxY3UXxGbQBS5Xy772v9algX56Lu42qQFdFxRTncbtUXQiMu5VwrMcyaIEsWEc1ol4duPJKO43BpE5q8zb1ZLOSHuK8U2FSAFrsISRaASQKe0CNI+Qw7jHY7wJIaiBzTdRdw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by DS7PR11MB8826.namprd11.prod.outlook.com (2603:10b6:8:256::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18; Thu, 7 Nov
- 2024 18:36:46 +0000
+ by PH8PR11MB8258.namprd11.prod.outlook.com (2603:10b6:510:1c1::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
+ 2024 19:29:12 +0000
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
- 18:36:46 +0000
-Date: Thu, 7 Nov 2024 12:36:44 -0600
+ 19:29:12 +0000
+Date: Thu, 7 Nov 2024 13:29:08 -0600
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t] lib/igt_core: Free log_buffer entries on exit
-Message-ID: <ypjxm3cpvsxvco5nn2wyxrpllmtb7k5pkksehtsve7piyrjal6@hesxrn4iz4ia>
-References: <20241107070208.3143050-1-lucas.demarchi@intel.com>
- <20241107173145.avmfmvivykerfpz7@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gustavo
+ Sousa" <gustavo.sousa@intel.com>, Zbigniew =?utf-8?Q?Kempczy=C5=84ski?=
+ <zbigniew.kempczynski@intel.com>, <ryszard.knop@intel.com>
+Subject: Re: [PATCH i-g-t] igt-runner fact checking
+Message-ID: <2znykwayxm74wqltmbbas45r6zhyllxcmr5g4jywcfuw5atzvu@46cr4rouvdil>
+References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
+ <tmbhd2nam5xibqejlcpqo53zeiv543jkfokfh4yly63yjhpqf7@ruf6limclqyh>
+ <8029d6ce-2d38-40a6-a574-00b6607805d8@linux.intel.com>
+ <qkr5xhm23dbziwp53m2xwjciqeghfe4zdtlurnpgphyxplx5pk@dkwxqwdymu77>
+ <5a7f1522-b060-4721-a3b8-bdda40e3a7d9@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20241107173145.avmfmvivykerfpz7@kamilkon-desk.igk.intel.com>
-X-ClientProxiedBy: MW4PR03CA0344.namprd03.prod.outlook.com
- (2603:10b6:303:dc::19) To CY5PR11MB6139.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5a7f1522-b060-4721-a3b8-bdda40e3a7d9@linux.intel.com>
+X-ClientProxiedBy: MW4PR03CA0338.namprd03.prod.outlook.com
+ (2603:10b6:303:dc::13) To CY5PR11MB6139.namprd11.prod.outlook.com
  (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DS7PR11MB8826:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98099057-572d-40ac-7327-08dcff5b2262
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH8PR11MB8258:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3333e302-2b5b-47a8-2a50-08dcff6274de
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?FFqdyy7xJC/nw2eV6EhRbLL37kKTFL+bZkSaAvmV8lzcf3meWu3z4uPc1Pfh?=
- =?us-ascii?Q?+VwOXxN+jcKwCBeIN2o+aFKpfFVrcW3pQTz4Zw4HkvWE7l4JA5Yf5jvO3uX+?=
- =?us-ascii?Q?TAdpdJeBEbHZkaFJp4iXitMHrLlEDvN6oaiRFPmk8SGW12yMGTFiNDfDYw1x?=
- =?us-ascii?Q?eugVYYrxYRFVvwQPwNcJ2uqiaGcNPdBnp19dxTOzQ50yAih1ZTgfN3Zv3dGu?=
- =?us-ascii?Q?EOsMHteBucmSORtdecCCHe9ZZT4TzAGiM7JLHBE6qvHCGC+wxmXlUazifiuO?=
- =?us-ascii?Q?K7ziOaoCvr01CjvIv38B84J0zQuyaynpUS01s7n7msmedJiZ8aD1VtKKgXk+?=
- =?us-ascii?Q?rc4S1w2jkpB+uZOpdsA0z/f/D9UjSmpOapfFe8Sm+vU6DxHgJwk/apmr+YQm?=
- =?us-ascii?Q?JYAfIvupbtXMXGXNEeQsWwTAPOPRWe1ThB/VkCRYu6ZDxgK0iGKHHVIEqfr/?=
- =?us-ascii?Q?NuRzs+th/VN93tVm8q+TZOa/xNmtYFu5RHNSwj659yalj8gsvjmlM3zd4CIu?=
- =?us-ascii?Q?av40XjSYpVXs7OguY/wLW6ITNtU4hT+Axmf5a+FQbk4uf0q+5EeGGToDRjvH?=
- =?us-ascii?Q?ztm2Lb4ru6QzZxCCABWtZyEka/qd6Dt7lQgskd1/K9CEr9KEhiWMTUKx9qZs?=
- =?us-ascii?Q?oatzlBJEMyoMh5zlyIHWkKHH2AUj3eKNU8ackFog57UuYA9tcw0DvVDEqycO?=
- =?us-ascii?Q?rrV260gHa3ysXvppIK6x4I0IB9iHACGxv0SGjfzdS5JI46t1KlKT6QdfRl3d?=
- =?us-ascii?Q?m2eBaLmWINLA+FFNNz2T3VOmsPO5BE7G8I1gZySfNnaoy/XkPSXLO2sdKpTA?=
- =?us-ascii?Q?sYPKXCrkWuwoardvKMCw0u3ZCHaQZa74NDK5dOtZ7+ijhqfDCwiX1YcaiRd1?=
- =?us-ascii?Q?17zoVGiHZ6aQikTy8pwLKsSbem9CsgoLnd6IifEZwY9E0oLB552enzU69bAB?=
- =?us-ascii?Q?8+CEw/NnhbVnb1MIYdP4XEbC6y8J7BMdk07LHldMIZAJyU1V60DSF3zIB9GZ?=
- =?us-ascii?Q?r736CwClUMJIBedbC/chWrD538gnXhM16WFYeomgqtxlM6G77rF7ekKaOoew?=
- =?us-ascii?Q?ftp1rENouuW1UgFy4hHWboarFr5QT2Gk2kz33GqK4RP99B2Dicfi+F487Bn/?=
- =?us-ascii?Q?zpACztKFzoqXeuRd0wfA5He4k92RXPnRmLHh6L34BZbvUrIwSQDohtdkxSYN?=
- =?us-ascii?Q?8AlFrcJojGQobjJA4mUPSnbry6Rzk8VQ2BrCiJtSD0AiMeY58Y6PJ39S7F84?=
- =?us-ascii?Q?EEFuq3t8BPHQm4jfWau7?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?7GdxKQJioIKeoMOrb0dRbf16uq69y3k3+PLmeyHFQNEutQOm6egZ09pLoK?=
+ =?iso-8859-1?Q?sfHYopqlTMj5faahvkzo0SPEXilsxktRhbcAblX6QccIIQR19KsX+NFRLz?=
+ =?iso-8859-1?Q?f1QdZpQEZRh0OLo1KlRMgmkithOXNvbns17ANyceorSFe42SVKvKKSuAuQ?=
+ =?iso-8859-1?Q?cOZuy82TEE5tCo9QXDbd2UpbWKz5O/gCBrdvUI/LMr/ueifWcMf6mI0gkK?=
+ =?iso-8859-1?Q?kY4vEgqSrAaxKTIGLScL08fsLJubDH5RdF+Cowsi+PfN9dzKRA5DkM2lbP?=
+ =?iso-8859-1?Q?QBwj9gNIUc9US76tEELUNgbimJLFWlnFlrjR2Sa1zC/K0cdP4NB/8fucw4?=
+ =?iso-8859-1?Q?BnLQJC9t211BZaSd+XdUumQ3FRa8YQTmSUyDnGdTQXElzR7ZBp345aISaE?=
+ =?iso-8859-1?Q?u0WcYkBHqzsIINlNkRMJd4MJ3DwhiPT9tQa6ukXcjoH78k5c9iROBNMG7M?=
+ =?iso-8859-1?Q?QHpTVOjskWsskp5XUbcuy65ky36/591C92z8TfKJLEDQzmrWhpTH/5FNav?=
+ =?iso-8859-1?Q?gPrwBin0FkoMIDQy2NBLlbfMnwumX9S7s20s6sP6XSMq+t60EjuSN7ZGWB?=
+ =?iso-8859-1?Q?d/gXd+m5WtyL7gzV7CADTdArJ666wJou0Jnw36PtPrfClrVxqqjw0cmHWQ?=
+ =?iso-8859-1?Q?xLzYBxBD4RphMKIRqdIznS/+gVhxUZPLP4abSB2CvJF/9X4niXID8AN489?=
+ =?iso-8859-1?Q?jpPnR5E4veiEVptDaaWUYd8bhYZIabte3wO1mcfyr/RYWCgMqkrOmovhmH?=
+ =?iso-8859-1?Q?sdo6niifIiORcmpEQglP8NXUWqBrqIePm3Bw8C1T69ArSk5Y4DSxDEeYaz?=
+ =?iso-8859-1?Q?j8ZI0/UAPBlyyQw0BvSyuAWkDpUHudJGqEyZ3kw8hG3F2Rwk8gXjEIrDdl?=
+ =?iso-8859-1?Q?TuZeQcIIJbaHzeslCSgvYBsx4I0x7VVGQ9Q0ywZPeOnPQwEr4eZ+gL45yo?=
+ =?iso-8859-1?Q?eAS8wAJgGzyMMhac8btBC8NC7+r27bPME86OQLT+q82VFawxZFZ2WLtrB6?=
+ =?iso-8859-1?Q?y0SztA889gTgFn4y+RHUHrPoa7g+22mj4MfIsJQj8dz6fIY38OoK9cNwKj?=
+ =?iso-8859-1?Q?iLotnFULl1B17amySHdNRQQmn/fJ5QoiN/8Vpy8Hd7XMHjce8Ip42FXbtS?=
+ =?iso-8859-1?Q?B5nJqorzFv/am1TsTXcEeTJ1pwPMFDbqKCRRyhnNMO8+gi+BNN5f1lHP6z?=
+ =?iso-8859-1?Q?Vdg/Mi+Ap/jp4llr0VjECLKmY0cZhAeb3HVvJAf268J9dcVmvAJ2zFYn2m?=
+ =?iso-8859-1?Q?oSml4gao3T296bf8nuMhIh4SxfEVEss58x1hi88jCcXLF3vRX9X5Z9uIc6?=
+ =?iso-8859-1?Q?HoXRKKJNEMhuJeA8N/VGGhk41bAc3USYFmflI8OXNBewZZDFn29AxYwVar?=
+ =?iso-8859-1?Q?XF4Ha7gjXn?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ehhO+B0LqYFiCWrjtMwRVxC6qCxOdPZfHgerSGeietFrsdBwqokWRQluIOfC?=
- =?us-ascii?Q?6K/y15D3TFjmmdLABGQBgMoAta7dqX8lBDyXy7h4ZkFvBR8rf3sCzy/JpPRB?=
- =?us-ascii?Q?VvgCfUq3Z3fHyv+RKF6e0OlFFGCViWG7dwj3LsL4/eUxuaZuPKcBytS36Dpc?=
- =?us-ascii?Q?PwAZ09ks+M2sy6rFDRLJ5B3pqT140qvVQXNCix6wsH1lXUPGJ6CCDTio/q4e?=
- =?us-ascii?Q?tbwwKTiID/80UWrHawcyiAyrqnGFUShZBqLzuTZR1QjLOPsFfyJ+p8Kqtztq?=
- =?us-ascii?Q?Px5sNzLBIzQRM/WIG5wlrbhfPP0/6Qn3Ie3MNvFm8di7dMzz5GBz4H+Aqo4t?=
- =?us-ascii?Q?kV82r9MDV0+1x1c8XViPcNUYWXRMKDCTbw/xg+YVony3AnESNVX6xt+AWAjH?=
- =?us-ascii?Q?TEKpfV3e/jESEYNykDFo/S0xNhe6LM6yQQzAdN34QtMEPLkBhw+6hzX0nCfB?=
- =?us-ascii?Q?sHcIFzOl32MDgIDVJKQdq0GwX09OJGil0NQsy4MtLF2THdnJ63+62rqmz6Iw?=
- =?us-ascii?Q?C9gdi88KZj2OC0pXN6RZhjd+P7wwmQYyi53az/fEd4+VbYjdoHodF4nTKcGc?=
- =?us-ascii?Q?qw09qMEX+FZzXLlXLiVgyTEUW297UJm3xIooWQak0SCL11K8cYzY04mE9HP+?=
- =?us-ascii?Q?PbE9f6U5mhkl9BDi0W/tU8WgHHLcYiCDrZQpb7STQ9u/uCXDY+GCVRpBWrwQ?=
- =?us-ascii?Q?Ndgm0azBH0E9If3Z02aEHMTOgwV4eEy6n8ry/RrflPcBtPeJXG8IMSXJPW3X?=
- =?us-ascii?Q?sVO5STJfjJ4xN8LhGkrqCpXoxvv0r1Xmmdd67lzk6qgRH8c4LiHKN4+Pldaw?=
- =?us-ascii?Q?0eoWr/c/Zr34PrYA7tmqQLbBbIrkuySWMiIj8vbC6HHo4brZkpR6/8yveIT1?=
- =?us-ascii?Q?3tjTUl6735wW9sne8DCzPNlEeyL1viV/Hv2vlIptKswsDb1l/qixJ6W9dzDu?=
- =?us-ascii?Q?k89SAEia8SJDo9vivepUi0kprCdLIpo57/Szc2k9igL5B2pqIhaV18+Y01B/?=
- =?us-ascii?Q?uQfDHk5yOXzUFAE4M6ZKIPIsS3snWVlyRQLiPo7u0DSAlbyixEtjEKGW46J+?=
- =?us-ascii?Q?RhP7L9JDhpFZl79ycvGJ+GBFZk5CsOmTKaL9+GYccBcphFNvpJN/DEeQIZNe?=
- =?us-ascii?Q?u9AdJROzgANw97VZOtVevPtGgQlq1yYtaYhAGyQRcio53cVkuLtjTWu0jizQ?=
- =?us-ascii?Q?v4nvxrJ6hGPn5coPpXMGspxqR4+TiyCCeJ7VUac+B/YEAAZnsyztBFtfMxAr?=
- =?us-ascii?Q?Pt8rs2J6BMRlRHgJvfB5VSfLfqKvB1oxuIwe4wNomA2+IPqoZM5dbD3EKIEe?=
- =?us-ascii?Q?A6k7q2e9VoAltIjDOen//6XZvO6EhtL0aLhJs+RJp44PUrz+InHPa8k8fr4R?=
- =?us-ascii?Q?3U504BOHiZaMZBkEI+Waco19Bxn52U07KoeWch9bcJmVj7ze4YCe/uZ0uFuR?=
- =?us-ascii?Q?cCFlDR+5L/gLSDdu6+MVt9Kry82Wk229bra0IMYgNoEeUKw90NLECAdzAgy2?=
- =?us-ascii?Q?tBXydUS1wqG4OzORX9caRfSfRRZuYIIzrfM6XFIqN2pjfieI5cDiAcvXYdfC?=
- =?us-ascii?Q?/3TxnkZwOjbW1T7wK5upZfPCD8iKM5NFfihaUmvC7m0eBUcqL97tHdCSv0KS?=
- =?us-ascii?Q?zw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98099057-572d-40ac-7327-08dcff5b2262
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?++qiU+r4+eoF0NwS3kyc1p/EWIBcBKXERzIGXCinZ12JbwxzU2OjBsjaZD?=
+ =?iso-8859-1?Q?NWUbalwfpI+/64gagT7iEivDTYsidBAPsS8OGekif15MHWxTgfCJ66kCCI?=
+ =?iso-8859-1?Q?nstHic8rhSttiPDgNJ4p8BNTIBDQ6NXGtuPyFsFSDdHzN7jODe7J7texJr?=
+ =?iso-8859-1?Q?S3a1D0C+BhClk+1pGo69RCM8znQ9o6Iif9uHXVMvX8htCr1YV5XktSI70S?=
+ =?iso-8859-1?Q?Ntp2e6F3Ayi9F4sYJBP2jTzFZxZEWuk0c58TQSaLJQ8EsQRmJArBFz5hFw?=
+ =?iso-8859-1?Q?oVNDYhawqBxR/AK7uK5FdOaWjuiiS5NcNxHhfz8FaUCPbi3kgCKqRhNgQE?=
+ =?iso-8859-1?Q?RB2bEbMMbj9ZlJ1eDoXwG7377r6K56VfqWNeYQnOdp5u3cITEBLXkwDgKv?=
+ =?iso-8859-1?Q?BFEYCNfWjMwbIZVXhK1n28Wn+qswFWcC3p8yFxTPDi9F6kR3WJuGg2SNtk?=
+ =?iso-8859-1?Q?HKBI1+J1iaGatNHt4Yt7Ik35TeJEkl+IK9GfPu8SjGMS79Cew5LeMWMxpS?=
+ =?iso-8859-1?Q?iZ/vEtE5qZiQYNxdFzNcCnlRjzv2MMf1w4WDN/gGjvZ7/Z0m63ZNsp5X5n?=
+ =?iso-8859-1?Q?f493DaVWfBPGFW4tZay4AWhs4qCPzkZ+vM0UCv1v927PUohEpXCAJt5/Hm?=
+ =?iso-8859-1?Q?POWp55NgcPrkkqU1v/1DJnopGXh4a/Qs6Eu6XvWp9T/fk4YCDnBmCjL1Qr?=
+ =?iso-8859-1?Q?YrAKB9RZlJEZUoaLPxe6SYfym7Gg9dY3kKbgp5xWybNDDHskf4M/pp4lze?=
+ =?iso-8859-1?Q?CtD3z/10d/krBbJ0zALAfgw+A8HXqKo9XYVS3G0lS5XVDYjUAxg0rYPguP?=
+ =?iso-8859-1?Q?TPp2gutbLOwuEY0CaHtA7ERuOLJ9fItH/eBpX1ygtMZPcxiHGMJEdiOwDA?=
+ =?iso-8859-1?Q?MUgqHiwfVI5C0C4Sz3QSbd38C7BKdVL4I1RaVbQdaRKZfz3ch71cY1OIMu?=
+ =?iso-8859-1?Q?DnOWjo8jzu4RMhkuKivS1SAmVMRnSAEPXlYKV1B42vwooK/syfkgwKTTwV?=
+ =?iso-8859-1?Q?66PmBCY4e2/7FNMnFmrYWp5uQ2kHrXvVfQdJp4Y31Up+FWG993XCq8lzXj?=
+ =?iso-8859-1?Q?N7S7CVDcB+azHNjfDmHIY70cGIljJEFoq5S/MYAjDFy7daSQcLme/tdj80?=
+ =?iso-8859-1?Q?Q25Wku/EvFgXbcRs5PWfZO16thIKyNh083SrZWLBGIQBid6quG6lAK3hFO?=
+ =?iso-8859-1?Q?YrlNuxIBVDkk9BhDdqzyeAJ+MUgzlv54PlyNgF9fFBORQ1PRa92EDZALbT?=
+ =?iso-8859-1?Q?3QRVz5dHzpTe5euaWL3t8sHKqgGhRav6TkQMrIo9P8evtu4jqqs2F1wneF?=
+ =?iso-8859-1?Q?6zYWaSCDd2hNRhesqikvZH93ms65di0co6pz9vq38m/095LM/cWJgGHUfi?=
+ =?iso-8859-1?Q?yvTHLny+A2q+5rz1PxiT3fS244a5bKE5YpDa2Cpufy4rTNm/EA7IRZRJ5R?=
+ =?iso-8859-1?Q?uFSHRtq+pk2EPVwezYIJKLoGjV0PwbrR2agjo6sKea2lq3NXqRBTO5pWVx?=
+ =?iso-8859-1?Q?d9b+zlQ5Jp5sbsrYYix1P6ecO3M0YagO/mkBoo47xXKtOz3o4oTunlFlTn?=
+ =?iso-8859-1?Q?KLXI5bldpw8VI8wnyImTNuogedL6Uboog94p+ZpllTLQsRmgsrM2m3L4Dl?=
+ =?iso-8859-1?Q?thhaR7K55edt8SMTOFQZtKmOJydUjtVJTXIwhcl/OyNqVAHhVhxUBVoQ?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3333e302-2b5b-47a8-2a50-08dcff6274de
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 18:36:46.6255 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 19:29:11.9608 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fcKn1RZBph0Lr9j4CiWqSLIbJQnvkIMMdtsK6o8ge6jLtJof3uNWG/bZ3eo+RvftFidaoldNwH1aML+pw64u9firkOQS5RTZXnJ60aQ7IuU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB8826
+X-MS-Exchange-CrossTenant-UserPrincipalName: zkE3sTzdwsdMHXudnA+liPtkHNLaELHr6IrJuWnOH5RKRsYE24kCT/EWFq0f6ePvdYDBcJOF/TeXjxojaOuGwtRp85RJvvd0OBNAHZjdi+Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8258
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -173,152 +183,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Nov 07, 2024 at 06:31:45PM +0100, Kamil Konieczny wrote:
+On Thu, Nov 07, 2024 at 06:48:39PM +0100, Peter Senna Tschudin wrote:
 >Hi Lucas,
->On 2024-11-06 at 23:02:08 -0800, Lucas De Marchi wrote:
->> Make sure the buffer entries are released, otherwise valgrind output
->> becomes each used entry as still reachable on exit (up to 256).
->>
->> Test:
->> 	# valgrind --leak-check=full  ./build/tests/xe_live_ktest  --r xe_mocs
->>
->> Before:
->> 	==16082== LEAK SUMMARY:
->> 	==16082==    definitely lost: 0 bytes in 0 blocks
->> 	==16082==    indirectly lost: 0 bytes in 0 blocks
->> 	==16082==      possibly lost: 0 bytes in 0 blocks
->> 	==16082==    still reachable: 33,473 bytes in 59 blocks
->>
->> After:
->> 	==15992== LEAK SUMMARY:
->> 	==15992==    definitely lost: 0 bytes in 0 blocks
->> 	==15992==    indirectly lost: 0 bytes in 0 blocks
->> 	==15992==      possibly lost: 0 bytes in 0 blocks
->> 	==15992==    still reachable: 31,083 bytes in 42 blocks
 >
->Thank you for a patch, there are still some blocks left,
->maybe because that buffer is a ring? e.g. it could have
->end < start
-
-no, those blocks are other things.
-
-Note that we are looping with a uint8_t. When we have start == 250
-and end == 2 (impossible due to how we place log messages, but just for
-illustration), it's expected to free the positions [250, 255], [0, 1].
-
-Some more context explanation of this change.
-
-I sent this because the first leaks I was seeing were related to libkmod
-and as the libkmod maintainer I was curious if it was a leak in libkmod
-that was getting masked by us not releasing its ctx. It was not, and
-just releasing the ctx (see
-https://patchwork.freedesktop.org/patch/623301/?series=140746&rev=3)
-made those go away.  While doing that and running other more log-heavy
-tests, I was getting a flood of these 256 blocks, so I fixed that just
-to get them out of the way of what I was really after.
-
-Looking back to this patch, not sure there's much value as whatever
-binary using it is already on its way out.
-
+>Thank you for your reply.
 >
+>On 07.11.2024 16:55, Lucas De Marchi wrote:
+>> +Ryszard to know if the CI part would be doable.
 >>
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->> ---
->>  lib/igt_core.c | 15 ++++++++++++---
->>  1 file changed, 12 insertions(+), 3 deletions(-)
+>> On Thu, Nov 07, 2024 at 08:18:52AM +0100, Peter Senna Tschudin wrote:
+>>>>> +    scan_kernel_loaded_kmods(list, last_test);
+>>>>
+>>>>
+>>>> So... igt_facts() hardcodes what is the info collected. Maybe we
+>>>> should rather plug this into the hooks framework as part of
+>>>> "built-in hooks".
+>>>
+>>> I do not follow what you are trying to communicate here. Also, please see what Zbigniew said here*. Facts are not test requirements, but the line is blurry. In the context here a fact is something in the environment that can change but that should not. An example is the disappearing GPU.
 >>
->> diff --git a/lib/igt_core.c b/lib/igt_core.c
->> index 407f7b551..879d1ecd8 100644
->> --- a/lib/igt_core.c
->> +++ b/lib/igt_core.c
->> @@ -469,11 +469,21 @@ static void _igt_log_buffer_append(char *line)
->>  	pthread_mutex_unlock(&log_buffer_mutex);
->>  }
+>> $ ./build/runner/igt_runner --help | grep -A1 hook
+>>   --hook HOOK_STR
+>>                         Forward HOOK_STR to the --hook option of each test.
+>>   --help-hook
+>>                         Show detailed usage information for --hook.
 >>
->> +static void _igt_log_buffer_reset_locked(void)
->> +{
->> +	for (; log_buffer.start != log_buffer.end; log_buffer.start++) {
->> +		free(log_buffer.entries[log_buffer.start]);
->> +		log_buffer.entries[log_buffer.start] = NULL;
->> +	}
+>> So... today we already have "generic support" for running arbitrary
+>> things before/after each test/subtest/dynamic-subtest.
+>>
+>>     $ cat << EOF > testlist.txt
+>>     igt@xe_exec_basic@once-basic
+>>     EOF
+>>     $ chmod +x lspci.sh
+>>     $ sudo ./build/runner/igt_runner \
+>>         --hook 'post-subtest:lspci -vv -d 8086:*:03xx' \
+>>         --test-list testlist.txt build/tests/ results/
+>>     $ head -n4 results/0/out.txt
+>>     03:00.0 VGA compatible controller: Intel Corporation DG2 [Arc A580] (rev 08) (prog-if 00 [VGA controller])
+>>         Subsystem: Intel Corporation Device 1425
+>>         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+>>         Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+>>
+>> So, instead of creating a separate thing called "igt_facts", what I'm
+>> proposing is that we build this on top of the hooks and these "facts"
+>> are simply built-in hooks that are commonly used. We may even keep them
+>> as scripts rather than translate to C.
 >
->Here you should use the same loop as in _dump, so
+>I fail to understand why one would want to do that. It feels hackish and misses the point. I would support your suggestion if we were talking about a temporary debug tool.
 >
->	i = log_buffer.start;
->	do {
->		// do ops here
->		i++;
->        } while (i != log_buffer.start && i != log_buffer.end);
+>The igt-facts are not meant to be temporary, I dislike the overhead, and I dislike the hackish nature of this mechanism. Can you tell me what are the benefits of using these hooks? This is an honest question, I do not understand.
 
-there's an off-by-one bug in this loop that I didn't want to reproduce
-here: if we never ever logged anything, at the beggining start == end == 0,
-and in the first check i == 1. Which means we will print (or free in
-this case) the 256 entries. Oops.  I think we always log at least the
-test name, so it's not a bug we reproduce.
+Having it in C would be completely fine too if with that it feels less
+hackish to you. Key thing here is how it's integrated in igt_runner and
+tests. We already have a generic infra for that, yet we are trying to add
+another one.
 
 >
->Or even simpler, init with NULLs and then just free all?
-
-it's a static variable, it's already zero initialized.
-
->For example, if start=2, end=1, there is still a valid pointer
->at end==1
-
-no, end marks where the *next* entry will be. At the beginning we have:
-
-start == end == 0. There are no entries in the ringbuffer.
-
-After the first logged message:
-start == 0, end == 1.
-
-If the ringbuffer ever wraps, then we will always have:
-
-start == x + 1; end == x, or
-start == 0; end == 255
-
-Except for when dumping the contents, this ringbuffer doesn't have any
-consumer incrementing the start AFAICS.
-
+>>
+>> What I'd like is something liked this (with whatever name we decide):
+>>
+>>     sudo ./build/runner/igt_runner --builtin-hooks lspci,drm-cards
 >
->Or do one more ops for case 'end < start'
+>This is far from what I am proposing in purpose and in architecture.
+>
+>>
+>> which is a shorthand or equivalent to:
+>>
+>>     sudo ./build/runner/igt_runner \
+>>         --hook post-subtest:$PWD/scripts/built-in-hooks/lspci.sh \
+>>         --hook post-subtest:$PWD/scripts/built-in-hooks/drm-cards.sh \
+>>         --test-list testlist.txt build/tests/ results/
+>
+>For me this feels like a bad idea. It is probably an order of magnitude slower to run, and it is also granular in a way that I fail to understand. igt-facts should not be selected at runtime by the user because we do not know when the facts will change. Again, think of the disappearing GPU: it is a 1 in 1'000'000 kind of event, but is super valuable to know when it happens.
 
-in the wrap case, see above. The key of the implementation is that we
-are using a uint8_t and relying on it wrapping back to 0, so we can just
-increment the head until it reaches the tail.
+So what? If we want it to run by default, we can:  CI just have to add
+it as argument that is passed by default. See all the additional options
+CI already passes. It's also not like 1 in 1'000'000 that's happening.
+For the next bug we are chasing, it's likely not about a card disappearing
+and rather about something else that we will have to add another hook/fact.
+I don't like the idea of infinitely adding these things without a quick
+way to enable/disable.
 
-As said above, there isn't much value in this patch other than "let's
-get it right", so consider it optional.
+If you dislike the additional fork+exec, this would have the same effect
+of what you did:
 
+sudo ./build/runner/igt_runner \
+	--hook post-subtest:builtin:scan_kernel_loaded_kmods \
+	...
+
+Again, I'm more concerned about the integration than if this is in C or
+in python or in bash.
 
 Lucas De Marchi
 
 >
->Regards,
->Kamil
+>>
+>> The cherry on top would be for CI to parse the cover letter and
+>> enable those ondemand, so we only do that in CI when we want to:
+>>
+>> /ci-built-in-hooks: lspci,drm-cards
+>>
+>> Could also be:
+>>
+>> /ci-hook: 'post-subtest:lspci -vv -d 8086:*:03xx'
 >
->> +
->> +	log_buffer.start = log_buffer.end = 0;
->> +}
->> +
->>  static void _igt_log_buffer_reset(void)
->>  {
->>  	pthread_mutex_lock(&log_buffer_mutex);
+>Very different from what I am proposing and I fail to understand how this can have potential to add value. Sorry :/
+>
 >>
->> -	log_buffer.start = log_buffer.end = 0;
->> +	_igt_log_buffer_reset_locked();
+>> (note that the current way we have is "Test-with:", but that is
+>> problematic as it's then parsed as a git-trailer and added to the
+>> patches by some tools)
 >>
->>  	pthread_mutex_unlock(&log_buffer_mutex);
->>  }
->> @@ -624,8 +634,7 @@ static void _igt_log_buffer_dump(void)
->>  		i++;
->>  	} while (i != log_buffer.start && i != log_buffer.end);
->>
->> -	/* reset the buffer */
->> -	log_buffer.start = log_buffer.end = 0;
->> +	_igt_log_buffer_reset_locked();
->>
->>  	_log_line_fprintf(stderr, "****  END  ****\n");
->>  	pthread_mutex_unlock(&log_buffer_mutex);
->> --
->> 2.47.0
->>
+>> Lucas De Marchi
+>
+>[...]
