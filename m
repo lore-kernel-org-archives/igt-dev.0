@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 814D4D5D688
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 20:13:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 426F8D5D688
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Nov 2024 20:43:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27C5E10E8C8;
-	Thu,  7 Nov 2024 20:13:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1DD810E8DD;
+	Thu,  7 Nov 2024 20:43:48 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63B5A10E8C8;
- Thu,  7 Nov 2024 20:13:40 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A475710E8D9;
+ Thu,  7 Nov 2024 20:43:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5996233357783008663=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Ffault?=
- =?utf-8?q?=5Finjection=3A_Ignore_expected_errors_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5Fin?=
+ =?utf-8?q?jection=3A_Ignore_expected_errors_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 07 Nov 2024 20:13:40 -0000
-Message-ID: <173101042040.1423870.14226862549718432683@2413ebb6fbb6>
+Date: Thu, 07 Nov 2024 20:43:47 -0000
+Message-ID: <173101222766.1423870.7046338873873689897@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20241107195959.98509-1-jonathan.cavitt@intel.com>
 In-Reply-To: <20241107195959.98509-1-jonathan.cavitt@intel.com>
@@ -41,40 +41,192 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============5996233357783008663==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/intel/xe_fault_injection: Ignore expected errors (rev2)
 URL   : https://patchwork.freedesktop.org/series/141026/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_8100 -> IGTPW_12063
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1306262 for the overview.
+Summary
+-------
 
-test:verify-blacklists has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66290414):
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing lib/xe/oa-configs/__pycache__/
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/index.html
+
+Participating hosts (45 -> 43)
+------------------------------
+
+  Additional (1): bat-arls-6 
+  Missing    (3): bat-arls-2 bat-arls-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12063:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-arls-6}:       NOTRUN -> [DMESG-WARN][1] +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/bat-arls-6/igt@i915_pm_rpm@module-reload.html
+
   
-  Skipping Git submodules setup
-  section_end:1731010073:get_sources
-  section_start:1731010073:download_artifacts
-  Downloading artifacts
-  Downloading artifacts for build:tests-fedora (66290400)...
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=66290400 responseStatus=200 OK token=glcbt-64
-  section_end:1731010079:download_artifacts
-  section_start:1731010079:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7bfb38ab210fe864fc416049e9a18003858d6e3c with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1731010082:step_script
-  section_start:1731010082:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1731010084:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:650:0s)
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12063 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-arlh-3:         [INCOMPLETE][2] ([i915#10341]) -> [PASS][3] +1 other test pass
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-3/igt@i915_selftest@live.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/bat-arlh-3/igt@i915_selftest@live.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
+  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
+  [i915#10202]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10202
+  [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
+  [i915#10207]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10207
+  [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
+  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
+  [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
+  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
+  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
+  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
+  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
+  [i915#12637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
+  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8100 -> IGTPW_12063
+  * Linux: CI_DRM_15647 -> CI_DRM_15651
+
+  CI-20190529: 20190529
+  CI_DRM_15647: 438ef86a725b59a171dba81fc258bb23a0ff536c @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15651: fce38995f74a8acb149e428bb83c93dddf19979a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12063: 7bfb38ab210fe864fc416049e9a18003858d6e3c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8100: 84e42580f918da926481fd2fb37be01451d6ee9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1306262
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/index.html
+
+--===============5996233357783008663==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Ignore expected errors (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141026/">https://patchwork.freedesktop.org/series/141026/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8100 -&gt; IGTPW_12063</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/index.html</p>
+<h2>Participating hosts (45 -&gt; 43)</h2>
+<p>Additional (1): bat-arls-6 <br />
+  Missing    (3): bat-arls-2 bat-arls-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12063:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>{bat-arls-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/bat-arls-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> +2 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12063 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-3/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12063/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8100 -&gt; IGTPW_12063</li>
+<li>Linux: CI_DRM_15647 -&gt; CI_DRM_15651</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15647: 438ef86a725b59a171dba81fc258bb23a0ff536c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15651: fce38995f74a8acb149e428bb83c93dddf19979a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12063: 7bfb38ab210fe864fc416049e9a18003858d6e3c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8100: 84e42580f918da926481fd2fb37be01451d6ee9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5996233357783008663==--
