@@ -4,64 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AE90D5C0F4
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 15:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78A23D5C0F5
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 16:00:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56FDF10E9EB;
-	Fri,  8 Nov 2024 15:58:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35ECE10E9EB;
+	Fri,  8 Nov 2024 16:00:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eeizSAW4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eJlhGbDg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12AF310E9EB
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 15:58:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F05E10E9EB
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 16:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731081508; x=1762617508;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=NQlHIC2RJ+j9G4yV+2q/aaWuSItnGGbefgrF9z7AIkM=;
- b=eeizSAW45+RubzaF8X+H7gZbkI9MKH0406cGCGGaGZAPo15KOR4NvEgH
- 2gZaWziOrMnSD7r15dERMyW+hh08dKlcT28XDTTmYv7ixqCdiYes5O5Ve
- 94qHxJZ4qCQBn9jnQ2xymiXBtxj9IDG2Hh7lhS6QzsgzMHJuk7jGV/Zxi
- R3eCpVC+ppzo+1fXwJokirGULh49a5JrgB1QzDWgshSJ1cfEPp4K7nMFb
- /nIjKAePZppNFCbaVj9/IpsfNzDNeJpSG08FmC82pYr+BvIOE2RJkzxrj
- 59xioqs9oEBrjwOao4yYJy9qVmrMFWX2NCeOtd3TWgK+NK1bD2tYxBpq7 w==;
-X-CSE-ConnectionGUID: ftA/b9Y6SvGdRPH1vM+MdA==
-X-CSE-MsgGUID: x5dpobc3S82yWEX4JgezEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11250"; a="30367068"
-X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="30367068"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2024 07:58:28 -0800
-X-CSE-ConnectionGUID: Y5Zvu48pSEefWl8aL48E/w==
-X-CSE-MsgGUID: YXEtBDrUTReLe95wJDZs+w==
+ t=1731081636; x=1762617636;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ISb9XmwOSTokR8AJhj44bNjRXqCNl0oKJyM4SxF5xc8=;
+ b=eJlhGbDgDvD9AMBod9+eJ/MhbMJz4GtM5GGfBdJoAHkYABj4dpQpo3q0
+ P5M9JK6SHK0n8ZHUuGi8UySaAs4NAQ1FbCs950brTvmlVNYntC5LiZQAS
+ FSF46aOob8MZ3+a3VUdKQCr+FUgW/YzXxN5R+NvR4ptdLBkE9C93MHKOb
+ ofV4AaiH5ra1XqCwEbhtuDsXrKzzK6gvwrPh9qqSkUn7Pxf7wXLbK/QsQ
+ xFIi6qbK0sSmFpgbOiOjva9A0DmwrPypcPOcaL/ma3UW7Bi5IeFBSu/Er
+ dgnmT0kEV/dMXdrYtS00AMOKSFlmFLwYULHtTN4UKYB6XAGQjQYQ5iJZ9 A==;
+X-CSE-ConnectionGUID: lr4y5j6cR/2plbktzgMHXw==
+X-CSE-MsgGUID: UeHleFq/QUSHcnSUghbE7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30738366"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30738366"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2024 08:00:34 -0800
+X-CSE-ConnectionGUID: Ja0eSv+9TFaPLRVvTGNOTA==
+X-CSE-MsgGUID: rTpZtXMtTiGVLWCeqHi3eQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="90162611"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 07:58:26 -0800
-Date: Fri, 8 Nov 2024 16:58:24 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="86422982"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO fdugast-desk.intel.com)
+ ([10.245.246.246])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2024 08:00:33 -0800
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
- alex.zuo@intel.com, francois.dugast@intel.com,
- lucas.demarchi@intel.com, matthew.brost@intel.com,
- rodrigo.vivi@intel.com, michal.wajdeczko@intel.com
-Subject: Re: [PATCH v2] tests/intel/xe_fault_injection: Ignore expected errors
-Message-ID: <20241108155824.deuiikqqcvog32ms@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- saurabhg.gupta@intel.com, alex.zuo@intel.com,
- francois.dugast@intel.com, lucas.demarchi@intel.com,
- matthew.brost@intel.com, rodrigo.vivi@intel.com,
- michal.wajdeczko@intel.com
-References: <20241107195959.98509-1-jonathan.cavitt@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t 0/5] xe_fault_injection improvements
+Date: Fri,  8 Nov 2024 16:59:28 +0100
+Message-ID: <20241108160021.1202234-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241107195959.98509-1-jonathan.cavitt@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,82 +66,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2024-11-07 at 19:59:59 +0000, Jonathan Cavitt wrote:
-> The following errors can be observed when running the xe_fault_injection
-> subtests:
-> 
-> [drm] *ERROR* GT0: GuC init failed with -ENOMEM
-> [drm] *ERROR* GT0: Failed to initialize uC (-ENOMEM)
-> probe with driver xe failed with error -12
-> 
-> Add these messages to the dmesg ignore regex to the applicable tests
-> (specifically, all tests for the last error, and all tests that target
-> GuC subsystems for the first two errors).
-> 
-> v2:
-> - Fix and merge regex (Kamil)
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3343
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> CC: Francois Dugast <francois.dugast@intel.com>
-> CC: Lucas De Marchi <lucas.demarchi@intel.com>
-> CC: Matthew Brost <matthew.brost@intel.com>
-> CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> CC: Michal Wajdeczko <michal.wajdeczko@intel.com>
-> CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/intel/xe_fault_injection.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-> index d1c8b25307..8b181808ed 100644
-> --- a/tests/intel/xe_fault_injection.c
-> +++ b/tests/intel/xe_fault_injection.c
-> @@ -30,6 +30,30 @@ enum injection_list_action {
->  	INJECTION_LIST_REMOVE,
->  };
->  
-> +static bool function_is_part_of_guc(char function_name[])
-> +{
-> +	return strstr(function_name, "_guc_") != NULL ||
-> +	       strstr(function_name, "_uc_") != NULL ||
-> +	       strstr(function_name, "_wopcm_") != NULL;
-> +}
-> +
-> +static void ignore_faults_in_dmesg(char function_name[])
-> +{
-> +	/* Driver probe is expected to fail in all cases, so ignore in igt_runner */
-> +	char regex[1024] = "probe with driver xe failed with error -12";
-> +
-> +	/*
-> +	 * If GuC module fault is injected, GuC is expected to fail,
-> +	 * so also ignore GuC init failures in igt_runner.
-> +	 */
-> +	if (function_is_part_of_guc(function_name)) {
-> +		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
-> +		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
+The first 3 patches are a resend of [1]. The last 2 patches extend the
+use of fault injection beyond probe time, to make KMD fail when calling
+certain IOCTLs and thus trigger more code paths. If this approach is
+accepted, it can easily be extended to more IOCTLs.
 
-This could be one call to strcat, but it is not a blocker.
+[1] https://patchwork.freedesktop.org/series/139777
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Francois Dugast (5):
+  tests/intel/xe_fault_injection: Use a static list of functions
+  lib/igt_sysfs: Add igt_sysfs_{get,set}_s32
+  tests/intel/xe_fault_injection: Use igt_sysfs helpers
+  tests/intel/xe_fault_injection: Inject errors during vm create IOCTL
+  tests/intel/xe_fault_injection: Inject errors during vm bind IOCTL
 
-> +	}
-> +
-> +	igt_emit_ignore_dmesg_regex(regex);
-> +}
-> +
->  /*
->   * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
->   */
-> @@ -175,6 +199,7 @@ igt_main
->  			if (regexec(&regex, line, 2, pmatch, 0) == 0) {
->  				strcpy(function_name, line);
->  				function_name[pmatch[1].rm_eo - 1] = '\0';
-> +				ignore_faults_in_dmesg(function_name);
->  				igt_dynamic_f("function-%s", function_name)
->  					inject_fault_try_bind(fd, pci_slot, function_name);
->  			}
-> -- 
-> 2.43.0
-> 
+ lib/igt_sysfs.c                  |  71 +++++++
+ lib/igt_sysfs.h                  |   5 +
+ tests/intel/xe_fault_injection.c | 320 +++++++++++++++++++++----------
+ 3 files changed, 299 insertions(+), 97 deletions(-)
+
+-- 
+2.43.0
+
