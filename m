@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 664D9D5D69F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDAF8D5D695
 	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 01:07:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA8E610E139;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E67BF10E324;
 	Fri,  8 Nov 2024 01:07:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JG1EBDa3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JMtA2gS4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39DEB10E139
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5E1A10E32C
  for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 01:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1731028045; x=1762564045;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=eOeSese85Faq+iGZaKEKk09J2JdtjrAFCsW/FX/vkHk=;
- b=JG1EBDa3C2cHN+B0wln2czkV33hVMbW3ao4yLSRmbuV29e/x7wxIrmVW
- rP+rdWMdOVOPR5WMWGKaV+xPDGawqS7IIllRGfyanlO5wVzjaetrFvLZ6
- VA084MzW5vn9Gvu0uuFxmjxm/CUMxYTpITnHoA+kBav9uvHOr82c61Gux
- f/bB3NU1OyMyuJ+90TMYilKy9H4veNdElab7xx28wltS+2vxVS9vowdqq
- MR1GMcz9KNIR1XmnJtBDCYsI5w2wE0pPe186yvsbAWwpukIBwAJn+Mr9U
- f9bhz1zo3Vh3j8YlJpCE8DuEhmj0V3Be966dCRJXCYdTACANorJs/cfh9 A==;
-X-CSE-ConnectionGUID: DzZTXSMESDCWULhPtcTHeQ==
-X-CSE-MsgGUID: ip8PkRUeQEasROUgcVBX6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="31009601"
-X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; d="scan'208";a="31009601"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lzAaq5kqYTyN5tD3rcyuv/yQn3KYN35tomwYBKcsbLI=;
+ b=JMtA2gS4J4ezmZhqM+O5llnqyUXW1fWycfw+WnoxZTZXNGGIMP95RmOR
+ FQOTMpkkkPRk7gYEp3Fxds/h7NPMPjzaqM5kgIxw3WK8kdHfp7Ea28o5M
+ lky07SyWw8GV4RDDBpeBsbb4FG5EvsX9h8lJRcX/LLv2XdZNkdCy088Y6
+ 1Ku8i1hZBZHZXknR8JBf8aI345bFodcgEUGaO2GfbtSM6MtDW1D8Mi4Bs
+ g1Lsh/JWLkNh4e6pYQ6dW/Eo3BvPWab/MQJ1zM40bGCwzc8T69VRlq80p
+ 3SZFi+G6irG0BCk5D1gsSsNW6M7v1sqI1VppHP1rzbQgCPknG6Dg6cQ22 Q==;
+X-CSE-ConnectionGUID: Uc4wmmznQTSmGkGfC48k0A==
+X-CSE-MsgGUID: 4bhz4hZhRHa8rYTh7BfLhQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="31009603"
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; d="scan'208";a="31009603"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Nov 2024 17:07:25 -0800
-X-CSE-ConnectionGUID: heL0jRPBSBOknbqxR7E4oA==
-X-CSE-MsgGUID: 3Y/wg4/5THaDUoQ5d+QyuQ==
+X-CSE-ConnectionGUID: BFu5DFkKTJe2d0cJBKmANw==
+X-CSE-MsgGUID: bhXwT3JmRp2GZdPhdUjowA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; d="scan'208";a="116191489"
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; d="scan'208";a="116191496"
 Received: from fyang16-desk.jf.intel.com ([10.165.21.214])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Nov 2024 17:07:23 -0800
 From: fei.yang@intel.com
 To: igt-dev@lists.freedesktop.org
-Cc: Fei Yang <fei.yang@intel.com>
-Subject: [i-g-t, v2, 0/4] separate sync data and batch buffer
-Date: Thu,  7 Nov 2024 17:10:37 -0800
-Message-Id: <20241108011041.2257553-1-fei.yang@intel.com>
+Cc: Fei Yang <fei.yang@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>
+Subject: [i-g-t, v2, 2/4] tests/intel/xe_exec_threads: remove redundant wait
+Date: Thu,  7 Nov 2024 17:10:39 -0800
+Message-Id: <20241108011041.2257553-3-fei.yang@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241108011041.2257553-1-fei.yang@intel.com>
+References: <20241108011041.2257553-1-fei.yang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,26 +70,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Fei Yang <fei.yang@intel.com>
 
-In INVALIDATE cases the test purposely remap the data buffer to a
-different physical location in the midle of execution to exercise the
-page fault handling flow. After the remapping we lose access to the old
-physical location, and that would cause a problem for comparing ufence
-value at the end of the execution. To fix this the exec_sync data needs
-to be separated from the batch buffer for instructions, and during the
-execution we don't remap the exec_sync data.
+The for-loop for REBIND case accidentally wait twice for the execs of
+0x20*n interations. Copyi paste the code from INVALIDATE case which is
+correct.
 
 Signed-off-by: Fei Yang <fei.yang@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+---
+ tests/intel/xe_exec_threads.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Fei Yang (4):
-  tests/intel/xe_exec_fault_mode: separate exec_sync and batch buffer
-  tests/intel/xe_exec_threads: remove redundant wait
-  tests/intel/xe_exec_threads: wait for all submissions to complete
-  tests/intel/xe_exec_threads: separate exec_sync and batch buffer
-
- tests/intel/xe_exec_fault_mode.c | 66 ++++++++++++++++++++++++--------
- tests/intel/xe_exec_threads.c    | 65 +++++++++++++++++++++++--------
- 2 files changed, 99 insertions(+), 32 deletions(-)
-
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 413d6626b..962957cd7 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -340,7 +340,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		xe_exec(fd, &exec);
+ 
+ 		if (flags & REBIND && i && !(i & 0x1f)) {
+-			for (j = i - 0x20; j <= i; ++j)
++			for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
+ 				xe_wait_ufence(fd, &data[j].exec_sync,
+ 					       USER_FENCE_VALUE,
+ 					       exec_queues[e], fence_timeout);
 -- 
 2.25.1
 
