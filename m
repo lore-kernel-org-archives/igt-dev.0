@@ -4,178 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBB47D64085
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 20:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C804BD6408A
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 21:12:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65EB910EA61;
-	Fri,  8 Nov 2024 20:25:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7969810E0AA;
+	Fri,  8 Nov 2024 21:12:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IATO2xMN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dEX4rZ3T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01F9B10EA5F
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 20:25:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75A1610E0AA
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 21:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731097522; x=1762633522;
+ t=1731100339; x=1762636339;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=33iJLJSeASX104x1PM7rWdSssvUzk5nzhuMfKusJJ0U=;
- b=IATO2xMNS1aZVY1IfNHy20YdMVwMiY5zACm25Srt9kZ9knfak+8cCqrB
- LTq3U12QCBkBZLk48pahKbYlt0Q4isrmtrfsQNuawhK1M3L9fgwFoXMfr
- PGR2B1SwN0lkNx8RgB+eJKV7EyG+kL5SsuYwUb+HXIrxFTXS17Yub0v3Y
- u+sjvjOzfrVHExnotlq1Qgi8vhmJKpHy4kdk9Ywl8iVs/pjNVraKgVV7T
- RDIyWE2iPYBT/XYyU7VFVSLyak/qxP0kUt0wI1rkZqDUIIQpJDSEKCGzw
- FD3pr+rstB989E/ucT9YcWnCtRah6aEP3RcI+Y5WATJcuqBdCF4fNfv4w Q==;
-X-CSE-ConnectionGUID: OKef/pPKQbm9AGwe2G9PFw==
-X-CSE-MsgGUID: LrBBLr30QB+acRSjwa9Drg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11250"; a="41607008"
-X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="41607008"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2024 12:25:22 -0800
-X-CSE-ConnectionGUID: TDt/4sMeSROnaDdQqhlFBg==
-X-CSE-MsgGUID: PEgQXm9CTlSFlRbIhzA5BA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=EcxOhRGLaFys1hjyBf/mrxbBzl5YoFlDQhZP3ixR2kk=;
+ b=dEX4rZ3TqQXdwM77bD4OUdxizAfehjIL1RMYKy7G02iNZBu7hH48CuJB
+ 8nkJs1E/TwHtiWf7ja5+kkrH/0YWCiJtZMZupcm5FieDNDJMc+xCs4IPm
+ LdWm45X8WoEGS8CdohM/E6sdfQx+wbgxWAPCQcm6IoSW76pnvkmwKavRD
+ nmAlfrq0Tqkvn5s9nIzO8XqRdzG4G4fTuRe7qt66qpHHQTvbF8F1r1iBc
+ 1MTusN2jREqZcr+zcP987wu1B0MlsevtUHnYhTNsH6fd6C0RCDZLrWFV2
+ GFqu8bb3iCW2yDRGYd4c3LYSfzy/zXcBYe/t69q0jhdl7p1leQtRASoKp A==;
+X-CSE-ConnectionGUID: fkeZjWWuQwKAwyW65PsgPA==
+X-CSE-MsgGUID: Mc4p8aKCS8eHJu/LOq0V7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11250"; a="18619528"
+X-IronPort-AV: E=Sophos;i="6.12,139,1728975600"; d="scan'208";a="18619528"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2024 13:12:18 -0800
+X-CSE-ConnectionGUID: LTgmPSuDQj+V4+svm0f2hg==
+X-CSE-MsgGUID: +FBeH+Q8QKCnaDgjmi1bYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="109004451"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 08 Nov 2024 12:25:21 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 8 Nov 2024 12:25:21 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 8 Nov 2024 12:25:21 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.41) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 8 Nov 2024 12:25:21 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FkXLEHEpnfzQ/RACqcUpZByrNU2sDG/HDCHepfKJ/loppPlzDFG3EgqLMPwo5Pv+b3ekKaiWwGXBYV6jyaX9yGqxqJ/8FarbA4hJ1OjNJp5kSIoBw3rbh0bGkrux7D0ybJXvH+Xit3wwtaNVOTgh08yizs6GVNJXO9HkbYFGniWKiA28Fq+e1kNprPX01IRDDWRztsdWy7qCiHRSjrVpanHm8It2mE6dHvA+Qf2jUcdxozYxddsteiw2KftgbhX3Ba17eU2c2dyM/hEmNT3Zmmu2Eb/DC7RCTGzIPzkRuK2XbAyPGjSt6jrGQ2ichhVRPnfNFKcsZtqZyViCbW9Y+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vpJPuU/u5lp7WvzGW/frWYGZhrmFW2+llv2zlTlfJDM=;
- b=kb8vd6kTUPP6X5ChiGQKhnrw5Xv8fWt6fIb8bUoZFi8ofHWrmBcP7tX641aVzxEVtsl92zZwOmIGpZAUbSOEaZ4WKz30KeEsUGxLOv3alhZeb4MWYGSuV9QB5kdrTmBzw/wFnLCp3Qi6pUwMZTt4iW/sohNW9xbzWoF+TtcWtsqz5IvxoVHQhCyJ5sQO38m0gDP9j1cpvGA5EE42uXgY9gqO3TsgEsam+OMepnVwAcnoEJ5OJf/UmcI6qtjOu3ugNNQwlAL0mOY8OJ+76rUP0n6IddsW4rxmHZijPxtau7oMiXbdvADq+IgOXacFKM/tucZ9nKdPPVvhMI2TyKGY/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
- by BN9PR11MB5292.namprd11.prod.outlook.com (2603:10b6:408:119::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.21; Fri, 8 Nov
- 2024 20:25:18 +0000
-Received: from DS0PR11MB7408.namprd11.prod.outlook.com
- ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
- ([fe80::6387:4b73:8906:7543%4]) with mapi id 15.20.8137.019; Fri, 8 Nov 2024
- 20:25:18 +0000
-Date: Fri, 8 Nov 2024 12:25:16 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Jonathan Cavitt
- <jonathan.cavitt@intel.com>, Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_drm_fdinfo: Increase sampling period
-Message-ID: <Zy5zrHZ5Wyru4Q0d@orsosgc001>
-References: <20241108054350.3484532-1-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20241108054350.3484532-1-lucas.demarchi@intel.com>
-X-ClientProxiedBy: MW4PR04CA0080.namprd04.prod.outlook.com
- (2603:10b6:303:6b::25) To DS0PR11MB7408.namprd11.prod.outlook.com
- (2603:10b6:8:136::15)
+X-IronPort-AV: E=Sophos;i="6.12,139,1728975600"; d="scan'208";a="85878689"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 13:12:16 -0800
+Date: Fri, 8 Nov 2024 22:11:56 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>, jani.nikula@intel.com,
+ clinton.a.taylor@intel.com, zbigniew.kempczynski@intel.com
+Subject: Re: [PATCH v2] lib: sync PCI ID macros with kernel
+Message-ID: <20241108211156.auwt53xlt4asqvwt@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>, jani.nikula@intel.com,
+ clinton.a.taylor@intel.com, zbigniew.kempczynski@intel.com
+References: <20241107231457.70157-1-ngai-mint.kwan@linux.intel.com>
+ <20241108144916.ejpqphj6lmig7iko@kamilkon-desk.igk.intel.com>
+ <sojqnvnniougw7y4yo5wmvstmxtuxvrhd2i376g6lig24r3jsm@islqlychrne4>
+ <61f3bf56-3a9b-4544-9f30-59641e129eb4@linux.intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|BN9PR11MB5292:EE_
-X-MS-Office365-Filtering-Correlation-Id: f30dab16-128b-4e84-6486-08dd00337625
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RlZOek0vcmZQYkF6blhjWFE3Vm5BQTllaDQvejRybmx2VlZUTUpPbHFySWxF?=
- =?utf-8?B?K0loMjlTQzVLc1BoWHo1ZnlQQThaWGc1TmZwMGRBN1Q5RFBMOGhTZHJQMVhl?=
- =?utf-8?B?VHRvZVBhdU9kNytoUStMMGduZk1FSXY2aWUrbVo1U2hOV2xKVUh4aHg2bFFt?=
- =?utf-8?B?c0dpb09ibFVmWHEyNlJORGVtQVhYME8rY2UrWE1YcjVZQ2dneEk2dFlCWWJ2?=
- =?utf-8?B?MXM0OU1MSWtzZ1lnTVdUYmFXK2UrcFVCajFiMHV0eXZSY3ZJNTJCY2ZaUmJZ?=
- =?utf-8?B?Tmc1SzR6dFhDdlY1Rzl2elVEQklHK0UrN2pvYmRTTVYwMjdVL1h2V1paRDU3?=
- =?utf-8?B?ejB5RklvTUVERGRHT3VhamtUdmxUbTViNVVOOUtDUFVyaCszOUxiblp5czZT?=
- =?utf-8?B?SXRSZUpISHBDRnh2V1JrSXNhL0x3TDUzdncxNWpxUjFrdm5WK1pOdzMyL2xv?=
- =?utf-8?B?U0VqTkl2VDZvTUpKbGdLRi90WFpiWEk1MDBSVlYrSlFoQi85NjdXV2FRcERa?=
- =?utf-8?B?ajk1eldYOGRxZmdjUGdlaHIzeUdkSE5mUUVha3pUSHpmY2kxbGdDNDJlSTF0?=
- =?utf-8?B?UFN1TnpHYWdpVExHMy8zV0xZSUxnQ3V4bkp0bElFeUMzeHh6L3pnTXFsT09s?=
- =?utf-8?B?L3ZQRXBKWEJKVCtTZ0xHazc1b1RGT1pqM2xUYVFxSGdESmdnSTNNL0lpK3NG?=
- =?utf-8?B?VWRlTzJYNlh6RW1vNDRVVUpqK0xJalQ1NHkvOFJUSTJUVnFUK2UySlVOeGw3?=
- =?utf-8?B?TzdYTERXK3ZkSDE5Z0QyOW4zVFZuaVpqS0ZSRlEreUdnZmJ5MzdWNXBxWElo?=
- =?utf-8?B?VGVoUmp6cTFGVVRNMHVFcmk0b052QXlpWjJsN2JqQ1NHLzZxKzJna3pqTkZF?=
- =?utf-8?B?Y1A2WnpBQnRsakdLNUEyK1JJa3JXZFRoNWlsaGlpQnhTK3A2VTNLdWZKbkJi?=
- =?utf-8?B?dnplMVFPRmR6TUdKNS9mOGhjbVpMOEZNY0pFZkUzOWpuaGNIZ3BFM0FueWxY?=
- =?utf-8?B?ZjZTN3F5RjdtVmpQeC9DTzVEV2ZRa2NzSE9yOW1oR0pVaVVqSW4xMThLVzlK?=
- =?utf-8?B?aThTUTQ4QmVQS0JsK1dGTVFaeGF0SUVKM2xpOG9Ha3J4ZGFDSVNvbWFTbC9L?=
- =?utf-8?B?a0pwcVZUZkptSWppYWRBM1Nvb2pncUtaQWo2eWtITUF3OWRML1FiNVF1VEYw?=
- =?utf-8?B?VjlEWjZuT3lERWV2OFljTTdKRkZyZ0YrTHpiSi81UlhrU1BHWG9kd2R5cmR6?=
- =?utf-8?B?eUsxSmdDSEZnTDZQbFZra21oSHl0OUhyVW1YR3lqV3BJWEZHK1BvOStUczdn?=
- =?utf-8?B?c0o0ZXRzQlRFaDVkTkpNNnJqM1pkbCt4UWNPMDFYQzJLK05YU29HWkh2S04v?=
- =?utf-8?B?aU8yRHBnYitmOG0vSlFWK1RSclIxanlMaGVhY2N0c1pEVXFzRzk1Vnd6OFk1?=
- =?utf-8?B?MEtuN0JQbWNuUWRQYnh2aEk3T2NHK1prN1VLSjdRRFlZSlJadFRlN2xCLzRw?=
- =?utf-8?B?REF3eEVLMy9odFdnR3F4c3BlMUVEMk5qakhTTG9lemVsNnlIN09vWmI5OHpH?=
- =?utf-8?B?clNhUUFOM0s3TGR0bmd1aFdIM3oyRXVrUnhobkdjZ0JCMy9FSW9jaElqeEg5?=
- =?utf-8?B?OHRKaEIvUFpWdnRMa0FPb3BTemF0U1ZWMzRnSEsxRG93RTB5MGtnalFwS1hU?=
- =?utf-8?B?YklwcCtkSUhyUWhCRnlDdEFMTVBwcTg3dkJ3czZ1MVBkMHBzRFdIYVVXZGJ4?=
- =?utf-8?Q?kJL4Lnx0nwnZhuPb+jYJow1OGN/PYi96q1AZBZw?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cG1mQkNJZldjeXYzbC96Rk5VOGsrRFIrQ0E2VTh2M2hic3FFWnhJRWd0eU5u?=
- =?utf-8?B?N2RnZ2NlMXVTSG1rQkx0TU1LZWwwUlpqbzBsR0xRejVheFd1U1lGL2lPK1pD?=
- =?utf-8?B?bnRPRFFlMXBKWFVUUmhaVHRjcFRaNjhkMGxDZVdwd2Q4V1JlQVVNd3Y4M0th?=
- =?utf-8?B?dk9yOUJLVnJ3ZlRTT2FNajJzVUJaWllHWFRkUGlzUHpYcjVQY055bm9YTFJp?=
- =?utf-8?B?MlgvRXorc1FWazRLTUFBdml6VXIzQVVGOEZrZ0xkUUI2bkZqVEtFVmxoZ3Uw?=
- =?utf-8?B?eFprZ3poNzZGRUgrSEJDNmpRb1NpZ0ZzMmdheEZ2M3pUOEVqRDhXK2ZBbXZa?=
- =?utf-8?B?MTFwSDNOYjZLb1Q1YkIrRzlBc21hVjc1YUQzOGhWTlVCRzRGV2VyT0h2bExy?=
- =?utf-8?B?N3paTzg1djVHdzV1NlJnR1RLejlSUzhnRTJGNzVqU3g2MFBZQ3ltM20zODR2?=
- =?utf-8?B?SG90aWxBZU9STnYvV002cDhBUFpSYW1sVlJDc1NXcXhDR3BnZmdPYktPMHhX?=
- =?utf-8?B?SDFwU25Nb0c0aHQrOUhWQlZLQmQ0ajNzOFJOZDZCWU1jMXNjNTEwdXRWV3RO?=
- =?utf-8?B?R1JtWW8wOHFSaW1GL0s0citsS3dlZi9hM1lvU0dMSUlyYXBTa0NEbVNLSldP?=
- =?utf-8?B?YzBkNlBnZHR4UFg2L3dVTXJvU1EzTGhFcnlRZEdQNnRyUGUvTFA4R3pXQVBY?=
- =?utf-8?B?d241U2V1bFdOYnZCWnFpaTJZWUVYMzBoZFVPZTZ1UmRLblJEdElnUDJaRkpF?=
- =?utf-8?B?U0VkZkpld1dhOGNOanVjWHQ0d1R1TGlJVTdiVVFmSXR1TmZaT0pPdGJsRS8y?=
- =?utf-8?B?c1prSDg2MitHcG1XbDhRSkFCS3dJeWkxZnUrRjJaWTJEZlFCMmdsaSswRVVy?=
- =?utf-8?B?UTBvdzlRdmpmTFFzWG0zVStwZVhvQ2orckpSanFRTHVIYUhNWmZtOGtuUUhk?=
- =?utf-8?B?SnMvT2c0aU05SnlIQWtMTU0zekwzTlNZMzUraVBRSFNFcEpRWHNndSsyM2FW?=
- =?utf-8?B?cjVKN0tCUkJrMUxwdUFJT3YwT0MraUVCMzUzcnl4ZVJKOEFHYW9CSG5qb1VB?=
- =?utf-8?B?SDlEZjBjSTB2WFgrRU9jYnlhWE10aUtWL2tja2Rnb0ZXL2VVZXhqYlkyL1Yx?=
- =?utf-8?B?UWpYclZjaTVSWlBaT0RvbmFYcmdrbTMxaER3SE9qM2p2OTdvK3ludlJkUDND?=
- =?utf-8?B?ZGpTSVNnemdxMnA1VnA2VHE0bEJheGc0U3JHUFlLcGFKdHRTTFdJbytjdmZT?=
- =?utf-8?B?UG5aM3NKNEhPMnJoUHJQeDdUQ3BWNmJCdVdpb0ZZNXdOeFBIN0cwWURIN0ds?=
- =?utf-8?B?eG0zMXRsV1djczQvUHpnenVKaWdDQk9kNm8xUkE0MHZCUzhSd2o0Ky8xVGdp?=
- =?utf-8?B?cWNrMm9TNjdBR0tCQW9wK3N2SnBuTFhRM1VEWnI2ZHpEa05CNzRCT0hFWjdO?=
- =?utf-8?B?eDJSTlpGbDhhSS9CL1krWTVWUEFpTWM0UVNwcXRINFBRN3BadkczQmxXd3E0?=
- =?utf-8?B?ZnZzZDQwNVBobDhtWlBHdnJxdXE2ZXAzOW9OM1Vienh3WmZHUitoZnFyZ3c5?=
- =?utf-8?B?eFhLK3grdm9mRXl4bVlPaHE2WlZwVUMrTHpKTnVWMWNRZ0RwMlEzcTNXVG1h?=
- =?utf-8?B?aStpWExuQ1VhUnVFSEF2anFEMUV4WEhpT1BleEZIcmhTY3JBNWNIeWdIdTFw?=
- =?utf-8?B?ZHdNUklOS25YNWV0L2FGTmNzNlV2VzF5Z25DTFMvc3VRcEdXbGdTQzNhVGNX?=
- =?utf-8?B?bGJCOU9jZGlzTEZlVE8xa1U3VmNTcjAyTjBWb2FqY2hxRTU1RVI2SjlUREh2?=
- =?utf-8?B?R2R4dlczOERhRU9SSGJiRXZYM0h2VUlzeE94aDBYMXdnUjNaazVDaHJ0aU5y?=
- =?utf-8?B?L2ZsanRDU2RLTi80SlFpamxjYlBKUU8vTjY0bEpmbjJiV1lneW4zUXVPaG5K?=
- =?utf-8?B?dEhxaFJNQ2tWUUxQQVdaR3lNVk5BQmo2QUtwV3huRXZURkQ4SkNZTGZTSVJZ?=
- =?utf-8?B?TjBRWXQ2bHdRQnVZQzVwUThBamdkYVBkMzNWM3BGTXlDM290bm5ybjI5Qncr?=
- =?utf-8?B?UnFuVFhwaEJsYjJBOFc5SzNsVERSR0M2NGw3dHc2ank1VHllRDVDazU1MHBU?=
- =?utf-8?B?M09jK0VCb1RUWVpXUkY4alpwSFZkYWFUQU4ycWxjaEtacC9pa21Na1FZU3dJ?=
- =?utf-8?Q?DdnvVr4SNFUaIXKUsBNQV3M=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f30dab16-128b-4e84-6486-08dd00337625
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2024 20:25:18.3646 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pAWnDkV6MuAmCRwFVAp9rK6P5UiBQqR5mSnWiY9tfRYnaz5RUs3v0I1Zq48IDvP8vd+ZaKdNXHk9G5jzJe+vd7PpRSJrNbklaZSgKWsei2c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5292
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <61f3bf56-3a9b-4544-9f30-59641e129eb4@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -191,50 +78,567 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Nov 07, 2024 at 09:43:50PM -0800, Lucas De Marchi wrote:
->This reverts commit 4f79f059766c ("tests/intel/xe_drm_fdinfo: Half the
->execution time") and goes in the opposite direction, doubling it.
->Although in some machines we pass consistently, others like LNL
->show sporadic failures.
->
->Even after changes in the kernel to improve it, it still shows those
->failures. Also, the failures can be much more frequent by stressing all
->the CPUs. Raise the period to reduce the error introduced due to
->additional scheduling delays. This shows a good improvement on LNL that
->doesn't fail anymore without CPU load and fails once every ~200
->iterations with 100% CPU load (vs once every ~3 iterations).
+Hi Ngai-Mint,
+On 2024-11-08 at 09:51:56 -0800, Ngai-Mint Kwan wrote:
+> 
+> 
+> 
+> On 2024-11-08 07:50, Lucas De Marchi wrote:
+> > On Fri, Nov 08, 2024 at 03:49:16PM +0100, Kamil Konieczny wrote:
+> > > Hi Ngai-Mint,
+> > > On 2024-11-07 at 15:14:45 -0800, Ngai-Mint Kwan wrote:
+> > > > Synch with kernel commit that uses common PCI ID macros:
+> > > > 3c1d5ced18db ("drm/i915/gsc: ARL-H and ARL-U need a newer GSC FW.")
+> > 
+> > $ git branch --contains 3c1d5ced18db8a67251c8436cf9bdc061f972bdb
+> > + drm-intel-next
+> > + drm-tip
+> > * tip
+> > 
+> > > 
+> > > I couldn't find this commit on drm-tip, did I miss something?
+> > > 
+> > > What I found using google was:
+> > > https://lore.kernel.org/all/2c1c07f5-920b-4f6e-87dc-752ae3725a2c@intel.com/T/
+> > > 
+> > > 
+> > > and in that commit there are only additions to i915_pciids.h
+> > 
+> > the commit describes the state of the branch... there may be previous
+> > changes being carried together. As long as it's an exact copy of the
+> > kernel header in that specific commit I think we are fine.
+> > 
+> > 
+> > Lucas De Marchi
+> > 
+> > > 
+> > > Please provide link to lore.kernel.org to a commit you are
+> > > referring and also which kernel tree you are using.
+> > > 
+> > > When this rename reach drm-tip?
+> 
+> This is the commit from drm-tip that this patch is referring to:
+> https://gitlab.freedesktop.org/drm/tip/-/commit/3c1d5ced18db8a67251c8436cf9bdc061f972bdb
+> 
+> Regards,
+> Ngai-Mint Kwan
+> 
 
-LGTM.
+Sorry I messed up my repo config, now I checked and corrected it
+and now LGTM
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-On a related note, how do we let a dev know that the tests may fail 
-occasionally due to scheduling delays, so that triaging future failures 
-can happen in a more informed manner? A comment in the IGT test file?  
-Thoughts?
+btw good to see PTL ids.
 
-Thanks,
-Umesh
+Regards,
+Kamil
 
->
->Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->---
-> tests/intel/xe_drm_fdinfo.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
->index 5fd7c0416..ef9273e2a 100644
->--- a/tests/intel/xe_drm_fdinfo.c
->+++ b/tests/intel/xe_drm_fdinfo.c
->@@ -82,7 +82,7 @@ struct pceu_cycles {
-> 	uint64_t total_cycles;
-> };
->
->-const unsigned long batch_duration_usec = (1 * USEC_PER_SEC) / 4;
->+const unsigned long batch_duration_usec = (1 * USEC_PER_SEC);
->
-> static const char *engine_map[] = {
-> 	"rcs",
->-- 
->2.47.0
->
+> > > 
+> > > 
+> > > Regards,
+> > > Kamil
+> > > 
+> > > > 
+> > > > Refactor lib to use new macro definitions and pciids.h header file.
+> > > > 
+> > > > Signed-off-by: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
+> > > > ---
+> > > >  docs/reference/igt-gpu-tools/meson.build |   3 +-
+> > > >  lib/i915/perf.c                          |   2 +-
+> > > >  lib/i915_pciids_local.h                  |   2 +-
+> > > >  lib/intel_device_info.c                  |   8 +-
+> > > >  lib/{i915_pciids.h => pciids.h}          | 106 ++++++++---
+> > > >  lib/xe/xe_oa.c                           |  12 +-
+> > > >  lib/xe_pciids.h                          | 218 -----------------------
+> > > >  7 files changed, 90 insertions(+), 261 deletions(-)
+> > > >  rename lib/{i915_pciids.h => pciids.h} (92%)
+> > > >  delete mode 100644 lib/xe_pciids.h
+> > > > 
+> > > > diff --git a/docs/reference/igt-gpu-tools/meson.build
+> > > > b/docs/reference/igt-gpu-tools/meson.build
+> > > > index d5db95e40..8d70a49b8 100644
+> > > > --- a/docs/reference/igt-gpu-tools/meson.build
+> > > > +++ b/docs/reference/igt-gpu-tools/meson.build
+> > > > @@ -10,7 +10,6 @@ ignore_headers = [
+> > > >      'gpgpu_fill.h',
+> > > >      'i830_reg.h',
+> > > >      'i915_3d.h',
+> > > > -    'i915_pciids.h',
+> > > >      'i915_reg.h',
+> > > >      'igt_edid_template.h',
+> > > >      'intel_reg.h',
+> > > > @@ -21,8 +20,8 @@ ignore_headers = [
+> > > >      'media_spin.h',
+> > > >      'media_fill_gen9.h',
+> > > >      'gen9_render.h',
+> > > > +    'pciids.h',
+> > > >      'version.h',
+> > > > -    'xe_pciids.h',
+> > > >  ]
+> > > > 
+> > > >  test_groups = [
+> > > > diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+> > > > index ef2f74be8..9eb1141d4 100644
+> > > > --- a/lib/i915/perf.c
+> > > > +++ b/lib/i915/perf.c
+> > > > @@ -37,7 +37,7 @@
+> > > > 
+> > > >  #include <i915_drm.h>
+> > > > 
+> > > > -#include "i915_pciids.h"
+> > > > +#include "pciids.h"
+> > > >  #include "i915_pciids_local.h"
+> > > > 
+> > > >  #include "intel_chipset.h"
+> > > > diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
+> > > > index c404a51af..b85cfd779 100644
+> > > > --- a/lib/i915_pciids_local.h
+> > > > +++ b/lib/i915_pciids_local.h
+> > > > @@ -5,7 +5,7 @@
+> > > >  #ifndef _I915_PCIIDS_LOCAL_H_
+> > > >  #define _I915_PCIIDS_LOCAL_H_
+> > > > 
+> > > > -#include "i915_pciids.h"
+> > > > +#include "pciids.h"
+> > > > 
+> > > >  /* MTL perf */
+> > > >  #ifndef INTEL_MTL_M_IDS
+> > > > diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> > > > index 2a118eda6..546b9c65a 100644
+> > > > --- a/lib/intel_device_info.c
+> > > > +++ b/lib/intel_device_info.c
+> > > > @@ -1,7 +1,6 @@
+> > > >  #include "intel_chipset.h"
+> > > > -#include "i915_pciids.h"
+> > > > +#include "pciids.h"
+> > > >  #include "i915_pciids_local.h"
+> > > > -#include "xe_pciids.h"
+> > > > 
+> > > >  #include <strings.h> /* ffs() */
+> > > > 
+> > > > @@ -635,12 +634,13 @@ static const struct pci_id_match
+> > > > intel_device_match[] = {
+> > > >      INTEL_ATS_M_IDS(INTEL_PCI_ID_INIT, &intel_ats_m_info),
+> > > > 
+> > > >      INTEL_MTL_IDS(INTEL_PCI_ID_INIT, &intel_meteorlake_info),
+> > > > +    INTEL_ARL_IDS(INTEL_PCI_ID_INIT, &intel_meteorlake_info),
+> > > > 
+> > > >      INTEL_PVC_IDS(INTEL_PCI_ID_INIT, &intel_pontevecchio_info),
+> > > > 
+> > > > -    XE_LNL_IDS(INTEL_PCI_ID_INIT, &intel_lunarlake_info),
+> > > > +    INTEL_LNL_IDS(INTEL_PCI_ID_INIT, &intel_lunarlake_info),
+> > > > 
+> > > > -    XE_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
+> > > > +    INTEL_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
+> > > > 
+> > > >      INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
+> > > >  };
+> > > > diff --git a/lib/i915_pciids.h b/lib/pciids.h
+> > > > similarity index 92%
+> > > > rename from lib/i915_pciids.h
+> > > > rename to lib/pciids.h
+> > > > index 3e39d644e..32480b556 100644
+> > > > --- a/lib/i915_pciids.h
+> > > > +++ b/lib/pciids.h
+> > > > @@ -22,30 +22,23 @@
+> > > >   * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+> > > >   * DEALINGS IN THE SOFTWARE.
+> > > >   */
+> > > > -#ifndef _I915_PCIIDS_H
+> > > > -#define _I915_PCIIDS_H
+> > > > -
+> > > > -/*
+> > > > - * A pci_device_id struct {
+> > > > - *    __u32 vendor, device;
+> > > > - *      __u32 subvendor, subdevice;
+> > > > - *    __u32 class, class_mask;
+> > > > - *    kernel_ulong_t driver_data;
+> > > > - * };
+> > > > - * Don't use C99 here because "class" is reserved and we want to
+> > > > - * give userspace flexibility.
+> > > > - */
+> > > > -#define INTEL_VGA_DEVICE(id, info) { \
+> > > > -    0x8086,    id, \
+> > > > -    ~0, ~0, \
+> > > > -    0x030000, 0xff0000, \
+> > > > -    (unsigned long) info }
+> > > > -
+> > > > -#define INTEL_QUANTA_VGA_DEVICE(info) { \
+> > > > -    0x8086,    0x16a, \
+> > > > -    0x152d,    0x8990, \
+> > > > -    0x030000, 0xff0000, \
+> > > > -    (unsigned long) info }
+> > > > +#ifndef __PCIIDS_H__
+> > > > +#define __PCIIDS_H__
+> > > > +
+> > > > +#ifdef __KERNEL__
+> > > > +#define INTEL_VGA_DEVICE(_id, _info) { \
+> > > > +    PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
+> > > > +    .class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
+> > > > +    .driver_data = (kernel_ulong_t)(_info), \
+> > > > +}
+> > > > +
+> > > > +#define INTEL_QUANTA_VGA_DEVICE(_info) { \
+> > > > +    .vendor = PCI_VENDOR_ID_INTEL, .device = 0x16a, \
+> > > > +    .subvendor = 0x152d, .subdevice = 0x8990, \
+> > > > +    .class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
+> > > > +    .driver_data = (kernel_ulong_t)(_info), \
+> > > > +}
+> > > > +#endif
+> > > > 
+> > > >  #define INTEL_I810_IDS(MACRO__, ...) \
+> > > >      MACRO__(0x7121, ## __VA_ARGS__), /* I810 */ \
+> > > > @@ -771,16 +764,71 @@
+> > > >      INTEL_ATS_M150_IDS(MACRO__, ## __VA_ARGS__), \
+> > > >      INTEL_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
+> > > > 
+> > > > +/* ARL */
+> > > > +#define INTEL_ARL_H_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0x7D51, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x7DD1, ## __VA_ARGS__)
+> > > > +
+> > > > +#define INTEL_ARL_U_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0x7D41, ## __VA_ARGS__) \
+> > > > +
+> > > > +#define INTEL_ARL_S_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0x7D67, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB640, ## __VA_ARGS__)
+> > > > +
+> > > > +#define INTEL_ARL_IDS(MACRO__, ...) \
+> > > > +    INTEL_ARL_H_IDS(MACRO__, ## __VA_ARGS__), \
+> > > > +    INTEL_ARL_U_IDS(MACRO__, ## __VA_ARGS__), \
+> > > > +    INTEL_ARL_S_IDS(MACRO__, ## __VA_ARGS__)
+> > > > +
+> > > >  /* MTL */
+> > > >  #define INTEL_MTL_IDS(MACRO__, ...) \
+> > > >      MACRO__(0x7D40, ## __VA_ARGS__), \
+> > > > -    MACRO__(0x7D41, ## __VA_ARGS__), \
+> > > >      MACRO__(0x7D45, ## __VA_ARGS__), \
+> > > > -    MACRO__(0x7D51, ## __VA_ARGS__), \
+> > > >      MACRO__(0x7D55, ## __VA_ARGS__), \
+> > > >      MACRO__(0x7D60, ## __VA_ARGS__), \
+> > > > -    MACRO__(0x7D67, ## __VA_ARGS__), \
+> > > > -    MACRO__(0x7DD1, ## __VA_ARGS__), \
+> > > >      MACRO__(0x7DD5, ## __VA_ARGS__)
+> > > > 
+> > > > -#endif /* _I915_PCIIDS_H */
+> > > > +/* PVC */
+> > > > +#define INTEL_PVC_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0x0B69, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0B6E, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BD4, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BD5, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BD6, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BD7, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BD8, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BD9, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BDA, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BDB, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BE0, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BE1, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x0BE5, ## __VA_ARGS__)
+> > > > +
+> > > > +/* LNL */
+> > > > +#define INTEL_LNL_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0x6420, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x64A0, ## __VA_ARGS__), \
+> > > > +    MACRO__(0x64B0, ## __VA_ARGS__)
+> > > > +
+> > > > +/* BMG */
+> > > > +#define INTEL_BMG_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0xE202, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xE20B, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xE20C, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xE20D, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xE212, ## __VA_ARGS__)
+> > > > +
+> > > > +/* PTL */
+> > > > +#define INTEL_PTL_IDS(MACRO__, ...) \
+> > > > +    MACRO__(0xB080, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB081, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB082, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB090, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB091, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB092, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB0A0, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB0A1, ## __VA_ARGS__), \
+> > > > +    MACRO__(0xB0A2, ## __VA_ARGS__)
+> > > > +
+> > > > +#endif /* __PCIIDS_H__ */
+> > > > diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
+> > > > index 17abfa454..db614b732 100644
+> > > > --- a/lib/xe/xe_oa.c
+> > > > +++ b/lib/xe/xe_oa.c
+> > > > @@ -21,9 +21,9 @@
+> > > >  #include "intel_hwconfig_types.h"
+> > > >  #include "ioctl_wrappers.h"
+> > > >  #include "linux_scaffold.h"
+> > > > +#include "pciids.h"
+> > > >  #include "xe_ioctl.h"
+> > > >  #include "xe_oa.h"
+> > > > -#include "xe_pciids.h"
+> > > >  #include "xe_query.h"
+> > > > 
+> > > >  #include "xe_oa_metrics_tglgt1.h"
+> > > > @@ -119,8 +119,8 @@ static bool
+> > > >  is_acm_gt1(const struct intel_xe_perf_devinfo *devinfo)
+> > > >  {
+> > > >      static const uint32_t devids[] = {
+> > > > -        XE_DG2_G11_IDS(DEVID),
+> > > > -        XE_ATS_M75_IDS(DEVID),
+> > > > +        INTEL_DG2_G11_IDS(DEVID),
+> > > > +        INTEL_ATS_M75_IDS(DEVID),
+> > > >      };
+> > > >      for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
+> > > >          if (devids[i] == devinfo->devid)
+> > > > @@ -134,7 +134,7 @@ static bool
+> > > >  is_acm_gt2(const struct intel_xe_perf_devinfo *devinfo)
+> > > >  {
+> > > >      static const uint32_t devids[] = {
+> > > > -        XE_DG2_G12_IDS(DEVID),
+> > > > +        INTEL_DG2_G12_IDS(DEVID),
+> > > >      };
+> > > >      for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
+> > > >          if (devids[i] == devinfo->devid)
+> > > > @@ -148,8 +148,8 @@ static bool
+> > > >  is_acm_gt3(const struct intel_xe_perf_devinfo *devinfo)
+> > > >  {
+> > > >      static const uint32_t devids[] = {
+> > > > -        XE_DG2_G10_IDS(DEVID),
+> > > > -        XE_ATS_M150_IDS(DEVID),
+> > > > +        INTEL_DG2_G10_IDS(DEVID),
+> > > > +        INTEL_ATS_M150_IDS(DEVID),
+> > > >      };
+> > > >      for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
+> > > >          if (devids[i] == devinfo->devid)
+> > > > diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
+> > > > deleted file mode 100644
+> > > > index 73d972a8a..000000000
+> > > > --- a/lib/xe_pciids.h
+> > > > +++ /dev/null
+> > > > @@ -1,218 +0,0 @@
+> > > > -/* SPDX-License-Identifier: MIT */
+> > > > -/*
+> > > > - * Copyright © 2022 Intel Corporation
+> > > > - */
+> > > > -
+> > > > -#ifndef _XE_PCIIDS_H_
+> > > > -#define _XE_PCIIDS_H_
+> > > > -
+> > > > -/*
+> > > > - * Lists below can be turned into initializers for a struct
+> > > > pci_device_id
+> > > > - * by defining INTEL_VGA_DEVICE:
+> > > > - *
+> > > > - * #define INTEL_VGA_DEVICE(id, info) { \
+> > > > - *    0x8086, id,            \
+> > > > - *    ~0, ~0,                \
+> > > > - *    0x030000, 0xff0000,        \
+> > > > - *    (unsigned long) info }
+> > > > - *
+> > > > - * And then calling like:
+> > > > - *
+> > > > - * XE_TGL_12_GT1_IDS(INTEL_VGA_DEVICE, ## __VA_ARGS__)
+> > > > - *
+> > > > - * To turn them into something else, just provide a different
+> > > > macro passed as
+> > > > - * first argument.
+> > > > - */
+> > > > -
+> > > > -/* TGL */
+> > > > -#define XE_TGL_GT1_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x9A60, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9A68, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9A70, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_TGL_GT2_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x9A40, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9A49, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9A59, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9A78, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9AC0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9AC9, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9AD9, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x9AF8, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_TGL_IDS(MACRO__, ...)        \
+> > > > -    XE_TGL_GT1_IDS(MACRO__, ## __VA_ARGS__),\
+> > > > -    XE_TGL_GT2_IDS(MACRO__, ## __VA_ARGS__)
+> > > > -
+> > > > -/* RKL */
+> > > > -#define XE_RKL_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x4C80, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4C8A, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4C8B, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4C8C, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4C90, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4C9A, ## __VA_ARGS__)
+> > > > -
+> > > > -/* DG1 */
+> > > > -#define XE_DG1_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x4905, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4906, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4907, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4908, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4909, ## __VA_ARGS__)
+> > > > -
+> > > > -/* ADL-S */
+> > > > -#define XE_ADLS_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x4680, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4682, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4688, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x468A, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x468B, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4690, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4692, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4693, ## __VA_ARGS__)
+> > > > -
+> > > > -/* ADL-P */
+> > > > -#define XE_ADLP_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x46A0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46A1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46A2, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46A3, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46A6, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46A8, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46AA, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x462A, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4626, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x4628, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46B0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46B1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46B2, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46B3, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46C0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46C1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46C2, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46C3, ## __VA_ARGS__)
+> > > > -
+> > > > -/* ADL-N */
+> > > > -#define XE_ADLN_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x46D0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46D1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x46D2, ## __VA_ARGS__)
+> > > > -
+> > > > -/* RPL-S */
+> > > > -#define XE_RPLS_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0xA780, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA781, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA782, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA783, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA788, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA789, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA78A, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA78B, ## __VA_ARGS__)
+> > > > -
+> > > > -/* RPL-U */
+> > > > -#define XE_RPLU_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0xA721, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7A1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7A9, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7AC, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7AD, ## __VA_ARGS__)
+> > > > -
+> > > > -/* RPL-P */
+> > > > -#define XE_RPLP_IDS(MACRO__, ...)        \
+> > > > -    XE_RPLU_IDS(MACRO__, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA720, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7A0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7A8, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7AA, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0xA7AB, ## __VA_ARGS__)
+> > > > -
+> > > > -/* DG2 */
+> > > > -#define XE_DG2_G10_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x5690, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x5691, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x5692, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A2, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56BE, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56BF, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_DG2_G11_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x5693, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x5694, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x5695, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A5, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A6, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56B0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56B1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56BA, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56BB, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56BC, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56BD, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_DG2_G12_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x5696, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x5697, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A3, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56A4, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56B2, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56B3, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_DG2_IDS(MACRO__, ...)        \
+> > > > -    XE_DG2_G10_IDS(MACRO__, ## __VA_ARGS__),\
+> > > > -    XE_DG2_G11_IDS(MACRO__, ## __VA_ARGS__),\
+> > > > -    XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_ATS_M150_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x56C0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x56C2, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_ATS_M75_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x56C1, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_ATS_M_IDS(MACRO__, ...)        \
+> > > > -    XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
+> > > > -    XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
+> > > > -
+> > > > -/* MTL / ARL */
+> > > > -#define XE_MTL_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x7D40, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x7D41, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x7D45, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x7D51, ## __VA_ARGS__),        \
+> > > > -    MACRO__(0x7D55, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x7D60, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x7D67, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x7DD1, ## __VA_ARGS__),        \
+> > > > -    MACRO__(0x7DD5, ## __VA_ARGS__)
+> > > > -
+> > > > -/* PVC */
+> > > > -#define XE_PVC_IDS(MACRO__, ...)        \
+> > > > -    MACRO__(0x0B69, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0B6E, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BD4, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BD5, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BD6, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BD7, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BD8, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BD9, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BDA, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BDB, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BE0, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BE1, ## __VA_ARGS__),    \
+> > > > -    MACRO__(0x0BE5, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_LNL_IDS(MACRO__, ...) \
+> > > > -    MACRO__(0x6420, ## __VA_ARGS__), \
+> > > > -    MACRO__(0x64A0, ## __VA_ARGS__), \
+> > > > -    MACRO__(0x64B0, ## __VA_ARGS__)
+> > > > -
+> > > > -#define XE_BMG_IDS(MACRO__, ...) \
+> > > > -    MACRO__(0xE202, ## __VA_ARGS__), \
+> > > > -    MACRO__(0xE20B, ## __VA_ARGS__), \
+> > > > -    MACRO__(0xE20C, ## __VA_ARGS__), \
+> > > > -    MACRO__(0xE20D, ## __VA_ARGS__), \
+> > > > -    MACRO__(0xE212, ## __VA_ARGS__)
+> > > > -
+> > > > -#endif
+> > > > -- 
+> > > > 2.43.0
+> > > > 
+> 
