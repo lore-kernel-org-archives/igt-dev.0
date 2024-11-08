@@ -4,60 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CB8FD64074
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 17:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5A29D64079
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 19:09:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F8A410E273;
-	Fri,  8 Nov 2024 17:52:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51BBB10EA2D;
+	Fri,  8 Nov 2024 19:09:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QO+b1utH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sn4tIHwe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8B9210E273
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 17:52:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A39910EA2E
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 19:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731088323; x=1762624323;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=7OZCRR6gTiFz0XIuojuBBkZlid+t3JIoLcdt5kaMjgY=;
- b=QO+b1utH62EBsA+QOtTcQW92dmCkxtZH3g/qiSEPW3RPGP9H4iwS/VAF
- sP1WfcxUaXNaJkV6CuiG7+1hvqUfcGFfxmn0uwCuaZZ4baqOmQa+8mH7W
- yVeSEP/zEgJvsHGL7APmhKSeDZtYhpokQzfj5psZo0iqhFIJWNtjgeHLu
- pDaOLboRPtrwnlyEfa337EJTV63AGAC7G4hAqHdEmAmOXmJ00LF7fVcDR
- JhEIS8P5wf2en+mzMwbEOpC1VIOF5zdNaxYzuEJn66Imw5ai7T2484J4A
- 4ibtvUIEIJ9xzHXNWcFi6vhYt034xn3agZxEIMQudlNwlTaMb7GZStJFE w==;
-X-CSE-ConnectionGUID: HqIUM3qaQZ+HVz6pJ0CtQQ==
-X-CSE-MsgGUID: bV9O17l+QBCjU+zC3m9woA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11250"; a="31209824"
-X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="31209824"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2024 09:52:02 -0800
-X-CSE-ConnectionGUID: XndYgYbZQLupA9wUN8RNwA==
-X-CSE-MsgGUID: RC0d0pCgSF2J7KAfv9grug==
+ t=1731092998; x=1762628998;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=b/ujJrh1RxfTWsZhbZCFf+AxgS5FQD3lzd0jqqa+Xsk=;
+ b=Sn4tIHwe0D30y9LKSmYQVFucOlkxdYBC0ekSim9XsBMId5HwcezBvFbR
+ 8tSw/E634D7ou2ByzZ9CtSd6JDC6ZMTHEYhGwhkrY+6d7pVN3fpp80gq7
+ OM5zoP3npml0n3O1pxHrt2NvH3tfPevHVIM3NhOuXGvAFI9slu/EYmo2u
+ 56GVJwD8gij9uIeesrDs6ayjEQkka/BsutkLdiM0A9rbpwbp4TOcjOmiC
+ b8MZbn+/NJqTeAF84jGnpIQqfI2eZc5ogaMLURizfRvNbD6Q9FlLSzJx7
+ ot6hUkPRR8ypLDae+kOOc1roX8dfShalYT7R7i6LGbuVGsIofnQqYFomY g==;
+X-CSE-ConnectionGUID: /VtL8UV0RxyLaUS0fGeHxQ==
+X-CSE-MsgGUID: U7aN+MNkQVGp86Susz08cg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53551182"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="53551182"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2024 11:09:57 -0800
+X-CSE-ConnectionGUID: Or9zCMEVRJqhXkC69pattA==
+X-CSE-MsgGUID: R2ZyiS09TPC9f7aZ0JJfSA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="90480533"
-Received: from unknown (HELO [10.24.12.70]) ([10.24.12.70])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2024 09:52:03 -0800
-Message-ID: <61f3bf56-3a9b-4544-9f30-59641e129eb4@linux.intel.com>
-Date: Fri, 8 Nov 2024 09:51:56 -0800
+X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; d="scan'208";a="86032976"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 08 Nov 2024 11:09:57 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 8 Nov 2024 11:09:56 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 8 Nov 2024 11:09:56 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.48) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 8 Nov 2024 11:09:55 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=plAWXw1x20Tmcmo899b9jrNFXJOh1X/7zUJQw7MjIV3cMt7LHlG1fvimu/Q4u8Kt2fFPobqnOLpPNS4b/PZG7lIXhmgnrjyrjWY3gHgkYjYzw5o+fsz1jGGjKO/oyZzLjsq4xoZIEJjHRM5Krtw6oMGNGvO+cVQc41nMecRxcrq7YUd+q3964+Od9F7HCa2/Fn1IiR65k7Y4pxMm08OPO4Z/f3aqWbfj1GO2JF+TGXjni3Arx+p4jGPm6iol8bryL+SglgHAdf/RNjXHGtoqUSoxo83mMJq88gWYCbUaHvgojm1BjvtGKBzvpY5ljS/5JAg4+ZhDmsftqLRDU70gqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fnINe8faIIdDMDPvYMzQ32RafkHKApKesqHj2A/uEj4=;
+ b=OTkdX5wKhdSo9wj145j4lxGWPL/nIg2OEeQ+b9vu1LkvJqo/NofBFcroYT0jSUDADi82nUMusMYG1CjJkpCH7TeaA3JzCTj0aQIkNpt7cNKcK6KhKs+RGijMB81WixrMZU1Hx2JVrMQ/99LkDc0BOOWfT1ZcH0FEpwnjKW+lk9GoWRiaBga0PhdCoKFuFDWYx1hKPQM2RC8xG2UvV4nWv1PPDYUgmXFp0zxTUYmgZ16hdeHeMu4QGcFf+SNIIoeUGmuGRx8vQv6mm1NFpZus+bLqo/3Lh1O1jJPOk9ZsIMbgSKd0VGMcp5GKDcbEUDihqP3K533/9AhBy/TU1h6ghA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
+ by SJ2PR11MB8470.namprd11.prod.outlook.com (2603:10b6:a03:56f::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Fri, 8 Nov
+ 2024 19:09:52 +0000
+Received: from BYAPR11MB2854.namprd11.prod.outlook.com
+ ([fe80::8a98:4745:7147:ed42]) by BYAPR11MB2854.namprd11.prod.outlook.com
+ ([fe80::8a98:4745:7147:ed42%7]) with mapi id 15.20.8114.020; Fri, 8 Nov 2024
+ 19:09:52 +0000
+Date: Fri, 8 Nov 2024 14:09:48 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 1/5] tests/intel/xe_fault_injection: Use a static
+ list of functions
+Message-ID: <Zy5h_NzkIGBjyYmP@intel.com>
+References: <20241108160021.1202234-1-francois.dugast@intel.com>
+ <20241108160021.1202234-2-francois.dugast@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241108160021.1202234-2-francois.dugast@intel.com>
+X-ClientProxiedBy: MW3PR06CA0026.namprd06.prod.outlook.com
+ (2603:10b6:303:2a::31) To BYAPR11MB2854.namprd11.prod.outlook.com
+ (2603:10b6:a02:c9::12)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] lib: sync PCI ID macros with kernel
-To: Lucas De Marchi <lucas.demarchi@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, jani.nikula@intel.com,
- clinton.a.taylor@intel.com, zbigniew.kempczynski@intel.com
-References: <20241107231457.70157-1-ngai-mint.kwan@linux.intel.com>
- <20241108144916.ejpqphj6lmig7iko@kamilkon-desk.igk.intel.com>
- <sojqnvnniougw7y4yo5wmvstmxtuxvrhd2i376g6lig24r3jsm@islqlychrne4>
-Content-Language: en-US
-From: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
-In-Reply-To: <sojqnvnniougw7y4yo5wmvstmxtuxvrhd2i376g6lig24r3jsm@islqlychrne4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB2854:EE_|SJ2PR11MB8470:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5986e56-f77c-4b24-3a7f-08dd0028ebef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?qCrht9vPzMxl/mJpn6l6u1FFMxPEf0NQUnlnhHYHiijpVFztBHud1kcy065l?=
+ =?us-ascii?Q?m3bT6/E58bNVgZCRJ4PoEKrrxd6IlSUX84K/PUHWMeaap4zPRljKLshfpgln?=
+ =?us-ascii?Q?mlE+aatiAaXIyNv53rk0Utbh6J6qWVZKRm2oXqYmAnhGCuaTNJrdTzdIjLNt?=
+ =?us-ascii?Q?3zpBu/Nk08RCQVwSOuM4busujqv50kOGoSPtkdPbhWnSNHLfKxgjp8ANHI/Y?=
+ =?us-ascii?Q?TT9Exjcf+V+kZf+jBYo7pCW0sIOfV0/S3ukSC1rCE+aEG/u+LQ9SMDif4UuS?=
+ =?us-ascii?Q?xna3+MuO8XUjEeoCqIDP+oU9Xk8yFCrAmcBY7Br8T5Aujn7m6B46BdQGJ/EH?=
+ =?us-ascii?Q?2CdPaUeoUuBfJb99tvXQRfg6YtaT20HYkR5iOgpEL318PM3mylGfkgA8j1oC?=
+ =?us-ascii?Q?u7AOHt1c19ULGWfQjsbZZA0ipr/GMIADXEDbBdgz6z+FsWeKIVxKUtDTg7or?=
+ =?us-ascii?Q?KIL0Qs5FxNh2bhF50jPkBUAWkn9mnkLJCbqGrFhFQwvIiBWnxYAsXSB0wJ48?=
+ =?us-ascii?Q?FxjTboovSdzi7GRrcUT2A1Mz3yC7zxIxeF1t4hGZSF/zuhQfoitIzTcCiv4W?=
+ =?us-ascii?Q?C8MfpELbHsSEW5uLBXgEKNtZBQ6295+bwsJvcAnYIe02NJ7uTiXdGQPDsneO?=
+ =?us-ascii?Q?JQkud+oISkHgbAp8XZn5YwxzalagH/7ST0IlIdcuxRrhNigyS186oMJw9mv5?=
+ =?us-ascii?Q?c392eQiQkDOphxs+djM2osU/gLmuy9RnVqF4N13BJf9MQ5ZGlM2WsZoNMGvJ?=
+ =?us-ascii?Q?mm6VSbiD6tsKzPsFJMuXZkiikdQMcJ6fVeBkxmV/kmh7yF0bfvpJ85zSy2Bb?=
+ =?us-ascii?Q?WSna8q05ABJ0psI2FsBCrahv6bisQyryaf+enqqhXSABYWV0gps36B2q/cxU?=
+ =?us-ascii?Q?khkDmSRDFmAa21wWYNVaEOPP4zWxEVJjaCag+yM7nL7qbpeep+otXBse7+XR?=
+ =?us-ascii?Q?KLZA8EVnirhA52D9jKz/cJ8tBnSfewwQLpknTOiPcMuzMycgPm8PHIC3RLDu?=
+ =?us-ascii?Q?y92UQknzzy6Xj7WAVEYVHhPaF1/ep7vEOQlNZ6JvvAm5Gpl5+gqtDadBZiWh?=
+ =?us-ascii?Q?vODYj5uEu/jSJN2pHQplxrxR4JnRGPNU+giDmc7uEThmn8rUqmAYL+u7AdaP?=
+ =?us-ascii?Q?aWqbIMYQj6MQ8MNwB5PmW18NjG/7ZGlNklvBE2GxUycgGmwtsp4ThwtuAhos?=
+ =?us-ascii?Q?RFZHmJ703myrSerdAfWEvAQCJdNiziwiaaxh8eliOW93QiSEn7zPr1QldPWM?=
+ =?us-ascii?Q?qW5SpcjzBN2de2fHCcrhpFR64YEadKW/r5neHyuW5Zyqd3HT2lfG+7RUOMiU?=
+ =?us-ascii?Q?EFtaMNV82MTv3bSStgTnd+De?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR11MB2854.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JeVj8DpDLOImTdSRohvuddW6ZEhSBaCXeSzsd4tBR6POpsboFtHUvjRT3y7+?=
+ =?us-ascii?Q?wp0gh+qKRaj7niJpql5ARPYsWqiqfubI0spSzJw3RbK9JFsUSV0fZrpxYEz3?=
+ =?us-ascii?Q?Q+s8tPLQy1EHdAzm1p8qcIW/Zi599fMckfVI+/6e2shV7QQHKgRcR5q7zI3O?=
+ =?us-ascii?Q?z9nkzkQFrclVYCP68jy7YnZvujSrjkBC7+oDscH2tD+jaGLUtDgxVKDucJr1?=
+ =?us-ascii?Q?XDrq+ukzO2zDRdKm6PYo5wLko3RYPpf8JAMWBoiOB0oB8Lj4Eoz/7eUe5XFH?=
+ =?us-ascii?Q?eQUmn/NOmx/GckSzAc3BDQja2WDOv2753wFXuMzmNUeZDXgY65xTQq0yX7bz?=
+ =?us-ascii?Q?Y6a/QGuhRMdfcvqlSoFet7Yr2re2CGyDNSdpAtUOah6xS0SBnU3w0cgTMf9v?=
+ =?us-ascii?Q?4e3W32ee8NkOvF6TXmpVc313+I97SAW8dXIenOdxEBvzLrbWMktAE0+5Xkej?=
+ =?us-ascii?Q?mfUyeLJnB/OfYII9S0ctjt0SXquGQCQzKX5mpWrArYTsh98wDwzBA0KhjGC9?=
+ =?us-ascii?Q?GVyUWvhM1zqkxRE3FFLdcftpCFWEiiQieuXEsE7thNzJCDqCUZx2493aDf6D?=
+ =?us-ascii?Q?Ve2okqvBLn40sahX1adAurnwboNPF5EaXOnPq3vW55PdNUEXCR9fnour6RRl?=
+ =?us-ascii?Q?yzT9derqfGmC7cO+Yz/wI9Kmvo9YqaJyXEh5RLAjmukbrDFhXx/FVSwfEEfX?=
+ =?us-ascii?Q?JQ3db/pu4slyQw2y3r6KNsXXbGTFc/pIkNr8LSsNro8oBxlteEPfmntSfjFL?=
+ =?us-ascii?Q?vXX2NryAnhqvrcRy8EZJzW8rD4rTGtkNuoHMBGEAHPWtCnl7VfgWGwAAdSmd?=
+ =?us-ascii?Q?ntxuIqJs2GSe66hWJ6ovsibfK1IqNQ7WT3ERL8BuWyvcpzh3AxgeQN67PNZm?=
+ =?us-ascii?Q?z3q5ZZq+fvpwTwPlc/J5OaoLjJndcsON6YZ3Q8l5cGd0bXUVHiuocqkLvfHo?=
+ =?us-ascii?Q?Yj+z85Eg+Dvpvw6zx4vy9g6K0CNYdQGF7NuBDCm6aUWvh97LawWpH0SovnR2?=
+ =?us-ascii?Q?o4oRF7mJcbeUjXuGx3+rggCE+YfCXrMExco5aVTV84xwUHEzOhbc+fJ8FRvL?=
+ =?us-ascii?Q?F3RATD3VMa78CWN+lq8g0mYgeql0by8ACzZKIrrBRYXSzyUj7oPdVZ0BsO9k?=
+ =?us-ascii?Q?ABsT90gfsqrqEsMsBxfc1uaW4i4XlFJ2+iPE0AjA8FTZQYACyzI4A09LPMMk?=
+ =?us-ascii?Q?7mQyEa/afuaqsEubqEzijvr4CqvUv7wch5hUzuVdDScZ9+QmGCP2svrGj5lP?=
+ =?us-ascii?Q?7dhA7SpkKsAn33my7s88yk9ibQOOXQRXYkAcFV8jqpnjYcDvgsFa1cUpZ6k2?=
+ =?us-ascii?Q?xCezsV8CQHvoFN4s28FkWaiXyCChZNhbQv/hDG7s4niwcIcB/PDYOctMGSdD?=
+ =?us-ascii?Q?spbYL+X/9iCfzN59Zk6ygFH9yf2iBqluXknZFkXAQyNlgLOYkn6hVpLTubdi?=
+ =?us-ascii?Q?etQB3qco3x8JYPRhb78/FQzG0sIDLCFmd10vGb+07obmHp1HsfrNeRUmgSYW?=
+ =?us-ascii?Q?AF6DUQdB1UQdsdv7BS1mIqHm3koyNIUfvDc4sXbJzbL2I18ll4ZniFZlFZy5?=
+ =?us-ascii?Q?rXAsWU/JP+AKZidI4oq4rxd5/cTTsqyall1CPbKkGC/a9FzHlbMOTc9WGTPw?=
+ =?us-ascii?Q?/g=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5986e56-f77c-4b24-3a7f-08dd0028ebef
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2854.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2024 19:09:52.0230 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: te3MR9OoapHnrC/qBbBVjc4DziZHkV7GP5cEIGhfBYrmiXAnieDCZxzL7OEorsPSIRQrpJltq43QuS1iTEh6LA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8470
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,554 +176,169 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Fri, Nov 08, 2024 at 04:59:29PM +0100, Francois Dugast wrote:
+> Until now the list of error injectable functions was determined at
+> runtime by reading debugfs. This was convenient as a new function
+> added in KMD would automatically be tested in a separate test. This
+> worked well as long as all error injectable functions were meant to
+> only be tested during probe time, which is a specific scenario. As we
+> want to use error injection in other situations, we will not be able
+> to automatically determine if this is a case for probe time, so we
+> need to make it explicit.
+
+oh, that's sad as it was really convenient...
+
+> 
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  tests/intel/xe_fault_injection.c | 72 ++++++++++++++++++--------------
+>  1 file changed, 41 insertions(+), 31 deletions(-)
+> 
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index d1c8b2530..891b4d70b 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -11,8 +11,6 @@
+>   * Test category: fault injection
+>   */
+>  
+> -#include <regex.h>
+> -
+>  #include "igt.h"
+>  #include "igt_device.h"
+>  #include "igt_kmod.h"
+> @@ -22,7 +20,6 @@
+>  #define PATH_FUNCTIONS_INJECTABLE	"/sys/kernel/debug/fail_function/injectable"
+>  #define PATH_FUNCTIONS_INJECT		"/sys/kernel/debug/fail_function/inject"
+>  #define PATH_FUNCTIONS_RETVAL		"/sys/kernel/debug/fail_function/%s/retval"
+> -#define REGEX_XE_FUNCTIONS		"^(.+)\\[xe\\]"
+>  #define INJECT_ERRNO			-ENOMEM
+>  
+>  enum injection_list_action {
+> @@ -45,7 +42,7 @@ static bool function_error_injection_enabled(void)
+>  	return false;
+>  }
+>  
+> -static void injection_list_do(enum injection_list_action action, char function_name[])
+> +static void injection_list_do(enum injection_list_action action, const char function_name[])
+>  {
+>  	FILE *file_inject;
+>  
+> @@ -114,7 +111,7 @@ static void cleanup_injection_fault(void)
+>  	fclose(file);
+>  }
+>  
+> -static void set_retval(char function_name[], long long retval)
+> +static void set_retval(const char function_name[], long long retval)
+>  {
+>  	FILE *file_retval;
+>  	char file_path[MAX_LINE_SIZE];
+> @@ -129,12 +126,27 @@ static void set_retval(char function_name[], long long retval)
+>  }
+>  
+>  /**
+> - * SUBTEST: inject-fault-probe
+> - * Description: inject an error in the injectable function then reprobe driver
+> + * SUBTEST: inject-fault-probe-function-%s
+> + * Description: inject an error in the injectable function %arg[1] then reprobe driver
+>   * Functionality: fault
+> + *
+> + * arg[1]:
+> + * @wait_for_lmem_ready:	wait_for_lmem_ready
+> + * @xe_device_create:		xe_device_create
+> + * @xe_ggtt_init_early:		xe_ggtt_init_early
+> + * @xe_guc_ads_init:		xe_guc_ads_init
+> + * @xe_guc_ct_init:		xe_guc_ct_init
+> + * @xe_guc_log_init:		xe_guc_log_init
+> + * @xe_pm_init_early:		xe_pm_init_early
+> + * @xe_tile_init_early:		xe_tile_init_early
+> + * @xe_uc_fw_init:		xe_uc_fw_init
+> + * @xe_wa_init:			xe_wa_init
+> + * @xe_wopcm_init:		xe_wopcm_init
+> + * @xe_guc_relay_init:		xe_guc_relay_init
+> + * @xe_sriov_init:		xe_sriov_init
+
+why not alphabetical order?
+I almost missed the guc_relay because it was not along with the other guc entires...
+
+>   */
+>  static void
+> -inject_fault_try_bind(int fd, char pci_slot[], char function_name[])
+> +inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+>  {
+>  	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
+>  		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
+> @@ -149,41 +161,39 @@ inject_fault_try_bind(int fd, char pci_slot[], char function_name[])
+>  igt_main
+>  {
+>  	int fd;
+> -	FILE *file_injectable;
+> -	char line[MAX_LINE_SIZE];
+> -	char function_name[64];
+>  	char pci_slot[MAX_LINE_SIZE];
+> -	regex_t regex;
+> -	regmatch_t pmatch[2];
+> +	const struct section {
+> +		const char *name;
+> +	} probe_function_sections[] = {
+> +		{ "wait_for_lmem_ready" },
+> +		{ "xe_device_create" },
+> +		{ "xe_ggtt_init_early" },
+> +		{ "xe_guc_ads_init" },
+> +		{ "xe_guc_ct_init" },
+> +		{ "xe_guc_log_init" },
+> +		{ "xe_pm_init_early" },
+> +		{ "xe_tile_init_early" },
+> +		{ "xe_uc_fw_init" },
+> +		{ "xe_wa_init" },
+> +		{ "xe_wopcm_init" },
+> +		{ "xe_guc_relay_init" },
+> +		{ "xe_sriov_init" },
+
+same comment on the alphabetical sort
+
+but up to you. The content is correct:
+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
 
-
-On 2024-11-08 07:50, Lucas De Marchi wrote:
-> On Fri, Nov 08, 2024 at 03:49:16PM +0100, Kamil Konieczny wrote:
->> Hi Ngai-Mint,
->> On 2024-11-07 at 15:14:45 -0800, Ngai-Mint Kwan wrote:
->>> Synch with kernel commit that uses common PCI ID macros:
->>> 3c1d5ced18db ("drm/i915/gsc: ARL-H and ARL-U need a newer GSC FW.")
->
-> $ git branch --contains 3c1d5ced18db8a67251c8436cf9bdc061f972bdb
-> + drm-intel-next
-> + drm-tip
-> * tip
->
->>
->> I couldn't find this commit on drm-tip, did I miss something?
->>
->> What I found using google was:
->> https://lore.kernel.org/all/2c1c07f5-920b-4f6e-87dc-752ae3725a2c@intel.com/T/ 
->>
->>
->> and in that commit there are only additions to i915_pciids.h
->
-> the commit describes the state of the branch... there may be previous
-> changes being carried together. As long as it's an exact copy of the
-> kernel header in that specific commit I think we are fine.
->
->
-> Lucas De Marchi
->
->>
->> Please provide link to lore.kernel.org to a commit you are
->> referring and also which kernel tree you are using.
->>
->> When this rename reach drm-tip?
-
-This is the commit from drm-tip that this patch is referring to:
-https://gitlab.freedesktop.org/drm/tip/-/commit/3c1d5ced18db8a67251c8436cf9bdc061f972bdb
-
-Regards,
-Ngai-Mint Kwan
-
->>
->>
->> Regards,
->> Kamil
->>
->>>
->>> Refactor lib to use new macro definitions and pciids.h header file.
->>>
->>> Signed-off-by: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
->>> ---
->>>  docs/reference/igt-gpu-tools/meson.build |   3 +-
->>>  lib/i915/perf.c                          |   2 +-
->>>  lib/i915_pciids_local.h                  |   2 +-
->>>  lib/intel_device_info.c                  |   8 +-
->>>  lib/{i915_pciids.h => pciids.h}          | 106 ++++++++---
->>>  lib/xe/xe_oa.c                           |  12 +-
->>>  lib/xe_pciids.h                          | 218 -----------------------
->>>  7 files changed, 90 insertions(+), 261 deletions(-)
->>>  rename lib/{i915_pciids.h => pciids.h} (92%)
->>>  delete mode 100644 lib/xe_pciids.h
->>>
->>> diff --git a/docs/reference/igt-gpu-tools/meson.build 
->>> b/docs/reference/igt-gpu-tools/meson.build
->>> index d5db95e40..8d70a49b8 100644
->>> --- a/docs/reference/igt-gpu-tools/meson.build
->>> +++ b/docs/reference/igt-gpu-tools/meson.build
->>> @@ -10,7 +10,6 @@ ignore_headers = [
->>>      'gpgpu_fill.h',
->>>      'i830_reg.h',
->>>      'i915_3d.h',
->>> -    'i915_pciids.h',
->>>      'i915_reg.h',
->>>      'igt_edid_template.h',
->>>      'intel_reg.h',
->>> @@ -21,8 +20,8 @@ ignore_headers = [
->>>      'media_spin.h',
->>>      'media_fill_gen9.h',
->>>      'gen9_render.h',
->>> +    'pciids.h',
->>>      'version.h',
->>> -    'xe_pciids.h',
->>>  ]
->>>
->>>  test_groups = [
->>> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
->>> index ef2f74be8..9eb1141d4 100644
->>> --- a/lib/i915/perf.c
->>> +++ b/lib/i915/perf.c
->>> @@ -37,7 +37,7 @@
->>>
->>>  #include <i915_drm.h>
->>>
->>> -#include "i915_pciids.h"
->>> +#include "pciids.h"
->>>  #include "i915_pciids_local.h"
->>>
->>>  #include "intel_chipset.h"
->>> diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
->>> index c404a51af..b85cfd779 100644
->>> --- a/lib/i915_pciids_local.h
->>> +++ b/lib/i915_pciids_local.h
->>> @@ -5,7 +5,7 @@
->>>  #ifndef _I915_PCIIDS_LOCAL_H_
->>>  #define _I915_PCIIDS_LOCAL_H_
->>>
->>> -#include "i915_pciids.h"
->>> +#include "pciids.h"
->>>
->>>  /* MTL perf */
->>>  #ifndef INTEL_MTL_M_IDS
->>> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
->>> index 2a118eda6..546b9c65a 100644
->>> --- a/lib/intel_device_info.c
->>> +++ b/lib/intel_device_info.c
->>> @@ -1,7 +1,6 @@
->>>  #include "intel_chipset.h"
->>> -#include "i915_pciids.h"
->>> +#include "pciids.h"
->>>  #include "i915_pciids_local.h"
->>> -#include "xe_pciids.h"
->>>
->>>  #include <strings.h> /* ffs() */
->>>
->>> @@ -635,12 +634,13 @@ static const struct pci_id_match 
->>> intel_device_match[] = {
->>>      INTEL_ATS_M_IDS(INTEL_PCI_ID_INIT, &intel_ats_m_info),
->>>
->>>      INTEL_MTL_IDS(INTEL_PCI_ID_INIT, &intel_meteorlake_info),
->>> +    INTEL_ARL_IDS(INTEL_PCI_ID_INIT, &intel_meteorlake_info),
->>>
->>>      INTEL_PVC_IDS(INTEL_PCI_ID_INIT, &intel_pontevecchio_info),
->>>
->>> -    XE_LNL_IDS(INTEL_PCI_ID_INIT, &intel_lunarlake_info),
->>> +    INTEL_LNL_IDS(INTEL_PCI_ID_INIT, &intel_lunarlake_info),
->>>
->>> -    XE_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
->>> +    INTEL_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
->>>
->>>      INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
->>>  };
->>> diff --git a/lib/i915_pciids.h b/lib/pciids.h
->>> similarity index 92%
->>> rename from lib/i915_pciids.h
->>> rename to lib/pciids.h
->>> index 3e39d644e..32480b556 100644
->>> --- a/lib/i915_pciids.h
->>> +++ b/lib/pciids.h
->>> @@ -22,30 +22,23 @@
->>>   * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
->>>   * DEALINGS IN THE SOFTWARE.
->>>   */
->>> -#ifndef _I915_PCIIDS_H
->>> -#define _I915_PCIIDS_H
->>> -
->>> -/*
->>> - * A pci_device_id struct {
->>> - *    __u32 vendor, device;
->>> - *      __u32 subvendor, subdevice;
->>> - *    __u32 class, class_mask;
->>> - *    kernel_ulong_t driver_data;
->>> - * };
->>> - * Don't use C99 here because "class" is reserved and we want to
->>> - * give userspace flexibility.
->>> - */
->>> -#define INTEL_VGA_DEVICE(id, info) { \
->>> -    0x8086,    id, \
->>> -    ~0, ~0, \
->>> -    0x030000, 0xff0000, \
->>> -    (unsigned long) info }
->>> -
->>> -#define INTEL_QUANTA_VGA_DEVICE(info) { \
->>> -    0x8086,    0x16a, \
->>> -    0x152d,    0x8990, \
->>> -    0x030000, 0xff0000, \
->>> -    (unsigned long) info }
->>> +#ifndef __PCIIDS_H__
->>> +#define __PCIIDS_H__
->>> +
->>> +#ifdef __KERNEL__
->>> +#define INTEL_VGA_DEVICE(_id, _info) { \
->>> +    PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
->>> +    .class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
->>> +    .driver_data = (kernel_ulong_t)(_info), \
->>> +}
->>> +
->>> +#define INTEL_QUANTA_VGA_DEVICE(_info) { \
->>> +    .vendor = PCI_VENDOR_ID_INTEL, .device = 0x16a, \
->>> +    .subvendor = 0x152d, .subdevice = 0x8990, \
->>> +    .class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
->>> +    .driver_data = (kernel_ulong_t)(_info), \
->>> +}
->>> +#endif
->>>
->>>  #define INTEL_I810_IDS(MACRO__, ...) \
->>>      MACRO__(0x7121, ## __VA_ARGS__), /* I810 */ \
->>> @@ -771,16 +764,71 @@
->>>      INTEL_ATS_M150_IDS(MACRO__, ## __VA_ARGS__), \
->>>      INTEL_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
->>>
->>> +/* ARL */
->>> +#define INTEL_ARL_H_IDS(MACRO__, ...) \
->>> +    MACRO__(0x7D51, ## __VA_ARGS__), \
->>> +    MACRO__(0x7DD1, ## __VA_ARGS__)
->>> +
->>> +#define INTEL_ARL_U_IDS(MACRO__, ...) \
->>> +    MACRO__(0x7D41, ## __VA_ARGS__) \
->>> +
->>> +#define INTEL_ARL_S_IDS(MACRO__, ...) \
->>> +    MACRO__(0x7D67, ## __VA_ARGS__), \
->>> +    MACRO__(0xB640, ## __VA_ARGS__)
->>> +
->>> +#define INTEL_ARL_IDS(MACRO__, ...) \
->>> +    INTEL_ARL_H_IDS(MACRO__, ## __VA_ARGS__), \
->>> +    INTEL_ARL_U_IDS(MACRO__, ## __VA_ARGS__), \
->>> +    INTEL_ARL_S_IDS(MACRO__, ## __VA_ARGS__)
->>> +
->>>  /* MTL */
->>>  #define INTEL_MTL_IDS(MACRO__, ...) \
->>>      MACRO__(0x7D40, ## __VA_ARGS__), \
->>> -    MACRO__(0x7D41, ## __VA_ARGS__), \
->>>      MACRO__(0x7D45, ## __VA_ARGS__), \
->>> -    MACRO__(0x7D51, ## __VA_ARGS__), \
->>>      MACRO__(0x7D55, ## __VA_ARGS__), \
->>>      MACRO__(0x7D60, ## __VA_ARGS__), \
->>> -    MACRO__(0x7D67, ## __VA_ARGS__), \
->>> -    MACRO__(0x7DD1, ## __VA_ARGS__), \
->>>      MACRO__(0x7DD5, ## __VA_ARGS__)
->>>
->>> -#endif /* _I915_PCIIDS_H */
->>> +/* PVC */
->>> +#define INTEL_PVC_IDS(MACRO__, ...) \
->>> +    MACRO__(0x0B69, ## __VA_ARGS__), \
->>> +    MACRO__(0x0B6E, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BD4, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BD5, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BD6, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BD7, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BD8, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BD9, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BDA, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BDB, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BE0, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BE1, ## __VA_ARGS__), \
->>> +    MACRO__(0x0BE5, ## __VA_ARGS__)
->>> +
->>> +/* LNL */
->>> +#define INTEL_LNL_IDS(MACRO__, ...) \
->>> +    MACRO__(0x6420, ## __VA_ARGS__), \
->>> +    MACRO__(0x64A0, ## __VA_ARGS__), \
->>> +    MACRO__(0x64B0, ## __VA_ARGS__)
->>> +
->>> +/* BMG */
->>> +#define INTEL_BMG_IDS(MACRO__, ...) \
->>> +    MACRO__(0xE202, ## __VA_ARGS__), \
->>> +    MACRO__(0xE20B, ## __VA_ARGS__), \
->>> +    MACRO__(0xE20C, ## __VA_ARGS__), \
->>> +    MACRO__(0xE20D, ## __VA_ARGS__), \
->>> +    MACRO__(0xE212, ## __VA_ARGS__)
->>> +
->>> +/* PTL */
->>> +#define INTEL_PTL_IDS(MACRO__, ...) \
->>> +    MACRO__(0xB080, ## __VA_ARGS__), \
->>> +    MACRO__(0xB081, ## __VA_ARGS__), \
->>> +    MACRO__(0xB082, ## __VA_ARGS__), \
->>> +    MACRO__(0xB090, ## __VA_ARGS__), \
->>> +    MACRO__(0xB091, ## __VA_ARGS__), \
->>> +    MACRO__(0xB092, ## __VA_ARGS__), \
->>> +    MACRO__(0xB0A0, ## __VA_ARGS__), \
->>> +    MACRO__(0xB0A1, ## __VA_ARGS__), \
->>> +    MACRO__(0xB0A2, ## __VA_ARGS__)
->>> +
->>> +#endif /* __PCIIDS_H__ */
->>> diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
->>> index 17abfa454..db614b732 100644
->>> --- a/lib/xe/xe_oa.c
->>> +++ b/lib/xe/xe_oa.c
->>> @@ -21,9 +21,9 @@
->>>  #include "intel_hwconfig_types.h"
->>>  #include "ioctl_wrappers.h"
->>>  #include "linux_scaffold.h"
->>> +#include "pciids.h"
->>>  #include "xe_ioctl.h"
->>>  #include "xe_oa.h"
->>> -#include "xe_pciids.h"
->>>  #include "xe_query.h"
->>>
->>>  #include "xe_oa_metrics_tglgt1.h"
->>> @@ -119,8 +119,8 @@ static bool
->>>  is_acm_gt1(const struct intel_xe_perf_devinfo *devinfo)
->>>  {
->>>      static const uint32_t devids[] = {
->>> -        XE_DG2_G11_IDS(DEVID),
->>> -        XE_ATS_M75_IDS(DEVID),
->>> +        INTEL_DG2_G11_IDS(DEVID),
->>> +        INTEL_ATS_M75_IDS(DEVID),
->>>      };
->>>      for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
->>>          if (devids[i] == devinfo->devid)
->>> @@ -134,7 +134,7 @@ static bool
->>>  is_acm_gt2(const struct intel_xe_perf_devinfo *devinfo)
->>>  {
->>>      static const uint32_t devids[] = {
->>> -        XE_DG2_G12_IDS(DEVID),
->>> +        INTEL_DG2_G12_IDS(DEVID),
->>>      };
->>>      for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
->>>          if (devids[i] == devinfo->devid)
->>> @@ -148,8 +148,8 @@ static bool
->>>  is_acm_gt3(const struct intel_xe_perf_devinfo *devinfo)
->>>  {
->>>      static const uint32_t devids[] = {
->>> -        XE_DG2_G10_IDS(DEVID),
->>> -        XE_ATS_M150_IDS(DEVID),
->>> +        INTEL_DG2_G10_IDS(DEVID),
->>> +        INTEL_ATS_M150_IDS(DEVID),
->>>      };
->>>      for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
->>>          if (devids[i] == devinfo->devid)
->>> diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
->>> deleted file mode 100644
->>> index 73d972a8a..000000000
->>> --- a/lib/xe_pciids.h
->>> +++ /dev/null
->>> @@ -1,218 +0,0 @@
->>> -/* SPDX-License-Identifier: MIT */
->>> -/*
->>> - * Copyright © 2022 Intel Corporation
->>> - */
->>> -
->>> -#ifndef _XE_PCIIDS_H_
->>> -#define _XE_PCIIDS_H_
->>> -
->>> -/*
->>> - * Lists below can be turned into initializers for a struct 
->>> pci_device_id
->>> - * by defining INTEL_VGA_DEVICE:
->>> - *
->>> - * #define INTEL_VGA_DEVICE(id, info) { \
->>> - *    0x8086, id,            \
->>> - *    ~0, ~0,                \
->>> - *    0x030000, 0xff0000,        \
->>> - *    (unsigned long) info }
->>> - *
->>> - * And then calling like:
->>> - *
->>> - * XE_TGL_12_GT1_IDS(INTEL_VGA_DEVICE, ## __VA_ARGS__)
->>> - *
->>> - * To turn them into something else, just provide a different macro 
->>> passed as
->>> - * first argument.
->>> - */
->>> -
->>> -/* TGL */
->>> -#define XE_TGL_GT1_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x9A60, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9A68, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9A70, ## __VA_ARGS__)
->>> -
->>> -#define XE_TGL_GT2_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x9A40, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9A49, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9A59, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9A78, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9AC0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9AC9, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9AD9, ## __VA_ARGS__),    \
->>> -    MACRO__(0x9AF8, ## __VA_ARGS__)
->>> -
->>> -#define XE_TGL_IDS(MACRO__, ...)        \
->>> -    XE_TGL_GT1_IDS(MACRO__, ## __VA_ARGS__),\
->>> -    XE_TGL_GT2_IDS(MACRO__, ## __VA_ARGS__)
->>> -
->>> -/* RKL */
->>> -#define XE_RKL_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x4C80, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4C8A, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4C8B, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4C8C, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4C90, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4C9A, ## __VA_ARGS__)
->>> -
->>> -/* DG1 */
->>> -#define XE_DG1_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x4905, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4906, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4907, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4908, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4909, ## __VA_ARGS__)
->>> -
->>> -/* ADL-S */
->>> -#define XE_ADLS_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x4680, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4682, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4688, ## __VA_ARGS__),    \
->>> -    MACRO__(0x468A, ## __VA_ARGS__),    \
->>> -    MACRO__(0x468B, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4690, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4692, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4693, ## __VA_ARGS__)
->>> -
->>> -/* ADL-P */
->>> -#define XE_ADLP_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x46A0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46A1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46A2, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46A3, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46A6, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46A8, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46AA, ## __VA_ARGS__),    \
->>> -    MACRO__(0x462A, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4626, ## __VA_ARGS__),    \
->>> -    MACRO__(0x4628, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46B0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46B1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46B2, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46B3, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46C0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46C1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46C2, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46C3, ## __VA_ARGS__)
->>> -
->>> -/* ADL-N */
->>> -#define XE_ADLN_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x46D0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46D1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x46D2, ## __VA_ARGS__)
->>> -
->>> -/* RPL-S */
->>> -#define XE_RPLS_IDS(MACRO__, ...)        \
->>> -    MACRO__(0xA780, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA781, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA782, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA783, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA788, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA789, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA78A, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA78B, ## __VA_ARGS__)
->>> -
->>> -/* RPL-U */
->>> -#define XE_RPLU_IDS(MACRO__, ...)        \
->>> -    MACRO__(0xA721, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7A1, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7A9, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7AC, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7AD, ## __VA_ARGS__)
->>> -
->>> -/* RPL-P */
->>> -#define XE_RPLP_IDS(MACRO__, ...)        \
->>> -    XE_RPLU_IDS(MACRO__, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA720, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7A0, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7A8, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7AA, ## __VA_ARGS__),    \
->>> -    MACRO__(0xA7AB, ## __VA_ARGS__)
->>> -
->>> -/* DG2 */
->>> -#define XE_DG2_G10_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x5690, ## __VA_ARGS__),    \
->>> -    MACRO__(0x5691, ## __VA_ARGS__),    \
->>> -    MACRO__(0x5692, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A2, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56BE, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56BF, ## __VA_ARGS__)
->>> -
->>> -#define XE_DG2_G11_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x5693, ## __VA_ARGS__),    \
->>> -    MACRO__(0x5694, ## __VA_ARGS__),    \
->>> -    MACRO__(0x5695, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A5, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A6, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56B0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56B1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56BA, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56BB, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56BC, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56BD, ## __VA_ARGS__)
->>> -
->>> -#define XE_DG2_G12_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x5696, ## __VA_ARGS__),    \
->>> -    MACRO__(0x5697, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A3, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56A4, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56B2, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56B3, ## __VA_ARGS__)
->>> -
->>> -#define XE_DG2_IDS(MACRO__, ...)        \
->>> -    XE_DG2_G10_IDS(MACRO__, ## __VA_ARGS__),\
->>> -    XE_DG2_G11_IDS(MACRO__, ## __VA_ARGS__),\
->>> -    XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
->>> -
->>> -#define XE_ATS_M150_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x56C0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x56C2, ## __VA_ARGS__)
->>> -
->>> -#define XE_ATS_M75_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x56C1, ## __VA_ARGS__)
->>> -
->>> -#define XE_ATS_M_IDS(MACRO__, ...)        \
->>> -    XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
->>> -    XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
->>> -
->>> -/* MTL / ARL */
->>> -#define XE_MTL_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x7D40, ## __VA_ARGS__),    \
->>> -    MACRO__(0x7D41, ## __VA_ARGS__),    \
->>> -    MACRO__(0x7D45, ## __VA_ARGS__),    \
->>> -    MACRO__(0x7D51, ## __VA_ARGS__),        \
->>> -    MACRO__(0x7D55, ## __VA_ARGS__),    \
->>> -    MACRO__(0x7D60, ## __VA_ARGS__),    \
->>> -    MACRO__(0x7D67, ## __VA_ARGS__),    \
->>> -    MACRO__(0x7DD1, ## __VA_ARGS__),        \
->>> -    MACRO__(0x7DD5, ## __VA_ARGS__)
->>> -
->>> -/* PVC */
->>> -#define XE_PVC_IDS(MACRO__, ...)        \
->>> -    MACRO__(0x0B69, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0B6E, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BD4, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BD5, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BD6, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BD7, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BD8, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BD9, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BDA, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BDB, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BE0, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BE1, ## __VA_ARGS__),    \
->>> -    MACRO__(0x0BE5, ## __VA_ARGS__)
->>> -
->>> -#define XE_LNL_IDS(MACRO__, ...) \
->>> -    MACRO__(0x6420, ## __VA_ARGS__), \
->>> -    MACRO__(0x64A0, ## __VA_ARGS__), \
->>> -    MACRO__(0x64B0, ## __VA_ARGS__)
->>> -
->>> -#define XE_BMG_IDS(MACRO__, ...) \
->>> -    MACRO__(0xE202, ## __VA_ARGS__), \
->>> -    MACRO__(0xE20B, ## __VA_ARGS__), \
->>> -    MACRO__(0xE20C, ## __VA_ARGS__), \
->>> -    MACRO__(0xE20D, ## __VA_ARGS__), \
->>> -    MACRO__(0xE212, ## __VA_ARGS__)
->>> -
->>> -#endif
->>> -- 
->>> 2.43.0
->>>
-
+> +		{ }
+> +	};
+>  
+>  	igt_fixture {
+>  		igt_require(function_error_injection_enabled());
+>  		fd = drm_open_driver(DRIVER_XE);
+>  		igt_device_get_pci_slot_name(fd, pci_slot);
+>  		setup_injection_fault();
+> -		file_injectable = fopen(PATH_FUNCTIONS_INJECTABLE, "r");
+> -		igt_assert(file_injectable);
+>  		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
+> -		igt_assert_eq(regcomp(&regex, REGEX_XE_FUNCTIONS, REG_EXTENDED), 0);
+>  	}
+>  
+> -	/*
+> -	 * Iterate over each error injectable function of the xe module
+> -	 */
+> -	igt_subtest_with_dynamic("inject-fault-probe") {
+> -		while ((fgets(line, MAX_LINE_SIZE, file_injectable)) != NULL) {
+> -			if (regexec(&regex, line, 2, pmatch, 0) == 0) {
+> -				strcpy(function_name, line);
+> -				function_name[pmatch[1].rm_eo - 1] = '\0';
+> -				igt_dynamic_f("function-%s", function_name)
+> -					inject_fault_try_bind(fd, pci_slot, function_name);
+> -			}
+> -		}
+> -	}
+> +	for (const struct section *s = probe_function_sections; s->name; s++)
+> +		igt_subtest_f("inject-fault-probe-function-%s", s->name)
+> +			inject_fault_probe(fd, pci_slot, s->name);
+>  
+>  	igt_fixture {
+> -		regfree(&regex);
+> -		fclose(file_injectable);
+>  		cleanup_injection_fault();
+>  		drm_close_driver(fd);
+>  		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
+> -- 
+> 2.43.0
+> 
