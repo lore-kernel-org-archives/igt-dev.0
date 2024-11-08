@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C837D5E141
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 06:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9959D5E142
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 06:47:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E332110E26E;
-	Fri,  8 Nov 2024 06:47:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 634B910E91F;
+	Fri,  8 Nov 2024 06:47:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OlCIkHqj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bYEGBAaz";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4278410E26E
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 06:47:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCF2910E91F
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 06:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731048446; x=1762584446;
+ t=1731048451; x=1762584451;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=POBKVFym1CRxix6hKSIcnD6+lxykygervqJEEowZokA=;
- b=OlCIkHqjnveOKbXxvsZ61637b2cd7JvJvP5XgKnAu4VHPH5gO69JIMA7
- +OmmbmFUy5jZosxM/dKREU3lbGsYfdFcghx8SFHsoAoB2duvEAX/pwRtL
- J63yOaLZhD9Y1dwQFosge5d5i3LoBzdcgjbSuQ+MjZZQ/miTliqDfrp96
- DmyJRQx6G1r8FYX8vewtnLKdhfa+oZCV7Ffv6rGQRQLr/bwbAnyL97lMK
- PeoW2NULdjiiSk2+M862aWFIgMRPc7Go3H36BOQMiivsdxLnpYtgUU4Ag
- e3sV1vNLhijhFDW6wCBORL3mkofltxR8u/OcFvQ0S7Orf3b6aqRjRy4Dc g==;
-X-CSE-ConnectionGUID: NKcB0cD0T1OaCfE5LiJomA==
-X-CSE-MsgGUID: czz8WSZ8QzqRbKRLm5lg4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34613019"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="34613019"
+ bh=XIQf757PnYh4NRDStThYlTCFwbXkq4QlPGJEIvP8zSs=;
+ b=bYEGBAazYpRhCzWo4aDqZYzOzY1qexLd1vKMmdpO748McVkpOP6CvYKk
+ qHzyHX8UGUkZPdZpecKiZA8ZMUhFRUiw3SYisANoFSA3WuRLRjL0wyF97
+ fOMRyf6kU9i5muwGoU86J4yMZEnygoyYHHiLRd126ebDA6ZUvunpI4zoo
+ DBbcpgXwr9VXG6GoOu+cZMCFRUjk+HIM5022xDRk0AqI+Xmhzzh97/oam
+ eUQ21wurHwWiDhHMbtBZPYVXBHnnBYxVO7Q9iyw1DDVrvR+Xct40caiQZ
+ S3w6Hh6N3tqA+Q9Hx8iFMVCVldzHzQgFgYu5DjX6d+zudmwzH0pqrmDJ1 A==;
+X-CSE-ConnectionGUID: 4hn2E+zpSWms1e6uIiLZBA==
+X-CSE-MsgGUID: 7XqKsYTeRne/n9JG7Ha3Og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34613032"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="34613032"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 22:47:26 -0800
-X-CSE-ConnectionGUID: Brrcw5+lRGe6SMnayfkEJA==
-X-CSE-MsgGUID: CL1Ms6uHQNinduSK0/HXBQ==
+ 07 Nov 2024 22:47:31 -0800
+X-CSE-ConnectionGUID: 2NLOsi8qREC7og2JLuDLZw==
+X-CSE-MsgGUID: 8GjywTDfRMq/azbWt+d8hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; d="scan'208";a="86230954"
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; d="scan'208";a="86230981"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.236])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 22:47:23 -0800
+ 07 Nov 2024 22:47:28 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 1/3] lib/intel_blt: Handle multiple ctrl-surf-copy blits
- on big surface
-Date: Fri,  8 Nov 2024 07:47:10 +0100
-Message-Id: <20241108064712.252927-2-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/xe_ccs: Add large-ctrl-surf-copy subtest
+Date: Fri,  8 Nov 2024 07:47:11 +0100
+Message-Id: <20241108064712.252927-3-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241108064712.252927-1-zbigniew.kempczynski@intel.com>
 References: <20241108064712.252927-1-zbigniew.kempczynski@intel.com>
@@ -71,199 +70,238 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Copying ccs data for bigger surfaces requires couple of blits. This is
-caused by the limitation of 10-bit size (for Xe and Xe2+) of the
-ctrl-surf-copy operation. To handle bigger than 64MiB surfaces on Xe
-and 4MiB on Xe2+ we need to divide blits to fit in mentioned 10-bit
-size.
+For big surface which ccs data might not fit in single ctrl-surf-copy
+blit we need to ensure library code is properly populating batchbuffer
+with couple of these commands.
 
-Change introduces looping around big surface to produce batch with
-couple of ctrl-surf-copy blits.
+Lets add the large-ctrl-surf-copy subtest which uses quite large surface
+4096 x (4096 + 64) x 32bpp (16MiB). Value 64 was selected intentionally,
+as 64 is expected aligned height for Tile64 (thus bigger than for other
+supported tilings) and this size exceeds single ctrl-surf-copy blit on
+Xe. On Xe2 we have bigger granularity per operation (4MiB) what will
+produce more blits than on Xe.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_blt.c | 121 ++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 86 insertions(+), 35 deletions(-)
+ tests/intel/xe_ccs.c | 145 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 143 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 1b0f279177..b2fb3151e0 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1115,7 +1115,13 @@ int blt_block_copy(int fd,
- 	return ret;
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index a2d18588fb..e154bf4dcc 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -51,6 +51,9 @@
+  * SUBTEST: ctrl-surf-copy-new-ctx
+  * Description: Check flatccs data are physically tagged and visible in vm
+  *
++ * SUBTEST: large-ctrl-surf-copy
++ * Description: Check flatccs data can be copied from large surface
++ *
+  * SUBTEST: suspend-resume
+  * Description: Check flatccs data persists after suspend / resume (S0)
+  */
+@@ -85,6 +88,8 @@ struct test_config {
+ 	bool suspend_resume;
+ 	int width_increment;
+ 	int width_steps;
++	int overwrite_width;
++	int overwrite_height;
+ };
+ 
+ #define PRINT_SURFACE_INFO(name, obj) do { \
+@@ -563,9 +568,92 @@ static void block_multicopy(int xe,
+ 	igt_assert_f(!result, "source and destination surfaces differs!\n");
  }
  
--static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
-+/*
-+ * Function calculates CCS bytes used for the surface. Size field in
-+ * ctrl-surf-copy command struct is for Xe and Xe2 10-bit length, so caller
-+ * has to divide ccs copy of bigger surfaces to couple of separate commands.
-+ * This function returns total size of ccs data used for the surface.
-+ */
-+static uint32_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
- {
- 	uint32_t src_size, dst_size;
- 	uint16_t ccsratio = CCS_RATIO(fd);
-@@ -1286,8 +1292,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
--	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
--				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
-+	uint32_t ccs_per_page, max_blocks, src_step, dst_step;
-+	int32_t left_blocks;
- 
- 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
- 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
-@@ -1299,51 +1305,108 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 					  alignment, surf->dst.pat_index);
- 	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
- 
-+	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
++static void block_copy_large(int xe,
++			     intel_ctx_t *ctx,
++			     uint32_t region1, uint32_t region2,
++			     uint32_t width, uint32_t height,
++			     enum blt_tiling_type tiling,
++			     const struct test_config *config)
++{
++	struct blt_copy_data blt = {};
++	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
++	struct blt_copy_object *src, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
++	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
++	uint64_t size;
++	uint32_t run_id = tiling;
++	uint32_t bb;
++	uint32_t *ptr;
++	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
++	bool result = true;
++	int i;
 +
-+	/*
-+	 * Copying in/out CCS data is limited by bitfield size_of_ctrl_copy size
-+	 * what means operation on bigger surface needs to be handled on couple
-+	 * of ctrl-surf-copy commands.
-+	 *
-+	 * Instead of hardcoding maximum number of blocks copied in single
-+	 * command we may calculate it from bitfield size (Xe and Xe2 differs
-+	 * in bitfield location [and in future platforms potentially size]).
-+	 */
- 	if (ip_ver >= IP_VER(20, 0)) {
-+		ccs_per_page = SZ_4K / CCS_RATIO(fd);
++	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
 +
- 		data.xe2.dw00.client = 0x2;
- 		data.xe2.dw00.opcode = 0x48;
- 		data.xe2.dw00.src_access_type = surf->src.access_type;
- 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
--
--		/* Ensure dst has size capable to keep src ccs aux */
--		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
- 		data.xe2.dw00.length = 0x3;
- 
--		data.xe2.dw01.src_address_lo = src_offset;
--		data.xe2.dw02.src_address_hi = src_offset >> 32;
-+		data.xe2.dw00.size_of_ctrl_copy = -1;
-+		max_blocks = data.xe2.dw00.size_of_ctrl_copy + 1;
++	if (!blt_uses_extended_block_copy(xe))
++		pext = NULL;
 +
-+		/*
-+		 * For Xe2+ each size_of_ctrl_copy increment covers 4K page size
-+		 * of surface, which in turn is covered by 8B of CCS data.
-+		 */
-+		src_step = surf->src.access_type == DIRECT_ACCESS ? ccs_per_page : SZ_4K;
-+		src_step *= max_blocks;
-+		dst_step = surf->dst.access_type == DIRECT_ACCESS ? ccs_per_page : SZ_4K;
-+		dst_step *= max_blocks;
++	blt_copy_init(xe, &blt);
 +
- 		data.xe2.dw02.src_mocs_index = surf->src.mocs_index;
--
--		data.xe2.dw03.dst_address_lo = dst_offset;
--		data.xe2.dw04.dst_address_hi = dst_offset >> 32;
- 		data.xe2.dw04.dst_mocs_index = surf->dst.mocs_index;
- 
- 		data_sz = sizeof(data.xe2);
- 	} else {
-+		ccs_per_page = SZ_64K / CCS_RATIO(fd);
++	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED,
++				COMPRESSION_TYPE_3D, true);
++	dst = blt_create_object(&blt, region2, width, height, bpp, uc_mocs,
++				tiling, COMPRESSION_ENABLED,
++				COMPRESSION_TYPE_3D, true);
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("dst", dst);
 +
- 		data.gen12.dw00.client = 0x2;
- 		data.gen12.dw00.opcode = 0x48;
- 		data.gen12.dw00.src_access_type = surf->src.access_type;
- 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
--
--		/* Ensure dst has size capable to keep src ccs aux */
--		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
- 		data.gen12.dw00.length = 0x3;
- 
--		data.gen12.dw01.src_address_lo = src_offset;
--		data.gen12.dw02.src_address_hi = src_offset >> 32;
-+		data.gen12.dw00.size_of_ctrl_copy = -1;
-+		max_blocks = data.gen12.dw00.size_of_ctrl_copy + 1;
++	blt_surface_fill_rect(xe, src, width, height);
++	WRITE_PNG(xe, run_id, "src", src, width, height, bpp);
 +
-+		/*
-+		 * For Xe each size_of_ctrl_copy increment covers 64K page size
-+		 * of surface, which in turn is covered by 256B of CCS data.
-+		 */
-+		src_step = surf->src.access_type == DIRECT_ACCESS ? ccs_per_page : SZ_64K;
-+		src_step *= max_blocks;
-+		dst_step = surf->dst.access_type == DIRECT_ACCESS ? ccs_per_page : SZ_64K;
-+		dst_step *= max_blocks;
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, param.compression_format,
++			   width, height, SURFACE_TYPE_2D);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
++	intel_ctx_xe_sync(ctx, true);
 +
- 		data.gen12.dw02.src_mocs_index = surf->src.mocs_index;
--
--		data.gen12.dw03.dst_address_lo = dst_offset;
--		data.gen12.dw04.dst_address_hi = dst_offset >> 32;
- 		data.gen12.dw04.dst_mocs_index = surf->dst.mocs_index;
- 
- 		data_sz = sizeof(data.gen12);
- 	}
- 
--	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
-+	left_blocks = __ccs_size(fd, surf) / ccs_per_page;
- 
--	igt_assert(bb_pos + data_sz < surf->bb.size);
--	memcpy(bb + bb_pos, &data, data_sz);
--	bb_pos += data_sz;
-+	while (left_blocks > 0) {
-+		int32_t nblocks = min_t(int32_t, left_blocks, max_blocks);
-+
-+		if (ip_ver >= IP_VER(20, 0)) {
-+			data.xe2.dw00.size_of_ctrl_copy = nblocks - 1;
-+			data.xe2.dw01.src_address_lo = src_offset;
-+			data.xe2.dw02.src_address_hi = src_offset >> 32;
-+			data.xe2.dw03.dst_address_lo = dst_offset;
-+			data.xe2.dw04.dst_address_hi = dst_offset >> 32;
-+		} else {
-+			data.gen12.dw00.size_of_ctrl_copy = nblocks - 1;
-+			data.gen12.dw01.src_address_lo = src_offset;
-+			data.gen12.dw02.src_address_hi = src_offset >> 32;
-+			data.gen12.dw03.dst_address_lo = dst_offset;
-+			data.gen12.dw04.dst_address_hi = dst_offset >> 32;
-+		}
-+
-+		left_blocks -= max_blocks;
-+		dst_offset += dst_step;
-+		src_offset += src_step;
-+
-+		igt_assert(bb_pos + data_sz < surf->bb.size);
-+		memcpy(bb + bb_pos, &data, data_sz);
-+		bb_pos += data_sz;
-+
-+		if (surf->print_bb) {
-+			igt_info("[CTRL SURF]:\n");
-+			igt_info("src offset: 0x%" PRIx64 ", dst offset: 0x%" PRIx64
-+				 ", bb offset: 0x%" PRIx64 ", copy nblocks: 0x%x\n",
-+				 src_offset, dst_offset, bb_offset, nblocks);
-+
-+			if (ip_ver >= IP_VER(20, 0))
-+				xe2_dump_bb_surf_ctrl_cmd(&data.xe2);
-+			else
-+				dump_bb_surf_ctrl_cmd(&data.gen12);
++	blt_surface_get_flatccs_data(xe, ctx, NULL, ahnd, dst, &ptr, &size);
++	for (i = 0; i < size / sizeof(*ptr); i++) {
++		if (ptr[i] == 0) {
++			result = false;
++			break;
 +		}
 +	}
++
++	if (!result) {
++		for (i = 0; i < size / sizeof(*ptr); i += 8)
++			igt_debug("[%08x]: %08x %08x %08x %08x %08x %08x %08x %08x\n",
++				  i,
++				  ptr[i], ptr[i + 1], ptr[i + 2], ptr[i + 3],
++				  ptr[i + 4], ptr[i + 5], ptr[i + 6], ptr[i + 7]);
++	}
++
++	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height, bpp);
++
++	/* Politely clean vm */
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(result, "ccs data must have no zeros!\n");
++}
++
+ enum copy_func {
+ 	BLOCK_COPY,
+ 	BLOCK_MULTICOPY,
++	LARGE_SURFCOPY,
+ };
  
- 	if (emit_bbe) {
- 		igt_assert(bb_pos + sizeof(uint32_t) < surf->bb.size);
-@@ -1351,18 +1414,6 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 		bb_pos += sizeof(uint32_t);
+ static const struct {
+@@ -579,6 +667,7 @@ static const struct {
+ } copyfns[] = {
+ 	[BLOCK_COPY] = { "", block_copy },
+ 	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
++	[LARGE_SURFCOPY] = { "", block_copy_large },
+ };
+ 
+ static void single_copy(int xe, const struct test_config *config,
+@@ -619,7 +708,8 @@ static void block_copy_test(int xe,
+ {
+ 	uint16_t dev_id = intel_get_drm_devid(xe);
+ 	struct igt_collection *regions;
+-	int tiling;
++	int tiling, width, height;
++
+ 
+ 	if (intel_gen(dev_id) >= 20 && config->compression)
+ 		igt_require(HAS_FLATCCS(dev_id));
+@@ -630,6 +720,9 @@ static void block_copy_test(int xe,
+ 	if (config->inplace && !config->compression)
+ 		return;
+ 
++	width = config->overwrite_width ?: param.width;
++	height = config->overwrite_height ?: param.height;
++
+ 	for_each_tiling(tiling) {
+ 		if (!blt_block_copy_supports_tiling(xe, tiling) ||
+ 		    (param.tiling >= 0 && param.tiling != tiling))
+@@ -660,7 +753,7 @@ static void block_copy_test(int xe,
+ 			if (!config->width_increment) {
+ 				igt_dynamic(testname)
+ 					single_copy(xe, config, region1, region2,
+-						    param.width, param.height,
++						    width, height,
+ 						    tiling, copy_function);
+ 			} else {
+ 				for (int w = param.incdim_width;
+@@ -686,6 +779,35 @@ static void block_copy_test(int xe,
+ 	}
+ }
+ 
++static void large_surf_ctrl_copy(int xe, const struct test_config *config)
++{
++	uint16_t dev_id = intel_get_drm_devid(xe);
++	int tiling, width, height;
++	uint32_t region1, region2;
++
++	igt_require(HAS_FLATCCS(dev_id));
++
++	region1 = system_memory(xe);
++	region2 = vram_if_possible(xe, 0);
++
++	width = config->overwrite_width;
++	height = config->overwrite_height;
++
++	/* Prefer TILE4 if supported */
++	if (blt_block_copy_supports_tiling(xe, T_TILE4)) {
++		tiling = T_TILE4;
++	} else {
++		for_each_tiling(tiling) {
++			if (!blt_block_copy_supports_tiling(xe, tiling))
++				continue;
++			break;
++		}
++	}
++
++	single_copy(xe, config, region1, region2, width, height, tiling,
++		    LARGE_SURFCOPY);
++}
++
+ static int opt_handler(int opt, int opt_index, void *data)
+ {
+ 	switch (opt) {
+@@ -815,6 +937,25 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 		block_copy_test(xe, &config, set, BLOCK_COPY);
  	}
  
--	if (surf->print_bb) {
--		igt_info("[CTRL SURF]:\n");
--		igt_info("src offset: %" PRIx64 ", dst offset: %" PRIx64
--			 ", bb offset: %" PRIx64 "\n",
--			 src_offset, dst_offset, bb_offset);
--
--		if (ip_ver >= IP_VER(20, 0))
--			xe2_dump_bb_surf_ctrl_cmd(&data.xe2);
--		else
--			dump_bb_surf_ctrl_cmd(&data.gen12);
--	}
--
- 	munmap(bb, surf->bb.size);
- 
- 	return bb_pos;
++	/*
++	 * Why 4096x4160 is chosen as WxH?
++	 *
++	 * On Xe ctrl-surf-copy size single increment does 256B ccs copy which
++	 * covers 64KiB surface. Size field is 10-bit so to exceed 64K * 1024
++	 * surface which is bigger than 4K x 4K x 32bpp (>64MiB) must be used.
++	 *
++	 * On Xe2+ ctrl-surf-copy has finer granularity - single size increment
++	 * copies 8B ccs which in turn covers 4KiB surface. So 64MiB+ surface
++	 * will require > 16 separate ctrl-surf-copy commands.
++	 */
++	igt_describe("Check flatccs data can be copied from large surface");
++	igt_subtest("large-ctrl-surf-copy") {
++		struct test_config config = { .overwrite_width = 4096,
++					      .overwrite_height = 4096+64, };
++
++		large_surf_ctrl_copy(xe, &config);
++	}
++
+ 	igt_describe("Check flatccs data persists after suspend / resume (S0)");
+ 	igt_subtest_with_dynamic("suspend-resume") {
+ 		struct test_config config = { .compression = true,
 -- 
 2.34.1
 
