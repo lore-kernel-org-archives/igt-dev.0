@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C177D5D699
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 00:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 514D3D5D695
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 00:21:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ACB0110E23A;
-	Fri,  8 Nov 2024 00:03:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5E9610E23A;
+	Fri,  8 Nov 2024 00:21:38 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F99310E23A;
- Fri,  8 Nov 2024 00:03:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D62B610E23A;
+ Fri,  8 Nov 2024 00:21:37 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3393397571134072242=="
+ boundary="===============9051193341812517720=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fsysfs=3A_Re?=
- =?utf-8?q?store_sysfs_params_correctly?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib=3A_sync_PCI_ID_macros_w?=
+ =?utf-8?q?ith_kernel_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+To: "Ngai-Mint Kwan" <ngai-mint.kwan@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 08 Nov 2024 00:03:27 -0000
-Message-ID: <173102420751.1424949.2026698933245031067@2413ebb6fbb6>
+Date: Fri, 08 Nov 2024 00:21:37 -0000
+Message-ID: <173102529787.1424970.5957657518809939555@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241107225254.302010-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20241107225254.302010-1-jonathan.cavitt@intel.com>
+References: <20241107231457.70157-1-ngai-mint.kwan@linux.intel.com>
+In-Reply-To: <20241107231457.70157-1-ngai-mint.kwan@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3393397571134072242==
+--===============9051193341812517720==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: test/intel/xe_sysfs: Restore sysfs params correctly
-URL   : https://patchwork.freedesktop.org/series/141072/
+Series: lib: sync PCI ID macros with kernel (rev2)
+URL   : https://patchwork.freedesktop.org/series/141024/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8100 -> IGTPW_12064
+CI Bug Log - changes from IGT_8100 -> IGTPW_12065
 ====================================================
 
 Summary
@@ -64,7 +64,7 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/index.html
 
 Participating hosts (45 -> 43)
 ------------------------------
@@ -75,7 +75,7 @@ Participating hosts (45 -> 43)
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_12064:
+  Here are the unknown changes that may have been introduced in IGTPW_12065:
 
 ### IGT changes ###
 
@@ -84,37 +84,24 @@ Possible new issues
   The following results come from untrusted machines, tests, or statuses.
   They do not affect the overall result.
 
-  * igt@i915_selftest@live@gem_contexts:
-    - {bat-arls-6}:       NOTRUN -> [DMESG-WARN][1] +32 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arls-6/igt@i915_selftest@live@gem_contexts.html
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-arls-6}:       NOTRUN -> [DMESG-WARN][1] +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/bat-arls-6/igt@i915_pm_rpm@module-reload.html
 
   
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12064 that come from known issues:
+  Here are the changes found in IGTPW_12065 that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-arlh-2:         [PASS][2] -> [ABORT][3] ([i915#10341])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-2/igt@i915_selftest@live.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arlh-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [PASS][4] -> [ABORT][5] ([i915#12061])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  
 #### Possible fixes ####
 
   * igt@i915_selftest@live:
-    - bat-arlh-3:         [INCOMPLETE][6] ([i915#10341]) -> [PASS][7] +1 other test pass
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-3/igt@i915_selftest@live.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arlh-3/igt@i915_selftest@live.html
+    - bat-arlh-3:         [INCOMPLETE][2] ([i915#10341]) -> [PASS][3] +1 other test pass
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-3/igt@i915_selftest@live.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/bat-arlh-3/igt@i915_selftest@live.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -153,20 +140,20 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_8100 -> IGTPW_12064
+  * IGT: IGT_8100 -> IGTPW_12065
   * Linux: CI_DRM_15647 -> CI_DRM_15654
 
   CI-20190529: 20190529
   CI_DRM_15647: 438ef86a725b59a171dba81fc258bb23a0ff536c @ git://anongit.freedesktop.org/gfx-ci/linux
   CI_DRM_15654: 4e8bea155458842471845b85ddc1cddddd151db9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12064: 12064
+  IGTPW_12065: 79a23998a65bbe81d6348da5d910ec0e67edcaf5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8100: 84e42580f918da926481fd2fb37be01451d6ee9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/index.html
 
---===============3393397571134072242==
+--===============9051193341812517720==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -186,57 +173,42 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>test/intel/xe_sysfs: Restore sysfs params correctly</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141072/">https://patchwork.freedesktop.org/series/141072/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib: sync PCI ID macros with kernel (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141024/">https://patchwork.freedesktop.org/series/141024/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8100 -&gt; IGTPW_12064</h1>
+    <h1>CI Bug Log - changes from IGT_8100 -&gt; IGTPW_12065</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/index.html</p>
 <h2>Participating hosts (45 -&gt; 43)</h2>
 <p>Additional (1): bat-arls-6 <br />
   Missing    (3): bat-arls-2 bat-arls-1 fi-snb-2520m </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12064:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12065:</p>
 <h3>IGT changes</h3>
 <h4>Suppressed</h4>
 <p>The following results come from untrusted machines, tests, or statuses.<br />
   They do not affect the overall result.</p>
 <ul>
-<li>igt@i915_selftest@live@gem_contexts:<ul>
-<li>{bat-arls-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arls-6/igt@i915_selftest@live@gem_contexts.html">DMESG-WARN</a> +32 other tests dmesg-warn</li>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>{bat-arls-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/bat-arls-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> +2 other tests dmesg-warn</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12064 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_12065 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arlh-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arlh-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@i915_selftest@live:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-3/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12064/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8100/bat-arlh-3/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12065/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 </ul>
@@ -245,16 +217,16 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8100 -&gt; IGTPW_12064</li>
+<li>IGT: IGT_8100 -&gt; IGTPW_12065</li>
 <li>Linux: CI_DRM_15647 -&gt; CI_DRM_15654</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_15647: 438ef86a725b59a171dba81fc258bb23a0ff536c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
   CI_DRM_15654: 4e8bea155458842471845b85ddc1cddddd151db9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12064: 12064<br />
+  IGTPW_12065: 79a23998a65bbe81d6348da5d910ec0e67edcaf5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8100: 84e42580f918da926481fd2fb37be01451d6ee9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============3393397571134072242==--
+--===============9051193341812517720==--
