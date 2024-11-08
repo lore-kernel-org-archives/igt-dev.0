@@ -4,57 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC9CD5E141
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 06:47:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FE89D5E140
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Nov 2024 06:51:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5DD7D10E155;
-	Fri,  8 Nov 2024 06:47:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4AAB410E26E;
+	Fri,  8 Nov 2024 06:51:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T0kbZ+V0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J/WSZtk1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3870710E155
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 06:47:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EC5810E26E
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2024 06:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731048456; x=1762584456;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Y7jsTrSeEj2DJsY1sduvIosisPvpmQe/EmzhQAIJTlk=;
- b=T0kbZ+V0Gc4hkzGFH6I7h0lwiP2ysz2oI25Hd2qcFuUupX+ubBWhKDIU
- G0l2r4ktXnus4ajJJxfcNT3HyFysaLXqG7iuQP7QLx0nps/uqTAKNsFz+
- iwLMg3q2JPhz18n91yF8gUkcal8fY2I3TXqgpr0vdn4EjROGNfse2CrPM
- n2j43qlM7YeyI26DCUMw1CuzYWNqd+z1vQW5rarWLdkTPLZqzw4gTupFP
- 1IlVOgk/LxXG+zj9X+0QvOI97D5iUnKZWaMm/F0RWxhb5OzI8CGnngZQA
- GtPNC27vYAeYPcrBfPPvnJqQ2eoyMpPH9D5UCCsLeTblHH+CixaiIFatE A==;
-X-CSE-ConnectionGUID: BI+qG51uRDCrsbjsSP6gbQ==
-X-CSE-MsgGUID: quWvDze3S1OlXRDyPT7toQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34613040"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="34613040"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 22:47:36 -0800
-X-CSE-ConnectionGUID: qzNZFD4mSWeGkaYCnvJBlA==
-X-CSE-MsgGUID: 34GpudzjR8qBFIjv1rNPOQ==
+ t=1731048706; x=1762584706;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=OE8sAi6LNSTToMUVOx4ofWZZKYEUJ7UGDs09im5DFaw=;
+ b=J/WSZtk1M3OLg+wmFCM3sa5+NMctRnhET0vWJj0vmvCVMzwswrdrxwmZ
+ YzZS3tnLoPzAXFSzaPIDyzv//lBDNf8aMiVKz67t7PgBnV+XmmYxPU+tm
+ au7Aaol8u50c4gqFjUCq1wgOX8O/Yr5Gl4xkk3YNuFjdx1RZTClyuTGSv
+ 9aNVYOiXx2gDDSJQRA7UG/7S6K00vR2waS4IX1LsWsyglyLtJf0wAx/Tt
+ L05zU1RkzPClVL5CGW6H9OR1TY2vcbWDUEeZKDlf9GIOKiD4uMaMONWxj
+ Ze067Bmv4LPaLmgfPl3vvO1uXJjZZ4ohGUTUJbX2N72VSBu1nrKfQmb6m g==;
+X-CSE-ConnectionGUID: A+IrkxY5TgO9dY/Wmg5EaA==
+X-CSE-MsgGUID: xVDpMWMkTH+ws3Y89IdtsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="30806384"
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; d="scan'208";a="30806384"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2024 22:51:43 -0800
+X-CSE-ConnectionGUID: UwaJxZwXQUud2eW+fIy0Gg==
+X-CSE-MsgGUID: QD4NjP5SQZK5iXkskKvdmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; d="scan'208";a="86231018"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.236])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2024 22:47:33 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 3/3] tests/gem_ccs: Add large-ctrl-surf-copy subtest
-Date: Fri,  8 Nov 2024 07:47:12 +0100
-Message-Id: <20241108064712.252927-4-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241108064712.252927-1-zbigniew.kempczynski@intel.com>
-References: <20241108064712.252927-1-zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; d="scan'208";a="116269970"
+Received: from askrebko-mobl1.ger.corp.intel.com (HELO [10.213.195.95])
+ ([10.213.195.95])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2024 22:51:41 -0800
+Message-ID: <08f43b41-cd86-415d-83e0-ce4fa161545c@linux.intel.com>
+Date: Fri, 8 Nov 2024 07:51:38 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] igt-runner fact checking
+To: "Knop, Ryszard" <ryszard.knop@intel.com>,
+ "De Marchi, Lucas" <lucas.demarchi@intel.com>
+Cc: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Sousa, Gustavo" <gustavo.sousa@intel.com>
+References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
+ <tmbhd2nam5xibqejlcpqo53zeiv543jkfokfh4yly63yjhpqf7@ruf6limclqyh>
+ <8029d6ce-2d38-40a6-a574-00b6607805d8@linux.intel.com>
+ <qkr5xhm23dbziwp53m2xwjciqeghfe4zdtlurnpgphyxplx5pk@dkwxqwdymu77>
+ <4dbdbc32618cc7bbc7b13ee961534fc798be5b91.camel@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <4dbdbc32618cc7bbc7b13ee961534fc798be5b91.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,185 +77,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is counterpart subtest for i915 driver which has same meaning for
-Xe (DG2) - check if big surface which ccs data might not fit in single
-ctrl-surf-copy is handled properly in the blitter library.
+Dear Ryszard,
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/intel/gem_ccs.c | 130 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 130 insertions(+)
+Thank you for taking the time to write. Please see my comments bellow.
 
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index 07aa6d322d..af1e85f6aa 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -45,6 +45,9 @@
-  * Description: Check flatccs data are physically tagged and visible i
-  *		different contexts
-  *
-+ * SUBTEST: large-ctrl-surf-copy
-+ * Description: Check flatccs data can be copied from large surface
-+ *
-  * SUBTEST: suspend-resume
-  * Description: Check flatccs data persists after suspend / resume (S0)
-  * Feature: flat_ccs_mapping, suspend
-@@ -76,6 +79,8 @@ struct test_config {
- 	bool surfcopy;
- 	bool new_ctx;
- 	bool suspend_resume;
-+	int overwrite_width;
-+	int overwrite_height;
- };
- 
- #define PRINT_SURFACE_INFO(name, obj) do { \
-@@ -520,6 +525,85 @@ static void block_multicopy(int i915,
- 	igt_assert_f(!result, "source and destination surfaces differs!\n");
- }
- 
-+static void block_copy_large(int i915,
-+			     intel_ctx_t *ctx,
-+			     const struct intel_execution_engine2 *e,
-+			     uint32_t region1, uint32_t region2,
-+			     uint32_t width, uint32_t height,
-+			     enum blt_tiling_type tiling,
-+			     const struct test_config *config)
-+{
-+	struct blt_copy_data blt = {};
-+	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-+	struct blt_copy_object *src, *dst;
-+	const uint32_t bpp = 32;
-+	uint64_t bb_size = SZ_4K;
-+	uint64_t ahnd = intel_allocator_open(i915, ctx->vm, INTEL_ALLOCATOR_RELOC);
-+	uint64_t size;
-+	uint32_t run_id = tiling;
-+	uint32_t bb;
-+	uint32_t *ptr;
-+	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
-+	bool result = true;
-+	int i;
-+
-+	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-+
-+	if (!blt_uses_extended_block_copy(i915))
-+		pext = NULL;
-+
-+	blt_copy_init(i915, &blt);
-+
-+	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
-+				T_LINEAR, COMPRESSION_DISABLED,
-+				COMPRESSION_TYPE_3D, true);
-+	dst = blt_create_object(&blt, region2, width, height, bpp, uc_mocs,
-+				tiling, COMPRESSION_ENABLED,
-+				COMPRESSION_TYPE_3D, true);
-+	PRINT_SURFACE_INFO("src", src);
-+	PRINT_SURFACE_INFO("dst", dst);
-+
-+	blt_surface_fill_rect(i915, src, width, height);
-+	WRITE_PNG(i915, run_id, "src", src, width, height, bpp);
-+
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, dst);
-+	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
-+	blt_set_object_ext(&ext.dst, param.compression_format,
-+			   width, height, SURFACE_TYPE_2D);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-+	gem_sync(i915, blt.dst.handle);
-+
-+	blt_surface_get_flatccs_data(i915, ctx, e, ahnd, dst, &ptr, &size);
-+	for (i = 0; i < size / sizeof(*ptr); i++) {
-+		if (ptr[i] == 0) {
-+			result = false;
-+			break;
-+		}
-+	}
-+
-+	if (!result) {
-+		for (i = 0; i < size / sizeof(*ptr); i += 8)
-+			igt_debug("[%08x]: %08x %08x %08x %08x %08x %08x %08x %08x\n",
-+				  i,
-+				  ptr[i], ptr[i + 1], ptr[i + 2], ptr[i + 3],
-+				  ptr[i + 4], ptr[i + 5], ptr[i + 6], ptr[i + 7]);
-+	}
-+
-+	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height, bpp);
-+
-+	/* Politely clean vm */
-+	blt_destroy_object(i915, src);
-+	blt_destroy_object(i915, dst);
-+	gem_close(i915, bb);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(result, "ccs data must have no zeros!\n");
-+}
-+
- enum copy_func {
- 	BLOCK_COPY,
- 	BLOCK_MULTICOPY,
-@@ -591,6 +675,44 @@ static void block_copy_test(int i915,
- 	}
- }
- 
-+static void large_surf_ctrl_copy(int i915, const struct test_config *config,
-+				 intel_ctx_t *ctx)
-+{
-+	uint16_t dev_id = intel_get_drm_devid(i915);
-+	const struct intel_execution_engine2 *e;
-+	int tiling, width, height;
-+	uint32_t region1, region2;
-+
-+	igt_require(HAS_FLATCCS(dev_id));
-+
-+	region1 = REGION_SMEM;
-+	region2 = gem_has_lmem(i915) ? REGION_LMEM(0) : REGION_SMEM;
-+
-+	width = config->overwrite_width;
-+	height = config->overwrite_height;
-+
-+	/* Prefer TILE4 if supported */
-+	if (blt_block_copy_supports_tiling(i915, T_TILE4)) {
-+		tiling = T_TILE4;
-+	} else {
-+		for_each_tiling(tiling) {
-+			if (!blt_block_copy_supports_tiling(i915, tiling))
-+				continue;
-+			break;
-+		}
-+	}
-+
-+	for_each_ctx_engine(i915, ctx, e) {
-+		if (!gem_engine_can_block_copy(i915, e))
-+			continue;
-+
-+		block_copy_large(i915, ctx, e, region1, region2, width, height,
-+				 tiling, config);
-+
-+		break;
-+	}
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -710,6 +832,14 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
- 	}
- 
-+	igt_describe("Check flatccs data can be copied from large surface");
-+	igt_subtest("large-ctrl-surf-copy") {
-+		struct test_config config = { .overwrite_width = 4096,
-+					      .overwrite_height = 4096+64, };
-+
-+		large_surf_ctrl_copy(i915, &config, (intel_ctx_t *) ctx);
-+	}
-+
- 	igt_describe("Check flatccs data persists after suspend / resume (S0)");
- 	igt_subtest_with_dynamic("suspend-resume") {
- 		struct test_config config = { .compression = true,
--- 
-2.34.1
+On 08.11.2024 02:15, Knop, Ryszard wrote:
 
+[...]
+
+> 
+> Extra hooks more or less hardcoded in the command line for a given run
+> are easy, just let us know when to add them. Reading extras from the
+> cover letter is doable, but would require time (think: early next year,
+> not a week or two), as we are switching the Patchwork integration to a
+> new implementation at the moment.
+> 
+> Although, two comments about the "facts" infra:
+> 
+> - I like the simple text format, but if possible, make the output
+> easier to parse with a consistent format for all state changes, like:
+> [FACT <test>] <new|changed|deleted>: <prop>: <value>[ -> <new_value>]
+
+Thank you for that, it will be on V4. What string do you want for the first
+facts that print before the first test? Currently is "before any test".
+
+Just to make sure I understood what you want, the first '[]' around FACT are
+intended to be printed while the second ones around  -> <new_value> are not to
+be printed and are there to indicate an optional part of the message. Correct?
+
+> 
+> - While running these facts within hooks could work, it would require
+> extending the hooks with something that can understand that a given
+> command is supposed to output a bunch of facts in a well-known format
+> (ideally JSON, alternatively a "key: value" text block), then diff them
+> against the state from the previou run of the same hook.
+
+Please tell me what you want. I like to have text output on the terminal with
+igt-runner output, but it is just a convenience. Please tell me how you want the
+output to be printed and/or saved to disk.
+
+[...]
+
+Thank you,
+
+Peter
