@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A4FD5E123
-	for <igt-dev@archiver.kernel.org>; Sat,  9 Nov 2024 07:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41570D5E123
+	for <igt-dev@archiver.kernel.org>; Sat,  9 Nov 2024 07:46:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC62410E0A7;
-	Sat,  9 Nov 2024 07:16:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0F7F10E07F;
+	Sat,  9 Nov 2024 07:46:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eBa1P9FP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RKBBJIea";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D67A910E0A7
- for <igt-dev@lists.freedesktop.org>; Sat,  9 Nov 2024 07:16:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A9EF10E0FC
+ for <igt-dev@lists.freedesktop.org>; Sat,  9 Nov 2024 07:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731136562; x=1762672562;
+ t=1731138375; x=1762674375;
  h=message-id:date:mime-version:from:subject:in-reply-to:to:
  cc:content-transfer-encoding;
- bh=Qju/4ZuG33rfwQyEfKZmECU7Rjt2RW68MEmnL+oSR2w=;
- b=eBa1P9FPKai7m716A02Hb78jTA6jqPr9PiOIfLKwT04nw0EMBi/WfvIS
- Jg9QCSQKW6h33hAcR22fA9ZlRJ56nCLJHF9TRK6USHCI1NpCMZcvSACQf
- JU+RuWqCLfkRy2d2Z4bWvaJQ7ZKU262PyxlO6mp3SHk3w1q37aNf3LDib
- jn+dpuhbuWRUUVKGUEncxIUoVEGoQe9Dl/DlfCgSwB+sZi5mb2daz3RUO
- UMGv13MyBtxj8HPmJTAKxXfeothqjLhVheW7GaPnUdMQ3b5eXBxNcZaTZ
- Ju6RpKNA7r9Ee594t0pkhZJd9BJrNCSdHpgLc96r8dk81Ayztlh0IWs2I w==;
-X-CSE-ConnectionGUID: C1YR5AfIQcCB77vvkqthLw==
-X-CSE-MsgGUID: 7lH6qiE3TLCUWf/ul+O4JA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="48474885"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="48474885"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2024 23:16:01 -0800
-X-CSE-ConnectionGUID: yNXbfRrkQo6zCbd6sitscg==
-X-CSE-MsgGUID: M9kx7fT0Rd2p2G1Y7oSJTQ==
+ bh=mGupd68oMxWbJDPV1mKfxgHtQPpqfktVTsGbrU26Br0=;
+ b=RKBBJIeaDtURKGUzyzQBGuKK1l7gI0VO4JyCeSp+mL180Gi93tk/y2vm
+ 1BNzkt7QATiXICAYSald9DYSo4DAvRhnsxs1mOhPyCbbijBUGQVbHXK82
+ yiILvMoZr1jg/nQWB2ZGj5R58BGQIF5QvOp2OsaC8Hr0u5OmL3iGPD3t2
+ MW6UEoVHIrslkavHL+jjlQt0uhgQCGzmnCMxUghIqEQi5dZ3JQeYq3t1T
+ 4wxSt8Uio1UYif2Qkhz49TT+Q4EZDpZKpDtWCuDaJVPUzy8RVeKS7VqFQ
+ 4xBYizlxHDL+pwiXurc02zn7P3FYTqCSV83sSZzfayvM4FCEnluu29wqU Q==;
+X-CSE-ConnectionGUID: uBngfTA9RhSYae0Rq5i5bw==
+X-CSE-MsgGUID: WEDLu9NnSTCZRWBm3osJsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31187251"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="31187251"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2024 23:46:14 -0800
+X-CSE-ConnectionGUID: yk3PQ9YITmq4ctu67OBzEQ==
+X-CSE-MsgGUID: +MLEkJQmRDquM0d9A7usYw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,140,1728975600"; d="scan'208";a="90460959"
+X-IronPort-AV: E=Sophos;i="6.12,140,1728975600"; d="scan'208";a="90574557"
 Received: from jzloch-mobl.ger.corp.intel.com (HELO [10.213.195.118])
  ([10.213.195.118])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2024 23:15:59 -0800
-Message-ID: <4e57c32c-b5d0-42fb-bed4-39f8f9eab7c6@linux.intel.com>
-Date: Sat, 9 Nov 2024 08:15:56 +0100
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2024 23:46:12 -0800
+Message-ID: <8728cd47-7018-4f50-9155-4719e58cf145@linux.intel.com>
+Date: Sat, 9 Nov 2024 08:46:10 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t v4] igt-runner fact checking
+Subject: [PATCH i-g-t v5] igt-runner fact checking
 Content-Language: en-US
 In-Reply-To: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
 To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
@@ -74,10 +74,8 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 When using igt-runner, collect facts before each test and after the last test,
 and report when facts change. The facts are:
- - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0 = 8086:e20b Intel
-Battlemage (Gen20)
- - Associations between PCI GPU and DRM card:
-hardware.pci.drm_card_at_addr.0000:03:00.0 = card1
+ - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0 = 8086:e20b Intel Battlemage (Gen20)
+ - Associations between PCI GPU and DRM card: hardware.pci.drm_card_at_addr.0000:03:00.0 = card1
  - GPU kernel modules loaded: kernel.kmod_is_loaded.i915 = true
 
 This change imposes little execution overhead and adds just a few lines of
@@ -87,19 +85,20 @@ module:
 
  [39.203551] Initializing watchdogs
  [39.203618]   /dev/watchdog0
- [39.214492] [FACT before any test] new hardware.pci.gpu_at_addr.0000:00:02.0 =
-8086:7d55 Intel Meteorlake (Gen12) Meteor Lake-P [Intel Arc Graphics]
+ [39.214492] [FACT before any test] new hardware.pci.gpu_at_addr.0000:00:02.0 = 8086:7d55 Intel Meteorlake (Gen12) Meteor Lake-P [Intel Arc Graphics]
  [39.220845] [001/161] (960s left) i915_module_load (load)
  [39.288581] Starting subtest: load
  [41.638363] Subtest load: SUCCESS (2.350s)
- [41.667936] [FACT i915_module_load (load)] new
-hardware.pci.drm_card_at_addr.0000:00:02.0 = card0
+ [41.667936] [FACT i915_module_load (load)] new hardware.pci.drm_card_at_addr.0000:00:02.0 = card0
  [41.668109] [FACT i915_module_load (load)] new kernel.kmod_is_loaded.i915 = true
  [41.674193] [002/161] (958s left) core_auth (basic-auth)
  ...
  [43.616975] [006/161] (956s left) fbdev (eof)
  [43.998204] Subtest eof: SKIP (0.000s)
  [44.023783] [FACT fbdev (eof)] new kernel.kmod_is_loaded.amdgpu = true
+
+v5:
+ - fix the broken patch format from v4
 
 v4:
  - fix a bug on delete_fact()
@@ -120,6 +119,7 @@ v2:
  - add lib/tests/igt_facts.c for basic unit testing
  - bugfix: do not report a new gpu when the driver changes the gpu name
  - bugfix: do not report the pci_id twice on the gpu name
+
 
 CC: Ryszard Knop <ryszard.knop@intel.com>
 CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
@@ -256,8 +256,7 @@ index 000000000..009fff2cb
 + *
 + * Returns: bool idicating if the fact was deleted
 + */
-+static bool delete_fact(igt_fact_list *list, const char *name, const char
-*last_test)
++static bool delete_fact(igt_fact_list *list, const char *name, const char *last_test)
 +{
 +	igt_fact *fact = NULL;
 +	int i;
@@ -907,7 +906,8 @@ index ac73e1dde..6ff252174 100644
  #include "output_strings.h"
  #include "runnercomms.h"
 +#include "igt_facts.h"
-  #define KMSG_HEADER "[IGT] "
+ 
+ #define KMSG_HEADER "[IGT] "
  #define KMSG_WARN 4
 @@ -2306,6 +2307,8 @@ bool execute(struct execute_state *state,
  	sigset_t sigmask;
@@ -915,12 +915,14 @@ index ac73e1dde..6ff252174 100644
  	bool status = true;
 +	igt_fact_list fact_list = {0};
 +	char *last_test = NULL;
-  	if (state->dry) {
+ 
+ 	if (state->dry) {
  		outf("Dry run, not executing. Invoke igt_resume if you want to execute.\n");
 @@ -2438,6 +2441,10 @@ bool execute(struct execute_state *state,
  		int result;
  		bool already_written = false;
- +		/* Calls before running each test */
+ 
++		/* Calls before running each test */
 +		igt_facts(&fact_list, last_test);
 +		last_test = entry_display_name(&job_list->entries[state->next]);
 +
@@ -933,8 +935,8 @@ index ac73e1dde..6ff252174 100644
  	}
 +	/* Last call to collect facts after the last test runs */
 +	igt_facts(&fact_list, last_test);
-  	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL,
-0666)) >= 0) {
+ 
+ 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
  		dprintf(timefd, "%f\n", timeofday_double());
 -- 
 2.34.1
