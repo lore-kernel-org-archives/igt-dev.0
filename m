@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C314ED2E9DE
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Nov 2024 11:48:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3CBCD2E9E4
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Nov 2024 12:55:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D3FC10E1D7;
-	Mon, 11 Nov 2024 11:48:55 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hZ27Sx3y";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5ABCD10E1D7;
- Mon, 11 Nov 2024 11:48:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731325734; x=1762861734;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=e3WYg2djj/CQcdZ6W/4/wT6BO7Jvj3pK8UKuaQGq1X0=;
- b=hZ27Sx3yDe0GnqX2y4LfV5IDXtM78FFJj0VvG6KQxKPcb8x8N29Aq+Sz
- 1Z72yboUnWSXiYI84jzKVD32km8CgsOERFtusanfSKgXT8sPOSLBTTtd8
- 7ymBhflBfRklJxvtp/KyAt1H4iVoNUXl1zAFofekyPG/DxqVVFTOrqsrM
- 42lfHKEJ/04F/iXPqfV/r2RmLNOQOrx2qZArKxcgFN/34qyDjBBLAL7yh
- 6RQRMkYY/qe8Z/SzjZh2wkV8XzuzxMxUQYUibDS1j1sQ/tl2Vhb7bMS4a
- clGTSOyvIJ0CGcsa54gOAdv9px3ZXVXzEhAmGzDlGO/5qqvxiiHBwCWTb g==;
-X-CSE-ConnectionGUID: zapTLrzGS92dL7JF1FnKug==
-X-CSE-MsgGUID: fCznX+5yQluxDzO6dXW6qg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11252"; a="42526003"
-X-IronPort-AV: E=Sophos;i="6.12,145,1728975600"; d="scan'208";a="42526003"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2024 03:48:54 -0800
-X-CSE-ConnectionGUID: 1bTpqkf+REueYR2CSmzeUA==
-X-CSE-MsgGUID: n+VtE/L5SmmpEcAnHJ688A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,145,1728975600"; d="scan'208";a="110160668"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.91])
- ([10.245.244.91])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2024 03:48:53 -0800
-Message-ID: <648a6278-4c97-497c-b99b-59c6b876f0a9@intel.com>
-Date: Mon, 11 Nov 2024 11:48:51 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6099010E4AF;
+	Mon, 11 Nov 2024 12:55:14 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C37310E4A9;
+ Mon, 11 Nov 2024 12:55:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2941747962813125963=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t V2 2/2] tests/intel: Add xe_pci_membarrier test
-To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
-References: <20241023094327.965050-1-tejas.upadhyay@intel.com>
- <20241023094327.965050-3-tejas.upadhyay@intel.com>
- <33c9d6a1-b8cf-4449-9311-4d57c185e653@intel.com>
- <SJ1PR11MB6204F3272611F49594373C3181532@SJ1PR11MB6204.namprd11.prod.outlook.com>
- <SJ1PR11MB6204DF3E6F9799CC944C420B81532@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <SJ1PR11MB6204DF3E6F9799CC944C420B81532@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv2=2C1/2=5D_tests/kms=5Fflip=3A_Updating_the_skip_message?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 11 Nov 2024 12:55:13 -0000
+Message-ID: <173132971323.2561525.15630044276108346102@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241106100021.1831921-1-pranay.samala@intel.com>
+In-Reply-To: <20241106100021.1831921-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,254 +37,446 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============2941747962813125963==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 06/11/2024 13:12, Upadhyay, Tejas wrote:
-> 
-> 
->> -----Original Message-----
->> From: Upadhyay, Tejas
->> Sent: Wednesday, November 6, 2024 5:30 PM
->> To: Auld, Matthew <matthew.auld@intel.com>; igt-dev@lists.freedesktop.org;
->> intel-xe@lists.freedesktop.org
->> Subject: RE: [PATCH i-g-t V2 2/2] tests/intel: Add xe_pci_membarrier test
->>
->>
->>
->>> -----Original Message-----
->>> From: Auld, Matthew <matthew.auld@intel.com>
->>> Sent: Friday, November 1, 2024 7:25 PM
->>> To: Upadhyay, Tejas <tejas.upadhyay@intel.com>; igt-
->>> dev@lists.freedesktop.org; intel-xe@lists.freedesktop.org
->>> Subject: Re: [PATCH i-g-t V2 2/2] tests/intel: Add xe_pci_membarrier
->>> test
->>>
->>> On 23/10/2024 10:43, Tejas Upadhyay wrote:
->>>> We want to make sure that direct mmap mapping of physical page at
->>>> doorbell space and whole page is accessible in order to use pci
->>>> memory barrier effect effectively.
->>>>
->>>> This is basic pci memory barrier test to showcase xe driver support
->>>> for feature. In follow up patches we will have more of corner and
->>>> negative tests added later.
->>>>
->>>> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
->>>> ---
->>>>    tests/intel/xe_pci_membarrier.c | 80
->>>> +++++++++++++++++++++++++++++++++
->>>
->>> Could probably just plonk this in the existing mmap offset tests file?
->>
->> I tried this, but looks like none of existing methods which are using bo-create
->> looks related to this test. Also negative tests are also going to be different for
->> this test. I would think it should be good to keep this test separate. What you
->> think!
-> 
-> Or I can do atlest below :
+== Series Details ==
 
-Yes, somethng like that seems fine to me.
+Series: series starting with [i-g-t,v2,1/2] tests/kms_flip: Updating the skip message
+URL   : https://patchwork.freedesktop.org/series/140996/
+State : success
 
-> 
-> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> index fc5d73d59..8ae6405b5 100644
-> --- a/tests/intel/xe_mmap.c
-> +++ b/tests/intel/xe_mmap.c
-> @@ -64,6 +64,54 @@ test_mmap(int fd, uint32_t placement, uint32_t flags)
->          gem_close(fd, bo);
->   }
-> 
-> +#define PAGE_SHIFT 12
-> +#define PAGE_SIZE 4096
-> +
-> +/**
-> + * SUBTEST: pci_membarrier
-> + * Description: create pci memory barrier with write on defined mmap offset.
-> + * Test category: functionality test
-> + *
-> + */
-> +static void test_pci_membarrier(int xe)
-> +{
-> +        uint64_t flags = MAP_SHARED;
-> +        unsigned int prot = PROT_WRITE;
-> +        uint32_t *ptr;
-> +        uint64_t size = PAGE_SIZE;
-> +        struct timespec tv;
-> +        struct drm_xe_gem_mmap_offset mmo = {
-> +                .handle = 0,
-> +                .flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
-> +        };
-> +
-> +        igt_assert_eq(igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
-> +        ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
-> +        igt_assert(ptr != MAP_FAILED);
-> +
-> +        /* Check whole page for any errors, also check as
-> +         * we should not read written values back
-> +         */
-> +        for (int i = 0; i < size / sizeof(*ptr); i++) {
-> +                /* It is expected unconfigured doorbell space
-> +                 * will return read value 0xdeadbeef
-> +                 */
-> +                igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
-> +
-> +                igt_gettime(&tv);
-> +                ptr[i] = i;
-> +                if (READ_ONCE(ptr[i]) == i) {
-> +                        while (READ_ONCE(ptr[i]) == i)
-> +                                ;
-> +                        igt_info("fd:%d value retained for %"PRId64"ns pos:%d\n",
-> +                                 xe, igt_nsec_elapsed(&tv), i);
-> +                }
-> +                igt_assert_neq(READ_ONCE(ptr[i]), i);
-> +        }
-> +
-> +        munmap(ptr, size);
-> +}
-> +
->   /**
->    * SUBTEST: bad-flags
->    * Description: Test mmap offset with bad flags.
-> @@ -273,6 +321,9 @@ igt_main
->                  test_mmap(fd, vram_memory(fd, 0) | system_memory(fd),
->                            DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> 
-> +       igt_subtest("pci-membarrier")
-> +               test_pci_membarrier(fd);
-> +
->          igt_subtest("bad-flags")
->                  test_bad_flags(fd);
-> 
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 2724c7a9a..0daed46da 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -306,6 +306,7 @@ intel_xe_progs = [
->          'xe_noexec_ping_pong',
->          'xe_oa',
->          'xe_pat',
-> +        'xe_pci_membarrier',
-> 
-> 
->>
->> Tejas
->>
->>>
->>>>    tests/meson.build               |  1 +
->>>>    2 files changed, 81 insertions(+)
->>>>    create mode 100644 tests/intel/xe_pci_membarrier.c
->>>>
->>>> diff --git a/tests/intel/xe_pci_membarrier.c
->>>> b/tests/intel/xe_pci_membarrier.c new file mode 100644 index
->>>> 000000000..d0bf447b6
->>>> --- /dev/null
->>>> +++ b/tests/intel/xe_pci_membarrier.c
->>>> @@ -0,0 +1,80 @@
->>>> +// SPDX-License-Identifier: MIT
->>>> +/*
->>>> + * Copyright(c) 2024 Intel Corporation. All rights reserved.
->>>> + */
->>>> +
->>>> +#include "xe_drm.h"
->>>> +#include "igt.h"
->>>> +
->>>> +/**
->>>> + * TEST: Test if the driver is capable of putting pci memory
->>>> +barrier using mmap
->>>> + * Category: Core
->>>> + * Mega feature: General Core features
->>>> + * Sub-category: Memory management tests
->>>> + * Functionality: mmap with pre-defined offset  */
->>>> +
->>>> +IGT_TEST_DESCRIPTION("Basic MMAP tests pci memory barrier effect
->>>> +with special offset"); #define PAGE_SHIFT 12 #define PAGE_SIZE 4096
->>>> +
->>>> +/**
->>>> + * SUBTEST: basic
->>>> + * Description: create pci memory barrier with write on defined
->>>> +mmap
->>> offset.
->>>> + * Test category: functionality test
->>>> + *
->>>> + */
->>>> +
->>>> +static void pci_membarrier(int xe)
->>>> +{
->>>> +	uint64_t flags = MAP_SHARED;
->>>> +	unsigned int prot = PROT_WRITE;
->>>> +	uint32_t *ptr;
->>>> +	uint64_t size = PAGE_SIZE;
->>>> +	struct timespec tv;
->>>> +        struct drm_xe_gem_mmap_offset mmo = {
->>>> +                .handle = 0,
->>>> +                .flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
->>>> +        };
->>>> +
->>>> +        igt_assert_eq(igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET,
->>> &mmo), 0);
->>>> +        ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
->>>> +	igt_assert(ptr != MAP_FAILED);
->>>
->>> nit: formatting
->>>
->>>> +
->>>> +	/* Check whole page for any errors, also check as
->>>> +	 * we should not read written values back
->>>> +	 */
->>>> +	for (int i = 0; i < size / sizeof(*ptr); i++) {
->>>> +		/* It is expected unconfigured doorbell space
->>>> +		 * will return read value 0xdeadbeef
->>>> +		 */
->>>> +		igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
->>>> +
->>>> +		igt_gettime(&tv);
->>>> +		ptr[i] = i;
->>>> +		if (READ_ONCE(ptr[i]) == i) {
->>>
->>> Can this actually happen where the value is written?
->>>
->>> I think also consider adding some negative testcases. For example:
->>>
->>> - Try to mmap something larger than 4K. Ensure we get an error.
->>> - Try BARRIER mmap_offset, and also supply a BO. Ensure we get an error.
->>>
->>>> +			while (READ_ONCE(ptr[i]) == i)
->>>> +				;
->>>> +			igt_info("fd:%d value retained for %"PRId64"ns
->>> pos:%d\n",
->>>> +				 xe, igt_nsec_elapsed(&tv), i);
->>>> +		}
->>>> +		igt_assert_neq(READ_ONCE(ptr[i]), i);
->>>> +	}
->>>> +
->>>> +	munmap(ptr, size);
->>>> +}
->>>> +
->>>> +igt_main
->>>> +{
->>>> +	int xe;
->>>> +
->>>> +	igt_fixture {
->>>> +		xe = drm_open_driver(DRIVER_XE);
->>>> +	}
->>>> +
->>>> +	igt_subtest_f("basic")
->>>> +		pci_membarrier(xe);
->>>> +
->>>> +	igt_fixture
->>>> +		drm_close_driver(xe);
->>>> +}
->>>> diff --git a/tests/meson.build b/tests/meson.build index
->>>> 34b87b125..15131d812 100644
->>>> --- a/tests/meson.build
->>>> +++ b/tests/meson.build
->>>> @@ -306,6 +306,7 @@ intel_xe_progs = [
->>>>    	'xe_noexec_ping_pong',
->>>>    	'xe_oa',
->>>>    	'xe_pat',
->>>> +        'xe_pci_membarrier',
->>>>    	'xe_peer2peer',
->>>>    	'xe_pm',
->>>>    	'xe_pm_residency',
+== Summary ==
 
+CI Bug Log - changes from IGT_8099 -> IGTPW_12047
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/index.html
+
+Participating hosts (46 -> 45)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12047:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
+    - {bat-mtlp-9}:       NOTRUN -> [TIMEOUT][1] +3 other tests timeout
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-9/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_8099 and IGTPW_12047:
+
+### New IGT tests (2) ###
+
+  * igt@kms_atomic_transition@plane-all-transition-fencing@pipe-a-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.93] s
+
+  * igt@kms_atomic_transition@plane-all-transition-fencing@pipe-b-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.96] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12047 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-8:          [PASS][2] -> [DMESG-FAIL][3] ([i915#9500])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8099/bat-dg2-8/igt@i915_selftest@live@workarounds.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-8/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_atomic_transition@modeset-transition-fencing:
+    - bat-atsm-1:         NOTRUN -> [SKIP][4] ([i915#6078]) +15 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-atsm-1/igt@kms_atomic_transition@modeset-transition-fencing.html
+
+  * igt@kms_atomic_transition@modeset-transition-nonblocking:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][5] ([i915#9792]) +15 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-6/igt@kms_atomic_transition@modeset-transition-nonblocking.html
+
+  * igt@kms_atomic_transition@modeset-transition-nonblocking-fencing:
+    - bat-kbl-2:          NOTRUN -> [SKIP][6] +15 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-kbl-2/igt@kms_atomic_transition@modeset-transition-nonblocking-fencing.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][7] +15 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-bsw-nick/igt@kms_atomic_transition@plane-all-modeset-transition.html
+    - bat-adlp-9:         NOTRUN -> [FAIL][8] ([i915#5956]) +1 other test fail
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-9/igt@kms_atomic_transition@plane-all-modeset-transition.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][9] ([i915#1769] / [i915#3555]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][10] ([i915#1769] / [i915#3555]) +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-jsl-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-arlh-3:         NOTRUN -> [SKIP][11] ([i915#1769]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arlh-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-twl-1:          NOTRUN -> [SKIP][12] ([i915#1769]) +1 other test skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-twl-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][13] ([i915#3555]) +1 other test skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-rplp-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-arls-2:         NOTRUN -> [SKIP][14] ([i915#1769]) +1 other test skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arls-2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - fi-skl-6600u:       NOTRUN -> [SKIP][15] +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-skl-6600u/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][16] ([i915#1769] / [i915#3555]) +1 other test skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-jsl-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+    - bat-twl-2:          NOTRUN -> [SKIP][17] ([i915#1769]) +1 other test skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-twl-2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:
+    - bat-apl-1:          NOTRUN -> [SKIP][18] ([i915#1769]) +1 other test skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-apl-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - bat-arlh-2:         NOTRUN -> [SKIP][19] ([i915#11346]) +15 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arlh-2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][20] ([i915#1769] / [i915#3555]) +1 other test skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-rkl-11600/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-pnv-d510:        NOTRUN -> [SKIP][21] +15 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-pnv-d510/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][22] ([i915#1769] / [i915#3555]) +1 other test skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg1-7/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][23] ([i915#1769] / [i915#3555]) +1 other test skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-rpls-4/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][24] ([i915#1769]) +1 other test skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-cfl-8109u/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][25] ([i915#1769]) +1 other test skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-7567u/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-ilk-650:         NOTRUN -> [SKIP][26] ([i915#1769]) +1 other test skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-ilk-650/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][27] ([i915#1769] / [i915#3555]) +1 other test skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-tgl-1115g4/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-cfl-guc:         NOTRUN -> [SKIP][28] ([i915#1769]) +1 other test skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-cfl-guc/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][29] ([i915#1769]) +1 other test skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-cfl-8700k/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][30] ([i915#1769]) +1 other test skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-hsw-4770/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][31] ([i915#1769]) +1 other test skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-ivb-3770/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][32] ([i915#1769] / [i915#3555]) +1 other test skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-14/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+    - bat-mtlp-8:         NOTRUN -> [FAIL][33] ([i915#11808] / [i915#5956]) +1 other test fail
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][34] ([i915#1769]) +1 other test skip
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-elk-e7500/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][35] ([i915#1769] / [i915#3555]) +1 other test skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-8/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][36] +15 other tests skip
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-guc/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - bat-arls-1:         NOTRUN -> [SKIP][37] ([i915#1769]) +1 other test skip
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arls-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - fi-glk-j4005:       NOTRUN -> [SKIP][38] ([i915#1769]) +1 other test skip
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-glk-j4005/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][39] ([i915#1769] / [i915#3555]) +1 other test skip
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-9/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+
+  * igt@kms_atomic_transition@plane-all-transition:
+    - bat-adlp-11:        NOTRUN -> [SKIP][40] ([i915#10470] / [i915#10501]) +10 other tests skip
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-11/igt@kms_atomic_transition@plane-all-transition.html
+
+  * igt@kms_atomic_transition@plane-all-transition-fencing:
+    - bat-dg2-9:          NOTRUN -> [SKIP][41] ([i915#9197]) +15 other tests skip
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-9/igt@kms_atomic_transition@plane-all-transition-fencing.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][42] +15 other tests skip
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-x1275/igt@kms_atomic_transition@plane-all-transition-fencing.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][43] ([i915#10470]) +4 other tests skip
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-11/igt@kms_atomic_transition@plane-all-transition-fencing.html
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][44] +15 other tests skip
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-8809g/igt@kms_atomic_transition@plane-all-transition-fencing.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][45] ([i915#12311]) +15 other tests skip
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg1-6/igt@kms_atomic_transition@plane-all-transition-fencing.html
+
+  * igt@kms_atomic_transition@plane-all-transition-nonblocking:
+    - bat-adlm-1:         NOTRUN -> [SKIP][46] ([i915#9900]) +15 other tests skip
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlm-1/igt@kms_atomic_transition@plane-all-transition-nonblocking.html
+
+  * igt@kms_atomic_transition@plane-toggle-modeset-transition:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][47] +15 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-blb-e6850/igt@kms_atomic_transition@plane-toggle-modeset-transition.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][48] ([i915#9197]) +4 other tests skip
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-11/igt@kms_atomic_transition@plane-toggle-modeset-transition.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][49] ([i915#12697]) -> [PASS][50] +1 other test pass
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8099/bat-mtlp-8/igt@i915_selftest@live.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-8/igt@i915_selftest@live.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10470]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470
+  [i915#10501]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10501
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#11808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11808
+  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
+  [i915#12697]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12697
+  [i915#1769]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#5956]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5956
+  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+  [i915#9500]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500
+  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
+  [i915#9900]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8099 -> IGTPW_12047
+  * Linux: CI_DRM_15638 -> CI_DRM_15642
+
+  CI-20190529: 20190529
+  CI_DRM_15638: 2b31f47649daecf2da6611c70072dfbe4914c22a @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15642: e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12047: d5dc1208853e52597bc13af5adeaf9a135fcda84 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8099: 27be46dee80b6b0de80f9fa3cd9bb5f55edccaf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/index.html
+
+--===============2941747962813125963==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] tests/kms_flip: Updating the skip message</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140996/">https://patchwork.freedesktop.org/series/140996/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8099 -&gt; IGTPW_12047</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/index.html</p>
+<h2>Participating hosts (46 -&gt; 45)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12047:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_atomic_transition@plane-all-modeset-transition-fencing:<ul>
+<li>{bat-mtlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-9/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">TIMEOUT</a> +3 other tests timeout</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_8099 and IGTPW_12047:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition-fencing@pipe-a-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.93] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition-fencing@pipe-b-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.96] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12047 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8099/bat-dg2-8/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-8/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500">i915#9500</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@modeset-transition-fencing:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-atsm-1/igt@kms_atomic_transition@modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@modeset-transition-nonblocking:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-6/igt@kms_atomic_transition@modeset-transition-nonblocking.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@modeset-transition-nonblocking-fencing:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-kbl-2/igt@kms_atomic_transition@modeset-transition-nonblocking-fencing.html">SKIP</a> +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-bsw-nick/igt@kms_atomic_transition@plane-all-modeset-transition.html">SKIP</a> +15 other tests skip</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-9/igt@kms_atomic_transition@plane-all-modeset-transition.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5956">i915#5956</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-jsl-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arlh-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-twl-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-rplp-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arls-2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-skl-6600u/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> +1 other test skip</li>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-jsl-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-twl-2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:</p>
+<ul>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-apl-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arlh-2/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +15 other tests skip</li>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-rkl-11600/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-pnv-d510/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> +15 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg1-7/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-rpls-4/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-cfl-8109u/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-7567u/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-ilk-650/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-tgl-1115g4/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-cfl-guc/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-cfl-8700k/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-hsw-4770/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-ivb-3770/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-14/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11808">i915#11808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5956">i915#5956</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-elk-e7500/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-8/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-guc/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> +15 other tests skip</li>
+<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-arls-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-glk-j4005/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-9/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-11/igt@kms_atomic_transition@plane-all-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10501">i915#10501</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition-fencing:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-9/igt@kms_atomic_transition@plane-all-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197">i915#9197</a>) +15 other tests skip</li>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-x1275/igt@kms_atomic_transition@plane-all-transition-fencing.html">SKIP</a> +15 other tests skip</li>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlp-11/igt@kms_atomic_transition@plane-all-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a>) +4 other tests skip</li>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-kbl-8809g/igt@kms_atomic_transition@plane-all-transition-fencing.html">SKIP</a> +15 other tests skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg1-6/igt@kms_atomic_transition@plane-all-transition-fencing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-transition-nonblocking:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-adlm-1/igt@kms_atomic_transition@plane-all-transition-nonblocking.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-toggle-modeset-transition:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/fi-blb-e6850/igt@kms_atomic_transition@plane-toggle-modeset-transition.html">SKIP</a> +15 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-dg2-11/igt@kms_atomic_transition@plane-toggle-modeset-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197">i915#9197</a>) +4 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8099/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12697">i915#12697</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12047/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8099 -&gt; IGTPW_12047</li>
+<li>Linux: CI_DRM_15638 -&gt; CI_DRM_15642</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15638: 2b31f47649daecf2da6611c70072dfbe4914c22a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15642: e6ccd1b8868ec5bc1569c0dbd0dbbd46148cc541 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12047: d5dc1208853e52597bc13af5adeaf9a135fcda84 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8099: 27be46dee80b6b0de80f9fa3cd9bb5f55edccaf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2941747962813125963==--
