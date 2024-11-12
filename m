@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D9BD41D54
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 13:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50600D42B80
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 13:43:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B1F410E5F1;
-	Tue, 12 Nov 2024 13:30:57 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BJmK73sA";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F66710E5EE
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 13:30:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731418253; x=1762954253;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mFxfg7cB2B+jR74ZOANJ1vMC8Pc48JjMbDzZD96hdBY=;
- b=BJmK73sA/J/lR7gXE8oAZDxb7/Tw7XHdDmyoh98DSOKram7ZbCneH69b
- DCDUQf+nV7hzHvk05dD6reLYAflf6SnnkSthdoc2pznV30KJjj0R4tbaa
- O+LkeQAUm2UEE2mclvpLLOJcEhl5zTsnZuox3OHspQGeqdOyo+wmPz00p
- E1e0B9JmEdkQT0WDQNlJX/MFYNLZAmQ08u+bQccCeq41hwWVDurah7MyH
- CT6Cxk1VJLU5H/glPSbUGV1GcwSMINO0709+ZdPPDpmagEMzRHC/dIFY9
- r2u2OHJ4r5zGV3mv/O4rmLn6YzkdZD3ErWa9Yr6Z+mPX3Gx58PCnwCEMh g==;
-X-CSE-ConnectionGUID: CTbEXnrbQR6Thu+1GPKNxQ==
-X-CSE-MsgGUID: 8iehpGuoRFWCrv41EogruA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11253"; a="34118268"
-X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; d="scan'208";a="34118268"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2024 05:30:53 -0800
-X-CSE-ConnectionGUID: ztWKb94CQX2FVhQa3FjuUA==
-X-CSE-MsgGUID: gYP0RF1NRr6eo+AOdS7eNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; d="scan'208";a="92237867"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO fdugast-desk.intel.com)
- ([10.245.246.113])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2024 05:30:51 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t,
- v3 4/5] tests/intel/xe_fault_injection: Inject errors during vm
- create IOCTL
-Date: Tue, 12 Nov 2024 14:29:53 +0100
-Message-ID: <20241112133034.1919573-5-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241112133034.1919573-1-francois.dugast@intel.com>
-References: <20241112133034.1919573-1-francois.dugast@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BC2C10E5E1;
+	Tue, 12 Nov 2024 13:43:04 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF69110E5E1;
+ Tue, 12 Nov 2024 13:43:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0308345684816062635=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fcolor=3A_fix_data-?=
+ =?utf-8?q?=3Eoutput?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 Nov 2024 13:43:02 -0000
+Message-ID: <173141898297.3043937.13288544794807968733@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241112125602.1451660-1-swati2.sharma@intel.com>
+In-Reply-To: <20241112125602.1451660-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,121 +37,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the fault injection infrastructure to make targeted internal KMD
-functions fail when executing xe_vm_create_ioctl() so that more code
-paths are tested, such as error handling and unwinding.
+--===============0308345684816062635==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Order function names alphabetically (Rodrigo Vivi)
+== Series Details ==
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_fault_injection.c | 55 ++++++++++++++++++++++++++++++--
- 1 file changed, 53 insertions(+), 2 deletions(-)
+Series: tests/kms_color: fix data->output
+URL   : https://patchwork.freedesktop.org/series/141213/
+State : success
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index f99cc48c6..d321446b5 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -17,6 +17,8 @@
- #include "igt_device.h"
- #include "igt_kmod.h"
- #include "igt_sysfs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
- 
- #define INJECT_ERRNO			-ENOMEM
- 
-@@ -154,13 +156,47 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 	injection_list_do(INJECTION_LIST_REMOVE, function_name);
- }
- 
-+static int
-+simple_vm_create(int fd, unsigned int flags)
-+{
-+	struct drm_xe_vm_create create = {
-+		.flags = flags,
-+	};
-+
-+	return igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
-+}
-+
-+/**
-+ * SUBTEST: vm-create-fail-%s
-+ * Description: inject an error in function %arg[1] used in vm create IOCTL to make it fail
-+ * Functionality: fault
-+ *
-+ * arg[1]:
-+ * @xe_exec_queue_create_bind:	xe_exec_queue_create_bind
-+ * @xe_pt_create:		xe_pt_create
-+ * @xe_vm_create_scratch:	xe_vm_create_scratch
-+ */
-+static void
-+vm_create_fail(int fd, const char function_name[], unsigned int flags)
-+{
-+	igt_assert_eq(simple_vm_create(fd, flags), 0);
-+
-+	injection_list_do(INJECTION_LIST_ADD, function_name);
-+	set_retval(function_name, INJECT_ERRNO);
-+	igt_assert(simple_vm_create(fd, flags) != 0);
-+	injection_list_do(INJECTION_LIST_REMOVE, function_name);
-+
-+	igt_assert_eq(simple_vm_create(fd, flags), 0);
-+}
-+
- igt_main
- {
- 	int fd;
- 	char pci_slot[NAME_MAX];
- 	const struct section {
- 		const char *name;
--	} probe_function_sections[] = {
-+		unsigned int flags;
-+	} probe_fail_functions[] = {
- 		{ "wait_for_lmem_ready" },
- 		{ "xe_device_create" },
- 		{ "xe_ggtt_init_early" },
-@@ -176,16 +212,29 @@ igt_main
- 		{ "xe_wopcm_init" },
- 		{ }
- 	};
-+	const struct section vm_create_fail_functions[] = {
-+		{ "xe_exec_queue_create_bind", 0 },
-+		{ "xe_pt_create", 0 },
-+		{ "xe_vm_create_scratch", DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE },
-+		{ }
-+	};
- 
- 	igt_fixture {
- 		igt_require(fail_function_injection_enabled());
- 		fd = drm_open_driver(DRIVER_XE);
- 		igt_device_get_pci_slot_name(fd, pci_slot);
- 		setup_injection_fault();
-+	}
-+
-+	for (const struct section *s = vm_create_fail_functions; s->name; s++)
-+		igt_subtest_f("vm-create-fail-%s", s->name)
-+			vm_create_fail(fd, s->name, s->flags);
-+
-+	igt_fixture {
- 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
- 	}
- 
--	for (const struct section *s = probe_function_sections; s->name; s++)
-+	for (const struct section *s = probe_fail_functions; s->name; s++)
- 		igt_subtest_f("inject-fault-probe-function-%s", s->name)
- 			inject_fault_probe(fd, pci_slot, s->name);
- 
-@@ -193,4 +242,6 @@ igt_main
- 		drm_close_driver(fd);
- 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
- 	}
-+
-+
- }
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8103_BAT -> XEIGTPW_12078_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12078_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#288]) +32 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-bmg-2:          [PASS][2] -> [INCOMPLETE][3] ([Intel XE#2874] / [Intel XE#2998]) +1 other test incomplete
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+    - bat-adlp-7:         [PASS][4] -> [INCOMPLETE][5] ([Intel XE#2874]) +1 other test incomplete
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#2229])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][7] ([Intel XE#1861]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-dg2-oem2:       [INCOMPLETE][9] ([Intel XE#2874]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#2998]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8103 -> IGTPW_12078
+  * Linux: xe-2206-6d0fd3fb958e77717cedf35f49325c7c0dfa11c9 -> xe-2211-e92f691cd7f6341efe3f9d14759b7776ab2d8571
+
+  IGTPW_12078: 95f45b45088a57105d61f56fd0e244534c6da163 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8103: 43994179978d4a120226f253cb95209d59639ef9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2206-6d0fd3fb958e77717cedf35f49325c7c0dfa11c9: 6d0fd3fb958e77717cedf35f49325c7c0dfa11c9
+  xe-2211-e92f691cd7f6341efe3f9d14759b7776ab2d8571: e92f691cd7f6341efe3f9d14759b7776ab2d8571
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/index.html
+
+--===============0308345684816062635==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_color: fix data-&gt;output</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141213/">https://patchwork.freedesktop.org/series/141213/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8103_BAT -&gt; XEIGTPW_12078_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12078_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
+<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998">Intel XE#2998</a>) +1 other test incomplete</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8103/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12078/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8103 -&gt; IGTPW_12078</li>
+<li>Linux: xe-2206-6d0fd3fb958e77717cedf35f49325c7c0dfa11c9 -&gt; xe-2211-e92f691cd7f6341efe3f9d14759b7776ab2d8571</li>
+</ul>
+<p>IGTPW_12078: 95f45b45088a57105d61f56fd0e244534c6da163 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8103: 43994179978d4a120226f253cb95209d59639ef9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2206-6d0fd3fb958e77717cedf35f49325c7c0dfa11c9: 6d0fd3fb958e77717cedf35f49325c7c0dfa11c9<br />
+  xe-2211-e92f691cd7f6341efe3f9d14759b7776ab2d8571: e92f691cd7f6341efe3f9d14759b7776ab2d8571</p>
+
+</body>
+</html>
+
+--===============0308345684816062635==--
