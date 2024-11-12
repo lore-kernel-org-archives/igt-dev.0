@@ -4,55 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4182D41D52
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 05:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7638D41D53
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 05:11:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97F8B10E56E;
-	Tue, 12 Nov 2024 05:04:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5561310E233;
+	Tue, 12 Nov 2024 05:11:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MMHP/VAu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kVUx1o3O";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9736710E56E
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 05:04:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA77810E233
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 05:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731387856; x=1762923856;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=lG7HmeeoDuCsWn4LeINHy0uuJwxsRvT2VxzXvWajFtw=;
- b=MMHP/VAu9VR5WQuO+R5LytPGeEYFG+/geoR6xFyM/TEmBqcoA+2Lm0qn
- 8LUVZz4x8juVqhxIyUquu0MEfM+uffoZQ7P+sluQ4BIRT7ZAdnxHuLgpv
- +26wIUiw9w5p6FLtZuMT07MjzHmXy9Oo3LXvvb9zEF1lqwBBziijH+89n
- RtVFFclr8RjAq1MAU5rl2w7h5Yqd9PCu4Do9WLFKulwtoa7qEBOlwHq4d
- mO6yzwQMmqIgec2Zu6LBFpIBfMgw/PqG51gKP92pPlLuf4wBSK66MqDYU
- auWH7xnITFwa/DG7NmrWlCkpLfwfO5+ramloduu5bAowJWs5QyTo8ZY65 Q==;
-X-CSE-ConnectionGUID: 5EayrG8YTmGcbziRCsBhzw==
-X-CSE-MsgGUID: K4Z+S8BwQF2FG6y4/UlmJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11253"; a="35137116"
-X-IronPort-AV: E=Sophos;i="6.12,147,1728975600"; d="scan'208";a="35137116"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2024 21:04:16 -0800
-X-CSE-ConnectionGUID: GOCrvmgbQOSr8qJONTGLPA==
-X-CSE-MsgGUID: fdBVJpIERR2W8IMHr7Kgxg==
+ t=1731388284; x=1762924284;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=5XSbSLXlXpS958WvvjpKi7xhoPpR5He65Jmk12xjggQ=;
+ b=kVUx1o3OZ8nzPaXys+zFmbNwGLKg+v46BO0GH5IU8WKq/kxWE6EEAYWW
+ MWRjpBXk5Pv5/xfpaw81NxNoNLmfedn0ziUkqcGgDQGoOm6Yy5mm0/xSu
+ x3Oci3kkNVPRhbp/vIJiG9a434cU5IJY+ZLzeBf7N9Exti4wK/EY32yaK
+ BYfIk72EVlmJETTloBa8KGcw8Ee+8UsuBUgVKh7alVIQTmC4RqyHViLSj
+ 0dVeqrSk8Ms50Gzp9v5Gin1YHi4xvgGjTgj9sqnqHnnf1m21xU+ScE41C
+ ZeSGZTMpT6jMwol6f2FSdj0FFxEGHTqz06xFtK+nPbxiy7Awd0br7mmx9 g==;
+X-CSE-ConnectionGUID: 8dIMxWkEQfusUo2j29P33w==
+X-CSE-MsgGUID: 5UJlNr9gTCmYWD98s05Vjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="42304236"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="42304236"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2024 21:11:23 -0800
+X-CSE-ConnectionGUID: 4RamBxa/TRu2+iMLNZPIrw==
+X-CSE-MsgGUID: GoYTHDbST5Ko/2JWVAyBuw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,147,1728975600"; d="scan'208";a="86836221"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa006.fm.intel.com with ESMTP; 11 Nov 2024 21:04:12 -0800
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v9 3/3] lib/monitor_edids/hdmi_edids: Shuffle edid with
- the redundant one
-Date: Tue, 12 Nov 2024 10:34:42 +0530
-Message-Id: <20241112050442.1854319-4-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241112050442.1854319-1-pranay.samala@intel.com>
-References: <20241112050442.1854319-1-pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,147,1728975600"; d="scan'208";a="87695751"
+Received: from jayarakr-mobl1.gar.corp.intel.com (HELO [10.247.246.122])
+ ([10.247.246.122])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2024 21:11:22 -0800
+Message-ID: <4f1ea6b6-63b1-4385-bbe8-6ee0878fd0f0@intel.com>
+Date: Tue, 12 Nov 2024 10:41:17 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v9 3/3] lib/monitor_edids/hdmi_edids: Shuffle edid
+ with the redundant one
+To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com
+References: <20241112050442.1854319-1-pranay.samala@intel.com>
+ <20241112050442.1854319-4-pranay.samala@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20241112050442.1854319-4-pranay.samala@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,85 +73,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The EDID for the 1920x1200 at 59.950 Hz mode is already included.
-It will be swapped with the EDID for the 2560x1600 at 59.972 Hz mode
-to ensure full coverage of all EDIDs.
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- lib/monitor_edids/hdmi_edids.h | 52 +++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
-
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index 9d75cfa98..f6cfe82ff 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -250,23 +250,15 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "34353732323059575320000000fc0044"
- 		  "454c4c20323430375746500a000000fd"
- 		  "00384c1e5311000a2020202020200068" },
--	{ .name = "DEL_61462_DELL_U2410_HDMI",
--	  .edid = "00ffffffffffff0010ac16f04c4e4332"
--		  "1f13010380342078ea1ec5ae4f34b126"
--		  "0e5054a54b008180a940d100714f0101"
--		  "010101010101283c80a070b023403020"
--		  "360006442100001a000000ff00463532"
--		  "354d39375332434e4c0a000000fc0044"
--		  "454c4c2055323431300a2020000000fd"
--		  "00384c1e5111000a202020202020012e"
--		  "020329f15090050403020716011f1213"
--		  "14201511062309070767030c00100038"
--		  "2d83010000e3050301023a801871382d"
--		  "40582c450006442100001e011d801871"
--		  "1c1620582c250006442100009e011d00"
--		  "7251d01e206e28550006442100001e8c"
--		  "0ad08a20e02d10103e96000644210000"
--		  "1800000000000000000000000000003e" },
-+	{ .name = "HWP_12442_HP_Z30i_HDMI",
-+	  .edid = "00ffffffffffff0022f09a3001010101"
-+		  "06180103804028782a1df5ae4f35b325"
-+		  "0d5054a10800d100b30095008100a940"
-+		  "8180d1c081c0e26800a0a0402e603020"
-+		  "360081902100001a000000fd00324618"
-+		  "621b000a202020202020000000fc0048"
-+		  "50205a3330690a2020202020000000ff"
-+		  "00434e34343036304742530a20200078" },
- 	{ .name = "DTV_0_DTV_HDMI",
- 	  .edid = "00ffffffffffff001296000001010101"
- 		  "0c180103803a20780a0dc9a057479827"
-@@ -507,15 +499,23 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "442100001e011d00bc52d01e20b82855"
- 		  "4006442100001e8c0ad08a20e02d1010"
- 		  "3e9600064421000018000000000000c1" },
--	{ .name = "HWP_12442_HP_Z30i_HDMI",
--	  .edid = "00ffffffffffff0022f09a3001010101"
--		  "06180103804028782a1df5ae4f35b325"
--		  "0d5054a10800d100b30095008100a940"
--		  "8180d1c081c0e26800a0a0402e603020"
--		  "360081902100001a000000fd00324618"
--		  "621b000a202020202020000000fc0048"
--		  "50205a3330690a2020202020000000ff"
--		  "00434e34343036304742530a20200078" },
-+	{ .name = "DEL_61462_DELL_U2410_HDMI",
-+	  .edid = "00ffffffffffff0010ac16f04c4e4332"
-+		  "1f13010380342078ea1ec5ae4f34b126"
-+		  "0e5054a54b008180a940d100714f0101"
-+		  "010101010101283c80a070b023403020"
-+		  "360006442100001a000000ff00463532"
-+		  "354d39375332434e4c0a000000fc0044"
-+		  "454c4c2055323431300a2020000000fd"
-+		  "00384c1e5111000a202020202020012e"
-+		  "020329f15090050403020716011f1213"
-+		  "14201511062309070767030c00100038"
-+		  "2d83010000e3050301023a801871382d"
-+		  "40582c450006442100001e011d801871"
-+		  "1c1620582c250006442100009e011d00"
-+		  "7251d01e206e28550006442100001e8c"
-+		  "0ad08a20e02d10103e96000644210000"
-+		  "1800000000000000000000000000003e" },
- 	{ .name = "HWP_12447_HP_Z24i_HDMI",
- 	  .edid = "00ffffffffffff0022f09f3001010101"
- 		  "1a180103803420782e3c50a7544da226"
--- 
-2.34.1
-
+On 12-11-2024 10:34, Pranay Samala wrote:
+> The EDID for the 1920x1200 at 59.950 Hz mode is already included.
+> It will be swapped with the EDID for the 2560x1600 at 59.972 Hz mode
+> to ensure full coverage of all EDIDs.
+>
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
