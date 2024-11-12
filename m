@@ -4,63 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB11D32D8D
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 13:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CEAAD32D8D
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 13:14:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D72B10E308;
-	Tue, 12 Nov 2024 13:02:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E4BC10E1E9;
+	Tue, 12 Nov 2024 13:14:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gN7yus23";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hu3TgGNd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 677FF10E308
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 13:02:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C122410E1E9
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 13:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731416536; x=1762952536;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=wJY6BWAl8GAKTqTa/xWKsVcjV9RpksEhcsHS9iRyTtU=;
- b=gN7yus234b5Uk7GbQy7kK336mmYbAW+oFVx+rcgK4Do2eH/2gUnsXNo6
- kRVzWvDRq0J3evtZWtPioM0x3jF/69w0QH4vR5u43t9rSPvOaIdLesHge
- MJ8wPxl1Quj09qZMgD11q/QCi0nKd/WNNclZdZ0YnP5/SlLcOBIMdDlhD
- NenWTqU0cW5b+SKXV2LcyaBch3RDHgLVxqYQD4YKPvdcBR0zaGS//sQ5S
- o9Uo6t+xv/Z50SzHt7W1S1VaSqT29GwHNGwbv5rHTBoTaL9a2EUGqvGy4
- BjsFF1F0jyfk8Z9wcgEr87M0yxlZbAYFhKZ57KAygjNBfBM2YcBp79EmV Q==;
-X-CSE-ConnectionGUID: V7MaoWpIRJmD3DQwHQ5ECA==
-X-CSE-MsgGUID: EEMFBjrSQJaZU0+UvZyc3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11253"; a="42633592"
-X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; d="scan'208";a="42633592"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2024 05:02:16 -0800
-X-CSE-ConnectionGUID: Irw1NOBiRBST7QYyJDc+AA==
-X-CSE-MsgGUID: QJhMBCjCSDe5tjM9taaASw==
+ t=1731417259; x=1762953259;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=4LGm/OFHhrMuguf+rdtUMwsJvjbELUANDxvWW31suf4=;
+ b=hu3TgGNdwnXQ44JFr2HODd6VJrKS6RLIS4A9RJnga/C96MLj0atkKMce
+ 7dHsTjDFOyxclKsOGau1LUuwL+DxhvcMhgXJaqbaKs9zowo/+NNDYqGML
+ zmlKVekdd8iUSQRQX4E82BfgbPVKxwsVJHi4ThQfoixy2+9T1Qrncho6e
+ bBMJzHiU9K1wVa38upxjRVVlWS9cOdbWY5H2nQGF6hR00ElAkwxzpwSQo
+ a/AwT+rlRUS64KTwXcVEQdjLVg5s1mdC+sHNm8irSZwDMYtJv8nmadWUG
+ OKtmAD89rdw91daOV7Sq4v9AY0vYx8gDqo7gQ0vhQRCjF0htdzQjO7z3u A==;
+X-CSE-ConnectionGUID: 0ekhQ//gRvC7gILnh6tlGg==
+X-CSE-MsgGUID: WQIjzy8LTQKCSTccxoowoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11253"; a="30650073"
+X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; d="scan'208";a="30650073"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2024 05:14:18 -0800
+X-CSE-ConnectionGUID: 4OMskqVaSOCu+Z9lKnKY0Q==
+X-CSE-MsgGUID: m14Op9UTT7CBHBt/vUGcCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; d="scan'208";a="87358581"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.121])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2024 05:02:14 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Ngai-Mint Kwan
- <ngai-mint.kwan@linux.intel.com>
-Subject: Re: [PATCH i-g-t] lib: sync PCI ID macros with kernel
-In-Reply-To: <20241112115745.qwb2qqovpntdn6uz@zkempczy-mobl2>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20241106185846.1218835-1-ngai-mint.kwan@linux.intel.com>
- <20241107170833.u7e2s6fjpk7qvdks@kamilkon-desk.igk.intel.com>
- <87iksyeplx.fsf@intel.com>
- <20241112110901.omdnfywpzfvsw2mh@zkempczy-mobl2>
- <87cyj0d7co.fsf@intel.com>
- <20241112115745.qwb2qqovpntdn6uz@zkempczy-mobl2>
-Date: Tue, 12 Nov 2024 15:02:10 +0200
-Message-ID: <871pzgd2r1.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; d="scan'208";a="87221082"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.134.205])
+ ([10.245.134.205])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2024 05:14:17 -0800
+Message-ID: <57539d98-0d64-423c-b2fc-00e731cc6814@linux.intel.com>
+Date: Tue, 12 Nov 2024 14:14:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t, v2, 3/4] tests/intel/xe_exec_threads: wait for all
+ submissions to complete
+To: fei.yang@intel.com, igt-dev@lists.freedesktop.org
+References: <20241108011041.2257553-1-fei.yang@intel.com>
+ <20241108011041.2257553-4-fei.yang@intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20241108011041.2257553-4-fei.yang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,98 +71,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 12 Nov 2024, Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.=
-com> wrote:
-> On Tue, Nov 12, 2024 at 01:22:47PM +0200, Jani Nikula wrote:
->> On Tue, 12 Nov 2024, Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@int=
-el.com> wrote:
->> > On Thu, Nov 07, 2024 at 10:49:30PM +0200, Jani Nikula wrote:
->> >> On Thu, 07 Nov 2024, Kamil Konieczny <kamil.konieczny@linux.intel.com=
-> wrote:
->> >> > On 2024-11-06 at 10:58:46 -0800, Ngai-Mint Kwan wrote:
->> >> >> diff --git a/lib/i915_pciids.h b/lib/pciids.h
->> >> >> similarity index 93%
->> >> >> rename from lib/i915_pciids.h
->> >> >> rename to lib/pciids.h
->> >> >> index 3e39d644e..7632507af 100644
->> >> >> --- a/lib/i915_pciids.h
->> >> >> +++ b/lib/pciids.h
->> >> >> @@ -22,30 +22,23 @@
->> >> >>   * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR =
-OTHER
->> >> >>   * DEALINGS IN THE SOFTWARE.
->> >> >>   */
->> >> >> -#ifndef _I915_PCIIDS_H
->> >> >> -#define _I915_PCIIDS_H
->> >> >> -
->> >> >> -/*
->> >> >> - * A pci_device_id struct {
->> >> >> - *	__u32 vendor, device;
->> >> >> - *      __u32 subvendor, subdevice;
->> >> >> - *	__u32 class, class_mask;
->> >> >> - *	kernel_ulong_t driver_data;
->> >> >> - * };
->> >> >> - * Don't use C99 here because "class" is reserved and we want to
->> >> >> - * give userspace flexibility.
->> >> >> - */
->> >> >> -#define INTEL_VGA_DEVICE(id, info) { \
->> >> >> -	0x8086,	id, \
->> >> >> -	~0, ~0, \
->> >> >> -	0x030000, 0xff0000, \
->> >> >> -	(unsigned long) info }
->> >> >> -
->> >> >> -#define INTEL_QUANTA_VGA_DEVICE(info) { \
->> >> >> -	0x8086,	0x16a, \
->> >> >> -	0x152d,	0x8990, \
->> >> >> -	0x030000, 0xff0000, \
->> >> >> -	(unsigned long) info }
->> >> >> +#ifndef __PCIIDS_H__
->> >> >> +#define __PCIIDS_H__
->> >> >> +
->> >> >> +#ifdef __KERNEL__
->> >> >
->> >> > I am not sure if we want a kernel defs, this is for userspace
->> >> > so imho this ifdef KERNEL/endif should be deleted. Or write
->> >> > a rationale why you included it here, or make it a comment?
->> >> > +cc Zbigniew
->> >>=20
->> >> The file comes verbatim from kernel.
->> >
->> > I have mixed feelings about copying kernel headers here directly
->> > if they are not uapi. However __KERNEL__ conditional was added to
->> > this header intentionally so copying this file outside the kernel
->> > and further reuse in userspace code is harmless. But I would add
->> > some explanation to README.md about pciids.h copying procedure
->> > for the future.
->>=20
->> We've been doing this for PCI IDs for at least 10 years, and for
->> intel_vbt_defs.h for at least 7 years.
->>=20
->> Please feel free to send documentation patches.
+
+On 11/8/2024 2:10 AM, fei.yang@intel.com wrote:
+> From: Fei Yang <fei.yang@intel.com>
 >
-> I see no __KERNEL__ in current xe_pciids.h and i915_pciids.h so
-> there's some change from my perspective. intel_vbt_defs.h also
-> doesn't contain any kernel conditional inside. I think author
-> of this change should provide additional documentation about this
-> (not me) - commit message for me is not enough. Till this change
-> I haven't noticed any __KERNEL__ usage in igt codebase and I think
-> if it appears it should be documented what's for dead code is
-> imported to the project.
+> In test_compute_mode, there is an one second sleep waiting for all the
+> submissions to complete, but a hardcode wait is not reliable for test
+> that could have thousands of xe_execs submissions. Instead we should
+> wait for the ufence to make sure the GPU is inactive before unbinding
+> the BO.
+>
+> Signed-off-by: Fei Yang <fei.yang@intel.com>
 
-See igt commit e966143f5c5f ("lib/intel_device_info: use dedicated macro
-for struct pci_id_match init"). INTEL_VGA_DEVICE has been unused in igt
-since then.
-
-I wrapped the macro in #ifdef __KERNEL__ in kernel commit fc9cb46bdca8
-("drm/i915/pciids: use designated initializers in INTEL_VGA_DEVICE()")
-to avoid it being used in igt again.
-
-I'm not going to document this further in igt.
+Tested it locally
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
 
-BR,
-Jani.
-
-
---=20
-Jani Nikula, Intel
+> ---
+>  tests/intel/xe_exec_threads.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+>
+> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> index 962957cd7..433f2620a 100644
+> --- a/tests/intel/xe_exec_threads.c
+> +++ b/tests/intel/xe_exec_threads.c
+> @@ -404,16 +404,32 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  		}
+>  	}
+>  
+> -	j = flags & INVALIDATE ?
+> -		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
+> +	j = 0; /* wait for all submissions to complete */
+> +	if (flags & INVALIDATE)
+> +		/*
+> +		 * For !RACE cases xe_wait_ufence has been called in above for-loop
+> +		 * except the last batch of submissions. For RACE cases we will need
+> +		 * to wait for the second half of the submissions to complete. There
+> +		 * is a potential race here because the first half submissions might
+> +		 * have updated the fence in the old physical location while the test
+> +		 * is remapping the buffer from a different physical location, but the
+> +		 * wait_ufence only checks the fence from the new location which would
+> +		 * never be updated. We have to assume the first half of the submissions
+> +		 * complete before the second half. Will have a follow up patch to fix
+> +		 * this completely.
+> +		 */
+> +		j = (flags & RACE) ? (n_execs / 2 + 1) : (((n_execs - 1) & ~0x1f) + 1);
+> +	else if (flags & REBIND)
+> +		/*
+> +		 * For REBIND cases xe_wait_ufence has been called in above for-loop
+> +		 * except the last batch of submissions.
+> +		 */
+> +		j = ((n_execs - 1) & ~0x1f) + 1;
+> +
+>  	for (i = j; i < n_execs; i++)
+>  		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+>  			       exec_queues[i % n_exec_queues], fence_timeout);
+>  
+> -	/* Wait for all execs to complete */
+> -	if (flags & INVALIDATE)
+> -		sleep(1);
+> -
+>  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+>  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+>  	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
