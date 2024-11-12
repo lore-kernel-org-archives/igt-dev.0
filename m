@@ -4,40 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38715D32D7D
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 09:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEC2D32D7C
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 09:41:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEDB510E31F;
-	Tue, 12 Nov 2024 09:37:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BFC310E59D;
+	Tue, 12 Nov 2024 09:41:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="XVzw2+J9";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="VaEvkkPX";
 	dkim-atps=neutral
 Received: from bali.collaboradmins.com (bali.collaboradmins.com
  [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D81A010E31F
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 09:37:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A16B10E59D
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 09:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1731404273;
- bh=GDH6tiHsk85PEkB/bp/p/9hYNHCtky9sTgwSV5dW4EY=;
+ s=mail; t=1731404503;
+ bh=JPfpiPu5/3spKmbu1oTSpvafxrL9VXTuYyMvnvuxk3A=;
  h=Date:Subject:To:References:From:In-Reply-To:From;
- b=XVzw2+J9t0cyLOhyFCwrGzV97ysKbbPr58v3/5DctpT1aAbo2l44K3w49wRwkpkQX
- FX9nPct/aYmJkTEaaeF/2ULdQ5k/di26GNaUcRQxZEtysllTVRSC9B6QFBt/Kal8Ik
- RXpQygEqEh0SNjmxe4pe1CchgJQz4OyX0m6RuOoVupOPlxn8pOB5MYpaysPOgtCem6
- Um99KBklYIUeJn9Fcjh5S2odhGZ5AtKc0BTtVzbIGjTKG9uE5jKuZNFNMZ6a4IcHr/
- 4xbeBRiSmAfsq+wfRybj/d39Hz+LIIqu8fTl4wTwqLVMaK2fNig9K90mduVv/xsivP
- 0DNsE/eiN10mg==
+ b=VaEvkkPXpOSRvfgCPFRixuaODseNXM5PjxBmbbIZvCv9Xc5000TgxyYsbPBJCkMn0
+ Xs+InqcWscMoq0pPM8iyIKYQPRi5Kk2tsFm5M80s0EblTEuI/0vbSlP/4wh+Xp5681
+ ehxV1UdfLYfVat4wmdqcPfkRDFOkaqGLYXGH4fTVf+tSJBoEynaX94r6qve8XvftT9
+ 4VN+EvT09bXb3lZlsbMBjHOqu35foDkp6aKOJXnYLNphvJY02MOGlBZIWXMdwCZluq
+ ayzD/bGM315IedvCV3z+Qx3U6aNBlx4cvM1nmCzXJJLBVGC+EwgZukhWtYoCi/UzYn
+ FgyfWPxrtxecw==
 Received: from [192.168.50.250] (unknown [171.76.85.49])
  (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: vignesh)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id 76D4317E1524;
- Tue, 12 Nov 2024 10:37:51 +0100 (CET)
-Message-ID: <ae418a89-5d58-4841-aec0-acca586af192@collabora.com>
-Date: Tue, 12 Nov 2024 15:07:40 +0530
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id AAA0917E1541;
+ Tue, 12 Nov 2024 10:41:41 +0100 (CET)
+Message-ID: <88b97a99-0077-41cc-93c5-37c145647885@collabora.com>
+Date: Tue, 12 Nov 2024 15:11:39 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 1/5] lib/chamelium/v3: Introduce the foundation
- for the Chamelium v3 wrapper
+Subject: Re: [PATCH i-g-t v3 0/5] tests/chamelium: Integrate the chamelium v3
 To: Louis Chauvet <louis.chauvet@bootlin.com>, igt-dev@lists.freedesktop.org, 
  ihf@google.com, markyacoub@google.com, thomas.petazzoni@bootlin.com,
  jeremie.dautheribes@bootlin.com,
@@ -45,10 +44,9 @@ To: Louis Chauvet <louis.chauvet@bootlin.com>, igt-dev@lists.freedesktop.org,
  20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com,
  20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com
 References: <20241022-dev-remove-static-ports-v3-0-bfbc7b2a83b9@bootlin.com>
- <20241022-dev-remove-static-ports-v3-1-bfbc7b2a83b9@bootlin.com>
 Content-Language: en-US
 From: Vignesh Raman <vignesh.raman@collabora.com>
-In-Reply-To: <20241022-dev-remove-static-ports-v3-1-bfbc7b2a83b9@bootlin.com>
+In-Reply-To: <20241022-dev-remove-static-ports-v3-0-bfbc7b2a83b9@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,223 +67,99 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Hi Louis,
 
 On 22/10/24 22:01, Louis Chauvet wrote:
-> Adds a build option to enable building the Chamelium v3 wrapper.
+> Hi all,
 > 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->   lib/chamelium/v3/igt_chamelium.c |  9 +++++++++
->   lib/chamelium/v3/igt_chamelium.h |  8 ++++++++
->   lib/igt_kms.c                    |  8 ++++++++
->   lib/meson.build                  | 12 +++++++++++-
->   lib/tests/meson.build            |  4 ++++
->   meson.build                      | 15 ++++++++++++++-
->   meson_options.txt                |  4 ++++
->   tests/meson.build                | 25 +++++++++++++++++++++++++
->   8 files changed, 83 insertions(+), 2 deletions(-)
+> This patch series introduces a new wrapper for the Chameleon v3 board, a
+> testing tool used primarily for Chromebooks, but also by community members
+> to increase test coverage of graphic devices. The Chameleon v3 is an
+> upgrade from its predecessor, with the ability to emulate 2 HDMI and 2
+> DisplayPort devices, including MST devices.
 > 
-> diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-> new file mode 100644
-> index 000000000000..152242998013
-> --- /dev/null
-> +++ b/lib/chamelium/v3/igt_chamelium.c
-> @@ -0,0 +1,9 @@
-> +// SPDX-License-Identifier: MIT
-> +
-> +#include <igt_core.h>
-> +#include "igt_chamelium.h"
-> +
-> +void chamelium_v3_init(void)
-> +{
-> +	igt_info("Using chamelium v3\n");
-> +}
-> diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-> new file mode 100644
-> index 000000000000..3195be2bc384
-> --- /dev/null
-> +++ b/lib/chamelium/v3/igt_chamelium.h
-> @@ -0,0 +1,8 @@
-> +/* SPDX-License-Identifier: MIT */
-> +
-> +#ifndef V3_IGT_CHAMELIUM_H
-> +#define V3_IGT_CHAMELIUM_H
-> +
-> +void chamelium_v3_init(void);
-> +
-> +#endif //V3_IGT_CHAMELIUM_H
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 56003ceaf9dc..4d9df90e771f 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2908,7 +2908,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->   	if (!resources)
->   		goto out;
->   
-> +/*
-> + * FIXME: Dirty hack to avoid those lines when chamelium v3 is used
-> + *
-> + * Must be replaced with a configuration file information, so the end user can choose if the
-> + * chamelium must be connected or not.
-> + */
->   #ifdef HAVE_CHAMELIUM_V2
-> +#ifndef HAVE_CHAMELIUM_V3
->   	{
->   		struct chamelium *chamelium;
->   
-> @@ -2923,6 +2930,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->   			chamelium_deinit_rpc_only(chamelium);
->   		}
->   	}
-> +#endif
->   #endif
->   
->   	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 5769f96fbdc1..8bcbd58bc0e6 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -195,7 +195,6 @@ if chamelium_v2.found()
->   		'chamelium/v2/igt_chamelium.c',
->   		'chamelium/v2/igt_chamelium_stream.c'
->   	]
-> -	lib_sources += 'monitor_edids/monitor_edids_helper.c'
->   endif
->   
->   if build_xe_eudebug
-> @@ -203,6 +202,17 @@ if build_xe_eudebug
->   	lib_sources += 'xe/xe_eudebug.c'
->   endif
->   
-> +if chamelium_v3.found()
-> +	lib_deps += chamelium_v3
-> +	lib_sources += [
-> +		'chamelium/v3/igt_chamelium.c',
-> +	]
-> +endif
-> +
-> +if chamelium_v2.found() or chamelium_v3.found()
-> +	lib_sources += 'monitor_edids/monitor_edids_helper.c'
-> +endif
-> +
->   if libprocps.found()
->   	lib_deps += libprocps
->   else
-> diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-> index fa7741b7be61..8a96cd73ee42 100644
-> --- a/lib/tests/meson.build
-> +++ b/lib/tests/meson.build
-> @@ -41,6 +41,10 @@ if chamelium_v2.found()
->   	lib_tests += 'igt_audio'
->   endif
->   
-> +if chamelium_v3.found()
-> +	lib_deps += chamelium_v3
-> +endif
-> +
->   foreach lib_test : lib_tests
->   	exec = executable(lib_test, lib_test + '.c', install : false,
->   			dependencies : igt_deps)
-> diff --git a/meson.build b/meson.build
-> index b4b1026acb4c..d5d7b325eacd 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -87,6 +87,7 @@ foreach cc_arg : cc_args
->   endforeach
->   
->   build_chamelium_v2 = get_option('chamelium_v2')
-> +build_chamelium_v3 = get_option('chamelium_v3')
->   build_docs = get_option('docs')
->   build_tests = not get_option('tests').disabled()
->   build_xe = not get_option('xe_driver').disabled()
-> @@ -174,7 +175,7 @@ if not xmlrpc.found() and xmlrpc_cmd.found()
->   	endif
->   endif
->   
-> -if build_chamelium_v2.enabled() and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
-> +if (build_chamelium_v2.enabled() or build_chamelium_v3.enabled()) and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
->   	error('Chamelium build forced and required dependency xmlrpc not found')
->   endif
->   
-> @@ -197,6 +198,18 @@ endif
->   
->   build_info += 'Build Chamelium v2 test: @0@'.format(chamelium_v2.found())
+> The board can read and analyze any stream on the DisplayPort and HDMI
+> cables, and even take captures, making it an ideal tool for testing
+> hardware, driver, and user space behavior in specific situations, such as
+> screen hotplugging and multiple MST screens. However, the changes between
+> the v2 and v3, such as the addition of MST support and the removal of CRC
+> for screen captures, would require significant modifications to the
+> existing tests and wrappers.
+> 
+> To avoid this complexity and ensure that the Chameleon v3 is fully
+> supported and the v2 is not broken, I wrote a new wrapper with
+> simplicity and ease of use in mind. The Chameleon v3 wrapper should only
+> manage the Chameleon itself, without the need for DRM displays, EDID
+> caching/modifications, or state machines. This approach will make it
+> easier for developers to use the Chameleon v3 and contribute to its
+> development.
+> 
+> This series depends on:
+> -https://lore.kernel.org/igt-dev/20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
+> -https://lore.kernel.org/igt-dev/20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
+> -https://lore.kernel.org/igt-dev/20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com
 
-We need to add this for Chamelium v3 test also?
+I have tested this series and the dependent patches,
+https://gitlab.freedesktop.org/vigneshraman/igt-gpu-tools/-/commits/test-chamelium-v3-fix/?ref_type=heads
 
->   
-> +
-> +if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and libcurl.found()
-> +	config.set('HAVE_CHAMELIUM_V3', 1)
-> +	chamelium_v3 = declare_dependency(dependencies : [
-> +										  xmlrpc,
-> +										  xmlrpc_util,
-> +										  xmlrpc_client,
-> +									  ])
-> +else
-> +	chamelium_v3 = disabler()
-> +endif
-> +
->   pthreads = dependency('threads')
->   math = cc.find_library('m')
->   realtime = cc.find_library('rt')
-> diff --git a/meson_options.txt b/meson_options.txt
-> index 3a6edefba349..ebdb9976da1a 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -12,6 +12,10 @@ option('chamelium_v2',
->          type : 'feature',
->          description : 'Build Chamelium v2 test')
->   
-> +option('chamelium_v3',
-> +       type : 'feature',
-> +       description : 'Build Chamelium v3 tests')
-> +
->   option('valgrind',
->          type : 'feature',
->          description : 'Build with support for valgrind annotations')
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 4eebe1838979..861101c2534e 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -340,6 +340,9 @@ chamelium_v2_progs = [
->   	'kms_chamelium_hpd',
->   ]
->   
-> +chamelium_v3_progs = [
-> +]
-> +
->   test_deps = [ igt_deps ]
->   
->   if libdrm_nouveau.found()
-> @@ -457,6 +460,28 @@ if chamelium_v2.found()
->   	test_deps += chamelium_v2
->   endif
->   
-> +if chamelium_v3.found()
-> +	foreach prog : chamelium_v3_progs
-> +		testexe = executable(prog,
-> +				 [join_paths('chamelium', 'v3', prog + '.c')],
-> +				 dependencies : test_deps,
-> +				 install_dir : libexecdir,
-> +				 install_rpath : libexecdir_rpathdir,
-> +				 install : true)
-> +		test_list += prog
-> +		test_executables += testexe
-> +		name = prog.split('/').get(-1)
-> +		if not meson.is_cross_build()
-> +			testlist_files += custom_target(name + '.testlist',
-> +				    build_by_default : true,
-> +				    command : [testexe, '--show-testlist'],
-> +				    capture : true,
-> +				    output : name + '.testlist')
-> +		endif
-> +	endforeach
-> +	test_deps += chamelium_v3
-> +endif
-> +
->   subdir('amdgpu')
->   
->   subdir('msm')
-> 
+kms_chamelium_v3_basic test passes in drm-ci,
+https://gitlab.freedesktop.org/vigneshraman/linux/-/jobs/66445667
+
 
 Regards,
 Vignesh
+
+
+> 
+> In addition, I will send more series to:
+> - add more methods to the chamelium wrapper
+> - add new options in the configuration file to configure the chamelium
+> - add tests for the cv3
+> 
+> ---
+> Changes in v3:
+> - Rebased and splitted the series
+> - Fixed few build issues
+> - Link to v2: https://lore.kernel.org/r/20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com
+> 
+> Changes in v2:
+> - Mainly splitting and cleaning work since the RFC,
+> - Link to v1: https://lore.kernel.org/r/20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com
+> 
+> ---
+> Louis Chauvet (5):
+>        lib/chamelium/v3: Introduce the foundation for the Chamelium v3 wrapper
+>        lib/chamelium/v3: Introduce initialization and cleanup of Chamelium-related structures
+>        lib/chamelium/v3: Add method to discover Chamelium ports
+>        lib/chamelium/v3: Implement method to retrieve Chamelium port names
+>        tests/chamelium/v3: Implement a basic Chamelium v3 accessibility test
+> 
+>   lib/chamelium/v3/igt_chamelium.c            | 309 ++++++++++++++++++++++++++++
+>   lib/chamelium/v3/igt_chamelium.h            |  52 +++++
+>   lib/igt_kms.c                               |   8 +
+>   lib/meson.build                             |  12 +-
+>   lib/tests/meson.build                       |   4 +
+>   meson.build                                 |  15 +-
+>   meson_options.txt                           |   4 +
+>   tests/chamelium/v3/kms_chamelium_v3_basic.c |  30 +++
+>   tests/meson.build                           |  26 +++
+>   9 files changed, 458 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 9b8c0f6da8898f760bfaa2113455eb84b68a69f4
+> change-id: 20240522-dev-remove-static-ports-9382ffbbf146
+> prerequisite-message-id: 20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
+> prerequisite-patch-id: 0562bbe57a0b489e7f46a51717c54ea26296cb8c
+> prerequisite-patch-id: a16d6fdd238eab5a91630d0934c9186669406fc7
+> prerequisite-patch-id: c7fcc64d709f283da748a0f9bbe3bd6143d76300
+> prerequisite-patch-id: 09fc5e2f569fa8287e767ceb353bc0a0f94ae2e1
+> prerequisite-patch-id: 63cf2f6323333bb8cbd0dbbd883b5c9fe373dea1
+> prerequisite-message-id: 20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
+> prerequisite-patch-id: 90ffdddeda6dd4cd2ae64e60fb31b0bbfee0250f
+> prerequisite-patch-id: d62e9d4981a68ac6e71544ab2a3dfec37dfa3299
+> prerequisite-patch-id: 3d898f58702cc303e18d3afc487e46f68641989b
+> prerequisite-patch-id: 57f5446073d42a01c29e6ff8a24f6609eedb49a1
+> prerequisite-patch-id: e6d6ee4ecd0e738a60091b19449c8622bb8bb6ae
+> prerequisite-message-id: 20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com
+> prerequisite-patch-id: 4ac6bf11d25e80e99d5607d4864c3c7b4273dde3
+> prerequisite-patch-id: 2246b4289eca0b8e8b02519051af7564b0875a2a
+> prerequisite-patch-id: 394057bc39308265a03e026ac924f88d3d933d49
+> prerequisite-patch-id: ad1f0838e81fa620013313316afd35a3d5c146fa
+> 
+> Best regards,
