@@ -4,51 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEC2D32D7C
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 09:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DE2BD32D82
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Nov 2024 10:00:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BFC310E59D;
-	Tue, 12 Nov 2024 09:41:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB10C10E5A1;
+	Tue, 12 Nov 2024 10:00:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="VaEvkkPX";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="VJA8GWBQ";
 	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A16B10E59D
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 09:41:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1731404503;
- bh=JPfpiPu5/3spKmbu1oTSpvafxrL9VXTuYyMvnvuxk3A=;
- h=Date:Subject:To:References:From:In-Reply-To:From;
- b=VaEvkkPXpOSRvfgCPFRixuaODseNXM5PjxBmbbIZvCv9Xc5000TgxyYsbPBJCkMn0
- Xs+InqcWscMoq0pPM8iyIKYQPRi5Kk2tsFm5M80s0EblTEuI/0vbSlP/4wh+Xp5681
- ehxV1UdfLYfVat4wmdqcPfkRDFOkaqGLYXGH4fTVf+tSJBoEynaX94r6qve8XvftT9
- 4VN+EvT09bXb3lZlsbMBjHOqu35foDkp6aKOJXnYLNphvJY02MOGlBZIWXMdwCZluq
- ayzD/bGM315IedvCV3z+Qx3U6aNBlx4cvM1nmCzXJJLBVGC+EwgZukhWtYoCi/UzYn
- FgyfWPxrtxecw==
-Received: from [192.168.50.250] (unknown [171.76.85.49])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested) (Authenticated sender: vignesh)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id AAA0917E1541;
- Tue, 12 Nov 2024 10:41:41 +0100 (CET)
-Message-ID: <88b97a99-0077-41cc-93c5-37c145647885@collabora.com>
-Date: Tue, 12 Nov 2024 15:11:39 +0530
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com
+ [209.85.215.174])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5EC110E5A1
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 10:00:05 +0000 (UTC)
+Received: by mail-pg1-f174.google.com with SMTP id
+ 41be03b00d2f7-7f45ab88e7fso1408506a12.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Nov 2024 02:00:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1731405605; x=1732010405; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NF5iCgS19Sg8kuxw5agEt1aNGyE+wawTKAecQMKnnn8=;
+ b=VJA8GWBQEUMAzdcCCKB5mfU3l6AufvMAc7/xqRmf8LQhedwCNhXfsHRrFlt8sZchOj
+ sgEMmqAnQx/+2Jo6MMZT4HmzwYeQm/hViaVcbPR4dLJHPgTHR7kIEbIPcfQ9rc0crjZc
+ d7bAd9QyHy7RKNY/oabEY+L3L08FeD4/YoGnVTJxvI02bHBdmEmNqc9jEFNpFYONLJWP
+ QhCeHAQJSu+Be7D7a7YB547KsU0Rc2M4EzotwRbxdrAs2ldv22/IqcO4j+5iyYFH23ZB
+ 1ap75vpAiTmBzEkFWcuqZ1jVxRoq3zNcdqmTQAqNS+SPEumlrOJuoH7RRAwYGnwfzkzh
+ q6rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731405605; x=1732010405;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NF5iCgS19Sg8kuxw5agEt1aNGyE+wawTKAecQMKnnn8=;
+ b=OVUfcOY09kXpG/PQZTWYnxRLigs62UARTX1znLZaYNGBjtq6L9gEpqDfJt+b0I9/qq
+ a39DwOpKEfA8fbueHV8W2xFyAdWKpqFFJy2AkZSLwQDYq4XeyYrDz0BFeuXXPQHhcS7G
+ VO60XOOqX3KT0nGICMNeBEq0lgpTxM0BXHzVXKj2ZGaA8WDvX/Ox0XliSmAf4tdib+Hc
+ s+tig8+PZNbhGESgzOHLV/sQAtVVH4UNiPC3IGXkVRbyjDQDYPzFlRQoXFSnP0gGvrP6
+ Xf3mXM/y06ts7C3lvh+V0YBPlAoULEfNXeY4KiHf7MOvtvAq461KClk3A7Q0KNupF2R5
+ OufQ==
+X-Gm-Message-State: AOJu0YwWMh1Ja9lZDk2cZ4c1w4FHChpqMvEBPEp0ZvEWFyqGdkki4ef0
+ pmwhj9fd+zjBtkmeQhFyUNa4lSBjyF4FX+Wy1laUsaeR5Z9+DHHWqT21dE9AyuxiuTmNChEtqPK
+ YMjs4wJc6W59ymuyORSYGs3YYC/8=
+X-Google-Smtp-Source: AGHT+IEuwuBi1viml00vlQ9lZXYxF2alRTML5DnvRld+wLIdJUamjaFGxoocPc6HjdxRjyWnXZjKpPKyXKHSCwQ0pRI=
+X-Received: by 2002:a05:6a20:2588:b0:1cf:3677:1c4a with SMTP id
+ adf61e73a8af0-1dc228fc6ddmr24085107637.16.1731405605194; Tue, 12 Nov 2024
+ 02:00:05 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 0/5] tests/chamelium: Integrate the chamelium v3
-To: Louis Chauvet <louis.chauvet@bootlin.com>, igt-dev@lists.freedesktop.org, 
- ihf@google.com, markyacoub@google.com, thomas.petazzoni@bootlin.com,
- jeremie.dautheribes@bootlin.com,
- 20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com,
- 20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com,
- 20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com
-References: <20241022-dev-remove-static-ports-v3-0-bfbc7b2a83b9@bootlin.com>
-Content-Language: en-US
-From: Vignesh Raman <vignesh.raman@collabora.com>
-In-Reply-To: <20241022-dev-remove-static-ports-v3-0-bfbc7b2a83b9@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
+ <20241004104121.32750-6-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241004104121.32750-6-ville.syrjala@linux.intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Tue, 12 Nov 2024 11:59:54 +0200
+Message-ID: <CAJ=qYWT3G7i7TrNg-ZtrLjg1RZo5A1-JsyeBL+uNWdRK09DS0A@mail.gmail.com>
+Subject: Re: [PATCH i-g-t 05/14] lib/igt_draw: Use function pointers for the
+ linear<->tiled conversion
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,102 +78,180 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-On 22/10/24 22:01, Louis Chauvet wrote:
-> Hi all,
-> 
-> This patch series introduces a new wrapper for the Chameleon v3 board, a
-> testing tool used primarily for Chromebooks, but also by community members
-> to increase test coverage of graphic devices. The Chameleon v3 is an
-> upgrade from its predecessor, with the ability to emulate 2 HDMI and 2
-> DisplayPort devices, including MST devices.
-> 
-> The board can read and analyze any stream on the DisplayPort and HDMI
-> cables, and even take captures, making it an ideal tool for testing
-> hardware, driver, and user space behavior in specific situations, such as
-> screen hotplugging and multiple MST screens. However, the changes between
-> the v2 and v3, such as the addition of MST support and the removal of CRC
-> for screen captures, would require significant modifications to the
-> existing tests and wrappers.
-> 
-> To avoid this complexity and ensure that the Chameleon v3 is fully
-> supported and the v2 is not broken, I wrote a new wrapper with
-> simplicity and ease of use in mind. The Chameleon v3 wrapper should only
-> manage the Chameleon itself, without the need for DRM displays, EDID
-> caching/modifications, or state machines. This approach will make it
-> easier for developers to use the Chameleon v3 and contribute to its
-> development.
-> 
-> This series depends on:
-> -https://lore.kernel.org/igt-dev/20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
-> -https://lore.kernel.org/igt-dev/20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
-> -https://lore.kernel.org/igt-dev/20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com
-
-I have tested this series and the dependent patches,
-https://gitlab.freedesktop.org/vigneshraman/igt-gpu-tools/-/commits/test-chamelium-v3-fix/?ref_type=heads
-
-kms_chamelium_v3_basic test passes in drm-ci,
-https://gitlab.freedesktop.org/vigneshraman/linux/-/jobs/66445667
-
-
-Regards,
-Vignesh
-
-
-> 
-> In addition, I will send more series to:
-> - add more methods to the chamelium wrapper
-> - add new options in the configuration file to configure the chamelium
-> - add tests for the cv3
-> 
+On Fri, Oct 4, 2024 at 1:41=E2=80=AFPM Ville Syrjala
+<ville.syrjala@linux.intel.com> wrote:
+>
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Replace the bare switch statements in the linear<->tiled
+> conversions with functions pointers. This will allow us to
+> more cleanly provide platform specific implementations for
+> each tiling format.
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > ---
-> Changes in v3:
-> - Rebased and splitted the series
-> - Fixed few build issues
-> - Link to v2: https://lore.kernel.org/r/20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com
-> 
-> Changes in v2:
-> - Mainly splitting and cleaning work since the RFC,
-> - Link to v1: https://lore.kernel.org/r/20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com
-> 
-> ---
-> Louis Chauvet (5):
->        lib/chamelium/v3: Introduce the foundation for the Chamelium v3 wrapper
->        lib/chamelium/v3: Introduce initialization and cleanup of Chamelium-related structures
->        lib/chamelium/v3: Add method to discover Chamelium ports
->        lib/chamelium/v3: Implement method to retrieve Chamelium port names
->        tests/chamelium/v3: Implement a basic Chamelium v3 accessibility test
-> 
->   lib/chamelium/v3/igt_chamelium.c            | 309 ++++++++++++++++++++++++++++
->   lib/chamelium/v3/igt_chamelium.h            |  52 +++++
->   lib/igt_kms.c                               |   8 +
->   lib/meson.build                             |  12 +-
->   lib/tests/meson.build                       |   4 +
->   meson.build                                 |  15 +-
->   meson_options.txt                           |   4 +
->   tests/chamelium/v3/kms_chamelium_v3_basic.c |  30 +++
->   tests/meson.build                           |  26 +++
->   9 files changed, 458 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 9b8c0f6da8898f760bfaa2113455eb84b68a69f4
-> change-id: 20240522-dev-remove-static-ports-9382ffbbf146
-> prerequisite-message-id: 20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
-> prerequisite-patch-id: 0562bbe57a0b489e7f46a51717c54ea26296cb8c
-> prerequisite-patch-id: a16d6fdd238eab5a91630d0934c9186669406fc7
-> prerequisite-patch-id: c7fcc64d709f283da748a0f9bbe3bd6143d76300
-> prerequisite-patch-id: 09fc5e2f569fa8287e767ceb353bc0a0f94ae2e1
-> prerequisite-patch-id: 63cf2f6323333bb8cbd0dbbd883b5c9fe373dea1
-> prerequisite-message-id: 20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
-> prerequisite-patch-id: 90ffdddeda6dd4cd2ae64e60fb31b0bbfee0250f
-> prerequisite-patch-id: d62e9d4981a68ac6e71544ab2a3dfec37dfa3299
-> prerequisite-patch-id: 3d898f58702cc303e18d3afc487e46f68641989b
-> prerequisite-patch-id: 57f5446073d42a01c29e6ff8a24f6609eedb49a1
-> prerequisite-patch-id: e6d6ee4ecd0e738a60091b19449c8622bb8bb6ae
-> prerequisite-message-id: 20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com
-> prerequisite-patch-id: 4ac6bf11d25e80e99d5607d4864c3c7b4273dde3
-> prerequisite-patch-id: 2246b4289eca0b8e8b02519051af7564b0875a2a
-> prerequisite-patch-id: 394057bc39308265a03e026ac924f88d3d933d49
-> prerequisite-patch-id: ad1f0838e81fa620013313316afd35a3d5c146fa
-> 
-> Best regards,
+>  lib/igt_draw.c | 79 ++++++++++++++++++++++++++++----------------------
+>  1 file changed, 44 insertions(+), 35 deletions(-)
+>
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index b39a33dcf2cb..dea73aca57b5 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -420,30 +420,34 @@ static void draw_rect_ptr_linear(void *ptr, uint32_=
+t stride,
+>         }
+>  }
+>
+> -static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t til=
+ing,
+> +typedef int (*linear_x_y_to_tiled_pos_fn)(int x, int y, uint32_t stride,=
+ int swizzle,
+> +                                         int bpp);
+> +
+> +static linear_x_y_to_tiled_pos_fn linear_to_tiled_fn(int fd, uint32_t ti=
+ling)
+> +{
+> +       switch (tiling) {
+> +       case I915_TILING_X:
+> +               return linear_x_y_to_xtiled_pos;
+> +       case I915_TILING_Y:
+> +               return linear_x_y_to_ytiled_pos;
+> +       case I915_TILING_4:
+> +               return linear_x_y_to_4tiled_pos;
+> +       default:
+> +               igt_assert(false);
+> +       }
+> +}
+> +
+> +static void draw_rect_ptr_tiled(int fd, void *ptr, uint32_t stride, uint=
+32_t tiling,
+>                                 int swizzle, struct rect *rect, uint64_t =
+color,
+>                                 int bpp)
+>  {
+> +       linear_x_y_to_tiled_pos_fn linear_x_y_to_tiled_pos =3D
+> +               linear_to_tiled_fn(fd, tiling);
+>         int x, y, pos;
+>
+>         for (y =3D rect->y; y < rect->y + rect->h; y++) {
+>                 for (x =3D rect->x; x < rect->x + rect->w; x++) {
+> -                       switch (tiling) {
+> -                       case I915_TILING_X:
+> -                               pos =3D linear_x_y_to_xtiled_pos(x, y, st=
+ride,
+> -                                                              swizzle, b=
+pp);
+> -                               break;
+> -                       case I915_TILING_Y:
+> -                               pos =3D linear_x_y_to_ytiled_pos(x, y, st=
+ride,
+> -                                                              swizzle, b=
+pp);
+> -                               break;
+> -                       case I915_TILING_4:
+> -                               pos =3D linear_x_y_to_4tiled_pos(x, y, st=
+ride,
+> -                                                              swizzle, b=
+pp);
+> -                               break;
+> -                       default:
+> -                               igt_assert(false);
+> -                       }
+> +                       pos =3D linear_x_y_to_tiled_pos(x, y, stride, swi=
+zzle, bpp);
+>                         set_pixel(ptr, pos, color, bpp);
+>                 }
+>         }
+> @@ -471,7 +475,7 @@ static void draw_rect_mmap_cpu(int fd, struct buf_dat=
+a *buf, struct rect *rect,
+>         case I915_TILING_X:
+>         case I915_TILING_Y:
+>         case I915_TILING_4:
+> -               draw_rect_ptr_tiled(ptr, buf->stride, tiling, swizzle, re=
+ct,
+> +               draw_rect_ptr_tiled(fd, ptr, buf->stride, tiling, swizzle=
+, rect,
+>                                     color, buf->bpp);
+>                 break;
+>         default:
+> @@ -536,7 +540,7 @@ static void draw_rect_mmap_wc(int fd, struct buf_data=
+ *buf, struct rect *rect,
+>         case I915_TILING_X:
+>         case I915_TILING_Y:
+>         case I915_TILING_4:
+> -               draw_rect_ptr_tiled(ptr, buf->stride, tiling, swizzle, re=
+ct,
+> +               draw_rect_ptr_tiled(fd, ptr, buf->stride, tiling, swizzle=
+, rect,
+>                                     color, buf->bpp);
+>                 break;
+>         default:
+> @@ -563,10 +567,29 @@ static void draw_rect_pwrite_untiled(int fd, struct=
+ buf_data *buf,
+>         }
+>  }
+>
+> +typedef void (*tiled_pos_to_x_y_linear_fn)(int tiled_pos, uint32_t strid=
+e,
+> +                                          int swizzle, int bpp, int *x, =
+int *y);
+> +
+> +static tiled_pos_to_x_y_linear_fn tiled_to_linear_fn(int fd, uint32_t ti=
+ling)
+> +{
+> +       switch (tiling) {
+> +       case I915_TILING_X:
+> +               return xtiled_pos_to_x_y_linear;
+> +       case I915_TILING_Y:
+> +               return ytiled_pos_to_x_y_linear;
+> +       case I915_TILING_4:
+> +               return tile4_pos_to_x_y_linear;
+> +       default:
+> +               igt_assert(false);
+> +       }
+> +}
+> +
+>  static void draw_rect_pwrite_tiled(int fd, struct buf_data *buf,
+>                                    uint32_t tiling, struct rect *rect,
+>                                    uint64_t color, uint32_t swizzle)
+>  {
+> +       tiled_pos_to_x_y_linear_fn tiled_pos_to_x_y_linear =3D
+> +               tiled_to_linear_fn(fd, tiling);
+>         int i;
+>         int tiled_pos, x, y, pixel_size;
+>         uint8_t tmp[4096];
+> @@ -588,22 +611,8 @@ static void draw_rect_pwrite_tiled(int fd, struct bu=
+f_data *buf,
+>                 set_pixel(tmp, i, color, buf->bpp);
+>
+>         for (tiled_pos =3D 0; tiled_pos < buf->size; tiled_pos +=3D pixel=
+_size) {
+> -               switch (tiling) {
+> -               case I915_TILING_X:
+> -                       xtiled_pos_to_x_y_linear(tiled_pos, buf->stride,
+> -                                                swizzle, buf->bpp, &x, &=
+y);
+> -                       break;
+> -               case I915_TILING_Y:
+> -                       ytiled_pos_to_x_y_linear(tiled_pos, buf->stride,
+> -                                                swizzle, buf->bpp, &x, &=
+y);
+> -                       break;
+> -               case I915_TILING_4:
+> -                       tile4_pos_to_x_y_linear(tiled_pos, buf->stride,
+> -                                               swizzle, buf->bpp, &x, &y=
+);
+> -                       break;
+> -               default:
+> -                       igt_assert(false);
+> -               }
+> +               tiled_pos_to_x_y_linear(tiled_pos, buf->stride,
+> +                                       swizzle, buf->bpp, &x, &y);
+>
+>                 if (x >=3D rect->x && x < rect->x + rect->w &&
+>                     y >=3D rect->y && y < rect->y + rect->h) {
+> --
+> 2.45.2
+>
