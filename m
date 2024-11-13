@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60619D637A2
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 17:07:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4941D637A0
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 17:41:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9AD810E709;
-	Wed, 13 Nov 2024 17:07:09 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3AA710E1C6;
- Wed, 13 Nov 2024 17:07:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6296343058118755219=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8503310E111;
+	Wed, 13 Nov 2024 17:41:48 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VaUVRQ49";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9E0F10E111
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 17:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731519707; x=1763055707;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8brX04qPLOzzGeJA/+XdVMOuyJxiK0cEdHwirKZXGqo=;
+ b=VaUVRQ49YqXuUbsGTQtcJCvSy0EcWxp3OU0OJ5Y0u7LY/MTAExJaKM0f
+ BNZZ77mJ2fqgvsHQl/eokI4qzidD88+ujNUVU6AbH1VuRAeBXUOSHC+L1
+ lGAZgcN6HnWljSqqScH+yAivcCggSivar44QG2DRaI1VI/RpiZYV7JVsN
+ IyLZJv0VpJdUxHLnzz8AkoIsdbAr/+8UJrUE0V6yT2F3xXhHO3mqwCbWn
+ ltc6ydOFqQpZHpNre8qD8bfBVfWEvwLzsu7a9qjJELB+GntNxDLtmazQV
+ d4H3TMCRO7ifB0wuH6qRJiq3E5A4xjpttjaBYp2PKvnyysZ6NyRFc6nwD A==;
+X-CSE-ConnectionGUID: Avk2sx2cQTieAqpjZrEPbQ==
+X-CSE-MsgGUID: oca/UtVORkSKlFP2GlYWSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53970263"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="53970263"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2024 09:41:46 -0800
+X-CSE-ConnectionGUID: A2f5RJHrRJucrWN9elaAtA==
+X-CSE-MsgGUID: RkjiHIjDR5CFXvUV5LZaHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="118753633"
+Received: from dg2adlp-alder-lake-client-platform.iind.intel.com
+ ([10.145.162.161])
+ by orviesa002.jf.intel.com with ESMTP; 13 Nov 2024 09:41:46 -0800
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_dirtyfb: Add skip condition for bmg
+ platform
+Date: Wed, 13 Nov 2024 23:11:18 +0530
+Message-Id: <20241113174118.158849-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fhdr=3A_Skip_bri?=
- =?utf-8?q?ghtness_on_non-internal_panels?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Nov 2024 17:07:08 -0000
-Message-ID: <173151762873.3666420.11283553629481156197@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241113142555.2974018-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20241113142555.2974018-1-santhosh.reddy.guddati@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,180 +63,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6296343058118755219==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+FBC test isn't supported on bmg, skip the test on this platform.
 
-== Series Details ==
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel/kms_dirtyfb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Series: tests/kms_hdr: Skip brightness on non-internal panels
-URL   : https://patchwork.freedesktop.org/series/141298/
-State : success
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 35df9be3b..e20fde777 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -54,7 +54,7 @@ IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
+ #endif
+ 
+ typedef struct {
+-	int drm_fd;
++	int drm_fd, devid;
+ 	int debugfs_fd;
+ 	igt_display_t display;
+ 	drmModeModeInfo *mode;
+@@ -345,6 +345,9 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+ 		igt_require(data.display.is_atomic);
++		data.devid = intel_get_drm_devid(data.drm_fd);
++		igt_require_f(!IS_BATTLEMAGE(data.devid),
++			     "FBC isn't supported on BMG\n");
+ 
+ 		data.bops = buf_ops_create(data.drm_fd);
+ 		data.rendercopy = igt_get_render_copyfunc(intel_get_drm_devid(data.drm_fd));
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8107 -> IGTPW_12092
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/index.html
-
-Participating hosts (47 -> 45)
-------------------------------
-
-  Missing    (2): bat-arls-5 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12092 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@kms_chamelium_frames@dp-crc-fast:
-    - bat-dg2-13:         [PASS][3] -> [DMESG-WARN][4] ([i915#12253])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [DMESG-FAIL][5] ([i915#12759]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-8:          [DMESG-FAIL][7] ([i915#9500]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12253]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253
-  [i915#12759]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12759
-  [i915#9500]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8107 -> IGTPW_12092
-
-  CI-20190529: 20190529
-  CI_DRM_15689: 169c7cd31a373ed31054abb423981856eb5fb119 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12092: 9ff42ad4c93fd951c3aa58314fc982ce60efa8fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8107: 0362b0deec80daaecdfa3dd0676dcabb6f14bd9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/index.html
-
---===============6296343058118755219==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_hdr: Skip brightness on non-internal panels</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141298/">https://patchwork.freedesktop.org/series/141298/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8107 -&gt; IGTPW_12092</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/index.html</p>
-<h2>Participating hosts (47 -&gt; 45)</h2>
-<p>Missing    (2): bat-arls-5 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12092 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-mtlp-8/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test abort</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@dp-crc-fast:</p>
-<ul>
-<li>bat-dg2-13:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253">i915#12253</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12759">i915#12759</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-dg2-8/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500">i915#9500</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12092/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8107 -&gt; IGTPW_12092</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15689: 169c7cd31a373ed31054abb423981856eb5fb119 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12092: 9ff42ad4c93fd951c3aa58314fc982ce60efa8fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8107: 0362b0deec80daaecdfa3dd0676dcabb6f14bd9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6296343058118755219==--
