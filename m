@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA90D41C02
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 06:01:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80616D41C0A
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 06:48:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB2B010E346;
-	Wed, 13 Nov 2024 06:01:22 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E70710E261;
- Wed, 13 Nov 2024 06:01:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2292888355208916880=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 08A4410E19B;
+	Wed, 13 Nov 2024 06:48:56 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xg/Ao8rg";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B09DE10E19B
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 06:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731480535; x=1763016535;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=5qPqcKylH629i41oz2zixpfrEGR73D3lcAT09GK/VZ8=;
+ b=Xg/Ao8rg2wRa7B1bojsW7fYakpbYefmEN0+OvzNfzXoYiskrqlUYncyV
+ vvIOww/YSDdZ05ABf1bhDmdUxE2O4jmlmR9KSkHKjPw0Zx2QAZNbuCONy
+ XIs5BknJVAWir5+vYcJWRp0WAMEDRROKOcVCeOCvf14EfiH5QBCpKBBIc
+ 8S84QGvOcCW14FFRbiWlOHfQimKtbbPcoG36Pw4aQnORt1rv///ExYYsT
+ qE+/UfbDDOiLRJ182VDo9WynS4rk+09HhSU7b33jmJjyMougtSqusgvrb
+ dAeby3gwptQC5ulPF/cvDEtYKVmcCQp/XcetNxUzKf4V6URg+1tsnjmtL g==;
+X-CSE-ConnectionGUID: Ma/NOtT+Rd6D2Tj96ZCnlw==
+X-CSE-MsgGUID: uMlpxBljQfehtxlprPHGLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="42471521"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="42471521"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2024 22:48:54 -0800
+X-CSE-ConnectionGUID: eLUXKoAkRJ2ZJh19NLDzyg==
+X-CSE-MsgGUID: KzQy2wN/SW6QJ5O2Hz/H3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; d="scan'208";a="88193420"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.168])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2024 22:48:52 -0800
+Date: Wed, 13 Nov 2024 07:48:49 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
+Subject: Re: [PATCH i-g-t] lib: sync PCI ID macros with kernel
+Message-ID: <20241113064849.udg2ey5bglp35eyf@zkempczy-mobl2>
+References: <20241106185846.1218835-1-ngai-mint.kwan@linux.intel.com>
+ <20241107170833.u7e2s6fjpk7qvdks@kamilkon-desk.igk.intel.com>
+ <87iksyeplx.fsf@intel.com>
+ <20241112110901.omdnfywpzfvsw2mh@zkempczy-mobl2>
+ <87cyj0d7co.fsf@intel.com>
+ <20241112115745.qwb2qqovpntdn6uz@zkempczy-mobl2>
+ <871pzgd2r1.fsf@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Freset?=
- =?utf-8?q?=3A_Add_mocs_reset_test_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Nov 2024 06:01:22 -0000
-Message-ID: <173147768218.3402358.14341416475861391936@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241112114922.2734880-1-nakshtra.goyal@intel.com>
-In-Reply-To: <20241112114922.2734880-1-nakshtra.goyal@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <871pzgd2r1.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,140 +73,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2292888355208916880==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Nov 12, 2024 at 03:02:10PM +0200, Jani Nikula wrote:
 
-== Series Details ==
+<cut>
 
-Series: tests/intel/xe_exec_reset: Add mocs reset test (rev4)
-URL   : https://patchwork.freedesktop.org/series/140575/
-State : success
+> >
+> > I see no __KERNEL__ in current xe_pciids.h and i915_pciids.h so
+> > there's some change from my perspective. intel_vbt_defs.h also
+> > doesn't contain any kernel conditional inside. I think author
+> > of this change should provide additional documentation about this
+> > (not me) - commit message for me is not enough. Till this change
+> > I haven't noticed any __KERNEL__ usage in igt codebase and I think
+> > if it appears it should be documented what's for dead code is
+> > imported to the project.
+> 
+> See igt commit e966143f5c5f ("lib/intel_device_info: use dedicated macro
+> for struct pci_id_match init"). INTEL_VGA_DEVICE has been unused in igt
+> since then.
+> 
+> I wrapped the macro in #ifdef __KERNEL__ in kernel commit fc9cb46bdca8
+> ("drm/i915/pciids: use designated initializers in INTEL_VGA_DEVICE()")
+> to avoid it being used in igt again.
 
-== Summary ==
+Rationale of your change is clear to me - isolation of INTEL_VGA_DEVICE()
+to use in the kernel only. My problems are when I see such thing in the
+igt header
 
-CI Bug Log - changes from XEIGT_8105_BAT -> XEIGTPW_12084_BAT
-====================================================
+#ifdef __KERNEL__
 
-Summary
--------
+... some definitions ...
 
-  **SUCCESS**
+#endif
 
-  No regressions found.
+1. is someone really is setting up __KERNEL__ in igt build system?
+   What's for it is here? (cognitive problem)
+2. this conditional is not necessary here, let's remove it.
+   (dead code problem)
 
-  
+I guess you will not accept change in which I would remove __KERNEL__
+conditional from the header (2).
 
-Participating hosts (9 -> 9)
-------------------------------
+> 
+> I'm not going to document this further in igt.
 
-  No changes in participating hosts
+I'm asking for the documenting of this change not for me, but for
+other developers who might be confused by this conditional in the
+future. Especially we want to copy this header from the kernel.
+If you still think this is not necessary I have no other arguments
+to convince you to add some note to README.md.
 
-Known issues
-------------
+--
+Zbigniew
 
-  Here are the changes found in XEIGTPW_12084_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#1861])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8105/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-bmg-2:          [PASS][3] -> [INCOMPLETE][4] ([Intel XE#2874] / [Intel XE#2998]) +1 other test incomplete
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8105/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
-  [Intel XE#2998]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998
-
-
-Build changes
--------------
-
-  * IGT: IGT_8105 -> IGTPW_12084
-
-  IGTPW_12084: 12084
-  IGT_8105: 8105
-  xe-2218-26f5fe99791def93b32e27e79e71dbd0666c117b: 26f5fe99791def93b32e27e79e71dbd0666c117b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/index.html
-
---===============2292888355208916880==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_reset: Add mocs reset test (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140575/">https://patchwork.freedesktop.org/series/140575/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8105_BAT -&gt; XEIGTPW_12084_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12084_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8105/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8105/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12084/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998">Intel XE#2998</a>) +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8105 -&gt; IGTPW_12084</li>
-</ul>
-<p>IGTPW_12084: 12084<br />
-  IGT_8105: 8105<br />
-  xe-2218-26f5fe99791def93b32e27e79e71dbd0666c117b: 26f5fe99791def93b32e27e79e71dbd0666c117b</p>
-
-</body>
-</html>
-
---===============2292888355208916880==--
+> 
+> 
+> BR,
+> Jani.
+> 
+> 
+> -- 
+> Jani Nikula, Intel
