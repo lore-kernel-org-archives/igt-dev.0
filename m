@@ -4,55 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03AED462A7
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 14:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B86D462A8
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 14:13:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A088810E716;
-	Wed, 13 Nov 2024 14:06:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DC0A10E252;
+	Wed, 13 Nov 2024 14:13:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WDHDNBQY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cVzdgT6Z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E973E10E716;
- Wed, 13 Nov 2024 14:06:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 609AB10E252
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 14:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731506782; x=1763042782;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=N/ORtc9aVertKbNro9687VYRdey4ckOigSXKC0sF93o=;
- b=WDHDNBQY0yUJg/uSboiKMM7Qw+JWYowIvievgGHIDxn8V/09SPZfCAFU
- WIIk0/3TougLtfdHYopdUHrOJAkXnLColiWt3qptU5VDDbD8xHm8ZA6CI
- vG9vO/1HU0BvkRqojixiR7KPyndHD6EJJ0S3KxYC1afzP7I/k0CXwhnnu
- FyLv9xX4Tdrju59ElFgoBVHJ4luda1EbUP16M6kjbRryKmSdP714BBgNz
- WsdiFCcHjJu+K0IqZWgLl6m1FamPKTBmcbxI8tCOEgpYRJLuH798cMtOE
- mzNrL46G9d1GECOO4HKRfaq7T5kYdHdialZgLyvXkFJ6/Pis/bRErrNRn Q==;
-X-CSE-ConnectionGUID: nk6ovumGQemjfY3mful+Xg==
-X-CSE-MsgGUID: kb7z+E0YQrKYdA+dWH1x5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="30792358"
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="30792358"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 06:06:22 -0800
-X-CSE-ConnectionGUID: H2str/FQSa6iqWrNeRYgHA==
-X-CSE-MsgGUID: PE9ru+0tQsC3F+aknfBBVw==
+ t=1731507203; x=1763043203;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9rgMh5sUmVUVUg9Nz3ogDCQ8e4mYobcoMKLNAs6b8u4=;
+ b=cVzdgT6Zrj5Nbl9fduJ/BpOZmw6/5F40Vs6c3250gDAqLtXfMtkn0kud
+ kCOKQBtKzFkpG1bd/3Ys4pXrnj2T7NK8ls54ciE/Q5q0I/H0Y+SohPa8e
+ xjcsETeUyonvxf07Jc1pYOfj+AqRFY1ulN5OKxaBGOttosICy+GnFdIMS
+ TLYHBNnBJkNMGVpZklXuIR8+f1i9e/lAw7/rxHS71MDlu9z3/i0zW1xM5
+ uDJNatqiTVJkT5UNGVEnQEs20qgRUSaMzqQkv5vy5neNAU+FtejZpMVgX
+ Zbfr9fW4eFjNpWhImtIHzKiihWKmJmpi7z3tH+2HKyk52KUEjHHvbBQAz g==;
+X-CSE-ConnectionGUID: HJ6VfkY0Q1GT6C9cpam4hA==
+X-CSE-MsgGUID: MC96fWMlQ1WyYhZupGiPYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="42809379"
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="42809379"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2024 06:13:23 -0800
+X-CSE-ConnectionGUID: o7dbKNW6R6aBd5iAU+RC2w==
+X-CSE-MsgGUID: e1T9lpnPREKVhwxj89rLQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="92654166"
-Received: from tejas-super-server.iind.intel.com ([10.145.169.166])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 06:06:20 -0800
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: [PATCH 4/4] tests/xe/mmap: add tests for pci mem barrier
-Date: Wed, 13 Nov 2024 19:40:12 +0530
-Message-Id: <20241113141012.1362064-5-tejas.upadhyay@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241113141012.1362064-1-tejas.upadhyay@intel.com>
-References: <20241113141012.1362064-1-tejas.upadhyay@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="87875957"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 06:13:22 -0800
+Date: Wed, 13 Nov 2024 15:13:19 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>,
+ clinton.a.taylor@intel.com, zbigniew.kempczynski@intel.com
+Subject: Re: [PATCH v2] lib: sync PCI ID macros with kernel
+Message-ID: <20241113141319.rshtc275frebo7lf@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>,
+ clinton.a.taylor@intel.com, zbigniew.kempczynski@intel.com
+References: <20241107231457.70157-1-ngai-mint.kwan@linux.intel.com>
+ <874j4if2mb.fsf@intel.com>
+ <lkiuylps7ka6qbno3gjtpkjbvu6dxpbkjw6725cri35coysxcz@yfcafnu4oguh>
+ <87wmhacf50.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wmhacf50.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,148 +78,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We want to make sure that mmap do direct mapping of physical
-page at doorbell space and whole page is accessible in order
-to use pci memory barrier effect effectively.
+Hi Jani,
+On 2024-11-11 at 11:07:39 +0200, Jani Nikula wrote:
+> On Fri, 08 Nov 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
+> > On Fri, Nov 08, 2024 at 12:20:44PM +0200, Jani Nikula wrote:
+> >>On Thu, 07 Nov 2024, Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com> wrote:
+> >>> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+> >>> index ef2f74be8..9eb1141d4 100644
+> >>> --- a/lib/i915/perf.c
+> >>> +++ b/lib/i915/perf.c
+> >>> @@ -37,7 +37,7 @@
+> >>>
+> >>>  #include <i915_drm.h>
+> >>>
+> >>> -#include "i915_pciids.h"
+> >>> +#include "pciids.h"
+> >>>  #include "i915_pciids_local.h"
+> >>
+> >>After this gets merged, maybe you could write a follow-up patch that
+> >>renames i915_pciids_local.h to pciids_local.h and cleans it up; there's
+> >
+> > Actually to remove it. Why are we still carrying that?
+> 
+> To cater for igt perf code, which uses smaller granularity than the
+> kernel. It's a good question whether we should split the macros up
+> further in kernel for the needs of perf.
 
-Following subtests are added,
-./build/tests/xe_mmap --r pci-membarrier
-./build/tests/xe_mmap --r pci-membarrier-bad-pagesize
-./build/tests/xe_mmap --r pci-membarrier-bad-object
+This should definitly be part of a comment in that header.
 
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
----
- tests/intel/xe_mmap.c | 96 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 96 insertions(+)
+I will merge this now, it should have a follow up in igt README.md
+as how to update this file.
 
-diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-index fc5d73d59..ae0363a20 100644
---- a/tests/intel/xe_mmap.c
-+++ b/tests/intel/xe_mmap.c
-@@ -64,6 +64,74 @@ test_mmap(int fd, uint32_t placement, uint32_t flags)
- 	gem_close(fd, bo);
- }
- 
-+#define PAGE_SHIFT 12
-+#define PAGE_SIZE 4096
-+
-+/**
-+ * SUBTEST: pci-membarrier
-+ * Description: create pci memory barrier with write on defined mmap offset.
-+ * Test category: functionality test
-+ *
-+ */
-+static void test_pci_membarrier(int xe)
-+{
-+	uint64_t flags = MAP_SHARED;
-+	unsigned int prot = PROT_WRITE;
-+	uint32_t *ptr;
-+	uint64_t size = PAGE_SIZE;
-+	struct timespec tv;
-+	struct drm_xe_gem_mmap_offset mmo = {
-+		.handle = 0,
-+		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
-+	};
-+
-+	igt_assert_eq(igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
-+	ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
-+	igt_assert(ptr != MAP_FAILED);
-+
-+	/* Check whole page for any errors, also check as
-+	 * we should not read written values back
-+	 */
-+	for (int i = 0; i < size / sizeof(*ptr); i++) {
-+		/* It is expected unconfigured doorbell space
-+		 * will return read value 0xdeadbeef
-+		 */
-+		igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
-+
-+		igt_gettime(&tv);
-+		ptr[i] = i;
-+		if (READ_ONCE(ptr[i]) == i) {
-+			while (READ_ONCE(ptr[i]) == i)
-+				;
-+			igt_info("fd:%d value retained for %"PRId64"ns pos:%d\n",
-+				 xe, igt_nsec_elapsed(&tv), i);
-+		}
-+		igt_assert_neq(READ_ONCE(ptr[i]), i);
-+	}
-+
-+	munmap(ptr, size);
-+}
-+
-+/**
-+ * SUBTEST: pci-membarrier-bad-pagesize
-+ * Description: Test mmap offset with bad pagesize for pci membarrier.
-+ * Test category: negative test
-+ *
-+ */
-+static void test_bad_pagesize_for_pcimem(int fd)
-+{
-+	uint32_t *map;
-+	uint64_t page_size = PAGE_SIZE * 2;
-+	struct drm_xe_gem_mmap_offset mmo = {
-+		.handle = 0,
-+		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
-+	};
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
-+	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo.offset);
-+	igt_assert(map == MAP_FAILED);
-+}
-+
- /**
-  * SUBTEST: bad-flags
-  * Description: Test mmap offset with bad flags.
-@@ -126,6 +194,25 @@ static void test_bad_object(int fd)
- 	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, ENOENT);
- }
- 
-+/**
-+ * SUBTEST: pci-membarrier-bad-object
-+ * Description: Test mmap offset with bad object for pci mem barrier.
-+ * Test category: negative test
-+ *
-+ */
-+static void test_bad_object_for_pcimem(int fd)
-+{
-+	uint64_t size = xe_get_default_alignment(fd);
-+	struct drm_xe_gem_mmap_offset mmo = {
-+		.handle = xe_bo_create(fd, 0, size,
-+				       vram_if_possible(fd, 0),
-+				       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM),
-+		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, EINVAL);
-+}
-+
- static jmp_buf jmp;
- 
- __noreturn static void sigtrap(int sig)
-@@ -273,6 +360,12 @@ igt_main
- 		test_mmap(fd, vram_memory(fd, 0) | system_memory(fd),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
-+	igt_subtest("pci-membarrier")
-+		test_pci_membarrier(fd);
-+
-+	igt_subtest_f("pci-membarrier-bad-pagesize")
-+		test_bad_pagesize_for_pcimem(fd);
-+
- 	igt_subtest("bad-flags")
- 		test_bad_flags(fd);
- 
-@@ -282,6 +375,9 @@ igt_main
- 	igt_subtest("bad-object")
- 		test_bad_object(fd);
- 
-+	igt_subtest("pci-membarrier-bad-object")
-+		test_bad_object_for_pcimem(fd);
-+
- 	igt_subtest("small-bar") {
- 		igt_require(xe_visible_vram_size(fd, 0));
- 		igt_require(xe_visible_vram_size(fd, 0) < xe_vram_size(fd, 0));
--- 
-2.34.1
+Regards,
+Kamil
 
+> 
+> > Or maybe keep it just for the IDs from the topic branch (which we won't
+> > add more to, hopefully) so we can keep sync'ing with drm-xe, or
+> > drm-intel or drm-next, depending on the context.
+> 
+> There no more PCI IDs in the topic branches, even PVC IDs are now in
+> -next, but we just enable those PCI IDs in the topic branch.
+> 
+> BR,
+> Jani.
+> 
+> 
+> -- 
+> Jani Nikula, Intel
