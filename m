@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4941D637A0
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 17:41:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A2A6D637A4
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 17:53:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8503310E111;
-	Wed, 13 Nov 2024 17:41:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBEAF10E111;
+	Wed, 13 Nov 2024 17:53:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VaUVRQ49";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SVFlW/s4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9E0F10E111
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 17:41:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD6B910E111
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 17:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731519707; x=1763055707;
+ t=1731520426; x=1763056426;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=8brX04qPLOzzGeJA/+XdVMOuyJxiK0cEdHwirKZXGqo=;
- b=VaUVRQ49YqXuUbsGTQtcJCvSy0EcWxp3OU0OJ5Y0u7LY/MTAExJaKM0f
- BNZZ77mJ2fqgvsHQl/eokI4qzidD88+ujNUVU6AbH1VuRAeBXUOSHC+L1
- lGAZgcN6HnWljSqqScH+yAivcCggSivar44QG2DRaI1VI/RpiZYV7JVsN
- IyLZJv0VpJdUxHLnzz8AkoIsdbAr/+8UJrUE0V6yT2F3xXhHO3mqwCbWn
- ltc6ydOFqQpZHpNre8qD8bfBVfWEvwLzsu7a9qjJELB+GntNxDLtmazQV
- d4H3TMCRO7ifB0wuH6qRJiq3E5A4xjpttjaBYp2PKvnyysZ6NyRFc6nwD A==;
-X-CSE-ConnectionGUID: Avk2sx2cQTieAqpjZrEPbQ==
-X-CSE-MsgGUID: oca/UtVORkSKlFP2GlYWSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53970263"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="53970263"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 09:41:46 -0800
-X-CSE-ConnectionGUID: A2f5RJHrRJucrWN9elaAtA==
-X-CSE-MsgGUID: RkjiHIjDR5CFXvUV5LZaHQ==
+ bh=CriBsEQH51X97lFQqpKGj45lWoY0PwBh13ZoVaee3oc=;
+ b=SVFlW/s49U/Qu8MiPrGzFE8kXdodRAZy3ah+dIZ4CjyNr2NrcFHu4YPw
+ yYJUTKn8AU4t+YqEOc+nE6NmB/n+xdT2jdzglUesENsrYAkBKwgiKx3PJ
+ tQrfVLbUO2NgDOx0j4Mt4zBayvpFI4MkyStfmuoLvnB2SeTR86GrZvp8v
+ rdj4e7bS98VsnY6IoHWG0XhB257kmf8Bw+PPTO6c3tynxJ7tof/aUyZsy
+ 5TWkKobTKP/tzESHNg/kmz8zvbFKO+3nmzBDXXM0a44ELR8R1Qtvwp2nV
+ FWPLbYpuicJuriwOV4eOzvi+qJ4bbVVvzK5v0q3Lun/fwdEd+4sBjEW3M A==;
+X-CSE-ConnectionGUID: fvQjKdZcSd2sNEvuHslMrw==
+X-CSE-MsgGUID: M7l/k/FCTTeu4SbjqBRqLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="30832503"
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="30832503"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2024 09:53:46 -0800
+X-CSE-ConnectionGUID: 4RkQO6b6Some8H/CrtbqYg==
+X-CSE-MsgGUID: RXzs8pSQRhePTR2+g7OUxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="118753633"
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="87835107"
 Received: from dg2adlp-alder-lake-client-platform.iind.intel.com
  ([10.145.162.161])
- by orviesa002.jf.intel.com with ESMTP; 13 Nov 2024 09:41:46 -0800
+ by orviesa010.jf.intel.com with ESMTP; 13 Nov 2024 09:52:52 -0800
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_dirtyfb: Add skip condition for bmg
- platform
-Date: Wed, 13 Nov 2024 23:11:18 +0530
-Message-Id: <20241113174118.158849-1-mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Add skip
+ condition for bmg platform
+Date: Wed, 13 Nov 2024 23:22:19 +0530
+Message-Id: <20241113175219.162926-1-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -70,32 +70,22 @@ FBC test isn't supported on bmg, skip the test on this platform.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_dirtyfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/intel/kms_frontbuffer_tracking.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index 35df9be3b..e20fde777 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -54,7 +54,7 @@ IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
- #endif
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index b7e3f7379..8ba1faf69 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -4471,6 +4471,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		setup_environment();
+ 		drm.devid = intel_get_drm_devid(drm.fd);
+ 		drm.display_ver = intel_display_ver(drm.devid);
++		igt_require_f(drm.display_ver != 14,
++			      "FBC isn't supported on BMG\n");
+ 	}
  
- typedef struct {
--	int drm_fd;
-+	int drm_fd, devid;
- 	int debugfs_fd;
- 	igt_display_t display;
- 	drmModeModeInfo *mode;
-@@ -345,6 +345,9 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
- 		igt_require(data.display.is_atomic);
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		igt_require_f(!IS_BATTLEMAGE(data.devid),
-+			     "FBC isn't supported on BMG\n");
- 
- 		data.bops = buf_ops_create(data.drm_fd);
- 		data.rendercopy = igt_get_render_copyfunc(intel_get_drm_devid(data.drm_fd));
+ 	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
 -- 
 2.25.1
 
