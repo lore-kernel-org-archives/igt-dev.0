@@ -4,56 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8AACD41C1A
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 08:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C5FFD41C19
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 09:01:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3463A10E6B4;
-	Wed, 13 Nov 2024 08:52:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C603610E36F;
+	Wed, 13 Nov 2024 09:01:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YKgqHjl2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nFTxYIQK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DB6610E6B4
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 08:52:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6434310E36F
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 09:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731487941; x=1763023941;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=5tlyZIPHkyBXA9uWVIT53f2sMjTwS6Hg09w6HPPUMHo=;
- b=YKgqHjl2VnbU6vioaAwD5/ZbDaqrgXT6ffW1baKNqYP70/8I9EyLJjHt
- ih326BzKefGoDuUA+ZMr00+Jd7DThinpWNNqg9MfAo1bEb6CET3t367Ea
- ROJLL9SlQEZYd5YHV9zr5yiQuZ4TxdHrub88wTqr4iGNczQNuXxqg+hS+
- 5shdwxT+LwFgqn7smQ+ckuJKPVlExxwVbJz6By0N4yhEz4cg7W4Kz1Uhj
- o2I4ik2WCLxDoJ4HELBxyNJNxbllckgwk2Ounk3V0fCwF423Ra5rljOvJ
- kW9Em3YZtoeHIUmAtR09WZuYeTZAMZuRaH4OHRYEj9EXQ5orBXK7POw8r Q==;
-X-CSE-ConnectionGUID: RRg1sk1GSG6TBzgwK8SYlg==
-X-CSE-MsgGUID: R9EvrZkIQM+vTtpCPdUORw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31335366"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="31335366"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 00:52:21 -0800
-X-CSE-ConnectionGUID: a/AJ+pNjRn+d6kiaoCTqYA==
-X-CSE-MsgGUID: OjIwFy6bR7SlUHYyuQl0jg==
+ t=1731488511; x=1763024511;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=TdTue62uopJhY3t1e6vpZ9+HjZYSiOQ27Rdvis9djE8=;
+ b=nFTxYIQKp7MIXXcwEg4cyAXRYAQXhdwJZKodP6Bmvdf4b1i4OfBWUbmP
+ QSM0p50jls7wUV5zu/teHDAHS53fd8c+lZZXuYzI+nTXlpsQeAeIt8TBC
+ jZt32mCST1SkihWNyyd9C94AUYH1LEcFjOJ3wHe/EyxCl4bRTpkgnKhTI
+ Rtk7X1/tSd9RzyTN3pORqyJoNSZg22rmFZrM0qcDIayJAA7O13oiZz1VS
+ BS+6THhyWNf2qF76XmYOvKDa3p1ik8VyYHpWMJARwWP5+MDxMQ2MzC8fd
+ aWtQhq4uYFYAOpVVWxg1o7tRNV+RyGe56LqHDWQBfu3rIc4zGx58h5gRs Q==;
+X-CSE-ConnectionGUID: 8saoJMm2SiS6mznNnDc1FQ==
+X-CSE-MsgGUID: C2DcmH7mTjSVYXIp2lAR9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="35161127"
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; d="scan'208";a="35161127"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2024 01:01:51 -0800
+X-CSE-ConnectionGUID: tFT+g8yoTTCd01bpH2KHhQ==
+X-CSE-MsgGUID: T1GLp1DNSNuna0gWoWp9wg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; d="scan'208";a="92579683"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
- ([10.245.246.180])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 00:52:19 -0800
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: christoph.manszewski@intel.com,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/xe_eudebug: Validate exec queue placements
-Date: Wed, 13 Nov 2024 09:51:55 +0100
-Message-Id: <20241113085155.209198-3-dominik.grzegorzek@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241113085155.209198-1-dominik.grzegorzek@intel.com>
-References: <20241113085155.209198-1-dominik.grzegorzek@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; d="scan'208";a="88621426"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.186])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2024 01:01:49 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Ngai-Mint Kwan
+ <ngai-mint.kwan@linux.intel.com>
+Subject: Re: [PATCH i-g-t] lib: sync PCI ID macros with kernel
+In-Reply-To: <20241113064849.udg2ey5bglp35eyf@zkempczy-mobl2>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20241106185846.1218835-1-ngai-mint.kwan@linux.intel.com>
+ <20241107170833.u7e2s6fjpk7qvdks@kamilkon-desk.igk.intel.com>
+ <87iksyeplx.fsf@intel.com>
+ <20241112110901.omdnfywpzfvsw2mh@zkempczy-mobl2>
+ <87cyj0d7co.fsf@intel.com>
+ <20241112115745.qwb2qqovpntdn6uz@zkempczy-mobl2>
+ <871pzgd2r1.fsf@intel.com>
+ <20241113064849.udg2ey5bglp35eyf@zkempczy-mobl2>
+Date: Wed, 13 Nov 2024 11:01:45 +0200
+Message-ID: <87plmzbj7q.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,197 +78,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test which validates exec_queue_placement uAPI. It requires
-ccs_mode, which is present only on platforms with multiple ccs engines.
+On Wed, 13 Nov 2024, Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.=
+com> wrote:
+> On Tue, Nov 12, 2024 at 03:02:10PM +0200, Jani Nikula wrote:
+>
+> <cut>
+>
+>> >
+>> > I see no __KERNEL__ in current xe_pciids.h and i915_pciids.h so
+>> > there's some change from my perspective. intel_vbt_defs.h also
+>> > doesn't contain any kernel conditional inside. I think author
+>> > of this change should provide additional documentation about this
+>> > (not me) - commit message for me is not enough. Till this change
+>> > I haven't noticed any __KERNEL__ usage in igt codebase and I think
+>> > if it appears it should be documented what's for dead code is
+>> > imported to the project.
+>>=20
+>> See igt commit e966143f5c5f ("lib/intel_device_info: use dedicated macro
+>> for struct pci_id_match init"). INTEL_VGA_DEVICE has been unused in igt
+>> since then.
+>>=20
+>> I wrapped the macro in #ifdef __KERNEL__ in kernel commit fc9cb46bdca8
+>> ("drm/i915/pciids: use designated initializers in INTEL_VGA_DEVICE()")
+>> to avoid it being used in igt again.
+>
+> Rationale of your change is clear to me - isolation of INTEL_VGA_DEVICE()
+> to use in the kernel only. My problems are when I see such thing in the
+> igt header
+>
+> #ifdef __KERNEL__
+>
+> ... some definitions ...
+>
+> #endif
+>
+> 1. is someone really is setting up __KERNEL__ in igt build system?
+>    What's for it is here? (cognitive problem)
+> 2. this conditional is not necessary here, let's remove it.
+>    (dead code problem)
+>
+> I guess you will not accept change in which I would remove __KERNEL__
+> conditional from the header (2).
+>
+>>=20
+>> I'm not going to document this further in igt.
+>
+> I'm asking for the documenting of this change not for me, but for
+> other developers who might be confused by this conditional in the
+> future. Especially we want to copy this header from the kernel.
+> If you still think this is not necessary I have no other arguments
+> to convince you to add some note to README.md.
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/intel/xe_eudebug.c | 123 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 122 insertions(+), 1 deletion(-)
+I didn't say it's not necessary (nor did I say that it is). I said I
+decline to write further documentation on this. If igt developers want
+more documentation, they know what it needs to say, and I don't.
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 8d45d59f3..39db16457 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -20,6 +20,7 @@
- #include <sys/prctl.h>
- 
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include "intel_pat.h"
- #include "lib/igt_syncobj.h"
- #include "xe/xe_eudebug.h"
-@@ -61,6 +62,7 @@ static void test_sysfs_toggle(int fd)
- #define VM_METADATA		(1 << 5)
- #define VM_BIND_METADATA	(1 << 6)
- #define VM_BIND_OP_MAP_USERPTR	(1 << 7)
-+#define EXEC_QUEUES_PLACEMENTS	(1 << 8)
- #define TEST_DISCOVERY		(1 << 31)
- 
- #define PAGE_SIZE SZ_4K
-@@ -420,6 +422,80 @@ static void vm_bind_client(int fd, struct xe_eudebug_client *c)
- 	xe_eudebug_client_vm_destroy(c, fd, vm);
- }
- 
-+static void placements_client(int fd, struct xe_eudebug_client *c)
-+{
-+	struct drm_xe_ext_set_property eq_ext = {
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
-+		.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
-+	};
-+	struct drm_xe_exec_queue_create create = {
-+		.extensions = to_user_pointer(&eq_ext),
-+	};
-+	struct drm_xe_engine_class_instance *eci;
-+	bool at_least_4_ccs = false;
-+	uint32_t vm;
-+	int i, gt;
-+
-+	xe_for_each_gt(fd, gt) {
-+		int count = 0;
-+
-+		xe_for_each_engine(fd, eci)
-+			if (eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
-+			    eci->gt_id == gt)
-+				count++;
-+
-+		if (count < 4)
-+			continue;
-+
-+		at_least_4_ccs = true;
-+
-+		vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+
-+		eci = calloc(count * count - 2, sizeof(*eci));
-+
-+		for (i = 0; i < count * count - 2; i++) {
-+			eci[i].engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
-+			eci[i].gt_id = gt;
-+		}
-+
-+		for (i = 0; i < count; i++)
-+			eci[i].engine_instance = i;
-+
-+		create.instances = to_user_pointer(eci);
-+		create.vm_id = vm;
-+		create.width = 1;
-+		create.num_placements = count;
-+		xe_eudebug_client_exec_queue_create(c, fd, &create);
-+		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-+
-+		create.width = count;
-+		create.num_placements = 1;
-+		xe_eudebug_client_exec_queue_create(c, fd, &create);
-+		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-+
-+		// every other instance (logical_mask ~ 1010, 0101)
-+		create.width = 2;
-+		create.num_placements = count/2;
-+		xe_eudebug_client_exec_queue_create(c, fd, &create);
-+		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-+
-+		// logically contigous placement (logical_mask ~ 1100, 0110, 0011)
-+		for (i = 0; i < count * count - 2; i++)
-+			eci[i].engine_instance = i / 2 + i % 2;
-+
-+		create.width = 2;
-+		create.num_placements = count - 1;
-+		xe_eudebug_client_exec_queue_create(c, fd, &create);
-+		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-+
-+		xe_eudebug_client_vm_destroy(c, fd, vm);
-+		free(eci);
-+	}
-+
-+	igt_require(at_least_4_ccs);
-+}
-+
- static void run_basic_client(struct xe_eudebug_client *c)
- {
- 	int fd, i;
-@@ -470,6 +546,9 @@ static void run_basic_client(struct xe_eudebug_client *c)
- 		xe_eudebug_client_vm_destroy(c, fd, vm);
- 	}
- 
-+	if (c->flags & EXEC_QUEUES_PLACEMENTS)
-+		placements_client(fd, c);
-+
- 	if (c->flags & VM_BIND || c->flags & VM_BIND_METADATA)
- 		basic_vm_bind_client(fd, c);
- 
-@@ -908,6 +987,11 @@ static void test_read_event(int fd)
-  *	Attach the debugger to a process that performs bind, bind array, rebind,
-  *	partial unbind, unbind and unbind all operations.
-  *
-+ * SUBTEST: exec-queue-placements
-+ * Description:
-+ *	Create compute exec_queues with various placements and compare them against
-+ *	event sent to the debugger.
-+ *
-  * SUBTEST: multigpu-basic-client
-  * Description:
-  *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
-@@ -2644,14 +2728,40 @@ static void test_basic_exec_queues_enable(int fd)
- 	xe_vm_destroy(fd, vm_non_lr);
- }
- 
-+static void ccs_mode_all_engines(int num_gt)
-+{
-+	int fd, gt, gt_fd, num_slices, ccs_mode;
-+	int num_gts_with_ccs_mode = 0;
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		fd = drm_open_driver(DRIVER_XE);
-+		gt_fd = xe_sysfs_gt_open(fd, gt);
-+		close(fd);
-+
-+		if (igt_sysfs_scanf(gt_fd, "num_cslices", "%u", &num_slices) <= 0)
-+			continue;
-+
-+		num_gts_with_ccs_mode++;
-+
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		igt_assert(num_slices == ccs_mode);
-+		close(gt_fd);
-+	}
-+
-+	errno = 0;
-+	igt_require(num_gts_with_ccs_mode > 0);
-+}
-+
- igt_main
- {
- 	bool was_enabled;
- 	bool *multigpu_was_enabled;
--	int fd, gpu_count;
-+	int fd, gpu_count, gt_count;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-+		gt_count = xe_number_gt(fd);
- 		was_enabled = xe_eudebug_enable(fd, true);
- 	}
- 
-@@ -2745,6 +2855,17 @@ igt_main
- 	igt_subtest("discovery-empty-clients")
- 		test_empty_discovery(fd, DISCOVERY_DESTROY_RESOURCES, 16);
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			drm_close_driver(fd);
-+			ccs_mode_all_engines(gt_count);
-+			fd = drm_open_driver(DRIVER_XE);
-+		}
-+
-+		igt_subtest("exec-queue-placements")
-+			test_basic_sessions(fd, EXEC_QUEUES_PLACEMENTS, 1, true);
-+	}
-+
- 	igt_fixture {
- 		xe_eudebug_enable(fd, was_enabled);
- 		drm_close_driver(fd);
--- 
-2.34.1
 
+BR,
+Jani.
+
+
+--=20
+Jani Nikula, Intel
