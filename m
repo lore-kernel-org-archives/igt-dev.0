@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F318DD462BF
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 15:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 280D5D462B9
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Nov 2024 15:27:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2346210E0BE;
-	Wed, 13 Nov 2024 15:15:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qh4EkWcb";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D559310E0BE
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Nov 2024 15:15:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731510942; x=1763046942;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9TPSJW/CqnmQfr7ZDxfwzhAVD9CDCoFciUvW0MfYWbY=;
- b=Qh4EkWcbNYXrDG+F7FXkDnE2t1o8n01jahKJ4IDXR736XCon1GQ2GVAJ
- oQYbxGyYnKVeTOHxuSgburRZRl/Rx3UMq0x/3Wz2KwpQ5AokxN6zoMc9u
- dH3SYcKxso+2l3YqjEsmpjFWbkds7Nwgfvs7XVuB/ZCxv+IU3klWGPB0k
- CJj/E3LHpwiuj2FjCuQiKnJlgM2z6phKnF2DTBvaYWPkl9HqcjWnlVvPU
- BQczwXBJrTVjZD//o6bHKVdjOVRbGRop/hBIdmu2XwsHB0HcgW4nt7Mok
- FbFeXLaqUPcjjaGORMJwu7DOLzLnNUuPntBs4H9gnTbd8j5jMLHqZJDdc w==;
-X-CSE-ConnectionGUID: l5qvQcWATw2MPYNdeSJWww==
-X-CSE-MsgGUID: uS7jF2vaSYOJNjiIWOd2UQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31580136"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="31580136"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 07:15:42 -0800
-X-CSE-ConnectionGUID: KzQmZ7UjSGi+1JUI5XEK+g==
-X-CSE-MsgGUID: 0CKsmglgSvaMn6S3PKOhkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="88065890"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 07:15:42 -0800
-Date: Wed, 13 Nov 2024 16:15:39 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] runner/executor: Check for error at writing
- dmesg dump
-Message-ID: <20241113151539.i2or7hqmwtp7zcnd@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Krzysztof Karas <krzysztof.karas@intel.com>
-References: <20241018161820.76014-1-kamil.konieczny@linux.intel.com>
- <20241018161820.76014-2-kamil.konieczny@linux.intel.com>
- <wfetyjmy34erijop7ffm5ywke7hx5q3i4za46u7m6xljry6iza@acdponikqdlx>
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE5E188735;
+	Wed, 13 Nov 2024 15:27:01 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9BC188735;
+ Wed, 13 Nov 2024 15:27:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9207493742624768608=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <wfetyjmy34erijop7ffm5ywke7hx5q3i4za46u7m6xljry6iza@acdponikqdlx>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Add_debugfs_SR-IOV_helpers?=
+ =?utf-8?q?=3B_Improve_clear-lmem_check_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 13 Nov 2024 15:27:00 -0000
+Message-ID: <173151162081.3662012.13564859611895769932@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241113115948.287709-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20241113115948.287709-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,84 +37,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2024-10-24 at 13:45:48 +0000, Krzysztof Karas wrote:
-> Hi Kamil,
-> 
-> I looked through the change and found only one thing that could be
-> added, the rest looks good to me.
-> 
-> On 2024-10-18 at 18:18:19 +0200, Kamil Konieczny wrote:
-> > In processing kernel dmesg there are checks for error at reading
-> > so add also one for writing.
-> > 
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  runner/executor.c | 29 ++++++++++++++++++++++++++---
-> >  1 file changed, 26 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/runner/executor.c b/runner/executor.c
-> > index ac73e1dde..3939f92f1 100644
-> > --- a/runner/executor.c
-> > +++ b/runner/executor.c
-> > @@ -600,7 +600,7 @@ static long dump_dmesg(int kmsgfd, int outfd)
-> >  	bool underflow_once = false;
-> >  	char cont;
-> >  	char buf[2048];
-> > -	ssize_t r;
-> > +	ssize_t r, w;
-> >  	long written = 0;
-> >  
-> >  	if (kmsgfd < 0)
-> > @@ -654,9 +654,32 @@ static long dump_dmesg(int kmsgfd, int outfd)
-> >  			return written;
-> >  		}
-> >  
-> > -		write(outfd, buf, r);
-> > -		written += r;
-> > +		w = write(outfd, buf, r);
-> > +		if (w < r) {
-> > +			if (w == -1 && errno == EINTR)
-> > +				w = write(outfd, buf, r);
-> > +
-> > +			if (w < r && w >= 0)
-> > +				w += write(outfd, buf + w, r - w);
-> > +
-> > +			if (w < r) {
-> > +				long err = -errno;
-> > +
-> > +				if (err) {
-> > +					errf("Write error while processing dmesg, errno=%d\n", errno);
-> You could include `w` and `r` values into this log as well.
+--===============9207493742624768608==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Done.
+== Series Details ==
 
-Regards,
-Kamil
+Series: Add debugfs SR-IOV helpers; Improve clear-lmem check (rev2)
+URL   : https://patchwork.freedesktop.org/series/140733/
+State : success
 
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> > +				} else {
-> > +					errf("Cannot write dmesg chunk: %ld < %ld\n", w, r);
-> > +					err = -1;
-> > +				}
-> >  
-> > +				if (comparefd >= 0)
-> > +					close(comparefd);
-> > +
-> > +				return err;
-> > +			}
-> > +		}
-> > +
-> > +		written += r;
-> >  		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
-> >  					    &flags, &seq, &usec, &cont) == 4) {
-> >  			/*
-> > -- 
-> > 2.47.0
-> > 
-> 
-> Best Regards,
-> Krzysztof K
+== Summary ==
+
+CI Bug Log - changes from IGT_8107 -> IGTPW_12089
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/index.html
+
+Participating hosts (47 -> 45)
+------------------------------
+
+  Missing    (2): bat-mtlp-9 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12089 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [DMESG-FAIL][3] ([i915#12759]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-dg2-8/igt@i915_selftest@live.html
+    - bat-arls-5:         [ABORT][5] ([i915#10341]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-arls-5/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-arls-5/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-8:          [DMESG-FAIL][7] ([i915#9500]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [ABORT][9] ([i915#12061]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12759]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12759
+  [i915#9500]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8107 -> IGTPW_12089
+
+  CI-20190529: 20190529
+  CI_DRM_15689: 169c7cd31a373ed31054abb423981856eb5fb119 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12089: f5d5f2360e92766f30cc248856661c8d587060fe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8107: 0362b0deec80daaecdfa3dd0676dcabb6f14bd9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/index.html
+
+--===============9207493742624768608==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add debugfs SR-IOV helpers; Improve clear-lmem check (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140733/">https://patchwork.freedesktop.org/series/140733/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8107 -&gt; IGTPW_12089</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/index.html</p>
+<h2>Participating hosts (47 -&gt; 45)</h2>
+<p>Missing    (2): bat-mtlp-9 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12089 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12759">i915#12759</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-dg2-8/igt@i915_selftest@live.html">PASS</a></li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-arls-5/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-arls-5/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500">i915#9500</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8107/bat-arls-5/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12089/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8107 -&gt; IGTPW_12089</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15689: 169c7cd31a373ed31054abb423981856eb5fb119 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12089: f5d5f2360e92766f30cc248856661c8d587060fe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8107: 0362b0deec80daaecdfa3dd0676dcabb6f14bd9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============9207493742624768608==--
