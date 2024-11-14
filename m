@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 689F9D68B2B
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Nov 2024 14:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C454D68B2D
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Nov 2024 15:00:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 28B5210E34B;
-	Thu, 14 Nov 2024 14:42:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 411A510E7EE;
+	Thu, 14 Nov 2024 15:00:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HVdToFJK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H9jpUrTe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1751F10E34B
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Nov 2024 14:42:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF17810E7EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Nov 2024 15:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731595349; x=1763131349;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xkAlwYbbmcLyH0lRX03Ph83j9Erff7VSMCQy0c1HvOM=;
- b=HVdToFJKyQQuo+0Al3Yg5wzfY39D99nirro9xCdwF4FFrA7sPUnhFf6f
- rrAdo3Fajz9vzUk11NPCovmM+qnwBemc6ShRgvXYHjgANe/g8u2ppVL9q
- 3C1BnnB1Mn8UnQvlz4pez8CAYjrSpVM9KIt3XUtEXCR6y9vS5rzvKB7Sz
- E3GIT+ZFjtHwXlsA0jyZb8ZakbgbqgLWlzaH51mb2b2hw0m33bVPNuG6Q
- mgQqo9I+P8zpEO/aaElnlKPLCHnBzivaDFM7STfdhe6Bn647UHhW6cXRK
- WyS3pkd5TPAa9Hunmtlgy6QBs8uJ5O9soDN4BIlGgVcqLnapbq1T7xcYW w==;
-X-CSE-ConnectionGUID: B+7fSI1dRTymS77anEb/9g==
-X-CSE-MsgGUID: HRv2B6GYR82VThoCcnmAeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="35257946"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="35257946"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2024 06:42:26 -0800
-X-CSE-ConnectionGUID: PEme8M/kQputEEoFH+p0ng==
-X-CSE-MsgGUID: Hr/bKfXQRqSPZ2Xn8XEexg==
+ t=1731596435; x=1763132435;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=UNYAOqXryvtSgussWQurUg08yXtsEA95eiVJLmeITV0=;
+ b=H9jpUrTemiSRoFtMCyxBCjxsZcONZ3Wr5G3vMuMVoI3x0dpR/iwLxYM2
+ LZthK6oN/l3v5nOuZjR3fPxFmKSz6nE/eHCc/LZX2s0uZ2Zt+voWvJmpT
+ TI3rFSWFzUv0vIkXQTHBHiqBgqKowpFU9FX5VkLIQiR7Jg4Gg5WIo0SpE
+ iqupdYMIoEiEpwIq27lgrcRNhaImUU+C6GCaylOsd69+lUeADipS6XyB3
+ 5Wi0X0+dj2PNDEhX2/OcLXB09iL/SXi+VYRYxE5MHjz8zPf1mL0z0OC8Q
+ +k5oRbDKAexB0VFdKnvg8UEDrY18ZhrXS4NExDTWxHz0L49y2OMN7Awir g==;
+X-CSE-ConnectionGUID: 4BSA60tJQee9GMhKlzVVPw==
+X-CSE-MsgGUID: 5/zvu2tfTN2Upy3VSPQWGw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31325570"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="31325570"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2024 07:00:33 -0800
+X-CSE-ConnectionGUID: nGdDsfKzTByGVsvvgJXaQw==
+X-CSE-MsgGUID: MBAH60acTkuHAPlQVFKfMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="119158445"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
- ([10.245.246.14])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2024 06:42:24 -0800
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t] tests/xe_eudebug: Convert comments to be C-styled
-Date: Thu, 14 Nov 2024 15:41:56 +0100
-Message-Id: <20241114144156.82071-1-dominik.grzegorzek@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="111533060"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.16])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2024 07:00:31 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v3 4/6] lib/igt_kmod: Stop passing ktap around
+Date: Thu, 14 Nov 2024 16:00:29 +0100
+Message-ID: <6796408.GXAFRqVoOG@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241107055254.3129207-5-lucas.demarchi@intel.com>
+References: <20241107055254.3129207-1-lucas.demarchi@intel.com>
+ <20241107055254.3129207-5-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,38 +70,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Change two comments in xe_eudebug testcase to be properly formatted.
-This was pointed in the review, but the patch has been merge before
-correcting mentioned nits.
+On Thursday, 7 November 2024 06:52:52 CET Lucas De Marchi wrote:
+> Just allocate and free in the only function it's needed.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-Fixes "05659c7f2 tests/xe_eudebug: Validate exec queue placements"
+Looks safe.
 
-Reported-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/intel/xe_eudebug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 39db16457..e9765d06e 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -474,13 +474,13 @@ static void placements_client(int fd, struct xe_eudebug_client *c)
- 		xe_eudebug_client_exec_queue_create(c, fd, &create);
- 		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
- 
--		// every other instance (logical_mask ~ 1010, 0101)
-+		/* every other instance (logical_mask ~ 1010, 0101) */
- 		create.width = 2;
- 		create.num_placements = count/2;
- 		xe_eudebug_client_exec_queue_create(c, fd, &create);
- 		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
- 
--		// logically contigous placement (logical_mask ~ 1100, 0110, 0011)
-+		/* logically contigous placement (logical_mask ~ 1100, 0110, 0011) */
- 		for (i = 0; i < count * count - 2; i++)
- 			eci[i].engine_instance = i / 2 + i % 2;
- 
--- 
-2.34.1
+> ---
+>  lib/igt_kmod.c | 29 ++++++++++++-----------------
+>  1 file changed, 12 insertions(+), 17 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 36578aa68..fd79e8739 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -995,8 +995,9 @@ static void kunit_results_free(struct igt_list_head *results,
+>  }
+>  
+>  static int kunit_get_results(struct igt_list_head *results, const char *debugfs_path,
+> -			     const char *suite, struct igt_ktap_results **ktap)
+> +			     const char *suite)
+>  {
+> +	struct igt_ktap_results *ktap;
+>  	char results_path[PATH_MAX];
+>  	FILE *results_stream;
+>  	char *buf = NULL;
+> @@ -1012,21 +1013,21 @@ static int kunit_get_results(struct igt_list_head *results, const char *debugfs_
+>  	if (igt_debug_on(!results_stream))
+>  		return -errno;
+>  
+> -	*ktap = igt_ktap_alloc(results);
+> -	if (igt_debug_on(!*ktap)) {
+> +	ktap = igt_ktap_alloc(results);
+> +	if (igt_debug_on(!ktap)) {
+>  		err = -ENOMEM;
+>  		goto out_fclose;
+>  	}
+>  
+>  	while (len = getline(&buf, &size, results_stream), len > 0) {
+> -		err = igt_ktap_parse(buf, *ktap);
+> +		err = igt_ktap_parse(buf, ktap);
+>  		if (err != -EINPROGRESS)
+>  			break;
+>  	}
+>  
+>  	free(buf);
+> +	igt_ktap_free(&ktap);
+>  
+> -	igt_ktap_free(ktap);
+>  out_fclose:
+>  	fclose(results_stream);
+>  
+> @@ -1037,8 +1038,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
+>  			    struct igt_ktest *tst,
+>  			    const char *suite,
+>  			    const char *opts,
+> -			    const char *debugfs_path,
+> -			    struct igt_ktap_results **ktap)
+> +			    const char *debugfs_path)
+>  {
+>  	struct igt_ktap_result *r, *rn;
+>  	struct dirent *subdir;
+> @@ -1083,7 +1083,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
+>  		if (suite && strcmp(subdir->d_name, suite))
+>  			continue;
+>  
+> -		igt_warn_on_f(kunit_get_results(tests, debugfs_path, subdir->d_name, ktap),
+> +		igt_warn_on_f(kunit_get_results(tests, debugfs_path, subdir->d_name),
+>  			      "parsing KTAP report from test suite \"%s\" failed\n",
+>  			      subdir->d_name);
+>  
+> @@ -1102,8 +1102,7 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  			const char *subtest,
+>  			const char *opts,
+>  			const char *debugfs_path,
+> -			struct igt_list_head *tests,
+> -			struct igt_ktap_results **ktap)
+> +			struct igt_list_head *tests)
+>  {
+>  	struct igt_ktap_result *t;
+>  
+> @@ -1133,7 +1132,7 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  			igt_assert_eq(igt_kernel_tainted(&taints), 0);
+>  
+>  			igt_assert_eq(kunit_get_results(&results, debugfs_path,
+> -							t->suite_name, ktap), 0);
+> +							t->suite_name), 0);
+>  
+>  			for (i = 0; i < 2; i++) {
+>  				kunit_result_free(&r, &suite_name, &case_name);
+> @@ -1197,7 +1196,6 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  {
+>  	char debugfs_path[PATH_MAX] = { '\0', };
+>  	struct igt_ktest tst = { .kmsg = -1, };
+> -	struct igt_ktap_results *ktap = NULL;
+>  	char *subtest;
+>  	IGT_LIST_HEAD(tests);
+>  
+> @@ -1243,16 +1241,13 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  	 * and for documentation.
+>  	 */
+>  	igt_subtest_with_dynamic(subtest) {
+> -		kunit_get_tests(&tests, &tst, suite, opts,
+> -				debugfs_path, &ktap);
+> -		__igt_kunit(&tst, subtest, opts, debugfs_path, &tests, &ktap);
+> +		kunit_get_tests(&tests, &tst, suite, opts, debugfs_path);
+> +		__igt_kunit(&tst, subtest, opts, debugfs_path, &tests);
+>  	}
+>  
+>  	igt_fixture {
+>  		char *suite_name = NULL, *case_name = NULL;
+>  
+> -		igt_ktap_free(&ktap);
+> -
+>  		kunit_results_free(&tests, &suite_name, &case_name);
+>  
+>  		igt_ktest_end(&tst);
+> 
+
+
+
 
