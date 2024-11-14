@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6589CD41C3B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B95ED41C3A
 	for <igt-dev@archiver.kernel.org>; Thu, 14 Nov 2024 04:58:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 22FBF10E79D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C68A10E7A0;
 	Thu, 14 Nov 2024 04:58:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b8uJRZfC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mTTZwCD0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2894310E797;
- Thu, 14 Nov 2024 04:58:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8B4510E79D;
+ Thu, 14 Nov 2024 04:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731560330; x=1763096330;
+ t=1731560332; x=1763096332;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SDNcx9SKQqtHwv/EBmWUxnxVtg6/tqbJqnWUUsou3tg=;
- b=b8uJRZfC6wfhfPxe6J4LetaUfYLsA+Y2XPh8iylQXyWhLV84VbdndHDP
- q3UtyHIeXft6etjpdMT2cNcY1C8zdfbMqV4uTVRCmgQ4+igyPD5Gn2vZK
- B8A4KfKrjAIHnCCeNi819qe+/l+zcBd1B0p1DpUI9uBxEKjJm210HX9HJ
- 1oDkiY8q9+5X19BMyKCL69UKtf/vNYIJwrUsB6AmqKmTzE3dtPmtUa7ug
- wrxOSaaxo1g+JCffWNtWkmJaoszlMk2OlOrHf/yAK39cgwI2BThwYzwDM
- R1WWzWtYmx9A8tUvJDn34pJX8NZEm223XWATwhizVn259ddgkknzgweFK w==;
-X-CSE-ConnectionGUID: q8bMvbY4SyitffhjfHqlVw==
-X-CSE-MsgGUID: zds5b9j/TkWrPvzZck4liQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11255"; a="35409531"
-X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; d="scan'208";a="35409531"
+ bh=xpFEKBSFsurNNKPAK5JROYVQ5NHMMqF7k73OqIDmEmI=;
+ b=mTTZwCD0MiBDUTPX0s6srzrOpdlNkO7NJhyRkV69UCFMnjiVHybijKKO
+ UYy7katZ5dt2U8KQk/HqVwqk14Q3P9I8fJl6S7wasUzR9P8svOjUBRRSL
+ mHAEBvtsEeDPbrEJETJsgqXjSxZVQ5PyNbnSfUaiAk4bBBr90iIBgbqQI
+ 11Wbw9VvFOaeT7QDIP6tqxGxacakkUcm7o6b5btgfb+Q9LXIK8PnAHaVU
+ 8Kg4sVFMEXpjDwmzTKxJZu/0prBrIUhnjIyzg6Zm1mduSZPQhTbdF5Rkk
+ JUORVxsopPMPvDKX5qJjO/d8+G+5CVjXhaCB7e5aQ0DBxyrlPWh9ITMew w==;
+X-CSE-ConnectionGUID: CqVS31oPQ/K4FVwMG3YPbA==
+X-CSE-MsgGUID: 6SOOiymFS0ixk0nrGBrrUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11255"; a="35409532"
+X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; d="scan'208";a="35409532"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 20:58:50 -0800
-X-CSE-ConnectionGUID: bgv5gL0sSPWW37ZaE+Qy5A==
-X-CSE-MsgGUID: SczhlTWfTzu6MH4i8lgGQw==
+ 13 Nov 2024 20:58:52 -0800
+X-CSE-ConnectionGUID: jwmwDrZBTXu8Hxrsqrpz7A==
+X-CSE-MsgGUID: 45xoOxi9QcGS1r7Jp3IPeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; d="scan'208";a="92139111"
+X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; d="scan'208";a="92139114"
 Received: from tejas-super-server.iind.intel.com ([10.145.169.166])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 20:58:48 -0800
+ 13 Nov 2024 20:58:50 -0800
 From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	intel-xe@lists.freedesktop.org
 Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: [i-g-t 2/4] include/drm-uapi-experimental: Move i915_drm_local.h to
- drm-uapi-experimental
-Date: Thu, 14 Nov 2024 10:31:27 +0530
-Message-Id: <20241114050129.1381711-3-tejas.upadhyay@intel.com>
+Subject: [i-g-t 3/4] include/intel_drm_local.h: Add
+ DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER
+Date: Thu, 14 Nov 2024 10:31:28 +0530
+Message-Id: <20241114050129.1381711-4-tejas.upadhyay@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241114050129.1381711-1-tejas.upadhyay@intel.com>
 References: <20241114050129.1381711-1-tejas.upadhyay@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,110 +69,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move i915_drm_local.h to drm-uapi-experimental/intel_drm_local.h
+For now dump into intel_drm_local.h. Once the uapi on the kernel side is
+merged, and is part of drm-next, we can sync the kernel headers and
+remove this.
 
 Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
 ---
- .../drm-uapi-experimental/intel_drm_local.h   | 27 +++++++++++++++++++
- lib/i915/gem_scheduler.c                      |  2 +-
- lib/i915/intel_memory_region.h                |  2 +-
- lib/igt_gt.h                                  |  2 +-
- tools/i915-perf/i915_perf_recorder.c          |  2 +-
- 5 files changed, 31 insertions(+), 4 deletions(-)
- create mode 100644 include/drm-uapi-experimental/intel_drm_local.h
+ include/drm-uapi-experimental/intel_drm_local.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/include/drm-uapi-experimental/intel_drm_local.h b/include/drm-uapi-experimental/intel_drm_local.h
-new file mode 100644
-index 000000000..1773c649b
---- /dev/null
+index 1773c649b..4afe588ec 100644
+--- a/include/drm-uapi-experimental/intel_drm_local.h
 +++ b/include/drm-uapi-experimental/intel_drm_local.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+#ifndef _INTEL_DRM_LOCAL_H_
-+#define _INTEL_DRM_LOCAL_H_
-+
-+#if defined(__cplusplus)
-+extern "C" {
-+#endif
-+
-+/*
-+ * It is necessary on occasion to add uapi declarations to IGT before they
-+ * appear in imported kernel uapi headers. This header is provided for this
-+ * purpose.
-+
-+ * Early uapi declarations should be added here exactly as they are
-+ * expected to appear in the kernel uapi headers, i.e. without the LOCAL_
-+ * or local_ prefix and without any #ifndef's. Attempt should be made to
-+ * clean these up when kernel uapi headers are sync'd.
-+ */
-+
-+#if defined(__cplusplus)
-+}
-+#endif
-+
-+#endif /* _INTEL_DRM_LOCAL_H_ */
-diff --git a/lib/i915/gem_scheduler.c b/lib/i915/gem_scheduler.c
-index 0087df902..7c4eea983 100644
---- a/lib/i915/gem_scheduler.c
-+++ b/lib/i915/gem_scheduler.c
-@@ -25,10 +25,10 @@
- #include <string.h>
- #include <sys/ioctl.h>
- 
-+#include "drm-uapi-experimental/intel_drm_local.h"
- #include "igt_core.h"
- #include "ioctl_wrappers.h"
- 
--#include "i915/i915_drm_local.h"
- #include "i915/gem_scheduler.h"
- #include "i915/gem_submission.h"
- 
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 9e24bd8fb..ce187f426 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -22,7 +22,7 @@
+@@ -20,6 +20,8 @@ extern "C" {
+  * clean these up when kernel uapi headers are sync'd.
   */
- #include "i915_drm.h"
- #include "igt_collection.h"
--#include "i915_drm_local.h"
-+#include "intel_drm_local.h"
  
- #ifndef INTEL_MEMORY_REGION_H
- #define INTEL_MEMORY_REGION_H
-diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-index d3213123d..82ed22be7 100644
---- a/lib/igt_gt.h
-+++ b/lib/igt_gt.h
-@@ -24,11 +24,11 @@
- #ifndef IGT_GT_H
- #define IGT_GT_H
- 
-+#include "drm-uapi-experimental/intel_drm_local.h"
- #include "igt_debugfs.h"
- #include "igt_dummyload.h"
- #include "igt_core.h"
- 
--#include "i915/i915_drm_local.h"
- #include "i915_drm.h"
- 
- struct pci_device;
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index ca4354832..5dc5eb65d 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -44,7 +44,7 @@
- 
- #include <i915_drm.h>
- 
--#include "i915/i915_drm_local.h"
-+#include "drm-uapi-experimental/intel_drm_local.h"
- 
- #include "igt_core.h"
- #include "intel_chipset.h"
++#define DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER	(1 << 0)
++
+ #if defined(__cplusplus)
+ }
+ #endif
 -- 
 2.34.1
 
