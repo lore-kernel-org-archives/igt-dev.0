@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEF6FD68B36
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Nov 2024 16:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D1AD637D4
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Nov 2024 17:06:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A75210E822;
-	Thu, 14 Nov 2024 16:29:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D006B10E094;
+	Thu, 14 Nov 2024 17:06:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CJRU5rEd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BwOmmm5z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0FBB10E822
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Nov 2024 16:29:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E889910E094
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Nov 2024 17:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731601779; x=1763137779;
+ t=1731603988; x=1763139988;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0L2O3YOJjtoayB8T81jKIbL99j+1KlYCzeu2MSOhjvk=;
- b=CJRU5rEdAUNgUOxyh++ae1y9TbSWnnCcn4rUI6SdRSBWjEbmQUyX6ASv
- zLerlQPi1eUsE/nyzCSGMCalmqFetb7IwF0BYh+jm0qOqifxvQpvpiLtV
- BmdAnkOHJqSivQlpudyFlEZ7jssbYoeI2N/Cx9u/pe5j4Notn29EEULB4
- UdHbksDDNhaT4wCBSIfZmk82kIagWXyow+Kq0aQ7MApsuZLuEih6oUW/8
- cz3TrmrtBmp5S4Rl+rSstlMJFTrtvgIfL5hAK/EXfko0TZFg309rJqY0c
- NaiG37Ljd7s988IyKydQcI7oEC761gr7rkLseEBiMes8C6HsNX/fzlXjK g==;
-X-CSE-ConnectionGUID: V8e2v3ybQtyTKXzXbA0Pvw==
-X-CSE-MsgGUID: KrlI0Xx0TUmAgsueIhFiEg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="42180184"
-X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="42180184"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2024 08:29:39 -0800
-X-CSE-ConnectionGUID: wyzczKkSQ4aLFxYdeQEzbA==
-X-CSE-MsgGUID: Xkk2Vs8ARrejEkcuKwrPdw==
+ bh=ZVccWlWjULPKfD00JijoReeLyo//U/IX1P3UALg7Skc=;
+ b=BwOmmm5zncgCbzMtlETugue3FoDXHyl+8odTMpZEhL3tvFSSqqJQTOZl
+ TAAcByNwVFCwmMmcWB7Xe7B5yuwcO50elfo39MoDKnCXJE5NCUXGQ5AV3
+ /6uvipEAw60vrAkTvhCy4r+lFWhLXugr0rCK97Ls9HBYKqeFNnjlMACDs
+ oky/RedvmFmvOM2GJfV7JuethJaHdGU/kh2gvseQQ4dcYFL0Us7tbduPe
+ g0PHXp0DjX1OwT99u76dRd1XTzqe1V7tfSvmOVRNcbxjbT12pVz9LxtgB
+ qjle82xlq1ciWGAKjGzLqkiPgnxch8Z0J/jzO6608VuAw4RBsLn2ntLcR Q==;
+X-CSE-ConnectionGUID: yY4LwIWESkOcmGHT83QzGA==
+X-CSE-MsgGUID: pvRWkBohTMuSM+rOldQN1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="56963293"
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="56963293"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2024 09:06:27 -0800
+X-CSE-ConnectionGUID: ETuFgIaJT9aULWK1vhPXPg==
+X-CSE-MsgGUID: ACbdRo83RCa+ZjX+MzfnuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="93334291"
-Received: from art-dev-395.igk.intel.com ([10.102.138.231])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2024 08:29:37 -0800
-From: "Maslak, Jan" <jan.maslak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: dominik.grzegorzek@intel.com,
-	"Maslak, Jan" <jan.maslak@intel.com>
-Subject: [PATCH 2/2] tests/xe_eudebug_online: update thread count handling in
- query_attention_bitmask_size()
-Date: Thu, 14 Nov 2024 16:28:43 +0000
-Message-Id: <20241114162843.1210570-3-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241114162843.1210570-1-jan.maslak@intel.com>
-References: <20241114162843.1210570-1-jan.maslak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="88429106"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.16])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2024 09:06:26 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v3 6/6] lib/igt_kmod: Do not leak kmod ctx
+Date: Thu, 14 Nov 2024 18:06:22 +0100
+Message-ID: <6844519.31r3eYUQgx@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241107055254.3129207-7-lucas.demarchi@intel.com>
+References: <20241107055254.3129207-1-lucas.demarchi@intel.com>
+ <20241107055254.3129207-7-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,55 +70,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
----
- tests/intel/xe_eudebug_online.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Hi Lucas,
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 0ef0d8093..514c59f8a 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -1118,7 +1118,9 @@ static bool intel_gen_has_lockstep_eus(int fd)
- 
- static int query_attention_bitmask_size(int fd, int gt)
- {
--	const unsigned int threads = 8;
-+	uint32_t thread_count_len;
-+	uint32_t* thread_count_ptr;
-+	uint32_t thread_count;
- 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
- 	struct drm_xe_query_topology_mask *topology;
- 	struct drm_xe_device_query query = {
-@@ -1130,6 +1132,10 @@ static int query_attention_bitmask_size(int fd, int gt)
- 	int pos = 0, eus;
- 	uint8_t *any_dss;
- 
-+	thread_count_ptr = xe_hwconfig_lookup_value(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU, &thread_count_len);
-+	igt_assert(thread_count_ptr);
-+	thread_count = *thread_count_ptr;
-+
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 	igt_assert_neq(query.size, 0);
- 
-@@ -1178,8 +1184,9 @@ static int query_attention_bitmask_size(int fd, int gt)
- 
- 	free(any_dss);
- 	free(topology);
-+	free(thread_count_ptr);
- 
--	return eus * threads / 8;
-+	return eus * DIV_ROUND_UP(thread_count, 8);
- }
- 
- static struct drm_xe_eudebug_event_exec_queue *
--- 
-2.34.1
+On Thursday, 7 November 2024 06:52:54 CET Lucas De Marchi wrote:
+> kmod_ctx() is used as a cheap way to cache the kmod ctx. Make sure it's
+> released when the process exit by using igt_install_exit_handler(),
+> which also guarantees children forked with igt_fork* don't free it on
+> exit. Normal forks are still susceptible to breakage, but if it that
+> happens, let it break so we can fix.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
----------------------------------------------------------------------
-Intel Technology Poland sp. z o.o.
-ul. Slowackiego 173 | 80-298 Gdansk | Sad Rejonowy Gdansk Polnoc | VII Wydzial Gospodarczy Krajowego Rejestru Sadowego - KRS 101882 | NIP 957-07-52-316 | Kapital zakladowy 200.000 PLN.
-Spolka oswiadcza, ze posiada status duzego przedsiebiorcy w rozumieniu ustawy z dnia 8 marca 2013 r. o przeciwdzialaniu nadmiernym opoznieniom w transakcjach handlowych.
+LGTM.
 
-Ta wiadomosc wraz z zalacznikami jest przeznaczona dla okreslonego adresata i moze zawierac informacje poufne. W razie przypadkowego otrzymania tej wiadomosci, prosimy o powiadomienie nadawcy oraz trwale jej usuniecie; jakiekolwiek przegladanie lub rozpowszechnianie jest zabronione.
-This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+
+> ---
+>  lib/igt_kmod.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 7be95a61c..89736ae59 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -71,14 +71,20 @@ static void squelch(void *data, int priority,
+>  {
+>  }
+>  
+> +static struct kmod_ctx *ctx__;
+> +
+> +static void free_kmod_ctx(int sig)
+> +{
+> +	kmod_unref(ctx__);
+> +}
+> +
+>  static struct kmod_ctx *kmod_ctx(void)
+>  {
+> -	static struct kmod_ctx *ctx;
+>  	const char **config_paths = NULL;
+>  	char *config_paths_str;
+>  	char *dirname;
+>  
+> -	if (ctx)
+> +	if (ctx__)
+>  		goto out;
+>  
+>  	dirname = getenv("IGT_KMOD_DIRNAME");
+> @@ -112,14 +118,16 @@ static struct kmod_ctx *kmod_ctx(void)
+>  		config_paths[i] = NULL;
+>  	}
+>  
+> -	ctx = kmod_new(dirname, config_paths);
+> -	igt_assert(ctx != NULL);
+> +	ctx__ = kmod_new(dirname, config_paths);
+> +	igt_assert(ctx__ != NULL);
+>  
+>  	free(config_paths);
+> +	igt_install_exit_handler(free_kmod_ctx);
+> +
+> +	kmod_set_log_fn(ctx__, squelch, NULL);
+>  
+> -	kmod_set_log_fn(ctx, squelch, NULL);
+>  out:
+> -	return ctx;
+> +	return ctx__;
+>  }
+>  
+>  /**
+> 
+
+
+
 
