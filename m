@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55B7AD6A229
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 301A0D6A221
 	for <igt-dev@archiver.kernel.org>; Thu, 14 Nov 2024 19:04:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E379610E2BD;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D895A10E093;
 	Thu, 14 Nov 2024 19:04:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kikhlV6G";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BOSYXVO2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D15AB10E093
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A88610E093
  for <igt-dev@lists.freedesktop.org>; Thu, 14 Nov 2024 19:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1731611045; x=1763147045;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=4gnAqMY4qOGnGJACbKd2MZYLNYVPQJL8mI0reoKpeCA=;
- b=kikhlV6GREqOKTT2/opmCqFvs6NvsAfWElSXLybuPU89c+odtmPodljU
- 54nZWl2hxMtqIGCVTOytORd7TsiC/PGOc8o+lFqBuAqhLVUTzIJfQ4Ddp
- 9EmzPcno8trVOi1IOAXkjsyuybLRGZr1KuoOlRl6uaOn1vdym2wfkpQRi
- VelGFqbxabzCGhN9LcZhmXCb6tGlnWaWEvftq+/g9heDtOjZY4WTld+NF
- omi8PTa63F7tocu80jcmgzP8+0BuoW4XuMaLZm0sK1w4CpplC+hnKsfJV
- wb3utctklafKvebTrAqtB15Pw3m9LI0dJsgGep0+lnBc3R7bpI8dg7y6Y A==;
-X-CSE-ConnectionGUID: cIVkaOIdQD+obUjyse+q4Q==
-X-CSE-MsgGUID: x4vfn9B0RG2vbKfTfp6O1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="34442574"
-X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="34442574"
+ bh=OxpWR52rgQ/vmMsk/eW4tvh2I3hFNczZvk/6TKXn+VY=;
+ b=BOSYXVO2BIMEphcLssNavSNaDw9AJ1lO8zqeha6HnJHu0TVgeW+fESF7
+ KmRT8el2DFqGcK7GeZGFHerfckXJCvHRE5whpmdK/GmGWsls9keyJwCoe
+ RXL5YOzbzZae7jhBRPlVNbNah6lpAHqvcAMcaisc1Fkb+oQdEMkz7/Jc/
+ 2i3rhnaFHQ3HL30Mza6BjvPAscNuWyEHRbt+FMx5oFpyzJnMSUMmbrjnW
+ wA5y11PuyWS7cz/0tOHdRN60qdK1T8iBWK8dqGTOBuicTkK0Kb1k7a4eT
+ WjHgGI1n1+ZAGvBrc1bm1CCU0U6I7RnXFpIBkR86bx4KmJBRaKrmIq9L0 Q==;
+X-CSE-ConnectionGUID: ZnOV931GSBWC5Zi/aCdUOg==
+X-CSE-MsgGUID: wk7+qud6QsiDh2oVRw5SAw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="34442571"
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="34442571"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Nov 2024 11:03:44 -0800
-X-CSE-ConnectionGUID: wjcMAB6eQyGxazaH2IYu8A==
-X-CSE-MsgGUID: EVAq6rcRQyar3qtYxZNpfA==
+X-CSE-ConnectionGUID: GbD+lHYZRjmKP6PpZl6n0g==
+X-CSE-MsgGUID: LhXQCPIAQ9e6FVX31b50Pg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="93242110"
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="93242109"
 Received: from cataylo2-desk.jf.intel.com ([10.165.21.140])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Nov 2024 11:03:43 -0800
 From: Clint Taylor <clinton.a.taylor@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v3 7/9] XE3: tests/kms_cursor_legacy:
- flip_vs_cursor_busy_crc was requiring any driver but used intel x-tile
-Date: Thu, 14 Nov 2024 11:03:37 -0800
-Message-Id: <20241114190339.3885752-8-clinton.a.taylor@intel.com>
+Subject: [PATCH i-g-t v3 6/9] XE3: tests/intel/kms_draw_crc: fix x-tiled tests
+ for case when there is no x-tile
+Date: Thu, 14 Nov 2024 11:03:36 -0800
+Message-Id: <20241114190339.3885752-7-clinton.a.taylor@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241114190339.3885752-1-clinton.a.taylor@intel.com>
 References: <20241114190339.3885752-1-clinton.a.taylor@intel.com>
@@ -69,27 +69,31 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 
-switch flip_vs_cursor_busy_crc to use linear framebuffer instead of x-tile
+On Xe3 display no more support x-tile and will disable such framebuffers
 
 Signed-off-by: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>
 Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
 ---
- tests/kms_cursor_legacy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/kms_draw_crc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 4e2cfde17..1f082df2d 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1679,7 +1679,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
- 	set_fb_on_crtc(display, pipe, output, &fb_info[0]);
- 	plane_primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_create_color_pattern_fb(display->drm_fd, fb_info[0].width, fb_info[0].height,
--				    DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED, .1, .1, .1, &fb_info[1]);
-+				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, &fb_info[1]);
+diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
+index e3d1c0ba9..3084e9c9b 100644
+--- a/tests/intel/kms_draw_crc.c
++++ b/tests/intel/kms_draw_crc.c
+@@ -243,8 +243,10 @@ static void fill_fb_subtest(void)
+ 	get_fill_crc(DRM_FORMAT_MOD_LINEAR, &crc);
+ 	igt_assert_crc_equal(&crc, &base_crc);
  
- 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
- 			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
+-	get_fill_crc(I915_FORMAT_MOD_X_TILED, &crc);
+-	igt_assert_crc_equal(&crc, &base_crc);
++	if (intel_display_ver(intel_get_drm_devid(drm_fd)) <= 20) {
++		get_fill_crc(I915_FORMAT_MOD_X_TILED, &crc);
++		igt_assert_crc_equal(&crc, &base_crc);
++	}
+ 
+ 	if (intel_display_ver(intel_get_drm_devid(drm_fd)) >= 9) {
+ 		get_fill_crc(has_4tile ?
 -- 
 2.25.1
 
