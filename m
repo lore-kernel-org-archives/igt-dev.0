@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751D3D6DDF2
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 11:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F08D6DDF2
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 11:55:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31A5B10E854;
-	Fri, 15 Nov 2024 11:48:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B1D710E854;
+	Fri, 15 Nov 2024 11:55:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hpu3B+Hl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PyRk8idi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 850BA10E854
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 11:48:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 596AB10E854
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 11:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731671311; x=1763207311;
+ t=1731671720; x=1763207720;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=w89t1cfjF/sD4f4hLhVGuuMzHqJlGaCY+dFoF+k5RiY=;
- b=hpu3B+HlzlHj2oPpdsxS59akCcXDWNo5+Zn+oZxm+dqhQkR4uYNCrY1+
- LBSh6cJcthBBrh9+MqAahgJ9aMyBROdeep83iSp8rpJ1m/CE2JMK1prkg
- 8yXXS6THzO4WZmSmH6vANZL7pefvgn/j81xWX2hfinU6net+qGjseHX9E
- WJHTNo8wy6rdu4z7eiIhPH649RByDyHJdwXEVKSldD9XTulf6H1/Y4pcC
- k4L3C5afK3vOPuQmKBVh6TUSOrN40C8Ga88cVnSJNeObEBMVnnJoJMkp1
- m10S1RT0Y37QCpK/BwiJW2A9EREGVN07kC4zoRsTk5eep0cA71UW9RhMV w==;
-X-CSE-ConnectionGUID: OoSZ5xMQSFSDRMzInHMoRQ==
-X-CSE-MsgGUID: yT+yY77GTc24xqPZcsexrA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="31595741"
-X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; d="scan'208";a="31595741"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2024 03:48:31 -0800
-X-CSE-ConnectionGUID: kxf2GKk6QwmDwozWsT8B5A==
-X-CSE-MsgGUID: f6qiDhV3SLCPVob+V8v1mA==
+ bh=xw5bT+plTLmX7QLxW8DD4DNw8ookHjwynYqaSgtJH/Y=;
+ b=PyRk8idiHWFjI6ABKQi9tHtljzOhWQfnhul4QjfN7Aqant9N/vlgxYjd
+ XbpuJMfE3CXyAlzUQI18ienuIwZRiprAZlnf8zbNC9H8s1fcijorbDrr0
+ wnMHqtr3p9u3G2xzXANOv47utcT4LTCHU8roAxKXlRJFfID7lADvYKxfo
+ LRK7vqEka6yblODzZlBP8EVYm2Gc7bA/eTy7sxJ6qlScwOxJf29GvEIaV
+ /hlXvS/ZD2yQEf+UG4ApSdFZlmguRgKTUqF+tHAvVdb+X/cYNjdKAwxJs
+ UyX7Iyz9X6xt4TzRCIGbcYVFf40CMJ5wKgYSks6K/nO7U3PZ6s7cDi9oB g==;
+X-CSE-ConnectionGUID: OSbh6OgFQGuy7SYY61HLPg==
+X-CSE-MsgGUID: WuQ4y9LCT1azbVWDH9ccaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="35603511"
+X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; d="scan'208";a="35603511"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Nov 2024 03:55:20 -0800
+X-CSE-ConnectionGUID: dvFqFV6DRc6l+SZ0SEOT2w==
+X-CSE-MsgGUID: MzCaI8imT7WF/5s3hLJPiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; d="scan'208";a="89295438"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 15 Nov 2024 03:48:30 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; d="scan'208";a="92614788"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 15 Nov 2024 03:55:20 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 15 Nov 2024 03:48:30 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ 15.1.2507.39; Fri, 15 Nov 2024 03:55:19 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 15 Nov 2024 03:48:30 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.47) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Fri, 15 Nov 2024 03:55:19 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 15 Nov 2024 03:48:27 -0800
+ 15.1.2507.39; Fri, 15 Nov 2024 03:55:19 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZQe/gdbRU2tWJxRLuXM/lgo3VSHyNOs/1P1utbtwcPKXVIhz0PyBJowHABXlIJlZHJ3cSL/SV9S4pgRe//gWMs5MbN11/h5dtID4WuV85zQRkAtAZo85s5+71hnaOax+QSBKCXWYWux1FuQmZBjLeipE8xsrefkWAr+sVrS9kJJHzPIu2jVpAaw3xDMqXoh3A3XD6+zKUv34PGz8reZ9JIZxgTLxNS1pW/Wl38j17NI35mYuD0rptnaD4EvGmzuTxPMH48ialQ+KkFdpYXrs8DaLZPHJnPhb1btl17PDyZRYlSK31VdF/V3xN8PQeoe1Yvh6qC9TzW8ij7qLEZ7Fjw==
+ b=s23EPdVGC8TymngRMziMmpPegruZRXQa3v80RRti5JSWyDRKt7YXJB3Vr1W0VGDar+AVWHFk6uT7ilMY3gMNaArrFFZ3SDFtb3tGVh6frENnJTO3SxbG6zBGwOhDfnaVgNaTfGPt1+fNSagULpoF62vAyNSIB1gF5hUXc3Fy5WS3dgiOvhY+S8NX29uHn6s7WY5G3maJFs1ViWof6XMsqm2FnuyBt51ON20EoEgQ52EL29PL2RgTQDpU7dr1JzQSWUS5+6hRUH36Xyb1kCZfUyL2mhUAii6t5JU+uasz9P+stIIk9c6i3NlfUfQ2KsPqqStszDb92rRtEoSRISBPDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MvptskmDVlkkAPhnLO5N/pgdMygH0wAC5OLygMC3DyE=;
- b=Cez0uZ0Iz1vYyVuNfpywA0yNLsLn4YqlwHthrMUaWxeCFC4ogpfDNKDrNI74YRh11szrfXrc+BJ3C4GBg//WyYjrVQbfOBqN1h8IqxakRIeQzJQ+jjTc5BHIbvH7CLxXITApWAuNzWJshENfKdvqYlV7DCLgJBLQ5LBZTEpvZKdPmCP1BfYHO1TSanWbYuxfPZNpOftPWt0NSxlAKdF+SJbEH+EK21wUOiKPf2rsR9l1yZZ6HX3wgfMdAeSmmXAmPibkc2Xl2dOtGyF/wfGi/5mfKocm1bS7DhoPD3G1yjqYOPEGiPzfm/2+Rv9mC9kfIHnTcmIDYwM05adN9Row8w==
+ bh=XREg+HzbxgWmMGvDoqb0oFds6+mnrs4bkY3bAk8Dm88=;
+ b=rFOy+HSs6PW26wjm0sgIAdhWvmDvleNqdBfb7FSfDbp5ZWfsWbR6VVWftYoLwuYZOuuRGgDPLV8KLV72p7tLK62gz9NlcI/0QGxLQunQo86bGjhObltSmFysLCBbKsjP0/qGqh5nhAEXF8MDAahSNsrECKAixsp7ZhAKDBbci0h/RYpO2y2IZg8UJF0MsMIwIAXCIlvp54XwQEVXWybT/V/KkeLinuEfkoI7eqFzzso2t7HKQjmrblQ25VOGXW7LKWxEOQEIoltg7EVzS0cROfv0YOKNQI4cP10cHXBMg+bQIYTO+ZShadj2Ub9QJ5S2l7lKZIvqS+n2lFpTWRNW0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,114 +69,114 @@ Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
  by SN7PR11MB6993.namprd11.prod.outlook.com (2603:10b6:806:2ac::18)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Fri, 15 Nov
- 2024 11:48:18 +0000
+ 2024 11:55:12 +0000
 Received: from BL1PR11MB5979.namprd11.prod.outlook.com
  ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
  ([fe80::b0f6:fbc:94be:2372%6]) with mapi id 15.20.8137.027; Fri, 15 Nov 2024
- 11:48:17 +0000
-Message-ID: <1c2e7204-2619-4a9b-ba13-bd45bc667a8b@intel.com>
-Date: Fri, 15 Nov 2024 17:18:11 +0530
+ 11:55:12 +0000
+Message-ID: <32e43ba4-0131-4234-8a57-549fdc3af58a@intel.com>
+Date: Fri, 15 Nov 2024 17:25:07 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/3] lib/igt_kms: Add
- igt_kms_frame_time_from_vrefresh()
+Subject: Re: [PATCH i-g-t 2/3] lib/igt_kms: Add
+ kmstest_wait_for_pageflip_timeout()
 To: Imre Deak <imre.deak@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20241022155311.2797257-1-imre.deak@intel.com>
- <20241022155311.2797257-2-imre.deak@intel.com>
+ <20241022155311.2797257-3-imre.deak@intel.com>
 Content-Language: en-US
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20241022155311.2797257-2-imre.deak@intel.com>
+In-Reply-To: <20241022155311.2797257-3-imre.deak@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN1PEPF000067EA.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c04::26) To BL1PR11MB5979.namprd11.prod.outlook.com
+X-ClientProxiedBy: PN3PR01CA0167.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:de::11) To BL1PR11MB5979.namprd11.prod.outlook.com
  (2603:10b6:208:386::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SN7PR11MB6993:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2be1599-da65-4a9e-2199-08dd056b6560
+X-MS-Office365-Filtering-Correlation-Id: 9a4b1432-2a13-49c2-305d-08dd056c5c18
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aHNHb1hKZGJQMVh4ZWdSVEtlY1JRVUp5TlV5djBabzZJb3ZsS0Uyc0pzSFJv?=
- =?utf-8?B?UTdWcGRnbkt2MGJGUEk2WVVQSHFiWmlncWFISHlDWUlkUXVyNjFzMFpkR00w?=
- =?utf-8?B?TFhidmorMjVrOUtWcVUxdmNxVkdldUpwL2pOQ3RET2JSODYwODJXUFJkMCtL?=
- =?utf-8?B?dkpqWWZNa3hwTjJSNW1Ga1JjSmJBNU15YzJkZkF2SC85Q0ZtTitLVXJNVTY1?=
- =?utf-8?B?NlZLTmhFZ0xyQktTRE1HNzJSOXVCZ2lobGRLbkRCd0FQZUpWWCtXTDF6RHpI?=
- =?utf-8?B?Sm5Cd0hnWFEvMlp4MG5mWXYwZ0h0aVRibU9uRzBZbDhFQTNBbG5VQ2NOOUdI?=
- =?utf-8?B?SXo0MnUrZ2M0OVdSbkpub2tGb21ZTDdwSUFFbURNekcrbDZDaThydkVqUXJl?=
- =?utf-8?B?MGRyd3dTN3dvaW4vbGQySmFGSnBLdU52NU8xNittVGF6c2RBV1VMVkJYZElB?=
- =?utf-8?B?elZaRWhXN1IxcVdOUmFjSkl2N2VhTkxCUnBsWXBtNFhTbGh3eWVQWWMxK051?=
- =?utf-8?B?VVpPUW5mNEtnclhSQ2FBMzhUNlFHWWJ4QVZkNnVuRjNmUDdsNGtEeXNVaXNR?=
- =?utf-8?B?VDVhMS8zbSthRlNRdlV6a2REV2J6ckxmcUxDVUFvS0V5UGJvL2JpUm43dkVJ?=
- =?utf-8?B?Sm5FcEIrZ3NnSmNBWHkrclk0SHpyV3oxeHR3UkxBS3hOS3BQSXBDeVVPWUJv?=
- =?utf-8?B?ZUFEQUNjb1d4eENtaFdKYWtjdGJuTGkwMXFTcFZlTnZzcGliNmREbXVNbXdV?=
- =?utf-8?B?UzhrMjhOVlRETFFVWnQyRDNEdWgyaHRRcXhkK3hMbjI0SnN0QmxhdEVkWk90?=
- =?utf-8?B?QWo1YUdPVUdNbm1uQ2ZGRTN2bTg1akUxYm5CYWZZSnVLc2pUaURPaXpQQjBP?=
- =?utf-8?B?alk0VnloTnFrZ2x1MWhHbU5acUVjdFhRUXRIeTJRRkZzaDFQMStTMG5ZRmxz?=
- =?utf-8?B?blM0cUNSNWt1RFdlRVpWQ05walpXSnJQVWxQRU1uemFJWmZnMFBBK0lFRlZM?=
- =?utf-8?B?eTVVNnRaSWZqSnl1Ujdsd2F0OEVNajV6ZGFWdkFreFJjWk1sSkRIYjFiODFh?=
- =?utf-8?B?U0ZLNWxqdys4UE1IQ04zTTNhbWxqYk5mR1dNc3U2amhwVk5oeTdTTDJCSnR5?=
- =?utf-8?B?NllyVlFMKzJhM0lLQ29KQWlXQk5hMVBrQmlVL1U4cDNPV29nRHdGWHo4dGFW?=
- =?utf-8?B?ZHdlOGtDM05sYThEc04xK2NZR0dUWlRxblZndzRYUGpaNVg4Y3BHQXZDOFFR?=
- =?utf-8?B?NUIxNWFyWHBKWjVGWVNvTWxCbDIrajZZM1JNV3BOdXVKVWE3YWs0dHFDUzJY?=
- =?utf-8?B?Tm85K3NDd1dqSW5Ca0x2dHJjM2hvSXpjbGVXNUU0RkY2QThVcTdEVFFORGF5?=
- =?utf-8?B?R1Vnek1SNVpwNWZhaGo3RW95OWNFRll6aXUxQ3NsTkszV0VxNzBoOFIzZW5C?=
- =?utf-8?B?dUZqdGo1b1VtOUs2YUVXaVptV01yR2JxWkt3M3lyY0NBYjRGMlBLNE8vQVZT?=
- =?utf-8?B?QjdRUWliUSt3bitjTjEvZDR3cU5pYllKWTZTUG9MamZONjdvcHNmQkZ6TlRk?=
- =?utf-8?B?UnpibFk4ZGM4SmJ6Wm1aNGQ4alBVRmpRbUN3TjVQZVkzaEtnRFpteEtORXh4?=
- =?utf-8?B?NmZHTlNGdzdxMXdvWTErT2x6Ty9HZ1ozQ3c0eWFybFdwcjVibTZBeXM2ckpF?=
- =?utf-8?B?N0Y1N2cyWXZpdTdyOGlObDdLQkd6c0NxYlBCVVJCZ2dmWVdjTGJVYVYwbG5r?=
- =?utf-8?Q?pjp0h5FIMVg6gVu1UhoXNM4lV0o7LoRseMlD0gg?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?QzU1VGZ3bGxyTk5VNXBETEMyYU5NQzB2Z2xWdkZDcXU0Mm9sNmx2cVJLSDkv?=
+ =?utf-8?B?UE5wdkxXbTNwdWF4WFhmM3FlMndhaGd3UnNsNlVmYXNmSjZUaC9qTHQxTlB5?=
+ =?utf-8?B?WE0wWWE0a0RWNWxSTUY0Q1BhNDJDWk85Rk5DSkRqbGthR285N2tPRVNZRHdT?=
+ =?utf-8?B?TWRBNEk1OTBFNmo0aWN5ZVM5WmMwRFREdThNb081QUp1N1I1OExvamlFc0Z2?=
+ =?utf-8?B?VjJHSWRYOGpuajNYZVQyTVgrNFBnc2owS2oyY0lCLzUzaXc4UzAyODN3cjJH?=
+ =?utf-8?B?M2xPai9aaUdjTlJZRFJzeU1rMVpsUEd3Mk11dUZDV0FLVHVQV0h6OFhKY2k2?=
+ =?utf-8?B?TDlOZkFPQWgzY3VISi8vbmlSSTE5dkVlYzVidjdGMWZwSE11Wm5qeGtyella?=
+ =?utf-8?B?YUxsYzRYVmlYVFBvclVlbi93V09JMFdTUU9INHpVT0ZyeXFtOVBxTU5rOUxm?=
+ =?utf-8?B?Vzg5RHVDbitnQ1dDQ0U2VEcyV2NKSXU4VXV1ODk1NUZqYnEvTHpzTk5pQjRF?=
+ =?utf-8?B?VWVVRk15aExJcnZhSzVQMC9zTmpFaElTVytaZVB6ajZQVndXR2xuUmdHRVFK?=
+ =?utf-8?B?dnRjYU9CSi9HaTdIdm1od3hJMGxyS28rWlh3UnZ5RXVRekU0UnFxR0poL0hm?=
+ =?utf-8?B?elBqcDdTOTRkam1NQlpOTmFGcnJwWGpaWEZEOWFveGFialVSL29GZzdubk5k?=
+ =?utf-8?B?TndFK254bUlqRXZCNlIrVjhCQUhLRmtmN0xGNk1lK2t5elFsUVdSdC8xUm5W?=
+ =?utf-8?B?S1k1MEUvV0RBVGQ0THFSR3dmQWFCbjArQ1dHU2kySSs4bE9qRDJiZmpyTWRv?=
+ =?utf-8?B?SlAvVmZOM3cvNExMRFBpeHpsUlQ3MGM5STMzVFJHbk5IYmFRSUdEcDlFd2tZ?=
+ =?utf-8?B?VHFXQkszT1NYb1NjNUxudGtTNGxMNlM1ZE1GRzRGZHF5SHdtV3dPQ1p6b2la?=
+ =?utf-8?B?MnYyRllFdzQ1bi9CRWRzSUxXVW1pVEl6RCt5bXd6Z0ZaR24wd1NWWjJ6VjJu?=
+ =?utf-8?B?YzNScGV5b3ZnbDl5T2o1SDQ1MlJMN0FmTG5QSHg2ZlN4MjZOajJjOUJ2WDNi?=
+ =?utf-8?B?RUNOSmM3c2NZT0JLY2NOWk85MTVsM2xta0g1Zy91YWFrRE9xZE52OGRuNzZm?=
+ =?utf-8?B?NXdHcnl1UUhBZ0picDZTY29TS0R3eXJDNW5aakxTVCtRZG1xakVLWDZqMk9X?=
+ =?utf-8?B?Wlc1UGplMFpMUTduVTV0WW10eE5YbWhyMThjRlpaUmhDVWtQTzFGMjU5a0Fo?=
+ =?utf-8?B?VDU2eEpCN3NKajNxcmtRU0poSEtVUUlLSlNYU0ZNOHl3T2RDV1FWTGs3cTBR?=
+ =?utf-8?B?VVNBanE5cnlGeWthaTRyQk41VzlmK3hCVFdtM3BVMGtmRU9Fd1ZPVjNrbkU1?=
+ =?utf-8?B?ZlZ4U3orL3k0cWF3ZnhhUjg5OERidVBvTXdpN2tvWS9TVHF5Q0VZMFliMllj?=
+ =?utf-8?B?bkR4WnVPcTRBQjJDZjloSGhTa2ljOFRDRXVKZDduK1VHaVdvd0hYV0pRYVZK?=
+ =?utf-8?B?ODFvSmROUnFxUWdYbS9DNVNtcjZBcHlhTFVNeDAvNFV2WHNhMUx4WUJuMDV4?=
+ =?utf-8?B?SlNKNzhMdWxrTUQ0RDVYaFI1alpNY1RDUlJCSFl3bm5OLzdkbTZ4YlV6UU0v?=
+ =?utf-8?B?NkNOTGxXU2FlMlljWEFEQVE3RGY4N3VRb2pOZXdhaW5Gc3V3MDFZMVBmYzkw?=
+ =?utf-8?B?MVhLcm42RFNHV1RvbHhzWmNnV0FISG52dFdwMEd0NlVtZ1FUNFM2NkJHOWxC?=
+ =?utf-8?Q?t/SdWSkkTrc07g4YGlGWXeqZ4f7FzFNrWYBVIoe?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YTc4N1NMcW5tbldHcTlKYjM5b0VEZ2htRFhncFB2S3pUcDFvd21IT3hpNGQw?=
- =?utf-8?B?cFhiVFJMY0lzUUxCa0tOWkcxNUVhcnpnM3g5QVVBU05pdUJMU2YzaVMyOVVV?=
- =?utf-8?B?TmxKUWRiUDBTU05yWW1wVjR5YVdQMW9IcnQ0bW41WnFXZDN4S2Fzd2VXbWo2?=
- =?utf-8?B?RllWWXpVa25obGh5YjZIVHhWY1kwQVYwTCsyV0h0eFZnbTlWRVJPTUd5V3k2?=
- =?utf-8?B?YlpHcTZkVUluSGZlY01JT2FGcm1yNnAwSjhsUVYwdXJ6eXNkbVV3cWlpOVVV?=
- =?utf-8?B?UmZCUjZLcDFDS2MwTlZTdmV2YTIzWkNEbGhkajRjeFNYRW5JRHhMOHUxZFN0?=
- =?utf-8?B?dW9uaFE2VjVEK2xIVjBLUjFQTXdIOCsvd0o2UFFnN3AzZjdFZXoyME44dXIv?=
- =?utf-8?B?NXRrMVgyUUQzT3BGbi9jUWIxWkU4Z1o5SnNOQzBOTVhHZVYxNE1LY01OUEpS?=
- =?utf-8?B?VDlKQ2htV25Yblo4ZWI3b2N2M2pRc0NQS254ZTFKUjNlRDNlUmlwb25Xb2Zz?=
- =?utf-8?B?aW5PYzVHZDJieWEwa3BJekFuRkxXV1dsZHBXZ29TVHc1U1BTNmFWN1M5dTVJ?=
- =?utf-8?B?N3RseWFxRkJpdDIvNE0zV1g1UDZLcXZyQmMxQWF0bUVhcVU5bWNZc3VzRDZD?=
- =?utf-8?B?WWs4cTMyZkF1RWhpY3lMMzlVQmJWRXRWMkJLNnMyQkxVVWVCSzk1dzgvaXYr?=
- =?utf-8?B?T1RUVVdPVlc1K1lTVHNNOG5RbE8rbks0VUJxNmZaU0d3WW1hVkYvekluY1V3?=
- =?utf-8?B?bDJkNzZ5bkx6WTM5YnJuK243VUxuY2dxbnV3dGJ3SXIreU9tU0dySEt5OThI?=
- =?utf-8?B?VWJESXAzVkdtREV4MmxjaEdaZmVxY1k5T2h0Q3UzVGZKYTc2cXVWRnlDZjM1?=
- =?utf-8?B?bUFmZTRZdHJnbTlXUEx3bDZybWVCZjd6Q3JDSkE3RjV4Qk5WRkdNcHV5ZGQ2?=
- =?utf-8?B?QTFNekRPVkJCWkdlb1U4b1U3Mk1Kd01FQ0FqUWw5alJiYXdwWU5tS1VSZnhF?=
- =?utf-8?B?dldMYnBUZXQxZXFhSFA4ejFGVEk4WWEzNlRYWVhZbXF1OW1DMk9xSEpuUDhV?=
- =?utf-8?B?RWJFTStZNzZMZHZDNmVhRVMxTSsxNHVjNnRxdm01YndVTThPVUNPRVcwaFFz?=
- =?utf-8?B?OG56NGg0V1p1SGhRQURKSjFOQjl1ZStVb21ZSVdjUkNESEJYby9iSzdNY3Uw?=
- =?utf-8?B?aURGY2tCUWcreTcvYmRlMmZ2YVNDVHFjL2ZaRnQ2QjVTOVV0M2ZLS1dNWUs0?=
- =?utf-8?B?SjBnS1Z2aStpT0xyVWYvbVpkVjMrbFUvMmRSNzdVVW9vWjYwcytnYWEzbExh?=
- =?utf-8?B?MDEyZnJOdkpKWVFiSE1WdWVzZzRHUjRQWWNPS1BRMjhOdkJzOVUxYTc5WGVB?=
- =?utf-8?B?Z2VvVHAyb3FUaWUySXZrc0NCTUJ2RFQvaW5NWkNWd1ludzhCUERoajZybjZr?=
- =?utf-8?B?UC9XNlN6cHJxSVJLZjVvaEpha2Y5MnE1aldpUU5oYnkwZktzOUcyeWhYZ2xC?=
- =?utf-8?B?bUtWQ1YwY1ZXUlFjLzBWUllXTlY2bkNIVmNlTDhxWlhPb2NlVCtDWWZrTEF0?=
- =?utf-8?B?USttTGZPYWQzZkJtUUdENnAzcGJ4Umg5OC8xeUcxZUQ2b24rN3d6S05iMWZN?=
- =?utf-8?B?MDl4K0ZNT29Cc3NlaHV1Vm5UWm40KzhMOXIwZjZ1ci92Sjk5b1VQZUVJam9I?=
- =?utf-8?B?YnVnSXB2Y05kVGhsV1d6MHlCalExM2ZCTXJJY29tdFBkRE1BV3VUbGdwc3Vo?=
- =?utf-8?B?NWkrR1FJUnpSaVdyVjkyRmxHb25WckZLczh4OTFMLytrVVVsMnh0dU1ZcGM2?=
- =?utf-8?B?RnN6Tk5TUVdVOUU4SytFb1ppck16UDVYNnNLSUJWT21IU3J6NXNZd3lKTWlR?=
- =?utf-8?B?Z1NlL0JNWnF6UEVMNENWd093TmxrbE9FRkkrS01GSHkvSXlXbTY3VWt1bmNZ?=
- =?utf-8?B?QUZWWlpZeC91bldSR1FvZnlJZlRyeEVuUEZzam1LSGJVb2ZqVWt0aUpIY25W?=
- =?utf-8?B?WW1jalRXUmVTdFBzWkF5d3IzbjBRSjUrSW0zVW5yOXgxbE5UOW9CMkFSS2Nl?=
- =?utf-8?B?a3hnTk5aTGIxb3NxS0F1Sng2Zmk0WjdCRGFaaldWUFlBOE04cE1ETFBodkk3?=
- =?utf-8?B?aDhWTWZHblFUc04vMFYzekp3ODJWbUpnNWhwZDFxdlVBM3ZsK1lhOElub1lV?=
- =?utf-8?B?WUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2be1599-da65-4a9e-2199-08dd056b6560
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RDN4S0NVblFwdXVYMGgzS2s4LzRSVE5qc3E1MDVGbHExSDFweGlTMGIrNE5s?=
+ =?utf-8?B?Ynhya3RpbGx4b2lZNEVCbkM5YUF4b2xSSVIzaFBKc3A4alpLSlFySmVTcTFr?=
+ =?utf-8?B?YlcrWWNtc0FqRFIyaERSOXVQNy9zVXVLVW5sMWt0S0xGQ2VOeWcycUFsWXZH?=
+ =?utf-8?B?aWdUQUlVZlNDRzAxSWk5d0Vod2w4aWJEcGFDMkRqSk9JOHg2TmdiaUxzQ1FC?=
+ =?utf-8?B?ZHdxZnkzVHpieXBYNElBZG5LbnlIQW81OEQvL2lTVkZCUE5PSzBqdmVJd0lI?=
+ =?utf-8?B?UXo0UGtuV1Y4STVPQXRmb0dKVDB3Z3JNU001THE3bmJEUmZqRzRZVWtJL3lT?=
+ =?utf-8?B?aXNKV2RNRlF0Z3FmVDZyL0x0U1IzcUJGUHlPR3hwLzk4ZGJhQ2J5bHhwMGI2?=
+ =?utf-8?B?S3ZlRmEvT0VBVFdzd1BKbmF3M21jQnpsR1hyNTdRYk9sY2sraUZDam1TZEI4?=
+ =?utf-8?B?SzFzMCtOYmpMVDdyWm81Ty9kTmlVblErQlJmSGNIYTZYelhSK08rYUpzRFNK?=
+ =?utf-8?B?NmhTeUVYK3hwWnhndFhHUEdVNDI2akQwekRpVWFiOUl6SEtQZFlmOURuMnFP?=
+ =?utf-8?B?WllORU1SODJ5dDMzZ2s3T1hzYzFRTy9ydERwcnluR2pKK1A1N0x5Sk1KUkt0?=
+ =?utf-8?B?WmdTeERqNStiMHZRaktGVFhQVUNpQVFCN0xSVEJDTHZCUTlpM2twclc2ME1U?=
+ =?utf-8?B?L0c5Y29ldVJsNU5taXF5ZjdiQ0cranZYVDYrL3JZeDkxVnk2NGowTHBrV1Ev?=
+ =?utf-8?B?QWFCUXFyNkdmazB6ZC9YNWI0Nlc3a0VJL09oRWJ5cG5TTkR3ZC9BVzBFZkxK?=
+ =?utf-8?B?QUwyQnZ1cHAyQ2ZON005L3c4U0p1WVZXZ0t6VlVNUGt0bXAwSUEyM0NFNXRE?=
+ =?utf-8?B?aDl6Y2JiKzh0b2lvME01OTZTQWJGdU5wM3pkNFMva1pEdlFweTd0NEczcjFL?=
+ =?utf-8?B?dFFFdXVmVU5QZHZGcHQ5cXBvZGs0ZGNCNVU3WUkrS003RjhvNnhLZFJtVW1F?=
+ =?utf-8?B?U1c4NWJTZTduZmFZTkN5empOMkVVZDh0dkZEbUJIWUVsK1BhR1dXcW0xdGtM?=
+ =?utf-8?B?ZWk5Z3hHd3JHOVYra09heWgvM3RJelJOWmE1dTludHVSU043UlJMRDVrenJQ?=
+ =?utf-8?B?ak9zWmd2bjMyalMveWszdm5hak95aDZOcXl2N1JhMFcrL2t5bGoxbVFIWmhv?=
+ =?utf-8?B?dU5zaGgwTk40aFByaWVHUW8wRnA0RDlCVWZ4a0xVVXBKeG5sUHJMbGt6aFk5?=
+ =?utf-8?B?Z1VpZGNMbTdlNXBqNzZ1WUROYjVXem9FYVJhWjErZlFvdk12Q1BsWFcvMFAv?=
+ =?utf-8?B?NThEQWlTeFRJcW5FbVhDYk1Rdy9UaGlJbnozQmlMUHNYZThXRDVTU3Vjakhu?=
+ =?utf-8?B?dE43c0wxWnZjMEtqRVM5bmI4MHRzR2R0aTBCa3Vjcng2NjhtNXpac0t1NnZP?=
+ =?utf-8?B?Sm02dFhjVlJsVDg5dFo5TmZNTTVHT0E3Q05qTFIvVWVicDB2blZIbGRPSlNv?=
+ =?utf-8?B?TUpzazdheTZJOUVrRktRUjlqVTB5OWM4L2RGWjBJblgvRVdibzEzc3dwYkY3?=
+ =?utf-8?B?RFZNc0EvTm1qRnJTdU16dWsyZWRVNThGR0V3c29hSWREdU03R1o4V0hzUDNx?=
+ =?utf-8?B?elR6N0NoQVlsZHNGR1ZBdTdyRWJHTW9oMjFtY0ZIK2ltZ3NHWXNiMjdFS2Ew?=
+ =?utf-8?B?MU9HN1ljL1VxOTBndU92MXo1a2VxUnBCSU00RWIvRVVvLzVHOVF5MmdYaW8x?=
+ =?utf-8?B?RmN4L2FVNWQ4VHpEemFSTTlkNWF2c0ZkWFRLODAyMldUUjZ4YXd5TWVzU1pB?=
+ =?utf-8?B?dU9lY1E1S29JN1BXcTZCV0R0MW1pdUhSTWtCZUZCZWovWVZ1b1lHNlJQOExF?=
+ =?utf-8?B?eXZlZjZESDgycXo0NzhCSkpnRzVKZ1pqR3EzblVVckpGVXEza0dwZkhGVDkz?=
+ =?utf-8?B?RlBCbEFsRWp2ZXFFaE1uUmRmQ20rMnFGRW5KZDNLTkZwaVM2OWJUY3k2ODZS?=
+ =?utf-8?B?WmNzRENDTUhCeWlkaDN4OUhBQ1UydTh3M1orMG5YcE1mbGFrSFJ3bGRvNllP?=
+ =?utf-8?B?elhnd2ZkZFhDWnRTanpvYmhtc0tkalNrQW1kZTh6WmpLaFNLSDhGb2tQcDZ1?=
+ =?utf-8?B?WWIyM2hUSXJmWURHeWZDWVhzaTBDSHU1dGt0Sm1SM0hKUVpyNk9DSkh4eXg2?=
+ =?utf-8?B?eHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a4b1432-2a13-49c2-305d-08dd056c5c18
 X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 11:48:17.9620 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 11:55:11.9853 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TKH8EJZ8ZnXPdQyiOT03CGtrgvKHP6OQDwmhEb3T028uLRDtrmnuUgxaiz7/u4YDBoUaFyBXIyzM9gJ0PD2K4A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: XWGe9Vj/8N4GxMhrshcmPKncjRmNuTjNArHfH+YGbQjrGReGWLcs8CmiA4oKp5D4q84V6B7nBatMwIpR7Tyq2w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6993
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -199,186 +199,77 @@ LGTM
 Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
 On 22-10-2024 09:23 pm, Imre Deak wrote:
-> Export a helper originally added to kms_vrr.c to convert a vertical
-> refresh rate to frame time. Use uint32_t for the type of vrefresh
-> matching the type of drmModeModeInfo::vrefresh.
+> Add a function to wait for a page flip completion providing the timeout
+> duration. This is required by the next patch, using an Intel HW specific
+> pageflip timeout.
 >
 > Signed-off-by: Imre Deak <imre.deak@intel.com>
 > ---
->   lib/igt_kms.c   | 12 ++++++++++++
->   lib/igt_kms.h   |  2 ++
->   tests/kms_vrr.c | 37 +++++++++++++++++--------------------
->   3 files changed, 31 insertions(+), 20 deletions(-)
+>   lib/igt_kms.c | 21 +++++++++++++++++----
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 18 insertions(+), 4 deletions(-)
 >
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index bb35d4b82..99231d6e7 100644
+> index 99231d6e7..81a9930a2 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -52,6 +52,7 @@
->   #include <i915_drm.h>
+> @@ -2377,15 +2377,16 @@ unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags)
+>   }
 >   
->   #include "drmtest.h"
-> +#include "igt_core.h"
->   #include "igt_kms.h"
->   #include "igt_aux.h"
->   #include "igt_edid.h"
-> @@ -254,6 +255,17 @@ const struct edid *igt_kms_get_alt_edid(void)
->   	return &edid;
+>   /**
+> - * kmstest_wait_for_pageflip:
+> + * kmstest_wait_for_pageflip_timeout:
+>    * @fd: Opened drm file descriptor
+> + * @timeout_us: timeout used for waiting
+>    *
+>    * Blocks until pageflip is completed
+>    */
+> -void kmstest_wait_for_pageflip(int fd)
+> +void kmstest_wait_for_pageflip_timeout(int fd, uint64_t timeout_us)
+>   {
+>   	drmEventContext evctx = { .version = 2 };
+> -	struct timeval timeout = { .tv_sec = 0, .tv_usec = 50000 };
+> +	struct timeval timeout = { .tv_sec = 0, .tv_usec = timeout_us };
+>   	fd_set fds;
+>   	int ret;
+>   
+> @@ -2398,7 +2399,8 @@ void kmstest_wait_for_pageflip(int fd)
+>   	} while (ret < 0 && errno == EINTR);
+>   
+>   	igt_fail_on_f(ret == 0,
+> -		     "Exceeded timeout (50ms) while waiting for a pageflip\n");
+> +		     "Exceeded timeout (%" PRIu64 " us) while waiting for a pageflip\n",
+> +		     timeout_us);
+>   
+>   	igt_assert_f(ret == 1,
+>   		     "Waiting for pageflip failed with %d from select(drmfd)\n",
+> @@ -2407,6 +2409,17 @@ void kmstest_wait_for_pageflip(int fd)
+>   	igt_assert(drmHandleEvent(fd, &evctx) == 0);
 >   }
 >   
 > +/**
-> + * igt_kms_frame_time_from_vrefresh:
-> + * @vrefresh: vertical refresh rate in 1/s units.
+> + * kmstest_wait_for_pageflip:
+> + * @fd: Opened drm file descriptor
 > + *
-> + * Returns the frame time in nanoseconds for the given vrefresh rate.
+> + * Blocks until pageflip is completed using a 50 ms timeout.
 > + */
-> +uint64_t igt_kms_frame_time_from_vrefresh(uint32_t vrefresh)
+> +void kmstest_wait_for_pageflip(int fd)
 > +{
-> +	return vrefresh ? (NSEC_PER_SEC / vrefresh) : 0;
+> +	kmstest_wait_for_pageflip_timeout(fd, 50000);
 > +}
 > +
->   #define AUDIO_EDID_SIZE (2 * EDID_BLOCK_SIZE)
->   
->   static const struct edid *
+>   /**
+>    * kms_has_vblank:
+>    * @fd: DRM fd
 > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 2b26d2bbf..fc7e4cda1 100644
+> index fc7e4cda1..57e62d86c 100644
 > --- a/lib/igt_kms.h
 > +++ b/lib/igt_kms.h
-> @@ -274,6 +274,8 @@ enum joined_pipes {
->   	JOINED_PIPES_ULTRA_JOINER = 4
->   };
+> @@ -310,6 +310,7 @@ void *kmstest_dumb_map_buffer(int fd, uint32_t handle, uint64_t size,
+>   			      unsigned prot);
+>   void kmstest_dumb_destroy(int fd, uint32_t handle);
+>   void kmstest_wait_for_pageflip(int fd);
+> +void kmstest_wait_for_pageflip_timeout(int fd, uint64_t timeout_us);
+>   unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags);
 >   
-> +uint64_t igt_kms_frame_time_from_vrefresh(uint32_t vrefresh);
-> +
->   bool kmstest_force_connector(int fd, drmModeConnector *connector,
->   			     enum kmstest_force_connector_state state);
->   bool kmstest_force_connector_joiner(int drm_fd, drmModeConnector *connector, int joined_pipes);
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 36a22eebe..12d29aa82 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -192,12 +192,6 @@ static uint64_t get_time_ns(void)
->   	return 0;
->   }
->   
-> -/* Returns the rate duration in nanoseconds for the given refresh rate. */
-> -static uint64_t rate_from_refresh(uint64_t refresh)
-> -{
-> -	return refresh ? (NSECS_PER_SEC / refresh) : 0;
-> -}
-> -
->   /* Instead of running on default mode, loop through the connector modes
->    * and find the mode with max refresh rate to exercise full vrr range.
->    */
-> @@ -340,13 +334,13 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
->   
->   	mode = *igt_output_get_mode(output);
->   
-> -	data->vtest_ns.min = rate_from_refresh(data->range.min);
-> -	data->vtest_ns.max = rate_from_refresh(data->range.max);
-> +	data->vtest_ns.min = igt_kms_frame_time_from_vrefresh(data->range.min);
-> +	data->vtest_ns.max = igt_kms_frame_time_from_vrefresh(data->range.max);
->   
->   	/* If unspecified on the command line, default rate to the midpoint */
->   	if (data->vtest_ns.rate_ns == 0) {
->   		range_t *range = &data->range;
-> -		data->vtest_ns.rate_ns = rate_from_refresh(
-> +		data->vtest_ns.rate_ns = igt_kms_frame_time_from_vrefresh(
->   						(range->min + range->max) / 2);
->   	}
->   
-> @@ -533,8 +527,8 @@ flip_and_measure_cmrr(data_t *data, igt_output_t *output, enum pipe pipe,
->   	uint32_t total_flip = 0, total_pass = 0;
->   	bool front = false;
->   	drmModeModeInfoPtr mode = igt_output_get_mode(output);
-> -	uint64_t req_rate_ns = rate_from_refresh(mode->vrefresh + VREFRESH_MODIFIER);
-> -	uint64_t exp_rate_ns = rate_from_refresh(mode->vrefresh);
-> +	uint64_t req_rate_ns = igt_kms_frame_time_from_vrefresh(mode->vrefresh + VREFRESH_MODIFIER);
-> +	uint64_t exp_rate_ns = igt_kms_frame_time_from_vrefresh(mode->vrefresh);
->   	uint64_t threshold_ns = exp_rate_ns / mode->vdisplay; /* Upto 1 scan line. */
->   
->   	igt_info("CMRR on: requested rate: %"PRIu64" ns (%.2f Hz) "
-> @@ -633,7 +627,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	 *      next Vmin.
->   	 */
->   	if (flags & TEST_FLIPLINE) {
-> -		rate[0] = rate_from_refresh(range.max + 5);
-> +		rate[0] = igt_kms_frame_time_from_vrefresh(range.max + 5);
->   		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
->   		igt_assert_f(result > 75,
->   			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-> @@ -649,7 +643,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	}
->   
->   	if (flags & TEST_FLIPLINE) {
-> -		rate[0] = rate_from_refresh(range.min - 10);
-> +		rate[0] = igt_kms_frame_time_from_vrefresh(range.min - 10);
->   		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
->   		igt_assert_f(result < 50,
->   			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
-> @@ -660,7 +654,10 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   		unsigned int range_min =
->   			/* For Intel h/w tweak the min rate, as h/w will terminate the vblank at Vmax. */
->   			is_intel_device(data->drm_fd) ? (range.min + 2) : range.min;
-> -		uint64_t maxmin_rates[] = {vtest_ns.max, rate_from_refresh(range_min)};
-> +		uint64_t maxmin_rates[] = {
-> +			vtest_ns.max,
-> +			igt_kms_frame_time_from_vrefresh(range_min)
-> +		};
->   
->   		result = flip_and_measure(data, output, pipe, maxmin_rates, 2, data->duration_ns);
->   		igt_assert_f(result > 75,
-> @@ -752,7 +749,7 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
->   	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
->   
->   	prepare_test(data, output, pipe);
-> -	rate[0] = rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
-> +	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
->   
->   	/*
->   	 * Sink with DRR and VRR can be in downclock mode so
-> @@ -784,7 +781,7 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
->   		igt_output_override_mode(output, &virtual_mode);
->   		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
->   
-> -		rate[0] = rate_from_refresh(vrefresh);
-> +		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
->   		result = flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
->   		igt_assert_f(result > 75,
->   			     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
-> @@ -802,7 +799,7 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   {
->   	uint64_t rate[] = {0};
->   
-> -	rate[0] = rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
-> +	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
->   	prepare_test(data, output, pipe);
->   
->   	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
-> @@ -811,7 +808,7 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
->   	flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
->   	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
-> -	rate[0] = rate_from_refresh(data->switch_modes[LOW_RR_MODE].vrefresh);
-> +	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[LOW_RR_MODE].vrefresh);
->   	flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
->   	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output->name),
->   		     "LOBF not enabled\n");
-> @@ -857,7 +854,7 @@ test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	result = flip_and_measure_cmrr(data, output, pipe, TEST_DURATION_NS * 2);
->   	igt_assert_f(result > 75,
->   		     "Refresh rate (%u Hz) %"PRIu64"ns: Target CMRR on threshold not reached, result was %u%%\n",
-> -		     mode.vrefresh, rate_from_refresh(mode.vrefresh), result);
-> +		     mode.vrefresh, igt_kms_frame_time_from_vrefresh(mode.vrefresh), result);
->   }
->   
->   static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
-> @@ -1006,7 +1003,7 @@ static int opt_handler(int opt, int opt_index, void *_data)
->   		data->duration_ns = atoi(optarg) * NSECS_PER_SEC;
->   		break;
->   	case 'r':
-> -		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
-> +		data->vtest_ns.rate_ns = igt_kms_frame_time_from_vrefresh(atoi(optarg));
->   		break;
->   	case 's':
->   		data->static_image = true;
+>   bool kms_has_vblank(int fd);
