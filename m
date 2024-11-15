@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A932CD65C7E
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 14:12:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77440D637CE
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 14:12:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D2CF10E860;
-	Fri, 15 Nov 2024 14:12:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 368AC10E864;
+	Fri, 15 Nov 2024 14:12:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A5ZkNEoB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RvkzOtdA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC09B10E85B
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 14:12:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5186B10E864
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 14:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731679947; x=1763215947;
+ t=1731679950; x=1763215950;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NH4tk6UM1L4bEXPkQurkj9KE6v/28L3dzRlq2pGf6fI=;
- b=A5ZkNEoBDvmtEUAjpd4pgP+2OlDFE2V61wjaTqoGCvHJ9GJ7Z1hz/4cU
- GgbP8YwmjfJV3tVSO682bvQ9MKpV9TKbdyiDug1dp+u4c0dZsJI1tkC+7
- +51swRfy3aSfaPG7AmGxMYe4o027lbha5fh2wtNlTSvC2peIf1z2qPSaT
- yLjQHwhMckYPZ5G6PjJU1USAQjhs8wD3nWk4MqnIjk4P1c5mK5+NeVXFX
- f+TwsXrOczSwLxZ1h3cd7NLVkYf3TK2KndLujoyk4JiyalW9rl/h5zfbp
- eR1HM68tjYQlcUc6ZzxlkWj95MhmIujBNtvc2a5J64N+3dAeXtb4I+k4Y Q==;
-X-CSE-ConnectionGUID: 68NG1cORSjuR1PMqawqY9Q==
-X-CSE-MsgGUID: /NfLWFOkTJSROvmYkynv1Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11257"; a="31822543"
-X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; d="scan'208";a="31822543"
+ bh=du30ofJ27DFknprXX5yUylkJ3JhFKHtCrCRx+MYr8NM=;
+ b=RvkzOtdAl1nUSTbqIRr8WleBeiDXoBGdvQCH+D0MsitPLef3GhyxmrWw
+ ys9uy9p8xq2skWCcPSHxXluA/TY0hus49HDfNDM5AQMPtlXwCDj/HGlhc
+ lQf/TiHTNto8dQn8wjbSBExugxByXVbaMcrQJxDVduqZN9O/SbKAIqHhM
+ 8WncIO8YY4fFSk/Rc8pJkv0LIhVtBp5JaOxLES0syUHtrSICmHMBIJT2J
+ QW1flYkUGqoTLRugl2cUV5xy2iSrfjChlPcfw3HblQSBv+l3V7t0llG21
+ hUgTC3dDCXecmDVWqnYmXeUT/tngv7HQgIB36ZkjC3N8wza/GV75ue5Eo g==;
+X-CSE-ConnectionGUID: 1YkejHTNQxWvon3xIApRxA==
+X-CSE-MsgGUID: HSAYIew6Tb6yoWA3PyUQMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11257"; a="31822547"
+X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; d="scan'208";a="31822547"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2024 06:12:27 -0800
-X-CSE-ConnectionGUID: szikv8ZORqOxwPsLoqnfIQ==
-X-CSE-MsgGUID: cAHYN7qoTS6jbn3fi92BQw==
+ 15 Nov 2024 06:12:30 -0800
+X-CSE-ConnectionGUID: 7rKNihoiTOKW3xfnodVYSg==
+X-CSE-MsgGUID: ys+Oq42+QQCmlX/8qnHotA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; d="scan'208";a="88979964"
+X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; d="scan'208";a="88979972"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO rapter.intel.com)
  ([10.245.246.40])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2024 06:12:24 -0800
+ 15 Nov 2024 06:12:27 -0800
 From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jonathan.cavitt@intel.com, mika.kuoppala@intel.com,
  dominik.grzegorzek@intel.com
-Subject: [PATCH i-g-t 2/4] lib/gpgpu_shader: Add causing a read pagefault from
- the eu thread
-Date: Fri, 15 Nov 2024 16:11:30 +0200
-Message-ID: <20241115141132.866838-3-gwan-gyeong.mun@intel.com>
+Subject: [PATCH i-g-t 3/4] eudebug: Add eudebug pagefault event declarations
+Date: Fri, 15 Nov 2024 16:11:31 +0200
+Message-ID: <20241115141132.866838-4-gwan-gyeong.mun@intel.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20241115141132.866838-1-gwan-gyeong.mun@intel.com>
 References: <20241115141132.866838-1-gwan-gyeong.mun@intel.com>
@@ -70,171 +69,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create a function that causing a read pagefault using the eu thread load
-instruction. If the given ppgtt address points to an unallocated ppgtt
-virtual address,  this shader can cause a read pagefault.
-To directly use a 64-bit address as an argument, use the
-Untyped 2D Block Array Load Instruction.
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
+Update the xe_eudebug drm to include pagefault events.
+
+Co-developed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 ---
- lib/gpgpu_shader.c          | 92 +++++++++++++++++++++++++++++++++++++
- lib/gpgpu_shader.h          |  1 +
- lib/iga64_generated_codes.c | 21 ++++++++-
- 3 files changed, 113 insertions(+), 1 deletion(-)
+ include/drm-uapi-experimental/xe_drm_eudebug.h | 13 +++++++++++++
+ lib/xe/xe_eudebug.c                            | 11 +++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 7a2f0d28d..d7c47be80 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -912,3 +912,95 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
- 	", 0x807fffff, /* leave breakpoint exception */
- 	y_offset, value, 0x7fffff /* clear all exceptions */ );
- }
-+
-+/**
-+ * gpgpu_shader__read_page_fault:
-+ * @shdr: shader to be modified
-+ * @ppgtt_addr: ppgtt virtual address to raise pagefault
-+ *
-+ * For a given arbitrary ppgtt virtual address, it raises a pagefault using
-+ * the eu thread load instruction.
-+ */
-+void gpgpu_shader__read_page_fault(struct gpgpu_shader *shdr, uint64_t ppgtt_addr)
-+{
-+	/* pagefault ppgtt virtual address */
-+	uint64_t addr = CANONICAL(ppgtt_addr);
-+
-+	igt_assert_f((addr & 0x3) == 0, "address must be aligned to DWord!\n");
-+
-+	emit_iga64_code(shdr, read_page_fault, "				\n\
-+#if GEN_VER >= 2000								\n\
-+// Unyped 2D Block Array Load 							\n\
-+// Instruction_Load2DBlockArray							\n\
-+// bspec: 63972									\n\
-+// src0 address payload (Untyped2DBLOCKAddressPayload) specifies both		\n\
-+//	the block parameters and the 2D Surface parameters.			\n\
-+// Untyped2DBLOCKAddressPayload							\n\
-+// bspec: 63986									\n\
-+// [243:240] Array Length: 0 (length is 1)					\n\
-+// [239:232] Block Height: 0 (height is 1)					\n\
-+// [231:224] Block Width: 0xf (width is 16)					\n\
-+// [223:192] Block Start Y: 0							\n\
-+// [191:160] Block Start X: 0							\n\
-+// [159:128] Untyped 2D Surface Pitch: 0x3f (pitch is 64 bytes)			\n\
-+// [127:96] Untyped 2D Surface Height: 0 (height is 1)				\n\
-+// [95:64] Untyped 2D Surface Width: 0x3f (width is 64 bytes)			\n\
-+// [63:0] Untyped 2D Surface Base Address					\n\
-+// initialize register								\n\
-+(W)	mov (8)			r30.0<1>:uq	0x0:uq				\n\
-+// [0:31] Untyped 2D Surface Base Address low					\n\
-+(W)	mov (1)			r30.0<1>:ud	ARG(0):ud			\n\
-+// [32:63] Untyped 2D Surface Base Address high					\n\
-+(W)	mov (1)			r30.1<1>:ud ARG(1):ud				\n\
-+// [95:64] Untyped 2D Surface Width: 0x3f					\n\
-+//	   (Width minus 1 (in bytes) of the 2D surface, it represents 64)	\n\
-+(W)	mov (1) 		r30.2<1>:ud	0x3f:ud				\n\
-+// [127:96] Untyped 2D Surface Height: 0x0					\n\
-+//	    (Height minus 1 (in number of data elements) of			\n\
-+//	    the Untyped 2D surface, it represents 1)				\n\
-+(W)	mov (1) 		r30.3<1>:ud	0x0:ud				\n\
-+// [159:128] Untyped 2D Surface Pitch: 0x3f					\n\
-+//	     (Pitch minus 1 (in bytes) of the 2D surface, it represents 64)	\n\
-+(W)	mov (1)			r30.4<1>:ud	0x3f:ud				\n\
-+// [231:224] Block Width: 0xf (15)						\n\
-+//	     (Specifies the width minus 1 (in number of data elements) for this	\n\
-+//	     rectangular region, it represents 16)				\n\
-+// Block width (encoded_value + 1) must be a multiple of DW (4 bytes).		\n\
-+// [239:232] Block Height: 0							\n\
-+//	     (Specifies the height minus 1 (in number of data elements) for	\n\
-+//	     this rectangular region, it represents 1)				\n\
-+// [243:240] Array Length: 0							\n\
-+//	     (Specifies Array Length minus 1 for Load2DBlockArray messages,	\n\
-+//	     must be zero for 2D Block Store messages, it represents 1)		\n\
-+(W)	mov (1)			r30.7<1>:ud	0xf:ud				\n\
-+//										\n\
-+// dest data payload format is selected by Data Size.				\n\
-+// Block Height x Block Width x Data size / GRF Register size			\n\
-+//	=> 1 x 16 x 32bit / 512bit = 1						\n\
-+// data payload format size is 1 GRF Register.					\n\
-+//										\n\
-+// send.ugm Untyped 2D Block Array Load						\n\
-+// Format: send.ugm (1) dst src0 src1 ExtMsg MsgDesc				\n\
-+// Execution Mask restriction: SIMT1						\n\
-+//										\n\
-+// Extended Message Descriptor (Dataport Extended Descriptor Imm 2D Block)	\n\
-+// bspec: 67780									\n\
-+// 0x0 =>									\n\
-+// [32:22] Global Y_offset: 0							\n\
-+// [21:12] Global X_offset: 0							\n\
-+//										\n\
-+// Message Descriptor								\n\
-+// bspec: 63972									\n\
-+// 0x2128403 =>									\n\
-+// [30:29] Address Type: 0 (FLAT)						\n\
-+// [28:25] Src0 Length: 1							\n\
-+// [24:20] Dest Length: 1							\n\
-+// [19:16] Cache : 2 (L1UC_L3UC) 10						\n\
-+// [15] Transpose Block: 1							\n\
-+// [11:9] Data Size: 2 (D32) 10							\n\
-+// [7] VNNI Transform: 0							\n\
-+// [5:0] Load Operation: 3 (Load 2D Block) 11					\n\
-+(W)	send.ugm (1)		r31	r30	null	0x0	0x2128403	\n\
-+#endif										\n\
-+	", lower_32_bits(addr), upper_32_bits(addr));
-+}
-\ No newline at end of file
-diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-index 355b128b5..318550c52 100644
---- a/lib/gpgpu_shader.h
-+++ b/lib/gpgpu_shader.h
-@@ -87,6 +87,7 @@ void gpgpu_shader__write_offset(struct gpgpu_shader *shdr, uint64_t ppgtt_offset
- 				uint32_t value);
- void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw, uint32_t x_offset,
- 				      uint32_t y_offset, uint32_t mask, uint32_t value);
-+void gpgpu_shader__read_page_fault(struct gpgpu_shader *shdr, uint64_t ppgtt_addr);
- void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
- void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
- void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
-diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-index b23613ac4..53a705358 100644
---- a/lib/iga64_generated_codes.c
-+++ b/lib/iga64_generated_codes.c
-@@ -3,7 +3,7 @@
+diff --git a/include/drm-uapi-experimental/xe_drm_eudebug.h b/include/drm-uapi-experimental/xe_drm_eudebug.h
+index f50051e9a..ed2e728c2 100644
+--- a/include/drm-uapi-experimental/xe_drm_eudebug.h
++++ b/include/drm-uapi-experimental/xe_drm_eudebug.h
+@@ -154,6 +154,7 @@ struct drm_xe_eudebug_event {
+ #define DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE	9
+ #define DRM_XE_EUDEBUG_EVENT_METADATA		10
+ #define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA 11
++#define DRM_XE_EUDEBUG_EVENT_PAGEFAULT		12
  
- #include "gpgpu_shader.h"
- 
--#define MD5_SUM_IGA64_ASMS 4fcde43dedb9d3212f1d85b5b180b0c1
-+#define MD5_SUM_IGA64_ASMS 01290b5ecda7a6e765463558d6f59952
- 
- struct iga64_template const iga64_code_gpgpu_fill[] = {
- 	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-@@ -79,6 +79,25 @@ struct iga64_template const iga64_code_gpgpu_fill[] = {
- 	}}
+ 	__u16 flags;
+ #define DRM_XE_EUDEBUG_EVENT_CREATE		(1 << 0)
+@@ -352,6 +353,18 @@ struct drm_xe_eudebug_event_vm_bind_op_metadata {
+ 	__u64 metadata_cookie;
  };
  
-+struct iga64_template const iga64_code_read_page_fault[] = {
-+	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-+		0x800c0061, 0x1e054330, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e054220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1e254220, 0x00000000, 0x0000003f,
-+		0x80000061, 0x1e354220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e454220, 0x00000000, 0x0000003f,
-+		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
-+		0x80032031, 0x1f0c0000, 0xf8061e0c, 0x00a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 0, .code = (const uint32_t []) {
++struct drm_xe_eudebug_event_pagefault {
++	struct drm_xe_eudebug_event base;
 +
-+	}}
++	__u64 client_handle;
++	__u64 exec_queue_handle;
++	__u64 lrc_handle;
++	__u32 flags;
++	__u32 bitmask_size;
++	__u64 pagefault_address;
++	__u8 bitmask[];
 +};
 +
- struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
- 	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
- 		0x80000966, 0x80018220, 0x02008000, 0x00008000,
+ #if defined(__cplusplus)
+ }
+ #endif
+diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+index c5814421b..de01e6b49 100644
+--- a/lib/xe/xe_eudebug.c
++++ b/lib/xe/xe_eudebug.c
+@@ -91,6 +91,8 @@ static const char *type_to_str(unsigned int type)
+ 		return "metadata";
+ 	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA:
+ 		return "vm_bind_op_metadata";
++	case DRM_XE_EUDEBUG_EVENT_PAGEFAULT:
++		return "pagefault";
+ 	}
+ 
+ 	return "UNKNOWN";
+@@ -222,6 +224,15 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *bu
+ 			op->vm_bind_op_ref_seqno, op->metadata_handle, op->metadata_cookie);
+ 		break;
+ 	}
++	case DRM_XE_EUDEBUG_EVENT_PAGEFAULT: {
++		struct drm_xe_eudebug_event_pagefault *pf = (void *)e;
++
++		sprintf(buf, "client_handle=%llu, exec_queue_handle=%llu, "
++			"lrc_handle=%llu, bitmask_size=%d, pagefault_address=0x%llx",
++			pf->client_handle, pf->exec_queue_handle, pf->lrc_handle,
++			pf->bitmask_size, pf->pagefault_address);
++		break;
++	}
+ 	default:
+ 		strcpy(buf, "<...>");
+ 	}
 -- 
 2.46.1
 
