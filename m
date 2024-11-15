@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF0ED6DDED
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 10:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C34CD6DDEF
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 10:19:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 62D9810E051;
-	Fri, 15 Nov 2024 10:14:34 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kK5deNya";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C19F10E051;
- Fri, 15 Nov 2024 10:14:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731665673; x=1763201673;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=bylL+rw0p74Dah++6R9E0wMcX2zS1qaPofo6hqZjsgE=;
- b=kK5deNyaBtsOK931k0O9eKE6Z7l2VT33s+naTF5xqzezhDwFW964OSNP
- 8PxLTxf4agRoXo3Kw2CeIKTayAK/zHODv98gj9SZpLNY+oJhTiot0VINS
- iK7uwGYox2uoKlbtpAx5N7kch/8h+vDq90iHy8GCnfmliLQ8A4eiDsEjl
- hlEJvOT+ZVVUq5g4WASyrc4Ca4T9n/Jt+w3en7UmVEl0QwyXqxRdvxwzO
- Q0jFZ/uEQBmvFArfU7wljkKB5Gho3DKXmomeDyV0dazBijSVMjinwbfb7
- jrHzlAC22iUGqtP4JG5t5ZAH0KD4N+8KO/3aTVUdPn8BulaAgTcRbt15I w==;
-X-CSE-ConnectionGUID: molqvtQwRA+RSbCGL+cleA==
-X-CSE-MsgGUID: DDOLLNp7QhyBHq/Q4luuEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="31801729"
-X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; d="scan'208";a="31801729"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2024 02:14:33 -0800
-X-CSE-ConnectionGUID: VowZQWo9RbeRxkT+nE4ssw==
-X-CSE-MsgGUID: muNkyjPsQEKa4UUYbmOnEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; d="scan'208";a="88939015"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO [10.245.244.175])
- ([10.245.244.175])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2024 02:14:32 -0800
-Message-ID: <ea60848c-8b64-4275-93eb-dc669f948c27@intel.com>
-Date: Fri, 15 Nov 2024 10:14:30 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id C755710E835;
+	Fri, 15 Nov 2024 10:19:08 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C00710E27A;
+ Fri, 15 Nov 2024 10:19:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6082730918238503654=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t 1/4] lib/i915_drm_local: Remove macros added via merged
- kernel
-To: Tejas Upadhyay <tejas.upadhyay@intel.com>, igt-dev@lists.freedesktop.org, 
- intel-xe@lists.freedesktop.org
-References: <20241114050129.1381711-1-tejas.upadhyay@intel.com>
- <20241114050129.1381711-2-tejas.upadhyay@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20241114050129.1381711-2-tejas.upadhyay@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fcolor=3A_fix_da?=
+ =?utf-8?q?ta-=3Eoutput?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 15 Nov 2024 10:19:07 -0000
+Message-ID: <173166594724.163300.7579554840610322188@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241112125602.1451660-1-swati2.sharma@intel.com>
+In-Reply-To: <20241112125602.1451660-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,38 +37,169 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 14/11/2024 05:01, Tejas Upadhyay wrote:
-> The uapi on the kernel side is merged, I915_ENGINE_CLASS_COMPUTE,
-> DRM_I915_PERF_PROP_OA_ENGINE_CLASS, DRM_I915_QUERY_GEOMETRY_SUBSLICES
-> and DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE  is part of drm-next,
-> remove this.
-> 
-> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+--===============6082730918238503654==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+== Series Details ==
 
-> ---
->   lib/i915/i915_drm_local.h | 6 ------
->   1 file changed, 6 deletions(-)
-> 
-> diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
-> index af0176500..dd646aedf 100644
-> --- a/lib/i915/i915_drm_local.h
-> +++ b/lib/i915/i915_drm_local.h
-> @@ -19,12 +19,6 @@ extern "C" {
->    * or local_ prefix and without any #ifndef's. Attempt should be made to
->    * clean these up when kernel uapi headers are sync'd.
->    */
-> -#define I915_ENGINE_CLASS_COMPUTE 4
-> -
-> -#define DRM_I915_QUERY_GEOMETRY_SUBSLICES      6
-> -
-> -#define DRM_I915_PERF_PROP_OA_ENGINE_CLASS	9
-> -#define DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE	10
->   
->   #if defined(__cplusplus)
->   }
+Series: tests/kms_color: fix data->output
+URL   : https://patchwork.freedesktop.org/series/141213/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8103 -> IGTPW_12078
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/index.html
+
+Participating hosts (46 -> 45)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12078 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-mtlp-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-twl-2:          [PASS][3] -> [INCOMPLETE][4] ([i915#10341])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-twl-2/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-twl-2:          [PASS][5] -> [INCOMPLETE][6] ([i915#12445])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][7] ([i915#9197]) -> [PASS][8] +2 other tests pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8103 -> IGTPW_12078
+  * Linux: CI_DRM_15674 -> CI_DRM_15679
+
+  CI-20190529: 20190529
+  CI_DRM_15674: 6d0fd3fb958e77717cedf35f49325c7c0dfa11c9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15679: e92f691cd7f6341efe3f9d14759b7776ab2d8571 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12078: 95f45b45088a57105d61f56fd0e244534c6da163 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8103: 43994179978d4a120226f253cb95209d59639ef9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/index.html
+
+--===============6082730918238503654==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_color: fix data-&gt;output</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141213/">https://patchwork.freedesktop.org/series/141213/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8103 -&gt; IGTPW_12078</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/index.html</p>
+<h2>Participating hosts (46 -&gt; 45)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12078 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-mtlp-8/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test abort</li>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-twl-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8103/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197">i915#9197</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12078/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8103 -&gt; IGTPW_12078</li>
+<li>Linux: CI_DRM_15674 -&gt; CI_DRM_15679</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15674: 6d0fd3fb958e77717cedf35f49325c7c0dfa11c9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15679: e92f691cd7f6341efe3f9d14759b7776ab2d8571 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12078: 95f45b45088a57105d61f56fd0e244534c6da163 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8103: 43994179978d4a120226f253cb95209d59639ef9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6082730918238503654==--
