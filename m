@@ -4,180 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E65D6A223
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 02:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9E5AD6A227
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 02:20:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9AFA310E263;
-	Fri, 15 Nov 2024 02:12:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5835210E131;
+	Fri, 15 Nov 2024 02:20:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E8jR+j8h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZEC6LVk8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53BBD10E263
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 02:12:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1125710E131
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 02:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731636773; x=1763172773;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=bGZNNu9FXRzYJtAzeuEFuRmM+A1XJYUc6x6NGZsDUqs=;
- b=E8jR+j8hyXEdPpGDNw8Pvwzc2mrIk3ua3X2q2i6Dn36dfYmz4Lji51L8
- EoB+Pz458TwsFETTk0Djv1TbxBqGklnV9farVoIrV0JILUdprSKSL0kdh
- VVkc0cMiwd2FfMmgHnGP6olRzm/dGFsK7+Ae6wK3MCTMEkd0u7Vib9PwC
- 3BD+Qod81R+LH1jp/YBAOi9t0AL4Mfmu6VUAHIzgJ+D/iLNvemfLoLFWv
- A1IlbgsgvzMEcN6Up+kot7LRSvtEFJt8usVIu8oXBZJtN5J4D+Bxme0+T
- SqNhFI34om2Qiyh/Qy5v2O3uS9aEsPF3D5/3dzMUDndAfdmPGUVahuV3u Q==;
-X-CSE-ConnectionGUID: rpDdAIZOR/mkF74Gl7H0qw==
-X-CSE-MsgGUID: qJc+JNyMRQuqGuCACwgcLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="31772054"
-X-IronPort-AV: E=Sophos;i="6.12,155,1728975600"; d="scan'208";a="31772054"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2024 12:17:30 -0800
-X-CSE-ConnectionGUID: gFzGWG6ASSe90cV8E3b4FQ==
-X-CSE-MsgGUID: 5/qP4+U/SuCZRNC8Y3Btaw==
+ t=1731637237; x=1763173237;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=TAssWyrnYYNbS90aN7Jvthu+1myuegZiZEXRuR4xMH4=;
+ b=ZEC6LVk8MGWDmuDPanTbF4GpJPHbP0mJkusSsUOX5nnINTjxwmiUNOqA
+ 82KXR77yVuoCvWY4YSaOzU0FpJMU4Xny6e8TxMHP7a6/teoQRJwDuBIz6
+ ixIXQ7oW9QUSZMZ6Xkl76DhfYR5MX+JcpqRdhxxyMTwgtzylVIaZcleOS
+ 7dX+5N1QlyMu34JXBNnh6SquVfuxZ7yaSd7v/DdKn7Tu0Jd+WJLFdGfNG
+ lFaK+RqSTMGJlsZHpOJ46tXy3E40GyJ9YOJJHrt2pP7H718TLVSZcAxQS
+ DNjehNbJKRSCk8H1dz6sIDf5qS9Ki1eGFgq4o1oXeRn16AM/ZMMQydLx+ Q==;
+X-CSE-ConnectionGUID: dA00J+8SRhqx3VxdjJR5dA==
+X-CSE-MsgGUID: meL/HDOcTL+EKFPW/sES9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="57025965"
+X-IronPort-AV: E=Sophos;i="6.12,155,1728975600"; d="scan'208";a="57025965"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2024 18:20:36 -0800
+X-CSE-ConnectionGUID: REfJUsEpSmW2tVKKeSZsNA==
+X-CSE-MsgGUID: D65Ze8PmS1GSp7zd31Jh9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; d="scan'208";a="93145381"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 14 Nov 2024 12:17:30 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 14 Nov 2024 12:17:29 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 14 Nov 2024 12:17:29 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.43) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 14 Nov 2024 12:17:28 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rvQzloX0a7k4jXnS3pcbo9UHJPraDCVK4c1ldZYJ/h3p8tcIMHDQw7lFTNE+Pr3Es5dXXjgcUiBfe9uneUw8bv83ooQywNlv3HyB1nuLk2aKsAQqDYWmQ6TreVBRk/WDe0M2tNJ7LXJ98unNUuJGk3r0I6QXq0kjvjvzimV9Tx3PPYAIICCIqLLjMci+6JVQGKvvtSuwIOUN0nQ9oO+5vTMyDEyZxZFQbd0MmzyDmJtqDBycCV8jrEFfaQQL7/4fyetZfOx1Hx16rcDuiKho92pwkfgYQPnb2DJf2V6eCd9eekhVnkdgqHCrOf5mvhBR+zV6SPMDLSLMR2WPyJSNhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yh3LxGQYD3MAI0yZzhBdGve38f3rCkq+bnsSRbyHUxA=;
- b=fz0YKNq8kQvGoFl8JoRrNg1G8/L8GmtM08KMkZtyg9cPnJaFv8x37iCGhZ9CJ3vi6tBtFpqdxCIWi9fXHQhXs1dxXjbsJkALA1YY0QY9VnNBZ1ozCLZpAgHhuIdXuvwW816xZtZuUyiUoZmSIRyODToCkM+yAhOkK9LeQ9YkypNrLxMcqBsBpch+ziepQejJ9zWSXDqs01cDJ7QBP1tHrIEKGKNQ+cdEL46CNecktwvs1dTOMBwfeOdJrWnX/SSn1+RNYfZowqoHtjh50eOQeY4KHUPtlh1PkVIBsMnJNaXkRT9IHT19aFSLug0cfnUwOgUs35fnwUHAKkPBA079PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by SA1PR11MB6992.namprd11.prod.outlook.com (2603:10b6:806:2b6::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.16; Thu, 14 Nov
- 2024 20:17:26 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372%6]) with mapi id 15.20.8137.027; Thu, 14 Nov 2024
- 20:17:26 +0000
-Message-ID: <645a5544-7efb-4722-ab41-d3f15f39b0b3@intel.com>
-Date: Fri, 15 Nov 2024 01:47:21 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: Add 6k resolution support for a
- single CRTC
-To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20241112163435.1351560-1-jeevan.b@intel.com>
- <20241112163435.1351560-2-jeevan.b@intel.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20241112163435.1351560-2-jeevan.b@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0254.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:21a::20) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-IronPort-AV: E=Sophos;i="6.12,155,1728975600"; d="scan'208";a="125920582"
+Received: from orsosgc001.jf.intel.com ([10.165.21.142])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2024 18:20:36 -0800
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jose Souza <jose.souza@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t] lib/xe/oa: Re-instate TestOa metric sets in LNL/BMG
+ XML's
+Date: Thu, 14 Nov 2024 18:20:31 -0800
+Message-ID: <20241115022031.3794406-1-ashutosh.dixit@intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SA1PR11MB6992:EE_
-X-MS-Office365-Filtering-Correlation-Id: 46239ae0-3902-4ee6-ae8a-08dd04e95b4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?N1p3d0ZIT1lHU3FpcmRmOHhKL2x4Z0RPbmdkeFFnamRCTkprVWVHVVZDWUFh?=
- =?utf-8?B?dkpOUit6YjFjeE1ZcmRqcUhVVXg4SFNjNmdqdWtZZkFvVGtkTVdFcFBGTDRS?=
- =?utf-8?B?VVUxeUtUTVJLcGJqeGxuMDZWVjhkMFk2YldVZmlwcmY5RVlHZnVCMndpN3B1?=
- =?utf-8?B?UGFtRjhwNERKSGd0TkdKSDJmUlpURHphUWtvTG1OM0c5N0ErZmJnZ2pDZGo5?=
- =?utf-8?B?NFpRLzdEN0ZTMTVtUlpQaXdWa0twbURLc2IrcnlGUys4a0VZMmluUEVybm5J?=
- =?utf-8?B?ZHJXTTVtK01saHZqZHZjcmN2NTVMOG9uYzBiUTBiVHo5aG84VEwxbnhvL1hJ?=
- =?utf-8?B?Y2JySjY1R2xQZWxicGhuSTBUN3BHZ0dFZHo2QnJ4T2NNaW1uZE91MnJYWEJY?=
- =?utf-8?B?bENYbWlmWG5EVWVzUUxwTjBaUGNCdkRyWWNkcmtNeTFwWXNZdlJXN0hXRFU3?=
- =?utf-8?B?anJ0M1hKNVdGeGVKdzhQd0Q3QmZKSmRVWTduSkxzbnlHZ1RuaU0vaVJlLy84?=
- =?utf-8?B?UUNMYWtTUXFsVWZiak5nN3VnZkVISTNycmM1M21HUlNEVUFWS0tNREZHNGFy?=
- =?utf-8?B?Z0lWRlMxVy9vcXV5amYxSkg1cUZMVzd1TElsM1pKblgyQ1VuUUV3SmZ3bU1K?=
- =?utf-8?B?alBJTU54OStxa2FqZk1DZG9NdytmY085ekVkeUI5UTgyckdJRDRsRW1pTStH?=
- =?utf-8?B?Y2o4S25zaTFXOW82Y3FGN0FlSVlvUjI1R21nYkVqS291MVZvK3dPVjBVc0Zl?=
- =?utf-8?B?V3c3bU1IV1pDNnd3eFFNcGcwc3VVa1JPREJwSm9yRE5YZ0FCaHY5TjN6dmw3?=
- =?utf-8?B?L2gwVVVKVGE1ZzZlVlZWRVduZllkNGtJaFpHeHh5dE5QRkpZSDlCNi9DKzlh?=
- =?utf-8?B?RWtZM3g1NlhDdkZSRkRDWUJnSURCeFNxblB6dTJLUWdtWHVjYXUreTcvOVUx?=
- =?utf-8?B?QzFLN24yWThXRWxYdjQvVkc3Ni8xTDF6aHVQMzRRQWs2VTZMTEd3d0tIVjN1?=
- =?utf-8?B?c1FQNGw0NXZ2SHRFYmV6M29WQzZFMjFTekk5bGtUbDNBdlVxTGgxNkp1TzNT?=
- =?utf-8?B?d1BHODBoL0ZtOFFOUEV4b2JNV0V4NEU5MUZmZHVBYkpKQ0NuRFhsZ1A0amQz?=
- =?utf-8?B?OG9tN0Fwbk1BcGcrMExQd0NOaEJ4ZEJNNG84QWx6TlBNM3Z0RUhqd3p6S0hG?=
- =?utf-8?B?b2l6WmVNSEtKMzljL0tRRXMzYjY0ZUJGUnM5ZnM4Umc4NEtjT3pXMW1BMEdO?=
- =?utf-8?B?eVBDems3TnZmbTd4ZXlyQ0FuN282alJybzhTRnFSTTV4UjVzUGoyd1ZDSm03?=
- =?utf-8?B?UWRlQjNmY1hvSStOelFBc2dteWkzNUhUenFyNzBYcGtNWHJkcUdLWkZmTjdN?=
- =?utf-8?B?Z0dRbUxDYTNKVFlxYmo4TkFJOE1tdmpCNld5N0hSeStoMVE1djYyNVBLdEtK?=
- =?utf-8?B?STlnbDg3NEduQk1pY1dwRHFBOEJDR3E1ZVd5SmRSSG8yRHNtZnY0VkJTN3Y3?=
- =?utf-8?B?MTIrQUkwYW1vaWFBZE5IMVhCc0xZY0lMQkplbU01YWpCZjZTQ2VTSzV1MStB?=
- =?utf-8?B?WVRBMkZ3NkJiSUh3bXJNRUZCMDhtVlorNEc2RW91S2cwdHZDbzYrai9wNHl6?=
- =?utf-8?B?L2dqM2lQb3l0OTRjS0gwajI3WHNuVUZRNmtsSGtwVXJQNjVPY2JubFMxMHZ4?=
- =?utf-8?B?RkhEbnYwWjdDdnZWWnF2SnRSc3RsZUQ2bzhGdHF4aDZDLzRsdnJwd05YdmFB?=
- =?utf-8?Q?7ILR9ZXjxjpo7F5hVViQyzH5O0ObtfPVaHw/zS8?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UWlLVzAzTVpwd3d3Q0pFdGRoSjhpekhyY1pqSzZ6ZWJTMXl0aERJVlZ3SWdW?=
- =?utf-8?B?VEhHMkxuOXNKd3pyUnZIdUFndnRybzFXeXBiMklIaG4rMzBTdFloTW9BZGZP?=
- =?utf-8?B?azFlbGN2OGY1MVh3SE1aRGJhU3hjbHlrTjN2c2lUd3dJUmhjbnA0YllMbUgx?=
- =?utf-8?B?VmM1cHFnT3NJaGpnOS9naHVJWEhHU1BaZ0dVRE8zai9Dd1RPUk5SR3NmRjVX?=
- =?utf-8?B?RXNyLytyNnFDbUphWEZDdHB5SXBFN09wQ2FVUjJhRFYvb3JQU1RuK1l5U2Js?=
- =?utf-8?B?T1ZsNVlOc0xJVm81em41THNwVzY2SDE5ZzB3OURRT3h2SkZuQUFNdnRtWjM1?=
- =?utf-8?B?WWUwZC9JZ29BTzczdXVBMVN6U2NiVjdTL2haY0RVQlJocVZ1bDhnUWpScXA1?=
- =?utf-8?B?dmlobittY3RYRFFuQWtTZkF2dHpqM3NWVVVxMVc5V0l5M2xBNm5EQW9OUnpI?=
- =?utf-8?B?d0tKRHpoYnh5ajQ0alpCTG9GU2psZFJRT1IyRVNOcnhKcjl2SXFZR1EyaTZu?=
- =?utf-8?B?Rnd5Y2hJck5qdEs4NnRDOWxGb2hsN1psNHhZMVBIclo2VmRjb1hVaDdibmV3?=
- =?utf-8?B?aG5vOVI2Y0h6TWpSa21jc3N6T3JkUWV1eWN0SllPQkVjc1Y5alkwYUdmZng0?=
- =?utf-8?B?ZVZtODhwd3dvSWtsTnhQdURoOWdFdjUzUVVBTzI2Nk5xT0FZSGlLeG12WXhP?=
- =?utf-8?B?Mk5pN1JXckluWWhUZWh0ZVJQRG45OVV1SmZHQnlXdVV2Q2J0Y3ZndW9Eclhv?=
- =?utf-8?B?a3h4NCtxYTVFZWtKQ0FQQk5aMlhveEFvMGhSWk4wRVFGRkxCZjYwUzE2TTJD?=
- =?utf-8?B?dWV3N2h0MWZPUC9pbzVaT2tYUVdDbS9pdlFaOHNRU0YwV3NnRGo5T01ubWNt?=
- =?utf-8?B?RitnVFFOOXNZc1pYOTRMU29RekJFbEF3QkdhU2tBV21DODR2Q1NSNnY0TVdG?=
- =?utf-8?B?SjdieTA0clJvMHZjWTZDVGlhMmVsVW02b0h4dUZFNlpaUlhERjdWS3hoR0Vy?=
- =?utf-8?B?Mk9UclhQS2xOYktTejY2UGxHKzB1eEU3Q3hiRzBUYWdGMGRiRytvUnNmcVBm?=
- =?utf-8?B?dnZtWWYrbkJCbVZtQytPTDdJdnRvdVVkWmlzeTNxS3NVMTQveThzVzdWWXBD?=
- =?utf-8?B?bHlScGZrcEdsalE4RS9NVTZXTkNHcml6Y0U5ZVhHeE5pTUs0cVk3RGxva21S?=
- =?utf-8?B?SFF6YTVGQ2JQbUpoU3pHN005cjQ1QUFrOXRrVmd1cnZUVXAyQXhaOVBGR0N2?=
- =?utf-8?B?dGFVUDAzSWkwTkNKOEYwWXh1M2M0bk5kR1FNeGdFTXh5SHEzeXRQRTh6NTc3?=
- =?utf-8?B?MlhzQVgzdmdFbFNTS3ZqOHZnQWMxNVJYMVM3enFYZTBDa0JXNzE1b0IyZnpy?=
- =?utf-8?B?Q1BEa09QQXo1SFZEY2RzTldmVXJ4K21uT3h2TDQvTVFpZllMTWgwNVpvdjFP?=
- =?utf-8?B?Wmk2NFp4SlFjREorNEd6SG1lS3J3Z2NrYzVMc1RvS05OUjFlMGlJQXNGaFZp?=
- =?utf-8?B?dFh5N0d4Z255TkJqb1h6clVrR1dQeFAweUxrRWVzeUJTcUplR0l3RmJOVDFz?=
- =?utf-8?B?djdzWENYcnNrMDJPQnRZYUNBUjBCSHhsNGplUko5dWpVUXRrTldGL2RjMm5r?=
- =?utf-8?B?OGZMR1lja2lOVlpQOEVKNktsdUQ4UHMzZGtnMTBsMXIwZE1hRlZycE1KaW8v?=
- =?utf-8?B?K3VJcVBuN24xb2Vqc20xczRvcTFWS0VVdkNUTGJkK3lMMk9jZWFuaHFkbEhl?=
- =?utf-8?B?dXpibkhTZndUUFMwMktZMi80TjhOVUwvTlhPcG1wdUZxc1VmZ3BOeVJJUDli?=
- =?utf-8?B?UktSVmk1RUtDd0ZSTnhmcGdiRFYrZ2FoTXFHem81a2JXeHdVVmlEWDVlWGZL?=
- =?utf-8?B?YlRmM2R2Yy9hbjU5SU5xY0tTMzg1b1JwVStybzhBaE9iZmV5V2lJRXIwL3pM?=
- =?utf-8?B?eFVEOTFtS1hadHlSUFo5dkR6Vk0rYjA1d1lLMDlONGd2RG1qVzMzMlh4ZEFP?=
- =?utf-8?B?eE1nUmhBOUJnZVN5c3dVb0lDWTQ3T3g4V2hFdDhwanFPYy9lRFFIZk1BTXFo?=
- =?utf-8?B?RUM0VHBLMklMQWtoSXNtNXNHNlVhM1ZoOFVXbnlUQ1pSMUcwMTA0dTdqT3Yx?=
- =?utf-8?B?SURVVGw4bitVTFE4bDJSdkY4Q1NURkVNUDBUbkdsbVpnckFoZ1o0ei9VNzNH?=
- =?utf-8?B?bFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46239ae0-3902-4ee6-ae8a-08dd04e95b4e
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2024 20:17:26.5743 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HqmliGBbv3cnzI6gnlElbZgCxfv6smppu1I7l8fc/MgB+f71dbDYgy/1567rOzK1Ntm+uOLQFBL6e9aYWI1xEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6992
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -193,114 +67,1116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevan,
+TestOa metrics for LNL set was dropped in 548fd137a9fe ("xe/oa: Update
+oa-lnl.xml"). However TestOa metrics can be useful for checking OA data. We
+are trying to figure out how to make use of the TestOa metrics for OA
+validation but for now reinstate TestOa metrics in LNL/BMG XML's.
 
-On 12-11-2024 10:04 pm, Jeevan B wrote:
-> increase big_joiner limitation to 6k from 5k for display version
-> greater than 30.
->
-> Bspec: 68858
->
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->   lib/igt_kms.c | 22 ++++++++++++++--------
->   lib/igt_kms.h |  5 +++--
->   2 files changed, 17 insertions(+), 10 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 5d8096a17..ca7f90ca8 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6330,6 +6330,7 @@ int igt_get_max_dotclock(int fd)
->   
->   /**
->    * igt_bigjoiner_possible:
-> + * @fd: drm file descriptor
->    * @mode: libdrm mode
->    * @max_dotclock: Max pixel clock frequency
->    *
-> @@ -6338,10 +6339,13 @@ int igt_get_max_dotclock(int fd)
->    *
->    * Returns: True if mode requires Bigjoiner, else False.
->    */
-> -bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
-> +bool igt_bigjoiner_possible(int fd, drmModeModeInfo *mode, int max_dotclock)
->   {
-> -	return (mode->hdisplay > MAX_HDISPLAY_PER_PIPE ||
-> -		mode->clock > max_dotclock);
-> +	int max_hdisplay, dev_id;
-> +	dev_id = intel_get_drm_devid(fd);
-> +	max_hdisplay = (intel_display_ver(dev_id) >= 30) ? HDISPLAY_6K_PER_PIPE :
-> +							   HDISPLAY_5K_PER_PIPE;
-> +	return (mode->hdisplay > max_hdisplay || mode->clock > max_dotclock);
->   }
->   
->   /**
-> @@ -6362,10 +6366,10 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   	bool found = false;
->   
->   	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-> -	found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
-> +	found = igt_bigjoiner_possible(drm_fd, &connector->modes[0], max_dotclock);
->   	if (!found) {
->   		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-> -		found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
-> +		found = igt_bigjoiner_possible(drm_fd, &connector->modes[0], max_dotclock);
->   	}
->   	if (found)
->   		*mode = connector->modes[0];
-> @@ -6384,7 +6388,7 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->    */
->   bool igt_ultrajoiner_possible(drmModeModeInfo *mode, int max_dotclock)
->   {
-> -	return (mode->hdisplay > 2 * MAX_HDISPLAY_PER_PIPE ||
-> +	return (mode->hdisplay > 2 * HDISPLAY_5K_PER_PIPE ||
->   		mode->clock > 2 * max_dotclock);
+Generated via repeated invocations of:
+	update-guids.py --guids=guids.xml MetricsXML_LNL.xml > guids.lnl.xml
+	# copy new guid's from guids.lnl.xml into guids.xml
+	mdapi-xml-convert.py --guids=guids.xml MetricsXML_LNL.xml > oa-lnl.xml
 
-Is there any change in ultra joiner condition?
+and
+	update-guids.py --guids=guids.xml MetricsXML_BMG.xml > guids.bmg.xml
+	# copy new guid's from guids.bmg.xml into guids.xml
+	mdapi-xml-convert.py --guids=guids.xml MetricsXML_BMG.xml > oa-bmg.xml
 
->   }
->   
-> @@ -6549,7 +6553,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   	 *  - current & previous crtcs are consecutive
->   	 */
->   	for (i = 0; i < pipes_in_use; i++) {
-> -		if (pipes[i].force_joiner || igt_bigjoiner_possible(pipes[i].mode, max_dotclock)) {
-> +		if (pipes[i].force_joiner || igt_bigjoiner_possible(display->drm_fd, pipes[i].mode,
-> +		    max_dotclock)) {
->   			igt_info("pipe-%s-%s: (Max dot-clock: %d KHz), force joiner: %s\n",
->   				 kmstest_pipe_name(pipes[i].idx),
->   				 igt_output_name(pipes[i].output),
-> @@ -6576,7 +6581,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   			}
->   		}
->   
-> -		if ((i > 0) && (pipes[i - 1].force_joiner || igt_bigjoiner_possible(pipes[i - 1].mode, max_dotclock))) {
-> +		if ((i > 0) && (pipes[i - 1].force_joiner || igt_bigjoiner_possible(display->drm_fd,
-> +		    pipes[i - 1].mode, max_dotclock))) {
->   			igt_info("pipe-%s-%s: (Max dot-clock: %d KHz), force joiner: %s\n",
->   				 kmstest_pipe_name(pipes[i - 1].idx),
->   				 igt_output_name(pipes[i - 1].output),
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index bd154d1c1..a1d2b8632 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -146,7 +146,8 @@ const char *kmstest_scaling_filter_str(int filter);
->   const char *kmstest_dsc_output_format_str(int output_format);
->   
->   void kmstest_dump_mode(drmModeModeInfo *mode);
-> -#define MAX_HDISPLAY_PER_PIPE 5120
-> +#define HDISPLAY_6K_PER_PIPE 6144
-> +#define HDISPLAY_5K_PER_PIPE 5120
->   
->   int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id);
->   void kmstest_set_vt_graphics_mode(void);
-> @@ -1238,7 +1239,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
->   bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   		igt_output_t *output, int bpc);
->   int igt_get_max_dotclock(int fd);
-> -bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
-> +bool igt_bigjoiner_possible(int fd, drmModeModeInfo *mode, int max_dotclock);
->   bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   			  int max_dotclock, drmModeModeInfo *mode);
->   bool igt_ultrajoiner_possible(drmModeModeInfo *mode, int max_dotclock);
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/xe/oa-configs/codegen.py |   3 +
+ lib/xe/oa-configs/guids.xml  |   3 +-
+ lib/xe/oa-configs/oa-bmg.xml | 664 ++++++++++++++++++++++++++++++++++-
+ lib/xe/oa-configs/oa-lnl.xml | 344 +++++++++++++++++-
+ 4 files changed, 1009 insertions(+), 5 deletions(-)
+
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index 51498f803d..7251f5c7a6 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -352,6 +352,9 @@ class Gen:
+         m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+         if m:
+             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++        m = re.search(r'\$GtXeCore([0-99]+)$', name)
++        if m:
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, 0)'.format(m.group(1))
+         return None
+ 
+     def output_rpn_equation_code(self, set, counter, equation):
+diff --git a/lib/xe/oa-configs/guids.xml b/lib/xe/oa-configs/guids.xml
+index dd912d00f1..c8831a912e 100644
+--- a/lib/xe/oa-configs/guids.xml
++++ b/lib/xe/oa-configs/guids.xml
+@@ -2755,11 +2755,11 @@
+     <guid config_hash="72e3ab9e7d727f97c5ea29bef23be40e" mdapi_config_hash="e6b78fe68f406ee2a0cc25293c60bc62" id="d66ce633-4ae5-4de2-8678-9705adfd45bc" chipset="lnl" name="RTProfile" />
+     <guid config_hash="6dc1bd4e8d8b49cc9776701db836ffe9" mdapi_config_hash="cee63b3642783febd3bcbf45629c5e1c" id="e7338926-568c-4424-bc44-f90318a6b472" chipset="lnl" name="VectorEngineProfile" />
+     <guid config_hash="b87d3a3dfab7193309deb13aeb595589" mdapi_config_hash="1950d62ef4b729af4494d76ca3ec8101" id="4ccd6535-fb9a-440f-b0f5-882879dc4cb0" chipset="lnl" name="VectorEngineStalls" />
+-    <guid config_hash="9df6fd1c4fd100b5e50cd97e16bd1cb8" mdapi_config_hash="47c19557fd9591c3fc3955e46db4565c" id="24c33f2c-f8d9-40d9-b2db-64e863b4d625" chipset="lnl" name="TestOa" />
+     <guid config_hash="9bfa717fd19e8d5b99062ca0101113dd" mdapi_config_hash="f390ce860d404c3f22f9d1a3159ec58e" id="0af24f48-05bc-467b-b561-33dec252e651" chipset="lnl" name="MetricSet1" />
+     <guid config_hash="d635631df97322be3d97b9c4e38152e9" mdapi_config_hash="68c19075e48e5128b456a91cd7b95286" id="914ad901-832a-4ccd-a21e-ddc7690ed213" chipset="lnl" name="MetricSet2" />
+     <guid config_hash="d63d186f5b83e91f8c0680847bbf4b24" mdapi_config_hash="d31ec4eaa11c8be0d8d72ecece53434f" id="3b3c9f55-e34b-423d-8c05-7b1af03b6685" chipset="lnl" name="MetricSet3" />
+     <guid config_hash="76b7587d047c30ecde26e3f6253b4165" mdapi_config_hash="e39d956ed7b8d0cbe7d354cff234af7d" id="e6f21065-a6f5-4ea4-a545-80d6aebaab56" chipset="lnl" name="MetricSet4" />
++    <guid config_hash="af9ab7d30e858c28688fd731a0500cef" mdapi_config_hash="f618549b849a175a4b6fb5f12c5f0c1a" id="24c33f2c-f8d9-40d9-b2db-64e863b4d625" chipset="lnl" name="TestOa" />
+     <guid config_hash="cb471dd20a7c853d00899dc7ef33aa0e" mdapi_config_hash="4583b70c638040debcfa88563635b0f5" id="f05e23fc-913d-4ab9-ba9a-43beb059a18c" chipset="bmg" name="RenderBasic" />
+     <guid config_hash="230eab6aa4f36b6de10357fe5f951d46" mdapi_config_hash="8eb3576953c1d98c1637128b495f8fa0" id="c7383a12-5c52-47a8-8e42-11b24d64d1f8" chipset="bmg" name="ComputeBasic" />
+     <guid config_hash="955739b43332e61729e0a7a032188c02" mdapi_config_hash="d9be0378dd2dd6a5f85f71d156d21b43" id="a80e9da5-d2c9-4c20-9f7c-c0adf74bbe89" chipset="bmg" name="DepthProfile" />
+@@ -2769,4 +2769,5 @@
+     <guid config_hash="72e3ab9e7d727f97c5ea29bef23be40e" mdapi_config_hash="e6b78fe68f406ee2a0cc25293c60bc62" id="da09a8a6-802c-48bc-8f3a-35834c9b8ba2" chipset="bmg" name="RTProfile" />
+     <guid config_hash="6dc1bd4e8d8b49cc9776701db836ffe9" mdapi_config_hash="cee63b3642783febd3bcbf45629c5e1c" id="dfe5251f-af3e-434c-b627-38490f2213da" chipset="bmg" name="VectorEngineProfile" />
+     <guid config_hash="b87d3a3dfab7193309deb13aeb595589" mdapi_config_hash="1950d62ef4b729af4494d76ca3ec8101" id="d008dcae-2a82-4929-a94d-2ba1e9c569d6" chipset="bmg" name="VectorEngineStalls" />
++    <guid config_hash="6723e2305bfd92e1d94c4242e476ee36" mdapi_config_hash="8c21cff2375af4159f5abd0ef05ee97a" id="9ec392a7-4c77-4253-a28a-85240821e82c" chipset="bmg" name="TestOa" />
+ </guids>
+diff --git a/lib/xe/oa-configs/oa-bmg.xml b/lib/xe/oa-configs/oa-bmg.xml
+index 15ca7ed26d..b94e7f9ca1 100644
+--- a/lib/xe/oa-configs/oa-bmg.xml
++++ b/lib/xe/oa-configs/oa-bmg.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0"?>
+-<metrics version="1725304531" merge_md5="">
++<metrics version="1731618854" merge_md5="">
+   <set name="RenderBasic"
+        chipset="BMG"
+        symbol_name="RenderBasic"
+@@ -5148,7 +5148,7 @@
+     <counter name="RT Callable Thread Ray Dispatch"
+              symbol_name="RT_CALLABLE_THREAD_RAY_DISPATCH"
+              underscore_name="rt_callable_thread_ray_dispatch"
+-             description="Number of callable threads dispatched"
++             description="Number of BTD shader spawn requests dispatched"
+              data_type="uint64"
+              units="events"
+              semantic_type="event"
+@@ -6997,4 +6997,664 @@
+     </register_config>
+   </set>
+ 
++  <set name="TestOa"
++       chipset="BMG"
++       symbol_name="TestOa"
++       underscore_name="test_oa"
++       mdapi_supported_apis="VK OGL OCL IO"
++       oa_format="576B_PEC64LL"
++       hw_config_guid="9ec392a7-4c77-4253-a28a-85240821e82c"
++       >
++    <counter name="GPU Time Elapsed"
++             symbol_name="GpuTime"
++             underscore_name="gpu_time"
++             description="Time elapsed on the GPU during the measurement."
++             data_type="uint64"
++             units="ns"
++             semantic_type="event"
++             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Core Clocks"
++             symbol_name="GpuCoreClocks"
++             underscore_name="gpu_core_clocks"
++             description="The total number of GPU core clocks elapsed during the measurement."
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="GPU_CLOCK 0 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="AVG GPU Core Frequency"
++             symbol_name="AvgGpuCoreFrequency"
++             underscore_name="avg_gpu_core_frequency"
++             description="Average GPU Core Frequency in the measurement."
++             data_type="uint64"
++             max_equation="$GpuMaxFrequency"
++             units="hz"
++             semantic_type="event"
++             equation="$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Busy"
++             symbol_name="GPU_BUSY"
++             underscore_name="gpu_busy"
++             description="Percentage of time in which GPU is not idle including all GPU engines"
++             data_type="float"
++             units="percent"
++             semantic_type="duration"
++             equation="PEC 32 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="Front End"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="IA Vertex"
++             symbol_name="IA_VERTEX"
++             underscore_name="ia_vertex"
++             description="Number of vertices in a draw"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 33 READ"
++             mdapi_group="Geometry"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GpGpu Threadgroup Count"
++             symbol_name="GPGPU_THREADGROUP_COUNT"
++             underscore_name="gpgpu_threadgroup_count"
++             description="Number of GPGPU threadgroups dispatched"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 0 READ"
++             mdapi_group="Thread Dispatcher"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Async GpGpu Threadgroup Count"
++             symbol_name="ASYNC_GPGPU_THREADGROUP_COUNT"
++             underscore_name="async_gpgpu_threadgroup_count"
++             description="Number of Async GPGPU threadgroups dispatched"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 1 READ"
++             mdapi_group="Thread Dispatcher"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Rasterizer Sample Output"
++             symbol_name="RASTERIZER_SAMPLE_OUTPUT"
++             underscore_name="rasterizer_sample_output"
++             description="Number of lit samples emitted by Rasterizer"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 34 READ"
++             mdapi_group="Rasterizer"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1"
++             symbol_name="TEST_EVENT1"
++             underscore_name="test_event1"
++             description="Number of GPU (gt) clock cycles at every clock period"
++             data_type="float"
++             units="percent"
++             semantic_type="duration"
++             equation="PEC 2 READ $XeCoreTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles"
++             symbol_name="TEST_EVENT1_CYCLES"
++             underscore_name="test_event1_cycles"
++             description="Number of GPU (gt) clock cycles at every clock period"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 2 READ"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore0"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE0"
++             underscore_name="test_event1_cycles_xecore0"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE0)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 3 READ"
++             availability="$GtXeCore0"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore1"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE1"
++             underscore_name="test_event1_cycles_xecore1"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE1)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 4 READ"
++             availability="$GtXeCore1"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore2"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE2"
++             underscore_name="test_event1_cycles_xecore2"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE2)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 5 READ"
++             availability="$GtXeCore2"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore3"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE3"
++             underscore_name="test_event1_cycles_xecore3"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE3)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 6 READ"
++             availability="$GtXeCore3"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore4"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE4"
++             underscore_name="test_event1_cycles_xecore4"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE4)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 21 READ"
++             availability="$GtXeCore4"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore5"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE5"
++             underscore_name="test_event1_cycles_xecore5"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE5)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 22 READ"
++             availability="$GtXeCore5"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore6"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE6"
++             underscore_name="test_event1_cycles_xecore6"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE6)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 23 READ"
++             availability="$GtXeCore6"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore7"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE7"
++             underscore_name="test_event1_cycles_xecore7"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE7)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 24 READ"
++             availability="$GtXeCore7"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore8"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE8"
++             underscore_name="test_event1_cycles_xecore8"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE8)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 25 READ"
++             availability="$GtXeCore8"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore9"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE9"
++             underscore_name="test_event1_cycles_xecore9"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE9)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 26 READ"
++             availability="$GtXeCore9"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore10"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE10"
++             underscore_name="test_event1_cycles_xecore10"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE10)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 27 READ"
++             availability="$GtXeCore10"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore11"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE11"
++             underscore_name="test_event1_cycles_xecore11"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE11)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 28 READ"
++             availability="$GtXeCore11"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore12"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE12"
++             underscore_name="test_event1_cycles_xecore12"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE12)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 29 READ"
++             availability="$GtXeCore12"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore13"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE13"
++             underscore_name="test_event1_cycles_xecore13"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE13)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 30 READ"
++             availability="$GtXeCore13"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore14"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE14"
++             underscore_name="test_event1_cycles_xecore14"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE14)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 31 READ"
++             availability="$GtXeCore14"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore15"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE15"
++             underscore_name="test_event1_cycles_xecore15"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE15)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 7 READ"
++             availability="$GtXeCore15"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore16"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE16"
++             underscore_name="test_event1_cycles_xecore16"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE16)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 8 READ"
++             availability="$GtXeCore16"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore17"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE17"
++             underscore_name="test_event1_cycles_xecore17"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE17)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 9 READ"
++             availability="$GtXeCore17"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore18"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE18"
++             underscore_name="test_event1_cycles_xecore18"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE18)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 10 READ"
++             availability="$GtXeCore18"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore19"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE19"
++             underscore_name="test_event1_cycles_xecore19"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE19)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 11 READ"
++             availability="$GtXeCore19"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore20"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE20"
++             underscore_name="test_event1_cycles_xecore20"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE20)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 12 READ"
++             availability="$GtXeCore20"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore21"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE21"
++             underscore_name="test_event1_cycles_xecore21"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE21)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 13 READ"
++             availability="$GtXeCore21"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore22"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE22"
++             underscore_name="test_event1_cycles_xecore22"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE22)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 14 READ"
++             availability="$GtXeCore22"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore23"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE23"
++             underscore_name="test_event1_cycles_xecore23"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE23)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 15 READ"
++             availability="$GtXeCore23"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore24"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE24"
++             underscore_name="test_event1_cycles_xecore24"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE24)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 16 READ"
++             availability="$GtXeCore24"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore25"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE25"
++             underscore_name="test_event1_cycles_xecore25"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE25)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 17 READ"
++             availability="$GtXeCore25"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore26"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE26"
++             underscore_name="test_event1_cycles_xecore26"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE26)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 18 READ"
++             availability="$GtXeCore26"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore27"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE27"
++             underscore_name="test_event1_cycles_xecore27"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE27)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 19 READ"
++             availability="$GtXeCore27"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Average"
++             symbol_name="TEST_EVENT1_CYCLES_AVERAGE"
++             underscore_name="test_event1_cycles_average"
++             description="Average number of GPU (gt) clock cycles at every clock period"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 2 READ $XeCoreTotalCount UDIV"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event2"
++             symbol_name="TEST_EVENT2"
++             underscore_name="test_event2"
++             description="Number of GPU (gt) clock cycles at every other clock period"
++             data_type="float"
++             units="percent"
++             semantic_type="duration"
++             equation="PEC 35 READ $SliceTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event2 Cycles"
++             symbol_name="TEST_EVENT2_CYCLES"
++             underscore_name="test_event2_cycles"
++             description="Number of GPU (gt) clock cycles at every other clock period"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 35 READ"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <register_config type="OA">
++        <register type="OA" address="0x00013000" value="0x00001801" />
++        <register type="OA" address="0x00013004" value="0x00000000" />
++        <register type="OA" address="0x00013008" value="0x00001802" />
++        <register type="OA" address="0x0001300C" value="0x00000000" />
++        <register type="OA" address="0x00013010" value="0x00003E00" />
++        <register type="OA" address="0x00013014" value="0x00000000" />
++        <register type="OA" address="0x00013018" value="0x00013E00" />
++        <register type="OA" address="0x0001301C" value="0x00000000" />
++        <register type="OA" address="0x00013020" value="0x00113E00" />
++        <register type="OA" address="0x00013024" value="0x00000000" />
++        <register type="OA" address="0x00013028" value="0x00213E00" />
++        <register type="OA" address="0x0001302C" value="0x00000000" />
++        <register type="OA" address="0x00013030" value="0x00313E00" />
++        <register type="OA" address="0x00013034" value="0x00000000" />
++        <register type="OA" address="0x00013038" value="0x00F13E00" />
++        <register type="OA" address="0x0001303C" value="0x00000000" />
++        <register type="OA" address="0x00013040" value="0x01013E00" />
++        <register type="OA" address="0x00013044" value="0x00000000" />
++        <register type="OA" address="0x00013048" value="0x01113E00" />
++        <register type="OA" address="0x0001304C" value="0x00000000" />
++        <register type="OA" address="0x00013050" value="0x01213E00" />
++        <register type="OA" address="0x00013054" value="0x00000000" />
++        <register type="OA" address="0x00013058" value="0x01313E00" />
++        <register type="OA" address="0x0001305C" value="0x00000000" />
++        <register type="OA" address="0x00013060" value="0x01413E00" />
++        <register type="OA" address="0x00013064" value="0x00000000" />
++        <register type="OA" address="0x00013068" value="0x01513E00" />
++        <register type="OA" address="0x0001306C" value="0x00000000" />
++        <register type="OA" address="0x00013070" value="0x01613E00" />
++        <register type="OA" address="0x00013074" value="0x00000000" />
++        <register type="OA" address="0x00013078" value="0x01713E00" />
++        <register type="OA" address="0x0001307C" value="0x00000000" />
++        <register type="OA" address="0x00013080" value="0x01813E00" />
++        <register type="OA" address="0x00013084" value="0x00000000" />
++        <register type="OA" address="0x00013088" value="0x01913E00" />
++        <register type="OA" address="0x0001308C" value="0x00000000" />
++        <register type="OA" address="0x00013090" value="0x01A13E00" />
++        <register type="OA" address="0x00013094" value="0x00000000" />
++        <register type="OA" address="0x00013098" value="0x01B13E00" />
++        <register type="OA" address="0x0001309C" value="0x00000000" />
++        <register type="OA" address="0x000130A8" value="0x00413E00" />
++        <register type="OA" address="0x000130AC" value="0x00000000" />
++        <register type="OA" address="0x000130B0" value="0x00513E00" />
++        <register type="OA" address="0x000130B4" value="0x00000000" />
++        <register type="OA" address="0x000130B8" value="0x00613E00" />
++        <register type="OA" address="0x000130BC" value="0x00000000" />
++        <register type="OA" address="0x000130C0" value="0x00713E00" />
++        <register type="OA" address="0x000130C4" value="0x00000000" />
++        <register type="OA" address="0x000130C8" value="0x00813E00" />
++        <register type="OA" address="0x000130CC" value="0x00000000" />
++        <register type="OA" address="0x000130D0" value="0x00913E00" />
++        <register type="OA" address="0x000130D4" value="0x00000000" />
++        <register type="OA" address="0x000130D8" value="0x00A13E00" />
++        <register type="OA" address="0x000130DC" value="0x00000000" />
++        <register type="OA" address="0x000130E0" value="0x00B13E00" />
++        <register type="OA" address="0x000130E4" value="0x00000000" />
++        <register type="OA" address="0x000130E8" value="0x00C13E00" />
++        <register type="OA" address="0x000130EC" value="0x00000000" />
++        <register type="OA" address="0x000130F0" value="0x00D13E00" />
++        <register type="OA" address="0x000130F4" value="0x00000000" />
++        <register type="OA" address="0x000130F8" value="0x00E13E00" />
++        <register type="OA" address="0x000130FC" value="0x00000000" />
++        <register type="OA" address="0x00013300" value="0x00005A00" />
++        <register type="OA" address="0x00013304" value="0x00000000" />
++        <register type="OA" address="0x00013500" value="0x00005A00" />
++        <register type="OA" address="0x00013504" value="0x00000000" />
++        <register type="OA" address="0x00013700" value="0x00005A00" />
++        <register type="OA" address="0x00013704" value="0x00000000" />
++        <register type="OA" address="0x00013308" value="0x00004405" />
++        <register type="OA" address="0x0001330C" value="0x00000000" />
++        <register type="OA" address="0x00013508" value="0x00004405" />
++        <register type="OA" address="0x0001350C" value="0x00000000" />
++        <register type="OA" address="0x00013708" value="0x00004405" />
++        <register type="OA" address="0x0001370C" value="0x00000000" />
++        <register type="OA" address="0x00013310" value="0x00006805" />
++        <register type="OA" address="0x00013314" value="0x00000000" />
++        <register type="OA" address="0x00013510" value="0x00006805" />
++        <register type="OA" address="0x00013514" value="0x00000000" />
++        <register type="OA" address="0x00013710" value="0x00006805" />
++        <register type="OA" address="0x00013714" value="0x00000000" />
++        <register type="OA" address="0x00013318" value="0x00007E00" />
++        <register type="OA" address="0x0001331C" value="0x00000000" />
++        <register type="OA" address="0x00013518" value="0x00007E00" />
++        <register type="OA" address="0x0001351C" value="0x00000000" />
++        <register type="OA" address="0x00013718" value="0x00007E00" />
++        <register type="OA" address="0x0001371C" value="0x00000000" />
++    </register_config>
++  </set>
++
+ </metrics>
+diff --git a/lib/xe/oa-configs/oa-lnl.xml b/lib/xe/oa-configs/oa-lnl.xml
+index 5a8586f03a..1ab28e1acc 100644
+--- a/lib/xe/oa-configs/oa-lnl.xml
++++ b/lib/xe/oa-configs/oa-lnl.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0"?>
+-<metrics version="1725302004" merge_md5="">
++<metrics version="1731613844" merge_md5="">
+   <set name="RenderBasic"
+        chipset="LNL"
+        symbol_name="RenderBasic"
+@@ -4920,7 +4920,7 @@
+     <counter name="RT Callable Thread Ray Dispatch"
+              symbol_name="RT_CALLABLE_THREAD_RAY_DISPATCH"
+              underscore_name="rt_callable_thread_ray_dispatch"
+-             description="Number of callable threads dispatched"
++             description="Number of BTD shader spawn requests dispatched"
+              data_type="uint64"
+              units="events"
+              semantic_type="event"
+@@ -6769,4 +6769,344 @@
+     </register_config>
+   </set>
+ 
++  <set name="TestOa"
++       chipset="LNL"
++       symbol_name="TestOa"
++       underscore_name="test_oa"
++       mdapi_supported_apis="VK OGL OCL IO"
++       oa_format="576B_PEC64LL"
++       hw_config_guid="24c33f2c-f8d9-40d9-b2db-64e863b4d625"
++       >
++    <counter name="GPU Time Elapsed"
++             symbol_name="GpuTime"
++             underscore_name="gpu_time"
++             description="Time elapsed on the GPU during the measurement."
++             data_type="uint64"
++             units="ns"
++             semantic_type="event"
++             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Core Clocks"
++             symbol_name="GpuCoreClocks"
++             underscore_name="gpu_core_clocks"
++             description="The total number of GPU core clocks elapsed during the measurement."
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="GPU_CLOCK 0 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="AVG GPU Core Frequency"
++             symbol_name="AvgGpuCoreFrequency"
++             underscore_name="avg_gpu_core_frequency"
++             description="Average GPU Core Frequency in the measurement."
++             data_type="uint64"
++             max_equation="$GpuMaxFrequency"
++             units="hz"
++             semantic_type="event"
++             equation="$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Busy"
++             symbol_name="GPU_BUSY"
++             underscore_name="gpu_busy"
++             description="Percentage of time in which GPU is not idle including all GPU engines"
++             data_type="float"
++             units="percent"
++             semantic_type="duration"
++             equation="PEC 32 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="Front End"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="IA Vertex"
++             symbol_name="IA_VERTEX"
++             underscore_name="ia_vertex"
++             description="Number of vertices in a draw"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 33 READ"
++             mdapi_group="Geometry"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GpGpu Threadgroup Count"
++             symbol_name="GPGPU_THREADGROUP_COUNT"
++             underscore_name="gpgpu_threadgroup_count"
++             description="Number of GPGPU threadgroups dispatched"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 0 READ"
++             mdapi_group="Thread Dispatcher"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Async GpGpu Threadgroup Count"
++             symbol_name="ASYNC_GPGPU_THREADGROUP_COUNT"
++             underscore_name="async_gpgpu_threadgroup_count"
++             description="Number of Async GPGPU threadgroups dispatched"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 1 READ"
++             mdapi_group="Thread Dispatcher"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Rasterizer Sample Output"
++             symbol_name="RASTERIZER_SAMPLE_OUTPUT"
++             underscore_name="rasterizer_sample_output"
++             description="Number of lit samples emitted by Rasterizer"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="PEC 34 READ"
++             mdapi_group="Rasterizer"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1"
++             symbol_name="TEST_EVENT1"
++             underscore_name="test_event1"
++             description="Number of GPU (gt) clock cycles at every clock period"
++             data_type="float"
++             units="percent"
++             semantic_type="duration"
++             equation="PEC 2 READ $XeCoreTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles"
++             symbol_name="TEST_EVENT1_CYCLES"
++             underscore_name="test_event1_cycles"
++             description="Number of GPU (gt) clock cycles at every clock period"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 2 READ"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore0"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE0"
++             underscore_name="test_event1_cycles_xecore0"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE0)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 3 READ"
++             availability="$GtXeCore0"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore1"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE1"
++             underscore_name="test_event1_cycles_xecore1"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE1)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 4 READ"
++             availability="$GtXeCore1"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore2"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE2"
++             underscore_name="test_event1_cycles_xecore2"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE2)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 5 READ"
++             availability="$GtXeCore2"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore3"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE3"
++             underscore_name="test_event1_cycles_xecore3"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE3)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 6 READ"
++             availability="$GtXeCore3"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore4"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE4"
++             underscore_name="test_event1_cycles_xecore4"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE4)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 21 READ"
++             availability="$GtXeCore4"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore5"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE5"
++             underscore_name="test_event1_cycles_xecore5"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE5)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 22 READ"
++             availability="$GtXeCore5"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore6"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE6"
++             underscore_name="test_event1_cycles_xecore6"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE6)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 23 READ"
++             availability="$GtXeCore6"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Xecore7"
++             symbol_name="TEST_EVENT1_CYCLES_XECORE7"
++             underscore_name="test_event1_cycles_xecore7"
++             description="Number of GPU (gt) clock cycles at every clock period (XECORE7)"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 24 READ"
++             availability="$GtXeCore7"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event1 Cycles Average"
++             symbol_name="TEST_EVENT1_CYCLES_AVERAGE"
++             underscore_name="test_event1_cycles_average"
++             description="Average number of GPU (gt) clock cycles at every clock period"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 2 READ $XeCoreTotalCount UDIV"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event2"
++             symbol_name="TEST_EVENT2"
++             underscore_name="test_event2"
++             description="Number of GPU (gt) clock cycles at every other clock period"
++             data_type="float"
++             units="percent"
++             semantic_type="duration"
++             equation="PEC 35 READ $SliceTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Test Event2 Cycles"
++             symbol_name="TEST_EVENT2_CYCLES"
++             underscore_name="test_event2_cycles"
++             description="Number of GPU (gt) clock cycles at every other clock period"
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="PEC 35 READ"
++             mdapi_group="Test"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <register_config type="OA">
++        <register type="OA" address="0x00013000" value="0x00001801" />
++        <register type="OA" address="0x00013004" value="0x00000000" />
++        <register type="OA" address="0x00013008" value="0x00001802" />
++        <register type="OA" address="0x0001300C" value="0x00000000" />
++        <register type="OA" address="0x00013010" value="0x00003E00" />
++        <register type="OA" address="0x00013014" value="0x00000000" />
++        <register type="OA" address="0x00013018" value="0x00013E00" />
++        <register type="OA" address="0x0001301C" value="0x00000000" />
++        <register type="OA" address="0x00013020" value="0x00113E00" />
++        <register type="OA" address="0x00013024" value="0x00000000" />
++        <register type="OA" address="0x00013028" value="0x00213E00" />
++        <register type="OA" address="0x0001302C" value="0x00000000" />
++        <register type="OA" address="0x00013030" value="0x00313E00" />
++        <register type="OA" address="0x00013034" value="0x00000000" />
++        <register type="OA" address="0x000130A8" value="0x00413E00" />
++        <register type="OA" address="0x000130AC" value="0x00000000" />
++        <register type="OA" address="0x000130B0" value="0x00513E00" />
++        <register type="OA" address="0x000130B4" value="0x00000000" />
++        <register type="OA" address="0x000130B8" value="0x00613E00" />
++        <register type="OA" address="0x000130BC" value="0x00000000" />
++        <register type="OA" address="0x000130C0" value="0x00713E00" />
++        <register type="OA" address="0x000130C4" value="0x00000000" />
++        <register type="OA" address="0x00013300" value="0x00005A00" />
++        <register type="OA" address="0x00013304" value="0x00000000" />
++        <register type="OA" address="0x00013500" value="0x00005A00" />
++        <register type="OA" address="0x00013504" value="0x00000000" />
++        <register type="OA" address="0x00013700" value="0x00005A00" />
++        <register type="OA" address="0x00013704" value="0x00000000" />
++        <register type="OA" address="0x00013308" value="0x00004405" />
++        <register type="OA" address="0x0001330C" value="0x00000000" />
++        <register type="OA" address="0x00013508" value="0x00004405" />
++        <register type="OA" address="0x0001350C" value="0x00000000" />
++        <register type="OA" address="0x00013708" value="0x00004405" />
++        <register type="OA" address="0x0001370C" value="0x00000000" />
++        <register type="OA" address="0x00013310" value="0x00006805" />
++        <register type="OA" address="0x00013314" value="0x00000000" />
++        <register type="OA" address="0x00013510" value="0x00006805" />
++        <register type="OA" address="0x00013514" value="0x00000000" />
++        <register type="OA" address="0x00013710" value="0x00006805" />
++        <register type="OA" address="0x00013714" value="0x00000000" />
++        <register type="OA" address="0x00013318" value="0x00007E00" />
++        <register type="OA" address="0x0001331C" value="0x00000000" />
++        <register type="OA" address="0x00013518" value="0x00007E00" />
++        <register type="OA" address="0x0001351C" value="0x00000000" />
++        <register type="OA" address="0x00013718" value="0x00007E00" />
++        <register type="OA" address="0x0001371C" value="0x00000000" />
++    </register_config>
++  </set>
++
+ </metrics>
+-- 
+2.41.0
+
