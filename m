@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E7AD68BCE
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 17:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F199CD68BCD
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Nov 2024 17:45:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAA3610E069;
-	Fri, 15 Nov 2024 17:20:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LSFUKJf4";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F9A610E069
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2024 17:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731691249; x=1763227249;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=K+gTC8mjoF+vEtfFz0mdrbXnXI+B8RDGU61nKhU3sDA=;
- b=LSFUKJf4Rlw2jZ9EtPsoFOg2/9+SK2iMepltGQ1TmTYxWWIbx0WzLwFM
- 1D+KpGrofm9C+dbeynA0PLupEK/rZlb8g4Q5CkRq5OVZu8F8A21fi46JZ
- dutgnsz9oHLw5+8zMhqaJYzBEEwcFNGTRHLvaHqVdR4i92XMSyaRJllWB
- Y4ZomwyfYPvaiTz+ibpz12Ph+Qq8tXy7OmR1dVhABAzh2YU885bqAqZo4
- 9oxmgMtJ/gHfafTQGCFzy676+t6FIThyxf8A63KP+jRu8vb4WREey4SH6
- YCsWdQ/OIdxBvRMLNTPqUxFccziuMemYOaDtyTwgvsFpLho3j//0RTU/h Q==;
-X-CSE-ConnectionGUID: pNcaLX8LRYK3s4uzMRzRVA==
-X-CSE-MsgGUID: wTeyQX0+QNaa+eunG/2x9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11257"; a="35391075"
-X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; d="scan'208";a="35391075"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2024 09:20:49 -0800
-X-CSE-ConnectionGUID: xjF2GtJ6T1ehRmtOr16qkA==
-X-CSE-MsgGUID: quG/hPqRRYWOhx8L3g/HYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; d="scan'208";a="88379820"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2024 09:20:47 -0800
-Date: Fri, 15 Nov 2024 18:20:45 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: Re: [i-g-t V2 1/5] lib/igt_kms: Add infra to handle crtc arbitrary
- attributes
-Message-ID: <20241115172045.ro55eptvlsmdzfp3@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-References: <20240924142638.238291-1-bhanuprakash.modem@intel.com>
- <20240924142638.238291-2-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7826E10E065;
+	Fri, 15 Nov 2024 17:45:37 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84D2410E079;
+ Fri, 15 Nov 2024 17:45:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1739981426262730863=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240924142638.238291-2-bhanuprakash.modem@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_test/intel/xe=5Fsysfs=3A_Resto?=
+ =?utf-8?q?re_sysfs_params_correctly?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 15 Nov 2024 17:45:35 -0000
+Message-ID: <173169273552.285105.16462297489521093189@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241115170352.102039-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20241115170352.102039-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,230 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2024-09-24 at 19:56:34 +0530, Bhanuprakash Modem wrote:
-> We may want to poke at various other crtc attributes
-> via sysfs/debugfs. Add a mechamisn to handle crtc
-> arbitrary attributes.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  lib/igt_kms.c | 150 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_kms.h |   3 +
->  2 files changed, 153 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index b40470c02..c22cdb602 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -92,6 +92,7 @@
->  #define DISPLAY_TILE_BLOCK 0x12
->  
->  typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
-> +typedef bool (*igt_crtc_attr_set)(int dir, const char *attr, const char *value);
->  
->  struct igt_connector_attr {
->  	uint32_t connector_type;
-> @@ -102,7 +103,16 @@ struct igt_connector_attr {
->  	const char *attr, *value, *reset_value;
->  };
->  
-> +struct igt_crtc_attr {
-> +	int pipe;
-> +	int idx;
-> +	int dir;
-> +	igt_crtc_attr_set set;
-> +	const char *attr, *value, *reset_value;
-> +};
-> +
->  static struct igt_connector_attr connector_attrs[MAX_CONNECTORS];
-> +static struct igt_crtc_attr crtc_attrs[IGT_MAX_PIPES];
->  
->  /**
->   * igt_kms_get_base_edid:
-> @@ -1802,6 +1812,125 @@ void kmstest_force_edid(int drm_fd, drmModeConnector *connector,
->  	igt_assert(ret != -1);
->  }
->  
-> +static struct igt_crtc_attr *crtc_attr_find(int idx, enum pipe pipe,
-> +					    igt_crtc_attr_set set,
-> +					    const char *attr)
-> +{
-> +	igt_assert(pipe != PIPE_NONE || pipe >= IGT_MAX_PIPES);
+--===============1739981426262730863==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Why not return NULL for PIPE_NONE?
-Also imho better:
+== Series Details ==
 
-	igt_assert(pipe >= 0 && pipe < ARRAY_SIZE());
+Series: test/intel/xe_sysfs: Restore sysfs params correctly
+URL   : https://patchwork.freedesktop.org/series/141422/
+State : success
 
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-> +		struct igt_crtc_attr *c = &crtc_attrs[i];
-> +
-> +		if (c->idx == idx &&
-> +		    c->pipe == pipe &&
-> +		    c->set == set && !strcmp(c->attr, attr))
-> +			return c;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct igt_crtc_attr *crtc_attr_find_free(void)
-> +{
-> +	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-> +		struct igt_crtc_attr *c = &crtc_attrs[i];
-> +
-> +		if (!c->attr)
-> +			return c;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct igt_crtc_attr *crtc_attr_alloc(int idx, enum pipe pipe,
-> +					     int dir, igt_crtc_attr_set set,
-> +					     const char *attr, const char *reset_value)
-> +{
-> +	struct igt_crtc_attr *c = crtc_attr_find_free();
+== Summary ==
 
-c could be NULL here, if find_free() failed.
+CI Bug Log - changes from XEIGT_8114_BAT -> XEIGTPW_12117_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> +
-> +	c->idx = idx;
-> +	c->pipe = pipe;
-> +
-> +	c->dir = dir;
-> +	c->set = set;
-> +	c->attr = attr;
-> +	c->reset_value = reset_value;
-> +
-> +	return c;
-> +}
-> +
-> +static void crtc_attr_free(struct igt_crtc_attr *c)
-> +{
-> +	memset(c, 0, sizeof(*c));
-> +}
-> +
-> +static bool crtc_attr_set(int idx, enum pipe pipe,
-> +			  int dir, igt_crtc_attr_set set,
-> +			  const char *attr, const char *value,
-> +			  const char *reset_value)
-> +{
-> +	struct igt_crtc_attr *c;
-> +
-> +	c = crtc_attr_find(idx, pipe, set, attr);
-> +	if (!c)
-> +		c = crtc_attr_alloc(idx, pipe, dir, set, attr, reset_value);
-> +
-> +	c->value = value;
-> +
-> +	if (!c->set(c->dir, c->attr, c->value)) {
-> +		crtc_attr_free(c);
-> +		return false;
-> +	}
-> +
-> +	if (!strcmp(c->value, c->reset_value))
-> +		crtc_attr_free(c);
-> +
-> +	return true;
-> +}
-> +
-> +static bool crtc_attr_set_debugfs(int drm_fd, enum pipe pipe,
-> +				  const char *attr, const char *value,
-> +				  const char *reset_value)
-> +{
-> +	int idx, dir;
-> +
-> +	idx = igt_device_get_card_index(drm_fd);
-> +	if (idx < 0 || idx > 63)
-> +		return false;
-> +
-> +	dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-> +	if (dir < 0)
-> +		return false;
-> +
-> +	if (!crtc_attr_set(idx, pipe, dir,
-> +			   igt_sysfs_set, attr,
-> +			   value, reset_value))
-> +		return false;
-> +
-> +	igt_info("Crtc-%d/%s is now %s\n", pipe, attr, value);
-> +
-> +	return true;
-> +}
-> +
-> +/**
-> + * kmstest_set_connector_dpms:
-> + *
-> + * Dump all attr state on all crtcs.
-> + */
-> +void dump_crtc_attrs(void)
-> +{
-> +	igt_debug("Current crtc attrs:\n");
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-> +		struct igt_crtc_attr *c = &crtc_attrs[i];
-> +
-> +		if (!c->attr)
-> +			continue;
-> +
-> +		igt_debug("\tcrtc-%d/%s: %s\n", c->pipe, c->attr, c->value);
-> +	}
-> +}
-> +
->  /**
->   * sort_drm_modes_by_clk_dsc:
->   * @a: first element
-> @@ -5459,6 +5588,27 @@ void igt_reset_connectors(void)
->  	}
->  }
->  
-> +/**
-> + * igt_reset_crtcs:
-> + *
-> + * Remove any forced state from the crtcs.
-> + */
-> +void igt_reset_crtcs(void)
-> +{
-> +	/*
-> +	 * Reset the crtcs stored in crtc_attrs, avoiding any
-> +	 * functions that are not safe to call in signal handlers
-> +	 */
-> +	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-> +		struct igt_crtc_attr *c = &crtc_attrs[i];
-> +
-> +		if (!c->attr)
-> +			continue;
-> +
-> +		c->set(c->dir, c->attr, c->reset_value);
-> +	}
-> +}
-> +
->  /**
->   * igt_watch_uevents:
->   *
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 25ba50916..97efbefa5 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1085,6 +1085,9 @@ void igt_pipe_refresh(igt_display_t *display, enum pipe pipe, bool force);
->  void igt_enable_connectors(int drm_fd);
->  void igt_reset_connectors(void);
->  
-> +void igt_reset_crtcs(void);
-> +void dump_crtc_attrs(void);
-> +
->  uint32_t kmstest_get_vbl_flag(int crtc_offset);
->  
->  const struct edid *igt_kms_get_base_edid(void);
-> -- 
-> 2.43.0
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8114 -> IGTPW_12117
+
+  IGTPW_12117: 12117
+  IGT_8114: 8114
+  xe-2235-36fec0eb87867bca47f8829c9e5dbf5b3e2b3aaf: 36fec0eb87867bca47f8829c9e5dbf5b3e2b3aaf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12117/index.html
+
+--===============1739981426262730863==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/intel/xe_sysfs: Restore sysfs params correctly</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141422/">https://patchwork.freedesktop.org/series/141422/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12117/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12117/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8114_BAT -&gt; XEIGTPW_12117_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8114 -&gt; IGTPW_12117</li>
+</ul>
+<p>IGTPW_12117: 12117<br />
+  IGT_8114: 8114<br />
+  xe-2235-36fec0eb87867bca47f8829c9e5dbf5b3e2b3aaf: 36fec0eb87867bca47f8829c9e5dbf5b3e2b3aaf</p>
+
+</body>
+</html>
+
+--===============1739981426262730863==--
