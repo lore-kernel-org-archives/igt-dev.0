@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD1C5D49219
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 12:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8537ED4921A
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 12:44:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 694A810E0BF;
-	Mon, 18 Nov 2024 12:44:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 369C810E347;
+	Mon, 18 Nov 2024 12:44:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AItKhIgJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dV9TR0HR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 396CE10E4CA
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 12:44:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A83BC10E4CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 12:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731933877; x=1763469877;
+ t=1731933883; x=1763469883;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/HXpg8WrhABBtNELDMdTbJIi3Xesh0PGeZjDL6y6L6U=;
- b=AItKhIgJlUck+DpKq6JdVwVj7jS4lwmITE7+BxpYIsQ7+CxHRuY652nt
- hJ4LLWP3G3BX+D7K0nHoBTtSTPqEEr+kf6HEkQijYRlnJpDmWbTKJS9k8
- yzQpUo0vRAExNjTTjc7Rz+bOWd0Dzk6l6INzL74c6+12mjNXq8H+mKkoP
- Yd4xYUKX7IIuTyQzbBQ5U855+NRhTCwRwRAiWj/TYe4NikUxYDhrZPFk0
- RAo7bTlzXc7rRhao6gWRldI1l+EAYX7MohpGIoYGo6/qQevULFW3K+Cfl
- l9zwbJW9PLxfHnhiZ8T4TW6jV89Q8WGJFyk8roHrcSZFV95cnzEwmaOfS g==;
-X-CSE-ConnectionGUID: H/eF7RZoQY2LPQak3ePqnw==
-X-CSE-MsgGUID: lgC3k1ZlTauCXzsZU2BD0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="32038963"
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="32038963"
+ bh=k7uOq6VWYYWG4Nm9Ee/9VmyGYqbqIRjhZc2H3qE01KQ=;
+ b=dV9TR0HRj2BmUKblyDPFRfxXs7OvyAYEcUltvsvB47ZBjJZ3iWwWnrF8
+ /fy4LTV9o/0eYnVGnLeAJz42rnwWp5JwrAl44rpQRXkSwcB6d7KuvFA+f
+ xJdPCMC8U4OfQYjT2JzhEnuYwNGAWSFohufKVRnw8SnM2c1i8VU1zy5/D
+ x+tNCv98aWv12VXSmqkNMCTqaZDC+6BV9hpi/tkg3TfX1j+y81hkzsEfz
+ Nu0rsNk4rA2M5CjiUuahrbaYV6dnCR4CsXlmsEdCDQi0V4piMmnK64Bgv
+ ytLYnk7Q5tB7S3ibGHFNuBiYKTiRdRN5ChKxYO6Z9Bfx0QVOgcGbL5FVr w==;
+X-CSE-ConnectionGUID: /1lXhYaRRray7a3kSOkORQ==
+X-CSE-MsgGUID: KCPaN/l2ROKx907iJ2wISw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="32038972"
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="32038972"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 04:44:37 -0800
-X-CSE-ConnectionGUID: AfJ7ZiJeS/G8xBmD5cK6qQ==
-X-CSE-MsgGUID: AzUZ/WcvQmejW2X14rZnjA==
+ 18 Nov 2024 04:44:43 -0800
+X-CSE-ConnectionGUID: tE02ByeiSlOMFLz7463h6A==
+X-CSE-MsgGUID: 6dL5FCHfRdiWzIabBRBkuw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="89365015"
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="89365039"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
  ([10.245.246.159])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 04:44:35 -0800
+ 18 Nov 2024 04:44:41 -0800
 From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/syncobj_wait: Update
- invalid-wait-zero-handles test
-Date: Mon, 18 Nov 2024 13:44:21 +0100
-Message-ID: <20241118124422.11868-2-krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t 2/2] HAX/DO_NOT_MERGE: Add wait-zero-handles to fast
+ feedback list
+Date: Mon, 18 Nov 2024 13:44:22 +0100
+Message-ID: <20241118124422.11868-3-krzysztof.niemiec@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124422.11868-1-krzysztof.niemiec@intel.com>
 References: <20241118124422.11868-1-krzysztof.niemiec@intel.com>
@@ -70,62 +70,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The behavior of DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT has been changed in [1]
-to accept empty lists of syncobj handles, but the
-invalid-wait-zero-handles test has not been updated to mirror this
-change. Fix the assert to check against 0 instead of -EINVAL, and rename
-the test to wait-zero-handles as this is no longer an invalid scenario.
-
-This change mirrors [2] for the syncobj_wait test.
-
-[1] https://patchwork.freedesktop.org/patch/554042/
-[2] https://patchwork.freedesktop.org/patch/618483/
-
 Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 ---
- tests/syncobj_wait.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/intel-ci/fast-feedback.testlist    | 2 ++
+ tests/intel-ci/xe-fast-feedback.testlist | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index be7e67163..e5f251205 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -80,8 +80,6 @@
-  *
-  * SUBTEST: invalid-wait-illegal-handle
-  *
-- * SUBTEST: invalid-wait-zero-handles
-- *
-  * SUBTEST: multi-wait-all-for-submit-signaled
-  *
-  * SUBTEST: multi-wait-all-for-submit-submitted
-@@ -177,6 +175,8 @@
-  * SUBTEST: wait-for-submit-delayed-submit
-  *
-  * SUBTEST: wait-for-submit-snapshot
-+ *
-+ * SUBTEST: wait-zero-handles
-  */
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..cf3a9d9b1 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,8 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
  
- IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
-@@ -297,7 +297,7 @@ static void
- test_wait_zero_handles(int fd)
- {
- 	struct drm_syncobj_wait wait = { 0 };
--	igt_assert_eq(__syncobj_wait(fd, &wait), -EINVAL);
-+	igt_assert_eq(__syncobj_wait(fd, &wait), 0);
- }
++igt@syncobj_wait@wait-zero-handles
++
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index d9fb98aab..b9f4d8700 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,6 +1,8 @@
+ # Should be the first test
+ igt@xe_module_load@load
  
- static void
-@@ -918,7 +918,7 @@ igt_main
- 	igt_subtest("invalid-wait-bad-flags")
- 		test_wait_bad_flags(fd);
- 
--	igt_subtest("invalid-wait-zero-handles")
-+	igt_subtest("wait-zero-handles")
- 		test_wait_zero_handles(fd);
- 
- 	igt_subtest("invalid-wait-illegal-handle")
++igt@syncobj_wait@wait-zero-handles
++
+ igt@fbdev@eof
+ igt@fbdev@info
+ igt@fbdev@nullptr
 -- 
 2.45.2
 
