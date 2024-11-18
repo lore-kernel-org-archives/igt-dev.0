@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BB1D68BFC
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 06:40:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C606CD6DDF9
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 06:58:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5613710E1F9;
-	Mon, 18 Nov 2024 06:40:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8184010E26C;
+	Mon, 18 Nov 2024 06:58:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UbNb1g4Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nW/QPH/1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0234C10E1F9
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 06:40:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05EAF10E26C;
+ Mon, 18 Nov 2024 06:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731912015; x=1763448015;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=vuXtW/BwZTw0qIFOTk6BtSAmPni4JmPpLcYWl0P+YAA=;
- b=UbNb1g4Y1cHxJ73Csrhqi4h49jTTjk23I+8DU2Om95DHOsQMMVRaOEK9
- 9Qkv458ad3z7KzGHwvUH4xRYczQ9IIuq0nEb6Pl8dep1uZKqf7iDhVjSz
- JRpOwc5kug0PjQAQBPwD12ZlwbSR4/LuCkeJEDwWyLt55kd+lUzuwiH7z
- qBTybtvPztAXu6e2vZPar4YyzX6pKGXLp1TKDY6jwVopZuNLWoZ+7N+8b
- bG3BQTrhwR2U5dq4VFg9qOjz+FmeO1gxoB0isJZ54+eoyPKFCk0STkEX4
- knD9jHU9bHP1FtKDp4Pd3sxTO6ewwcc4458yfun/haVivzD0aHUTmvcY+ w==;
-X-CSE-ConnectionGUID: vBYBsxuWSraHRw+j+IGsiw==
-X-CSE-MsgGUID: EF6HV0HsQ369kSr/An5H9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="31948742"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="31948742"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2024 22:40:14 -0800
-X-CSE-ConnectionGUID: B2sFnvIMQZONlLknNVg1Bg==
-X-CSE-MsgGUID: rA2lujEhQdyv4dhzZ9C/OQ==
+ t=1731913080; x=1763449080;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XhSq2VyR+p3Vp8mQbTkV6O8ZZf35BOgonsNRGrchGKQ=;
+ b=nW/QPH/1VERGMtjBtf3eEEiC8g6VD59wy4v1NkK3xTWEbviqu6i62miG
+ Ez62xUbtzzvnZWRXvuEapf2fpo8zAQTZRWF08MzIcXXXPOo6BTNPuuUsI
+ ixPxUTuWW/V9ijmmOgGqe2x3TqcpkODNM3cXzFtrFmB6F9POeJQd7Nvzo
+ XDbb3OcSpFeIEIdR+WwA3bbWKFycuYLlwGMEkBF9PyMv1xK+8yHTrp2eB
+ n6F1ObRA3RX+bQTVaXArzYI7yfBzxPiCrxjRd22Cg4B50WF7XOGSGtJ4r
+ WWHyKGJqHVF1lHQs7rkYjiD5Bv+Eheg7j0U8p6v7kPGB8QbXHrTr1RIRO g==;
+X-CSE-ConnectionGUID: V0z947QwTIaXGYf6CdDRvQ==
+X-CSE-MsgGUID: 1Y1yuCbQSY2DHJ0HzCwhhQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="42927334"
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="42927334"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2024 22:57:59 -0800
+X-CSE-ConnectionGUID: LKOGnxHsTZ2VAd6mg3UtlA==
+X-CSE-MsgGUID: s80awZiuT72VS6n2hcKHyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="89564562"
-Received: from spottumu-desk.iind.intel.com ([10.145.152.200])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2024 22:40:10 -0800
-From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ashutosh.dixit@intel.com,
-	sai.teja.pottumuttu@intel.com
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_oa: Replace hardcoded OA buffer size
- assumptions
-Date: Mon, 18 Nov 2024 12:02:23 +0530
-Message-Id: <20241118063223.3974722-3-sai.teja.pottumuttu@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="89542997"
+Received: from tejas-super-server.iind.intel.com ([10.145.169.166])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2024 22:57:58 -0800
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [i-g-t V2 0/4]  Add pci_membarrier test in xe_mmap
+Date: Mon, 18 Nov 2024 12:32:07 +0530
+Message-Id: <20241118070211.1474372-1-tejas.upadhyay@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241118063223.3974722-1-sai.teja.pottumuttu@intel.com>
-References: <20241118063223.3974722-1-sai.teja.pottumuttu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,49 +66,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A few xe_oa tests assumed that the default OA buffer size is 16MB
-and had calculations around it. These would fail if the default
-buffer size is changed on the kernel side.
+Series adds,
+1. Remove all local defines which are landed from upstream kernel
+include. Keeping include in igt_gt.h as its common header for all 
+such defines.
+2. New flag in mmap_offset ioctl to provide query
+support for special offset.
+3. Adds pci_membarrier subtests xe_mmap test
 
-Replace such assumptions with the OA buffer size we get from
-DRM_XE_OBSERVATION_IOCTL_INFO ioctl
+Note: Similar drm-uapi change made here is under review
+in KMD as well
 
-Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
----
- tests/intel/xe_oa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Tejas Upadhyay (4):
+  lib/i915_drm_local: Remove macros added via merged kernel
+  include/drm-uapi-experimental: Move i915_drm_local.h to
+    drm-uapi-experimental
+  include/intel_drm_local.h: Add DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER
+  tests/xe/mmap: add tests for pci mem barrier
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 4e4d0fabc..3b65212ae 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -2389,7 +2389,7 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	size_t report_size = get_oa_format(fmt).size;
--	int buf_size = 65536 * report_size;
-+	int buf_size = oa_buffer_size;
- 	uint8_t *buf = malloc(buf_size);
- 	int len;
- 	size_t oa_buf_size = oa_buffer_size;
-@@ -2533,7 +2533,7 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
- 		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
--	uint32_t buf_size = 3 * 65536 * report_size;
-+	uint32_t buf_size = 3 * oa_buffer_size;
- 	uint8_t *buf = malloc(buf_size);
- 	uint32_t total_len = 0;
- 	const uint32_t *last_report;
-@@ -2615,7 +2615,7 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	size_t report_size = get_oa_format(fmt).size;
--	int buf_size = 65536 * report_size;
-+	int buf_size = oa_buffer_size;
- 	uint8_t *buf = malloc(buf_size);
- 	size_t oa_buf_size = oa_buffer_size;
- 	int n_full_oa_reports = oa_buf_size / report_size;
+ .../drm-uapi-experimental/intel_drm_local.h   | 29 ++++++
+ lib/i915/gem_scheduler.c                      |  1 -
+ lib/i915/i915_drm_local.h                     |  6 --
+ lib/i915/intel_memory_region.h                |  1 -
+ lib/igt_gt.h                                  |  2 +-
+ tests/intel/xe_mmap.c                         | 95 +++++++++++++++++++
+ tools/i915-perf/i915_perf_recorder.c          |  2 -
+ 7 files changed, 125 insertions(+), 11 deletions(-)
+ create mode 100644 include/drm-uapi-experimental/intel_drm_local.h
+
 -- 
 2.34.1
 
