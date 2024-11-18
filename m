@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BC6D60D0A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6152D60D03
 	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E8DD10E580;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 71FAF10E581;
 	Mon, 18 Nov 2024 23:36:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DcGfB6og";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k7e1z2jx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0523B10E56D
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 006E110E576
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1731972959; x=1763508959;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=k6npIro/CDXRVdYry+Z7wVHzj1KL9gz5MwjkQUsk+8Y=;
- b=DcGfB6ogqAAqxUxmuhvs0y5Uk0eBmNK/xHr0N4rqfR4UGAMS5kZ6kKmA
- 93oakxWLViwig9lf7UHXbxeEF60lwe9/dPb23/X65t8rgQJ6BTKN6wUQq
- 6SYGi0ty+jaxpn0JToDMv5eW3wYh070rnO0LT+npZSIcvFP3m0/UZyxg5
- er63iFG/c2dXlXz4qWw8tVff5Xisin6LAj++k5TFes6zMhDGB6KK/6X2y
- bgpHdC3Qn5REhI96pdJmrNYjQ1wZCbaDNBvtyT8CheHvz3T6TJIqhL3uG
- YQYisvz6J46ORg529h5MGIqhkETRYL25BfxbAczBPYrBI2VbmMVtrrNTg A==;
-X-CSE-ConnectionGUID: VKnB4QjnSMGT02A0N5M+jA==
-X-CSE-MsgGUID: JmI9RtP4QAGEscynRvIBlw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451257"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451257"
+ bh=XTgAsegDjFV05M1nrJP912+yjN4Cgy2+lhTXrEG8ScA=;
+ b=k7e1z2jx+lAYSFpFZ61UsQtfC9Vj84KlUcAbfKWxH7L+ZYzyt30Y04pG
+ OzKA0cJbYQe3uTVkJBFAW6wIvrU8UK4bEI+vBsBYYt6eN/AcETC0XwaJK
+ NHOvEA8uxecWqF/iw9VMhKW55HnjnZ8ctyOrBKaRhXGkLi7GcXvM3Ty/6
+ nF54q0W6V0MK+BPUzgs/AhD5FJOYeiwLwTCLWtGsLZljC/1TIHa4GE03J
+ A0TfmJPky/ndRWTSasJKxIeeJlkBbMpn7MMb0U4opEvIbkwN7vFcRLKgo
+ bezIGp0R/2oUlTCfcK3NfrTXwWBLSDMK7zmK5LmrcNUlF4kXH9GHT9UbI A==;
+X-CSE-ConnectionGUID: diCi1UJMS66M50A3Jr+MIA==
+X-CSE-MsgGUID: R497is+vRVa3tMgt4q7wMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451256"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451256"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:58 -0800
-X-CSE-ConnectionGUID: k1I6TPcASkqZPEV0zP8+CQ==
-X-CSE-MsgGUID: CFcLRC9XREaECPY4SjLO6A==
+X-CSE-ConnectionGUID: wBafm9+uSSOySsjEJ6+6gA==
+X-CSE-MsgGUID: zmkj7NvQT6y7B9hQl8OqIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245255"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245254"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 29/29] drm/xe: Add user fence TDR
-Date: Mon, 18 Nov 2024 15:36:20 -0800
-Message-Id: <20241118233620.2373819-30-matthew.brost@intel.com>
+Subject: [RFC PATCH 28/29] drm/xe: Add VM convert fence IOCTL
+Date: Mon, 18 Nov 2024 15:36:19 -0800
+Message-Id: <20241118233620.2373819-29-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -66,302 +66,403 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We cannot let user fences exported as dma-fence run forever. Add a TDR
-to protect against this. If the TDR fires the entire VM is killed as
-dma-fences are not tied to an individual queue.
+Basically a version of the resume worker which also converts user syncs
+to kerenl syncs (dma-fences) and vise versa. The expoxrted dma-fences in
+the conversion guard against preemption which is required to avoid
+breaking dma fence rules (no memory allocations in path of dma-fence,
+resume requires memory allocations).
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/xe/xe_vm.c       | 164 +++++++++++++++++++++++++++++--
- drivers/gpu/drm/xe/xe_vm_types.h |  22 +++++
- 2 files changed, 179 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c        |   1 +
+ drivers/gpu/drm/xe/xe_preempt_fence.c |   9 +
+ drivers/gpu/drm/xe/xe_vm.c            | 247 +++++++++++++++++++++++++-
+ drivers/gpu/drm/xe/xe_vm.h            |   2 +
+ drivers/gpu/drm/xe/xe_vm_types.h      |   4 +
+ 5 files changed, 254 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 573b5f3df0c8..56dd26eddd92 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -191,6 +191,7 @@ static const struct drm_ioctl_desc xe_ioctls[] = {
+ 	DRM_IOCTL_DEF_DRV(XE_WAIT_USER_FENCE, xe_wait_user_fence_ioctl,
+ 			  DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF_DRV(XE_OBSERVATION, xe_observation_ioctl, DRM_RENDER_ALLOW),
++	DRM_IOCTL_DEF_DRV(XE_VM_CONVERT_FENCE, xe_vm_convert_fence_ioctl, DRM_RENDER_ALLOW),
+ };
+ 
+ static long xe_drm_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
+index 80a8bc82f3cc..c225f3cc82a3 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence.c
++++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
+@@ -12,6 +12,14 @@ static struct xe_exec_queue *to_exec_queue(struct dma_fence_preempt *fence)
+ 	return container_of(fence, struct xe_preempt_fence, base)->q;
+ }
+ 
++static struct dma_fence *
++xe_preempt_fence_preempt_delay(struct dma_fence_preempt *fence)
++{
++	struct xe_exec_queue *q = to_exec_queue(fence);
++
++	return q->vm->preempt.exported_fence ?: dma_fence_get_stub();
++}
++
+ static int xe_preempt_fence_preempt(struct dma_fence_preempt *fence)
+ {
+ 	struct xe_exec_queue *q = to_exec_queue(fence);
+@@ -35,6 +43,7 @@ static void xe_preempt_fence_preempt_finished(struct dma_fence_preempt *fence)
+ }
+ 
+ static const struct dma_fence_preempt_ops xe_preempt_fence_ops = {
++	.preempt_delay = xe_preempt_fence_preempt_delay,
+ 	.preempt = xe_preempt_fence_preempt,
+ 	.preempt_wait = xe_preempt_fence_preempt_wait,
+ 	.preempt_finished = xe_preempt_fence_preempt_finished,
 diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 5078aeea2bd8..8b475e76bfe0 100644
+index 16bc1b82d950..5078aeea2bd8 100644
 --- a/drivers/gpu/drm/xe/xe_vm.c
 +++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -30,6 +30,7 @@
- #include "xe_exec_queue.h"
- #include "xe_gt_pagefault.h"
- #include "xe_gt_tlb_invalidation.h"
-+#include "xe_hw_fence.h"
- #include "xe_migrate.h"
- #include "xe_pat.h"
- #include "xe_pm.h"
-@@ -336,11 +337,15 @@ void xe_vm_kill(struct xe_vm *vm, bool unlocked)
- 	if (unlocked)
- 		xe_vm_lock(vm, false);
+@@ -6,6 +6,7 @@
+ #include "xe_vm.h"
  
--	vm->flags |= XE_VM_FLAG_BANNED;
--	trace_xe_vm_kill(vm);
-+	if (!(vm->flags |= XE_VM_FLAG_BANNED)) {
-+		vm->flags |= XE_VM_FLAG_BANNED;
-+		trace_xe_vm_kill(vm);
+ #include <linux/dma-fence-array.h>
++#include <linux/dma-fence-chain.h>
+ #include <linux/nospec.h>
  
--	list_for_each_entry(q, &vm->preempt.exec_queues, lr.link)
--		q->ops->kill(q);
-+		list_for_each_entry(q, &vm->preempt.exec_queues, lr.link)
-+			q->ops->kill(q);
-+
-+		/* TODO: Unmap usermap doorbells */
-+	}
- 
- 	if (unlocked)
- 		xe_vm_unlock(vm);
-@@ -1393,6 +1398,9 @@ static void xe_vm_free_scratch(struct xe_vm *vm)
- 	}
+ #include <drm/drm_exec.h>
+@@ -441,29 +442,44 @@ int xe_vm_validate_rebind(struct xe_vm *vm, struct drm_exec *exec,
  }
  
-+static void userfence_tdr(struct work_struct *w);
-+static void userfence_kill(struct work_struct *w);
-+
- struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ static int xe_preempt_work_begin(struct drm_exec *exec, struct xe_vm *vm,
+-				 bool *done)
++				 int extra_fence_count, bool *done)
  {
- 	struct drm_gem_object *vm_resv_obj;
-@@ -1517,6 +1525,12 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 		}
+ 	int err;
+ 
++	*done = false;
++
+ 	err = drm_gpuvm_prepare_vm(&vm->gpuvm, exec, 0);
+ 	if (err)
+ 		return err;
+ 
+-	if (xe_vm_is_idle(vm)) {
++	if (xe_vm_in_preempt_fence_mode(vm) && xe_vm_is_idle(vm)) {
+ 		vm->preempt.rebind_deactivated = true;
+ 		*done = true;
+ 		return 0;
  	}
  
-+	spin_lock_init(&vm->userfence.lock);
-+	INIT_LIST_HEAD(&vm->userfence.pending_list);
-+	vm->userfence.timeout = HZ * 5;
-+	INIT_DELAYED_WORK(&vm->userfence.tdr, userfence_tdr);
-+	INIT_WORK(&vm->userfence.kill_work, userfence_kill);
++	err = drm_gpuvm_prepare_objects(&vm->gpuvm, exec, 0);
++	if (err)
++		return err;
 +
- 	if (number_tiles > 1)
- 		vm->composite_fence_ctx = dma_fence_context_alloc(1);
- 
-@@ -1562,6 +1576,9 @@ void xe_vm_close_and_put(struct xe_vm *vm)
- 	xe_vm_close(vm);
- 	flush_work(&vm->preempt.rebind_work);
- 
-+	flush_delayed_work(&vm->userfence.tdr);
-+	flush_work(&vm->userfence.kill_work);
+ 	if (!preempt_fences_waiting(vm)) {
+ 		*done = true;
 +
- 	down_write(&vm->lock);
- 	for_each_tile(tile, xe, id) {
- 		if (vm->q[id])
-@@ -3449,6 +3466,114 @@ static int check_semaphores(struct xe_vm *vm, struct xe_sync_entry *syncs,
- 	return 0;
- }
- 
-+struct tdr_item {
-+	struct dma_fence *fence;
-+	struct xe_vm *vm;
-+	struct list_head link;
-+	struct dma_fence_cb cb;
-+	u64 deadline;
-+};
++		if (extra_fence_count) {
++			struct drm_gem_object *obj;
++			unsigned long index;
 +
-+static void userfence_kill(struct work_struct *w)
-+{
-+	struct xe_vm *vm =
-+		container_of(w, struct xe_vm, userfence.kill_work);
-+
-+	down_write(&vm->lock);
-+	xe_vm_kill(vm, true);
-+	up_write(&vm->lock);
-+}
-+
-+static void userfence_tdr(struct work_struct *w)
-+{
-+	struct xe_vm *vm =
-+		container_of(w, struct xe_vm, userfence.tdr.work);
-+	struct tdr_item *tdr_item;
-+	bool timeout = false, cookie = dma_fence_begin_signalling();
-+
-+	xe_hw_fence_irq_stop(&vm->xe->user_fence_irq);
-+
-+	spin_lock_irq(&vm->userfence.lock);
-+	list_for_each_entry(tdr_item, &vm->userfence.pending_list, link) {
-+		if (!dma_fence_is_signaled(tdr_item->fence)) {
-+			drm_notice(&vm->xe->drm,
-+				   "Timedout usermap fence: seqno=%llu, deadline=%llu, jiffies=%llu",
-+				   tdr_item->fence->seqno, tdr_item->deadline,
-+				   get_jiffies_64());
-+			dma_fence_set_error(tdr_item->fence, -ETIME);
-+			timeout = true;
-+			vm->userfence.timeout = 0;
++			drm_exec_for_each_locked_object(exec, index, obj) {
++				err = dma_resv_reserve_fences(obj->resv,
++							      extra_fence_count);
++				if (err)
++					return err;
++			}
 +		}
-+	}
-+	spin_unlock_irq(&vm->userfence.lock);
 +
-+	xe_hw_fence_irq_start(&vm->xe->user_fence_irq);
-+
-+	/*
-+	 * This is dma-fence signaling path so we cannot take the locks requires
-+	 * to kill a VM. Defer killing to a worker.
-+	 */
-+	if (timeout)
-+		schedule_work(&vm->userfence.kill_work);
-+
-+	dma_fence_end_signalling(cookie);
-+}
-+
-+static void userfence_fence_cb(struct dma_fence *fence,
-+			       struct dma_fence_cb *cb)
-+{
-+	struct tdr_item *next, *tdr_item = container_of(cb, struct tdr_item, cb);
-+	struct xe_vm *vm = tdr_item->vm;
-+	struct xe_gt *gt = xe_device_get_gt(vm->xe, 0);
-+
-+	if (fence)
-+		spin_lock(&vm->userfence.lock);
-+	else
-+		spin_lock_irq(&vm->userfence.lock);
-+
-+	list_del(&tdr_item->link);
-+	next = list_first_entry_or_null(&vm->userfence.pending_list,
-+					typeof(*next), link);
-+	if (next)
-+		mod_delayed_work(gt->ordered_wq, &vm->userfence.tdr,
-+				 next->deadline - get_jiffies_64());
-+	else
-+		cancel_delayed_work(&vm->userfence.tdr);
-+
-+	if (fence)
-+		spin_unlock(&vm->userfence.lock);
-+	else
-+		spin_unlock_irq(&vm->userfence.lock);
-+
-+	dma_fence_put(tdr_item->fence);
-+	xe_vm_put(tdr_item->vm);
-+	kfree(tdr_item);
-+}
-+
-+static void userfence_tdr_add(struct xe_vm *vm, struct tdr_item *tdr_item,
-+			      struct dma_fence *fence)
-+{
-+	struct xe_gt *gt = xe_device_get_gt(vm->xe, 0);
-+	int ret;
-+
-+	tdr_item->fence = dma_fence_get(fence);
-+	tdr_item->vm = xe_vm_get(vm);
-+	INIT_LIST_HEAD(&tdr_item->link);
-+	tdr_item->deadline = vm->userfence.timeout + get_jiffies_64();
-+
-+	spin_lock_irq(&vm->userfence.lock);
-+	list_add_tail(&tdr_item->link, &vm->userfence.pending_list);
-+	if (list_is_singular(&vm->userfence.pending_list))
-+		mod_delayed_work(gt->ordered_wq,
-+				 &vm->userfence.tdr,
-+				 vm->userfence.timeout);
-+	spin_unlock_irq(&vm->userfence.lock);
-+
-+	ret = dma_fence_add_callback(fence, &tdr_item->cb, userfence_fence_cb);
-+	if (ret == -ENOENT)
-+		userfence_fence_cb(NULL, &tdr_item->cb);
-+}
-+
- int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- 			      struct drm_file *file)
- {
-@@ -3459,6 +3584,7 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- 	struct drm_xe_semaphore __user *semaphores_user;
- 	struct xe_sync_entry *syncs = NULL;
- 	struct xe_vm *vm;
-+	struct tdr_item **tdr_items = NULL;
- 	int err = 0, i, num_syncs = 0;
- 	bool done = false;
- 	struct drm_exec exec;
-@@ -3493,6 +3619,12 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- 		goto release_vm_lock;
+ 		return 0;
  	}
  
-+	tdr_items = kcalloc(args->num_syncs, sizeof(*tdr_items), GFP_KERNEL);
-+	if (!tdr_items) {
+-	err = drm_gpuvm_prepare_objects(&vm->gpuvm, exec, 0);
+-	if (err)
+-		return err;
+-
+ 	err = wait_for_existing_preempt_fences(vm);
+ 	if (err)
+ 		return err;
+@@ -474,7 +490,8 @@ static int xe_preempt_work_begin(struct drm_exec *exec, struct xe_vm *vm,
+ 	 * The fence reservation here is intended for the new preempt fences
+ 	 * we attach at the end of the rebind work.
+ 	 */
+-	return xe_vm_validate_rebind(vm, exec, vm->preempt.num_exec_queues);
++	return xe_vm_validate_rebind(vm, exec, vm->preempt.num_exec_queues +
++				     extra_fence_count);
+ }
+ 
+ static void preempt_rebind_work_func(struct work_struct *w)
+@@ -509,9 +526,9 @@ static void preempt_rebind_work_func(struct work_struct *w)
+ 	drm_exec_init(&exec, DRM_EXEC_INTERRUPTIBLE_WAIT, 0);
+ 
+ 	drm_exec_until_all_locked(&exec) {
+-		bool done = false;
++		bool done;
+ 
+-		err = xe_preempt_work_begin(&exec, vm, &done);
++		err = xe_preempt_work_begin(&exec, vm, 0, &done);
+ 		drm_exec_retry_on_contention(&exec);
+ 		if (err || done) {
+ 			drm_exec_fini(&exec);
+@@ -1638,6 +1655,7 @@ static void vm_destroy_work_func(struct work_struct *w)
+ 		container_of(w, struct xe_vm, destroy_work);
+ 	struct xe_device *xe = vm->xe;
+ 	struct xe_tile *tile;
++	struct dma_fence *fence;
+ 	u8 id;
+ 
+ 	/* xe_vm_close_and_put was not called? */
+@@ -1660,6 +1678,9 @@ static void vm_destroy_work_func(struct work_struct *w)
+ 	if (vm->xef)
+ 		xe_file_put(vm->xef);
+ 
++	dma_fence_chain_for_each(fence, vm->preempt.exported_fence);
++	dma_fence_put(vm->preempt.exported_fence);
++
+ 	kfree(vm);
+ }
+ 
+@@ -3403,3 +3424,211 @@ void xe_vm_snapshot_free(struct xe_vm_snapshot *snap)
+ 	}
+ 	kvfree(snap);
+ }
++
++static int check_semaphores(struct xe_vm *vm, struct xe_sync_entry *syncs,
++			    struct drm_exec *exec, int num_syncs)
++{
++	int i, j;
++
++	for (i = 0; i < num_syncs; ++i) {
++		struct xe_bo *bo = syncs[i].bo;
++		struct drm_gem_object *obj = &bo->ttm.base;
++
++		if (bo->vm == vm)
++			continue;
++
++		for (j = 0; j < exec->num_objects; ++j) {
++			if (obj == exec->objects[j])
++				break;
++		}
++
++		if (j == exec->num_objects)
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
++int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
++			      struct drm_file *file)
++{
++	struct xe_device *xe = to_xe_device(dev);
++	struct xe_file *xef = to_xe_file(file);
++	struct drm_xe_vm_convert_fence __user *args = data;
++	struct drm_xe_sync __user *syncs_user;
++	struct drm_xe_semaphore __user *semaphores_user;
++	struct xe_sync_entry *syncs = NULL;
++	struct xe_vm *vm;
++	int err = 0, i, num_syncs = 0;
++	bool done = false;
++	struct drm_exec exec;
++	unsigned int fence_count = 0;
++	LIST_HEAD(preempt_fences);
++	ktime_t end = 0;
++	long wait;
++	int __maybe_unused tries = 0;
++	struct dma_fence *fence, *prev = NULL;
++
++	if (XE_IOCTL_DBG(xe, args->extensions || args->flags ||
++			 args->reserved[0] || args->reserved[1] ||
++			 args->pad))
++		return -EINVAL;
++
++	vm = xe_vm_lookup(xef, args->vm_id);
++	if (XE_IOCTL_DBG(xe, !vm))
++		return -EINVAL;
++
++	err = down_write_killable(&vm->lock);
++	if (err)
++		goto put_vm;
++
++	if (XE_IOCTL_DBG(xe, xe_vm_is_closed_or_banned(vm))) {
++		err = -ENOENT;
++		goto release_vm_lock;
++	}
++
++	syncs = kcalloc(args->num_syncs * 2, sizeof(*syncs), GFP_KERNEL);
++	if (!syncs) {
 +		err = -ENOMEM;
 +		goto release_vm_lock;
 +	}
 +
- 	syncs_user = u64_to_user_ptr(args->syncs);
- 	semaphores_user = u64_to_user_ptr(args->semaphores);
- 	for (i = 0; i < args->num_syncs; i++, num_syncs++) {
-@@ -3505,6 +3637,15 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- 		if (err)
- 			goto release_syncs;
- 
++	syncs_user = u64_to_user_ptr(args->syncs);
++	semaphores_user = u64_to_user_ptr(args->semaphores);
++	for (i = 0; i < args->num_syncs; i++, num_syncs++) {
++		struct xe_sync_entry *sync = &syncs[i];
++		struct xe_sync_entry *semaphore_sync =
++			&syncs[args->num_syncs + i];
++
++		err = xe_sync_entry_parse(xe, xef, sync, &syncs_user[i],
++					  SYNC_PARSE_FLAG_DISALLOW_USER_FENCE);
++		if (err)
++			goto release_syncs;
++
++		err = xe_sync_semaphore_parse(xe, xef, semaphore_sync,
++					      &semaphores_user[i],
++					      sync->flags);
++		if (err) {
++			xe_sync_entry_cleanup(&syncs[i]);
++			goto release_syncs;
++		}
++	}
++
++retry:
++	if (xe_vm_userptr_check_repin(vm)) {
++		err = xe_vm_userptr_pin(vm);
++		if (err)
++			goto release_syncs;
++	}
++
++	drm_exec_init(&exec, DRM_EXEC_INTERRUPTIBLE_WAIT, 0);
++
++	drm_exec_until_all_locked(&exec) {
++		err = xe_preempt_work_begin(&exec, vm, num_syncs, &done);
++		drm_exec_retry_on_contention(&exec);
++		if (err) {
++			drm_exec_fini(&exec);
++			if (err && xe_vm_validate_should_retry(&exec, err, &end))
++				err = -EAGAIN;
++
++			goto release_syncs;
++		}
++	}
++
++	if (XE_IOCTL_DBG(xe, check_semaphores(vm, syncs + num_syncs,
++					      &exec, num_syncs))) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
++
++	if (!done) {
++		err = alloc_preempt_fences(vm, &preempt_fences, &fence_count);
++		if (err)
++			goto out_unlock;
++
++		wait = dma_resv_wait_timeout(xe_vm_resv(vm),
++					     DMA_RESV_USAGE_KERNEL,
++					     false, MAX_SCHEDULE_TIMEOUT);
++		if (wait <= 0) {
++			err = -ETIME;
++			goto out_unlock;
++		}
++	}
++
++#define retry_required(__tries, __vm) \
++	(IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT) ? \
++	(!(__tries)++ || __xe_vm_userptr_needs_repin(__vm)) : \
++	__xe_vm_userptr_needs_repin(__vm))
++
++	down_read(&vm->userptr.notifier_lock);
++	if (retry_required(tries, vm)) {
++		up_read(&vm->userptr.notifier_lock);
++		err = -EAGAIN;
++		goto out_unlock;
++	}
++
++#undef retry_required
++
++	/* Point of no return. */
++	xe_assert(vm->xe, list_empty(&vm->rebind_list));
++
++	for (i = 0; i < num_syncs; i++) {
++		struct xe_sync_entry *sync = &syncs[i];
++		struct xe_sync_entry *semaphore_sync = &syncs[num_syncs + i];
++
 +		if (sync->flags & DRM_XE_SYNC_FLAG_SIGNAL) {
-+			tdr_items[i] = kmalloc(sizeof(struct tdr_item),
-+					       GFP_KERNEL);
-+			if (!tdr_items[i]) {
-+				xe_sync_entry_cleanup(&syncs[i]);
-+				goto release_syncs;
-+			}
-+		}
++			xe_sync_entry_signal(sync, semaphore_sync->fence);
++			xe_sync_entry_hw_fence_installed(semaphore_sync);
 +
- 		err = xe_sync_semaphore_parse(xe, xef, semaphore_sync,
- 					      &semaphores_user[i],
- 					      sync->flags);
-@@ -3591,6 +3732,10 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- 				&semaphore_sync->chain_fence->base;
- 			semaphore_sync->chain_fence = NULL;
- 
-+			userfence_tdr_add(vm, tdr_items[i],
-+					  semaphore_sync->fence);
-+			tdr_items[i] = 0;
++			dma_fence_put(prev);
++			prev = dma_fence_get(vm->preempt.exported_fence);
 +
- 			semaphore_sync->fence = NULL;   /* Ref owned by chain */
- 		} else {
- 			xe_sync_entry_signal(semaphore_sync, sync->fence);
-@@ -3617,9 +3762,13 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- out_unlock:
- 	drm_exec_fini(&exec);
- release_syncs:
--	while (err != -EAGAIN && num_syncs--) {
--		xe_sync_entry_cleanup(&syncs[num_syncs]);
--		xe_sync_entry_cleanup(&syncs[args->num_syncs + num_syncs]);
-+	if (err != -EAGAIN) {
-+		for (i = 0; i < num_syncs; ++i)
-+			kfree(tdr_items[i]);
-+		while (num_syncs--) {
-+			xe_sync_entry_cleanup(&syncs[num_syncs]);
-+			xe_sync_entry_cleanup(&syncs[args->num_syncs + num_syncs]);
++			dma_fence_chain_init(semaphore_sync->chain_fence,
++					     prev, semaphore_sync->fence,
++					     vm->preempt.seqno++);
++
++			vm->preempt.exported_fence =
++				&semaphore_sync->chain_fence->base;
++			semaphore_sync->chain_fence = NULL;
++
++			semaphore_sync->fence = NULL;   /* Ref owned by chain */
++		} else {
++			xe_sync_entry_signal(semaphore_sync, sync->fence);
++			drm_gpuvm_resv_add_fence(&vm->gpuvm, &exec,
++						 dma_fence_chain_contained(sync->fence),
++						 DMA_RESV_USAGE_BOOKKEEP,
++						 DMA_RESV_USAGE_BOOKKEEP);
 +		}
- 	}
- release_vm_lock:
- 	if (err == -EAGAIN)
-@@ -3629,6 +3778,7 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
- 	xe_vm_put(vm);
- 	free_preempt_fences(&preempt_fences);
- 	kfree(syncs);
-+	kfree(tdr_items);
++	}
++
++	dma_fence_chain_for_each(fence, prev);
++	dma_fence_put(prev);
++
++	if (!done) {
++		spin_lock(&vm->xe->ttm.lru_lock);
++		ttm_lru_bulk_move_tail(&vm->lru_bulk_move);
++		spin_unlock(&vm->xe->ttm.lru_lock);
++
++		arm_preempt_fences(vm, &preempt_fences);
++		resume_and_reinstall_preempt_fences(vm, &exec);
++	}
++	up_read(&vm->userptr.notifier_lock);
++
++out_unlock:
++	drm_exec_fini(&exec);
++release_syncs:
++	while (err != -EAGAIN && num_syncs--) {
++		xe_sync_entry_cleanup(&syncs[num_syncs]);
++		xe_sync_entry_cleanup(&syncs[args->num_syncs + num_syncs]);
++	}
++release_vm_lock:
++	if (err == -EAGAIN)
++		goto retry;
++	up_write(&vm->lock);
++put_vm:
++	xe_vm_put(vm);
++	free_preempt_fences(&preempt_fences);
++	kfree(syncs);
++
++	return err;
++}
+diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
+index 4391dbaeba51..c1c70239cc91 100644
+--- a/drivers/gpu/drm/xe/xe_vm.h
++++ b/drivers/gpu/drm/xe/xe_vm.h
+@@ -181,6 +181,8 @@ int xe_vm_destroy_ioctl(struct drm_device *dev, void *data,
+ 			struct drm_file *file);
+ int xe_vm_bind_ioctl(struct drm_device *dev, void *data,
+ 		     struct drm_file *file);
++int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
++			      struct drm_file *file);
  
- 	return err;
- }
+ void xe_vm_close_and_put(struct xe_vm *vm);
+ 
 diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
-index c5cb83722706..49cac5716f72 100644
+index 7f9a303e51d8..c5cb83722706 100644
 --- a/drivers/gpu/drm/xe/xe_vm_types.h
 +++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -260,6 +260,28 @@ struct xe_vm {
- 		struct dma_fence *exported_fence;
+@@ -254,6 +254,10 @@ struct xe_vm {
+ 		 * BOs
+ 		 */
+ 		struct work_struct rebind_work;
++		/** @seqno: Seqno of exported dma-fences */
++		u64 seqno;
++		/** @exported_fence: Chain of exported dma-fences */
++		struct dma_fence *exported_fence;
  	} preempt;
  
-+	/** @userfence: User fence state */
-+	struct {
-+		/**
-+		 * @userfence.lock: fence lock
-+		 */
-+		spinlock_t lock;
-+		/**
-+		 * @userfence.pending_list: pending fence list, protected by
-+		 * userfence.lock
-+		 */
-+		struct list_head pending_list;
-+		/** @userfence.tdr: fence TDR */
-+		struct delayed_work tdr;
-+		/** @userfence.kill_work */
-+		struct work_struct kill_work;
-+		/**
-+		 * @userfence.timeout: Fence timeout period, protected by
-+		 * userfence.lock
-+		 */
-+		u32 timeout;
-+	} userfence;
-+
  	/** @um: unified memory state */
- 	struct {
- 		/** @asid: address space ID, unique to each VM */
 -- 
 2.34.1
 
