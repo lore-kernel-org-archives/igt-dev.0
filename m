@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 415CFD60CF8
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:33:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E69B1D60CFA
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0433810E040;
-	Mon, 18 Nov 2024 23:33:38 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6361210E040;
- Mon, 18 Nov 2024 23:33:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3643715615501883951=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A375E10E190;
+	Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TXtozZoc";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E8A710E040
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731972953; x=1763508953;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=rH8hTGJCAoerEtuHvYdMXIH/cuzWnm4A2o119v9dQe0=;
+ b=TXtozZoc0Ep4Ke8vCfsaNbyomyNd2D9x0DH+o7KZT8TCKf3PIMiL5NxW
+ l+2XFfk45dqSkJjCT1hBcJMGC6VWTnnfRgVECGWPSMRB4A1eZkZVOHkVp
+ ouEaWfxdkl/HNcJarKZdUzBJwDmmKnAtHed9dS/smNW+CrW2osZO+XC8G
+ YhVR0lFPRV1fCw8vUXNtxq3EuWq3vNVtuzLMLhxa/nxobbjVyvtdHE92c
+ NVBusI9FxRVbLjboDKK7UZ1+aqESfxFo/qW77MCHFH1lQ9fmlZht2pDbr
+ O9TAGVUd6xQCGQ1B4ZeSOns1JGeNYrT0KYoea93P+UcXHpWz73uFwNLjw w==;
+X-CSE-ConnectionGUID: S5pSZJ9SSLm1jHtmF3yB5A==
+X-CSE-MsgGUID: nzwEx6uTQCylYCbDJWTDnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451221"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451221"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 15:35:53 -0800
+X-CSE-ConnectionGUID: Ib7dpoX9RreWa4jvY5IW4A==
+X-CSE-MsgGUID: +Ir11qaTTZS+kp4p8UHJVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245218"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 15:35:49 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [RFC PATCH 01/29] dma-fence: Add dma_fence_preempt base class
+Date: Mon, 18 Nov 2024 15:35:52 -0800
+Message-Id: <20241118233620.2373819-2-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
+References: <20241118233620.2373819-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel-ci=3A_Block_all_ge?=
- =?utf-8?q?m=5Fexec=5Ffair_tests_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Katarzyna Piecielska" <katarzyna.piecielska@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Nov 2024 23:33:36 -0000
-Message-ID: <173197281642.88190.13300827776256293968@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241118111528.4190241-1-katarzyna.piecielska@intel.com>
-In-Reply-To: <20241118111528.4190241-1-katarzyna.piecielska@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,210 +64,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3643715615501883951==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a dma_fence_preempt base class with driver ops to implement
+preemption, based on the existing Xe preemptive fence implementation.
 
-== Series Details ==
+Annotated to ensure correct driver usage.
 
-Series: tests/intel-ci: Block all gem_exec_fair tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/141391/
-State : success
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ drivers/dma-buf/Makefile            |   2 +-
+ drivers/dma-buf/dma-fence-preempt.c | 133 ++++++++++++++++++++++++++++
+ include/linux/dma-fence-preempt.h   |  56 ++++++++++++
+ 3 files changed, 190 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/dma-buf/dma-fence-preempt.c
+ create mode 100644 include/linux/dma-fence-preempt.h
 
-== Summary ==
+diff --git a/drivers/dma-buf/Makefile b/drivers/dma-buf/Makefile
+index 70ec901edf2c..c25500bb38b5 100644
+--- a/drivers/dma-buf/Makefile
++++ b/drivers/dma-buf/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-y := dma-buf.o dma-fence.o dma-fence-array.o dma-fence-chain.o \
+-	 dma-fence-unwrap.o dma-resv.o
++	 dma-fence-preempt.o dma-fence-unwrap.o dma-resv.o
+ obj-$(CONFIG_DMABUF_HEAPS)	+= dma-heap.o
+ obj-$(CONFIG_DMABUF_HEAPS)	+= heaps/
+ obj-$(CONFIG_SYNC_FILE)		+= sync_file.o
+diff --git a/drivers/dma-buf/dma-fence-preempt.c b/drivers/dma-buf/dma-fence-preempt.c
+new file mode 100644
+index 000000000000..6e6ce7ea7421
+--- /dev/null
++++ b/drivers/dma-buf/dma-fence-preempt.c
+@@ -0,0 +1,133 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#include <linux/dma-fence-preempt.h>
++#include <linux/dma-resv.h>
++
++static void dma_fence_preempt_work_func(struct work_struct *w)
++{
++	bool cookie = dma_fence_begin_signalling();
++	struct dma_fence_preempt *pfence =
++		container_of(w, typeof(*pfence), work);
++	const struct dma_fence_preempt_ops *ops = pfence->ops;
++	int err = pfence->base.error;
++
++	if (!err) {
++		err = ops->preempt_wait(pfence);
++		if (err)
++			dma_fence_set_error(&pfence->base, err);
++	}
++
++	dma_fence_signal(&pfence->base);
++	ops->preempt_finished(pfence);
++
++	dma_fence_end_signalling(cookie);
++}
++
++static const char *
++dma_fence_preempt_get_driver_name(struct dma_fence *fence)
++{
++	return "dma_fence_preempt";
++}
++
++static const char *
++dma_fence_preempt_get_timeline_name(struct dma_fence *fence)
++{
++	return "ordered";
++}
++
++static void dma_fence_preempt_issue(struct dma_fence_preempt *pfence)
++{
++	int err;
++
++	err = pfence->ops->preempt(pfence);
++	if (err)
++		dma_fence_set_error(&pfence->base, err);
++
++	queue_work(pfence->wq, &pfence->work);
++}
++
++static void dma_fence_preempt_cb(struct dma_fence *fence,
++				 struct dma_fence_cb *cb)
++{
++	struct dma_fence_preempt *pfence =
++		container_of(cb, typeof(*pfence), cb);
++
++	dma_fence_preempt_issue(pfence);
++}
++
++static void dma_fence_preempt_delay(struct dma_fence_preempt *pfence)
++{
++	struct dma_fence *fence;
++	int err;
++
++	fence = pfence->ops->preempt_delay(pfence);
++	if (WARN_ON_ONCE(!fence || IS_ERR(fence)))
++		return;
++
++	err = dma_fence_add_callback(fence, &pfence->cb, dma_fence_preempt_cb);
++	if (err == -ENOENT)
++		dma_fence_preempt_issue(pfence);
++}
++
++static bool dma_fence_preempt_enable_signaling(struct dma_fence *fence)
++{
++	struct dma_fence_preempt *pfence =
++		container_of(fence, typeof(*pfence), base);
++
++	if (pfence->ops->preempt_delay)
++		dma_fence_preempt_delay(pfence);
++	else
++		dma_fence_preempt_issue(pfence);
++
++	return true;
++}
++
++static const struct dma_fence_ops preempt_fence_ops = {
++	.get_driver_name = dma_fence_preempt_get_driver_name,
++	.get_timeline_name = dma_fence_preempt_get_timeline_name,
++	.enable_signaling = dma_fence_preempt_enable_signaling,
++};
++
++/**
++ * dma_fence_is_preempt() - Is preempt fence
++ *
++ * @fence: Preempt fence
++ *
++ * Return: True if preempt fence, False otherwise
++ */
++bool dma_fence_is_preempt(const struct dma_fence *fence)
++{
++	return fence->ops == &preempt_fence_ops;
++}
++EXPORT_SYMBOL(dma_fence_is_preempt);
++
++/**
++ * dma_fence_preempt_init() - Initial preempt fence
++ *
++ * @fence: Preempt fence
++ * @ops: Preempt fence operations
++ * @wq: Work queue for preempt wait, should have WQ_MEM_RECLAIM set
++ * @context: Fence context
++ * @seqno: Fence seqence number
++ */
++void dma_fence_preempt_init(struct dma_fence_preempt *fence,
++			    const struct dma_fence_preempt_ops *ops,
++			    struct workqueue_struct *wq,
++			    u64 context, u64 seqno)
++{
++	/*
++	 * XXX: We really want to check wq for WQ_MEM_RECLAIM here but
++	 * workqueue_struct is private.
++	 */
++
++	fence->ops = ops;
++	fence->wq = wq;
++	INIT_WORK(&fence->work, dma_fence_preempt_work_func);
++	spin_lock_init(&fence->lock);
++	dma_fence_init(&fence->base, &preempt_fence_ops,
++		       &fence->lock, context, seqno);
++}
++EXPORT_SYMBOL(dma_fence_preempt_init);
+diff --git a/include/linux/dma-fence-preempt.h b/include/linux/dma-fence-preempt.h
+new file mode 100644
+index 000000000000..28d803f89527
+--- /dev/null
++++ b/include/linux/dma-fence-preempt.h
+@@ -0,0 +1,56 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#ifndef __LINUX_DMA_FENCE_PREEMPT_H
++#define __LINUX_DMA_FENCE_PREEMPT_H
++
++#include <linux/dma-fence.h>
++#include <linux/workqueue.h>
++
++struct dma_fence_preempt;
++struct dma_resv;
++
++/**
++ * struct dma_fence_preempt_ops - Preempt fence operations
++ *
++ * These functions should be implemented in the driver side.
++ */
++struct dma_fence_preempt_ops {
++	/** @preempt_delay: Preempt execution with a delay */
++	struct dma_fence *(*preempt_delay)(struct dma_fence_preempt *fence);
++	/** @preempt: Preempt execution */
++	int (*preempt)(struct dma_fence_preempt *fence);
++	/** @preempt_wait: Wait for preempt of execution to complete */
++	int (*preempt_wait)(struct dma_fence_preempt *fence);
++	/** @preempt_finished: Signal that the preempt has finished */
++	void (*preempt_finished)(struct dma_fence_preempt *fence);
++};
++
++/**
++ * struct dma_fence_preempt - Embedded preempt fence base class
++ */
++struct dma_fence_preempt {
++	/** @base: Fence base class */
++	struct dma_fence base;
++	/** @lock: Spinlock for fence handling */
++	spinlock_t lock;
++	/** @cb: Callback preempt delay */
++	struct dma_fence_cb cb;
++	/** @ops: Preempt fence operation */
++	const struct dma_fence_preempt_ops *ops;
++	/** @wq: Work queue for preempt wait */
++	struct workqueue_struct *wq;
++	/** @work: Work struct for preempt wait */
++	struct work_struct work;
++};
++
++bool dma_fence_is_preempt(const struct dma_fence *fence);
++
++void dma_fence_preempt_init(struct dma_fence_preempt *fence,
++			    const struct dma_fence_preempt_ops *ops,
++			    struct workqueue_struct *wq,
++			    u64 context, u64 seqno);
++
++#endif
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8115_BAT -> XEIGTPW_12125_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12125_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#2229] / [Intel XE#455]) +1 other test skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#2229])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][5] ([Intel XE#1033]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [SKIP][7] ([Intel XE#1192]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  * igt@xe_pat@pat-index-xelp@render:
-    - bat-adlp-vf:        [DMESG-WARN][9] ([Intel XE#358]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][11] ([Intel XE#1192]) -> [SKIP][12] ([Intel XE#2229] / [Intel XE#455])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/358
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
-
-
-Build changes
--------------
-
-  * IGT: IGT_8115 -> IGTPW_12125
-  * Linux: xe-2248-6abefc8e3bf638090d5277bc3e6fd02bb25579a4 -> xe-2249-1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6
-
-  IGTPW_12125: 12125
-  IGT_8115: 4942fc57c20f9cb2195e70991c4e4df03dd3db21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2248-6abefc8e3bf638090d5277bc3e6fd02bb25579a4: 6abefc8e3bf638090d5277bc3e6fd02bb25579a4
-  xe-2249-1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6: 1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/index.html
-
---===============3643715615501883951==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci: Block all gem_exec_fair tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141391/">https://patchwork.freedesktop.org/series/141391/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8115_BAT -&gt; XEIGTPW_12125_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12125_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp@render:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/358">Intel XE#358</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12125/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8115 -&gt; IGTPW_12125</li>
-<li>Linux: xe-2248-6abefc8e3bf638090d5277bc3e6fd02bb25579a4 -&gt; xe-2249-1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6</li>
-</ul>
-<p>IGTPW_12125: 12125<br />
-  IGT_8115: 4942fc57c20f9cb2195e70991c4e4df03dd3db21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2248-6abefc8e3bf638090d5277bc3e6fd02bb25579a4: 6abefc8e3bf638090d5277bc3e6fd02bb25579a4<br />
-  xe-2249-1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6: 1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6</p>
-
-</body>
-</html>
-
---===============3643715615501883951==--
