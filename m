@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E65D60D05
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 831C5D60D07
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3099F10E56D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7698710E573;
 	Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fYrtjRoe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b2GsrRNE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10D6B10E578
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B2DF10E569
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731972959; x=1763508959;
+ t=1731972958; x=1763508958;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=0osXRmnKpiY3+lFHIipsNkgn0vpsvm78bLb55LfZ/Ws=;
- b=fYrtjRoeFRiCUUqVTSS/quRnzsqPmZYq6h+mkqSAH3tDSPib1ci2zkZi
- KHmQvEL05bSIJ3xjbd1eRjRw+ugu+9mcY2I3o2VYKEk0JiQjvpN6R3Drg
- MAbIISRm0vM6Ai6eQf7TgwdD65EJLyb/JvhD68eLLdMzWpsuxH3chMZEZ
- lq/2mBDMcdzXsgg5vDSXjJNCMRS9C0pOgkNoQ8rI1vNQ/maEJg1kdecI5
- LNIjhqTjO93clSb/Zsydt1QabDivzoszMuSA2pZ6lgo0SEjQEET5x8E4b
- qo2zlsuiTopRl8AK2pm7yok5WhxoZ/7uqWM5rE8be6qDmGoksnnkmLVkT Q==;
-X-CSE-ConnectionGUID: XFTx0+npToei+sqyku+mfA==
-X-CSE-MsgGUID: VouWUiLQTEecZkfsVSWhYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451255"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451255"
+ bh=3JQ2v4LblLT+fySLDRUZtov1VGz24hLhWMPLpO5qV7M=;
+ b=b2GsrRNEb9FqK9rEUQaA+96tohB+hMN1cwQbspJBRdAJcQctFe/wV+GA
+ DcFIeVvm2bXZ8lE5VlK4prE0ixq1PbE1lsaK78SsQbS38ozch3CDz7egy
+ UAqcOXLdBF+ur4YjkAyXi+ZMw9IOSx2OD99u1eudxl2U4nPqUYifX9WXx
+ 9cdmKz/Es8Zz9WTGrqjoqGmDQh1O5ICJBwEm8H++twp24GWVuAZSxflk2
+ ZFPJfLBQRcuucHrIp2jy4PGItk4gA0Ib1N+KSFMD/08ve88NNcOkAvOV+
+ W2gVhoYN7+RJujxyHFGtJnVlhqukU33ldtGZZSRXUBF8EWIJ5uOkX0qEL w==;
+X-CSE-ConnectionGUID: zaep16+JSoWAYSwLRXQzAg==
+X-CSE-MsgGUID: Kdggk1fUTbGLiyqS327dKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451232"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451232"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 15:35:58 -0800
-X-CSE-ConnectionGUID: MbrCH/VlT+qYAQLSr1RpyA==
-X-CSE-MsgGUID: zTv9w1UcRgK2zu7Ho/P7/w==
+ 18 Nov 2024 15:35:53 -0800
+X-CSE-ConnectionGUID: boTL4phBSkCNCmli8kbrsA==
+X-CSE-MsgGUID: oKh0Gx9JR6ezdiHI7axubg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245251"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245226"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 27/29] drm/xe: Teach xe_sync layer about drm_xe_semaphore
-Date: Mon, 18 Nov 2024 15:36:18 -0800
-Message-Id: <20241118233620.2373819-28-matthew.brost@intel.com>
+Subject: [RFC PATCH 09/29] FIXME: drm/xe: Add pad to ring and indirect state
+Date: Mon, 18 Nov 2024 15:36:00 -0800
+Message-Id: <20241118233620.2373819-10-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -66,207 +66,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Teach xe_sync layer about drm_xe_semaphore which is used import / export
-user fences.
+Unsure why, but without this intermittent hangs occur on GuC context
+switching.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/xe/xe_sync.c       | 90 ++++++++++++++++++++++++++++++
- drivers/gpu/drm/xe/xe_sync.h       |  8 +++
- drivers/gpu/drm/xe/xe_sync_types.h |  5 +-
- 3 files changed, 102 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_lrc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index 42f5bebd09e5..ac4510ad52a9 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -6,6 +6,7 @@
- #include "xe_sync.h"
+diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+index e3c1773191bd..9633e5e700f6 100644
+--- a/drivers/gpu/drm/xe/xe_lrc.c
++++ b/drivers/gpu/drm/xe/xe_lrc.c
+@@ -929,7 +929,7 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
+ 	if (IS_ERR(lrc->bo))
+ 		return PTR_ERR(lrc->bo);
  
- #include <linux/dma-fence-array.h>
-+#include <linux/dma-fence-user-fence.h>
- #include <linux/kthread.h>
- #include <linux/sched/mm.h>
- #include <linux/uaccess.h>
-@@ -14,11 +15,15 @@
- #include <drm/drm_syncobj.h>
- #include <uapi/drm/xe_drm.h>
+-	lrc->submission_ring = xe_bo_create_pin_map(xe, tile, vm, ring_size,
++	lrc->submission_ring = xe_bo_create_pin_map(xe, tile, vm, SZ_32K,
+ 						    ttm_bo_type_kernel,
+ 						    XE_BO_FLAG_VRAM_IF_DGFX(tile) |
+ 						    XE_BO_FLAG_GGTT |
+@@ -943,8 +943,7 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
+ 	if (xe_gt_has_indirect_ring_state(gt)) {
+ 		lrc->flags |= XE_LRC_FLAG_INDIRECT_RING_STATE;
  
-+#include "xe_bo.h"
- #include "xe_device_types.h"
- #include "xe_exec_queue.h"
-+#include "xe_hw_fence.h"
- #include "xe_macros.h"
- #include "xe_sched_job_types.h"
- 
-+#define IS_UNINSTALLED_HW_FENCE		BIT(31)
-+
- struct xe_user_fence {
- 	struct xe_device *xe;
- 	struct kref refcount;
-@@ -211,6 +216,74 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
- 	return 0;
- }
- 
-+int xe_sync_semaphore_parse(struct xe_device *xe, struct xe_file *xef,
-+			    struct xe_sync_entry *sync,
-+			    struct drm_xe_semaphore __user *semaphore_user,
-+			    unsigned int flags)
-+{
-+	struct drm_xe_semaphore semaphore_in;
-+	struct drm_gem_object *gem_obj;
-+	struct xe_bo *bo;
-+
-+	if (copy_from_user(&semaphore_in, semaphore_user,
-+			   sizeof(*semaphore_user)))
-+		return -EFAULT;
-+
-+	if (XE_IOCTL_DBG(xe, semaphore_in.offset & 0x7 ||
-+			 !semaphore_in.handle || semaphore_in.token ||
-+			 semaphore_in.reserved[0] || semaphore_in.reserved[1]))
-+		return -EINVAL;
-+
-+	gem_obj = drm_gem_object_lookup(xef->drm, semaphore_in.handle);
-+	if (XE_IOCTL_DBG(xe, !gem_obj))
-+		return -ENOENT;
-+
-+	bo = gem_to_xe_bo(gem_obj);
-+
-+	if (XE_IOCTL_DBG(xe, bo->size < semaphore_in.offset)) {
-+		xe_bo_put(bo);
-+		return -EINVAL;
-+	}
-+
-+	if (flags & DRM_XE_SYNC_FLAG_SIGNAL) {
-+		struct iosys_map vmap = sync->bo->vmap;
-+		struct dma_fence *fence;
-+
-+		sync->chain_fence = dma_fence_chain_alloc();
-+		if (!sync->chain_fence) {
-+			xe_bo_put(bo);
-+			dma_fence_chain_free(sync->chain_fence);
-+			return -ENOMEM;
-+		}
-+
-+		fence = xe_hw_fence_alloc();
-+		if (IS_ERR(fence)) {
-+			xe_bo_put(bo);
-+			return PTR_ERR(fence);
-+		}
-+
-+		vmap = bo->vmap;
-+		iosys_map_incr(&vmap, semaphore_in.offset);
-+
-+		xe_hw_fence_user_init(fence, xe, vmap, semaphore_in.seqno);
-+		sync->fence = fence;
-+		sync->flags = IS_UNINSTALLED_HW_FENCE;
-+	} else {
-+		sync->user_fence = dma_fence_user_fence_alloc();
-+		if (XE_IOCTL_DBG(xe, !sync->user_fence)) {
-+			xe_bo_put(bo);
-+			return PTR_ERR(sync->ufence);
-+		}
-+
-+		sync->addr = semaphore_in.offset;
-+		sync->timeline_value = semaphore_in.seqno;
-+		sync->flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	}
-+	sync->bo = bo;
-+
-+	return 0;
-+}
-+
- int xe_sync_entry_add_deps(struct xe_sync_entry *sync, struct xe_sched_job *job)
- {
- 	if (sync->fence)
-@@ -249,17 +322,34 @@ void xe_sync_entry_signal(struct xe_sync_entry *sync, struct dma_fence *fence)
- 			user_fence_put(sync->ufence);
- 			dma_fence_put(fence);
- 		}
-+	} else if (sync->user_fence) {
-+		struct iosys_map vmap = sync->bo->vmap;
-+
-+		iosys_map_incr(&vmap, sync->addr);
-+		dma_fence_user_fence_attach(fence, sync->user_fence,
-+					    &vmap, sync->timeline_value);
-+		sync->user_fence = NULL;
- 	}
- }
- 
-+void xe_sync_entry_hw_fence_installed(struct xe_sync_entry *sync)
-+{
-+	sync->flags &= ~IS_UNINSTALLED_HW_FENCE;
-+}
-+
- void xe_sync_entry_cleanup(struct xe_sync_entry *sync)
- {
- 	if (sync->syncobj)
- 		drm_syncobj_put(sync->syncobj);
-+	xe_bo_put(sync->bo);
-+	if (sync->flags & IS_UNINSTALLED_HW_FENCE)
-+		dma_fence_set_error(sync->fence, -ECANCELED);
- 	dma_fence_put(sync->fence);
- 	dma_fence_chain_free(sync->chain_fence);
- 	if (sync->ufence)
- 		user_fence_put(sync->ufence);
-+	if (sync->user_fence)
-+		dma_fence_user_fence_free(sync->user_fence);
- }
- 
- /**
-diff --git a/drivers/gpu/drm/xe/xe_sync.h b/drivers/gpu/drm/xe/xe_sync.h
-index 256ffc1e54dc..fd56929e37cc 100644
---- a/drivers/gpu/drm/xe/xe_sync.h
-+++ b/drivers/gpu/drm/xe/xe_sync.h
-@@ -8,6 +8,9 @@
- 
- #include "xe_sync_types.h"
- 
-+struct drm_xe_semaphore;
-+struct drm_xe_sync;
-+
- struct xe_device;
- struct xe_exec_queue;
- struct xe_file;
-@@ -22,10 +25,15 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
- 			struct xe_sync_entry *sync,
- 			struct drm_xe_sync __user *sync_user,
- 			unsigned int flags);
-+int xe_sync_semaphore_parse(struct xe_device *xe, struct xe_file *xef,
-+			    struct xe_sync_entry *sync,
-+			    struct drm_xe_semaphore __user *semaphore_user,
-+			    unsigned int flags);
- int xe_sync_entry_add_deps(struct xe_sync_entry *sync,
- 			   struct xe_sched_job *job);
- void xe_sync_entry_signal(struct xe_sync_entry *sync,
- 			  struct dma_fence *fence);
-+void xe_sync_entry_hw_fence_installed(struct xe_sync_entry *sync);
- void xe_sync_entry_cleanup(struct xe_sync_entry *sync);
- struct dma_fence *
- xe_sync_in_fence_get(struct xe_sync_entry *sync, int num_sync,
-diff --git a/drivers/gpu/drm/xe/xe_sync_types.h b/drivers/gpu/drm/xe/xe_sync_types.h
-index 30ac3f51993b..28e846c29122 100644
---- a/drivers/gpu/drm/xe/xe_sync_types.h
-+++ b/drivers/gpu/drm/xe/xe_sync_types.h
-@@ -11,14 +11,17 @@
- struct drm_syncobj;
- struct dma_fence;
- struct dma_fence_chain;
--struct drm_xe_sync;
-+struct dma_fence_user_fence;
- struct user_fence;
-+struct xe_bo;
- 
- struct xe_sync_entry {
- 	struct drm_syncobj *syncobj;
- 	struct dma_fence *fence;
- 	struct dma_fence_chain *chain_fence;
- 	struct xe_user_fence *ufence;
-+	struct dma_fence_user_fence *user_fence;
-+	struct xe_bo *bo;
- 	u64 addr;
- 	u64 timeline_value;
- 	u32 type;
+-		lrc->indirect_state = xe_bo_create_pin_map(xe, tile, vm,
+-							   LRC_INDIRECT_RING_STATE_SIZE,
++		lrc->indirect_state = xe_bo_create_pin_map(xe, tile, vm, SZ_8K,
+ 							   ttm_bo_type_kernel,
+ 							   XE_BO_FLAG_VRAM_IF_DGFX(tile) |
+ 							   XE_BO_FLAG_GGTT |
 -- 
 2.34.1
 
