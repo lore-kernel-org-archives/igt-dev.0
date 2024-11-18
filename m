@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2926D49228
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 14:43:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5591D49228
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 14:50:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A4C310E4EF;
-	Mon, 18 Nov 2024 14:43:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97DF610E500;
+	Mon, 18 Nov 2024 14:50:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="KF1xnW+v";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="IlD/iNyF";
 	dkim-atps=neutral
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com
- [209.85.210.175])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D417510E4EF
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 14:43:11 +0000 (UTC)
-Received: by mail-pf1-f175.google.com with SMTP id
- d2e1a72fcca58-7246c8b89b4so2860193b3a.1
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 06:43:11 -0800 (PST)
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com
+ [209.85.216.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6ECF210E501
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 14:50:31 +0000 (UTC)
+Received: by mail-pj1-f42.google.com with SMTP id
+ 98e67ed59e1d1-2ea49a1b4c8so1096181a91.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 06:50:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731940991; x=1732545791; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1731941431; x=1732546231; darn=lists.freedesktop.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SbSSv1Px/zILJQUkmbH1Y7bZn2ftrS/qztqC1qdc+68=;
- b=KF1xnW+v8ynut47F72NMraipfHqmQB9eTiyB0beTmRtKBFkV89WNUc5WPViNW+3Cz1
- n7NGrmz10E2xhkP2JOiGLnolXX9Cltolb9TELeFlAwQGiWcx5L638i7IdFWOohpazZCU
- UyXH7UlnSr8x4PW/HpT8OIDgZ00I38bgERSFW48ToV1LgZIwTiiFac1YJf7l1N+j7qn8
- yHxzz1GNvD2sf2p2PxGiyYKJziYRPAJZytPun6Ec3/EP4eTh2zK0K/w5LR91eu3g33Nm
- EM+psGPOqdJL9IdtYgMO6PS2sJ5qzUnlWn3Sb1OMec/qpuopUYYJeyfHPa1ZFbPCFz6a
- j65g==
+ bh=3ykBqa/18NEhh0vxyOqRiJ5PbeRS0Q1EGd0EuLRFrOY=;
+ b=IlD/iNyFoh4ZLHkn8FCYn67LtyYqMUiaKajKhstk1+WRtq7bOGBqJoMdl2AoNMyazy
+ 94mKpmw5iMCfgCr1JzZoMq/xEE6Z89oWf2d0AECogUNhrcV6ooRiJX2Eu5vw7xO/tCIX
+ lBnzkKncRb7mcBjIugGpI+xTxZuCMidj3uVFqki/iwkkJer78LCzh4JO9v8y8pAtypPe
+ jsNKl3Y3rfsFV74L5x5/Je60LDGgQqEiCFnsHe5a2rualnFCrbmXRibYTCnbiRoj/NkP
+ jOu48txrW//g6T91F1l+ltMYVu9ySHLL6W1KbDajRNx+xHTIyKPivoPOmsYd5Wd8PG48
+ vA+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731940991; x=1732545791;
+ d=1e100.net; s=20230601; t=1731941431; x=1732546231;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SbSSv1Px/zILJQUkmbH1Y7bZn2ftrS/qztqC1qdc+68=;
- b=vW3EAxJnUnPfv7BnJar0gUM9+WYn4DByr5ScdAhbRfFETtxf9OFcLnO/uFB0HfdaIr
- l1iNNo8QcBT7/Vj1a5a27yqj/jHRurxFFdUOEPPnbiUS/ntg48HFo4Bsrr+oiH9DobFU
- Vz1QZvYJp+y/e1SSrlF7u6/+sg4s4bUJkLj5oCA+A/227VvpHii3/vXFbsRZ+DjIKWfs
- kR1CkCi6DflDfnsFPNoHDhurx0BEp4hZgGyGo+oJMoBwSxtqpeZ5GCuHjuVTDTXSu3cq
- qDzT3EWAX7Ix6SrnNJxgQOWz5ocJbOGetVkV8tdunvytmG6qTrFv/ecPhR8/XXJIR/xt
- TPkQ==
-X-Gm-Message-State: AOJu0YwCJgaaJzSkEIvovQiVEZ9LMmShOTNfIDyAp6dkNSeuhEoVQ2R4
- q5eutqysU0REPhgL9CCs3xLPzh4TGGvdyHqLxWMgW1/iRUQXujpNp5XGNprM1G5piVNZg4d+7fj
- 3BdwJ48Ssy1nAnLINyyv8T5heRww=
-X-Google-Smtp-Source: AGHT+IFvR19JHudEybLvLMmOkPf4w56YKVH0MhqooqlWeIjEa7VYNT9fewZeDTFPA1sDwKc9duHjTMp27geL9uQG0w0=
-X-Received: by 2002:a17:90a:e7ca:b0:2e0:7b03:1908 with SMTP id
- 98e67ed59e1d1-2e9fe63fca3mr25135136a91.10.1731940991048; Mon, 18 Nov 2024
- 06:43:11 -0800 (PST)
+ bh=3ykBqa/18NEhh0vxyOqRiJ5PbeRS0Q1EGd0EuLRFrOY=;
+ b=SGwJiXp4wzgsn34rqmc5DjKrvQlYdJ3sU1gWzfLHTx3qDApxUEMqAgqlHD3NFU1Ozs
+ ZuLfutKa+s8MicBWYqXj9m85/5miV/A5LN29MR1fYgmxiHjPbHrLbM0jOTNbCzRZiVwq
+ lj2yME5zj9trt0bWT6qUkRdkm4mU8VP9sEOfkUDk51aiEwKkpi31vWGy6U7Lf0oWuUsZ
+ kDsqCFOr0HC/nuef0WPs0plZvhQH4d/lQLoD2TmOOHAszMZh69jxufZnoXreiYLP9Hv9
+ S6p4yutloteRakfba4sSAH522m42ZtyscZdGL+iDI9P4AT8hWQSVXn+Aa6yd2kxYvrHL
+ +1gw==
+X-Gm-Message-State: AOJu0YyOr+A89YEF5ZMP6Rq394N2pHI5Vz4ljqU/8AEMiMMMz99X1G41
+ DpPYBGJjyJFFCF60D7S8/Q8UvuaDIgwVhIGdGeokZn+5KgZ16M86zP9pcM40qqkULm9iq+R5E5o
+ +5CfhMeEel6yIA21fenU7vAH1vCKvfeUnHkqbXg==
+X-Google-Smtp-Source: AGHT+IF7qlvJQ0MQtdFWEeXl2PE1Ff/Wv5r5rvl7atwWY7hioLANXnmSwiRCgiN6+gCWTABIXPXHGEGJVuxRqmxPOH0=
+X-Received: by 2002:a17:90b:380a:b0:2ea:5fed:4a2e with SMTP id
+ 98e67ed59e1d1-2ea5fed4bcemr6162772a91.6.1731941430832; Mon, 18 Nov 2024
+ 06:50:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
- <20241004104121.32750-9-ville.syrjala@linux.intel.com>
-In-Reply-To: <20241004104121.32750-9-ville.syrjala@linux.intel.com>
+ <20241004104121.32750-13-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241004104121.32750-13-ville.syrjala@linux.intel.com>
 From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Mon, 18 Nov 2024 16:42:59 +0200
-Message-ID: <CAJ=qYWQfF=+zQj754xOOPN+zH=ZC_p8cgXuHjVhUhA5WDtGhFw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t 08/14] lib/igt_draw: Add 64bpp support for the
- non-XY_FAST_COLOR_BLT path
+Date: Mon, 18 Nov 2024 16:50:19 +0200
+Message-ID: <CAJ=qYWR6SX_0EcT7R9vTT6=g81nYKrPdyBSA0zT=0ufEdk0ehg@mail.gmail.com>
+Subject: Re: [PATCH i-g-t 12/14] tests/kms_draw_crc: Test 64bpp
 To: Ville Syrjala <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
@@ -85,75 +84,73 @@ On Fri, Oct 4, 2024 at 1:41=E2=80=AFPM Ville Syrjala
 >
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> XY_COLOR_BLT can't do 64bpp since we have nowhere to store
-> the other half of the color. In order to support 64bpp
-> pixel formats we have to get a little bit creative and
-> use XY_PAT_BLT_IMMEDIATE instead. We simply treat the
-> buffer as 32bpp, double the horizontal dimensions to
-> compensate, and alternate between the lower and upper
-> dwords of the color value when filling the 8x8 pattern.
+> Test 64bpp formats to make sure igt_draw is working correctly.
 >
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > ---
->  lib/igt_draw.c  | 24 ++++++++++++++++++++++++
->  lib/intel_reg.h |  2 ++
->  2 files changed, 26 insertions(+)
+>  tests/intel/kms_draw_crc.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
 >
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index 2312a0c71030..81da01a6c5ad 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -833,6 +833,30 @@ static void draw_rect_blt(int fd, struct cmd_data *c=
-md_data,
->                 intel_bb_out(ibb, (1 << 29) | ((pitch-1) << 14) | (buf_he=
-ight-1));
->                 intel_bb_out(ibb, 0);   /* mipmap levels / qpitch */
->                 intel_bb_out(ibb, 0);   /* mipmap index / alignment */
-> +       } else if (buf->bpp =3D=3D 64) {
-> +               int x =3D rect->x * 2;
-> +               int w =3D rect->w * 2;
-> +
-> +               blt_cmd_depth =3D 3 << 24; /* 32bpp */
-> +               blt_cmd_len =3D ((ver >=3D 8) ?  0x4 : 0x3) + 8*8;
-> +               blt_cmd_tiling =3D (tiling) ? XY_COLOR_BLT_TILED : 0;
-> +               pitch =3D (ver >=3D 4 && tiling) ? buf->stride / 4 : buf-=
->stride;
-> +
-> +               switch_blt_tiling(ibb, tiling, true);
-> +
-> +               intel_bb_out(ibb, XY_PAT_BLT_IMMEDIATE_CMD_NOLEN | XY_COL=
-OR_BLT_WRITE_ALPHA |
-> +                            XY_COLOR_BLT_WRITE_RGB | blt_cmd_tiling | bl=
-t_cmd_len);
-> +               intel_bb_out(ibb, blt_cmd_depth | (0xF0 << 16) | pitch);
-> +               intel_bb_out(ibb, (rect->y << 16) | x);
-> +               intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (x + w));
-> +               intel_bb_emit_reloc_fenced(ibb, dst->handle, 0, I915_GEM_=
-DOMAIN_RENDER,
-> +                                          0, dst->addr.offset);
-> +               for (int i =3D 0; i < 8*8; i +=3D 2) {
-> +                       intel_bb_out(ibb, color);
-> +                       intel_bb_out(ibb, color >> 32);
-> +               }
-> +
-> +               switch_blt_tiling(ibb, tiling, false);
->         } else {
->                 switch (buf->bpp) {
->                 case 8:
-> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-> index 26833c66f8e7..903b44b59fc3 100644
-> --- a/lib/intel_reg.h
-> +++ b/lib/intel_reg.h
-> @@ -2545,6 +2545,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA=
-RE.
->  #define XY_COLOR_BLT_WRITE_RGB         (1<<20)
->  #define XY_COLOR_BLT_TILED             (1<<11)
+> diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
+> index e3d1c0ba9bd8..078a6f46d31a 100644
+> --- a/tests/intel/kms_draw_crc.c
+> +++ b/tests/intel/kms_draw_crc.c
+> @@ -34,6 +34,7 @@
 >
-> +#define XY_PAT_BLT_IMMEDIATE_CMD_NOLEN ((2<<29)|(0x72<<22))
-> +
->  #define XY_SETUP_CLIP_BLT_CMD          ((2<<29)|(3<<22)|1)
+>  #include "i915/gem.h"
+>  #include "igt.h"
+> +#include "igt_halffloat.h"
 >
->  #define XY_SRC_COPY_BLT_WRITE_ALPHA    (1<<21)
+>  /**
+>   * SUBTEST: fill-fb
+> @@ -76,6 +77,7 @@ static const uint32_t formats[] =3D {
+>         DRM_FORMAT_XRGB8888,
+>         DRM_FORMAT_RGB565,
+>         DRM_FORMAT_XRGB2101010,
+> +       DRM_FORMAT_XBGR16161616F,
+>  };
+>
+>  static const uint64_t modifiers[] =3D {
+> @@ -109,9 +111,11 @@ static void find_modeset_params(void)
+>         }
+>  }
+>
+> -static uint32_t get_color(uint32_t drm_format, bool r, bool g, bool b)
+> +static uint64_t get_color(uint32_t drm_format, bool r, bool g, bool b)
+>  {
+> -       uint32_t color =3D 0;
+> +       uint64_t color =3D 0;
+> +       uint16_t h[3];
+> +       float f[3];
+>
+>         switch (drm_format) {
+>         case DRM_FORMAT_RGB565:
+> @@ -129,6 +133,15 @@ static uint32_t get_color(uint32_t drm_format, bool =
+r, bool g, bool b)
+>                 color |=3D g ? 0x3FF << 10 : 0;
+>                 color |=3D b ? 0x3FF : 0;
+>                 break;
+> +       case DRM_FORMAT_XBGR16161616F:
+> +               f[0] =3D r ? 1.0f : 0.0f;
+> +               f[1] =3D g ? 1.0f : 0.0f;
+> +               f[2] =3D b ? 1.0f : 0.0f;
+> +               igt_float_to_half(f, h, 3);
+> +               color |=3D (uint64_t)h[2] << 32 |
+> +                       (uint64_t)h[1] << 16 |
+> +                       (uint64_t)h[0] << 0;
+> +               break;
+>         default:
+>                 igt_assert(false);
+>         }
+> @@ -290,6 +303,8 @@ static const char *format_str(int format_index)
+>                 return "xrgb8888";
+>         case DRM_FORMAT_XRGB2101010:
+>                 return "xrgb2101010";
+> +       case DRM_FORMAT_XBGR16161616F:
+> +               return "xbgr16161616f";
+>         default:
+>                 igt_assert(false);
+>         }
 > --
 > 2.45.2
 >
