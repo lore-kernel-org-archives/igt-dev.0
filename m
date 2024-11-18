@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E2AD60CF8
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09A57D60D05
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E1D410E57A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA85710E57B;
 	Mon, 18 Nov 2024 23:36:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c329mZu5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EU/2QDjM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CAD410E040
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D253B10E572
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731972953; x=1763508953;
+ t=1731972959; x=1763508959;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Ai1mfcFgevmGKJpWo6ttA0URBdnq6ylMV+L0WkHjHAE=;
- b=c329mZu5P07CB3yt/oBgPJFD8KOf+nLBB8VHNQnPEWo2qiUMt63bcaxo
- Mi4JlQvvO8RRUW9pcodVCcDB65j9XLSI72EPs41mf8u1LLWdtxfMXf/BP
- csaK9cSlyjuQkpMjREnJK4CGJhlGz6GCYhwwYXbc/0CwBnOsTqDp90ohb
- udm1bKK+1ckEQKdDyCr4im+ZQ1iHPsSAt/qzkd3r7Rd2wp04jp3Fipbtj
- j2IDNhjhUGXaUIpy/nWjkeQGw0ISePhoVaj2drOP/bjPbgRLcmrWvBQ0x
- SEo1G6Zcbr9vD5/iAtBH6MbBccticWiZEZeiqnGJhKEVyjzVkX34ofVaE w==;
-X-CSE-ConnectionGUID: EftLIB/mRemL906pqGg9Ew==
-X-CSE-MsgGUID: zmIz/c58T7maPn0WLslQlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451223"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451223"
+ bh=KSwdYjxf8PXwMIB2tQPack53L/KWH/z20YDuNNF5+gY=;
+ b=EU/2QDjM+3IMK00soQse1Jc9nHHX/BBUjsZIaSap3GUvpwCPjM6oeG1g
+ Tin8iTLrxZrgW+VBCksw/zzUgiNPG3HbXbuCmu1qp5IZDhWcsJty5+xB4
+ 1BW85X6MqAituTrmBqqV1O/+JO7ETu8sauhh074jRzM/C40LYx/Kih3o5
+ f4h9Ax9W+lBYQMTEANNwRt0XXYmzzwIY9nRJXcMUgLuj5KY4D2aAq8M8Q
+ Lwvt8uXsLn0TdBA0OG76V7eMQVkJHUfBE7sCB4uRlecXYLyK2UU0rnhAS
+ /Ag6Rk++VSMvwVZ1f9fv9gIgwDHIweHSSY7VMcxMrikghXBnlYXELh7Ny Q==;
+X-CSE-ConnectionGUID: sE0pxnB3TriPw2pEOZ0g9g==
+X-CSE-MsgGUID: wKMl7vVzSR60U9RsDduusA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451243"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451243"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 15:35:53 -0800
-X-CSE-ConnectionGUID: R8DqgcXvTGCkrPqV9Hwbzg==
-X-CSE-MsgGUID: mi/JI8/CS/O3g1qu2+nkEQ==
+ 18 Nov 2024 15:35:54 -0800
+X-CSE-ConnectionGUID: ijObNrm1SBKTp4BrBsFrhQ==
+X-CSE-MsgGUID: MrA+M5fkRHemgUFhUE3QcA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245220"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245240"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 03/29] drm/xe: Use dma_fence_preempt base class
-Date: Mon, 18 Nov 2024 15:35:54 -0800
-Message-Id: <20241118233620.2373819-4-matthew.brost@intel.com>
+Subject: [RFC PATCH 20/29] drm/xe: Teach GuC backend to kill usermap queues
+Date: Mon, 18 Nov 2024 15:36:11 -0800
+Message-Id: <20241118233620.2373819-21-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -66,265 +66,153 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the dma_fence_preempt base class in Xe instead of open-coding the
-preemption implementation.
+Usermap exec queue's teardown (kill) differs from other exec queues as
+no job is available, a doorbell is mapped, and the kill should be
+immediate.
 
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Christian Koenig <christian.koenig@amd.com>
+A follow up could unify LR queue cleanup with usermap but keeping this
+a seperate flow for now.
+
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/dma-buf/dma-fence-preempt.c         |  5 +-
- drivers/gpu/drm/xe/xe_guc_submit.c          |  3 +
- drivers/gpu/drm/xe/xe_hw_engine_group.c     |  4 +-
- drivers/gpu/drm/xe/xe_preempt_fence.c       | 80 ++++++---------------
- drivers/gpu/drm/xe/xe_preempt_fence.h       |  2 +-
- drivers/gpu/drm/xe/xe_preempt_fence_types.h | 11 +--
- 6 files changed, 34 insertions(+), 71 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_exec_queue_types.h |  2 +-
+ drivers/gpu/drm/xe/xe_guc_submit.c           | 56 +++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-fence-preempt.c b/drivers/dma-buf/dma-fence-preempt.c
-index 6e6ce7ea7421..bcc5e5cec919 100644
---- a/drivers/dma-buf/dma-fence-preempt.c
-+++ b/drivers/dma-buf/dma-fence-preempt.c
-@@ -8,11 +8,11 @@
- 
- static void dma_fence_preempt_work_func(struct work_struct *w)
- {
--	bool cookie = dma_fence_begin_signalling();
- 	struct dma_fence_preempt *pfence =
- 		container_of(w, typeof(*pfence), work);
- 	const struct dma_fence_preempt_ops *ops = pfence->ops;
- 	int err = pfence->base.error;
-+	bool cookie = dma_fence_begin_signalling();
- 
- 	if (!err) {
- 		err = ops->preempt_wait(pfence);
-@@ -23,6 +23,7 @@ static void dma_fence_preempt_work_func(struct work_struct *w)
- 	dma_fence_signal(&pfence->base);
- 	ops->preempt_finished(pfence);
- 
-+	/* The entire worker is signaling path, thus annotate the entirety */
- 	dma_fence_end_signalling(cookie);
- }
- 
-@@ -109,7 +110,7 @@ EXPORT_SYMBOL(dma_fence_is_preempt);
-  *
-  * @fence: Preempt fence
-  * @ops: Preempt fence operations
-- * @wq: Work queue for preempt wait, should have WQ_MEM_RECLAIM set
-+ * @wq: Work queue for preempt wait, must have WQ_MEM_RECLAIM set
-  * @context: Fence context
-  * @seqno: Fence seqence number
-  */
+diff --git a/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h b/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h
+index 2d53af75ed75..c6c58e414b19 100644
+--- a/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h
++++ b/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h
+@@ -29,7 +29,7 @@ struct xe_guc_exec_queue {
+ 	 * a message needs to sent through the GPU scheduler but memory
+ 	 * allocations are not allowed.
+ 	 */
+-#define MAX_STATIC_MSG_TYPE	3
++#define MAX_STATIC_MSG_TYPE	4
+ 	struct xe_sched_msg static_msgs[MAX_STATIC_MSG_TYPE];
+ 	/** @lr_tdr: long running TDR worker */
+ 	struct work_struct lr_tdr;
 diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index f9ecee5364d8..58a3f4bb3887 100644
+index 59d2e08797f5..82071a0ec91e 100644
 --- a/drivers/gpu/drm/xe/xe_guc_submit.c
 +++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1603,6 +1603,9 @@ static int guc_exec_queue_suspend_wait(struct xe_exec_queue *q)
+@@ -230,6 +230,11 @@ static void set_exec_queue_doorbell_registered(struct xe_exec_queue *q)
+ 	atomic_or(EXEC_QUEUE_STATE_DB_REGISTERED, &q->guc->state);
+ }
+ 
++static void clear_exec_queue_doorbell_registered(struct xe_exec_queue *q)
++{
++	atomic_and(~EXEC_QUEUE_STATE_DB_REGISTERED, &q->guc->state);
++}
++
+ static bool exec_queue_killed_or_banned_or_wedged(struct xe_exec_queue *q)
+ {
+ 	return (atomic_read(&q->guc->state) &
+@@ -798,6 +803,8 @@ static void disable_scheduling_deregister(struct xe_guc *guc,
+ 		       G2H_LEN_DW_DEREGISTER_CONTEXT, 2);
+ }
+ 
++static void guc_exec_queue_kill_user(struct xe_exec_queue *q);
++
+ static void xe_guc_exec_queue_trigger_cleanup(struct xe_exec_queue *q)
+ {
  	struct xe_guc *guc = exec_queue_to_guc(q);
- 	int ret;
+@@ -806,7 +813,9 @@ static void xe_guc_exec_queue_trigger_cleanup(struct xe_exec_queue *q)
+ 	/** to wakeup xe_wait_user_fence ioctl if exec queue is reset */
+ 	wake_up_all(&xe->ufence_wq);
  
-+	if (exec_queue_reset(q) || exec_queue_killed_or_banned_or_wedged(q))
-+		return -ECANCELED;
-+
- 	/*
- 	 * Likely don't need to check exec_queue_killed() as we clear
- 	 * suspend_pending upon kill but to be paranoid but races in which
-diff --git a/drivers/gpu/drm/xe/xe_hw_engine_group.c b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-index 82750520a90a..8ed5410c3964 100644
---- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
-+++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-@@ -163,7 +163,7 @@ int xe_hw_engine_group_add_exec_queue(struct xe_hw_engine_group *group, struct x
- 	if (xe_vm_in_fault_mode(q->vm) && group->cur_mode == EXEC_MODE_DMA_FENCE) {
- 		q->ops->suspend(q);
- 		err = q->ops->suspend_wait(q);
--		if (err)
-+		if (err == -ETIME)
- 			goto err_suspend;
+-	if (xe_exec_queue_is_lr(q))
++	if (xe_exec_queue_is_usermap(q))
++		guc_exec_queue_kill_user(q);
++	else if (xe_exec_queue_is_lr(q))
+ 		queue_work(guc_to_gt(guc)->ordered_wq, &q->guc->lr_tdr);
+ 	else
+ 		xe_sched_tdr_queue_imm(&q->guc->sched);
+@@ -1294,8 +1303,10 @@ static void __guc_exec_queue_process_msg_cleanup(struct xe_sched_msg *msg)
+ 	xe_gt_assert(guc_to_gt(guc), !(q->flags & EXEC_QUEUE_FLAG_PERMANENT));
+ 	trace_xe_exec_queue_cleanup_entity(q);
  
- 		xe_hw_engine_group_resume_faulting_lr_jobs(group);
-@@ -236,7 +236,7 @@ static int xe_hw_engine_group_suspend_faulting_lr_jobs(struct xe_hw_engine_group
- 			continue;
+-	if (exec_queue_doorbell_registered(q))
++	if (exec_queue_doorbell_registered(q)) {
++		clear_exec_queue_doorbell_registered(q);
+ 		deallocate_doorbell(guc, q->guc->id);
++	}
  
- 		err = q->ops->suspend_wait(q);
--		if (err)
-+		if (err == -ETIME)
- 			goto err_suspend;
+ 	if (exec_queue_registered(q))
+ 		disable_scheduling_deregister(guc, q);
+@@ -1382,10 +1393,29 @@ static void __guc_exec_queue_process_msg_resume(struct xe_sched_msg *msg)
  	}
- 
-diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
-index 83fbeea5aa20..80a8bc82f3cc 100644
---- a/drivers/gpu/drm/xe/xe_preempt_fence.c
-+++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
-@@ -4,73 +4,40 @@
-  */
- 
- #include "xe_preempt_fence.h"
--
--#include <linux/slab.h>
--
- #include "xe_exec_queue.h"
- #include "xe_vm.h"
- 
--static void preempt_fence_work_func(struct work_struct *w)
-+static struct xe_exec_queue *to_exec_queue(struct dma_fence_preempt *fence)
- {
--	bool cookie = dma_fence_begin_signalling();
--	struct xe_preempt_fence *pfence =
--		container_of(w, typeof(*pfence), preempt_work);
--	struct xe_exec_queue *q = pfence->q;
--
--	if (pfence->error) {
--		dma_fence_set_error(&pfence->base, pfence->error);
--	} else if (!q->ops->reset_status(q)) {
--		int err = q->ops->suspend_wait(q);
--
--		if (err)
--			dma_fence_set_error(&pfence->base, err);
--	} else {
--		dma_fence_set_error(&pfence->base, -ENOENT);
--	}
--
--	dma_fence_signal(&pfence->base);
--	/*
--	 * Opt for keep everything in the fence critical section. This looks really strange since we
--	 * have just signalled the fence, however the preempt fences are all signalled via single
--	 * global ordered-wq, therefore anything that happens in this callback can easily block
--	 * progress on the entire wq, which itself may prevent other published preempt fences from
--	 * ever signalling.  Therefore try to keep everything here in the callback in the fence
--	 * critical section. For example if something below grabs a scary lock like vm->lock,
--	 * lockdep should complain since we also hold that lock whilst waiting on preempt fences to
--	 * complete.
--	 */
--	xe_vm_queue_rebind_worker(q->vm);
--	xe_exec_queue_put(q);
--	dma_fence_end_signalling(cookie);
-+	return container_of(fence, struct xe_preempt_fence, base)->q;
  }
  
--static const char *
--preempt_fence_get_driver_name(struct dma_fence *fence)
-+static int xe_preempt_fence_preempt(struct dma_fence_preempt *fence)
- {
--	return "xe";
-+	struct xe_exec_queue *q = to_exec_queue(fence);
++static void __guc_exec_queue_process_msg_kill_user(struct xe_sched_msg *msg)
++{
++	struct xe_exec_queue *q = msg->private_data;
++	struct xe_guc *guc = exec_queue_to_guc(q);
 +
-+	return q->ops->suspend(q);
- }
- 
--static const char *
--preempt_fence_get_timeline_name(struct dma_fence *fence)
-+static int xe_preempt_fence_preempt_wait(struct dma_fence_preempt *fence)
- {
--	return "preempt";
-+	struct xe_exec_queue *q = to_exec_queue(fence);
++	if (!xe_lrc_ring_is_idle(q->lrc[0]))
++		xe_gt_dbg(q->gt, "Killing non-idle usermap queue: guc_id=%d",
++			  q->guc->id);
 +
-+	return q->ops->suspend_wait(q);
- }
- 
--static bool preempt_fence_enable_signaling(struct dma_fence *fence)
-+static void xe_preempt_fence_preempt_finished(struct dma_fence_preempt *fence)
- {
--	struct xe_preempt_fence *pfence =
--		container_of(fence, typeof(*pfence), base);
--	struct xe_exec_queue *q = pfence->q;
-+	struct xe_exec_queue *q = to_exec_queue(fence);
- 
--	pfence->error = q->ops->suspend(q);
--	queue_work(q->vm->xe->preempt_fence_wq, &pfence->preempt_work);
--	return true;
-+	xe_vm_queue_rebind_worker(q->vm);
-+	xe_exec_queue_put(q);
- }
- 
--static const struct dma_fence_ops preempt_fence_ops = {
--	.get_driver_name = preempt_fence_get_driver_name,
--	.get_timeline_name = preempt_fence_get_timeline_name,
--	.enable_signaling = preempt_fence_enable_signaling,
-+static const struct dma_fence_preempt_ops xe_preempt_fence_ops = {
-+	.preempt = xe_preempt_fence_preempt,
-+	.preempt_wait = xe_preempt_fence_preempt_wait,
-+	.preempt_finished = xe_preempt_fence_preempt_finished,
- };
- 
- /**
-@@ -95,7 +62,6 @@ struct xe_preempt_fence *xe_preempt_fence_alloc(void)
- 		return ERR_PTR(-ENOMEM);
- 
- 	INIT_LIST_HEAD(&pfence->link);
--	INIT_WORK(&pfence->preempt_work, preempt_fence_work_func);
- 
- 	return pfence;
- }
-@@ -134,11 +100,11 @@ xe_preempt_fence_arm(struct xe_preempt_fence *pfence, struct xe_exec_queue *q,
- {
- 	list_del_init(&pfence->link);
- 	pfence->q = xe_exec_queue_get(q);
--	spin_lock_init(&pfence->lock);
--	dma_fence_init(&pfence->base, &preempt_fence_ops,
--		      &pfence->lock, context, seqno);
- 
--	return &pfence->base;
-+	dma_fence_preempt_init(&pfence->base, &xe_preempt_fence_ops,
-+			       q->vm->xe->preempt_fence_wq, context, seqno);
++	if (exec_queue_doorbell_registered(q)) {
++		clear_exec_queue_doorbell_registered(q);
++		deallocate_doorbell(guc, q->guc->id);
++	}
 +
-+	return &pfence->base.base;
- }
++	if (exec_queue_registered(q))
++		disable_scheduling_deregister(guc, q);
++}
++
+ #define CLEANUP		1	/* Non-zero values to catch uninitialized msg */
+ #define SET_SCHED_PROPS	2
+ #define SUSPEND		3
+ #define RESUME		4
++#define KILL_USER	5
+ #define OPCODE_MASK	0xf
+ #define MSG_LOCKED	BIT(8)
  
- /**
-@@ -169,5 +135,5 @@ xe_preempt_fence_create(struct xe_exec_queue *q,
- 
- bool xe_fence_is_xe_preempt(const struct dma_fence *fence)
+@@ -1408,6 +1438,9 @@ static void guc_exec_queue_process_msg(struct xe_sched_msg *msg)
+ 	case RESUME:
+ 		__guc_exec_queue_process_msg_resume(msg);
+ 		break;
++	case KILL_USER:
++		__guc_exec_queue_process_msg_kill_user(msg);
++		break;
+ 	default:
+ 		XE_WARN_ON("Unknown message type");
+ 	}
+@@ -1600,6 +1633,7 @@ static bool guc_exec_queue_try_add_msg(struct xe_exec_queue *q,
+ #define STATIC_MSG_CLEANUP	0
+ #define STATIC_MSG_SUSPEND	1
+ #define STATIC_MSG_RESUME	2
++#define STATIC_MSG_KILL_USER	3
+ static void guc_exec_queue_fini(struct xe_exec_queue *q)
  {
--	return fence->ops == &preempt_fence_ops;
-+	return dma_fence_is_preempt(fence);
+ 	struct xe_sched_msg *msg = q->guc->static_msgs + STATIC_MSG_CLEANUP;
+@@ -1725,6 +1759,24 @@ static void guc_exec_queue_resume(struct xe_exec_queue *q)
+ 	xe_sched_msg_unlock(sched);
  }
-diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.h b/drivers/gpu/drm/xe/xe_preempt_fence.h
-index 9406c6fea525..7b56d12c0786 100644
---- a/drivers/gpu/drm/xe/xe_preempt_fence.h
-+++ b/drivers/gpu/drm/xe/xe_preempt_fence.h
-@@ -25,7 +25,7 @@ xe_preempt_fence_arm(struct xe_preempt_fence *pfence, struct xe_exec_queue *q,
- static inline struct xe_preempt_fence *
- to_preempt_fence(struct dma_fence *fence)
+ 
++static void guc_exec_queue_kill_user(struct xe_exec_queue *q)
++{
++	struct xe_gpu_scheduler *sched = &q->guc->sched;
++	struct xe_sched_msg *msg = q->guc->static_msgs + STATIC_MSG_KILL_USER;
++
++	if (exec_queue_extra_ref(q))
++		return;
++
++	set_exec_queue_banned(q);
++
++	xe_sched_msg_lock(sched);
++	if (guc_exec_queue_try_add_msg(q, msg, KILL_USER)) {
++		set_exec_queue_extra_ref(q);
++		xe_exec_queue_get(q);
++	}
++	xe_sched_msg_unlock(sched);
++}
++
+ static bool guc_exec_queue_reset_status(struct xe_exec_queue *q)
  {
--	return container_of(fence, struct xe_preempt_fence, base);
-+	return container_of(fence, struct xe_preempt_fence, base.base);
- }
- 
- /**
-diff --git a/drivers/gpu/drm/xe/xe_preempt_fence_types.h b/drivers/gpu/drm/xe/xe_preempt_fence_types.h
-index 312c3372a49f..f12b89f7dc35 100644
---- a/drivers/gpu/drm/xe/xe_preempt_fence_types.h
-+++ b/drivers/gpu/drm/xe/xe_preempt_fence_types.h
-@@ -6,8 +6,7 @@
- #ifndef _XE_PREEMPT_FENCE_TYPES_H_
- #define _XE_PREEMPT_FENCE_TYPES_H_
- 
--#include <linux/dma-fence.h>
--#include <linux/workqueue.h>
-+#include <linux/dma-fence-preempt.h>
- 
- struct xe_exec_queue;
- 
-@@ -18,17 +17,11 @@ struct xe_exec_queue;
-  */
- struct xe_preempt_fence {
- 	/** @base: dma fence base */
--	struct dma_fence base;
-+	struct dma_fence_preempt base;
- 	/** @link: link into list of pending preempt fences */
- 	struct list_head link;
- 	/** @q: exec queue for this preempt fence */
- 	struct xe_exec_queue *q;
--	/** @preempt_work: work struct which issues preemption */
--	struct work_struct preempt_work;
--	/** @lock: dma-fence fence lock */
--	spinlock_t lock;
--	/** @error: preempt fence is in error state */
--	int error;
- };
- 
- #endif
+ 	return exec_queue_reset(q) || exec_queue_killed_or_banned_or_wedged(q);
 -- 
 2.34.1
 
