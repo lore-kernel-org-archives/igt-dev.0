@@ -4,52 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7248D43FEF
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 08:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA4FD43FF1
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 09:00:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A651810E459;
-	Mon, 18 Nov 2024 08:47:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDD7B10E450;
+	Mon, 18 Nov 2024 08:59:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HsZt3DNa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rr9zW8Xc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAF2610E459
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 08:47:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F210A10E450
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 08:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731919632; x=1763455632;
+ t=1731920399; x=1763456399;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=EotISKJKoNLDLoOibFrxZ54nJ+rGtSqdb2tAK28UukA=;
- b=HsZt3DNat914APi5M+4U5WwhI5UIG9IlF3fTg2xyY9kGH0Kemp8lH1IV
- UKWrp2x5ZxrP0QG7sPyV1oFOhdtQlb3GAf7w6T9PahCFH8ATVhtIvj/gL
- tJQ5nUos6AgSqEW8Qhs4qFFcbg4ttbOpZFCzVxFHrFEyYNuSmJwHgysek
- RDMD8PwyPVB0O/771flMrntWQdYtTooLomkB4PNW+kwR+yYPskv6Pz8Y3
- Wi6MeG9O20sdGOiNjMNSTZt2PRJMRRZufAztMfCvXUEfQZc80nx2o44LK
- NykBR9TrYHenK4D7a42rLKa8w9lPUn70urndib/7/fmk8SGX3BYAyCeda Q==;
-X-CSE-ConnectionGUID: rJyhOXbjRgyuodmWU4JTKQ==
-X-CSE-MsgGUID: gTA9WX+7ST6BiTC1/AfZLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="31919681"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="31919681"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 00:47:12 -0800
-X-CSE-ConnectionGUID: jPVb6sT5SjmMJEXa4R/T3A==
-X-CSE-MsgGUID: lNGGsU/fRTCghHuZ/33hpw==
+ bh=ur0plXxdaMybUvcxRoPHDe46Sqh2ZMhfjko+baXmq94=;
+ b=Rr9zW8XcKav0k/Mn214tbsghyh74s0YJVdULWxjxlJOvSAQxsv/Rb5da
+ vIs8Y6/vP6cQVL8U2KoZA1wTyZPjow+p4VjF4qcYRn+TMyUkWvAGJW7Fd
+ eRZK1+wZ5m37ERIwKlnUqqYY47U/U4RHIMUPp26W5n80QYZMtTtNfObQL
+ 7qFLilysxc/nhlMuOxepM1TT28+n/ialKN8FaVNA9qGeTBRnjrBoq9map
+ /U+bDc7AlBhB7Qix2+KPEgjD/U4SzoY1VdK03NH3pRyk1BhJYeh05+Lf3
+ 0Ieo/0mHrDE/WKFpDTiW0e4Rh4Smh9luzOJFsSvrqPdIYGY0pR4iYkPIt Q==;
+X-CSE-ConnectionGUID: Y4QvaYpYR9O8FimmyRcbdg==
+X-CSE-MsgGUID: XU+6sHUKTziI0PjcRTVR9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="43259470"
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="43259470"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 00:59:44 -0800
+X-CSE-ConnectionGUID: /LllP230TZSiyRlFdHwsnQ==
+X-CSE-MsgGUID: oeCw6u+8QOaPc5bPA+luhQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="93228386"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 00:47:10 -0800
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="89079244"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.145.169.86])
+ by orviesa010.jf.intel.com with ESMTP; 18 Nov 2024 00:59:41 -0800
+From: nakshtra.goyal@intel.com
 To: igt-dev@lists.freedesktop.org,
-	swati2.sharma@intel.com
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t] tests/intel/kms_frontbuffer_tracking: Fix testplan
- documentation
-Date: Mon, 18 Nov 2024 14:06:24 +0530
-Message-ID: <20241118083624.1936758-1-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.0
+	ramadevi.gandi@intel.com
+Cc: matthew.d.roper@intel.com
+Subject: [PATCH v5 i-g-t] tests/intel/xe_exec_reset: Add mocs reset test
+Date: Mon, 18 Nov 2024 14:31:31 +0530
+Message-Id: <20241118090131.3233488-1-nakshtra.goyal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,40 +65,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix the testplan documentaion for i915 specific tests.
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+v3: Correcting documentation for functionality and changing suspend resume
+to gt reset,adding required header. (Matt Roper)
+
+Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/intel/xe_exec_reset.c | 44 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index b7e3f7379..f149be3da 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -763,18 +763,22 @@
- /**
-  * SUBTEST: fbc-%dp-%s-fliptrack-mmap-gtt
-  * Description: Check if the hardware tracking works after page flips
-+ * Driver requirement: i915
-  * Functionality: fbc, fbt, kms_core
-  *
-  * SUBTEST: fbcdrrs-%dp-%s-fliptrack-mmap-gtt
-  * Description: Check if the hardware tracking works after page flips
-+ * Driver requirement: i915
-  * Functionality: drrs, fbc, fbt, kms_core
-  *
-  * SUBTEST: fbcpsr-%dp-%s-fliptrack-mmap-gtt
-  * Description: Check if the hardware tracking works after page flips
-+ * Driver requirement: i915
-  * Functionality: fbc, fbt, kms_core, psr1
-  *
-  * SUBTEST: fbcpsrdrrs-%dp-%s-fliptrack-mmap-gtt
-  * Description: Check if the hardware tracking works after page flips
-+ * Driver requirement: i915
-  * Functionality: drrs, fbc, fbt, kms_core, psr1
-  *
-  * arg[1].values:   1, 2
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 43ef1e334..a3eaf8bbf 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -12,6 +12,8 @@
+  * Test category: functionality test
+  */
+ 
++#include <fcntl.h>
++
+ #include "igt.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+@@ -715,6 +717,44 @@ gt_reset(int fd, int n_threads, int n_sec)
+ 	free(threads);
+ }
+ 
++/**
++ * SUBTEST: gt-mocs-reset
++ * Description: Validate mocs register contents over GT reset
++ * Test category: mocs
++ *
++ */
++static void
++gt_mocs_reset(int fd, int gt)
++{
++	char path[256];
++
++	/* Mocs debugfs contents before and after GT reset.
++	 * Allocate memory to store 10k characters sufficient enough
++	 * to store global mocs and lncf mocs data.
++	 */
++	char *mocs_content_pre = (char *)malloc(10000 * sizeof(char));
++	char *mocs_contents_post = (char *)malloc(10000 * sizeof(char));
++
++	igt_assert(mocs_content_pre);
++	igt_assert(mocs_contents_post);
++
++	sprintf(path, "gt%d/mocs", gt);
++	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
++	igt_debugfs_dump(fd, path);
++	igt_debugfs_read(fd, path, mocs_content_pre);
++
++	xe_force_gt_reset_sync(fd, gt);
++
++	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
++	igt_debugfs_dump(fd, path);
++	igt_debugfs_read(fd, path, mocs_contents_post);
++
++	igt_assert(strcmp(mocs_content_pre, mocs_contents_post) == 0);
++
++	free(mocs_content_pre);
++	free(mocs_contents_post);
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -820,6 +860,10 @@ igt_main
+ 	igt_subtest("gt-reset-stress")
+ 		gt_reset(fd, 4, 1);
+ 
++	igt_subtest("gt-mocs-reset")
++		xe_for_each_gt(fd, gt)
++			gt_mocs_reset(fd, gt);
++
+ 	igt_fixture
+ 		drm_close_driver(fd);
+ }
 -- 
-2.43.0
+2.34.1
 
