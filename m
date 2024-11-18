@@ -4,184 +4,37 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25356D49219
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 13:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 060EBD49221
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 13:26:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B9D9010E4B8;
-	Mon, 18 Nov 2024 13:08:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aSvRuG9N";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AD0710E4B8
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 13:08:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731935293; x=1763471293;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=zk1z4PTo8f7ESevxX5UyKBeB7CCVlU6IqKTILpxz3lY=;
- b=aSvRuG9N8wIncYWKmcHCeGQPJVYqAIcDsFDzWeD4UtMvuzxUhqKS0MSs
- Uw0Bbs63QZ8qcU+VusXacPenUyKJD8+1J6D3seGG4+Cp+/C2lhQ9nx2Hs
- wH1m7luwsFDSGFeRL5KF6pOZ+45dkwXTTkBlJvHURnVSRjcmiocPSAecb
- ipivsru4bVg6CmPe/mHzRTzlgYETphG0H0C8XdsPrAE8Z1N9CvAZUcF7t
- ZjFJM2DlS3W7057Fd+PYZfxwMzglYJ97RmAhuWpUV9gVFdyou8JjIYtsh
- iyVgYkDOJAars/21SmIBfe9NSN/KVTWi65pBpSWObOcyhx7q7aHz46k5p A==;
-X-CSE-ConnectionGUID: 3WIucZYFTCGa8kZUML8R1g==
-X-CSE-MsgGUID: ZqHUsnHZTjmkG5BmW1n0UQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="32041347"
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="32041347"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 05:08:13 -0800
-X-CSE-ConnectionGUID: NwruNBh6QLGRhiVxZZ1U+g==
-X-CSE-MsgGUID: gobKo35JSJi6jKlOQI+jhA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="120152526"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Nov 2024 05:08:12 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 18 Nov 2024 05:08:11 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 18 Nov 2024 05:08:11 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.49) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 18 Nov 2024 05:08:11 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=On8uqZRTOwrJsssX46IT7KUHfMGuQklSDfdimjS9LJulM6daEc2amuf+0S7XEkmIb1ZJP7suJKY00kDwKF9oYR6lqW9uOKJQ1ciRwnLgbhfIjxCiRKiQloQic4IiPzubpj80ULdWEeFol3I0YwKtuiu0Y0aqDSUaU88ucZ16VwRxrr4JIdPXjScL6gAfcvIgW/xYO1seAwNEuIulZ93o6iX3pxSvbJbGCyI7hTQ2JRamHdO6U0XdOZsROfhvevB2NfFFMndaK4pp90po87zCu25JJS1sBfU1rnJDRKUMCqFy08oTIF4RQ/chnwjGUYGnfyukF2swZAZCJ2QSTHO6Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I6U5LunrgtpCoqdKJ0b7FiMcRFaBNMDPAR57vCVKATQ=;
- b=mEOLOnUhYI+8/3W2YexQHYlyrfd3jJGVqdnuK0HcCTdQu7mi/ROvjboOyGTfn0heTIt9IJxk8Rxl3Kdp6Wuc2XGttGn9LXFEoKQR16EBxel0PlCJ8GBRrFygy6dtMoz0xFOCuY3QaM2f7b3ZMEB1GDzaTCw/A0qFjax7jF9huMXd21xqtR4RXnbyQgcO41RduUoB0I7bgbDT0NjfZzxXFdme2uhjLAGrxY9ARu1uhhqam527UxTlmHP8MTjqMEg0JffzI9DewTkSti7KcIYsKQAoshaJJqqQ4Pv7yUSc4nY/9/59A/QgG+p6FYvItsG1NVbx5ItenzPbCx1282eE7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6614.namprd11.prod.outlook.com (2603:10b6:806:255::11)
- by MW6PR11MB8311.namprd11.prod.outlook.com (2603:10b6:303:241::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Mon, 18 Nov
- 2024 13:08:09 +0000
-Received: from SA1PR11MB6614.namprd11.prod.outlook.com
- ([fe80::aa2a:7e7a:494b:3746]) by SA1PR11MB6614.namprd11.prod.outlook.com
- ([fe80::aa2a:7e7a:494b:3746%3]) with mapi id 15.20.8158.023; Mon, 18 Nov 2024
- 13:08:09 +0000
-Message-ID: <8e9181aa-1fe6-49c5-bd10-95e89db8754c@intel.com>
-Date: Mon, 18 Nov 2024 14:08:05 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/4] lib/gpgpu_shader: Add causing a read pagefault
- from the eu thread
-To: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <jonathan.cavitt@intel.com>, <mika.kuoppala@intel.com>,
- <dominik.grzegorzek@intel.com>
-References: <20241115141132.866838-1-gwan-gyeong.mun@intel.com>
- <20241115141132.866838-3-gwan-gyeong.mun@intel.com>
-Content-Language: en-GB
-From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20241115141132.866838-3-gwan-gyeong.mun@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: WA0P291CA0018.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1::15) To SA1PR11MB6614.namprd11.prod.outlook.com
- (2603:10b6:806:255::11)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E3ED10E095;
+	Mon, 18 Nov 2024 13:26:50 +0000 (UTC)
+X-Greylist: delayed 1169 seconds by postgrey-1.36 at gabe;
+ Mon, 18 Nov 2024 13:26:48 UTC
+Received: from coelho.fi (coelho.fi [88.99.146.29])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97D8810E095
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 13:26:48 +0000 (UTC)
+Received: from 91-155-254-241.elisa-laajakaista.fi ([91.155.254.241]
+ helo=[192.168.100.137])
+ by coelho.fi with esmtpsa (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (Exim 4.97) (envelope-from <luca@coelho.fi>)
+ id 1tD1TG-00000001yXa-0cGW; Mon, 18 Nov 2024 15:07:16 +0200
+Message-ID: <b7299a2dc50db417a360d702c660ec57b8733f34.camel@coelho.fi>
+From: Luca Coelho <luca@coelho.fi>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Ryszard Knop <ryszard.knop@intel.com>, Janusz Krzysztofik	
+ <janusz.krzysztofik@linux.intel.com>, Zbigniew =?UTF-8?Q?Kempczy=C5=84ski?=
+ <zbigniew.kempczynski@intel.com>, Lucas De Marchi
+ <lucas.demarchi@intel.com>, 	luciano.coelho@intel.com
+Date: Mon, 18 Nov 2024 15:07:12 +0200
+In-Reply-To: <384b983e-b1f5-4266-aa14-5739397bc7a1@linux.intel.com>
+References: <384b983e-b1f5-4266-aa14-5739397bc7a1@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.1-1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6614:EE_|MW6PR11MB8311:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aaa6173-e9e6-4f34-196d-08dd07d20c95
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y1lrOHpPamczZEFFR0U3cHk1QzJpb21lblFwL0VvL0VEMEo3YllmNnhIZkd5?=
- =?utf-8?B?eVQvQXRERmtNTTFWc0RwUm92TW1oek1XRHZwUHZEWnpuK0ZMc2g2VGZ4OGdn?=
- =?utf-8?B?UUM4VEREVEo1QTdFTEU1RjlnMnE3YWVPaE0xckVMdEphOFZ6S3FUemUvQkk0?=
- =?utf-8?B?L2lpOEQxeTB6TVBsb1NEa3REajcyZkZwcENJb0FrS1V2ZG5KUUdVLzFibjdp?=
- =?utf-8?B?UzBBOHNzUTBDcis1eGJhaVlKc0NJZGpqYy80L0pEYWxjZEQ3cDZpb2UwQ3JY?=
- =?utf-8?B?U2kwdW5IZVhtVVY0YTlTRGs3amtlY1RMajFXLysyYzhwNUJzWWZFNFpIaC85?=
- =?utf-8?B?d2JzRUttbnB1b1BQcDZQQzNkbWg1bmhOZXlZR0dySFZlTEoydEppWG4rdzNP?=
- =?utf-8?B?b2F2U1FDOXBOUDA5enpOdmFNYkVmSitPUi9pYjFOMnJKY1pCakJhR1lSeXNr?=
- =?utf-8?B?STlUdDY2ZU56NzVrM2Q4Y0twLzFkRnRzSGlwZk1YK3Ztb1ZaRzVXRkpldDlx?=
- =?utf-8?B?RFQ3eEtjU1Y2Y0ZYZTQ4V0taZFIvSDNHWG82eDczTXdNWEJOWE5vOTMvMkNB?=
- =?utf-8?B?T3c0RFpaazZFbmJTUkV4aUdJRGNDMnkzZW9IS2VSYjNkQmxxanJUV0N0VFpm?=
- =?utf-8?B?dUs1QjRDMFM4cVBkNDZFUy9DbStyOUpDaHJsVnh1K3pXb3NLN2gwS0RUQ3M1?=
- =?utf-8?B?MnV6cGtoNVR1ZG8yR3NWYzhJZWpkZlQyaTZMT1ZSOWhWdURvek12dEJ4ajlv?=
- =?utf-8?B?ZjJldVYzY3NDRXNtVDJ3dFRKWUhjTk9QNnRvWWM5eElMWDlCS1l3TFdhbTNn?=
- =?utf-8?B?MFBkV0F2Z2hNQ1grV2x6RGtBTGtCcExpMHpNTUYyR1JKNHRXZG9zYVRybU5U?=
- =?utf-8?B?MUJzY2Z1eXNDaFc3MWdubW5EMHkzOWozMjBpemZBMzZnMFVNQ21Ka3V0VjRK?=
- =?utf-8?B?Wit0M1J3bktJdVoxUHptVEZyS1BEUDJJLzBleUk3WUlwQngxSmtlN255LzBl?=
- =?utf-8?B?V050VE53Q0ZocXlTYzZ5TllnYjhiRmtzWGtwUXRTODA2VzJRZlNZb3gxaXlN?=
- =?utf-8?B?dkUwTWZ3NjhFa2swdXlFWHlFdUZ2U2s1b3JjVDlKNEE0d0ZpbkxOZi9FcVdG?=
- =?utf-8?B?V1Nxa0ROKzBzU24vOVB6TXdHTW1KVlVHdVRZZzVPS3FBY2NYamZuTlZoOEF6?=
- =?utf-8?B?T3JRM1dYY0ErMmFPZmlFZmJtSmJDVDdZK1VvZWpabXI2UllSWTVOZkRkblZD?=
- =?utf-8?B?cGZZVnl4eDBlNENnZHdJR3JZMCtsZTNPNXVYQ3FlUUloTWVxcUFiWmdVV2ZF?=
- =?utf-8?B?cXJmelE1MnIrN0J5KzNoUVMxbGZnK001SGVlb1hJcDRQQ0s1WGVSK0hmMDJS?=
- =?utf-8?B?R1hnTmo2NFd5UXV1d3pjaUVJYnZFMzV4dTNDb3VPSmtuTzRvZmhtTUM1SlBF?=
- =?utf-8?B?bmRSeXVuS3pua0JMZWNVSmZXMUtVbnNZV2lXbjV5clExdnRyNXovQ0tHbEtu?=
- =?utf-8?B?RWhhVm5aZlMzQmhGeWpTSlNrRCtScENXN3Jqb1N2eGhmcURkS1NybFU0M1J2?=
- =?utf-8?B?NVVuRm5hRzMrekR2WU1OWndhSHp2VndZZjRGeDlOa2pUeDkvSTRkY1pCdXcx?=
- =?utf-8?B?TjZaQXd5T3lGeFhGZDA5RUk4Wm5CYjBnMmJQaXI1YUtneHViMXBLVnhJemlE?=
- =?utf-8?Q?kLdKrBkS0zcZ6+GZMD8p?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR11MB6614.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SzZEcnlUaEVOdEJZRkpOTnZFaVRIVk96Rm1YSndINlN1aFlYSU1RdDd4d3E0?=
- =?utf-8?B?MVZDRjhKM29FaGdqRmczNkpVY2NBMGl1Tm14ZG9QSUhXSzZEKzlqem5mMWRu?=
- =?utf-8?B?MzJLcnNoQnJmcEcrVnNVM1lQU3FWVXo4S2RqUVh1ajNVTkZJYWZQUWtwY3Zh?=
- =?utf-8?B?ZnRDRDRUYzhtUk53S2h2SmFza1JmT2M1MHNNT01kdkJibUpUSnlEdVRKWW1H?=
- =?utf-8?B?bHRwakpVTjd4dkRmUEgzdCtMNWRvSkpiYmtmMmJXZk52RlltREFnTytuV01R?=
- =?utf-8?B?alZPM1loQzJtZzU2YzltNWxMZlI2eXJReDhDTFJjM0dEWlk4NFpPWXNJc0Jv?=
- =?utf-8?B?cndwdmdZWUpRbmk2SDNIZWRtUDdKUkVPUmIwRjI5S2ZiZjhmaTFtUVN2djBP?=
- =?utf-8?B?dlVScVNObWpuejVlUXE2ZWxiLzlQSWVFSmdFbVhQOGZoTG4vampMbkJJRnZp?=
- =?utf-8?B?RFNIZWFkZFJTVGFoMXllSWUzMkV4MjNaOWZYK3ZsajBXVGp6S3F5ZEQvT0h5?=
- =?utf-8?B?ZVN2eDJBN29yTm1QOGJCUlpkNkczaExiZ3FhdmZpQTBCbGovamRzTlNTUFZa?=
- =?utf-8?B?dGVGVHl1T0ZTYitQblplejdBNFRDcnN0VjFscVR6K21nNStJRTRSRUNheW5M?=
- =?utf-8?B?Rm9haGtDaFVubDBqL3JqYy9WOHVxdk5OQXNWU0o2Y1hhdS9ubjRHR0F0cUlL?=
- =?utf-8?B?MTdSUnFTcm0rajNLVUNDL2JSTXRyZ1VvVGZDc1hlWS9FaUpXMUVuTUc0anhT?=
- =?utf-8?B?ZFEzeTJ4NS8xVmY5V0JiNFVFcWZVSFBZeTBGSG1qNC9GTlJQak5Kd3FKbjNt?=
- =?utf-8?B?Z2wxLzUrQ2dXcXVlTWFiVm9HQ2w0RUVCdmJpakdzODE5MjcyajFMcEgycmNM?=
- =?utf-8?B?cmxGR0kwaXRFNnZjUVBueSt6dVNnMnJaSzJHeVNYUmF4U3JVL2FaQmZDbHIw?=
- =?utf-8?B?NzI2bkxobXU3S1c0VE9DVnFVZUpxNmQrR2NaZVFnMUVCMHRiWHV6a0dUb0Fo?=
- =?utf-8?B?cmFQSjIvOE5mNGJ5VUVKZ0hpN0JHV01QclNiaHlzQTk0WDJZQThRS1JOSDJV?=
- =?utf-8?B?bDNjZE04ejZ4Y1BrZGtlamtCMjZSVjIzK05LM1BtaUw0NW9NQnJIRnBwY01O?=
- =?utf-8?B?N2I2RGV1TndrVjBOcEQ1ZnRpM0R5SmorQ0Q2S1JhcGZjdlNKczkzcTU1WFVx?=
- =?utf-8?B?bTJ5RytYQTFKTmh2aHJWcE0wUUF6bTVTRVRIOUE2QzdOZ1hZdG9qQVYvU0lD?=
- =?utf-8?B?YmFENzQzR2NSVXcxdmVhclNRNDJxQW9TOG93WG1iVGJzeVZwNk9Tb2xQUjlj?=
- =?utf-8?B?MWo4WlhSSGZxaGsyK011ZCs3MFVHRkttV0tqdDZYZWRzRDFZTUkwOExmYUxU?=
- =?utf-8?B?TE1mV29wNy80NnJTWGo0Zko0bngzYkQrZjV3Z0srZ0N5b3VncFFlaXFSMVA5?=
- =?utf-8?B?Skh4SWN5d1BFNE9uTmdqM2hjNmozbENhTVA4c3EyTmxoSjJiRy9MYzFHcUVT?=
- =?utf-8?B?QjVZbVZ6WSswYUVjaWRJeU1nVkJjM2dOVFM4cGxMd2o0QWRqQnlJSHJUd0ZM?=
- =?utf-8?B?S1E5UkxBTTQ0eUJ0NTZsTnNwZG41aG05RTg1cHBwcUhIN2c0TUI5Y1paVkF2?=
- =?utf-8?B?dXk4Q2MrZ0xhdkFmZVM0bEJmZlNiNFN3VFl6Z0U4V1J6L1UySU9EN1hybGZT?=
- =?utf-8?B?VWlkLzNUMHlvRXlwYzBaV05pMTVxTkxUUm1kN3UrcTFtbmpLa2QrOTJQeWcz?=
- =?utf-8?B?TGtuOEJpQlp1Q1J3M0dta0I1WWdoazljN251bXJOTG9KV3JuNWtaVnEzSm4v?=
- =?utf-8?B?MUIrWmNGTlBYL1hpbzY1anMzMGU1VFd5dVdlY0tERUYrTHJkRVRlOTBhRmlO?=
- =?utf-8?B?TWVYdGh1TFQ4KzR1d3pIVzFuZk91Z3djWFl4M0pPeE1Nb0dpK0lkN1l2THI0?=
- =?utf-8?B?Zk4zczBPdWxnbnJoTjlJZVNNUGtnRmRYc1ZWdGV6ZllRWkt3NSs0N3NIb3Qy?=
- =?utf-8?B?QzN2THhySkFpdXMyNEYyTnRuVFhiaUlkN0tPVklrNlpVY0llZmhKQWVQSTYx?=
- =?utf-8?B?djNNZUlZNlltTzRaV3BvSFVUdGVrbC9BSm1EcWYvckZ4UXd3d0ZZdDZEUVc0?=
- =?utf-8?B?K0ljaXBTdGdEcWNQWU1jVkcyRm1tTDJaK3EzT3VTNXRGRHBERm9PTTNYM25D?=
- =?utf-8?B?THc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aaa6173-e9e6-4f34-196d-08dd07d20c95
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6614.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 13:08:09.4421 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0ta+K4MBn6XpjtVgSuF25Wle3LpWm5b1osLGIAyH/MmwRc7+JCxr78DNl5bg1PAc52Xf4y9l/OkYkgD49z1SMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8311
-X-OriginatorOrg: intel.com
+Subject: Re: [PATCH i-g-t v6] igt-runner fact checking
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,178 +50,1029 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-W dniu 15.11.2024 o 15:11, Gwan-gyeong Mun pisze:
-> Create a function that causing a read pagefault using the eu thread load
-> instruction. If the given ppgtt address points to an unallocated ppgtt
-> virtual address,  this shader can cause a read pagefault.
-> To directly use a 64-bit address as an argument, use the
-> Untyped 2D Block Array Load Instruction.
-> 
-> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+On Mon, 2024-11-18 at 09:24 +0100, Peter Senna Tschudin wrote:
+> When using igt-runner, collect facts before each test and after the last =
+test,
+> and report when facts change. The facts are:
+>  - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0 =3D 8086:e20b I=
+ntel Battlemage (Gen20)
+>  - Associations between PCI GPU and DRM card: hardware.pci.drm_card_at_ad=
+dr.0000:03:00.0 =3D card1
+>  - Kernel taints: kernel.is_tainted.taint_warn =3D true
+>  - GPU kernel modules loaded: kernel.kmod_is_loaded.i915 =3D true
+>=20
+> This change imposes little execution overhead and adds just a few lines o=
+f
+> logging. The facts will be printed on normal igt-runner output. Here is a=
+ real
+> example from our CI showing a problem: the test 'fbdev (eof)' loaded the =
+amdgpu
+> module:
+>=20
+>  [39.203551] Initializing watchdogs
+>  [39.203618]   /dev/watchdog0
+>  [39.214492] [FACT before any test] new hardware.pci.gpu_at_addr.0000:00:=
+02.0 =3D 8086:7d55 Intel Meteorlake (Gen12) Meteor Lake-P [Intel Arc Graphi=
+cs]
+>  [39.220845] [001/161] (960s left) i915_module_load (load)
+>  [39.288581] Starting subtest: load
+>  [41.638363] Subtest load: SUCCESS (2.350s)
+>  [41.667936] [FACT i915_module_load (load)] new hardware.pci.drm_card_at_=
+addr.0000:00:02.0 =3D card0
+>  [41.668109] [FACT i915_module_load (load)] new kernel.kmod_is_loaded.i91=
+5 =3D true
+>  [41.674193] [002/161] (958s left) core_auth (basic-auth)
+>  ...
+>  [43.616975] [006/161] (956s left) fbdev (eof)
+>  [43.998204] Subtest eof: SKIP (0.000s)
+>  [44.023783] [FACT fbdev (eof)] new kernel.kmod_is_loaded.amdgpu =3D true
+>=20
+> v6:
+>  - sort includes in igt_facts.c alphabetically
+>  - add facts for kernel taints using igt_kernel_tainted() and
+>    igt_explain_taints()
+>=20
+> v5:
+>  - fix the broken patch format from v4
+>=20
+> v4:
+>  - fix a bug on delete_fact()
+>  - drop glib and calls to g_ functions
+>  - change commit message to indicate that report only on fact changes
+>  - use consistent format for reporting changes
+>  - fix SPDX header format
+>=20
+> v3:
+>  - refreshed commit message
+>  - changed format SPDX string
+>  - removed license text
+>  - replace last_test assignment when null by two ternary operators
+>  - added function descriptions following example found elsewhere in the c=
+ode
+>  - added igt_assert to catch failures to realloc()
+>=20
+> v2:
+>  - add lib/tests/igt_facts.c for basic unit testing
+>  - bugfix: do not report a new gpu when the driver changes the gpu name
+>  - bugfix: do not report the pci_id twice on the gpu name
+>=20
+> CC: Ryszard Knop <ryszard.knop@intel.com>
+> CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> CC: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> CC: Lucas De Marchi <lucas.demarchi@intel.com>
+> CC: luciano.coelho@intel.com
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->   lib/gpgpu_shader.c          | 92 +++++++++++++++++++++++++++++++++++++
->   lib/gpgpu_shader.h          |  1 +
->   lib/iga64_generated_codes.c | 21 ++++++++-
->   3 files changed, 113 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-> index 7a2f0d28d..d7c47be80 100644
-> --- a/lib/gpgpu_shader.c
-> +++ b/lib/gpgpu_shader.c
-> @@ -912,3 +912,95 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
->   	", 0x807fffff, /* leave breakpoint exception */
->   	y_offset, value, 0x7fffff /* clear all exceptions */ );
->   }
+>  lib/igt_facts.c       | 714 ++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_facts.h       |  34 ++
+>  lib/meson.build       |   1 +
+>  lib/tests/igt_facts.c |  15 +
+>  lib/tests/meson.build |   1 +
+>  runner/executor.c     |   9 +
+>  6 files changed, 774 insertions(+)
+>  create mode 100644 lib/igt_facts.c
+>  create mode 100644 lib/igt_facts.h
+>  create mode 100644 lib/tests/igt_facts.c
+>=20
+> diff --git a/lib/igt_facts.c b/lib/igt_facts.c
+> new file mode 100644
+> index 000000000..e76196459
+> --- /dev/null
+> +++ b/lib/igt_facts.c
+> @@ -0,0 +1,714 @@
+> +// SPDX-License-Identifier: MIT
+> +// Copyright =C2=A9 2024 Intel Corporation
+> +
+> +#include <ctype.h>
+> +#include <libudev.h>
+> +#include <stdio.h>
+> +#include <sys/time.h>
+> +#include <time.h>
+> +
+> +#include "igt_core.h"
+> +#include "igt_device_scan.h"
+> +#include "igt_facts.h"
+> +#include "igt_kmod.h"
+> +#include "igt_taints.h"
 > +
 > +/**
-> + * gpgpu_shader__read_page_fault:
-> + * @shdr: shader to be modified
-> + * @ppgtt_addr: ppgtt virtual address to raise pagefault
+> + * report_fact_change: prints changes using igt_info()
 > + *
-> + * For a given arbitrary ppgtt virtual address, it raises a pagefault using
-> + * the eu thread load instruction.
+> + * Reports facts that are new, changed and deleted.
+> + *
+> + * Returns: void
 > + */
-> +void gpgpu_shader__read_page_fault(struct gpgpu_shader *shdr, uint64_t ppgtt_addr)
+
+If you are planning to create docs from this (which I assume you do,
+because of the "/**"), you should add descriptions to all function
+arguments, otherwise you'll get warnings, I think.
+
+
+> +static void report_fact_change(igt_fact *fact, const char *new_value,
+> +			       const char *last_test, bool delete)
+
+I think you don't need this function.  If you take away all the
+boilerplate and the checks to see who is actually calling the function
+(i.e. if it is new, update, delete...), all that remains is an
+igt_info() call.  It seems to me that you are checking things which you
+already knew again inside this function.
+
+
 > +{
-> +	/* pagefault ppgtt virtual address */
-> +	uint64_t addr = CANONICAL(ppgtt_addr);
+> +	struct timespec uptime_ts;
+> +	char *uptime =3D NULL;
+> +	bool changed =3D false;
+> +	const char *before_tests   =3D "before any test";
 > +
-> +	igt_assert_f((addr & 0x3) == 0, "address must be aligned to DWord!\n");
+> +	if (clock_gettime(CLOCK_BOOTTIME, &uptime_ts) !=3D 0)
+> +		return;
 > +
-> +	emit_iga64_code(shdr, read_page_fault, "				\n\
-> +#if GEN_VER >= 2000								\n\
-> +// Unyped 2D Block Array Load 							\n\
-> +// Instruction_Load2DBlockArray							\n\
-> +// bspec: 63972									\n\
-> +// src0 address payload (Untyped2DBLOCKAddressPayload) specifies both		\n\
-> +//	the block parameters and the 2D Surface parameters.			\n\
-> +// Untyped2DBLOCKAddressPayload							\n\
-> +// bspec: 63986									\n\
-> +// [243:240] Array Length: 0 (length is 1)					\n\
-> +// [239:232] Block Height: 0 (height is 1)					\n\
-> +// [231:224] Block Width: 0xf (width is 16)					\n\
-> +// [223:192] Block Start Y: 0							\n\
-> +// [191:160] Block Start X: 0							\n\
-> +// [159:128] Untyped 2D Surface Pitch: 0x3f (pitch is 64 bytes)			\n\
-> +// [127:96] Untyped 2D Surface Height: 0 (height is 1)				\n\
-> +// [95:64] Untyped 2D Surface Width: 0x3f (width is 64 bytes)			\n\
-> +// [63:0] Untyped 2D Surface Base Address					\n\
-> +// initialize register								\n\
-> +(W)	mov (8)			r30.0<1>:uq	0x0:uq				\n\
-> +// [0:31] Untyped 2D Surface Base Address low					\n\
-> +(W)	mov (1)			r30.0<1>:ud	ARG(0):ud			\n\
-> +// [32:63] Untyped 2D Surface Base Address high					\n\
-> +(W)	mov (1)			r30.1<1>:ud ARG(1):ud				\n\
-> +// [95:64] Untyped 2D Surface Width: 0x3f					\n\
-> +//	   (Width minus 1 (in bytes) of the 2D surface, it represents 64)	\n\
-> +(W)	mov (1) 		r30.2<1>:ud	0x3f:ud				\n\
-> +// [127:96] Untyped 2D Surface Height: 0x0					\n\
-> +//	    (Height minus 1 (in number of data elements) of			\n\
-> +//	    the Untyped 2D surface, it represents 1)				\n\
-> +(W)	mov (1) 		r30.3<1>:ud	0x0:ud				\n\
-> +// [159:128] Untyped 2D Surface Pitch: 0x3f					\n\
-> +//	     (Pitch minus 1 (in bytes) of the 2D surface, it represents 64)	\n\
-> +(W)	mov (1)			r30.4<1>:ud	0x3f:ud				\n\
-> +// [231:224] Block Width: 0xf (15)						\n\
-> +//	     (Specifies the width minus 1 (in number of data elements) for this	\n\
-> +//	     rectangular region, it represents 16)				\n\
-> +// Block width (encoded_value + 1) must be a multiple of DW (4 bytes).		\n\
-> +// [239:232] Block Height: 0							\n\
-> +//	     (Specifies the height minus 1 (in number of data elements) for	\n\
-> +//	     this rectangular region, it represents 1)				\n\
-> +// [243:240] Array Length: 0							\n\
-> +//	     (Specifies Array Length minus 1 for Load2DBlockArray messages,	\n\
-> +//	     must be zero for 2D Block Store messages, it represents 1)		\n\
-> +(W)	mov (1)			r30.7<1>:ud	0xf:ud				\n\
+> +	asprintf(&uptime,
+> +		 "%ld.%06ld",
+> +		 uptime_ts.tv_sec,
+> +		 uptime_ts.tv_nsec / 1000);
+> +
+> +	/* If delete is true, the fact was deleted */
+> +	if (delete) {
+> +		igt_info("[%s] [FACT %s] deleted: %s: %s\n",
+> +			 uptime,
+> +			 last_test ? last_test : before_tests,
+> +			 fact->name,
+> +			 fact->value);
+> +		return;
+> +	}
 
-It duplicates code from gpgpu_shader__write_offset, could be replaced 
-with macros as in https://patchwork.freedesktop.org/series/141348/ , but 
-no rush :)
+For example here, only the deletion code calls this function with
+delete =3D=3D true, so it could just as well print the info by itself.
 
-> +//										\n\
-> +// dest data payload format is selected by Data Size.				\n\
-> +// Block Height x Block Width x Data size / GRF Register size			\n\
-> +//	=> 1 x 16 x 32bit / 512bit = 1						\n\
-> +// data payload format size is 1 GRF Register.					\n\
-> +//										\n\
-> +// send.ugm Untyped 2D Block Array Load						\n\
-> +// Format: send.ugm (1) dst src0 src1 ExtMsg MsgDesc				\n\
-> +// Execution Mask restriction: SIMT1						\n\
-> +//										\n\
-> +// Extended Message Descriptor (Dataport Extended Descriptor Imm 2D Block)	\n\
-> +// bspec: 67780									\n\
-> +// 0x0 =>									\n\
-> +// [32:22] Global Y_offset: 0							\n\
-> +// [21:12] Global X_offset: 0							\n\
-> +//										\n\
-> +// Message Descriptor								\n\
-> +// bspec: 63972									\n\
-> +// 0x2128403 =>									\n\
-> +// [30:29] Address Type: 0 (FLAT)						\n\
-> +// [28:25] Src0 Length: 1							\n\
-> +// [24:20] Dest Length: 1							\n\
-> +// [19:16] Cache : 2 (L1UC_L3UC) 10						\n\
-> +// [15] Transpose Block: 1							\n\
-> +// [11:9] Data Size: 2 (D32) 10							\n\
-> +// [7] VNNI Transform: 0							\n\
-> +// [5:0] Load Operation: 3 (Load 2D Block) 11					\n\
-> +(W)	send.ugm (1)		r31	r30	null	0x0	0x2128403	\n\
-> +#endif										\n\
-> +	", lower_32_bits(addr), upper_32_bits(addr));
+Same thing for the subsequent blocks.
+
+
+> +
+> +	/* If new_value is NULL, it is a new fact */
+> +	if (new_value =3D=3D NULL) {
+> +		igt_info("[%s] [FACT %s] new: %s: %s\n",
+> +			 uptime,
+> +			 last_test ? last_test : before_tests,
+> +			 fact->name,
+> +			 fact->value);
+> +		return;
+> +	}
+> +
+> +	/* Check if the value changed
+> +	 *
+> +	 * There is a corner case because the gpu driver can change the human
+> +	 * readeable strings. If the fact->name contains pci_gpu_fact, compare
+> +	 * just the first nine characters (pci_id).
+> +	 */
+> +	if (strstr(fact->name, pci_gpu_fact) !=3D NULL) {
+> +		if (strncmp(fact->value, new_value, 9) !=3D 0)
+> +			changed =3D true;
+> +	} else if (strcmp(fact->value, new_value) !=3D 0)
+> +		changed =3D true;
+
+And this, the only actual logic in this function is better done when
+you get this information.
+
+
+> +
+> +	if (changed) {
+> +		igt_info("[%s] [FACT %s] changed: %s: %s -> %s\n",
+> +			 uptime,
+> +			 last_test,
+> +			 fact->name,
+> +			 fact->value,
+> +			 new_value);
+> +		changed =3D false;
+> +	}
+> +	free(uptime);
 > +}
-> \ No newline at end of file
-
-New line
-
-> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-> index 355b128b5..318550c52 100644
-> --- a/lib/gpgpu_shader.h
-> +++ b/lib/gpgpu_shader.h
-> @@ -87,6 +87,7 @@ void gpgpu_shader__write_offset(struct gpgpu_shader *shdr, uint64_t ppgtt_offset
->   				uint32_t value);
->   void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw, uint32_t x_offset,
->   				      uint32_t y_offset, uint32_t mask, uint32_t value);
-> +void gpgpu_shader__read_page_fault(struct gpgpu_shader *shdr, uint64_t ppgtt_addr);
->   void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
->   void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
->   void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
-> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-> index b23613ac4..53a705358 100644
-> --- a/lib/iga64_generated_codes.c
-> +++ b/lib/iga64_generated_codes.c
-> @@ -3,7 +3,7 @@
->   
->   #include "gpgpu_shader.h"
->   
-> -#define MD5_SUM_IGA64_ASMS 4fcde43dedb9d3212f1d85b5b180b0c1
-> +#define MD5_SUM_IGA64_ASMS 01290b5ecda7a6e765463558d6f59952
->   
->   struct iga64_template const iga64_code_gpgpu_fill[] = {
->   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-> @@ -79,6 +79,25 @@ struct iga64_template const iga64_code_gpgpu_fill[] = {
->   	}}
->   };
->   
-> +struct iga64_template const iga64_code_read_page_fault[] = {
-> +	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-> +		0x800c0061, 0x1e054330, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e054220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
-> +		0x80000061, 0x1e254220, 0x00000000, 0x0000003f,
-> +		0x80000061, 0x1e354220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e454220, 0x00000000, 0x0000003f,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
-> +		0x80032031, 0x1f0c0000, 0xf8061e0c, 0x00a00000,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 0, .size = 0, .code = (const uint32_t []) {
 > +
-> +	}}
+> +/**
+> + * get_fact: Returns a fact from the list by name.
+> + *
+> + * Iterates over the list of facts and returns the first one with the sa=
+me name.
+> + * If no fact is found, returns NULL.
+> + *
+> + * Returns: igt_fact* or NULL
+> + */
+> +static igt_fact *get_fact(igt_fact_list *list, const char *name)
+> +{
+> +	if (!list || list->facts =3D=3D NULL || list->num_facts =3D=3D 0)
+> +		return NULL;
+
+AFAICT list->facts =3D=3D NULL and list->num_facts =3D=3D 0 are redundant h=
+ere,
+right? It should not happen.  And if you did lose track of the
+num_facts you actually had in the list (regardless of whether it's
+zero), you would be in trouble in other places too.
+
+
+
+> +
+> +	for (int i =3D 0; i < list->num_facts; i++) {
+> +		if (list->facts[i].name =3D=3D NULL)
+> +			continue;
+> +
+> +		if (strcmp(list->facts[i].name, name) =3D=3D 0)
+> +			return &list->facts[i];
+> +	}
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * delete_fact: Deletes a fact from the list by name.
+> + *
+> + * Iterates over the list of facts and deletes the first one with the sa=
+me name.
+> + * Returns true if the fact was deleted, false otherwise.
+> + *
+> + * Returns: bool idicating if the fact was deleted
+> + */
+> +static bool delete_fact(igt_fact_list *list, const char *name, const cha=
+r *last_test)
+> +{
+> +	igt_fact *fact =3D NULL;
+> +	int i;
+> +
+> +	if (!list || !name || list->facts =3D=3D NULL || list->num_facts =3D=3D=
+ 0)
+> +		return false;
+> +
+> +	fact =3D get_fact(list, name);
+> +	if (fact =3D=3D NULL)
+> +		return false;
+> +
+> +	/* Report the deletion */
+> +	report_fact_change(fact, NULL, last_test, true);
+> +
+> +	/* Move all facts after the one to be deleted one step back */
+> +	for (i =3D 0; i < list->num_facts; i++) {
+> +		if (strcmp(list->facts[i].name, name) =3D=3D 0) {
+> +			free(list->facts[i].name);
+> +			free(list->facts[i].value);
+> +
+> +			for (int j =3D i; j < list->num_facts - 1; j++)
+> +				list->facts[j] =3D list->facts[j + 1];
+> +			break;
+> +		}
+> +	}
+> +	list->num_facts--;
+> +
+> +	if (list->num_facts =3D=3D 0) {
+> +		free(list->facts);
+> +		list->facts =3D NULL;
+> +	} else {
+> +		list->facts =3D realloc(list->facts, list->num_facts * sizeof(igt_fact=
+));
+> +		igt_assert(list->facts !=3D NULL);
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * set_fact: Adds a fact to the list.
+> + *
+> + * This is intended for the "new_list" that is created for being merged =
+with the
+> + * "list". It adds a new fact to the list. If the fact already exists, i=
+t
+> + * returns false.
+> + *
+> + * Returns: bool indicating if the fact was added
+> + */
+> +static bool set_fact(igt_fact_list *list, const char *name,
+> +		     const char *value, const char *last_test)
+> +{
+> +	igt_fact *fact =3D NULL;
+> +
+> +	/* Check that name and value are not null */
+> +	if (name =3D=3D NULL || value =3D=3D NULL)
+> +		return false;
+> +
+> +	fact =3D get_fact(list, name);
+> +	if (fact !=3D NULL)
+> +		return false; /* Should not happen */
+> +
+> +	/* Add a new fact */
+> +	list->num_facts++;
+> +
+> +	list->facts =3D realloc(list->facts, list->num_facts * sizeof(igt_fact)=
+);
+> +	igt_assert(list->facts !=3D NULL);
+> +
+> +	list->facts[list->num_facts - 1].name =3D strdup(name);
+> +	list->facts[list->num_facts - 1].value =3D strdup(value);
+> +
+> +	if (last_test)
+> +		list->facts[list->num_facts - 1].last_test =3D strdup(last_test);
+> +	else
+> +		list->facts[list->num_facts - 1].last_test =3D NULL;
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * update_list: Updates the main list with new or different facts
+> + *
+> + * This function is used to update the main list with new or different f=
+acts. It
+> + * differs from set_fact because by calling report_fact_change() as this=
+ is
+> + * changing the actual fact list.
+
+Again, I think you should know this at the caller side (and you do), so
+if you just print instead of having the report_fact_change() function,
+you can use a single function for add and update.
+
+
+> + *
+> + * Returns: bool indicating if the list was changed
+> + */
+> +static bool update_list(igt_fact_list *list, const char *name,
+> +			const char *value, const char *last_test)
+> +{
+> +	igt_fact *fact =3D NULL;
+> +
+> +	/* Check that name and value are not null */
+> +	if (name =3D=3D NULL || value =3D=3D NULL)
+> +		return false;
+> +
+> +	fact =3D get_fact(list, name);
+> +	if (fact !=3D NULL) {
+> +		/* Return false if fact->value equals value */
+> +		if (strcmp(fact->value, value) =3D=3D 0)
+> +			return false; /* Not changed */
+> +
+> +		report_fact_change(fact, value, last_test, false);
+> +
+> +		/* Update the value */
+> +		fact->value =3D strdup(value);
+> +		return true;
+> +	}
+> +
+> +	/* Add a new fact */
+> +	list->num_facts++;
+> +
+> +	list->facts =3D realloc(list->facts, list->num_facts * sizeof(igt_fact)=
+);
+> +	igt_assert(list->facts !=3D NULL);
+> +
+> +	list->facts[list->num_facts - 1].name =3D strdup(name);
+> +	list->facts[list->num_facts - 1].value =3D strdup(value);
+> +
+> +	/* Report new fact */
+> +	report_fact_change(&list->facts[list->num_facts - 1], NULL,
+> +					   last_test, false);
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * merge_facts: Merges two lists of facts
+> + *
+> + * This function merges two lists of facts. It filters the facts by fact=
+_group
+> + * and deletes the ones that are not present in the new_list. It also up=
+dates
+> + * the facts that are present in both lists.
+> + *
+> + * As an example if fact_group is "pci_gpu", we can delete the fact
+> + * hardware.pci.gpu_at.0000:00:02.0 if it doesn't exist in new_list.
+> + *
+> + * Returns: void
+> + */
+> +static void merge_facts(igt_fact_list *list, igt_fact_list *new_list,
+> +			const char *fact_group, const char *last_test)
+> +{
+> +	/* Filter by fact_group and delete facts that exist on list
+> +	 * but not on new_list
+> +	 */
+> +	for (int i =3D 0; i < list->num_facts; i++) {
+> +		if (strstr(list->facts[i].name, fact_group) =3D=3D NULL)
+> +			continue;
+> +		if (get_fact(new_list, list->facts[i].name) =3D=3D NULL)
+> +			delete_fact(list, list->facts[i].name, last_test);
+> +	}
+> +
+> +	/* Add and update facts from new_list to list */
+> +	for (int i =3D 0; i < new_list->num_facts; i++) {
+> +		if (strstr(new_list->facts[i].name, fact_group) =3D=3D NULL)
+> +			continue; /* Should never happen */
+> +		update_list(list, new_list->facts[i].name,
+> +			    new_list->facts[i].value,
+> +			    new_list->facts[i].last_test);
+> +	}
+> +}
+
+Can't you just grow the list instead of creating new ones and then
+merging?
+
+This makes me start thinking... it would be so much easier to make all
+this in python.  Would it be possible to glue a python script to igt-
+runner (or whoever calls it) and get the data from dmesg, lsmod etc.?
+Or otherwise aren't there any libraries already used by IGT that
+include list handling?
+
+I didn't finish reviewing the rest of this patch yet.  My current
+comment may pivot the way you're implementing this completely, so
+better wait for your reply. :)
+
+--
+Cheers,
+Luca.
+
+
+> +
+> +/**
+> + * scan_pci_for_gpus: scans the pci bus for gpus using udev
+> + *
+> + * This function scans the pci bus for gpus using udev. It creates a new=
+ list
+> + * of facts with the pci_gpu_fact fact_group and merges it with the list=
+ of
+> + * facts passed as argument.
+> + *
+> + * Returns: void
+> + */
+> +static void scan_pci_for_gpus(igt_fact_list *list, const char *last_test=
+)
+> +{
+> +	struct udev *udev =3D NULL;
+> +	struct udev_enumerate *enumerate =3D NULL;
+> +	struct udev_list_entry *devices, *dev_list_entry;
+> +	struct igt_device_card card;
+> +	char pcistr[10];
+> +	int ret;
+> +	char *factname =3D NULL;
+> +	char *factvalue =3D NULL;
+> +	igt_fact_list new_list =3D {0};
+> +
+> +	udev =3D udev_new();
+> +	if (!udev) {
+> +		igt_warn("Failed to create udev context\n");
+> +		return;
+> +	}
+> +
+> +	enumerate =3D udev_enumerate_new(udev);
+> +	if (!enumerate) {
+> +		igt_warn("Failed to create udev enumerate\n");
+> +		udev_unref(udev);
+> +		return;
+> +	}
+> +
+> +	ret =3D udev_enumerate_add_match_subsystem(enumerate, "pci");
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret =3D udev_enumerate_add_match_property(enumerate, "PCI_CLASS", "3000=
+0");
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret =3D udev_enumerate_add_match_property(enumerate, "PCI_CLASS", "3800=
+0");
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret =3D udev_enumerate_scan_devices(enumerate);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	devices =3D udev_enumerate_get_list_entry(enumerate);
+> +	if (!devices)
+> +		goto out;
+> +
+> +	udev_list_entry_foreach(dev_list_entry, devices) {
+> +		const char *path;
+> +		struct udev_device *udev_dev;
+> +		struct udev_list_entry *entry;
+> +		char *model =3D NULL;
+> +		char *codename =3D NULL;
+> +
+> +		path =3D udev_list_entry_get_name(dev_list_entry);
+> +		udev_dev =3D udev_device_new_from_syspath(udev, path);
+> +		if (!udev_dev)
+> +			continue;
+> +
+> +		/* Strip path to only the content after the last / */
+> +		path =3D strrchr(path, '/');
+> +		if (path)
+> +			path++;
+> +		else
+> +			path =3D "unknown";
+> +
+> +		strcpy(card.pci_slot_name, "-");
+> +
+> +		entry =3D udev_device_get_properties_list_entry(udev_dev);
+> +		while (entry) {
+> +			const char *name =3D udev_list_entry_get_name(entry);
+> +			const char *value =3D udev_list_entry_get_value(entry);
+> +
+> +			entry =3D udev_list_entry_get_next(entry);
+> +			if (!strcmp(name, "ID_MODEL_FROM_DATABASE"))
+> +				model =3D strdup(value);
+> +			else if (!strcmp(name, "PCI_ID"))
+> +				igt_assert_eq(sscanf(value, "%hx:%hx",
+> +						     &card.pci_vendor, &card.pci_device), 2);
+> +		}
+> +		snprintf(pcistr, sizeof(pcistr), "%04x:%04x",
+> +			 card.pci_vendor, card.pci_device);
+> +		codename =3D igt_device_get_pretty_name(&card, false);
+> +
+> +		/* Set codename to null if it is the same string as pci_id */
+> +		if (codename && strcmp(pcistr, codename) =3D=3D 0) {
+> +			free(codename);
+> +			codename =3D NULL;
+> +		}
+> +		asprintf(&factname, "%s.%s", pci_gpu_fact, path);
+> +		asprintf(&factvalue,
+> +			"%s %s %s",
+> +			pcistr,
+> +			codename ? codename : "",
+> +			model ? model : "");
+> +
+> +		set_fact(&new_list, factname, factvalue, last_test);
+> +
+> +		free(codename);
+> +		free(model);
+> +		udev_device_unref(udev_dev);
+> +	}
+> +	merge_facts(list, &new_list, pci_gpu_fact, last_test);
+> +
+> +out:
+> +	udev_enumerate_unref(enumerate);
+> +	udev_unref(udev);
+> +}
+> +
+> +/**
+> + * scan_pci_drm_cards: scans the pci bus for drm cards using udev
+> + *
+> + * This function scans the pci bus for drm cards using udev. It creates =
+a new
+> + * list of facts with the drm_card_fact fact_group and merges it with th=
+e list
+> + * of facts passed as argument.
+> + *
+> + * Returns: void
+> + */
+> +static void scan_pci_drm_cards(igt_fact_list *list, const char *last_tes=
+t)
+> +{
+> +	struct udev *udev =3D NULL;
+> +	struct udev_enumerate *enumerate =3D NULL;
+> +	struct udev_list_entry *devices, *dev_list_entry;
+> +	int ret;
+> +	char *factname =3D NULL;
+> +	char *factvalue =3D NULL;
+> +	igt_fact_list new_list =3D {0};
+> +
+> +	udev =3D udev_new();
+> +	if (!udev)
+> +		return;
+> +
+> +	enumerate =3D udev_enumerate_new(udev);
+> +	if (!enumerate) {
+> +		udev_unref(udev);
+> +		return;
+> +	}
+> +
+> +	ret =3D udev_enumerate_add_match_subsystem(enumerate, "drm");
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret =3D udev_enumerate_scan_devices(enumerate);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	devices =3D udev_enumerate_get_list_entry(enumerate);
+> +	if (!devices)
+> +		goto out;
+> +
+> +	ret =3D udev_enumerate_add_match_subsystem(enumerate, "drm");
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret =3D udev_enumerate_scan_devices(enumerate);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	devices =3D udev_enumerate_get_list_entry(enumerate);
+> +	if (!devices)
+> +		goto out;
+> +
+> +	udev_list_entry_foreach(dev_list_entry, devices) {
+> +		const char *path;
+> +		struct udev_device *drm_dev, *pci_dev;
+> +		const char *drm_name, *pci_addr;
+> +
+> +		path =3D udev_list_entry_get_name(dev_list_entry);
+> +		drm_dev =3D udev_device_new_from_syspath(udev, path);
+> +		if (!drm_dev)
+> +			continue;
+> +
+> +		drm_name =3D udev_device_get_sysname(drm_dev);
+> +		/* Filter the device by name. Want devices such as card0 and card1.
+> +		 * If the device has '-' in the name, contine
+> +		 */
+> +		if (strncmp(drm_name, "card", 4) !=3D 0 || strchr(drm_name, '-') !=3D =
+NULL) {
+> +			udev_device_unref(drm_dev);
+> +			continue;
+> +		}
+> +
+> +		/* Get the pci address of the gpu associated with the drm_dev*/
+> +		pci_dev =3D udev_device_get_parent_with_subsystem_devtype(drm_dev, "pc=
+i", NULL);
+> +		if (pci_dev) {
+> +			pci_addr =3D udev_device_get_sysattr_value(pci_dev, "address");
+> +			if (!pci_addr)
+> +				pci_addr =3D udev_device_get_sysname(pci_dev);
+> +		} else {
+> +			/* Some GPUs are platform devices. Ignore them. */
+> +			pci_addr =3D NULL;
+> +			udev_device_unref(drm_dev);
+> +			continue;
+> +		}
+> +		asprintf(&factname, "%s.%s", drm_card_fact, pci_addr);
+> +		asprintf(&factvalue, "%s", drm_name);
+> +		set_fact(&new_list, factname, factvalue, last_test);
+> +
+> +		udev_device_unref(drm_dev);
+> +	}
+> +	if (new_list.num_facts > 0)
+> +		merge_facts(list, &new_list, drm_card_fact, last_test);
+> +
+> +out:
+> +	udev_enumerate_unref(enumerate);
+> +	udev_unref(udev);
+> +}
+> +
+> +/**
+> + * scan_kernel_tainted: scans for kernel taints using existing igt infra
+> + *
+> + * This function scans for kernel taints using igt_kernel_tainted() and
+> + * igt_explain_taints(). It will cut off the explanation keeping only th=
+e
+> + * taint name.
+> + *
+> + * Returns: void
+> + */
+> +static void scan_kernel_tainted(igt_fact_list *list, const char *last_te=
+st)
+> +{
+> +	unsigned long taints =3D 0;
+> +	const char *reason =3D NULL;
+> +	char *taint_name =3D NULL;
+> +	char *fact_name =3D NULL;
+> +	igt_fact_list new_list =3D {0};
+> +
+> +	taints =3D igt_kernel_tainted(&taints);
+> +	/* For testing, set all bits to 1
+> +	 * taints =3D 0xFFFFFFFF;
+> +	 */
+> +
+> +	while ((reason =3D igt_explain_taints(&taints)) !=3D NULL) {
+> +		/* Cut at the ':' to get only the taint name */
+> +		taint_name =3D strtok(strdup(reason), ":");
+> +		if (!taint_name)
+> +			continue;
+> +
+> +		/* Lowercase taint_name */
+> +		for (int i =3D 0; taint_name[i]; i++)
+> +			taint_name[i] =3D tolower(taint_name[i]);
+> +
+> +		asprintf(&fact_name, "%s.%s", ktaint_fact, taint_name);
+> +		set_fact(&new_list, fact_name, "true", last_test);
+> +
+> +		free(taint_name);
+> +		free(fact_name);
+> +	}
+> +
+> +	merge_facts(list, &new_list, ktaint_fact, last_test);
+> +}
+> +
+> +
+> +/**
+> + * scan_kernel_loaded_kmods: scans for loaded kmods using igt_fact_kmod_=
+list
+> + * and igt_kmod_is_loaded()
+> + *
+> + * This function scans for loaded kmods using igt_fact_kmod_list and
+> + * igt_kmod_is_loaded(). It creates a new list of facts with the kmod_fa=
+ct
+> + * fact_group and merges it with the list of facts passed as argument.
+> + *
+> + * Returns: void
+> + */
+> +static void scan_kernel_loaded_kmods(igt_fact_list *list, const char *la=
+st_test)
+> +{
+> +	char *name =3D NULL;
+> +	igt_fact_list new_list =3D {0};
+> +
+> +	/* Iterate over igt_fact_kmod_list[] until the element contains "\0" */
+> +	for (int i =3D 0; strcmp(igt_fact_kmod_list[i], "\0") !=3D 0; i++) {
+> +		asprintf(&name, "%s.%s", kmod_fact, igt_fact_kmod_list[i]);
+> +		if (igt_kmod_is_loaded(igt_fact_kmod_list[i]))
+> +			set_fact(&new_list, name, "true", last_test);
+> +
+> +		free(name);
+> +	}
+> +	merge_facts(list, &new_list, kmod_fact, last_test);
+> +}
+> +
+> +/**
+> + * igt_facts: the main public function for igt_facts
+> + *
+> + * Call this function where you want to gather and report facts.
+> + *
+> + * Returns: void
+> + */
+> +void igt_facts(igt_fact_list *list, const char *last_test)
+> +{
+> +	scan_pci_for_gpus(list, last_test);
+> +	scan_pci_drm_cards(list, last_test);
+> +	scan_kernel_tainted(list, last_test);
+> +	scan_kernel_loaded_kmods(list, last_test);
+> +
+> +	/* Flush stdout and stderr */
+> +	fflush(stdout);
+> +	fflush(stderr);
+> +}
+> +
+> +/**
+> + * print_all_facts: prints all facts in the list
+> + *
+> + * This function prints all facts in the list.
+> + *
+> + * Returns: void
+> + */
+> +void print_all_facts(igt_fact_list *list)
+> +{
+> +	igt_info("Number of facts: %d\n", list->num_facts);
+> +	for (int i =3D 0; i < list->num_facts; i++)
+> +		igt_info(" - %s: %s\n", list->facts[i].name, list->facts[i].value);
+> +}
+> +
+> +
+> +/*
+> + * Testing
+> + *
+> + * Defined here so that we can keep most of the functions static
+> + *
+> + */
+> +
+> +/**
+> + * igt_facts_test_pci_gpu: Tests set_fact and merge_facts for a pci gpu
+> + *
+> + * Returns: void
+> + */
+> +static void igt_facts_test_pci_gpu(igt_fact_list *list,
+> +				   const char *last_test,
+> +				   int index)
+> +{
+> +	igt_fact_list new_list =3D {0};
+> +
+> +	set_fact(&new_list, /* fact list */
+> +		 "hardware.pci.gpu_at_addr.0000:00:02.0",
+> +		 "8086:64a0 Intel Lunarlake (Gen20)",
+> +		 last_test);
+> +
+> +	igt_assert_eq(new_list.num_facts, 1);
+> +	igt_assert_eq(strcmp(new_list.facts[0].name,
+> +		      "hardware.pci.gpu_at_addr.0000:00:02.0"), 0);
+> +	igt_assert_eq(strcmp(new_list.facts[0].value,
+> +		      "8086:64a0 Intel Lunarlake (Gen20)"), 0);
+> +	igt_assert(new_list.facts[0].last_test =3D=3D NULL);
+> +
+> +	merge_facts(list, &new_list, pci_gpu_fact, last_test);
+> +	igt_assert_eq(list->num_facts, index + 1);
+> +	igt_assert_eq(strcmp(list->facts[index].name,
+> +		      "hardware.pci.gpu_at_addr.0000:00:02.0"), 0);
+> +	igt_assert_eq(strcmp(list->facts[index].value,
+> +		      "8086:64a0 Intel Lunarlake (Gen20)"), 0);
+> +
+> +}
+> +
+> +/**
+> + * igt_facts_test_i915_kmod: Tests set_fact and merge_facts for the i915=
+ kmod
+> + *
+> + * Returns: void
+> + */
+> +static void igt_facts_test_i915_kmod(igt_fact_list *list,
+> +				     const char *last_test,
+> +				     int index)
+> +{
+> +	igt_fact_list new_list =3D {0};
+> +
+> +	set_fact(&new_list,
+> +		 "kernel.kmod_is_loaded.i915",
+> +		 "true",
+> +		 last_test);
+> +
+> +	igt_assert_eq(new_list.num_facts, 1);
+> +	igt_assert_eq(strcmp(new_list.facts[0].name,
+> +		      "kernel.kmod_is_loaded.i915"), 0);
+> +	igt_assert_eq(strcmp(new_list.facts[0].value, "true"), 0);
+> +	igt_assert(new_list.facts[0].last_test =3D=3D NULL);
+> +
+> +	merge_facts(list, &new_list, kmod_fact, last_test);
+> +	igt_assert_eq(list->num_facts, index + 1);
+> +	igt_assert_eq(strcmp(list->facts[index].name,
+> +		      "kernel.kmod_is_loaded.i915"), 0);
+> +	igt_assert_eq(strcmp(list->facts[index].value, "true"), 0);
+> +}
+> +
+> +/**
+> + * igt_facts_test_delete_facts: Tests delete_fact in different scenarios
+> + *
+> + * Returns: void
+> + */
+> +static void igt_facts_test_delete_fact(igt_fact_list *list,
+> +				       const char *last_test)
+> +{
+> +	igt_info("Testing delete_fact()\n");
+> +
+> +	delete_fact(list, "kernel.kmod_is_loaded.i915", NULL);
+> +	igt_assert_eq(list->num_facts, 1);
+> +	igt_assert_eq(strcmp(list->facts[0].name,
+> +		      "hardware.pci.gpu_at_addr.0000:00:02.0"), 0);
+> +	igt_assert_eq(strcmp(list->facts[0].value,
+> +		      "8086:64a0 Intel Lunarlake (Gen20)"), 0);
+> +
+> +	delete_fact(list, "hardware.pci.gpu_at_addr.0000:00:02.0", NULL);
+> +	igt_assert_eq(list->num_facts, 0);
+> +
+> +	/* Test delete on an empty list */
+> +	delete_fact(list, "kernel.kmod_is_loaded.i915", NULL);
+> +	igt_assert_eq(list->num_facts, 0);
+> +
+> +	/* Test delete on reverse order */
+> +	igt_facts_test_pci_gpu(list, NULL, 0);
+> +	igt_facts_test_i915_kmod(list, NULL, 1);
+> +	delete_fact(list, "hardware.pci.gpu_at_addr.0000:00:02.0", NULL);
+> +	delete_fact(list, "kernel.kmod_is_loaded.i915", NULL);
+> +	igt_assert_eq(list->num_facts, 0);
+> +
+> +	/* List is empty from now on*/
+> +	delete_fact(list, "hardware.pci.gpu_at_addr.0000:00:02.0", NULL);
+> +	delete_fact(list, "kernel.kmod_is_loaded.i915", NULL);
+> +	igt_assert_eq(list->num_facts, 0);
+> +}
+> +
+> +/**
+> + * igt_facts_test: Main function for testing the igt_facts module
+> + *
+> + * Returns: bool indicating if the tests passed
+> + */
+> +bool igt_facts_test(void)
+> +{
+> +	igt_fact_list fact_list =3D {0};
+> +
+> +	/* Test set_fact for the pci gpu */
+> +	igt_info("Testing set_fact()\n");
+> +	igt_facts_test_pci_gpu(&fact_list, NULL, 0);
+> +	igt_facts_test_i915_kmod(&fact_list, NULL, 1);
+> +
+> +	/* Test delete_fact */
+> +	igt_facts_test_delete_fact(&fact_list, NULL);
+> +
+> +	return true;
+> +}
+> diff --git a/lib/igt_facts.h b/lib/igt_facts.h
+> new file mode 100644
+> index 000000000..e3c2c77eb
+> --- /dev/null
+> +++ b/lib/igt_facts.h
+> @@ -0,0 +1,34 @@
+> +/* SPDX-License-Identifier: MIT
+> + * Copyright =C2=A9 2024 Intel Corporation
+> + */
+> +
+> +#include <stdbool.h>
+> +
+> +typedef struct {
+> +	char *name;
+> +	char *value;
+> +	char *last_test;
+> +} igt_fact;
+> +
+> +typedef struct {
+> +	igt_fact *facts;
+> +	int num_facts;
+> +} igt_fact_list;
+> +
+> +const char *igt_fact_kmod_list[] =3D {
+> +	"amdgpu",
+> +	"i915",
+> +	"nouveau",
+> +	"radeon",
+> +	"xe",
+> +	"\0"
 > +};
 > +
->   struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
->   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->   		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-
+> +const char *kmod_fact     =3D "kernel.kmod_is_loaded"; /* true or false =
+*/
+> +const char *ktaint_fact   =3D "kernel.is_tainted"; /* taint name: taint_=
+warn */
+> +const char *pci_gpu_fact  =3D "hardware.pci.gpu_at_addr"; /* id vendor m=
+odel */
+> +const char *drm_card_fact =3D "hardware.pci.drm_card_at_addr"; /* cardX =
+*/
+> +
+> +void igt_facts(igt_fact_list *list, const char *last_test);
+> +void print_all_facts(igt_fact_list *list);
+> +bool igt_facts_test(void); /* For unit testing only */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index c3556a921..c44ca2b5a 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -18,6 +18,7 @@ lib_sources =3D [
+>  	'i915/i915_crc.c',
+>  	'igt_collection.c',
+>  	'igt_color_encoding.c',
+> +	'igt_facts.c',
+>  	'igt_crc.c',
+>  	'igt_debugfs.c',
+>  	'igt_device.c',
+> diff --git a/lib/tests/igt_facts.c b/lib/tests/igt_facts.c
+> new file mode 100644
+> index 000000000..4b1c8a80c
+> --- /dev/null
+> +++ b/lib/tests/igt_facts.c
+> @@ -0,0 +1,15 @@
+> +// SPDX-License-Identifier: MIT
+> +// Copyright =C2=A9 2024 Intel Corporation
+> +
+> +#include <stdbool.h>
+> +
+> +#include "igt_core.h"
+> +#include "igt_facts.h"
+> +
+> +/* Tests are not defined here so we can keep most of the functions stati=
+c */
+> +
+> +igt_simple_main
+> +{
+> +	igt_info("Running igt_facts_test\n");
+> +	igt_assert(igt_facts_test() =3D=3D true);
+> +}
+> diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+> index df8092638..1ce19f63c 100644
+> --- a/lib/tests/meson.build
+> +++ b/lib/tests/meson.build
+> @@ -8,6 +8,7 @@ lib_tests =3D [
+>  	'igt_dynamic_subtests',
+>  	'igt_edid',
+>  	'igt_exit_handler',
+> +	'igt_facts',
+>  	'igt_fork',
+>  	'igt_fork_helper',
+>  	'igt_hook',
+> diff --git a/runner/executor.c b/runner/executor.c
+> index ac73e1dde..6ff252174 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -35,6 +35,7 @@
+>  #include "executor.h"
+>  #include "output_strings.h"
+>  #include "runnercomms.h"
+> +#include "igt_facts.h"
+> =20
+>  #define KMSG_HEADER "[IGT] "
+>  #define KMSG_WARN 4
+> @@ -2306,6 +2307,8 @@ bool execute(struct execute_state *state,
+>  	sigset_t sigmask;
+>  	double time_spent =3D 0.0;
+>  	bool status =3D true;
+> +	igt_fact_list fact_list =3D {0};
+> +	char *last_test =3D NULL;
+> =20
+>  	if (state->dry) {
+>  		outf("Dry run, not executing. Invoke igt_resume if you want to execute=
+.\n");
+> @@ -2438,6 +2441,10 @@ bool execute(struct execute_state *state,
+>  		int result;
+>  		bool already_written =3D false;
+> =20
+> +		/* Calls before running each test */
+> +		igt_facts(&fact_list, last_test);
+> +		last_test =3D entry_display_name(&job_list->entries[state->next]);
+> +
+>  		if (should_die_because_signal(sigfd)) {
+>  			status =3D false;
+>  			goto end;
+> @@ -2526,6 +2533,8 @@ bool execute(struct execute_state *state,
+>  			return execute(state, settings, job_list);
+>  		}
+>  	}
+> +	/* Last call to collect facts after the last test runs */
+> +	igt_facts(&fact_list, last_test);
+> =20
+>  	if ((timefd =3D openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_=
+EXCL, 0666)) >=3D 0) {
+>  		dprintf(timefd, "%f\n", timeofday_double());
