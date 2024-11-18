@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBE9D60D08
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BC6D60D0A
 	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0CC8710E57F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E8DD10E580;
 	Mon, 18 Nov 2024 23:36:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ExEscGaJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DcGfB6og";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D804710E040
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0523B10E56D
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731972954; x=1763508954;
+ t=1731972959; x=1763508959;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Rg2arXeuFU6PrAFxbxFS4Q0ahHLNAQySLw0eB/7jbv0=;
- b=ExEscGaJSXaxWrDDuZ7kxRrARS2SMCHV0zZbVP4zxBq5CygDiItTe6XO
- 4ByQ/KYRx2HLMM/2sOW9IlpN5XZNkwDCMcFiHrAnBpMHjNIDvrM4J7PZP
- UXUhl9rZiqSTRrLwMK0dPLsBzg8suIB9NWfXZeulmdfxEv7NjUdAQ+vIm
- ulYw1B4XB32J8uoStoLIly4esXyGScZjm4vkINTBYfwfWRnPHUErtKfpq
- AWdDe5VlHmZ49BaAkAUFH4kiBJNMLmEZcm1MIi2lS3uryBr2KW5i52RdQ
- ZXbyE59JhyI9vqYFqNSiiTszSBBQ99jXaJuxIxqNbpUAqSy6zvZ7z9Ub1 Q==;
-X-CSE-ConnectionGUID: cwzrVdiFT5K4ziagiYGKnQ==
-X-CSE-MsgGUID: KR+d1Y6XRf+rZzqbzp6y+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451230"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451230"
+ bh=k6npIro/CDXRVdYry+Z7wVHzj1KL9gz5MwjkQUsk+8Y=;
+ b=DcGfB6ogqAAqxUxmuhvs0y5Uk0eBmNK/xHr0N4rqfR4UGAMS5kZ6kKmA
+ 93oakxWLViwig9lf7UHXbxeEF60lwe9/dPb23/X65t8rgQJ6BTKN6wUQq
+ 6SYGi0ty+jaxpn0JToDMv5eW3wYh070rnO0LT+npZSIcvFP3m0/UZyxg5
+ er63iFG/c2dXlXz4qWw8tVff5Xisin6LAj++k5TFes6zMhDGB6KK/6X2y
+ bgpHdC3Qn5REhI96pdJmrNYjQ1wZCbaDNBvtyT8CheHvz3T6TJIqhL3uG
+ YQYisvz6J46ORg529h5MGIqhkETRYL25BfxbAczBPYrBI2VbmMVtrrNTg A==;
+X-CSE-ConnectionGUID: VKnB4QjnSMGT02A0N5M+jA==
+X-CSE-MsgGUID: JmI9RtP4QAGEscynRvIBlw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451257"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451257"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 15:35:53 -0800
-X-CSE-ConnectionGUID: kfHZabehRD+OocvsbrLtnA==
-X-CSE-MsgGUID: m8WqZxZVTGCsNCAIExlg1g==
+ 18 Nov 2024 15:35:58 -0800
+X-CSE-ConnectionGUID: k1I6TPcASkqZPEV0zP8+CQ==
+X-CSE-MsgGUID: CFcLRC9XREaECPY4SjLO6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245224"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245255"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 07/29] drm/xe: Break indirect ring state out into its own
- BO
-Date: Mon, 18 Nov 2024 15:35:58 -0800
-Message-Id: <20241118233620.2373819-8-matthew.brost@intel.com>
+Subject: [RFC PATCH 29/29] drm/xe: Add user fence TDR
+Date: Mon, 18 Nov 2024 15:36:20 -0800
+Message-Id: <20241118233620.2373819-30-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -67,206 +66,302 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Start laying the ground work for UMD submission. This will allow mmaping
-the indirect ring state to user space.
+We cannot let user fences exported as dma-fence run forever. Add a TDR
+to protect against this. If the TDR fires the entire VM is killed as
+dma-fences are not tied to an individual queue.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/xe/xe_lrc.c       | 79 ++++++++++++++++++++++---------
- drivers/gpu/drm/xe/xe_lrc_types.h |  7 ++-
- 2 files changed, 63 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c       | 164 +++++++++++++++++++++++++++++--
+ drivers/gpu/drm/xe/xe_vm_types.h |  22 +++++
+ 2 files changed, 179 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-index 758648b6a711..e3c1773191bd 100644
---- a/drivers/gpu/drm/xe/xe_lrc.c
-+++ b/drivers/gpu/drm/xe/xe_lrc.c
-@@ -74,10 +74,6 @@ size_t xe_gt_lrc_size(struct xe_gt *gt, enum xe_engine_class class)
- 		size = 2 * SZ_4K;
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 5078aeea2bd8..8b475e76bfe0 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -30,6 +30,7 @@
+ #include "xe_exec_queue.h"
+ #include "xe_gt_pagefault.h"
+ #include "xe_gt_tlb_invalidation.h"
++#include "xe_hw_fence.h"
+ #include "xe_migrate.h"
+ #include "xe_pat.h"
+ #include "xe_pm.h"
+@@ -336,11 +337,15 @@ void xe_vm_kill(struct xe_vm *vm, bool unlocked)
+ 	if (unlocked)
+ 		xe_vm_lock(vm, false);
  
--	/* Add indirect ring state page */
--	if (xe_gt_has_indirect_ring_state(gt))
--		size += LRC_INDIRECT_RING_STATE_SIZE;
--
- 	return size;
- }
+-	vm->flags |= XE_VM_FLAG_BANNED;
+-	trace_xe_vm_kill(vm);
++	if (!(vm->flags |= XE_VM_FLAG_BANNED)) {
++		vm->flags |= XE_VM_FLAG_BANNED;
++		trace_xe_vm_kill(vm);
  
-@@ -694,8 +690,7 @@ static u32 __xe_lrc_ctx_timestamp_offset(struct xe_lrc *lrc)
- 
- static inline u32 __xe_lrc_indirect_ring_offset(struct xe_lrc *lrc)
- {
--	/* Indirect ring state page is at the very end of LRC */
--	return lrc->size - LRC_INDIRECT_RING_STATE_SIZE;
-+	return 0;
- }
- 
- #define DECL_MAP_ADDR_HELPERS(elem) \
-@@ -726,6 +721,20 @@ static inline u32 __maybe_unused __xe_lrc_##elem##_ggtt_addr(struct xe_lrc *lrc)
- 	return xe_bo_ggtt_addr(lrc->submission_ring) + __xe_lrc_##elem##_offset(lrc); \
- } \
- 
-+#define DECL_MAP_INDIRECT_ADDR_HELPERS(elem) \
-+static inline struct iosys_map __xe_lrc_##elem##_map(struct xe_lrc *lrc) \
-+{ \
-+	struct iosys_map map = lrc->indirect_state->vmap; \
-+\
-+	xe_assert(lrc_to_xe(lrc), !iosys_map_is_null(&map));  \
-+	iosys_map_incr(&map, __xe_lrc_##elem##_offset(lrc)); \
-+	return map; \
-+} \
-+static inline u32 __maybe_unused __xe_lrc_##elem##_ggtt_addr(struct xe_lrc *lrc) \
-+{ \
-+	return xe_bo_ggtt_addr(lrc->indirect_state) + __xe_lrc_##elem##_offset(lrc); \
-+} \
+-	list_for_each_entry(q, &vm->preempt.exec_queues, lr.link)
+-		q->ops->kill(q);
++		list_for_each_entry(q, &vm->preempt.exec_queues, lr.link)
++			q->ops->kill(q);
 +
- DECL_MAP_RING_ADDR_HELPERS(ring)
- DECL_MAP_ADDR_HELPERS(pphwsp)
- DECL_MAP_ADDR_HELPERS(seqno)
-@@ -734,8 +743,9 @@ DECL_MAP_ADDR_HELPERS(start_seqno)
- DECL_MAP_ADDR_HELPERS(ctx_job_timestamp)
- DECL_MAP_ADDR_HELPERS(ctx_timestamp)
- DECL_MAP_ADDR_HELPERS(parallel)
--DECL_MAP_ADDR_HELPERS(indirect_ring)
-+DECL_MAP_INDIRECT_ADDR_HELPERS(indirect_ring)
- 
-+#undef DECL_INDIRECT_MAP_ADDR_HELPERS
- #undef DECL_RING_MAP_ADDR_HELPERS
- #undef DECL_MAP_ADDR_HELPERS
- 
-@@ -845,25 +855,27 @@ void xe_lrc_write_ctx_reg(struct xe_lrc *lrc, int reg_nr, u32 val)
- 	xe_map_write32(xe, &map, val);
- }
- 
--static void *empty_lrc_data(struct xe_hw_engine *hwe)
-+static void *empty_lrc_data(struct xe_hw_engine *hwe, bool has_default)
- {
- 	struct xe_gt *gt = hwe->gt;
- 	void *data;
- 	u32 *regs;
- 
--	data = kzalloc(xe_gt_lrc_size(gt, hwe->class), GFP_KERNEL);
-+	data = kzalloc(xe_gt_lrc_size(gt, hwe->class) +
-+		       LRC_INDIRECT_RING_STATE_SIZE, GFP_KERNEL);
- 	if (!data)
- 		return NULL;
- 
- 	/* 1st page: Per-Process of HW status Page */
--	regs = data + LRC_PPHWSP_SIZE;
--	set_offsets(regs, reg_offsets(gt_to_xe(gt), hwe->class), hwe);
--	set_context_control(regs, hwe);
--	set_memory_based_intr(regs, hwe);
--	reset_stop_ring(regs, hwe);
-+	if (!has_default) {
-+		regs = data + LRC_PPHWSP_SIZE;
-+		set_offsets(regs, reg_offsets(gt_to_xe(gt), hwe->class), hwe);
-+		set_context_control(regs, hwe);
-+		set_memory_based_intr(regs, hwe);
-+		reset_stop_ring(regs, hwe);
++		/* TODO: Unmap usermap doorbells */
 +	}
- 	if (xe_gt_has_indirect_ring_state(gt)) {
--		regs = data + xe_gt_lrc_size(gt, hwe->class) -
--		       LRC_INDIRECT_RING_STATE_SIZE;
-+		regs = data + xe_gt_lrc_size(gt, hwe->class);
- 		set_offsets(regs, xe2_indirect_ring_state_offsets, hwe);
- 	}
  
-@@ -883,6 +895,7 @@ static void xe_lrc_finish(struct xe_lrc *lrc)
- 	xe_hw_fence_ctx_finish(&lrc->fence_ctx);
- 	xe_bo_unpin_map_no_vm(lrc->bo);
- 	xe_bo_unpin_map_no_vm(lrc->submission_ring);
-+	xe_bo_unpin_map_no_vm(lrc->indirect_state);
+ 	if (unlocked)
+ 		xe_vm_unlock(vm);
+@@ -1393,6 +1398,9 @@ static void xe_vm_free_scratch(struct xe_vm *vm)
+ 	}
  }
  
- #define PVC_CTX_ASID		(0x2e + 1)
-@@ -903,8 +916,6 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 	kref_init(&lrc->refcount);
- 	lrc->flags = 0;
- 	lrc_size = xe_gt_lrc_size(gt, hwe->class);
--	if (xe_gt_has_indirect_ring_state(gt))
--		lrc->flags |= XE_LRC_FLAG_INDIRECT_RING_STATE;
- 
- 	/*
- 	 * FIXME: Perma-pinning LRC as we don't yet support moving GGTT address
-@@ -929,6 +940,22 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 		goto err_lrc_finish;
++static void userfence_tdr(struct work_struct *w);
++static void userfence_kill(struct work_struct *w);
++
+ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ {
+ 	struct drm_gem_object *vm_resv_obj;
+@@ -1517,6 +1525,12 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ 		}
  	}
  
-+	if (xe_gt_has_indirect_ring_state(gt)) {
-+		lrc->flags |= XE_LRC_FLAG_INDIRECT_RING_STATE;
++	spin_lock_init(&vm->userfence.lock);
++	INIT_LIST_HEAD(&vm->userfence.pending_list);
++	vm->userfence.timeout = HZ * 5;
++	INIT_DELAYED_WORK(&vm->userfence.tdr, userfence_tdr);
++	INIT_WORK(&vm->userfence.kill_work, userfence_kill);
 +
-+		lrc->indirect_state = xe_bo_create_pin_map(xe, tile, vm,
-+							   LRC_INDIRECT_RING_STATE_SIZE,
-+							   ttm_bo_type_kernel,
-+							   XE_BO_FLAG_VRAM_IF_DGFX(tile) |
-+							   XE_BO_FLAG_GGTT |
-+							   XE_BO_FLAG_GGTT_INVALIDATE);
-+		if (IS_ERR(lrc->indirect_state)) {
-+			err = PTR_ERR(lrc->indirect_state);
-+			lrc->indirect_state = NULL;
-+			goto err_lrc_finish;
+ 	if (number_tiles > 1)
+ 		vm->composite_fence_ctx = dma_fence_context_alloc(1);
+ 
+@@ -1562,6 +1576,9 @@ void xe_vm_close_and_put(struct xe_vm *vm)
+ 	xe_vm_close(vm);
+ 	flush_work(&vm->preempt.rebind_work);
+ 
++	flush_delayed_work(&vm->userfence.tdr);
++	flush_work(&vm->userfence.kill_work);
++
+ 	down_write(&vm->lock);
+ 	for_each_tile(tile, xe, id) {
+ 		if (vm->q[id])
+@@ -3449,6 +3466,114 @@ static int check_semaphores(struct xe_vm *vm, struct xe_sync_entry *syncs,
+ 	return 0;
+ }
+ 
++struct tdr_item {
++	struct dma_fence *fence;
++	struct xe_vm *vm;
++	struct list_head link;
++	struct dma_fence_cb cb;
++	u64 deadline;
++};
++
++static void userfence_kill(struct work_struct *w)
++{
++	struct xe_vm *vm =
++		container_of(w, struct xe_vm, userfence.kill_work);
++
++	down_write(&vm->lock);
++	xe_vm_kill(vm, true);
++	up_write(&vm->lock);
++}
++
++static void userfence_tdr(struct work_struct *w)
++{
++	struct xe_vm *vm =
++		container_of(w, struct xe_vm, userfence.tdr.work);
++	struct tdr_item *tdr_item;
++	bool timeout = false, cookie = dma_fence_begin_signalling();
++
++	xe_hw_fence_irq_stop(&vm->xe->user_fence_irq);
++
++	spin_lock_irq(&vm->userfence.lock);
++	list_for_each_entry(tdr_item, &vm->userfence.pending_list, link) {
++		if (!dma_fence_is_signaled(tdr_item->fence)) {
++			drm_notice(&vm->xe->drm,
++				   "Timedout usermap fence: seqno=%llu, deadline=%llu, jiffies=%llu",
++				   tdr_item->fence->seqno, tdr_item->deadline,
++				   get_jiffies_64());
++			dma_fence_set_error(tdr_item->fence, -ETIME);
++			timeout = true;
++			vm->userfence.timeout = 0;
 +		}
 +	}
++	spin_unlock_irq(&vm->userfence.lock);
 +
- 	lrc->size = lrc_size;
- 	lrc->tile = gt_to_tile(hwe->gt);
- 	lrc->ring.size = ring_size;
-@@ -938,8 +965,8 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 	xe_hw_fence_ctx_init(&lrc->fence_ctx, hwe->gt,
- 			     hwe->fence_irq, hwe->name);
- 
--	if (!gt->default_lrc[hwe->class]) {
--		init_data = empty_lrc_data(hwe);
-+	if (!gt->default_lrc[hwe->class] || xe_gt_has_indirect_ring_state(gt)) {
-+		init_data = empty_lrc_data(hwe, !!gt->default_lrc[hwe->class]);
- 		if (!init_data) {
- 			err = -ENOMEM;
- 			goto err_lrc_finish;
-@@ -951,7 +978,7 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 	 * values
- 	 */
- 	map = __xe_lrc_pphwsp_map(lrc);
--	if (!init_data) {
-+	if (gt->default_lrc[hwe->class]) {
- 		xe_map_memset(xe, &map, 0, 0, LRC_PPHWSP_SIZE);	/* PPHWSP */
- 		xe_map_memcpy_to(xe, &map, LRC_PPHWSP_SIZE,
- 				 gt->default_lrc[hwe->class] + LRC_PPHWSP_SIZE,
-@@ -959,9 +986,17 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 	} else {
- 		xe_map_memcpy_to(xe, &map, 0, init_data,
- 				 xe_gt_lrc_size(gt, hwe->class));
--		kfree(init_data);
++	xe_hw_fence_irq_start(&vm->xe->user_fence_irq);
++
++	/*
++	 * This is dma-fence signaling path so we cannot take the locks requires
++	 * to kill a VM. Defer killing to a worker.
++	 */
++	if (timeout)
++		schedule_work(&vm->userfence.kill_work);
++
++	dma_fence_end_signalling(cookie);
++}
++
++static void userfence_fence_cb(struct dma_fence *fence,
++			       struct dma_fence_cb *cb)
++{
++	struct tdr_item *next, *tdr_item = container_of(cb, struct tdr_item, cb);
++	struct xe_vm *vm = tdr_item->vm;
++	struct xe_gt *gt = xe_device_get_gt(vm->xe, 0);
++
++	if (fence)
++		spin_lock(&vm->userfence.lock);
++	else
++		spin_lock_irq(&vm->userfence.lock);
++
++	list_del(&tdr_item->link);
++	next = list_first_entry_or_null(&vm->userfence.pending_list,
++					typeof(*next), link);
++	if (next)
++		mod_delayed_work(gt->ordered_wq, &vm->userfence.tdr,
++				 next->deadline - get_jiffies_64());
++	else
++		cancel_delayed_work(&vm->userfence.tdr);
++
++	if (fence)
++		spin_unlock(&vm->userfence.lock);
++	else
++		spin_unlock_irq(&vm->userfence.lock);
++
++	dma_fence_put(tdr_item->fence);
++	xe_vm_put(tdr_item->vm);
++	kfree(tdr_item);
++}
++
++static void userfence_tdr_add(struct xe_vm *vm, struct tdr_item *tdr_item,
++			      struct dma_fence *fence)
++{
++	struct xe_gt *gt = xe_device_get_gt(vm->xe, 0);
++	int ret;
++
++	tdr_item->fence = dma_fence_get(fence);
++	tdr_item->vm = xe_vm_get(vm);
++	INIT_LIST_HEAD(&tdr_item->link);
++	tdr_item->deadline = vm->userfence.timeout + get_jiffies_64();
++
++	spin_lock_irq(&vm->userfence.lock);
++	list_add_tail(&tdr_item->link, &vm->userfence.pending_list);
++	if (list_is_singular(&vm->userfence.pending_list))
++		mod_delayed_work(gt->ordered_wq,
++				 &vm->userfence.tdr,
++				 vm->userfence.timeout);
++	spin_unlock_irq(&vm->userfence.lock);
++
++	ret = dma_fence_add_callback(fence, &tdr_item->cb, userfence_fence_cb);
++	if (ret == -ENOENT)
++		userfence_fence_cb(NULL, &tdr_item->cb);
++}
++
+ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ 			      struct drm_file *file)
+ {
+@@ -3459,6 +3584,7 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ 	struct drm_xe_semaphore __user *semaphores_user;
+ 	struct xe_sync_entry *syncs = NULL;
+ 	struct xe_vm *vm;
++	struct tdr_item **tdr_items = NULL;
+ 	int err = 0, i, num_syncs = 0;
+ 	bool done = false;
+ 	struct drm_exec exec;
+@@ -3493,6 +3619,12 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ 		goto release_vm_lock;
  	}
  
-+	if (xe_gt_has_indirect_ring_state(gt)) {
-+		map = __xe_lrc_indirect_ring_map(lrc);
-+		xe_map_memcpy_to(xe, &map, 0, init_data +
-+				 xe_gt_lrc_size(gt, hwe->class),
-+				 LRC_INDIRECT_RING_STATE_SIZE);
++	tdr_items = kcalloc(args->num_syncs, sizeof(*tdr_items), GFP_KERNEL);
++	if (!tdr_items) {
++		err = -ENOMEM;
++		goto release_vm_lock;
 +	}
 +
-+	kfree(init_data);
+ 	syncs_user = u64_to_user_ptr(args->syncs);
+ 	semaphores_user = u64_to_user_ptr(args->semaphores);
+ 	for (i = 0; i < args->num_syncs; i++, num_syncs++) {
+@@ -3505,6 +3637,15 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ 		if (err)
+ 			goto release_syncs;
+ 
++		if (sync->flags & DRM_XE_SYNC_FLAG_SIGNAL) {
++			tdr_items[i] = kmalloc(sizeof(struct tdr_item),
++					       GFP_KERNEL);
++			if (!tdr_items[i]) {
++				xe_sync_entry_cleanup(&syncs[i]);
++				goto release_syncs;
++			}
++		}
 +
- 	if (vm) {
- 		xe_lrc_set_ppgtt(lrc, vm);
+ 		err = xe_sync_semaphore_parse(xe, xef, semaphore_sync,
+ 					      &semaphores_user[i],
+ 					      sync->flags);
+@@ -3591,6 +3732,10 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ 				&semaphore_sync->chain_fence->base;
+ 			semaphore_sync->chain_fence = NULL;
  
-diff --git a/drivers/gpu/drm/xe/xe_lrc_types.h b/drivers/gpu/drm/xe/xe_lrc_types.h
-index 3ad9ac2d644f..3be708c82313 100644
---- a/drivers/gpu/drm/xe/xe_lrc_types.h
-+++ b/drivers/gpu/drm/xe/xe_lrc_types.h
-@@ -27,7 +27,12 @@ struct xe_lrc {
- 	 */
- 	struct xe_bo *submission_ring;
- 
--	/** @size: size of lrc including any indirect ring state page */
-+	/**
-+	 * @indirect_state: buffer object (memory) for indirect state
-+	 */
-+	struct xe_bo *indirect_state;
++			userfence_tdr_add(vm, tdr_items[i],
++					  semaphore_sync->fence);
++			tdr_items[i] = 0;
 +
-+	/** @size: size of lrc */
- 	u32 size;
+ 			semaphore_sync->fence = NULL;   /* Ref owned by chain */
+ 		} else {
+ 			xe_sync_entry_signal(semaphore_sync, sync->fence);
+@@ -3617,9 +3762,13 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ out_unlock:
+ 	drm_exec_fini(&exec);
+ release_syncs:
+-	while (err != -EAGAIN && num_syncs--) {
+-		xe_sync_entry_cleanup(&syncs[num_syncs]);
+-		xe_sync_entry_cleanup(&syncs[args->num_syncs + num_syncs]);
++	if (err != -EAGAIN) {
++		for (i = 0; i < num_syncs; ++i)
++			kfree(tdr_items[i]);
++		while (num_syncs--) {
++			xe_sync_entry_cleanup(&syncs[num_syncs]);
++			xe_sync_entry_cleanup(&syncs[args->num_syncs + num_syncs]);
++		}
+ 	}
+ release_vm_lock:
+ 	if (err == -EAGAIN)
+@@ -3629,6 +3778,7 @@ int xe_vm_convert_fence_ioctl(struct drm_device *dev, void *data,
+ 	xe_vm_put(vm);
+ 	free_preempt_fences(&preempt_fences);
+ 	kfree(syncs);
++	kfree(tdr_items);
  
- 	/** @tile: tile which this LRC belongs to */
+ 	return err;
+ }
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index c5cb83722706..49cac5716f72 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -260,6 +260,28 @@ struct xe_vm {
+ 		struct dma_fence *exported_fence;
+ 	} preempt;
+ 
++	/** @userfence: User fence state */
++	struct {
++		/**
++		 * @userfence.lock: fence lock
++		 */
++		spinlock_t lock;
++		/**
++		 * @userfence.pending_list: pending fence list, protected by
++		 * userfence.lock
++		 */
++		struct list_head pending_list;
++		/** @userfence.tdr: fence TDR */
++		struct delayed_work tdr;
++		/** @userfence.kill_work */
++		struct work_struct kill_work;
++		/**
++		 * @userfence.timeout: Fence timeout period, protected by
++		 * userfence.lock
++		 */
++		u32 timeout;
++	} userfence;
++
+ 	/** @um: unified memory state */
+ 	struct {
+ 		/** @asid: address space ID, unique to each VM */
 -- 
 2.34.1
 
