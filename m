@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630E2D60CFD
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47285D60D03
 	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 108BB10E569;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 004E010E56B;
 	Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KUSynGRB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RDQJo1r2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C917E10E56E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF46B10E56B
  for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1731972959; x=1763508959;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gg7AO0QPwabBwsHQ+3ISwQCdQZLih9895VdKNFkARtg=;
- b=KUSynGRBScakCV3wyTzrjAnFLbOAiGH9nYj2oZXDA6vTmPZmo7IbVLMz
- 0zhwQsaA8tp7oFuR957qH3C89iHqEqARv3FEiKKXxTeXakhmQTO/2FP9D
- Fb0sbg3jTod7J3WYwnm516pKVvRFAXxA4ecKbD76ccpKTKGPC+KNvCD2k
- q6LC38ZIdBXudX+gsImpBO8nOgRYDa8Bb0nGxHMxaMRKEFUKTDx2JUTef
- OEoq7mdjWkfkK/0yPuRhh9FMzPOkhuPBGOt91fJEfVkdeVCeprTSK8NuO
- HI13DBSbIru93QrypQnv3vRLliBhqDEb6uPF4hIAaBmdGe6kaRBP06nC5 Q==;
-X-CSE-ConnectionGUID: ZK+JfGKHQ9C7IVrvamqlyw==
-X-CSE-MsgGUID: 9t18HHyfSdGN3QhyFOlkGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451240"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451240"
+ bh=OtbyF2EW/P7V2LLp0ko5/zMgM1ltR8QgJg7XG/TyNAU=;
+ b=RDQJo1r2WayTpV8MctxaZHD3d/Je+LU4ky5aLadrWfNgnt4sR1Wke1Eb
+ kBfsdGdrKd4Pp+ny/mwFXwV5mEolEWYPp7pT9ZaXF7GDAvvF5L8B7KVoc
+ OhGP+kqqn1dsaZnVbwLmIumbuy0l8vLHl0wEpTpITY6fWhtrTauEBEqi+
+ 2WQ6B8KoXs8RuYI7WAiXArRvOaTmU7BoVtAqq7Zlkz0hJ+LliCESEmui6
+ PJxAkZUc6lf3bSdbx+vn5LUGkJz4U+oxmAF/jxkvbDnEVLV7goFkO4m8K
+ ht0jTLtywycQvAaMF8vTJ7tdliw0OQb1NjS9bOZWe3IqGoXCPmKFoVFZc g==;
+X-CSE-ConnectionGUID: 5IWTbBk5RSuSYPgAilv4gw==
+X-CSE-MsgGUID: UkHP+BbETp24PJSB3ubNMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451244"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451244"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 15:35:53 -0800
-X-CSE-ConnectionGUID: ffw6yZp/QPCR3/OpE84LVA==
-X-CSE-MsgGUID: NrO2rmaQSoqiFCN0jPxG1A==
+ 18 Nov 2024 15:35:54 -0800
+X-CSE-ConnectionGUID: VeQtq4DNQWeHkDK7hLcrSA==
+X-CSE-MsgGUID: JI/yPk3PQOKrU/RRQb/NaQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245238"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245230"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 18/29] drm/xe: Drop EXEC_QUEUE_FLAG_UMD_SUBMISSION flag
-Date: Mon, 18 Nov 2024 15:36:09 -0800
-Message-Id: <20241118233620.2373819-19-matthew.brost@intel.com>
+Subject: [RFC PATCH 13/29] drm/xe/mmap: Add mmap support for PCI memory barrier
+Date: Mon, 18 Nov 2024 15:36:04 -0800
+Message-Id: <20241118233620.2373819-14-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -66,111 +66,276 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use xe_exec_queue_is_usermap helper instead.
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+In order to avoid having userspace to use MI_MEM_FENCE,
+we are adding a mechanism for userspace to generate a
+PCI memory barrier with low overhead (avoiding IOCTL call
+as well as writing to VRAM will adds some overhead).
+
+This is implemented by memory-mapping a page as uncached
+that is backed by MMIO on the dGPU and thus allowing userspace
+to do memory write to the page without invoking an IOCTL.
+We are selecting the MMIO so that it is not accessible from
+the PCI bus so that the MMIO writes themselves are ignored,
+but the PCI memory barrier will still take action as the MMIO
+filtering will happen after the memory barrier effect.
+
+When we detect special defined offset in mmap(), We are mapping
+4K page which contains the last of page of doorbell MMIO range
+to userspace for same purpose.
+
+For user to query special offset we are adding special flag in
+mmap_offset ioctl which needs to be passed as follows,
+struct drm_xe_gem_mmap_offset mmo = {
+        .handle = 0, /* this must be 0 */
+        .flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
+};
+igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
+map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo);
+
+Note: Test coverage for this is added by IGT
+      https://patchwork.freedesktop.org/series/140368/  here.
+      UMD implementing test, once PR is ready will attach with
+      this patch.
+
+V6(MAuld)
+  - Move physical mmap to fault handler
+  - Modify kernel-doc and attach UMD PR when ready
+V5(MAuld)
+  - Return invalid early in case of non 4K PAGE_SIZE
+  - Format kernel-doc and add note for 4K PAGE_SIZE HW limit
+V4(MAuld)
+  - Add kernel-doc for uapi change
+  - Restrict page size to 4K
+V3(MAuld)
+  - Remove offset defination from UAPI to be able to change later
+  - Edit commit message for special flag addition
+V2(MAuld)
+  - Add fault handler with dummy page to handle unplug device
+  - Add Build check for special offset to be below normal start page
+  - Test d3hot, mapping seems to be valid in d3hot as well
+  - Add more info to commit message
+
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c       | 3 +--
- drivers/gpu/drm/xe/xe_exec_queue.h       | 5 +++++
- drivers/gpu/drm/xe/xe_exec_queue_types.h | 2 --
- drivers/gpu/drm/xe/xe_guc_submit.c       | 4 ++--
- drivers/gpu/drm/xe/xe_lrc.c              | 4 ++--
- 5 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c     |  16 ++++-
+ drivers/gpu/drm/xe/xe_bo.h     |   2 +
+ drivers/gpu/drm/xe/xe_device.c | 103 ++++++++++++++++++++++++++++++++-
+ include/uapi/drm/xe_drm.h      |  29 +++++++++-
+ 4 files changed, 147 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index c8d45133eb59..a22f089ccec6 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -486,7 +486,7 @@ static int exec_queue_user_ext_usermap(struct xe_device *xe,
- 	if (XE_IOCTL_DBG(xe, xe_vm_in_lr_mode(q->vm)))
- 		return -EOPNOTSUPP;
- 
--	if (XE_IOCTL_DBG(xe, q->flags & EXEC_QUEUE_FLAG_UMD_SUBMISSION))
-+	if (XE_IOCTL_DBG(xe, xe_exec_queue_is_usermap(q)))
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 96dbc88b1f55..f948262e607f 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -2138,9 +2138,23 @@ int xe_gem_mmap_offset_ioctl(struct drm_device *dev, void *data,
+ 	    XE_IOCTL_DBG(xe, args->reserved[0] || args->reserved[1]))
  		return -EINVAL;
  
- 	err = __copy_from_user(&ext, address, sizeof(ext));
-@@ -519,7 +519,6 @@ static int exec_queue_user_ext_usermap(struct xe_device *xe,
- 	q->usermap->ring_addr = ext.ring_addr;
+-	if (XE_IOCTL_DBG(xe, args->flags))
++	if (XE_IOCTL_DBG(xe, args->flags &
++			 ~DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER))
+ 		return -EINVAL;
  
- 	xe_pm_runtime_get_noresume(xe);
--	q->flags |= EXEC_QUEUE_FLAG_UMD_SUBMISSION;
++	if (args->flags & DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER) {
++		if (XE_IOCTL_DBG(xe, args->handle))
++			return -EINVAL;
++
++		if (XE_IOCTL_DBG(xe, PAGE_SIZE > SZ_4K))
++			return -EINVAL;
++
++		BUILD_BUG_ON(((XE_PCI_BARRIER_MMAP_OFFSET >> XE_PTE_SHIFT) +
++			      SZ_4K) >= DRM_FILE_PAGE_OFFSET_START);
++		args->offset = XE_PCI_BARRIER_MMAP_OFFSET;
++		return 0;
++	}
++
+ 	gem_obj = drm_gem_object_lookup(file, args->handle);
+ 	if (XE_IOCTL_DBG(xe, !gem_obj))
+ 		return -ENOENT;
+diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
+index 7fa44a0138b0..e7724965d3f1 100644
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -63,6 +63,8 @@
  
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.h b/drivers/gpu/drm/xe/xe_exec_queue.h
-index 90c7f73eab88..a4a1dbf5b977 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.h
-@@ -57,6 +57,11 @@ static inline bool xe_exec_queue_is_parallel(struct xe_exec_queue *q)
- 	return q->width > 1;
- }
+ #define XE_BO_PROPS_INVALID	(-1)
  
-+static inline bool xe_exec_queue_is_usermap(struct xe_exec_queue *q)
++#define XE_PCI_BARRIER_MMAP_OFFSET	(0x50 << XE_PTE_SHIFT)
++
+ struct sg_table;
+ 
+ struct xe_bo *xe_bo_alloc(void);
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 930bb2750e2e..f6069db795e7 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -231,12 +231,113 @@ static long xe_drm_compat_ioctl(struct file *file, unsigned int cmd, unsigned lo
+ #define xe_drm_compat_ioctl NULL
+ #endif
+ 
++static void barrier_open(struct vm_area_struct *vma)
 +{
-+	return !!q->usermap;
++	drm_dev_get(vma->vm_private_data);
 +}
 +
- bool xe_exec_queue_is_lr(struct xe_exec_queue *q);
++static void barrier_close(struct vm_area_struct *vma)
++{
++	drm_dev_put(vma->vm_private_data);
++}
++
++static void barrier_release_dummy_page(struct drm_device *dev, void *res)
++{
++	struct page *dummy_page = (struct page *)res;
++
++	__free_page(dummy_page);
++}
++
++static vm_fault_t barrier_fault(struct vm_fault *vmf)
++{
++	struct drm_device *dev = vmf->vma->vm_private_data;
++	struct vm_area_struct *vma = vmf->vma;
++	vm_fault_t ret = VM_FAULT_NOPAGE;
++	pgprot_t prot;
++	int idx;
++
++	prot = vm_get_page_prot(vma->vm_flags);
++
++	if (drm_dev_enter(dev, &idx)) {
++		unsigned long pfn;
++
++#define LAST_DB_PAGE_OFFSET 0x7ff001
++		pfn = PHYS_PFN(pci_resource_start(to_pci_dev(dev->dev), 0) +
++				LAST_DB_PAGE_OFFSET);
++		ret = vmf_insert_pfn_prot(vma, vma->vm_start, pfn,
++					  pgprot_noncached(prot));
++		drm_dev_exit(idx);
++	} else {
++		struct page *page;
++
++		/* Allocate new dummy page to map all the VA range in this VMA to it*/
++		page = alloc_page(GFP_KERNEL | __GFP_ZERO);
++		if (!page)
++			return VM_FAULT_OOM;
++
++		/* Set the page to be freed using drmm release action */
++		if (drmm_add_action_or_reset(dev, barrier_release_dummy_page, page))
++			return VM_FAULT_OOM;
++
++		ret = vmf_insert_pfn_prot(vma, vma->vm_start, page_to_pfn(page),
++					  prot);
++	}
++
++	return ret;
++}
++
++static const struct vm_operations_struct vm_ops_barrier = {
++	.open = barrier_open,
++	.close = barrier_close,
++	.fault = barrier_fault,
++};
++
++static int xe_pci_barrier_mmap(struct file *filp,
++			       struct vm_area_struct *vma)
++{
++	struct drm_file *priv = filp->private_data;
++	struct drm_device *dev = priv->minor->dev;
++
++	if (vma->vm_end - vma->vm_start > SZ_4K)
++		return -EINVAL;
++
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
++
++	if (vma->vm_flags & (VM_READ | VM_EXEC))
++		return -EINVAL;
++
++	vm_flags_clear(vma, VM_MAYREAD | VM_MAYEXEC);
++	vm_flags_set(vma, VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP | VM_IO);
++	vma->vm_ops = &vm_ops_barrier;
++	vma->vm_private_data = dev;
++	drm_dev_get(vma->vm_private_data);
++
++	return 0;
++}
++
++static int xe_mmap(struct file *filp, struct vm_area_struct *vma)
++{
++	struct drm_file *priv = filp->private_data;
++	struct drm_device *dev = priv->minor->dev;
++
++	if (drm_dev_is_unplugged(dev))
++		return -ENODEV;
++
++	switch (vma->vm_pgoff) {
++	case XE_PCI_BARRIER_MMAP_OFFSET >> XE_PTE_SHIFT:
++		return xe_pci_barrier_mmap(filp, vma);
++	}
++
++	return drm_gem_mmap(filp, vma);
++}
++
+ static const struct file_operations xe_driver_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = drm_open,
+ 	.release = drm_release_noglobal,
+ 	.unlocked_ioctl = xe_drm_ioctl,
+-	.mmap = drm_gem_mmap,
++	.mmap = xe_mmap,
+ 	.poll = drm_poll,
+ 	.read = drm_read,
+ 	.compat_ioctl = xe_drm_compat_ioctl,
+diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+index 4a8a4a63e99c..6490b16b1217 100644
+--- a/include/uapi/drm/xe_drm.h
++++ b/include/uapi/drm/xe_drm.h
+@@ -811,6 +811,32 @@ struct drm_xe_gem_create {
  
- bool xe_exec_queue_ring_full(struct xe_exec_queue *q);
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-index b30b5ee910fa..26ce85b8d163 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-@@ -93,8 +93,6 @@ struct xe_exec_queue {
- #define EXEC_QUEUE_FLAG_BIND_ENGINE_CHILD	BIT(3)
- /* kernel exec_queue only, set priority to highest level */
- #define EXEC_QUEUE_FLAG_HIGH_PRIORITY		BIT(4)
--/* queue used for UMD submission */
--#define EXEC_QUEUE_FLAG_UMD_SUBMISSION		BIT(5)
+ /**
+  * struct drm_xe_gem_mmap_offset - Input of &DRM_IOCTL_XE_GEM_MMAP_OFFSET
++ *
++ * The @flags can be:
++ *  - %DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER - For user to query special offset
++ *  for use in mmap ioctl. Writing to the returned mmap address will generate a
++ *  PCI memory barrier with low overhead (avoiding IOCTL call as well as writing
++ *  to VRAM which would also add overhead), acting like an MI_MEM_FENCE
++ *  instruction.
++ *
++ *  Note: The mmap size can be at most 4K, due to HW limitations. As a result
++ *  this interface is only supported on CPU architectures that support 4K page
++ *  size. The mmap_offset ioctl will detect this and gracefully return an
++ *  error, where userspace is expected to have a different fallback method for
++ *  triggering a barrier.
++ *
++ *  Roughly the usage would be as follows:
++ *
++ *  .. code-block:: C
++ *
++ *  struct drm_xe_gem_mmap_offset mmo = {
++ *	.handle = 0, // must be set to 0
++ *	.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
++ *  };
++ *
++ *  err = ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
++ *  map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo.offset);
++ *  map[i] = 0xdeadbeaf; // issue barrier
+  */
+ struct drm_xe_gem_mmap_offset {
+ 	/** @extensions: Pointer to the first extension struct, if any */
+@@ -819,7 +845,8 @@ struct drm_xe_gem_mmap_offset {
+ 	/** @handle: Handle for the object being mapped. */
+ 	__u32 handle;
  
- 	/**
- 	 * @flags: flags for this exec queue, should statically setup aside from ban
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index c226c7b3245d..59d2e08797f5 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1522,7 +1522,7 @@ static int guc_exec_queue_init(struct xe_exec_queue *q)
- 		xe_sched_stop(sched);
+-	/** @flags: Must be zero */
++#define DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER     (1 << 0)
++	/** @flags: Flags */
+ 	__u32 flags;
  
- 	q->guc->db.id = -1;
--	if (q->flags & EXEC_QUEUE_FLAG_UMD_SUBMISSION) {
-+	if (xe_exec_queue_is_usermap(q)) {
- 		db_id = xe_guc_db_mgr_reserve_id_locked(&guc->dbm);
- 		if (db_id < 0) {
- 			err = db_id;
-@@ -1532,7 +1532,7 @@ static int guc_exec_queue_init(struct xe_exec_queue *q)
- 
- 	mutex_unlock(&guc->submission_state.lock);
- 
--	if (q->flags & EXEC_QUEUE_FLAG_UMD_SUBMISSION) {
-+	if (xe_exec_queue_is_usermap(q)) {
- 		q->guc->db.id = db_id;
- 		err = create_doorbell(guc, q);
- 		if (err)
-diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-index 8d5a65724c04..e8675624966d 100644
---- a/drivers/gpu/drm/xe/xe_lrc.c
-+++ b/drivers/gpu/drm/xe/xe_lrc.c
-@@ -18,7 +18,7 @@
- #include "xe_bo.h"
- #include "xe_device.h"
- #include "xe_drm_client.h"
--#include "xe_exec_queue_types.h"
-+#include "xe_exec_queue.h"
- #include "xe_gt.h"
- #include "xe_gt_printk.h"
- #include "xe_hw_fence.h"
-@@ -912,7 +912,7 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_exec_queue *q,
- 	void *init_data = NULL;
- 	u32 arb_enable;
- 	u32 lrc_size;
--	bool user_queue = q && q->flags & EXEC_QUEUE_FLAG_UMD_SUBMISSION;
-+	bool user_queue = q && xe_exec_queue_is_usermap(q);;
- 	enum ttm_bo_type submit_type = user_queue ? ttm_bo_type_device :
- 		ttm_bo_type_kernel;
- 	unsigned int submit_flags = user_queue ?
+ 	/** @offset: The fake offset to use for subsequent mmap call */
 -- 
 2.34.1
 
