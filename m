@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE057D591AD
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 19:51:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34BBCD591B2
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 20:03:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E63810E171;
-	Mon, 18 Nov 2024 19:51:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBC7A10E171;
+	Mon, 18 Nov 2024 20:03:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VQCzE2iL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P6u1UTW5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E51F10E171
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 19:51:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 932B810E171
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 20:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731959496; x=1763495496;
+ t=1731960202; x=1763496202;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=gZHXQoHwPC8Q6qoEKwdNgIZekXXa3JPYYujG+HrlPrY=;
- b=VQCzE2iLYoQA5mnfhAujpH5vhFMr8dFEo1inw+LVzWCuebeuAuQF5sex
- l34xNXDt7CZYZUoV9pogDaetuAzVcxVlg1cLBx1EYt6dx2SwwrXg44I0f
- h7eS8Xqvqya4+Ia3+ssG7hQ+eD7MXfMUB7EfFPjNJ/YgPLcrKaKhCg+fu
- dm2dGrRwFewBfCCgdz0s0fzOgqKOW8NtW+sxDEUcf+BzxBXqEaBHlwBPn
- Gpx9gAC+Rnr928ng0GRTL9R+rjyzwltqXztRsvGQTUa75/+puTXa+JFrg
- OMEwN+yxI7ZUjqS2WWvlM/wtJ3N/KjjKzXOXATG1vqg8L1Wi1b1yHrb6L g==;
-X-CSE-ConnectionGUID: MQV7kij7SN2l+WggGB62HQ==
-X-CSE-MsgGUID: n5grDMIcTP+j9hzQQAIbNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="43318277"
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="43318277"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 11:51:36 -0800
-X-CSE-ConnectionGUID: KrQ57hrOQU2kT07j1tuMzg==
-X-CSE-MsgGUID: eos+INyVSimNZNxx/2PLzA==
+ bh=Y0VbhnxHdhg/vRsSQhHqw4fZbwtTOjZ9GTDuRiTdhL0=;
+ b=P6u1UTW5I7Qg84LOlvs6vKS2pD1rphxsu+bj7tL76WdsZhhHRiayuCQI
+ i3Yeh+8PJIsQhFQJssp2ovPlCtcSUX77GkfaHw/bczLMRiX5wdWWHBKMY
+ jfGyHpLSjWiYOWoBArXBVOw3dKDiRLKaxK1xrIzc+ldX0RbunPjPA5baz
+ U4rgGBJU0+/+VPU1i2hctYwGIScNhBKF1XovQNp40qGgQOmaKzLkrcdLV
+ AiuSeiTNP2NQdRjiXC05JxpeBmUl/KhngjNdlORAlQQwrq7cX6/yYKDhN
+ Q6hPzxr/8zd4m6kQHUgIgRL8wMmG3fGHryKFJb2SCCnuHFykaF+Dqt/Ht g==;
+X-CSE-ConnectionGUID: /P4xkAMRROa1YLoYzUg4Ig==
+X-CSE-MsgGUID: qhOIObKmTNSF+vyw038IMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="49369440"
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="49369440"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 12:03:21 -0800
+X-CSE-ConnectionGUID: jXtkNcRSRFqC5TYcu90RLw==
+X-CSE-MsgGUID: P8na3iqYT8y2k9wKiTU6Vg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="88893227"
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="126866849"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 11:51:36 -0800
-Date: Mon, 18 Nov 2024 11:51:35 -0800
-Message-ID: <85y11gwcag.wl-ashutosh.dixit@intel.com>
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 12:03:21 -0800
+Date: Mon, 18 Nov 2024 12:03:20 -0800
+Message-ID: <85wmh0wbqv.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_oa: Fetch OA buffer size from
  observation IOCTL
 In-Reply-To: <20241118063223.3974722-2-sai.teja.pottumuttu@intel.com>
-References: <20241118063223.3974722-1-sai.teja.pottumuttu@intel.com>	<20241118063223.3974722-2-sai.teja.pottumuttu@intel.com>
+References: <20241118063223.3974722-1-sai.teja.pottumuttu@intel.com>
+ <20241118063223.3974722-2-sai.teja.pottumuttu@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,53 +74,24 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Sun, 17 Nov 2024 22:32:22 -0800, Sai Teja Pottumuttu wrote:
 >
+> @@ -2367,7 +2392,7 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
+>	int buf_size = 65536 * report_size;
+>	uint8_t *buf = malloc(buf_size);
+>	int len;
+> -	size_t oa_buf_size = MAX_OA_BUF_SIZE;
+> +	size_t oa_buf_size = oa_buffer_size;
+>	int n_full_oa_reports = oa_buf_size / report_size;
+>	uint64_t fill_duration = n_full_oa_reports * oa_period;
+>	uint32_t *last_periodic_report = malloc(report_size);
+> @@ -2592,7 +2617,7 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+>	size_t report_size = get_oa_format(fmt).size;
+>	int buf_size = 65536 * report_size;
+>	uint8_t *buf = malloc(buf_size);
+> -	size_t oa_buf_size = MAX_OA_BUF_SIZE;
+> +	size_t oa_buf_size = oa_buffer_size;
+>	int n_full_oa_reports = oa_buf_size / report_size;
+>	uint64_t fill_duration = n_full_oa_reports * oa_period;
+>	uint32_t *last_periodic_report = malloc(report_size);
 
-This one mostly looks good, just a couple of nits below.
-
-Also how are you testing these patches? To test I suggest just run:
-
-	sudo ./build/tests/xe_oa
-
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 33e978a48..4e4d0fabc 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -63,9 +63,6 @@
->  #define PIPE_CONTROL_PPGTT_WRITE	(0 << 2)
->  #define PIPE_CONTROL_GLOBAL_GTT_WRITE   (1 << 2)
->
-> -#define MAX_OA_BUF_SIZE (16 * 1024 * 1024)
-> -#define OA_BUFFER_SIZE MAX_OA_BUF_SIZE
-> -
->  #define RING_FORCE_TO_NONPRIV_ADDRESS_MASK 0x03fffffc
->  /*
->   * Engine specific registers defined as offsets from engine->mmio_base. For
-> @@ -303,6 +300,7 @@ struct drm_xe_engine_class_instance default_hwe;
->
->  static struct intel_xe_perf *intel_xe_perf;
->  static uint64_t oa_exp_1_millisec;
-> +static uint64_t oa_buffer_size;
-
-s/size_t/uint64_t/
-
-Also, for clarity, let's call this default_oa_buffer_size too. Because
-oa_buffer_size later can be changed per stream. So that later when we
-introduce different oa buffer sizes etc there won't be any confusion.
-
->  struct intel_mmio_data mmio_data;
->  static igt_render_copyfunc_t render_copy;
->
-> @@ -511,6 +509,30 @@ __perf_open(int fd, struct intel_xe_oa_open_prop *param, bool prevent_pm)
->	return ret;
->  }
->
-> +static u64 get_default_oa_buffer_size(int fd)
-
-Let's make the return type size_t here too.
-
-Rest lgtm. I'll take a quick look at the next version and should be able to
-R-b it.
-
-Thanks.
---
-Ashutosh
+Maybe get rid of these two oa_buf_size local variables too, directly use
+default_oa_buffer_size.
