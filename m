@@ -4,57 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8537ED4921A
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 12:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 579CFD49212
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 12:48:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 369C810E347;
-	Mon, 18 Nov 2024 12:44:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0354E10E081;
+	Mon, 18 Nov 2024 12:48:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dV9TR0HR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S7F9ig8Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A83BC10E4CA
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 12:44:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A938110E081
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 12:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731933883; x=1763469883;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=k7uOq6VWYYWG4Nm9Ee/9VmyGYqbqIRjhZc2H3qE01KQ=;
- b=dV9TR0HRj2BmUKblyDPFRfxXs7OvyAYEcUltvsvB47ZBjJZ3iWwWnrF8
- /fy4LTV9o/0eYnVGnLeAJz42rnwWp5JwrAl44rpQRXkSwcB6d7KuvFA+f
- xJdPCMC8U4OfQYjT2JzhEnuYwNGAWSFohufKVRnw8SnM2c1i8VU1zy5/D
- x+tNCv98aWv12VXSmqkNMCTqaZDC+6BV9hpi/tkg3TfX1j+y81hkzsEfz
- Nu0rsNk4rA2M5CjiUuahrbaYV6dnCR4CsXlmsEdCDQi0V4piMmnK64Bgv
- ytLYnk7Q5tB7S3ibGHFNuBiYKTiRdRN5ChKxYO6Z9Bfx0QVOgcGbL5FVr w==;
-X-CSE-ConnectionGUID: /1lXhYaRRray7a3kSOkORQ==
-X-CSE-MsgGUID: KCPaN/l2ROKx907iJ2wISw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="32038972"
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="32038972"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 04:44:43 -0800
-X-CSE-ConnectionGUID: tE02ByeiSlOMFLz7463h6A==
-X-CSE-MsgGUID: 6dL5FCHfRdiWzIabBRBkuw==
+ t=1731934133; x=1763470133;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=7x0eBLs7xvq47ikHvweyV39kqrENXJBKObaXhCRQFuU=;
+ b=S7F9ig8YIfIXoiw5gWkJ2y9t9wWwfAlaugFJkuUD+WeYDWwVa06Cc0tf
+ 7LXwRZZHZSALv9VoW21sXD9o1cppE56ibMTyRF5FkvG1g81QtE/lww5dz
+ +iv55uU4HtcNQEieGtShIZJ7CUtJI8GYjHB9ZVbfs67XdAXmgihR0kSLz
+ Yc52zrFJ6rDIlJlrL3QXy9zhKlYttB00KTNCuIHtRCEaLBMVYzNYqEWo+
+ xamv0h561baZuwqTN5iTQ7XLKg5BDx++7h2ABymAduHDidhFJbV/8Cu2c
+ 1fpHbdqi19gncPkgc2cjcc3hhGCuPSsboUG0p3AXSDpBlM7ZGdd1pOU/6 g==;
+X-CSE-ConnectionGUID: 14wBAh08R4W3mh8ZIWlrUg==
+X-CSE-MsgGUID: MkwEk/pBTASeOodQB3VBWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="49425922"
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="49425922"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 04:48:53 -0800
+X-CSE-ConnectionGUID: aYf5y6d1SBKE7RNjfkn0TA==
+X-CSE-MsgGUID: h6dcyCLKQsyzhl9WAGOqKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="89365039"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
- ([10.245.246.159])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 04:44:41 -0800
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t 2/2] HAX/DO_NOT_MERGE: Add wait-zero-handles to fast
- feedback list
-Date: Mon, 18 Nov 2024 13:44:22 +0100
-Message-ID: <20241118124422.11868-3-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241118124422.11868-1-krzysztof.niemiec@intel.com>
-References: <20241118124422.11868-1-krzysztof.niemiec@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="89646779"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 04:48:52 -0800
+Date: Mon, 18 Nov 2024 13:48:49 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Taylor, Clinton A" <clinton.a.taylor@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+Subject: Re: [PATCH i-g-t v3 5/9] XE3: tests/kms_addfb_basic: fix x-tiled
+ tests for case when there is no x-tile
+Message-ID: <20241118124849.47jg5gczvubp4fi7@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Taylor, Clinton A" <clinton.a.taylor@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+References: <20241114190339.3885752-1-clinton.a.taylor@intel.com>
+ <20241114190339.3885752-6-clinton.a.taylor@intel.com>
+ <20241115133105.o7772oanzhwk2kil@kamilkon-desk.igk.intel.com>
+ <9a959681ca5fad5d62b7d4fa21deadaf3005ac40.camel@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9a959681ca5fad5d62b7d4fa21deadaf3005ac40.camel@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,38 +78,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
- tests/intel-ci/fast-feedback.testlist    | 2 ++
- tests/intel-ci/xe-fast-feedback.testlist | 2 ++
- 2 files changed, 4 insertions(+)
+Hi Taylor,,
+On 2024-11-15 at 23:42:17 +0000, Taylor, Clinton A wrote:
+> On Fri, 2024-11-15 at 14:31 +0100, Kamil Konieczny wrote:
+> > Hi Clint,
+> > On 2024-11-14 at 11:03:35 -0800, Clint Taylor wrote:
+> > > From: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
+> > 
+> > Please use correct names here, it should be:
+> > 
+> > > From: "Juha-pekka Heikkila" <juha-pekka.heikkila@intel.com>
+> > > On Xe3 display no more support x-tile and will disable such framebuffers
+> > > 
+> > > Signed-off-by: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>
+> > 
+> > and here:
+> > 
+> > Signed-off-by: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
+> > 
+> > Please do the same corrections in other patches in this series.
+> > 
+>   I will ask JP if it's ok to change the original SOB and Author lines. They were
+> originally committed this way.
+> 
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..cf3a9d9b1 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,6 +1,8 @@
- # Try to load the driver if it's not available yet.
- igt@i915_module_load@load
- 
-+igt@syncobj_wait@wait-zero-handles
-+
- # Keep alphabetically sorted by default
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index d9fb98aab..b9f4d8700 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,6 +1,8 @@
- # Should be the first test
- igt@xe_module_load@load
- 
-+igt@syncobj_wait@wait-zero-handles
-+
- igt@fbdev@eof
- igt@fbdev@info
- igt@fbdev@nullptr
--- 
-2.45.2
+You are right, now I see I didn't add J-P to cc, so +cc
+I am also not sure if it should be 'Juha-Pekka' or 'Juha-pekka'
 
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+
+Regards,
+Kamil
+
+> 
+> -Clint
+> 
+> > Regards,
+> > Kamil
+> > 
+> > > Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+> > > ---
+> > >  tests/kms_addfb_basic.c | 22 ++++++++++++----------
+> > >  1 file changed, 12 insertions(+), 10 deletions(-)
+> > > 
+> > > diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> > > index b22818592..3ba87117b 100644
+> > > --- a/tests/kms_addfb_basic.c
+> > > +++ b/tests/kms_addfb_basic.c
+> > > @@ -217,6 +217,12 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
+> > >  	return err;
+> > >  }
+> > >  
+> > > +static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_fb_cmd2 *f)
+> > > +{
+> > > +	return igt_display_has_format_mod(disp, f->pixel_format,
+> > > +					  f->modifier[0]) ? 0 : -1;
+> > > +}
+> > > +
+> > >  static void invalid_tests(int fd)
+> > >  {
+> > >  	struct drm_mode_fb_cmd2 f = {};
+> > > @@ -735,8 +741,10 @@ static void addfb25_tests(int fd)
+> > >  		igt_describe("Check if addfb2 call works for x-tiling");
+> > >  		igt_subtest("addfb25-x-tiled-legacy") {
+> > >  			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+> > > -			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+> > > -			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+> > > +			igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+> > > +				      addfb_expected_ret(&display, &f));
+> > > +			if (!addfb_expected_ret(&display, &f))
+> > > +				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+> > >  			f.fb_id = 0;
+> > >  		}
+> > >  
+> > > @@ -756,12 +764,6 @@ static void addfb25_tests(int fd)
+> > >  		gem_close(fd, gem_bo);
+> > >  }
+> > >  
+> > > -static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_fb_cmd2 *f)
+> > > -{
+> > > -	return igt_display_has_format_mod(disp, f->pixel_format,
+> > > -					  f->modifier[0]) ? 0 : -1;
+> > > -}
+> > > -
+> > >  static void addfb25_ytile(int fd)
+> > >  {
+> > >  	struct drm_mode_fb_cmd2 f = {};
+> > > @@ -1012,8 +1014,6 @@ igt_main
+> > >  
+> > >  	master_tests(fd);
+> > >  
+> > > -	addfb25_tests(fd);
+> > > -
+> > >  	tiling_tests(fd);
+> > >  
+> > >  	igt_subtest_group {
+> > > @@ -1025,6 +1025,8 @@ igt_main
+> > >  		igt_fixture
+> > >  			igt_require_intel(fd);
+> > >  
+> > > +		addfb25_tests(fd);
+> > > +
+> > >  		addfb25_ytile(fd);
+> > >  
+> > >  		addfb25_4tile(fd);
+> > > -- 
+> > > 2.25.1
+> > > 
