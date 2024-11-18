@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 839BFD60CFA
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:35:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29108D60CF8
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE77A10E2A0;
-	Mon, 18 Nov 2024 23:35:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7EB710E56A;
+	Mon, 18 Nov 2024 23:35:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jL0KGpN4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="da2p6A/b";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7782110E190
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCF2110E571
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731972953; x=1763508953;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=7Q34MN1+S/hWvA02/u63ADNitopgDqBdhWospnhR7xY=;
- b=jL0KGpN49+jI08qE/WRsyekikDfaU6IvqNpXC9xKmvd6BTHcvV/UiVab
- TVHa175gas/JqrAZOj/pqLZ84k5pi42+M8ukkbYe2zDtPbf7qOqXdpFJi
- HupaKeo0j/7C5NKOwt0HGcbhSbh8Zrgf52CDOytidnLYlVJJXHojS6/20
- UPXFbRiWNCz/KlKZjHUVgLhcDguwcqYU1y7MNHc1G8DYpIvrAUBBTls/R
- KG3SnRiDT8O6ORPCmBt9uvpvUfsiRXpKmHK9m8oyLrvUAxwsg3c6z8hj7
- FfI0+km1fvy1+0VB/Sc/7dPv4SyZFEvh6MDrZIYNNTHu3WSb/ak0PFKOQ w==;
-X-CSE-ConnectionGUID: XMBVHZCzQwGmupxoQD/xiQ==
-X-CSE-MsgGUID: U+g9VEOPQIqKm40mQwdzqw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451224"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451224"
+ t=1731972959; x=1763508959;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=bj9M7C0DQr35+AV9jiUejnxNFjJG4cp8nso19AZvrOQ=;
+ b=da2p6A/buRF9Cdy40u1xIWD7bWeR0mWTDrcgINKtNTxOdQVY004UeVhF
+ 3ErbR06KpAvaG/B3MrkHDHAnmDvT+kYx1Hnub3DJA7x7uRPK72WILudB1
+ 9sicNJqAfctXNcc3sKS67hF/X6rbvTvbuoUv35zn4YkoKNK+EkI2m0GQr
+ sbnSSD+IRn/d2V5BRaLmSOMYUjBtnlMNg1rA37FkpXpncnDKSpxoPAIDF
+ xvKU83UhIlDHJqEPo9HOA1NwHAVjd6oMgOMqYFEa1LcqkM/2GhmHXzguF
+ 15f0klOaTYeyn1+Dp9ZoA/3hOokTVnXnYez7z3PxIOs1qLhb0dDTnExDO w==;
+X-CSE-ConnectionGUID: sVU4S+nqSu+7takVPK6QRw==
+X-CSE-MsgGUID: TiSdp2LbRQ+lPHM6S5HNbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451242"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451242"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:53 -0800
-X-CSE-ConnectionGUID: f1WivZ1QSneoPTP7aAzamg==
-X-CSE-MsgGUID: kgFdN3F2QiuvcyuVEO3hTQ==
+X-CSE-ConnectionGUID: PxIrGICHTNaeaveONBdEpQ==
+X-CSE-MsgGUID: LRw8Ny6QSn+NErxSD4ju1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245217"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245239"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 00/29] UMD direct submission in Xe
-Date: Mon, 18 Nov 2024 15:35:51 -0800
-Message-Id: <20241118233620.2373819-1-matthew.brost@intel.com>
+Subject: [RFC PATCH 19/29] drm/xe: Do not allow usermap exec queues in exec
+ IOCTL
+Date: Mon, 18 Nov 2024 15:36:10 -0800
+Message-Id: <20241118233620.2373819-20-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
+References: <20241118233620.2373819-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,138 +67,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is an RFC, or possibly even a proof of concept, for UMD (User Mode
-Driver) direct submission in Xe. It is similar to AMD's design [1] [2]
-or ARM's design [3], utilizing a uAPI to convert user-space syncs
-(memory writes) to kernel-space syncs (DMA fences). It is built around
-the existing Xe preemption fences for dynamic memory management, such as
-userptr invalidation and buffer object (BO) eviction.
+Not supported at the moment, may need something in the no doorbells
+available.
 
-The series also enables mapping a PPGTT-bound submission ring in
-non-privileged mode, as well as exposing indirect ring state (such as
-ring head, tail, etc.) and the doorbell to user space, enabling UMD
-direct submission.
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ drivers/gpu/drm/xe/xe_exec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The target for this series is Mesa, with the goal of enabling UMD direct
-submission and removing the submission thread that currently handles
-future fences. I've discussed this with Sima and the Intel Mesa team,
-and it seems like a reachable target. Most synchronization will be
-handled in user space via memory writes and semaphore wait ring
-instructions, with only legacy cross-process synchronization (e.g.,
-compositors) requiring kernel synchronization (DMA fences).
-
-The series includes some common patches at the beginning to implement
-preemption fences and user fences. The idea of preemption
-DMA-reservation slots [4] has been dropped in favor of attaching the
-last exported DMA fence to the preemption fence as suggested by AMD.
-
-This is a public checkpoint on the KMD (Kernel Mode Driver) work, which
-will be tabled until Intel's Mesa team has the bandwidth to begin the
-UMD work. That said, the uAPI is very preliminary and likely to change.
-One idea that was discussed is a common user fence interface based
-around DRM syncobjs, which will likely be explored further as UMD
-engagement begins. Some work for syncing VM binds (kernel operation)
-with UMD direct submission is also likely required.
-
-Testing has been done with [5], and the main features—such as basic
-submission, dynamic memory management, user-to-kernel sync conversion,
-and protection against endless user fences—are working on BMG and LNL.
-
-The GitLab branch [6] has also been pushed for reference.
-
-Any early community feedback is always appreciated.
-
-Matt
-
-[1] https://patchwork.freedesktop.org/series/113675/
-[2] https://patchwork.freedesktop.org/series/114385/
-[3] https://patchwork.freedesktop.org/series/137924/
-[4] https://patchwork.freedesktop.org/series/141129/
-[5] https://patchwork.freedesktop.org/series/141518/
-[6] https://gitlab.freedesktop.org/mbrost/xe-kernel-driver-umd-submission-post/-/tree/post-11-18-24?ref_type=heads 
-
-Matthew Brost (28):
-  dma-fence: Add dma_fence_preempt base class
-  dma-fence: Add dma_fence_user_fence
-  drm/xe: Use dma_fence_preempt base class
-  drm/xe: Allocate doorbells for UMD exec queues
-  drm/xe: Add doorbell ID to snapshot capture
-  drm/xe: Break submission ring out into its own BO
-  drm/xe: Break indirect ring state out into its own BO
-  drm/xe: Clear GGTT in xe_bo_restore_kernel
-  FIXME: drm/xe: Add pad to ring and indirect state
-  drm/xe: Enable indirect ring on media GT
-  drm/xe: Don't add pinned mappings to VM bulk move
-  drm/xe: Add exec queue post init extension processing
-  drm/xe: Add support for mmapping doorbells to user space
-  drm/xe: Add support for mmapping submission ring and indirect ring
-    state to user space
-  drm/xe/uapi: Define UMD exec queue mapping uAPI
-  drm/xe: Add usermap exec queue extension
-  drm/xe: Drop EXEC_QUEUE_FLAG_UMD_SUBMISSION flag
-  drm/xe: Do not allow usermap exec queues in exec IOCTL
-  drm/xe: Teach GuC backend to kill usermap queues
-  drm/xe: Enable preempt fences on usermap queues
-  drm/xe/uapi: Add uAPI to convert user semaphore to / from drm syncobj
-  drm/xe: Add user fence IRQ handler
-  drm/xe: Add xe_hw_fence_user_init
-  drm/xe: Add a message lock to the Xe GPU scheduler
-  drm/xe: Always wait on preempt fences in vma_check_userptr
-  drm/xe: Teach xe_sync layer about drm_xe_semaphore
-  drm/xe: Add VM convert fence IOCTL
-  drm/xe: Add user fence TDR
-
-Tejas Upadhyay (1):
-  drm/xe/mmap: Add mmap support for PCI memory barrier
-
- drivers/dma-buf/Makefile                     |   2 +-
- drivers/dma-buf/dma-fence-preempt.c          | 134 ++++++
- drivers/dma-buf/dma-fence-user-fence.c       |  73 ++++
- drivers/gpu/drm/xe/xe_bo.c                   |  29 +-
- drivers/gpu/drm/xe/xe_bo.h                   |   5 +
- drivers/gpu/drm/xe/xe_bo_evict.c             |   8 +-
- drivers/gpu/drm/xe/xe_device.c               | 181 +++++++-
- drivers/gpu/drm/xe/xe_device_types.h         |   3 +
- drivers/gpu/drm/xe/xe_exec.c                 |   3 +-
- drivers/gpu/drm/xe/xe_exec_queue.c           | 175 +++++++-
- drivers/gpu/drm/xe/xe_exec_queue.h           |   5 +
- drivers/gpu/drm/xe/xe_exec_queue_types.h     |  13 +
- drivers/gpu/drm/xe/xe_execlist.c             |   2 +-
- drivers/gpu/drm/xe/xe_ggtt.c                 |  19 +-
- drivers/gpu/drm/xe/xe_ggtt.h                 |   2 +
- drivers/gpu/drm/xe/xe_gpu_scheduler.c        |  19 +-
- drivers/gpu/drm/xe/xe_gpu_scheduler.h        |  12 +-
- drivers/gpu/drm/xe/xe_gpu_scheduler_types.h  |   2 +
- drivers/gpu/drm/xe/xe_guc_exec_queue_types.h |   9 +-
- drivers/gpu/drm/xe/xe_guc_submit.c           | 177 +++++++-
- drivers/gpu/drm/xe/xe_guc_submit_types.h     |   2 +
- drivers/gpu/drm/xe/xe_hw_engine.c            |   4 +-
- drivers/gpu/drm/xe/xe_hw_engine_group.c      |   4 +-
- drivers/gpu/drm/xe/xe_hw_fence.c             |  17 +
- drivers/gpu/drm/xe/xe_hw_fence.h             |   3 +
- drivers/gpu/drm/xe/xe_lrc.c                  | 176 ++++++--
- drivers/gpu/drm/xe/xe_lrc.h                  |   4 +-
- drivers/gpu/drm/xe/xe_lrc_types.h            |  16 +-
- drivers/gpu/drm/xe/xe_pci.c                  |   1 +
- drivers/gpu/drm/xe/xe_preempt_fence.c        |  89 ++--
- drivers/gpu/drm/xe/xe_preempt_fence.h        |   2 +-
- drivers/gpu/drm/xe/xe_preempt_fence_types.h  |  11 +-
- drivers/gpu/drm/xe/xe_pt.c                   |   5 +-
- drivers/gpu/drm/xe/xe_sync.c                 |  90 ++++
- drivers/gpu/drm/xe/xe_sync.h                 |   8 +
- drivers/gpu/drm/xe/xe_sync_types.h           |   5 +-
- drivers/gpu/drm/xe/xe_vm.c                   | 423 ++++++++++++++++++-
- drivers/gpu/drm/xe/xe_vm.h                   |   4 +-
- drivers/gpu/drm/xe/xe_vm_types.h             |  26 ++
- include/linux/dma-fence-preempt.h            |  56 +++
- include/linux/dma-fence-user-fence.h         |  31 ++
- include/uapi/drm/xe_drm.h                    | 147 ++++++-
- 42 files changed, 1798 insertions(+), 199 deletions(-)
- create mode 100644 drivers/dma-buf/dma-fence-preempt.c
- create mode 100644 drivers/dma-buf/dma-fence-user-fence.c
- create mode 100644 include/linux/dma-fence-preempt.h
- create mode 100644 include/linux/dma-fence-user-fence.h
-
+diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
+index 31cca938956f..898e4718d639 100644
+--- a/drivers/gpu/drm/xe/xe_exec.c
++++ b/drivers/gpu/drm/xe/xe_exec.c
+@@ -132,7 +132,8 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+ 	if (XE_IOCTL_DBG(xe, !q))
+ 		return -ENOENT;
+ 
+-	if (XE_IOCTL_DBG(xe, q->flags & EXEC_QUEUE_FLAG_VM)) {
++	if (XE_IOCTL_DBG(xe, q->flags & EXEC_QUEUE_FLAG_VM ||
++			 xe_exec_queue_is_usermap(q))) {
+ 		err = -EINVAL;
+ 		goto err_exec_queue;
+ 	}
 -- 
 2.34.1
 
