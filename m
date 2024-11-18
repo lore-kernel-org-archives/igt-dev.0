@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19968D60D00
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A93D60CFA
 	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4542B10E571;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 642A710E572;
 	Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yo6zLCbE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lL7n6VGk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECD0510E575
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB42F10E569
  for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1731972959; x=1763508959;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=C02NA37fN9dm3BF7bGK31pqMn+aFCtASLHdm9hCh/k4=;
- b=Yo6zLCbErwkAKeKpdeBoyX4MmIH+xPNNvOmlxEn+o9+vF8byp7FeIrRj
- 2D4XTGMz/9FYLATCScOjWFaYnR1ZRA22uit7prw2hXaGbA4ROvKzhsZO/
- h/MMMH+6O0F0FnrUZ8g7JDkTIpmqzGNakEVIFv+qrXwQ4DJQm/KdFpT6y
- IcIMjjrQ7qVxgWC0IPtuD3vguttN9aqwplcCoKeNegOyDl8Z09ws0+9/C
- RcSmKv4qAPIbcfWoV/zcqNkHQG/+t7Emy0ZedBSFL8AXEz4Lv/2CVPDmD
- TC8wPj4OHq6+wJkNHKlP6iWi/iWbr/4HqzNrXo8kK9Jqp934BNiVJIleo g==;
-X-CSE-ConnectionGUID: 9SVtuDoaTgylXsYbP9hNrw==
-X-CSE-MsgGUID: nm8j/MSwQRi1GsuWJ+nH5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451247"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451247"
+ bh=0CfghZNeiZ/DK/IeKHwi+ZoI/7jLbVs/H+RcKIZeBk8=;
+ b=lL7n6VGkvmEX91mhtdoQ/Ml6DHOhFQoK3ljdEI2gYcLqSLJle85Rwui/
+ vfUw3EWuAk/gYoueufLzv0iq9DnG80VCdLOj7MFkP2U5Ar8ylBHdLEH4v
+ nCYtg6paQm6JagkmecfRWHhM0srBvmmc7BPV85A/b3lao/OaIdWmtI7RO
+ MSMb2sH+jD+YPCLk3Ud/5aqSiDyBv+Beu8g0+/s7hn7bjld3jk72Z9siu
+ L18WTnLbWEhPFw4BciDXj8dRBgxZ0k7RUiApuU35mDyX4+ieOz2LasnjE
+ 9ry6HhlTQ5cm2l6l6Fv5P4iyHQTyjEmg2DdyoI5OJL5zhbiuoNx9ZCSHP g==;
+X-CSE-ConnectionGUID: fmQNixb7RwutsTPeKtcr5w==
+X-CSE-MsgGUID: 5W3E7GjeRsOVN1x8aLIx0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451246"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451246"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:54 -0800
-X-CSE-ConnectionGUID: S85CrYfTQFaFPMxrgsjYKw==
-X-CSE-MsgGUID: A9HbnN2vSxuKRAYQoEyIeA==
+X-CSE-ConnectionGUID: bi9S7DIKS3KyCLghhf4nJQ==
+X-CSE-MsgGUID: UWkgxEMFTsWSxkUpRffQrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245245"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245242"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 23/29] drm/xe: Add user fence IRQ handler
-Date: Mon, 18 Nov 2024 15:36:14 -0800
-Message-Id: <20241118233620.2373819-24-matthew.brost@intel.com>
+Subject: [RFC PATCH 21/29] drm/xe: Enable preempt fences on usermap queues
+Date: Mon, 18 Nov 2024 15:36:12 -0800
+Message-Id: <20241118233620.2373819-22-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -66,83 +66,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Imported user fences will not be tied to a specific queue or hardware
-engine class. Therefore, a device IRQ handler is needed to signal the
-associated exported DMA fences.
+Preempt fences are used by usermap queues to implement dynamic memory
+(BO eviction, userptr invalidation), enable preempt fences on usermap
+queues.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/xe/xe_device.c       | 4 ++++
- drivers/gpu/drm/xe/xe_device_types.h | 3 +++
- drivers/gpu/drm/xe/xe_hw_engine.c    | 4 +++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c |  3 ++-
+ drivers/gpu/drm/xe/xe_pt.c         |  3 +--
+ drivers/gpu/drm/xe/xe_vm.c         | 18 ++++++++----------
+ drivers/gpu/drm/xe/xe_vm.h         |  2 +-
+ 4 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index bbdff4308b2e..573b5f3df0c8 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -39,6 +39,7 @@
- #include "xe_gt_sriov_vf.h"
- #include "xe_guc.h"
- #include "xe_hw_engine_group.h"
-+#include "xe_hw_fence.h"
- #include "xe_hwmon.h"
- #include "xe_irq.h"
- #include "xe_memirq.h"
-@@ -902,6 +903,7 @@ int xe_device_probe(struct xe_device *xe)
- 	if (err)
- 		goto err;
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index a22f089ccec6..987584090263 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -794,7 +794,8 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 		if (IS_ERR(q))
+ 			return PTR_ERR(q);
  
-+	xe_hw_fence_irq_init(&xe->user_fence_irq);
- 	for_each_gt(gt, xe, id) {
- 		last_gt = id;
+-		if (xe_vm_in_preempt_fence_mode(vm)) {
++		if (xe_vm_in_preempt_fence_mode(vm) ||
++		    xe_exec_queue_is_usermap(q)) {
+ 			q->lr.context = dma_fence_context_alloc(1);
  
-@@ -944,6 +946,7 @@ int xe_device_probe(struct xe_device *xe)
- 	xe_oa_fini(xe);
- 
- err_fini_gt:
-+	xe_hw_fence_irq_finish(&xe->user_fence_irq);
- 	for_each_gt(gt, xe, id) {
- 		if (id < last_gt)
- 			xe_gt_remove(gt);
-@@ -979,6 +982,7 @@ void xe_device_remove(struct xe_device *xe)
- 
- 	xe_heci_gsc_fini(xe);
- 
-+	xe_hw_fence_irq_finish(&xe->user_fence_irq);
- 	for_each_gt(gt, xe, id)
- 		xe_gt_remove(gt);
- }
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 8592f1b02db1..3ac118c6f85e 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -507,6 +507,9 @@ struct xe_device {
- 		int mode;
- 	} wedged;
- 
-+	/** @user_fence_irq: User fence IRQ handler */
-+	struct xe_hw_fence_irq user_fence_irq;
-+
- #ifdef TEST_VM_OPS_ERROR
- 	/**
- 	 * @vm_inject_error_position: inject errors at different places in VM
-diff --git a/drivers/gpu/drm/xe/xe_hw_engine.c b/drivers/gpu/drm/xe/xe_hw_engine.c
-index c4b0dc3be39c..2c9aa5343971 100644
---- a/drivers/gpu/drm/xe/xe_hw_engine.c
-+++ b/drivers/gpu/drm/xe/xe_hw_engine.c
-@@ -822,8 +822,10 @@ void xe_hw_engine_handle_irq(struct xe_hw_engine *hwe, u16 intr_vec)
- 	if (hwe->irq_handler)
- 		hwe->irq_handler(hwe, intr_vec);
- 
--	if (intr_vec & GT_RENDER_USER_INTERRUPT)
-+	if (intr_vec & GT_RENDER_USER_INTERRUPT) {
-+		xe_hw_fence_irq_run(&gt_to_xe(hwe->gt)->user_fence_irq);
- 		xe_hw_fence_irq_run(hwe->fence_irq);
-+	}
+ 			err = xe_vm_add_compute_exec_queue(vm, q);
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index 684dc075deac..a75667346ab3 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -1882,8 +1882,7 @@ static void bind_op_commit(struct xe_vm *vm, struct xe_tile *tile,
+ 	 * the rebind worker
+ 	 */
+ 	if (pt_update_ops->wait_vm_bookkeep &&
+-	    xe_vm_in_preempt_fence_mode(vm) &&
+-	    !current->mm)
++	    vm->preempt.num_exec_queues && !current->mm)
+ 		xe_vm_queue_rebind_worker(vm);
  }
  
- /**
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 2e67648ed512..16bc1b82d950 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -229,7 +229,8 @@ int xe_vm_add_compute_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q)
+ 	int err;
+ 	bool wait;
+ 
+-	xe_assert(vm->xe, xe_vm_in_preempt_fence_mode(vm));
++	xe_assert(vm->xe, xe_vm_in_preempt_fence_mode(vm) ||
++		  xe_exec_queue_is_usermap(q));
+ 
+ 	down_write(&vm->lock);
+ 	err = drm_gpuvm_exec_lock(&vm_exec);
+@@ -280,7 +281,7 @@ int xe_vm_add_compute_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q)
+  */
+ void xe_vm_remove_compute_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q)
+ {
+-	if (!xe_vm_in_preempt_fence_mode(vm))
++	if (!xe_vm_in_preempt_fence_mode(vm) && !xe_exec_queue_is_usermap(q))
+ 		return;
+ 
+ 	down_write(&vm->lock);
+@@ -487,7 +488,7 @@ static void preempt_rebind_work_func(struct work_struct *w)
+ 	long wait;
+ 	int __maybe_unused tries = 0;
+ 
+-	xe_assert(vm->xe, xe_vm_in_preempt_fence_mode(vm));
++	xe_assert(vm->xe, !xe_vm_in_fault_mode(vm));
+ 	trace_xe_vm_rebind_worker_enter(vm);
+ 
+ 	down_write(&vm->lock);
+@@ -1467,10 +1468,9 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ 		vm->batch_invalidate_tlb = true;
+ 	}
+ 
+-	if (vm->flags & XE_VM_FLAG_LR_MODE) {
+-		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
++	INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
++	if (vm->flags & XE_VM_FLAG_LR_MODE)
+ 		vm->batch_invalidate_tlb = false;
+-	}
+ 
+ 	/* Fill pt_root after allocating scratch tables */
+ 	for_each_tile(tile, xe, id) {
+@@ -1543,8 +1543,7 @@ void xe_vm_close_and_put(struct xe_vm *vm)
+ 	xe_assert(xe, !vm->preempt.num_exec_queues);
+ 
+ 	xe_vm_close(vm);
+-	if (xe_vm_in_preempt_fence_mode(vm))
+-		flush_work(&vm->preempt.rebind_work);
++	flush_work(&vm->preempt.rebind_work);
+ 
+ 	down_write(&vm->lock);
+ 	for_each_tile(tile, xe, id) {
+@@ -1644,8 +1643,7 @@ static void vm_destroy_work_func(struct work_struct *w)
+ 	/* xe_vm_close_and_put was not called? */
+ 	xe_assert(xe, !vm->size);
+ 
+-	if (xe_vm_in_preempt_fence_mode(vm))
+-		flush_work(&vm->preempt.rebind_work);
++	flush_work(&vm->preempt.rebind_work);
+ 
+ 	mutex_destroy(&vm->snap_mutex);
+ 
+diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
+index c864dba35e1d..4391dbaeba51 100644
+--- a/drivers/gpu/drm/xe/xe_vm.h
++++ b/drivers/gpu/drm/xe/xe_vm.h
+@@ -216,7 +216,7 @@ int xe_vm_invalidate_vma(struct xe_vma *vma);
+ 
+ static inline void xe_vm_queue_rebind_worker(struct xe_vm *vm)
+ {
+-	xe_assert(vm->xe, xe_vm_in_preempt_fence_mode(vm));
++	xe_assert(vm->xe, !xe_vm_in_fault_mode(vm));
+ 	queue_work(vm->xe->ordered_wq, &vm->preempt.rebind_work);
+ }
+ 
 -- 
 2.34.1
 
