@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ADEFD4920C
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 11:15:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EF19D4920C
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 11:15:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AA36210E1B7;
-	Mon, 18 Nov 2024 11:15:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD01210E48E;
+	Mon, 18 Nov 2024 11:15:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yw94Ohsl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ot/WxJ2E";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96AE410E1B7
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 11:15:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 372E810E48E
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 11:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731928541; x=1763464541;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jq6rqT1k9KdsoZZsefo+HG77MbFnFEXxRDNsnHlBV60=;
- b=Yw94OhslqsZxufAT7rpeYF+u4kfNr6B5yIjGOUj+dcYxVzoTHmfpp1+K
- PYFbtZqZa0xyixqmiZ3cafSAHXWNa3xgYZZPVZrp27phrW+LtCViT+inI
- ISFDFTb4UPAwow9qU1FHC6N8dZdr0B6hhp5S8IcG86iNsDGCIUrW+L7/E
- Giu20UNbQ1A6314uGjlysK0NFWqI6FahChzfobKnWaKIp2v0wfFIEcaYA
- FKiUgWptuTmVg1vlua4347f9WuXKH70zdeqvtBqYXGPqr9LFdHWDgsm4u
- tjuIAR5J9qTEQWoTO+aRSd0emGFtLgPl5luoxVoG8DgTJcP1VsUZCLIXr A==;
-X-CSE-ConnectionGUID: QHLPWjohQOi+YlnZ7THmog==
-X-CSE-MsgGUID: zb/INhHVRmyTDO79D91M0g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="43266225"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="43266225"
+ t=1731928549; x=1763464549;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=73kGz0ZGiyHSBA58c9rmdk7lAVZItfC/4G18HGQzbsA=;
+ b=Ot/WxJ2Ed7APGkjv6d4a/elbgcaEBHOaoPErofY77zpAg7heYwDNJ/wJ
+ RQU/ws92iGV7RkX8ELMSFzm4SVUqbUzVTI/st7IOaxkAihOQPMEu5A2cS
+ rxmNXRDBDralEOgW/O3ixt0v+qD6/RzrfatSPZ4PjPLZ6WeANdRIbZ7sZ
+ e1d/xkeJudacFTkeiwAtQhlbXPWGK+tuZJlUoMljy1IqWeyFbmJ3LwdUT
+ 89H3eb40F3O3w9Plaq2kHTi5VLHggmSG1Ds9//MuhKV8V+Izj8ImEufeE
+ RpG0YpgSr9xiFCk3FBxRi5w5NcjCL9CnpXy2PNUNXlGTy2f63bGBH/gZ3 w==;
+X-CSE-ConnectionGUID: z9WiW0rAQkSPTEf1pLsOWA==
+X-CSE-MsgGUID: z8MkBwwsQ1qK2rYHKME+YA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="43266233"
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="43266233"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 03:15:40 -0800
-X-CSE-ConnectionGUID: s7S9mwjJQsCr4qDAXfVrEg==
-X-CSE-MsgGUID: FV43kkQ0RrivJgDkOg+E9Q==
+ 18 Nov 2024 03:15:49 -0800
+X-CSE-ConnectionGUID: bdkjKleXS2SnwwVJt10Nnw==
+X-CSE-MsgGUID: d6HcZHZXSyW9l1qe1sP10Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="89111629"
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; d="scan'208";a="89111661"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 03:15:39 -0800
+ 18 Nov 2024 03:15:47 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Andi Shyti <andi.shyti@linux.intel.com>,
  Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t v2 0/1] tests/intel-ci: Block all gem_exec_fair tests
-Date: Mon, 18 Nov 2024 11:15:27 +0000
-Message-Id: <20241118111528.4190241-1-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 1/1] tests/intel-ci: Block all gem_exec_fair tests
+Date: Mon, 18 Nov 2024 11:15:28 +0000
+Message-Id: <20241118111528.4190241-2-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241118111528.4190241-1-katarzyna.piecielska@intel.com>
+References: <20241118111528.4190241-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -75,18 +77,26 @@ Ref:
 https://gitlab.freedesktop.org/drm/intel/issues/2842
 https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12786
 
-v2: Fix regexp (Kamil)
-
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Andi Shyti <andi.shyti@linux.intel.com>
 Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-
-Katarzyna Piecielska (1):
-  tests/intel-ci: Block all gem_exec_fair tests
-
+---
  tests/intel-ci/blacklist.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index cfc5491d5..d0b39111c 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -29,7 +29,7 @@ igt@gem_evict_alignment(@.*)?
+ igt@gem_evict_everything(@.*)?
+ igt@gem_exec_big@(?!.*single).*
+ igt@gem_exec_capture@many-.*
+-igt@gem_exec_fair@(?!.*basic).*
++igt@gem_exec_fair(@.*)?
+ igt@gem_exec_fence@.*hang.*
+ igt@gem_exec_flush@(?!.*basic).*
+ igt@gem_exec_latency(@.*)?
 -- 
 2.34.1
 
