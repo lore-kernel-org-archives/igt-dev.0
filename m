@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47285D60D03
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E65D60D05
 	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 004E010E56B;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3099F10E56D;
 	Mon, 18 Nov 2024 23:36:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RDQJo1r2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fYrtjRoe";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF46B10E56B
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10D6B10E578
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1731972959; x=1763508959;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=OtbyF2EW/P7V2LLp0ko5/zMgM1ltR8QgJg7XG/TyNAU=;
- b=RDQJo1r2WayTpV8MctxaZHD3d/Je+LU4ky5aLadrWfNgnt4sR1Wke1Eb
- kBfsdGdrKd4Pp+ny/mwFXwV5mEolEWYPp7pT9ZaXF7GDAvvF5L8B7KVoc
- OhGP+kqqn1dsaZnVbwLmIumbuy0l8vLHl0wEpTpITY6fWhtrTauEBEqi+
- 2WQ6B8KoXs8RuYI7WAiXArRvOaTmU7BoVtAqq7Zlkz0hJ+LliCESEmui6
- PJxAkZUc6lf3bSdbx+vn5LUGkJz4U+oxmAF/jxkvbDnEVLV7goFkO4m8K
- ht0jTLtywycQvAaMF8vTJ7tdliw0OQb1NjS9bOZWe3IqGoXCPmKFoVFZc g==;
-X-CSE-ConnectionGUID: 5IWTbBk5RSuSYPgAilv4gw==
-X-CSE-MsgGUID: UkHP+BbETp24PJSB3ubNMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451244"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451244"
+ bh=0osXRmnKpiY3+lFHIipsNkgn0vpsvm78bLb55LfZ/Ws=;
+ b=fYrtjRoeFRiCUUqVTSS/quRnzsqPmZYq6h+mkqSAH3tDSPib1ci2zkZi
+ KHmQvEL05bSIJ3xjbd1eRjRw+ugu+9mcY2I3o2VYKEk0JiQjvpN6R3Drg
+ MAbIISRm0vM6Ai6eQf7TgwdD65EJLyb/JvhD68eLLdMzWpsuxH3chMZEZ
+ lq/2mBDMcdzXsgg5vDSXjJNCMRS9C0pOgkNoQ8rI1vNQ/maEJg1kdecI5
+ LNIjhqTjO93clSb/Zsydt1QabDivzoszMuSA2pZ6lgo0SEjQEET5x8E4b
+ qo2zlsuiTopRl8AK2pm7yok5WhxoZ/7uqWM5rE8be6qDmGoksnnkmLVkT Q==;
+X-CSE-ConnectionGUID: XFTx0+npToei+sqyku+mfA==
+X-CSE-MsgGUID: VouWUiLQTEecZkfsVSWhYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451255"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451255"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 15:35:54 -0800
-X-CSE-ConnectionGUID: VeQtq4DNQWeHkDK7hLcrSA==
-X-CSE-MsgGUID: JI/yPk3PQOKrU/RRQb/NaQ==
+ 18 Nov 2024 15:35:58 -0800
+X-CSE-ConnectionGUID: MbrCH/VlT+qYAQLSr1RpyA==
+X-CSE-MsgGUID: zTv9w1UcRgK2zu7Ho/P7/w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245230"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245251"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 13/29] drm/xe/mmap: Add mmap support for PCI memory barrier
-Date: Mon, 18 Nov 2024 15:36:04 -0800
-Message-Id: <20241118233620.2373819-14-matthew.brost@intel.com>
+Subject: [RFC PATCH 27/29] drm/xe: Teach xe_sync layer about drm_xe_semaphore
+Date: Mon, 18 Nov 2024 15:36:18 -0800
+Message-Id: <20241118233620.2373819-28-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -66,276 +66,207 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Teach xe_sync layer about drm_xe_semaphore which is used import / export
+user fences.
 
-In order to avoid having userspace to use MI_MEM_FENCE,
-we are adding a mechanism for userspace to generate a
-PCI memory barrier with low overhead (avoiding IOCTL call
-as well as writing to VRAM will adds some overhead).
-
-This is implemented by memory-mapping a page as uncached
-that is backed by MMIO on the dGPU and thus allowing userspace
-to do memory write to the page without invoking an IOCTL.
-We are selecting the MMIO so that it is not accessible from
-the PCI bus so that the MMIO writes themselves are ignored,
-but the PCI memory barrier will still take action as the MMIO
-filtering will happen after the memory barrier effect.
-
-When we detect special defined offset in mmap(), We are mapping
-4K page which contains the last of page of doorbell MMIO range
-to userspace for same purpose.
-
-For user to query special offset we are adding special flag in
-mmap_offset ioctl which needs to be passed as follows,
-struct drm_xe_gem_mmap_offset mmo = {
-        .handle = 0, /* this must be 0 */
-        .flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
-};
-igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
-map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo);
-
-Note: Test coverage for this is added by IGT
-      https://patchwork.freedesktop.org/series/140368/  here.
-      UMD implementing test, once PR is ready will attach with
-      this patch.
-
-V6(MAuld)
-  - Move physical mmap to fault handler
-  - Modify kernel-doc and attach UMD PR when ready
-V5(MAuld)
-  - Return invalid early in case of non 4K PAGE_SIZE
-  - Format kernel-doc and add note for 4K PAGE_SIZE HW limit
-V4(MAuld)
-  - Add kernel-doc for uapi change
-  - Restrict page size to 4K
-V3(MAuld)
-  - Remove offset defination from UAPI to be able to change later
-  - Edit commit message for special flag addition
-V2(MAuld)
-  - Add fault handler with dummy page to handle unplug device
-  - Add Build check for special offset to be below normal start page
-  - Test d3hot, mapping seems to be valid in d3hot as well
-  - Add more info to commit message
-
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Michal Mrozek <michal.mrozek@intel.com>
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/xe/xe_bo.c     |  16 ++++-
- drivers/gpu/drm/xe/xe_bo.h     |   2 +
- drivers/gpu/drm/xe/xe_device.c | 103 ++++++++++++++++++++++++++++++++-
- include/uapi/drm/xe_drm.h      |  29 +++++++++-
- 4 files changed, 147 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c       | 90 ++++++++++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_sync.h       |  8 +++
+ drivers/gpu/drm/xe/xe_sync_types.h |  5 +-
+ 3 files changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 96dbc88b1f55..f948262e607f 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -2138,9 +2138,23 @@ int xe_gem_mmap_offset_ioctl(struct drm_device *dev, void *data,
- 	    XE_IOCTL_DBG(xe, args->reserved[0] || args->reserved[1]))
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
+index 42f5bebd09e5..ac4510ad52a9 100644
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -6,6 +6,7 @@
+ #include "xe_sync.h"
  
--	if (XE_IOCTL_DBG(xe, args->flags))
-+	if (XE_IOCTL_DBG(xe, args->flags &
-+			 ~DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER))
- 		return -EINVAL;
+ #include <linux/dma-fence-array.h>
++#include <linux/dma-fence-user-fence.h>
+ #include <linux/kthread.h>
+ #include <linux/sched/mm.h>
+ #include <linux/uaccess.h>
+@@ -14,11 +15,15 @@
+ #include <drm/drm_syncobj.h>
+ #include <uapi/drm/xe_drm.h>
  
-+	if (args->flags & DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER) {
-+		if (XE_IOCTL_DBG(xe, args->handle))
-+			return -EINVAL;
++#include "xe_bo.h"
+ #include "xe_device_types.h"
+ #include "xe_exec_queue.h"
++#include "xe_hw_fence.h"
+ #include "xe_macros.h"
+ #include "xe_sched_job_types.h"
+ 
++#define IS_UNINSTALLED_HW_FENCE		BIT(31)
 +
-+		if (XE_IOCTL_DBG(xe, PAGE_SIZE > SZ_4K))
-+			return -EINVAL;
+ struct xe_user_fence {
+ 	struct xe_device *xe;
+ 	struct kref refcount;
+@@ -211,6 +216,74 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
+ 	return 0;
+ }
+ 
++int xe_sync_semaphore_parse(struct xe_device *xe, struct xe_file *xef,
++			    struct xe_sync_entry *sync,
++			    struct drm_xe_semaphore __user *semaphore_user,
++			    unsigned int flags)
++{
++	struct drm_xe_semaphore semaphore_in;
++	struct drm_gem_object *gem_obj;
++	struct xe_bo *bo;
 +
-+		BUILD_BUG_ON(((XE_PCI_BARRIER_MMAP_OFFSET >> XE_PTE_SHIFT) +
-+			      SZ_4K) >= DRM_FILE_PAGE_OFFSET_START);
-+		args->offset = XE_PCI_BARRIER_MMAP_OFFSET;
-+		return 0;
++	if (copy_from_user(&semaphore_in, semaphore_user,
++			   sizeof(*semaphore_user)))
++		return -EFAULT;
++
++	if (XE_IOCTL_DBG(xe, semaphore_in.offset & 0x7 ||
++			 !semaphore_in.handle || semaphore_in.token ||
++			 semaphore_in.reserved[0] || semaphore_in.reserved[1]))
++		return -EINVAL;
++
++	gem_obj = drm_gem_object_lookup(xef->drm, semaphore_in.handle);
++	if (XE_IOCTL_DBG(xe, !gem_obj))
++		return -ENOENT;
++
++	bo = gem_to_xe_bo(gem_obj);
++
++	if (XE_IOCTL_DBG(xe, bo->size < semaphore_in.offset)) {
++		xe_bo_put(bo);
++		return -EINVAL;
 +	}
 +
- 	gem_obj = drm_gem_object_lookup(file, args->handle);
- 	if (XE_IOCTL_DBG(xe, !gem_obj))
- 		return -ENOENT;
-diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
-index 7fa44a0138b0..e7724965d3f1 100644
---- a/drivers/gpu/drm/xe/xe_bo.h
-+++ b/drivers/gpu/drm/xe/xe_bo.h
-@@ -63,6 +63,8 @@
- 
- #define XE_BO_PROPS_INVALID	(-1)
- 
-+#define XE_PCI_BARRIER_MMAP_OFFSET	(0x50 << XE_PTE_SHIFT)
++	if (flags & DRM_XE_SYNC_FLAG_SIGNAL) {
++		struct iosys_map vmap = sync->bo->vmap;
++		struct dma_fence *fence;
 +
- struct sg_table;
- 
- struct xe_bo *xe_bo_alloc(void);
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 930bb2750e2e..f6069db795e7 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -231,12 +231,113 @@ static long xe_drm_compat_ioctl(struct file *file, unsigned int cmd, unsigned lo
- #define xe_drm_compat_ioctl NULL
- #endif
- 
-+static void barrier_open(struct vm_area_struct *vma)
-+{
-+	drm_dev_get(vma->vm_private_data);
-+}
++		sync->chain_fence = dma_fence_chain_alloc();
++		if (!sync->chain_fence) {
++			xe_bo_put(bo);
++			dma_fence_chain_free(sync->chain_fence);
++			return -ENOMEM;
++		}
 +
-+static void barrier_close(struct vm_area_struct *vma)
-+{
-+	drm_dev_put(vma->vm_private_data);
-+}
++		fence = xe_hw_fence_alloc();
++		if (IS_ERR(fence)) {
++			xe_bo_put(bo);
++			return PTR_ERR(fence);
++		}
 +
-+static void barrier_release_dummy_page(struct drm_device *dev, void *res)
-+{
-+	struct page *dummy_page = (struct page *)res;
++		vmap = bo->vmap;
++		iosys_map_incr(&vmap, semaphore_in.offset);
 +
-+	__free_page(dummy_page);
-+}
-+
-+static vm_fault_t barrier_fault(struct vm_fault *vmf)
-+{
-+	struct drm_device *dev = vmf->vma->vm_private_data;
-+	struct vm_area_struct *vma = vmf->vma;
-+	vm_fault_t ret = VM_FAULT_NOPAGE;
-+	pgprot_t prot;
-+	int idx;
-+
-+	prot = vm_get_page_prot(vma->vm_flags);
-+
-+	if (drm_dev_enter(dev, &idx)) {
-+		unsigned long pfn;
-+
-+#define LAST_DB_PAGE_OFFSET 0x7ff001
-+		pfn = PHYS_PFN(pci_resource_start(to_pci_dev(dev->dev), 0) +
-+				LAST_DB_PAGE_OFFSET);
-+		ret = vmf_insert_pfn_prot(vma, vma->vm_start, pfn,
-+					  pgprot_noncached(prot));
-+		drm_dev_exit(idx);
++		xe_hw_fence_user_init(fence, xe, vmap, semaphore_in.seqno);
++		sync->fence = fence;
++		sync->flags = IS_UNINSTALLED_HW_FENCE;
 +	} else {
-+		struct page *page;
++		sync->user_fence = dma_fence_user_fence_alloc();
++		if (XE_IOCTL_DBG(xe, !sync->user_fence)) {
++			xe_bo_put(bo);
++			return PTR_ERR(sync->ufence);
++		}
 +
-+		/* Allocate new dummy page to map all the VA range in this VMA to it*/
-+		page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+		if (!page)
-+			return VM_FAULT_OOM;
-+
-+		/* Set the page to be freed using drmm release action */
-+		if (drmm_add_action_or_reset(dev, barrier_release_dummy_page, page))
-+			return VM_FAULT_OOM;
-+
-+		ret = vmf_insert_pfn_prot(vma, vma->vm_start, page_to_pfn(page),
-+					  prot);
++		sync->addr = semaphore_in.offset;
++		sync->timeline_value = semaphore_in.seqno;
++		sync->flags = DRM_XE_SYNC_FLAG_SIGNAL;
 +	}
-+
-+	return ret;
-+}
-+
-+static const struct vm_operations_struct vm_ops_barrier = {
-+	.open = barrier_open,
-+	.close = barrier_close,
-+	.fault = barrier_fault,
-+};
-+
-+static int xe_pci_barrier_mmap(struct file *filp,
-+			       struct vm_area_struct *vma)
-+{
-+	struct drm_file *priv = filp->private_data;
-+	struct drm_device *dev = priv->minor->dev;
-+
-+	if (vma->vm_end - vma->vm_start > SZ_4K)
-+		return -EINVAL;
-+
-+	if (is_cow_mapping(vma->vm_flags))
-+		return -EINVAL;
-+
-+	if (vma->vm_flags & (VM_READ | VM_EXEC))
-+		return -EINVAL;
-+
-+	vm_flags_clear(vma, VM_MAYREAD | VM_MAYEXEC);
-+	vm_flags_set(vma, VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP | VM_IO);
-+	vma->vm_ops = &vm_ops_barrier;
-+	vma->vm_private_data = dev;
-+	drm_dev_get(vma->vm_private_data);
++	sync->bo = bo;
 +
 +	return 0;
 +}
 +
-+static int xe_mmap(struct file *filp, struct vm_area_struct *vma)
+ int xe_sync_entry_add_deps(struct xe_sync_entry *sync, struct xe_sched_job *job)
+ {
+ 	if (sync->fence)
+@@ -249,17 +322,34 @@ void xe_sync_entry_signal(struct xe_sync_entry *sync, struct dma_fence *fence)
+ 			user_fence_put(sync->ufence);
+ 			dma_fence_put(fence);
+ 		}
++	} else if (sync->user_fence) {
++		struct iosys_map vmap = sync->bo->vmap;
++
++		iosys_map_incr(&vmap, sync->addr);
++		dma_fence_user_fence_attach(fence, sync->user_fence,
++					    &vmap, sync->timeline_value);
++		sync->user_fence = NULL;
+ 	}
+ }
+ 
++void xe_sync_entry_hw_fence_installed(struct xe_sync_entry *sync)
 +{
-+	struct drm_file *priv = filp->private_data;
-+	struct drm_device *dev = priv->minor->dev;
-+
-+	if (drm_dev_is_unplugged(dev))
-+		return -ENODEV;
-+
-+	switch (vma->vm_pgoff) {
-+	case XE_PCI_BARRIER_MMAP_OFFSET >> XE_PTE_SHIFT:
-+		return xe_pci_barrier_mmap(filp, vma);
-+	}
-+
-+	return drm_gem_mmap(filp, vma);
++	sync->flags &= ~IS_UNINSTALLED_HW_FENCE;
 +}
 +
- static const struct file_operations xe_driver_fops = {
- 	.owner = THIS_MODULE,
- 	.open = drm_open,
- 	.release = drm_release_noglobal,
- 	.unlocked_ioctl = xe_drm_ioctl,
--	.mmap = drm_gem_mmap,
-+	.mmap = xe_mmap,
- 	.poll = drm_poll,
- 	.read = drm_read,
- 	.compat_ioctl = xe_drm_compat_ioctl,
-diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-index 4a8a4a63e99c..6490b16b1217 100644
---- a/include/uapi/drm/xe_drm.h
-+++ b/include/uapi/drm/xe_drm.h
-@@ -811,6 +811,32 @@ struct drm_xe_gem_create {
+ void xe_sync_entry_cleanup(struct xe_sync_entry *sync)
+ {
+ 	if (sync->syncobj)
+ 		drm_syncobj_put(sync->syncobj);
++	xe_bo_put(sync->bo);
++	if (sync->flags & IS_UNINSTALLED_HW_FENCE)
++		dma_fence_set_error(sync->fence, -ECANCELED);
+ 	dma_fence_put(sync->fence);
+ 	dma_fence_chain_free(sync->chain_fence);
+ 	if (sync->ufence)
+ 		user_fence_put(sync->ufence);
++	if (sync->user_fence)
++		dma_fence_user_fence_free(sync->user_fence);
+ }
  
  /**
-  * struct drm_xe_gem_mmap_offset - Input of &DRM_IOCTL_XE_GEM_MMAP_OFFSET
-+ *
-+ * The @flags can be:
-+ *  - %DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER - For user to query special offset
-+ *  for use in mmap ioctl. Writing to the returned mmap address will generate a
-+ *  PCI memory barrier with low overhead (avoiding IOCTL call as well as writing
-+ *  to VRAM which would also add overhead), acting like an MI_MEM_FENCE
-+ *  instruction.
-+ *
-+ *  Note: The mmap size can be at most 4K, due to HW limitations. As a result
-+ *  this interface is only supported on CPU architectures that support 4K page
-+ *  size. The mmap_offset ioctl will detect this and gracefully return an
-+ *  error, where userspace is expected to have a different fallback method for
-+ *  triggering a barrier.
-+ *
-+ *  Roughly the usage would be as follows:
-+ *
-+ *  .. code-block:: C
-+ *
-+ *  struct drm_xe_gem_mmap_offset mmo = {
-+ *	.handle = 0, // must be set to 0
-+ *	.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
-+ *  };
-+ *
-+ *  err = ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
-+ *  map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo.offset);
-+ *  map[i] = 0xdeadbeaf; // issue barrier
-  */
- struct drm_xe_gem_mmap_offset {
- 	/** @extensions: Pointer to the first extension struct, if any */
-@@ -819,7 +845,8 @@ struct drm_xe_gem_mmap_offset {
- 	/** @handle: Handle for the object being mapped. */
- 	__u32 handle;
+diff --git a/drivers/gpu/drm/xe/xe_sync.h b/drivers/gpu/drm/xe/xe_sync.h
+index 256ffc1e54dc..fd56929e37cc 100644
+--- a/drivers/gpu/drm/xe/xe_sync.h
++++ b/drivers/gpu/drm/xe/xe_sync.h
+@@ -8,6 +8,9 @@
  
--	/** @flags: Must be zero */
-+#define DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER     (1 << 0)
-+	/** @flags: Flags */
- 	__u32 flags;
+ #include "xe_sync_types.h"
  
- 	/** @offset: The fake offset to use for subsequent mmap call */
++struct drm_xe_semaphore;
++struct drm_xe_sync;
++
+ struct xe_device;
+ struct xe_exec_queue;
+ struct xe_file;
+@@ -22,10 +25,15 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
+ 			struct xe_sync_entry *sync,
+ 			struct drm_xe_sync __user *sync_user,
+ 			unsigned int flags);
++int xe_sync_semaphore_parse(struct xe_device *xe, struct xe_file *xef,
++			    struct xe_sync_entry *sync,
++			    struct drm_xe_semaphore __user *semaphore_user,
++			    unsigned int flags);
+ int xe_sync_entry_add_deps(struct xe_sync_entry *sync,
+ 			   struct xe_sched_job *job);
+ void xe_sync_entry_signal(struct xe_sync_entry *sync,
+ 			  struct dma_fence *fence);
++void xe_sync_entry_hw_fence_installed(struct xe_sync_entry *sync);
+ void xe_sync_entry_cleanup(struct xe_sync_entry *sync);
+ struct dma_fence *
+ xe_sync_in_fence_get(struct xe_sync_entry *sync, int num_sync,
+diff --git a/drivers/gpu/drm/xe/xe_sync_types.h b/drivers/gpu/drm/xe/xe_sync_types.h
+index 30ac3f51993b..28e846c29122 100644
+--- a/drivers/gpu/drm/xe/xe_sync_types.h
++++ b/drivers/gpu/drm/xe/xe_sync_types.h
+@@ -11,14 +11,17 @@
+ struct drm_syncobj;
+ struct dma_fence;
+ struct dma_fence_chain;
+-struct drm_xe_sync;
++struct dma_fence_user_fence;
+ struct user_fence;
++struct xe_bo;
+ 
+ struct xe_sync_entry {
+ 	struct drm_syncobj *syncobj;
+ 	struct dma_fence *fence;
+ 	struct dma_fence_chain *chain_fence;
+ 	struct xe_user_fence *ufence;
++	struct dma_fence_user_fence *user_fence;
++	struct xe_bo *bo;
+ 	u64 addr;
+ 	u64 timeline_value;
+ 	u32 type;
 -- 
 2.34.1
 
