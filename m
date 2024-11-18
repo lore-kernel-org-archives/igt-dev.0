@@ -4,59 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836F6D49212
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 12:44:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665C3D49219
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 12:44:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2382510E081;
-	Mon, 18 Nov 2024 12:44:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A7C710E081;
+	Mon, 18 Nov 2024 12:44:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z5SpxDQp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NbSzbS3h";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1866C10E081
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 12:44:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E35A910E081
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 12:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731933843; x=1763469843;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=IwuoxOW+fjl6SHzNA6314ejnb1o/86bhm4ubeBspsTU=;
- b=Z5SpxDQp7nwcX6X+ouI9vkMkCYLWqbHAOxkCOrE2waAVyLpMJz+sY6n8
- RnJLVKzTIPbEMIejC6GUhYeR/5fOIYT/lSDd4SurnjtAnXooa4dKid+AJ
- cxqzO5NGQj1CcgIkcY1vStJpkNb4wbEhopWX+kSkz3aA+XxW7Twy+xfmB
- aRg0+w1XT0i297zpHyh/PQoh4uJ4GNOB4AAVMmE8y1BHEL493qbHFcxqz
- 3BTsBDIQeS42/VLZhI31IeoWy5cSHNFagvj1ibfJo7IvRaGNzGQ3WuAbC
- OW9u6v68t/wR62usuES6bl8zLyYQ7XEZC/G6WrT+0xAZDk7ogc1ks0AGE g==;
-X-CSE-ConnectionGUID: bm9P7J9URliP386j+MP1bw==
-X-CSE-MsgGUID: vuFA6ay+QwiRcZg5lWt3Gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="57290695"
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="57290695"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 04:44:02 -0800
-X-CSE-ConnectionGUID: a8v8TLy9Qo+JZsaw24j+vA==
-X-CSE-MsgGUID: nAezysUTSv2GIgsu2/5iVA==
+ t=1731933872; x=1763469872;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=O0OpXwHDtgPScsctxLBsD0otN7BXGe/0yc7OqqpCtVc=;
+ b=NbSzbS3hJPEYBjopETgdKw+4gVQhgLr613Qw4yMGYxK6qQM31RZ6zHTH
+ x5XnkHTDCDeoNoTcVBwdnWn3vd6IuwRrtN3hU/WCkvRffPWaJ5OfMqsh6
+ noIy+o42CHUSNHR9f1EdWQEYDFAmQ8qmT4hcjoHz8I64P+vWI5YzhpfPk
+ zK71w4hJhdw3Scq7olh3NR2ulj7dMQIVyLY9QHM7VYVBmE0tbF04F4gdY
+ myx1Yu/GFfiGlbaDxMAjUfNZh4HtAZ3MgJquViRq+fxTRYcMCsBpAPBpi
+ 6HKQxbZbDhKNjHuUh03xs14q7kZNXvmuER+5dqC9hH8J216Y06lgyMS9G Q==;
+X-CSE-ConnectionGUID: oWJNqIb2QqqZ88mkMQQ/xQ==
+X-CSE-MsgGUID: dzIkwDodQU26h7rHm2wglw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="32038956"
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="32038956"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 04:44:32 -0800
+X-CSE-ConnectionGUID: cPTcfLOXQX6jjO5kWdb6Sw==
+X-CSE-MsgGUID: o9j+hpqIQPGxwO7dYK0etg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="120145265"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 04:44:02 -0800
-Date: Mon, 18 Nov 2024 13:43:48 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; d="scan'208";a="89365004"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.246.159])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 04:44:29 -0800
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, swati2.sharma@intel.com
-Subject: Re: [i-g-t] tests/intel/kms_frontbuffer_tracking: Fix testplan
- documentation
-Message-ID: <20241118124348.ku4azqvdjt7ywbnp@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- swati2.sharma@intel.com
-References: <20241118083624.1936758-1-bhanuprakash.modem@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/syncobj_wait: Update
+ invalid-wait-zero-handles test
+Date: Mon, 18 Nov 2024 13:44:20 +0100
+Message-ID: <20241118124422.11868-1-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241118083624.1936758-1-bhanuprakash.modem@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,45 +68,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2024-11-18 at 14:06:24 +0530, Bhanuprakash Modem wrote:
-> Fix the testplan documentaion for i915 specific tests.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+The behavior of DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT has been changed in [1]
+to accept empty lists of syncobj handles, but the
+invalid-wait-zero-handles test has not been updated to mirror this
+change. Fix the assert to check against 0 instead of -EINVAL, and rename
+the test to wait-zero-handles as this is no longer an invalid scenario.
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+This change mirrors [2] for the syncobj_wait test.
 
-> ---
->  tests/intel/kms_frontbuffer_tracking.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index b7e3f7379..f149be3da 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -763,18 +763,22 @@
->  /**
->   * SUBTEST: fbc-%dp-%s-fliptrack-mmap-gtt
->   * Description: Check if the hardware tracking works after page flips
-> + * Driver requirement: i915
->   * Functionality: fbc, fbt, kms_core
->   *
->   * SUBTEST: fbcdrrs-%dp-%s-fliptrack-mmap-gtt
->   * Description: Check if the hardware tracking works after page flips
-> + * Driver requirement: i915
->   * Functionality: drrs, fbc, fbt, kms_core
->   *
->   * SUBTEST: fbcpsr-%dp-%s-fliptrack-mmap-gtt
->   * Description: Check if the hardware tracking works after page flips
-> + * Driver requirement: i915
->   * Functionality: fbc, fbt, kms_core, psr1
->   *
->   * SUBTEST: fbcpsrdrrs-%dp-%s-fliptrack-mmap-gtt
->   * Description: Check if the hardware tracking works after page flips
-> + * Driver requirement: i915
->   * Functionality: drrs, fbc, fbt, kms_core, psr1
->   *
->   * arg[1].values:   1, 2
-> -- 
-> 2.43.0
-> 
+[1] https://patchwork.freedesktop.org/patch/554042/
+[2] https://patchwork.freedesktop.org/patch/618483/
+
+Krzysztof Niemiec (2):
+  tests/syncobj_wait: Update invalid-wait-zero-handles test
+  HAX/DO_NOT_MERGE: Add wait-zero-handles to fast feedback list
+
+ tests/intel-ci/fast-feedback.testlist    | 2 ++
+ tests/intel-ci/xe-fast-feedback.testlist | 2 ++
+ tests/syncobj_wait.c                     | 8 ++++----
+ 3 files changed, 8 insertions(+), 4 deletions(-)
+
+-- 
+2.45.2
+
