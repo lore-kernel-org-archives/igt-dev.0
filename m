@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B16ED60D06
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E2AD60CF8
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Nov 2024 23:36:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D0B7D10E57D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E1D410E57A;
 	Mon, 18 Nov 2024 23:36:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aTcw74p4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c329mZu5";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7C0B10E574
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CAD410E040
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2024 23:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731972959; x=1763508959;
+ t=1731972953; x=1763508953;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=CB/UAMQz/584WOERxoPhXPZsBITEWPivbuUiVFlOkiU=;
- b=aTcw74p4kl9MfALYhz8zkcB8GKlsDm8Az5cqrjtS98mjjKOQugj+blKN
- wOaUvBkyR70nmdNAvMgMGJxzr338c3X/WCvHxOh7S15qymRcQvdNuucdr
- 3HGwo4CFuH/VvdfrZIbF/xy0nPlJYB5t4A9ymfWWQgOHWmZKnvGZuQh7C
- u1hUcpKcdeebaPhTqxG7xUT7Y4LuhdzXNxXPebmH2mX8O3aKgt2srcIDb
- yZzRTDs6lcJb9mbQ+6L8dG1oKhaxvff+mpDoD+0ZDOux7JdZ1PuNLr8Ut
- 47OYmXi3Xrb6rgQMq0NpsOMry7asjJixWlsfkiHA1gT+vB5aqRfOtvQfn Q==;
-X-CSE-ConnectionGUID: T4P7zV46SXCvSk/RMhrYeQ==
-X-CSE-MsgGUID: ipEzNOtiQ7qpLm/+TUQYkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451250"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451250"
+ bh=Ai1mfcFgevmGKJpWo6ttA0URBdnq6ylMV+L0WkHjHAE=;
+ b=c329mZu5P07CB3yt/oBgPJFD8KOf+nLBB8VHNQnPEWo2qiUMt63bcaxo
+ Mi4JlQvvO8RRUW9pcodVCcDB65j9XLSI72EPs41mf8u1LLWdtxfMXf/BP
+ csaK9cSlyjuQkpMjREnJK4CGJhlGz6GCYhwwYXbc/0CwBnOsTqDp90ohb
+ udm1bKK+1ckEQKdDyCr4im+ZQ1iHPsSAt/qzkd3r7Rd2wp04jp3Fipbtj
+ j2IDNhjhUGXaUIpy/nWjkeQGw0ISePhoVaj2drOP/bjPbgRLcmrWvBQ0x
+ SEo1G6Zcbr9vD5/iAtBH6MbBccticWiZEZeiqnGJhKEVyjzVkX34ofVaE w==;
+X-CSE-ConnectionGUID: EftLIB/mRemL906pqGg9Ew==
+X-CSE-MsgGUID: zmIz/c58T7maPn0WLslQlg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54451223"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54451223"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 15:35:58 -0800
-X-CSE-ConnectionGUID: buSdXO+aQC2isu37rdluLw==
-X-CSE-MsgGUID: v2NLtd9wSkywYtn8JyMLmw==
+ 18 Nov 2024 15:35:53 -0800
+X-CSE-ConnectionGUID: R8DqgcXvTGCkrPqV9Hwbzg==
+X-CSE-MsgGUID: mi/JI8/CS/O3g1qu2+nkEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245243"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="120245220"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2024 15:35:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [RFC PATCH 22/29] drm/xe/uapi: Add uAPI to convert user semaphore to
- / from drm syncobj
-Date: Mon, 18 Nov 2024 15:36:13 -0800
-Message-Id: <20241118233620.2373819-23-matthew.brost@intel.com>
+Subject: [RFC PATCH 03/29] drm/xe: Use dma_fence_preempt base class
+Date: Mon, 18 Nov 2024 15:35:54 -0800
+Message-Id: <20241118233620.2373819-4-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118233620.2373819-1-matthew.brost@intel.com>
 References: <20241118233620.2373819-1-matthew.brost@intel.com>
@@ -67,107 +66,264 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Simple interface to allow user space to share user syncs with kernel
-syncs (dma-fences). The idea also is when user syncs are converted to
-kernel syncs, preemption is guarded against until the kernel sync
-signals. This is required to adhere to dma-fencing rules (no memory
-allocates done in path of dma-fence, resume after preemption requires
-memory allocations).
+Use the dma_fence_preempt base class in Xe instead of open-coding the
+preemption implementation.
 
-FIXME: uAPI likely to change, perhaps in drm generic way. Currently
-enough for a PoC and enable initial Mesa development.
-
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Christian Koenig <christian.koenig@amd.com>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- include/uapi/drm/xe_drm.h | 62 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ drivers/dma-buf/dma-fence-preempt.c         |  5 +-
+ drivers/gpu/drm/xe/xe_guc_submit.c          |  3 +
+ drivers/gpu/drm/xe/xe_hw_engine_group.c     |  4 +-
+ drivers/gpu/drm/xe/xe_preempt_fence.c       | 80 ++++++---------------
+ drivers/gpu/drm/xe/xe_preempt_fence.h       |  2 +-
+ drivers/gpu/drm/xe/xe_preempt_fence_types.h | 11 +--
+ 6 files changed, 34 insertions(+), 71 deletions(-)
 
-diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-index 9356a714a2e0..0cd473d2d91b 100644
---- a/include/uapi/drm/xe_drm.h
-+++ b/include/uapi/drm/xe_drm.h
-@@ -102,6 +102,7 @@ extern "C" {
- #define DRM_XE_EXEC			0x09
- #define DRM_XE_WAIT_USER_FENCE		0x0a
- #define DRM_XE_OBSERVATION		0x0b
-+#define DRM_XE_VM_CONVERT_FENCE		0x0c
+diff --git a/drivers/dma-buf/dma-fence-preempt.c b/drivers/dma-buf/dma-fence-preempt.c
+index 6e6ce7ea7421..bcc5e5cec919 100644
+--- a/drivers/dma-buf/dma-fence-preempt.c
++++ b/drivers/dma-buf/dma-fence-preempt.c
+@@ -8,11 +8,11 @@
  
- /* Must be kept compact -- no holes */
+ static void dma_fence_preempt_work_func(struct work_struct *w)
+ {
+-	bool cookie = dma_fence_begin_signalling();
+ 	struct dma_fence_preempt *pfence =
+ 		container_of(w, typeof(*pfence), work);
+ 	const struct dma_fence_preempt_ops *ops = pfence->ops;
+ 	int err = pfence->base.error;
++	bool cookie = dma_fence_begin_signalling();
  
-@@ -117,6 +118,7 @@ extern "C" {
- #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
- #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
- #define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
-+#define DRM_IOCTL_XE_VM_CONVERT_FENCE		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_CONVERT_FENCE, struct drm_xe_vm_convert_fence)
+ 	if (!err) {
+ 		err = ops->preempt_wait(pfence);
+@@ -23,6 +23,7 @@ static void dma_fence_preempt_work_func(struct work_struct *w)
+ 	dma_fence_signal(&pfence->base);
+ 	ops->preempt_finished(pfence);
  
- /**
-  * DOC: Xe IOCTL Extensions
-@@ -1796,6 +1798,66 @@ struct drm_xe_oa_stream_info {
- 	__u64 reserved[3];
++	/* The entire worker is signaling path, thus annotate the entirety */
+ 	dma_fence_end_signalling(cookie);
+ }
+ 
+@@ -109,7 +110,7 @@ EXPORT_SYMBOL(dma_fence_is_preempt);
+  *
+  * @fence: Preempt fence
+  * @ops: Preempt fence operations
+- * @wq: Work queue for preempt wait, should have WQ_MEM_RECLAIM set
++ * @wq: Work queue for preempt wait, must have WQ_MEM_RECLAIM set
+  * @context: Fence context
+  * @seqno: Fence seqence number
+  */
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index f9ecee5364d8..58a3f4bb3887 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1603,6 +1603,9 @@ static int guc_exec_queue_suspend_wait(struct xe_exec_queue *q)
+ 	struct xe_guc *guc = exec_queue_to_guc(q);
+ 	int ret;
+ 
++	if (exec_queue_reset(q) || exec_queue_killed_or_banned_or_wedged(q))
++		return -ECANCELED;
++
+ 	/*
+ 	 * Likely don't need to check exec_queue_killed() as we clear
+ 	 * suspend_pending upon kill but to be paranoid but races in which
+diff --git a/drivers/gpu/drm/xe/xe_hw_engine_group.c b/drivers/gpu/drm/xe/xe_hw_engine_group.c
+index 82750520a90a..8ed5410c3964 100644
+--- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
++++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
+@@ -163,7 +163,7 @@ int xe_hw_engine_group_add_exec_queue(struct xe_hw_engine_group *group, struct x
+ 	if (xe_vm_in_fault_mode(q->vm) && group->cur_mode == EXEC_MODE_DMA_FENCE) {
+ 		q->ops->suspend(q);
+ 		err = q->ops->suspend_wait(q);
+-		if (err)
++		if (err == -ETIME)
+ 			goto err_suspend;
+ 
+ 		xe_hw_engine_group_resume_faulting_lr_jobs(group);
+@@ -236,7 +236,7 @@ static int xe_hw_engine_group_suspend_faulting_lr_jobs(struct xe_hw_engine_group
+ 			continue;
+ 
+ 		err = q->ops->suspend_wait(q);
+-		if (err)
++		if (err == -ETIME)
+ 			goto err_suspend;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
+index 83fbeea5aa20..80a8bc82f3cc 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence.c
++++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
+@@ -4,73 +4,40 @@
+  */
+ 
+ #include "xe_preempt_fence.h"
+-
+-#include <linux/slab.h>
+-
+ #include "xe_exec_queue.h"
+ #include "xe_vm.h"
+ 
+-static void preempt_fence_work_func(struct work_struct *w)
++static struct xe_exec_queue *to_exec_queue(struct dma_fence_preempt *fence)
+ {
+-	bool cookie = dma_fence_begin_signalling();
+-	struct xe_preempt_fence *pfence =
+-		container_of(w, typeof(*pfence), preempt_work);
+-	struct xe_exec_queue *q = pfence->q;
+-
+-	if (pfence->error) {
+-		dma_fence_set_error(&pfence->base, pfence->error);
+-	} else if (!q->ops->reset_status(q)) {
+-		int err = q->ops->suspend_wait(q);
+-
+-		if (err)
+-			dma_fence_set_error(&pfence->base, err);
+-	} else {
+-		dma_fence_set_error(&pfence->base, -ENOENT);
+-	}
+-
+-	dma_fence_signal(&pfence->base);
+-	/*
+-	 * Opt for keep everything in the fence critical section. This looks really strange since we
+-	 * have just signalled the fence, however the preempt fences are all signalled via single
+-	 * global ordered-wq, therefore anything that happens in this callback can easily block
+-	 * progress on the entire wq, which itself may prevent other published preempt fences from
+-	 * ever signalling.  Therefore try to keep everything here in the callback in the fence
+-	 * critical section. For example if something below grabs a scary lock like vm->lock,
+-	 * lockdep should complain since we also hold that lock whilst waiting on preempt fences to
+-	 * complete.
+-	 */
+-	xe_vm_queue_rebind_worker(q->vm);
+-	xe_exec_queue_put(q);
+-	dma_fence_end_signalling(cookie);
++	return container_of(fence, struct xe_preempt_fence, base)->q;
+ }
+ 
+-static const char *
+-preempt_fence_get_driver_name(struct dma_fence *fence)
++static int xe_preempt_fence_preempt(struct dma_fence_preempt *fence)
+ {
+-	return "xe";
++	struct xe_exec_queue *q = to_exec_queue(fence);
++
++	return q->ops->suspend(q);
+ }
+ 
+-static const char *
+-preempt_fence_get_timeline_name(struct dma_fence *fence)
++static int xe_preempt_fence_preempt_wait(struct dma_fence_preempt *fence)
+ {
+-	return "preempt";
++	struct xe_exec_queue *q = to_exec_queue(fence);
++
++	return q->ops->suspend_wait(q);
+ }
+ 
+-static bool preempt_fence_enable_signaling(struct dma_fence *fence)
++static void xe_preempt_fence_preempt_finished(struct dma_fence_preempt *fence)
+ {
+-	struct xe_preempt_fence *pfence =
+-		container_of(fence, typeof(*pfence), base);
+-	struct xe_exec_queue *q = pfence->q;
++	struct xe_exec_queue *q = to_exec_queue(fence);
+ 
+-	pfence->error = q->ops->suspend(q);
+-	queue_work(q->vm->xe->preempt_fence_wq, &pfence->preempt_work);
+-	return true;
++	xe_vm_queue_rebind_worker(q->vm);
++	xe_exec_queue_put(q);
+ }
+ 
+-static const struct dma_fence_ops preempt_fence_ops = {
+-	.get_driver_name = preempt_fence_get_driver_name,
+-	.get_timeline_name = preempt_fence_get_timeline_name,
+-	.enable_signaling = preempt_fence_enable_signaling,
++static const struct dma_fence_preempt_ops xe_preempt_fence_ops = {
++	.preempt = xe_preempt_fence_preempt,
++	.preempt_wait = xe_preempt_fence_preempt_wait,
++	.preempt_finished = xe_preempt_fence_preempt_finished,
  };
  
-+/**
-+ * struct drm_xe_semaphore - Semaphore
-+ */
-+struct drm_xe_semaphore {
-+	/**
-+	 * @handle: Handle for the semaphore. Must be bound to the VM when
-+	 * passed into drm_xe_vm_convert_fence.
-+	 */
-+	__u32 handle;
-+
-+	/** @offset: Offset in BO for semaphore, must QW aligned */
-+	__u32 offset;
-+
-+	/** @seqno: Sequence number of semaphore */
-+	__u64 seqno;
-+
-+	/** @token: Semaphore token - MBZ as not supported yet */
-+	__u64 token;
-+
-+	/** @reserved: reserved for future use */
-+	__u64 reserved[2];
-+};
-+
-+/**
-+ * struct drm_xe_vm_convert_fence - Convert semaphore to / from syncobj
-+ *
-+ * DRM_XE_SYNC_FLAG_SIGNAL set indicates semaphore -> syncobj
-+ * DRM_XE_SYNC_FLAG_SIGNAL clear indicates syncobj -> semaphore
-+ */
-+struct drm_xe_vm_convert_fence {
-+	/**
-+	 * @extensions: Pointer to the first extension struct, if any
-+	 */
-+	__u64 extensions;
-+
-+	/** @vm_id: VM ID */
-+	__u32 vm_id;
-+
-+	/** @flags: Flags - MBZ */
-+	__u32 flags;
-+
-+	/** @pad: MBZ */
-+	__u32 pad;
-+
-+	/**
-+	 * @num_syncs: Number of struct drm_xe_sync and struct drm_xe_semaphore
-+	 * in arrays.
-+	 */
-+	__u32 num_syncs;
-+
-+	/** @syncs: Pointer to struct drm_xe_sync array. */
-+	__u64 syncs;
-+
-+	/** @semaphores: Pointer to struct drm_xe_semaphore array. */
-+	__u64 semaphores;
-+
-+	/** @reserved: reserved for future use */
-+	__u64 reserved[2];
-+};
-+
- #if defined(__cplusplus)
+ /**
+@@ -95,7 +62,6 @@ struct xe_preempt_fence *xe_preempt_fence_alloc(void)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	INIT_LIST_HEAD(&pfence->link);
+-	INIT_WORK(&pfence->preempt_work, preempt_fence_work_func);
+ 
+ 	return pfence;
  }
+@@ -134,11 +100,11 @@ xe_preempt_fence_arm(struct xe_preempt_fence *pfence, struct xe_exec_queue *q,
+ {
+ 	list_del_init(&pfence->link);
+ 	pfence->q = xe_exec_queue_get(q);
+-	spin_lock_init(&pfence->lock);
+-	dma_fence_init(&pfence->base, &preempt_fence_ops,
+-		      &pfence->lock, context, seqno);
+ 
+-	return &pfence->base;
++	dma_fence_preempt_init(&pfence->base, &xe_preempt_fence_ops,
++			       q->vm->xe->preempt_fence_wq, context, seqno);
++
++	return &pfence->base.base;
+ }
+ 
+ /**
+@@ -169,5 +135,5 @@ xe_preempt_fence_create(struct xe_exec_queue *q,
+ 
+ bool xe_fence_is_xe_preempt(const struct dma_fence *fence)
+ {
+-	return fence->ops == &preempt_fence_ops;
++	return dma_fence_is_preempt(fence);
+ }
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.h b/drivers/gpu/drm/xe/xe_preempt_fence.h
+index 9406c6fea525..7b56d12c0786 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence.h
++++ b/drivers/gpu/drm/xe/xe_preempt_fence.h
+@@ -25,7 +25,7 @@ xe_preempt_fence_arm(struct xe_preempt_fence *pfence, struct xe_exec_queue *q,
+ static inline struct xe_preempt_fence *
+ to_preempt_fence(struct dma_fence *fence)
+ {
+-	return container_of(fence, struct xe_preempt_fence, base);
++	return container_of(fence, struct xe_preempt_fence, base.base);
+ }
+ 
+ /**
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence_types.h b/drivers/gpu/drm/xe/xe_preempt_fence_types.h
+index 312c3372a49f..f12b89f7dc35 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence_types.h
++++ b/drivers/gpu/drm/xe/xe_preempt_fence_types.h
+@@ -6,8 +6,7 @@
+ #ifndef _XE_PREEMPT_FENCE_TYPES_H_
+ #define _XE_PREEMPT_FENCE_TYPES_H_
+ 
+-#include <linux/dma-fence.h>
+-#include <linux/workqueue.h>
++#include <linux/dma-fence-preempt.h>
+ 
+ struct xe_exec_queue;
+ 
+@@ -18,17 +17,11 @@ struct xe_exec_queue;
+  */
+ struct xe_preempt_fence {
+ 	/** @base: dma fence base */
+-	struct dma_fence base;
++	struct dma_fence_preempt base;
+ 	/** @link: link into list of pending preempt fences */
+ 	struct list_head link;
+ 	/** @q: exec queue for this preempt fence */
+ 	struct xe_exec_queue *q;
+-	/** @preempt_work: work struct which issues preemption */
+-	struct work_struct preempt_work;
+-	/** @lock: dma-fence fence lock */
+-	spinlock_t lock;
+-	/** @error: preempt fence is in error state */
+-	int error;
+ };
+ 
  #endif
 -- 
 2.34.1
