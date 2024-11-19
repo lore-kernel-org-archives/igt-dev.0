@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9011ED6C2B4
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 21:50:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF9AD6C2AF
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 22:25:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2703B10E0CA;
-	Tue, 19 Nov 2024 21:50:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AJ8kqxlB";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B62010E0CA
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 21:50:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732053029; x=1763589029;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/EpxWu9A+vQwpXU0Ahr4pOmfTCAoJf3OHZuvu5IWUlo=;
- b=AJ8kqxlBhifXPjJWSmGsmN9nba19BhgK6C0QbN+D+Fb2QgaVwRhM9kWv
- 8gymh7b34grgvPddmthXJDz5khy0PUYW6ZFCdfh5/qFRiIJ535H/xR2Yn
- c59V4XyOUsJlyP4sd2JFPiD69Ot6iAMpxgCDd7Ejg8naq1K7bfwyDMfVk
- 059oVD7p+6bqrBi0RgZVBkj4qF98CVgIHmogAgqSL+Fa3wSkHwLdMN5oL
- dcp1n7HXPsz6TqOlULlTZJ+yfosYlvlTTyXIAnOEOissP7tyEX/Zhq4jX
- yjcufgWmctVvuarW3GvkZ0ELJe1c8MkJxamxkIvRu1zpPiPqVFbjg8bnd A==;
-X-CSE-ConnectionGUID: 3FW89IADTq69oeWwUiNvjA==
-X-CSE-MsgGUID: CYywrt5TTjOjUUB6xTj6/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="35756664"
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="35756664"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2024 13:50:29 -0800
-X-CSE-ConnectionGUID: eaPbefSdSkCBOQIbRK23vg==
-X-CSE-MsgGUID: QIvgp5/KQCS+iLRHcF8/QQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="94630025"
-Received: from dut4411lnl.fm.intel.com ([10.105.10.34])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2024 13:50:28 -0800
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
- francois.dugast@intel.com, lucas.demarchi@intel.com,
- matthew.brost@intel.com, rodrigo.vivi@intel.com,
- michal.wajdeczko@intel.com, kamil.konieczny@linux.intel.com
-Subject: [PATCH v3] tests/intel/xe_fault_injection: Ignore expected errors
-Date: Tue, 19 Nov 2024 21:50:27 +0000
-Message-ID: <20241119215027.109598-1-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F9F910E055;
+	Tue, 19 Nov 2024 22:25:28 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F405010E055;
+ Tue, 19 Nov 2024 22:25:26 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5574187018392962416=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_vmtb=3A_Introduce_SR-IOV_VM-le?=
+ =?utf-8?q?vel_testing_tool_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Adam Miszczak" <adam.miszczak@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 19 Nov 2024 22:25:27 -0000
+Message-ID: <173205512701.477000.7021237149632129827@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241119074704.3175277-1-adam.miszczak@linux.intel.com>
+In-Reply-To: <20241119074704.3175277-1-adam.miszczak@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,97 +37,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The following errors can be observed when running the xe_fault_injection
-subtests:
+--===============5574187018392962416==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[drm] *ERROR* GT0: GuC init failed with -ENOMEM
-[drm] *ERROR* GT0: Failed to initialize uC (-ENOMEM)
-probe with driver xe failed with error -12
+== Series Details ==
 
-Add these messages to the dmesg ignore regex to the applicable tests
-(specifically, all tests for the last error, and all tests that target
-GuC subsystems for the first two errors).
+Series: vmtb: Introduce SR-IOV VM-level testing tool (rev2)
+URL   : https://patchwork.freedesktop.org/series/141049/
+State : success
 
-v2:
-- Fix and merge regex (Kamil)
+== Summary ==
 
-v3:
-- Rebase change to be compatible with latest revision (Kamil)
+CI Bug Log - changes from XEIGT_8118_BAT -> XEIGTPW_12139_BAT
+====================================================
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3343
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-CC: Francois Dugast <francois.dugast@intel.com>
-CC: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: Matthew Brost <matthew.brost@intel.com>
-CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
-CC: Michal Wajdeczko <michal.wajdeczko@intel.com>
-CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel/xe_fault_injection.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Summary
+-------
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 1b29041745..7d6c902761 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -50,6 +50,30 @@ static int fail_function_open(void)
- 	return debugfs_fail_function_dir_fd;
- }
- 
-+static bool function_is_part_of_guc(const char function_name[])
-+{
-+	return strstr(function_name, "_guc_") != NULL ||
-+	       strstr(function_name, "_uc_") != NULL ||
-+	       strstr(function_name, "_wopcm_") != NULL;
-+}
-+
-+static void ignore_faults_in_dmesg(const char function_name[])
-+{
-+	/* Driver probe is expected to fail in all cases, so ignore in igt_runner */
-+	char regex[1024] = "probe with driver xe failed with error -12";
-+
-+	/*
-+	 * If GuC module fault is injected, GuC is expected to fail,
-+	 * so also ignore GuC init failures in igt_runner.
-+	 */
-+	if (function_is_part_of_guc(function_name)) {
-+		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
-+		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
-+	}
-+
-+	igt_emit_ignore_dmesg_regex(regex);
-+}
-+
- /*
-  * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
-  */
-@@ -152,6 +176,7 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
- 		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
- 
-+	ignore_faults_in_dmesg(function_name);
- 	injection_list_do(INJECTION_LIST_ADD, function_name);
- 	set_retval(function_name, INJECT_ERRNO);
- 	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
-@@ -184,6 +209,7 @@ vm_create_fail(int fd, const char function_name[], unsigned int flags)
- {
- 	igt_assert_eq(simple_vm_create(fd, flags), 0);
- 
-+	ignore_faults_in_dmesg(function_name);
- 	injection_list_do(INJECTION_LIST_ADD, function_name);
- 	set_retval(function_name, INJECT_ERRNO);
- 	igt_assert(simple_vm_create(fd, flags) != 0);
-@@ -243,6 +269,7 @@ vm_bind_fail(int fd, const char function_name[])
- 
- 	igt_assert_eq(simple_vm_bind(fd, vm), 0);
- 
-+	ignore_faults_in_dmesg(function_name);
- 	injection_list_do(INJECTION_LIST_ADD, function_name);
- 	set_retval(function_name, INJECT_ERRNO);
- 	igt_assert(simple_vm_bind(fd, vm) != 0);
--- 
-2.43.0
+  **SUCCESS**
 
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12139_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_intel_bb@render@render-linear-256:
+    - bat-adlp-vf:        [PASS][1] -> [DMESG-WARN][2] ([Intel XE#358]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][3] -> [SKIP][4] ([Intel XE#1192]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/358
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8118 -> IGTPW_12139
+  * Linux: xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd -> xe-2254-ccf64319402f90f68549e2047a7f985a46436e41
+
+  IGTPW_12139: 12139
+  IGT_8118: 17707095f1e5d3c30f463b43022f01c0160579b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd: f8f85a38f6c75e091805f01ceff4041ac2fdf3fd
+  xe-2254-ccf64319402f90f68549e2047a7f985a46436e41: ccf64319402f90f68549e2047a7f985a46436e41
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/index.html
+
+--===============5574187018392962416==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>vmtb: Introduce SR-IOV VM-level testing tool (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141049/">https://patchwork.freedesktop.org/series/141049/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8118_BAT -&gt; XEIGTPW_12139_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12139_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_intel_bb@render@render-linear-256:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/358">Intel XE#358</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12139/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8118 -&gt; IGTPW_12139</li>
+<li>Linux: xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd -&gt; xe-2254-ccf64319402f90f68549e2047a7f985a46436e41</li>
+</ul>
+<p>IGTPW_12139: 12139<br />
+  IGT_8118: 17707095f1e5d3c30f463b43022f01c0160579b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd: f8f85a38f6c75e091805f01ceff4041ac2fdf3fd<br />
+  xe-2254-ccf64319402f90f68549e2047a7f985a46436e41: ccf64319402f90f68549e2047a7f985a46436e41</p>
+
+</body>
+</html>
+
+--===============5574187018392962416==--
