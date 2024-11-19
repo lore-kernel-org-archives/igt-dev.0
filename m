@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D80AD4920E
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 05:16:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3193D4920E
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 05:30:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 226B710E5AE;
-	Tue, 19 Nov 2024 05:16:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93B1810E0A5;
+	Tue, 19 Nov 2024 05:30:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZS+IhDAZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XKAJljE8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 248E710E5AE
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 05:16:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1559110E0A5
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 05:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731993364; x=1763529364;
+ t=1731994220; x=1763530220;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=aVSG8fKiwTA2XiqS1QzbTHBBLZ6IC0KJsFes+HUhmBo=;
- b=ZS+IhDAZJ8JMkv2yiOcVAeXivubIcPKx0l/g4cmY0/lLpVnzsucpSPQz
- VB960nfvw/FNHie5yqL4u77SoGr9/JdbND2kRStLK66VW2gCqK8Q84G31
- n4B+QdKoR0aji+Cu0xosQzrKjymA9r9lvNrdFPVTaKL7XJF/3psdkD3hX
- 4Q96XZtpcBAqZhw8MtG7ZXMCaGR+5ilFJnUB2ykuueVbfRVFhKLka8hst
- Bf9aY8J+JJNnPAFkAxF1rbPT4JZZa10UYegkWWDJC5kOVwBfrsylPpUbk
- RM75P9HYKoYHKsQQMsN+RYr7VReHLcVMaASI553Zqt9JZcI1WHkX48dJL g==;
-X-CSE-ConnectionGUID: NwTd1hNNQt2YmP910d60LA==
-X-CSE-MsgGUID: dg1q8ryFQ2S9ZGvXg8aMQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54473741"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54473741"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 21:16:04 -0800
-X-CSE-ConnectionGUID: WDB1dgUiTFaY8XZ8A5hB8g==
-X-CSE-MsgGUID: UaNwFoI5TiuCEnW2ER7E0Q==
+ bh=Uow/1MZ73CViXHzfkko5B1vJwu53WieP2VQe8hHHERg=;
+ b=XKAJljE8pk/JtCIG6uG9dstV2u/ZyV+z//M9cz/Dry7g0EkarlJ2mu14
+ 2fzh2yvZ0GfGt/Mxp4Ru4L0yCuKeDla3v+d53Bzrar5BWATFVQAUiGSWE
+ att/otrRzzfd7zOZxQnommAYPmkbgU1urkr+7wCrbCMS6beIfJe+LcMW7
+ stINVBmQYEXGPG08KTahuciPui2Xv7XXNXk7LzBIQS8EyI06D4g4NtzXl
+ xEenmug5c0dAhLJzwAbTOYfCU3sm9uE99nYlvQhXvrdxBzj4ZBRViqIlO
+ qmUXnnV7cMRHwwUwR0+fLowFk3abBWlH5YDerdoE760BwUroZ0ckF96wx g==;
+X-CSE-ConnectionGUID: HT/rCkwvRUyOPMpJ86wUNg==
+X-CSE-MsgGUID: 0tV31PoWQVSxMxyOphfZFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="35884737"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="35884737"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 21:30:19 -0800
+X-CSE-ConnectionGUID: PtWjmiedRcKiM97o/+z9tA==
+X-CSE-MsgGUID: LZWOYLEMS4G3jOKzIQHhRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="89366711"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 21:16:01 -0800
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="89865098"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2024 21:30:19 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, kunal1.joshi@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v4 2/2] lib/igt_kms: Add igt_is_joiner_mode
-Date: Tue, 19 Nov 2024 10:41:42 +0530
-Message-Id: <20241119051142.2272779-3-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241119051142.2272779-1-santhosh.reddy.guddati@intel.com>
-References: <20241119051142.2272779-1-santhosh.reddy.guddati@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v4 1/6] lib/igt_kmod: Drop legacy kunit fallback
+Date: Mon, 18 Nov 2024 21:29:49 -0800
+Message-ID: <20241119052954.1993905-2-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241119052954.1993905-1-lucas.demarchi@intel.com>
+References: <20241119052954.1993905-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,66 +68,367 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add function igt_is_joiner_mode` to verify if the display is in
-big joiner or ultra joiner mode.
+Kunit has support for listing tests with debugfs for quite some time,
+there's no need for the fallback to be happening: let's just start
+failing the tests if we can't get the list of tests from debugfs.
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_kms.c | 29 +++++++++++++++++++++++++++++
- lib/igt_kms.h |  2 +-
- 2 files changed, 30 insertions(+), 1 deletion(-)
+ lib/igt_kmod.c | 289 ++-----------------------------------------------
+ 1 file changed, 12 insertions(+), 277 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 76f32e1e0..de8dca163 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6441,6 +6441,35 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 	return found;
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 87036d06c..5224d36a4 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -959,121 +959,6 @@ static bool kunit_set_filtering(const char *filter_glob, const char *filter,
+ 	return ret;
  }
  
-+/**
-+ * igt_is_joiner_mode
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Check if the display is in joiner mode.
-+ *
-+ * Returns: True if the display is in joiner mode, else False.
-+ */
-+bool igt_is_joiner_mode(igt_display_t *display, igt_output_t *output)
-+{
-+	bool is_joiner = false;
-+	bool is_ultra_joiner = false;
-+	int max_dotclock;
-+	drmModeModeInfo mode;
-+
-+	max_dotclock = igt_get_max_dotclock(display->drm_fd);
-+	is_joiner = bigjoiner_mode_found(display->drm_fd,
-+					 output->config.connector,
-+					 max_dotclock, &mode);
-+	is_ultra_joiner = ultrajoiner_mode_found(display->drm_fd,
-+						 output->config.connector,
-+						 max_dotclock, &mode);
-+
-+	if (is_joiner || is_ultra_joiner)
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * igt_has_force_joiner_debugfs
-  * @drmfd: A drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 301f370df..c94dc0612 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1268,5 +1268,5 @@ int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
- void igt_reset_link_params(int drm_fd, igt_output_t *output);
- int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
- int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+-struct modprobe_data {
+-	struct kmod_module *kmod;
+-	const char *opts;
+-	int err;
+-	pthread_t parent;
+-	pthread_mutex_t lock;
+-	pthread_t thread;
+-};
 -
-+bool igt_is_joiner_mode(igt_display_t *display, igt_output_t *output);
- #endif /* __IGT_KMS_H__ */
+-static void *modprobe_task(void *arg)
+-{
+-	struct modprobe_data *data = arg;
+-
+-	data->err = modprobe(data->kmod, data->opts);
+-
+-	if (igt_debug_on(data->err)) {
+-		bool once = false;
+-		int err;
+-
+-		while (err = pthread_mutex_trylock(&data->lock),
+-		       err && !igt_debug_on(err != EBUSY)) {
+-			igt_debug_on(pthread_kill(data->parent, SIGCHLD) &&
+-				     !once);
+-			once = true;
+-		}
+-	} else {
+-		/* let main thread use mutex to detect modprobe completion */
+-		igt_debug_on(pthread_mutex_lock(&data->lock));
+-	}
+-
+-	return NULL;
+-}
+-
+-static void kunit_sigchld_handler(int signal)
+-{
+-}
+-
+-static int kunit_kmsg_result_get(struct igt_list_head *results,
+-				 struct modprobe_data *modprobe,
+-				 int fd, struct igt_ktap_results *ktap)
+-{
+-	struct sigaction sigchld = { .sa_handler = kunit_sigchld_handler, },
+-			 saved;
+-	char record[BUF_LEN + 1], *buf;
+-	unsigned long taints;
+-	int ret;
+-
+-	do {
+-		int err;
+-
+-		if (igt_debug_on(igt_kernel_tainted(&taints)))
+-			return -ENOTRECOVERABLE;
+-
+-		if (modprobe) {
+-			err = igt_debug_on(sigaction(SIGCHLD, &sigchld, &saved));
+-			if (err == -1)
+-				return -errno;
+-			else if (unlikely(err))
+-				return err;
+-
+-			err = pthread_mutex_lock(&modprobe->lock);
+-			switch (err) {
+-			case EOWNERDEAD:
+-				/* leave the mutex unrecoverable */
+-				igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+-				__attribute__ ((fallthrough));
+-			case ENOTRECOVERABLE:
+-				igt_debug_on(sigaction(SIGCHLD, &saved, NULL));
+-				if (igt_debug_on(modprobe->err))
+-					return modprobe->err;
+-				break;
+-			case 0:
+-				break;
+-			default:
+-				igt_debug("pthread_mutex_lock() error: %d\n", err);
+-				igt_debug_on(sigaction(SIGCHLD, &saved, NULL));
+-				return -err;
+-			}
+-		}
+-
+-		ret = read(fd, record, BUF_LEN);
+-
+-		if (modprobe && !err) {	/* pthread_mutex_lock() succeeded */
+-			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+-			igt_debug_on(sigaction(SIGCHLD, &saved, NULL));
+-		}
+-
+-		if (igt_debug_on(!ret))
+-			return -ENODATA;
+-		if (igt_debug_on(ret == -1))
+-			return -errno;
+-		if (unlikely(igt_debug_on(ret < 0)))
+-			break;
+-
+-		/* skip kmsg continuation lines */
+-		if (igt_debug_on(*record == ' '))
+-			continue;
+-
+-		/* NULL-terminate the record */
+-		record[ret] = '\0';
+-
+-		/* detect start of log message, continue if not found */
+-		buf = strchrnul(record, ';');
+-		if (igt_debug_on(*buf == '\0'))
+-			continue;
+-		buf++;
+-
+-		ret = igt_ktap_parse(buf, ktap);
+-		if (!ret || igt_debug_on(ret != -EINPROGRESS))
+-			break;
+-	} while (igt_list_empty(results));
+-
+-	return ret;
+-}
+-
+ static void kunit_result_free(struct igt_ktap_result **r,
+ 			      char **suite_name, char **case_name)
+ {
+@@ -1148,147 +1033,7 @@ out_fclose:
+ 	return err;
+ }
+ 
+-static void __igt_kunit_legacy(struct igt_ktest *tst,
+-			       const char *subtest,
+-			       const char *opts)
+-{
+-	struct modprobe_data modprobe = { tst->kmod, opts, 0, pthread_self(), };
+-	char *suite_name = NULL, *case_name = NULL;
+-	struct igt_ktap_results *ktap;
+-	struct igt_ktap_result *r;
+-	pthread_mutexattr_t attr;
+-	IGT_LIST_HEAD(results);
+-	unsigned long taints;
+-	int flags, ret;
+-
+-	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
+-
+-	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
+-	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
+-		      "Could not set /dev/kmsg to blocking mode\n");
+-
+-	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+-
+-	igt_skip_on(pthread_mutexattr_init(&attr));
+-	igt_skip_on(pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST));
+-	igt_skip_on(pthread_mutex_init(&modprobe.lock, &attr));
+-
+-	ktap = igt_ktap_alloc(&results);
+-	igt_require(ktap);
+-
+-	if (igt_debug_on(pthread_create(&modprobe.thread, NULL,
+-					modprobe_task, &modprobe))) {
+-		igt_ktap_free(&ktap);
+-		igt_skip("Failed to create a modprobe thread\n");
+-	}
+-
+-	do {
+-		ret = kunit_kmsg_result_get(&results, &modprobe,
+-					    tst->kmsg, ktap);
+-		if (igt_debug_on(ret && ret != -EINPROGRESS))
+-			break;
+-
+-		if (igt_debug_on(igt_list_empty(&results)))
+-			break;
+-
+-		r = igt_list_first_entry(&results, r, link);
+-
+-		igt_dynamic_f("%s%s%s",
+-			      strcmp(r->suite_name, subtest) ?  r->suite_name : "",
+-			      strcmp(r->suite_name, subtest) ? "-" : "",
+-			      r->case_name) {
+-
+-			if (r->code == IGT_EXIT_INVALID) {
+-				/* parametrized test case, get actual result */
+-				kunit_result_free(&r, &suite_name, &case_name);
+-
+-				igt_assert(igt_list_empty(&results));
+-
+-				ret = kunit_kmsg_result_get(&results, &modprobe,
+-							    tst->kmsg, ktap);
+-				if (ret != -EINPROGRESS)
+-					igt_fail_on(ret);
+-
+-				igt_fail_on(igt_list_empty(&results));
+-
+-				r = igt_list_first_entry(&results, r, link);
+-
+-				igt_fail_on_f(strcmp(r->suite_name, suite_name),
+-					      "suite_name expected: %s, got: %s\n",
+-					      suite_name, r->suite_name);
+-				igt_fail_on_f(strcmp(r->case_name, case_name),
+-					      "case_name expected: %s, got: %s\n",
+-					      case_name, r->case_name);
+-			}
+-
+-			igt_assert_neq(r->code, IGT_EXIT_INVALID);
+-
+-			if (r->msg && *r->msg) {
+-				igt_skip_on_f(r->code == IGT_EXIT_SKIP,
+-					      "%s\n", r->msg);
+-				igt_fail_on_f(r->code == IGT_EXIT_FAILURE,
+-					      "%s\n", r->msg);
+-				igt_abort_on_f(r->code == IGT_EXIT_ABORT,
+-					      "%s\n", r->msg);
+-			} else {
+-				igt_skip_on(r->code == IGT_EXIT_SKIP);
+-				igt_fail_on(r->code == IGT_EXIT_FAILURE);
+-				if (r->code == IGT_EXIT_ABORT)
+-					igt_fail(r->code);
+-			}
+-			igt_assert_eq(r->code, IGT_EXIT_SUCCESS);
+-
+-			switch (pthread_mutex_lock(&modprobe.lock)) {
+-			case 0:
+-				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
+-				break;
+-			case EOWNERDEAD:
+-				/* leave the mutex unrecoverable */
+-				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
+-				__attribute__ ((fallthrough));
+-			case ENOTRECOVERABLE:
+-				igt_assert_eq(modprobe.err, 0);
+-				break;
+-			default:
+-				igt_debug("pthread_mutex_lock() failed\n");
+-				break;
+-			}
+-
+-			igt_assert_eq(igt_kernel_tainted(&taints), 0);
+-		}
+-
+-		kunit_result_free(&r, &suite_name, &case_name);
+-
+-	} while (ret == -EINPROGRESS);
+-
+-	kunit_results_free(&results, &suite_name, &case_name);
+-
+-	switch (pthread_mutex_lock(&modprobe.lock)) {
+-	case 0:
+-		igt_debug_on(pthread_cancel(modprobe.thread));
+-		igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
+-		igt_debug_on(pthread_join(modprobe.thread, NULL));
+-		break;
+-	case EOWNERDEAD:
+-		/* leave the mutex unrecoverable */
+-		igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
+-		break;
+-	case ENOTRECOVERABLE:
+-		break;
+-	default:
+-		igt_debug("pthread_mutex_lock() failed\n");
+-		igt_debug_on(pthread_join(modprobe.thread, NULL));
+-		break;
+-	}
+-
+-	igt_ktap_free(&ktap);
+-
+-	igt_skip_on(modprobe.err);
+-	igt_skip_on(igt_kernel_tainted(&taints));
+-	igt_skip_on_f(ret, "KTAP parser failed\n");
+-}
+-
+-static bool kunit_get_tests(struct igt_list_head *tests,
++static void kunit_get_tests(struct igt_list_head *tests,
+ 			    struct igt_ktest *tst,
+ 			    const char *suite,
+ 			    const char *opts,
+@@ -1302,7 +1047,7 @@ static bool kunit_get_tests(struct igt_list_head *tests,
+ 
+ 	*debugfs_dir = opendir(debugfs_path);
+ 	if (igt_debug_on(!*debugfs_dir))
+-		return false;
++		return;
+ 
+ 	/*
+ 	 * To get a list of test cases provided by a kunit test module, ask the
+@@ -1313,7 +1058,7 @@ static bool kunit_get_tests(struct igt_list_head *tests,
+ 	 * a free text list of unknown length from /dev/kmsg.
+ 	 */
+ 	if (igt_debug_on(!kunit_set_filtering(suite, "module=none", "skip")))
+-		return false;
++		return;
+ 
+ 	if (!suite) {
+ 		seekdir(*debugfs_dir, 2);	/* directory itself and its parent */
+@@ -1350,8 +1095,6 @@ static bool kunit_get_tests(struct igt_list_head *tests,
+ 	igt_list_for_each_entry_safe(r, rn, tests, link)
+ 		igt_require_f(r->code == IGT_EXIT_SKIP,
+ 			      "Unexpected non-SKIP result while listing test cases\n");
+-
+-	return true;
+ }
+ 
+ static void __igt_kunit(struct igt_ktest *tst,
+@@ -1476,8 +1219,13 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+ 		}
+ 	}
+ 
++	/* We need the base KUnit module loaded if not built-in */
++	igt_ignore_warn(igt_kmod_load("kunit", NULL));
++	kunit_debugfs_path(debugfs_path);
++
+ 	igt_fixture {
+ 		igt_require(subtest);
++		igt_require(*debugfs_path);
+ 
+ 		igt_skip_on(igt_ktest_init(&tst, module_name));
+ 		igt_skip_on(igt_ktest_begin(&tst));
+@@ -1485,30 +1233,17 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+ 		igt_assert(igt_list_empty(&tests));
+ 	}
+ 
+-	/* We need the base KUnit module loaded if not built-in */
+-	igt_ignore_warn(igt_kmod_load("kunit", NULL));
+-
+ 	/*
+ 	 * We need to use igt_subtest here, as otherwise it may crash with:
+-	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
++	 * "skipping is allowed only in fixtures, subtests or igt_simple_main"
+ 	 * if used on igt_main. This is also needed in order to provide
+ 	 * proper namespace for dynamic subtests, with is required for CI
+ 	 * and for documentation.
+ 	 */
+ 	igt_subtest_with_dynamic(subtest) {
+-		/*
+-		 * TODO: As soon as no longer needed by major Linux
+-		 *	 distributions, replace the fallback to
+-		 *	 __igt_kunit_legacy() processing path, required by
+-		 *	 LTS kernels not capable of using KUnit filters for
+-		 *	 listing test cases in KTAP format, with igt_require.
+-		 */
+-		kunit_debugfs_path(debugfs_path);
+-		if (igt_debug_on(!*debugfs_path) ||
+-		    !kunit_get_tests(&tests, &tst, suite, opts, debugfs_path, &debugfs_dir, &ktap))
+-			__igt_kunit_legacy(&tst, subtest, opts);
+-		else
+-			__igt_kunit(&tst, subtest, opts, debugfs_path, &tests, &ktap);
++		kunit_get_tests(&tests, &tst, suite, opts,
++				debugfs_path, &debugfs_dir, &ktap);
++		__igt_kunit(&tst, subtest, opts, debugfs_path, &tests, &ktap);
+ 	}
+ 
+ 	igt_fixture {
 -- 
-2.34.1
+2.47.0
 
