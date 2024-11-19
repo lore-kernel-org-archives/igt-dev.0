@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BF9D44001
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 05:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D80AD4920E
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 05:16:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C0C010E5B1;
-	Tue, 19 Nov 2024 05:16:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 226B710E5AE;
+	Tue, 19 Nov 2024 05:16:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aAj3Nzks";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZS+IhDAZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CDC210E5AE
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 05:16:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 248E710E5AE
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 05:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731993362; x=1763529362;
+ t=1731993364; x=1763529364;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8+9/EDQhSYVlXljRZDjFZ8rEoNIQsbkzr9CXeFqhAN0=;
- b=aAj3Nzks6tA57YMa0rWO1fgtOesRTMcSTkRkOgjj9ikArFZWSAsYaS+j
- gwUX6ZwGD2pPdHibYg05h41rIus6AO7YMUy/7j+Ug9rVNFHBhU5Zf0Mdz
- 1Yv5g1KFmhFTe1WYebDEayTjX95FTCcpB/had8FXPa3k7czAiM9SLfuFm
- jPN8knent50VZq5ppIzkogcdSK3xbFOBr2MalmGtwfbXh21FMTsKptj8p
- gU2i6H4aMGyyOQJfXSeZX7zPMjklXWo9v0c2GLzyp5I3ewZsABWfenlFy
- HcqQMpsVsVc4gpfQ0rLyEWtXr2JiAIZtZtVCi6+ztEto+TGYH5WfB+j7a w==;
-X-CSE-ConnectionGUID: Zwalj5eHSKKZlZYQNicEQQ==
-X-CSE-MsgGUID: 8KkNQVYiRX2sIkOoVngqLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54473740"
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54473740"
+ bh=aVSG8fKiwTA2XiqS1QzbTHBBLZ6IC0KJsFes+HUhmBo=;
+ b=ZS+IhDAZJ8JMkv2yiOcVAeXivubIcPKx0l/g4cmY0/lLpVnzsucpSPQz
+ VB960nfvw/FNHie5yqL4u77SoGr9/JdbND2kRStLK66VW2gCqK8Q84G31
+ n4B+QdKoR0aji+Cu0xosQzrKjymA9r9lvNrdFPVTaKL7XJF/3psdkD3hX
+ 4Q96XZtpcBAqZhw8MtG7ZXMCaGR+5ilFJnUB2ykuueVbfRVFhKLka8hst
+ Bf9aY8J+JJNnPAFkAxF1rbPT4JZZa10UYegkWWDJC5kOVwBfrsylPpUbk
+ RM75P9HYKoYHKsQQMsN+RYr7VReHLcVMaASI553Zqt9JZcI1WHkX48dJL g==;
+X-CSE-ConnectionGUID: NwTd1hNNQt2YmP910d60LA==
+X-CSE-MsgGUID: dg1q8ryFQ2S9ZGvXg8aMQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="54473741"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="54473741"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2024 21:16:02 -0800
-X-CSE-ConnectionGUID: LCGJMWuySN+Bhr/qTA1KTg==
-X-CSE-MsgGUID: 7NRlMQQNSzO9NqqYDaHBKw==
+ 18 Nov 2024 21:16:04 -0800
+X-CSE-ConnectionGUID: WDB1dgUiTFaY8XZ8A5hB8g==
+X-CSE-MsgGUID: UaNwFoI5TiuCEnW2ER7E0Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="89366705"
+X-IronPort-AV: E=Sophos;i="6.12,165,1728975600"; d="scan'208";a="89366711"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 21:15:59 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 21:16:01 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, kunal1.joshi@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v4 1/2] tests/kms_async_flips: Skip async flips on
- joiner output
-Date: Tue, 19 Nov 2024 10:41:41 +0530
-Message-Id: <20241119051142.2272779-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v4 2/2] lib/igt_kms: Add igt_is_joiner_mode
+Date: Tue, 19 Nov 2024 10:41:42 +0530
+Message-Id: <20241119051142.2272779-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241119051142.2272779-1-santhosh.reddy.guddati@intel.com>
 References: <20241119051142.2272779-1-santhosh.reddy.guddati@intel.com>
@@ -69,58 +68,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Async flips are disallowed with joiner, but the test commit still
-goes through and causes failures. Update the tests to skip on
-joiner outputs.
-
-V2: Skip tests only on joiner outputs (Kunal).
-V3: Add a todo to remove workaround when async flips with joiner is
-    supported in kernel.
-V4: Add proper FIXME, improve log message and
-    move igt_is_joiner mode to library (Swati).
+Add function igt_is_joiner_mode` to verify if the display is in
+big joiner or ultra joiner mode.
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_async_flips.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ lib/igt_kms.c | 29 +++++++++++++++++++++++++++++
+ lib/igt_kms.h |  2 +-
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 5dec71291..62df3e1b3 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -653,6 +653,12 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 		data->allow_fail = false;
- 		data->modifier = default_modifier(data);
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
-+			/*
-+			 * FIXME: joiner+async flip is busted currently in KMD.
-+			 * Remove this check once the issues are fixed in KMD.
-+			 */
-+			igt_skip_on_f(igt_is_joiner_mode(display, data->output),
-+				      "Skipping, async flip not supported on joiner mode\n");
- 			test_init_fbs(data);
- 			test(data);
- 		}
-@@ -674,8 +680,16 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
- 			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
- 				      data->output->name,
- 				      igt_fb_modifier_name(data->modifier)) {
--				test_init_fbs(data);
--				test(data);
-+				      /*
-+				       * FIXME: joiner+async flip is busted currently in KMD.
-+				       * Remove this check once the issues are fixed in KMD.
-+				       */
-+				      igt_skip_on_f(igt_is_joiner_mode(&data->display,
-+								       data->output),
-+						    "Skipping, async flip not supported "
-+						    "on joiner mode\n");
-+				      test_init_fbs(data);
-+				      test(data);
- 			}
- 		}
- 	}
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 76f32e1e0..de8dca163 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6441,6 +6441,35 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 	return found;
+ }
+ 
++/**
++ * igt_is_joiner_mode
++ * @display: a pointer to an #igt_display_t structure
++ *
++ * Check if the display is in joiner mode.
++ *
++ * Returns: True if the display is in joiner mode, else False.
++ */
++bool igt_is_joiner_mode(igt_display_t *display, igt_output_t *output)
++{
++	bool is_joiner = false;
++	bool is_ultra_joiner = false;
++	int max_dotclock;
++	drmModeModeInfo mode;
++
++	max_dotclock = igt_get_max_dotclock(display->drm_fd);
++	is_joiner = bigjoiner_mode_found(display->drm_fd,
++					 output->config.connector,
++					 max_dotclock, &mode);
++	is_ultra_joiner = ultrajoiner_mode_found(display->drm_fd,
++						 output->config.connector,
++						 max_dotclock, &mode);
++
++	if (is_joiner || is_ultra_joiner)
++		return true;
++
++	return false;
++}
++
+ /**
+  * igt_has_force_joiner_debugfs
+  * @drmfd: A drm file descriptor
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 301f370df..c94dc0612 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1268,5 +1268,5 @@ int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
+ void igt_reset_link_params(int drm_fd, igt_output_t *output);
+ int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
+ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+-
++bool igt_is_joiner_mode(igt_display_t *display, igt_output_t *output);
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.34.1
 
