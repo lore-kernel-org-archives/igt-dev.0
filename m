@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D5C1D44148
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 12:34:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 973B9D44153
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 12:49:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 036EB10E128;
-	Tue, 19 Nov 2024 12:34:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4980B10E27B;
+	Tue, 19 Nov 2024 12:49:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JNd6Fgc4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l8j5QLWk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B29FC10E128
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 12:34:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 260CF10E63A
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 12:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732019653; x=1763555653;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=52ZJ5569qZ4hGMA7fvNjKUMKsro3B4e+L5MJjcxpcN0=;
- b=JNd6Fgc4+CyLcPIjqhJHa16aX+O2E3ZsTdtV2oZL83LJSgXaBrTJID5o
- iRn7/4+5cV8Tuu+uBYQ9zmWCV1DCvNPfWQ0K0HTgzYl7AZC5XRtri+FZ3
- disk5FHZ9aEOX8eCjHT/MSxTfGr/YI+GKPC4Iqrvssit51LnQjhbg8CwN
- 0qHK0LDTyA1Q0XGtlQngVf7M2BxPAzVqFK1ZYOf+VPqOV19by14/K9dFI
- 1qakvN0NbQss6//TQsv/Cpso+82hprKVeAU9mPLGeD77vScpQIV31T1jb
- smlLN2L19YSczwBbOuD+QkeTlniDiTOYmvwcObMenov3rlDaFaNxPH+65 A==;
-X-CSE-ConnectionGUID: CMono2PnRTWLMjeZmOj8Aw==
-X-CSE-MsgGUID: IAa8M/nRQwauPvDhEgEWYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="35684457"
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="35684457"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2024 04:34:12 -0800
-X-CSE-ConnectionGUID: jHwRgRK2SU6OPTkV6HmpsA==
-X-CSE-MsgGUID: 1B1O61XTRYeyRDb4zsEDBQ==
+ t=1732020554; x=1763556554;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=xvV1kxyHzlYBv76nD88DQWeBpeqGBGkfswm/7bsWs0I=;
+ b=l8j5QLWkS4K2OdqUhPcNAqKCxMxWy+Z3zluXLxOmO/swUKpfPsqGpgUj
+ KV+zaeWvpGMA2n402ZmaY/B46YRZq80GdGbiZd36Ea5suegb6XJchFmao
+ 4MOqllQEa7bMWtbmugGL426rKpraHKvJuRYiIbzUbvA3zgJtRkCZ45nLk
+ ZnhL2yprlO1WTLDOurItsID0qKm8FlxyVVsoA3u3p13xdPRwAI/KMHSY8
+ KLg70HP7WdGWLBkltE3hIx6d10YlyEn5ll80RN+X69s5Iq9pTm80IMaSo
+ 8ayxdu2W41CCzaf4VLazqDlIAmH2ReVHe8LwzaX7atboxVIrZKQXlbBIm Q==;
+X-CSE-ConnectionGUID: hIGtXWuaQLWi7Y+FQnTOWg==
+X-CSE-MsgGUID: D1EnIs3PR66AKy+uGhHFNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11260"; a="19626172"
+X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="19626172"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2024 04:49:13 -0800
+X-CSE-ConnectionGUID: Umvtvl1jQY+GsxPpM/XKOg==
+X-CSE-MsgGUID: MxINAmfMSIGUNZaPe9DnJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="89548283"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- jhogande-mobl1..) ([10.245.244.5])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2024 04:34:11 -0800
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Subject: [PATCH] lib/igt_psr: Dump out PSR status if waiting PSR entry or
- update fails
-Date: Tue, 19 Nov 2024 14:33:24 +0200
-Message-Id: <20241119123324.4070696-1-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="120477987"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.246.221])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2024 04:49:12 -0800
+Date: Tue, 19 Nov 2024 13:49:08 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/1] tests/intel-ci: Block all gem_exec_fair tests
+Message-ID: <ZzyJRLF0iFRN3uEl@ashyti-mobl2.lan>
+References: <20241118111528.4190241-1-katarzyna.piecielska@intel.com>
+ <20241118111528.4190241-2-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241118111528.4190241-2-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,106 +70,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently we are receiving reports from CI testing indication PSR entry of
-update are failing. It would ease making conclusions on the reports if PSR
-status when failure happened would be available. Solve this by printing out
-PSR status if waiting PSR entry or update fails.
+Hi Kasia,
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- lib/igt_psr.c | 39 +++++++++++++++++++++++++++++++--------
- 1 file changed, 31 insertions(+), 8 deletions(-)
+On Mon, Nov 18, 2024 at 11:15:28AM +0000, Katarzyna Piecielska wrote:
+> As i915 schedules is not going to be improved there is no need to
+> execute gem_exec_fair tests. For now let's keep them for future
+> reference.
+> 
+> Ref:
+> https://gitlab.freedesktop.org/drm/intel/issues/2842
+> https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12786
+> 
+> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 83c21e6ba..61feea9aa 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -88,10 +88,9 @@ static bool sink_status_checks(void)
- 	return env && atoi(env);
- }
- 
--static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
-+static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output, char *buf, int buf_len)
- {
- 	char debugfs_file[128] = {0};
--	char buf[PSR_STATUS_MAX_LEN];
- 	drmModeConnector *c;
- 	const char *state;
- 	bool active;
-@@ -113,7 +112,7 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
- 
- 	SET_DEBUGFS_PATH(output, debugfs_file);
- 	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
--				     buf, sizeof(buf));
-+				     buf, buf_len);
- 	if (ret < 0) {
- 		igt_info("Could not read i915_edp_psr_status: %s\n",
- 			 strerror(-ret));
-@@ -137,11 +136,22 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
-  */
- bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 20);
-+	char buf[PSR_STATUS_MAX_LEN];
-+	int ret;
-+
-+	ret = igt_wait(psr_active_check(debugfs_fd, mode, output, buf, sizeof(buf)), 500, 20);
-+
-+	if (!ret)
-+		igt_info("PSR not active within timeout. PSR status at the end of the wait:\n%s", buf);
-+
-+	return ret;
- }
- 
- bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
-+	char buf[PSR_STATUS_MAX_LEN];
-+	int ret;
-+
- 	/*
- 	 * TODO: After enabling Panel Replay on DP2.1, observe that the SRD status
- 	 * remains in the SRDENT_ON state. Remove the polling mechanism for the SRD
-@@ -149,13 +159,21 @@ bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- 	 */
- 	if (output != NULL &&
- 	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
--		return igt_wait(psr_active_check(debugfs_fd, mode, output), 40, 1);
-+		ret = igt_wait(psr_active_check(debugfs_fd, mode, output, buf, sizeof(buf)), 40, 1);
- 	else
--		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 1);
-+		ret = igt_wait(!psr_active_check(debugfs_fd, mode, output, buf, sizeof(buf)), 40, 1);
-+
-+	if (!ret)
-+		igt_info("PSR not inactive for update within timeout. PSR status at the end of the wait:\n %s", buf);
-+
-+	return ret;
- }
- 
- bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
-+	char buf[PSR_STATUS_MAX_LEN];
-+	int ret;
-+
- 	/*
- 	 * TODO: After enabling Panel Replay on DP2.1, observe that the SRD status
- 	 * remains in the SRDENT_ON state. Remove the polling mechanism for the SRD
-@@ -163,9 +181,14 @@ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *outp
- 	 */
- 	if (output != NULL &&
- 	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
--		return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 1);
-+		ret = igt_wait(psr_active_check(debugfs_fd, mode, output, buf, sizeof(buf)), 500, 1);
- 	else
--		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 1);
-+		ret = igt_wait(!psr_active_check(debugfs_fd, mode, output, buf, sizeof(buf)), 500, 1);
-+
-+	if (!ret)
-+		igt_info("PSR not inactive for update within timeout. PSR status at the end of the wait:\n %s", buf);
-+
-+	return ret;
- }
- 
- static ssize_t psr_write(int debugfs_fd, const char *buf, igt_output_t *output)
--- 
-2.34.1
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
+Thanks,
+Andi
