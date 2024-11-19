@@ -4,64 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAF6FD6C299
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 20:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA5F7D6C29A
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 21:07:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E7B310E0A4;
-	Tue, 19 Nov 2024 20:50:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KBA2D3Py";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8213310E0A4
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 20:50:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732049406; x=1763585406;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=2N2OjDXOLlvUMSUBqAivA4HCSpUbvEgq0Adb8ERFwtU=;
- b=KBA2D3PyVgvg1s8cZnLEk2VOwNMulSghL/B2cPBCpqmTO8oRf4CDOe7+
- 46o4PykrrlWKhByhUvO8d6cZ1/ZLb6anTixNake/BBMzErZOHRZUOhmCD
- 7p2ulUfK/Wx4fXMcwTpPgh/bDam9nZ1Y5v/FQQ289UknTRV4XdOxFZGMS
- T8S8E3PSrmwD7VNtbZ83mAqo+zMJlxyIBsvr6eIXA6i1nO9AtMhth81ru
- D4T7N41AZvUwV5KEpWr5KnLVL66N2lvkOtRzt9rDDhL6kRTe/fFDCyoEX
- X0JDwUK2dwE6NhBU1GM4tES3QXYPDzxeh3cV/jtfoFU8dVpGgtlywnWHw Q==;
-X-CSE-ConnectionGUID: 9PP8Paj6RJ6Nm0YdBqR8LQ==
-X-CSE-MsgGUID: V9NTFSmpTxyr6B87YD4kwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="49615415"
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="49615415"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2024 12:50:05 -0800
-X-CSE-ConnectionGUID: UaSR0BnUTtmN7x/sDLn1xw==
-X-CSE-MsgGUID: qIK2NQYbSce6rCkFbBxw2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="89496891"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 12:50:04 -0800
-Date: Tue, 19 Nov 2024 21:50:01 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
- alex.zuo@intel.com, francois.dugast@intel.com,
- lucas.demarchi@intel.com, matthew.brost@intel.com,
- rodrigo.vivi@intel.com, michal.wajdeczko@intel.com
-Subject: Re: [PATCH v2] tests/intel/xe_fault_injection: Ignore expected errors
-Message-ID: <20241119205001.3xwoinayeqsehhcz@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- saurabhg.gupta@intel.com, alex.zuo@intel.com,
- francois.dugast@intel.com, lucas.demarchi@intel.com,
- matthew.brost@intel.com, rodrigo.vivi@intel.com,
- michal.wajdeczko@intel.com
-References: <20241107195959.98509-1-jonathan.cavitt@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93B3788F94;
+	Tue, 19 Nov 2024 21:07:56 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 949DC88F94;
+ Tue, 19 Nov 2024 21:07:55 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4272547304252667889=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241107195959.98509-1-jonathan.cavitt@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Force_connector/crtc_attrs_to_?=
+ =?utf-8?q?default_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 19 Nov 2024 21:07:55 -0000
+Message-ID: <173205047562.449319.2575323333297421983@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241118095948.2017893-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20241118095948.2017893-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,88 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2024-11-07 at 19:59:59 +0000, Jonathan Cavitt wrote:
-> The following errors can be observed when running the xe_fault_injection
-> subtests:
-> 
-> [drm] *ERROR* GT0: GuC init failed with -ENOMEM
-> [drm] *ERROR* GT0: Failed to initialize uC (-ENOMEM)
-> probe with driver xe failed with error -12
-> 
-> Add these messages to the dmesg ignore regex to the applicable tests
-> (specifically, all tests for the last error, and all tests that target
-> GuC subsystems for the first two errors).
-> 
-> v2:
-> - Fix and merge regex (Kamil)
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3343
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> CC: Francois Dugast <francois.dugast@intel.com>
-> CC: Lucas De Marchi <lucas.demarchi@intel.com>
-> CC: Matthew Brost <matthew.brost@intel.com>
-> CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> CC: Michal Wajdeczko <michal.wajdeczko@intel.com>
-> CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/intel/xe_fault_injection.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+--===============4272547304252667889==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-There were recently changes apllied to this test and now your patch
-do not apply, also imho we need to test it again so please rebase
-and resend.
+== Series Details ==
 
-Regards,
-Kamil
+Series: Force connector/crtc attrs to default (rev5)
+URL   : https://patchwork.freedesktop.org/series/137234/
+State : success
 
-> 
-> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-> index d1c8b25307..8b181808ed 100644
-> --- a/tests/intel/xe_fault_injection.c
-> +++ b/tests/intel/xe_fault_injection.c
-> @@ -30,6 +30,30 @@ enum injection_list_action {
->  	INJECTION_LIST_REMOVE,
->  };
->  
-> +static bool function_is_part_of_guc(char function_name[])
-> +{
-> +	return strstr(function_name, "_guc_") != NULL ||
-> +	       strstr(function_name, "_uc_") != NULL ||
-> +	       strstr(function_name, "_wopcm_") != NULL;
-> +}
-> +
-> +static void ignore_faults_in_dmesg(char function_name[])
-> +{
-> +	/* Driver probe is expected to fail in all cases, so ignore in igt_runner */
-> +	char regex[1024] = "probe with driver xe failed with error -12";
-> +
-> +	/*
-> +	 * If GuC module fault is injected, GuC is expected to fail,
-> +	 * so also ignore GuC init failures in igt_runner.
-> +	 */
-> +	if (function_is_part_of_guc(function_name)) {
-> +		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
-> +		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
-> +	}
-> +
-> +	igt_emit_ignore_dmesg_regex(regex);
-> +}
-> +
->  /*
->   * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
->   */
-> @@ -175,6 +199,7 @@ igt_main
->  			if (regexec(&regex, line, 2, pmatch, 0) == 0) {
->  				strcpy(function_name, line);
->  				function_name[pmatch[1].rm_eo - 1] = '\0';
-> +				ignore_faults_in_dmesg(function_name);
->  				igt_dynamic_f("function-%s", function_name)
->  					inject_fault_try_bind(fd, pci_slot, function_name);
->  			}
-> -- 
-> 2.43.0
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8118_BAT -> XEIGTPW_12138_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-lnl-2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8118 -> IGTPW_12138
+  * Linux: xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd -> xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de
+
+  IGTPW_12138: 12138
+  IGT_8118: 17707095f1e5d3c30f463b43022f01c0160579b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd: f8f85a38f6c75e091805f01ceff4041ac2fdf3fd
+  xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de: c2bd638d71d621e6887e15ae2e7bf1571b9599de
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12138/index.html
+
+--===============4272547304252667889==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Force connector/crtc attrs to default (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137234/">https://patchwork.freedesktop.org/series/137234/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12138/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12138/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8118_BAT -&gt; XEIGTPW_12138_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-lnl-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8118 -&gt; IGTPW_12138</li>
+<li>Linux: xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd -&gt; xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de</li>
+</ul>
+<p>IGTPW_12138: 12138<br />
+  IGT_8118: 17707095f1e5d3c30f463b43022f01c0160579b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd: f8f85a38f6c75e091805f01ceff4041ac2fdf3fd<br />
+  xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de: c2bd638d71d621e6887e15ae2e7bf1571b9599de</p>
+
+</body>
+</html>
+
+--===============4272547304252667889==--
