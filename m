@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E25E8D6C295
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 20:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 279FED6C299
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Nov 2024 20:47:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2ADF10E364;
-	Tue, 19 Nov 2024 20:39:20 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9291B10E364;
- Tue, 19 Nov 2024 20:39:19 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7025453258769974134=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF89F10E369;
+	Tue, 19 Nov 2024 20:47:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O2RtKxCk";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9861210E369
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Nov 2024 20:47:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732049228; x=1763585228;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=t+hNkodFtpHTd4eP2CIpGh1j/pjJ0rQ/dgMusqDYW5s=;
+ b=O2RtKxCkinCqhf+Bs4aQYy3tAx0RbfLa5HfRqK7hapGXtVeRPRGGarJu
+ glpN6VevaFhYpWaQD00TOvohFbEKoQacylMS/5Z9XRtHkN5SBV/tLJUEc
+ U5Pw3XnD/tzNDinm+75N7qtx30hOl+BEXk+hpkmsAVKQ17cds+Qih+xQa
+ YaGIgzrpo2m5rpiQ/atwmMtOeb6sgk/o+YnQIr0nj5ZabAuTsgnIBpDxg
+ H0DSEL76qgKtUd879iZB16oIa7SugVK312HJkthX7G0ek6bkMHWa9FdMt
+ a0I33Z+MTueOcneruO2ygEedrBJnaPl9rSG406iFwHIbbMqbThPri0xGE g==;
+X-CSE-ConnectionGUID: TpB6+jBuTWi74RDll/QvaQ==
+X-CSE-MsgGUID: bbONnNRwRcC+c3TlNNfL1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="31938302"
+X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="31938302"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2024 12:47:08 -0800
+X-CSE-ConnectionGUID: vGLXg1gnTH2suD12dmr6qg==
+X-CSE-MsgGUID: bb1rxATWQNKHL5jIjaQJ3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; d="scan'208";a="90072086"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 12:47:06 -0800
+Date: Tue, 19 Nov 2024 21:47:03 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests=2Fsyncobj?=
+ =?utf-8?B?X3dhaXQ6?= Update invalid-wait-zero-handles test (rev4)
+Message-ID: <20241119204703.vxegpjleoritqkfn@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>
+References: <20241118124422.11868-1-krzysztof.niemiec@intel.com>
+ <173198054111.107654.12011343560311556000@b555e5b46a47>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fkms=3A_Clear_all_pip?=
- =?utf-8?q?e_properties_on_reset_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Nov 2024 20:39:19 -0000
-Message-ID: <173204875961.419408.6330288021751582765@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241118141522.2046021-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20241118141522.2046021-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <173198054111.107654.12011343560311556000@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,186 +71,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7025453258769974134==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi igt-dev,
+On 2024-11-19 at 01:42:21 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/syncobj_wait: Update invalid-wait-zero-handles test (rev4)
+> URL   : https://patchwork.freedesktop.org/series/140727/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8115_BAT -> XEIGTPW_12127_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_12127_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_12127_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12127_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@core_hotunplug@unbind-rebind:
+>     - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] +2 other tests dmesg-warn
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+> 
 
-== Series Details ==
+This is new test and it is present in CI.BAT for i915:
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12127/index.html
 
-Series: lib/igt_kms: Clear all pipe properties on reset (rev2)
-URL   : https://patchwork.freedesktop.org/series/141498/
-State : success
+However, when looking into combined Xe.BAT here:
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-all.html?
+it is not present there.
 
-== Summary ==
+Is xe-fast-feedback ignored or not updated in this combined view?
 
-CI Bug Log - changes from XEIGT_8118_BAT -> XEIGTPW_12137_BAT
-====================================================
++cc Ewelina
 
-Summary
--------
+Regards,
+Kamil
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12137_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_exec_balancer@twice-cm-virtual-rebind:
-    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#358])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_exec_balancer@twice-cm-virtual-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-vf/igt@xe_exec_balancer@twice-cm-virtual-rebind.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [PASS][5] -> [SKIP][6] ([Intel XE#1192]) +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  
-#### Warnings ####
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-lnl-1:          [DMESG-FAIL][7] ([Intel XE#3466]) -> [INCOMPLETE][8] ([Intel XE#3466])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-lnl-1/igt@xe_exec_fault_mode@many-basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-lnl-1/igt@xe_exec_fault_mode@many-basic.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][9] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][10] ([Intel XE#1192])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3466
-  [Intel XE#358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/358
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8118 -> IGTPW_12137
-  * Linux: xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd -> xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de
-
-  IGTPW_12137: 12137
-  IGT_8118: 17707095f1e5d3c30f463b43022f01c0160579b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd: f8f85a38f6c75e091805f01ceff4041ac2fdf3fd
-  xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de: c2bd638d71d621e6887e15ae2e7bf1571b9599de
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/index.html
-
---===============7025453258769974134==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_kms: Clear all pipe properties on reset (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141498/">https://patchwork.freedesktop.org/series/141498/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8118_BAT -&gt; XEIGTPW_12137_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12137_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_balancer@twice-cm-virtual-rebind:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_exec_balancer@twice-cm-virtual-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-vf/igt@xe_exec_balancer@twice-cm-virtual-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/358">Intel XE#358</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-lnl-1/igt@xe_exec_fault_mode@many-basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3466">Intel XE#3466</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-lnl-1/igt@xe_exec_fault_mode@many-basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3466">Intel XE#3466</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8118/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12137/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8118 -&gt; IGTPW_12137</li>
-<li>Linux: xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd -&gt; xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de</li>
-</ul>
-<p>IGTPW_12137: 12137<br />
-  IGT_8118: 17707095f1e5d3c30f463b43022f01c0160579b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2252-f8f85a38f6c75e091805f01ceff4041ac2fdf3fd: f8f85a38f6c75e091805f01ceff4041ac2fdf3fd<br />
-  xe-2253-c2bd638d71d621e6887e15ae2e7bf1571b9599de: c2bd638d71d621e6887e15ae2e7bf1571b9599de</p>
-
-</body>
-</html>
-
---===============7025453258769974134==--
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_12127_BAT that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@kms_flip@basic-flip-vs-wf_vblank:
+>     - bat-lnl-1:          [PASS][3] -> [FAIL][4] ([Intel XE#886]) +1 other test fail
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+> 
+>   * igt@kms_psr@psr-cursor-plane-move:
+>     - bat-adlp-7:         [PASS][5] -> [SKIP][6] ([Intel XE#3443] / [Intel XE#455]) +3 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+> 
+>   * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+>     - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#2229] / [Intel XE#455]) +1 other test skip
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+> 
+>   * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+>     - bat-adlp-vf:        NOTRUN -> [SKIP][8] ([Intel XE#2229])
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@xe_live_ktest@xe_migrate:
+>     - bat-adlp-vf:        [SKIP][9] ([Intel XE#1192]) -> [PASS][10] +1 other test pass
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+> 
+>   * igt@xe_pat@pat-index-xelp@render:
+>     - bat-adlp-vf:        [DMESG-WARN][11] ([Intel XE#358]) -> [PASS][12] +1 other test pass
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@xe_live_ktest@xe_bo:
+>     - bat-adlp-vf:        [SKIP][13] ([Intel XE#1192]) -> [SKIP][14] ([Intel XE#2229] / [Intel XE#455])
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8115/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+> 
+>   
+>   [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+>   [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+>   [Intel XE#3443]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3443
+>   [Intel XE#358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/358
+>   [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+>   [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_8115 -> IGTPW_12127
+>   * Linux: xe-2248-6abefc8e3bf638090d5277bc3e6fd02bb25579a4 -> xe-2249-1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6
+> 
+>   IGTPW_12127: 12127
+>   IGT_8115: 4942fc57c20f9cb2195e70991c4e4df03dd3db21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-2248-6abefc8e3bf638090d5277bc3e6fd02bb25579a4: 6abefc8e3bf638090d5277bc3e6fd02bb25579a4
+>   xe-2249-1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6: 1fe9a6cc7d136c9a34c47ccd6ee5a2b7d02c0bd6
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12127/index.html
