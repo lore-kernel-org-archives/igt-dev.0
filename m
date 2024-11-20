@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B76D1D63926
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Nov 2024 11:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA589D6392B
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Nov 2024 11:00:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B35F10E705;
-	Wed, 20 Nov 2024 11:00:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A531910E706;
+	Wed, 20 Nov 2024 11:00:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OhUJjv1V";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H/RlD8I4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7360910E705
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Nov 2024 11:00:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19B7B10E706
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Nov 2024 11:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732100434; x=1763636434;
+ t=1732100436; x=1763636436;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8tXbUhATVOdD9Nxh0ZwhgxJJAjmCE7KlTQoWVcLI4zc=;
- b=OhUJjv1Vj34uhRMvAJNQSOt/W4wsYfz8sK16Tz/Q8GAvgEMBh7D5cRRZ
- gE3/HSRpnhjrB5Xmk1+1ADGmfAIBnGvXbFkkNrmvHm1HtNnaUmk+zFSIf
- QwsbIYYtEENTkr8goIGCx2B0OhbY0WQY64AxO0PYi55QXllSejuzssxNB
- 5KLFhbsaxn9s3KI4wK3H000sW5oioxScbD/NvGDpWZ1KY69pJq51zYYX3
- Ml10FD/EOArcIzDXFNgibN5zUaeo0fNzTG8IfuboyO5ZXaQZUylNFOPWv
- WsIUgnS0HV/IwWWPZmlu/OPF2/U//80Lq1fSPmhVAFEadTdmMSPWY1ROX w==;
-X-CSE-ConnectionGUID: r4AFRfxnQSuSFjaEQ/SR+w==
-X-CSE-MsgGUID: 4P++AuGdRTaA2NUiRFTK5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="32081908"
-X-IronPort-AV: E=Sophos;i="6.12,169,1728975600"; d="scan'208";a="32081908"
+ bh=wMEBUepqYlu5zLqU4b4teFAjWBJTkl0XDGt8Ip2RAMY=;
+ b=H/RlD8I4rCQMbfRvpxajay+7+Nh1zTZP+p2F+XWl31Qh2AObMerbVQh4
+ nmHy54rKGm6UtbVp1NpLUEB9xEOsu8GNGTyS1WoEpm99/liiI2RVAVHzA
+ 22qbXXvXe0andOd4nthTsD2Nkn6xsBnbm6kwVpBgMvHFZVx1rR5S/Q4Ho
+ k9fgfIpzqq9K7tVRm1i6/uiU4nS0p/LSJqzOmprybc8kUjrapoQ4kHDJs
+ nJZdcy3IoRrrOrEl3/0w0LJYCJ76rGBfATncMc8gDuJKyVtcwAOZ8jbhl
+ BculINS63iDixvllUC5PnTUTPcwD4KIHf30eauwiXnA9A6cJjVVtd2E4L A==;
+X-CSE-ConnectionGUID: B+Ewq+RHQ+ex/Vrj9ynz0g==
+X-CSE-MsgGUID: RHsZpaaDRTKH/Mwkpc7Lwg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="32081910"
+X-IronPort-AV: E=Sophos;i="6.12,169,1728975600"; d="scan'208";a="32081910"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2024 03:00:34 -0800
-X-CSE-ConnectionGUID: 061/i/f1QBaeBvU9G5slSg==
-X-CSE-MsgGUID: HNKjC02MRt69ftRUKS4Gkg==
+ 20 Nov 2024 03:00:36 -0800
+X-CSE-ConnectionGUID: xA92WqrVS6ufkupgp57UZQ==
+X-CSE-MsgGUID: Pp5ARC5iQ8OioRFIuWuS5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,169,1728975600"; d="scan'208";a="94334622"
+X-IronPort-AV: E=Sophos;i="6.12,169,1728975600"; d="scan'208";a="94334632"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2024 03:00:33 -0800
+ 20 Nov 2024 03:00:34 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	swati2.sharma@intel.com
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t 2/3] intel-ci/i915: Drop PSR + DRRS tests from blocklist
-Date: Wed, 20 Nov 2024 16:19:39 +0530
-Message-ID: <20241120104940.2147075-3-bhanuprakash.modem@intel.com>
+Subject: [i-g-t 3/3] intel-ci/xe: Drop PSR + DRRS tests from blocklist
+Date: Wed, 20 Nov 2024 16:19:40 +0530
+Message-ID: <20241120104940.2147075-4-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241120104940.2147075-1-bhanuprakash.modem@intel.com>
 References: <20241120104940.2147075-1-bhanuprakash.modem@intel.com>
@@ -73,25 +73,24 @@ no need to maintian the blocklist too.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/blacklist.txt | 5 -----
- 1 file changed, 5 deletions(-)
+ tests/intel-ci/xe.blocklist.txt | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index 775a4de0d..1236b8280 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -83,11 +83,6 @@ igt@gem_exec_alignment@pi-shared
- ###############################################
- igt@kms_frontbuffer_tracking@.*drrs.*
- ###############################################
--# Invalid combo:- PSR + DRRS can't be tested
--# together
--###############################################
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index b76f6061c..e29e745a0 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -75,10 +75,6 @@ igt@kms_pm_lpsp@screens-disabled
+ igt@kms_pm_rpm@(fences|fences-dpms|pm-caching|pm-tiling)
+ igt@kms_pm_rpm@.*pc8-residency.*
+ ##################################################################
+-# KMS: Invalid combo:- PSR + DRRS can't be tested together
+-##################################################################
 -igt@kms_frontbuffer_tracking@(fbcpsrdrrs|psrdrrs).*
--###############################################
- # Tends to generate invalid configurations
- # using CCS planes or configurations that
- # exceed HW capabilities resulting in sporadic
+-##################################################################
+ # KMS: Yet to add/missing XE support
+ ##################################################################
+ igt@kms_prime@.*
 -- 
 2.43.0
 
