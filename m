@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 408B9D711D1
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Nov 2024 17:38:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89CEFD711CF
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Nov 2024 17:38:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0250D10E162;
-	Wed, 20 Nov 2024 17:38:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 526F389496;
+	Wed, 20 Nov 2024 17:38:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RZeqxgXr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fBS37gmg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12A9A10E162
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Nov 2024 17:38:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67D6A89496
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Nov 2024 17:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732124291; x=1763660291;
+ t=1732124315; x=1763660315;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rQMWho9C7+5sDIxhbHyKgJg984OzLYMDfSke1Hf/u1w=;
- b=RZeqxgXrYh4/Y1YjgwZgR13qM2memVLU09HTLD/U5GOAV10zHmR9i6xb
- 01cLE0DoVa0wi01uzRC97bd2o8gfINPh4J5S4holYjumg5xObAPZPcFgg
- FkZ7adiQ+43MAdMk11qvTNUylLiNVPhmQvPdElQwTpOzdDjVnm71GlftE
- wwVWQYVioWUD3RhXRCzG184zzRiS9DNFFOraNroEHjrg6+slv7NBFiaQb
- i06vkmex1I51lEPHUaHjpjnub5rAIH2W0TKk42VF6zeNZ57G5sRqKAfVF
- vS5Qkfe936zoClAgK2jtap9kx42hr6OUl3DWOKXAMHJkvRJMZhVHLARpO A==;
-X-CSE-ConnectionGUID: QFB8Z2rYTsiPidp7R1YV7Q==
-X-CSE-MsgGUID: nR49gn2GTA+vKSgfwN3xJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11262"; a="35058724"
-X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="35058724"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2024 09:38:11 -0800
-X-CSE-ConnectionGUID: jt9K646+SxKFKf1Xhh4P6Q==
-X-CSE-MsgGUID: Lw/+L6BISpyPm0wEdvuJWA==
+ bh=d6qU1Jh/neQ0Mj9Z2p8l7Nvaw18fLHvmlLdtfcmgEck=;
+ b=fBS37gmgQiBIR9X3/HC7XQa1lUGr28MF2r+2VbVDr/4WTq5gml17GBcR
+ qpJ+A65IDAf5oXcuWFVfgU5y8B/G5u8vW9Mv688mHQ+qsLm49ZQF8IERK
+ WyQZW7nT+KeLNyUod7jCu8IHpDnM4qDoGHxb1SV2hRC9Raq1/ara6U/Xr
+ rSvmx4MvAVK4GxtSr7kjP/13d3CLAb5RL+Hh4FZlKIhJlTxAuZqB1k/mD
+ bQzVMeMD2WkbhM4h1OoNiGu6DRVid2mR99Tev6BQHXFnCN9bkhrDCqSut
+ bG7CuKqDnjI6o2s1zSbkgyHp5NhJdWwBp/9Nvuv9c1/mki+p1l3B5j76Z A==;
+X-CSE-ConnectionGUID: 8Wk0vMkQTuWyuqS7q5SFkg==
+X-CSE-MsgGUID: mBCvADyGSgKK8l1kGX3qyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11262"; a="19793886"
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="19793886"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2024 09:38:35 -0800
+X-CSE-ConnectionGUID: VX3zvc5kQ2uAe7fpwtwcIg==
+X-CSE-MsgGUID: 7DssBHG3RJmx9HaSVHnlMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="90395697"
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="94932259"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.97.199])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2024 09:38:07 -0800
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2024 09:38:31 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, adam.miszczak@linux.intel.com,
@@ -50,10 +50,10 @@ Cc: kamil.konieczny@linux.intel.com, adam.miszczak@linux.intel.com,
  narasimha.c.v@intel.com, piotr.piorkowski@intel.com,
  satyanarayana.k.v.p@intel.com, tomasz.lis@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH v2 i-g-t 2/3] lib/xe/xe_sriov_provisioning: Refactor range
- handling and logging
-Date: Wed, 20 Nov 2024 18:37:48 +0100
-Message-Id: <20241120173749.348843-3-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 3/3] tests/xe/xe_sriov_flr: Use SKIP for unmet
+ subcheck prerequisites
+Date: Wed, 20 Nov 2024 18:37:49 +0100
+Message-Id: <20241120173749.348843-4-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241120173749.348843-1-marcin.bernatowicz@linux.intel.com>
 References: <20241120173749.348843-1-marcin.bernatowicz@linux.intel.com>
@@ -75,13 +75,9 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce an append_range helper to reduce code duplication in handling
-provisioned PTE ranges. Limit debug logs to the first 70 entries for
-clarity and improved reasoning. Enhance error handling by propagating
-realloc failures.
-
-v2: Update range-checking logic to iterate only within valid PTE offsets
-    based on MAX_WOPCM_SIZE and GUC_GGTT_TOP.
+Handle missing prerequisites by marking subchecks as SKIP instead of FAIL.
+This avoids misleading results suggesting FLR issues when tests haven't
+started or conditions aren't met.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -94,136 +90,87 @@ Cc: Michał Winiarski <michal.winiarski@intel.com>
 Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/xe/xe_sriov_provisioning.c | 78 +++++++++++++++++++++++-----------
- 1 file changed, 53 insertions(+), 25 deletions(-)
+ tests/intel/xe_sriov_flr.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index 7cde2c240..8e2ec41e1 100644
---- a/lib/xe/xe_sriov_provisioning.c
-+++ b/lib/xe/xe_sriov_provisioning.c
-@@ -3,7 +3,7 @@
-  * Copyright(c) 2024 Intel Corporation. All rights reserved.
-  */
+diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
+index 1049cffec..550d58bb9 100644
+--- a/tests/intel/xe_sriov_flr.c
++++ b/tests/intel/xe_sriov_flr.c
+@@ -393,7 +393,12 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
+ 		if (vf_id == 0)
+ 			continue;
  
--#include <stdlib.h>
-+#include <errno.h>
+-		igt_assert(vf_id >= 1 && vf_id <= num_vfs);
++		if (vf_id < 1 || vf_id > num_vfs) {
++			set_skip_reason(&gdata->base, "Unexpected VF%u at range entry %u [%#lx-%#lx], num_vfs=%u\n",
++					vf_id, i, ranges[i].start, ranges[i].end, num_vfs);
++			free(ranges);
++			return -1;
++		}
  
- #include "igt_core.h"
- #include "intel_chipset.h"
-@@ -39,6 +39,10 @@ const char *xe_sriov_shared_res_to_string(enum xe_sriov_shared_res res)
- #define PRE_1250_IP_VER_GGTT_PTE_VFID_MASK	GENMASK_ULL(4, 2)
- #define GGTT_PTE_VFID_MASK			GENMASK_ULL(11, 2)
- #define GGTT_PTE_VFID_SHIFT			2
-+#define GUC_GGTT_TOP				0xFEE00000
-+#define MAX_WOPCM_SIZE				SZ_8M
-+#define START_PTE_OFFSET			(MAX_WOPCM_SIZE / SZ_4K * sizeof(xe_ggtt_pte_t))
-+#define MAX_PTE_OFFSET				(GUC_GGTT_TOP / SZ_4K * sizeof(xe_ggtt_pte_t))
+ 		if (gdata->pte_offsets[vf_id].end) {
+ 			set_skip_reason(&gdata->base, "Duplicate GGTT PTE offset range for VF%u\n",
+@@ -410,7 +415,7 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
  
- static uint64_t get_vfid_mask(int fd)
- {
-@@ -48,6 +52,37 @@ static uint64_t get_vfid_mask(int fd)
- 		GGTT_PTE_VFID_MASK : PRE_1250_IP_VER_GGTT_PTE_VFID_MASK;
+ 	for (int vf_id = 1; vf_id <= num_vfs; ++vf_id)
+ 		if (!gdata->pte_offsets[vf_id].end) {
+-			set_fail_reason(&gdata->base,
++			set_skip_reason(&gdata->base,
+ 					"Failed to find VF%u provisioned GGTT PTE offset range\n",
+ 					vf_id);
+ 			return -1;
+@@ -440,7 +445,7 @@ static void ggtt_subcheck_init(struct subcheck_data *data)
+ 
+ 		populate_ggtt_pte_offsets(gdata);
+ 	} else {
+-		set_fail_reason(data, "xe_mmio is NULL\n");
++		set_skip_reason(data, "xe_mmio is NULL\n");
+ 	}
  }
  
-+#define MAX_DEBUG_ENTRIES 70
-+
-+static int append_range(struct xe_sriov_provisioned_range **ranges,
-+			unsigned int *nr_ranges, unsigned int vf_id,
-+			uint32_t start, uint32_t end)
-+{
-+	struct xe_sriov_provisioned_range *new_ranges;
-+
-+	new_ranges = realloc(*ranges,
-+			     (*nr_ranges + 1) * sizeof(struct xe_sriov_provisioned_range));
-+	if (!new_ranges) {
-+		free(*ranges);
-+		*ranges = NULL;
-+		*nr_ranges = 0;
-+		return -ENOMEM;
-+	}
-+
-+	*ranges = new_ranges;
-+	if (*nr_ranges < MAX_DEBUG_ENTRIES)
-+		igt_debug("Found VF%u GGTT range [%#x-%#x] num_ptes=%ld\n",
-+			  vf_id, start, end,
-+			  (end - start + sizeof(xe_ggtt_pte_t)) /
-+			  sizeof(xe_ggtt_pte_t));
-+	(*ranges)[*nr_ranges].vf_id = vf_id;
-+	(*ranges)[*nr_ranges].start = start;
-+	(*ranges)[*nr_ranges].end = end;
-+	(*nr_ranges)++;
-+
-+	return 0;
-+}
-+
- /**
-  * xe_sriov_find_ggtt_provisioned_pte_offsets - Find GGTT provisioned PTE offsets
-  * @pf_fd: File descriptor for the Physical Function
-@@ -76,28 +111,23 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
- 	uint32_t current_start = 0;
- 	uint32_t current_end = 0;
- 	xe_ggtt_pte_t pte;
-+	int ret;
+@@ -460,7 +465,7 @@ static void ggtt_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
+ 	for_each_pte_offset(pte_offset, &gdata->pte_offsets[vf_id]) {
+ 		if (!set_pte_gpa(&gdata->ggtt, gdata->mmio, data->gt, pte_offset,
+ 				 (uint8_t)vf_id, &pte)) {
+-			set_fail_reason(data,
++			set_skip_reason(data,
+ 					"Prepare VF%u failed, unexpected gpa: Read PTE: %#lx at offset: %#x\n",
+ 					vf_id, pte, pte_offset);
+ 			return;
+@@ -696,7 +701,7 @@ static void lmem_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
  
- 	*ranges = NULL;
- 	*nr_ranges = 0;
- 
--	for (uint32_t offset = 0; offset < SZ_8M; offset += sizeof(xe_ggtt_pte_t)) {
-+	for (uint32_t offset = START_PTE_OFFSET; offset < MAX_PTE_OFFSET;
-+	     offset += sizeof(xe_ggtt_pte_t)) {
- 		pte = xe_mmio_ggtt_read(mmio, gt, offset);
- 		vf_id = (pte & vfid_mask) >> GGTT_PTE_VFID_SHIFT;
- 
- 		if (vf_id != current_vf_id) {
- 			if (current_vf_id != -1) {
--				/* End the current range */
--				*ranges = realloc(*ranges, (*nr_ranges + 1) *
--						  sizeof(struct xe_sriov_provisioned_range));
--				igt_assert(*ranges);
--				igt_debug("Found VF%u ggtt range [%#x-%#x] num_ptes=%ld\n",
--					  current_vf_id, current_start, current_end,
--					  (current_end - current_start + sizeof(xe_ggtt_pte_t)) /
--					  sizeof(xe_ggtt_pte_t));
--				(*ranges)[*nr_ranges].vf_id = current_vf_id;
--				(*ranges)[*nr_ranges].start = current_start;
--				(*ranges)[*nr_ranges].end = current_end;
--				(*nr_ranges)++;
-+				/* End the current range and append it */
-+				ret = append_range(ranges, nr_ranges, current_vf_id,
-+						   current_start, current_end);
-+				if (ret < 0)
-+					return ret;
- 			}
- 			/* Start a new range */
- 			current_vf_id = vf_id;
-@@ -107,18 +137,16 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
+ 	if (!lmem_mmap_write_munmap(data->pf_fd, vf_id,
+ 				    ldata->vf_lmem_size[vf_id], vf_id)) {
+-		set_fail_reason(data, "LMEM write failed on VF%u\n", vf_id);
++		set_skip_reason(data, "LMEM write failed on VF%u\n", vf_id);
  	}
- 
- 	if (current_vf_id != -1) {
--		*ranges = realloc(*ranges, (*nr_ranges + 1) *
--				  sizeof(struct xe_sriov_provisioned_range));
--		igt_assert(*ranges);
--		igt_debug("Found VF%u ggtt range [%#x-%#x] num_ptes=%ld\n",
--			  current_vf_id, current_start, current_end,
--			  (current_end - current_start + sizeof(xe_ggtt_pte_t)) /
--			  sizeof(xe_ggtt_pte_t));
--		(*ranges)[*nr_ranges].vf_id = current_vf_id;
--		(*ranges)[*nr_ranges].start = current_start;
--		(*ranges)[*nr_ranges].end = current_end;
--		(*nr_ranges)++;
-+		/* Append the last range */
-+		ret = append_range(ranges, nr_ranges, current_vf_id,
-+				   current_start, current_end);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
-+	if (*nr_ranges > MAX_DEBUG_ENTRIES)
-+		igt_debug("Ranges output trimmed to first %u entries out of %u",
-+			  MAX_DEBUG_ENTRIES, *nr_ranges);
-+
- 	return 0;
  }
+ 
+@@ -758,12 +763,12 @@ static void regs_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
+ 		struct pci_device *pci_dev = __igt_device_get_pci_device(data->pf_fd, vf_id);
+ 
+ 		if (!pci_dev) {
+-			set_fail_reason(data, "No PCI device found for VF%u\n", vf_id);
++			set_skip_reason(data, "No PCI device found for VF%u\n", vf_id);
+ 			return;
+ 		}
+ 
+ 		if (intel_register_access_init(&rdata->mmio[vf_id], pci_dev, false)) {
+-			set_fail_reason(data, "Failed to get access to VF%u MMIO\n", vf_id);
++			set_skip_reason(data, "Failed to get access to VF%u MMIO\n", vf_id);
+ 			return;
+ 		}
+ 	}
+@@ -773,7 +778,7 @@ static void regs_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
+ 
+ 		intel_register_write(&rdata->mmio[vf_id], reg, vf_id);
+ 		if (intel_register_read(&rdata->mmio[vf_id], reg) != vf_id) {
+-			set_fail_reason(data, "Registers write/read check failed on VF%u\n", vf_id);
++			set_skip_reason(data, "Registers write/read check failed on VF%u\n", vf_id);
+ 			return;
+ 		}
+ 	}
 -- 
 2.31.1
 
