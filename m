@@ -4,59 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79AFFD711DD
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Nov 2024 18:47:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A9A6D44152
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Nov 2024 18:50:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 30F6110E2D8;
-	Wed, 20 Nov 2024 18:47:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09AB410E7A4;
+	Wed, 20 Nov 2024 18:50:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nhslddQu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aGvkQASe";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C842B10E115
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Nov 2024 18:46:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4ED8410E7A4
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Nov 2024 18:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732128419; x=1763664419;
+ t=1732128630; x=1763664630;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=5PjuBiVF9lSY+WkwiuBSdL8Enr+TmtnlAnWwtnqpk9Y=;
- b=nhslddQug4fX/cnKK0QY7EmEF8aNKh86edPFtMDrhfOIGeDqWzS0oDyK
- ZCO1FFr5NZL4MUECioU8epoy8Sw3WDeeraJzdhuiS0/S17Olyw07XMi5t
- fccSOysYT4kYgjww5VvYAW5Gr22VOPO4i7fDKnCRQSp0cxXZnGF1VL7Om
- DUz6L9hG7C0p/2Unu8A9XZcmEewfnX4tVg8ZKLGwPLntPNK7GWdeVXN6L
- 4TwH0AVMd/op4OG1BigppQILlCSSmWmd82VGcf1tR8+rs5Zy2iZWKkgTi
- C0HnKQV7u9+jXQvcfulreWpXlClyCehHVbzebaaS608D7C1zcRrgdTCU3 A==;
-X-CSE-ConnectionGUID: k1XvcuK2QLKmIhpxgBam+g==
-X-CSE-MsgGUID: nMtPohftSL6pvXjrOS0nJg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11262"; a="43607222"
-X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="43607222"
+ bh=J8DjJw63o8zj0sNxW09nk8KdqyZHuODbONbhjQLcv4s=;
+ b=aGvkQASerHIev94zThteZ/qyIfQtmScSRJcxyqdZffhwyDghnLY2oeoh
+ 8xF0tgdwU2bQFePmqoS0MRFfK5Uhs3HrzMxBdy4ByfPaVqJ5Sr9mhvzen
+ BalKeDab7lsHmyKB6ELYE9StakCKMqEeb9MZYRY+BsznYfUMPgJLcXTCR
+ kB1YD81/BzTLSvMcSwsq4G4CsyVAG+jl2beGEkp7OrRqBnmmsAJpuk2b3
+ CKniTZuVvEOy6DFwFxmb/uhGp3Rkm4zljUMS4DrIgWo6EntXK30XqHb29
+ NIdKF5647Erc3Tapjn+gDtUQjmE0w4195fAELG/BxDIfUhj2OhS36aypi Q==;
+X-CSE-ConnectionGUID: 90yrWaT3QnCCy9b4k2GDOQ==
+X-CSE-MsgGUID: 8byB9xgyQGaecgncjqHFjQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11262"; a="43607595"
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="43607595"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2024 10:46:58 -0800
-X-CSE-ConnectionGUID: JLZXaUy4RBKGuL9CD5EILg==
-X-CSE-MsgGUID: iNRjCRq2QwmDztlOKBk0Sg==
+ 20 Nov 2024 10:50:30 -0800
+X-CSE-ConnectionGUID: RAVp9VuwRLqgmcQNYsc+1Q==
+X-CSE-MsgGUID: nf1HGIwvRW+d3dx8recxMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="90409041"
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; d="scan'208";a="90410013"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
  by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2024 10:46:57 -0800
-Date: Wed, 20 Nov 2024 19:46:42 +0100
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2024 10:50:28 -0800
+Date: Wed, 20 Nov 2024 19:50:25 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] tests/syncobj_wait: Update
- invalid-wait-zero-handles test
-Message-ID: <20241120184642.y3bchi4wvwoulzjs@kamilkon-desk.igk.intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
+ alex.zuo@intel.com, francois.dugast@intel.com,
+ lucas.demarchi@intel.com, matthew.brost@intel.com,
+ rodrigo.vivi@intel.com, michal.wajdeczko@intel.com
+Subject: Re: [PATCH v3] tests/intel/xe_fault_injection: Ignore expected errors
+Message-ID: <20241120185025.dxhnwlw7z3z36gmh@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-References: <20241120103507.7653-1-krzysztof.niemiec@intel.com>
- <20241120103507.7653-3-krzysztof.niemiec@intel.com>
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ saurabhg.gupta@intel.com, alex.zuo@intel.com,
+ francois.dugast@intel.com, lucas.demarchi@intel.com,
+ matthew.brost@intel.com, rodrigo.vivi@intel.com,
+ michal.wajdeczko@intel.com
+References: <20241119215027.109598-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241120103507.7653-3-krzysztof.niemiec@intel.com>
+In-Reply-To: <20241119215027.109598-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,68 +77,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2024-11-20 at 11:35:07 +0100, Krzysztof Niemiec wrote:
-> The behavior of DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT has been changed in [1]
-> to accept empty lists of syncobj handles, but the
-> invalid-wait-zero-handles test has not been updated to mirror this
-> change. Fix the assert to check against 0 instead of -EINVAL, and rename
-> the test to wait-zero-handles as this is no longer an invalid scenario.
+Hi Jonathan,
+On 2024-11-19 at 21:50:27 +0000, Jonathan Cavitt wrote:
+> The following errors can be observed when running the xe_fault_injection
+> subtests:
 > 
-> This change mirrors [2] for the syncobj_wait test.
+> [drm] *ERROR* GT0: GuC init failed with -ENOMEM
+> [drm] *ERROR* GT0: Failed to initialize uC (-ENOMEM)
+> probe with driver xe failed with error -12
 > 
-> [1] https://patchwork.freedesktop.org/patch/554042/
-> [2] https://patchwork.freedesktop.org/patch/618483/
+> Add these messages to the dmesg ignore regex to the applicable tests
+> (specifically, all tests for the last error, and all tests that target
+> GuC subsystems for the first two errors).
 > 
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+> v2:
+> - Fix and merge regex (Kamil)
+> 
+> v3:
+> - Rebase change to be compatible with latest revision (Kamil)
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3343
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> CC: Francois Dugast <francois.dugast@intel.com>
+> CC: Lucas De Marchi <lucas.demarchi@intel.com>
+> CC: Matthew Brost <matthew.brost@intel.com>
+> CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> CC: Michal Wajdeczko <michal.wajdeczko@intel.com>
+> CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Again you dropped my r-b here, it still holds so
+My r-b holds so
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+Please respond to CI fails and also look into fails
+related to these tests, I checked few and they seem unrelated.
+
+Regards,
+Kamil
+
 > ---
->  tests/syncobj_wait.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  tests/intel/xe_fault_injection.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
 > 
-> diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-> index be7e67163..e5f251205 100644
-> --- a/tests/syncobj_wait.c
-> +++ b/tests/syncobj_wait.c
-> @@ -80,8 +80,6 @@
->   *
->   * SUBTEST: invalid-wait-illegal-handle
->   *
-> - * SUBTEST: invalid-wait-zero-handles
-> - *
->   * SUBTEST: multi-wait-all-for-submit-signaled
->   *
->   * SUBTEST: multi-wait-all-for-submit-submitted
-> @@ -177,6 +175,8 @@
->   * SUBTEST: wait-for-submit-delayed-submit
->   *
->   * SUBTEST: wait-for-submit-snapshot
-> + *
-> + * SUBTEST: wait-zero-handles
->   */
->  
->  IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
-> @@ -297,7 +297,7 @@ static void
->  test_wait_zero_handles(int fd)
->  {
->  	struct drm_syncobj_wait wait = { 0 };
-> -	igt_assert_eq(__syncobj_wait(fd, &wait), -EINVAL);
-> +	igt_assert_eq(__syncobj_wait(fd, &wait), 0);
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 1b29041745..7d6c902761 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -50,6 +50,30 @@ static int fail_function_open(void)
+>  	return debugfs_fail_function_dir_fd;
 >  }
 >  
->  static void
-> @@ -918,7 +918,7 @@ igt_main
->  	igt_subtest("invalid-wait-bad-flags")
->  		test_wait_bad_flags(fd);
+> +static bool function_is_part_of_guc(const char function_name[])
+> +{
+> +	return strstr(function_name, "_guc_") != NULL ||
+> +	       strstr(function_name, "_uc_") != NULL ||
+> +	       strstr(function_name, "_wopcm_") != NULL;
+> +}
+> +
+> +static void ignore_faults_in_dmesg(const char function_name[])
+> +{
+> +	/* Driver probe is expected to fail in all cases, so ignore in igt_runner */
+> +	char regex[1024] = "probe with driver xe failed with error -12";
+> +
+> +	/*
+> +	 * If GuC module fault is injected, GuC is expected to fail,
+> +	 * so also ignore GuC init failures in igt_runner.
+> +	 */
+> +	if (function_is_part_of_guc(function_name)) {
+> +		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
+> +		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
+> +	}
+> +
+> +	igt_emit_ignore_dmesg_regex(regex);
+> +}
+> +
+>  /*
+>   * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
+>   */
+> @@ -152,6 +176,7 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+>  	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
+>  		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
 >  
-> -	igt_subtest("invalid-wait-zero-handles")
-> +	igt_subtest("wait-zero-handles")
->  		test_wait_zero_handles(fd);
+> +	ignore_faults_in_dmesg(function_name);
+>  	injection_list_do(INJECTION_LIST_ADD, function_name);
+>  	set_retval(function_name, INJECT_ERRNO);
+>  	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
+> @@ -184,6 +209,7 @@ vm_create_fail(int fd, const char function_name[], unsigned int flags)
+>  {
+>  	igt_assert_eq(simple_vm_create(fd, flags), 0);
 >  
->  	igt_subtest("invalid-wait-illegal-handle")
+> +	ignore_faults_in_dmesg(function_name);
+>  	injection_list_do(INJECTION_LIST_ADD, function_name);
+>  	set_retval(function_name, INJECT_ERRNO);
+>  	igt_assert(simple_vm_create(fd, flags) != 0);
+> @@ -243,6 +269,7 @@ vm_bind_fail(int fd, const char function_name[])
+>  
+>  	igt_assert_eq(simple_vm_bind(fd, vm), 0);
+>  
+> +	ignore_faults_in_dmesg(function_name);
+>  	injection_list_do(INJECTION_LIST_ADD, function_name);
+>  	set_retval(function_name, INJECT_ERRNO);
+>  	igt_assert(simple_vm_bind(fd, vm) != 0);
 > -- 
-> 2.45.2
+> 2.43.0
 > 
