@@ -4,55 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05337E65D34
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DBF2E65D2F
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:52:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B6AB510EAF5;
-	Fri, 22 Nov 2024 08:48:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BEDBF10EAF5;
+	Fri, 22 Nov 2024 08:52:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e1Vaal2e";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="E0OIMz1G";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBCC110EB03
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 08:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732265299; x=1763801299;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=jk1b4d8FeqE3WQQ9EZa/wOYrp5jC1iZKx9NQ3aLTvD4=;
- b=e1Vaal2envONBvjzJeLJn5XoVTlDgMCKYUJehfCa2yk+Jjc6hA+xryo+
- vooxEAC9y/C188l/S8q5xR0iSPoB22z0IO6QyRevyJ5N2pc5nrZ3yS28f
- 9DbdMLSw3Tp0lEFNdxJX/goZuiRKa4JNLUldd+KGzJXECj01BkZxaIyik
- FoDIKYx9EY5WAu3WmI1BEMbyqDfXKqNePt9IFRVnTZHy54s/VCvYtO/Yn
- AyVscCz1YrDLPazaSIstz/CeY8Xtoif1phDi9eP6en7hAPFX9EFJ7eIyy
- NZZpta3RRGCgFZXQGe636m5MNR6+GKVsMqFLCLXqwP+HZ0EIuLzXQTPeQ g==;
-X-CSE-ConnectionGUID: Wyy1iEv9T2+IoO2rPDAhGQ==
-X-CSE-MsgGUID: I2uJJBq+S7SSc4//+lkUgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="20004064"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="20004064"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 00:48:19 -0800
-X-CSE-ConnectionGUID: VO+kq3N6T1Or8NbKLOm3kg==
-X-CSE-MsgGUID: GmZRbVkeSrGVEYwQqkEWEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="90679452"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 22 Nov 2024 00:48:17 -0800
-Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 22 Nov 2024 10:48:16 +0200
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+ [209.85.128.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBFC810E8C7
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 09:38:44 +0000 (UTC)
+Received: by mail-wm1-f53.google.com with SMTP id
+ 5b1f17b1804b1-4315baa51d8so5622025e9.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 01:38:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1732181923; x=1732786723; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=c2Ra9e7X2J4umjnJzBRCE2K+A1e3AVKrx97rLwbStp8=;
+ b=E0OIMz1GfPOtOccfKXYGdc9ZX8Xks/yuAjbLUJexj+wKg36fXKozyeawYkJ1vMKS03
+ Csrz3BxtaC/+6kVWYOjWu3pSqHAz4JzINHbQHbiLt2oxqvFuj8apBwRBhPuQUK2XpPzN
+ Mlhe6Ky9LUt4R+idCdDDvcIonXZ7yto/RjLLwqCetw6rlZ7u6ULiFxmzJfk9dC7oIL+d
+ wMlS5oeSJUPLQwsqvTQYe/kIFi61c3JxADZ//2bX4mzYTNYrfup5nvR/7AgWIkpl4GbF
+ /lf5apHMTAm2SDHl8+xmwqNEtM2fAgETbjvgjWxdRbDKW7paiPbHAaSTXR2yzx96E/Wm
+ c9Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732181923; x=1732786723;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=c2Ra9e7X2J4umjnJzBRCE2K+A1e3AVKrx97rLwbStp8=;
+ b=iXnI6bpuJzL/SrPp0mJuJs0irJ9tkxNKo4tfCwMvpYrKkPnMc4o21bN45TgxRX/Hih
+ j4qcNlJ3XxqHCrMrkwkFMN1tmTq6diRtYXNCH0aEC35vY/YyeivN4R4POuJiYh6lxkH4
+ EB2TH0VXfp3h4rH72xZf/9TyLz5s2fjH2pw9b1lPxCKrWiqGViNKoVH8lc129lu0hFvv
+ hoJPs5f907lYKj0fVkaX6/kUoia7gcjRTRPhIXJvZQ+Y+By03doGqP8f/dVCgQ1U3OI2
+ QuyGfBiQSt8zmM6F/GkVVSmf5+FRXG4Zp6sbQsjLWS37v0MFtdNpgppAXuS7biAuEFRP
+ 8KoA==
+X-Gm-Message-State: AOJu0Yyhuh/t52sMRuhheTvNqjIvhHaDPXFPmXAKetTMPkV4H88SHE92
+ tBW/WWodihj5Pexdo4queanCMtqo7ZZdEosVgs1hsftIgIKL3BpK5FII7vS0
+X-Google-Smtp-Source: AGHT+IHNU5M9MA9IM/rgHLKmNIU94yqKUP3f9BHPiEsh82VOzoIKGb8bQy/qo8oHG1XZPyurz6v5NA==
+X-Received: by 2002:a7b:cde1:0:b0:431:5632:448b with SMTP id
+ 5b1f17b1804b1-433c8361254mr9912215e9.25.1732181922519; 
+ Thu, 21 Nov 2024 01:38:42 -0800 (PST)
+Received: from localhost.localdomain (62-178-82-42.cable.dynamic.surfer.at.
+ [62.178.82.42]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-433b463ab2bsm49278805e9.33.2024.11.21.01.38.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Nov 2024 01:38:41 -0800 (PST)
+From: Christian Gmeiner <christian.gmeiner@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 4/4] tests/intel/gem_draw: Test igt_draw without kms
-Date: Fri, 22 Nov 2024 10:48:04 +0200
-Message-ID: <20241122084804.29669-5-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
-References: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
+Cc: kernel-dev@igalia.com, tursulin@igalia.com,
+ Christian Gmeiner <cgmeiner@igalia.com>
+Subject: [PATCH i-g-t] gputop: Add memory only utilization type
+Date: Thu, 21 Nov 2024 10:38:21 +0100
+Message-ID: <20241121093822.3863544-1-christian.gmeiner@gmail.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 22 Nov 2024 08:52:06 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,282 +80,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-kms_draw_crc is our only way to confirm that igt_draw
-linear<->tiled conversion routines are correct. That may
-not cover every case as we could be hitting display
-specific limitations that prevent testing everything.
+Add special handling for drivers that only provide memory utilization
+fdinfo.
 
-Introduce a new gem_draw test case that compares igt_draw
-mmap/pwrite methods against GTT mmaps. This will verify that
-the software conversion routines match the hardware (de)tiling
-peformed via the fenced region.
-
-TODO: could verify against blt/rendercopy
-      when gtt mmaps are not available...
-
-v2: Drop the "driver requirement: i915" to make it past
-    the documentation build scripts
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
 ---
- tests/intel/gem_draw.c | 233 +++++++++++++++++++++++++++++++++++++++++
- tests/meson.build      |   1 +
- 2 files changed, 234 insertions(+)
- create mode 100644 tests/intel/gem_draw.c
+ tools/gputop.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tests/intel/gem_draw.c b/tests/intel/gem_draw.c
-new file mode 100644
-index 000000000000..86df7c33ff2d
---- /dev/null
-+++ b/tests/intel/gem_draw.c
-@@ -0,0 +1,233 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
+diff --git a/tools/gputop.c b/tools/gputop.c
+index 43b01f566..4135d84c1 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -35,6 +35,7 @@
+ enum utilization_type {
+ 	UTILIZATION_TYPE_ENGINE_TIME,
+ 	UTILIZATION_TYPE_TOTAL_CYCLES,
++	UTILIZATION_TYPE_MEMORY_ONLY,
+ };
+ 
+ static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+@@ -141,6 +142,9 @@ engines_identical(const struct igt_drm_client *c,
+ 	    c->engines->max_engine_id != pc->engines->max_engine_id)
+ 		return false;
+ 
++	if (!c->engines->num_engines && !pc->engines->num_engines)
++		return true;
 +
-+/**
-+ * TEST: gem draw
-+ * Category: GEM
-+ * Description: Tests whether the igt_draw library actually works.
-+ * Functionality: tiling
-+ * Test category: functionality test
-+ */
+ 	for (i = 0; i <= c->engines->max_engine_id; i++)
+ 		if (c->engines->capacity[i] != pc->engines->capacity[i] ||
+ 		    !!c->engines->names[i] != !!pc->engines->names[i] ||
+@@ -193,6 +197,8 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+ 		utilization_type = UTILIZATION_TYPE_TOTAL_CYCLES;
+ 	else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIME)
+ 		utilization_type = UTILIZATION_TYPE_ENGINE_TIME;
++	else if (c->regions->num_regions)
++		utilization_type = UTILIZATION_TYPE_MEMORY_ONLY;
+ 	else
+ 		return 0;
+ 
+@@ -209,6 +215,13 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+ 	       if (!c->total_total_cycles)
+ 		       return 0;
+ 	       break;
++	case UTILIZATION_TYPE_MEMORY_ONLY:
++		for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
++			sz += c->memory[i].total;
 +
-+/**
-+ * SUBTEST: draw-method-%s
-+ * Description: Verify that igt draw library works for the %arg[1] method with
-+ *              different tilings and color depths.
-+ *
-+ * arg[1]:
-+ *
-+ * @mmap-cpu:     MMAP-CPU
-+ * @mmap-wc:      MMAP-WC
-+ * @pwrite:       PWRITE
-+ */
++		if (sz == 0)
++			return 0;
++		break;
+ 	}
+ 
+ 	/* Print header when moving to a different DRM card. */
+@@ -234,6 +247,9 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+ 
+ 	lines++;
+ 
++	if (utilization_type == UTILIZATION_TYPE_MEMORY_ONLY)
++		goto print_name;
 +
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "igt.h"
-+#include "igt_halffloat.h"
-+#include "igt_primes.h"
-+
-+int drm_fd;
-+struct buf_ops *bops;
-+
-+static const enum igt_draw_method draw_methods[] = {
-+	IGT_DRAW_MMAP_CPU,
-+	IGT_DRAW_MMAP_WC,
-+	IGT_DRAW_PWRITE,
-+};
-+
-+static const uint32_t tilings[] = {
-+	I915_TILING_NONE,
-+	I915_TILING_X,
-+	I915_TILING_Y,
-+};
-+
-+static uint64_t read_pixel(const void *ptr, int stride, int x, int y, int bpp)
-+{
-+	ptr += y * stride + x * bpp / 8;
-+
-+	switch (bpp) {
-+	case 8:
-+		return *(const uint8_t*)ptr;
-+	case 16:
-+		return *(const uint16_t*)ptr;
-+	case 32:
-+		return *(const uint32_t*)ptr;
-+	case 64:
-+		return *(const uint64_t*)ptr;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static void check_rect(const void *ptr, int stride,
-+		       int x0, int y0, int w, int h,
-+		       uint64_t color, int bpp)
-+{
-+	int x1 = x0 + w - 1;
-+	int y1 = y0 + h - 1;
-+
-+	if (bpp < 64)
-+		color &= (1ull << bpp) - 1;
-+
-+	/* only check the corners to speed this up a bit */
-+	igt_assert_eq(read_pixel(ptr, stride, x0, y0, bpp), color);
-+	igt_assert_eq(read_pixel(ptr, stride, x0, y1, bpp), color);
-+	igt_assert_eq(read_pixel(ptr, stride, x1, y0, bpp), color);
-+	igt_assert_eq(read_pixel(ptr, stride, x1, y1, bpp), color);
-+}
-+
-+static void draw(enum igt_draw_method method,
-+		 int width, int height,
-+		 uint32_t stride, int bpp, uint32_t tiling)
-+{
-+	uint64_t size = stride * height;
-+	uint64_t color;
-+	uint32_t handle;
-+	void *ptr;
-+
-+	igt_require(buf_ops_has_tiling_support(bops, tiling));
-+
-+	handle = gem_create(drm_fd, size);
-+	gem_set_tiling(drm_fd, handle, tiling, stride);
-+
-+	color = 0x0123456789abcdef;
-+	for (int y = 0 ; y < height;) {
-+		int y_next = min(height, (int)igt_next_prime_number(y));
-+		int h = y_next - y;
-+
-+		for (int x = 0; x < width; ) {
-+			int x_next = min(width, (int)igt_next_prime_number(x));
-+			int w = x_next - x;
-+
-+			igt_draw_rect(drm_fd, bops, 0, handle, size, stride,
-+				      width, height, tiling, method,
-+				      x, y, w, h, color, bpp);
-+
-+			color = igt_ror(color, 1, 64);
-+
-+			x = x_next;
-+		}
-+
-+		y = y_next;
-+	}
-+
-+	gem_set_domain(drm_fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-+
-+	ptr = gem_mmap__gtt(drm_fd, handle, size, PROT_READ);
-+
-+	color = 0x0123456789abcdef;
-+	for (int y = 0 ; y < height;) {
-+		int y_next = min(height, (int)igt_next_prime_number(y));
-+		int h = y_next - y;
-+
-+		for (int x = 0; x < width; ) {
-+			int x_next = min(width, (int)igt_next_prime_number(x));
-+			int w = x_next - x;
-+
-+			check_rect(ptr, stride, x, y, w, h, color, bpp);
-+
-+			color = igt_ror(color, 1, 64);
-+
-+			x = x_next;
-+		}
-+
-+		y = y_next;
-+	}
-+
-+	munmap(ptr, size);
-+
-+	gem_close(drm_fd, handle);
-+}
-+
-+static void draw_method_subtest(enum igt_draw_method method,
-+				int bpp, uint32_t tiling)
-+{
-+	const struct intel_device_info *info =
-+		intel_get_device_info(intel_get_drm_devid(drm_fd));
-+	int width, height, stride;
-+	int tile_w, tile_h;
-+
-+	if (info->graphics_ver == 2) {
-+		tile_w = 128;
-+		tile_h = 16;
-+	} else if (tiling == I915_TILING_X ||
-+		   info->is_grantsdale || info->is_alviso) {
-+		tile_w = 512;
-+		tile_h = 8;
-+	} else {
-+		tile_w = 128;
-+		tile_h = 32;
-+	}
-+
-+	stride = 4 * tile_w;
-+	width = stride * 8 / bpp;
-+	height = 4 * tile_h;
-+
-+	draw(method, width, height, stride, bpp, tiling);
-+}
-+
-+static void setup_environment(void)
-+{
-+	drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-+	igt_require(drm_fd >= 0);
-+	bops = buf_ops_create(drm_fd);
-+
-+	/* need hardware to untile for verification */
-+	gem_require_mappable_ggtt(drm_fd);
-+}
-+
-+static void teardown_environment(void)
-+{
-+	buf_ops_destroy(bops);
-+	drm_close_driver(drm_fd);
-+}
-+
-+static const char *tiling_str(uint32_t tiling)
-+{
-+	switch (tiling) {
-+	case I915_TILING_NONE :
-+		return "untiled";
-+	case I915_TILING_X :
-+		return "xtiled";
-+	case I915_TILING_Y :
-+		return "ytiled";
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+igt_main
-+{
-+	int method_idx, tiling_idx;
-+
-+	igt_fixture
-+		setup_environment();
-+
-+	for (method_idx = 0; method_idx < ARRAY_SIZE(draw_methods); method_idx++) {
-+		enum igt_draw_method method = draw_methods[method_idx];
-+
-+		igt_describe_f("Verify that igt draw library works for the draw "
-+			       "method (%s) with different tilings and color depths.",
-+			       igt_draw_get_method_name(method));
-+
-+		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
-+			if (!igt_draw_supports_method(drm_fd, method))
-+				continue;
-+
-+			for (tiling_idx = 0; tiling_idx < ARRAY_SIZE(tilings); tiling_idx++) {
-+				uint32_t tiling = tilings[tiling_idx];
-+
-+				for (int bpp = 8; bpp <= 64; bpp *= 2) {
-+					igt_dynamic_f("%dbpp-%s", bpp, tiling_str(tiling))
-+						draw_method_subtest(method, bpp, tiling);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_fixture
-+		teardown_environment();
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 2724c7a9a6e6..9bcace851c33 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -118,6 +118,7 @@ intel_i915_progs = [
- 	'gem_ctx_shared',
- 	'gem_ctx_sseu',
- 	'gem_ctx_switch',
-+	'gem_draw',
- 	'gem_eio',
- 	'gem_evict_alignment',
- 	'gem_evict_everything',
+ 	for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
+ 		double pct;
+ 
+@@ -249,6 +265,9 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+ 			pct = (double)c->utilization[i].delta_cycles / c->utilization[i].delta_total_cycles * 100 /
+ 				c->engines->capacity[i];
+ 			break;
++		case UTILIZATION_TYPE_MEMORY_ONLY:
++			/* Nothing to do. */
++			break;
+ 		}
+ 
+ 		/*
+@@ -262,6 +281,7 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+ 		len += *engine_w;
+ 	}
+ 
++print_name:
+ 	printf(" %-*s\n", con_w - len - 1, c->print_name);
+ 
+ 	return lines;
 -- 
-2.45.2
+2.47.0
 
