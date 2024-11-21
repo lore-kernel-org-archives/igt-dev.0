@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74309D6ED32
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 13:41:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E62C0D6ED33
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 13:41:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34B9810E95B;
-	Thu, 21 Nov 2024 13:41:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9DB7810E95D;
+	Thu, 21 Nov 2024 13:41:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HX9ZY+rV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iMol4vYq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70E7E10E95B
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 13:41:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF3F210E959
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 13:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732196480; x=1763732480;
+ t=1732196477; x=1763732477;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/+p1jhgmhUab7FFfpgRfxqAhl+m1jUophsm6UHuhjHA=;
- b=HX9ZY+rVeXAdyAA//8698BVY/CuB0Y7w+hMI8+qz2f5ATdlbA3xvanS0
- 57od3qhTayvGpU3EfbSA16BZ/K6We7FB4oLAufJe6OS3xuT/XwxyxU7PY
- Quus+JFZGRbMnNkp0XkcMzpRfcUk6Bk9alTSmqYfdLAbJmEGw7Bmbd6qp
- 6XNUxz/X3hdxRnctP1V/wtq16G5AqQLiYIA6oqm0qjCi1MPEiD9PSod+c
- 81o13Snak3kwFu4SuEoCMmkDtNRM47HLPzjVMf/lZAZzeuBBj79AiWUDR
- iJbH2ziAn/6o4ENV3IZUofKs5J8A/I+xNUeuHa/N+Pr3j/17hJkDPV+GK w==;
-X-CSE-ConnectionGUID: mRzpabrQSzuCNRYs3A8M3g==
-X-CSE-MsgGUID: o1TKVtcNQXKBfeB/1ZZ3rg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="54809155"
-X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="54809155"
+ bh=b60B3gHxihVD8aX7g1eMpM8NaI7oZn4MFYO0zs6ja3w=;
+ b=iMol4vYq8QG4k5NryFiWllGyfFpKYoU7MAVQOYZt8MgFQphQ4vVj439V
+ aoYuUYuldDhxxWpRCZidjW7p3WK/2itggVh9SSbynyA5AqpYTaxr+XO2Y
+ vkj+TZha7la1lyVzp5y6iTS4UbpipW+kjEAod6JCc3teKsdxIpxW+5hNt
+ TWrOTMLvxhWcE2RqT0TCHC5z8UIdxGFH+XS5VXgGrN4CPxHJ42saSMFKI
+ zYfoXgelIQJyDT25vMCiu9soD97FjWzhUgvBe0Xf5C/hrdi/qKmP9nTUC
+ 1pDX1IOJ5fUrglhvuWeQOCIsKKhFY4Mts/7Z1SKHAb/lmIn9vI9yrp2ib g==;
+X-CSE-ConnectionGUID: 0E/KBBvYTUWdv7vAWOMR5Q==
+X-CSE-MsgGUID: Pbtg4ePYSBCDmF4eXOqAPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="54809151"
+X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="54809151"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 05:41:20 -0800
-X-CSE-ConnectionGUID: lQFOxV6nSWu8t4AgDNcYdg==
-X-CSE-MsgGUID: JK/MDceMS82DP4GWc9KyMQ==
+ 21 Nov 2024 05:41:17 -0800
+X-CSE-ConnectionGUID: eIgaQHA+TcShHghCOUaWUg==
+X-CSE-MsgGUID: 08XZdeKkQHy+CMx0SanDQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="90192552"
+X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="90192543"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 05:41:19 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 05:41:16 -0800
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
- "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 4/5] lib: update fopen() to accomodate imgdir
-Date: Thu, 21 Nov 2024 19:09:57 +0530
-Message-ID: <20241121133958.3382633-5-ramanaidu.naladala@intel.com>
+Cc: swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 2/5] runner/settings: Update absolute_path function
+ to accept const char* parameter
+Date: Thu, 21 Nov 2024 19:09:55 +0530
+Message-ID: <20241121133958.3382633-3-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241121133958.3382633-1-ramanaidu.naladala@intel.com>
 References: <20241121133958.3382633-1-ramanaidu.naladala@intel.com>
@@ -68,79 +68,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
+Modified the absolute_path function in settings.c to take a
+const char* parameter instead of char*. Updated the corresponding
+declaration in settings.h.This change ensures that the input path
+is not modified within the function, improving code safety and clarity.
 
-Update fopen() to accomodate imgage directory path. Tests like kms_3d
-use this function while creating fb from png image.
-
-Signed-off-by: Ramanaidu Naladala <ramanaidu.naladala@intel.com>
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/igt_core.c | 17 +++++++++++++++--
- lib/igt_core.h |  4 ++--
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ runner/settings.c | 2 +-
+ runner/settings.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 407f7b551..8dae8f51d 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -3306,10 +3306,11 @@ void igt_reset_timeout(void)
+diff --git a/runner/settings.c b/runner/settings.c
+index 0d27e7af3..dd4b08dd7 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -565,7 +565,7 @@ static char *_basename(const char *path)
+ 	return tmpname;
  }
  
- FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
--		       const char* filename)
-+		       const char* igt_imgdir, const char* filename)
+-char *absolute_path(char *path)
++char *absolute_path(const char *path)
  {
- 	char path[PATH_MAX];
- 	FILE *fp;
-+	char *abpath;
+ 	char *result = NULL;
+ 	char *base, *dir;
+diff --git a/runner/settings.h b/runner/settings.h
+index 8335f0b8c..6246d0c3d 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -135,7 +135,7 @@ bool parse_options(int argc, char **argv,
+ bool validate_settings(struct settings *settings);
  
- 	snprintf(path, sizeof(path), "%s/%s", igt_datadir, filename);
- 	fp = fopen(path, "r");
-@@ -3317,8 +3318,20 @@ FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
- 		snprintf(path, sizeof(path), "%s/%s", igt_srcdir, filename);
- 		fp = fopen(path, "r");
- 	}
-+
-+	if (!fp) {
-+		snprintf(path, sizeof(path), "%s/%s", igt_imgdir, filename);
-+		fp = fopen(path, "r");
-+        }
-+
-+	if (!fp) {
-+		abpath = getenv("IMGDIR");
-+                snprintf(path, sizeof(path), "%s/%s", abpath, filename);
-+                fp = fopen(path, "r");
-+        }
-+
- 	if (!fp) {
--		snprintf(path, sizeof(path), "./%s", filename);
-+		snprintf(path, sizeof(path), "./data/%s", filename);
- 		fp = fopen(path, "r");
- 	}
+ /* TODO: Better place for this */
+-char *absolute_path(char *path);
++char *absolute_path(const char *path);
  
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 90f57402f..5b058a8d0 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -1457,7 +1457,7 @@ static inline uint32_t igt_seconds_elapsed(struct timespec *start)
- void igt_reset_timeout(void);
- 
- FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
--		       const char* filename);
-+		       const char* igt_imgdir, const char* filename);
  /**
-  * igt_fopen_data:
-  * @filename: filename to open.
-@@ -1466,7 +1466,7 @@ FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
-  * then from build directory, and finally from current directory.
-  */
- #define igt_fopen_data(filename) \
--	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, filename)
-+	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, IGT_IMGDIR, filename)
- 
- int igt_system(const char *command);
- int igt_system_quiet(const char *command);
+  * serialize_settings:
 -- 
 2.43.0
 
