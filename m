@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51F5EE65D00
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 22:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F8A5E65D03
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 23:09:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1620F10E1FF;
-	Thu, 21 Nov 2024 22:55:36 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="njkzuG4T";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A74E10E1FF
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 22:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732229734; x=1763765734;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=B/hG0udu4+HbrVjllnN6EmIwDpfZ2o9cnqoBBfI4N4w=;
- b=njkzuG4TJncLT/jyWCSm3MiyDjqyqLY2mrVcHkFZSm3r/SIYZnQ7UJ47
- YOVEjsOjUm9eetrspo0RMJxDPDTzLfKr20VNUwUaBJa27UryPk0KajjYb
- P+8SteXL0+mZuqpgSw1RKBidgg3d9dYSnTflE523OGfK5QzcecC4rtcU5
- lejSqLTOFB8M/GsX+ymL3S9Nt8rpsGRLBNKxOH6IP5+xLgERGMyLqLs8j
- 6NrE8j0IehPAMkMqYLbwwCFg+y0vKvt1mZYAVntYzPi70Jrz6jb2ei7P4
- SDH/KRa5AJJn0VUZjoaeTBf/0j+BhVJje5oOswDIeoDrKqVaRo1+YOZ3c Q==;
-X-CSE-ConnectionGUID: Dzi7xF3qTVO5TJ5+MkvHwA==
-X-CSE-MsgGUID: DsVmHWneS5epPzNnnBTE+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="36151338"
-X-IronPort-AV: E=Sophos;i="6.12,174,1728975600"; d="scan'208";a="36151338"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 14:55:33 -0800
-X-CSE-ConnectionGUID: PAfd3CWsQY2chciKh+7H5w==
-X-CSE-MsgGUID: NcUMRkKLQuWJAWNPvsudFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,174,1728975600"; d="scan'208";a="95196918"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 14:55:32 -0800
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [CI 2/2] lib/igt_kmod: Fix leaking subtest name
-Date: Thu, 21 Nov 2024 14:55:10 -0800
-Message-ID: <20241121225510.3701650-2-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241121225510.3701650-1-lucas.demarchi@intel.com>
-References: <20241121225510.3701650-1-lucas.demarchi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CDE8A10E106;
+	Thu, 21 Nov 2024 23:09:37 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B24E10E106;
+ Thu, 21 Nov 2024 23:09:36 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6963883819467024782=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fcdclk=3A_?=
+ =?utf-8?q?Handle_scenario_where_ref_and_new_cdclk_is_same?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Nov 2024 23:09:36 -0000
+Message-ID: <173223057625.1361745.14161364839699142290@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241121174659.1752109-1-swati2.sharma@intel.com>
+In-Reply-To: <20241121174659.1752109-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,52 +37,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Keep it simple, checking by !suite and then assigning subtest
-accordingly. Since this is done only once, always call strdup()
-and free().
+--===============6963883819467024782==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- lib/igt_kmod.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 5224d36a4..3729a053c 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -1197,8 +1197,8 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
- 	char debugfs_path[PATH_MAX] = { '\0', };
- 	struct igt_ktest tst = { .kmsg = -1, };
- 	struct igt_ktap_results *ktap = NULL;
--	const char *subtest = suite;
- 	DIR *debugfs_dir = NULL;
-+	char *subtest;
- 	IGT_LIST_HEAD(tests);
- 
- 	/*
-@@ -1206,7 +1206,9 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
- 	 * we take the module name, drop the trailing "_test" or "_kunit"
- 	 * suffix, if any, and use the result as our IGT subtest name.
- 	 */
--	if (!subtest) {
-+	if (suite) {
-+		subtest = strdup(suite);
-+	} else {
- 		subtest = strdup(module_name);
- 		if (!igt_debug_on(!subtest)) {
- 			char *suffix = strstr(subtest, "_test");
-@@ -1259,6 +1261,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
- 		igt_ktest_end(&tst);
- 	}
- 
-+	free(subtest);
- 	igt_ktest_fini(&tst);
- }
- 
--- 
-2.47.0
+Series: tests/intel/kms_cdclk: Handle scenario where ref and new cdclk is same
+URL   : https://patchwork.freedesktop.org/series/141672/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8121_BAT -> XEIGTPW_12166_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12166_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3429]) +31 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-adlp-7:         [SKIP][5] ([Intel XE#455]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@kms_psr@psr-primary-page-flip@edp-1:
+    - bat-adlp-7:         [DMESG-WARN][7] ([Intel XE#3517]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#3429]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429
+  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8121 -> IGTPW_12166
+  * Linux: xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380 -> xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199
+
+  IGTPW_12166: 12166
+  IGT_8121: 8121
+  xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380: e46649e7764a9f6868ccbcba7b8b23b413303380
+  xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199: bb17c42521f57b592e9ad49daca1f9f9045d3199
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/index.html
+
+--===============6963883819467024782==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_cdclk: Handle scenario where ref and new cdclk is same</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141672/">https://patchwork.freedesktop.org/series/141672/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8121_BAT -&gt; XEIGTPW_12166_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12166_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_addfb_basic@bad-pitch-0:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429">Intel XE#3429</a>) +31 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12166/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8121 -&gt; IGTPW_12166</li>
+<li>Linux: xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380 -&gt; xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199</li>
+</ul>
+<p>IGTPW_12166: 12166<br />
+  IGT_8121: 8121<br />
+  xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380: e46649e7764a9f6868ccbcba7b8b23b413303380<br />
+  xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199: bb17c42521f57b592e9ad49daca1f9f9045d3199</p>
+
+</body>
+</html>
+
+--===============6963883819467024782==--
