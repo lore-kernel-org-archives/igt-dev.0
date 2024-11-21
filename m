@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF416D6ED0E
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 12:04:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C34D6ED11
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 12:07:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8019010E3FB;
-	Thu, 21 Nov 2024 12:04:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7680D10E3FB;
+	Thu, 21 Nov 2024 12:07:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="myh1Re1C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I/gxHz+s";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BD2110E3FB
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 12:04:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6778489823
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 12:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732190652; x=1763726652;
+ t=1732190852; x=1763726852;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=0uTsae6PA14AJYT7FAXD0xyDtJYvRqupT1KOOehePMc=;
- b=myh1Re1C+64j5ZAQZdBBEv4nXbQBGVBZqyFdDn8IoX99KoyU6Az9/ouJ
- x69KP7lbPi2r2D6s3aDkIr3SiTPDTxw+5k0EVwMcydE5JiQiEDL1IPEOU
- yNUJWM5IX2AG1WttYPUaxRr54KV4NXrZL70zxvL34AcNRopXIZ/KYuEoZ
- +g1PPDsm+sVyw7byCK0UMW/Bwfc8XC0PIOzShN2H4VpPfvLnFu2Fx7vZ5
- JFtjlPkm8xKVfRu+R89978cEgmiw8YgRLPGcQRrPa6E4huIKUYZhXyMSy
- leF/QqFMA7bYXb4ttutJULHClaEi7sYNsTgoc8GtLSzGxW5sRxd9cg5q5 Q==;
-X-CSE-ConnectionGUID: NBhv70juSXO1wiMN6Xh4nw==
-X-CSE-MsgGUID: qXuqj8eaQ6e8HbMnkaKBwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="42941458"
-X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="42941458"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 04:04:12 -0800
-X-CSE-ConnectionGUID: 8bnd/d8bRGSeTPaggoSkAg==
-X-CSE-MsgGUID: 7FmeeSAgSjOHWxl2xzzfqQ==
+ bh=YnHEUBlux88AepYhNhw3m3WocrcP5GRiSJbeAre13/Q=;
+ b=I/gxHz+sLbgDwlzBRWwOWiAVnCKo/ywHx2A50KIuyUM1Vg4P5RBxLg5N
+ v4l/YjKR/BYHU7/dBy+mZ2zMoHOVkaf0t4GiXC+LUaOE0/P8ICE3ZhMzs
+ RvbBQnHFfWeP8tbPm432ixEcA13r7du614/2lPsmDEvP2gO+y1gQyIKC+
+ O4JuPS2qXuDfVndiInhDPRu6hFs/rs0H9ZSdIuoRPxTfV7TE97uuJmEZq
+ /cVzXL2iFh2FIUWcEFp0+eYsgJlqeFTPMVvXtmZdXAzXJtLItTWGt/dji
+ KMJnoprlo1NgfgAWkagq59EUwNy6lTJLFf4vbqmqdBJZmllvRG1xdu6hy A==;
+X-CSE-ConnectionGUID: I4SLx0qzS9uJ4GNXgNe+rQ==
+X-CSE-MsgGUID: Ls9+OVXFQCeVzrVbEhUX2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32434084"
+X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="32434084"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2024 04:07:32 -0800
+X-CSE-ConnectionGUID: jORNY5cWT4mYC+zzKLHbZg==
+X-CSE-MsgGUID: OCO8Ji/1SDOpM2D2amHaDw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="95038329"
+X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="90175284"
 Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Nov 2024 04:04:12 -0800
+ by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 21 Nov 2024 04:07:31 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
  ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 21 Nov 2024 04:04:11 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ 15.1.2507.39; Thu, 21 Nov 2024 04:07:30 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 21 Nov 2024 04:04:11 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.170)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Thu, 21 Nov 2024 04:07:30 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 21 Nov 2024 04:04:09 -0800
+ 15.1.2507.39; Thu, 21 Nov 2024 04:07:30 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vpWNxbdg5Yd/iO7JZmbL5XqJ3OP6XBj209qS/LybWpXExxVLLXlvKAACo805UXqCdBZ2D/Wa1Pb4UYm2OctFzADg2Gc5fsgmvMuYvfa3inr71h/pmhPjuGaZp4gl1Mk6s0uGRYr+UsuNpVGtf6qNmRpyMO0zfQOUpAGQbxZoHTBYBnoJXdwCLG7L7ZKNEpq0WFmyq/9PL6G/deuIe//eHcotY9gRNjwfqE6wrQRuruGGNrKDDt7QmqTc+CBFjBD1+WCW8JRKdGtwH4Wgt3+piDdDypGm5H6doUXKuouGLfKpmirghzhVkHY2yPH8mNN1mbskN9yjwWrxNCx/F0rz6w==
+ b=Zn1XgZ3Vwh++W7IFPsUVHf/clONFhp5a9CXFHMsndolHso4EnCwMMs4O2PaYAU5lw0TWn0Fjjkfgjj/UXOdO4w1oZS/A2euzJ/g+6ufEOXcCEnhgead5nwL52peL1kI3msBF+jwOR9et5APzHLWEjbtrI5y4wYSqOJRDMsc+kxpSo3JSwH/g3/habBKXK6VBPa+EIDhm9yOr/guLFie8oXWy2DLwkPLg9I1nrt9TuqvQZy5PsZA/9NgL6xJnKw3fYN4ULVg47+JCbIoYk5Ga84qKTgtDEEsed0YeC0XRJAoPDEY7d9JbrqHvxq2b/3nEuhAO910GlhedRGbGcnP03w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hPh+zKrY7ZIloHgu4zKddvOmh11BRx67aiYreNyiUlk=;
- b=lczi+wI6Pft6YeQ6jnDE5Y//pKZ6GGHhSPBQEWo/YJ5MovcgJdMVglxEdmrNb+vUIKvn6dDGKNXv3stIKQ1cM4oX1d3niuSVu7q0EEtAo48DBPTL6IBzAMGmw1zukjDD/la5Y8kYYEpIZgNSDtJRFuqaC7VpFoeEpbBaUD3HKTmdIkOsGdxaCpx3WOGNV2HIPl28Sw4NyxPYUwMys/efvZG/uO+1D5KTJfrSmmrN2vgk55X6RVcW4LawEKz9Y6+p9ALGT8Ko4gicEqT1qk3NVDaP9obnYOxnUFpDIRPtLr+mmn75sMx3k7QJegia3/YZVVOoFgw+ARwNB9sWXKFH7Q==
+ bh=d6Y/GHIquAaSNYmyLoxN6s9fUHhJqp6LUhsQNcfTpII=;
+ b=erYa1iIo+W2wlXovoDFwOCNS4JEuyx/S/8FxPrZnmtU5Z9qYk3cVS9bcJhZhRQtkuzUbw3l/nbIFVXOVH7Gn/N0CKE3H63c5CQQLL98QI2xwPcG1jVqPbXXD0T7ZhOptQE1uyQcHjvzBsW0Iz+wMaH4rS65EZBHfXBqS90PIOWhb6WZgiM8qd5RCYoIazjUuiEdrxKJih3xVz3ZaeRjS/e8MQiG4e59hLxwizGYDLNJiY4IztrqBzv9VxXWeDKMFT7M4cL/+EE6osf9+jPf7JLi1rbG1yGybGRqyyzciwgrWxHvYycDgzzmxvMyDBQvWQdBdqubz5iYl9XR+F4JonA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,115 +69,116 @@ Received: from DS0PR11MB7904.namprd11.prod.outlook.com (2603:10b6:8:f8::8) by
  PH7PR11MB5886.namprd11.prod.outlook.com (2603:10b6:510:135::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Thu, 21 Nov
- 2024 12:04:06 +0000
+ 2024 12:07:27 +0000
 Received: from DS0PR11MB7904.namprd11.prod.outlook.com
  ([fe80::f97d:d6b8:112a:7739]) by DS0PR11MB7904.namprd11.prod.outlook.com
  ([fe80::f97d:d6b8:112a:7739%6]) with mapi id 15.20.8158.024; Thu, 21 Nov 2024
- 12:04:06 +0000
-Message-ID: <baab4845-d504-466d-b46c-833ad33eb7d9@intel.com>
-Date: Thu, 21 Nov 2024 14:02:59 +0200
+ 12:07:27 +0000
+Message-ID: <e60db2f7-bb97-4e35-868e-8cc0d52689df@intel.com>
+Date: Thu, 21 Nov 2024 14:06:13 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/4] lib/gpgpu_shader: Add causing a read pagefault
- from the eu thread
+Subject: Re: [PATCH i-g-t 4/4] tests/intel/xe_eudebug_online: Add read/write
+ pagefault online tests
 To: "Hajda, Andrzej" <andrzej.hajda@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <jonathan.cavitt@intel.com>, <mika.kuoppala@intel.com>,
  <dominik.grzegorzek@intel.com>
 References: <20241115141132.866838-1-gwan-gyeong.mun@intel.com>
- <20241115141132.866838-3-gwan-gyeong.mun@intel.com>
- <8e9181aa-1fe6-49c5-bd10-95e89db8754c@intel.com>
+ <20241115141132.866838-5-gwan-gyeong.mun@intel.com>
+ <c110ebfc-9b3c-4d40-9231-fb8157638e16@intel.com>
 Content-Language: en-US
 From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-In-Reply-To: <8e9181aa-1fe6-49c5-bd10-95e89db8754c@intel.com>
+In-Reply-To: <c110ebfc-9b3c-4d40-9231-fb8157638e16@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZR2P278CA0022.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:46::7) To DS0PR11MB7904.namprd11.prod.outlook.com
+X-ClientProxiedBy: ZR0P278CA0024.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:1c::11) To DS0PR11MB7904.namprd11.prod.outlook.com
  (2603:10b6:8:f8::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7904:EE_|PH7PR11MB5886:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7b9fd0f-4344-47dd-b72b-08dd0a2498ec
+X-MS-Office365-Filtering-Correlation-Id: 9b2abb64-4585-404d-f275-08dd0a251109
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?QWlib1BhclZxNjBIZExuZHh5LzFNQmYrVkF5Tk5udnY1SDZKR0NFbTRrUmhM?=
- =?utf-8?B?LzVvcy9UY0hIQ3pNaGZiZUhKdGtBWFFWMnNNZmRZbU9CWmw4TTNLZ0hyTGpz?=
- =?utf-8?B?UXIzc1l5QU5QVHllb2ZKWU1MU0VwaGFSZVZ5M1lFNUZDcmpIekUyaWgxaGJw?=
- =?utf-8?B?TjhhaWVxa2RMWmRwVkwrdzdkV2ZPZlBldnZvQWFqOEhiVm40Z3VzcnI2aE5r?=
- =?utf-8?B?WHJjUGRNdHBTL3NLOVN3a28zNldJZTRLRkVRMTI3TTdKeGNsYTI1YnZUTUZ0?=
- =?utf-8?B?T01PWDJ3L1JFWG13VFhhMW0vQ2lGUUduL0F3RjJ6d29uVVBvbnZJWVhyR3hs?=
- =?utf-8?B?bnV0UWhJcURoMTdqMEpGVHlMK1VScFgrd2trdUJMTWxiL1lyMXYzV29IbmpI?=
- =?utf-8?B?elNNSjF3NEw0VkJtNWt3b2t4eGZGUGlZZmdOaXdjcWJpSWQ5cTFOU1Y3UEF1?=
- =?utf-8?B?QTFRM0dveUY5YSs3aHBUbkk5VXR6cTZJZzhiMCtzNnBMbnlMOXA1V2dFbXhF?=
- =?utf-8?B?QkJxa1QyNGdJbkNZUXhiQWNZTG5nU1FDL2NUZjQrVmM2LzFYU0N5T1NPa28y?=
- =?utf-8?B?ZkUzQUk4N2RQYTV0aU9SV0xLVnVlY09MMHFKVURRQmM0cEs5Q1h3QkcrM3Y3?=
- =?utf-8?B?dEtTTnl3UXJDNDNHRlZXUVNxQUFZZTB5OEdBcGhDTXl2Uy8veUxTanN0SXN3?=
- =?utf-8?B?cnF0K3prYkhFZzJXaGxCVlk5NlJmNFV4NklMK3cxTjNvSm9yK3hHOWUxR3pl?=
- =?utf-8?B?b1dTN0FTODNnbHM5UW1HTElFM2FXMFNLQnJUcVpPSkNCN01wUnZlZ2JxMnp4?=
- =?utf-8?B?T1UzY3ljS2laVTcrODhmYnBoSnpBQTZKYm1ON21Qb3N3MngvemtGT0lWUnlP?=
- =?utf-8?B?TnZMcWVhK2RKZk1jN0VKbjdIamdVdTduK2lFVzE0ZkI0MTNVZUg5eGVvZlRk?=
- =?utf-8?B?K3grd0pTWVpoSGtETnlBbDBPa1RBWlUyY1ViM3pZM2I0TkRRQ3hHaHNZaW16?=
- =?utf-8?B?UGVVUDZKMlRzN1BxbmhBbGQ3SUNrMnp5N1B6QzhzSDhOb3J1VDhNc083b0xj?=
- =?utf-8?B?TkwwQm9LRml4QndMZ01qMzc4ZTZpMW5Qak1wR1orYTUwcHVkYzBRbHo4TEsw?=
- =?utf-8?B?dWRiV1prQ2QzTTd3aWpVeDBsclB6UjV5OTd3VEZoNUticXFQN21zQWFIQ3hm?=
- =?utf-8?B?SXNlNEF4QmlGeGJVdnhKcTlxcFAzTjVpemN3aDRZTzB3RjI5YkV5LzZCNGRh?=
- =?utf-8?B?akVjQ2Z2SHphOXVRSUYzUGxUam5mT3puZzVwV1lQZFM3djFBV0ZBaHlxY1hq?=
- =?utf-8?B?U2JvbTZ4eFRnc09oVWQycDlDZkpub2dIYklFd2FNMzB6WXVFVTRUS1dvSEFl?=
- =?utf-8?B?RER1V3Z2TlhURE50L3hnQmRjYkxSOG5CTnBvK2dLditWdUQ0alhhYkJlS0dN?=
- =?utf-8?B?ekl5a3lPcDJvdGhQWmtiVkVGdzRZMEpFZ1FEQ1FpWWZabkc4Z3VYVklDNVI3?=
- =?utf-8?B?Nk03dDE0cU02NUFLYi91QlNGc2tMM1IzVzJqSldwaUdzRnRBRlZJaU9MTnZP?=
- =?utf-8?B?YmJJS24xVVhteVBkZmhWdGxuTE1JOGpWNDd4N3hRYUJ5OEl3T3pqU1RDTExK?=
- =?utf-8?B?UDZKR2lYRzhra1k0Mjhma2hlcXlPYlNQNEM1ZWNYa1A5YlpSTlZVVHRPWlpo?=
- =?utf-8?Q?GHCsuvrQxcRg5Me3V2qT?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MGpVU290SDRaa0U5Z1pKclppSmF0bm1uY204MmNqZUFqSTc0NGUzWDV6NDBQ?=
+ =?utf-8?B?a3IzRS9xelpMVzRaandxS1l1WW4zZDdrOUJDR3h1QURGM1BwekFqejUwYTM1?=
+ =?utf-8?B?MDNsNVhOTmpCUEYwNHBlUWNwTmpQWjJldFh5VGhocXFxWEVHdjZpRG0rbmk5?=
+ =?utf-8?B?S1dWdzVpZnh3RVFGbHBFWGpORzh5UGRwVGtMblJGRUxKTm8vNkZ5cXFORHVI?=
+ =?utf-8?B?dER5TzFyZGFGdGo0Skk0QTgzUXNNd2tOWWtlcFl3NEw2SHVSaFJZWVlUTjJu?=
+ =?utf-8?B?YUpGTHRwaG1kL2FlYjRhM0Q1Q2hRZ1UycDRoWkwveE1HOTRWb01ERFVpekN2?=
+ =?utf-8?B?VlRibndKMkdoSkQ5N1BmaE04bkFwVUJYVmNTcjMwUUs2NnkvZjNDK2RwcjUr?=
+ =?utf-8?B?c1NZL3lsUFhRQlJxa2t4NTdsWDN1dHF5V2txSHhRT3MvYzB6MW9uQ0VlZ3kw?=
+ =?utf-8?B?RUx4VkxqcUNNdDcxOTVZcEVhbEtTWTdPL0dLS09zcVFTZlFVdEVxL0dRZW91?=
+ =?utf-8?B?ZmpkNHdJT0xtQjFNNzBYQ1MzTXR1SktPcnRDcW1qS0pqRW44YWYwNlk3KzFz?=
+ =?utf-8?B?Rlk4K2h0a0FocFc1NEgwLy9UN0FKVkxyZE9KU3RoOUl5Sy9EVXZqQWNLMUdz?=
+ =?utf-8?B?dXZjeE1hSzlueEN5RUNDTWpBOGxrbTdkeUtleDZRSWQwejlsOTh6eWhVanBq?=
+ =?utf-8?B?emYyQTY3VVJYbVdseVNRbnlxRHArNGNzU2pGejZLSG9sekx6YzhXYUlLeDhV?=
+ =?utf-8?B?YWJEZElkK3AwVUE3anJxUG5OTnVjSTVnS0RRVkJpOXo3a1pUMUwvSWdLcWJu?=
+ =?utf-8?B?aWZiekRyQ2Y3V3kzbkdpVTdOMlJBc2hsaytNTHZyY3FGaTdmdFRvRkQ1SHky?=
+ =?utf-8?B?ZEgxNjI3RHR2ekJTS3NsdkplZkhseTJlWm50K205VitLZ3JlQkxSNk1SWVAz?=
+ =?utf-8?B?RlZPYTIxeVhDWTBBbFpBZW5keGt6QU1kMTVXVWVDNHlEUDZsRU5WMUF2Unlo?=
+ =?utf-8?B?eWFua2FRVWdqQzhxb1pUZTJYZis2eHRyU1BJbURPLzhVaG0raGtYZDJTcjU4?=
+ =?utf-8?B?Tzkxc2w3RHhuU3ZFN3FZUTRWcVU1WnVWUi9HNzU1ZCtBMWdjRHlzRU9PNW5U?=
+ =?utf-8?B?bHViUC9qdzZlZ1lUNnNFaWhsYW80NGdWTWpjYnVhRjd2YnhhVkJYQkdtUjBZ?=
+ =?utf-8?B?TmpZUEEwWGUxT0JIVUdPeEhUS1lqVnBtdUtjMjZDL3RUS2NQc2ZKcy8vTGkv?=
+ =?utf-8?B?SlJtY3Y1V0lXSnJuYVpHU1QyNExFVkd6SCtFWGRDUEdoSUhJSUtXL00rYS9Q?=
+ =?utf-8?B?M3JkM08wUkVYY0c1NCtpTTJHZGV2YnkwZlU5bWc1azZXaHJCK0Q3WU9FMmZm?=
+ =?utf-8?B?NkhPdGNVM0dJOENRVnVTYWU3dU13RGoxUndwcXRCMVpRVGNKZVhTRHh5eS9G?=
+ =?utf-8?B?c0dWdFZ5MFZ6allGWVlLL1BCeCtENzVvK0NwS0lEb08xbUFUb3BNZXVqd2RM?=
+ =?utf-8?B?RlJQQVhCMHNrTngrTDJXT3o3MW82R2JsYVhCVUlPSTliZ2JPM0s4UXlPRzNG?=
+ =?utf-8?B?RVl2Y0JFNzJxYVBRd2VXSjB3NXBYRWxrREZwMUQ2cWRhVmUyajcybmZSb2xX?=
+ =?utf-8?B?eG5VUTlTNWZkc0JQZlE5c3NycERBRjBRRTJFNVhWVEs0d0Z4cTJOd0E0QjJn?=
+ =?utf-8?B?blVCSGFkSGg1QjZmNTNQRTlKWFNSVWhqNDdEaWpUeHhETk9jZlFybTlSNzNi?=
+ =?utf-8?Q?XiU6augIl4mi/Z0I3k=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7904.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VGN2OVErakpLZkxiOXRPVlFDdWNidzdGL3FsaGF4QTFSRVF4WjhacmhLcUUx?=
- =?utf-8?B?T3N6d1hRbjZ4NU9PTGs2TmFFMTVMREZTdWp5Tm5iaWlyOXkzRk5CbjNFUTBT?=
- =?utf-8?B?OEx2dmsxWlRmSlpmQU4vbTc3RzB3bGdMSmdxOW1Nc0RsUjkvRHZjdlF5MzZn?=
- =?utf-8?B?bzMwaGU0MXhqU3BLWjlDaGNXSEpZallQNzBMek1XR0JkRnc2RUNtRmRZbUhx?=
- =?utf-8?B?a3ZOWXRIRy9lSkttb0gzYkpvRXVhY1BDbXBhcFRiVk5UT1dWaFFWWWlNYzhQ?=
- =?utf-8?B?NzVJVkxsNEc1L2hKbzRPNENpZEh0UHRnNFB2UGlOOFBzalhIQlg5K3ZLeDE0?=
- =?utf-8?B?NzRpMXZpQVF4RmdqMkZzaTdRT3ZWZkVBOVIvRlN2dk5Xa3k4TjlPOFVTWG51?=
- =?utf-8?B?YnZLcVRuVXNSYnBtZ1ljc0NhRVBKSnJGeU9JTmtlc0JsaDFZbEdSV2lPOUQ5?=
- =?utf-8?B?YjVtSXA5TjBUWlF3eFBjVkIza2pGMFQzTG45MENVWTZ2TFpPWFRxeEJmaEp2?=
- =?utf-8?B?Wk5pSVJnTTN2YnM5NmlGL2J3Z2xtMXNhYW1wNkRnc01vcHZJZmVsU0NNbWdN?=
- =?utf-8?B?T0xQSUxhZjdXRzhMaVVvZUNxSCtMeWJ6czcwcDlTNDRHT0llSytoODQ0S0FT?=
- =?utf-8?B?dzNHVGsyazgwclBYUVJ4MkJYTjB2aCtuSWRmMi9SeS9TckJGWldPODl4azRn?=
- =?utf-8?B?RUpTb3pyb1ZKNWZpUU5WSXBKbkp2ZHRpMEtDMytBelMvT2JCdEZHL3FJbGI4?=
- =?utf-8?B?STUxMHUxdDdsaEVUM1JGbis2elJsRmkxOVRJRTRGQjgyRUlzZUpHNnpSeE9R?=
- =?utf-8?B?TS9seGMzSndrUzBZR010VlZQWDRWV1hMT3E4cjlpWHdQYWxTb0I5b0FxUktU?=
- =?utf-8?B?T0dZdGtOODFiT09yNm5NYzBta1ZGWUhVQjJRclM4Y2RnZHpXU3oyYWJpL1Rl?=
- =?utf-8?B?VEtMaGhpczYyUURpdGlQVVhDcUFzRDlwRHcvZytxWTBieGtDeU5iN2JlVVoz?=
- =?utf-8?B?eDJva3IyNUQzanN0ZG1veEZlUU5lME1hSXI1UEtNeGpvb2V4cWFKc1FNQnJs?=
- =?utf-8?B?U0YwckJOZGtmOHdvbW85TGRtMmtKVHZ0WkNCNDVBQk9QMnVsNGJBZnR6djBB?=
- =?utf-8?B?WjFId21yd1ZGR1VlSi9qbUhTTUx0Z21kY1F1dWk3VkNYVHFVOWhlVkpzK3Qy?=
- =?utf-8?B?MGNMVXMxSk0vSnlzS0xEQjFvemRPcWthd0VLZ0JqdFlrVk8xcE15OUpNZGRp?=
- =?utf-8?B?Zk1KWFhkY1N2NXM0YVM1YnlhNVNXb2ZGNXNEeEJRUHBSdDA2V0pBeWdoMG5r?=
- =?utf-8?B?VlQ0bllsbzhNU2Jrd1MybmRQbVNmQ2dSdGJsZ1RHLzRWWnpESHlYY0xCbkF2?=
- =?utf-8?B?RHpDKzlZSHAvYjVYVHBlaC9iQ2hyeFViK3dmRyt3ZlRwMUk1bEc5VzJtTUVx?=
- =?utf-8?B?WkZ4SHdwUG1pUXFVMVZUNUxQWGNuS3VaaXViTjVFNWs0ZTJUM0cwcngyNVNQ?=
- =?utf-8?B?ZVBpVGdNNjBZbDVJb080ZkMwNXQ5dFZINHI3NGFzYUE5VmFvaGg3amF4Z1dy?=
- =?utf-8?B?U3lNVHhpRnBlYzVhYkVGZEFjUFhuYndHd3RIVXFva3VPR1ZCbVNIb09DTHhT?=
- =?utf-8?B?UUpVQkUzWjdFSmN6UHZja3B1V1V4VGFGb2pBcnA3Nk9PaUx3dmQ4RmptNWlq?=
- =?utf-8?B?YzlhcTZGQkRGMFpyQ3hsNGpaZFRtQklsZGlvRVJwM3g4SFFIZ3grMWxGaEZ4?=
- =?utf-8?B?Z0R1dmFlRHg5eVBGek43cys1bXRBOFExVERBUW5JNnJTSStNblVzaXdTZ1J6?=
- =?utf-8?B?TzB3anh6U2Roa1IyV3lDM205Y0hKT3ZCdXUwQjFuL1c0TzBodU9raVdpL2t2?=
- =?utf-8?B?RWlucmhVWW1DRWViY2thYmpVVm5SaFd3K1ZtdjB1S0krandmUWpiZUI5c1k2?=
- =?utf-8?B?cVhVdGd5Q3FOME84RFBMM2Nvbm5xc2x0RG9LempTR3lsR2x5TTdiTEpqSVV2?=
- =?utf-8?B?dFgyczgvNFh5WnR3UDBubTBnVXBEb0pKNWtaMVplYll0RW81TFdsUFhaRWFW?=
- =?utf-8?B?UTJpZ0F4Q1VLK2ZGRC9yMzBkaDJubE5BTDJyRmpGSUhSNHNqOEsyT1VmSnRa?=
- =?utf-8?B?NDNVZE0ybGtjZlkybDRrSGd2d1lHZ3lqUUw0a1NsU3BkczdtNWlBZkFYTVlo?=
- =?utf-8?B?RHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7b9fd0f-4344-47dd-b72b-08dd0a2498ec
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SFVqVG5aRHB5SVErUkg3cjBrajNld1hpcXpLQ0hUcmVIL2g0N3VUTGhFRVFK?=
+ =?utf-8?B?M1NjVkJ5KytpT2NKM282ZXhtUE1CYWREZWRTV283VnFqSlhDL2tsNUxkSUlC?=
+ =?utf-8?B?dGt6SGdlKzViOHZoVk9EZGk5YUh1d0FRcUF6WlJaWUtVNHcyQ2NjYTlhSG1R?=
+ =?utf-8?B?SnVsd3B6cVlXZDB6UUZMYkY1dU85T2FDSnltSTVSdVRQVEMyY2lGaEk5eTdY?=
+ =?utf-8?B?Q1dYeVk0c1htR2R1OEFVUEpxbGt6U2pGZTQ1SUlLUDBqU0hGbFh4c2hUbDFp?=
+ =?utf-8?B?ZUxoODZWaDVwNFE3NXRHYjFoVDNwNExOcEIwMHVKTFN6eks4c0U3ODh1N1kw?=
+ =?utf-8?B?eW1oM0c1NjVIdGZic2RpOGlONXFCRmpKZzhJY3d3bXR1OENRdmhTNWJQTDFJ?=
+ =?utf-8?B?SktDOGU0V0tISEJwVHhDVzIyK3ZoaHNKSjVIR1VPdzJzQ043R1lUWW9TTGhh?=
+ =?utf-8?B?ZmlWUnEvVjVza0NwNTNlUWs3MHlNZFVmSVZtellsei80MjdJV3pRcWxYVFhz?=
+ =?utf-8?B?R3VpTHM3UTJsNWM2NEY1T0NaMEE0amF2NnVwOWhMaHFza1ZXNE8rTTJSWHl4?=
+ =?utf-8?B?a05NTkpBR3pRUlpQZDhEdElmNGNIUUdBNjBrU1cvWVNFLzRCUTMybjZMdGdZ?=
+ =?utf-8?B?b3lmamdKQUlPMjJjL0pZNytDQ3FSZnhucjQyTHhtV1BqcHFKTkpNSUpITFVW?=
+ =?utf-8?B?QU04eVhuVEtnencxcEdGbGlSNitSQVdicWFhdVBib3ZvajRYTDZRaXZYb3Jy?=
+ =?utf-8?B?ZlF3anEvQVlpR2c3Y1llVnNtZnRLNE5VQmFybW9JeDVlNTlMQmw4NHlqQlhJ?=
+ =?utf-8?B?b3NnUStFZFR2ZGtUM0xmd0pTY0dpdXZHVTdud2ZQUFhxKzZyMlFqbkVWUkl2?=
+ =?utf-8?B?WEZEUndjRUpyalN5UUNNOHFNYThmRUtuVUE2Sm56UmF6T0hiZEhKTERvSUo1?=
+ =?utf-8?B?RGgzV2IyVUpYZktKKzhaUDFiWndUMUxPcFliWEc2Y0VHRjM2cGRISU1tL3hh?=
+ =?utf-8?B?MUEwWGNTNTFMVitjZ2hCWUhoSVFIdDNScmVxNlRneW43SWhad2dOaTQ0Tjhn?=
+ =?utf-8?B?OXUyeWlCdHNZV1pnbTdUaUJIQ0o3MytsR0VDbm5KV3N1c1k0QUI2MElEb2p0?=
+ =?utf-8?B?TGpUK1ZtYU9GSzlnemJleUpnYjdBdkhRb0Z4R2czRGxTaGRNay9xaEFBTE8x?=
+ =?utf-8?B?SENCQ1NZVk9QeGQ1NVJ2S3M0Q2U1cElQSmF5dWZqdEpKdXBqaGpRRm5MRWdZ?=
+ =?utf-8?B?eDJqTnlRdG9ubWZKa3ZzMCtoVExGWDNHRmN4QWlJUjFCWHlOZnpvZEpXbmcx?=
+ =?utf-8?B?V1ZmVG1lMmNwS3IvZDdBRlFjWlk4RW1FeWlvNVpmcGhETWhtOHRZUWJNbm1Z?=
+ =?utf-8?B?cUlqMXZxdzZKcS9DT1BzeENmTlRyaUNMQnovTGhPd0diMFZqbThQSXJPTks1?=
+ =?utf-8?B?aWpYanRFeVU0V0w1WGRZaWVLVE1QVWtnOXI3SFFLV2lLY2tURlArQ2kyZ0dC?=
+ =?utf-8?B?SCtuYjlsVEd2aGpWMUI3S21ES0VLSTVzTVFmRURzZnM1cUFlcXo1OE5qN1ZV?=
+ =?utf-8?B?Vi8xaUhNT001M1JZcXY2OG80RS9rcURqNGgvaE45S29uZHcrdXN5Q29UV0Vn?=
+ =?utf-8?B?b2dOU3I0K0hRaEE4Zkd2RzhyWGk5eWV1YjZjMitHMTYyYUhrL3hIMmExSVN4?=
+ =?utf-8?B?VWN0QnFHNm00Vm5zRmRmRHEvRVhjeERsdUlvSzhxMDdNb3dmRHI3b0RhZ3h4?=
+ =?utf-8?B?NFRPekdETDlERTJ0RjkyeGsvR3FTRllMeTc0LzZpZ3cyRk5HbHE2dkpETEd0?=
+ =?utf-8?B?UDNiczZQUXRoQU0zUGFzUlEwZkoxRWpuaWUzd0ZCc1RwbS91TnhlZjNsQnhP?=
+ =?utf-8?B?VmVCT1RGcUp1Qjd0WFBIK01xc21iejV3blNDQmJYc1pEajZHYzNPcldTWFlZ?=
+ =?utf-8?B?Qlc4OW5MWnV5TXc4Nndmak9uYkZSOExFc1BsY1I5U3lmMkhjcTJmUmpMa2VI?=
+ =?utf-8?B?ZkY3T3RaMHI3ODFSOWhhN3UvRUh6N0xiOEp0N2xwTTVvdjVMcDhWM0wxcFBM?=
+ =?utf-8?B?cU9ZeFVDZXVWU2NzRlp5VFRLS0FGYWdHSUlBTXUzZlZWcTloT056aE84OS9E?=
+ =?utf-8?B?VnpzWkNzcHc1TlZXSm9ybDNjMnY5aW05L0RqK09DbFhoMzV5UnpWVzNSRzVL?=
+ =?utf-8?B?NHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b2abb64-4585-404d-f275-08dd0a251109
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7904.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2024 12:04:06.0373 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2024 12:07:27.3865 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DIfO/rYvqs6d7zGJdAi0bzm+JdaRatFAghNiNzGJEb45TxfNXcOJb7K+6RgEJid6Y2OiJUOjsyhCW/l6wp7ztWPxfu3OXBjlOYW2fo3j7NA=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9lMNTW+sQNVtYkGs9XFnKb3LxaKkDr+ot8Jao3KQw0qXjpeeJ2ydMkwqaEFltX3UHhFbhL/bVl8keQdlNAcfc8C1o7789IMTgI+e04lesLQ=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5886
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -197,201 +198,448 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 11/18/24 3:08 PM, Hajda, Andrzej wrote:
+On 11/19/24 10:10 AM, Hajda, Andrzej wrote:
+> 
 > W dniu 15.11.2024 o 15:11, Gwan-gyeong Mun pisze:
->> Create a function that causing a read pagefault using the eu thread load
->> instruction. If the given ppgtt address points to an unallocated ppgtt
->> virtual address,  this shader can cause a read pagefault.
->> To directly use a 64-bit address as an argument, use the
->> Untyped 2D Block Array Load Instruction.
+>> Add read and write pagefault tests to xe_eudebug_online that checks if a
+>> pagefault event is submitted by the KMD debugger when a pagefault occurs.
 >>
+>> Test that read (load instruction) and write(store instruction) attempt to
+>> load or store access to unallocated memory, causing a pagefault.
+>> Examine the address causing the page fault and the number of eu threads
+>> causing the pagefault.
+>>
+>> Co-developed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 >> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 >> ---
->>   lib/gpgpu_shader.c          | 92 +++++++++++++++++++++++++++++++++++++
->>   lib/gpgpu_shader.h          |  1 +
->>   lib/iga64_generated_codes.c | 21 ++++++++-
->>   3 files changed, 113 insertions(+), 1 deletion(-)
+>>   tests/intel/xe_eudebug_online.c | 219 +++++++++++++++++++++++++++++++-
+>>   1 file changed, 215 insertions(+), 4 deletions(-)
 >>
->> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
->> index 7a2f0d28d..d7c47be80 100644
->> --- a/lib/gpgpu_shader.c
->> +++ b/lib/gpgpu_shader.c
->> @@ -912,3 +912,95 @@ void 
->> gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
->>       ", 0x807fffff, /* leave breakpoint exception */
->>       y_offset, value, 0x7fffff /* clear all exceptions */ );
+>> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/ 
+>> xe_eudebug_online.c
+>> index 0ef0d8093..eae0eb520 100644
+>> --- a/tests/intel/xe_eudebug_online.c
+>> +++ b/tests/intel/xe_eudebug_online.c
+>> @@ -36,6 +36,8 @@
+>>   #define BB_IN_VRAM            (1 << 11)
+>>   #define TARGET_IN_SRAM            (1 << 12)
+>>   #define TARGET_IN_VRAM            (1 << 13)
+>> +#define SHADER_PAGEFAULT_READ        (1 << 14)
+>> +#define SHADER_PAGEFAULT_WRITE        (1 << 15)
+>>   #define TRIGGER_UFENCE_SET_BREAKPOINT    (1 << 24)
+>>   #define TRIGGER_RESUME_SINGLE_WALK    (1 << 25)
+>>   #define TRIGGER_RESUME_PARALLEL_WALK    (1 << 26)
+>> @@ -45,6 +47,7 @@
+>>   #define TRIGGER_RESUME_DSS        (1 << 30)
+>>   #define TRIGGER_RESUME_ONE        (1 << 31)
+>> +#define SHADER_PAGEFAULT    (SHADER_PAGEFAULT_READ | 
+>> SHADER_PAGEFAULT_WRITE)
+>>   #define BB_REGION_BITMASK    (BB_IN_SRAM | BB_IN_VRAM)
+>>   #define TARGET_REGION_BITMASK    (TARGET_IN_SRAM | TARGET_IN_VRAM)
+>> @@ -61,6 +64,8 @@
+>>   #define CACHING_VALUE(n)    (CACHING_INIT_VALUE + (n))
+>>   #define SHADER_CANARY 0x01010101
+>> +#define BAD_CANARY 0xf1f1f1f
+>> +#define BAD_OFFSET (0x12345678ull << 12)
+>>   #define WALKER_X_DIM        4
+>>   #define WALKER_ALIGNMENT    16
+>> @@ -123,6 +128,9 @@ static int get_number_of_threads(uint64_t flags)
+>>       if (flags & SHADER_MIN_THREADS)
+>>           return 16;
+>> +    if (flags & SHADER_PAGEFAULT)
+>> +        return 16;
+>> +
+>>       if (flags & (TRIGGER_RESUME_ONE | TRIGGER_RESUME_SINGLE_WALK |
+>>                TRIGGER_RESUME_PARALLEL_WALK | SHADER_CACHING_SRAM | 
+>> SHADER_CACHING_VRAM))
+>>           return 32;
+>> @@ -179,6 +187,16 @@ static struct gpgpu_shader *get_shader(int fd, 
+>> const unsigned int flags)
+>>               gpgpu_shader__common_target_write_u32(shader, s_dim.y + 
+>> i, CACHING_VALUE(i));
+>>           gpgpu_shader__nop(shader);
+>>           gpgpu_shader__breakpoint(shader);
+>> +    } else if (flags & SHADER_PAGEFAULT) {
+>> +        if (flags & SHADER_PAGEFAULT_READ)
+>> +            gpgpu_shader__read_page_fault(shader, BAD_OFFSET);
+> 
+> 
+> The name of the functions seems incorrect, it is bad offset which makes 
+> page_fault.
+> 
+> So at least  gpgpu_shader__read_offset, maybe gpgpu_shader__test_read ???
+> 
+I will update the shader naming as gpgpu_shader__write_a64_dword() and 
+gpgpu_shader__read_a64_dword()
+> 
+>> +        else if (flags & SHADER_PAGEFAULT_WRITE)
+> 
+> No need of "if (...)" - it suggests there should be another 'else' which 
+> is not true.
+> 
+next version will fix it.
+> 
+>> +            gpgpu_shader__write_offset(shader, BAD_OFFSET, BAD_CANARY);
+>> +
+>> +        gpgpu_shader__label(shader, 0);
+>> +        gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+>> +        gpgpu_shader__jump_neq(shader, 0, w_dim.y, STEERING_END_LOOP);
+>> +        gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+>>       }
+>>       gpgpu_shader__eot(shader);
+>> @@ -217,6 +235,17 @@ static int count_set_bits(void *ptr, size_t size)
+>>       return count;
 >>   }
->> +
->> +/**
->> + * gpgpu_shader__read_page_fault:
->> + * @shdr: shader to be modified
->> + * @ppgtt_addr: ppgtt virtual address to raise pagefault
->> + *
->> + * For a given arbitrary ppgtt virtual address, it raises a pagefault 
->> using
->> + * the eu thread load instruction.
->> + */
->> +void gpgpu_shader__read_page_fault(struct gpgpu_shader *shdr, 
->> uint64_t ppgtt_addr)
+>> +static int
+>> +eu_attentions_xor_count(const uint32_t *a, const uint32_t *b, 
+>> uint32_t size)
 >> +{
->> +    /* pagefault ppgtt virtual address */
->> +    uint64_t addr = CANONICAL(ppgtt_addr);
+>> +    int count = 0;
 >> +
->> +    igt_assert_f((addr & 0x3) == 0, "address must be aligned to 
->> DWord!\n");
+>> +    for (int i = 0; i < size / 4 ; i++)
+>> +        count += igt_hweight(a[i] ^ b[i]);
 >> +
->> +    emit_iga64_code(shdr, read_page_fault, "                \n\
->> +#if GEN_VER >= 2000                                \n\
->> +// Unyped 2D Block Array Load                             \n\
->> +// Instruction_Load2DBlockArray                            \n\
->> +// bspec: 63972                                    \n\
->> +// src0 address payload (Untyped2DBLOCKAddressPayload) specifies 
->> both        \n\
->> +//    the block parameters and the 2D Surface parameters.            \n\
->> +// Untyped2DBLOCKAddressPayload                            \n\
->> +// bspec: 63986                                    \n\
->> +// [243:240] Array Length: 0 (length is 1)                    \n\
->> +// [239:232] Block Height: 0 (height is 1)                    \n\
->> +// [231:224] Block Width: 0xf (width is 16)                    \n\
->> +// [223:192] Block Start Y: 0                            \n\
->> +// [191:160] Block Start X: 0                            \n\
->> +// [159:128] Untyped 2D Surface Pitch: 0x3f (pitch is 64 
->> bytes)            \n\
->> +// [127:96] Untyped 2D Surface Height: 0 (height is 1)                
->> \n\
->> +// [95:64] Untyped 2D Surface Width: 0x3f (width is 64 
->> bytes)            \n\
->> +// [63:0] Untyped 2D Surface Base Address                    \n\
->> +// initialize register                                \n\
->> +(W)    mov (8)            r30.0<1>:uq    0x0:uq                \n\
->> +// [0:31] Untyped 2D Surface Base Address low                    \n\
->> +(W)    mov (1)            r30.0<1>:ud    ARG(0):ud            \n\
->> +// [32:63] Untyped 2D Surface Base Address high                    \n\
->> +(W)    mov (1)            r30.1<1>:ud ARG(1):ud                \n\
->> +// [95:64] Untyped 2D Surface Width: 0x3f                    \n\
->> +//       (Width minus 1 (in bytes) of the 2D surface, it represents 
->> 64)    \n\
->> +(W)    mov (1)         r30.2<1>:ud    0x3f:ud                \n\
->> +// [127:96] Untyped 2D Surface Height: 0x0                    \n\
->> +//        (Height minus 1 (in number of data elements) of            \n\
->> +//        the Untyped 2D surface, it represents 1)                \n\
->> +(W)    mov (1)         r30.3<1>:ud    0x0:ud                \n\
->> +// [159:128] Untyped 2D Surface Pitch: 0x3f                    \n\
->> +//         (Pitch minus 1 (in bytes) of the 2D surface, it represents 
->> 64)    \n\
->> +(W)    mov (1)            r30.4<1>:ud    0x3f:ud                \n\
->> +// [231:224] Block Width: 0xf (15)                        \n\
->> +//         (Specifies the width minus 1 (in number of data elements) 
->> for this    \n\
->> +//         rectangular region, it represents 16)                \n\
->> +// Block width (encoded_value + 1) must be a multiple of DW (4 
->> bytes).        \n\
->> +// [239:232] Block Height: 0                            \n\
->> +//         (Specifies the height minus 1 (in number of data elements) 
->> for    \n\
->> +//         this rectangular region, it represents 1)                \n\
->> +// [243:240] Array Length: 0                            \n\
->> +//         (Specifies Array Length minus 1 for Load2DBlockArray 
->> messages,    \n\
->> +//         must be zero for 2D Block Store messages, it represents 
->> 1)        \n\
->> +(W)    mov (1)            r30.7<1>:ud    0xf:ud                \n\
-> 
-> It duplicates code from gpgpu_shader__write_offset, could be replaced 
-> with macros as in https://patchwork.freedesktop.org/series/141348/ , but 
-> no rush :)
-> 
-Introducing macros will be done in another refactoring patch.
-Thanks.
->> +//                                        \n\
->> +// dest data payload format is selected by Data Size.                \n\
->> +// Block Height x Block Width x Data size / GRF Register 
->> size            \n\
->> +//    => 1 x 16 x 32bit / 512bit = 1                        \n\
->> +// data payload format size is 1 GRF Register.                    \n\
->> +//                                        \n\
->> +// send.ugm Untyped 2D Block Array Load                        \n\
->> +// Format: send.ugm (1) dst src0 src1 ExtMsg MsgDesc                \n\
->> +// Execution Mask restriction: SIMT1                        \n\
->> +//                                        \n\
->> +// Extended Message Descriptor (Dataport Extended Descriptor Imm 2D 
->> Block)    \n\
->> +// bspec: 67780                                    \n\
->> +// 0x0 =>                                    \n\
->> +// [32:22] Global Y_offset: 0                            \n\
->> +// [21:12] Global X_offset: 0                            \n\
->> +//                                        \n\
->> +// Message Descriptor                                \n\
->> +// bspec: 63972                                    \n\
->> +// 0x2128403 =>                                    \n\
->> +// [30:29] Address Type: 0 (FLAT)                        \n\
->> +// [28:25] Src0 Length: 1                            \n\
->> +// [24:20] Dest Length: 1                            \n\
->> +// [19:16] Cache : 2 (L1UC_L3UC) 10                        \n\
->> +// [15] Transpose Block: 1                            \n\
->> +// [11:9] Data Size: 2 (D32) 10                            \n\
->> +// [7] VNNI Transform: 0                            \n\
->> +// [5:0] Load Operation: 3 (Load 2D Block) 11                    \n\
->> +(W)    send.ugm (1)        r31    r30    null    0x0    0x2128403    \n\
->> +#endif                                        \n\
->> +    ", lower_32_bits(addr), upper_32_bits(addr));
+>> +    return count;
 >> +}
->> \ No newline at end of file
-> 
-> New line
-> 
->> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
->> index 355b128b5..318550c52 100644
->> --- a/lib/gpgpu_shader.h
->> +++ b/lib/gpgpu_shader.h
->> @@ -87,6 +87,7 @@ void gpgpu_shader__write_offset(struct gpgpu_shader 
->> *shdr, uint64_t ppgtt_offset
->>                   uint32_t value);
->>   void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, 
->> uint32_t dw, uint32_t x_offset,
->>                         uint32_t y_offset, uint32_t mask, uint32_t 
->> value);
->> +void gpgpu_shader__read_page_fault(struct gpgpu_shader *shdr, 
->> uint64_t ppgtt_addr);
->>   void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
->>   void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
->>   void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
->> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
->> index b23613ac4..53a705358 100644
->> --- a/lib/iga64_generated_codes.c
->> +++ b/lib/iga64_generated_codes.c
->> @@ -3,7 +3,7 @@
->>   #include "gpgpu_shader.h"
->> -#define MD5_SUM_IGA64_ASMS 4fcde43dedb9d3212f1d85b5b180b0c1
->> +#define MD5_SUM_IGA64_ASMS 01290b5ecda7a6e765463558d6f59952
->>   struct iga64_template const iga64_code_gpgpu_fill[] = {
->>       { .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->> @@ -79,6 +79,25 @@ struct iga64_template const iga64_code_gpgpu_fill[] 
->> = {
->>       }}
->>   };
->> +struct iga64_template const iga64_code_read_page_fault[] = {
->> +    { .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->> +        0x800c0061, 0x1e054330, 0x00000000, 0x00000000,
->> +        0x80000061, 0x1e054220, 0x00000000, 0xc0ded000,
->> +        0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
->> +        0x80000061, 0x1e254220, 0x00000000, 0x0000003f,
->> +        0x80000061, 0x1e354220, 0x00000000, 0x00000000,
->> +        0x80000061, 0x1e454220, 0x00000000, 0x0000003f,
->> +        0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
->> +        0x80032031, 0x1f0c0000, 0xf8061e0c, 0x00a00000,
->> +        0x80000001, 0x00010000, 0x20000000, 0x00000000,
->> +        0x80000001, 0x00010000, 0x30000000, 0x00000000,
->> +        0x80000901, 0x00010000, 0x00000000, 0x00000000,
->> +    }},
->> +    { .gen_ver = 0, .size = 0, .code = (const uint32_t []) {
 >> +
->> +    }}
->> +};
->> +
->>   struct iga64_template const 
->> iga64_code_end_system_routine_step_if_eq[] = {
->>       { .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->>           0x80000966, 0x80018220, 0x02008000, 0x00008000,
+>>   static int count_canaries_eq(uint32_t *ptr, struct dim_t w_dim, 
+>> uint32_t value)
+>>   {
+>>       int count = 0;
+>> @@ -636,7 +665,7 @@ static void eu_attention_resume_trigger(struct 
+>> xe_eudebug_debugger *d,
+>>           }
+>>       }
+>> -    if (d->flags & SHADER_LOOP) {
+>> +    if (d->flags & (SHADER_LOOP | SHADER_PAGEFAULT)) {
+>>           uint32_t threads = get_number_of_threads(d->flags);
+>>           uint32_t val = STEERING_END_LOOP;
+>> @@ -746,6 +775,43 @@ static void 
+>> eu_attention_resume_single_step_trigger(struct xe_eudebug_debugger *
+>>               data->single_step_bitmask[i] &= ~att->bitmask[i];
+>>   }
+>> +static void eu_attention_resume_pagefault_trigger(struct 
+>> xe_eudebug_debugger *d,
+>> +                          struct drm_xe_eudebug_event *e)
+>> +{
+>> +    struct drm_xe_eudebug_event_eu_attention *att = (void *) e;
 > 
+> 
+> att = igt_container_of(e, att, base);
+> 
+>> +    struct online_debug_data *data = d->ptr;
+>> +    uint32_t bitmask_size = att->bitmask_size;
+>> +    uint8_t *bitmask;
+> 
+> In safe world could be:
+> 
+> uint8_t bitmask[att->bitmask_size];
+> your approach seems safer, however.
+> 
+>> +
+>> +    if (data->last_eu_control_seqno > att->base.seqno)
+>> +        return;
+>> +
+>> +    bitmask = calloc(1, att->bitmask_size);
+> igt_assert(bitmask);
+>> +
+>> +    eu_ctl_stopped(d->fd, att->client_handle, att->exec_queue_handle,
+>> +               att->lrc_handle, bitmask, &bitmask_size);
+>> +    igt_assert(bitmask_size == att->bitmask_size);
+>> +
+>> +    pthread_mutex_lock(&data->mutex);
+>> +
+>> +    if (d->flags & SHADER_PAGEFAULT) {
+>> +        uint32_t threads = get_number_of_threads(d->flags);
+>> +        uint32_t val = STEERING_END_LOOP;
+>> +
+>> +        igt_assert_eq(pwrite(data->vm_fd, &val, sizeof(uint32_t),
+>> +                     data->target_offset + steering_offset(threads)),
+>> +                  sizeof(uint32_t));
+>> +        fsync(data->vm_fd);
+>> +    }
+>> +    pthread_mutex_unlock(&data->mutex);
+>> +
+>> +    data->last_eu_control_seqno = eu_ctl_resume(d->master_fd, d->fd, 
+>> att->client_handle,
+>> +                            att->exec_queue_handle, att->lrc_handle,
+>> +                            bitmask, att->bitmask_size);
+>> +
+>> +    free(bitmask);
+>> +}
+>> +
+>>   static void open_trigger(struct xe_eudebug_debugger *d,
+>>                struct drm_xe_eudebug_event *e)
+>>   {
+>> @@ -1015,7 +1081,7 @@ static void run_online_client(struct 
+>> xe_eudebug_client *c)
+>>       struct intel_bb *ibb;
+>>       struct intel_buf *buf;
+>>       uint32_t *ptr;
+>> -    int fd;
+>> +    int fd, vm_flags;
+>>       metadata[0] = calloc(2, sizeof(*metadata));
+>>       metadata[1] = calloc(2, sizeof(*metadata));
+>> @@ -1025,7 +1091,7 @@ static void run_online_client(struct 
+>> xe_eudebug_client *c)
+>>       fd = xe_eudebug_client_open_driver(c);
+>>       /* Additional memory for steering control */
+>> -    if (c->flags & SHADER_LOOP || c->flags & SHADER_SINGLE_STEP)
+>> +    if (c->flags & SHADER_LOOP || c->flags & SHADER_SINGLE_STEP || c- 
+>> >flags & SHADER_PAGEFAULT)
+>>           s_dim.y++;
+>>       /* Additional memory for caching check */
+>>       if ((c->flags & SHADER_CACHING_SRAM) || (c->flags & 
+>> SHADER_CACHING_VRAM))
+>> @@ -1045,7 +1111,11 @@ static void run_online_client(struct 
+>> xe_eudebug_client *c)
+>>                                  DRM_XE_DEBUG_METADATA_PROGRAM_MODULE,
+>>                                  2 * sizeof(*metadata), metadata[1]);
+>> -    create.vm_id = xe_eudebug_client_vm_create(c, fd, 
+>> DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+>> +    vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
+>> +    vm_flags |= c->flags & SHADER_PAGEFAULT ? 
+>> DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
+>> +
+>> +    create.vm_id = xe_eudebug_client_vm_create(c, fd, vm_flags, 0);
+>> +
+>>       xe_eudebug_client_exec_queue_create(c, fd, &create);
+>>       ibb = xe_bb_create_on_offset(fd, create.exec_queue_id, 
+>> create.vm_id, bb_offset, bb_size,
+>> @@ -1245,11 +1315,14 @@ match_attention_with_exec_queue(struct 
+>> xe_eudebug_event_log *log,
+>>   static void online_session_check(struct xe_eudebug_session *s, int 
+>> flags)
+>>   {
+>>       struct drm_xe_eudebug_event_eu_attention *ea = NULL;
+>> +    struct drm_xe_eudebug_event_pagefault *pf = NULL;
+>>       struct drm_xe_eudebug_event *event = NULL;
+>>       struct online_debug_data *data = s->client->ptr;
+>>       bool expect_exception = flags & DISABLE_DEBUG_MODE ? false : true;
+>>       int sum = 0;
+>>       int bitmask_size;
+>> +    int pagefault_threads = 0;
+>> +    uint32_t *ptr = NULL;
+> ptr can be defined in else clause.
+>>       xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
+>>                         XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
+>> @@ -1265,6 +1338,16 @@ static void online_session_check(struct 
+>> xe_eudebug_session *s, int flags)
+>>               igt_assert_eq(ea->bitmask_size, bitmask_size);
+>>               sum += count_set_bits(ea->bitmask, bitmask_size);
+>>               igt_assert(match_attention_with_exec_queue(s->debugger- 
+>> >log, ea));
+>> +        } else if (event->type == DRM_XE_EUDEBUG_EVENT_PAGEFAULT) {
+>> +            uint32_t after_offset = bitmask_size / sizeof(uint32_t);
+>> +            uint32_t resolved_offset = bitmask_size / 
+>> sizeof(uint32_t) * 2;
+>> +
+>> +            pf = (struct drm_xe_eudebug_event_pagefault *)event;
+>> +            ptr = (uint32_t *) pf->bitmask;
+>> +            igt_assert_eq(pf->bitmask_size, bitmask_size * 3);
+>> +            pagefault_threads += eu_attentions_xor_count(ptr + 
+>> after_offset,
+>> +                                     ptr + resolved_offset,
+>> +                                     bitmask_size);
+>>           }
+>>       }
+>> @@ -1279,6 +1362,9 @@ static void online_session_check(struct 
+>> xe_eudebug_session *s, int flags)
+>>           igt_assert(sum > 0);
+>>       else
+>>           igt_assert(sum == 0);
+>> +
+>> +    if (flags & SHADER_PAGEFAULT)
+>> +        igt_assert(pagefault_threads > 0);
+>>   }
+>>   static void ufence_ack_trigger(struct xe_eudebug_debugger *d,
+>> @@ -1302,6 +1388,55 @@ static void ufence_ack_set_bp_trigger(struct 
+>> xe_eudebug_debugger *d,
+>>       }
+>>   }
+>> +static void pagefault_trigger(struct xe_eudebug_debugger *d,
+>> +                  struct drm_xe_eudebug_event *e)
+>> +{
+>> +    struct drm_xe_eudebug_event_pagefault *pf = (void *) e;
+>> +    int before_threads, after_threads, resolved_threads, 
+>> pagefault_threads;
+>> +    uint32_t attn_size = pf->bitmask_size / 3;
+>> +    uint32_t *ptr = (uint32_t *) pf->bitmask;
+>> +    uint32_t offset, before_offset = 0;
+>> +    uint32_t after_offset = attn_size / sizeof(uint32_t);
+>> +    uint32_t resolved_offset = attn_size / sizeof(uint32_t) * 2;
+>> +
+>> +    before_threads = count_set_bits(ptr + before_offset, attn_size);
+>> +    after_threads = count_set_bits(ptr + after_offset, attn_size);
+>> +    resolved_threads = count_set_bits(ptr + resolved_offset, attn_size);
+>> +
+>> +    pagefault_threads = eu_attentions_xor_count(ptr + after_offset,
+>> +                            ptr + resolved_offset,
+>> +                            attn_size);
+>> +
+>> +    igt_debug("EVENT[%llu] pagefault; threads[before=%d, after=%d, "
+>> +          "resolved=%d, pagefault=%d] "
+>> +          "client[%llu], exec_queue[%llu], lrc[%llu], 
+>> bitmask_size[%d], "
+>> +          "pagefault_address[0x%llx]\n",
+>> +          pf->base.seqno, before_threads, after_threads, 
+>> resolved_threads,
+>> +          pagefault_threads, pf->client_handle, pf->exec_queue_handle,
+>> +          pf->lrc_handle, pf->bitmask_size,
+>> +          pf->pagefault_address);
+>> +
+>> +    for (int idx = 0; idx < 3; idx++) {
+>> +        if (idx == 0) {
+>> +            igt_debug("=== Attentions before ===\n");
+>> +            offset = before_offset;
+>> +        } else if (idx == 1) {
+>> +            igt_debug("=== Attentions after ===\n");
+>> +            offset = after_offset;
+>> +        } else {
+>> +            igt_debug("=== Attentions resolved ===\n");
+>> +            offset = resolved_offset;
+>> +        }
+>> +
+>> +        for (uint32_t i = 0; i < attn_size / sizeof(uint32_t); i += 2)
+>> +            igt_debug("bitmask[%d] = 0x%08x%08x\n", i / 2,
+>> +                  ptr[offset + i], ptr[offset + i + 1]);
+>> +    }
+> 
+> I have impression we can put most of it into arrays, and drop *_offset, 
+> kind of:
+> 
+> int attn_size_32 = attn_size / sizeof(uint32_t);
+> 
+> uint32_t *ptrs[3] = {ptr, ptr + attn_size_32, ptr + 2 * attn_size_32];
+> int threads[3];
+> const char * const name[3] = { "before", "after", "resolved" };
+> 
+> for (int idx = 0; idx < 3; idx++)
+>      threads[i] = count_set_bits(ptr[i], attn_size);
+> 
+> ...
+> for (int idx = 0; idx < 3; idx++) {
+>      igt_debug("=== Attentions %s ===\n", name[idx]);
+>      for (...)
+>          igt_debug(..., ptr[idx][i]...);
+> }
+> 
+thanks for guiding readable / clean code style.
+I'll follow on next version.
+
+G.G.
+> 
+> Regards
+> Andrzej
+> 
+>> +
+>> +    igt_assert(pagefault_threads > 0);
+>> +    igt_assert_eq_u64(pf->pagefault_address, BAD_OFFSET);
+>> +}
+>> +
+>>   /**
+>>    * SUBTEST: basic-breakpoint
+>>    * Description:
+>> @@ -1383,6 +1518,77 @@ static void test_set_breakpoint_online(int fd, 
+>> struct drm_xe_engine_class_instan
+>>       online_debug_data_destroy(data);
+>>   }
+>> +/**
+>> + * SUBTEST: pagefault-read
+>> + * Description:
+>> + *     Check whether KMD sends pagefault event for workload in debug 
+>> mode that
+>> + *     triggers a read pagefault.
+>> + *
+>> + * SUBTEST: pagefault-write
+>> + * Description:
+>> + *     Check whether KMD sends pagefault event for workload in debug 
+>> mode that
+>> + *     triggers a write pagefault.
+>> + */
+>> +static void test_pagefault_online(int fd, struct 
+>> drm_xe_engine_class_instance *hwe,
+>> +                  int flags)
+>> +{
+>> +    struct xe_eudebug_session *s;
+>> +    struct online_debug_data *data;
+>> +    uint32_t val;
+>> +
+>> +    data = online_debug_data_create(hwe);
+>> +    s = xe_eudebug_session_create(fd, run_online_client, flags, data);
+>> +
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_OPEN,
+>> +                    open_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
+>> +                    exec_queue_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+>> +                    eu_attention_debug_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+>> +                    eu_attention_resume_pagefault_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_METADATA,
+>> +                    create_metadata_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+>> +                    ufence_ack_trigger);
+>> +    xe_eudebug_debugger_add_trigger(s->debugger, 
+>> DRM_XE_EUDEBUG_EVENT_PAGEFAULT,
+>> +                    pagefault_trigger);
+>> +
+>> +    igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 
+>> 0);
+>> +    xe_eudebug_debugger_start_worker(s->debugger);
+>> +    xe_eudebug_client_start(s->client);
+>> +
+>> +    /* wait for workload to start */
+>> +    igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+>> +        /* collect needed data from triggers */
+>> +        if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data- 
+>> >target_size) == 0)
+>> +            continue;
+>> +
+>> +        if (pread(data->vm_fd, &val, sizeof(val), data- 
+>> >target_offset) == sizeof(val))
+>> +            if (val != 0)
+>> +                break;
+>> +    }
+>> +
+>> +    pthread_mutex_lock(&data->mutex);
+>> +    igt_assert(data->client_handle != -1);
+>> +    igt_assert(data->exec_queue_handle != -1);
+>> +
+>> +    pthread_mutex_unlock(&data->mutex);
+>> +
+>> +    xe_eudebug_client_wait_done(s->client);
+>> +
+>> +    xe_eudebug_debugger_stop_worker(s->debugger, 1);
+>> +
+>> +    xe_eudebug_event_log_print(s->debugger->log, true);
+>> +    xe_eudebug_event_log_print(s->client->log, true);
+>> +
+>> +    online_session_check(s, s->flags);
+>> +
+>> +    xe_eudebug_session_destroy(s);
+>> +    online_debug_data_destroy(data);
+>> +}
+>> +
+>>   /**
+>>    * SUBTEST: preempt-breakpoint
+>>    * Description:
+>> @@ -2344,6 +2550,11 @@ igt_main
+>>       igt_subtest("breakpoint-many-sessions-tiles")
+>>           test_many_sessions_on_tiles(fd, true);
+>> +    test_gt_render_or_compute("pagefault-read", fd, hwe)
+>> +        test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_READ);
+>> +    test_gt_render_or_compute("pagefault-write", fd, hwe)
+>> +        test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_WRITE);
+>> +
+>>       igt_fixture {
+>>           xe_eudebug_enable(fd, was_enabled);
 
