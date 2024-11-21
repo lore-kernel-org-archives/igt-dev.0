@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44834D6ED2B
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 13:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70506D6ED32
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 13:41:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1DF610E947;
-	Thu, 21 Nov 2024 13:41:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2B8B610E959;
+	Thu, 21 Nov 2024 13:41:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fAXCUljS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jTHW+aT2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5446310E947
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 13:41:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FBC10E959
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 13:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732196473; x=1763732473;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=uouU/wrnuEaGTpoXa1VFdn2TIiCSxfvGNaFJSgoWCEo=;
- b=fAXCUljSK9XSFswwaOVGbOcYB85MQI1tqeIyMDVHIkVo1J0lORCoy99m
- HYbFg82npJSkr5OAtjSu7v3qWPq1g7wJOwHjdoU2/OqyL+WjRXs7lQd8b
- ZLD1c315MbEWomHv6Xk3dWkyriAn4xBpyoXi5JaVoiiZN/SWZnsdECvy8
- smhnUsBtKc2OuqQEwA54oAjz0Q4PRPfKXVU7WPkLJvC+hSvepMUBKp3by
- DnNrWOzDDSGaQVvc99mcMWk1/yqvtF4Fmpd9TthqNQhPrr3igH5FZlpQb
- sRnqTM5vd0H6WyuZmi/UABctBZolDtjpWT+8vazuiaHPjW0axGz9PqWUY Q==;
-X-CSE-ConnectionGUID: i8zmvuJCQMOisYkp9+oJ2Q==
-X-CSE-MsgGUID: Oa60TpyESXu4zTv+hpslYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="54809147"
-X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="54809147"
+ t=1732196475; x=1763732475;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=rVJGvYaBM97zc1HP6PmDqPOxVgheRgzMWDcplCwjiLg=;
+ b=jTHW+aT2owafdRWQgWk5kJ2WPn0Q8SE3CYrCMmMlWWgkTNwbfqs9vTqb
+ IXAO4t42MoGA3kOY9p+apA5j2DNRxvzm/PK+W7Xt6LrLTtuQU5kzho5zH
+ hHj9NHDyqZuqQz5LbQSAffcA6PncU2fD3WnW9SA3zMEP1zELBd0c3ag9Z
+ TdaHUaTdMK8V2Ns0Q3L3JruJLWbBVAaUcNtH7rY0Tlo5nQ0m4S9BbOyI6
+ KSXQ2sW0uyyfUCEeKt9fgjKLbDIei189fAQnsclnCvn2C1PBvY75y8eOE
+ W5FnezGrAY//7YOeZEfM468cJfkUJohdFbsHDy5cKfyZT8+PTApnL/lRs w==;
+X-CSE-ConnectionGUID: TbBki5UHSfqj5gyaZoThHA==
+X-CSE-MsgGUID: vUab3S8/QwWoWoseSiYqcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="54809148"
+X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="54809148"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 05:41:13 -0800
-X-CSE-ConnectionGUID: RtsaFOF+QNKdCeVqbv4auA==
-X-CSE-MsgGUID: cwaOSghdSLqAtPQ2jssWKQ==
+ 21 Nov 2024 05:41:15 -0800
+X-CSE-ConnectionGUID: gd4d6RgmSOmq0mHwUe4TYg==
+X-CSE-MsgGUID: wB31kLQ+QI2MQhqHuXZObw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="90192535"
+X-IronPort-AV: E=Sophos;i="6.12,172,1728975600"; d="scan'208";a="90192539"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 05:41:12 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 05:41:14 -0800
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 0/5] Update image assets
-Date: Thu, 21 Nov 2024 19:09:53 +0530
-Message-ID: <20241121133958.3382633-1-ramanaidu.naladala@intel.com>
+Cc: swati2.sharma@intel.com,
+ "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 1/5] data: create new data directory
+Date: Thu, 21 Nov 2024 19:09:54 +0530
+Message-ID: <20241121133958.3382633-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241121133958.3382633-1-ramanaidu.naladala@intel.com>
+References: <20241121133958.3382633-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,38 +68,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update image assets and improve file handling.
+From: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
 
-Naladala Ramanaidu (3):
-  runner/settings: Update absolute_path function to accept const char*
-    parameter
-  runner/settings: Add function to set IMGDIR environment variable
-  HAX patch do not merge
+Placing png images inside "tests/" directory seems wrong, as these
+are not source files. These images should ideally be in a directory
+with other non-exec files, so creating a new "data/" directory to
+store such non-exec files.
 
-Naladala, Ramanaidu (2):
-  data: create new data directory
-  lib: update fopen() to accomodate imgdir
-
- {tests => data}/1080p-left.png           | Bin
- {tests => data}/1080p-right.png          | Bin
- data/meson.build                         |  11 +
- {tests => data}/pass.png                 | Bin
- lib/igt_core.c                           |  17 +-
- lib/igt_core.h                           |   4 +-
- lib/meson.build                          |   1 +
- meson.build                              |   2 +
- runner/runner.c                          |   2 +
- runner/settings.c                        |  15 +-
- runner/settings.h                        |  10 +-
- tests/intel-ci/fast-feedback.testlist    | 168 +-------------
- tests/intel-ci/xe-fast-feedback.testlist | 279 +----------------------
- tests/meson.build                        |   6 -
- 14 files changed, 58 insertions(+), 457 deletions(-)
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ {tests => data}/1080p-left.png  | Bin
+ {tests => data}/1080p-right.png | Bin
+ data/meson.build                |  11 +++++++++++
+ {tests => data}/pass.png        | Bin
+ lib/meson.build                 |   1 +
+ meson.build                     |   2 ++
+ tests/meson.build               |   6 ------
+ 7 files changed, 14 insertions(+), 6 deletions(-)
  rename {tests => data}/1080p-left.png (100%)
  rename {tests => data}/1080p-right.png (100%)
  create mode 100644 data/meson.build
  rename {tests => data}/pass.png (100%)
 
+diff --git a/tests/1080p-left.png b/data/1080p-left.png
+similarity index 100%
+rename from tests/1080p-left.png
+rename to data/1080p-left.png
+diff --git a/tests/1080p-right.png b/data/1080p-right.png
+similarity index 100%
+rename from tests/1080p-right.png
+rename to data/1080p-right.png
+diff --git a/data/meson.build b/data/meson.build
+new file mode 100644
+index 000000000..9490d20ac
+--- /dev/null
++++ b/data/meson.build
+@@ -0,0 +1,11 @@
++image_files = [
++  '1080p-left.png',
++  '1080p-right.png',
++  'pass.png',
++]
++
++foreach img : image_files
++      configure_file(output:img, input:img, copy:true)
++endforeach
++
++install_data(sources : image_files, install_dir : datadir)
+diff --git a/tests/pass.png b/data/pass.png
+similarity index 100%
+rename from tests/pass.png
+rename to data/pass.png
+diff --git a/lib/meson.build b/lib/meson.build
+index 3d459c7a3..6f8f479ff 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -238,6 +238,7 @@ foreach f: lib_sources
+ 	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
+ 	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
+ 	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
++	    '-DIGT_IMGDIR="@0@"'.format(imgdir),
+ 	])
+ 
+     lib_intermediates += lib
+diff --git a/meson.build b/meson.build
+index 64f57f232..5ff646825 100644
+--- a/meson.build
++++ b/meson.build
+@@ -286,6 +286,7 @@ vmwgfxdir = join_paths(libexecdir, 'vmwgfx')
+ mandir = get_option('mandir')
+ pkgconfigdir = join_paths(libdir, 'pkgconfig')
+ python3 = find_program('python3', required : true)
++imgdir = join_paths(build_root, 'data')
+ 
+ if get_option('use_rpath')
+ 	# Set up runpath for the test executables towards libigt.so.
+@@ -381,6 +382,7 @@ endif
+ subdir('overlay')
+ subdir('man')
+ subdir('docs')
++subdir('data')
+ 
+ message('Build options')
+ message('=============')
+diff --git a/tests/meson.build b/tests/meson.build
+index 2724c7a9a..61dc7ed34 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -508,11 +508,5 @@ if not meson.is_cross_build()
+ 			output : 'gem_stress.testlist')
+ endif
+ 
+-image_files = [
+-  '1080p-left.png',
+-  '1080p-right.png',
+-  'pass.png',
+-]
+-install_data(sources : image_files, install_dir : datadir)
+ 
+ subdir('intel-ci')
 -- 
 2.43.0
 
