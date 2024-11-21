@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F46D78765
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 14:19:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63E1D78765
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 14:19:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2378110E974;
-	Thu, 21 Nov 2024 14:19:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 621D610E972;
+	Thu, 21 Nov 2024 14:19:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bIwuaXvv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HSc2ZnFA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E142710E974
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 14:19:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2A7010E972
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 14:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732198746; x=1763734746;
+ t=1732198752; x=1763734752;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vEiGXZZQrNEMFGM/zIepIlfK4Z0Fh610muvzWSuMnxI=;
- b=bIwuaXvvwY4Y5jQEyOpPbysqE+QZeAeLVGluBjgqKYKzeX5uDjWAeP7K
- I9oiCNiYe8xjiy47ZE67Y4z0ULQWs9z3Dmo78pcKuyWHyAz0xZ9dCwJ6d
- awYznAblat55ebZUk1NpwGTfeft2tcSyywD3Voei3M5m0wrpbgK9jlFxT
- sIEXW7xjU9S25wxJ5NZ6qiJFr1gwLlZzIFbpkqLjYXSh48b6+bcl4P9Xg
- 27z1GypPOlzkuBz4H/Pf7nd3ly+KKb6UJE9ncnGv4BiHdtlUsVufa8wu0
- dD7MuMirpSxIMCDx231HbINLYRzb0PRR8484AGVuqUrXGlblj7Zea13Ma g==;
-X-CSE-ConnectionGUID: 0Ud5wGA7RAGRohfceDnz/g==
-X-CSE-MsgGUID: jNupUMO7TCeigq/dVnY6Fw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32449583"
-X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; d="scan'208";a="32449583"
+ bh=mtqpbU1lGLAnNlczIbzIkdAeskOPDigg2DFZPOVjs20=;
+ b=HSc2ZnFAqk+0/8Z71TmQpCC0ZR6Zez18HgjjVpxrbiuGGl9YecsMmeGR
+ kX3+JUTLATkeZkCbtds76AVQ4PMuANSSU1ZF7EbBXqbOaruwmcDX75mDO
+ 6313LrotJiO/XvbprRLzAQOj6lnXfXgcOy3cmogoVYqXfihpeThTjFW22
+ c8oanDsiD5TZRvpr+tjvsKgKeCradhVVTpyqFvTprE9296dymNSauLB4F
+ J4gDvaCfcIftVsLupgOJ9Mzt1iiJleHRCBFlZ7Uyz1br8GuZO3pVHL0fW
+ hZdtGDQJf7ljsY9SAbF50PLKGibIuKiX6YJ4r+1O+tvMPVvB1moSoauHY w==;
+X-CSE-ConnectionGUID: D9tJzyv2SUullfcplyWFQw==
+X-CSE-MsgGUID: EvUSqI2dS3G0PdZlR/qU0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32449615"
+X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; d="scan'208";a="32449615"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 06:19:05 -0800
-X-CSE-ConnectionGUID: rN/H+gpvQvyfnBTBv2KHRQ==
-X-CSE-MsgGUID: baOr/4FORoGvSmBtLsGTfA==
+ 21 Nov 2024 06:19:12 -0800
+X-CSE-ConnectionGUID: 27KGguBZSdqFm6+In5ggJw==
+X-CSE-MsgGUID: v3OsMHY6QWyu97lsppINiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; d="scan'208";a="127788710"
+X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; d="scan'208";a="127788760"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.98.7])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 06:19:02 -0800
+ 21 Nov 2024 06:19:09 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, adam.miszczak@linux.intel.com,
@@ -50,10 +50,10 @@ Cc: kamil.konieczny@linux.intel.com, adam.miszczak@linux.intel.com,
  narasimha.c.v@intel.com, piotr.piorkowski@intel.com,
  satyanarayana.k.v.p@intel.com, tomasz.lis@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH v3 i-g-t 1/4] lib/xe/xe_mmio: Replace open-coded init/cleanup
- with existing functions
-Date: Thu, 21 Nov 2024 15:18:48 +0100
-Message-Id: <20241121141851.631877-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v3 i-g-t 2/4] lib/xe/xe_sriov_provisioning: Refactor range
+ handling and logging
+Date: Thu, 21 Nov 2024 15:18:49 +0100
+Message-Id: <20241121141851.631877-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241121141851.631877-1-marcin.bernatowicz@linux.intel.com>
 References: <20241121141851.631877-1-marcin.bernatowicz@linux.intel.com>
@@ -75,51 +75,137 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use intel_register_access_init and intel_register_access_fini to handle
-initialization and cleanup, reducing code duplication. This improves
-maintainability and ensures consistency, including handling forcewake
-for Xe.
+Introduce an append_range helper to reduce code duplication in handling
+provisioned PTE ranges. Limit debug logs to the first 70 entries for
+clarity and improved reasoning. Enhance error handling by propagating
+realloc failures.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: C V Narasimha <narasimha.c.v@intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: K V P Satyanarayana <satyanarayana.k.v.p@intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
 Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/xe/xe_mmio.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ lib/xe/xe_sriov_provisioning.c | 71 ++++++++++++++++++++++------------
+ 1 file changed, 47 insertions(+), 24 deletions(-)
 
-diff --git a/lib/xe/xe_mmio.c b/lib/xe/xe_mmio.c
-index 0817c12f6..834816133 100644
---- a/lib/xe/xe_mmio.c
-+++ b/lib/xe/xe_mmio.c
-@@ -23,13 +23,8 @@ void xe_mmio_vf_access_init(int pf_fd, int vf_id, struct xe_mmio *mmio)
- 
- 	igt_assert_f(pci_dev, "No PCI device found for VF%u\n", vf_id);
- 
--	intel_mmio_use_pci_bar(&mmio->intel_mmio, pci_dev);
--
--	igt_assert(mmio->intel_mmio.igt_mmio);
--
-+	intel_register_access_init(&mmio->intel_mmio, pci_dev, false);
- 	mmio->fd = pf_fd;
--	mmio->intel_mmio.safe = false;
--	mmio->intel_mmio.pci_device_id = pci_dev->device_id;
- }
- 
- /**
-@@ -53,8 +48,7 @@ void xe_mmio_access_init(int pf_fd, struct xe_mmio *mmio)
+diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
+index 7cde2c240..d448a53d8 100644
+--- a/lib/xe/xe_sriov_provisioning.c
++++ b/lib/xe/xe_sriov_provisioning.c
+@@ -3,7 +3,7 @@
+  * Copyright(c) 2024 Intel Corporation. All rights reserved.
   */
- void xe_mmio_access_fini(struct xe_mmio *mmio)
- {
--	mmio->intel_mmio.pci_device_id = 0;
--	intel_mmio_unmap_pci_bar(&mmio->intel_mmio);
-+	intel_register_access_fini(&mmio->intel_mmio);
+ 
+-#include <stdlib.h>
++#include <errno.h>
+ 
+ #include "igt_core.h"
+ #include "intel_chipset.h"
+@@ -48,6 +48,37 @@ static uint64_t get_vfid_mask(int fd)
+ 		GGTT_PTE_VFID_MASK : PRE_1250_IP_VER_GGTT_PTE_VFID_MASK;
  }
  
++#define MAX_DEBUG_ENTRIES 70
++
++static int append_range(struct xe_sriov_provisioned_range **ranges,
++			unsigned int *nr_ranges, unsigned int vf_id,
++			uint32_t start, uint32_t end)
++{
++	struct xe_sriov_provisioned_range *new_ranges;
++
++	new_ranges = realloc(*ranges,
++			     (*nr_ranges + 1) * sizeof(struct xe_sriov_provisioned_range));
++	if (!new_ranges) {
++		free(*ranges);
++		*ranges = NULL;
++		*nr_ranges = 0;
++		return -ENOMEM;
++	}
++
++	*ranges = new_ranges;
++	if (*nr_ranges < MAX_DEBUG_ENTRIES)
++		igt_debug("Found VF%u GGTT range [%#x-%#x] num_ptes=%ld\n",
++			  vf_id, start, end,
++			  (end - start + sizeof(xe_ggtt_pte_t)) /
++			  sizeof(xe_ggtt_pte_t));
++	(*ranges)[*nr_ranges].vf_id = vf_id;
++	(*ranges)[*nr_ranges].start = start;
++	(*ranges)[*nr_ranges].end = end;
++	(*nr_ranges)++;
++
++	return 0;
++}
++
  /**
+  * xe_sriov_find_ggtt_provisioned_pte_offsets - Find GGTT provisioned PTE offsets
+  * @pf_fd: File descriptor for the Physical Function
+@@ -76,6 +107,7 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
+ 	uint32_t current_start = 0;
+ 	uint32_t current_end = 0;
+ 	xe_ggtt_pte_t pte;
++	int ret;
+ 
+ 	*ranges = NULL;
+ 	*nr_ranges = 0;
+@@ -86,18 +118,11 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
+ 
+ 		if (vf_id != current_vf_id) {
+ 			if (current_vf_id != -1) {
+-				/* End the current range */
+-				*ranges = realloc(*ranges, (*nr_ranges + 1) *
+-						  sizeof(struct xe_sriov_provisioned_range));
+-				igt_assert(*ranges);
+-				igt_debug("Found VF%u ggtt range [%#x-%#x] num_ptes=%ld\n",
+-					  current_vf_id, current_start, current_end,
+-					  (current_end - current_start + sizeof(xe_ggtt_pte_t)) /
+-					  sizeof(xe_ggtt_pte_t));
+-				(*ranges)[*nr_ranges].vf_id = current_vf_id;
+-				(*ranges)[*nr_ranges].start = current_start;
+-				(*ranges)[*nr_ranges].end = current_end;
+-				(*nr_ranges)++;
++				/* End the current range and append it */
++				ret = append_range(ranges, nr_ranges, current_vf_id,
++						   current_start, current_end);
++				if (ret < 0)
++					return ret;
+ 			}
+ 			/* Start a new range */
+ 			current_vf_id = vf_id;
+@@ -107,18 +132,16 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
+ 	}
+ 
+ 	if (current_vf_id != -1) {
+-		*ranges = realloc(*ranges, (*nr_ranges + 1) *
+-				  sizeof(struct xe_sriov_provisioned_range));
+-		igt_assert(*ranges);
+-		igt_debug("Found VF%u ggtt range [%#x-%#x] num_ptes=%ld\n",
+-			  current_vf_id, current_start, current_end,
+-			  (current_end - current_start + sizeof(xe_ggtt_pte_t)) /
+-			  sizeof(xe_ggtt_pte_t));
+-		(*ranges)[*nr_ranges].vf_id = current_vf_id;
+-		(*ranges)[*nr_ranges].start = current_start;
+-		(*ranges)[*nr_ranges].end = current_end;
+-		(*nr_ranges)++;
++		/* Append the last range */
++		ret = append_range(ranges, nr_ranges, current_vf_id,
++				   current_start, current_end);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
++	if (*nr_ranges > MAX_DEBUG_ENTRIES)
++		igt_debug("Ranges output trimmed to first %u entries out of %u\n",
++			  MAX_DEBUG_ENTRIES, *nr_ranges);
++
+ 	return 0;
+ }
 -- 
 2.31.1
 
