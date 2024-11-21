@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDDFFD743C9
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 17:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7695D743CA
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Nov 2024 17:44:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96BA810E06D;
-	Thu, 21 Nov 2024 17:44:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ap2jHh7K";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 099CA10E06D
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 17:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732211049; x=1763747049;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=glMCOamzAQYcR1/FlQZMXDAxgfP9Nhud0KxBySCWg4I=;
- b=ap2jHh7Kd3KvdtwWyyjsME5SoB/TMogQcBvFS0tASVJi/LsnLvxJPzL3
- MVg3eu8VSQAH3Xo9xqgbwUUXSQZF23LdmpW6OzfBPPFVvIaYPBMC5c/nW
- 42MuZKQmWh1vtX1jhjFnj4cOF7PLqj5CwQp5Q4x6qm5yU8twzkrk6xI93
- ZDeSn139Cd6RCpw3mmg5WfcgKxoGQygMzIQooIIvucVM5j3NVF4igZh/D
- w5BLtbA1MoyI8T55buh/GRn67o3/VCE8o+41nZczYk6+vd+ZUy96CZm0s
- hulHchUTgPlSOGR7Aw90syoyZYweOHs5yMyj5s9Rg3bFnGteoyuFEvzxn g==;
-X-CSE-ConnectionGUID: WpP0RP/7QmKe4KcHGAqoYw==
-X-CSE-MsgGUID: fiekTj3OQ/+3RwVSwmYy8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32583382"
-X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; d="scan'208";a="32583382"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2024 09:44:08 -0800
-X-CSE-ConnectionGUID: 4Va+d1j7QwGQo3fUpbBuIA==
-X-CSE-MsgGUID: fSkOGySARMm1QLl6/wEQxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; d="scan'208";a="113603823"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 09:44:07 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_cdclk: Handle scenario where ref and
- new cdclk is same
-Date: Thu, 21 Nov 2024 23:16:59 +0530
-Message-Id: <20241121174659.1752109-1-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FB0810E06D;
+	Thu, 21 Nov 2024 17:44:52 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AD7C10E06D;
+ Thu, 21 Nov 2024 17:44:51 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Improvements_for_xe=5Fsri?=
+ =?utf-8?q?ov=5Fflr_test_and_xe=5Fmmio_lib_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Nov 2024 17:44:51 -0000
+Message-ID: <173221109145.1246934.17173470537317461018@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241121141851.631877-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20241121141851.631877-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,157 +37,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are couple of issues with the mode-transition-all-outputs
-subtest. Firstly, test should execute only if we have minimun
-of 2 connected outputs. Secondly, if hdisplay and vdisplay of
-highest and lowest modes are same for an output, don't consider
-that output. Both these issues are addressed here.
+== Series Details ==
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1887
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel/kms_cdclk.c | 67 +++++++++++++++++++++++++----------------
- 1 file changed, 41 insertions(+), 26 deletions(-)
+Series: Improvements for xe_sriov_flr test and xe_mmio lib (rev3)
+URL   : https://patchwork.freedesktop.org/series/141556/
+State : failure
 
-diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-index 382b3e9d1..61d73c8c6 100644
---- a/tests/intel/kms_cdclk.c
-+++ b/tests/intel/kms_cdclk.c
-@@ -54,6 +54,7 @@ IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
- #define VDISPLAY_4K	2160
- #define VREFRESH	60
- #define MAX_CDCLK_4K	307200
-+#define DISPLAY_COUNT	2
- 
- /* Test flags */
- enum {
-@@ -274,83 +275,97 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_display_t *display = &data->display;
- 	int debugfs_fd = data->debugfs_fd;
- 	drmModeModeInfo *mode, *mode_hi, *mode_lo;
-+	igt_output_t *valid_outputs[IGT_MAX_PIPES];
- 	igt_output_t *output;
--	int valid_outputs = 0;
-+	int count = 0;
- 	int cdclk_ref, cdclk_new;
- 	uint16_t width = 0, height = 0;
- 	struct igt_fb fb;
- 	igt_pipe_t *pipe;
- 	igt_plane_t *plane;
--	int i = 0, j = 0;
-+	int i = 0, j = 0, k = 0;
- 
- 	do_cleanup_display(display);
- 	igt_display_reset(display);
- 
--	for_each_connected_output(&data->display, output)
--		valid_outputs++;
--
--	i = 0;
--	for_each_connected_output(display, output) {
-+	for_each_connected_output(&data->display, output) {
- 		mode = igt_output_get_mode(output);
- 		igt_assert(mode);
- 
-+		mode_hi = get_highres_mode(output);
-+		igt_require(mode_hi != NULL);
-+
-+		mode_lo = get_lowres_mode(output);
-+
-+		if (mode_hi->hdisplay == mode_lo->hdisplay && mode_hi->vdisplay == mode_lo->vdisplay) {
-+		      igt_debug("Highest and lowest mode resolutions are same; no transition\n");
-+		      continue;
-+		}
-+
-+		valid_outputs[count++] = output;
-+	}
-+
-+	igt_skip_on_f(count < DISPLAY_COUNT,
-+		      "Valid outputs (%d) should be equal or greater than %d\n", count, DISPLAY_COUNT);
-+
-+	for (i = 0; i < count; i++) {
-+		mode = igt_output_get_mode(valid_outputs[i]);
-+		igt_assert(mode);
-+
- 		width = max(width, mode->hdisplay);
- 		height = max(height, mode->vdisplay);
- 
--		mode_hi = get_highres_mode(output);
-+		mode_hi = get_highres_mode(valid_outputs[i]);
- 		igt_require(mode_hi != NULL);
- 
--		igt_output_set_pipe(output, i);
--		igt_output_override_mode(output, mode_hi);
--		i++;
-+		igt_output_set_pipe(valid_outputs[i], i);
-+		igt_output_override_mode(valid_outputs[i], mode_hi);
- 	}
-+
- 	igt_require(intel_pipe_output_combo_valid(display));
- 	igt_display_reset(display);
- 
- 	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 			      DRM_FORMAT_MOD_LINEAR, &fb);
--	i = 0;
--	for_each_connected_output(display, output) {
--		pipe = &display->pipes[i];
-+
-+	for (k = 0; k < count; k++) {
-+		pipe = &display->pipes[k];
- 		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
- 
- 		mode = NULL;
- 
--		igt_output_set_pipe(output, i);
--		mode = igt_output_get_mode(output);
-+		igt_output_set_pipe(valid_outputs[k], k);
-+		mode = igt_output_get_mode(valid_outputs[k]);
- 		igt_assert(mode);
- 
--		mode_lo = get_lowres_mode(output);
-+		mode_lo = get_lowres_mode(valid_outputs[k]);
- 
--		igt_output_override_mode(output, mode_lo);
-+		igt_output_override_mode(valid_outputs[k], mode_lo);
- 		igt_plane_set_fb(plane, &fb);
- 		igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo->vdisplay);
- 		igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisplay);
--		i++;
- 	}
- 
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
- 
--	j = 0;
--	for_each_connected_output(display, output) {
-+	for (j = 0; j < count; j++) {
- 		pipe = &display->pipes[j];
- 		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
- 
- 		mode = NULL;
- 
--		igt_output_set_pipe(output, j);
--		mode = igt_output_get_mode(output);
-+		igt_output_set_pipe(valid_outputs[j], j);
-+		mode = igt_output_get_mode(valid_outputs[j]);
- 		igt_assert(mode);
- 
--		mode_hi = get_highres_mode(output);
-+		mode_hi = get_highres_mode(valid_outputs[j]);
- 		igt_require(mode_hi != NULL);
- 
--		igt_output_override_mode(output, mode_hi);
-+		igt_output_override_mode(valid_outputs[j], mode_hi);
- 		igt_plane_set_fb(plane, &fb);
- 		igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi->vdisplay);
- 		igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisplay);
--		j++;
- 	}
- 
- 	igt_display_commit2(display, COMMIT_ATOMIC);
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8119 -> IGTPW_12162
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12162 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12162, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12162:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-6:         [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-mtlp-6/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-mtlp-6/igt@i915_selftest@live.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-apl-1:          [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-apl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-apl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_addfb_basic@small-bo:
+    - {bat-mtlp-9}:       [PASS][5] -> [DMESG-WARN][6] +1 other test dmesg-warn
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-mtlp-9/igt@kms_addfb_basic@small-bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-mtlp-9/igt@kms_addfb_basic@small-bo.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12162 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][7] -> [ABORT][8] ([i915#12915])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-rpls-4:         [FAIL][9] ([i915#12903]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-arlh-3:         [ABORT][11] -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-arlh-3/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-arlh-3/igt@i915_selftest@live.html
+    - {bat-arls-6}:       [ABORT][13] -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-arls-6/igt@i915_selftest@live.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-arls-6/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [ABORT][15] ([i915#12061]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - {bat-arls-6}:       [ABORT][17] ([i915#12061]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_chamelium_edid@dp-edid-read:
+    - bat-dg2-13:         [FAIL][19] ([i915#12505]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8119/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12505]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12505
+  [i915#12695]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12695
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12915]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12915
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8119 -> IGTPW_12162
+
+  CI-20190529: 20190529
+  CI_DRM_15725: e46649e7764a9f6868ccbcba7b8b23b413303380 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12162: 12162
+  IGT_8119: 8119
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12162/index.html
