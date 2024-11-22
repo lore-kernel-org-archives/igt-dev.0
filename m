@@ -4,69 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DACE6918F
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 20:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1470AE6918F
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 20:26:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3136310E096;
-	Fri, 22 Nov 2024 20:19:57 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="dv22ZnGu";
-	dkim-atps=neutral
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com
- [209.85.216.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DB2D10E096
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 20:19:56 +0000 (UTC)
-Received: by mail-pj1-f44.google.com with SMTP id
- 98e67ed59e1d1-2e3010478e6so2140426a91.1
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 12:19:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732306796; x=1732911596; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2b5y+VTPX5auq7jQy0StOBUK9aR7UOrxifzjmeyCG4g=;
- b=dv22ZnGuZx7bDUXtGQRcG1A7gE538cM4Hy79ZzrR2v5EOoWvxK3XhhITdUPJsCme2k
- JClSTPMllTF1ar5Fu4jiV/maHhEARw9o8lC5Ahvr8kA0yokiuyZeN7H93YCw60foY6xX
- 5QkWyGakpIUhjB7evmDvrEj9R84PzMLUidVgdQ5IOkvZgya+V3z3X36V/N65tPa2KjhU
- LLA73acueBoeSi+jl/QeSMqyyORBesEH/E3LqlVTWV/lK08wDMvHmwouTQZgw1mMqf5x
- Pi0xyAg//OoubOKBXD6oBn1uLValpdHeBH//8wooIev8B88/mHQJtMB3EdPmUcloOsPm
- Ie6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732306796; x=1732911596;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2b5y+VTPX5auq7jQy0StOBUK9aR7UOrxifzjmeyCG4g=;
- b=igQqLiCaT8xV/RpokmRFVIgv1OpKztfBSGnkbaurLk6crE/8io4eRthkMSUXoYWQWZ
- Mn0AiaJj9+MYKp3DxmUgU7ikUiDREEvGBlhwtD9mdsyPc2gk/jgyDMqyVbbFBGWm2dZ+
- JWFC5/Lcl+pAjknCw4eV1f1HUwjUQf4GkiRHDA/7iuPi1uXFNbKF60D7W0rLOM0OeZmn
- tMrPeQpCrlApFAIHfHGGODWWPralwG0W5ShihWCdspFOQYY4311JQ9k8TERSHuzyQpDf
- STFg3vWdsGWmSvxHb/NtKvc7mTVjpxtQ832IrtmFFMNfGcy4zBhyJXt+bCH/mdWYoZjH
- NkRg==
-X-Gm-Message-State: AOJu0YyazouzbPWVlrF1ZhXVAchu8pZoWlu6BnOSyjGimaMGA8rw9EGy
- 8TzOyN/U7Ns70hGMNkNtNeCv4/400b5PXJJ85xpYWrh8k9XbSYCqOaYUZMEtlEEISdObXeZuMpe
- JIgy2ucvx6BS/e2ZlU36roZK4TQDJCWrK
-X-Gm-Gg: ASbGncvVuESkZvuPYKH51W2F6xRXBvo3d86e+sgk0g8xWvClEJfeAUE2lMsJW9mrYwl
- a+Pizc3ihOGJMwCpiFPFCwMSqIHxvrw==
-X-Google-Smtp-Source: AGHT+IGhoPPF0e7+j64VdaumPZBTnX9m2ZhdGQ+ubdz++0rwUQv7y7+XqKqpTAFn228zvYaa7WVVGSJPikEfO7syNYo=
-X-Received: by 2002:a17:90b:1e06:b0:2ea:715b:72b0 with SMTP id
- 98e67ed59e1d1-2eb0e841f7dmr4261841a91.23.1732306795609; Fri, 22 Nov 2024
- 12:19:55 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C29F410E096;
+	Fri, 22 Nov 2024 20:26:36 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD82810E096;
+ Fri, 22 Nov 2024 20:26:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20241121093822.3863544-1-christian.gmeiner@gmail.com>
- <861e015e-48d9-4a91-8da3-efcae38e1d0a@igalia.com>
- <CAH9NwWeLHGMS8sXt47ctLczfXD1ggg9x2pc3tnKszqJZ=CPdvQ@mail.gmail.com>
- <693bcca3-3969-44a0-ba96-c26fe4bd70c7@igalia.com>
-In-Reply-To: <693bcca3-3969-44a0-ba96-c26fe4bd70c7@igalia.com>
-From: Christian Gmeiner <christian.gmeiner@gmail.com>
-Date: Fri, 22 Nov 2024 21:19:44 +0100
-Message-ID: <CAH9NwWdb5k_2cWYCcQWdMLzKKn1R5ZadSeVoVHTZ30iymyhaHg@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] gputop: Add memory only utilization type
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com, tursulin@igalia.com, 
- Christian Gmeiner <cgmeiner@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_new_test_to_validate_?=
+ =?utf-8?q?adaptive_sharpness_filter_=28rev9=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 22 Nov 2024 20:26:34 -0000
+Message-ID: <173230719492.1827214.13148685781032706623@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241122185708.1755203-1-swati2.sharma@intel.com>
+In-Reply-To: <20241122185708.1755203-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,239 +37,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi
+== Series Details ==
 
-> > Hi Tvrtko
-> >
-> >>> From: Christian Gmeiner <cgmeiner@igalia.com>
-> >>>
-> >>> Add special handling for drivers that only provide memory utilization
-> >>> fdinfo.
-> >>
-> >> To check I am following correctly - special in this context means avoi=
-d
-> >> displaying empty fields, or avoid a crash, or?
-> >
-> > - Avoid early return in print_client(..) -> no output show.
-> > - Avoid a crash in strcmp(..).
-> >
-> >>
-> >>> Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-> >>> ---
-> >>>    tools/gputop.c | 20 ++++++++++++++++++++
-> >>>    1 file changed, 20 insertions(+)
-> >>>
-> >>> diff --git a/tools/gputop.c b/tools/gputop.c
-> >>> index 43b01f566..4135d84c1 100644
-> >>> --- a/tools/gputop.c
-> >>> +++ b/tools/gputop.c
-> >>> @@ -35,6 +35,7 @@
-> >>>    enum utilization_type {
-> >>>        UTILIZATION_TYPE_ENGINE_TIME,
-> >>>        UTILIZATION_TYPE_TOTAL_CYCLES,
-> >>> +     UTILIZATION_TYPE_MEMORY_ONLY,
-> >>>    };
-> >>>
-> >>>    static const char *bars[] =3D { " ", "=E2=96=8F", "=E2=96=8E", "=
-=E2=96=8D", "=E2=96=8C", "=E2=96=8B", "=E2=96=8A", "=E2=96=89", "=E2=96=88"=
- };
-> >>> @@ -141,6 +142,9 @@ engines_identical(const struct igt_drm_client *c,
-> >>>            c->engines->max_engine_id !=3D pc->engines->max_engine_id)
-> >>>                return false;
-> >>>
-> >>> +     if (!c->engines->num_engines && !pc->engines->num_engines)
-> >>> +             return true;
-> >>
-> >> strcmp() below crashes?
-> >>
-> >
-> > Correct.
-> >
-> >> I would move the check you added to be first in this function. I think
-> >> that makes most sense from the flow wise - checking it before max_engi=
-ne_id.
-> >>
-> >
-> > Will do in v2.
-> >
-> >> With this fixed what remains broken?
-> >>
-> >
-> > Show any output :)
->
-> I totally missed it. Shows the value of commit messages. ;)
->
-> Okay.. I wonder if we can get away without adding
-> UTILIZATION_TYPE_MEMORY_ONLY and instead make the code skip unavailable
-> data.
->
-> Would something like this work:
->
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 43b01f566ac8..9639a7f5fde8 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -137,6 +137,9 @@ engines_identical(const struct igt_drm_client *c,
->   {
->         unsigned int i;
->
-> +       if (!c->engines->num_engines && !pc->engines->num_engines)
-> +               return true;
-> +
->         if (c->engines->num_engines !=3D pc->engines->num_engines ||
->             c->engines->max_engine_id !=3D pc->engines->max_engine_id)
->                 return false;
-> @@ -188,27 +191,20 @@ print_client(struct igt_drm_client *c, struct
-> igt_drm_client **prevc,
->         uint64_t sz;
->         int len;
->
-> +       if (c->samples < 2)
-> +               return 0;
-> +
->         if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_TOTAL_CYCLES=
- &&
-> -           c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_CYCLES)
-> +           c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_CYCLES) {
->                 utilization_type =3D UTILIZATION_TYPE_TOTAL_CYCLES;
-> -       else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_=
-TIME)
-> +               /* Filter out idle clients. */
-> +               if (c->engines->num_engines && !c->total_total_cycles)
-> +                       return 0;
-> +       } else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGIN=
-E_TIME) {
->                 utilization_type =3D UTILIZATION_TYPE_ENGINE_TIME;
-> -       else
-> -               return 0;
-> -
-> -       if (c->samples < 2)
-> -               return 0;
-> -
-> -       /* Filter out idle clients. */
-> -       switch (utilization_type) {
-> -       case UTILIZATION_TYPE_ENGINE_TIME:
-> -              if (!c->total_engine_time)
-> -                      return 0;
-> -              break;
-> -       case UTILIZATION_TYPE_TOTAL_CYCLES:
-> -              if (!c->total_total_cycles)
-> -                      return 0;
-> -              break;
-> +               /* Filter out idle clients. */
-> +               if (c->engines->num_engines && !c->total_engine_time)
-> +                       return 0;
->         }
->
->         /* Print header when moving to a different DRM card. */
-> @@ -234,7 +230,9 @@ print_client(struct igt_drm_client *c, struct
-> igt_drm_client **prevc,
->
->         lines++;
->
-> -       for (i =3D 0; c->samples > 1 && i <=3D c->engines->max_engine_id;=
- i++) {
-> +       for (i =3D 0;
-> +            c->engines->num_engines && i <=3D c->engines->max_engine_id;
-> +            i++) {
->                 double pct;
->
->                 if (!c->engines->capacity[i])
->
+Series: Add new test to validate adaptive sharpness filter (rev9)
+URL   : https://patchwork.freedesktop.org/series/130218/
+State : success
 
-With your patch I get:
+== Summary ==
 
-DRM minor 128
-PID      MEM      RSS  NAME
-1308      16M      16M  kmscube
-1308       0B       0B  kmscube
+CI Bug Log - changes from IGT_8123 -> IGTPW_12181
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12181 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [PASS][3] -> [SKIP][4] ([i915#9197]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg2-11:         [FAIL][5] ([i915#12903]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
+    - bat-rpls-4:         [FAIL][7] ([i915#12903]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/bat-mtlp-8/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-dp1:
+    - fi-kbl-7567u:       [DMESG-WARN][11] -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@reload:
+    - fi-cfl-8109u:       [DMESG-WARN][13] ([i915#11621] / [i915#1982]) -> [DMESG-WARN][14] ([i915#11621])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/fi-cfl-8109u/igt@i915_module_load@reload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/fi-cfl-8109u/igt@i915_module_load@reload.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-cfl-8109u:       [DMESG-WARN][15] ([i915#11621]) -> [DMESG-WARN][16] ([i915#11621] / [i915#1982]) +1 other test dmesg-warn
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8123/fi-cfl-8109u/igt@kms_busy@basic@flip.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/fi-cfl-8109u/igt@kms_busy@basic@flip.html
+
+  
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
 
 
-I think we should filter out the 0B MEM's one too - or?
+Build changes
+-------------
 
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8123 -> IGTPW_12181
+  * Linux: CI_DRM_15731 -> CI_DRM_15733
 
-diff --git a/tools/gputop.c b/tools/gputop.c
-index 43b01f566..459cf213f 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -137,6 +137,9 @@ engines_identical(const struct igt_drm_client *c,
- {
-     unsigned int i;
+  CI-20190529: 20190529
+  CI_DRM_15731: a381faddbfc974e7bd57efe953a738415afccd6a @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15733: 2281c1c4cf9827bee2c301c15120bac74f4af4c1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12181: 12181
+  IGT_8123: fb343db7fc59c760ef0a0c19303e7bcec177dbd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-+    if (!c->engines->num_engines && !pc->engines->num_engines)
-+        return true;
-+
-     if (c->engines->num_engines !=3D pc->engines->num_engines ||
-         c->engines->max_engine_id !=3D pc->engines->max_engine_id)
-         return false;
-@@ -188,27 +191,28 @@ print_client(struct igt_drm_client *c, struct
-igt_drm_client **prevc,
-     uint64_t sz;
-     int len;
+== Logs ==
 
-+    if (c->samples < 2)
-+        return 0;
-+
-     if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_TOTAL_CYCLES &&
--        c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_CYCLES)
-+        c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_CYCLES) {
-         utilization_type =3D UTILIZATION_TYPE_TOTAL_CYCLES;
--    else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIME)
-+        /* Filter out idle clients. */
-+        if (c->engines->num_engines && !c->total_total_cycles)
-+            return 0;
-+    } else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIM=
-E) {
-         utilization_type =3D UTILIZATION_TYPE_ENGINE_TIME;
--    else
--        return 0;
-+        /* Filter out idle clients. */
-+        if (c->engines->num_engines && !c->total_engine_time)
-+            return 0;
-+    }
-
--    if (c->samples < 2)
--        return 0;
-+    if (c->regions->num_regions) {
-+        for (sz =3D 0, i =3D 0; i <=3D c->regions->max_region_id; i++)
-+            sz +=3D c->memory[i].total;
-
--    /* Filter out idle clients. */
--    switch (utilization_type) {
--    case UTILIZATION_TYPE_ENGINE_TIME:
--           if (!c->total_engine_time)
--               return 0;
--           break;
--    case UTILIZATION_TYPE_TOTAL_CYCLES:
--           if (!c->total_total_cycles)
--               return 0;
--           break;
-+        if (sz =3D=3D 0)
-+            return 0;
-     }
-
-     /* Print header when moving to a different DRM card. */
-@@ -234,7 +238,9 @@ print_client(struct igt_drm_client *c, struct
-igt_drm_client **prevc,
-
-     lines++;
-
--    for (i =3D 0; c->samples > 1 && i <=3D c->engines->max_engine_id; i++)=
- {
-+    for (i =3D 0;
-+        c->engines->num_engines && i <=3D c->engines->max_engine_id;
-+        i++) {
-         double pct;
-
-         if (!c->engines->capacity[i])
-
-
---=20
-greets
---
-Christian Gmeiner, MSc
-
-https://christian-gmeiner.info/privacypolicy
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12181/index.html
