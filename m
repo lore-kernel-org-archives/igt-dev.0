@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB796E65D34
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B757CE65D34
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:48:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8CA9510EAF5;
-	Fri, 22 Nov 2024 08:42:42 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04A9110EAF5;
- Fri, 22 Nov 2024 08:42:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7634501265471963005=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76F6610EAF5;
+	Fri, 22 Nov 2024 08:48:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="efLqkPxV";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7AB110EAF5
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 08:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732265287; x=1763801287;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=omOiS2vhThFwxbq7NebsKboic6EHQ+PWtIqLSTlTrY8=;
+ b=efLqkPxV7MP0ykoCT2V+Exo7XrOqx98iBWRm7UC8MA1hX1dGvWmEot3w
+ WYXixABSOTxx6JSyRNofFW6687Vpee4drHmqVt/S1Mla0xE88wv/ONTWb
+ taPbNozTINgALofE4K2Rvf6zviascnnmxHy5A0rGeXyCWWmmO1XuCR2a3
+ nePzXjnVCFNW03zioUOvT55yBWOPxhTpxGvQ2i8fA24DFXygawMHIoUZB
+ uhunbsnnAh9dHUn4lgnz0mPUDn96FlKnUp7QJhd5rTkYVlavCYfF+BPyk
+ Q6zHyR18vDkBV2fERyeEbuAHheghJXvFbdd+Urowpgm/ZQx445t27gbz+ Q==;
+X-CSE-ConnectionGUID: hoNITb9/TqWlbTB8FGqTfA==
+X-CSE-MsgGUID: YbC7XH8LRNmMAQ7JnRua0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="20004051"
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="20004051"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2024 00:48:07 -0800
+X-CSE-ConnectionGUID: 08pgbUWPSZOa9D5Lz95ZVQ==
+X-CSE-MsgGUID: ELlH47j5TQ6sv6HwlVNefQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="90679372"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 22 Nov 2024 00:48:05 -0800
+Received: by stinkbox (sSMTP sendmail emulation);
+ Fri, 22 Nov 2024 10:48:04 +0200
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2 0/4] intel: igt_draw and intel_bufops improvements
+Date: Fri, 22 Nov 2024 10:48:00 +0200
+Message-ID: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Drop_PSR_+_DRRS_tests_=28re?=
- =?utf-8?q?v2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Nov 2024 08:42:42 -0000
-Message-ID: <173226496203.1630843.5722917854421082565@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241120104940.2147075-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20241120104940.2147075-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,143 +63,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7634501265471963005==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+Remainder of the earlier bigger igt_draw/bufops stuff:
+- hook in all gen2/gen3 tile layouts
+- pread/pwrite fallback in intel_bufops for !WC systems
+- new gem_draw test to validate igt_draw mmap cpu/wc and pwrite
+  support w/o display limitations getting in the way
 
-Series: Drop PSR + DRRS tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/141596/
-State : success
+Ville Syrjälä (4):
+  lib/intel_bufops: Add support for gen2 and i915 tiling layouts
+  lib/intel_bufops: Provide pread/pwrite based fallback when we don't
+    have WC
+  tests/kms_draw_crc: Test 64bpp
+  tests/intel/gem_draw: Test igt_draw without kms
 
-== Summary ==
+ lib/intel_bufops.c         | 151 +++++++++++++++++-------
+ tests/intel/gem_draw.c     | 233 +++++++++++++++++++++++++++++++++++++
+ tests/intel/kms_draw_crc.c |  19 ++-
+ tests/meson.build          |   1 +
+ 4 files changed, 363 insertions(+), 41 deletions(-)
+ create mode 100644 tests/intel/gem_draw.c
 
-CI Bug Log - changes from XEIGT_8121_BAT -> XEIGTPW_12172_BAT
-====================================================
+-- 
+2.45.2
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12172_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-adlp-7:         [SKIP][1] ([Intel XE#455]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@kms_psr@psr-primary-page-flip@edp-1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#3517]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-
-  
-  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8121 -> IGTPW_12172
-  * Linux: xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380 -> xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199
-
-  IGTPW_12172: 12172
-  IGT_8121: 8121
-  xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380: e46649e7764a9f6868ccbcba7b8b23b413303380
-  xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199: bb17c42521f57b592e9ad49daca1f9f9045d3199
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/index.html
-
---===============7634501265471963005==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Drop PSR + DRRS tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141596/">https://patchwork.freedesktop.org/series/141596/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8121_BAT -&gt; XEIGTPW_12172_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12172_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8121/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12172/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8121 -&gt; IGTPW_12172</li>
-<li>Linux: xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380 -&gt; xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199</li>
-</ul>
-<p>IGTPW_12172: 12172<br />
-  IGT_8121: 8121<br />
-  xe-2257-e46649e7764a9f6868ccbcba7b8b23b413303380: e46649e7764a9f6868ccbcba7b8b23b413303380<br />
-  xe-2259-bb17c42521f57b592e9ad49daca1f9f9045d3199: bb17c42521f57b592e9ad49daca1f9f9045d3199</p>
-
-</body>
-</html>
-
---===============7634501265471963005==--
