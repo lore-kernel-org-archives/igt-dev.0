@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7661DE6916C
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 15:51:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11821E69173
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 15:51:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2DBB410EBE0;
-	Fri, 22 Nov 2024 15:51:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF74110EBEB;
+	Fri, 22 Nov 2024 15:51:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bjmkXDlu";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="EsJts5oX";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B674C10EBE7
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 15:51:42 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B5A1B2000B;
- Fri, 22 Nov 2024 15:51:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32B1A10EBEA
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 15:51:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4585B20007;
+ Fri, 22 Nov 2024 15:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1732290701;
+ t=1732290703;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x0TAelbviFE+ez9e86Csl+7j8Ca8ywWtBoluiQbDoFY=;
- b=bjmkXDlu0sEKA2lN8NPaRd5P7ShWP65doC8Zk+2rfQjCSkY9oHw51L4dj0eNOdM9iFd1g0
- NomjmQtwxjcCI1rSI42ycS5g2SdKRjnDNf0FCCoeNLRBrrx2ybzo9/3MHH+nyi6SZL+/ho
- og5EwNw1J4ynVW1JqbpiTB2ooh0bwcN5w8ERAWZ4n3ztBBQHsLJ2LO2ULcbfme7rwdE4Gn
- 4hI9egtwEnm6pbnx0Hj953/q7bTVrOiNcfGp9nUIF3hx4mUEBu1mVH9lo40QABjgf/b7ej
- E1p+6etwhQe/8TaRUnfwX4XBtLwoCvghR3D4myilgokcPzJSyonMKwut8rSU4A==
+ bh=o4PM/afvPsutQtI7f19jp5TUjZxPumwpwmwAr7l9sYA=;
+ b=EsJts5oXgCJmtHXnCAWwyLhDrzxD0THRpKMuOMw4yvMcmYn/9fuUUC2ZvyST0FN8tVTdlm
+ /PQwaNn7zBqcYmDlULmDBZIP5izy+X2gLpp3rlvkFU6+k+f/teRbq79/i4WURe6yfpXu/J
+ 0Eswf/yHk79lsHH3NghEZBFFj25Lc5kD/NSyzXxkhiWKWP+9e57dbqXcszOEgKEK0cgmzb
+ W7vhvfJYM3wigXVZgxzLeDL3dkCvwUiCwvs8IxLO+MeHQE5NhmOaHCchyxHr5owvpOp73C
+ G0A3ewrq672/WPFUWJpoF8ogvVaePTmHCsD0yD4EUCdRgvqShoubbalPlrF5nQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 22 Nov 2024 16:51:34 +0100
-Subject: [PATCH i-g-t v3 1/5] lib/monitor_edids: Add helper functions for
- using monitor_edid objects
+Date: Fri, 22 Nov 2024 16:51:36 +0100
+Subject: [PATCH i-g-t v3 3/5] lib/monitor_edids: Add helper to print all
+ available EDID names
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241122-b4-cv3-02-monitor-edids-v3-1-1798f58167ef@bootlin.com>
+Message-Id: <20241122-b4-cv3-02-monitor-edids-v3-3-1798f58167ef@bootlin.com>
 References: <20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com>
 In-Reply-To: <20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -50,21 +50,21 @@ Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  seanpaul@google.com, jeremie.dautheribes@bootlin.com, markyacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5957;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2049;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=usY50Lp+MNn6CJaTIv3lgaXjcBnZmENr6LyEOjRihm4=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnQKiJReo3CFOOzsP2XJ6QFIztuHt58QM6btGFY
- X82DHVNVqmJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZ0CoiQAKCRAgrS7GWxAs
- 4m+JD/9s/JCjdlkbVc13SWxi7NEZq91+2POq9XSqVVH0I577ECQaz4RQCD1WxM1Ive0JC7pQSqE
- SETYH/gwZoqwdkJzUJ6Jin3XE2hU8mZv0gxT8TJfN0fpiRjCWr3OkdYy+qfK3Wij7827pR8QtY/
- g4ZF3jf3FBc3IvUfiAWQBF91UdyPx5rGTxBwzGtvzWJHfcd4qDXv5lz7n1qxPS077W+hH+ViBU5
- C8xWleyaO1oHxCFTpu0ElDsd6r5O+H09DROFZx0fEyB4qj4ocPfKZkT0QajqH6YmWhGAAIe3ssU
- j0JFxE76q5eMOK6M0LHb/7B9guD1kQVV3gGpi2mdeFMpOMzgbnBc/9hpcsP9UFiTGzJc6wULS/+
- 7u0+EYjKeZ7PXDq1y4UkJQmsjRPvElVhHqPW5pxKF3PaHkOP44Gbze03pkCya5NAokY/Kf+oJ/r
- 3GUApCNX0O8mLqLONyUHi+hbwH741eqlsfGvr7fPtcj8rOUj+Z4E/qVsDGh5Ho4DMVedmwPbQZR
- V8jJxXdp/gVhknl3hPYrzUIBbzWj24gtWTdE2nDtNLbeRvL0QA2MnSy+7+0eFSU5BpzzCjil96V
- UltQ+aRFxsrYHka+TOsNd5lyd7LLf0jCxRKu0AzYDZahgHryrUqrdcGThHF/H5iabgIyS5XDJet
- cgvePh14mrKknfw==
+ bh=btPZj6EcW06WSlJLBMlVZsUlWMDgPD2cC8WNYvbQrdI=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnQKiKY5WOZk8WiXCb8Np0KELnHqnoC999U0cCi
+ pvYIQQ2GpyJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZ0CoigAKCRAgrS7GWxAs
+ 4hGTEADRpZrqHGRTCE6y1WSO2yfkNnrGyjDPYzWRmVU/HgMSvajER8t1IyoGiK0Izm8ssX9bWmy
+ 7KbFLwoc+IDbgUNSeceXT9oZ8QkOhe71Fcn85UvXRBYsdtJszVuNbTaOWCU4Hd/Eg+E2Rhngr2r
+ HHVWhjRZ0paV3XM4j2Tzb7/CcrGBwyVusKifKhQ61O1FZfgqRnPfnD4XFBK5eFAqhxDBa9PI/Ft
+ bOetbtEIfexdac9+I1ky22+iXqXkj0HP3EGE5CT1C+qn7o4Y64PTC3SoTOlMC+MlhnxJnbZxSpP
+ mwcwcJkFlmc71w4TpE/2pukIh5mjpy0Vi7jF9EpStMZZ9IIJL6b0dKd4K9so0gE+Y8Ng68Jxs1o
+ 3eGVTyBVBAmiD3WuTFtror305rgu34jlnB1p/QPJgCaDpoFN0jm7YO6N3WL0/HyCFVRDvbkhFCZ
+ THes6wahx2Cm9GhEJbJLev3NrNjPhaESkpp2EUvefrqMI/6Vc23TKnHmkfgK+674mmbDmZGRPE2
+ kSEGstZHaqrayc9IMVHVr36QHjLQedt9Wwhwv0LXWQYxKnS39FudNVh1XCBpIpfisPi5sKXXmZB
+ RShjVfobXz4dqNPtyWk2+H2Y6GWqWwv1v78NlA9qOrd9W/Kyh5TRRNoMD6tXdhY2eFt2z4ikQeg
+ khSlXfrPG/nfPwQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -83,175 +83,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the functions edid_from_monitor_edid() and
-get_edids_for_connector_type(). The former converts a monitor_edid object
-to a struct edid, which can then be utilized by igt_kms helpers. The
-latter returns a list of monitor_edid objects for a specific connector
-with certain characteristics
+During the chamelium v3 configuration, it may be required to know the list
+of supported EDID names, so add an helper to print them.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/dp_edids.h             |  4 ++
- lib/monitor_edids/hdmi_edids.h           |  4 ++
- lib/monitor_edids/monitor_edids_helper.c | 77 ++++++++++++++++++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  7 ++-
- 4 files changed, 91 insertions(+), 1 deletion(-)
+ lib/monitor_edids/monitor_edids_helper.c | 15 +++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
-index 144907558be1faa306b646ce3b47b24c13050968..8192520c89e61d3d38c508ca97a61040cea4ba90 100644
---- a/lib/monitor_edids/dp_edids.h
-+++ b/lib/monitor_edids/dp_edids.h
-@@ -12,6 +12,7 @@
- #ifndef TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_
- #define TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_
- 
-+#include "drmtest.h"
- #include "monitor_edids_helper.h"
- 
- monitor_edid DP_EDIDS_4K[] = {
-@@ -194,4 +195,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
- 
-  };
- 
-+#define DP_EDIDS_4K_COUNT = ARRAY_SIZE(DP_EDIDS_4K);
-+#define DP_EDIDS_NON_4K_COUNT = ARRAY_SIZE(DP_EDIDS_NON_4K);
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index f6cfe82ff6e1c4419160bcdcc851a5e28eb08726..23ac04d94b6f672572e34b8059ff1b47d0730839 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -12,6 +12,7 @@
- #ifndef TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_
- #define TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_
- 
-+#include "drmtest.h"
- #include "monitor_edids_helper.h"
- 
- monitor_edid HDMI_EDIDS_4K[] = {
-@@ -604,4 +605,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "1620582c2500baac4200009e0000006b" },
- };
- 
-+#define HDMI_EDIDS_4K_COUNT = ARRAY_SIZE(HDMI_EDIDS_4K);
-+#define HDMI_EDIDS_NON_4K_COUNT = ARRAY_SIZE(HDMI_EDIDS_NON_4K);
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
 diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index 1cbf1c22f0bbc5fb4047ce42bde2042ec8170efb..a7a945659f751be99ecd9d55f9b7307df256d543 100644
+index 4d739937ede1e8f09eb6e8bf225f047d5c3dfd04..9de8aa06a45c164e928ae3821f841414b437eaac 100644
 --- a/lib/monitor_edids/monitor_edids_helper.c
 +++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -15,6 +15,9 @@
- #include <assert.h>
+@@ -195,3 +195,18 @@ struct edid *get_edid_by_name(char *name)
  
- #include "igt_core.h"
-+#include "igt_edid.h"
-+#include "dp_edids.h"
-+#include "hdmi_edids.h"
- 
- static uint8_t convert_hex_char_to_byte(char c)
- {
-@@ -90,3 +93,77 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
- 	free(edid);
- 	edid = NULL;
+ 	return NULL;
  }
 +
-+/*
-+ * edid_from_monitor_edid() - Get a struct edid from a monitor_edid
-+ * @mon_edid: Monitor EDId to convert
-+ *
-+ * The caller must free the returned pointer
-+ */
-+struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
-+{
-+	uint8_t *raw_edid;
-+	size_t edid_size;
-+	int i;
-+
-+	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
-+	raw_edid = malloc(edid_size);
-+	igt_assert(raw_edid);
-+
-+	for (i = 0; i < edid_size; i++) {
-+		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
-+			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
-+	}
-+
-+	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
-+		uint8_t *new_edid;
-+
-+		igt_debug("The edid size stored in the raw edid is shorter than the edid stored in the table.");
-+		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
-+		igt_assert(new_edid);
-+		raw_edid = new_edid;
-+	}
-+
-+	return (struct edid *)raw_edid;
-+}
 +
 +/*
-+ * get_edids_for_connector_type() - Get the list of EDIDS for a
-+ * specific connector type.
-+ *
-+ * @type: The connector type to get the EDIDs from
-+ * @count: Used to store the number of EDIDs in the returned list
-+ * @four_k: Use true to fetch 4k EDIDs, false to fetch non-4k EDIDs
++ * list_edid_names() - Print all the EDID available in igt
++ * @level: Log level to write the names on
 + */
-+struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
++void list_edid_names(enum igt_log_level level)
 +{
-+	if (four_k) {
-+		switch (type) {
-+		case DRM_MODE_CONNECTOR_DisplayPort:
-+			*count = DP_EDIDS_4K_COUNT;
-+			return DP_EDIDS_4K;
-+		case DRM_MODE_CONNECTOR_HDMIA:
-+			*count = HDMI_EDIDS_4K_COUNT;
-+			return HDMI_EDIDS_4K;
-+		default:
-+			*count = 0;
-+			igt_debug("No 4k EDID for the connector %s\n",
-+				  kmstest_connector_type_str(type));
-+			return NULL;
-+		}
-+	} else {
-+		switch (type) {
-+		case DRM_MODE_CONNECTOR_DisplayPort:
-+			*count = DP_EDIDS_NON_4K_COUNT;
-+			return DP_EDIDS_NON_4K;
-+		case DRM_MODE_CONNECTOR_HDMIA:
-+			*count = HDMI_EDIDS_NON_4K_COUNT;
-+			return HDMI_EDIDS_NON_4K;
-+		default:
-+			*count = 0;
-+			igt_debug("No EDID for the connector %s\n",
-+				  kmstest_connector_type_str(type));
-+			return NULL;
++	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
++		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
++			igt_log(IGT_LOG_DOMAIN, level, " - \"%s\"\n",
++				ALL_EDIDS[i].edid_list[j].name);
 +		}
 +	}
 +}
 diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index 05679f0897f3d0618d656cc071b565b48d31da28..e5069868683d97053d8e66666e83692f1b733db3 100644
+index a45dca870eb20f66c9472be6643019d23bc18b9a..04a639f47b49ab176e914f6044bba6769dc84ccb 100644
 --- a/lib/monitor_edids/monitor_edids_helper.h
 +++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -12,6 +12,8 @@
- #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
+@@ -15,6 +15,7 @@
+ #include <stddef.h>
+ #include <stdbool.h>
  
- #include <stdint.h>
-+#include <stddef.h>
-+#include <stdbool.h>
- 
++#include "igt_core.h"
  #include "igt_chamelium.h"
  
-@@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
- 				     const monitor_edid *edid);
- void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ /* Max Length can be increased as needed, when new EDIDs are added. */
+@@ -35,5 +36,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
+ struct edid *get_edid_by_name(char *name);
++void list_edid_names(enum igt_log_level level);
  
--#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
-\ No newline at end of file
-+struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
-+struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
-+
-+#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
 -- 
 2.47.0
