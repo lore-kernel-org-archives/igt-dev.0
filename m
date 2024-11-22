@@ -4,56 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1678E69189
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 18:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2905CE6918F
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 19:05:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D7BC10E300;
-	Fri, 22 Nov 2024 18:54:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA53A10EC5A;
+	Fri, 22 Nov 2024 19:05:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fGEAbQi7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SUJLH1DS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4D5210E300
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 18:54:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DECE710E300
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 19:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732301681; x=1763837681;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=8m4VGDw8LvabvMHnAfuhogBj0Sq/jpYfjLQLQN7iruM=;
- b=fGEAbQi71IGrMT62wqqscPc7TijG0eY/afz1wzzovrAErqjSfF+Cz7bL
- TNJa13qONCv2dqf7c5Jma+J5pk8FzhVqr70S696+pG1ZHE/tU142/upYR
- t2maCCVkCPWzHrxO09YBkHT2yzrLNLI3gfP/mOGUiM9jvBiTz/Nb6O0nA
- 8JoRQb7+gl17nwT6jTeuwV6edC+vzHgp6sn4qQkhbzQ1HD/ZI9e4WS6wl
- bOozueLPIW8t9jp/PESDWlIGWb0CsTjYuDFti/iJaDl+UVjUVlomJlGtK
- S9TcvEp3qZHzK1p03To2Uyr+CYIqv2SSCvm3qbE1ess6KTw+U2tqLWEDU A==;
-X-CSE-ConnectionGUID: izv4qL77SZmNFeNqE97Edg==
-X-CSE-MsgGUID: uexl6H+jTAKyf47p625efQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="49987419"
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="49987419"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 10:54:24 -0800
-X-CSE-ConnectionGUID: p5Aqw+D9TV6Hg2xHXa6EJA==
-X-CSE-MsgGUID: H6cT+YwsRX2GyBta8N0OAA==
+ t=1732302325; x=1763838325;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=sbylnE5AKdEHQhA5CcuUxz25wb/1prNb8D9dbb/Vpds=;
+ b=SUJLH1DSNz9/QjYKeBppEuO6DuZVFTfbqTYT/tFnXfui1qhUYpPIcmiY
+ j7tYpJYYm5q5d7bp/F2sMCiwIZCKv5aNxTyoqoX9iZZZ1IJqLd6NSQF7w
+ YmMcn6ERnxZXfKh8G9gjArjCOhGePWKraIKEJwYNbVnIztSQZqFT68IFL
+ x4buKzCxIshtxkGJeX0JPjznwPa6iQ0hkBJRqeL+/7l/+viqrJsCvYtk4
+ IJmSTZpihtVtnl4SBzUf+5RvdrSMaWhalogxGK46VMR+NyedkVIhP4gex
+ mKboIoZBLDFoUUR96ipnFljymACRlQFg9nU90OxmYB8lDoPvqw2cwHJv8 A==;
+X-CSE-ConnectionGUID: R5FpQyI4QxqTwkXkTmum/g==
+X-CSE-MsgGUID: MSmZy2VNS1+tWWZb2j68LQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="32525961"
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="32525961"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2024 11:05:25 -0800
+X-CSE-ConnectionGUID: 6cwlnTGkQAS3pJw3O8bD2Q==
+X-CSE-MsgGUID: f2pLZBEUSOuIDm0xDGguzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="113930316"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 10:54:23 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,
- v2 4/4] tests/chamelium/kms_chamelium_sharpness_filter: Add basic test
-Date: Sat, 23 Nov 2024 00:27:08 +0530
-Message-Id: <20241122185708.1755203-5-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241122185708.1755203-1-swati2.sharma@intel.com>
-References: <20241122185708.1755203-1-swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="90791939"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Nov 2024 11:05:24 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 22 Nov 2024 11:05:23 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 22 Nov 2024 11:05:23 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 22 Nov 2024 11:05:23 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dKTKuBld70gKj2rZjzSaPsBno4PXOjk2/60MWLz6Xm9CziYL+48uwQGFJhbNT+aQPftGaPFEXlkodNxXkQRRnPuYJU5iqo3NZlJF6agknTRH6dOaBLOio+HzbqpIRP9szZjEvnmCwBtkQdkxoJt66/TE3HsW8ZV/5D2lwMzvxmoNsfEp3cN4jCLJ8s6p4LMYaIaJynyRRDVg3A9RD963rPuiLJ7fkBz/lDyPM6Lz8oeBbgVdu3V2jFLYfMdcCrHVWTCn9fprMWPoyaZDFhOx1FxKlS1OLala+OxAL2E/5ykMMt1nPABrBbzQgZt4bXqMNaA1m+YtWz00dmtkBCNsyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aagq/4oPjbRHtSwpxnpAVUMQBq6aMGm58/m+XlE9RN8=;
+ b=LTqLJTy91Zhd5HtLlQBTmthkcL4J/P1Tx4gHJXe3MW3QtmwpRImRdePOyV7mkE4Z9zCWBya/TVNWUFqVsQicnNOLKRgEc5/t8EOG9XJk5KY6SVQvoSB7ymr2T4+Efb5xLmcHAGmMtrZ0VVpCJ4sMEp6bu1ZdLqExU3yVPfxaEWmcMdhsLRXT9p9HtIBl+VFkapwB6o460b+MXkooPW482W42Dbl5b/dz5MSM+MDmb+6qGwyHTekMt4w9ZHw4fZG6mBQolDhubOOBintbnpK/QaqXMrARwsG20dalnAMtpOi9EyHSlXEKZ1hdOWb1oBR9MH9oaNEkE8GLQ1E90WTpdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
+ by CY8PR11MB6962.namprd11.prod.outlook.com (2603:10b6:930:59::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.17; Fri, 22 Nov
+ 2024 19:05:20 +0000
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372%7]) with mapi id 15.20.8182.014; Fri, 22 Nov 2024
+ 19:05:19 +0000
+Message-ID: <6b563be6-ce89-43aa-a8ea-b6ba82f2c559@intel.com>
+Date: Sat, 23 Nov 2024 00:35:11 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/kms_pm_rpm: Fix cursor_fb3 framebuffer
+ creation format
+To: "Samala, Pranay" <pranay.samala@intel.com>, "B, Jeevan"
+ <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "B S, Karthik" <karthik.b.s@intel.com>
+References: <20241122040958.145956-1-jeevan.b@intel.com>
+ <PH7PR11MB60538FC20BDF122A76648177E7232@PH7PR11MB6053.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <PH7PR11MB60538FC20BDF122A76648177E7232@PH7PR11MB6053.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PNYP287CA0024.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:23d::28) To BL1PR11MB5979.namprd11.prod.outlook.com
+ (2603:10b6:208:386::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|CY8PR11MB6962:EE_
+X-MS-Office365-Filtering-Correlation-Id: f92c705c-0892-48c1-f102-08dd0b289bab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YTdsTHRINTZSZjdkZUZkOGNrYXd6WWNMNTRFVFZpQy84d1FhUER3OTBwV3dV?=
+ =?utf-8?B?cFoxcFpMclJLMUZZY3JXRVZ5dkUwcWEvSnZsQ0RIM1JLWGdncllMdWdtYnNu?=
+ =?utf-8?B?VElxYWpwQXVmVlZVV2tnUHQ2dkdZQkFOWVRnRlZmZlZaTHE0akVaL25RenIz?=
+ =?utf-8?B?d1IyTUsrZG5MZWM2VVVuN0o0TXV4U3BQeG1CUFk5UGNCSzhIVm92d0Frd0wx?=
+ =?utf-8?B?WDVWbTJMclJIUEQxR0U4dWQzWTRzMHhWN3l5T0c5d1l0SFFSbEtFVFRLdy8r?=
+ =?utf-8?B?dk5raXpneWJJTXVGMUdFQVF1QTAwSktXZWpNbEs0aEJseW42OUdhRm5Dc2pZ?=
+ =?utf-8?B?dlpOekM5cnV3WVZaQndXMnZEUyt3WmZYazcwVEtaejVFSXh3YmR0ckx2UlJy?=
+ =?utf-8?B?bkFVeHZidUFSbTk0bm1TVEtiRGFEaXo4azJBSEt4UGJzSi9TNFdobEtJU0tC?=
+ =?utf-8?B?WTBSTk5HQ3BlcjhsUFliTnUyVVdicGVPYnpISXl4K0t5djVCQUhiWFUrL2NC?=
+ =?utf-8?B?YUpoLzVld0piTXg2VnZJbGRyRTZtb1ZocENsd1V4aFFSVWlBZmdOSVNEMnAw?=
+ =?utf-8?B?Y2hUY3BSM1VpT0UyZWFMQWpzMVJjWk1Ma3hDMlN2SE1XUkFuUk0xQ3dxM3dM?=
+ =?utf-8?B?RUNOK0J5TTJNbTdUUEROVFRUR0cxcWtkeW11b2p4c2RHK284bVBhb3AzclF2?=
+ =?utf-8?B?bFIwNkY4MzR6di85MGl2VEZRbXF2bVRoSXlQOTVuMXpXMHZ3MzZadjh1L2lY?=
+ =?utf-8?B?OGFTK2JFYTErYUpjQVdjNzdZNGU4aUtMSGk1clFHNEZaekxmaXNQenpPZUZS?=
+ =?utf-8?B?Smxqb0NYZy9zM3h3VmI5bFZHSW5oRXc1ZlRtWWZzL0crUDVaL3hGcFI5a3pE?=
+ =?utf-8?B?SkZnVTRBU2R0WjBpdWc2QUZjYWkwUGhseXpvdEkxT2UxenBRM3I4RFV0UjNY?=
+ =?utf-8?B?d24vUlNwQnVQc2h0MGFvdnh5dUVydllWczRYNXpYYmVJL0hUYlJlMEFwZFI2?=
+ =?utf-8?B?dDdNMnMrLzkxWVFCRWN5c1NZM2JObzBLVVJqYnRLWDhIUFpIczlPWHNlQVVu?=
+ =?utf-8?B?Q1IrVHFkb3hpV1d1RXVYWUpZaUpERDFCajFFTGVaYUJxZlpKWFRDMGdBZXVQ?=
+ =?utf-8?B?bThOK1l0cFloeUxGOUNUanVBTVFmOUc1b1dxMFBPRkZQK1IxeE0wMW9WeGts?=
+ =?utf-8?B?ejRZWWxFUmd1amdhSURDU0dwVk1GSXppb0lkMkkvYnVoNTdYZ29uejJxR3VM?=
+ =?utf-8?B?VTJ4d0h6eDd5eFNGdVl5WHZ0NWhYMG5hcXMrWmFnajhma3FsU25jRnNVTTVT?=
+ =?utf-8?B?WjE2S3VvUkFjN1lvK2JZRWd4Mlczc1ZrV1hwajk5b0daSDIzMmVRTkVnaUpa?=
+ =?utf-8?B?bVZrNVFSQUtSOHRnYjNaWUU0Mnl6UDIvalFFcFBZTjU3N1cybS9kMEZ6c1Q5?=
+ =?utf-8?B?SVlLSDlBVm9Gby95WjlEN0p5WlRoODk0UlRrS1ZoMnl3R2laNEw2NlpYQzJw?=
+ =?utf-8?B?bFJlTXpXMXBUR1dtWmNuR3NaSFFBOTBBUUs3OWwyYmNUcWQ1dml2LzdzRUZj?=
+ =?utf-8?B?Sy9rOU5DL202VEhIeEVCRXFqc1dsV0pEajNKK3lPaC9OR21RVmZiV3MrZzJy?=
+ =?utf-8?B?d1FScmh0RXRnM3p0N0N2ODZ6V0VMM3Z3STFYcWprWUMvTFFwS1I4YllBZ0xY?=
+ =?utf-8?B?ME5BUGUxRDN6cEFhNnV0QXZPcDFHTWZpNzFLb1lvZzl5QVhjNTdQL2xBbUxv?=
+ =?utf-8?B?dGNiSGxWV1VGMitkQUJ6d3U0dzZkejZKOFo0ZVBoOFo4UmY4bENsaE95OGxM?=
+ =?utf-8?Q?tTWWpEPZSr36U/NA7eGQR0TDf1+MiYkjBC1p0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MjZzWTc1WUJtVWZFdkxvWXludVhYWUtCbUxlUXNtOGwvaXZmWFl1Z252QkFR?=
+ =?utf-8?B?L1YrVXJ5MnR3ZitMRWs1UlhxNjRoNWhWQ0NkM3FNTnlBclhubkNuQlpTK1VI?=
+ =?utf-8?B?Y0FSNENlWUtkWGU0eVUyNDRyZmZTZFN1RHB6N2N4azBrNkR6TnJZU05YWjBv?=
+ =?utf-8?B?QjJ6VFhZbW82K1lwQkdESkxmek1lRmtxWGdORDFiTlhGRndqOUFTUlhIYXkz?=
+ =?utf-8?B?c0l4ZVhHbDk5UXF1dmpyam9HK0NJamY4ZkZJOWhNcHVIdGJIUHczSXNCdkk4?=
+ =?utf-8?B?TEQxR25HWmdSK05tY01VbGFOem9wbU0wcEpUd3lhK2JaV0gwYW5rTlFhcnlh?=
+ =?utf-8?B?TjI5OXBCMURKQjFUWE43dDlsZ2ZpZ0cxZ3RUV1FnazY1bnkrbTVBTFNFNXAr?=
+ =?utf-8?B?N3lCMngrOGZMTWtVMGExeXNyL1JrRHlyK01lZ2lpWEpSUUQwVlc2ZFhXTVVq?=
+ =?utf-8?B?VXFqSDY2eWVnOXRRSDZDbkVjTWhFL1c3UHVaSjN4ejNaVTdpUXNycSt6Y0Mv?=
+ =?utf-8?B?OHdyK0pZMjc3VUJEWmFzTEg4ZzZWSmRST0VYYnZLcXpsVjhseFNKdmxoendT?=
+ =?utf-8?B?OElRdXVNYloyRWtFaDI1dUR1SE5jdlV0OCtmY2NCalZJZ0x0MEJiazdOckNp?=
+ =?utf-8?B?enpERU9seTBQdkVaS0pmY252bEFEWlBHelcvV2pMaDBtL28rZTlBTHNRT3Q1?=
+ =?utf-8?B?RjJLOG9TdmlEMjVTUnpHS1hzV3FEZDgybXM3VitDQm9MNFBsY3M5WmNhM0pt?=
+ =?utf-8?B?Z3ZCZFVVejBWRUtNNTNTZHcrQThMOS9oNTNwbkVTSGZvUjEwZzYrR0xkaERm?=
+ =?utf-8?B?anBja1o5OC95MnhTYTFyK2tGSG9ES05VckFyU1VMbE1zZkFkR2RqWnNGWDJu?=
+ =?utf-8?B?VE9TWXQ0MElVUW0vcnJyd2RMY2VkNnpTRklHOVNKTTNuMy90bGxyczVwc04z?=
+ =?utf-8?B?UDZqSG1lNFhQY1pKL1h5Sm15UlFmYjN4MFlKVE9uWlQ5NW53aUZBelcydGdG?=
+ =?utf-8?B?d2NQbkZaSjFtaUZKYWJNSEJyM3RqNWFhMkxzRlppRnRvckY5YlJtSTZoQW9i?=
+ =?utf-8?B?UW5rdWxnQWtqdlFoUUFyNVNhMWpOTlh1bUEwRjRacWM3T2J2NGFrdHBXcHJV?=
+ =?utf-8?B?ZXhuY2Yzd3dCZmdrUDc2UmlyREhFNTRvekhYWFl6RHZoVFBUVlBlRmRlNExi?=
+ =?utf-8?B?ZVAzN2NCdnlHRnd2dW1VaGY2V1NSYS9hcWtXek9oL0RrMnlDWHBva1ExdnNs?=
+ =?utf-8?B?bXFBR01PVjVYMXlRNWlRMDVVUGhJVHhSN29NV3dlQ1VYYXZDMXBLVGltUVVC?=
+ =?utf-8?B?OE9VTnZpdXlhRzljaldmOUZGQmZHNE83RC9zVlM2ek5WdDJwZlJ1MmROcnBU?=
+ =?utf-8?B?Qnk1Wm4wOExmNDU1YTJqa2o4b0l2Q1BJQS90V3ZZbFJkdG1Zc3VyeWg4Rzlt?=
+ =?utf-8?B?WFBZb0ltakxVa3NVS2FPdkx1NDNJL05SOFBraXJ0N3g1NVpzSFcwdEVJOXFn?=
+ =?utf-8?B?QXpTVVRPdlBJN1NpWVpCU0pZMEtsUHNXWGpuS251a1kyNEsxR0RrVDB0NnBZ?=
+ =?utf-8?B?WkFQRytlQXdHcFBsV1YzZkx3bXVZM0FNcW5adVhBb3c0Rjg0c210cFp1U2Fj?=
+ =?utf-8?B?bHcyeXhyS0ZYVXRzZERINU1GZFExamIyMk9JeW1zSk5CZjJ4aERTYnhZdWFi?=
+ =?utf-8?B?K1ROWkhMQ2QwbzYzT2pKYitTWW5PNE5Dcno1cHJsSXRoZ08xNTZFM0d1YmVS?=
+ =?utf-8?B?MmF6cC9lcmZXUm9aV0JMRlltbmxOZUpBWlozc1F2Q1ZYOXNhVnNST29Cc0p0?=
+ =?utf-8?B?amVRL01CbUZuWDhZbG82amVrUDVaODBZRUdTazVUOHMwUC9vN1Awbjg1bWhG?=
+ =?utf-8?B?N1drY3hQRGlrSGNFemJKMS9qakhFYktFRElDSTVhQjN1cFM2aldnSFJFZlZl?=
+ =?utf-8?B?Vm85MS9FODdrQXFDZE9Kb0wraW8ySjNqT0Vqa3BYMDh2MTh6VmRLUzlxbXAv?=
+ =?utf-8?B?Uyt4ZnRuK3liNkdpZ2xEdG9Ibllsb2lWaHRTY09EbVhCNG0vc1VvRndPTjRr?=
+ =?utf-8?B?N3QzbXRJUTVlQzlFanVXOWlFK2RYcUpjOGFWU0VaaDF4SnpyeFN5MGlRb1li?=
+ =?utf-8?B?cHdJWUQreFJUb2VqTFVDUHdNRWJpTUJtTU53OGZOVVpaTnFaa2ZMRlhtazN1?=
+ =?utf-8?B?d2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f92c705c-0892-48c1-f102-08dd0b289bab
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2024 19:05:19.8016 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xX90+4FA7fB9iU2D60lmePZ/o+Ir61lMQZX5dPVcHSv+o8ioorA86FIj2V5IYSAXek0uzhzuuvJ6ZLK4VLAuwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6962
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,292 +197,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new chamelium based sharpness test. Basic test is added where
-we have tried comparing frame dump of unsharped and sharped image.
-After, sharpness filter is applied its expected both frame dumps
-will be different.
+On 22-11-2024 11:11 am, Samala, Pranay wrote:
 
-v2: -removed MIN/MAX_FILTER_STRENGTH (Ankit)
-    -fixed alignment (Ankit)
-    -removed commit with fb_ref (Ankit)
-    -set data->pipe_id (Ankit)
-    -removed disable_filter_strength_on_pipe()
-    -fixed CRASH
-    -fixed assert condition
+> Hi Jeevan,
+>
+> Add bspec id. in commit message.
+Hi Pranay,
+Here there is no need to specify bspec id since its a generic change, 
+nothing specific to
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- .../kms_chamelium_sharpness_filter.c          | 240 ++++++++++++++++++
- tests/meson.build                             |   2 +
- 2 files changed, 242 insertions(+)
- create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
+platform.
 
-diff --git a/tests/chamelium/kms_chamelium_sharpness_filter.c b/tests/chamelium/kms_chamelium_sharpness_filter.c
-new file mode 100644
-index 000000000..d7316723a
---- /dev/null
-+++ b/tests/chamelium/kms_chamelium_sharpness_filter.c
-@@ -0,0 +1,240 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms chamelium sharpness filter
-+ * Category: Display
-+ * Description: Test to validate content adaptive sharpness filter using Chamelium
-+ * Driver requirement: xe
-+ * Functionality: chamelium, casf
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+/**
-+ * SUBTEST: filter-basic
-+ * Description: Verify basic content adaptive sharpness filter.
-+ */
-+
-+IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter using Chamelium");
-+
-+#define MID_FILTER_STRENGTH		128
-+
-+typedef struct {
-+	int drm_fd;
-+	enum pipe pipe_id;
-+	struct igt_fb fb, fb_ref;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int filter_strength;
-+	struct chamelium *chamelium;
-+	struct chamelium_port **ports;
-+	int port_count;
-+} data_t;
-+
-+static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
-+{
-+	bool ret = true;
-+
-+	igt_output_set_pipe(data->output, pipe);
-+	if (!intel_pipe_output_combo_valid(&data->display))
-+		ret = false;
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
-+static void set_filter_strength_on_pipe(data_t *data)
-+{
-+	igt_pipe_set_prop_value(&data->display, data->pipe_id,
-+				IGT_CRTC_SHARPNESS_STRENGTH,
-+				data->filter_strength);
-+}
-+
-+static void paint_image(igt_fb_t *fb)
-+{
-+	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
-+	int img_x, img_y, img_w, img_h;
-+	const char *file = "1080p-left.png";
-+
-+	img_x = img_y = 0;
-+	img_w = fb->width;
-+	img_h = fb->height;
-+
-+	igt_paint_image(cr, file, img_x, img_y, img_w, img_h);
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
-+static void setup_fb(int fd, int width, int height, uint32_t format,
-+		     uint64_t modifier, struct igt_fb *fb)
-+{
-+	int fb_id;
-+
-+	fb_id = igt_create_fb(fd, width, height, format, modifier, fb);
-+	igt_assert(fb_id);
-+
-+	paint_image(fb);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fb);
-+	igt_remove_fb(data->drm_fd, &data->fb_ref);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_output_override_mode(data->output, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+
-+static bool test_t(data_t *data, igt_plane_t *primary,
-+		   struct chamelium_port *port)
-+{
-+	struct chamelium_frame_dump *dump;
-+	drmModeModeInfo *mode;
-+	int height, width;
-+	bool ret = false;
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	mode = igt_output_get_mode(data->output);
-+	height = mode->hdisplay;
-+	width = mode->vdisplay;
-+
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb_ref);
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
-+
-+	igt_plane_set_fb(data->primary, &data->fb);
-+	set_filter_strength_on_pipe(data);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_debug("Reading frame dumps from Chamelium...\n");
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	dump = chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	ret = chamelium_frame_match_or_dump(data->chamelium, port,
-+					    dump, &data->fb_ref,
-+					    CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(dump);
-+	cleanup(data);
-+
-+	return ret;
-+}
-+
-+static int test_setup(data_t *data, enum pipe p)
-+{
-+	igt_pipe_t *pipe;
-+	int i = 0;
-+
-+	igt_display_reset(&data->display);
-+	igt_modeset_disable_all_outputs(&data->display);
-+	chamelium_reset_state(&data->display, data->chamelium, NULL,
-+			      data->ports, data->port_count);
-+
-+	pipe = &data->display.pipes[p];
-+	igt_require(pipe->n_planes >= 0);
-+
-+	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(data->primary);
-+
-+	/*
-+	 * Prefer to run this test on HDMI connector if its connected, since on DP we
-+	 * sometimes face DP FSM issue
-+	 */
-+        for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+                for (i = 0; i < data->port_count; i++) {
-+                        if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-+			    data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
-+			    strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
-+                                return i;
-+                }
-+        }
-+
-+	for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+		for (i = 0; i < data->port_count; i++) {
-+			if (strcmp(data->output->name,
-+				   chamelium_port_get_name(data->ports[i])) == 0)
-+				return i;
-+		}
-+	}
-+
-+	return -1;
-+}
-+
-+static void test_sharpness_filter(data_t *data,  enum pipe p)
-+{
-+	int port_idx = test_setup(data, p);
-+
-+	igt_require(port_idx >= 0);
-+	igt_require(igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_SHARPNESS_STRENGTH));
-+
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
-+
-+	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
-+		igt_assert_f(!(test_t(data, data->primary, data->ports[port_idx]) == 1), "No sharpness observed.\n");
-+}
-+
-+static void
-+run_sharpness_filter_test(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	enum pipe pipe;
-+
-+	igt_describe("Verify basic content adaptive sharpness filter.");
-+	igt_subtest_with_dynamic("filter-basic") {
-+		for_each_pipe(display, pipe) {
-+			data->filter_strength = MID_FILTER_STRENGTH;
-+			test_sharpness_filter(data, pipe);
-+		}
-+	}
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+
-+		igt_chamelium_allow_fsm_handling = false;
-+
-+		/* we need to initalize chamelium after igt_display_require */
-+		data.chamelium = chamelium_init(data.drm_fd, &data.display);
-+		igt_require(data.chamelium);
-+
-+		data.ports = chamelium_get_ports(data.chamelium,
-+						 &data.port_count);
-+
-+		if (!data.port_count)
-+			igt_skip("No ports connected\n");
-+		/*
-+		 * We don't cause any harm by plugging
-+		 * discovered ports, just incase they are not plugged
-+		 * we currently skip in test_setup
-+		 */
-+		for(int i = 0; i < data.port_count; i++)
-+			chamelium_plug(data.chamelium, data.ports[i]);
-+
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	run_sharpness_filter_test(&data);
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 84d8bed4b..0a336c2c1 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -340,6 +340,7 @@ chamelium_progs = [
- 	'kms_chamelium_edid',
- 	'kms_chamelium_frames',
- 	'kms_chamelium_hpd',
-+	'kms_chamelium_sharpness_filter',
- ]
- 
- test_deps = [ igt_deps ]
-@@ -365,6 +366,7 @@ extra_sources = {
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
-+	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
- 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
- }
--- 
-2.25.1
+Jeevan,
 
+You can update subject, here nothing is being fixed. You are just 
+updating fb format,
+since there is no specific need to use X tile.
+>
+>> -----Original Message-----
+>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Jeevan B
+>> Sent: Friday, November 22, 2024 9:40 AM
+>> To: igt-dev@lists.freedesktop.org
+>> Cc: B S, Karthik <karthik.b.s@intel.com>; B, Jeevan <jeevan.b@intel.com>
+>> Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: Fix cursor_fb3 framebuffer
+>> creation format
+>>
+>> Updated cursor_fb3 framebuffer creation in the cursor subtest function to use
+>> linear tiling instead of x-tile. As x-tile is no longer supported on latest platforms.
+>>
+>> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+>> ---
+>>   tests/intel/kms_pm_rpm.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c index
+>> 990c50915..aeeaf69f7 100644
+>> --- a/tests/intel/kms_pm_rpm.c
+>> +++ b/tests/intel/kms_pm_rpm.c
+>> @@ -1199,7 +1199,7 @@ static void cursor_subtest(bool dpms)
+>>   	igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+>>   		      DRM_FORMAT_MOD_LINEAR, &cursor_fb2);
+>>   	igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_XRGB8888,
+>> -		      I915_FORMAT_MOD_X_TILED, &cursor_fb3);
+>> +		      DRM_FORMAT_MOD_LINEAR, &cursor_fb3);
+>>
+>>   	fill_igt_fb(&cursor_fb1, 0xFF00FFFF);
+>>   	fill_igt_fb(&cursor_fb2, 0xFF00FF00);
+>> --
+>> 2.25.1
