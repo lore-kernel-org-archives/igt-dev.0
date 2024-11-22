@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AC58E69188
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 18:54:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1678E69189
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 18:54:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A8FF10E300;
-	Fri, 22 Nov 2024 18:54:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D7BC10E300;
+	Fri, 22 Nov 2024 18:54:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PtB6qaRW";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fGEAbQi7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A77BC10EC5B
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 18:54:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4D5210E300
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 18:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732301662; x=1763837662;
+ t=1732301681; x=1763837681;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Sm9fXg+5CUi69mian8rZHc/TVpJDftq8RT5xD0vuzM4=;
- b=PtB6qaRWHxnKERhLiM1dkdlrl3D8ffiLKxqxL7h1rWjUnZgYiEF0G79G
- mfvgdfJB0MZsWKDyAt7wx9lpg6iBvl2X6MzI3hyRWHbFep2QaD/ujgFSB
- W/YzpsJUmWZgl+NO/nyIFtof4FOA8fxROkOwnUpChCgZMXA20UaXztHuj
- v7ApsV94+wptPtP8Mygn79n2JeT7f7IwhRfCwFP7ABjee+VWuINDILlA2
- kzmtETZJrMPQYsb1sqF01AB3Wb3Mi7wJ88tJlfy9/HQ6U1wQN6MWPfFnE
- 2BgI60CWLX+I97zesf4YNh+ux/rMp3l9nnocI3jZd3Tj1qUw6wd7C6WRD w==;
-X-CSE-ConnectionGUID: Opa3JJ5XQa2gGOBzDdLBSQ==
-X-CSE-MsgGUID: 1XGLrJinTSWT0D8S7gzH0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="49987416"
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="49987416"
+ bh=8m4VGDw8LvabvMHnAfuhogBj0Sq/jpYfjLQLQN7iruM=;
+ b=fGEAbQi71IGrMT62wqqscPc7TijG0eY/afz1wzzovrAErqjSfF+Cz7bL
+ TNJa13qONCv2dqf7c5Jma+J5pk8FzhVqr70S696+pG1ZHE/tU142/upYR
+ t2maCCVkCPWzHrxO09YBkHT2yzrLNLI3gfP/mOGUiM9jvBiTz/Nb6O0nA
+ 8JoRQb7+gl17nwT6jTeuwV6edC+vzHgp6sn4qQkhbzQ1HD/ZI9e4WS6wl
+ bOozueLPIW8t9jp/PESDWlIGWb0CsTjYuDFti/iJaDl+UVjUVlomJlGtK
+ S9TcvEp3qZHzK1p03To2Uyr+CYIqv2SSCvm3qbE1ess6KTw+U2tqLWEDU A==;
+X-CSE-ConnectionGUID: izv4qL77SZmNFeNqE97Edg==
+X-CSE-MsgGUID: uexl6H+jTAKyf47p625efQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="49987419"
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="49987419"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 10:54:22 -0800
-X-CSE-ConnectionGUID: 8KlV3zzeTW2c1jKYGt9FkA==
-X-CSE-MsgGUID: wAGzmb/NS0yAodE1ujwzVQ==
+ 22 Nov 2024 10:54:24 -0800
+X-CSE-ConnectionGUID: p5Aqw+D9TV6Hg2xHXa6EJA==
+X-CSE-MsgGUID: H6cT+YwsRX2GyBta8N0OAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="113930304"
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; d="scan'208";a="113930316"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
  by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 10:54:21 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 10:54:23 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v8 3/4] tests/kms_sharpness_filter: Add adaptive sharpness filter test
-Date: Sat, 23 Nov 2024 00:27:07 +0530
-Message-Id: <20241122185708.1755203-4-swati2.sharma@intel.com>
+ v2 4/4] tests/chamelium/kms_chamelium_sharpness_filter: Add basic test
+Date: Sat, 23 Nov 2024 00:27:08 +0530
+Message-Id: <20241122185708.1755203-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241122185708.1755203-1-swati2.sharma@intel.com>
 References: <20241122185708.1755203-1-swati2.sharma@intel.com>
@@ -70,82 +69,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New test is added to validate adaptive sharpness filter on
-LNL platform. Various testcases are added to validate this
-feature. These are non CRC based tests and manual verification
-is required.
+Add new chamelium based sharpness test. Basic test is added where
+we have tried comparing frame dump of unsharped and sharped image.
+After, sharpness filter is applied its expected both frame dumps
+will be different.
 
-Pipe scaler is repurposed to perform a portion of this work.
-This means pipe scaling will be unavailable while the sharpening
-function is being used. The other scaler can be used for plane
-scaler.
-
-15 subtests are added:
-	-basic: verify basic functionality
-	-toggle: switch between enable and disable
-	-tap: verify different taps selected based on resolution
-	-modifiers: verify casf with different modifiers
-	-rotation: verify casf with different rotation
-	-formats: verify casf with different formats
-	-dpms: verify casf with dpms
-	-suspend: verify casf with suspend
-	-upscale: apply plane scaler and casf together
-	-downscale: apply plane scaler and casf together
-	-strength: vary strength and check difference in sharpness
-	-invalid filter with scaler: enable scaler on 2 planes and attempt
-				     is made to enable casf
-	-invalid filter with plane: enable 2 NV12 planes and attempt
-				    is made to enable casf
-	-invalid plane with filter: enable 1 NV12 plane and casf and attempt
-				    is made to enable 2nd NV12 plane
-	-invalid filter with scaling mode: enable scaling_mode property and attempt
-					   is made to enable casf
-
-TODO: -Enable casf with varying output formats (YCBCR/RGB)
-
-v2: -Updated modifier type to uint64_t.
-    -Replaced IGT_CRTC_SHARPENESS_STRENGTH with IGT_CRTC_SHARPNESS_STRENGTH.
-v3: -Updated setup_fb with height and width.
-v4: -Renamed tests/intel/kms_sharpness_filter.c -> tests/kms_sharpness_filter.c (Ankit)
-    -Added subtest invalid filter with connector. (Ankit)
-    -Updated documentation. (Bhanu)
-    -Used driver_close_driver instead close. (Bhanu)
-    -Added check to avoid debug print for invalid tests and filter strength = 0. (Ankit)
-v5: -Instead of using default strength as MAX, use MID value strength.
-    -Add relevant debug print for test skip.
-    -Fix indentation.
-    -Renamed invalid-filter-with-connector -> invalid-filter-with-scaling-mode
-    -Reworked on invalid-filter-with-scaling-mode(), added provision to
-     validate other scaling modes.
-v6: -Skip test if ret=-EINVAL for downscaling test.
-    -Change if() for tap subtest.
-v8: -Optimize tap-filter subtest (Ankit)
+v2: -removed MIN/MAX_FILTER_STRENGTH (Ankit)
+    -fixed alignment (Ankit)
+    -removed commit with fb_ref (Ankit)
+    -set data->pipe_id (Ankit)
+    -removed disable_filter_strength_on_pipe()
+    -fixed CRASH
+    -fixed assert condition
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_sharpness_filter.c | 739 +++++++++++++++++++++++++++++++++++
- tests/meson.build            |   1 +
- 2 files changed, 740 insertions(+)
- create mode 100644 tests/kms_sharpness_filter.c
+ .../kms_chamelium_sharpness_filter.c          | 240 ++++++++++++++++++
+ tests/meson.build                             |   2 +
+ 2 files changed, 242 insertions(+)
+ create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
 
-diff --git a/tests/kms_sharpness_filter.c b/tests/kms_sharpness_filter.c
+diff --git a/tests/chamelium/kms_chamelium_sharpness_filter.c b/tests/chamelium/kms_chamelium_sharpness_filter.c
 new file mode 100644
-index 000000000..9f261e72f
+index 000000000..d7316723a
 --- /dev/null
-+++ b/tests/kms_sharpness_filter.c
-@@ -0,0 +1,739 @@
++++ b/tests/chamelium/kms_chamelium_sharpness_filter.c
+@@ -0,0 +1,240 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2024 Intel Corporation
 + */
 +
 +/**
-+ * TEST: kms sharpness filter
++ * TEST: kms chamelium sharpness filter
 + * Category: Display
-+ * Description: Test to validate content adaptive sharpness filter
++ * Description: Test to validate content adaptive sharpness filter using Chamelium
 + * Driver requirement: xe
-+ * Functionality: casf
++ * Functionality: chamelium, casf
 + * Mega feature: General Display Features
 + * Test category: functionality test
 + */
@@ -156,218 +116,43 @@ index 000000000..9f261e72f
 +/**
 + * SUBTEST: filter-basic
 + * Description: Verify basic content adaptive sharpness filter.
-+ *
-+ * SUBTEST: filter-tap
-+ * Description: Verify that following a resolution change, distict taps are selected.
-+ *
-+ * SUBTEST: filter-strength
-+ * Description: Verify that varying strength (0-255), affects the degree of sharpeness applied.
-+ *
-+ * SUBTEST: filter-toggle
-+ * Description: Verify toggling between enabling and disabling content adaptive sharpness filter.
-+ *
-+ * SUBTEST: filter-modifiers
-+ * Description: Verify content adaptive sharpness filter with varying modifiers.
-+ * Functionality: casf, tiling
-+ *
-+ * SUBTEST: filter-rotations
-+ * Description: Verify content adaptive sharpness filter with varying rotations.
-+ * Functionality: casf, rotation
-+ *
-+ * SUBTEST: filter-formats
-+ * Description: Verify content adaptive sharpness filter with varying formats.
-+ * Functionality: casf, pixel-format
-+ *
-+ * SUBTEST: filter-dpms
-+ * Description: Verify content adaptive sharpness filter with DPMS.
-+ * Functionality: casf, dpms
-+ *
-+ * SUBTEST: filter-suspend
-+ * Description: Verify content adaptive sharpness filter with suspend.
-+ * Functionality: casf, suspend
-+ *
-+ * SUBTEST: filter-scaler-upscale
-+ * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled.
-+ * Functionality: casf, scaling
-+ *
-+ * SUBTEST: filter-scaler-downscale
-+ * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled.
-+ * Functionality: casf, scaling
-+ *
-+ * SUBTEST: invalid-filter-with-scaler
-+ * Description: Negative check for content adaptive sharpness filter
-+ * 		when 2 plane scalers have already been enabled and
-+ * 		attempt is made to enable sharpness filter.
-+ * Functionality: casf, scaling
-+ *
-+ * SUBTEST: invalid-filter-with-plane
-+ * Description: Negative check for content adaptive sharpness filter
-+ * 		when 2 NV12 planes have already been enabled and attempt is
-+ * 		made to enable the sharpness filter.
-+ * Functionality: casf, plane
-+ *
-+ * SUBTEST: invalid-plane-with-filter
-+ * Description: Negative check for content adaptive sharpness filter
-+ * 		when 1 NV12 plane and sharpness filter have already been enabled
-+ * 		and attempt is made to enable the second NV12 plane.
-+ * Functionality: casf, plane
-+ *
-+ * SUBTEST: invalid-filter-with-scaling-mode
-+ * Description: Negative check for content adaptive sharpness filter
-+ *              when scaling mode is already enabled and attempt is made to enable
-+ *              sharpness filter.
-+ * Functionality: casf, scaling
-+*/
-+
-+IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
-+
-+/*
-+ * Until the CRC support is added test needs to be invoked with
-+ * --interactive|--i to manually verify if "sharpened" image
-+ * is seen without corruption for each subtest.
 + */
 +
-+#define TAP_3				3
-+#define TAP_5				5
-+#define TAP_7				7
-+#define DISABLE_FILTER			0
-+#define MIN_FILTER_STRENGTH		1
++IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter using Chamelium");
++
 +#define MID_FILTER_STRENGTH		128
-+#define MAX_FILTER_STRENGTH		255
-+#define MAX_PIXELS_FOR_3_TAP_FILTER	(1920 * 1080)
-+#define MAX_PIXELS_FOR_5_TAP_FILTER	(3840 * 2160)
-+#define NROUNDS				10
-+#define INVALID_TEST ((type == TEST_INVALID_FILTER_WITH_SCALER) \
-+		   || (type == TEST_INVALID_FILTER_WITH_PLANE) \
-+		   || (type == TEST_INVALID_PLANE_WITH_FILTER) \
-+		   || (type == TEST_INVALID_FILTER_WITH_SCALING_MODE))
-+#define SET_PLANES ((type == TEST_FILTER_UPSCALE) \
-+		||  (type == TEST_FILTER_DOWNSCALE) \
-+		||  (type == TEST_INVALID_FILTER_WITH_SCALER) \
-+		||  (type == TEST_INVALID_FILTER_WITH_PLANE) \
-+		||  (type == TEST_INVALID_FILTER_WITH_SCALING_MODE))
-+
-+enum test_type {
-+	TEST_FILTER_TAP,
-+	TEST_FILTER_BASIC,
-+	TEST_FILTER_TOGGLE,
-+	TEST_FILTER_MODIFIERS,
-+	TEST_FILTER_ROTATION,
-+	TEST_FILTER_FORMATS,
-+	TEST_FILTER_DPMS,
-+	TEST_FILTER_SUSPEND,
-+	TEST_FILTER_UPSCALE,
-+	TEST_FILTER_DOWNSCALE,
-+	TEST_FILTER_STRENGTH,
-+	TEST_INVALID_FILTER_WITH_SCALER,
-+	TEST_INVALID_FILTER_WITH_PLANE,
-+	TEST_INVALID_PLANE_WITH_FILTER,
-+	TEST_INVALID_FILTER_WITH_SCALING_MODE,
-+};
-+
-+const int filter_strength_list[] = {
-+	MIN_FILTER_STRENGTH,
-+	(MIN_FILTER_STRENGTH + MID_FILTER_STRENGTH) / 2,
-+	MID_FILTER_STRENGTH,
-+	(MID_FILTER_STRENGTH + MAX_FILTER_STRENGTH) / 2,
-+	MAX_FILTER_STRENGTH,
-+};
-+const int filter_tap_list[] = {
-+	TAP_3,
-+	TAP_5,
-+	TAP_7,
-+};
-+static const struct {
-+	uint64_t modifier;
-+	const char *name;
-+} modifiers[] = {
-+	{ DRM_FORMAT_MOD_LINEAR, "linear", },
-+	{ I915_FORMAT_MOD_X_TILED, "x-tiled", },
-+	{ I915_FORMAT_MOD_4_TILED, "4-tiled", },
-+};
-+static const int formats[] = {
-+	DRM_FORMAT_NV12,
-+	DRM_FORMAT_RGB565,
-+	DRM_FORMAT_XRGB8888,
-+	DRM_FORMAT_XBGR16161616F,
-+};
-+static const igt_rotation_t rotations[] = {
-+	IGT_ROTATION_0,
-+	IGT_ROTATION_180,
-+};
-+static const uint32_t scaling_modes[] = {
-+	DRM_MODE_SCALE_FULLSCREEN,
-+	DRM_MODE_SCALE_CENTER,
-+	DRM_MODE_SCALE_ASPECT,
-+};
 +
 +typedef struct {
 +	int drm_fd;
-+	bool limited;
 +	enum pipe pipe_id;
-+	struct igt_fb fb[4];
-+	igt_pipe_t *pipe;
++	struct igt_fb fb, fb_ref;
 +	igt_display_t display;
 +	igt_output_t *output;
-+	igt_plane_t *plane[4];
++	igt_plane_t *primary;
 +	drmModeModeInfo *mode;
 +	int filter_strength;
-+	int filter_tap;
-+	uint64_t modifier;
-+	const char *modifier_name;
-+	uint32_t format;
-+	igt_rotation_t rotation;
-+	uint32_t scaling_mode;
++	struct chamelium *chamelium;
++	struct chamelium_port **ports;
++	int port_count;
 +} data_t;
++
++static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
++{
++	bool ret = true;
++
++	igt_output_set_pipe(data->output, pipe);
++	if (!intel_pipe_output_combo_valid(&data->display))
++		ret = false;
++	igt_output_set_pipe(data->output, PIPE_NONE);
++
++	return ret;
++}
 +
 +static void set_filter_strength_on_pipe(data_t *data)
 +{
 +	igt_pipe_set_prop_value(&data->display, data->pipe_id,
 +				IGT_CRTC_SHARPNESS_STRENGTH,
 +				data->filter_strength);
-+}
-+
-+static bool has_scaling_mode(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE) &&
-+	       igt_output_get_prop(output, IGT_CONNECTOR_SCALING_MODE);
-+}
-+
-+static drmModeModeInfo *get_mode(igt_output_t *output, int tap)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *mode[3] = { NULL };
-+	int total_pixels = 0;
-+
-+	/*
-+	 * TAP 3: mode->hdisplay <= 1920 && mode->vdisplay <= 1080
-+	 * TAP 5: mode->hdisplay > 1920 && mode->vdisplay > 1080
-+	 * TAP 7: mode->hdisplay >= 3840 && mode->vdisplay >= 2160
-+	 */
-+	for (int i = 0; i < connector->count_modes; i++) {
-+		total_pixels = connector->modes[i].hdisplay * connector->modes[i].vdisplay;
-+
-+		if (total_pixels <= MAX_PIXELS_FOR_3_TAP_FILTER && mode[0] == NULL)
-+			mode[0] = &connector->modes[i];
-+
-+		if (total_pixels > MAX_PIXELS_FOR_3_TAP_FILTER &&
-+		    total_pixels <= MAX_PIXELS_FOR_5_TAP_FILTER && mode[1] == NULL)
-+			mode[1] = &connector->modes[i];
-+
-+		if (total_pixels > MAX_PIXELS_FOR_5_TAP_FILTER && mode[2] == NULL)
-+			mode[2] = &connector->modes[i];
-+	}
-+
-+	switch (tap) {
-+	case TAP_3:
-+		return mode[0];
-+	case TAP_5:
-+		return mode[1];
-+	case TAP_7:
-+		return mode[2];
-+	default:
-+		igt_assert(0);
-+	}
 +}
 +
 +static void paint_image(igt_fb_t *fb)
@@ -396,478 +181,154 @@ index 000000000..9f261e72f
 +	paint_image(fb);
 +}
 +
-+static void cleanup_fbs(data_t *data)
-+{
-+	for (int i = 0; i < ARRAY_SIZE(data->fb); i++)
-+		igt_remove_fb(data->drm_fd, &data->fb[i]);
-+}
-+
 +static void cleanup(data_t *data)
 +{
-+	igt_display_reset(&data->display);
-+
-+	cleanup_fbs(data);
++	igt_remove_fb(data->drm_fd, &data->fb);
++	igt_remove_fb(data->drm_fd, &data->fb_ref);
++	igt_output_set_pipe(data->output, PIPE_NONE);
++	igt_output_override_mode(data->output, NULL);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
 +}
 +
-+static void set_planes(data_t *data, enum test_type type)
++
++static bool test_t(data_t *data, igt_plane_t *primary,
++		   struct chamelium_port *port)
 +{
-+	int ret;
-+	drmModeModeInfo *mode = data->mode;
-+	igt_output_t *output = data->output;
++	struct chamelium_frame_dump *dump;
++	drmModeModeInfo *mode;
++	int height, width;
++	bool ret = false;
 +
-+	data->plane[1] = igt_output_get_plane(output, 1);
-+	data->plane[2] = igt_output_get_plane(output, 2);
++	igt_output_set_pipe(data->output, data->pipe_id);
 +
-+	if (type == TEST_FILTER_UPSCALE) {
-+		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[1]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_size(data->plane[1], mode->hdisplay, mode->vdisplay);
-+	}
++	mode = igt_output_get_mode(data->output);
++	height = mode->hdisplay;
++	width = mode->vdisplay;
 +
-+	if (type == TEST_FILTER_DOWNSCALE) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_size(data->plane[1], mode->hdisplay * 0.75, mode->vdisplay * 0.75);
-+	}
++	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb_ref);
++	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
 +
-+	if (type == TEST_INVALID_FILTER_WITH_SCALER) {
-+		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[1]);
-+		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[2]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_fb(data->plane[2], &data->fb[2]);
-+		igt_plane_set_size(data->plane[1], mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(data->plane[2], mode->hdisplay, mode->vdisplay);
-+	}
-+
-+	if (type == TEST_INVALID_FILTER_WITH_PLANE) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[2]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_fb(data->plane[2], &data->fb[2]);
-+	}
-+
-+	if (type == TEST_INVALID_PLANE_WITH_FILTER) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+	}
-+
-+	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		setup_fb(data->drm_fd, 640, 480, data->format, data->modifier, &data->fb[2]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_fb(data->plane[2], &data->fb[2]);
-+
-+		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		igt_assert_eq(ret, 0);
-+
-+		mode->hdisplay = 640;
-+		mode->vdisplay = 480;
-+
-+		igt_output_override_mode(data->output, mode);
-+		igt_plane_set_fb(data->plane[2], NULL);
-+		igt_plane_set_fb(data->plane[1], &data->fb[2]);
-+
-+		igt_output_set_prop_value(data->output, IGT_CONNECTOR_SCALING_MODE, data->scaling_mode);
-+	}
-+}
-+
-+static void test_sharpness_filter(data_t *data,  enum test_type type)
-+{
-+	igt_output_t *output = data->output;
-+	drmModeModeInfo *mode = data->mode;
-+	int height = mode->hdisplay;
-+	int width =  mode->vdisplay;
-+	int ret;
-+
-+	igt_display_reset(&data->display);
-+	igt_output_set_pipe(output, data->pipe_id);
-+
-+	if (type == TEST_FILTER_TAP) {
-+		mode = get_mode(output, data->filter_tap);
-+		igt_require(mode != NULL);
-+	        igt_info("Mode %dx%d@%d on output %s\n", mode->hdisplay, mode->vdisplay, mode->vrefresh,
-+			  igt_output_name(output));
-+		igt_output_override_mode(output, mode);
-+	}
-+
-+	data->plane[0] = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_skip_on_f(!igt_plane_has_format_mod(data->plane[0], data->format, data->modifier),
-+		      "No requested format/modifier on pipe %s\n", kmstest_pipe_name(data->pipe_id));
-+
-+	setup_fb(data->drm_fd, height, width, data->format, data->modifier, &data->fb[0]);
-+	igt_plane_set_fb(data->plane[0], &data->fb[0]);
-+
-+	if (igt_plane_has_rotation(data->plane[0], data->rotation))
-+		igt_plane_set_rotation(data->plane[0], data->rotation);
-+	else
-+		igt_skip("No requested rotation on pipe %s\n", kmstest_pipe_name(data->pipe_id));
-+
-+	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
-+		igt_require_f(has_scaling_mode(output), "No connecter scaling mode found on %s\n", output->name);
-+
-+	if (SET_PLANES)
-+		set_planes(data, type);
-+
-+	/* Set filter strength property */
++	igt_plane_set_fb(data->primary, &data->fb);
 +	set_filter_strength_on_pipe(data);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
 +
-+	if (!INVALID_TEST && data->filter_strength != 0)
-+		igt_debug("Sharpened image should be observed for filter strength > 0\n");
++	igt_debug("Reading frame dumps from Chamelium...\n");
++	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++	dump = chamelium_read_captured_frame(data->chamelium, 0);
 +
-+	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
-+		ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
-+	else
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	if (type == TEST_FILTER_DPMS) {
-+		kmstest_set_connector_dpms(data->drm_fd,
-+					   output->config.connector,
-+					   DRM_MODE_DPMS_OFF);
-+		kmstest_set_connector_dpms(data->drm_fd,
-+					   output->config.connector,
-+					   DRM_MODE_DPMS_ON);
-+	}
-+
-+	if (type == TEST_FILTER_SUSPEND)
-+		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+					      SUSPEND_TEST_NONE);
-+
-+	if (type == TEST_INVALID_PLANE_WITH_FILTER) {
-+		data->plane[3] = igt_output_get_plane(data->output, 3);
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[3]);
-+		igt_plane_set_fb(data->plane[3], &data->fb[3]);
-+
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+	}
-+
-+	if (type == TEST_FILTER_DOWNSCALE)
-+		igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
-+			      "Scaling op not supported, cdclk limits might be exceeded.\n");
-+
-+	if (INVALID_TEST)
-+		igt_assert_eq(ret, -EINVAL);
-+	else
-+		igt_assert_eq(ret, 0);
-+
++	ret = chamelium_frame_match_or_dump(data->chamelium, port,
++					    dump, &data->fb_ref,
++					    CHAMELIUM_CHECK_ANALOG);
++	chamelium_destroy_frame_dump(dump);
 +	cleanup(data);
++
++	return ret;
 +}
 +
-+static bool has_sharpness_filter(igt_pipe_t *pipe)
++static int test_setup(data_t *data, enum pipe p)
 +{
-+	return igt_pipe_obj_has_prop(pipe, IGT_CRTC_SHARPNESS_STRENGTH);
++	igt_pipe_t *pipe;
++	int i = 0;
++
++	igt_display_reset(&data->display);
++	igt_modeset_disable_all_outputs(&data->display);
++	chamelium_reset_state(&data->display, data->chamelium, NULL,
++			      data->ports, data->port_count);
++
++	pipe = &data->display.pipes[p];
++	igt_require(pipe->n_planes >= 0);
++
++	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	igt_assert(data->primary);
++
++	/*
++	 * Prefer to run this test on HDMI connector if its connected, since on DP we
++	 * sometimes face DP FSM issue
++	 */
++        for_each_valid_output_on_pipe(&data->display, p, data->output) {
++		data->pipe_id = p;
++                for (i = 0; i < data->port_count; i++) {
++                        if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
++			    data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
++			    strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
++                                return i;
++                }
++        }
++
++	for_each_valid_output_on_pipe(&data->display, p, data->output) {
++		data->pipe_id = p;
++		for (i = 0; i < data->port_count; i++) {
++			if (strcmp(data->output->name,
++				   chamelium_port_get_name(data->ports[i])) == 0)
++				return i;
++		}
++	}
++
++	return -1;
++}
++
++static void test_sharpness_filter(data_t *data,  enum pipe p)
++{
++	int port_idx = test_setup(data, p);
++
++	igt_require(port_idx >= 0);
++	igt_require(igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_SHARPNESS_STRENGTH));
++
++	if (!pipe_output_combo_valid(data, p))
++		return;
++
++	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
++		igt_assert_f(!(test_t(data, data->primary, data->ports[port_idx]) == 1), "No sharpness observed.\n");
 +}
 +
 +static void
-+run_sharpness_filter_test(data_t *data, enum test_type type)
++run_sharpness_filter_test(data_t *data)
 +{
 +	igt_display_t *display = &data->display;
-+	igt_output_t *output;
 +	enum pipe pipe;
-+	char name[40];
-+
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
-+
-+		data->output = output;
-+		data->pipe_id = pipe;
-+		data->pipe = &display->pipes[data->pipe_id];
-+		data->mode = igt_output_get_mode(data->output);
-+
-+		if (!has_sharpness_filter(data->pipe)) {
-+			igt_info("%s: Doesn't support IGT_CRTC_SHARPNESS_STRENGTH.\n",
-+			kmstest_pipe_name(pipe));
-+			continue;
-+		}
-+
-+		igt_output_set_pipe(output, pipe);
-+
-+		if (!intel_pipe_output_combo_valid(display)) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
-+
-+		switch (type) {
-+		case TEST_FILTER_BASIC:
-+			snprintf(name, sizeof(name), "-basic");
-+			break;
-+		case TEST_FILTER_TAP:
-+			snprintf(name, sizeof(name), "-tap-%d", data->filter_tap);
-+			break;
-+		case TEST_FILTER_TOGGLE:
-+			snprintf(name, sizeof(name), "-toggle");
-+			break;
-+		case TEST_FILTER_MODIFIERS:
-+			snprintf(name, sizeof(name), "-%s", data->modifier_name);
-+			break;
-+		case TEST_FILTER_ROTATION:
-+			snprintf(name, sizeof(name), "-%srot", igt_plane_rotation_name(data->rotation));
-+			break;
-+		case TEST_FILTER_FORMATS:
-+			snprintf(name, sizeof(name), "-%s", igt_format_str(data->format));
-+			break;
-+		case TEST_FILTER_DPMS:
-+			snprintf(name, sizeof(name), "-dpms");
-+			break;
-+		case TEST_FILTER_SUSPEND:
-+			snprintf(name, sizeof(name), "-suspend");
-+			break;
-+		case TEST_FILTER_UPSCALE:
-+			snprintf(name, sizeof(name), "-upscale");
-+			break;
-+		case TEST_FILTER_DOWNSCALE:
-+			snprintf(name, sizeof(name), "-downscale");
-+			break;
-+		case TEST_INVALID_FILTER_WITH_SCALER:
-+			snprintf(name, sizeof(name), "-invalid-filter-with-scaler");
-+			break;
-+		case TEST_INVALID_FILTER_WITH_PLANE:
-+			snprintf(name, sizeof(name), "-invalid-filter-with-plane");
-+			break;
-+		case TEST_INVALID_PLANE_WITH_FILTER:
-+			snprintf(name, sizeof(name), "-invalid-plane-with-filter");
-+			break;
-+		case TEST_FILTER_STRENGTH:
-+			snprintf(name, sizeof(name), "-strength-%d", data->filter_strength);
-+			break;
-+		case TEST_INVALID_FILTER_WITH_SCALING_MODE:
-+			snprintf(name, sizeof(name), "-invalid-filter-with-scaling-mode-%s", kmstest_scaling_mode_str(data->scaling_mode));
-+			break;
-+		default:
-+			igt_assert(0);
-+		}
-+
-+		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe_id), data->output->name, name)
-+			test_sharpness_filter(data, type);
-+
-+		if (data->limited)
-+			break;
-+	}
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	data_t *data = _data;
-+
-+	switch (opt) {
-+	case 'l':
-+		data->limited = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const char help_str[] =
-+	"  --limited|-l\t\tLimit execution to 1 valid pipe-output combo\n";
-+
-+data_t data = {};
-+
-+igt_main_args("l", NULL, help_str, opt_handler, &data)
-+{
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+	}
 +
 +	igt_describe("Verify basic content adaptive sharpness filter.");
 +	igt_subtest_with_dynamic("filter-basic") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_BASIC);
-+		}
-+
-+	igt_describe("Verify that following a resolution change, "
-+		     "distict taps are selected.");
-+	igt_subtest_with_dynamic("filter-tap") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		for (int k = 0; k < ARRAY_SIZE(filter_tap_list); k++) {
-+			data.filter_tap = filter_tap_list[k];
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_TAP);
++		for_each_pipe(display, pipe) {
++			data->filter_strength = MID_FILTER_STRENGTH;
++			test_sharpness_filter(data, pipe);
 +		}
 +	}
++}
 +
-+	igt_describe("Verify that varying strength(0-255), affects "
-+		     "the degree of sharpeness applied.");
-+	igt_subtest_with_dynamic("filter-strength") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
++igt_main
++{
++	data_t data = {};
 +
-+		for (int k = 0; k < ARRAY_SIZE(filter_strength_list); k++) {
-+			data.filter_strength = filter_strength_list[k];
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 +
-+			run_sharpness_filter_test(&data, TEST_FILTER_STRENGTH);
-+		}
++		igt_display_require(&data.display, data.drm_fd);
++		igt_require(data.display.is_atomic);
++
++		igt_chamelium_allow_fsm_handling = false;
++
++		/* we need to initalize chamelium after igt_display_require */
++		data.chamelium = chamelium_init(data.drm_fd, &data.display);
++		igt_require(data.chamelium);
++
++		data.ports = chamelium_get_ports(data.chamelium,
++						 &data.port_count);
++
++		if (!data.port_count)
++			igt_skip("No ports connected\n");
++		/*
++		 * We don't cause any harm by plugging
++		 * discovered ports, just incase they are not plugged
++		 * we currently skip in test_setup
++		 */
++		for(int i = 0; i < data.port_count; i++)
++			chamelium_plug(data.chamelium, data.ports[i]);
++
++		kmstest_set_vt_graphics_mode();
 +	}
 +
-+	igt_describe("Verify toggling between enabling and disabling "
-+		     "content adaptive sharpness filter.");
-+	igt_subtest_with_dynamic("filter-toggle") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+
-+		for (int k = 0; k < NROUNDS; k++) {
-+			data.filter_strength = DISABLE_FILTER;
-+			run_sharpness_filter_test(&data, TEST_FILTER_TOGGLE);
-+			data.filter_strength = MAX_FILTER_STRENGTH;
-+			run_sharpness_filter_test(&data, TEST_FILTER_TOGGLE);
-+		}
-+	}
-+
-+	igt_describe("Verify content adaptive sharpness filter with "
-+		     "varying modifiers.");
-+	igt_subtest_with_dynamic("filter-modifiers") {
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		for (int k = 0; k < ARRAY_SIZE(modifiers); k++) {
-+			data.modifier = modifiers[k].modifier;
-+			data.modifier_name = modifiers[k].name;
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_MODIFIERS);
-+		}
-+	}
-+
-+	igt_describe("Verify content adaptive sharpness filter with "
-+		     "varying rotations.");
-+	igt_subtest_with_dynamic("filter-rotations") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		for (int k = 0; k < ARRAY_SIZE(rotations); k++) {
-+			data.rotation = rotations[k];
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_ROTATION);
-+		}
-+	}
-+
-+	igt_describe("Verify content adaptive sharpness filter with "
-+		     "varying formats.");
-+	igt_subtest_with_dynamic("filter-formats") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		for (int k = 0; k < ARRAY_SIZE(formats); k++) {
-+			data.format = formats[k];
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_FORMATS);
-+		}
-+	}
-+
-+	igt_describe("Verify content adaptive sharpness filter "
-+		     "with DPMS.");
-+	igt_subtest_with_dynamic("filter-dpms") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_DPMS);
-+		}
-+
-+	igt_describe("Verify content adaptive sharpness filter "
-+		     "with suspend.");
-+	igt_subtest_with_dynamic("filter-suspend") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_SUSPEND);
-+		}
-+
-+	igt_describe("Verify content adaptive sharpness filter "
-+		     "with 1 plane scaler enabled.");
-+	igt_subtest_with_dynamic("filter-scaler-upscale") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_UPSCALE);
-+		}
-+
-+	igt_describe("Verify content adaptive sharpness filter "
-+		     "with 1 plane scaler enabled.");
-+	igt_subtest_with_dynamic("filter-scaler-downscale") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_FILTER_DOWNSCALE);
-+		}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when 2 plane scalers have already been enabled and "
-+		     "attempt is made to enable sharpness filter.");
-+	igt_subtest_with_dynamic("invalid-filter-with-scaler") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALER);
-+		}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when 2 NV12 planes have already been enabled and attempt is "
-+		     "made to enable the sharpness filter.");
-+	igt_subtest_with_dynamic("invalid-filter-with-plane") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_NV12;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_PLANE);
-+		}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when 1 NV12 plane and sharpness filter have already been enabled "
-+		     "and attempt is made to enable the second NV12 plane.");
-+	igt_subtest_with_dynamic("invalid-plane-with-filter") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_NV12;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+			run_sharpness_filter_test(&data, TEST_INVALID_PLANE_WITH_FILTER);
-+		}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when scaling mode is already enabled and attempt is made "
-+		     "to enable sharpness filter.");
-+	igt_subtest_with_dynamic("invalid-filter-with-scaling-mode") {
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			data.rotation = IGT_ROTATION_0;
-+			data.format = DRM_FORMAT_XRGB8888;
-+			data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		for (int k = 0; k < ARRAY_SIZE(scaling_modes); k++) {
-+			data.scaling_mode = scaling_modes[k];
-+
-+			run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALING_MODE);
-+		}
-+	}
++	run_sharpness_filter_test(&data);
 +
 +	igt_fixture {
 +		igt_display_fini(&data.display);
@@ -875,17 +336,25 @@ index 000000000..9f261e72f
 +	}
 +}
 diff --git a/tests/meson.build b/tests/meson.build
-index 2724c7a9a..84d8bed4b 100644
+index 84d8bed4b..0a336c2c1 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -58,6 +58,7 @@ test_progs = [
- 	'kms_sequence',
- 	'kms_setmode',
- 	'kms_sysfs_edid_timing',
-+	'kms_sharpness_filter',
- 	'kms_tiled_display',
- 	'kms_tv_load_detect',
- 	'kms_universal_plane',
+@@ -340,6 +340,7 @@ chamelium_progs = [
+ 	'kms_chamelium_edid',
+ 	'kms_chamelium_frames',
+ 	'kms_chamelium_hpd',
++	'kms_chamelium_sharpness_filter',
+ ]
+ 
+ test_deps = [ igt_deps ]
+@@ -365,6 +366,7 @@ extra_sources = {
+ 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
+ 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
+ }
 -- 
 2.25.1
 
