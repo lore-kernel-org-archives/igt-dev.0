@@ -4,68 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F5DBE65D35
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:52:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67D2E65D36
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:55:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B2BB10EB00;
-	Fri, 22 Nov 2024 08:52:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FED810E1E2;
+	Fri, 22 Nov 2024 08:55:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="G48G1gJ1";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="U87NEUb9";
 	dkim-atps=neutral
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com
- [209.85.216.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2118110E150
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 18:35:37 +0000 (UTC)
-Received: by mail-pj1-f46.google.com with SMTP id
- 98e67ed59e1d1-2ea4c5b8fbcso946490a91.0
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Nov 2024 10:35:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732214136; x=1732818936; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p74w66bkC3nPxaIfTeUPdqi/MI+3iJl+nJneqNXJQjg=;
- b=G48G1gJ1ILU6//Q300H7JPs3sn1+Ia7R900PH1A27nZaKGx870SfzKImH2Cd880o1U
- KhFzLWrS1CO3xbEL0bgrIQeuFKPk0evcv5GqrtVHKmKG5TVW14spG9LE9TEM3gW5KuYb
- g4oaNIu7rJWNaFSbyVowOkfhJD+VoqLmh5dYDbXUDkDlYPUmstgq9Nowx855rly5JYrO
- m7gQgXbCNkmvDAXJvFbkPtHCoFJ5258frEtDO+DfTwgihBtilNDq494jMtRH5gBGWjYk
- 3vrYLkF/uEPehFz1wMI7J6WODvxtnsykBMrlXlesKE0Q3OJYidwKAThY0dUVfzvrxT6m
- D4Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732214136; x=1732818936;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=p74w66bkC3nPxaIfTeUPdqi/MI+3iJl+nJneqNXJQjg=;
- b=BpC9O+VFSv5nCqe+Nz0cJQIixXxbQ/1KZL94/SJBhiJ+kfZtJVSJ/ApvhQAKPOnh4S
- inkPbBiFX437FsXC7oiNi3WaBzqdJ8DdagY6IGV5yx3f6X7G3SxXNOa/WIgZOw0Azy3f
- H57WF/84FQssWpqry+VSE0hzqKQGcLw77TJAH3tUw0jFj1l9vYuJs0Mqg0mBRwsw5Kd1
- SYo1rFf/1koZvJ633CCRQk6fKMa0T9nXZkKeaIrLf4GYy6IGVpLw4MQaB2lFQhKbNCm9
- 4aVhgB+UGCBXrlRo180AyF5iz7SCvOdwKksgxurvlZC43BEXO42vWqfAhtJXBZ3kBbfg
- KHnA==
-X-Gm-Message-State: AOJu0YzZzOwVzCowhzSF0sdD+asVD9xysITjBSrx7Tsx75IToMxe84aD
- AACJwLiP71bnw1GT+JFonvdn/nYw5Rnu2/1azu5hjK72U97aEV0CQOKY8/tNUPGGSUTpI95QXEl
- FcBP/53Yhu0eRUHFldYQIg8EMebb8kIsuF+0=
-X-Gm-Gg: ASbGncvkPufTk/6nC6qURTvM2IXuZlKGBl85vfnC3T/xQhw4ISdivWBdtiBJslYp1kn
- 37eJABXgEepViG0QQAS1bK3p6+VQW0w==
-X-Google-Smtp-Source: AGHT+IHaBt69WFMWvZY0xWAUjcMnT7qPV8cnnYIeBB6MwMEe/UDnTL7tnyytQOPaUeDWWQWFF9jl8zA19MoPCapAsTA=
-X-Received: by 2002:a17:90a:f002:b0:2e9:20d8:414c with SMTP id
- 98e67ed59e1d1-2eaebd40289mr6272047a91.5.1732214135255; Thu, 21 Nov 2024
- 10:35:35 -0800 (PST)
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C367410E1E2
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 08:55:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=QKtA26KWwWdTf+rEtUq87Ulwl5xxwKi20vFMqeaIfEw=; b=U87NEUb90hZ9SClelIJzt6AIvb
+ mzZLATfG6t8/7v4DH6/p1E5q4UG/RC3fgk8sN2rABbR9hhKsGVFKJMhTZQOjccRkfTJgsEDlUQ4uA
+ 7BQrwfHn7jiTcJZkp0dpBvs4hqcm9baFQq179iflYbvkK27r92sr73u5iYeW1vy3sIy/rmZ9LN3pn
+ x/LPOJn/Wv05aiWIx4gJMEYEER0Ueyv6050y3WPA1ppOIyjsjzCkMX3DrvP2h7WibQvbEPG4ZsOYO
+ VXKZh3pq6LLDtWCuvtYHw/LJmSEiOCo0cP4hreQCNWNq205AebWxOWQD/YnRoXojMTyKjNHhUM0hj
+ O/IPtVGA==;
+Received: from [90.241.98.187] (helo=[192.168.0.101])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1tEPRK-00ArVM-E2; Fri, 22 Nov 2024 09:54:58 +0100
+Message-ID: <693bcca3-3969-44a0-ba96-c26fe4bd70c7@igalia.com>
+Date: Fri, 22 Nov 2024 08:54:57 +0000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] gputop: Add memory only utilization type
+To: Christian Gmeiner <christian.gmeiner@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
+ tursulin@igalia.com, Christian Gmeiner <cgmeiner@igalia.com>
 References: <20241121093822.3863544-1-christian.gmeiner@gmail.com>
  <861e015e-48d9-4a91-8da3-efcae38e1d0a@igalia.com>
-In-Reply-To: <861e015e-48d9-4a91-8da3-efcae38e1d0a@igalia.com>
-From: Christian Gmeiner <christian.gmeiner@gmail.com>
-Date: Thu, 21 Nov 2024 19:35:23 +0100
-Message-ID: <CAH9NwWeLHGMS8sXt47ctLczfXD1ggg9x2pc3tnKszqJZ=CPdvQ@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] gputop: Add memory only utilization type
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com, tursulin@igalia.com, 
- Christian Gmeiner <cgmeiner@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Fri, 22 Nov 2024 08:52:06 +0000
+ <CAH9NwWeLHGMS8sXt47ctLczfXD1ggg9x2pc3tnKszqJZ=CPdvQ@mail.gmail.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <CAH9NwWeLHGMS8sXt47ctLczfXD1ggg9x2pc3tnKszqJZ=CPdvQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,145 +63,207 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Tvrtko
 
-> > From: Christian Gmeiner <cgmeiner@igalia.com>
-> >
-> > Add special handling for drivers that only provide memory utilization
-> > fdinfo.
->
-> To check I am following correctly - special in this context means avoid
-> displaying empty fields, or avoid a crash, or?
+On 21/11/2024 18:35, Christian Gmeiner wrote:
+> Hi Tvrtko
+> 
+>>> From: Christian Gmeiner <cgmeiner@igalia.com>
+>>>
+>>> Add special handling for drivers that only provide memory utilization
+>>> fdinfo.
+>>
+>> To check I am following correctly - special in this context means avoid
+>> displaying empty fields, or avoid a crash, or?
+> 
+> - Avoid early return in print_client(..) -> no output show.
+> - Avoid a crash in strcmp(..).
+> 
+>>
+>>> Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+>>> ---
+>>>    tools/gputop.c | 20 ++++++++++++++++++++
+>>>    1 file changed, 20 insertions(+)
+>>>
+>>> diff --git a/tools/gputop.c b/tools/gputop.c
+>>> index 43b01f566..4135d84c1 100644
+>>> --- a/tools/gputop.c
+>>> +++ b/tools/gputop.c
+>>> @@ -35,6 +35,7 @@
+>>>    enum utilization_type {
+>>>        UTILIZATION_TYPE_ENGINE_TIME,
+>>>        UTILIZATION_TYPE_TOTAL_CYCLES,
+>>> +     UTILIZATION_TYPE_MEMORY_ONLY,
+>>>    };
+>>>
+>>>    static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+>>> @@ -141,6 +142,9 @@ engines_identical(const struct igt_drm_client *c,
+>>>            c->engines->max_engine_id != pc->engines->max_engine_id)
+>>>                return false;
+>>>
+>>> +     if (!c->engines->num_engines && !pc->engines->num_engines)
+>>> +             return true;
+>>
+>> strcmp() below crashes?
+>>
+> 
+> Correct.
+> 
+>> I would move the check you added to be first in this function. I think
+>> that makes most sense from the flow wise - checking it before max_engine_id.
+>>
+> 
+> Will do in v2.
+> 
+>> With this fixed what remains broken?
+>>
+> 
+> Show any output :)
 
-- Avoid early return in print_client(..) -> no output show.
-- Avoid a crash in strcmp(..).
+I totally missed it. Shows the value of commit messages. ;)
 
->
-> > Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-> > ---
-> >   tools/gputop.c | 20 ++++++++++++++++++++
-> >   1 file changed, 20 insertions(+)
-> >
-> > diff --git a/tools/gputop.c b/tools/gputop.c
-> > index 43b01f566..4135d84c1 100644
-> > --- a/tools/gputop.c
-> > +++ b/tools/gputop.c
-> > @@ -35,6 +35,7 @@
-> >   enum utilization_type {
-> >       UTILIZATION_TYPE_ENGINE_TIME,
-> >       UTILIZATION_TYPE_TOTAL_CYCLES,
-> > +     UTILIZATION_TYPE_MEMORY_ONLY,
-> >   };
-> >
-> >   static const char *bars[] =3D { " ", "=E2=96=8F", "=E2=96=8E", "=E2=
-=96=8D", "=E2=96=8C", "=E2=96=8B", "=E2=96=8A", "=E2=96=89", "=E2=96=88" };
-> > @@ -141,6 +142,9 @@ engines_identical(const struct igt_drm_client *c,
-> >           c->engines->max_engine_id !=3D pc->engines->max_engine_id)
-> >               return false;
-> >
-> > +     if (!c->engines->num_engines && !pc->engines->num_engines)
-> > +             return true;
->
-> strcmp() below crashes?
->
+Okay.. I wonder if we can get away without adding 
+UTILIZATION_TYPE_MEMORY_ONLY and instead make the code skip unavailable 
+data.
 
-Correct.
+Would something like this work:
 
-> I would move the check you added to be first in this function. I think
-> that makes most sense from the flow wise - checking it before max_engine_=
-id.
->
+diff --git a/tools/gputop.c b/tools/gputop.c
+index 43b01f566ac8..9639a7f5fde8 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -137,6 +137,9 @@ engines_identical(const struct igt_drm_client *c,
+  {
+  	unsigned int i;
 
-Will do in v2.
++	if (!c->engines->num_engines && !pc->engines->num_engines)
++		return true;
++
+  	if (c->engines->num_engines != pc->engines->num_engines ||
+  	    c->engines->max_engine_id != pc->engines->max_engine_id)
+  		return false;
+@@ -188,27 +191,20 @@ print_client(struct igt_drm_client *c, struct 
+igt_drm_client **prevc,
+  	uint64_t sz;
+  	int len;
 
-> With this fixed what remains broken?
->
++	if (c->samples < 2)
++		return 0;
++
+  	if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_TOTAL_CYCLES &&
+-	    c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_CYCLES)
++	    c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_CYCLES) {
+  		utilization_type = UTILIZATION_TYPE_TOTAL_CYCLES;
+-	else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIME)
++		/* Filter out idle clients. */
++		if (c->engines->num_engines && !c->total_total_cycles)
++			return 0;
++	} else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIME) {
+  		utilization_type = UTILIZATION_TYPE_ENGINE_TIME;
+-	else
+-		return 0;
+-
+-	if (c->samples < 2)
+-		return 0;
+-
+-	/* Filter out idle clients. */
+-	switch (utilization_type) {
+-	case UTILIZATION_TYPE_ENGINE_TIME:
+-	       if (!c->total_engine_time)
+-		       return 0;
+-	       break;
+-	case UTILIZATION_TYPE_TOTAL_CYCLES:
+-	       if (!c->total_total_cycles)
+-		       return 0;
+-	       break;
++		/* Filter out idle clients. */
++		if (c->engines->num_engines && !c->total_engine_time)
++			return 0;
+  	}
 
-Show any output :)
+  	/* Print header when moving to a different DRM card. */
+@@ -234,7 +230,9 @@ print_client(struct igt_drm_client *c, struct 
+igt_drm_client **prevc,
 
-> The loop in print_client() should ideally be skipped but even as is I
-> think exits on the capacity check, no? At the moment it seems like this
-> could be enough but maybe I am missing something.
->
+  	lines++;
 
-You are correct - it works without the goto thing.
+-	for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
++	for (i = 0;
++	     c->engines->num_engines && i <= c->engines->max_engine_id;
++	     i++) {
+  		double pct;
 
-> Regards,
->
-> Tvrtko
->
-> > +
-> >       for (i =3D 0; i <=3D c->engines->max_engine_id; i++)
-> >               if (c->engines->capacity[i] !=3D pc->engines->capacity[i]=
- ||
-> >                   !!c->engines->names[i] !=3D !!pc->engines->names[i] |=
-|
-> > @@ -193,6 +197,8 @@ print_client(struct igt_drm_client *c, struct igt_d=
-rm_client **prevc,
-> >               utilization_type =3D UTILIZATION_TYPE_TOTAL_CYCLES;
-> >       else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_=
-TIME)
-> >               utilization_type =3D UTILIZATION_TYPE_ENGINE_TIME;
-> > +     else if (c->regions->num_regions)
-> > +             utilization_type =3D UTILIZATION_TYPE_MEMORY_ONLY;
-> >       else
-> >               return 0;
-> >
-> > @@ -209,6 +215,13 @@ print_client(struct igt_drm_client *c, struct igt_=
-drm_client **prevc,
-> >              if (!c->total_total_cycles)
-> >                      return 0;
-> >              break;
-> > +     case UTILIZATION_TYPE_MEMORY_ONLY:
-> > +             for (sz =3D 0, i =3D 0; i <=3D c->regions->max_region_id;=
- i++)
-> > +                     sz +=3D c->memory[i].total;
-> > +
-> > +             if (sz =3D=3D 0)
-> > +                     return 0;
-> > +             break;
-> >       }
-> >
-> >       /* Print header when moving to a different DRM card. */
-> > @@ -234,6 +247,9 @@ print_client(struct igt_drm_client *c, struct igt_d=
-rm_client **prevc,
-> >
-> >       lines++;
-> >
-> > +     if (utilization_type =3D=3D UTILIZATION_TYPE_MEMORY_ONLY)
-> > +             goto print_name;
-> > +
-> >       for (i =3D 0; c->samples > 1 && i <=3D c->engines->max_engine_id;=
- i++) {
-> >               double pct;
-> >
-> > @@ -249,6 +265,9 @@ print_client(struct igt_drm_client *c, struct igt_d=
-rm_client **prevc,
-> >                       pct =3D (double)c->utilization[i].delta_cycles / =
-c->utilization[i].delta_total_cycles * 100 /
-> >                               c->engines->capacity[i];
-> >                       break;
-> > +             case UTILIZATION_TYPE_MEMORY_ONLY:
-> > +                     /* Nothing to do. */
-> > +                     break;
-> >               }
-> >
-> >               /*
-> > @@ -262,6 +281,7 @@ print_client(struct igt_drm_client *c, struct igt_d=
-rm_client **prevc,
-> >               len +=3D *engine_w;
-> >       }
-> >
-> > +print_name:
-> >       printf(" %-*s\n", con_w - len - 1, c->print_name);
-> >
-> >       return lines;
+  		if (!c->engines->capacity[i])
 
+Regards,
 
+Tvrtko
 
---=20
-greets
---
-Christian Gmeiner, MSc
-
-https://christian-gmeiner.info/privacypolicy
+>> The loop in print_client() should ideally be skipped but even as is I
+>> think exits on the capacity check, no? At the moment it seems like this
+>> could be enough but maybe I am missing something.
+>>
+> 
+> You are correct - it works without the goto thing.
+> 
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>> +
+>>>        for (i = 0; i <= c->engines->max_engine_id; i++)
+>>>                if (c->engines->capacity[i] != pc->engines->capacity[i] ||
+>>>                    !!c->engines->names[i] != !!pc->engines->names[i] ||
+>>> @@ -193,6 +197,8 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+>>>                utilization_type = UTILIZATION_TYPE_TOTAL_CYCLES;
+>>>        else if (c->utilization_mask & IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIME)
+>>>                utilization_type = UTILIZATION_TYPE_ENGINE_TIME;
+>>> +     else if (c->regions->num_regions)
+>>> +             utilization_type = UTILIZATION_TYPE_MEMORY_ONLY;
+>>>        else
+>>>                return 0;
+>>>
+>>> @@ -209,6 +215,13 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+>>>               if (!c->total_total_cycles)
+>>>                       return 0;
+>>>               break;
+>>> +     case UTILIZATION_TYPE_MEMORY_ONLY:
+>>> +             for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
+>>> +                     sz += c->memory[i].total;
+>>> +
+>>> +             if (sz == 0)
+>>> +                     return 0;
+>>> +             break;
+>>>        }
+>>>
+>>>        /* Print header when moving to a different DRM card. */
+>>> @@ -234,6 +247,9 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+>>>
+>>>        lines++;
+>>>
+>>> +     if (utilization_type == UTILIZATION_TYPE_MEMORY_ONLY)
+>>> +             goto print_name;
+>>> +
+>>>        for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
+>>>                double pct;
+>>>
+>>> @@ -249,6 +265,9 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+>>>                        pct = (double)c->utilization[i].delta_cycles / c->utilization[i].delta_total_cycles * 100 /
+>>>                                c->engines->capacity[i];
+>>>                        break;
+>>> +             case UTILIZATION_TYPE_MEMORY_ONLY:
+>>> +                     /* Nothing to do. */
+>>> +                     break;
+>>>                }
+>>>
+>>>                /*
+>>> @@ -262,6 +281,7 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
+>>>                len += *engine_w;
+>>>        }
+>>>
+>>> +print_name:
+>>>        printf(" %-*s\n", con_w - len - 1, c->print_name);
+>>>
+>>>        return lines;
+> 
+> 
+> 
