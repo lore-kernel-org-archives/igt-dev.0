@@ -4,69 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E7DAE6916C
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 15:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB3EE69173
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 16:09:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A4F710EBF1;
-	Fri, 22 Nov 2024 15:51:51 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="oH93Y5rR";
-	dkim-atps=neutral
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
- [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69A9F10EBEA
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 15:51:46 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CC51A2000F;
- Fri, 22 Nov 2024 15:51:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1732290705;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=66QzY99VcWis0H80NAMjVA2SlYhMSybYV4TiIPO50iI=;
- b=oH93Y5rRvla/11hvv2QbFOpW2fSOBgnCRmSG8fyiHIUqj4psm494lGM46slh9M3S2Kk3eG
- bfDbQxNdZqR6pEKK6qY/hCzemi9A6TCX6DEka+08OtLT7Ux8ENJFflGRPgiOP/Py13VQC+
- 2QwuMFLiL2NhI33flZS4uoG8rQBNh7gxXQlhrsYQ3Ox3j3bCcvEJY87VANl6p6eblNQRNM
- 1JfNPvFrA5aYjLjjd8KKj2Xf8qOy/BlrgKJFcfDnaYDIQTbgWnCmwrFwKhGQTth2rdXTNG
- 2vmWQbeAPL9Riw+4iQ0N7LkBYBAHGw/b/lvFe+Hv/D8Ccvlb4JA7pQARYTVNbg==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 22 Nov 2024 16:51:38 +0100
-Subject: [PATCH i-g-t v3 5/5] lib/monitor_edids: Add new EDID for HDMI 4k
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6485510E301;
+	Fri, 22 Nov 2024 16:09:45 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4316B10E301;
+ Fri, 22 Nov 2024 16:09:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5497115965084313232=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241122-b4-cv3-02-monitor-edids-v3-5-1798f58167ef@bootlin.com>
-References: <20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com>
-In-Reply-To: <20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
- Ashutosh Dixit <ashutosh.dixit@intel.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, nicolejadeyee@google.com, 
- seanpaul@google.com, jeremie.dautheribes@bootlin.com, markyacoub@google.com, 
- Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1475;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=pmj4DT9Gp+9bblPBBXLEmlH4gRnqAnV2LOEhOlitZh8=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnQKiK3vYz5Tr4H3+mq+tfX+W8R4MXvu+KtdLPf
- zRYpxBMlVyJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZ0CoigAKCRAgrS7GWxAs
- 4twtEACPOGpE9bWf1MnUeKHIPHlUfVhiGLP4/OQ0O9CngdKFTph8q9jWwNpEc6vdaIg34KCVlCR
- 8PhRhAGlfgFVCdXZseH61NtFfG6VpfXUQDWZunPVUYK3LEuyMOdmd8lyLjQ/d6p0U8lQu+QwJaq
- SKOKgY5nI9QbdKMiQ5orV0EoYHO+cGaBpJaLgnq1pxyeg7ivImecN4hHn+fBnacGs4gQnF38HMx
- /STza+jpuQXR3hhhvr/LQPEkaHH4tdQOS87EmSt84FgP0rZvWTm6+5R28HcdQWz+s/VLRPddut2
- 9Nn+nohxzPRNU4ZXYXkD7in7NvAZYxhYAHcX1l6QnJifFyhX6u/nsz46l0ajcXQ4cOD4SPkHngc
- Q86XeD18ShGdxhiFl9BXMhacfTO2p06QeXyu6iowIBngalwDr3ezwleGar0oY82UahWOAxBWdIv
- XNVSmF44+eOg0vfLV7YgIgNl7KLp6RV+oczF3N64cvsPMyltC3uYqqJw/JlVK9JX/CbY88k2/Nl
- pUAsOfnFT0q2GQ/pBWX12kBunPpJDnnKXy/q65wcYPqzob+/W4AQOROP7LqFBm0YS2ufU/Cy7Hf
- KDorKx7R/7iPrpk1PufFj3tUYTdMjuGQ2+6joLrQd9s6ClZePAj3ZLbkKupFQZ7pqrfDWCQRu+V
- uQLEOyClSg422Kg==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-GND-Sasl: louis.chauvet@bootlin.com
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel=5Fcompute=3A_Use_vali?=
+ =?utf-8?q?d_number_of_array_size_for_unbind?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 22 Nov 2024 16:09:44 -0000
+Message-ID: <173229178429.1756019.2188873537255246009@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241122102931.210761-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20241122102931.210761-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,47 +37,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add EDID for the HDMI screen LG HDR 4K.
+--===============5497115965084313232==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- lib/monitor_edids/hdmi_edids.h | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index 3ff331e9f7c2a48858359ca41f4aec1f7ec8204d..3f5c38982886297cc768cb99ce26d6e0f883520a 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -50,7 +50,23 @@ monitor_edid HDMI_EDIDS_4K[] = {
- 		  "5E00A0A0A0295030203500C48F210000"
- 		  "1EEF5100A0F070198030203500C48F21"
- 		  "00001E000000000000000000000000A8" },
--
-+	{ .name = "4K_GSM_LG_HDR_4K_HDMI",
-+	  .edid = "00ffffffffffff001e6d4f77c75f1500"
-+		  "0521010380462878ea7ba1ae4f44a926"
-+		  "0c5054210800d1c06140454001010101"
-+		  "010101010101a0cb0046f0703e802010"
-+		  "3500b9882100001a000000fd00283c1e"
-+		  "873c000a202020202020000000fc004c"
-+		  "472048445220344b0a202020000000ff"
-+		  "003330354d414e4a43335a37350a01e4"
-+		  "0203427223090707830100004d010304"
-+		  "10121f202261605f5e5d6d030c001000"
-+		  "b83c20006001020367d85dc401788003"
-+		  "e30f0003e2006ae305c000e606050159"
-+		  "5952a36600a0f0701f8030203500b988"
-+		  "2100001a565e00a0a0a0295030203500"
-+		  "b9882100001a023a801871382d40582c"
-+		  "4500b9882100001a00000000000000af" },
- };
- 
- monitor_edid HDMI_EDIDS_NON_4K[] = {
+Series: intel_compute: Use valid number of array size for unbind
+URL   : https://patchwork.freedesktop.org/series/141693/
+State : success
 
--- 
-2.47.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8123_BAT -> XEIGTPW_12175_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12175_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3517]) +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-adlp-7:         [PASS][3] -> [SKIP][4] ([Intel XE#455]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+
+  
+  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8123 -> IGTPW_12175
+
+  IGTPW_12175: 12175
+  IGT_8123: fb343db7fc59c760ef0a0c19303e7bcec177dbd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2263-a381faddbfc974e7bd57efe953a738415afccd6a: a381faddbfc974e7bd57efe953a738415afccd6a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/index.html
+
+--===============5497115965084313232==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel_compute: Use valid number of array size for unbind</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141693/">https://patchwork.freedesktop.org/series/141693/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8123_BAT -&gt; XEIGTPW_12175_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12175_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +2 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12175/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8123 -&gt; IGTPW_12175</li>
+</ul>
+<p>IGTPW_12175: 12175<br />
+  IGT_8123: fb343db7fc59c760ef0a0c19303e7bcec177dbd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2263-a381faddbfc974e7bd57efe953a738415afccd6a: a381faddbfc974e7bd57efe953a738415afccd6a</p>
+
+</body>
+</html>
+
+--===============5497115965084313232==--
