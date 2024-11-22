@@ -4,186 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACB01D75E53
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 14:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBFA8D75E57
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 14:22:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F8E310EBAE;
-	Fri, 22 Nov 2024 14:11:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 96C6810EB53;
+	Fri, 22 Nov 2024 14:22:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifrHcHZT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VV36eEwl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8065110EBAE
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 14:11:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1F6410EB53
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 14:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732284698; x=1763820698;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=PqE6EOmJc6VukqNMYJMkXc42sBMm+RcFNJEXJ2jiwGA=;
- b=ifrHcHZTWCUw7519FqdUGfC+8zMfs2iTLsScuJN2AFGKpCGVQkCnwrYG
- hI50HQ3d+IK6zbJMWZFxZtTSvGzyv0WpUntLG6uOiP3twekNJk/ajqdav
- +p26YGLNWeVsncVplVBv2oIg/yt1+EGDRcEWZeuMs12qcfPQpIelotj4e
- cGUDuNJpTg3lMSM7OGQc6JkC44tOUPAfJ9ym4+FImqL4I9TSBiYHcjBxe
- lLqRmAfGOt8fQKkL+Z1WOL68S0jWnACB/bSN7xCxxJtZLbHzuUbsRvlff
- rr6lpNlXM5/KzkeBDb57FUb7QXeZd+DlJl8thIVkqsaDs5PMxbZgKHeQY w==;
-X-CSE-ConnectionGUID: LW8ueaaYRKWhPLTvDF8zWA==
-X-CSE-MsgGUID: CPPMV/PdTkOqyAhhZ/sIPQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="32364661"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="32364661"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 06:11:38 -0800
-X-CSE-ConnectionGUID: y4FGpbuMSwe7bKWgM8lpXQ==
-X-CSE-MsgGUID: NlpMvcGMRYC2zjyMTky2uQ==
+ t=1732285366; x=1763821366;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=iT0BINSvcAh7LdqkkwaN6dTQ1gMRrLvUr+xJoGME030=;
+ b=VV36eEwlp8z3dQ/jhfPE1DjadYpJLIQCqNKe1tluxyB5FqFRwMLGADCD
+ CEmkrYdQDyAv7P8bV4olJIkmUXeGTphLAlrnnFzW7gRs9OMqPosxqN91V
+ Mj9U5VNgpU+IT1bprd8sAtxipBlRLdWU2AxQ131udDBpXhcZ92pEwqNzW
+ SxRHUfmhyFmY3EaovHuKFLfdOY7+TNdYLQe4dHLPPtOc05jdzgWJeBP30
+ vEpU1dVJpRllTLORwxVpAiU1+He5DHFEbMegNVVDkkwkaP6IESLDl2zJ/
+ 8OhDsupZoje8TjmUZword2K2vlTCUFcre12m6/Jx/BynC9920gyVsQ1/7 Q==;
+X-CSE-ConnectionGUID: UX1wnXYsQJ6EvW9HBLOSHQ==
+X-CSE-MsgGUID: 4Xbo+d7MQvWRjrudewzJFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="42949506"
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="42949506"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2024 06:22:46 -0800
+X-CSE-ConnectionGUID: oUhZHQrKTpGiYS+mxMxF2A==
+X-CSE-MsgGUID: 9QtG3eayRQaAygLnoi952Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="95020734"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 22 Nov 2024 06:11:37 -0800
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="95658266"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Nov 2024 06:22:45 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 22 Nov 2024 06:11:36 -0800
+ 15.1.2507.39; Fri, 22 Nov 2024 06:22:44 -0800
 Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 22 Nov 2024 06:11:36 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.45) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Fri, 22 Nov 2024 06:22:44 -0800
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.173)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 22 Nov 2024 06:11:36 -0800
+ 15.1.2507.39; Fri, 22 Nov 2024 06:22:44 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DVn5JEl5iD9TR2GIi0wqguYLYjAm6mplYCOwZwapZKXpG2ofrfyjmEWfdqWWAvlQe8y7fItgCGOpM5PlCV7Eliv13/pibyBfdV//XYAtVnt/6TyWVMBK1bHGa2rTAwWR0Y2kZzU5cVdJg7ev1OAl3Gd0Cl5MXNHtpC1y9DO8qBtnz21lgwjmOoq8OpMZaZ2UmWdU8UDOlzImlkF0QXdE1DX86xnCMDqooFQjg5SxDoKMY51dhM+AdW4/gm0iRW0PJLtEmV6DslYnUKVWd2NwPaVBWKp0gdMAdvUsFXJWaSaU4qwwGgrqPl9eouDknAvFWRRu8TvI729v/vfi8XLkxw==
+ b=ohZZKt7sHPcS04/Bz+HuOlNqYr9vMbOVX/WbhUfOenyB8p4yEabeX9ap18cC33riSokzeu6x5nV4/+zms5QK06olijY/ZcDhxKQRZOBf2r6hPSQe++9Uxn5zwTvRKAKJ2awOxigf/22XZl2GQwXA1oSOKqb4EIyF99ecWOciGbq5BZ/T9My5FHUgY5wvRO5DHYcDnz8BS46jatuUnw5hcdcWj29Ig5zzXjTlpJt6BTgUGRbj19dX1l7b6vS86I4CI1ajYlF9tDVPy0mkwNzAc5t4C887zMAsi3LMxvteODyfzIYnDhaItDz5aeFImi/PadODcN0bSOfxFrsnpytTtw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PqE6EOmJc6VukqNMYJMkXc42sBMm+RcFNJEXJ2jiwGA=;
- b=kYRK5E7pLnmdSAXjMDoLLTTOXRdLfgpEFyOAyy8f13qUKUkx+clUmV3gQmtf8FKXHKnzOHzPNrOmvoD+FzTmpllniERDOC22hhul+53GLZQYLLMp6JD/DybZBLLNDqGeKFVvJ0KXr5M9RCyismH9xSz17YILlvnkE9XZ2VgwE/re/cAR7rEUAS1ho776irk88M8cPfWCnaG4xIpU80JdyN6FZiGkBhshhiHFwkdvSCmm7Z9MtFDlZYxViFB3pYFaSSfFlyycJ4ia8U9lbNdnZL0O9OXTsVgeHiisiabu6A0XYrt5wygxsirZnQ+fyDza9n85HQopVyhxEgsNA0f5wg==
+ bh=qceTXqWb4Lm4wIoYxXE4O0LWn+aaFC9OgIaq/YirQjs=;
+ b=AtHV8kyKwsZ/sGE8tW3J5UWl1BFmSBLfoPDqAijENGmdFWLilOlxKpEiNsqg84usdsTAkae9/76OfdiJoRi8QbMNwLBAEXxH0DPfUG9pHTRNPavOawSabhqiuhUprVFWdO22qOtYkBNJIELBHPq5cC8apW5M/5dn6s2z8ROryqJ6uq/VX4cltTkNWisCbBmHcNKdxIapt10hrP3mL2B/O4ldgN1G4EWOZ87rTxDZUkUH0EoqhKW0N6n+kdaN28KSONQyUSeQQBp4A69t5LVc3P7UTka2CU0CkolAgZduwHQDPc66i4bTrbDgjDwlkEzosMUZpw0qWXpqKQ6NKm5SSw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from IA0PR11MB7864.namprd11.prod.outlook.com (2603:10b6:208:3df::14)
- by DM4PR11MB7375.namprd11.prod.outlook.com (2603:10b6:8:101::12) with
- Microsoft SMTP Server (version=TLS1_2,
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB6619.namprd11.prod.outlook.com (2603:10b6:303:1eb::13)
+ by SN7PR11MB8263.namprd11.prod.outlook.com (2603:10b6:806:26d::19)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Fri, 22 Nov
- 2024 14:11:31 +0000
-Received: from IA0PR11MB7864.namprd11.prod.outlook.com
- ([fe80::9333:15de:faa8:4cf9]) by IA0PR11MB7864.namprd11.prod.outlook.com
- ([fe80::9333:15de:faa8:4cf9%5]) with mapi id 15.20.8158.024; Fri, 22 Nov 2024
- 14:11:28 +0000
-From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Hajda,
- Andrzej" <andrzej.hajda@intel.com>
+ 2024 14:22:41 +0000
+Received: from MW4PR11MB6619.namprd11.prod.outlook.com
+ ([fe80::55f0:ee1a:cbd4:a704]) by MW4PR11MB6619.namprd11.prod.outlook.com
+ ([fe80::55f0:ee1a:cbd4:a704%5]) with mapi id 15.20.8182.014; Fri, 22 Nov 2024
+ 14:22:41 +0000
+Message-ID: <b7edccc0-0c27-4afd-b473-6a4c520cfb47@intel.com>
+Date: Fri, 22 Nov 2024 15:22:36 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] lib/gpgpu_shader: simplify load/store shaders
+To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Mun,
  Gwan-gyeong" <gwan-gyeong.mun@intel.com>, "Manszewski, Christoph"
  <christoph.manszewski@intel.com>, "kamil.konieczny@linux.intel.com"
  <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH v3 4/4] lib/gpgpu_shader: add support for Xe3 platforms
-Thread-Topic: [PATCH v3 4/4] lib/gpgpu_shader: add support for Xe3 platforms
-Thread-Index: AQHbPDi/Gb78LsRp5EGigqJdrqu8CLLDWGWA
-Date: Fri, 22 Nov 2024 14:11:28 +0000
-Message-ID: <f52bb270341789ee54eee040c7783719d7990ed8.camel@intel.com>
 References: <20241121-gpgpu_send_rework-v3-0-0b6aa48ab006@intel.com>
- <20241121-gpgpu_send_rework-v3-4-0b6aa48ab006@intel.com>
-In-Reply-To: <20241121-gpgpu_send_rework-v3-4-0b6aa48ab006@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7864:EE_|DM4PR11MB7375:EE_
-x-ms-office365-filtering-correlation-id: 677300c8-dbd8-4eaf-46a9-08dd0aff8ef1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?cjVJOUU1b3MwVThURXh3a2RBVGUxdjVudXZkeHEvSWllcjNBbndmditQdXA1?=
- =?utf-8?B?MXlQUndJS1B0bjlHb20xZm8rYTVjN0FVbmVJa25qbU10R2FURy9FVEdPWUVj?=
- =?utf-8?B?dDRSV2plNVQ2aTQ3bzJudGI3ZlRjNmVFZFpKWE9mdjhZY1RtS0sxWldIdFJQ?=
- =?utf-8?B?T044dTZvZ1BhN2ZGMVN6SjQxM1FWNE5LUEdJMmd4Z1ZEVXpuUGF5L0VsREFx?=
- =?utf-8?B?T0gyVzJFZ3RHczQzRitsYkYrLzdTZG54QlUwa2xMU0JidW1KZVhTY1owTndr?=
- =?utf-8?B?ekVKNXBiN2dtYmp0OFFxY0R0SW9IQ3ZQWXZoaklCdFJlY29NZlVuTkVNbG1T?=
- =?utf-8?B?VWNhVmdidXV4RExqMGNMZUc4V3c0b2w0N29jSUppS2FrNWRwVW0rZ1c1eS9x?=
- =?utf-8?B?c0ZBQWhnUGlBK2NNOHdaYUhPZXczSmFhaWlYWnpJam42UHJaQS9sbThvV3Nn?=
- =?utf-8?B?WkFiZnJaS2NUVTRFeVNGbmpnUVh3dXU1ZFkxS2p0eU8rejJPbjBXRzFFMzRj?=
- =?utf-8?B?MHBvU05STGF4K0VTUDRkeHUrZVorUEZCTW40dkVLSW9ITlY4K3NIWnpLTGtW?=
- =?utf-8?B?V1QzdTVva3B1NlZaWnN5ZFBYR0tqemU4YmhyOGlFdTZIL0gya3JPRDJ4MHNz?=
- =?utf-8?B?NzdLS3d4czIzZlZQVXU4Yk4rNHFscXVjVG0vNVIwMmJ3QVlYaG5HWUd4dUZa?=
- =?utf-8?B?eE5BZldLYUJEbXc2WXRJaWdTNmhERHN1ZFBLeGdVSUpQYUJZUy8xZzdzbzBL?=
- =?utf-8?B?aTlLWWpRbjUrL2RvZXhjRG8vdTllbXlCN0o2Y2lwbnhWQi81cCtBeGtpQTBu?=
- =?utf-8?B?b3k0MmRuVy8xZEVSMXZ2YU5ldFA0TWhHMG1hbWpFWFVOZFFLRXdFVW5EeU5T?=
- =?utf-8?B?N0xoTzhIdlUybWY2OS8yelA3QkMvNFRkQlQzRmQreEkwdjMwNzdhMkhFSUdv?=
- =?utf-8?B?bDZMSnllQ01BY3YrT0VYbG9GTXIvclJFVElyVTFQTkx1MGJVdHRNYVNaTHZu?=
- =?utf-8?B?R0RvNnFsZ3Jwa054NW81b2lCQjdnNkRONzVFelRxTFhzZVdrOVdBcHZ2eThQ?=
- =?utf-8?B?RVpydDM0TjhtRDlWL244OVNRS3RORWlJMWhLMm8wZm00NlQyUXFvTTlUWHox?=
- =?utf-8?B?YzF0bWpKUHdnbENUcWJIZXM1dXZXbHhZczBaaGlOTkxOWGJyUFNEakFEMFl6?=
- =?utf-8?B?NHFaQXZOWXo4VGZMOVhWY2Z2UUxjNitRcjN5RVRFYysvL0lFT2hDQTcxOENq?=
- =?utf-8?B?akEvekw3OC9kTzl3VW5tOGUyTlFYSmRyUWNUSjM0Y3Q0Z1lUUXFDL0EwMUdu?=
- =?utf-8?B?MWkyNlIvdWcwdzlsSkVGQTF0ZGtyWlMrb21kVkRLQW80N2tjOW9FMG5UdWtH?=
- =?utf-8?B?dEx5T05pNzJLZXpNdFl4UHYwY3R3aStwYUluZXc2SHQ5K1A3WjhuZGhFdDBC?=
- =?utf-8?B?ODJoYVBOYjFyZFJ5akg5TjA4YWtvb05JMGF2RmhzTEJoeVlZRDZmRUtwRFI2?=
- =?utf-8?B?Z3g4cEtFNnVPUG9GNjNnQXR6elJYSFZnTE1yVlZwYS90NzZ1UUJBa1RYVUxQ?=
- =?utf-8?B?QzFqbkR5MGVMVkYvWW0xeFlIdXlwTjMyeUFydnFWUlVFQUowcDZETkI4Wk9V?=
- =?utf-8?B?UVRjYThmaU92ZUJ5NWExOCtXb0Q5S2VCaEllNnZQajVDbkpDdkpMRTVXSHl0?=
- =?utf-8?B?T3dsZ25kdlZKTlM1MHpRdzZRMm1BREZuem9ldzZwek55aERCd1dEU0szeWlK?=
- =?utf-8?B?ekMwQ1BzaStneEZHSlNLNnJZdTlJVGlTK2RPK0JiZDllU2g1eVNEUFMxRGZl?=
- =?utf-8?Q?Ed5kjO6/9JePXtWBJeeYterBjcBA+MpriniQ0=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR11MB7864.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?L3N2QStQWHRLYnBVSXhlTGlPRE8xdlBWdnVYMFBVUkN3dmN3dWRkZmo1Rml1?=
- =?utf-8?B?d3lsS0FweUdBT2RHU0tTSWNxNng1b016SS9jemVCOE80azNsYnhBYTlDTjFv?=
- =?utf-8?B?NzBLc1lhNmpjbk9NS2hwUGdneDhZUlVjWmtkMldycGJHNUlCeVZwZEJISEdV?=
- =?utf-8?B?TXlCZDZ1WmhLLzZVai9ObWFnaEkyQ3AxdWJsQ0paT0lWV3dRTGVRbXVCeXFz?=
- =?utf-8?B?OGwvNC8zeVNDd29BRkZ1M2YxQ2NHUjhMWmFKejU5blJ1TFNVVDIwcE16Vkx3?=
- =?utf-8?B?ZmtHUEhvcEExSE9JOW9mRTI2NFJGeHZxSk5ldWRheU8wYXNELzJiR2RrSFo3?=
- =?utf-8?B?ekY4OSs4SEZRd2dvSE40RUZ6RUlDWExKZEZGMy9PMmFPTnUvT2l5WTA2eEo3?=
- =?utf-8?B?SmlCSXIydFdsbHFpSk1DWWdnc0dReEVaRDUxUTZGOVJPL3lodzByRTF0ckFp?=
- =?utf-8?B?cVg0eVcyaVozUndIczdNZHpRRzU1aDNRQXkzNnhRb1NzWjhDRWFnLzVjRkpZ?=
- =?utf-8?B?eWhZODNwYWJIa2tvTWNnN2pRSk1rYU1yd0ovRGFlNkRBbXhBRUIxcjZma0Jm?=
- =?utf-8?B?U1cyOTBkdXFkclllV2YrUFJZQUl1dnBDTnNCaGtQeGo5TjBwWGRoK2tPN3E0?=
- =?utf-8?B?Q0pNSzZRdzl1dmFuQ0pCdm81RUVON2JjWTNsOWZNd3ROUzhpNkxyeTV2eDFm?=
- =?utf-8?B?WlJLUWF4dlNNWmtsTkZ2YkZJdW10dVFrcFRMeUFpSURqTmRUb2hhcXQrVXVP?=
- =?utf-8?B?OHN6UTg2aVBsbk9NUjJOaDFCcHNxdGZNMVk2bThacGEvSHBoQk9QT1ZNc3ph?=
- =?utf-8?B?ZG5hNTZYaENKeTdRUWNUTG5ic0N6SjlLaHFUYnZNRmpiaTVsRFFCanRTZ3JC?=
- =?utf-8?B?SzcySCttc0tMS3hWeHlIMmtLdFRSTnU0MlI4WVMyVDlIaU4xbWR0MC90WjVp?=
- =?utf-8?B?RXA1a0YrSDI3T2xQbUhSSHRqd0x3MEYxWit4Y3VzMy9GSk44RkhnaEEvbCtG?=
- =?utf-8?B?VUhhZnU2Nzc0aTlZd0VFU2h4OFZvTnhLQU9yOW5uWm96WU1lNHArQm1GMUVk?=
- =?utf-8?B?T0NJaFpOdUt5eEFTdklsbE5mMjhuUmhNUHhZYTVIR2wrQkZNendLY3pBTVNW?=
- =?utf-8?B?NEF0ZEpGU1FnOWhNVDZ6SFMzbDVCOWpPRGN4UC9lUjRoSjdWUG8yT2FvNit3?=
- =?utf-8?B?aHRpS1l3dURzbmNCd0p3SlhoaFFlNVpGMm9GaExidjlTUyszZy90MDBKbWpR?=
- =?utf-8?B?VUd1bWpvek1wWjNPbU5mMDNLaE5jcUJrSHc4THZXZ3JZbVNOZEowMzdkc25D?=
- =?utf-8?B?WTFpSkk0UmFveWIwUFl3cnpINUJNcER2RjkyQVB5ZTNmQ2dST2IvMTh2OXRv?=
- =?utf-8?B?WjI4eEVBbGM5TnY3ZmYrYk9OWmhSRklXbVQ4b0loSUdjSVdHN3oyb3I0VW41?=
- =?utf-8?B?WmYzbXRQTlE3U002M3Y5dTFNbUo0VXdid3lrZnhFajRVQTBTU1hVMWlnZjFO?=
- =?utf-8?B?eEYxdC9ndkYwUmQ4T2ljOXdoV1Y0VFNIbEo4M2ZTb0ZrYk5LOW5laWlzaGJB?=
- =?utf-8?B?cFNhVEdTL3JqVlRpa01iQnVnZzB5bDlkTGo5WTUwaG0vM29Va3BlT2tsVjVa?=
- =?utf-8?B?VHdxY2JXalJaOXByOGdLRG50Znc1aGtBV2dKbUNwMkZpMG80ZWNLNUIwelln?=
- =?utf-8?B?T3FlMmxHZHBIbm9JemxLMkE0L2VYZVVLNC9rdm9RVElTSlczN0tWK0R3dDdG?=
- =?utf-8?B?NnZCQldyOHJYb244NjIzZzhPVXYybmdWNFhDT2Uwck5XdG5qbkxQS1NPTjVh?=
- =?utf-8?B?dUxyaGtoRGpaN0x0M3JXN1lsczl1QW1RWnVtVElPUTliYTZJdlNmeFh2elBQ?=
- =?utf-8?B?bGR4TWdNNlE0NFcwMFNMNGd1YU5LYjdndW5SbHFrOFVYbXM2NWNCNzdTTm9x?=
- =?utf-8?B?UjBHSTJTYWJBMkxPZWNCKzVrNHVVZjgrQ3grYkx0ME9rSzhwY3RsZ2Q0V2xU?=
- =?utf-8?B?VFYwWWJyMkw2RVJSQkhicGRjaEU5Mnc5ajIwRGo2aDRyR2RXd1M5V3hKdmFu?=
- =?utf-8?B?bldxT1N0Q09oSTRPSEVnV0ZmRi9Xdmw2SXNXR2MvS3IzT3pDaG0zLzBlanVS?=
- =?utf-8?B?OHZTdE5UWUFOWk0wTTgwc29NQ1RWZlVXY0dBQ0Q3MTdHUXJHMVpkMHVnRGsw?=
- =?utf-8?Q?UEI5uildHd0inxotGO/Jd44=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E33343C4E3565A46934A33C354672DB7@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20241121-gpgpu_send_rework-v3-2-0b6aa48ab006@intel.com>
+ <6a525a4772b595e0ac0739005d4902c60fafd369.camel@intel.com>
+Content-Language: en-GB
+From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <6a525a4772b595e0ac0739005d4902c60fafd369.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: WA2P291CA0007.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1e::10) To MW4PR11MB6619.namprd11.prod.outlook.com
+ (2603:10b6:303:1eb::13)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB6619:EE_|SN7PR11MB8263:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad2d1dca-d595-46a6-514d-08dd0b011f52
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Z0NURUNIY3hTZyt2SXI3b1VtYjBBeXhSU1hLYmpvYlRremFTOXBIY2JnNFlD?=
+ =?utf-8?B?Z1lMSGtSdUJnZk5nbGM1c0NPdWlHZisrSmxZNnlySVRpNGVTenc3SDlDM09Z?=
+ =?utf-8?B?ZkZkZzIwVXhFNngzT3FXUi9nMGlibnBuaUVCUHdRaFVxM3IrYkh5S2pwMnhw?=
+ =?utf-8?B?S3pSTXp0cGlpSGpBVGpGb1E4cUd5Wkk5QVBpcEFCRk1OVTZ1Vk5oR1U5Wmdu?=
+ =?utf-8?B?QUJWVk5yaGJFT1p0NkRUVHNVN0VnYy83YkRjTjlBMjV4T28yVklEZVJNQmNX?=
+ =?utf-8?B?M0VXV0JSYUt1dUhvanpxRGhBRWhBaVp4c1dKTVlERWxpeTFZb0dDblpLUUNN?=
+ =?utf-8?B?eStVQmJkUGxTVHRVMWZRLzNsOVZ0QnpPSXQ0NDh1eFl0L2xBK2padFJqdUdF?=
+ =?utf-8?B?cllZVE5Ra3BBVTM0aVNmV3hxNU9XSDJOa25Ea0JFeHRsckdOZWJ2R2RzdXFQ?=
+ =?utf-8?B?QVZrUk5GZldUb2N1eDVQU1FIYnlrOElCYys2dGp2NnBPbzlOaGRFL0hSYUQw?=
+ =?utf-8?B?UlVEanR4TjUyMTNFdjc4QTd0ZDNMNE1ZaGxZcHRrL1hZNk13YjJCSlZoT3ZG?=
+ =?utf-8?B?Vy8rbmxDZkZ0SDFkblBXdkMyamVLNWQ1SUY3cWdGYjdvL1drdHFzU0FPNlFT?=
+ =?utf-8?B?RkZPRy81a2ZiS2pjSGJXSWdMK2ZkWENGeHViWEkyRUVudnVlTy9uRVVGQ3k1?=
+ =?utf-8?B?TUpzazg0aU82bkxGNjRDMGFKY0h3WGpPV1BGOVNUbStLSmZla3drNndCVCsx?=
+ =?utf-8?B?MDI1ZTdycXFZcnZraFkvaHV2dnAvc0o0T0szTlFLS1ZzRzdIVmovK0luSkh5?=
+ =?utf-8?B?S0ZUK3hDSDkwNHVMUVhTeTl3anlmem5mNE1tR0RxVU44OGNXYW9IRy9JMXZm?=
+ =?utf-8?B?ekt3d3k5ZUZGTGZQQk9mcWhhc1RCcTBmL0hZNllodlNDZHl5WFplVE9lYjRm?=
+ =?utf-8?B?Q1VwVVB0WjYrS29NZmFGUHllY1ltUTl3d1RNSFB0Z2dLeVh2QmgxMG9FNHVS?=
+ =?utf-8?B?c1JtR0I3SElReGp2OGV2OTNzSkFwWVB6a2wzSWVhOEtyVDdaWVV1K2xYZnRz?=
+ =?utf-8?B?YjNjT3pkaFEyZE9SM0pHZFM2MUJUZG1qUEY4YnpuR0tuZmdEelFWYURRL0l3?=
+ =?utf-8?B?OU9iU3EzWEgwZDMyUEJkMjNhaDRMQ2R1RklaTzNsaktHT1NVK2pvTUQwZ1oz?=
+ =?utf-8?B?ODA3U3BOaVlQN002cVczc0FiR0RxOUx0eUwyY1A1dG1UV1JJNjdVSm0yWi9X?=
+ =?utf-8?B?ZlZ2UnJKeUd2ckRxWEFRWEhNWkd4SVJNWHZUcnRvSGpuMnhDdzlPbzRKZlRM?=
+ =?utf-8?B?c3NYVUZ6VzhGbFdQVHhhUmFHQlVqUjhYa25GUFJVck1lenhxcUZtd25mS1Q2?=
+ =?utf-8?B?YS9PcFdoT0pTMnoyTkxHS0d5UkFCQjNLWHV4RjN5SmlzOVJNd21IUFlZQmFI?=
+ =?utf-8?B?Ulpjc1NxZXZFOUFVaG8rYVkyMlNoM010dndOTHdZMGpTa29qK1ZjeVNzUlRL?=
+ =?utf-8?B?YWFGeWpnTU11TzlkNFR3ZlVBY2x4NXJhYlltdHhCN0UxeHJsMmhmM1YvMGJW?=
+ =?utf-8?B?dlo2V1A4T2huK2M5YVVGTkhoemYwSXpsZzdsaDZWV2R0MlZxd3NuRjJjS3JZ?=
+ =?utf-8?B?VkZEdXdhYTVTZkltK001YWxRU3NLRzE3VEhJcWFTdFJwWHdLbC9UUzBLT3E5?=
+ =?utf-8?B?WlVldzJiSThCTDB2ajdxZkd4N2l0YzloWGdNNTdSQ1NFWm5HM1hwdHphR3Fm?=
+ =?utf-8?B?eTJGMThNUFR4YTlBeEkwUHhUcVdmNzFuRjllbXE5Tk9ua2daNXJzMXdQUnRv?=
+ =?utf-8?B?dEdBTE1RdjZiY0V3Y090dz09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW4PR11MB6619.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bWludFRXUWU5NEFScUdySnJ5a2ZIU21YaTFQck5PT3FzUnVTK1RWd0hsVXU2?=
+ =?utf-8?B?eDdiVEwxZEFYRmZpajdKYlRvY0dyb1pJWEprbVppR1M0R1dXbDhRdTU0dUFr?=
+ =?utf-8?B?MUZDY29LR2JmZzlTTkh4bE9YbGVJVUVvYUVEaGtzNWJpS3B1VklqVDR5VGN4?=
+ =?utf-8?B?cmpSdmZ6U2dpN2pvWW5yT0wvL1lESzRsbzdjaDF3ZHRNTmtBRXdmRFhhSmFS?=
+ =?utf-8?B?eDNpRHoyRnFzbTNQUElYOTB6YWthbVpSekkrQThMSkVDMHZnaVdDS3ZjTTFa?=
+ =?utf-8?B?czZVQW0zcEpSeXUwcnRpN0JaTFZlMDNRL0p4ZWhUVFBRYjJxeE5XN1dORDkx?=
+ =?utf-8?B?eExmbkZ5cDI0VGZJdGhtUmlnS1hvUVdoYmRBYzRmcnFnOTV1aWRkMmsvS00v?=
+ =?utf-8?B?OThXRXM1d003bGdtNDl2VVN6aEV2dzdoTkpoZm5DWHNpUld2eUxsam8yTDV6?=
+ =?utf-8?B?QnphOHplQWQ5M3BPSGZFQm1lcnZRY2ZiM2d4YXNuNjE0SFpCQ3BoQ3FTc2hk?=
+ =?utf-8?B?S1ZKWmp2R2c1NXZVVjNXOVlnenpiUkJuUDNSY2QyWFRUNE9jRk9Qc3JHZjZt?=
+ =?utf-8?B?aXRTOU5uOVpUdGZzMDc0c05KSS9OQndvbzNaeEs5cUczQnk4RU90Y3JNSVk2?=
+ =?utf-8?B?NnFkelM3TWp3QmRINldiSFNPaEdkYTY2ZDZ2SVNXcFpHam1leXAxV3BPU3pD?=
+ =?utf-8?B?c2gvaXR1Vk0zaHJGZ3JIdGNqVHdGZ01FWHdGd3RZVVhoVHAvR3Y5Mmg0aFpK?=
+ =?utf-8?B?bDE5RnFkTThvS1FjYmNRQlFlMHBhOUdpa3lybVdFYy9pcTZWNElsUjJMbitt?=
+ =?utf-8?B?cVVYR1IrRGtMMXpIT0ZjV1U2WGxtQ1pKVkJIejFadEs3NzZmd0xTMUtjMnN4?=
+ =?utf-8?B?YWlnbWlpb3FtMXJVVC8vbHlvV0RwOXA2YU8xOE03dENWcGFkc1RxazFQZ1NX?=
+ =?utf-8?B?TGk3L2hWOFhyWkRXVHRSSUhjYjgvSUVYTE1pM1d5cGZqRHNDQjB1OTVPeE5S?=
+ =?utf-8?B?Y2hkZWJ6U3NON3lQd2dPODNSeUpiQWIxQVF2bGJ4VUIvYzMwZTdyMGt0TW95?=
+ =?utf-8?B?YzE2V0V4YzUxTXlicjIxYUdNMFE1OGxTcGg0TkJUaGllUGNCcGVpNkdVTG5y?=
+ =?utf-8?B?SDBsQVdtRDVjeVpJMkN4a1ZCYi9vbVdHbEk0Mkw4RVhVZGRvKy9ueUpPcG5a?=
+ =?utf-8?B?L0JnYVRXSEVtYlFKeEc3eVlKOWFadWtURTNiRytSbThXTU5GeVMvREFTQ2d1?=
+ =?utf-8?B?bDN0OFJWMHozS3d5QjMzM0VmRVN3aDVQeFZzOUFTMVkyalViZ0VGQjUxYXA2?=
+ =?utf-8?B?bVRybjl4T25TL3NlMDhOUkZnUWJENFlZNUpKa05kYncwU2l6TXBKYzA0ZXlE?=
+ =?utf-8?B?U0c4QU5xRlZwMWpXNnZTdFVTcUtUY1JMZnNCSStrVnVQMSt5N05KanpHWWVx?=
+ =?utf-8?B?Rm5mMmhxaFNuZVA1L3pBZThwcmdCby93Sk1xaHVFSHI1TWdtZElxRFZvR0dl?=
+ =?utf-8?B?NUlVZUxMM1ZrMlI4dzE2N0xUVlZJM0Vxdm5Pd1RaUXJXRDJ6SE9CUUlQcmQy?=
+ =?utf-8?B?VEtIUGd0SE9pb3QrU0U3QnBQbE9IS2NsdDUrRG85eXJRdE1jaXhrZGg4YWVp?=
+ =?utf-8?B?L3BudHBacHE1UmNZL2t6U2g5L0txUXJldnVvSWRMUmpNRzEvZ21hNEErWE5V?=
+ =?utf-8?B?amVNYUNMSnh0ODNqbVBWVGI0bzZBeDdSVWovQkJXSy9KL2h2c29kMTJtMTdx?=
+ =?utf-8?B?OWxxeFdEV054ZWE4bmhBVUtYQXZ6citPSjRKaFZCWGM2Qm50Vm9LWVg0MHBK?=
+ =?utf-8?B?aHZZU3UxQS94V3JrY1piVHNlRXZ4QlIvYkZXa2ZuR2RDVFRLNFhKNGV3RFNV?=
+ =?utf-8?B?YjJWT2drS1g0MldBVDlxMGhxSEdsMjNDTkJQaVp3V2Zxa1lpelRwMGhFQTkw?=
+ =?utf-8?B?ZlliL3dTL21obTB1RXM0anloM2ZBYy9XVTZHQkhTanNVYisrOVcvb2hjbldj?=
+ =?utf-8?B?QUk3MEdMc1VWVGpEMElDaVdCSkwyTytraXRHcUh5S2VHYmcrUUQ3MXJERnVN?=
+ =?utf-8?B?bGY5V281TDQ4VVFiaWZIR29hK1QremEwTnRMdWM1US9uSlQxbnJIMk50T095?=
+ =?utf-8?B?V3ZodHpOWlhFSTRBMElzODMzUVB5TlF4ajlKT2pnY1QyMHkwUVFHbTYxbW9D?=
+ =?utf-8?B?REE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2d1dca-d595-46a6-514d-08dd0b011f52
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6619.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7864.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 677300c8-dbd8-4eaf-46a9-08dd0aff8ef1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Nov 2024 14:11:28.7198 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CSbwNeZn+J2qBnyhhPe9ILEwwPKHpcXiAxZSjSORgL78pgk8s2DMU5JTPnnHp4bh/kUMAndRhwiPA8h90Y+x/Kb1NLRcudx0+DH2nFiLvjE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7375
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2024 14:22:40.8988 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PCOxl1AhUzluSZtI4mvLuO3hNzd66Tv1n4mtEnODYFdY+UyEheCTMPX7CPkSNGAO9ywbzpzSkGV1NrqovRLxEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8263
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -200,142 +201,916 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-T24gVGh1LCAyMDI0LTExLTIxIGF0IDE4OjEyICswMTAwLCBBbmRyemVqIEhhamRhIHdyb3RlOg0K
-PiBYZTMgcGxhdGZvcm1zIGRpc2FsbG93IGluZGlyZWN0IGxvYWQvc3RvcmUgYWRkcmVzc2luZy4g
-U3VyZmFjZSBkZXNjcmlwdG9yDQo+IG11c3QgYmUgcGFzc2VkIGluIDJEQmxvY2sgcGF5bG9hZC4g
-VXNlIGZvciBpdCBpbmxpbmUgZGF0YSBwYXNzZWQgZnJvbQ0KPiB0aHJlYWQgZGlzcGF0Y2hlci4N
-Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IEFuZHJ6ZWogSGFqZGEgPGFuZHJ6ZWouaGFqZGFAaW50ZWwu
-Y29tPg0KPiAtLS0NCj4gIGxpYi9ncGdwdV9zaGFkZXIuYyAgICAgICAgICB8IDIwICsrKysrKysr
-KysrKystLS0tLS0tDQo+ICBsaWIvaWdhNjRfZ2VuZXJhdGVkX2NvZGVzLmMgfCAxMyArKysrKysr
-Ky0tLS0tDQo+ICBsaWIvaWdhNjRfbWFjcm9zLmggICAgICAgICAgfCAzNyArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKystLS0tDQo+ICAzIGZpbGVzIGNoYW5nZWQsIDU0IGluc2VydGlv
-bnMoKyksIDE2IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9ncGdwdV9zaGFk
-ZXIuYyBiL2xpYi9ncGdwdV9zaGFkZXIuYw0KPiBpbmRleCA1MTg0MjMxNTg4ODAuLjI3ZThiZTZi
-MzdlMiAxMDA2NDQNCj4gLS0tIGEvbGliL2dwZ3B1X3NoYWRlci5jDQo+ICsrKyBiL2xpYi9ncGdw
-dV9zaGFkZXIuYw0KPiBAQCAtMjEwLDYgKzIxMCwxNyBAQCBfX3hlaHBfZ3BncHVfZXhlY2Z1bmMo
-c3RydWN0IGludGVsX2JiICppYmIsDQo+ICAJCSAgICAgIGVuZ2luZSB8IEk5MTVfRVhFQ19OT19S
-RUxPQywgZmFsc2UpOw0KPiAgfQ0KPiAgDQo+ICtzdGF0aWMgdm9pZCBncGdwdV9hbGxvY19ncHVf
-YWRkcihpbnQgZmQsIHN0cnVjdCBpbnRlbF9idWYgKnRhcmdldCkNCj4gK3sNCj4gKwl1aW50NjRf
-dCBhaG5kOw0KPiArDQo+ICsJYWhuZCA9IGludGVsX2FsbG9jYXRvcl9vcGVuX2Z1bGwoZmQsIDAs
-IDAsIDAsIElOVEVMX0FMTE9DQVRPUl9TSU1QTEUsDQo+ICsJCQkJCSBBTExPQ19TVFJBVEVHWV9M
-T1dfVE9fSElHSCwgMCk7DQo+ICsJdGFyZ2V0LT5hZGRyLm9mZnNldCA9IGludGVsX2FsbG9jYXRv
-cl9hbGxvYyhhaG5kLCB0YXJnZXQtPmhhbmRsZSwNCj4gKwkJCQkJCSAgICB0YXJnZXQtPnN1cmZh
-Y2VbMF0uc2l6ZSwgMCk7DQo+ICsJaW50ZWxfYWxsb2NhdG9yX2Nsb3NlKGFobmQpOw0KPiArfQ0K
-PiArDQo+ICAvKioNCj4gICAqIGdwZ3B1X3NoYWRlcl9leGVjOg0KPiAgICogQGliYjogcG9pbnRl
-ciB0byBpbml0aWFsaXplZCBpbnRlbF9iYg0KPiBAQCAtMjMxLDE3ICsyNDIsMTIgQEAgdm9pZCBn
-cGdwdV9zaGFkZXJfZXhlYyhzdHJ1Y3QgaW50ZWxfYmIgKmliYiwNCj4gIAkJICAgICAgIHN0cnVj
-dCBncGdwdV9zaGFkZXIgKnNpcCwNCj4gIAkJICAgICAgIHVpbnQ2NF90IHJpbmcsIGJvb2wgZXhw
-bGljaXRfZW5naW5lKQ0KPiAgew0KPiAtCXVpbnQ2NF90IGFobmQ7DQo+IC0NCj4gIAlpZ3RfcmVx
-dWlyZShzaGRyLT5nZW5fdmVyID49IFNVUFBPUlRFRF9HRU5fVkVSKTsNCj4gIAlpZ3RfYXNzZXJ0
-KGliYi0+c2l6ZSA+PSBQQUdFX1NJWkUpOw0KPiAgCWlndF9hc3NlcnQoaWJiLT5wdHIgPT0gaWJi
-LT5iYXRjaCk7DQo+ICANCj4gLQlhaG5kID0gaW50ZWxfYWxsb2NhdG9yX29wZW5fZnVsbChpYmIt
-PmZkLCAwLCAwLCAwLCBJTlRFTF9BTExPQ0FUT1JfU0lNUExFLA0KPiAtCQkJCQkgQUxMT0NfU1RS
-QVRFR1lfTE9XX1RPX0hJR0gsIDApOw0KPiAtCXRhcmdldC0+YWRkci5vZmZzZXQgPSBpbnRlbF9h
-bGxvY2F0b3JfYWxsb2MoYWhuZCwgdGFyZ2V0LT5oYW5kbGUsDQo+IC0JCQkJCQkgICAgdGFyZ2V0
-LT5zdXJmYWNlWzBdLnNpemUsIDApOw0KPiAtCWludGVsX2FsbG9jYXRvcl9jbG9zZShhaG5kKTsN
-Cj4gKwlpZiAodGFyZ2V0LT5hZGRyLm9mZnNldCA9PSBJTlRFTF9CVUZfSU5WQUxJRF9BRERSRVNT
-KQ0KPiArCQlncGdwdV9hbGxvY19ncHVfYWRkcihpYmItPmZkLCB0YXJnZXQpOw0KDQpZb3UgY291
-bGQgZGVmaW5lIGdwZ3B1X2FsbG9jX2dwdV9hZGRyIGluIGEgcHJldmlvdXMgcGF0Y2guIA0KPiAg
-DQo+ICAJaWYgKHNoZHItPmdlbl92ZXIgPj0gMTI1MCkNCj4gIAkJX194ZWhwX2dwZ3B1X2V4ZWNm
-dW5jKGliYiwgdGFyZ2V0LCB4X2RpbSwgeV9kaW0sIHNoZHIsIHNpcCwNCj4gZGlmZiAtLWdpdCBh
-L2xpYi9pZ2E2NF9nZW5lcmF0ZWRfY29kZXMuYyBiL2xpYi9pZ2E2NF9nZW5lcmF0ZWRfY29kZXMu
-Yw0KPiBpbmRleCAwNDAxNWIwYjZkMjkuLmExMjEzNWU3ZGJmZCAxMDA2NDQNCj4gLS0tIGEvbGli
-L2lnYTY0X2dlbmVyYXRlZF9jb2Rlcy5jDQo+ICsrKyBiL2xpYi9pZ2E2NF9nZW5lcmF0ZWRfY29k
-ZXMuYw0KPiBAQCAtMyw3ICszLDcgQEANCj4gIA0KPiAgI2luY2x1ZGUgImdwZ3B1X3NoYWRlci5o
-Ig0KPiAgDQo+IC0jZGVmaW5lIE1ENV9TVU1fSUdBNjRfQVNNUyBkYTY2YmUzY2Y5YmVjODE5YTYx
-NDI5ZGU3NTk0MzAxMQ0KPiArI2RlZmluZSBNRDVfU1VNX0lHQTY0X0FTTVMgN2IxZGI2MGQxZGU0
-NmNmMzU2NjZmMmE3ZjUxZThmYzINCj4gIA0KPiAgc3RydWN0IGlnYTY0X3RlbXBsYXRlIGNvbnN0
-IGlnYTY0X2NvZGVfZ3BncHVfZmlsbFtdID0gew0KPiAgCXsgLmdlbl92ZXIgPSAyMDAwLCAuc2l6
-ZSA9IDQ0LCAuY29kZSA9IChjb25zdCB1aW50MzJfdCBbXSkgew0KPiBAQCAtODAsMTAgKzgwLDEx
-IEBAIHN0cnVjdCBpZ2E2NF90ZW1wbGF0ZSBjb25zdCBpZ2E2NF9jb2RlX2dwZ3B1X2ZpbGxbXSA9
-IHsNCj4gIH07DQo+ICANCj4gIHN0cnVjdCBpZ2E2NF90ZW1wbGF0ZSBjb25zdCBpZ2E2NF9jb2Rl
-X2VuZF9zeXN0ZW1fcm91dGluZV9zdGVwX2lmX2VxW10gPSB7DQo+IC0JeyAuZ2VuX3ZlciA9IDIw
-MDAsIC5zaXplID0gNDQsIC5jb2RlID0gKGNvbnN0IHVpbnQzMl90IFtdKSB7DQo+ICsJeyAuZ2Vu
-X3ZlciA9IDIwMDAsIC5zaXplID0gNDgsIC5jb2RlID0gKGNvbnN0IHVpbnQzMl90IFtdKSB7DQo+
-ICAJCTB4ODAwMDA5NjYsIDB4ODAwMTgyMjAsIDB4MDIwMDgwMDAsIDB4MDAwMDgwMDAsDQo+ICAJ
-CTB4ODAwMDA5NjUsIDB4ODAxMTgyMjAsIDB4MDIwMDgwMTAsIDB4YzBkZWQwMDAsDQo+ICAJCTB4
-ODAwYzA5NjEsIDB4MWUwNTQyMjAsIDB4MDAwMDAwMDAsIDB4MDAwMDAwMDAsDQo+ICsJCTB4ODAw
-MDAwNjEsIDB4MWU1NTQyMjAsIDB4MDAwMDAwMDAsIDB4MDAwMDAwMDAsDQo+ICAJCTB4ODAwMDAw
-NjEsIDB4MWU2NTQyMjAsIDB4MDAwMDAwMDAsIDB4YzBkZWQwMDAsDQo+ICAJCTB4ODAwMDAwNjEs
-IDB4MWU3NTQyMjAsIDB4MDAwMDAwMDAsIDB4MDAwMDAwMDMsDQo+ICAJCTB4ODAwMzIwMzEsIDB4
-MWYwYzAwMDAsIDB4ZDAwNjFlOGMsIDB4MDQwMDAwMDAsDQo+IEBAIC00ODQsMTMgKzQ4NSwxNCBA
-QCBzdHJ1Y3QgaWdhNjRfdGVtcGxhdGUgY29uc3QgaWdhNjRfY29kZV9tZWRpYV9ibG9ja193cml0
-ZV9haXBbXSA9IHsNCj4gIH07DQo+ICANCj4gIHN0cnVjdCBpZ2E2NF90ZW1wbGF0ZSBjb25zdCBp
-Z2E2NF9jb2RlX2NvbW1vbl90YXJnZXRfd3JpdGVbXSA9IHsNCj4gLQl7IC5nZW5fdmVyID0gMjAw
-MCwgLnNpemUgPSA0OCwgLmNvZGUgPSAoY29uc3QgdWludDMyX3QgW10pIHsNCj4gKwl7IC5nZW5f
-dmVyID0gMjAwMCwgLnNpemUgPSA1MiwgLmNvZGUgPSAoY29uc3QgdWludDMyX3QgW10pIHsNCj4g
-IAkJMHg4MDEwMDA2MSwgMHgxZjA1NDIyMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwNCj4gIAkJ
-MHg4MDAwMDA2MSwgMHgxZjA1NDIyMCwgMHgwMDAwMDAwMCwgMHhjMGRlZDAwMSwNCj4gIAkJMHg4
-MDAwMDA2MSwgMHgxZjE1NDIyMCwgMHgwMDAwMDAwMCwgMHhjMGRlZDAwMiwNCj4gIAkJMHg4MDAw
-MDA2MSwgMHgxZjI1NDIyMCwgMHgwMDAwMDAwMCwgMHhjMGRlZDAwMywNCj4gIAkJMHg4MDAwMDA2
-MSwgMHgxZjM1NDIyMCwgMHgwMDAwMDAwMCwgMHhjMGRlZDAwNCwNCj4gIAkJMHg4MDBjMDA2MSwg
-MHgxZTA1NDIyMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwNCj4gKwkJMHg4MDAwMDA2MSwgMHgx
-ZTU1NDIyMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwNCj4gIAkJMHg4MDAwMDA2MSwgMHgxZTY1
-NDIyMCwgMHgwMDAwMDAwMCwgMHhjMGRlZDAwMCwNCj4gIAkJMHg4MDAwMDA2MSwgMHgxZTc1NDIy
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwZiwNCj4gIAkJMHg4MDAzMjAzMSwgMHgwMDAwMDAwMCwg
-MHhkMDBlMWU5NCwgMHgwNDAwMDAwMCwNCj4gQEAgLTYxMiwxNCArNjE0LDE1IEBAIHN0cnVjdCBp
-Z2E2NF90ZW1wbGF0ZSBjb25zdCBpZ2E2NF9jb2RlX2NsZWFyX3I0MFtdID0gew0KPiAgfTsNCj4g
-IA0KPiAgc3RydWN0IGlnYTY0X3RlbXBsYXRlIGNvbnN0IGlnYTY0X2NvZGVfanVtcF9kd19uZXFb
-XSA9IHsNCj4gLQl7IC5nZW5fdmVyID0gMjAwMCwgLnNpemUgPSAzMiwgLmNvZGUgPSAoY29uc3Qg
-dWludDMyX3QgW10pIHsNCj4gKwl7IC5nZW5fdmVyID0gMjAwMCwgLnNpemUgPSAzNiwgLmNvZGUg
-PSAoY29uc3QgdWludDMyX3QgW10pIHsNCj4gIAkJMHg4MDBjMDA2MSwgMHgxZTA1NDIyMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwNCj4gKwkJMHg4MDAwMDA2MSwgMHgxZTU1NDIyMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwNCj4gIAkJMHg4MDAwMDA2MSwgMHgxZTY1NDIyMCwgMHgwMDAwMDAw
-MCwgMHhjMGRlZDAwMCwNCj4gIAkJMHg4MDAwMDA2MSwgMHgxZTc1NDIyMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMywNCj4gIAkJMHg4MDAzMjAzMSwgMHgxZjBjMDAwMCwgMHhkMDA2MWU4YywgMHgw
-NDAwMDAwMCwNCj4gIAkJMHg4MDAwMDA2MSwgMHgzMDAxNDIyMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwNCj4gIAkJMHg4MDAwODA3MCwgMHgwMDAxODIyMCwgMHgyMjAwMWYwNCwgMHhjMGRlZDAw
-MSwNCj4gLQkJMHg4NDAwMDAyMCwgMHgwMDAwNDAwMCwgMHgwMDAwMDAwMCwgMHhmZmZmZmZhMCwN
-Cj4gKwkJMHg4NDAwMDAyMCwgMHgwMDAwNDAwMCwgMHgwMDAwMDAwMCwgMHhmZmZmZmY5MCwNCj4g
-IAkJMHg4MDAwMDkwMSwgMHgwMDAxMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwNCj4gIAl9
-fSwNCj4gIAl7IC5nZW5fdmVyID0gMTI3MCwgLnNpemUgPSA0MCwgLmNvZGUgPSAoY29uc3QgdWlu
-dDMyX3QgW10pIHsNCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ2E2NF9tYWNyb3MuaCBiL2xpYi9pZ2E2
-NF9tYWNyb3MuaA0KPiBpbmRleCA0MGI2MzM4OTI4ZTEuLmY4Mjc4NTYxMDIwNyAxMDA2NDQNCj4g
-LS0tIGEvbGliL2lnYTY0X21hY3Jvcy5oDQo+ICsrKyBiL2xpYi9pZ2E2NF9tYWNyb3MuaA0KPiBA
-QCAtMjEsNiArMjEsMTMgQEANCj4gICNkZWZpbmUgUjBfVEdJRFkgcjAuNjwwOzEsMD46dWQNCj4g
-ICNkZWZpbmUgUjBfRkZUSUQgcjAuNTwwOzEsMD46dWQNCj4gIA0KPiArLyogSW5saW5lIGRhdGEg
-ZnJvbSBDT01QVVRFX1dBTEtFUiosIEJzcGVjOiA0NzIwMywgNzM1ODQNCj4gKyAqIEZpbGxlZCBi
-eSBfX3hlKl9ncGdwdV9leGVjZnVuYy4NCj4gKyAqLw0KPiArI2RlZmluZSBSMV9UR1RfQUREUkVT
-UyByMS4wPDA7MSwwPjp1cQ0KPiArI2RlZmluZSBSMV9UR1RfV0lEVEggcjEuMjwwOzEsMD46dWQN
-Cj4gKyNkZWZpbmUgUjFfVEdUX0hFSUdIVCByMS4zPDA7MSwwPjp1ZA0KPiArDQo+ICAjZGVmaW5l
-IFNFVF9TSEFSRURfTUVESUFfQkxPQ0tfTVNHX0hEUihkc3QsIHksIHdpZHRoKQlcDQo+ICAoVykJ
-bW92ICg4KQkJZHN0LjA8MT46dWQJMHgwOnVkCQk7XA0KPiAgKFcpCW1vdiAoMSkJCWRzdC4xPDE+
-OnVkCXkJCTtcDQo+IEBAIC0zNSwyOCArNDIsNTAgQEANCj4gIChXKQltb3YgKDEpCQlkc3QuMjwx
-Pjp1ZAkod2lkdGggLSAxKTp1ZAkJO1wNCj4gIChXKQltb3YgKDEpCQlkc3QuNDwxPjp1ZAlSMF9G
-RlRJRA0KPiAgDQo+ICsjaWYgR0VOX1ZFUiA8IDMwMDANCj4gKyNkZWZpbmUgU0VUX1NVUkZBQ0Vf
-REVTQyhkc3QpCQkJXA0KPiArKFcpCW1vdiAoOCkJCWRzdC4wPDE+OnVkCTB4MDp1ZA0KPiArI2Vs
-c2UNCj4gKyNkZWZpbmUgU0VUX1NVUkZBQ0VfREVTQyhkc3QpCQkJCQlcDQo+ICsoVykJbW92ICgx
-KQkJZHN0LjA8MT46dXEJUjFfVEdUX0FERFJFU1MJCTtcDQo+ICsoVykJYWRkICgxKQkJZHN0LjI8
-MT46dWQJUjFfVEdUX1dJRFRICS0xOmQJO1wNCj4gKyhXKQlhZGQgKDEpCQlkc3QuMzwxPjp1ZAlS
-MV9UR1RfSEVJR0hUCS0xOmQJO1wNCj4gKyhXKQlhZGQgKDEpCQlkc3QuNDwxPjp1ZAlSMV9UR1Rf
-V0lEVEgJLTE6ZA0KPiArI2VuZGlmDQo+ICsNCj4gICNkZWZpbmUgU0VUX1NIQVJFRF9NRURJQV9B
-MkRCTE9DS19QQVlMT0FEKGRzdCwgeSwgd2lkdGgpCVwNCj4gLShXKQltb3YgKDgpCQlkc3QuMDwx
-Pjp1ZAkweDA6dWQJCTtcDQo+IC0oVykJbW92ICgxKQkJZHN0LjY8MT46dWQJeQkJO1wNCj4gKwlT
-RVRfU1VSRkFDRV9ERVNDKGRzdCkJCQkJCTtcDQo+ICsoVykJbW92ICgxKQkJZHN0LjU8MT46dWQJ
-MHgwOnVkCQkJO1wNCj4gKyhXKQltb3YgKDEpCQlkc3QuNjwxPjp1ZAl5CQkJO1wNCj4gIChXKQlt
-b3YgKDEpCQlkc3QuNzwxPjp1ZAkod2lkdGggLSAxKTp1ZA0KPiAgDQo+IC0jZGVmaW5lIFNFVF9U
-SFJFQURfTUVESUFfQTJEQkxPQ0tfUEFZTE9BRChkc3QsIHgsIHksIHdpZHRoKQkJXA0KPiAtKFcp
-CW1vdiAoOCkJCWRzdC4wPDE+OnVkCTB4MDp1ZAkJCTtcDQo+ICsjZGVmaW5lIFNFVF9USFJFQURf
-TUVESUFfQTJEQkxPQ0tfUEFZTE9BRChkc3QsIHgsIHksIHdpZHRoKQlcDQo+ICsJU0VUX1NVUkZB
-Q0VfREVTQyhkc3QpCQkJCQk7XA0KPiAgKFcpCXNobCAoMSkJCWRzdC41PDE+OnVkCVIwX1RHSURY
-CTB4Mjp1ZAk7XA0KPiAgKFcpCWFkZCAoMSkJCWRzdC41PDE+OnVkCWRzdC41PDA7MSwwPjp1ZAl4
-OnVkCTtcDQo+ICAoVykJYWRkICgxKQkJZHN0LjY8MT46dWQJUjBfVEdJRFkJeQk7XA0KPiAgKFcp
-CW1vdiAoMSkJCWRzdC43PDE+OnVkCSh3aWR0aCAtIDEpOnVkCQk7XA0KPiAgDQo+ICAjaWYgR0VO
-X1ZFUiA8IDIwMDANCj4gKw0KPiAgI2RlZmluZSBTRVRfU0hBUkVEX1NQQUNFX0FERFIoZHN0LCB5
-LCB3aWR0aCkgU0VUX1NIQVJFRF9NRURJQV9CTE9DS19NU0dfSERSKGRzdCwgeSwgd2lkdGgpDQo+
-ICAjZGVmaW5lIFNFVF9USFJFQURfU1BBQ0VfQUREUihkc3QsIHgsIHksIHdpZHRoKSBTRVRfVEhS
-RUFEX01FRElBX0JMT0NLX01TR19IRFIoZHN0LCB4LCB5LCB3aWR0aCkNCj4gICNkZWZpbmUgTE9B
-RF9TUEFDRV9EVyhkc3QsIHNyYykgc2VuZC5kYzEgKDEpCWRzdAlzcmMJc3JjMV9udWxsIDB4MAkw
-eDIxOTAwMDANCj4gICNkZWZpbmUgU1RPUkVfU1BBQ0VfRFcoZHN0LCBzcmMpIHNlbmQuZGMxICgx
-KQludWxsCWRzdAludWxsCTB4MAkweDQwQTgwMDANCj4gKw0KPiAgI2Vsc2UNCj4gKw0KPiAgI2Rl
-ZmluZSBTRVRfU0hBUkVEX1NQQUNFX0FERFIoZHN0LCB5LCB3aWR0aCkgU0VUX1NIQVJFRF9NRURJ
-QV9BMkRCTE9DS19QQVlMT0FEKGRzdCwgeSwgd2lkdGgpDQo+ICAjZGVmaW5lIFNFVF9USFJFQURf
-U1BBQ0VfQUREUihkc3QsIHgsIHksIHdpZHRoKSBTRVRfVEhSRUFEX01FRElBX0EyREJMT0NLX1BB
-WUxPQUQoZHN0LCB4LCB5LCB3aWR0aCkNCj4gKw0KPiArI2lmIEdFTl9WRVIgPCAzMDAwDQo+ICAj
-ZGVmaW5lIExPQURfU1BBQ0VfRFcoZHN0LCBzcmMpIHNlbmQudGdtICgxKQlkc3QJc3JjCW51bGw6
-MAkweDAJMHg2MjEwMDAwMw0KPiAgI2RlZmluZSBTVE9SRV9TUEFDRV9EVyhkc3QsIHNyYykgc2Vu
-ZC50Z20gKDEpCW51bGwJZHN0CW51bGw6MAkweDAJMHg2NDAwMDAwNw0KPiArI2Vsc2UNCj4gKyNk
-ZWZpbmUgTE9BRF9TUEFDRV9EVyhkc3QsIHNyYykgc2VuZC51Z20gKDEpCWRzdAlzcmMJbnVsbDow
-CTB4MAkweDIxMjAwMDMNCj4gKyNkZWZpbmUgU1RPUkVfU1BBQ0VfRFcoZHN0LCBzcmMpIHNlbmQu
-dWdtICgxKQludWxsCWRzdAlzcmM6MQkweDAJMHgyMDIwMDA3DQo+ICsjZW5kaWYNCj4gKw0KPiAg
-I2VuZGlmDQo+ICANCj4gICNlbmRpZg0KPiANCg0K
+
+W dniu 22.11.2024 o 15:05, Grzegorzek, Dominik pisze:
+> On Thu, 2024-11-21 at 18:12 +0100, Andrzej Hajda wrote:
+>> There is lot of redundancy in shaders code regarding load/store messages.
+>> It makes the code barely readable. Simplify it by using macros in iga64
+>> assembler.
+>> Every load/store operation is split into two phases:
+>> 1. Load address/descriptor (from) where data should be stored/loaded.
+>> 2. Issue load/store instruction.
+>> Shader threads needs two types of memory access:
+>> 3. Private area per thread.
+>> 4. Area shared per all threads.
+>> Different platforms access surface in different ways:
+>> 5. Using media block messages.
+>> 6. Using untyped 2d block messages.
+>> 7. Future platforms will use different messages.
+>>
+>> All this is simplified to two macros per message in shader:
+>> 	load_(shared|thread)_space_addr(dst,y,width)
+>> 	(load|store)_space_dw(dst, src)
+>>
+>> v2:
+>>    - captialze introduced macros (Dominik)
+>>    - fixed thread -> shared call (Zbigniew)
+>>
+>> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+>> ---
+>>   lib/gpgpu_shader.c          | 160 +++-------------------
+>>   lib/iga64_generated_codes.c | 318 +++++++++++++++++++++-----------------------
+>>   lib/iga64_macros.h          |  43 ++++++
+>>   3 files changed, 215 insertions(+), 306 deletions(-)
+>>
+>> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+>> index 4e1b8d5e9009..363435e7efd3 100644
+>> --- a/lib/gpgpu_shader.c
+>> +++ b/lib/gpgpu_shader.c
+>> @@ -431,22 +431,8 @@ void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
+>>   
+>>   	size = emit_iga64_code(shdr, jump_dw_neq, "					\n\
+>>   L0:											\n\
+>> -(W)		mov (16|M0)              r30.0<1>:ud    0x0:ud				\n\
+>> -#if GEN_VER < 2000 // Media Block Write							\n\
+>> -	// Y offset of the block in rows := thread group id Y				\n\
+>> -(W)		mov (1|M0)               r30.1<1>:ud    ARG(0):ud			\n\
+>> -	// block width [0,63] representing 1 to 64 bytes, we want dword			\n\
+>> -(W)		mov (1|M0)               r30.2<1>:ud    0x3:ud				\n\
+>> -	// FFTID := FFTID from R0 header						\n\
+>> -(W)		mov (1|M0)               r30.4<1>:ud    r0.5<0;1,0>:ud  		\n\
+>> -(W)		send.dc1 (16|M0)         r31     r30      null    0x0	0x2190000	\n\
+>> -#else // Typed 2D Block Store								\n\
+>> -	// Store X and Y block start (160:191 and 192:223)				\n\
+>> -(W)            mov (1|M0)               r30.6<1>:ud    ARG(0):ud			\n\
+>> -	// Store X and Y block size (224:231 and 232:239)				\n\
+>> -(W)            mov (1|M0)               r30.7<1>:ud    0x3:ud				\n\
+>> -(W)            send.tgm (16|M0)         r31     r30    null:0    0x0    0x62100003	\n\
+>> -#endif											\n\
+>> +		SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 4)				\n\
+>> +(W)		LOAD_SPACE_DW(r31, r30)							\n\
+> It's a bit odd to me, that in case of LOAD_SPACE_DW you leave an user with a choice
+> wheter to set Write Enable (W). Is there any possible use case when we do not won't to set it before
+> send message? Especially, taking into account that we aready always did it perparing the message.
+> Moving (W) inside the macro would be cleaner. And it will spare a future user a dillema wheter use
+> it or not.
+
+
+Sometimes it is '(W)', sometimes '(W&f0.0)' 
+(gpgpu_shader__write_on_exception), I think it is easier this way than 
+via extra argument, or separate macro.
+
+Regards
+
+Andrzej
+
+
+>
+> Other than that I did not spot more issues. Great cleanup indeed, so from my side it is:
+> Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+>
+>>   	// clear the flag register							\n\
+>>   (W)		mov (1|M0)               f0.0<1>:ud    0x0:ud				\n\
+>>   (W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(1):ud	\n\
+>> @@ -511,28 +497,13 @@ void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
+>>   				       uint32_t y_offset, const uint32_t value[4])
+>>   {
+>>   	emit_iga64_code(shdr, common_target_write, "				\n\
+>> -(W)	mov (16|M0)		r30.0<1>:ud	0x0:ud				\n\
+>>   (W)	mov (16|M0)		r31.0<1>:ud	0x0:ud				\n\
+>>   (W)	mov (1|M0)		r31.0<1>:ud	ARG(1):ud			\n\
+>>   (W)	mov (1|M0)		r31.1<1>:ud	ARG(2):ud			\n\
+>>   (W)	mov (1|M0)		r31.2<1>:ud	ARG(3):ud			\n\
+>>   (W)	mov (1|M0)		r31.3<1>:ud	ARG(4):ud			\n\
+>> -#if GEN_VER < 2000 // Media Block Write						\n\
+>> -	// Y offset of the block in rows					\n\
+>> -(W)	mov (1|M0)		r30.1<1>:ud	ARG(0):ud			\n\
+>> -	// block width [0,63] representing 1 to 64 bytes			\n\
+>> -(W)	mov (1|M0)		r30.2<1>:ud	0xf:ud				\n\
+>> -	// FFTID := FFTID from R0 header					\n\
+>> -(W)	mov (1|M0)		r30.4<1>:ud	r0.5<0;1,0>:ud			\n\
+>> -	// written value							\n\
+>> -(W)	send.dc1 (16|M0)	null	r30	src1_null  0x0	0x40A8000	\n\
+>> -#else	// Typed 2D Block Store							\n\
+>> -	// Store X and Y block start (160:191 and 192:223)			\n\
+>> -(W)	mov (1|M0)              r30.6<1>:ud     ARG(0):ud			\n\
+>> -	// Store X and Y block size (224:231 and 232:239)			\n\
+>> -(W)	mov (1|M0)              r30.7<1>:ud     0xf:ud				\n\
+>> -(W)	send.tgm (16|M0)        null    r30     null:0  0x0     0x64000007	\n\
+>> -#endif										\n\
+>> +	SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 16)				\n\
+>> +(W)	STORE_SPACE_DW(r30, r31)						\n\
+>>   	", y_offset, value[0], value[1], value[2], value[3]);
+>>   }
+>>   
+>> @@ -565,31 +536,8 @@ void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset)
+>>   	emit_iga64_code(shdr, media_block_write_aip, "				\n\
+>>   	// Payload								\n\
+>>   (W)	mov (1|M0)               r5.0<1>:ud    cr0.2:ud				\n\
+>> -#if GEN_VER < 2000 // Media Block Write						\n\
+>> -	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
+>> -(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    0x2:ud		\n\
+>> -	// Y offset of the block in rows := thread group id Y			\n\
+>> -(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud			\n\
+>> -(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud    ARG(0):ud	\n\
+>> -	// block width [0,63] representing 1 to 64 bytes			\n\
+>> -(W)	mov (1|M0)               r4.2<1>:ud    0x3:ud				\n\
+>> -	// FFTID := FFTID from R0 header					\n\
+>> -(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud			\n\
+>> -(W)	send.dc1 (16|M0)         null     r4   src1_null 0       0x40A8000	\n\
+>> -#else // Typed 2D Block Store							\n\
+>> -	// Load r2.0-3 with tg id X << ARG(0)					\n\
+>> -(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x2:ud		\n\
+>> -	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
+>> -(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
+>> -(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(0):ud	\n\
+>> -	// payload setup							\n\
+>> -(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
+>> -	// Store X and Y block start (160:191 and 192:223)			\n\
+>> -(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
+>> -	// Store X and Y block max_size (224:231 and 232:239)			\n\
+>> -(W)	mov (1|M0)               r4.7<1>:ud    0x3:ud				\n\
+>> -(W)	send.tgm (16|M0)         null     r4   null:0    0    0x64000007	\n\
+>> -#endif										\n\
+>> +	SET_THREAD_SPACE_ADDR(r4, 0, ARG(0):ud, 4)				\n\
+>> +(W)	STORE_SPACE_DW(r4, r5)							\n\
+>>   	", y_offset);
+>>   }
+>>   
+>> @@ -618,38 +566,11 @@ void gpgpu_shader__increase_aip(struct gpgpu_shader *shdr, uint32_t value)
+>>   void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>>   			       uint32_t y_offset)
+>>   {
+>> -	emit_iga64_code(shdr, media_block_write, "				\n\
+>> -	// Clear message header							\n\
+>> -(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
+>> -	// Payload								\n\
+>> -(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud			\n\
+>> -(W)	mov (1|M0)               r5.1<1>:ud    ARG(4):ud			\n\
+>> -(W)	mov (1|M0)               r5.2<1>:ud    ARG(5):ud			\n\
+>> -(W)	mov (1|M0)               r5.3<1>:ud    ARG(6):ud			\n\
+>> -#if GEN_VER < 2000 // Media Block Write						\n\
+>> -	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
+>> -(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud	\n\
+>> -	// Y offset of the block in rows := thread group id Y			\n\
+>> -(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud			\n\
+>> -(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud	\n\
+>> -	// block width [0,63] representing 1 to 64 bytes			\n\
+>> -(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud			\n\
+>> -	// FFTID := FFTID from R0 header					\n\
+>> -(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud			\n\
+>> -(W)	send.dc1 (16|M0)         null     r4   src1_null 0    0x40A8000		\n\
+>> -#else // Typed 2D Block Store							\n\
+>> -	// Load r2.0-3 with tg id X << ARG(0)					\n\
+>> -(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud	\n\
+>> -	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
+>> -(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
+>> -(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud	\n\
+>> -	// Store X and Y block start (160:191 and 192:223)			\n\
+>> -(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
+>> -	// Store X and Y block max_size (224:231 and 232:239)			\n\
+>> -(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud			\n\
+>> -(W)	send.tgm (16|M0)         null     r4   null:0    0    0x64000007	\n\
+>> -#endif										\n\
+>> -	", 2, y_offset, 3, value, value, value, value);
+>> +	emit_iga64_code(shdr, media_block_write, "		\n\
+>> +(W)	mov (1)		r5.0<1>:ud    ARG(1):ud			\n\
+>> +	SET_THREAD_SPACE_ADDR(r4, 0, ARG(0):ud, 4)		\n\
+>> +(W)	STORE_SPACE_DW(r4, r5)					\n\
+>> +	", y_offset, value);
+>>   }
+>>   
+>>   /**
+>> @@ -697,41 +618,14 @@ void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
+>>   				      uint32_t y_offset, uint32_t mask, uint32_t expected)
+>>   {
+>>   	emit_iga64_code(shdr, write_on_exception, "					\n\
+>> -	// Clear message header								\n\
+>> -(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud					\n\
+>> -	// Payload									\n\
+>> -(W)	mov (1|M0)               r5.0<1>:ud    ARG(4):ud				\n\
+>> -#if GEN_VER < 2000 // prepare Media Block Write						\n\
+>> -	// X offset of the block in bytes := (thread group id X << ARG(0))		\n\
+>> -(W)	add (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud	 ARG(1):ud		\n\
+>> -(W)	shl (1|M0)               r4.0<1>:ud    r4.0<0;1,0>:ud    ARG(0):ud		\n\
+>> -	// Y offset of the block in rows := thread group id Y				\n\
+>> -(W)	add (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud   ARG(2):ud		\n\
+>> -	// block width [0,63] representing 1 to 64 bytes				\n\
+>> -(W)	mov (1|M0)               r4.2<1>:ud    ARG(3):ud				\n\
+>> -	// FFTID := FFTID from R0 header						\n\
+>> -(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud				\n\
+>> -#else // prepare Typed 2D Block Store							\n\
+>> -	// Load r2.0 with tg id (X + ARG(1)) << ARG(0)					\n\
+>> -(W)	add (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud	 ARG(1):ud		\n\
+>> -(W)	shl (1|M0)               r2.0<1>:ud    r2.0<0;1,0>:ud    ARG(0):ud		\n\
+>> -	// Load r2.4-7 with tg id Y + ARG(2):ud						\n\
+>> -(W)	add (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud    ARG(2):ud		\n\
+>> -	// Store X and Y block start (160:191 and 192:223)				\n\
+>> -(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud				\n\
+>> -	// Store X and Y block max_size (224:231 and 232:239)				\n\
+>> -(W)	mov (1|M0)               r4.7<1>:ud    ARG(3):ud				\n\
+>> -#endif											\n\
+>> +(W)	mov (1|M0)		r5.0<1>:ud	ARG(2):ud				\n\
+>> +	SET_THREAD_SPACE_ADDR(r4, ARG(0), ARG(1):ud, 4)				\n\
+>>   	// Check if masked exception is equal to provided value and write conditionally \n\
+>> -(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(5):ud		\n\
+>> -(W)      mov (1|M0)              f0.0<1>:ud     0x0:ud					\n\
+>> -(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(6):ud		\n\
+>> -#if GEN_VER < 2000 // Media Block Write							\n\
+>> -(W&f0.0) send.dc1 (16|M0)        null     r4   src1_null 0    0x40A8000			\n\
+>> -#else // Typed 2D Block Store								\n\
+>> -(W&f0.0) send.tgm (16|M0)        null     r4   null:0    0    0x64000007		\n\
+>> -#endif											\n\
+>> -	", 2, x_offset, y_offset, 3, value, mask, expected);
+>> +(W)     and (1|M0)		r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(3):ud		\n\
+>> +(W)     mov (1|M0)		f0.0<1>:ud     0x0:ud					\n\
+>> +(W)     cmp (1|M0) (eq)f0.0	null:ud        r3.0<0;1,0>:ud  ARG(4):ud		\n\
+>> +(W&f0.0) STORE_SPACE_DW(r4, r5)								\n\
+>> +	", 4 * x_offset, y_offset, value, mask, expected);
+>>   }
+>>   
+>>   /**
+>> @@ -778,22 +672,8 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
+>>   	emit_iga64_code(shdr, end_system_routine_step_if_eq, "				\n\
+>>   (W)		or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud	\n\
+>>   (W)		and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud	\n\
+>> -(W)		mov (16|M0)              r30.0<1>:ud    0x0:ud				\n\
+>> -#if GEN_VER < 2000 // Media Block Write							\n\
+>> -		// Y offset of the block in rows := thread group id Y			\n\
+>> -(W)		mov (1|M0)               r30.1<1>:ud    ARG(1):ud			\n\
+>> -		// block width [0,63] representing 1 to 64 bytes, we want dword		\n\
+>> -(W)		mov (1|M0)               r30.2<1>:ud    0x3:ud				\n\
+>> -		// FFTID := FFTID from R0 header					\n\
+>> -(W)		mov (1|M0)               r30.4<1>:ud    r0.5<0;1,0>:ud			\n\
+>> -(W)		send.dc1 (16|M0)         r31     r30      null    0x0	0x2190000	\n\
+>> -#else	// Typed 2D Block Store								\n\
+>> -		// Store X and Y block start (160:191 and 192:223)			\n\
+>> -(W)		mov (1|M0)               r30.6<1>:ud    ARG(1):ud			\n\
+>> -		// Store X and Y block size (224:231 and 232:239)			\n\
+>> -(W)		mov (1|M0)               r30.7<1>:ud    0x3:ud				\n\
+>> -(W)		send.tgm (16|M0)         r31     r30    null:0    0x0    0x62100003	\n\
+>> -#endif											\n\
+>> +		SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 4)				\n\
+>> +(W)		LOAD_SPACE_DW(r31, r30)							\n\
+>>   		// clear the flag register						\n\
+>>   (W)		mov (1|M0)               f0.0<1>:ud    0x0:ud				\n\
+>>   (W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(2):ud	\n\
+>> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+>> index 41be66f74486..04015b0b6d29 100644
+>> --- a/lib/iga64_generated_codes.c
+>> +++ b/lib/iga64_generated_codes.c
+>> @@ -3,7 +3,7 @@
+>>   
+>>   #include "gpgpu_shader.h"
+>>   
+>> -#define MD5_SUM_IGA64_ASMS 09d72b5fd1f62c8c2905caa80f400567
+>> +#define MD5_SUM_IGA64_ASMS da66be3cf9bec819a61429de75943011
+>>   
+>>   struct iga64_template const iga64_code_gpgpu_fill[] = {
+>>   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>> @@ -83,10 +83,10 @@ struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
+>>   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>>   		0x80000966, 0x80018220, 0x02008000, 0x00008000,
+>>   		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
+>> -		0x80100961, 0x1e054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x1e654220, 0x00000000, 0xc0ded001,
+>> +		0x800c0961, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
+>> -		0x80132031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
+>> +		0x80032031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
+>>   		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
+>> @@ -96,12 +96,12 @@ struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
+>>   	{ .gen_ver = 1270, .size = 52, .code = (const uint32_t []) {
+>>   		0x80000966, 0x80018220, 0x02008000, 0x00008000,
+>>   		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
+>> -		0x80040961, 0x1e054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
+>> +		0x80030961, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80004031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
+>>   		0x81000965, 0x80218220, 0x02008020, 0xc0ded003,
+>> @@ -111,11 +111,11 @@ struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
+>>   	{ .gen_ver = 1260, .size = 48, .code = (const uint32_t []) {
+>>   		0x80000966, 0x80018220, 0x02008000, 0x00008000,
+>>   		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
+>> -		0x80100961, 0x1e054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
+>> +		0x800c0961, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
+>> -		0x80132031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80032031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
+>>   		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
+>> @@ -125,12 +125,12 @@ struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
+>>   	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
+>>   		0x80000966, 0x80018220, 0x02008000, 0x00008000,
+>>   		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
+>> -		0x80040961, 0x1e054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
+>> +		0x80030961, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80004031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
+>>   		0x81000965, 0x80218220, 0x02008020, 0xc0ded003,
+>> @@ -140,11 +140,11 @@ struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
+>>   	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
+>>   		0x80000166, 0x80018220, 0x02008000, 0x00008000,
+>>   		0x80000165, 0x80218220, 0x02008020, 0xc0ded000,
+>> -		0x80040161, 0x1e054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
+>> +		0x80030161, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>> -		0x80049031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80009031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
+>>   		0x81000165, 0x80218220, 0x02008020, 0xc0ded003,
+>> @@ -193,84 +193,83 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
+>>   };
+>>   
+>>   struct iga64_template const iga64_code_write_on_exception[] = {
+>> -	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+>> -		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> -		0x80000040, 0x02058220, 0x02000014, 0xc0ded001,
+>> -		0x80001969, 0x02058220, 0x02000204, 0xc0ded000,
+>> -		0x80000040, 0x02158220, 0x02000064, 0xc0ded002,
+>> -		0x80041961, 0x04550220, 0x00220205, 0x00000000,
+>> -		0x80000061, 0x04754220, 0x00000000, 0xc0ded003,
+>> -		0x80000965, 0x03058220, 0x02008010, 0xc0ded005,
+>> +	{ .gen_ver = 2000, .size = 52, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
+>> +		0x800c0061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
+>> +		0x80001940, 0x04558220, 0x02000454, 0xc0ded000,
+>> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded001,
+>> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
+>> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded003,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>> -		0x84132031, 0x00000000, 0xd00e0494, 0x04000000,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded004,
+>> +		0x84032031, 0x00000000, 0xd00e0494, 0x04000000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
+>> -		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> -		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
+>> -		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
+>> -		0x80000040, 0x04258220, 0x020000c4, 0xc0ded002,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
+>> +		0x80030061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0xc0ded000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80000965, 0x03058220, 0x02008020, 0xc0ded005,
+>> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded003,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded004,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x81004031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
+>> -		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> -		0x80000040, 0x04058220, 0x02000014, 0xc0ded001,
+>> -		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
+>> -		0x80000040, 0x04158220, 0x02000064, 0xc0ded002,
+>> -		0x80000061, 0x04254220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
+>> +		0x800c0061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000014, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0xc0ded000,
+>> +		0x80000040, 0x04158220, 0x02000064, 0xc0ded001,
+>> +		0x80000061, 0x04254220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04450220, 0x00000054, 0x00000000,
+>> -		0x80000965, 0x03058220, 0x02008010, 0xc0ded005,
+>> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded003,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>> -		0x84132031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded004,
+>> +		0x84032031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
+>> -		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> -		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
+>> -		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
+>> -		0x80000040, 0x04258220, 0x020000c4, 0xc0ded002,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
+>> +		0x80030061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0xc0ded000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80000965, 0x03058220, 0x02008020, 0xc0ded005,
+>> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded003,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded004,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x81004031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
+>> -		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> -		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
+>> -		0x80000169, 0x04058220, 0x02000404, 0xc0ded000,
+>> -		0x80000040, 0x04258220, 0x020000c4, 0xc0ded002,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
+>> +		0x80030061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80000140, 0x04058220, 0x02000404, 0xc0ded000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80000165, 0x03058220, 0x02008020, 0xc0ded005,
+>> +		0x80000165, 0x03058220, 0x02008020, 0xc0ded003,
+>>   		0x80000161, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80000270, 0x00018220, 0x12000304, 0xc0ded006,
+>> -		0x81049031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000270, 0x00018220, 0x12000304, 0xc0ded004,
+>> +		0x81009031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000101, 0x00010000, 0x00000000, 0x00000000,
+>> @@ -324,84 +323,68 @@ struct iga64_template const iga64_code_clear_exception[] = {
+>>   };
+>>   
+>>   struct iga64_template const iga64_code_media_block_write[] = {
+>> -	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+>> -		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+>> -		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+>> -		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
+>> -		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
+>> -		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+>> -		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
+>> -		0x80041961, 0x04550220, 0x00220205, 0x00000000,
+>> -		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
+>> -		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
+>> +	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
+>> +		0x800c0061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
+>> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
+>> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded000,
+>> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
+>> +		0x80032031, 0x00000000, 0xd00e0494, 0x04000000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
+>> -		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>> -		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>> -		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+>> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> -		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +	{ .gen_ver = 1270, .size = 48, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
+>> +		0x80030061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded000,
+>> +		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80004031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
+>> -		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+>> -		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+>> -		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
+>> -		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
+>> -		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+>> -		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
+>> -		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
+>> +	{ .gen_ver = 1260, .size = 44, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
+>> +		0x800c0061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000014, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04158220, 0x02000064, 0xc0ded000,
+>> +		0x80000061, 0x04254220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04450220, 0x00000054, 0x00000000,
+>> -		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80032031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
+>> -		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>> -		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>> -		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+>> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> -		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +	{ .gen_ver = 1250, .size = 48, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
+>> +		0x80030061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded000,
+>> +		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80004031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
+>> -		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>> -		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>> -		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+>> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> -		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +	{ .gen_ver = 0, .size = 44, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
+>> +		0x80030061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80000140, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded000,
+>> +		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80009031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000101, 0x00010000, 0x00000000, 0x00000000,
+>> @@ -432,65 +415,68 @@ struct iga64_template const iga64_code_write_aip[] = {
+>>   };
+>>   
+>>   struct iga64_template const iga64_code_media_block_write_aip[] = {
+>> -	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
+>>   		0x80000961, 0x05050220, 0x00008020, 0x00000000,
+>> -		0x80000969, 0x02058220, 0x02000014, 0x00000002,
+>> -		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+>> -		0x80001940, 0x02158220, 0x02000214, 0xc0ded000,
+>> -		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
+>> +		0x800c0961, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
+>> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
+>> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded000,
+>>   		0x80000061, 0x04754220, 0x00000000, 0x00000003,
+>> -		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
+>> +		0x80032031, 0x00000000, 0xd00e0494, 0x04000000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1270, .size = 44, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 1270, .size = 48, .code = (const uint32_t []) {
+>>   		0x80000961, 0x05050220, 0x00008040, 0x00000000,
+>> -		0x80000969, 0x04058220, 0x02000024, 0x00000002,
+>> -		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded000,
+>> +		0x80030961, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded000,
+>>   		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80004031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1260, .size = 40, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 1260, .size = 44, .code = (const uint32_t []) {
+>>   		0x80000961, 0x05050220, 0x00008020, 0x00000000,
+>> -		0x80000969, 0x04058220, 0x02000014, 0x00000002,
+>> -		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+>> -		0x80001940, 0x04158220, 0x02000414, 0xc0ded000,
+>> +		0x800c0961, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000014, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04158220, 0x02000064, 0xc0ded000,
+>>   		0x80000061, 0x04254220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04450220, 0x00000054, 0x00000000,
+>> -		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80032031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1250, .size = 44, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 1250, .size = 48, .code = (const uint32_t []) {
+>>   		0x80000961, 0x05050220, 0x00008040, 0x00000000,
+>> -		0x80000969, 0x04058220, 0x02000024, 0x00000002,
+>> -		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded000,
+>> +		0x80030961, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80001940, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded000,
+>>   		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80004031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 0, .size = 40, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 0, .size = 44, .code = (const uint32_t []) {
+>>   		0x80000161, 0x05050220, 0x00008040, 0x00000000,
+>> -		0x80000169, 0x04058220, 0x02000024, 0x00000002,
+>> -		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80000140, 0x04258220, 0x02000424, 0xc0ded000,
+>> +		0x80030161, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000069, 0x04058220, 0x02000024, 0x00000002,
+>> +		0x80000140, 0x04058220, 0x02000404, 0x00000000,
+>> +		0x80000040, 0x04258220, 0x020000c4, 0xc0ded000,
+>>   		0x80000061, 0x04454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80009031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000101, 0x00010000, 0x00000000, 0x00000000,
+>> @@ -499,77 +485,77 @@ struct iga64_template const iga64_code_media_block_write_aip[] = {
+>>   
+>>   struct iga64_template const iga64_code_common_target_write[] = {
+>>   	{ .gen_ver = 2000, .size = 48, .code = (const uint32_t []) {
+>> -		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
+>>   		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
+>>   		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
+>> +		0x800c0061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
+>> -		0x80132031, 0x00000000, 0xd00e1e94, 0x04000000,
+>> +		0x80032031, 0x00000000, 0xd00e1e94, 0x04000000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1270, .size = 56, .code = (const uint32_t []) {
+>> -		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
+>>   		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
+>>   		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
+>> +		0x80030061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x00000000, 0xc0001e14, 0x02a00000,
+>> +		0x80004031, 0x00000000, 0xc0001e14, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1260, .size = 52, .code = (const uint32_t []) {
+>> -		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
+>>   		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
+>>   		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
+>> +		0x800c0061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0x0000000f,
+>>   		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
+>> -		0x80132031, 0x00000000, 0xc0001e14, 0x02a00000,
+>> +		0x80032031, 0x00000000, 0xc0001e14, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
+>> -		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
+>>   		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
+>>   		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
+>> +		0x80030061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x00000000, 0xc0001e14, 0x02a00000,
+>> +		0x80004031, 0x00000000, 0xc0001e14, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
+>> -		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
+>>   		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
+>>   		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
+>> +		0x80030061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>> -		0x80049031, 0x00000000, 0xc0001e14, 0x02a00000,
+>> +		0x80009031, 0x00000000, 0xc0001e14, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000101, 0x00010000, 0x00000000, 0x00000000,
+>> @@ -627,56 +613,56 @@ struct iga64_template const iga64_code_clear_r40[] = {
+>>   
+>>   struct iga64_template const iga64_code_jump_dw_neq[] = {
+>>   	{ .gen_ver = 2000, .size = 32, .code = (const uint32_t []) {
+>> -		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x800c0061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
+>> -		0x80132031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
+>> +		0x80032031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
+>>   		0x84000020, 0x00004000, 0x00000000, 0xffffffa0,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1270, .size = 40, .code = (const uint32_t []) {
+>> -		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80030061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80004031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
+>>   		0x81000020, 0x00004000, 0x00000000, 0xffffff80,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1260, .size = 36, .code = (const uint32_t []) {
+>> -		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x800c0061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
+>> -		0x80132031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80032031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
+>>   		0x84000020, 0x00004000, 0x00000000, 0xffffff90,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 1250, .size = 40, .code = (const uint32_t []) {
+>> -		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80030061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>>   		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> -		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80004031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
+>>   		0x81000020, 0x00004000, 0x00000000, 0xffffff80,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>>   	{ .gen_ver = 0, .size = 36, .code = (const uint32_t []) {
+>> -		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
+>> +		0x80030061, 0x1e054220, 0x00000000, 0x00000000,
+>>   		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
+>>   		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
+>>   		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
+>> -		0x80049031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>> +		0x80009031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
+>>   		0x80000061, 0x30014220, 0x00000000, 0x00000000,
+>>   		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
+>>   		0x81000120, 0x00004000, 0x00000000, 0xffffff90,
+>> diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
+>> index 6459b524c3fd..40b6338928e1 100644
+>> --- a/lib/iga64_macros.h
+>> +++ b/lib/iga64_macros.h
+>> @@ -16,4 +16,47 @@
+>>   #define src1_null null:0
+>>   #endif
+>>   
+>> +/* GPGPU_R0Payload fields, Bspec: 55396, 56587 */
+>> +#define R0_TGIDX r0.1<0;1,0>:ud
+>> +#define R0_TGIDY r0.6<0;1,0>:ud
+>> +#define R0_FFTID r0.5<0;1,0>:ud
+>> +
+>> +#define SET_SHARED_MEDIA_BLOCK_MSG_HDR(dst, y, width)	\
+>> +(W)	mov (8)		dst.0<1>:ud	0x0:ud		;\
+>> +(W)	mov (1)		dst.1<1>:ud	y		;\
+>> +(W)	mov (1)		dst.2<1>:ud	(width - 1):ud	;\
+>> +(W)	mov (1)		dst.4<1>:ud	R0_FFTID
+>> +
+>> +#define SET_THREAD_MEDIA_BLOCK_MSG_HDR(dst, x, y, width)	\
+>> +(W)	mov (8)		dst.0<1>:ud	0x0:ud			;\
+>> +(W)	shl (1)		dst.0<1>:ud	R0_TGIDX	0x2:ud	;\
+>> +(W)	add (1)		dst.0<1>:ud	dst.0<0;1,0>:ud	x:ud	;\
+>> +(W)	add (1)		dst.1<1>:ud	R0_TGIDY	y	;\
+>> +(W)	mov (1)		dst.2<1>:ud	(width - 1):ud		;\
+>> +(W)	mov (1)		dst.4<1>:ud	R0_FFTID
+>> +
+>> +#define SET_SHARED_MEDIA_A2DBLOCK_PAYLOAD(dst, y, width)	\
+>> +(W)	mov (8)		dst.0<1>:ud	0x0:ud		;\
+>> +(W)	mov (1)		dst.6<1>:ud	y		;\
+>> +(W)	mov (1)		dst.7<1>:ud	(width - 1):ud
+>> +
+>> +#define SET_THREAD_MEDIA_A2DBLOCK_PAYLOAD(dst, x, y, width)		\
+>> +(W)	mov (8)		dst.0<1>:ud	0x0:ud			;\
+>> +(W)	shl (1)		dst.5<1>:ud	R0_TGIDX	0x2:ud	;\
+>> +(W)	add (1)		dst.5<1>:ud	dst.5<0;1,0>:ud	x:ud	;\
+>> +(W)	add (1)		dst.6<1>:ud	R0_TGIDY	y	;\
+>> +(W)	mov (1)		dst.7<1>:ud	(width - 1):ud		;\
+>> +
+>> +#if GEN_VER < 2000
+>> +#define SET_SHARED_SPACE_ADDR(dst, y, width) SET_SHARED_MEDIA_BLOCK_MSG_HDR(dst, y, width)
+>> +#define SET_THREAD_SPACE_ADDR(dst, x, y, width) SET_THREAD_MEDIA_BLOCK_MSG_HDR(dst, x, y, width)
+>> +#define LOAD_SPACE_DW(dst, src) send.dc1 (1)	dst	src	src1_null 0x0	0x2190000
+>> +#define STORE_SPACE_DW(dst, src) send.dc1 (1)	null	dst	null	0x0	0x40A8000
+>> +#else
+>> +#define SET_SHARED_SPACE_ADDR(dst, y, width) SET_SHARED_MEDIA_A2DBLOCK_PAYLOAD(dst, y, width)
+>> +#define SET_THREAD_SPACE_ADDR(dst, x, y, width) SET_THREAD_MEDIA_A2DBLOCK_PAYLOAD(dst, x, y, width)
+>> +#define LOAD_SPACE_DW(dst, src) send.tgm (1)	dst	src	null:0	0x0	0x62100003
+>> +#define STORE_SPACE_DW(dst, src) send.tgm (1)	null	dst	null:0	0x0	0x64000007
+>> +#endif
+>> +
+>>   #endif
+>>
