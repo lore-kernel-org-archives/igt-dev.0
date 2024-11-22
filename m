@@ -4,58 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9008DD75E58
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 14:35:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9BB9D75E59
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 14:47:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 489A410EBBC;
-	Fri, 22 Nov 2024 14:35:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 866D010EB53;
+	Fri, 22 Nov 2024 14:47:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KiuaYK6S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UEKYiXnO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A6B510EBBC
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 14:35:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C41B10EB53
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 14:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732286112; x=1763822112;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ReT6UJDQgXxk/NfjlvyAs1iUazB1FciqHTGiSc5dI2o=;
- b=KiuaYK6SGJINw71jC8Xj8CC82iu7vTFPKruTQ31X6deNJVkWliQ2XghW
- t4dEam4o385zT6kY0e9F/ARWYooltYbk7Z7RYjxjCouuoQB4iVcPlQ+8e
- 5WI1cuf+Iyuo1N5wUeCQv2L4TtO6eIAa0QRTtRV7xbhuJFNTtjNgL4C2H
- HOWA7/SQ9kL6qjZK+Mn6Xi83tRyF15gczeCSAuzUnJLK8kk1kyKtdOnxO
- C9lM9DsOuh/+9EB1Mqz/+/Bvj1MrglZf+VDLAWKx/rLYbyyGxr+J9GL5V
- CCSYb/gZGukQZB1tKXtZ6TlXM/JzayrlO1VlFXLOCzlqDl4Xo0sPA5rbT w==;
-X-CSE-ConnectionGUID: MKo2DD8KROuf52DU4wi4/A==
-X-CSE-MsgGUID: eoH1xZbiQJyYNIIzxZXfBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="57845213"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="57845213"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 06:35:12 -0800
-X-CSE-ConnectionGUID: jxnebRbgT+OL4ZVRwOdRBw==
-X-CSE-MsgGUID: wy6nVjVoSXOEudCoWtd/iA==
+ t=1732286820; x=1763822820;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=SR7evorQIuEfk90BLdAIv8EZTt0f3yyK76OzSSRflVU=;
+ b=UEKYiXnOsOf8k+XSz1Xw9zkXxtMMMVo0CR+ADBYsNkwCVuBYGOsEH20g
+ Xf60wGGyBLJ/6N70xxbjKlqxxf2KSXmPZNY6CXhth/I5N/G/URE0hPbgL
+ +5EgvWShCGvBQ2lzL0Og5vcpHOZnehY2bLONWw0VnbF8ekL/GJLrwvilY
+ UOZ5SnxpTjovLVY/z/+fMN6sA0UkmmU1CjKdY1vPLNvuyLgy1Caf+KZlw
+ bBqx6SNmb2RfJph1xiG+xFFdjXHOICYMOJq0u6AJYv30eW1ehhb38bpSS
+ xdX236Y5Tdkkc8QuC0qAV+b0mxrt/7ZM015UsqJbGGtZfcAGf41ux4Ty7 g==;
+X-CSE-ConnectionGUID: 3prnqkyWRmmhzniBJe1S5A==
+X-CSE-MsgGUID: gZrQCDDwSKmcE+SvYyz/0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="35302312"
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="35302312"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2024 06:46:59 -0800
+X-CSE-ConnectionGUID: lqVcnqFFTnOS2ilu7tJAGw==
+X-CSE-MsgGUID: OfjkZ+FMSkCpdCQjFWlZyw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="91384005"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO rapter.intel.com)
- ([10.245.246.141])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 06:35:10 -0800
-From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: andrzej.hajda@intel.com, christoph.manszewski@intel.com,
- jonathan.cavitt@intel.com, mika.kuoppala@intel.com,
- dominik.grzegorzek@intel.com
-Subject: [PATCH i-g-t v3 4/4] tests/intel/xe_eudebug_online: Add read/write
- pagefault online tests
-Date: Fri, 22 Nov 2024 16:34:46 +0200
-Message-ID: <20241122143446.659440-5-gwan-gyeong.mun@intel.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20241122143446.659440-1-gwan-gyeong.mun@intel.com>
-References: <20241122143446.659440-1-gwan-gyeong.mun@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="95679643"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Nov 2024 06:46:59 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 22 Nov 2024 06:46:58 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 22 Nov 2024 06:46:58 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 22 Nov 2024 06:46:44 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tWN4oa74E0zirh/bwHFpcQ1KLXXpss5E8yPfHSi6pYpzSxpS2v0wK3UrrR3ub0eM52zk6AR0LqiAM15cdSxyJZn03mvMB3vM1GPajc5vKRkKSviCLthsr8wFdH1JF7IxTrWmUuKh334PMw6xffUW+FUD9m40NWg1uQB4JwPyvGFgiskgDSJ4cq56gGuQTLqrvyyHUKQNY3xf6BiGjis+a+jJqz8cZ+S1zeSDD98xDMebymFr4d4/h1nqrv3Q6Rl4wMTbmMQ5vCCVASidNRNy29f0nK0QgBHYs+OlNjyWYffiXv9fvdkI7Trznl47hnEmW08+0gtgupS9Zcuyhpfc8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+eeaz6H7AuCQKzUVtT7E0ywbleBcGWDT7l/oMkepvVU=;
+ b=akH1zO5/iBBQoKQORpytJ74LR9wtrlZrfaXiNu8EP2LTENDu/LsJX06uPjae9vBCDwibgMIQirdCkUTVYoJiptzGR3GTwwkWR0kS/TrSfxFrX68cQYvIgRbFJHx+Dy8G5r0B5kpEspyG2Vnn6Qv07fM6FhkL+WJxxThbXACxSkIMWPeVv5OP75aUAYQw25N/OTDTPTslWeNJERUVgG2QvlgAhCtgSwWSNc9AjJjcSBXLKL7TScN9rqUo09KRciFbO/CefYIqi1kFklDjeY1hN19aXQJm1EMYqfMsD+rdFEl8Bd1//iZa+t3vQsOAmUFvCvNgI6cywEYhCHflZpTy+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
+ by SJ0PR11MB5053.namprd11.prod.outlook.com (2603:10b6:a03:2af::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.18; Fri, 22 Nov
+ 2024 14:46:41 +0000
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::5461:fa8c:58b8:e10d%6]) with mapi id 15.20.8182.014; Fri, 22 Nov 2024
+ 14:46:41 +0000
+Date: Fri, 22 Nov 2024 15:46:32 +0100
+From: Francois Dugast <francois.dugast@intel.com>
+To: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <saurabhg.gupta@intel.com>,
+ <alex.zuo@intel.com>, <nirmoy.das@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_fault_injection: Use valid pat index
+Message-ID: <Z0CZSOP2ppGVZOfX@fdugast-desk>
+References: <20241121202943.149868-1-jonathan.cavitt@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241121202943.149868-1-jonathan.cavitt@intel.com>
+Organization: Intel Corporation
+X-ClientProxiedBy: ZR2P278CA0030.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:46::20) To CY8PR11MB7828.namprd11.prod.outlook.com
+ (2603:10b6:930:78::8)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|SJ0PR11MB5053:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96ad6124-2589-4ec8-fee5-08dd0b047a11
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?fzxPqCLa2EH3NksqT+3QqlpqS0dMEnv5SUPiIv9gf3jonqo1EzoP3ipLsz5i?=
+ =?us-ascii?Q?0SwUjHG4bopVO2UMcxMypX/FviWANiEHQi48olQ34/I+RrYXNNX64PkJ1JSF?=
+ =?us-ascii?Q?V5ZjLceXtQEntN7B2DDSPkE+Z5mz3i5HkDE65VPrFvoD6o4MzDfHT0mgVvIe?=
+ =?us-ascii?Q?U6x5JuLtPrKE26+39AXchtAJ8D7byTSjTIZWbNSlxZYI5A5XlrQv6Gq4Z0Rn?=
+ =?us-ascii?Q?KvHReqoBl9Ujj24RYg1oTMS3wd8qZV6/vQqhfrpbAYKN7D71ZIR98RBmLZUn?=
+ =?us-ascii?Q?rUuDvhr5m+hcuc/GT/UFdL6V1GQZvKCwRqk3U2PQebjMeL+/APzguW/sRFxN?=
+ =?us-ascii?Q?JjAkS+yghyQHOmAdI+UaGMkd3Udx5i/KVC8v7UduyUzQ7qEjOdJe782sz+3j?=
+ =?us-ascii?Q?66KudY9o0yaKhjIc3SH/dcjlyuhm6Re32BhPUrdY+ohqu5kCXtsr6Bl4egJ4?=
+ =?us-ascii?Q?2XG618TyzngpXXUUTMVJTV6Z1XWrbfVfZ4FGrJNlBg+Rs6jy5tbPb1bRCCsU?=
+ =?us-ascii?Q?F7hPtn0vAIsk9JKo8mQaT77JQW0w/zl5GcmTmTVRpT/fct3ThfxGGabJgE3c?=
+ =?us-ascii?Q?bRfcPruXJKlxaxPq52ByJkG8rSirkCjBAOSvU6/Zt+4GVITtbkLFAQ1lHr7y?=
+ =?us-ascii?Q?sIpuLrbDrCrqHs4zLrH/jfh9e8hNe1Kb/uXDopzYv+izxZVXAIvOdf93zgXY?=
+ =?us-ascii?Q?t6H4QM3p+MLjn/CqkkBDi8on/bFo0BrSp47Uz7fo9rtY/AvJis2pzHAzmQ79?=
+ =?us-ascii?Q?FuH7SYlkFoMOyA6SEYiw/cJulTSPYHzUQy7Yd+fU4hsTvMLxFLzfe1+TQx/U?=
+ =?us-ascii?Q?IoO2TxOnHtb5GbvbePZm28NTmHQFt1At2ckjMBBDvvvnSajQmN4D90KoU3Gt?=
+ =?us-ascii?Q?qlhaofGYCm+HW6duEw4QlxE8g7wgmLkWhmpgdWkbUBuZd7bmfAW6Tna34z1W?=
+ =?us-ascii?Q?B/wNaA07jV42z31T/XyEbuZoRm0AqPVsdl6ef+Eb+2vIMG8AJLykWzOAr+pn?=
+ =?us-ascii?Q?WQzCoR0TXZK6iA3lFFkj+aDYhPqovWkJx7VlNqHEg4/nP7g0s0ElFHX0hTld?=
+ =?us-ascii?Q?SFPGXOKHEyAjhkqvuyk/DPCxPIZ1iP7l+ndsrenw3r8z1iJmKWxB/V0XSPUL?=
+ =?us-ascii?Q?VqLMwPVmQLkRe4P3MogScbEwVccUd2MWu4BjYzbuGD91ftcn/lFetyYzYEWD?=
+ =?us-ascii?Q?1AnEARBAYggM8bme/pfaQhVb5HH8j+DUFK5hqHLL0unGnSJqiqMf56liONBl?=
+ =?us-ascii?Q?rdJOwiXL8y6ugPWcMjdg?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?E9XnvN4P9cYqmG/8ZtdMtbO+h7i62aifisB4+maMncBIOgcU98fA0qdb59B3?=
+ =?us-ascii?Q?ANo055NG+lmXVLPI4oJFZWeiwVdHWrJ+g77VWRc5TRvyQnNG5rR1zlJYiFDF?=
+ =?us-ascii?Q?cdyu9JH6IQKaD0W8p2V/EPBWdod9cS1IAV54n4DELeD7dQerYo3XxGrnKNIp?=
+ =?us-ascii?Q?3xlY+G2mfOeMiBgG8Oq1UZueuhWILJkN5OBCeKcqcUW14sp/E74LfMbEfeh3?=
+ =?us-ascii?Q?OnQMxLAKQj38XCrcZfNgfzB1ZWzqv2nd9f+cKg/xzQkv9K8023h/d9UQA9kw?=
+ =?us-ascii?Q?osUqI0emZJj8rNfyK4Y7mJHDxsbd/1Guir1euIva4W+2cUXl4kLGfvXdyrNJ?=
+ =?us-ascii?Q?jzo9rry/f5A3CFcuwm+62EuAR2UwM0No3crJyKVzT8zn4a2jjL3I9aBltXSm?=
+ =?us-ascii?Q?D92k2OIe4g12mdeKywG0ZteTk2C2fQanK2QPXcVIe158kTpPp4Bm8R7/H4HW?=
+ =?us-ascii?Q?zjJxm3BoWR7Xk7JCqr4pILKk3ZrAq6Gtt7GGPaqq19OclHiCV2bGObTB+WLf?=
+ =?us-ascii?Q?W5EvJt2tAvbxmTBXM9Vq9+IV+jhSBMDh7RFPSkmTZqRO/b/abr9+vWSS13rR?=
+ =?us-ascii?Q?b8lCOBQQ8X98lFpGBK5YhG47L+5pzXu4qPFcUnL1B9WZ6cMQxg+BGV98FLPY?=
+ =?us-ascii?Q?UsDfBJ1r3Suxw9O9m1i0FPEnNtj2RPmsHNDgcm/eqpgdcSyyNmus/pTreg5S?=
+ =?us-ascii?Q?6K9YtI0AAjJlqLCBqoDS0ZHs+49tX1mwplmdJWZrFn9Dv+aQ7kJ0/hRARVKu?=
+ =?us-ascii?Q?BS/q7+ZX8fuvIyvYdrh33M6J5iCekeX64NJqzq/sRW6ZWz2B50UQNgLEMtip?=
+ =?us-ascii?Q?43XPFyNOjW6AGsJaedkRFWp4PeX7pe8D4rSdP6cGfWRNFsTtPZwPyq8RWe1G?=
+ =?us-ascii?Q?C1davwmbsq+A+i41R0SRPXahLEBd1TZe7FBCls2bi3pzPnR/G2xaHFBS2/8Y?=
+ =?us-ascii?Q?LTUwAwWlpsRgawPpBwACYJlAPWEsxBOh3x9q7DnbWUA/EVlzCZgvF9xbzPHQ?=
+ =?us-ascii?Q?LG9r5/TQPcHTt5Il2x3H+uEXxQ1nbrk6LuAbuakK/8iD5NH1WGOKbIdBBsQj?=
+ =?us-ascii?Q?m05EBZXWvrm4nt/B6Lrn9+5DDFCSSn7rF2CzGElk1z1ATU3llX7XGp97w+84?=
+ =?us-ascii?Q?wbIkuCvoe2tgQU7AI+h+RNQCaH8+ZczOWnozlRj6m0aa2BZZ257HBpnLPDps?=
+ =?us-ascii?Q?sL4ilyiMydu6iJ39KFgzX+GsqYCHjs3zBx4WZAImI3+QY66HJBdEEE+1OfRT?=
+ =?us-ascii?Q?yPn3mPSn2gChTTsACZ9gdGEhtJUYEGBNRxDdbZfZcDcXB9lgb8rMU+4Dm7v/?=
+ =?us-ascii?Q?mCCdA9F9pFWvZWzZ8wo4Z7/bqvsIa7finHOgNkYwzUxEE8t5RIB30JI+neT0?=
+ =?us-ascii?Q?0R+WaY9CsJJV3ELSHs+Q1U+YfhyR88wYSm1ItYpsVmLGRIj0UxMN1GDPCTQS?=
+ =?us-ascii?Q?XJ7x4LITppyOIngglMJ5uf+HyoSDHJStQWniYUqtstgJdgr5oh2Cv2c3+BQt?=
+ =?us-ascii?Q?9f16zb+gp5XEvolsW0ql8ACE4POCEUDNqR+c1tCRYIuF6dnUNqsYZ7rlAOVR?=
+ =?us-ascii?Q?nWo4QGuKusoYEbutUXWPdX6JddYpA8U7mwdPkoK8i0YJK3nL+i7COlvABu0i?=
+ =?us-ascii?Q?kw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96ad6124-2589-4ec8-fee5-08dd0b047a11
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2024 14:46:41.4139 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SKyhMOiMB3ltxCHYzrbbf5aStnKJW4k4a6Q6NZFvX7tRoPvb+TV7vAuLjVdvntRiwktmAZqXXZFyMNnU+GaKkHhqlsYo1cnDAMJq99WwjTU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5053
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,302 +175,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add read and write pagefault tests to xe_eudebug_online that checks if a
-pagefault event is submitted by the KMD debugger when a pagefault occurs.
+On Thu, Nov 21, 2024 at 08:29:42PM +0000, Jonathan Cavitt wrote:
+> As a part of vm_bind_ioctl_check_args, all vm binds that use the
+> DRM_XE_VM_BIND_OP_MAP_USERPTR operation must have a coherency mode of
+> XE_COH_AT_LEAST_1WAY.  This is determined by the pat_index set in the
+> bind operation before the bind is performed.
+> 
+> The value is usually set by intel_get_pat_idx_wb, as this is the
+> default used in the various xe_vm_bind helper functions (or, more
+> specifically, the pat index value DEFAULT_PAT_INDEX is passed, which
+> translates to using intel_get_pat_idx_wb to generate the true value sent
+> to the ioctl).  However, when the ioctl is called manually (through
+> igt_ioctl, for example), it is up to the calling test to ensure the pat
+> index value is correctly set, and in xe_vm, for example,
+> intel_get_pat_idx_wb is used as well to set the pat index.
+> 
+> This step was not done in the simple_vm_bind function in
+> xe_fault_injection, so use intel_get_pat_idx_wb to set the pat index.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3499
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> CC: Francois Dugast <francois.dugast@intel.com>
+> CC: Nirmoy Das <nirmoy.das@intel.com>
 
-Test that read (load instruction) and write(store instruction) attempt to
-load or store access to unallocated memory, causing a pagefault.
-Examine the address causing the page fault and the number of eu threads
-causing the pagefault.
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 
-v2: Integration to handle pagefault scenario in
-    eu_attention_resume_trigger() callback. (Christoph)
-
-Co-developed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- tests/intel/xe_eudebug_online.c | 146 ++++++++++++++++++++++++++++++--
- 1 file changed, 140 insertions(+), 6 deletions(-)
-
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 0ef0d8093..a4850c916 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -36,6 +36,8 @@
- #define BB_IN_VRAM			(1 << 11)
- #define TARGET_IN_SRAM			(1 << 12)
- #define TARGET_IN_VRAM			(1 << 13)
-+#define SHADER_PAGEFAULT_READ		(1 << 14)
-+#define SHADER_PAGEFAULT_WRITE		(1 << 15)
- #define TRIGGER_UFENCE_SET_BREAKPOINT	(1 << 24)
- #define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
- #define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
-@@ -45,6 +47,7 @@
- #define TRIGGER_RESUME_DSS		(1 << 30)
- #define TRIGGER_RESUME_ONE		(1 << 31)
- 
-+#define SHADER_PAGEFAULT	(SHADER_PAGEFAULT_READ | SHADER_PAGEFAULT_WRITE)
- #define BB_REGION_BITMASK	(BB_IN_SRAM | BB_IN_VRAM)
- #define TARGET_REGION_BITMASK	(TARGET_IN_SRAM | TARGET_IN_VRAM)
- 
-@@ -61,6 +64,8 @@
- #define CACHING_VALUE(n)	(CACHING_INIT_VALUE + (n))
- 
- #define SHADER_CANARY 0x01010101
-+#define BAD_CANARY 0xf1f1f1f
-+#define BAD_OFFSET (0x12345678ull << 12)
- 
- #define WALKER_X_DIM		4
- #define WALKER_ALIGNMENT	16
-@@ -120,7 +125,7 @@ static struct intel_buf *create_uc_buf(int fd, int width, int height, uint64_t r
- 
- static int get_number_of_threads(uint64_t flags)
- {
--	if (flags & SHADER_MIN_THREADS)
-+	if (flags & (SHADER_MIN_THREADS | SHADER_PAGEFAULT))
- 		return 16;
- 
- 	if (flags & (TRIGGER_RESUME_ONE | TRIGGER_RESUME_SINGLE_WALK |
-@@ -179,6 +184,16 @@ static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
- 			gpgpu_shader__common_target_write_u32(shader, s_dim.y + i, CACHING_VALUE(i));
- 		gpgpu_shader__nop(shader);
- 		gpgpu_shader__breakpoint(shader);
-+	} else if (flags & SHADER_PAGEFAULT) {
-+		if (flags & SHADER_PAGEFAULT_READ)
-+			gpgpu_shader__read_a64_d32(shader, BAD_OFFSET);
-+		else
-+			gpgpu_shader__write_a64_d32(shader, BAD_OFFSET, BAD_CANARY);
-+
-+		gpgpu_shader__label(shader, 0);
-+		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
-+		gpgpu_shader__jump_neq(shader, 0, w_dim.y, STEERING_END_LOOP);
-+		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
- 	}
- 
- 	gpgpu_shader__eot(shader);
-@@ -217,6 +232,16 @@ static int count_set_bits(void *ptr, size_t size)
- 	return count;
- }
- 
-+static int eu_attentions_xor_count(const uint32_t *a, const uint32_t *b, uint32_t size)
-+{
-+	int count = 0;
-+
-+	for (int i = 0; i < size / 4 ; i++)
-+		count += igt_hweight(a[i] ^ b[i]);
-+
-+	return count;
-+}
-+
- static int count_canaries_eq(uint32_t *ptr, struct dim_t w_dim, uint32_t value)
- {
- 	int count = 0;
-@@ -593,11 +618,15 @@ static void eu_attention_resume_trigger(struct xe_eudebug_debugger *d,
- 		return;
- 
- 	bitmask = calloc(1, att->bitmask_size);
-+	igt_assert(bitmask);
- 
- 	eu_ctl_stopped(d->fd, att->client_handle, att->exec_queue_handle,
- 		       att->lrc_handle, bitmask, &bitmask_size);
- 	igt_assert(bitmask_size == att->bitmask_size);
--	igt_assert(memcmp(bitmask, att->bitmask, att->bitmask_size) == 0);
-+
-+	/* No guarantee that all pagefaulting eu threads will raise attention */
-+	if (!(d->flags & SHADER_PAGEFAULT))
-+		igt_assert(memcmp(bitmask, att->bitmask, att->bitmask_size) == 0);
- 
- 	pthread_mutex_lock(&data->mutex);
- 	if (igt_nsec_elapsed(&data->exception_arrived) < (MAX_PREEMPT_TIMEOUT + 1) * NSEC_PER_SEC &&
-@@ -636,7 +665,7 @@ static void eu_attention_resume_trigger(struct xe_eudebug_debugger *d,
- 		}
- 	}
- 
--	if (d->flags & SHADER_LOOP) {
-+	if (d->flags & (SHADER_LOOP | SHADER_PAGEFAULT)) {
- 		uint32_t threads = get_number_of_threads(d->flags);
- 		uint32_t val = STEERING_END_LOOP;
- 
-@@ -1015,7 +1044,7 @@ static void run_online_client(struct xe_eudebug_client *c)
- 	struct intel_bb *ibb;
- 	struct intel_buf *buf;
- 	uint32_t *ptr;
--	int fd;
-+	int fd, vm_flags;
- 
- 	metadata[0] = calloc(2, sizeof(*metadata));
- 	metadata[1] = calloc(2, sizeof(*metadata));
-@@ -1025,7 +1054,7 @@ static void run_online_client(struct xe_eudebug_client *c)
- 	fd = xe_eudebug_client_open_driver(c);
- 
- 	/* Additional memory for steering control */
--	if (c->flags & SHADER_LOOP || c->flags & SHADER_SINGLE_STEP)
-+	if (c->flags & SHADER_LOOP || c->flags & SHADER_SINGLE_STEP || c->flags & SHADER_PAGEFAULT)
- 		s_dim.y++;
- 	/* Additional memory for caching check */
- 	if ((c->flags & SHADER_CACHING_SRAM) || (c->flags & SHADER_CACHING_VRAM))
-@@ -1045,7 +1074,11 @@ static void run_online_client(struct xe_eudebug_client *c)
- 							   DRM_XE_DEBUG_METADATA_PROGRAM_MODULE,
- 							   2 * sizeof(*metadata), metadata[1]);
- 
--	create.vm_id = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
-+	vm_flags |= c->flags & SHADER_PAGEFAULT ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
-+
-+	create.vm_id = xe_eudebug_client_vm_create(c, fd, vm_flags, 0);
-+
- 	xe_eudebug_client_exec_queue_create(c, fd, &create);
- 
- 	ibb = xe_bb_create_on_offset(fd, create.exec_queue_id, create.vm_id, bb_offset, bb_size,
-@@ -1245,11 +1278,13 @@ match_attention_with_exec_queue(struct xe_eudebug_event_log *log,
- static void online_session_check(struct xe_eudebug_session *s, int flags)
- {
- 	struct drm_xe_eudebug_event_eu_attention *ea = NULL;
-+	struct drm_xe_eudebug_event_pagefault *pf = NULL;
- 	struct drm_xe_eudebug_event *event = NULL;
- 	struct online_debug_data *data = s->client->ptr;
- 	bool expect_exception = flags & DISABLE_DEBUG_MODE ? false : true;
- 	int sum = 0;
- 	int bitmask_size;
-+	int pagefault_threads = 0;
- 
- 	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
- 					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
-@@ -1265,6 +1300,17 @@ static void online_session_check(struct xe_eudebug_session *s, int flags)
- 			igt_assert_eq(ea->bitmask_size, bitmask_size);
- 			sum += count_set_bits(ea->bitmask, bitmask_size);
- 			igt_assert(match_attention_with_exec_queue(s->debugger->log, ea));
-+		} else if (event->type == DRM_XE_EUDEBUG_EVENT_PAGEFAULT) {
-+			uint32_t after_offset = bitmask_size / sizeof(uint32_t);
-+			uint32_t resolved_offset = bitmask_size / sizeof(uint32_t) * 2;
-+			uint32_t *ptr = NULL;
-+
-+			pf = igt_container_of(event, pf, base);
-+			ptr = (uint32_t *) pf->bitmask;
-+			igt_assert_eq(pf->bitmask_size, bitmask_size * 3);
-+			pagefault_threads += eu_attentions_xor_count(ptr + after_offset,
-+								     ptr + resolved_offset,
-+								     bitmask_size);
- 		}
- 	}
- 
-@@ -1279,6 +1325,9 @@ static void online_session_check(struct xe_eudebug_session *s, int flags)
- 		igt_assert(sum > 0);
- 	else
- 		igt_assert(sum == 0);
-+
-+	if (flags & SHADER_PAGEFAULT)
-+		igt_assert(pagefault_threads > 0);
- }
- 
- static void ufence_ack_trigger(struct xe_eudebug_debugger *d,
-@@ -1302,6 +1351,43 @@ static void ufence_ack_set_bp_trigger(struct xe_eudebug_debugger *d,
- 	}
- }
- 
-+static void pagefault_trigger(struct xe_eudebug_debugger *d,
-+			      struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_pagefault *pf = igt_container_of(e, pf, base);
-+	uint32_t attn_size = pf->bitmask_size / 3;
-+	int attn_size_as_u32 = attn_size / sizeof(uint32_t);
-+	uint32_t *ptr = (uint32_t *) pf->bitmask;
-+	uint32_t *ptrs[3] = {ptr, ptr + attn_size_as_u32, ptr + 2 * attn_size_as_u32};
-+	const char * const name[3] = {"before", "after", "resolved"};
-+	int threads[3], pagefault_threads, idx;
-+
-+	for (idx = 0; idx < 3; idx++)
-+		threads[idx] = count_set_bits(ptrs[idx], attn_size);
-+
-+	pagefault_threads = eu_attentions_xor_count(ptrs[1], ptrs[2], attn_size);
-+
-+	igt_debug("EVENT[%llu] pagefault; threads[before=%d, after=%d, "
-+		  "resolved=%d, pagefault=%d] "
-+		  "client[%llu], exec_queue[%llu], lrc[%llu], bitmask_size[%d], "
-+		  "pagefault_address[0x%llx]\n",
-+		  pf->base.seqno, threads[0], threads[1], threads[2],
-+		  pagefault_threads, pf->client_handle, pf->exec_queue_handle,
-+		  pf->lrc_handle, pf->bitmask_size,
-+		  pf->pagefault_address);
-+
-+	for (idx = 0; idx < 3; idx++) {
-+		igt_debug("=== Attentions %s ===\n", name[idx]);
-+
-+		for (uint32_t i = 0; i < attn_size_as_u32; i += 2)
-+			igt_debug("bitmask[%d] = 0x%08x%08x\n", i / 2,
-+				  ptrs[idx][i], ptrs[idx][i + 1]);
-+	}
-+
-+	igt_assert(pagefault_threads > 0);
-+	igt_assert_eq_u64(pf->pagefault_address, BAD_OFFSET);
-+}
-+
- /**
-  * SUBTEST: basic-breakpoint
-  * Description:
-@@ -1383,6 +1469,49 @@ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instan
- 	online_debug_data_destroy(data);
- }
- 
-+/**
-+ * SUBTEST: pagefault-read
-+ * Description:
-+ *     Check whether KMD sends pagefault event for workload in debug mode that
-+ *     triggers a read pagefault.
-+ *
-+ * SUBTEST: pagefault-write
-+ * Description:
-+ *     Check whether KMD sends pagefault event for workload in debug mode that
-+ *     triggers a write pagefault.
-+ */
-+static void test_pagefault_online(int fd, struct drm_xe_engine_class_instance *hwe,
-+				  int flags)
-+{
-+	struct xe_eudebug_session *s;
-+	struct online_debug_data *data;
-+
-+	data = online_debug_data_create(hwe);
-+	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-+
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-+					open_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-+					exec_queue_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-+					eu_attention_debug_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-+					eu_attention_resume_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-+					create_metadata_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-+					ufence_ack_trigger);
-+	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_PAGEFAULT,
-+					pagefault_trigger);
-+
-+	xe_eudebug_session_run(s);
-+	online_session_check(s, s->flags);
-+
-+	xe_eudebug_session_destroy(s);
-+	online_debug_data_destroy(data);
-+}
-+
- /**
-  * SUBTEST: preempt-breakpoint
-  * Description:
-@@ -2344,6 +2473,11 @@ igt_main
- 	igt_subtest("breakpoint-many-sessions-tiles")
- 		test_many_sessions_on_tiles(fd, true);
- 
-+	test_gt_render_or_compute("pagefault-read", fd, hwe)
-+		test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_READ);
-+	test_gt_render_or_compute("pagefault-write", fd, hwe)
-+		test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_WRITE);
-+
- 	igt_fixture {
- 		xe_eudebug_enable(fd, was_enabled);
- 
--- 
-2.46.1
-
+> ---
+>  tests/intel/xe_fault_injection.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 1b29041745..f8d7278caa 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -17,6 +17,7 @@
+>  #include "igt_device.h"
+>  #include "igt_kmod.h"
+>  #include "igt_sysfs.h"
+> +#include "intel_pat.h"
+>  #include "lib/igt_syncobj.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+> @@ -213,6 +214,7 @@ simple_vm_bind(int fd, uint32_t vm)
+>  		.bind.addr = BO_ADDR,
+>  		.bind.op = DRM_XE_VM_BIND_OP_MAP_USERPTR,
+>  		.bind.flags = 0,
+> +		.bind.pat_index = intel_get_pat_idx_wb(fd),
+>  		.num_syncs = 1,
+>  		.syncs = (uintptr_t)&syncobj,
+>  		.exec_queue_id = 0,
+> -- 
+> 2.43.0
+> 
