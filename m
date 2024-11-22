@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0747E65D34
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05337E65D34
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 08:48:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A6BE710EB02;
-	Fri, 22 Nov 2024 08:48:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6AB510EAF5;
+	Fri, 22 Nov 2024 08:48:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ksNs4Xxv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e1Vaal2e";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E00D10EB02
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 08:48:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBCC110EB03
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 08:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732265296; x=1763801296;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=sjFzW/5HP12SXaiidPqCqD+WjIfljgIZ92kfRm0TXIM=;
- b=ksNs4XxvJlPqKUflf3NzermsxMU86C+tklcoAQk/rNKbFw0bdOFWENad
- 1FzEEegjU/W8pcVI3ATgR47A6QupV4YPIk95m0ukaHcrI96I6T4VgaS7W
- HxvRy8E4gpdovVA91drSmqYoh/9wv0hwq40CyvnTxWSxn/1mrEOqpe4Z4
- f0jehn2P9mLNBXiHY2v1MwIYR3HxANGgY+SF/Dg7UuL0ZNlkpTUUvBovW
- pktJOHQH8sm9FPpPjxiy6iCETeIFXTUBbUUQYBxqj8yppjpjfw7MZ7y+c
- s5tE+AclIrPpBtZxHeba/L6g+aaG5UBPwuAoimLzyuG53wRogQGaq6VRt Q==;
-X-CSE-ConnectionGUID: iKMoWxGqS5exV2uQloilGw==
-X-CSE-MsgGUID: wuWdafEgSkKKT33VpEMOtw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="20004061"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="20004061"
+ t=1732265299; x=1763801299;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=jk1b4d8FeqE3WQQ9EZa/wOYrp5jC1iZKx9NQ3aLTvD4=;
+ b=e1Vaal2envONBvjzJeLJn5XoVTlDgMCKYUJehfCa2yk+Jjc6hA+xryo+
+ vooxEAC9y/C188l/S8q5xR0iSPoB22z0IO6QyRevyJ5N2pc5nrZ3yS28f
+ 9DbdMLSw3Tp0lEFNdxJX/goZuiRKa4JNLUldd+KGzJXECj01BkZxaIyik
+ FoDIKYx9EY5WAu3WmI1BEMbyqDfXKqNePt9IFRVnTZHy54s/VCvYtO/Yn
+ AyVscCz1YrDLPazaSIstz/CeY8Xtoif1phDi9eP6en7hAPFX9EFJ7eIyy
+ NZZpta3RRGCgFZXQGe636m5MNR6+GKVsMqFLCLXqwP+HZ0EIuLzXQTPeQ g==;
+X-CSE-ConnectionGUID: Wyy1iEv9T2+IoO2rPDAhGQ==
+X-CSE-MsgGUID: I2uJJBq+S7SSc4//+lkUgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="20004064"
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="20004064"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 00:48:16 -0800
-X-CSE-ConnectionGUID: 1Bax6CleSCm1wNAXZp8d7A==
-X-CSE-MsgGUID: hHsQe9RTSpaaNMfB279RRw==
+ 22 Nov 2024 00:48:19 -0800
+X-CSE-ConnectionGUID: VO+kq3N6T1Or8NbKLOm3kg==
+X-CSE-MsgGUID: GmZRbVkeSrGVEYwQqkEWEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="90679438"
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="90679452"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 22 Nov 2024 00:48:14 -0800
+ by fmviesa008.fm.intel.com with SMTP; 22 Nov 2024 00:48:17 -0800
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 22 Nov 2024 10:48:13 +0200
+ Fri, 22 Nov 2024 10:48:16 +0200
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 3/4] tests/kms_draw_crc: Test 64bpp
-Date: Fri, 22 Nov 2024 10:48:03 +0200
-Message-ID: <20241122084804.29669-4-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 4/4] tests/intel/gem_draw: Test igt_draw without kms
+Date: Fri, 22 Nov 2024 10:48:04 +0200
+Message-ID: <20241122084804.29669-5-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
 References: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
@@ -71,73 +70,280 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Test 64bpp formats to make sure igt_draw is working correctly.
+kms_draw_crc is our only way to confirm that igt_draw
+linear<->tiled conversion routines are correct. That may
+not cover every case as we could be hitting display
+specific limitations that prevent testing everything.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Introduce a new gem_draw test case that compares igt_draw
+mmap/pwrite methods against GTT mmaps. This will verify that
+the software conversion routines match the hardware (de)tiling
+peformed via the fenced region.
+
+TODO: could verify against blt/rendercopy
+      when gtt mmaps are not available...
+
+v2: Drop the "driver requirement: i915" to make it past
+    the documentation build scripts
+
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_draw_crc.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ tests/intel/gem_draw.c | 233 +++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build      |   1 +
+ 2 files changed, 234 insertions(+)
+ create mode 100644 tests/intel/gem_draw.c
 
-diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
-index e3d1c0ba9bd8..078a6f46d31a 100644
---- a/tests/intel/kms_draw_crc.c
-+++ b/tests/intel/kms_draw_crc.c
-@@ -34,6 +34,7 @@
- 
- #include "i915/gem.h"
- #include "igt.h"
+diff --git a/tests/intel/gem_draw.c b/tests/intel/gem_draw.c
+new file mode 100644
+index 000000000000..86df7c33ff2d
+--- /dev/null
++++ b/tests/intel/gem_draw.c
+@@ -0,0 +1,233 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++/**
++ * TEST: gem draw
++ * Category: GEM
++ * Description: Tests whether the igt_draw library actually works.
++ * Functionality: tiling
++ * Test category: functionality test
++ */
++
++/**
++ * SUBTEST: draw-method-%s
++ * Description: Verify that igt draw library works for the %arg[1] method with
++ *              different tilings and color depths.
++ *
++ * arg[1]:
++ *
++ * @mmap-cpu:     MMAP-CPU
++ * @mmap-wc:      MMAP-WC
++ * @pwrite:       PWRITE
++ */
++
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++#include "igt.h"
 +#include "igt_halffloat.h"
- 
- /**
-  * SUBTEST: fill-fb
-@@ -76,6 +77,7 @@ static const uint32_t formats[] = {
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_RGB565,
- 	DRM_FORMAT_XRGB2101010,
-+	DRM_FORMAT_XBGR16161616F,
- };
- 
- static const uint64_t modifiers[] = {
-@@ -109,9 +111,11 @@ static void find_modeset_params(void)
- 	}
- }
- 
--static uint32_t get_color(uint32_t drm_format, bool r, bool g, bool b)
-+static uint64_t get_color(uint32_t drm_format, bool r, bool g, bool b)
- {
--	uint32_t color = 0;
-+	uint64_t color = 0;
-+	uint16_t h[3];
-+	float f[3];
- 
- 	switch (drm_format) {
- 	case DRM_FORMAT_RGB565:
-@@ -129,6 +133,15 @@ static uint32_t get_color(uint32_t drm_format, bool r, bool g, bool b)
- 		color |= g ? 0x3FF << 10 : 0;
- 		color |= b ? 0x3FF : 0;
- 		break;
-+	case DRM_FORMAT_XBGR16161616F:
-+		f[0] = r ? 1.0f : 0.0f;
-+		f[1] = g ? 1.0f : 0.0f;
-+		f[2] = b ? 1.0f : 0.0f;
-+		igt_float_to_half(f, h, 3);
-+		color |= (uint64_t)h[2] << 32 |
-+			(uint64_t)h[1] << 16 |
-+			(uint64_t)h[0] << 0;
-+		break;
- 	default:
- 		igt_assert(false);
- 	}
-@@ -290,6 +303,8 @@ static const char *format_str(int format_index)
- 		return "xrgb8888";
- 	case DRM_FORMAT_XRGB2101010:
- 		return "xrgb2101010";
-+	case DRM_FORMAT_XBGR16161616F:
-+		return "xbgr16161616f";
- 	default:
- 		igt_assert(false);
- 	}
++#include "igt_primes.h"
++
++int drm_fd;
++struct buf_ops *bops;
++
++static const enum igt_draw_method draw_methods[] = {
++	IGT_DRAW_MMAP_CPU,
++	IGT_DRAW_MMAP_WC,
++	IGT_DRAW_PWRITE,
++};
++
++static const uint32_t tilings[] = {
++	I915_TILING_NONE,
++	I915_TILING_X,
++	I915_TILING_Y,
++};
++
++static uint64_t read_pixel(const void *ptr, int stride, int x, int y, int bpp)
++{
++	ptr += y * stride + x * bpp / 8;
++
++	switch (bpp) {
++	case 8:
++		return *(const uint8_t*)ptr;
++	case 16:
++		return *(const uint16_t*)ptr;
++	case 32:
++		return *(const uint32_t*)ptr;
++	case 64:
++		return *(const uint64_t*)ptr;
++	default:
++		return 0;
++	}
++}
++
++static void check_rect(const void *ptr, int stride,
++		       int x0, int y0, int w, int h,
++		       uint64_t color, int bpp)
++{
++	int x1 = x0 + w - 1;
++	int y1 = y0 + h - 1;
++
++	if (bpp < 64)
++		color &= (1ull << bpp) - 1;
++
++	/* only check the corners to speed this up a bit */
++	igt_assert_eq(read_pixel(ptr, stride, x0, y0, bpp), color);
++	igt_assert_eq(read_pixel(ptr, stride, x0, y1, bpp), color);
++	igt_assert_eq(read_pixel(ptr, stride, x1, y0, bpp), color);
++	igt_assert_eq(read_pixel(ptr, stride, x1, y1, bpp), color);
++}
++
++static void draw(enum igt_draw_method method,
++		 int width, int height,
++		 uint32_t stride, int bpp, uint32_t tiling)
++{
++	uint64_t size = stride * height;
++	uint64_t color;
++	uint32_t handle;
++	void *ptr;
++
++	igt_require(buf_ops_has_tiling_support(bops, tiling));
++
++	handle = gem_create(drm_fd, size);
++	gem_set_tiling(drm_fd, handle, tiling, stride);
++
++	color = 0x0123456789abcdef;
++	for (int y = 0 ; y < height;) {
++		int y_next = min(height, (int)igt_next_prime_number(y));
++		int h = y_next - y;
++
++		for (int x = 0; x < width; ) {
++			int x_next = min(width, (int)igt_next_prime_number(x));
++			int w = x_next - x;
++
++			igt_draw_rect(drm_fd, bops, 0, handle, size, stride,
++				      width, height, tiling, method,
++				      x, y, w, h, color, bpp);
++
++			color = igt_ror(color, 1, 64);
++
++			x = x_next;
++		}
++
++		y = y_next;
++	}
++
++	gem_set_domain(drm_fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
++
++	ptr = gem_mmap__gtt(drm_fd, handle, size, PROT_READ);
++
++	color = 0x0123456789abcdef;
++	for (int y = 0 ; y < height;) {
++		int y_next = min(height, (int)igt_next_prime_number(y));
++		int h = y_next - y;
++
++		for (int x = 0; x < width; ) {
++			int x_next = min(width, (int)igt_next_prime_number(x));
++			int w = x_next - x;
++
++			check_rect(ptr, stride, x, y, w, h, color, bpp);
++
++			color = igt_ror(color, 1, 64);
++
++			x = x_next;
++		}
++
++		y = y_next;
++	}
++
++	munmap(ptr, size);
++
++	gem_close(drm_fd, handle);
++}
++
++static void draw_method_subtest(enum igt_draw_method method,
++				int bpp, uint32_t tiling)
++{
++	const struct intel_device_info *info =
++		intel_get_device_info(intel_get_drm_devid(drm_fd));
++	int width, height, stride;
++	int tile_w, tile_h;
++
++	if (info->graphics_ver == 2) {
++		tile_w = 128;
++		tile_h = 16;
++	} else if (tiling == I915_TILING_X ||
++		   info->is_grantsdale || info->is_alviso) {
++		tile_w = 512;
++		tile_h = 8;
++	} else {
++		tile_w = 128;
++		tile_h = 32;
++	}
++
++	stride = 4 * tile_w;
++	width = stride * 8 / bpp;
++	height = 4 * tile_h;
++
++	draw(method, width, height, stride, bpp, tiling);
++}
++
++static void setup_environment(void)
++{
++	drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
++	igt_require(drm_fd >= 0);
++	bops = buf_ops_create(drm_fd);
++
++	/* need hardware to untile for verification */
++	gem_require_mappable_ggtt(drm_fd);
++}
++
++static void teardown_environment(void)
++{
++	buf_ops_destroy(bops);
++	drm_close_driver(drm_fd);
++}
++
++static const char *tiling_str(uint32_t tiling)
++{
++	switch (tiling) {
++	case I915_TILING_NONE :
++		return "untiled";
++	case I915_TILING_X :
++		return "xtiled";
++	case I915_TILING_Y :
++		return "ytiled";
++	default:
++		igt_assert(false);
++	}
++}
++
++igt_main
++{
++	int method_idx, tiling_idx;
++
++	igt_fixture
++		setup_environment();
++
++	for (method_idx = 0; method_idx < ARRAY_SIZE(draw_methods); method_idx++) {
++		enum igt_draw_method method = draw_methods[method_idx];
++
++		igt_describe_f("Verify that igt draw library works for the draw "
++			       "method (%s) with different tilings and color depths.",
++			       igt_draw_get_method_name(method));
++
++		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
++			if (!igt_draw_supports_method(drm_fd, method))
++				continue;
++
++			for (tiling_idx = 0; tiling_idx < ARRAY_SIZE(tilings); tiling_idx++) {
++				uint32_t tiling = tilings[tiling_idx];
++
++				for (int bpp = 8; bpp <= 64; bpp *= 2) {
++					igt_dynamic_f("%dbpp-%s", bpp, tiling_str(tiling))
++						draw_method_subtest(method, bpp, tiling);
++				}
++			}
++		}
++	}
++
++	igt_fixture
++		teardown_environment();
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 2724c7a9a6e6..9bcace851c33 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -118,6 +118,7 @@ intel_i915_progs = [
+ 	'gem_ctx_shared',
+ 	'gem_ctx_sseu',
+ 	'gem_ctx_switch',
++	'gem_draw',
+ 	'gem_eio',
+ 	'gem_evict_alignment',
+ 	'gem_evict_everything',
 -- 
 2.45.2
 
