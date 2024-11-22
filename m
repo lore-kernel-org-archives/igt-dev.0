@@ -4,186 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF8E6D75E22
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 10:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6908ED75E22
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Nov 2024 10:48:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CB8D10EB4E;
-	Fri, 22 Nov 2024 10:43:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2745510EB4C;
+	Fri, 22 Nov 2024 10:48:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="igFpxZtm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iJe0fZ15";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E687D10EB4E
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 10:43:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB3C310EB4C
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2024 10:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732272222; x=1763808222;
+ t=1732272488; x=1763808488;
  h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=z0Dca7MmCsk9heeNVwylkYrfSDth2x5WEP7FUoHXQyc=;
- b=igFpxZtmcj+BvdWEHDBKW//e+22PGtQ4n4QfKURQcUi7XdIvJ1baoEVb
- llX1/lkfvJVo3MQizdU3zPkMDRap35/EM7Er+fu6USD3szDF6j9f71OkM
- qgHbh3R/n6O1TmbKKi4PUyQRcR5gq0piWnAhdLh33T2vNHm1284/1m7Xv
- ft3rkifqTiI52e32feU+Eil9iHwmmZcykbOOxYBidYaq8V8Beddbe6EeF
- bjRXsXkdVVSbsJdPyzxJqM4MzgAiGJnyL4g6083g4TnKEFSlDlsQ12vjs
- i+2icjZ38XvoDlgX5Jajiy3rwni7OprOVkP5OzoWZDCKKnFa5r3N21rSd Q==;
-X-CSE-ConnectionGUID: iet+jnNfQqqLqdUY12B8HQ==
-X-CSE-MsgGUID: /eGGtnnlRM2Er7EsMsIZig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32281306"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208,217";a="32281306"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2024 02:43:42 -0800
-X-CSE-ConnectionGUID: +NlPx1r7QiGTI6DcP3Ci7A==
-X-CSE-MsgGUID: kFjruDClSRmx6Pn6ZDFctw==
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=LzP7U8xCkbsMT/18DFtKiRtqbnyjeXc6u/YYJ8K6vZE=;
+ b=iJe0fZ15teV+fsnnHHmyKGUq9p4Q67ZCG8ODL2LZlUK8BgBcAmwOGHSL
+ r2X1pHvaxttWXwUbsAhaBHpjoesnAVntDdwZ8+tS2Xl+WUe9ZBI+HT9Je
+ Pzx85pfhaNTGeg+LeoaVLHlbWteo/mfLirNWjPuaZ3/iC6AAQLtKVnIiq
+ s3dxmHgzMdaDdItMkTjjkPFrLCVIJULCU7/mNDgNsn+EWeCfjGnmW2sRK
+ ETz6Ormg5XRDX1za9ZQUpkrdp51/T3aTDu33DQVQaIvI1AKFn7Ucb58vJ
+ dDSyTwJnQlORIKdpPUMcPsDftRn1CrVUUtINufQwpr/9ji6/XJiXV3kZp g==;
+X-CSE-ConnectionGUID: 9Kj0ujngRIeBesHCz3gQUg==
+X-CSE-MsgGUID: oMBNZmdlTsma0ncy8iWM4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="35282904"
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="35282904"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2024 02:48:07 -0800
+X-CSE-ConnectionGUID: PRlVhKdiTcy+GwMdoKLKKA==
+X-CSE-MsgGUID: BLzpkfsUR/ulAaqFlv1A5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208,217";a="90522697"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 22 Nov 2024 02:43:42 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; d="scan'208";a="90686558"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Nov 2024 02:48:07 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 22 Nov 2024 02:43:41 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ 15.1.2507.39; Fri, 22 Nov 2024 02:48:06 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 22 Nov 2024 02:43:41 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.175)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Fri, 22 Nov 2024 02:48:06 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 22 Nov 2024 02:43:41 -0800
+ 15.1.2507.39; Fri, 22 Nov 2024 02:48:06 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RLUv2UM61Z+NKjuN0QbXxLAMroEL4GOMraNIlfrpx7ukKt4nK4lebL2WsWExUu4GUj7jr2t9nn6djlHzxStKuUQ+dJk2wx6pth0KPaRVv9McQnWOMviflfwP7g9MH6aenCvbe5P7ZNSV6ddqYNad+dktSFY7eLC1yitc/7dYXZqtMn7EVrl+YMC1iyMHdj6mufPlyku5ZhXeqNOoh4AM370O+RKcfMPHaS/m8M3uc+cO44mZWrSi1OPaIbbnGWY95RWsd8EtACJU2c6s6/Pnbbc1PYWyEY+uYOQY92PyYAEZnANrA0TWvYD+XAQEpy55ySmn+1KRiYnQOOJIxF3Xsw==
+ b=aMebRzuqyNcAS1op08IvtGn0o/g/Wv/jgPky7xj2QMW+SC8Nr34OX9VKH5/jMKj8kNV1KHXUYSbvc8WIOH9FcLH+7O8ATrrfjRGJegxA2MyaWG3rkfLjCUrzxTzXhVWpfqYFWKk9asMzhbD2az8Ux/V9MJ57mXAnWTUozhv3cK9dk91YYCFpPGHNz05x4oZpPdipfb9XTD467eRurTY2NibozqFXANcdxMQblfahm3Nre98bdvxUgQ4r+1NRh0v+jBOdn4+kV38eFMcEbCJU40Q8dzsSng8CosftTqllZSekdVo//PmPFsuY/3pIgModIxnU9KCs13WMsMW43n5puw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AExkAm97fR5Ph3DkngkozFyrA9zwN2H4/dOOKWRr+fs=;
- b=gM6Eu7HwotdnWerIiNfPaSlzj4PtjMSHzL2UD786mtopFi/iRgX7qPEOsNO6hKxPtu5mlQKQxNsKsXxc0RD9Sw+4HWwZQfBRz1vRW0L6a/0D+mbbgrmmJ6uscB/9aS3pJd68QE61oioTNlnVtZSIjNe1jpm1b9+DdK7+QP0l2iR02IzwdBOYcrtttwiqLaP7cXnNgtvRRRIH5RBZS0w2sj2sdMgFqv21QGozI/NZ6L2pSXyDflWkvL3xEjja6t2spGWmKkiSdCA7J5oh2y2w7N/eD1O5/lLcqEYI5kJdIpCjhDUeBZr67zI2K4x02uy2UQrvIrBAUzV+uVpgRYqDGw==
+ bh=y82tTKozE1SNK/IxzxAh3+Y2OZ1CHPoeET68BGgG0nw=;
+ b=cAT1EokQIFzTwTN11jk/YoijSHGUx3kyuHBTB/sEup1U5Wi3irJekj/r3AAJkJBLhdrBTAHJNm7ZnW464AMcoAz7RhJYcBAQ+9vSJG9zgSamx3LOGOQqPZt6x241BD5fKzq9SnHI7v8n2ZppRsovRJtHsw6Geo7r8hS7hzhkOiRu2fYto25eWHLMviQZgMoMUKgxwXNJMRu01EdO+qZqOR30IbkiCr49LDw+nrtjmvhcj9/zA15G/U5aOuPsDi61ggTQUzlx+N0NdoB/JQYWqFub9BBgxiNJa3HtYEtehz8mZMUzColbpgnzLFq9z25pX2Ez49wISGIucEEd5vUg+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
- by LV3PR11MB8694.namprd11.prod.outlook.com (2603:10b6:408:21b::11)
+Received: from SA1PR11MB6614.namprd11.prod.outlook.com (2603:10b6:806:255::11)
+ by BY1PR11MB8007.namprd11.prod.outlook.com (2603:10b6:a03:525::12)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.17; Fri, 22 Nov
- 2024 10:43:38 +0000
-Received: from BN9PR11MB5482.namprd11.prod.outlook.com
- ([fe80::158b:b258:5e7:c229]) by BN9PR11MB5482.namprd11.prod.outlook.com
- ([fe80::158b:b258:5e7:c229%4]) with mapi id 15.20.8158.024; Fri, 22 Nov 2024
- 10:43:38 +0000
-Content-Type: multipart/alternative;
- boundary="------------cllSVayKQpwvvsJawk1hXb7p"
-Message-ID: <ab09af6e-7c79-43b8-837d-cd0cae309635@intel.com>
-Date: Fri, 22 Nov 2024 11:43:34 +0100
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24; Fri, 22 Nov
+ 2024 10:47:59 +0000
+Received: from SA1PR11MB6614.namprd11.prod.outlook.com
+ ([fe80::aa2a:7e7a:494b:3746]) by SA1PR11MB6614.namprd11.prod.outlook.com
+ ([fe80::aa2a:7e7a:494b:3746%3]) with mapi id 15.20.8158.023; Fri, 22 Nov 2024
+ 10:47:59 +0000
+Message-ID: <741fbc09-652b-4ab3-a6ba-699f9ab5b900@intel.com>
+Date: Fri, 22 Nov 2024 11:47:55 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 i-g-t 4/4] lib/xe/xe_sriov_provisioning: Iterate only
- within valid PTE offsets
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+Subject: Re: [PATCH i-g-t v2 1/4] lib/gppgu_shader: Add write D32 to ppgtt
+ virtual address
+To: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
  <igt-dev@lists.freedesktop.org>
-CC: <kamil.konieczny@linux.intel.com>, <adam.miszczak@linux.intel.com>,
- <jakub1.kolakowski@intel.com>, <michal.wajdeczko@intel.com>,
- <michal.winiarski@intel.com>, <narasimha.c.v@intel.com>,
- <piotr.piorkowski@intel.com>, <satyanarayana.k.v.p@intel.com>,
- <tomasz.lis@intel.com>
-References: <20241121141851.631877-1-marcin.bernatowicz@linux.intel.com>
- <20241121141851.631877-5-marcin.bernatowicz@linux.intel.com>
-From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
-Content-Language: en-US
-In-Reply-To: <20241121141851.631877-5-marcin.bernatowicz@linux.intel.com>
-X-ClientProxiedBy: WA2P291CA0021.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::29) To BN9PR11MB5482.namprd11.prod.outlook.com
- (2603:10b6:408:103::16)
+CC: <christoph.manszewski@intel.com>, <jonathan.cavitt@intel.com>,
+ <mika.kuoppala@intel.com>, <dominik.grzegorzek@intel.com>
+References: <20241121122230.451423-1-gwan-gyeong.mun@intel.com>
+ <20241121122230.451423-2-gwan-gyeong.mun@intel.com>
+ <119dcb83-dca7-446f-bd0b-d028c76f54c5@intel.com>
+ <b4d29d9c-b828-46c6-abcc-313f6653cf16@intel.com>
+Content-Language: en-GB
+From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <b4d29d9c-b828-46c6-abcc-313f6653cf16@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: WA2P291CA0010.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1e::16) To SA1PR11MB6614.namprd11.prod.outlook.com
+ (2603:10b6:806:255::11)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|LV3PR11MB8694:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09e9d8b9-e4e7-43b6-12a4-08dd0ae28608
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6614:EE_|BY1PR11MB8007:EE_
+X-MS-Office365-Filtering-Correlation-Id: 263ecfb9-e6f7-4e5f-da68-08dd0ae3213f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|7053199007|8096899003; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UUlpNEI1N1VPNjBuMGpwcUI4TFV6NjVUL2ROUDdnck1vRXdnOERFYUxOTk12?=
- =?utf-8?B?R1lGc3RIeEZLWWRYUWVSa1pTcmRCU21PTEZlZkJPcGhiVWVzL0VVb3B6NlZB?=
- =?utf-8?B?OWoxMExUbDZHdlVXNW5LVHZMTnB2OHdvbFhseXdZelBjbjJ3QWtkRi90VEZW?=
- =?utf-8?B?U1NEaHhnc1I0S2E2MEVVTUE4M2pwRGV1ZEtTRXFNRGg0TXMvY3NmNUZKdGp0?=
- =?utf-8?B?VTFUaC91Tk5acmR4VEVKYUFJbjV0ZjQySlNySmlJbzY1TlZUL0Yrd1NCNVNp?=
- =?utf-8?B?VGxFU1pSalQ0bXdJb042andCRWxnR2JSY2RWakJtdlFka0VSdkcxSnoxL0JW?=
- =?utf-8?B?bzVDQko1QktZNjdHZXhDNURwckdLWGdZb1hLQ3JweU90UXNqMzRIUEtrWUU0?=
- =?utf-8?B?L3R5TFZHRHhYbjNGQjYvdFRkZDMvYjR2THpOS3FxbWE0YnZoQ1plYTAxUk1S?=
- =?utf-8?B?bDMwejRWWUROT3ZIb0pqRHpadExNbmw5TUo1QisrTldmc1k2Q1ZMRFpVSk8v?=
- =?utf-8?B?MEswL3BFRFNRQlN0Y1BmMS9yU2FVZ2JCdjBITW01RG43dVgzSVIraU5kSnVC?=
- =?utf-8?B?NzUwZldpMkwzMjMza3NmZEp4NEZRd0VKSTVSM21mNEVnaTNCRDB1VElZMk0x?=
- =?utf-8?B?VzFjbFJFK01sR0dMN1BTcVlSNXJoc3QzZldPQXJYSXBKQWZ6SVQ0QU1Qa3pQ?=
- =?utf-8?B?OFlBdWRuSVVqNGVqS0ZOeDcvTDlkMzZMVHJHLzZ1QVFZR24wOXFtWklFa0s5?=
- =?utf-8?B?b1RQNXNzN2ZmTW5WdmRiWC9ZREgxUFhWTFNvMUI4T3l4dUV1OGJ6dkpTSy80?=
- =?utf-8?B?R0pNY0lveU9wWm05MkFScVpHWFBQeFJuWnBpd1BIQ204R1hNR2QraXVGYTEy?=
- =?utf-8?B?MGFvL2dyS0pIL1RCcUwrRWNhVHZSRjRJcDY3a2FQRUVtc3U3QVZZS3hKL1dn?=
- =?utf-8?B?UGFmc0M1Z2NYS0lHNlFmYWNCYVk4MC9ZcUh5MFBCS04xVHUxQVd5cWE3U3lp?=
- =?utf-8?B?dUlMd0Y3cSszM2dJNEQ0TFQ3WjJNbHEzQ3pPSjU1V2Q5TG0rU1NhUXNyOXNr?=
- =?utf-8?B?QnJVZ0VZQ2loNVBIWnhseU54UEtWN1U2UVNWUTFYbGEycTFZeFVUM0ZqNnNr?=
- =?utf-8?B?VU9JQlByN2NmTW9SU3ZTRmYzSGw2VURQd29xaGlEa0FTejdFRTIwTXRuL1Ex?=
- =?utf-8?B?WVM4R0VZeEFuVlBjZE1uaGFZeDh6TE1IWisveGJzcjBVZ0VVWTQ3VVBIazlo?=
- =?utf-8?B?aWsveVhEUDNmaU5zSEJKdi9zVjFwaWlTT0djZUVSNldEOXZrQ01xT2lLdWtB?=
- =?utf-8?B?NCtSMng3VlRuMGdYYWpkam9NUy8yTExkV0h6c1FrVkMrWmpqYjYwWXlXb2dq?=
- =?utf-8?B?RWVNK2Zkck84Q0FESUEyVUpYSEQxczZ1R1hpa3U0YlhBcjVmUzJJWGt6RGRB?=
- =?utf-8?B?Q2VKMGtBS1BBMHVmNkdONTd2RzdsTm1qeG9wZlduR0JzVHdKZlo4b2VSNzNj?=
- =?utf-8?B?eEYzWmV5SzdrenUrMUg4K290YUwxRTZmUHoyRXJ3d01BdHpzWkl1SXVhNzl6?=
- =?utf-8?B?cUpESndRTk9nTVE2eFV6NFVWbE00WXdWakt2ek5ZWGVBeW12K2pDRXdmdEVJ?=
- =?utf-8?B?WXRub0V3eUVKSEcvZlJaVnFFQVNYYkJVTHFZTlNuTUtVQmllTUlaZXpuSVpZ?=
- =?utf-8?Q?ypWTiuUodH5vXlnn6N1Q?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YXRTdnFVNC9mY0pVRSt1SlZManpzOUZxMDJjdDI4QUNyZEN1SFlPS3pYL0E4?=
+ =?utf-8?B?WTFrcWtBalV0VjFxSk5WV1FWZ2R6c1NNbkxHWUNUWTdudG9LKzNWUkcxQ3JU?=
+ =?utf-8?B?Tm1pM3VWdERRcVlaTlJkZDNKYy8ydm9UazFieEpaN05vZTBleE9QV05VU2ho?=
+ =?utf-8?B?RlRWRnJKYndFemhDS1d1OUtQV000c0pkZ05RbVFtbXlzV1pROEhGN0NUNG9T?=
+ =?utf-8?B?Zm5OV3g5VGVkenJLSEt3Qk9tUmE2OTlrV2Q0cG1DaUZIT0cxTUtWTHBxdXJ6?=
+ =?utf-8?B?YUYyTXV4cHdUV1E0bzVZVWdqLzBTY2QzRUNMa2c0Q1VmanBDdnJsRFpyU2Zh?=
+ =?utf-8?B?aFFFWGMyQVdBQyt3WVQzdVVocFYyeFFWckNwdzJ3S3VtOWVRaEN4dFY1d0lY?=
+ =?utf-8?B?c1RnTmZDT3hBZFl4RGMvc3dzSURHQXQwTjQwMDdPeGhGUWRFbEJtbWY3dWxu?=
+ =?utf-8?B?WER2b3YyeWdTb1RzcnovT09TOFlkVTdrYmZ3Q29yelUxS0pzYkpkaHgvc2ZF?=
+ =?utf-8?B?NlNmQ1A0bUo2UzhoVUx3cnkyV1N0SVN6eEVBWHluMUlRekVWSTJKYjVUUTB3?=
+ =?utf-8?B?RGUwL0srTXRzVjVJNXFCS1ZRZmt1dy80cVFTR3kzMmdMOCtPZW5ueS8yOEho?=
+ =?utf-8?B?WU5yS0szVVRXRmFKb2lBa2ZkdlVCakl4Z2RLKzVSUHJ0MkNmMDdWT3pFVkNu?=
+ =?utf-8?B?cEJ6TlVtQ3ZWQXdVaDN5S0xuUG80dTc4ME50cms4eTVWVCtKaVNVK3Z0empD?=
+ =?utf-8?B?T3E3cWZFY3l3eG41NDdqYjlnRjNsUFViL2NHNnJGdmdnQ2tVR3laZ0hxREZa?=
+ =?utf-8?B?VkNQQnppU2d6UzdYY1AvOXEvODd2YU84Z1FpM0lTWjRTa3E1MStra0x4Q2VT?=
+ =?utf-8?B?d09jOTNKejZINjV1SysrSFViayszbEx3dVhXdjVlRC9VekwrZXFlR2htRmNt?=
+ =?utf-8?B?Q3dJWCs3dFkza0hCR2xidHgzTHBXL1FiOVcvNXNtSSs1ZDgzVS9xQmVLYlBL?=
+ =?utf-8?B?MElKNFUyemdHcjlUelE2ZWEyWDlBM0JUU3lEQnVJeDFKMGsxelVzTG5scm94?=
+ =?utf-8?B?WjhFOVZEdFFFY3VOUTVHbmloVHhROEtVSnVmOEduQWxnY0pxTm1mYytpdG0y?=
+ =?utf-8?B?ZkRRUEN2SVFGcHhrMzJ3Wjg0OXhGYjB1RjNReVBaZHBOTkUya2o0VmNuLzRU?=
+ =?utf-8?B?Wk9YNUYrLzY4elExcjNQWWthOStQMmJ5aVExdEY1Y1VIUGszSVpINE1ic1p3?=
+ =?utf-8?B?OHY2WC9DYVlaT0tTK1R6dWRqMDY1cEVjdHFsSUlUUGlrWHhmY25NTDlEUFo3?=
+ =?utf-8?B?UHp5K2d1NmZ6UC9wN2N6SGZVQ0IzUXRaakVuNEdyUGNPbm9FSDRsMS9wS2dy?=
+ =?utf-8?B?a05ZZmZCZFJJSlh3dVJ2N0laTTB1SEtBZXRwdlBHVU93bFRaOXJrZEJOMzQ5?=
+ =?utf-8?B?QlpSTmsrK2x4R1Nsck8rTE9WbkxnaDdsS2M1WDBlSHE4L0FFTkxyZWMwQytp?=
+ =?utf-8?B?WTNtdTJEOEZDWGlyTWFCRjY2aEZxQVFmLytoSTlYd0tUTzVkNUsyTDVmTFVx?=
+ =?utf-8?B?dmZMMmtmUFIxc09wRXZxWUZKTkVoY1R1U2VpNnpCU1J3RGpQVDRaaHhWWDA3?=
+ =?utf-8?B?QmtRWnRML09xcGZPZS9Qd1BTaGtXblNZZUVJUTltOVNQN3hDWGRIRGZZbmc3?=
+ =?utf-8?B?ZFVuUlZVN0VuNDVtTVU4Zk5IK0hTRG4ydGVFd0hmWUpPeDI0ZnBmMzUyb1Zt?=
+ =?utf-8?Q?hdrtod2lCNmAevM0oVhV96dHpZ8cUZ9jOF2kc2L?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(8096899003); DIR:OUT;
- SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:SA1PR11MB6614.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dkNGUjNCSG9yV2ZRVHJSQVdlV0hPU0w0ZDk3MVVjMTNZNTlyS1JyQ2h3WHF0?=
- =?utf-8?B?U3dRL2pvbjNaWnhoT1JmM2owOUZPd2ppTzFSY2hoWkdJNTA3VThIK2V4aWFa?=
- =?utf-8?B?SFZ4UkpTeG5jamNteWVqSDYvbGZGSW0yKzRHbXFsbXh4SWcwUHlpT29xdkRT?=
- =?utf-8?B?WC9DMy9pOGN4eHROVzVBOXBzZjNkeitaeCsxTmVlczQ5VCtoSkp5Q0hyaGI2?=
- =?utf-8?B?alU4ak9pa1pDMHlKRW5rbGdCMWswQWdNT3pBSitSMUIvK1JtVjJoRTZiRVpP?=
- =?utf-8?B?NHVnVmRyUEZaZktWeDhzalVkZ2JGS3djVVRibVY2dytNVGVudk12bjVhS3I5?=
- =?utf-8?B?SFU4dkhWczlMdmRIQUdqSmUwbnpXN0FCVkQ2bVhHWmM4UmpKUENiL0wxb2pj?=
- =?utf-8?B?QUc3QkJuZ3dXRko0UElGWndPZm9YbGFIT3RVdVNjVTdPajBCWURmUlJOQ0d3?=
- =?utf-8?B?T0V2dEtIMjBselQwa1l3eVFxMEFzYnBZZjlTYkVyOWgrMTRXcVViVkhRL0ty?=
- =?utf-8?B?ZUJyRGhtSjlNVFMxMmg0eWJ6NFZLbGdEN1BtdUhobE9CWXArUnc1NGdTNjFv?=
- =?utf-8?B?bmlPdkVYZmJLUkZEYzdUWE5PWjlObDFhb2NzSWQzL0NGZ3ZtV01GZGphSkJh?=
- =?utf-8?B?NEVyY3BIbW1ncGd6c2llOUFvYlVLRmRLUGZLYWNkTjN5T25SaWRSQXYxWUd5?=
- =?utf-8?B?eFB5OW1pN1k4WEVzK1VEOS9GM2JIRFo3Y3lSNGowYTh0ck9XOGhscHp5VzN4?=
- =?utf-8?B?dHh3M056SEtMVVJkZFFkVUlLYXNtYWJ0NGhDYmhYOThTdFdSbGpTY041WVFY?=
- =?utf-8?B?WWl6VmV3OEI2dG5qMHQvK2dVTW9WdEhxdGs5dTE5RTNZcVlzUTBRZGI0L3lm?=
- =?utf-8?B?dFNjaXQ0dnNhNHk2ZStqODdrTlhRSmh1dVlDZmtiNVNnaitWV1oyaFRLZHZj?=
- =?utf-8?B?QnJpVzdXM1lZUEpJTVlDZi9SSkZ0R1IzWXFtYWdQSFg5eGcrdW9hZ3JDWkth?=
- =?utf-8?B?R1JjYlRvanVDWVJIeVAvOTI3clNMbGUrKzJZajZmM085ZE95WlR0MjlmRjVw?=
- =?utf-8?B?RnVOazdQODV4ZnRCKzBtV3l0N0pyUlJVM1ZiS1ExTEgwY3E3Sng3ZlVsZmRH?=
- =?utf-8?B?eUxrWjFoN3l2ZElOU2lmcStxMzBnbDF5LzFtd3NjMElWZTkvT245UUdNenRx?=
- =?utf-8?B?YjNLd3lENC9TNU5vV0RTSlhva2xmdGk2VHBlc0wwcGY1dTdaS0VTOU13ZXA4?=
- =?utf-8?B?VU8vRGZJZFQwcUNTWmc0SzU1cjlqK2IvT2hLY21Cd0dTbnpKcGtXTk8yYXZ0?=
- =?utf-8?B?MDFqRkIxd0JEM0xuazhWMjM3YzhjMStyTitRUExFdytuREthMlNqdm5WT2tL?=
- =?utf-8?B?Ti9yYzVtb0pCNW9ibG1PbStkMXdYbDVrYXRhOVptOEdOWmpsc2tuRkFmWWhS?=
- =?utf-8?B?Mkk5L2R2c25Ib1VxbkxJRy8rTDY5VVdQZFhXWSsyVU4wT0U2NFVaeUFMdC8x?=
- =?utf-8?B?OWwrMHQzMWtkT2k4WnpEMGg5YVRnV2hOS3VTS09YTXE1c09BamtOTk9WUUJm?=
- =?utf-8?B?TzVlNEJqdU5sblcySitVaC93WmVGblpHYTlsZ0VqMVk3OFJRY0JyQnl1UWFI?=
- =?utf-8?B?amc0eExGQW5KL1UrNGc5VnJUMis4ZVBoTVl1WlB4eFRQZXYzemJkY2Qvd0FM?=
- =?utf-8?B?R2RQdTJpNnN4VGl2cWpQZXlCNU1tVmhOZklwSXE3eEg1MzZaQWwzaSs4OWhB?=
- =?utf-8?B?aVZDdERSRVl0MXZzdnBHc2liVCtuYURsUVJnNHZiYmphL2RiUHRmT0JNdzhx?=
- =?utf-8?B?VU84Y1MyaVBDeGdISWM4YklmcnA4QU5pUk5OS2x6STFibFh5NHBQVWdkWXFI?=
- =?utf-8?B?dEJJcmF6bkpQb1FDSS9NeGYwRmViaE5PVEE3QUc3YWpadUhhNWhETFBUdjRZ?=
- =?utf-8?B?b2szRGNpVEtHaU4rZHRqaFhIZkR2ZDRlTU5YWHpqR0NDV0I4cGcxbE1nUW1N?=
- =?utf-8?B?Mk1ZZFgyZXRhMktMeHVBN0UvVldORVhFNXBDcTB2eTBXcDkxRmlKaXhMWTNP?=
- =?utf-8?B?ay9JRXdwRG9HVndVY1dHdUw4MjcvckhJcFVrOEd3bUZOY05FeFRBL2FVQ05H?=
- =?utf-8?B?UHgvVDVuWkRQREJlcHJhaXF0UHROY25GYU41T29HMnBONUNldEEzdUlYYkg2?=
- =?utf-8?B?dFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09e9d8b9-e4e7-43b6-12a4-08dd0ae28608
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c1ZzbjgwYVJPWUlhY0Y0SW41SHlVOXQ4cURwZm1BY3V2UWpMd1YwZTdLTVNt?=
+ =?utf-8?B?Z083Ri9ncS9STm12WExvZjkxNjJNRVJ0Q0srQ3p5K1RXOHFjeUtrN29vbVBz?=
+ =?utf-8?B?aUExUnpxeHl5b1R4TG93K3NNYVNoU0Ruem9za3gzQy82Z0pJTzkyeTB4K28w?=
+ =?utf-8?B?OUlKakJROUQ2dWo0ejFRYk1HQXZONTlHL2dkK3dEcHBjSWVEaUd6dllhMVZQ?=
+ =?utf-8?B?QW1CM1hLQnpybW5pUjh0eVZhbUJlenVLbzR1RFIvQUl5T2FiMXBOS1kzejB5?=
+ =?utf-8?B?RzV0TkdGbkJtYk5DdzBxVTRRemU3Wkt3RWNSQ3BYdzRmWUp4blVuSmtoR3c3?=
+ =?utf-8?B?SHlXdzdEbU5NcWFaZ290M1lNdS91TlU1WnJMV1VVTGpaRTNFMzZ5MkloV2FW?=
+ =?utf-8?B?UFJTMjA4UWZoSk5lK0tWenF2SlVTNDJzZmFobHo4M3pmZTVJWmJFRGl0amk2?=
+ =?utf-8?B?NjBwM3lKK1NYYlQ1bkFxNVladFdkWmphNm12S3A0K3B4RGN4NDJHdCsxQUdw?=
+ =?utf-8?B?K3QzQUdlaVlWSXZvZ2JndDljUDMzRm1nUnZLT1FRRzdyOWh1K1l6aTUvbDR0?=
+ =?utf-8?B?ZGh6Tkp6L25vSXNhMlNEK3FteGxqK1FrMCtuWVdYZGE4azN3RDR1dlF3dDVL?=
+ =?utf-8?B?VkIvTWRyY2ZieUY1RHdPYnV2SkJXN0ZaaTVabFk4T2g2L0NtZHJ1MVFBYTJt?=
+ =?utf-8?B?RFFocktQUEh2aVo3bnBScW1Jdy9JcmN0YWNuRFZKenp5R0kzNmRucW5RTVY0?=
+ =?utf-8?B?MWdPZ3BCUGhVeENFT2dSM2hrdGxxRTduK0U3R0FXOFJQY0s2UnpEbHh5bUVV?=
+ =?utf-8?B?TE5ENkpJa2tsdEsrOUFHNVpySmV3elhXSXlFaGVXUjNWN0luRi9NRTFjNlg2?=
+ =?utf-8?B?eUd5aEFwLy94Umt6ckkzSnM5RlFEWlVzNHdsYnZZbms4ZFNlWTk1ZEo0bzRu?=
+ =?utf-8?B?bU9Pa3NzUjlId1cxNEs1Tk41dno2a2Q4bUtxS0JFMnpYSC9YMUdoUCtkNVZn?=
+ =?utf-8?B?YmJ3eGFQWmVZQmpmMU1DbjVOSTVMNzhiNHAyM1lPWE1za0VYdFhaZGovRHdt?=
+ =?utf-8?B?c0krZWNDaGwzelZ4UDZyKzRsL2NLaWhiSGZWSTVuaWZRekhIUUFlMW01NVlj?=
+ =?utf-8?B?K0tWYXlLM3hwY0pBQVByeHNBZHZaR0hheW1yUDd4ZElvamxueXJqeUZ0aEI5?=
+ =?utf-8?B?MmhqaU1Nb09MSDV6SUcwNUtHRWhwQWVGMzM2WktLTGkwd05VYzhPcGFsUklw?=
+ =?utf-8?B?ZnhkQUo5elNVdmdibWZFVlptVk13aXpJcnVaMGMrdGd5VmZqQ2ZHOGF4aElw?=
+ =?utf-8?B?WUpzaU16MFRMUDdUL2VOcWhmb0tseENkem01L1JsYjhMNDRObnRTTDZFYWFI?=
+ =?utf-8?B?S3hjVkxqN0R1Wk16eHdFS3prOEduWFF0NUs4RTFjYUJ1TUVKMVlNN1JaOFk1?=
+ =?utf-8?B?T2grVjNHTHBZS0RHUXZyeFprQzhOY1RzZmVYd3VaRVJ2OGhTV3I4YWZsK0tv?=
+ =?utf-8?B?Ukc0L1JRc0lMc0wvbDZHU2c3WTJ1SGc4WUF1dENRd0pFYkt1dk5GMk0yRGRG?=
+ =?utf-8?B?NWpZU3hYVlRCSlpzWFJvMDZHc1pqNC9iZmMvTVJYSGFIK1dXa3N4cGdJWS94?=
+ =?utf-8?B?TzRLVHFmZ1BIUUFGN1pNZDNjY2NDUlRSQ1Z0Mjh1SDFVbXJlN3dibmNGQ0Zo?=
+ =?utf-8?B?ZU9UVmI2OFVnNW0ydlFpb0ZXTHJYUTlSaEt6bHBMb0ZHbFNNOVl0KzFOSUhw?=
+ =?utf-8?B?U1lhTWI2MzE0RFZ0U0lzbUhQQno1Nmc2Yk9Hb1l1RUphemt6SGZRSGpsaG05?=
+ =?utf-8?B?VXBrQW1xS2tJRm5wMHcrWnpwSnJLcVlSdTZBVytUNExrK3dhQkUwOTNJYlpz?=
+ =?utf-8?B?U2F0OXdCaWRwNW1WZ2g3YWRCOFRyQ1BackJGK1N3dVVmbFVDY2FtSU9pek1Q?=
+ =?utf-8?B?S1dMSHAyYXlCazZycmk2QWpTN3VtVDJ1L0Iyd2crU2pONmRvd3VUcTg1RXQ4?=
+ =?utf-8?B?VklGd1FUbnN5dmRpWno4cFdwc0RJdUlyNzVoVTZJTEx6MWhSR0dRbHRUekgx?=
+ =?utf-8?B?QlpNZGVJQ20wUzRPQUk0STdMd3BZNjR6dmpSeW40ZUJkZG1WR3ExYTQyYjVR?=
+ =?utf-8?B?RVl1ZU0wMlFYajlKcnlXVkFnNGlIMkJhQVd5MGZGeEVGVm5nVWNkYlpLc212?=
+ =?utf-8?B?Wmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 263ecfb9-e6f7-4e5f-da68-08dd0ae3213f
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6614.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2024 10:43:38.6244 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2024 10:47:59.1058 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pvj0EnoffzgCZLPNn7gcHHSEz+yUILpc45an78FaWApyu3VRKMsNQNaTJCLX0KME3xWiB4Yl8ieefaenKS3tnQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8694
+X-MS-Exchange-CrossTenant-UserPrincipalName: m7ooYnBAV5unF7IyCmOTwqO273zc5sJZkBHOnWJespJQg5i3srC9BAVNVco957xo3exL3ccV0DIqAwq32UUf9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR11MB8007
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -200,125 +200,274 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------cllSVayKQpwvvsJawk1hXb7p
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 11/21/2024 15:18, Marcin Bernatowicz wrote:
-> Update range-checking logic to iterate only within valid PTE offsets
-> based on MAX_WOPCM_SIZE and GUC_GGTT_TOP.
+W dniu 22.11.2024 o 08:51, Gwan-gyeong Mun pisze:
 >
-> Closes:https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3507
-> Signed-off-by: Marcin Bernatowicz<marcin.bernatowicz@linux.intel.com>
-> Cc: Adam Miszczak<adam.miszczak@linux.intel.com>
-> Cc: C V Narasimha<narasimha.c.v@intel.com>
-> Cc: Jakub Kolakowski<jakub1.kolakowski@intel.com>
-> Cc: K V P Satyanarayana<satyanarayana.k.v.p@intel.com>
-> Cc: Lukasz Laguna<lukasz.laguna@intel.com>
-> Cc: Michał Wajdeczko<michal.wajdeczko@intel.com>
-> Cc: Michał Winiarski<michal.winiarski@intel.com>
-> Cc: Piotr Piórkowski<piotr.piorkowski@intel.com>
-> Cc: Tomasz Lis<tomasz.lis@intel.com>
-> ---
->   lib/xe/xe_sriov_provisioning.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
 >
-> diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-> index d448a53d8..67ae9cf54 100644
-> --- a/lib/xe/xe_sriov_provisioning.c
-> +++ b/lib/xe/xe_sriov_provisioning.c
-> @@ -39,6 +39,10 @@ const char *xe_sriov_shared_res_to_string(enum xe_sriov_shared_res res)
->   #define PRE_1250_IP_VER_GGTT_PTE_VFID_MASK	GENMASK_ULL(4, 2)
->   #define GGTT_PTE_VFID_MASK			GENMASK_ULL(11, 2)
->   #define GGTT_PTE_VFID_SHIFT			2
-> +#define GUC_GGTT_TOP				0xFEE00000
-> +#define MAX_WOPCM_SIZE				SZ_8M
-> +#define START_PTE_OFFSET			(MAX_WOPCM_SIZE / SZ_4K * sizeof(xe_ggtt_pte_t))
-> +#define MAX_PTE_OFFSET				(GUC_GGTT_TOP / SZ_4K * sizeof(xe_ggtt_pte_t))
->   
->   static uint64_t get_vfid_mask(int fd)
->   {
-> @@ -112,7 +116,8 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
->   	*ranges = NULL;
->   	*nr_ranges = 0;
->   
-> -	for (uint32_t offset = 0; offset < SZ_8M; offset += sizeof(xe_ggtt_pte_t)) {
-> +	for (uint32_t offset = START_PTE_OFFSET; offset < MAX_PTE_OFFSET;
-> +	     offset += sizeof(xe_ggtt_pte_t)) {
->   		pte = xe_mmio_ggtt_read(mmio, gt, offset);
->   		vf_id = (pte & vfid_mask) >> GGTT_PTE_VFID_SHIFT;
->   
+> On 11/21/24 6:08 PM, Hajda, Andrzej wrote:
+>>
+>> W dniu 21.11.2024 o 13:22, Gwan-gyeong Mun pisze:
+>>> From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+>>>
+>>> Create a function that adds the capabilty to write an dword size at 
+>>> a given
+>>> ppgtt address with a dword value. Use an Untyped 2D Block Array Store
+>>> DataPort functionality of XE2+ with A64 flat addressing to direct 
+>>> accessing
+>>> an entire ppgtt address space.
+>>>
+>>> For the write to succeed, the given ppgtt virtual address has to be 
+>>> bound.
+>>> Otherwise a store page fault will be triggered.
+>>>
+>>> v2: Fix the function name to be more clear. (Andrzej)
+>>>      Use lower_32_bits() / upper_32_bits() macro (Andrzej)
+>>>      Drop unused code
+>>>
+>>> Suggested-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+>>> Co-developed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>>> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>>> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+>>> ---
+>>>   lib/gpgpu_shader.c          | 94 
+>>> +++++++++++++++++++++++++++++++++++++
+>>>   lib/gpgpu_shader.h          |  2 +
+>>>   lib/iga64_generated_codes.c | 23 ++++++++-
+>>>   3 files changed, 118 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+>>> index 4e1b8d5e9..d9da35895 100644
+>>> --- a/lib/gpgpu_shader.c
+>>> +++ b/lib/gpgpu_shader.c
+>>> @@ -803,3 +803,97 @@ void 
+>>> gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
+>>>       ", 0x807fffff, /* leave breakpoint exception */
+>>>       y_offset, value, 0x7fffff /* clear all exceptions */ );
+>>>   }
+>>> +
+>>> +/**
+>>> + * gpgpu_shader__write_a64_dword:
+>>> + * @shdr: shader to be modified
+>>> + * @ppgtt_addr: write target ppgtt virtual address
+>>> + * @value: dword to be written
+>>> + *
+>>> + * Write one D32 data (DW; DoubleWord) directly to the target ppgtt 
+>>> virtual
+>>> + * address (A64 Flat Address model).
+>>> + *
+>>> + * Note: for the write to succeed, the address specified by 
+>>> @ppgtt_addr has
+>>> + * to be bound. Otherwise a store page fault will be triggered.
+>>> + */
+>>> +void gpgpu_shader__write_a64_dword(struct gpgpu_shader *shdr, 
+>>> uint64_t ppgtt_addr,
+>>> +                   uint32_t value)
+>>
+>>
+>> Nice name, could be even gpgpu_shader__write_a64_d32, to follow spec 
+>> convention.
+>>
+> Ok, will update.
+>>
+>>> +{
+>>> +    uint64_t addr = CANONICAL(ppgtt_addr);
+>>> +    igt_assert_f((addr & 0x3) == 0, "address must be aligned to 
+>>> DWord!\n");
+>>> +
+>>> +    emit_iga64_code(shdr, write_a64_dword, " \n\
+>>> +#if GEN_VER >= 2000                                \n\
+>>> +// Unyped 2D Block Store                            \n\
+>>> +// Instruction_Store2DBlock                            \n\
+>>> +// bspec: 63981                                    \n\
+>>> +// src0 address payload (Untyped2DBLOCKAddressPayload) specifies 
+>>> both        \n\
+>>> +//    the block parameters and the 2D Surface 
+>>> parameters.            \n\
+>>> +// src1 data payload format is selected by Data 
+>>> Size.                \n\
+>>> +// Untyped2DBLOCKAddressPayload \n\
+>>> +// bspec: 63986                                    \n\
+>>> +// [243:240] Array Length: 0 (length is 1) \n\
+>>> +// [239:232] Block Height: 0 (height is 1) \n\
+>>> +// [231:224] Block Width: 0xf (width is 16)                    \n\
+>>> +// [223:192] Block Start Y: 0                            \n\
+>>> +// [191:160] Block Start X: 0                            \n\
+>>> +// [159:128] Untyped 2D Surface Pitch: 0x3f (pitch is 64 
+>>> bytes)            \n\
+>>> +// [127:96] Untyped 2D Surface Height: 0 (height is 
+>>> 1)                \n\
+>>> +// [95:64] Untyped 2D Surface Width: 0x3f (width is 64 
+>>> bytes)            \n\
+>>> +// [63:0] Untyped 2D Surface Base Address \n\
+>>> +// initialize register                                \n\
+>>> +(W)    mov (8)            r30.0<1>:uq 0x0:uq                \n\
+>>> +// [0:31] Untyped 2D Surface Base Address low                    \n\
+>>> +(W)    mov (1)            r30.0<1>:ud ARG(0):ud            \n\
+>>> +// [32:63] Untyped 2D Surface Base Address high                    \n\
+>>> +(W)    mov (1)            r30.1<1>:ud ARG(1):ud                \n\
+>>> +// [95:64] Untyped 2D Surface Width: 0x3f \n\
+>>> +//       (Width minus 1 (in bytes) of the 2D surface, it represents 
+>>> 64)    \n\
+>>> +(W)    mov (1)         r30.2<1>:ud 0x3f:ud                \n\
+>>> +// [127:96] Untyped 2D Surface Height: 0x0 \n\
+>>> +//        (Height minus 1 (in number of data elements) 
+>>> of            \n\
+>>> +//        the Untyped 2D surface, it represents 1)                \n\
+>>> +(W)    mov (1)         r30.3<1>:ud 0x0:ud                \n\
+>>> +// [159:128] Untyped 2D Surface Pitch: 0x3f                    \n\
+>>> +//         (Pitch minus 1 (in bytes) of the 2D surface, it 
+>>> represents 64)    \n\
+>>> +(W)    mov (1)            r30.4<1>:ud 0x3f:ud                \n\
+>>> +// [231:224] Block Width: 0xf (15)                        \n\
+>>> +//         (Specifies the width minus 1 (in number of data 
+>>> elements) for this    \n\
+>>> +//         rectangular region, it represents 16)                \n\
+>>> +// Block width (encoded_value + 1) must be a multiple of DW (4 
+>>> bytes).        \n\
+>>> +// [239:232] Block Height: 0                            \n\
+>>> +//         (Specifies the height minus 1 (in number of data 
+>>> elements) for    \n\
+>>> +//         this rectangular region, it represents 1)                
+>>> \n\
+>>> +// [243:240] Array Length: 0                            \n\
+>>> +//         (Specifies Array Length minus 1 for Load2DBlockArray 
+>>> messages,    \n\
+>>> +//         must be zero for 2D Block Store messages, it represents 
+>>> 1)        \n\
+>>> +(W)    mov (1)            r30.7<1>:ud 0xf:ud                \n\
+>>
+>>
+>> Shouldn't this be 0x3:ud now, for dword ?
+>>
+> No, r30.7 needs to set 0xf:ud.
 
 
-LGTM,
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+0xf mean block width is 16 bytes, it means 4 dwords, in the description 
+you says one d32,
+
+to source register r31 you enter also d32, and zeroes the rest.
+
+So what is going here? Writing one dword, or 4dwords (one provided, and 
+the rest 0) ?
 
 
---------------cllSVayKQpwvvsJawk1hXb7p
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Regards
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">On 11/21/2024 15:18, Marcin Bernatowicz
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20241121141851.631877-5-marcin.bernatowicz@linux.intel.com">
-      <pre wrap="" class="moz-quote-pre">Update range-checking logic to iterate only within valid PTE offsets
-based on MAX_WOPCM_SIZE and GUC_GGTT_TOP.
+Andrzej
 
-Closes: <a class="moz-txt-link-freetext" href="https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3507">https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3507</a>
-Signed-off-by: Marcin Bernatowicz <a class="moz-txt-link-rfc2396E" href="mailto:marcin.bernatowicz@linux.intel.com">&lt;marcin.bernatowicz@linux.intel.com&gt;</a>
-Cc: Adam Miszczak <a class="moz-txt-link-rfc2396E" href="mailto:adam.miszczak@linux.intel.com">&lt;adam.miszczak@linux.intel.com&gt;</a>
-Cc: C V Narasimha <a class="moz-txt-link-rfc2396E" href="mailto:narasimha.c.v@intel.com">&lt;narasimha.c.v@intel.com&gt;</a>
-Cc: Jakub Kolakowski <a class="moz-txt-link-rfc2396E" href="mailto:jakub1.kolakowski@intel.com">&lt;jakub1.kolakowski@intel.com&gt;</a>
-Cc: K V P Satyanarayana <a class="moz-txt-link-rfc2396E" href="mailto:satyanarayana.k.v.p@intel.com">&lt;satyanarayana.k.v.p@intel.com&gt;</a>
-Cc: Lukasz Laguna <a class="moz-txt-link-rfc2396E" href="mailto:lukasz.laguna@intel.com">&lt;lukasz.laguna@intel.com&gt;</a>
-Cc: Michał Wajdeczko <a class="moz-txt-link-rfc2396E" href="mailto:michal.wajdeczko@intel.com">&lt;michal.wajdeczko@intel.com&gt;</a>
-Cc: Michał Winiarski <a class="moz-txt-link-rfc2396E" href="mailto:michal.winiarski@intel.com">&lt;michal.winiarski@intel.com&gt;</a>
-Cc: Piotr Piórkowski <a class="moz-txt-link-rfc2396E" href="mailto:piotr.piorkowski@intel.com">&lt;piotr.piorkowski@intel.com&gt;</a>
-Cc: Tomasz Lis <a class="moz-txt-link-rfc2396E" href="mailto:tomasz.lis@intel.com">&lt;tomasz.lis@intel.com&gt;</a>
----
- lib/xe/xe_sriov_provisioning.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index d448a53d8..67ae9cf54 100644
---- a/lib/xe/xe_sriov_provisioning.c
-+++ b/lib/xe/xe_sriov_provisioning.c
-@@ -39,6 +39,10 @@ const char *xe_sriov_shared_res_to_string(enum xe_sriov_shared_res res)
- #define PRE_1250_IP_VER_GGTT_PTE_VFID_MASK	GENMASK_ULL(4, 2)
- #define GGTT_PTE_VFID_MASK			GENMASK_ULL(11, 2)
- #define GGTT_PTE_VFID_SHIFT			2
-+#define GUC_GGTT_TOP				0xFEE00000
-+#define MAX_WOPCM_SIZE				SZ_8M
-+#define START_PTE_OFFSET			(MAX_WOPCM_SIZE / SZ_4K * sizeof(xe_ggtt_pte_t))
-+#define MAX_PTE_OFFSET				(GUC_GGTT_TOP / SZ_4K * sizeof(xe_ggtt_pte_t))
- 
- static uint64_t get_vfid_mask(int fd)
- {
-@@ -112,7 +116,8 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
- 	*ranges = NULL;
- 	*nr_ranges = 0;
- 
--	for (uint32_t offset = 0; offset &lt; SZ_8M; offset += sizeof(xe_ggtt_pte_t)) {
-+	for (uint32_t offset = START_PTE_OFFSET; offset &lt; MAX_PTE_OFFSET;
-+	     offset += sizeof(xe_ggtt_pte_t)) {
- 		pte = xe_mmio_ggtt_read(mmio, gt, offset);
- 		vf_id = (pte &amp; vfid_mask) &gt;&gt; GGTT_PTE_VFID_SHIFT;
- </pre>
-    </blockquote>
-    <br>
-    <br>
-    LGTM,<br>
-    <span lang="en-US">Reviewed-by: </span><span lang="pl">L</span><span lang="en-US">ukasz </span><span lang="pl">L</span><span lang="en-US">aguna <a class="moz-txt-link-rfc2396E" href="mailto:lukasz.laguna@intel.com">&lt;lukasz.laguna@intel.com&gt;</a><br>
-      <br>
-      <br>
-    </span><span lang="en-US"></span><span style="white-space: pre-wrap">
-</span>
-  </body>
-</html>
-
---------------cllSVayKQpwvvsJawk1hXb7p--
+>
+> please refer the Structure_Untyped2DBLOCKAddressPayload: bspec 63986
+>
+> [31:0]    => r30.0:ud  <= [0:31] Untyped 2D Surface Base Address low
+> [63:32]   => r30.1:ud  <= [32:63] Untyped 2D Surface Base Address high
+> [95:64]   => r30.2:ud  <= [95:64] Untyped 2D Surface Width: 0x3f
+> [127:96]  => r30.3:ud  <= [127:96] Untyped 2D Surface Height: 0
+> [159:128] => r30.4:ud  <= [159:128] Untyped 2D Surface Pitch: 0x3f
+> [191:160] => r30.5:ud  <= [191:160] Block Start X: 0
+> [223:192] => r30.6:ud  <= [223:192] Block Start Y: 0
+> [251:224] => r30.7:ud  <= [231:224] Block Width: 0xf
+>                           [239:232] Block Height: 0
+>                           [243:240] Array Length: 0
+>                           ; 0xf
+>
+> br,
+>
+> G.G.
+>> Beside those details:
+>>
+>> Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+>>
+>> Regards
+>> Andrzej
+>>
+>>> +// src1 data payload size                            \n\
+>>> +// Block Height x Block Width x Data size / GRF Register 
+>>> size            \n\
+>>> +//    => 1 x 16 x 32bit / 512bit = 1                        \n\
+>>> +// data payload size is 1                            \n\
+>>> +(W)    mov (8)            r31.0<1>:uq 0x0:uq                \n\
+>>> +(W)    mov (1|M0)        r31.0<1>:ud ARG(2):ud            \n\
+>>> +// send.ugm Untyped 2D Block Array Store \n\
+>>> +// Format: send.ugm (1) dst src0 src1 ExtMsg MsgDesc                
+>>> \n\
+>>> +// Execution Mask restriction: SIMT1 \n\
+>>> +//                                        \n\
+>>> +// Extended Message Descriptor (Dataport Extended Descriptor Imm 2D 
+>>> Block)    \n\
+>>> +// bspec: 67780                                    \n\
+>>> +// 0x0 =>                                    \n\
+>>> +// [32:22] Global Y_offset: 0                            \n\
+>>> +// [21:12] Global X_offset: 0                            \n\
+>>> +//                                        \n\
+>>> +// Message Descriptor                                \n\
+>>> +// bspec: 63981                                    \n\
+>>> +// 0x2020407 =>                                    \n\
+>>> +// [30:29] Address Type: 0 (FLAT)                        \n\
+>>> +// [28:25] Src0 Length: 1                            \n\
+>>> +// [24:20] Dest Length: 0                            \n\
+>>> +// [19:16] Cache : 2 (L1UC_L3UC)                        \n\
+>>> +// [11:9] Data Size: 2 (D32)                            \n\
+>>> +// [5:0] Store Operation: 7                            \n\
+>>> +(W)    send.ugm (1)        null    r30    r31:1    0x0 0x2020407    
+>>> \n\
+>>> +#endif                                        \n\
+>>> +    ", lower_32_bits(addr), upper_32_bits(addr), value);
+>>> +}
+>>> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+>>> index c7c21c115..18a4c9725 100644
+>>> --- a/lib/gpgpu_shader.h
+>>> +++ b/lib/gpgpu_shader.h
+>>> @@ -85,6 +85,8 @@ void gpgpu_shader__write_dword(struct gpgpu_shader 
+>>> *shdr, uint32_t value,
+>>>                      uint32_t y_offset);
+>>>   void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, 
+>>> uint32_t dw, uint32_t x_offset,
+>>>                         uint32_t y_offset, uint32_t mask, uint32_t 
+>>> value);
+>>> +void gpgpu_shader__write_a64_dword(struct gpgpu_shader *shdr, 
+>>> uint64_t ppgtt_addr,
+>>> +                   uint32_t value);
+>>>   void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
+>>>   void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
+>>>   void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
+>>> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+>>> index 6638be07b..e97bcf042 100644
+>>> --- a/lib/iga64_generated_codes.c
+>>> +++ b/lib/iga64_generated_codes.c
+>>> @@ -3,7 +3,7 @@
+>>>   #include "gpgpu_shader.h"
+>>> -#define MD5_SUM_IGA64_ASMS ec9d477415eebb7d6983395f1bcde78f
+>>> +#define MD5_SUM_IGA64_ASMS a1ee0173014ab4cda3090faeca1cbae1
+>>>   struct iga64_template const iga64_code_gpgpu_fill[] = {
+>>>       { .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>>> @@ -79,6 +79,27 @@ struct iga64_template const 
+>>> iga64_code_gpgpu_fill[] = {
+>>>       }}
+>>>   };
+>>> +struct iga64_template const iga64_code_write_a64_dword[] = {
+>>> +    { .gen_ver = 2000, .size = 52, .code = (const uint32_t []) {
+>>> +        0x800c0061, 0x1e054330, 0x00000000, 0x00000000,
+>>> +        0x80000061, 0x1e054220, 0x00000000, 0xc0ded000,
+>>> +        0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
+>>> +        0x80000061, 0x1e254220, 0x00000000, 0x0000003f,
+>>> +        0x80000061, 0x1e354220, 0x00000000, 0x00000000,
+>>> +        0x80000061, 0x1e454220, 0x00000000, 0x0000003f,
+>>> +        0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
+>>> +        0x800c0061, 0x1f054330, 0x00000000, 0x00000000,
+>>> +        0x80000061, 0x1f054220, 0x00000000, 0xc0ded002,
+>>> +        0x80032031, 0x00000000, 0xf80e1e0c, 0x00801f0c,
+>>> +        0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>> +        0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>> +        0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>> +    }},
+>>> +    { .gen_ver = 0, .size = 0, .code = (const uint32_t []) {
+>>> +
+>>> +    }}
+>>> +};
+>>> +
+>>>   struct iga64_template const 
+>>> iga64_code_end_system_routine_step_if_eq[] = {
+>>>       { .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>>>           0x80000966, 0x80018220, 0x02008000, 0x00008000,
+>
