@@ -4,168 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D81D58D72
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 17:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06624D58D78
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 18:20:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 240CF10E6D1;
-	Mon, 25 Nov 2024 17:36:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5BFD210E6F0;
+	Mon, 25 Nov 2024 18:20:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uh8ufJHM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F8ah4V+c";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5DFA10E6D1
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Nov 2024 17:36:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FA9E10E0A3
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Nov 2024 18:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732556181; x=1764092181;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=mgJRH6DnUkamrcFh9MuUCKptmoJ0JCJT4KwjyD6vfKo=;
- b=Uh8ufJHMvIEJnSNZQt4F0I6RgRPCXGl804aZykwd6Skfmi1a5vZVv4sd
- DlASytXyoiJTXfYuIbGlVP/dCh/X1n9nPBb1eJU9EiO4prpoF52vb9+iT
- NhF+x4XcDgHFaYlXNJFlAIfXF4hcOfpO58BIWEUbMs3pOgdDmp0IZd3N2
- TzMh63Hp8F6YFWY59lWW89AK/mEEQYdxyaT311zWwIFV5eZ2HsYwdy1ol
- b7FxFC78ryU0Zl9nSo1A9lzzBZNoBtTaZ5Ut250JBwnSO0mka5rnBVPuU
- WOA1CpL5Znt1Ehza3eMr5/6QH4haaTfMIgyyDrqnOmcBVzoitOpInEBZV g==;
-X-CSE-ConnectionGUID: zgssWCjoQ0CSDHndGHrxfg==
-X-CSE-MsgGUID: 6Nu5MziMRmuunACHaoEWNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="43745116"
-X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="43745116"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2024 09:36:21 -0800
-X-CSE-ConnectionGUID: GhC9DHzlQCWV+8T4qSDLvg==
-X-CSE-MsgGUID: vYb7o+4lTrSH1NK5thgNOQ==
+ t=1732558854; x=1764094854;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=enlqAZ5IjrfPTAaXzn4DNByHfb9Cr66YdEvYfqKXCFk=;
+ b=F8ah4V+cLcEK9fjNFw55uSmZ3eMlVXq1LPt/Ac9TgiJnI6arMLhWIpba
+ rZ6NE4bCDOKxJ1MxIoDZy/g/TAv3qGP3MrQuSpdEzLKmzKHMc5MHgb+1F
+ c2loxUc8NlaNmbLXJSPCFPOjvRIfotNJgsgyF7+X/lOl4D0KAc6d5EqSx
+ 7EROnx0Zt33CkGqISFCnfWEAorRcb9y3WyZm2lR0n6CLs2sl5dBEVOBhu
+ AaZzCgf/rBwEKiwbJm4wUkHOl+vDKV/dmX1WgQXysb5XPkpS6RZBX1GJh
+ VndFO3mEN6vl+YdJ4WsS5NjTtaIbqEXFM6d+Wf0M51OyagdW+rHm5ZffO Q==;
+X-CSE-ConnectionGUID: jtK9B1JAShai+n9G4GHxTQ==
+X-CSE-MsgGUID: JXbA2PyAQvqVxy+29XYEVA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="55187632"
+X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="55187632"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Nov 2024 10:20:54 -0800
+X-CSE-ConnectionGUID: CgPCCFChSxmPGM21eB0SXg==
+X-CSE-MsgGUID: j88OCt/uQXqrnMBbh7eO1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="91800003"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 25 Nov 2024 09:36:20 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="114614363"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 25 Nov 2024 10:20:53 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 25 Nov 2024 09:36:20 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 25 Nov 2024 10:20:52 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 25 Nov 2024 09:36:20 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.175)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Mon, 25 Nov 2024 10:20:52 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.171)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 25 Nov 2024 09:36:19 -0800
+ 15.1.2507.39; Mon, 25 Nov 2024 10:20:52 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mRq3+lmcuPiO3mo3gwPydq3yzXrkCdQPMrae40XZLBsRBfcomOl2RLUKcp1eXKVNtnNaM0lGAv0lCanNW1vKV1dmrF2E6mlQvqz8TF0TTdwpX2NDY3yvHG77RgpJzkKKn0QEPcgooKLlJt6bwE5pbNG1E0nYkDc/ksGN+XnG0EnAOD1WUXLFxWKAdNz6/esNmhdBZilPvJEd7spJWH9Ynrq9gJ99ZkNHQfuUeoNOTZlR2NRxLnEvpoYa9wpu+p9npKk9jmr8LcTfeMyQ9CKvC2hoTzavwTZStKe+e6yJ9pgqvYX14PAK3jcHUJuqORWkePRY3feaUGeOb4RMXvmA0g==
+ b=FxoDX2Jy5xJ4Ss/+b9t9VoQfLpGPO6grRzCpQRRORFvA+8NY8nKtmCUV2SyZ6AX9yOiLy97fuINtvrN9uNLibQym69gquHpaEj5HZPubDlcnSnEFi1whA94VV9wGnMkhIWEMWAzYXE5G/iRAUlD2/txCCpwdRHsgDHydgjSgXfscAuIHLakTqM6afTs0O7oeUPjsROZ6IoY9f40BgcesdwhLOFLD0mnTcqLyM/WDFZAHPEB7MCcTi+7xY9mnYpQtKmnuegJKspJ5jJz1Gvx/685zKIqSuIujkZHwsBWYWnyhTsHa89FWecrvZuImno8L9NfIfrOyPVXqhk3/cPgd7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iY9nvYEbTOAQ5s40KfQdE63NmWFnxQGTC8rja0VnHig=;
- b=j6G0V/1xzUd93AcN9K3mXzlaLNehTre4uNmfSortWLRRv+JOpuBP27wkLuEMDP5pzVCrwv5wDewJcCCqhQ8W03fpA2S+YEbUvuwF0lppd9XLbitvVbCIBQhkTDldZ5lt1KM+PnN94davhH8jAj0PmzfuuYL4Ye6tg5mWujQGRX7NZYRSEFlI2STX6O76SV5N+jfbXKSzRCjH9ICAc9tcChvJZ1iarpakCMKO2R7gv7Ohl/8wbOOR4uhrflLoKqkyi3uHLaVr3Kd/f8CzfOCD5ErnUm/pGZ4OndY3fF+5mC2DtlmDhtfb2nWaasGYKRMrBStc6DaHXFO0JIaSOlxg6w==
+ bh=CyurGR3vF7xAkvSk7nJqSxXb852gugXggnoNPc+pVbY=;
+ b=r+VjJGQ/JPkhTETmwetSp3TeuQV+iyzsBnbx7Yhaa7u84rs2aOlKimP9FoDSFQLS+Q9mSS9HE6lgOa8H50dLWi7ee9CSwaANOX/Vw8HlScSIVkeMj3flecl3vpQc1yHErExRT4fc4P//87B4p8tng2axRKEoQq4hj2eqZY9enpKXm5HkN7/cD0rEp3BDQGBZ3RN2Up60VA9ge0N+8gtSPPV3jR3qesO65SAKKtEookX5Tg6GJfBUyV9p5Ym+8mEmOiMtNAErUNzmtOv1j0x01mHh3u7+I7osgOGd1qhA+gDHJ793W7eNoDT68txh2w3pgv66+zrbKBafF+7ABz4L7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
- PH8PR11MB6681.namprd11.prod.outlook.com (2603:10b6:510:1c4::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8182.20; Mon, 25 Nov 2024 17:36:17 +0000
-Received: from DM4PR11MB6312.namprd11.prod.outlook.com
- ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
- ([fe80::faad:f9ae:2b45:e9ba%4]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 17:36:16 +0000
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Samala, Pranay" <pranay.samala@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "B S, Karthik" <karthik.b.s@intel.com>, "Sharma, Swati2"
- <swati2.sharma@intel.com>, "Lattannavar, Sameer"
- <sameer.lattannavar@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/kms_dsc: Add meaningfull skip message
-Thread-Topic: [PATCH i-g-t] tests/intel/kms_dsc: Add meaningfull skip message
-Thread-Index: AQHbPulyFghHsqTczkCG/+X4ODSTZrLIOEZg
-Date: Mon, 25 Nov 2024 17:36:16 +0000
-Message-ID: <DM4PR11MB63120680914E79DF2142B6A7902E2@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20241125032420.1945935-1-pranay.samala@intel.com>
-In-Reply-To: <20241125032420.1945935-1-pranay.samala@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|PH8PR11MB6681:EE_
-x-ms-office365-filtering-correlation-id: 8922f053-6eb4-4c2e-ac46-08dd0d77aa7c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?frfuocnstlZKnUSjnsHyAE12LBT/MBd3aiLD7QIk1QIDuWeiLlERPjnZ1dqm?=
- =?us-ascii?Q?+d47Agjc2oYel6WfF5LYeKAJWKHQ6magCOpYcFt7NQDxi6cqGASxiXQUXy4l?=
- =?us-ascii?Q?WEu/mJRSgJGkK2L93iYUB3who7pxKV4MjiFFqBNCCejOp/ubzLDs+HPvCEE9?=
- =?us-ascii?Q?dWfaPvw3q6LBYjFmOUz+oiIDOOxcg6TBLnCSNypUiHJIqk5JZzA9/rLR0Imw?=
- =?us-ascii?Q?HCzqeafAfUrEFCE8RgK55wA+D+lcpadUlAYjUbMsUmkxUDpBTr2cqpiY9zez?=
- =?us-ascii?Q?0Dae1Nyyhh2C+a0wh9nGZVrFpuAk4ESQOFXD5KJDDCK84gl+vJfDUqTWo7yT?=
- =?us-ascii?Q?OM4KrPgjsri8dWqv3DrXTmi+BGfPEIZZXEXOfIdSGiIWwrkiXbwgF8K4/pZD?=
- =?us-ascii?Q?OkFtc5o4AafYG6bBeQUnSssv6XG0UFQ3rNV1XpDqQCNfK1v0F15ZJtmu80F/?=
- =?us-ascii?Q?gzlm+6EcwDqJcsHFk2X6kUmIzcspHiMqDYo7M5MkfiOkITh5drEY15SzKRTa?=
- =?us-ascii?Q?qAcjMhfnXpB87ZjZsqkLvfZ34bPnUiB9NqEkbUIiI09a/kuQwHqKd2Lt6nqz?=
- =?us-ascii?Q?orxIZSvngk4qYn9XmZQLohYayss70wVik37ZD4pTn6NXaCthHuqtZz2Cnmb3?=
- =?us-ascii?Q?hPeRuMtCRbKI6CYoUdcSTDxx8Mi7a9/yJTe9D8lLxBTVsx+rgHw97gpu08WI?=
- =?us-ascii?Q?M89iAF8gDHakuKOCL1hDguA3GYSLeH0BHcJcCCVNPmk2ULcQ3qBl1gONV/HR?=
- =?us-ascii?Q?NhyCV4PyZ14CcRwhNSbcGecR4Hmew5b0SVdi4h6sqGa9m9kaK2UlQijsI6h6?=
- =?us-ascii?Q?fCS1ESIzg3SLUt/l+9E6YQn3vCgUvxV2WQ2TIKaAB9v5mu3AoELeGsdYSfKm?=
- =?us-ascii?Q?XpfaJwmARk4CugMyEh/9L7EjBKwbw+zZ27tfikHEWri8h+8o4E9pIJkBtir6?=
- =?us-ascii?Q?mtbjcSTqp2ovgxaRaRRTs//+GD+RQPNfWA+kUIR3oqDbdyZ9zNaLr4gVcZtI?=
- =?us-ascii?Q?t0qVIegEf6/3/GpZ0C8ZOkNLuEHGKtFBcYB0NqsCWndp4yV5GGvkHWPRxrNQ?=
- =?us-ascii?Q?yF6nIvcMbwPPAJlIHTahfHQvdkNSPYmSYnQEC7kLXTbaEdozAlAGcDy0/bEX?=
- =?us-ascii?Q?a9U1ottWERZ0bek+yHr2k7j2UCDk6vcfOAI9QKTVzF7RRqDeHKzMm71lhi0a?=
- =?us-ascii?Q?J5viWm0J8xlpMuCvkFuindbFl0dDOwokVV89Me2Uktcpi8/z4t+V5J6wreyt?=
- =?us-ascii?Q?PJrsPI+oYwwG/baFvVXJSddNXaVc9RCtdnmHqW83PmYsunxfV3d30uizStar?=
- =?us-ascii?Q?EXpPyOZsorEWmVIk1Rgeo+flbERirFJRJfCN5vBHUDCL5FtKqGZGGJA+/2uM?=
- =?us-ascii?Q?IUzppVeXONrnZ6Wazne12aUt2KO8x1rCYrcqdjV0/VJLB9tb+Q=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TjvSzh2dBpwr5BDnjYO09ybkhN7fc9yBRxGfyTDCbIRRTFO4tqiyTZgqupLV?=
- =?us-ascii?Q?Oe3kx85lomHbnFuD5pXZeZedMqFg/OXIQWuR8P52bdgpHJio51mjalj3bxiV?=
- =?us-ascii?Q?qN1eL3wCNAp/1UX7il60JDKe6MeTD86jyerhML2fvyNLLi80PZ3jfZfzH7VG?=
- =?us-ascii?Q?9mh3Ae+AMJe2Ou5RxjLXXoHxqgfW5CbLgjAHeJWx1U1lpoqW/uoVmSvKoW9v?=
- =?us-ascii?Q?apI8B97MqpSTjOG5DK07Q1betCuHS5dnZ6/rMcQ82dl8fMLV3aleyNkJqxI9?=
- =?us-ascii?Q?x/tJmnV6oLIU7F4epUlPym3adnwlmE47DMK5OFafyEff8droJaXpwQ6wAeES?=
- =?us-ascii?Q?QM08jvmp+yA6G+vrBNL0E6rcFVnh+/e1KGZem8EwLfnzWqfCw8B4eHeXHWnu?=
- =?us-ascii?Q?4/kDPAWY4GZnwdpCW21ATgpa39up9iiIXlwoKg5ZkG+0HjH5vQshyaYgPLXz?=
- =?us-ascii?Q?bu52WfNqV+k8DQE58EicsI5/ssz5Sz2aJCmEU7Rdfu259OpLG8eTzpJ+xhhf?=
- =?us-ascii?Q?c5sOH+bAsOZ/xUQLJvNi+2uPQ7FHG4yUtyNKip4i0EnkP137n7UFH8ku6/4v?=
- =?us-ascii?Q?FiKmujml2ROJchwf7vwyzTV9QKUXXRfiClS0LgPFl7CX0Q3Q7rKjoI9HO5bY?=
- =?us-ascii?Q?2mWjAbFBCe3gGiod4kSF3376DBsHpWCe3N39XRm7sDy41hxTMzaiLu9ZbYON?=
- =?us-ascii?Q?IV14rAkk5GyQoY/MsXcw+aaqPB043BKkR32fVD5ppRyj1gaiC8pjS/67Fhue?=
- =?us-ascii?Q?gsnOLo1byaxAtXTkSvgjYzIduRgeYTYkZ1LlQATu07Wmylq9XcQWB9S0YE+5?=
- =?us-ascii?Q?0LH0727bjIWrLaWAa/k/5FIRUBM17NswMJ2ApWZ1pDcWnjdfsLwoDNwuKHh2?=
- =?us-ascii?Q?WAtFvmSkVBL4muUZfDle3O3291MtyiWo9zrrntJhCqILVKNMZxmEUYd5BIzL?=
- =?us-ascii?Q?SDEhnVrJ66FhGAQIie2T3ZnkQQt3QKsRe/NYQ168SrWGMES14Rkbobtjrp5W?=
- =?us-ascii?Q?wpPT/BdLY9ZTyohyhXj1+1ZlSomkIRIvySKM27mVT1vIw+w1qaaUaj0dCp42?=
- =?us-ascii?Q?5rgnRnXjsr0khXyogKUcSinSMGV8j45mx35SmTyxAeb0bR9OzpXXjtnGxq5N?=
- =?us-ascii?Q?YEAiwoSgOWEaNYuMWwiFF3FVBsxq7tPXCGZPMfgSA7TCHvnU/ooyfB0t45RE?=
- =?us-ascii?Q?ZW+NSBhILDD9ofQXgOGDizemjyzF5/pGvMLbHI9LXZwAKSfQcTS1J1/5z7KU?=
- =?us-ascii?Q?63LfdpFIqAAs5F0QJy/bljPA2j09epfv2WusbpZFIvTHZTbioAgYY7RQtaDZ?=
- =?us-ascii?Q?QXkX1w/TniLZtSgKr7/UeDJR1uMiTJZVDtoekAISmc54/Y5euaVpGr0ak57E?=
- =?us-ascii?Q?wO4L1x4fafksZ/KXsJ6scascVNpgdzUvHAQV8v2laQyUzdohvyr4FRbZJzdK?=
- =?us-ascii?Q?2TItzryvdAwOLYAjCt5n1R6zl5wVe8q0sq1OgoZqh+ZM17KoCpZtfRRZjiTr?=
- =?us-ascii?Q?eqtDnmctUazoz1gUYF15761pQxgGOGEEKDOlxGwI34Ogiea3HIXKcm4XkezZ?=
- =?us-ascii?Q?GjN/qcnO/ALglvwDMIyuh+4hgLjLxeKDZoA8OHOJ?=
+Received: from BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
+ by PH7PR11MB5983.namprd11.prod.outlook.com (2603:10b6:510:1e2::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.18; Mon, 25 Nov
+ 2024 18:20:49 +0000
+Received: from BYAPR11MB2854.namprd11.prod.outlook.com
+ ([fe80::8a98:4745:7147:ed42]) by BYAPR11MB2854.namprd11.prod.outlook.com
+ ([fe80::8a98:4745:7147:ed42%7]) with mapi id 15.20.8158.021; Mon, 25 Nov 2024
+ 18:20:49 +0000
+Date: Mon, 25 Nov 2024 13:20:37 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 1/1] tests/intel/kms_ccs: add hiberbate test
+Message-ID: <Z0S_9YaQta79ooeQ@intel.com>
+References: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
+ <20241125161958.296816-2-juhapekka.heikkila@gmail.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20241125161958.296816-2-juhapekka.heikkila@gmail.com>
+X-ClientProxiedBy: MW4PR03CA0080.namprd03.prod.outlook.com
+ (2603:10b6:303:b6::25) To SN6PR11MB2864.namprd11.prod.outlook.com
+ (2603:10b6:805:63::26)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB2854:EE_|PH7PR11MB5983:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6261441b-a7b2-457c-532e-08dd0d7de290
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?U2rchIYS9ODY7Muw8udX6iN0ulkJVZ34kVptB2hevTald8W9/7h+URGRI6hd?=
+ =?us-ascii?Q?w12QypX9RBNxj3Z54nVKTA3L7VCQ8aZLHaRepb82LYKQWusYhOSz9fmUNPsR?=
+ =?us-ascii?Q?w2kciG6kRHbSZMtwtPKUWtRTyOvaH0BvBFsY4yYbULCTDuqrl2oDJ7euF1dt?=
+ =?us-ascii?Q?sS1wWsxy9DVnc429sdSXMlwq5wA4qCkpO62Ig7Yo0+tfVzXMs41obCVxCc9g?=
+ =?us-ascii?Q?VJkbMqSEVLwkNzc32lSWu3BWwt1OtIBN1N8/uIF23rcEdcJjEulCjJJqw/jQ?=
+ =?us-ascii?Q?6CI64R57ykMU04avvcKKFuomESzcekeECLD4LrTMh9RX2HtbaxeCeT0xPIiR?=
+ =?us-ascii?Q?D9FtTgaxngpUKGliKxkL5sQHL5WpSKg9I5yAG21nAR2QLB6te7l20cND4tUv?=
+ =?us-ascii?Q?5LNGr9pMALmLqiOO6nHAu+vhaJ0BxrcaAVxde3c1ZxTrdzRbxL2sRdJpVn+E?=
+ =?us-ascii?Q?4/nWpATLYCJX0Uz1N3AKyUYhv1f3g4jz/2LPQsab+Zj7icvIrLThiXou8suZ?=
+ =?us-ascii?Q?oqmelBiH1G343YQr/qfF4EBCcF0j+dawcEzkqxEBc3Vk7WSZ8649a1gLltdg?=
+ =?us-ascii?Q?x561XjEPRmB8ODTd67C17OTN471XUWcaELBiVo8MEUgrDhlnjOgHaVtkBgwp?=
+ =?us-ascii?Q?uGIuS8XZUGgS7twqVp5sTdB6f8kAoWUkDGX7AryOt2StKFTY+jQPMW5uMvWP?=
+ =?us-ascii?Q?g5UmzfS4cHLRoHfbT/ibygaU2GG5wmjsHx9xsEQtjID2Wa+IgrXsoeRi484U?=
+ =?us-ascii?Q?7PLk0WaF/rPTtOYgB2/tMT6aOerO9E1j6yhgk1moOEd27osMgqy6Za3dfHWB?=
+ =?us-ascii?Q?fKwdSJbKNb25/idmPGsxtbQ8eQccdJmkSeIsONYS/79UUwIsYuN1/ypK/xn2?=
+ =?us-ascii?Q?xB3sATeQMTE3A5pEw0lfgPMEQUM8F0IAVyXe6Ao/MKzNUhkhPbkm5flb2vlM?=
+ =?us-ascii?Q?j2drKM6OL/CCiZ5sAQ5OrO9QrfUCPBlgB86eoVQikhJAe3ItvcPSYQ7gqgdO?=
+ =?us-ascii?Q?EjAgjP6i4xA0is+YXIITvCjSDbUToZNwKCSLH7m59/r1xSR0sgzMwCgcZwqH?=
+ =?us-ascii?Q?sG7ApRTI+7h4NTpL4TfM7H+HCtylQrhKSWQxmF8/d6GpmnWDb8zu2mSQfF5a?=
+ =?us-ascii?Q?M9yECorlx2zwQO07Rf+A75v1cRzXSmIdaYo1ru8lq16VrFU2bXGsZupe8h5K?=
+ =?us-ascii?Q?WQULqWk+ApswrG8GTYF5FupENi9PZtCctAV5IXTgTqv11PHPRwklxwkn4KBk?=
+ =?us-ascii?Q?5jPtae5ABLaY46TTYTxAt5UizHQ4pZx9tHzHCTv4X2ULhVQs/0diTdpVfhLX?=
+ =?us-ascii?Q?1Z0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR11MB2854.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uzNDeC0LR5otXXIfK+3z/6FwyQckSMhLI+ea6HLkmhM1e8fHCZMWnLPS9qHQ?=
+ =?us-ascii?Q?Sw7mMsXaYgVD7kkzCcGgGDdr5yU0kFcccr7ZvHGQ/tejtXdUYe8luPzcCjeF?=
+ =?us-ascii?Q?JSPkvXnLU41sLex01tO1uzyr8dokMsXiowVKTCkp6fwjY1fOrW5RnPIMltkD?=
+ =?us-ascii?Q?yUOeEzFpCWnvd4DKCsnvcfyQEOYyhl/ObDt8Laoc0xArqbXt9LxjXAEn15cp?=
+ =?us-ascii?Q?4blpJlM1tsz5RTBnsTIjxQ+g7mb9Mc8lGWI83iEUh1/sDgJg2xt26fnEH3BL?=
+ =?us-ascii?Q?ooSR44hEuzWho/RhbWP0FALysySAoCD/UowP7IQCSW3yPKIG+UwGyqQQU7iY?=
+ =?us-ascii?Q?ZgeHqCCnXhehuoB1nMvZFs1qjGAUbjIWZyYGcKS3smzTZO/w54TxJFQkFyDd?=
+ =?us-ascii?Q?SbHNpsR3oOZw2hL7+9BtMhrNSX1mPwshvzaE7h7aNGlVKJ/K1VIU0bLIHyuK?=
+ =?us-ascii?Q?6qd69RaYqdhiYDgfjdE4+hunFv0gDPAOUg26L7IM1gxQtdJNfrT+VN3kIt+5?=
+ =?us-ascii?Q?9LKhmxJLpcR7pz/RM85eFSqTh+Y/p3EoLPqoec3WxgTMvfm6qhqu0Vmz2BvI?=
+ =?us-ascii?Q?jm9Ytnv9FHUVbbJ3Mv4PhNAfqMS4WT/BIxaa2fnMpzmeQsr9m52vu6SnHOPr?=
+ =?us-ascii?Q?FPFRLVz5P0RVyPTaggIH8MdR17+Ta11WNGKdsDG0Ami6pk3Qhvsp0AeJCxrT?=
+ =?us-ascii?Q?dKwfuiNHDL9UDb8UZG654/OB/qZDGnfXTLMIR3NvU6NNY2rhbWQGnFearIoE?=
+ =?us-ascii?Q?g+axRoRdm+xIjUH48LdsAkDJa/DLN//Gkp84yooKA0SAnI3U5TeOSVqLSMzB?=
+ =?us-ascii?Q?zZYGaE+erDkdr12y8Q0cLBqRRSFOWIP/iILurB4KWI8RJzOLLaWDIm5UCGh3?=
+ =?us-ascii?Q?Yyq2q/d13GHcJkTqQDzaXsRi1NENgYx/VW0WyzJxhx9L/Ot1BlHrH4ttYWC3?=
+ =?us-ascii?Q?yxQ84yoxBQGmEmFaIWTvH5YfET7gBRhZ6hsbsroohziHiX58+usa/vfBHdqw?=
+ =?us-ascii?Q?45neOI+UoSRP5wQEcLLN8YxmRyyh1QYETGQBlm535YZkMo06V9Kcyh20UpPi?=
+ =?us-ascii?Q?xptm2ftR7fM1Q7H/5NYmUPLM5ZsLM2ihLXpRpu1P+L2k4ly+QaI13O1n0dTk?=
+ =?us-ascii?Q?D/a4FZeYO6TbQ0izbcq3bOEunOAn/MqVd/dALGU1k95Bxol3Yxml0HgS+H+G?=
+ =?us-ascii?Q?tu9cA6PbyfdLf6JL4qMV2TyBY+rjvdWqGenhd7JQ93I8jOF6SRrpbA7bj1Xy?=
+ =?us-ascii?Q?RqIKX7MYm32+I1etj6+uVkaHWSqqyY3jX2y7PKpquwZuC9U/xo7+YQJjK10g?=
+ =?us-ascii?Q?heHV7e/k/rxLB4ix8ZE0AWc7u0dIW6NDow7eDrecTCsW+kxFXTWqT/UK3mOk?=
+ =?us-ascii?Q?mGPhYoAjULyUl/kV2jKkel6rTuQWKnBzcU7htOS+51zElwTZGscSVh/W9UWq?=
+ =?us-ascii?Q?20gpMxeEfzdoUiDeno3/4SKVNgsKzsWLrknHiZ1Zd27072AFKKYba9kYhrwk?=
+ =?us-ascii?Q?lvUtCTeenNtKoXeYLHVU+0oitGRmF0QOshloCLRtxx+3OIm18OvOkeqpENtY?=
+ =?us-ascii?Q?Vms+zHtIDwzywp6du2di3CZaLBY3OAfAmdopje0fXc/ORRNpqngapypF8SQc?=
+ =?us-ascii?Q?sQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6261441b-a7b2-457c-532e-08dd0d7de290
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2864.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8922f053-6eb4-4c2e-ac46-08dd0d77aa7c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Nov 2024 17:36:16.9018 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gr3CFmP03OO2CYYDI2r3fG+7kLr/cfqxOSWs8u2q93+8puqGx1CjPt9rM58ZUFUZhgHdKBk19uTZd59UAjodjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6681
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 18:20:49.5595 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0fJkxvBmipuzTc7hGSKDoeusqKsD1MlqZfxxFH3LO1tAIox9Bb3X93L1eZIdXx92ZWRxr8r19JAFnjdM3Bb6cA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5983
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -182,101 +175,252 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Samala, Pranay <pranay.samala@intel.com>
-> Sent: Monday, November 25, 2024 8:54 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: B S, Karthik <karthik.b.s@intel.com>; Sharma, Swati2
-> <swati2.sharma@intel.com>; B, Jeevan <jeevan.b@intel.com>; Lattannavar,
-> Sameer <sameer.lattannavar@intel.com>; Samala, Pranay
-> <pranay.samala@intel.com>
-> Subject: [PATCH i-g-t] tests/intel/kms_dsc: Add meaningfull skip message
->=20
-> This patch adds a proper skip message which will be easy to debug.
->=20
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+On Mon, Nov 25, 2024 at 06:19:58PM +0200, Juha-Pekka Heikkila wrote:
+> Add hibernate test which bring entire system down for short
+> hibernate. This mode is added to suspend tests to be run
+> manually with '-r' flag because this is not ci friendly test,
+> on hibernate ci would lose connection to the hibernated box.
+
+I know that nowadays it is a beast to get hibernate to work in the distros,
+but afaik our CI is prepared for that, otherwise we wouldn't be able to
+get these:
+
+https://intel-gfx-ci.01.org/tree/intel-xe/index.html?testfilter=s4
+
+> 
+> For this test to work kernel resume point need to be set using swapfile, from
+> kernel command line is checked if there is found something along the lines of
+> "resume=/dev/nvme0n1p2 resume_offset=73527296" or so to verify hibernate
+> will be successfull.
+
+Indeed painful nowadays... I can't even believe this gap came from user
+report... is anyone really still using hibernation nowadays?! :)
+
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
->  tests/intel/kms_dsc.c | 36 ++++++++++++++++++++----------------
->  1 file changed, 20 insertions(+), 16 deletions(-)
->=20
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c index
-> 9b48caf76..65b0d262c 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -280,21 +280,6 @@ static void test_dsc(data_t *data, uint32_t test_typ=
-e, int
-> bpc,
->  		data->output =3D output;
->  		data->pipe =3D pipe;
->=20
-> -		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
-> -		    !check_gen11_dp_constraint(data->drm_fd, data->output,
-> data->pipe) ||
-> -		     igt_get_output_max_bpc(data->drm_fd, output->name) <
-> MIN_DSC_BPC)
-> -			continue;
-> -
-> -		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
-> -		    (!is_dsc_output_format_supported(data->drm_fd, data-
-> >disp_ver,
-> -						     data->output, data-
-> >output_format)))
-> -			continue;
-> -
-> -		if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
-> -		    (!is_dsc_fractional_bpp_supported(data->disp_ver,
-> -						      data->drm_fd, data-
-> >output)))
-> -			continue;
-> -
->  		if (test_type & TEST_DSC_OUTPUT_FORMAT)
->  			snprintf(&name[0][0], LEN, "-%s",
-> kmstest_dsc_output_format_str(data->output_format));
->  		if (test_type & TEST_DSC_FORMAT)
-> @@ -303,8 +288,27 @@ static void test_dsc(data_t *data, uint32_t test_typ=
-e, int
-> bpc,
->  			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
->=20
->  		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data-
-> >pipe), data->output->name,
-> -			      &name[0][0], &name[1][0], &name[2][0])
-> +			      &name[0][0], &name[1][0], &name[2][0]) {
-> +			if (!is_dsc_supported_by_sink(data->drm_fd, data-
-> >output) ||
-> +			    !check_gen11_dp_constraint(data->drm_fd, data-
-> >output, data->pipe) ||
-> +			    igt_get_output_max_bpc(data->drm_fd, output-
-> >name) < MIN_DSC_BPC)
-> +				continue;
+>  tests/intel/kms_ccs.c | 162 +++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 159 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+> index 3e9a57863..fd2fe9d3d 100644
+> --- a/tests/intel/kms_ccs.c
+> +++ b/tests/intel/kms_ccs.c
+> @@ -190,6 +190,7 @@ typedef struct {
+>  	bool user_seed;
+>  	enum igt_commit_style commit;
+>  	int fb_list_length;
+> +	bool do_hibernate;
+>  	struct {
+>  		struct igt_fb fb;
+>  		int width, height;
+> @@ -271,6 +272,154 @@ static const struct {
+>   */
+>  #define MAX_SPRITE_PLANE_WIDTH 2000
+>  
+> +/* constants for hibenate test */
+> +#define RTC_WAKE_CMD "rtcwake -m no -s %d"
+
+Why are you calling rtcwake directly instead of using
+igt_system_suspend_autoresume(SUSPEND_STATE_DISK...) ?!
+
+Please check lib/igt_aux lib/igt_pm and tests/xe/xe_pm
+
+> +#define PROC_CMDLINE "/proc/cmdline"
+> +#define SYS_POWER_STATE "/sys/power/state"
+> +#define GRUB_CFG_PATH "/boot/grub/grub.cfg"
 > +
-> +			if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
-> +			    (!is_dsc_output_format_supported(data->drm_fd,
-> data->disp_ver,
-> +							     data->output, data-
-> >output_format))) {
-> +				igt_skip("DSC %s output format not supported
-> on pipe-%s\n",
-> +					 kmstest_dsc_output_format_str(data-
-> >output_format),
-> +					 kmstest_pipe_name(data->pipe));
-> +				continue;
+> +static void check_hibernation_support(void)
+> +{
+> +	int fd;
+> +	char buffer[2048];
+> +	ssize_t bytes_read;
+> +	FILE *cmdline;
+> +
+> +	/* Check if hibernation is supported in /sys/power/state */
+> +	fd = open(SYS_POWER_STATE, O_RDONLY);
+> +	igt_require_f(fd > 0, "Failed to open /sys/power/state");
+> +	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+> +	close(fd);
+> +
+> +	igt_require_f(bytes_read > 0, "Failed to read /sys/power/state");
+> +
+> +	buffer[bytes_read] = '\0';
+> +	igt_require_f(strstr(buffer, "disk") != NULL,
+> +		      "Hibernation (suspend to disk) is not supported on this system.\n");
+> +
+> +	/* Check if resume is configured in kernel command line */
+> +	cmdline = fopen(PROC_CMDLINE, "r");
+> +	igt_require_f(cmdline, "Failed to open /proc/cmdline");
+> +	fread(buffer, 1, sizeof(buffer) - 1, cmdline);
+> +	fclose(cmdline);
+> +
+> +	igt_require_f(strstr(buffer, "resume="),
+> +		      "Kernel does not have 'resume' parameter configured for hibernation.\n");
+> +}
+
+we should probably have this in the igt_pm lib to be used in other places
+like xe_pm. I remember we had discussions when s4 started failing in CI,
+but apparently the solution was to make CI to work with it instead of
+protecting our s4 tests...
+
+> +
+> +static void set_rtc_wake_timer(int seconds)
+> +{
+> +	char command[256];
+> +
+> +	snprintf(command, sizeof(command), RTC_WAKE_CMD, seconds);
+> +
+> +	igt_require_f(system(command) == 0,
+> +		      "Failed to set RTC wake timer.\n");
+> +}
+> +
+> +static void hibernate_system(void)
+> +{
+> +	int fd;
+> +
+> +	fd = open(SYS_POWER_STATE, O_WRONLY);
+> +	igt_require_f(fd > 0, "Failed to open /sys/power/state");
+> +
+> +	if (write(fd, "disk", 4) != 4) {
+> +		close(fd);
+> +		igt_require_f(0, "Failed to write 'disk' to /sys/power/state");
+> +	}
+> +	close(fd);
+> +}
+> +
+> +static void ensure_grub_boots_same_kernel(void)
+
+I don't believe that this should be to the test case to ensure.
+This should be ensured by the infra to support these s4 testcases.
+
+> +{
+> +	char cmdline[1024];
+> +	char current_kernel[256];
+> +	char last_menuentry[512] = "";
+> +	char grub_entry[512];
+> +	char command[1024];
+> +	FILE *cmdline_file, *grub_cfg;
+> +	char line[1024];
+> +	bool kernel_found = false;
+> +	char *kernel_arg;
+> +	char *kernel_end;
+> +
+> +	/* Read /proc/cmdline to get the current kernel image */
+> +	cmdline_file = fopen(PROC_CMDLINE, "r");
+> +	igt_require_f(cmdline_file, "Failed to open /proc/cmdline");
+> +
+> +	if (!fgets(cmdline, sizeof(cmdline), cmdline_file)) {
+> +		fclose(cmdline_file);
+> +		igt_require_f(0, "Failed to read /proc/cmdline");
+> +	}
+> +	fclose(cmdline_file);
+> +
+> +	/* Parse the kernel image from cmdline */
+> +	kernel_arg = strstr(cmdline, "BOOT_IMAGE=");
+> +	igt_require_f(kernel_arg, "BOOT_IMAGE= not found in /proc/cmdline\n");
+> +
+> +	kernel_arg += strlen("BOOT_IMAGE=");
+> +	kernel_end = strchr(kernel_arg, ' ');
+> +
+> +	if (!kernel_end)
+> +		kernel_end = kernel_arg + strlen(kernel_arg);
+> +
+> +	snprintf(current_kernel, sizeof(current_kernel), "%.*s",
+> +		 (int)(kernel_end - kernel_arg), kernel_arg);
+> +	igt_debug("Current kernel image: %s\n", current_kernel);
+> +
+> +	/* Open GRUB config file to find matching entry */
+> +	grub_cfg = fopen(GRUB_CFG_PATH, "r");
+> +	igt_require_f(grub_cfg, "Failed to open GRUB configuration file");
+> +
+> +
+> +	while (fgets(line, sizeof(line), grub_cfg)) {
+> +		/* Check if the line contains a menuentry */
+> +		if (strstr(line, "menuentry")) {
+> +		/* Store the menuentry line */
+> +			char *start = strchr(line, '\'');
+> +			char *end = start ? strchr(start + 1, '\'') : NULL;
+> +
+> +			if (start && end) {
+> +				snprintf(last_menuentry,
+> +					 sizeof(last_menuentry),
+> +					 "%.*s", (int)(end - start - 1),
+> +					 start + 1);
 > +			}
-> +
-> +			if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
-> +			    (!is_dsc_fractional_bpp_supported(data->disp_ver,
-> +							      data->drm_fd,
-> data->output)))
-> +				continue;
->  			update_display(data, test_type);
 > +		}
-This introduces new dynamic subtests,=20
-LGTM.=20
-
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
->=20
->  		if (data->limited)
->  			break;
-> --
-> 2.34.1
-
+> +
+> +		/* Check if the current line contains the kernel */
+> +		if (strstr(line, current_kernel)) {
+> +			/* Use the last seen menuentry as the match */
+> +			snprintf(grub_entry, sizeof(grub_entry), "%s",
+> +				 last_menuentry);
+> +			kernel_found = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	fclose(grub_cfg);
+> +
+> +	igt_require_f(kernel_found, "Failed to find matching GRUB entry for kernel: %s\n",
+> +		      current_kernel);
+> +
+> +	/* Set the GRUB boot target using grub-reboot */
+> +	snprintf(command, sizeof(command), "grub-reboot \"%s\"", grub_entry);
+> +	igt_require_f(system(command) == 0, "Failed to set GRUB boot target to: %s\n",
+> +		      grub_entry);
+> +
+> +	igt_debug("Set GRUB to boot kernel: %s (GRUB entry: %s)\n",
+> +		  current_kernel, grub_entry);
+> +}
+> +
+> +static void hibernate_autoresume(int resume_delay)
+> +{
+> +	check_hibernation_support();
+> +	set_rtc_wake_timer(resume_delay);
+> +	ensure_grub_boots_same_kernel();
+> +	hibernate_system();
+> +}
+> +
+>  static void addfb_init(struct igt_fb *fb, struct drm_mode_fb_cmd2 *f)
+>  {
+>  	int i;
+> @@ -839,8 +988,11 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+>  
+>  	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc) {
+>  		if (data->flags & TEST_SUSPEND && fb_flags & FB_COMPRESSED) {
+> -			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> -						      SUSPEND_TEST_NONE);
+> +			if (data->do_hibernate)
+> +				hibernate_autoresume(30);
+> +			else
+> +				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> +							      SUSPEND_TEST_NONE);
+>  
+>  			/* on resume check flat ccs is still compressed */
+>  			if (is_xe_device(data->drm_fd) &&
+> @@ -1044,6 +1196,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
+>  		data->user_seed = true;
+>  		data->seed = strtoul(optarg, NULL, 0);
+>  		break;
+> +	case 'r':
+> +		data->do_hibernate = true;
+> +		break;
+>  	default:
+>  		return IGT_OPT_HANDLER_ERROR;
+>  	}
+> @@ -1056,9 +1211,10 @@ static data_t data;
+>  static const char *help_str =
+>  "  -c\t\tCheck the presence of compression meta-data\n"
+>  "  -s <seed>\tSeed for random number generator\n"
+> +"  -r\t\tOn suspend test do full hibernate with reboot\n"
+>  ;
+>  
+> -igt_main_args("cs:", NULL, help_str, opt_handler, &data)
+> +igt_main_args("csr:", NULL, help_str, opt_handler, &data)
+>  {
+>  	igt_fixture {
+>  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+> -- 
+> 2.45.2
+> 
