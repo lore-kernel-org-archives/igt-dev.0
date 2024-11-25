@@ -4,27 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6108D59D64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 22:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D39FED59D7F
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 23:25:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D35710E120;
-	Mon, 25 Nov 2024 22:51:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 628D910E101;
+	Mon, 25 Nov 2024 23:25:46 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB5FD10E17A;
- Mon, 25 Nov 2024 22:51:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED52D10E0E0;
+ Mon, 25 Nov 2024 23:25:45 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/i915/pm=5Frc6=5Fres?=
- =?utf-8?q?idency=3A_Replace_waitboost_with?=
+Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_CCS_hibernate_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sk.anirban@intel.com
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Nov 2024 22:51:47 -0000
-Message-ID: <173257510798.3028787.9305949287254953758@b555e5b46a47>
+Date: Mon, 25 Nov 2024 23:25:45 -0000
+Message-ID: <173257714597.3040654.16830227860040741641@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20241125155857.2561292-1-sk.anirban@intel.com>
-In-Reply-To: <20241125155857.2561292-1-sk.anirban@intel.com>
+References: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,175 +42,81 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/i915/pm_rc6_residency: Replace waitboost with
-URL   : https://patchwork.freedesktop.org/series/141759/
-State : failure
+Series: CCS hibernate test
+URL   : https://patchwork.freedesktop.org/series/141760/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8125 -> IGTPW_12192
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1317067 for the overview.
 
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12192 absolutely need to be
-  verified manually.
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67189032):
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 392e13d5 as detached HEAD (ref is intel/IGTPW_12193)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing lib/xe/oa-configs/__pycache__/
+  Removing scripts/__pycache__/
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12192, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  Skipping Git submodules setup
+  section_end:1732576936:get_sources
+  section_start:1732576936:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-392e13d5bb297e2e010846f61036e0c996a82461 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64@sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f ...
+  section_end:1732576938:step_script
+  section_start:1732576938:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1732576939:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c: image not known (docker.go:650:0s)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12192:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_lmem_swapping@parallel-random-engines@lmem0:
-    - bat-dg2-14:         [PASS][1] -> [ABORT][2] +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8125/bat-dg2-14/igt@gem_lmem_swapping@parallel-random-engines@lmem0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-14/igt@gem_lmem_swapping@parallel-random-engines@lmem0.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0:
-    - bat-mtlp-8:         NOTRUN -> [FAIL][3] +5 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-mtlp-8/igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt1-vcs0:
-    - bat-mtlp-6:         NOTRUN -> [FAIL][4] +5 other tests fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-mtlp-6/igt@i915_pm_rc6_residency@rc6-idle@gt1-vcs0.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt1-vecs0:
-    - bat-arlh-2:         NOTRUN -> [FAIL][5] +5 other tests fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-arlh-2/igt@i915_pm_rc6_residency@rc6-idle@gt1-vecs0.html
-    - bat-arlh-3:         NOTRUN -> [FAIL][6] +5 other tests fail
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-arlh-3/igt@i915_pm_rc6_residency@rc6-idle@gt1-vecs0.html
-    - bat-arls-5:         NOTRUN -> [FAIL][7] +5 other tests fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-arls-5/igt@i915_pm_rc6_residency@rc6-idle@gt1-vecs0.html
-
-  * igt@i915_selftest@live@guc_hang:
-    - bat-adlp-9:         [PASS][8] -> [ABORT][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8125/bat-adlp-9/igt@i915_selftest@live@guc_hang.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-adlp-9/igt@i915_selftest@live@guc_hang.html
-
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67189031):
+         popen
+  ../tests/intel/kms_ccs.c:289:7: warning: nested extern declaration of ‘open’ [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:289:29: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
+    fd = open(SYS_POWER_STATE, O_RDONLY);
+                               ^~~~~~~~
+                               STA_RONLY
+  ../tests/intel/kms_ccs.c:289:29: note: each undeclared identifier is reported only once for each function it appears in
+  ../tests/intel/kms_ccs.c: In function ‘hibernate_system’:
+  ../tests/intel/kms_ccs.c:324:29: error: ‘O_WRONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
+    fd = open(SYS_POWER_STATE, O_WRONLY);
+                               ^~~~~~~~
+                               STA_RONLY
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1732576954:step_script
+  section_start:1732576954:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1732576955:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-#### Suppressed ####
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0:
-    - {bat-mtlp-9}:       NOTRUN -> [FAIL][10] +5 other tests fail
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-mtlp-9/igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0.html
-    - {bat-arls-6}:       NOTRUN -> [FAIL][11] +5 other tests fail
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-arls-6/igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12192 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_tiled_blits@basic:
-    - fi-pnv-d510:        [PASS][12] -> [SKIP][13] +2 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8125/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle:
-    - fi-tgl-1115g4:      NOTRUN -> [WARN][14] ([i915#2681]) +4 other tests warn
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-tgl-1115g4/igt@i915_pm_rc6_residency@rc6-idle.html
-    - bat-dg2-9:          NOTRUN -> [FAIL][15] ([i915#12548] / [i915#3591]) +1 other test fail
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-9/igt@i915_pm_rc6_residency@rc6-idle.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][16] ([i915#12548] / [i915#3591]) +1 other test fail
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg1-6/igt@i915_pm_rc6_residency@rc6-idle.html
-    - bat-dg2-14:         NOTRUN -> [FAIL][17] ([i915#12548] / [i915#3591])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-14/igt@i915_pm_rc6_residency@rc6-idle.html
-    - bat-dg2-8:          NOTRUN -> [FAIL][18] ([i915#12548] / [i915#3591])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-8/igt@i915_pm_rc6_residency@rc6-idle.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0:
-    - fi-ilk-650:         NOTRUN -> [SKIP][19] +2 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-ilk-650/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][20] +1 other test skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-blb-e6850/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
-    - fi-bsw-nick:        NOTRUN -> [ABORT][21] ([i915#12957]) +1 other test abort
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-bsw-nick/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][22] +1 other test skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-pnv-d510/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0:
-    - fi-elk-e7500:       NOTRUN -> [SKIP][23] +2 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-elk-e7500/igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0.html
-    - fi-hsw-4770:        NOTRUN -> [WARN][24] ([i915#2681]) +1 other test warn
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/fi-hsw-4770/igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle@gt0-vecs0:
-    - bat-dg2-8:          NOTRUN -> [FAIL][25] ([i915#12739] / [i915#3591])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-8/igt@i915_pm_rc6_residency@rc6-idle@gt0-vecs0.html
-    - bat-dg2-9:          NOTRUN -> [FAIL][26] ([i915#12739] / [i915#3591])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-9/igt@i915_pm_rc6_residency@rc6-idle@gt0-vecs0.html
-    - bat-dg2-14:         NOTRUN -> [FAIL][27] ([i915#12739] / [i915#3591])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg2-14/igt@i915_pm_rc6_residency@rc6-idle@gt0-vecs0.html
-
-  * igt@i915_selftest@live:
-    - bat-adlp-9:         [PASS][28] -> [ABORT][29] ([i915#12435])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8125/bat-adlp-9/igt@i915_selftest@live.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-adlp-9/igt@i915_selftest@live.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [FAIL][30] ([i915#12903]) -> [PASS][31]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8125/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arls-6}:       [ABORT][32] ([i915#12061]) -> [PASS][33] +1 other test pass
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8125/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
-  [i915#12548]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12548
-  [i915#12739]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12739
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12957]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12957
-  [i915#2681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2681
-  [i915#3591]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3591
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8125 -> IGTPW_12192
-
-  CI-20190529: 20190529
-  CI_DRM_15743: 6510562075d8541c218e72188f9ef339f8ba371f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12192: 12192
-  IGT_8125: fbfda23ba003aab3454436d95c233dcf5e3bee54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67189033):
+         popen
+  ../tests/intel/kms_ccs.c:289:7: warning: nested extern declaration of ‘open’ [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:289:29: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
+    fd = open(SYS_POWER_STATE, O_RDONLY);
+                               ^~~~~~~~
+                               STA_RONLY
+  ../tests/intel/kms_ccs.c:289:29: note: each undeclared identifier is reported only once for each function it appears in
+  ../tests/intel/kms_ccs.c: In function ‘hibernate_system’:
+  ../tests/intel/kms_ccs.c:324:29: error: ‘O_WRONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
+    fd = open(SYS_POWER_STATE, O_WRONLY);
+                               ^~~~~~~~
+                               STA_RONLY
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1732576977:step_script
+  section_start:1732576977:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1732576978:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12192/index.html
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1317067
