@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3344D58D50
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 14:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A922ED58D50
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 14:34:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AAB9310E3CF;
-	Mon, 25 Nov 2024 14:33:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65B6310E66F;
+	Mon, 25 Nov 2024 14:34:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YxzG2VsW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C0vl7+Po";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EE1D10E3CF
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Nov 2024 14:33:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EBBD10E66E
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Nov 2024 14:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732545236; x=1764081236;
+ t=1732545240; x=1764081240;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=/pZ3gT1p2Ua1v6LyjmtVNG3KQrpBGJHl4VoY9VYqjEo=;
- b=YxzG2VsWRdLNCHBrnRA5VCtyxAPUSD5VRFx/VCqcWp74IUEzmxbDPAC4
- o+urVsQaa4bDLrxuOjtWPhf16sJvg0SvHxmzwP5VEh+z1czJ2PUDZ1QAg
- TsnB7dGMVl6URy3m28n2pNizfmlqnOM/hCMcBWzLz4e+qF9YMEWlaJN+3
- sic8Pm3VfSyOzlCjXxRb83OmNYOFpqhzcD96rai1U2up5gt8NJrT5/c+G
- 2Xf7mMIvntEFA5XmscGAANOaR4ZwST+oslaO9A7i0K5BeB/zRPvu3Y/Mi
- 63k4SNnWYfi3NvIWCrWHbwSY/mV2uBY+XCNYDEwjAhCKqjkCjuPs70D2Z g==;
-X-CSE-ConnectionGUID: B3Ahpp2DRMKMeij7jFZ83A==
-X-CSE-MsgGUID: Zws788MjRmWte5oKpbBcBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="50177108"
-X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="50177108"
+ bh=2P0PmecFbhZTLfGy/zNcQk6RhKm9VMk4bvJyD60TQtI=;
+ b=C0vl7+Po0BJOfmK0/OeAlEcTtFs6EXUSBJN1HouENisvPK/8h/8R5nyH
+ L6vnEE7xd3vLP0ddEEEMXoiYKzFxUa1NV6yoNhEhMqt5s3lnOZExiJcVv
+ Whg/dpYq/kU97ZOFPt99nW6LTt6EDZB1zeVNKHOtFD1PkdUKNkvO+vphD
+ iE6WOO4R+AU8LLXBEHPg2/thRSiqBE4NIquk0vhq3FXu/S57sFzdM8Csh
+ qi1N3ErC0CkQxFLIIFhVh93o4pyTCYIbPV2jx5DTQQmxTbidID7F6q/di
+ JwHuhHpJfBtWQKsIryngcSqNrrPomNK+d6/EYeGFq3m8HXfyKZCjoRZoV g==;
+X-CSE-ConnectionGUID: 2ohX2pN0QWGEMV/doab//Q==
+X-CSE-MsgGUID: zIrCb7xeSniLEjvjHRE8FA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="50177110"
+X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="50177110"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2024 06:33:55 -0800
-X-CSE-ConnectionGUID: qE/DXLhrRaG33RsEM17A2A==
-X-CSE-MsgGUID: JoVrQlRzSN6BfTT7/Y2uPw==
+ 25 Nov 2024 06:33:59 -0800
+X-CSE-ConnectionGUID: 5IM4k6ivR8yZliafyJbfHQ==
+X-CSE-MsgGUID: O3ifnvARQaeftq3Q2rpqdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="96350011"
+X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; d="scan'208";a="96350040"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.102.138.202])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2024 06:33:53 -0800
+ 25 Nov 2024 06:33:57 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Mon, 25 Nov 2024 15:33:00 +0100
-Subject: [PATCH v5 1/4] scripts/generate_iga64_codes: add iga64_macros.h to
- checksum calculation
+Date: Mon, 25 Nov 2024 15:33:02 +0100
+Subject: [PATCH v5 3/4] lib/gpgpu_shader: pass surface desription to
+ shaders via inline data
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241125-gpgpu_send_rework-v5-1-4454df13e1e1@intel.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241125-gpgpu_send_rework-v5-3-4454df13e1e1@intel.com>
 References: <20241125-gpgpu_send_rework-v5-0-4454df13e1e1@intel.com>
 In-Reply-To: <20241125-gpgpu_send_rework-v5-0-4454df13e1e1@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -59,18 +59,18 @@ Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2700;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3032;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=/pZ3gT1p2Ua1v6LyjmtVNG3KQrpBGJHl4VoY9VYqjEo=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBnRIrNk4ZhR/JW/emTp9M2mnUn/eKESb/pp8xSoxd8
- Rw/aH0+JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZ0SKzQAKCRAjYrKT3hD91zMXC/
- 9MY4BMAuagSmH3gqBdoKWFIwq+TYCQ4HKsbG9FLrneia+zUbS3276aJgtvDm3kfy3P6OEHRIm4a3jg
- 4FiQoyaTdjoRp+meOwtyxKRYoiebCwMmISICweSgP8ail2C3tVulLgaEDwuyHg/PpH0+z4OtX+sQ02
- EGcrNVzs2vTq9123foKoAK2DbtU3qqILC37xXFU4aQnAzQUiwDTtNNRR3fduhOG8J7THfBC8ag1ril
- 9N1CnhkULummcON8t7XsxKkGhIPK48jor7Ul6pHZHOKhDdBB37mjDY3vdb5B+kJGrI+mk/9nuz6BSL
- uP+rUAqGDTTeLE/SEQ15fUFybu3ZeRD+Y/vq60ktZsLGxRl50xRhnhQke96GSpfohmRDIxSFhqRDV5
- +zGX9u4VWfDEI8ONi1/y3Wiuf++9aKbAqi9jxMVAQQmyo5bJ6QShMvECPDsuBzeruZCtVbXSIwezzy
- le9HW2HyvgfRT4NQNuuGmq+lpH+BEIzODJbTD7ap38IYQ=
+ bh=2P0PmecFbhZTLfGy/zNcQk6RhKm9VMk4bvJyD60TQtI=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBnRIrOeO7Nfzs7UpxO/dIYuVeFDjkKkiXWaW24MACU
+ 5o6yDvGJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZ0SKzgAKCRAjYrKT3hD917esDA
+ CSbWnlk+YYpfpfOwWTfcL9w0rC9nZs9VQY7qobeA3rnqMx2ThhrP09dSr+3sBaRDqjeIaowEFZxBwO
+ hufzcW8bNcriQBRUErphgpaSwq2wAnDhKo87kSvz67OjlchZDEM8fH/JM1zANCdtICmOQSUym3kNOd
+ 7k1eiFOsUjrksRrKUKzB5F7jcjD69enFa2wPeUpz+8mMeCWNBhGE+5Ler5ZFh57s1OLAvn+YFW1be2
+ shHcMRczFJa8e+Tvh2ZzTmK8UpMNERUKhhf1xfNg98QHdXumzMeagfIudijDBr1UnfbdtuuKxxXjnO
+ 1esa2yqVSufyMJ7A3OXlXKesImmkRwqcP9DDsS4rjqa/WgFWXYZHtoD4hBf5gAVR6b/OjEYh7G+ArI
+ m4mb6bZ33p724EroUUf5eCYOtqnPIxlhXx7NZ6NW8mou73n0gMmeOyDxWMkRH/OFYmgDB43cDdii4T
+ hBoh8TZnf2UYphDmNK2LcdBBQUniSjCM8a2RzlXP3gyi4=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -88,75 +88,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Since generated code depends on iga64_macros.h assemblies should be
-recompiled on it's change as well.
+Since newer architectures require stateless load/stores we need to pass
+surface description to the shader. Instead of doing it for every call
+we can use inline data which is passed by COMPUTE_WALKER and is stored
+in GRF register r1.
 
-v2:
-  - added warning to iga64_macros.h (Zbigniew)
+v4:
+  - moved gpgpu_alloc_gpu_addr changes from next patch here (Dominik),
+  - pass vm_id to intel_allocator (Dominik).
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/iga64_generated_codes.c  | 2 +-
- lib/iga64_macros.h           | 5 ++++-
- lib/meson.build              | 1 +
- scripts/generate_iga64_codes | 2 +-
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ lib/gpgpu_shader.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-index 9db6bdd95c81..7bece1452e30 100644
---- a/lib/iga64_generated_codes.c
-+++ b/lib/iga64_generated_codes.c
-@@ -3,7 +3,7 @@
+diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+index d9b511d4a474..c591eb119b91 100644
+--- a/lib/gpgpu_shader.c
++++ b/lib/gpgpu_shader.c
+@@ -148,6 +148,16 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
+ 		      engine | I915_EXEC_NO_RELOC, false);
+ }
  
- #include "gpgpu_shader.h"
++static void
++fill_inline_data(uint32_t *inline_data, uint64_t target_offset, struct intel_buf *target)
++{
++	igt_assert(target->surface[0].stride == intel_buf_width(target) * target->bpp/8);
++	*inline_data++ = lower_32_bits(target_offset);
++	*inline_data++ = upper_32_bits(target_offset);
++	*inline_data++ = target->surface[0].stride;
++	*inline_data++ = intel_buf_height(target);
++}
++
+ static void
+ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+ 		      struct intel_buf *target,
+@@ -159,6 +169,7 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+ 	struct xehp_interface_descriptor_data idd;
+ 	uint32_t sip_offset;
+ 	uint64_t engine;
++	uint32_t *inline_data;
  
--#define MD5_SUM_IGA64_ASMS 85067cf5769bd5f5ab2a2abe5bdc9645
-+#define MD5_SUM_IGA64_ASMS 4c0bba92477c23a16c976cf0d7ccaba9
+ 	intel_bb_add_intel_buf(ibb, target, true);
  
- struct iga64_template const iga64_code_gpgpu_fill[] = {
- 	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
-index 03cc726d48c2..6459b524c3fd 100644
---- a/lib/iga64_macros.h
-+++ b/lib/iga64_macros.h
-@@ -1,7 +1,10 @@
- /* SPDX-License-Identifier: MIT */
- /* Copyright © 2024 Intel Corporation */
+@@ -186,7 +197,10 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+ 	if (sip_offset)
+ 		emit_sip(ibb, sip_offset);
  
--/* Header used during pre-process phase of iga64 assembly. */
-+/* Header used during pre-process phase of iga64 assembly.
-+ * WARNING: changing this file causes rebuild of all shaders.
-+ * Do not touch without current version of iga64 compiler.
-+ */
++	/* Inline data is at 31th/32th dword of COMPUTE_WALKER, BSpec: 67028 */
++	inline_data = intel_bb_ptr(ibb) + 4 * (shdr->gen_ver < 2000 ? 31 : 32);
+ 	xehp_emit_compute_walk(ibb, 0, 0, x_dim * 16, y_dim, &idd, 0x0);
++	fill_inline_data(inline_data, CANONICAL(target->addr.offset), target);
  
- #ifndef IGA64_MACROS_H
- #define IGA64_MACROS_H
-diff --git a/lib/meson.build b/lib/meson.build
-index 3d459c7a3bae..207b6e18519a 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -250,6 +250,7 @@ iga64_generated_codes = custom_target(
-     'iga64_generated_codes.c',
-     input : [ 'iga64_generated_codes.c' ] + iga64_assembly_libs,
-     output : 'iga64_generated_codes.c',
-+    depend_files : 'iga64_macros.h',
-     command : [ generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT@' ]
- )
+ 	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
+ 	intel_bb_ptr_align(ibb, 32);
+@@ -196,6 +210,17 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+ 		      engine | I915_EXEC_NO_RELOC, false);
+ }
  
-diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
-index bbf1f7008242..652bf01a080c 100755
---- a/scripts/generate_iga64_codes
-+++ b/scripts/generate_iga64_codes
-@@ -40,7 +40,7 @@ while  read -d $'\0' asm; do
- done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o /dev/null; done)
++static void gpgpu_alloc_gpu_addr(struct intel_bb *ibb, struct intel_buf *target)
++{
++	uint64_t ahnd;
++
++	ahnd = intel_allocator_open_vm_full(ibb->fd, ibb->vm_id, 0, 0, INTEL_ALLOCATOR_SIMPLE,
++					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	target->addr.offset = intel_allocator_alloc(ahnd, target->handle,
++						    target->surface[0].size, 0);
++	intel_allocator_close(ahnd);
++}
++
+ /**
+  * gpgpu_shader_exec:
+  * @ibb: pointer to initialized intel_bb
+@@ -221,6 +246,9 @@ void gpgpu_shader_exec(struct intel_bb *ibb,
+ 	igt_assert(ibb->size >= PAGE_SIZE);
+ 	igt_assert(ibb->ptr == ibb->batch);
  
- # check if we need to recompile - checksum difference and compiler present
--MD5_ASMS="$(md5sum <<< "${ASMS[@]}" | cut -b1-32)"
-+MD5_ASMS="$(md5sum <<< "$(< ../lib/iga64_macros.h) ${ASMS[@]}" | cut -b1-32)"
- MD5_PRE="$(grep -Po '(?<=^#define MD5_SUM_IGA64_ASMS )\S{32,32}' $INPUT 2>/dev/null)"
- 
- if [ "$MD5_ASMS" = "$MD5_PRE" ]; then
++	if (target->addr.offset == INTEL_BUF_INVALID_ADDRESS)
++		gpgpu_alloc_gpu_addr(ibb, target);
++
+ 	if (shdr->gen_ver >= 1250)
+ 		__xehp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
+ 				      ring, explicit_engine);
 
 -- 
 2.34.1
