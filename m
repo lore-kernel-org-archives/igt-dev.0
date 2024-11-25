@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C46D58D4C
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 13:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 487FED58D4B
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 13:57:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0784010E3C5;
-	Mon, 25 Nov 2024 13:48:27 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F47010E123;
- Mon, 25 Nov 2024 13:48:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2460482081461703326=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D448310E3C5;
+	Mon, 25 Nov 2024 13:57:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CgchBTyG";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDB4410E3C5
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Nov 2024 13:57:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732543024; x=1764079024;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1Gkm3Aa75E6qXEQswzzRHtC/2aFUSIFgLERrGzZR8O4=;
+ b=CgchBTyGKhX6wsxvtAjzprVM85Jh91FWe5kzarh/7tkNNZbgGG/BvW7c
+ s8ou9Rl1IB423630q2aq1VGX8u3+/U6bKUDsaum0xUzyHLCD/5Dx6mXfm
+ hjBK9tdFRKc5Vb9cpbG+TMzogyQgXJ9MBhwOUpYJDrP7+8TzOTkUaE5gB
+ 8ewVFi4vB2qYDSWaFE453zpFXMUbzlsUfqR8SBee0uJUn26ToI1JSX4pI
+ jjUPOd0BMBVhwWhOWehFUITysQaUy45xL1b/9BfVyqH2ZyQFwFlFXPlP5
+ o6PQ+PrACEfZQr2/L7uC7pkEG1y2RGVnp+L4hupOwQGo/5M3UwkO6Qi9J Q==;
+X-CSE-ConnectionGUID: k2KafSpfTrWA7wibLCHYJw==
+X-CSE-MsgGUID: I5300WPzRdGsK86L/3W0QQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="44043504"
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; d="scan'208";a="44043504"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Nov 2024 05:57:04 -0800
+X-CSE-ConnectionGUID: 0nGC5M9KQrW90GJhuPXSAw==
+X-CSE-MsgGUID: C2iCV+NgR7uOyBHiaFkx3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; d="scan'208";a="96335581"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO
+ dpiatkow-mobl1.mshome.net) ([10.245.246.228])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Nov 2024 05:57:02 -0800
+From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Subject: [PATCH i-g-t 0/1] tests/intel/xe_exec_store: Introduce long-shader
+ tests
+Date: Mon, 25 Nov 2024 14:56:44 +0100
+Message-Id: <20241125135645.6776-1-dominik.karol.piatkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_GPGPU_fill_improvements_=28?=
- =?utf-8?q?rev8=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Nov 2024 13:48:26 -0000
-Message-ID: <173254250647.2836371.13549707820777082071@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241125082258.74889-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20241125082258.74889-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +68,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2460482081461703326==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Introduce 4 tests:
+- long-shader-bb-sram-target-sram
+- long-shader-bb-sram-target-vram
+- long-shader-bb-vram-target-sram
+- long-shader-bb-vram-target-vram
 
-== Series Details ==
+These tests are core version of xe_eudebug_online@writes-caching* tests.
 
-Series: GPGPU fill improvements (rev8)
-URL   : https://patchwork.freedesktop.org/series/141352/
-State : success
+Each test writes incrementing values to 2-page-long target surface using
+long shader. The bb is searched for full shader, expecting it to exist.
+The target surface is checked against written values. Each test places
+bb and surface in different configuration of memory regions in order to
+validate memory coherency.
 
-== Summary ==
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-CI Bug Log - changes from XEIGT_8124_BAT -> XEIGTPW_12188_BAT
-====================================================
+Dominik Karol Piątkowski (1):
+  tests/intel/xe_exec_store: Introduce long-shader tests
 
-Summary
--------
+ tests/intel/xe_exec_store.c | 130 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 130 insertions(+)
 
-  **SUCCESS**
+-- 
+2.34.1
 
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8124 -> IGTPW_12188
-  * Linux: xe-2269-4d723d57180a3aafc1a510bc08ef42f4b03671a7 -> xe-2270-b21f1413ea1860e80fd278112e820e6dadfc9df9
-
-  IGTPW_12188: 12188
-  IGT_8124: 8124
-  xe-2269-4d723d57180a3aafc1a510bc08ef42f4b03671a7: 4d723d57180a3aafc1a510bc08ef42f4b03671a7
-  xe-2270-b21f1413ea1860e80fd278112e820e6dadfc9df9: b21f1413ea1860e80fd278112e820e6dadfc9df9
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12188/index.html
-
---===============2460482081461703326==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>GPGPU fill improvements (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141352/">https://patchwork.freedesktop.org/series/141352/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12188/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12188/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8124_BAT -&gt; XEIGTPW_12188_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8124 -&gt; IGTPW_12188</li>
-<li>Linux: xe-2269-4d723d57180a3aafc1a510bc08ef42f4b03671a7 -&gt; xe-2270-b21f1413ea1860e80fd278112e820e6dadfc9df9</li>
-</ul>
-<p>IGTPW_12188: 12188<br />
-  IGT_8124: 8124<br />
-  xe-2269-4d723d57180a3aafc1a510bc08ef42f4b03671a7: 4d723d57180a3aafc1a510bc08ef42f4b03671a7<br />
-  xe-2270-b21f1413ea1860e80fd278112e820e6dadfc9df9: b21f1413ea1860e80fd278112e820e6dadfc9df9</p>
-
-</body>
-</html>
-
---===============2460482081461703326==--
