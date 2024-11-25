@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D39FED59D7F
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 23:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35852D59D7F
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Nov 2024 23:32:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 628D910E101;
-	Mon, 25 Nov 2024 23:25:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C784610E0E0;
+	Mon, 25 Nov 2024 23:32:23 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED52D10E0E0;
- Mon, 25 Nov 2024 23:25:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1374B10E0E0;
+ Mon, 25 Nov 2024 23:32:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2803944516525887889=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_CCS_hibernate_test?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_CCS_hibernate_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Nov 2024 23:25:45 -0000
-Message-ID: <173257714597.3040654.16830227860040741641@b555e5b46a47>
+Date: Mon, 25 Nov 2024 23:32:22 -0000
+Message-ID: <173257754208.3039489.17823833087783305471@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
@@ -40,83 +40,139 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============2803944516525887889==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: CCS hibernate test
 URL   : https://patchwork.freedesktop.org/series/141760/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_8125_BAT -> XEIGTPW_12193_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1317067 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67189032):
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 392e13d5 as detached HEAD (ref is intel/IGTPW_12193)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing lib/xe/oa-configs/__pycache__/
-  Removing scripts/__pycache__/
-  
-  Skipping Git submodules setup
-  section_end:1732576936:get_sources
-  section_start:1732576936:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-392e13d5bb297e2e010846f61036e0c996a82461 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64@sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f ...
-  section_end:1732576938:step_script
-  section_start:1732576938:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1732576939:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c: image not known (docker.go:650:0s)
+  **SUCCESS**
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67189031):
-         popen
-  ../tests/intel/kms_ccs.c:289:7: warning: nested extern declaration of ‘open’ [-Wnested-externs]
-  ../tests/intel/kms_ccs.c:289:29: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    fd = open(SYS_POWER_STATE, O_RDONLY);
-                               ^~~~~~~~
-                               STA_RONLY
-  ../tests/intel/kms_ccs.c:289:29: note: each undeclared identifier is reported only once for each function it appears in
-  ../tests/intel/kms_ccs.c: In function ‘hibernate_system’:
-  ../tests/intel/kms_ccs.c:324:29: error: ‘O_WRONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    fd = open(SYS_POWER_STATE, O_WRONLY);
-                               ^~~~~~~~
-                               STA_RONLY
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1732576954:step_script
-  section_start:1732576954:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1732576955:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No regressions found.
+
   
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67189033):
-         popen
-  ../tests/intel/kms_ccs.c:289:7: warning: nested extern declaration of ‘open’ [-Wnested-externs]
-  ../tests/intel/kms_ccs.c:289:29: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    fd = open(SYS_POWER_STATE, O_RDONLY);
-                               ^~~~~~~~
-                               STA_RONLY
-  ../tests/intel/kms_ccs.c:289:29: note: each undeclared identifier is reported only once for each function it appears in
-  ../tests/intel/kms_ccs.c: In function ‘hibernate_system’:
-  ../tests/intel/kms_ccs.c:324:29: error: ‘O_WRONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    fd = open(SYS_POWER_STATE, O_WRONLY);
-                               ^~~~~~~~
-                               STA_RONLY
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1732576977:step_script
-  section_start:1732576977:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1732576978:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-pvc-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12193_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3517]) +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-adlp-7:         [PASS][3] -> [SKIP][4] ([Intel XE#455]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+
+  
+  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8125 -> IGTPW_12193
+  * Linux: xe-2275-6510562075d8541c218e72188f9ef339f8ba371f -> xe-2276-ae312905c5a9fc7ce599a74422f068725101c475
+
+  IGTPW_12193: 12193
+  IGT_8125: fbfda23ba003aab3454436d95c233dcf5e3bee54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2275-6510562075d8541c218e72188f9ef339f8ba371f: 6510562075d8541c218e72188f9ef339f8ba371f
+  xe-2276-ae312905c5a9fc7ce599a74422f068725101c475: ae312905c5a9fc7ce599a74422f068725101c475
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1317067
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/index.html
+
+--===============2803944516525887889==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>CCS hibernate test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141760/">https://patchwork.freedesktop.org/series/141760/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8125_BAT -&gt; XEIGTPW_12193_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12193_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +2 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12193/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8125 -&gt; IGTPW_12193</li>
+<li>Linux: xe-2275-6510562075d8541c218e72188f9ef339f8ba371f -&gt; xe-2276-ae312905c5a9fc7ce599a74422f068725101c475</li>
+</ul>
+<p>IGTPW_12193: 12193<br />
+  IGT_8125: fbfda23ba003aab3454436d95c233dcf5e3bee54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2275-6510562075d8541c218e72188f9ef339f8ba371f: 6510562075d8541c218e72188f9ef339f8ba371f<br />
+  xe-2276-ae312905c5a9fc7ce599a74422f068725101c475: ae312905c5a9fc7ce599a74422f068725101c475</p>
+
+</body>
+</html>
+
+--===============2803944516525887889==--
