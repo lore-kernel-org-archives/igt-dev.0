@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7902ED5A6DF
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 05:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5FCD5A6DF
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 06:32:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1111410E799;
-	Tue, 26 Nov 2024 05:46:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e9LEflgA";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2306110E799
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Nov 2024 05:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732599980; x=1764135980;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=UbuBmZz5vC2c5M4qy1jyHBff6EPyxZHXfCDBHsJnkIc=;
- b=e9LEflgAtw7O7AZIaxu/rX43f9eDRMBCM5HKmYzyag1S2uyY4L3sJn7a
- Tudsyu5eud12Nt04CUqawUvMuiPglEIO3isE+hoIMuyXxHaVCJPTLtJ1a
- u/+8YSQ75Gj4xiWJsHWgSt+CDuYWaEbUu7xnBVPmfJfkTbM+rC8Rj/yVL
- 9M0BMec/gUSVbJkj+xrx6mmDeFO+7WAqTm1uC/0/24R/heyubHuTO4q9B
- AQO/y58Iv0RisXZe/wPhMC82El3XuP4wyamFWwupr/sLI5Blns/jKh49F
- +hamtwROgfhJRIRXD/cbw97n5ozuGqUKUjJovscgEQZithJrLRrvwu9+e w==;
-X-CSE-ConnectionGUID: T+yB4rlCT7u/hMpg1rDoQw==
-X-CSE-MsgGUID: FpumUMkxRySsiyfzWPOjpQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="32599989"
-X-IronPort-AV: E=Sophos;i="6.12,185,1728975600"; d="scan'208";a="32599989"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2024 21:46:20 -0800
-X-CSE-ConnectionGUID: iS3NX4zYRM2CmGfX/uSqwQ==
-X-CSE-MsgGUID: 9/YcoZrpS0WGFa5qm5Yf9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,185,1728975600"; d="scan'208";a="91912615"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa007.jf.intel.com with ESMTP; 25 Nov 2024 21:46:18 -0800
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com, jeevan.b@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v2] tests/intel/kms_dsc: Add meaningfull skip message
-Date: Tue, 26 Nov 2024 11:16:58 +0530
-Message-Id: <20241126054658.1951121-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC67B10E799;
+	Tue, 26 Nov 2024 06:32:38 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D85510E799;
+ Tue, 26 Nov 2024 06:32:37 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1236878848384445580=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdsc=3A_Ad?=
+ =?utf-8?q?d_meaningfull_skip_message_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Nov 2024 06:32:37 -0000
+Message-ID: <173260275759.3221166.29889812829417000@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241126054658.1951121-1-pranay.samala@intel.com>
+In-Reply-To: <20241126054658.1951121-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,73 +37,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch adds a proper skip message which will be
-easy to debug.
+--===============1236878848384445580==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Small clean up in if statement
+== Series Details ==
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_dsc.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+Series: tests/intel/kms_dsc: Add meaningfull skip message (rev2)
+URL   : https://patchwork.freedesktop.org/series/141738/
+State : success
 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 9b48caf76..5ebb12e9d 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -280,21 +280,6 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		data->output = output;
- 		data->pipe = pipe;
- 
--		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
--		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe) ||
--		     igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC)
--			continue;
--
--		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
--		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
--						     data->output, data->output_format)))
--			continue;
--
--		if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
--		    (!is_dsc_fractional_bpp_supported(data->disp_ver,
--						      data->drm_fd, data->output)))
--			continue;
--
- 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
- 			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
- 		if (test_type & TEST_DSC_FORMAT)
-@@ -303,8 +288,25 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
- 
- 		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
--			      &name[0][0], &name[1][0], &name[2][0])
-+			      &name[0][0], &name[1][0], &name[2][0]) {
-+			if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
-+			    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe) ||
-+			    igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC)
-+				continue;
-+
-+			if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
-+			    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-+							     data->output, data->output_format)))
-+				igt_skip("DSC %s output format not supported on pipe-%s\n",
-+					 kmstest_dsc_output_format_str(data->output_format),
-+					 kmstest_pipe_name(data->pipe));
-+
-+			if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
-+			    (!is_dsc_fractional_bpp_supported(data->disp_ver,
-+							      data->drm_fd, data->output)))
-+				continue;
- 			update_display(data, test_type);
-+		}
- 
- 		if (data->limited)
- 			break;
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8125_BAT -> XEIGTPW_12197_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-pvc-2 
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8125_BAT and XEIGTPW_12197_BAT:
+
+### New IGT tests (5) ###
+
+  * igt@kms_dsc@dsc-basic@pipe-a-hdmi-a-3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_dsc@dsc-basic@pipe-b-hdmi-a-3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_dsc@dsc-basic@pipe-c-hdmi-a-3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_dsc@dsc-basic@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_dsc@dsc-basic@pipe-d-hdmi-a-3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12197_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#1861])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-lnl-1:          [SKIP][3] ([Intel XE#2244]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-7:         [SKIP][5] ([Intel XE#455]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+    - bat-bmg-1:          [SKIP][7] ([Intel XE#2244]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       [SKIP][9] ([Intel XE#455]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8125 -> IGTPW_12197
+  * Linux: xe-2275-6510562075d8541c218e72188f9ef339f8ba371f -> xe-2276-ae312905c5a9fc7ce599a74422f068725101c475
+
+  IGTPW_12197: 12197
+  IGT_8125: fbfda23ba003aab3454436d95c233dcf5e3bee54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2275-6510562075d8541c218e72188f9ef339f8ba371f: 6510562075d8541c218e72188f9ef339f8ba371f
+  xe-2276-ae312905c5a9fc7ce599a74422f068725101c475: ae312905c5a9fc7ce599a74422f068725101c475
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/index.html
+
+--===============1236878848384445580==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_dsc: Add meaningfull skip message (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141738/">https://patchwork.freedesktop.org/series/141738/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8125_BAT -&gt; XEIGTPW_12197_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8125_BAT and XEIGTPW_12197_BAT:</p>
+<h3>New IGT tests (5)</h3>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic@pipe-a-hdmi-a-3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic@pipe-b-hdmi-a-3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic@pipe-c-hdmi-a-3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic@pipe-d-hdmi-a-3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12197_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-lnl-1/igt@kms_dsc@dsc-basic.html">PASS</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-adlp-7/igt@kms_dsc@dsc-basic.html">PASS</a></li>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-bmg-1/igt@kms_dsc@dsc-basic.html">PASS</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8125/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12197/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8125 -&gt; IGTPW_12197</li>
+<li>Linux: xe-2275-6510562075d8541c218e72188f9ef339f8ba371f -&gt; xe-2276-ae312905c5a9fc7ce599a74422f068725101c475</li>
+</ul>
+<p>IGTPW_12197: 12197<br />
+  IGT_8125: fbfda23ba003aab3454436d95c233dcf5e3bee54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2275-6510562075d8541c218e72188f9ef339f8ba371f: 6510562075d8541c218e72188f9ef339f8ba371f<br />
+  xe-2276-ae312905c5a9fc7ce599a74422f068725101c475: ae312905c5a9fc7ce599a74422f068725101c475</p>
+
+</body>
+</html>
+
+--===============1236878848384445580==--
