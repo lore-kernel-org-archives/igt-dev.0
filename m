@@ -4,58 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6B2D65521
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 16:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89ED5D6552D
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 16:55:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D77F10E950;
-	Tue, 26 Nov 2024 16:42:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C1E710E953;
+	Tue, 26 Nov 2024 16:55:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ijBkEyV0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BruRqlph";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 494D110E940;
- Tue, 26 Nov 2024 16:42:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 480D710E953
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Nov 2024 16:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732639338; x=1764175338;
+ t=1732640147; x=1764176147;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=sx7zsEx13hcrtWabYz8W1ov++0jNw2Juy2RV/mzWOmk=;
- b=ijBkEyV0+uMnzceQJ4sSaWvAfJ8Yn1/3lKkCV/ggouUpnvNWOHXFP6Jy
- qhScSS7HrKNVfzq42tpLbbpBgEIuNIGmcUicEdJWztGm+uK+k8PhUIhoB
- KynSsMLkCmXBXsiTQwttkewDUFrCianP8pcNEghb8ueEgV2q0UMfHbbd5
- zMjiGnToXOke7mCxUVGTpgb7r8cqQVIOk95aoydtT6h/eBGqZr88JcxcK
- f8y5uUZGTS92f5ug7pxihq0Qn4jB3sp0v1EOlXw7pQHjyDDrcO2llrwt0
- j17onsmha15E3jw3MhQAYCGQz1H3CIkyxaGPsFnA6TyqVTWN0dEPECmYH w==;
-X-CSE-ConnectionGUID: 2gG9H7yYQpaEzpnYMwmiTQ==
-X-CSE-MsgGUID: AlXZlIUxQx6KSWcxTboCpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="43307035"
-X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="43307035"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2024 08:42:17 -0800
-X-CSE-ConnectionGUID: LcJOilUFT/ez+E+9r8lVwQ==
-X-CSE-MsgGUID: mNum60dHQW61WLVh4PzV1A==
+ bh=S23yDDxnYFH+DdDW+t8tdKmvQ+QT8NWyY+rPLhDNawo=;
+ b=BruRqlphUBP72BYjlyssWEYMA8GnFR4rH2u5SwL1drOXnD0THfP3CMvD
+ Bb2P/Ei4yhSZjBkfr7/ovMTptXdt5AcQQYEwtXhqWibDAU28v1wptmL/H
+ ljnBmd2lIMYZzoz48KFbSfoo5Hafa3t43v6gAoOy0g/2hbiWaQKOQjwga
+ 7XpohvZmbHc0OvX6lv0A/7iJC+YCY1L5gfpWY4TEQOy1+dKI5qZP5Mhv7
+ QKorqcnzCtJtgKq1laIterjxw6WHzznnl1CzMAKc/n9i6ewBFfUUsKhE0
+ waRdSAbj/MVuE4ziK7F1W79VDj9nANJ5+msmEeTEKRWPM2fiM6Dsy0AWi A==;
+X-CSE-ConnectionGUID: MS8vFj1CQ120Natpz4VdFQ==
+X-CSE-MsgGUID: 0qeYkRWhRvC+0dLk3OZhKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="36600473"
+X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="36600473"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2024 08:55:46 -0800
+X-CSE-ConnectionGUID: dSKwFyTCQXCrSoUbzz5rcg==
+X-CSE-MsgGUID: U2fQ59KgTCSsp/pNf0qFDg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="122512749"
+X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="114941342"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2024 08:42:16 -0800
-Date: Tue, 26 Nov 2024 17:42:13 +0100
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2024 08:55:44 -0800
+Date: Tue, 26 Nov 2024 17:55:41 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIENJLnhlRlVMTA==?= =?utf-8?Q?=3A?= failure for
- Ignore more warns in xe_wedged tests (rev3)
-Message-ID: <20241126164213.ozrkupe2cyr7f5th@kamilkon-desk.igk.intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
+ alex.zuo@intel.com, vinay.belgaumkar@intel.com
+Subject: Re: [PATCH v7 2/4] tests/intel/xe_sysfs*: Restore values on test
+ failure
+Message-ID: <20241126165541.5kpurie66hge4cox@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20241108201839.119079-1-kamil.konieczny@linux.intel.com>
- <173119879475.1946529.11584229732756860169@2413ebb6fbb6>
+ igt-dev@lists.freedesktop.org,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ saurabhg.gupta@intel.com, alex.zuo@intel.com,
+ vinay.belgaumkar@intel.com
+References: <20241118180511.64212-1-jonathan.cavitt@intel.com>
+ <20241118180511.64212-3-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173119879475.1946529.11584229732756860169@2413ebb6fbb6>
+In-Reply-To: <20241118180511.64212-3-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,155 +75,238 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-11-10 at 00:33:14 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Jonathan,
+On 2024-11-18 at 18:05:09 +0000, Jonathan Cavitt wrote:
+> The tests xe_sysfs_preempt_timeout and xe_sysfs_timeslice_duration
+> modify the values of preempt_timeout_us and timeslice_duration_us,
+> respectively.  However, on a test failure, it is possible that these
+> values may remain in their modified states, resulting in the values
+> being used in future tests and causing unexpected behavior.
 > 
-> Series: Ignore more warns in xe_wedged tests (rev3)
-> URL   : https://patchwork.freedesktop.org/series/140511/
-> State : failure
+> Save the respective modified values before starting the test and attempt
+> to restore the values on test exit.
 > 
-> == Summary ==
+> v2:
+> - Fix some formatting issues (Kamil)
+> - Abort if value restore fails (Kamil)
+> - Directly call igt_sysfs_printf on exit to avoid duplicating on helper
+>   (Kamil)
 > 
-> CI Bug Log - changes from XEIGT_8101_full -> XEIGTPW_12072_full
-> ====================================================
+> v3:
+> - Do not compare potentially unassigned variable (Kamil)
+> - Whitespace and commit name fixes (Kamil)
 > 
-> Summary
-> -------
+> v4:
+> - Fix igt_sysfs_scanf/printf usage in tests (Kamil)
 > 
->   **FAILURE**
+> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/xe_sysfs_preempt_timeout.c    | 58 +++++++++++++++++++----
+>  tests/intel/xe_sysfs_timeslice_duration.c | 57 ++++++++++++++++++----
+>  2 files changed, 96 insertions(+), 19 deletions(-)
 > 
->   Serious unknown changes coming with XEIGTPW_12072_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_12072_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 4)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_12072_full:
-> 
+> diff --git a/tests/intel/xe_sysfs_preempt_timeout.c b/tests/intel/xe_sysfs_preempt_timeout.c
+> index 7fa0dfcdf7..841c04b215 100644
+> --- a/tests/intel/xe_sysfs_preempt_timeout.c
+> +++ b/tests/intel/xe_sysfs_preempt_timeout.c
+> @@ -170,6 +170,7 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
+>  	set_preempt_timeout(engine, saved);
+>  }
+>  
+> +#define	MAX_GTS	8
+>  igt_main
+>  {
+>  	static const struct {
+> @@ -183,8 +184,10 @@ igt_main
+>  				       "preempt_timeout_min",
+>  				       "preempt_timeout_max"}, };
+>  	int count = sizeof(property) / sizeof(property[0]);
+> +	int gt_count = 0;
+>  	int fd = -1, sys_fd, gt;
+> -	int engines_fd = -1, gt_fd = -1;
+> +	int engines_fd[MAX_GTS], gt_fd[MAX_GTS];
+> +	unsigned int pts[MAX_GTS][XE_MAX_ENGINE_INSTANCE];
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+> @@ -192,26 +195,61 @@ igt_main
+>  		sys_fd = igt_sysfs_open(fd);
+>  		igt_require(sys_fd != -1);
+>  		close(sys_fd);
+> +
+> +		xe_for_each_gt(fd, gt) {
+> +			int *list, size;
+> +			igt_require(gt_count < MAX_GTS);
+> +
+> +			gt_fd[gt_count] = xe_sysfs_gt_open(fd, gt);
+> +			igt_require(gt_fd[gt_count] != -1);
+> +			engines_fd[gt_count] = openat(gt_fd[gt_count], "engines", O_RDONLY);
+> +			igt_require(engines_fd[gt_count] != -1);
+> +
+> +			list = igt_sysfs_get_engine_list(engines_fd[gt_count], &size);
+> +			igt_require(size > 0);
+> +
+> +			for (int i = 0; i < size; i++)
+> +				igt_require(igt_sysfs_scanf(list[i], "preempt_timeout_us", "%u",
+> +							    &pts[gt_count][i]) == 1);
+> +
+> +			igt_sysfs_free_engine_list(list, size);
+> +			gt_count++;
+> +		}
+>  	}
+>  
+>  	for (int i = 0; i < count; i++) {
+>  		for (typeof(*tests) *t = tests; t->name; t++) {
+>  			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+> +				int j = 0;
+>  				xe_for_each_gt(fd, gt) {
+> -					gt_fd = xe_sysfs_gt_open(fd, gt);
+> -					igt_require(gt_fd != -1);
+> -					engines_fd = openat(gt_fd, "engines", O_RDONLY);
+> -					igt_require(engines_fd != -1);
+> -
+> -					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
+> -									  t->fn);
+> -					close(engines_fd);
+> -					close(gt_fd);
+> +					int e = engines_fd[j];
+> +
+> +					igt_sysfs_engines(fd, e, gt, 1, property[i], t->fn);
+> +					j++;
+>  				}
+>  			}
+>  		}
+>  	}
+>  	igt_fixture {
+> +		for (int i = gt_count - 1; i >= 0; i--) {
+> +			int *list, size;
+> +			list = igt_sysfs_get_engine_list(engines_fd[i], &size);
+> +
+> +			for (int j = size - 1; j >= 0; j--) {
+> +				unsigned int store = UINT_MAX;
+> +
+> +				igt_assert_lte(0, igt_sysfs_printf(list[j], "preempt_timeout_us",
 
-Below regressions are unrelated to change in xe_wedged test,
+This should be abort.
+
+> +								   "%u", pts[i][j]));
+> +				igt_sysfs_scanf(list[j], "preempt_timeout_us", "%u", &store);
+> +				igt_abort_on_f(store != pts[i][j],
+> +					       "preempt_timeout_us not restored!\n");
+> +			}
+> +
+> +			igt_sysfs_free_engine_list(list, size);
+> +			close(engines_fd[i]);
+> +			close(gt_fd[i]);
+> +		}
+> +
+>  		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
+> index cf95a3ac1c..22c543692c 100644
+> --- a/tests/intel/xe_sysfs_timeslice_duration.c
+> +++ b/tests/intel/xe_sysfs_timeslice_duration.c
+> @@ -142,6 +142,7 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
+>  	set_timeslice_duration(engine, saved);
+>  }
+>  
+> +#define	MAX_GTS	8
+>  igt_main
+>  {
+>  	static const struct {
+> @@ -155,8 +156,10 @@ igt_main
+>  				       "timeslice_duration_min",
+>  				       "timeslice_duration_max"}, };
+>  	int count = sizeof(property) / sizeof(property[0]);
+> +	int gt_count = 0;
+>  	int fd = -1, sys_fd, gt;
+> -	int engines_fd = -1, gt_fd = -1;
+> +	int engines_fd[MAX_GTS], gt_fd[MAX_GTS];
+> +	unsigned int tds[MAX_GTS][XE_MAX_ENGINE_INSTANCE];
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+> @@ -164,25 +167,61 @@ igt_main
+>  		sys_fd = igt_sysfs_open(fd);
+>  		igt_require(sys_fd != -1);
+>  		close(sys_fd);
+> +
+> +		xe_for_each_gt(fd, gt) {
+> +			int *list, size;
+> +			igt_require(gt_count < MAX_GTS);
+> +
+> +			gt_fd[gt_count] = xe_sysfs_gt_open(fd, gt);
+> +			igt_require(gt_fd[gt_count] != -1);
+> +			engines_fd[gt_count] = openat(gt_fd[gt_count], "engines", O_RDONLY);
+> +			igt_require(engines_fd[gt_count] != -1);
+> +
+> +			list = igt_sysfs_get_engine_list(engines_fd[gt_count], &size);
+> +			igt_require(size > 0);
+> +
+> +			for (int i = 0; i < size; i++)
+> +				igt_require(igt_sysfs_scanf(list[i], "timeslice_duration_us", "%u",
+> +							    &tds[gt_count][i]) == 1);
+> +
+> +			igt_sysfs_free_engine_list(list, size);
+> +			gt_count++;
+> +		}
+>  	}
+>  
+>  	for (int i = 0; i < count; i++) {
+>  		for (typeof(*tests) *t = tests; t->name; t++) {
+>  			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+> +				int j = 0;
+>  				xe_for_each_gt(fd, gt) {
+> -					gt_fd = xe_sysfs_gt_open(fd, gt);
+> -					igt_require(gt_fd != -1);
+> -					engines_fd = openat(gt_fd, "engines", O_RDONLY);
+> -					igt_require(engines_fd != -1);
+> -					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
+> -										 t->fn);
+> -					close(engines_fd);
+> -					close(gt_fd);
+> +					int e = engines_fd[j];
+> +
+> +					igt_sysfs_engines(fd, e, gt, 1, property[i], t->fn);
+> +					j++;
+>  				}
+>  			}
+>  		}
+>  	}
+>  	igt_fixture {
+> +		for (int i = gt_count - 1; i >= 0; i--) {
+> +			int *list, size;
+> +			list = igt_sysfs_get_engine_list(engines_fd[i], &size);
+> +
+> +			for (int j = size - 1; j >= 0; j--) {
+> +				unsigned int store = UINT_MAX;
+> +
+> +				igt_assert_lte(0, igt_sysfs_printf(list[j], "timeslice_duration_us",
+
+Same here.
+With above fixed you can keep my r-b,
 
 Regards,
 Kamil
 
-> ### IGT changes ###
+> +								   "%u", tds[i][j]));
+> +				igt_sysfs_scanf(list[j], "timeslice_duration_us", "%u", &store);
+> +				igt_abort_on_f(store != tds[i][j],
+> +					       "timeslice_duration_us not restored!\n");
+> +			}
+> +
+> +			igt_sysfs_free_engine_list(list, size);
+> +			close(engines_fd[i]);
+> +			close(gt_fd[i]);
+> +		}
+> +
+>  		drm_close_driver(fd);
+>  	}
+>  }
+> -- 
+> 2.43.0
 > 
-> #### Possible regressions ####
-> 
->   * igt@core_getversion@all-cards:
->     - shard-dg2-set2:     [PASS][1] -> [FAIL][2] +1 other test fail
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-435/igt@core_getversion@all-cards.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-434/igt@core_getversion@all-cards.html
-> 
->   * igt@core_hotunplug@unbind-rebind:
->     - shard-lnl:          [PASS][3] -> [DMESG-WARN][4]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-lnl-4/igt@core_hotunplug@unbind-rebind.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-lnl-1/igt@core_hotunplug@unbind-rebind.html
-> 
->   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-b-hdmi-a-6:
->     - shard-dg2-set2:     [PASS][5] -> [DMESG-WARN][6]
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-432/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-b-hdmi-a-6.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-b-hdmi-a-6.html
-> 
->   * igt@kms_cursor_crc@cursor-random-128x128:
->     - shard-dg2-set2:     [PASS][7] -> [SKIP][8] +3 other tests skip
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-435/igt@kms_cursor_crc@cursor-random-128x128.html
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_cursor_crc@cursor-random-128x128.html
-> 
->   * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-wc:
->     - shard-dg2-set2:     NOTRUN -> [SKIP][9] +3 other tests skip
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-wc.html
-> 
->   * igt@kms_psr@fbc-psr2-no-drrs:
->     - shard-lnl:          [PASS][10] -> [FAIL][11] +1 other test fail
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-lnl-4/igt@kms_psr@fbc-psr2-no-drrs.html
->    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-lnl-6/igt@kms_psr@fbc-psr2-no-drrs.html
-> 
->   * igt@kms_rotation_crc@sprite-rotation-90:
->     - shard-bmg:          NOTRUN -> [SKIP][12]
->    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-bmg-6/igt@kms_rotation_crc@sprite-rotation-90.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe:
->     - shard-dg2-set2:     [SKIP][13] ([Intel XE#373]) -> [SKIP][14]
->    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-466/igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe.html
->    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe.html
-> 
->   * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling:
->     - shard-dg2-set2:     [SKIP][15] ([Intel XE#455]) -> [SKIP][16]
->    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-435/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling.html
->    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling.html
-> 
->   * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-wc:
->     - shard-dg2-set2:     [SKIP][17] ([Intel XE#2890]) -> [SKIP][18]
->    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-434/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-wc.html
->    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-wc.html
-> 
->   * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:
->     - shard-dg2-set2:     [SKIP][19] ([Intel XE#2351] / [Intel XE#2890]) -> [SKIP][20]
->    [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-434/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html
->    [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html
-> 
->   * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc:
->     - shard-dg2-set2:     [SKIP][21] ([Intel XE#653]) -> [SKIP][22]
->    [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-463/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc.html
->    [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc.html
-> 
->   * igt@kms_hdr@static-toggle-dpms:
->     - shard-dg2-set2:     [SKIP][23] ([Intel XE#2423] / [i915#2575]) -> [SKIP][24] +1 other test skip
->    [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-434/igt@kms_hdr@static-toggle-dpms.html
->    [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_hdr@static-toggle-dpms.html
-> 
->   * igt@kms_pm_backlight@basic-brightness:
->     - shard-dg2-set2:     [SKIP][25] ([Intel XE#870]) -> [SKIP][26]
->    [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-464/igt@kms_pm_backlight@basic-brightness.html
->    [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-432/igt@kms_pm_backlight@basic-brightness.html
-> 
->   * igt@kms_pm_dc@dc5-retention-flops:
->     - shard-dg2-set2:     [SKIP][27] ([Intel XE#3309]) -> [SKIP][28]
->    [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8101/shard-dg2-433/igt@kms_pm_dc@dc5-retention-flops.html
->    [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/shard-dg2-434/igt@kms_pm_dc@dc5-retention-flops.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_12072_full that come from known issues:
-> 
-> ### IGT changes ###
-
-...cut...
-
->   [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
->   [i915#2575]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2575
->   [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
-> 
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_8101 -> IGTPW_12072
->   * Linux: xe-2190-5521311ecd7ffbb0adf016dbf83bd0165fc94d25 -> xe-2193-5d94c05a3b9625a569b92a4ed208ce04e241f122
-> 
->   IGTPW_12072: ba67f6a70cd24baa8b58795c7bd22bd2b8028525 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8101: 1235576931b5abdcb2c755672d194fb540fa6fb1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-2190-5521311ecd7ffbb0adf016dbf83bd0165fc94d25: 5521311ecd7ffbb0adf016dbf83bd0165fc94d25
->   xe-2193-5d94c05a3b9625a569b92a4ed208ce04e241f122: 5d94c05a3b9625a569b92a4ed208ce04e241f122
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12072/index.html
