@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28BE0D3B994
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 14:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82187D3B9A4
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 15:26:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB35D10E8CD;
-	Tue, 26 Nov 2024 14:24:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hAm7oAZd";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D687410E8CD
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Nov 2024 14:24:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732631083; x=1764167083;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hBZ0xYzC/gybQaZ3TPYan6SPdctnW0Yl5MhuppmNG3I=;
- b=hAm7oAZdfzhfIMzH5MPoUleBM7PJccBuLiM09s8P1NGWVWGB/877+f7P
- dswXS6W4gJcERudpaOgIkaulI6x+wZsbDx9r86RHhVqI6akt9MfOAQsfW
- sLq+vJDPdR4HUZaXyE29rIg7vDsedwoJB4G60jYfDRdYdFre6pAKf80bj
- OcjoHbKoikcdtkeI7EZ/ooUpad94mkex1lx/gK9DH1YcNn2dYNPP53aTi
- zC8H2cY3bLv3t9HcAPe8eTIrZ0c2qy33BsaCOqsS2LSMEdOHX/6OmQABK
- EZT4BIBCKFqyCG0Zg+FhgPGJT6pXsvtAjgqH05/3kkziPtOwLYAcZ1CWx w==;
-X-CSE-ConnectionGUID: 6fG/69nGQDuErCSHPfouwQ==
-X-CSE-MsgGUID: MMk5H8ITTpK6KCe6kpBzFA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="33045365"
-X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="33045365"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2024 06:24:43 -0800
-X-CSE-ConnectionGUID: jEZNHB0MQC2yyEaTJJX4Ng==
-X-CSE-MsgGUID: +k1Mdq6ATPyIAdrf8sswPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="122611969"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2024 06:24:42 -0800
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, ramanaidu.naladala@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v3 1/1] RFC tests/intel/kms_frontbuffer_tracking:
- Introduce plane-fbc-dr test
-Date: Tue, 26 Nov 2024 19:49:58 +0530
-Message-Id: <20241126141958.1138489-2-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241126141958.1138489-1-santhosh.reddy.guddati@intel.com>
-References: <20241126141958.1138489-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40F8410E13A;
+	Tue, 26 Nov 2024 15:26:14 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EBE510E13A;
+ Tue, 26 Nov 2024 15:26:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0457081956017944678=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/perf=5Fpmu=3A_F?=
+ =?utf-8?q?ix_Test_Assertion_Failure_for_semaphore-busy_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ravi Kumar Vodapalli" <ravi.kumar.vodapalli@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Nov 2024 15:26:13 -0000
+Message-ID: <173263477318.3394481.17252294569228225524@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241126140913.4066558-1-ravi.kumar.vodapalli@intel.com>
+In-Reply-To: <20241126140913.4066558-1-ravi.kumar.vodapalli@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,290 +37,328 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the FP_DAMAGE_CLIPS property of the plane for non psr modes
-and fill the damaged rectangles on the plane with framebuffer
-coordinates and verify that fbc dirty ctl is enabled.
+--===============0457081956017944678==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Fix typo , add version check for feature support,
-    extend support for all pipes (Rama Naidu).
+== Series Details ==
 
-v3: Add new subtest to scatter dirty rectangles at differnt places in a
-    frame and commit all rectangles at once (Rama Naidu).
-    Add a negative case with invalid coordinates (Vinod)
+Series: tests/intel/perf_pmu: Fix Test Assertion Failure for semaphore-busy test
+URL   : https://patchwork.freedesktop.org/series/141792/
+State : success
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 233 +++++++++++++++++++++++++
- 1 file changed, 233 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index b7e3f7379..730e02b04 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -57,6 +57,14 @@
-  * Description: Sanity test to enable FBC on a plane.
-  * Functionality: fbc
-  *
-+ * SUBTEST: plane-fbc-dr
-+ * Description: Sanity test to verify FBC DR by sending multiple damaged areas with non psr modes
-+ * Functionality: fbc
-+ *
-+ * SUBTEST: plane-fbc-dr-scatter
-+ * Description: Sanity test to verify FBC DR by sending multiple damaged areas scattered.
-+ * Functionality: fbc
-+ *
-  * SUBTEST: pipe-fbc-rte
-  * Description: Sanity test to enable FBC on each pipe.
-  * Functionality: fbc
-@@ -1168,6 +1176,7 @@
-  */
- 
- #define TIME SLOW_QUICK(1000, 10000)
-+#define MAX_DIRTY_RECT 3
- 
- IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
- 		     "its related features: FBC, PSR and DRRS");
-@@ -4282,6 +4291,204 @@ static int opt_handler(int option, int option_index, void *data)
- 	return IGT_OPT_HANDLER_SUCCESS;
- }
- 
-+static void set_damage_clip(struct drm_mode_rect *damage, int x1, int y1, int x2, int y2)
-+{
-+	damage->x1 = x1;
-+	damage->y1 = y1;
-+	damage->x2 = x2;
-+	damage->y2 = y2;
-+}
-+
-+static void fbc_dirty_rectangle_basic(const struct test_mode *t)
-+{
-+	struct drm_mode_rect rect_data[MAX_DIRTY_RECT];
-+	uint32_t color;
-+	drmModeModeInfo *mode;
-+	int width, height, x, y;
-+
-+	prepare_subtest_data(t, NULL);
-+
-+	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+
-+	mode = igt_output_get_mode(prim_mode_params.output);
-+
-+	set_damage_clip(&rect_data[0], 0, 0, mode->hdisplay - 1, mode->vdisplay - 1);
-+	set_damage_clip(&rect_data[1], mode->hdisplay / 2, mode->vdisplay / 2,
-+			mode->hdisplay - 1, mode->vdisplay - 1);
-+	set_damage_clip(&rect_data[2], mode->hdisplay - 10, mode->vdisplay - 10,
-+			mode->hdisplay - 1, mode->vdisplay - 1);
-+
-+	igt_debug("Dirty Rectangle data = {%d, %d, %d, %d}, {%d, %d, %d, %d}, {%d, %d, %d, %d}\n",
-+		   rect_data[0].x1, rect_data[0].y1, rect_data[0].x2, rect_data[0].y2,
-+		   rect_data[1].x1, rect_data[1].y1, rect_data[1].x2, rect_data[1].y2,
-+		   rect_data[2].x1, rect_data[2].y1, rect_data[2].x2, rect_data[2].y2);
-+
-+	for (int i = 0; i < MAX_DIRTY_RECT; i++) {
-+		igt_plane_t *primary;
-+		igt_fb_t fb[MAX_DIRTY_RECT];
-+
-+		primary = igt_output_get_plane_type(prim_mode_params.output,
-+						    DRM_PLANE_TYPE_PRIMARY);
-+		width = rect_data[i].x2 - rect_data[i].x1;
-+		height = rect_data[i].y2 - rect_data[i].y1;
-+		x = rect_data[i].x1;
-+		y = rect_data[i].y1;
-+
-+		create_fb(t->format, width, height, t->tiling, t->plane, &fb[i]);
-+		color = pick_color(&fb[i], COLOR_PRIM_BG);
-+		igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb[i], t->method,
-+				 x, y, width, height, color);
-+		igt_plane_set_fb(primary, &fb[i]);
-+		igt_plane_set_position(primary, x, y);
-+		igt_plane_set_size(primary, width, height);
-+		igt_fb_set_size(&fb[i], primary, width, height);
-+		igt_plane_replace_prop_blob(primary, IGT_PLANE_FB_DAMAGE_CLIPS,
-+					    &rect_data[i], sizeof(rect_data[i]));
-+
-+		igt_display_commit_atomic(&drm.display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+		fbc_update_last_action();
-+		do_assertions(ASSERT_FBC_ENABLED | ASSERT_NO_ACTION_CHANGE);
-+		igt_assert_f(fbc_enable_per_plane(primary->index + 1,
-+			     prim_mode_params.pipe), "FBC disabled\n");
-+
-+		igt_remove_fb(drm.fd, &fb[i]);
-+		igt_plane_set_fb(primary, NULL);
-+		igt_display_commit2(&drm.display, COMMIT_ATOMIC);
-+	}
-+}
-+
-+static void fbc_dirty_rectangle_scatter(const struct test_mode *t)
-+{
-+	struct drm_mode_rect rect_data[MAX_DIRTY_RECT];
-+	uint32_t color;
-+	drmModeModeInfo *mode;
-+	int width, height, x, y;
-+	int hdisplay, vdisplay;
-+	igt_plane_t *primary;
-+	igt_fb_t fb[MAX_DIRTY_RECT];
-+
-+	prepare_subtest_data(t, NULL);
-+	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+
-+	mode = igt_output_get_mode(prim_mode_params.output);
-+	hdisplay = mode->hdisplay;
-+	vdisplay = mode->vdisplay;
-+
-+	// Set damage clips
-+	set_damage_clip(&rect_data[0], 0, 0, hdisplay / 4, vdisplay / 4);
-+	set_damage_clip(&rect_data[1], hdisplay / 2, vdisplay / 2,
-+			hdisplay / 2 + 50, vdisplay / 2 + 50);
-+	set_damage_clip(&rect_data[2], hdisplay - 100,
-+			vdisplay - 100, hdisplay - 1, vdisplay - 1);
-+
-+	igt_debug("Dirty Rectangle data = {%d, %d, %d, %d}, {%d, %d, %d, %d}, {%d, %d, %d, %d}\n",
-+		   rect_data[0].x1, rect_data[0].y1, rect_data[0].x2, rect_data[0].y2,
-+		   rect_data[1].x1, rect_data[1].y1, rect_data[1].x2, rect_data[1].y2,
-+		   rect_data[2].x1, rect_data[2].y1, rect_data[2].x2, rect_data[2].y2);
-+
-+	primary = igt_output_get_plane_type(prim_mode_params.output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+
-+	for (int i = 0; i < MAX_DIRTY_RECT; i++) {
-+		width = rect_data[i].x2 - rect_data[i].x1;
-+		height = rect_data[i].y2 - rect_data[i].y1;
-+		x = rect_data[i].x1;
-+		y = rect_data[i].y1;
-+
-+		create_fb(t->format, width, height, t->tiling, t->plane, &fb[i]);
-+		color = pick_color(&fb[i], COLOR_PRIM_BG);
-+		igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb[i], t->method,
-+				 x, y, width, height, color);
-+		igt_plane_set_fb(primary, &fb[i]);
-+		igt_plane_set_position(primary, x, y);
-+		igt_plane_set_size(primary, width, height);
-+		igt_fb_set_size(&fb[i], primary, width, height);
-+	}
-+
-+	igt_plane_replace_prop_blob(primary, IGT_PLANE_FB_DAMAGE_CLIPS,
-+				    rect_data, sizeof(rect_data));
-+
-+	igt_display_commit_atomic(&drm.display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	fbc_update_last_action();
-+	do_assertions(ASSERT_FBC_ENABLED | ASSERT_NO_ACTION_CHANGE);
-+	igt_assert_f(fbc_enable_per_plane(primary->index + 1,
-+					  prim_mode_params.pipe),
-+					  "FBC disabled\n");
-+
-+	for (int i = 0; i < MAX_DIRTY_RECT; i++)
-+		igt_remove_fb(drm.fd, &fb[i]);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit2(&drm.display, COMMIT_ATOMIC);
-+}
-+
-+static void fbc_dirty_rectangle_negative(const struct test_mode *t)
-+{
-+	struct drm_mode_rect rect_data[MAX_DIRTY_RECT];
-+	uint32_t color, ret;
-+	drmModeModeInfo *mode;
-+	int width, height, x, y;
-+	igt_plane_t *primary;
-+	igt_fb_t fb[MAX_DIRTY_RECT];
-+
-+	prepare_subtest_data(t, NULL);
-+
-+	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+
-+	mode = igt_output_get_mode(prim_mode_params.output);
-+
-+	// Set invalid damage clips
-+	set_damage_clip(&rect_data[0], -10, -10,
-+			mode->hdisplay / 4, mode->vdisplay / 4);
-+	set_damage_clip(&rect_data[1], mode->hdisplay / 2, mode->vdisplay / 2,
-+			mode->hdisplay / 2 + 50, mode->vdisplay / 2 + 50);
-+	set_damage_clip(&rect_data[2], mode->hdisplay - 100, mode->vdisplay - 100,
-+			mode->hdisplay + 10, mode->vdisplay + 10);
-+
-+	igt_debug("Dirty Rectangle data = {%d, %d, %d, %d}, {%d, %d, %d, %d}, {%d, %d, %d, %d}\n",
-+		   rect_data[0].x1, rect_data[0].y1, rect_data[0].x2, rect_data[0].y2,
-+		   rect_data[1].x1, rect_data[1].y1, rect_data[1].x2, rect_data[1].y2,
-+		   rect_data[2].x1, rect_data[2].y1, rect_data[2].x2, rect_data[2].y2);
-+
-+	primary = igt_output_get_plane_type(prim_mode_params.output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	for (int i = 0; i < MAX_DIRTY_RECT; i++) {
-+		width = rect_data[i].x2 - rect_data[i].x1;
-+		height = rect_data[i].y2 - rect_data[i].y1;
-+		x = rect_data[i].x1;
-+		y = rect_data[i].y1;
-+
-+		create_fb(t->format, width, height, t->tiling, t->plane, &fb[i]);
-+		color = pick_color(&fb[i], COLOR_PRIM_BG);
-+		igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb[i], t->method,
-+				 x, y, width, height, color);
-+		igt_plane_set_fb(primary, &fb[i]);
-+		igt_plane_set_position(primary, x, y);
-+		igt_plane_set_size(primary, width, height);
-+		igt_fb_set_size(&fb[i], primary, width, height);
-+	}
-+
-+	igt_plane_replace_prop_blob(primary, IGT_PLANE_FB_DAMAGE_CLIPS,
-+				    rect_data, sizeof(rect_data));
-+
-+	ret = igt_display_try_commit_atomic(&drm.display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_assert_eq(ret, -EINVAL);
-+
-+	fbc_update_last_action();
-+	do_assertions(ASSERT_FBC_DISABLED | ASSERT_NO_ACTION_CHANGE);
-+
-+	for (int i = 0; i < MAX_DIRTY_RECT; i++)
-+		igt_remove_fb(drm.fd, &fb[i]);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit2(&drm.display, COMMIT_ATOMIC);
-+}
-+
- const char *help_str =
- "  --no-status-check           Don't check for enable/disable status\n"
- "  --no-crc-check              Don't check for CRC values\n"
-@@ -4507,6 +4714,32 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		plane_fbc_rte_subtest(&t);
- 	}
- 
-+	igt_subtest_group {
-+		igt_subtest_with_dynamic("plane-fbc-dr") {
-+			t.feature = FEATURE_FBC;
-+			igt_require_f(drm.display_ver > 20,
-+				      "FBC with dirty region is not supported\n");
-+			igt_dynamic_f("pipe-%s", kmstest_pipe_name(prim_mode_params.pipe))
-+			fbc_dirty_rectangle_basic(&t);
-+		}
-+
-+		igt_subtest_with_dynamic("plane-fbc-dr-scatter") {
-+			t.feature = FEATURE_FBC;
-+			igt_require_f(drm.display_ver > 20,
-+				      "FBC with dirty region is not supported\n");
-+			igt_dynamic_f("pipe-%s", kmstest_pipe_name(prim_mode_params.pipe))
-+			fbc_dirty_rectangle_scatter(&t);
-+		}
-+
-+		igt_subtest_with_dynamic("plane-fbc-dr-negative") {
-+			t.feature = FEATURE_FBC;
-+			igt_require_f(drm.display_ver > 20,
-+					  "FBC with dirty region is not supported\n");
-+			igt_dynamic_f("pipe-%s", kmstest_pipe_name(prim_mode_params.pipe))
-+			fbc_dirty_rectangle_negative(&t);
-+		}
-+	}
-+
- 	igt_subtest_group {
- 		igt_subtest_with_dynamic("pipe-fbc-rte") {
- 
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_8126_BAT -> XEIGTPW_12198_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 9)
+------------------------------
+
+  Additional (1): bat-pvc-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12198_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][1] ([i915#6077]) +30 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-pvc-2:          NOTRUN -> [SKIP][2] ([Intel XE#1024] / [Intel XE#782]) +5 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][3] ([Intel XE#1024] / [Intel XE#784])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024] / [Intel XE#947]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#540]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#1024] / [Intel XE#783])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#829]) +6 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][8] ([Intel XE#780])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_prop_blob@basic.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#1024]) +2 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-pvc-2:          NOTRUN -> [SKIP][10] ([Intel XE#2849]) +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_gt_freq@freq_fixed_idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][11] ([Intel XE#1021]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_gt_freq@freq_fixed_idle.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][12] ([Intel XE#255])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_intel_bb@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][13] ([Intel XE#532])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_intel_bb@render.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-pvc-2:          NOTRUN -> [SKIP][14] ([Intel XE#2229]) +1 other test skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-pvc-2:          NOTRUN -> [SKIP][15] ([Intel XE#977]) +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][16] ([Intel XE#976])
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-pvc-2:          NOTRUN -> [SKIP][17] ([Intel XE#979])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][18] ([Intel XE#531])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-pvc-2:          NOTRUN -> [SKIP][19] ([Intel XE#3342])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+  [Intel XE#1021]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+  [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
+  [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
+  [Intel XE#976]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/976
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+  [i915#6077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8126 -> IGTPW_12198
+  * Linux: xe-2279-7cd4d1589e461d61330ec272c448bc6d1b9da35e -> xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198
+
+  IGTPW_12198: 12198
+  IGT_8126: 8126
+  xe-2279-7cd4d1589e461d61330ec272c448bc6d1b9da35e: 7cd4d1589e461d61330ec272c448bc6d1b9da35e
+  xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198: 739a2506c44a0be22cc842d2c625a05ed21c1198
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/index.html
+
+--===============0457081956017944678==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/perf_pmu: Fix Test Assertion Failure for semaphore-busy test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141792/">https://patchwork.freedesktop.org/series/141792/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8126_BAT -&gt; XEIGTPW_12198_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 9)</h2>
+<p>Additional (1): bat-pvc-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12198_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077">i915#6077</a>) +30 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/829">Intel XE#829</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_fixed_idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_gt_freq@freq_fixed_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021">Intel XE#1021</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_intel_bb@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/532">Intel XE#532</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/976">Intel XE#976</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/531">Intel XE#531</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12198/bat-pvc-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8126 -&gt; IGTPW_12198</li>
+<li>Linux: xe-2279-7cd4d1589e461d61330ec272c448bc6d1b9da35e -&gt; xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198</li>
+</ul>
+<p>IGTPW_12198: 12198<br />
+  IGT_8126: 8126<br />
+  xe-2279-7cd4d1589e461d61330ec272c448bc6d1b9da35e: 7cd4d1589e461d61330ec272c448bc6d1b9da35e<br />
+  xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198: 739a2506c44a0be22cc842d2c625a05ed21c1198</p>
+
+</body>
+</html>
+
+--===============0457081956017944678==--
