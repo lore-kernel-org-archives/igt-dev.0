@@ -4,28 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C73D6553E
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 18:10:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF8CBD6553F
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Nov 2024 18:10:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0EDFF10E97B;
-	Tue, 26 Nov 2024 18:10:13 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AE5D10E979;
- Tue, 26 Nov 2024 18:10:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B0F910E979;
+	Tue, 26 Nov 2024 18:10:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifXxFhVl";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 837D410E979
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Nov 2024 18:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732644651; x=1764180651;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=iBvEl4O+y4MDtX2aD93hVgNJZX255Oy1bCUSdpHLC7I=;
+ b=ifXxFhVlu6Fyt1bKurcG1jJf1P/+hCwTDJVSAz1pg9FSQAeffsd2fVET
+ 0a1fLDkP/Jgq24SLSr/rYpZKcZ5QS1TfyHEb04/xn/5PolIcAbW4GG85A
+ PH+yt0DywW2yzUH3+lJJ+ehlHPvPQxrzaEt59ejMrNKiUneU/NiIQrhm5
+ jRqJ7LTAb8oKypqhdwmZ3ycvk2RYcy1ndAYz+Ln8tKLIg6kFH/VWPYIrt
+ ovJB3NNrDesLVcmL3lvLbdcKMB30qo3VgixVVO91E8eCt8oZn/SYRxJH9
+ nIM3vkFwimZ9+HbXzQTvSlN2q+Kd37w0Jf+QDD/76YOFF7IfAL83wz4ms g==;
+X-CSE-ConnectionGUID: Or/nYbC2Tey1h1KFbWGRNg==
+X-CSE-MsgGUID: xEF/4169RemXEiGJwpyQSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="32952137"
+X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="32952137"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2024 10:10:50 -0800
+X-CSE-ConnectionGUID: rwGuBj7ZQ/eIMvIpAjCRAA==
+X-CSE-MsgGUID: BZWwRzzKRm2YbfzScmjN9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; d="scan'208";a="91583148"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2024 10:10:48 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 0/2] Ignore more warns in xe_wedged tests
+Date: Tue, 26 Nov 2024 19:10:18 +0100
+Message-Id: <20241126181024.1398259-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_starting_with_=5B1?=
- =?utf-8?q?/3=5D_tests/amdgpu=3A_refactor_multimedia_tests_for_improved_modu?=
- =?utf-8?q?larity?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Nov 2024 18:10:11 -0000
-Message-ID: <173264461148.3447124.10021162651085117374@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241126172923.206952-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20241126172923.206952-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,105 +65,19 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+It turns out that there are more drm warnings which should be ignored
+by igt_runner. Tests succeeds but later on when generating results
+runner turns it into a failure.
 
-Series: series starting with [1/3] tests/amdgpu: refactor multimedia tests for improved modularity
-URL   : https://patchwork.freedesktop.org/series/141801/
-State : failure
+v2: corrected and added more regex-es, move '|' to begin of split
+  strings for better reading, corrected name in Cc and added r-b
+v3: corrected drmtest logic for opening cards, improved assert
+  logic for xe unbind (Kamil)
 
-== Summary ==
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-CI Bug Log - changes from IGT_8126 -> IGTPW_12201
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12201 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12201, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12201/index.html
-
-Participating hosts (45 -> 43)
-------------------------------
-
-  Missing    (2): bat-rplp-1 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12201:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
-    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8126/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12201/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12201 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [PASS][3] -> [SKIP][4] ([i915#9197]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8126/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12201/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [FAIL][5] ([i915#12903]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8126/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12201/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_mocs:
-    - bat-twl-2:          [ABORT][7] ([i915#12919]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8126/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12201/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8126 -> IGTPW_12201
-  * Linux: CI_DRM_15747 -> CI_DRM_15749
-
-  CI-20190529: 20190529
-  CI_DRM_15747: 7cd4d1589e461d61330ec272c448bc6d1b9da35e @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15749: 739a2506c44a0be22cc842d2c625a05ed21c1198 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12201: 12201
-  IGT_8126: 8126
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12201/index.html
