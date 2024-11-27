@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7021CD6D229
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 19:06:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F0ECD6D22C
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 19:06:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A4F910E1D4;
-	Wed, 27 Nov 2024 19:06:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5ADCA10EBCD;
+	Wed, 27 Nov 2024 19:06:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I1mF0CZ9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VfHChtfL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F9CC10E1D4
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 19:06:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD5E310EBCD
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 19:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732734411; x=1764270411;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=B4+7gunf7UoHOkVbKs/6QF6UqxxovTnoF5HQt0nIFtU=;
- b=I1mF0CZ9Beabz+jVN1NHlXVoFPv03iXrM7IyehUUiG6aleUia+PPpqe9
- jAPc5UDfJnx/7dlCQhaQeujZqxKLNs8OqFTUXTvmpG+JynANNyDOPbUe3
- h/R/1a4FttCYRwt5z7V5VMbn4NzAEnFvg2E9+0lcf8YnS3Ovs8XwJk5n4
- R7N/Vu7n2V41wL+/Wn+tgpkg2E3vNFGCNnampPPcvxlQ9sG6M1IZAKCho
- +XF8CDen18JryXDjncyT4qVCprlVkBfvtbt3p8DKoqqxrf/uHdvWMnD8p
- aejmP5rV5sML+Hmwcd9/tabt7Tvvxwjhq6/LKj5hm6J/DP7DU9hizHTnR Q==;
-X-CSE-ConnectionGUID: QLnnHju8QWi1oIPFyJiVzw==
-X-CSE-MsgGUID: xc1WCFvUSSOPJoFsu4IIyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="50355533"
-X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="50355533"
+ t=1732734413; x=1764270413;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=rg/GCNhGOIY8168QesXXn/u8MDsSvc3S6XOCkJtOgtw=;
+ b=VfHChtfLshNDK4Gbfl1s/nbELDbBFFB3s130QdjC2Rz1KhDk+RaIQUuS
+ 5ABeU7b72JxOLqaaQsfvRrbXx9YnBD10P4mTvo0XcSL+cm2/IIbm6i0IU
+ e3hpF0vJtL/6v+P928usKfJmerg/YjEuI+qIB3pnh5Dl24NZ11/Xh8JWJ
+ dEDegcwp/kNgN64tBQZd2cVLO3PH/oRKjoAcVlMwhe+kmJegx9o5Ar7If
+ w1/9CWq0hj5xE1HxggkcsG6co3R4V6BEagw3ObiJZipPGYBudKlyACRUq
+ bEcmmIaqQmHcpjEaxZGD0jur8VpzO6nDNd7ECGucG9prYnEVZLtkhSEgn Q==;
+X-CSE-ConnectionGUID: +EfEK/QGQPWYJJJfO3Z8dw==
+X-CSE-MsgGUID: AM7f+XddQ3WCL+VRH3fB/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="50355534"
+X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="50355534"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2024 11:06:51 -0800
-X-CSE-ConnectionGUID: MjiyOo7GSBaPya5hGzr57A==
-X-CSE-MsgGUID: nzccsXRwQOKTm6b76FuPQQ==
+ 27 Nov 2024 11:06:53 -0800
+X-CSE-ConnectionGUID: 4TZ8/aBFTAOz5lkuH/9Nvw==
+X-CSE-MsgGUID: 0RjXi0MQTdqElP00GHRXLg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="122851634"
+X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="122851642"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 11:06:50 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 11:06:52 -0800
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com,
 	Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t 0/2] Update skip messages in scaling modes
-Date: Thu, 28 Nov 2024 00:35:28 +0530
-Message-ID: <20241127190530.3421021-1-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/kms_scaling_modes: Add informative messages
+ for skipped scaling mode tests
+Date: Thu, 28 Nov 2024 00:35:29 +0530
+Message-ID: <20241127190530.3421021-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241127190530.3421021-1-ramanaidu.naladala@intel.com>
+References: <20241127190530.3421021-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,19 +69,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-These changes improve the clarity of test logs, making it easier
-to understand why certain tests are skipped.
+Add `igt_info` messages to provide more context when skipping outputs
+that do not support scaling mode. Include `igt_info` messages to
+indicate when invalid pipe/output combinations are skipped.
 
-Naladala Ramanaidu (2):
-  tests/kms_scaling_modes: Add informative messages for skipped scaling
-    mode tests
-  HAX patch do not merge
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/kms_scaling_modes.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
- tests/intel-ci/fast-feedback.testlist    | 171 +-------------
- tests/intel-ci/xe-fast-feedback.testlist | 282 +----------------------
- tests/kms_scaling_modes.c                |   9 +-
- 3 files changed, 15 insertions(+), 447 deletions(-)
-
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 5fd34c4b2..dd2c6426c 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -117,12 +117,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+ 		igt_display_reset(display);
+ 
+-		if (!has_scaling_mode(output))
++		if (!has_scaling_mode(output)) {
++			igt_info("Output %s does not support scaling mode.\n",
++				  igt_output_name(output));
+ 			continue;
++		}
+ 
+ 		igt_output_set_pipe(output, pipe);
+-		if (!intel_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display)) {
++			igt_info("Skipping invalid pipe/output combination.\n");
+ 			continue;
++		}
+ 
+ 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 			test_scaling_mode_on_output(display, pipe, output, flags);
 -- 
 2.43.0
 
