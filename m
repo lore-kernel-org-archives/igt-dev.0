@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64260D609C4
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 09:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84718D609C4
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 09:45:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19A5710EA68;
-	Wed, 27 Nov 2024 09:45:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E84B10EA6A;
+	Wed, 27 Nov 2024 09:45:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y+SElzvd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ndY7qJp7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76C7A10EA68
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 09:45:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93ED410EA6A
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 09:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732700745; x=1764236745;
+ t=1732700749; x=1764236749;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CTFVg3MFSAbmRLGbfoeyg0cBF25V8Rt1V8ASXTiFS9I=;
- b=Y+SElzvdZFZpQiRb1wm5Bu/Gogm+YBe0MzYquBkrw3M0B1msP4iiSu6R
- 8LPsSCBSSiCNUpQwNnfNEBa38TftXI/ZSvd7LpVh+kRY+tMZZUDKq7XyE
- kwcI5YULfSDoHFoBTF8yFSPQa+UZW+HhhyR1UYAGnAPC9ot3531LRmreF
- gYdM1rOl/d10jSBuVQ3n8JsGbtK6JwxBftLAFUdwZk2CINFopvABjtVM/
- eGj7SpEwa7ly/hkvMUzdCWnBnfkAl39jgSNu13+VjsXNHiJlXRYn6Er/8
- gcEI/P0+b3QK7WhQew+fJMX/BNSvcDhoWbNSLufGlOGSGwfAHHysHnJDr w==;
-X-CSE-ConnectionGUID: E3G+Ma+BSKG1UWgACm8kEg==
-X-CSE-MsgGUID: fbnEqXq7RYOVVbSVRwzx3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="43556098"
-X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; d="scan'208";a="43556098"
+ bh=HaBzZWF3DeeYcw1X/jAPHQyUOyMzJykfrABte9Okrn8=;
+ b=ndY7qJp7NPhMbMGAarjbMU1c5YBuJz8wV6rv3MCceaxmVEbvMYBP2AGs
+ F1Y5k6d/S1rf7Sv1ToYLTgc9+OA4eosnf7Ijhr5Bg3wPYpb5JTTA4qN4G
+ Zd3uXdbJL5p1TcauvjlOVmgDQXfVfg8EhWdDeXRKMj87M/eyPy6f/2n4g
+ NF9Ro6dPuOGy2JOs9Cmie5W7nU5EPdp2hd9JETbbTGQ3dhGONojtdAzT0
+ foBiHP0SUJw2/EEtggfEPUKNxlOSq/+K288IFGNRdl4FfsMRzqUmPCOvg
+ 3nny5aYcRE+bhij73AhDOvWo/X5LMiIP+Jl7IOk+ZxdHZDuYSb275ShfR w==;
+X-CSE-ConnectionGUID: HO6nTwQhR7+33ivkd9WfaQ==
+X-CSE-MsgGUID: PoLgwSPwQAeq0/WkhDR5rQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="43556100"
+X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; d="scan'208";a="43556100"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2024 01:45:44 -0800
-X-CSE-ConnectionGUID: 50wJHyvmTzeuqIOQYLB1Kw==
-X-CSE-MsgGUID: tcNjGmTWQjmrBavvlhpdwA==
+ 27 Nov 2024 01:45:49 -0800
+X-CSE-ConnectionGUID: vTf3LOPrRPee25FVQqE1qA==
+X-CSE-MsgGUID: YOYLaY18QMuObKAlzNvzaQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; d="scan'208";a="91984009"
+X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; d="scan'208";a="91984021"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
  ([10.245.246.117])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2024 01:45:43 -0800
+ 27 Nov 2024 01:45:47 -0800
 From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t v3 1/2] HAX/DO_NOT_MERGE: Wait for context termination
-Date: Wed, 27 Nov 2024 10:45:27 +0100
-Message-ID: <20241127094528.7041-2-krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t v3 2/2] tests/intel/gem_ctx_persistence: Wait for
+ context termination
+Date: Wed, 27 Nov 2024 10:45:28 +0100
+Message-ID: <20241127094528.7041-3-krzysztof.niemiec@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241127094528.7041-1-krzysztof.niemiec@intel.com>
 References: <20241127094528.7041-1-krzysztof.niemiec@intel.com>
@@ -68,55 +69,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
- tests/intel-ci/fast-feedback.testlist    | 4 ++++
- tests/intel-ci/xe-fast-feedback.testlist | 4 ++++
- tests/intel-ci/xe.blocklist.txt          | 1 -
- 3 files changed, 8 insertions(+), 1 deletion(-)
+In some of the subtests, there is a race condition - if a non-persistent
+context is not terminated by the driver before the associated spinner is
+ended and probed for status, the status will be incorrectly reported as
+completed.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..dbfb9ed65 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,6 +1,10 @@
- # Try to load the driver if it's not available yet.
- igt@i915_module_load@load
+Add a sleep instruction before the assert to give the kernel time to
+clean up.
+
+v2:
+ - Update the patch description,
+ - Change the previous expression to a simpler usleep(),
+ - Add a usleep() call in test_saturated_hostile_all(), as this behavior
+   is also shown in this subtest.
+
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/intel/gem_ctx_persistence.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
+index 974444cf1..d90b78267 100644
+--- a/tests/intel/gem_ctx_persistence.c
++++ b/tests/intel/gem_ctx_persistence.c
+@@ -1029,6 +1029,9 @@ test_saturated_hostile_all(int i915, const intel_ctx_t *base_ctx,
+ 	igt_spin_busywait_until_started(spin);
+ 	intel_ctx_destroy(i915, ctx);
  
-+igt@gem_ctx_persistence@smoketest
-+igt@gem_ctx_persistence@saturated-hostile
-+igt@gem_ctx_persistence@saturated-hostile-nopreempt
++	/* Give the kernel some time to terminate the context */
++	usleep(reset_timeout_ms * 1000);
 +
- # Keep alphabetically sorted by default
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index d9fb98aab..bbe411692 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,6 +1,10 @@
- # Should be the first test
- igt@xe_module_load@load
+ 	/* Hostile request requires a GPU reset to terminate */
+ 	igt_assert_eq(wait_for_status(spin->out_fence, reset_timeout_ms), -EIO);
  
-+igt@gem_ctx_persistence@smoketest
-+igt@gem_ctx_persistence@saturated-hostile
-+igt@gem_ctx_persistence@saturated-hostile-nopreempt
+@@ -1173,6 +1176,9 @@ static void __smoker(int i915, const intel_ctx_cfg_t *cfg,
+ 	drm_close_driver(fd);
+ 	flush_delayed_fput(i915);
+ 
++	/* Give the kernel some time to terminate the context */
++	usleep(reset_timeout_ms * 1000);
 +
- igt@fbdev@eof
- igt@fbdev@info
- igt@fbdev@nullptr
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index f9ef612c4..882a0e963 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -15,7 +15,6 @@ igt@vmwgfx.*
- # Exclude all i915 tests
- ##################################################################
- igt@api.*
--igt@gem.*
- igt@gen.*
- igt@i915_.*
- igt@perf.*
+ 	igt_spin_end(spin);
+ 
+ 	igt_assert_eq(wait_for_status(spin->out_fence, timeout), expected);
 -- 
 2.45.2
 
