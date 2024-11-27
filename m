@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FEBBD690E4
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 08:02:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 236C8D690E2
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 08:07:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E896310E30D;
-	Thu, 28 Nov 2024 08:02:12 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3857110E30D;
- Thu, 28 Nov 2024 08:02:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51D8210E30D;
+	Thu, 28 Nov 2024 08:07:42 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dragonic.eu header.i=@dragonic.eu header.b="UVtCigp0";
+	dkim-atps=neutral
+Received: from k11.unixstorm.org (k11.unixstorm.org [91.227.122.80])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33A7410E0F5
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 15:05:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dragonic.eu
+ ; s=x;
+ h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=VZeg8A3GrLGZqePYwXP1S4aRmt5KXjrIbCiWP0ZYlyw=; b=UVtCigp0+jjYGBy65DgMHySUax
+ FZpMVDryn0GBF2PqQlE8AYF903DcUYx4TwBnYNwgBRfbOQ5Uvh67++tWzfyfB+Cq8aubevBRq8FuT
+ AQK8stqBWvyMy40YzGgO1zVRzQ0U7GoE/nfNsxXtXbR8E+oEATswQVGaFwEjSvQxR0mZ591A5IJXO
+ wwWWj4EA1UV7G/5P1sj1cakgW5PJfLUQ6rsksFxnn2ReOKjQR/eL1DRn95MWg2Vh/X81QX7LEFrau
+ Ml1jUR1Mtu5j/vcBlD7t1O2NmhbLlfX1BJbw/b7p2kHyjn4ce7L8LrG1lJGjs7Len8qsBlRDUSkZD
+ ZWPIMxQg==;
+Received: from 037008241088.gdansk.vectranet.pl ([37.8.241.88]
+ helo=folkvangr.lan)
+ by k11.unixstorm.org with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96.2-12-g29d01ae2a) (envelope-from <rk@dragonic.eu>)
+ id 1tGJbT-00077f-2k; Wed, 27 Nov 2024 16:05:19 +0100
+Message-ID: <8383c51498ad6b3586afbc48523727a1db3b0e15.camel@dragonic.eu>
+Subject: Re: [i-g-t,v2,1/4] runner/executor: Check for error at writing
+ dmesg dump
+From: Ryszard Knop <rk@dragonic.eu>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ igt-dev@lists.freedesktop.org
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Date: Wed, 27 Nov 2024 16:05:11 +0100
+In-Reply-To: <20241120183208.146299-2-kamil.konieczny@linux.intel.com>
+References: <20241120183208.146299-2-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=3AAdd_m?=
- =?utf-8?q?ore_logs_to_skips/failure_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Nov 2024 08:02:12 -0000
-Message-ID: <173278093222.4034178.4126235926346776861@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241128063539.1984668-1-pranay.samala@intel.com>
-In-Reply-To: <20241128063539.1984668-1-pranay.samala@intel.com>
+X-Authenticated-Id: dragoon
+X-Mailman-Approved-At: Thu, 28 Nov 2024 08:07:41 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +61,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+On Wed, 2024-11-20 at 19:32 +0100, Kamil Konieczny wrote:
+> In processing kernel dmesg there are checks for error at reading
+> so add also one for writing.
+>=20
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+> ---
+> =C2=A0runner/executor.c | 29 ++++++++++++++++++++++++++---
+> =C2=A01 file changed, 26 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/runner/executor.c b/runner/executor.c
+> index ac73e1dde..e4d1fc323 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -600,7 +600,7 @@ static long dump_dmesg(int kmsgfd, int outfd)
+> =C2=A0	bool underflow_once =3D false;
+> =C2=A0	char cont;
+> =C2=A0	char buf[2048];
+> -	ssize_t r;
+> +	ssize_t r, w;
+> =C2=A0	long written =3D 0;
+> =C2=A0
+> =C2=A0	if (kmsgfd < 0)
+> @@ -654,9 +654,32 @@ static long dump_dmesg(int kmsgfd, int outfd)
+> =C2=A0			return written;
+> =C2=A0		}
+> =C2=A0
+> -		write(outfd, buf, r);
+> -		written +=3D r;
+> +		w =3D write(outfd, buf, r);
+> +		if (w < r) {
 
-Series: tests/kms_plane:Add more logs to skips/failure (rev2)
-URL   : https://patchwork.freedesktop.org/series/141653/
-State : success
+You could rewrite this entire block to have a single write call, or to hand=
+le multiple
+interrupts/better error messages:
 
-== Summary ==
+int encountered_errors =3D 0;
+while (written < r) {
+  int w =3D write(outfd, buf + written, r - written);
+  if (w > 0) {
+    written +=3D w;
+    continue;
+  }
 
-CI Bug Log - changes from IGT_8128 -> IGTPW_12212
-====================================================
+  encountered_errors +=3D 1;
+  if (encountered_errors >=3D 100) {
+    errf("Too many errors while writing out dmesg, aborting\n");
+    break;
+=C2=A0 }
 
-Summary
--------
+  // Recoverable errors:
+  if ((errno =3D=3D EINTR) || (errno =3D=3D EAGAIN)) continue;
 
-  **SUCCESS**
+  // Non-recoverable:
+  errf("Error writing out dmesg (written %ld < %ld bytes): %s\n", written, =
+r, strerror(errno));
+  break;
+}
 
-  No regressions found.
+> +			if (w =3D=3D -1 && errno =3D=3D EINTR)
+> +				w =3D write(outfd, buf, r);
+> +
+> +			if (w < r && w >=3D 0)
+> +				w +=3D write(outfd, buf + w, r - w);
+> +
+> +			if (w < r) {
+> +				long err =3D -errno;
+> +
+> +				if (err) {
+> +					errf("Write error while processing dmesg, errno=3D%d %ld <
+> %ld\n", errno, w, r);
+> +				} else {
+> +					errf("Cannot write dmesg chunk: %ld < %ld\n", w, r);
+> +					err =3D -1;
+> +				}
+> =C2=A0
+> +				if (comparefd >=3D 0)
+> +					close(comparefd);
+> +
+> +				return err;
+> +			}
+> +		}
+> +
+> +		written +=3D r;
+> =C2=A0		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
+> =C2=A0					=C2=A0=C2=A0=C2=A0 &flags, &seq, &usec, &cont) =3D=3D 4) {
+> =C2=A0			/*
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12212 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-rpls-4:         [PASS][1] -> [FAIL][2] ([i915#12903])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-mtlp-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][5] -> [ABORT][6] ([i915#12061]) +1 other test abort
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arlh-2:         [PASS][7] -> [ABORT][8] ([i915#12061]) +1 other test abort
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dp1:
-    - bat-apl-1:          [PASS][9] -> [DMESG-WARN][10] ([i915#12921]) +1 other test dmesg-warn
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-apl-1/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-apl-1/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-2:          [ABORT][11] ([i915#12919] / [i915#9413]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-twl-2/igt@i915_selftest@live.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-twl-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-twl-2:          [ABORT][13] ([i915#9413]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [SKIP][15] ([i915#9197]) -> [PASS][16] +3 other tests pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8128/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#12921]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12921
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8128 -> IGTPW_12212
-  * Linux: CI_DRM_15754 -> CI_DRM_15755
-
-  CI-20190529: 20190529
-  CI_DRM_15754: 24e36a5200d65a337d37827d4abcae11c9693f6f @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15755: 2a09bda868b896bc2a88a3a902e493063ce9e021 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12212: 12212
-  IGT_8128: 8128
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12212/index.html
