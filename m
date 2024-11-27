@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CDB4D609CD
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 10:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ABB4D609CC
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 10:22:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C16F10EA82;
-	Wed, 27 Nov 2024 10:20:32 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7FE810E223;
- Wed, 27 Nov 2024 10:20:30 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7901652489808959919=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id ADB3210E223;
+	Wed, 27 Nov 2024 10:22:10 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DTtyun1r";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28BC610E223
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 10:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732702930; x=1764238930;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ZcpvzHMXwW3I5BobjietkTZ3gOzuQrCMQwaa8KcXEoc=;
+ b=DTtyun1ra30O3YYVuYfJLcHHykU3Vo26XB5TO2vqlUUeSn7Mh/fuC5Pj
+ m9GfvT+IVfAVWcDbnnJECJEh7nZBZHWFrJIeW8OND122nyX8K2VGUgcyh
+ 3iKXkdVQL/wbMoGfmwCYvh4MVTKuvre8Z4OX+o8Il3+ne36MhcKv6rOOZ
+ yMDpNIaD0O0UkBwdg5ogrbcVaghcW8Z+be+QQ012qWT/9682iuwb0rrss
+ sE1J7zQ7xwltR/JTWXaT5cM1xuHreczkh7jN9N/8M/kaK/HI33EYp0Vo+
+ 93LmRKAtdrZmRlHuwfuyRCHJDoYXscvCJ/hujycIbE5qEzY1Hchvwjp1G w==;
+X-CSE-ConnectionGUID: r/9uIaAGQa2BiXuQMG6nTQ==
+X-CSE-MsgGUID: Yy0VU6E3Rz69Z8+6lVfJAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="43391072"
+X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; d="scan'208";a="43391072"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2024 02:22:10 -0800
+X-CSE-ConnectionGUID: skHKesMXTxSTSeaghbR63g==
+X-CSE-MsgGUID: oJq3dm9eRImfSHM4F6Dibg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; d="scan'208";a="96974268"
+Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
+ ([10.91.214.39])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2024 02:22:09 -0800
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, marcin.bernatowicz@linux.intel.com,
+ michal.wajdeczko@intel.com, pawel.sikora@intel.com
+Subject: [PATCH i-g-t v3 0/4] vmtb: Introduce SR-IOV VM-level testing tool
+Date: Wed, 27 Nov 2024 11:21:58 +0100
+Message-Id: <20241127102202.3903735-1-adam.miszczak@linux.intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Skip_test_if_joiner_display?=
- =?utf-8?q?_is_connected_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 27 Nov 2024 10:20:30 -0000
-Message-ID: <173270283081.3676557.11757435578431929168@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241127081357.569876-1-jeevan.b@intel.com>
-In-Reply-To: <20241127081357.569876-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,155 +65,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7901652489808959919==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+VM Test Bench (VMTB) is a tool for testing virtualization
+(SR-IOV) supported by the xe driver.
+It allows to enable and provision VFs (Virtual Functions)
+and facilitates manipulation of VMs (Virtual Machines)
+running virtual GPUs.
 
-== Series Details ==
+Initially only basic test scenarios are provided:
+- enable VFs, pass it to VMs and boot guest OS
+- submit basic workloads on a guest with virtualized GPU
+- exercise VF driver probe and remove
 
-Series: Skip test if joiner display is connected (rev4)
-URL   : https://patchwork.freedesktop.org/series/141614/
-State : success
+Proposed location for the new tool is the root IGT directory:
+igt-gpu-tools/vmtb
+but some other options can be also considered, for example:
+tools/vmtb
+tests/vmtb
 
-== Summary ==
+v2:
+- improve device detection function:
+  instead of parsing lspci output with regex, iterate over
+  sysfs driver directory to get bound devices' BDFs (Marcin)
+- remove obsolete fixtures and other unused code (Marcin)
 
-CI Bug Log - changes from XEIGT_8127_BAT -> XEIGTPW_12204_BAT
-====================================================
+v3:
+- integrate VMTB with IGT meson build/install system (Kamil)
+- move the tool from IGT's root to tools/vmtb subdir (Kamil)
+- split VMTB core implementation, tests, resources and meson config
+  into separate patches (Kamil)
+- update readme description for build, install and dependencies
 
-Summary
--------
+Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Paweł Sikora <pawel.sikora@intel.com>
 
-  **SUCCESS**
+Adam Miszczak (4):
+  tools/vmtb: VM Test Bench core
+  tools/vmtb: Basic SR-IOV tests
+  tools/vmtb: Test resources - vGPU profiles
+  tools/vmtb: Install VMTB with IGT build system
 
-  No regressions found.
+ meson.build                                   |   2 +
+ meson_options.txt                             |   5 +
+ tools/meson.build                             |   4 +
+ tools/vmtb/MANIFEST.in                        |   3 +
+ tools/vmtb/README.md                          | 106 +++
+ tools/vmtb/bench/__init__.py                  |  43 ++
+ tools/vmtb/bench/configurators/__init__.py    |   0
+ tools/vmtb/bench/configurators/pci.py         |  48 ++
+ .../vmtb/bench/configurators/vgpu_profile.py  | 264 ++++++++
+ .../configurators/vgpu_profile_config.py      | 148 +++++
+ tools/vmtb/bench/configurators/vmtb_config.py | 110 ++++
+ tools/vmtb/bench/drivers/__init__.py          |   0
+ tools/vmtb/bench/drivers/driver_interface.py  | 198 ++++++
+ tools/vmtb/bench/drivers/xe.py                | 307 +++++++++
+ tools/vmtb/bench/exceptions.py                |  40 ++
+ tools/vmtb/bench/executors/__init__.py        |   0
+ .../bench/executors/executor_interface.py     |  22 +
+ tools/vmtb/bench/executors/gem_wsim.py        |  70 ++
+ tools/vmtb/bench/executors/igt.py             | 117 ++++
+ tools/vmtb/bench/executors/shell.py           |  30 +
+ tools/vmtb/bench/helpers/__init__.py          |   0
+ tools/vmtb/bench/helpers/helpers.py           |  77 +++
+ tools/vmtb/bench/helpers/log.py               |  75 +++
+ tools/vmtb/bench/machines/__init__.py         |   0
+ tools/vmtb/bench/machines/device_interface.py |  23 +
+ tools/vmtb/bench/machines/host.py             | 196 ++++++
+ .../vmtb/bench/machines/machine_interface.py  |  65 ++
+ .../vmtb/bench/machines/physical/__init__.py  |   0
+ tools/vmtb/bench/machines/physical/device.py  | 240 +++++++
+ tools/vmtb/bench/machines/virtual/__init__.py |   0
+ .../machines/virtual/backends/__init__.py     |   0
+ .../virtual/backends/backend_interface.py     |  40 ++
+ .../machines/virtual/backends/guestagent.py   |  99 +++
+ .../machines/virtual/backends/qmp_monitor.py  | 161 +++++
+ tools/vmtb/bench/machines/virtual/vm.py       | 604 ++++++++++++++++++
+ tools/vmtb/dev-requirements.txt               |   6 +
+ tools/vmtb/pyproject.toml                     |  25 +
+ tools/vmtb/pytest.ini                         |   0
+ tools/vmtb/requirements.txt                   |   2 +
+ tools/vmtb/vmm_flows/__init__.py              |   0
+ tools/vmtb/vmm_flows/conftest.py              | 307 +++++++++
+ .../resources/vgpu_profiles/Flex170.json      | 113 ++++
+ tools/vmtb/vmm_flows/test_basic.py            | 160 +++++
+ tools/vmtb/vmtb_config.json                   |  31 +
+ 44 files changed, 3741 insertions(+)
+ create mode 100644 tools/vmtb/MANIFEST.in
+ create mode 100644 tools/vmtb/README.md
+ create mode 100644 tools/vmtb/bench/__init__.py
+ create mode 100644 tools/vmtb/bench/configurators/__init__.py
+ create mode 100644 tools/vmtb/bench/configurators/pci.py
+ create mode 100644 tools/vmtb/bench/configurators/vgpu_profile.py
+ create mode 100644 tools/vmtb/bench/configurators/vgpu_profile_config.py
+ create mode 100644 tools/vmtb/bench/configurators/vmtb_config.py
+ create mode 100644 tools/vmtb/bench/drivers/__init__.py
+ create mode 100644 tools/vmtb/bench/drivers/driver_interface.py
+ create mode 100644 tools/vmtb/bench/drivers/xe.py
+ create mode 100644 tools/vmtb/bench/exceptions.py
+ create mode 100644 tools/vmtb/bench/executors/__init__.py
+ create mode 100644 tools/vmtb/bench/executors/executor_interface.py
+ create mode 100644 tools/vmtb/bench/executors/gem_wsim.py
+ create mode 100644 tools/vmtb/bench/executors/igt.py
+ create mode 100644 tools/vmtb/bench/executors/shell.py
+ create mode 100644 tools/vmtb/bench/helpers/__init__.py
+ create mode 100644 tools/vmtb/bench/helpers/helpers.py
+ create mode 100644 tools/vmtb/bench/helpers/log.py
+ create mode 100644 tools/vmtb/bench/machines/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/device_interface.py
+ create mode 100644 tools/vmtb/bench/machines/host.py
+ create mode 100644 tools/vmtb/bench/machines/machine_interface.py
+ create mode 100644 tools/vmtb/bench/machines/physical/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/physical/device.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/backend_interface.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/guestagent.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/qmp_monitor.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/vm.py
+ create mode 100644 tools/vmtb/dev-requirements.txt
+ create mode 100644 tools/vmtb/pyproject.toml
+ create mode 100644 tools/vmtb/pytest.ini
+ create mode 100644 tools/vmtb/requirements.txt
+ create mode 100644 tools/vmtb/vmm_flows/__init__.py
+ create mode 100644 tools/vmtb/vmm_flows/conftest.py
+ create mode 100644 tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
+ create mode 100644 tools/vmtb/vmm_flows/test_basic.py
+ create mode 100644 tools/vmtb/vmtb_config.json
 
-  
+-- 
+2.39.1
 
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12204_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3517]) +2 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8127/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@kms_addfb_basic@bad-pitch-0:
-    - bat-adlp-7:         [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3429]) +31 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8127/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-adlp-7:         [PASS][5] -> [SKIP][6] ([Intel XE#455]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8127/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-
-  
-  [Intel XE#3429]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429
-  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8127 -> IGTPW_12204
-  * Linux: xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198 -> xe-2283-441e225c838a29660f3f1c29cc2a617572e63099
-
-  IGTPW_12204: 9966add27274a5e871cc23031a6ea7aebff48777 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8127: 433ecaf95ccaed2b5adcb40d27fa5b7a08a2e03d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198: 739a2506c44a0be22cc842d2c625a05ed21c1198
-  xe-2283-441e225c838a29660f3f1c29cc2a617572e63099: 441e225c838a29660f3f1c29cc2a617572e63099
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/index.html
-
---===============7901652489808959919==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Skip test if joiner display is connected (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141614/">https://patchwork.freedesktop.org/series/141614/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8127_BAT -&gt; XEIGTPW_12204_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12204_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8127/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +2 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@bad-pitch-0:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8127/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429">Intel XE#3429</a>) +31 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8127/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12204/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8127 -&gt; IGTPW_12204</li>
-<li>Linux: xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198 -&gt; xe-2283-441e225c838a29660f3f1c29cc2a617572e63099</li>
-</ul>
-<p>IGTPW_12204: 9966add27274a5e871cc23031a6ea7aebff48777 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8127: 433ecaf95ccaed2b5adcb40d27fa5b7a08a2e03d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2281-739a2506c44a0be22cc842d2c625a05ed21c1198: 739a2506c44a0be22cc842d2c625a05ed21c1198<br />
-  xe-2283-441e225c838a29660f3f1c29cc2a617572e63099: 441e225c838a29660f3f1c29cc2a617572e63099</p>
-
-</body>
-</html>
-
---===============7901652489808959919==--
