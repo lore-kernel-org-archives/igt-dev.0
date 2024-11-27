@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AF1D6D234
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 19:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33A04D6D237
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 20:03:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DC34A10E30B;
-	Wed, 27 Nov 2024 19:53:59 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC9D710E30B;
- Wed, 27 Nov 2024 19:53:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id C38CB10EBD4;
+	Wed, 27 Nov 2024 20:03:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XtKw3lZ0";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8852310EBD4
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 20:03:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732737790; x=1764273790;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=N1HVALRfDeOAd3oW4Sv9E1UNMNPvtIpmJTWYojBwZLo=;
+ b=XtKw3lZ0EFKrtu5BdKAHnM+2C5Kj+mACpXHYMFq8t3lBLrnMANteRBLn
+ qoRzUD+u+mqwpLgBKDbFwdmYtUApijtCUt0oSCK9xc3yiZ4VPc7U8eW+W
+ Qt89V7DUBFCDGIQcEEGMiMeTSkQ6pZydxgc/ppqto14BVZsSG+x8t6ZzK
+ VXUh4NYyPD7k3tbXTxDrhB/RKsGvQI390lxnMTx+Wm3hYAyDxEZJ1utoA
+ l6qF2+rPArJKE6gjKFbAE0FcD1LdonG2hn2rwCd8GcnlnbS8cthCo75VL
+ EHxFI0hcBhB59rT3eostjplU8fZKUlnH1XmPuAXXP+1erYd3d38w3aA9P w==;
+X-CSE-ConnectionGUID: 0AVpkZzPQSiCB4W6J7tV9Q==
+X-CSE-MsgGUID: eN0PrbOvS3iSLyAnZLwbCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="44344219"
+X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="44344219"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2024 12:03:10 -0800
+X-CSE-ConnectionGUID: zOD16AQxQOSTM1O8Sgk2GQ==
+X-CSE-MsgGUID: 4zgV34QySnCfoBJFk0TDXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="96484669"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.81.89])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2024 12:03:07 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, adam.miszczak@linux.intel.com,
+ jakub1.kolakowski@intel.com, lukasz.laguna@intel.com,
+ michal.wajdeczko@intel.com, michal.winiarski@intel.com,
+ narasimha.c.v@intel.com, piotr.piorkowski@intel.com,
+ satyanarayana.k.v.p@intel.com, tomasz.lis@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 0/4] Subject: [PATCH i-g-t 0/4] lib/xe: Add SR-IOV
+ debugfs and provisioning helpers
+Date: Wed, 27 Nov 2024 21:02:58 +0100
+Message-Id: <20241127200302.1376594-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Update_skip_messages_in_s?=
- =?utf-8?q?caling_modes?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 27 Nov 2024 19:53:57 -0000
-Message-ID: <173273723796.3835350.5417158078517027285@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241127190530.3421021-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20241127190530.3421021-1-ramanaidu.naladala@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,182 +70,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+This patch series introduces helper functions for managing SR-IOV debugfs
+and provisioning attributes in the XE driver.
 
-Series: Update skip messages in scaling modes
-URL   : https://patchwork.freedesktop.org/series/141850/
-State : success
+Summary of changes:
 
-== Summary ==
+1. lib/xe/xe_sriov_debugfs:
+   - Add generic helper functions to get and set debugfs attributes
+     for u32, u64, and bool types.
 
-CI Bug Log - changes from IGT_8127 -> IGTPW_12209
-====================================================
+2. lib/xe/xe_sriov_provisioning:
+   - Introduce functions to get and set scheduling attributes such as
+     execution quantum, preemption timeout, idle scheduling policy,
+     priority, and engine reset behavior. Provide both returning and
+     asserting variants for error handling flexibility.
+   - Add a helper to ensure default scheduling attributes are set
+     for PF and VF contexts. Skip tests when non-default configurations
+     are detected.
+   - Add accessors for shared resource quota and spare attributes
+     (GGTT, LMEM, contexts, and doorbells).
 
-Summary
--------
+Marcin Bernatowicz (4):
+  lib/xe/xe_sriov_debugfs: Add debugfs get/set functions for u32, u64,
+    bool
+  lib/xe/xe_sriov_provisioning: Add scheduling attributes accessors
+  lib/xe/xe_sriov_provisioning: Add helper to check default scheduling
+    attributes
+  lib/xe/xe_sriov_provisioning: Add accessors for quota/spare attributes
 
-  **SUCCESS**
+ lib/xe/xe_sriov_debugfs.c      | 194 ++++++++++++
+ lib/xe/xe_sriov_debugfs.h      |  18 ++
+ lib/xe/xe_sriov_provisioning.c | 534 +++++++++++++++++++++++++++++++++
+ lib/xe/xe_sriov_provisioning.h |  68 +++++
+ 4 files changed, 814 insertions(+)
 
-  No regressions found.
+-- 
+2.31.1
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/index.html
-
-Participating hosts (45 -> 42)
-------------------------------
-
-  Missing    (3): fi-glk-j4005 fi-snb-2520m bat-jsl-3 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12209 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_scaling_modes@scaling-mode-center:
-    - fi-blb-e6850:       NOTRUN -> [SKIP][1] +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-blb-e6850/igt@kms_scaling_modes@scaling-mode-center.html
-
-  * igt@kms_scaling_modes@scaling-mode-full:
-    - fi-ivb-3770:        NOTRUN -> [SKIP][2] +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-ivb-3770/igt@kms_scaling_modes@scaling-mode-full.html
-    - bat-dg1-6:          NOTRUN -> [SKIP][3] ([i915#12311]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-dg1-6/igt@kms_scaling_modes@scaling-mode-full.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][4] +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-elk-e7500/igt@kms_scaling_modes@scaling-mode-full.html
-    - bat-dg2-8:          NOTRUN -> [SKIP][5] ([i915#3555]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-dg2-8/igt@kms_scaling_modes@scaling-mode-full.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][6] +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-kbl-guc/igt@kms_scaling_modes@scaling-mode-full.html
-    - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#3555]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adls-6/igt@kms_scaling_modes@scaling-mode-full.html
-    - bat-adlm-1:         NOTRUN -> [SKIP][8] ([i915#9900]) +3 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adlm-1/igt@kms_scaling_modes@scaling-mode-full.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][9] +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-ilk-650/igt@kms_scaling_modes@scaling-mode-full.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#3555]) +3 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-tgl-1115g4/igt@kms_scaling_modes@scaling-mode-full.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][11] +3 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-cfl-guc/igt@kms_scaling_modes@scaling-mode-full.html
-
-  * igt@kms_scaling_modes@scaling-mode-full-aspect:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][12] ([i915#9792]) +3 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-mtlp-6/igt@kms_scaling_modes@scaling-mode-full-aspect.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][13] ([i915#10470])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adlp-11/igt@kms_scaling_modes@scaling-mode-full-aspect.html
-
-  * igt@kms_scaling_modes@scaling-mode-none:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][14] +3 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-skl-6600u/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-arlh-3:         NOTRUN -> [SKIP][15] ([i915#11495]) +4 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-arlh-3/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][16] +3 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-pnv-d510/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-dg1-7:          NOTRUN -> [SKIP][17] ([i915#3555]) +3 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-dg1-7/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-adlp-9:         NOTRUN -> [SKIP][18] ([i915#3555]) +3 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adlp-9/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-twl-2:          NOTRUN -> [SKIP][19] ([i915#11495])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-twl-2/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][20] ([i915#3555]) +3 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-dg2-11/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-rpls-4:         NOTRUN -> [SKIP][21] ([i915#3555]) +3 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-rpls-4/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][22] +3 other tests skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-kbl-7567u/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][23] +3 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-cfl-8700k/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][24] +3 other tests skip
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-kbl-8809g/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-apl-1:          NOTRUN -> [SKIP][25] +3 other tests skip
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-apl-1/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-dg2-14:         NOTRUN -> [SKIP][26] ([i915#3555]) +3 other tests skip
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-dg2-14/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][27] +3 other tests skip
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-bsw-nick/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][28] +3 other tests skip
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-kbl-2/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-arls-5:         NOTRUN -> [SKIP][29] ([i915#12732]) +3 other tests skip
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-arls-5/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][30] ([i915#3555] / [i915#5030])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-rplp-1/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-arlh-2:         NOTRUN -> [SKIP][31] ([i915#11346]) +3 other tests skip
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-arlh-2/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][32] ([i915#3555]) +3 other tests skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-rkl-11600/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-dg2-9:          NOTRUN -> [SKIP][33] ([i915#3555]) +3 other tests skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-dg2-9/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][34] +3 other tests skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-kbl-x1275/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][35] ([i915#10470] / [i915#10501]) +2 other tests skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adlp-11/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][36] +3 other tests skip
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-hsw-4770/igt@kms_scaling_modes@scaling-mode-none.html
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][37] +3 other tests skip
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/fi-cfl-8109u/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-mtlp-8:         NOTRUN -> [SKIP][38] ([i915#3555] / [i915#5030] / [i915#9041])
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-mtlp-8/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][39] ([i915#3555] / [i915#5030])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-jsl-1/igt@kms_scaling_modes@scaling-mode-none.html
-    - bat-adlp-6:         NOTRUN -> [SKIP][40] ([i915#3555] / [i915#5030])
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adlp-6/igt@kms_scaling_modes@scaling-mode-none.html
-
-  * igt@kms_scaling_modes@scaling-mode-none@pipe-a-edp-1:
-    - bat-adlp-6:         NOTRUN -> [SKIP][41] ([i915#5030]) +3 other tests skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-adlp-6/igt@kms_scaling_modes@scaling-mode-none@pipe-a-edp-1.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][42] ([i915#5030]) +3 other tests skip
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-rplp-1/igt@kms_scaling_modes@scaling-mode-none@pipe-a-edp-1.html
-
-  * igt@kms_scaling_modes@scaling-mode-none@pipe-b-edp-1:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][43] ([i915#5030]) +2 other tests skip
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-mtlp-8/igt@kms_scaling_modes@scaling-mode-none@pipe-b-edp-1.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][44] ([i915#5030]) +2 other tests skip
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-jsl-1/igt@kms_scaling_modes@scaling-mode-none@pipe-b-edp-1.html
-
-  * igt@kms_scaling_modes@scaling-mode-none@pipe-c-edp-1:
-    - bat-twl-2:          NOTRUN -> [SKIP][45] ([i915#11495] / [i915#5030]) +2 other tests skip
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-twl-2/igt@kms_scaling_modes@scaling-mode-none@pipe-c-edp-1.html
-
-  * igt@kms_scaling_modes@scaling-mode-none@pipe-d-edp-1:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][46] ([i915#5030] / [i915#9041])
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/bat-mtlp-8/igt@kms_scaling_modes@scaling-mode-none@pipe-d-edp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10470]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470
-  [i915#10501]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10501
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#11495]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11495
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#12732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12732
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#5030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5030
-  [i915#9041]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9041
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
-  [i915#9900]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8127 -> IGTPW_12209
-  * Linux: CI_DRM_15749 -> CI_DRM_15754
-
-  CI-20190529: 20190529
-  CI_DRM_15749: 739a2506c44a0be22cc842d2c625a05ed21c1198 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15754: 24e36a5200d65a337d37827d4abcae11c9693f6f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12209: 12209
-  IGT_8127: 433ecaf95ccaed2b5adcb40d27fa5b7a08a2e03d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12209/index.html
