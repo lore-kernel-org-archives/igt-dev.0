@@ -4,182 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC27CD690E2
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 08:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26D1DD690E8
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 08:24:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7777D10E30D;
-	Thu, 28 Nov 2024 08:15:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D4A0510E30D;
+	Thu, 28 Nov 2024 08:24:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z6SptME2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EZqNSV3q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F9CF10E30D
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 08:15:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C10D910E30D
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 08:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732781715; x=1764317715;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=rf5zMGMhf52kOb8ydE5dJQRtb/TFb8XY7+p1pM8q3HU=;
- b=Z6SptME27BowuD+c0EGtMnnOPNsysMAAwVwDExIeR1e1hhWH//aE4XfT
- Uf42R9vF7AJG7eQRlf/SsDN4YN5uIUfgYzi78x0q1J+4BkfcohmofIQAz
- XL2BalRrVz/UFIPFgd8o12TJHPrCA3TAGZgHWRaekEyW6JEnI3+WyMZsz
- 6Pu9c3bIJcg5rT3Gyc9VrYqbiXVrS6sNLYWoa75GFYwKYJ1WF2zkY8F25
- EfrnLy1qQTlb0bdckpk63DR4DPKA90yrkVdDHoriwlCv+dhw5QEsMZjIV
- DxJ3nNzMTaEX7Aehsh6IDRuzCQ/hrZdd0J3o1pERkxi9z8VT+GhijKvgO A==;
-X-CSE-ConnectionGUID: ++nUPyQNQP2TC4EK2p/BSw==
-X-CSE-MsgGUID: k8oBOU2GSmiVI2ehIDMmuA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="35865949"
-X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; d="scan'208";a="35865949"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2024 00:15:15 -0800
-X-CSE-ConnectionGUID: TQWM0h1FTIe0xrLGviM/GQ==
-X-CSE-MsgGUID: SBWCHrlVSTaqgsIa6S8pSw==
+ t=1732782252; x=1764318252;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=z+5mou7ecc7CHm4Wu7H9OK4dlzQMrXmKOjwd3uHFFlo=;
+ b=EZqNSV3qQoYD+dOiAkbc8wesVZ7XUg5poEAqqGpW5NcuJbzHHZyBbk/Q
+ Ww/DwBnDtdzfqZYHA+xzULi+GKoy0JFDS+MQGr2S6I7qsoj82F44PBeUT
+ D8p4bdlg6oinlgpDgMAj/WkxqttzZHthFazjkQ8JaWwhdeW/nkYUo9YVP
+ Q6IRKotnLSXBpE8WVSP0ohp0KR9WE0yplpewMxvtKHINcL8ybGdTgkFg6
+ oiejAHjkqy6PIoOZ2mPTAijPJ0taObKZmzrq1bAlXD1lMlWULckx4BR3P
+ C+0BodXvWmVDMJNyl0WpEEnXkJmdcjVzV9fvhbcLNVN7NCxO6O0dUD0Ps A==;
+X-CSE-ConnectionGUID: h5gZ26qzRhesdVHGcnFcoA==
+X-CSE-MsgGUID: +0vvHJSLR7SGRZrDoUcpWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="36668590"
+X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; d="scan'208";a="36668590"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Nov 2024 00:24:11 -0800
+X-CSE-ConnectionGUID: Rkh6fZpyRxmGhDf+l9JS6A==
+X-CSE-MsgGUID: Fi0FOJ2pRh27JyN7Vevp6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; d="scan'208";a="93003339"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 28 Nov 2024 00:15:15 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 28 Nov 2024 00:15:14 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 28 Nov 2024 00:15:14 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.170)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 28 Nov 2024 00:15:12 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JgpxS31hWa7N+oKYj/YqkG8Q/U52JP8WMtCBUi2ggB/LhFM2xnD9Zh91Jxs9AWykJq17RDXlPKDmYigYLDsFnrbmsBxh5XhsQvy5ljVQLQW5FT8FZxP6YWGGcXLsxpZLcRfod1E4Qe4MwEVGfi1K8cjADuW3KC0yp0daOyLrV/MrIby89EV6fZS0jD+imEaxKfH3OnlVOYHP0WpYtbAuV+ImTv05+OVATxYrFoTumcSfjoBqC0OX3FQRONMohH/x0dWWfDsdwAj3qm3PeeO0uZswP0pNIBVDHShyns9bmGZx8mvuAx4e5Pi3ONIewPdXHjRafh08sRP8sx7b6TlrZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bK/C9IHIWMajdDz/KJzUHZMiVFIw6BDM5ZYl/rHVpNk=;
- b=AiMWQeJ1nBUyIsOZBWlM72T/0K4EfOYoX808+9JxDRBf4V60ngwYFaOrwACQ1rC/UZBaieLl3ImLD6Gvy5Eq597nEFw/54BiAZDMYzpOwhUu5NbHwGStOnqyB8wL+QwJrazd0ZREgfCPgqk3OpAkInG05B2J5ECJbGU/zAEghe7N0ASd+U/FxsDvyODNcm65zwdUzfuAsbOGnviOnyURE15A6Pb8V1DG8ndVWk/bJ1Z5MVNtqgipod4IkqhCgwJXFnBarcethLRrtMvQoeazdaq0R1vABmQZ+f13j8jzIkYNOqe46JSp8JKicdqtfpfp5jjmcJfbI3tCtM7wX65Yhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by PH7PR11MB7449.namprd11.prod.outlook.com (2603:10b6:510:27a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.13; Thu, 28 Nov
- 2024 08:15:05 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8207.010; Thu, 28 Nov 2024
- 08:15:04 +0000
-Message-ID: <179e3f80-a49e-4c55-877b-8ccced1c169c@intel.com>
-Date: Thu, 28 Nov 2024 13:44:58 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 4/4] lib/igt_kms: Add 6k resolution support for a
- single CRTC
-To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <swati2.sharma@intel.com>
-References: <20241127081357.569876-1-jeevan.b@intel.com>
- <20241127081357.569876-5-jeevan.b@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20241127081357.569876-5-jeevan.b@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0242.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:21a::8) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; d="scan'208";a="91778224"
+Received: from algaffne-mobl1.amr.corp.intel.com (HELO [10.213.198.240])
+ ([10.213.198.240])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Nov 2024 00:24:10 -0800
+Message-ID: <12bdf6c0-5f0d-4a4a-99b8-50a88e848990@linux.intel.com>
+Date: Thu, 28 Nov 2024 09:24:07 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|PH7PR11MB7449:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b7714b2-ec7d-4dfd-65c4-08dd0f84c354
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?a2pDcGRIS3VMUXJJNC9zN2UwNi9ucHJLVmdMRmtIcTlJczVlVk9PZGt3ZnhS?=
- =?utf-8?B?WUFhaVlEdWlxOWcrWTlxdFdYanlrN3ZJVUk0QmZHOCthcyt1aDRrM2EvQ0VZ?=
- =?utf-8?B?ejVEQkxwK1ZnbDVlWFZGYWlWaVJYZDdXb1czWVkrQW4rY3dJNVlJUFVBRDJT?=
- =?utf-8?B?bHRIU0d1OTBPU3cySmRMVEJGM0JuL0lmdEI2YzQ5V3lsWmxVWjdPbm5rbEJr?=
- =?utf-8?B?SEVRV3NPNm1UZFRKUzQvTFZES1JBWDRzeW5iUm95ZForTW9wSSttcWhSblVS?=
- =?utf-8?B?ZHNRVjRFMkllT013R2lDdzFQTXFWVWxBOERlWXpRYWlsSjEvSzBuOEV6bTJK?=
- =?utf-8?B?R1pTUlVqZW9lOGxEVVJRVnI0MGFjOUdVbGxNSGFSZmlvVEs4K2tMcmFHZ0VL?=
- =?utf-8?B?andISjN2UlBFcWRhZlcyMFU1d2VLUmRVN0RSUGxaUks4WG9mWDNrZmgyRWpW?=
- =?utf-8?B?dnRLbk16Q01wQzlkYmJNdnJoRHQzQmo3eE5VU3NyOU5HOENEMVplR3YxOXlP?=
- =?utf-8?B?V240eWszd3FXY21xczlqd00wY1VYRjVlZkdLRy9Pb3VOVDRuZ3A3eEI4TUpW?=
- =?utf-8?B?Q1pyMEg3UHlyYjBhWHJZbExpL0VCRjg1RGNGTFlzMHliNFkzMmtIUENiWGo4?=
- =?utf-8?B?Zk5XYTM1bjB1OXFUZXNuaSsrcVNYZUlZbzU3aFhYVlRoaC9HRy9xbnNLQmRn?=
- =?utf-8?B?RFB6UHdFL3hpdWEvNEpMc0pNSk5hR3kxVTVkRWRYTUk4QkhVdVlXaFcybEUw?=
- =?utf-8?B?eWNXcnRaaTd6dXZCTlBzbm92Z2VxTjdpSTNLNGFRZ1NOUmpsVnFDcE9nU0Jo?=
- =?utf-8?B?eFZrcjIzdmhaTXQvRWFKN2JrdjNlSG1WUlBDQ3VaS0tQL3BDU3NoTFpCNmxn?=
- =?utf-8?B?OEdLdWJ5TVU2S2krYnk4MTRabnE5em9uNFFaWEo5MS8wbEMzQlBzYmhMK3dF?=
- =?utf-8?B?MzJPSDF0OUZjaHVqTTUzNHBmRzEvRzFCUlVPQnd2cVN3UlRwS2tjbE1uMGRT?=
- =?utf-8?B?Tlg4N1cxVVArZTFPeHVVUjlWYy83Ym4yeityalFnaDM3THZrTHJ2NkJJYWJW?=
- =?utf-8?B?L1dBNTBnNFFHUVdrK3I5bFViSndUTXhmcG9EcnlWemY5YklVT2xBMjNieHEz?=
- =?utf-8?B?RUtISDhCbUk4ck5NSUQvSDVKVDV6Z0J0SzFwY2sxVGU4MUtGb1VsWTM3bmdQ?=
- =?utf-8?B?RXZNcFVhak5RYkxhc0Z6Sm4xMHhaQThOZTB1QzhyaWdiMTVhMm81MllYQ3VM?=
- =?utf-8?B?anRZN2hoakJrZkxkQlNvRzRLbFl6NlYzOWJNRkhjcmJpTU5HVHhmWVo3ejl0?=
- =?utf-8?B?Rko0b0NpL1JVakZJeVpqSjA2UVA1VFNKNUhaaHZnUkgrQ3haQTdlTHU1blhh?=
- =?utf-8?B?SnRRZjh1M3VtNjRUd0ZnYUsxdlBCVyt6ZTlMNVVMV3lHamIrZVpiVFdxaDRy?=
- =?utf-8?B?eTcyZXZtVExSQzY3M1Z2bDNqQ1BYWlcwUTdLRXVmVFhBeGVzeUE5YTBtY21V?=
- =?utf-8?B?c3N3NXJVUEFDM2lVNDRLS3d3MjdaQ01wMXRub2JkSStSc0lZLzhCVTNOZzBq?=
- =?utf-8?B?NG9Qb3Y2VkpJNVR3L0IvcVVaTnBTSnVoQUV6RmNFUXkrUE1Zc1FzR2ttWDVp?=
- =?utf-8?B?bDBDWm9hdHp6U3h6bWVmRWloSmZZRmFtbGpNUjdPYzlVaVRjQ05kOUdTcE0v?=
- =?utf-8?B?ak1YaFNKTTB6S2xxa09WMDVVV3I4T2pvN2dVTGhjdDBZLzJvUU5BNXZQbkRH?=
- =?utf-8?B?N2pUT3hrbk5uOWxreGorek9ySzc2cXVMb0FVaFRNVnpSSkc0bFpKTDY4VDB1?=
- =?utf-8?B?Zy83bE9LNFpxQzl1SFVOZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TWVnNUh0QjNPN2VJUCttaGFKUy9pSVRvZXJxRTFVRXVVNXJyRSswK2w1aXh6?=
- =?utf-8?B?cCsyVzg0eVZpUXpTdXFyRW1jcGJnZHJScU11dE1RMFpoR2ZCL2E0YjlsRjJG?=
- =?utf-8?B?b1YvOTVJVHhRazVxZ2MrNytvTElJMlFpS3hJdmxWMk9OUmxiOFJVeWFKR3Av?=
- =?utf-8?B?R2FwSUs2cHJFdDBuUEI4NWJzeG1oS0lRWENjRUJ6b2J2Rjc5WHZ6cVlDdVRP?=
- =?utf-8?B?WHBzdnBnSUJjU1E3VnIrTlBpSEsrYWh6WUc2amZTRC8rSUpYRFVyTk0ydkxj?=
- =?utf-8?B?aEZvdksvWXJuVEVnbERZa3IyNCsrS21iL2pzODFxNWpLS1g4TDc3Lzdnb01C?=
- =?utf-8?B?UGhoYzJ5dWNvSEQwOFdWTFFUZktpUzBGUXZqVFplTkh6MzBhQklMQXZhMmQx?=
- =?utf-8?B?NG41a1U0RnJwUlVJd0kyWmhoUGNSb0pOVUJNbjZYNk4rQnRiU0VIKzFRZW1Q?=
- =?utf-8?B?MkpvVDNDbE1QV0VYMmZhVVFDR2dqNTAxVEtXRDF2NWhQVTFLY2xrekM5Mjht?=
- =?utf-8?B?R0taQjkwZTNhNjNGL1JMWFF5Sm9OWUV1Qms3THZMdjl4dG9WdU41Z2xnZUNT?=
- =?utf-8?B?U3d3SWpnQWRTYW41cTBUQzArSm9lRloxdHRjVW9mWHJUSUxvZzVOdVlidUlC?=
- =?utf-8?B?YlZzWnFyL0lUNFMvWFlqYVRxNUVyTU03cTlHOVFPdE9xeVdvcmhTQituYjFM?=
- =?utf-8?B?Q24wTjZ3TnhNZ29Ra3NUVnoyUGM3ZmtpcDR4b0ZCSnBsUStuZGl2VmxwZllB?=
- =?utf-8?B?cjB6ZmpnRFBwTXhhUlN4U1dpM3duT2d6eFV3anphNHhOVXVNRXRPU2pXUnhi?=
- =?utf-8?B?ZENlL0Z2Q0pIRktJVjREZzNkTjNKQXZSMjFDb1c1blRVVnpkQlZKSUsySlFZ?=
- =?utf-8?B?L0xmQ0JKVDdmcngxb1d0eFJFaTY5SDZWVzdySTdMT1FqaEVmeGUyWjUzR05Y?=
- =?utf-8?B?cFRXcGN5ZTRxN2p3OE5JS1YxaFovZnltQUt0YkpTYWhGRUJYYTZyemJkUmNR?=
- =?utf-8?B?QTFSY0Fld05zRjZZekhFK3NtaTVUeXMvcGExa0cxSk81cG1CdU9jOGhEelQy?=
- =?utf-8?B?ZDhkLzYxaFp1R0Vhd21adWR1NDF0UWRWS1dScGdCWnp1V3dVTjBPNDhKQWFR?=
- =?utf-8?B?Tkx1dlJmZm8zS0F0RnNjVFFmMmx0dmUvYi9uK2trZjA2ZERUcEhucjdxZWFz?=
- =?utf-8?B?ZEtZNGpJREpzblAzNUQxTkowYU8zRmdqOVVPS0FObU1mcEFTeEF0cllPN0JC?=
- =?utf-8?B?cGVReUIzK0dmUkRqblp1UXQ4TmpmUmxjNkllZEt0WWdXOWVIOUhWWjRYVjNH?=
- =?utf-8?B?UnVSM04valBYd0NzWlQ1dFNQWHR3OUIrUFlzOFc5NGlHU1V4eUFjTjM2U2g2?=
- =?utf-8?B?ZVZYT2lEQlY4eXRUNkxETmF6QWRiUE5WRkxMV1dLZlp4Vk9Sd04wS3JDdk52?=
- =?utf-8?B?dEJLM1pkU2oyOUxIKzdwYTNTakpIei9DblhOOURvU1RUVlhJOUdMWmd1M0lL?=
- =?utf-8?B?RGJyOFhuNy9zb2RxbVl5SmVxVlMyZDRSR3B4R0lCS2QyOWNPYkt0Z2lUMmpJ?=
- =?utf-8?B?VXY5Sk9xVjliMFpoc255S254WFpTb1lVbHZxcEpQcnVSUkc0SlhiNjdTbFVR?=
- =?utf-8?B?eXVvQlJyTWlOQzdIMW1DMXFwcng3TU05bFFmSTAyRlBVbzQ1eCtaWnhWR2lK?=
- =?utf-8?B?RUhWNm53VjFGVGluRHhETjZpVUd5a0FvdGFMWnlqSGVSUVo0dkNwd1d0WCsz?=
- =?utf-8?B?QncyS1VJelBNVFI5Z0I1RkpkT2ViN3F2TUJwUXVaVHRlL2Y3RjNRM25YZ1Vl?=
- =?utf-8?B?RzVEMTBFYnhBamVhYWttR3VoMW5YZ3ZEekJMNTRPQmhQK3N0ZHBlVG5neXd2?=
- =?utf-8?B?SHUxMHNlZ0xhYnQxM3lHVlNieDN6VW1OZWh6U2JhZG5LMFp6cWFXTENhc0I2?=
- =?utf-8?B?SFNUYkFneHBpc2NnR1NoZjJaRnFVcWUxK0lGeHRWN1Y4WGR2M3UwNnBkNk5m?=
- =?utf-8?B?d2JVQ2NURDF3VFJ0N3NlRFp4QmxRMzVwMjN1TnB6VHVxVERsQXhOUmE3Ymli?=
- =?utf-8?B?dTY4K0FPT3lpMVhCVXdVZzdvOVd4aWQyRU4yRXFyRHNUcUtsL216Q1hUUFFQ?=
- =?utf-8?B?eDBJSGM5TE0zczQxdTJYVUZwRDdMVm8rTzZYR2lhYVlNVjdJWXZqaG1yakh6?=
- =?utf-8?B?eXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b7714b2-ec7d-4dfd-65c4-08dd0f84c354
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2024 08:15:04.7566 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: coyitGKe42bg6JVSVou5s4rmk6qsonveZtu6c7tgAcb4Ey0N3Xqdh6SuaYs60ORjVKao+4rpKeYfTTlB4h6uXryobCeO1PfZBEXV7C642js=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7449
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] lib/xe/xe_spin: move the spinner related functions to
+ lib
+To: Pravalika Gurram <pravalika.gurram@intel.com>, lucas.demarchi@intel.com,
+ igt-dev@lists.freedesktop.org
+References: <20241113175207.399101-1-pravalika.gurram@intel.com>
+ <20241113175207.399101-2-pravalika.gurram@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20241113175207.399101-2-pravalika.gurram@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -195,197 +72,593 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+I did compile and test using igt-runner and the following test-list
+with and without the two patches in this series. I found no issues.
 
-On 11/27/2024 1:43 PM, Jeevan B wrote:
-> increase big_joiner limitation to 6k from 5k for display version
-> greater than 30.
->
-> Bspec: 68858
-> Apart from lib following tests are modified:
-> tests/intel/kms_pm_lpsp.c
-> tests/kms_flip.c
-> tests/kms_setmode.c
->
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+ igt@xe_drm_fdinfo
+ igt@xe_spin_batch
+ igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip
+ igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-onoff
+ igt@core_hotunplug@hotrebind
+ igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-blt
+ igt@xe_prime_self_import@basic-with_one_bo
+ igt@xe_exec_basic@many-basic
+ igt@kms_mmap_write_crc@main
+ igt@kms_flip@2x-busy-flip
+ igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-fullscreen
+ igt@kms_addfb_basic@invalid-set-prop-any
+ igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
+ igt@kms_frontbuffer_tracking@fbcpsr-tiling-4
+ igt@kms_cursor_edge_walk@64x64-left-edge
+ igt@xe_module_load@reload-no-display
+
+On 13.11.2024 18:52, Pravalika Gurram wrote:
+> move spin_ctx_init,spin_ctx_start,spin_ctx_end,spin_ctx_destroy
+> to xe spin lib to avoid code redundancy.
+> 
+> v2: use allocator based on developer preference.
+>     change spin_ctx to xe_spin_ctx to avoid name clashes [Zbigniew]
+> v3: Integrate spin_ctx to xe_cork
+>     use designated structure initialization for optional arg [Lucas]
+> 
+> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+
 > ---
->   lib/igt_kms.c             | 23 +++++++++++++++--------
->   lib/igt_kms.h             |  5 +++--
->   tests/intel/kms_pm_lpsp.c |  4 ++--
->   tests/kms_flip.c          |  4 ++--
->   tests/kms_setmode.c       |  4 ++--
->   5 files changed, 24 insertions(+), 16 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 6fb5822ee..f8c240c22 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6355,6 +6355,7 @@ int igt_get_max_dotclock(int fd)
->   
->   /**
->    * igt_bigjoiner_possible:
-> + * @fd: drm file descriptor
-drm_fd would be a better name.
->    * @mode: libdrm mode
->    * @max_dotclock: Max pixel clock frequency
->    *
-> @@ -6363,10 +6364,14 @@ int igt_get_max_dotclock(int fd)
->    *
->    * Returns: True if mode requires Bigjoiner, else False.
->    */
-> -bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
-> +bool igt_bigjoiner_possible(int fd, drmModeModeInfo *mode, int max_dotclock)
->   {
-> -	return (mode->hdisplay > MAX_HDISPLAY_PER_PIPE ||
-> -		mode->clock > max_dotclock);
-> +	int max_hdisplay, dev_id;
+>  lib/xe/xe_spin.c            | 116 +++++++++++++++++++++
+>  lib/xe/xe_spin.h            |  40 ++++++--
+>  tests/intel/xe_drm_fdinfo.c | 200 +++++++-----------------------------
+>  3 files changed, 183 insertions(+), 173 deletions(-)
+> 
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 3adacc3a8..41679d9c6 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -292,6 +292,122 @@ void xe_spin_free(int fd, struct igt_spin *spin)
+>  	free(spin);
+>  }
+>  
+> +struct xe_cork *
+> +xe_spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe,
+> +		uint32_t vm, uint16_t width, uint16_t num_placements,
+> +		struct xe_cork_opts *opts)
+> +{
+> +	struct xe_cork *ctx = calloc(1, sizeof(*ctx));
 > +
-> +	dev_id = intel_get_drm_devid(fd);
-> +	max_hdisplay = (intel_display_ver(dev_id) >= 30) ? HDISPLAY_6K_PER_PIPE :
-> +			HDISPLAY_5K_PER_PIPE;
-> +	return (mode->hdisplay > max_hdisplay || mode->clock > max_dotclock);
+> +	igt_assert(width && num_placements &&
+> +		   (width == 1 || num_placements == 1));
+> +	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
+> +
+> +	ctx->class = hwe->engine_class;
+> +	ctx->width = width;
+> +	ctx->num_placements = num_placements;
+> +	ctx->vm = vm;
+> +
+> +	ctx->exec.num_batch_buffer = width;
+> +	ctx->exec.num_syncs = 2;
+> +	ctx->exec.syncs = to_user_pointer(ctx->sync);
+> +
+> +	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> +	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> +	ctx->sync[0].handle = syncobj_create(fd, 0);
+> +
+> +	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> +	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> +	ctx->sync[1].handle = syncobj_create(fd, 0);
+> +
+> +	ctx->bo_size = sizeof(struct xe_spin);
+> +	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
+> +	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
+> +			       vram_if_possible(fd, hwe->gt_id),
+> +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	if (opts->ahnd) {
+> +		for (unsigned int i = 0; i < width; i++)
+> +			ctx->addr[i] = intel_allocator_alloc_with_strategy(opts->ahnd,
+> +					ctx->bo, ctx->bo_size, 0,
+> +					ALLOC_STRATEGY_LOW_TO_HIGH);
+> +	} else {
+> +		for (unsigned int i = 0; i < width; i++)
+> +			ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
+> +	}
+> +
+> +	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
+> +
+> +	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
+> +					     hwe, 0, &ctx->exec_queue), 0);
+> +
+> +	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
+> +			 ctx->sync, 1);
+> +
+> +	return ctx;
+> +}
+> +
+> +void xe_spin_sync_start(int fd, struct xe_cork *ctx)
+> +{
+> +	if (!ctx)
+> +		return;
+> +
+> +	ctx->spin_opts.addr = ctx->addr[0];
+> +	ctx->spin_opts.write_timestamp = true;
+> +	ctx->spin_opts.preempt = true;
+> +	xe_spin_init(ctx->spin, &ctx->spin_opts);
+> +
+> +	/* re-use sync[0] for exec */
+> +	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> +
+> +	ctx->exec.exec_queue_id = ctx->exec_queue;
+> +
+> +	if (ctx->width > 1)
+> +		ctx->exec.address = to_user_pointer(ctx->addr);
+> +	else
+> +		ctx->exec.address = ctx->addr[0];
+> +
+> +	xe_exec(fd, &ctx->exec);
+> +
+> +	xe_spin_wait_started(ctx->spin);
+> +	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
+> +
+> +	igt_debug("%d: spinner started\n", ctx->class);
+> +}
+> +
+> +void xe_spin_sync_end(int fd, struct xe_cork *ctx)
+> +{
+> +	if (!ctx || ctx->ended)
+> +		return;
+> +
+> +	xe_spin_end(ctx->spin);
+> +
+> +	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
+> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> +	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
+> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +	ctx->ended = true;
+> +	igt_debug("%d: spinner ended (timestamp=%u)\n", ctx->class,
+> +		  ctx->spin->timestamp);
+> +}
+> +
+> +void xe_spin_ctx_destroy(int fd, struct xe_cork *ctx)
+> +{
+> +	if (!ctx)
+> +		return;
+> +
+> +	syncobj_destroy(fd, ctx->sync[0].handle);
+> +	syncobj_destroy(fd, ctx->sync[1].handle);
+> +	xe_exec_queue_destroy(fd, ctx->exec_queue);
+> +
+> +	munmap(ctx->spin, ctx->bo_size);
+> +	gem_close(fd, ctx->bo);
+> +
+> +	free(ctx);
+> +}
+> +
+>  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  		  struct xe_cork *cork)
+>  {
+> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> index d65adb05c..21488b071 100644
+> --- a/lib/xe/xe_spin.h
+> +++ b/lib/xe/xe_spin.h
+> @@ -32,6 +32,10 @@ struct xe_spin_opts {
+>  	bool write_timestamp;
+>  };
+>  
+> +struct xe_cork_opts {
+> +	uint64_t ahnd;
+> +};
+> +
+>  /* Mapped GPU object */
+>  struct xe_spin {
+>  	uint32_t batch[128];
+> @@ -43,9 +47,35 @@ struct xe_spin {
+>  	uint32_t timestamp;
+>  };
+>  
+> +struct xe_cork {
+> +	struct xe_spin *spin;
+> +	int fd;
+> +	uint32_t vm;
+> +	uint32_t bo;
+> +	uint32_t exec_queue;
+> +	uint32_t syncobj;
+> +	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
+> +	struct drm_xe_sync sync[2];
+> +	struct drm_xe_exec exec;
+> +	size_t bo_size;
+> +	struct xe_spin_opts spin_opts;
+> +	bool ended;
+> +	uint16_t class;
+> +	uint16_t width;
+> +	uint16_t num_placements;
+> +};
+> +
+>  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+>  uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
+>  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+> +struct xe_cork *
+> +xe_spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
+> +	      uint16_t width, uint16_t num_placements, struct xe_cork_opts *opts);
+> +void xe_spin_ctx_destroy(int fd, struct xe_cork *ctx);
+> +
+> +#define xe_spin_ctx_init_opts(fd, hwe, vm, width, num_placements, ...) \
+> +	xe_spin_ctx_init(fd, hwe, vm, width, num_placements, \
+> +			&((struct xe_cork_opts){__VA_ARGS__}))
+>  
+>  #define xe_spin_init_opts(fd, ...) \
+>  	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
+> @@ -55,15 +85,9 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>  void xe_spin_wait_started(struct xe_spin *spin);
+>  void xe_spin_end(struct xe_spin *spin);
+>  void xe_spin_free(int fd, struct igt_spin *spin);
+> +void xe_spin_sync_start(int fd, struct xe_cork *ctx);
+> +void xe_spin_sync_end(int fd, struct xe_cork *ctx);
+>  
+> -struct xe_cork {
+> -	struct xe_spin *spin;
+> -	int fd;
+> -	uint32_t vm;
+> -	uint32_t bo;
+> -	uint32_t exec_queue;
+> -	uint32_t syncobj;
+> -};
+>  
+>  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  		  struct xe_cork *cork);
+> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+> index 5fd7c0416..d7d392000 100644
+> --- a/tests/intel/xe_drm_fdinfo.c
+> +++ b/tests/intel/xe_drm_fdinfo.c
+> @@ -367,133 +367,6 @@ static void basic_engine_utilization(int xe)
+>  	igt_require(info.num_engines);
+>  }
+>  
+> -struct spin_ctx {
+> -	uint32_t vm;
+> -	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
+> -	struct drm_xe_sync sync[2];
+> -	struct drm_xe_exec exec;
+> -	uint32_t exec_queue;
+> -	size_t bo_size;
+> -	uint32_t bo;
+> -	struct xe_spin *spin;
+> -	struct xe_spin_opts spin_opts;
+> -	bool ended;
+> -	uint16_t class;
+> -	uint16_t width;
+> -	uint16_t num_placements;
+> -};
+> -
+> -static struct spin_ctx *
+> -spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
+> -	      uint16_t width, uint16_t num_placements)
+> -{
+> -	struct spin_ctx *ctx = calloc(1, sizeof(*ctx));
+> -
+> -	igt_assert(width && num_placements &&
+> -		   (width == 1 || num_placements == 1));
+> -	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
+> -
+> -	ctx->class = hwe->engine_class;
+> -	ctx->width = width;
+> -	ctx->num_placements = num_placements;
+> -	ctx->vm = vm;
+> -
+> -	for (unsigned int i = 0; i < width; i++)
+> -		ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
+> -
+> -	ctx->exec.num_batch_buffer = width;
+> -	ctx->exec.num_syncs = 2;
+> -	ctx->exec.syncs = to_user_pointer(ctx->sync);
+> -
+> -	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> -	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> -	ctx->sync[0].handle = syncobj_create(fd, 0);
+> -
+> -	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> -	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> -	ctx->sync[1].handle = syncobj_create(fd, 0);
+> -
+> -	ctx->bo_size = sizeof(struct xe_spin);
+> -	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
+> -	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
+> -			       vram_if_possible(fd, hwe->gt_id),
+> -			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> -	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
+> -
+> -	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
+> -					     hwe, 0, &ctx->exec_queue), 0);
+> -
+> -	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
+> -			 ctx->sync, 1);
+> -
+> -	return ctx;
+> -}
+> -
+> -static void
+> -spin_sync_start(int fd, struct spin_ctx *ctx)
+> -{
+> -	if (!ctx)
+> -		return;
+> -
+> -	ctx->spin_opts.addr = ctx->addr[0];
+> -	ctx->spin_opts.write_timestamp = true;
+> -	ctx->spin_opts.preempt = true;
+> -	xe_spin_init(ctx->spin, &ctx->spin_opts);
+> -
+> -	/* re-use sync[0] for exec */
+> -	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> -
+> -	ctx->exec.exec_queue_id = ctx->exec_queue;
+> -
+> -	if (ctx->width > 1)
+> -		ctx->exec.address = to_user_pointer(ctx->addr);
+> -	else
+> -		ctx->exec.address = ctx->addr[0];
+> -
+> -	xe_exec(fd, &ctx->exec);
+> -
+> -	xe_spin_wait_started(ctx->spin);
+> -	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
+> -
+> -	igt_debug("%s: spinner started\n", engine_map[ctx->class]);
+> -}
+> -
+> -static void
+> -spin_sync_end(int fd, struct spin_ctx *ctx)
+> -{
+> -	if (!ctx || ctx->ended)
+> -		return;
+> -
+> -	xe_spin_end(ctx->spin);
+> -
+> -	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
+> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> -
+> -	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> -	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
+> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> -
+> -	ctx->ended = true;
+> -	igt_debug("%s: spinner ended (timestamp=%u)\n", engine_map[ctx->class],
+> -		  ctx->spin->timestamp);
+> -}
+> -
+> -static void
+> -spin_ctx_destroy(int fd, struct spin_ctx *ctx)
+> -{
+> -	if (!ctx)
+> -		return;
+> -
+> -	syncobj_destroy(fd, ctx->sync[0].handle);
+> -	syncobj_destroy(fd, ctx->sync[1].handle);
+> -	xe_exec_queue_destroy(fd, ctx->exec_queue);
+> -
+> -	munmap(ctx->spin, ctx->bo_size);
+> -	gem_close(fd, ctx->bo);
+> -
+> -	free(ctx);
+> -}
+> -
+>  static void
+>  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+>  	      int class, int width, enum expected_load expected_load)
+> @@ -535,7 +408,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  {
+>  	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	enum expected_load expected_load;
+>  	uint32_t vm;
+>  	int new_fd;
+> @@ -545,8 +418,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+>  	if (flags & TEST_BUSY) {
+> -		ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -		spin_sync_start(fd, ctx);
+> +		ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +		xe_spin_sync_start(fd, ctx);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu1[0]);
+> @@ -555,7 +428,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  
+>  	usleep(batch_duration_usec);
+>  	if (flags & TEST_TRAILING_IDLE)
+> -		spin_sync_end(fd, ctx);
+> +		xe_spin_sync_end(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu2[0]);
+>  	if (flags & TEST_ISOLATION)
+> @@ -574,8 +447,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  		close(new_fd);
+>  	}
+>  
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> @@ -584,19 +457,19 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	uint32_t vm;
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -	spin_sync_start(fd, ctx);
+> +	ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +	xe_spin_sync_start(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+>  
+>  	/* destroy queue before sampling again */
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu2);
+>  
+> @@ -610,18 +483,17 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	uint32_t vm;
+>  	int class;
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+> -
+> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -	spin_sync_start(fd, ctx);
+> +	ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +	xe_spin_sync_start(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+> -	spin_sync_end(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+>  	read_engine_cycles(fd, pceu2);
+>  
+>  	xe_for_each_engine_class(class) {
+> @@ -631,8 +503,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+>  		check_results(pceu1, pceu2, class, 1, expected_load);
+>  	}
+>  
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> @@ -641,7 +513,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+>  	struct drm_xe_engine_class_instance *_hwe;
+>  	uint32_t vm;
+>  	int class;
+> @@ -654,15 +526,14 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>  
+>  		if (_class == hwe->engine_class || ctx[_class])
+>  			continue;
+> -
+> -		ctx[_class] = spin_ctx_init(fd, _hwe, vm, 1, 1);
+> -		spin_sync_start(fd, ctx[_class]);
+> +		ctx[_class] = xe_spin_ctx_init_opts(fd, _hwe, vm, 1, 1);
+> +		xe_spin_sync_start(fd, ctx[_class]);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+>  	xe_for_each_engine_class(class)
+> -		spin_sync_end(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+>  	read_engine_cycles(fd, pceu2);
+>  
+>  	xe_for_each_engine_class(class) {
+> @@ -673,8 +544,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>  			continue;
+>  
+>  		check_results(pceu1, pceu2, class, 1, expected_load);
+> -		spin_sync_end(fd, ctx[class]);
+> -		spin_ctx_destroy(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+> +		xe_spin_ctx_destroy(fd, ctx[class]);
+>  	}
+>  
+>  	xe_vm_destroy(fd, vm);
+> @@ -685,7 +556,7 @@ utilization_all_full_load(int fd)
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	uint32_t vm;
+>  	int class;
+> @@ -697,15 +568,14 @@ utilization_all_full_load(int fd)
+>  		class = hwe->engine_class;
+>  		if (ctx[class])
+>  			continue;
+> -
+> -		ctx[class] = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -		spin_sync_start(fd, ctx[class]);
+> +		ctx[class] = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +		xe_spin_sync_start(fd, ctx[class]);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+>  	xe_for_each_engine_class(class)
+> -		spin_sync_end(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+>  	read_engine_cycles(fd, pceu2);
+>  
+>  	xe_for_each_engine_class(class) {
+> @@ -713,8 +583,8 @@ utilization_all_full_load(int fd)
+>  			continue;
+>  
+>  		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
+> -		spin_sync_end(fd, ctx[class]);
+> -		spin_ctx_destroy(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+> +		xe_spin_ctx_destroy(fd, ctx[class]);
+>  	}
+>  
+>  	xe_vm_destroy(fd, vm);
+> @@ -741,7 +611,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	enum expected_load expected_load;
+>  	int fd_spill, num_placements;
+>  	uint32_t vm;
+> @@ -767,8 +637,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+>  	if (flags & TEST_BUSY) {
+> -		ctx = spin_ctx_init(fd, eci, vm, width, num_placements);
+> -		spin_sync_start(fd, ctx);
+> +		ctx = xe_spin_ctx_init_opts(fd, eci, vm, width, num_placements);
+> +		xe_spin_sync_start(fd, ctx);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu[0]);
+> @@ -777,7 +647,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  
+>  	usleep(batch_duration_usec);
+>  	if (flags & TEST_TRAILING_IDLE)
+> -		spin_sync_end(fd, ctx);
+> +		xe_spin_sync_end(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu[1]);
+>  	if (flags & TEST_ISOLATION)
+> @@ -797,8 +667,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  		close(fd_spill);
+>  	}
+>  
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  
+>  	xe_vm_destroy(fd, vm);
+>  }
 
-leaving a line before return would make it more readable.
-
-
->   }
->   
->   /**
-> @@ -6387,10 +6392,10 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   	bool found = false;
->   
->   	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-> -	found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
-> +	found = igt_bigjoiner_possible(drm_fd, &connector->modes[0], max_dotclock);
->   	if (!found) {
->   		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-> -		found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
-> +		found = igt_bigjoiner_possible(drm_fd, &connector->modes[0], max_dotclock);
->   	}
->   	if (found)
->   		*mode = connector->modes[0];
-> @@ -6409,7 +6414,7 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->    */
->   bool igt_ultrajoiner_possible(drmModeModeInfo *mode, int max_dotclock)
->   {
-> -	return (mode->hdisplay > 2 * MAX_HDISPLAY_PER_PIPE ||
-> +	return (mode->hdisplay > 2 * HDISPLAY_5K_PER_PIPE ||
->   		mode->clock > 2 * max_dotclock);
->   }
->   
-> @@ -6605,7 +6610,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   	 *  - current & previous crtcs are consecutive
->   	 */
->   	for (i = 0; i < pipes_in_use; i++) {
-> -		if (pipes[i].force_joiner || igt_bigjoiner_possible(pipes[i].mode, max_dotclock)) {
-> +		if (pipes[i].force_joiner || igt_bigjoiner_possible(display->drm_fd,
-> +		    pipes[i].mode, max_dotclock)) {
-
-Better break this after ||
-
-if (pipes[i].force_joiner ||
-     igt_bigjoiner_possible(display->drm_fd, pipes[i].mode, max_dotclock)) {
-
-
->   			igt_info("pipe-%s-%s: (Max dot-clock: %d KHz), force joiner: %s\n",
->   				 kmstest_pipe_name(pipes[i].idx),
->   				 igt_output_name(pipes[i].output),
-> @@ -6632,7 +6638,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   			}
->   		}
->   
-> -		if ((i > 0) && (pipes[i - 1].force_joiner || igt_bigjoiner_possible(pipes[i - 1].mode, max_dotclock))) {
-> +		if ((i > 0) && (pipes[i - 1].force_joiner ||
-> +		    igt_bigjoiner_possible(display->drm_fd, pipes[i - 1].mode, max_dotclock))) {
-
-
-This should be aligned with parenthesis for (pipes[i - 1].force_joiner ||
-
->   			igt_info("pipe-%s-%s: (Max dot-clock: %d KHz), force joiner: %s\n",
->   				 kmstest_pipe_name(pipes[i - 1].idx),
->   				 igt_output_name(pipes[i - 1].output),
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index c2fbbb5b0..a5ceaf116 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -146,7 +146,8 @@ const char *kmstest_scaling_filter_str(int filter);
->   const char *kmstest_dsc_output_format_str(int output_format);
->   
->   void kmstest_dump_mode(drmModeModeInfo *mode);
-> -#define MAX_HDISPLAY_PER_PIPE 5120
-> +#define HDISPLAY_6K_PER_PIPE 6144
-> +#define HDISPLAY_5K_PER_PIPE 5120
->   
->   int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id);
->   void kmstest_set_vt_graphics_mode(void);
-> @@ -1241,7 +1242,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
->   bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   		igt_output_t *output, int bpc);
->   int igt_get_max_dotclock(int fd);
-> -bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
-> +bool igt_bigjoiner_possible(int fd, drmModeModeInfo *mode, int max_dotclock);
-
-lets use drm_fd as mentioned earlier.
-
-With few minor styling fixes, this is:
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
-
-
->   bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   			  int max_dotclock, drmModeModeInfo *mode);
->   bool igt_ultrajoiner_possible(drmModeModeInfo *mode, int max_dotclock);
-> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-> index 889da42de..74e9d799a 100644
-> --- a/tests/intel/kms_pm_lpsp.c
-> +++ b/tests/intel/kms_pm_lpsp.c
-> @@ -166,11 +166,11 @@ static bool test_constraint(data_t *data)
->   	if (igt_check_force_joiner_status(data->drm_fd, data->output->name))
->   		return false;
->   
-> -	if (igt_bigjoiner_possible(mode, max_dotclock)) {
-> +	if (igt_bigjoiner_possible(data->drm_fd, mode, max_dotclock)) {
->   		for_each_connector_mode(data->output) {
->   			mode = &data->output->config.connector->modes[j__];
->   
-> -			if (igt_bigjoiner_possible(mode, max_dotclock))
-> +			if (igt_bigjoiner_possible(data->drm_fd, mode, max_dotclock))
->   				continue;
->   
->   			igt_output_override_mode(data->output, mode);
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index 88cd41083..3ad4d0afb 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -1756,11 +1756,11 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
->   				 o->kconnector[i - 1]->connector_type_id);
->   
->   		if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
-> -		      igt_bigjoiner_possible(&o->kmode[i], max_dotclock)) &&
-> +		      igt_bigjoiner_possible(drm_fd, &o->kmode[i], max_dotclock)) &&
->   		     ((crtc_idxs[i] >= (total_crtcs - 1)) ||
->   		      ((i < (crtc_count - 1)) && (abs(crtc_idxs[i + 1] - crtc_idxs[i]) <= 1)))) ||
->   		    ((i > 0) && (igt_check_force_joiner_status(drm_fd, prev_conn_name) ||
-> -				 igt_bigjoiner_possible(&o->kmode[i - 1], max_dotclock)) &&
-> +				 igt_bigjoiner_possible(drm_fd, &o->kmode[i - 1], max_dotclock)) &&
->   		     (abs(crtc_idxs[i] - crtc_idxs[i - 1]) <= 1))) {
->   
->   			igt_debug("Combo: %s is not possible with selected mode(s).\n", test_name);
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index bc7b8fabb..d61cfeb9a 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -736,11 +736,11 @@ static void test_one_combination(const struct test_config *tconf,
->   			 *   - current & previous crtcs are consecutive
->   			 */
->   			if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
-> -			      igt_bigjoiner_possible(&crtc->mode, max_dotclock)) &&
-> +			      igt_bigjoiner_possible(drm_fd, &crtc->mode, max_dotclock)) &&
->   			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
->   			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
->   			    ((i > 0) && (igt_check_force_joiner_status(drm_fd, prev_conn_name) ||
-> -					 igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock)) &&
-> +					 igt_bigjoiner_possible(drm_fd, &crtc[i - 1].mode, max_dotclock)) &&
->   			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
->   				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
->   				goto out;
