@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C3DD69107
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 13:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E991DD69109
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 13:05:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBC7810EC7A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A840F10EC76;
 	Thu, 28 Nov 2024 13:05:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E868Q5pO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iznCSrE3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5C2310E479
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 13:05:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8412110E479
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 13:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732799118; x=1764335118;
+ t=1732799120; x=1764335120;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VuDFn3b1Nq98n+UrFOUu2iolRbLhuGlETbJCf7DwTzo=;
- b=E868Q5pOMBMpR0+e5G2pB5nE0IDyRQ2eRYyrQrEtSEDqRLXU+Oj2GJyI
- u2P2v0yFS2jJNJuPWBwdE7cnLLUvIP/usSvatck7liP+wHNUBY3G8VeH3
- PbmbBfMGngRd3pYs/WfcQJ3vt/IIzW7L97url0/lWaggYIdBmVYpEsupI
- ZnebKf1tR7iSvLbm6oE5SQ6e71FxtSznKQtb5nbi3o7wTQaygAXGB6N3c
- vNCeqH+NEBa2dRjUFqBqiMhQZWOgi31k/yExo1foNyMI0bHDM0mG9Xrzs
- vCB4s3DcChO48rvqov/dggZxlTAkWSc7uHdjLAa9dYtmIZBk2YBpXmmU0 Q==;
-X-CSE-ConnectionGUID: VJr8zSUWQNW3ajuLbpFTWA==
-X-CSE-MsgGUID: 62Moa9CWTSypmTb6+DTJHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="33183271"
-X-IronPort-AV: E=Sophos;i="6.12,192,1728975600"; d="scan'208";a="33183271"
+ bh=MgFzQUl75ZjJPsj3+bTKzTYYbnZS6EiuVs4JIfXeTDI=;
+ b=iznCSrE3QBz5AKfbuCKBLXs7u0bV3iPQwaxuu7w/emzd0dKZbL8jrYnd
+ f/stsxMeL1X+sinO0oOivpwYp5ixioxZ4BziJ7sZX+T49vio3jvpiSQg+
+ oKdbp/NKJOqUO/O1EwwNKx/8tjeHuih1gClgjZvDLEL3Ur6VWm1n9ncXA
+ YcZMBMoJLmVzG4KTtDgRvCpSnOfWg7hElmMTBjHukLzZWDYmD7v4SOI4u
+ GT6iy77oKNZfmiWhBLaWmvIYTLXy2VlZxF8+m1EngreE5Zv4DEb0IPmcc
+ EbjUkz106eprKHdFwyDGjVOopKb/2WjORAptzALzB2aK9ukl1u0/aBEs0 w==;
+X-CSE-ConnectionGUID: rBAI5qXBR/ye9lRhxSQtvA==
+X-CSE-MsgGUID: ItRBvbvOSvOzGSJKBHTDpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="33183278"
+X-IronPort-AV: E=Sophos;i="6.12,192,1728975600"; d="scan'208";a="33183278"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2024 05:05:18 -0800
-X-CSE-ConnectionGUID: tNiLsU5IRw6EzQV439PoqQ==
-X-CSE-MsgGUID: +/u4I1TtSPmZzWKnZWWiiQ==
+ 28 Nov 2024 05:05:20 -0800
+X-CSE-ConnectionGUID: IeENur6nQAO7IOHGZEFyMg==
+X-CSE-MsgGUID: 7JofJQEaSwiz7vgZOnh/AA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,192,1728975600"; d="scan'208";a="129736116"
+X-IronPort-AV: E=Sophos;i="6.12,192,1728975600"; d="scan'208";a="129736127"
 Received: from art-dev-395.igk.intel.com ([10.211.135.233])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2024 05:05:16 -0800
+ 28 Nov 2024 05:05:18 -0800
 From: Jan Maslak <jan.maslak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dominik.grzegorzek@intel.com, jonathan.cavitt@intel.com,
  matthew.d.roper@intel.com, Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 1/3] lib/xe_query: add hwconfig to xe_device
-Date: Thu, 28 Nov 2024 13:05:01 +0000
-Message-Id: <20241128130503.241328-2-jan.maslak@intel.com>
+Subject: [PATCH 2/3] lib/xe_query: add xe_hwconfig_lookup_value() helper
+Date: Thu, 28 Nov 2024 13:05:02 +0000
+Message-Id: <20241128130503.241328-3-jan.maslak@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241128130503.241328-1-jan.maslak@intel.com>
 References: <20241128130503.241328-1-jan.maslak@intel.com>
@@ -68,87 +68,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add hwconfig and hwconfig_size to xe_device, so that it can be accessed
-easier by the tests.
-Thanks to this, hwconfig data will only be queried once and cached.
+Add a new helper function, xe_hw_config_lookup_value(), that
+returns a pointer to the value of a given hwconfig attribute.
 
 Signed-off-by: Jan Maslak <jan.maslak@intel.com>
-Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/xe/xe_query.c | 28 ++++++++++++++++++++++++++++
- lib/xe/xe_query.h |  6 ++++++
- 2 files changed, 34 insertions(+)
+ lib/xe/xe_query.c | 39 +++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.h |  2 ++
+ 2 files changed, 41 insertions(+)
 
 diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 0c9cff066..49bed033b 100644
+index 49bed033b..f3731d9d3 100644
 --- a/lib/xe/xe_query.c
 +++ b/lib/xe/xe_query.c
-@@ -39,6 +39,32 @@ static struct drm_xe_query_config *xe_query_config_new(int fd)
- 	return config;
+@@ -839,6 +839,45 @@ uint16_t xe_gt_get_tile_id(int fd, int gt)
+ 	return xe_dev->gt_list->gt_list[gt].tile_id;
  }
  
-+static uint32_t *xe_query_hwconfig_new(int fd, uint32_t *hwconfig_size)
++/**
++ * xe_hwconfig_lookup_value:
++ * @fd: xe device fd
++ * @attribute: hwconfig attribute id
++ * @len: pointer to store length of the value (in uint32_t sized elements)
++ *
++ * Returns a pointer to the value of the hwconfig attribute @attribute and
++ * writes the number of uint32_t elements indicating the length of the value to @len.
++ */
++uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len)
 +{
++	struct xe_device *xe_dev;
 +	uint32_t *hwconfig;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_HWCONFIG,
-+		.size = 0,
-+		.data = 0,
-+	};
++	uint32_t pos, hwconfig_len;
 +
-+	/* Perform the initial query to get the size */
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	igt_assert_neq(query.size, 0);
++	xe_dev = find_in_cache(fd);
++	igt_assert(xe_dev);
 +
-+	hwconfig = malloc(query.size);
++	hwconfig = xe_dev->hwconfig;
 +	igt_assert(hwconfig);
 +
-+	query.data = to_user_pointer(hwconfig);
++	/* Extract the value from the hwconfig */
++	pos = 0;
++	hwconfig_len = xe_dev->hwconfig_size / sizeof(uint32_t);
++	while (pos + 2 < hwconfig_len) {
++		uint32_t attribute_id = hwconfig[pos];
++		uint32_t attribute_len = hwconfig[pos + 1];
++		uint32_t *attribute_data = &hwconfig[pos + 2];
 +
-+	/* Perform the query to get the actual data */
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++		if (attribute_id == attribute) {
++			*len = attribute_len;
++			return attribute_data;
++		}
++		pos += 2 + attribute_len;
++	}
 +
-+	*hwconfig_size = query.size;
-+	return hwconfig;
++	return NULL;
 +}
 +
- static struct drm_xe_query_gt_list *xe_query_gt_list_new(int fd)
+ igt_constructor
  {
- 	struct drm_xe_query_gt_list *gt_list;
-@@ -239,6 +265,7 @@ static struct xe_device *find_in_cache(int fd)
- static void xe_device_free(struct xe_device *xe_dev)
- {
- 	free(xe_dev->config);
-+	free(xe_dev->hwconfig);
- 	free(xe_dev->gt_list);
- 	free(xe_dev->engines);
- 	free(xe_dev->mem_regions);
-@@ -268,6 +295,7 @@ struct xe_device *xe_device_get(int fd)
- 
- 	xe_dev->fd = fd;
- 	xe_dev->config = xe_query_config_new(fd);
-+	xe_dev->hwconfig = xe_query_hwconfig_new(fd, &xe_dev->hwconfig_size);
- 	xe_dev->va_bits = xe_dev->config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
- 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
- 	xe_dev->gt_list = xe_query_gt_list_new(fd);
+ 	xe_device_cache_init();
 diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index cabb8078c..f8836578e 100644
+index f8836578e..30ea5ad41 100644
 --- a/lib/xe/xe_query.h
 +++ b/lib/xe/xe_query.h
-@@ -26,6 +26,12 @@ struct xe_device {
- 	/** @config: xe configuration */
- 	struct drm_xe_query_config *config;
+@@ -15,6 +15,7 @@
+ #include "igt_aux.h"
+ #include "igt_list.h"
+ #include "igt_sizes.h"
++#include "intel_hwconfig_types.h"
  
-+	/** @hwconfig: xe hwconfig table data */
-+	uint32_t *hwconfig;
-+
-+	/** @hwconfig_size: size of hwconfig in bytes */
-+	uint32_t hwconfig_size;
-+
- 	/** @gt_list: gt info */
- 	struct drm_xe_query_gt_list *gt_list;
+ #define XE_DEFAULT_ALIGNMENT           SZ_4K
+ #define XE_DEFAULT_ALIGNMENT_64K       SZ_64K
+@@ -118,6 +119,7 @@ struct drm_xe_engine *xe_find_engine_by_class(int fd, uint16_t engine_class);
+ bool xe_has_media_gt(int fd);
+ bool xe_is_media_gt(int fd, int gt);
+ uint16_t xe_gt_get_tile_id(int fd, int gt);
++uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
  
+ struct xe_device *xe_device_get(int fd);
+ void xe_device_put(int fd);
 -- 
 2.34.1
 
