@@ -4,162 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66820D6D247
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Nov 2024 23:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7B7D6D251
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 01:34:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F24FD10E0BA;
-	Wed, 27 Nov 2024 23:16:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D604210E311;
+	Thu, 28 Nov 2024 01:34:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dk1vsbMr";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ytdtZebB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 655FC10E0BA
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Nov 2024 23:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732749402; x=1764285402;
- h=date:from:to:subject:message-id:references:in-reply-to:
- mime-version; bh=RUR+Vmbcu/4OSaJutBtptfYQnF2udC1q2kRk+7SwzeI=;
- b=dk1vsbMry9MvcCEEY2m07QLoLyzSWRRtpeuITZgBfqnmKL03srgMfhhL
- hZRZju9WyksZ433aWMo4AUWxNvxmhHEFTPlPqJG8cjmRcbxhPLLkipty/
- Vaztup5u3B/QwhKulWVPuDS1pbORupUbEaBqTWHXbH1xvJLr/AeyWjdMc
- y77YbBXWD49fTzx+5Vf26VrGhcTTkLQNfvJ9od4S9R7G8e5pivJJ+AxPI
- lJG2BO5RTYjGmUNG4py7DAqyKu+HgLDf2hX1w6Rk8ZJNriFlte4jU8pbF
- Q+W6JlA9Qo7UJOqOpZV0GOAVJIB6UqClGxAvoRtFMLfjOKvv0yTtjMdhm A==;
-X-CSE-ConnectionGUID: 2L+vX8qwSXimcaM9zB/6zw==
-X-CSE-MsgGUID: y3JRIP6oSC2kf6u9Lj0bLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="44356390"
-X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="44356390"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2024 15:16:34 -0800
-X-CSE-ConnectionGUID: f0XYjijeTUeah/CFKV8xdw==
-X-CSE-MsgGUID: zSCDy8q8QMGJaKpxIJ4SSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; d="scan'208";a="91688664"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 27 Nov 2024 15:16:27 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 27 Nov 2024 15:16:26 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 27 Nov 2024 15:16:26 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.48) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 27 Nov 2024 15:16:26 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2066.outbound.protection.outlook.com [40.107.94.66])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0ADC710E074
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 01:34:47 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X2Bu7IkSiD+4CntowqmDd6UdrcsxhQebKxSdrDecR0kviPTnFfrXUgJsOyRryxAor85PUrtJPDJhXTep3FflTwbhMWXMcI1S6FPjpDxuw0W02KQKG3C2PnTFNyzd6jMzLD7PIEkQABf3o0bRSbZAcCyhuM13U/xorM4phXmmVCkXFStoDDxnk0epF4WVlsPkJi0t/NyqsqHQkjNIv0vriJQ2TuEF/aaXEpE8pAMA+silue89qc140UI7v7rTA1kzIaLTLdNcaIB7u6BOX+TQbfUk+bgciM6Y/2oBUsvo6WrHc4PIxyaMfVYeo7xNR0lzgae9BuyQxn/Viia5ivWqLg==
+ b=cIf+b2EAZ+WpgYCO1iUDabKEE+YEkWKJYnGkn8JZVICueodCfDzo/7BeqJswEinR2AzfWmWEyNj2cBpadJHhoDi9o5yJ2uU7TJM9qxAH15NaNeyNvk6azqXXqH+yoaVhinC8GsN7S1HTXUT/NkSBHIZX0F4OBVXdjbNR89rt7qL4gAXC/pBLqkL2lwKCVZ9L03VZNE16TBX3jmFW5nbnDwkPunJEEHnYA8OREIbKTS3aHV2DGbG60TjbXib/v7f73HB0sBJk+X+SwRibmwaOtdo4qAb/zglJiCtqtexNaOkXTvt5j5vxkQsjLrxt0isAw7lLiNoJZ5Zn4GBOua8Oow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W2O/nFuOcV9cK+M2IjJb5V/HQbRZb/KuNdj5DAZBLRM=;
- b=Y/Re/XC0434tE/JrJhz2tP5H9JwabVolvuhjbcYahgfFgmjwZwR+Hz0HUPyQpL+BqFwrUZ9CaUbX3whnEDpTwgtXL15SyGDVWYT0uBbdLDyYh/osoezIDrUyvO+jviZMWTsdgSnVIUcjH17S7wQ3YlmjxPm+dEXhnYEv1c6PRcsuJe7h3BxrWujlJDcHgGsoCyLyHQGukhqGFa3dEBJoXeQLGYZ7+EHE5R8/gr03J+zEyaSbnDT58pTZMZHflS1+Ie0e4jORqZ6GRS8hxsXrFRMbiUKnH/pApZRo34FppPtffcMMZoDhogAtBaW+Twt+m/ObBo74vEZb7p6UEWKMVw==
+ bh=kmjPsSljEE8d5hwrPZTR0AP3A7SGtYXco7SLuWGMvx4=;
+ b=mKd9P6gVGiYgdL4VFBBLL5Dw9AMtj/5sv+Foe+c0254pM58VSsrjA1Frl6r4RTaTqlAag/nx8l7bql/lOb/TFtZVX8bytnOmNSPhWz6xQge1pOfKd2r4ArfC0MOaUYG1Pm4nlTHW0Jp1etcaIlPRhG4iq7RNrrkyfiz9GrpGvJspjkTgfL6Wt88tqCWUe/fgUogd83epMwTtAvchO5Rn77v3r/kJvbozRu6ckyScNgZ8/OuKEpdQXUxGTPYKaU7acv9FgZcN31Pq2CoHdgpohkkptlTDHBt/kt+K/5ba76gGs3vlsGYmMJ4dqKMUqDKkArvZntYRLgAqHN7VpFEidQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by CY8PR11MB7266.namprd11.prod.outlook.com (2603:10b6:930:99::6) with
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kmjPsSljEE8d5hwrPZTR0AP3A7SGtYXco7SLuWGMvx4=;
+ b=ytdtZebBRgDOr9wIOzXnLZOLIhTS6KriVtwuifZfcx0c7wma64XZkQJcErVcw+PRjs844C8vz/u3GjQ3hG7dyPKmdlSOQ0NXo2OcuVmdoZRLHjeEcTP0eslX+Ih4I4yleum6KBsPttxQjHnMzrLvlIXLKHONsNbUJ6oPpEpCgAs=
+Received: from DM4PR12MB5152.namprd12.prod.outlook.com (2603:10b6:5:393::16)
+ by SN7PR12MB7024.namprd12.prod.outlook.com (2603:10b6:806:26e::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.13; Wed, 27 Nov
- 2024 23:16:24 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::8dd1:f169:5266:e16e]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::8dd1:f169:5266:e16e%5]) with mapi id 15.20.8182.019; Wed, 27 Nov 2024
- 23:16:24 +0000
-Date: Wed, 27 Nov 2024 15:16:22 -0800
-From: Matt Roper <matthew.d.roper@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw6IGZhaWx1?=
- =?utf-8?Q?re_for_tests=2Fintel=2Fxe=5Fwedged?= =?utf-8?Q?=3A?= Manage
- verbosity of GT reset fault injection
-Message-ID: <20241127231622.GK4891@mdroper-desk1.amr.corp.intel.com>
-References: <20241126230240.1780940-1-matthew.d.roper@intel.com>
- <173266744926.3541275.14723747967553947524@b555e5b46a47>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Thu, 28 Nov
+ 2024 01:34:39 +0000
+Received: from DM4PR12MB5152.namprd12.prod.outlook.com
+ ([fe80::d4b5:6a30:96d5:e3ed]) by DM4PR12MB5152.namprd12.prod.outlook.com
+ ([fe80::d4b5:6a30:96d5:e3ed%3]) with mapi id 15.20.8207.010; Thu, 28 Nov 2024
+ 01:34:38 +0000
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>, "Koenig, Christian"
+ <Christian.Koenig@amd.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>, 
+ "Liu, Leo" <Leo.Liu@amd.com>, "Zhang, Boyuan" <Boyuan.Zhang@amd.com>
+Subject: RE: [PATCH 3/3] tests/amd_uvd: Introduce additional test instance for
+ UVD dec.& enc.
+Thread-Topic: [PATCH 3/3] tests/amd_uvd: Introduce additional test instance
+ for UVD dec.& enc.
+Thread-Index: AQHbQCjJTEU7IskFFEOewm9n2mreS7LL6vxw
+Date: Thu, 28 Nov 2024 01:34:38 +0000
+Message-ID: <DM4PR12MB51528364E10A77D80B00D1FDE3292@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20241126172923.206952-1-vitaly.prosyak@amd.com>
+ <20241126172923.206952-3-vitaly.prosyak@amd.com>
+In-Reply-To: <20241126172923.206952-3-vitaly.prosyak@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ActionId=1828b19f-db6b-4d1d-8c65-b1d9502caefa;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=true;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
+ Internal Distribution Only;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2024-11-28T01:34:22Z;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR12MB5152:EE_|SN7PR12MB7024:EE_
+x-ms-office365-filtering-correlation-id: 35202868-bdfe-4163-1f0b-08dd0f4cd2f5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?1v7SgTfstfIQjbTS0c9NxmOMTLPOGihigo4CRLyFV172uqpNnYgNX0GDUBQ+?=
+ =?us-ascii?Q?xFNzRmYamgcIavTD2dfFIaTuoylYmnHPHUsfN05CMToK27mvHa6uKD3xbf9Q?=
+ =?us-ascii?Q?dr15iUXM6iW27yOBwLmSCPNILCPaq4Qq4zBVpKzAKr2P5yMfB1TwVf8CK4vC?=
+ =?us-ascii?Q?p+WjYjXCLAklx3ERqXZEQfoVtK4iKGjGN8HSwhqgBHcJ3ZmXRTQ0lS5LLxb6?=
+ =?us-ascii?Q?cdTEKGUaHljlOHZ99tJiXTIzApn67NVZdOQtfnM6WhIlmmKQutuiTsWTjuBc?=
+ =?us-ascii?Q?i/vRdWwoX+YV7JFRsUzYpAvFW3mKnyhbo+tm6z5kygYr0PYhbjj89mMkeH9Q?=
+ =?us-ascii?Q?qw52PVWC4vtIq67HzIjcv5Tk6oMRXOeBR+KNnFAgeoXxm6mzw8EEhxxtncHX?=
+ =?us-ascii?Q?d9VA7AJNy419aTTLx5blnk08EFRlHOHLzQUHiQRcTrnamIE/omXw+6xtAPRL?=
+ =?us-ascii?Q?SQR+NoAqu85rS3Q09nVz5SgXaT+npzgenDnmSfF3aDydorehBFkFbNx9/J+l?=
+ =?us-ascii?Q?kg11wcTGeXkUOBn3eyN0w8X9pp6RjhsrumK+eYuuQbR7ZUx6zU6Lnme189MD?=
+ =?us-ascii?Q?UElpRuT9GyLVGwrIuoStkWgfTm+6L48NKeLc3jzbbcFSwSflq0t9pYpRc1xI?=
+ =?us-ascii?Q?hHj7vwt22P1/64p2xj5qXJZylNv89ciqGmK1k3ehgiQxXvU7AAldQGfEOprB?=
+ =?us-ascii?Q?phxqNseEeITntP/fSh+uahQ6YrNCbiI8gtmhhG6AI+xMYfCI2u3NJ652Rxsn?=
+ =?us-ascii?Q?N+iabogIUEAu74zk9WFR5w0ds5QHzjaiHwuZlceksr+IZjf7gSHOOh+hPqyl?=
+ =?us-ascii?Q?jjj+aGkIlyp8u5mTfwGN+AWXfLzHebUnlBo0cPbphQgwvjL0Th9wtkEB+Hbd?=
+ =?us-ascii?Q?S/KGj/C4jme8krptUHl/5FVVaCDoQasjm88YBfp9qfrl1zIn0y9uFmjkLdMj?=
+ =?us-ascii?Q?NGbAxrvcdRtgVOsA0TkfVQ4GTZokICT/ezchbVwN3oo+F8JDq6DV1v3Oo2Tw?=
+ =?us-ascii?Q?hu1/M2lHwMRGn4+mxWsr+0yDM+wmeK+MFTr+uNcU/tVBMLhnsxHcldNfIsVE?=
+ =?us-ascii?Q?7M5qOxMwPjI8vbe4dr/uPV3y7oPtmkWCpjhevtslG1rrECHytsMrfECx7d3/?=
+ =?us-ascii?Q?L091B9YqsplLE5bJsOc456Up92ZLZzGmDfQwSe3d83Kvwp+x2GNho6Mf5d2G?=
+ =?us-ascii?Q?Mkdsze3Kx563vU4he15GYuAufGCTCtO+Ni7pG0BSyPYV0Kkfg+BJ9jj3ITZk?=
+ =?us-ascii?Q?MRkpyVh96zoAyxZhRwLPN4UTe37/qEFYb8ULxbHOdsmRK0NUWZhyUVtnXJKf?=
+ =?us-ascii?Q?1DanbJTj5qNoUTOvG9gTzjcFYvOELfZ9UMnDd9UWTah3X1vB7SpAK5+uFX2E?=
+ =?us-ascii?Q?n6fCafFFpTCsPc634SfM2rWjdnOw0ZmUm4R7giusl+KGx2Wr4w=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB5152.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007)(38070700018); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+Ivv314yc47xsedKjdKuDSivunqek79s0baia1HJ5DsfbhrsvVquBr+pNOZp?=
+ =?us-ascii?Q?/wAuW5rlYfXlk6CVrtbIp/l/MZZaWhnwvLgla8id6+bIqb2k2ScCqqsSVK2/?=
+ =?us-ascii?Q?bk+4Wa7pM1wWGSU5N4K+hNjctVPh14RfjUrs5lyZSVcU1u5qqyfdzsAAvZsX?=
+ =?us-ascii?Q?HD5zP1F+h9+0YtPStPqVk6nhAuVoh5xfWDVy69ZZhXISsnmef17x8JX0trAa?=
+ =?us-ascii?Q?mWLQ2VpWHFWg+LBrj8NX7OT5q/5qTl8Jgtu1cbySBW/57G0ocSptmHaqWEby?=
+ =?us-ascii?Q?0waCO9slVkDSBHgfgU1ONnws8+JgEsfCR6dQHOYpTmyoCdNiRr7b+zncI4SH?=
+ =?us-ascii?Q?Wic9tqHg2/EDyoeDcCrfb4sIJmIROrmBRL96O0gDu4/2lIOejPPElvG79q4D?=
+ =?us-ascii?Q?3opqLg9DZcvEUsdAaq/Jd5qHaf9wxfNOsohCDsDHEslpDG4jeypwuV79XYmp?=
+ =?us-ascii?Q?qXH/AceNXDfzesI1NbFKAfTzdRsOtpGCjE8AxRN0qTq9yYcwbGVfyMnh9E0R?=
+ =?us-ascii?Q?RrPhoSvrc30ZFkS9vsDseS30IHc97iId9kNxo+R/1p5yL7n9v4LA6HAMxd5R?=
+ =?us-ascii?Q?UVBvOhOjUfxVt/ctPLXry/wz+VLNl2nV6oFkcfCrVqzMAm1xwU8rtNqcdrhv?=
+ =?us-ascii?Q?CmnGBY5ZEIspWAUevabi6sLOSYHSrOwRzp4PzD6j+K68k3+1qZ1y1PNaS7zJ?=
+ =?us-ascii?Q?UosJe9Fc5tOKjC32XDPXuzYPWp86Yy0G2n8vkjJ7elimadv9NRrgh8Xd+93K?=
+ =?us-ascii?Q?3Mk0TYtbQviwm5v0Moix/gZ3Hzq9A8KXjy/TqhHv/TPoGHouHir48Qe+Vthx?=
+ =?us-ascii?Q?PyAfWA5ZqWAD/nsQdpdkYASXkadKsz3Ms73xotnrHeggryfSsa2PhyJgMgCS?=
+ =?us-ascii?Q?ST1+DP86HK6qFVFjYM8Yva+uSYblgeGu7tnN4l/mG/0TWeXPclbVFj+Vim4k?=
+ =?us-ascii?Q?teHT/zy99JC9ew6p0uCq5WzyqKteYbq/nN82kOzTIdZonZrzKdk5OvSBGqJN?=
+ =?us-ascii?Q?adAtONbJwTWwwKp2khojWNzjoRiSRwWzmaweUK+ET12rYtD4EXBhrdetWSdE?=
+ =?us-ascii?Q?PHT06ws9m79T8AcuuPJorilxR9ZtCEAxIHJ2d7nouMlcz3C+FlHEglOwyIrL?=
+ =?us-ascii?Q?WIPuCeVzfwLlEMs+0xhUqFfN4la6Qi/qEHlZr/280BPvDkIrQdaz6VPDJY0I?=
+ =?us-ascii?Q?S6uoK9cQNZ9U9Y2T1Dg/CKUuQCzuLRa5Mcqm3mgIi/vCLjgXrkmtP0iI2Q04?=
+ =?us-ascii?Q?3hD5gEx/XmQ8/F6oEjtEiRElwIG+SXcKtwBvC66e0WDm0vZWgV1zKjaEETrq?=
+ =?us-ascii?Q?r01vfA5IvX+yI8MJaxnstjUxdM/4errnatRUXLTWLJmSQKR6vvkflFWV/b8M?=
+ =?us-ascii?Q?HdVEChzfQpPRn8rJVE3goQReoCBJfCh6CB7HsLeH+9nJBVYWbPuYg4kVyyaW?=
+ =?us-ascii?Q?YEQUTquH30/IZUHFyIMdoqRkrCAhcFTt+GfiX3xKpRYr/oqXhiJAaMY/MO5V?=
+ =?us-ascii?Q?HUU/Ngq5DXeRQ2zn8HAfmhVxOYlJiAd+uclRtV7kx595cXBh/zNZ3rSuhWd1?=
+ =?us-ascii?Q?r0ZHBvUDLv/hwc2fTzA=3D?=
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <173266744926.3541275.14723747967553947524@b555e5b46a47>
-X-ClientProxiedBy: BY5PR13CA0011.namprd13.prod.outlook.com
- (2603:10b6:a03:180::24) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|CY8PR11MB7266:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5aa2f82f-e8aa-41f5-03c4-08dd0f398313
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pjADWc8WiFr5DXBSq+KrhJjv69nxGY1XMP46vjx5/IUl00XUiqej6uXESg1r?=
- =?us-ascii?Q?d5zJcl572RjyAY0pcHUGg+bRhQqclSD39HqOiQd41ToGxVjkDVRu6kZIojIN?=
- =?us-ascii?Q?XIjSjiotB9S1HtVdK1qpXe2vZGj1NVRt3gJwztXPdohXwsF7DszmOGn/9Wkf?=
- =?us-ascii?Q?5IZKj/HzYS6C879aJZzXg6JbTHmQobBHHVDasVimJXvwl9mQN6INqN/5JWOq?=
- =?us-ascii?Q?bri7kVGfJ2Wa5ZaP+gI5y+Y+Dnrz89DTOOAmPwS9sfDT7nnU4O/Lp3AFx21V?=
- =?us-ascii?Q?UGwdAfldHRrRdobHYc1qIE4meQabdpOYUSLolhdzKx230juJYiBBtWd11zz/?=
- =?us-ascii?Q?ntCFSSfmYBBdcCzAK8BD9bHq2X6RpbxtKMLaeGolQAhqlD0A6f6AUQYHDLsE?=
- =?us-ascii?Q?/VJZbOfir85HJ/eGiFUDPdEECHqFfEwphij9L3YPABlNrHGLeb5CRI6TQZ60?=
- =?us-ascii?Q?sXZ1085GIYBiFzs44GWXFFo2Ku4e8mbhiK5rPkH3s2O7QUAOG7WWZkTr7lTL?=
- =?us-ascii?Q?rRYVqinRI7GLLoL4vkV8dROKO7iMnEvMLw/Z8jnJTA7i7k0e+rZdSidDmDob?=
- =?us-ascii?Q?XS+uHX6EPccBivgZNRAnRDxZ0VEgUCsg9/MmrlBL9qhXYyB4anuJlEu4O6tN?=
- =?us-ascii?Q?JGKUyXpb2z2WUtHkHtLmx07mu1pIksH+d92fFXPfcQzOEIUcm9jMHKhU69hv?=
- =?us-ascii?Q?NPoZDzojZ06xIZzBBPKiPgitbNEqsv6cJKA5DZ3TbwFQiajy/GcxLWtOgg8l?=
- =?us-ascii?Q?bJe98pBGzhA82d2wT+nU1j020EHqZy4q9dqVu+pS87lshDa67TjiUNESGpS6?=
- =?us-ascii?Q?ypwX6EHBVos1pHNbNs8V3PAw/WLhigmiMACNjJ8iCj3GKGPoWcsxwNVCc9pG?=
- =?us-ascii?Q?VfgsDZUPva9WhDtvetgzDydCY+COEHwEl/2eKilAG0ba04guACXa3Cq1PQ7m?=
- =?us-ascii?Q?egC8sQftd1Bn53lzTQryZIvTl7lhvPZzCFITx1mRBiRPbiQulfMXQ7GiRH/n?=
- =?us-ascii?Q?lkA4Pn/Y0YXfASLe7eiTxg4+Xw4DpEsMRforr4R5KNT5G5gkvPWrNZue7HG8?=
- =?us-ascii?Q?PicK2l9G22duPU++rHfqKaRDN0syU3RYFxpf4DkuPCii2FzZ+gx81FxoFDsa?=
- =?us-ascii?Q?W2yjNkAeDH99WyJsLpARPUOUMSja3JinkDgXIRbtJEEx8TmEBawzbOONozgH?=
- =?us-ascii?Q?6rhktXz/WGvW0JnfO17SW58ZvYiDwJ+xn7SVE3JIhyyAdgRnVUNcAMRA8QNk?=
- =?us-ascii?Q?qmiBj4XKNZg8mtxBVtXY8lGrnk7JcEXqxMdwmk5MuLjTaCV9WGyPV+1MWbaX?=
- =?us-ascii?Q?V6U=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB8182.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tfYMfCOJkLomN5oRZYZmaUY+vNrbBP4DPM9r2SsBEPWl/JbkA5MKuWU829iu?=
- =?us-ascii?Q?J+gH44ogqGy7qW8EmplOXZkPRztpaiaeNmTaUxj659LSQToSO0yPyBCtX/Sq?=
- =?us-ascii?Q?iJ7gvfXBMl0ffkJg6K0xxe0R56lZTzYHPw+pigNI13JERyWQ49E747Nt9q4P?=
- =?us-ascii?Q?wf7eatNEOoBZTyGX67NsMlD4knYbGV09q2jJ32DDuL1nxt8u9IeW11aXFjGz?=
- =?us-ascii?Q?iyYAmaA7GbkDqUV2OPHF/mZa8PJabVkZcKpM3uqMdGUix808Yu+LJq+Ime5D?=
- =?us-ascii?Q?kyww4O9LxmfEbUxvc/4IYXjL4t4DhMnuRSrv61oO6tGJiSB0c0xrPHyahc+C?=
- =?us-ascii?Q?Y4g2K1YWCQUeWvf+2AKB8sfimghxPWYBhIJXQdRFdcRNqQCYb/y9exmnO6/O?=
- =?us-ascii?Q?qoDvI6D7DqsL2h1F983kczIEnj29q0SLy0D7Ep9VKDmCHYobH1Y9WhHgf3qm?=
- =?us-ascii?Q?TqWbKe0MFGFpHOi7xOmXgtoRt6xgc0hBvaMMAiqsZmup20TbRwSYxIuV0i5T?=
- =?us-ascii?Q?nQZQqyy/0HIFCrYRVN3TtTIlXSFjxZmHxuFrgDpOkQoNQ0nCnCuy7mwK92nl?=
- =?us-ascii?Q?IXMzZygiEVIYA199nhsjze68ajxuzoJAuHaBziH8aWGJ1r7JtBdjJ1f6gSNI?=
- =?us-ascii?Q?92Q70vU3Kpf/QSrOHKTzP9h/jfgGeO091MVlI9mw+bXmTnfGGCvAhcWtiC1g?=
- =?us-ascii?Q?Bx1e499XxsbBH4Qef3MqkJS3iD6PWatErQ00L7SxOGnSvS6J5GhtyN1dl8Pz?=
- =?us-ascii?Q?CIpttsg7N+zU4oiS5vbDucjJeZzEqtPefi5af/c34jo8OrdGruHH+C0vL16y?=
- =?us-ascii?Q?dUDYo0jxTqZxbx3q6TeH2FmEPJtYhPwRxZ79XZiYi/3d8sx94mlyOe/0jkuR?=
- =?us-ascii?Q?NtVDEX5oIijYrXtijsPE4zCu+3hSleANmkZIJZCywAEiJtTwbTSpBMfDl0or?=
- =?us-ascii?Q?msRbfqMN+GyCerLbW/Ew8/tEVZ/P2S65NdOM7AmCJ9l9W8K/XvHGujIz9F4W?=
- =?us-ascii?Q?vJuEKG++SAmfNMbMXpG9H6nPRJulngV2juCqQxiT96OCx7Wyi/mEC4zebTrE?=
- =?us-ascii?Q?XJZ6tBnqoKSO7Cf5N62JXDJ85t7tlfyKF7+xs12CMw4MOSvMu6/hupIF36YD?=
- =?us-ascii?Q?8yzqh8Hh04hFUxN4rXX2/VMgQHA2W9/S2UPepJ8jPm72Lfa8yZ0ADF06Cqg6?=
- =?us-ascii?Q?sk+a0VTUM6ARHYkaZAecJlLF1NZCuiROsOC53ovMS6MteCafaP7Mr7Mt4wBb?=
- =?us-ascii?Q?aIcnIhVtD/GPpqVR0ubC6zfFFZh6lB7o4fH1SH+JqQUl/j/nnk8sKPLJ7YTO?=
- =?us-ascii?Q?vncb15AKcYUMHSS7pYTRyWzuqO7uMPtvzF7KJ7JmCtRQN9nZ5DuhA/C08C4w?=
- =?us-ascii?Q?7sB4XwYxl9a/X9kEQS5/InZza6ZkX7wPZT6jBCC2rFXCrzthAwfUQbui8JSH?=
- =?us-ascii?Q?d9DlW79ZXYRdBzyQDFKsSRvmJ/6meLQpzgkCPS26RuPVqW+HheKZ40Plg+uS?=
- =?us-ascii?Q?ZpY4ONff73CnLanvNENQbAxX38xJsZOeJ3/duOFgMzdVDjj/SLKzxFd92Xp5?=
- =?us-ascii?Q?uvBCDBmmYlw6em+/1FUm0KyGsMZbxDrHzcYLH4UwO9+IZAlLzpNWN76FLF3n?=
- =?us-ascii?Q?rA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5aa2f82f-e8aa-41f5-03c4-08dd0f398313
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
+X-OriginatorOrg: amd.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2024 23:16:24.4378 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VEenOkjuTtBXRrYcyocHhC8GVtmS4Vl8GlbkRYfH2315rWO15g+xIYtddcD34IePI7MF6uVtJb8r1MVbBk4eI5+o4/T1x3ZKhOlOsdd9edA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7266
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5152.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35202868-bdfe-4163-1f0b-08dd0f4cd2f5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2024 01:34:38.7098 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6vMPtHl8j/x6aG9JCwPMktE1IeUdY1ObH8gg55uHoaagiok+8bW4Fc/lswQ+d7kAXbuNM33eRPbGafL0M3iU6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7024
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -175,78 +160,348 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Nov 27, 2024 at 12:30:49AM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/intel/xe_wedged: Manage verbosity of GT reset fault injection
-> URL   : https://patchwork.freedesktop.org/series/141810/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8126_full -> XEIGTPW_12203_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_12203_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_12203_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 4)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_12203_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@core_hotunplug@hotreplug:
->     - shard-lnl:          [PASS][1] -> [DMESG-WARN][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8126/shard-lnl-5/igt@core_hotunplug@hotreplug.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12203/shard-lnl-6/igt@core_hotunplug@hotreplug.html
+[AMD Official Use Only - AMD Internal Distribution Only]
 
-This change to the xe_wedged test would not impact the behavior of the
-core_hotunplug test.
+This series is good for me and is
+Reviewed-by: "Jesse.zhang@amd.com"
 
-> Known issues
-> ------------
-<snip>
->   * igt@xe_wedged@basic-wedged:
->     - shard-dg2-set2:     [SKIP][800] ([Intel XE#1130]) -> [DMESG-WARN][801] ([Intel XE#2919])
->    [800]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8126/shard-dg2-466/igt@xe_wedged@basic-wedged.html
->    [801]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12203/shard-dg2-435/igt@xe_wedged@basic-wedged.html
+-----Original Message-----
+From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+Sent: Wednesday, November 27, 2024 1:29 AM
+To: igt-dev@lists.freedesktop.org
+Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhan=
+g@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Deucher, Alexande=
+r <Alexander.Deucher@amd.com>; Liu, Leo <Leo.Liu@amd.com>; Zhang, Boyuan <B=
+oyuan.Zhang@amd.com>
+Subject: [PATCH 3/3] tests/amd_uvd: Introduce additional test instance for =
+UVD dec.& enc.
 
-Although this patch completely fixed the issue for me on the LNL system
-I was using to test locally, it looks like we do still need to tell
-igt_runner to ignore one more non-stackdump message to completely fix
-the bug on all platforms (which I think the other patch on the list from
-Kamil should take care of).
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Applied to master with Kamil's r-b from the gitlab comment.  Since it
-looks like this wasn't a full fix (despite being a move in the right
-direction), I re-opened the gitlab issue that got auto-closed as well
-until we have the rest of the fix.
+Added another process instance to simulate stressful conditions for UVD dec=
+oding and encoding tests, increasing test coverage and robustness.
 
+Cc: Jesse Zhang  <jesse.zhang@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alexander Deucher <alexander.deucher@amd.com>
+Cc: Leo Liu <leo.liu@amd.com>
+Cc: Boyuan Zhang <boyuan.zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ tests/amdgpu/amd_uvd_dec.c | 82 +++++++++++++++++++++++++++++++++-----
+ tests/amdgpu/amd_uvd_enc.c | 60 ++++++++++++++++++++++++----
+ 2 files changed, 124 insertions(+), 18 deletions(-)
 
-Matt
+diff --git a/tests/amdgpu/amd_uvd_dec.c b/tests/amdgpu/amd_uvd_dec.c index =
+3ec411aac..4b82549cc 100644
+--- a/tests/amdgpu/amd_uvd_dec.c
++++ b/tests/amdgpu/amd_uvd_dec.c
+@@ -2,7 +2,11 @@
+ // Copyright 2023 Advanced Micro Devices, Inc.
+ // Copyright 2014 Advanced Micro Devices, Inc.
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
++#include <spawn.h>
++#include <sys/wait.h>
++
+ #include "lib/amdgpu/amd_mmd_shared.h"
++#include "lib/amdgpu/amd_shared_process.h"
+
+ static void
+ uvd_cmd(uint32_t family_id, uint64_t addr, uint32_t cmd, uint32_t *idx, @@=
+ -21,6 +25,7 @@ uvd_cmd(uint32_t family_id, uint64_t addr, uint32_t cmd, ui=
+nt32_t *idx,
+
+ static void
+ amdgpu_uvd_dec_create(amdgpu_device_handle device_handle,
++               struct shmbuf *sh_mem,
+                struct mmd_shared_context *shared_context,
+                struct mmd_context *context)
+ {
+@@ -35,6 +40,8 @@ amdgpu_uvd_dec_create(amdgpu_device_handle device_handle,
+        req.alloc_size =3D 4*1024;
+        req.preferred_heap =3D AMDGPU_GEM_DOMAIN_GTT;
+
++       sync_point_enter(sh_mem);
++
+        r =3D amdgpu_bo_alloc(device_handle, &req, &buf_handle);
+        igt_assert_eq(r, 0);
+
+@@ -88,11 +95,16 @@ amdgpu_uvd_dec_create(amdgpu_device_handle device_handl=
+e,
+
+        r =3D amdgpu_bo_free(buf_handle);
+        igt_assert_eq(r, 0);
++
++       sync_point_exit(sh_mem);
++
+ }
+
+ static void
+ amdgpu_uvd_decode(amdgpu_device_handle device_handle,
+-               struct mmd_context *context, struct mmd_shared_context *sha=
+red_context)
++               struct shmbuf *sh_mem,
++               struct mmd_shared_context *shared_context,
++               struct mmd_context *context)
+ {
+        const unsigned int dpb_size =3D 15923584, dt_size =3D 737280;
+        uint64_t msg_addr, fb_addr, bs_addr, dpb_addr, ctx_addr, dt_addr, i=
+t_addr; @@ -115,6 +127,8 @@ amdgpu_uvd_decode(amdgpu_device_handle device_h=
+andle,
+
+        req.preferred_heap =3D AMDGPU_GEM_DOMAIN_GTT;
+
++       sync_point_enter(sh_mem);
++
+        r =3D amdgpu_bo_alloc(device_handle, &req, &buf_handle);
+        igt_assert_eq(r, 0);
+
+@@ -232,11 +246,15 @@ amdgpu_uvd_decode(amdgpu_device_handle device_handle,
+
+        r =3D amdgpu_bo_free(buf_handle);
+        igt_assert_eq(r, 0);
++
++       sync_point_exit(sh_mem);
+ }
+
+ static void
+-amdgpu_uvd_dec_destroy(amdgpu_device_handle device_handle, struct mmd_cont=
+ext *context,
+-                struct mmd_shared_context *shared_context)
++amdgpu_uvd_dec_destroy(amdgpu_device_handle device_handle,
++               struct shmbuf *sh_mem,
++               struct mmd_shared_context *shared_context,
++               struct mmd_context *context)
+ {
+        struct amdgpu_bo_alloc_request req =3D {0};
+        amdgpu_bo_handle buf_handle;
+@@ -249,6 +267,8 @@ amdgpu_uvd_dec_destroy(amdgpu_device_handle device_hand=
+le, struct mmd_context *c
+        req.alloc_size =3D 4 * 1024;
+        req.preferred_heap =3D AMDGPU_GEM_DOMAIN_GTT;
+
++       sync_point_enter(sh_mem);
++
+        r =3D amdgpu_bo_alloc(device_handle, &req, &buf_handle);
+        igt_assert_eq(r, 0);
+
+@@ -292,6 +312,8 @@ amdgpu_uvd_dec_destroy(amdgpu_device_handle device_hand=
+le, struct mmd_context *c
+
+        r =3D amdgpu_bo_free(buf_handle);
+        igt_assert_eq(r, 0);
++
++       sync_point_exit(sh_mem);
+ }
+
+ igt_main
+@@ -301,37 +323,77 @@ igt_main
+        struct mmd_shared_context shared_context =3D {};
+        int fd =3D -1;
+
++       int r;
++       char cmdline[2048];
++       char shm_name[256] =3D {};
++       int argc =3D 0;
++       char **argv =3D NULL;
++       char *path =3D NULL;
++       enum  process_type process =3D PROCESS_UNKNOWN;
++       int fd_shm =3D -1;
++       struct shmbuf *sh_mem =3D NULL;
++       posix_spawn_file_actions_t action;
++
++       pid_t pid_brother;
++       uint32_t major, minor;
++       int err;
++
+        igt_fixture {
+-               uint32_t major, minor;
+-               int err;
++
++               posix_spawn_file_actions_init(&action);
++
++               if (get_command_line(cmdline, &argc, &argv, &path) !=3D 0)
++                       igt_fail(IGT_EXIT_FAILURE);
++
++               r =3D is_run_device_parameter_found(argc, argv, ONDEVICE);
++               snprintf(shm_name, sizeof(shm_name), "/uvd_dec_shm_%d", r);
+
+                fd =3D drm_open_driver(DRIVER_AMDGPU);
+                err =3D amdgpu_device_initialize(fd, &major, &minor, &devic=
+e);
+                igt_require(err =3D=3D 0);
+-               igt_info("Initialized amdgpu, driver version %d.%d\n",
+-                        major, minor);
+                err =3D mmd_shared_context_init(device, &shared_context);
+                igt_require(err =3D=3D 0);
+                err =3D mmd_context_init(device, &context);
+                igt_require(err =3D=3D 0);
+                igt_skip_on(!is_uvd_tests_enable(shared_context.family_id, =
+shared_context.chip_id,
+                                shared_context.chip_rev));
++
++               if (is_brother_parameter_found(argc, argv, BROTHER) =3D=3D =
+0) {
++                       add_brother_parameter(&argc, argv, BROTHER);
++                       fd_shm =3D shared_mem_create(&sh_mem, shm_name);
++                       igt_require(fd_shm !=3D -1);
++                       launch_brother_process(argc, argv, path, &pid_broth=
+er, fd_shm);
++                       process =3D PROCESS_TEST;
++
++               } else {
++                       process =3D PROCESS_BROTHER;
++                       pid_brother =3D getpid();
++               }
++               if (process =3D=3D PROCESS_BROTHER)
++                       fd_shm =3D shared_mem_open(&sh_mem);
++
+        }
+        igt_describe("Test whether uvd dec is created");
+        igt_subtest("amdgpu_uvd_dec_create")
+-       amdgpu_uvd_dec_create(device, &shared_context, &context);
++       amdgpu_uvd_dec_create(device, sh_mem, &shared_context, &context);
+
+        igt_describe("Test whether uvd dec can decode");
+        igt_subtest("amdgpu_uvd_decode")
+-       amdgpu_uvd_decode(device, &context, &shared_context);
++       amdgpu_uvd_decode(device, sh_mem, &shared_context, &context);
+
+        igt_describe("Test whether uvd dec is destroyed");
+        igt_subtest("amdgpu_uvd_dec_destroy")
+-       amdgpu_uvd_dec_destroy(device, &context, &shared_context);
++       amdgpu_uvd_dec_destroy(device, sh_mem, &shared_context, &context);
+
+        igt_fixture {
+                mmd_context_clean(device, &context);
++               if (process =3D=3D PROCESS_TEST)
++                       waitpid(pid_brother, NULL, 0);
++
+                amdgpu_device_deinitialize(device);
+                drm_close_driver(fd);
++               shared_mem_destroy(sh_mem, fd_shm, true, shm_name);
++               posix_spawn_file_actions_destroy(&action);
++               free_command_line(argc, argv, path);
+        }
+ }
+diff --git a/tests/amdgpu/amd_uvd_enc.c b/tests/amdgpu/amd_uvd_enc.c index =
+15fb11fa3..fecda249a 100644
+--- a/tests/amdgpu/amd_uvd_enc.c
++++ b/tests/amdgpu/amd_uvd_enc.c
+@@ -1,8 +1,11 @@
+ // SPDX-License-Identifier: MIT
+ // Copyright 2023 Advanced Micro Devices, Inc.
+ // Copyright 2017 Advanced Micro Devices, Inc.
++#include <spawn.h>
++#include <sys/wait.h>
+
+ #include "lib/amdgpu/amd_mmd_shared.h"
++#include "lib/amdgpu/amd_shared_process.h"
+
+ static bool
+ is_uvd_enc_enable(amdgpu_device_handle device_handle) @@ -293,20 +296,24 @=
+@ amdgpu_uvd_enc_destroy(amdgpu_device_handle device_handle,  }
+
+ static void
+-amdgpu_uvd_enc_test(amdgpu_device_handle device, struct mmd_shared_context=
+ *shared_context)
++amdgpu_uvd_enc_test(amdgpu_device_handle device,
++               struct shmbuf *sh_mem,
++               struct mmd_shared_context *shared_context)
+ {
+        struct uvd_enc_context context =3D {0};
+        int r;
+
++       sync_point_enter(sh_mem);
++
+        r =3D mmd_context_init(device, &context.uvd);
+-       igt_require(r =3D=3D 0);
++       igt_require(r);
+        amdgpu_uvd_enc_create(device, &context);
+        amdgpu_uvd_enc_session_init(device, &context);
+        amdgpu_uvd_enc_encode(device, &context, shared_context);
+        amdgpu_uvd_enc_destroy(device, &context);
+-
+        mmd_context_clean(device, &context.uvd);
+
++       sync_point_exit(sh_mem);
+ }
+
+ igt_main
+@@ -315,28 +322,65 @@ igt_main
+        struct mmd_shared_context shared_context =3D {};
+        int fd =3D -1;
+
++       int r;
++       char cmdline[2048];
++       char shm_name[256] =3D {};
++       int argc =3D 0;
++       char **argv =3D NULL;
++       char *path =3D NULL;
++       enum  process_type process =3D PROCESS_UNKNOWN;
++       int fd_shm =3D -1;
++       struct shmbuf *sh_mem =3D NULL;
++       posix_spawn_file_actions_t action;
++
++       pid_t pid_brother;
++       uint32_t major, minor;
++       int err;
+        igt_fixture {
+-               uint32_t major, minor;
+-               int err;
++
++               posix_spawn_file_actions_init(&action);
++
++               if (get_command_line(cmdline, &argc, &argv, &path) !=3D 0)
++                       igt_fail(IGT_EXIT_FAILURE);
++
++               r =3D is_run_device_parameter_found(argc, argv, ONDEVICE);
++               snprintf(shm_name, sizeof(shm_name), "/uvd_enc_shm_%d", r);
+
+                fd =3D drm_open_driver(DRIVER_AMDGPU);
+                err =3D amdgpu_device_initialize(fd, &major, &minor, &devic=
+e);
+                igt_require(err =3D=3D 0);
+-               igt_info("Initialized amdgpu, driver version %d.%d\n",
+-                        major, minor);
+                memset(&shared_context, 0, sizeof(shared_context));
+                err =3D mmd_shared_context_init(device, &shared_context);
+                igt_require(err =3D=3D 0);
+
+                igt_skip_on(!is_uvd_enc_enable(device));
++               if (is_brother_parameter_found(argc, argv, BROTHER) =3D=3D =
+0) {
++                       add_brother_parameter(&argc, argv, BROTHER);
++                       fd_shm =3D shared_mem_create(&sh_mem, shm_name);
++                       igt_require(fd_shm !=3D -1);
++                       launch_brother_process(argc, argv, path, &pid_broth=
+er, fd_shm);
++                       process =3D PROCESS_TEST;
++
++               } else {
++                       process =3D PROCESS_BROTHER;
++                       pid_brother =3D getpid();
++               }
++               if (process =3D=3D PROCESS_BROTHER)
++                       fd_shm =3D shared_mem_open(&sh_mem);
+        }
+
+        igt_describe("Test uvd session, encode, destroy");
+        igt_subtest("uvd_encoder")
+-               amdgpu_uvd_enc_test(device, &shared_context);
++               amdgpu_uvd_enc_test(device, sh_mem, &shared_context);
+
+        igt_fixture {
++               if (process =3D=3D PROCESS_TEST)
++                       waitpid(pid_brother, NULL, 0);
++
+                amdgpu_device_deinitialize(device);
+                drm_close_driver(fd);
++               shared_mem_destroy(sh_mem, fd_shm, true, shm_name);
++               posix_spawn_file_actions_destroy(&action);
++               free_command_line(argc, argv, path);
+        }
+ }
+--
+2.25.1
+
