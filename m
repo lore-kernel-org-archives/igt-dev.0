@@ -4,27 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99068D69112
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 14:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E4CD69112
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 14:05:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5037510ECC0;
-	Thu, 28 Nov 2024 14:05:39 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AFAF10ECC0;
- Thu, 28 Nov 2024 14:05:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id D873510ECC2;
+	Thu, 28 Nov 2024 14:05:49 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="KmIwyTU9";
+	dkim-atps=neutral
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com
+ [209.85.210.170])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5F9F10ECC2
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 14:05:48 +0000 (UTC)
+Received: by mail-pf1-f170.google.com with SMTP id
+ d2e1a72fcca58-724ffe64923so919062b3a.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 06:05:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1732802748; x=1733407548; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jka5+PA+ugKIElQ9uC4xFW5xRNFe0DzlHa1l8/NlEtw=;
+ b=KmIwyTU9x6uLMiZGoZ6svQpNu9K5ROxeOipNE2IWbSz0Dhkqmg79QjhQCbNNEVy16h
+ od8DS9+CvgfVM7huZZid5g0AWK+u/UUKNrpzAtas2QpMcnC7InVjcAsvdQ4PaCcsfiYZ
+ pX+zzcBHa5fyu93nb0f33dkREpL4QusIoQ4qwp1P6KnwS6ip05iZ4TtuW4sVnh+tn7U0
+ /fcKmMjGNu5QhGTapyG81hRgc9lrx2FDBcI0oJ9l5ApzkPYsF6KcUYw4OcGGW6yUFBH6
+ I0xXIfxSWRs0tc8Xxvzy8n9Z/ANB/PKtdfZ5ShSiumzsvOQH/TIE1Ni8oSTaVqYioYvI
+ gdGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732802748; x=1733407548;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jka5+PA+ugKIElQ9uC4xFW5xRNFe0DzlHa1l8/NlEtw=;
+ b=S7fMxYPIiCZAjdGyN6EHvlyocL2L8RjaXoSuG1S02O4PRXj+JeAYp//VglBZsmE/yl
+ EoW2+tJKQN0E4Tn6h54HWrzGB/ihjML8AvhnlBk0QeBw9nXlJmn9XmYJTHyWcSI6O9xT
+ fG3djivnfV7ryCD3wzB+CqFzsxF+9kLSwKs3cljv3DN2H4sw/QGDEdr5lw39JdBA2d88
+ rGT9rvTrlblngkg57Ku7adU3FWlrb3HiUuJRXPVUTSASfJi6Ug7YCDHcS6RjGl4217qe
+ 2tIiyy96ivwUmm4N0Fc32MT7OzHvZRRWc2vN5G0LNLaAdCgTDMqwUGYm7sHAVRKwMmPG
+ rtcw==
+X-Gm-Message-State: AOJu0YyizTzwDTVJqTzBH0U8eMj+lSaXyvq8oSlUtN+SN+NbZBzuyTVQ
+ meQ8Dzr8BHbyfE028JhSAFrAuy261/77mKNAXC46ECkeH4K0NZ3bHqEU0ps2EIFa9HdmGIyx/FP
+ UM/Zpe3QMcZ7W07W5aMejxIN7riY=
+X-Gm-Gg: ASbGnctW43nX+LV60SIk4r8oiLDuZiBAjpWSfy7VFzunftvGXEInjdPFvbo6NWH4sl2
+ q1UsAlVr0xtiAjtO7C3wr/mWcD5kPUNxypA==
+X-Google-Smtp-Source: AGHT+IEnGyz6NAKeiFbCLqw8TlaxowwJUUgnzO8WlMP/X9dxdf4E8KiqANgA85MqGqUBnHnPbbk/KsYJrbnHqpjR7Ss=
+X-Received: by 2002:a17:90b:3947:b0:2ea:9309:75b3 with SMTP id
+ 98e67ed59e1d1-2ee08e9d29amr8376252a91.2.1732802747992; Thu, 28 Nov 2024
+ 06:05:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/gem=5Fmmap=5Foffset?=
- =?utf-8?q?=3A_Fix_OOM_hits_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Nov 2024 14:05:39 -0000
-Message-ID: <173280273903.4072800.3558476513640341188@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241128111822.836089-4-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20241128111822.836089-4-janusz.krzysztofik@linux.intel.com>
+References: <20241114190339.3885752-1-clinton.a.taylor@intel.com>
+ <20241114190339.3885752-6-clinton.a.taylor@intel.com>
+ <20241115133105.o7772oanzhwk2kil@kamilkon-desk.igk.intel.com>
+ <9a959681ca5fad5d62b7d4fa21deadaf3005ac40.camel@intel.com>
+In-Reply-To: <9a959681ca5fad5d62b7d4fa21deadaf3005ac40.camel@intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Thu, 28 Nov 2024 16:05:36 +0200
+Message-ID: <CAJ=qYWSPYBcpBFd+=OwjyFxZ9GDu3HtJ6dVj05yR19M2J8KBGw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v3 5/9] XE3: tests/kms_addfb_basic: fix x-tiled
+ tests for case when there is no x-tile
+To: "Taylor, Clinton A" <clinton.a.taylor@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,121 +80,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi,
 
-Series: tests/gem_mmap_offset: Fix OOM hits (rev2)
-URL   : https://patchwork.freedesktop.org/series/141643/
-State : success
+To be honest this is minor issue to me. Originally Intel IT tools set
+my name as is seen on the original s-o-b and in the past years I
+didn't care enough as changing that from default. I don't think anyone
+mistakes me for someone else in any of these ways of spelling my name
+but changing it for this patch will cause s-o-b not to match any of
+the previous if someone need to go grepping it.
 
-== Summary ==
+/Juha-Pekka
 
-CI Bug Log - changes from IGT_8129 -> IGTPW_12214
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12214 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#12903])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
-    - bat-dg1-7:          [PASS][5] -> [FAIL][6] ([i915#12903])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][7] -> [ABORT][8] ([i915#12061]) +1 other test abort
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-mtlp-8/igt@i915_selftest@live.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_mocs:
-    - bat-twl-2:          [PASS][9] -> [ABORT][10] ([i915#12919]) +1 other test abort
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [INCOMPLETE][11] ([i915#12904]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-apl-1/igt@dmabuf@all-tests.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_module_load@load:
-    - bat-twl-1:          [DMESG-WARN][13] ([i915#1982]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-twl-1/igt@i915_module_load@load.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-twl-1/igt@i915_module_load@load.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-rpls-4:         [FAIL][15] ([i915#12903]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [ABORT][17] ([i915#12919]) -> [PASS][18] +1 other test pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-twl-1/igt@i915_selftest@live.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-twl-1/igt@i915_selftest@live.html
-    - fi-skl-6600u:       [INCOMPLETE][19] ([i915#13050]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/fi-skl-6600u/igt@i915_selftest@live.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/fi-skl-6600u/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [ABORT][21] ([i915#12061]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8129/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13050]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8129 -> IGTPW_12214
-
-  CI-20190529: 20190529
-  CI_DRM_15757: f3f406165a3d5f0fcb60be2060b7920ac385dc22 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12214: 12214
-  IGT_8129: 363499a879fee5b9b7eda8acf7c772bce3423493 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12214/index.html
+On Sat, Nov 16, 2024 at 1:42=E2=80=AFAM Taylor, Clinton A
+<clinton.a.taylor@intel.com> wrote:
+>
+> On Fri, 2024-11-15 at 14:31 +0100, Kamil Konieczny wrote:
+> > Hi Clint,
+> > On 2024-11-14 at 11:03:35 -0800, Clint Taylor wrote:
+> > > From: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
+> >
+> > Please use correct names here, it should be:
+> >
+> > > From: "Juha-pekka Heikkila" <juha-pekka.heikkila@intel.com>
+> > > On Xe3 display no more support x-tile and will disable such framebuff=
+ers
+> > >
+> > > Signed-off-by: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>
+> >
+> > and here:
+> >
+> > Signed-off-by: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
+> >
+> > Please do the same corrections in other patches in this series.
+> >
+>   I will ask JP if it's ok to change the original SOB and Author lines. T=
+hey were
+> originally committed this way.
+>
+>
+> -Clint
+>
+> > Regards,
+> > Kamil
+> >
+> > > Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+> > > ---
+> > >  tests/kms_addfb_basic.c | 22 ++++++++++++----------
+> > >  1 file changed, 12 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> > > index b22818592..3ba87117b 100644
+> > > --- a/tests/kms_addfb_basic.c
+> > > +++ b/tests/kms_addfb_basic.c
+> > > @@ -217,6 +217,12 @@ static int legacy_addfb(int fd, struct drm_mode_=
+fb_cmd *arg)
+> > >     return err;
+> > >  }
+> > >
+> > > +static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_f=
+b_cmd2 *f)
+> > > +{
+> > > +   return igt_display_has_format_mod(disp, f->pixel_format,
+> > > +                                     f->modifier[0]) ? 0 : -1;
+> > > +}
+> > > +
+> > >  static void invalid_tests(int fd)
+> > >  {
+> > >     struct drm_mode_fb_cmd2 f =3D {};
+> > > @@ -735,8 +741,10 @@ static void addfb25_tests(int fd)
+> > >             igt_describe("Check if addfb2 call works for x-tiling");
+> > >             igt_subtest("addfb25-x-tiled-legacy") {
+> > >                     f.modifier[0] =3D I915_FORMAT_MOD_X_TILED;
+> > > -                   do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+> > > -                   do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+> > > +                   igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2,=
+ &f),
+> > > +                                 addfb_expected_ret(&display, &f));
+> > > +                   if (!addfb_expected_ret(&display, &f))
+> > > +                           do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_i=
+d);
+> > >                     f.fb_id =3D 0;
+> > >             }
+> > >
+> > > @@ -756,12 +764,6 @@ static void addfb25_tests(int fd)
+> > >             gem_close(fd, gem_bo);
+> > >  }
+> > >
+> > > -static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_f=
+b_cmd2 *f)
+> > > -{
+> > > -   return igt_display_has_format_mod(disp, f->pixel_format,
+> > > -                                     f->modifier[0]) ? 0 : -1;
+> > > -}
+> > > -
+> > >  static void addfb25_ytile(int fd)
+> > >  {
+> > >     struct drm_mode_fb_cmd2 f =3D {};
+> > > @@ -1012,8 +1014,6 @@ igt_main
+> > >
+> > >     master_tests(fd);
+> > >
+> > > -   addfb25_tests(fd);
+> > > -
+> > >     tiling_tests(fd);
+> > >
+> > >     igt_subtest_group {
+> > > @@ -1025,6 +1025,8 @@ igt_main
+> > >             igt_fixture
+> > >                     igt_require_intel(fd);
+> > >
+> > > +           addfb25_tests(fd);
+> > > +
+> > >             addfb25_ytile(fd);
+> > >
+> > >             addfb25_4tile(fd);
+> > > --
+> > > 2.25.1
+> > >
