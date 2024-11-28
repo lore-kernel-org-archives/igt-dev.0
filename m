@@ -2,24 +2,24 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB5C8D70DEB
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 21:12:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B64DD70DEB
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 21:21:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7C3FA10ED53;
-	Thu, 28 Nov 2024 21:12:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1A2E10E273;
+	Thu, 28 Nov 2024 21:21:42 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D202810ED53;
- Thu, 28 Nov 2024 21:11:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DFD210E273;
+ Thu, 28 Nov 2024 21:21:41 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2917479188130650566=="
+ boundary="===============5615565770597185107=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/i915=5Fhangman?=
  =?utf-8?q?=3A_Fix_spin_engine_hang_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Mikolaj Wasiak" <mikolaj.wasiak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Nov 2024 21:11:59 -0000
-Message-ID: <173282831982.43182.10537880521242470420@b555e5b46a47>
+Date: Thu, 28 Nov 2024 21:21:41 -0000
+Message-ID: <173282890127.43181.8086034963098024292@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <tjaif54c4ekuwkevjdspwzv5peoy66ovcyoowaauqv5jbobcv4@p5fvemmwlbhl>
 In-Reply-To: <tjaif54c4ekuwkevjdspwzv5peoy66ovcyoowaauqv5jbobcv4@p5fvemmwlbhl>
@@ -39,7 +39,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2917479188130650566==
+--===============5615565770597185107==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -3471,7 +3471,7 @@ Known issues
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12216/index.html
 
---===============2917479188130650566==
+--===============5615565770597185107==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -7133,4 +7133,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2917479188130650566==--
+--===============5615565770597185107==--
