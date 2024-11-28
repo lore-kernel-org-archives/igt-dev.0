@@ -4,70 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E4CD69112
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 14:05:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33CD9D69113
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 14:22:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D873510ECC2;
-	Thu, 28 Nov 2024 14:05:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="KmIwyTU9";
-	dkim-atps=neutral
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com
- [209.85.210.170])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5F9F10ECC2
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 14:05:48 +0000 (UTC)
-Received: by mail-pf1-f170.google.com with SMTP id
- d2e1a72fcca58-724ffe64923so919062b3a.2
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 06:05:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732802748; x=1733407548; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jka5+PA+ugKIElQ9uC4xFW5xRNFe0DzlHa1l8/NlEtw=;
- b=KmIwyTU9x6uLMiZGoZ6svQpNu9K5ROxeOipNE2IWbSz0Dhkqmg79QjhQCbNNEVy16h
- od8DS9+CvgfVM7huZZid5g0AWK+u/UUKNrpzAtas2QpMcnC7InVjcAsvdQ4PaCcsfiYZ
- pX+zzcBHa5fyu93nb0f33dkREpL4QusIoQ4qwp1P6KnwS6ip05iZ4TtuW4sVnh+tn7U0
- /fcKmMjGNu5QhGTapyG81hRgc9lrx2FDBcI0oJ9l5ApzkPYsF6KcUYw4OcGGW6yUFBH6
- I0xXIfxSWRs0tc8Xxvzy8n9Z/ANB/PKtdfZ5ShSiumzsvOQH/TIE1Ni8oSTaVqYioYvI
- gdGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732802748; x=1733407548;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jka5+PA+ugKIElQ9uC4xFW5xRNFe0DzlHa1l8/NlEtw=;
- b=S7fMxYPIiCZAjdGyN6EHvlyocL2L8RjaXoSuG1S02O4PRXj+JeAYp//VglBZsmE/yl
- EoW2+tJKQN0E4Tn6h54HWrzGB/ihjML8AvhnlBk0QeBw9nXlJmn9XmYJTHyWcSI6O9xT
- fG3djivnfV7ryCD3wzB+CqFzsxF+9kLSwKs3cljv3DN2H4sw/QGDEdr5lw39JdBA2d88
- rGT9rvTrlblngkg57Ku7adU3FWlrb3HiUuJRXPVUTSASfJi6Ug7YCDHcS6RjGl4217qe
- 2tIiyy96ivwUmm4N0Fc32MT7OzHvZRRWc2vN5G0LNLaAdCgTDMqwUGYm7sHAVRKwMmPG
- rtcw==
-X-Gm-Message-State: AOJu0YyizTzwDTVJqTzBH0U8eMj+lSaXyvq8oSlUtN+SN+NbZBzuyTVQ
- meQ8Dzr8BHbyfE028JhSAFrAuy261/77mKNAXC46ECkeH4K0NZ3bHqEU0ps2EIFa9HdmGIyx/FP
- UM/Zpe3QMcZ7W07W5aMejxIN7riY=
-X-Gm-Gg: ASbGnctW43nX+LV60SIk4r8oiLDuZiBAjpWSfy7VFzunftvGXEInjdPFvbo6NWH4sl2
- q1UsAlVr0xtiAjtO7C3wr/mWcD5kPUNxypA==
-X-Google-Smtp-Source: AGHT+IEnGyz6NAKeiFbCLqw8TlaxowwJUUgnzO8WlMP/X9dxdf4E8KiqANgA85MqGqUBnHnPbbk/KsYJrbnHqpjR7Ss=
-X-Received: by 2002:a17:90b:3947:b0:2ea:9309:75b3 with SMTP id
- 98e67ed59e1d1-2ee08e9d29amr8376252a91.2.1732802747992; Thu, 28 Nov 2024
- 06:05:47 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D37DB10EC93;
+	Thu, 28 Nov 2024 14:22:50 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60C7910EC8D;
+ Thu, 28 Nov 2024 14:22:50 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8761799845287312933=="
 MIME-Version: 1.0
-References: <20241114190339.3885752-1-clinton.a.taylor@intel.com>
- <20241114190339.3885752-6-clinton.a.taylor@intel.com>
- <20241115133105.o7772oanzhwk2kil@kamilkon-desk.igk.intel.com>
- <9a959681ca5fad5d62b7d4fa21deadaf3005ac40.camel@intel.com>
-In-Reply-To: <9a959681ca5fad5d62b7d4fa21deadaf3005ac40.camel@intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Thu, 28 Nov 2024 16:05:36 +0200
-Message-ID: <CAJ=qYWSPYBcpBFd+=OwjyFxZ9GDu3HtJ6dVj05yR19M2J8KBGw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v3 5/9] XE3: tests/kms_addfb_basic: fix x-tiled
- tests for case when there is no x-tile
-To: "Taylor, Clinton A" <clinton.a.taylor@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=5Feudebug=5Fonline?=
+ =?utf-8?q?=3A_update_thread_count_handling_in_query=5Fattention=5Fbitmask?=
+ =?utf-8?q?=5Fsize=28=29_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 28 Nov 2024 14:22:50 -0000
+Message-ID: <173280377039.4064499.16540644026810000969@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241128130503.241328-1-jan.maslak@intel.com>
+In-Reply-To: <20241128130503.241328-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,123 +38,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+--===============8761799845287312933==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To be honest this is minor issue to me. Originally Intel IT tools set
-my name as is seen on the original s-o-b and in the past years I
-didn't care enough as changing that from default. I don't think anyone
-mistakes me for someone else in any of these ways of spelling my name
-but changing it for this patch will cause s-o-b not to match any of
-the previous if someone need to go grepping it.
+== Series Details ==
 
-/Juha-Pekka
+Series: tests/xe_eudebug_online: update thread count handling in query_attention_bitmask_size() (rev3)
+URL   : https://patchwork.freedesktop.org/series/141366/
+State : success
 
-On Sat, Nov 16, 2024 at 1:42=E2=80=AFAM Taylor, Clinton A
-<clinton.a.taylor@intel.com> wrote:
->
-> On Fri, 2024-11-15 at 14:31 +0100, Kamil Konieczny wrote:
-> > Hi Clint,
-> > On 2024-11-14 at 11:03:35 -0800, Clint Taylor wrote:
-> > > From: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
-> >
-> > Please use correct names here, it should be:
-> >
-> > > From: "Juha-pekka Heikkila" <juha-pekka.heikkila@intel.com>
-> > > On Xe3 display no more support x-tile and will disable such framebuff=
-ers
-> > >
-> > > Signed-off-by: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>
-> >
-> > and here:
-> >
-> > Signed-off-by: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
-> >
-> > Please do the same corrections in other patches in this series.
-> >
->   I will ask JP if it's ok to change the original SOB and Author lines. T=
-hey were
-> originally committed this way.
->
->
-> -Clint
->
-> > Regards,
-> > Kamil
-> >
-> > > Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
-> > > ---
-> > >  tests/kms_addfb_basic.c | 22 ++++++++++++----------
-> > >  1 file changed, 12 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> > > index b22818592..3ba87117b 100644
-> > > --- a/tests/kms_addfb_basic.c
-> > > +++ b/tests/kms_addfb_basic.c
-> > > @@ -217,6 +217,12 @@ static int legacy_addfb(int fd, struct drm_mode_=
-fb_cmd *arg)
-> > >     return err;
-> > >  }
-> > >
-> > > +static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_f=
-b_cmd2 *f)
-> > > +{
-> > > +   return igt_display_has_format_mod(disp, f->pixel_format,
-> > > +                                     f->modifier[0]) ? 0 : -1;
-> > > +}
-> > > +
-> > >  static void invalid_tests(int fd)
-> > >  {
-> > >     struct drm_mode_fb_cmd2 f =3D {};
-> > > @@ -735,8 +741,10 @@ static void addfb25_tests(int fd)
-> > >             igt_describe("Check if addfb2 call works for x-tiling");
-> > >             igt_subtest("addfb25-x-tiled-legacy") {
-> > >                     f.modifier[0] =3D I915_FORMAT_MOD_X_TILED;
-> > > -                   do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-> > > -                   do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
-> > > +                   igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2,=
- &f),
-> > > +                                 addfb_expected_ret(&display, &f));
-> > > +                   if (!addfb_expected_ret(&display, &f))
-> > > +                           do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_i=
-d);
-> > >                     f.fb_id =3D 0;
-> > >             }
-> > >
-> > > @@ -756,12 +764,6 @@ static void addfb25_tests(int fd)
-> > >             gem_close(fd, gem_bo);
-> > >  }
-> > >
-> > > -static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_f=
-b_cmd2 *f)
-> > > -{
-> > > -   return igt_display_has_format_mod(disp, f->pixel_format,
-> > > -                                     f->modifier[0]) ? 0 : -1;
-> > > -}
-> > > -
-> > >  static void addfb25_ytile(int fd)
-> > >  {
-> > >     struct drm_mode_fb_cmd2 f =3D {};
-> > > @@ -1012,8 +1014,6 @@ igt_main
-> > >
-> > >     master_tests(fd);
-> > >
-> > > -   addfb25_tests(fd);
-> > > -
-> > >     tiling_tests(fd);
-> > >
-> > >     igt_subtest_group {
-> > > @@ -1025,6 +1025,8 @@ igt_main
-> > >             igt_fixture
-> > >                     igt_require_intel(fd);
-> > >
-> > > +           addfb25_tests(fd);
-> > > +
-> > >             addfb25_ytile(fd);
-> > >
-> > >             addfb25_4tile(fd);
-> > > --
-> > > 2.25.1
-> > >
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8129_BAT -> XEIGTPW_12215_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12215_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#3429]) -> [PASS][2] +31 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8129/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12215/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+
+  
+  [Intel XE#3429]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8129 -> IGTPW_12215
+
+  IGTPW_12215: 12215
+  IGT_8129: 363499a879fee5b9b7eda8acf7c772bce3423493 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2289-f3f406165a3d5f0fcb60be2060b7920ac385dc22: f3f406165a3d5f0fcb60be2060b7920ac385dc22
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12215/index.html
+
+--===============8761799845287312933==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_eudebug_online: update thread count handling in query_attention_bitmask_size() (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141366/">https://patchwork.freedesktop.org/series/141366/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12215/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12215/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8129_BAT -&gt; XEIGTPW_12215_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12215_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_addfb_basic@bad-pitch-0:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8129/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429">Intel XE#3429</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12215/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> +31 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8129 -&gt; IGTPW_12215</li>
+</ul>
+<p>IGTPW_12215: 12215<br />
+  IGT_8129: 363499a879fee5b9b7eda8acf7c772bce3423493 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2289-f3f406165a3d5f0fcb60be2060b7920ac385dc22: f3f406165a3d5f0fcb60be2060b7920ac385dc22</p>
+
+</body>
+</html>
+
+--===============8761799845287312933==--
