@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7784D69114
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 15:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9964ED6911C
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Nov 2024 15:50:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 690E310ECF6;
-	Thu, 28 Nov 2024 15:41:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 459C110E152;
+	Thu, 28 Nov 2024 15:50:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="iz+9MKUW";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="UgQDNMlG";
 	dkim-atps=neutral
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com
- [209.85.216.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40B6810ECF6
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 15:41:05 +0000 (UTC)
-Received: by mail-pj1-f54.google.com with SMTP id
- 98e67ed59e1d1-2ea1e605193so789385a91.0
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 07:41:05 -0800 (PST)
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com
+ [209.85.215.170])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 567D310E152
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 15:50:46 +0000 (UTC)
+Received: by mail-pg1-f170.google.com with SMTP id
+ 41be03b00d2f7-7e9e38dd5f1so704305a12.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Nov 2024 07:50:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732808465; x=1733413265; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1732809046; x=1733413846; darn=lists.freedesktop.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7IOdDaOmtwDyWITxohHhTIu981VoLyNlayfw1ZNjlo4=;
- b=iz+9MKUWnMHfcM0+pnBL2i5lhmcAvB3RcOwEiwgHitwXnTfM2LiB81vbcLVTPBoK39
- I+uoC9RofPj5deNUc8IjWPfP3p1wb0S2NEI9xUxxH2hpl8TSE07oT16zJOPs3mrf/h7O
- 2MIbyIXx1j1KMP+sifjL/REKl6yoXlEsXNUnCfDpteWGzi4V9fy1v4qQIoSW5LggLc++
- tfYb4HLe0KJPU3i/etgwehY+gKMxiAy99vM/7c7PsTS4TGN0odqQ4ATYdNBniIrjgkH0
- VgLfjNcXoEhCpf+DBM/N9QTAgFoj/GlgbJXIS4WgNYtWweFtA1oQKOdmBEO2KQCRAnYJ
- UqQg==
+ bh=fI/tUTN0zpieqGEa/PWzjRhxBCfgGA2Wua4wrx0zaEw=;
+ b=UgQDNMlGFdAKNfD7yCwjIvdrWyN7oZD3CqSRSFqxAPpA4LxBW4rtczuGHfzcqDXPcy
+ wMYAC88ePmjq0Td2DzeKxtlAjYnqLmy9K9Phd8Imsx6NHmimtoS/hUPajxUIafvT38UG
+ 6CIWfzRKAmFbS5zRJxJ2kLm9yqyIUdHR/pRRTN12mJ0pIC7kZMZuqkQjgbBSAhSn5oJj
+ iwYlKjXnnN77G9jR3LicXe0kudRq+VNmcgyUZ3r8yM9CGWNULT55rGC8O5nfEWi0x18D
+ TNxFyp1I42UfkV5/OYQvApnEy2lyhvrbR/kIUaqxdoH9XAFpUnXp5GMjtjolaWPL+UwZ
+ 11eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732808465; x=1733413265;
+ d=1e100.net; s=20230601; t=1732809046; x=1733413846;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7IOdDaOmtwDyWITxohHhTIu981VoLyNlayfw1ZNjlo4=;
- b=R4719oG1CYYmD0zyvAVxi+zMJC6EK+PQNRz5cONIuzxi2koJHpC2W+uSnUtucDhFzt
- MxSZ/CTE1H9os5MTMfNqFOuvf5X4V0KrPdJVGv6rLdUwi0yysEeHVATEUYWIM9SUG3Vn
- E3aeVMnj2e9twgcobJvsvqPgXaw2S+d7iA2KFZM5SyEgCSyWNoqPpBtoQgvhuUa9ec4G
- yA5TVG2CJtcf+0a71+gQ99oGxAernU2zUL4mTdE7PFswS6fwP8pbI3sG3REA/p9i1v/x
- W7+94zE2ZwlV6fzzHOzYQb/bSfiBPHdgSflkhwu1xZpUQlttmT/3u+OUG2J1mzhuczTf
- XJuQ==
-X-Gm-Message-State: AOJu0YzwSemNIVM9Ri0WXSnVsXMF16twswMEXNIflQaPipRDFYClw+vC
- WUQ6W3/yG9UXBKv9N+wIuPT8402U+jERWCigCVUYb2nzWL+Ygbfq3cbUF4b1eviUBN8Kr9n0v4q
- hqdA8KYIvJq3g7nsnp5/WJxNhOdleBwF6D0k=
-X-Gm-Gg: ASbGncta/BIQSMHGxaaw3BNZDd/wK6jeC7+wwwwArX0hViBs0fIffENY0K/syifygeG
- kk/a+Df4eiRlZSI+voiLxCDn/r6oIIpPRjw==
-X-Google-Smtp-Source: AGHT+IH/qUj+Nvz6/2eHDupBBOcsWhs/50Cm3hJdrE/vAFhMR0ovSkdNcQyntjevMNCSdH9JhMMf38r8lEtXqbQpDm4=
-X-Received: by 2002:a17:90b:4d8f:b0:2ea:b0f9:ff73 with SMTP id
- 98e67ed59e1d1-2ee093d5f46mr8635208a91.25.1732808464534; Thu, 28 Nov 2024
- 07:41:04 -0800 (PST)
+ bh=fI/tUTN0zpieqGEa/PWzjRhxBCfgGA2Wua4wrx0zaEw=;
+ b=ctK9S9ITpCRLG0/jGnLT1znAFYgPlP8o6pflxeHBchi6UFMXUrcFxGfUtA5O9ppoI0
+ Y91jtkFblBlCHpH3F36aSY3BGRkBHoQWHhb/vZdi/idUh5URjATk7nog4eNkclHf0C5j
+ In9lMresE5aNxzFf5WbETpJCQ/XgSjyQtUc46lA0MRtL07bdK3pV1+wVXeSPFNhxReNy
+ IO4zJ1YKiIq3J6CardxRpIoTTIjO+fS4A2j5NP59H3tVeauFh25ZXL+FNcGQa0bZikHx
+ JSqajXLUzNMrIqtpCIrwryywhz36TcJ30x42tPx3E/hj6GaSsuTNv10HF3AHQzAAn5LS
+ Xenw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXy1mNetH6P/L5voJUSUaZDuJkB9NEAtRUDFSw9anv1VksjEWotyBL+RMZeXA10UMcrXFrPmABu@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YwlvGbHObTNqjfF0KvCGjCapRQZS93vl3WaP9ONG1M0iDbI2nFu
+ 4NHRAa4pnbIAiykOiYZbq4nxC9XAE0Ny2y/lE9y+WGe+vy+UxUOHQTTKf+7+EyTWZGLpYJ7OOA8
+ N68oQJCkga4txM8Rd7buoXOWFGUtixAHtwqc=
+X-Gm-Gg: ASbGnctPibpQO9T37gQU+2NL0klwpc8/9JXc2V3K8VnQ5/3gbLvPqsjkIUcFyvMRSjP
+ zWefKherMCfHkRrivDt8ohWBSjFkR/ijYbA==
+X-Google-Smtp-Source: AGHT+IHqWUEel2VpNartnXtpJymTV7xPr7vPDxKAwFOavQjzAaOaxtviRvuDa0gUYrTBoGL9OD2QVB11SNPt3aLMavk=
+X-Received: by 2002:a17:90b:1a8b:b0:2ea:3f34:f18d with SMTP id
+ 98e67ed59e1d1-2ee08eb1d2bmr9796354a91.10.1732809045748; Thu, 28 Nov 2024
+ 07:50:45 -0800 (PST)
 MIME-Version: 1.0
 References: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
  <20241125161958.296816-2-juhapekka.heikkila@gmail.com>
@@ -61,14 +63,15 @@ References: <20241125161958.296816-1-juhapekka.heikkila@gmail.com>
  <Z0XDFpvsdlB45R8T@intel.com>
  <CAJ=qYWTfuqkjQQ9eQDK8UaGDZ-xe3tvidt6kOX6sYgEYzk2uNw@mail.gmail.com>
  <CAJ=qYWRcsbwmsG+aQBEKqd_c80XrTPorn0+Ji+P5H4TNu=ze2A@mail.gmail.com>
- <Z0hlv5a4fXjVuJnw@intel.com>
-In-Reply-To: <Z0hlv5a4fXjVuJnw@intel.com>
+ <CY5PR11MB62111EF23896738A0B52783095292@CY5PR11MB6211.namprd11.prod.outlook.com>
+In-Reply-To: <CY5PR11MB62111EF23896738A0B52783095292@CY5PR11MB6211.namprd11.prod.outlook.com>
 From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Thu, 28 Nov 2024 17:40:53 +0200
-Message-ID: <CAJ=qYWR=q46BpQvO7BC3BRCGBFN4WFu42FW4yQG1EXD+iEqirQ@mail.gmail.com>
+Date: Thu, 28 Nov 2024 17:50:33 +0200
+Message-ID: <CAJ=qYWSPUWxgsaQZAs5e2edGm=Dh=_Oh7oM+00F1ofMmMfEy9w@mail.gmail.com>
 Subject: Re: [PATCH i-g-t 1/1] tests/intel/kms_ccs: add hiberbate test
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, 
+ Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -86,15 +89,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Nov 28, 2024 at 2:45=E2=80=AFPM Rodrigo Vivi <rodrigo.vivi@intel.co=
-m> wrote:
->
-> On Wed, Nov 27, 2024 at 03:21:17PM +0200, Juha-Pekka Heikkil=C3=A4 wrote:
+On Thu, Nov 28, 2024 at 8:19=E2=80=AFAM Gupta, Anshuman
+<anshuman.gupta@intel.com> wrote:
+> > -----Original Message-----
+> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha=
+-
+> > Pekka Heikkil=C3=A4
+> > Sent: Wednesday, November 27, 2024 6:51 PM
+> > To: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> > Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedeskt=
+op.org>
+> > Subject: Re: [PATCH i-g-t 1/1] tests/intel/kms_ccs: add hiberbate test
+> >
 > > On Tue, Nov 26, 2024 at 7:12=E2=80=AFPM Juha-Pekka Heikkil=C3=A4
 > > <juhapekka.heikkila@gmail.com> wrote:
 > > >
 > > > On Tue, Nov 26, 2024 at 3:00=E2=80=AFPM Rodrigo Vivi <rodrigo.vivi@in=
-tel.com> wrote:
+tel.com>
+> > wrote:
 > > > >
 > > > > On Tue, Nov 26, 2024 at 10:07:37AM +0200, Juha-Pekka Heikkil=C3=A4 =
 wrote:
@@ -104,56 +116,69 @@ back here.
 > > > > > On Mon, Nov 25, 2024 at 10:03=E2=80=AFPM Juha-Pekka Heikkil=C3=A4
 > > > > > <juhapekka.heikkila@gmail.com> wrote:
 > > > > > >
-> > > > > > On Mon, Nov 25, 2024 at 8:20=E2=80=AFPM Rodrigo Vivi <rodrigo.v=
-ivi@intel.com> wrote:
+> > > > > > On Mon, Nov 25, 2024 at 8:20=E2=80=AFPM Rodrigo Vivi
+> > <rodrigo.vivi@intel.com> wrote:
 > > > > > > >
-> > > > > > > On Mon, Nov 25, 2024 at 06:19:58PM +0200, Juha-Pekka Heikkila=
- wrote:
+> > > > > > > On Mon, Nov 25, 2024 at 06:19:58PM +0200, Juha-Pekka Heikkila
+> > wrote:
 > > > > > > > > Add hibernate test which bring entire system down for short
 > > > > > > > > hibernate. This mode is added to suspend tests to be run
-> > > > > > > > manually with '-r' flag because this is not ci friendly tes=
-t,
-> > > > > > > > on hibernate ci would lose connection to the hibernated box=
-.
+> > > > > > > > manually with '-r' flag because this is not ci friendly
+> > > > > > > > test, on hibernate ci would lose connection to the hibernat=
+ed box.
 > > > > > > >
 > > > > > > > I know that nowadays it is a beast to get hibernate to work i=
-n the distros,
-> > > > > > > but afaik our CI is prepared for that, otherwise we wouldn't =
-be able to
-> > > > > > > get these:
+n
+> > > > > > > the distros, but afaik our CI is prepared for that, otherwise
+> > > > > > > we wouldn't be able to get these:
 > > > > > > >
 > > > > > > > https://intel-gfx-ci.01.org/tree/intel-xe/index.html?testfilt=
-er=3Ds4
+e
+> > > > > > > r=3Ds4
 > > > > > >
-> > > > > > If you go see those test machine bootlogs you see there is no r=
-esume
-> > > > > > configured. I think all these current s4 tests work with pm_tes=
-t hence
-> > > > > > also original problem where tests didn't reproduce that broken =
-ccs
-> > > > > > after resume. If you try running on your own box any of these s=
-4 tests
-> > > > > > you'll see they don't go fully down. I wanted to have a test th=
-at does
-> > > > > > the same as real hibernate.
+> > > > > > If you go see those test machine bootlogs you see there is no
+> > > > > > resume configured. I think all these current s4 tests work with
+> > > > > > pm_test hence also original problem where tests didn't reproduc=
+e
+> > > > > > that broken ccs after resume. If you try running on your own bo=
+x
+> > > > > > any of these s4 tests you'll see they don't go fully down. I
+> > > > > > wanted to have a test that does the same as real hibernate.
 > > > >
 > > > > hmmm... something indeed changed because of CI.
+> Network driver does not resume properly and take time during actual hiber=
+nation,
+> AFAIU the problem might br igt tests are forked by igt_runner and igt_run=
+ner is a child of bash ssh instance.
+> Ssh connection are prone to disconnect on loss of network that will kill =
+the bash and igt runner and igt test will be zombie.
+> If we can run igt runner as a background process or as native on console,=
+ and should make igt_runner to wait for network resume.
+
+You mean ssh connection gives up too soon? For that I have in my ssh
+config these
+
+ServerAliveInterval 500
+ServerAliveCountMax 7
+
+this gives the test box almost one hour time to respond back, ssh will
+wait patiently. I use one hour here because I sometimes use kgdb.
+
+/Juha-Pekka
+
 > > > >
 > > > > I originally implemented them without SUSPEND_TEST_DEVICES, in a wa=
-y that
-> > > > the machine was going fully down in my ADL+DG2 machine.
+y
+> > > > that the machine was going fully down in my ADL+DG2 machine.
 > > > >
-> > > > But commit 4b767566bbc ("tests/intel/xe_pm: S4 to go up to devices =
-only")
-> > > > modified that to make it work for CI.
+> > > > But commit 4b767566bbc ("tests/intel/xe_pm: S4 to go up to devices
+> > > > only") modified that to make it work for CI.
 > > > >
-> > > > So, perhaps we can do both, have the manual setup with -r and no TE=
-ST
-> > > > and have the one with TEST but not fully down.
+> > > > So, perhaps we can do both, have the manual setup with -r and no
+> > > > TEST and have the one with TEST but not fully down.
 > > > >
-> > > > Have you reproduced the CSS reported bug? Then have you tried the s=
-olution
-> > > > with the TEST?
+> > > > Have you reproduced the CSS reported bug? Then have you tried the
+> > > > solution with the TEST?
 > > >
 > > > I suspect I earlier got lot of frozen test machines, with these test
 > > > it always affect testing of new test. This test I now have here does
@@ -163,25 +188,23 @@ olution
 > > > > > >
 > > > > > > >
 > > > > > > > >
-> > > > > > > > For this test to work kernel resume point need to be set us=
-ing swapfile, from
-> > > > > > > > kernel command line is checked if there is found something =
-along the lines of
-> > > > > > > > "resume=3D/dev/nvme0n1p2 resume_offset=3D73527296" or so to=
- verify hibernate
-> > > > > > > > will be successfull.
+> > > > > > > > For this test to work kernel resume point need to be set
+> > > > > > > > using swapfile, from kernel command line is checked if ther=
+e
+> > > > > > > > is found something along the lines of
+> > > > > > > > "resume=3D/dev/nvme0n1p2 resume_offset=3D73527296" or so to
+> > > > > > > > verify hibernate will be successfull.
 > > > > > > >
-> > > > > > > Indeed painful nowadays... I can't even believe this gap came=
- from user
-> > > > > > > report... is anyone really still using hibernation nowadays?!=
- :)
+> > > > > > > Indeed painful nowadays... I can't even believe this gap came
+> > > > > > > from user report... is anyone really still using hibernation
+> > > > > > > nowadays?! :)
 > > > > > > >
 > > > > > > > >
-> > > > > > > > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmai=
-l.com>
+> > > > > > > > Signed-off-by: Juha-Pekka Heikkila
+> > > > > > > > <juhapekka.heikkila@gmail.com>
 > > > > > > > > ---
-> > > > > > > >  tests/intel/kms_ccs.c | 162 ++++++++++++++++++++++++++++++=
-+++++++++++-
+> > > > > > > >  tests/intel/kms_ccs.c | 162
+> > > > > > > > +++++++++++++++++++++++++++++++++++++++++-
 > > > > > > > >  1 file changed, 159 insertions(+), 3 deletions(-)
 > > > > > > > >
 > > > > > > > > diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
@@ -195,13 +218,13 @@ l.com>
 > > > > > > > > +     bool do_hibernate;
 > > > > > > > >       struct {
 > > > > > > > >               struct igt_fb fb;
-> > > > > > > >               int width, height;
-> > > > > > > > @@ -271,6 +272,154 @@ static const struct {
+> > > > > > > >               int width, height; @@ -271,6 +272,154 @@
+> > > > > > > > static const struct {
 > > > > > > > >   */
 > > > > > > > >  #define MAX_SPRITE_PLANE_WIDTH 2000
 > > > > > > > >
-> > > > > > > > +/* constants for hibenate test */
-> > > > > > > > +#define RTC_WAKE_CMD "rtcwake -m no -s %d"
+> > > > > > > > +/* constants for hibenate test */ #define RTC_WAKE_CMD
+> > > > > > > > +"rtcwake -m no -s %d"
 > > > > > > >
 > > > > > > > Why are you calling rtcwake directly instead of using
 > > > > > > > igt_system_suspend_autoresume(SUSPEND_STATE_DISK...) ?!
@@ -210,8 +233,8 @@ l.com>
 > > > > > >
 > > > > > > I wanted rtc only to wake up the machine. On
 > > > > > > igt_system_suspend_autoresume(..) I'd get pm_test handling whic=
-h I
-> > > > > > want to avoid here.
+h
+> > > > > > I want to avoid here.
 > > > >
 > > > > you can do that.... just pass SUSPEND_TEST_NONE instead of
 > > > > SUSPEND_TEST_DEVICES as the second argument. So, a lot of the logic
@@ -237,42 +260,23 @@ h I
 > > > instead of resuming.
 > >
 > > There is something fishy going on with
-> > igt_system_suspend_autoresume(..). When I try to use
-> > SUSPEND_STATE_DISK and SUSPEND_TEST_NONE, lnl boxes I've tried never
-> > successfully hibernated. These boxes start to go down but don't power
-> > off and I see same code always stuck on board led display. I'm not
-> > able to pinpoint the issue since I'm not so familiar with pm code. On
-> > same boxes, the hibernate code I have on this patch did work 5/5. As
-> > above mentioned difference is I use rtc to wake the system but I on my
-> > own go write  /sys/power/state. While it should do the same thing,
-> > something is different..no idea could it be just some firmware issue
-> > vs timing but result is anyway different. I had quick try with mtl and
-> > i915 igt_system_suspend_autoresume(..) where things did work as
-> > expected.
->
-> hmm that's indeed interesting... the autoresume uses rtcwake anyway no?
-> perhaps some different option passed to rtcwake?
->
-> well, to be honest, I have seen many cases where our autoresume gets
-> stuck in different platforms with differents levels of suspend :/
->
-> Maybe we could try to improve our autoresume to ensure it is taking
-> your safer sequence here? or at least have your safer sequence as
-> an alternative inside the lib/igt_pm as well?
->
-
-I now know what affect the hibernate. I'll need to get lnl boxes here
-updated with new fw. Disconnecting all type-c cables made hibernate
-through igt_system_suspend_autoresume(..) reliable. I think I would
-prefer igt_system_suspend_autoresume type hibernate for test as it
-probably is closer to what distros are doing.
-
-Once have latest fw will need to see does this problem still exist. In
-any case I'll move code around a bit and move that resume point check
-into libigt
-
-/Juha-Pekka
-
+> > igt_system_suspend_autoresume(..). When I try to use SUSPEND_STATE_DISK
+> > and SUSPEND_TEST_NONE, lnl boxes I've tried never successfully hibernat=
+ed.
+> > These boxes start to go down but don't power off and I see same code al=
+ways
+> > stuck on board led display. I'm not able to pinpoint the issue since I'=
+m not so
+> > familiar with pm code. On same boxes, the hibernate code I have on this=
+ patch
+> > did work 5/5. As above mentioned difference is I use rtc to wake the sy=
+stem
+> > but I on my own go write  /sys/power/state. While it should do the same
+> > thing, something is different..no idea could it be just some firmware i=
+ssue vs
+> > timing but result is anyway different. I had quick try with mtl and
+> > i915 igt_system_suspend_autoresume(..) where things did work as expecte=
+d.
 > >
 > > >
 > > > >
@@ -283,8 +287,7 @@ into libigt
 > > > > > > > > +#define SYS_POWER_STATE "/sys/power/state"
 > > > > > > > > +#define GRUB_CFG_PATH "/boot/grub/grub.cfg"
 > > > > > > > > +
-> > > > > > > > +static void check_hibernation_support(void)
-> > > > > > > > +{
+> > > > > > > > +static void check_hibernation_support(void) {
 > > > > > > > > +     int fd;
 > > > > > > > > +     char buffer[2048];
 > > > > > > > > +     ssize_t bytes_read;
@@ -298,13 +301,13 @@ e");
 > > > > > > > > +     bytes_read =3D read(fd, buffer, sizeof(buffer) - 1);
 > > > > > > > > +     close(fd);
 > > > > > > > > +
-> > > > > > > > +     igt_require_f(bytes_read > 0, "Failed to read /sys/po=
-wer/state");
+> > > > > > > > +     igt_require_f(bytes_read > 0, "Failed to read
+> > > > > > > > + /sys/power/state");
 > > > > > > > > +
 > > > > > > > > +     buffer[bytes_read] =3D '\0';
 > > > > > > > > +     igt_require_f(strstr(buffer, "disk") !=3D NULL,
-> > > > > > > > +                   "Hibernation (suspend to disk) is not s=
-upported on this system.\n");
+> > > > > > > > +                   "Hibernation (suspend to disk) is not
+> > > > > > > > + supported on this system.\n");
 > > > > > > > > +
 > > > > > > > > +     /* Check if resume is configured in kernel command li=
 ne */
@@ -316,48 +319,42 @@ ne */
 > > > > > > > > +
 > > > > > > > > +     igt_require_f(strstr(buffer, "resume=3D"),
 > > > > > > > > +                   "Kernel does not have 'resume' paramete=
-r configured for hibernation.\n");
-> > > > > > > > +}
+r
+> > > > > > > > +configured for hibernation.\n"); }
 > > > > > > >
-> > > > > > > we should probably have this in the igt_pm lib to be used in =
-other places
-> > > > > > > like xe_pm. I remember we had discussions when s4 started fai=
-ling in CI,
-> > > > > > > but apparently the solution was to make CI to work with it in=
-stead of
-> > > > > > > protecting our s4 tests...
+> > > > > > > we should probably have this in the igt_pm lib to be used in
+> > > > > > > other places like xe_pm. I remember we had discussions when s=
+4
+> > > > > > > started failing in CI, but apparently the solution was to mak=
+e
+> > > > > > > CI to work with it instead of protecting our s4 tests...
 > > > > > >
 > > > > > > I was last week talking with Jari Tahvanainen about this. Our c=
-i is
-> > > > > > not configured for the machines really hibernating, he suggeste=
-d we
-> > > > > > first start with one test, start to run it in special box, and =
-we go
-> > > > > > on from there .. so, here we are :)
-> > > > > > I agree final destination for this function should be in lib/ l=
-ike in
-> > > > > > igt_pm or so.
+i
+> > > > > > is not configured for the machines really hibernating, he
+> > > > > > suggested we first start with one test, start to run it in
+> > > > > > special box, and we go on from there .. so, here we are :) I
+> > > > > > agree final destination for this function should be in lib/ lik=
+e
+> > > > > > in igt_pm or so.
 > > > > > >
 > > > > > > >
 > > > > > > > > +
-> > > > > > > > +static void set_rtc_wake_timer(int seconds)
-> > > > > > > > +{
+> > > > > > > > +static void set_rtc_wake_timer(int seconds) {
 > > > > > > > > +     char command[256];
 > > > > > > > > +
-> > > > > > > > +     snprintf(command, sizeof(command), RTC_WAKE_CMD, seco=
-nds);
+> > > > > > > > +     snprintf(command, sizeof(command), RTC_WAKE_CMD,
+> > > > > > > > + seconds);
 > > > > > > > > +
 > > > > > > > > +     igt_require_f(system(command) =3D=3D 0,
-> > > > > > > > +                   "Failed to set RTC wake timer.\n");
-> > > > > > > > +}
+> > > > > > > > +                   "Failed to set RTC wake timer.\n"); }
 > > > > > > > > +
-> > > > > > > > +static void hibernate_system(void)
-> > > > > > > > +{
+> > > > > > > > +static void hibernate_system(void) {
 > > > > > > > > +     int fd;
 > > > > > > > > +
 > > > > > > > > +     fd =3D open(SYS_POWER_STATE, O_WRONLY);
-> > > > > > > > +     igt_require_f(fd > 0, "Failed to open /sys/power/stat=
-e");
+> > > > > > > > +     igt_require_f(fd > 0, "Failed to open
+> > > > > > > > + /sys/power/state");
 > > > > > > > > +
 > > > > > > > > +     if (write(fd, "disk", 4) !=3D 4) {
 > > > > > > > > +             close(fd);
@@ -374,11 +371,11 @@ e.
 > > > > > > > This should be ensured by the infra to support these s4 testc=
 ases.
 > > > > > >
-> > > > > > This is bit so-so. If guys would run this test on their own box=
-es to
-> > > > > > do some debugging, forgetting to always set the correct kernel =
-for the
-> > > > > > next in-test reboot would cause incorrect results.
+> > > > > > This is bit so-so. If guys would run this test on their own
+> > > > > > boxes to do some debugging, forgetting to always set the correc=
+t
+> > > > > > kernel for the next in-test reboot would cause incorrect result=
+s.
 > > > > > >
 > > > > > > >
 > > > > > > > > +{
@@ -396,8 +393,8 @@ for the
 > > > > > > > > +     /* Read /proc/cmdline to get the current kernel image=
  */
 > > > > > > > > +     cmdline_file =3D fopen(PROC_CMDLINE, "r");
-> > > > > > > > +     igt_require_f(cmdline_file, "Failed to open /proc/cmd=
-line");
+> > > > > > > > +     igt_require_f(cmdline_file, "Failed to open
+> > > > > > > > + /proc/cmdline");
 > > > > > > > > +
 > > > > > > > > +     if (!fgets(cmdline, sizeof(cmdline), cmdline_file)) {
 > > > > > > > > +             fclose(cmdline_file);
@@ -408,8 +405,8 @@ e");
 > > > > > > > > +
 > > > > > > > > +     /* Parse the kernel image from cmdline */
 > > > > > > > > +     kernel_arg =3D strstr(cmdline, "BOOT_IMAGE=3D");
-> > > > > > > > +     igt_require_f(kernel_arg, "BOOT_IMAGE=3D not found in=
- /proc/cmdline\n");
+> > > > > > > > +     igt_require_f(kernel_arg, "BOOT_IMAGE=3D not found in
+> > > > > > > > + /proc/cmdline\n");
 > > > > > > > > +
 > > > > > > > > +     kernel_arg +=3D strlen("BOOT_IMAGE=3D");
 > > > > > > > > +     kernel_end =3D strchr(kernel_arg, ' ');
@@ -421,13 +418,13 @@ e");
 > > > > > > > > +     snprintf(current_kernel, sizeof(current_kernel), "%.*=
 s",
 > > > > > > > > +              (int)(kernel_end - kernel_arg), kernel_arg);
-> > > > > > > > +     igt_debug("Current kernel image: %s\n", current_kerne=
-l);
+> > > > > > > > +     igt_debug("Current kernel image: %s\n",
+> > > > > > > > + current_kernel);
 > > > > > > > > +
 > > > > > > > > +     /* Open GRUB config file to find matching entry */
 > > > > > > > > +     grub_cfg =3D fopen(GRUB_CFG_PATH, "r");
-> > > > > > > > +     igt_require_f(grub_cfg, "Failed to open GRUB configur=
-ation file");
+> > > > > > > > +     igt_require_f(grub_cfg, "Failed to open GRUB
+> > > > > > > > + configuration file");
 > > > > > > > > +
 > > > > > > > > +
 > > > > > > > > +     while (fgets(line, sizeof(line), grub_cfg)) {
@@ -436,7 +433,8 @@ ation file");
 > > > > > > > > +             /* Store the menuentry line */
 > > > > > > > > +                     char *start =3D strchr(line, '\'');
 > > > > > > > > +                     char *end =3D start ? strchr(start + =
-1, '\'') : NULL;
+1,
+> > > > > > > > + '\'') : NULL;
 > > > > > > > > +
 > > > > > > > > +                     if (start && end) {
 > > > > > > > > +                             snprintf(last_menuentry,
@@ -464,57 +462,58 @@ y), "%s",
 > > > > > > > > +     fclose(grub_cfg);
 > > > > > > > > +
 > > > > > > > > +     igt_require_f(kernel_found, "Failed to find matching =
-GRUB entry for kernel: %s\n",
+GRUB entry
+> > for kernel: %s\n",
 > > > > > > > > +                   current_kernel);
 > > > > > > > > +
 > > > > > > > > +     /* Set the GRUB boot target using grub-reboot */
 > > > > > > > > +     snprintf(command, sizeof(command), "grub-reboot \"%s\=
-"", grub_entry);
+"",
+> > grub_entry);
 > > > > > > > > +     igt_require_f(system(command) =3D=3D 0, "Failed to se=
-t GRUB boot target to: %s\n",
+t GRUB boot
+> > target to: %s\n",
 > > > > > > > > +                   grub_entry);
 > > > > > > > > +
 > > > > > > > > +     igt_debug("Set GRUB to boot kernel: %s (GRUB entry: %=
 s)\n",
-> > > > > > > > +               current_kernel, grub_entry);
-> > > > > > > > +}
+> > > > > > > > +               current_kernel, grub_entry); }
 > > > > > > > > +
-> > > > > > > > +static void hibernate_autoresume(int resume_delay)
-> > > > > > > > +{
+> > > > > > > > +static void hibernate_autoresume(int resume_delay) {
 > > > > > > > > +     check_hibernation_support();
 > > > > > > > > +     set_rtc_wake_timer(resume_delay);
 > > > > > > > > +     ensure_grub_boots_same_kernel();
 > > > > > > > > +     hibernate_system();
 > > > > > > > > +}
 > > > > > > > > +
-> > > > > > > >  static void addfb_init(struct igt_fb *fb, struct drm_mode_=
-fb_cmd2 *f)
-> > > > > > > >  {
+> > > > > > > >  static void addfb_init(struct igt_fb *fb, struct
+> > > > > > > > drm_mode_fb_cmd2 *f)  {
 > > > > > > > >       int i;
-> > > > > > > > @@ -839,8 +988,11 @@ static bool try_config(data_t *data, e=
-num test_fb_flags fb_flags,
+> > > > > > > > @@ -839,8 +988,11 @@ static bool try_config(data_t *data,
+> > > > > > > > enum test_fb_flags fb_flags,
 > > > > > > > >
 > > > > > > > >       if (ret =3D=3D 0 && !(fb_flags & TEST_BAD_ROTATION_90=
 ) && crc) {
-> > > > > > > >               if (data->flags & TEST_SUSPEND && fb_flags & =
-FB_COMPRESSED) {
-> > > > > > > > -                     igt_system_suspend_autoresume(SUSPEND=
-_STATE_MEM,
+> > > > > > > >               if (data->flags & TEST_SUSPEND && fb_flags &
+> > FB_COMPRESSED) {
+> > > > > > > > -
+> > igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
 > > > > > > > > -                                                   SUSPEND=
 _TEST_NONE);
 > > > > > > > > +                     if (data->do_hibernate)
 > > > > > > > > +                             hibernate_autoresume(30);
 > > > > > > > > +                     else
-> > > > > > > > +                             igt_system_suspend_autoresume=
-(SUSPEND_STATE_MEM,
-> > > > > > > > +                                                          =
- SUSPEND_TEST_NONE);
+> > > > > > > > +
+> > igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> > > > > > > > +
+> > > > > > > > + SUSPEND_TEST_NONE);
 > > > > > > > >
 > > > > > > > >                       /* on resume check flat ccs is still =
 compressed */
-> > > > > > > >                       if (is_xe_device(data->drm_fd) &&
-> > > > > > > > @@ -1044,6 +1196,9 @@ static int opt_handler(int opt, int o=
-pt_index, void *opt_data)
+> > > > > > > >                       if (is_xe_device(data->drm_fd) && @@
+> > > > > > > > -1044,6 +1196,9 @@ static int opt_handler(int opt, int opt_=
+index,
+> > void *opt_data)
 > > > > > > > >               data->user_seed =3D true;
 > > > > > > > >               data->seed =3D strtoul(optarg, NULL, 0);
 > > > > > > > >               break;
@@ -524,9 +523,10 @@ pt_index, void *opt_data)
 > > > > > > > >       default:
 > > > > > > > >               return IGT_OPT_HANDLER_ERROR;
 > > > > > > > >       }
-> > > > > > > > @@ -1056,9 +1211,10 @@ static data_t data;
-> > > > > > > >  static const char *help_str =3D
-> > > > > > > >  "  -c\t\tCheck the presence of compression meta-data\n"
+> > > > > > > > @@ -1056,9 +1211,10 @@ static data_t data;  static const
+> > > > > > > > char *help_str =3D  "  -c\t\tCheck the presence of compress=
+ion
+> > > > > > > > meta-data\n"
 > > > > > > > >  "  -s <seed>\tSeed for random number generator\n"
 > > > > > > > > +"  -r\t\tOn suspend test do full hibernate with reboot\n"
 > > > > > > > >  ;
@@ -535,8 +535,8 @@ pt_index, void *opt_data)
 > > > > > > > > +igt_main_args("csr:", NULL, help_str, opt_handler, &data)
 > > > > > > > >  {
 > > > > > > > >       igt_fixture {
-> > > > > > > >               data.drm_fd =3D drm_open_driver_master(DRIVER=
-_INTEL | DRIVER_XE);
+> > > > > > > >               data.drm_fd =3D
+> > > > > > > > drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
 > > > > > > > > --
 > > > > > > > > 2.45.2
 > > > > > > > >
