@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE8FD6EBFD
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 10:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70EF0D6EC00
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 11:05:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1EF510EDFD;
-	Fri, 29 Nov 2024 10:46:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 16C1410E1ED;
+	Fri, 29 Nov 2024 11:05:00 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF56A10EDFD;
- Fri, 29 Nov 2024 10:46:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5915543714244516782=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFE9A10E1ED;
+ Fri, 29 Nov 2024 11:04:58 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/lobf=3A_Remove_?=
- =?utf-8?q?lobf_supported_check?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/lobf=3A_Remov?=
+ =?utf-8?q?e_lobf_supported_check?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Animesh Manna" <animesh.manna@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 29 Nov 2024 10:46:15 -0000
-Message-ID: <173287717584.250271.2385414497080114133@b555e5b46a47>
+Date: Fri, 29 Nov 2024 11:04:58 -0000
+Message-ID: <173287829884.256552.12039258277747416537@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241129084006.3448688-1-animesh.manna@intel.com>
 In-Reply-To: <20241129084006.3448688-1-animesh.manna@intel.com>
@@ -41,137 +41,130 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5915543714244516782==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
 Series: tests/intel/lobf: Remove lobf supported check
 URL   : https://patchwork.freedesktop.org/series/141914/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8131_BAT -> XEIGTPW_12220_BAT
+CI Bug Log - changes from IGT_8131 -> IGTPW_12220
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_12220 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12220, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (8 -> 8)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/index.html
+
+Participating hosts (45 -> 43)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-arls-6 fi-snb-2520m 
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12220:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live:
+    - fi-pnv-d510:        NOTRUN -> [ABORT][1] +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/fi-pnv-d510/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@guc:
+    - bat-adlp-11:        [PASS][2] -> [ABORT][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/bat-adlp-11/igt@i915_selftest@live@guc.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/bat-adlp-11/igt@i915_selftest@live@guc.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_12220_BAT that come from known issues:
+  Here are the changes found in IGTPW_12220 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#1861])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [PASS][4] -> [INCOMPLETE][5] ([i915#12904]) +1 other test incomplete
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live:
+    - bat-adlp-11:        [PASS][6] -> [ABORT][7] ([i915#12435] / [i915#13009])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/bat-adlp-11/igt@i915_selftest@live.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/bat-adlp-11/igt@i915_selftest@live.html
+    - fi-skl-6600u:       [PASS][8] -> [INCOMPLETE][9] ([i915#13050])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/fi-skl-6600u/igt@i915_selftest@live.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/fi-skl-6600u/igt@i915_selftest@live.html
 
   
 #### Possible fixes ####
 
+  * igt@i915_pm_rpm@module-reload:
+    - bat-rpls-4:         [FAIL][10] ([i915#12903]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - fi-skl-6600u:       [FAIL][12] ([i915#2346]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/fi-skl-6600u/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/fi-skl-6600u/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
   * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [FAIL][3] ([Intel XE#886]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+    - {bat-mtlp-9}:       [FAIL][14] ([i915#11989]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp7:
+    - {bat-mtlp-9}:       [FAIL][16] -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp7.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp7.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][18] ([i915#9197]) -> [PASS][19] +3 other tests pass
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8131/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
 
   
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#11989]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11989
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13009
+  [i915#13050]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050
+  [i915#2346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2346
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8131 -> IGTPW_12220
 
+  CI-20190529: 20190529
+  CI_DRM_15762: 4f5b3a832a6480c82639b5500d731d7222b7eee7 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12220: 12220
   IGT_8131: f846ef8f7ddf051c88504c607136a9b5392bdef7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2294-4f5b3a832a6480c82639b5500d731d7222b7eee7: 4f5b3a832a6480c82639b5500d731d7222b7eee7
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/index.html
-
---===============5915543714244516782==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/lobf: Remove lobf supported check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141914/">https://patchwork.freedesktop.org/series/141914/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8131_BAT -&gt; XEIGTPW_12220_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12220_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8131 -&gt; IGTPW_12220</li>
-</ul>
-<p>IGTPW_12220: 12220<br />
-  IGT_8131: f846ef8f7ddf051c88504c607136a9b5392bdef7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2294-4f5b3a832a6480c82639b5500d731d7222b7eee7: 4f5b3a832a6480c82639b5500d731d7222b7eee7</p>
-
-</body>
-</html>
-
---===============5915543714244516782==--
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12220/index.html
