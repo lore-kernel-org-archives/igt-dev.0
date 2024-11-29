@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42326D72A14
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 20:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D3DD729FD
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 20:46:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E299610E2CB;
-	Fri, 29 Nov 2024 20:45:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D23D310E366;
+	Fri, 29 Nov 2024 20:46:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bBHjFUZi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hdKoc5ip";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A424710E2CB
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Nov 2024 20:45:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E3E710E366
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Nov 2024 20:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732913158; x=1764449158;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=zDnuCbn6NfWXM7vIFpbG3IGYNYbHnB/E+Gv+FBS0tUk=;
- b=bBHjFUZi3TXTyLenViRgwnx00Oh/JaQeO/XrQjkO1VrpCfvvAJHi70kz
- KkcQosnDTlR74MTsFA29bzhdE23YU1oXKcu/stX5RUxyVcHUWabZLj95f
- JBZrXdEcwmB64+O6D9obW/ADhSL1Kd0dDKGZU7KQ2kI5iu+9m48yFyxBc
- 81kmmrJJ7ekJ4rX54SpyiQHTJiVQ/SZcxOzVtQPUYbTZGBRQDqHkGL6UY
- IeslF6PXV3hjJjMM3b1sIoYFB/il7aPO0Rrg7TfQ6tJE/jQV3LB07QV8W
- gTHa1z3omIQK8ouirO4Y1maL0P5Et4u3LAprncEATSMN7UWi0my4glEIU A==;
-X-CSE-ConnectionGUID: EGAzOllDSK+8vhfL0U/dfg==
-X-CSE-MsgGUID: qBnbPM8XTqagQygd6CxOrw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="33284307"
-X-IronPort-AV: E=Sophos;i="6.12,196,1728975600"; d="scan'208";a="33284307"
+ t=1732913162; x=1764449162;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=gDJ/AeE0QeXA4N1w7DnVCJYoVhlsBQcHeDfp2SgHfeo=;
+ b=hdKoc5ipGaHVFV5GrVqqxbTo0QvylKGwlhtrKHM/5gsxXxWMbREYVqJB
+ AcOymGJJq5Uz9JvZSTRIXzG6QHBLyG/r9Rr+Ew5fcVeqelY9b2p3V8jNt
+ KhtD8pQf+3Jv50b/7xn/nMOcH3MDVPgxMEPDAA9JGMcsgyuKczRXu44h6
+ kkh+cMOJ7r4h2wUxIuoI9W+3bV3d/be9eHtcHrvx/2Mf+djP4Aom1+2po
+ BIkHCQNftCZ6HYP8lpKgxjdbXiU/MIleMPGcOOFQ4E/KQyeCCZedRFB7c
+ gjaa03Ys8fDt/Zy8v+Qd9rCnRWbsa8J8bjP1ACVkj0j591b+SwhtQvVQV A==;
+X-CSE-ConnectionGUID: SRcVU/OoRGKuHRRigaswUQ==
+X-CSE-MsgGUID: 35giBP4OSZ6WOufoty9/Zw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="33284311"
+X-IronPort-AV: E=Sophos;i="6.12,196,1728975600"; d="scan'208";a="33284311"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Nov 2024 12:45:57 -0800
-X-CSE-ConnectionGUID: MA68fjX9SmynTNpBL+d8zw==
-X-CSE-MsgGUID: IVVL2pYTR1WEEOpGdFB7CA==
+ 29 Nov 2024 12:46:02 -0800
+X-CSE-ConnectionGUID: LExTKebwQmilM0kbdRB4rw==
+X-CSE-MsgGUID: J+wINWWgShCH+QPCaBE4IA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,196,1728975600"; d="scan'208";a="123519881"
+X-IronPort-AV: E=Sophos;i="6.12,196,1728975600"; d="scan'208";a="123519892"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.213])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Nov 2024 12:45:55 -0800
+ 29 Nov 2024 12:45:59 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>, Karol Krol <karol.krol@intel.com>,
  Ewelina Musial <ewelina.musial@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
  Jan Sokolowski <jan.sokolowski@intel.com>, Ryszard Knop <rk@dragonic.eu>
-Subject: [PATCH i-g-t v3 0/3] runner: Allow limits at dumping dmesg
-Date: Fri, 29 Nov 2024 21:45:47 +0100
-Message-ID: <20241129204550.116355-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v3 1/3] runner/executor: Limit reading dmesg to chunks
+Date: Fri, 29 Nov 2024 21:45:48 +0100
+Message-ID: <20241129204550.116355-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241129204550.116355-1-kamil.konieczny@linux.intel.com>
+References: <20241129204550.116355-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,37 +71,159 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are few patches, first is a check for write error which could
-happen at full disk, second is a revised solution to a problem with
-dmesg dumping exeeding disk limit in runner. Also while at this
-inform user when an actual disklimit occurred and correct one error
-path.
+There was no disk limit checks in reading kernel dmesg and that
+could lead to writing really huge dumps longer than 400MB,
+greatly exceeding disk limits used by CI and hardly useful for
+developers. Make a dmesg dumping in chunks, size depending on
+number of CPUs present, with a minimum of 64KB.
+This could also allow to kick in disk limits checks if a driver
+starts spilling messages into dmesg.
 
-Previous proposed solution: runner: check disk limit at dumping kmsg
-https://patchwork.freedesktop.org/series/114353/
+v2: correct size at last dump, also inform user about exceeding
+  limits (Kamil)
 
-Gitlab issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
-
-v2: correct size in case of no disk limits used,
-  also correct one error path and inform user when an actual disk
-  limiting could affect what is written in log (Kamil)
-v3: dropped patch 1/4 "Check for error at writing dmesg" (Kamil)
-
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
 Cc: Petri Latvala <adrinael@adrinael.net>
 Cc: Karol Krol <karol.krol@intel.com>
 Cc: Ewelina Musial <ewelina.musial@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: Ryszard Knop <rk@dragonic.eu>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Reviewed-by: Ryszard Knop <rk@dragonic.eu>
+---
+ runner/executor.c | 64 ++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 55 insertions(+), 9 deletions(-)
 
-Kamil Konieczny (3):
-  runner/executor: Limit reading dmesg to chunks
-  runner/executor: Fix error handling at terminating test
-  runner/executor: Inform about terminating
-
- runner/executor.c | 78 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 66 insertions(+), 12 deletions(-)
-
+diff --git a/runner/executor.c b/runner/executor.c
+index ac73e1dde..16b12ba16 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -585,13 +585,14 @@ void close_outputs(int *fds)
+ }
+ 
+ /* Returns the number of bytes written to disk, or a negative number on error */
+-static long dump_dmesg(int kmsgfd, int outfd)
++static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
+ {
+ 	/*
+ 	 * Write kernel messages to the log file until we reach
+-	 * 'now'. Unfortunately, /dev/kmsg doesn't support seeking to
+-	 * -1 from SEEK_END so we need to use a second fd to read a
+-	 * message to match against, or stop when we reach EAGAIN.
++	 * 'now' or we read at least size bytes. Unfortunately,
++	 * /dev/kmsg doesn't support seeking to -1 from SEEK_END
++	 * so we need to use a second fd to read a message to
++	 *  match against, or stop when we reach EAGAIN.
+ 	 */
+ 
+ 	int comparefd;
+@@ -606,6 +607,9 @@ static long dump_dmesg(int kmsgfd, int outfd)
+ 	if (kmsgfd < 0)
+ 		return 0;
+ 
++	if (size < 0)
++		return 0;
++
+ 	comparefd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
+ 	if (comparefd < 0) {
+ 		errf("Error opening another fd for /dev/kmsg\n");
+@@ -667,6 +671,13 @@ static long dump_dmesg(int kmsgfd, int outfd)
+ 			if (seq >= cmpseq)
+ 				return written;
+ 		}
++
++		if (size && written >= size) {
++			if (comparefd >= 0)
++				close(comparefd);
++
++			return written;
++		}
+ 	}
+ }
+ 
+@@ -860,6 +871,25 @@ static void write_packet_with_canary(int fd, struct runnerpacket *packet, bool s
+ /* TODO: Refactor this macro from here and from various tests to lib */
+ #define KB(x) ((x) * 1024)
+ 
++#if !defined(SIZE_MAX)
++#define SIZE_MAX (((size_t)-1) ^ (1 << (8 * sizeof(size_t) - 1)))
++#endif
++
++/* Calculates disk limit to use when dumping dmesg, returns:
++ * number > 0	: size of limit to use
++ * number < 0	: negative number when limit exceeded, no more dumping
++ **/
++static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
++{
++	size_t dt = limit - disk_usage;
++
++	assert(SIZE_MAX > 0);
++	if (!limit)
++		return SIZE_MAX; /* no limit */
++
++	return dt != 0 ? dt : -1;
++}
++
+ /*
+  * Returns:
+  *  =0 - Success
+@@ -892,6 +922,8 @@ static int monitor_output(pid_t child,
+ 	unsigned long taints = 0;
+ 	bool aborting = false;
+ 	size_t disk_usage = 0;
++	size_t dmsg_chunk_size = 4096 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 16);
++	long dmesgwritten;
+ 	bool socket_comms_used = false; /* whether the test actually uses comms */
+ 	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
+ 
+@@ -1217,11 +1249,9 @@ static int monitor_output(pid_t child,
+ 	socket_end:
+ 
+ 		if (kmsgfd >= 0 && FD_ISSET(kmsgfd, &set)) {
+-			long dmesgwritten;
+-
+ 			time_last_activity = time_now;
+ 
+-			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG]);
++			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
+ 			if (settings->sync)
+ 				fdatasync(outputs[_F_DMESG]);
+ 
+@@ -1459,7 +1489,8 @@ static int monitor_output(pid_t child,
+ 					asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
+ 				}
+ 
+-				dump_dmesg(kmsgfd, outputs[_F_DMESG]);
++				dmsg_chunk_size = calc_last_dmesg_chunk(settings->disk_usage_limit, disk_usage);
++				dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
+ 				if (settings->sync)
+ 					fdatasync(outputs[_F_DMESG]);
+ 
+@@ -1485,9 +1516,24 @@ static int monitor_output(pid_t child,
+ 		}
+ 	}
+ 
+-	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
++	dmsg_chunk_size = calc_last_dmesg_chunk(settings->disk_usage_limit, disk_usage);
++	dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
+ 	if (settings->sync)
+ 		fdatasync(outputs[_F_DMESG]);
++	if (dmesgwritten > 0) {
++		disk_usage += dmesgwritten;
++		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
++			char disk[1024];
++
++			snprintf(disk, sizeof(disk), "igt_runner: disk limit exceeded at dmesg dump, %ld > %ld\n", disk_usage, settings->disk_usage_limit);
++			if (settings->log_level >= LOG_LEVEL_NORMAL) {
++				outf("%s", disk);
++				fflush(stdout);
++			} else if (killed) {
++				errf("%s", disk);
++			}
++		}
++	}
+ 
+ 	free(buf);
+ 	free(outbuf);
 -- 
 2.47.1
 
