@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 947BFD6EBEE
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 08:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE8FD6EBFD
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 10:46:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4345410E33A;
-	Fri, 29 Nov 2024 08:59:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OZZ38Fkq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C784010E33A
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Nov 2024 08:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1732870794; x=1764406794;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+piqdNPFpv4+eMS2NDF1pUv2FPZKV9zi5DByRnmM8tE=;
- b=OZZ38FkqUE92TmhjRbCyuINDOLeyZz7L421DdbrxfyRdaOJCKNdypt8Z
- md2WmOfUM5w75NGx+va1Dm2jS6sU4QZFrQyA0CsS4I+tLuv9F7PGXXvWt
- XnCSEjEAA5wIw1C0ffC8aDeJ/7yPV4+1+A89Q7N1AKAUuhjzXCPX9TjqN
- W/HbqxpFV3zB6AN8HnjF8uve38NdRcvj869FFp0PLcc7QCFEIqq5qJaXP
- SvdO1aS/aigBQ48Lrecn42+BytMogyzKjjU2kF+mbxr0vWosKkUmiycoa
- r50NNonmn6sQbJL0DkGYqngl3XlodnegON3vnnsjswVDtCV1t/vlOS9nC Q==;
-X-CSE-ConnectionGUID: zSihhvgWRVKJtDRhoONgog==
-X-CSE-MsgGUID: hz1P4wFZSVOw9vI9dehEsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="44479305"
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; d="scan'208,223";a="44479305"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Nov 2024 00:59:53 -0800
-X-CSE-ConnectionGUID: NibBzsIvQ029Q6csFhZPLQ==
-X-CSE-MsgGUID: 97MAkTOzRB2jOzd7VQSvJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; d="scan'208,223";a="96857867"
-Received: from srr4-3-linux-101-amanna.iind.intel.com ([10.223.74.76])
- by fmviesa005.fm.intel.com with ESMTP; 29 Nov 2024 00:59:52 -0800
-From: Animesh Manna <animesh.manna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Animesh Manna <animesh.manna@intel.com>,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/intel/lobf: Remove lobf supported check
-Date: Fri, 29 Nov 2024 14:10:06 +0530
-Message-Id: <20241129084006.3448688-1-animesh.manna@intel.com>
-X-Mailer: git-send-email 2.29.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1EF510EDFD;
+	Fri, 29 Nov 2024 10:46:17 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF56A10EDFD;
+ Fri, 29 Nov 2024 10:46:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5915543714244516782=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/lobf=3A_Remove_?=
+ =?utf-8?q?lobf_supported_check?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Animesh Manna" <animesh.manna@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 29 Nov 2024 10:46:15 -0000
+Message-ID: <173287717584.250271.2385414497080114133@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241129084006.3448688-1-animesh.manna@intel.com>
+In-Reply-To: <20241129084006.3448688-1-animesh.manna@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,34 +37,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From kernel driver debugfs support is not present so remove
-the lobf supported check from igt.
+--===============5915543714244516782==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Jeevan B <jeevan.b@intel.com>
-Signed-off-by: Animesh Manna <animesh.manna@intel.com>
----
- tests/kms_vrr.c | 5 -----
- 1 file changed, 5 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index f0564bb6a..e7d2ff1db 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -890,11 +890,6 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 		if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
- 		    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, NULL))
- 			psr_disable(data->drm_fd, data->debugfs_fd, NULL);
--
--		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
--			igt_info("%s: LOBF not supported.\n", igt_output_name(output));
--			return false;
--		}
- 	}
- 
- 	/* Reset output */
--- 
-2.29.0
+Series: tests/intel/lobf: Remove lobf supported check
+URL   : https://patchwork.freedesktop.org/series/141914/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8131_BAT -> XEIGTPW_12220_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12220_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#1861])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [FAIL][3] ([Intel XE#886]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8131 -> IGTPW_12220
+
+  IGTPW_12220: 12220
+  IGT_8131: f846ef8f7ddf051c88504c607136a9b5392bdef7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2294-4f5b3a832a6480c82639b5500d731d7222b7eee7: 4f5b3a832a6480c82639b5500d731d7222b7eee7
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/index.html
+
+--===============5915543714244516782==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/lobf: Remove lobf supported check</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141914/">https://patchwork.freedesktop.org/series/141914/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8131_BAT -&gt; XEIGTPW_12220_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12220_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8131/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12220/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8131 -&gt; IGTPW_12220</li>
+</ul>
+<p>IGTPW_12220: 12220<br />
+  IGT_8131: f846ef8f7ddf051c88504c607136a9b5392bdef7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2294-4f5b3a832a6480c82639b5500d731d7222b7eee7: 4f5b3a832a6480c82639b5500d731d7222b7eee7</p>
+
+</body>
+</html>
+
+--===============5915543714244516782==--
