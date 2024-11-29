@@ -4,71 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E2F0D6EBE6
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 08:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94190D6EBEC
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Nov 2024 08:16:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A720F10E125;
-	Fri, 29 Nov 2024 08:11:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5130110EDB6;
+	Fri, 29 Nov 2024 08:16:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="PjdbQgA9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jALU++0s";
 	dkim-atps=neutral
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com
- [209.85.215.176])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A117310E125
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Nov 2024 08:11:32 +0000 (UTC)
-Received: by mail-pg1-f176.google.com with SMTP id
- 41be03b00d2f7-7fc2dbee20fso1161410a12.3
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Nov 2024 00:11:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732867892; x=1733472692; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eH3JRFYR9TSjCeLs8aD9sNCL4sq6p0TBqVfwMNVcXzI=;
- b=PjdbQgA9KPz7xHErnR4zLRi397O36rImOiyFWVU1Epe55+UwNqNodbgX/+HzdYNgVW
- hr8spK3CQrNCd2vIfZcLzq6clBtUnVgYgJYE23ycaKpWTK1p/2n0I0qQfwRLYAvclK+i
- omerBy2vGCUSCCoApT+LBcyBeFqIRmvnNW7ucU70uQOYM37KNNvuw6vpakjw4KcBLnKz
- zu/1ZwkZzvnT7+apZR0tawy6UdsYv90HRbdP2GrU4joFU8ax1FAh+5ZQXcnjyNk5AD2G
- aJb45/qXtUUoxC3u5qqCPRPV9pRp2aKZjudY8HkWaQe7P7611KlTted9rTFJ9K8058sg
- CQtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732867892; x=1733472692;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eH3JRFYR9TSjCeLs8aD9sNCL4sq6p0TBqVfwMNVcXzI=;
- b=AsLj70oswPPQ95C/qJwLnKfiusFamIcRIJfKkAySVIv3M7cbtAfPGZU+CroBeicp/Z
- ehJcs3OU9qmyDdgtv9U6oDKbraeEt+2utRWIRNjqYE1eWYK7nNSZ++1JYy3xWzJ2CdTe
- jMowTPJdBgZmAmTg8Bjon1DKLi+P5hDY0BLfKy2vna+wmJtLj2cQwvWIQOMiGa6Q7M1m
- FKmfZ/3UKea9wmoCylL6XCG44nHSahmUX9uxDFENhto6qYAgNtE72ieM3zkt9u9r/UrY
- mxdUg87QfsL7QdBsmS0SndOjn099CsK7OeqGDWeUtM3Z7HmOI+q2NvcAEyFUhacB8kUn
- E/Sw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXWPJLJRZSEfsVyWn6LoEQPmhovvGMn8nx3zaabEmAMEaouUch/Up+kw9pPvPrhKu9PtKuXNL5a@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YztpQb2sPnbGLV5G1jZCFIlsj/w2ZWqKNlYe505ESiLOxnWpThR
- 11vQP8retrI45oFiPhQE0mJLyYM0Z0KlOwjR7VCpzM7MKqshGdFJneXlbVhKRPD6g4blo9EhHyl
- caoVSYNyFBUhEwf5qCtuNZpZbGcxuG50qWXs=
-X-Gm-Gg: ASbGnctNjAdFR5i802BAuS2IhexU8LpPMCpqVs15kvQjptxYPNvxHbymkqteAKE4BZf
- UE2f+zPLMTtVCRaGwferlakSLHJOGiSvKqg==
-X-Google-Smtp-Source: AGHT+IG/lLL88H88axRUhnb7h1H7VC5ywxpYTu7cqo9OajicdleDe9vZzbLLyDPckWKuxit6ZKAwF8XsWjVnXmCtzr4=
-X-Received: by 2002:a17:90b:52c3:b0:2ee:5691:774e with SMTP id
- 98e67ed59e1d1-2ee56917798mr2403453a91.2.1732867892053; Fri, 29 Nov 2024
- 00:11:32 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 131DA10EDB6;
+ Fri, 29 Nov 2024 08:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732868182; x=1764404182;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=FaDk3P2mDQ6IReEde16Vp8QiqzA77bvHjrhPxVUtXO0=;
+ b=jALU++0smeO9aJgWuiB2QVReesY4F/yMZwQ7466uezM+n5hlRvtrRyRc
+ 15jb5zoIYoD4fFZy2XJxV/0F5KcVPBpSWHUEPgw9TDaAOMa0m6bNAAYjj
+ XLys62/Z0B/IiN9fg6I1xZ9/gBVVd0h6yLNf4tdIHss5zWgG3OTXO78NE
+ y7HTQCeTfDgttn9yYFEDBWWXMCdo2ZmIFYNuaYAXDHrid8fJgQSqws00u
+ fZto1siKrKVb+5tw4KrBsbm1k9BkY0wUkR4j6wT+0p57DJx7km9OS70sN
+ axfG3flUkhT/ECV6vxd9IOKz3IDAyN3j2jsAgrP5ei6wWRvXr0I/Fh/G1 g==;
+X-CSE-ConnectionGUID: P8n4Bh1VQC6bwl0tMWP7pA==
+X-CSE-MsgGUID: 5kdyFahTQVSJ+rDPgd7v6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="44476025"
+X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; d="scan'208";a="44476025"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Nov 2024 00:16:22 -0800
+X-CSE-ConnectionGUID: ybdEZc21RTqaBxlV9cgJFw==
+X-CSE-MsgGUID: +NGKvWltQ/yj8kZt8+0Ysg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="97471305"
+Received: from moandrew-mobl2.ger.corp.intel.com (HELO [10.213.198.81])
+ ([10.213.198.81])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Nov 2024 00:16:21 -0800
+Message-ID: <2133e8a2-9a00-4aad-b0fa-f30e8ba271ca@linux.intel.com>
+Date: Fri, 29 Nov 2024 09:16:18 +0100
 MIME-Version: 1.0
-References: <20241125171028.383914-1-jeevan.b@intel.com>
- <Z0TAXl62KunlTuxl@intel.com>
- <8af2561a-2b0d-4c69-8f01-3012e3db8ab8@intel.com>
-In-Reply-To: <8af2561a-2b0d-4c69-8f01-3012e3db8ab8@intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Fri, 29 Nov 2024 10:11:20 +0200
-Message-ID: <CAJ=qYWQviTq5O6Zfpg5jExJPS4u74bNnNea24J1zUoPq4V-Xkw@mail.gmail.com>
-Subject: Re: [PATCH] tests/intel/kms_pm_rpm: Update cursor_fb3 framebuffer
- creation format
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, Jeevan B <jeevan.b@intel.com>, 
- igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_igt-runner?=
+ =?UTF-8?Q?_fact_checking_=28rev9=29?=
+To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
+ <173286764294.213798.1042774316885389138@b555e5b46a47>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <173286764294.213798.1042774316885389138@b555e5b46a47>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,47 +71,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Nov 26, 2024 at 2:02=E2=80=AFPM Sharma, Swati2 <swati2.sharma@intel=
-.com> wrote:
->
-> Hi Rodrigo,
->
-> On 25-11-2024 11:52 pm, Rodrigo Vivi wrote:
-> > On Mon, Nov 25, 2024 at 10:40:28PM +0530, Jeevan B wrote:
-> >> Updated cursor_fb3 framebuffer creation in the cursor subtest function
-> >> to use linear tiling instead of x-tile. As x-tile is no longer support=
-ed
-> >> on latest platforms.
-> > Shouldn't we then add a new format without removing the old ones?
-> > Otherwise it looks like you are removing coverage on old platforms.
-> Is there any specific reason why x tiling was used initially? Any idea?
-> Isn't linear tiling common across all platforms?
 
-Look like that test will need to be looked at bit more detail than
-just switch the tiling. Anyway to me it look like Jeevan's patch is
-incorrect because this test seem to be trying something with fences,
-removing tiling here would invalidate the test. Probably there should
-be required gem_require_mappable_ggtt(..) unless the test can be
-otherwise rewritten.
+Dear I915,
 
-> >> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> >> ---
-> >>   tests/intel/kms_pm_rpm.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-> >> index 990c50915..aeeaf69f7 100644
-> >> --- a/tests/intel/kms_pm_rpm.c
-> >> +++ b/tests/intel/kms_pm_rpm.c
-> >> @@ -1199,7 +1199,7 @@ static void cursor_subtest(bool dpms)
-> >>      igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> >>                    DRM_FORMAT_MOD_LINEAR, &cursor_fb2);
-> >>      igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_XRGB8888,
-> >> -                  I915_FORMAT_MOD_X_TILED, &cursor_fb3);
-> >> +                  DRM_FORMAT_MOD_LINEAR, &cursor_fb3);
-> >>
-> >>      fill_igt_fb(&cursor_fb1, 0xFF00FFFF);
-> >>      fill_igt_fb(&cursor_fb2, 0xFF00FF00);
-> >> --
-> >> 2.25.1
-> >>
+On 29.11.2024 09:07, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: igt-runner fact checking (rev9)
+> URL   : https://patchwork.freedesktop.org/series/140841/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8130 -> IGTPW_12219
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_12219 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12219, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/index.html
+> 
+> Participating hosts (45 -> 44)
+> ------------------------------
+> 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_12219:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_pm_rpm@module-reload:
+>     - fi-kbl-guc:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8130/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+> 
+>   * igt@kms_flip@basic-plain-flip@b-dp1:
+>     - fi-cfl-8109u:       [PASS][3] -> [DMESG-WARN][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8130/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@b-dp1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@b-dp1.html
+
+These are unrelated to my change. Please fix and re-run.
+
+Thank you,
+
+Peter
+
+[...]
