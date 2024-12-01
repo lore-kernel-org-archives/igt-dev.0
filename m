@@ -4,54 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81C6D10DC0
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 08:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1AABD10DCF
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 08:56:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7906310E21B;
-	Mon,  2 Dec 2024 08:48:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8022A10E677;
+	Mon,  2 Dec 2024 08:56:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X8GZA2pq";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="KSnC/E6q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EC9F10E668
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Dec 2024 08:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733129317; x=1764665317;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=vbhuA6yarB3m52+UcLfrxZSXEVgTVg3arFrCFkS62Ko=;
- b=X8GZA2pqxh9Pk/w97boOs8oj33O+r+y5Ng+d10FCLXXDoCy4DxNwQ31+
- YEBuhssLfgqdP4cFdUqLiT2xf3lQNmduJyFFKT8RfjmSwrkmk3IGSNqPJ
- Qy630Jh9/M9rrnPzehXNcXgcmZvyzwA8lO4KkRQwCzC4Ror5l4VyoN+Fb
- zpK0pFneY3dWFNlEn5qEhSsggURuzRveXDGcfm9u3ybIy/tesN3HOcMs1
- kjGgFshubGL+wiRSURM9VqjK644AdNI8zw5ilVeYXgN+LndLMcYBu2tPB
- kJuovfU5ojYOQjzzkFJLw9ndRxFD3yJXsBneaJ6IVn140Q+83b+tTy/03 g==;
-X-CSE-ConnectionGUID: gO8i7QUqQgOEBzQRdZV1Gg==
-X-CSE-MsgGUID: 2gBLB9UOS3OuO0F7HzK4ag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="33533047"
-X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; d="scan'208";a="33533047"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 00:48:37 -0800
-X-CSE-ConnectionGUID: xgISvJ1rRHOPaMSlFuX50w==
-X-CSE-MsgGUID: U5i1RfbVTWu73f5b+4IrJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; d="scan'208";a="130528835"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 00:48:36 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/kms_dsc: Split max_bpc constraint
-Date: Mon,  2 Dec 2024 14:21:27 +0530
-Message-Id: <20241202085127.1785594-2-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241202085127.1785594-1-swati2.sharma@intel.com>
-References: <20241202085127.1785594-1-swati2.sharma@intel.com>
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B24A810E06D
+ for <igt-dev@lists.freedesktop.org>; Sun,  1 Dec 2024 18:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+ In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=MSMg3Ha+E/q2q2YLi1zOP1aQr27vtjJNh6UUMlSyu2E=; b=KSnC/E6qd4x6FRry5DYxpg6pLY
+ Zu0LzFnuieC7Eyhvg6+MBgpGBYZIJ1amcYmp+qi34siKufTzgNBxEDC0SjCa+Vh1f/uDgTOaJCds/
+ k1nDvgQLsC5FxIl+FhfEtnZ4tgcgLjxUGhnt4FDHxON8W4IH/LdUHKxgppNhmvjB70CdYU2G/JgWb
+ GLGIwf/cgrRHv/9EIGAGO2EaXPxARgqok5AQFDu3gcb2Iymgkxy3dLHfJoIT5+2+vPkrZ39t6Iglo
+ sezL2RvU59/CmuADlSYTjmjWw/GMtHsi3pVhpRrFhAOukn3Zn/N2imR5zBVaGAeLtUO/cGOJkICpK
+ u4oNJYOQ==;
+Received: from [177.139.20.227] (helo=localhost.localdomain)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1tHoqk-00F4Q3-FF; Sun, 01 Dec 2024 19:39:18 +0100
+From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+To: igt-dev@lists.freedesktop.org, Simon Ser <contact@emersion.fr>,
+ kernel-dev@igalia.com,
+ =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Cc: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+Subject: [PATCH 1/1] tests/kms_async_flips: add atomic test
+Date: Sun,  1 Dec 2024 15:38:41 -0300
+Message-ID: <20241201183841.71046-2-andrealmeid@igalia.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241201183841.71046-1-andrealmeid@igalia.com>
+References: <20241201183841.71046-1-andrealmeid@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Mon, 02 Dec 2024 08:56:47 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,34 +62,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Split max_bpc constraint and add igt_info message.
+From: Simon Ser <contact@emersion.fr>
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+This adds a simple test for DRM_MODE_PAGE_FLIP_ASYNC with the
+atomic uAPI.
+
+Signed-off-by: Simon Ser <contact@emersion.fr>
+[Rebased and added modeset commit]
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
 ---
- tests/intel/kms_dsc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_async_flips.c | 44 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 9b48caf76..5508e7a9e 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -281,10 +281,14 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		data->pipe = pipe;
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 5dec71291..ce02db8e7 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -331,6 +331,42 @@ static void test_async_flip(data_t *data)
+ 	}
+ }
  
- 		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
--		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe) ||
--		     igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC)
-+		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
- 			continue;
- 
-+		if (igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC) {
-+			igt_info("Output %s doesn't support min %d-bpc\n", igt_output_name(data->output), MIN_DSC_BPC);
-+			continue;
-+		}
++static void test_async_flip_atomic(data_t *data)
++{
++	int frame;
++	long long int fps;
++	struct timeval start, end, diff;
 +
- 		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
- 		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
- 						     data->output, data->output_format)))
++	test_init(data);
++
++	/*
++	 * Async flips doesn't allow mode sets, so do a initial sync flip
++	 * setting this mode
++	 */
++	igt_plane_set_fb(data->plane, &data->bufs[0]);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, data);
++
++	gettimeofday(&start, NULL);
++	frame = 1;
++	do {
++		uint32_t flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
++
++		igt_plane_set_fb(data->plane, &data->bufs[frame % 4]);
++		igt_display_commit_atomic(&data->display, flags, data);
++
++		wait_flip_event(data);
++
++		gettimeofday(&end, NULL);
++		timersub(&end, &start, &diff);
++
++		frame++;
++	} while (diff.tv_sec < RUN_TIME);
++
++	fps = frame * 1000 / RUN_TIME;
++	igt_assert_f((fps / 1000) > (data->refresh_rate * MIN_FLIPS_PER_FRAME),
++		     "FPS should be significantly higher than the refresh rate\n");
++}
++
+ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int *seq)
+ {
+ 	drmVBlank wait_vbl;
+@@ -765,6 +801,14 @@ igt_main
+ 		run_test(&data, test_async_flip);
+ 	}
+ 
++	igt_describe("Verify the async flip functionality and the fps during atomic async flips");
++	igt_subtest_with_dynamic("atomic-async-flip") {
++		require_monotonic_timestamp(data.drm_fd);
++		igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP),
++			      "Atomic async page-flips are not supported\n");
++		run_test(&data, test_async_flip_atomic);
++	}
++
+ 	igt_fixture {
+ 		for (i = 0; i < NUM_FBS; i++)
+ 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
 -- 
-2.25.1
+2.47.0
 
