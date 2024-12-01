@@ -4,48 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFF16D49767
-	for <igt-dev@archiver.kernel.org>; Sun,  1 Dec 2024 11:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA98D4976D
+	for <igt-dev@archiver.kernel.org>; Sun,  1 Dec 2024 12:25:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5BE6E10E038;
-	Sun,  1 Dec 2024 11:46:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="WfojN97T";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FC0510E038
- for <igt-dev@lists.freedesktop.org>; Sun,  1 Dec 2024 11:46:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:
- Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=0pm5ow57T6OlAqO4sr098g/f53vY+XGv7bdKs8h9WSQ=; b=WfojN97TxJwzyRRLMqQJcLFfKf
- /HcWYzXqPGYQk7vmWa4BgiG8xz3qTFMyWeB/Rj9klmXUvnjNdAbaWXRyQA98caiA+4R1Bnllb/gYh
- kF6c1+UIum9zBUDJO97JN34YiBuNR5f7s7BRKTZ/62nUcewcUA7oBM6pFoEvxOC+fwJH06uuA7j5N
- Xs1bgwVYLrs3cv8DRHHTWGX5EyyffvrPkJNE7sQJOz3xe+7TdXV0dHMYkWPnV4bGl25/AqVl5V3Mn
- HkxdcrwALd+bssJC/vni5aWGioIuP9ROSW4X/xb4bXWH0CmlNAN10j9RU8eQSRQg6ZS/66AXLa7kI
- sQsG2n+w==;
-Received: from [187.36.213.55] (helo=localhost.localdomain)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
- (Exim) id 1tHiP7-00EzFh-MK; Sun, 01 Dec 2024 12:46:22 +0100
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>,
- Vignesh Raman <vignesh.raman@collabora.com>,
- Helen Koike <helen.koike@collabora.com>,
- Daniel Stone <daniels@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH i-g-t] tests/vkms: Delete VKMS test list
-Date: Sun,  1 Dec 2024 08:45:06 -0300
-Message-Id: <20241201114506.19947-1-mcanal@igalia.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 24B4710E1A3;
+	Sun,  1 Dec 2024 12:25:06 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D883210E0FB;
+ Sun,  1 Dec 2024 12:25:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/vkms=3A_Delete_VKMS?=
+ =?utf-8?q?_test_list?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sun, 01 Dec 2024 12:25:04 -0000
+Message-ID: <173305590486.1248488.14598537840666288773@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241201114506.19947-1-mcanal@igalia.com>
+In-Reply-To: <20241201114506.19947-1-mcanal@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,292 +37,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-First, this list is severely outdated. Therefore, it doesn't make sense
-to keep an outdated test list in the repository, especially considering
-that it is not being maintained.
+== Series Details ==
 
-Second, DRM CI now supports VKMS, and developers are maintaining an
-updated list of IGT tests that VKMS supports. Thus, keeping this list
-in IGT is redundant.
+Series: tests/vkms: Delete VKMS test list
+URL   : https://patchwork.freedesktop.org/series/141962/
+State : failure
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- tests/vkms_ci/README        |  21 ----
- tests/vkms_ci/vkms.testlist | 234 ------------------------------------
- 2 files changed, 255 deletions(-)
- delete mode 100644 tests/vkms_ci/README
- delete mode 100644 tests/vkms_ci/vkms.testlist
+== Summary ==
 
-diff --git a/tests/vkms_ci/README b/tests/vkms_ci/README
-deleted file mode 100644
-index 74a59ae8f..000000000
---- a/tests/vkms_ci/README
-+++ /dev/null
-@@ -1,21 +0,0 @@
--This directory contains test lists to be used for vkms's DRM support.
--The files are passed to igt_runner/piglit with the --test-list parameter
--directly.
--
--The test lists are contained in the IGT repository for several
--reasons:
--
--- The lists stay synchronized with the IGT codebase.
--- Public availability. Kernel developers can see what tests are run,
--  and can see what changes are done to the set, when, and why.
--- Keep track of the features implemented by the vkms DRM driver.
--
--=============
--vkms.testlist
--=============
--
--This test list is meant as a general test suite for the vkms DRM driver,
--gathering all must-pass tests for the driver.
--
--As more features are implemented to the vkms DRM driver, the correspondent
--tests should be added to this list.
-diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
-deleted file mode 100644
-index c3333bcb0..000000000
---- a/tests/vkms_ci/vkms.testlist
-+++ /dev/null
-@@ -1,234 +0,0 @@
--igt@kms_atomic@atomic-invalid-params
--igt@kms_atomic@crtc-invalid-params
--igt@kms_atomic@plane-cursor-legacy
--igt@kms_atomic@plane-immutable-zpos
--igt@kms_atomic@plane-invalid-params
--igt@kms_atomic@plane-primary-legacy
--igt@kms_atomic@test-only
--igt@kms_atomic_transition@modeset-transition
--igt@kms_atomic_transition@modeset-transition-fencing
--igt@kms_atomic_transition@modeset-transition-nonblocking
--igt@kms_atomic_transition@modeset-transition-nonblocking-fencing
--igt@kms_atomic_transition@plane-all-modeset-transition
--igt@kms_atomic_transition@plane-all-transition
--igt@kms_atomic_transition@plane-all-transition-nonblocking
--igt@kms_atomic_transition@plane-primary-toggle-with-vblank-wait
--igt@kms_atomic_transition@plane-toggle-modeset-transition
--igt@kms_atomic_transition@plane-use-after-nonblocking-unbind
--igt@kms_bw@linear-tiling-1-displays-1920x1080p
--igt@kms_bw@linear-tiling-1-displays-2560x1440p
--igt@kms_bw@linear-tiling-1-displays-3840x2160p
--igt@kms_bw@linear-tiling-2-displays-1920x1080p
--igt@kms_bw@linear-tiling-2-displays-2560x1440p
--igt@kms_bw@linear-tiling-2-displays-3840x2160p
--igt@kms_concurrent@pipe-a
--igt@kms_cursor_crc@cursor-alpha-opaque
--igt@kms_cursor_crc@cursor-alpha-transparent
--igt@kms_cursor_crc@cursor-dpms
--igt@kms_cursor_crc@cursor-offscreen-128x128
--igt@kms_cursor_crc@cursor-offscreen-128x42
--igt@kms_cursor_crc@cursor-offscreen-256x256
--igt@kms_cursor_crc@cursor-offscreen-256x85
--igt@kms_cursor_crc@cursor-offscreen-32x10
--igt@kms_cursor_crc@cursor-offscreen-32x32
--igt@kms_cursor_crc@cursor-offscreen-512x170
--igt@kms_cursor_crc@cursor-offscreen-512x512
--igt@kms_cursor_crc@cursor-offscreen-64x21
--igt@kms_cursor_crc@cursor-offscreen-64x64
--igt@kms_cursor_crc@cursor-onscreen-128x128
--igt@kms_cursor_crc@cursor-onscreen-128x42
--igt@kms_cursor_crc@cursor-onscreen-256x256
--igt@kms_cursor_crc@cursor-onscreen-256x85
--igt@kms_cursor_crc@cursor-onscreen-32x10
--igt@kms_cursor_crc@cursor-onscreen-32x32
--igt@kms_cursor_crc@cursor-onscreen-512x170
--igt@kms_cursor_crc@cursor-onscreen-512x512
--igt@kms_cursor_crc@cursor-onscreen-64x21
--igt@kms_cursor_crc@cursor-onscreen-64x64
--igt@kms_cursor_crc@cursor-random-128x128
--igt@kms_cursor_crc@cursor-random-128x42
--igt@kms_cursor_crc@cursor-random-256x256
--igt@kms_cursor_crc@cursor-random-256x85
--igt@kms_cursor_crc@cursor-random-32x10
--igt@kms_cursor_crc@cursor-random-32x32
--igt@kms_cursor_crc@cursor-random-512x170
--igt@kms_cursor_crc@cursor-random-512x512
--igt@kms_cursor_crc@cursor-random-64x21
--igt@kms_cursor_crc@cursor-random-64x64
--igt@kms_cursor_crc@cursor-rapid-movement-128x128
--igt@kms_cursor_crc@cursor-rapid-movement-128x42
--igt@kms_cursor_crc@cursor-rapid-movement-256x256
--igt@kms_cursor_crc@cursor-rapid-movement-256x85
--igt@kms_cursor_crc@cursor-rapid-movement-32x10
--igt@kms_cursor_crc@cursor-rapid-movement-32x32
--igt@kms_cursor_crc@cursor-rapid-movement-512x170
--igt@kms_cursor_crc@cursor-rapid-movement-512x512
--igt@kms_cursor_crc@cursor-rapid-movement-64x21
--igt@kms_cursor_crc@cursor-rapid-movement-64x64
--igt@kms_cursor_crc@cursor-size-change
--igt@kms_cursor_crc@cursor-sliding-128x128
--igt@kms_cursor_crc@cursor-sliding-128x42
--igt@kms_cursor_crc@cursor-sliding-256x256
--igt@kms_cursor_crc@cursor-sliding-256x85
--igt@kms_cursor_crc@cursor-sliding-32x10
--igt@kms_cursor_crc@cursor-sliding-32x32
--igt@kms_cursor_crc@cursor-sliding-512x170
--igt@kms_cursor_crc@cursor-sliding-512x512
--igt@kms_cursor_crc@cursor-sliding-64x21
--igt@kms_cursor_crc@cursor-sliding-64x64
--igt@kms_cursor_crc@cursor-suspend
--igt@kms_cursor_edge_walk@128x128-left-edge
--igt@kms_cursor_edge_walk@128x128-right-edge
--igt@kms_cursor_edge_walk@128x128-top-bottom
--igt@kms_cursor_edge_walk@128x128-top-edge
--igt@kms_cursor_edge_walk@256x256-left-edge
--igt@kms_cursor_edge_walk@256x256-right-edge
--igt@kms_cursor_edge_walk@256x256-top-bottom
--igt@kms_cursor_edge_walk@256x256-top-edge
--igt@kms_cursor_edge_walk@64x64-left-edge
--igt@kms_cursor_edge_walk@64x64-right-edge
--igt@kms_cursor_edge_walk@64x64-top-bottom
--igt@kms_cursor_edge_walk@64x64-top-edge
--igt@kms_flip@absolute-wf_vblank
--igt@kms_flip@absolute-wf_vblank-interruptible
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_flip@blocking-absolute-wf_vblank
--igt@kms_flip@blocking-absolute-wf_vblank-interruptible
--igt@kms_flip@blocking-wf_vblank
--igt@kms_flip@busy-flip
--igt@kms_flip@dpms-off-confusion
--igt@kms_flip@dpms-off-confusion-interruptible
--igt@kms_flip@dpms-vs-vblank-race
--igt@kms_flip@dpms-vs-vblank-race-interruptible
--igt@kms_flip@flip-vs-absolute-wf_vblank
--igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible
--igt@kms_flip@flip-vs-blocking-wf-vblank
--igt@kms_flip@flip-vs-dpms-off-vs-modeset
--igt@kms_flip@flip-vs-dpms-off-vs-modeset-interruptible
--igt@kms_flip@flip-vs-expired-vblank
--igt@kms_flip@flip-vs-expired-vblank-interruptible
--igt@kms_flip@flip-vs-panning
--igt@kms_flip@flip-vs-panning-interruptible
--igt@kms_flip@flip-vs-rmfb
--igt@kms_flip@flip-vs-rmfb-interruptible
--igt@kms_flip@flip-vs-suspend
--igt@kms_flip@flip-vs-suspend-interruptible
--igt@kms_flip@flip-vs-wf_vblank-interruptible
--igt@kms_flip@modeset-vs-vblank-race
--igt@kms_flip@modeset-vs-vblank-race-interruptible
--igt@kms_flip@nonblocking-read
--igt@kms_flip@nonexisting-fb
--igt@kms_flip@nonexisting-fb-interruptible
--igt@kms_flip@plain-flip-fb-recreate
--igt@kms_flip@plain-flip-fb-recreate-interruptible
--igt@kms_flip@plain-flip-interruptible
--igt@kms_flip@plain-flip-ts-check
--igt@kms_flip@plain-flip-ts-check-interruptible
--igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset
--igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
--igt@kms_flip@wf_vblank-ts-check
--igt@kms_flip@wf_vblank-ts-check-interruptible
--igt@kms_flip_event_leak@basic
--igt@kms_getfb@getfb-addfb-different-handles
--igt@kms_getfb@getfb-handle-closed
--igt@kms_getfb@getfb-handle-not-fb
--igt@kms_getfb@getfb-handle-protection
--igt@kms_getfb@getfb-handle-valid
--igt@kms_getfb@getfb-handle-zero
--igt@kms_getfb@getfb-repeated-different-handles
--igt@kms_getfb@getfb2-handle-closed
--igt@kms_getfb@getfb2-handle-not-fb
--igt@kms_getfb@getfb2-handle-protection
--igt@kms_getfb@getfb2-handle-zero
--igt@kms_getfb@getfb2-into-addfb2
--igt@kms_lease@cursor_implicit_plane
--igt@kms_lease@empty_lease
--igt@kms_lease@implicit-plane-lease
--igt@kms_lease@invalid-create-leases
--igt@kms_lease@lease-uevent
--igt@kms_lease@lease_again
--igt@kms_lease@lease_get
--igt@kms_lease@lease_invalid_connector
--igt@kms_lease@lease_invalid_crtc
--igt@kms_lease@lease_invalid_plane
--igt@kms_lease@lease_revoke
--igt@kms_lease@lessee_list
--igt@kms_lease@master-vs-lease
--igt@kms_lease@multimaster-lease
--igt@kms_lease@page_flip_implicit_plane
--igt@kms_lease@possible-crtcs-filtering
--igt@kms_lease@setcrtc_implicit_plane
--igt@kms_lease@simple_lease
--igt@kms_multipipe_modeset@basic-max-pipe-crc-check
--igt@kms_pipe_crc_basic@bad-source
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck
--igt@kms_pipe_crc_basic@disable-crc-after-crtc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_pipe_crc_basic@suspend-read-crc
--igt@kms_plane@plane-panning-bottom-right
--igt@kms_plane@plane-panning-bottom-right-suspend
--igt@kms_plane@plane-panning-top-left
--igt@kms_plane@plane-position-covered
--igt@kms_plane@plane-position-hole
--igt@kms_plane@plane-position-hole-dpms
--igt@kms_plane_cursor@overlay
--igt@kms_plane_cursor@primary
--igt@kms_plane_cursor@viewport
--igt@kms_plane_lowres@tiling-none
--igt@kms_plane_multiple@tiling-none
--igt@kms_plane_scaling@invalid-parameters
--igt@kms_prop_blob@basic
--igt@kms_prop_blob@blob-multiple
--igt@kms_prop_blob@blob-prop-core
--igt@kms_prop_blob@blob-prop-lifetime
--igt@kms_prop_blob@blob-prop-validate
--igt@kms_prop_blob@invalid-get-prop
--igt@kms_prop_blob@invalid-get-prop-any
--igt@kms_prop_blob@invalid-set-prop
--igt@kms_prop_blob@invalid-set-prop-any
--igt@kms_properties@connector-properties-atomic
--igt@kms_properties@connector-properties-legacy
--igt@kms_properties@crtc-properties-atomic
--igt@kms_properties@crtc-properties-legacy
--igt@kms_properties@get_properties-sanity-atomic
--igt@kms_properties@get_properties-sanity-non-atomic
--igt@kms_properties@invalid-properties-atomic
--igt@kms_properties@invalid-properties-legacy
--igt@kms_properties@plane-properties-atomic
--igt@kms_properties@plane-properties-legacy
--igt@kms_rmfb@close-fd
--igt@kms_rmfb@rmfb-ioctl
--igt@kms_sequence@get-busy
--igt@kms_sequence@get-forked
--igt@kms_sequence@get-forked-busy
--igt@kms_sequence@get-idle
--igt@kms_sequence@queue-busy
--igt@kms_sequence@queue-idle
--igt@kms_universal_plane@disable-primary-vs-flip-pipe-a
--igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a
--igt@kms_universal_plane@universal-plane-pipe-a-functional
--igt@kms_vblank@crtc-id
--igt@kms_vblank@invalid
--igt@kms_vblank@pipe-a-accuracy-idle
--igt@kms_vblank@pipe-a-query-busy
--igt@kms_vblank@pipe-a-query-forked
--igt@kms_vblank@pipe-a-query-forked-busy
--igt@kms_vblank@pipe-a-query-idle
--igt@kms_vblank@pipe-a-ts-continuation-dpms-suspend
--igt@kms_vblank@pipe-a-ts-continuation-idle
--igt@kms_vblank@pipe-a-ts-continuation-modeset
--igt@kms_vblank@pipe-a-ts-continuation-suspend
--igt@kms_vblank@pipe-a-wait-busy
--igt@kms_vblank@pipe-a-wait-forked
--igt@kms_vblank@pipe-a-wait-forked-busy
--igt@kms_vblank@pipe-a-wait-idle
--igt@kms_writeback@writeback-check-output
--igt@kms_writeback@writeback-fb-id
--igt@kms_writeback@writeback-invalid-parameters
--igt@kms_writeback@writeback-pixel-formats
--- 
-2.39.5 (Apple Git-154)
+CI Bug Log - changes from IGT_8132 -> IGTPW_12225
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12225 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12225, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/index.html
+
+Participating hosts (45 -> 45)
+------------------------------
+
+  Additional (1): fi-rkl-11600 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12225:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/bat-arlh-2/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/bat-arlh-2/igt@i915_selftest@live.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12225 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][3] ([i915#9318])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [PASS][4] -> [INCOMPLETE][5] ([i915#12904]) +1 other test incomplete
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/bat-apl-1/igt@dmabuf@all-tests.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#4613]) +3 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][8] ([i915#3282])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg1-7:          [PASS][9] -> [FAIL][10] ([i915#12903])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][11] ([i915#4103]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([i915#3555] / [i915#3840])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][13]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([i915#5354])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][15] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][16] ([i915#3555])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-read:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][17] ([i915#3291] / [i915#3708]) +2 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-rkl-11600/igt@prime_vgem@basic-read.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adls-6:         [FAIL][18] ([i915#12903]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/bat-adls-6/igt@i915_pm_rpm@module-reload.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/bat-adls-6/igt@i915_pm_rpm@module-reload.html
+    - bat-arls-5:         [DMESG-WARN][20] ([i915#4423]) -> [PASS][21]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/bat-arls-5/igt@i915_pm_rpm@module-reload.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/bat-arls-5/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][22] ([i915#12061]) -> [PASS][23] +1 other test pass
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/bat-mtlp-8/igt@i915_selftest@live.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][24] ([i915#11621]) -> [PASS][25] +38 other tests pass
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-1:
+    - fi-cfl-8109u:       [DMESG-WARN][26] -> [PASS][27] +2 other tests pass
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8132/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-1.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12695]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12695
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4423]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4423
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8132 -> IGTPW_12225
+
+  CI-20190529: 20190529
+  CI_DRM_15763: 108f610005f88de624c1a8c4f85d5cab9f530ddb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12225: 61c3fe7f34c7aa79951575c5668fd63e58d0fa30 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8132: 7675e070cb74c6808050764367f978f6b74ebc36 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12225/index.html
