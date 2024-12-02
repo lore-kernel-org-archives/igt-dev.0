@@ -4,166 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96719D7830D
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 11:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E92D78319
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 13:03:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CD2F10E6D5;
-	Mon,  2 Dec 2024 11:18:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0476D10E1B3;
+	Mon,  2 Dec 2024 13:03:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yb4UOfp+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iW03TqQM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B864310E1E5
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Dec 2024 11:18:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D06F10E1B3
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Dec 2024 13:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733138323; x=1764674323;
- h=from:to:cc:subject:date:message-id:references:
+ t=1733144636; x=1764680636;
+ h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=KbUYX7qlTz7Z/ignArBux7it5M5xWgzmfEIA/rsh0NA=;
- b=Yb4UOfp+b+aUgQgK5LZJGZQE4uXe88yG8ZmBMQsIMNBcbDozXZINubfT
- 1KNkQtxkz3Fz2fAg3mKmKegITxHtFLkH8Q97FiluqFBmz2zhhgoYy4R2v
- tu+P4GRlhidGSk6GdtEh1E7HI1+FPmxis9QSjFjsBhZEqNWHED8tCJLyc
- 1Xzi3ImsSyv5+YYN1e5NTr3xHQn1Im5szvRm3RWACFhOXc5imnGhXNFNe
- CbdXMAteQkZj4Asz/mmOldmFSYxhx8zu/2Oy9zTjCLPg7yOWmB7AOxgKC
- Jkui4ltihmjU8LwOqjTgcOV5FoqILsXDe0o77aE+axKOVPSCCb8IqwH52 g==;
-X-CSE-ConnectionGUID: L0J7/R6UQYupXONfuYt5NQ==
-X-CSE-MsgGUID: CMdzB279QhShOG5+0rpFFw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="36961861"
-X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="36961861"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 03:18:42 -0800
-X-CSE-ConnectionGUID: vj6JnTvqSa2jjo6pun/W0g==
-X-CSE-MsgGUID: 3bOLKM59SYqMIt4OyN6lHQ==
+ bh=oqF8iaOhiarjDgX8jgv/VaheILgREdLHgYa5dRHyL0M=;
+ b=iW03TqQM+MUpjJqq5AdHrc4YchUqciTAZKt+VU6wGNe/jWaYqVir4MJ3
+ Ykw4zJtouWMIBN2k8dhZeksFR2vp8xPnSqX/RwiIL6I8NHnhox1Rmt+CS
+ Q8x/3jEaKjjgyUyNDiAKjwNWpectBrT2+gyLoC+vvpl9Ydpq6b83q6Mwh
+ svDx85zxIoMFiiz+kMZexTO4n/Oj3FruxnskV6AykH6vWf552jfYaOUiJ
+ EFr+Br5NjvRLoYEVf4V0KJTkIes5EL2WWfwU+s4Ci5FlLOKK2sihj1pgn
+ ZLCqIxHad4Gmr/+AsVOXEdapXXsjfZU8B+3XX8l2PuTDJhF3BMVIH43qn g==;
+X-CSE-ConnectionGUID: ZcJD4e76RS22b9mwLWs5TQ==
+X-CSE-MsgGUID: eKqae3x2T9iG7QRCbvLNLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="43794625"
+X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="43794625"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2024 05:03:56 -0800
+X-CSE-ConnectionGUID: odOrZ5XnTaOAid40OgmfUw==
+X-CSE-MsgGUID: GOux5hSlRnu2DIrQIICI8w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="123926764"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 02 Dec 2024 03:18:42 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="92930716"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 02 Dec 2024 05:03:55 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 2 Dec 2024 03:18:42 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 2 Dec 2024 05:03:55 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 2 Dec 2024 03:18:42 -0800
+ 15.1.2507.39 via Frontend Transport; Mon, 2 Dec 2024 05:03:55 -0800
 Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 2 Dec 2024 03:18:41 -0800
+ 15.1.2507.39; Mon, 2 Dec 2024 05:03:55 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vs9HxrxzUMXjXrpxugkC3IhkBrqfDToVf3vWX0kLHGiSNQeCaDIr6hP5pUQ/Vi99NB524PAS23DZjDoXhwVrv2aMXb8RcDOQH7xrMxkIj0IUe4s9IvJZkGDS2i116K+7Ooz1USwc7Hqg/NRCeA3CjN8dYfUXR1l1qbWAiS+LlwyPofqZ1KOysufg4N07Ljq/VfXDDwXArRSfqNTPKNKQo4Nt3DQ7cpAn0JOxeS8OaXHtWubiXo7g0G0H/9YAnpZ5mJnozvsbSUqukpylYHluKFdalZTAoPf+a7GKlkc7xPOumcD2uJ8di+xv3VgDmm3gMYdKl61y55B0OIC3bUhLAw==
+ b=D1T5WYnirMyzoHBD1PuTfFgtCr0LjTakyUBsF3lilh0IxbicI6wVKSOKKoDeg4p6nEfmH6ysBM96TSAgm1P7Sbig71Rnkj+nYRPKNPEwUmwpYg6MZGe4toxmBDkwifoIfMbS97hYUrsNVaU3sVmz8Hdr18Vs0GxJv0ff6FLgPACA7F4dBbBCvD4J9GG8uV59UAbW1lTdCTimHTLpkAr8pGZGRnNVdgnmlk3EY9HeufLHLbLgwYBe2vysjvmoYLrJDPkrsKo4xlr7EzEl9/UZi29ATnOLHzNskCw4aOPMV2Fq0s3eLnU7TPX8lMqQvpCLdwRnvue/XqQPyDkgntvERA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q6NTBM2cVwVvLQ4uaCVFU8VmBlW9ETl5vMZkdaM74jw=;
- b=cC1T+k50RN4PediyixXQ6i28T7M+D1c7BFbiolK+xhXB5TqF87NpdG3rQdHh/dEOuZX03CI79jaoVLXGDJbjwcyHM9JGIGERHKJPCbby4dy/JhDrAnYm7RxIXXQhP1WlnhuaUGqo8hjR8nE9frC64jvu3l7ER/nT/xcs8FfSCKMHvZTUGS7+CPl0PjcZXstqD4FgUYwMeO5SjVcm2zDwiB5HfkaZP2PZm+hM0ka5a8IxQCXR9e/qMReE04Mk5K1Oo6PSYYvIn1QG2Naq+3MKV+mbVt/DuQPp2ia0ObumHVScYq88vtGfMpqfA90vmERaK2fxdFRMwt9DseZAfbxQcw==
+ bh=CCRNo+xIUBGz8k5sHD6RUOqGUyxptPEH83Q5TCcWNho=;
+ b=Yb4EvWfhgJCxl5hnjZ6bjYy91/+VxyxT1UhFfSuBn+LrPGBBJO3YrVyjsR9GvHFwR3PyvlVY8DbS65yY6Z3dCf0g/lfIydpzGw9LDJs9RzCgXEBKtZI3KIygzaQxpE6rtNOKzor5Y8RRYAIOPwPCFJw6O2vcGSNf9IAFC57WtFt0Fh5NGtmmXi2OpqyPd7PmVDSRPZ87uKJqoumgtATa6hpcsLR6YDJHpMtPm445XE2a1dkScOfJqgOJUduwnttgBSZ/TeBNHDISAWW06he5LimcA8OUb8GV5snSsl08reUwquliUvS0LpZ4SwTD1PwDMNZFYjEfdF5a3CBz9TL3Vw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by SJ2PR11MB7520.namprd11.prod.outlook.com (2603:10b6:a03:4c2::19)
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
+ by CH3PR11MB7322.namprd11.prod.outlook.com (2603:10b6:610:14a::13)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.17; Mon, 2 Dec
- 2024 11:18:38 +0000
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::4a36:b210:9d85:d13b]) by PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::4a36:b210:9d85:d13b%5]) with mapi id 15.20.8207.017; Mon, 2 Dec 2024
- 11:18:38 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t 1/2] tests/intel/dsc: Convert debug msg to info msg
-Thread-Topic: [PATCH i-g-t 1/2] tests/intel/dsc: Convert debug msg to info msg
-Thread-Index: AQHbRJcCq2H5Om6I40W2Oq/iTialVrLSzSNg
-Date: Mon, 2 Dec 2024 11:18:38 +0000
-Message-ID: <PH7PR11MB60538096EC53283FA21CC752E7352@PH7PR11MB6053.namprd11.prod.outlook.com>
-References: <20241202085127.1785594-1-swati2.sharma@intel.com>
-In-Reply-To: <20241202085127.1785594-1-swati2.sharma@intel.com>
-Accept-Language: en-US
+ 2024 13:03:50 +0000
+Received: from BN9PR11MB5482.namprd11.prod.outlook.com
+ ([fe80::158b:b258:5e7:c229]) by BN9PR11MB5482.namprd11.prod.outlook.com
+ ([fe80::158b:b258:5e7:c229%4]) with mapi id 15.20.8207.017; Mon, 2 Dec 2024
+ 13:03:49 +0000
+Message-ID: <ea50177f-e2dc-4451-bacc-fe8b62a3ccae@intel.com>
+Date: Mon, 2 Dec 2024 14:03:43 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/4] lib/xe/xe_sriov_debugfs: Add debugfs get/set
+ functions for u32, u64, bool
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <kamil.konieczny@linux.intel.com>, <adam.miszczak@linux.intel.com>,
+ <jakub1.kolakowski@intel.com>, <michal.wajdeczko@intel.com>,
+ <michal.winiarski@intel.com>, <narasimha.c.v@intel.com>,
+ <piotr.piorkowski@intel.com>, <satyanarayana.k.v.p@intel.com>,
+ <tomasz.lis@intel.com>
+References: <20241127200302.1376594-1-marcin.bernatowicz@linux.intel.com>
+ <20241127200302.1376594-2-marcin.bernatowicz@linux.intel.com>
+From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|SJ2PR11MB7520:EE_
-x-ms-office365-filtering-correlation-id: 953b80a1-523e-4186-9bb6-08dd12c3121e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?7bPMxV8mQb9RnhqLjp6/ULN3GK0A4nd8t1b5Pv15lUvkQBV7BBOt+ntH5PbV?=
- =?us-ascii?Q?lAXRWXUrl/5FPoT4bYePmPIPej7e3qnSlQayBMsaN4Bjbo8+0vV4zHYTNXH5?=
- =?us-ascii?Q?X9R6nW7r6DjWhcAFeUy4okfTmRR3BoUPh/KHAxHcfPbP1IWcYJMMzwEXBeiO?=
- =?us-ascii?Q?PT03zGKAXJIHRFJmskKV0RprjgqQffKJcs1gM79UQoIJ+xIrulvvR9YwyR0c?=
- =?us-ascii?Q?32A5e7SF2l4BH9vv2pDXKYhRqTFV7Vr+Kk6IIL9mTO7mh7sqOiisGk25Rp2J?=
- =?us-ascii?Q?3Gmq4sQx1Ejtl70znEaci3WyyNyIZH6iePFgAaSAnkc3VhvSvRxO+YHLw6IW?=
- =?us-ascii?Q?EQV35GePL8cpQALwJScn3AZ+p+5drCrnRWXUnwDJj0d6B4brE7op0p0mBkBE?=
- =?us-ascii?Q?pIP3GVkPFeR3eUUZRt6AfqfWRIjK9oj+wo3mO70uLvgvRdQUvwT5sJkNXYiE?=
- =?us-ascii?Q?mOIkTmoh/7ASixs+QgIZwbFnihDvcuQLEx1vLusJNHNca00P9qAgAenkQJtB?=
- =?us-ascii?Q?hJ0ozmAez9GtRVcA+Yi/aJYKzpWSNmtlVUIwgl9qqmgJ0IkI+eo4SZd3knLi?=
- =?us-ascii?Q?5HhJHy0mq20XhPInen8rGnX8oGn050IWK3ayHXmR//Ty9kfdiLQZ6DO5NaVB?=
- =?us-ascii?Q?NcQWjXi7B7P8ckx334qnB85NBvTm4TfSNZrCRB+5QkLCL3iKL1/RBht6kUxi?=
- =?us-ascii?Q?M2Wjs+Dkib76i/wY1E2AJXB5gHoOQJ/uSMwsk+sJjREGb8cFAl1G2SUb8k67?=
- =?us-ascii?Q?z6p3a6usQyE3CYabGHqSWAShpUdWbL2XmlP2yRGJJxO2KOD9hsBszFLbBx8k?=
- =?us-ascii?Q?r1nLQi3U905R7cHlTsy16HV461xB3xxk4NxY9OW5JNo7llvaGrLSpmELEGxv?=
- =?us-ascii?Q?5Hw7NDY/leyEASzPBliwB1NteASoEujuxqdjv9pTwdkAvZ4UdJS/UDmg+Mdt?=
- =?us-ascii?Q?b+im3FmW/hMd/I3zOzloUwxY0q+zuqCE50tSGPBW87i8eajA+j1U7EWQIop9?=
- =?us-ascii?Q?3GFwy9GFKqG2TmcITlECRoVJw/EKvZqiK84EC99rsM6EeE5csDt4fS9KMLBt?=
- =?us-ascii?Q?fzoFQCp9XAGBYTD+rFvfm8lYaOhp3yskXvLzg+/x5Rf+W58swC2TLpx5FnEw?=
- =?us-ascii?Q?h+IsyCWkxtj/hmmiktQbY1+6R3BB4U5gHd65fV8GREGabc5Y5XSb9Yg4ENRY?=
- =?us-ascii?Q?iARZ4581/FvrnwtPwvGb3xTdS2yoGgRDRVwEuu3ksf7kVdA6MWMuz17P1UdL?=
- =?us-ascii?Q?fEL9FCUk/jM0FEgBxjqsXF/wxH7C1aAPjVRFhw4PNug5la8Bw1FrJg3pfPLu?=
- =?us-ascii?Q?Hncn7nTSdfhoSs0WS5T1Wg3Dc4tdFZMqnUgJd7duQJWyOdAvRaMdDvMYUqMg?=
- =?us-ascii?Q?cEqyN2vq5sZf6WaDgdOR24y8JLoTO1jm1O84n/uwYsaXNvC8iw=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GASbUGlgD+E1Nr+DB8yNu/b0JIgt87JHY0BkBsr/gguziM9ZJu8bp/fT5LoB?=
- =?us-ascii?Q?1uoLFYJ4TQUStEHRqAhkmfTSWEIdY7e3w6EAhi5vlMe2S5p+D3TnODGcsgTZ?=
- =?us-ascii?Q?m5zf7bl5nX91FYp84337sTuTkVxabd6h2ZnFqd80rlUEEYyeuufExeBVeR6q?=
- =?us-ascii?Q?BIJ9wGd6zPRUHiJ2fdfuXLVUy86oW4qDlUU5k9NZi0yuvdV5e/pGvMC3hQCF?=
- =?us-ascii?Q?oGtaIFPpEsI2SU08SCU2svm7w06gQlogHqzuizyiir6WsfrHzXdm3QcvAskl?=
- =?us-ascii?Q?6Q1WY62slMiYCpJd+5xyDjnkMe3zoJA/03mWmpInYgx9yCzDUxZiAed32M1F?=
- =?us-ascii?Q?r5Ht52wWruLoNE7Evy4UHimLboMSpUBMt70SLmRfBDd1b75wVzf+xrAi6glZ?=
- =?us-ascii?Q?uP0Pd+GCCh8nnv1XNr7HKmiqF5Xd8qdPMKhnsTw3GURRzqYOg7/kxdZg1OgZ?=
- =?us-ascii?Q?nhaVuW1KisU0HqofkE2dzdKv7t8Y5b8LsiUppUeBEivXK8g7umulJZtw6qPG?=
- =?us-ascii?Q?6dJR8f9F1xuZJ0ArlfdX9mp3jU70itfIpPZNZml2zLMjUVHgyhak+aKb082B?=
- =?us-ascii?Q?kbg5qgth3T8p/VEB1v4Thprq6EL1g4xuimvrw7b9YKONj6GzXRAZz+NDorKM?=
- =?us-ascii?Q?pLC/Cogo+TOS+Sp+6EQhl+9gSrZlti13RgoasfbEm/n4Xv2GMedr1RlGlaDd?=
- =?us-ascii?Q?9DpK1dyU2Zd7xwJ5kn4U+wmbZAkMq4qKjHJ2342xEgmvTFpimQ51R+a59Lni?=
- =?us-ascii?Q?0qP8/rNUhEX9dxJoc9esYBohMel7cJUyphMeQm6GAlPLyzNOvdvTJ0mZulIG?=
- =?us-ascii?Q?V4hD8JBGq95nPYS+/koiMMFARCCxeTYrgfy5gs/gXbbwM/WffqmySNNr9AbF?=
- =?us-ascii?Q?w3W5+bAg2N/wmuQ1ccjxKYqSB7A1gu32MI2sYOBo/pC8C4Z/vTYZQjYCYZfq?=
- =?us-ascii?Q?OrzyIMH7d1aoNI+pLZpVs/Ragr6ZQ4vD0HLDTN+ELlalqzhz5YDEdnunvhAT?=
- =?us-ascii?Q?/arBAI2GSRRyHKGwXu+9cv5LU6pfUDv8jgatangpx6lqcnfyzk8nIebemNeC?=
- =?us-ascii?Q?w0Xih6+40ud6cqBsKqfKXTl9lEcGCSsvy/ye34/TTlosTe8nWRrFLc3XhIzn?=
- =?us-ascii?Q?wXhRb5/j/njjDItaji3ebTheHhqk4Xdv2F/O9ux5gKdSCCidRltKDhQk9Oaz?=
- =?us-ascii?Q?3j4/o3JN66gHpMxrh8WZCHKSXJfAenwjQ1dLJgWMsuVuRl2CzSH0p3IfBgVx?=
- =?us-ascii?Q?p2thgy4nbTI+RJ94yzPQCmf4vv4X1K5BYGBz/2l69ljW9AaTlvQQjdx7c+j+?=
- =?us-ascii?Q?+i/dnfsHBx/z8Mi5hzIM+jgD8HV13kqAugd1OlFBTjyDB0nKfy2tJITLy649?=
- =?us-ascii?Q?k4i9X9FSkz3w7uGr1cT8+Tlgc+go6Iypftud6m9pvPGgLxJRqKN+F4ukHD0p?=
- =?us-ascii?Q?qeYjJ5FZvaZXVRUJcurPaPkoQedwBRxPe90pOYWwca1jOpql/css4SViJC3h?=
- =?us-ascii?Q?Nq8XmGgbiYx/oZyWULYYUtSYMH7qPK11ellWrApIBYM9y9BPLKVcET4W9RDN?=
- =?us-ascii?Q?S0WeManRh8VdLC50BSfns9mMIIobbU68/2iymk/E?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241127200302.1376594-2-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZR2P278CA0003.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:50::6) To BN9PR11MB5482.namprd11.prod.outlook.com
+ (2603:10b6:408:103::16)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|CH3PR11MB7322:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4c86f61-87b2-429f-c8cb-08dd12d1c260
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K0hBV3NHNytqZk5GM1ZjWFhFZXpadlpLWG5aajVQYldlVUVEOXhPYVJQbHBl?=
+ =?utf-8?B?VnVjUm9KRXJ3cHQ3aWxmdUgxMnphaU8xYmNWeWo2dVdzTVFZYTUwSm9WWU5y?=
+ =?utf-8?B?UU40WUNOOTkyTnQxSnFMb2JjS2pKcGtNbjZ6cThpQklaV1I1U1grZTRiajBD?=
+ =?utf-8?B?UElZc3NyQmNhVHNhNFI1Z1AzUWc4WFZpd0ZOOU1ZS3ZJL0tqcVBpQUxLVi9L?=
+ =?utf-8?B?dnU1b1pxck1HNGk2R09YeHlOR1FXa2QvOVhqdUczOFlCV0I1LzBzd3JMZTI0?=
+ =?utf-8?B?ZSs2anBnM3FZVjlQZm8ySG42aktNNTFhQzYreXpmRW5SR29ZbFpudkpia29a?=
+ =?utf-8?B?ckZJYVVHUFNDa1pNVEJZVnBULzdYbjBKMitBcXFGNnUyeW8wdEFRV0pRV2Q5?=
+ =?utf-8?B?ZFMyUmZ0NDJaVlRIay9teUZrK1JnUTYyeUJtQjExeDlneU1WQUYvcEZhWmpV?=
+ =?utf-8?B?cEpqbzNEcmpZL1o3cEIreTVSZUc3aWNzdFlseGx5bmhmTFNicysxdXlDK0Vv?=
+ =?utf-8?B?ODhFaFVJTnFPZWU3aDZOSXprWXlaZUVWNjl3Q2dIbUtTdER5bUtDK0dCU3Ax?=
+ =?utf-8?B?UXY5NS81YzY1Q3hjUkFDeU0rVzVMOVRKaUlETUVYSnlMUHR6UEZyMDhZQTV3?=
+ =?utf-8?B?SGFzeGNzVkwrd1NjajdFdEJjSm13VXVMRVcrdTIyY1U2TE9zRDdzNmJTLzBy?=
+ =?utf-8?B?ZmxuVVFNbEUwWmZYVUJod0N0K2hiQitXckZoSndVdXRKWVVSMzJ3aEJDYitr?=
+ =?utf-8?B?bjlBS241UkFWd1BXQjEvangxTWhXMGNiT0M4U0RXOFdjU1BZYTNrK0FVUTN1?=
+ =?utf-8?B?Z0lGcnhIV3g5Z2FLVW92WjVua3lEL1FSNWFSQWllQzFvNVZJMWhNaDRvWTlW?=
+ =?utf-8?B?eTRMS3hrUE1lM3FRY3VrOWRyeTJWK09yTi9XWVZUeVRSekUwTGhBUmRlWmpm?=
+ =?utf-8?B?SElmbThTQTA2QVN6STRkODltOEQ3UVNPQVhiZy9SaU1xdHR5T2Fpczl2dG9Y?=
+ =?utf-8?B?enVVTjk0cURpdUFMV2NZaFBycGRpUFcwTEg4bEtLWGpjNVgwNU15UXloZzJt?=
+ =?utf-8?B?WWpSMFpmTUI1aTFrZ2IvMDQvNmZHWkIzNGd4dElKN2tJY1EwT0RHV3hQWVVN?=
+ =?utf-8?B?NWhFVEREdm8xUGJzTk9LdS9jQ3NpZW5nZTlCbGEyODdQSFpra1lMenRJdDcv?=
+ =?utf-8?B?MWtqZFRMcE5DNm9LSGxBQzNuMnhQTWs3dVh0SG0vcHdtTERlWTZraWJCclJq?=
+ =?utf-8?B?YURkaXphT255SjZiUkVqd1FSbUY5Y2hrd24xQVZtLzY0TGx0RkcraXZ2a1ND?=
+ =?utf-8?B?VVVrRkJuWHZqempKTGc3eUY5Rjl5ck5rQUxlVTN2RWJ3eE8waktvVVVTM2Mv?=
+ =?utf-8?B?RVJSOFpMaDlNZGZmN214eGJaRHRYOHVNeUExQ2M2MWpweEtNZkNjTWtkcDZ4?=
+ =?utf-8?B?M3U3MVN3TDhZcUJWYzlWdkZZN2NGWW4xR3FwU20vV0JhTXFQVXl0TzF4RXQ4?=
+ =?utf-8?B?Mks1VzM0cDN4bGIrOERsWnFoZGZ4S3ZhSUgvVDhzNXhKeHJNUVFSTk40M1ZC?=
+ =?utf-8?B?MTFBNHBlaHlVYkx3K2tqVmNiUlR3WmlRTld2aG9qSlpsL2ZaeG9KUXNUclJV?=
+ =?utf-8?B?TEFOVUszM1lIVHUxS216RU1lK2E1TWtXekhHTzBVTnBrWjVFNlZQNUd2NjZz?=
+ =?utf-8?B?RFdaME5DVnR0VDMzVWFiNUV3bnA3dFJGTkF5VHJzT2tPNSs3KzZRMjlkOFg5?=
+ =?utf-8?B?VzNPcUpkUU1pVDlkNTl5SWpjSE5PUyt5L2JHN1pKc0VMR093dWtISmlLNTA3?=
+ =?utf-8?B?dytsYWpHbjdHVml6SUdQUT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bU5YdmU5Yll0a1dQd3g1L2o5clc0ajE4WURqMisvbGYwUDAzaHdLTHh4QlV6?=
+ =?utf-8?B?U0Q4cWh5bEpIeGNDWGhXTGtUcDZzR1oyRzVmUWhyeXNZeVQ0S3ZHcG8wQmh3?=
+ =?utf-8?B?N2o1L0xIZGFXbmxDTDUwN0ozZUR1dHNSYjhsUFFwUzhnYXQ3VzcveXQyeWZn?=
+ =?utf-8?B?aTJNOUxRQ0EzT3MyNmdKeWNwajBaV241RCtCNFUvalUwdTRsWFdTcnMzNGhV?=
+ =?utf-8?B?a3R2UW00NzdrWnRoL0VmZC9EcWxRT2tXNGYwTWhUNGZDUHp0SmNkTTBJcWpK?=
+ =?utf-8?B?ZVpEemdVc1dTWEV5SVBNSTRZdXMvRkhnTXJZMm9QZkZ6SDlRd0NQTVdRNGNH?=
+ =?utf-8?B?NXZocThFWXZCa2FIUkFsbEpHYTlhUWJoV2tibjF2R2ZrSVY1N0FRYnZYSEZh?=
+ =?utf-8?B?R1JNVnk1ZWNtdktON2E2YUpLR2hrM0pSRlNQTWt3eUJTTE1jb0pDUWNQV1A5?=
+ =?utf-8?B?aytCeFlCSXk3TkFqTTJ6ZlVkeXZ6cTNWd3RJeDdnbjhLcmh0OWs0enhsT3N6?=
+ =?utf-8?B?T2QvNERjZSs4akRsSjkvUG9acVM3bDgzdEFyMDNLZVFDb1h3dkF5TzBaWmZr?=
+ =?utf-8?B?SGRVTDlnR0FGR1pseDBuVWdQNDhTUXkvWFhucE1FZVFvNk9qQWlXQWJGOW5H?=
+ =?utf-8?B?aVAzc1BIOFRwNzRKZUpLWHBEdWRBS0dwNVdKU0tqaERDM2gxSFNlOEFDNzhp?=
+ =?utf-8?B?clo5TnNJSnQ1bHpmd3IvSTdKTWp5ZDMyRDY0UCthaDU1KzdWaFdlVWxhNWhK?=
+ =?utf-8?B?UjNOWjhLaktLREx6RU9iOGYwS2xpU09YVnBIeXZzdFZwZ2VONittdzRvSm9O?=
+ =?utf-8?B?aUFwSElIT1NwL2RlT25pV1VGUWxuT0xFaDFZNXRFSFhndHhVWisvb0V5dk54?=
+ =?utf-8?B?RVRBRDNySFNEaFJrTWpPRmZORXNTZTlqbUVxdEJOd3JBSCtwVHZ0ZUpXdy9n?=
+ =?utf-8?B?bHlTMUFpVU01TWZ5Q1YvZUl6SXRaOGNhSy9LS01xaENlNHp4QmhQTFl2Ykt1?=
+ =?utf-8?B?Y3l0SldrRXdhQkRrT2J2MWJzMFl0TUNMWEQ4SjVDekltbkRiTEM3KzdLZDV1?=
+ =?utf-8?B?S0FVbVBiOXNxZjBlMEM5dnNkRDVkMFRqVDdkb0xlYUZ3TWxPUGY5aUhleENP?=
+ =?utf-8?B?WkRJYXVKV2tLTVNEQU5EUlZoTmgyQ0pXTFZMQVJEakRRd3NHSFhQYjk3K053?=
+ =?utf-8?B?QW5yZUw1Z1B5UnhGM1YyNThDYjJtMzZERzk4YWFmZjlIRXdpKytsM0c4Rmdr?=
+ =?utf-8?B?RktJamdRU1RPNFI0aVpRMmdNamVmUHBEUkNoaHkyY2xaQ3hPbU1mdmpwVUxR?=
+ =?utf-8?B?VUpBaXQrQzd4RWhrbW1hdmZLRlZRa2hJbTcxbWRoUWZmM1R2ajFTUmtEdjBM?=
+ =?utf-8?B?ZjdVakljNXdzNUUybDlIQmJuRDFhV1BKb01oMU1FNndZU3ZuamVHempXVmgy?=
+ =?utf-8?B?UTJWV2FqTmFCY0VUM2s2YVp4dXdsYUY4VVAzbGJFak5WaEJKMW9zYVBSdXUz?=
+ =?utf-8?B?UDR6MW1zeS8rSFBiSk5nOUJ1cnE2bTk0Nm5mN01zRnR2dVkvZXJWM1lReDQ4?=
+ =?utf-8?B?ZnFKM3ZWc2JGU2xLeDNDc2NqVER5UXU3U0Y4OEJleEZLTVNpNTZDa09admpJ?=
+ =?utf-8?B?dURtRmVOTS9sVjJZbEdRdkt4elg4TkhOUTJaNUlRd0c3b3grUERnWmVGd1Zx?=
+ =?utf-8?B?UGhrNjMza0l4Yms2c00yWWxFWjE3U00xZlFJeEhvN1VwOXFPbU15V2FLQTlM?=
+ =?utf-8?B?dEdvVmdLaEhNTzc5ZFkyU0FFU3lOblYrbHVKZmlxanJWem4vMUJvNXRhd3ZT?=
+ =?utf-8?B?RlZzbmNEUUxNTU9mTFNvaFNBWnh3WUZJL0F4Q2V0aHkwemlCbWdPZHN0T1RC?=
+ =?utf-8?B?bHNtcDdGVGZmUWp1Z0x5cUNvbnNsMUdmaytSMmFlN291NDBYYUhBUGtsRE5Z?=
+ =?utf-8?B?MStzREtEektadStxWk5wS085RnV3OGtIWTY0YmZ1VVRaQUFRWmsyaHdxalZm?=
+ =?utf-8?B?RmFSV2x0aGEwZCtMNE1ocVY2eTV4QSt0RGdFVHZLTWlua1I4RVpqQ2pRbHRT?=
+ =?utf-8?B?NkhjVlE4aldoT1p2M2xRZTVhVjU3YStXMGhPOWNocUdBWHlaazFZM21VSkVO?=
+ =?utf-8?Q?nxUtuz2ZI1mqId1YQwbJ7pbn7?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4c86f61-87b2-429f-c8cb-08dd12d1c260
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 953b80a1-523e-4186-9bb6-08dd12c3121e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2024 11:18:38.8372 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9PadIMUfk4/sCF6DYmo1q8p+0E++pufdjBIZ8tpDQyG9E5xtHKX5Jrbg52v3EnramqG1Ki21aXjLJ2nM/PxfRw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7520
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2024 13:03:48.9594 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sdYpRGicMagIvHtXFkg/HbK/U4uvlyvtRTe89MHGEXq5IGiH2ALcsQGHAIQb6rLFi9vAKJRYLf0dhWEUnJEuWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7322
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -180,122 +199,273 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
-> Sharma
-> Sent: Monday, December 2, 2024 2:21 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t 1/2] tests/intel/dsc: Convert debug msg to info msg
->=20
-> Convert `igt_debug` to `igt_info` to provide more context when skipping o=
-utputs
-> that doesn't fulfil dsc constraints.
->=20
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+On 11/27/2024 21:02, Marcin Bernatowicz wrote:
+> Add helper functions to get and set SR-IOV debugfs attributes for u32,
+> u64, and boolean types.
+>
+> Functions added:
+> - __xe_sriov_pf_debugfs_get_u32
+> - __xe_sriov_pf_debugfs_set_u32
+> - __xe_sriov_pf_debugfs_get_u64
+> - __xe_sriov_pf_debugfs_set_u64
+> - __xe_sriov_pf_debugfs_get_boolean
+> - __xe_sriov_pf_debugfs_set_boolean
+>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+> Cc: Michał Winiarski <michal.winiarski@intel.com>
+> Cc: Narasimha C V <narasimha.c.v@intel.com>
+> Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> Cc: Tomasz Lis <tomasz.lis@intel.com>
 > ---
->  tests/intel/kms_dsc_helper.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->=20
-> diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c =
-index
-> 0de09b8e9..cea4304e4 100644
-> --- a/tests/intel/kms_dsc_helper.c
-> +++ b/tests/intel/kms_dsc_helper.c
-> @@ -69,14 +69,14 @@ bool is_dsc_supported_by_source(int drmfd)  bool
-> is_dsc_supported_by_sink(int drmfd, igt_output_t *output)  {
->  	if (!igt_is_dsc_supported_by_sink(drmfd, output->name)) {
-> -		igt_debug("DSC not supported on connector %s\n",
-> +		igt_info("DSC not supported on connector %s\n",
->  			  output->name);
+>   lib/xe/xe_sriov_debugfs.c | 194 ++++++++++++++++++++++++++++++++++++++
+>   lib/xe/xe_sriov_debugfs.h |  18 ++++
+>   2 files changed, 212 insertions(+)
+>
+> diff --git a/lib/xe/xe_sriov_debugfs.c b/lib/xe/xe_sriov_debugfs.c
+> index c87f91492..038912f23 100644
+> --- a/lib/xe/xe_sriov_debugfs.c
+> +++ b/lib/xe/xe_sriov_debugfs.c
+> @@ -9,6 +9,7 @@
+>   #include "drmtest.h"
+>   #include "igt_debugfs.h"
+>   #include "igt_sriov_device.h"
+> +#include "igt_sysfs.h"
+>   #include "xe/xe_query.h"
+>   #include "xe/xe_sriov_debugfs.h"
+>   #include "xe/xe_sriov_provisioning.h"
+> @@ -204,3 +205,196 @@ cleanup:
+>   
+>   	return ret;
+>   }
+> +
+> +static int xe_sriov_pf_debugfs_path_open(int pf, unsigned int vf_num,
+> +					 unsigned int gt_num)
+> +{
+> +	char path[PATH_MAX];
+> +
+> +	if (igt_debug_on_f(!xe_sriov_pf_debugfs_path(pf, vf_num, gt_num, path,
+> +						     sizeof(path)),
+> +			   "path: %s\n", path))
+> +		return -1;
+> +
+> +	return open(path, O_RDONLY);
 
-Alignment should match open parenthesis.
->  		return false;
->  	}
->=20
->  	if (!output_is_internal_panel(output) &&
->  	    !igt_is_fec_supported(drmfd, output->name)) {
-> -		igt_debug("DSC cannot be enabled without FEC on %s\n",
-> +		igt_info("DSC cannot be enabled without FEC on %s\n",
->  			  output->name);
+O_RDWR?
 
-Same goes here.
->  		return false;
->  	}
-> @@ -91,7 +91,7 @@ bool check_gen11_dp_constraint(int drmfd, igt_output_t
-> *output, enum pipe pipe)
->=20
->  	if ((connector->connector_type =3D=3D
-> DRM_MODE_CONNECTOR_DisplayPort) &&
->  	    (pipe =3D=3D PIPE_A) && IS_GEN11(devid)) {
-> -		igt_debug("DSC not supported on pipe A on external DP in gen11
-> platforms\n");
-> +		igt_info("DSC not supported on pipe %s on %s in gen11
-> platforms\n",
-> +kmstest_pipe_name(pipe), output->name);
+> +}
+> +
+> +/**
+> + * __xe_sriov_pf_debugfs_get_u32:
+> + * @pf: PF device file descriptor
+> + * @vf_num: VF number (1-based) or 0 for PF
+> + * @gt_num: GT number
+> + * @attr: debugfs attribute name
+> + * @value: pointer to read value
+> + *
+> + * Reads SR-IOV debugfs attribute @attr for given PF device @pf,
+> + * VF number @vf_num on GT @gt_num.
+> + *
+> + * Return: 0 on success and negative error on failure.
+> + */
+> +int __xe_sriov_pf_debugfs_get_u32(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint32_t *value)
+> +{
+> +	bool ret;
+> +	int dir;
+> +
+> +	dir = xe_sriov_pf_debugfs_path_open(pf, vf_num, gt_num);
+> +	if (igt_debug_on(dir < 0))
+> +		return false;
 
-line length is 123 columns, exceeding 100 columns.
->  		return false;
->  	}
->=20
-> @@ -126,7 +126,7 @@ void force_dsc_output_format(int drmfd, igt_output_t
-> *output,  static bool is_dsc_output_format_supported_by_source(int disp_v=
-er,
-> enum dsc_output_format output_format)  {
->  	if (disp_ver < 14 && output_format =3D=3D DSC_FORMAT_YCBCR420) {
-> -		igt_debug("Output format DSC YCBCR420 not supported on D13
-> and older platforms\n");
-> +		igt_info("Output format DSC YCBCR420 not supported on D13
-> and older
-> +platforms\n");
->  		return false;
->  	}
->=20
-> @@ -140,7 +140,7 @@ bool is_dsc_output_format_supported(int drmfd, int
-> disp_ver, igt_output_t *outpu
->  		return false;
->=20
->  	if (!igt_is_dsc_output_format_supported_by_sink(drmfd, output->name,
-> output_format)) {
-> -		igt_debug("DSC %s output format not supported on connector
-> %s\n",
-> +		igt_info("DSC %s output format not supported on connector
-> %s\n",
->  			  kmstest_dsc_output_format_str(output_format),
+return dir;
 
-Alignment should match open parenthesis.
-
-Regards,
-Pranay Samala
-> output->name);
->  		return false;
->  	}
-> @@ -182,7 +182,7 @@ void restore_force_dsc_fractional_bpp_en(void)
->  static bool is_dsc_fractional_bpp_supported_by_source(int disp_ver)  {
->  	if (disp_ver < 14) {
-> -		igt_debug("DSC fractional bpp not supported on D13 and older
-> platforms\n");
-> +		igt_info("DSC fractional bpp not supported on D13 and older
-> +platforms\n");
->  		return false;
->  	}
->=20
-> @@ -195,7 +195,7 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, in=
-t
-> drmfd, igt_output_t *outp
->  		return false;
->=20
->  	if (!igt_is_dsc_fractional_bpp_supported_by_sink(drmfd, output->name))
-> {
-> -		igt_debug("DSC fractional bpp not supported on connector
-> %s\n", output->name);
-> +		igt_info("DSC fractional bpp not supported on connector %s\n",
-> +output->name);
->  		return false;
->  	}
->=20
-> --
-> 2.25.1
-
+> +
+> +	ret = __igt_sysfs_get_u32(dir, attr, value);
+> +	close(dir);
+> +
+> +	return ret ? 0 : -1;
+> +}
+> +
+> +/**
+> + * __xe_sriov_pf_debugfs_set_u32:
+> + * @pf: PF device file descriptor
+> + * @vf_num: VF number (1-based) or 0 for PF
+> + * @gt_num: GT number
+> + * @attr: debugfs attribute name
+> + * @value: u32 value to be set
+> + *
+> + * Writes @value to SR-IOV debugfs attribute @attr for given PF device @pf,
+> + * VF number @vf_num on GT @gt_num.
+> + *
+> + * Return: 0 on success and negative error on failure.
+> + */
+> +int __xe_sriov_pf_debugfs_set_u32(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint32_t value)
+> +{
+> +	bool ret;
+> +	int dir;
+> +
+> +	dir = xe_sriov_pf_debugfs_path_open(pf, vf_num, gt_num);
+> +	if (igt_debug_on(dir < 0))
+> +		return dir;
+> +
+> +	ret = __igt_sysfs_set_u32(dir, attr, value);
+> +	close(dir);
+> +
+> +	return ret ? 0 : -1;
+> +}
+> +
+> +/**
+> + * __xe_sriov_pf_debugfs_get_u64:
+> + * @pf: PF device file descriptor
+> + * @vf_num: VF number (1-based) or 0 for PF
+> + * @gt_num: GT number
+> + * @attr: debugfs attribute name
+> + * @value: pointer to read value
+> + *
+> + * Reads SR-IOV debugfs attribute @attr for given PF device @pf,
+> + * VF number @vf_num on GT @gt_num.
+> + *
+> + * Return: 0 on success and negative error on failure.
+> + */
+> +int __xe_sriov_pf_debugfs_get_u64(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint64_t *value)
+> +{
+> +	bool ret;
+> +	int dir;
+> +
+> +	dir = xe_sriov_pf_debugfs_path_open(pf, vf_num, gt_num);
+> +	if (igt_debug_on(dir < 0))
+> +		return dir;
+> +
+> +	ret = __igt_sysfs_get_u64(dir, attr, value);
+> +	close(dir);
+> +
+> +	return ret ? 0 : -1;
+> +}
+> +
+> +/**
+> + * __xe_sriov_pf_debugfs_set_u64:
+> + * @pf: PF device file descriptor
+> + * @vf_num: VF number (1-based) or 0 for PF
+> + * @gt_num: GT number
+> + * @attr: debugfs attribute name
+> + * @value: u64 value to be set
+> + *
+> + * Writes @value to SR-IOV debugfs attribute @attr for given PF device @pf,
+> + * VF number @vf_num on GT @gt_num.
+> + *
+> + * Return: 0 on success and negative error on failure.
+> + */
+> +int __xe_sriov_pf_debugfs_set_u64(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint64_t value)
+> +{
+> +	bool ret;
+> +	int dir;
+> +
+> +	dir = xe_sriov_pf_debugfs_path_open(pf, vf_num, gt_num);
+> +	if (igt_debug_on(dir < 0))
+> +		return dir;
+> +
+> +	ret = __igt_sysfs_set_u64(dir, attr, value);
+> +	close(dir);
+> +
+> +	return ret ? 0 : -1;
+> +}
+> +
+> +/**
+> + * __xe_sriov_pf_debugfs_get_boolean:
+> + * @pf: PF device file descriptor
+> + * @vf_num: VF number (1-based) or 0 for PF
+> + * @gt_num: GT number
+> + * @attr: debugfs attribute name
+> + * @value: pointer to read value
+> + *
+> + * Reads SR-IOV debugfs attribute @attr for given PF device @pf,
+> + * VF number @vf_num on GT @gt_num.
+> + *
+> + * Return: 0 on success and negative error on failure.
+> + */
+> +int __xe_sriov_pf_debugfs_get_boolean(int pf, unsigned int vf_num,
+> +				      unsigned int gt_num, const char *attr,
+> +				      bool *value)
+> +{
+> +	bool ret;
+> +	int dir;
+> +
+> +	dir = xe_sriov_pf_debugfs_path_open(pf, vf_num, gt_num);
+> +	if (igt_debug_on(dir < 0))
+> +		return dir;
+> +
+> +	ret = __igt_sysfs_get_boolean(dir, attr, value);
+> +	close(dir);
+> +
+> +	return ret ? 0 : -1;
+> +}
+> +
+> +/**
+> + * __xe_sriov_pf_debugfs_set_boolean:
+> + * @pf: PF device file descriptor
+> + * @vf_num: VF number (1-based) or 0 for PF
+> + * @gt_num: GT number
+> + * @attr: debugfs attribute name
+> + * @value: u64 value to be set
+> + *
+> + * Writes @value to SR-IOV debugfs attribute @attr for given PF device @pf,
+> + * VF number @vf_num on GT @gt_num.
+> + *
+> + * Return: 0 on success and negative error on failure.
+> + */
+> +int __xe_sriov_pf_debugfs_set_boolean(int pf, unsigned int vf_num,
+> +				      unsigned int gt_num, const char *attr,
+> +				      bool value)
+> +{
+> +	bool ret;
+> +	int dir;
+> +
+> +	dir = xe_sriov_pf_debugfs_path_open(pf, vf_num, gt_num);
+> +	if (igt_debug_on(dir < 0))
+> +		return dir;
+> +
+> +	ret = __igt_sysfs_set_boolean(dir, attr, value);
+> +	close(dir);
+> +
+> +	return ret ? 0 : -1;
+> +}
+> diff --git a/lib/xe/xe_sriov_debugfs.h b/lib/xe/xe_sriov_debugfs.h
+> index 856445e76..2db965f9b 100644
+> --- a/lib/xe/xe_sriov_debugfs.h
+> +++ b/lib/xe/xe_sriov_debugfs.h
+> @@ -16,5 +16,23 @@ int xe_sriov_pf_debugfs_read_provisioned_ranges(int pf_fd, enum xe_sriov_shared_
+>   						unsigned int gt_id,
+>   						struct xe_sriov_provisioned_range **ranges,
+>   						unsigned int *nr_ranges);
+> +int __xe_sriov_pf_debugfs_get_u32(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint32_t *value);
+> +int __xe_sriov_pf_debugfs_set_u32(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint32_t value);
+> +int __xe_sriov_pf_debugfs_get_u64(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint64_t *value);
+> +int __xe_sriov_pf_debugfs_set_u64(int pf, unsigned int vf_num,
+> +				  unsigned int gt_num, const char *attr,
+> +				  uint64_t value);
+> +int __xe_sriov_pf_debugfs_get_boolean(int pf, unsigned int vf_num,
+> +				      unsigned int gt_num, const char *attr,
+> +				      bool *value);
+> +int __xe_sriov_pf_debugfs_set_boolean(int pf, unsigned int vf_num,
+> +				      unsigned int gt_num, const char *attr,
+> +				      bool value);
+>   
+>   #endif /* __XE_SRIOV_DEBUGFS_H__ */
