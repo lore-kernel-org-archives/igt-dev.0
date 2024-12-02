@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B65DEE69E85
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 19:19:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8DCDE69E86
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 19:29:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64B9310E072;
-	Mon,  2 Dec 2024 19:19:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76FFE10E827;
+	Mon,  2 Dec 2024 19:29:19 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E6D910E072;
- Mon,  2 Dec 2024 19:19:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCA2A10E827;
+ Mon,  2 Dec 2024 19:29:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4706096679794022185=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fsysfs=3A_?=
- =?utf-8?q?Restore_sysfs_params_correctly?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fsysfs=3A_Re?=
+ =?utf-8?q?store_sysfs_params_correctly?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 02 Dec 2024 19:19:18 -0000
-Message-ID: <173316715825.1736558.10978470545006084946@b555e5b46a47>
+Date: Mon, 02 Dec 2024 19:29:17 -0000
+Message-ID: <173316775789.1736551.4725501836690249214@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241202180816.47538-1-jonathan.cavitt@intel.com>
 In-Reply-To: <20241202180816.47538-1-jonathan.cavitt@intel.com>
@@ -41,6 +41,11 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4706096679794022185==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: test/intel/xe_sysfs: Restore sysfs params correctly
@@ -49,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8133 -> IGTPW_12229
+CI Bug Log - changes from XEIGT_8133_BAT -> XEIGTPW_12229_BAT
 ====================================================
 
 Summary
@@ -59,70 +64,83 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/index.html
+  
 
-Participating hosts (43 -> 42)
+Participating hosts (8 -> 8)
 ------------------------------
 
-  Missing    (1): fi-snb-2520m 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_12229 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [PASS][1] -> [FAIL][2] ([i915#12903])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8133/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8133/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-cfl-8109u:       [DMESG-WARN][5] ([i915#12914]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8133/fi-cfl-8109u/igt@core_hotunplug@unbind-rebind.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/fi-cfl-8109u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-tgl-1115g4:      [FAIL][7] ([i915#12903]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8133/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [SKIP][9] ([i915#9197]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8133/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12914]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12914
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8133 -> IGTPW_12229
-  * Linux: CI_DRM_15770 -> CI_DRM_15772
+  * Linux: xe-2302-77777471ae59ce2f0d0e74d55c60014cf02bd4df -> xe-2303-26715037f44d6dd8c755dd7c3e115cf9b29782a4
 
-  CI-20190529: 20190529
-  CI_DRM_15770: 77777471ae59ce2f0d0e74d55c60014cf02bd4df @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15772: e3a2a984e96718e036e66185ab8c7ed2a2d7201f @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12229: 569a859f53b6b6b4089f223f26f3bd4f3cbc455a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8133: 16f2bfe294cc103df8ebb208aa2e64415262f534 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2302-77777471ae59ce2f0d0e74d55c60014cf02bd4df: 77777471ae59ce2f0d0e74d55c60014cf02bd4df
+  xe-2303-26715037f44d6dd8c755dd7c3e115cf9b29782a4: 26715037f44d6dd8c755dd7c3e115cf9b29782a4
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12229/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12229/index.html
+
+--===============4706096679794022185==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/intel/xe_sysfs: Restore sysfs params correctly</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142000/">https://patchwork.freedesktop.org/series/142000/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12229/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12229/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8133_BAT -&gt; XEIGTPW_12229_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8133 -&gt; IGTPW_12229</li>
+<li>Linux: xe-2302-77777471ae59ce2f0d0e74d55c60014cf02bd4df -&gt; xe-2303-26715037f44d6dd8c755dd7c3e115cf9b29782a4</li>
+</ul>
+<p>IGTPW_12229: 569a859f53b6b6b4089f223f26f3bd4f3cbc455a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8133: 16f2bfe294cc103df8ebb208aa2e64415262f534 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2302-77777471ae59ce2f0d0e74d55c60014cf02bd4df: 77777471ae59ce2f0d0e74d55c60014cf02bd4df<br />
+  xe-2303-26715037f44d6dd8c755dd7c3e115cf9b29782a4: 26715037f44d6dd8c755dd7c3e115cf9b29782a4</p>
+
+</body>
+</html>
+
+--===============4706096679794022185==--
