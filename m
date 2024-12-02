@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFBD2E69E81
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 18:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 435BBE69E81
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 18:45:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7C08710E106;
-	Mon,  2 Dec 2024 18:37:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1BD810E307;
+	Mon,  2 Dec 2024 18:45:10 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3334B10E106;
- Mon,  2 Dec 2024 18:37:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 037D110E1D9;
+ Mon,  2 Dec 2024 18:45:09 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0226537574282425449=="
+ boundary="===============3266224403001956998=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_tests/intel/dsc=3A_Convert_debug_msg_to_info_msg?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_lib/pciids=3A_sync_with_ker?=
+ =?utf-8?q?nel?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
+To: "Matthew Auld" <matthew.auld@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 02 Dec 2024 18:37:46 -0000
-Message-ID: <173316466620.1712299.14270628794555754688@b555e5b46a47>
+Date: Mon, 02 Dec 2024 18:45:09 -0000
+Message-ID: <173316510900.1725634.4681356263119850179@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20241202085127.1785594-1-swati2.sharma@intel.com>
-In-Reply-To: <20241202085127.1785594-1-swati2.sharma@intel.com>
+References: <20241202093219.12157-1-matthew.auld@intel.com>
+In-Reply-To: <20241202093219.12157-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,57 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0226537574282425449==
+--===============3266224403001956998==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] tests/intel/dsc: Convert debug msg to info msg
-URL   : https://patchwork.freedesktop.org/series/141978/
-State : success
+Series: lib/pciids: sync with kernel
+URL   : https://patchwork.freedesktop.org/series/141981/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8133_BAT -> XEIGTPW_12226_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
+Series 141981 revision 1 was fully merged or fully failed: no git log
 
 
-Changes
--------
 
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8133 -> IGTPW_12226
-
-  IGTPW_12226: e63da63e9db5a55ea26bc66806f5ad25d284fc47 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8133: 16f2bfe294cc103df8ebb208aa2e64415262f534 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2302-77777471ae59ce2f0d0e74d55c60014cf02bd4df: 77777471ae59ce2f0d0e74d55c60014cf02bd4df
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12226/index.html
-
---===============0226537574282425449==
+--===============3266224403001956998==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/intel/dsc: Convert debug msg to info msg</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141978/">https://patchwork.freedesktop.org/series/141978/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12226/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12226/index.html</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/pciids: sync with kernel</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141981/">https://patchwork.freedesktop.org/series/141981/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8133_BAT -&gt; XEIGTPW_12226_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8133 -&gt; IGTPW_12226</li>
-</ul>
-<p>IGTPW_12226: e63da63e9db5a55ea26bc66806f5ad25d284fc47 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8133: 16f2bfe294cc103df8ebb208aa2e64415262f534 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2302-77777471ae59ce2f0d0e74d55c60014cf02bd4df: 77777471ae59ce2f0d0e74d55c60014cf02bd4df</p>
+    <p>Series 141981 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============0226537574282425449==--
+--===============3266224403001956998==--
