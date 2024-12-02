@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 091B0D7830D
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 11:10:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96719D7830D
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 11:18:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B90E810E6C5;
-	Mon,  2 Dec 2024 11:10:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3CD2F10E6D5;
+	Mon,  2 Dec 2024 11:18:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yu0gIIsc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yb4UOfp+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6416C10E6C5
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Dec 2024 11:10:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B864310E1E5
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Dec 2024 11:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733137809; x=1764673809;
+ t=1733138323; x=1764674323;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=3Hu5aN3fkISc6he4gHHDS3nFdEpfPtsLTkvD/w0AUAA=;
- b=Yu0gIIscFPPsiu1HMxrwNDjet3t89hFbQdfnio8bufBK8pF38daIO7ZU
- 28WjUrdDrCpOvIIsVyDsugVulStjF1peyG3BoRO+5D9QLEi4zXR5wA0ex
- 08UcUqAZhDBo/o29jG024935RYLlnbLQCrEqKji9ApXcJn/JJAXv3bRqK
- 8u+tCo/tI/lVIpg9xLh26OgVfn1SsJnNTq51Il7Bu9PUvPCKPL8e2w/P+
- gwgg+dIf6+wKClhXi5NDFufRMIQPB4v0QIgkh3iRJ7LoPDNA1mF8OibZS
- b3gvbDvDI+f3t6PBdYiUkZ0t+Mx84qjBUxdyGc5O7xoq3mfu0FHuWCZXe Q==;
-X-CSE-ConnectionGUID: TtCnENAWTkCr0o/8WGdssg==
-X-CSE-MsgGUID: WLife2vZQ4qfE8CPyMGEGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="36163948"
-X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="36163948"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 03:10:08 -0800
-X-CSE-ConnectionGUID: pIe7t7vbT1ubmsK1grvCLw==
-X-CSE-MsgGUID: vSlmJHUNTQ62gyiZ9icjEA==
+ bh=KbUYX7qlTz7Z/ignArBux7it5M5xWgzmfEIA/rsh0NA=;
+ b=Yb4UOfp+b+aUgQgK5LZJGZQE4uXe88yG8ZmBMQsIMNBcbDozXZINubfT
+ 1KNkQtxkz3Fz2fAg3mKmKegITxHtFLkH8Q97FiluqFBmz2zhhgoYy4R2v
+ tu+P4GRlhidGSk6GdtEh1E7HI1+FPmxis9QSjFjsBhZEqNWHED8tCJLyc
+ 1Xzi3ImsSyv5+YYN1e5NTr3xHQn1Im5szvRm3RWACFhOXc5imnGhXNFNe
+ CbdXMAteQkZj4Asz/mmOldmFSYxhx8zu/2Oy9zTjCLPg7yOWmB7AOxgKC
+ Jkui4ltihmjU8LwOqjTgcOV5FoqILsXDe0o77aE+axKOVPSCCb8IqwH52 g==;
+X-CSE-ConnectionGUID: L0J7/R6UQYupXONfuYt5NQ==
+X-CSE-MsgGUID: CMdzB279QhShOG5+0rpFFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="36961861"
+X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="36961861"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2024 03:18:42 -0800
+X-CSE-ConnectionGUID: vj6JnTvqSa2jjo6pun/W0g==
+X-CSE-MsgGUID: 3bOLKM59SYqMIt4OyN6lHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="92910301"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 02 Dec 2024 03:10:08 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; d="scan'208";a="123926764"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 02 Dec 2024 03:18:42 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 2 Dec 2024 03:10:07 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 2 Dec 2024 03:18:42 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 2 Dec 2024 03:10:07 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Mon, 2 Dec 2024 03:18:42 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 2 Dec 2024 03:10:07 -0800
+ 15.1.2507.39; Mon, 2 Dec 2024 03:18:41 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qmcwLoEK2nGIkic/T/CtNvlahySmRB09GYMg2NHXZbkKcKiLW+eTb2s+lF9OzShx5mhuakYLgdSXyiiREPilVqv6eh/tABPm5fLliiY+PhoY5eKUGFwtRb2rQTeesWKLCnDgnmcJ9WJD4P7aWGWpFsbxo6WHsd/yKPr54gT6n1cYyJ0G1b3zEnwHrNvxyYnlFwwj3ntDhyb+WyT3L0DsAgm1BYPovxHv8srPSQH9l4/UATC8O4/HyhKdV9CsdIoL+2mA52Au0Jjf32kzk3VPkeP24CdW5TpKh9usHR7tm6NuQoDh6LcdVIrXQifnR+xtWXZ4T7F8xLq5nSqG9gbeVA==
+ b=vs9HxrxzUMXjXrpxugkC3IhkBrqfDToVf3vWX0kLHGiSNQeCaDIr6hP5pUQ/Vi99NB524PAS23DZjDoXhwVrv2aMXb8RcDOQH7xrMxkIj0IUe4s9IvJZkGDS2i116K+7Ooz1USwc7Hqg/NRCeA3CjN8dYfUXR1l1qbWAiS+LlwyPofqZ1KOysufg4N07Ljq/VfXDDwXArRSfqNTPKNKQo4Nt3DQ7cpAn0JOxeS8OaXHtWubiXo7g0G0H/9YAnpZ5mJnozvsbSUqukpylYHluKFdalZTAoPf+a7GKlkc7xPOumcD2uJ8di+xv3VgDmm3gMYdKl61y55B0OIC3bUhLAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wtri8dki3uSYqE5oyN03pDRchvgFsaz0J/T1HcuEuWk=;
- b=S0BoP7IOjc6Z7t36+09do8u6ZX0AHLLjF/f+AbgOip+SmWymhb2aLzKLsRU7banhExQ4jxdTL91/VYBg8qL5SmBNFAmS2ecrBuZEvfY7GmIOxF7ATTMlyFnEzgdS4RYd7oJN5E3nWEHyVSQVLPnIHTDg0fzJqhiloVI99Ea4OlMZlK7NfYPRs2/nHuOQn9s9inK7n7LticJcyir8GO8romXOYWVAMUagPXNrn9y+yNDnuS3z0WbMjhS/B1uh4nsYb6oDRK7H1OJHWnqBLVT7PYGGdCKTLc71l27sEKYqY+ZnlO7QhV3xyWl5gd+j0c/bZbeBYLCw25O3PNU2nkA7PA==
+ bh=q6NTBM2cVwVvLQ4uaCVFU8VmBlW9ETl5vMZkdaM74jw=;
+ b=cC1T+k50RN4PediyixXQ6i28T7M+D1c7BFbiolK+xhXB5TqF87NpdG3rQdHh/dEOuZX03CI79jaoVLXGDJbjwcyHM9JGIGERHKJPCbby4dy/JhDrAnYm7RxIXXQhP1WlnhuaUGqo8hjR8nE9frC64jvu3l7ER/nT/xcs8FfSCKMHvZTUGS7+CPl0PjcZXstqD4FgUYwMeO5SjVcm2zDwiB5HfkaZP2PZm+hM0ka5a8IxQCXR9e/qMReE04Mk5K1Oo6PSYYvIn1QG2Naq+3MKV+mbVt/DuQPp2ia0ObumHVScYq88vtGfMpqfA90vmERaK2fxdFRMwt9DseZAfbxQcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by CH0PR11MB5284.namprd11.prod.outlook.com (2603:10b6:610:bf::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Mon, 2 Dec
- 2024 11:10:05 +0000
+ by SJ2PR11MB7520.namprd11.prod.outlook.com (2603:10b6:a03:4c2::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.17; Mon, 2 Dec
+ 2024 11:18:38 +0000
 Received: from PH7PR11MB6053.namprd11.prod.outlook.com
  ([fe80::4a36:b210:9d85:d13b]) by PH7PR11MB6053.namprd11.prod.outlook.com
  ([fe80::4a36:b210:9d85:d13b%5]) with mapi id 15.20.8207.017; Mon, 2 Dec 2024
- 11:10:05 +0000
+ 11:18:38 +0000
 From: "Samala, Pranay" <pranay.samala@intel.com>
 To: "Sharma, Swati2" <swati2.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t 2/2] tests/intel/kms_dsc: Split max_bpc constraint
-Thread-Topic: [PATCH i-g-t 2/2] tests/intel/kms_dsc: Split max_bpc constraint
-Thread-Index: AQHbRJcGGL0lUcJ+HESaZzyQdEBV9rLSxOrw
-Date: Mon, 2 Dec 2024 11:10:04 +0000
-Message-ID: <PH7PR11MB6053A9B428396F52FE88A90DE7352@PH7PR11MB6053.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 1/2] tests/intel/dsc: Convert debug msg to info msg
+Thread-Topic: [PATCH i-g-t 1/2] tests/intel/dsc: Convert debug msg to info msg
+Thread-Index: AQHbRJcCq2H5Om6I40W2Oq/iTialVrLSzSNg
+Date: Mon, 2 Dec 2024 11:18:38 +0000
+Message-ID: <PH7PR11MB60538096EC53283FA21CC752E7352@PH7PR11MB6053.namprd11.prod.outlook.com>
 References: <20241202085127.1785594-1-swati2.sharma@intel.com>
- <20241202085127.1785594-2-swati2.sharma@intel.com>
-In-Reply-To: <20241202085127.1785594-2-swati2.sharma@intel.com>
+In-Reply-To: <20241202085127.1785594-1-swati2.sharma@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -91,80 +90,80 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|CH0PR11MB5284:EE_
-x-ms-office365-filtering-correlation-id: f8903861-d936-4c6f-bca5-08dd12c1dfd2
+x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|SJ2PR11MB7520:EE_
+x-ms-office365-filtering-correlation-id: 953b80a1-523e-4186-9bb6-08dd12c3121e
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?LyxW9pnuDpBlFhUBHVIiCre09wbzb1D+BU+e6mW+v9uG1Uua/nsJjmlWudrl?=
- =?us-ascii?Q?kY8wLR3MPwaAONJvrBGU+Oqqs+dPoioyqtNoGul1wFbai5bB1oY0Harmum+c?=
- =?us-ascii?Q?IeNcc41fq5s0kSxoyM6Fdx3SuIskWzplC+pURV4WHzIBHukKgkd/Rd5hZQaM?=
- =?us-ascii?Q?HyBLzyY3pQVPQtma7J+t780Flrzqu0tUxC9/H/2NbTn/cczCKCinsRwqhdwj?=
- =?us-ascii?Q?s+PWP2gFhQpoW5UkwUjypCFanX7rVkLtr4PkNzd4gv7OAnQsSPPfe4mHCrkb?=
- =?us-ascii?Q?NWS5eHO8juwC8CxXZbmM8fFECH3crBirS8OAFBOWh4ZrOyhXeey/DKK9hxr+?=
- =?us-ascii?Q?sDvHOlovEaREbTTDcdNWWThf5C8lh8iNd5Xl6BfThfmtMScfWpLRWxzoej8x?=
- =?us-ascii?Q?N9NgBvrX7rTXbOQN7EhFuZuncqmmmv+GPNKhwOo9NTuv8JfvHJOWSnVtiYwq?=
- =?us-ascii?Q?GP3nl3Ii0JSDVG5JKW8fGDtjH0OHEvbR/kUtEozLwPD/w2vGOt8EUjtQ7Ngv?=
- =?us-ascii?Q?IXzWO8Btiwqn28oFg5Vm2EtTXV9sxp2PLqg4fxcHVk5Sv8xPZLKygsqhG3Zm?=
- =?us-ascii?Q?1iCpM6X64JWpwwGMC838RQ/97n45eJVqFvn/vAZUEnG5ZkTfsli75LUtpeGe?=
- =?us-ascii?Q?7tDgiII2Pn9L4570IkZiC1lkuuARiVvcF5MaKbfQbeusJnS1fT8tp/0HMWSM?=
- =?us-ascii?Q?IjOmh14NITIlPNeDzgO+avdPmI1CE43dwRzCndySbEBMyI+Dwn2fZLcSE8wx?=
- =?us-ascii?Q?4Wam00vji6zuDDEpav5QZL+fL7yLl1au88hSetnAzT21ggzw2pSwFDZlb6jB?=
- =?us-ascii?Q?v20B4gLNXcpWBY9OQIlJ3wPaGMuZPz4R1/uj0jsQ9qwWFvjWugiHBNz288nU?=
- =?us-ascii?Q?oOHG5M5qz19AmhCHBMpHAbVajxxePLua2T5qbqjMlDV4kLm//7EFIGlFE5IZ?=
- =?us-ascii?Q?CL0yrGw1t2KF1x5p2k1v0C5wm/j8UiMMcy/DtGqUO/ExrvicuJo/m20VWdIg?=
- =?us-ascii?Q?TEzqu1vK81P1E+kiDgNoBRXMassBXY7DReOfqvCUxOh1woUZYgsA8dybsdiC?=
- =?us-ascii?Q?q2WZNlNCweVHBg7pE/s6bKYIVr94NqLbL4+xfCr3slhdmwenC8AAasMGnAo9?=
- =?us-ascii?Q?s/ecQ6sf3v6JBkEPc5ukNqo5NYwLnEHaqjU1Ok7FI/QQqIzc/xb0FMUATB2h?=
- =?us-ascii?Q?5/BFGLydj2QwB8yjzg+j/hxgbKg08XGYgBXWiJrPowg1y8Go8A18YlpS3wkC?=
- =?us-ascii?Q?sCl07+1LQCBzo92vQVpciqva9aSAL+4ZdymFxwMjP4+o4mTithjeaEnMMKjE?=
- =?us-ascii?Q?ykrbPBRp3GOIXM08QwYptkvNYV5635Sn2fhJGoxG0Ucl/TckCkHsx+X/0XlG?=
- =?us-ascii?Q?juX6vtNZ4jji2yd3XnTfoyCpJkDdWL7S7ZtLKUiObe5ToeDEWg=3D=3D?=
+ ARA:13230040|1800799024|366016|376014|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?7bPMxV8mQb9RnhqLjp6/ULN3GK0A4nd8t1b5Pv15lUvkQBV7BBOt+ntH5PbV?=
+ =?us-ascii?Q?lAXRWXUrl/5FPoT4bYePmPIPej7e3qnSlQayBMsaN4Bjbo8+0vV4zHYTNXH5?=
+ =?us-ascii?Q?X9R6nW7r6DjWhcAFeUy4okfTmRR3BoUPh/KHAxHcfPbP1IWcYJMMzwEXBeiO?=
+ =?us-ascii?Q?PT03zGKAXJIHRFJmskKV0RprjgqQffKJcs1gM79UQoIJ+xIrulvvR9YwyR0c?=
+ =?us-ascii?Q?32A5e7SF2l4BH9vv2pDXKYhRqTFV7Vr+Kk6IIL9mTO7mh7sqOiisGk25Rp2J?=
+ =?us-ascii?Q?3Gmq4sQx1Ejtl70znEaci3WyyNyIZH6iePFgAaSAnkc3VhvSvRxO+YHLw6IW?=
+ =?us-ascii?Q?EQV35GePL8cpQALwJScn3AZ+p+5drCrnRWXUnwDJj0d6B4brE7op0p0mBkBE?=
+ =?us-ascii?Q?pIP3GVkPFeR3eUUZRt6AfqfWRIjK9oj+wo3mO70uLvgvRdQUvwT5sJkNXYiE?=
+ =?us-ascii?Q?mOIkTmoh/7ASixs+QgIZwbFnihDvcuQLEx1vLusJNHNca00P9qAgAenkQJtB?=
+ =?us-ascii?Q?hJ0ozmAez9GtRVcA+Yi/aJYKzpWSNmtlVUIwgl9qqmgJ0IkI+eo4SZd3knLi?=
+ =?us-ascii?Q?5HhJHy0mq20XhPInen8rGnX8oGn050IWK3ayHXmR//Ty9kfdiLQZ6DO5NaVB?=
+ =?us-ascii?Q?NcQWjXi7B7P8ckx334qnB85NBvTm4TfSNZrCRB+5QkLCL3iKL1/RBht6kUxi?=
+ =?us-ascii?Q?M2Wjs+Dkib76i/wY1E2AJXB5gHoOQJ/uSMwsk+sJjREGb8cFAl1G2SUb8k67?=
+ =?us-ascii?Q?z6p3a6usQyE3CYabGHqSWAShpUdWbL2XmlP2yRGJJxO2KOD9hsBszFLbBx8k?=
+ =?us-ascii?Q?r1nLQi3U905R7cHlTsy16HV461xB3xxk4NxY9OW5JNo7llvaGrLSpmELEGxv?=
+ =?us-ascii?Q?5Hw7NDY/leyEASzPBliwB1NteASoEujuxqdjv9pTwdkAvZ4UdJS/UDmg+Mdt?=
+ =?us-ascii?Q?b+im3FmW/hMd/I3zOzloUwxY0q+zuqCE50tSGPBW87i8eajA+j1U7EWQIop9?=
+ =?us-ascii?Q?3GFwy9GFKqG2TmcITlECRoVJw/EKvZqiK84EC99rsM6EeE5csDt4fS9KMLBt?=
+ =?us-ascii?Q?fzoFQCp9XAGBYTD+rFvfm8lYaOhp3yskXvLzg+/x5Rf+W58swC2TLpx5FnEw?=
+ =?us-ascii?Q?h+IsyCWkxtj/hmmiktQbY1+6R3BB4U5gHd65fV8GREGabc5Y5XSb9Yg4ENRY?=
+ =?us-ascii?Q?iARZ4581/FvrnwtPwvGb3xTdS2yoGgRDRVwEuu3ksf7kVdA6MWMuz17P1UdL?=
+ =?us-ascii?Q?fEL9FCUk/jM0FEgBxjqsXF/wxH7C1aAPjVRFhw4PNug5la8Bw1FrJg3pfPLu?=
+ =?us-ascii?Q?Hncn7nTSdfhoSs0WS5T1Wg3Dc4tdFZMqnUgJd7duQJWyOdAvRaMdDvMYUqMg?=
+ =?us-ascii?Q?cEqyN2vq5sZf6WaDgdOR24y8JLoTO1jm1O84n/uwYsaXNvC8iw=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(38070700018); DIR:OUT;
+ SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700018); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?eUy0NIIsetwCaUipLs2uCrHWpba4xtDDQeemEgK7adANW9C0ZVorYdk65qjl?=
- =?us-ascii?Q?DRdolbv7mTu0ImWkds/uL3Oys6BHICCBffzHFT8zPGeDlOQiq3OgYk1DNajX?=
- =?us-ascii?Q?qVOhvKEgvt9s11bXwhc6nhUyYL1n47tjK4xY5U1pe9AXDxRSpfrTmzyMedUJ?=
- =?us-ascii?Q?MhmNi50/fLA+EcQbY1iVMdy4yzwkT/Z1Mc256C5hqjZm9LoYIgNLn2TPEEjh?=
- =?us-ascii?Q?zIDhy2XwaHCxo3edFvDqT8GcnP+z3sBNFvwGj7br6z3BzAlg89luLgYtAqqc?=
- =?us-ascii?Q?On2NaLqLfJws3j4zboANberTcDgyLif+5RUvwnsUhkUW0F4a/AAl5TMfX1It?=
- =?us-ascii?Q?RVUBNhgJpBK5uFgixQtUzYBk1EgzjbJrNkxjj594hdR9Abfy9NV9AMzklKjw?=
- =?us-ascii?Q?umIhDd54inrWAgoYWFyxaDVvjoALxF73Ofs5cVEpmq88p4FctXI/ke1X2LpY?=
- =?us-ascii?Q?PZjDGI75yJYlPL00Oc14Apv/HD7Od20hTgrH3yrciAeOX+ycu8PPxn/M4pA2?=
- =?us-ascii?Q?7vsyLJ7ksrSvdv0sjsD2Uwx60gMZTjkn0QASE0Gi3KZxz771Hl0iY9JcKJAb?=
- =?us-ascii?Q?qlo2FJu2Gj+6lRtOfnI9QwbtHyy8s6D9QbfF/0N5eBdjFoavVw2j5j42Xz9f?=
- =?us-ascii?Q?Bl/oaACp3sfWAqaPbaC+pZ72+2kcVplUC40qkhbtoB0+KenuVgvi6dGrX8Pr?=
- =?us-ascii?Q?CZJSe7wokmXP90wD/Z1RtLhuKrcWQtA+YEmmttWfBVC7dx2ttWUbhIU/ZnT4?=
- =?us-ascii?Q?DiCOEF78Ljje+lUsLKzuLWKvxQMJ6V1ENn0YR3NvU2e0JlPgEGwQ6vnYaqy/?=
- =?us-ascii?Q?FuIL1DhOUq6XYDDLSkQcohEOHglZqGpIj/ZoEXpNVKI2nXtmNyb5it3zxQpw?=
- =?us-ascii?Q?A2P0B0Lm5XLhT57i5nk85sAlbTbe9qmTAWpkgVWlUt6cre5b4H1XvxAjOYT3?=
- =?us-ascii?Q?e0crJ8OGaF89+GVm4OBvia9/4POw4Okt/q5nc99+qfnFYXKW8C89qCSeyZFW?=
- =?us-ascii?Q?4Xkz92crn3dYDOlzV3VNJVKTaHLHmkrraFNYzAjkGLL/B0zgpjnyPElocYf/?=
- =?us-ascii?Q?00TtZt07RQPCmtmMJHLL4Fe0qwCCBxtxZbZS2y9y51lKXTY5fdaERWulQGEp?=
- =?us-ascii?Q?KjaQW1FlvrNbPyCaUfyAJN9KDJbkAMeDcIMef5Avm5mlD7A9xenh1ArBbZgW?=
- =?us-ascii?Q?uwfPDwSuYPQmmgnhDDkngSNva8y+eSqAlxHImYFxEJFuYQPzI1PzHh+0Gkgx?=
- =?us-ascii?Q?XIsUtMgAKewp1/fZUrP0LXMbf1bxkaQ1L3DHUvdq+wixYJZPD6TKwIspOD7Z?=
- =?us-ascii?Q?DCZR8fmtZsEtB/Acz/w542kRPoUvIaVDuJf/5+y0krGM5LU/5mk/LG1PYzaB?=
- =?us-ascii?Q?iaWTJGXFxXhIB7xEqPyx+RCwVHSAL9f3rFx5EOyR79wgRCwTh0q4pxLPdR5q?=
- =?us-ascii?Q?WqjUC3w+uFXJadccegfC1hfcRzcvuMM3u7dT5AAQFN72P4SCfXi/VnNywzwW?=
- =?us-ascii?Q?4FmoUH/f0mkaZvUapH4PPqxtqAo8ezHzqRIzZBPBpSoNqVZCyN5JqYBn2ND3?=
- =?us-ascii?Q?Zau9PewjwrtodaLToik8MQnadG07dnB1BtrzCzDJ?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GASbUGlgD+E1Nr+DB8yNu/b0JIgt87JHY0BkBsr/gguziM9ZJu8bp/fT5LoB?=
+ =?us-ascii?Q?1uoLFYJ4TQUStEHRqAhkmfTSWEIdY7e3w6EAhi5vlMe2S5p+D3TnODGcsgTZ?=
+ =?us-ascii?Q?m5zf7bl5nX91FYp84337sTuTkVxabd6h2ZnFqd80rlUEEYyeuufExeBVeR6q?=
+ =?us-ascii?Q?BIJ9wGd6zPRUHiJ2fdfuXLVUy86oW4qDlUU5k9NZi0yuvdV5e/pGvMC3hQCF?=
+ =?us-ascii?Q?oGtaIFPpEsI2SU08SCU2svm7w06gQlogHqzuizyiir6WsfrHzXdm3QcvAskl?=
+ =?us-ascii?Q?6Q1WY62slMiYCpJd+5xyDjnkMe3zoJA/03mWmpInYgx9yCzDUxZiAed32M1F?=
+ =?us-ascii?Q?r5Ht52wWruLoNE7Evy4UHimLboMSpUBMt70SLmRfBDd1b75wVzf+xrAi6glZ?=
+ =?us-ascii?Q?uP0Pd+GCCh8nnv1XNr7HKmiqF5Xd8qdPMKhnsTw3GURRzqYOg7/kxdZg1OgZ?=
+ =?us-ascii?Q?nhaVuW1KisU0HqofkE2dzdKv7t8Y5b8LsiUppUeBEivXK8g7umulJZtw6qPG?=
+ =?us-ascii?Q?6dJR8f9F1xuZJ0ArlfdX9mp3jU70itfIpPZNZml2zLMjUVHgyhak+aKb082B?=
+ =?us-ascii?Q?kbg5qgth3T8p/VEB1v4Thprq6EL1g4xuimvrw7b9YKONj6GzXRAZz+NDorKM?=
+ =?us-ascii?Q?pLC/Cogo+TOS+Sp+6EQhl+9gSrZlti13RgoasfbEm/n4Xv2GMedr1RlGlaDd?=
+ =?us-ascii?Q?9DpK1dyU2Zd7xwJ5kn4U+wmbZAkMq4qKjHJ2342xEgmvTFpimQ51R+a59Lni?=
+ =?us-ascii?Q?0qP8/rNUhEX9dxJoc9esYBohMel7cJUyphMeQm6GAlPLyzNOvdvTJ0mZulIG?=
+ =?us-ascii?Q?V4hD8JBGq95nPYS+/koiMMFARCCxeTYrgfy5gs/gXbbwM/WffqmySNNr9AbF?=
+ =?us-ascii?Q?w3W5+bAg2N/wmuQ1ccjxKYqSB7A1gu32MI2sYOBo/pC8C4Z/vTYZQjYCYZfq?=
+ =?us-ascii?Q?OrzyIMH7d1aoNI+pLZpVs/Ragr6ZQ4vD0HLDTN+ELlalqzhz5YDEdnunvhAT?=
+ =?us-ascii?Q?/arBAI2GSRRyHKGwXu+9cv5LU6pfUDv8jgatangpx6lqcnfyzk8nIebemNeC?=
+ =?us-ascii?Q?w0Xih6+40ud6cqBsKqfKXTl9lEcGCSsvy/ye34/TTlosTe8nWRrFLc3XhIzn?=
+ =?us-ascii?Q?wXhRb5/j/njjDItaji3ebTheHhqk4Xdv2F/O9ux5gKdSCCidRltKDhQk9Oaz?=
+ =?us-ascii?Q?3j4/o3JN66gHpMxrh8WZCHKSXJfAenwjQ1dLJgWMsuVuRl2CzSH0p3IfBgVx?=
+ =?us-ascii?Q?p2thgy4nbTI+RJ94yzPQCmf4vv4X1K5BYGBz/2l69ljW9AaTlvQQjdx7c+j+?=
+ =?us-ascii?Q?+i/dnfsHBx/z8Mi5hzIM+jgD8HV13kqAugd1OlFBTjyDB0nKfy2tJITLy649?=
+ =?us-ascii?Q?k4i9X9FSkz3w7uGr1cT8+Tlgc+go6Iypftud6m9pvPGgLxJRqKN+F4ukHD0p?=
+ =?us-ascii?Q?qeYjJ5FZvaZXVRUJcurPaPkoQedwBRxPe90pOYWwca1jOpql/css4SViJC3h?=
+ =?us-ascii?Q?Nq8XmGgbiYx/oZyWULYYUtSYMH7qPK11ellWrApIBYM9y9BPLKVcET4W9RDN?=
+ =?us-ascii?Q?S0WeManRh8VdLC50BSfns9mMIIobbU68/2iymk/E?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8903861-d936-4c6f-bca5-08dd12c1dfd2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2024 11:10:04.9189 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 953b80a1-523e-4186-9bb6-08dd12c3121e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2024 11:18:38.8372 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aNmrGwWFElT1ld98ABL0Cf5jm1OFB80LcR3R47rVtjgMF/1UffJPpZn4LxG/zuCN1XUEokcpNeoz8CmH8xsRsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5284
+X-MS-Exchange-CrossTenant-userprincipalname: 9PadIMUfk4/sCF6DYmo1q8p+0E++pufdjBIZ8tpDQyG9E5xtHKX5Jrbg52v3EnramqG1Ki21aXjLJ2nM/PxfRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7520
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -181,7 +180,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Swati,
+
 
 > -----Original Message-----
 > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
@@ -189,52 +188,114 @@ Hi Swati,
 > Sent: Monday, December 2, 2024 2:21 PM
 > To: igt-dev@lists.freedesktop.org
 > Cc: Sharma, Swati2 <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t 2/2] tests/intel/kms_dsc: Split max_bpc constraint
+> Subject: [PATCH i-g-t 1/2] tests/intel/dsc: Convert debug msg to info msg
 >=20
-> Split max_bpc constraint and add igt_info message.
+> Convert `igt_debug` to `igt_info` to provide more context when skipping o=
+utputs
+> that doesn't fulfil dsc constraints.
 >=20
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/intel/kms_dsc.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  tests/intel/kms_dsc_helper.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 >=20
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c index
-> 9b48caf76..5508e7a9e 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -281,10 +281,14 @@ static void test_dsc(data_t *data, uint32_t test_ty=
-pe,
-> int bpc,
->  		data->pipe =3D pipe;
+> diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c =
+index
+> 0de09b8e9..cea4304e4 100644
+> --- a/tests/intel/kms_dsc_helper.c
+> +++ b/tests/intel/kms_dsc_helper.c
+> @@ -69,14 +69,14 @@ bool is_dsc_supported_by_source(int drmfd)  bool
+> is_dsc_supported_by_sink(int drmfd, igt_output_t *output)  {
+>  	if (!igt_is_dsc_supported_by_sink(drmfd, output->name)) {
+> -		igt_debug("DSC not supported on connector %s\n",
+> +		igt_info("DSC not supported on connector %s\n",
+>  			  output->name);
+
+Alignment should match open parenthesis.
+>  		return false;
+>  	}
 >=20
->  		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
-> -		    !check_gen11_dp_constraint(data->drm_fd, data->output,
-> data->pipe) ||
-> -		     igt_get_output_max_bpc(data->drm_fd, output->name) <
-> MIN_DSC_BPC)
-> +		    !check_gen11_dp_constraint(data->drm_fd, data->output,
-> +data->pipe))
->  			continue;
+>  	if (!output_is_internal_panel(output) &&
+>  	    !igt_is_fec_supported(drmfd, output->name)) {
+> -		igt_debug("DSC cannot be enabled without FEC on %s\n",
+> +		igt_info("DSC cannot be enabled without FEC on %s\n",
+>  			  output->name);
+
+Same goes here.
+>  		return false;
+>  	}
+> @@ -91,7 +91,7 @@ bool check_gen11_dp_constraint(int drmfd, igt_output_t
+> *output, enum pipe pipe)
 >=20
-> +		if (igt_get_output_max_bpc(data->drm_fd, output->name) <
-> MIN_DSC_BPC) {
-> +			igt_info("Output %s doesn't support min %d-bpc\n",
-> igt_output_name(data->output), MIN_DSC_BPC);
+>  	if ((connector->connector_type =3D=3D
+> DRM_MODE_CONNECTOR_DisplayPort) &&
+>  	    (pipe =3D=3D PIPE_A) && IS_GEN11(devid)) {
+> -		igt_debug("DSC not supported on pipe A on external DP in gen11
+> platforms\n");
+> +		igt_info("DSC not supported on pipe %s on %s in gen11
+> platforms\n",
+> +kmstest_pipe_name(pipe), output->name);
 
-line length is 119 columns, exceeding 100 columns.
-> +			continue;
-> +		}
-> +
->  		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
->  		    (!is_dsc_output_format_supported(data->drm_fd, data-
-> >disp_ver,
->  						     data->output, data-
-> >output_format)))
+line length is 123 columns, exceeding 100 columns.
+>  		return false;
+>  	}
+>=20
+> @@ -126,7 +126,7 @@ void force_dsc_output_format(int drmfd, igt_output_t
+> *output,  static bool is_dsc_output_format_supported_by_source(int disp_v=
+er,
+> enum dsc_output_format output_format)  {
+>  	if (disp_ver < 14 && output_format =3D=3D DSC_FORMAT_YCBCR420) {
+> -		igt_debug("Output format DSC YCBCR420 not supported on D13
+> and older platforms\n");
+> +		igt_info("Output format DSC YCBCR420 not supported on D13
+> and older
+> +platforms\n");
+>  		return false;
+>  	}
+>=20
+> @@ -140,7 +140,7 @@ bool is_dsc_output_format_supported(int drmfd, int
+> disp_ver, igt_output_t *outpu
+>  		return false;
+>=20
+>  	if (!igt_is_dsc_output_format_supported_by_sink(drmfd, output->name,
+> output_format)) {
+> -		igt_debug("DSC %s output format not supported on connector
+> %s\n",
+> +		igt_info("DSC %s output format not supported on connector
+> %s\n",
+>  			  kmstest_dsc_output_format_str(output_format),
 
-Apart from this code looks good to me.
+Alignment should match open parenthesis.
 
-Regards,=20
+Regards,
 Pranay Samala
+> output->name);
+>  		return false;
+>  	}
+> @@ -182,7 +182,7 @@ void restore_force_dsc_fractional_bpp_en(void)
+>  static bool is_dsc_fractional_bpp_supported_by_source(int disp_ver)  {
+>  	if (disp_ver < 14) {
+> -		igt_debug("DSC fractional bpp not supported on D13 and older
+> platforms\n");
+> +		igt_info("DSC fractional bpp not supported on D13 and older
+> +platforms\n");
+>  		return false;
+>  	}
+>=20
+> @@ -195,7 +195,7 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, in=
+t
+> drmfd, igt_output_t *outp
+>  		return false;
+>=20
+>  	if (!igt_is_dsc_fractional_bpp_supported_by_sink(drmfd, output->name))
+> {
+> -		igt_debug("DSC fractional bpp not supported on connector
+> %s\n", output->name);
+> +		igt_info("DSC fractional bpp not supported on connector %s\n",
+> +output->name);
+>  		return false;
+>  	}
+>=20
 > --
 > 2.25.1
 
