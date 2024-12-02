@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3A7D4979C
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 05:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E675D4979C
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Dec 2024 05:07:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15BA610E0E7;
-	Mon,  2 Dec 2024 05:01:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 29B4A10E03C;
+	Mon,  2 Dec 2024 05:07:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Syy9v/sR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DPkvLwZY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A0AD10E0E7;
- Mon,  2 Dec 2024 05:01:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3833710E03C;
+ Mon,  2 Dec 2024 05:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733115695; x=1764651695;
+ t=1733116040; x=1764652040;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=sVTq9SS+I1hBlTKg9KPD1m4LErgfeTFZa50i3W+Q4y4=;
- b=Syy9v/sRdQmeLeIbRRaLyGqhNv4sdW7eNAp8ML6m2xf/gpD9kVegVBF2
- 4osILljrwh0C4Og39S1j+GoQc06i17wjfUQ62Vhq03+Ymcy8pB9pzjQHx
- mFqApM4LYZhVCYgmPSjA+6Lto1xuSxKNG8fLicqMW/2Wau4u6CSLGJZ83
- JJc+uR3WYrnrsQmIFThDjOiRjvJSF8QJfWew5P32Mi3mJRvmIfP62RHGM
- aF+0mcKfsVwcArlZpOzQ/BSJw38sEiiljMhRSUVvPC5uOlFPHArzAgZ1j
- Yq1Ptu6BM1Ft+Otr9FvncfxbG3akDEq56CQrTqBWKzFRc/HonZJL29skR w==;
-X-CSE-ConnectionGUID: O9b2JLHhSo2Its8jww6lzw==
-X-CSE-MsgGUID: JnDE8CVbQEy5KGfCwzgFCg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="43752342"
-X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; d="scan'208";a="43752342"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Dec 2024 21:01:35 -0800
-X-CSE-ConnectionGUID: IkjQDxbzQOmseQcViP2uSQ==
-X-CSE-MsgGUID: wp7yUtPYSuKYzuidcFLMww==
+ bh=SA+tTIbULaqYcEugnZLADjDD7s5aogYZm3K2iZ6dbTg=;
+ b=DPkvLwZYZkJ8XTNc5Fa+ixaQHAVRubMmvczLkjsLGfiBxBdxN/sq/GzQ
+ p0fhkR9VhWtBcOxnC3vc2G6npLZWiWKQdxQUf7V0gnX1Zg9ey4TkWPkhK
+ K7YVJMH7yz4sYg1oOAie+lCclHUFRqiAI0Tbb8y/pXL5RdaWzxqWav5E/
+ mmh4ySr116Oa0zY7fC1qYMivk94N1E9GklqKIe7HXUM+qSLRZnf9atIik
+ oETVYUh8U+tRDT81aRdl9+UsLwscG31C1S5ZyFLLMlj5NiUwfcFNWefEW
+ Lx5xChcxuT2+fjF1pnlIcgfatg4JvNGkUnH3LfktFQbMd3l0aQpIo3xn7 A==;
+X-CSE-ConnectionGUID: o9CXOK61SwW8QcpRCQhBDg==
+X-CSE-MsgGUID: eWFAveAFTwy6YcF0SJ3Kgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="33189374"
+X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; d="scan'208";a="33189374"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Dec 2024 21:07:19 -0800
+X-CSE-ConnectionGUID: X9ZJOHMtT22HSrQikQCq6w==
+X-CSE-MsgGUID: rxb5iP6KTiC6n5GW8jx+Sg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; d="scan'208";a="97960117"
+X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; d="scan'208";a="97767564"
 Received: from cjones-mobl.ger.corp.intel.com (HELO [10.213.199.113])
  ([10.213.199.113])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Dec 2024 21:01:34 -0800
-Message-ID: <4580a4b8-2257-41c5-be46-c3201f75e720@linux.intel.com>
-Date: Mon, 2 Dec 2024 06:01:24 +0100
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Dec 2024 21:07:18 -0800
+Message-ID: <330c7c7c-553a-4c86-b44e-61651a67f3df@linux.intel.com>
+Date: Mon, 2 Dec 2024 06:07:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_igt-runner_?=
- =?UTF-8?Q?fact_checking_=28rev9=29?=
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_i915=2ECI=2EFull=3A_failure_for_igt-runne?=
+ =?UTF-8?Q?r_fact_checking_=28rev9=29?=
 To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
- <173290118286.355975.3786252362572644125@b555e5b46a47>
+ <173290129168.355976.8281068319435410321@b555e5b46a47>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <173290118286.355975.3786252362572644125@b555e5b46a47>
+In-Reply-To: <173290129168.355976.8281068319435410321@b555e5b46a47>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,7 +73,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Dear I915,
 
-On 29.11.2024 18:26, Patchwork wrote:
+On 29.11.2024 18:28, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: igt-runner fact checking (rev9)
@@ -82,7 +82,7 @@ On 29.11.2024 18:26, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_8130_full -> XEIGTPW_12219_full
+> CI Bug Log - changes from CI_DRM_15761_full -> IGTPW_12219_full
 > ====================================================
 > 
 > Summary
@@ -90,16 +90,16 @@ On 29.11.2024 18:26, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_12219_full absolutely need to be
+>   Serious unknown changes coming with IGTPW_12219_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_12219_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_12219_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/index.html
 > 
-> Participating hosts (4 -> 4)
+> Participating hosts (10 -> 10)
 > ------------------------------
 > 
 >   No changes in participating hosts
@@ -107,60 +107,40 @@ On 29.11.2024 18:26, Patchwork wrote:
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_12219_full:
+>   Here are the unknown changes that may have been introduced in IGTPW_12219_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_cursor_crc@cursor-sliding-128x128:
->     - shard-lnl:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8130/shard-lnl-7/igt@kms_cursor_crc@cursor-sliding-128x128.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-lnl-4/igt@kms_cursor_crc@cursor-sliding-128x128.html
+>   * igt@gem_exec_suspend@basic-s3:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][1] +1 other test incomplete
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/shard-dg2-11/igt@gem_exec_suspend@basic-s3.html
 > 
->   * igt@kms_flip@flip-vs-absolute-wf_vblank@a-hdmi-a6:
->     - shard-dg2-set2:     NOTRUN -> [FAIL][3] +1 other test fail
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-dg2-466/igt@kms_flip@flip-vs-absolute-wf_vblank@a-hdmi-a6.html
+>   * igt@gem_tiled_swapping@non-threaded:
+>     - shard-tglu:         [PASS][2] -> [FAIL][3]
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15761/shard-tglu-3/igt@gem_tiled_swapping@non-threaded.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/shard-tglu-5/igt@gem_tiled_swapping@non-threaded.html
 > 
->   * igt@kms_flip_tiling@flip-change-tiling@pipe-a-dp-2-x-to-x:
->     - shard-bmg:          NOTRUN -> [SKIP][4]
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-bmg-4/igt@kms_flip_tiling@flip-change-tiling@pipe-a-dp-2-x-to-x.html
+>   * igt@kms_cursor_legacy@torture-move@pipe-a:
+>     - shard-glk:          [PASS][4] -> [DMESG-WARN][5] +1 other test dmesg-warn
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15761/shard-glk8/igt@kms_cursor_legacy@torture-move@pipe-a.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/shard-glk8/igt@kms_cursor_legacy@torture-move@pipe-a.html
 > 
->   * igt@kms_flip_tiling@flip-change-tiling@pipe-d-dp-4-linear-to-4-rc-ccs-cc:
->     - shard-dg2-set2:     NOTRUN -> [DMESG-WARN][5] +106 other tests dmesg-warn
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-dg2-436/igt@kms_flip_tiling@flip-change-tiling@pipe-d-dp-4-linear-to-4-rc-ccs-cc.html
+>   * igt@kms_flip@flip-vs-suspend@a-hdmi-a1:
+>     - shard-glk:          NOTRUN -> [INCOMPLETE][6] +1 other test incomplete
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/shard-glk3/igt@kms_flip@flip-vs-suspend@a-hdmi-a1.html
 > 
->   * igt@xe_ccs@suspend-resume@linear-compressed-compfmt0-vram01-vram01:
->     - shard-bmg:          [PASS][6] -> [FAIL][7]
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8130/shard-bmg-5/igt@xe_ccs@suspend-resume@linear-compressed-compfmt0-vram01-vram01.html
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-bmg-7/igt@xe_ccs@suspend-resume@linear-compressed-compfmt0-vram01-vram01.html
-> 
->   * igt@xe_ccs@suspend-resume@tile64-compressed-compfmt0-vram01-vram01:
->     - shard-dg2-set2:     [PASS][8] -> [INCOMPLETE][9] +1 other test incomplete
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8130/shard-dg2-436/igt@xe_ccs@suspend-resume@tile64-compressed-compfmt0-vram01-vram01.html
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-dg2-435/igt@xe_ccs@suspend-resume@tile64-compressed-compfmt0-vram01-vram01.html
-> 
->   * igt@xe_exec_sip_eudebug@wait-writesip-nodebug:
->     - shard-lnl:          [PASS][10] -> [FAIL][11] +1 other test fail
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8130/shard-lnl-4/igt@xe_exec_sip_eudebug@wait-writesip-nodebug.html
->    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-lnl-7/igt@xe_exec_sip_eudebug@wait-writesip-nodebug.html
-
-These are unrelated to my change. Please fix and run again.
-
-> 
->   
-> #### Warnings ####
-> 
->   * igt@xe_fault_injection@inject-fault-probe-function-wait_for_lmem_ready:
->     - shard-bmg:          [SKIP][12] ([Intel XE#1130]) -> [ABORT][13]
->    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8130/shard-bmg-1/igt@xe_fault_injection@inject-fault-probe-function-wait_for_lmem_ready.html
->    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12219/shard-bmg-6/igt@xe_fault_injection@inject-fault-probe-function-wait_for_lmem_ready.html
+>   * igt@kms_pm_rpm@pm-tiling:
+>     - shard-rkl:          [PASS][7] -> [SKIP][8] +1 other test skip
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15761/shard-rkl-4/igt@kms_pm_rpm@pm-tiling.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12219/shard-rkl-4/igt@kms_pm_rpm@pm-tiling.html
 > 
 
 These are unrelated to my change. Please fix and run again.
+
+[...]
 
 Thank you,
 
 Peter
-
-[...]
