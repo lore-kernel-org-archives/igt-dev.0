@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49938E6C61A
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 09:20:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81051D49797
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 09:20:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B98A10E99C;
-	Tue,  3 Dec 2024 09:20:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FA8E10E99F;
+	Tue,  3 Dec 2024 09:20:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="d+nBQrQ2";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="QIGhA3NG";
 	dkim-atps=neutral
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com
- [209.85.214.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 914D110E99C
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 09:20:04 +0000 (UTC)
-Received: by mail-pl1-f171.google.com with SMTP id
- d9443c01a7336-215bebfba73so4369695ad.1
- for <igt-dev@lists.freedesktop.org>; Tue, 03 Dec 2024 01:20:04 -0800 (PST)
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com
+ [209.85.214.173])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0257510E99F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 09:20:08 +0000 (UTC)
+Received: by mail-pl1-f173.google.com with SMTP id
+ d9443c01a7336-215bebfba73so4370435ad.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 03 Dec 2024 01:20:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733217604; x=1733822404; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1733217607; x=1733822407; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BEtONwicdleHEYgZ+zS5glyvGmPXjpZPRzU/fEMJ38w=;
- b=d+nBQrQ2ttL6jSN//thOINLCrDQc2rJ6kmR1FlPTcrazUJyFANrsTTV97h0XMn4u44
- AA0GZe+nCCP7cZZu4eixro2e36jBV2R1hXsf12B3V47dFhEIwHrNP+vGMopJ50fRq1EJ
- 4rwN+89Q4swoqcjjEObZwcRNKj5489k54/f35TAnBo3p2k4A2pslYQ3o6B6lfwx5MRM+
- q4AHN9uBMjcFw6TgzvMi5xxvC6xojFl+hjORXi+6fG9BB/fJgxSELmc02UyCo0i5yH9r
- sXEdYLGE78n8SgzeSE2lQMuSzivMdrQbcaX6x6ZUv1A4tfaHnb5byJg3Tj0s4KC8XKiK
- 6fIg==
+ bh=mVXNMnt0bJzJrtXFXHhXRAm0lDRsDkMD3LAiK4gUmKM=;
+ b=QIGhA3NG4mkJfym8l381PwtVerLV3QZgEqcXsv8L2bCvTEi9yO/FBDIJJ0nsjL4tDI
+ JkGxJT2sLSx6Na3U8hctERs1X5u+K50yP8wjDQ7J1aNK9Cp/ojhM0Q2mZ7T3iTMfOpCF
+ d47XgdENJm3f8E2HerrWJxLJBvZxvWknEZXjdVUh27r4ekR7qBU/MQVFZvN9cZGo+RJt
+ /KD2Os5TBAFqhwkG6C1ZQGUfalmgj8le6MpE7hSjtPcPZn9VKEfs6Z83uJUJyAWB8tMc
+ cZE2pYS9q3jUcrxGCEfLiiKQtL2LXUxJTdFsof+HSPEhbu5c1/V5oT23GVQ6L/0yre9d
+ PkoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733217604; x=1733822404;
+ d=1e100.net; s=20230601; t=1733217607; x=1733822407;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BEtONwicdleHEYgZ+zS5glyvGmPXjpZPRzU/fEMJ38w=;
- b=tGNZKa+JXcY/shdPsQIwiYhN13d4fHpxSSn6wDlIgfoEx+GSKo2JIgAUtgHvPrFnZc
- TnFALpqac/hLHFmVaLvdZyJ9ve755Z/XB5VhlxaP+G/2oZb77rZj/pmrUEr7S/h552oq
- xs5oWRH+RV2q9+ryE9nIYV9yKpInWFGkpH4aMEhHEk8vucNzo9whEA+xCcpvdexsPdyH
- Q79mo8z4sqBCA9LAAehMdNn+DDxHUlImbhs2n7izqai0TVhGQoIXiw+puCJtpzyx4/N9
- SNTFZfyp5TTFuIwGqCRjgJlN51x59LKWrl7NA0qQSPYz3LwSVXgo1/peRuLy+5PtYPR3
- a0iQ==
-X-Gm-Message-State: AOJu0Yyz3h2qA83trLriOynPYA/C+cVZcRPe4avztBLf5+UTy0tcaLHi
- TuKNsGZUtmkoe7skVf0LcBRcn9U7G8EylrY3Ap0Gb+xYuT0e9HYs0ZC/Detk
-X-Gm-Gg: ASbGnculWPX08sWxxifTHUtfSGXhnv+da8b4A/nzk2l/OMOAqJigeZaA4iFoc3ZnXv+
- SYdE7so/CyxrSvk+4a9JOVrPzQUvS5ScdoYeS5nX0c5Rn2Xx2ionL+l2MkGZBJJB0Dc2B2OhsoG
- wHN+wmRr/cM7UIWjjwuhfhpR7joQizXesU4RuNIsYU9APEV3BzHkXTKrvWJE7HbGqplnAt0V6f1
- S3fAdRT+4DrESYt9qrqJ5pufy7iB+8e18DybfFURfCKrlhYCs0Oa+8=
-X-Google-Smtp-Source: AGHT+IEwPWJvnJvFPT/G3CJOf2pwih+ZvERp4LFePG8NaZgD9OJabh4M0UiQ3TfT+cO8ejlC9s7Nbg==
-X-Received: by 2002:a17:902:e810:b0:215:9d29:9724 with SMTP id
- d9443c01a7336-215bd11c71cmr22740945ad.38.1733217603555; 
- Tue, 03 Dec 2024 01:20:03 -0800 (PST)
+ bh=mVXNMnt0bJzJrtXFXHhXRAm0lDRsDkMD3LAiK4gUmKM=;
+ b=NZGsA1RiCNg3xaqSo5DUdDt6BhFirdhL4/QpY+ku7eL/qK6UhoU8pejFMAwFDQMNUs
+ 8MTNm1BCow+DhjQtj2RED9QlTPSmlioODr9/HzPYnfLdtTWDtR3OG05qTY3ZiZwZ9Lnz
+ +xs9VIWTORbNJMy3aJW+XoaTaEldxZZ+JjkWPDPmWxzUQgoq+RW0Ub/TnD7dotSWDcaF
+ 4dpN9Xd8V6cFGX/6+BlbTdlHsLMGuAV9ehX3IxzHkW0h0eOJZQh6psBN5bAX6ZFdRwuR
+ GON6/5ZNYvUwZpFoTtLATcF/ItHhqmCe9si05yVB0+9vptygJ8RudSf4TogkFYsFWNlY
+ Ih5g==
+X-Gm-Message-State: AOJu0YzHOZMFaVTBQuLVhxB8KKSQoIy4Kqx8xYhpV6sEG9nw8QO+/xu6
+ 1zFVidRU1zDC5uy+Z4QCFspzt6S/lIeUJ52QnQAlxHg0IEnDD1Fs6q9TZILp
+X-Gm-Gg: ASbGnctfsRfeSq63fsFDio4VDvr00vZexpgVGTRZvtKJSbNbWr8WxPNE94Ro0cnGJZ/
+ uLkq4WwBQqCCjs0rbbMk71V2gfHWhxZOi1fpxLeSk6O6HuOnD/+9HTaqmM3y5KcihfE3M2c5dKU
+ 9fLArrZMpG7nGJPxLjGiG1BK8FiwQHdJixyYScd5FQh4e3EuAl1gJvPF6Tkm7pTUVFhj7XtsvRr
+ ETjFR82P+2U+7JISXVT1vmxr3SLiOb2DWlKA7QM6ZRQ0dXbepIWeVg=
+X-Google-Smtp-Source: AGHT+IFwAM69RxbZb6eoSjnc29WRPmVZdkbw9l+jcBzdH6dHNmnTR92306/oL9R9d40ju/Ps8Emrng==
+X-Received: by 2002:a17:902:c94a:b0:215:5935:7eef with SMTP id
+ d9443c01a7336-215bcfc2a99mr28401695ad.22.1733217607334; 
+ Tue, 03 Dec 2024 01:20:07 -0800 (PST)
 Received: from localhost ([192.55.54.45]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215898c3b7bsm37350655ad.173.2024.12.03.01.20.02
+ d9443c01a7336-2156e0c8d2csm48287405ad.17.2024.12.03.01.20.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 01:20:03 -0800 (PST)
+ Tue, 03 Dec 2024 01:20:07 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
  "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t 1/2] lib/igt_pm: Add helpers for hibernating kernel
-Date: Tue,  3 Dec 2024 11:24:17 +0200
-Message-ID: <20241203092418.3454357-2-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/kms_ccs: add hiberbate test
+Date: Tue,  3 Dec 2024 11:24:18 +0200
+Message-ID: <20241203092418.3454357-3-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203092418.3454357-1-juhapekka.heikkila@gmail.com>
 References: <20241203092418.3454357-1-juhapekka.heikkila@gmail.com>
@@ -84,195 +84,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Here added
+Add hibernate test which bring entire system down for short
+hibernate. This mode is added to suspend tests to be run
+manually with '-r' flag because this is not ci friendly test,
+on hibernate ci would lose connection to the hibernated box.
 
-igt_pm_check_hibernation_support()
-igt_pm_ensure_grub_boots_same_kernel()
-
-to check if kernel is configured for resuming from hibernation
-and helper to set grub booting currently run kernel on next reboot.
+For this test to work kernel resume point need to be set, from
+kernel command line is checked if there is found something along
+the lines of "resume=/dev/nvme0n1p2" or so to verify hibernate
+will be successful.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_pm.c | 155 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_pm.h |   2 +
- 2 files changed, 157 insertions(+)
+ tests/intel/kms_ccs.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 1a5d9c42b..2055996bc 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1470,3 +1470,158 @@ void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val)
- 	igt_require(igt_sysfs_has_attr(gtfd, "slpc_ignore_eff_freq"));
- 	igt_sysfs_set_u32(gtfd, "slpc_ignore_eff_freq", val);
- }
-+
-+/**
-+ * igt_pm_check_hibernation_support:
-+ *
-+ * Return: True if kernel is configured with resume point for hibernate.
-+ */
-+bool igt_pm_check_hibernation_support(void)
-+{
-+	int fd;
-+	char buffer[2048];
-+	ssize_t bytes_read;
-+	FILE *cmdline;
-+
-+	/* Check if hibernation is supported in /sys/power/state */
-+	fd = open("/sys/power/state", O_RDONLY);
-+
-+	if (fd <= 0) {
-+		igt_debug("Failed to open /sys/power/state\n");
-+		return false;
-+	}
-+
-+	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
-+	close(fd);
-+
-+	if (bytes_read <= 0) {
-+		igt_debug("Failed to read /sys/power/state");
-+		return false;
-+	}
-+
-+	buffer[bytes_read] = '\0';
-+	if (strstr(buffer, "disk") == NULL) {
-+		igt_debug("Hibernation (suspend to disk) is not supported on this system.\n");
-+		return false;
-+	}
-+
-+	/* Check if resume is configured in kernel command line */
-+	cmdline = fopen("/proc/cmdline", "r");
-+
-+	if (!cmdline) {
-+		igt_debug("Failed to open /proc/cmdline");
-+		return false;
-+	}
-+
-+	fread(buffer, 1, sizeof(buffer) - 1, cmdline);
-+	fclose(cmdline);
-+
-+	if (strstr(buffer, "resume=") == NULL) {
-+		igt_debug("Kernel does not have 'resume' parameter configured for hibernation.\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+/**
-+ * igt_pm_ensure_grub_boots_same_kernel:
-+ *
-+ * Return: True if kernel was found and set for next reboot.
-+ */
-+bool igt_pm_ensure_grub_boots_same_kernel(void)
-+{
-+	char cmdline[1024];
-+	char current_kernel[256];
-+	char last_menuentry[512] = "";
-+	char grub_entry[512];
-+	char command[1024];
-+	FILE *cmdline_file, *grub_cfg;
-+	char line[1024];
-+	bool kernel_found = false;
-+	char *kernel_arg;
-+	char *kernel_end;
-+
-+	/* Read /proc/cmdline to get the current kernel image */
-+	cmdline_file = fopen("/proc/cmdline", "r");
-+	if (!cmdline_file) {
-+		igt_debug("Failed to open /proc/cmdline");
-+		return false;
-+	}
-+
-+	if (!fgets(cmdline, sizeof(cmdline), cmdline_file)) {
-+		fclose(cmdline_file);
-+		igt_debug("Failed to read /proc/cmdline");
-+		return false;
-+	}
-+	fclose(cmdline_file);
-+
-+	/* Parse the kernel image from cmdline */
-+	kernel_arg = strstr(cmdline, "BOOT_IMAGE=");
-+	if (!kernel_arg) {
-+		igt_debug("BOOT_IMAGE= not found in /proc/cmdline\n");
-+		return false;
-+	}
-+
-+	kernel_arg += strlen("BOOT_IMAGE=");
-+	kernel_end = strchr(kernel_arg, ' ');
-+
-+	if (!kernel_end)
-+		kernel_end = kernel_arg + strlen(kernel_arg);
-+
-+	snprintf(current_kernel, sizeof(current_kernel), "%.*s",
-+		 (int)(kernel_end - kernel_arg), kernel_arg);
-+	igt_debug("Current kernel image: %s\n", current_kernel);
-+
-+	/* Open GRUB config file to find matching entry */
-+	grub_cfg = fopen("/boot/grub/grub.cfg", "r");
-+	if (!grub_cfg) {
-+		igt_debug("Failed to open GRUB configuration file");
-+		return false;
-+	}
-+
-+	while (fgets(line, sizeof(line), grub_cfg)) {
-+		/* Check if the line contains a menuentry */
-+		if (strstr(line, "menuentry")) {
-+		/* Store the menuentry line */
-+			char *start = strchr(line, '\'');
-+			char *end = start ? strchr(start + 1, '\'') : NULL;
-+
-+			if (start && end) {
-+				snprintf(last_menuentry,
-+					 sizeof(last_menuentry),
-+					 "%.*s", (int)(end - start - 1),
-+					 start + 1);
-+			}
-+		}
-+
-+		/* Check if the current line contains the kernel */
-+		if (strstr(line, current_kernel)) {
-+			/* Use the last seen menuentry as the match */
-+			snprintf(grub_entry, sizeof(grub_entry), "%s",
-+				 last_menuentry);
-+			kernel_found = true;
-+			break;
-+		}
-+	}
-+
-+	fclose(grub_cfg);
-+
-+	if (!kernel_found) {
-+		igt_debug("Failed to find matching GRUB entry for kernel: %s\n",
-+			  current_kernel);
-+		return false;
-+	}
-+
-+	/* Set the GRUB boot target using grub-reboot */
-+	snprintf(command, sizeof(command), "grub-reboot \"%s\"", grub_entry);
-+	if (system(command) != 0) {
-+		igt_debug("Failed to set GRUB boot target to: %s\n",
-+			  grub_entry);
-+		return false;
-+	}
-+
-+	igt_debug("Set GRUB to boot kernel: %s (GRUB entry: %s)\n",
-+		  current_kernel, grub_entry);
-+	return true;
-+}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index 6b428f53e..7cc774e85 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -97,5 +97,7 @@ uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
- uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
- int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
- void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
-+bool igt_pm_check_hibernation_support(void);
-+bool igt_pm_ensure_grub_boots_same_kernel(void);
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 3e9a57863..d720de04a 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -190,6 +190,7 @@ typedef struct {
+ 	bool user_seed;
+ 	enum igt_commit_style commit;
+ 	int fb_list_length;
++	bool do_hibernate;
+ 	struct {
+ 		struct igt_fb fb;
+ 		int width, height;
+@@ -839,8 +840,17 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
  
- #endif /* IGT_PM_H */
+ 	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc) {
+ 		if (data->flags & TEST_SUSPEND && fb_flags & FB_COMPRESSED) {
+-			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-						      SUSPEND_TEST_NONE);
++			if (data->do_hibernate) {
++				igt_require_f(igt_pm_check_hibernation_support(),
++					      "Kernel is not cofigured for resume\n");
++				igt_require_f(igt_pm_ensure_grub_boots_same_kernel(),
++					      "Couldn't find correct kernel in grub.cfg\n");
++				igt_system_suspend_autoresume(SUSPEND_STATE_DISK,
++							      SUSPEND_TEST_NONE);
++			} else {
++				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++							      SUSPEND_TEST_NONE);
++			}
+ 
+ 			/* on resume check flat ccs is still compressed */
+ 			if (is_xe_device(data->drm_fd) &&
+@@ -1044,6 +1054,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
+ 		data->user_seed = true;
+ 		data->seed = strtoul(optarg, NULL, 0);
+ 		break;
++	case 'r':
++		data->do_hibernate = true;
++		break;
+ 	default:
+ 		return IGT_OPT_HANDLER_ERROR;
+ 	}
+@@ -1056,9 +1069,10 @@ static data_t data;
+ static const char *help_str =
+ "  -c\t\tCheck the presence of compression meta-data\n"
+ "  -s <seed>\tSeed for random number generator\n"
++"  -r\t\tOn suspend test do full hibernate with reboot\n"
+ ;
+ 
+-igt_main_args("cs:", NULL, help_str, opt_handler, &data)
++igt_main_args("csr:", NULL, help_str, opt_handler, &data)
+ {
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
 -- 
 2.45.2
 
