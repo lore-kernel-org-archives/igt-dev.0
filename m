@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F494E69E9D
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 10:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FFB6E64A81
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 11:20:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4810510E313;
-	Tue,  3 Dec 2024 10:38:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5519110E355;
+	Tue,  3 Dec 2024 11:20:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvddkyWh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Er4RXGjB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0195B10E313
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 10:38:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30CF310E355
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 11:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733222326; x=1764758326;
+ t=1733224827; x=1764760827;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=DpQyJ0Yi5w1/pACnOVy5zYEjjpB923Mog+F818dpIe4=;
- b=IvddkyWhxG/qpAWCWeOwb+lQuPC14kMccW7Lzfe1/et6+X0VHI7kL7gO
- AfjSRcg/tz2yCInkcA+j72cjHlqWQh6VdHbR/3p6fRtVLo2y290WrvApr
- RWOvYb7m9xn8PAoYs/gdW0zUaFQB0QqBA37dnGFaOEVbP/bRhOvpQfz0h
- pHHcR1Nk2p4yVfQZp9MpnvHhVVzEntDEXH3k+9iKW6kIs64TSvGKAcPo2
- ii+dwf+m6RFsNmgI6UtTSSNT8BBqbMX5nUv0AYgfcNaSj4Gwg9NVdqPMp
- ZxhAbXPsff3ZdH3a19HxQsEaOhA0G3R+AHTgpQWRhSLlvzyeJ7QQZvBG5 Q==;
-X-CSE-ConnectionGUID: y/6bs7nAQtmlmFflQGreqQ==
-X-CSE-MsgGUID: TmhktPasRJm/2fVXc6yRhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="33559288"
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="33559288"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 02:38:46 -0800
-X-CSE-ConnectionGUID: le2LZmn5Rmm10+rzCPJYIw==
-X-CSE-MsgGUID: 35PewHRESqSUD7J+0YQacA==
+ bh=f06skY/LFVhamtgg9TpV//0z1zoY/qrJuUEv4RFRs7I=;
+ b=Er4RXGjBH0InMoEjIZ779Cbp98IPto1lK0vjkZ9UXKTWZYcfdtLmuC7f
+ imIzfxV+U544ob8dOqd7MZ+Ke4otLmWec/XLkizIx7WsL6mOlUHFubXAI
+ /05O4MUncMgN/3NIV0frSXBgx8jw+UCavS+l2TY2K9ZtPN5sHRVtmdzk6
+ jSGBzioSHvHOcdI4WKOVXRGtS4EXQHU6GsxjzGhEUiE9s0HoVziYsUdAR
+ ZglBhgQgFgAMHpE80Pt91ZNTK/OUFF67BFdLvCO6dO5PiuIZwAG43iU5q
+ DOsmGpQd69ex6SLR2Gj35wbv8ZB7a7Ii9jmJvh5zTj2mewtq6LjIh7nJS A==;
+X-CSE-ConnectionGUID: r2APg5VuS2qkIqjusIZ77g==
+X-CSE-MsgGUID: 9W1VK4dvRTauBSdyv/DIIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="44818021"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="44818021"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 03:20:27 -0800
+X-CSE-ConnectionGUID: QFuCJdsTQLCFFBULG5rmjA==
+X-CSE-MsgGUID: T0aUhcHMSeukRomo+VBUyQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="97835185"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="93868442"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.113.95])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 02:38:42 -0800
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 03:20:23 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
@@ -52,8 +52,8 @@ Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Subject: [PATCH i-g-t] tests/intel/xe_sriov_flr: Add parallel FLR subtest for
  SR-IOV VFs
-Date: Tue,  3 Dec 2024 11:38:38 +0100
-Message-Id: <20241203103838.2074946-1-marcin.bernatowicz@linux.intel.com>
+Date: Tue,  3 Dec 2024 12:20:18 +0100
+Message-Id: <20241203112018.2091639-1-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -83,6 +83,9 @@ allowing for both sequential and parallel FLR strategies.
 Update clear_tests to use the new execution strategy approach and
 modify existing subtests to utilize the sequential FLR strategy.
 
+v2: Reintroduce condition to reinitialize test data only if more VFs
+    remain to be tested (omitted when extracting execute_sequential_flr).
+
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
@@ -94,11 +97,11 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- tests/intel/xe_sriov_flr.c | 127 +++++++++++++++++++++++++++++--------
- 1 file changed, 99 insertions(+), 28 deletions(-)
+ tests/intel/xe_sriov_flr.c | 120 +++++++++++++++++++++++++++++--------
+ 1 file changed, 96 insertions(+), 24 deletions(-)
 
 diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-index 550d58bb9..253106856 100644
+index 550d58bb9..11a8b39d6 100644
 --- a/tests/intel/xe_sriov_flr.c
 +++ b/tests/intel/xe_sriov_flr.c
 @@ -35,6 +35,11 @@
@@ -213,19 +216,16 @@ index 550d58bb9..253106856 100644
  		usleep(wait_flr_ms * 1000);
  
  		for (vf_id = 1; vf_id <= num_vfs; ++vf_id)
-@@ -272,28 +320,42 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
+@@ -272,28 +320,43 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
  				if (subcheck_can_proceed(&checks[i]))
  					checks[i].verify_vf(vf_id, flr_vf_id, checks[i].data);
  
 -		/* reinitialize test data for FLRed VF */
--		if (flr_vf_id < num_vfs)
--			for (i = 0; i < num_checks; ++i)
--				if (subcheck_can_proceed(&checks[i]))
--					checks[i].prepare_vf(flr_vf_id, checks[i].data);
 +		/* Reinitialize test data for the FLRed VF */
-+		for (i = 0; i < num_checks; ++i)
-+			if (subcheck_can_proceed(&checks[i]))
-+				checks[i].prepare_vf(flr_vf_id, checks[i].data);
+ 		if (flr_vf_id < num_vfs)
+ 			for (i = 0; i < num_checks; ++i)
+ 				if (subcheck_can_proceed(&checks[i]))
+ 					checks[i].prepare_vf(flr_vf_id, checks[i].data);
  
  		if (no_subchecks_can_proceed(checks, num_checks))
 -			goto cleanup;
@@ -271,7 +271,7 @@ index 550d58bb9..253106856 100644
  }
  
  #define GEN12_VF_CAP_REG			0x1901f8
-@@ -817,7 +879,7 @@ static void regs_subcheck_cleanup(struct subcheck_data *data)
+@@ -817,7 +880,7 @@ static void regs_subcheck_cleanup(struct subcheck_data *data)
  				intel_register_access_fini(&rdata->mmio[i]);
  }
  
@@ -280,7 +280,7 @@ index 550d58bb9..253106856 100644
  {
  	struct xe_mmio xemmio = { };
  	const unsigned int num_gts = xe_number_gt(pf_fd);
-@@ -882,7 +944,7 @@ static void clear_tests(int pf_fd, int num_vfs)
+@@ -882,7 +945,7 @@ static void clear_tests(int pf_fd, int num_vfs)
  	};
  	igt_assert_eq(i, num_checks);
  
@@ -289,7 +289,7 @@ index 550d58bb9..253106856 100644
  }
  
  igt_main
-@@ -899,7 +961,7 @@ igt_main
+@@ -899,7 +962,7 @@ igt_main
  
  	igt_describe("Verify LMEM, GGTT, and SCRATCH_REGS are properly cleared after VF1 FLR");
  	igt_subtest("flr-vf1-clear") {
@@ -298,7 +298,7 @@ index 550d58bb9..253106856 100644
  	}
  
  	igt_describe("Perform sequential FLR on each VF, verifying that LMEM, GGTT, and SCRATCH_REGS are cleared only on the reset VF.");
-@@ -908,7 +970,16 @@ igt_main
+@@ -908,7 +971,16 @@ igt_main
  
  		igt_require(total_vfs > 1);
  
