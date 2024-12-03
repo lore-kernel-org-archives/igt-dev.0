@@ -4,60 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FFB6E64A81
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 11:20:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23385E64A82
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 11:43:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5519110E355;
-	Tue,  3 Dec 2024 11:20:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B13C010E1A0;
+	Tue,  3 Dec 2024 11:43:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Er4RXGjB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h/JJfodA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30CF310E355
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 11:20:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 447A410E1A0
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 11:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733224827; x=1764760827;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=f06skY/LFVhamtgg9TpV//0z1zoY/qrJuUEv4RFRs7I=;
- b=Er4RXGjBH0InMoEjIZ779Cbp98IPto1lK0vjkZ9UXKTWZYcfdtLmuC7f
- imIzfxV+U544ob8dOqd7MZ+Ke4otLmWec/XLkizIx7WsL6mOlUHFubXAI
- /05O4MUncMgN/3NIV0frSXBgx8jw+UCavS+l2TY2K9ZtPN5sHRVtmdzk6
- jSGBzioSHvHOcdI4WKOVXRGtS4EXQHU6GsxjzGhEUiE9s0HoVziYsUdAR
- ZglBhgQgFgAMHpE80Pt91ZNTK/OUFF67BFdLvCO6dO5PiuIZwAG43iU5q
- DOsmGpQd69ex6SLR2Gj35wbv8ZB7a7Ii9jmJvh5zTj2mewtq6LjIh7nJS A==;
-X-CSE-ConnectionGUID: r2APg5VuS2qkIqjusIZ77g==
-X-CSE-MsgGUID: 9W1VK4dvRTauBSdyv/DIIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="44818021"
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="44818021"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 03:20:27 -0800
-X-CSE-ConnectionGUID: QFuCJdsTQLCFFBULG5rmjA==
-X-CSE-MsgGUID: T0aUhcHMSeukRomo+VBUyQ==
+ t=1733226210; x=1764762210;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=px0wJNRcVcO5bT8pa15jsDDcHO9piNUjhWNR6ntQETs=;
+ b=h/JJfodA3IcV3Z3w/2cOZAgGq4zzbJk5HMVPBOiGXhnvkwaS3P2FVSJs
+ ThDCCuykgNA25DxtX2DVozFQjKRxMv8sH0sSI1JDRzNdxgJ5wD/KkhSBp
+ H7EkOwnrbkEP1TuHqZDD/rgy/JW4O0wSpO5dcKNTTq1R+zmfIr1QAw6Mr
+ +4GdSJgtOJ7Hhx2ZW8bICZo7ivyqza4/zQaDLgFfICfyB7Wq1HoODS174
+ VuCPQOEXlovAYxklLwVYdwmNkfvJtT3XLT8V9zyt8bpUv+MuFLIoMJoQZ
+ aYQVvlRgLKzJrSGhYuIPYUM/UPYWWNlD3S7ymMARMAglvyv24gsElCACb Q==;
+X-CSE-ConnectionGUID: AFJQeNUUSuKlZMxeHcGhug==
+X-CSE-MsgGUID: cPLxAs0iRbapeydfBqRT7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="32780152"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="32780152"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 03:43:29 -0800
+X-CSE-ConnectionGUID: 8myx7M3ISWKcQo+BYzuVrQ==
+X-CSE-MsgGUID: 4oM2R1OaS2iPPncwAvBxvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="93868442"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.113.95])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 03:20:23 -0800
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
- michal.winiarski@intel.com, narasimha.c.v@intel.com,
- piotr.piorkowski@intel.com, satyanarayana.k.v.p@intel.com,
- tomasz.lis@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_sriov_flr: Add parallel FLR subtest for
- SR-IOV VFs
-Date: Tue,  3 Dec 2024 12:20:18 +0100
-Message-Id: <20241203112018.2091639-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="94245206"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 03:43:27 -0800
+Date: Tue, 3 Dec 2024 12:43:09 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
+ Vignesh Raman <vignesh.raman@collabora.com>,
+ Helen Koike <helen.koike@collabora.com>,
+ Daniel Stone <daniels@collabora.com>, igt-dev@lists.freedesktop.org,
+ kernel-dev@igalia.com
+Subject: Re: [PATCH i-g-t] tests/vkms: Delete VKMS test list
+Message-ID: <20241203114309.5fpajswi4nsjehlf@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ Vignesh Raman <vignesh.raman@collabora.com>,
+ Helen Koike <helen.koike@collabora.com>,
+ Daniel Stone <daniels@collabora.com>, igt-dev@lists.freedesktop.org,
+ kernel-dev@igalia.com
+References: <20241201114506.19947-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241201114506.19947-1-mcanal@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,249 +79,309 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a new subtest flr-vfs-parallel to validate parallel FLR
-execution on all VFs. This subtest ensures correct behavior during
-simultaneous resets.
+Hi Maíra,
+On 2024-12-01 at 08:45:06 -0300, Maíra Canal wrote:
+> First, this list is severely outdated. Therefore, it doesn't make sense
+> to keep an outdated test list in the repository, especially considering
+> that it is not being maintained.
+> 
+> Second, DRM CI now supports VKMS, and developers are maintaining an
+> updated list of IGT tests that VKMS supports. Thus, keeping this list
+> in IGT is redundant.
+> 
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+> ---
+>  tests/vkms_ci/README        |  21 ----
 
-Refactor verify_flr to accept an execution strategy function pointer,
-allowing for both sequential and parallel FLR strategies.
+Can you at least move this into tests/vkms_ci.README
 
-Update clear_tests to use the new execution strategy approach and
-modify existing subtests to utilize the sequential FLR strategy.
+and update it to current state, for example write where more info
+could be found and where/how is it testing now? It is not strong
+opinion so with or without this you could add
 
-v2: Reintroduce condition to reinitialize test data only if more VFs
-    remain to be tested (omitted when extracting execute_sequential_flr).
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Narasimha C V <narasimha.c.v@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Tomasz Lis <tomasz.lis@intel.com>
----
- tests/intel/xe_sriov_flr.c | 120 +++++++++++++++++++++++++++++--------
- 1 file changed, 96 insertions(+), 24 deletions(-)
+Btw do you use igt_runner for testing? I am asking this
+because we develop a few new features, for example there
+is idea of adding facts checks, either into igt_runner or
+as an outside programm runned by igt_runner hooks.
 
-diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-index 550d58bb9..11a8b39d6 100644
---- a/tests/intel/xe_sriov_flr.c
-+++ b/tests/intel/xe_sriov_flr.c
-@@ -35,6 +35,11 @@
-  * Description:
-  *   Sequentially performs FLR on each VF to verify isolation and
-  *   clearing of LMEM, GGTT, and SCRATCH_REGS on the reset VF only.
-+ *
-+ * SUBTEST: flr-vfs-parallel
-+ * Run type: FULL
-+ * Description:
-+ *   Executes FLR on all VFs simultaneously to validate correct behavior during parallel resets.
-  */
- 
- IGT_TEST_DESCRIPTION("Xe tests for SR-IOV VF FLR (Functional Level Reset)");
-@@ -210,6 +215,26 @@ static void subchecks_report_results(struct subcheck *checks, int num_checks)
- 	igt_skip_on(skips == num_checks);
- }
- 
-+/**
-+ * flr_exec_strategy - Function pointer for FLR execution strategy
-+ * @pf_fd: File descriptor for the Physical Function (PF).
-+ * @num_vfs: Total number of Virtual Functions (VFs) to test.
-+ * @checks: Array of subchecks.
-+ * @num_checks: Number of subchecks.
-+ * @wait_flr_ms: Time to wait (in milliseconds) for FLR to complete
-+ *
-+ * Defines a strategy for executing FLRs (Functional Level Resets)
-+ * across multiple VFs. The strategy determines the order and
-+ * manner (e.g., sequential or parallel) in which FLRs are performed.
-+ * It is expected to initiate FLRs and handle related operations,
-+ * such as verifying and preparing subchecks.
-+ *
-+ * Return: The ID of the last VF for which FLR was successfully initiated.
-+ */
-+typedef int (*flr_exec_strategy)(int pf_fd, int num_vfs,
-+				 struct subcheck *checks, int num_checks,
-+				 const int wait_flr_ms);
-+
- /**
-  * verify_flr - Orchestrates the verification of Function Level Reset (FLR)
-  *              across multiple Virtual Functions (VFs).
-@@ -222,18 +247,20 @@ static void subchecks_report_results(struct subcheck *checks, int num_checks)
-  * @num_vfs: Total number of Virtual Functions (VFs) to test.
-  * @checks: Array of subchecks.
-  * @num_checks: Number of subchecks.
-+ * @flr_exec_strategy: Execution strategy for FLR (e.g., sequential or parallel).
-  *
-  * Detailed Workflow:
-  * - Initializes and prepares VFs for testing.
-- * - Iterates through each VF, performing FLR, and verifies that only
-- *   the reset VF is affected while others remain unchanged.
-- * - Reinitializes test data for the FLRed VF if there are more VFs to test.
-- * - Continues the process until all VFs are tested.
-- * - Handles any test failures or early exits, cleans up, and reports results.
-+ * - Executes the FLR operation using the provided execution strategy
-+ *   (e.g., sequential or parallel) and validates that the reset VF behaves
-+ *   as expected.
-+ * - Cleans up resources and reports results after all VFs have been tested
-+ *   or in the case of an early exit.
-  *
-  * A timeout is used to wait for FLR operations to complete.
-  */
--static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_checks)
-+static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks,
-+		       int num_checks, flr_exec_strategy exec_strategy)
- {
- 	const int wait_flr_ms = 200;
- 	int i, vf_id, flr_vf_id = -1;
-@@ -242,6 +269,7 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
- 	igt_sriov_enable_vfs(pf_fd, num_vfs);
- 	if (igt_warn_on(!igt_sriov_device_reset_exists(pf_fd, 1)))
- 		goto disable_vfs;
-+
- 	/* Refresh PCI state */
- 	if (igt_warn_on(igt_pci_system_reinit()))
- 		goto disable_vfs;
-@@ -257,14 +285,34 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
- 	if (no_subchecks_can_proceed(checks, num_checks))
- 		goto cleanup;
- 
--	flr_vf_id = 1;
-+	/* Execute the chosen FLR strategy */
-+	flr_vf_id = exec_strategy(pf_fd, num_vfs, checks, num_checks, wait_flr_ms);
-+
-+cleanup:
-+	for (i = 0; i < num_checks; ++i)
-+		checks[i].cleanup(checks[i].data);
-+
-+disable_vfs:
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	if (flr_vf_id > 0 || no_subchecks_can_proceed(checks, num_checks))
-+		subchecks_report_results(checks, num_checks);
-+	else
-+		igt_skip("No checks executed\n");
-+}
-+
-+static int execute_sequential_flr(int pf_fd, int num_vfs,
-+				  struct subcheck *checks, int num_checks,
-+				  const int wait_flr_ms)
-+{
-+	int i, vf_id, flr_vf_id = 1;
- 
- 	do {
- 		if (igt_warn_on_f(!igt_sriov_device_reset(pf_fd, flr_vf_id),
- 				  "Initiating VF%u FLR failed\n", flr_vf_id))
--			goto cleanup;
-+			break;
- 
--		/* assume FLR is finished after wait_flr_ms */
-+		/* Assume FLR is finished after wait_flr_ms */
- 		usleep(wait_flr_ms * 1000);
- 
- 		for (vf_id = 1; vf_id <= num_vfs; ++vf_id)
-@@ -272,28 +320,43 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
- 				if (subcheck_can_proceed(&checks[i]))
- 					checks[i].verify_vf(vf_id, flr_vf_id, checks[i].data);
- 
--		/* reinitialize test data for FLRed VF */
-+		/* Reinitialize test data for the FLRed VF */
- 		if (flr_vf_id < num_vfs)
- 			for (i = 0; i < num_checks; ++i)
- 				if (subcheck_can_proceed(&checks[i]))
- 					checks[i].prepare_vf(flr_vf_id, checks[i].data);
- 
- 		if (no_subchecks_can_proceed(checks, num_checks))
--			goto cleanup;
-+			break;
- 
- 	} while (++flr_vf_id <= num_vfs);
- 
--cleanup:
--	for (i = 0; i < num_checks; ++i)
--		checks[i].cleanup(checks[i].data);
-+	return flr_vf_id - 1;
-+}
- 
--disable_vfs:
--	igt_sriov_disable_vfs(pf_fd);
-+static int execute_parallel_flr(int pf_fd, int num_vfs, struct subcheck *checks,
-+				int num_checks, const int wait_flr_ms)
-+{
-+	int i, vf_id, flr_vf_id = 1;
- 
--	if (flr_vf_id > 1 || no_subchecks_can_proceed(checks, num_checks))
--		subchecks_report_results(checks, num_checks);
--	else
--		igt_skip("No checks executed\n");
-+	for (; flr_vf_id <= num_vfs; ++flr_vf_id) {
-+		if (igt_warn_on_f(!igt_sriov_device_reset(pf_fd, flr_vf_id),
-+				  "Initiating VF%u FLR failed\n", flr_vf_id))
-+			break;
-+	}
-+
-+	/* At least one FLR initiated */
-+	if (flr_vf_id > 1) {
-+		/* Assume FLRs finished after wait_flr_ms */
-+		usleep(wait_flr_ms * 1000);
-+
-+		for (vf_id = 1; vf_id <= num_vfs; ++vf_id)
-+			for (i = 0; i < num_checks; ++i)
-+				if (subcheck_can_proceed(&checks[i]))
-+					checks[i].verify_vf(vf_id, vf_id, checks[i].data);
-+	}
-+
-+	return flr_vf_id - 1;
- }
- 
- #define GEN12_VF_CAP_REG			0x1901f8
-@@ -817,7 +880,7 @@ static void regs_subcheck_cleanup(struct subcheck_data *data)
- 				intel_register_access_fini(&rdata->mmio[i]);
- }
- 
--static void clear_tests(int pf_fd, int num_vfs)
-+static void clear_tests(int pf_fd, int num_vfs, flr_exec_strategy exec_strategy)
- {
- 	struct xe_mmio xemmio = { };
- 	const unsigned int num_gts = xe_number_gt(pf_fd);
-@@ -882,7 +945,7 @@ static void clear_tests(int pf_fd, int num_vfs)
- 	};
- 	igt_assert_eq(i, num_checks);
- 
--	verify_flr(pf_fd, num_vfs, checks, num_checks);
-+	verify_flr(pf_fd, num_vfs, checks, num_checks, exec_strategy);
- }
- 
- igt_main
-@@ -899,7 +962,7 @@ igt_main
- 
- 	igt_describe("Verify LMEM, GGTT, and SCRATCH_REGS are properly cleared after VF1 FLR");
- 	igt_subtest("flr-vf1-clear") {
--		clear_tests(pf_fd, 1);
-+		clear_tests(pf_fd, 1, execute_sequential_flr);
- 	}
- 
- 	igt_describe("Perform sequential FLR on each VF, verifying that LMEM, GGTT, and SCRATCH_REGS are cleared only on the reset VF.");
-@@ -908,7 +971,16 @@ igt_main
- 
- 		igt_require(total_vfs > 1);
- 
--		clear_tests(pf_fd, total_vfs > 3 ? 3 : total_vfs);
-+		clear_tests(pf_fd, total_vfs > 3 ? 3 : total_vfs, execute_sequential_flr);
-+	}
-+
-+	igt_describe("Perform FLR on all VFs in parallel, ensuring correct behavior during simultaneous resets.");
-+	igt_subtest("flr-vfs-parallel") {
-+		unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
-+
-+		igt_require(total_vfs > 1);
-+
-+		clear_tests(pf_fd, total_vfs, execute_parallel_flr);
- 	}
- 
- 	igt_fixture {
--- 
-2.31.1
 
+Regards,
+Kamil
+
+>  tests/vkms_ci/vkms.testlist | 234 ------------------------------------
+>  2 files changed, 255 deletions(-)
+>  delete mode 100644 tests/vkms_ci/README
+>  delete mode 100644 tests/vkms_ci/vkms.testlist
+> 
+> diff --git a/tests/vkms_ci/README b/tests/vkms_ci/README
+> deleted file mode 100644
+> index 74a59ae8f..000000000
+> --- a/tests/vkms_ci/README
+> +++ /dev/null
+> @@ -1,21 +0,0 @@
+> -This directory contains test lists to be used for vkms's DRM support.
+> -The files are passed to igt_runner/piglit with the --test-list parameter
+> -directly.
+> -
+> -The test lists are contained in the IGT repository for several
+> -reasons:
+> -
+> -- The lists stay synchronized with the IGT codebase.
+> -- Public availability. Kernel developers can see what tests are run,
+> -  and can see what changes are done to the set, when, and why.
+> -- Keep track of the features implemented by the vkms DRM driver.
+> -
+> -=============
+> -vkms.testlist
+> -=============
+> -
+> -This test list is meant as a general test suite for the vkms DRM driver,
+> -gathering all must-pass tests for the driver.
+> -
+> -As more features are implemented to the vkms DRM driver, the correspondent
+> -tests should be added to this list.
+> diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
+> deleted file mode 100644
+> index c3333bcb0..000000000
+> --- a/tests/vkms_ci/vkms.testlist
+> +++ /dev/null
+> @@ -1,234 +0,0 @@
+> -igt@kms_atomic@atomic-invalid-params
+> -igt@kms_atomic@crtc-invalid-params
+> -igt@kms_atomic@plane-cursor-legacy
+> -igt@kms_atomic@plane-immutable-zpos
+> -igt@kms_atomic@plane-invalid-params
+> -igt@kms_atomic@plane-primary-legacy
+> -igt@kms_atomic@test-only
+> -igt@kms_atomic_transition@modeset-transition
+> -igt@kms_atomic_transition@modeset-transition-fencing
+> -igt@kms_atomic_transition@modeset-transition-nonblocking
+> -igt@kms_atomic_transition@modeset-transition-nonblocking-fencing
+> -igt@kms_atomic_transition@plane-all-modeset-transition
+> -igt@kms_atomic_transition@plane-all-transition
+> -igt@kms_atomic_transition@plane-all-transition-nonblocking
+> -igt@kms_atomic_transition@plane-primary-toggle-with-vblank-wait
+> -igt@kms_atomic_transition@plane-toggle-modeset-transition
+> -igt@kms_atomic_transition@plane-use-after-nonblocking-unbind
+> -igt@kms_bw@linear-tiling-1-displays-1920x1080p
+> -igt@kms_bw@linear-tiling-1-displays-2560x1440p
+> -igt@kms_bw@linear-tiling-1-displays-3840x2160p
+> -igt@kms_bw@linear-tiling-2-displays-1920x1080p
+> -igt@kms_bw@linear-tiling-2-displays-2560x1440p
+> -igt@kms_bw@linear-tiling-2-displays-3840x2160p
+> -igt@kms_concurrent@pipe-a
+> -igt@kms_cursor_crc@cursor-alpha-opaque
+> -igt@kms_cursor_crc@cursor-alpha-transparent
+> -igt@kms_cursor_crc@cursor-dpms
+> -igt@kms_cursor_crc@cursor-offscreen-128x128
+> -igt@kms_cursor_crc@cursor-offscreen-128x42
+> -igt@kms_cursor_crc@cursor-offscreen-256x256
+> -igt@kms_cursor_crc@cursor-offscreen-256x85
+> -igt@kms_cursor_crc@cursor-offscreen-32x10
+> -igt@kms_cursor_crc@cursor-offscreen-32x32
+> -igt@kms_cursor_crc@cursor-offscreen-512x170
+> -igt@kms_cursor_crc@cursor-offscreen-512x512
+> -igt@kms_cursor_crc@cursor-offscreen-64x21
+> -igt@kms_cursor_crc@cursor-offscreen-64x64
+> -igt@kms_cursor_crc@cursor-onscreen-128x128
+> -igt@kms_cursor_crc@cursor-onscreen-128x42
+> -igt@kms_cursor_crc@cursor-onscreen-256x256
+> -igt@kms_cursor_crc@cursor-onscreen-256x85
+> -igt@kms_cursor_crc@cursor-onscreen-32x10
+> -igt@kms_cursor_crc@cursor-onscreen-32x32
+> -igt@kms_cursor_crc@cursor-onscreen-512x170
+> -igt@kms_cursor_crc@cursor-onscreen-512x512
+> -igt@kms_cursor_crc@cursor-onscreen-64x21
+> -igt@kms_cursor_crc@cursor-onscreen-64x64
+> -igt@kms_cursor_crc@cursor-random-128x128
+> -igt@kms_cursor_crc@cursor-random-128x42
+> -igt@kms_cursor_crc@cursor-random-256x256
+> -igt@kms_cursor_crc@cursor-random-256x85
+> -igt@kms_cursor_crc@cursor-random-32x10
+> -igt@kms_cursor_crc@cursor-random-32x32
+> -igt@kms_cursor_crc@cursor-random-512x170
+> -igt@kms_cursor_crc@cursor-random-512x512
+> -igt@kms_cursor_crc@cursor-random-64x21
+> -igt@kms_cursor_crc@cursor-random-64x64
+> -igt@kms_cursor_crc@cursor-rapid-movement-128x128
+> -igt@kms_cursor_crc@cursor-rapid-movement-128x42
+> -igt@kms_cursor_crc@cursor-rapid-movement-256x256
+> -igt@kms_cursor_crc@cursor-rapid-movement-256x85
+> -igt@kms_cursor_crc@cursor-rapid-movement-32x10
+> -igt@kms_cursor_crc@cursor-rapid-movement-32x32
+> -igt@kms_cursor_crc@cursor-rapid-movement-512x170
+> -igt@kms_cursor_crc@cursor-rapid-movement-512x512
+> -igt@kms_cursor_crc@cursor-rapid-movement-64x21
+> -igt@kms_cursor_crc@cursor-rapid-movement-64x64
+> -igt@kms_cursor_crc@cursor-size-change
+> -igt@kms_cursor_crc@cursor-sliding-128x128
+> -igt@kms_cursor_crc@cursor-sliding-128x42
+> -igt@kms_cursor_crc@cursor-sliding-256x256
+> -igt@kms_cursor_crc@cursor-sliding-256x85
+> -igt@kms_cursor_crc@cursor-sliding-32x10
+> -igt@kms_cursor_crc@cursor-sliding-32x32
+> -igt@kms_cursor_crc@cursor-sliding-512x170
+> -igt@kms_cursor_crc@cursor-sliding-512x512
+> -igt@kms_cursor_crc@cursor-sliding-64x21
+> -igt@kms_cursor_crc@cursor-sliding-64x64
+> -igt@kms_cursor_crc@cursor-suspend
+> -igt@kms_cursor_edge_walk@128x128-left-edge
+> -igt@kms_cursor_edge_walk@128x128-right-edge
+> -igt@kms_cursor_edge_walk@128x128-top-bottom
+> -igt@kms_cursor_edge_walk@128x128-top-edge
+> -igt@kms_cursor_edge_walk@256x256-left-edge
+> -igt@kms_cursor_edge_walk@256x256-right-edge
+> -igt@kms_cursor_edge_walk@256x256-top-bottom
+> -igt@kms_cursor_edge_walk@256x256-top-edge
+> -igt@kms_cursor_edge_walk@64x64-left-edge
+> -igt@kms_cursor_edge_walk@64x64-right-edge
+> -igt@kms_cursor_edge_walk@64x64-top-bottom
+> -igt@kms_cursor_edge_walk@64x64-top-edge
+> -igt@kms_flip@absolute-wf_vblank
+> -igt@kms_flip@absolute-wf_vblank-interruptible
+> -igt@kms_flip@basic-flip-vs-dpms
+> -igt@kms_flip@basic-flip-vs-modeset
+> -igt@kms_flip@basic-flip-vs-wf_vblank
+> -igt@kms_flip@basic-plain-flip
+> -igt@kms_flip@blocking-absolute-wf_vblank
+> -igt@kms_flip@blocking-absolute-wf_vblank-interruptible
+> -igt@kms_flip@blocking-wf_vblank
+> -igt@kms_flip@busy-flip
+> -igt@kms_flip@dpms-off-confusion
+> -igt@kms_flip@dpms-off-confusion-interruptible
+> -igt@kms_flip@dpms-vs-vblank-race
+> -igt@kms_flip@dpms-vs-vblank-race-interruptible
+> -igt@kms_flip@flip-vs-absolute-wf_vblank
+> -igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible
+> -igt@kms_flip@flip-vs-blocking-wf-vblank
+> -igt@kms_flip@flip-vs-dpms-off-vs-modeset
+> -igt@kms_flip@flip-vs-dpms-off-vs-modeset-interruptible
+> -igt@kms_flip@flip-vs-expired-vblank
+> -igt@kms_flip@flip-vs-expired-vblank-interruptible
+> -igt@kms_flip@flip-vs-panning
+> -igt@kms_flip@flip-vs-panning-interruptible
+> -igt@kms_flip@flip-vs-rmfb
+> -igt@kms_flip@flip-vs-rmfb-interruptible
+> -igt@kms_flip@flip-vs-suspend
+> -igt@kms_flip@flip-vs-suspend-interruptible
+> -igt@kms_flip@flip-vs-wf_vblank-interruptible
+> -igt@kms_flip@modeset-vs-vblank-race
+> -igt@kms_flip@modeset-vs-vblank-race-interruptible
+> -igt@kms_flip@nonblocking-read
+> -igt@kms_flip@nonexisting-fb
+> -igt@kms_flip@nonexisting-fb-interruptible
+> -igt@kms_flip@plain-flip-fb-recreate
+> -igt@kms_flip@plain-flip-fb-recreate-interruptible
+> -igt@kms_flip@plain-flip-interruptible
+> -igt@kms_flip@plain-flip-ts-check
+> -igt@kms_flip@plain-flip-ts-check-interruptible
+> -igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset
+> -igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
+> -igt@kms_flip@wf_vblank-ts-check
+> -igt@kms_flip@wf_vblank-ts-check-interruptible
+> -igt@kms_flip_event_leak@basic
+> -igt@kms_getfb@getfb-addfb-different-handles
+> -igt@kms_getfb@getfb-handle-closed
+> -igt@kms_getfb@getfb-handle-not-fb
+> -igt@kms_getfb@getfb-handle-protection
+> -igt@kms_getfb@getfb-handle-valid
+> -igt@kms_getfb@getfb-handle-zero
+> -igt@kms_getfb@getfb-repeated-different-handles
+> -igt@kms_getfb@getfb2-handle-closed
+> -igt@kms_getfb@getfb2-handle-not-fb
+> -igt@kms_getfb@getfb2-handle-protection
+> -igt@kms_getfb@getfb2-handle-zero
+> -igt@kms_getfb@getfb2-into-addfb2
+> -igt@kms_lease@cursor_implicit_plane
+> -igt@kms_lease@empty_lease
+> -igt@kms_lease@implicit-plane-lease
+> -igt@kms_lease@invalid-create-leases
+> -igt@kms_lease@lease-uevent
+> -igt@kms_lease@lease_again
+> -igt@kms_lease@lease_get
+> -igt@kms_lease@lease_invalid_connector
+> -igt@kms_lease@lease_invalid_crtc
+> -igt@kms_lease@lease_invalid_plane
+> -igt@kms_lease@lease_revoke
+> -igt@kms_lease@lessee_list
+> -igt@kms_lease@master-vs-lease
+> -igt@kms_lease@multimaster-lease
+> -igt@kms_lease@page_flip_implicit_plane
+> -igt@kms_lease@possible-crtcs-filtering
+> -igt@kms_lease@setcrtc_implicit_plane
+> -igt@kms_lease@simple_lease
+> -igt@kms_multipipe_modeset@basic-max-pipe-crc-check
+> -igt@kms_pipe_crc_basic@bad-source
+> -igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+> -igt@kms_pipe_crc_basic@disable-crc-after-crtc
+> -igt@kms_pipe_crc_basic@nonblocking-crc
+> -igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+> -igt@kms_pipe_crc_basic@read-crc
+> -igt@kms_pipe_crc_basic@read-crc-frame-sequence
+> -igt@kms_pipe_crc_basic@suspend-read-crc
+> -igt@kms_plane@plane-panning-bottom-right
+> -igt@kms_plane@plane-panning-bottom-right-suspend
+> -igt@kms_plane@plane-panning-top-left
+> -igt@kms_plane@plane-position-covered
+> -igt@kms_plane@plane-position-hole
+> -igt@kms_plane@plane-position-hole-dpms
+> -igt@kms_plane_cursor@overlay
+> -igt@kms_plane_cursor@primary
+> -igt@kms_plane_cursor@viewport
+> -igt@kms_plane_lowres@tiling-none
+> -igt@kms_plane_multiple@tiling-none
+> -igt@kms_plane_scaling@invalid-parameters
+> -igt@kms_prop_blob@basic
+> -igt@kms_prop_blob@blob-multiple
+> -igt@kms_prop_blob@blob-prop-core
+> -igt@kms_prop_blob@blob-prop-lifetime
+> -igt@kms_prop_blob@blob-prop-validate
+> -igt@kms_prop_blob@invalid-get-prop
+> -igt@kms_prop_blob@invalid-get-prop-any
+> -igt@kms_prop_blob@invalid-set-prop
+> -igt@kms_prop_blob@invalid-set-prop-any
+> -igt@kms_properties@connector-properties-atomic
+> -igt@kms_properties@connector-properties-legacy
+> -igt@kms_properties@crtc-properties-atomic
+> -igt@kms_properties@crtc-properties-legacy
+> -igt@kms_properties@get_properties-sanity-atomic
+> -igt@kms_properties@get_properties-sanity-non-atomic
+> -igt@kms_properties@invalid-properties-atomic
+> -igt@kms_properties@invalid-properties-legacy
+> -igt@kms_properties@plane-properties-atomic
+> -igt@kms_properties@plane-properties-legacy
+> -igt@kms_rmfb@close-fd
+> -igt@kms_rmfb@rmfb-ioctl
+> -igt@kms_sequence@get-busy
+> -igt@kms_sequence@get-forked
+> -igt@kms_sequence@get-forked-busy
+> -igt@kms_sequence@get-idle
+> -igt@kms_sequence@queue-busy
+> -igt@kms_sequence@queue-idle
+> -igt@kms_universal_plane@disable-primary-vs-flip-pipe-a
+> -igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a
+> -igt@kms_universal_plane@universal-plane-pipe-a-functional
+> -igt@kms_vblank@crtc-id
+> -igt@kms_vblank@invalid
+> -igt@kms_vblank@pipe-a-accuracy-idle
+> -igt@kms_vblank@pipe-a-query-busy
+> -igt@kms_vblank@pipe-a-query-forked
+> -igt@kms_vblank@pipe-a-query-forked-busy
+> -igt@kms_vblank@pipe-a-query-idle
+> -igt@kms_vblank@pipe-a-ts-continuation-dpms-suspend
+> -igt@kms_vblank@pipe-a-ts-continuation-idle
+> -igt@kms_vblank@pipe-a-ts-continuation-modeset
+> -igt@kms_vblank@pipe-a-ts-continuation-suspend
+> -igt@kms_vblank@pipe-a-wait-busy
+> -igt@kms_vblank@pipe-a-wait-forked
+> -igt@kms_vblank@pipe-a-wait-forked-busy
+> -igt@kms_vblank@pipe-a-wait-idle
+> -igt@kms_writeback@writeback-check-output
+> -igt@kms_writeback@writeback-fb-id
+> -igt@kms_writeback@writeback-invalid-parameters
+> -igt@kms_writeback@writeback-pixel-formats
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
