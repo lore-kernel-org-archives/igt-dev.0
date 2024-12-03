@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3891E64AB3
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 14:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF14E64AB7
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 15:01:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A3BBA10EA34;
-	Tue,  3 Dec 2024 14:34:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F217510E25B;
+	Tue,  3 Dec 2024 15:01:57 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58B3B10EA34;
- Tue,  3 Dec 2024 14:34:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83EA410E25B;
+ Tue,  3 Dec 2024 15:01:56 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/gem=5Fctx=5Fp?=
- =?utf-8?q?aram=3A_Add_GTT_size_test?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsriov=5F?=
+ =?utf-8?q?flr=3A_Add_parallel_FLR_subtest_for_SR-IOV_VFs_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mikolaj Wasiak" <mikolaj.wasiak@intel.com>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 03 Dec 2024 14:34:43 -0000
-Message-ID: <173323648335.2040786.7067628017645447485@b555e5b46a47>
+Date: Tue, 03 Dec 2024 15:01:56 -0000
+Message-ID: <173323811653.2043547.2588171016577529524@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <wwioetfbvnmnwoe2oqzy6dzl35vtll6agmn2vz746ibpprdl4o@mhw2tembwbp6>
-In-Reply-To: <wwioetfbvnmnwoe2oqzy6dzl35vtll6agmn2vz746ibpprdl4o@mhw2tembwbp6>
+References: <20241203112018.2091639-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20241203112018.2091639-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,13 +43,13 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/intel/gem_ctx_param: Add GTT size test
-URL   : https://patchwork.freedesktop.org/series/142041/
+Series: tests/intel/xe_sriov_flr: Add parallel FLR subtest for SR-IOV VFs (rev2)
+URL   : https://patchwork.freedesktop.org/series/142042/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8136 -> IGTPW_12234
+CI Bug Log - changes from IGT_8136 -> IGTPW_12235
 ====================================================
 
 Summary
@@ -59,7 +59,7 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/index.html
 
 Participating hosts (42 -> 41)
 ------------------------------
@@ -69,40 +69,44 @@ Participating hosts (42 -> 41)
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12234 that come from known issues:
+  Here are the changes found in IGTPW_12235 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
   * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [PASS][1] -> [FAIL][2] ([i915#12903])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
     - bat-rpls-4:         [PASS][3] -> [FAIL][4] ([i915#12903])
    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
 
   * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [PASS][7] -> [SKIP][8] ([i915#9197]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+    - bat-dg2-11:         [PASS][5] -> [SKIP][6] ([i915#9197]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
 
   
 #### Possible fixes ####
 
   * igt@i915_selftest@live:
-    - bat-mtlp-8:         [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-mtlp-8/igt@i915_selftest@live.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-mtlp-8:         [ABORT][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-mtlp-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
 
   
   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
   [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
   [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
 
 
@@ -110,13 +114,13 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_8136 -> IGTPW_12234
+  * IGT: IGT_8136 -> IGTPW_12235
 
   CI-20190529: 20190529
   CI_DRM_15778: 5779fb3c12faf12589054127d60b1d36d56ba219 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12234: 9e35f1aaad473ece4c5e63893f99efbe0ee32f93 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12235: 8dea383212fa49137a6066d92f5531f50081a1f6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8136: 21076ee09438af484c58b308d8179277503922f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12234/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12235/index.html
