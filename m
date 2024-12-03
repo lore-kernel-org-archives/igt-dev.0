@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 644D5E64A9E
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 13:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95D2E64AB2
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 14:08:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA92010E45D;
-	Tue,  3 Dec 2024 13:41:19 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A5E210E45D;
- Tue,  3 Dec 2024 13:41:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id A643A10EA17;
+	Tue,  3 Dec 2024 14:08:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hkvjcNWN";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 180CE10EA09
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 14:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733234921; x=1764770921;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=390Lyl0zyg0JvsYG1gNcf1LPUZ5tPqcnXIJV3+a+I8M=;
+ b=hkvjcNWNkOZh96qw5SsZZE+u5mmTwBtLe4RUOPVwIl2qPJjt3ZugGKCl
+ +Qig+2nZjHdKldh3Jmx6uvKlGAy5q2vFQZEpHenKoCOkQC6c28z0mTcC9
+ 3Y7ON8H8Igi/QO5JulnnxmBphfTO3tt3zQ0Hqdpt1fzlYXdlsVVpic8gm
+ rKoD27p/hxoebNN2zEhUvDyrF1jPnp/TozA7XbhapiWvY8FKVcwTt+Aeu
+ jgTGbhDot0d/1UMCn9792C50vEG+gNz83Xp2rGistlOPsR3jPrEdVmJkI
+ 34nC9hQXkNcOKCUelfaonT4dW3MOfod2suozVQw7i6uvzpmAdVHODr/i1 g==;
+X-CSE-ConnectionGUID: cEvPsadjSLmvg8uVcnGxKA==
+X-CSE-MsgGUID: JQfjciy8QiyLTud9WfHD/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44839388"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="44839388"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 06:08:40 -0800
+X-CSE-ConnectionGUID: r7chUY45RGWG23Z0PsbmDA==
+X-CSE-MsgGUID: WEf0S3COSNCsO1gx3nF3DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="98464616"
+Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
+ by orviesa003.jf.intel.com with ESMTP; 03 Dec 2024 06:08:40 -0800
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH i-g-t] tests/intel: Don't abort the test on the unavailability
+ of sysnode
+Date: Tue,  3 Dec 2024 19:36:26 +0530
+Message-Id: <20241203140626.514454-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Add_hibernate_helpers_and?=
- =?utf-8?q?_kms=5Fccs_hibernate_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 03 Dec 2024 13:41:18 -0000
-Message-ID: <173323327803.2013478.4935343895607587055@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241203092418.3454357-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20241203092418.3454357-1-juhapekka.heikkila@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,120 +62,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+use calloc to assign NULL value in false case, because in restore case
+it will restore the NULL value instead of garbage.
+test should not be abort/skip on the unavailability of sysnode
 
-Series: Add hibernate helpers and kms_ccs hibernate test
-URL   : https://patchwork.freedesktop.org/series/142035/
-State : failure
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ tests/intel/perf_pmu.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+index bfa2d501a..87ddfe1a9 100644
+--- a/tests/intel/perf_pmu.c
++++ b/tests/intel/perf_pmu.c
+@@ -1786,7 +1786,7 @@ test_frequency_idle(int gem_fd, unsigned int gt)
+ 	sysfs = igt_sysfs_gt_open(gem_fd, gt);
+ 	igt_require(sysfs >= 0);
+ 
+-	min_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
++	__igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz", &min_freq);
+ 	close(sysfs);
+ 
+ 	/* While parked, our convention is to report the GPU at 0Hz */
+@@ -2403,23 +2403,23 @@ static void save_sysfs_freq(int i915)
+ 
+ 	num_gts = igt_sysfs_get_num_gt(i915);
+ 
+-	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+-	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+-	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
++	stash_min = (uint32_t *)calloc(num_gts, sizeof(uint32_t) * num_gts);
++	stash_max = (uint32_t *)calloc(num_gts, sizeof(uint32_t) * num_gts);
++	stash_boost = (uint32_t *)calloc(num_gts, sizeof(uint32_t) * num_gts);
+ 
+ 	/* Save boost, min and max across GTs */
+ 	i915_for_each_gt(i915, tmp, gt) {
+ 		sysfs = igt_sysfs_gt_open(i915, gt);
+ 		igt_require(sysfs >= 0);
+ 
+-		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
+-		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
+-		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
++		__igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz", &stash_min[gt]);
++		__igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz", &stash_max[gt]);
++		__igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz", &stash_boost[gt]);
+ 		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
+ 			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
+ 
+-		rpn_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
+-		rp0_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
++		__igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz", &rpn_freq);
++		__igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz", &rp0_freq);
+ 
+ 		/* Set pre-conditions, in case frequencies are in non-default state */
+ 		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", rp0_freq));
+-- 
+2.34.1
 
-CI Bug Log - changes from IGT_8135 -> IGTPW_12233
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12233 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12233, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/index.html
-
-Participating hosts (42 -> 41)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12233:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-dp1:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12233 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [PASS][3] -> [FAIL][4] ([i915#12903])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][5] -> [ABORT][6] ([i915#12061]) +1 other test abort
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - fi-cfl-8109u:       [PASS][7] -> [DMESG-WARN][8] ([i915#12914])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [PASS][9] -> [SKIP][10] ([i915#9197]) +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [ABORT][11] ([i915#12061]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/bat-mtlp-8/igt@i915_selftest@live.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [ABORT][13] ([i915#12061]) -> [PASS][14] +1 other test pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arlh-2:         [ABORT][15] ([i915#12061]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8135/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12914]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12914
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8135 -> IGTPW_12233
-  * Linux: CI_DRM_15775 -> CI_DRM_15778
-
-  CI-20190529: 20190529
-  CI_DRM_15775: 4de82d50b8de6a278c1483a7f76ae830c89d1824 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15778: 5779fb3c12faf12589054127d60b1d36d56ba219 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12233: 6c12ec492cf98f6ad9679b4ceb6dff08304c3b61 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8135: c6840f5e3c3b942aa79727ee4978a5b79f290b67 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12233/index.html
