@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47AEEE6C60C
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 06:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9948EE6C60B
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 06:53:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0835F10E911;
-	Tue,  3 Dec 2024 06:49:16 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ScJ0culn";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0889E10E25A
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 06:49:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733208554; x=1764744554;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ihwQgotn0zdC9T8z8daZuGnzVdHSwA6TfRKQAvqERPI=;
- b=ScJ0culn29qNJDRHFe18DQk6Z25X9ADbKyUliWL1cHJuNwQbLkq7aRwM
- f5SflWs+eaA6SKeFD+Er7V2/QgnKNlEE5wZ7wkUwPyhBEf+MIKY2cQXq/
- PMNeYzGqGr824fBEltE8nQOEhM2B1pdjnYZjY/dFKNWWrr1aFQlXGsMRG
- h1UKppkqxV82m3dNc9Ihn3mf2aQ7LRIwAD1bd3OGCdSkExBW/6fprXCOj
- 44QO3R6yvGidxu+7fywgJfLeFZfAzzEffekXVVoVyRfjrZJ4zP8HrHOJE
- 86bvlx8pn7WrUASjHd0wd2p9z7uPwAMjEOTuY2CbvEejnggJ+u2wI0LMC w==;
-X-CSE-ConnectionGUID: 9J6EcRgyQFuI929GyvnFyA==
-X-CSE-MsgGUID: 99HMks7jQ366NRc/DaR2WQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="33537963"
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="33537963"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 22:49:14 -0800
-X-CSE-ConnectionGUID: jEFQpxsAQ8KrjgltQ7jrfg==
-X-CSE-MsgGUID: x0XYUVcDTSW54aMNtv45RQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="98426759"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 22:49:12 -0800
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1 1/1] tests/kms_invalid_mode: Add ultrajoiner support
- to adjust_mode_clock_too_high
-Date: Tue,  3 Dec 2024 12:14:01 +0530
-Message-Id: <20241203064401.366661-2-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241203064401.366661-1-santhosh.reddy.guddati@intel.com>
-References: <20241203064401.366661-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38CB210E009;
+	Tue,  3 Dec 2024 06:53:12 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00D3D10E009;
+ Tue,  3 Dec 2024 06:53:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_test/kms=5Fcontent=5Fprot?=
+ =?utf-8?q?ection=3A_Account_for_reauthetication_in_LIC_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Suraj Kandpal" <suraj.kandpal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 03 Dec 2024 06:53:10 -0000
+Message-ID: <173320879099.1920414.10374216198080718343@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241203061519.2121105-1-suraj.kandpal@intel.com>
+In-Reply-To: <20241203061519.2121105-1-suraj.kandpal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,71 +37,126 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Check ultrajoiner support on the output and
-adjust `max_dotclock` accordingly.
+== Series Details ==
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_invalid_mode.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+Series: test/kms_content_protection: Account for reauthetication in LIC (rev2)
+URL   : https://patchwork.freedesktop.org/series/141871/
+State : failure
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 4fd644594..5f13efddb 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -34,6 +34,7 @@
-  */
- 
- #include "igt.h"
-+#include "xe/xe_query.h"
- #include <limits.h>
- #include <stdbool.h>
- 
-@@ -99,6 +100,28 @@ can_bigjoiner(data_t *data)
- 	return false;
- }
- 
-+static bool
-+can_ultrajoiner(data_t *data)
-+{
-+	bool ultra_joiner_supported = false;
-+	bool is_dgfx;
-+	int display_ver;
-+
-+	is_dgfx = is_xe_device(data->drm_fd) ? xe_has_vram(data->drm_fd) :
-+					       gem_has_lmem(data->drm_fd);
-+	display_ver = intel_display_ver(intel_get_drm_devid(data->drm_fd));
-+
-+	if ((is_dgfx && display_ver == 14) || (display_ver > 14))
-+		ultra_joiner_supported = true;
-+
-+	if (ultra_joiner_supported) {
-+		igt_debug("Platform supports ultrajoiner\n");
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- static bool
- adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
- {
-@@ -128,6 +151,12 @@ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
- 		max_dotclock *= 2;
- 	}
- 
-+	if (can_ultrajoiner(data)) {
-+		igt_info("Platform supports ultrajoiner with %s\n",
-+				 data->output->name);
-+		max_dotclock *= 4;
-+	}
-+
- 	mode->clock = max_dotclock + 1;
- 
- 	return true;
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8134 -> IGTPW_12231
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12231 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12231, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12231:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live:
+    - fi-glk-j4005:       [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-glk-j4005/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-glk-j4005/igt@i915_selftest@live.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12231 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg1-7:          [PASS][3] -> [FAIL][4] ([i915#12903])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+    - bat-rpls-4:         [PASS][5] -> [FAIL][6] ([i915#12903])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][7] -> [ABORT][8] ([i915#12061]) +1 other test abort
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [INCOMPLETE][9] ([i915#12904]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      [FAIL][11] ([i915#12903]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-9:         [FAIL][13] ([i915#11989]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-adlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-adlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1:
+    - bat-adlp-9:         [FAIL][15] -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-adlp-9/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-adlp-9/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][17] ([i915#9197]) -> [PASS][18] +3 other tests pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+  [i915#11989]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11989
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8134 -> IGTPW_12231
+  * Linux: CI_DRM_15774 -> CI_DRM_15775
+
+  CI-20190529: 20190529
+  CI_DRM_15774: 83cfa47b496201ff05d4a369f6fe3f75665a2acf @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15775: 4de82d50b8de6a278c1483a7f76ae830c89d1824 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12231: 12231
+  IGT_8134: 027fbf68a00630d7bb8ae200c620296e2bad971d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/index.html
