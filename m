@@ -4,175 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25F5CE69E9D
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 10:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F494E69E9D
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 10:38:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6BBB10E9C6;
-	Tue,  3 Dec 2024 10:16:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4810510E313;
+	Tue,  3 Dec 2024 10:38:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nFalu2m8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvddkyWh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE8BA10E9C6
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 10:16:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0195B10E313
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 10:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733220985; x=1764756985;
- h=date:from:to:cc:subject:message-id:mime-version;
- bh=b+MOOEldrGjtdxrQT17UKYzTAjc6ODv9KF81yCkeWeo=;
- b=nFalu2m8FY5VMzBDLOf97ufVz/hjBr0jrw0uLllLKAZ515KS6zwUt4mD
- tUqQ0Mtif7etmp8t1wnh7sptiz7cFCpyQz6zem/Q/O5AyrP4g/MSUgXD1
- VMjnPcV9gVbJEdRNEOMd14JROtlczlGKUKam4xjYcsB36GYvrZaCcfYXq
- dlK9zDCqzyQHGYzQwWYg+NENrisieBNEfaN1Swpe3ayHaxwqyWT6zKoEQ
- subM4TtTrE2l0NpxrW0ESu7153FtQEVAS8dcjkD1+Sr3gQHjqEJJFEHBM
- 69pgwWlMgBZjumj1RdHzViyXnqV96MR7a00u7pDx/TfEW6duvR3dLw0Q1 Q==;
-X-CSE-ConnectionGUID: hCB+iSQiR9aQaphzfXUB6Q==
-X-CSE-MsgGUID: sLVIpLg5RQ6CGW3GNQ99IA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="43910172"
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="43910172"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 02:16:25 -0800
-X-CSE-ConnectionGUID: hdKQN4xDTTOLpWQ6YRleKw==
-X-CSE-MsgGUID: EVCbqg4VS2GokAtlc3MW2w==
+ t=1733222326; x=1764758326;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DpQyJ0Yi5w1/pACnOVy5zYEjjpB923Mog+F818dpIe4=;
+ b=IvddkyWhxG/qpAWCWeOwb+lQuPC14kMccW7Lzfe1/et6+X0VHI7kL7gO
+ AfjSRcg/tz2yCInkcA+j72cjHlqWQh6VdHbR/3p6fRtVLo2y290WrvApr
+ RWOvYb7m9xn8PAoYs/gdW0zUaFQB0QqBA37dnGFaOEVbP/bRhOvpQfz0h
+ pHHcR1Nk2p4yVfQZp9MpnvHhVVzEntDEXH3k+9iKW6kIs64TSvGKAcPo2
+ ii+dwf+m6RFsNmgI6UtTSSNT8BBqbMX5nUv0AYgfcNaSj4Gwg9NVdqPMp
+ ZxhAbXPsff3ZdH3a19HxQsEaOhA0G3R+AHTgpQWRhSLlvzyeJ7QQZvBG5 Q==;
+X-CSE-ConnectionGUID: y/6bs7nAQtmlmFflQGreqQ==
+X-CSE-MsgGUID: TmhktPasRJm/2fVXc6yRhQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="33559288"
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="33559288"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 02:38:46 -0800
+X-CSE-ConnectionGUID: le2LZmn5Rmm10+rzCPJYIw==
+X-CSE-MsgGUID: 35PewHRESqSUD7J+0YQacA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="93055424"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 03 Dec 2024 02:16:24 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 3 Dec 2024 02:16:23 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 3 Dec 2024 02:16:23 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.48) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 3 Dec 2024 02:16:23 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z2l3rdTY1cCjZOYtgKXSc/x+O0jRRe/2ELls6DUQKYLb0pFqu6RhEVgdsJDEsDHLOZo7FfkSWclAfqQGp/Gmuj2OY0JegHlRRKMSxr42eXQvZlsB4DE1eF1llZDhJJAe+/xBtQ4GWJB9OPYDyvK0l20RyV0O9h4IL3YXjVjGFvN9fNpVUHYZBKDlIVDkferChQrx7w0ThurI43q1SjPJQqXci8BIXsV/jnEoK0wMlxp/05Nr5WuoPWLn3+xUXqdHvGMkcCjTvvvvNnSpmll53kSmQamrWgknrudD+XxBYxtRcWSwNSWMzezS/jx6xKSeRIBeXqlhgo8XOkrtbJPrjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IJes3F0d2+LEH36TFP4AHd46n7Q5pK+7Bm5bBidZj2I=;
- b=hSzgeZdslOyJ1t/K2DkGlLeFFfB0fh+cNDDOpjHd5+uBLfvp4WTtBToo+lER1F9ZRc8wN+bEvMjehsyI/1o2yQfleGUHApk3OyaBuOiMJr3w6aEL8LBCa7XIGhEN8TypbvD41mg1w//rSUHCr4w5i7KaRiEiDEplDQ9uoPjhJJ/UjBU53OTwT+Jy4aOVueRE58mbTNsGAvUO07eCaeteRealKAvJaeUfECvx6hZ6HwIfNmXijc9WGql0KRLOk8h4flZFUCvEmopkH1wtYOGZf8noU48y7jgaE3uAp1E4jQ+lRQY8z1bdUyNuxjGbMWq/bZhgfPjwUHFQ01w92QEX2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL3PR11MB6409.namprd11.prod.outlook.com (2603:10b6:208:3b8::18)
- by SA0PR11MB4654.namprd11.prod.outlook.com (2603:10b6:806:98::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Tue, 3 Dec
- 2024 10:16:20 +0000
-Received: from BL3PR11MB6409.namprd11.prod.outlook.com
- ([fe80::74e:6abd:bab0:3d0b]) by BL3PR11MB6409.namprd11.prod.outlook.com
- ([fe80::74e:6abd:bab0:3d0b%7]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
- 10:16:20 +0000
-Date: Tue, 3 Dec 2024 11:16:10 +0100
-From: Mikolaj Wasiak <mikolaj.wasiak@intel.com>
-To: <igt-dev@lists.freedesktop.org>, <andi.shyti@intel.com>
-CC: <krzysztof.karas@intel.com>, <eugene.kobyak@intel.com>
-Subject: [PATCH] tests/intel/gem_ctx_param: Add GTT size test
-Message-ID: <wwioetfbvnmnwoe2oqzy6dzl35vtll6agmn2vz746ibpprdl4o@mhw2tembwbp6>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-X-ClientProxiedBy: DUZPR01CA0299.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b7::10) To BL3PR11MB6409.namprd11.prod.outlook.com
- (2603:10b6:208:3b8::18)
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="97835185"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.113.95])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 02:38:42 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
+ lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
+ michal.winiarski@intel.com, narasimha.c.v@intel.com,
+ piotr.piorkowski@intel.com, satyanarayana.k.v.p@intel.com,
+ tomasz.lis@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_sriov_flr: Add parallel FLR subtest for
+ SR-IOV VFs
+Date: Tue,  3 Dec 2024 11:38:38 +0100
+Message-Id: <20241203103838.2074946-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6409:EE_|SA0PR11MB4654:EE_
-X-MS-Office365-Filtering-Correlation-Id: be032548-6306-4901-d1cf-08dd13838808
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?bERBeXRMaDcxSy9uS0lDeWhKRXdiYTlVdGpEdHhldDNEQXlZMW1OUHlLdlBq?=
- =?utf-8?B?Q084L2YyY09nMlQxZ0pHdGM1dFFMb0VNbk5UU3V3TW5NN0FmQWxxbkJDMDFm?=
- =?utf-8?B?Y0xLSjVqcDRSNE1PSG1hUTR6TWI0VWxSbU1sTzJVUUZaUFZSRlByd3ZDa0Zr?=
- =?utf-8?B?MjNwcXh3c29kS3lCMFAyMjRUaFVrbzkwR0FHZ2k2My8wbDA5VGM2dkVkdm5q?=
- =?utf-8?B?ZE11cUxBMW5uUkdUeFZ5aVQ3TXpxWDlJMEJFWk9YRDQxVyszbkNnS3l3SWRX?=
- =?utf-8?B?WEJ4QmI1ZDVwQmM1REEyb1ZMdW0waGcza1lmZVhESXpBUGJCSjc0R3h3b1Bk?=
- =?utf-8?B?NDdTVUJzMGw5bzh2QzhkYTdPUkdTdzJUV2M2ZDdOSFhSSDhDQjlvZjdOS09y?=
- =?utf-8?B?VTUwbDlwLzFVbHkxaTJoUHBraXo2SXNocXdyZXBYQjBLL1VORHNXRm14WGpi?=
- =?utf-8?B?aVNpRXk2OTMrMmdvZWR6ZkY0WlBEUlYzSTJkMnBQQXpXN3Q0aUFVRzAyMWRY?=
- =?utf-8?B?eFdERGVXYW1hY0lZSEQxZjR3eC9NYkRIMmkyWmtTNk1IWExFbUt0amttaGJ1?=
- =?utf-8?B?dXA2cnQySkYyMlZCZkdGWE1lU0hybTVMMnBvajNhMnVBNHRrVGVnTGJJTmNi?=
- =?utf-8?B?Z0JlSTNhZlppZlhTS3JYZWd1amZEcitMOWN3MkVWdXFDRFBsaGxaZHMybC9l?=
- =?utf-8?B?Qk5zYjV0MkRxOTFBVms0UCt5dU50QTkxNWgvVllEalZ5RU1OM3dlTitWTWxO?=
- =?utf-8?B?K3VHQkV6Q0hhZDhVWFptSGVSNWxsMlRZeGVRYmtlWEdsaktNbFJoYUZZRHpv?=
- =?utf-8?B?a3o3Y203UTFPNWQ5b2M0dEJyUU9vaWNnMnJJekM0UnRkUzRKeFhvMTdiTW9k?=
- =?utf-8?B?OTdidmZxQko2eGwzQUw3MnFTbmJwU2FNWnY2WDN2VUR4OUNoMElmOTJRdFht?=
- =?utf-8?B?K1NIWFpKV1dWd1l1RnpMMEZ6U0NiWTVtRlFFU2E3dDBieGl4a20ybTNLTmYr?=
- =?utf-8?B?Q1FsNE5VTjh2VGNrOUwwQkpMVnpGVDR6Mm93L1kzUVBIaEdpN21SYlRrTEhB?=
- =?utf-8?B?YS8reVJFbG9yVlRoOGZ0WTZNZnRpdjI1QTNsTmlYa1NVWUFlemtkcmlvNkNz?=
- =?utf-8?B?UCtpZUZoNmF0TllwcDBrOUMzc05HOERGN1JmRVZEclliYUFjWnRJbnF2dUhP?=
- =?utf-8?B?aXlKbXY3a1U0dmdtdmJteDJhRU1qTWxKTXZObjJxbk9nMHJ6TXhBNHVVajll?=
- =?utf-8?B?SzBkclQwTlZNTStiL1NhOXp5TVBpZGtpeWRRbnQ0dHhrZVhaUVZEbWwwZnBO?=
- =?utf-8?B?aWxYSXhCVDlrTERQK3VuMDBKaE1BNmJWNldsSis4ZGRXejhrQ1luc2lzM3o4?=
- =?utf-8?B?aVdEYUgxc0loTzJZWldKRFlEakYrWG1IM3F3K2wxOVBuR3kvT3U5WHRkZ3c1?=
- =?utf-8?B?MnYxMkpYNk1nRElpN094L3EvYm5lZDkrS2dMbDg1cjJrTXlWSVNQb0NvSlho?=
- =?utf-8?B?S0orSXZPTDYzRDBtRGhoN1N6ZDlxQVd2VkNLTzhGY2s0L0ZoaHpZajR5Vk9C?=
- =?utf-8?B?Vllpa2R3aElGRlJNOFgzRGNzRkx3dGFxS1M4N3YvSVluOHVZS1AyLzg0NWlX?=
- =?utf-8?B?blNlRmpHOHRldU5KaTRqUXltcWNrL29HcVE0TVI1QnFkSk5POGdkNHNlMjZt?=
- =?utf-8?B?am5UU0FUZnlCVTRlNFVnL2pqOW96ZGRYUW5HaUFnNDVHVzA2M0ZpYUZSVUdu?=
- =?utf-8?B?NUxPNE9hUlo0UHI0dXEva0xUZUxWSVBlMmN4QjdXeVVHRkIwZE1ZOVUzeVVS?=
- =?utf-8?B?SGdUSjIwSUpqUUwyT0lwdz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL3PR11MB6409.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SVFpTUZWTUNUQm9zaldNeGZWV2FVRXFRUVNlOFdxbm11R1ViVFJtY2kwR1Qv?=
- =?utf-8?B?ZDVmTCtOVU9nN3h1Z3lvbUwzNi9VeEY4WmRkeHBDVE9vVk1lcjFjZlVYaDhJ?=
- =?utf-8?B?RnR4TmJKWnBsMnYxczBMeFZpSit3OGg0L0hPcVFpN3VBaGdNeE91bnpOM2N1?=
- =?utf-8?B?UC9QdlROVGttVFo1QnJXNjBDem84MHMvZWc5UUZIM0JOWDJXbFhRL0dPaS8x?=
- =?utf-8?B?TmtMZVFPT3oxSSsyS3ZQVkhGRVhWSzhDcklGWHFnQkdXUGk3ckJ4WFM0K2Qr?=
- =?utf-8?B?cXY2K290ZVNWVnZTUFdOSk94OHF3M0NwclRiNFpDd3orNmRwTEx0WURKQytK?=
- =?utf-8?B?M0lTMXJOU0owVldHRVBZbnNwTys4SXBYcUNNS0wrWGZ6YWMyMGd5akwrWWFL?=
- =?utf-8?B?Rk1KcDJxWDdjc1Fobzdod2kvWk5FVExiTkFDWVZyV1pxc0J2TCs4L3Y5bmhw?=
- =?utf-8?B?MlRGMXhHQkFsaDRNVE12ZkNSS2tMQmV1d1FpNGlIbDN2eFJHYmpQYm1leDRI?=
- =?utf-8?B?R0dvdkd0aE1YaE83ZzVSOFNjZFY4RFhhNEtGd05IZy9naHFyMU8rODRoVnoz?=
- =?utf-8?B?Zi9QTTc0bi9EMCtJdTVtazhyQ0ZoVG9ROXJjQVdwbjl2S28rTnBVY0YrZTdK?=
- =?utf-8?B?d3Izci9OUy9WZjUwOGlqOWlwVGp3aVRsd1RhNDNEdnJNTmEwR25tZWhHeHp3?=
- =?utf-8?B?MnIrQ2tScitXMzlwbVpIdWZtdllsd2czWFpQMjhXNzdISWp6YkxmUVQ2OWxn?=
- =?utf-8?B?M1UxNktUR1BRZzE3NTc2S0RYeENTeEVzQXVaWDJXdUtWUDZPTGRhbGZXT1h3?=
- =?utf-8?B?cmV5RzBmYTdQdVI0U0RFVmxWRjhvcGFXcG1MSWlqOVA4Ui96VGc1aGxGMWRv?=
- =?utf-8?B?U1c0ZnYwTmxjWVpRUlVkMjQ1SklPZ1hYaFJMSWRqbXBTcC9sMGhFaUZBYi9N?=
- =?utf-8?B?T2NJblQvQ05CU0U1WUNTbXNVdzduWjhoQVd4aGwrL3NFd3YxZ09XcEZCN2xy?=
- =?utf-8?B?ZW1tMnE4WnpSTjdDWlR2WkszMndIb3pBTmRueVkzL1pGc0Q2S1JkUS9SUkIv?=
- =?utf-8?B?SjJ4OFZLRnN1V1BXb1JKTXo4c2lEZ1QwOFAySGUvaFp2RUt6WHlBcStJZytY?=
- =?utf-8?B?bCtPK0Jyd1A3UExPQ0RpTkZvcGd0dUlVMG1vM0wrbDdzZEdvcHh2QWtrbCtm?=
- =?utf-8?B?Q29lUHdLb1l5T2ptOEVVdTNyRUxuZWpUcEkxVE1NWHRRUGRJYXBLL1g3d1I5?=
- =?utf-8?B?VFdBVDhuNDVOSHNZc0lQcVBHRUl0dzdzZ0pOTDVRdThqeWN4L1VkM1FxYWJm?=
- =?utf-8?B?UlJ0V2pUV1AvWkZQZExYa0xMTmErRFpGUWQrYW9XNlVFMWFucWtFZW0xeGdV?=
- =?utf-8?B?U0VZa0oxSDYxVDRBNTJqakR0QkdDNWJ2L0s1TitPWWJCWG5nY25IRXhOV1g5?=
- =?utf-8?B?T29pUFVNcmtBcDZqQ0RNMVNLYWtGUVRhd2l0TXpxTE1tVU8wdlhVZWl3SEdS?=
- =?utf-8?B?VzZIYThGalZ6WTUzaHJIRWpiZXdPVGVUL3E3eVJxMFNOOEhIYUEwbFJIMGtn?=
- =?utf-8?B?emRQNk1WV1VBSUJmSFpOSlk3Y3YzdXhldHk0OHRWSXRPVVpSMUVPUFhTdGxq?=
- =?utf-8?B?WEJQcVZEc2hhdUhIeEpMNXM1dWhxVmJaTksyTm9rei9vUWw5K3luZEdqTGxj?=
- =?utf-8?B?Y1B0ejVyQzRpSUFicmZpODFTcVFTL1I3RGM5aU1DOVVLZSs1MG5oVHVmNy9a?=
- =?utf-8?B?ZEMxQmIxSmY3Z3VTYnRJTlNCbS8rcmdzVjIweEQ3ZS9SYnBhRjRmbGt5dkV6?=
- =?utf-8?B?cUo2Qm43cDZ3OUFUNGpsMDVCRkdSRUVQNGRaN3QxUzEyajB2cGd1ZHVKYVh6?=
- =?utf-8?B?RGdrdDRVNVh0eEtYenMyeTdmU044dm83NUlmMGk2alFDRDV5Mkw5QmVjY1A4?=
- =?utf-8?B?SUZSYnpQRjMzNkl0ZE5SOFphZWQvRFR0OVllaUdCTEhBQXAxeHR0L1M3U1FO?=
- =?utf-8?B?dGU5VWRJaTlBeDZvZFVKVGJNUm5YcStKWWt2UTNEQ0tjanEvZ3JoOWkyOTRY?=
- =?utf-8?B?QlhaK0ExUC9aRUpCdHBMZGJhb3BCalJKU29RMG80UTVuSjFhVnpTdndpbTgz?=
- =?utf-8?B?TC9XSndueGVYeG1nb01tclMwR0pKZndiaWJ5RmtobnVwMVV0djBBcUM5allY?=
- =?utf-8?B?NHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: be032548-6306-4901-d1cf-08dd13838808
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6409.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 10:16:20.1771 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KRUutiooVOv38JYTnQe/JmOfswuQtwr+QO7o8nUHPcEbtJ1HVG8UOCATD156DicpQ71uzhJyCvY6yOrN/6pknwn2x2zdg8/KwgIcaqGs6is=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4654
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -188,44 +73,249 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create test checking if driver reports total GTT size.
+Introduce a new subtest flr-vfs-parallel to validate parallel FLR
+execution on all VFs. This subtest ensures correct behavior during
+simultaneous resets.
 
-Signed-off-by: Mikolaj Wasiak <mikolaj.wasiak@intel.com>
+Refactor verify_flr to accept an execution strategy function pointer,
+allowing for both sequential and parallel FLR strategies.
+
+Update clear_tests to use the new execution strategy approach and
+modify existing subtests to utilize the sequential FLR strategy.
+
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Narasimha C V <narasimha.c.v@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- tests/intel/gem_ctx_param.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/intel/xe_sriov_flr.c | 127 +++++++++++++++++++++++++++++--------
+ 1 file changed, 99 insertions(+), 28 deletions(-)
 
-diff --git a/tests/intel/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
-index 2e39a519b..bb208cf22 100644
---- a/tests/intel/gem_ctx_param.c
-+++ b/tests/intel/gem_ctx_param.c
-@@ -107,6 +107,9 @@
-  *
-  * SUBTEST: vm
-  * Description: Tests that multiple contexts can share the same VMA
+diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
+index 550d58bb9..253106856 100644
+--- a/tests/intel/xe_sriov_flr.c
++++ b/tests/intel/xe_sriov_flr.c
+@@ -35,6 +35,11 @@
+  * Description:
+  *   Sequentially performs FLR on each VF to verify isolation and
+  *   clearing of LMEM, GGTT, and SCRATCH_REGS on the reset VF only.
 + *
-+ * SUBTEST: gtt-size
-+ * Description: Tests that total size of GTT is power of two
++ * SUBTEST: flr-vfs-parallel
++ * Run type: FULL
++ * Description:
++ *   Executes FLR on all VFs simultaneously to validate correct behavior during parallel resets.
   */
  
- IGT_TEST_DESCRIPTION("Basic test for context set/get param input validation.");
-@@ -468,6 +471,16 @@ igt_main
- 	igt_subtest("vm")
- 		test_vm(fd);
+ IGT_TEST_DESCRIPTION("Xe tests for SR-IOV VF FLR (Functional Level Reset)");
+@@ -210,6 +215,26 @@ static void subchecks_report_results(struct subcheck *checks, int num_checks)
+ 	igt_skip_on(skips == num_checks);
+ }
  
-+	arg.param = I915_CONTEXT_PARAM_GTT_SIZE;
++/**
++ * flr_exec_strategy - Function pointer for FLR execution strategy
++ * @pf_fd: File descriptor for the Physical Function (PF).
++ * @num_vfs: Total number of Virtual Functions (VFs) to test.
++ * @checks: Array of subchecks.
++ * @num_checks: Number of subchecks.
++ * @wait_flr_ms: Time to wait (in milliseconds) for FLR to complete
++ *
++ * Defines a strategy for executing FLRs (Functional Level Resets)
++ * across multiple VFs. The strategy determines the order and
++ * manner (e.g., sequential or parallel) in which FLRs are performed.
++ * It is expected to initiate FLRs and handle related operations,
++ * such as verifying and preparing subchecks.
++ *
++ * Return: The ID of the last VF for which FLR was successfully initiated.
++ */
++typedef int (*flr_exec_strategy)(int pf_fd, int num_vfs,
++				 struct subcheck *checks, int num_checks,
++				 const int wait_flr_ms);
 +
-+	igt_describe("Tests that total size of GTT is power of two");
-+	igt_subtest("gtt-size") {
-+		gem_context_get_param(fd, &arg);
+ /**
+  * verify_flr - Orchestrates the verification of Function Level Reset (FLR)
+  *              across multiple Virtual Functions (VFs).
+@@ -222,18 +247,20 @@ static void subchecks_report_results(struct subcheck *checks, int num_checks)
+  * @num_vfs: Total number of Virtual Functions (VFs) to test.
+  * @checks: Array of subchecks.
+  * @num_checks: Number of subchecks.
++ * @flr_exec_strategy: Execution strategy for FLR (e.g., sequential or parallel).
+  *
+  * Detailed Workflow:
+  * - Initializes and prepares VFs for testing.
+- * - Iterates through each VF, performing FLR, and verifies that only
+- *   the reset VF is affected while others remain unchanged.
+- * - Reinitializes test data for the FLRed VF if there are more VFs to test.
+- * - Continues the process until all VFs are tested.
+- * - Handles any test failures or early exits, cleans up, and reports results.
++ * - Executes the FLR operation using the provided execution strategy
++ *   (e.g., sequential or parallel) and validates that the reset VF behaves
++ *   as expected.
++ * - Cleans up resources and reports results after all VFs have been tested
++ *   or in the case of an early exit.
+  *
+  * A timeout is used to wait for FLR operations to complete.
+  */
+-static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_checks)
++static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks,
++		       int num_checks, flr_exec_strategy exec_strategy)
+ {
+ 	const int wait_flr_ms = 200;
+ 	int i, vf_id, flr_vf_id = -1;
+@@ -242,6 +269,7 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
+ 	igt_sriov_enable_vfs(pf_fd, num_vfs);
+ 	if (igt_warn_on(!igt_sriov_device_reset_exists(pf_fd, 1)))
+ 		goto disable_vfs;
 +
-+		igt_assert_neq_u64(arg.value, 0);
-+		igt_assert(is_power_of_two(arg.value));
+ 	/* Refresh PCI state */
+ 	if (igt_warn_on(igt_pci_system_reinit()))
+ 		goto disable_vfs;
+@@ -257,14 +285,34 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
+ 	if (no_subchecks_can_proceed(checks, num_checks))
+ 		goto cleanup;
+ 
+-	flr_vf_id = 1;
++	/* Execute the chosen FLR strategy */
++	flr_vf_id = exec_strategy(pf_fd, num_vfs, checks, num_checks, wait_flr_ms);
++
++cleanup:
++	for (i = 0; i < num_checks; ++i)
++		checks[i].cleanup(checks[i].data);
++
++disable_vfs:
++	igt_sriov_disable_vfs(pf_fd);
++
++	if (flr_vf_id > 0 || no_subchecks_can_proceed(checks, num_checks))
++		subchecks_report_results(checks, num_checks);
++	else
++		igt_skip("No checks executed\n");
++}
++
++static int execute_sequential_flr(int pf_fd, int num_vfs,
++				  struct subcheck *checks, int num_checks,
++				  const int wait_flr_ms)
++{
++	int i, vf_id, flr_vf_id = 1;
+ 
+ 	do {
+ 		if (igt_warn_on_f(!igt_sriov_device_reset(pf_fd, flr_vf_id),
+ 				  "Initiating VF%u FLR failed\n", flr_vf_id))
+-			goto cleanup;
++			break;
+ 
+-		/* assume FLR is finished after wait_flr_ms */
++		/* Assume FLR is finished after wait_flr_ms */
+ 		usleep(wait_flr_ms * 1000);
+ 
+ 		for (vf_id = 1; vf_id <= num_vfs; ++vf_id)
+@@ -272,28 +320,42 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks, int num_
+ 				if (subcheck_can_proceed(&checks[i]))
+ 					checks[i].verify_vf(vf_id, flr_vf_id, checks[i].data);
+ 
+-		/* reinitialize test data for FLRed VF */
+-		if (flr_vf_id < num_vfs)
+-			for (i = 0; i < num_checks; ++i)
+-				if (subcheck_can_proceed(&checks[i]))
+-					checks[i].prepare_vf(flr_vf_id, checks[i].data);
++		/* Reinitialize test data for the FLRed VF */
++		for (i = 0; i < num_checks; ++i)
++			if (subcheck_can_proceed(&checks[i]))
++				checks[i].prepare_vf(flr_vf_id, checks[i].data);
+ 
+ 		if (no_subchecks_can_proceed(checks, num_checks))
+-			goto cleanup;
++			break;
+ 
+ 	} while (++flr_vf_id <= num_vfs);
+ 
+-cleanup:
+-	for (i = 0; i < num_checks; ++i)
+-		checks[i].cleanup(checks[i].data);
++	return flr_vf_id - 1;
++}
+ 
+-disable_vfs:
+-	igt_sriov_disable_vfs(pf_fd);
++static int execute_parallel_flr(int pf_fd, int num_vfs, struct subcheck *checks,
++				int num_checks, const int wait_flr_ms)
++{
++	int i, vf_id, flr_vf_id = 1;
+ 
+-	if (flr_vf_id > 1 || no_subchecks_can_proceed(checks, num_checks))
+-		subchecks_report_results(checks, num_checks);
+-	else
+-		igt_skip("No checks executed\n");
++	for (; flr_vf_id <= num_vfs; ++flr_vf_id) {
++		if (igt_warn_on_f(!igt_sriov_device_reset(pf_fd, flr_vf_id),
++				  "Initiating VF%u FLR failed\n", flr_vf_id))
++			break;
 +	}
 +
- 	arg.param = I915_CONTEXT_PARAM_PRIORITY;
++	/* At least one FLR initiated */
++	if (flr_vf_id > 1) {
++		/* Assume FLRs finished after wait_flr_ms */
++		usleep(wait_flr_ms * 1000);
++
++		for (vf_id = 1; vf_id <= num_vfs; ++vf_id)
++			for (i = 0; i < num_checks; ++i)
++				if (subcheck_can_proceed(&checks[i]))
++					checks[i].verify_vf(vf_id, vf_id, checks[i].data);
++	}
++
++	return flr_vf_id - 1;
+ }
  
- 	igt_describe("Verify that context set param ioctl returns relevant error if driver "
+ #define GEN12_VF_CAP_REG			0x1901f8
+@@ -817,7 +879,7 @@ static void regs_subcheck_cleanup(struct subcheck_data *data)
+ 				intel_register_access_fini(&rdata->mmio[i]);
+ }
+ 
+-static void clear_tests(int pf_fd, int num_vfs)
++static void clear_tests(int pf_fd, int num_vfs, flr_exec_strategy exec_strategy)
+ {
+ 	struct xe_mmio xemmio = { };
+ 	const unsigned int num_gts = xe_number_gt(pf_fd);
+@@ -882,7 +944,7 @@ static void clear_tests(int pf_fd, int num_vfs)
+ 	};
+ 	igt_assert_eq(i, num_checks);
+ 
+-	verify_flr(pf_fd, num_vfs, checks, num_checks);
++	verify_flr(pf_fd, num_vfs, checks, num_checks, exec_strategy);
+ }
+ 
+ igt_main
+@@ -899,7 +961,7 @@ igt_main
+ 
+ 	igt_describe("Verify LMEM, GGTT, and SCRATCH_REGS are properly cleared after VF1 FLR");
+ 	igt_subtest("flr-vf1-clear") {
+-		clear_tests(pf_fd, 1);
++		clear_tests(pf_fd, 1, execute_sequential_flr);
+ 	}
+ 
+ 	igt_describe("Perform sequential FLR on each VF, verifying that LMEM, GGTT, and SCRATCH_REGS are cleared only on the reset VF.");
+@@ -908,7 +970,16 @@ igt_main
+ 
+ 		igt_require(total_vfs > 1);
+ 
+-		clear_tests(pf_fd, total_vfs > 3 ? 3 : total_vfs);
++		clear_tests(pf_fd, total_vfs > 3 ? 3 : total_vfs, execute_sequential_flr);
++	}
++
++	igt_describe("Perform FLR on all VFs in parallel, ensuring correct behavior during simultaneous resets.");
++	igt_subtest("flr-vfs-parallel") {
++		unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
++
++		igt_require(total_vfs > 1);
++
++		clear_tests(pf_fd, total_vfs, execute_parallel_flr);
+ 	}
+ 
+ 	igt_fixture {
 -- 
-2.47.1
+2.31.1
 
