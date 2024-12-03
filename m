@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB8C2E6C5F7
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 03:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18E4E6C5F7
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Dec 2024 03:47:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AA7AD10E8D8;
-	Tue,  3 Dec 2024 03:47:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 73E2F10E8D9;
+	Tue,  3 Dec 2024 03:47:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fHq2AlDz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jNnATZee";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4416B10E8D8
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 03:47:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3608D10E8D9
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2024 03:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733197652; x=1764733652;
+ t=1733197654; x=1764733654;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=l/A+zu52Ey3h6a9DK7WXT0a60GLV07uvTF1HDv0HhkE=;
- b=fHq2AlDzP9qxnT+8zRvNEeqFfNJMHADocDbWOo+9gsZZ0H4DUEPIM2Ep
- Zud+GMlQP0664OwLnPwOKpjP7+7qP0774BeW9RwFMZq54JYPssN5b1nfJ
- i+ekHuUIHXPbjLj1IPkbtE8yAYYJYwptpPgshU/CSUP9S297mv3IJ8j7p
- aZgBECHm+Ec/kS6CkenjKAdt1FAze85Rzc0Z+nn/r5jvRK5Jkg1WCYoET
- I5WQwDu7eOERh0YuYB2x2YR/O/uRPt81Lgo8+CPITjYZto6LsES/csaww
- JemuTI9NN1Km9ZZZPGN2EP+GZgZA7SCbnqTIOPqg1G3jM3/DafhmvKVzC Q==;
-X-CSE-ConnectionGUID: ANLZWfwZROuIk/oOPgY/8w==
-X-CSE-MsgGUID: eBgDer5OQqikl+weRVnbvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="44062101"
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="44062101"
+ b=jNnATZeeh647PlzmaVLka9jekMD0Nx8QWpog6ruXwZF7vIA0iV0o3lEB
+ KU5jmXibMH+LJByznE+1THAQy8MU8BUJpYySAUk8J5MjOUEH2PIZwJffG
+ oenc8VgI4GlpsHRrEgCsSN1ziXl9SqY3z/L5RauA8DAj96owKTETiD4Us
+ 9/ZtcMxIKEW6RO4lbVuoBQ2/OGpGaJD04gmMCXA9SjBzQ/bUpuYfDycbO
+ T0AN9RofI3M5zvH+WHh2LHemKh5votNggnzZUp6Kdof7ooOh9793MVaJe
+ iLEctqrrEDRiNBOXmddpd61e5Vq0vFqsfErurD/Y8SmvpBSC+txRm3sfU A==;
+X-CSE-ConnectionGUID: RaKYRq/6QEuW8WYoXJIOpQ==
+X-CSE-MsgGUID: +aHswSKVSsGrs735zfc4Ow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="44062102"
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="44062102"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 19:47:32 -0800
-X-CSE-ConnectionGUID: iHtxv7bPTN+1kuF+RAQqKw==
-X-CSE-MsgGUID: dUm3SqgDTlWi2JDqFRaLCQ==
+ 02 Dec 2024 19:47:34 -0800
+X-CSE-ConnectionGUID: IqveSbskSE6p8pfrY4PPgw==
+X-CSE-MsgGUID: Xh+UkRqLRECN+Tt+Kk9fFg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="93217166"
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="93217174"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
  by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 19:47:30 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 19:47:32 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 Subject: [PATCH i-g-t v6 1/1] tests/intel/kms_joiner: switch modeset between
- uj and bj
-Date: Tue,  3 Dec 2024 09:12:17 +0530
-Message-Id: <20241203034218.53066-2-santhosh.reddy.guddati@intel.com>
+ ultra and big joiner
+Date: Tue,  3 Dec 2024 09:12:18 +0530
+Message-Id: <20241203034218.53066-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241203034218.53066-1-santhosh.reddy.guddati@intel.com>
 References: <20241203034218.53066-1-santhosh.reddy.guddati@intel.com>
