@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D2FFE7716C
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 10:18:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A82FE77170
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 10:18:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD5BC10E3AA;
-	Thu,  5 Dec 2024 10:18:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A9A610EE18;
+	Thu,  5 Dec 2024 10:18:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c6ZcLX4r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vjsq66xH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 783B110E292
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2024 14:53:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF5F210ED31
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2024 14:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733324004; x=1764860004;
+ t=1733320976; x=1764856976;
  h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=R5/gHkUSfCPFwviGwydwLgYN9dDzdwG86CWYn/TXVaU=;
- b=c6ZcLX4rb++i3+zJd6WZW7HDg0cFXJEa5lmyLevytmXsQ17B/1PQSiS4
- GB1oS8IxrlcBXjZozjAwbBs93j+u3BbTuP07HdTa+9AVeJpMPFvsy/bO3
- x5lOXqUQS6dQ0kYBcGGZr7s3VHIquZIB7H1567buUswMfAdM+OO10r4Gm
- gToekJdUN7BZY3gDssCdeTGcejtMKFUQSw71nsr0GHZI+Tjz00e7DMXzr
- T/NfGBrRcqUN8+kg7MQ880IUZ0lwM6MlCKklXBdrPSa11H3rL9dsZbxNv
- Rw1F8fcZ5RQBTsdEIb517MLDezMMFgJfw6WOdr+P+diVToeO83OB4biwr Q==;
-X-CSE-ConnectionGUID: jQMc4PvOT8meroP7JfojNg==
-X-CSE-MsgGUID: DLtCiHCBQFGcyT/ARg3CuQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="44971390"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="44971390"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2024 06:53:22 -0800
-X-CSE-ConnectionGUID: cRKRuG+OQIm4WhG9B24bmg==
-X-CSE-MsgGUID: m/L1waooSLKBjo0cBAAlgA==
+ b=Vjsq66xHBzPqrZqW8rru0iIejRBEr3yMv36RI9skSPrZmyZ8Lm2j9/3d
+ CIGu3qdKwKd6yntbZlzBfnJTiUJM0dX3YYDn+S5+nnN8UgjjShLYLYmsz
+ RgTbAiFNsuuwmtwwOwy+de/FAuCiVk73+WG+/8vrjvs0VVdHaaO4U0NC6
+ 6r4rj6k6Cpeam5UaRwvgvv7+lcI5YIZMZzjFrL8zYGsYf0X8x2FLqSI99
+ bD2yaLomBZa/iSXhIt2rIPO/zmKKGJDyuVULwL80ilRUoJSBWCLc85/ww
+ AeU5FONUAjLZgy9qnzys+2BHSq/2XHSGiULn3oRs6S0TjE+WTr1AsfBNj Q==;
+X-CSE-ConnectionGUID: P3bRA26sRHCxg1gTG7/glw==
+X-CSE-MsgGUID: zSi4dyM6QxWcOJVJCqQxwg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="21172974"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="21172974"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2024 06:02:55 -0800
+X-CSE-ConnectionGUID: yNiY5bmhSNCbuZ+EwDtmhQ==
+X-CSE-MsgGUID: U0AySr5ZQqqqlUJy7qpqOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="93675985"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="98757330"
 Received: from dut7077atsm.jf.intel.com ([10.75.201.71])
- by orviesa009.jf.intel.com with ESMTP; 04 Dec 2024 06:53:19 -0800
+ by orviesa005.jf.intel.com with ESMTP; 04 Dec 2024 06:02:55 -0800
 From: nishit.sharma@intel.com
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t] GPGPU support for MTL platform
-Date: Wed,  4 Dec 2024 14:53:19 +0000
-Message-Id: <20241204145319.2707203-1-nishit.sharma@intel.com>
+To: zbigniew.kempczynski@intel.com,
+	igt-dev@lists.freedesktop.org
+Subject: [PATCH] GPGPU support in MTL
+Date: Wed,  4 Dec 2024 14:02:54 +0000
+Message-Id: <20241204140254.2679729-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
