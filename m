@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54085E7716D
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 07:40:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8302E7716B
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 08:23:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0775810EC1B;
-	Wed,  4 Dec 2024 07:40:48 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C48310EC1B;
- Wed,  4 Dec 2024 07:40:47 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9186610E498;
+	Wed,  4 Dec 2024 08:23:36 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F+jSOTiY";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19EC510E498
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2024 08:23:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733300615; x=1764836615;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=j5jwFleCraOLhJ2e2t+Thp0hobqT1NUauNwdd1KFTkA=;
+ b=F+jSOTiY3Nkc/wlX3LwmdUxzeH1Kqi/qmQRzPRJAsScbiZCg//lrkTHQ
+ FBZbbYQzle8xm+oHKr7r2kumg6qvQuS0pSwmWXYhu3B36bXuNXtZA09Rf
+ YReUuYaW1fTHl/mOLaVFMIRDVQ+svHnysHZC56tpAt4Vv89H1aI3X2QXB
+ V1puyVMBHTdJ7XaJ4wl/hRKvYylTg2nNeJvP/h8niADHGdSDNK5KV3IcQ
+ /vzrsvO0phYIYG4fPTCXhJVvpQScbEB8ihL4CzGrzeS3AgRBHgvPFTbUb
+ VmcHO2TiX7bR7LT4cHT4If6f/LneV6W4hvxvonaZh+IAw8Y2TDHz7GlGJ A==;
+X-CSE-ConnectionGUID: ozanjAJHTaqiR6PF6XcHEg==
+X-CSE-MsgGUID: hsvrwhLpSrOBDlkmUA2eWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44163530"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="44163530"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2024 00:23:34 -0800
+X-CSE-ConnectionGUID: 4SyTH3T+SmWbzbKhysqqXw==
+X-CSE-MsgGUID: uEMFD+5ASOCfWdhWVdmp/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="98768687"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 00:23:34 -0800
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com,
+	Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,v9 0/9] Add new test to validate adaptive sharpness
+Date: Wed,  4 Dec 2024 13:56:18 +0530
+Message-Id: <20241204082627.1800617-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Skip_test_if_joiner_displ?=
- =?utf-8?q?ay_is_connected_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 04 Dec 2024 07:40:47 -0000
-Message-ID: <173329804716.2333621.3957034994737510864@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241204060924.1155970-1-jeevan.b@intel.com>
-In-Reply-To: <20241204060924.1155970-1-jeevan.b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,225 +63,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+New test is added to validate adaptive sharpness filter on
+LNL platform. Pipe scaler is repurposed to perform a portion
+of this work. This means pipe scaling will be unavailable while
+the sharpening function is being used. The other scaler can be
+used for plane scaler.
 
-Series: Skip test if joiner display is connected (rev6)
-URL   : https://patchwork.freedesktop.org/series/141614/
-State : success
+In this series, attempt is made to validate adaptive sharpness
+solution which helps in improving the image quality. For this new
+CRTC property is added. The user can set this property with desired
+sharpness strength value with 0-255. A value of 1 representing
+minimum sharpening strength and 255 representing maximum
+sharpness strength. A strength value of 0 means no sharpening or
+sharpening feature disabled.
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8136 -> IGTPW_12240
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_12240 need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12240, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/index.html
-
-Participating hosts (42 -> 41)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12240:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - fi-pnv-d510:        [ABORT][1] ([i915#13203]) -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/fi-pnv-d510/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/fi-pnv-d510/igt@i915_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12240 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-arls-5:         NOTRUN -> [SKIP][3] ([i915#9318])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@eof:
-    - bat-arls-5:         NOTRUN -> [SKIP][4] ([i915#11191] / [i915#11345]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@fbdev@eof.html
-
-  * igt@fbdev@info:
-    - bat-arls-5:         NOTRUN -> [SKIP][5] ([i915#1849])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@fbdev@info.html
-
-  * igt@gem_lmem_swapping@basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][6] ([i915#10213] / [i915#11671]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_mmap@basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][7] ([i915#11343] / [i915#4083])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_mmap@basic.html
-
-  * igt@gem_render_tiled_blits@basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][8] ([i915#10197] / [i915#10211] / [i915#4079])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_render_tiled_blits@basic.html
-
-  * igt@gem_tiled_blits@basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][9] ([i915#12637] / [i915#4077]) +2 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_tiled_blits@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][10] ([i915#10206] / [i915#4079])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [PASS][11] -> [FAIL][12] ([i915#12903])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-arls-5:         NOTRUN -> [SKIP][13] ([i915#10209] / [i915#11681])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@i915_pm_rps@basic-api.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-arls-5:         NOTRUN -> [SKIP][14] ([i915#10200] / [i915#12203])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@clobberred-modifier:
-    - bat-arls-5:         NOTRUN -> [SKIP][15] ([i915#10200]) +8 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_addfb_basic@clobberred-modifier.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][16] ([i915#12732]) +16 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-arls-5:         NOTRUN -> [SKIP][17] ([i915#3637]) +3 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-arls-5:         NOTRUN -> [SKIP][18] ([i915#10207])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-arls-5:         NOTRUN -> [SKIP][19] ([i915#4342] / [i915#5354])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [PASS][20] -> [SKIP][21] ([i915#9197]) +3 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-arls-5:         NOTRUN -> [SKIP][22] ([i915#9812])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - bat-arls-5:         NOTRUN -> [SKIP][23] ([i915#9732]) +3 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_psr@psr-primary-page-flip.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-arls-5:         NOTRUN -> [SKIP][24] ([i915#10208] / [i915#8809])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-arls-5:         NOTRUN -> [SKIP][25] ([i915#12732] / [i915#3708])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-arls-5:         NOTRUN -> [SKIP][26] ([i915#10212] / [i915#3708])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-fence-read.html
-
-  * igt@prime_vgem@basic-gtt:
-    - bat-arls-5:         NOTRUN -> [SKIP][27] ([i915#12637] / [i915#3708] / [i915#4077]) +1 other test skip
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-gtt.html
-
-  * igt@prime_vgem@basic-read:
-    - bat-arls-5:         NOTRUN -> [SKIP][28] ([i915#10214] / [i915#3708])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-read.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-arls-5:         NOTRUN -> [SKIP][29] ([i915#10216] / [i915#3708])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [ABORT][30] ([i915#12061]) -> [PASS][31] +1 other test pass
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-mtlp-8/igt@i915_selftest@live.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-mtlp-8/igt@i915_selftest@live.html
-
-  
-  [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
-  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
-  [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
-  [i915#10207]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10207
-  [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
-  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
-  [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
-  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
-  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
-  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
-  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
-  [i915#11191]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11191
-  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
-  [i915#11345]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11345
-  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
-  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
-  [i915#12637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637
-  [i915#12732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12732
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
-  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
+KMD: https://patchwork.freedesktop.org/series/138754/
 
 
-Build changes
--------------
+Swati Sharma (9):
+  lib/igt_kms: Add "sharpness strength" as crtc property
+  lib/igt_kms: Add func() to return scaling mode name string
+  tests/kms_sharpness_filter: Add adaptive sharpness basic filter tests
+  tests/kms_sharpness_filter: Add toggle subtest
+  tests/kms_sharpness_filter: Add filter-tap subtest
+  tests/kms_sharpness_filter: Add dpms/suspend subtests
+  tests/kms_sharpness_filter: Add scaler subtests
+  tests/kms_sharpness_filter: Add invalid subtests
+  tests/chamelium/kms_chamelium_sharpness_filter: Add basic test
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8136 -> IGTPW_12240
-  * Linux: CI_DRM_15778 -> CI_DRM_15783
+ lib/igt_kms.c                                 |  23 +
+ lib/igt_kms.h                                 |   2 +
+ .../kms_chamelium_sharpness_filter.c          | 240 ++++++
+ tests/kms_sharpness_filter.c                  | 755 ++++++++++++++++++
+ tests/meson.build                             |   3 +
+ 5 files changed, 1023 insertions(+)
+ create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
+ create mode 100644 tests/kms_sharpness_filter.c
 
-  CI-20190529: 20190529
-  CI_DRM_15778: 5779fb3c12faf12589054127d60b1d36d56ba219 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15783: 40be916657d26be563dbbd2b618cc398ea9aeb33 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12240: 29060abd6f510f1605c9e6bf366d17d4894efc92 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8136: 21076ee09438af484c58b308d8179277503922f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+-- 
+2.25.1
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/index.html
