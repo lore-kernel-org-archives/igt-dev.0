@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08100E7716D
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 08:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A937AE7716B
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 09:09:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B63FC10EC54;
-	Wed,  4 Dec 2024 08:23:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5049C10E175;
+	Wed,  4 Dec 2024 09:09:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LOOlW4VG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="agWipqAE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C54510EC54
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2024 08:23:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEC2810E175
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2024 09:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733300630; x=1764836630;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=8m4VGDw8LvabvMHnAfuhogBj0Sq/jpYfjLQLQN7iruM=;
- b=LOOlW4VG9lzYHHbtpWeKOSx4rOJ77jbMV/ViEnUOXGOSe1hR9FdtgQrL
- +AmPWKqdb7e5e0/a7EH1NRkXOweSV3bw9G42BWRevWeEP71NPvocx5Psq
- 54CdcLw6GEeTukKH2lZO9Z+fH0ODfGN9A7d2W2yhq8dO5mIW4tAJcST3w
- 2PwhnLp8W55VVd9RXUkvnPO0hJv8ApG8HcpEdjVZfpeq1+HY5H4QX3XeF
- WlXwMjFF1ryf1Cpz3BTEtonLu/8T9zsp6Ghb8cQLZdR02DXl6qm9aJe9A
- aKWR6Bc1g4jY+QIighLB7W1lBwC94SYH3qJra72MVQY2wkJghRw6J9+fk w==;
-X-CSE-ConnectionGUID: rzf71SOnRsWXwY5KvJ18Xg==
-X-CSE-MsgGUID: PTayc4Y0RluXlSuR5IxwOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44163552"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="44163552"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2024 00:23:50 -0800
-X-CSE-ConnectionGUID: v0Q9uP/DQVSJC2CBLgE7IA==
-X-CSE-MsgGUID: YIjuiWbwRw2G6yDZH77i9g==
+ t=1733303387; x=1764839387;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=UkxM2mJnDbgo315DJecGD5eWRCncZasaJx1/5ZgXUHY=;
+ b=agWipqAErBkkVVuD7r5mpOwx/ddsQ0RwTtj1GHE7++TP4HpaZeKhVd/U
+ ly0a3eprn2YF7reqYIFRzY+gHECQYUnv2FKk4HIpEEYLBCQZrG5RG7czx
+ GJhN2C0IDSYbNGWnGPj9F2h4P7eTe05xQvbDnXXibF7FtcRDAakomyb2A
+ QyzS3I1vZrssV10Q8Buzb+JrnwjyJgmhTCYb2vhpwnMUxJQiqIImhwBcS
+ 6gHPsfO/OnCy6B59sIN4ezsNN0cidIePAgQ2pIO+t7K/OFGLVxTuyIl/b
+ N/65qlAiyO7wumqo9ByDqWJAnqyhLzAeM6eKLX7yET2Qft21gzjb6A0fV g==;
+X-CSE-ConnectionGUID: iUwMQJP/TS2AeU61CcxRSg==
+X-CSE-MsgGUID: C+/jNvs1Spy5N9ABV161FQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44036079"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="44036079"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2024 01:09:47 -0800
+X-CSE-ConnectionGUID: bHcnP+24QZKd+aTeqY6FKA==
+X-CSE-MsgGUID: gxvwjIefQaich8G5tC7cSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="98768758"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 00:23:49 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com,
-	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 9/9] tests/chamelium/kms_chamelium_sharpness_filter: Add
- basic test
-Date: Wed,  4 Dec 2024 13:56:27 +0530
-Message-Id: <20241204082627.1800617-10-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241204082627.1800617-1-swati2.sharma@intel.com>
-References: <20241204082627.1800617-1-swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="93551291"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.190])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2024 01:09:45 -0800
+Date: Wed, 4 Dec 2024 10:09:41 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Pravalika Gurram <pravalika.gurram@intel.com>
+Cc: lucas.demarchi@intel.com, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH 1/2] lib/xe/xe_spin: move the spinner related functions
+ to lib
+Message-ID: <20241204090941.mg7sagkukuwpvfzx@zkempczy-mobl2>
+References: <20241113175207.399101-1-pravalika.gurram@intel.com>
+ <20241113175207.399101-2-pravalika.gurram@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241113175207.399101-2-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,292 +70,619 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new chamelium based sharpness test. Basic test is added where
-we have tried comparing frame dump of unsharped and sharped image.
-After, sharpness filter is applied its expected both frame dumps
-will be different.
+On Wed, Nov 13, 2024 at 11:22:06PM +0530, Pravalika Gurram wrote:
+> move spin_ctx_init,spin_ctx_start,spin_ctx_end,spin_ctx_destroy
+> to xe spin lib to avoid code redundancy.
+> 
+> v2: use allocator based on developer preference.
+>     change spin_ctx to xe_spin_ctx to avoid name clashes [Zbigniew]
+> v3: Integrate spin_ctx to xe_cork
+>     use designated structure initialization for optional arg [Lucas]
+> 
+> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 
-v2: -removed MIN/MAX_FILTER_STRENGTH (Ankit)
-    -fixed alignment (Ankit)
-    -removed commit with fb_ref (Ankit)
-    -set data->pipe_id (Ankit)
-    -removed disable_filter_strength_on_pipe()
-    -fixed CRASH
-    -fixed assert condition
+In the past I've also kept versioning in the commit message but now I
+think better is to just keep it under three lines so finally it won't
+be a part of the commit. I mean commit shouldn't be polluted with
+history of the patch. If someone will be interested link to lore may
+be added by b4 on merge time.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- .../kms_chamelium_sharpness_filter.c          | 240 ++++++++++++++++++
- tests/meson.build                             |   2 +
- 2 files changed, 242 insertions(+)
- create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
+> ---
+>  lib/xe/xe_spin.c            | 116 +++++++++++++++++++++
+>  lib/xe/xe_spin.h            |  40 ++++++--
+>  tests/intel/xe_drm_fdinfo.c | 200 +++++++-----------------------------
+>  3 files changed, 183 insertions(+), 173 deletions(-)
+> 
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 3adacc3a8..41679d9c6 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -292,6 +292,122 @@ void xe_spin_free(int fd, struct igt_spin *spin)
+>  	free(spin);
+>  }
+>  
+> +struct xe_cork *
+> +xe_spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe,
+> +		uint32_t vm, uint16_t width, uint16_t num_placements,
+> +		struct xe_cork_opts *opts)
 
-diff --git a/tests/chamelium/kms_chamelium_sharpness_filter.c b/tests/chamelium/kms_chamelium_sharpness_filter.c
-new file mode 100644
-index 000000000..d7316723a
---- /dev/null
-+++ b/tests/chamelium/kms_chamelium_sharpness_filter.c
-@@ -0,0 +1,240 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms chamelium sharpness filter
-+ * Category: Display
-+ * Description: Test to validate content adaptive sharpness filter using Chamelium
-+ * Driver requirement: xe
-+ * Functionality: chamelium, casf
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+/**
-+ * SUBTEST: filter-basic
-+ * Description: Verify basic content adaptive sharpness filter.
-+ */
-+
-+IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter using Chamelium");
-+
-+#define MID_FILTER_STRENGTH		128
-+
-+typedef struct {
-+	int drm_fd;
-+	enum pipe pipe_id;
-+	struct igt_fb fb, fb_ref;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int filter_strength;
-+	struct chamelium *chamelium;
-+	struct chamelium_port **ports;
-+	int port_count;
-+} data_t;
-+
-+static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
-+{
-+	bool ret = true;
-+
-+	igt_output_set_pipe(data->output, pipe);
-+	if (!intel_pipe_output_combo_valid(&data->display))
-+		ret = false;
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
-+static void set_filter_strength_on_pipe(data_t *data)
-+{
-+	igt_pipe_set_prop_value(&data->display, data->pipe_id,
-+				IGT_CRTC_SHARPNESS_STRENGTH,
-+				data->filter_strength);
-+}
-+
-+static void paint_image(igt_fb_t *fb)
-+{
-+	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
-+	int img_x, img_y, img_w, img_h;
-+	const char *file = "1080p-left.png";
-+
-+	img_x = img_y = 0;
-+	img_w = fb->width;
-+	img_h = fb->height;
-+
-+	igt_paint_image(cr, file, img_x, img_y, img_w, img_h);
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
-+static void setup_fb(int fd, int width, int height, uint32_t format,
-+		     uint64_t modifier, struct igt_fb *fb)
-+{
-+	int fb_id;
-+
-+	fb_id = igt_create_fb(fd, width, height, format, modifier, fb);
-+	igt_assert(fb_id);
-+
-+	paint_image(fb);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fb);
-+	igt_remove_fb(data->drm_fd, &data->fb_ref);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_output_override_mode(data->output, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+
-+static bool test_t(data_t *data, igt_plane_t *primary,
-+		   struct chamelium_port *port)
-+{
-+	struct chamelium_frame_dump *dump;
-+	drmModeModeInfo *mode;
-+	int height, width;
-+	bool ret = false;
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	mode = igt_output_get_mode(data->output);
-+	height = mode->hdisplay;
-+	width = mode->vdisplay;
-+
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb_ref);
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
-+
-+	igt_plane_set_fb(data->primary, &data->fb);
-+	set_filter_strength_on_pipe(data);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_debug("Reading frame dumps from Chamelium...\n");
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	dump = chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	ret = chamelium_frame_match_or_dump(data->chamelium, port,
-+					    dump, &data->fb_ref,
-+					    CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(dump);
-+	cleanup(data);
-+
-+	return ret;
-+}
-+
-+static int test_setup(data_t *data, enum pipe p)
-+{
-+	igt_pipe_t *pipe;
-+	int i = 0;
-+
-+	igt_display_reset(&data->display);
-+	igt_modeset_disable_all_outputs(&data->display);
-+	chamelium_reset_state(&data->display, data->chamelium, NULL,
-+			      data->ports, data->port_count);
-+
-+	pipe = &data->display.pipes[p];
-+	igt_require(pipe->n_planes >= 0);
-+
-+	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(data->primary);
-+
-+	/*
-+	 * Prefer to run this test on HDMI connector if its connected, since on DP we
-+	 * sometimes face DP FSM issue
-+	 */
-+        for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+                for (i = 0; i < data->port_count; i++) {
-+                        if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-+			    data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
-+			    strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
-+                                return i;
-+                }
-+        }
-+
-+	for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+		for (i = 0; i < data->port_count; i++) {
-+			if (strcmp(data->output->name,
-+				   chamelium_port_get_name(data->ports[i])) == 0)
-+				return i;
-+		}
-+	}
-+
-+	return -1;
-+}
-+
-+static void test_sharpness_filter(data_t *data,  enum pipe p)
-+{
-+	int port_idx = test_setup(data, p);
-+
-+	igt_require(port_idx >= 0);
-+	igt_require(igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_SHARPNESS_STRENGTH));
-+
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
-+
-+	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
-+		igt_assert_f(!(test_t(data, data->primary, data->ports[port_idx]) == 1), "No sharpness observed.\n");
-+}
-+
-+static void
-+run_sharpness_filter_test(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	enum pipe pipe;
-+
-+	igt_describe("Verify basic content adaptive sharpness filter.");
-+	igt_subtest_with_dynamic("filter-basic") {
-+		for_each_pipe(display, pipe) {
-+			data->filter_strength = MID_FILTER_STRENGTH;
-+			test_sharpness_filter(data, pipe);
-+		}
-+	}
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+
-+		igt_chamelium_allow_fsm_handling = false;
-+
-+		/* we need to initalize chamelium after igt_display_require */
-+		data.chamelium = chamelium_init(data.drm_fd, &data.display);
-+		igt_require(data.chamelium);
-+
-+		data.ports = chamelium_get_ports(data.chamelium,
-+						 &data.port_count);
-+
-+		if (!data.port_count)
-+			igt_skip("No ports connected\n");
-+		/*
-+		 * We don't cause any harm by plugging
-+		 * discovered ports, just incase they are not plugged
-+		 * we currently skip in test_setup
-+		 */
-+		for(int i = 0; i < data.port_count; i++)
-+			chamelium_plug(data.chamelium, data.ports[i]);
-+
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	run_sharpness_filter_test(&data);
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 84d8bed4b..0a336c2c1 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -340,6 +340,7 @@ chamelium_progs = [
- 	'kms_chamelium_edid',
- 	'kms_chamelium_frames',
- 	'kms_chamelium_hpd',
-+	'kms_chamelium_sharpness_filter',
- ]
- 
- test_deps = [ igt_deps ]
-@@ -365,6 +366,7 @@ extra_sources = {
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
-+	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
- 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
- }
--- 
-2.25.1
+I think this should be prefixed by xe_cork_...() as you're returning
+xe_cork structure. And likely I would rename this to xe_cork_create()
+as you're allocating the memory inside the function.
 
+I've roughly took a look to xe_vm.c xe_cork usage and it seems it might
+be replaced by this code. Only some options should be passed in
+xe_cork_opts (write_timestamp, preempt, ahnd).
+
+> +{
+> +	struct xe_cork *ctx = calloc(1, sizeof(*ctx));
+> +
+> +	igt_assert(width && num_placements &&
+> +		   (width == 1 || num_placements == 1));
+> +	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
+> +
+> +	ctx->class = hwe->engine_class;
+> +	ctx->width = width;
+> +	ctx->num_placements = num_placements;
+> +	ctx->vm = vm;
+
+You should collect ahnd as well to remove offset from the allocator
+on the spinner completion.
+
+> +
+> +	ctx->exec.num_batch_buffer = width;
+> +	ctx->exec.num_syncs = 2;
+> +	ctx->exec.syncs = to_user_pointer(ctx->sync);
+> +
+> +	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> +	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> +	ctx->sync[0].handle = syncobj_create(fd, 0);
+> +
+> +	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> +	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> +	ctx->sync[1].handle = syncobj_create(fd, 0);
+> +
+> +	ctx->bo_size = sizeof(struct xe_spin);
+> +	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
+> +	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
+> +			       vram_if_possible(fd, hwe->gt_id),
+> +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	if (opts->ahnd) {
+> +		for (unsigned int i = 0; i < width; i++)
+> +			ctx->addr[i] = intel_allocator_alloc_with_strategy(opts->ahnd,
+> +					ctx->bo, ctx->bo_size, 0,
+> +					ALLOC_STRATEGY_LOW_TO_HIGH);
+> +	} else {
+> +		for (unsigned int i = 0; i < width; i++)
+> +			ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
+> +	}
+> +
+> +	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
+> +
+> +	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
+> +					     hwe, 0, &ctx->exec_queue), 0);
+> +
+> +	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
+> +			 ctx->sync, 1);
+> +
+> +	return ctx;
+> +}
+> +
+> +void xe_spin_sync_start(int fd, struct xe_cork *ctx)
+
+xe_cork_sync_start() or xe_cork_start() if you'll be able to replace
+xe_vm.c xe_cork current usage to use this code.
+
+> +{
+> +	if (!ctx)
+> +		return;
+> +
+> +	ctx->spin_opts.addr = ctx->addr[0];
+> +	ctx->spin_opts.write_timestamp = true;
+> +	ctx->spin_opts.preempt = true;
+> +	xe_spin_init(ctx->spin, &ctx->spin_opts);
+> +
+> +	/* re-use sync[0] for exec */
+> +	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> +
+> +	ctx->exec.exec_queue_id = ctx->exec_queue;
+> +
+> +	if (ctx->width > 1)
+> +		ctx->exec.address = to_user_pointer(ctx->addr);
+> +	else
+> +		ctx->exec.address = ctx->addr[0];
+> +
+> +	xe_exec(fd, &ctx->exec);
+> +
+> +	xe_spin_wait_started(ctx->spin);
+> +	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
+> +
+> +	igt_debug("%d: spinner started\n", ctx->class);
+
+I would add .debug option to xe_cork_opts to allow user to print debug
+if necessary.
+
+> +}
+> +
+> +void xe_spin_sync_end(int fd, struct xe_cork *ctx)
+
+Similar to above - xe_cork_sync_end() or xe_cork_end().
+
+> +{
+> +	if (!ctx || ctx->ended)
+> +		return;
+> +
+> +	xe_spin_end(ctx->spin);
+> +
+> +	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
+> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> +	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
+> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+
+You should remove address from the allocator if ahnd != 0.
+
+> +
+> +	ctx->ended = true;
+> +	igt_debug("%d: spinner ended (timestamp=%u)\n", ctx->class,
+> +		  ctx->spin->timestamp);
+
+Print this only if user will use .debug option.
+
+> +}
+> +
+> +void xe_spin_ctx_destroy(int fd, struct xe_cork *ctx)
+
+xe_cork_destroy().
+
+> +{
+> +	if (!ctx)
+> +		return;
+> +
+> +	syncobj_destroy(fd, ctx->sync[0].handle);
+> +	syncobj_destroy(fd, ctx->sync[1].handle);
+> +	xe_exec_queue_destroy(fd, ctx->exec_queue);
+> +
+> +	munmap(ctx->spin, ctx->bo_size);
+> +	gem_close(fd, ctx->bo);
+> +
+> +	free(ctx);
+> +}
+> +
+>  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  		  struct xe_cork *cork)
+
+Think how to switch to above code and drop this.
+
+--
+Zbigniew
+
+>  {
+> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> index d65adb05c..21488b071 100644
+> --- a/lib/xe/xe_spin.h
+> +++ b/lib/xe/xe_spin.h
+> @@ -32,6 +32,10 @@ struct xe_spin_opts {
+>  	bool write_timestamp;
+>  };
+>  
+> +struct xe_cork_opts {
+> +	uint64_t ahnd;
+> +};
+> +
+>  /* Mapped GPU object */
+>  struct xe_spin {
+>  	uint32_t batch[128];
+> @@ -43,9 +47,35 @@ struct xe_spin {
+>  	uint32_t timestamp;
+>  };
+>  
+> +struct xe_cork {
+> +	struct xe_spin *spin;
+> +	int fd;
+> +	uint32_t vm;
+> +	uint32_t bo;
+> +	uint32_t exec_queue;
+> +	uint32_t syncobj;
+> +	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
+> +	struct drm_xe_sync sync[2];
+> +	struct drm_xe_exec exec;
+> +	size_t bo_size;
+> +	struct xe_spin_opts spin_opts;
+> +	bool ended;
+> +	uint16_t class;
+> +	uint16_t width;
+> +	uint16_t num_placements;
+> +};
+> +
+>  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+>  uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
+>  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+> +struct xe_cork *
+> +xe_spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
+> +	      uint16_t width, uint16_t num_placements, struct xe_cork_opts *opts);
+> +void xe_spin_ctx_destroy(int fd, struct xe_cork *ctx);
+> +
+> +#define xe_spin_ctx_init_opts(fd, hwe, vm, width, num_placements, ...) \
+> +	xe_spin_ctx_init(fd, hwe, vm, width, num_placements, \
+> +			&((struct xe_cork_opts){__VA_ARGS__}))
+>  
+>  #define xe_spin_init_opts(fd, ...) \
+>  	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
+> @@ -55,15 +85,9 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>  void xe_spin_wait_started(struct xe_spin *spin);
+>  void xe_spin_end(struct xe_spin *spin);
+>  void xe_spin_free(int fd, struct igt_spin *spin);
+> +void xe_spin_sync_start(int fd, struct xe_cork *ctx);
+> +void xe_spin_sync_end(int fd, struct xe_cork *ctx);
+>  
+> -struct xe_cork {
+> -	struct xe_spin *spin;
+> -	int fd;
+> -	uint32_t vm;
+> -	uint32_t bo;
+> -	uint32_t exec_queue;
+> -	uint32_t syncobj;
+> -};
+>  
+>  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  		  struct xe_cork *cork);
+> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+> index 5fd7c0416..d7d392000 100644
+> --- a/tests/intel/xe_drm_fdinfo.c
+> +++ b/tests/intel/xe_drm_fdinfo.c
+> @@ -367,133 +367,6 @@ static void basic_engine_utilization(int xe)
+>  	igt_require(info.num_engines);
+>  }
+>  
+> -struct spin_ctx {
+> -	uint32_t vm;
+> -	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
+> -	struct drm_xe_sync sync[2];
+> -	struct drm_xe_exec exec;
+> -	uint32_t exec_queue;
+> -	size_t bo_size;
+> -	uint32_t bo;
+> -	struct xe_spin *spin;
+> -	struct xe_spin_opts spin_opts;
+> -	bool ended;
+> -	uint16_t class;
+> -	uint16_t width;
+> -	uint16_t num_placements;
+> -};
+> -
+> -static struct spin_ctx *
+> -spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
+> -	      uint16_t width, uint16_t num_placements)
+> -{
+> -	struct spin_ctx *ctx = calloc(1, sizeof(*ctx));
+> -
+> -	igt_assert(width && num_placements &&
+> -		   (width == 1 || num_placements == 1));
+> -	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
+> -
+> -	ctx->class = hwe->engine_class;
+> -	ctx->width = width;
+> -	ctx->num_placements = num_placements;
+> -	ctx->vm = vm;
+> -
+> -	for (unsigned int i = 0; i < width; i++)
+> -		ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
+> -
+> -	ctx->exec.num_batch_buffer = width;
+> -	ctx->exec.num_syncs = 2;
+> -	ctx->exec.syncs = to_user_pointer(ctx->sync);
+> -
+> -	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> -	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> -	ctx->sync[0].handle = syncobj_create(fd, 0);
+> -
+> -	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> -	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> -	ctx->sync[1].handle = syncobj_create(fd, 0);
+> -
+> -	ctx->bo_size = sizeof(struct xe_spin);
+> -	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
+> -	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
+> -			       vram_if_possible(fd, hwe->gt_id),
+> -			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> -	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
+> -
+> -	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
+> -					     hwe, 0, &ctx->exec_queue), 0);
+> -
+> -	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
+> -			 ctx->sync, 1);
+> -
+> -	return ctx;
+> -}
+> -
+> -static void
+> -spin_sync_start(int fd, struct spin_ctx *ctx)
+> -{
+> -	if (!ctx)
+> -		return;
+> -
+> -	ctx->spin_opts.addr = ctx->addr[0];
+> -	ctx->spin_opts.write_timestamp = true;
+> -	ctx->spin_opts.preempt = true;
+> -	xe_spin_init(ctx->spin, &ctx->spin_opts);
+> -
+> -	/* re-use sync[0] for exec */
+> -	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> -
+> -	ctx->exec.exec_queue_id = ctx->exec_queue;
+> -
+> -	if (ctx->width > 1)
+> -		ctx->exec.address = to_user_pointer(ctx->addr);
+> -	else
+> -		ctx->exec.address = ctx->addr[0];
+> -
+> -	xe_exec(fd, &ctx->exec);
+> -
+> -	xe_spin_wait_started(ctx->spin);
+> -	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
+> -
+> -	igt_debug("%s: spinner started\n", engine_map[ctx->class]);
+> -}
+> -
+> -static void
+> -spin_sync_end(int fd, struct spin_ctx *ctx)
+> -{
+> -	if (!ctx || ctx->ended)
+> -		return;
+> -
+> -	xe_spin_end(ctx->spin);
+> -
+> -	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
+> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> -
+> -	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> -	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
+> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+> -
+> -	ctx->ended = true;
+> -	igt_debug("%s: spinner ended (timestamp=%u)\n", engine_map[ctx->class],
+> -		  ctx->spin->timestamp);
+> -}
+> -
+> -static void
+> -spin_ctx_destroy(int fd, struct spin_ctx *ctx)
+> -{
+> -	if (!ctx)
+> -		return;
+> -
+> -	syncobj_destroy(fd, ctx->sync[0].handle);
+> -	syncobj_destroy(fd, ctx->sync[1].handle);
+> -	xe_exec_queue_destroy(fd, ctx->exec_queue);
+> -
+> -	munmap(ctx->spin, ctx->bo_size);
+> -	gem_close(fd, ctx->bo);
+> -
+> -	free(ctx);
+> -}
+> -
+>  static void
+>  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+>  	      int class, int width, enum expected_load expected_load)
+> @@ -535,7 +408,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  {
+>  	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	enum expected_load expected_load;
+>  	uint32_t vm;
+>  	int new_fd;
+> @@ -545,8 +418,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+>  	if (flags & TEST_BUSY) {
+> -		ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -		spin_sync_start(fd, ctx);
+> +		ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +		xe_spin_sync_start(fd, ctx);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu1[0]);
+> @@ -555,7 +428,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  
+>  	usleep(batch_duration_usec);
+>  	if (flags & TEST_TRAILING_IDLE)
+> -		spin_sync_end(fd, ctx);
+> +		xe_spin_sync_end(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu2[0]);
+>  	if (flags & TEST_ISOLATION)
+> @@ -574,8 +447,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>  		close(new_fd);
+>  	}
+>  
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> @@ -584,19 +457,19 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	uint32_t vm;
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -	spin_sync_start(fd, ctx);
+> +	ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +	xe_spin_sync_start(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+>  
+>  	/* destroy queue before sampling again */
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu2);
+>  
+> @@ -610,18 +483,17 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	uint32_t vm;
+>  	int class;
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+> -
+> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -	spin_sync_start(fd, ctx);
+> +	ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +	xe_spin_sync_start(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+> -	spin_sync_end(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+>  	read_engine_cycles(fd, pceu2);
+>  
+>  	xe_for_each_engine_class(class) {
+> @@ -631,8 +503,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+>  		check_results(pceu1, pceu2, class, 1, expected_load);
+>  	}
+>  
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> @@ -641,7 +513,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+>  	struct drm_xe_engine_class_instance *_hwe;
+>  	uint32_t vm;
+>  	int class;
+> @@ -654,15 +526,14 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>  
+>  		if (_class == hwe->engine_class || ctx[_class])
+>  			continue;
+> -
+> -		ctx[_class] = spin_ctx_init(fd, _hwe, vm, 1, 1);
+> -		spin_sync_start(fd, ctx[_class]);
+> +		ctx[_class] = xe_spin_ctx_init_opts(fd, _hwe, vm, 1, 1);
+> +		xe_spin_sync_start(fd, ctx[_class]);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+>  	xe_for_each_engine_class(class)
+> -		spin_sync_end(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+>  	read_engine_cycles(fd, pceu2);
+>  
+>  	xe_for_each_engine_class(class) {
+> @@ -673,8 +544,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>  			continue;
+>  
+>  		check_results(pceu1, pceu2, class, 1, expected_load);
+> -		spin_sync_end(fd, ctx[class]);
+> -		spin_ctx_destroy(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+> +		xe_spin_ctx_destroy(fd, ctx[class]);
+>  	}
+>  
+>  	xe_vm_destroy(fd, vm);
+> @@ -685,7 +556,7 @@ utilization_all_full_load(int fd)
+>  {
+>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	uint32_t vm;
+>  	int class;
+> @@ -697,15 +568,14 @@ utilization_all_full_load(int fd)
+>  		class = hwe->engine_class;
+>  		if (ctx[class])
+>  			continue;
+> -
+> -		ctx[class] = spin_ctx_init(fd, hwe, vm, 1, 1);
+> -		spin_sync_start(fd, ctx[class]);
+> +		ctx[class] = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
+> +		xe_spin_sync_start(fd, ctx[class]);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu1);
+>  	usleep(batch_duration_usec);
+>  	xe_for_each_engine_class(class)
+> -		spin_sync_end(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+>  	read_engine_cycles(fd, pceu2);
+>  
+>  	xe_for_each_engine_class(class) {
+> @@ -713,8 +583,8 @@ utilization_all_full_load(int fd)
+>  			continue;
+>  
+>  		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
+> -		spin_sync_end(fd, ctx[class]);
+> -		spin_ctx_destroy(fd, ctx[class]);
+> +		xe_spin_sync_end(fd, ctx[class]);
+> +		xe_spin_ctx_destroy(fd, ctx[class]);
+>  	}
+>  
+>  	xe_vm_destroy(fd, vm);
+> @@ -741,7 +611,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>  	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
+> -	struct spin_ctx *ctx = NULL;
+> +	struct xe_cork *ctx = NULL;
+>  	enum expected_load expected_load;
+>  	int fd_spill, num_placements;
+>  	uint32_t vm;
+> @@ -767,8 +637,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  
+>  	vm = xe_vm_create(fd, 0, 0);
+>  	if (flags & TEST_BUSY) {
+> -		ctx = spin_ctx_init(fd, eci, vm, width, num_placements);
+> -		spin_sync_start(fd, ctx);
+> +		ctx = xe_spin_ctx_init_opts(fd, eci, vm, width, num_placements);
+> +		xe_spin_sync_start(fd, ctx);
+>  	}
+>  
+>  	read_engine_cycles(fd, pceu[0]);
+> @@ -777,7 +647,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  
+>  	usleep(batch_duration_usec);
+>  	if (flags & TEST_TRAILING_IDLE)
+> -		spin_sync_end(fd, ctx);
+> +		xe_spin_sync_end(fd, ctx);
+>  
+>  	read_engine_cycles(fd, pceu[1]);
+>  	if (flags & TEST_ISOLATION)
+> @@ -797,8 +667,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>  		close(fd_spill);
+>  	}
+>  
+> -	spin_sync_end(fd, ctx);
+> -	spin_ctx_destroy(fd, ctx);
+> +	xe_spin_sync_end(fd, ctx);
+> +	xe_spin_ctx_destroy(fd, ctx);
+>  
+>  	xe_vm_destroy(fd, vm);
+>  }
+> -- 
+> 2.34.1
+> 
