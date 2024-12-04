@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F1EE7716D
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 19:33:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13FC9E77170
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 19:52:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5503B10E1B9;
-	Wed,  4 Dec 2024 19:33:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B434A10E1B9;
+	Wed,  4 Dec 2024 19:52:53 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44F1010E1B9;
- Wed,  4 Dec 2024 19:33:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A38810E1B9;
+ Wed,  4 Dec 2024 19:52:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6276276477255777450=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_lib/xe/xe=5Fgt=3A_Repai?=
- =?utf-8?q?r_xe=5Fgt=5Fstats=5Fget=5Fcount_function?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_test_for_configurable_O?=
+ =?utf-8?q?A_buffer_size?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
+To: "Sai Teja Pottumuttu" <sai.teja.pottumuttu@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 04 Dec 2024 19:33:45 -0000
-Message-ID: <173334082527.2641299.6147450662522368470@b555e5b46a47>
+Date: Wed, 04 Dec 2024 19:52:52 -0000
+Message-ID: <173334197249.2653444.4556535222219796359@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20241204154650.13327-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20241204154650.13327-1-jonathan.cavitt@intel.com>
+References: <20241204161606.363295-1-sai.teja.pottumuttu@intel.com>
+In-Reply-To: <20241204161606.363295-1-sai.teja.pottumuttu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,495 +41,242 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============6276276477255777450==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Series: lib/xe/xe_gt: Repair xe_gt_stats_get_count function
-URL   : https://patchwork.freedesktop.org/series/142124/
-State : warning
+== Series Details ==
 
-=3D=3D Summary =3D=3D
+Series: Add test for configurable OA buffer size
+URL   : https://patchwork.freedesktop.org/series/142128/
+State : success
 
-Pipeline status: FAILED.
+== Summary ==
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1323511 f=
-or the overview.
+CI Bug Log - changes from XEIGT_8138_BAT -> XEIGTPW_12246_BAT
+====================================================
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/67728241):
-  [4/1770] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=
-'.
-  FAILED: lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=20
-  cc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I../lib -I../include -I../inc=
-lude/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I=
-../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.=
-0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/u=
-sr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/inc=
-lude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -=
-I/usr/include/valgrind -I/usr/include/alsa -I/usr/include -fdiagnostics-col=
-or=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
-=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
--function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
-rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
-missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
-on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
-alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unu=
-sed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -=
-Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Din=
-t-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull=
- -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-poi=
-nt -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-bui=
-ltin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr=
-/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/te=
-sts"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_gt_c=
-@sta/xe_xe_gt.c.o' -MF 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o.d' -o =
-'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    close(f);
-          ^
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/include/unistd.h:353:23: note: expected =E2=80=98int=E2=80=99 but ar=
-gument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98struct _IO_FILE *=
-=E2=80=99}
-   extern int close (int __fd);
-                     ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340513:step_script
-  section_start:1733340513:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340514:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/67728244):
-  [6/1400] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=
-'.
-  FAILED: lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=20
-  /usr/bin/aarch64-linux-gnu-gcc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I=
-../lib -I../include -I../include/drm-uapi -I../include/drm-uapi-experimenta=
-l -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/include/=
-cairo -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include=
- -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/us=
-r/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/u=
-sr/include/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -f=
-diagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-p=
-ch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_S=
-OURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -W=
-implicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-form=
-at-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold=
--style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-proto=
-types -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno=
--missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-=
-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=
-=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conver=
-sion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces =
--Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werr=
-or=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builti=
-n-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIG=
-T_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-=
-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"'  -MD -MQ 'lib/76b5a3=
-5@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -MF 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe=
-_xe_gt.c.o.d' -o 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -c ../lib/x=
-e/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    close(f);
-          ^
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/aarch64-linux-gnu/include/unistd.h:353:23: note: expected =E2=80=98i=
-nt=E2=80=99 but argument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98=
-struct _IO_FILE *=E2=80=99}
-   extern int close (int __fd);
-                     ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340534:step_script
-  section_start:1733340534:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340537:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/67728243):
-  [7/1410] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=
-'.
-  FAILED: lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib =
--I../lib -I../include -I../include/drm-uapi -I../include/drm-uapi-experimen=
-tal -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/includ=
-e/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/inc=
-lude -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -=
-I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau =
--I/usr/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/usr/include/a=
-lsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winv=
-alid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FOR=
-TIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=
-=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissi=
-ng-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-extern=
-s -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstric=
-t-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitializ=
-ed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wn=
-o-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -W=
-error=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-c=
-onversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-br=
-aces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type =
--Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-b=
-uiltin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread =
-'-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds=
-/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"'  -MD -MQ 'lib/7=
-6b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -MF 'lib/76b5a35@@igt-xe_xe_gt_c@s=
-ta/xe_xe_gt.c.o.d' -o 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -c ../=
-lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    close(f);
-          ^
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/arm-linux-gnueabihf/include/unistd.h:353:23: note: expected =E2=80=
-=98int=E2=80=99 but argument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=
-=80=98struct _IO_FILE *=E2=80=99}
-   extern int close (int __fd);
-                     ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340596:step_script
-  section_start:1733340596:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340597:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No regressions found.
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/67728245):
-  [6/1284] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=
-'.
-  FAILED: lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I../=
-lib -I../include -I../include/drm-uapi -I../include/drm-uapi-experimental -=
-I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cai=
-ro -I/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/include -I/us=
-r/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/incl=
-ude/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/inc=
-lude/mips-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiagnosti=
-cs-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextr=
-a -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2=
- -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-=
-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attrib=
-ute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-de=
-finition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wu=
-ninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-=
-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -W=
-no-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bo=
-unds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -Werro=
-r=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dn=
-onnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequen=
-ce-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -f=
-no-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=
-=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci=
--tags/tests"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"'  -MD -MQ 'lib/76b5a35@@igt-xe=
-_xe_gt_c@sta/xe_xe_gt.c.o' -MF 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.=
-o.d' -o 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    close(f);
-          ^
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/mips-linux-gnu/include/unistd.h:353:23: note: expected =E2=80=98int=
-=E2=80=99 but argument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98st=
-ruct _IO_FILE *=E2=80=99}
-   extern int close (int __fd);
-                     ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340624:step_script
-  section_start:1733340624:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340624:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-c=
-i/igt-ci-tags/-/jobs/67728242):
-  [8/417] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
-  FAILED: lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o=20
-  cc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I../lib -I../include -I../inc=
-lude/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I=
-../lib/stubs/syscalls -I. -I../ -I../lib/stubs/libunwind -I/usr/include/cai=
-ro -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/=
-usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/in=
-clude/libpng16 -I/usr/include/libdrm -fdiagnostics-color=3Dalways -pipe -D_=
-FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GN=
-U_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdecl=
-aration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-o=
-p -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmi=
-ssing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -W=
-redundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-=
-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-poi=
-nter-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-un=
-used-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -We=
-rror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast -We=
-rror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to=
--int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraph=
-s -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEF=
-ILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-=
-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMA=
-IN=3D"xe/xe_gt"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -M=
-F 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o.d' -o 'lib/76b5a35@@igt-xe_=
-xe_gt_c@sta/xe_xe_gt.c.o' -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    close(f);
-          ^
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/include/unistd.h:353:23: note: expected =E2=80=98int=E2=80=99 but ar=
-gument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98struct _IO_FILE *=
-=E2=80=99}
-   extern int close (int __fd);
-                     ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340534:step_script
-  section_start:1733340534:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340536:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Participating hosts (6 -> 7)
+------------------------------
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/67728236):
-  cc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I../lib -I../include -I../inc=
-lude/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I=
-../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.=
-0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/free=
-type2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/n=
-ouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_O=
-FFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOUR=
-CE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaratio=
-n-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmi=
-ssing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-=
-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredund=
-ant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbe=
-red -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-a=
-rith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-=
-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bound=
-s -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -Werror=
-=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dno=
-nnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequenc=
-e-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fn=
-o-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D=
-"/opt/igt/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags=
-/tests"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"' -MD -MQ 'lib/76b5a35@@igt-xe_xe_gt=
-_c@sta/xe_xe_gt.c.o' -MF 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o.d' -=
-o 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    176 |  close(f);
-        |        ^
-        |        |
-        |        FILE * {aka struct _IO_FILE *}
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/include/unistd.h:353:23: note: expected =E2=80=98int=E2=80=99 but ar=
-gument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98struct _IO_FILE *=
-=E2=80=99}
-    353 | extern int close (int __fd);
-        |                   ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340515:step_script
-  section_start:1733340515:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340515:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  Additional (1): bat-bmg-1 
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/67728240):
-                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/xe/xe_gt.c:178:9: note: uninitialized use occurs here
-          return count;
-                 ^~~~~
-  ../lib/xe/xe_gt.c:169:9: note: remove the condition if it is always true
-          while (fgets(tlb_path, sizeof(tlb_path), f)) {
-                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 1
-  ../lib/xe/xe_gt.c:158:11: note: initialize the variable 'count' to silenc=
-e this warning
-          int count;
-                   ^
-                    =3D 0
-  1 warning and 1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1733340518:step_script
-  section_start:1733340518:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340518:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Known issues
+------------
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/67728239):
-  cc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I../lib -I../include -I../inc=
-lude/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I=
-../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.=
-0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/free=
-type2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind=
- -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvali=
-d-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIF=
-Y_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2=
- -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-f=
-ormat-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -W=
-old-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-pr=
-ototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -=
-Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-me=
-mber -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-r=
-esult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
-=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=
-=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
--cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
-error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE6=
-4_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tool=
-s"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=
-=3D"xe/xe_gt"' -MD -MQ 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -MF '=
-lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o.d' -o 'lib/76b5a35@@igt-xe_xe_=
-gt_c@sta/xe_xe_gt.c.o' -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    176 |  close(f);
-        |        ^
-        |        |
-        |        FILE * {aka struct _IO_FILE *}
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/include/unistd.h:353:23: note: expected =E2=80=98int=E2=80=99 but ar=
-gument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98struct _IO_FILE *=
-=E2=80=99}
-    353 | extern int close (int __fd);
-        |                   ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340534:step_script
-  section_start:1733340534:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340536:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  Here are the changes found in XEIGTPW_12246_BAT that come from known issues:
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/67728237):
-  cc -Ilib/76b5a35@@igt-xe_xe_gt_c@sta -Ilib -I../lib -I../include -I../inc=
-lude/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I=
-../lib/stubs/syscalls -I. -I../ -I../lib/stubs/libunwind -I/usr/include/cai=
-ro -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pix=
-man-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdr=
-m -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnostics-color=
-=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
-=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
--function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
-rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
-missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
-on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
-alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-com=
-pare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dad=
-dress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
-=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmi=
-ssing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretu=
-rn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-string=
-s -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -=
-pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D=
-"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"' -MD -MQ=
- 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -MF 'lib/76b5a35@@igt-xe_xe=
-_gt_c@sta/xe_xe_gt.c.o.d' -o 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'=
- -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    176 |  close(f);
-        |        ^
-        |        |
-        |        FILE * {aka struct _IO_FILE *}
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/include/unistd.h:353:23: note: expected =E2=80=98int=E2=80=99 but ar=
-gument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98struct _IO_FILE *=
-=E2=80=99}
-    353 | extern int close (int __fd);
-        |                   ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340534:step_script
-  section_start:1733340534:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340536:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+### IGT changes ###
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/67728238):
-  cc -Ilib/lib@@igt-xe_xe_gt_c@sta -Ilib -I../lib -I../include -I../include=
-/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I../l=
-ib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I=
-/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype=
-2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouve=
-au -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSE=
-T_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -=
-include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-af=
-ter-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissin=
-g-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prot=
-otypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-=
-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered =
--Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith=
- -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unus=
-ed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -W=
-error=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint=
--to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull =
--Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-poin=
-t -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-buil=
-tin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/=
-local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tes=
-ts"' '-DIGT_LOG_DOMAIN=3D"xe/xe_gt"'  -MD -MQ 'lib/lib@@igt-xe_xe_gt_c@sta/=
-xe_xe_gt.c.o' -MF 'lib/lib@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o.d' -o 'lib/lib@=
-@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o' -c ../lib/xe/xe_gt.c
-  ../lib/xe/xe_gt.c: In function =E2=80=98xe_gt_stats_get_count=E2=80=99:
-  ../lib/xe/xe_gt.c:176:8: error: passing argument 1 of =E2=80=98close=E2=
-=80=99 makes integer from pointer without a cast [-Werror=3Dint-conversion]
-    176 |  close(f);
-        |        ^
-        |        |
-        |        FILE * {aka struct _IO_FILE *}
-  In file included from ../lib/igt_core.h:46,
-                   from ../lib/xe/xe_gt.c:12:
-  /usr/include/unistd.h:353:23: note: expected =E2=80=98int=E2=80=99 but ar=
-gument is of type =E2=80=98FILE *=E2=80=99 {aka =E2=80=98struct _IO_FILE *=
-=E2=80=99}
-    353 | extern int close (int __fd);
-        |                   ~~~~^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1733340513:step_script
-  section_start:1733340513:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1733340513:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+#### Issues hit ####
 
-=3D=3D Logs =3D=3D
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-bmg-1:          NOTRUN -> [SKIP][1] ([Intel XE#2233])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1323511
+  * igt@kms_dsc@dsc-basic:
+    - bat-bmg-1:          NOTRUN -> [SKIP][2] ([Intel XE#2244])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-bmg-1:          NOTRUN -> [SKIP][3] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-bmg-1:          NOTRUN -> [SKIP][4] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-bmg-2:          NOTRUN -> [SKIP][5] ([Intel XE#2229])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-bmg-1:          NOTRUN -> [SKIP][6] ([Intel XE#1192]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-bmg-1:          NOTRUN -> [SKIP][7] ([Intel XE#1420])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-bmg-1:          NOTRUN -> [SKIP][8] ([Intel XE#2245])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-bmg-1:          NOTRUN -> [SKIP][9] ([Intel XE#2236])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-bmg-1:          NOTRUN -> [SKIP][10] ([Intel XE#3342])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_dma_buf:
+    - bat-bmg-2:          [SKIP][11] ([Intel XE#1192]) -> [PASS][12] +2 other tests pass
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8138/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8138 -> IGTPW_12246
+  * Linux: xe-2318-c8df5caf278df4f9ca0aba627047c5ee4318fc0d -> xe-2320-62d365d6c3078d7e4f34dd65735f6fcd7b53a856
+
+  IGTPW_12246: 12246
+  IGT_8138: 8138
+  xe-2318-c8df5caf278df4f9ca0aba627047c5ee4318fc0d: c8df5caf278df4f9ca0aba627047c5ee4318fc0d
+  xe-2320-62d365d6c3078d7e4f34dd65735f6fcd7b53a856: 62d365d6c3078d7e4f34dd65735f6fcd7b53a856
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/index.html
+
+--===============6276276477255777450==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add test for configurable OA buffer size</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142128/">https://patchwork.freedesktop.org/series/142128/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8138_BAT -&gt; XEIGTPW_12246_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (6 -&gt; 7)</h2>
+<p>Additional (1): bat-bmg-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12246_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_dma_buf:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8138/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12246/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8138 -&gt; IGTPW_12246</li>
+<li>Linux: xe-2318-c8df5caf278df4f9ca0aba627047c5ee4318fc0d -&gt; xe-2320-62d365d6c3078d7e4f34dd65735f6fcd7b53a856</li>
+</ul>
+<p>IGTPW_12246: 12246<br />
+  IGT_8138: 8138<br />
+  xe-2318-c8df5caf278df4f9ca0aba627047c5ee4318fc0d: c8df5caf278df4f9ca0aba627047c5ee4318fc0d<br />
+  xe-2320-62d365d6c3078d7e4f34dd65735f6fcd7b53a856: 62d365d6c3078d7e4f34dd65735f6fcd7b53a856</p>
+
+</body>
+</html>
+
+--===============6276276477255777450==--
