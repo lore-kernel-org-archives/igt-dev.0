@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB6DE7716D
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 07:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54085E7716D
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 07:40:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04C6810EC1B;
-	Wed,  4 Dec 2024 07:30:16 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VfYcIqju";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C509210EC0D;
- Wed,  4 Dec 2024 07:30:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733297415; x=1764833415;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=XEjmeVEs4f0GJpIY1vqcsKAh9fT31CGGgvuTaCN67JM=;
- b=VfYcIqju7VL/Rf+KwDpoFrkLbtZSBxsk89p+EBZo2x5eaiU+41r81kUP
- lJNCuFGHFa4zme/HXHeFD/e1dQ1+5axWqoiyiXhIgxezV5nY4jPD7KX+h
- 4RdbDtqGHxunp47x+BAuhDTA8z4/1+8IFgGKPbfc6srPcNS7PdQFkYKgv
- FUR1e3fe5X2/D3X9LjdpG9YNtxYzkEtkpM85sR47Z1FYdoDbbMYfYptAc
- 5qqY5fSO/VBfNMnXMu6g64pTAMwVyyed2wprOYDmFMzUW8YUPKp5gXBTq
- AfXgsgRQJ7ZZoftI8zjd9eZ8TMhqv7HeparLNfDQYOAXOUWc5FlYj9n7Q A==;
-X-CSE-ConnectionGUID: L/ZPVoTgRYCgBjrLOoeiCA==
-X-CSE-MsgGUID: pVtHEFO/QDi9TtI5Xq3FzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="37327413"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="37327413"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 23:30:13 -0800
-X-CSE-ConnectionGUID: jkzWNpbCQK2+dMe5F8VUYg==
-X-CSE-MsgGUID: Ey6ShlneQvqn37tHxwBQqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="94513293"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 23:30:12 -0800
-Date: Wed, 4 Dec 2024 08:30:09 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- tests/vkms: Delete VKMS test list
-Message-ID: <20241204073009.mtzvhgzdnywg7vjf@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20241201114506.19947-1-mcanal@igalia.com>
- <173306572004.1292197.7802778642493683151@b555e5b46a47>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0775810EC1B;
+	Wed,  4 Dec 2024 07:40:48 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C48310EC1B;
+ Wed,  4 Dec 2024 07:40:47 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <173306572004.1292197.7802778642493683151@b555e5b46a47>
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Skip_test_if_joiner_displ?=
+ =?utf-8?q?ay_is_connected_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 04 Dec 2024 07:40:47 -0000
+Message-ID: <173329804716.2333621.3957034994737510864@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241204060924.1155970-1-jeevan.b@intel.com>
+In-Reply-To: <20241204060924.1155970-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,400 +37,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-12-01 at 15:08:40 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/vkms: Delete VKMS test list
-> URL   : https://patchwork.freedesktop.org/series/141962/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8132_full -> XEIGTPW_12225_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_12225_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_12225_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 4)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_12225_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:
->     - shard-bmg:          [PASS][1] -> [DMESG-WARN][2] +6 other tests dmesg-warn
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8132/shard-bmg-4/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12225/shard-bmg-3/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html
-> 
->   * igt@kms_lease@atomic-implicit-crtc:
->     - shard-bmg:          [PASS][3] -> [INCOMPLETE][4] +2 other tests incomplete
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8132/shard-bmg-2/igt@kms_lease@atomic-implicit-crtc.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12225/shard-bmg-3/igt@kms_lease@atomic-implicit-crtc.html
-> 
->   * igt@kms_plane_lowres@tiling-none@pipe-a-dp-2:
->     - shard-bmg:          [PASS][5] -> [FAIL][6]
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8132/shard-bmg-2/igt@kms_plane_lowres@tiling-none@pipe-a-dp-2.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12225/shard-bmg-3/igt@kms_plane_lowres@tiling-none@pipe-a-dp-2.html
-> 
->   * igt@kms_psr@psr2-basic:
->     - shard-lnl:          [PASS][7] -> [FAIL][8] +1 other test fail
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8132/shard-lnl-7/igt@kms_psr@psr2-basic.html
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12225/shard-lnl-3/igt@kms_psr@psr2-basic.html
-> 
->   * igt@xe_fault_injection@inject-fault-probe-function-xe_tile_init_early:
->     - shard-lnl:          [PASS][9] -> [ABORT][10]
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8132/shard-lnl-8/igt@xe_fault_injection@inject-fault-probe-function-xe_tile_init_early.html
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12225/shard-lnl-3/igt@xe_fault_injection@inject-fault-probe-function-xe_tile_init_early.html
-> 
+== Series Details ==
 
-Above are unrelated.
+Series: Skip test if joiner display is connected (rev6)
+URL   : https://patchwork.freedesktop.org/series/141614/
+State : success
 
->   
-> New tests
-> ---------
-> 
->   New tests have been introduced between XEIGT_8132_full and XEIGTPW_12225_full:
+== Summary ==
 
-This definitly do not come from this patch.
+CI Bug Log - changes from IGT_8136 -> IGTPW_12240
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> 
-> ### New IGT tests (72) ###
-> 
->   * igt@kms_color@deep-color@pipe-a-dp-2-ctm:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.31] s
-> 
->   * igt@kms_color@deep-color@pipe-a-dp-2-degamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.30] s
-> 
->   * igt@kms_color@deep-color@pipe-a-dp-2-gamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.30] s
-> 
->   * igt@kms_color@deep-color@pipe-b-dp-2-ctm:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.32] s
-> 
->   * igt@kms_color@deep-color@pipe-b-dp-2-degamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.30] s
-> 
->   * igt@kms_color@deep-color@pipe-b-dp-2-gamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.31] s
-> 
->   * igt@kms_color@deep-color@pipe-c-dp-2-ctm:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.32] s
-> 
->   * igt@kms_color@deep-color@pipe-c-dp-2-degamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.30] s
-> 
->   * igt@kms_color@deep-color@pipe-c-dp-2-gamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.30] s
-> 
->   * igt@kms_color@deep-color@pipe-d-dp-2-ctm:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.33] s
-> 
->   * igt@kms_color@deep-color@pipe-d-dp-2-degamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.28] s
-> 
->   * igt@kms_color@deep-color@pipe-d-dp-2-gamma:
->     - Statuses : 1 pass(s)
->     - Exec time: [5.31] s
-> 
->   * igt@kms_cursor_crc@cursor-offscreen-256x256@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.65] s
-> 
->   * igt@kms_cursor_crc@cursor-offscreen-256x256@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.51] s
-> 
->   * igt@kms_cursor_crc@cursor-offscreen-64x64@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.68] s
-> 
->   * igt@kms_cursor_crc@cursor-offscreen-64x64@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.49] s
-> 
->   * igt@kms_cursor_crc@cursor-onscreen-128x128@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.95] s
-> 
->   * igt@kms_cursor_crc@cursor-onscreen-128x128@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.76] s
-> 
->   * igt@kms_cursor_crc@cursor-onscreen-256x256@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.88] s
-> 
->   * igt@kms_cursor_crc@cursor-onscreen-256x256@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.74] s
-> 
->   * igt@kms_cursor_crc@cursor-onscreen-64x64@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.94] s
-> 
->   * igt@kms_cursor_crc@cursor-onscreen-64x64@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.73] s
-> 
->   * igt@kms_cursor_crc@cursor-random-128x128@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.80] s
-> 
->   * igt@kms_cursor_crc@cursor-random-128x128@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.57] s
-> 
->   * igt@kms_cursor_crc@cursor-random-256x256@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.79] s
-> 
->   * igt@kms_cursor_crc@cursor-random-256x256@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.58] s
-> 
->   * igt@kms_cursor_crc@cursor-random-64x64@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.57] s
-> 
->   * igt@kms_cursor_crc@cursor-random-64x64@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.58] s
-> 
->   * igt@kms_cursor_crc@cursor-rapid-movement-256x256@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.61] s
-> 
->   * igt@kms_cursor_crc@cursor-rapid-movement-256x256@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.40] s
-> 
->   * igt@kms_cursor_crc@cursor-rapid-movement-64x64@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.54] s
-> 
->   * igt@kms_cursor_crc@cursor-rapid-movement-64x64@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.39] s
-> 
->   * igt@kms_cursor_crc@cursor-sliding-128x128@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.54] s
-> 
->   * igt@kms_cursor_crc@cursor-sliding-128x128@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.39] s
-> 
->   * igt@kms_cursor_crc@cursor-sliding-256x256@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.60] s
-> 
->   * igt@kms_cursor_crc@cursor-sliding-256x256@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.47] s
-> 
->   * igt@kms_cursor_crc@cursor-sliding-64x64@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.63] s
-> 
->   * igt@kms_cursor_crc@cursor-sliding-64x64@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [4.31] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-7efc@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.50] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-7efc@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.52] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-basic@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.61] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-basic@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.66] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-opaque-fb@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.52] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-opaque-fb@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.55] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-transparent-fb@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.52] s
-> 
->   * igt@kms_plane_alpha_blend@alpha-transparent-fb@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.53] s
-> 
->   * igt@kms_plane_alpha_blend@constant-alpha-max@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.97] s
-> 
->   * igt@kms_plane_alpha_blend@constant-alpha-max@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.93] s
-> 
->   * igt@kms_plane_alpha_blend@constant-alpha-mid@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.73] s
-> 
->   * igt@kms_plane_alpha_blend@constant-alpha-mid@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.77] s
-> 
->   * igt@kms_plane_alpha_blend@constant-alpha-min@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.71] s
-> 
->   * igt@kms_plane_alpha_blend@constant-alpha-min@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.72] s
-> 
->   * igt@kms_plane_alpha_blend@coverage-7efc@pipe-a-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.49] s
-> 
->   * igt@kms_plane_alpha_blend@coverage-7efc@pipe-d-dp-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.54] s
-> 
->   * igt@kms_plane_cursor@overlay@pipe-a-dp-2-size-128:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.18] s
-> 
->   * igt@kms_plane_cursor@overlay@pipe-a-dp-2-size-256:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.18] s
-> 
->   * igt@kms_plane_cursor@overlay@pipe-a-dp-2-size-64:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.38] s
-> 
->   * igt@kms_plane_cursor@overlay@pipe-d-dp-2-size-128:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.25] s
-> 
->   * igt@kms_plane_cursor@overlay@pipe-d-dp-2-size-256:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.21] s
-> 
->   * igt@kms_plane_cursor@overlay@pipe-d-dp-2-size-64:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.35] s
-> 
->   * igt@kms_plane_cursor@primary@pipe-a-dp-2-size-128:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.95] s
-> 
->   * igt@kms_plane_cursor@primary@pipe-a-dp-2-size-256:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.96] s
-> 
->   * igt@kms_plane_cursor@primary@pipe-a-dp-2-size-64:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.98] s
-> 
->   * igt@kms_plane_cursor@primary@pipe-d-dp-2-size-128:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.95] s
-> 
->   * igt@kms_plane_cursor@primary@pipe-d-dp-2-size-256:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.98] s
-> 
->   * igt@kms_plane_cursor@primary@pipe-d-dp-2-size-64:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.07] s
-> 
->   * igt@kms_plane_cursor@viewport@pipe-a-dp-2-size-128:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.23] s
-> 
->   * igt@kms_plane_cursor@viewport@pipe-a-dp-2-size-256:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.18] s
-> 
->   * igt@kms_plane_cursor@viewport@pipe-a-dp-2-size-64:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.34] s
-> 
->   * igt@kms_plane_cursor@viewport@pipe-d-dp-2-size-128:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.23] s
-> 
->   * igt@kms_plane_cursor@viewport@pipe-d-dp-2-size-256:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.17] s
-> 
->   * igt@kms_plane_cursor@viewport@pipe-d-dp-2-size-64:
->     - Statuses : 1 pass(s)
->     - Exec time: [3.31] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_12225_full that come from known issues:
-> 
+  **WARNING**
 
-...cut...
+  Minor unknown changes coming with IGTPW_12240 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12240, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_8132 -> IGTPW_12225
-> 
->   IGTPW_12225: 61c3fe7f34c7aa79951575c5668fd63e58d0fa30 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8132: 7675e070cb74c6808050764367f978f6b74ebc36 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-2295-108f610005f88de624c1a8c4f85d5cab9f530ddb: 108f610005f88de624c1a8c4f85d5cab9f530ddb
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12225/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12240:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_module_load@load:
+    - fi-pnv-d510:        [ABORT][1] ([i915#13203]) -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/fi-pnv-d510/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/fi-pnv-d510/igt@i915_module_load@load.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12240 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-arls-5:         NOTRUN -> [SKIP][3] ([i915#9318])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@debugfs_test@basic-hwmon.html
+
+  * igt@fbdev@eof:
+    - bat-arls-5:         NOTRUN -> [SKIP][4] ([i915#11191] / [i915#11345]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@fbdev@eof.html
+
+  * igt@fbdev@info:
+    - bat-arls-5:         NOTRUN -> [SKIP][5] ([i915#1849])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@fbdev@info.html
+
+  * igt@gem_lmem_swapping@basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][6] ([i915#10213] / [i915#11671]) +3 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_mmap@basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][7] ([i915#11343] / [i915#4083])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_mmap@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][8] ([i915#10197] / [i915#10211] / [i915#4079])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_blits@basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][9] ([i915#12637] / [i915#4077]) +2 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_tiled_blits@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][10] ([i915#10206] / [i915#4079])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg1-7:          [PASS][11] -> [FAIL][12] ([i915#12903])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-arls-5:         NOTRUN -> [SKIP][13] ([i915#10209] / [i915#11681])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-arls-5:         NOTRUN -> [SKIP][14] ([i915#10200] / [i915#12203])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@clobberred-modifier:
+    - bat-arls-5:         NOTRUN -> [SKIP][15] ([i915#10200]) +8 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_addfb_basic@clobberred-modifier.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][16] ([i915#12732]) +16 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-arls-5:         NOTRUN -> [SKIP][17] ([i915#3637]) +3 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-arls-5:         NOTRUN -> [SKIP][18] ([i915#10207])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-arls-5:         NOTRUN -> [SKIP][19] ([i915#4342] / [i915#5354])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [PASS][20] -> [SKIP][21] ([i915#9197]) +3 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-arls-5:         NOTRUN -> [SKIP][22] ([i915#9812])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - bat-arls-5:         NOTRUN -> [SKIP][23] ([i915#9732]) +3 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-arls-5:         NOTRUN -> [SKIP][24] ([i915#10208] / [i915#8809])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-arls-5:         NOTRUN -> [SKIP][25] ([i915#12732] / [i915#3708])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-arls-5:         NOTRUN -> [SKIP][26] ([i915#10212] / [i915#3708])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-gtt:
+    - bat-arls-5:         NOTRUN -> [SKIP][27] ([i915#12637] / [i915#3708] / [i915#4077]) +1 other test skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-gtt.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-arls-5:         NOTRUN -> [SKIP][28] ([i915#10214] / [i915#3708])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-arls-5:         NOTRUN -> [SKIP][29] ([i915#10216] / [i915#3708])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-arls-5/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][30] ([i915#12061]) -> [PASS][31] +1 other test pass
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8136/bat-mtlp-8/igt@i915_selftest@live.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/bat-mtlp-8/igt@i915_selftest@live.html
+
+  
+  [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
+  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
+  [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
+  [i915#10207]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10207
+  [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
+  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
+  [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
+  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
+  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
+  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
+  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+  [i915#11191]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11191
+  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
+  [i915#11345]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11345
+  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
+  [i915#12637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637
+  [i915#12732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12732
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8136 -> IGTPW_12240
+  * Linux: CI_DRM_15778 -> CI_DRM_15783
+
+  CI-20190529: 20190529
+  CI_DRM_15778: 5779fb3c12faf12589054127d60b1d36d56ba219 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15783: 40be916657d26be563dbbd2b618cc398ea9aeb33 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12240: 29060abd6f510f1605c9e6bf366d17d4894efc92 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8136: 21076ee09438af484c58b308d8179277503922f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12240/index.html
