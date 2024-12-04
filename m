@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A937AE7716B
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 09:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76271E7716B
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Dec 2024 09:13:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5049C10E175;
-	Wed,  4 Dec 2024 09:09:48 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="agWipqAE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEC2810E175
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2024 09:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733303387; x=1764839387;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=UkxM2mJnDbgo315DJecGD5eWRCncZasaJx1/5ZgXUHY=;
- b=agWipqAErBkkVVuD7r5mpOwx/ddsQ0RwTtj1GHE7++TP4HpaZeKhVd/U
- ly0a3eprn2YF7reqYIFRzY+gHECQYUnv2FKk4HIpEEYLBCQZrG5RG7czx
- GJhN2C0IDSYbNGWnGPj9F2h4P7eTe05xQvbDnXXibF7FtcRDAakomyb2A
- QyzS3I1vZrssV10Q8Buzb+JrnwjyJgmhTCYb2vhpwnMUxJQiqIImhwBcS
- 6gHPsfO/OnCy6B59sIN4ezsNN0cidIePAgQ2pIO+t7K/OFGLVxTuyIl/b
- N/65qlAiyO7wumqo9ByDqWJAnqyhLzAeM6eKLX7yET2Qft21gzjb6A0fV g==;
-X-CSE-ConnectionGUID: iUwMQJP/TS2AeU61CcxRSg==
-X-CSE-MsgGUID: C+/jNvs1Spy5N9ABV161FQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44036079"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="44036079"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2024 01:09:47 -0800
-X-CSE-ConnectionGUID: bHcnP+24QZKd+aTeqY6FKA==
-X-CSE-MsgGUID: gxvwjIefQaich8G5tC7cSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; d="scan'208";a="93551291"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.190])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2024 01:09:45 -0800
-Date: Wed, 4 Dec 2024 10:09:41 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Pravalika Gurram <pravalika.gurram@intel.com>
-Cc: lucas.demarchi@intel.com, igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 1/2] lib/xe/xe_spin: move the spinner related functions
- to lib
-Message-ID: <20241204090941.mg7sagkukuwpvfzx@zkempczy-mobl2>
-References: <20241113175207.399101-1-pravalika.gurram@intel.com>
- <20241113175207.399101-2-pravalika.gurram@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32E3610E175;
+	Wed,  4 Dec 2024 09:13:40 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28C4410E175;
+ Wed,  4 Dec 2024 09:13:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2523956912528714708=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241113175207.399101-2-pravalika.gurram@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Skip_test_if_joiner_display?=
+ =?utf-8?q?_is_connected_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 04 Dec 2024 09:13:38 -0000
+Message-ID: <173330361815.2362683.13611045477850235147@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241204060924.1155970-1-jeevan.b@intel.com>
+In-Reply-To: <20241204060924.1155970-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,622 +37,392 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Nov 13, 2024 at 11:22:06PM +0530, Pravalika Gurram wrote:
-> move spin_ctx_init,spin_ctx_start,spin_ctx_end,spin_ctx_destroy
-> to xe spin lib to avoid code redundancy.
-> 
-> v2: use allocator based on developer preference.
->     change spin_ctx to xe_spin_ctx to avoid name clashes [Zbigniew]
-> v3: Integrate spin_ctx to xe_cork
->     use designated structure initialization for optional arg [Lucas]
-> 
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+--===============2523956912528714708==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-In the past I've also kept versioning in the commit message but now I
-think better is to just keep it under three lines so finally it won't
-be a part of the commit. I mean commit shouldn't be polluted with
-history of the patch. If someone will be interested link to lore may
-be added by b4 on merge time.
+== Series Details ==
 
-> ---
->  lib/xe/xe_spin.c            | 116 +++++++++++++++++++++
->  lib/xe/xe_spin.h            |  40 ++++++--
->  tests/intel/xe_drm_fdinfo.c | 200 +++++++-----------------------------
->  3 files changed, 183 insertions(+), 173 deletions(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 3adacc3a8..41679d9c6 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -292,6 +292,122 @@ void xe_spin_free(int fd, struct igt_spin *spin)
->  	free(spin);
->  }
->  
-> +struct xe_cork *
-> +xe_spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe,
-> +		uint32_t vm, uint16_t width, uint16_t num_placements,
-> +		struct xe_cork_opts *opts)
+Series: Skip test if joiner display is connected (rev6)
+URL   : https://patchwork.freedesktop.org/series/141614/
+State : failure
 
-I think this should be prefixed by xe_cork_...() as you're returning
-xe_cork structure. And likely I would rename this to xe_cork_create()
-as you're allocating the memory inside the function.
+== Summary ==
 
-I've roughly took a look to xe_vm.c xe_cork usage and it seems it might
-be replaced by this code. Only some options should be passed in
-xe_cork_opts (write_timestamp, preempt, ahnd).
+CI Bug Log - changes from XEIGT_8136_BAT -> XEIGTPW_12240_BAT
+====================================================
 
-> +{
-> +	struct xe_cork *ctx = calloc(1, sizeof(*ctx));
-> +
-> +	igt_assert(width && num_placements &&
-> +		   (width == 1 || num_placements == 1));
-> +	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
-> +
-> +	ctx->class = hwe->engine_class;
-> +	ctx->width = width;
-> +	ctx->num_placements = num_placements;
-> +	ctx->vm = vm;
+Summary
+-------
 
-You should collect ahnd as well to remove offset from the allocator
-on the spinner completion.
+  **FAILURE**
 
-> +
-> +	ctx->exec.num_batch_buffer = width;
-> +	ctx->exec.num_syncs = 2;
-> +	ctx->exec.syncs = to_user_pointer(ctx->sync);
-> +
-> +	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> +	ctx->sync[0].handle = syncobj_create(fd, 0);
-> +
-> +	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> +	ctx->sync[1].handle = syncobj_create(fd, 0);
-> +
-> +	ctx->bo_size = sizeof(struct xe_spin);
-> +	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
-> +	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
-> +			       vram_if_possible(fd, hwe->gt_id),
-> +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	if (opts->ahnd) {
-> +		for (unsigned int i = 0; i < width; i++)
-> +			ctx->addr[i] = intel_allocator_alloc_with_strategy(opts->ahnd,
-> +					ctx->bo, ctx->bo_size, 0,
-> +					ALLOC_STRATEGY_LOW_TO_HIGH);
-> +	} else {
-> +		for (unsigned int i = 0; i < width; i++)
-> +			ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
-> +	}
-> +
-> +	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
-> +
-> +	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
-> +					     hwe, 0, &ctx->exec_queue), 0);
-> +
-> +	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
-> +			 ctx->sync, 1);
-> +
-> +	return ctx;
-> +}
-> +
-> +void xe_spin_sync_start(int fd, struct xe_cork *ctx)
+  Serious unknown changes coming with XEIGTPW_12240_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12240_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-xe_cork_sync_start() or xe_cork_start() if you'll be able to replace
-xe_vm.c xe_cork current usage to use this code.
+  
 
-> +{
-> +	if (!ctx)
-> +		return;
-> +
-> +	ctx->spin_opts.addr = ctx->addr[0];
-> +	ctx->spin_opts.write_timestamp = true;
-> +	ctx->spin_opts.preempt = true;
-> +	xe_spin_init(ctx->spin, &ctx->spin_opts);
-> +
-> +	/* re-use sync[0] for exec */
-> +	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +
-> +	ctx->exec.exec_queue_id = ctx->exec_queue;
-> +
-> +	if (ctx->width > 1)
-> +		ctx->exec.address = to_user_pointer(ctx->addr);
-> +	else
-> +		ctx->exec.address = ctx->addr[0];
-> +
-> +	xe_exec(fd, &ctx->exec);
-> +
-> +	xe_spin_wait_started(ctx->spin);
-> +	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
-> +
-> +	igt_debug("%d: spinner started\n", ctx->class);
+Participating hosts (7 -> 7)
+------------------------------
 
-I would add .debug option to xe_cork_opts to allow user to print debug
-if necessary.
+  Additional (1): bat-bmg-1 
+  Missing    (1): bat-adlp-7 
 
-> +}
-> +
-> +void xe_spin_sync_end(int fd, struct xe_cork *ctx)
+Possible new issues
+-------------------
 
-Similar to above - xe_cork_sync_end() or xe_cork_end().
+  Here are the unknown changes that may have been introduced in XEIGTPW_12240_BAT:
 
-> +{
-> +	if (!ctx || ctx->ended)
-> +		return;
-> +
-> +	xe_spin_end(ctx->spin);
-> +
-> +	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
-> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +
-> +	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> +	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
-> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+### IGT changes ###
 
-You should remove address from the allocator if ahnd != 0.
+#### Possible regressions ####
 
-> +
-> +	ctx->ended = true;
-> +	igt_debug("%d: spinner ended (timestamp=%u)\n", ctx->class,
-> +		  ctx->spin->timestamp);
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8136/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
 
-Print this only if user will use .debug option.
+  
+Known issues
+------------
 
-> +}
-> +
-> +void xe_spin_ctx_destroy(int fd, struct xe_cork *ctx)
+  Here are the changes found in XEIGTPW_12240_BAT that come from known issues:
 
-xe_cork_destroy().
+### IGT changes ###
 
-> +{
-> +	if (!ctx)
-> +		return;
-> +
-> +	syncobj_destroy(fd, ctx->sync[0].handle);
-> +	syncobj_destroy(fd, ctx->sync[1].handle);
-> +	xe_exec_queue_destroy(fd, ctx->exec_queue);
-> +
-> +	munmap(ctx->spin, ctx->bo_size);
-> +	gem_close(fd, ctx->bo);
-> +
-> +	free(ctx);
-> +}
-> +
->  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->  		  struct xe_cork *cork)
+#### Issues hit ####
 
-Think how to switch to above code and drop this.
+  * igt@fbdev@eof:
+    - bat-lnl-2:          NOTRUN -> [SKIP][3] ([Intel XE#2134]) +4 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@fbdev@eof.html
 
---
-Zbigniew
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-bmg-1:          NOTRUN -> [SKIP][4] ([Intel XE#2233])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][5] ([Intel XE#1466] / [Intel XE#2235])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
 
->  {
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index d65adb05c..21488b071 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -32,6 +32,10 @@ struct xe_spin_opts {
->  	bool write_timestamp;
->  };
->  
-> +struct xe_cork_opts {
-> +	uint64_t ahnd;
-> +};
-> +
->  /* Mapped GPU object */
->  struct xe_spin {
->  	uint32_t batch[128];
-> @@ -43,9 +47,35 @@ struct xe_spin {
->  	uint32_t timestamp;
->  };
->  
-> +struct xe_cork {
-> +	struct xe_spin *spin;
-> +	int fd;
-> +	uint32_t vm;
-> +	uint32_t bo;
-> +	uint32_t exec_queue;
-> +	uint32_t syncobj;
-> +	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
-> +	struct drm_xe_sync sync[2];
-> +	struct drm_xe_exec exec;
-> +	size_t bo_size;
-> +	struct xe_spin_opts spin_opts;
-> +	bool ended;
-> +	uint16_t class;
-> +	uint16_t width;
-> +	uint16_t num_placements;
-> +};
-> +
->  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
->  uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
->  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
-> +struct xe_cork *
-> +xe_spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
-> +	      uint16_t width, uint16_t num_placements, struct xe_cork_opts *opts);
-> +void xe_spin_ctx_destroy(int fd, struct xe_cork *ctx);
-> +
-> +#define xe_spin_ctx_init_opts(fd, hwe, vm, width, num_placements, ...) \
-> +	xe_spin_ctx_init(fd, hwe, vm, width, num_placements, \
-> +			&((struct xe_cork_opts){__VA_ARGS__}))
->  
->  #define xe_spin_init_opts(fd, ...) \
->  	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
-> @@ -55,15 +85,9 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
->  void xe_spin_end(struct xe_spin *spin);
->  void xe_spin_free(int fd, struct igt_spin *spin);
-> +void xe_spin_sync_start(int fd, struct xe_cork *ctx);
-> +void xe_spin_sync_end(int fd, struct xe_cork *ctx);
->  
-> -struct xe_cork {
-> -	struct xe_spin *spin;
-> -	int fd;
-> -	uint32_t vm;
-> -	uint32_t bo;
-> -	uint32_t exec_queue;
-> -	uint32_t syncobj;
-> -};
->  
->  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->  		  struct xe_cork *cork);
-> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-> index 5fd7c0416..d7d392000 100644
-> --- a/tests/intel/xe_drm_fdinfo.c
-> +++ b/tests/intel/xe_drm_fdinfo.c
-> @@ -367,133 +367,6 @@ static void basic_engine_utilization(int xe)
->  	igt_require(info.num_engines);
->  }
->  
-> -struct spin_ctx {
-> -	uint32_t vm;
-> -	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
-> -	struct drm_xe_sync sync[2];
-> -	struct drm_xe_exec exec;
-> -	uint32_t exec_queue;
-> -	size_t bo_size;
-> -	uint32_t bo;
-> -	struct xe_spin *spin;
-> -	struct xe_spin_opts spin_opts;
-> -	bool ended;
-> -	uint16_t class;
-> -	uint16_t width;
-> -	uint16_t num_placements;
-> -};
-> -
-> -static struct spin_ctx *
-> -spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
-> -	      uint16_t width, uint16_t num_placements)
-> -{
-> -	struct spin_ctx *ctx = calloc(1, sizeof(*ctx));
-> -
-> -	igt_assert(width && num_placements &&
-> -		   (width == 1 || num_placements == 1));
-> -	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
-> -
-> -	ctx->class = hwe->engine_class;
-> -	ctx->width = width;
-> -	ctx->num_placements = num_placements;
-> -	ctx->vm = vm;
-> -
-> -	for (unsigned int i = 0; i < width; i++)
-> -		ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
-> -
-> -	ctx->exec.num_batch_buffer = width;
-> -	ctx->exec.num_syncs = 2;
-> -	ctx->exec.syncs = to_user_pointer(ctx->sync);
-> -
-> -	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> -	ctx->sync[0].handle = syncobj_create(fd, 0);
-> -
-> -	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> -	ctx->sync[1].handle = syncobj_create(fd, 0);
-> -
-> -	ctx->bo_size = sizeof(struct xe_spin);
-> -	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
-> -	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
-> -			       vram_if_possible(fd, hwe->gt_id),
-> -			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> -	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
-> -
-> -	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
-> -					     hwe, 0, &ctx->exec_queue), 0);
-> -
-> -	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
-> -			 ctx->sync, 1);
-> -
-> -	return ctx;
-> -}
-> -
-> -static void
-> -spin_sync_start(int fd, struct spin_ctx *ctx)
-> -{
-> -	if (!ctx)
-> -		return;
-> -
-> -	ctx->spin_opts.addr = ctx->addr[0];
-> -	ctx->spin_opts.write_timestamp = true;
-> -	ctx->spin_opts.preempt = true;
-> -	xe_spin_init(ctx->spin, &ctx->spin_opts);
-> -
-> -	/* re-use sync[0] for exec */
-> -	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> -
-> -	ctx->exec.exec_queue_id = ctx->exec_queue;
-> -
-> -	if (ctx->width > 1)
-> -		ctx->exec.address = to_user_pointer(ctx->addr);
-> -	else
-> -		ctx->exec.address = ctx->addr[0];
-> -
-> -	xe_exec(fd, &ctx->exec);
-> -
-> -	xe_spin_wait_started(ctx->spin);
-> -	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
-> -
-> -	igt_debug("%s: spinner started\n", engine_map[ctx->class]);
-> -}
-> -
-> -static void
-> -spin_sync_end(int fd, struct spin_ctx *ctx)
-> -{
-> -	if (!ctx || ctx->ended)
-> -		return;
-> -
-> -	xe_spin_end(ctx->spin);
-> -
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> -	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	ctx->ended = true;
-> -	igt_debug("%s: spinner ended (timestamp=%u)\n", engine_map[ctx->class],
-> -		  ctx->spin->timestamp);
-> -}
-> -
-> -static void
-> -spin_ctx_destroy(int fd, struct spin_ctx *ctx)
-> -{
-> -	if (!ctx)
-> -		return;
-> -
-> -	syncobj_destroy(fd, ctx->sync[0].handle);
-> -	syncobj_destroy(fd, ctx->sync[1].handle);
-> -	xe_exec_queue_destroy(fd, ctx->exec_queue);
-> -
-> -	munmap(ctx->spin, ctx->bo_size);
-> -	gem_close(fd, ctx->bo);
-> -
-> -	free(ctx);
-> -}
-> -
->  static void
->  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
->  	      int class, int width, enum expected_load expected_load)
-> @@ -535,7 +408,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  {
->  	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	enum expected_load expected_load;
->  	uint32_t vm;
->  	int new_fd;
-> @@ -545,8 +418,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	if (flags & TEST_BUSY) {
-> -		ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -		spin_sync_start(fd, ctx);
-> +		ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
-> +		xe_spin_sync_start(fd, ctx);
->  	}
->  
->  	read_engine_cycles(fd, pceu1[0]);
-> @@ -555,7 +428,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  
->  	usleep(batch_duration_usec);
->  	if (flags & TEST_TRAILING_IDLE)
-> -		spin_sync_end(fd, ctx);
-> +		xe_spin_sync_end(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu2[0]);
->  	if (flags & TEST_ISOLATION)
-> @@ -574,8 +447,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  		close(new_fd);
->  	}
->  
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_spin_sync_end(fd, ctx);
-> +	xe_spin_ctx_destroy(fd, ctx);
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> @@ -584,19 +457,19 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	uint32_t vm;
->  
->  	vm = xe_vm_create(fd, 0, 0);
-> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -	spin_sync_start(fd, ctx);
-> +	ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
-> +	xe_spin_sync_start(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  
->  	/* destroy queue before sampling again */
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_spin_sync_end(fd, ctx);
-> +	xe_spin_ctx_destroy(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu2);
->  
-> @@ -610,18 +483,17 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	uint32_t vm;
->  	int class;
->  
->  	vm = xe_vm_create(fd, 0, 0);
-> -
-> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -	spin_sync_start(fd, ctx);
-> +	ctx = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
-> +	xe_spin_sync_start(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
-> -	spin_sync_end(fd, ctx);
-> +	xe_spin_sync_end(fd, ctx);
->  	read_engine_cycles(fd, pceu2);
->  
->  	xe_for_each_engine_class(class) {
-> @@ -631,8 +503,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
->  		check_results(pceu1, pceu2, class, 1, expected_load);
->  	}
->  
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_spin_sync_end(fd, ctx);
-> +	xe_spin_ctx_destroy(fd, ctx);
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> @@ -641,7 +513,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
-> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
->  	struct drm_xe_engine_class_instance *_hwe;
->  	uint32_t vm;
->  	int class;
-> @@ -654,15 +526,14 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->  
->  		if (_class == hwe->engine_class || ctx[_class])
->  			continue;
-> -
-> -		ctx[_class] = spin_ctx_init(fd, _hwe, vm, 1, 1);
-> -		spin_sync_start(fd, ctx[_class]);
-> +		ctx[_class] = xe_spin_ctx_init_opts(fd, _hwe, vm, 1, 1);
-> +		xe_spin_sync_start(fd, ctx[_class]);
->  	}
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  	xe_for_each_engine_class(class)
-> -		spin_sync_end(fd, ctx[class]);
-> +		xe_spin_sync_end(fd, ctx[class]);
->  	read_engine_cycles(fd, pceu2);
->  
->  	xe_for_each_engine_class(class) {
-> @@ -673,8 +544,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->  			continue;
->  
->  		check_results(pceu1, pceu2, class, 1, expected_load);
-> -		spin_sync_end(fd, ctx[class]);
-> -		spin_ctx_destroy(fd, ctx[class]);
-> +		xe_spin_sync_end(fd, ctx[class]);
-> +		xe_spin_ctx_destroy(fd, ctx[class]);
->  	}
->  
->  	xe_vm_destroy(fd, vm);
-> @@ -685,7 +556,7 @@ utilization_all_full_load(int fd)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
-> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
->  	struct drm_xe_engine_class_instance *hwe;
->  	uint32_t vm;
->  	int class;
-> @@ -697,15 +568,14 @@ utilization_all_full_load(int fd)
->  		class = hwe->engine_class;
->  		if (ctx[class])
->  			continue;
-> -
-> -		ctx[class] = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -		spin_sync_start(fd, ctx[class]);
-> +		ctx[class] = xe_spin_ctx_init_opts(fd, hwe, vm, 1, 1);
-> +		xe_spin_sync_start(fd, ctx[class]);
->  	}
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  	xe_for_each_engine_class(class)
-> -		spin_sync_end(fd, ctx[class]);
-> +		xe_spin_sync_end(fd, ctx[class]);
->  	read_engine_cycles(fd, pceu2);
->  
->  	xe_for_each_engine_class(class) {
-> @@ -713,8 +583,8 @@ utilization_all_full_load(int fd)
->  			continue;
->  
->  		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
-> -		spin_sync_end(fd, ctx[class]);
-> -		spin_ctx_destroy(fd, ctx[class]);
-> +		xe_spin_sync_end(fd, ctx[class]);
-> +		xe_spin_ctx_destroy(fd, ctx[class]);
->  	}
->  
->  	xe_vm_destroy(fd, vm);
-> @@ -741,7 +611,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	enum expected_load expected_load;
->  	int fd_spill, num_placements;
->  	uint32_t vm;
-> @@ -767,8 +637,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	if (flags & TEST_BUSY) {
-> -		ctx = spin_ctx_init(fd, eci, vm, width, num_placements);
-> -		spin_sync_start(fd, ctx);
-> +		ctx = xe_spin_ctx_init_opts(fd, eci, vm, width, num_placements);
-> +		xe_spin_sync_start(fd, ctx);
->  	}
->  
->  	read_engine_cycles(fd, pceu[0]);
-> @@ -777,7 +647,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  
->  	usleep(batch_duration_usec);
->  	if (flags & TEST_TRAILING_IDLE)
-> -		spin_sync_end(fd, ctx);
-> +		xe_spin_sync_end(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu[1]);
->  	if (flags & TEST_ISOLATION)
-> @@ -797,8 +667,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  		close(fd_spill);
->  	}
->  
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_spin_sync_end(fd, ctx);
-> +	xe_spin_ctx_destroy(fd, ctx);
->  
->  	xe_vm_destroy(fd, vm);
->  }
-> -- 
-> 2.34.1
-> 
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-lnl-2:          NOTRUN -> [SKIP][6] ([Intel XE#2235]) +13 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-bmg-1:          NOTRUN -> [SKIP][7] ([Intel XE#2244])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-lnl-2:          NOTRUN -> [SKIP][8] ([Intel XE#2235] / [Intel XE#2482]) +3 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_force_connector_basic@force-edid:
+    - bat-lnl-2:          NOTRUN -> [SKIP][9] ([Intel XE#2235] / [Intel XE#352]) +2 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_force_connector_basic@force-edid.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-lnl-2:          NOTRUN -> [SKIP][10] ([Intel XE#2235] / [Intel XE#2548])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-lnl-2:          NOTRUN -> [SKIP][11] ([Intel XE#1470] / [Intel XE#2235] / [Intel XE#2853])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-bmg-1:          NOTRUN -> [DMESG-WARN][12] ([Intel XE#877]) +1 other test dmesg-warn
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-lnl-2:          NOTRUN -> [SKIP][13] ([Intel XE#2850] / [Intel XE#929]) +2 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-bmg-1:          NOTRUN -> [SKIP][14] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-bmg-1:          NOTRUN -> [SKIP][15] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][16] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_evict@evict-small-cm:
+    - bat-lnl-2:          NOTRUN -> [SKIP][17] ([Intel XE#688]) +17 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_evict@evict-small-cm.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-bmg-1:          NOTRUN -> [SKIP][18] ([Intel XE#1192]) +2 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][19] ([Intel XE#1192]) +2 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_mmap@vram:
+    - bat-lnl-2:          NOTRUN -> [SKIP][20] ([Intel XE#1416])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-bmg-1:          NOTRUN -> [SKIP][21] ([Intel XE#1420])
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_pat@pat-index-xehpc.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][22] ([Intel XE#1420] / [Intel XE#2838])
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-bmg-1:          NOTRUN -> [SKIP][23] ([Intel XE#2245])
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_pat@pat-index-xelp.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][24] ([Intel XE#977])
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-bmg-1:          NOTRUN -> [SKIP][25] ([Intel XE#2236])
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_pat@pat-index-xelpg.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][26] ([Intel XE#2236] / [Intel XE#979])
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-bmg-1:          NOTRUN -> [SKIP][27] ([Intel XE#3342])
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_sriov_flr@flr-vf1-clear.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][28] ([Intel XE#3342])
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
+  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
+  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8136 -> IGTPW_12240
+  * Linux: xe-2310-5779fb3c12faf12589054127d60b1d36d56ba219 -> xe-2315-40be916657d26be563dbbd2b618cc398ea9aeb33
+
+  IGTPW_12240: 29060abd6f510f1605c9e6bf366d17d4894efc92 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8136: 21076ee09438af484c58b308d8179277503922f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2310-5779fb3c12faf12589054127d60b1d36d56ba219: 5779fb3c12faf12589054127d60b1d36d56ba219
+  xe-2315-40be916657d26be563dbbd2b618cc398ea9aeb33: 40be916657d26be563dbbd2b618cc398ea9aeb33
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/index.html
+
+--===============2523956912528714708==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Skip test if joiner display is connected (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141614/">https://patchwork.freedesktop.org/series/141614/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8136_BAT -&gt; XEIGTPW_12240_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12240_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12240_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>Additional (1): bat-bmg-1 <br />
+  Missing    (1): bat-adlp-7 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12240_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8136/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12240_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@eof:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-edid:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_force_connector_basic@force-edid.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-cm:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_evict@evict-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a>)</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>)</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a>)</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-bmg-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12240/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8136 -&gt; IGTPW_12240</li>
+<li>Linux: xe-2310-5779fb3c12faf12589054127d60b1d36d56ba219 -&gt; xe-2315-40be916657d26be563dbbd2b618cc398ea9aeb33</li>
+</ul>
+<p>IGTPW_12240: 29060abd6f510f1605c9e6bf366d17d4894efc92 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8136: 21076ee09438af484c58b308d8179277503922f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2310-5779fb3c12faf12589054127d60b1d36d56ba219: 5779fb3c12faf12589054127d60b1d36d56ba219<br />
+  xe-2315-40be916657d26be563dbbd2b618cc398ea9aeb33: 40be916657d26be563dbbd2b618cc398ea9aeb33</p>
+
+</body>
+</html>
+
+--===============2523956912528714708==--
