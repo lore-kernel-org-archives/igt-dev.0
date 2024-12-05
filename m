@@ -4,162 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1ADDE7716E
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 21:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8984E7716E
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 21:57:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6031C10E5E5;
-	Thu,  5 Dec 2024 21:52:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 83B7210EFA9;
+	Thu,  5 Dec 2024 21:57:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aOg/O4aF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TkDrE5FJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6490810E5E5
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Dec 2024 21:52:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C751A10EFA9
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Dec 2024 21:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733435571; x=1764971571;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=uelqnIltBEB4tzsbz1J3j/zMmyV2U8CpgF7znWgb/i4=;
- b=aOg/O4aF1TZR+01J6nox3Ak4wmRIGv0AGIFx2vUE5C44yellxClPRXGT
- wUiHMxqXTdM0uTAbjlMQy29osOTah9OXw2wppWcv41tjgdoQb+Kyt0xcg
- xlQYa/DTnWpdCS+6prXLil/G4D4b01pXIsYAyzATN7vF7gh6F04Gdo4kf
- 2V2oaUM0N8EwhuMf+ndgJejhfQMV6Cm5NxUyrbG5yQL9wslrHBcVbse3b
- NFC/BbP4l/OuDuKvIWbA/jsDaTpL5By1xlAq69FOSnnqQdO3e39TCbmHn
- LjdS6SDnxSaXBpT3B8rNiuvx5j2KSRXeLMGHJVABnkEXuL8RhoBqwPx/B Q==;
-X-CSE-ConnectionGUID: L0d3ClYhROapCSxyDDf78w==
-X-CSE-MsgGUID: e9U4M4FiTxaL5VcSMovomA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="37558001"
-X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="37558001"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 13:52:51 -0800
-X-CSE-ConnectionGUID: 635yIL/tTxe14eKWOaWYTw==
-X-CSE-MsgGUID: 7J1b6eXUS12lVhrIRVQEpA==
+ t=1733435857; x=1764971857;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=SH3C36FT2RTVhoLEimdnHrtisAxxQB5VahUJ215mWoI=;
+ b=TkDrE5FJcOSDn8VxrXDA1j60s2kj5cksHnXVptfNN8v7isO+2HIS+H4v
+ n+ZGQ6d216dcvaScih34XBetfaHCflJtr/SE5AdnVl+aWMTVR26wJrcGO
+ mvMCwE8AWq9cneh5l8/xBlELZy8PXIf0hgxAPe4H2p58MceSFs1rr54vI
+ 3tO3MBdz9OA758t+oz0IFjDMFy5CK5qsJp2Yt2fkplHpjKwRAkwOP/kk8
+ vwn2bYmyDdwIsQ8WlPPirz5PZGLM7hyhq4j8yyet57b1tYy+aP1/2+i8h
+ Qo3/35pBWLs17jGgfUR/yU8ei+FydmyH1pqQQZTQYJrWQN69ZyA22cGB/ g==;
+X-CSE-ConnectionGUID: UfSmLWcUT5qvcVHLrjClpg==
+X-CSE-MsgGUID: F1QAA2t4TuipsL0IyA6KGw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="36612040"
+X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="36612040"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Dec 2024 13:57:37 -0800
+X-CSE-ConnectionGUID: uV8EYa/CSE+S/hAamYT3Gw==
+X-CSE-MsgGUID: GtlTi4BOTqaneT52arCcIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="94085309"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Dec 2024 13:52:49 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 5 Dec 2024 13:52:49 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 5 Dec 2024 13:52:49 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.174)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 5 Dec 2024 13:52:49 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ml8RJo9QTGQ2ThPPSztGHIxLrVbZ89PzXX3Q9GLtDkXmS2XaSF5GKu+zaeN9hV6xKn89ES5nXRwIgzkouOFS59rLWPIm0RTsvfePT40JydIosrcOyzBEO1/f2MAi8/yXzK/hdSOBug4nkJtovSaRd3ecSBAS7Vcs9q4LX+iRXGsg+wVyyRDMwMStSm8oMnNJu6ibs/zBgL2GOK/dW44x3MFRdHuN9RsIfu1JyXYrF9oIMhCD7pQZZYhfB36nj3ln+jwgiFpJmlFHBvfLLpAcGBfusWadt6xglZuk++YeQGl04SuyNqVrMW0vDBwYS1JGkulA3NnVQ/ep6ji+kOI4sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f/hBBqXA91ztqegJy0AMTPj5NU8LTISf8lH/zEfCh3A=;
- b=adV+Udoa+3SYpP0WGLsvtiUkP8/auAOFMYSNTWCAfaf7SLBBQa+QThdd9b50cWKLQ6CiZM1iFYUjZa+s4cAie7eUdpT0Oy37MVFuZ9WbVZIHwSGM41sb5qnIljr0C3Vd3lkevrhVxatb8WvEahBZhPKNOm4LmpgJYQi82kiJKB02fmTdSqGPeMYj0n8kNdpcJXaA1nFA0HeD+kJ4FnAaF19kEU8Mu7qLrDPyM5qmTCa6GpPLuI5BT71uKI6iuWjQvdB8l0myDI4hOiHCVu2xjuJlWt5OuWsGQ9wY68xZFaP415dyvSPHL8cAsblMiN626evZxjHubmF9qXUtauxzmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
- by SA2PR11MB4844.namprd11.prod.outlook.com (2603:10b6:806:f9::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Thu, 5 Dec
- 2024 21:52:44 +0000
-Received: from BYAPR11MB2854.namprd11.prod.outlook.com
- ([fe80::8a98:4745:7147:ed42]) by BYAPR11MB2854.namprd11.prod.outlook.com
- ([fe80::8a98:4745:7147:ed42%5]) with mapi id 15.20.8207.014; Thu, 5 Dec 2024
- 21:52:43 +0000
-Date: Thu, 5 Dec 2024 16:52:33 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/kms_ccs: add hiberbate test
-Message-ID: <Z1Igoelq7HqHlv3X@intel.com>
-References: <20241203092418.3454357-1-juhapekka.heikkila@gmail.com>
- <20241203092418.3454357-3-juhapekka.heikkila@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241203092418.3454357-3-juhapekka.heikkila@gmail.com>
-X-ClientProxiedBy: MW4P223CA0011.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:303:80::16) To BYAPR11MB2854.namprd11.prod.outlook.com
- (2603:10b6:a02:c9::12)
+X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="98292873"
+Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.27.7])
+ by fmviesa003.fm.intel.com with ESMTP; 05 Dec 2024 13:57:36 -0800
+From: Zhanjun Dong <zhanjun.dong@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Zhanjun Dong <zhanjun.dong@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: [PATCH v7] tests/intel/xe_exec_capture: Add xe_exec_capture test
+Date: Thu,  5 Dec 2024 13:57:35 -0800
+Message-Id: <20241205215735.295314-1-zhanjun.dong@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB2854:EE_|SA2PR11MB4844:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98a3b268-fa56-4e3f-986e-08dd157725d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?jbzrc8kDNZRtD5BqbabPa9V0ek8sMHmWE+O7zLxz5+GDQnbuJuqLkHkHHtZc?=
- =?us-ascii?Q?QzzzXp4MGC/T1sDuj9nQzZccZIM+bYOlM4oNi71kIYCmld4vigCcFjjcl1/5?=
- =?us-ascii?Q?UawWfWspTGBlNfQMuN8nVMC6an8oUlBQpSTR6/P9/BLoSQikdwNVQwXq+DZ8?=
- =?us-ascii?Q?S0AQXDyaPuBpWNQyfbboW42tDNRg+L7q2cTM/+G/X9/56YHoQwKXDIF6G99l?=
- =?us-ascii?Q?hMQ49DggkIrNtFZ5mJmj/j9sLeBwRJfRq4nSQUEnIbDvAZQlaH7Hnlyk5ZxY?=
- =?us-ascii?Q?IQOn/+RZchaFDtcVOVoV8M7AnK9UyBrFKhxyob7xIxD2WtE1htin4YwsIRtD?=
- =?us-ascii?Q?gY6PrE+UX9Q81TDlc/IezlEDxDJffvLlg5PUZIfLFWPgBGQot4y5/aRc8V7+?=
- =?us-ascii?Q?8PtA/CGlFG8p33eTQAoHiRjQBRIsPMaHUAUgE9CFLhZbAZWzPs/kihgOXO4T?=
- =?us-ascii?Q?mEVVkGodeK0RavKOXH8tOFMn8Mm+/P1ip3BdAFhb7488lPcz4+Dtks9VgbDh?=
- =?us-ascii?Q?5CLXwKE5RhvpiHYn4wTkCem1JZcZjs/Ztt8YVNhwvac34gVhoOsbmGKAWxkp?=
- =?us-ascii?Q?GNPBqQWXiQJ5h1nJDE+4Uk4FInyODQeBePryGMxtKTcPq+37GiXxr258U2DZ?=
- =?us-ascii?Q?a2tT5F7I4EhSLMIUzLCCeUOumyJXFrN6xSoAXWvI8b/d/1gsDZ8Jm7kjj97T?=
- =?us-ascii?Q?7VGgnwXYzEukFy5FT8NGFzAQLiXJCQPqkFVZ7bH8oFyq0hKdrQYCkGs+Tf9S?=
- =?us-ascii?Q?YpFj7ZHZ83cjHLc8eA94vRrwRG8LXEpE9c9PTLzmLiYoomnHRd6DLMoUltQV?=
- =?us-ascii?Q?pnXOhvsRJjpkOeY8k7JaAggXQDQpf5XvKMACekCLMBClQCekZQc4Hn5jYZVj?=
- =?us-ascii?Q?h71qmTCDv1ZNeeyuGqRp2GlN/MbPf9Juu3GGZ8wTsHvs+y/XlmRNm8G+6Ins?=
- =?us-ascii?Q?KZ43KOmRGxHjoeX1EoPmdX6GqhLwwC54EjjdsUYimBHhibJ31WEeNaYk03d/?=
- =?us-ascii?Q?Bm7RQS1YVwajTZhvmXvdyljEt2swZgVQJ0dLw3q60K/a0+OcMkXzg/AIlnA5?=
- =?us-ascii?Q?Z5B52zVjH0MS6hK7cgMz8LHypGvphEIa4Lg8hvaxby4QK+g2wl4YgYYmeZrI?=
- =?us-ascii?Q?SQ7ctyGSqNBHPvEwzYCLly47bkBBlnC3OR42qzmMFrbS43P/91N8b5hvuih2?=
- =?us-ascii?Q?Qa6flaOWXz6fxHyLceZmQ+fHf6BpzFVhlH1YsHynysB/ww5MfpKi+Z3rycva?=
- =?us-ascii?Q?K+vuyYwczjnSmzbmlBK577iCZb3lJADEb7m8TwZv5ngO/mde5SV7n+vebeS2?=
- =?us-ascii?Q?v3AQL+9LmxGWPv1ZautHC1bdzs+cX3LD6rcGBRr+FZrmBQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR11MB2854.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oAZ37/fHY2EUqmGYXymtICHniafZ9O5/ZEeH+jvT008Zi8hnmiiwF+FknpJ0?=
- =?us-ascii?Q?Fc/dfOiQimlrU6nGAdJOLjJmFT41TxxHwjol84gnJM+Pl3WgIJA0Zvi9iOsg?=
- =?us-ascii?Q?MX+rSyhAFjPhlienAKNQZoGtzHj2eKhmlGVATu1ATrgiMqzqGoaV4NeA0pNx?=
- =?us-ascii?Q?XHo4PjISdwiJxiqSLze4G8Jem+86ATFlkhIRa4vS8pUomLBlm0/YcsykjrD4?=
- =?us-ascii?Q?cDxCSEMA5Xekug3HTsH58odAu3V6CSJwF+jv/33ifXAnFN69ni0VrekpXkt8?=
- =?us-ascii?Q?lyTU4cSpMpHsI+dkwzDiAUqehowcOKeN0bPRlGrrcvRPDI/Dya0TpiRMZekF?=
- =?us-ascii?Q?EexOIEKwU2A2FJSXMiydpiGf1+UxINrVvlaHMzZlGxkF9xwMFDJTLURaqZFD?=
- =?us-ascii?Q?iVhxTpgTXTyVhSlcrVavcEiUumhQythP+DQjm/AWBThJv/oq+3r2QQCmHM0u?=
- =?us-ascii?Q?Efrlcya2ZQ48Vk67VVEMRLA/cKL96cb988OXvbFfqkvtolfYkiQeTOUXx2Q6?=
- =?us-ascii?Q?3/tIr6wFjWDJKtWwhOvTahIuILcKvFouwKanTQptRCU4SyRGQDf/f5Ve/BTo?=
- =?us-ascii?Q?/IjzZ13CtbcXrUZb+2zHbpyKSjLBLtB7Dik9eGDLa7gkjH4zPFeB/CCZXg0R?=
- =?us-ascii?Q?IcbNrcBhYDyRHV9gev0/nZjITt/LcyqVzYiDhwVvKNF34J8Cndh9nQZKNuGA?=
- =?us-ascii?Q?zcmakI4L7pOUhT0OZWvEEZ+OnRsA83ZhQAQGl0R6ED2c9DCeUpOX8M1IMc4T?=
- =?us-ascii?Q?11hQa3g41LY1XsUSJD1s3Ggxr97v5bEJqfRm3NVijPQPF7SgxgUoSX5fgG6L?=
- =?us-ascii?Q?0W9dz2DaxCkk+zJgmqYiQ+Fmi7qPSWAaOgjCHg/swBCVEfstDvWc2me0iWjq?=
- =?us-ascii?Q?2q3jkG7jmf2LEPWfxaU5dwHO6Wpf9ZMZD3ORwca9W5fGLBPRvDVURWx/28Mj?=
- =?us-ascii?Q?yy08Vwv+Xr4xq/MQJ4eAcbMsGsQCKLWOft9jTOHiarBottqPsf2Rpx49aJEP?=
- =?us-ascii?Q?atn8QrwaaI5zPjBa2X4tvVRYvEnz3RGrn5Urt4AuW9aY858nVz3riBYulcF+?=
- =?us-ascii?Q?WWzxTdC95V57zpANUOBNkSagGZ8lr+nMjDD0bGNq3Af4n3xspBvIAQjb5Qqn?=
- =?us-ascii?Q?qrL1+PKk4dl/mu0DWpV6ETfYTm1ameN7WGrz8UvEIHk1NuTCcG0nYY993/oE?=
- =?us-ascii?Q?08nL7tmIKFLXXnyJnjLSkXlvo5pKOHVpDY1TabFdbJgVmSFrXWNjtJSNnZm9?=
- =?us-ascii?Q?CQV6njwDRca9rh4QHLLxP6SS+6eY+F2brmZsB7kHhaD4zF5HhAvoD6vuq6k/?=
- =?us-ascii?Q?HsWou8lL0ZC+9YVLVOv0BRrSq6S3diJlcVjKzVOyi3tui4e2QIQd399/VDWB?=
- =?us-ascii?Q?qgwwInHJARceTxf0fWdZkRwif3eBMIBLrA86pWj7MH9KhVjvolUgf2y0G/4Y?=
- =?us-ascii?Q?faVvYv23Tsntbr9vmRh1yebDlL89HQ1mwzMQuuRB5k+NMZtF3zf9398ZthK1?=
- =?us-ascii?Q?Kbfaedj4JYPkX0FPFr6RK/ePFs4LSXp7xC0T06hWj5b1VZUoxPFzRRc86/0N?=
- =?us-ascii?Q?MyhnGrpvj+G4a6p+8vLo+TwyODOlrDKrmQKRxWPeAIMDP24G0W3e0b57qTlm?=
- =?us-ascii?Q?pw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98a3b268-fa56-4e3f-986e-08dd157725d3
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2854.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 21:52:43.9102 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iSrl+f52J61hwehIDS30J4jgvvjmTlPNNi38AFWi5TQXqACEXBJstSa/as8NweSwy0tcbhc2dzjyG0NQmXP19A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4844
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -175,83 +66,530 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Dec 03, 2024 at 11:24:18AM +0200, Juha-Pekka Heikkila wrote:
-> Add hibernate test which bring entire system down for short
-> hibernate. This mode is added to suspend tests to be run
-> manually with '-r' flag because this is not ci friendly test,
-> on hibernate ci would lose connection to the hibernated box.
-> 
-> For this test to work kernel resume point need to be set, from
-> kernel command line is checked if there is found something along
-> the lines of "resume=/dev/nvme0n1p2" or so to verify hibernate
-> will be successful.
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/intel/kms_ccs.c | 20 +++++++++++++++++---
->  1 file changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-> index 3e9a57863..d720de04a 100644
-> --- a/tests/intel/kms_ccs.c
-> +++ b/tests/intel/kms_ccs.c
-> @@ -190,6 +190,7 @@ typedef struct {
->  	bool user_seed;
->  	enum igt_commit_style commit;
->  	int fb_list_length;
-> +	bool do_hibernate;
->  	struct {
->  		struct igt_fb fb;
->  		int width, height;
-> @@ -839,8 +840,17 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->  
->  	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc) {
->  		if (data->flags & TEST_SUSPEND && fb_flags & FB_COMPRESSED) {
-> -			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> -						      SUSPEND_TEST_NONE);
-> +			if (data->do_hibernate) {
-> +				igt_require_f(igt_pm_check_hibernation_support(),
-> +					      "Kernel is not cofigured for resume\n");
-> +				igt_require_f(igt_pm_ensure_grub_boots_same_kernel(),
+Submit cmds to the GPU that result in a GuC engine reset and check that
+devcoredump register dump is generated, by the GuC, and includes the
+full register range.
 
-supposing we find a better more generic way for the grub:
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Changes from prior revs:
+ v7:-  Fix typo and removed unused macros
+ v6:-  Adjust start_line to start from 0
+       Use 7 bit engine_cid, start with random number
+       Add ioerror detect on fgets
+       Reorgnize the regular expression
+       Remove unnecessary radom seed init
+ v5:-  Detect devcoredump matches the testing engine
+       Engine will run with random cid
+ v4:-  Support runs on multiple GPU
+       Load all devcoredump content to buffer
+       Alloc line buffer dynamic vs static global memory
+       Changed to igt_assert_f to provide more info if failed
+ v3:-  Remove call to bash and awk
+       Add regular express parse
+       Detect devcoredump through card index
+       Add devcoredump removal check
+ v2:-  Fix CI.build error
+       Add multiple GPU card support
+---
+ tests/intel/xe_exec_capture.c | 474 ++++++++++++++++++++++++++++++++++
+ tests/meson.build             |   1 +
+ 2 files changed, 475 insertions(+)
+ create mode 100644 tests/intel/xe_exec_capture.c
 
-and no luck with the SUSPEND_STATE_DISK, USPEND_TEST_MEM automatic case?
+diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
+new file mode 100644
+index 000000000..de44137de
+--- /dev/null
++++ b/tests/intel/xe_exec_capture.c
+@@ -0,0 +1,474 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++/**
++ * TEST: Basic tests for GuC based register capture
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: CMD submission
++ * Functionality: Debug
++ * Test category: functionality test
++ */
++
++#include <ctype.h>
++#include <fcntl.h>
++#include <regex.h>
++#include <stdio.h>
++#include <string.h>
++
++#include "igt.h"
++#include "igt_device.h"
++#include "lib/igt_syncobj.h"
++#include "lib/intel_reg.h"
++#include "linux_scaffold.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_spin.h"
++
++#define MAX_N_EXECQUEUES		16
++
++#define BASE_ADDRESS			0x1a0000
++#define ADDRESS_SHIFT			39
++#define CID_ADDRESS_MASK		0x7F
++/* Batch buffer element count, in number of dwords(u32) */
++#define BATCH_DW_COUNT			16
++
++#define MAX_TEMP_LEN			80
++#define MAX_SYSFS_PATH_LEN		128
++#define MAX_LINES			4096
++/* Max line buffer size (includes last '\0') */
++#define MAX_LINE_LEN			1024
++#define MAIN_BUF_SIZE			(MAX_LINES * MAX_LINE_LEN * sizeof(char))
++/*
++ * Devcoredump might have long line this test don't care.
++ * This buffer size used when load dump content
++ */
++#define LINE_BUF_SIZE			(64 * 1024)
++
++#define DUMP_PATH			"/sys/class/drm/card%d/device/devcoredump/data"
++#define START_TAG			"**** Job ****"
++#define END_TAG				"**** VM state ****"
++
++/* Optional Space */
++#define SPC_O				"[ \t]*"
++/* Required Space */
++#define SPC				"[ \t]+"
++/* Optional Non-Space */
++#define NSPC_O				"([^ \t]*)"
++/* Required Non-Space */
++#define NSPC				"([^ \t]+)"
++#define BEG				"^" SPC_O
++#define REQ_FIELD			NSPC SPC
++#define REQ_FIELD_LAST			NSPC SPC_O
++#define OPT_FIELD			NSPC_O SPC_O
++#define END				SPC_O "$"
++
++#define REGEX_NON_SPACE_GROUPS	BEG REQ_FIELD REQ_FIELD_LAST OPT_FIELD OPT_FIELD OPT_FIELD END
++#define REGEX_NON_SPACE_GROUPS_COUNT	6
++
++#define INDEX_KEY			1
++#define INDEX_VALUE			2
++#define INDEX_ENGINE_PHYSICAL		2
++#define INDEX_ENGINE_NAME		1
++#define INDEX_ENGINE_INSTANCE		4
++
++static char *safe_strncpy(char *dst, const char *src, int n)
++{
++	char *s;
++
++	igt_assert(n > 0);
++	igt_assert(dst && src);
++
++	s = strncpy(dst, src, n - 1);
++	s[n - 1] = '\0';
++
++	return s;
++}
++
++static const char *xe_engine_class_name(u32 engine_class)
++{
++	switch (engine_class) {
++	case DRM_XE_ENGINE_CLASS_RENDER:
++		return "rcs";
++	case DRM_XE_ENGINE_CLASS_COPY:
++		return "bcs";
++	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
++		return "vcs";
++	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
++		return "vecs";
++	case DRM_XE_ENGINE_CLASS_COMPUTE:
++		return "ccs";
++	default:
++		igt_warn("Engine class 0x%x unknown\n", engine_class);
++		return "unknown";
++	}
++}
++
++static void
++test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_queues, int n_execs,
++		 unsigned int flags, u64 addr)
++{
++	u32 vm;
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++	u32 exec_queues[MAX_N_EXECQUEUES];
++	u32 syncobjs[MAX_N_EXECQUEUES];
++	size_t bo_size;
++	u32 bo = 0;
++	struct {
++		struct xe_spin spin;
++		u32 batch[BATCH_DW_COUNT];
++		u64 pad;
++		u32 data;
++	} *data;
++	struct xe_spin_opts spin_opts = { .preempt = false };
++	int i, b;
++
++	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
++
++	vm = xe_vm_create(fd, 0, 0);
++	bo_size = sizeof(*data) * n_execs;
++	bo_size = xe_bb_size(fd, bo_size);
++
++	bo = xe_bo_create(fd, vm, bo_size,
++			  vram_if_possible(fd, eci->gt_id),
++			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	data = xe_bo_map(fd, bo, bo_size);
++
++	for (i = 0; i < n_exec_queues; i++) {
++		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		syncobjs[i] = syncobj_create(fd, 0);
++	};
++
++	sync[0].handle = syncobj_create(fd, 0);
++	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++
++	for (i = 0; i < n_execs; i++) {
++		u64 base_addr = addr;
++		u64 batch_offset = (char *)&data[i].batch - (char *)data;
++		u64 batch_addr = base_addr + batch_offset;
++		u64 spin_offset = (char *)&data[i].spin - (char *)data;
++		u64 sdi_offset = (char *)&data[i].data - (char *)data;
++		u64 sdi_addr = base_addr + sdi_offset;
++		u64 exec_addr;
++		int e = i % n_exec_queues;
++
++		if (!i) {
++			spin_opts.addr = base_addr + spin_offset;
++			xe_spin_init(&data[i].spin, &spin_opts);
++			exec_addr = spin_opts.addr;
++		} else {
++			b = 0;
++			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++			data[i].batch[b++] = sdi_addr;
++			data[i].batch[b++] = sdi_addr >> 32;
++			data[i].batch[b++] = 0xc0ffee;
++			data[i].batch[b++] = MI_BATCH_BUFFER_END;
++			igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++			exec_addr = batch_addr;
++		}
++
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].handle = syncobjs[e];
++
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = exec_addr;
++		if (e != i)
++			syncobj_reset(fd, &syncobjs[e], 1);
++		xe_exec(fd, &exec);
++	}
++
++	for (i = 0; i < n_exec_queues && n_execs; i++)
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
++					NULL));
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	syncobj_destroy(fd, sync[0].handle);
++	for (i = 0; i < n_exec_queues; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++	}
++
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
++static char **alloc_lines_buffer(void)
++{
++	int i;
++	char **lines = (char **)malloc(MAX_LINES * sizeof(char *));
++	char *main_buf =  (char *)malloc(MAIN_BUF_SIZE);
++
++	igt_assert_f(lines, "Out of memory.\n");
++	igt_assert_f(main_buf, "Out of memory.\n");
++
++	/* set string array pointers */
++	for (i = 0; i < MAX_LINES; i++)
++		lines[i] = main_buf + i * MAX_LINE_LEN;
++
++	return lines;
++}
++
++static char *get_devcoredump_path(int card_id, char *buf)
++{
++	sprintf(buf, DUMP_PATH, card_id);
++	return buf;
++}
++
++static int load_all(FILE *fd, char **lines, char *buf)
++{
++	int start_line = 0, i = 0;
++	bool skip = true;
++
++	memset(lines[0], 0, MAIN_BUF_SIZE);
++	while (!feof(fd) && i < MAX_LINES) {
++		/*
++		 * Devcoredump might have long lines, load up to
++		 * LINE_BUF_SIZE for a single line
++		 */
++		if (!fgets(buf, LINE_BUF_SIZE, fd))
++			if (ferror(fd) != 0) {
++				igt_warn("Failed to read devcoredump file, error: %d\n",
++					 ferror(fd));
++				break;
++			}
++
++		if (skip) {
++			start_line++;
++			/* Skip all lines before START_TAG */
++			if (strncmp(START_TAG, buf, strlen(START_TAG)))
++				continue;
++			else
++				skip = false;
++		}
++
++		/* Only save up to MAX_LINE_LEN to buffer */
++		safe_strncpy(lines[i++], buf, MAX_LINE_LEN);
++
++		/* Stop on END_TAG */
++		if (!strncmp(END_TAG, buf, strlen(END_TAG)))
++			break;
++	}
++	return start_line;
++}
++
++static int access_devcoredump(char *path, char **lines, char *line_buf)
++{
++	int start_line = -1;
++	FILE *fd = fopen(path, "r");
++
++	if (!fd)
++		return false;
++
++	igt_debug("Devcoredump found: %s\n", path);
++
++	/* Clear memory before load file */
++	if (lines)
++		start_line = load_all(fd, lines, line_buf);
++
++	fclose(fd);
++	return start_line;
++}
++
++static bool rm_devcoredump(char *path)
++{
++	int fd = open(path, O_WRONLY);
++
++	if (fd != -1) {
++		igt_debug("Clearing devcoredump.\n");
++		write(fd, "0", 1);
++		close(fd);
++		return true;
++	}
++
++	return false;
++}
++
++static char
++*get_coredump_item(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index)
++{
++	int i;
++	regmatch_t match[REGEX_NON_SPACE_GROUPS_COUNT];
++
++	for (i = 0; i < MAX_LINES; i++) {
++		char *line = lines[i];
++
++		/* Skip lines without tag */
++		if (!strstr(line, tag))
++			continue;
++
++		if ((regexec(regex, line, REGEX_NON_SPACE_GROUPS_COUNT, match, 0)) == 0) {
++			char *key = NULL, *value = NULL;
++
++			if (match[tag_index].rm_so >= 0) {
++				key = &line[match[tag_index].rm_so];
++				line[match[tag_index].rm_eo] = '\0';
++			}
++			if (match[target_index].rm_so >= 0) {
++				value = &line[match[target_index].rm_so];
++				line[match[target_index].rm_eo] = '\0';
++			}
++
++			if (key && value && strcmp(tag, key) == 0)
++				return value;
++			/* if key != tag,  keep searching and loop to next line */
++		}
++	}
++
++	return NULL;
++}
++
++static void
++check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo, u64 addr_hi)
++{
++	u64 result;
++	char *output;
++
++	igt_assert_f((output = get_coredump_item(regex, lines, tag, INDEX_KEY, INDEX_VALUE)),
++		     "Target not found:%s\n", tag);
++	result = strtoul(output, NULL, 16);
++	igt_debug("Compare %s %s vs [0x%lX-0x%lX]\n", tag, output, addr_lo, addr_hi);
++	igt_assert_f((addr_lo <= result) && (result <= addr_hi),
++		     "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
++}
++
++static void
++check_item_str(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index,
++	       const char *target, bool up_to_target_len)
++{
++	char buf[MAX_TEMP_LEN] = {0};
++	char *output;
++	int code;
++
++	igt_assert_f(output = get_coredump_item(regex, lines, tag, tag_index, target_index),
++		     "Target not found:%s\n", tag);
++
++	if (up_to_target_len) {
++		igt_assert_f(strlen(target) < MAX_TEMP_LEN, "Target too long.\n");
++		safe_strncpy(buf, output, MAX_TEMP_LEN);
++		buf[strlen(target)] = 0;
++		output = buf;
++	}
++	code = strncmp(output, target, strlen(target));
++	igt_debug("From tag '%s' found %s vs %s\n", tag, output, target);
++	igt_assert_f(code == 0, "Expected value:%s, received:%s\n", target, output);
++}
++
++/**
++ * SUBTEST: reset
++ * Description: Reset GuC, check devcoredump output values
++ */
++static void test_card(int fd)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	regex_t regex;
++	int start_line;
++	int engine_cid = rand();
++	char **lines;
++	char *single_line_buf =  (char *)malloc(LINE_BUF_SIZE);
++	char temp[MAX_TEMP_LEN];
++	char path[MAX_SYSFS_PATH_LEN];
++
++	igt_assert_f(single_line_buf, "Out of memory.\n");
++
++	regcomp(&regex, REGEX_NON_SPACE_GROUPS, REG_EXTENDED | REG_NEWLINE);
++	get_devcoredump_path(igt_device_get_card_index(fd), path);
++	lines = alloc_lines_buffer();
++
++	/* clear old devcoredump, if any */
++	rm_devcoredump(path);
++
++	xe_for_each_engine(fd, hwe) {
++		/*
++		 * To test devcoredump register data, the test batch address is
++		 * used to compare with the dump, address bit 40 to 46 act as
++		 * context id, which start with an random number, increased 1
++		 * per engine. By this way, the address is unique for each
++		 * engine, and start with an random number on each run.
++		 */
++		const u64 addr = BASE_ADDRESS | ((u64)(engine_cid++ % CID_ADDRESS_MASK) <<
++						 ADDRESS_SHIFT);
++
++		igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
++			  hwe->engine_instance);
++
++		test_legacy_mode(fd, hwe, 1, 1, 0, addr);
++
++		/* assert devcoredump created */
++		igt_assert_f((start_line = access_devcoredump(path, lines, single_line_buf)) > 0,
++			     "Devcoredump not exist, errno=%d.\n", errno);
++
++		sprintf(temp, "instance=%d", hwe->engine_instance);
++		check_item_str(&regex, lines, "(physical),", INDEX_ENGINE_PHYSICAL,
++			       INDEX_ENGINE_INSTANCE, temp, false);
++		check_item_str(&regex, lines, "(physical),", INDEX_ENGINE_PHYSICAL,
++			       INDEX_ENGINE_NAME, xe_engine_class_name(hwe->engine_class), true);
++
++		check_item_str(&regex, lines, "Capture_source:", INDEX_KEY, INDEX_VALUE,
++			       "GuC", false);
++		check_item_u64(&regex, lines, "ACTHD:", addr,
++			       addr + BATCH_DW_COUNT * sizeof(u32));
++		check_item_u64(&regex, lines, "RING_BBADDR:", addr,
++			       addr + BATCH_DW_COUNT * sizeof(u32));
++
++		/* clear devcoredump */
++		rm_devcoredump(path);
++		sleep(1);
++		/* Assert devcoredump removed */
++		igt_assert_f(!access_devcoredump(path, NULL, NULL), "Devcoredump not removed\n");
++	}
++	/* Free lines buffer */
++	free(lines);
++	free(single_line_buf);
++	regfree(&regex);
++}
++
++igt_main
++{
++	int xe;
++
++	igt_fixture
++		xe = drm_open_driver(DRIVER_XE);
++
++	igt_subtest("reset") {
++		int gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
++
++		igt_require(xe > 0);
++		if (gpu_count >= 2) {
++			igt_multi_fork(child, gpu_count) {
++				int gpu_fd;
++
++				gpu_fd = drm_open_filtered_card(child);
++				igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child,
++					     errno);
++				igt_assert(is_xe_device(gpu_fd));
++
++				test_card(gpu_fd);
++				drm_close_driver(gpu_fd);
++			}
++			igt_waitchildren();
++		} else {
++			test_card(xe);
++		}
++	}
++
++	igt_fixture
++		drm_close_driver(xe);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 2724c7a9a..a6750d523 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -285,6 +285,7 @@ intel_xe_progs = [
+ 	'xe_exec_atomic',
+ 	'xe_exec_balancer',
+ 	'xe_exec_basic',
++	'xe_exec_capture',
+ 	'xe_exec_compute_mode',
+ 	'xe_exec_fault_mode',
+ 	'xe_exec_mix_modes',
+-- 
+2.34.1
 
-> +					      "Couldn't find correct kernel in grub.cfg\n");
-> +				igt_system_suspend_autoresume(SUSPEND_STATE_DISK,
-> +							      SUSPEND_TEST_NONE);
-> +			} else {
-> +				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> +							      SUSPEND_TEST_NONE);
-> +			}
->  
->  			/* on resume check flat ccs is still compressed */
->  			if (is_xe_device(data->drm_fd) &&
-> @@ -1044,6 +1054,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
->  		data->user_seed = true;
->  		data->seed = strtoul(optarg, NULL, 0);
->  		break;
-> +	case 'r':
-> +		data->do_hibernate = true;
-> +		break;
->  	default:
->  		return IGT_OPT_HANDLER_ERROR;
->  	}
-> @@ -1056,9 +1069,10 @@ static data_t data;
->  static const char *help_str =
->  "  -c\t\tCheck the presence of compression meta-data\n"
->  "  -s <seed>\tSeed for random number generator\n"
-> +"  -r\t\tOn suspend test do full hibernate with reboot\n"
->  ;
->  
-> -igt_main_args("cs:", NULL, help_str, opt_handler, &data)
-> +igt_main_args("csr:", NULL, help_str, opt_handler, &data)
->  {
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-> -- 
-> 2.45.2
-> 
