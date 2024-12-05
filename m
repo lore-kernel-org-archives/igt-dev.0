@@ -4,181 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2006E77170
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 19:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B522E7716E
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 21:50:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6126110EF99;
-	Thu,  5 Dec 2024 19:44:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B48210E18E;
+	Thu,  5 Dec 2024 21:50:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C8WQbw/v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="np0KXOkz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88C1A10EF99
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Dec 2024 19:44:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C40C10E18E
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Dec 2024 21:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733427864; x=1764963864;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=rWBeAjh5WexaQsZBllHa0VlJV1s6b44bKeemzj1B3E4=;
- b=C8WQbw/vh1Okaf4j+FcOmjCKrhD6VxAOUkJyu7u/xKAWop3LE+c2PLso
- aQMicvIFALcHRQePuFawZojwDQ8CTWAQFRHLP72tMxtrVa7yMy8vtWN4/
- JfDYEqBumfYK1CtFHfd9rqLkxaag9nVPGtUtmBJ1C6Qs1iQgPsKme0g4/
- IllXHjk+Htn97YQfSzNe52oCcZRkPrprXJ2lfA8B43j23sfGSu2v+YjV+
- UqG5v1c0lolwuB5MnrQk2M0rp806wrPwKHIGtpryQm8gbofUn1KwA8yq4
- tO//wUqn3lDkjl9WmbhrRxGwsRqK6reuAt9z8rim+fAMzt+OCT2xccuXV w==;
-X-CSE-ConnectionGUID: 5KCjqG3rSdCLBAhGEJ8A+A==
-X-CSE-MsgGUID: RbntYweTQT6ZbmYU2Wf12A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33909025"
-X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="33909025"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 11:44:23 -0800
-X-CSE-ConnectionGUID: QxvqnS2JRBmtTHN7vCknxQ==
-X-CSE-MsgGUID: sOwatFguQNu3XqK9j1Owow==
+ t=1733435411; x=1764971411;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=9fxU0Dj2/1iemFqvKKUVzLGF1VgtaJ7IjSBN3aZ/bEY=;
+ b=np0KXOkzKf2yD9V60yyfD+7G5LefcUTaQ2VNjbLBAknATFxRCQ3ZC4Gs
+ xudzMBpyDMz/SzuotPq2FdbSNHraIa6lu4ERinSNbHbaDGBSrkjmnyQRC
+ iDYp5uIS2NOtYKrs38WJYBuQlRGAaG8PFeAV0evVvrS7J/OM0zcrxZMBz
+ ylkkPiB5YDrUNCAZ3WWi5EgOqcJSWcKmA/lOBDQvyGeDs2lsh+WVbjggM
+ tFFDsWXV2dcA91iQLn+4jMPr97Fyh/Rq/9li7KX4w32FSETIjfiKtUItP
+ jzdlVsGh8Nb7nsmKuIeBoecq4SjP6RqHxwsW4JAEM0PQpF71fxCiCvDI4 g==;
+X-CSE-ConnectionGUID: TmPoKFlXTUuI7PHZIiCLEA==
+X-CSE-MsgGUID: xbuRChhgTq65RA7FVGgMsg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33689745"
+X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="33689745"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Dec 2024 13:50:10 -0800
+X-CSE-ConnectionGUID: 8an7UO7mRpuCx75RhOnIrg==
+X-CSE-MsgGUID: vLV5WrHCSpaC324/cmy43g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="99238513"
+X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; d="scan'208";a="99041651"
 Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Dec 2024 11:44:23 -0800
+ by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 05 Dec 2024 13:50:10 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
  ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 5 Dec 2024 11:44:22 -0800
+ 15.1.2507.39; Thu, 5 Dec 2024 13:50:09 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 5 Dec 2024 11:44:22 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Thu, 5 Dec 2024 13:50:09 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 5 Dec 2024 11:44:22 -0800
+ 15.1.2507.39; Thu, 5 Dec 2024 13:50:09 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bggRQNwNnDbfH7kVxf/PzdhjwW/S6Kk8BkaCEIJL7F7lqDW7EQJ5ho/+hcM9tIcYXoPHBHy92YHfPa+PMOD+FvAQ5vo/XX2NwJ49U/xYUJZS+Yady0pgEfkRsD5XPNRhloktBRQWafMx6aVee3empjfZN6l2iC5Rd+mYJI+AQmOrwAVFaZhXw+obEKA6RkOqo8bde9yfhcfVaem6j6OljcbLvXW4QsO79KnUxExQi/Kfr2Yr8Kd7Nu9ZvAwr6HRT010uWC6WRYJoRFacju4gcHb/SZec3Mgj5OSo90IZB/L8LvgV2ZQjyqs6ydpwsUQO/bbabwnIiwEN+sNttIY4CA==
+ b=qMYlRllbqzNUnAJz43HG+5JCrRo0zlj234WakF0aLC7gQgpmGKdJeXr124nZAU1M4MM95MhdgLFKZ5yRYYIdtbDF+TqA4VoRaHjEwe8ipnDZEmQRcehFOXa+BQNbQP5rMEblNrw0xQ/VeR7RaczJVu4BcSwjgBUp6tcElvMNONd6dShxysggNi7Q/2XCdNAwUA1B7IZdK5/cL+lVgWTyHkFOc4iSkxCOYVCFNfZ3zRuBEhvpQLIPeb60q89TOlRaIAwSrVZCGrB5vax7H5cl6/LUQaXHUA5g+8kaOEti10Q/fVp/ZL36DJGFBWHHFB5Vb2sLLsEgTkjiVOH0uTZqMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2PE8oOq+yxwrDyf+bPyMvSrtoasG3HPUSGZiNuBfvd0=;
- b=ov9aKTsI9jTMKFZX7UadMm/W7VgUODNfmIOwOiCxD58xwiptg4sjzBJQq6gP+QMaNvG27CUsUGWsHLycTzohs4J7//ywOVNovy6TsEDxR4YaLYv1uimhW71dXgu1gqOmRc3d1OPpcZa76pfkoCHJqf/o/TzA6BsufOwODVykKXPImgy0i8wqDhjwnjsfceWjp+Ls5mSP+4w0XzvfOy06EofpXGWiszbCkq39Sx22HuF4mT3OUE+kIwFUvD8uNYB/OwqTRRm7Pg6SRB46jT/2i3GfLSmuUXNSrelKFlWuD4cXyW+RCDnWjOnB7Wjf4uW4iHA9W8fHgpj5PUwKMwcnaA==
+ bh=QDpONRt5jE3Q3MMuwWg5LezWrwU6dTeUIxrgmXNaoNc=;
+ b=tV2eBthyLmPlqhWHYucMF1o5e9gq3cvckWBLFc5YLygf247qUmZ+fINRbmugQp2/BJ2Jk4G3mMh20wcjQmvlHyXfxDHcCp34EGYDK84zoG87F74wtfgJxavpl59S6bc2gcQLTgupwcr3u5vflB/A1GyslCMqeAGRQOZ6kJjrAlv0ISNBxFL3f+3RWURBmmhPv/Y+/Mz2kTuLrmFPXT9yyCM1Ri2AZwyApEeTfFEvvZHgl5HYmxHbBcyy+serKoyVHxAsqxV541CLSSLYxgQvgF/4t0vtTF3LNZOr7ENgMHBEEP9Ey6EPI27PmSRiSSKiDjNISTxcqg1+CYELgYy9TA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB8200.namprd11.prod.outlook.com (2603:10b6:208:454::6)
- by SJ0PR11MB5937.namprd11.prod.outlook.com (2603:10b6:a03:42c::15)
+Received: from BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
+ by SJ0PR11MB5167.namprd11.prod.outlook.com (2603:10b6:a03:2d9::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.17; Thu, 5 Dec
- 2024 19:44:17 +0000
-Received: from IA1PR11MB8200.namprd11.prod.outlook.com
- ([fe80::b6d:5228:91bf:469e]) by IA1PR11MB8200.namprd11.prod.outlook.com
- ([fe80::b6d:5228:91bf:469e%5]) with mapi id 15.20.8207.017; Thu, 5 Dec 2024
- 19:44:15 +0000
-Message-ID: <86233b83-7556-494a-9883-4c2241442d37@intel.com>
-Date: Thu, 5 Dec 2024 14:44:13 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] tests/intel/xe_exec_capture: Add xe_exec_capture test
-To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Senna, Peter" <peter.senna@intel.com>, "kamil.konieczny@linux.intel.com"
- <kamil.konieczny@linux.intel.com>
-References: <20241205143924.190169-1-zhanjun.dong@intel.com>
- <3708c2a6e6c9b57f8e8b622ce11c43591bbaec67.camel@intel.com>
-Content-Language: en-US
-From: "Dong, Zhanjun" <zhanjun.dong@intel.com>
-In-Reply-To: <3708c2a6e6c9b57f8e8b622ce11c43591bbaec67.camel@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR01CA0049.prod.exchangelabs.com (2603:10b6:a03:94::26)
- To IA1PR11MB8200.namprd11.prod.outlook.com
- (2603:10b6:208:454::6)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Thu, 5 Dec
+ 2024 21:50:02 +0000
+Received: from BYAPR11MB2854.namprd11.prod.outlook.com
+ ([fe80::8a98:4745:7147:ed42]) by BYAPR11MB2854.namprd11.prod.outlook.com
+ ([fe80::8a98:4745:7147:ed42%5]) with mapi id 15.20.8207.014; Thu, 5 Dec 2024
+ 21:50:02 +0000
+Date: Thu, 5 Dec 2024 16:49:58 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_pm: Add helpers for hibernating kernel
+Message-ID: <Z1IgBqtKWdkMycN-@intel.com>
+References: <20241203092418.3454357-1-juhapekka.heikkila@gmail.com>
+ <20241203092418.3454357-2-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241203092418.3454357-2-juhapekka.heikkila@gmail.com>
+X-ClientProxiedBy: MW4PR04CA0059.namprd04.prod.outlook.com
+ (2603:10b6:303:6a::34) To BYAPR11MB2854.namprd11.prod.outlook.com
+ (2603:10b6:a02:c9::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB8200:EE_|SJ0PR11MB5937:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ed9a1ec-d72a-4384-3fa2-08dd15653381
+X-MS-TrafficTypeDiagnostic: BYAPR11MB2854:EE_|SJ0PR11MB5167:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac4d0bae-4175-45b0-b3b7-08dd1576c582
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?b0QxVzFjRjFxbE1aOFp2aTF1TnN0aEdXdDg0R2phOGNTYXExM3FMUzNCellD?=
- =?utf-8?B?bDNWcHRsc1k3TWlaS0tLOTF2Uk9zNEFQeXU0L3lLYUtyNFpEYlV4ektpZ1Bt?=
- =?utf-8?B?RTVOL2dGZXlUZE9oZVl4Zjc0aEV4NlhPWEtVQkE1U0Z2Qk1Ob2hpR0NSd1NB?=
- =?utf-8?B?SFE0WWZlekxTei9rVkdDTDhtZEZjMVl2RFd3VG1pbmtEd3BNVTZhNjRyOEpO?=
- =?utf-8?B?WGRDVTdNNitzbGlxUjBEak1xdHNVTXJBK0dlRzBjbjJvdTh0YzRpd0c0bktF?=
- =?utf-8?B?TzA1ZmNzWU1YanFyZEQrYTlPTmZLVWpJTnR3eHMwK2U3MksvMzFvZ3hIYlBh?=
- =?utf-8?B?Mi9Eb0RiZmc3SjY2Rm16Y0RpaVBoVGNFVmRBN0lkalBiN2g5YnNVYXo2NkFn?=
- =?utf-8?B?N1l4bFRCaTlYOUVrc0FSOHhnTEtLWTNaS1FESzBNOXVpVTdYUmFPUXB3Y28x?=
- =?utf-8?B?MlRPM0hxcXNPOWN2TzJWWXpJRUV1UTd6dE9DZEFwakZYZkdJZGFud2JoT3Q3?=
- =?utf-8?B?R0JNb0psSjRGa1FSYU1tK1kwUkdZVVA3TVNSNmFkaVlIbU1XZndkWWNnSDk2?=
- =?utf-8?B?QVBCWUZiYk1LY3d0MzFNOHRINzI3aW11Rk5waC9ra1E3bnlvVzhxcUZVY00y?=
- =?utf-8?B?SFhyUzlTNVRQM0hNd3pjeGZDMUplMFc2aGM3ODBYcDhPOHlHTkVMbDNzZVFi?=
- =?utf-8?B?ZFg2Z3NCUDllblFWbHdqa2FkKzdZUzBnK2Z5MkxIb3REVVdyMjdCRC9YUFMy?=
- =?utf-8?B?bVpnTDhjRG93M21ZY04zU1dRdi96YVJoMkswdlVjTnI1N05RQkhYQXhFbFBQ?=
- =?utf-8?B?OGxld3BIWFMxb1dXT2pDdWZ2SlRXMithbEhxUHdDc1VtSDkzQ0k5K3ROZTI3?=
- =?utf-8?B?TnB1RmxOeGhOdC82WWtOT0xtelpxbjJhVXdOUDQ1b09uL0VJOG0zRWk0OUVp?=
- =?utf-8?B?blI3bCtBaWUzQ1FxejEvaTNXS0U1SHgvY1d2ODdRRnpITG1iOU01TWRhZ09k?=
- =?utf-8?B?emEzNGdtRkY2a2oxMEFnWkUzNG1iUEVma0p1Uk1SNlpRN1UzYk5SZ2Z3NUcw?=
- =?utf-8?B?ZXFYenNzL3VzbERibEFmNTBndlFybFg3R2RzOUU0UjJKOG9IUjJ0clhOZjE1?=
- =?utf-8?B?VEFiRDJST3lxaGtyM1hiQ3V2cXJYSlZUOHMzeEpyZFhhaXUzMEYvMWtSQ1Er?=
- =?utf-8?B?dmRRU2Y2Kzc4cWx5WE1mTms1cG00dXlDVzVuaDhVaDR3c3kwcVJ0ZnFaS2N5?=
- =?utf-8?B?VjlxS0NhR1BnN2VIeGU4Tnd1QWY3aWlhY1NnN3N1eTVYOFlmbWpqZm9FR3V5?=
- =?utf-8?B?VG5ZRVFQdnJudS9RSElaWk5WaXNLMU5pNFZ4ZVI5a1J6NXYxKzZVRi9nRTdt?=
- =?utf-8?B?RWFsWE5JdlBSUHpqQklwazZiRTJ5Z3BjSU9uV3BtRG9FbTRhWm9EODNzKzJM?=
- =?utf-8?B?UXFUK05ISXVBODRiZjRCZjh0RGd1T2lyNVlNKzJ4clNZWGNIN2NZblUxcGdF?=
- =?utf-8?B?L2RPNnYxNm1mVmZtNkVESm9CaXNLOGNUTWJVVDBOS0tKekNSTlRFNzluMTRQ?=
- =?utf-8?B?dTF4Nit2azhUbXFreWwwM09jeUg3dzZ0bXloR2ExQ3lBY0gwUFR0czNoUm5T?=
- =?utf-8?B?ajdGRnM5LzVsV25Md2oxSUo3dTVsZDlpRHl3WmxMaWxwUE5CeE5FQ01zNkZH?=
- =?utf-8?B?WlNsVk0yTEx6QTJiZWozL29xNytJVGx5M1RkeHc0eVZBM2dtaEs5WHBHV2lS?=
- =?utf-8?B?U2ZyTWNLRWpVeGhIdEZtaFRHVkY3bVFVREhHN0VBR2RvYWFReG5XcytSdVR5?=
- =?utf-8?B?TGJKakowcU5BbE1SZWRBdz09?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pColM3EH9hKW/wemwX23nsg8UePwnxp5VEVWNEbzNRDp7TTisLhA23i2e/L2?=
+ =?us-ascii?Q?vRllLE/1Zq6z0k3gFSk1nhx6WiE/p8kLwno+YR57IViGHAfnsOkHXelSHYa2?=
+ =?us-ascii?Q?T75Ezfwob9SjFxsOVQvfS+Kl4ieieA12TzK5xv39FJiA8M9tHNzNs7XPQVDU?=
+ =?us-ascii?Q?LrD/0MFQGDpPVYZbeNjsVlWBM/ma0CRUyCS37JAF327jlWKECjN9LZOOxvGU?=
+ =?us-ascii?Q?jV3lpFPkEvQPPO7uqdONAgzEPbRlbouoqcpFbI6kH1Q8G3rvIwooisHbHpGo?=
+ =?us-ascii?Q?PHcktstH56UEi7pUh+F5NuPvM6It5LX+LODtx9WrRvuO2YpWB9T20nr6Nm28?=
+ =?us-ascii?Q?DqcMRwAhtxPs+9cMq0GhE6VQ4uWi55MD3Y2nLOCmTAnn8sYHkIJxdITxz1bR?=
+ =?us-ascii?Q?/bnFFIG1ucQaUKtGIFRW+A0NDBUN1yZ6LoVxvcMdtyPmkqReI4Ow5VPo8VjS?=
+ =?us-ascii?Q?oAwj5gHfB0rP3K7TqlQHC6yW6s3ZaO9JOoRMBciFCtI4H9psI/gUxWU9iuOw?=
+ =?us-ascii?Q?7hesqrRUL1CDBZOPh0HjxCh9/Nro4WmLD5iGwImoSZGWfecqy9kzAEdEYN2n?=
+ =?us-ascii?Q?IQINYSehCQdxiqbOW5g2q4AP/JKR3D7UHktRAzil8VJ29irZSW+4lzPhdafc?=
+ =?us-ascii?Q?Vw7JCRC/HDxofs69md7ZXmOwIPam663itdUfE18fkWaYONHjY7ZMmwON3rtV?=
+ =?us-ascii?Q?w0+xsWCxqSm9j9INTHBrCUfQMCA3hL6ASBn/xdxZf6doWKgCJPc1cuS2Ct3j?=
+ =?us-ascii?Q?agYsfqEG2rW7/462UMl+3+M3T3yKFeoMoijYPOp4+cG7FZDX9qrKO4sbmmEy?=
+ =?us-ascii?Q?H9u5pmd+C6Ozp2/GDGXVvDJc5aeJRK20ItOB5n5vLVkvuAYpaOFEcrKB4vZw?=
+ =?us-ascii?Q?jRwdFUY4OE9W0KGbIp3g4qocUZLVvV737KMpO613sQXXdElyNXcYibewUjFi?=
+ =?us-ascii?Q?TbEVLpVw7AqI12Bh61v0hAJFlhzBW5aRTyMFcuavFkrlOXM3s/juosE/IQG5?=
+ =?us-ascii?Q?KWJiKhAwdNIlMJ81XmkbSNmCMTghsLNN72lgmrRPLvitdAA8B3vIyXVilKju?=
+ =?us-ascii?Q?JrgDg1HGu+g/gdX/DqgD68KmOaxGubOwkv8VupZPIJROxlOJ9DA5Oc/cgCBr?=
+ =?us-ascii?Q?avC01lOagVC/p/+Q1tKnKtwGvX+Un6ztIjX7qKlLSpazsD5kyzVzywM8ZTga?=
+ =?us-ascii?Q?FmRp87uI7XJP/CIePTHLwi9u9PU9wQkmPV8CIPNb3JAE13hmvEf24L1qkjEH?=
+ =?us-ascii?Q?yk1EhM1qGXiUvadHEEJJ2DmkY6MA15FpTW8u5ob+R2d4wL5oH1nR6yxdVKmb?=
+ =?us-ascii?Q?gCH/Uoi+qPBPodnFy/TvZaRCJvSyY5KbYjN2hwVX5u661g=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB8200.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:BYAPR11MB2854.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVpVdlNHeXlxUmhyU3g2M0U4WHd0YStIRnZLMGhBMWc1TlNoNkJ0QlBrRlE0?=
- =?utf-8?B?cVBEemUyUDIzak5pUitDSDRRdDZ3U1ltbVZ4NTMzZWVKNjJ3N29mZnp6UzVK?=
- =?utf-8?B?VVExd0hpREpqc0k2Y0c3YTBLVStzMjdkZG54bTN1Nmh5eCtpcld2azV0OHc3?=
- =?utf-8?B?a1haUWhyM2NFeVl3cnlmcndWMzlCYXlmVEltQWJSL0haWmNEZG9ucmFDeEtC?=
- =?utf-8?B?bTlDU1hUSnpiQzBNWXkrb0c3UnY5SjE3aThhS1pQdjBoc1hMZjJqbVFGZlZT?=
- =?utf-8?B?ckRSVWxEd28rY2RFQksrQmRUcjNFS2VKblRNTEVCZkFtenBRcHF2Ri9RZDhs?=
- =?utf-8?B?Sk82OVJRQjBiamp1OERQd1M3M1hPYitJMTBqdXpyOGZUd010aFVKRVZ5N0kr?=
- =?utf-8?B?elJCNWJsZmIxdWFkcFEvaFdjMHIxa0FBcDdCQU1qTHZ6dkkvVEJPMXBESXNr?=
- =?utf-8?B?OXN4T2E5OGhncktQOWt6N1QvSTZ6WTRrbW1GUG5EQ2xrd3VJY2UvMWlzYjZ6?=
- =?utf-8?B?YkpINno2LzZmQlVqRXRBMVBhVnRxb3RPd2RoWGNRem1IeFZCcDI5MFF3OE11?=
- =?utf-8?B?dkxpY3c2WEVWdEp6S3c5aS9pZjhGQlVnYVpuaFhmVUswcXBQTVlOS1RJbmRO?=
- =?utf-8?B?Zkxka2FZTC9JRDl2UWkrWGF1YldZeE1OUnJnWkd2Rm1WelFNWmNKdlVlWFVp?=
- =?utf-8?B?WjNHZitpbElFSHRaanU2OEpxSnBkM2xuRHVTUCtvb2ZpQklieEI0ZmFueXRz?=
- =?utf-8?B?UVZ5Y3h1R0tBSDd5a0tHYmtUc0VjY3pVa0tOTC9TeUZENDBkc2VxR0tMbkxU?=
- =?utf-8?B?a2FBOVJqS2lKMDFLbmtWVy9ReHgySjB4SWoxZWgvZDhMSFBzeVlsMWp4dTNz?=
- =?utf-8?B?ZUMvMWJYQ2taT2Y5ZUQyMW1ndVhJNUkreUtFUFVvSTY3elF6TzQzQzQzL1Ax?=
- =?utf-8?B?UTlYa3UxQk85L2lBaEtQTENBVXdibmRldHFRY1lKOVkxR083S2RsR2w3TXVM?=
- =?utf-8?B?c0ttRWo0bDJ6b2JpU0hKOXp5bVFCVU14ME9vazlRYktqM3pGaUJtd3RiVVF6?=
- =?utf-8?B?TzhYaFQ2N0tZcFExdzhDdkFNL0xERWhlNTlzZ2t0L2h3MzZiaE5kbVk5c2Ra?=
- =?utf-8?B?SlhZUytjRnFVZHZuWGZkQ0orNHMwS0IrVjIzeTMwb1dZb2RXeHFzR2NudkV2?=
- =?utf-8?B?MjZlcHpRaGlnZ25SNWwrOWllMTBSUW44TW9EamVZcFpWZ200Z0phVkRBUGRE?=
- =?utf-8?B?aml5UWdTSUplUjR5OFNET2x0VlJncWYwQys2YkpRMmZteHl2a1Q1eWdjWWM2?=
- =?utf-8?B?TGZzTkVNVFVxTEQ3cTd2YjYxaGh6NzlSbmJpZXRiaTdpcDdMNjNaNEdJQ050?=
- =?utf-8?B?YllCdGRuNnlpTFlFZ3hxMlZ3RTV5V3gyb3BIZlFJZG96ZXNXaE1HTGhqck9u?=
- =?utf-8?B?VGUwTzk0ekQ0S1cvSHQyYXJ3K2JVdHJrWXJXUDhaQ2RKcXBJYnJ6djN2WkJ2?=
- =?utf-8?B?aVhtQ2xEWGI4SHZqUDRuZUZnTkJYSGdCRWVtMEZTQXJOWlo4eGFKcW9Vdy9q?=
- =?utf-8?B?enQyNlpaYk84dEJpVjdNVUtGRDM2UXNUbDdpYjUrM28yN3pIWVpmWXd2RExm?=
- =?utf-8?B?RkxOcmcrUExySUE0d2pOazA2TzQwblhvb0ZGYTRZY1BKKzViODNxV2RwRkM3?=
- =?utf-8?B?UWFKcUZ1azFYQTlwL0FTUkk4WmN4Sll5WjMyT1lqS2lJZHV6Z2huamRxTVAz?=
- =?utf-8?B?SGlGdm8rbWxRRzFqRGh5c3RwYkZxaGlkUjg5SkkrSGlBSWJGbWJRdDB5RjFo?=
- =?utf-8?B?aWY0aHlvZmdlOHEvdnJTTXR5VkU4VVdDSTJsQ3crbk94Skg3b01XVVMydGJY?=
- =?utf-8?B?SGNscWplRkhiQkRVd1dqYUpKL0YvNjZBU0Z2WGt3ZWhMOXIyNnE0azd0Nmt0?=
- =?utf-8?B?VWFSTlN5RDg2Y0cyTUdZNTcyUHlKYk96amZuUTRHSkF1ajdmNjNDU29IYzRp?=
- =?utf-8?B?cmhyVTl3a2c5RHZsR2NUWEZWd1hFSjJHQ3JwdUplQjh1NmM2OFJHQmtwcmU3?=
- =?utf-8?B?MWpWN0pYb3VLVGJ3MEtUcjF1Unp5RUVXRjFuMlVKK0NUYjNab1hNY25nbGR3?=
- =?utf-8?Q?pjYyV9eQ84rANiox1rvjoLgPe?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ed9a1ec-d72a-4384-3fa2-08dd15653381
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB8200.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Jj6EGw0r7Ayk3/gacSjuAlpIt7tyPa/4pcFJW0pIu4Q9luuhcGMO7yX54omP?=
+ =?us-ascii?Q?TDZBHL2H85a7CsJthn5QzcN9dKka0FiCRnc9FNOUBIVFF/jIaCOYbz4DSIpb?=
+ =?us-ascii?Q?oa1mYVB/BONb/WCQelvR1MjW8y/sUAnI4UDUe4sqKnj+ReeAtYQwMamAqdmu?=
+ =?us-ascii?Q?4eq4qtg/osh1tZkWfIE1tqOGDAk4inSsCxB3lxfBlt/7KrprqE4CBB8ggk+7?=
+ =?us-ascii?Q?qH52Y32odEUxMjLCDKpDsYKzC93JrXzznDIHRPVarwl4mEc/7CtZPN5sdohB?=
+ =?us-ascii?Q?dodRQtI6ZyY8NnNuaZtxVDXcudDrRmzAWs/NWVPU+hgFTfi5Awqzss2p7106?=
+ =?us-ascii?Q?yFQK3CwOIDumA2GpJnLmLMAJkDGBYinMbONDnkf5Pe49qQuEDCXInlFb13HR?=
+ =?us-ascii?Q?wTU8s2mv718XVnhRtZn12f00SBtL3z56FQxvvYUqahJz4+4f1NHhuAs67Biz?=
+ =?us-ascii?Q?LsDY7pb3w8rsFQSJZY+Y1B1+pLU8WVOni5QrS0NEhiwoSwPukDrb1HNmOjGT?=
+ =?us-ascii?Q?iJhFa1AL5N2i6whoc3XCgrLErfR5lnxvtg9TIjZAplFCWqYgmrgXoC3oLB2k?=
+ =?us-ascii?Q?fT1/6koFWgDMB/Q1XfaMYZIrKWi1DesGYT6AZsFS92tlK2grUe2XgNN9NwIJ?=
+ =?us-ascii?Q?+k8+iirvo378KcLuL6Jq9ioLI0DnQ1OAZIIWSdT5IRhVousyS1tzALVgCuxZ?=
+ =?us-ascii?Q?PZ21WANdRpW75in9WNZ6FadYMxot+RtLubRbyrTYy3ZSCwTEXk4fLxceLD1j?=
+ =?us-ascii?Q?XA2s5EwgmtiDCAqFp+QUCIIn/TQTw22Pyn2Bnh/AU96Cl2CbSNv2qHdWOuwK?=
+ =?us-ascii?Q?OCeSPYMKa8+X1IBJyIoINL+5H1sUZZkVORNZJwgNwIGXHiAvfI+S7STSgU3M?=
+ =?us-ascii?Q?ewRf8YcjRBLehaK3J4qdmBgyLFOwt1duFlV35jWXyqSJr0XAxnmWxa5RipbV?=
+ =?us-ascii?Q?N+WAQaa/G1pZTFxl7GQ0V9yvik1LKmLmVOjq6ia09lAThCMsv0Lcht7MpwCm?=
+ =?us-ascii?Q?DqYoP7FXWK3Eo/QmCGw5S6D6GkrEuoLzLbUDbNGCGVr710vt+tqo/z4VZIQc?=
+ =?us-ascii?Q?8m/d/h/0sVM89tKfPHeimbTedT3RNUZLVXFmjgUIFsJgvMFc5OayawqvMKF9?=
+ =?us-ascii?Q?m4hAIKQZPOrovGaTTzxVYIiY8IIBnTmhuZXZgiNJB7wtPx2FI3kbfDLdPCGJ?=
+ =?us-ascii?Q?hvyqpcVMboEL8rOQLcAeQU0opaX6WpQXZSbawO/wxw0xBqcasW6BLcodNQcN?=
+ =?us-ascii?Q?NVYdKmzisuIe5LDv1NQ6/IQGHwjvz6/IgyfCWDEL3ySqbVf+7AWtfbL6bOfL?=
+ =?us-ascii?Q?GzR/hWBuwDbXHBssR8IzWszcSInruNxtRICO/hMZx+wQ2BD6zxJGMXzH5Hit?=
+ =?us-ascii?Q?idUm/CA1ILk4jxFycsi9MI3Kg5EubeDeiTguXp9GD8yDRTzKUDC9tL7wdQZT?=
+ =?us-ascii?Q?GXGeT5h1PJMT38OIgHH6AvCAKSaW7btek1bzOOqzX63P1kOrsGVnZjXCO5cq?=
+ =?us-ascii?Q?MFAP/OSlJ9VU8/TmSgHG4qXG8VNVEGwvJQ/0IiWJMLMhpe+nWKsVnmubeANu?=
+ =?us-ascii?Q?52wDEsXxwMuWKRbrSdbE5wK4Nl2WfowKeaNn4ZlJ4bYYO18cRmr5adct17ZQ?=
+ =?us-ascii?Q?hA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac4d0bae-4175-45b0-b3b7-08dd1576c582
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2854.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 19:44:15.8672 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 21:50:02.3686 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q2V3WZ1PUJrQS6TFO11HWkpacvRwC4Yn2XPTq5dkmn7cmALkeBgrYxWjVnPULdsgCRMt9YNSY95C9ZWBqUA41g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5937
+X-MS-Exchange-CrossTenant-UserPrincipalName: wPUUmQzOPaIqqq8a+FRghCFCWexIqyk7q06amQqDxOFUSNfmOkZr7kjJUoajijRcpyH8twjvlLJkwMcL2hgW9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5167
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -195,562 +175,210 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Thanks for review, next rev is on the way.
-
-Regards,
-Zhanjun Dong
-
-On 2024-12-05 12:50 p.m., Teres Alexis, Alan Previn wrote:
-> I missed couple of additional things from my prior review - see below.
-> However, this is trival so I'll provide conditional R-b as long as you fix these.
+On Tue, Dec 03, 2024 at 11:24:17AM +0200, Juha-Pekka Heikkila wrote:
+> Here added
 > 
-> Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> igt_pm_check_hibernation_support()
+> igt_pm_ensure_grub_boots_same_kernel()
 > 
-> P.S. - one question, when you've tested this, are we getting unique batch addresses for each run/engine/test and subtest
-> gets the match right (as per the last rev change intent)?
+> to check if kernel is configured for resuming from hibernation
+> and helper to set grub booting currently run kernel on next reboot.
 > 
-> On Thu, 2024-12-05 at 06:39 -0800, Zhanjun Dong wrote:
->> Submit cmds to the GPU that result in a GuC engine reset and check that
->> devcoredump register dump is generated, by the GuC, and includes the
->> full register range.
->>
->> Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
->> Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
->> Cc: Peter Senna Tschudin <peter.senna@intel.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>
->> Changes from prior revs:
->>   v6:-  Adjust start_line to start from 0
->>         Use 7 bit engine_cid, start with random number
->>         Add ioerror detect on fgets
->>         Reorgnize the regular expression
->>         Remove unnecessary radom seed init
->>   v5:-  Detect devcoredump matches the testing engine
->>         Engine will run with random cid
->>   v4:-  Support runs on multiple GPU
->>         Load all devcoredump content to buffer
->>         Alloc line buffer dynamic vs static global memory
->>         Changed to igt_assert_f to provide more info if failed
->>   v3:-  Remove call to bash and awk
->>         Add regular express parse
->>         Detect devcoredump through card index
->>         Add devcoredump removal check
->>   v2:-  Fix CI.build error
->>         Add multiple GPU card support
->> ---
->>   tests/intel/xe_exec_capture.c | 481 ++++++++++++++++++++++++++++++++++
->>   tests/meson.build             |   1 +
->>   2 files changed, 482 insertions(+)
->>   create mode 100644 tests/intel/xe_exec_capture.c
->>
->> diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
->> new file mode 100644
->> index 000000000..2c39de595
->> --- /dev/null
->> +++ b/tests/intel/xe_exec_capture.c
->> @@ -0,0 +1,481 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2024 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Basic tests for GuC based register capture
->> + * Category: Core
->> + * Mega feature: General Core features
->> + * Sub-category: CMD submission
->> + * Functionality: Debug
->> + * Test category: functionality test
->> + */
->> +
->> +#include <ctype.h>
->> +#include <fcntl.h>
->> +#include <regex.h>
->> +#include <stdio.h>
->> +#include <string.h>
->> +
->> +#include "igt.h"
->> +#include "igt_device.h"
->> +#include "lib/igt_syncobj.h"
->> +#include "lib/intel_reg.h"
->> +#include "linux_scaffold.h"
->> +#include "xe_drm.h"
->> +#include "xe/xe_ioctl.h"
->> +#include "xe/xe_query.h"
->> +#include "xe/xe_spin.h"
->> +
->> +#define MAX_N_EXECQUEUES               16
->> +#define MAX_INSTANCE                   9
->> +#define GT_RESET                       (0x1 << 0)
->> +#define CLOSE_FD                       (0x1 << 1)
->> +#define CLOSE_EXEC_QUEUES              (0x1 << 2)
->> +#define VIRTUAL                                (0x1 << 3)
->> +#define PARALLEL                       (0x1 << 4)
->> +#define CAT_ERROR                      (0x1 << 5)
-> alan: i notice you do not use the GT_RESET -> CAT_ERROR #defines.
-Thanks, actully, the above defines, from MAX_INSTANCE to CAT_ERROR are 
-not use. To be removed.
-
->> +
->> +#define BASE_ADDRESS                   0x1a0000
->> +#define ADDRESS_SHIFT                  39
->> +#define CID_ADDRESS_MASK               0x7F
->> +/* Batch buffer element count, in number of dwords(u32) */
->> +#define BATCH_DW_COUNT                 16
->> +
->> +#define MAX_TEMP_LEN                   80
->> +#define MAX_SYSFS_PATH_LEN             128
->> +#define MAX_LINES                      4096
->> +/* Max line buffer size (includes last '\0') */
->> +#define MAX_LINE_LEN                   1024
->> +#define MAIN_BUF_SIZE                  (MAX_LINES * MAX_LINE_LEN * sizeof(char))
->> +/*
->> + * Devcoredump might have long line this test don't care.
->> + * This buffer size used when load dump content
->> + */
->> +#define LINE_BUF_SIZE                  (64 * 1024)
->> +
->> +#define DUMP_PATH                      "/sys/class/drm/card%d/device/devcoredump/data"
->> +#define START_TAG                      "**** Job ****"
->> +#define END_TAG                                "**** VM state ****"
->> +
->> +/* Optional Space */
->> +#define SPC_O                  "[ \t]*"
->> +/* Required Space */
->> +#define SPC                    "[ \t]+"
->> +/* Optional Non-Space */
->> +#define NSPC_O                 "([^ \t]*)"
->> +/* Required Non-Space */
->> +#define NSPC                   "([^ \t]+)"
->> +#define BEG                    "^" SPC_O
->> +#define REQ_FIELD              NSPC SPC
->> +#define REQ_FIELD_LAST         NSPC SPC_O
->> +#define OPT_FIELD              NSPC_O SPC_O
->> +#define END                    SPC_O "$"
->> +
->> +#define REGEX_NON_SPACE_GROUPS BEG REQ_FIELD REQ_FIELD_LAST OPT_FIELD OPT_FIELD OPT_FIELD END
->> +#define REGEX_NON_SPACE_GROUPS_COUNT   6
->> +
->> +#define INDEX_KEY                      1
->> +#define INDEX_VLAUE                    2
-> alan: spelling of value
-To be fixed.
-
->> +#define INDEX_ENGINE_PHYSICAL          2
->> +#define INDEX_ENGINE_NAME              1
->> +#define INDEX_ENGINE_INSTANCE          4
->> +
->> +static char *safe_strncpy(char *dst, const char *src, int n)
->> +{
->> +       char *s;
->> +
->> +       igt_assert(n > 0);
->> +       igt_assert(dst && src);
->> +
->> +       s = strncpy(dst, src, n - 1);
->> +       s[n - 1] = '\0';
->> +
->> +       return s;
->> +}
->> +
->> +static const char *xe_engine_class_name(u32 engine_class)
->> +{
->> +       switch (engine_class) {
->> +       case DRM_XE_ENGINE_CLASS_RENDER:
->> +               return "rcs";
->> +       case DRM_XE_ENGINE_CLASS_COPY:
->> +               return "bcs";
->> +       case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
->> +               return "vcs";
->> +       case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
->> +               return "vecs";
->> +       case DRM_XE_ENGINE_CLASS_COMPUTE:
->> +               return "ccs";
->> +       default:
->> +               igt_warn("Engine class 0x%x unknown\n", engine_class);
->> +               return "unknown";
->> +       }
->> +}
->> +
->> +static void
->> +test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_queues, int n_execs,
->> +                unsigned int flags, u64 addr)
->> +{
->> +       u32 vm;
->> +       struct drm_xe_sync sync[2] = {
->> +               { .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->> +               { .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->> +       };
->> +       struct drm_xe_exec exec = {
->> +               .num_batch_buffer = 1,
->> +               .num_syncs = 2,
->> +               .syncs = to_user_pointer(sync),
->> +       };
->> +       u32 exec_queues[MAX_N_EXECQUEUES];
->> +       u32 syncobjs[MAX_N_EXECQUEUES];
->> +       size_t bo_size;
->> +       u32 bo = 0;
->> +       struct {
->> +               struct xe_spin spin;
->> +               u32 batch[BATCH_DW_COUNT];
->> +               u64 pad;
->> +               u32 data;
->> +       } *data;
->> +       struct xe_spin_opts spin_opts = { .preempt = false };
->> +       int i, b;
->> +
->> +       igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
->> +
->> +       vm = xe_vm_create(fd, 0, 0);
->> +       bo_size = sizeof(*data) * n_execs;
->> +       bo_size = xe_bb_size(fd, bo_size);
->> +
->> +       bo = xe_bo_create(fd, vm, bo_size,
->> +                         vram_if_possible(fd, eci->gt_id),
->> +                         DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +       data = xe_bo_map(fd, bo, bo_size);
->> +
->> +       for (i = 0; i < n_exec_queues; i++) {
->> +               exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
->> +               syncobjs[i] = syncobj_create(fd, 0);
->> +       };
->> +
->> +       sync[0].handle = syncobj_create(fd, 0);
->> +       xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
->> +
->> +       for (i = 0; i < n_execs; i++) {
->> +               u64 base_addr = addr;
->> +               u64 batch_offset = (char *)&data[i].batch - (char *)data;
->> +               u64 batch_addr = base_addr + batch_offset;
->> +               u64 spin_offset = (char *)&data[i].spin - (char *)data;
->> +               u64 sdi_offset = (char *)&data[i].data - (char *)data;
->> +               u64 sdi_addr = base_addr + sdi_offset;
->> +               u64 exec_addr;
->> +               int e = i % n_exec_queues;
->> +
->> +               if (!i) {
->> +                       spin_opts.addr = base_addr + spin_offset;
->> +                       xe_spin_init(&data[i].spin, &spin_opts);
->> +                       exec_addr = spin_opts.addr;
->> +               } else {
->> +                       b = 0;
->> +                       data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +                       data[i].batch[b++] = sdi_addr;
->> +                       data[i].batch[b++] = sdi_addr >> 32;
->> +                       data[i].batch[b++] = 0xc0ffee;
->> +                       data[i].batch[b++] = MI_BATCH_BUFFER_END;
->> +                       igt_assert(b <= ARRAY_SIZE(data[i].batch));
->> +
->> +                       exec_addr = batch_addr;
->> +               }
->> +
->> +               sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->> +               sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->> +               sync[1].handle = syncobjs[e];
->> +
->> +               exec.exec_queue_id = exec_queues[e];
->> +               exec.address = exec_addr;
->> +               if (e != i)
->> +                       syncobj_reset(fd, &syncobjs[e], 1);
->> +               xe_exec(fd, &exec);
->> +       }
->> +
->> +       for (i = 0; i < n_exec_queues && n_execs; i++)
->> +               igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
->> +                                       NULL));
->> +       igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->> +
->> +       sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->> +       xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
->> +       igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->> +
->> +       syncobj_destroy(fd, sync[0].handle);
->> +       for (i = 0; i < n_exec_queues; i++) {
->> +               syncobj_destroy(fd, syncobjs[i]);
->> +               xe_exec_queue_destroy(fd, exec_queues[i]);
->> +       }
->> +
->> +       munmap(data, bo_size);
->> +       gem_close(fd, bo);
->> +       xe_vm_destroy(fd, vm);
->> +}
->> +
->> +static char **alloc_lines_buffer(void)
->> +{
->> +       int i;
->> +       char **lines = (char **)malloc(MAX_LINES * sizeof(char *));
->> +       char *main_buf =  (char *)malloc(MAIN_BUF_SIZE);
->> +
->> +       igt_assert_f(lines, "Out of memory.\n");
->> +       igt_assert_f(main_buf, "Out of memory.\n");
->> +
->> +       /* set string array pointers */
->> +       for (i = 0; i < MAX_LINES; i++)
->> +               lines[i] = main_buf + i * MAX_LINE_LEN;
->> +
->> +       return lines;
->> +}
->> +
->> +static char *get_devcoredump_path(int card_id, char *buf)
->> +{
->> +       sprintf(buf, DUMP_PATH, card_id);
->> +       return buf;
->> +}
->> +
->> +static int load_all(FILE *fd, char **lines, char *buf)
->> +{
->> +       int start_line = 0, i = 0;
->> +       bool skip = true;
->> +
->> +       memset(lines[0], 0, MAIN_BUF_SIZE);
->> +       while (!feof(fd) && i < MAX_LINES) {
->> +               /*
->> +                * Devcoredump might have long lines, load up to
->> +                * LINE_BUF_SIZE for a single line
->> +                */
->> +               if (!fgets(buf, LINE_BUF_SIZE, fd))
->> +                       if (ferror(fd) != 0) {
->> +                               igt_warn("Failed to read devcoredump file, error: %d\n",
->> +                                        ferror(fd));
->> +                               break;
->> +                       }
->> +
->> +               if (skip) {
->> +                       start_line++;
->> +                       /* Skip all lines before START_TAG */
->> +                       if (strncmp(START_TAG, buf, strlen(START_TAG)))
->> +                               continue;
->> +                       else
->> +                               skip = false;
->> +               }
->> +
->> +               /* Only save up to MAX_LINE_LEN to buffer */
->> +               safe_strncpy(lines[i++], buf, MAX_LINE_LEN);
->> +
->> +               /* Stop on END_TAG */
->> +               if (!strncmp(END_TAG, buf, strlen(END_TAG)))
->> +                       break;
->> +       }
->> +       return start_line;
->> +}
->> +
->> +static int access_devcoredump(char *path, char **lines, char *line_buf)
->> +{
->> +       int start_line = -1;
->> +       FILE *fd = fopen(path, "r");
->> +
->> +       if (!fd)
->> +               return false;
->> +
->> +       igt_debug("Devcoredump found: %s\n", path);
->> +
->> +       /* Clear memory before load file */
->> +       if (lines)
->> +               start_line = load_all(fd, lines, line_buf);
->> +
->> +       fclose(fd);
->> +       return start_line;
->> +}
->> +
->> +static bool rm_devcoredump(char *path)
->> +{
->> +       int fd = open(path, O_WRONLY);
->> +
->> +       if (fd != -1) {
->> +               igt_debug("Clearing devcoredump.\n");
->> +               write(fd, "0", 1);
->> +               close(fd);
->> +               return true;
->> +       }
->> +
->> +       return false;
->> +}
->> +
->> +static char
->> +*get_coredump_item(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index)
->> +{
->> +       int i;
->> +       regmatch_t match[REGEX_NON_SPACE_GROUPS_COUNT];
->> +
->> +       for (i = 0; i < MAX_LINES; i++) {
->> +               char *line = lines[i];
->> +
->> +               /* Skip lines without tag */
->> +               if (!strstr(line, tag))
->> +                       continue;
->> +
->> +               if ((regexec(regex, line, REGEX_NON_SPACE_GROUPS_COUNT, match, 0)) == 0) {
->> +                       char *key = NULL, *value = NULL;
->> +
->> +                       if (match[tag_index].rm_so >= 0) {
->> +                               key = &line[match[tag_index].rm_so];
->> +                               line[match[tag_index].rm_eo] = '\0';
->> +                       }
->> +                       if (match[target_index].rm_so >= 0) {
->> +                               value = &line[match[target_index].rm_so];
->> +                               line[match[target_index].rm_eo] = '\0';
->> +                       }
->> +
->> +                       if (key && value && strcmp(tag, key) == 0)
->> +                               return value;
->> +                       /* if key != tag,  keep searching and loop to next line */
->> +               }
->> +       }
->> +
->> +       return NULL;
->> +}
->> +
->> +static void
->> +check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo, u64 addr_hi)
->> +{
->> +       u64 result;
->> +       char *output;
->> +
->> +       igt_assert_f((output = get_coredump_item(regex, lines, tag, INDEX_KEY, INDEX_VLAUE)),
->> +                    "Target not found:%s\n", tag);
->> +       result = strtoul(output, NULL, 16);
->> +       igt_debug("Compare %s %s vs [0x%lX-0x%lX]\n", tag, output, addr_lo, addr_hi);
->> +       igt_assert_f((addr_lo <= result) && (result <= addr_hi),
->> +                    "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
->> +}
->> +
->> +static void
->> +check_item_str(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index,
->> +              const char *target, bool up_to_target_len)
->> +{
->> +       char buf[MAX_TEMP_LEN] = {0};
->> +       char *output;
->> +       int code;
->> +
->> +       igt_assert_f(output = get_coredump_item(regex, lines, tag, tag_index, target_index),
->> +                    "Target not found:%s\n", tag);
->> +
->> +       if (up_to_target_len) {
->> +               igt_assert_f(strlen(target) < MAX_TEMP_LEN, "Target too long.\n");
->> +               safe_strncpy(buf, output, MAX_TEMP_LEN);
->> +               buf[strlen(target)] = 0;
->> +               output = buf;
->> +       }
->> +       code = strncmp(output, target, strlen(target));
->> +       igt_debug("From tag '%s' found %s vs %s\n", tag, output, target);
->> +       igt_assert_f(code == 0, "Expected value:%s, received:%s\n", target, output);
->> +}
->> +
->> +/**
->> + * SUBTEST: reset
->> + * Description: Reset GuC, check devcoredump output values
->> + */
->> +static void test_card(int fd)
->> +{
->> +       struct drm_xe_engine_class_instance *hwe;
->> +       regex_t regex;
->> +       int start_line;
->> +       int engine_cid = rand();
->> +       char **lines;
->> +       char *single_line_buf =  (char *)malloc(LINE_BUF_SIZE);
->> +       char temp[MAX_TEMP_LEN];
->> +       char path[MAX_SYSFS_PATH_LEN];
->> +
->> +       igt_assert_f(single_line_buf, "Out of memory.\n");
->> +
->> +       regcomp(&regex, REGEX_NON_SPACE_GROUPS, REG_EXTENDED | REG_NEWLINE);
->> +       get_devcoredump_path(igt_device_get_card_index(fd), path);
->> +       lines = alloc_lines_buffer();
->> +
->> +       /* clear old devcoredump, if any */
->> +       rm_devcoredump(path);
->> +
->> +       xe_for_each_engine(fd, hwe) {
->> +               /*
->> +                * To test devcoredump register data, the test batch address is
->> +                * used to compare with the dump, address bit 40 to 46 act as
->> +                * context id, which start with an random number, increased 1
->> +                * per engine. By this way, the address is unique for each
->> +                * engine, and start with an random number on each run.
->> +                */
->> +               const u64 addr = BASE_ADDRESS | ((u64)(engine_cid++ % CID_ADDRESS_MASK) <<
->> +                                                ADDRESS_SHIFT);
->> +
->> +               igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
->> +                         hwe->engine_instance);
->> +
->> +               test_legacy_mode(fd, hwe, 1, 1, 0, addr);
->> +
->> +               /* assert devcoredump created */
->> +               igt_assert_f((start_line = access_devcoredump(path, lines, single_line_buf)) > 0,
->> +                            "Devcoredump not exist, errno=%d.\n", errno);
->> +
->> +               sprintf(temp, "instance=%d", hwe->engine_instance);
->> +               check_item_str(&regex, lines, "(physical),", INDEX_ENGINE_PHYSICAL,
->> +                              INDEX_ENGINE_INSTANCE, temp, false);
->> +               check_item_str(&regex, lines, "(physical),", INDEX_ENGINE_PHYSICAL,
->> +                              INDEX_ENGINE_NAME, xe_engine_class_name(hwe->engine_class), true);
->> +
->> +               check_item_str(&regex, lines, "Capture_source:", INDEX_KEY, INDEX_VLAUE,
->> +                              "GuC", false);
->> +               check_item_u64(&regex, lines, "ACTHD:", addr,
->> +                              addr + BATCH_DW_COUNT * sizeof(u32));
->> +               check_item_u64(&regex, lines, "RING_BBADDR:", addr,
->> +                              addr + BATCH_DW_COUNT * sizeof(u32));
->> +
->> +               /* clear devcoredump */
->> +               rm_devcoredump(path);
->> +               sleep(1);
->> +               /* Assert devcoredump removed */
->> +               igt_assert_f(!access_devcoredump(path, NULL, NULL), "Devcoredump not removed\n");
->> +       }
->> +       /* Free lines buffer */
->> +       free(lines);
->> +       free(single_line_buf);
->> +       regfree(&regex);
->> +}
->> +
->> +igt_main
->> +{
->> +       int xe;
->> +
->> +       igt_fixture
->> +               xe = drm_open_driver(DRIVER_XE);
->> +
->> +       igt_subtest("reset") {
->> +               int gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
->> +
->> +               igt_require(xe > 0);
->> +               if (gpu_count >= 2) {
->> +                       igt_multi_fork(child, gpu_count) {
->> +                               int gpu_fd;
->> +
->> +                               gpu_fd = drm_open_filtered_card(child);
->> +                               igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child,
->> +                                            errno);
->> +                               igt_assert(is_xe_device(gpu_fd));
->> +
->> +                               test_card(gpu_fd);
->> +                               drm_close_driver(gpu_fd);
->> +                       }
->> +                       igt_waitchildren();
->> +               } else {
->> +                       test_card(xe);
->> +               }
->> +       }
->> +
->> +       igt_fixture
->> +               drm_close_driver(xe);
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 2724c7a9a..a6750d523 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -285,6 +285,7 @@ intel_xe_progs = [
->>          'xe_exec_atomic',
->>          'xe_exec_balancer',
->>          'xe_exec_basic',
->> +       'xe_exec_capture',
->>          'xe_exec_compute_mode',
->>          'xe_exec_fault_mode',
->>          'xe_exec_mix_modes',
->> -- 
->> 2.34.1
->>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  lib/igt_pm.c | 155 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_pm.h |   2 +
+>  2 files changed, 157 insertions(+)
 > 
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 1a5d9c42b..2055996bc 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -1470,3 +1470,158 @@ void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val)
+>  	igt_require(igt_sysfs_has_attr(gtfd, "slpc_ignore_eff_freq"));
+>  	igt_sysfs_set_u32(gtfd, "slpc_ignore_eff_freq", val);
+>  }
+> +
+> +/**
+> + * igt_pm_check_hibernation_support:
+> + *
+> + * Return: True if kernel is configured with resume point for hibernate.
+> + */
+> +bool igt_pm_check_hibernation_support(void)
+> +{
+> +	int fd;
+> +	char buffer[2048];
+> +	ssize_t bytes_read;
+> +	FILE *cmdline;
+> +
+> +	/* Check if hibernation is supported in /sys/power/state */
+> +	fd = open("/sys/power/state", O_RDONLY);
+> +
+> +	if (fd <= 0) {
+> +		igt_debug("Failed to open /sys/power/state\n");
+> +		return false;
+> +	}
+> +
+> +	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+> +	close(fd);
+> +
+> +	if (bytes_read <= 0) {
+> +		igt_debug("Failed to read /sys/power/state");
+> +		return false;
+> +	}
+> +
+> +	buffer[bytes_read] = '\0';
+> +	if (strstr(buffer, "disk") == NULL) {
+> +		igt_debug("Hibernation (suspend to disk) is not supported on this system.\n");
+> +		return false;
+> +	}
+> +
+> +	/* Check if resume is configured in kernel command line */
+> +	cmdline = fopen("/proc/cmdline", "r");
+> +
+> +	if (!cmdline) {
+> +		igt_debug("Failed to open /proc/cmdline");
+> +		return false;
+> +	}
+> +
+> +	fread(buffer, 1, sizeof(buffer) - 1, cmdline);
+> +	fclose(cmdline);
+> +
+> +	if (strstr(buffer, "resume=") == NULL) {
+> +		igt_debug("Kernel does not have 'resume' parameter configured for hibernation.\n");
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_pm_ensure_grub_boots_same_kernel:
+> + *
+> + * Return: True if kernel was found and set for next reboot.
+> + */
+> +bool igt_pm_ensure_grub_boots_same_kernel(void)
+> +{
+> +	char cmdline[1024];
+> +	char current_kernel[256];
+> +	char last_menuentry[512] = "";
+> +	char grub_entry[512];
+> +	char command[1024];
+> +	FILE *cmdline_file, *grub_cfg;
+> +	char line[1024];
+> +	bool kernel_found = false;
+> +	char *kernel_arg;
+> +	char *kernel_end;
+> +
+> +	/* Read /proc/cmdline to get the current kernel image */
+> +	cmdline_file = fopen("/proc/cmdline", "r");
+> +	if (!cmdline_file) {
+> +		igt_debug("Failed to open /proc/cmdline");
+> +		return false;
+> +	}
+> +
+> +	if (!fgets(cmdline, sizeof(cmdline), cmdline_file)) {
+> +		fclose(cmdline_file);
+> +		igt_debug("Failed to read /proc/cmdline");
+> +		return false;
+> +	}
+> +	fclose(cmdline_file);
+> +
+> +	/* Parse the kernel image from cmdline */
+> +	kernel_arg = strstr(cmdline, "BOOT_IMAGE=");
+> +	if (!kernel_arg) {
+> +		igt_debug("BOOT_IMAGE= not found in /proc/cmdline\n");
+> +		return false;
+> +	}
+> +
+> +	kernel_arg += strlen("BOOT_IMAGE=");
+> +	kernel_end = strchr(kernel_arg, ' ');
+> +
+> +	if (!kernel_end)
+> +		kernel_end = kernel_arg + strlen(kernel_arg);
+> +
+> +	snprintf(current_kernel, sizeof(current_kernel), "%.*s",
+> +		 (int)(kernel_end - kernel_arg), kernel_arg);
+> +	igt_debug("Current kernel image: %s\n", current_kernel);
+> +
+> +	/* Open GRUB config file to find matching entry */
+> +	grub_cfg = fopen("/boot/grub/grub.cfg", "r");
 
+The problem is that this depends on distro and with or without EFI...
+
+in my Fedora here:
+
+$ cat /boot/grub/grub.cfg
+cat: /boot/grub/grub.cfg: No such file or directory
+
+
+> +	if (!grub_cfg) {
+> +		igt_debug("Failed to open GRUB configuration file");
+> +		return false;
+> +	}
+> +
+> +	while (fgets(line, sizeof(line), grub_cfg)) {
+> +		/* Check if the line contains a menuentry */
+> +		if (strstr(line, "menuentry")) {
+
+Also I believe this can change from distro to distro...
+It should be better to have a generic way using other tools that
+could give us the default or next boot...
+
+> +		/* Store the menuentry line */
+> +			char *start = strchr(line, '\'');
+> +			char *end = start ? strchr(start + 1, '\'') : NULL;
+> +
+> +			if (start && end) {
+> +				snprintf(last_menuentry,
+> +					 sizeof(last_menuentry),
+> +					 "%.*s", (int)(end - start - 1),
+> +					 start + 1);
+> +			}
+> +		}
+> +
+> +		/* Check if the current line contains the kernel */
+> +		if (strstr(line, current_kernel)) {
+> +			/* Use the last seen menuentry as the match */
+> +			snprintf(grub_entry, sizeof(grub_entry), "%s",
+> +				 last_menuentry);
+> +			kernel_found = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	fclose(grub_cfg);
+> +
+> +	if (!kernel_found) {
+> +		igt_debug("Failed to find matching GRUB entry for kernel: %s\n",
+> +			  current_kernel);
+> +		return false;
+> +	}
+> +
+> +	/* Set the GRUB boot target using grub-reboot */
+> +	snprintf(command, sizeof(command), "grub-reboot \"%s\"", grub_entry);
+> +	if (system(command) != 0) {
+> +		igt_debug("Failed to set GRUB boot target to: %s\n",
+> +			  grub_entry);
+> +		return false;
+> +	}
+> +
+> +	igt_debug("Set GRUB to boot kernel: %s (GRUB entry: %s)\n",
+> +		  current_kernel, grub_entry);
+> +	return true;
+> +}
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index 6b428f53e..7cc774e85 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -97,5 +97,7 @@ uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
+>  uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
+>  int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+>  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
+> +bool igt_pm_check_hibernation_support(void);
+> +bool igt_pm_ensure_grub_boots_same_kernel(void);
+>  
+>  #endif /* IGT_PM_H */
+> -- 
+> 2.45.2
+> 
