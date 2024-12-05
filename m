@@ -4,55 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 415B5E7716C
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 11:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F900E77170
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Dec 2024 11:35:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CDC4610E39B;
-	Thu,  5 Dec 2024 11:26:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C950C10E3B6;
+	Thu,  5 Dec 2024 11:35:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mg2G6CPX";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="nW2QUyo0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5D4010E39B
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Dec 2024 11:26:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733398007; x=1764934007;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1fsKXP8MaEoRpQpeCLPxZq79Vir5HKdSIVxWzU+/V8w=;
- b=Mg2G6CPXC7jZFAx4snsvgfDlFZp8W/LNEh995/JqmjUh29tdnZ9vP+Zq
- MaGn2PTJi8NX0xn9pqBmw1Om0Kl9E0Z79+gL6QGhOFCqN3gBojVCdnZ5N
- 8uz17LRTshK7rw+Nix/uRW4hHdc5GbIlQ9AFBrjcgLisoqEtk+mCXfHm6
- IxsNago7jr/FSBzRJdd2fHCVKJ392277iAlaT4W++JPCKRVwCQQNhKT9Q
- yt5/XGCUsUVOSu2V/PsJAIEYgFgrvjM6NMg4STXXYx4Xpl3xlS10tujGO
- zyvDF2BEuOaljh1BOSHo1dgX+uyaiGdhz/O3p9w4C4p7yRnM0KOtEbLvM A==;
-X-CSE-ConnectionGUID: u5bQwHCZSgOQJqlGAK2AFQ==
-X-CSE-MsgGUID: oI3Bf7qjRxqdF0ANL92YZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="36542083"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="36542083"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 03:26:46 -0800
-X-CSE-ConnectionGUID: uiGDQul8SFqkk9nbOtSwyw==
-X-CSE-MsgGUID: JSxRHhhLQX+nEE8/7lLDrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="93937606"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.9])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 03:26:45 -0800
-Date: Thu, 5 Dec 2024 12:26:41 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] GPGPU support for MTL platform
-Message-ID: <20241205112641.4eerr6svngpjdxf4@zkempczy-mobl2>
-References: <20241205084802.3289124-1-nishit.sharma@intel.com>
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
+ [209.85.214.176])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B13E10E3B6
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Dec 2024 11:35:43 +0000 (UTC)
+Received: by mail-pl1-f176.google.com with SMTP id
+ d9443c01a7336-2155157c31fso6120455ad.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 05 Dec 2024 03:35:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733398543; x=1734003343; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JlbSIlHOxiu6Ygqoo61gX+LcBkwQ2m0QugdzuuVKPDI=;
+ b=nW2QUyo0IKWdEWGEK8tj/9MVRwQheg/RJn228OFDRrtr28DRJO98uWGgdZwc/BOkUo
+ iFkzIE+G3cU3/wfYyi6b+qmygY2PQhBAgRKDqrrjimq/Eb8cvWbSoPDwK7vd3Aub19e0
+ ZchJtZpW8izgwnZ7HOo9Rt8Uk/pJDYwzJOPDU579hpZdXwvjx+BsXRo8zjBZbbGit2Qt
+ nWOELx6unRJPNNVUJsgIAIbqcTj25w3yF1l9Vejp6vTx0X+mCl39Un+9IPZnqUWZGmEF
+ mI3MAl55mpOXyeSwfqPfM4t4BCDrsrZfIAE946MmawtOicxnb8R72KO2XcHaM4bw4/QN
+ t5vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733398543; x=1734003343;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JlbSIlHOxiu6Ygqoo61gX+LcBkwQ2m0QugdzuuVKPDI=;
+ b=bijeeLqFeFyuM8+72JxIUZd0YEJKSN5uSUh/jaUe0TyDz6Z/LsqX5RJQzTm6EQBnqr
+ CAaboW+XYKpzas8D5Xa/RSizwQ/V8CEAv4GIOWmZhs8z6AM+1HVaV5wkHxb4iebbedw2
+ HWB0xQfiL0G2ukePX5k2tJ1hxnAormf40FLLmGkmjWxKJk/tgN2nmaOcFlRWdnAJLPhY
+ M452yS2P8sGufQQJLY5DBaD0oN/Wd2dQdTzojCwERWmSR67YdG09RbTJC9PwYNloeM3X
+ pag1DuynljNqDAnrAYgrA9uH9+oFltgv2bm8m37qipsKsy1Y208Nd4/ywkPG+aRytnaa
+ JUMg==
+X-Gm-Message-State: AOJu0YzASSFyDuCYjufaV5gUQr/F9Eq05qSkWCo1OuasS3+t93+fZa+U
+ xxqXcU6n3tLNFDmV46nfEiZw058tTDHY05OOZpFw1Bs8/nSwfRvEl3dZdLma/jxjDbQoMcsiV0H
+ GzY81Z2dXaMGTkGw92xPieXbYzf4=
+X-Gm-Gg: ASbGncusSA09nFblWSC7jDvLp3/loYwl70dCOBQTPMwCtySJ8QRBL7OiEIXKhjJJajS
+ s1mXfAfzi84GW+elzq1kl7RRyIFQZkCqOgw==
+X-Google-Smtp-Source: AGHT+IGeaf2PGLRSexhZkuIhN58m3xyddd0xcEOfJQEGwpqxi/4KAIqk9GJvT11kPnAKPxpZcKdgYm+OnuDTS0A48iw=
+X-Received: by 2002:a17:902:f688:b0:215:8fd3:d1b6 with SMTP id
+ d9443c01a7336-215f3cbb3f6mr38419245ad.23.1733398542580; Thu, 05 Dec 2024
+ 03:35:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241205084802.3289124-1-nishit.sharma@intel.com>
+References: <20241205060049.1236277-1-jeevan.b@intel.com>
+In-Reply-To: <20241205060049.1236277-1-jeevan.b@intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Thu, 5 Dec 2024 13:35:31 +0200
+Message-ID: <CAJ=qYWSEbGHHebGeJYFrAGsLKipHV0rbD9kqOfemuQJ0bACSTg@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_pm_rpm: Update cursor_fb3
+ framebuffer creation format
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com, 
+ rodrigo.vivi@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,377 +80,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Dec 05, 2024 at 08:48:02AM +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> GPGPU shader and pipeline was missing for MTL platform
-> Added GPGPU Shader and Compute Pipeline for exercising
-> gpgpu in MTL for i915 and XE
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+On Thu, Dec 5, 2024 at 7:45=E2=80=AFAM Jeevan B <jeevan.b@intel.com> wrote:
+>
+> Updated the cursor_fb3 framebuffer creation in the cursor subtest
+> function to use a supported tiling format, either X-tile or linear,
+> for supported platforms.
+>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  lib/intel_compute.c                | 219 ++++++++++++++++++++++++++++-
->  lib/intel_compute_square_kernels.c |  49 +++++++
->  2 files changed, 266 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 879928ab6..14f71c303 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -9,6 +9,7 @@
->  #include <stdint.h>
->  
->  #include "i915/gem_create.h"
-> +#include "i915/gem_vm.h"
+>  tests/intel/kms_pm_rpm.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
+> index 990c50915..283911afb 100644
+> --- a/tests/intel/kms_pm_rpm.c
+> +++ b/tests/intel/kms_pm_rpm.c
+> @@ -1198,8 +1198,13 @@ static void cursor_subtest(bool dpms)
+>                       DRM_FORMAT_MOD_LINEAR, &cursor_fb1);
+>         igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+>                       DRM_FORMAT_MOD_LINEAR, &cursor_fb2);
+> -       igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_XRGB8888,
+> -                     I915_FORMAT_MOD_X_TILED, &cursor_fb3);
+> +       if (igt_display_has_format_mod(&ms_data.display, DRM_FORMAT_XRGB8=
+888,
+> +                                     I915_FORMAT_MOD_X_TILED))
+> +               igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_XRGB8888,
+> +                             I915_FORMAT_MOD_X_TILED, &cursor_fb3);
+> +       else
+> +               igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_XRGB8888,
+> +                             DRM_FORMAT_MOD_LINEAR, &cursor_fb3);
 
-What for is this include?
+How does this change align with that few lines below is this:
 
->  #include "igt.h"
->  #include "gen7_media.h"
->  #include "gen8_media.h"
-> @@ -102,6 +103,7 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
->  	}
->  }
->  
-> +
+        /* Cursor 3 was created with tiling and painted with a GTT mmap, so
+         * hopefully it has some fences around it. */
+        rc =3D drmModeRmFB(drm_fd, cursor_fb3.fb_id);
+        igt_assert_eq(rc, 0);
+        __gem_set_tiling(drm_fd, cursor_fb3.gem_handle, false,
+cursor_fb3.strides[0]);
 
-Unnecessary line.
+?
 
->  static void bo_execenv_destroy(struct bo_execenv *execenv)
->  {
->  	igt_assert(execenv);
-> @@ -1014,7 +1016,7 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  
->  	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM(1);
->  	addr_bo_buffer_batch[b++] = 0x00002580;
-> -	addr_bo_buffer_batch[b++] = 0x00060002;
-> +	addr_bo_buffer_batch[b++] = 0x90080000;
+Regardless if here would be tried to set linear tile mode to linear
+tile mode that __gem_set_tiling is going to say in any case it's not
+supported on the same platforms as where x-tile is not available, see
+here https://patchwork.freedesktop.org/patch/325343/
 
-This changes other pipeline.
-
->  
->  	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
->  	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x41;
-> @@ -1161,6 +1163,126 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_destroy(&execenv);
->  }
->  
-> +static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-> +					uint64_t addr_general_state_base,
-> +					uint64_t addr_surface_state_base,
-> +					uint64_t addr_dynamic_state_base,
-> +					uint64_t addr_instruction_state_base,
-> +					uint64_t offset_indirect_data_start,
-> +					uint64_t kernel_start_pointer)
-> +{
-> +	int b = 0;
-> +
-> +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-> +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
-> +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
-> +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
-> +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
-> +
-> +
-> +	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-> +				    PIPELINE_SELECT_GPGPU;
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE;
-> +	addr_bo_buffer_batch[b++] = 0x80000000;
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_CFE_STATE | 0x4;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x03808800;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM(1);
-> +	addr_bo_buffer_batch[b++] = 0x00002580;
-> +	addr_bo_buffer_batch[b++] = 0x00060002;
-> +
-> +
-> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
-> +	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_general_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00028000;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = (addr_instruction_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_instruction_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0xfffff001;
-> +	addr_bo_buffer_batch[b++] = 0x00010001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0xfffff001;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00007fbf;
-> +	addr_bo_buffer_batch[b++] = 0x5E70F021;
-> +	addr_bo_buffer_batch[b++] = 0x00007F6A;
-> +	addr_bo_buffer_batch[b++] = 0x00010000;
-> +
-> +
-> +	addr_bo_buffer_batch[b++] = GEN8_3DSTATE_BINDING_TABLE_POOL_ALLOC | 0x2;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x2;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x001ff000;
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_COMPUTE_WALKER | 0x25;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000040;
-> +	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
-> +	addr_bo_buffer_batch[b++] = 0xbe040000;
-> +	addr_bo_buffer_batch[b++] = 0xffffffff;
-> +	addr_bo_buffer_batch[b++] = 0x000003ff;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = kernel_start_pointer;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00001080;
-> +	addr_bo_buffer_batch[b++] = 0x0c000020;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000008;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00001087;
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH;
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000400;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
-> +	addr_bo_buffer_batch[b++] = 0x00100000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
-> +}
-> +
-> +
->  static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  					uint64_t addr_general_state_base,
->  					uint64_t addr_surface_state_base,
-> @@ -1321,6 +1443,94 @@ static void xe2_create_indirect_data_inc_kernel(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  }
->  
-> +/**
-> + * xelpg_compute_exec - run a pipeline compatible with MTL
-> + *
-> + * @fd: file descriptor of the opened DRM device
-> + * @kernel: GPU Kernel binary to be executed
-> + * @size: size of @kernel.
-> + * @eci: xelpg engine class instance if device is MTL
-> + */
-> +static void xelpg_compute_exec(int fd, const unsigned char *kernel,
-> +				unsigned int size,
-> +				struct drm_xe_engine_class_instance *eci)
-> +{
-> +#define XELPG_BO_DICT_ENTRIES 9
-> +	struct bo_dict_entry bo_dict[XELPG_BO_DICT_ENTRIES] = {
-> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
-> +		  .name = "instr state base"},
-> +		{ .addr = ADDR_DYNAMIC_STATE_BASE,
-> +		  .size = 0x100000,
-> +		  .name = "dynamic state base"},
-> +		{ .addr = ADDR_SURFACE_STATE_BASE,
-> +		  .size = 0x1000,
-> +		  .name = "surface state base"},
-> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-> +		  .size =  0x1000,
-> +		  .name = "indirect object base"},
-> +		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
-> +		  .name = "addr input"},
-> +		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
-> +		  .name = "addr output" },
-> +		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-> +		  .name = "general state base" },
-> +		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
-> +		  .size = 0x1000,
-> +		  .name = "binding table" },
-> +		{ .addr = ADDR_BATCH,
-> +		  .size = SIZE_BATCH,
-> +		  .name = "batch" },
-> +	};
-> +
-> +	struct bo_execenv execenv;
-> +	float *dinput;
-> +
-> +	bo_execenv_create(fd, &execenv, eci);
-> +
-> +	/* Sets Kernel size */
-> +	bo_dict[0].size = ALIGN(size, 0x1000);
-> +
-> +	bo_execenv_bind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-> +
-> +	memcpy(bo_dict[0].data, kernel, size);
-> +
-> +	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> +	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +
-> +	dinput = (float *)bo_dict[4].data;
-> +	srand(time(NULL));
-> +
-> +	for (int i = 0; i < SIZE_DATA; i++)
-> +		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +
-> +	xelpg_compute_exec_compute(bo_dict[8].data,
-> +				   ADDR_GENERAL_STATE_BASE,
-> +				   ADDR_SURFACE_STATE_BASE,
-> +				   ADDR_DYNAMIC_STATE_BASE,
-> +				   ADDR_INSTRUCTION_STATE_BASE,
-> +				   OFFSET_INDIRECT_DATA_START,
-> +				   OFFSET_KERNEL);
-> +
-> +	bo_execenv_exec(&execenv, ADDR_BATCH);
-> +
-> +	for (int i = 0; i < SIZE_DATA; i++) {
-> +		float f1, f2;
-> +
-> +		f1 = ((float *) bo_dict[5].data)[i];
-> +		f2 = ((float *) bo_dict[4].data)[i];
-> +
-> +		if (f1 != f2 * f2)
-> +			igt_debug("[%4d] f1: %f != %f %f\n", i, f1, f2 * f2, f2);
-> +
-> +		igt_assert(f1 == f2 * f2);
-> +	}
-> +
-> +	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-> +	bo_execenv_destroy(&execenv);
-> +}
-> +
->  /**
->   * xe2lpg_compute_exec - run a pipeline compatible with XE2
->   *
-> @@ -1406,7 +1616,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  		igt_assert(f1 == f2 * f2);
->  	}
->  
-> -	bo_execenv_unbind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
-> +	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
-
-This is wrong.
-
->  	bo_execenv_destroy(&execenv);
->  }
->  
-> @@ -1449,6 +1659,11 @@ static const struct {
->  		.compute_exec = xehpc_compute_exec,
->  		.compat = COMPAT_DRIVER_XE,
->  	},
-> +	{
-> +		.ip_ver = IP_VER(12, 70),
-> +		.compute_exec = xelpg_compute_exec,
-> +		.compat = COMPAT_DRIVER_I915,
-
-Isn't this correct also for COMPAT_DRIVER_XE? May you test it and
-unblock if it is passing for xe?
-
---
-Zbigniew
-
-> +	},
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.compute_exec = xe2lpg_compute_exec,
-> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
-> index a1f3b46da..b0912e7e4 100644
-> --- a/lib/intel_compute_square_kernels.c
-> +++ b/lib/intel_compute_square_kernels.c
-> @@ -3844,6 +3844,50 @@ static const unsigned char xe2lpg_kernel_inc_bin[] = {
->  	0x00, 0x00, 0x00, 0x00
->  };
->  
-> +unsigned char xelpg_kernel_square_bin[] = {
-> +	0x61, 0x00, 0x03, 0x80, 0x20, 0x42, 0x05, 0x7f, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x45, 0x7f,
-> +	0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80,
-> +	0x20, 0x82, 0x45, 0x7f, 0x44, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00,
-> +	0x01, 0x19, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x40, 0x03, 0x80, 0x00, 0x00, 0x14, 0x08,
-> +	0x0c, 0x7f, 0xfa, 0xa7, 0x00, 0x00, 0x10, 0x02, 0x61, 0x00, 0x03, 0x80,
-> +	0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-> +	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80,
-> +	0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x01, 0xc0, 0x04, 0xc0, 0x04,
-> +	0x01, 0x09, 0x00, 0xe8, 0x01, 0x00, 0x11, 0x00, 0x41, 0x1a, 0x20, 0x22,
-> +	0x16, 0x09, 0x11, 0x03, 0x49, 0x00, 0x04, 0xa2, 0x12, 0x09, 0x11, 0x03,
-> +	0x52, 0x19, 0x04, 0x00, 0x60, 0x06, 0x04, 0x05, 0x04, 0x04, 0x0e, 0x01,
-> +	0x04, 0x01, 0x04, 0x07, 0x52, 0x00, 0x24, 0x00, 0x60, 0x06, 0x04, 0x0a,
-> +	0x04, 0x04, 0x0e, 0x01, 0x04, 0x02, 0x04, 0x07, 0x70, 0x1a, 0x04, 0x00,
-> +	0x60, 0x02, 0x01, 0x00, 0x04, 0x05, 0x10, 0x52, 0x84, 0x08, 0x00, 0x00,
-> +	0x70, 0x1a, 0x24, 0x00, 0x60, 0x02, 0x01, 0x00, 0x04, 0x0a, 0x10, 0x52,
-> +	0x84, 0x08, 0x00, 0x00, 0x2e, 0x00, 0x05, 0x11, 0x00, 0xc0, 0x00, 0x00,
-> +	0xd0, 0x00, 0x00, 0x00, 0xd0, 0x00, 0x00, 0x00, 0x69, 0x00, 0x0c, 0x60,
-> +	0x02, 0x05, 0x20, 0x00, 0x69, 0x00, 0x0e, 0x66, 0x02, 0x0a, 0x20, 0x00,
-> +	0x40, 0x1a, 0x10, 0xa0, 0x32, 0x0c, 0x10, 0x08, 0x40, 0x1a, 0x12, 0xa6,
-> +	0x32, 0x0e, 0x10, 0x08, 0x01, 0x1a, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x31, 0x40, 0x04, 0x00,
-> +	0x00, 0x00, 0x14, 0x14, 0x94, 0x10, 0x00, 0xfa, 0x00, 0x00, 0x00, 0x04,
-> +	0x01, 0x19, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x41, 0x24, 0x00, 0x00, 0x00, 0x14, 0x16,
-> +	0x94, 0x12, 0x00, 0xfa, 0x00, 0x00, 0x00, 0x04, 0x40, 0x00, 0x0c, 0xa0,
-> +	0x4a, 0x0c, 0x10, 0x08, 0x40, 0x00, 0x0e, 0xa6, 0x4a, 0x0e, 0x10, 0x08,
-> +	0x41, 0x20, 0x14, 0x20, 0x00, 0x14, 0x00, 0x14, 0x41, 0x21, 0x16, 0x26,
-> +	0x00, 0x16, 0x00, 0x16, 0x31, 0xa0, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x95, 0x0c, 0x08, 0xfa, 0x14, 0x14, 0x00, 0x04, 0x31, 0x91, 0x24, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x95, 0x0e, 0x08, 0xfa, 0x14, 0x16, 0x00, 0x04,
-> +	0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-> +	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x2f, 0x00, 0x05, 0x00,
-> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
-> +	0x61, 0x00, 0x7f, 0x64, 0x00, 0x03, 0x10, 0x00, 0x01, 0x11, 0x00, 0x80,
-> +	0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x31, 0x40, 0x00, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30,
-> +	0x00, 0x00, 0x00, 0x00
-> +};
->  
->  const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  	{
-> @@ -3866,6 +3910,11 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  		.size = sizeof(xehpc_kernel_square_bin),
->  		.kernel = xehpc_kernel_square_bin,
->  	},
-> +	{
-> +		.ip_ver = IP_VER(12, 70),
-> +		.size = sizeof(xelpg_kernel_square_bin),
-> +		.kernel = xelpg_kernel_square_bin,
-> +	},
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.size = sizeof(xe2lpg_kernel_square_bin),
-> -- 
-> 2.34.1
-> 
+>
+>         fill_igt_fb(&cursor_fb1, 0xFF00FFFF);
+>         fill_igt_fb(&cursor_fb2, 0xFF00FF00);
+> --
+> 2.25.1
+>
