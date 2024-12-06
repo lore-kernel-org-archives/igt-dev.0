@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB73DE77179
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 12:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28507E77173
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 12:33:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9247510E413;
-	Fri,  6 Dec 2024 12:15:52 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="noaeeK4I";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11AFD10E413
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 12:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733487351; x=1765023351;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=5NIH0vAS3qc/53B3NtgroZqWAxTsZ7apcLIqX2yzkes=;
- b=noaeeK4IEos0QmHnL0wMiTJXnqd0HqtnvmGgenkIDGiwdXPMrKS8AQni
- nU4Hsj/0wVrKfodPgecvs7I2ftBHFXTz86zF0nSpu6AkspzEoTJd4ErHX
- X7LXunuJh3HHGXK8FAY/PBWSAT/PNHP+Gv8yW5GcB8QjZu/9ZLTlsBRia
- KcxnQxn4A7FD4ol+hTwBG2RxpdGKwqiM3Y7TZIIGJ6WtL997SMJb+1HK4
- joosqbsOL42tl3Ja77S+WayDZu6B4AF9vdc6DDRAZl0nV3GrzDeiqQWp+
- 4ULdzHL3sErkyoXY61sBIqVO9PUUC5jAwUq6Szut1P1zCgC540Fg4fHUO Q==;
-X-CSE-ConnectionGUID: pCTMAoedQD6RG+Mym//lEQ==
-X-CSE-MsgGUID: E8Tc5zpxRGaU+i8ZrGZeKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45214052"
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="45214052"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2024 04:15:51 -0800
-X-CSE-ConnectionGUID: WYR/tQBJSe2ner6OuccMyQ==
-X-CSE-MsgGUID: aD4pFhWcQ8GadyCkvBxfCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="94846892"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.244.159])
- ([10.245.244.159])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2024 04:15:50 -0800
-Message-ID: <e63f049f-5224-45ae-96c3-3e1aa8a46077@intel.com>
-Date: Fri, 6 Dec 2024 12:15:47 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFC8E10E2E5;
+	Fri,  6 Dec 2024 12:33:22 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CB0510E2E5;
+ Fri,  6 Dec 2024 12:33:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/intel_bufops: Set NEEDS_VISIBLE_VRAM for each
- buf by default
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20241205104134.22790-1-dominik.grzegorzek@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20241205104134.22790-1-dominik.grzegorzek@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_GPGPU_support_for_MTL_pla?=
+ =?utf-8?q?tform_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sharma, Nishit" <nishit.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 06 Dec 2024 12:33:21 -0000
+Message-ID: <173348840111.3337989.4980222151542676189@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241205132814.3440727-1-nishit.sharma@intel.com>
+In-Reply-To: <20241205132814.3440727-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,46 +37,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 05/12/2024 10:41, Dominik Grzegorzek wrote:
-> Some tests (i.e. xe_eudebug_online, xe_exec_sip) are mapping intel_buf.
-> If the backing storage is nvram, any access to mmaped buffer may
-> cause segmentation fault. Set DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM
-> by default as intel_bufs might be mapped and this is not harmful.
+== Series Details ==
 
-There is the downside that all objects will now be limited to BAR size 
-when using this API. i.e you might have 16G VRAM but only 256M BAR. But 
-I guess user can always pass in their own handle if they need something 
-more special, so NEEDS_VISIBLE_VRAM is probably a sensible default and 
-most tests probably don't care about the limit? Ideally the API would 
-have an option to hint that CPU access is something they actually need.
+Series: GPGPU support for MTL platform (rev6)
+URL   : https://patchwork.freedesktop.org/series/142149/
+State : success
 
-Also: https://patchwork.freedesktop.org/series/141710/
+== Summary ==
 
-> 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+CI Bug Log - changes from IGT_8139 -> IGTPW_12262
+====================================================
 
-> ---
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
->   lib/intel_bufops.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 619222019..49b91a171 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -1021,7 +1021,8 @@ static void __intel_buf_init(struct buf_ops *bops,
->   				cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->   
->   			bo_size = ALIGN(bo_size, xe_get_default_alignment(bops->fd));
-> -			buf->handle = xe_bo_create_caching(bops->fd, 0, bo_size, region, 0,
-> +			buf->handle = xe_bo_create_caching(bops->fd, 0, bo_size, region,
-> +							   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
->   							   cpu_caching);
->   		}
->   	}
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12262 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg2-11:         [PASS][1] -> [FAIL][2] ([i915#12903])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         [PASS][3] -> [INCOMPLETE][4] ([i915#13194])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-arlh-2/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [PASS][5] -> [INCOMPLETE][6] ([i915#13269])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-6:         [PASS][7] -> [ABORT][8] ([i915#12061]) +1 other test abort
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2:
+    - fi-cfl-8109u:       [PASS][9] -> [DMESG-WARN][10] ([i915#12914]) +2 other tests dmesg-warn
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/fi-cfl-8109u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/fi-cfl-8109u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][11] ([i915#9197]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12914]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12914
+  [i915#13194]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13194
+  [i915#13269]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13269
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8139 -> IGTPW_12262
+  * Linux: CI_DRM_15796 -> CI_DRM_15799
+
+  CI-20190529: 20190529
+  CI_DRM_15796: 1b7746f770882ce40dacae683e8e65657c40c2b7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15799: e57b4b7cd137e0ae00d2601b4b55ab7f504da422 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12262: 12262
+  IGT_8139: b0c59bb94e6c990589eb6825c1436ce412804dae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12262/index.html
