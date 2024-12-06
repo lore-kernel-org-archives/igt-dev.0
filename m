@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 113FCE77179
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 16:51:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A44A6E77173
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 16:52:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAC4810F131;
-	Fri,  6 Dec 2024 16:51:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P9c2ATdl";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8586E10F131
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 16:51:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733503895; x=1765039895;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nZ8id+gWqaN0NQDLWnEJizhj9a7Y5woqR79WpKUyu1E=;
- b=P9c2ATdlBM4x3DL7rFNNoxhw0KQBfReWDGo4JMCZV15FLBqMBoAKdiQ6
- AAoPCkEgCJTL5UEX0i94SmpjQZzsBntKmvrCJ+1/HUvWKaIlXvzQSTSJc
- 4ZaOVx2Y4unXzxPhApTHE2t2d5vJ9OUJ65XIYKyl4WQ0Zf5nkKyvnHWOX
- I0Wdhsz9KESn9pbwL8B/R2jq08SfEhFrNQ6g/acNjQyzHNV8a6P253TBT
- n41z9R48BpiG8vYmYnZ8oHvZU2pyTbQ40BoN5F9zEa7wp6fgItTUVUHFZ
- 7sqlAtoc+MhfJwV2GENhmQ77KgDGCLJJ4RFcYbtzWupjdTILeTBusce72 Q==;
-X-CSE-ConnectionGUID: XQlx3v8OTs6D6vSYcgdI8A==
-X-CSE-MsgGUID: p3yTB4dLS8mrCF4eAXwAxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="33746588"
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="33746588"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2024 08:51:34 -0800
-X-CSE-ConnectionGUID: X9yha35jRJaFLBQnxJxnuw==
-X-CSE-MsgGUID: pt1StfCmRFOE7tc3NROveA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="125292346"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 08:51:34 -0800
-Date: Fri, 6 Dec 2024 17:51:30 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tests/xe_exec_sip: increase timeout margin for tests
-Message-ID: <20241206165130.boizrw7y3u4xpbfd@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20241206-xe_exec_sip_eudebug_increase_timeout_for_devcoredump-v1-1-6736edd67447@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4EACC10F131;
+	Fri,  6 Dec 2024 16:52:32 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2BB910F131;
+ Fri,  6 Dec 2024 16:52:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241206-xe_exec_sip_eudebug_increase_timeout_for_devcoredump-v1-1-6736edd67447@intel.com>
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Fexec?=
+ =?utf-8?q?=5Fcapture=3A_Add_xe=5Fexec=5Fcapture_test_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zhanjun Dong" <zhanjun.dong@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 06 Dec 2024 16:52:30 -0000
+Message-ID: <173350395079.3357417.9838202129499478167@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241205215735.295314-1-zhanjun.dong@intel.com>
+In-Reply-To: <20241205215735.295314-1-zhanjun.dong@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,44 +37,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andrzej,
-On 2024-12-06 at 09:17:48 +0100, Andrzej Hajda wrote:
-> In case engine reset happens 4s timeout margin sometimes is not enough
-> and test fails. It happens mostly on LNL/BMG due to devcoredump creation.
-> On CI it does not pass 5s, let's increase it to 8s to be on safe side.
-> 
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: tests/intel/xe_exec_capture: Add xe_exec_capture test (rev6)
+URL   : https://patchwork.freedesktop.org/series/140007/
+State : warning
 
-> ---
->  tests/intel/xe_exec_sip_eudebug.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_sip_eudebug.c b/tests/intel/xe_exec_sip_eudebug.c
-> index d056a14a2d7f..c317112b4154 100644
-> --- a/tests/intel/xe_exec_sip_eudebug.c
-> +++ b/tests/intel/xe_exec_sip_eudebug.c
-> @@ -263,8 +263,8 @@ static void test_sip(enum shader_type shader_type, enum sip_type sip_type,
->  	debugger_enabled = xe_eudebug_debugger_available(fd);
->  	vm_id = xe_vm_create(fd, debugger_enabled ? DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
->  
-> -	/* Get timeout for job, and add 4s to ensure timeout processes in subtest. */
-> -	timeout = xe_sysfs_get_job_timeout_ms(fd, eci) + 4ull * MSEC_PER_SEC;
-> +	/* Get timeout for job, and add 8s for devcoredump processing. */
-> +	timeout = xe_sysfs_get_job_timeout_ms(fd, eci) + 8ull * MSEC_PER_SEC;
->  	timeout *= NSEC_PER_MSEC;
->  	timeout *= igt_run_in_simulation() ? 10 : 1;
->  
-> 
-> ---
-> base-commit: e776f39da6b3666a2834f7e02a1eed9a87f21d74
-> change-id: 20241206-xe_exec_sip_eudebug_increase_timeout_for_devcoredump-64e46bd9721d
-> 
-> Best regards,
-> -- 
-> Andrzej Hajda <andrzej.hajda@intel.com>
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1324974 for the overview.
+
+test:list-undocumented-tests has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67853533):
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out d3f1851d as detached HEAD (ref is intel/IGTPW_12269)...
+  Removing build/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1733503710:get_sources
+  section_start:1733503710:download_artifacts
+  Downloading artifacts
+  Downloading artifacts for build:tests-fedora (67853520)...
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=67853520 responseStatus=200 OK token=glcbt-64
+  section_end:1733503729:download_artifacts
+  section_start:1733503729:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-d3f1851d2c6faf46bb999d887d46143459e205f5 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1733503733:step_script
+  section_start:1733503733:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1733503734:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:650:0s)
+
+test:verify-blacklists has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/67853534):
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing lib/xe/oa-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1733503713:get_sources
+  section_start:1733503713:download_artifacts
+  Downloading artifacts
+  Downloading artifacts for build:tests-fedora (67853520)...
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=67853520 responseStatus=200 OK token=glcbt-64
+  section_end:1733503729:download_artifacts
+  section_start:1733503729:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-d3f1851d2c6faf46bb999d887d46143459e205f5 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1733503733:step_script
+  section_start:1733503733:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1733503735:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:650:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1324974
