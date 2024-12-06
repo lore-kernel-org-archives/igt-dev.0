@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0ACBE7717B
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 04:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B394E77173
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 05:06:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56D3710E1E1;
-	Fri,  6 Dec 2024 04:57:02 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C2DD10E1E1;
- Fri,  6 Dec 2024 04:57:01 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5243210793532894472=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E429F10E5F4;
+	Fri,  6 Dec 2024 05:06:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDLDJWqr";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA3310E3CD
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 05:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733461584; x=1764997584;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fXHyOFMmalZmcgGRWuVffBaTl1BPYBvbdGTCqjnF4Q8=;
+ b=aDLDJWqrnUAAmcl07JQM1yUVzjIsFGpI+loPq8EulA376AJ00WA9wojv
+ gDAmmXx7zw6m8CZnX/efhdU0ve+KClE20Kkgpl2YW+7roVP6NLhtXmSZp
+ OCgdDAigEugDRHCIYjFRcqEx/6V/smQc4ZaYJw6Tg4GUJQ1MWr7BxwURl
+ oCoT3aXq7J632JIPgntgxUrATxZeZtB4HaRLqBx31fOxtQ6Q8DpofYOPU
+ N3xeo/+HpdYL56jg4rkumgFIX6KK2cDgpti6/c3gDR/1JYx9R85QwWk0t
+ i9gXVhQj4NtaSt/YUcQ4n8qYiqzF6uy2pox58DTXl1gXU1l3VruaC8SO3 A==;
+X-CSE-ConnectionGUID: EmfsyPQNRLOe3HBQm5cVMg==
+X-CSE-MsgGUID: dPBfZUu2QN2FIdRpgObIlQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33929718"
+X-IronPort-AV: E=Sophos;i="6.12,212,1728975600"; d="scan'208";a="33929718"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Dec 2024 21:06:24 -0800
+X-CSE-ConnectionGUID: CbG2If7MR02RXqIJzVfKnA==
+X-CSE-MsgGUID: er3PRDUlS6utRE4CV+ezaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,212,1728975600"; d="scan'208";a="99126363"
+Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
+ by fmviesa004.fm.intel.com with ESMTP; 05 Dec 2024 21:06:22 -0800
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com,
+ Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH i-g-t v3] tests/intel/perf_pmu: Skip frequency test on older
+ platforms
+Date: Fri,  6 Dec 2024 10:34:03 +0530
+Message-Id: <20241206050403.541668-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fcap?=
- =?utf-8?q?ture=3A_Add_xe=5Fexec=5Fcapture_test_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Zhanjun Dong" <zhanjun.dong@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 06 Dec 2024 04:57:01 -0000
-Message-ID: <173346102118.3172147.15314687923301417237@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241205215735.295314-1-zhanjun.dong@intel.com>
-In-Reply-To: <20241205215735.295314-1-zhanjun.dong@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,163 +63,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5243210793532894472==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On a few old platforms like BLB, ELK, ILK or PNV the following
+sysfs node "rps_min_freq_mhz" is not present which cause
+frequency test to abort. Make it skip those cases
 
-== Series Details ==
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12728
 
-Series: tests/intel/xe_exec_capture: Add xe_exec_capture test (rev5)
-URL   : https://patchwork.freedesktop.org/series/140007/
-State : failure
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/perf_pmu.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+index bfa2d501a..5d0467c02 100644
+--- a/tests/intel/perf_pmu.c
++++ b/tests/intel/perf_pmu.c
+@@ -1786,7 +1786,7 @@ test_frequency_idle(int gem_fd, unsigned int gt)
+ 	sysfs = igt_sysfs_gt_open(gem_fd, gt);
+ 	igt_require(sysfs >= 0);
+ 
+-	min_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
++	igt_require(__igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz", &min_freq));
+ 	close(sysfs);
+ 
+ 	/* While parked, our convention is to report the GPU at 0Hz */
+@@ -2403,23 +2403,23 @@ static void save_sysfs_freq(int i915)
+ 
+ 	num_gts = igt_sysfs_get_num_gt(i915);
+ 
+-	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+-	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+-	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
++	stash_min = (uint32_t *)calloc(num_gts, sizeof(uint32_t) * num_gts);
++	stash_max = (uint32_t *)calloc(num_gts, sizeof(uint32_t) * num_gts);
++	stash_boost = (uint32_t *)calloc(num_gts, sizeof(uint32_t) * num_gts);
+ 
+ 	/* Save boost, min and max across GTs */
+ 	i915_for_each_gt(i915, tmp, gt) {
+ 		sysfs = igt_sysfs_gt_open(i915, gt);
+ 		igt_require(sysfs >= 0);
+ 
+-		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
+-		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
+-		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
++		__igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz", &stash_min[gt]);
++		__igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz", &stash_max[gt]);
++		__igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz", &stash_boost[gt]);
+ 		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
+ 			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
+ 
+-		rpn_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
+-		rp0_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
++		__igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz", &rpn_freq);
++		__igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz", &rp0_freq);
+ 
+ 		/* Set pre-conditions, in case frequencies are in non-default state */
+ 		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", rp0_freq));
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8139_BAT -> XEIGTPW_12261_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_12261_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_12261_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_12261_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
-    - bat-lnl-1:          [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8139/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12261_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-3:
-    - bat-bmg-1:          [PASS][3] -> [DMESG-WARN][4] ([Intel XE#877]) +1 other test dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8139/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-3.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-3.html
-
-  
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
-
-
-Build changes
--------------
-
-  * IGT: IGT_8139 -> IGTPW_12261
-  * Linux: xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7 -> xe-2331-e57b4b7cd137e0ae00d2601b4b55ab7f504da422
-
-  IGTPW_12261: eba40584ea93f752dfc8491a10478a6e0e2b807a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8139: b0c59bb94e6c990589eb6825c1436ce412804dae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7: 1b7746f770882ce40dacae683e8e65657c40c2b7
-  xe-2331-e57b4b7cd137e0ae00d2601b4b55ab7f504da422: e57b4b7cd137e0ae00d2601b4b55ab7f504da422
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/index.html
-
---===============5243210793532894472==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_capture: Add xe_exec_capture test (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140007/">https://patchwork.freedesktop.org/series/140007/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8139_BAT -&gt; XEIGTPW_12261_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_12261_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_12261_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_12261_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-dpms@a-edp1:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8139/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12261_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-3:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8139/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12261/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8139 -&gt; IGTPW_12261</li>
-<li>Linux: xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7 -&gt; xe-2331-e57b4b7cd137e0ae00d2601b4b55ab7f504da422</li>
-</ul>
-<p>IGTPW_12261: eba40584ea93f752dfc8491a10478a6e0e2b807a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8139: b0c59bb94e6c990589eb6825c1436ce412804dae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7: 1b7746f770882ce40dacae683e8e65657c40c2b7<br />
-  xe-2331-e57b4b7cd137e0ae00d2601b4b55ab7f504da422: e57b4b7cd137e0ae00d2601b4b55ab7f504da422</p>
-
-</body>
-</html>
-
---===============5243210793532894472==--
