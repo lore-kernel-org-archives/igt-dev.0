@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93CA4E77173
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96C54E77179
 	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 21:30:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 383B710F1D3;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32F0F10F1D2;
 	Fri,  6 Dec 2024 21:30:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SnYAvooD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l4I/GTJd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24F2D10F1D2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50DF710F1CF
  for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 21:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1733520604; x=1765056604;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=u9Okqs+TQPHvhaO+S/2NjJzYdOHTXDim6bOumjpbTQk=;
- b=SnYAvooDfpmsSDxU0RnwmseQZRGiRGywkZBkO0yyotRZ09Yd84GnY/O+
- O3XEcT5nLIkRwQiMuWeZ+UF4uWpm5S3EnTC0v8/MIc1gmYNpb6b/A75sS
- aGa4lRpdpXDpGdIHDa3nTMQYAFmKdH4ebT8lOYHpDlcVlWSuK+OzjOY+C
- m7JqlibI6WMqfVZL9+sGZcwyt5G2YAtpQ9dyoBEtv1N/zKI3Co0VNdYVF
- gnBVmKQQHejSx7vmZ642H/cxdDZ2OfLf1u0NbdQW4dal+ouD5GjRvs5jJ
- hoxEVvCr1hMp7Rjb1HkSXuWLiRQJtjwZ2cmtqOzpOESHK344pxcYB/pyF A==;
-X-CSE-ConnectionGUID: n4ekH7wrSZuL0UcJFQNIag==
-X-CSE-MsgGUID: NbqxNRreQBmPu8FnDBW2CA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="51304468"
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="51304468"
+ bh=m5H3S4wAyC0Ay93dFtNmFcJIZDoSOPonnmqOrirXO2E=;
+ b=l4I/GTJdYkLCZyFTI1B+LXaVMt148Kcjxm1su9TX5Ho4kgtMypW50+Yo
+ EYYJbyPzXd/78jRo+1KEWyPONxOC3Xzz8KBXm07kbBt6qPhVKINUoeARk
+ 6qsGxbdlwIFqH2KCYlTm82f527GOxZlG48CpOq8wHWbFbq0J62QxxJuXp
+ eTdsUmzdlGcg18Ui2U9koC0z1v//QjwVlKXhpF5CPCI8/cZgF+RqpOW8T
+ WDlC64vDBwE4257nVT+n24bCi2+Knadc7TN/RPM/tSe6PlgdMNf/yB0dY
+ juN/3b2xl8xuV8YLeRwnUHRqJsVQwNIK9zmpxfe9XVNXwaMWRb5FA97aF Q==;
+X-CSE-ConnectionGUID: ja/BL6EtSZa8sThwq/RCMw==
+X-CSE-MsgGUID: 3UWQMXvvQICcTZ5bZKLdUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="51304470"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="51304470"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  06 Dec 2024 13:27:53 -0800
-X-CSE-ConnectionGUID: W+PQ9hJ6SPaRZ//f26uohw==
-X-CSE-MsgGUID: iNXvV0zwScu5DjQC3tahWw==
+X-CSE-ConnectionGUID: GmtwcTLdTRaV8t/j43oV2A==
+X-CSE-MsgGUID: 0qig4mN4SqCbuwy7eM594A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="95306722"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="95306724"
 Received: from cataylo2-desk.jf.intel.com ([10.165.21.140])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  06 Dec 2024 13:27:53 -0800
 From: Clint Taylor <clinton.a.taylor@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v4 1/8] PTL: lib/intel_chipset: add pantherlake
- definition and support
-Date: Fri,  6 Dec 2024 13:27:41 -0800
-Message-Id: <20241206212748.2101217-2-clinton.a.taylor@intel.com>
+Subject: [PATCH i-g-t v4 3/8] XE3: tests/intel/xe_pat: extend for xe3
+Date: Fri,  6 Dec 2024 13:27:43 -0800
+Message-Id: <20241206212748.2101217-4-clinton.a.taylor@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241206212748.2101217-1-clinton.a.taylor@intel.com>
 References: <20241206212748.2101217-1-clinton.a.taylor@intel.com>
@@ -67,62 +66,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Matt Atwood <matthew.s.atwood@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-Add support for the pantherlake platform for xe.
+Same pat_index modes should apply as for xe2. Matches the kernel.
 
-Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+Reviewed-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 ---
- lib/intel_chipset.h     |  2 ++
- lib/intel_device_info.c | 13 +++++++++++++
- 2 files changed, 15 insertions(+)
+ tests/intel/xe_pat.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 0c04476bf..c93ad9f75 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -92,6 +92,8 @@ struct intel_device_info {
- 	bool is_pontevecchio : 1;
- 	bool is_lunarlake : 1;
- 	bool is_battlemage : 1;
-+	bool is_pantherlake : 1;
-+
- 	const struct intel_cmds_info *cmds_info;
- 	const char *codename;
- };
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index d38dc415d..349cf1b48 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -526,6 +526,17 @@ static const struct intel_device_info intel_battlemage_info = {
- 	.cmds_info = &xe2_cmds_info,
- };
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index b0b3ad8a7..1322df349 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -110,7 +110,7 @@ static void pat_index_all(int fd)
  
-+static const struct intel_device_info intel_pantherlake_info = {
-+	.graphics_ver = 30,
-+	.graphics_rel = 0,
-+	.display_ver = 30,
-+	.has_4tile = true,
-+	.has_flatccs = true,
-+	.is_pantherlake = true,
-+	.codename = "pantherlake",
-+	.cmds_info = &xe2_cmds_info,
-+};
-+
- #define INTEL_PCI_ID_INIT(_id, _info) { \
- 	.vendor_id = 0x8086, .device_id = (_id), \
- 	.subvendor_id = PCI_MATCH_ANY, .subdevice_id = PCI_MATCH_ANY, \
-@@ -642,6 +653,8 @@ static const struct pci_id_match intel_device_match[] = {
+ 	for (pat_index = 0; pat_index <= intel_get_max_pat_index(fd);
+ 	     pat_index++) {
+-		if (intel_get_device_info(dev_id)->graphics_ver == 20 &&
++		if (intel_get_device_info(dev_id)->graphics_ver >= 20 &&
+ 		    pat_index >= 16 && pat_index <= 19) { /* hw reserved */
+ 			igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
+ 						   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
+@@ -854,7 +854,7 @@ static uint8_t get_pat_idx_wt(int fd, bool *compressed)
+ 	uint16_t dev_id = intel_get_drm_devid(fd);
  
- 	INTEL_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
+ 	if (compressed)
+-		*compressed = intel_get_device_info(dev_id)->graphics_ver == 20;
++		*compressed = intel_get_device_info(dev_id)->graphics_ver >= 20;
  
-+	INTEL_PTL_IDS(INTEL_PCI_ID_INIT, &intel_pantherlake_info),
-+
- 	INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
- };
- 
+ 	return intel_get_pat_idx_wt(fd);
+ }
 -- 
 2.25.1
 
