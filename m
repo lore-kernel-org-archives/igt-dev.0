@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3135BE7716E
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 00:20:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B24E7716E
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 00:23:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA20F10EFEC;
-	Fri,  6 Dec 2024 00:20:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8938310EFEC;
+	Fri,  6 Dec 2024 00:23:48 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3FE610EFEC;
- Fri,  6 Dec 2024 00:20:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89A3510EFEC;
+ Fri,  6 Dec 2024 00:23:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7343196832931842116=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fs?=
- =?utf-8?q?tore=3A_Introduce_long-shader_tests?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fsto?=
+ =?utf-8?q?re=3A_Introduce_long-shader_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 06 Dec 2024 00:20:31 -0000
-Message-ID: <173344443179.3134186.8167126754623733213@b555e5b46a47>
+Date: Fri, 06 Dec 2024 00:23:47 -0000
+Message-ID: <173344462755.3134186.8348254743619030415@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241205100320.12780-1-dominik.karol.piatkowski@intel.com>
 In-Reply-To: <20241205100320.12780-1-dominik.karol.piatkowski@intel.com>
@@ -42,6 +42,11 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7343196832931842116==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/intel/xe_exec_store: Introduce long-shader tests
@@ -50,7 +55,7 @@ State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8139 -> IGTPW_12253
+CI Bug Log - changes from XEIGT_8139_BAT -> XEIGTPW_12253_BAT
 ====================================================
 
 Summary
@@ -58,105 +63,225 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_12253 absolutely need to be
+  Serious unknown changes coming with XEIGTPW_12253_BAT absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12253, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in XEIGTPW_12253_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/index.html
+  
 
-Participating hosts (44 -> 43)
+Participating hosts (8 -> 8)
 ------------------------------
 
-  Missing    (1): fi-snb-2520m 
+  No changes in participating hosts
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_12253:
+  Here are the unknown changes that may have been introduced in XEIGTPW_12253_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg2-8:          [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-dg2-8/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-dg2-8/igt@i915_pm_rpm@module-reload.html
+  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
+    - bat-lnl-1:          [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8139/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12253/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
 
   
-Known issues
-------------
+New tests
+---------
 
-  Here are the changes found in IGTPW_12253 that come from known issues:
+  New tests have been introduced between XEIGT_8139_BAT and XEIGTPW_12253_BAT:
 
-### IGT changes ###
+### New IGT tests (9) ###
 
-#### Issues hit ####
+  * igt@xe_exec_store@long-shader-bb-check:
+    - Statuses : 8 pass(s)
+    - Exec time: [0.01, 0.20] s
 
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - fi-bsw-nick:        [PASS][3] -> [INCOMPLETE][4] ([i915#12904]) +1 other test incomplete
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-system-target-system:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.00, 0.01] s
 
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-7:          [PASS][5] -> [FAIL][6] ([i915#12903])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-system-target-vram0:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
 
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [PASS][7] -> [ABORT][8] ([i915#12435] / [i915#12919])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-twl-1/igt@i915_selftest@live.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-twl-1/igt@i915_selftest@live.html
-    - bat-arls-5:         NOTRUN -> [ABORT][9] ([i915#12061])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-arls-5/igt@i915_selftest@live.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-vram0-target-system:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.04] s
 
-  * igt@i915_selftest@live@requests:
-    - bat-twl-1:          [PASS][10] -> [ABORT][11] ([i915#12919])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-twl-1/igt@i915_selftest@live@requests.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-twl-1/igt@i915_selftest@live@requests.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-vram0-target-vram0:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.04] s
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][12] -> [ABORT][13] ([i915#12061])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-arls-5/igt@i915_selftest@live@workarounds.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-system-target-system:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.00, 0.01] s
 
-  
-#### Possible fixes ####
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-system-target-vram0:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
 
-  * igt@i915_pm_rpm@module-reload:
-    - bat-rpls-4:         [FAIL][14] ([i915#12903]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-vram0-target-system:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04] s
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [ABORT][16] ([i915#12061]) -> [PASS][17] +1 other test pass
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8139/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+  * igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-vram0-target-vram0:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04] s
 
   
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8139 -> IGTPW_12253
-  * Linux: CI_DRM_15796 -> CI_DRM_15797
+  * Linux: xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7 -> xe-2329-777ecc16b887cadb4012cc323be01c46a23fea9f
 
-  CI-20190529: 20190529
-  CI_DRM_15796: 1b7746f770882ce40dacae683e8e65657c40c2b7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15797: 777ecc16b887cadb4012cc323be01c46a23fea9f @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12253: 99d7d55baa56370768f2ecaa723cba51b4509710 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8139: b0c59bb94e6c990589eb6825c1436ce412804dae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7: 1b7746f770882ce40dacae683e8e65657c40c2b7
+  xe-2329-777ecc16b887cadb4012cc323be01c46a23fea9f: 777ecc16b887cadb4012cc323be01c46a23fea9f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12253/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12253/index.html
+
+--===============7343196832931842116==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_store: Introduce long-shader tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142159/">https://patchwork.freedesktop.org/series/142159/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12253/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12253/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8139_BAT -&gt; XEIGTPW_12253_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12253_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12253_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12253_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-dpms@a-edp1:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8139/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12253/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8139_BAT and XEIGTPW_12253_BAT:</p>
+<h3>New IGT tests (9)</h3>
+<ul>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [0.01, 0.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-system-target-system:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-system-target-vram0:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-vram0-target-system:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_compute0-bb-vram0-target-vram0:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-system-target-system:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-system-target-vram0:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-vram0-target-system:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@long-shader-bb-check@gt0-drm_xe_engine_class_render0-bb-vram0-target-vram0:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8139 -&gt; IGTPW_12253</li>
+<li>Linux: xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7 -&gt; xe-2329-777ecc16b887cadb4012cc323be01c46a23fea9f</li>
+</ul>
+<p>IGTPW_12253: 99d7d55baa56370768f2ecaa723cba51b4509710 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8139: b0c59bb94e6c990589eb6825c1436ce412804dae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2328-1b7746f770882ce40dacae683e8e65657c40c2b7: 1b7746f770882ce40dacae683e8e65657c40c2b7<br />
+  xe-2329-777ecc16b887cadb4012cc323be01c46a23fea9f: 777ecc16b887cadb4012cc323be01c46a23fea9f</p>
+
+</body>
+</html>
+
+--===============7343196832931842116==--
