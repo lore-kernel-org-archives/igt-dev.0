@@ -4,51 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81197E77173
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 16:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A88C2E77173
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 16:47:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1446C10F130;
-	Fri,  6 Dec 2024 16:39:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6908510F131;
+	Fri,  6 Dec 2024 16:47:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T4NW3w1J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BbOOJVW6";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D8A610F130
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 16:39:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A59410F131
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 16:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733503142; x=1765039142;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=DN5p6MPaHeoqQoFtCdCiQrQGvGVnu9s0AfK46u4eyzs=;
- b=T4NW3w1JMr6ZBX5FH2eo4v+YhT3cYzZprjj+WEctjcsp90FvxAQWqW1e
- yl8LUiYGsag2fBBMt9CSALbIoKVn4Lj/09/v67WFCpsW38nXc0oyAAVPy
- UyrRTzd+lu8bwLbLRsgypnfHxEXfm0Y5UkkQHk/M0xxQvF+lMiyX7nLOx
- RXm2tDgneOtZLd29fMRzYmyT0TQ4y5a4uHCvuLmQcTbGlu14Kkp0t7NCB
- M6nVZFfmsyEk0YgDC1jiHSNzNNwAE3BIwUJJrcO8ADLCX7Nd7UvgKPqpT
- Oe0+iIa46WJCUYzUTMIoSmopWnzEtPUIzcOaHbuPWh0SprXJEHaqZX2Ph A==;
-X-CSE-ConnectionGUID: b1hNMH3vR3ePb+v2l3WY/A==
-X-CSE-MsgGUID: ukbo78+GQE6dRZAcP5mGaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="33918170"
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="33918170"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2024 08:38:58 -0800
-X-CSE-ConnectionGUID: nn/4DLkRT/a+jXwp0wgi0g==
-X-CSE-MsgGUID: e39FZwqtRbisWHAuxVt8FQ==
+ t=1733503635; x=1765039635;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Fp3k/wj+3yr/WnSa0n5QhVqSHH8tYrG5s1rb0yqpUkQ=;
+ b=BbOOJVW6XMUUoYT8borrhwUr43cVhOIGrC4vQQTCAm0fjD3zdaTXLzrd
+ kQpfvlYcQd62q2CJw3xT/iOHe7lotzGORl+3MCbmAiXkcUWqfBpnCdWi2
+ PyJKoX0HD6WBbRstGdLOswdyXJBf4o48BI1+Gk5xOYMVOH26gQQzLCJcX
+ gygdD7BNtIzw6kb0JoW8+TO9X9al/V6p4oWPyA/3GQNCFXyeM9WIEGPLH
+ pO2l9V8pT4iUpB7iWDi+KaEINJ3iIPvn9eSFCY6vDXzqxkosSgKaaGGtC
+ uATC8GbG+Q2KQTtelCI2LWcyFnAcQqUX7pBKtvHl3R9Gyzl1BiDHFqQAw g==;
+X-CSE-ConnectionGUID: 8YHAx9cSSMO13RMdkNvlLg==
+X-CSE-MsgGUID: 0ORiwSD0Ta+tcTOWhl6A/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="44332831"
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="44332831"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2024 08:47:14 -0800
+X-CSE-ConnectionGUID: GHo/Bd9GR6qsHgSY4XZ1mg==
+X-CSE-MsgGUID: KN0d0BsdTymotmVUb8pw3Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="94936337"
-Received: from dut7077atsm.jf.intel.com ([10.75.201.71])
- by fmviesa009.fm.intel.com with ESMTP; 06 Dec 2024 08:38:57 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org,
-	nishit.sharma@intel.com
-Subject: [PATCH i-g-t v8]lib/intel_compute*: GPGPU support for MTL platform
-Date: Fri,  6 Dec 2024 16:38:56 +0000
-Message-Id: <20241206163856.127594-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="94911900"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 08:47:09 -0800
+Date: Fri, 6 Dec 2024 17:46:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ luciano.coelho@intel.com, nirmoy.das@intel.com,
+ stuart.summers@intel.com, himal.prasad.ghimiray@intel.com,
+ dominik.karol.piatkowski@intel.com, katarzyna.piecielska@intel.com,
+ Petri Latvala <adrinael@adrinael.net>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Jani Saarinen <jani.saarinen@intel.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>,
+ Helen Koike <helen.koike@collabora.com>, Melissa Wen <mwen@igalia.com>,
+ =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+Subject: Re: [PATCH i-g-t v10] igt-runner fact checking
+Message-ID: <20241206164654.nqzmzcilagwvuug6@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ luciano.coelho@intel.com, nirmoy.das@intel.com,
+ stuart.summers@intel.com, himal.prasad.ghimiray@intel.com,
+ dominik.karol.piatkowski@intel.com, katarzyna.piecielska@intel.com,
+ Petri Latvala <adrinael@adrinael.net>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Jani Saarinen <jani.saarinen@intel.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>,
+ Helen Koike <helen.koike@collabora.com>,
+ Melissa Wen <mwen@igalia.com>,
+ =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
+ <b909e2ca-f713-45e1-997d-6871e136a076@linux.intel.com>
+ <20241206114250.h53jleknj4kgrpri@kamilkon-desk.igk.intel.com>
+ <1ee3fa1d-144a-49f5-8bf3-4fa00929894b@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1ee3fa1d-144a-49f5-8bf3-4fa00929894b@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,319 +107,354 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Peter,
+On 2024-12-06 at 14:16:27 +0100, Peter Senna Tschudin wrote:
+> Hi Kamil,
+> 
+> Thank you for your comments. I appreciate the opportunity to clarify and address
+> your concerns.
+> 
+> On 06.12.2024 12:42, Kamil Konieczny wrote:
+> > Hi Peter,
+> > On 2024-12-05 at 05:54:26 +0100, Peter Senna Tschudin wrote:
+> > 
+> > overall looks good, I have few nits, see below.
+> 
+> Thank you! Our CI tested it thoroughly, it creates value, and  it works well.
+> It is time to merge it.
+> 
+> > 
+> > As for subject, it usally informs what changed, so "igt-runner fact checking"
+> > is a little misleading. Please see my ask about that below.
+> 
+> Please explain what is misleading about the subject. It looks good to me.
+> 
 
-GPGPU shader and pipeline was missing for MTL platform
-Added GPGPU Shader and Compute Pipeline for exercising
-gpgpu in MTL for i915 and XE
+Subject suggest that this is a change only for runner, while it
+also adds a tool lsfacts.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/intel_compute.c                | 209 +++++++++++++++++++++++++++++
- lib/intel_compute_square_kernels.c |  49 +++++++
- 2 files changed, 258 insertions(+)
+> > 
+> >> When using igt-runner, collect facts before each test and after the
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 879928ab6..f1520aad4 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -1161,6 +1161,122 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_destroy(&execenv);
- }
- 
-+static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-+					uint64_t addr_general_state_base,
-+					uint64_t addr_surface_state_base,
-+					uint64_t addr_dynamic_state_base,
-+					uint64_t addr_instruction_state_base,
-+					uint64_t offset_indirect_data_start,
-+					uint64_t kernel_start_pointer)
-+{
-+	int b = 0;
-+
-+	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-+	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
-+	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
-+	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
-+	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
-+	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
-+	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
-+
-+	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-+				    PIPELINE_SELECT_GPGPU;
-+
-+	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE;
-+	addr_bo_buffer_batch[b++] = 0x80000000;
-+
-+	addr_bo_buffer_batch[b++] = XEHP_CFE_STATE | 0x4;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x03808800;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM(1);
-+	addr_bo_buffer_batch[b++] = 0x00002580;
-+	addr_bo_buffer_batch[b++] = 0x00060002;
-+
-+	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
-+	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_general_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00028000;
-+	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = (addr_instruction_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_instruction_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0xfffff001;
-+	addr_bo_buffer_batch[b++] = 0x00010001;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0xfffff001;
-+	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00007fbf;
-+	addr_bo_buffer_batch[b++] = 0x5E70F021;
-+	addr_bo_buffer_batch[b++] = 0x00007F6A;
-+	addr_bo_buffer_batch[b++] = 0x00010000;
-+
-+	addr_bo_buffer_batch[b++] = GEN8_3DSTATE_BINDING_TABLE_POOL_ALLOC | 0x2;
-+	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x2;
-+	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x001ff000;
-+
-+	addr_bo_buffer_batch[b++] = XEHP_COMPUTE_WALKER | 0x25;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000040;
-+	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
-+	addr_bo_buffer_batch[b++] = 0xbe040000;
-+	addr_bo_buffer_batch[b++] = 0xffffffff;
-+	addr_bo_buffer_batch[b++] = 0x000003ff;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = kernel_start_pointer;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00001080;
-+	addr_bo_buffer_batch[b++] = 0x0c000020;
-+
-+	addr_bo_buffer_batch[b++] = 0x00000008;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00001087;
-+	addr_bo_buffer_batch[b++] = ADDR_BATCH;
-+	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
-+	addr_bo_buffer_batch[b++] = 0x00100000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
-+}
-+
- static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 					uint64_t addr_general_state_base,
- 					uint64_t addr_surface_state_base,
-@@ -1321,6 +1437,94 @@ static void xe2_create_indirect_data_inc_kernel(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- }
- 
-+/**
-+ * xelpg_compute_exec - run a pipeline compatible with MTL
-+ *
-+ * @fd: file descriptor of the opened DRM device
-+ * @kernel: GPU Kernel binary to be executed
-+ * @size: size of @kernel.
-+ * @eci: xelpg engine class instance if device is MTL
-+ */
-+static void xelpg_compute_exec(int fd, const unsigned char *kernel,
-+				unsigned int size,
-+				struct drm_xe_engine_class_instance *eci)
-+{
-+#define XELPG_BO_DICT_ENTRIES 9
-+	struct bo_dict_entry bo_dict[XELPG_BO_DICT_ENTRIES] = {
-+		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
-+		  .name = "instr state base"},
-+		{ .addr = ADDR_DYNAMIC_STATE_BASE,
-+		  .size = 0x100000,
-+		  .name = "dynamic state base"},
-+		{ .addr = ADDR_SURFACE_STATE_BASE,
-+		  .size = 0x1000,
-+		  .name = "surface state base"},
-+		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-+		  .size =  0x1000,
-+		  .name = "indirect object base"},
-+		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
-+		  .name = "addr input"},
-+		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
-+		  .name = "addr output" },
-+		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-+		  .name = "general state base" },
-+		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
-+		  .size = 0x1000,
-+		  .name = "binding table" },
-+		{ .addr = ADDR_BATCH,
-+		  .size = SIZE_BATCH,
-+		  .name = "batch" },
-+	};
-+
-+	struct bo_execenv execenv;
-+	float *dinput;
-+
-+	bo_execenv_create(fd, &execenv, eci);
-+
-+	/* Sets Kernel size */
-+	bo_dict[0].size = ALIGN(size, 0x1000);
-+
-+	bo_execenv_bind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-+
-+	memcpy(bo_dict[0].data, kernel, size);
-+
-+	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-+	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-+
-+	dinput = (float *)bo_dict[4].data;
-+	srand(time(NULL));
-+
-+	for (int i = 0; i < SIZE_DATA; i++)
-+		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-+
-+	xelpg_compute_exec_compute(bo_dict[8].data,
-+				   ADDR_GENERAL_STATE_BASE,
-+				   ADDR_SURFACE_STATE_BASE,
-+				   ADDR_DYNAMIC_STATE_BASE,
-+				   ADDR_INSTRUCTION_STATE_BASE,
-+				   OFFSET_INDIRECT_DATA_START,
-+				   OFFSET_KERNEL);
-+
-+	bo_execenv_exec(&execenv, ADDR_BATCH);
-+
-+	for (int i = 0; i < SIZE_DATA; i++) {
-+		float f1, f2;
-+
-+		f1 = ((float *) bo_dict[5].data)[i];
-+		f2 = ((float *) bo_dict[4].data)[i];
-+
-+		if (f1 != f2 * f2)
-+			igt_debug("[%4d] f1: %f != %f %f\n", i, f1, f2 * f2, f2);
-+
-+		igt_assert(f1 == f2 * f2);
-+	}
-+
-+	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-+	bo_execenv_destroy(&execenv);
-+}
-+
- /**
-  * xe2lpg_compute_exec - run a pipeline compatible with XE2
-  *
-@@ -1449,6 +1653,11 @@ static const struct {
- 		.compute_exec = xehpc_compute_exec,
- 		.compat = COMPAT_DRIVER_XE,
- 	},
-+	{
-+		.ip_ver = IP_VER(12, 70),
-+		.compute_exec = xelpg_compute_exec,
-+		.compat = COMPAT_DRIVER_I915 | COMPAT_DRIVER_XE,
-+	},
- 	{
- 		.ip_ver = IP_VER(20, 01),
- 		.compute_exec = xe2lpg_compute_exec,
-diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
-index a1f3b46da..b0912e7e4 100644
---- a/lib/intel_compute_square_kernels.c
-+++ b/lib/intel_compute_square_kernels.c
-@@ -3844,6 +3844,50 @@ static const unsigned char xe2lpg_kernel_inc_bin[] = {
- 	0x00, 0x00, 0x00, 0x00
- };
- 
-+unsigned char xelpg_kernel_square_bin[] = {
-+	0x61, 0x00, 0x03, 0x80, 0x20, 0x42, 0x05, 0x7f, 0x00, 0x00, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x45, 0x7f,
-+	0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80,
-+	0x20, 0x82, 0x45, 0x7f, 0x44, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00,
-+	0x01, 0x19, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x31, 0x40, 0x03, 0x80, 0x00, 0x00, 0x14, 0x08,
-+	0x0c, 0x7f, 0xfa, 0xa7, 0x00, 0x00, 0x10, 0x02, 0x61, 0x00, 0x03, 0x80,
-+	0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-+	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-+	0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80,
-+	0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x01, 0xc0, 0x04, 0xc0, 0x04,
-+	0x01, 0x09, 0x00, 0xe8, 0x01, 0x00, 0x11, 0x00, 0x41, 0x1a, 0x20, 0x22,
-+	0x16, 0x09, 0x11, 0x03, 0x49, 0x00, 0x04, 0xa2, 0x12, 0x09, 0x11, 0x03,
-+	0x52, 0x19, 0x04, 0x00, 0x60, 0x06, 0x04, 0x05, 0x04, 0x04, 0x0e, 0x01,
-+	0x04, 0x01, 0x04, 0x07, 0x52, 0x00, 0x24, 0x00, 0x60, 0x06, 0x04, 0x0a,
-+	0x04, 0x04, 0x0e, 0x01, 0x04, 0x02, 0x04, 0x07, 0x70, 0x1a, 0x04, 0x00,
-+	0x60, 0x02, 0x01, 0x00, 0x04, 0x05, 0x10, 0x52, 0x84, 0x08, 0x00, 0x00,
-+	0x70, 0x1a, 0x24, 0x00, 0x60, 0x02, 0x01, 0x00, 0x04, 0x0a, 0x10, 0x52,
-+	0x84, 0x08, 0x00, 0x00, 0x2e, 0x00, 0x05, 0x11, 0x00, 0xc0, 0x00, 0x00,
-+	0xd0, 0x00, 0x00, 0x00, 0xd0, 0x00, 0x00, 0x00, 0x69, 0x00, 0x0c, 0x60,
-+	0x02, 0x05, 0x20, 0x00, 0x69, 0x00, 0x0e, 0x66, 0x02, 0x0a, 0x20, 0x00,
-+	0x40, 0x1a, 0x10, 0xa0, 0x32, 0x0c, 0x10, 0x08, 0x40, 0x1a, 0x12, 0xa6,
-+	0x32, 0x0e, 0x10, 0x08, 0x01, 0x1a, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x31, 0x40, 0x04, 0x00,
-+	0x00, 0x00, 0x14, 0x14, 0x94, 0x10, 0x00, 0xfa, 0x00, 0x00, 0x00, 0x04,
-+	0x01, 0x19, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x31, 0x41, 0x24, 0x00, 0x00, 0x00, 0x14, 0x16,
-+	0x94, 0x12, 0x00, 0xfa, 0x00, 0x00, 0x00, 0x04, 0x40, 0x00, 0x0c, 0xa0,
-+	0x4a, 0x0c, 0x10, 0x08, 0x40, 0x00, 0x0e, 0xa6, 0x4a, 0x0e, 0x10, 0x08,
-+	0x41, 0x20, 0x14, 0x20, 0x00, 0x14, 0x00, 0x14, 0x41, 0x21, 0x16, 0x26,
-+	0x00, 0x16, 0x00, 0x16, 0x31, 0xa0, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x95, 0x0c, 0x08, 0xfa, 0x14, 0x14, 0x00, 0x04, 0x31, 0x91, 0x24, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x95, 0x0e, 0x08, 0xfa, 0x14, 0x16, 0x00, 0x04,
-+	0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-+	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-+	0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x2f, 0x00, 0x05, 0x00,
-+	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
-+	0x61, 0x00, 0x7f, 0x64, 0x00, 0x03, 0x10, 0x00, 0x01, 0x11, 0x00, 0x80,
-+	0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x31, 0x40, 0x00, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30,
-+	0x00, 0x00, 0x00, 0x00
-+};
- 
- const struct intel_compute_kernels intel_compute_square_kernels[] = {
- 	{
-@@ -3866,6 +3910,11 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
- 		.size = sizeof(xehpc_kernel_square_bin),
- 		.kernel = xehpc_kernel_square_bin,
- 	},
-+	{
-+		.ip_ver = IP_VER(12, 70),
-+		.size = sizeof(xelpg_kernel_square_bin),
-+		.kernel = xelpg_kernel_square_bin,
-+	},
- 	{
- 		.ip_ver = IP_VER(20, 01),
- 		.size = sizeof(xe2lpg_kernel_square_bin),
--- 
-2.34.1
+s/igt-runner/igt_runner/
 
+> >> last test, and report when facts change. The facts are:
+
+Add newline here.
+
+> >>  - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0: 8086:e20b Intel Battlemage (Gen20)
+> >>  - Associations between PCI GPU and DRM card: hardware.pci.drm_card_at_addr.0000:03:00.0: card1
+> >>  - Kernel taints: kernel.is_tainted.taint_warn: true
+> >>  - GPU kernel modules loaded: kernel.kmod_is_loaded.i915: true
+
+imho here it should be general description what it will print, like:
+
+- GPUs on PCI bus: 'hardware PCI bus' 'GPU name'
+- Associations between PCI GPU and DRM card: 'PCI bus': 'card number'
+- Kernel taints: 'true' or 'false'
+- GPU kernel modules loaded: 'driver name'
+
+and then you could provide an example.
+
+> >>
+> >> This change imposes little execution overhead and adds just a few
+> > 
+> > imho 'little overhead' is beause facts are only four but I agree
+> > we could change implementation when its number grows.
+> 
+> Little overhead is because of how I implemented the code. The execution
+> is efficient and produces as little text output as possible.
+> 
+> > 
+> >> lines of logging. The facts will be printed on normal igt-runner
+> >> output. Here is a real example from our CI showing
+> >> hotreplug-lateclose changing the DRM card number and tainting the
+> >> kernel on the abort path:
+> >>
+> >>  [245.316207] [056/121] (816s left) core_hotunplug (hotreplug-lateclose)
+> >>  [245.383596] Starting subtest: hotreplug-lateclose
+> >>  [249.843361] Aborting: Lockdep not active
+> >>  [249.858249] [FACT core_hotunplug (hotreplug-lateclose)] changed: hardware.pci.drm_card_at_addr.0000:00:02.0: card0 -> card1
+> >>  [249.858392] [FACT core_hotunplug (hotreplug-lateclose)] new: kernel.is_tainted.taint_die: true
+> >>  [249.859075] Closing watchdogs
+
+Where is a note about adding new tool? Patch should describe
+all changes. I would prefer to see such note at beginning of
+description. Btw splitting this into few functional patches
+will gain that naturally.
+
+> >>
+> >> CC: Ryszard Knop <ryszard.knop@intel.com>
+> >> CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> >> CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> >> CC: Lucas De Marchi <lucas.demarchi@intel.com>
+> >> CC: luciano.coelho@intel.com
+> >> CC: nirmoy.das@intel.com
+> >> CC: stuart.summers@intel.com
+> >> CC: himal.prasad.ghimiray@intel.com
+> >> CC: dominik.karol.piatkowski@intel.com
+> >> CC: katarzyna.piecielska@intel.com
+> > 
+> > +cc Petri + kms devs
+> > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> > Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+> > Cc: Swati Sharma <swati2.sharma@intel.com>
+> > Cc: Jani Saarinen <jani.saarinen@intel.com>
+> > Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> > 
+> > +other gpu devs
+> > Cc: Rob Clark <robdclark@gmail.com>
+> > Cc: Rob Clark <robdclark@chromium.org>
+> > Cc: Helen Koike <helen.koike@collabora.com>
+> > 
+> > +drm ci dev
+> > Cc: Melissa Wen <mwen@igalia.com>
+> > Cc: Maíra Canal <mcanal@igalia.com>
+> 
+> That is a lot of people to CC, but ok.
+> 
+
+Well I do not know if it will help other igt_runner users,
+so it is better to ask.
+
+> > 
+> >> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> >> ---
+> >> Re-sending as the mailing list server rejected the message
+> >> yesterday due to a probably full disk...
+> >>
+> >> v10:
+> >>  - fix memory leaks from asprintf (Thank you Dominik Karol!)
+> >>  - fix comments for consistency (Thank you Dominik Karol!)
+> >>
+> >> v9:
+> >>  - do not report new hardware when loading/unloading kmod changes
+> >>    the string of the GPU name. I accidentally reintroduced this
+> >>    issue when refactoring to use linked lists.
+> >>  - add tools/lsfacts: 9 lines of code that print either the facts
+> >>    or that no facts were found.
+> >>  - fix code comments describing functions
+> >>  - fix white space issues
+> >>
+> >> v8:
+> >>  - fix white space issues
+> >>
+> >> v7:
+> >>  - refactor to use linked lists provided by igt_lists
+> >>  - Added function arguments to code comments
+> >>  - updated commit message
+> >>
+> >> v6:
+> >>  - sort includes in igt_facts.c alphabetically
+> >>  - add facts for kernel taints using igt_kernel_tainted() and
+> >>    igt_explain_taints()
+> >>
+> >> v5:
+> >>  - fix the broken patch format from v4
+> >>
+> >> v4:
+> >>  - fix a bug on delete_fact()
+> >>  - drop glib and calls to g_ functions
+> >>  - change commit message to indicate that report only on fact changes
+> >>  - use consistent format for reporting changes
+> >>  - fix SPDX header format
+> >>
+> >> v3:
+> >>  - refreshed commit message
+> >>  - changed format SPDX string
+> >>  - removed license text
+> >>  - replace last_test assignment when null by two ternary operators
+> >>  - added function descriptions following example found elsewhere in
+> >>    the code
+> >>  - added igt_assert to catch failures to realloc()
+> >>
+> >> v2:
+> >>  - add lib/tests/igt_facts.c for basic unit testing
+> >>  - bugfix: do not report a new gpu when the driver changes the gpu name
+> >>  - bugfix: do not report the pci_id twice on the gpu name
+> >>
+> >>  lib/igt_facts.c       | 755 ++++++++++++++++++++++++++++++++++++++++++
+> >>  lib/igt_facts.h       |  47 +++
+> >>  lib/meson.build       |   1 +
+> >>  lib/tests/igt_facts.c |  15 +
+> >>  lib/tests/meson.build |   1 +
+> > 
+> > Please split your patchset into three, add above files to
+> > first patch:
+> > 
+> > [PATCH i-g-t v11 1/3] lib/igt_facts: add fact checking lib
+> > 
+> >>  runner/executor.c     |  10 +
+> > 
+> > [PATCH i-g-t v11 2/3] runner/executor: Check facts at tests run
+> > 
+> >>  tools/lsfacts.c       |  25 ++
+> >>  tools/meson.build     |   1 +
+> > 
+> > [PATCH i-g-t v11 3/3] tools/lsfacts: Add facts listing tool
+> > 
+> > and it all with cover letter.
+> 
+> No. Why would I do that? Both the change to runner/executor.c and
+> the new tool are very small, not justifying a separate patch. They
+> also match well in functionality also not justifying a different
+> patch. What gain are you trying to achieve here? I really like a
+> single patch in this case.
+> 
+
+You could split it in other ways, first adding lib and tool lsfacts,
+then small patch change in runner/executor.c
+
+It is also about a risk, change in igt_runner is a main risk and in
+case we need a revert, I would prefer to revert small patch, one
+from 2 or 3 rather than one big that added all. Additional gain is
+more clear git log history.
+
+> > 
+> >>  8 files changed, 855 insertions(+)
+> >>  create mode 100644 lib/igt_facts.c
+> >>  create mode 100644 lib/igt_facts.h
+> >>  create mode 100644 lib/tests/igt_facts.c
+> >>  create mode 100644 tools/lsfacts.c
+> >>
+> >> diff --git a/lib/igt_facts.c b/lib/igt_facts.c
+> >> new file mode 100644
+> >> index 000000000..4749d3417
+> >> --- /dev/null
+> >> +++ b/lib/igt_facts.c
+> >> @@ -0,0 +1,755 @@
+> >> +// SPDX-License-Identifier: MIT
+> >> +// Copyright © 2024 Intel Corporation
+> > 
+> > Copyright is usally formatted in C-comment style /* comment */
+> > to allow extending it (or adding Author: fields, etc) See other
+> > C files for example tests/device_reset.c
+> > So here:
+> > 
+> > /*
+> >  * Copyright © 2024 Intel Corporation
+> >  */
+> > 
+> > Do the same in other new files.
+> 
+> No sorry, this is because of you asked me to please kernel's
+> checkpatch.pl. I am not sending another revision for this nit
+> that changes the comment style. Have you seen how the comment
+> style varies in our code base, including recent commits? Why
+> being so picky with my patch?
+> 
+
+I try to look into new patches but I cannot take care of every one.
+checkpatch.pl checks SPDX line, while 'Copyright' is in separate
+comment. Check for yourself:
+
+grep Copyright lib/*c
+grep Copyright lib/*h
+
+None of it has '//' as a starting comment.
+And I checked my replay to your v1, I asked about dropping text
+_after_ Copyright, I did not wrote any about using '//' for it.
+
+> That being said, if you want to implement these changes yourself
+> please go for it.
+
+Well, no. I just skimmed over your changes and see there is
+list of gpu drivers there:
+
++const char *igt_fact_kmod_list[] = {
+	+	"amdgpu",
+	+	"i915",
+	+	"nouveau",
+	+	"radeon",
+	+	"xe",
+	+	"\0"
+	+};
+
+It should be in sync with lib/drmtest.c
+
+} modules[] = {
+        { DRIVER_AMDGPU, "amdgpu" },
+        { DRIVER_INTEL, "i915", modprobe_i915 },
+        { DRIVER_MSM, "msm" },
+        { DRIVER_PANFROST, "panfrost" },
+        { DRIVER_V3D, "v3d" },
+        { DRIVER_VC4, "vc4" },
+        { DRIVER_VGEM, "vgem" },
+        { DRIVER_VMWGFX, "vmwgfx" },
+        { DRIVER_XE, "xe" },
+        {}
+
+or at least add a comment why it is not.
+
+Regards,
+Kamil
+
+> 
+> Thank you,
+> 
+> Peter
+> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> >> +
+> >> +#include <ctype.h>
+> >> +#include <libudev.h>
+> >> +#include <stdio.h>
+> >> +#include <sys/time.h>
+> >> +#include <time.h>
+> >> +
+> >> +#include "igt_core.h"
+> >> +#include "igt_device_scan.h"
+> >> +#include "igt_facts.h"
+> >> +#include "igt_kmod.h"
+> >> +#include "igt_list.h"
+> >> +#include "igt_taints.h"
+> >> +
+> >> +static struct igt_list_head igt_facts_list_drm_card_head;
+> >> +static struct igt_list_head igt_facts_list_kmod_head;
+> >> +static struct igt_list_head igt_facts_list_ktaint_head;
+> >> +static struct igt_list_head igt_facts_list_pci_gpu_head;
+> >> +
+> >> +
+> >> +/**
+> >> + * igt_facts_lists_init:
+> >> + *
+> >> + * Initialize igt_facts linked lists.
+> >> + *
+> >> + * Returns: void
+> >> + */
+> >> +void igt_facts_lists_init(void)
+> >> +{
+> >> +	IGT_INIT_LIST_HEAD(&igt_facts_list_drm_card_head);
+> >> +	IGT_INIT_LIST_HEAD(&igt_facts_list_kmod_head);
+> >> +	IGT_INIT_LIST_HEAD(&igt_facts_list_ktaint_head);
+> >> +	IGT_INIT_LIST_HEAD(&igt_facts_list_pci_gpu_head);
+> >> +}
+> >> +
+> >> +
+> >> +/**
+> >> + * igt_facts_log:
+> >> + * @last_test: name of the test that triggered the fact
+> >> + * @name: name of the fact
+> >> + * @new_value: new value of the fact
+> >> + * @old_value: old value of the fact
+> >> + *
+> >> + * Reports fact changes:
+> >> + * - new fact: if old_value is NULL and new_value is not NULL
+> >> + * - deleted fact: if new_value is NULL and old_value is not NULL
+> >> + * - changed fact: if new_value is different from old_value
+> >> + *
+> >> + * Returns: void
+> >> + */
+> >> +static void igt_facts_log(const char *last_test, const char *name,
+> >> +			  const char *new_value, const char *old_value)
+> >> +{
+> > 
+> > ...cut...
+> > 
+> >> -- 
+> >> 2.34.1
+> >>
+> 
