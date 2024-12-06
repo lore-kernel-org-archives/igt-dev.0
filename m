@@ -4,92 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7ECE77173
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 11:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB73DE77179
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Dec 2024 12:15:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05E0D10E3F7;
-	Fri,  6 Dec 2024 11:43:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9247510E413;
+	Fri,  6 Dec 2024 12:15:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wt4xQOdC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="noaeeK4I";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7647F10E3F7
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 11:43:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11AFD10E413
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2024 12:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733485395; x=1765021395;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=P95veMcOI/x0I+eYa3NWDzraZh53b4WYdzYbdoaUzP4=;
- b=Wt4xQOdC0dfXzAAb5v+CHlIA1MaU89iulO59qeZL2yUaJ3Ub7nV9zaMm
- afc/aJTt8jokSzwsLNute7hTVrpMLUuBnTXtCfLhVTa4WJ7Z5HpkEqoy6
- xW+xVoXi0NPRi4Mcu9x50EaWOOE40F530elaL/lmtrFtCBjbyBTwkfwyl
- C0nX8rQm15a5/4BUgoay4mFeDnBf4nOu1GzuNZSBMe7NL3ce4CMPIBHhk
- jU39YWghGNmWm3kKoRSGlTmHvkRGtBY8r55kuGF/OMi03GfRn2c3uEKQR
- Ty4bbxvVq/hzSm5l/ppY0jIFgjX7gUzs9X2UZQ1R45b8GKQecn38TDVr8 A==;
-X-CSE-ConnectionGUID: s4ujTsJPRCu+00ymZvjHIg==
-X-CSE-MsgGUID: j+n+Xs03RjGPdG1t6JAcHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33964297"
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="33964297"
+ t=1733487351; x=1765023351;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=5NIH0vAS3qc/53B3NtgroZqWAxTsZ7apcLIqX2yzkes=;
+ b=noaeeK4IEos0QmHnL0wMiTJXnqd0HqtnvmGgenkIDGiwdXPMrKS8AQni
+ nU4Hsj/0wVrKfodPgecvs7I2ftBHFXTz86zF0nSpu6AkspzEoTJd4ErHX
+ X7LXunuJh3HHGXK8FAY/PBWSAT/PNHP+Gv8yW5GcB8QjZu/9ZLTlsBRia
+ KcxnQxn4A7FD4ol+hTwBG2RxpdGKwqiM3Y7TZIIGJ6WtL997SMJb+1HK4
+ joosqbsOL42tl3Ja77S+WayDZu6B4AF9vdc6DDRAZl0nV3GrzDeiqQWp+
+ 4ULdzHL3sErkyoXY61sBIqVO9PUUC5jAwUq6Szut1P1zCgC540Fg4fHUO Q==;
+X-CSE-ConnectionGUID: pCTMAoedQD6RG+Mym//lEQ==
+X-CSE-MsgGUID: E8Tc5zpxRGaU+i8ZrGZeKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45214052"
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="45214052"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2024 03:43:14 -0800
-X-CSE-ConnectionGUID: 5YAQ1FlESmSMF3Aenw+8tw==
-X-CSE-MsgGUID: O5Osc2v2RVqFJDcQwEgf3A==
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2024 04:15:51 -0800
+X-CSE-ConnectionGUID: WYR/tQBJSe2ner6OuccMyQ==
+X-CSE-MsgGUID: aD4pFhWcQ8GadyCkvBxfCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="94836141"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 03:43:08 -0800
-Date: Fri, 6 Dec 2024 12:42:50 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- luciano.coelho@intel.com, nirmoy.das@intel.com,
- stuart.summers@intel.com, himal.prasad.ghimiray@intel.com,
- dominik.karol.piatkowski@intel.com, katarzyna.piecielska@intel.com,
- Petri Latvala <adrinael@adrinael.net>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>,
- Helen Koike <helen.koike@collabora.com>, Melissa Wen <mwen@igalia.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Subject: Re: [PATCH i-g-t v10] igt-runner fact checking
-Message-ID: <20241206114250.h53jleknj4kgrpri@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- luciano.coelho@intel.com, nirmoy.das@intel.com,
- stuart.summers@intel.com, himal.prasad.ghimiray@intel.com,
- dominik.karol.piatkowski@intel.com, katarzyna.piecielska@intel.com,
- Petri Latvala <adrinael@adrinael.net>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>,
- Helen Koike <helen.koike@collabora.com>,
- Melissa Wen <mwen@igalia.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
- <b909e2ca-f713-45e1-997d-6871e136a076@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; d="scan'208";a="94846892"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.244.159])
+ ([10.245.244.159])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2024 04:15:50 -0800
+Message-ID: <e63f049f-5224-45ae-96c3-3e1aa8a46077@intel.com>
+Date: Fri, 6 Dec 2024 12:15:47 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib/intel_bufops: Set NEEDS_VISIBLE_VRAM for each
+ buf by default
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20241205104134.22790-1-dominik.grzegorzek@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20241205104134.22790-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b909e2ca-f713-45e1-997d-6871e136a076@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,227 +72,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2024-12-05 at 05:54:26 +0100, Peter Senna Tschudin wrote:
+On 05/12/2024 10:41, Dominik Grzegorzek wrote:
+> Some tests (i.e. xe_eudebug_online, xe_exec_sip) are mapping intel_buf.
+> If the backing storage is nvram, any access to mmaped buffer may
+> cause segmentation fault. Set DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM
+> by default as intel_bufs might be mapped and this is not harmful.
 
-overall looks good, I have few nits, see below.
+There is the downside that all objects will now be limited to BAR size 
+when using this API. i.e you might have 16G VRAM but only 256M BAR. But 
+I guess user can always pass in their own handle if they need something 
+more special, so NEEDS_VISIBLE_VRAM is probably a sensible default and 
+most tests probably don't care about the limit? Ideally the API would 
+have an option to hint that CPU access is something they actually need.
 
-As for subject, it usally informs what changed, so "igt-runner fact checking"
-is a little misleading. Please see my ask about that below.
+Also: https://patchwork.freedesktop.org/series/141710/
 
-> When using igt-runner, collect facts before each test and after the
-> last test, and report when facts change. The facts are:
->  - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0: 8086:e20b Intel Battlemage (Gen20)
->  - Associations between PCI GPU and DRM card: hardware.pci.drm_card_at_addr.0000:03:00.0: card1
->  - Kernel taints: kernel.is_tainted.taint_warn: true
->  - GPU kernel modules loaded: kernel.kmod_is_loaded.i915: true
 > 
-> This change imposes little execution overhead and adds just a few
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-imho 'little overhead' is beause facts are only four but I agree
-we could change implementation when its number grows.
-
-> lines of logging. The facts will be printed on normal igt-runner
-> output. Here is a real example from our CI showing
-> hotreplug-lateclose changing the DRM card number and tainting the
-> kernel on the abort path:
-> 
->  [245.316207] [056/121] (816s left) core_hotunplug (hotreplug-lateclose)
->  [245.383596] Starting subtest: hotreplug-lateclose
->  [249.843361] Aborting: Lockdep not active
->  [249.858249] [FACT core_hotunplug (hotreplug-lateclose)] changed: hardware.pci.drm_card_at_addr.0000:00:02.0: card0 -> card1
->  [249.858392] [FACT core_hotunplug (hotreplug-lateclose)] new: kernel.is_tainted.taint_die: true
->  [249.859075] Closing watchdogs
-> 
-> CC: Ryszard Knop <ryszard.knop@intel.com>
-> CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> CC: Lucas De Marchi <lucas.demarchi@intel.com>
-> CC: luciano.coelho@intel.com
-> CC: nirmoy.das@intel.com
-> CC: stuart.summers@intel.com
-> CC: himal.prasad.ghimiray@intel.com
-> CC: dominik.karol.piatkowski@intel.com
-> CC: katarzyna.piecielska@intel.com
-
-+cc Petri + kms devs
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Jani Saarinen <jani.saarinen@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-
-+other gpu devs
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Helen Koike <helen.koike@collabora.com>
-
-+drm ci dev
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Maíra Canal <mcanal@igalia.com>
-
-> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
-> Re-sending as the mailing list server rejected the message
-> yesterday due to a probably full disk...
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > 
-> v10:
->  - fix memory leaks from asprintf (Thank you Dominik Karol!)
->  - fix comments for consistency (Thank you Dominik Karol!)
+>   lib/intel_bufops.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> v9:
->  - do not report new hardware when loading/unloading kmod changes
->    the string of the GPU name. I accidentally reintroduced this
->    issue when refactoring to use linked lists.
->  - add tools/lsfacts: 9 lines of code that print either the facts
->    or that no facts were found.
->  - fix code comments describing functions
->  - fix white space issues
-> 
-> v8:
->  - fix white space issues
-> 
-> v7:
->  - refactor to use linked lists provided by igt_lists
->  - Added function arguments to code comments
->  - updated commit message
-> 
-> v6:
->  - sort includes in igt_facts.c alphabetically
->  - add facts for kernel taints using igt_kernel_tainted() and
->    igt_explain_taints()
-> 
-> v5:
->  - fix the broken patch format from v4
-> 
-> v4:
->  - fix a bug on delete_fact()
->  - drop glib and calls to g_ functions
->  - change commit message to indicate that report only on fact changes
->  - use consistent format for reporting changes
->  - fix SPDX header format
-> 
-> v3:
->  - refreshed commit message
->  - changed format SPDX string
->  - removed license text
->  - replace last_test assignment when null by two ternary operators
->  - added function descriptions following example found elsewhere in
->    the code
->  - added igt_assert to catch failures to realloc()
-> 
-> v2:
->  - add lib/tests/igt_facts.c for basic unit testing
->  - bugfix: do not report a new gpu when the driver changes the gpu name
->  - bugfix: do not report the pci_id twice on the gpu name
-> 
->  lib/igt_facts.c       | 755 ++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_facts.h       |  47 +++
->  lib/meson.build       |   1 +
->  lib/tests/igt_facts.c |  15 +
->  lib/tests/meson.build |   1 +
+> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> index 619222019..49b91a171 100644
+> --- a/lib/intel_bufops.c
+> +++ b/lib/intel_bufops.c
+> @@ -1021,7 +1021,8 @@ static void __intel_buf_init(struct buf_ops *bops,
+>   				cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
+>   
+>   			bo_size = ALIGN(bo_size, xe_get_default_alignment(bops->fd));
+> -			buf->handle = xe_bo_create_caching(bops->fd, 0, bo_size, region, 0,
+> +			buf->handle = xe_bo_create_caching(bops->fd, 0, bo_size, region,
+> +							   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
+>   							   cpu_caching);
+>   		}
+>   	}
 
-Please split your patchset into three, add above files to
-first patch:
-
-[PATCH i-g-t v11 1/3] lib/igt_facts: add fact checking lib
-
->  runner/executor.c     |  10 +
-
-[PATCH i-g-t v11 2/3] runner/executor: Check facts at tests run
-
->  tools/lsfacts.c       |  25 ++
->  tools/meson.build     |   1 +
-
-[PATCH i-g-t v11 3/3] tools/lsfacts: Add facts listing tool
-
-and it all with cover letter.
-
->  8 files changed, 855 insertions(+)
->  create mode 100644 lib/igt_facts.c
->  create mode 100644 lib/igt_facts.h
->  create mode 100644 lib/tests/igt_facts.c
->  create mode 100644 tools/lsfacts.c
-> 
-> diff --git a/lib/igt_facts.c b/lib/igt_facts.c
-> new file mode 100644
-> index 000000000..4749d3417
-> --- /dev/null
-> +++ b/lib/igt_facts.c
-> @@ -0,0 +1,755 @@
-> +// SPDX-License-Identifier: MIT
-> +// Copyright © 2024 Intel Corporation
-
-Copyright is usally formatted in C-comment style /* comment */
-to allow extending it (or adding Author: fields, etc) See other
-C files for example tests/device_reset.c
-So here:
-
-/*
- * Copyright © 2024 Intel Corporation
- */
-
-Do the same in other new files.
-
-Regards,
-Kamil
-
-> +
-> +#include <ctype.h>
-> +#include <libudev.h>
-> +#include <stdio.h>
-> +#include <sys/time.h>
-> +#include <time.h>
-> +
-> +#include "igt_core.h"
-> +#include "igt_device_scan.h"
-> +#include "igt_facts.h"
-> +#include "igt_kmod.h"
-> +#include "igt_list.h"
-> +#include "igt_taints.h"
-> +
-> +static struct igt_list_head igt_facts_list_drm_card_head;
-> +static struct igt_list_head igt_facts_list_kmod_head;
-> +static struct igt_list_head igt_facts_list_ktaint_head;
-> +static struct igt_list_head igt_facts_list_pci_gpu_head;
-> +
-> +
-> +/**
-> + * igt_facts_lists_init:
-> + *
-> + * Initialize igt_facts linked lists.
-> + *
-> + * Returns: void
-> + */
-> +void igt_facts_lists_init(void)
-> +{
-> +	IGT_INIT_LIST_HEAD(&igt_facts_list_drm_card_head);
-> +	IGT_INIT_LIST_HEAD(&igt_facts_list_kmod_head);
-> +	IGT_INIT_LIST_HEAD(&igt_facts_list_ktaint_head);
-> +	IGT_INIT_LIST_HEAD(&igt_facts_list_pci_gpu_head);
-> +}
-> +
-> +
-> +/**
-> + * igt_facts_log:
-> + * @last_test: name of the test that triggered the fact
-> + * @name: name of the fact
-> + * @new_value: new value of the fact
-> + * @old_value: old value of the fact
-> + *
-> + * Reports fact changes:
-> + * - new fact: if old_value is NULL and new_value is not NULL
-> + * - deleted fact: if new_value is NULL and old_value is not NULL
-> + * - changed fact: if new_value is different from old_value
-> + *
-> + * Returns: void
-> + */
-> +static void igt_facts_log(const char *last_test, const char *name,
-> +			  const char *new_value, const char *old_value)
-> +{
-
-...cut...
-
-> -- 
-> 2.34.1
-> 
