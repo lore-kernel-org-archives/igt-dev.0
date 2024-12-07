@@ -4,162 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68B7AE77173
-	for <igt-dev@archiver.kernel.org>; Sat,  7 Dec 2024 00:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFBFBE77173
+	for <igt-dev@archiver.kernel.org>; Sat,  7 Dec 2024 00:21:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 184C510E1F4;
-	Sat,  7 Dec 2024 00:10:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 470AD10E1FD;
+	Sat,  7 Dec 2024 00:21:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TAr7BDeK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F1YqA843";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EB5210E1F4
- for <igt-dev@lists.freedesktop.org>; Sat,  7 Dec 2024 00:10:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F018910E1FD
+ for <igt-dev@lists.freedesktop.org>; Sat,  7 Dec 2024 00:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733530219; x=1765066219;
+ t=1733530907; x=1765066907;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=38i8Od91byyajgedxlzMsmeZT8X68Zt7NTrfgAZHuBM=;
- b=TAr7BDeK43FYtscQC1IQF7htpqTOvF4YMVEtLs1HFWQ86w8yDsb1q2aV
- eUA2iVnA3Ei3DVQYSk32slqH29dRHd3WAW2iPp6kbk15xzu7bn+5zr/4c
- vexHHZ+v6pXN4KvOI+hF4qBCY55nL3PLfjTqR/eZwWfbhpzGHbICmQC8s
- dVzeLyFrvs71dmDhfGGaOgYQ35FpanqXH+0hru0uPLAnNgeMRjo2/lbM9
- SYK7+QDIdamgJ/rtl/EuSoquksizjcLxsaCaYIxxYxEqvsUkiR+344FiW
- mPDqh0V6uwFhvqW4qm0R8MqimzbVCnz7ji1Fni11XLfmyv2slddtGn7XB A==;
-X-CSE-ConnectionGUID: j9RauibQTiaLeoCkuh02Nw==
-X-CSE-MsgGUID: PKllH/uTRoqSMITy/1Dwxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="34137554"
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="34137554"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2024 16:10:12 -0800
-X-CSE-ConnectionGUID: +K//hM1iSeCJQBI8OJ8NOw==
-X-CSE-MsgGUID: 5t3GtIRyQ5uzehXi0+6wxQ==
+ bh=Cdf6SgJ56bcihZsaTklJIJh941RzQ3bKL5B/sCZ+4qE=;
+ b=F1YqA843wm/MefOtzIeUygQJ2ojxRrLGbi7/f1eZllxqVtEl2ufG2Rym
+ VwdhpnUFH3NZQg3ooS6aZMLcvoUAT7NVPiTSER//EPRURdEBTodJUNe7G
+ GwLeLWEwY8VT2klU8nxmMrFTMckRxFPIeon2r+3LovK3RUZW+NWcb3ZPK
+ GMpsnsJOrBqPpLcHg9AVIzSNmbigseB/QSMqp9S+SKw2wWfODs+AYQs3R
+ nbD3lPJSTv4uRHfwcjSfE7EuzKRn9tkKcBbQ+9T3+fsZ5yIKkUUnNQQHl
+ WsEymyGAVBNNfwP3LtDGJXeteeKqs+VdTlhBmSWDeIEmYJiTfCIuVnrOv g==;
+X-CSE-ConnectionGUID: 5ZUMYKzCQV+W2WACyx6GoQ==
+X-CSE-MsgGUID: mjhomtH2TbGHGOdySREe1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="37832925"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="37832925"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2024 16:21:46 -0800
+X-CSE-ConnectionGUID: wmd6Wtl2QAqMl4/BMwN0VQ==
+X-CSE-MsgGUID: xdCy3m3PTEi2LGcD+2mxtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="94636367"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 06 Dec 2024 16:10:09 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 6 Dec 2024 16:10:08 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="117800303"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 06 Dec 2024 16:21:46 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
  fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 6 Dec 2024 16:10:08 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.170)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.39; Fri, 6 Dec 2024 16:21:46 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 6 Dec 2024 16:21:46 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.171)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 6 Dec 2024 16:10:07 -0800
+ 15.1.2507.39; Fri, 6 Dec 2024 16:21:46 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VlqiUiwchhWOWo49BI/Fmo3The+LBgITU+4TcISGz9NHOX6cAXrEGPpz1Xiv860AXMq/SACghSSG6R+JVs6CcLi9wD8N2MAT1V7Atgv9Xg7cEM90zZ23oKZffKYrVpmGZcX503QcOnBhNYln4SaxgW+3qeFousK6Yvr6jsoH6rMp+d0pReiN30BObTWLRUO2oz5N++jGEsrbnt1EZdSdPObLEcR09RA99nq2XaMA8C5UaDXF9OjhzASgapePpBeXimC8LIdqvNj2R/0RPGJLDYkAzoV4Rmdr6ykwsk68duRXumtyZeXZp3U/fmQdPk11OE8ojMcJlHnyl/TucvUm/g==
+ b=Lyfc0Y5V32MBgqo7ePbx1lMKoz2kBiwcjG2eQvz6mJRCsFmVGE94OprcSAkVYBspXrFSY3etCdaQ64RAJMMjo6/oRhKfrnbgRTW6pC9vYdJz58kj/CEaN7jYbU/Vyb9l8jMvikqLiOHTpcgtTdbAn1V0iBzYqu6IEnp/3YemCCZs7v3fjxCeik0+RhqWBfINt5QCVoaYh6ugLRUolFZTIGjdNPKnW8ZXMT8JsXKRq+S2M0d+9GaXXCms97Q2ANqfISQDWGavRoxU6ON6dJPJKLiV6MrfdgbHbFmEJzXIoWX9W5pQcm1WQoqGyK14k4CDS2wWHV0PJY7B0+WgvUuM8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F79RUwKFupuI1ywq/Sj9NA7dMPY6LDEeKnuHnMnDQQU=;
- b=vi0kCOitXYcgM//+dhBv+dN32LzvTngLSWGuK268X0cNjL2peColoEvh7EqVoK3GKr0rkkrGyRB9mVlit06Hm2uRcN+Oco9GOycLzUNaQaqv7rG/Y6wVd+Z5suGjzHORWAycUXZoSUfzHrrsrkILO3k3Iyo8cq0zj2TQXDf64q2jgYdAKFh30VNq1EjN7OxSnCV0hOZlIaRMftXqzFCPLrFDOS4hufR6Sq6v1DK3kwEroylmqD3fS24bGOkYA+u0atefB7r2VhcP/8vTBN0IP/fGSM2saX3KVzwFXf33IvjCKCOOsfu0WnvZFcTaDWys+U5960T5NovzEw27S8/zVg==
+ bh=2p1MshWqVcSY3fF3hggciYzinuRuqZfVWJda/hudTH0=;
+ b=ereznPA+ai73OMhMGg73PGsi4a3uikqp1Ns6t03VryQRX48v6eSo0yuTzU8YEaiLX0cRXysDA1vOlHsQjMmbxYnym51+JGUfkfbohOcvfQvyqYDElSczwH9QfoyZZUFKHD+/uDQTbKe5xuIwGfwTR3FeipjiOo40NlCW2udhNrcyB3yu99CokwU73KSmjqFg2b0jIe798JWswfK7x6wHvsYyaJY1avI7lYW5JTH/ocgPCO4i5ggHRzDlKeZGAh5v9CD6gSByQUbawsrnJvvGzZrWKEYiTc2Qbmmmyh+/Zp3PQCvPsCMA9lfkcGsB7r//r+Z8uuxR9QfC6p0qkLQWSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by CO1PR11MB4914.namprd11.prod.outlook.com (2603:10b6:303:90::24) with
+ by PH7PR11MB6722.namprd11.prod.outlook.com (2603:10b6:510:1ae::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Sat, 7 Dec
- 2024 00:10:05 +0000
+ 2024 00:21:43 +0000
 Received: from DS0PR11MB8182.namprd11.prod.outlook.com
  ([fe80::8dd1:f169:5266:e16e]) by DS0PR11MB8182.namprd11.prod.outlook.com
  ([fe80::8dd1:f169:5266:e16e%5]) with mapi id 15.20.8230.010; Sat, 7 Dec 2024
- 00:10:05 +0000
-Date: Fri, 6 Dec 2024 16:10:03 -0800
+ 00:21:42 +0000
+Date: Fri, 6 Dec 2024 16:21:40 -0800
 From: Matt Roper <matthew.d.roper@intel.com>
 To: Clint Taylor <clinton.a.taylor@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v4 6/8] XE3: tests/kms_cursor_legacy:
- flip_vs_cursor_busy_crc was requiring any driver but used intel x-tile
-Message-ID: <20241207001003.GN3224633@mdroper-desk1.amr.corp.intel.com>
+Subject: Re: [PATCH i-g-t v4 7/8] XE3: tests/intel/kms_frontbuffer_tracking:
+ fix x-tiled tests for case when there is no x-tile
+Message-ID: <20241207002140.GO3224633@mdroper-desk1.amr.corp.intel.com>
 References: <20241206212748.2101217-1-clinton.a.taylor@intel.com>
- <20241206212748.2101217-7-clinton.a.taylor@intel.com>
+ <20241206212748.2101217-8-clinton.a.taylor@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20241206212748.2101217-7-clinton.a.taylor@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0181.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::6) To DS0PR11MB8182.namprd11.prod.outlook.com
+In-Reply-To: <20241206212748.2101217-8-clinton.a.taylor@intel.com>
+X-ClientProxiedBy: SJ0PR05CA0034.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::9) To DS0PR11MB8182.namprd11.prod.outlook.com
  (2603:10b6:8:163::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|CO1PR11MB4914:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0d5c424-80ac-4f31-a226-08dd1653808b
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|PH7PR11MB6722:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff69f604-2ce9-43aa-e1e3-08dd16552008
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?kH0/7SdVlOnbWCBWHGnNvw8X+daaXvfNiWD1WNLEmy1wbT8B3flV9n9XlrlZ?=
- =?us-ascii?Q?/npFX/PNW8q2LB1zG4ggeQ7UblHBe/K/Roqv3+tht7NbH/gq0nyX4FqhO8sm?=
- =?us-ascii?Q?ph5OU3t7G8ukXeP6W4eJKhBmgH9oqScQe+umZaCoUtyA9QBLDxj4X1Bi97KH?=
- =?us-ascii?Q?aQpS9VDvlyFZonZLZ2+rIQCLVEjfFvixB8gfkfogfB6uofTdn7hRON99mS55?=
- =?us-ascii?Q?/63JmLrww3tYz1UbuLW7hK8xMczBl5IurzwD0N8Rj19qKQa/kwdW7YleGhxR?=
- =?us-ascii?Q?Wo/kIDnPYNlPVHUw8fSpzsRS0LhX0KkrbH/hXk85xCVcKJk36sLlAFWmVAOz?=
- =?us-ascii?Q?i78nBfpVgsb68Mjw/zf56ReHUbdnpqjuis0lPElQ3IaN1ICC3YNpOfVJb6Y7?=
- =?us-ascii?Q?Mxzg2GXxg0y0xY7w9qqWY+TVk7k8IFDJVzKiX/Gna6YDyHbYZ8j/iEjFjQHq?=
- =?us-ascii?Q?qOAoVA55IR9wviDCjQbX0waHvUXtsn380Fk6zrM2dZEPSx4WB8MKVRZ0Zb1U?=
- =?us-ascii?Q?4qUSea04tOlGLghxSu1S0xxt6avhzRhOzdVlHZDLqSQGAHOjGe5IEeE5vrzw?=
- =?us-ascii?Q?YEQrLKhcDOakKnXri/BgSx2Ph9qDI/DLHrKRs4ufTKHfp0E0nSdfyPp3xMB+?=
- =?us-ascii?Q?irr42aWriUq/ThqhtAlzCMLX34lE388vmeXiyaO1fgQ34roZsrSyf0wI8s3s?=
- =?us-ascii?Q?WAe2ignhuzb05+Ka+MnG0TU7+XS8t6QuGHFcFriEwDIDdpTh9B3r+DBjBf+9?=
- =?us-ascii?Q?vjyOnApPfHfvdx4dzxwnJstFsFheUJmHL7zfV2ewCR1M2L+/OAcMItXRd958?=
- =?us-ascii?Q?60/Zssd9fLuGgdIaLjU5eEo5jNtvrfzJ5yTilPmM85JUYYnJOyNxwhH7j580?=
- =?us-ascii?Q?m1rx7luremmrnv51K8d5mi2UB/aF6FxmN/gd/o/SksCFk76suMohLZqdapP8?=
- =?us-ascii?Q?PWLBiirElyx/TffmRezlSwOjUooZwWNp/XkQDiINF+BdLmHTRZE3Bpp7OK9c?=
- =?us-ascii?Q?YFXOxi4EdJlXK1psj0PCWKvd7bCWNWyA6trZafMgoxj3aH9X4yvwz+piLrtW?=
- =?us-ascii?Q?zkgXGMOD8rSY+eo9uWZf1z9/kOfDu95/klsvvf5/PRYJMTWcFfkoKxB5knrc?=
- =?us-ascii?Q?9qRw7ejNRWPqv9RWQiONkEswlbJouiZG1Coau/mOH5wnC7OxNU4Qlx9xXFZP?=
- =?us-ascii?Q?P6ujRFy6mKMxE7yY2fvbPZV+4xvFcFTYBvCsn/Y/4LL37SKTnUevL7km8pOV?=
- =?us-ascii?Q?fQacku8ZzhKLznTzK335X5X6873Gn4mJFLoh3OV0yfuExI2XBSOaEDuH4Hnh?=
- =?us-ascii?Q?M8uDK52jPm0TvlNYzi3gvDGrh/i3bBLYIoXdBndZ0peraA=3D=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?UNEwf8sNvC7hKHIAoD5yr93va1oM5NUNpBGBwDqVPNOWxCROHMY9TW3kmG7R?=
+ =?us-ascii?Q?XTxIN9b2HR5S+DKCG+CRcJ9ppNXGSMmy1pJZSO/i2X0Y+BaKmSeJrPgctvEH?=
+ =?us-ascii?Q?XR9jNjEFKocDnZprUQyLhVu+jrUsifsz1c3vc6Het2y01iTUFZ1+zxYqxgtP?=
+ =?us-ascii?Q?Il1J/f0Moiq9pIvPiUZSAl1MPctm0NUbSW0b0ZdQSjlF0hQiMVttjwwMOm8c?=
+ =?us-ascii?Q?99HZdTqo4OZd88pC397RWbE3Y069mAAUXOhC8nfyatH7jd9poXMU6uGKvF38?=
+ =?us-ascii?Q?yhhuUc+1kHss/uqRq+rmrsZggBY4tc1bPYKMraiwzhv672xBuPXDzzzgD4/q?=
+ =?us-ascii?Q?Us1NS8etmSHDqngb+EvgaNIr5VlCZZBGzDOuA2TgAPCabn0eR1pKrP4zKiXy?=
+ =?us-ascii?Q?oDovGh2RVwtIFX7bCI5zA3xX9Lc4Dmm1NWOfzwbtiOdFw78YBB7sRi0B6BGQ?=
+ =?us-ascii?Q?/sxxEZLgX05EfozVCnCuyYJk3MVYKgmhxp2xYpdHDBUwN+HMpFqIorTJinGu?=
+ =?us-ascii?Q?oj97lMNddVrDgwgt91O4c+AqL81EQA3jmwQFpe6kA1uaivAZNdkKhX9c7Bic?=
+ =?us-ascii?Q?4x7BArtw6a3aflxH+rrEbj6Y6r6UNtH9e+vpYssRuJccNsYYuuygMo7uoTcQ?=
+ =?us-ascii?Q?Mh1K7E/jp/fEn9mORchkuH087DPEsQRrmpwgdtOg+uhisr7aRnzDvLnZfZjD?=
+ =?us-ascii?Q?EFdDPbj73r5fW4vJA5cm3XGVr6J4BsIceEZ8Q1TCVtnUEHTEWSIBEPilxZrO?=
+ =?us-ascii?Q?z6v+/2YWnPi1oRe2OtCTUhJf4+Yl3NO2eWZXdVpXMTJwEANCLFJ9MhM52p6B?=
+ =?us-ascii?Q?ItX4rO8G/HaAHPDMO1OH/bAwrpAcwm3pUeXCsRuapYYOJC8iXyI34P5kYr/4?=
+ =?us-ascii?Q?782julCEE5rAIfO4mdX18a7r18zoWC59SAi7bPa1TrlJADUx51X6MvP2FUWb?=
+ =?us-ascii?Q?SS3QBJyZth5xpWJRKFdN8bgbrfrIm4USabGcHneYhmL+hRXfE9tQK2aqI6RW?=
+ =?us-ascii?Q?t64ebT/7AtfeMCHhOUPpR8MHFz+axyHvBT0n902lBopV6kb/m8Ni47sSFSvM?=
+ =?us-ascii?Q?6nXx7Is7jrQgvY6OuZaJHNmnO1nA21NVqo92p07C5VljBHeh2+phTapvxHNu?=
+ =?us-ascii?Q?oExKXy1A9netnojN2rZchpzZP/W0crADXLUhKjw2+g3w3WNKENrWmPIPz+i7?=
+ =?us-ascii?Q?7B1DaZSIou5KI2pYPjOp2tUkQbfANeI+OE0CCbh6VKsg5heH5hzlz2CnP4mu?=
+ =?us-ascii?Q?VQ+dLSUQxN7RoCdtjADyXZPUKS/Tq59WBd+ytRAC619rYAq9pF7aZQQfBCFu?=
+ =?us-ascii?Q?z0yklQnrfPtoTtiaWM+Tk0hdQWNsz9DXrYqnT8LreFuO9g=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB8182.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?T/tmGLJvdtYT4X52ZW32wZHpSqMAIZa3oAPE2lYabjCUrVIrXX7X6y3CbZNu?=
- =?us-ascii?Q?4NJHryMVom5ENOQ2PHInQj0gsPT7roinBiOE4AcYborUmdDk6X4oIY2la/bH?=
- =?us-ascii?Q?Bz1XFwQ+cXFA2cFnxJgJXqvx29mPv34XFthh3zqVx2IHo2ilaNKDBrl2fuIC?=
- =?us-ascii?Q?y/CJACjRwH8Rf5HSEhr17/fOyV4Qxzys9qdyqNDoV5C5RnMME8e0cfllTYHK?=
- =?us-ascii?Q?rj2aHYzro9R+nEILO0e/Snwi2vi5Q3JMdTI9xHScdgVwV2IGAxc2Qgky+rK2?=
- =?us-ascii?Q?5IQz97MiSAMpE2LnTpmLfIPdPoQCTjMQSZpd4IVSmqRDmKNSwNXblFaKxojH?=
- =?us-ascii?Q?rAvfyNm1s2PcAg7LcUkm3bFxtjk+IQAuC/2u3m7YyRjuzPvnXY6Hb351NlAN?=
- =?us-ascii?Q?uyR1fS3zUMwFH3iPDA3YHkpW1Fkp36+NsBUan4k2hPIL492lSnSy5ZRnr+Md?=
- =?us-ascii?Q?lKvRhN6gEb+axRO+6bfZ1tiH3GZlGiMJMaDXXHguw1qBmgYeWRjgjkK/iav7?=
- =?us-ascii?Q?q6+OCgCwvoRqX7xcEg4ywoFt2nfjLAnkIC5R9DR8O5XN91P+epdqF3lsAlah?=
- =?us-ascii?Q?T6kKeaWijJuV7MRjBdKVKkxJj5/exgzuyo4O7HDdJZZllbf8gEW3DadX7eth?=
- =?us-ascii?Q?XHSP7VSC/qsmJzG5AyyaQDmtxdDa61g8BUHnaetqQyH9l2wDNVvaRFod95a3?=
- =?us-ascii?Q?aBrAlIDcH5aeZHvbDJFsbGz113Ns8k6Z5QYgkFBsuhnGVwxWuwLWGMOdICkg?=
- =?us-ascii?Q?8DzzcgSF1o7cNnv+YbFwmxxXKjs8g5pCb1ObLzdWdoq39veeYCrQ3IUkPthx?=
- =?us-ascii?Q?O1X9Gx8JflVq90NGT3JMSbvt51jvEZz9cY8jd/fHjazJQg0Vp6P6EgSh5Zb4?=
- =?us-ascii?Q?DGUlfaWJlQ898Oo4MmJis/95xaHyHWsxIOFTXhEFPcVGAmsrFpWY+xNB5J9v?=
- =?us-ascii?Q?voZxrdgd4N64TpCpkKgLs9jo/KKxOsMeBCwMbeCaisJD+u0Frp3UNyZ/4AQc?=
- =?us-ascii?Q?7IqwxxFGXPscvJITP6e3NI3VNl44N7o78Nf2sDeLTXpz4PayrZTCPbHOkoKC?=
- =?us-ascii?Q?AVBZXq3EYrRGmqiR12RWWGncLNHXdzqDjcWanForhP/F0kAzyXZJx6oIPXOC?=
- =?us-ascii?Q?LCYB42PZ2Y7X23wgCS3dNWHMbGSD+q0j5cdludYEwLojmAlAax+zeZ8GwPKg?=
- =?us-ascii?Q?WuO1Zsfx5jXs8bxZyfZD/yu19Uc+Tg3f8iqI5T1Ryb5L/PjQ6BjF0u+bs/7p?=
- =?us-ascii?Q?sgZl3Q6glohw9o+N4q5mixb4zK/eIRUuNXDmDAYVC8YF/NZgoo+dns+YeHsr?=
- =?us-ascii?Q?7l5Uq2mGDvh8vM/8EEGz5A6ZTas+wUV3vXtqx/IVvvuafaUVsvAUrLV0X5d3?=
- =?us-ascii?Q?mPoEiU3UYeJMlALF3EPZ1W/Mq6NtL2dr2g2dY3FxTB+LwmkHsmEqkc3BI2gY?=
- =?us-ascii?Q?VcLXtbyVLZkSYrqJkuj2Zj0zNjZSBS4RRMOp1wM6POnDqCcprHD3NQa618Ws?=
- =?us-ascii?Q?dqrL+IQxwgDmbfycFRdl3eSm3nSKi6bOOLZCmWTlVrgNh7AKB/Iucu3+HHKi?=
- =?us-ascii?Q?3sUP5kgGISvUv+EmiHfgs+4a7ragZqrbGEZ38WCdI4b4OHQwUhCdV9l9fYxC?=
- =?us-ascii?Q?kQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0d5c424-80ac-4f31-a226-08dd1653808b
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iFk3lOex/umJ1uJ+4bbXdhAI/Ow7N89b3XxIhAWwINQL4x8PY6hIN9j7bNa/?=
+ =?us-ascii?Q?0Ordo1mVfbQ7ORLpTlRFTF0hh79bfJJ7oeisMNAVgOUZH3t7HwCA5zqDT/57?=
+ =?us-ascii?Q?oTAqAoWOQyfeRyD/jGI7Fd+agtgudQZmWKDBzT3rDFpAftiRa0SNw/2BWi5u?=
+ =?us-ascii?Q?hWWgfc5tNYZCeOndY98M1rk0pEYLVkJcsuadLFTtFzwUEPQcbbZIN8WJNL06?=
+ =?us-ascii?Q?EV7mMVmQlHNIcVG/Fu1wI+y8kf8Ia6wB3gbk0PpEV1NH5gw83323V73HuH3Z?=
+ =?us-ascii?Q?k1KwZIXMN4DhrjdsxOAkJkvzFTscnWVi9qur8ofp3P1x9Xh7ozttNSIFoEVJ?=
+ =?us-ascii?Q?gjbM2RRrn2ZQxGXIP593O8lHU9TbTbKJ38EyT8+WL/uf3MdFv++zcy1xb0qu?=
+ =?us-ascii?Q?cpT/X46qJkrbEMpqGTtkqNA3nEqnA7Ey/jRflpyBNouF5jxcrOWrYCcKYNBH?=
+ =?us-ascii?Q?p+3/5sv9DecVjRwCaZorqD/l035s4mn3Jsz9UCsICedqFmmMBYomXpH0gJkY?=
+ =?us-ascii?Q?iM0f6wGiA5+2N/QO7V/6KdA/O07vPZU5q4sFeav5dyb5xTEtzzITGiO+hBOP?=
+ =?us-ascii?Q?Q8gF908mC6t1au+/7U5Rqk2UFyAkUNQ2Hhgd1OugQSj0luXnHLSzP1CN7AEG?=
+ =?us-ascii?Q?GUNPXJu7+gBJP+ojeIAN7niV8DCpACA+cO+nyhjGXOoOVGStmKaCjk+IqTOg?=
+ =?us-ascii?Q?KAIDaL4/WyXi6bMB4IPVqqShxjpyepzaB9x7lgbdxd5LedLBMhnO0WJf87lp?=
+ =?us-ascii?Q?XBFN3WRtblECvxzSPC8JB+r0ckt1rs2FTlcgDNZCHsRG20nVoawjNWpDehQp?=
+ =?us-ascii?Q?ceL7PkfhicErwPlfsTfaLYKwfUie21LHvV8O4knS+cxkCd5KYzBofynku19R?=
+ =?us-ascii?Q?FLpggECxLW63r/4xjDcTkmP70ZCq6XTDA7F6OtpP5T9HZzzwFj0IOiErL3fg?=
+ =?us-ascii?Q?vTHn/xju4yLaa71fjVCeAAoAfb0MyVoneHIqVftHfxdCyNpX8aWu1MBcJUT0?=
+ =?us-ascii?Q?SLXa20YQGM54Wx0kQu3kOhv1E9EWW34XEfucGYZF3GNHDdgQlTs5yG7DQu1c?=
+ =?us-ascii?Q?KxiAEnk4ZGzbCMNUPze7V5npNH5nq7wMStdUg2A7iNcm8Z91Ms7tqMisP5wH?=
+ =?us-ascii?Q?tNvJn1xhIH2iDGpqCtei7g/fW4ytz9OOb64HZeFfnQt0F7EPfKxz+ucgEW0w?=
+ =?us-ascii?Q?LYBuiIUWYarHv8Uxe4ml6Y+Cksuh2/hh3Fr70Gtp8RK351kRxE2Tlsz8JOxb?=
+ =?us-ascii?Q?rAYaJHpwGuogKSGVxR9urET+LBWUj2RJJD8oej2/6AZ9aN+ycD5k0F1yYlq3?=
+ =?us-ascii?Q?qd3l8vDv6xA6d1bfG2ERRclIF5DRdMw4AuJyLlczzqCRfY/tuVJhy+x7N5dv?=
+ =?us-ascii?Q?5Y6QtvAlRTMIvOw5HYatgnl5d+NNzThOP2hOKDYlxChnWnsfXYpISY69voQw?=
+ =?us-ascii?Q?41Yt4wtX+U2EaGaz4BDnL1GsEzH99yDpoUNPywz+N2STn46e7dB3cvUopvF6?=
+ =?us-ascii?Q?nB2Noc1RsMr1x56bqDyD6fW76BxTVd8elLuIDVt4BqI3gWCw/HJQ+G1M4TUv?=
+ =?us-ascii?Q?MlfEHyhUzj1oKA8h0YTMIwKTL73jtJsqj7AAKxszUSkFRgyEHMvCF2ZLYJdk?=
+ =?us-ascii?Q?bA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff69f604-2ce9-43aa-e1e3-08dd16552008
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2024 00:10:05.2825 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2024 00:21:42.3393 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6GA8QqVTRw6QzoC8/eFYGnvLOILPB5d9m9fmgMm7vs3ef9WbOgq23jSCLFvYdzqeCldCDqaa8X7/c3aCPIgQNVrdo0Z1R3scCbY5l3scNVw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4914
+X-MS-Exchange-CrossTenant-UserPrincipalName: mL/ToldY/DheEgvxTyjOMfQmW18m1IX47hojT2p1hQXWnzvtSC18dRtna03XBgsn3ysvY+I2taQtxteIxjNtvo63Fu5FMlN0Ll1o7Fqbmew=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6722
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -176,40 +176,122 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Dec 06, 2024 at 01:27:46PM -0800, Clint Taylor wrote:
+On Fri, Dec 06, 2024 at 01:27:47PM -0800, Clint Taylor wrote:
 > From: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 > 
-> switch flip_vs_cursor_busy_crc to use linear framebuffer instead of x-tile
-
-You should probably elaborate on why here (i.e., not all platforms
-support X-tiled framebuffers anymore).
-
+> On Xe3 display no more support x-tile and will disable such framebuffers
+> 
+> v2: Optimize display_ver checks (Sai Teja)
 > 
 > Signed-off-by: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>
+> Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+> ---
+>  tests/intel/kms_frontbuffer_tracking.c | 25 +++++++++++++++++++++----
+>  1 file changed, 21 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index e41ee0a80..c5b3fd46f 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -2181,7 +2181,12 @@ static void setup_modeset(void)
+>  	offscreen_fb.fb = NULL;
+>  	offscreen_fb.w = 1024;
+>  	offscreen_fb.h = 1024;
+> -	create_fbs(FORMAT_DEFAULT, opt.tiling);
+> +
+> +	/* Xe3 remove x-tile from display + */
+> +	if (drm.display_ver < 30)
+> +		create_fbs(FORMAT_DEFAULT, opt.tiling);
+> +	else
+> +		create_fbs(FORMAT_DEFAULT, TILING_4);
 
-Another case where the name format needs to be fixed.
+We should really try to get away from hardcoding assumptions like this.
+Real userspace can't check the display IP version and is expected to use
+the information the kernel already advertises.  It would be better if
+unspecified/default tiling just walks down a list of modifiers and
+uses the IGT helper to check whether the modifier is supported; once it
+finds one that's supported it can use that.  Tests that try to
+explicitly use a specific tiling should skip if the kernel doesn't list
+any modifiers with that tiling.  And things like this where the user can
+manually specify a specific tiling format on the command line should
+just plain fail if they specify a tiling type that isn't supported (we
+shouldn't just silently ignore what they were asking for).
+
+>  }
+>  
+>  static void teardown_modeset(void)
+> @@ -2302,7 +2307,6 @@ static void setup_drrs(void)
+>  
+>  static void setup_environment(void)
+>  {
+> -	setup_drm();
+>  	setup_modeset();
+>  
+>  	setup_fbc();
+> @@ -3146,6 +3150,7 @@ static bool tiling_is_valid(int feature_flags, enum tiling_type tiling)
+>  	case TILING_LINEAR:
+>  		return intel_gen(drm.devid) >= 9;
+>  	case TILING_X:
+> +		return (intel_get_device_info(drm.devid)->display_ver > 29) ? false : true;
+
+I don't think this is necessary.  This function is only used by the
+"%s-tiling-%s" subtest, and it's already bailed out if tiling is X-tile
+before we call this function.
+
+
+>  	case TILING_Y:
+>  		return true;
+>  	case TILING_4:
+> @@ -4226,9 +4231,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  	igt_output_t *output;
+>  
+>  	igt_fixture {
+> -		setup_environment();
+> +		setup_drm();
+>  		drm.devid = intel_get_drm_devid(drm.fd);
+>  		drm.display_ver = intel_display_ver(drm.devid);
+> +		setup_environment();
+>  	}
+>  
+>  	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
+> @@ -4537,6 +4543,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  					if (t.tiling == TILING_4)
+>  						igt_require(intel_get_device_info(drm.devid)->has_4tile);
+>  
+> +					/* Xe3 remove x-tile from display + */
+> +					if (t.tiling == TILING_X) {
+> +						igt_require(drm.display_ver < 30);
+> +					}
+
+This function already has a
+
+    if (t.tiling == TILING_X)
+            continue;
+
+earlier, so we can never get here with X-tiling.
 
 
 Matt
 
-> Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
-> ---
->  tests/kms_cursor_legacy.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 4e2cfde17..1f082df2d 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -1679,7 +1679,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
->  	set_fb_on_crtc(display, pipe, output, &fb_info[0]);
->  	plane_primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->  	igt_create_color_pattern_fb(display->drm_fd, fb_info[0].width, fb_info[0].height,
-> -				    DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED, .1, .1, .1, &fb_info[1]);
-> +				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, &fb_info[1]);
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
->  			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
+> +
+>  					if (tiling_is_valid(t.feature, t.tiling))
+>  						draw_subtest(&t);
+>  					else
+> @@ -4568,7 +4579,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  	t.format = FORMAT_DEFAULT;
+>  	t.flip = FLIP_PAGEFLIP;
+>  	t.method = IGT_DRAW_BLT;
+> -	t.tiling = opt.tiling;
+> +
+> +	/* Xe3 remove x-tile from display + */
+> +	if (drm.display_ver < 30)
+> +		t.tiling = opt.tiling;
+> +	else
+> +		t.tiling = TILING_4;
+> +
+>  	igt_subtest("basic") {
+>  		if (!is_xe_device(drm.fd))
+>  			igt_require_gem(drm.fd);
 > -- 
 > 2.25.1
 > 
