@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 388EEE77173
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 08:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F9B5E7717D
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 08:06:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D076E10E4A1;
-	Mon,  9 Dec 2024 08:05:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD73C10E4AD;
+	Mon,  9 Dec 2024 08:06:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OKtEpO3L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m6c/DWwt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E943510E4A1
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 08:05:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A766210E4AD
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 08:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733731557; x=1765267557;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=NgnrTXB9Gj6+H2oB0DkHUywGY3pJGx6bZuOOxhD7yHA=;
- b=OKtEpO3LXl+SYV5sRvetmL7apxdx2Un3m7yIvoXkM/heNtpwjdZQCrDi
- 4HlJw1i+OiQ5PSnQlKDGJtJ+rzEJSUiZNUfEIffEMkOpuo2q3y9JMffO6
- dp2y1GWrcQCmVveTsZ3XMzEu6uBBZQT6jO2n5HMC/R+m6kdGQxvwbkZYv
- Gsm8pZAADw//sWp3F2cFwBM0e1CPCmV8QygbqWfyYeChcTZxqwan1XJo7
- n6MvzTv+FjmD+lZDizGKxZRA+4Vc1D4fj7Ew4dm0d9miZCcivQf+ze4st
- JWe6iV8/S7tBJ8HobhiaYdLZepkKum9P7Jr4NB7t69QewtNjEnTokrbw9 A==;
-X-CSE-ConnectionGUID: vLWVMS/DTkmVzyaSd1XJKg==
-X-CSE-MsgGUID: qzjnwqUpS8SkzZEuOQTMFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="56495708"
-X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="56495708"
+ t=1733731565; x=1765267565;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=FDSURYNGkKLMW8qOjq/IkblVKbWDR9XUIeHp3rfj0K8=;
+ b=m6c/DWwtu0ojl33rMNVGhWnGL58294m7hm/wvxhJeltcY1bkC4DlOtOZ
+ Vz3GZHLofCmzGCezyepr9E8JQ14XGyhSqx/141mClkJMIAuuucVDA3EEp
+ IJpMNi4QkUcrfWbXnhRqchJrefWC4taczPtQJ2E0sLEbPxPv7tTDL3bSP
+ r5QeHeOfFR5K+2PzapzTnhGN2CzVww/8Ho6u65rR6MpL2/L1m040w8aQM
+ aiGMh8iX/YRnUVNSDCNZJDyp9DOYfoyWGGu0yJLkqoEsVNb1F5KA9Ssli
+ 4MkBEdB3AHp6JfhraAIdGE8sPkppETqRZ7biFcr0cBa5q2yEJHxV8RcyU g==;
+X-CSE-ConnectionGUID: b8Crqj2SRp+LstKmnfFrPg==
+X-CSE-MsgGUID: 8IDkmWjBTKGkM2z6Hnl1qg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="56495714"
+X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="56495714"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 00:05:57 -0800
-X-CSE-ConnectionGUID: YygKYHjVT7+44Z6malFdyg==
-X-CSE-MsgGUID: NmtQOIK0QNiQ0ewoS9bR5A==
+ 09 Dec 2024 00:06:05 -0800
+X-CSE-ConnectionGUID: oW51LdXwRRSuuuQjTY1UwQ==
+X-CSE-MsgGUID: knYAqUtgQx6+48LW/COcrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="99952433"
+X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="99952456"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.211.135.227])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 00:05:56 -0800
+ 09 Dec 2024 00:06:04 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 0/1] Adjust test documentation to given standard
-Date: Mon,  9 Dec 2024 08:05:45 +0000
-Message-Id: <20241209080546.557032-1-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 1/1] tests/intel: Adjust test documentation to given
+ standard
+Date: Mon,  9 Dec 2024 08:05:46 +0000
+Message-Id: <20241209080546.557032-2-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241209080546.557032-1-katarzyna.piecielska@intel.com>
+References: <20241209080546.557032-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,14 +75,45 @@ Change Category for:
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Katarzyna Piecielska (1):
-  tests/intel: Adjust test documentation to given standard
-
+---
  tests/intel/xe_exec_sip.c | 8 ++++----
  tests/intel/xe_tlb.c      | 2 +-
  2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+index 91c8df161..062b80a08 100644
+--- a/tests/intel/xe_exec_sip.c
++++ b/tests/intel/xe_exec_sip.c
+@@ -5,12 +5,12 @@
+ 
+ /**
+  * TEST: Tests for GPGPU shader and system routine (SIP) execution
+- * Category: Software building block
+- * Description: Exercise interaction between GPGPU shader and system routine
+- *              (SIP), which should handle exceptions raised on Execution Unit.
+- * Functionality: system routine
++ * Category: Core
+  * Mega feature: Compute
+  * Sub-category: GPGPU tests
++ * Functionality: system routine
++ * Description: Exercise interaction between GPGPU shader and system routine
++ *              (SIP), which should handle exceptions raised on Execution Unit.
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+index 8104e45d8..9b920fe8a 100644
+--- a/tests/intel/xe_tlb.c
++++ b/tests/intel/xe_tlb.c
+@@ -15,7 +15,7 @@
+ 
+ /**
+  * TEST: Check Translation Lookaside Buffer Invalidation.
+- * Category: Software building block
++ * Category: Core
+  * Mega feature: General Core features
+  * Sub-category: CMD submission
+  * Functionality: TLB invalidate
 -- 
 2.34.1
 
