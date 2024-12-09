@@ -4,56 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D071E77173
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 06:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B04E77173
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 07:04:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 36FC910E29C;
-	Mon,  9 Dec 2024 06:31:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B73810E2A8;
+	Mon,  9 Dec 2024 07:04:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iuxMuNT8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6ni2Mno";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CD9F10E29C
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 06:31:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A71E10E2A8
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 07:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733725882; x=1765261882;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=5TGk2DHQL8JuI8VpnW/v9y2wpw84r2wHGKuldcOsj7M=;
- b=iuxMuNT8A8xCTehl37v0SbaXw7BowXp6zoZ56cQgToJO7RJsxvILvQ1E
- n1HZqUiHawTWv7FortBVs61rxc1Vt08vfId+HSdYyBbU8LXENIz+KLufP
- 1MXUkWZpBiDhYpQClj7WD1B+KrhmpgGxXtQ4SlgSrr1RTAmgbhVhSnmpi
- URyLFcO7ewllaF23tiZjq1MSmwn4MeJCyRF/RV1xbgBi9n5bXaHBaVYSb
- fgAC/+npmN93evrd4//HpSElzgswpiGwMKIS8HEB2BXM+mRlzgfpNRthE
- 7Jy3k1jMXSt00bx6QRqlO5HyRUecyw15HZfFXf+2l651gCWtmttCLit9H Q==;
-X-CSE-ConnectionGUID: twAbwArxS+WgjqUCx1h/JA==
-X-CSE-MsgGUID: SB//y3VUScOEhcVEcD9++A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="33923360"
-X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="33923360"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Dec 2024 22:31:21 -0800
-X-CSE-ConnectionGUID: CiMsUssAQo+9lXnjEfTHvA==
-X-CSE-MsgGUID: 3Fb/+rkITECKpfPRdGzdWg==
+ t=1733727854; x=1765263854;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=I5ALymbFK1f3lf4UR377Le67UPDghZArqlalEfA9skY=;
+ b=S6ni2MnoesnJhiW3s2bfC22k649/CJdTLRrWdGlYj1zKsywDZZ3XQ/Ak
+ eybqUwYYWAzu3WdksW63YcDEQO6gB7kScOEqOmqB9wHNI0IfiJ8/qkOhv
+ 2k6DlApiwvI3Y64/P5U5PBZ+HlE58vYuIM8Uq5/DRAzUg3FqavEEmPTIF
+ aj4+R8bkQlHez8d9KyrhwLRIjGLB/uvGG3g7WMYivsP/8MRLOUZPVIkRk
+ iU6i7Jn72Hqv45QXuPfhd0oD+r6FXG5mss7MzpZk0Iy3c9xCFNclfNAjr
+ uvU2k32a80nib0BGy/tQMm+1XVYC3XkcN1Qyq8cpDadli+zz2OqnH6b72 Q==;
+X-CSE-ConnectionGUID: IX7SBbBkRqmgF/h6e0m3OQ==
+X-CSE-MsgGUID: kux38xQeRjeWpTPNnmDxYg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="51537864"
+X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="51537864"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Dec 2024 23:04:13 -0800
+X-CSE-ConnectionGUID: Udh77JFxTBmwpXMK6uH+DQ==
+X-CSE-MsgGUID: Adiud6xvSg6rLTrs2h7SZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="132363612"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.165])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Dec 2024 22:31:19 -0800
-Date: Mon, 9 Dec 2024 07:31:16 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v8]lib/intel_compute*: GPGPU support for MTL platform
-Message-ID: <20241209063116.sqlipfzgupa3k2nr@zkempczy-mobl2>
-References: <20241206163856.127594-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="94853544"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 08 Dec 2024 23:04:13 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sun, 8 Dec 2024 23:04:12 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Sun, 8 Dec 2024 23:04:12 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.171)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sun, 8 Dec 2024 23:04:12 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Jtr+nLo9RpUrz1KKIZHQrskjJXfXaP4+bfb2cijI0gRKQH/OLP/D2RmELQD56olm3E+XcEx3b5raFPnmQV2Sm526OGlAwnyyIW1PHA2hTXO/Er1mkdtSb20helRyo4UdnIIEWEpJBDEJO4JYQHAPAvMWbexgl/Z9uvGebZews+PM/TABuFV695omVJpKdz4cd1AqqJV0SQpAqXXpTVppmEQZTHx07bp/6jrhdbKp6EkW1BA4n4pxDw/OCU26Iu2y47ir6NovulL3Iz/4Pf7QS90WuNOsotI3hgzP2cCScggy+08BGSbvr5sdILIWLrvL497d9chaq0dKCrwSA8HdJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3JJQAwVQwA9iM65CwR4GWtliDi06hL1hLVbGr+zkAWw=;
+ b=e5Pedg2umQsNIh5VEa+7lklS1yO3guob63NcWDUMZdJ8umi/mziFSBbE6XHnzLwu60eYCoLqQ465K/3Vb4VCZpvmZXcx5G8oe/OZvADkpjvSEwtks0P/704ZM5wMWvnQyPYeqj9hCKDWSwg2saMmcCX2s4s9KMmWFtDVJwoJmByVI3pijeYkXN5SHsUNQ7KqVGtfmDULWAa+aUq+sLekBvJ0XPs27d9iOjSLAosWs9XI3w5uUvOZi67Qx6pAvW8b4pVnAoBGaqcEktLNSqdyEJ/HUIFRW04G6PT2W+Wh/0CGF+Dw2+z6b/opQlUxrto2ljrGE78IN+ilbvRWsgFekA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
+ by SN7PR11MB7420.namprd11.prod.outlook.com (2603:10b6:806:328::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Mon, 9 Dec
+ 2024 07:04:10 +0000
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372%7]) with mapi id 15.20.8207.017; Mon, 9 Dec 2024
+ 07:04:10 +0000
+Message-ID: <b4277fb5-b12f-4f6e-bac3-f38abdffad70@intel.com>
+Date: Mon, 9 Dec 2024 12:33:59 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] tests/kms_scaling_modes: Add informative
+ messages for skipped scaling mode tests
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <karthik.b.s@intel.com>
+References: <20241127190530.3421021-1-ramanaidu.naladala@intel.com>
+ <20241127190530.3421021-2-ramanaidu.naladala@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20241127190530.3421021-2-ramanaidu.naladala@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0059.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:99::13) To BL1PR11MB5979.namprd11.prod.outlook.com
+ (2603:10b6:208:386::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241206163856.127594-1-nishit.sharma@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SN7PR11MB7420:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c55c72b-64f5-45f3-bd3e-08dd181fae18
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bTBHV0VxMGZYSG9uanFtZm9sRXZEck1wWWRjSXhyZkl4ZUpNWWdZZUFYZmMw?=
+ =?utf-8?B?TTRaSWNtWEpVbGkwMllJd2NtakxneXkzY0NHSVlxTWJmcXBYZkl6NkkxeXNn?=
+ =?utf-8?B?MGp6QysyN2RIa21KSmw1RkdjRThKaU9RYStvMEUrMTZyOGYrdFRpMkpTQ2NN?=
+ =?utf-8?B?M01FSGc3S0NrWlVXTGNpYTRuT0kxcitzdURQWG03VEhDR0dFeHlrbjhMRXN2?=
+ =?utf-8?B?VVE1RjR2d21peFhZYWh0NHNJYnd1dWR0YjA1MUFDdkJTaXNGbkZ5clIyTVFH?=
+ =?utf-8?B?Z0hFaDZ4YjhFRWZ0ZXV3MHJMYXE1TFFoSFIzcG80NDYwbzREMS9wK2F1UzdI?=
+ =?utf-8?B?bjdXNjFYU1lmbnpiZFQ5dGQyZkYrQUdKUkh5ZkhJR2JoQktVTFhqTmE3TndV?=
+ =?utf-8?B?SWhJbEc1c1pEQWt0Ulo3clZtWnREcE9FNnY2Tm81NE5VVS90NmFKa0c0dkxS?=
+ =?utf-8?B?R1dlaUJKN3hMUnI5bnZkazJLWHpYUGJLQVlNVDJ0Zk5ITnd6TnFXeWl3Sjl3?=
+ =?utf-8?B?T1R4UGpsV2FhRWpTZHB5VmFiRk5hT1gxQlZGRmxSSHdkRm5BNEE1NTJ4a0RZ?=
+ =?utf-8?B?blVFTGpLYlpML1p1WFBsVGlOWUo1R2NxMXJzc25ha3JaV21HOWpXTGh3cWRV?=
+ =?utf-8?B?NmJkMkU5OU10L3F3emxVQ0lra01XZ2NjdjJuY3RkMnA4dkdGb01xSFpCNnBH?=
+ =?utf-8?B?QmF3V3d0UW8raVVaVGpFWGpNaVhKcXFHLzRucFJacUNlU0pXcVZFK2Q0M1dS?=
+ =?utf-8?B?bXMzZ2wxOVovZnFYOHhOS2pPSDA4Qlgzc1lSMWl0emw4eFdkWDdMRDBRcTVO?=
+ =?utf-8?B?WEpOMkpNa3pOUHJWOFk4UUpvTXFqTHplVTYxV2FZK1RjQ0p4SDZUbDhxM1Q1?=
+ =?utf-8?B?bzZ3N1Z5bjNQT3dLR3JqMjh2bWRjcmtodVhxYUUwdzExYmhyZEJUbzJ4T1lT?=
+ =?utf-8?B?bVdTdmZSL3NNL2REWUdLa0t3blljTnU0RlovTkhGdmhPV1V2TW4rdnZ5MXE1?=
+ =?utf-8?B?OGNuUXlqWXFscmN3c3FzUmR5a0pUUXlHVGlwY2NPUGFkM2ZWN2djYVFuZUNL?=
+ =?utf-8?B?OTZqM3BpNUQ4M003bFdUd1czc3c5UFQyOTkzMjByR1RxTSs0QUlnWEtHZGpY?=
+ =?utf-8?B?UThkdjJrQjdweEpiQjdTYVdIU1dTUmdTTWZCZmQ2MjkwK0xBK05ycHowRVdk?=
+ =?utf-8?B?ckIwTFozRy9Bclh2Y0tnNC9jNGhuVDJYSFpWMGhyUHduUWxuUEFHNW1YS3JV?=
+ =?utf-8?B?dWZxS0pWcTR0TkhlUWoyL2tXSWdvYWpPRm16eW5ZdUc0R2VzTW5XQW5pSTJy?=
+ =?utf-8?B?V0g1YWEvL1JHVlpIZ0hJZmZ0a3VzZ1ErME0zd1pJcmNRWmdoVTJDeTJtTmlE?=
+ =?utf-8?B?eCtnWG53TktZaTZ2WFNpSmxwMkVlb0xwd2IxWC9yMi9vbERoK2tRbUFSRmJY?=
+ =?utf-8?B?bFRhNHhOR2hSTWxhdG45bTJyMDRtaFhteWtReGF1QTN2b3NUejR1cWNsemx1?=
+ =?utf-8?B?aWVWazR4SWJJQWdNdlBMQVJlOHZCRTlPbnhqUkQwMm96M1d0dlpocndESVJm?=
+ =?utf-8?B?YnRHZ1RHSGU3bldaV2FGN2tiY2ZwZHhYQjJQRTBCMTdqbU1HOFVldVdqMldO?=
+ =?utf-8?B?aDlTQUt3bWVuSGpDak5FRDd6Nk0vZGZFU1J5bmhNWXBnc2tMbmhwYXBDYk1N?=
+ =?utf-8?B?MHpqT1FMTVpCakRzRjErUmdwM1orTGUzU2d3a2huSVdSSmpIL0d5bktVQUx4?=
+ =?utf-8?B?SDBiaXpEcmpRQmNOeGNwT1VlNThsUytjbWh2S1ZUeGg1U0xBeFE5N1BNZ2RL?=
+ =?utf-8?B?ZUF0Y3Q5ZnlUSjd0TXlsdz09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SnhzVG10VTRhYndGTHJhc1l3Y0o4ZGh4clZCc2RXRVliQVdnUzhUNmt6ak12?=
+ =?utf-8?B?NVVPRG1aaStWazZhOHBVUmIzRWNybi9QZXhmMkVIT0ZsemIvdVhqMFB4OXBj?=
+ =?utf-8?B?RTZ3aU43NVhES1I3NHVKUVJiZGM4NzdDdHdMNVUweFRVcE8zZ21QVFVkUVVY?=
+ =?utf-8?B?WER1S2Rhb0VIOUZOdC85UVVJUDgyd3Flc0dpM1pEd0g4YzJMVFVYeWZOMXls?=
+ =?utf-8?B?QWhYWkFXSUF5TGlvMmlsckR3WHJzS1F4SkdtOUt6MHZnRnRGOTB1dnY3UlRj?=
+ =?utf-8?B?YmdrN0Nick5jcWhkM0ZZWkQ5T1BnTlI3L25LenJwbmEzTk1XdDhJOGZibXhL?=
+ =?utf-8?B?NndOUCs2ODd2THluRzdia2hBaHZsVnN2bVZuaTZYUWdGbHdxTUZiM3R2cTB3?=
+ =?utf-8?B?K29BVmV6VWRnZXpmUWFSaEZPNnpwTEcvSjNVd1lYSVhPSEcwaEVpdFNVeG1p?=
+ =?utf-8?B?a0xEMkNjdllsRzRrRnBoZll0SzVwd051TEJEbTA5ZGRVSmROOXRwU21zTmNi?=
+ =?utf-8?B?WVVDc29qK2MxcXZRRVFhZHdlVGtjdTFycEJPR01CbDFlMC9RdzBjSlBMQk95?=
+ =?utf-8?B?U2dGeXI2T1Jzdk1mdW9VQ2xFeVFxSUxmTHJHRFdVSVU2TzQyMDd5V25MNHRZ?=
+ =?utf-8?B?YkJ0UURGNDZyeG9aRzJERjhaMU5EK2h1dmczYU5ranprWHEzcmJNZGtnYkN6?=
+ =?utf-8?B?MEF3RlRhUnZwckV0MTFJVWNyd3VCblAvbjdoSXJXMDg2VXhMMlZ1dDNoaWtF?=
+ =?utf-8?B?UVNpa0RxVjZOUzEvdnREa1VUdFNacW1LSXJnaEY1NHVoa1hrRnBzTE9oZzly?=
+ =?utf-8?B?aDhDRHBQZklsZmFEd2NORWFKYkcrY3AxRW9xSVcyY2Q4UWNzUld2MElGTjlz?=
+ =?utf-8?B?V3JxdDhScTlHdzdDWHM4K1Vjb3Q3anhVbGRBZGJzek01VFNFK3R5VDdKR0c3?=
+ =?utf-8?B?cXNhbEIrNXkvMGNCY1k3cXlkbXlFS01YZ1Y0SGZFN29laVJvUFZkaWwyNDFi?=
+ =?utf-8?B?ZmxwQUp0V21NQW1MMFc1NTlZQ3RoeWVMdElEbXAxZmVtMWdBWGM4d3E5ZEJl?=
+ =?utf-8?B?SXhRanMwcndVRzMzUGxrNFNhUmZ5dHcrVTZUaTZrNnZQUWhVM2M4UFMrY1ZD?=
+ =?utf-8?B?anNTTzZ6V2hoQmxQZ3lNT1hCaG9qZ1RyODdFRkVKaGUvN3k5SjQyVXNSbm40?=
+ =?utf-8?B?REM2aHZCR0pDM3krK01uRHg0bWJCeFp6ZGlTS0xpZmVZazNYMnI1b0paN0tI?=
+ =?utf-8?B?cmVXekpOUmtSbkxSNHhXOFZIbzdOZzZyTnVQVXBZM29MTDRPbXV1N3V6NGY0?=
+ =?utf-8?B?N3M4ZmlNQ0wwLzgxdHJnVXFsekE2ekszVTdaNDlZTkw0VWdaMVpUWWlyS3E0?=
+ =?utf-8?B?RE1XbS9JV1JZTHNZdFIyYTBrLzZRTG16Z25ROEozSmRQMHpsenFQZ3RiRWln?=
+ =?utf-8?B?YjUxZWJVK1FUL3JIY1NUVFFSMWlnU3IzNU1PY0o0ckFjbFN1SFk5RmpHLzhs?=
+ =?utf-8?B?QmwzMkNzdS93eWp5aGI1VTliUkRvRWI1amtWcFl0ZFcwYzJXRnVTb1FFOGNS?=
+ =?utf-8?B?c2JINGFvMHUwblNvbGtTK2RuOFE4dmhrdHdORjU3cVlrWjNwR1l4UFVXNnRs?=
+ =?utf-8?B?cnNIQmMrcTJkNnh2bkJsWjBDUmNGSGxYQ0JoOVYwV24raE45ditBeU94UnFM?=
+ =?utf-8?B?TjBpV3Uxb2hTUmdtcEpjSWxTY3l5VjNwRzhtcFR0d2ZrTDFCaFlqZUUzeWlZ?=
+ =?utf-8?B?UWRyUnB3azhvYk5HdUowVzNhNWMyWkVwcm52azFqcDM5L3I2eEhFVFZMQVd3?=
+ =?utf-8?B?aXJ0OEdZVGN6aTFRZ2lGcXR3a3BOK0JTWnVUbmVPQmdvOFpqUzFza2ZJMlZy?=
+ =?utf-8?B?bG02dGcyQlkrVG1FZzYvSVdVNGkra0N6STNpK25yeExyVGZTNHFGeU1KZDl6?=
+ =?utf-8?B?WUovR2MxOTBDYUovTjlBRUV0NHY0cjlFMUxmQnV3dWZXUG8rNmc4MEZoUFJ0?=
+ =?utf-8?B?SUxMNktJMm5Zd1RpUkVHY2dsdEVaRG91ZmxTMzZnR09tVU01cjluVXJhZklM?=
+ =?utf-8?B?YkVKbG5Jb2thSVUvVTd5ZXEyTFpLK1A3K0haRGpOM2w0MDBPbEhPZ2Y4Mnpz?=
+ =?utf-8?Q?b24rsyf0yB9hHuWIdu/HmlGAI?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c55c72b-64f5-45f3-bd3e-08dd181fae18
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 07:04:10.4232 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vox+hnXp0U1y0OUs09e6Vd32+pOQqyg1eXi/fCi64g39FS2vL6f42W7PyIVaL46fEcrxAzVoXKaZm1/UIKj6lg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7420
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,338 +195,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Dec 06, 2024 at 04:38:56PM +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> GPGPU shader and pipeline was missing for MTL platform
-> Added GPGPU Shader and Compute Pipeline for exercising
-> gpgpu in MTL for i915 and XE
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Hi Ramanaidu,
 
-
-This is not visible here but I noticed you have incorrect subject:
-
-[PATCH i-g-t]lib/... rest of your subject
-
-what causes after applying prefix (lib/...) is lost. Check your git
-configuration on patch preparation.
-
-I'm going to fix this before merge so don't send new version.
-
-But for patch itself:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
+On 28-11-2024 12:35 am, Naladala Ramanaidu wrote:
+> Add `igt_info` messages to provide more context when skipping outputs
+> that do not support scaling mode. Include `igt_info` messages to
+> indicate when invalid pipe/output combinations are skipped.
+>
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 > ---
->  lib/intel_compute.c                | 209 +++++++++++++++++++++++++++++
->  lib/intel_compute_square_kernels.c |  49 +++++++
->  2 files changed, 258 insertions(+)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 879928ab6..f1520aad4 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -1161,6 +1161,122 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_destroy(&execenv);
->  }
->  
-> +static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-> +					uint64_t addr_general_state_base,
-> +					uint64_t addr_surface_state_base,
-> +					uint64_t addr_dynamic_state_base,
-> +					uint64_t addr_instruction_state_base,
-> +					uint64_t offset_indirect_data_start,
-> +					uint64_t kernel_start_pointer)
-> +{
-> +	int b = 0;
-> +
-> +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-> +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
-> +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
-> +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
-> +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
-> +
-> +	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-> +				    PIPELINE_SELECT_GPGPU;
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE;
-> +	addr_bo_buffer_batch[b++] = 0x80000000;
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_CFE_STATE | 0x4;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x03808800;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM(1);
-> +	addr_bo_buffer_batch[b++] = 0x00002580;
-> +	addr_bo_buffer_batch[b++] = 0x00060002;
-> +
-> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
-> +	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_general_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00028000;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = (addr_instruction_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_instruction_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0xfffff001;
-> +	addr_bo_buffer_batch[b++] = 0x00010001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0xfffff001;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00007fbf;
-> +	addr_bo_buffer_batch[b++] = 0x5E70F021;
-> +	addr_bo_buffer_batch[b++] = 0x00007F6A;
-> +	addr_bo_buffer_batch[b++] = 0x00010000;
-> +
-> +	addr_bo_buffer_batch[b++] = GEN8_3DSTATE_BINDING_TABLE_POOL_ALLOC | 0x2;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x2;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x001ff000;
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_COMPUTE_WALKER | 0x25;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000040;
-> +	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
-> +	addr_bo_buffer_batch[b++] = 0xbe040000;
-> +	addr_bo_buffer_batch[b++] = 0xffffffff;
-> +	addr_bo_buffer_batch[b++] = 0x000003ff;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = kernel_start_pointer;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00001080;
-> +	addr_bo_buffer_batch[b++] = 0x0c000020;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000008;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00001087;
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH;
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000400;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
-> +	addr_bo_buffer_batch[b++] = 0x00100000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
-> +}
-> +
->  static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  					uint64_t addr_general_state_base,
->  					uint64_t addr_surface_state_base,
-> @@ -1321,6 +1437,94 @@ static void xe2_create_indirect_data_inc_kernel(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  }
->  
-> +/**
-> + * xelpg_compute_exec - run a pipeline compatible with MTL
-> + *
-> + * @fd: file descriptor of the opened DRM device
-> + * @kernel: GPU Kernel binary to be executed
-> + * @size: size of @kernel.
-> + * @eci: xelpg engine class instance if device is MTL
-> + */
-> +static void xelpg_compute_exec(int fd, const unsigned char *kernel,
-> +				unsigned int size,
-> +				struct drm_xe_engine_class_instance *eci)
-> +{
-> +#define XELPG_BO_DICT_ENTRIES 9
-> +	struct bo_dict_entry bo_dict[XELPG_BO_DICT_ENTRIES] = {
-> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
-> +		  .name = "instr state base"},
-> +		{ .addr = ADDR_DYNAMIC_STATE_BASE,
-> +		  .size = 0x100000,
-> +		  .name = "dynamic state base"},
-> +		{ .addr = ADDR_SURFACE_STATE_BASE,
-> +		  .size = 0x1000,
-> +		  .name = "surface state base"},
-> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-> +		  .size =  0x1000,
-> +		  .name = "indirect object base"},
-> +		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
-> +		  .name = "addr input"},
-> +		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
-> +		  .name = "addr output" },
-> +		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-> +		  .name = "general state base" },
-> +		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
-> +		  .size = 0x1000,
-> +		  .name = "binding table" },
-> +		{ .addr = ADDR_BATCH,
-> +		  .size = SIZE_BATCH,
-> +		  .name = "batch" },
-> +	};
-> +
-> +	struct bo_execenv execenv;
-> +	float *dinput;
-> +
-> +	bo_execenv_create(fd, &execenv, eci);
-> +
-> +	/* Sets Kernel size */
-> +	bo_dict[0].size = ALIGN(size, 0x1000);
-> +
-> +	bo_execenv_bind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-> +
-> +	memcpy(bo_dict[0].data, kernel, size);
-> +
-> +	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> +	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +
-> +	dinput = (float *)bo_dict[4].data;
-> +	srand(time(NULL));
-> +
-> +	for (int i = 0; i < SIZE_DATA; i++)
-> +		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +
-> +	xelpg_compute_exec_compute(bo_dict[8].data,
-> +				   ADDR_GENERAL_STATE_BASE,
-> +				   ADDR_SURFACE_STATE_BASE,
-> +				   ADDR_DYNAMIC_STATE_BASE,
-> +				   ADDR_INSTRUCTION_STATE_BASE,
-> +				   OFFSET_INDIRECT_DATA_START,
-> +				   OFFSET_KERNEL);
-> +
-> +	bo_execenv_exec(&execenv, ADDR_BATCH);
-> +
-> +	for (int i = 0; i < SIZE_DATA; i++) {
-> +		float f1, f2;
-> +
-> +		f1 = ((float *) bo_dict[5].data)[i];
-> +		f2 = ((float *) bo_dict[4].data)[i];
-> +
-> +		if (f1 != f2 * f2)
-> +			igt_debug("[%4d] f1: %f != %f %f\n", i, f1, f2 * f2, f2);
-> +
-> +		igt_assert(f1 == f2 * f2);
-> +	}
-> +
-> +	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-> +	bo_execenv_destroy(&execenv);
-> +}
-> +
->  /**
->   * xe2lpg_compute_exec - run a pipeline compatible with XE2
->   *
-> @@ -1449,6 +1653,11 @@ static const struct {
->  		.compute_exec = xehpc_compute_exec,
->  		.compat = COMPAT_DRIVER_XE,
->  	},
-> +	{
-> +		.ip_ver = IP_VER(12, 70),
-> +		.compute_exec = xelpg_compute_exec,
-> +		.compat = COMPAT_DRIVER_I915 | COMPAT_DRIVER_XE,
-> +	},
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.compute_exec = xe2lpg_compute_exec,
-> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
-> index a1f3b46da..b0912e7e4 100644
-> --- a/lib/intel_compute_square_kernels.c
-> +++ b/lib/intel_compute_square_kernels.c
-> @@ -3844,6 +3844,50 @@ static const unsigned char xe2lpg_kernel_inc_bin[] = {
->  	0x00, 0x00, 0x00, 0x00
->  };
->  
-> +unsigned char xelpg_kernel_square_bin[] = {
-> +	0x61, 0x00, 0x03, 0x80, 0x20, 0x42, 0x05, 0x7f, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x45, 0x7f,
-> +	0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80,
-> +	0x20, 0x82, 0x45, 0x7f, 0x44, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00,
-> +	0x01, 0x19, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x40, 0x03, 0x80, 0x00, 0x00, 0x14, 0x08,
-> +	0x0c, 0x7f, 0xfa, 0xa7, 0x00, 0x00, 0x10, 0x02, 0x61, 0x00, 0x03, 0x80,
-> +	0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-> +	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80,
-> +	0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x01, 0xc0, 0x04, 0xc0, 0x04,
-> +	0x01, 0x09, 0x00, 0xe8, 0x01, 0x00, 0x11, 0x00, 0x41, 0x1a, 0x20, 0x22,
-> +	0x16, 0x09, 0x11, 0x03, 0x49, 0x00, 0x04, 0xa2, 0x12, 0x09, 0x11, 0x03,
-> +	0x52, 0x19, 0x04, 0x00, 0x60, 0x06, 0x04, 0x05, 0x04, 0x04, 0x0e, 0x01,
-> +	0x04, 0x01, 0x04, 0x07, 0x52, 0x00, 0x24, 0x00, 0x60, 0x06, 0x04, 0x0a,
-> +	0x04, 0x04, 0x0e, 0x01, 0x04, 0x02, 0x04, 0x07, 0x70, 0x1a, 0x04, 0x00,
-> +	0x60, 0x02, 0x01, 0x00, 0x04, 0x05, 0x10, 0x52, 0x84, 0x08, 0x00, 0x00,
-> +	0x70, 0x1a, 0x24, 0x00, 0x60, 0x02, 0x01, 0x00, 0x04, 0x0a, 0x10, 0x52,
-> +	0x84, 0x08, 0x00, 0x00, 0x2e, 0x00, 0x05, 0x11, 0x00, 0xc0, 0x00, 0x00,
-> +	0xd0, 0x00, 0x00, 0x00, 0xd0, 0x00, 0x00, 0x00, 0x69, 0x00, 0x0c, 0x60,
-> +	0x02, 0x05, 0x20, 0x00, 0x69, 0x00, 0x0e, 0x66, 0x02, 0x0a, 0x20, 0x00,
-> +	0x40, 0x1a, 0x10, 0xa0, 0x32, 0x0c, 0x10, 0x08, 0x40, 0x1a, 0x12, 0xa6,
-> +	0x32, 0x0e, 0x10, 0x08, 0x01, 0x1a, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x31, 0x40, 0x04, 0x00,
-> +	0x00, 0x00, 0x14, 0x14, 0x94, 0x10, 0x00, 0xfa, 0x00, 0x00, 0x00, 0x04,
-> +	0x01, 0x19, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x41, 0x24, 0x00, 0x00, 0x00, 0x14, 0x16,
-> +	0x94, 0x12, 0x00, 0xfa, 0x00, 0x00, 0x00, 0x04, 0x40, 0x00, 0x0c, 0xa0,
-> +	0x4a, 0x0c, 0x10, 0x08, 0x40, 0x00, 0x0e, 0xa6, 0x4a, 0x0e, 0x10, 0x08,
-> +	0x41, 0x20, 0x14, 0x20, 0x00, 0x14, 0x00, 0x14, 0x41, 0x21, 0x16, 0x26,
-> +	0x00, 0x16, 0x00, 0x16, 0x31, 0xa0, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x95, 0x0c, 0x08, 0xfa, 0x14, 0x14, 0x00, 0x04, 0x31, 0x91, 0x24, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x95, 0x0e, 0x08, 0xfa, 0x14, 0x16, 0x00, 0x04,
-> +	0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-> +	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x2f, 0x00, 0x05, 0x00,
-> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
-> +	0x61, 0x00, 0x7f, 0x64, 0x00, 0x03, 0x10, 0x00, 0x01, 0x11, 0x00, 0x80,
-> +	0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x31, 0x40, 0x00, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30,
-> +	0x00, 0x00, 0x00, 0x00
-> +};
->  
->  const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  	{
-> @@ -3866,6 +3910,11 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  		.size = sizeof(xehpc_kernel_square_bin),
->  		.kernel = xehpc_kernel_square_bin,
->  	},
-> +	{
-> +		.ip_ver = IP_VER(12, 70),
-> +		.size = sizeof(xelpg_kernel_square_bin),
-> +		.kernel = xelpg_kernel_square_bin,
-> +	},
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.size = sizeof(xe2lpg_kernel_square_bin),
-> -- 
-> 2.34.1
-> 
+>   tests/kms_scaling_modes.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+> index 5fd34c4b2..dd2c6426c 100644
+> --- a/tests/kms_scaling_modes.c
+> +++ b/tests/kms_scaling_modes.c
+> @@ -117,12 +117,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
+>   	for_each_pipe_with_valid_output(display, pipe, output) {
+>   		igt_display_reset(display);
+>   
+> -		if (!has_scaling_mode(output))
+> +		if (!has_scaling_mode(output)) {
+> +			igt_info("Output %s does not support scaling mode.\n",
+
+Please update the igt_info as igt_info("%s: Doesn't support 
+IGT_CONNECTOR_SCALING_MODE\n", igt_output_name(output));
+
+
+> +				  igt_output_name(output));
+>   			continue;
+> +		}
+>   
+>   		igt_output_set_pipe(output, pipe);
+> -		if (!intel_pipe_output_combo_valid(display))
+> +		if (!intel_pipe_output_combo_valid(display)) {
+> +			igt_info("Skipping invalid pipe/output combination.\n");
+>   			continue;
+> +		}
+>   
+>   		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+>   			test_scaling_mode_on_output(display, pipe, output, flags);
