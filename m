@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6C18E77182
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EE9AE7717D
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:24:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A0A1110E75C;
-	Mon,  9 Dec 2024 14:24:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32BD810E4B7;
+	Mon,  9 Dec 2024 14:24:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IPGR0dg3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FTezw1GG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9F4710E75C
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 14:24:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 356F310E4B7
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 14:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733754279; x=1765290279;
+ t=1733754282; x=1765290282;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hfuPTAR8SeVtNfRLYcqljQb5sT5rLQsYLPufHoFOIFs=;
- b=IPGR0dg3KeJnf8CKe4AabnAJ5D7P74fgif6DaqZC2+CLrhGohTu4NYZO
- Nvnoc47Q0yfy1dnV4kVbugCjiQHPFVZ7Se/JcwMV7GYRg/tsZGBAZoaJP
- btS36uhU6vGmTCca9CwpIj++o3qeNUtBOsz8S5bfM0NNKuAz93LSXgmXB
- U7b8NJG1x5Kd2rLoTrIyquVddk0aq9zpLc4TC+RPD84LARlypsJshFT0v
- IJSsVVWgJ/N0NZ81n3hR/Q3IkHrKaRVWHiS1lHjmeGTwOQDCjx7k+yX9T
- 092XfV+F40w/f/2V2WXKtsBIRMRPtpJTStEzF5b4DDG9K8wNFg+M/gHWz g==;
-X-CSE-ConnectionGUID: YQc10LYHRz2Z7FXyKZFhUA==
-X-CSE-MsgGUID: 0Wl75opaTy+PIbV/i5adNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33968996"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="33968996"
+ bh=j/TPHCW7tTMN9bGDM7TXSAaugaLVvVynrNDrnfmz9YY=;
+ b=FTezw1GG9qMBRofJ0XoqrlLkNO7EkcyUah7VdiRHarm5yynHNXRayxx3
+ NILYD1rSfHvjBhTO52LzLCAnHWK0XvGmYWQHeKoQY8wmYV7XYs8RkZgHY
+ vcZ6dz6kOp/qMK5B3ZkHwJYJq6hksJy+OJrQycSPbtkmdcoNOmpNoOi5d
+ cQP/TU6uV6WLeBKx5tdPoUNXW64mUscRCs0TOx4c/blijzVZSMfKFv32k
+ L2UyCwXsndNKRi1w6wyaRj910rtq8pyHssaNSA8YNTLlabMq5m2jQAmEU
+ tLSUigeb9F5WjySHfSyMPutTO/DbiYDNkD2qizicN+akYOpZQQ/UtS54f A==;
+X-CSE-ConnectionGUID: ROox4/jdRy2LXd+RyuJ9cg==
+X-CSE-MsgGUID: KR6yQoJQRXO3dd57gjQVJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33969005"
+X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="33969005"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:24:39 -0800
-X-CSE-ConnectionGUID: e01dVIdmTJ2ZwHBQKMao0Q==
-X-CSE-MsgGUID: /JEHGtFtRXWm/ksYvfqBXg==
+ 09 Dec 2024 06:24:42 -0800
+X-CSE-ConnectionGUID: 9DnxvXXqRtehiP4LemcRKQ==
+X-CSE-MsgGUID: QxogCLhAR1G9q2XYDX2fow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="94776176"
+X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="94776231"
 Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
  ([10.91.214.39])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:24:37 -0800
+ 09 Dec 2024 06:24:40 -0800
 From: Adam Miszczak <adam.miszczak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, marcin.bernatowicz@linux.intel.com,
  michal.wajdeczko@intel.com, pawel.sikora@intel.com
-Subject: [PATCH i-g-t v4 3/4] tools/vmtb: Test resources - vGPU profiles
-Date: Mon,  9 Dec 2024 15:24:22 +0100
-Message-Id: <20241209142423.2718734-4-adam.miszczak@linux.intel.com>
+Subject: [PATCH i-g-t v4 4/4] tools/vmtb: Install VMTB with IGT build system
+Date: Mon,  9 Dec 2024 15:24:23 +0100
+Message-Id: <20241209142423.2718734-5-adam.miszczak@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20241209142423.2718734-1-adam.miszczak@linux.intel.com>
 References: <20241209142423.2718734-1-adam.miszczak@linux.intel.com>
@@ -69,137 +69,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Provide vGPU profiles definition for Flex 170 (ATS-M) platform.
-Definitions are provided in a JSON format, parsed by the VMTB
-and applied as a test setup (fixture).
+Integrate VMTB into the IGT build system: introduce a new meson
+build option 'vmtb' to enable VMTB sources installation
+in a libexec directory by default:
+   /usr/local/libexec/igt-gpu-tools/vmtb/
+
+VMTB is not enabled in a default IGT meson configuration,
+to build and install it, use the following command:
+   meson build -Dvmtb=enabled && ninja -C build install
 
 Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- .../resources/vgpu_profiles/Flex170.json      | 113 ++++++++++++++++++
- 1 file changed, 113 insertions(+)
- create mode 100644 tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
+ meson.build       | 2 ++
+ meson_options.txt | 5 +++++
+ tools/meson.build | 4 ++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
-new file mode 100644
-index 000000000..ff1fa7e20
---- /dev/null
-+++ b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
-@@ -0,0 +1,113 @@
-+{
-+    "version": "1.1",
-+    "PFResources": {
-+        "Default": "MinimumPFResources",
-+        "Profile": {
-+            "MinimumPFResources": {
-+                "LocalMemoryEccOn": 402653184,
-+                "LocalMemoryEccOff": 402653184,
-+                "Contexts": 1024,
-+                "Doorbells": 16,
-+                "GGTTSize": 268435456
-+            }
-+        }
-+    },
-+    "vGPUResources": {
-+        "Default": null,
-+        "Profile": {
-+            "Flex170_16": {
-+                "VFCount": 1,
-+                "LocalMemoryEccOff": 16777216000,
-+                "LocalMemoryEccOn": 2147483648,
-+                "Contexts": 1024,
-+                "Doorbells": 240,
-+                "GGTTSize": 4026531840
-+            },
-+            "Flex170_8": {
-+                "VFCount": 2,
-+                "LocalMemoryEccOff": 8388608000,
-+                "LocalMemoryEccOn": 2147483648,
-+                "Contexts": 1024,
-+                "Doorbells": 120,
-+                "GGTTSize": 2013265920
-+            },
-+            "Flex170_4": {
-+                "VFCount": 4,
-+                "LocalMemoryEccOff": 4194304000,
-+                "LocalMemoryEccOn": 2147483648,
-+                "Contexts": 1024,
-+                "Doorbells": 60,
-+                "GGTTSize": 1006632960
-+            },
-+            "Flex170_2": {
-+                "VFCount": 8,
-+                "LocalMemoryEccOff": 2097152000,
-+                "LocalMemoryEccOn": 1073741824,
-+                "Contexts": 1024,
-+                "Doorbells": 30,
-+                "GGTTSize": 503316480
-+            },
-+            "Flex170_1": {
-+                "VFCount": 16,
-+                "LocalMemoryEccOff": 1048576000,
-+                "LocalMemoryEccOn": 536870912,
-+                "Contexts": 1024,
-+                "Doorbells": 15,
-+                "GGTTSize": 251658240
-+            }
-+        }
-+    },
-+    "vGPUScheduler": {
-+        "Default": "Flexible_30fps_GPUTimeSlicing",
-+        "Profile": {
-+            "Flexible_30fps_GPUTimeSlicing": {
-+                "GPUTimeSlicing": {
-+                    "ScheduleIfIdle": false,
-+                    "PFExecutionQuantum": 20,
-+                    "PFPreemptionTimeout": 20000,
-+                    "VFAttributes": {
-+                        "VFExecutionQuantum": "lambda VFCount : max( 32 // VFCount, 1)",
-+                        "VFPreemptionTimeout": "lambda VFCount : 128000 if (VFCount == 1) else max( 64000 // VFCount, 16000)"
-+                    }
-+                }
-+            },
-+            "Fixed_30fps_GPUTimeSlicing": {
-+                "GPUTimeSlicing": {
-+                    "ScheduleIfIdle": true,
-+                    "PFExecutionQuantum": 20,
-+                    "PFPreemptionTimeout": 20000,
-+                    "VFAttributes": {
-+                        "VFExecutionQuantum": "lambda VFCount : max( 32 // VFCount, 1)",
-+                        "VFPreemptionTimeout": "lambda VFCount : 128000 if (VFCount == 1) else max( 64000 // VFCount, 16000)"
-+                    }
-+                }
-+            },
-+            "Flexible_BurstableQoS_GPUTimeSlicing": {
-+                "GPUTimeSlicing": {
-+                    "ScheduleIfIdle": false,
-+                    "PFExecutionQuantum": 20,
-+                    "PFPreemptionTimeout": 20000,
-+                    "VFAttributes": {
-+                        "VFExecutionQuantum": "lambda VFCount : min((2000 // max(VFCount-1,1)*0.5, 50))",
-+                        "VFPreemptionTimeout": "lambda VFCount : (2000 // max(VFCount-1,1) - min((2000 // max(VFCount-1,1))*0.5, 50))*1000"
-+                    }
-+                }
-+            }
-+        }
-+    },
-+    "vGPUSecurity": {
-+        "Default": "Disabled",
-+        "Profile": {
-+            "Disabled": {
-+                "ResetAfterVfSwitch": false,
-+                "GuCSamplingPeriod": 0,
-+                "GuCThresholdCATError": 0,
-+                "GuCThresholdPageFault": 0,
-+                "GuCThresholdH2GStorm": 0,
-+                "GuCThresholdDbStorm": 0,
-+                "GuCThresholdGTIrqStorm": 0,
-+                "GuCThresholdEngineReset": 0
-+            }
-+        }
-+    }
-+}
-\ No newline at end of file
+diff --git a/meson.build b/meson.build
+index 64f57f232..0f26f95c8 100644
+--- a/meson.build
++++ b/meson.build
+@@ -91,10 +91,12 @@ build_docs = get_option('docs')
+ build_tests = not get_option('tests').disabled()
+ build_xe = not get_option('xe_driver').disabled()
+ build_xe_eudebug = get_option('xe_eudebug').enabled()
++build_vmtb = get_option('vmtb').enabled()
+ with_libdrm = get_option('libdrm_drivers')
+ 
+ build_info = ['Build type: ' + get_option('buildtype')]
+ build_info += 'Build Xe EU debugger test framework: @0@'.format(build_xe_eudebug)
++build_info += 'Build VM Test Bench: @0@'.format(build_vmtb)
+ 
+ inc = include_directories('include', 'include/drm-uapi', 'include/drm-uapi-experimental', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
+ 
+diff --git a/meson_options.txt b/meson_options.txt
+index c410f9b77..e23402b36 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -47,6 +47,11 @@ option('xe_eudebug',
+        value : 'disabled',
+        description : 'Build library and tests for Xe EU debugger')
+ 
++option('vmtb',
++       type : 'feature',
++       value : 'disabled',
++       description : 'Build VM Test Bench')
++
+ option('libdrm_drivers',
+        type : 'array',
+        value : ['auto'],
+diff --git a/tools/meson.build b/tools/meson.build
+index 48c9a4b50..38b04851c 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -113,6 +113,10 @@ if libudev.found()
+ 			install : true)
+ endif
+ 
++if build_vmtb
++	install_subdir('vmtb', install_dir: libexecdir)
++endif
++
+ subdir('i915-perf')
+ subdir('xe-perf')
+ subdir('null_state_gen')
 -- 
 2.39.1
 
