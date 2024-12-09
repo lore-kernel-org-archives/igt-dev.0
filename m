@@ -4,58 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56E09E7717D
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 17:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C59E7717D
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 17:48:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA6BC10E2B5;
-	Mon,  9 Dec 2024 17:31:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 930D010E4E8;
+	Mon,  9 Dec 2024 17:48:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bbkHppVt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FS6+PaI2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA00A10E2B6
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 17:31:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45A7A10E4E8
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 17:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733765477; x=1765301477;
+ t=1733766530; x=1765302530;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=g86Yko85PocMLXCI2iGYqETcpafXo+y1O/nZojYY5kg=;
- b=bbkHppVt3j1d8p4tRMgxL2zI9vGPW4tRW+Mg6AiYAuA5rpOABJEYIVL1
- HBmE518+tXqB5u4znSMdm+YC4XoDr/mtXmEUnEQDHGeUEFWjbrlBQuFKH
- VT+bO3aetKIwJrKH3zbP5KJaOgXXlORR7O9U525VXZBlUU5rrwolBNrdS
- tFuXS2k8pLg7vIsfn9zxCJ5+8yr35RW5Eqtz9gXDMwno99rshqQrCO9aT
- D6+1qmym9GlzWgo+Lxsi+4yvyFkhNMRMNqPoUQgqUVr6BWrkuebnRqc0C
- wFY4Kb1GQf/UmOQTZ0McCQBLefezP9mpP9TUEZ9KNlWqDlkwZZq7j5r1t w==;
-X-CSE-ConnectionGUID: ZLLzQrScRiylWsMAzklOKg==
-X-CSE-MsgGUID: pwox2mCiTWe7zSVK1lZkww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33415576"
-X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="33415576"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 09:31:17 -0800
-X-CSE-ConnectionGUID: LcVfELO6QZqjpBG0oHhPHA==
-X-CSE-MsgGUID: /+aezwqPTqCjlJt6pZA9fA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=71OEg/ZdMdjYx1iaOPhYhq9S26Uu6+B9nXh3VIupoCY=;
+ b=FS6+PaI2Ff7k8tN8LQDMox6Y4d+8W/3/fvSS/DOI4L+pXJtqu77MH+6D
+ QVbydQzWmecB6UPxqS+iRe2ntJGadpHVQyFqr1KbYpSvLwXz6fKgSYq5+
+ +eRxqkx8gXCR95xW6d+GuH924sdQKLAHGJtSTm/W66pgnIf9x3hbp++Q+
+ NYK0H4C/gSe6KH0vxWhY9KdhgT7V6KAh08Wqo37HqV+ZbJcH19qY6SM7h
+ vVWZWfr0UA6hLIHUNqlC0fTvWds4ilZGg3w6T9eb50Mt70QqH6OQh7evo
+ 01Ztsg7g+K9vepTcCkNXL+dBCm3+OncZ6kUFZBjiAiOAwaVgUjG0o4ACY w==;
+X-CSE-ConnectionGUID: 1XHJ6Uu8SZiYzGUQYMH7nw==
+X-CSE-MsgGUID: +R1t6y39S8mjL/8hlMxunw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44757986"
+X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="44757986"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2024 09:48:49 -0800
+X-CSE-ConnectionGUID: ipQpfJpVQ0ygUsW/x73P3Q==
+X-CSE-MsgGUID: wOIBog5ITh+6pvy/8f55GA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="95208255"
+X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="94985616"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 09:31:15 -0800
-Date: Mon, 9 Dec 2024 18:31:13 +0100
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 09:48:48 -0800
+Date: Mon, 9 Dec 2024 18:48:46 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 1/2] Revert "tests/intel/xe_sysfs_timeslice_duration:
- Restore preempt timeout"
-Message-ID: <20241209173113.uwm35ukncv2qlvy6@kamilkon-desk.igk.intel.com>
+To: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
+Subject: Re: [PATCH i-g-t] lib/igt_profiling: add include for PATH_MAX constant
+Message-ID: <20241209174846.fhr7udtqh42jrh4k@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20241206215459.128077-1-jonathan.cavitt@intel.com>
+ Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>,
+ Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
+References: <20241103171806.10248-1-arkamar@atlas.cz>
+ <202412892440-Z1Vl2JjW1W30ZH4q-arkamar@atlas.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241206215459.128077-1-jonathan.cavitt@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <202412892440-Z1Vl2JjW1W30ZH4q-arkamar@atlas.cz>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,89 +74,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2024-12-06 at 21:54:58 +0000, Jonathan Cavitt wrote:
-> This reverts commit f33842ab06b7470c9c9ec482bfd123b2d58507af.
+Hi Petr,
+On 2024-12-08 at 10:24:40 +0100, Petr Vaněk wrote:
+> Hi igt-devs,
 > 
-> The commit refers to the wrong link in the Closes field, so that needs
-> to be changed.
+> On Sun, Nov 03, 2024 at 06:18:06PM +0100, Petr Vaněk wrote:
+> > PATH_MAX constant is defined in limits.h header file. It needs to be
+> > explicitly included in musl environment as it is not transitively
+> > available for any of available includes.
+> 
+> gentle ping. It has been a month since I sent the patch.
+> 
+> Cheers,
+> Petr
+> 
 
-Nak, as discussed offline imho we should live with wrong 'Closes' tag,
-just make sure you correct this in GitLab issues. You could also send
-replay to original wrong merged patch so it will be possible to find-out
-later on lore.kernel.org
+Sorry, I forgot about this, your patch merged.
 
 Regards,
 Kamil
 
-> 
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> ---
->  tests/intel/xe_sysfs_timeslice_duration.c | 19 ++-----------------
->  1 file changed, 2 insertions(+), 17 deletions(-)
-> 
-> diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
-> index 752672691f..899093a9df 100644
-> --- a/tests/intel/xe_sysfs_timeslice_duration.c
-> +++ b/tests/intel/xe_sysfs_timeslice_duration.c
-> @@ -115,11 +115,10 @@ static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_
->  static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
->  {
->  	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
-> -	unsigned int saved, old_pt;
-> +	unsigned int saved;
->  	uint64_t elapsed;
->  	uint64_t epsilon;
->  
-> -	igt_assert(igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &old_pt) == 1);
->  	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) == 1);
->  	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
->  	igt_debug("Initial %s:%u\n", property[0], saved);
-> @@ -141,9 +140,6 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
->  	}
->  
->  	set_timeslice_duration(engine, saved);
-> -	igt_assert_lte(0, igt_sysfs_printf(engine, "preempt_timeout_us", "%u", old_pt));
-> -	igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &saved);
-> -	igt_assert_eq(saved, old_pt);
->  }
->  
->  #define	MAX_GTS	8
-> @@ -163,7 +159,6 @@ igt_main
->  	int gt_count = 0;
->  	int fd = -1, sys_fd, gt;
->  	int engines_fd[MAX_GTS], gt_fd[MAX_GTS];
-> -	unsigned int pts[MAX_GTS][XE_MAX_ENGINE_INSTANCE];
->  	unsigned int tds[MAX_GTS][XE_MAX_ENGINE_INSTANCE];
->  	int *engine_list[MAX_GTS];
->  
-> @@ -189,8 +184,6 @@ igt_main
->  			while (list[i] != -1) {
->  				igt_require(igt_sysfs_scanf(list[i], "timeslice_duration_us", "%u",
->  							    &tds[gt_count][i]) == 1);
-> -				igt_require(igt_sysfs_scanf(list[i], "preempt_timeout_us", "%u",
-> -							    &pts[gt_count][i]) == 1);
->  				i++;
->  			}
->  
-> @@ -222,16 +215,8 @@ igt_main
->  			while (list[j] != -1) {
->  				unsigned int store = UINT_MAX;
->  
-> -				igt_sysfs_printf(list[j], "preempt_timeout_us",
-> -						 "%u", pts[i][j]);
-> -				igt_sysfs_scanf(list[j], "preempt_timeout_us",
-> -						"%u", &store);
-> -				igt_abort_on_f(store != pts[i][j],
-> -					       "preempt_timeout_us not restored!\n");
-> -
-> -				store = UINT_MAX;
->  				igt_sysfs_printf(list[j], "timeslice_duration_us",
-> -						 "%u", tds[i][j]);
-> +						"%u", tds[i][j]);
->  				igt_sysfs_scanf(list[j], "timeslice_duration_us",
->  						"%u", &store);
->  				igt_abort_on_f(store != tds[i][j],
-> -- 
-> 2.43.0
-> 
+> > Fixes: 9366bee04d16 ("lib: Add DRM driver sysfs profiling knob toggling functions")
+> > Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
+> > Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+> > ---
+> >  lib/igt_profiling.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+> > index b61506742..e1526ad98 100644
+> > --- a/lib/igt_profiling.c
+> > +++ b/lib/igt_profiling.c
+> > @@ -10,6 +10,7 @@
+> >  #include <assert.h>
+> >  #include <dirent.h>
+> >  #include <fcntl.h>
+> > +#include <limits.h>
+> >  #include <stdbool.h>
+> >  #include <stdio.h>
+> >  #include <stdlib.h>
+> > -- 
+> > 2.45.2
+> > 
