@@ -4,61 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 883D7E7717D
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:14:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D167FE77180
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:24:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4468410E74C;
-	Mon,  9 Dec 2024 14:14:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F06B10E4B7;
+	Mon,  9 Dec 2024 14:24:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bsaJHD3f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vl7oVbBM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D31010E74C
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 14:14:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62FCA10E4B7
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 14:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733753683; x=1765289683;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=8P2cvTTEPhWL3AhV6TRv0AWCOHB0h595AlLYGULHg7o=;
- b=bsaJHD3fmsy5Yta0PR9jnWMLVaPQKQiW7cyPINXGW77pH8Z+MLPitQHf
- enHK6NyT8yf/c+rnqx4F2kdByBPWHZtxfujVN3G1u60O6V89z7MR9ZutF
- 1/2+3GHrvbaEOljXRlGnQ8JZ2lBGO9Sn8CS8m01OgV39zk6ORtHquei5g
- Hcw8Hdkokdv/OQk2agGpxaDSzEvpCkv7HwcYKATrKjwrI1Mk4Npycb13D
- Xz5FWy3GMf/oZyFmJ7PN8sIBXtWUQgguv42UKb0GaDCZ2HLSQBSwB9jZY
- LtixHV95aeE3JvqYpmlZT4c0nTAgapadPeE7j3d8Yco7vwb1xw27a5ES+ Q==;
-X-CSE-ConnectionGUID: x33k5hdYQw+Exx053STR0w==
-X-CSE-MsgGUID: 5O8QtSlFTbeeXHQwmYEobw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34187322"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="34187322"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:14:42 -0800
-X-CSE-ConnectionGUID: al6TiGp9TDyIgGr3bFmEag==
-X-CSE-MsgGUID: btf18EnNQKiIV0mWdjAYfA==
+ t=1733754268; x=1765290268;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jx08pFFP295dMrzhpVuQWfD14oz1zWkulSzzDFc6EwE=;
+ b=Vl7oVbBMiUvn9pArDDMiggPEhRk/Rm5wUn0lZZEIMKhxCwuJ81eHiXwe
+ 4ZRIfFKZWJDp730VNTjq7qAwanPN+ZzlYlhgOU2l0FbTXfJ+7jEP0xnEn
+ 8DDcjSWOGTIDU8c8XdOE0mvx7d+4yUtvTdB8+8s4X3Xtb7m1itzurqdh6
+ 2OprySc4WL6/buONrfpcgwzLg5PpAvPjjlhrD0dcLD82rhSEixStPnzYQ
+ 1n0jDKL9PHViZ0O1MZeFOktFILaODTM0/Yf243uoXX+9hOJDbqkNK+URT
+ Wum869316mIYZWfC+VkaPRsRe7HRCfNvObL3PlCOGdjp1BH9rV2IzqvJx g==;
+X-CSE-ConnectionGUID: f3miVC5vQ+ylD6qLMQ06gA==
+X-CSE-MsgGUID: OUL4zXv+Se2k8QX6rFi57A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33968967"
+X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="33968967"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2024 06:24:27 -0800
+X-CSE-ConnectionGUID: oqz4lpcYS9SG4g1rE/xsdQ==
+X-CSE-MsgGUID: U2e3CHGDQD2o++w72Rc/Ag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="95544044"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO
- dpiatkow-mobl1.mshome.net) ([10.245.246.170])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:14:40 -0800
-From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="94776037"
+Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
+ ([10.91.214.39])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2024 06:24:25 -0800
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/intel/xe_eudebug: Add
- basic-vm-bind-ufence-sigint-client test
-Date: Mon,  9 Dec 2024 15:13:59 +0100
-Message-Id: <20241209141359.5738-4-dominik.karol.piatkowski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241209141359.5738-1-dominik.karol.piatkowski@intel.com>
-References: <20241209141359.5738-1-dominik.karol.piatkowski@intel.com>
+Cc: kamil.konieczny@linux.intel.com, marcin.bernatowicz@linux.intel.com,
+ michal.wajdeczko@intel.com, pawel.sikora@intel.com
+Subject: [PATCH i-g-t v4 0/4] vmtb: Introduce SR-IOV VM-level testing tool
+Date: Mon,  9 Dec 2024 15:24:19 +0100
+Message-Id: <20241209142423.2718734-1-adam.miszczak@linux.intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -77,76 +68,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test that gives user fence in application, holds it, sends SIGINT
-to client and checks if anything breaks.
+VM Test Bench (VMTB) is a tool for testing virtualization
+(SR-IOV) supported by the xe driver.
+It allows to enable and provision VFs (Virtual Functions)
+and facilitates manipulation of VMs (Virtual Machines)
+running virtual GPUs.
 
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- tests/intel/xe_eudebug.c | 44 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+Initially only basic test scenarios are provided:
+- enable VFs, pass it to VMs and boot guest OS
+- submit basic workloads on a guest with virtualized GPU
+- exercise VF driver probe and remove
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 0a4bebf1e..8728d5b23 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -2218,6 +2218,47 @@ static void test_ufence_drop_debugger_before_ack(int fd)
- 	ufence_priv_destroy(priv);
- }
- 
-+/**
-+ * SUBTEST: basic-vm-bind-ufence-sigint-client
-+ * Description:
-+ *	Give user fence in application, hold it, send SIGINT to client and check if anything breaks.
-+ */
-+static void test_ufence_sigint_client(int fd)
-+{
-+	struct xe_eudebug_debugger *d;
-+	struct xe_eudebug_session *s;
-+	struct xe_eudebug_client *c;
-+	struct ufence_priv *priv;
-+
-+	priv = ufence_priv_create();
-+	s = xe_eudebug_session_create(fd, basic_ufence_client, 0, priv);
-+	c = s->client;
-+	d = s->debugger;
-+
-+	xe_eudebug_debugger_add_trigger(d,
-+					DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-+					basic_ufence_trigger);
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
-+	xe_eudebug_debugger_start_worker(d);
-+	xe_eudebug_client_start(c);
-+
-+	xe_eudebug_debugger_wait_stage(s, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
-+	xe_eudebug_assert_f(d, wait_for_ufence_events(priv, XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * MSEC_PER_SEC) == 0,
-+			    "missing ufence events\n");
-+
-+	kill(c->pid, SIGINT);
-+
-+	xe_eudebug_debugger_stop_worker(d, 1);
-+
-+	xe_eudebug_event_log_print(d->log, true);
-+
-+	xe_eudebug_debugger_destroy(s->debugger);
-+	free(s);
-+
-+	ufence_priv_destroy(priv);
-+}
-+
- struct vm_bind_clear_thread_priv {
- 	struct drm_xe_engine_class_instance *hwe;
- 	struct xe_eudebug_client *c;
-@@ -2875,6 +2916,9 @@ igt_main
- 	igt_subtest("basic-vm-bind-drop-debugger-before-ufence-ack")
- 		test_ufence_drop_debugger_before_ack(fd);
- 
-+	igt_subtest("basic-vm-bind-ufence-sigint-client")
-+		test_ufence_sigint_client(fd);
-+
- 	igt_subtest("vma-ufence")
- 		test_vma_ufence(fd, 0);
- 
+Proposed location for the new tool is the root IGT directory:
+igt-gpu-tools/vmtb
+but some other options can be also considered, for example:
+tools/vmtb
+tests/vmtb
+
+v2:
+- improve device detection function:
+  instead of parsing lspci output with regex, iterate over
+  sysfs driver directory to get bound devices' BDFs (Marcin)
+- remove obsolete fixtures and other unused code (Marcin)
+
+v3:
+- integrate VMTB with IGT meson build/install system (Kamil)
+- move the tool from IGT's root to tools/vmtb subdir (Kamil)
+- split VMTB core implementation, tests, resources and meson config
+  into separate patches (Kamil)
+- update readme description for build, install and dependencies
+
+v4:
+- fix checkpatch issues: typos, whitespaces (Kamil)
+
+Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Paweł Sikora <pawel.sikora@intel.com>
+
+Adam Miszczak (4):
+  tools/vmtb: VM Test Bench core
+  tools/vmtb: Basic SR-IOV tests
+  tools/vmtb: Test resources - vGPU profiles
+  tools/vmtb: Install VMTB with IGT build system
+
+ meson.build                                   |   2 +
+ meson_options.txt                             |   5 +
+ tools/meson.build                             |   4 +
+ tools/vmtb/MANIFEST.in                        |   3 +
+ tools/vmtb/README.md                          | 106 +++
+ tools/vmtb/bench/__init__.py                  |  43 ++
+ tools/vmtb/bench/configurators/__init__.py    |   0
+ tools/vmtb/bench/configurators/pci.py         |  48 ++
+ .../vmtb/bench/configurators/vgpu_profile.py  | 264 ++++++++
+ .../configurators/vgpu_profile_config.py      | 148 +++++
+ tools/vmtb/bench/configurators/vmtb_config.py | 110 ++++
+ tools/vmtb/bench/drivers/__init__.py          |   0
+ tools/vmtb/bench/drivers/driver_interface.py  | 198 ++++++
+ tools/vmtb/bench/drivers/xe.py                | 307 +++++++++
+ tools/vmtb/bench/exceptions.py                |  40 ++
+ tools/vmtb/bench/executors/__init__.py        |   0
+ .../bench/executors/executor_interface.py     |  22 +
+ tools/vmtb/bench/executors/gem_wsim.py        |  70 ++
+ tools/vmtb/bench/executors/igt.py             | 117 ++++
+ tools/vmtb/bench/executors/shell.py           |  30 +
+ tools/vmtb/bench/helpers/__init__.py          |   0
+ tools/vmtb/bench/helpers/helpers.py           |  77 +++
+ tools/vmtb/bench/helpers/log.py               |  75 +++
+ tools/vmtb/bench/machines/__init__.py         |   0
+ tools/vmtb/bench/machines/device_interface.py |  23 +
+ tools/vmtb/bench/machines/host.py             | 196 ++++++
+ .../vmtb/bench/machines/machine_interface.py  |  65 ++
+ .../vmtb/bench/machines/physical/__init__.py  |   0
+ tools/vmtb/bench/machines/physical/device.py  | 240 +++++++
+ tools/vmtb/bench/machines/virtual/__init__.py |   0
+ .../machines/virtual/backends/__init__.py     |   0
+ .../virtual/backends/backend_interface.py     |  40 ++
+ .../machines/virtual/backends/guestagent.py   |  99 +++
+ .../machines/virtual/backends/qmp_monitor.py  | 161 +++++
+ tools/vmtb/bench/machines/virtual/vm.py       | 604 ++++++++++++++++++
+ tools/vmtb/dev-requirements.txt               |   6 +
+ tools/vmtb/pyproject.toml                     |  25 +
+ tools/vmtb/pytest.ini                         |   0
+ tools/vmtb/requirements.txt                   |   2 +
+ tools/vmtb/vmm_flows/__init__.py              |   0
+ tools/vmtb/vmm_flows/conftest.py              | 307 +++++++++
+ .../resources/vgpu_profiles/Flex170.json      | 113 ++++
+ tools/vmtb/vmm_flows/test_basic.py            | 160 +++++
+ tools/vmtb/vmtb_config.json                   |  31 +
+ 44 files changed, 3741 insertions(+)
+ create mode 100644 tools/vmtb/MANIFEST.in
+ create mode 100644 tools/vmtb/README.md
+ create mode 100644 tools/vmtb/bench/__init__.py
+ create mode 100644 tools/vmtb/bench/configurators/__init__.py
+ create mode 100644 tools/vmtb/bench/configurators/pci.py
+ create mode 100644 tools/vmtb/bench/configurators/vgpu_profile.py
+ create mode 100644 tools/vmtb/bench/configurators/vgpu_profile_config.py
+ create mode 100644 tools/vmtb/bench/configurators/vmtb_config.py
+ create mode 100644 tools/vmtb/bench/drivers/__init__.py
+ create mode 100644 tools/vmtb/bench/drivers/driver_interface.py
+ create mode 100644 tools/vmtb/bench/drivers/xe.py
+ create mode 100644 tools/vmtb/bench/exceptions.py
+ create mode 100644 tools/vmtb/bench/executors/__init__.py
+ create mode 100644 tools/vmtb/bench/executors/executor_interface.py
+ create mode 100644 tools/vmtb/bench/executors/gem_wsim.py
+ create mode 100644 tools/vmtb/bench/executors/igt.py
+ create mode 100644 tools/vmtb/bench/executors/shell.py
+ create mode 100644 tools/vmtb/bench/helpers/__init__.py
+ create mode 100644 tools/vmtb/bench/helpers/helpers.py
+ create mode 100644 tools/vmtb/bench/helpers/log.py
+ create mode 100644 tools/vmtb/bench/machines/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/device_interface.py
+ create mode 100644 tools/vmtb/bench/machines/host.py
+ create mode 100644 tools/vmtb/bench/machines/machine_interface.py
+ create mode 100644 tools/vmtb/bench/machines/physical/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/physical/device.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/__init__.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/backend_interface.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/guestagent.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/backends/qmp_monitor.py
+ create mode 100644 tools/vmtb/bench/machines/virtual/vm.py
+ create mode 100644 tools/vmtb/dev-requirements.txt
+ create mode 100644 tools/vmtb/pyproject.toml
+ create mode 100644 tools/vmtb/pytest.ini
+ create mode 100644 tools/vmtb/requirements.txt
+ create mode 100644 tools/vmtb/vmm_flows/__init__.py
+ create mode 100644 tools/vmtb/vmm_flows/conftest.py
+ create mode 100644 tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
+ create mode 100644 tools/vmtb/vmm_flows/test_basic.py
+ create mode 100644 tools/vmtb/vmtb_config.json
+
 -- 
-2.34.1
+2.39.1
 
