@@ -4,14 +4,14 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05FA9E77180
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13B99E7717D
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:35:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB8B310E75A;
-	Mon,  9 Dec 2024 14:31:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C97D210E75C;
+	Mon,  9 Dec 2024 14:35:21 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1665810E740;
- Mon,  9 Dec 2024 14:31:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D41A10E75C;
+ Mon,  9 Dec 2024 14:35:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -20,8 +20,8 @@ Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/kms=5Fcontent=5
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kandpal, Suraj" <suraj.kandpal@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 09 Dec 2024 14:31:17 -0000
-Message-ID: <173375467707.486559.15670852963623128792@b555e5b46a47>
+Date: Mon, 09 Dec 2024 14:35:20 -0000
+Message-ID: <173375492037.486559.3452687877980847734@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241203061519.2121105-1-suraj.kandpal@intel.com>
 In-Reply-To: <20241203061519.2121105-1-suraj.kandpal@intel.com>
