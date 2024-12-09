@@ -4,61 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C59E7717D
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 17:48:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3341E7717D
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 17:52:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 930D010E4E8;
-	Mon,  9 Dec 2024 17:48:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9029710E4E8;
+	Mon,  9 Dec 2024 17:52:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FS6+PaI2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WitRGHRd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45A7A10E4E8
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 17:48:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D92D10E4E8
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 17:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733766530; x=1765302530;
+ t=1733766754; x=1765302754;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=71OEg/ZdMdjYx1iaOPhYhq9S26Uu6+B9nXh3VIupoCY=;
- b=FS6+PaI2Ff7k8tN8LQDMox6Y4d+8W/3/fvSS/DOI4L+pXJtqu77MH+6D
- QVbydQzWmecB6UPxqS+iRe2ntJGadpHVQyFqr1KbYpSvLwXz6fKgSYq5+
- +eRxqkx8gXCR95xW6d+GuH924sdQKLAHGJtSTm/W66pgnIf9x3hbp++Q+
- NYK0H4C/gSe6KH0vxWhY9KdhgT7V6KAh08Wqo37HqV+ZbJcH19qY6SM7h
- vVWZWfr0UA6hLIHUNqlC0fTvWds4ilZGg3w6T9eb50Mt70QqH6OQh7evo
- 01Ztsg7g+K9vepTcCkNXL+dBCm3+OncZ6kUFZBjiAiOAwaVgUjG0o4ACY w==;
-X-CSE-ConnectionGUID: 1XHJ6Uu8SZiYzGUQYMH7nw==
-X-CSE-MsgGUID: +R1t6y39S8mjL/8hlMxunw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44757986"
-X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="44757986"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 09:48:49 -0800
-X-CSE-ConnectionGUID: ipQpfJpVQ0ygUsW/x73P3Q==
-X-CSE-MsgGUID: wOIBog5ITh+6pvy/8f55GA==
+ mime-version:in-reply-to;
+ bh=P8nVWCMyetNTYH23SQiieYvGPV4qLQvr9LpcZeFGlMs=;
+ b=WitRGHRdu8xu2x/L5+ygFfKphruoUA9FV8Vs/VGZEtZa1c7qtMEyexKj
+ oNaa0lbD74WxJDzoRh7a6CPh1orP/WhUdtEagMmEXNFgyv0ndtNXQ06rq
+ O293BIfe++uXsH7cdiWCsLYqcM9HarM7TtD8XC2u0fdsl4i2AeHhyJryk
+ 6tbCi++8ibS1yqigsB6k4CKCyWXY487iotTcw0+cR+Mh7wUlft+96B8pq
+ +1vPwc2pn/d4dpJhQ+LTfTEXPj2rSVhfkZIjbsVVbPwhliIfZKuPrOe35
+ VqnCLr2WEQsE9E2OPQuuEmnGEiA06sYoVgJJJUtctQGFKYToOwjCmhG45 Q==;
+X-CSE-ConnectionGUID: zsEbJO2+RNCdT/3iNt4iog==
+X-CSE-MsgGUID: 3MP+JGkdTB2J4HKfk4YAZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33991923"
+X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="33991923"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2024 09:52:33 -0800
+X-CSE-ConnectionGUID: Vs2KlyvXTH28Y8L4z5EZAg==
+X-CSE-MsgGUID: JwDvHkuGRh+FDvDRZl/aSw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="94985616"
+X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; d="scan'208";a="95216874"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 09:48:48 -0800
-Date: Mon, 9 Dec 2024 18:48:46 +0100
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 09:52:31 -0800
+Date: Mon, 9 Dec 2024 18:52:28 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-Subject: Re: [PATCH i-g-t] lib/igt_profiling: add include for PATH_MAX constant
-Message-ID: <20241209174846.fhr7udtqh42jrh4k@kamilkon-desk.igk.intel.com>
+To: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/1] tests/intel: Adjust test documentation to
+ given standard
+Message-ID: <20241209175228.hk63z7vtjdehmpas@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-References: <20241103171806.10248-1-arkamar@atlas.cz>
- <202412892440-Z1Vl2JjW1W30ZH4q-arkamar@atlas.cz>
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20241209080546.557032-1-katarzyna.piecielska@intel.com>
+ <20241209080546.557032-2-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202412892440-Z1Vl2JjW1W30ZH4q-arkamar@atlas.cz>
+In-Reply-To: <20241209080546.557032-2-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,45 +72,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Petr,
-On 2024-12-08 at 10:24:40 +0100, Petr Vaněk wrote:
-> Hi igt-devs,
+Hi Katarzyna,
+On 2024-12-09 at 08:05:46 +0000, Katarzyna Piecielska wrote:
+> Change Category for:
+>  * tests/intel/xe_exec_sip.c
+>  * tests/intel/xe_tlb.c
 > 
-> On Sun, Nov 03, 2024 at 06:18:06PM +0100, Petr Vaněk wrote:
-> > PATH_MAX constant is defined in limits.h header file. It needs to be
-> > explicitly included in musl environment as it is not transitively
-> > available for any of available includes.
-> 
-> gentle ping. It has been a month since I sent the patch.
-> 
-> Cheers,
-> Petr
-> 
+> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Sorry, I forgot about this, your patch merged.
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
-> > Fixes: 9366bee04d16 ("lib: Add DRM driver sysfs profiling knob toggling functions")
-> > Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
-> > Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
-> > ---
-> >  lib/igt_profiling.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
-> > index b61506742..e1526ad98 100644
-> > --- a/lib/igt_profiling.c
-> > +++ b/lib/igt_profiling.c
-> > @@ -10,6 +10,7 @@
-> >  #include <assert.h>
-> >  #include <dirent.h>
-> >  #include <fcntl.h>
-> > +#include <limits.h>
-> >  #include <stdbool.h>
-> >  #include <stdio.h>
-> >  #include <stdlib.h>
-> > -- 
-> > 2.45.2
-> > 
+> ---
+>  tests/intel/xe_exec_sip.c | 8 ++++----
+>  tests/intel/xe_tlb.c      | 2 +-
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+> index 91c8df161..062b80a08 100644
+> --- a/tests/intel/xe_exec_sip.c
+> +++ b/tests/intel/xe_exec_sip.c
+> @@ -5,12 +5,12 @@
+>  
+>  /**
+>   * TEST: Tests for GPGPU shader and system routine (SIP) execution
+> - * Category: Software building block
+> - * Description: Exercise interaction between GPGPU shader and system routine
+> - *              (SIP), which should handle exceptions raised on Execution Unit.
+> - * Functionality: system routine
+> + * Category: Core
+>   * Mega feature: Compute
+>   * Sub-category: GPGPU tests
+> + * Functionality: system routine
+> + * Description: Exercise interaction between GPGPU shader and system routine
+> + *              (SIP), which should handle exceptions raised on Execution Unit.
+>   * Test category: functionality test
+>   */
+>  
+> diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+> index 8104e45d8..9b920fe8a 100644
+> --- a/tests/intel/xe_tlb.c
+> +++ b/tests/intel/xe_tlb.c
+> @@ -15,7 +15,7 @@
+>  
+>  /**
+>   * TEST: Check Translation Lookaside Buffer Invalidation.
+> - * Category: Software building block
+> + * Category: Core
+>   * Mega feature: General Core features
+>   * Sub-category: CMD submission
+>   * Functionality: TLB invalidate
+> -- 
+> 2.34.1
+> 
