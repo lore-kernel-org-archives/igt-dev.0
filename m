@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EE9AE7717D
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05FA9E77180
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Dec 2024 14:31:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 32BD810E4B7;
-	Mon,  9 Dec 2024 14:24:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FTezw1GG";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 356F310E4B7
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Dec 2024 14:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733754282; x=1765290282;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=j/TPHCW7tTMN9bGDM7TXSAaugaLVvVynrNDrnfmz9YY=;
- b=FTezw1GG9qMBRofJ0XoqrlLkNO7EkcyUah7VdiRHarm5yynHNXRayxx3
- NILYD1rSfHvjBhTO52LzLCAnHWK0XvGmYWQHeKoQY8wmYV7XYs8RkZgHY
- vcZ6dz6kOp/qMK5B3ZkHwJYJq6hksJy+OJrQycSPbtkmdcoNOmpNoOi5d
- cQP/TU6uV6WLeBKx5tdPoUNXW64mUscRCs0TOx4c/blijzVZSMfKFv32k
- L2UyCwXsndNKRi1w6wyaRj910rtq8pyHssaNSA8YNTLlabMq5m2jQAmEU
- tLSUigeb9F5WjySHfSyMPutTO/DbiYDNkD2qizicN+akYOpZQQ/UtS54f A==;
-X-CSE-ConnectionGUID: ROox4/jdRy2LXd+RyuJ9cg==
-X-CSE-MsgGUID: KR6yQoJQRXO3dd57gjQVJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33969005"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="33969005"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:24:42 -0800
-X-CSE-ConnectionGUID: 9DnxvXXqRtehiP4LemcRKQ==
-X-CSE-MsgGUID: QxogCLhAR1G9q2XYDX2fow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="94776231"
-Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
- ([10.91.214.39])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:24:40 -0800
-From: Adam Miszczak <adam.miszczak@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, marcin.bernatowicz@linux.intel.com,
- michal.wajdeczko@intel.com, pawel.sikora@intel.com
-Subject: [PATCH i-g-t v4 4/4] tools/vmtb: Install VMTB with IGT build system
-Date: Mon,  9 Dec 2024 15:24:23 +0100
-Message-Id: <20241209142423.2718734-5-adam.miszczak@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20241209142423.2718734-1-adam.miszczak@linux.intel.com>
-References: <20241209142423.2718734-1-adam.miszczak@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB8B310E75A;
+	Mon,  9 Dec 2024 14:31:18 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1665810E740;
+ Mon,  9 Dec 2024 14:31:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/kms=5Fcontent=5Fprot?=
+ =?utf-8?q?ection=3A_Account_for_reauthetication_in_LIC_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 09 Dec 2024 14:31:17 -0000
+Message-ID: <173375467707.486559.15670852963623128792@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241203061519.2121105-1-suraj.kandpal@intel.com>
+In-Reply-To: <20241203061519.2121105-1-suraj.kandpal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,74 +37,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Integrate VMTB into the IGT build system: introduce a new meson
-build option 'vmtb' to enable VMTB sources installation
-in a libexec directory by default:
-   /usr/local/libexec/igt-gpu-tools/vmtb/
+== Series Details ==
 
-VMTB is not enabled in a default IGT meson configuration,
-to build and install it, use the following command:
-   meson build -Dvmtb=enabled && ninja -C build install
+Series: test/kms_content_protection: Account for reauthetication in LIC (rev2)
+URL   : https://patchwork.freedesktop.org/series/141871/
+State : success
 
-Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- meson.build       | 2 ++
- meson_options.txt | 5 +++++
- tools/meson.build | 4 ++++
- 3 files changed, 11 insertions(+)
+== Summary ==
 
-diff --git a/meson.build b/meson.build
-index 64f57f232..0f26f95c8 100644
---- a/meson.build
-+++ b/meson.build
-@@ -91,10 +91,12 @@ build_docs = get_option('docs')
- build_tests = not get_option('tests').disabled()
- build_xe = not get_option('xe_driver').disabled()
- build_xe_eudebug = get_option('xe_eudebug').enabled()
-+build_vmtb = get_option('vmtb').enabled()
- with_libdrm = get_option('libdrm_drivers')
- 
- build_info = ['Build type: ' + get_option('buildtype')]
- build_info += 'Build Xe EU debugger test framework: @0@'.format(build_xe_eudebug)
-+build_info += 'Build VM Test Bench: @0@'.format(build_vmtb)
- 
- inc = include_directories('include', 'include/drm-uapi', 'include/drm-uapi-experimental', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
- 
-diff --git a/meson_options.txt b/meson_options.txt
-index c410f9b77..e23402b36 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -47,6 +47,11 @@ option('xe_eudebug',
-        value : 'disabled',
-        description : 'Build library and tests for Xe EU debugger')
- 
-+option('vmtb',
-+       type : 'feature',
-+       value : 'disabled',
-+       description : 'Build VM Test Bench')
-+
- option('libdrm_drivers',
-        type : 'array',
-        value : ['auto'],
-diff --git a/tools/meson.build b/tools/meson.build
-index 48c9a4b50..38b04851c 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -113,6 +113,10 @@ if libudev.found()
- 			install : true)
- endif
- 
-+if build_vmtb
-+	install_subdir('vmtb', install_dir: libexecdir)
-+endif
-+
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
--- 
-2.39.1
+CI Bug Log - changes from IGT_8134 -> IGTPW_12231
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12231 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg1-7:          [PASS][1] -> [FAIL][2] ([i915#12903])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+    - bat-rpls-4:         [PASS][3] -> [FAIL][4] ([i915#12903])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - fi-glk-j4005:       [PASS][5] -> [INCOMPLETE][6] ([i915#12435])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-glk-j4005/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-glk-j4005/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-glk-j4005:       [PASS][7] -> [INCOMPLETE][8] ([i915#13288])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-glk-j4005/igt@i915_selftest@live@execlists.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-glk-j4005/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][9] -> [ABORT][10] ([i915#12061]) +1 other test abort
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [INCOMPLETE][11] ([i915#12904]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      [FAIL][13] ([i915#12903]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1:
+    - bat-adlp-9:         [FAIL][15] ([i915#11989]) -> [PASS][16] +1 other test pass
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-adlp-9/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-adlp-9/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][17] ([i915#9197]) -> [PASS][18] +3 other tests pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8134/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+  [i915#11989]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11989
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13288]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13288
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8134 -> IGTPW_12231
+  * Linux: CI_DRM_15774 -> CI_DRM_15775
+
+  CI-20190529: 20190529
+  CI_DRM_15774: 83cfa47b496201ff05d4a369f6fe3f75665a2acf @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15775: 4de82d50b8de6a278c1483a7f76ae830c89d1824 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12231: 12231
+  IGT_8134: 027fbf68a00630d7bb8ae200c620296e2bad971d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12231/index.html
