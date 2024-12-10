@@ -4,57 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95656E7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 08:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42BDFE7717F
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 08:39:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E61F10E80A;
-	Tue, 10 Dec 2024 08:10:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07E7010E822;
+	Tue, 10 Dec 2024 08:39:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n3IXeAAQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mMh5YiVa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7033910E80A
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 08:10:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 510AC10E822
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 08:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733818248; x=1765354248;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=kaM+Ej3Fs1tkLdEU9Eb3dGVTLAqcSH+Fx42g64hKKTQ=;
- b=n3IXeAAQn4jDqPme+areo88xwvKHTywiewKD07jiMOuQyRke6MsI2JpH
- +FnmtueZUPhtv8de40rJJLibVaDcwTPZZ1xfWXrTMkXsvaF4K+3IpRIYC
- 8XWd6a+we9VR9AjW979qpl1XD/L48pA0UyIHuNnduj6jcjTQqJvxQ1sxf
- LH8pBriJiJDKOP6lRLnaow3Qg0306c8+cU0k/SQhU8VXGZQa2mcQq9tgY
- wuPc/cLvW1b8k0WhAeLQ7FwB3fKj+I+/ak+O5La2Nh7x5qYxfl5ZvAGQ7
- cDCh1ACbzndAW4/+Qk3BUDSjr+eGuUv2bGSzUyDL5/HkM6KGmBpHGdL2b w==;
-X-CSE-ConnectionGUID: YZ22uNM5RTmVas9zLu+/mg==
-X-CSE-MsgGUID: cy7cbO7WRQeXff6q2Cx1gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34054190"
-X-IronPort-AV: E=Sophos;i="6.12,221,1728975600"; d="scan'208";a="34054190"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 00:10:48 -0800
-X-CSE-ConnectionGUID: K8Z/mq5USs6xuRneDaK1bA==
-X-CSE-MsgGUID: RqFourtNTZW12FHFoeg7qA==
+ t=1733819945; x=1765355945;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=XIiOkJb7qUP1p9mEG2/ycLqKPYueWMe6nqVUn9O1Bbo=;
+ b=mMh5YiVame+6cFmFtqoJ6KTYKWZ9CARev/6uSPMAiod/2dqochJmxNTa
+ uRm1VJJpd6as4eKGfoOAlFaHeBVnXRcHtmqbKC6ZssNyKNoXAhbyA1LaW
+ sctzzSaVV6+fRDzHp5popJag2TWc1vmy4C/yEII2f5DczXt0gv9tNZ645
+ LSeisMNbPUDmp/SkNp0nLRGjNmfabOOWa1G4a7sM4D5eLKh1bsQU+aael
+ hojlyhXoTXkLgrVcW2+OJJTLH7FDa2SqBGgvOjB3tdYtq9crK3TgGh2Q1
+ lwI4tTIBnRkX6BVExE19xouZ9VE4OZDWxasqvKgDbxUMhSNAwf4vJZbdG A==;
+X-CSE-ConnectionGUID: KxVFc9XCRf6d1JgHUj3vyw==
+X-CSE-MsgGUID: uyYog5shQf+6mDA9HFTX5Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44620880"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="44620880"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 00:39:05 -0800
+X-CSE-ConnectionGUID: 8vi8iVfSSNOu1qvpgb+8Fg==
+X-CSE-MsgGUID: dI/d1ja5S3mBXkN6Dg0Obg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,221,1728975600"; d="scan'208";a="126227547"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.221])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 00:10:47 -0800
-Date: Tue, 10 Dec 2024 09:10:44 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Pravalika Gurram <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH v5 1/2] lib/xe/xe_spin: move the spinner related
- functions to lib
-Message-ID: <20241210081044.bqw2rdogsno54huo@zkempczy-mobl2>
-References: <20241206111032.572276-1-pravalika.gurram@intel.com>
- <20241206111032.572276-2-pravalika.gurram@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="96144400"
+Received: from scoltan-mobl.ger.corp.intel.com (HELO [10.213.201.5])
+ ([10.213.201.5])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 00:39:02 -0800
+Message-ID: <519663d4-e075-40d9-8404-7a2c2a95c5a9@linux.intel.com>
+Date: Tue, 10 Dec 2024 09:38:59 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241206111032.572276-2-pravalika.gurram@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v10] igt-runner fact checking
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Ryszard Knop <ryszard.knop@intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>, luciano.coelho@intel.com,
+ nirmoy.das@intel.com, stuart.summers@intel.com,
+ himal.prasad.ghimiray@intel.com, dominik.karol.piatkowski@intel.com,
+ katarzyna.piecielska@intel.com
+References: <5a111c35-7245-4ada-a2a0-3fd0fd5bbeab@linux.intel.com>
+ <15344780.JCcGWNJJiE@jkrzyszt-mobl2.ger.corp.intel.com>
+ <c3b14136-db8a-4d3d-82cb-038c2241fe76@linux.intel.com>
+ <11260117.BaYr0rKQ5T@jkrzyszt-mobl2.ger.corp.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <11260117.BaYr0rKQ5T@jkrzyszt-mobl2.ger.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,716 +79,171 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Dec 06, 2024 at 04:40:31PM +0530, Pravalika Gurram wrote:
-> move spin_ctx_init,spin_ctx_start,spin_ctx_end,spin_ctx_destroy
-> to xe spin lib to avoid code redundancy.
-> removed xe_cork*  functions to avoid duplicate spinner code.
-> 
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
-> ---
->  lib/xe/xe_spin.c            | 160 +++++++++++++++++++----------
->  lib/xe/xe_spin.h            |  56 ++++++----
->  tests/intel/xe_drm_fdinfo.c | 200 +++++++-----------------------------
->  tests/intel/xe_vm.c         |  17 +--
->  4 files changed, 188 insertions(+), 245 deletions(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 3adacc3a8..f9b18dfc0 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -292,77 +292,125 @@ void xe_spin_free(int fd, struct igt_spin *spin)
->  	free(spin);
->  }
->  
-> -void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
-> -		  struct xe_cork *cork)
-> +struct xe_cork *
-> +xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe,
-> +		uint32_t vm, uint16_t width, uint16_t num_placements,
-> +		struct xe_cork_opts *opts)
->  {
-> -	uint64_t addr = xe_get_default_alignment(fd);
-> -	size_t bo_size = xe_bb_size(fd, SZ_4K);
-> -	uint32_t vm, bo, exec_queue, syncobj;
-> -	struct xe_spin *spin;
-> -	struct drm_xe_sync sync = {
-> -		.type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> -	};
-> -	struct drm_xe_exec exec = {
-> -		.num_batch_buffer = 1,
-> -		.num_syncs = 1,
-> -		.syncs = to_user_pointer(&sync),
-> -	};
-> -
-> -	vm = xe_vm_create(fd, 0, 0);
-> -
-> -	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, hwe->gt_id),
-> -			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> -	spin = xe_bo_map(fd, bo, 0x1000);
-> +	struct xe_cork *ctx = calloc(1, sizeof(*ctx));
+Very good morning Janusz,
 
-Assert if ctx allocation fails. I would also check assert if opts is
-NULL as there's dereference to it and it's not optional.
+Thank you for your detailed question.
 
-> +
-> +	igt_assert(width && num_placements &&
-> +		   (width == 1 || num_placements == 1));
-> +	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
-> +
-> +	ctx->class = hwe->engine_class;
-> +	ctx->width = width;
-> +	ctx->num_placements = num_placements;
-> +	ctx->vm = vm;
-> +	ctx->ahnd = opts->ahnd;
+On 09.12.2024 14:50, Janusz Krzysztofik wrote:
+> On Monday, 9 December 2024 12:06:33 CET Peter Senna Tschudin wrote:
+>> Hi Janusz,
+>>
+>> On 09.12.2024 10:17, Janusz Krzysztofik wrote:
+>>> On Friday, 6 December 2024 06:45:31 CET Peter Senna Tschudin wrote:
+>>>> Hi Janusz,
+>>>>
+>>>> Thank you for your detailed comments. I appreciate the opportunity
+>>>> to clarify and address your concerns.
+>>>>
+>>>> On 05.12.2024 15:05, Janusz Krzysztofik wrote:
+>>>>> Hi Peter,
+>>>>>
+>>>>> On Wednesday, 4 December 2024 19:44:53 CET Peter Senna Tschudin wrote:
+>>>>>> When using igt-runner, collect facts before each test and after the
+>>>>>> last test, and report when facts change. The facts are:
+>>>>>>  - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0: 8086:e20b Intel Battlemage (Gen20)
+>>>>>>  - Associations between PCI GPU and DRM card: hardware.pci.drm_card_at_addr.0000:03:00.0: card1
+>>>>>>  - Kernel taints: kernel.is_tainted.taint_warn: true
+>>>>>>  - GPU kernel modules loaded: kernel.kmod_is_loaded.i915: true
+>>>>>>
+>>>>>> This change imposes little execution overhead and adds just a few
+>>>>>> lines of logging. The facts will be printed on normal igt-runner
+>>>>>> output. Here is a real example from our CI shwoing
+>>>>>> hotreplug-lateclose changing the DRM card number 
+>>>>>
+>>>>> Since you give that as an example of how helpful your facts can be, and follow 
+>>>>> that with a kernel taint example, that may indicate you think, and users of 
+>>>>> your facts may then be mislead having that read, that the taint was related to 
+>>>>> the change of card number, while both had nothing to do with each other.
+>>>>
+>>>> Let’s take a step back to define the purpose and scope of igt-facts:
+>>>>  - Definition of a fact from the dictionary: A fact is an objectively verifiable
+>>>>    piece of information.
+>>>>  - Purpose of igt-facts: Track which tests cause changes to the facts.
+>>>>
+>>>> The operation is straightforward: facts are collected before and after each test,
+>>>> and any differences are logged. Here’s an example showing a fact change and a new
+>>>> fact after running hotreplug-lateclose:
+>>>>
+>>>>  [249.858249] [FACT core_hotunplug (hotreplug-lateclose)] changed: hardware.pci.drm_card_at_addr.0000:00:02.0: card0 -> card1
+>>>>  [249.858392] [FACT core_hotunplug (hotreplug-lateclose)] new: kernel.is_tainted.taint_die: true
+>>>>
+>>>> This output highlights the facts without implying causation between them. The
+>>>> tool(and my commit message) neither explains relationships between facts nor
+>>>> misleads users into assuming causation.
+>>>
+>>> For me your commit message does.
+>>
+>> Can you please provide some external support for your claims?
+>>
+>> I am very careful while writing, and I am aware of my own limitations.
+>> After reading what chatGPT wrote about my text, I felt comfortable
+>> about not misleading anyone. Please mind the wording of my
+>> question: I did not hint a desired outcome for chatGPT.
+>>
+>> My Question:
+>> -- // --
+>> Can you please indicate any potential causality relationship
+>> that the following text may offer?
+>>
+>> Here is a real example from our CI shwoing hotreplug-lateclose
+>> changing the DRM card number and tainting the kernel on the
+>> abort path
+>> -- // --
+>>
+>> chatGPT answer:
+>> --//--
+>> The text suggests a potential causality relationship between the
+>> "hotreplug-lateclose" operation and its effects on the system:
+>>
+>> 1. Causal Event: The "hotreplug-lateclose" operation.
+>> This likely refers to a process in the CI(Continuous Integration)
+>> environment related to hotplugging devices and managing late-close
+>> scenarios. Hotplugging involves dynamically adding or removing
+>> hardware components without shutting down the system.
+>>
+>> 2. Effects:
+>>
+>> * Changing the DRM card number: This implies that the operation
+>> affects the enumeration or reordering of DRM (Direct Rendering
+>> Manager) devices, causing the card number to be reassigned.
+>>
+>> * Kernel Tainting on the abort path: Kernel tainting typically
+>> indicates that the kernel has entered a state that is not
+>> guaranteed to be stable or reliable. This could occur due
+>> to improper handling of errors or unexpected conditions
+>> during the "abort path" (likely a failure or cleanup process
+>> in the operation).
+>>
+>> Suggested Causal Chain:
+>> 1. The "hotreplug-lateclose" operation executes in the CI.
+>> 2. This causes a change in DRM card enumeration (potentially due
+>> to how devices are initialized or re-initialized).
+>> 3. On the abort path of this operation, a condition arises that
+>> taints the kernel (possibly due to resource cleanup issues,
+>> unhandled errors, or driver misbehavior).
+>>
+>> This text highlights a possible link between hotreplug-lateclose
+>> handling and instabilities in DRM device management as well as
+>> kernel state integrity.
+>> --//--
+>>
+>>
+>>
+>>>
+>>> Can you please provide a full list of "facts" your code is supposed to handle?
+>>
+>> This is in the commit message already, at the very begining.
+>>   
+>>> Can you please explain why you selected just those "facts", not others?
+>>
+>> It was either what was missing, such as a convenient way to learn when
+>> something strange happend as a gpu disappearing from the PCI bus, or
+>> something that we believe may cause errors downstream such as a taint,
+>> and the list of loaded modules.
+>>
+>> For the drm card number association, we belive that there may be a caching
+>> issue: we are trying to figure it out if the drm-reopen cache handles the
+>> change of drm number association well. We have weak information pointing
+>> to a probable problem akin to missing cache invalidation.
 
-Copy debug from opts to cork, then you won't need to pass opts to
-start/stop.
+[...]
+ > *What value do your facts add to CI reporting then?*
 
-> +
-> +	ctx->exec.num_batch_buffer = width;
-> +	ctx->exec.num_syncs = 2;
-> +	ctx->exec.syncs = to_user_pointer(ctx->sync);
-> +
-> +	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> +	ctx->sync[0].handle = syncobj_create(fd, 0);
-> +
-> +	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> +	ctx->sync[1].handle = syncobj_create(fd, 0);
-> +
-> +	ctx->bo_size = sizeof(struct xe_spin);
-> +	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
-> +	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
-> +			       vram_if_possible(fd, hwe->gt_id),
-> +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	if (opts->ahnd) {
-> +		for (unsigned int i = 0; i < width; i++)
-> +			ctx->addr[i] = intel_allocator_alloc_with_strategy(opts->ahnd,
-> +					ctx->bo, ctx->bo_size, 0,
-> +					ALLOC_STRATEGY_LOW_TO_HIGH);
-> +	} else {
-> +		for (unsigned int i = 0; i < width; i++)
-> +			ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
-> +	}
->  
-> -	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-> +	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
->  
-> -	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-> -	syncobj = syncobj_create(fd, 0);
-> +	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
-> +					     hwe, 0, &ctx->exec_queue), 0);
->  
-> -	xe_spin_init_opts(spin, .addr = addr, .preempt = true);
-> -	exec.exec_queue_id = exec_queue;
-> -	exec.address = addr;
-> -	sync.handle = syncobj;
-> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-> +	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
-> +			 ctx->sync, 1);
->  
-> -	cork->spin = spin;
-> -	cork->fd = fd;
-> -	cork->vm = vm;
-> -	cork->bo = bo;
-> -	cork->exec_queue = exec_queue;
-> -	cork->syncobj = syncobj;
-> +	return ctx;
->  }
->  
-> -bool xe_cork_started(struct xe_cork *cork)
-> +void xe_cork_sync_start(int fd, struct xe_cork *ctx, struct xe_cork_opts *opts)
+It seems that the focus of your feedback has shifted from 'Peter is
+misleading people' to questioning the value of igt-runner. I believe
+it's important to address this change in perspective to ensure
+clarity and productive discussion.
 
-As I noticed on the above comment, you can remove opts here if you'll
-copy all the fields to ctx.
+To address your new point, let me draw an analogy: asking "what is
+the value of igt-runner?" is similar to questioning the use of a car
+to reach the supermarket when walking is an option. While walking may
+suffice, the car adds efficiency and convenience, especially for
+larger or more complex "tasks".
 
->  {
-> -	return xe_spin_started(cork->spin);
-> -}
-> +	if (!ctx)
-> +		return;
+In our CI setup, a typical test list includes between 100 and
+200 tests. As you rightly pointed out, determining which test changed
+a specific fact currently requires significant time and effort. When
+multiple tests modify different facts, the process is not practical.
 
-This should assert if NULL is passed. And in all public cork functions
-as well.  I see no reason why someone would pass NULL here.
+igt-facts adds value by:
+- Clearly identifying which tests change which facts.
+- Enabling us to know which facts were present and absent before the
+  first test runs.
+- Reporting only changes, making the information concise and
+  efficient to review.
 
->  
-> -void xe_cork_wait_started(struct xe_cork *cork)
-> -{
-> -	xe_spin_wait_started(cork->spin);
-> -}
-> +	ctx->spin_opts.addr = ctx->addr[0];
-> +	ctx->spin_opts.write_timestamp = true;
-> +	ctx->spin_opts.preempt = true;
-> +	xe_spin_init(ctx->spin, &ctx->spin_opts);
->  
-> -void xe_cork_end(struct xe_cork *cork)
-> -{
-> -	xe_spin_end(cork->spin);
-> -}
-> +	/* re-use sync[0] for exec */
+Moreover, for most developers, the igt-facts output will not be
+obtrusive. In our CI runs, the output is saved only to the
+igt_runner?? file and does not appear in dmesg or the results.json
+file.
 
-I would alter it a little bit to 'reuse sync[0] as in-fence for exec'.
+And even so, in the few hundred runs that I checked, igt-facts
+typically added between 3 and 16 lines of log to a file that has
+about 1000 lines.
 
-> +	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  
-> -void xe_cork_wait_done(struct xe_cork *cork)
-> -{
-> -	igt_assert(syncobj_wait(cork->fd, &cork->syncobj, 1, INT64_MAX, 0,
-> -				NULL));
-> +	ctx->exec.exec_queue_id = ctx->exec_queue;
-> +
-> +	if (ctx->width > 1)
-> +		ctx->exec.address = to_user_pointer(ctx->addr);
-> +	else
-> +		ctx->exec.address = ctx->addr[0];
-> +
-> +	xe_exec(fd, &ctx->exec);
-> +
-> +	xe_spin_wait_started(ctx->spin);
-> +	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
-> +
-> +	if (opts->debug)
+I hope this explanation helps clarify the purpose and value of
+igt-facts.
 
-This should be copied to ctx.
+Thank you,
 
-> +		igt_info("%d: spinner started\n", ctx->class);
->  }
->  
-> -void xe_cork_fini(struct xe_cork *cork)
-> +void xe_cork_sync_end(int fd, struct xe_cork *ctx, struct xe_cork_opts *opts)
->  {
-> -	syncobj_destroy(cork->fd, cork->syncobj);
-> -	xe_exec_queue_destroy(cork->fd, cork->exec_queue);
-> -	xe_vm_destroy(cork->fd, cork->vm);
-> -	gem_close(cork->fd, cork->bo);
-> +	if (!ctx || ctx->ended)
-> +		return;
-
-What's for is ended? If user is calling destroy path twice it should
-fail instead of silently hiding multiple calls.
-
-> +
-> +	xe_spin_end(ctx->spin);
-> +
-> +	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
-> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-
-This wait on sync[0] is not needed, as it's signalled in-fence which
-comes from vm_bind part.
-
-> +
-> +	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-
-This syncobj should be reseted here.
-
-> +	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
-> +	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +
-> +	if (opts->ahnd)
-> +		put_ahnd(ctx->ahnd);
-
-This should be part of destroy, not stop.
-
-> +
-> +	ctx->ended = true;
-> +
-> +	if (opts->debug)
-> +		igt_info("%d: spinner ended (timestamp=%u)\n", ctx->class,
-> +			ctx->spin->timestamp);
->  }
->  
-> -uint32_t xe_cork_sync_handle(struct xe_cork *cork)
-> +void xe_cork_destroy(int fd, struct xe_cork *ctx)
->  {
-> -	return cork->syncobj;
-> +	if (!ctx)
-> +		return;
-> +
-> +	syncobj_destroy(fd, ctx->sync[0].handle);
-> +	syncobj_destroy(fd, ctx->sync[1].handle);
-> +	xe_exec_queue_destroy(fd, ctx->exec_queue);
-> +
-> +	munmap(ctx->spin, ctx->bo_size);
-> +	gem_close(fd, ctx->bo);
-> +
-> +	free(ctx);
->  }
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index d65adb05c..4e159c973 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -32,6 +32,11 @@ struct xe_spin_opts {
->  	bool write_timestamp;
->  };
->  
-> +struct xe_cork_opts {
-> +	uint64_t ahnd;
-> +	bool debug;
-> +};
-> +
->  /* Mapped GPU object */
->  struct xe_spin {
->  	uint32_t batch[128];
-> @@ -43,9 +48,36 @@ struct xe_spin {
->  	uint32_t timestamp;
->  };
->  
-> +struct xe_cork {
-> +	struct xe_spin *spin;
-> +	int fd;
-> +	uint32_t vm;
-> +	uint32_t bo;
-> +	uint32_t exec_queue;
-> +	uint32_t syncobj;
-> +	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
-> +	struct drm_xe_sync sync[2];
-> +	struct drm_xe_exec exec;
-> +	size_t bo_size;
-> +	struct xe_spin_opts spin_opts;
-> +	bool ended;
-> +	uint16_t class;
-> +	uint16_t width;
-> +	uint16_t num_placements;
-> +	uint64_t ahnd;
-
-You may add struct xe_cork_opts here and copy it on create.
-
-> +};
-> +
->  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
->  uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
->  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
-> +struct xe_cork *
-> +xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
-> +	      uint16_t width, uint16_t num_placements, struct xe_cork_opts *opts);
-> +void xe_cork_destroy(int fd, struct xe_cork *ctx);
-> +
-> +#define xe_cork_create_opts(fd, hwe, vm, width, num_placements, ...) \
-> +	xe_cork_create(fd, hwe, vm, width, num_placements, \
-> +			&((struct xe_cork_opts){__VA_ARGS__}))
->  
->  #define xe_spin_init_opts(fd, ...) \
->  	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
-> @@ -55,23 +87,11 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
->  void xe_spin_end(struct xe_spin *spin);
->  void xe_spin_free(int fd, struct igt_spin *spin);
-> -
-> -struct xe_cork {
-> -	struct xe_spin *spin;
-> -	int fd;
-> -	uint32_t vm;
-> -	uint32_t bo;
-> -	uint32_t exec_queue;
-> -	uint32_t syncobj;
-> -};
-> -
-> -void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
-> -		  struct xe_cork *cork);
-> -bool xe_cork_started(struct xe_cork *cork);
-> -void xe_cork_wait_started(struct xe_cork *cork);
-> -void xe_cork_end(struct xe_cork *cork);
-> -void xe_cork_wait_done(struct xe_cork *cork);
-> -void xe_cork_fini(struct xe_cork *cork);
-> -uint32_t xe_cork_sync_handle(struct xe_cork *cork);
-> +void xe_cork_sync_start(int fd, struct xe_cork *ctx, struct xe_cork_opts *opts);
-> +void xe_cork_sync_end(int fd, struct xe_cork *ctx, struct xe_cork_opts *opts);
-> +#define xe_cork_sync_start_opts(fd, ctx, ...) \
-> +	xe_cork_sync_start(fd, ctx, &((struct xe_cork_opts){__VA_ARGS__}))
-> +#define xe_cork_sync_end_opts(fd, ctx, ...) \
-> +	xe_cork_sync_end(fd, ctx, &((struct xe_cork_opts){__VA_ARGS__}))
->  
->  #endif	/* XE_SPIN_H */
-> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-> index ef9273e2a..3111d1f6f 100644
-> --- a/tests/intel/xe_drm_fdinfo.c
-> +++ b/tests/intel/xe_drm_fdinfo.c
-> @@ -367,133 +367,6 @@ static void basic_engine_utilization(int xe)
->  	igt_require(info.num_engines);
->  }
->  
-> -struct spin_ctx {
-> -	uint32_t vm;
-> -	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
-> -	struct drm_xe_sync sync[2];
-> -	struct drm_xe_exec exec;
-> -	uint32_t exec_queue;
-> -	size_t bo_size;
-> -	uint32_t bo;
-> -	struct xe_spin *spin;
-> -	struct xe_spin_opts spin_opts;
-> -	bool ended;
-> -	uint16_t class;
-> -	uint16_t width;
-> -	uint16_t num_placements;
-> -};
-> -
-> -static struct spin_ctx *
-> -spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
-> -	      uint16_t width, uint16_t num_placements)
-> -{
-> -	struct spin_ctx *ctx = calloc(1, sizeof(*ctx));
-> -
-> -	igt_assert(width && num_placements &&
-> -		   (width == 1 || num_placements == 1));
-> -	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
-> -
-> -	ctx->class = hwe->engine_class;
-> -	ctx->width = width;
-> -	ctx->num_placements = num_placements;
-> -	ctx->vm = vm;
-> -
-> -	for (unsigned int i = 0; i < width; i++)
-> -		ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
-> -
-> -	ctx->exec.num_batch_buffer = width;
-> -	ctx->exec.num_syncs = 2;
-> -	ctx->exec.syncs = to_user_pointer(ctx->sync);
-> -
-> -	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> -	ctx->sync[0].handle = syncobj_create(fd, 0);
-> -
-> -	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> -	ctx->sync[1].handle = syncobj_create(fd, 0);
-> -
-> -	ctx->bo_size = sizeof(struct xe_spin);
-> -	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
-> -	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
-> -			       vram_if_possible(fd, hwe->gt_id),
-> -			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> -	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
-> -
-> -	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
-> -					     hwe, 0, &ctx->exec_queue), 0);
-> -
-> -	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
-> -			 ctx->sync, 1);
-> -
-> -	return ctx;
-> -}
-> -
-> -static void
-> -spin_sync_start(int fd, struct spin_ctx *ctx)
-> -{
-> -	if (!ctx)
-> -		return;
-> -
-> -	ctx->spin_opts.addr = ctx->addr[0];
-> -	ctx->spin_opts.write_timestamp = true;
-> -	ctx->spin_opts.preempt = true;
-> -	xe_spin_init(ctx->spin, &ctx->spin_opts);
-> -
-> -	/* re-use sync[0] for exec */
-> -	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> -
-> -	ctx->exec.exec_queue_id = ctx->exec_queue;
-> -
-> -	if (ctx->width > 1)
-> -		ctx->exec.address = to_user_pointer(ctx->addr);
-> -	else
-> -		ctx->exec.address = ctx->addr[0];
-> -
-> -	xe_exec(fd, &ctx->exec);
-> -
-> -	xe_spin_wait_started(ctx->spin);
-> -	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
-> -
-> -	igt_debug("%s: spinner started\n", engine_map[ctx->class]);
-> -}
-> -
-> -static void
-> -spin_sync_end(int fd, struct spin_ctx *ctx)
-> -{
-> -	if (!ctx || ctx->ended)
-> -		return;
-> -
-> -	xe_spin_end(ctx->spin);
-> -
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> -	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	ctx->ended = true;
-> -	igt_debug("%s: spinner ended (timestamp=%u)\n", engine_map[ctx->class],
-> -		  ctx->spin->timestamp);
-> -}
-> -
-> -static void
-> -spin_ctx_destroy(int fd, struct spin_ctx *ctx)
-> -{
-> -	if (!ctx)
-> -		return;
-> -
-> -	syncobj_destroy(fd, ctx->sync[0].handle);
-> -	syncobj_destroy(fd, ctx->sync[1].handle);
-> -	xe_exec_queue_destroy(fd, ctx->exec_queue);
-> -
-> -	munmap(ctx->spin, ctx->bo_size);
-> -	gem_close(fd, ctx->bo);
-> -
-> -	free(ctx);
-> -}
-> -
->  static void
->  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
->  	      int class, int width, enum expected_load expected_load)
-> @@ -535,7 +408,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  {
->  	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	enum expected_load expected_load;
->  	uint32_t vm;
->  	int new_fd;
-> @@ -545,8 +418,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	if (flags & TEST_BUSY) {
-> -		ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -		spin_sync_start(fd, ctx);
-> +		ctx = xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +		xe_cork_sync_start_opts(fd, ctx);
->  	}
->  
->  	read_engine_cycles(fd, pceu1[0]);
-> @@ -555,7 +428,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  
->  	usleep(batch_duration_usec);
->  	if (flags & TEST_TRAILING_IDLE)
-> -		spin_sync_end(fd, ctx);
-> +		xe_cork_sync_end_opts(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu2[0]);
->  	if (flags & TEST_ISOLATION)
-> @@ -574,8 +447,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->  		close(new_fd);
->  	}
->  
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_cork_sync_end_opts(fd, ctx);
-> +	xe_cork_destroy(fd, ctx);
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> @@ -584,19 +457,19 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	uint32_t vm;
->  
->  	vm = xe_vm_create(fd, 0, 0);
-> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -	spin_sync_start(fd, ctx);
-> +	ctx = xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +	xe_cork_sync_start_opts(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  
->  	/* destroy queue before sampling again */
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_cork_sync_end_opts(fd, ctx);
-> +	xe_cork_destroy(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu2);
->  
-> @@ -610,18 +483,17 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	uint32_t vm;
->  	int class;
->  
->  	vm = xe_vm_create(fd, 0, 0);
-> -
-> -	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -	spin_sync_start(fd, ctx);
-> +	ctx = xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +	xe_cork_sync_start_opts(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
-> -	spin_sync_end(fd, ctx);
-> +	xe_cork_sync_end_opts(fd, ctx);
->  	read_engine_cycles(fd, pceu2);
->  
->  	xe_for_each_engine_class(class) {
-> @@ -631,8 +503,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
->  		check_results(pceu1, pceu2, class, 1, expected_load);
->  	}
->  
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_cork_sync_end_opts(fd, ctx);
-> +	xe_cork_destroy(fd, ctx);
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> @@ -641,7 +513,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
-> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
->  	struct drm_xe_engine_class_instance *_hwe;
->  	uint32_t vm;
->  	int class;
-> @@ -654,15 +526,14 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->  
->  		if (_class == hwe->engine_class || ctx[_class])
->  			continue;
-> -
-> -		ctx[_class] = spin_ctx_init(fd, _hwe, vm, 1, 1);
-> -		spin_sync_start(fd, ctx[_class]);
-> +		ctx[_class] = xe_cork_create_opts(fd, _hwe, vm, 1, 1);
-> +		xe_cork_sync_start_opts(fd, ctx[_class]);
->  	}
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  	xe_for_each_engine_class(class)
-> -		spin_sync_end(fd, ctx[class]);
-> +		xe_cork_sync_end_opts(fd, ctx[class]);
->  	read_engine_cycles(fd, pceu2);
->  
->  	xe_for_each_engine_class(class) {
-> @@ -673,8 +544,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->  			continue;
->  
->  		check_results(pceu1, pceu2, class, 1, expected_load);
-> -		spin_sync_end(fd, ctx[class]);
-> -		spin_ctx_destroy(fd, ctx[class]);
-> +		xe_cork_sync_end_opts(fd, ctx[class]);
-> +		xe_cork_destroy(fd, ctx[class]);
->  	}
->  
->  	xe_vm_destroy(fd, vm);
-> @@ -685,7 +556,7 @@ utilization_all_full_load(int fd)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
-> +	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
->  	struct drm_xe_engine_class_instance *hwe;
->  	uint32_t vm;
->  	int class;
-> @@ -697,15 +568,14 @@ utilization_all_full_load(int fd)
->  		class = hwe->engine_class;
->  		if (ctx[class])
->  			continue;
-> -
-> -		ctx[class] = spin_ctx_init(fd, hwe, vm, 1, 1);
-> -		spin_sync_start(fd, ctx[class]);
-> +		ctx[class] = xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +		xe_cork_sync_start_opts(fd, ctx[class]);
->  	}
->  
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  	xe_for_each_engine_class(class)
-> -		spin_sync_end(fd, ctx[class]);
-> +		xe_cork_sync_end_opts(fd, ctx[class]);
->  	read_engine_cycles(fd, pceu2);
->  
->  	xe_for_each_engine_class(class) {
-> @@ -713,8 +583,8 @@ utilization_all_full_load(int fd)
->  			continue;
->  
->  		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
-> -		spin_sync_end(fd, ctx[class]);
-> -		spin_ctx_destroy(fd, ctx[class]);
-> +		xe_cork_sync_end_opts(fd, ctx[class]);
-> +		xe_cork_destroy(fd, ctx[class]);
->  	}
->  
->  	xe_vm_destroy(fd, vm);
-> @@ -741,7 +611,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
-> -	struct spin_ctx *ctx = NULL;
-> +	struct xe_cork *ctx = NULL;
->  	enum expected_load expected_load;
->  	int fd_spill, num_placements;
->  	uint32_t vm;
-> @@ -767,8 +637,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	if (flags & TEST_BUSY) {
-> -		ctx = spin_ctx_init(fd, eci, vm, width, num_placements);
-> -		spin_sync_start(fd, ctx);
-> +		ctx = xe_cork_create_opts(fd, eci, vm, width, num_placements);
-> +		xe_cork_sync_start_opts(fd, ctx);
->  	}
->  
->  	read_engine_cycles(fd, pceu[0]);
-> @@ -777,7 +647,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  
->  	usleep(batch_duration_usec);
->  	if (flags & TEST_TRAILING_IDLE)
-> -		spin_sync_end(fd, ctx);
-> +		xe_cork_sync_end_opts(fd, ctx);
->  
->  	read_engine_cycles(fd, pceu[1]);
->  	if (flags & TEST_ISOLATION)
-> @@ -797,8 +667,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->  		close(fd_spill);
->  	}
->  
-> -	spin_sync_end(fd, ctx);
-> -	spin_ctx_destroy(fd, ctx);
-> +	xe_cork_sync_end_opts(fd, ctx);
-> +	xe_cork_destroy(fd, ctx);
->  
->  	xe_vm_destroy(fd, vm);
->  }
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index e78ddd0e5..77c02c488 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -945,18 +945,23 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
->  
->  	sync[0].handle = syncobj_create(fd, 0);
->  	if (flags & BIND_ARRAY_ENOBUFS_FLAG) {
-> -		struct xe_cork cork;
-> +		struct xe_cork *ctx = NULL;
-> +		uint32_t vm_cork;
->  
-> -		xe_cork_init(fd, eci, &cork);
-> +		vm_cork = xe_vm_create(fd, 0, 0);
-> +		ctx = xe_cork_create_opts(fd, eci, vm_cork, 1, 1);
-> +		xe_cork_sync_start_opts(fd, ctx, .debug = true);
->  
-> -		sync[1].handle = xe_cork_sync_handle(&cork);
-> +		sync[1].handle = ctx->sync[1].handle;
->  		sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  
->  		xe_vm_bind_array_err(fd, vm, bind_exec_queue, bind_ops,
->  				     n_execs, sync, 2, ENOBUFS);
-> -		xe_cork_end(&cork);
-> -		xe_cork_wait_done(&cork);
-> -		xe_cork_fini(&cork);
-> +		/* destroy queue before sampling again */
-> +		xe_cork_sync_end_opts(fd, ctx, .debug = true);
-> +		xe_cork_destroy(fd, ctx);
-> +		xe_vm_destroy(fd, vm_cork);
-> +
->  		n_execs = n_execs / 4;
->  	}
->  
-> -- 
-> 2.34.1
-> 
+Peter
