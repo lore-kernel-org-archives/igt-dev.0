@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1921CE7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 11:15:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6C8E7717F
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 11:25:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C8F8410E88F;
-	Tue, 10 Dec 2024 11:15:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F2E4410E5C9;
+	Tue, 10 Dec 2024 11:25:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MMF2OWHQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="caUKCdSr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D06D10E892
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 11:15:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAC2E10E392;
+ Tue, 10 Dec 2024 11:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733829307; x=1765365307;
+ t=1733829903; x=1765365903;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4E6YtpysexJwcXdC1Lv2jwJgY7WbQLOpt5nyzmLLz+k=;
- b=MMF2OWHQL6jG0T/K+4zvO98RlN9f1X+BXzP41LRbBMmQhEBC7S3kffEj
- jrPxiVfxOYWMarsnIeH1/FlLTuPr4gehxWkw2XvD+D2pUkGNZ0etMm71k
- 45HhN2NXMPAQKQegRMIk/J3D8c54t3L6FLHgzp/04TwfqYOqZYe2f0WWY
- ULPPWEB3FHdK/EBCOVZWFKjRFpSdOAFR43281lUv3EQI8+54ch/ETpUqn
- jZLxMgZNaqIuVJ6O25+/Fu+k6cWpRp6DJ8y5EEDuC0qeef44g0THyEn5h
- RiAH8fhLxSuAL/93Vw0LL37LUiAP0eKA644teW/vkw4dq58sm1stkVdyj A==;
-X-CSE-ConnectionGUID: vKyVjL2qTi61xaXr4rzwvA==
-X-CSE-MsgGUID: KeNY8VesRkiXlAwHafshXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44841968"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="44841968"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 03:15:07 -0800
-X-CSE-ConnectionGUID: PoEMNnDJSOewr5CmGYyj1A==
-X-CSE-MsgGUID: 24+/jhhwSmeJLjfdrIxuNw==
+ bh=ojvX9THhqAOZJWMBlUm+aL8hxV9MkHZ6Kvdd9BYz59c=;
+ b=caUKCdSrRmTJwGZPFCNGvUnADB76PtFDGImZld71bO0SmLj1IttV8OnQ
+ lViyPZ5NXnikctpac/VDo+K8C7YZ+5Eve12i6zFcks8e2q5lWRe12zoTA
+ MG+ZvLvkfCU4TQ1VUgW+/Z2fq3BEXIHSAoMkS3f34ybCJeKpAds4WT97z
+ Pb538TY+KudqlGzHxENrQSghpXYCyPBf0rjARAAK4R3Uu7nNAXoQ+IblS
+ rZMhalObOsSikmw3svQdB0Q7oODv2LVs+YSdufnbKJbWdX7mtRMJbOXmX
+ ZafWNnafr4t5Rv4YmHoP+SnESmJAq/WgKoYSqjOV+JI+lKonw0iPCMxJn w==;
+X-CSE-ConnectionGUID: ok/ib7EfQviTOGoFDuZzYA==
+X-CSE-MsgGUID: UTLGWkM9RryatIA2Gle5Jg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="21753177"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="21753177"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 03:25:03 -0800
+X-CSE-ConnectionGUID: wVjSol1JSU2cp1jJBfqoqQ==
+X-CSE-MsgGUID: WLBE1Va6RMuBgnh/3vTqTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95203174"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95831196"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 03:15:05 -0800
-Date: Tue, 10 Dec 2024 12:15:02 +0100
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 03:25:01 -0800
+Date: Tue, 10 Dec 2024 12:24:58 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: Re: [PATCH i-g-t 1/3] tests/intel/xe_oa: Move Xe2+ check before
- init_sys_info
-Message-ID: <20241210111502.2yz5vouacupywu3h@kamilkon-desk.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Matthew Auld <matthew.auld@intel.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
+ tests/intel/xe_mmap: fix assert_caching on small-bar
+Message-ID: <20241210112458.nox4psb5mp3vitha@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
  igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20241210020812.1513475-1-ashutosh.dixit@intel.com>
+ Matthew Auld <matthew.auld@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20241122164730.326543-1-matthew.auld@intel.com>
+ <173241836763.2295444.10242686638902181437@b555e5b46a47>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241210020812.1513475-1-ashutosh.dixit@intel.com>
+In-Reply-To: <173241836763.2295444.10242686638902181437@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,42 +73,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ashutosh,
-On 2024-12-09 at 18:08:10 -0800, Ashutosh Dixit wrote:
-> In order to avoid failures on unsupported Xe1 platforms, move Xe2+ check
-> before init_sys_info.
+Hi igt-dev,
+On 2024-11-24 at 03:19:27 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3645
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Series: tests/intel/xe_mmap: fix assert_caching on small-bar
+> URL   : https://patchwork.freedesktop.org/series/141710/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8123_full -> XEIGTPW_12180_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_12180_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_12180_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12180_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Below regressions are unrelated to xe_mmap test changes.
 
-> ---
->  tests/intel/xe_oa.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+Regards,
+Kamil
+
 > 
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 8a88945a2b..9e7c2ae1e6 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -4855,14 +4855,14 @@ igt_main
->  		devid = intel_get_drm_devid(drm_fd);
->  		sysfs = igt_sysfs_open(drm_fd);
->  
-> +		/* Currently only run on Xe2+ */
-> +		igt_require(intel_graphics_ver(devid) >= IP_VER(20, 0));
-> +
->  		igt_require(init_sys_info());
->  
->  		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
->  
->  		render_copy = igt_get_render_copyfunc(devid);
-> -
-> -		/* Currently only run on Xe2+ */
-> -		igt_require(intel_graphics_ver(devid) >= IP_VER(20, 0));
->  	}
->  
->  	igt_subtest("non-system-wide-paranoid")
-> -- 
-> 2.47.1
+>   * igt@kms_flip@2x-flip-vs-rmfb-interruptible@ac-dp2-hdmi-a3:
+>     - shard-bmg:          NOTRUN -> [DMESG-WARN][1] +1 other test dmesg-warn
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12180/shard-bmg-4/igt@kms_flip@2x-flip-vs-rmfb-interruptible@ac-dp2-hdmi-a3.html
 > 
+>   * igt@kms_flip@blocking-wf_vblank@a-edp1:
+>     - shard-lnl:          [PASS][2] -> [FAIL][3]
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/shard-lnl-3/igt@kms_flip@blocking-wf_vblank@a-edp1.html
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12180/shard-lnl-6/igt@kms_flip@blocking-wf_vblank@a-edp1.html
+> 
+>   * igt@kms_flip@flip-vs-panning-interruptible@d-dp4:
+>     - shard-dg2-set2:     NOTRUN -> [INCOMPLETE][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12180/shard-dg2-435/igt@kms_flip@flip-vs-panning-interruptible@d-dp4.html
+> 
+>   * igt@xe_exec_basic@many-execqueues-null:
+>     - shard-bmg:          [PASS][5] -> [DMESG-WARN][6] +4 other tests dmesg-warn
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/shard-bmg-4/igt@xe_exec_basic@many-execqueues-null.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12180/shard-bmg-6/igt@xe_exec_basic@many-execqueues-null.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@xe_wedged@wedged-at-any-timeout:
+>     - shard-bmg:          [SKIP][7] ([Intel XE#1130]) -> [ABORT][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8123/shard-bmg-1/igt@xe_wedged@wedged-at-any-timeout.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12180/shard-bmg-1/igt@xe_wedged@wedged-at-any-timeout.html
+> 
+>   
+> Known issues
+> ------------
+> 
+...cut...
+
+>   Here are the changes found in XEIGTPW_12180_full that come from known issues:
+>   [Intel XE#958]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/958
+>   [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+>   [i915#2575]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2575
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_8123 -> IGTPW_12180
+>   * Linux: xe-2263-a381faddbfc974e7bd57efe953a738415afccd6a -> xe-2264-2d0d734c211b36125b27eceb42aceac394d4f377
+> 
+>   IGTPW_12180: 4095ce9bfaff0948dae68be7d0c2383f918ba4c3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8123: fb343db7fc59c760ef0a0c19303e7bcec177dbd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-2263-a381faddbfc974e7bd57efe953a738415afccd6a: a381faddbfc974e7bd57efe953a738415afccd6a
+>   xe-2264-2d0d734c211b36125b27eceb42aceac394d4f377: 2d0d734c211b36125b27eceb42aceac394d4f377
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12180/index.html
