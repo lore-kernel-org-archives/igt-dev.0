@@ -4,66 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42BDFE7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 08:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E09FE77181
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 08:39:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07E7010E822;
-	Tue, 10 Dec 2024 08:39:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1898710E825;
+	Tue, 10 Dec 2024 08:39:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mMh5YiVa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bxehgBha";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 510AC10E822
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 08:39:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2AD010E824;
+ Tue, 10 Dec 2024 08:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733819945; x=1765355945;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=XIiOkJb7qUP1p9mEG2/ycLqKPYueWMe6nqVUn9O1Bbo=;
- b=mMh5YiVame+6cFmFtqoJ6KTYKWZ9CARev/6uSPMAiod/2dqochJmxNTa
- uRm1VJJpd6as4eKGfoOAlFaHeBVnXRcHtmqbKC6ZssNyKNoXAhbyA1LaW
- sctzzSaVV6+fRDzHp5popJag2TWc1vmy4C/yEII2f5DczXt0gv9tNZ645
- LSeisMNbPUDmp/SkNp0nLRGjNmfabOOWa1G4a7sM4D5eLKh1bsQU+aael
- hojlyhXoTXkLgrVcW2+OJJTLH7FDa2SqBGgvOjB3tdYtq9crK3TgGh2Q1
- lwI4tTIBnRkX6BVExE19xouZ9VE4OZDWxasqvKgDbxUMhSNAwf4vJZbdG A==;
-X-CSE-ConnectionGUID: KxVFc9XCRf6d1JgHUj3vyw==
-X-CSE-MsgGUID: uyYog5shQf+6mDA9HFTX5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44620880"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="44620880"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 00:39:05 -0800
-X-CSE-ConnectionGUID: 8vi8iVfSSNOu1qvpgb+8Fg==
-X-CSE-MsgGUID: dI/d1ja5S3mBXkN6Dg0Obg==
+ t=1733819948; x=1765355948;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=Ra9sW7W5U904ijNm2wQvb0Ib+RvS/NUKYCW7qMSMIAs=;
+ b=bxehgBhaItjRZZNMbCiItvCInRjWXjRZFYtuf5ELiYRYTJvEphuDs6F8
+ vYf85KCqYU7S8/SR+QPcNFEKd0MjvANu9/KCliCIfP2tHrKU4BK7zqT2q
+ pBN0cjos4ltwrwA0HbSDJyNSU9S00xsYb4xFuFvyKOlW1dRwoax4xhbHz
+ 0sMn1GDbR8N7uJ8oXBqEctGPDYoGW/tgfs0woHCShmhpY02jiKMsKRCPb
+ N1nZBxupYDgWlRfvf1+t+XNzlq85uOxhPvirRjNiTau2cTIQGRFsguyMS
+ Q6PbdGdrJSTm+wk7yRM3FLKgq6qeezaSx44JKhGXeqwe6G31yxejkmWI1 Q==;
+X-CSE-ConnectionGUID: 6Sv0vk+YTsm/v02rRRRs0Q==
+X-CSE-MsgGUID: U5+t7sjKTK6qMtDu281GQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34286194"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="34286194"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 00:39:08 -0800
+X-CSE-ConnectionGUID: mcoAEBLnQyqOyBxD/t2Pyg==
+X-CSE-MsgGUID: FyB/uLdYRrmUhVQ6yCQJmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="96144400"
-Received: from scoltan-mobl.ger.corp.intel.com (HELO [10.213.201.5])
- ([10.213.201.5])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 00:39:02 -0800
-Message-ID: <519663d4-e075-40d9-8404-7a2c2a95c5a9@linux.intel.com>
-Date: Tue, 10 Dec 2024 09:38:59 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v10] igt-runner fact checking
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Ryszard Knop <ryszard.knop@intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>, luciano.coelho@intel.com,
- nirmoy.das@intel.com, stuart.summers@intel.com,
- himal.prasad.ghimiray@intel.com, dominik.karol.piatkowski@intel.com,
- katarzyna.piecielska@intel.com
-References: <5a111c35-7245-4ada-a2a0-3fd0fd5bbeab@linux.intel.com>
- <15344780.JCcGWNJJiE@jkrzyszt-mobl2.ger.corp.intel.com>
- <c3b14136-db8a-4d3d-82cb-038c2241fe76@linux.intel.com>
- <11260117.BaYr0rKQ5T@jkrzyszt-mobl2.ger.corp.intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="100378526"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 10 Dec 2024 00:39:08 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 10 Dec 2024 00:39:07 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 10 Dec 2024 00:39:07 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.40) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 10 Dec 2024 00:39:06 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QxrzataQyb+ZKyf321DMq/qaycc4QWbUjOJ13cKssky4m4IlOgF3chouGo2C/HlfvVD9GFA2M/3QkQWufGKqCvNu0hN6lXKSVQzBH59qi+5cIHlCyg1mILVDKyQ41M7j1jOCP+OPd6qRiHeBjKDhPuBs+CCWJTbWAH0VdEpgUpgRqHahadlto8wNaJ2hCl2+Aj+MzGySs7MG4o4pS74zeEjID58aXT+nysufZNiQE5UliBF8SU8hurDaDqFTk/TahEP8PvlJExrj2t+zlYPer8g5az1pOCIZ+Ss94Ut/LRkHpqKiryvN07o0oxa4b4ZK0AeWpGCPEZE81EBA593new==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t86qzuifkMMwMKfkF3VMcjViYVpdgRs1CL1Qi0q7O5g=;
+ b=HBwcNjRUfmR1kUBI6MPf0JmKfyBkvqHrn0EkozCNI10we6Bs0F93CfX47rICW5XUoAyDELztJG0vM0gYVfXDL35MbITUo1XJRWgROMWi3hK8r1Ef8bvbni5aE3ea2NxTor3CRlXFvTcwD6wy6bdzUOegGlOSyi1a2zwnfo3EKiQUGrt3hzRpm3vToYzNsA98NP+/ImHh0FYdaOp+Vb3y9xQCrEf0m2/WkYxJyLx1AgC3AUxId03YWJnY8ofy1E3vralogGSQc9lkriZqCkFe2QJJnO56wvPl5+sC876mrUX3PmbqJM5pbP+MG8GYPl4KLvfd2/Cm6B947Ju4rjvlLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ1PR11MB6204.namprd11.prod.outlook.com (2603:10b6:a03:459::19)
+ by PH0PR11MB4904.namprd11.prod.outlook.com (2603:10b6:510:40::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.14; Tue, 10 Dec
+ 2024 08:39:04 +0000
+Received: from SJ1PR11MB6204.namprd11.prod.outlook.com
+ ([fe80::fd8d:bca9:3486:7762]) by SJ1PR11MB6204.namprd11.prod.outlook.com
+ ([fe80::fd8d:bca9:3486:7762%6]) with mapi id 15.20.8230.010; Tue, 10 Dec 2024
+ 08:39:04 +0000
+From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+To: "Roper, Matthew D" <matthew.d.roper@intel.com>, "Harrison, John C"
+ <john.c.harrison@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, "Maslak,
+ Jan" <jan.maslak@intel.com>
+Subject: RE: [i-g-t] lib/xe: set hwconfig NULL for unsupported platforms
+Thread-Topic: [i-g-t] lib/xe: set hwconfig NULL for unsupported platforms
+Thread-Index: AQHbShe8cI5ICXNyREu5L3nHcfY9wbLeSoaAgAAV3QCAAMiTAA==
+Date: Tue, 10 Dec 2024 08:39:04 +0000
+Message-ID: <SJ1PR11MB6204B0BAE50616FBD2690FFB813D2@SJ1PR11MB6204.namprd11.prod.outlook.com>
+References: <20241209085709.1979242-1-tejas.upadhyay@intel.com>
+ <60c6f1d7-6bee-40fa-9f7b-8f138b3a3501@intel.com>
+ <20241209203822.GR3224633@mdroper-desk1.amr.corp.intel.com>
+In-Reply-To: <20241209203822.GR3224633@mdroper-desk1.amr.corp.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <11260117.BaYr0rKQ5T@jkrzyszt-mobl2.ger.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ1PR11MB6204:EE_|PH0PR11MB4904:EE_
+x-ms-office365-filtering-correlation-id: 7734d273-af92-4582-69d3-08dd18f61a73
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?3INbth7P0qf9rYC9ejjeJLPLYowzjVZwJAs/CcVhMhzZSsjdvxaGbr2m2czs?=
+ =?us-ascii?Q?o1zZSqVTYkujN2IMC1NyIc0w4g1Bt2TM2+BSLJq9D93BldciozFLWImth01I?=
+ =?us-ascii?Q?mOuFQddANyUeIMLPmFUJYMQZlC3HufdMIYIeNF3XUEQ1PPpHM5hbGJty8Adk?=
+ =?us-ascii?Q?i8PwcW+NBwDFP5I5QxzY1tTBnOxw9/xOir3EI1jbSICEnnNivfXwPpj7+vMp?=
+ =?us-ascii?Q?NKb0DevCVdrf/wtxkXYk9PhrcXd6aHnCY/0RiCax5jIEqNEHYjZRVRGIjmqH?=
+ =?us-ascii?Q?4qE3g3EmvtdLw9XpbQ8GMNtZTFe/YKu/ucmhz94e4mcbrebrO8jFlfnukwr+?=
+ =?us-ascii?Q?3LuFEteWwLYdW2hq+Ed1WSukv9IY+T23FOyAyEkYYCDwATYZYI4Fn4nXIcNY?=
+ =?us-ascii?Q?pR4WR8RUOapfzOA8vUnj2uWuNU9rJuPT3kilrU0oEwsZL7BY4QsRvWEwyrhe?=
+ =?us-ascii?Q?V0mgt5aFX73mpANM3+Dx1bJJ4AtHGuLmAftX7g8Iki4Z2LH3t0cnjvgTSyFT?=
+ =?us-ascii?Q?y5K+B+mzWEuOvgaQd1vlSlCoQpDJkurz30nCjghgO/2c/Jhkd44Ndv4uxDGl?=
+ =?us-ascii?Q?uY2NjJf9Lbvpuv5Dwh8WcZsUaV+CMbxps8wJsn3LKJPLU2aVt3T75Dl4lou5?=
+ =?us-ascii?Q?o3VuG7mESJFfpI3awmh2be8z59AHJVSp63mA1sqk91YZuVh0XaU+2WA3ZPM7?=
+ =?us-ascii?Q?tKTH/NVjjqyUxs9hXnqxUYfepwQNA02/BpFSH0JXdDE3U05hXPk9C8AVeYjD?=
+ =?us-ascii?Q?faknHHV1Z/d9ZkhqRrbt1h1EqV/lUWJAwl3Vdu5SixLRcVkpr3IQ3fRFLR53?=
+ =?us-ascii?Q?3Mc3OoBAhDG+T5ocUd7hH15K5kbvtc+eJL2aHTeBffs+imypLhZ+jQ89iwxf?=
+ =?us-ascii?Q?i9JzBFscezm0R5Y0j8XwD6iVsN8qv+NPaFrFLd44xJybY2aNjkUny1UA18z+?=
+ =?us-ascii?Q?shS2srF3svkAOQcSw0uzexF9R+nHOex3Cq6c+w18FyizipuC9cS91UUhnOdg?=
+ =?us-ascii?Q?dK3yzSgQ0rYJ/EwwaOUXP+LimvzaEr4XJqyfOFARiVc1kQ90qiWeLoKiCJkv?=
+ =?us-ascii?Q?dVHB+k6fxdk07PISvKpuRI0nzpx8PUnFBMvn1XMO5iJ0ZwDIOv6DopURqHzj?=
+ =?us-ascii?Q?7JOvEFC3s953GowSWThOSF3hc7X25aYs5iwpJXR9MAWDffn1tuZaQv+s7HD2?=
+ =?us-ascii?Q?W3NfOnj6ZX0LdYN0DdqrLbEn0MbgBxbklhHCGis8T9/D2c2P7MyExD0Z2yx+?=
+ =?us-ascii?Q?Yd9H9E3x0uI9KqkB+twrpiJNVowFuvwV8PQxecxC4zpKSA9wUgSCC0Oha23z?=
+ =?us-ascii?Q?QmQh6pt7e8Rv0mIlo/zhZBWs44i43fxajHInNt/Pzwq0LXdY+H//tw3KCNRT?=
+ =?us-ascii?Q?AKfAzM4=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ1PR11MB6204.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?f2CFNZC5oW/2yWxAQjRyc6yghdXQXlFAGiXpbPjYOvjYn/lKfhi29iQeYzjh?=
+ =?us-ascii?Q?JARhePQv9K0RumyDzmFEfLzzZ4vJutfLCOa7fVxsp4OpWgLuWCb7YZvGjEP+?=
+ =?us-ascii?Q?9TlLynZuzUWnRt3TJYAbmwJyLI3B5TwNKPLAItLneUiWuPjznKEEd/Na/rzK?=
+ =?us-ascii?Q?r4If/JLBN8FvqukgeZWDZuG5RomZL1jMb1DSLaapRI4VzhphpbfpTMsfcZvy?=
+ =?us-ascii?Q?B3uAuTT7Cer+JW9SWAKaxpzNX+PxY7ih/Q4wl9Yr32xgY40UbM+VmNYF4IfA?=
+ =?us-ascii?Q?J3V7QMNTLF1P9UE7uu9C+Vdjn/ugQ2x3q1MYQZui8VJdHD/9q9oUyzrSVL+J?=
+ =?us-ascii?Q?RxsLyTmZ/RHlmrygMgzTcoaNo14WHos5M0b0GKJRaBs7j3opzJJzJ1bBpKGe?=
+ =?us-ascii?Q?mUmVVrfVZf8RRO4DEuQHcEE7yRMeqSqwTcmvYkrX764zrpRxopK7cs12c79S?=
+ =?us-ascii?Q?kNUTGvb38Km+wJ5ZuDenssL3f6p9W1mMLrpLP50NheYBSX6Qs6ySgKEEEPsx?=
+ =?us-ascii?Q?JwAPL5xcFP+mcAg4se8esVf6R/OBjr/DSYSk6iXqcUWcstEV9qSWCGjZYRnU?=
+ =?us-ascii?Q?eLkIhUu/NH1Y4Tq9XI5jn7SbjzPvZfl7qtyI9T83/26wPRpf8vQwdWzPpdIz?=
+ =?us-ascii?Q?54DB0yv0GewUFUxGlNOcrV2vuKtHsjOd2aeoNq5KIqZnw98Ky2QmzJsFZD1G?=
+ =?us-ascii?Q?L7d7LsIoM8XxfD34uWaQ4qMK3DBm3CNbLHdRAj7qniqHWQWNyNvkOAhEYXPI?=
+ =?us-ascii?Q?jvKY7+5vCzjJlV+ujQYwVW+OnSiTehwKH2GbW0L8+DgbYaAaEr9GhwI1XpIf?=
+ =?us-ascii?Q?ZnjhQ7Pxh0nCa06ljNqeUBO0tex7lbQHcEg6nB6NQxkDPBh/TbEqSeJu/93O?=
+ =?us-ascii?Q?RLhqpcd8b7vNO9eIbPnQbBlrhJQzoYTYQ7BhmK4kllzUU+a45AbzRzde+r3t?=
+ =?us-ascii?Q?EZLxJF5ZvQ0JxRSOAz0p9LveFChuAY4U+rGE6m7Ylaee4cqnQt0wUyCryMIP?=
+ =?us-ascii?Q?QUKGpedZslipxJgAor4T1uwzU6jPQ2B01NyLPuMso6qeYk8dD1XRk/gbsC1f?=
+ =?us-ascii?Q?X4vo6Pijx30ywXVWvgZMKutsdYKhvl7M0RhigeOrDR2zUKLKDZJKsyy8FXT7?=
+ =?us-ascii?Q?4Ywo47IhgjV+V6rZeOk/6mSjdFZVJJRxftFRftXC4mFdJrL9EfC5g5AGcUOV?=
+ =?us-ascii?Q?SKTGQv37ngV+xK907DAsIj0kaHpWoh/Y8mBJIZZG+gn23liVEU+RLChCjY5h?=
+ =?us-ascii?Q?Mjm3rB+hmXRP76HLgpxwpDlMYIHk4kLez36sXedw5xWEZf/gM/N/jyz6Whmw?=
+ =?us-ascii?Q?VsHCd95bY/htziysF/pN4kyNQ7Kz8UlzqDQICFy/x6YM4aHHivvs7I2JTrA4?=
+ =?us-ascii?Q?9zmIktoMgE8GmYIhPZ+9DpxsvUo9BEiyHKInzJTtDWusMqHxgQcUKIVvv/6K?=
+ =?us-ascii?Q?A19Kn/ksqOi6PFwwgwQnMfEoJ/9BUuXzZxCMs7sT9GJtDVfEjpUkx/1YBCpR?=
+ =?us-ascii?Q?xm/MzFLYwXkGM9wNaocDj5YocpUuLgX67ixwUBUP5MD+6aj2rP8Ba+Wm5JLa?=
+ =?us-ascii?Q?gCXIvvybaZwgdWKy/T4MRDcEq4rX5Uv1K8gJ+L3w?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6204.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7734d273-af92-4582-69d3-08dd18f61a73
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2024 08:39:04.0828 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SroF+g3hVSmjiSR258Mug7PTgfGnzWlklvds7Z7MLZhXwfjiB+TRpA1b9UvryOwkwETSiqRwhN6iFK8AeeNxolE5sx9GzC1uM+ROB+P7Lrc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4904
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,171 +182,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Very good morning Janusz,
 
-Thank you for your detailed question.
 
-On 09.12.2024 14:50, Janusz Krzysztofik wrote:
-> On Monday, 9 December 2024 12:06:33 CET Peter Senna Tschudin wrote:
->> Hi Janusz,
->>
->> On 09.12.2024 10:17, Janusz Krzysztofik wrote:
->>> On Friday, 6 December 2024 06:45:31 CET Peter Senna Tschudin wrote:
->>>> Hi Janusz,
->>>>
->>>> Thank you for your detailed comments. I appreciate the opportunity
->>>> to clarify and address your concerns.
->>>>
->>>> On 05.12.2024 15:05, Janusz Krzysztofik wrote:
->>>>> Hi Peter,
->>>>>
->>>>> On Wednesday, 4 December 2024 19:44:53 CET Peter Senna Tschudin wrote:
->>>>>> When using igt-runner, collect facts before each test and after the
->>>>>> last test, and report when facts change. The facts are:
->>>>>>  - GPUs on PCI bus: hardware.pci.gpu_at_addr.0000:03:00.0: 8086:e20b Intel Battlemage (Gen20)
->>>>>>  - Associations between PCI GPU and DRM card: hardware.pci.drm_card_at_addr.0000:03:00.0: card1
->>>>>>  - Kernel taints: kernel.is_tainted.taint_warn: true
->>>>>>  - GPU kernel modules loaded: kernel.kmod_is_loaded.i915: true
->>>>>>
->>>>>> This change imposes little execution overhead and adds just a few
->>>>>> lines of logging. The facts will be printed on normal igt-runner
->>>>>> output. Here is a real example from our CI shwoing
->>>>>> hotreplug-lateclose changing the DRM card number 
->>>>>
->>>>> Since you give that as an example of how helpful your facts can be, and follow 
->>>>> that with a kernel taint example, that may indicate you think, and users of 
->>>>> your facts may then be mislead having that read, that the taint was related to 
->>>>> the change of card number, while both had nothing to do with each other.
->>>>
->>>> Let’s take a step back to define the purpose and scope of igt-facts:
->>>>  - Definition of a fact from the dictionary: A fact is an objectively verifiable
->>>>    piece of information.
->>>>  - Purpose of igt-facts: Track which tests cause changes to the facts.
->>>>
->>>> The operation is straightforward: facts are collected before and after each test,
->>>> and any differences are logged. Here’s an example showing a fact change and a new
->>>> fact after running hotreplug-lateclose:
->>>>
->>>>  [249.858249] [FACT core_hotunplug (hotreplug-lateclose)] changed: hardware.pci.drm_card_at_addr.0000:00:02.0: card0 -> card1
->>>>  [249.858392] [FACT core_hotunplug (hotreplug-lateclose)] new: kernel.is_tainted.taint_die: true
->>>>
->>>> This output highlights the facts without implying causation between them. The
->>>> tool(and my commit message) neither explains relationships between facts nor
->>>> misleads users into assuming causation.
->>>
->>> For me your commit message does.
->>
->> Can you please provide some external support for your claims?
->>
->> I am very careful while writing, and I am aware of my own limitations.
->> After reading what chatGPT wrote about my text, I felt comfortable
->> about not misleading anyone. Please mind the wording of my
->> question: I did not hint a desired outcome for chatGPT.
->>
->> My Question:
->> -- // --
->> Can you please indicate any potential causality relationship
->> that the following text may offer?
->>
->> Here is a real example from our CI shwoing hotreplug-lateclose
->> changing the DRM card number and tainting the kernel on the
->> abort path
->> -- // --
->>
->> chatGPT answer:
->> --//--
->> The text suggests a potential causality relationship between the
->> "hotreplug-lateclose" operation and its effects on the system:
->>
->> 1. Causal Event: The "hotreplug-lateclose" operation.
->> This likely refers to a process in the CI(Continuous Integration)
->> environment related to hotplugging devices and managing late-close
->> scenarios. Hotplugging involves dynamically adding or removing
->> hardware components without shutting down the system.
->>
->> 2. Effects:
->>
->> * Changing the DRM card number: This implies that the operation
->> affects the enumeration or reordering of DRM (Direct Rendering
->> Manager) devices, causing the card number to be reassigned.
->>
->> * Kernel Tainting on the abort path: Kernel tainting typically
->> indicates that the kernel has entered a state that is not
->> guaranteed to be stable or reliable. This could occur due
->> to improper handling of errors or unexpected conditions
->> during the "abort path" (likely a failure or cleanup process
->> in the operation).
->>
->> Suggested Causal Chain:
->> 1. The "hotreplug-lateclose" operation executes in the CI.
->> 2. This causes a change in DRM card enumeration (potentially due
->> to how devices are initialized or re-initialized).
->> 3. On the abort path of this operation, a condition arises that
->> taints the kernel (possibly due to resource cleanup issues,
->> unhandled errors, or driver misbehavior).
->>
->> This text highlights a possible link between hotreplug-lateclose
->> handling and instabilities in DRM device management as well as
->> kernel state integrity.
->> --//--
->>
->>
->>
->>>
->>> Can you please provide a full list of "facts" your code is supposed to handle?
->>
->> This is in the commit message already, at the very begining.
->>   
->>> Can you please explain why you selected just those "facts", not others?
->>
->> It was either what was missing, such as a convenient way to learn when
->> something strange happend as a gpu disappearing from the PCI bus, or
->> something that we believe may cause errors downstream such as a taint,
->> and the list of loaded modules.
->>
->> For the drm card number association, we belive that there may be a caching
->> issue: we are trying to figure it out if the drm-reopen cache handles the
->> change of drm number association well. We have weak information pointing
->> to a probable problem akin to missing cache invalidation.
+> -----Original Message-----
+> From: Roper, Matthew D <matthew.d.roper@intel.com>
+> Sent: Tuesday, December 10, 2024 2:08 AM
+> To: Harrison, John C <john.c.harrison@intel.com>
+> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>; igt-
+> dev@lists.freedesktop.org; intel-xe@lists.freedesktop.org; Maslak, Jan
+> <jan.maslak@intel.com>
+> Subject: Re: [i-g-t] lib/xe: set hwconfig NULL for unsupported platforms
+>=20
+> On Mon, Dec 09, 2024 at 11:20:07AM -0800, John Harrison wrote:
+> > On 12/9/2024 00:57, Tejas Upadhyay wrote:
+> > > There are hardware platforms which are not supporting hwconfig
+> > > table, for example ADLS. Querying hwconfig on unsupported platforms
+> > > leads to assert and failure for some of tests like,
+> > > ./build/tests/xe_module_load --r load
+> > The module reload test should not be querying the hwconfig table?!
+>=20
+> See the Fixes: line; that patch made it so that anything calling
+> xe_device_get() will fetch and cache the hwconfig (and assert if it's
+> missing).  xe_module load calls __drm_open_driver ->
+> __drm_open_driver_another -> xe_device_get so it does indeed fetch the
+> hwconfig table now and hit the assertion added by that patch.
+>=20
+> I don't know if always grabbing and caching the hwconfig was actually a
+> good idea or not.  As we've seen here, the hwconfig may legitimately be
+> NULL, so as we remove the assertion here, we still need to do
+> NULL-checks at the point the hwconfig gets used to truly be safe.
+>=20
+> >
+> > But the hwconfig test itself should be failing on platforms which do no=
+t
+> > have a table. That is intentional. There is no platform which is POR fo=
+r the
+> > Xe driver which does not support hwconfig tables. So the test is suppos=
+ed
+> to
+> > fail if it ever does not get a valid table.
+>=20
+> The Xe driver is only officially supported on the Xe2 platforms and
+> beyond, but it can still load and run on some pre-Xe2 platforms that
+> people were using as development platforms; some of those don't support
+> hwconfig.  And even though our CI setup is only trying to test a subset
+> of those platforms that do contain hwconfig, note that our DG2 setups
+> also have an ADL-S igpu that also gets probed during module load, and
+> that's what leads to the CI failures that were reported here.
+>=20
+>=20
+> Maybe XeKMD is mature enough now (and we have enough real platforms for
+> testing now) that we could prune the list of platforms that Xe is
+> willing to load on with unofficial support.  E.g., drop the unofficial
+> support for TGL, RKL, and ADL-S since those platforms don't have
+> hwconfig and I don't think any of our developers are still using them as
+> development vehicles at this point.  That's probably a separate
+> discussion from the patch at hand though.
+>=20
 
-[...]
- > *What value do your facts add to CI reporting then?*
+We can go with this patch or skip hwconfig considerations for unsupported p=
+latforms like KMD is doing, but in the end it will also need same kind of c=
+hanges.
 
-It seems that the focus of your feedback has shifted from 'Peter is
-misleading people' to questioning the value of igt-runner. I believe
-it's important to address this change in perspective to ensure
-clarity and productive discussion.
+Or if we plan to remove pre-xe2 platforms completely from CI then no change=
+ needed.=20
 
-To address your new point, let me draw an analogy: asking "what is
-the value of igt-runner?" is similar to questioning the use of a car
-to reach the supermarket when walking is an option. While walking may
-suffice, the car adds efficiency and convenience, especially for
-larger or more complex "tasks".
+Tejas
 
-In our CI setup, a typical test list includes between 100 and
-200 tests. As you rightly pointed out, determining which test changed
-a specific fact currently requires significant time and effort. When
-multiple tests modify different facts, the process is not practical.
-
-igt-facts adds value by:
-- Clearly identifying which tests change which facts.
-- Enabling us to know which facts were present and absent before the
-  first test runs.
-- Reporting only changes, making the information concise and
-  efficient to review.
-
-Moreover, for most developers, the igt-facts output will not be
-obtrusive. In our CI runs, the output is saved only to the
-igt_runner?? file and does not appear in dmesg or the results.json
-file.
-
-And even so, in the few hundred runs that I checked, igt-facts
-typically added between 3 and 16 lines of log to a file that has
-about 1000 lines.
-
-I hope this explanation helps clarify the purpose and value of
-igt-facts.
-
-Thank you,
-
-Peter
+>=20
+> Matt
+>=20
+> >
+> > John.
+> >
+> > >
+> > > https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3683
+> > >
+> > > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > > Cc: Jan Maslak <jan.maslak@intel.com>
+> > > Fixes: 37a230e50 ("lib/xe_query: add hwconfig to xe_device")
+> > > Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> > > ---
+> > >   lib/xe/xe_query.c | 6 ++++--
+> > >   1 file changed, 4 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> > > index f3731d9d3..8f0a5392c 100644
+> > > --- a/lib/xe/xe_query.c
+> > > +++ b/lib/xe/xe_query.c
+> > > @@ -51,7 +51,8 @@ static uint32_t *xe_query_hwconfig_new(int fd,
+> uint32_t *hwconfig_size)
+> > >   	/* Perform the initial query to get the size */
+> > >   	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query),
+> 0);
+> > > -	igt_assert_neq(query.size, 0);
+> > > +	if (!query.size)
+> > > +		return NULL;
+> > >   	hwconfig =3D malloc(query.size);
+> > >   	igt_assert(hwconfig);
+> > > @@ -858,7 +859,8 @@ uint32_t *xe_hwconfig_lookup_value(int fd, enum
+> intel_hwconfig attribute, uint32
+> > >   	igt_assert(xe_dev);
+> > >   	hwconfig =3D xe_dev->hwconfig;
+> > > -	igt_assert(hwconfig);
+> > > +	if (!hwconfig)
+> > > +		return NULL;
+> > >   	/* Extract the value from the hwconfig */
+> > >   	pos =3D 0;
+> >
+>=20
+> --
+> Matt Roper
+> Graphics Software Engineer
+> Linux GPU Platform Enablement
+> Intel Corporation
