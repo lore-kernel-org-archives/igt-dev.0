@@ -4,27 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 495D6E7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 17:55:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A895DE7717F
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 18:11:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 067E410E947;
-	Tue, 10 Dec 2024 17:55:39 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A519410E947;
- Tue, 10 Dec 2024 17:55:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F7B810E16C;
+	Tue, 10 Dec 2024 18:11:05 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OviPKcen";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D8D210E16C
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 18:11:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733854265; x=1765390265;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=xE5jOGiW66kfdf7lLMmFgMOMjWpfTg2t2YsMOPMwVVU=;
+ b=OviPKcenXY5OfrEsYdVEKMZG5qlP5CBulAQ3sKegtMgrciz9nPB0RiIh
+ QrLlOz5wbIlYCMKcJn64W2oxe8errthBopeTb5Dwrdh93SXJqFKbBrkxR
+ X2jGdqBVpYlRYw5rBRB+8RS5BLc4SJ8iQgoge6ySe9mFKpuwBaqVsKjYI
+ mqsfugACgR8pIfFlCUEZ9BZVCqILJWq+9bEm99ZYszQGgmvQdScna1v2E
+ xNzwKvGuR0vRKIiFG7vSlxvXn1jsBbzfYOyH5OMs40FeVnIk19vExhwzm
+ fr6IYMJC7Rv4oYgdagzuTd9qkIUwXOUIVRNs7MA/bgVvjAbVEdju6OJ8c A==;
+X-CSE-ConnectionGUID: TRr5naMHTail6n5Lfw+ijg==
+X-CSE-MsgGUID: wYdZ58W+TsSU5KUF0EEVZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="56693538"
+X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; d="scan'208";a="56693538"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 10:11:04 -0800
+X-CSE-ConnectionGUID: qAwdKDhhRTah4JswDG3RiA==
+X-CSE-MsgGUID: jmlRxQ4aRIGDjHsuS2TLeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; d="scan'208";a="95938847"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.246.239])
+ ([10.245.246.239])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 10:11:02 -0800
+Message-ID: <4d317afd-5281-4059-b36b-a34d575e1b07@intel.com>
+Date: Tue, 10 Dec 2024 19:10:58 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_sink_max_dsc_slice_co?=
- =?utf-8?q?unt_lib_helper?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Dec 2024 17:55:37 -0000
-Message-ID: <173385333766.905409.5196229131505997050@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241210135322.2117541-1-swati2.sharma@intel.com>
-In-Reply-To: <20241210135322.2117541-1-swati2.sharma@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/3] tests/intel/xe_eudebug: Add
+ basic-vm-bind-ufence-delay-ack test
+To: =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+References: <20241209141359.5738-1-dominik.karol.piatkowski@intel.com>
+ <20241209141359.5738-2-dominik.karol.piatkowski@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241209141359.5738-2-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,112 +75,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi Dominik,
 
-Series: Add sink max dsc slice count lib helper
-URL   : https://patchwork.freedesktop.org/series/142353/
-State : success
+On 9.12.2024 15:13, Dominik Karol Piątkowski wrote:
+> Add a test that gives user fence in application and checks if delayed
+> ufence ack works.
+> 
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-== Summary ==
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
-CI Bug Log - changes from IGT_8147 -> IGTPW_12284
-====================================================
+Thanks,
+Christoph
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12284 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_auth@basic-auth:
-    - bat-twl-1:          [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-twl-1/igt@core_auth@basic-auth.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/bat-twl-1/igt@core_auth@basic-auth.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#12903])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
-    - bat-dg1-7:          [PASS][5] -> [FAIL][6] ([i915#12903])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dp2:
-    - fi-cfl-8109u:       [PASS][7] -> [DMESG-WARN][8] ([i915#12914])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp2.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp2.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [INCOMPLETE][9] ([i915#12904]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-apl-1/igt@dmabuf@all-tests.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [ABORT][11] ([i915#12061]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_chamelium_edid@dp-edid-read:
-    - bat-dg2-13:         [FAIL][13] ([i915#12505]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
-
-  
-#### Warnings ####
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-dp2:
-    - fi-cfl-8109u:       [DMESG-WARN][15] ([i915#11621]) -> [DMESG-WARN][16] ([i915#11621] / [i915#12914]) +2 other tests dmesg-warn
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@c-dp2.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@c-dp2.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12505]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12505
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#12914]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12914
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8147 -> IGTPW_12284
-
-  CI-20190529: 20190529
-  CI_DRM_15814: 6966a52cb5531bf6cc785fadba160a71cd31e7aa @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12284: c34c6cfb6e5421c8492176f45effdbd59839b1e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8147: df65b61f81a5cc919c10ff9c5ed516b45364135c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12284/index.html
+> ---
+>   tests/intel/xe_eudebug.c | 32 ++++++++++++++++++++++----------
+>   1 file changed, 22 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+> index 39db16457..1853dee40 100644
+> --- a/tests/intel/xe_eudebug.c
+> +++ b/tests/intel/xe_eudebug.c
+> @@ -54,16 +54,17 @@ static void test_sysfs_toggle(int fd)
+>   #define STAGE_PRE_DEBUG_RESOURCES_DONE	1
+>   #define STAGE_DISCOVERY_DONE		2
+>   
+> -#define CREATE_VMS		(1 << 0)
+> -#define CREATE_EXEC_QUEUES	(1 << 1)
+> -#define VM_BIND			(1 << 2)
+> -#define VM_BIND_VM_DESTROY	(1 << 3)
+> -#define VM_BIND_EXTENDED	(1 << 4)
+> -#define VM_METADATA		(1 << 5)
+> -#define VM_BIND_METADATA	(1 << 6)
+> -#define VM_BIND_OP_MAP_USERPTR	(1 << 7)
+> -#define EXEC_QUEUES_PLACEMENTS	(1 << 8)
+> -#define TEST_DISCOVERY		(1 << 31)
+> +#define CREATE_VMS			(1 << 0)
+> +#define CREATE_EXEC_QUEUES		(1 << 1)
+> +#define VM_BIND				(1 << 2)
+> +#define VM_BIND_VM_DESTROY		(1 << 3)
+> +#define VM_BIND_EXTENDED		(1 << 4)
+> +#define VM_METADATA			(1 << 5)
+> +#define VM_BIND_METADATA		(1 << 6)
+> +#define VM_BIND_OP_MAP_USERPTR		(1 << 7)
+> +#define EXEC_QUEUES_PLACEMENTS		(1 << 8)
+> +#define VM_BIND_DELAY_UFENCE_ACK	(1 << 9)
+> +#define TEST_DISCOVERY			(1 << 31)
+>   
+>   #define PAGE_SIZE SZ_4K
+>   #define MDATA_SIZE (WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM * PAGE_SIZE)
+> @@ -2124,6 +2125,10 @@ static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
+>    * SUBTEST: basic-vm-bind-ufence
+>    * Description:
+>    *      Give user fence in application and check if ufence ack works
+> + *
+> + * SUBTEST: basic-vm-bind-ufence-delay-ack
+> + * Description:
+> + *	Give user fence in application and check if delayed ufence ack works
+>    */
+>   static void test_basic_ufence(int fd, unsigned int flags)
+>   {
+> @@ -2148,6 +2153,10 @@ static void test_basic_ufence(int fd, unsigned int flags)
+>   	xe_eudebug_debugger_wait_stage(s, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
+>   	xe_eudebug_assert_f(d, wait_for_ufence_events(priv, XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * MSEC_PER_SEC) == 0,
+>   			    "missing ufence events\n");
+> +
+> +	if (flags & VM_BIND_DELAY_UFENCE_ACK)
+> +		sleep(XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * 4 / 5);
+> +
+>   	ack_fences(d);
+>   
+>   	xe_eudebug_client_wait_done(c);
+> @@ -2813,6 +2822,9 @@ igt_main
+>   	igt_subtest("basic-vm-bind-ufence")
+>   		test_basic_ufence(fd, 0);
+>   
+> +	igt_subtest("basic-vm-bind-ufence-delay-ack")
+> +		test_basic_ufence(fd, VM_BIND_DELAY_UFENCE_ACK);
+> +
+>   	igt_subtest("vma-ufence")
+>   		test_vma_ufence(fd, 0);
+>   
