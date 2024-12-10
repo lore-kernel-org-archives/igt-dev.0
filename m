@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F84E7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 18:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 792C5E7717F
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 18:23:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6EEBC10E953;
-	Tue, 10 Dec 2024 18:22:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Emzd7OC0";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C76A410E953
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 18:22:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733854941; x=1765390941;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=cKKJOyYNS/6WdFSWPrMlVUp8ARS4LsAm/c25B1dgeOk=;
- b=Emzd7OC0ldnfuA906w/d4upMzM8fwvYaeMggsVSc/KurZ9jlcqBma/Ve
- 2osGs133blk9bWv7Cmgjx5ztyHxMOfdsd+5bKpe0BsnEQ4MAqLdyQAOtV
- 2vmg3Yr5QrB3KvIG8KSkIQdTVn3jAzn211YsVyqzHmL6mgzeN4K1Ts2Dp
- lWJafYhAcK8jgCfqPkOQVinKWk3oF6NQp/YLiq4/95cGUEEu/Kvw9lPlT
- CXddILS+px6tzUDmYveRvKp5eeF5oHWWfgFocBYWM/z0yzhexf2lxiwSS
- 4/Mmth04rTL/UrA49pENnjuuQKXrSxKPe1swfojjxBJJqWOAjCYAV0KUO w==;
-X-CSE-ConnectionGUID: 6865LVtNTyixbhE2iSAiHg==
-X-CSE-MsgGUID: MryqJXCDQd6EvRJC9zslaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="56694550"
-X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; d="scan'208";a="56694550"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 10:22:21 -0800
-X-CSE-ConnectionGUID: epk1tukfQhOZLWZXJyiRGA==
-X-CSE-MsgGUID: SNXDq3cySqOopZge5pQRbw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; d="scan'208";a="100300683"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.246.239])
- ([10.245.246.239])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 10:22:18 -0800
-Message-ID: <b62733e3-d141-46bd-92c5-b5186d754072@intel.com>
-Date: Tue, 10 Dec 2024 19:22:15 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C4EE10E956;
+	Tue, 10 Dec 2024 18:23:52 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94E7A10E953;
+ Tue, 10 Dec 2024 18:23:51 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/3] tests/intel/xe_eudebug: Add
- basic-vm-bind-drop-debugger-before-ufence-ack test
-To: =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>, igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-References: <20241209141359.5738-1-dominik.karol.piatkowski@intel.com>
- <20241209141359.5738-3-dominik.karol.piatkowski@intel.com>
-Content-Language: en-US
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20241209141359.5738-3-dominik.karol.piatkowski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/intel=5Fbufops=3A_Set?=
+ =?utf-8?q?_NEEDS=5FVISIBLE=5FVRAM_for_each_buf_by_default_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 10 Dec 2024 18:23:51 -0000
+Message-ID: <173385503160.905409.3185653503143061949@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241205104134.22790-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20241205104134.22790-1-dominik.grzegorzek@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,112 +37,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dominik,
+== Series Details ==
 
-On 9.12.2024 15:13, Dominik Karol Piątkowski wrote:
-> Add a test that gives user fence in application, holds it, drops the
-> debugger connection and checks if anything breaks. It is expected that
-> held acks are released when connection is dropped.
-> 
-> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> ---
->   tests/intel/xe_eudebug.c | 50 ++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 50 insertions(+)
-> 
-> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-> index 1853dee40..0a4bebf1e 100644
-> --- a/tests/intel/xe_eudebug.c
-> +++ b/tests/intel/xe_eudebug.c
-> @@ -2171,6 +2171,53 @@ static void test_basic_ufence(int fd, unsigned int flags)
->   	ufence_priv_destroy(priv);
->   }
->   
-> +/**
-> + * SUBTEST: basic-vm-bind-drop-debugger-before-ufence-ack
-> + * Description:
-> + *	Give user fence in application, hold it, drop the debugger connection and check if anything
-> + *	breaks. Expect that held acks are released when connection is dropped.
-> + */
-> +static void test_ufence_drop_debugger_before_ack(int fd)
+Series: lib/intel_bufops: Set NEEDS_VISIBLE_VRAM for each buf by default (rev2)
+URL   : https://patchwork.freedesktop.org/series/142167/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8147 -> IGTPW_12285
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12285 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12285, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12285:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1:
+    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12285 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#12926])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-modeset.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - fi-kbl-7567u:       [PASS][7] -> [DMESG-WARN][8] ([i915#12920])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [ABORT][9] ([i915#12435] / [i915#12919]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-twl-1/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/bat-twl-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-twl-1:          [ABORT][11] ([i915#12919]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-twl-1/igt@i915_selftest@live@requests.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/bat-twl-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [ABORT][13] ([i915#12061]) -> [PASS][14] +1 other test pass
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_chamelium_edid@dp-edid-read:
+    - bat-dg2-13:         [FAIL][15] ([i915#12505]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@reload:
+    - fi-cfl-8109u:       [DMESG-WARN][17] ([i915#11621] / [i915#1982]) -> [DMESG-WARN][18] ([i915#11621])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-cfl-8109u/igt@i915_module_load@reload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/fi-cfl-8109u/igt@i915_module_load@reload.html
+
+  
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12505]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12505
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#12920]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12920
+  [i915#12926]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12926
+  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
 
 
-I can't help but imagine merging this code with the existing 
-'test_basic_ufence'.
+Build changes
+-------------
 
-> +{
-> +	struct xe_eudebug_debugger *d;
-> +	struct xe_eudebug_session *s;
-> +	struct xe_eudebug_client *c;
-> +	struct ufence_priv *priv;
-> +
-> +	priv = ufence_priv_create();
-> +	s = xe_eudebug_session_create(fd, basic_ufence_client, 0, priv);
-> +	c = s->client;
-> +	d = s->debugger;
-> +
-> +	xe_eudebug_debugger_add_trigger(d,
-> +					DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					basic_ufence_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
-> +	xe_eudebug_debugger_start_worker(d);
-> +	xe_eudebug_client_start(c);
-> +
-> +	xe_eudebug_debugger_wait_stage(s, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
-> +	xe_eudebug_assert_f(d, wait_for_ufence_events(priv, XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * MSEC_PER_SEC) == 0,
-> +			    "missing ufence events\n");
-> +
-> +	xe_eudebug_debugger_detach(d);
-> +	sleep(1);
-> +	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8147 -> IGTPW_12285
 
-Basically it's this block vs ack.
+  CI-20190529: 20190529
+  CI_DRM_15814: 6966a52cb5531bf6cc785fadba160a71cd31e7aa @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12285: 87df147a66c6b32674f97a008a6238915a7b0849 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8147: df65b61f81a5cc919c10ff9c5ed516b45364135c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-> +
-> +	xe_eudebug_client_wait_done(c);
-> +	xe_eudebug_debugger_stop_worker(d, 1);
-> +
-> +	xe_eudebug_event_log_print(d->log, true);
-> +	xe_eudebug_event_log_print(c->log, true);
-> +
-> +	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
-> +				 XE_EUDEBUG_FILTER_EVENT_VM | XE_EUDEBUG_FILTER_EVENT_OPEN);
+== Logs ==
 
-And this. Given the fact that the 'UFENCE' filter in 'test_basic_ufence' 
-is redundant, we could just introduce a filter variable, that would be 
-set accordingly together with the reconnect block.
-
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	ufence_priv_destroy(priv);
-> +} > +
->   struct vm_bind_clear_thread_priv {
->   	struct drm_xe_engine_class_instance *hwe;
->   	struct xe_eudebug_client *c;
-> @@ -2825,6 +2872,9 @@ igt_main
->   	igt_subtest("basic-vm-bind-ufence-delay-ack")
->   		test_basic_ufence(fd, VM_BIND_DELAY_UFENCE_ACK);
->   
-> +	igt_subtest("basic-vm-bind-drop-debugger-before-ufence-ack")
-
-No strong opinion but 'basic-vm-bind-ufence-reconnect' would be somewhat 
-inline what we have in our online test, nicely allows to select ufence 
-tests with a glob and is a little bit shorter. It is less descriptive 
-but then it also seems quite logical to expect the reconnect to happen 
-at the most interesting moment - which for this test is the ufence blocking.
-
-Other than some code organization it looks good so:
-
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
-
-Thanks,
-Christoph
-
-> +		test_ufence_drop_debugger_before_ack(fd);
-> +
->   	igt_subtest("vma-ufence")
->   		test_vma_ufence(fd, 0);
->   
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12285/index.html
