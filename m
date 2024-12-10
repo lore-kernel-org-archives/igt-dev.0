@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0781AE7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 16:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2626E77180
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Dec 2024 16:15:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9946C10E0C3;
-	Tue, 10 Dec 2024 16:15:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ADBBE10E3BB;
+	Tue, 10 Dec 2024 16:15:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m0yy5bL+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wqv0q1qE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9A6B10E0C3
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 16:15:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C1BF10E3BB
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2024 16:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733847348; x=1765383348;
+ t=1733847357; x=1765383357;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IYjuV0kS/NUiQF5kd8UrSciJgzfqjJ4/pvFoQjsSyBs=;
- b=m0yy5bL+s4ZqQ54XBta9cASIS0mAHH8X6o+wN9cERlyPVIEWGPtTJ6+K
- hc6TJNph11hCQ81g5mDeixfu2NZpwApgWZkMsgR1IT/IHm8rvFuU4W9vn
- DwM4oD9fkbYf8e/wqbPlexDLGxvtiUpaScwhhmFdTjjk0bqLJEfZSl5Lu
- uqTABv63P1eY89k4jtjBoowit8m2AtxEx8izhF74PA6zg8AXo7Qykji1L
- wU4QKhi8zEn1TOUMsWhxA9Vvv+hdwagmnrdAVhRqmI3t8nuPP4t8PyBgm
- LvirMPIiLvCuskAh0UsuCa6lze48QDCo8I7Gaj0mvkGqS8vAhaIoIrcuf g==;
-X-CSE-ConnectionGUID: 8lPsNjKASPOckC/j+xCPng==
-X-CSE-MsgGUID: u/h6nFBfRUWFGvOtRTv2Wg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38125506"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="38125506"
+ bh=5lbbeYPN1HEM6QnZ0oTHv0F5KOdMdCy+ZwkpOjKZNl8=;
+ b=Wqv0q1qEprq+m30CI9DIZ/qk6qQmyRLLDMFxWO4QzfV1z78M4vHte0zy
+ GbZJLnTLEdRh0BpCMEpMYrKHfAuoPrrNy5Y5XnihFNkA/oBnANUfmTmXb
+ ITw79PbRT8iP9o1b8dLufdZHPwp//kIYexXzZ8iMkumf9uMfYsMwmBqYG
+ akKrD63d7KAYXBcG2SgiU4xMcG1vurx2qPup1bFZ67rZDEkqkmU2pQ6dx
+ XrATzAg/PI5hCWdpKXz1sEXBI+QzGPWOur2xss9sRwttqzJcsbwbnFyrh
+ QVudnOVeOQA5uGMjo1mL1mXJb6Z2GUMogypAieW6QBXk8fftSuPkOqDDO Q==;
+X-CSE-ConnectionGUID: j+X6DtD0QaOH6pMOfTqMbg==
+X-CSE-MsgGUID: 4GHSB0CfRVuIQwt5pQ5nXQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38125524"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="38125524"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 08:15:48 -0800
-X-CSE-ConnectionGUID: 6G+vuNZTROyaaJ3nOAP1mw==
-X-CSE-MsgGUID: x5UJaWhtQUOkYiqpRvPq3Q==
+ 10 Dec 2024 08:15:57 -0800
+X-CSE-ConnectionGUID: a/vLCbjPQve7BQ6ADSTmpg==
+X-CSE-MsgGUID: TAVZRFS2T1C4N1j3JLE0Ig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95520444"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95520488"
 Received: from unknown (HELO localhost) ([10.217.180.234])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 08:15:45 -0800
+ 10 Dec 2024 08:15:54 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -55,9 +55,9 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Piotr Piorkowski <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH 2/3] drm/xe/rtp: Add match helper to omit SR-IOV VF device
-Date: Tue, 10 Dec 2024 17:15:24 +0100
-Message-Id: <20241210161525.777763-3-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH 3/3] drm/xe/vf: Don't apply Wa_22019338487 for VF
+Date: Tue, 10 Dec 2024 17:15:25 +0100
+Message-Id: <20241210161525.777763-4-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241210161525.777763-1-marcin.bernatowicz@linux.intel.com>
 References: <20241210161525.777763-1-marcin.bernatowicz@linux.intel.com>
@@ -78,8 +78,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a match helper that allows the application of a workaround
-when the device is not an SR-IOV VF (Virtual Function) device.
+Don't use Wa_22019338487 for VF.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -94,43 +93,22 @@ Cc: Piotr Piorkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- drivers/gpu/drm/xe/xe_rtp.c |  5 +++++
- drivers/gpu/drm/xe/xe_rtp.h | 11 +++++++++++
- 2 files changed, 16 insertions(+)
+ drivers/gpu/drm/xe/xe_wa_oob.rules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_rtp.c b/drivers/gpu/drm/xe/xe_rtp.c
-index b13d4d62f0b1..7a1c78fdfc92 100644
---- a/drivers/gpu/drm/xe/xe_rtp.c
-+++ b/drivers/gpu/drm/xe/xe_rtp.c
-@@ -340,3 +340,8 @@ bool xe_rtp_match_first_gslice_fused_off(const struct xe_gt *gt,
- 	return dss >= dss_per_gslice;
- }
- 
-+bool xe_rtp_match_not_sriov_vf(const struct xe_gt *gt,
-+			       const struct xe_hw_engine *hwe)
-+{
-+	return !IS_SRIOV_VF(gt_to_xe(gt));
-+}
-diff --git a/drivers/gpu/drm/xe/xe_rtp.h b/drivers/gpu/drm/xe/xe_rtp.h
-index 827d932b6908..7dea10d732d7 100644
---- a/drivers/gpu/drm/xe/xe_rtp.h
-+++ b/drivers/gpu/drm/xe/xe_rtp.h
-@@ -476,4 +476,15 @@ bool xe_rtp_match_first_render_or_compute(const struct xe_gt *gt,
- bool xe_rtp_match_first_gslice_fused_off(const struct xe_gt *gt,
- 					 const struct xe_hw_engine *hwe);
- 
-+/*
-+ * xe_rtp_match_not_sriov_vf - Match when not on SR-IOV VF device
-+ *
-+ * @gt: GT structure
-+ * @hwe: Engine instance
-+ *
-+ * Returns: true if device is not VF, false otherwise.
-+ */
-+bool xe_rtp_match_not_sriov_vf(const struct xe_gt *gt,
-+			       const struct xe_hw_engine *hwe);
-+
- #endif
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 3ed12a85cc60..40438c3d9b72 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -34,7 +34,7 @@
+ 		GRAPHICS_VERSION(2004)
+ 22019338487	MEDIA_VERSION(2000)
+ 		GRAPHICS_VERSION(2001)
+-		MEDIA_VERSION(3000), MEDIA_STEP(A0, B0)
++		MEDIA_VERSION(3000), MEDIA_STEP(A0, B0), FUNC(xe_rtp_match_not_sriov_vf)
+ 22019338487_display	PLATFORM(LUNARLAKE)
+ 16023588340	GRAPHICS_VERSION(2001)
+ 14019789679	GRAPHICS_VERSION(1255)
 -- 
 2.31.1
 
