@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 493ABE7717D
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 09:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18BE2E77180
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 09:42:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B4A810EAB8;
-	Wed, 11 Dec 2024 09:38:28 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFF7610EAB8;
- Wed, 11 Dec 2024 09:38:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id A75BC10E0B8;
+	Wed, 11 Dec 2024 09:42:57 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CCTnQw3u";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4489010E0B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2024 09:42:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733910176; x=1765446176;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=7js4qFRtg1k+1iHZHi8y9PngrAimd8J6b2kT9Px8zmY=;
+ b=CCTnQw3uDeO9M32AExYpYD2RrfpqDi6KIOK8YGZF/qAv5SXQkCdcGhSc
+ Qx0umE84G86XJ0go/igakwpTeuuWbaWCU/nF6d3EzifHc3e1AKh5HJj6x
+ /deaU5R3U3N6iFBOSkGBe5tWm8JonO8mycfnf49x6im0BzoNII9IGoCeS
+ 8b5TtVEgnl8ACwWFWxoVGcrbw0O2eWj4FuBUiIPdni9VIMH3M01vlUB5M
+ ZT/9O29TJprQpZ0GQy9zTGleq15p3aTI1AeGtvh4hPK0VDajloSc00RtJ
+ /CmDGfCZ7C51Lri3tOrKkp4UQFjJVzoBEvXxCuOD6Bfdz4ZSn64BeES+D g==;
+X-CSE-ConnectionGUID: 28dJNUWSSLG1gfO4h44jhA==
+X-CSE-MsgGUID: h5+FC1AiQG2POdLy9rKLQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="34407597"
+X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; d="scan'208";a="34407597"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 01:42:56 -0800
+X-CSE-ConnectionGUID: ilOfIG5DT72Hm0bxgkoFEA==
+X-CSE-MsgGUID: /oKGnzdATXCPkR9qZ4kCsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; d="scan'208";a="96099865"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 01:42:54 -0800
+Date: Wed, 11 Dec 2024 10:42:52 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t v1 2/5] runner/settings: Update absolute_path
+ function to accept const char* parameter
+Message-ID: <20241211094252.hevhgzikhhehyrci@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, swati2.sharma@intel.com
+References: <20241121133958.3382633-1-ramanaidu.naladala@intel.com>
+ <20241121133958.3382633-3-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/xe=5Fspin=5Fbatch?=
- =?utf-8?q?=3A_Add_spin-timestamp-check_=28rev7=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Dec 2024 09:38:26 -0000
-Message-ID: <173390990691.1156177.8273414715971243954@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241211085848.617278-1-pravalika.gurram@intel.com>
-In-Reply-To: <20241211085848.617278-1-pravalika.gurram@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241121133958.3382633-3-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,131 +69,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi Naladala,
+On 2024-11-21 at 19:09:55 +0530, Naladala Ramanaidu wrote:
 
-Series: tests/xe_spin_batch: Add spin-timestamp-check (rev7)
-URL   : https://patchwork.freedesktop.org/series/140933/
-State : failure
+[PATCH i-g-t v1 2/5] runner/settings: Update absolute_path function to accept const char* parameter
 
-== Summary ==
+Please make it a little shorter and more descriptive, like
+[PATCH i-g-t v1 2/5] runner/settings: constify absolute_path parameter
 
-CI Bug Log - changes from IGT_8147 -> IGTPW_12290
-====================================================
+> Modified the absolute_path function in settings.c to take a
+> const char* parameter instead of char*. Updated the corresponding
+> declaration in settings.h.This change ensures that the input path
+> is not modified within the function, improving code safety and clarity.
 
-Summary
--------
+This looks a little too long and also like "C to words",
+read CONTRIBUTE.md for pointers how to write patch descriptions.
 
-  **FAILURE**
+Reagrds,
+Kamil
 
-  Serious unknown changes coming with IGTPW_12290 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12290, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/index.html
-
-Participating hosts (45 -> 45)
-------------------------------
-
-  Additional (1): fi-ivb-3770 
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12290:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@requests:
-    - bat-apl-1:          [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-apl-1/igt@i915_selftest@live@requests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/bat-apl-1/igt@i915_selftest@live@requests.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12290 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-mtlp-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-apl-1:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12435])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-apl-1/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/bat-apl-1/igt@i915_selftest@live.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-vga-1:
-    - fi-ivb-3770:        NOTRUN -> [SKIP][7] +23 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/fi-ivb-3770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-vga-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [INCOMPLETE][8] ([i915#12904]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-apl-1/igt@dmabuf@all-tests.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_module_load@reload:
-    - fi-cfl-8109u:       [DMESG-WARN][10] ([i915#11621] / [i915#1982]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-cfl-8109u/igt@i915_module_load@reload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/fi-cfl-8109u/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][12] ([i915#11621]) -> [PASS][13] +131 other tests pass
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@kms_chamelium_edid@dp-edid-read:
-    - bat-dg2-13:         [FAIL][14] ([i915#12505]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [SKIP][16] ([i915#9197]) -> [PASS][17] +2 other tests pass
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8147/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
-  [i915#12505]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12505
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8147 -> IGTPW_12290
-  * Linux: CI_DRM_15814 -> CI_DRM_15817
-
-  CI-20190529: 20190529
-  CI_DRM_15814: 6966a52cb5531bf6cc785fadba160a71cd31e7aa @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15817: 7bbcd7df9387f0d9004f997df33f7a9472d9c080 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12290: 12290
-  IGT_8147: df65b61f81a5cc919c10ff9c5ed516b45364135c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12290/index.html
+> 
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>  runner/settings.c | 2 +-
+>  runner/settings.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/runner/settings.c b/runner/settings.c
+> index 0d27e7af3..dd4b08dd7 100644
+> --- a/runner/settings.c
+> +++ b/runner/settings.c
+> @@ -565,7 +565,7 @@ static char *_basename(const char *path)
+>  	return tmpname;
+>  }
+>  
+> -char *absolute_path(char *path)
+> +char *absolute_path(const char *path)
+>  {
+>  	char *result = NULL;
+>  	char *base, *dir;
+> diff --git a/runner/settings.h b/runner/settings.h
+> index 8335f0b8c..6246d0c3d 100644
+> --- a/runner/settings.h
+> +++ b/runner/settings.h
+> @@ -135,7 +135,7 @@ bool parse_options(int argc, char **argv,
+>  bool validate_settings(struct settings *settings);
+>  
+>  /* TODO: Better place for this */
+> -char *absolute_path(char *path);
+> +char *absolute_path(const char *path);
+>  
+>  /**
+>   * serialize_settings:
+> -- 
+> 2.43.0
+> 
