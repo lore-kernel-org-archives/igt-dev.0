@@ -4,28 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE33E7717D
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 21:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DCDE7717D
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 21:26:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7050210E62E;
-	Wed, 11 Dec 2024 21:14:38 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6BB910E62E;
- Wed, 11 Dec 2024 21:14:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0181843341604842976=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA9F810EC1A;
+	Wed, 11 Dec 2024 21:26:50 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E8xwXL8T";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB90D10EC1A
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2024 21:26:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733952410; x=1765488410;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=raPRSa/K0X7GDKacEKMqt098jChqAppdNCH1RHN7l7Q=;
+ b=E8xwXL8TwMdnfV6L3eLL0XqbrpVgFm3xjAF2JAdO8l741c0My7aFGAJw
+ +9MHNgBiyKoXx3nfAOP3NcUpVdzi4UePSq6F7nGW+XfFSdasFTt9mrxsq
+ RE4fzp7CLO9xj8+8WkkAGjXRxCS0C9XE2kaXjh5quC8QTkrVVejrCNFRd
+ 8CRhEABsVCkphIREP16v6bcHhwSwhMQXy2RgLJzXLqrqamlJ7vTkDpY0t
+ 6DEsYJkC7wIVC7bC8lY++/oOpQe4Q7bi0j2NiDYfAduGY8JqTJWrUQWhD
+ qgvg/gxG2EAM57Gv7xRORMEx6GUajveIuRxMrwNq2NsyHG7G0AhIHhtoi Q==;
+X-CSE-ConnectionGUID: /5O68A+2SRO+zSWbNEGjtw==
+X-CSE-MsgGUID: /oLtIrjtRACIrfbDx92Bsw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44823217"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="44823217"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 13:26:50 -0800
+X-CSE-ConnectionGUID: JdGiI6LrQBiWDmtYNnv46A==
+X-CSE-MsgGUID: AcZijmN9Q7+vsRZ/HWGmyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,226,1728975600"; d="scan'208";a="126784257"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO [10.245.246.37])
+ ([10.245.246.37])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 13:26:47 -0800
+Message-ID: <862337aa-7a40-48f7-b77d-b0c5b2494892@intel.com>
+Date: Wed, 11 Dec 2024 22:26:44 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_tests/xe=5Feudebug=3A_Set_NEEDS=5FVISIBLE=5FVRAM_for_?=
- =?utf-8?q?=27create=5Fbind=5Flist=27?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Dec 2024 21:14:36 -0000
-Message-ID: <173395167673.1337501.2158292526268754214@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241211191741.36973-1-christoph.manszewski@intel.com>
-In-Reply-To: <20241211191741.36973-1-christoph.manszewski@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 i-g-t 3/3] tests/intel/xe_eudebug: Add
+ basic-vm-bind-ufence-sigint-client test
+To: =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+References: <20241211135039.5853-1-dominik.karol.piatkowski@intel.com>
+ <20241211135039.5853-4-dominik.karol.piatkowski@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241211135039.5853-4-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,261 +75,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0181843341604842976==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Dominik
 
-== Series Details ==
+On 11.12.2024 14:50, Dominik Karol Piątkowski wrote:
+> Add a test that gives user fence in application, holds it, sends SIGINT
+> to client and checks if anything breaks.
+> 
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> ---
+> v2:
+> - Cleanup after the client in basic-vm-bind-ufence-sigint-client,
+>    merge the test into test_basic_ufence
+> ---
+>   tests/intel/xe_eudebug.c | 17 +++++++++++++++++
+>   1 file changed, 17 insertions(+)
+> 
+> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+> index 77ce905f0..c543eb064 100644
+> --- a/tests/intel/xe_eudebug.c
+> +++ b/tests/intel/xe_eudebug.c
+> @@ -65,6 +65,7 @@ static void test_sysfs_toggle(int fd)
+>   #define EXEC_QUEUES_PLACEMENTS		(1 << 8)
+>   #define VM_BIND_DELAY_UFENCE_ACK	(1 << 9)
+>   #define VM_BIND_UFENCE_RECONNECT	(1 << 10)
+> +#define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 11)
+>   #define TEST_DISCOVERY			(1 << 31)
+>   
+>   #define PAGE_SIZE SZ_4K
+> @@ -2135,6 +2136,10 @@ static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
+>    * Description:
+>    *	Give user fence in application, hold it, drop the debugger connection and check if anything
+>    *	breaks. Expect that held acks are released when connection is dropped.
+> + *
+> + * SUBTEST: basic-vm-bind-ufence-sigint-client
+> + * Description:
+> + *	Give user fence in application, hold it, send SIGINT to client and check if anything breaks.
+>    */
+>   static void test_basic_ufence(int fd, unsigned int flags)
+>   {
+> @@ -2164,6 +2169,14 @@ static void test_basic_ufence(int fd, unsigned int flags)
+>   	if (flags & VM_BIND_DELAY_UFENCE_ACK)
+>   		sleep(XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * 4 / 5);
+>   
+> +	if (flags & VM_BIND_UFENCE_SIGINT_CLIENT) {
+> +		kill(c->pid, SIGINT);
+> +		c->pid = 0;
+> +		xe_eudebug_debugger_stop_worker(d, 1);
+> +		xe_eudebug_event_log_print(d->log, true);
+> +		goto end;
+> +	}
+> +
+>   	if (flags & VM_BIND_UFENCE_RECONNECT) {
+>   		filter = XE_EUDEBUG_FILTER_EVENT_VM_BIND | XE_EUDEBUG_FILTER_EVENT_VM |
+>   				XE_EUDEBUG_FILTER_EVENT_OPEN;
+> @@ -2181,6 +2194,7 @@ static void test_basic_ufence(int fd, unsigned int flags)
+>   
+>   	xe_eudebug_session_check(s, true, filter);
+>   
+> +end:
 
-Series: series starting with [i-g-t,1/2] tests/xe_eudebug: Set NEEDS_VISIBLE_VRAM for 'create_bind_list'
-URL   : https://patchwork.freedesktop.org/series/142438/
-State : success
+Well 'goto' has it's place, but I think we could do without it here. How 
+about:
 
-== Summary ==
+```
+@@ -2149,7 +2166,28 @@ static void test_basic_ufence(int fd, unsigned 
+int flags)
+         xe_eudebug_debugger_wait_stage(s, 
+STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
+         xe_eudebug_assert_f(d, wait_for_ufence_events(priv, 
+XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * MSEC_PER_SEC) == 0,
+                             "missing ufence events\n");
+-       ack_fences(d);
++
++       if (flags & VM_BIND_DELAY_UFENCE_ACK)
++               sleep(XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * 4 / 5);
++
++       if (flags & VM_BIND_UFENCE_SIGINT_CLIENT) {
++               /* Killing client so client log will be empty */
++               filter = XE_EUDEBUG_FILTER_ALL;
++
++               kill(c->pid, SIGINT);
++               c->pid = 0;
++               c->done = 1;
++       } else if (flags & VM_BIND_UFENCE_RECONNECT) {
++               /* Reconnecting debugger after client is done, debugger 
+log will be cut */
++               filter = XE_EUDEBUG_FILTER_EVENT_VM_BIND | 
+XE_EUDEBUG_FILTER_EVENT_VM |
++                        XE_EUDEBUG_FILTER_EVENT_OPEN;
++
++               xe_eudebug_debugger_detach(d);
++               xe_eudebug_client_wait_done(c);
++               igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
++       } else {
++               ack_fences(d);
++       }
+```
 
-CI Bug Log - changes from XEIGT_8149_BAT -> XEIGTPW_12298_BAT
-====================================================
+We have one central place which determines the way we release the 
+fences, the rest of the function is common.
 
-Summary
--------
+Note: this code uses "XE_EUDEBUG_FILTER_ALL" which is currently broken - 
+I've sent a fix here: https://patchwork.freedesktop.org/series/142438/
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 8)
-------------------------------
-
-  Additional (1): bat-lnl-1 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12298_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-lnl-1:          NOTRUN -> [SKIP][1] ([Intel XE#1466])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-lnl-1:          NOTRUN -> [DMESG-WARN][2] ([Intel XE#3729])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-lnl-1:          NOTRUN -> [SKIP][3] ([Intel XE#2244])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - bat-lnl-1:          NOTRUN -> [SKIP][4] ([Intel XE#352]) +2 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-lnl-1:          NOTRUN -> [SKIP][5] ([Intel XE#1470] / [Intel XE#2853])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@sriov_basic@enable-vfs-autoprobe-off:
-    - bat-lnl-1:          NOTRUN -> [SKIP][6] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
-
-  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
-    - bat-lnl-1:          NOTRUN -> [SKIP][7] ([Intel XE#688]) +17 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-lnl-1:          NOTRUN -> [SKIP][8] ([Intel XE#1192]) +2 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_mmap@vram:
-    - bat-lnl-1:          NOTRUN -> [SKIP][9] ([Intel XE#1416])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-lnl-1:          NOTRUN -> [SKIP][10] ([Intel XE#1420] / [Intel XE#2838])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-lnl-1:          NOTRUN -> [SKIP][11] ([Intel XE#977])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-lnl-1:          NOTRUN -> [SKIP][12] ([Intel XE#979])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html
-
-  * igt@xe_sriov_flr@flr-vf1-clear:
-    - bat-lnl-1:          NOTRUN -> [SKIP][13] ([Intel XE#3342])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html
-
-  
-  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
-  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
-  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
-  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
-  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
-  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
-  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
-  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
-  [Intel XE#3729]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3729
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+Thanks,
+Christoph
 
 
-Build changes
--------------
 
-  * IGT: IGT_8149 -> IGTPW_12298
-
-  IGTPW_12298: 1de50630e7e299db6545c809f7bfa7dfcba9b455 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8149: 1e3893ae48c972da2338a62477d74de0f7b26776 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2354-49199ebefcd6fc1e6dc38eafa23a2825bf39c27d: 49199ebefcd6fc1e6dc38eafa23a2825bf39c27d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/index.html
-
---===============0181843341604842976==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/xe_eudebug: Set NEEDS_VISIBLE_VRAM for &#x27;create_bind_list&#x27;</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142438/">https://patchwork.freedesktop.org/series/142438/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8149_BAT -&gt; XEIGTPW_12298_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 8)</h2>
-<p>Additional (1): bat-lnl-1 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12298_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3729">Intel XE#3729</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12298/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8149 -&gt; IGTPW_12298</li>
-</ul>
-<p>IGTPW_12298: 1de50630e7e299db6545c809f7bfa7dfcba9b455 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8149: 1e3893ae48c972da2338a62477d74de0f7b26776 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2354-49199ebefcd6fc1e6dc38eafa23a2825bf39c27d: 49199ebefcd6fc1e6dc38eafa23a2825bf39c27d</p>
-
-</body>
-</html>
-
---===============0181843341604842976==--
+>   	xe_eudebug_session_destroy(s);
+>   	ufence_priv_destroy(priv);
+>   }
+> @@ -2842,6 +2856,9 @@ igt_main
+>   	igt_subtest("basic-vm-bind-ufence-reconnect")
+>   		test_basic_ufence(fd, VM_BIND_UFENCE_RECONNECT);
+>   
+> +	igt_subtest("basic-vm-bind-ufence-sigint-client")
+> +		test_basic_ufence(fd, VM_BIND_UFENCE_SIGINT_CLIENT);
+> +
+>   	igt_subtest("vma-ufence")
+>   		test_vma_ufence(fd, 0);
+>   
