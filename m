@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80202E7717D
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 20:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 358E2E7717D
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 20:48:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35D7210EC12;
-	Wed, 11 Dec 2024 20:32:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LDzeIbko";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98B5210E1D2
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2024 20:32:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733949128; x=1765485128;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=VvBUEZBCe0wbZFIGw7dUFGbwY6tl7/ACqLuEjj6VWmo=;
- b=LDzeIbkok5pdzEdl+r/BcnQXJ3X2amp852G2zRjctXehyex6/YKycZGY
- KHeCoJzrvZHEq/93t6HbgiWfve27BOpmwnAWUKxyFX5WN5NxIJ4g8HnZU
- WJ62vbuJkvHAGAhHObWdZsu+X51k2yJ2SbLE+tkiw19lg0W7bKUGNIQUe
- Q4wCrI1F8GSOWtT4Ai7A6VIiZdk/V3R2uiq0v6RqLnMvXyQJp/gjcwvo9
- KrMVJyCEfS2jAoCmvEvf3Qd9r7H5OVOpTcGopRuuiLmm0X9v/3Wg+72+R
- +zpX4kHVQgwT6SRPTUIl72ccQeBrfOj/KvrARitDWJCMhDmsFOvEUCgP/ w==;
-X-CSE-ConnectionGUID: +xGvVVFTTUilswz0O8nz6A==
-X-CSE-MsgGUID: m4J2mf3BQwuChYP5+CI96A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38279015"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="38279015"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 12:32:08 -0800
-X-CSE-ConnectionGUID: eWP/SLMqQKaKYRYj/KU3Mg==
-X-CSE-MsgGUID: SErRbykbQgOWWI+BkQILlg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="100889986"
-Received: from unknown (HELO
- dg2adlp-Alder-Lake-Client-Platform.iind.intel.com) ([10.145.162.161])
- by orviesa005.jf.intel.com with ESMTP; 11 Dec 2024 12:31:56 -0800
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Adarsh G M <adarsh.g.m@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t v6] tests/kms_histogram: Added IGT support to validate
- global histogram
-Date: Thu, 12 Dec 2024 02:01:19 +0530
-Message-Id: <20241211203119.260449-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241211193652.208427-1-mohammed.thasleem@intel.com>
-References: <20241211193652.208427-1-mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF18010E63D;
+	Wed, 11 Dec 2024 20:48:05 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27A5A10EC32;
+ Wed, 11 Dec 2024 20:48:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5220634930578259484=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/lobf=3A_Remove_?=
+ =?utf-8?q?lobf_supported_check_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Manna, Animesh" <animesh.manna@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 11 Dec 2024 20:48:05 -0000
+Message-ID: <173395008515.1327330.10869978238126980070@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241129084006.3448688-1-animesh.manna@intel.com>
+In-Reply-To: <20241129084006.3448688-1-animesh.manna@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,523 +37,261 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The IGT changes included tests for enabling/disabling histogram.
-Validating the histogram event generation and if any One such library
-Global Histogram Enhancement(GHE) present, will feed the histogram to
-the library, get the enhanced LUT data and feed it back to the KMD.
-For histogram generation, black/white and color images are flipped.
+--===============5220634930578259484==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-   Display histogram is a hardware functionality where a statistics for 'x'
-number of frames is generated to form a histogram data. This is notified
-to the user via histogram event. Compositor then upon sensing the histogram
-event will read the histogram data from KMD via crtc property.
+== Series Details ==
 
-A library can be developed to take this generated histogram as an input and
-apply some algorithm to generate an Image Enhancement(IET).
+Series: tests/intel/lobf: Remove lobf supported check (rev2)
+URL   : https://patchwork.freedesktop.org/series/141914/
+State : success
 
-This is further fed back to the KMD via crtc property. KMD will feed this
-bask to the hardware. Hardware will use this as a multiplicand factor to
-multiply with the incoming pixels at the end of the pipe which is then
-pushed onto the display.
+== Summary ==
 
-One such library Global Histogram Enhancement(GHE) will take the histogram
-as input and apply the algorithm to enhance the density and then return
-the enhanced factor.
-GHE library link: https://github.com/intel/ghe
-Display Global Histogram changes:
-	https://patchwork.freedesktop.org/series/135793/
-	https://lore.kernel.org/all/20241119104521.575377-1-arun.r.murthy@intel.com/
+CI Bug Log - changes from XEIGT_8149_BAT -> XEIGTPW_12297_BAT
+====================================================
 
-TODO: Extend the tests for different formats/modifiers.
+Summary
+-------
 
-v2: Remove eDP restriction. (Vandita)
-    Update crtc property name. (Arun)
-v3: Update discription and test names. (Kamil)
-    Remove warning message from meson build. (Kamil)
-v4: Fixed some nits. (Kamil)
-v5: Update discription. (Kamil)
-    Minor changes. (Kamil)
-    Updated crtc property and algo api names. (Arun)
-v6: Fix build failure.
+  **SUCCESS**
 
-Signed-off-by: Adarsh G M <adarsh.g.m@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c         |  23 +++
- lib/igt_kms.h         |   5 +
- meson.build           |   5 +
- tests/kms_histogram.c | 349 ++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build     |   2 +
- 5 files changed, 384 insertions(+)
- create mode 100644 tests/kms_histogram.c
+  No regressions found.
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 3d061abc5..a67d17c4f 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -714,6 +714,9 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
- 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
- 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
- 	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
-+	[IGT_CRTC_HISTOGRAM] = "HISTOGRAM_ENABLE",
-+	[IGT_CRTC_GLOBAL_HISTOGRAM] = "HISTOGRAM_DATA",
-+	[IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR] = "HISTOGRAM_IET",
- };
- 
- const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
-@@ -2615,6 +2618,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
- 	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_VRR_ENABLED))
- 		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_VRR_ENABLED, 0);
- 
-+	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_HISTOGRAM))
-+		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_HISTOGRAM, 0);
-+
- 	pipe->out_fence_fd = -1;
- }
- 
-@@ -5643,6 +5649,23 @@ bool igt_lease_change_detected(struct udev_monitor *mon, int timeout_secs)
- 			      ARRAY_SIZE(props));
- }
- 
-+/**
-+ * igt_global_histogram_event_detected:
-+ * @mon: A udev monitor initialized with #igt_watch_uevents
-+ * @timeout_secs: How long to wait for a lease change event to occur.
-+ *
-+ * Detect if a global Histogram event was received since we last checked the monitor.
-+ *
-+ * Returns: true if a sysfs global Histogram event was received, false if we timed out
-+ */
-+bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs)
-+{
-+	const char *props[1] = {"HISTOGRAM"};
-+	int expected_val = 1;
-+
-+	return event_detected(mon, timeout_secs, props, &expected_val, ARRAY_SIZE(props));
-+}
-+
- /**
-  * igt_flush_uevents:
-  * @mon: A udev monitor initialized with #igt_watch_uevents
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 8810123fb..1e2a927ab 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -165,6 +165,9 @@ enum igt_atomic_crtc_properties {
-        IGT_CRTC_OUT_FENCE_PTR,
-        IGT_CRTC_VRR_ENABLED,
-        IGT_CRTC_SCALING_FILTER,
-+       IGT_CRTC_HISTOGRAM,
-+       IGT_CRTC_GLOBAL_HISTOGRAM,
-+       IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
-        IGT_NUM_CRTC_PROPS
- };
- 
-@@ -1140,6 +1143,8 @@ void igt_cleanup_uevents(struct udev_monitor *mon);
- bool igt_display_has_format_mod(igt_display_t *display, uint32_t format, uint64_t modifier);
- bool igt_plane_has_format_mod(igt_plane_t *plane, uint32_t format, uint64_t modifier);
- 
-+bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs);
-+
- /**
-  * igt_vblank_after_eq:
-  * @a: First vblank sequence number.
-diff --git a/meson.build b/meson.build
-index 0f26f95c8..fdcbb6450 100644
---- a/meson.build
-+++ b/meson.build
-@@ -197,6 +197,11 @@ else
- 	chamelium = disabler()
- endif
- 
-+libghe = dependency('libghe', required : false)
-+if libghe.found()
-+      config.set('HAVE_LIBGHE', 1)
-+endif
-+
- build_info += 'Build Chamelium test: @0@'.format(chamelium.found())
- 
- pthreads = dependency('threads')
-diff --git a/tests/kms_histogram.c b/tests/kms_histogram.c
-new file mode 100644
-index 000000000..c25aa022b
---- /dev/null
-+++ b/tests/kms_histogram.c
-@@ -0,0 +1,349 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms histogram
-+ * Category: Display
-+ * Description: Test to verify histogram features.
-+ * Functionality: histogram
-+ * Mega feature: Display
-+ * Test category: functionality test
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#include "igt.h"
-+#include "igt_vec.h"
-+#ifdef HAVE_LIBGHE
-+#include "ghe.h"
-+#endif
-+
-+#define GLOBAL_HIST_DISABLE		0
-+#define GLOBAL_HIST_ENABLE		1
-+#define GLOBAL_HIST_DELAY		2
-+#define FLIP_COUNT			20
-+
-+/**
-+ * SUBTEST: global-basic
-+ * Description: Test to enable histogram, flip monochrome fbs, wait for
-+ *		histogram event and then read the histogram data
-+ *
-+ * SUBTEST: global-color
-+ * Description: Test to enable histogram, flip color fbs, wait for
-+ *		histogram event and then read the histogram data
-+ *
-+ * SUBTEST: algo-basic
-+ * Description: Test to enable histogram, flip monochrome fbs, wait for
-+ *		histogram event and then read the histogram data and enhance pixels by
-+ *		multiplying by a pixel factor using algo
-+ *
-+ * SUBTEST: algo-color
-+ * Description: Test to enable histogram, flip color fbs, wait for histogram event
-+ *		and then read the histogram data and enhance pixels by multiplying
-+ *		by a pixel factor using algo
-+ */
-+
-+IGT_TEST_DESCRIPTION("This test will verify the display histogram.");
-+
-+typedef struct data {
-+	igt_display_t display;
-+	int drm_fd;
-+	igt_fb_t fb[5];
-+} data_t;
-+
-+typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, drmModePropertyBlobRes*);
-+
-+static void enable_and_verify_global_histogram(data_t *data, enum pipe pipe)
-+{
-+	uint32_t global_hist_value;
-+
-+	/* Enable global_hist */
-+	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_ENABLE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	/* Verify if global_hist is enabled */
-+	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
-+	igt_assert_f(global_hist_value == GLOBAL_HIST_ENABLE, "Failed to enable global_hist\n");
-+}
-+
-+static void disable_and_verify_global_histogram(data_t *data, enum pipe pipe)
-+{
-+	uint32_t global_hist_value;
-+
-+	/* Disable global_hist */
-+	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_DISABLE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	/* Verify if global_hist is disabled */
-+	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
-+	igt_assert_f(global_hist_value == GLOBAL_HIST_DISABLE, "Failed to disable global_hist\n");
-+}
-+
-+static void cleanup_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-+{
-+	igt_plane_t *plane;
-+
-+	disable_and_verify_global_histogram(data, pipe);
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane)
-+		igt_plane_set_fb(plane, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[0]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[1]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[2]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[3]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[4]);
-+}
-+
-+static drmModePropertyBlobRes *get_global_histogram_data(data_t *data, enum pipe pipe)
-+{
-+	uint64_t blob_id;
-+
-+	blob_id = igt_pipe_obj_get_prop(&data->display.pipes[pipe],
-+					IGT_CRTC_GLOBAL_HISTOGRAM);
-+	if (blob_id == 0)
-+		return NULL;
-+
-+	return drmModeGetPropertyBlob(data->drm_fd, blob_id);
-+}
-+
-+static void read_global_histogram(data_t *data, enum pipe pipe,
-+				  drmModePropertyBlobRes **hist_blob_ptr)
-+{
-+	uint32_t *histogram_ptr;
-+	drmModePropertyBlobRes *global_hist_blob = NULL;
-+
-+	igt_set_timeout(GLOBAL_HIST_DELAY, "Waiting to read global histogram blob.\n");
-+	do {
-+		global_hist_blob = get_global_histogram_data(data, pipe);
-+	} while (!global_hist_blob);
-+
-+	igt_reset_timeout();
-+
-+	*hist_blob_ptr = global_hist_blob;
-+	histogram_ptr = (uint32_t *) global_hist_blob->data;
-+	for (int i = 0; i < global_hist_blob->length / sizeof(*histogram_ptr); i++)
-+		igt_debug("Histogram[%d] = %d\n", i, *(histogram_ptr++));
-+}
-+
-+#ifdef HAVE_LIBGHE
-+static void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size)
-+{
-+	uint32_t i;
-+
-+	for (i = 0; i < size; i++) {
-+		/* Displaying IET LUT */
-+		igt_debug("Pixel Factor[%d] = %d\n", i, *(dietfactor + i));
-+	}
-+
-+	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
-+				       dietfactor, size);
-+}
-+
-+static struct globalhist_args *algo_get_pixel_factor(drmModePropertyBlobRes *global_hist_blob,
-+						    igt_output_t *output)
-+{
-+	struct globalhist_args *argsPtr =
-+		(struct globalhist_args *)malloc(sizeof(struct globalhist_args));
-+
-+	drmModeModeInfo *mode;
-+
-+	mode = igt_output_get_mode(output);
-+
-+	memcpy(argsPtr->histogram, global_hist_blob->data, global_hist_blob->length);
-+	argsPtr->resolution_x = mode->hdisplay;
-+	argsPtr->resolution_y = mode->vdisplay;
-+
-+	igt_debug("Making call to global histogram algorithm.\n");
-+	histogram_compute_generate_data_bin(argsPtr);
-+
-+	return argsPtr;
-+}
-+
-+static void algo_image_enhancement_factor(data_t *data, enum pipe pipe,
-+					  igt_output_t *output,
-+					  drmModePropertyBlobRes *global_hist_blob)
-+{
-+	struct globalhist_args *args = algo_get_pixel_factor(global_hist_blob, output);
-+
-+	igt_assert(args);
-+	igt_debug("Writing pixel factor blob.\n");
-+
-+	set_pixel_factor(&data->display.pipes[pipe], args->dietfactor,
-+			 ARRAY_SIZE(args->dietfactor));
-+	free(args);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+#endif
-+
-+static void create_monochrome_fbs(data_t *data, drmModeModeInfo *mode)
-+{
-+	/* TODO: Extend the tests for different formats/modifiers. */
-+	/* These frame buffers used to flip monochrome fbs to get histogram event. */
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0, 0, 0, &data->fb[0]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       1, 1, 1, &data->fb[1]));
-+}
-+
-+static void create_color_fbs(data_t *data, drmModeModeInfo *mode)
-+{
-+	/* TODO: Extend the tests for different formats/modifiers. */
-+	/* These frame buffers used to flip color fbs to get histogram event. */
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0.5, 0, 0.5, &data->fb[0]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       1, 0, 0, &data->fb[1]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0, 1, 0, &data->fb[2]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0, 0, 1, &data->fb[3]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       1, 0, 1, &data->fb[4]));
-+}
-+
-+static void flip_fb(data_t *data, enum pipe pipe, igt_output_t *output, struct igt_fb *fb)
-+{
-+	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), fb);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, bool color_fb)
-+{
-+	int i;
-+	struct udev_monitor *mon = igt_watch_uevents();
-+	drmModeModeInfo *mode = igt_output_get_mode(output);
-+	bool event_detected = false;
-+	int fb_count = color_fb ? 5 : 2;
-+
-+	if (color_fb)
-+		create_color_fbs(data, mode);
-+	else
-+		create_monochrome_fbs(data, mode);
-+
-+	flip_fb(data, pipe, output, &data->fb[0]);
-+	enable_and_verify_global_histogram(data, pipe);
-+
-+	igt_flush_uevents(mon);
-+	for (i = 1; i <= FLIP_COUNT; i++) {
-+		flip_fb(data, pipe, output, &data->fb[i % fb_count]);
-+
-+		/* Check for histogram event on every flip and break the loop if detected. */
-+		if (igt_global_histogram_event_detected(mon, 0)) {
-+			event_detected = true;
-+			break;
-+		}
-+	}
-+
-+	igt_cleanup_uevents(mon);
-+	igt_assert_f(event_detected, "Histogram event not generated.\n");
-+}
-+
-+static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_output_t *output,
-+					  bool color_fb, test_t test_pixel_factor)
-+{
-+	drmModePropertyBlobRes *global_hist_blob = NULL;
-+
-+	prepare_pipe(data, pipe, output, color_fb);
-+
-+	read_global_histogram(data, pipe, &global_hist_blob);
-+
-+	if (test_pixel_factor)
-+		test_pixel_factor(data, pipe, output, global_hist_blob);
-+
-+	drmModeFreePropertyBlob(global_hist_blob);
-+	cleanup_pipe(data, pipe, output);
-+}
-+
-+static void run_tests_for_global_histogram(data_t *data, bool color_fb,
-+					   test_t test_pixel_factor)
-+{
-+	enum pipe pipe;
-+	igt_output_t *output;
-+
-+	for_each_connected_output(&data->display, output) {
-+		for_each_pipe(&data->display, pipe) {
-+			if (!igt_pipe_obj_has_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM))
-+				continue;
-+
-+			igt_display_reset(&data->display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!intel_pipe_output_combo_valid(&data->display))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+				run_global_histogram_pipeline(data, pipe, output, color_fb, test_pixel_factor);
-+		}
-+	}
-+}
-+
-+static void run_algo_test(data_t *data, bool color_fb)
-+{
-+#ifdef HAVE_LIBGHE
-+	run_tests_for_global_histogram(data, color_fb, algo_image_enhancement_factor);
-+#else
-+	igt_skip("Histogram algorithm library not found.\n");
-+#endif
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		kmstest_set_vt_graphics_mode();
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+		igt_require(data.display.is_atomic);
-+	}
-+
-+	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
-+		     "event and then read the histogram data.");
-+	igt_subtest_with_dynamic("global-basic")
-+		run_tests_for_global_histogram(&data, false, NULL);
-+
-+	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
-+		     "and then read the histogram data.");
-+	igt_subtest_with_dynamic("global-color")
-+		run_tests_for_global_histogram(&data, true, NULL);
-+
-+	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
-+		     "event and then read the histogram data and enhance pixels by multiplying "
-+		     "by a pixel factor using algo.");
-+	igt_subtest_with_dynamic("algo-basic")
-+		run_algo_test(&data, false);
-+
-+	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
-+		     "and then read the histogram data and enhance pixels by multiplying "
-+		     "by a pixel factor using algo.");
-+	igt_subtest_with_dynamic("algo-color")
-+		run_algo_test(&data, true);
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 2724c7a9a..89bba6454 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -37,6 +37,7 @@ test_progs = [
- 	'kms_getfb',
- 	'kms_hdmi_inject',
- 	'kms_hdr',
-+	'kms_histogram',
- 	'kms_invalid_mode',
- 	'kms_lease',
- 	'kms_multipipe_modeset',
-@@ -380,6 +381,7 @@ extra_dependencies = {
- 	'gem_eio': [ realtime ],
- 	'gem_exec_balancer': [ lib_igt_perf ],
- 	'gem_mmap_offset': [ libatomic ],
-+	'kms_histogram': [ libghe ],
- 	'i915_pm_freq_mult': [ lib_igt_perf ],
- 	'i915_pm_rc6_residency': [ lib_igt_perf ],
- 	'perf': [ lib_igt_i915_perf ],
--- 
-2.25.1
+  
 
+Participating hosts (7 -> 8)
+------------------------------
+
+  Additional (1): bat-lnl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12297_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-lnl-1:          NOTRUN -> [SKIP][1] ([Intel XE#1466])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-lnl-1:          NOTRUN -> [SKIP][2] ([Intel XE#2244])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
+    - bat-lnl-1:          NOTRUN -> [DMESG-WARN][3] ([Intel XE#3729]) +1 other test dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-lnl-1:          NOTRUN -> [SKIP][4] ([Intel XE#352]) +2 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-lnl-1:          NOTRUN -> [SKIP][5] ([Intel XE#1470] / [Intel XE#2853])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-lnl-1:          NOTRUN -> [SKIP][6] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-lnl-1:          NOTRUN -> [SKIP][7] ([Intel XE#688]) +17 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-lnl-1:          NOTRUN -> [SKIP][8] ([Intel XE#1192]) +2 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_live_ktest@xe_bo.html
+
+  * igt@xe_mmap@vram:
+    - bat-lnl-1:          NOTRUN -> [SKIP][9] ([Intel XE#1416])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-lnl-1:          NOTRUN -> [SKIP][10] ([Intel XE#1420] / [Intel XE#2838])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-lnl-1:          NOTRUN -> [SKIP][11] ([Intel XE#977])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-lnl-1:          NOTRUN -> [SKIP][12] ([Intel XE#979])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-lnl-1:          NOTRUN -> [SKIP][13] ([Intel XE#3342])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
+  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#3729]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3729
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8149 -> IGTPW_12297
+
+  IGTPW_12297: bb3fd0b5fbfb7d92b85b6a4f616a71b3185a2301 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8149: 1e3893ae48c972da2338a62477d74de0f7b26776 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2354-49199ebefcd6fc1e6dc38eafa23a2825bf39c27d: 49199ebefcd6fc1e6dc38eafa23a2825bf39c27d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/index.html
+
+--===============5220634930578259484==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/lobf: Remove lobf supported check (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141914/">https://patchwork.freedesktop.org/series/141914/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8149_BAT -&gt; XEIGTPW_12297_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 8)</h2>
+<p>Additional (1): bat-lnl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12297_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-edp1:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3729">Intel XE#3729</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12297/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8149 -&gt; IGTPW_12297</li>
+</ul>
+<p>IGTPW_12297: bb3fd0b5fbfb7d92b85b6a4f616a71b3185a2301 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8149: 1e3893ae48c972da2338a62477d74de0f7b26776 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2354-49199ebefcd6fc1e6dc38eafa23a2825bf39c27d: 49199ebefcd6fc1e6dc38eafa23a2825bf39c27d</p>
+
+</body>
+</html>
+
+--===============5220634930578259484==--
