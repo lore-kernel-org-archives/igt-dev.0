@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4DA8E7717D
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 15:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84AF9E7717D
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Dec 2024 15:35:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64B8210E1C2;
-	Wed, 11 Dec 2024 15:15:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3961810E15B;
+	Wed, 11 Dec 2024 15:35:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HoNMWu0K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U6pW+Gfy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11BC010E1C2
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2024 15:15:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9788810E15B
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2024 15:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733930104; x=1765466104;
+ t=1733931302; x=1765467302;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=+diXR/6bmNlIOPj8CB2GSGnaiBJwebyw44iyJs7Td4Y=;
- b=HoNMWu0KebDBKpt+2jMyzugT5+HYz3E7SaEr3AibtGAzGY1mSTlqvKbU
- 2T6aDOakbt7gawrHcpUuAEv8peUTvtVOkZE3+KtPLJNvWw6A+hMV6dhxl
- ZM2W+6Fe0MIYHXtO3w1c6WPeniKqQG4NXsbHbPMsnM1EyIAR1vX8anGkY
- cZ/xQMP1NPdgoPmpnu7SXC9ovNj06K7fX46dih4aWgDXxhSUtsQB6zODG
- NsmmeoMaoHMobx50Cw4zh9xcidia2w+zKzR/wVpEZWO3ZKYR51pdz9BZc
- 3SAVCXi83TFRl78nTQRjf4wlS1F4iBl/um7jnKPc18NWnGv7PC61hk1f6 A==;
-X-CSE-ConnectionGUID: 6+FyyqxISP+nkPYlCuSOqg==
-X-CSE-MsgGUID: TuNEoD5rQmmP1G9S7pAxvg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34041825"
-X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; d="scan'208";a="34041825"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 07:15:03 -0800
-X-CSE-ConnectionGUID: vJ8WsbZNSaK5G77U2rNi6w==
-X-CSE-MsgGUID: PkdWAz9EToSmEXe8kaKxcQ==
+ bh=CMlCf+X68QKk9sjpx070OPwQ7s7pn4ge+weZhNFTLuY=;
+ b=U6pW+GfyqgWb4/v9vm7Q4YkWB94tWWHhJvynL1udvCKp9G9bEAS/PG6P
+ ZugAU5DoKkPJm8MQmAHbOAVsyL99wFFF8Qi4abX4M1d8nE2/VIRxXmEmh
+ UtTl5irTvgOKItRZh/wUs8wA3O6LAuxXZ6KNAn5EKzdSDRnIIAZmCMPub
+ 25IY0iuWMS+Gmzmzm4VKyBQWuN0ZaaNoCMdSWjn+QsnbJ9IhY59yFZBEv
+ aVUIU2QoeJw3HtBx0frnk4fRnCNiWPLdrF1BVIeRdxz5rPsOt8NOweGpi
+ +tC0akO9K1R3jJ7VrK0mcGCcepoMz+uL3RUccv5cmmrpYclCzYrsNvppK A==;
+X-CSE-ConnectionGUID: UVBMfprZSJKdwFHyfJOHOA==
+X-CSE-MsgGUID: tepdgE46Rq22jyTsF1j44w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45698706"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="45698706"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 07:35:02 -0800
+X-CSE-ConnectionGUID: xKczPJbRRVayDbrbNzK6Fg==
+X-CSE-MsgGUID: +ba1WL6sQdKl4+fIK2my3A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; d="scan'208";a="95669974"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="96290888"
 Received: from unknown (HELO
  dg2adlp-Alder-Lake-Client-Platform.iind.intel.com) ([10.145.162.161])
- by fmviesa007.fm.intel.com with ESMTP; 11 Dec 2024 07:15:00 -0800
+ by orviesa007.jf.intel.com with ESMTP; 11 Dec 2024 07:35:00 -0800
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: arun.r.murthy@intel.com,
 	Mohammed Thasleem <mohammed.thasleem@intel.com>
 Subject: [PATCH i-g-t] tests/kms_histogram: Add test to count the number of
  histogram events
-Date: Wed, 11 Dec 2024 20:44:24 +0530
-Message-Id: <20241211151424.97387-1-mohammed.thasleem@intel.com>
+Date: Wed, 11 Dec 2024 21:04:23 +0530
+Message-Id: <20241211153423.104992-1-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,11 +71,11 @@ This test to count the number of histogram events during color flips.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_histogram.c | 42 ++++++++++++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 12 deletions(-)
+ tests/kms_histogram.c | 45 ++++++++++++++++++++++++++++++-------------
+ 1 file changed, 32 insertions(+), 13 deletions(-)
 
 diff --git a/tests/kms_histogram.c b/tests/kms_histogram.c
-index c25aa022b..9d9112915 100644
+index c25aa022b..63549ec20 100644
 --- a/tests/kms_histogram.c
 +++ b/tests/kms_histogram.c
 @@ -29,6 +29,7 @@
@@ -95,13 +95,17 @@ index c25aa022b..9d9112915 100644
 +		         bool color_fb, bool count_events)
  {
 -	int i;
-+	int i, events = 0;
++	int i, count, events = 0;
  	struct udev_monitor *mon = igt_watch_uevents();
  	drmModeModeInfo *mode = igt_output_get_mode(output);
  	bool event_detected = false;
-@@ -248,24 +250,34 @@ static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, boo
+@@ -246,26 +248,37 @@ static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, boo
+ 	enable_and_verify_global_histogram(data, pipe);
+ 
  	igt_flush_uevents(mon);
- 	for (i = 1; i <= FLIP_COUNT; i++) {
+-	for (i = 1; i <= FLIP_COUNT; i++) {
++	count = (count_events > 0) ? CHK_FLIP_COUNT : FLIP_COUNT;
++	for (i = 1; i <= count; i++) {
  		flip_fb(data, pipe, output, &data->fb[i % fb_count]);
 +		if (count_events)
 +			igt_wait_for_vblank(data->drm_fd, data->display.pipes[pipe].crtc_offset);
@@ -139,7 +143,7 @@ index c25aa022b..9d9112915 100644
  
  	read_global_histogram(data, pipe, &global_hist_blob);
  
-@@ -277,7 +289,8 @@ static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_outp
+@@ -277,7 +290,8 @@ static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_outp
  }
  
  static void run_tests_for_global_histogram(data_t *data, bool color_fb,
@@ -149,7 +153,7 @@ index c25aa022b..9d9112915 100644
  {
  	enum pipe pipe;
  	igt_output_t *output;
-@@ -294,7 +307,7 @@ static void run_tests_for_global_histogram(data_t *data, bool color_fb,
+@@ -294,7 +308,7 @@ static void run_tests_for_global_histogram(data_t *data, bool color_fb,
  				continue;
  
  			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
@@ -158,7 +162,7 @@ index c25aa022b..9d9112915 100644
  		}
  	}
  }
-@@ -302,7 +315,7 @@ static void run_tests_for_global_histogram(data_t *data, bool color_fb,
+@@ -302,7 +316,7 @@ static void run_tests_for_global_histogram(data_t *data, bool color_fb,
  static void run_algo_test(data_t *data, bool color_fb)
  {
  #ifdef HAVE_LIBGHE
@@ -167,7 +171,7 @@ index c25aa022b..9d9112915 100644
  #else
  	igt_skip("Histogram algorithm library not found.\n");
  #endif
-@@ -320,15 +333,20 @@ igt_main
+@@ -320,15 +334,20 @@ igt_main
  		igt_require(data.display.is_atomic);
  	}
  
