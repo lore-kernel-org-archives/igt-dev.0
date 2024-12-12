@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37964E7717F
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 04:37:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC9C7E77182
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 04:44:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AEE3810E18F;
-	Thu, 12 Dec 2024 04:37:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B05A10ECB3;
+	Thu, 12 Dec 2024 04:44:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KJKEDyjC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GBD9fDDJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAB8110E18F
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 04:37:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCDC610E18F
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 04:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733978227; x=1765514227;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=Ys+eoQ6WX6cH2EzQ7iyV8jj+7FrX8A9mdnwYvXRZ8Rs=;
- b=KJKEDyjCnPAh7N93D5KsL76sqk6+I56CJ3lHWSg/hBUvU8rhwi3eVPgG
- MAPcon1AsRGsAmnxk9S4HV52KQX/9h9GxYjBpPHWQaehz4srXXhEK6eyJ
- Ue4p8ilLbsYs6aErA6gmoKwPBezxktrXI5QJyzSvmmybl5dfK0BQpvveN
- 85eR8v8vKS3sxd+qljBNF7Y9xTG9IRMhicob5HwNYuF7sZkJgIN/mQ26U
- 2tLw1VQhIfncXja14GkaH+WbPNY0fjdU5aeOJZJRIhqHX1AKEAJ1f2GPC
- O1EeSJSR4QvdhDdMGaGzfRsyRIqcSrUmW8OkMIS1I+CrMl5XJcrl0uJfx g==;
-X-CSE-ConnectionGUID: y2/bxIFqTOyxPMN+AlPO5Q==
-X-CSE-MsgGUID: 0K8UwAteTda9Dfjvp94WmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44851156"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="44851156"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 20:37:07 -0800
-X-CSE-ConnectionGUID: 33SVDUJHSg2aICLc/2/zCQ==
-X-CSE-MsgGUID: u4Yvk3mOSGCTAunajF21gQ==
+ t=1733978691; x=1765514691;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=sVEw5GZhbkNul0lOmtph8iPoyHjH+G4tvxxIPWAnedU=;
+ b=GBD9fDDJfcxX+CNICUXLA0NsH0LX4p3SOmXoEVLQd1UX5ayVYawZ7XPf
+ GO5IvUYfhOxuomfLAtwT7Td1MRr+waG6vepJU6eFBVZwfBx399N1o46Qo
+ eZf0VoIe3HhOMt9m7QzOjZYJKG7RRzNZZD3hWRU9Y/uDcLtDzVsM9rxOR
+ HmPX5WTPy66UZD2tM7+FaNf2Fhq9Nw8SALT1tsC7Ff01ZvdUtq5bkIe0w
+ eLsbNK+oyWVoWo9hScKcItLmuEKO3lG2vKbMyYFSZOUkhWueLaiC4bblC
+ QRSl0e2edR5AfXSgUeT5SfX9SnFyfuG4sq8jtse8FlH4Jtc3NRxujY9EH g==;
+X-CSE-ConnectionGUID: pm5EJ0RYTqWB3Dm10tCioQ==
+X-CSE-MsgGUID: 1W+mnchCQmmk1IarUN6vVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="56855887"
+X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="56855887"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 20:44:51 -0800
+X-CSE-ConnectionGUID: VKFgmdM7RzW3CsMrLEg4Vg==
+X-CSE-MsgGUID: qIOdrPlZScGtL5/oTZq36g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="126922859"
-Received: from jeevakrx-mobl2.amr.corp.intel.com (HELO [10.247.213.249])
- ([10.247.213.249])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 20:37:05 -0800
-Message-ID: <d4b86f46-cfcd-461d-a7e2-be28699a43f8@intel.com>
-Date: Thu, 12 Dec 2024 10:07:04 +0530
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119335815"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 20:44:49 -0800
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com, karthik.b.s@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 1/1] tests/kms_invalid_mode: Add ultrajoiner support
+ to adjust_mode_clock_too_high
+Date: Thu, 12 Dec 2024 10:09:03 +0530
+Message-Id: <20241212043903.2255318-2-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241212043903.2255318-1-santhosh.reddy.guddati@intel.com>
+References: <20241212043903.2255318-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t] tests/intel-ci: Update chamelium-only.testlist
-To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
-References: <20241212042509.30614-1-karthik.b.s@intel.com>
-Content-Language: en-US
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20241212042509.30614-1-karthik.b.s@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,12 +69,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Check ultrajoiner support on the output and
+adjust `max_dotclock` accordingly.
 
-On 12-12-2024 09:55, Karthik B S wrote:
-> kms_dp_tiled_display is renamed to kms_tiled_display.
-> Update this in the chamelium-only.testslist
->
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3547
->
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+v2: remove extra parenthesis, indentation (Pranay)
+
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_invalid_mode.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 4fd644594..0c0765ec0 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -34,6 +34,7 @@
+  */
+ 
+ #include "igt.h"
++#include "xe/xe_query.h"
+ #include <limits.h>
+ #include <stdbool.h>
+ 
+@@ -99,6 +100,28 @@ can_bigjoiner(data_t *data)
+ 	return false;
+ }
+ 
++static bool
++can_ultrajoiner(data_t *data)
++{
++	bool ultra_joiner_supported = false;
++	bool is_dgfx;
++	int display_ver;
++
++	is_dgfx = is_xe_device(data->drm_fd) ? xe_has_vram(data->drm_fd) :
++					       gem_has_lmem(data->drm_fd);
++	display_ver = intel_display_ver(intel_get_drm_devid(data->drm_fd));
++
++	if ((is_dgfx && display_ver == 14) || display_ver > 14)
++		ultra_joiner_supported = true;
++
++	if (ultra_joiner_supported) {
++		igt_debug("Platform supports ultrajoiner\n");
++		return true;
++	}
++
++	return false;
++}
++
+ static bool
+ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
+ {
+@@ -128,6 +151,12 @@ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
+ 		max_dotclock *= 2;
+ 	}
+ 
++	if (can_ultrajoiner(data)) {
++		igt_info("Platform supports ultrajoiner with %s\n",
++			 data->output->name);
++		max_dotclock *= 4;
++	}
++
+ 	mode->clock = max_dotclock + 1;
+ 
+ 	return true;
+-- 
+2.34.1
+
