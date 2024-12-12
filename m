@@ -4,54 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF2B8E77185
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 00:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A71DE7717D
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 00:24:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0416910EC90;
-	Thu, 12 Dec 2024 00:18:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F41E310E2DB;
+	Thu, 12 Dec 2024 00:24:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lNC+NAS1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yz2U6IAK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68A2A10EC8B
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 00:18:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C23CB10E2DB
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 00:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733962724; x=1765498724;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2enFyJCczim16lAgp74iSMGSLzK2DK6yq39XSlvX53Q=;
- b=lNC+NAS17tA/HjQpypHDjhx5s1nS9q3soYGnsjQj8yAH4Uo50ytjtzR8
- vKyWI3YiGM69K+B8sU+YROqg95ZvyAUx/9kOw8Uf/Q2MQpVFxMMba54/b
- yQktTQJ6qLRI3Xcr3XdSJWSUKfGt9MrZmFrlCow0+whYLoWScbXcKvHsR
- j2WKV0pwSklFBAYxUaXFEzMHoqC0aQEVkCK9t7f5hHt9ZHQ+wcalahEcm
- +Z5mlOOGAxhpW+i0aBFvL13Dd+WIB/M6f4eaUBXwppC2uTPfIKnEkDAgS
- 68qPELgR6S3YgAx2AYV7/+SRvNBRpk/qaxQ/ktlFWTLxOrabcv42E5mbO A==;
-X-CSE-ConnectionGUID: lmrV6hkGRnawgF+i99YBZA==
-X-CSE-MsgGUID: PRx2uFPKTS2oyc2lSCs+WQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="45040489"
-X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="45040489"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 16:18:44 -0800
-X-CSE-ConnectionGUID: 3VEEYP1VQce8vi/Pmi+t5w==
-X-CSE-MsgGUID: 2Njloa2vQj6hDSZMriCLDA==
+ t=1733963085; x=1765499085;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=Nli21nDXc8KWAqkS8RTgh3+612JDmfyird7aq2Ishp0=;
+ b=Yz2U6IAKmmy9VK3RC+iCvZyQbGkC1KeG1Ng13204oZf6ZVpku7aDpX/a
+ j191+1jb3zv+rXVYD1lM10szOAjWuM4HNqAolO3+NIe4uUpNQ8VrXs4Gx
+ 4hN7unu03gT0e7bTEURMyv112YzHjayeDcZP8QJ6bEY70rx3cvULJwjyu
+ 8JOPsWZz6bn5YnYdsXBVDMOvq0265ggqBWcTOIOztvCFCJ4bmei3BFhXE
+ si5y7QWVeVkzhTSv1LB8WeQNfy9YS95lEw+YIvDm5gTgTLDzw2B2JQPCA
+ Fx0wzYqWUDwe0nyApLluwWxCMW59DU6NKNwo9oazI4+lKk4MgKI3iB1Ax g==;
+X-CSE-ConnectionGUID: U+POXZ+dRQulz6DX6vkyBA==
+X-CSE-MsgGUID: qeh6IFiQTcKoHOXu8Ck1WQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34608276"
+X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="34608276"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 16:24:45 -0800
+X-CSE-ConnectionGUID: 5p2wSh2vRai6SmTo9omZYw==
+X-CSE-MsgGUID: yE2R77COSMqeAKxRvZQ7Ig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="126840887"
-Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 16:18:44 -0800
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: [PATCH i-g-t 6/7] tests/intel/xe_pxp: Termination tests
-Date: Wed, 11 Dec 2024 16:18:27 -0800
-Message-ID: <20241212001829.2082490-7-daniele.ceraolospurio@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241212001829.2082490-1-daniele.ceraolospurio@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="100858453"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 11 Dec 2024 16:24:45 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 11 Dec 2024 16:24:44 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 11 Dec 2024 16:24:44 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.172)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 11 Dec 2024 16:24:35 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gJQq2l2TuIFPVxjrF9ncU/zLEB9V4yPMQQj2jGVfLX4/OtoUAuRDnz40HrFl8RFhWCmIGX14Ptd+GN/gGPU7zMYCNdaj4bsSH6d1dbDFy+VX6Ln9DFwsKPyCuV/U1xaYYraLx6V5jEiEiyDxv+boCfsJzt9Roz0g6fU3EEsSYVqs1/g5tkpr+ONOqecJ1WMNwohCwt426Ax3YBrQjKw7k+djvCiAfS2i5IJSVfgbV1erkQ9XdRNbaDqFhzNvjHcIN1QtLWZ4QCtFTUg9LMbPJ+KmhKhCjuTVqxhNV2v7dqSgwWGTrsDioTBfyCHQ2VIK3EySto/dLlCaRGyqkAiPJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z9jRv4g/JLfb84rc6tvLbBSuL9O6+sV76dhBWHbQB5E=;
+ b=LJUUvy5VHAwqh8XsrJHN+dx03nAwd75Qq5SpG0m4BdUM9zwjGqIeM8hRr8hFBBnA6cVYhwr4TPr+HCuw2NWEkbiAT4cigw68GBchD8sIsbIBtT+Y2xCcxfIulh46Hwg34HPVAUvS1i877A1RaltwTi1VWEwv3nnRqx6Bnb/0VkzEoEsFX4xaQ+ZN+4ld4CRjIJok42U154n7r4VzL5AGAFrnPL5FbxiZ/ub6azXyx/WWVVP09qRNMlBR8OkTesoyp1heVhgWpBqo4bTICQDoGd26HAvQ2XApF3aHk3z4Dw/At/HZqnHocTBhKDRfyUH6cVJ68ne9t85oPoeK4BY5FA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB7605.namprd11.prod.outlook.com (2603:10b6:510:277::5)
+ by DM4PR11MB5295.namprd11.prod.outlook.com (2603:10b6:5:392::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.14; Thu, 12 Dec
+ 2024 00:24:32 +0000
+Received: from PH7PR11MB7605.namprd11.prod.outlook.com
+ ([fe80::d720:25db:67bb:6f50]) by PH7PR11MB7605.namprd11.prod.outlook.com
+ ([fe80::d720:25db:67bb:6f50%4]) with mapi id 15.20.8230.016; Thu, 12 Dec 2024
+ 00:24:32 +0000
+Message-ID: <16394f40-9549-48f7-aefd-c3b3f316ab67@intel.com>
+Date: Wed, 11 Dec 2024 16:24:31 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 2/7] tests/intel/xe_vm: Update invalid flag subtest
+To: <igt-dev@lists.freedesktop.org>
 References: <20241212001829.2082490-1-daniele.ceraolospurio@intel.com>
+ <20241212001829.2082490-3-daniele.ceraolospurio@intel.com>
+Content-Language: en-US
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+In-Reply-To: <20241212001829.2082490-3-daniele.ceraolospurio@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ2PR07CA0012.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::13) To PH7PR11MB7605.namprd11.prod.outlook.com
+ (2603:10b6:510:277::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB7605:EE_|DM4PR11MB5295:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3d26a01-7481-40d4-92ee-08dd1a4359a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TVQwQTNWVVJtMFo0TEpqVStNZ3RRSEhZWXkyRjJLWEVCVjVCTDVLUUxHZ1RM?=
+ =?utf-8?B?eWNjWkRESXNXWUx3K1VtVjhqa1lZNTRZdmFoNVQ1VTZhcThPYytWZWZMV2dz?=
+ =?utf-8?B?SGcwOThxeEdoallOdFFQMCtFTkVudFJMV1pEMTN1S0lrK3lNaU0wc3JzRUto?=
+ =?utf-8?B?ZEhReUVQWCtUMWM2UTAvVXNvZlB3Z2MvdlNoL2F6aHBWTjZSbjZBdnJQMHVa?=
+ =?utf-8?B?Zm9vWjNJbk5SbEE0Z1Fib3ZPZHpkOU9kSTZaNWJvdmhPVkcyZGlWTXhjSlph?=
+ =?utf-8?B?bFFMd0x3TmxNbkZ1eUpUWVBTODB4L2EwcXErazQ0ZWVRQTRDaHVhNHk2ZXNF?=
+ =?utf-8?B?QjFFVzFLdWQ5T3QvL3huTjl4dnJZcEVkWU5BWkhVcjQyTjIzSkpKZXZIRExY?=
+ =?utf-8?B?TjJDQ1J4cjg5WnQxTWNjcFJKeDBSc090MHpZenFidU1Qd04ra1hkdk9qR0Ro?=
+ =?utf-8?B?Qk9oU3doaTd3NmRhL0tjSnRsYjhrOVZoeisyRXVTYk51N2c3cExLK1VpU3Y2?=
+ =?utf-8?B?T3ZseHE1Sjl0VmF1Ym1UR2RwcEpKcHA1VTlFYlFYZWgyWjQ3SFAyNXFtVnJI?=
+ =?utf-8?B?eG8yamlDdHp4TjdNM1k3c0c4dnI1UTdDTStsWE1mRXhtV0lWZW1oOW1GRG40?=
+ =?utf-8?B?UjNxdlcwNHMwaFhRTHRYdUZGd0g3NlVSK0lvdmRjb1ZNMUFxM2hwODlzOU41?=
+ =?utf-8?B?dU82YW42TFI4SXZuTktDOUYxQ0R0dzNyakdCQ2pMUUtXNXFqNmNLT2dhOExF?=
+ =?utf-8?B?clFWYkYrcEk5RFVJb0xkQVk3aWxMdmJTdTNhei9BMGhkZnNmUFlHVWN3MlRU?=
+ =?utf-8?B?RmxKM3oyMzA5VUkwWmJtUkhHUjdKZk1ZNlkxbVNScEI3bXI5M3Y3S1kyL2Rh?=
+ =?utf-8?B?RjAxL1lJVHlPWW1kNFNWY0tvOEgrSGNiZnNvUHdNY3FXVlNXam1IaHhlS2l6?=
+ =?utf-8?B?WUliQmo5aGIzbml4VUVvR2pxWDVQYXczUi8xUFBKQThNREZ4Q0gxelJyWHli?=
+ =?utf-8?B?eGk1YXpJTnd4MXEzaE5uWWFRZzNzRU5mNVJZVGtCM0V0UnZuYlErRG5GVHhC?=
+ =?utf-8?B?MzJ2TTJhRmpyRkg3NHFJOG5VZWFJZFRpR2dzM21RbWFLaFg0Qm40LzJMVUE2?=
+ =?utf-8?B?am4vdTBQVnhkS25mSmYvd2loR2RKMkVBcnBlVDZTeTZPRUR1OTU0dDQxRzFB?=
+ =?utf-8?B?VW15aDhtNzNmcWZ2L09sMk1zSC9kQlY0ZGJZbDJ6ODRwckpXb0J0aHB2UXBJ?=
+ =?utf-8?B?ZjZFQkpSZDlSOUo2MEdWakZsZFBqekszdXlGTzZ2TmJJRW5GZDJsRjVGUXhQ?=
+ =?utf-8?B?aTY5SUlwTGF2b3VtQlhLNWRqNUpvd3ZYZnNud1FucUxRU3ZsdElFeCt3TW13?=
+ =?utf-8?B?ZXhJeWZLdmV5M25SK0ZxUFNMVm1uRjlGeTdraTVYbzhDZFNLQUVyUlNNOXM5?=
+ =?utf-8?B?OGVqSTFBdyt4Z2o0UUQ1bmQvQ1hQNDdYK1QvM3hYTWVxM1hjT0pRdnBMenpT?=
+ =?utf-8?B?QTNreUxkK0FZRzVhamJPMGRnTXVRZG53K0lCdWE3WVZOa045WU96Zm0rVi9x?=
+ =?utf-8?B?UE9HTlQwRktZemc5V0pyZU54cHlzZDdibEk1eHc1TmZLWWlqQkFsd3lDNzRZ?=
+ =?utf-8?B?bTU3c1lXKzBYM1BhZ3hPbjN4empaQjVsZGdHa2NXaDBqMUozeWtrR1ZwNmJT?=
+ =?utf-8?B?Zlk5L1JVVGkyVURIeDJLSDFGM0U1enJ6WU5rNHZ0NzFPWS9BV3R5VjBDRk1G?=
+ =?utf-8?B?UkhXdSthSVg5MXVSNXZNdG9TWVR2aVE4NEtwbW9FOHQ0RjdJTG42c0NLRDFk?=
+ =?utf-8?B?K0VJMjNOT0VDOTNHK1NJUT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB7605.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WCtYeUZQSEdEN09iTFE3YzN4VWljczV3L0FPRW1OR3lZeC9PR0RVQjIvK1hn?=
+ =?utf-8?B?aHlnTlBtZXNqYXl6MGZsc3NqWW5PdWdhVnVpbUxPcUlyanE4RkJHbHVjRDZa?=
+ =?utf-8?B?cExnNkFCS0M0WmJkWG0vTEFwa3ZnZ0xZWHVIMGN0OTJTOFZGSnlqaGRNa1Fx?=
+ =?utf-8?B?Y3M1Z2dZemRZQkI0WWpwd1NDY3dic3p3SnFKZGFNa1N1djRTMjFjL2dYbEpD?=
+ =?utf-8?B?bnhqNzVnbkNBSklPMmJBMXkzVHNqVno4ZlBiYk1BYldIVEJBSzV4UXBveHlr?=
+ =?utf-8?B?VHZLLzJHcUZwa0dFd3dROGtDZ0RiWmdwZzZHZVRwMTcvYldyOGhJcC9ua1h2?=
+ =?utf-8?B?SnlqZXcvNkYzYWFoWmpqT3hZRVQ1SUpZMmRFWUo2cEh0UUJydDc1YldoSEtR?=
+ =?utf-8?B?cVRYbnFYYmpweDlEaTJRNDVtVjFMNW5UcWJ3M2NlU2FLOXJHUzNDNVc1V1dn?=
+ =?utf-8?B?QS9qa0RaMWYrNVhmdGZpZTkrcTdBVjZrR1ZWOFJ1WHFqMDM1bzJsRXBPdk12?=
+ =?utf-8?B?aFNBR0FjdjNvUStHS0NJU2NFamErR0FXenY3V3llTE04ZUZNRXh1M2pWdlJE?=
+ =?utf-8?B?M2pHMWZYN1Y5WnkrMDV5RHA4MktmTEU5WFNGUDltbG5kZSttS0tCR0wzS0lz?=
+ =?utf-8?B?bUNoa3MrV0U2RkpZTzBocjMyeFBIQ2ZBZms0SS9nYUM4czV2dTZtSXRrZ0pO?=
+ =?utf-8?B?NmRud3lMQjVNYkxGbVNEbHVhak00am5RZFZFOHJMbm9meFJKUjc4b2dNd3NR?=
+ =?utf-8?B?R3JYZkFFdjlGY3J4R0JYQmdMYko3bnlMN0d4Nm1GVThISmZoQlJoREdGVWp3?=
+ =?utf-8?B?SU1ZaFlla0dTcE1ZdHNRalhVZWJPdGxBVXlRck8weDY5eHFwUnNsYllLZkxS?=
+ =?utf-8?B?aXgyaUNMQXBTN05qRkZkN2NHUVFpYnNRK1FyRzBSN2xRM2VuMkQ2ZThZMFNj?=
+ =?utf-8?B?enVESU5Ubmo1bHVNWkpyaWNhMXdjSCs2b0hsQzhsbjh3WVFNUTdxMFl3N2Fa?=
+ =?utf-8?B?R2dySHc4NTZxVFNvM2E5VGY2eE1oU2h2ZFBQWjNPVmp0ek9JdDVRR0tmUHg3?=
+ =?utf-8?B?VE41Q0plaG9FczFGWFE1U3phK1piRWVnSkRNdWN1a2NRSmpMd280a1kzNEVF?=
+ =?utf-8?B?a3dOOEJxcDFuSi84ZjZmUWQ1Yi84WmJtOUo2dTI3MjVSa2dGblAzUnNEbmxP?=
+ =?utf-8?B?c2swYVpkZDNuUG5EcUNlWHNvdkJNM01zWDZ0eEpwMlVrWkc0MzZ2YkN4dExu?=
+ =?utf-8?B?SXMxMFpxM0p2N1hqRkpHdGZhNy9xQk42eWZRVmxDUFg3VTdlOGM2V0xoOFZl?=
+ =?utf-8?B?UFRrdDc4NmlqV09DWUhXYkJuakRJVTJVL1ZGamJEQ1UvMWk5d013dGsvMnZX?=
+ =?utf-8?B?bTlHWWIyemo5ak5abmhLTmhxZGc2SWlpY2xqUzdTQzBCWUVlaUtWbGQrNlB1?=
+ =?utf-8?B?WXh2QkxtY05YalY1N0hrcWVhNUZpZGdOSE5sK2pjV0paV2N1OGM1cmJoKy8z?=
+ =?utf-8?B?dVgxZzlxM3VFTE9SUW5zNHUwOEVSMFZjVHVhWWcveEpmM3hjWUd5OXAwdCty?=
+ =?utf-8?B?OVVnTmY2aVBVdk1Zc2pVc0pBZ1NDZXF6UExmU2ZHeEVrY3prSFV2a3dWcHdt?=
+ =?utf-8?B?c0xldGpzNFpJNC90cEF4SHB4WEF0UlJRMngvS1VWcmRQNCtvd0txNW5JMGQy?=
+ =?utf-8?B?UUdmVHBGL0F4YTFSYWRmOU0vc3BqUDBRNkF6RE1zNG5oMkJLTnNRenR3c3VO?=
+ =?utf-8?B?TkZoTFEzSVdaRmRRU25xakc2MUVKK0VqRFl4U0V6ZWRPYXRaTGNBcDMzRXc3?=
+ =?utf-8?B?SWJxeHpvdmczMlFHVDhmQWdBZFVXMDJkY2M3RUVyZjhiUjl0MDYvMTRKaEQ2?=
+ =?utf-8?B?UmZWUmV3dXlWNU9vdnQ2SkhwRnF4QW9GMFBlZUtNSDJmMUxxVWhuZ0ZJMGll?=
+ =?utf-8?B?K1QwTno4V3JLQXRsOUlhVzZ0WXEzLzRINnFVUTRlR2pIRndaaW9laXZKcm5q?=
+ =?utf-8?B?R0VKYkI4TW90b3dRRURXV1V6T3ZGeHhycU5qNEgvci9uWFdkbHpwR1NVTnR2?=
+ =?utf-8?B?ai93K1Vqd0crbW5ZajB6YVJMQ3EwT1ZHR2dmT0xadndkYUx3WitvN2J0ZFNm?=
+ =?utf-8?B?VjNnVWRCSjJOYkR5UWRMdHJWenFsbnk5T3pqRWlqNCs3ZlBoYnhaaThxd3V2?=
+ =?utf-8?Q?1CbMLXkmyOYseRqt5nGUjgQ=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3d26a01-7481-40d4-92ee-08dd1a4359a1
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB7605.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 00:24:32.6592 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ucuK1I41Y3dCZczdnVhSvZ372b1KpBatNRIWLqZ/lMflDhALjLbFDv5LhPq1jTPNetmelrbcpcQj4/cEi960bXULkKTaF0btosKL65+F4R4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5295
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,597 +193,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are several events that can cause the PXP key to be invalidated
-and trigger a PXP termination (suspend, PXP termination irq). After a
-termination, we expect the key to be different and the raw encrypted
-data to change for the same source data.
-Additionally, all PXP objects are invalidated during a termination and
-can no longer be used in submission or kept mapped to VMs; we therefore
-need to test both the execution and bind ioctls to make sure they work
-as expected after a termination.
 
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
----
- lib/intel_batchbuffer.c |   8 +-
- lib/intel_batchbuffer.h |   1 +
- lib/xe/xe_ioctl.c       |  12 +-
- lib/xe/xe_ioctl.h       |   2 +
- tests/intel/xe_pxp.c    | 431 +++++++++++++++++++++++++++++++++++++++-
- 5 files changed, 442 insertions(+), 12 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 489e78782..a15859786 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2416,9 +2416,9 @@ static void update_offsets(struct intel_bb *ibb,
- 
- #define LINELEN 76
- 
--static int
--__xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
-+int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- {
-+	int ret = 0;
- 	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
- 	uint32_t engine_id;
- 	struct drm_xe_sync syncs[2] = {
-@@ -2495,12 +2495,12 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 	ibb->engine_syncobj = syncobj_create(ibb->fd, 0);
- 	syncs[1].handle = ibb->engine_syncobj;
- 
--	xe_exec_sync(ibb->fd, engine_id, ibb->batch_offset, syncs, 2);
-+	ret = xe_exec_sync_failable(ibb->fd, engine_id, ibb->batch_offset, syncs, 2);
- 
- 	if (sync)
- 		intel_bb_sync(ibb);
- 
--	return 0;
-+	return ret;
- }
- 
- static int
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 178aaa9d8..6a7e8df4a 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -508,6 +508,7 @@ void intel_bb_dump_cache(struct intel_bb *ibb);
- 
- void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
- 		   uint64_t flags, bool sync);
-+int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync);
- 
- uint64_t intel_bb_get_object_offset(struct intel_bb *ibb, uint32_t handle);
- bool intel_bb_object_offset_to_buf(struct intel_bb *ibb, struct intel_buf *buf);
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 01ab7c758..cd7314eda 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -462,8 +462,8 @@ void xe_exec(int fd, struct drm_xe_exec *exec)
- 	igt_assert_eq(__xe_exec(fd, exec), 0);
- }
- 
--void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
--		  struct drm_xe_sync *sync, uint32_t num_syncs)
-+int xe_exec_sync_failable(int fd, uint32_t exec_queue, uint64_t addr,
-+			  struct drm_xe_sync *sync, uint32_t num_syncs)
- {
- 	struct drm_xe_exec exec = {
- 		.exec_queue_id = exec_queue,
-@@ -473,7 +473,13 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		.num_batch_buffer = 1,
- 	};
- 
--	igt_assert_eq(__xe_exec(fd, &exec), 0);
-+	return __xe_exec(fd, &exec);
-+}
-+
-+void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
-+		  struct drm_xe_sync *sync, uint32_t num_syncs)
-+{
-+	igt_assert_eq(xe_exec_sync_failable(fd, exec_queue, addr, sync, num_syncs), 0);
- }
- 
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index c8a2d81c5..9bdf73b2b 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -91,6 +91,8 @@ int __xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs);
-+int xe_exec_sync_failable(int fd, uint32_t exec_queue, uint64_t addr,
-+		  struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
- int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		     uint32_t exec_queue, int64_t *timeout);
-diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-index 3d625af8f..7e5b45263 100644
---- a/tests/intel/xe_pxp.c
-+++ b/tests/intel/xe_pxp.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include "igt.h"
-+#include "igt_syncobj.h"
- #include "intel_batchbuffer.h"
- #include "intel_bufops.h"
- #include "intel_mocs.h"
-@@ -81,6 +82,15 @@ static uint32_t create_pxp_rcs_queue(int fd, uint32_t vm)
- 	return q;
- }
- 
-+static uint32_t create_regular_rcs_queue(int fd, uint32_t vm)
-+{
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
-+	};
-+
-+	return xe_exec_queue_create(fd, vm, &inst, 0);
-+}
-+
- static int query_pxp_status(int fd)
- {
- 	struct drm_xe_query_pxp_status *pxp_query;
-@@ -337,15 +347,25 @@ static void pxp_rendercopy(int fd, uint32_t q, uint32_t vm, uint32_t copy_size,
- 	buf_ops_destroy(bops);
- }
- 
--/**
-- * SUBTEST: regular-src-to-pxp-dest-rendercopy
-- * Description: copy from a regular BO to a PXP one and verify the encryption
-- */
--static void test_render_regular_src_to_pxp_dest(int fd)
-+static void copy_bo_cpu(int fd, uint32_t bo, uint32_t *dst, uint32_t size)
-+{
-+	uint32_t *src_ptr;
-+
-+	src_ptr = xe_bo_mmap_ext(fd, bo, size, PROT_READ);
-+
-+	memcpy(dst, src_ptr, size);
-+
-+	igt_assert_eq(munmap(src_ptr, size), 0);
-+}
-+
-+static void __test_render_regular_src_to_pxp_dest(int fd, uint32_t *outpixels, int outsize)
- {
- 	uint32_t vm, srcbo, dstbo;
- 	uint32_t q;
- 
-+	if (outpixels)
-+		igt_assert_lte(TSTSURF_SIZE, outsize);
-+
- 	vm = xe_vm_create(fd, 0, 0);
- 
- 	/*
-@@ -361,12 +381,24 @@ static void test_render_regular_src_to_pxp_dest(int fd)
- 
- 	check_bo_color(fd, dstbo, TSTSURF_SIZE, TSTSURF_FILLCOLOR1, false);
- 
-+	if (outpixels)
-+		copy_bo_cpu(fd, dstbo, outpixels, TSTSURF_SIZE);
-+
- 	gem_close(fd, srcbo);
- 	gem_close(fd, dstbo);
- 	xe_exec_queue_destroy(fd, q);
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: regular-src-to-pxp-dest-rendercopy
-+ * Description: copy from a regular BO to a PXP one and verify the encryption
-+ */
-+static void test_render_regular_src_to_pxp_dest(int fd)
-+{
-+	__test_render_regular_src_to_pxp_dest(fd, NULL, 0);
-+}
-+
- static int bocmp(int fd, uint32_t bo1, uint32_t bo2, uint32_t size)
- {
- 	uint32_t *ptr1, *ptr2;
-@@ -428,6 +460,379 @@ static void test_render_pxp_protsrc_to_protdest(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+#define PS_OP_TAG_LOW 0x1234fed0
-+#define PS_OP_TAG_HI 0x5678cbaf
-+static void emit_pipectrl(struct intel_bb *ibb, struct intel_buf *fenceb)
-+{
-+	uint32_t pipe_ctl_flags = 0;
-+
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(2));
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+
-+	pipe_ctl_flags = (PIPE_CONTROL_FLUSH_ENABLE |
-+			  PIPE_CONTROL_CS_STALL |
-+			  PIPE_CONTROL_QW_WRITE);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(6));
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+
-+	intel_bb_emit_reloc(ibb, fenceb->handle, 0, I915_GEM_DOMAIN_COMMAND, 0,
-+			    fenceb->addr.offset);
-+	intel_bb_out(ibb, PS_OP_TAG_LOW);
-+	intel_bb_out(ibb, PS_OP_TAG_HI);
-+	intel_bb_out(ibb, MI_NOOP);
-+	intel_bb_out(ibb, MI_NOOP);
-+}
-+
-+static void assert_pipectl_storedw_done(int fd, uint32_t bo)
-+{
-+	uint32_t *ptr;
-+
-+	ptr = xe_bo_mmap_ext(fd, bo, 4096, PROT_READ|PROT_WRITE);
-+	igt_assert_eq(ptr[0], PS_OP_TAG_LOW);
-+	igt_assert_eq(ptr[1], PS_OP_TAG_HI);
-+
-+	igt_assert(munmap(ptr, 4096) == 0);
-+}
-+
-+static int submit_flush_store_dw(int fd, uint32_t q, bool q_is_pxp, uint32_t vm,
-+				 uint32_t dst, bool dst_is_pxp)
-+{
-+	struct intel_buf *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	int ret = 0;
-+
-+	bops = buf_ops_create(fd);
-+	igt_assert(bops);
-+
-+	ibb = intel_bb_create_with_context(fd, q, vm, NULL, 4096);
-+	igt_assert(ibb);
-+	intel_bb_set_pxp(ibb, q_is_pxp, DISPLAY_APPTYPE, DRM_XE_PXP_HWDRM_DEFAULT_SESSION);
-+
-+	dstbuf = buf_create(fd, bops, dst, 256, 4, 32, 4096);
-+	intel_buf_set_pxp(dstbuf, dst_is_pxp);
-+
-+	intel_bb_ptr_set(ibb, 0);
-+	intel_bb_add_intel_buf(ibb, dstbuf, true);
-+	emit_pipectrl(ibb, dstbuf);
-+	intel_bb_emit_bbe(ibb);
-+	ret = __xe_bb_exec(ibb, 0, false);
-+	if (ret == 0)
-+		ret = intel_bb_sync(ibb);
-+	if (ret == 0)
-+		assert_pipectl_storedw_done(fd, dst);
-+
-+	intel_buf_destroy(dstbuf);
-+	intel_bb_destroy(ibb);
-+	buf_ops_destroy(bops);
-+
-+	return ret;
-+}
-+
-+static void trigger_pxp_debugfs_forced_teardown(int xe_fd)
-+{
-+	char str[32];
-+	int ret;
-+	int fd;
-+
-+	fd = igt_debugfs_dir(xe_fd);
-+	igt_assert(fd >= 0);
-+	ret = igt_debugfs_simple_read(fd, "pxp/terminate", str, 32);
-+	igt_assert_f(ret >= 0, "Can't open pxp termination debugfs\n");
-+
-+	/* give the kernel time to handle the termination */
-+	sleep(1);
-+}
-+
-+enum termination_type {
-+	PXP_TERMINATION_IRQ,
-+	PXP_TERMINATION_RPM,
-+	PXP_TERMINATION_SUSPEND
-+};
-+
-+static void trigger_termination(int fd, enum termination_type type)
-+{
-+	switch (type) {
-+	case PXP_TERMINATION_IRQ:
-+		trigger_pxp_debugfs_forced_teardown(fd);
-+		break;
-+	case PXP_TERMINATION_RPM:
-+		igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+		break;
-+	case PXP_TERMINATION_SUSPEND:
-+		igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
-+		break;
-+	}
-+}
-+
-+/**
-+ * SUBTEST: pxp-termination-key-update-post-termination-irq
-+ * Description: Verify key is changed after a termination irq
-+ */
-+
-+/**
-+ * SUBTEST: pxp-termination-key-update-post-suspend
-+ * Description: Verify key is changed after a suspend/resume cycle
-+ */
-+
-+/**
-+ * SUBTEST: pxp-termination-key-update-post-rpm
-+ * Description: Verify key is changed after a runtime suspend/resume cycle
-+ */
-+
-+static void test_pxp_teardown_keychange(int fd, enum termination_type type)
-+{
-+	uint32_t* encrypted_data_before;
-+	uint32_t* encrypted_data_after;
-+	int matched_after_keychange = 0, loop = 0;
-+
-+	encrypted_data_before = malloc(TSTSURF_SIZE);
-+	encrypted_data_after = malloc(TSTSURF_SIZE);
-+	igt_assert(encrypted_data_before && encrypted_data_after);
-+
-+	__test_render_regular_src_to_pxp_dest(fd, encrypted_data_before, TSTSURF_SIZE);
-+
-+	trigger_termination(fd, type);
-+
-+	__test_render_regular_src_to_pxp_dest(fd, encrypted_data_after, TSTSURF_SIZE);
-+
-+	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
-+		if (encrypted_data_before[loop] == encrypted_data_after[loop])
-+			++matched_after_keychange;
-+		++loop;
-+	}
-+	igt_assert_eq(matched_after_keychange, 0);
-+
-+	free(encrypted_data_before);
-+	free(encrypted_data_after);
-+}
-+
-+/**
-+ * SUBTEST: pxp-stale-bo-bind-post-termination-irq
-+ * Description: verify that VM bind on a stale BO (due to a termination irq) is rejected.
-+ */
-+
-+/**
-+ * SUBTEST: pxp-stale-bo-bind-post-suspend
-+ * Description: verify that VM bind on a stale BO (due to a suspend/resume cycle)
-+ *              is rejected.
-+ */
-+
-+/**
-+ * SUBTEST: pxp-stale-bo-bind-post-rpm
-+ * Description: verify that VM bind on a stale BO (due to a runtime suspend/resume
-+ *              cycle) is rejected.
-+ */
-+
-+static void __test_pxp_stale_bo_bind(int fd, enum termination_type type, bool pxp)
-+{
-+	uint32_t vm, q;
-+	uint32_t dstbo;
-+	uint32_t flags = pxp ? DRM_XE_VM_BIND_FLAG_CHECK_PXP : 0;
-+	int ret;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	q = create_pxp_rcs_queue(fd, vm);
-+
-+	dstbo = pxp_bo_create(fd, vm, 4096, DRM_XE_PXP_TYPE_HWDRM);
-+
-+	igt_assert_eq(submit_flush_store_dw(fd, q, true, vm, dstbo, true), 0);
-+
-+	/*
-+	 * RPM cleanup is automatic as soon as we release the reference, so we
-+	 * neet to make sure not to release it before other types of termination
-+	 * have occurred.
-+	 */
-+	if (type == PXP_TERMINATION_RPM) {
-+		xe_exec_queue_destroy(fd, q);
-+		trigger_termination(fd, type);
-+	} else {
-+		trigger_termination(fd, type);
-+		xe_exec_queue_destroy(fd, q);
-+	}
-+
-+	/* trying to map a stale BO is an illegal op */
-+	ret = __xe_vm_bind(fd, vm, 0, dstbo, 0, 0, 4096, DRM_XE_VM_BIND_OP_MAP,
-+			   flags, NULL, 0, 0, DEFAULT_PAT_INDEX, 0);
-+	igt_assert_eq(ret, pxp ? -ENOEXEC : 0);
-+
-+	gem_close(fd, dstbo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+static void test_pxp_stale_bo_bind(int fd, enum termination_type type)
-+{
-+	__test_pxp_stale_bo_bind(fd, type, true);
-+}
-+
-+static void pxp_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t addr,
-+			     uint64_t size, uint32_t op)
-+{
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = syncobj_create(fd, 0),
-+	};
-+
-+	__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, size, op,
-+			    DRM_XE_VM_BIND_FLAG_CHECK_PXP, &sync, 1, 0, 0);
-+
-+	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+	syncobj_destroy(fd, sync.handle);
-+}
-+
-+static uint32_t create_and_bind_simple_pxp_batch(int fd, uint32_t vm,
-+						 uint32_t size, uint64_t addr)
-+{
-+	uint32_t bo;
-+	uint32_t *map;
-+	bo = pxp_bo_create(fd, vm, 4096, DRM_XE_PXP_TYPE_HWDRM);
-+	pxp_vm_bind_sync(fd, vm, bo, addr, size, DRM_XE_VM_BIND_OP_MAP);
-+
-+	map = xe_bo_map(fd, bo, 4096);
-+	*map = MI_BATCH_BUFFER_END;
-+	munmap(map, 4096);
-+
-+	return bo;
-+}
-+
-+/**
-+ * SUBTEST: pxp-stale-bo-exec-post-termination-irq
-+ * Description: verify that a submission using VM with a mapped stale BO (due to
-+ *              a termination irq) is rejected.
-+ */
-+
-+/**
-+ * SUBTEST: pxp-stale-bo-exec-post-suspend
-+ * Description: verify that a submission using VM with a mapped stale BO (due to
-+ *              a suspend/resume cycle) is rejected.
-+ */
-+
-+/**
-+ * SUBTEST: pxp-stale-bo-exec-post-rpm
-+ * Description: verify that a submission using VM with a mapped stale BO (due to
-+ *              a runtime suspend/resume cycle) is rejected.
-+ */
-+
-+static void __test_pxp_stale_bo_exec(int fd, enum termination_type type, bool pxp)
-+{
-+	uint32_t vm, q;
-+	uint32_t bo;
-+	int expected;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+
-+	q = create_pxp_rcs_queue(fd, vm); /* start a PXP session */
-+	bo = create_and_bind_simple_pxp_batch(fd, vm, 4096, 0);
-+
-+	/*
-+	 * RPM cleanup is automatic as soon as we release the reference, so we
-+	 * neet to make sure not to release it before other types of termination
-+	 * have occurred.
-+	 */
-+	if (type == PXP_TERMINATION_RPM) {
-+		xe_exec_queue_destroy(fd, q);
-+		trigger_termination(fd, type);
-+	} else {
-+		trigger_termination(fd, type);
-+		xe_exec_queue_destroy(fd, q);
-+	}
-+
-+	/* create a clean queue using the VM with the invalid object mapped in */
-+	if (pxp) {
-+		q = create_pxp_rcs_queue(fd, vm);
-+		expected = -ENOEXEC;
-+	} else {
-+		q = create_regular_rcs_queue(fd, vm);
-+		expected = 0;
-+	}
-+
-+	igt_assert_eq(xe_exec_sync_failable(fd, q, 0, NULL, 0), expected);
-+
-+	/* now make sure we can unmap the stale BO and have a clean exec after */
-+	if (pxp) {
-+		pxp_vm_bind_sync(fd, vm, 0, 0, 4096, DRM_XE_VM_BIND_OP_UNMAP);
-+		gem_close(fd, bo);
-+
-+		bo = create_and_bind_simple_pxp_batch(fd, vm, 4096, 0);
-+		igt_assert_eq(xe_exec_sync_failable(fd, q, 0, NULL, 0), 0);
-+	}
-+
-+	xe_exec_queue_destroy(fd, q);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+static void test_pxp_stale_bo_exec(int fd, enum termination_type type)
-+{
-+	__test_pxp_stale_bo_exec(fd, type, true);
-+}
-+
-+/**
-+ * SUBTEST: pxp-stale-queue-post-termination-irq
-+ * Description: verify that submissions on a stale queue (due to a termination
-+ *              irq) are cancelled
-+ */
-+
-+/**
-+ * SUBTEST: pxp-stale-queue-post-suspend
-+ * Description: verify that submissions on a stale queue (due to a suspend/resume
-+ *              cycle) are cancelled
-+ */
-+
-+static void test_pxp_stale_queue_execution(int fd, enum termination_type type)
-+{
-+	uint32_t vm, q;
-+	uint32_t dstbo;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	q = create_pxp_rcs_queue(fd, vm);
-+
-+	dstbo = regular_bo_create_and_fill(fd, vm, 4096, 0);
-+
-+	igt_assert_eq(submit_flush_store_dw(fd, q, true, vm, dstbo, false), 0);
-+
-+	trigger_termination(fd, type);
-+
-+	/* when we execute an invalid queue we expect the job to be canceled */
-+	igt_assert_eq(submit_flush_store_dw(fd, q, true, vm, dstbo, false), -ECANCELED);
-+
-+	gem_close(fd, dstbo);
-+	xe_exec_queue_destroy(fd, q);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: pxp-optout
-+ * Description: verify that submssions with stale objects/queues are not blocked
-+ *              if the user does not opt-in to the PXP checks.
-+ */
-+static void test_pxp_optout(int fd)
-+{
-+	__test_pxp_stale_bo_exec(fd, PXP_TERMINATION_IRQ, false);
-+	__test_pxp_stale_bo_bind(fd, PXP_TERMINATION_IRQ, false);
-+}
-+
-+static void termination_tests(int fd, enum termination_type type, const char *tag)
-+{
-+	if (type == PXP_TERMINATION_RPM)
-+		igt_setup_runtime_pm(fd);
-+
-+	igt_subtest_f("pxp-termination-key-update-post-%s", tag)
-+		test_pxp_teardown_keychange(fd, type);
-+	igt_subtest_f("pxp-stale-bo-bind-post-%s", tag)
-+		test_pxp_stale_bo_bind(fd, type);
-+	igt_subtest_f("pxp-stale-bo-exec-post-%s", tag)
-+		test_pxp_stale_bo_exec(fd, type);
-+
-+	/* An active PXP queue holds an RPM ref, so we can't test RPM with it */
-+	if (type != PXP_TERMINATION_RPM)
-+		igt_subtest_f("pxp-stale-queue-post-%s", tag)
-+			test_pxp_stale_queue_execution(fd, type);
-+	else
-+		igt_restore_runtime_pm();
-+}
-+
- igt_main
- {
- 	int xe_fd = -1;
-@@ -465,6 +870,22 @@ igt_main
- 			test_render_pxp_protsrc_to_protdest(xe_fd);
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(xe_fd);
-+			igt_assert(devid);
-+		}
-+		igt_describe("Verify teardown management");
-+
-+		termination_tests(xe_fd, PXP_TERMINATION_IRQ, "termination-irq");
-+		termination_tests(xe_fd, PXP_TERMINATION_SUSPEND, "suspend");
-+		termination_tests(xe_fd, PXP_TERMINATION_RPM, "rpm");
-+
-+		igt_subtest("pxp-optout")
-+			test_pxp_optout(xe_fd);
-+	}
-+
- 	igt_fixture {
- 		close(xe_fd);
- 	}
--- 
-2.43.0
+On 12/11/2024 4:18 PM, Daniele Ceraolo Spurio wrote:
+> PXP introduced a new valid flag, so we need to add it to the test and
+> shift the first invalid bit left by one.
+>
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> ---
+>   tests/intel/xe_vm.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index e78ddd0e5..741dc0c7a 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -2216,6 +2216,11 @@ static void bind_flag_invalid(int fd)
+>   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+>   	syncobj_reset(fd, &sync[0].handle, 1);
+>   
+> +	bind.bind.flags = DRM_XE_VM_BIND_FLAG_CHECK_PXP;
+> +	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
+> +	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+> +	syncobj_reset(fd, &sync[0].handle, 1);
+
+Right after sending the patches I realized I forgot to squash a fix to 
+only perform this ioctl if the PXP interface is supported. Will wait a 
+bit for comments on other patches before re-spinning this one.
+
+Daniele
+
+> +
+>   	bind.bind.flags = DRM_XE_VM_BIND_FLAG_NULL;
+>   	bind.bind.obj = 0;
+>   	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
+> @@ -2229,7 +2234,7 @@ static void bind_flag_invalid(int fd)
+>   	syncobj_reset(fd, &sync[0].handle, 1);
+>   
+>   	/* Using invalid flags should not work */
+> -	bind.bind.flags = 1 << 4;
+> +	bind.bind.flags = 1 << 5;
+>   	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
+>   	do_ioctl_err(fd, DRM_IOCTL_XE_VM_BIND, &bind, EINVAL);
+>   
 
