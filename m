@@ -4,72 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D6FEE7717F
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 16:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37633E7717F
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 16:30:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F8B510EE2F;
-	Thu, 12 Dec 2024 16:23:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC30089F63;
+	Thu, 12 Dec 2024 16:30:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b+7JGH1v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZXhEj8Jc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D996210EE2F
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 16:23:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28CAE10E1F8
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 16:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734020594; x=1765556594;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=0Ixejeq+JSck3TgIHn0ylbGTwuYqvsZ3XlYg75IH4oE=;
- b=b+7JGH1vF4Pg5NIJ1ezUM9oBYUW9i1AYJfFgu89NCxnkFB4nP29ewY7Q
- 1VsBGvCoC5N4qpRkuHKMoaSCwJ8egQcX57BuXBHiyMNLwEADZpOH8heZh
- dCMNq7fOqZyw1LtmR0jaS0nwzGUj6x8RsihFnKKF8aMWq1J1j4dT7xL5+
- UJtWXadhjaMGcA3uaWDnu3cO9WXQbc1HS0ENSUlpfk1mpb2TzDHZpG8OB
- tEpum8S+jyodrqFIb2X5KcihC0F9raqT/JiY8Y417ao7zBZdR6oe9EHXa
- uJsrfkUe8j+3RJ+s2F73e/j00wdNvjje68nACx2V+P4bvdDLwaP/7SY8M g==;
-X-CSE-ConnectionGUID: 13ScaRTGQLyJwp69MyMigQ==
-X-CSE-MsgGUID: 8TC+9sBMSZ+9Y6uhvJluqQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="37292117"
-X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; d="scan'208";a="37292117"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 08:23:13 -0800
-X-CSE-ConnectionGUID: HkgwfYuoTdGW6dG7k+FRQw==
-X-CSE-MsgGUID: 1YBJVqmYSK20P9hemsI+4A==
+ t=1734021047; x=1765557047;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=DS95md1s9r6DDX4ClxBw+Um5OU8uCOIh/w70Z8pu8AM=;
+ b=ZXhEj8JcokpVjypmBSB3gksA0GFJojU9tO5H1tfF/SdwlVXFL5sWZaNc
+ dkYEVmHN+5rYjn01+Fa2fOL95qA4VUTqaBwQU2Y90JTDlb2JIj58m1j9s
+ 483gfGIAp6bXBMrTMZy0eSlS9Ua5NyY8dkjVXZRfEU4MXmWfxGdS2UQfD
+ 3fBgN0oGhbkO3MTewC6ykRrZX3afGec1bBKzMH8znxJCaxMM6E2GLZfz8
+ CNTHrJeEKfa6VllorIGcEiP4xEJ1jf1PL87bSsyXNCgCZneOOt/iFFTkK
+ P60Z258Yo6XGAIu/TZ+br0V1wlWvHbDlKSP6B1q4lI472fqbXcRkac20K A==;
+X-CSE-ConnectionGUID: l1c2QKGgR6mZpdrkI5RqJg==
+X-CSE-MsgGUID: c6YjC/l4TwKlhtcHNGm8JQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45859852"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="45859852"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2024 08:30:47 -0800
+X-CSE-ConnectionGUID: 1g82lISXQqGNFFdJ6OKdsw==
+X-CSE-MsgGUID: FvuTJjBNR++YsqyELLHVAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="97071712"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.87])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 08:23:06 -0800
-Date: Thu, 12 Dec 2024 17:23:02 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Helen Koike <helen.koike@collabora.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
- Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
- Rob Clark <robdclark@chromium.org>, Ryszard Knop <ryszard.knop@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- dominik.karol.piatkowski@intel.com, himal.prasad.ghimiray@intel.com,
- katarzyna.piecielska@intel.com, luciano.coelho@intel.com,
- nirmoy.das@intel.com, stuart.summers@intel.com
-Subject: Re: [PATCH i-g-t v12 3/3] runner/executor: Integrate igt_facts
- functionality
-Message-ID: <20241212162302.r43stekuwqpij3ls@zkempczy-mobl2>
-References: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
- <20241212071527.64595-1-peter.senna@linux.intel.com>
- <20241212071527.64595-4-peter.senna@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; d="scan'208";a="96685200"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO [10.245.246.105])
+ ([10.245.246.105])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2024 08:30:45 -0800
+Message-ID: <6133ae28-2c38-4c87-ae5c-879a4e138595@intel.com>
+Date: Thu, 12 Dec 2024 17:30:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241212071527.64595-4-peter.senna@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/4] lib/xe_eudebug: Use igt_container_of instead of
+ (void *) casting
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: andrzej.hajda@intel.com
+References: <20241211114044.210562-1-dominik.grzegorzek@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241211114044.210562-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,160 +74,314 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Dec 12, 2024 at 08:15:27AM +0100, Peter Senna Tschudin wrote:
-> Modifies the igt_runner to include calls to igt_facts() before the
-> execution of each test and after the final test concludes. Also adds
-> command line options to igt_runner:
->  -f, --facts to enable igt_facts
+Hi Dominik,
+
+On 11.12.2024 12:40, Dominik Grzegorzek wrote:
+> Replace all places in which we casted base to specific event via (void
+> *) casting with igt_container_of, as this is more errorless approach.
 > 
-> igt_facts is disabled by default. If not explicitly enabled with the
-> command-line argument -f or --facts, igt_facts() will return
-> immediately without performing any operations.
-> 
-> The test name is obtained by calling
-> entry_display_name(&job_list->entries[state->next]).
-> 
-> CC: Helen Koike <helen.koike@collabora.com>
-> CC: Jani Nikula <jani.nikula@linux.intel.com>
-> CC: Jani Saarinen <jani.saarinen@intel.com>
-> CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> CC: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-> CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> CC: Lucas De Marchi <lucas.demarchi@intel.com>
-> CC: Maíra Canal <mcanal@igalia.com>
-> CC: Melissa Wen <mwen@igalia.com>
-> CC: Petri Latvala <adrinael@adrinael.net>
-> CC: Rob Clark <robdclark@chromium.org>
-> CC: Ryszard Knop <ryszard.knop@intel.com>
-> CC: Swati Sharma <swati2.sharma@intel.com>
-> CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> CC: dominik.karol.piatkowski@intel.com
-> CC: himal.prasad.ghimiray@intel.com
-> CC: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
-> CC: katarzyna.piecielska@intel.com
-> CC: luciano.coelho@intel.com
-> CC: nirmoy.das@intel.com
-> CC: stuart.summers@intel.com
-> Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
-> Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+
+Thanks,
+Christoph
+
 > ---
->  runner/executor.c | 10 ++++++++++
->  runner/settings.c |  9 ++++++++-
->  2 files changed, 18 insertions(+), 1 deletion(-)
+>   lib/xe/xe_eudebug.c | 81 ++++++++++++++++++++++++---------------------
+>   1 file changed, 43 insertions(+), 38 deletions(-)
 > 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 49ae8c90d..d4d704a34 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -30,6 +30,7 @@
->  
->  #include "igt_aux.h"
->  #include "igt_core.h"
-> +#include "igt_facts.h"
->  #include "igt_taints.h"
->  #include "igt_vec.h"
->  #include "executor.h"
-> @@ -2360,12 +2361,15 @@ bool execute(struct execute_state *state,
->  	sigset_t sigmask;
->  	double time_spent = 0.0;
->  	bool status = true;
-> +	char *last_test = NULL;
->  
->  	if (state->dry) {
->  		outf("Dry run, not executing. Invoke igt_resume if you want to execute.\n");
->  		return true;
->  	}
->  
-> +	igt_facts_lists_init();
-> +
->  	if (state->next >= job_list->size) {
->  		outf("All tests already executed.\n");
->  		return true;
-> @@ -2492,6 +2496,10 @@ bool execute(struct execute_state *state,
->  		int result;
->  		bool already_written = false;
->  
-> +		/* Calls before running each test */
-> +		igt_facts(last_test);
-> +		last_test = entry_display_name(&job_list->entries[state->next]);
-> +
->  		if (should_die_because_signal(sigfd)) {
->  			status = false;
->  			goto end;
-> @@ -2580,6 +2588,8 @@ bool execute(struct execute_state *state,
->  			return execute(state, settings, job_list);
->  		}
->  	}
-> +	/* Last call to collect facts after the last test runs */
-> +	igt_facts(last_test);
->  
->  	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
->  		dprintf(timefd, "%f\n", timeofday_double());
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 0d27e7af3..0e8e4572e 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -1,3 +1,4 @@
-> +#include "igt_facts.h"
->  #include "igt_hook.h"
->  #include "igt_vec.h"
->  #include "settings.h"
-> @@ -40,6 +41,7 @@ enum {
->  	OPT_INCLUDE = 't',
->  	OPT_EXCLUDE = 'x',
->  	OPT_ENVIRONMENT = 'e',
-> +	OPT_FACTS = 'f',
->  	OPT_SYNC = 's',
->  	OPT_LOG_LEVEL = 'l',
->  	OPT_OVERWRITE = 'o',
-> @@ -230,6 +232,7 @@ static const char *usage_str =
->  	"                                   environment variable IGT_PING_HOSTNAME does\n"
->  	"                                   not respond to ping.\n"
->  	"                         all     - abort for all of the above.\n"
-> +	"  -f, --facts           Enable igt_facts tracking\n"
->  	"  -s, --sync            Sync results to disk after every test\n"
->  	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
->  	"                        Set the logger verbosity level\n"
-> @@ -665,6 +668,7 @@ bool parse_options(int argc, char **argv,
->  		{"environment", required_argument, NULL, OPT_ENVIRONMENT},
->  		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
->  		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
-> +		{"facts", no_argument, NULL, OPT_FACTS},
->  		{"sync", no_argument, NULL, OPT_SYNC},
->  		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
->  		{"test-list", required_argument, NULL, OPT_TEST_LIST},
-> @@ -695,7 +699,7 @@ bool parse_options(int argc, char **argv,
->  	settings->dmesg_warn_level = -1;
->  	settings->prune_mode = -1;
->  
-> -	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
-> +	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
->  				long_options, NULL)) != -1) {
->  		switch (c) {
->  		case OPT_VERSION:
-> @@ -736,6 +740,9 @@ bool parse_options(int argc, char **argv,
->  				goto error;
->  			}
->  			break;
-> +		case OPT_FACTS:
-> +			igt_facts_config.enabled = true;
-> +			break;
-
-Use local static for this. We don't want to change internal
-state of the library from the runner, just use its API.
-Then call igt_facts() conditionally depending on this flag.
-
-With this:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
->  		case OPT_SYNC:
->  			settings->sync = true;
->  			break;
-> -- 
-> 2.34.1
-> 
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index 8f3bb2f1e..f2483028f 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -140,20 +140,20 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *bu
+>   {
+>   	switch (e->type) {
+>   	case DRM_XE_EUDEBUG_EVENT_OPEN: {
+> -		struct drm_xe_eudebug_event_client *ec = (void *)e;
+> +		struct drm_xe_eudebug_event_client *ec = igt_container_of(e, ec, base);
+>   
+>   		sprintf(buf, "handle=%llu", ec->client_handle);
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM: {
+> -		struct drm_xe_eudebug_event_vm *evm = (void *)e;
+> +		struct drm_xe_eudebug_event_vm *evm = igt_container_of(e, evm, base);
+>   
+>   		sprintf(buf, "client_handle=%llu, handle=%llu",
+>   			evm->client_handle, evm->vm_handle);
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
+> -		struct drm_xe_eudebug_event_exec_queue *ee = (void *)e;
+> +		struct drm_xe_eudebug_event_exec_queue *ee = igt_container_of(e, ee, base);
+>   
+>   		sprintf(buf, "client_handle=%llu, vm_handle=%llu, "
+>   			"exec_queue_handle=%llu, engine_class=%d, exec_queue_width=%d",
+> @@ -162,7 +162,8 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *bu
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS: {
+> -		struct drm_xe_eudebug_event_exec_queue_placements *ee = (void *)e;
+> +		struct drm_xe_eudebug_event_exec_queue_placements *ee = igt_container_of(e, ee,
+> +											 base);
+>   		struct drm_xe_engine_class_instance *instances = (void *)(ee->instances);
+>   		int i, l;
+>   
+> @@ -182,7 +183,7 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *bu
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EU_ATTENTION: {
+> -		struct drm_xe_eudebug_event_eu_attention *ea = (void *)e;
+> +		struct drm_xe_eudebug_event_eu_attention *ea = igt_container_of(e, ea, base);
+>   
+>   		sprintf(buf, "client_handle=%llu, exec_queue_handle=%llu, "
+>   			"lrc_handle=%llu, bitmask_size=%d",
+> @@ -191,34 +192,34 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *bu
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND: {
+> -		struct drm_xe_eudebug_event_vm_bind *evmb = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind *evmb = igt_container_of(e, evmb, base);
+>   
+>   		sprintf(buf, "client_handle=%llu, vm_handle=%llu, flags=0x%x, num_binds=%u",
+>   			evmb->client_handle, evmb->vm_handle, evmb->flags, evmb->num_binds);
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP: {
+> -		struct drm_xe_eudebug_event_vm_bind_op *op = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_op *op = igt_container_of(e, op, base);
+>   
+>   		sprintf(buf, "vm_bind_ref_seqno=%lld, addr=%016llx, range=%llu num_extensions=%llu",
+>   			op->vm_bind_ref_seqno, op->addr, op->range, op->num_extensions);
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE: {
+> -		struct drm_xe_eudebug_event_vm_bind_ufence *f = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_ufence *f = igt_container_of(e, f, base);
+>   
+>   		sprintf(buf, "vm_bind_ref_seqno=%lld", f->vm_bind_ref_seqno);
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_METADATA: {
+> -		struct drm_xe_eudebug_event_metadata *em = (void *)e;
+> +		struct drm_xe_eudebug_event_metadata *em = igt_container_of(e, em, base);
+>   
+>   		sprintf(buf, "client_handle=%llu, metadata_handle=%llu, type=%llu, len=%llu",
+>   			em->client_handle, em->metadata_handle, em->type, em->len);
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA: {
+> -		struct drm_xe_eudebug_event_vm_bind_op_metadata *op = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_op_metadata *op = igt_container_of(e, op, base);
+>   
+>   		sprintf(buf, "vm_bind_op_ref_seqno=%lld, metadata_handle=%llu, metadata_cookie=%llu",
+>   			op->vm_bind_op_ref_seqno, op->metadata_handle, op->metadata_cookie);
+> @@ -461,16 +462,18 @@ static int match_fields(struct drm_xe_eudebug_event *a, void *data)
+>   
+>   	switch (a->type) {
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
+> -		struct drm_xe_eudebug_event_exec_queue *ae = (void *)a;
+> -		struct drm_xe_eudebug_event_exec_queue *be = (void *)b;
+> +		struct drm_xe_eudebug_event_exec_queue *ae = igt_container_of(a, ae, base);
+> +		struct drm_xe_eudebug_event_exec_queue *be = igt_container_of(b, be, base);
+>   
+>   		if (ae->engine_class == be->engine_class && ae->width == be->width)
+>   			ret = 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS: {
+> -		struct drm_xe_eudebug_event_exec_queue_placements *ae = (void *)a;
+> -		struct drm_xe_eudebug_event_exec_queue_placements *be = (void *)b;
+> +		struct drm_xe_eudebug_event_exec_queue_placements *ae = igt_container_of(a, ae,
+> +											 base);
+> +		struct drm_xe_eudebug_event_exec_queue_placements *be = igt_container_of(b, be,
+> +											 base);
+>   
+>   		if (ae->num_placements == be->num_placements &&
+>   		    memcmp(ae->instances, be->instances,
+> @@ -480,16 +483,16 @@ static int match_fields(struct drm_xe_eudebug_event *a, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND: {
+> -		struct drm_xe_eudebug_event_vm_bind *ea = (void *)a;
+> -		struct drm_xe_eudebug_event_vm_bind *eb = (void *)b;
+> +		struct drm_xe_eudebug_event_vm_bind *ea = igt_container_of(a, ea, base);
+> +		struct drm_xe_eudebug_event_vm_bind *eb = igt_container_of(b, eb, base);
+>   
+>   		if (ea->num_binds == eb->num_binds)
+>   			ret = 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP: {
+> -		struct drm_xe_eudebug_event_vm_bind_op *ea = (void *)a;
+> -		struct drm_xe_eudebug_event_vm_bind_op *eb = (void *)b;
+> +		struct drm_xe_eudebug_event_vm_bind_op *ea = igt_container_of(a, ea, base);
+> +		struct drm_xe_eudebug_event_vm_bind_op *eb = igt_container_of(b, eb, base);
+>   
+>   		if (ea->addr == eb->addr && ea->range == eb->range &&
+>   		    ea->num_extensions == eb->num_extensions)
+> @@ -497,8 +500,8 @@ static int match_fields(struct drm_xe_eudebug_event *a, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA: {
+> -		struct drm_xe_eudebug_event_vm_bind_op_metadata *ea = (void *)a;
+> -		struct drm_xe_eudebug_event_vm_bind_op_metadata *eb = (void *)b;
+> +		struct drm_xe_eudebug_event_vm_bind_op_metadata *ea = igt_container_of(a, ea, base);
+> +		struct drm_xe_eudebug_event_vm_bind_op_metadata *eb = igt_container_of(b, eb, base);
+>   
+>   		if (ea->metadata_handle == eb->metadata_handle &&
+>   		    ea->metadata_cookie == eb->metadata_cookie)
+> @@ -526,35 +529,36 @@ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+>   
+>   	switch (e->type) {
+>   	case DRM_XE_EUDEBUG_EVENT_OPEN: {
+> -		struct drm_xe_eudebug_event_client *client = (void *)e;
+> +		struct drm_xe_eudebug_event_client *client = igt_container_of(e, client, base);
+>   
+>   		if (client->client_handle == h)
+>   			return 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM: {
+> -		struct drm_xe_eudebug_event_vm *vm = (void *)e;
+> +		struct drm_xe_eudebug_event_vm *vm = igt_container_of(e, vm, base);
+>   
+>   		if (vm->client_handle == h)
+>   			return 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
+> -		struct drm_xe_eudebug_event_exec_queue *ee = (void *)e;
+> +	struct drm_xe_eudebug_event_exec_queue *ee = igt_container_of(e, ee, base);
+>   
+>   		if (ee->client_handle == h)
+>   			return 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS: {
+> -		struct drm_xe_eudebug_event_exec_queue_placements *ee = (void *)e;
+> +		struct drm_xe_eudebug_event_exec_queue_placements *ee = igt_container_of(e, ee,
+> +											 base);
+>   
+>   		if (ee->client_handle == h)
+>   			return 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND: {
+> -		struct drm_xe_eudebug_event_vm_bind *evmb = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind *evmb = igt_container_of(e, evmb, base);
+>   
+>   		if (evmb->client_handle == h) {
+>   			*bind_seqno = evmb->base.seqno;
+> @@ -563,7 +567,7 @@ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP: {
+> -		struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_op *eo = igt_container_of(e, eo, base);
+>   
+>   		if (eo->vm_bind_ref_seqno == *bind_seqno) {
+>   			*bind_op_seqno = eo->base.seqno;
+> @@ -572,7 +576,7 @@ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE: {
+> -		struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_ufence *ef = igt_container_of(e, ef, base);
+>   
+>   		if (ef->vm_bind_ref_seqno == *bind_seqno)
+>   			return 1;
+> @@ -580,14 +584,14 @@ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_METADATA: {
+> -		struct drm_xe_eudebug_event_metadata *em = (void *)e;
+> +		struct drm_xe_eudebug_event_metadata *em = igt_container_of(e, em, base);
+>   
+>   		if (em->client_handle == h)
+>   			return 1;
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA: {
+> -		struct drm_xe_eudebug_event_vm_bind_op_metadata *eo = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_op_metadata *eo = igt_container_of(e, eo, base);
+>   
+>   		if (eo->vm_bind_op_ref_seqno == *bind_op_seqno)
+>   			return 1;
+> @@ -615,7 +619,7 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   
+>   	switch (e->type) {
+>   	case DRM_XE_EUDEBUG_EVENT_OPEN: {
+> -		struct drm_xe_eudebug_event_client *client = (void *)e;
+> +		struct drm_xe_eudebug_event_client *client = igt_container_of(e, client, base);
+>   		struct drm_xe_eudebug_event_client *filter = data;
+>   
+>   		if (client->client_handle == filter->client_handle)
+> @@ -623,7 +627,7 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM: {
+> -		struct drm_xe_eudebug_event_vm *vm = (void *)e;
+> +		struct drm_xe_eudebug_event_vm *vm = igt_container_of(e, vm, base);
+>   		struct drm_xe_eudebug_event_vm *filter = data;
+>   
+>   		if (vm->vm_handle == filter->vm_handle)
+> @@ -631,7 +635,7 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
+> -		struct drm_xe_eudebug_event_exec_queue *ee = (void *)e;
+> +		struct drm_xe_eudebug_event_exec_queue *ee = igt_container_of(e, ee, base);
+>   		struct drm_xe_eudebug_event_exec_queue *filter = data;
+>   
+>   		if (ee->exec_queue_handle == filter->exec_queue_handle)
+> @@ -639,7 +643,7 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND: {
+> -		struct drm_xe_eudebug_event_vm_bind *evmb = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind *evmb = igt_container_of(e, evmb, base);
+>   		struct drm_xe_eudebug_event_vm_bind *filter = data;
+>   
+>   		if (evmb->vm_handle == filter->vm_handle &&
+> @@ -648,7 +652,7 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP: {
+> -		struct drm_xe_eudebug_event_vm_bind_op *avmb = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_op *avmb = igt_container_of(e, avmb, base);
+>   		struct drm_xe_eudebug_event_vm_bind_op *filter = data;
+>   
+>   		if (avmb->addr == filter->addr &&
+> @@ -657,7 +661,7 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_METADATA: {
+> -		struct drm_xe_eudebug_event_metadata *em = (void *)e;
+> +		struct drm_xe_eudebug_event_metadata *em = igt_container_of(e, em, base);
+>   		struct drm_xe_eudebug_event_metadata *filter = data;
+>   
+>   		if (em->metadata_handle == filter->metadata_handle)
+> @@ -665,7 +669,8 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+>   		break;
+>   	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA: {
+> -		struct drm_xe_eudebug_event_vm_bind_op_metadata *avmb = (void *)e;
+> +		struct drm_xe_eudebug_event_vm_bind_op_metadata *avmb = igt_container_of(e, avmb,
+> +											 base);
+>   		struct drm_xe_eudebug_event_vm_bind_op_metadata *filter = data;
+>   
+>   		if (avmb->metadata_handle == filter->metadata_handle &&
+> @@ -760,8 +765,8 @@ static void compare_client(struct xe_eudebug_event_log *log1, struct drm_xe_eude
+>   			   struct xe_eudebug_event_log *log2, struct drm_xe_eudebug_event *ev2,
+>   			   uint32_t filter)
+>   {
+> -	struct drm_xe_eudebug_event_client *ev1_client = (void *)ev1;
+> -	struct drm_xe_eudebug_event_client *ev2_client = (void *)ev2;
+> +	struct drm_xe_eudebug_event_client *ev1_client = igt_container_of(ev1, ev1_client, base);
+> +	struct drm_xe_eudebug_event_client *ev2_client = igt_container_of(ev2, ev2_client, base);
+>   	uint64_t cbs = 0, dbs = 0, cbso = 0, dbso = 0;
+>   
+>   	struct igt_list_head matched_seqno_list;
