@@ -4,58 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E6F6E77180
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 19:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDFA0E7717F
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 19:25:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CCF7910E656;
-	Thu, 12 Dec 2024 19:19:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 869A310EE81;
+	Thu, 12 Dec 2024 19:25:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nxPJCnWH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iMiHKhBT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8643A10E301;
- Thu, 12 Dec 2024 19:19:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76E4F10EE81
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 19:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734031154; x=1765567154;
+ t=1734031507; x=1765567507;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=V10RzgreobjMSNFx/Dgrd/Ukgo/wN5lNxb4F9fAzU2o=;
- b=nxPJCnWHYw/PSpzuiY28RwcycQhQ9lIsdzZ6aU/eoilxGA1pP/jagmjG
- pWC0c77xsTDpKdE2xIixgwfwjeyBDAi0i15dNEL08PC3HJIypMJ3yFzUw
- iyoGIVd1yKA9Ip8C3mDvJy+24yfpza3YGCpIMhdBB36C3x17Oh3IpSLNh
- ukmmyRpFjT9CnqmCkYjp9xim1/ACfCKHeGrMmTyv7IHf1H0OPZfvg7KTH
- QfiRB8cARo1yXF7MAbRxrgCn9Q/I3NVIKapHCQnYiZ6ZkoRbXaDqogZr5
- JbgmXBtgLCQmmBxMyGY/mFtfHOttWpXUka4M/JUbbrUTKgS2QaeKGtqWC g==;
-X-CSE-ConnectionGUID: zTxRSSUFSHy8ObLlNPbArQ==
-X-CSE-MsgGUID: EKXHI6KaRXm1XRL1LZvbcw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="59867285"
-X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; d="scan'208";a="59867285"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 11:19:13 -0800
-X-CSE-ConnectionGUID: k6w/c/G/Q6S5AWC7DIDBsQ==
-X-CSE-MsgGUID: qgLOVUhgQuyj3kVJD9rLdw==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=DlXSr72OjfkbuVr2XlpRtlhQFP/kOQDuJUolxfo5HxI=;
+ b=iMiHKhBTsl8mo37Ex4ZzmoXeZeI6TriyuRJzchSq/3H4RhzmBefPWGIx
+ s9quHjhTPnKB7afTCwbC5VknCh9PCSlGOMu3D7rvPeKjshfASFijES2Ur
+ CfEWaFkuA9KBLVzLEhTJqZN+EvfbLKn+oozBJUCFbnlZ4FYoQitgJJInN
+ JRSCW4RJhJGrx9oR1fxpu55w9tufvCygcPK4Dl2+7IXYWn/VQEcu8nRry
+ Toa5a8EznCwHdtwmC5cr1JtXDsIi1mBykDgbZSlkgQOCpVL29UYLTbRE7
+ U2+amDHQVflOTWwTq3oXa69xL1NEkPFrA6OWnVg19FayVcpOaRxYbVf7M Q==;
+X-CSE-ConnectionGUID: gUjC3AdYSr2rvX20F70thQ==
+X-CSE-MsgGUID: SMusIUOsS3GsBK4Lxx3weg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="37313506"
+X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; d="scan'208";a="37313506"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2024 11:25:07 -0800
+X-CSE-ConnectionGUID: 6OSv3xtuTpC2/deBCZZLYQ==
+X-CSE-MsgGUID: 3kVckIh8TzqFWopynxh0iw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="97131698"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="96758002"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 11:19:13 -0800
-Date: Thu, 12 Dec 2024 20:19:09 +0100
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 11:25:06 -0800
+Date: Thu, 12 Dec 2024 20:25:03 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- Fix dist building with iga64 codes script
-Message-ID: <20241212191909.bo5takijstlhd52l@kamilkon-desk.igk.intel.com>
+To: =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
+Cc: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ kernel-dev@igalia.com
+Subject: Re: [PATCH i-g-t] tests/kms_async_flips: Create subtest for overlay
+ planes
+Message-ID: <20241212192503.in7dodmb2mqpl3cb@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20241212105231.49481-1-kamil.konieczny@linux.intel.com>
- <173402392733.1666436.10629882087228347120@b555e5b46a47>
+ =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>,
+ igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ kernel-dev@igalia.com
+References: <20241211031820.115844-1-andrealmeid@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173402392733.1666436.10629882087228347120@b555e5b46a47>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241211031820.115844-1-andrealmeid@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,100 +74,161 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-12-12 at 17:18:47 -0000, Patchwork wrote:
-> == Series Details ==
+Hi André,
+On 2024-12-11 at 00:18:20 -0300, André Almeida wrote:
+> amdgpu can perform async flips in overlay planes as well, so create a
+> test for that.
 > 
-> Series: Fix dist building with iga64 codes script
-> URL   : https://patchwork.freedesktop.org/series/142473/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_15830_full -> IGTPW_12305_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_12305_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12305_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/index.html
-> 
-> Participating hosts (11 -> 11)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_12305_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_eio@in-flight-suspend:
->     - shard-glk:          NOTRUN -> [INCOMPLETE][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-glk4/igt@gem_eio@in-flight-suspend.html
-> 
->   * igt@kms_async_flips@crc-atomic@pipe-a-hdmi-a-1:
->     - shard-rkl:          NOTRUN -> [INCOMPLETE][2] +1 other test incomplete
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-rkl-7/igt@kms_async_flips@crc-atomic@pipe-a-hdmi-a-1.html
->     - shard-tglu-1:       NOTRUN -> [INCOMPLETE][3] +1 other test incomplete
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-tglu-1/igt@kms_async_flips@crc-atomic@pipe-a-hdmi-a-1.html
-> 
->   * igt@kms_async_flips@crc-atomic@pipe-c-hdmi-a-3:
->     - shard-dg1:          NOTRUN -> [CRASH][4] +3 other tests crash
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-dg1-13/igt@kms_async_flips@crc-atomic@pipe-c-hdmi-a-3.html
-> 
->   * igt@kms_async_flips@invalid-async-flip-atomic:
->     - shard-dg2:          NOTRUN -> [SKIP][5]
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-dg2-4/igt@kms_async_flips@invalid-async-flip-atomic.html
-> 
->   * igt@kms_pm_rpm@cursor:
->     - shard-rkl:          [PASS][6] -> [SKIP][7]
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15830/shard-rkl-1/igt@kms_pm_rpm@cursor.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-rkl-7/igt@kms_pm_rpm@cursor.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@gem_workarounds@suspend-resume-context:
->     - shard-glk:          [INCOMPLETE][8] ([i915#13273]) -> [INCOMPLETE][9]
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15830/shard-glk2/igt@gem_workarounds@suspend-resume-context.html
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-glk4/igt@gem_workarounds@suspend-resume-context.html
-> 
->   * igt@perf_pmu@rc6@runtime-pm-long-gt0:
->     - shard-rkl:          [DMESG-WARN][10] ([i915#12964]) -> [SKIP][11]
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15830/shard-rkl-4/igt@perf_pmu@rc6@runtime-pm-long-gt0.html
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/shard-rkl-7/igt@perf_pmu@rc6@runtime-pm-long-gt0.html
+> Signed-off-by: André Almeida <andrealmeid@igalia.com>
+> ---
+>  tests/kms_async_flips.c | 42 +++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 38 insertions(+), 4 deletions(-)
 > 
 
-Unrelated, no need for respin as this patch was dropped.
+To make it compile on GitLab please add description of test to
+a comments section, something like:
+
+ * SUBTEST: async-flip-suspend-resume
+ * Description: Verify the async flip functionality with suspend and resume cycle
+
+add here:
+
+ *
+ * SUBTEST: overlay-atomic
+ * Description: Verify overlay planes with async flips in atomic API
+ */
 
 Regards,
 Kamil
 
->   
-> Known issues
-> ------------
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 6e00be3de..10a416cfb 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -109,12 +109,14 @@ typedef struct {
+>  	uint32_t crtc_id;
+>  	uint32_t refresh_rate;
+>  	struct igt_fb bufs[NUM_FBS];
+> +	struct igt_fb bufs_overlay[NUM_FBS];
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	unsigned long flip_timestamp_us;
+>  	double flip_interval;
+>  	uint64_t modifier;
+>  	igt_plane_t *plane;
+> +	igt_plane_t *overlay_plane;
+>  	igt_pipe_crc_t *pipe_crc;
+>  	igt_crc_t ref_crc;
+>  	int flip_count;
+> @@ -126,6 +128,7 @@ typedef struct {
+>  	bool allow_fail;
+>  	struct buf_ops *bops;
+>  	bool atomic_path;
+> +	bool overlay_path;
+>  } data_t;
+>  
+>  static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+> @@ -226,6 +229,8 @@ static void test_init(data_t *data)
+>  	igt_output_set_pipe(data->output, data->pipe);
+>  
+>  	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+> +	if (data->overlay_path)
+> +		data->overlay_plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_OVERLAY);
+>  }
+>  
+>  static void test_init_fbs(data_t *data)
+> @@ -246,16 +251,27 @@ static void test_init_fbs(data_t *data)
+>  		prev_modifier = data->modifier;
+>  
+>  		if (data->bufs[0].fb_id) {
+> -			for (i = 0; i < NUM_FBS; i++)
+> +			for (i = 0; i < NUM_FBS; i++) {
+>  				igt_remove_fb(data->drm_fd, &data->bufs[i]);
+> +				if (data->overlay_path)
+> +					igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
+> +			}
+>  		}
+>  
+> -		for (i = 0; i < NUM_FBS; i++)
+> +		for (i = 0; i < NUM_FBS; i++) {
+>  			make_fb(data, &data->bufs[i], width, height, i);
+> +			if (data->overlay_path)
+> +				make_fb(data, &data->bufs_overlay[i], width, height, i);
+> +		}
+>  	}
+>  
+>  	igt_plane_set_fb(data->plane, &data->bufs[0]);
+>  	igt_plane_set_size(data->plane, width, height);
+> +
+> +	if (data->overlay_path) {
+> +		igt_plane_set_fb(data->overlay_plane, &data->bufs[0]);
+> +		igt_plane_set_size(data->overlay_plane, width, height);
+> +	}
+>  }
+>  
+>  static bool async_flip_needs_extra_frame(data_t *data)
+> @@ -283,12 +299,17 @@ static bool async_flip_needs_extra_frame(data_t *data)
+>  static int perform_flip(data_t *data, int frame, int flags)
+>  {
+>  	int ret;
+> +	igt_plane_t *plane;
+> +	struct igt_fb *bufs;
+> +
+> +	plane = data->overlay_path ? data->overlay_plane : data->plane;
+> +	bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
+>  
+>  	if (!data->atomic_path) {
+>  		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> -				      data->bufs[frame % NUM_FBS].fb_id, flags, data);
+> +				     bufs[frame % NUM_FBS].fb_id, flags, data);
+>  	} else {
+> -		igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
+> +		igt_plane_set_fb(plane, &data->bufs[frame % NUM_FBS]);
+>  		ret = igt_display_try_commit_atomic(&data->display, flags, data);
+>  	}
+>  
+> @@ -758,6 +779,7 @@ igt_main
+>  		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+>  			data.alternate_sync_async = false;
+>  			data.atomic_path = false;
+> +			data.overlay_path = false;
+>  			if (is_intel_device(data.drm_fd))
+>  				run_test_with_modifiers(&data, test_async_flip);
+>  			else
+> @@ -769,6 +791,7 @@ igt_main
+>  		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
+>  			data.alternate_sync_async = false;
+>  			data.atomic_path = true;
+> +			data.overlay_path = false;
+>  			if (is_intel_device(data.drm_fd))
+>  				run_test_with_modifiers(&data, test_async_flip);
+>  			else
+> @@ -779,6 +802,7 @@ igt_main
+>  		igt_subtest_with_dynamic("alternate-sync-async-flip") {
+>  			data.alternate_sync_async = true;
+>  			data.atomic_path = false;
+> +			data.overlay_path = false;
+>  			run_test(&data, test_async_flip);
+>  		}
+>  
+> @@ -786,7 +810,17 @@ igt_main
+>  		igt_subtest_with_dynamic("alternate-sync-async-flip-atomic") {
+>  			data.alternate_sync_async = true;
+>  			data.atomic_path = true;
+> +			data.overlay_path = false;
+> +			run_test(&data, test_async_flip);
+> +		}
+> +
+> +		igt_describe("Verify overlay planes with async flips in atomic API");
+> +		igt_subtest_with_dynamic("overlay-atomic") {
+> +			igt_require(is_amdgpu_device(data.drm_fd));
+> +			data.atomic_path = true;
+> +			data.overlay_path = true;
+>  			run_test(&data, test_async_flip);
+> +			data.overlay_path = false;
+>  		}
+>  
+>  		igt_describe("Verify that the async flip timestamp does not "
+> -- 
+> 2.47.1
 > 
->   Here are the changes found in IGTPW_12305_full that come from known issues:
-> 
-> ### IGT changes ###
-
-...cut...
-
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12305/index.html
