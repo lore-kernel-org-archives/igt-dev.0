@@ -4,58 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF35E7717F
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 14:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D5DCE7717F
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Dec 2024 14:15:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC40B10EDE2;
-	Thu, 12 Dec 2024 14:11:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gXgYxAdt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CEE110EDE2
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2024 14:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734012697; x=1765548697;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=kcVJsfmdkrkP1cwF02QaN7vJR0FDur+K5n9hbxspe7U=;
- b=gXgYxAdtcovAsi6MVkpnIqyFxBfFr0wvG1CuslbX4BbBAJZKfDU3opuI
- SY5NIuITeaFAG48RF9wL27Y0dnF50lYgBuVNzYDeqZ1U9KLzcS92IK6sE
- ipHseXzScFmQCkS6j3647v2GXR5UYYEAOQITsh42NET1KBCjOaC0KFB0v
- CDEWjaG41kxUTJ74G7UPFRPD83UhQd5NeAsdkM+rnC3Xon2sY3IugEOiT
- aad211HwlcyhwyBvtgJw1RbsjgMmcREkZSkAODTaCOsq6rdM5gep8qy5L
- 2hvjvouwq8uOjjRGyElXJNMWmCNb0bGU6cbojVBHJ0wlwDhsIIbpItEEy g==;
-X-CSE-ConnectionGUID: iKxoOm+HSVuN+JVtdPg4Ag==
-X-CSE-MsgGUID: HYjKVKn5QWqcZ2lb95XLJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="59825926"
-X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="59825926"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 06:11:36 -0800
-X-CSE-ConnectionGUID: w0ekjqUDTQ2zxJShy5p2vA==
-X-CSE-MsgGUID: 0ff/E5qaRiutZPOGQDtIdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="127228611"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 06:11:35 -0800
-Date: Thu, 12 Dec 2024 15:11:17 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH] scripts/generate_iga64_codes: fix path of iga64_macros.h
-Message-ID: <20241212141117.5o4y2jscmwzw3fhc@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-References: <20241212-fix_iga64_macros_path-v1-1-9e8d149c8667@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A4EF10EDF3;
+	Thu, 12 Dec 2024 14:15:06 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7826A10EDEC;
+ Thu, 12 Dec 2024 14:15:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_scripts/generate=5Figa64?=
+ =?utf-8?q?=5Fcodes=3A_fix_path_of_iga64=5Fmacros=2Eh?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Andrzej Hajda" <andrzej.hajda@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 12 Dec 2024 14:15:04 -0000
+Message-ID: <173401290448.1586471.16600598160334579699@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241212-fix_iga64_macros_path-v1-1-9e8d149c8667@intel.com>
 In-Reply-To: <20241212-fix_iga64_macros_path-v1-1-9e8d149c8667@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,74 +37,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andrzej,
-On 2024-12-12 at 13:45:39 +0100, Andrzej Hajda wrote:
-> The build process fails if the build dir is not a subdir of the project.
-> 
-> Fixes: cba1773fd01d ("scripts/generate_iga64_codes: add iga64_macros.h to checksum calculation")
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+== Series Details ==
 
-Works for me and looks good,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: scripts/generate_iga64_codes: fix path of iga64_macros.h
+URL   : https://patchwork.freedesktop.org/series/142480/
+State : failure
 
-> ---
->  lib/meson.build              | 2 +-
->  scripts/generate_iga64_codes | 6 ++++--
->  2 files changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 640513e6c52c..beaf43dffc5b 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -252,7 +252,7 @@ iga64_generated_codes = custom_target(
->      input : [ 'iga64_generated_codes.c' ] + iga64_assembly_libs,
->      output : 'iga64_generated_codes.c',
->      depend_files : 'iga64_macros.h',
-> -    command : [ generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT@' ]
-> +    command : [ 'env', 'IGT_SRCDIR=@0@'.format(source_root), generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT@' ]
->  )
->  
->  lib_intermediates += static_library('igt-iga64_generated_codes.c',
-> diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
-> index 652bf01a080c..3f207e9ff1a8 100755
-> --- a/scripts/generate_iga64_codes
-> +++ b/scripts/generate_iga64_codes
-> @@ -22,6 +22,8 @@ die() {
->      exit 1
->  }
->  
-> +: ${IGT_SRCDIR:=..}
-> +
->  # parse args
->  while getopts ':i:o:' opt; do
->      case $opt in
-> @@ -40,7 +42,7 @@ while  read -d $'\0' asm; do
->  done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o /dev/null; done)
->  
->  # check if we need to recompile - checksum difference and compiler present
-> -MD5_ASMS="$(md5sum <<< "$(< ../lib/iga64_macros.h) ${ASMS[@]}" | cut -b1-32)"
-> +MD5_ASMS="$(md5sum <<< "$(< $IGT_SRCDIR/lib/iga64_macros.h) ${ASMS[@]}" | cut -b1-32)"
->  MD5_PRE="$(grep -Po '(?<=^#define MD5_SUM_IGA64_ASMS )\S{32,32}' $INPUT 2>/dev/null)"
->  
->  if [ "$MD5_ASMS" = "$MD5_PRE" ]; then
-> @@ -90,7 +92,7 @@ EOF
->  # Compiles assembly to binary representation sent to stdout.
->  compile_iga64() {
->      cmd="cpp -P - -o $WD/$asm_name.$gen_name.asm"
-> -    cmd+=" -DGEN_VER=$gen_ver -D'ARG(n)=($IGA64_ARG0 + (n))' -imacros ../lib/iga64_macros.h"
-> +    cmd+=" -DGEN_VER=$gen_ver -D'ARG(n)=($IGA64_ARG0 + (n))' -imacros $IGT_SRCDIR/lib/iga64_macros.h"
->      eval "$cmd" <<<"$asm_body" || die "cpp error for $asm_name.$gen_name\ncmd: $cmd"
->      cmd="iga64 -Xauto-deps -Wall -p=$gen_name"
->      cmd+=" $WD/$asm_name.$gen_name.asm"
-> 
-> ---
-> base-commit: 7812065f4aebab1629b570bd78ef71e09480b359
-> change-id: 20241212-fix_iga64_macros_path-5c38885d3d94
-> 
-> Best regards,
-> -- 
-> Andrzej Hajda <andrzej.hajda@intel.com>
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8150 -> IGTPW_12306
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12306 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12306, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/index.html
+
+Participating hosts (45 -> 46)
+------------------------------
+
+  Additional (2): fi-ivb-3770 fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12306:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bsw-nick:        [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/fi-bsw-nick/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/fi-bsw-nick/igt@i915_selftest@live@hangcheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12306 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - fi-pnv-d510:        NOTRUN -> [ABORT][3] ([i915#13203])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/fi-pnv-d510/igt@i915_module_load@load.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-rpls-4:         [PASS][4] -> [FAIL][5] ([i915#12903])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-arls-5:         NOTRUN -> [ABORT][6] ([i915#12061])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-arls-5/igt@i915_selftest@live.html
+    - fi-bsw-nick:        [PASS][7] -> [ABORT][8] ([i915#12435])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/fi-bsw-nick/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/fi-bsw-nick/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][9] -> [ABORT][10] ([i915#12061]) +1 other test abort
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arls-5:         [PASS][11] -> [ABORT][12] ([i915#12061])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-arlh-2:         [PASS][13] -> [ABORT][14] ([i915#12061]) +1 other test abort
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-vga-1:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][15] +23 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/fi-ivb-3770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-vga-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg1-7:          [FAIL][16] ([i915#12903]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-dg1-7/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [ABORT][18] ([i915#12919] / [i915#9413]) -> [PASS][19] +1 other test pass
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8150/bat-twl-1/igt@i915_selftest@live.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/bat-twl-1/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8150 -> IGTPW_12306
+  * Linux: CI_DRM_15827 -> CI_DRM_15830
+
+  CI-20190529: 20190529
+  CI_DRM_15827: 9b5dff950301bf05d2e76745cacb457a0a82b50f @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15830: 7b441ab54824526dd570dfbfbef51bcd2ba4c5b5 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12306: 12306
+  IGT_8150: 7812065f4aebab1629b570bd78ef71e09480b359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12306/index.html
