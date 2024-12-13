@@ -4,58 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6B36E7717F
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 10:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A3C9E77180
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 10:34:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7380C10EF9E;
-	Fri, 13 Dec 2024 10:32:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BAD0710EFA0;
+	Fri, 13 Dec 2024 10:34:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EoDREZmV";
+	dkim=pass (2048-bit key; unprotected) header.d=adrinael-net.20230601.gappssmtp.com header.i=@adrinael-net.20230601.gappssmtp.com header.b="m0wlq/Wz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7047F10EF9E
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2024 10:32:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734085939; x=1765621939;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=+Pngs0ENRu/X1SB4jybQ6GeffUMMEglOhX5lBzmm+RU=;
- b=EoDREZmVHL2IPUd2q4TG8RyMvIGwL/uYgWsmGyZbDC4bPYgnM0RZ8Jz8
- 27kx6f/nL7ajHJ+EQFUBP2vG/j/Qb9AwZcLRV7mYnd8gP0WaeCl6djHF1
- Z2h36YbO4N+KUwvVEw4NK9SDHw8M83XJFVVVW+ZpNPZjxi6K1W2RRJZAL
- XIVbuRu0H4OzRBV9vDrHOLiRonjTR/b4lZf6Y0Pxo4NVtbmBu9mB67hM5
- UuYUgEFyre67BHP7ayuaeAUIFo6UGA9NXSmjQcjl1lNj5hxd6N8EB2hPK
- gKTd4vV0dDhZSJRGidNGQ2O5Y3kYN0b0vK1Wx9i/z9KlSswxh4ldSGKUY Q==;
-X-CSE-ConnectionGUID: BQjvDcMlQAOoA8mDQmCYVg==
-X-CSE-MsgGUID: PyUuc0RGQz+WCb5faQJJ2w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="45224861"
-X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; d="scan'208";a="45224861"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Dec 2024 02:32:19 -0800
-X-CSE-ConnectionGUID: bzSDnQSBSUS7fMya24lx5A==
-X-CSE-MsgGUID: JkoyauCvSseWMYwLjPhICg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="97286791"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.244.7])
- ([10.245.244.7])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Dec 2024 02:32:19 -0800
-Message-ID: <b04d46fe-b2db-4fd1-96b2-1ab5a8c991ed@intel.com>
-Date: Fri, 13 Dec 2024 10:32:15 +0000
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 072A310EFA0
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2024 10:34:24 +0000 (UTC)
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-53e389d8dc7so1639622e87.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2024 02:34:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adrinael-net.20230601.gappssmtp.com; s=20230601; t=1734086062; x=1734690862;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KjwAsZ2A68gABaB8pYw6v5OvQNrAfgTMrDt2dDVBQ9A=;
+ b=m0wlq/Wz2MS16HB3nnv+8LIzTltwxcPXk6y4k6b/FS/ihUnczydQ64evnrSg3r9a+4
+ 46LkjNpkNON4im2m9lvcwlQEKFlL9w9/rf02Onk2wyS94wCrje9W6nQJ+Ds/xIM+MGbE
+ z+NE+2Oojfr/EmIDQk32UKo8SYRuSO9MeNF//7BnyB3L+g82NEUq6YCRD5Dx3nznBE1O
+ rqFx0NMx8bbkiBLJ6a+cc9qt8FQxG2Rg1ZARy6vRYF9imYVHBke+9UTPwmih6Oab4uTz
+ FSRoiCwFhJpR8//qrRjKSYDev3EnT9Wyd40/IQYxTYN4ui9eYjwPlbmwjvQH/HcYTLik
+ M7rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734086062; x=1734690862;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KjwAsZ2A68gABaB8pYw6v5OvQNrAfgTMrDt2dDVBQ9A=;
+ b=WV+fPuXTM4BtlpmrZqdWxImRLdFlWKae7CsKuK1mPrINz3O+M05L8uLdC7pZJg584a
+ y/x7BsCJMcT0ikr2r9HGKw2/HJ3zBgCHKKB+m7OupHpXCcEldrLYxm+04jUHhEDWVoOk
+ CBV42I2tVwaL/vNu3ywLB8RpJiKlcDQSryZZ7wtdTVWsEXhosrCm0P5XrCaB6JwLtswL
+ qcgfc52kj1mSPIfVBknJHJ6IPYNbbduxRXWQqKR4lV2MNkvqWV0rYXXN+0XUAukQyhHz
+ QDLjQ4ANYwWUPlymWCS+FUPWCblRPxVLFupGxrLOPe+L3WgHduQa85Ns7lQJXSPIsHhU
+ EXYQ==
+X-Gm-Message-State: AOJu0Yw//SnFNQ8vMCq86gAaoKzZuThWZKYJYQvpq6fhpG54BMiwwLZH
+ AWwmBvxV/6YeEM7ea+U4aYTMg5vOVZzSozYRipuA1fgjjnXVUAI+qj/On7b+bDFMX70qgg87z0b
+ aZxbZHl6WqAOVCQwAihqDBjY6sAnw8m6huxCp4RbF8QnAqI/xQ0c=
+X-Gm-Gg: ASbGncvBfXzrxmNZc5GOpxUegxYOFE5LGCzn2E8s2YnWX7z3ApU/9v1d23sQ36ulU94
+ ac7P7C+GKPGP77OtwNSF9o2ZD4t8ieq0/1hNs
+X-Google-Smtp-Source: AGHT+IGzunsIH4Msl1kzt+7m3U+WXp7spgkcwy7nEgyAlDIvDtvIGM29YhLOkU51DBNEHY6GTq0JgAsy8yCVfdeqDgw=
+X-Received: by 2002:a05:6512:3d21:b0:53a:1a81:f006 with SMTP id
+ 2adb3069b0e04-54090563f80mr667195e87.31.1734086062201; Fri, 13 Dec 2024
+ 02:34:22 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/intel/xe_vm_create: Check negative cases for
- vm_create ioctl
-To: Pravalika Gurram <pravalika.gurram@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20241213075724.641859-1-pravalika.gurram@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20241213075724.641859-1-pravalika.gurram@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241213101547.13411-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20241213101547.13411-1-kamil.konieczny@linux.intel.com>
+From: Petri Latvala <adrinael@adrinael.net>
+Date: Fri, 13 Dec 2024 12:34:11 +0200
+Message-ID: <CAGiqM9nuApm7Gvczp6xtFQYemPrgMybL_0h7nSDwtx8wDpArog@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] Update MAINTAINERS
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, 
+ Karthik B S <karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,142 +83,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 13/12/2024 07:57, Pravalika Gurram wrote:
-> Negative test to check vm_create ioctl returns expected error when
-> invalid flags, extensions, reserved  param is used.
-
-Would be good to also do the same for the vm_destroy ioctl. It has pad 
-and reserved also which should be zero, plus would be good to also try 
-to destroy an invalid vm id.
-
-> 
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+On Fri, Dec 13, 2024 at 12:15=E2=80=AFPM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Add Karthik B S.
+>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->   tests/intel/xe_vm_create.c | 104 +++++++++++++++++++++++++++++++++++++
->   tests/meson.build          |   1 +
->   2 files changed, 105 insertions(+)
->   create mode 100644 tests/intel/xe_vm_create.c
-> 
-> diff --git a/tests/intel/xe_vm_create.c b/tests/intel/xe_vm_create.c
-> new file mode 100644
-> index 000000000..2430e6739
-> --- /dev/null
-> +++ b/tests/intel/xe_vm_create.c
-> @@ -0,0 +1,104 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + */
-> +
-> +#include "igt.h"
-> +#include "xe_drm.h"
-> +
-> +/**
-> + * TEST: Negative test for vm create ioctl
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: Synchronization
-> + * Functionality: vm create
-> + * Test category: negative test
-> + */
-> +
-> +/**
-> + * SUBTEST: invalid-flag-%s
-> + * Description:  function %arg[1] used in vm create IOCTL to make it fail
-> + * Functionality: fault
-> + *
-> + * arg[1]:
-> + * @xe_vm_create_fault:  xe_vm_create_fault
-> + * @xe_vm_create_scrach_fault: xe_vm_create_scrach_fault
-> + * @xe_vm_create_scrach_fault_lr:    xe_vm_create_scrach_fault_lr
-> + */
-> +
-> +static void invalid_flag(int fd, __u32 flags)
-> +{
-> +	struct drm_xe_vm_create create = {
-> +		.flags = flags,
-> +	};
-> +
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-> +
-> +}
-> +
-> +/**
-> + * SUBTEST: invalid-extensions
-> + * Description: Check query with invalid extensions returns expected error code
-> + *
-> + * SUBTEST: invalid-reserved
-> + * Description: Check query with invalid reserved value returns expected error code
-> + */
-> +
-> +static void inavlid_extensions(int fd)
-> +{
-> +	struct drm_xe_vm_create create = {
-> +		.extensions = -1,
-> +	};
-> +
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-> +
-> +}
-> +
-> +static void inavlid_reserved(int fd)
-> +{
-> +	struct drm_xe_vm_create create = {
-> +		.reserved[0] = 0xffff,
-> +	};
-> +
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-> +
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +
-> +	const struct section {
-> +		const char *name;
-> +		__u32 flags;
-> +	} vm_create_flags_fail_functions[] = {
-> +		{ "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-> +		{ "xe_vm_create_scrach_fault",
-> +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-> +			DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-> +		{ "xe_vm_create_scrach_fault_lr",
-> +			~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-> +			DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
-> +		{ }
-> +	};
-> +
-> +	igt_fixture
-> +		fd = drm_open_driver(DRIVER_XE);
-> +
-> +	for (const struct section *s = vm_create_flags_fail_functions; s->name; s++) {
-> +		igt_subtest_f("invalid-flag-%s", s->name)
-> +			invalid_flag(fd, s->flags);
-> +	}
-> +
-> +	igt_subtest("invalid-extensions")
-> +			inavlid_extensions(fd);
-> +
-> +	igt_subtest("invalid-reserved")
-> +			inavlid_reserved(fd);
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 2724c7a9a..fb9fc75d8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -321,6 +321,7 @@ intel_xe_progs = [
->   	'xe_sysfs_scheduler',
->           'xe_sysfs_timeslice_duration',
->           'xe_tlb',
-> +        'xe_vm_create',
->   ]
->   
->   intel_xe_eudebug_progs = [
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 90c3c0880..afc5dbb36 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4,3 +4,4 @@ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>  Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+>  Ashutosh Dixit <ashutosh.dixit@intel.com>
+> +Karthik B S <karthik.b.s@intel.com>
+> --
+> 2.47.1
+>
 
+Acked-by: Petri Latvala <adrinael@adrinael.net>
