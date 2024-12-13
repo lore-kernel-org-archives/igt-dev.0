@@ -4,28 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50560E7717F
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 14:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86608E7717F
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 14:50:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E11F710EB4C;
-	Fri, 13 Dec 2024 14:33:55 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99B0810EB4C;
- Fri, 13 Dec 2024 14:33:54 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FE0F10F048;
+	Fri, 13 Dec 2024 14:50:32 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cQ23JWzF";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D699610F048
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2024 14:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734101431; x=1765637431;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=yHCbuK+8pBNXkd71kV3/jePQ3Cke+aeLmjh7/9Wfu9k=;
+ b=cQ23JWzFR7LWqtkbf4q+ZcUBM1Q7ymMmqn3hAv3DGvuU669ZR2w0EI5k
+ zdCruZTP0nX+vd5teKjnUsmB5JDUZeYxYyEpFmtyGUcTUJ0zZnQ7rU1qT
+ XG4+SXA02sehdMVtn69MTkWYqBaUwmeTTp7VAzftbA17diM3OvdyDwHkQ
+ e6HgSX5xY2ozkvpqgKCdmRVO77+pgUaSbJ3QcoqGpEpWDixrWb0kCi15t
+ dQ2oXLcNKGjx21f0ygTKRtmMAi09Qbdsk1Mp4sIwvomuZg4Mq4GmxqXZj
+ 6XbZr0CtxWtqOxoCp2LclRPuMR3r9flD4DzcKkAxPqvFtj+a/JW+h+XKi w==;
+X-CSE-ConnectionGUID: D3lWLBdCSQq2GSQRJnKfEQ==
+X-CSE-MsgGUID: 6Z909B4sRruRt6X0MRsnmw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34456847"
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; d="scan'208";a="34456847"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Dec 2024 06:50:30 -0800
+X-CSE-ConnectionGUID: LqHSMV3zTwKVbYt3oSx31g==
+X-CSE-MsgGUID: gm6T9HrbSZazbbAvr60vTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="101126580"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.134])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Dec 2024 06:50:29 -0800
+Date: Fri, 13 Dec 2024 15:50:26 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Gurram, Pravalika" <pravalika.gurram@intel.com>
+Cc: "Auld, Matthew" <matthew.auld@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH] tests/intel/xe_vm_create: Check negative cases for
+ vm_create ioctl
+Message-ID: <20241213145026.yg3jyzfmuj7lhg2p@zkempczy-mobl2>
+References: <20241213075724.641859-1-pravalika.gurram@intel.com>
+ <b04d46fe-b2db-4fd1-96b2-1ab5a8c991ed@intel.com>
+ <BL1PR11MB55256BCD8A5A3FF36BFB732584382@BL1PR11MB5525.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_xe=5Feudebug=5Fonline=3A_?=
- =?utf-8?q?Add_default_threads=5Fper=5Feu_value_for_platforms_without_hwconf?=
- =?utf-8?q?ig=2E?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 13 Dec 2024 14:33:54 -0000
-Message-ID: <173410043462.2161898.10718966101175515863@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241213092339.18038-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20241213092339.18038-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BL1PR11MB55256BCD8A5A3FF36BFB732584382@BL1PR11MB5525.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,116 +70,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+On Fri, Dec 13, 2024 at 12:15:32PM +0000, Gurram, Pravalika wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Auld, Matthew <matthew.auld@intel.com>
+> > Sent: Friday, December 13, 2024 4:02 PM
+> > To: Gurram, Pravalika <pravalika.gurram@intel.com>; igt-
+> > dev@lists.freedesktop.org
+> > Subject: Re: [PATCH] tests/intel/xe_vm_create: Check negative cases for
+> > vm_create ioctl
+> > 
+> > On 13/12/2024 07:57, Pravalika Gurram wrote:
+> > > Negative test to check vm_create ioctl returns expected error when
+> > > invalid flags, extensions, reserved  param is used.
+> > 
+> > Would be good to also do the same for the vm_destroy ioctl. It has pad and
+> > reserved also which should be zero, plus would be good to also try to destroy an
+> > invalid vm id.
+> > 
+> 
+> Thanks for reply I will also add for vm_destroy ioctl waiting for input 
+> is it okay to add new lib? or not
 
-Series: xe_eudebug_online: Add default threads_per_eu value for platforms without hwconfig.
-URL   : https://patchwork.freedesktop.org/series/142536/
-State : failure
+Looks xe_vm.c file is right place for vm create/destroy test cases.
+What do you mean add new lib? This is test case not a library.
 
-== Summary ==
+--
+Zbigniew
 
-CI Bug Log - changes from IGT_8155 -> IGTPW_12312
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12312 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12312, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12312:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@evict:
-    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/fi-skl-6600u/igt@i915_selftest@live@evict.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/fi-skl-6600u/igt@i915_selftest@live@evict.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12312 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-jsl-1:          [PASS][3] -> [DMESG-FAIL][4] ([i915#13132]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/bat-jsl-1/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/bat-jsl-1/igt@i915_selftest@live.html
-    - bat-arls-5:         NOTRUN -> [ABORT][5] ([i915#12061])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/bat-arls-5/igt@i915_selftest@live.html
-    - fi-skl-6600u:       [PASS][6] -> [INCOMPLETE][7] ([i915#13050])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/fi-skl-6600u/igt@i915_selftest@live.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/fi-skl-6600u/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][8] -> [ABORT][9] ([i915#12061])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg2-11:         [FAIL][10] ([i915#12903]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/bat-dg2-11/igt@i915_pm_rpm@module-reload.html
-    - bat-rpls-4:         [FAIL][12] ([i915#12903]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arls-6}:       [ABORT][14] ([i915#12061]) -> [PASS][15] +1 other test pass
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8155/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
-  [i915#13050]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050
-  [i915#13132]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13132
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8155 -> IGTPW_12312
-
-  CI-20190529: 20190529
-  CI_DRM_15837: 8f7b64e137723da601f3c07d0cda22566cf994d5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12312: 979524f04ca87c93239b5438fce280bcdc9c3c88 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8155: f33cf6456706ad5d454a87a773104b4fca7d81e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12312/index.html
+> 
+> > >
+> > > Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+> > > ---
+> > >   tests/intel/xe_vm_create.c | 104
+> > +++++++++++++++++++++++++++++++++++++
+> > >   tests/meson.build          |   1 +
+> > >   2 files changed, 105 insertions(+)
+> > >   create mode 100644 tests/intel/xe_vm_create.c
+> > >
+> > > diff --git a/tests/intel/xe_vm_create.c b/tests/intel/xe_vm_create.c
+> > > new file mode 100644 index 000000000..2430e6739
+> > > --- /dev/null
+> > > +++ b/tests/intel/xe_vm_create.c
+> > > @@ -0,0 +1,104 @@
+> > > +// SPDX-License-Identifier: MIT
+> > > +/*
+> > > + * Copyright © 2024 Intel Corporation  */
+> > > +
+> > > +#include "igt.h"
+> > > +#include "xe_drm.h"
+> > > +
+> > > +/**
+> > > + * TEST: Negative test for vm create ioctl
+> > > + * Category: Core
+> > > + * Mega feature: General Core features
+> > > + * Sub-category: Synchronization
+> > > + * Functionality: vm create
+> > > + * Test category: negative test
+> > > + */
+> > > +
+> > > +/**
+> > > + * SUBTEST: invalid-flag-%s
+> > > + * Description:  function %arg[1] used in vm create IOCTL to make it
+> > > +fail
+> > > + * Functionality: fault
+> > > + *
+> > > + * arg[1]:
+> > > + * @xe_vm_create_fault:  xe_vm_create_fault
+> > > + * @xe_vm_create_scrach_fault: xe_vm_create_scrach_fault
+> > > + * @xe_vm_create_scrach_fault_lr:    xe_vm_create_scrach_fault_lr
+> > > + */
+> > > +
+> > > +static void invalid_flag(int fd, __u32 flags) {
+> > > +	struct drm_xe_vm_create create = {
+> > > +		.flags = flags,
+> > > +	};
+> > > +
+> > > +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
+> > > +
+> > > +}
+> > > +
+> > > +/**
+> > > + * SUBTEST: invalid-extensions
+> > > + * Description: Check query with invalid extensions returns expected
+> > > +error code
+> > > + *
+> > > + * SUBTEST: invalid-reserved
+> > > + * Description: Check query with invalid reserved value returns
+> > > +expected error code  */
+> > > +
+> > > +static void inavlid_extensions(int fd) {
+> > > +	struct drm_xe_vm_create create = {
+> > > +		.extensions = -1,
+> > > +	};
+> > > +
+> > > +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
+> > > +
+> > > +}
+> > > +
+> > > +static void inavlid_reserved(int fd)
+> > > +{
+> > > +	struct drm_xe_vm_create create = {
+> > > +		.reserved[0] = 0xffff,
+> > > +	};
+> > > +
+> > > +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
+> > > +
+> > > +}
+> > > +
+> > > +igt_main
+> > > +{
+> > > +	int fd;
+> > > +
+> > > +	const struct section {
+> > > +		const char *name;
+> > > +		__u32 flags;
+> > > +	} vm_create_flags_fail_functions[] = {
+> > > +		{ "xe_vm_create_fault",
+> > DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
+> > > +		{ "xe_vm_create_scrach_fault",
+> > > +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
+> > > +			DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
+> > > +		{ "xe_vm_create_scrach_fault_lr",
+> > > +			~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
+> > > +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
+> > > +			DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
+> > > +		{ }
+> > > +	};
+> > > +
+> > > +	igt_fixture
+> > > +		fd = drm_open_driver(DRIVER_XE);
+> > > +
+> > > +	for (const struct section *s = vm_create_flags_fail_functions; s->name;
+> > s++) {
+> > > +		igt_subtest_f("invalid-flag-%s", s->name)
+> > > +			invalid_flag(fd, s->flags);
+> > > +	}
+> > > +
+> > > +	igt_subtest("invalid-extensions")
+> > > +			inavlid_extensions(fd);
+> > > +
+> > > +	igt_subtest("invalid-reserved")
+> > > +			inavlid_reserved(fd);
+> > > +
+> > > +	igt_fixture {
+> > > +		drm_close_driver(fd);
+> > > +	}
+> > > +
+> > > +}
+> > > diff --git a/tests/meson.build b/tests/meson.build index
+> > > 2724c7a9a..fb9fc75d8 100644
+> > > --- a/tests/meson.build
+> > > +++ b/tests/meson.build
+> > > @@ -321,6 +321,7 @@ intel_xe_progs = [
+> > >   	'xe_sysfs_scheduler',
+> > >           'xe_sysfs_timeslice_duration',
+> > >           'xe_tlb',
+> > > +        'xe_vm_create',
+> > >   ]
+> > >
+> > >   intel_xe_eudebug_progs = [
+> 
