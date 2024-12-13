@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A513E7717F
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 19:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDCEE7717F
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 20:14:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E469C10E444;
-	Fri, 13 Dec 2024 19:00:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EEP/ALHg";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 361E810E444
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2024 19:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734116407; x=1765652407;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=9CZjwR7YgPwXLDslWjHaaWDqFbkrSgtlFUuAn8XyaBw=;
- b=EEP/ALHg9ETj5iMdWSXop7q4CcvlgENTbOPo/Pn7k11kawYqH35h0oJ+
- 4DUNOHhCY2LneGacZmfbVWaYmG5VlZV9f9Ww8n9pHmNfcyYrW+mhq1WX9
- Pt1ORYxNCPscNX6SvVERLBaMIBoeUPdkRmFzfsjVduBUOPHhdDwr0IaCh
- N6TeihMj9Cak7LUes46vbHdtrILwygGK03L1a3nV1mrmXFR7bjmvzamkU
- Rs/G/pV8LKN9B4iZZRsAHfpkHd0ar4OhLdWG1qpOOT/GLvLr94QeJggGD
- pl3FkWFJzgqMXnjuQ37Ecr+wKtSntXib2fglsDq6NNU3kti6CozRbw71G Q==;
-X-CSE-ConnectionGUID: /EpsmvkUTHmCLSJTkXjdgw==
-X-CSE-MsgGUID: HO2OdWyOQ16v8wytBHIuPA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34812341"
-X-IronPort-AV: E=Sophos;i="6.12,232,1728975600"; d="scan'208";a="34812341"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Dec 2024 11:00:07 -0800
-X-CSE-ConnectionGUID: lQXbUPUJQ/C/tR+t5WQMKw==
-X-CSE-MsgGUID: ANnN+mr8Qemeg3FJxjod2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,232,1728975600"; d="scan'208";a="96496189"
-Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
- by fmviesa007.fm.intel.com with ESMTP; 13 Dec 2024 11:00:04 -0800
-From: Pravalika Gurram <pravalika.gurram@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com, katarzyna.piecielska@intel.com,
- matthew.auld@intel.com, Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH v2] tests/intel/xe_vm: Check negative cases for
- vm_create/destroy ioctl
-Date: Sat, 14 Dec 2024 00:27:35 +0530
-Message-Id: <20241213185735.652032-1-pravalika.gurram@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id EFC5710E0BE;
+	Fri, 13 Dec 2024 20:14:24 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B71DD10E0BE;
+ Fri, 13 Dec 2024 20:14:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Frp?=
+ =?utf-8?q?m=3A_Add_mappable_GTT_check_in_cursor_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Dec 2024 20:14:23 -0000
+Message-ID: <173412086374.2255360.11333319439554704405@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241213103228.1920627-1-jeevan.b@intel.com>
+In-Reply-To: <20241213103228.1920627-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,173 +37,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Negative test to check vm_create/destroy ioctl returns expected error when
-invalid flags, extensions, reserved, pad, vm_id  param is used.
+== Series Details ==
 
-Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
----
- tests/intel/xe_vm.c | 131 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 131 insertions(+)
+Series: tests/intel/kms_pm_rpm: Add mappable GTT check in cursor test
+URL   : https://patchwork.freedesktop.org/series/142544/
+State : success
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index e78ddd0e5..3535d48c7 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -2242,6 +2242,102 @@ static void bind_flag_invalid(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * TEST: Negative test for vm create/destroy ioctl
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: Synchronization
-+ * Functionality: vm create
-+ * Test category: negative test
-+ */
-+
-+/**
-+ * SUBTEST: invalid-flag-%s
-+ * Description:  function %arg[1] used in vm create IOCTL to make it fail
-+ * Functionality: fault
-+ *
-+ * arg[1]:
-+ * @xe_vm_create_fault:  xe_vm_create_fault
-+ * @xe_vm_create_scratch_fault: xe_vm_create_scrach_fault
-+ * @xe_vm_create_scratch_fault_lr:    xe_vm_create_scrach_fault_lr
-+ */
-+
-+static void invalid_flag(int fd, __u32 flags)
-+{
-+	struct drm_xe_vm_create create = {
-+		.flags = flags,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-+
-+}
-+
-+/**
-+ * SUBTEST: invalid-extensions
-+ * Description: Check query with invalid extensions returns expected error code
-+ *
-+ * SUBTEST: vm-create-invalid-reserved
-+ * Description: Send query with invalid reserved value for vm_create ioctl
-+ */
-+
-+static void invalid_extensions(int fd)
-+{
-+	struct drm_xe_vm_create create = {
-+		.extensions = -1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-+
-+}
-+
-+static void vm_create_invalid_reserved(int fd)
-+{
-+	struct drm_xe_vm_create create = {
-+		.reserved[0] = 0xffff,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-+
-+}
-+
-+/**
-+ * SUBTEST: vm-destroy-invalid-reserved
-+ * Description: Send query with invalid reserved value for vm_destroy ioctl
-+ *
-+ * SUBTEST: invalid-pad
-+ * Description: Check query with invalid pad returns expected error code
-+ *
-+ * SUBTEST: invalid-vm-id
-+ * Description: Check query with invalid vm_id returns expected error code
-+ */
-+
-+static void vm_destroy_invalid_reserved(int fd)
-+{
-+	struct drm_xe_vm_destroy destroy = {
-+		.reserved[0] = 0xffff,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, EINVAL);
-+}
-+
-+static void invalid_pad(int fd)
-+{
-+	struct drm_xe_vm_destroy destroy = {
-+		.pad = 1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, EINVAL);
-+}
-+
-+static void invalid_vm_id(int fd)
-+{
-+	struct drm_xe_vm_destroy destroy = {
-+		.vm_id = 0xdeadbeef,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, ENOENT);
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -2339,6 +2435,21 @@ igt_main
- 		{ NULL },
- 	};
- 
-+        const struct vm_create_section {
-+                const char *name;
-+                __u32 flags;
-+        } vm_create_flags_fail_functions[] = {
-+                { "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-+                { "xe_vm_create_scratch_fault",
-+                        DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-+                        DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-+                { "xe_vm_create_scratch_fault_lr",
-+                        ~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+                        DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-+                        DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
-+                { }
-+        };
-+
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
- 
-@@ -2598,6 +2709,26 @@ igt_main
- 		}
- 	}
- 
-+	for (const struct vm_create_section *s = vm_create_flags_fail_functions; s->name; s++) {
-+		igt_subtest_f("invalid-flag-%s", s->name)
-+			invalid_flag(fd, s->flags);
-+	}
-+
-+	igt_subtest("invalid-extensions")
-+		invalid_extensions(fd);
-+
-+	igt_subtest("vm-create-invalid-reserved")
-+		vm_create_invalid_reserved(fd);
-+
-+	igt_subtest("vm-destroy-invalid-reserved")
-+		vm_destroy_invalid_reserved(fd);
-+
-+	igt_subtest("invalid-pad")
-+		invalid_pad(fd);
-+
-+	igt_subtest("invalid-vm-id")
-+		invalid_vm_id(fd);
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8156 -> IGTPW_12314
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12314 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-2:          NOTRUN -> [ABORT][1] ([i915#12919])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-twl-2:          [PASS][2] -> [ABORT][3] ([i915#12919])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-dp2:
+    - fi-cfl-8109u:       [PASS][4] -> [DMESG-WARN][5] ([i915#12914]) +2 other tests dmesg-warn
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp2.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp2.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [INCOMPLETE][6] ([i915#12904]) -> [PASS][7] +1 other test pass
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@dmabuf@all-tests.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-rpls-4:         [FAIL][8] ([i915#12903]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][10] ([i915#12061]) -> [PASS][11] +1 other test pass
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-mtlp-8/igt@i915_selftest@live.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-apl-1:          [DMESG-WARN][12] ([i915#12921]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@kms_flip@basic-flip-vs-dpms.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-apl-1/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-apl-1:          [DMESG-WARN][14] ([i915#12918]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
+    - bat-apl-1:          [DMESG-WARN][16] -> [PASS][17] +1 other test pass
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#12914]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12914
+  [i915#12918]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12918
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#12921]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12921
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8156 -> IGTPW_12314
+  * Linux: CI_DRM_15838 -> CI_DRM_15843
+
+  CI-20190529: 20190529
+  CI_DRM_15838: a752f9b5366a071e41f973b51842b6af5817f2a2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15843: 3002940575eb5832d1fb8d10fd6311467b29c6d7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12314: 286e2c20252aecafe4310cb2dba45852e3975a21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8156: edf352a96646c8d793f0c1eb11795112f9bde725 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12314/index.html
