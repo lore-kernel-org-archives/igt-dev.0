@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C64E77180
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 16:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD4D7E7717F
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 17:24:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BB5310F0A0;
-	Fri, 13 Dec 2024 16:53:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75FBC10E26D;
+	Fri, 13 Dec 2024 17:24:07 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D4A810F0A0;
- Fri, 13 Dec 2024 16:53:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C01B910E26D;
+ Fri, 13 Dec 2024 17:24:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/chamelium/kms=5Fc?=
- =?utf-8?q?hamelium=5Fedid=3A_Limit_the_number_of_EDIDs_tested_to_prevent_CI?=
- =?utf-8?q?_timeout=2E?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/chamelium/kms=5Fcha?=
+ =?utf-8?q?melium=5Fedid=3A_Limit_the_number_of_EDIDs_tested_to_prevent_CI_t?=
+ =?utf-8?q?imeout=2E?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 13 Dec 2024 16:53:09 -0000
-Message-ID: <173410878950.2184382.11977069409687717834@b555e5b46a47>
+Date: Fri, 13 Dec 2024 17:24:06 -0000
+Message-ID: <173411064678.2180623.6424319770167565238@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241213095432.2323965-1-pranay.samala@intel.com>
 In-Reply-To: <20241213095432.2323965-1-pranay.samala@intel.com>
@@ -46,36 +46,106 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Series: tests/chamelium/kms_chamelium_edid: Limit the number of EDIDs tested to prevent CI timeout.
 URL   : https://patchwork.freedesktop.org/series/142542/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_8156 -> IGTPW_12313
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1329406 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/68176499):
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 85cf021d as detached HEAD (ref is intel/IGTPW_12313)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing lib/xe/oa-configs/__pycache__/
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12313 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
   
-  Skipping Git submodules setup
-  section_end:1734108513:get_sources
-  section_start:1734108513:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-85cf021d67c5f7d53662b08ff24901cb8ec8d768 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf@sha256:3a0ffeb305cdc6ef081dde81d86afee76102e74f76c0f7bd5685fc2457ec707b ...
-  section_end:1734108516:step_script
-  section_start:1734108516:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1734108518:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8: image not known (docker.go:650:0s)
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [INCOMPLETE][3] ([i915#12904]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@dmabuf@all-tests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-rpls-4:         [FAIL][5] ([i915#12903]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-mtlp-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-apl-1:          [DMESG-WARN][11] ([i915#12921]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@kms_flip@basic-flip-vs-dpms.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-apl-1/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-apl-1:          [DMESG-WARN][13] ([i915#12918]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
+    - bat-apl-1:          [DMESG-WARN][15] -> [PASS][16] +1 other test pass
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][17] ([i915#9197]) -> [PASS][18] +2 other tests pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8156/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12903]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12903
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#12918]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12918
+  [i915#12921]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12921
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8156 -> IGTPW_12313
+  * Linux: CI_DRM_15838 -> CI_DRM_15839
+
+  CI-20190529: 20190529
+  CI_DRM_15838: a752f9b5366a071e41f973b51842b6af5817f2a2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15839: fb3d98511a2f6375a5c989ca5520aa31b689b119 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12313: 85cf021d67c5f7d53662b08ff24901cb8ec8d768 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8156: edf352a96646c8d793f0c1eb11795112f9bde725 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1329406
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12313/index.html
