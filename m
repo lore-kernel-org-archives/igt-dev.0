@@ -4,183 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D09F8E7717D
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 13:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16682E7717D
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Dec 2024 13:24:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B0D010E1A0;
-	Fri, 13 Dec 2024 13:10:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B7A3F10EFF9;
+	Fri, 13 Dec 2024 13:23:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l5e/gTrn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eg4/jxw3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A90B10E1A0
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2024 13:10:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D169C10EFF9;
+ Fri, 13 Dec 2024 13:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734095421; x=1765631421;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=2JQm1c7HPQXDmDksUAll9iBKf95ttZZwXOATZQE2sDE=;
- b=l5e/gTrnw//uoMToaM8w4yMERLds1x+DGAaUVeyb+dhIfcGnP3DAZz5/
- kiBxAQBXawfG58pp5Fse1wy87RoDfngQw5YSa6AWgrs+BEkbMB06qk67k
- 6/Fv+mH9NPywcCuq3OKyqXZmvYbtcDjswh/qd3lHY5/1irmf3knUqAshc
- 7zHhdNf89sodeUt3IdGvfjGI+shMnv+/wIg6BNUJ3EGuMcke+PWjn9sNZ
- wz3Ah8vyfTMh5uV1xXovvW4Ea+nQsl87WN71hEorW1mp9phT3NafXY5Dq
- 1N9rLyg7P8p8n1nM9GEz3SVfpUgZTLqNfGih/7+sJ9xGxsh2O5RV6BTFt w==;
-X-CSE-ConnectionGUID: nn/YcEgORvi1qjpcgczNdw==
-X-CSE-MsgGUID: Y2X/2JEMRiucCz9SsLqFlw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="52067049"
-X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; d="scan'208";a="52067049"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Dec 2024 05:10:20 -0800
-X-CSE-ConnectionGUID: MS6xgjQMTFOp1hsZbTjMXA==
-X-CSE-MsgGUID: 44S4ufiWTt6wdZmC89DY9Q==
+ t=1734096237; x=1765632237;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=TXnI7SpDsZtyL96Pw+5PTgXQIRuubfo1PLYxBJxRZ0E=;
+ b=eg4/jxw30AtnDaEGyfmAzSJJmXVO7G8h/xWy7lbn3P87ca1M4jLiW6Z1
+ z2o9nwVITSY1XrrjDVd2lZcKr3bMoa8UbbpXDRsoJRBAzNO5gI377gW8E
+ ccj3IngnCZklWun+vHcyDB/QF+mqeFIivnnBgnJnM0320L/kXgbe/b4k0
+ 9ow9VZMZ1xx8uZcyi/NnHctscF2SrwVJ0e5i4L4fSmoSwIlHdtc53H4UM
+ 4Bo0J797m8no3wXEPqVmf9YfR1R7t7nnRebFj7RTrvKL0MEksUwxe0fgE
+ FBU1GvD5/+Z8XN0aTgW1w3COwkimHJv56/5mm30GrWHj99goFcvjEujL8 A==;
+X-CSE-ConnectionGUID: yPCOXg6hRZmYos+FM+edgA==
+X-CSE-MsgGUID: 0gEH8L68TmCu1NrbEoxTLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34783141"
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; d="scan'208";a="34783141"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Dec 2024 05:23:57 -0800
+X-CSE-ConnectionGUID: s/A/jJQvTLmV6kT012Gjjg==
+X-CSE-MsgGUID: cnMiCnELQGK3bCW9jk/EBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; d="scan'208";a="96764761"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 13 Dec 2024 05:10:20 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 13 Dec 2024 05:10:20 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Fri, 13 Dec 2024 05:10:20 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.175)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 13 Dec 2024 05:10:19 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LUiPkFB5yeveWqULRIPKeg7h1fr+Su31xmYxNFNt1ZDvezp4MHmCLVXrbL1Zrp3MG8uRokpRDNLWMczB7KasMFXxM1Ua8GYLb5Oh03lkCUYor5dOGm5+gE013Nj5MnJA3gK9OQ2SvJ84Qd17q6I/unDLsihguG9zAVNeXhIAV0XlO+aE4vW55cneQHzmtpMbJSZ8C4LAzNl26qV0UznD2qNPwTViR43iOu2YZYKonuYXWi8m1IcqnvbvNUUw5jxyTiYKEu8aWEOYCh7uniiTgd/WuA1IWE8xA23h1FXYrffIdw9922hXCWQBYudH99liXyQNwjH9/n/FOfnp79P2Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e2InigLgfmxujcCiIKUa3EWLyzmN0zC3xAU1jheYmms=;
- b=BVjERkmRoeT55347yuDZMvj2qSICkTVBsCuXCrnid0CxK+DFN6aWE6xzP6sAWr2xfN42V8f+FunOpwRos7drO78+A0BKovKfO00r5ORI/cCdzNzO7MjoL3y+pIjFN51093D6XeiZmjfQtJhvUdTAtZnyBZHxHa6pyVG9+h6o+4dUEtCc/JolWIbRkz19WxHBtIrIz1Kh2htJY76218Hx5NHJLtH4j9IFGY/zMJRPqC46bl8yoxHlRFzrbTimpBIWMpcEDRNq143AG70A6wVPcv3Mqy8ypttQgXVnO5JVHLttxByFQbfO7ozJOJm358rdTFGb9YM3dqj4q6LQ3xDCIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by SJ0PR11MB4928.namprd11.prod.outlook.com (2603:10b6:a03:2d2::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Fri, 13 Dec
- 2024 13:10:18 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372%7]) with mapi id 15.20.8251.015; Fri, 13 Dec 2024
- 13:10:18 +0000
-Message-ID: <a74b3f67-a2cd-4e61-b170-4e2b9b70dd7c@intel.com>
-Date: Fri, 13 Dec 2024 18:40:10 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] runner/settings: Add function to set IMGDIR
- environment variable
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Naladala Ramanaidu
- <ramanaidu.naladala@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20241119075259.3048734-1-ramanaidu.naladala@intel.com>
- <20241119075259.3048734-4-ramanaidu.naladala@intel.com>
- <20241211091447.js7h3rukaido7utt@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20241211091447.js7h3rukaido7utt@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN0PR01CA0002.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:4f::7) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="101624567"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.244.7])
+ ([10.245.244.7])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Dec 2024 05:23:56 -0800
+Message-ID: <ba8b6e62-580f-4ac5-baef-1c88531431ad@intel.com>
+Date: Fri, 13 Dec 2024 13:23:54 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SJ0PR11MB4928:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2050670d-80aa-420a-20ca-08dd1b777cfd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?bzBpSjFPc25hdHJDM0hLejBTVGl3bE80VldORjZuNURBQXdINWJtOXFGQjFk?=
- =?utf-8?B?KzJIUUw2MnAraEdsNUlUWDVORDY4emxTUHc4VWJYSTlSZ2g4b1FIcTJiaXh0?=
- =?utf-8?B?SUdNTzBETnprN3dYYStiM0tKQm9sWXoyVTVBazlTNFBha2thejFreHlVMUow?=
- =?utf-8?B?VkRLWFdURWhISnkyblY5bWNaY2RlaTNPWWlLaUJ1YjAzWDlkbUNPdHlCVm0r?=
- =?utf-8?B?bnBhaUVBbUVhTU5UdVlFalVnQzdHT054ajBLUXp2bGppRVZsaktHc09BaDNk?=
- =?utf-8?B?UUVTWThoRDc2akJSc0hSU2hDNU5aZ0ZPZ1FCZ3hiaDFhOUNDSHFmRklGQnI4?=
- =?utf-8?B?bVp3VEYrekxZbU4zNkxnbVZJaS9pSXRmVDFWWVVKUys3R2Fjang1L09selJ2?=
- =?utf-8?B?aFp3b0VSdEU0WlY2cjVZaVZMZmtZMUE2YnJTOWZadEhVbXpEc2lHQytmT1RB?=
- =?utf-8?B?eG1KNHVhY0dMeGdEZnphUWRJdlFBa3E5L01rVFlNaERZM2x1bWwrV0tLOUVN?=
- =?utf-8?B?QkJqMFBuNWc5eS85OTlrck1mVXd3YlJzV3NXRzdDYUpUVFhqNEZpNko2UVFL?=
- =?utf-8?B?aEhtcWxJK0FlSnlDbzRmQjVEQXlrK1NPb1FRQndvYmJhTjZ6bERqancxdHUv?=
- =?utf-8?B?QUUvbDZvSCtvaU52Uk0wUzJYS3Buc2VDRFBZQlZETjZZWU9RTXE4c1Irbkx1?=
- =?utf-8?B?bHVZZWh5UTJHcDhmVFI1cnhiajdzVlZxV0pXdHp0NFRlTERNamZZN1p4MGlr?=
- =?utf-8?B?SEladWVaZ2tFOENHSWtsR0VwVXFGYjQybzF5SHlFUDhhQXNhT3JIQmt5djFB?=
- =?utf-8?B?MFN4dXlrVEZkVlUvWlpEUTRuVUtyUEZrblpBeHgwbWtGOXB4b0hsenFRSzNR?=
- =?utf-8?B?QXZobWtLYWZtcktoSWIvdi9xOGhLcksraCs0RGhEc1NmclBEdENvYjFwMmJr?=
- =?utf-8?B?djNFSGtzdWJSd0N4OGN1S3pYOGE5amtWd09xWS8xSEUwWXZwRW9Zd2x2Zjdy?=
- =?utf-8?B?RmN0TW5xelloOWF0dlVRb1ZCREJKemVzblVHU2FhYTZTaHIxeWY1V2s4c2dG?=
- =?utf-8?B?SFpId3R4QnFRTXI4VDZWRWhsQUU4UnQ2b1lITHB3NXUwV2w2eEhHN3NyYWNi?=
- =?utf-8?B?VHVvSG1OYVA4bisyVHdRVjhiWkh2OS9iTUJPRGFYbXBUZVRZTTQxQmorcTh6?=
- =?utf-8?B?bnd1VnNoWE9yRDEvMjZPbVowT0lWZTZDcUxnUFBsd00xRi9BOUZ1Q3VPcWZY?=
- =?utf-8?B?eTRiWW9EUitPRTE3UC9CWjVNeUMrUFJ5cGNpYXBDL3ZlNU0wc3djTGFuM1hn?=
- =?utf-8?B?N3diWVlJUWxuRkdLc3VGdlUwd3RDd2JUeHBHTzA5TDdRL2VMQVppTk1sVHhO?=
- =?utf-8?B?VitWcUpHcFdhbDh3QWZ5MUI2TE8wQkpDSXNUZDA3enhrOGc4WmIyMDJpOTNT?=
- =?utf-8?B?RDdqLzA5a1VYVEVlbVRla2J5M2hCY29XazZiVlcrSVZKYXFMRXZnMUpZdVBj?=
- =?utf-8?B?bUlqb1VvTkpvRjdDN3JJVGdLZDVBbHhSZU5ibjYyaTRpRGJZUlA3OWxxOGMw?=
- =?utf-8?B?SzYyVmNBSGR3c0o4dTNtRTFBZVBvRlRtVEsrN1NhZEtxNUs1MlAxajNDbjRR?=
- =?utf-8?B?QkQwYW9SUGlOLzM3S1RYTzZwcG8vVGszUlNWV3JrTE02YWd4aW9Xc28rMFl0?=
- =?utf-8?B?c3JnSUR4eGVXdUNRaXJMaDRQMEhnSGtzV0RzVSt5cEFXRWJtaUN6OGFROG5R?=
- =?utf-8?B?ZmIwblpPSHdqYlNrSkN0UWo4RXQyeEVvZkk4eGpsNGxMOXlMREJsUEVDTWlD?=
- =?utf-8?B?WkZjZS9BL2l0empEZWhUdz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Mk1zUjRkUVd3QUc5dit5RDJweGJNbnd2WVV3Y1F4cmQyUm9hcy9WaG5QTmh1?=
- =?utf-8?B?a0R3dS9OSUx2cjN5ZHlVY0w0SUhLcE0rdE85V1ZhNHVZbU0rNDZUTmNYTHZZ?=
- =?utf-8?B?MzZYMVFLSC9xWHkyam1ud2IveExNczdRb0RxdEZ1UXRlRE0xd09YWXhPcWkr?=
- =?utf-8?B?azdxa1kyMktIb1gvbFFoRlhTOE4ydHA3VEJzU2RFMWtYKzdkM21KbW5UMm4v?=
- =?utf-8?B?alVmVDVHVVhISUVNdHRIQmNDaVd5RWlOelVkWldRSjFmLzVTNS9leFMzcmNI?=
- =?utf-8?B?WkcwR2lDL2IvUkVGRnlWbGdZUFBYUytZUVA0Rmd3T2pwWmh3OThtNDhqalRX?=
- =?utf-8?B?Sk5IelNTRkh4TkU0MVRzQkhTam5wSUcvaGttbmJFaVR6WlQvMzY3ZnNFWk5t?=
- =?utf-8?B?clNEb2hVRHB6OWlxeHE0aUNYOElZOFdyc2d5UkR6OVFIbEhkN25DeXpZOG0r?=
- =?utf-8?B?djJXQ0RDTXFnak5qeGxsZVhnYUV1dlNIZ01JenkwajFwQXdxMjU1WnU3dlhY?=
- =?utf-8?B?eTRxTXpzVHVMWGpmcVN2cEdxNlBnbEVlZ1o5Mzg5TkE3WEg2UG15VnpjR0Jw?=
- =?utf-8?B?QmJ1bS9NS2FpRERiRUY1ODdiUkdEMFJXdmhoZ3pxYU9NZ2kxODZHbzlZdU5l?=
- =?utf-8?B?Y3NGcWlXUlVkV1ZHMkxpRzZMdGtTaFRTMElvQ2R4dE1lSTN6Y1puSCs0eDVj?=
- =?utf-8?B?Tm94bU1hWE5mUGVXK1AyWDRQaGJXRkwzRkhTKzZTUElNWS92YUdrN0tUT2VE?=
- =?utf-8?B?NHZ0MGRUc1VIdnhtRDAwUmZTZXNGcUwxNDRYV0tlTUJOVjJ6bFJES0hBMlBM?=
- =?utf-8?B?dGptL0hYQmN0dll2NDgydjRZYy9aa0dzcll0QXNLTXh3S1RNYWFsS0lCMjli?=
- =?utf-8?B?SFhuSVoyemFxMHhwWUUxeG81Y3pJTkcrRVFscE9NQ2ZtZjNUR0hITElNeGxi?=
- =?utf-8?B?WEY3Q0NCUFlZdlVSUWM4TllRUFc1Nkt0ZUEwTVJJMG03SWhLOTdJci9xV0Vz?=
- =?utf-8?B?L3dpdjhRYkdWZks0am9pSVhWWVllcFlWa0Y5ZFNlcFBLd2FxSVpXbEVLd0pj?=
- =?utf-8?B?OVpGNHEveDBscXIza1JRMElyRUJsa0l1YUtYcWtFS2ZPWnczTUJRdHR2NCs4?=
- =?utf-8?B?NEdUdTZ2MmU0NklUa1JiT1FEakNBWklDUFNRRDh4V1NQdFlINXFwbjc4eDVk?=
- =?utf-8?B?Zk80WUE0eXMyMnBOYjJ1T0dxYW8vemFiTWxyS2xiZ3VSSXJDUlBZWmtDSEVX?=
- =?utf-8?B?V21TS0J6RjlDWkQxNG0xSy9yRklKL2NGYTlxOVpjL1JtZ2dNUXhheVBKVHh4?=
- =?utf-8?B?MjQvMFBXVXNFbUVvZFAyY3p0NzliY2ZIWWU5Nko3bmdjK08xcXlSUFBTNmVj?=
- =?utf-8?B?NWJ5THV6WTlISWdjV3JyWkp3YmpGMndwMTJ1WHppRk0rSHVxRW9ScmtOVVRS?=
- =?utf-8?B?WW5LVDRaVzU0Q2NKd3RZeG9wVU1UNzVFUk9aQi9CRmFjWmczM3lkU2Zkbkh4?=
- =?utf-8?B?QjhqWHR6alY0alhKVGJ4Rkt2NUNSK1hhR1FBQm9LUHBDZG9wdlBTbG1ZQXRV?=
- =?utf-8?B?V0YxSEx6Yzl3YXVWUkt3NlQzT0xXQnA2VjdpZWxLUk10cmdNR2JXM21vcW9X?=
- =?utf-8?B?ZGczNGRXQ0lUQ0FuMm9NSXJJTGRKZENkNUVqMDJnWFFVTmJCMUcrT3U1bGpU?=
- =?utf-8?B?bjY3cHcwcUVCaStpcDROK29ZRWp5V3dtbEhJdmxtMG5kVlhpTy90WE5BRW9W?=
- =?utf-8?B?K2lnanZIdHZVRDdXYXM0aXArT21kMDhPSWd6Q2t0R0R0cFdvZGJNaGpNcFNH?=
- =?utf-8?B?ZWh2dGljZjEyUG51bDBCaEE0V3ZsQUE0THFtT2picUs2R1MrVm96STFoUGlT?=
- =?utf-8?B?cEVTSURXZDFGMzBmVDE0OTlKeWxrdTFqQit1ODRhRmJ1Rm92S1RVZUdEekxl?=
- =?utf-8?B?ZG5uZW1XQ2hQWXZCVU9DdXFqQkVsRzhWRzRVWG54VHBGWHI1QVFTMW5va3dm?=
- =?utf-8?B?czZyQU5YZVZtYU54VVRQZFNCSWxrSVVtNkFWclJCQUdyU1c4L0hPWEFFbjNJ?=
- =?utf-8?B?eGxMSStudHo5NnpTUkU1NElrck5vcDJiTHFaRGZtWWd0Rk50RXYxL0MvWHBw?=
- =?utf-8?B?eU90MGU4UFFrSnV2T2JRZisyZTNpTVpCZ1ZVVk0wYUU4cXFiUGR5bm9oWllz?=
- =?utf-8?B?VkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2050670d-80aa-420a-20ca-08dd1b777cfd
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 13:10:17.3277 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DXhjgJq34aZqXMG+MRm4+raA7pYZqs2/MzUTbBvhErpWW9lrR2b+7oACl2H87tqbhEE8N/KOgKWNr9h8JuQfyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4928
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t V5 4/4] tests/xe/mmap: add tests for pci mem barrier
+To: Tejas Upadhyay <tejas.upadhyay@intel.com>, igt-dev@lists.freedesktop.org, 
+ intel-xe@lists.freedesktop.org
+References: <20241128055647.1677371-1-tejas.upadhyay@intel.com>
+ <20241128055647.1677371-5-tejas.upadhyay@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20241128055647.1677371-5-tejas.upadhyay@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -196,112 +71,285 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ramanaidu,
+On 28/11/2024 05:56, Tejas Upadhyay wrote:
+> We want to make sure that mmap do direct mapping of physical
+> page at doorbell space and whole page is accessible in order
+> to use pci memory barrier effect effectively.
+> 
+> Following subtests are added,
+> ./build/tests/xe_mmap --r pci-membarrier
+> ./build/tests/xe_mmap --r pci-membarrier-parallel
+> ./build/tests/xe_mmap --r pci-membarrier-bad-pagesize
+> ./build/tests/xe_mmap --r pci-membarrier-bad-object
+> 
+> V5:
+>   - Add pci-membarrier-parallel test
+> V3(MAuld):
+>   - Check if pci memory barrier is supported
+> V2(MAuld)
+>   - use do_ioctl and replace igt_subtest_f with igt_subtest
+>   - Remove unused define
+> 
+> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> ---
+>   tests/intel/xe_mmap.c | 211 ++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 211 insertions(+)
+> 
+> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
+> index fc5d73d59..1a61095d5 100644
+> --- a/tests/intel/xe_mmap.c
+> +++ b/tests/intel/xe_mmap.c
+> @@ -64,6 +64,161 @@ test_mmap(int fd, uint32_t placement, uint32_t flags)
+>   	gem_close(fd, bo);
+>   }
+>   
+> +#define PAGE_SIZE 4096
+> +
+> +/**
+> + * SUBTEST: pci-membarrier
+> + * Description: create pci memory barrier with write on defined mmap offset.
+> + * Test category: functionality test
+> + *
+> + */
+> +static void test_pci_membarrier(int xe)
+> +{
+> +	uint64_t flags = MAP_SHARED;
+> +	unsigned int prot = PROT_WRITE;
+> +	uint32_t *ptr;
+> +	uint64_t size = PAGE_SIZE;
+> +	struct timespec tv;
+> +	struct drm_xe_gem_mmap_offset mmo = {
+> +		.handle = 0,
+> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
+> +	};
+> +
+> +	do_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
+> +	ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
+> +	igt_assert(ptr != MAP_FAILED);
+> +
+> +	/* Check whole page for any errors, also check as
+> +	 * we should not read written values back
+> +	 */
+> +	for (int i = 0; i < size / sizeof(*ptr); i++) {
+> +		/* It is expected unconfigured doorbell space
+> +		 * will return read value 0xdeadbeef
+> +		 */
+> +		igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
+> +
+> +		igt_gettime(&tv);
+> +		ptr[i] = i;
+> +		if (READ_ONCE(ptr[i]) == i) {
+> +			while (READ_ONCE(ptr[i]) == i)
+> +				;
+> +			igt_info("fd:%d value retained for %"PRId64"ns pos:%d\n",
+> +				 xe, igt_nsec_elapsed(&tv), i);
+> +		}
+> +		igt_assert_neq(READ_ONCE(ptr[i]), i);
+> +	}
+> +
+> +	munmap(ptr, size);
+> +}
+> +
+> +/**
+> + * SUBTEST: pci-membarrier-parallel
+> + * Description: create parallel pci memory barrier with write on defined mmap offset.
+> + * Test category: functionality test
+> + *
+> + */
+> +static void test_pci_membarrier_parallel(int xe, int child)
+> +{
+> +	unsigned int bad_ns, elapsed;
+> +	uint64_t flags = MAP_SHARED;
+> +	unsigned int i;
+> +	unsigned int prot = PROT_WRITE;
+> +	uint32_t *ptr;
+> +	uint64_t size = PAGE_SIZE;
+> +	struct drm_xe_gem_mmap_offset mmo = {
+> +		.handle = 0,
+> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
+> +	};
+> +	struct timespec total, bad;
+> +	int tpos = size / sizeof(*ptr);
+> +	int value;
+> +
+> +	do_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
+> +	ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
+> +	igt_assert(ptr != MAP_FAILED);
+> +
+> +	/* Check any random position up to 1K */
+> +	i = rand() % (size / sizeof(*ptr));
 
-On 11-12-2024 02:44 pm, Kamil Konieczny wrote:
-> Hi Naladala,
-> On 2024-11-19 at 13:22:57 +0530, Naladala Ramanaidu wrote:
->> Introduced set_imgdir() function in settings.c to set the IMGDIR
-> imho better name is IGT_DATA or IGT_IMAGES, also you do not
-> need to write about which file you changed, it is already in patch
-> itself.
->
-> Swati, do you have suggestions here for this env var?
-Agree with Kamil, IGT_DATA might be better choice for environment variable
-which is inline with other env var too like 
-IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION,
-IGT_HOOK*, etc.
->> environment variable. The function uses absolute_path() to convert
->> the relative path "../share/igt-gpu-tools" to an absolute path.
->> Added the declaration of set_imgdir() in settings.h with a brief
->> description.
-> Drop this "C to description", it is in patch.
->
->> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
->> ---
->>   runner/runner.c   |  2 ++
->>   runner/settings.c | 13 +++++++++++++
->>   runner/settings.h |  8 ++++++++
->>   3 files changed, 23 insertions(+)
->>
->> diff --git a/runner/runner.c b/runner/runner.c
->> index 4855ad641..a52834197 100644
->> --- a/runner/runner.c
->> +++ b/runner/runner.c
->> @@ -49,6 +49,8 @@ int main(int argc, char **argv)
->>   		exitcode = 1;
->>   	}
->>   
->> +	unsetenv("IMGDIR");
-> imho you should have a flag and do not unset this
-> if user sets this before runner starts, e.g. honor
-> user environment.
->
->> +
-> Remove this empty line.
->
->>   	printf("Done.\n");
-> Why this print is here?
->
-> While at this, could you add newline here?
->
->>   	return exitcode;
->>   }
->> diff --git a/runner/settings.c b/runner/settings.c
->> index dd4b08dd7..d42f3a68a 100644
->> --- a/runner/settings.c
->> +++ b/runner/settings.c
->> @@ -587,6 +587,15 @@ char *absolute_path(const char *path)
->>   	return result;
->>   }
->>   
->> +int set_imgdir(void)
->> +{
->> +	const char *path = "../share/igt-gpu-tools";
->> +	char *abpath;
->> +
->> +	abpath = absolute_path(path);
->> +	return setenv("IMGDIR", abpath, 1);
-> Repeated string here shows we need a global const char for it.
->
->> +}
->> +
->>   static char *bin_path(char *fname)
->>   {
->>   	char *path, *p;
->> @@ -863,6 +872,10 @@ bool parse_options(int argc, char **argv,
->>   		settings->test_root = absolute_path(env_test_root);
->>   	}
->>   
->> +	if (set_imgdir() != 0) {
->> +		usage(stderr, "img dir not set");
->> +	}
->> +
->>   	if (!settings->test_root) {
->>   		usage(stderr, "Test root not set");
->>   		goto error;
->> diff --git a/runner/settings.h b/runner/settings.h
->> index 6246d0c3d..a7abe19fd 100644
->> --- a/runner/settings.h
->> +++ b/runner/settings.h
->> @@ -150,4 +150,12 @@ bool serialize_settings(struct settings *settings);
->>   bool read_settings_from_file(struct settings *settings, FILE* f);
->>   bool read_settings_from_dir(struct settings *settings, int dirfd);
->>   
->> +/**
->> + * set_imgdir:
->> + *
->> + * The function will set the environment variable.
->> + *
->> + */
-> Description is needed in C source, not in header.
->
-> Regards,
-> Kamil
->
->> +int set_imgdir(void);
->> +
->>   #endif
->> -- 
->> 2.43.0
->>
+So both child and parent will have the same rand() value here.
+
+> +	/* It is expected unconfigured doorbell space
+> +	 * will return read value 0xdeadbeef
+> +	 */
+> +	igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
+> +
+> +	igt_until_timeout(5) {
+> +		WRITE_ONCE(ptr[i], i);
+> +	}
+> +	bad_ns = 0;
+> +	igt_gettime(&total);
+> +	igt_until_timeout(5) { /* XXX sync with parent loop! */
+> +		if (READ_ONCE(ptr[i]) == i) {
+> +			igt_gettime(&bad);
+> +			while (READ_ONCE(ptr[i]) == i)
+> +				;
+> +			bad_ns += igt_nsec_elapsed(&bad);
+> +		}
+> +	}
+> +	elapsed = igt_nsec_elapsed(&total);
+> +	if (bad_ns) {
+> +		igt_info("Cross-client writes visible %.1f%% of the time.\n",
+
+Is this actually "Cross-client"? Are cross client visible writes 
+possible? Is the below not enough to check this?
+
+> +			 bad_ns * 100. / elapsed);
+> +	}
+> +	igt_assert(20 * bad_ns < elapsed); /* Arbitrary 5% threshold */
+> +	igt_assert_neq(READ_ONCE(ptr[i]), i);
+
+> +	igt_until_timeout(5) {
+> +		/* Check clients should not be able to see each other */
+> +		if (child != -1)
+> +			value = tpos + 1;
+> +		else
+> +			value = tpos;
+> +
+> +		WRITE_ONCE(ptr[tpos-1], value);
+> +	}
+> +	bad_ns = 0;
+> +	igt_gettime(&total);
+> +	igt_until_timeout(5) { /* XXX sync with parent loop! */
+> +		if (READ_ONCE(ptr[tpos-1]) == value) {
+> +			igt_gettime(&bad);
+> +			while (READ_ONCE(ptr[tpos-1]) == value)
+> +				;
+> +			bad_ns += igt_nsec_elapsed(&bad);
+> +		}
+> +	}
+> +	elapsed = igt_nsec_elapsed(&total);
+> +	if (bad_ns) {
+> +		igt_info("Cross-client writes visible %.1f%% of the time.\n",
+> +			 bad_ns * 100. / elapsed);
+> +	}
+> +	igt_assert(20 * bad_ns < elapsed); /* Arbitrary 5% threshold */
+> +	if (child != -1)
+> +		igt_assert_neq(READ_ONCE(ptr[tpos-1]), tpos);
+> +	else
+> +		igt_assert_neq(READ_ONCE(ptr[tpos-1]), tpos + 1);
+> +	igt_assert_eq_u32(READ_ONCE(ptr[tpos-1]), 0xdeadbeef);
+> +
+> +	munmap(ptr, size);
+> +}
+> +
+> +/**
+> + * SUBTEST: pci-membarrier-bad-pagesize
+> + * Description: Test mmap offset with bad pagesize for pci membarrier.
+> + * Test category: negative test
+> + *
+> + */
+> +static void test_bad_pagesize_for_pcimem(int fd)
+> +{
+> +	uint32_t *map;
+> +	uint64_t page_size = PAGE_SIZE * 2;
+> +	struct drm_xe_gem_mmap_offset mmo = {
+> +		.handle = 0,
+> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
+> +	};
+> +
+> +	do_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
+> +	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo.offset);
+> +	igt_assert(map == MAP_FAILED);
+> +}
+> +
+>   /**
+>    * SUBTEST: bad-flags
+>    * Description: Test mmap offset with bad flags.
+> @@ -126,6 +281,25 @@ static void test_bad_object(int fd)
+>   	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, ENOENT);
+>   }
+>   
+> +/**
+> + * SUBTEST: pci-membarrier-bad-object
+> + * Description: Test mmap offset with bad object for pci mem barrier.
+> + * Test category: negative test
+> + *
+> + */
+> +static void test_bad_object_for_pcimem(int fd)
+> +{
+> +	uint64_t size = xe_get_default_alignment(fd);
+> +	struct drm_xe_gem_mmap_offset mmo = {
+> +		.handle = xe_bo_create(fd, 0, size,
+> +				       vram_if_possible(fd, 0),
+> +				       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM),
+> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
+> +	};
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, EINVAL);
+> +}
+> +
+>   static jmp_buf jmp;
+>   
+>   __noreturn static void sigtrap(int sig)
+> @@ -255,6 +429,16 @@ static void test_cpu_caching(int fd)
+>   	assert_caching(fd, system_memory(fd), DRM_XE_GEM_CPU_CACHING_WC + 1, true);
+>   }
+>   
+> +static bool is_pci_membarrier_supported(int fd)
+> +{
+> +	struct drm_xe_gem_mmap_offset mmo = {
+> +		.handle = 0,
+> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
+> +	};
+> +
+> +	return (igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo) == 0);
+> +}
+> +
+>   igt_main
+>   {
+>   	int fd;
+> @@ -273,6 +457,28 @@ igt_main
+>   		test_mmap(fd, vram_memory(fd, 0) | system_memory(fd),
+>   			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>   
+> +	igt_subtest("pci-membarrier") {
+> +		igt_require(is_pci_membarrier_supported(fd));
+> +		test_pci_membarrier(fd);
+> +	}
+> +
+> +	igt_subtest("pci-membarrier-parallel") {
+> +		int xe = drm_open_driver(DRIVER_XE);
+> +
+> +		igt_require(is_pci_membarrier_supported(fd));
+> +		igt_fork(child, 1)
+> +			test_pci_membarrier_parallel(xe, child);
+> +		test_pci_membarrier_parallel(fd, -1);
+> +		igt_waitchildren();
+> +
+> +		close(xe);
+> +	}
+> +
+> +	igt_subtest("pci-membarrier-bad-pagesize") {
+> +		igt_require(is_pci_membarrier_supported(fd));
+> +		test_bad_pagesize_for_pcimem(fd);
+> +	}
+> +
+>   	igt_subtest("bad-flags")
+>   		test_bad_flags(fd);
+>   
+> @@ -282,6 +488,11 @@ igt_main
+>   	igt_subtest("bad-object")
+>   		test_bad_object(fd);
+>   
+> +	igt_subtest("pci-membarrier-bad-object") {
+> +		igt_require(is_pci_membarrier_supported(fd));
+> +		test_bad_object_for_pcimem(fd);
+> +	}
+> +
+>   	igt_subtest("small-bar") {
+>   		igt_require(xe_visible_vram_size(fd, 0));
+>   		igt_require(xe_visible_vram_size(fd, 0) < xe_vram_size(fd, 0));
+
