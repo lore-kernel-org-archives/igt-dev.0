@@ -4,54 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3DB6E7716A
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 00:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC7AE7717F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 05:57:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6846010E077;
-	Mon, 16 Dec 2024 00:35:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2688110E17C;
+	Mon, 16 Dec 2024 05:57:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JwiPm/pC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jKJ5iMa4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA40A10E032;
- Mon, 16 Dec 2024 00:35:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A74FE10E17C
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 05:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734309346; x=1765845346;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=YgNlomtP7eUexZp+hH6aNKKSVU1AlZpA3rkGWhFWS9Y=;
- b=JwiPm/pCH0gB635HlL0Klc+Kcxh27k81ipK+AFk1UGykhlkALtyoo/vZ
- 6lZSKVcutRZOZ8fFADMGWaUrnhYYNg0ELs6RYuYLIp+7I5pu/DOu9/lo0
- 7CeC6Jw34J6fUk958+2U8ixHLjPPgAn4XiX46pHTQoSLCu4t2DSN9Q6cr
- F7gE4d9uMPp4bRxthhtBgd/SLXp9SevFXSKUeEu00Mp1IBfknbJ9UQYO6
- 4Qv66saF3H4+MsCNNEeXRTxYXPhCkzhZ8+ymEDuqTrsqaKotNge2/wkGi
- 8m4YcdUaI1xP7vgsbYoRwsvL5Hp/S7xV0U5q0Hkadt/nrldUnxQdMTnl0 g==;
-X-CSE-ConnectionGUID: 9kKgaxZlTie2bD9WyzieVg==
-X-CSE-MsgGUID: gZdLO/GBTG6U0NHduUinxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="34841916"
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; d="scan'208";a="34841916"
+ t=1734328674; x=1765864674;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=2AmdICXnmuR9XoiUHtJuqHGTqym93EwJAsDZiVlvASA=;
+ b=jKJ5iMa4j9xjr169ykloqCJvOMOk+dMzVpFWw5XB9g0z/D/bP8Db0S5v
+ lswmZDPTeBr4+1ajTnhtsvN4NtBKr5yhyklis9r1xvnqA+ReAppKKLhIO
+ 0NFQhfEX/alQSuiYlv0SvwJkSo6BHmY4RlsUIQNwyCwCz6DziCoGPAhEc
+ h75y6+n8F+QJ1XnLUlO10QKiaS/Lv8dckGlBHEXGtquSf0kmk/yXGIPgC
+ RKm+RQRqTCdhkZ6kUQNNaeaathwwiJ6fkxCax7clkcjYmNuuoX+YBCkIC
+ K0L5aMXl5/TCBAWa8lGT26M0d8+CMcix40RCywgUCFG6MEyUe61R34BtW Q==;
+X-CSE-ConnectionGUID: y2hDWw20T6enCqDg1lp6OQ==
+X-CSE-MsgGUID: m6z3NhaAQh+bMekHo03hfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="57185318"
+X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; d="scan'208";a="57185318"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Dec 2024 16:35:45 -0800
-X-CSE-ConnectionGUID: DyIcLCWPR7mohyTcoAXsJQ==
-X-CSE-MsgGUID: vthkHUxaRCmsAWj8q1gjKg==
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2024 21:57:53 -0800
+X-CSE-ConnectionGUID: jafUaH+0Q+Ski7Y3Wyz6kA==
+X-CSE-MsgGUID: 0wpMNXkmQOmJE1WEOg9gRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="102129169"
-Received: from vbelgaum-ubuntu.fm.intel.com ([10.1.39.141])
- by orviesa003.jf.intel.com with ESMTP; 15 Dec 2024 16:35:45 -0800
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	igt-dev@lists.freedesktop.org
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] tools/gputop: Add GT freq and c6 stats
-Date: Sun, 15 Dec 2024 16:32:38 -0800
-Message-Id: <20241216003238.2953498-1-vinay.belgaumkar@intel.com>
-X-Mailer: git-send-email 2.38.1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="102187521"
+Received: from soc-dcgdq34.clients.intel.com (HELO [10.66.97.73])
+ ([10.66.97.73])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2024 21:57:51 -0800
+Message-ID: <a5d73cd9-af40-4202-8378-5ebe00acfa4e@intel.com>
+Date: Mon, 16 Dec 2024 11:27:47 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t] tests/chamelium/kms_chamelium_edid: Limit the number of
+ EDIDs tested to prevent CI timeout.
+To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
+ Mark Yacoub <markyacoub@chromium.org>, Mark Yacoub <markyacoub@google.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20241213095432.2323965-1-pranay.samala@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20241213095432.2323965-1-pranay.samala@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,460 +73,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add GT C6 and Frequency support. These will use the PMU interface
-and are displayed per GT/device in the header.
 
-GT: 0, c6:  94.54% req_freq:  750.63 MHz act_freq:    0.00 MHz
-GT: 1, c6:   2.75% req_freq: 1200.71 MHz act_freq: 1112.66 MHz
-
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
----
- lib/igt_drm_clients.c |  17 +++++
- lib/igt_drm_clients.h |  25 +++++++
- lib/igt_perf.c        |  57 +++++++++++++-
- lib/igt_perf.h        |   2 +
- tools/gputop.c        | 168 +++++++++++++++++++++++++++++++++++++++++-
- tools/intel_gpu_top.c |  18 +----
- tools/meson.build     |   2 +-
- 7 files changed, 271 insertions(+), 18 deletions(-)
-
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 858cd3645..add2696fa 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -19,6 +19,7 @@
- 
- #include "igt_drm_clients.h"
- #include "igt_drm_fdinfo.h"
-+#include "igt_perf.h"
- 
- #ifndef ARRAY_SIZE
- #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-@@ -164,6 +165,7 @@ igt_drm_client_add(struct igt_drm_clients *clients,
- {
- 	struct igt_drm_client *c;
- 	unsigned int i;
-+	char *path;
- 
- 	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE,
- 				     drm_minor, info->id));
-@@ -190,6 +192,18 @@ igt_drm_client_add(struct igt_drm_clients *clients,
- 	c->drm_minor = drm_minor;
- 	c->clients = clients;
- 
-+	if (info->driver && info->pdev) {
-+		snprintf(c->device_events_path, sizeof(c->device_events_path) - 1,
-+			 "%s_%s", info->driver, info->pdev);
-+		path = c->device_events_path;
-+		for (; *path; ++path)
-+			if (*path == ':')
-+				*path = '_';
-+		c->pmu_fd = -1;
-+		c->num_gts = 0;
-+		c->num_pmu_counters = 0;
-+	}
-+
- 	/* Engines */
- 	c->engines = calloc(1, sizeof(*c->engines));
- 	assert(c->engines);
-@@ -262,6 +276,9 @@ void igt_drm_client_free(struct igt_drm_client *c, bool clear)
- 
- 	free(c->memory);
- 
-+	if (c->pmu_fd != -1)
-+		close(c->pmu_fd);
-+
- 	if (clear)
- 		memset(c, 0, sizeof(*c));
- }
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 946d709de..9d5b966ee 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -56,6 +56,22 @@ struct igt_drm_client_regions {
- 
- struct igt_drm_clients;
- 
-+struct pmu_pair {
-+	uint64_t cur;
-+	uint64_t prev;
-+};
-+
-+struct pmu_counter {
-+	uint64_t type;
-+	uint64_t config;
-+	unsigned int idx;
-+	struct pmu_pair val;
-+	double scale;
-+	const char *units;
-+	bool present;
-+};
-+
-+#define MAX_GTS 4
- struct igt_drm_client {
- 	struct igt_drm_clients *clients; /* Owning list. */
- 
-@@ -86,6 +102,15 @@ struct igt_drm_client {
- 		uint64_t last_total_cycles; /* Engine total cycles data as parsed from fdinfo. */
- 	} *utilization; /* Array of engine utilization */
- 
-+	char device_events_path[300];
-+	int num_gts;
-+	int pmu_fd;
-+	int num_pmu_counters;
-+	struct pmu_counter freq_req_gt[MAX_GTS];
-+	struct pmu_counter freq_act_gt[MAX_GTS];
-+	struct pmu_counter c6_gt[MAX_GTS];
-+	uint64_t ts_cur, ts_prev;
-+
- 	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
- };
- 
-diff --git a/lib/igt_perf.c b/lib/igt_perf.c
-index 3866c6d77..14c362515 100644
---- a/lib/igt_perf.c
-+++ b/lib/igt_perf.c
-@@ -129,6 +129,61 @@ uint64_t igt_perf_type_id(const char *device)
- 	return strtoull(buf, NULL, 0);
- }
- 
-+int perf_xe_format_gt_id(const char *device)
-+{
-+	char buf[150];
-+	ssize_t ret;
-+	int fd, start, end;
-+
-+	snprintf(buf, sizeof(buf),
-+		 "/sys/bus/event_source/devices/%s/format/gt_id",
-+		 device);
-+
-+	fd = open(buf, O_RDONLY);
-+	if (fd < 0)
-+		return -EINVAL;
-+
-+	ret = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+	if (ret < 1)
-+		return ret;
-+
-+	buf[ret] = '\0';
-+	ret = sscanf(buf, "config:%d-%d", &start, &end);
-+	if (ret != 2)
-+		return -EINVAL;
-+
-+	return start;
-+}
-+
-+int perf_xe_event_config(const char *device, const char *event, uint64_t *config)
-+{
-+	char buf[150];
-+	ssize_t ret;
-+	int fd;
-+
-+	snprintf(buf, sizeof(buf),
-+		 "/sys/bus/event_source/devices/%s/events/%s",
-+		 device,
-+		 event);
-+
-+	fd = open(buf, O_RDONLY);
-+	if (fd < 0)
-+		return -EINVAL;
-+
-+	ret = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+	if (ret < 1)
-+		return ret;
-+
-+	buf[ret] = '\0';
-+	ret = sscanf(buf, "config=0x%lx", config);
-+	if (ret != 1)
-+		return -EINVAL;
-+
-+	return ret;
-+}
-+
- int igt_perf_events_dir(int i915)
- {
- 	char buf[80];
-@@ -180,7 +235,7 @@ int perf_igfx_open_group(uint64_t config, int group)
- int perf_xe_open(int xe, uint64_t config)
- {
- 	return _perf_open(xe_perf_type_id(xe), config, -1,
--			PERF_FORMAT_TOTAL_TIME_ENABLED);
-+			  PERF_FORMAT_TOTAL_TIME_ENABLED);
- }
- 
- int perf_i915_open(int i915, uint64_t config)
-diff --git a/lib/igt_perf.h b/lib/igt_perf.h
-index 3d9ba2917..f1c433657 100644
---- a/lib/igt_perf.h
-+++ b/lib/igt_perf.h
-@@ -71,5 +71,7 @@ int perf_i915_open(int i915, uint64_t config);
- int perf_i915_open_group(int i915, uint64_t config, int group);
- 
- int perf_xe_open(int xe, uint64_t config);
-+int perf_xe_event_config(const char *device, const char *event, uint64_t *config);
-+int perf_xe_format_gt_id(const char *device);
- 
- #endif /* I915_PERF_H */
-diff --git a/tools/gputop.c b/tools/gputop.c
-index 43b01f566..2c2f2f471 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -29,6 +29,7 @@
- #include "igt_core.h"
- #include "igt_drm_clients.h"
- #include "igt_drm_fdinfo.h"
-+#include "igt_perf.h"
- #include "igt_profiling.h"
- #include "drmtest.h"
- 
-@@ -76,6 +77,170 @@ static void print_percentage_bar(double percent, int max_len)
- 	putchar('|');
- }
- 
-+static int
-+get_num_gts(uint64_t type, uint64_t config, int gt_shift)
-+{
-+	int fd, gt_id;
-+
-+	errno = 0;
-+	for (gt_id = 0; gt_id < MAX_GTS; gt_id++) {
-+		config |= (uint64_t)gt_id << gt_shift;
-+		fd = igt_perf_open(type, config);
-+		if (fd < 0)
-+			break;
-+		close(fd);
-+	}
-+
-+	if (!gt_id || (errno && errno != ENOENT))
-+		gt_id = -errno;
-+
-+	return gt_id;
-+}
-+
-+#define _open_pmu(type, cnt, pmu, fd) \
-+({ \
-+	int fd__; \
-+\
-+	fd__ = igt_perf_open_group((type), (pmu)->config, (fd)); \
-+	if (fd__ >= 0) { \
-+		if ((fd) == -1) \
-+			(fd) = fd__; \
-+		(pmu)->present = true; \
-+		(pmu)->idx = (cnt)++; \
-+	} \
-+\
-+	fd__; \
-+})
-+
-+static int pmu_init(struct igt_drm_client *c)
-+{
-+	unsigned int i, num_cntr = 0;
-+	int fd = -1, ret;
-+	uint64_t type = igt_perf_type_id(c->device_events_path);
-+	uint64_t config;
-+	int gt_shift;
-+	char event_str[100];
-+
-+	/* Get a sample event config which can be used to find num_gts */
-+	ret = perf_xe_event_config(c->device_events_path, "actual-frequency", &config);
-+	assert(ret >= 0);
-+	gt_shift = perf_xe_format_gt_id(c->device_events_path);
-+	assert(ret > 0);
-+
-+	c->num_gts = get_num_gts(type, config, gt_shift);
-+
-+	for (i = 0; i < c->num_gts; i++) {
-+		snprintf(event_str, sizeof(event_str), "c6-residency");
-+		ret = perf_xe_event_config(c->device_events_path, event_str,
-+					   &c->c6_gt[i].config);
-+		assert(ret >= 0);
-+		c->c6_gt[i].config |= (uint64_t)i << gt_shift;
-+		_open_pmu(type, num_cntr, &c->c6_gt[i], fd);
-+
-+		snprintf(event_str, sizeof(event_str), "actual-frequency");
-+		ret = perf_xe_event_config(c->device_events_path, event_str,
-+					   &c->freq_act_gt[i].config);
-+		assert(ret >= 0);
-+		c->freq_act_gt[i].config |= (uint64_t)i << gt_shift;
-+		_open_pmu(type, num_cntr, &c->freq_act_gt[i], fd);
-+
-+		snprintf(event_str, sizeof(event_str), "requested-frequency");
-+		ret = perf_xe_event_config(c->device_events_path, event_str,
-+					   &c->freq_req_gt[i].config);
-+		assert(ret >= 0);
-+		c->freq_req_gt[i].config |= (uint64_t)i << gt_shift;
-+		_open_pmu(type, num_cntr, &c->freq_req_gt[i], fd);
-+	}
-+
-+	/* Saved the pmu fd */
-+	assert(fd > 0);
-+	c->pmu_fd = fd;
-+	c->num_pmu_counters = num_cntr;
-+
-+	return fd;
-+}
-+
-+static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
-+{
-+	uint64_t buf[2 + num];
-+	unsigned int i;
-+	ssize_t len;
-+
-+	memset(buf, 0, sizeof(buf));
-+
-+	len = read(fd, buf, sizeof(buf));
-+	assert(len == sizeof(buf));
-+
-+	for (i = 0; i < num; i++)
-+		val[i] = buf[2 + i];
-+
-+	return buf[1];
-+}
-+
-+static void __update_sample(struct pmu_counter *counter, uint64_t val)
-+{
-+	counter->val.prev = counter->val.cur;
-+	counter->val.cur = val;
-+}
-+
-+static void update_sample(struct pmu_counter *counter, uint64_t *val)
-+{
-+	if (counter->present)
-+		__update_sample(counter, val[counter->idx]);
-+}
-+
-+static void
-+calc_c6_pct(struct igt_drm_client *c, unsigned int gt, unsigned long t)
-+{
-+	unsigned long c6_diff = c->c6_gt[gt].val.cur - c->c6_gt[gt].val.prev;
-+
-+	printf("GT: %d, c6: %6.2lf%%", gt, 100 * (double)((1e6 * c6_diff) / (double)t));
-+}
-+
-+static void
-+calc_freq(struct igt_drm_client *c, uint8_t gt, uint64_t t)
-+{
-+	uint64_t req_freq_diff = 1e9 * (c->freq_req_gt[gt].val.cur - c->freq_req_gt[gt].val.prev);
-+	uint64_t act_freq_diff = 1e9 * (c->freq_act_gt[gt].val.cur - c->freq_act_gt[gt].val.prev);
-+
-+	printf(" req_freq: %7.2lf MHz", (double)req_freq_diff / (double)t);
-+	printf(" act_freq: %7.2lf MHz", (double)act_freq_diff / (double)t);
-+}
-+
-+static int
-+print_pmu_stats(struct igt_drm_client *c, int *lines)
-+{
-+	int ret = 0;
-+	int i;
-+	uint64_t *val;
-+	uint64_t ts_diff;
-+
-+	if (c->pmu_fd == -1)
-+		pmu_init(c);
-+
-+	assert(c->num_pmu_counters > 0);
-+
-+	val = (uint64_t *)malloc(c->num_pmu_counters * sizeof(uint64_t));
-+
-+	c->ts_prev = c->ts_cur;
-+	c->ts_cur = pmu_read_multi(c->pmu_fd, c->num_pmu_counters, val);
-+	ts_diff = c->ts_cur - c->ts_prev;
-+
-+	for (i = 0; i < c->num_gts; i++) {
-+		update_sample(&c->c6_gt[i], val);
-+		update_sample(&c->freq_req_gt[i], val);
-+		update_sample(&c->freq_act_gt[i], val);
-+		calc_c6_pct(c, i, ts_diff);
-+		calc_freq(c, i, ts_diff);
-+		putchar('\n');
-+	}
-+
-+	if (val)
-+		free(val);
-+
-+	return ret;
-+}
-+
- static int
- print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
- 		    int *engine_w)
-@@ -92,6 +257,8 @@ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
- 	if (lines++ >= con_h)
- 		return lines;
- 
-+	ret += print_pmu_stats(c, &lines);
-+
- 	putchar('\n');
- 	if (c->regions->num_regions)
- 		len = printf("%*s      MEM      RSS ",
-@@ -219,7 +386,6 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
- 	}
- 
- 	*prevc = c;
--
- 	len = printf("%*s ", c->clients->max_pid_len, c->pid_str);
- 
- 	if (c->regions->num_regions) {
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index a608b894d..585e2acec 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -52,21 +52,6 @@
- 
- #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
- 
--struct pmu_pair {
--	uint64_t cur;
--	uint64_t prev;
--};
--
--struct pmu_counter {
--	uint64_t type;
--	uint64_t config;
--	unsigned int idx;
--	struct pmu_pair val;
--	double scale;
--	const char *units;
--	bool present;
--};
--
- struct engine_class {
- 	unsigned int engine_class;
- 	const char *name;
-@@ -724,6 +709,8 @@ static void pmu_sample(struct engines *engines)
- 	uint64_t val[2 + num_val];
- 	unsigned int i;
- 
-+	printf("\n num counters: %d", num_val);
-+
- 	engines->ts.prev = engines->ts.cur;
- 	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
- 
-@@ -735,6 +722,7 @@ static void pmu_sample(struct engines *engines)
- 		update_sample(&engines->freq_req_gt[i], val);
- 		engines->freq_req.val.cur += engines->freq_req_gt[i].val.cur;
- 		engines->freq_req.val.prev += engines->freq_req_gt[i].val.prev;
-+		printf("\n GT: %d, ctr idx: %d", i, engines->freq_req_gt[i].idx);
- 
- 		update_sample(&engines->freq_act_gt[i], val);
- 		engines->freq_act.val.cur += engines->freq_act_gt[i].val.cur;
-diff --git a/tools/meson.build b/tools/meson.build
-index 38b04851c..9e6c8546a 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -70,7 +70,7 @@ endif
- executable('gputop', 'gputop.c',
-            install : true,
-            install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
-+           dependencies : [lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
- 
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
--- 
-2.38.1
-
+On 13-12-2024 15:24, Pranay Samala wrote:
+> This patch reduces the number of non-4K HDMI EDIDs to 25 when
+> the extended flag is not used, as CI does not use this flag.
+> DP EDID tests are not reduced due to existing limited EDIDs.
+> The change ensures that only HDMI non-4K EDIDs are limited,
+> improving test efficiency and avoiding CI timeouts.
+>
+> Cc: Mark Yacoub <markyacoub@chromium.org>
+> Cc: Mark Yacoub <markyacoub@google.com>
+> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+>
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
