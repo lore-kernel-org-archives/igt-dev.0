@@ -4,72 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6283E7717F
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 06:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB3C3E7717F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 06:50:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 92E5C10E2DA;
-	Mon, 16 Dec 2024 06:11:17 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IytH7Pwn";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6FA810E2DA
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 06:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734329477; x=1765865477;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=5hKzbFPmF39CENCkuxxu3h8lcyEmlSk2Lhkz5RSN6qA=;
- b=IytH7Pwnek9xdThdsFoD05d87Jq2gELDn7yJKXPufplEgYrcOwzbXzI2
- /e+C2zX+jICA7OwIFPWU5R3YYgCbCUBbQfy4+Fjun+gBl/crV1ShPDSnp
- vx9IXg8vccT+3k6bKhxJas+6cpTmDCD6N/acAwhzKLsd1iNAaPesOdY7B
- BZZn+91tA4ibKQxE91EKvR0ASXfXKOjQjemDLwwJ1j+0JOBeJms0YBZoT
- YMe++aATNdoZg4pfM7zxxgjEx1scDGrGvL//f9wYjW0DEYGaX6kQ47tCJ
- Cs4mgRgYGdjd68vFlTpP7j6KHNFZw+tMfxY0S/JNDMR5t4ss/w0Usfwg7 g==;
-X-CSE-ConnectionGUID: HhYrQIHHQOiv12A687e0TQ==
-X-CSE-MsgGUID: 6Sl/CTw7Tja3Fw8ojnwiBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="57186203"
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; d="scan'208";a="57186203"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Dec 2024 22:11:17 -0800
-X-CSE-ConnectionGUID: YG5eu6hEQaSRQQ2Wmz8b/g==
-X-CSE-MsgGUID: juzL6UqeToWnIRFAoJH9dg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="102191529"
-Received: from singhra3-mobl.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.213.201.245])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Dec 2024 22:11:12 -0800
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Helen Koike <helen.koike@collabora.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
- Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
- Rob Clark <robdclark@chromium.org>, Ryszard Knop <ryszard.knop@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- dominik.karol.piatkowski@intel.com, himal.prasad.ghimiray@intel.com,
- katarzyna.piecielska@intel.com, luciano.coelho@intel.com,
- nirmoy.das@intel.com, stuart.summers@intel.com
-Subject: [PATCH i-g-t v13 3/3] runner/executor: Integrate igt_facts
- functionality
-Date: Mon, 16 Dec 2024 07:10:36 +0100
-Message-Id: <20241216061036.194296-4-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241216061036.194296-1-peter.senna@linux.intel.com>
-References: <20241216061036.194296-1-peter.senna@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CA2110E20B;
+	Mon, 16 Dec 2024 06:50:07 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C50C10E058;
+ Mon, 16 Dec 2024 06:50:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8054454943719246202=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_igt=5Ffacts_for_fact_tracki?=
+ =?utf-8?q?ng?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 16 Dec 2024 06:50:06 -0000
+Message-ID: <173433180662.3190146.9970575685733037277@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241216061036.194296-1-peter.senna@linux.intel.com>
+In-Reply-To: <20241216061036.194296-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,256 +37,295 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Modifies igt_runner to include calls to igt_facts() before the
-execution of each test and after the final test concludes. Facts are
-disabled by default, so add command line options to igt_runner to
-enable facts:  -f, --facts
+--===============8054454943719246202==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Updates serialize_settings() and read_settings_from_file() to save
-and restore igt_runner settings to and from disk. This is used when
-calling igt_runner with '--dry-run' and then by calling igt_resume
-instead of igt_runner.
+== Series Details ==
 
-Updates unit testing for igt_runner to test that:
- - Facts are disabled by default
- - Facts can be enabled by command line arguments
- - The choice about facts being enabled or not is saved to disk
-   and restored from disk
+Series: igt_facts for fact tracking
+URL   : https://patchwork.freedesktop.org/series/142628/
+State : success
 
-CC: Helen Koike <helen.koike@collabora.com>
-CC: Jani Nikula <jani.nikula@linux.intel.com>
-CC: Jani Saarinen <jani.saarinen@intel.com>
-CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-CC: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-CC: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: Maíra Canal <mcanal@igalia.com>
-CC: Melissa Wen <mwen@igalia.com>
-CC: Petri Latvala <adrinael@adrinael.net>
-CC: Rob Clark <robdclark@chromium.org>
-CC: Ryszard Knop <ryszard.knop@intel.com>
-CC: Swati Sharma <swati2.sharma@intel.com>
-CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-CC: dominik.karol.piatkowski@intel.com
-CC: himal.prasad.ghimiray@intel.com
-CC: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
-CC: katarzyna.piecielska@intel.com
-CC: luciano.coelho@intel.com
-CC: nirmoy.das@intel.com
-CC: stuart.summers@intel.com
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
-Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- runner/executor.c     | 14 ++++++++++++++
- runner/runner_tests.c | 11 ++++++++++-
- runner/settings.c     | 10 +++++++++-
- runner/settings.h     |  1 +
- 4 files changed, 34 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 49ae8c90d..999e7f719 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -30,6 +30,7 @@
- 
- #include "igt_aux.h"
- #include "igt_core.h"
-+#include "igt_facts.h"
- #include "igt_taints.h"
- #include "igt_vec.h"
- #include "executor.h"
-@@ -2360,11 +2361,14 @@ bool execute(struct execute_state *state,
- 	sigset_t sigmask;
- 	double time_spent = 0.0;
- 	bool status = true;
-+	char *last_test = NULL;
- 
- 	if (state->dry) {
- 		outf("Dry run, not executing. Invoke igt_resume if you want to execute.\n");
- 		return true;
- 	}
-+	if (settings->facts)
-+		igt_facts_lists_init();
- 
- 	if (state->next >= job_list->size) {
- 		outf("All tests already executed.\n");
-@@ -2492,6 +2496,12 @@ bool execute(struct execute_state *state,
- 		int result;
- 		bool already_written = false;
- 
-+		/* Collect facts before running each test */
-+		if (settings->facts) {
-+			igt_facts(last_test);
-+			last_test = entry_display_name(&job_list->entries[state->next]);
-+		}
-+
- 		if (should_die_because_signal(sigfd)) {
- 			status = false;
- 			goto end;
-@@ -2581,6 +2591,10 @@ bool execute(struct execute_state *state,
- 		}
- 	}
- 
-+	/* Collect facts after the last test runs */
-+	if (settings->facts)
-+		igt_facts(last_test);
-+
- 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
- 		dprintf(timefd, "%f\n", timeofday_double());
- 		close(timefd);
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index a661722ac..8441763f2 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -190,6 +190,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
- 	igt_assert_eqstr(one->name, two->name);
- 	igt_assert_eq(one->dry_run, two->dry_run);
- 	igt_assert_eq(one->allow_non_root, two->allow_non_root);
-+	igt_assert_eq(one->facts, two->facts);
- 	igt_assert_eq(one->sync, two->sync);
- 	igt_assert_eq(one->log_level, two->log_level);
- 	igt_assert_eq(one->overwrite, two->overwrite);
-@@ -302,6 +303,7 @@ igt_main
- 		igt_assert_eq(settings->exclude_regexes.size, 0);
- 		igt_assert(igt_list_empty(&settings->env_vars));
- 		igt_assert(!igt_vec_length(&settings->hook_strs));
-+		igt_assert(!settings->facts);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -423,6 +425,7 @@ igt_main
- 		igt_assert(!settings->dry_run);
- 		igt_assert_eq(settings->include_regexes.size, 0);
- 		igt_assert_eq(settings->exclude_regexes.size, 0);
-+		igt_assert(!settings->facts);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -460,6 +463,7 @@ igt_main
- 				       "--environment", "ENVS_WITH_JUST_KEYS",
- 				       "-b", blacklist_name,
- 				       "--blacklist", blacklist2_name,
-+				       "-f",
- 				       "-s",
- 				       "-l", "verbose",
- 				       "--overwrite",
-@@ -518,6 +522,7 @@ igt_main
- 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 0)), "echo hello");
- 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 1)), "echo world");
- 
-+		igt_assert(settings->facts);
- 		igt_assert(settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_VERBOSE);
- 		igt_assert(settings->overwrite);
-@@ -724,16 +729,19 @@ igt_main
- 		igt_assert_eqstr(settings->name, "foo");
- 		igt_assert(settings->dry_run);
- 		igt_assert(!settings->test_list);
-+		igt_assert(!settings->facts);
- 		igt_assert(!settings->sync);
- 
- 		argv[1] = "--test-list";
--		argv[3] = "--sync";
-+		argv[3] = "--facts";
-+		argv[4] = "--sync";
- 
- 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
- 
- 		igt_assert_eqstr(settings->name, "results-path");
- 		igt_assert(!settings->dry_run);
- 		igt_assert(strstr(settings->test_list, "foo") != NULL);
-+		igt_assert(settings->facts);
- 		igt_assert(settings->sync);
- 	}
- 
-@@ -966,6 +974,7 @@ igt_main
- 					       "-t", "pattern2",
- 					       "-x", "xpattern1",
- 					       "-x", "xpattern2",
-+					       "-f",
- 					       "-s",
- 					       "-l", "verbose",
- 					       "--overwrite",
-diff --git a/runner/settings.c b/runner/settings.c
-index 0d27e7af3..92fd42ea6 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -40,6 +40,7 @@ enum {
- 	OPT_INCLUDE = 't',
- 	OPT_EXCLUDE = 'x',
- 	OPT_ENVIRONMENT = 'e',
-+	OPT_FACTS = 'f',
- 	OPT_SYNC = 's',
- 	OPT_LOG_LEVEL = 'l',
- 	OPT_OVERWRITE = 'o',
-@@ -230,6 +231,7 @@ static const char *usage_str =
- 	"                                   environment variable IGT_PING_HOSTNAME does\n"
- 	"                                   not respond to ping.\n"
- 	"                         all     - abort for all of the above.\n"
-+	"  -f, --facts           Enable facts tracking\n"
- 	"  -s, --sync            Sync results to disk after every test\n"
- 	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
- 	"                        Set the logger verbosity level\n"
-@@ -665,6 +667,7 @@ bool parse_options(int argc, char **argv,
- 		{"environment", required_argument, NULL, OPT_ENVIRONMENT},
- 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
- 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
-+		{"facts", no_argument, NULL, OPT_FACTS},
- 		{"sync", no_argument, NULL, OPT_SYNC},
- 		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
- 		{"test-list", required_argument, NULL, OPT_TEST_LIST},
-@@ -695,7 +698,7 @@ bool parse_options(int argc, char **argv,
- 	settings->dmesg_warn_level = -1;
- 	settings->prune_mode = -1;
- 
--	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
-+	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
- 				long_options, NULL)) != -1) {
- 		switch (c) {
- 		case OPT_VERSION:
-@@ -736,6 +739,9 @@ bool parse_options(int argc, char **argv,
- 				goto error;
- 			}
- 			break;
-+		case OPT_FACTS:
-+			settings->facts = true;
-+			break;
- 		case OPT_SYNC:
- 			settings->sync = true;
- 			break;
-@@ -1098,6 +1104,7 @@ bool serialize_settings(struct settings *settings)
- 		SERIALIZE_LINE(f, settings, name, "%s");
- 	SERIALIZE_LINE(f, settings, dry_run, "%d");
- 	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
-+	SERIALIZE_LINE(f, settings, facts, "%d");
- 	SERIALIZE_LINE(f, settings, sync, "%d");
- 	SERIALIZE_LINE(f, settings, log_level, "%d");
- 	SERIALIZE_LINE(f, settings, overwrite, "%d");
-@@ -1168,6 +1175,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_LINE(settings, name, val, name, val ? strdup(val) : NULL);
- 		PARSE_LINE(settings, name, val, dry_run, numval);
- 		PARSE_LINE(settings, name, val, allow_non_root, numval);
-+		PARSE_LINE(settings, name, val, facts, numval);
- 		PARSE_LINE(settings, name, val, sync, numval);
- 		PARSE_LINE(settings, name, val, log_level, numval);
- 		PARSE_LINE(settings, name, val, overwrite, numval);
-diff --git a/runner/settings.h b/runner/settings.h
-index 8335f0b8c..f69f09778 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -57,6 +57,7 @@ struct settings {
- 	struct regex_list exclude_regexes;
- 	struct igt_list_head env_vars;
- 	struct igt_vec hook_strs;
-+	bool facts;
- 	bool sync;
- 	int log_level;
- 	bool overwrite;
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_8156_BAT -> XEIGTPW_12319_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 9)
+------------------------------
+
+  Additional (1): bat-lnl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12319_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-lnl-1:          NOTRUN -> [SKIP][1] ([Intel XE#1466])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-lnl-1:          NOTRUN -> [SKIP][2] ([Intel XE#2244])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
+    - bat-lnl-1:          NOTRUN -> [DMESG-WARN][3] ([Intel XE#3729]) +1 other test dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-lnl-1:          NOTRUN -> [SKIP][4] ([Intel XE#352]) +2 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-lnl-1:          NOTRUN -> [SKIP][5] ([Intel XE#1470] / [Intel XE#2853])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-lnl-1:          NOTRUN -> [SKIP][6] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-lnl-1:          NOTRUN -> [SKIP][7] ([Intel XE#688]) +17 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-lnl-1:          NOTRUN -> [SKIP][8] ([Intel XE#1192]) +2 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_live_ktest@xe_bo.html
+
+  * igt@xe_mmap@vram:
+    - bat-lnl-1:          NOTRUN -> [SKIP][9] ([Intel XE#1416])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-lnl-1:          NOTRUN -> [SKIP][10] ([Intel XE#1420] / [Intel XE#2838])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-lnl-1:          NOTRUN -> [SKIP][11] ([Intel XE#977])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-lnl-1:          NOTRUN -> [SKIP][12] ([Intel XE#979])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-lnl-1:          NOTRUN -> [SKIP][13] ([Intel XE#3342])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-adlp-7:         [DMESG-WARN][14] ([Intel XE#3517]) -> [PASS][15] +2 other tests pass
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8156/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-adlp-7:         [SKIP][16] ([Intel XE#455]) -> [PASS][17] +3 other tests pass
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8156/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
+  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#3729]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3729
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8156 -> IGTPW_12319
+  * Linux: xe-2370-a752f9b5366a071e41f973b51842b6af5817f2a2 -> xe-2380-63be16e210b1c3e43b43d8ca9b7e17f15142d2c3
+
+  IGTPW_12319: 12319
+  IGT_8156: edf352a96646c8d793f0c1eb11795112f9bde725 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2370-a752f9b5366a071e41f973b51842b6af5817f2a2: a752f9b5366a071e41f973b51842b6af5817f2a2
+  xe-2380-63be16e210b1c3e43b43d8ca9b7e17f15142d2c3: 63be16e210b1c3e43b43d8ca9b7e17f15142d2c3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/index.html
+
+--===============8054454943719246202==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>igt_facts for fact tracking</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142628/">https://patchwork.freedesktop.org/series/142628/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8156_BAT -&gt; XEIGTPW_12319_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 9)</h2>
+<p>Additional (1): bat-lnl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12319_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-edp1:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3729">Intel XE#3729</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8156/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8156/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12319/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8156 -&gt; IGTPW_12319</li>
+<li>Linux: xe-2370-a752f9b5366a071e41f973b51842b6af5817f2a2 -&gt; xe-2380-63be16e210b1c3e43b43d8ca9b7e17f15142d2c3</li>
+</ul>
+<p>IGTPW_12319: 12319<br />
+  IGT_8156: edf352a96646c8d793f0c1eb11795112f9bde725 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2370-a752f9b5366a071e41f973b51842b6af5817f2a2: a752f9b5366a071e41f973b51842b6af5817f2a2<br />
+  xe-2380-63be16e210b1c3e43b43d8ca9b7e17f15142d2c3: 63be16e210b1c3e43b43d8ca9b7e17f15142d2c3</p>
+
+</body>
+</html>
+
+--===============8054454943719246202==--
