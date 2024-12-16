@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E917E77183
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 15:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4F8E7717F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 15:15:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2701510E6C6;
-	Mon, 16 Dec 2024 15:15:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 31FE110E6CD;
+	Mon, 16 Dec 2024 15:15:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I6ban5fu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GSPqk+/h";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA32E10E6CD
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 15:15:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3095310E6CD
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 15:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734362116; x=1765898116;
+ t=1734362120; x=1765898120;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5FN/0hsX120sDHSQet7HglnOObG0d+YQBAUQ/tCd3NE=;
- b=I6ban5fuSfnw+cTOpZG7E8l4BVk62QpBXmU8s4kf5Wv87ilnEDXUp1ph
- 6+oJG9uL+yzDsrpV6jyPgUax5moqBowER0c1XbWeb5lSKeeQr929/gKmv
- 0b92fv6ZKBx3+SedKTPc2jpZ0JVHaBmQ5KAFPbnZKCOkiGUVSDPfelDC7
- mJv6LPIfYcaSlUlyParp8tBv8Igs1EDdA+A95DXVA7YW8qNjZEVoRvam0
- oeoWfuY6OzxmyiQ7rHp5D6bEHrQOYHxT0UywNVDx1xOA0aqJZFtC1cjIh
- iX3/C9vX0MOt+bFYJhO4vqTPmOgUUD5yptUjnbKrx9CbVpySsSdwMXeS2 w==;
-X-CSE-ConnectionGUID: UF1TsLPjS6Km5DYumBLZRA==
-X-CSE-MsgGUID: Lz7qivP0Te2IAH3pMvasxw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="60137448"
-X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; d="scan'208";a="60137448"
+ bh=CoGBTkrexc4g2tc5VdaTbfS249KzVoymZ5t/6JkCqvA=;
+ b=GSPqk+/hZAM9a7NVkwwA5QM7SZyldJkre0OCJpNuCl/aK0YEOMCWn4p2
+ IeP0ntEU0BWyaH0XdIr+io5gx0gfKs5Fqw/S7kyNTDH5Up7vbpJ0H6OfK
+ KubbNSt8sYzUC5zp4OKBvRQvxru6h1A4mrdlc0epW4CNUFwdGhhlwarBb
+ Wc6fn/KgYRNEOv6Xwmvaxb82lye2ZEdbEQovYsy0XNmo0Javn7+Jg/h1i
+ XVtZyjgZ6qOXaR3GEpQj86MpKZQfiUB+SYoH/TrHGX/8ckcvf7rmb9/HT
+ N8GOEJJ3zfEWS+Ag53fdyrC4rYgA8Pbet9O5vGMHjm1LzpdacARLJ2YVP w==;
+X-CSE-ConnectionGUID: sxe0d/yUQoatk0PI40m5Zg==
+X-CSE-MsgGUID: OlASrc7ITM+uZkqQZjVwXQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="60137463"
+X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; d="scan'208";a="60137463"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 07:15:16 -0800
-X-CSE-ConnectionGUID: KcnHY1aWTIOJ2gKiDi2Dvg==
-X-CSE-MsgGUID: cH8o7X7QRW6mQMvbU625Bg==
+ 16 Dec 2024 07:15:20 -0800
+X-CSE-ConnectionGUID: KGRCtDfnQAq6xiifAXCkKA==
+X-CSE-MsgGUID: ufLg+br/SBqSoOeoKyhUzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128208781"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128208791"
 Received: from courtneypc.ger.corp.intel.com (HELO
  friendship7-home.clients.intel.com) ([10.213.202.56])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 07:15:11 -0800
+ 16 Dec 2024 07:15:15 -0800
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
@@ -60,9 +60,10 @@ Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
  dominik.karol.piatkowski@intel.com, himal.prasad.ghimiray@intel.com,
  katarzyna.piecielska@intel.com, luciano.coelho@intel.com,
  nirmoy.das@intel.com, stuart.summers@intel.com
-Subject: [PATCH i-g-t v14 resend 2/3] tools/lsfacts: Add tool for listing facts
-Date: Mon, 16 Dec 2024 16:14:19 +0100
-Message-Id: <20241216151420.43042-3-peter.senna@linux.intel.com>
+Subject: [PATCH i-g-t v14 resend 3/3] runner/executor: Integrate igt_facts
+ functionality
+Date: Mon, 16 Dec 2024 16:14:20 +0100
+Message-Id: <20241216151420.43042-4-peter.senna@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241216151420.43042-1-peter.senna@linux.intel.com>
 References: <20241216151420.43042-1-peter.senna@linux.intel.com>
@@ -84,8 +85,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Report the facts that are present on the system or 'No facts found...'
-if no facts are detected.
+Modifies igt_runner to include calls to igt_facts() before the
+execution of each test and after the final test concludes. Facts are
+disabled by default, so add command line options to igt_runner to
+enable facts:  -f, --facts
+
+Updates serialize_settings() and read_settings_from_file() to save
+and restore igt_runner settings to and from disk. This is used when
+calling igt_runner with '--dry-run' and then by calling igt_resume
+instead of igt_runner.
+
+Updates unit testing for igt_runner to test that:
+ - Facts are disabled by default
+ - Facts can be enabled by command line arguments
+ - The choice about facts being enabled or not is saved to disk
+   and restored from disk
 
 CC: Helen Koike <helen.koike@collabora.com>
 CC: Jani Nikula <jani.nikula@linux.intel.com>
@@ -112,56 +126,211 @@ Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
 Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 ---
- tools/lsfacts.c   | 27 +++++++++++++++++++++++++++
- tools/meson.build |  1 +
- 2 files changed, 28 insertions(+)
- create mode 100644 tools/lsfacts.c
+ runner/executor.c     | 14 ++++++++++++++
+ runner/runner_tests.c | 11 ++++++++++-
+ runner/settings.c     | 10 +++++++++-
+ runner/settings.h     |  1 +
+ 4 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lsfacts.c b/tools/lsfacts.c
-new file mode 100644
-index 000000000..bbe77717a
---- /dev/null
-+++ b/tools/lsfacts.c
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+#include "igt.h"
+diff --git a/runner/executor.c b/runner/executor.c
+index 49ae8c90d..999e7f719 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -30,6 +30,7 @@
+ 
+ #include "igt_aux.h"
+ #include "igt_core.h"
 +#include "igt_facts.h"
+ #include "igt_taints.h"
+ #include "igt_vec.h"
+ #include "executor.h"
+@@ -2360,11 +2361,14 @@ bool execute(struct execute_state *state,
+ 	sigset_t sigmask;
+ 	double time_spent = 0.0;
+ 	bool status = true;
++	char *last_test = NULL;
+ 
+ 	if (state->dry) {
+ 		outf("Dry run, not executing. Invoke igt_resume if you want to execute.\n");
+ 		return true;
+ 	}
++	if (settings->facts)
++		igt_facts_lists_init();
+ 
+ 	if (state->next >= job_list->size) {
+ 		outf("All tests already executed.\n");
+@@ -2492,6 +2496,12 @@ bool execute(struct execute_state *state,
+ 		int result;
+ 		bool already_written = false;
+ 
++		/* Collect facts before running each test */
++		if (settings->facts) {
++			igt_facts(last_test);
++			last_test = entry_display_name(&job_list->entries[state->next]);
++		}
 +
-+/**
-+ * SECTION:lsfacts
-+ * @short_description: lsfacts
-+ * @title: lsfacts
-+ * @include: lsfacts.c
-+ *
-+ * # lsfacts
-+ *
-+ * Scan for igt-facts and print them on screen. Indicate if no facts are found.
-+ */
-+int main(int argc, char *argv[])
-+{
-+	igt_facts_lists_init();
+ 		if (should_die_because_signal(sigfd)) {
+ 			status = false;
+ 			goto end;
+@@ -2581,6 +2591,10 @@ bool execute(struct execute_state *state,
+ 		}
+ 	}
+ 
++	/* Collect facts after the last test runs */
++	if (settings->facts)
++		igt_facts(last_test);
 +
-+	igt_facts("lsfacts");
-+
-+	if (igt_facts_are_all_lists_empty())
-+		igt_info("No facts found...\n");
-+}
-diff --git a/tools/meson.build b/tools/meson.build
-index 38b04851c..511aec69e 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -42,6 +42,7 @@ tools_progs = [
- 	'intel_gem_info',
- 	'intel_gvtg_test',
- 	'dpcd_reg',
-+	'lsfacts',
- 	'lsgpu',
- 	'power',
- ]
+ 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
+ 		dprintf(timefd, "%f\n", timeofday_double());
+ 		close(timefd);
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index a661722ac..8441763f2 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -190,6 +190,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
+ 	igt_assert_eqstr(one->name, two->name);
+ 	igt_assert_eq(one->dry_run, two->dry_run);
+ 	igt_assert_eq(one->allow_non_root, two->allow_non_root);
++	igt_assert_eq(one->facts, two->facts);
+ 	igt_assert_eq(one->sync, two->sync);
+ 	igt_assert_eq(one->log_level, two->log_level);
+ 	igt_assert_eq(one->overwrite, two->overwrite);
+@@ -302,6 +303,7 @@ igt_main
+ 		igt_assert_eq(settings->exclude_regexes.size, 0);
+ 		igt_assert(igt_list_empty(&settings->env_vars));
+ 		igt_assert(!igt_vec_length(&settings->hook_strs));
++		igt_assert(!settings->facts);
+ 		igt_assert(!settings->sync);
+ 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
+ 		igt_assert(!settings->overwrite);
+@@ -423,6 +425,7 @@ igt_main
+ 		igt_assert(!settings->dry_run);
+ 		igt_assert_eq(settings->include_regexes.size, 0);
+ 		igt_assert_eq(settings->exclude_regexes.size, 0);
++		igt_assert(!settings->facts);
+ 		igt_assert(!settings->sync);
+ 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
+ 		igt_assert(!settings->overwrite);
+@@ -460,6 +463,7 @@ igt_main
+ 				       "--environment", "ENVS_WITH_JUST_KEYS",
+ 				       "-b", blacklist_name,
+ 				       "--blacklist", blacklist2_name,
++				       "-f",
+ 				       "-s",
+ 				       "-l", "verbose",
+ 				       "--overwrite",
+@@ -518,6 +522,7 @@ igt_main
+ 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 0)), "echo hello");
+ 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 1)), "echo world");
+ 
++		igt_assert(settings->facts);
+ 		igt_assert(settings->sync);
+ 		igt_assert_eq(settings->log_level, LOG_LEVEL_VERBOSE);
+ 		igt_assert(settings->overwrite);
+@@ -724,16 +729,19 @@ igt_main
+ 		igt_assert_eqstr(settings->name, "foo");
+ 		igt_assert(settings->dry_run);
+ 		igt_assert(!settings->test_list);
++		igt_assert(!settings->facts);
+ 		igt_assert(!settings->sync);
+ 
+ 		argv[1] = "--test-list";
+-		argv[3] = "--sync";
++		argv[3] = "--facts";
++		argv[4] = "--sync";
+ 
+ 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+ 
+ 		igt_assert_eqstr(settings->name, "results-path");
+ 		igt_assert(!settings->dry_run);
+ 		igt_assert(strstr(settings->test_list, "foo") != NULL);
++		igt_assert(settings->facts);
+ 		igt_assert(settings->sync);
+ 	}
+ 
+@@ -966,6 +974,7 @@ igt_main
+ 					       "-t", "pattern2",
+ 					       "-x", "xpattern1",
+ 					       "-x", "xpattern2",
++					       "-f",
+ 					       "-s",
+ 					       "-l", "verbose",
+ 					       "--overwrite",
+diff --git a/runner/settings.c b/runner/settings.c
+index 0d27e7af3..92fd42ea6 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -40,6 +40,7 @@ enum {
+ 	OPT_INCLUDE = 't',
+ 	OPT_EXCLUDE = 'x',
+ 	OPT_ENVIRONMENT = 'e',
++	OPT_FACTS = 'f',
+ 	OPT_SYNC = 's',
+ 	OPT_LOG_LEVEL = 'l',
+ 	OPT_OVERWRITE = 'o',
+@@ -230,6 +231,7 @@ static const char *usage_str =
+ 	"                                   environment variable IGT_PING_HOSTNAME does\n"
+ 	"                                   not respond to ping.\n"
+ 	"                         all     - abort for all of the above.\n"
++	"  -f, --facts           Enable facts tracking\n"
+ 	"  -s, --sync            Sync results to disk after every test\n"
+ 	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
+ 	"                        Set the logger verbosity level\n"
+@@ -665,6 +667,7 @@ bool parse_options(int argc, char **argv,
+ 		{"environment", required_argument, NULL, OPT_ENVIRONMENT},
+ 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
+ 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
++		{"facts", no_argument, NULL, OPT_FACTS},
+ 		{"sync", no_argument, NULL, OPT_SYNC},
+ 		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
+ 		{"test-list", required_argument, NULL, OPT_TEST_LIST},
+@@ -695,7 +698,7 @@ bool parse_options(int argc, char **argv,
+ 	settings->dmesg_warn_level = -1;
+ 	settings->prune_mode = -1;
+ 
+-	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
++	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
+ 				long_options, NULL)) != -1) {
+ 		switch (c) {
+ 		case OPT_VERSION:
+@@ -736,6 +739,9 @@ bool parse_options(int argc, char **argv,
+ 				goto error;
+ 			}
+ 			break;
++		case OPT_FACTS:
++			settings->facts = true;
++			break;
+ 		case OPT_SYNC:
+ 			settings->sync = true;
+ 			break;
+@@ -1098,6 +1104,7 @@ bool serialize_settings(struct settings *settings)
+ 		SERIALIZE_LINE(f, settings, name, "%s");
+ 	SERIALIZE_LINE(f, settings, dry_run, "%d");
+ 	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
++	SERIALIZE_LINE(f, settings, facts, "%d");
+ 	SERIALIZE_LINE(f, settings, sync, "%d");
+ 	SERIALIZE_LINE(f, settings, log_level, "%d");
+ 	SERIALIZE_LINE(f, settings, overwrite, "%d");
+@@ -1168,6 +1175,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ 		PARSE_LINE(settings, name, val, name, val ? strdup(val) : NULL);
+ 		PARSE_LINE(settings, name, val, dry_run, numval);
+ 		PARSE_LINE(settings, name, val, allow_non_root, numval);
++		PARSE_LINE(settings, name, val, facts, numval);
+ 		PARSE_LINE(settings, name, val, sync, numval);
+ 		PARSE_LINE(settings, name, val, log_level, numval);
+ 		PARSE_LINE(settings, name, val, overwrite, numval);
+diff --git a/runner/settings.h b/runner/settings.h
+index 8335f0b8c..f69f09778 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -57,6 +57,7 @@ struct settings {
+ 	struct regex_list exclude_regexes;
+ 	struct igt_list_head env_vars;
+ 	struct igt_vec hook_strs;
++	bool facts;
+ 	bool sync;
+ 	int log_level;
+ 	bool overwrite;
 -- 
 2.34.1
 
