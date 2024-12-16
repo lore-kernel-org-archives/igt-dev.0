@@ -4,62 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C04E77183
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 17:09:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 449BDE7717F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 18:47:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72F7E10E71A;
-	Mon, 16 Dec 2024 17:09:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA60610E763;
+	Mon, 16 Dec 2024 18:47:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HWOBeucJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J0IE8MCk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE97410E71A;
- Mon, 16 Dec 2024 17:09:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC3E610E75F
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 18:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734368996; x=1765904996;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=zJCcPGeKVLwRo10h2qomsFQbxDjZZlKnFpCn4F3Wv08=;
- b=HWOBeucJDBP6QHWWVcCZVuUvxuDz5UoQxgcvaVKOL7XSnvHvEY/Plyol
- S075Nmnmdn7DyvT2RrNTWUjUwh00ZtG4g3o5cIMMwJC+r2xkOJhBD2UZS
- aHLsA2ybkSFujXrYvjDzCwhgKb+4TRbAZxXSqa/sHNna6Hgn+EKPqYxFf
- CtdvusL4n/52ip12Cwpl9GiTpS8E5bW8WsRHY/YY7mY72XC2k2bkgr8P3
- acJMIsajdEg8YoPsltPYX7oePTblX6dnJ5GpdkHuSAgy2xI+dPNsxcbrh
- Vso/rl42jVayuZbG9e8voM4bMAnzgV9d8lKxHuQbau3Jgi0BvaJW5b85b g==;
-X-CSE-ConnectionGUID: prN6BFhZRHeR0UpIKILFew==
-X-CSE-MsgGUID: ooLFB4tGRiymzwUdR/Ijgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="38443586"
-X-IronPort-AV: E=Sophos;i="6.12,239,1728975600"; d="scan'208";a="38443586"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 09:09:55 -0800
-X-CSE-ConnectionGUID: K7dD+zz3R3eZDA39qc603g==
-X-CSE-MsgGUID: 2RY65gHTTNyCtXw6cNbYBg==
+ t=1734374849; x=1765910849;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=JzQAzfJPKdEIUXkURqqLXGLVYhu51InHRQPuUa3ZNfA=;
+ b=J0IE8MCkJHSq0Rc9oy49tx1OJY9x2Rp/3lv0BDxkl/1YS47Nc8/gBPY8
+ YKh2b6uefmLRIx/4WR1McFtuOte/YCzxjCACYIU5vh4JtDdUY6w82cmiW
+ 1rK/XSeClpmG4MjCoN8v0hptTiRxKDE8aiSBrRNO65vvezrxrDjiaj2In
+ dwOmq7RJiMqNbdu+Y4sAj279fx29l8+uRa3dxc9tfBAFN+2G4xPumTpVu
+ Wh01tbT5cd0qB2wP1Yn1w22q6oO0B3T7PCj9CoNP6WHQd26Z8sMDtn350
+ DLe6YqARmn5pjdxTaJKPahWh+mMbeldBu4bBGDq9Wrz0JnmLTzN34A4nc A==;
+X-CSE-ConnectionGUID: nvt1rRJTQke+Fa45sdL8RQ==
+X-CSE-MsgGUID: Z8qZFp7TQImpIR4sDihn4A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34922700"
+X-IronPort-AV: E=Sophos;i="6.12,239,1728975600"; d="scan'208";a="34922700"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2024 10:47:29 -0800
+X-CSE-ConnectionGUID: B8+RSkcBTd6sYfEm5C8/rQ==
+X-CSE-MsgGUID: AJMLKLKFR5qnzZs4Vyq2SQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="134597546"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- [10.245.244.246]) ([10.245.244.246])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 09:09:54 -0800
-Message-ID: <a82dbbe4-a42d-49df-860d-bcf79860a446@intel.com>
-Date: Mon, 16 Dec 2024 17:09:52 +0000
+X-IronPort-AV: E=Sophos;i="6.12,239,1728975600"; d="scan'208";a="97522049"
+Received: from courtneypc.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.213.202.56])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2024 10:47:25 -0800
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@intel.com>, ramadevi.gandi@intel.com,
+ ryszard.knop@intel.com, sameer.lattannavar@intel.com,
+ lucas.demarchi@intel.com, jani.saarinen@intel.com,
+ katarzyna.piecielska@intel.com, matthew.d.roper@intel.com,
+ gregory.f.germano@intel.com, clinton.a.taylor@intel.com,
+ balasubramani.vivekanandan@intel.com, jianshui.yu@intel.com,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: [PATCH RFC i-g-t] lib/igt_kmemleak: library to interact with kmemleak
+Date: Mon, 16 Dec 2024 19:46:42 +0100
+Message-Id: <20241216184642.133454-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t V5 4/4] tests/xe/mmap: add tests for pci mem barrier
-To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
-References: <20241128055647.1677371-1-tejas.upadhyay@intel.com>
- <20241128055647.1677371-5-tejas.upadhyay@intel.com>
- <ba8b6e62-580f-4ac5-baef-1c88531431ad@intel.com>
- <SJ1PR11MB6204480D213664A0BF5A0D4A813B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
- <3e7e192d-4e1a-45a3-a36e-fca2e38a272a@intel.com>
- <SJ1PR11MB6204F562E03C0D1A9670DA7E813B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <SJ1PR11MB6204F562E03C0D1A9670DA7E813B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -76,351 +73,599 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 16/12/2024 13:06, Upadhyay, Tejas wrote:
-> 
-> 
->> -----Original Message-----
->> From: Auld, Matthew <matthew.auld@intel.com>
->> Sent: Monday, December 16, 2024 6:25 PM
->> To: Upadhyay, Tejas <tejas.upadhyay@intel.com>; igt-
->> dev@lists.freedesktop.org; intel-xe@lists.freedesktop.org
->> Subject: Re: [i-g-t V5 4/4] tests/xe/mmap: add tests for pci mem barrier
->>
->> On 16/12/2024 12:29, Upadhyay, Tejas wrote:
->>>
->>>
->>>> -----Original Message-----
->>>> From: Auld, Matthew <matthew.auld@intel.com>
->>>> Sent: Friday, December 13, 2024 6:54 PM
->>>> To: Upadhyay, Tejas <tejas.upadhyay@intel.com>; igt-
->>>> dev@lists.freedesktop.org; intel-xe@lists.freedesktop.org
->>>> Subject: Re: [i-g-t V5 4/4] tests/xe/mmap: add tests for pci mem
->>>> barrier
->>>>
->>>> On 28/11/2024 05:56, Tejas Upadhyay wrote:
->>>>> We want to make sure that mmap do direct mapping of physical page at
->>>>> doorbell space and whole page is accessible in order to use pci
->>>>> memory barrier effect effectively.
->>>>>
->>>>> Following subtests are added,
->>>>> ./build/tests/xe_mmap --r pci-membarrier ./build/tests/xe_mmap --r
->>>>> pci-membarrier-parallel ./build/tests/xe_mmap --r
->>>>> pci-membarrier-bad-pagesize ./build/tests/xe_mmap --r
->>>>> pci-membarrier-bad-object
->>>>>
->>>>> V5:
->>>>>     - Add pci-membarrier-parallel test
->>>>> V3(MAuld):
->>>>>     - Check if pci memory barrier is supported
->>>>> V2(MAuld)
->>>>>     - use do_ioctl and replace igt_subtest_f with igt_subtest
->>>>>     - Remove unused define
->>>>>
->>>>> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
->>>>> ---
->>>>>     tests/intel/xe_mmap.c | 211
->>>> ++++++++++++++++++++++++++++++++++++++++++
->>>>>     1 file changed, 211 insertions(+)
->>>>>
->>>>> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c index
->>>>> fc5d73d59..1a61095d5 100644
->>>>> --- a/tests/intel/xe_mmap.c
->>>>> +++ b/tests/intel/xe_mmap.c
->>>>> @@ -64,6 +64,161 @@ test_mmap(int fd, uint32_t placement, uint32_t
->>>> flags)
->>>>>     	gem_close(fd, bo);
->>>>>     }
->>>>>
->>>>> +#define PAGE_SIZE 4096
->>>>> +
->>>>> +/**
->>>>> + * SUBTEST: pci-membarrier
->>>>> + * Description: create pci memory barrier with write on defined
->>>>> +mmap
->>>> offset.
->>>>> + * Test category: functionality test
->>>>> + *
->>>>> + */
->>>>> +static void test_pci_membarrier(int xe) {
->>>>> +	uint64_t flags = MAP_SHARED;
->>>>> +	unsigned int prot = PROT_WRITE;
->>>>> +	uint32_t *ptr;
->>>>> +	uint64_t size = PAGE_SIZE;
->>>>> +	struct timespec tv;
->>>>> +	struct drm_xe_gem_mmap_offset mmo = {
->>>>> +		.handle = 0,
->>>>> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
->>>>> +	};
->>>>> +
->>>>> +	do_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
->>>>> +	ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
->>>>> +	igt_assert(ptr != MAP_FAILED);
->>>>> +
->>>>> +	/* Check whole page for any errors, also check as
->>>>> +	 * we should not read written values back
->>>>> +	 */
->>>>> +	for (int i = 0; i < size / sizeof(*ptr); i++) {
->>>>> +		/* It is expected unconfigured doorbell space
->>>>> +		 * will return read value 0xdeadbeef
->>>>> +		 */
->>>>> +		igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
->>>>> +
->>>>> +		igt_gettime(&tv);
->>>>> +		ptr[i] = i;
->>>>> +		if (READ_ONCE(ptr[i]) == i) {
->>>>> +			while (READ_ONCE(ptr[i]) == i)
->>>>> +				;
->>>>> +			igt_info("fd:%d value retained for %"PRId64"ns
->>>> pos:%d\n",
->>>>> +				 xe, igt_nsec_elapsed(&tv), i);
->>>>> +		}
->>>>> +		igt_assert_neq(READ_ONCE(ptr[i]), i);
->>>>> +	}
->>>>> +
->>>>> +	munmap(ptr, size);
->>>>> +}
->>>>> +
->>>>> +/**
->>>>> + * SUBTEST: pci-membarrier-parallel
->>>>> + * Description: create parallel pci memory barrier with write on
->>>>> +defined
->>>> mmap offset.
->>>>> + * Test category: functionality test
->>>>> + *
->>>>> + */
->>>>> +static void test_pci_membarrier_parallel(int xe, int child) {
->>>>> +	unsigned int bad_ns, elapsed;
->>>>> +	uint64_t flags = MAP_SHARED;
->>>>> +	unsigned int i;
->>>>> +	unsigned int prot = PROT_WRITE;
->>>>> +	uint32_t *ptr;
->>>>> +	uint64_t size = PAGE_SIZE;
->>>>> +	struct drm_xe_gem_mmap_offset mmo = {
->>>>> +		.handle = 0,
->>>>> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
->>>>> +	};
->>>>> +	struct timespec total, bad;
->>>>> +	int tpos = size / sizeof(*ptr);
->>>>> +	int value;
->>>>> +
->>>>> +	do_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
->>>>> +	ptr = mmap(NULL, size, prot, flags, xe, mmo.offset);
->>>>> +	igt_assert(ptr != MAP_FAILED);
->>>>> +
->>>>> +	/* Check any random position up to 1K */
->>>>> +	i = rand() % (size / sizeof(*ptr));
->>>>
->>>> So both child and parent will have the same rand() value here.
->>>
->>> Possible to have same value but very narrow chance and too much to
->> worry(being sane value) for test functionality we have at hand.
->>
->> I think it will always be the same value. They both start with the same seed so
->> rand() here should give same rng sequence. But I thought that was
->> intentional...
-> 
-> My bad that’s correct it is intentional same value.
-> 
->>
->>>
->>>>
->>>>> +	/* It is expected unconfigured doorbell space
->>>>> +	 * will return read value 0xdeadbeef
->>>>> +	 */
->>>>> +	igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
->>>>> +
->>>>> +	igt_until_timeout(5) {
->>>>> +		WRITE_ONCE(ptr[i], i);
->>>>> +	}
->>>>> +	bad_ns = 0;
->>>>> +	igt_gettime(&total);
->>>>> +	igt_until_timeout(5) { /* XXX sync with parent loop! */
->>>>> +		if (READ_ONCE(ptr[i]) == i) {
->>>>> +			igt_gettime(&bad);
->>>>> +			while (READ_ONCE(ptr[i]) == i)
->>>>> +				;
->>>>> +			bad_ns += igt_nsec_elapsed(&bad);
->>>>> +		}
->>>>> +	}
->>>>> +	elapsed = igt_nsec_elapsed(&total);
->>>>> +	if (bad_ns) {
->>>>> +		igt_info("Cross-client writes visible %.1f%% of the time.\n",
->>>>
->>>> Is this actually "Cross-client"? Are cross client visible writes
->>>> possible? Is the below not enough to check this?
->>>
->>> Again this is similar to original test where I put debug, we never hit this
->> debug in this test as well, but it was the thinking that the value was hold and
->> cross client might read it, so to test and show case scenario we are checking
->> this. Otherwise below check is enough for clients isolation.
->>
->> Do we need to test that again? Can't we just test the cross clients isolation
->> below?
-> 
-> it's a critical part of the design that sharing a common register page between processes does not violate process isolation; we want to test this from as many angles as possible. So prefer to keep it.
+From: Peter Senna Tschudin <peter.senna@intel.com>
 
-Ok, but it looks to write the same value, so not sure how easily we can 
-detect "process isolation" vs single client just seeing its own write 
-like in test_pci_membarrier()? Would it not make sense to use something 
-unique?  Or something else like read in a loop from one context and then 
-hammer it from the other context?
+Adds a simple library for interacting with kmemleak ispired by
+'tests/amdgpu/amd_mem_leak.c'. Also adds unit testing for the
+library.
 
-> 
-> Tejas
-> 
->>
->>>
->>> Tejas
->>>
->>>>
->>>>> +			 bad_ns * 100. / elapsed);
->>>>> +	}
->>>>> +	igt_assert(20 * bad_ns < elapsed); /* Arbitrary 5% threshold */
->>>>> +	igt_assert_neq(READ_ONCE(ptr[i]), i);
->>>>
->>>>> +	igt_until_timeout(5) {
->>>>> +		/* Check clients should not be able to see each other */
->>>>> +		if (child != -1)
->>>>> +			value = tpos + 1;
->>>>> +		else
->>>>> +			value = tpos;
->>>>> +
->>>>> +		WRITE_ONCE(ptr[tpos-1], value);
->>>>> +	}
->>>>> +	bad_ns = 0;
->>>>> +	igt_gettime(&total);
->>>>> +	igt_until_timeout(5) { /* XXX sync with parent loop! */
->>>>> +		if (READ_ONCE(ptr[tpos-1]) == value) {
->>>>> +			igt_gettime(&bad);
->>>>> +			while (READ_ONCE(ptr[tpos-1]) == value)
->>>>> +				;
->>>>> +			bad_ns += igt_nsec_elapsed(&bad);
->>>>> +		}
->>>>> +	}
->>>>> +	elapsed = igt_nsec_elapsed(&total);
->>>>> +	if (bad_ns) {
->>>>> +		igt_info("Cross-client writes visible %.1f%% of the time.\n",
->>>>> +			 bad_ns * 100. / elapsed);
->>>>> +	}
->>>>> +	igt_assert(20 * bad_ns < elapsed); /* Arbitrary 5% threshold */
->>>>> +	if (child != -1)
->>>>> +		igt_assert_neq(READ_ONCE(ptr[tpos-1]), tpos);
->>>>> +	else
->>>>> +		igt_assert_neq(READ_ONCE(ptr[tpos-1]), tpos + 1);
->>>>> +	igt_assert_eq_u32(READ_ONCE(ptr[tpos-1]), 0xdeadbeef);
->>>>> +
->>>>> +	munmap(ptr, size);
->>>>> +}
->>>>> +
->>>>> +/**
->>>>> + * SUBTEST: pci-membarrier-bad-pagesize
->>>>> + * Description: Test mmap offset with bad pagesize for pci membarrier.
->>>>> + * Test category: negative test
->>>>> + *
->>>>> + */
->>>>> +static void test_bad_pagesize_for_pcimem(int fd) {
->>>>> +	uint32_t *map;
->>>>> +	uint64_t page_size = PAGE_SIZE * 2;
->>>>> +	struct drm_xe_gem_mmap_offset mmo = {
->>>>> +		.handle = 0,
->>>>> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
->>>>> +	};
->>>>> +
->>>>> +	do_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo);
->>>>> +	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd,
->>>> mmo.offset);
->>>>> +	igt_assert(map == MAP_FAILED);
->>>>> +}
->>>>> +
->>>>>     /**
->>>>>      * SUBTEST: bad-flags
->>>>>      * Description: Test mmap offset with bad flags.
->>>>> @@ -126,6 +281,25 @@ static void test_bad_object(int fd)
->>>>>     	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo,
->>>> ENOENT);
->>>>>     }
->>>>>
->>>>> +/**
->>>>> + * SUBTEST: pci-membarrier-bad-object
->>>>> + * Description: Test mmap offset with bad object for pci mem barrier.
->>>>> + * Test category: negative test
->>>>> + *
->>>>> + */
->>>>> +static void test_bad_object_for_pcimem(int fd) {
->>>>> +	uint64_t size = xe_get_default_alignment(fd);
->>>>> +	struct drm_xe_gem_mmap_offset mmo = {
->>>>> +		.handle = xe_bo_create(fd, 0, size,
->>>>> +				       vram_if_possible(fd, 0),
->>>>> +
->>>> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM),
->>>>> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
->>>>> +	};
->>>>> +
->>>>> +	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo,
->>>> EINVAL); }
->>>>> +
->>>>>     static jmp_buf jmp;
->>>>>
->>>>>     __noreturn static void sigtrap(int sig) @@ -255,6 +429,16 @@
->>>>> static void test_cpu_caching(int fd)
->>>>>     	assert_caching(fd, system_memory(fd),
->>>> DRM_XE_GEM_CPU_CACHING_WC + 1, true);
->>>>>     }
->>>>>
->>>>> +static bool is_pci_membarrier_supported(int fd) {
->>>>> +	struct drm_xe_gem_mmap_offset mmo = {
->>>>> +		.handle = 0,
->>>>> +		.flags = DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER,
->>>>> +	};
->>>>> +
->>>>> +	return (igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo) ==
->>>> 0); }
->>>>> +
->>>>>     igt_main
->>>>>     {
->>>>>     	int fd;
->>>>> @@ -273,6 +457,28 @@ igt_main
->>>>>     		test_mmap(fd, vram_memory(fd, 0) | system_memory(fd),
->>>>>
->>>> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->>>>>
->>>>> +	igt_subtest("pci-membarrier") {
->>>>> +		igt_require(is_pci_membarrier_supported(fd));
->>>>> +		test_pci_membarrier(fd);
->>>>> +	}
->>>>> +
->>>>> +	igt_subtest("pci-membarrier-parallel") {
->>>>> +		int xe = drm_open_driver(DRIVER_XE);
->>>>> +
->>>>> +		igt_require(is_pci_membarrier_supported(fd));
->>>>> +		igt_fork(child, 1)
->>>>> +			test_pci_membarrier_parallel(xe, child);
->>>>> +		test_pci_membarrier_parallel(fd, -1);
->>>>> +		igt_waitchildren();
->>>>> +
->>>>> +		close(xe);
->>>>> +	}
->>>>> +
->>>>> +	igt_subtest("pci-membarrier-bad-pagesize") {
->>>>> +		igt_require(is_pci_membarrier_supported(fd));
->>>>> +		test_bad_pagesize_for_pcimem(fd);
->>>>> +	}
->>>>> +
->>>>>     	igt_subtest("bad-flags")
->>>>>     		test_bad_flags(fd);
->>>>>
->>>>> @@ -282,6 +488,11 @@ igt_main
->>>>>     	igt_subtest("bad-object")
->>>>>     		test_bad_object(fd);
->>>>>
->>>>> +	igt_subtest("pci-membarrier-bad-object") {
->>>>> +		igt_require(is_pci_membarrier_supported(fd));
->>>>> +		test_bad_object_for_pcimem(fd);
->>>>> +	}
->>>>> +
->>>>>     	igt_subtest("small-bar") {
->>>>>     		igt_require(xe_visible_vram_size(fd, 0));
->>>>>     		igt_require(xe_visible_vram_size(fd, 0) < xe_vram_size(fd, 0));
->>>
-> 
+To use the library include "igt_kmemleak.h" and:
+ 1. igt_kmemleak_init(NULL) /* Returns true if kmemleak is active */
+ 2. igt_kmemleak_clear()
+ 3. /* Run your test */
+ 4. igt_kmemleak_scan()
+ 5. if (igt_kmemleak_found_leaks())
+       igt_kmemleak_cp_leaks_file(*dst)
+
+CC: ramadevi.gandi@intel.com
+CC: ryszard.knop@intel.com
+CC: sameer.lattannavar@intel.com
+CC: lucas.demarchi@intel.com
+CC: jani.saarinen@intel.com
+CC: katarzyna.piecielska@intel.com
+CC: matthew.d.roper@intel.com
+CC: gregory.f.germano@intel.com
+CC: clinton.a.taylor@intel.com
+CC: balasubramani.vivekanandan@intel.com
+CC: jianshui.yu@intel.com
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ lib/igt_kmemleak.c       | 154 +++++++++++++++++++++
+ lib/igt_kmemleak.h       |  69 ++++++++++
+ lib/meson.build          |   1 +
+ lib/tests/igt_kmemleak.c | 291 +++++++++++++++++++++++++++++++++++++++
+ lib/tests/meson.build    |   1 +
+ 5 files changed, 516 insertions(+)
+ create mode 100644 lib/igt_kmemleak.c
+ create mode 100644 lib/igt_kmemleak.h
+ create mode 100644 lib/tests/igt_kmemleak.c
+
+diff --git a/lib/igt_kmemleak.c b/lib/igt_kmemleak.c
+new file mode 100644
+index 000000000..02ee0361d
+--- /dev/null
++++ b/lib/igt_kmemleak.c
+@@ -0,0 +1,154 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#include <ctype.h>
++#include <libudev.h>
++#include <stdio.h>
++#include <sys/time.h>
++#include <time.h>
++
++#include "igt_core.h"
++#include "igt_device_scan.h"
++#include "igt_kmemleak.h"
++#include "igt_kmod.h"
++#include "igt_list.h"
++
++/* We can change the path for unit testing, see igt_kmemleak_init() */
++static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
++
++/**
++ * igt_kmemeak_init:
++ * @igt_kmemleak_file: update the path to kmemleak file to enable unit testing
++ *
++ * Check if kmemleak is enabled in the kernel, if debugfs is mounted and
++ * if kmemleak file is present and readable.
++ *
++ * Returns: true if kmemleak is enabled, false otherwise.
++ */
++bool igt_kmemleak_init(const char *unit_test_kmemleak_file)
++{
++	FILE *fp;
++
++	if (unit_test_kmemleak_file)
++		snprintf(igt_kmemleak_file,
++			 sizeof(igt_kmemleak_file),
++			 "%s",
++			 unit_test_kmemleak_file);
++
++	fp = fopen(igt_kmemleak_file, "r");
++	if (!fp)
++		return false;
++
++	fclose(fp);
++	return true;
++}
++
++/**
++ * igt_kmemeak_cmd:
++ * @cmd: command to send to kmemleak
++ *
++ * Send a command to kmemleak.
++ *
++ * Returns: true if sending the command was successful, false otherwise.
++ */
++bool igt_kmemleak_cmd(const char *cmd)
++{
++	FILE *fp;
++
++	fp = fopen(igt_kmemleak_file, "r+");
++	if (!fp)
++		return false;
++
++	if (fwrite(cmd, 1, strlen(cmd), fp) != strlen(cmd)) {
++		fclose(fp);
++		return false;
++	}
++
++	fclose(fp);
++	return true;
++}
++
++/**
++ * igt_kmemeak_scan:
++ *
++ * Trigger an immediate scan on kmemleak.
++ *
++ * Returns: true if sending the command to scan was successful, false otherwise.
++ */
++bool igt_kmemleak_scan(void)
++{
++	return igt_kmemleak_cmd("scan");
++}
++
++/**
++ * igt_kmemeak_clear:
++ *
++ * Trigger an immediate clear on kmemleak.
++ *
++ * Returns: true if sending the command to clear was successful, false
++ * otherwise.
++ */
++bool igt_kmemleak_clear(void)
++{
++	return igt_kmemleak_cmd("clear");
++}
++
++/**
++ * igt_kmemeak_found_leaks:
++ *
++ * Check if kmemleak found any leaks.
++ *
++ * Returns: true if kmemleak found any leaks, false otherwise.
++ */
++bool igt_kmemleak_found_leaks(void)
++{
++	FILE *fp;
++	char buf[1];
++
++	fp = fopen(igt_kmemleak_file, "r");
++	if (!fp)
++		return false;
++
++	if (fread(buf, 1, 1, fp) <= 0) {
++		fclose(fp);
++		return false;
++	}
++
++	/* fread() did read 1 char */
++	fclose(fp);
++	return true;
++}
++
++/**
++ * igt_kmemeak_cp_leaks_file:
++ * @dst: path of destination file including the file name
++ *
++ * Copy kmemleak file to dst.
++ *
++ * Returns: true if copy was successful, false otherwise
++ */
++bool igt_kmemleak_cp_leaks_file(const char *dst)
++{
++	FILE *src, *dest;
++	char buf[1024];
++	size_t n;
++
++	src = fopen(igt_kmemleak_file, "r");
++	if (!src)
++		return false;
++
++	dest = fopen(dst, "w");
++	if (!dest) {
++		fclose(src);
++		return false;
++	}
++
++	while ((n = fread(buf, 1, sizeof(buf), src)) > 0)
++		fwrite(buf, 1, n, dest);
++
++	fclose(src);
++	fclose(dest);
++	return true;
++}
+diff --git a/lib/igt_kmemleak.h b/lib/igt_kmemleak.h
+new file mode 100644
+index 000000000..a65f31810
+--- /dev/null
++++ b/lib/igt_kmemleak.h
+@@ -0,0 +1,69 @@
++/* SPDX-License-Identifier: MIT
++ * Copyright © 2024 Intel Corporation
++ */
++
++#ifndef IGT_KMEMLEAK_H
++#define IGT_KMEMLEAK_H
++
++#include <stdbool.h>
++
++/**
++ * igt_kmemeak_init:
++ * @igt_kmemleak_file: update the path to kmemleak file to enable unit testing
++ *
++ * Check if kmemleak is enabled in the kernel, if debugfs is mounted and
++ * if kmemleak file is present and readable.
++ *
++ * Returns: true if kmemleak is enabled, false otherwise.
++ */
++bool igt_kmemleak_init(const char *unit_test_kmemleak_file);
++
++/**
++ * igt_kmemeak_cmd:
++ * @cmd: command to send to kmemleak
++ *
++ * Send a command to kmemleak.
++ *
++ * Returns: true if sending the command was successful, false otherwise.
++ */
++bool igt_kmemleak_cmd(const char *cmd);
++
++/**
++ * igt_kmemeak_scan:
++ *
++ * Trigger an immediate scan on kmemleak.
++ *
++ * Returns: true if sending the command to scan was successful, false otherwise.
++ */
++bool igt_kmemleak_scan(void);
++
++/**
++ * igt_kmemeak_clear:
++ *
++ * Trigger an immediate clear on kmemleak.
++ *
++ * Returns: true if sending the command to clear was successful, false
++ * otherwise.
++ */
++bool igt_kmemleak_clear(void);
++
++/**
++ * igt_kmemeak_found_leaks:
++ *
++ * Check if kmemleak found any leaks.
++ *
++ * Returns: true if kmemleak found any leaks, false otherwise.
++ */
++bool igt_kmemleak_found_leaks(void);
++
++/**
++ * igt_kmemeak_cp_leaks_file:
++ * @dst: path of destination file including the file name
++ *
++ * Copy kmemleak file to dst.
++ *
++ * Returns: true if copy was successful, false otherwise
++ */
++bool igt_kmemleak_cp_leaks_file(const char *dst);
++
++#endif /* IGT_KMEMLEAK_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index 640513e6c..24423ef37 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -96,6 +96,7 @@ lib_sources = [
+ 	'igt_dummyload.c',
+ 	'igt_store.c',
+ 	'uwildmat/uwildmat.c',
++	'igt_kmemleak.c',
+ 	'igt_kmod.c',
+ 	'igt_ktap.c',
+ 	'igt_panfrost.c',
+diff --git a/lib/tests/igt_kmemleak.c b/lib/tests/igt_kmemleak.c
+new file mode 100644
+index 000000000..f5bf5ca07
+--- /dev/null
++++ b/lib/tests/igt_kmemleak.c
+@@ -0,0 +1,291 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#include <ctype.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <zlib.h>
++
++#include "igt_core.h"
++#include "igt_kmemleak.h"
++
++const char *kmemleak_file_example =
++"unreferenced object 0xffff888102a2e638 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   00 00 00 00 00 00 00 00 0d 01 a2 00 00 00 00 00  ................\n"
++"   f0 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
++" backtrace (crc 2df71a7e):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2ed18 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   38 e6 a2 02 81 88 ff ff 0d 11 2d 00 00 00 00 00  8.........-.....\n"
++"   f2 7c 03 00 00 c9 ff ff 58 ea a2 02 81 88 ff ff  .|......X.......\n"
++" backtrace (crc ec2a8bdc):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2ea58 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   38 e6 a2 02 81 88 ff ff 0d 01 a0 00 00 00 00 00  8...............\n"
++"   f6 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
++" backtrace (crc f911c0d1):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2e428 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   58 ea a2 02 81 88 ff ff 0d 01 35 00 00 00 00 00  X.........5.....\n"
++"   fc 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
++" backtrace (crc cb8aaffd):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2e008 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   28 e4 a2 02 81 88 ff ff 0d 01 2d 00 00 00 00 00  (.........-.....\n"
++"   fc 7c 03 00 00 c9 ff ff c8 e2 a2 02 81 88 ff ff  .|..............\n"
++" backtrace (crc 7f883e78):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2b9e5>] acpi_ps_get_next_namepath+0x1f5/0x390\n"
++"   [<ffffffff81c2cc15>] acpi_ps_parse_loop+0x4a5/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2e2c8 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   28 e4 a2 02 81 88 ff ff 0d 01 73 00 00 00 00 00  (.........s.....\n"
++"   00 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
++" backtrace (crc 338c016):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2e378 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   c8 e2 a2 02 81 88 ff ff 0d 01 0d 00 00 00 00 00  ................\n"
++"   01 7d 03 00 00 c9 ff ff 98 e7 a2 02 81 88 ff ff  .}..............\n"
++" backtrace (crc 665fb8a7):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2e798 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   7c8 e2 a2 02 81 88 ff ff 0d 01 98 00 00 00 00 00  ................\n"
++"   1b 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
++" backtrace (crc b7a23a1c):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
++"unreferenced object 0xffff888102a2e0b8 (size 80):\n"
++" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
++" hex dump (first 32 bytes):\n"
++"   98 e7 a2 02 81 88 ff ff 0d 01 2d 00 00 00 00 00  ..........-.....\n"
++"   1c 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
++" backtrace (crc 14d67a9c):\n"
++"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
++"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
++"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
++"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
++"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
++"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
++"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
++"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
++"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
++"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
++"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
++"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
++"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
++"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
++"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
++"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170\n";
++
++static unsigned long crc32_file(int fd)
++{
++	unsigned long crc;
++	char buf[1024];
++	ssize_t n;
++
++	crc = crc32(0, Z_NULL, 0);
++	while ((n = read(fd, buf, sizeof(buf))) > 0)
++		crc = crc32(crc, (const Bytef *)buf, n);
++
++	return crc;
++}
++
++static void test_igt_kmemleak_cp_leaks_file(void)
++{
++	char dst_file_path[256] = "/tmp/igt_kmemleak_dstfile_XXXXXX";
++	int fd;
++	unsigned long crc;
++
++	fd = mkstemp(dst_file_path);
++	close(fd);
++
++	igt_assert(igt_kmemleak_cp_leaks_file(dst_file_path));
++
++	/* Test that both files have the same size */
++	fd = open(dst_file_path, O_RDONLY);
++	igt_assert(fd >= 0);
++	igt_assert(lseek(fd, 0, SEEK_END) == strlen(kmemleak_file_example));
++	close(fd);
++
++	/* Test that both files have the same content */
++	crc = crc32(0, Z_NULL, 0);
++	crc = crc32(crc,
++		    (const Bytef *)kmemleak_file_example,
++		    strlen(kmemleak_file_example));
++
++	fd = open(dst_file_path, O_RDONLY);
++	igt_assert(fd >= 0);
++	igt_info(" dst_file: %s\n", dst_file_path);
++	close(fd);
++}
++
++static void test_empty_file(void)
++{
++	char tmp_file_path[256] = "/tmp/igt_kmemleak_test_XXXXXX";
++	int fd;
++
++	fd = mkstemp(tmp_file_path);
++	igt_assert(fd >= 0);
++	close(fd);
++
++	/* Set the path for the unit testing file */
++	igt_assert(igt_kmemleak_init(tmp_file_path));
++	igt_assert(!igt_kmemleak_found_leaks());
++}
++
++static void test_non_empty_file(void)
++{
++	char tmp_file_path[256] = "/tmp/igt_kmemleak_test_XXXXXX";
++	int fd;
++
++	fd = mkstemp(tmp_file_path);
++	igt_assert(fd >= 0);
++	write(fd, kmemleak_file_example, strlen(kmemleak_file_example));
++
++	/* Set the path for the unit testing file */
++	igt_assert(igt_kmemleak_init(tmp_file_path));
++
++	/* Test igt_kmemleak_found_leaks() that should return true */
++	igt_assert(igt_kmemleak_found_leaks());
++}
++
++igt_simple_main
++{
++	test_empty_file();
++	test_non_empty_file();
++	test_igt_kmemleak_cp_leaks_file();
++}
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index df8092638..bcbea9ba4 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -15,6 +15,7 @@ lib_tests = [
+         'igt_ktap_parser',
+ 	'igt_list_only',
+ 	'igt_invalid_subtest_name',
++	'igt_kmemleak',
+ 	'igt_nesting',
+ 	'igt_no_exit',
+ 	'igt_runnercomms_packets',
+-- 
+2.34.1
 
