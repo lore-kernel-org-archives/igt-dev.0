@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3E62E77183
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 23:26:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4B84E77184
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 23:53:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E71A10E4D2;
-	Mon, 16 Dec 2024 23:26:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 607AC10E7EB;
+	Mon, 16 Dec 2024 23:53:16 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3872510E1CC;
- Mon, 16 Dec 2024 23:26:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A1BF10E7EA;
+ Mon, 16 Dec 2024 23:53:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/igt=5Fkmemleak=3A_lib?=
- =?utf-8?q?rary_to_interact_with_kmemleak?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fasync=5Fflips?=
+ =?utf-8?q?=3A_Create_subtest_for_overlay_planes_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
+To: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Dec 2024 23:26:03 -0000
-Message-ID: <173439156322.3482645.12114014848185627884@b555e5b46a47>
+Date: Mon, 16 Dec 2024 23:53:15 -0000
+Message-ID: <173439319523.3497811.13582866521232381783@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20241216184642.133454-1-peter.senna@linux.intel.com>
-In-Reply-To: <20241216184642.133454-1-peter.senna@linux.intel.com>
+References: <20241216202427.76168-1-andrealmeid@igalia.com>
+In-Reply-To: <20241216202427.76168-1-andrealmeid@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,107 +43,83 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: lib/igt_kmemleak: library to interact with kmemleak
-URL   : https://patchwork.freedesktop.org/series/142673/
-State : failure
+Series: tests/kms_async_flips: Create subtest for overlay planes (rev2)
+URL   : https://patchwork.freedesktop.org/series/142386/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8157 -> IGTPW_12327
+CI Bug Log - changes from IGT_8157 -> IGTPW_12328
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_12327 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12327, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/index.html
 
 Participating hosts (45 -> 44)
 ------------------------------
 
   Missing    (1): fi-snb-2520m 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12327:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/bat-mtlp-8/igt@i915_selftest@live.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12327 that come from known issues:
+  Here are the changes found in IGTPW_12328 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_module_load@reload:
-    - fi-cfl-guc:         [PASS][3] -> [DMESG-WARN][4] ([i915#1982])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/fi-cfl-guc/igt@i915_module_load@reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/fi-cfl-guc/igt@i915_module_load@reload.html
-
   * igt@i915_selftest@live:
-    - bat-arls-5:         NOTRUN -> [ABORT][5] ([i915#12061])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/bat-arls-5/igt@i915_selftest@live.html
+    - bat-mtlp-8:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/bat-mtlp-8/igt@i915_selftest@live.html
+    - fi-skl-6600u:       [PASS][3] -> [INCOMPLETE][4] ([i915#13050])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/fi-skl-6600u/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/fi-skl-6600u/igt@i915_selftest@live.html
 
   * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][6] -> [ABORT][7] ([i915#12061])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-8:         [PASS][8] -> [ABORT][9] ([i915#12061])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
+    - bat-arlh-3:         [PASS][5] -> [ABORT][6] ([i915#12061]) +1 other test abort
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/bat-arlh-3/igt@i915_selftest@live@workarounds.html
 
   
 #### Possible fixes ####
 
-  * igt@i915_selftest@live@gt_mocs:
-    - bat-twl-2:          [ABORT][10] ([i915#12919]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/bat-twl-2/igt@i915_selftest@live@gt_mocs.html
-
   * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [ABORT][12] ([i915#12061]) -> [PASS][13] +1 other test pass
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-6:         [ABORT][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+    - {bat-arls-6}:       [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/bat-arls-6/igt@i915_selftest@live@workarounds.html
 
   
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+  [i915#13050]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_8157 -> IGTPW_12327
+  * IGT: IGT_8157 -> IGTPW_12328
   * Linux: CI_DRM_15848 -> CI_DRM_15855
 
   CI-20190529: 20190529
   CI_DRM_15848: 63be16e210b1c3e43b43d8ca9b7e17f15142d2c3 @ git://anongit.freedesktop.org/gfx-ci/linux
   CI_DRM_15855: 8bfb48c045396305771aaea35f06d5ef3bf3a191 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12327: 9f8406e86d1d9fdce5fea06e856390c7c968cb48 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12328: 6a635c371e592ececc2bd1287971005861c85d91 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8157: 48a70f6795e6d68b9fae275261ae3b09d3401fe1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12327/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12328/index.html
