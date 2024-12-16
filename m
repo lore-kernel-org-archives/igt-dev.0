@@ -4,71 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4F8E7717F
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 15:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CFA0E7717F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 15:31:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31FE110E6CD;
-	Mon, 16 Dec 2024 15:15:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E07710E6D4;
+	Mon, 16 Dec 2024 15:31:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GSPqk+/h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hCfZ0uj4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3095310E6CD
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 15:15:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98E5C10E6D4
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 15:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734362120; x=1765898120;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CoGBTkrexc4g2tc5VdaTbfS249KzVoymZ5t/6JkCqvA=;
- b=GSPqk+/hZAM9a7NVkwwA5QM7SZyldJkre0OCJpNuCl/aK0YEOMCWn4p2
- IeP0ntEU0BWyaH0XdIr+io5gx0gfKs5Fqw/S7kyNTDH5Up7vbpJ0H6OfK
- KubbNSt8sYzUC5zp4OKBvRQvxru6h1A4mrdlc0epW4CNUFwdGhhlwarBb
- Wc6fn/KgYRNEOv6Xwmvaxb82lye2ZEdbEQovYsy0XNmo0Javn7+Jg/h1i
- XVtZyjgZ6qOXaR3GEpQj86MpKZQfiUB+SYoH/TrHGX/8ckcvf7rmb9/HT
- N8GOEJJ3zfEWS+Ag53fdyrC4rYgA8Pbet9O5vGMHjm1LzpdacARLJ2YVP w==;
-X-CSE-ConnectionGUID: sxe0d/yUQoatk0PI40m5Zg==
-X-CSE-MsgGUID: OlASrc7ITM+uZkqQZjVwXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="60137463"
-X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; d="scan'208";a="60137463"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 07:15:20 -0800
-X-CSE-ConnectionGUID: KGRCtDfnQAq6xiifAXCkKA==
-X-CSE-MsgGUID: ufLg+br/SBqSoOeoKyhUzA==
+ t=1734363100; x=1765899100;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XVfaF+vZd9zro6ytsumCV+uHUPHvFF+6uOT5E1M2DyI=;
+ b=hCfZ0uj47sPgGXYBWsSYwuUVwhCdl9hyQqwSfVrt3s9P20k/cUAjCACf
+ 2KOcJ+ykN0C2SLAd3ojbrCp02tZosD4dZApVfDlJ3vww8wY6cvS8eRLod
+ GFqRZgx0hf2fjf5lV5yacan5dr2MG/3i/l6rVx6AVTEsE67hWDBnHh2RW
+ W4NdXJth52uYxIdhdBS7iYcYKJ6Aq46D1+LfX0md5skMvDBaJ++ge2nf6
+ jLKFkRJvO8doYdW8RARneBimCpLfqF5+Z0jD8KTNZ2CXi9dyd+zNl1HM2
+ yti0aUt+1ru+2KT4wX/TjXydBSmD5Et7/QPHyTELAfgEn19iEQ4A53x6Q w==;
+X-CSE-ConnectionGUID: QgXFyh/iQx+8ZW4qdxoqFQ==
+X-CSE-MsgGUID: d1/47AcuQM+L+NRFGzueQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="52274480"
+X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; d="scan'208";a="52274480"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2024 07:31:39 -0800
+X-CSE-ConnectionGUID: lbIeHas9S4W+KxUqK5S9GQ==
+X-CSE-MsgGUID: eCTKcVTsSA6urENvxlbCpQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128208791"
-Received: from courtneypc.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.213.202.56])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 07:15:15 -0800
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102221267"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.213])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2024 07:31:37 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Helen Koike <helen.koike@collabora.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
- Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
- Rob Clark <robdclark@chromium.org>, Ryszard Knop <ryszard.knop@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- dominik.karol.piatkowski@intel.com, himal.prasad.ghimiray@intel.com,
- katarzyna.piecielska@intel.com, luciano.coelho@intel.com,
- nirmoy.das@intel.com, stuart.summers@intel.com
-Subject: [PATCH i-g-t v14 resend 3/3] runner/executor: Integrate igt_facts
- functionality
-Date: Mon, 16 Dec 2024 16:14:20 +0100
-Message-Id: <20241216151420.43042-4-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241216151420.43042-1-peter.senna@linux.intel.com>
-References: <20241216151420.43042-1-peter.senna@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: [PATCH i-g-t] tests/intel/gem_pxp: Fix requirements
+Date: Mon, 16 Dec 2024 16:31:29 +0100
+Message-ID: <20241216153129.50964-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -85,252 +68,253 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Modifies igt_runner to include calls to igt_facts() before the
-execution of each test and after the final test concludes. Facts are
-disabled by default, so add command line options to igt_runner to
-enable facts:  -f, --facts
+Requirements should either be global in first igt_fixture or
+should be placed in each subtests. Placing them in later
+fixtures results in misleading reports like:
 
-Updates serialize_settings() and read_settings_from_file() to save
-and restore igt_runner settings to and from disk. This is used when
-calling igt_runner with '--dry-run' and then by calling igt_resume
-instead of igt_runner.
+sudo ./gem_pxp --r hw-rejects-pxp-context
+Subtest hw-rejects-pxp-context: SUCCESS (0,001s)
+Test requirement not met in [...] ../tests/intel/gem_pxp.c:1317:
+Test requirement: pxp_supported
 
-Updates unit testing for igt_runner to test that:
- - Facts are disabled by default
- - Facts can be enabled by command line arguments
- - The choice about facts being enabled or not is saved to disk
-   and restored from disk
+Created few helpers and used them in each subtest, also
+fixed closing power debugfs fd.
 
-CC: Helen Koike <helen.koike@collabora.com>
-CC: Jani Nikula <jani.nikula@linux.intel.com>
-CC: Jani Saarinen <jani.saarinen@intel.com>
-CC: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-CC: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-CC: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: Maíra Canal <mcanal@igalia.com>
-CC: Melissa Wen <mwen@igalia.com>
-CC: Petri Latvala <adrinael@adrinael.net>
-CC: Rob Clark <robdclark@chromium.org>
-CC: Ryszard Knop <ryszard.knop@intel.com>
-CC: Swati Sharma <swati2.sharma@intel.com>
-CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-CC: dominik.karol.piatkowski@intel.com
-CC: himal.prasad.ghimiray@intel.com
-CC: katarzyna.piecielska@intel.com
-CC: luciano.coelho@intel.com
-CC: nirmoy.das@intel.com
-CC: stuart.summers@intel.com
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
-Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- runner/executor.c     | 14 ++++++++++++++
- runner/runner_tests.c | 11 ++++++++++-
- runner/settings.c     | 10 +++++++++-
- runner/settings.h     |  1 +
- 4 files changed, 34 insertions(+), 2 deletions(-)
+ tests/intel/gem_pxp.c | 157 +++++++++++++++++++++++++++---------------
+ 1 file changed, 101 insertions(+), 56 deletions(-)
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 49ae8c90d..999e7f719 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -30,6 +30,7 @@
+diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
+index 94544240d..d1562a165 100644
+--- a/tests/intel/gem_pxp.c
++++ b/tests/intel/gem_pxp.c
+@@ -1282,11 +1282,33 @@ static void test_display_protected_crc(int i915, igt_display_t *display)
+ 	igt_remove_fb(i915, &protected_fb);
+ }
  
- #include "igt_aux.h"
- #include "igt_core.h"
-+#include "igt_facts.h"
- #include "igt_taints.h"
- #include "igt_vec.h"
- #include "executor.h"
-@@ -2360,11 +2361,14 @@ bool execute(struct execute_state *state,
- 	sigset_t sigmask;
- 	double time_spent = 0.0;
- 	bool status = true;
-+	char *last_test = NULL;
- 
- 	if (state->dry) {
- 		outf("Dry run, not executing. Invoke igt_resume if you want to execute.\n");
- 		return true;
++static void require_nopxp(bool pxp_supported, uint32_t devid)
++{
++	igt_require_f(!pxp_supported, "HW supports PXP, devid=%x\n", devid);
++}
++
++static void require_pxp(bool pxp_supported, uint32_t devid)
++{
++	igt_require_f(pxp_supported, "HW do not supports PXP, devid=%x\n", devid);
++}
++
++static void require_pxp_render(bool pxp_supported, uint32_t devid, igt_render_copyfunc_t rendercopy)
++{
++	require_pxp(pxp_supported, devid);
++	igt_require_f(rendercopy, "No rendercopy found for devid=%x\n", devid);
++}
++
++static void require_init_powermgt(int i915, struct powermgt_data *pm)
++{
++	if (pm->debugfsdir == -1)
++		init_powermgt_resources(i915, pm);
++}
++
+ igt_main
+ {
+ 	int i915 = -1;
+ 	bool pxp_supported = false;
+-	struct powermgt_data pm = {0};
++	struct powermgt_data pm = {-1};
+ 	igt_render_copyfunc_t rendercopy = NULL;
+ 	uint32_t devid = 0;
+ 	igt_display_t display;
+@@ -1296,110 +1318,133 @@ igt_main
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+ 		igt_require(i915);
+ 		igt_require_gem(i915);
++		devid = intel_get_drm_devid(i915);
++		igt_assert(devid);
+ 		pxp_supported = is_pxp_hw_supported(i915);
++		rendercopy = igt_get_render_copyfunc(devid);
  	}
-+	if (settings->facts)
-+		igt_facts_lists_init();
  
- 	if (state->next >= job_list->size) {
- 		outf("All tests already executed.\n");
-@@ -2492,6 +2496,12 @@ bool execute(struct execute_state *state,
- 		int result;
- 		bool already_written = false;
- 
-+		/* Collect facts before running each test */
-+		if (settings->facts) {
-+			igt_facts(last_test);
-+			last_test = entry_display_name(&job_list->entries[state->next]);
+ 	igt_subtest_group {
+-		igt_fixture {
+-			igt_require((pxp_supported == 0));
+-		}
+-
+ 		igt_describe("Verify protected buffer on unsupported hw:");
+-		igt_subtest("hw-rejects-pxp-buffer")
++		igt_subtest("hw-rejects-pxp-buffer") {
++			require_nopxp(pxp_supported, devid);
+ 			test_bo_alloc_pxp_nohw(i915);
 +		}
-+
- 		if (should_die_because_signal(sigfd)) {
- 			status = false;
- 			goto end;
-@@ -2581,6 +2591,10 @@ bool execute(struct execute_state *state,
- 		}
+ 		igt_describe("Verify protected context on unsupported hw:");
+-		igt_subtest("hw-rejects-pxp-context")
++		igt_subtest("hw-rejects-pxp-context") {
++			require_nopxp(pxp_supported, devid);
+ 			test_ctx_alloc_pxp_nohw(i915);
++		}
  	}
  
-+	/* Collect facts after the last test runs */
-+	if (settings->facts)
-+		igt_facts(last_test);
-+
- 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
- 		dprintf(timefd, "%f\n", timeofday_double());
- 		close(timefd);
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index a661722ac..8441763f2 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -190,6 +190,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
- 	igt_assert_eqstr(one->name, two->name);
- 	igt_assert_eq(one->dry_run, two->dry_run);
- 	igt_assert_eq(one->allow_non_root, two->allow_non_root);
-+	igt_assert_eq(one->facts, two->facts);
- 	igt_assert_eq(one->sync, two->sync);
- 	igt_assert_eq(one->log_level, two->log_level);
- 	igt_assert_eq(one->overwrite, two->overwrite);
-@@ -302,6 +303,7 @@ igt_main
- 		igt_assert_eq(settings->exclude_regexes.size, 0);
- 		igt_assert(igt_list_empty(&settings->env_vars));
- 		igt_assert(!igt_vec_length(&settings->hook_strs));
-+		igt_assert(!settings->facts);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -423,6 +425,7 @@ igt_main
- 		igt_assert(!settings->dry_run);
- 		igt_assert_eq(settings->include_regexes.size, 0);
- 		igt_assert_eq(settings->exclude_regexes.size, 0);
-+		igt_assert(!settings->facts);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -460,6 +463,7 @@ igt_main
- 				       "--environment", "ENVS_WITH_JUST_KEYS",
- 				       "-b", blacklist_name,
- 				       "--blacklist", blacklist2_name,
-+				       "-f",
- 				       "-s",
- 				       "-l", "verbose",
- 				       "--overwrite",
-@@ -518,6 +522,7 @@ igt_main
- 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 0)), "echo hello");
- 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 1)), "echo world");
+ 	igt_subtest_group {
+-		igt_fixture {
+-			igt_require(pxp_supported);
+-		}
+-
+ 		igt_describe("Verify protected buffer on supported hw:");
+-		igt_subtest("create-regular-buffer")
++		igt_subtest("create-regular-buffer") {
++			require_pxp(pxp_supported, devid);
+ 			test_bo_alloc_pxp_off(i915);
+-		igt_subtest("create-protected-buffer")
++		}
++		igt_subtest("create-protected-buffer") {
++			require_pxp(pxp_supported, devid);
+ 			test_bo_alloc_pxp_on(i915);
++		}
  
-+		igt_assert(settings->facts);
- 		igt_assert(settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_VERBOSE);
- 		igt_assert(settings->overwrite);
-@@ -724,16 +729,19 @@ igt_main
- 		igt_assert_eqstr(settings->name, "foo");
- 		igt_assert(settings->dry_run);
- 		igt_assert(!settings->test_list);
-+		igt_assert(!settings->facts);
- 		igt_assert(!settings->sync);
+ 		igt_describe("Verify protected context on supported hw:");
+-		igt_subtest("create-regular-context-1")
++		igt_subtest("create-regular-context-1") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_alloc_recover_off_protect_off(i915);
+-		igt_subtest("create-regular-context-2")
++		}
++		igt_subtest("create-regular-context-2") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_alloc_recover_on_protect_off(i915);
+-		igt_subtest("fail-invalid-protected-context")
++		}
++		igt_subtest("fail-invalid-protected-context") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_alloc_recover_on_protect_on(i915);
+-		igt_subtest("create-valid-protected-context")
++		}
++		igt_subtest("create-valid-protected-context") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_alloc_recover_off_protect_on(i915);
++		}
  
- 		argv[1] = "--test-list";
--		argv[3] = "--sync";
-+		argv[3] = "--facts";
-+		argv[4] = "--sync";
- 
- 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
- 
- 		igt_assert_eqstr(settings->name, "results-path");
- 		igt_assert(!settings->dry_run);
- 		igt_assert(strstr(settings->test_list, "foo") != NULL);
-+		igt_assert(settings->facts);
- 		igt_assert(settings->sync);
+ 		igt_describe("Verify protected context integrity:");
+-		igt_subtest("reject-modify-context-protection-on")
++		igt_subtest("reject-modify-context-protection-on") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_mod_regular_to_all_valid(i915);
+-		igt_subtest("reject-modify-context-protection-off-1")
++		}
++		igt_subtest("reject-modify-context-protection-off-1") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_mod_recover_off_to_on(i915);
+-		igt_subtest("reject-modify-context-protection-off-2")
++		}
++		igt_subtest("reject-modify-context-protection-off-2") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_mod_protected_on_to_off(i915);
+-		igt_subtest("reject-modify-context-protection-off-3")
++		}
++		igt_subtest("reject-modify-context-protection-off-3") {
++			require_pxp(pxp_supported, devid);
+ 			test_ctx_mod_protected_to_all_invalid(i915);
++		}
+ 	}
+ 	igt_subtest_group {
+-		igt_fixture {
+-			igt_require(pxp_supported);
+-			devid = intel_get_drm_devid(i915);
+-			igt_assert(devid);
+-			rendercopy = igt_get_render_copyfunc(devid);
+-			igt_require(rendercopy);
+-		}
+-
+ 		igt_describe("Verify protected render operations:");
+-		igt_subtest("regular-baseline-src-copy-readible")
++		igt_subtest("regular-baseline-src-copy-readible") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
+ 			test_render_baseline(i915);
+-		igt_subtest("protected-raw-src-copy-not-readible")
++		}
++		igt_subtest("protected-raw-src-copy-not-readible") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
+ 			test_render_pxp_src_to_protdest(i915);
+-		igt_subtest("protected-encrypted-src-copy-not-readible")
++		}
++		igt_subtest("protected-encrypted-src-copy-not-readible") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
+ 			test_render_pxp_protsrc_to_protdest(i915);
+-		igt_subtest("dmabuf-shared-protected-dst-is-context-refcounted")
++		}
++		igt_subtest("dmabuf-shared-protected-dst-is-context-refcounted") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
+ 			test_pxp_dmabuffshare_refcnt(i915);
++		}
+ 	}
+ 	igt_subtest_group {
+-		igt_fixture {
+-			igt_require(pxp_supported);
+-			devid = intel_get_drm_devid(i915);
+-			igt_assert(devid);
+-			rendercopy = igt_get_render_copyfunc(devid);
+-			igt_require(rendercopy);
+-			init_powermgt_resources(i915, &pm);
+-		}
+ 		igt_describe("Verify suspend-resume teardown management:");
+-		igt_subtest("verify-pxp-key-change-after-suspend-resume")
++		igt_subtest("verify-pxp-key-change-after-suspend-resume") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
++			require_init_powermgt(i915, &pm);
+ 			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
+-		igt_subtest("verify-pxp-stale-ctx-execution")
++		}
++		igt_subtest("verify-pxp-stale-ctx-execution") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
++			require_init_powermgt(i915, &pm);
+ 			test_pxp_stale_ctx_execution(i915);
+-		igt_subtest("verify-pxp-stale-buf-execution")
++		}
++		igt_subtest("verify-pxp-stale-buf-execution") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
++			require_init_powermgt(i915, &pm);
+ 			test_pxp_stale_buf_execution(i915);
+-		igt_subtest("verify-pxp-stale-buf-optout-execution")
++		}
++		igt_subtest("verify-pxp-stale-buf-optout-execution") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
++			require_init_powermgt(i915, &pm);
+ 			test_pxp_stale_buf_optout_execution(i915);
+-		igt_subtest("verify-pxp-execution-after-suspend-resume")
++		}
++		igt_subtest("verify-pxp-execution-after-suspend-resume") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
++			require_init_powermgt(i915, &pm);
+ 			test_pxp_pwrcycle_staleasset_execution(i915, &pm);
++		}
+ 	}
+ 	igt_subtest_group {
+-		igt_fixture {
+-			igt_require(pxp_supported);
+-			devid = intel_get_drm_devid(i915);
+-			igt_assert(devid);
+-			rendercopy = igt_get_render_copyfunc(devid);
+-			igt_require(rendercopy);
+-
++		igt_describe("Test the display CRC");
++		igt_subtest("display-protected-crc") {
++			require_pxp_render(pxp_supported, devid, rendercopy);
+ 			igt_require_pipe_crc(i915);
+ 			igt_display_require(&display, i915);
+-		}
+-		igt_describe("Test the display CRC");
+-		igt_subtest("display-protected-crc")
+ 			test_display_protected_crc(i915, &display);
++		}
  	}
  
-@@ -966,6 +974,7 @@ igt_main
- 					       "-t", "pattern2",
- 					       "-x", "xpattern1",
- 					       "-x", "xpattern2",
-+					       "-f",
- 					       "-s",
- 					       "-l", "verbose",
- 					       "--overwrite",
-diff --git a/runner/settings.c b/runner/settings.c
-index 0d27e7af3..92fd42ea6 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -40,6 +40,7 @@ enum {
- 	OPT_INCLUDE = 't',
- 	OPT_EXCLUDE = 'x',
- 	OPT_ENVIRONMENT = 'e',
-+	OPT_FACTS = 'f',
- 	OPT_SYNC = 's',
- 	OPT_LOG_LEVEL = 'l',
- 	OPT_OVERWRITE = 'o',
-@@ -230,6 +231,7 @@ static const char *usage_str =
- 	"                                   environment variable IGT_PING_HOSTNAME does\n"
- 	"                                   not respond to ping.\n"
- 	"                         all     - abort for all of the above.\n"
-+	"  -f, --facts           Enable facts tracking\n"
- 	"  -s, --sync            Sync results to disk after every test\n"
- 	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
- 	"                        Set the logger verbosity level\n"
-@@ -665,6 +667,7 @@ bool parse_options(int argc, char **argv,
- 		{"environment", required_argument, NULL, OPT_ENVIRONMENT},
- 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
- 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
-+		{"facts", no_argument, NULL, OPT_FACTS},
- 		{"sync", no_argument, NULL, OPT_SYNC},
- 		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
- 		{"test-list", required_argument, NULL, OPT_TEST_LIST},
-@@ -695,7 +698,7 @@ bool parse_options(int argc, char **argv,
- 	settings->dmesg_warn_level = -1;
- 	settings->prune_mode = -1;
- 
--	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
-+	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
- 				long_options, NULL)) != -1) {
- 		switch (c) {
- 		case OPT_VERSION:
-@@ -736,6 +739,9 @@ bool parse_options(int argc, char **argv,
- 				goto error;
- 			}
- 			break;
-+		case OPT_FACTS:
-+			settings->facts = true;
-+			break;
- 		case OPT_SYNC:
- 			settings->sync = true;
- 			break;
-@@ -1098,6 +1104,7 @@ bool serialize_settings(struct settings *settings)
- 		SERIALIZE_LINE(f, settings, name, "%s");
- 	SERIALIZE_LINE(f, settings, dry_run, "%d");
- 	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
-+	SERIALIZE_LINE(f, settings, facts, "%d");
- 	SERIALIZE_LINE(f, settings, sync, "%d");
- 	SERIALIZE_LINE(f, settings, log_level, "%d");
- 	SERIALIZE_LINE(f, settings, overwrite, "%d");
-@@ -1168,6 +1175,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_LINE(settings, name, val, name, val ? strdup(val) : NULL);
- 		PARSE_LINE(settings, name, val, dry_run, numval);
- 		PARSE_LINE(settings, name, val, allow_non_root, numval);
-+		PARSE_LINE(settings, name, val, facts, numval);
- 		PARSE_LINE(settings, name, val, sync, numval);
- 		PARSE_LINE(settings, name, val, log_level, numval);
- 		PARSE_LINE(settings, name, val, overwrite, numval);
-diff --git a/runner/settings.h b/runner/settings.h
-index 8335f0b8c..f69f09778 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -57,6 +57,7 @@ struct settings {
- 	struct regex_list exclude_regexes;
- 	struct igt_list_head env_vars;
- 	struct igt_vec hook_strs;
-+	bool facts;
- 	bool sync;
- 	int log_level;
- 	bool overwrite;
+ 	igt_fixture {
++		if (pm.debugfsdir != -1)
++			close(pm.debugfsdir);
++
+ 		drm_close_driver(i915);
+ 	}
+ }
 -- 
-2.34.1
+2.47.1
 
