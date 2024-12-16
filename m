@@ -4,28 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8473AE7717F
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 20:15:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5764FE7717F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Dec 2024 20:24:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35A1F10E2D2;
-	Mon, 16 Dec 2024 20:15:35 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D569A10E2D2;
- Mon, 16 Dec 2024 20:15:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD45510E407;
+	Mon, 16 Dec 2024 20:24:37 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="hYzeIG5L";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DC6510E407
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2024 20:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+ Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=GE+DEYXzYUU5ZY939idDwkERpSCRZk5EUoB14ekfkRs=; b=hYzeIG5LhGEhBUkaR6JdHw7E99
+ upHhSWGF1ieQtB4qy4QkQpMsaK/azAlItdcdbZ89iN4da9M+Yq8IxA2nfBSsrxi5PNWazdMur2gHf
+ MI20FuhvbI60SKBBwfo6NHKZmUFefVJF8qztdNj+4ez7W6gDjUBjjCfa2xyY7Os247ZAMKVnOZZBj
+ 4Vq59weAvYSJMmPeJG0PtqwkIXN5SuMy5j47exEvErplYt36E8aigk0SUk8kWPirpclcCGMmEhYJU
+ ehkC9jbDKR9hKQz5NvxbVXJo5N098pfb4SLMQA0dY8aUjRn/hTmhw9YBJBLEV2dohGZ/OX5SixfEc
+ AHulxWtg==;
+Received: from [179.193.1.214] (helo=localhost.localdomain)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1tNHdo-003vtT-K4; Mon, 16 Dec 2024 21:24:33 +0100
+From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: kernel-dev@igalia.com,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+Subject: [PATCH v2] tests/kms_async_flips: Create subtest for overlay planes
+Date: Mon, 16 Dec 2024 17:24:27 -0300
+Message-ID: <20241216202427.76168-1-andrealmeid@igalia.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2C1/2=5D_lib/xe/xe=5Futil=3A_introduce_helper_for_enabling_c?=
- =?utf-8?q?cs_mode?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Dec 2024 20:15:33 -0000
-Message-ID: <173438013387.3405903.14478148648112323162@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241216131137.50945-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20241216131137.50945-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,85 +56,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+amdgpu can perform async flips in overlay planes as well, so create a
+test for that.
 
-Series: series starting with [i-g-t,1/2] lib/xe/xe_util: introduce helper for enabling ccs mode
-URL   : https://patchwork.freedesktop.org/series/142652/
-State : success
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+---
+v2: Add test description for GitLab compilation
+---
+ tests/kms_async_flips.c | 45 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 4 deletions(-)
 
-== Summary ==
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 4a72be7b5..dd0907d50 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -89,6 +89,9 @@
+  *
+  * SUBTEST: async-flip-suspend-resume
+  * Description: Verify the async flip functionality with suspend and resume cycle
++ *
++ * SUBTEST: overlay-atomic
++ * Description: Verify overlay planes with async flips in atomic API
+  */
+ 
+ #define CURSOR_POS 128
+@@ -109,12 +112,14 @@ typedef struct {
+ 	uint32_t crtc_id;
+ 	uint32_t refresh_rate;
+ 	struct igt_fb bufs[NUM_FBS];
++	struct igt_fb bufs_overlay[NUM_FBS];
+ 	igt_display_t display;
+ 	igt_output_t *output;
+ 	unsigned long flip_timestamp_us;
+ 	double flip_interval;
+ 	uint64_t modifier;
+ 	igt_plane_t *plane;
++	igt_plane_t *overlay_plane;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	igt_crc_t ref_crc;
+ 	int flip_count;
+@@ -126,6 +131,7 @@ typedef struct {
+ 	bool allow_fail;
+ 	struct buf_ops *bops;
+ 	bool atomic_path;
++	bool overlay_path;
+ } data_t;
+ 
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+@@ -226,6 +232,8 @@ static void test_init(data_t *data)
+ 	igt_output_set_pipe(data->output, data->pipe);
+ 
+ 	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
++	if (data->overlay_path)
++		data->overlay_plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_OVERLAY);
+ }
+ 
+ static void test_init_fbs(data_t *data)
+@@ -246,16 +254,27 @@ static void test_init_fbs(data_t *data)
+ 		prev_modifier = data->modifier;
+ 
+ 		if (data->bufs[0].fb_id) {
+-			for (i = 0; i < NUM_FBS; i++)
++			for (i = 0; i < NUM_FBS; i++) {
+ 				igt_remove_fb(data->drm_fd, &data->bufs[i]);
++				if (data->overlay_path)
++					igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
++			}
+ 		}
+ 
+-		for (i = 0; i < NUM_FBS; i++)
++		for (i = 0; i < NUM_FBS; i++) {
+ 			make_fb(data, &data->bufs[i], width, height, i);
++			if (data->overlay_path)
++				make_fb(data, &data->bufs_overlay[i], width, height, i);
++		}
+ 	}
+ 
+ 	igt_plane_set_fb(data->plane, &data->bufs[0]);
+ 	igt_plane_set_size(data->plane, width, height);
++
++	if (data->overlay_path) {
++		igt_plane_set_fb(data->overlay_plane, &data->bufs[0]);
++		igt_plane_set_size(data->overlay_plane, width, height);
++	}
+ }
+ 
+ static bool async_flip_needs_extra_frame(data_t *data)
+@@ -283,12 +302,17 @@ static bool async_flip_needs_extra_frame(data_t *data)
+ static int perform_flip(data_t *data, int frame, int flags)
+ {
+ 	int ret;
++	igt_plane_t *plane;
++	struct igt_fb *bufs;
++
++	plane = data->overlay_path ? data->overlay_plane : data->plane;
++	bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
+ 
+ 	if (!data->atomic_path) {
+ 		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+-				      data->bufs[frame % NUM_FBS].fb_id, flags, data);
++				     bufs[frame % NUM_FBS].fb_id, flags, data);
+ 	} else {
+-		igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
++		igt_plane_set_fb(plane, &data->bufs[frame % NUM_FBS]);
+ 		ret = igt_display_try_commit_atomic(&data->display, flags, data);
+ 	}
+ 
+@@ -772,6 +796,7 @@ igt_main
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+ 			data.alternate_sync_async = false;
+ 			data.atomic_path = false;
++			data.overlay_path = false;
+ 			if (is_intel_device(data.drm_fd))
+ 				run_test_with_modifiers(&data, test_async_flip);
+ 			else
+@@ -783,6 +808,7 @@ igt_main
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
+ 			data.alternate_sync_async = false;
+ 			data.atomic_path = true;
++			data.overlay_path = false;
+ 			if (is_intel_device(data.drm_fd))
+ 				run_test_with_modifiers(&data, test_async_flip);
+ 			else
+@@ -793,6 +819,7 @@ igt_main
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
+ 			data.alternate_sync_async = true;
+ 			data.atomic_path = false;
++			data.overlay_path = false;
+ 			run_test(&data, test_async_flip);
+ 		}
+ 
+@@ -800,7 +827,17 @@ igt_main
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip-atomic") {
+ 			data.alternate_sync_async = true;
+ 			data.atomic_path = true;
++			data.overlay_path = false;
++			run_test(&data, test_async_flip);
++		}
++
++		igt_describe("Verify overlay planes with async flips in atomic API");
++		igt_subtest_with_dynamic("overlay-atomic") {
++			igt_require(is_amdgpu_device(data.drm_fd));
++			data.atomic_path = true;
++			data.overlay_path = true;
+ 			run_test(&data, test_async_flip);
++			data.overlay_path = false;
+ 		}
+ 
+ 		igt_describe("Verify that the async flip timestamp does not "
+-- 
+2.47.1
 
-CI Bug Log - changes from IGT_8157 -> IGTPW_12322
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12322/index.html
-
-Participating hosts (45 -> 43)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-elk-e7500 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12322 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12322/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12322/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [ABORT][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12322/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-    - {bat-arls-6}:       [ABORT][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8157/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12322/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8157 -> IGTPW_12322
-  * Linux: CI_DRM_15848 -> CI_DRM_15854
-
-  CI-20190529: 20190529
-  CI_DRM_15848: 63be16e210b1c3e43b43d8ca9b7e17f15142d2c3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15854: 49cc582754c205bbe43d4ef2b1fd3894bee1f3bd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12322: 8e330f8f12a1a68c9485b2921198510bbbeb6f88 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8157: 48a70f6795e6d68b9fae275261ae3b09d3401fe1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12322/index.html
