@@ -4,54 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C46E7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 19:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17D4AE77184
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 19:07:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D318E10EA71;
-	Tue, 17 Dec 2024 19:02:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C6ADC10E641;
+	Tue, 17 Dec 2024 19:07:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fYoiopAI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Iiw2vnvi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7F6910EA59
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 19:02:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF00310E641
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 19:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734462124; x=1765998124;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/p3usSZ5TF2GG8znusKn3Y/2Wnsx64aTc3MBviEbuMw=;
- b=fYoiopAIYbD8rHIMPCuRWkRyDdlbugx3MLXGeU+ou72CKZtLlRhIU5Zx
- l8DyMGd/Q28A9C1fRFLFkb3k5gUDsn4xNzVWQZkk0maofodbCXc5kGV1L
- ueupo+ytgkw5F9ga8CvEusAaBwtvh5+pnCBYF8WGBQXU3SLn0JnTDeSb6
- LHk1PXPj4Nui+MsHxY+f1Pc380A98Zjv7AS46EaqnraBuoEaiTlKQl5lS
- PlNQEAQbZkZzjmB6MPDEbeXtb2N9vhlh1I99b9bbfX0+fcCqjhN07nOhX
- xUJW+3/oxdjtQvpe59hlW0SFMW+PbtQb6EtG/kBHk+JqYeB2y6/590VYV w==;
-X-CSE-ConnectionGUID: WSt68olhQNKYUpqMQNl/Kw==
-X-CSE-MsgGUID: nKtToGWRQQ61wmgQlmeIjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="35032238"
-X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="35032238"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 11:02:03 -0800
-X-CSE-ConnectionGUID: KxQd6YQXTASHbKeHLSt2dQ==
-X-CSE-MsgGUID: dKOda2k9TVC+nGoTWofsMw==
+ t=1734462450; x=1765998450;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ckuUIsgbGkLouECLnFQHvEPEcUkftAhlhR7XAXRjya4=;
+ b=Iiw2vnvicj1VpCOAkwkQ2I9OV4TJ4/5gIDvVHcn15FYqq8rDXZnHcKMi
+ lqxaX+nNkL7EYYOSh7iOOaaPawZxm4561dd+AH/IiCNXWa26CtwAhk8y1
+ 0BKRmLobltDmvrYH0wBbubEf8s8r6BUMt9PHFXO1kRq6nxQHDp39ZEil/
+ MMJQsl4cn+yMYyHPeaG8Y5wNP+N1cLpMZxQ4PNnPr9uJ/3axkKILf4wIH
+ XJkIcZ0qyVbCN+QsLRUOUmBfVfePaPxASGbCU+C0fg9mtSlfXNgeHN+MS
+ 05PMvHQBz5JFCr7uuggz0hE76lmYPOLrASPCydnHe6AlpDdlFn0aK40ST Q==;
+X-CSE-ConnectionGUID: xroiMuGxTUOvO9DXYzf8Lw==
+X-CSE-MsgGUID: j14yioiSQF+Kr4dKZTEm7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="34942388"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="34942388"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 11:07:29 -0800
+X-CSE-ConnectionGUID: v0H8J+qvTVaa8Ln1BAJ7Vw==
+X-CSE-MsgGUID: oHEPpqAQTUuP54O72JttwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="97508687"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 11:02:00 -0800
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, swati2.sharma@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] RFC: tests/intel/kms_joiner: Add a new test to validate
- non-joiner mode
-Date: Wed, 18 Dec 2024 00:46:57 +0530
-Message-Id: <20241217191657.2102779-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="98199962"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 11:07:27 -0800
+Date: Tue, 17 Dec 2024 20:07:11 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
+Subject: Re: [PATCH] tests/intel/gem_exec_balancer: Decrease required load in
+ `full` test
+Message-ID: <20241217190711.zbj5pnznlzdn2yx6@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
+References: <uupn5abwcptf6p4zdaz4ozl5utjcwij2sjlebrlgkqw3xupxma@nvacr67vd6tf>
+ <20241217162302.u52qy7ji5zlfahm5@kamilkon-desk.igk.intel.com>
+ <Z2G-ELt9yrHygP6-@ashyti-mobl2.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z2G-ELt9yrHygP6-@ashyti-mobl2.lan>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,178 +75,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We need to ensure that the system does not use a joiner for modes that do
-not require it. This test will validate that the correct non-joiner mode
-is selected, and then forcing a modeset and flip on the last pipe. If the
-joiner is mistakenly enabled for a non-joiner mode, the test should fail.
-otherwise, the commit should proceed as expected.
+Hi Andi,
+On 2024-12-17 at 19:08:16 +0100, Andi Shyti wrote:
+> Hi,
+> 
+> this patch is wrongly formatted:
+> 
+>  - where is the versioning? (git format patch -v <N>). I think
+>    this is v4.
+>  - where is the changelog? (please after the '---' section).
+> 
+> Please don't overlook at them next time.
+> 
+> On Tue, Dec 17, 2024 at 05:23:02PM +0100, Kamil Konieczny wrote:
+> > Hi Sebastian,
+> > On 2024-12-17 at 15:06:41 +0000, Sebastian Brzezinka wrote:
+> > > Adjust the minimal load in the `full` test. It's a minor tolerance
+> > > issue expected 90% got 86.6%.
+> > > 
+> > > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13003
+> > 
+> > Remove empty line, with this
+> 
+> Can you fix it before merging to avoid another resend?
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_joiner.c | 83 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+Yes I could do it at merge time,
 
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index 9a353ee1b..a41f201d1 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -71,10 +71,15 @@
-  * SUBTEST: invalid-modeset-force-ultra-joiner
-  * Description: Verify if the modeset on the other pipes are rejected when
-  *              the pipe A is active with force ultra joiner modeset.
-+ *
-+ * SUBTEST: basic-non-joiner
-+ * Description:
-  */
- IGT_TEST_DESCRIPTION("Test joiner / force joiner");
- 
- #define INVALID_TEST_OUTPUT 2
-+#define HDISPLAY_6K_PER_PIPE 6144
-+#define HDISPLAY_5K_PER_PIPE 5120
- 
- typedef struct {
- 	int drm_fd;
-@@ -82,6 +87,7 @@ typedef struct {
- 	int ultra_joiner_output_count;
- 	int non_big_joiner_output_count;
- 	int non_ultra_joiner_output_count;
-+	int nonjoiner_output_count;
- 	int mixed_output_count;
- 	int output_count;
- 	int n_pipes;
-@@ -91,6 +97,7 @@ typedef struct {
- 	igt_output_t *non_big_joiner_output[IGT_MAX_PIPES];
- 	igt_output_t *non_ultra_joiner_output[IGT_MAX_PIPES];
- 	igt_output_t *mixed_output[IGT_MAX_PIPES];
-+	igt_output_t *nonjoiner_output[IGT_MAX_PIPES];
- 	enum pipe pipe_seq[IGT_MAX_PIPES];
- 	igt_display_t display;
- } data_t;
-@@ -161,6 +168,25 @@ static enum pipe setup_pipe(data_t *data, igt_output_t *output, enum pipe pipe,
- 	return master_pipe;
- }
- 
-+static bool nonjoiner_mode_found(int drm_fd, drmModeConnector *connector, drmModeModeInfo *mode)
-+{
-+	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-+	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-+
-+	for (int i = 0; i < connector->count_modes; i++) {
-+		drmModeModeInfo *current_mode = &connector->modes[i];
-+
-+		if ((current_mode->hdisplay <= HDISPLAY_6K_PER_PIPE &&
-+		    current_mode->clock <= max_dotclock) ||
-+		    (current_mode->hdisplay <= HDISPLAY_5K_PER_PIPE)) {
-+			*mode = *current_mode;
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static void test_single_joiner(data_t *data, int output_count, bool force_joiner)
- {
- 	int i;
-@@ -409,6 +435,49 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
- 	}
- }
- 
-+static void test_single_non_joiner(data_t *data)
-+{
-+	int count;
-+	igt_output_t **outputs, *output;
-+	igt_fb_t fb;
-+	igt_plane_t *primary;
-+	drmModeModeInfo mode;
-+	drmModeConnector *con;
-+
-+	count = data->nonjoiner_output_count;
-+	outputs = data->nonjoiner_output;
-+
-+	for (int i = 0; i < count; i++) {
-+		igt_display_reset(&data->display);
-+		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+		output = outputs[i];
-+		con = output->config.connector;
-+
-+		if (nonjoiner_mode_found(data->drm_fd, con, &mode)) {
-+			igt_output_override_mode(output, &mode);
-+			igt_info("Assigning pipe %s to %s with mode %dx%d@%d\n",
-+				 kmstest_pipe_name(data->pipe_seq[data->n_pipes - 1]),
-+				 igt_output_name(output), mode.hdisplay,
-+				 mode.vdisplay, mode.vrefresh);
-+
-+			igt_output_set_pipe(output, data->pipe_seq[data->n_pipes - 1]);
-+
-+			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+			igt_create_pattern_fb(data->drm_fd, mode.hdisplay, mode.vdisplay, DRM_FORMAT_XRGB8888,
-+					      DRM_FORMAT_MOD_LINEAR, &fb);
-+
-+			igt_plane_set_fb(primary, &fb);
-+			igt_assert(igt_display_try_commit2(&data->display, COMMIT_ATOMIC));
-+			igt_plane_set_fb(primary, NULL);
-+			igt_remove_fb(data->drm_fd, &fb);
-+		}
-+		else {
-+			igt_warn("No valid non-joiner mode found for output %s\n", igt_output_name(output));
-+		}
-+	}
-+}
-+
- igt_main
- {
- 	bool ultra_joiner_supported, is_dgfx;
-@@ -423,6 +492,7 @@ igt_main
- 		data.ultra_joiner_output_count = 0;
- 		data.non_big_joiner_output_count = 0;
- 		data.non_ultra_joiner_output_count = 0;
-+		data.nonjoiner_output_count = 0;
- 		data.mixed_output_count = 0;
- 		data.output_count = 0;
- 		j = 0;
-@@ -441,6 +511,7 @@ igt_main
- 
- 		for_each_connected_output(&data.display, output) {
- 			bool ultrajoiner_found = false, bigjoiner_found = false, force_joiner_supported = false;
-+			bool nonjoiner_found = false;
- 			drmModeConnector *connector = output->config.connector;
- 
- 			/*
-@@ -451,6 +522,7 @@ igt_main
- 			 */
- 			bigjoiner_found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock, &mode);
- 			ultrajoiner_found = ultrajoiner_mode_found(data.drm_fd, connector, max_dotclock, &mode);
-+			nonjoiner_found = nonjoiner_mode_found(data.drm_fd, connector, &mode);
- 
- 			if (igt_has_force_joiner_debugfs(data.drm_fd, output->name))
- 				force_joiner_supported = true;
-@@ -465,6 +537,9 @@ igt_main
- 			else if (force_joiner_supported)
- 				data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
- 
-+			if (nonjoiner_found)
-+				data.nonjoiner_output[data.nonjoiner_output_count++] = output;
-+
- 			data.output_count++;
- 		}
- 		if (data.big_joiner_output_count == 1 && data.non_big_joiner_output_count >= 1) {
-@@ -615,6 +690,14 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
-+	igt_subtest_with_dynamic("basic-non-joiner") {
-+		igt_require_f(data.n_pipes >= 1,
-+			      "Minimum of 1 pipes are required\n");
-+		igt_dynamic_f("non-joiner")
-+			test_single_non_joiner(&data);
-+        }
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.25.1
+Regards,
+Kamil
 
+Btw such performace measuring is prone to some random noise,
+when something on DUT will hog system.
+
+Regards,
+Kamil
+
+> 
+> In any case:
+> 
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+> 
+> Thanks,
+> Andi
+> 
+> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > > 
+> > > Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> > > ---
+> > >  tests/intel/gem_exec_balancer.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+> > > index c3f0c938b..46ea19a2a 100644
+> > > --- a/tests/intel/gem_exec_balancer.c
+> > > +++ b/tests/intel/gem_exec_balancer.c
+> > > @@ -1815,7 +1815,7 @@ static void full(int i915, unsigned int flags)
+> > >  
+> > >  		free(ci);
+> > >  
+> > > -		igt_assert_f(load > 0.90,
+> > > +		igt_assert_f(load > 0.85,
+> > >  			     "minimum load for %d x class:%d was found to be only %.1f%% busy\n",
+> > >  			     count, class, load*100);
+> > >  		gem_quiescent_gpu(i915);
+> > > -- 
+> > > 2.34.1
+> > > 
