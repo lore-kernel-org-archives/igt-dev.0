@@ -4,56 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0184FE7717F
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 15:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E139E7717F
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 16:00:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9445E10E04F;
-	Tue, 17 Dec 2024 15:15:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kd+eLtCA";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75CD910E04F
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 15:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734448512; x=1765984512;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=sc1dNtoSGS7g0juIFHVjW0BrzTuZhjGJhIYF7kSKhQo=;
- b=Kd+eLtCA5jTZjgJrVcZIwt8+gUQV5veAe2wUb9QL8J+XySvrHXjonlCt
- /S/hwakSJtzKxBf1qG0bUUjqqOV7Y/7ulzmfKNMB4KJl/O2yobFuAR2HI
- rPsYKtHUc37QjiyXpLQvtAZhor6S2mbqv3M8gyFKiDMzoBnoDyj3fiNfl
- lV8xyyXaYPHM0n/yXXqtx2sxX+IPHTpcRui3H/LbwviOCtPndHlqWSHHd
- 9WTw9pwfTUHm4tG/mhD5smGODbWQEtktESaJgy0ZtGfAIxX360ntUuCmK
- F5lRcaIrH6Qs3FYH0mJ4W1rfVI3xCafGIkWWpFI+2tBmJ490hydfh7+lz A==;
-X-CSE-ConnectionGUID: FI0RBoS9St+x8L9OlOcCYA==
-X-CSE-MsgGUID: 7LNG+kjzQNWCKqlCYAA1Yw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="45572079"
-X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="45572079"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 07:15:12 -0800
-X-CSE-ConnectionGUID: OFeX7VCaQt6qT/WJ/6fi2Q==
-X-CSE-MsgGUID: r/0lYe5JTg+NpN88M8aiNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="102647851"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
- ([10.125.111.153])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 07:15:12 -0800
-Date: Tue, 17 Dec 2024 09:15:06 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ilia Levi <ilia.levi@intel.com>
-Subject: Re: [PATCH i-g-t] lib/igt_core: Use suffix for casting to long to
- avoid overflow
-Message-ID: <epqvxhpjy6fndm5j65rqxsm74qfgotnkpmh3vv7jjab7yllvs7@rumx3g7g27r2>
-References: <20241217105807.94489-1-zbigniew.kempczynski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42D8710EA22;
+	Tue, 17 Dec 2024 16:00:06 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0418510EA0C;
+ Tue, 17 Dec 2024 16:00:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8377394285353062041=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fcore=3A_Use_suffi?=
+ =?utf-8?q?x_for_casting_to_long_to_avoid_overflow?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 17 Dec 2024 16:00:05 -0000
+Message-ID: <173445120501.3891499.12857024003549455642@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241217105807.94489-1-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20241217105807.94489-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,62 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Dec 17, 2024 at 11:58:07AM +0100, Zbigniew Kempczyński wrote:
->Multiplication without using casting to long (long) for at least
->one argument in expression may cause overflow especially when we're
->using this for calculating timeouts in nanoseconds precision.
->
->Ensure we're picking valid ul/ull suffix for base definitions for
->all dependents.
->
->Reported-by: Ilia Levi <ilia.levi@intel.com>
->Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/163
->
+--===============8377394285353062041==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-drop this newline so the lines above are also part of the git trailer.
+== Series Details ==
 
->Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->Cc: Ilia Levi <ilia.levi@intel.com>
->---
-> lib/igt_core.h | 10 ++++++++--
-> 1 file changed, 8 insertions(+), 2 deletions(-)
->
->diff --git a/lib/igt_core.h b/lib/igt_core.h
->index 90f57402f0..1b6e70182b 100644
->--- a/lib/igt_core.h
->+++ b/lib/igt_core.h
->@@ -1517,11 +1517,17 @@ void igt_kmsg(const char *format, ...);
-> #define le32_to_cpu(x)  (x)
-> #endif
->
->-#define MSEC_PER_SEC (1000u)
->+#if __WORDSIZE == 64
+Series: lib/igt_core: Use suffix for casting to long to avoid overflow
+URL   : https://patchwork.freedesktop.org/series/142712/
+State : success
 
-we could just use ull regardless of wordsize
+== Summary ==
 
-but overall lgtm. With those changes: Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+CI Bug Log - changes from XEIGT_8160_BAT -> XEIGTPW_12332_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
 
 
-Lucas De Marchi
+Changes
+-------
 
->+#define MSEC_PER_SEC (1000ul)
->+#define USEC_PER_MSEC (1000ul)
->+#else
->+#define MSEC_PER_SEC (1000ull)
->+#define USEC_PER_MSEC (1000ull)
->+#endif
->+
-> #define USEC_PER_SEC (1000u * MSEC_PER_SEC)
-> #define USEC_PER_DECISEC (100u * MSEC_PER_SEC)
-> #define NSEC_PER_SEC (1000u * USEC_PER_SEC)
->-#define USEC_PER_MSEC (1000u)
-> #define NSEC_PER_MSEC (1000u * USEC_PER_MSEC)
->
-> #define for_if(expr__) if (!(expr__)) {} else
->-- 
->2.34.1
->
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8160 -> IGTPW_12332
+
+  IGTPW_12332: 1678524f3fdb72edcc7d20562c9d535886d89485 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8160: 4f10d98c56498ab29445ae0b06aab6f5a8ec2eca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2390-ff2d4c1b285a836d28341cdf04adbc811757d4c8: ff2d4c1b285a836d28341cdf04adbc811757d4c8
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12332/index.html
+
+--===============8377394285353062041==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_core: Use suffix for casting to long to avoid overflow</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142712/">https://patchwork.freedesktop.org/series/142712/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12332/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12332/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8160_BAT -&gt; XEIGTPW_12332_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8160 -&gt; IGTPW_12332</li>
+</ul>
+<p>IGTPW_12332: 1678524f3fdb72edcc7d20562c9d535886d89485 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8160: 4f10d98c56498ab29445ae0b06aab6f5a8ec2eca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2390-ff2d4c1b285a836d28341cdf04adbc811757d4c8: ff2d4c1b285a836d28341cdf04adbc811757d4c8</p>
+
+</body>
+</html>
+
+--===============8377394285353062041==--
