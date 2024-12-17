@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F4E9E77184
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 16:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C659E7717F
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 16:23:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C68D110EA15;
-	Tue, 17 Dec 2024 16:22:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40BAE10EA15;
+	Tue, 17 Dec 2024 16:23:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LX0h2uND";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZC20jdyu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C172D10EA15
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 16:22:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C858010EA15
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 16:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734452541; x=1765988541;
+ t=1734452586; x=1765988586;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=sZd4ziIjHLKcWAXxkZRyO1JAzjoIy/Av/MNR3PHEFD8=;
- b=LX0h2uNDBxRRoXOoeJc2Xw2jD4jkQGLVPvw0geUuteALmDLgzQvfEN17
- +fahylmP0KYIkRIhSl3WzfWMyHIBMTWhKoV/VWs3/9OJZI7+AUYOfe9fC
- pdtO8EjykWwnk0Yr3NyzgGC0pL5n+8nf2I1fULs4yEpbazOay/pO+7wHL
- /qu+6F8IhFBBlVhQd48T1jFrMJR5MB3DJl4HLrFbtRU8aDjTqGPRKbzPJ
- 1FDRbLf2ViqtdK4v21YjDvwiOGv1OvW2P9tn/pPcIgnjMJIDf6unszdqE
- Y0R5Crmoxznt+Zasatl8Ghrh9/CKrCJkmaZWIlbqNfCbejCD0cZ62yGf6 A==;
-X-CSE-ConnectionGUID: Dfnks0RaRXCV3XVmaEO1aA==
-X-CSE-MsgGUID: mHts8HMvRY+PVLHjK9RWTA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45893733"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="45893733"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 08:22:20 -0800
-X-CSE-ConnectionGUID: K1glB35OSFm/zlWjmPZZEw==
-X-CSE-MsgGUID: RFXYMDTvRZKZ1qd7xgW9Gw==
+ mime-version:in-reply-to;
+ bh=HdKOZu8tZf1eixwOL1zaQaom93kSlrZcaEWkwF6xsQM=;
+ b=ZC20jdyu2HI+NxlKATU6HoxUoWv4R1IsZyWjlrFXCF/P5ZfaUazUy5W1
+ DILn31htGn/mU5coShF6vNZm3S06MDzy6Jl2gOeXqZUkHQ7cPPIvGKC1t
+ auHyBEsnyCw/pdrnAmFyf2iTHmZtsH2vVzm9nysTlwpHS0Ie2vLpEei8r
+ QGLV3deFcx156KmBm7HUEZcLk7UirSZCpK91B8EgR2MOSD+7Q1qy30cAk
+ f/aPIonU5Xo2GuGje0s9QcQwTNRdUjmcKriDljOXO0zMEbaT5OSDQAWty
+ XicHrRWAK6YsXjXsj23xgVNbLKgFrvJQ53/O3Op2F0biZnAJcMZCr6V5J w==;
+X-CSE-ConnectionGUID: qq7DzXy3R4ufWJchHrwDVQ==
+X-CSE-MsgGUID: X/pHZXUmQb6t3hbrs5vNyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="35035956"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="35035956"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 08:23:05 -0800
+X-CSE-ConnectionGUID: MLnokeLhS7yzpgK3bLapgg==
+X-CSE-MsgGUID: LJkSdNEWTxCzkkWrzLDMRQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="98157921"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="97364019"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 08:22:17 -0800
-Date: Tue, 17 Dec 2024 17:22:02 +0100
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 08:23:04 -0800
+Date: Tue, 17 Dec 2024 17:23:02 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/gem_exec_balancer: Decrease expected
- load value
-Message-ID: <20241217162202.ojer3mq27yhga2s4@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH] tests/intel/gem_exec_balancer: Decrease required load in
+ `full` test
+Message-ID: <20241217162302.u52qy7ji5zlfahm5@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
  igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
-References: <fjysvvdi7wbyamul3gxnaitsbnsbme27ikteqelhk6ukih75vs@cynz3yfs5gmx>
+References: <uupn5abwcptf6p4zdaz4ozl5utjcwij2sjlebrlgkqw3xupxma@nvacr67vd6tf>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fjysvvdi7wbyamul3gxnaitsbnsbme27ikteqelhk6ukih75vs@cynz3yfs5gmx>
+In-Reply-To: <uupn5abwcptf6p4zdaz4ozl5utjcwij2sjlebrlgkqw3xupxma@nvacr67vd6tf>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,37 +72,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Sebastian,
-On 2024-12-17 at 15:01:10 +0000, Sebastian Brzezinka wrote:
-> Expected value of 0.90 may occasionally not be achieved, either be
-> latency in the scheduler, or perf reporting. I'm lowering it to 0.85
-> to match actual values ​​(87.5% in last fail).
+On 2024-12-17 at 15:06:41 +0000, Sebastian Brzezinka wrote:
+> Adjust the minimal load in the `full` test. It's a minor tolerance
+> issue expected 90% got 86.6%.
 > 
-> Resolves: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12943
->
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13003
 
-s/Resolves/Closes/
-
-LGTM
+Remove empty line, with this
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> Signed-off-by :Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> 
+> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 > ---
 >  tests/intel/gem_exec_balancer.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
-> index e7c43f1b4..c3f0c938b 100644
+> index c3f0c938b..46ea19a2a 100644
 > --- a/tests/intel/gem_exec_balancer.c
 > +++ b/tests/intel/gem_exec_balancer.c
-> @@ -614,7 +614,7 @@ static void check_individual_engine(int i915,
+> @@ -1815,7 +1815,7 @@ static void full(int i915, unsigned int flags)
 >  
->  	close(pmu);
+>  		free(ci);
 >  
-> -	igt_assert_f(load > 0.90,
-> +	igt_assert_f(load > 0.85,
->  		     "engine %d (class:instance %d:%d) was found to be only %.1f%% busy\n",
->  		     idx, ci[idx].engine_class, ci[idx].engine_instance, load*100);
->  }
+> -		igt_assert_f(load > 0.90,
+> +		igt_assert_f(load > 0.85,
+>  			     "minimum load for %d x class:%d was found to be only %.1f%% busy\n",
+>  			     count, class, load*100);
+>  		gem_quiescent_gpu(i915);
 > -- 
 > 2.34.1
 > 
