@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D81EE77184
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16BDAE7716A
 	for <igt-dev@archiver.kernel.org>; Tue, 17 Dec 2024 06:33:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D2F610E862;
-	Tue, 17 Dec 2024 06:33:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C75DB10E414;
+	Tue, 17 Dec 2024 06:33:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ARzzshz2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ayOmo/ae";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D353C10E414
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 06:33:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23A3810E414
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2024 06:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734417187; x=1765953187;
+ t=1734417185; x=1765953185;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JwY676F7y1vHu62yaQfA3kkg1D1qJSFizYdzjnELhV8=;
- b=ARzzshz2G70LdHEHqqA4B5y1QkvQ9TnOLsUx15opKeoEP8KDKpAhutxR
- 4S7ys+2bVrh/PRwfP7hY5PsCyvAFTW5k8yH8L8rkB7gOTn6gQalzG6DDH
- EP13ksbYTYS61uEcfwVMVKTiBRLdXMF7lmDtVx6sBISNm2wJQOKqkdnNw
- aO+ZMzktX76cE3G95DJHtufOJB5nDmzDeAR8oayL5DY1PoTEw4WGx4jOM
- 8B8a4CgcxKCfmJykvPa1O0pWJNfwoSXHhPzLLa7SVC999RKBsDfEOXtrz
- qrFgrKNa82Y+xYkqYUcVtPkEu9w/foTnMhnIsDlR3bGezwryAt10bJvOY Q==;
-X-CSE-ConnectionGUID: wESA6I8bSral9EZElSZODw==
-X-CSE-MsgGUID: PgGWMAscTrK+U9oejIAM3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="35052823"
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="35052823"
+ bh=JU9tl0wr/N/zuUUTFC6K40ay5eG0wwvhIIPYQVQ79lU=;
+ b=ayOmo/aep6JH1zap2/KewT7eOQN7EfirX96x3q67u+sN8+Stl3x2aBVJ
+ nMzKZE26TQIbb3J8GmFB35seu3w81NuG8MXOTQjRJpU2F9mFIWdAutdV9
+ 4ZCI+4NO+wDo/VWEJ29dP6SO9eOojrWB5Q+7vNZlYrttt2BCBkAWzcHlf
+ 4YtGJ01pv03hDlJwf8BfmWR6jy8c/eKceicQ15Mlvv8/8BnSyco69OzmR
+ Uth74WnSCK7fQFnczaTF3WJXqIj2uky7Y31rCkOKyeyyJAC9d+SCv4luE
+ P/k3MqScD4Q3H+iGPZqWWUkMp5qOcLmI2HNvCW4cAGU9g/qwsbWikHT13 w==;
+X-CSE-ConnectionGUID: vlmSzzlnQzyzLnruXGo6Vg==
+X-CSE-MsgGUID: OSvGfDrBS6u8fcEtsEYV6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="35052821"
+X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="35052821"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 22:33:06 -0800
-X-CSE-ConnectionGUID: iqCbuaXaTYyWNVMToYU5Cg==
-X-CSE-MsgGUID: ejAd9W/uQh+GgTjvMu55hQ==
+ 16 Dec 2024 22:33:05 -0800
+X-CSE-ConnectionGUID: 141/3G5bRHWl6IUMPUP7eQ==
+X-CSE-MsgGUID: JBCXCYQqRLalJtl+M3XPag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102041156"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102041151"
 Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
- by fmviesa005.fm.intel.com with ESMTP; 16 Dec 2024 22:33:05 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 16 Dec 2024 22:33:03 -0800
 From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com,
  Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH v11 2/2] tests/xe_spin_batch: Add spin-timestamp-check
-Date: Tue, 17 Dec 2024 12:00:29 +0530
-Message-Id: <20241217063029.663697-3-pravalika.gurram@intel.com>
+Subject: [PATCH v11 1/2] lib/xe/xe_spin: move the spinner related functions to
+ lib
+Date: Tue, 17 Dec 2024 12:00:28 +0530
+Message-Id: <20241217063029.663697-2-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217063029.663697-1-pravalika.gurram@intel.com>
 References: <20241217063029.663697-1-pravalika.gurram@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,150 +68,710 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-check the ctx_timestamp register post gt reset for each engine.
+move spin_ctx_init,spin_ctx_start,spin_ctx_end,spin_ctx_destroy
+to xe spin lib to avoid code redundancy.
+removed xe_cork*  functions to avoid duplicate spinner code.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- tests/intel/xe_spin_batch.c | 118 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 118 insertions(+)
+ lib/xe/xe_spin.c            | 203 ++++++++++++++++++++++++++----------
+ lib/xe/xe_spin.h            |  52 +++++----
+ tests/intel/xe_drm_fdinfo.c | 195 ++++++----------------------------
+ tests/intel/xe_vm.c         |  17 +--
+ 4 files changed, 222 insertions(+), 245 deletions(-)
 
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index 9314e229e..0ad2490a0 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -309,6 +309,119 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
- 	put_ahnd(ahnd);
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 3adacc3a8..2bde55856 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -292,77 +292,168 @@ void xe_spin_free(int fd, struct igt_spin *spin)
+ 	free(spin);
  }
  
-+#define HANG 1
-+static void exec_store(int fd, struct drm_xe_engine_class_instance *eci,
-+		       bool flags)
+-void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+-		  struct xe_cork *cork)
+-{
+-	uint64_t addr = xe_get_default_alignment(fd);
+-	size_t bo_size = xe_bb_size(fd, SZ_4K);
+-	uint32_t vm, bo, exec_queue, syncobj;
+-	struct xe_spin *spin;
+-	struct drm_xe_sync sync = {
+-		.type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+-	};
+-	struct drm_xe_exec exec = {
+-		.num_batch_buffer = 1,
+-		.num_syncs = 1,
+-		.syncs = to_user_pointer(&sync),
+-	};
+-
+-	vm = xe_vm_create(fd, 0, 0);
++/**
++ * xe_cork_create:
++ * @fd: xe device fd
++ * @hwe: Xe engine class instance if device is Xe
++ * @vm: vm handle
++ * @width: number of batch buffers
++ * @num_placements: number of valid placements for this exec queue
++ * @opts: controlling options such as allocator handle, debug.
++ *
++ * xe_cork_create create vm, bo, exec_queue and bind the buffer
++ * using vmbind
++ *
++ * This returns xe_cork after binding buffer object.
++ */
+ 
+-	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, hwe->gt_id),
+-			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+-	spin = xe_bo_map(fd, bo, 0x1000);
++struct xe_cork *
++xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe,
++		uint32_t vm, uint16_t width, uint16_t num_placements,
++		struct xe_cork_opts *opts)
 +{
-+	uint64_t ahnd, bb_size, bb_addr;
-+	uint32_t vm, exec_queue, bb;
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+	struct drm_xe_sync syncobj = {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.timeline_value = USER_FENCE_VALUE,
-+	};
++	struct xe_cork *ctx = calloc(1, sizeof(*ctx));
 +
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&syncobj),
-+	};
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+		uint64_t vm_sync;
-+		uint64_t exec_sync;
-+	} *data;
-+	uint64_t batch_offset, batch_addr, sdi_offset, sdi_addr;
-+	int64_t timeout = NSEC_PER_SEC;
-+	int i, ret;
++	igt_assert(ctx);
++	igt_assert(width && num_placements &&
++		   (width == 1 || num_placements == 1));
++	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
 +
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
++	ctx->class = hwe->engine_class;
++	ctx->width = width;
++	ctx->num_placements = num_placements;
++	ctx->vm = vm;
++	ctx->cork_opts = *opts;
 +
-+	vm = xe_vm_create(fd, 0, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+	bb_size = xe_bb_size(fd, sizeof(*data));
-+	bb = xe_bo_create(fd, vm, bb_size, vram_if_possible(fd, eci->gt_id), 0);
-+	bb_addr = intel_allocator_alloc_with_strategy(ahnd, bb, bb_size, 0,
-+						      ALLOC_STRATEGY_LOW_TO_HIGH);
-+	data = xe_bo_map(fd, bb, bb_size);
-+	syncobj.addr = to_user_pointer(&data->vm_sync);
-+	xe_vm_bind_async(fd, vm, 0, bb, 0, bb_addr, bb_size, &syncobj, 1);
-+	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
++	ctx->exec.num_batch_buffer = width;
++	ctx->exec.num_syncs = 2;
++	ctx->exec.syncs = to_user_pointer(ctx->sync);
 +
-+	batch_offset = (char *)&data->batch - (char *)data;
-+	batch_addr = bb_addr + batch_offset;
-+	sdi_offset = (char *)&data->data - (char *)data;
-+	sdi_addr = bb_addr + sdi_offset;
++	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
++	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
++	ctx->sync[0].handle = syncobj_create(fd, 0);
 +
-+	i = 0;
++	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
++	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
++	ctx->sync[1].handle = syncobj_create(fd, 0);
 +
-+	data->batch[i++] = MI_STORE_DWORD_IMM_GEN4;
-+	data->batch[i++] = sdi_addr;
-+	data->batch[i++] = sdi_addr >> 32;
-+	data->batch[i++] = 0;
-+	if (!(flags & HANG))
-+		data->batch[i++] = MI_BATCH_BUFFER_END;
-+	igt_assert(i <= ARRAY_SIZE(data->batch));
++	ctx->bo_size = sizeof(struct xe_spin);
++	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
++	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
++			       vram_if_possible(fd, hwe->gt_id),
++			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	if (ctx->cork_opts.ahnd) {
++		for (unsigned int i = 0; i < width; i++)
++			ctx->addr[i] = intel_allocator_alloc_with_strategy(ctx->cork_opts.ahnd,
++					ctx->bo, ctx->bo_size, 0,
++					ALLOC_STRATEGY_LOW_TO_HIGH);
++	} else {
++		for (unsigned int i = 0; i < width; i++)
++			ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
++	}
+ 
+-	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
++	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
+ 
+-	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+-	syncobj = syncobj_create(fd, 0);
++	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
++					     hwe, 0, &ctx->exec_queue), 0);
+ 
+-	xe_spin_init_opts(spin, .addr = addr, .preempt = true);
+-	exec.exec_queue_id = exec_queue;
+-	exec.address = addr;
+-	sync.handle = syncobj;
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
++			 ctx->sync, 1);
+ 
+-	cork->spin = spin;
+-	cork->fd = fd;
+-	cork->vm = vm;
+-	cork->bo = bo;
+-	cork->exec_queue = exec_queue;
+-	cork->syncobj = syncobj;
++	return ctx;
+ }
+ 
+-bool xe_cork_started(struct xe_cork *cork)
++/**
++ * xe_cork_sync_start:
++ *
++ * @fd: xe device fd
++ * @ctx: pointer to xe_cork structure
++ *
++ * run the spinner using xe_spin_init submit batch using xe_exec
++ * and wait for fence using syncobj_wait
++ */
++void xe_cork_sync_start(int fd, struct xe_cork *ctx)
+ {
+-	return xe_spin_started(cork->spin);
+-}
++	igt_assert(ctx);
+ 
+-void xe_cork_wait_started(struct xe_cork *cork)
+-{
+-	xe_spin_wait_started(cork->spin);
+-}
++	ctx->spin_opts.addr = ctx->addr[0];
++	ctx->spin_opts.write_timestamp = true;
++	ctx->spin_opts.preempt = true;
++	xe_spin_init(ctx->spin, &ctx->spin_opts);
+ 
+-void xe_cork_end(struct xe_cork *cork)
+-{
+-	xe_spin_end(cork->spin);
+-}
++	/* reuse sync[0] as in-fence for exec */
++	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+ 
+-void xe_cork_wait_done(struct xe_cork *cork)
+-{
+-	igt_assert(syncobj_wait(cork->fd, &cork->syncobj, 1, INT64_MAX, 0,
+-				NULL));
++	ctx->exec.exec_queue_id = ctx->exec_queue;
 +
-+	syncobj.addr = bb_addr + (char *)&data->exec_sync - (char *)data;
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = batch_addr;
-+	xe_exec(fd, &exec);
-+	ret = __xe_wait_ufence(fd, &data->exec_sync, USER_FENCE_VALUE, 0, &timeout);
-+	igt_assert(flags ? ret < 0 : ret == 0);
++	if (ctx->width > 1)
++		ctx->exec.address = to_user_pointer(ctx->addr);
++	else
++		ctx->exec.address = ctx->addr[0];
 +
-+	munmap(data, bb_size);
-+	gem_close(fd, bb);
++	xe_exec(fd, &ctx->exec);
 +
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
++	xe_spin_wait_started(ctx->spin);
++	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
 +
-+	put_ahnd(ahnd);
-+}
++	if (ctx->cork_opts.debug)
++		igt_info("%d: spinner started\n", ctx->class);
+ }
+ 
+-void xe_cork_fini(struct xe_cork *cork)
++/*
++ * xe_cork_sync_end
++ *
++ * @fd: xe device fd
++ * @ctx: pointer to xe_cork structure
++ *
++ * Wrapper to end spinner created by xe_cork_create. It will
++ * unbind the vm which was binded to the exec_queue and bo.
++ */
++void xe_cork_sync_end(int fd, struct xe_cork *ctx)
+ {
+-	syncobj_destroy(cork->fd, cork->syncobj);
+-	xe_exec_queue_destroy(cork->fd, cork->exec_queue);
+-	xe_vm_destroy(cork->fd, cork->vm);
+-	gem_close(cork->fd, cork->bo);
++	igt_assert(ctx);
 +
-+static void run_spinner(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	struct xe_cork *ctx = NULL;
-+	uint32_t vm;
-+	uint32_t ts_1, ts_2;
++	if (ctx->ended)
++		igt_warn("Don't attempt call end twice %d\n", ctx->ended);
++
++	xe_spin_end(ctx->spin);
++
++	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
++
++	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	syncobj_reset(fd, &ctx->sync[0].handle, 1);
++
++	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
++	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	ctx->ended = true;
++
++	if (ctx->cork_opts.debug)
++		igt_info("%d: spinner ended (timestamp=%u)\n", ctx->class,
++			ctx->spin->timestamp);
+ }
+ 
+-uint32_t xe_cork_sync_handle(struct xe_cork *cork)
++/*
++ * xe_cork_destroy
++ *
++ * @fd: xe device fd
++ * @ctx: pointer to xe_cork structure
++ *
++ * It will destroy vm, exec_queue and free the ctx.
++ */
++void xe_cork_destroy(int fd, struct xe_cork *ctx)
+ {
+-	return cork->syncobj;
++	igt_assert(ctx);
++
++	syncobj_destroy(fd, ctx->sync[0].handle);
++	syncobj_destroy(fd, ctx->sync[1].handle);
++	xe_exec_queue_destroy(fd, ctx->exec_queue);
++
++	if (ctx->cork_opts.ahnd)
++		intel_allocator_free(ctx->cork_opts.ahnd, ctx->bo);
++
++	munmap(ctx->spin, ctx->bo_size);
++	gem_close(fd, ctx->bo);
++
++	free(ctx);
+ }
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index d65adb05c..593065bc0 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -32,6 +32,11 @@ struct xe_spin_opts {
+ 	bool write_timestamp;
+ };
+ 
++struct xe_cork_opts {
 +	uint64_t ahnd;
++	bool debug;
++};
 +
-+	vm = xe_vm_create(fd, 0, 0);
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+	ctx = xe_cork_create_opts(fd, eci, vm, 1, 1, .ahnd = ahnd);
+ /* Mapped GPU object */
+ struct xe_spin {
+ 	uint32_t batch[128];
+@@ -43,9 +48,36 @@ struct xe_spin {
+ 	uint32_t timestamp;
+ };
+ 
++struct xe_cork {
++	struct xe_spin *spin;
++	int fd;
++	uint32_t vm;
++	uint32_t bo;
++	uint32_t exec_queue;
++	uint32_t syncobj;
++	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
++	struct drm_xe_sync sync[2];
++	struct drm_xe_exec exec;
++	size_t bo_size;
++	struct xe_spin_opts spin_opts;
++	struct xe_cork_opts cork_opts;
++	bool ended;
++	uint16_t class;
++	uint16_t width;
++	uint16_t num_placements;
++};
++
+ igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+ uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
+ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
++struct xe_cork *
++xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
++	      uint16_t width, uint16_t num_placements, struct xe_cork_opts *opts);
++void xe_cork_destroy(int fd, struct xe_cork *ctx);
++
++#define xe_cork_create_opts(fd, hwe, vm, width, num_placements, ...) \
++	xe_cork_create(fd, hwe, vm, width, num_placements, \
++			&((struct xe_cork_opts){__VA_ARGS__}))
+ 
+ #define xe_spin_init_opts(fd, ...) \
+ 	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
+@@ -55,23 +87,7 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+ void xe_spin_wait_started(struct xe_spin *spin);
+ void xe_spin_end(struct xe_spin *spin);
+ void xe_spin_free(int fd, struct igt_spin *spin);
+-
+-struct xe_cork {
+-	struct xe_spin *spin;
+-	int fd;
+-	uint32_t vm;
+-	uint32_t bo;
+-	uint32_t exec_queue;
+-	uint32_t syncobj;
+-};
+-
+-void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+-		  struct xe_cork *cork);
+-bool xe_cork_started(struct xe_cork *cork);
+-void xe_cork_wait_started(struct xe_cork *cork);
+-void xe_cork_end(struct xe_cork *cork);
+-void xe_cork_wait_done(struct xe_cork *cork);
+-void xe_cork_fini(struct xe_cork *cork);
+-uint32_t xe_cork_sync_handle(struct xe_cork *cork);
++void xe_cork_sync_start(int fd, struct xe_cork *ctx);
++void xe_cork_sync_end(int fd, struct xe_cork *ctx);
+ 
+ #endif	/* XE_SPIN_H */
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index ef9273e2a..66a181d5b 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -367,133 +367,6 @@ static void basic_engine_utilization(int xe)
+ 	igt_require(info.num_engines);
+ }
+ 
+-struct spin_ctx {
+-	uint32_t vm;
+-	uint64_t addr[XE_MAX_ENGINE_INSTANCE];
+-	struct drm_xe_sync sync[2];
+-	struct drm_xe_exec exec;
+-	uint32_t exec_queue;
+-	size_t bo_size;
+-	uint32_t bo;
+-	struct xe_spin *spin;
+-	struct xe_spin_opts spin_opts;
+-	bool ended;
+-	uint16_t class;
+-	uint16_t width;
+-	uint16_t num_placements;
+-};
+-
+-static struct spin_ctx *
+-spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
+-	      uint16_t width, uint16_t num_placements)
+-{
+-	struct spin_ctx *ctx = calloc(1, sizeof(*ctx));
+-
+-	igt_assert(width && num_placements &&
+-		   (width == 1 || num_placements == 1));
+-	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
+-
+-	ctx->class = hwe->engine_class;
+-	ctx->width = width;
+-	ctx->num_placements = num_placements;
+-	ctx->vm = vm;
+-
+-	for (unsigned int i = 0; i < width; i++)
+-		ctx->addr[i] = 0x100000 + 0x100000 * hwe->engine_class;
+-
+-	ctx->exec.num_batch_buffer = width;
+-	ctx->exec.num_syncs = 2;
+-	ctx->exec.syncs = to_user_pointer(ctx->sync);
+-
+-	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+-	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+-	ctx->sync[0].handle = syncobj_create(fd, 0);
+-
+-	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+-	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+-	ctx->sync[1].handle = syncobj_create(fd, 0);
+-
+-	ctx->bo_size = sizeof(struct xe_spin);
+-	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
+-	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
+-			       vram_if_possible(fd, hwe->gt_id),
+-			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+-	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
+-
+-	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements,
+-					     hwe, 0, &ctx->exec_queue), 0);
+-
+-	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size,
+-			 ctx->sync, 1);
+-
+-	return ctx;
+-}
+-
+-static void
+-spin_sync_start(int fd, struct spin_ctx *ctx)
+-{
+-	if (!ctx)
+-		return;
+-
+-	ctx->spin_opts.addr = ctx->addr[0];
+-	ctx->spin_opts.write_timestamp = true;
+-	ctx->spin_opts.preempt = true;
+-	xe_spin_init(ctx->spin, &ctx->spin_opts);
+-
+-	/* re-use sync[0] for exec */
+-	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+-
+-	ctx->exec.exec_queue_id = ctx->exec_queue;
+-
+-	if (ctx->width > 1)
+-		ctx->exec.address = to_user_pointer(ctx->addr);
+-	else
+-		ctx->exec.address = ctx->addr[0];
+-
+-	xe_exec(fd, &ctx->exec);
+-
+-	xe_spin_wait_started(ctx->spin);
+-	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
+-
+-	igt_debug("%s: spinner started\n", engine_map[ctx->class]);
+-}
+-
+-static void
+-spin_sync_end(int fd, struct spin_ctx *ctx)
+-{
+-	if (!ctx || ctx->ended)
+-		return;
+-
+-	xe_spin_end(ctx->spin);
+-
+-	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
+-	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+-
+-	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+-	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->sync, 1);
+-	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
+-
+-	ctx->ended = true;
+-	igt_debug("%s: spinner ended (timestamp=%u)\n", engine_map[ctx->class],
+-		  ctx->spin->timestamp);
+-}
+-
+-static void
+-spin_ctx_destroy(int fd, struct spin_ctx *ctx)
+-{
+-	if (!ctx)
+-		return;
+-
+-	syncobj_destroy(fd, ctx->sync[0].handle);
+-	syncobj_destroy(fd, ctx->sync[1].handle);
+-	xe_exec_queue_destroy(fd, ctx->exec_queue);
+-
+-	munmap(ctx->spin, ctx->bo_size);
+-	gem_close(fd, ctx->bo);
+-
+-	free(ctx);
+-}
+-
+ static void
+ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+ 	      int class, int width, enum expected_load expected_load)
+@@ -535,7 +408,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ {
+ 	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+-	struct spin_ctx *ctx = NULL;
++	struct xe_cork *ctx = NULL;
+ 	enum expected_load expected_load;
+ 	uint32_t vm;
+ 	int new_fd;
+@@ -545,8 +418,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	if (flags & TEST_BUSY) {
+-		ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+-		spin_sync_start(fd, ctx);
++		ctx = xe_cork_create_opts(fd, hwe, vm, 1, 1);
++		xe_cork_sync_start(fd, ctx);
+ 	}
+ 
+ 	read_engine_cycles(fd, pceu1[0]);
+@@ -555,7 +428,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ 
+ 	usleep(batch_duration_usec);
+ 	if (flags & TEST_TRAILING_IDLE)
+-		spin_sync_end(fd, ctx);
++		xe_cork_sync_end(fd, ctx);
+ 
+ 	read_engine_cycles(fd, pceu2[0]);
+ 	if (flags & TEST_ISOLATION)
+@@ -574,8 +447,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ 		close(new_fd);
+ 	}
+ 
+-	spin_sync_end(fd, ctx);
+-	spin_ctx_destroy(fd, ctx);
++	xe_cork_destroy(fd, ctx);
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
+@@ -584,19 +456,19 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+ {
+ 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+-	struct spin_ctx *ctx = NULL;
++	struct xe_cork *ctx = NULL;
+ 	uint32_t vm;
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+-	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+-	spin_sync_start(fd, ctx);
++	ctx = xe_cork_create_opts(fd, hwe, vm, 1, 1);
 +	xe_cork_sync_start(fd, ctx);
-+
-+	/* Collect and check timestamps before stopping the spinner */
-+	usleep(50000);
-+	ts_1 = READ_ONCE(ctx->spin->timestamp);
-+	usleep(50000);
-+	ts_2 = READ_ONCE(ctx->spin->timestamp);
-+	igt_assert_neq_u32(ts_1, ts_2);
-+
+ 
+ 	read_engine_cycles(fd, pceu1);
+ 	usleep(batch_duration_usec);
+ 
+ 	/* destroy queue before sampling again */
+-	spin_sync_end(fd, ctx);
+-	spin_ctx_destroy(fd, ctx);
 +	xe_cork_sync_end(fd, ctx);
 +	xe_cork_destroy(fd, ctx);
-+
-+	xe_vm_destroy(fd, vm);
-+	put_ahnd(ahnd);
-+}
-+
-+/**
-+ * SUBTEST: spin-timestamp-check
-+ * Description: Initiate gt reset then check the timestamp register for each engine.
-+ * Test category: functionality test
-+ */
-+static void xe_spin_timestamp_check(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	exec_store(fd, eci, 0); /* sanity check */
-+
-+	exec_store(fd, eci, HANG); /* hang the engine */
-+
-+	run_spinner(fd, eci);
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -343,6 +456,11 @@ igt_main
- 			xe_for_each_engine_class(class)
- 				xe_spin_fixed_duration(fd, gt, class, SPIN_FIX_DURATION_PREEMPT);
  
-+	igt_subtest_with_dynamic("spin-timestamp-check")
-+		xe_for_each_engine(fd, hwe)
-+			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class))
-+				xe_spin_timestamp_check(fd, hwe);
-+
- 	igt_fixture
- 		drm_close_driver(fd);
+ 	read_engine_cycles(fd, pceu2);
+ 
+@@ -610,18 +482,17 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+ {
+ 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+-	struct spin_ctx *ctx = NULL;
++	struct xe_cork *ctx = NULL;
+ 	uint32_t vm;
+ 	int class;
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+-
+-	ctx = spin_ctx_init(fd, hwe, vm, 1, 1);
+-	spin_sync_start(fd, ctx);
++	ctx = xe_cork_create_opts(fd, hwe, vm, 1, 1);
++	xe_cork_sync_start(fd, ctx);
+ 
+ 	read_engine_cycles(fd, pceu1);
+ 	usleep(batch_duration_usec);
+-	spin_sync_end(fd, ctx);
++	xe_cork_sync_end(fd, ctx);
+ 	read_engine_cycles(fd, pceu2);
+ 
+ 	xe_for_each_engine_class(class) {
+@@ -631,8 +502,7 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+ 		check_results(pceu1, pceu2, class, 1, expected_load);
+ 	}
+ 
+-	spin_sync_end(fd, ctx);
+-	spin_ctx_destroy(fd, ctx);
++	xe_cork_destroy(fd, ctx);
+ 	xe_vm_destroy(fd, vm);
  }
+ 
+@@ -641,7 +511,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+ {
+ 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+-	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
++	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+ 	struct drm_xe_engine_class_instance *_hwe;
+ 	uint32_t vm;
+ 	int class;
+@@ -654,15 +524,14 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+ 
+ 		if (_class == hwe->engine_class || ctx[_class])
+ 			continue;
+-
+-		ctx[_class] = spin_ctx_init(fd, _hwe, vm, 1, 1);
+-		spin_sync_start(fd, ctx[_class]);
++		ctx[_class] = xe_cork_create_opts(fd, _hwe, vm, 1, 1);
++		xe_cork_sync_start(fd, ctx[_class]);
+ 	}
+ 
+ 	read_engine_cycles(fd, pceu1);
+ 	usleep(batch_duration_usec);
+ 	xe_for_each_engine_class(class)
+-		spin_sync_end(fd, ctx[class]);
++		xe_cork_sync_end(fd, ctx[class]);
+ 	read_engine_cycles(fd, pceu2);
+ 
+ 	xe_for_each_engine_class(class) {
+@@ -673,8 +542,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+ 			continue;
+ 
+ 		check_results(pceu1, pceu2, class, 1, expected_load);
+-		spin_sync_end(fd, ctx[class]);
+-		spin_ctx_destroy(fd, ctx[class]);
++		xe_cork_destroy(fd, ctx[class]);
+ 	}
+ 
+ 	xe_vm_destroy(fd, vm);
+@@ -685,7 +553,7 @@ utilization_all_full_load(int fd)
+ {
+ 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+-	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
++	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	uint32_t vm;
+ 	int class;
+@@ -697,15 +565,14 @@ utilization_all_full_load(int fd)
+ 		class = hwe->engine_class;
+ 		if (ctx[class])
+ 			continue;
+-
+-		ctx[class] = spin_ctx_init(fd, hwe, vm, 1, 1);
+-		spin_sync_start(fd, ctx[class]);
++		ctx[class] = xe_cork_create_opts(fd, hwe, vm, 1, 1);
++		xe_cork_sync_start(fd, ctx[class]);
+ 	}
+ 
+ 	read_engine_cycles(fd, pceu1);
+ 	usleep(batch_duration_usec);
+ 	xe_for_each_engine_class(class)
+-		spin_sync_end(fd, ctx[class]);
++		xe_cork_sync_end(fd, ctx[class]);
+ 	read_engine_cycles(fd, pceu2);
+ 
+ 	xe_for_each_engine_class(class) {
+@@ -713,8 +580,7 @@ utilization_all_full_load(int fd)
+ 			continue;
+ 
+ 		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
+-		spin_sync_end(fd, ctx[class]);
+-		spin_ctx_destroy(fd, ctx[class]);
++		xe_cork_destroy(fd, ctx[class]);
+ 	}
+ 
+ 	xe_vm_destroy(fd, vm);
+@@ -741,7 +607,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+ 	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
+-	struct spin_ctx *ctx = NULL;
++	struct xe_cork *ctx = NULL;
+ 	enum expected_load expected_load;
+ 	int fd_spill, num_placements;
+ 	uint32_t vm;
+@@ -767,8 +633,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	if (flags & TEST_BUSY) {
+-		ctx = spin_ctx_init(fd, eci, vm, width, num_placements);
+-		spin_sync_start(fd, ctx);
++		ctx = xe_cork_create_opts(fd, eci, vm, width, num_placements);
++		xe_cork_sync_start(fd, ctx);
+ 	}
+ 
+ 	read_engine_cycles(fd, pceu[0]);
+@@ -777,7 +643,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+ 
+ 	usleep(batch_duration_usec);
+ 	if (flags & TEST_TRAILING_IDLE)
+-		spin_sync_end(fd, ctx);
++		xe_cork_sync_end(fd, ctx);
+ 
+ 	read_engine_cycles(fd, pceu[1]);
+ 	if (flags & TEST_ISOLATION)
+@@ -797,8 +663,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+ 		close(fd_spill);
+ 	}
+ 
+-	spin_sync_end(fd, ctx);
+-	spin_ctx_destroy(fd, ctx);
++	xe_cork_destroy(fd, ctx);
+ 
+ 	xe_vm_destroy(fd, vm);
+ }
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index e78ddd0e5..d51a75aec 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -945,18 +945,23 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 
+ 	sync[0].handle = syncobj_create(fd, 0);
+ 	if (flags & BIND_ARRAY_ENOBUFS_FLAG) {
+-		struct xe_cork cork;
++		struct xe_cork *ctx = NULL;
++		uint32_t vm_cork;
+ 
+-		xe_cork_init(fd, eci, &cork);
++		vm_cork = xe_vm_create(fd, 0, 0);
++		ctx = xe_cork_create_opts(fd, eci, vm_cork, 1, 1);
++		xe_cork_sync_start(fd, ctx);
+ 
+-		sync[1].handle = xe_cork_sync_handle(&cork);
++		sync[1].handle = ctx->sync[1].handle;
+ 		sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+ 
+ 		xe_vm_bind_array_err(fd, vm, bind_exec_queue, bind_ops,
+ 				     n_execs, sync, 2, ENOBUFS);
+-		xe_cork_end(&cork);
+-		xe_cork_wait_done(&cork);
+-		xe_cork_fini(&cork);
++		/* destroy queue before sampling again */
++		xe_cork_sync_end(fd, ctx);
++		xe_cork_destroy(fd, ctx);
++		xe_vm_destroy(fd, vm_cork);
++
+ 		n_execs = n_execs / 4;
+ 	}
+ 
 -- 
 2.34.1
 
