@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4A6E77183
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 06:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73403E77183
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 06:34:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97FBE10E1BA;
-	Wed, 18 Dec 2024 06:17:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C683C10E1BA;
+	Wed, 18 Dec 2024 06:34:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PsfOcbGP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F0ivvzwI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4916610E1BA
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 06:17:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7747C10E1BA
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 06:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734502675; x=1766038675;
+ t=1734503666; x=1766039666;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=tjutucVojQTiIWSEAOpnkxncEGCw77aEypkLQzN+u4s=;
- b=PsfOcbGPIC/caeClmsDdWos3RzpOH1XlpdZUWGjLex1MBuK7AlKT3SeS
- yIOADF3wtVqCsywOECRtkeRwbcedpOViKCq+VgtDSPVAX0/1yMa1ft6OQ
- kFgWEVZ8oIjcXcOuUYmPqRlCxIS1nE6RBQhMtKLHWgoaqG5uwn8z+9jux
- c6q2VheoglRGsDGTi7f5hdvgee6En3udCtYOpWhWy3xGa+/2qZXcMud53
- OaWqe5rywURKnLW1+DeAjsuWeIuGl/XpC+dYCHvahe34aG4ZA4mA06lcz
- 7zEWQX36iL0ni0/UwKkVSYnXaiZ2ESAkFA8AZodkrY3fj6pC/HTiXHPfy A==;
-X-CSE-ConnectionGUID: OVj885H4STyUyzlr6eoJdQ==
-X-CSE-MsgGUID: r/BBgQE7T5CDKYKKx2kqwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="45445253"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="45445253"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 22:17:55 -0800
-X-CSE-ConnectionGUID: QRN6n81dTFq8+1FuPmlWqA==
-X-CSE-MsgGUID: MOc9VYdKSQS//OMus/vuxQ==
+ bh=t0OwlzlGGj/3B/pNjo1mH3sW9VVzxRIpdjOsG8p0hak=;
+ b=F0ivvzwIgEfU4MQ8+VRz8Q555+b5taywItqf5s6Y6q0dwc9d4S4n0lRt
+ KFxnm5Xa8ACZeFcGgnYBhZpXFzFEZ4dpy2LzxpBfG2Lvuv02q8HYVfmNr
+ kEjc35EFX/+kHbDt8TcaseJUTQyxn8Lnx+JaAiMqiMR3fjdJ2vMuNElgx
+ x++ZT7UuXryT+LRyClXkWknyI9ZpdSrgAndIdDZ+8J30hxBbssk6qsJcO
+ LHk2Y7zQbNhqefSKF5ZFXhP86bqHWQo+x3HTwJCQfSn6seQmqHKeRqFjz
+ rlehMz0hWL3RLADUrp9y6NM3VafVolVujWTlE4nYTAKndo8Tk0RSZ2oXX g==;
+X-CSE-ConnectionGUID: qnwqv46NT4Km4rJd2zzePg==
+X-CSE-MsgGUID: lUL0zqx6Sw6Sg8WspjPh9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="46356380"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="46356380"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 22:34:25 -0800
+X-CSE-ConnectionGUID: 3D3Dv+yNTPOXtd0i0domjw==
+X-CSE-MsgGUID: mW82Tm/vT0W/lqVMCZxjLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="102762273"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="97555418"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.90])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 22:17:54 -0800
-Date: Wed, 18 Dec 2024 07:17:48 +0100
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 22:34:23 -0800
+Date: Wed, 18 Dec 2024 07:34:19 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Lucas De Marchi <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Francois Dugast <francois.dugast@intel.com>,
  Peter Senna Tschudin <peter.senna@linux.intel.com>
 Subject: Re: [PATCH i-g-t 4/4] lib/igt_device_scan: Fix scan vs
  bind/unbind/reload
-Message-ID: <20241218061748.5pc5ac7i3el477kp@zkempczy-mobl2>
+Message-ID: <20241218063419.zqikqynzuvi5vake@zkempczy-mobl2>
 References: <20241218051324.2696557-1-lucas.demarchi@intel.com>
  <20241218051324.2696557-5-lucas.demarchi@intel.com>
 MIME-Version: 1.0
@@ -82,6 +82,16 @@ On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
 > Re-scanning when trying to match a device is not expensive compared to
 > what most tests are doing, so simply force it to occur whenever trying
 > to match a card.
+
+I also should comment the above. It is generally true, but I've noticed
+getting attributes might be expensive. Even it may take up to few
+seconds, that's why I've added some attributes we don't fetch from udev
+(see is_on_blacklist()). If I'm not wrong getting 'config' was a cause
+to limit attributes we fetch.
+
+--
+Zbigniew
+
 > 
 > Example for xe_wedged:
 > 
@@ -109,16 +119,6 @@ On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
 >  	 */
 > -	igt_devices_scan(false);
 > +	igt_devices_scan(true);
-
-Please don't. Check igt_device_filter_add() and for loop inside. This
-would trigger a lot of rescans instead of one.
-
-If whatever is causing changes from drm (udev) perspective it should be
-targeted there, not in the library.
-
---
-Zbigniew
-
 >  
 >  	if (igt_device_filter_apply(filter) == false)
 >  		return false;
