@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34CC3E77183
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 06:07:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4A6E77183
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 06:17:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E16D110E673;
-	Wed, 18 Dec 2024 06:07:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97FBE10E1BA;
+	Wed, 18 Dec 2024 06:17:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HZ4Oissb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PsfOcbGP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92CB110E673
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 06:07:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4916610E1BA
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 06:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734502057; x=1766038057;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1ixU36n0/y6y95Jja2oyQigxgabYLQ4ZgDd0ZOLQFnQ=;
- b=HZ4OissbAwhy08hbPlDIlRuFAJevK+X96sUItqzgrMub9aXjnD778Uyt
- Iv+0B2v3+UYudxOz02zTgYpkX689xZXoxPXwlPH9nOG7d7PLNrfmd8PdX
- 4Z6Xem345Ae9dqv4ri0H4zDZsf8n1VqVkOmFusgYbr/Fl58ZbNZvG/cdA
- 5/iac+hIl3xJdEnU4qSkQPZKf4UmwbWmGCoZsHowNdJd4qDTqb3IxxxRz
- dsI0MiXzk1kBZLxhrPhjnBujH20tfdCoAsYt2Ds3GoarhbpdeJ9ERGoPA
- f1azkrQVi3H2de8hZqRxYTIx1WufFCacTW4wU1Ec0A2N0BhHq8tfUQU8+ A==;
-X-CSE-ConnectionGUID: BLYYtF34T3aZwTjNfRYOmw==
-X-CSE-MsgGUID: AtSVHx74QImTumHvKAMyLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="46353277"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="46353277"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 22:07:37 -0800
-X-CSE-ConnectionGUID: MnOcx7/ZTRag+weCs0pNpA==
-X-CSE-MsgGUID: YD/ZucAwTNOx7JUupEAlDQ==
+ t=1734502675; x=1766038675;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=tjutucVojQTiIWSEAOpnkxncEGCw77aEypkLQzN+u4s=;
+ b=PsfOcbGPIC/caeClmsDdWos3RzpOH1XlpdZUWGjLex1MBuK7AlKT3SeS
+ yIOADF3wtVqCsywOECRtkeRwbcedpOViKCq+VgtDSPVAX0/1yMa1ft6OQ
+ kFgWEVZ8oIjcXcOuUYmPqRlCxIS1nE6RBQhMtKLHWgoaqG5uwn8z+9jux
+ c6q2VheoglRGsDGTi7f5hdvgee6En3udCtYOpWhWy3xGa+/2qZXcMud53
+ OaWqe5rywURKnLW1+DeAjsuWeIuGl/XpC+dYCHvahe34aG4ZA4mA06lcz
+ 7zEWQX36iL0ni0/UwKkVSYnXaiZ2ESAkFA8AZodkrY3fj6pC/HTiXHPfy A==;
+X-CSE-ConnectionGUID: OVj885H4STyUyzlr6eoJdQ==
+X-CSE-MsgGUID: r/BBgQE7T5CDKYKKx2kqwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="45445253"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="45445253"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 22:17:55 -0800
+X-CSE-ConnectionGUID: QRN6n81dTFq8+1FuPmlWqA==
+X-CSE-MsgGUID: MOc9VYdKSQS//OMus/vuxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121014498"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="102762273"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.90])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 22:07:36 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Ilia Levi <ilia.levi@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v3] lib/igt_core: fix overflow in micro/nano-seconds
- calculations
-Date: Wed, 18 Dec 2024 07:07:30 +0100
-Message-Id: <20241218060730.18961-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 22:17:54 -0800
+Date: Wed, 18 Dec 2024 07:17:48 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Francois Dugast <francois.dugast@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: Re: [PATCH i-g-t 4/4] lib/igt_device_scan: Fix scan vs
+ bind/unbind/reload
+Message-ID: <20241218061748.5pc5ac7i3el477kp@zkempczy-mobl2>
+References: <20241218051324.2696557-1-lucas.demarchi@intel.com>
+ <20241218051324.2696557-5-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241218051324.2696557-5-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,57 +71,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Multiplication without using casting to long (long) for at least
-one argument in expression may cause overflow especially when we're
-using this for calculating timeouts in nanoseconds precision.
+On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
+> There's no guarantee a card will end up with the same device node when
+> modules are loaded/unloaded and drivers bound/unbound. There's some
+> fundamental issue with the igt's the way it is and it's also puzzling
+> from the logs it looks like the device vanished from the bus, when in
+> reality is just the SW state out of sync with what the kernel is
+> exporting.
+> 
+> Re-scanning when trying to match a device is not expensive compared to
+> what most tests are doing, so simply force it to occur whenever trying
+> to match a card.
+> 
+> Example for xe_wedged:
+> 
+> 	$ sudo ./build/tests/xe_wedged --device pci:0000:03:00.0 --r wedged-at-any-timeout
+> 	(xe_wedged:11173) drmtest-DEBUG: Looking for devices to open using filter 0: pci:0000:03:00.0
+> 	(xe_wedged:11173) drmtest-DEBUG: Filter matched /dev/dri/card1 | /dev/dri/renderD129
+> 
+> 	... [ wedge and rebind here ]
+> 
+> 	(xe_wedged:11173) drmtest-DEBUG: Looking for devices to open using filter 0: pci:0000:03:00.0
+> 	(xe_wedged:11173) drmtest-DEBUG: Filter matched /dev/dri/card2 | /dev/dri/renderD130
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/igt_device_scan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index 8e2297087..956719fba 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -1983,7 +1983,7 @@ static bool __igt_device_card_match(const char *filter,
+>  	 * Scan devices in case the user hasn't yet,
+>  	 * but leave a decision on forced rescan on the user side.
+>  	 */
+> -	igt_devices_scan(false);
+> +	igt_devices_scan(true);
 
-Ensure we're picking valid ul/ull suffix for base definitions for
-all dependents.
+Please don't. Check igt_device_filter_add() and for loop inside. This
+would trigger a lot of rescans instead of one.
 
-Reported-by: Ilia Levi <ilia.levi@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/163
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Ilia Levi <ilia.levi@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Link: https://lore.kernel.org/r/20241217105807.94489-1-zbigniew.kempczynski@intel.com
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+If whatever is causing changes from drm (udev) perspective it should be
+targeted there, not in the library.
 
----
-v2: Define __WORDSIZE if not defined (Lucas)
-v3: Eh, forgot to reprase the title (Kamil)
----
- lib/igt_core.h | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+--
+Zbigniew
 
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 90f57402f0..f0ba1a3818 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -1517,11 +1517,21 @@ void igt_kmsg(const char *format, ...);
- #define le32_to_cpu(x)  (x)
- #endif
- 
--#define MSEC_PER_SEC (1000u)
-+#ifndef __WORDSIZE
-+#define __WORDSIZE (__SIZEOF_LONG__ * 8)
-+#endif
-+
-+#if __WORDSIZE == 64
-+#define MSEC_PER_SEC (1000ul)
-+#define USEC_PER_MSEC (1000ul)
-+#else
-+#define MSEC_PER_SEC (1000ull)
-+#define USEC_PER_MSEC (1000ull)
-+#endif
-+
- #define USEC_PER_SEC (1000u * MSEC_PER_SEC)
- #define USEC_PER_DECISEC (100u * MSEC_PER_SEC)
- #define NSEC_PER_SEC (1000u * USEC_PER_SEC)
--#define USEC_PER_MSEC (1000u)
- #define NSEC_PER_MSEC (1000u * USEC_PER_MSEC)
- 
- #define for_if(expr__) if (!(expr__)) {} else
--- 
-2.34.1
-
+>  
+>  	if (igt_device_filter_apply(filter) == false)
+>  		return false;
+> -- 
+> 2.47.0
+> 
