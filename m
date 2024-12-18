@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C755EE77187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 21:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED67CE77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 21:36:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F46710E256;
-	Wed, 18 Dec 2024 21:21:57 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD1AB10E24C;
- Wed, 18 Dec 2024 21:21:56 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5A8310E24C;
+	Wed, 18 Dec 2024 21:36:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Huj68Uvi";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FA0310E24C
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 21:36:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734557818; x=1766093818;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=2YKRA6sLoCRZbGyFjqWGbj4D6FtX5druCLtfgjxkJJI=;
+ b=Huj68UviizDtkiIPcA60lR4+6IVPrH+UZgsDRyGICZ6dkr63CQfUzp7c
+ nAA9QKeZ4JaJti0BeVXP6B4thS9v/6SN7TbAnUJVmwxYnb+eVRXL5PfbM
+ eQKJmTgWhi910muhswWlRtVZckidCkJOmA9pwuJyt8lMr6QkJiyIb86nt
+ r1la1zakSZmFjAEpmZk0tE4W83xpFcMqK4ixUIH6ho8RBFl89JU65pcvU
+ GmPr1sr939ln3l9pJm30471nkD6+HY2rNnLDrXpYmiUQio3wHS9s+Sqq1
+ +wMiF3kWVFxsSA3JrwsMTbZOh1aNgFyKBo9p9lnnQlDpW048nx2v9nD0w g==;
+X-CSE-ConnectionGUID: vFu1u5iwQiunXDU1xIKqEQ==
+X-CSE-MsgGUID: sKUiuWP4Tq+xmDgjGo4XQQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34379756"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="34379756"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 13:36:58 -0800
+X-CSE-ConnectionGUID: KB8q2e9HRbKzzDo1IS2c6g==
+X-CSE-MsgGUID: 0OfVcKFERmOYxiYlSYu1Qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128973915"
+Received: from cataylo2-desk.jf.intel.com ([10.165.21.140])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 13:36:58 -0800
+From: Clint Taylor <clinton.a.taylor@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v5 1/7] lib/intel_chipset: add pantherlake definition
+ and support
+Date: Wed, 18 Dec 2024 13:36:48 -0800
+Message-Id: <20241218213654.2734573-2-clinton.a.taylor@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
+References: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Miscellaneous_OA_Refactor?=
- =?utf-8?q?s?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sai Teja Pottumuttu" <sai.teja.pottumuttu@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Dec 2024 21:21:56 -0000
-Message-ID: <173455691690.146355.5483444066706565449@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241218084134.2898703-1-sai.teja.pottumuttu@intel.com>
-In-Reply-To: <20241218084134.2898703-1-sai.teja.pottumuttu@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,80 +64,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+From: Matt Atwood <matthew.s.atwood@intel.com>
 
-Series: Miscellaneous OA Refactors
-URL   : https://patchwork.freedesktop.org/series/142773/
-State : success
+Add support for the pantherlake platform for xe.
 
-== Summary ==
+Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+---
+ lib/intel_chipset.h     |  2 ++
+ lib/intel_device_info.c | 13 +++++++++++++
+ 2 files changed, 15 insertions(+)
 
-CI Bug Log - changes from IGT_8164 -> IGTPW_12342
-====================================================
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 0c04476bf..c93ad9f75 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -92,6 +92,8 @@ struct intel_device_info {
+ 	bool is_pontevecchio : 1;
+ 	bool is_lunarlake : 1;
+ 	bool is_battlemage : 1;
++	bool is_pantherlake : 1;
++
+ 	const struct intel_cmds_info *cmds_info;
+ 	const char *codename;
+ };
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index d38dc415d..349cf1b48 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -526,6 +526,17 @@ static const struct intel_device_info intel_battlemage_info = {
+ 	.cmds_info = &xe2_cmds_info,
+ };
+ 
++static const struct intel_device_info intel_pantherlake_info = {
++	.graphics_ver = 30,
++	.graphics_rel = 0,
++	.display_ver = 30,
++	.has_4tile = true,
++	.has_flatccs = true,
++	.is_pantherlake = true,
++	.codename = "pantherlake",
++	.cmds_info = &xe2_cmds_info,
++};
++
+ #define INTEL_PCI_ID_INIT(_id, _info) { \
+ 	.vendor_id = 0x8086, .device_id = (_id), \
+ 	.subvendor_id = PCI_MATCH_ANY, .subdevice_id = PCI_MATCH_ANY, \
+@@ -642,6 +653,8 @@ static const struct pci_id_match intel_device_match[] = {
+ 
+ 	INTEL_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
+ 
++	INTEL_PTL_IDS(INTEL_PCI_ID_INIT, &intel_pantherlake_info),
++
+ 	INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
+ };
+ 
+-- 
+2.25.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12342/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12342 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12342/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  * igt@runner@aborted:
-    - bat-twl-2:          NOTRUN -> [FAIL][3] ([i915#13173])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12342/bat-twl-2/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][4] ([i915#11621]) -> [PASS][5] +132 other tests pass
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12342/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13173]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13173
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8164 -> IGTPW_12342
-  * Linux: CI_DRM_15864 -> CI_DRM_15865
-
-  CI-20190529: 20190529
-  CI_DRM_15864: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15865: d8f0c44e2ed948dcc45d04a0dfa83612995a702b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12342: d6f2757dca13107ae4337520c30c846df6a3216d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12342/index.html
