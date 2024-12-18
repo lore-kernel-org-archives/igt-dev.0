@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD2E1E7718B
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 23:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16261E77188
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 23:39:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 66D8D10E1C6;
-	Wed, 18 Dec 2024 23:39:15 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E2UbbUWi";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7127E10E1C6
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 23:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734565154; x=1766101154;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=g/+BkKw7mH+N2OJ12zQe/Xh/HODUD2DHGX6ftoNSpMY=;
- b=E2UbbUWiWB2WfrMl9FoFasd25kfKHzjNhFnwFUWZkIUOh8tjyYqC8j3O
- QHGypzqGtE6KmxZXQnZSsr5kCKrPFlJiqNt0Dj4ZUWfnfnq6ZcEelfKSG
- Bh146HhTkrh6lMSlW4Dp+c6UcWCbtleS9J7r5fu8eL1JTvdixSSqWOiL7
- Neo7d8VGJ/sBd+tZ9XjffWSt2kVUvtgALnXkFHXqSg2fFkpNxBBEF6zGF
- +dexj8g+lclljQZ6F4xeiA3tC9yNhrZcLupsFUwEGe8p047SFwcByLqBh
- XBWRvqeBiYIGoODxMh43lhYLx9p24HUPnzNF9MlVL1rVfoSmWu7tbX8mq g==;
-X-CSE-ConnectionGUID: UH1Jz+ssS9Wwt63CIUPPxw==
-X-CSE-MsgGUID: IYkqX/OeTn6fAaqLcJ2kHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="38844374"
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="38844374"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 15:39:13 -0800
-X-CSE-ConnectionGUID: n7FjyQqdRlOri2xIYaHtDA==
-X-CSE-MsgGUID: 7fc/4bnqQNCXuoEhqoZPLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="97800875"
-Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 15:39:13 -0800
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 2/2] lib/igt_kmod: Do not explicitly unload intel mei
- driver
-Date: Wed, 18 Dec 2024 15:38:30 -0800
-Message-ID: <20241218233830.2444510-2-daniele.ceraolospurio@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241218233830.2444510-1-daniele.ceraolospurio@intel.com>
-References: <20241218233830.2444510-1-daniele.ceraolospurio@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B992F10E040;
+	Wed, 18 Dec 2024 23:39:57 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B495C10E040;
+ Wed, 18 Dec 2024 23:39:56 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_core=5Fgetversion=3A_Add_?=
+ =?utf-8?q?raw-cards_subtest?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Dec 2024 23:39:56 -0000
+Message-ID: <173456519673.214883.10239446957920625708@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241218190418.126565-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20241218190418.126565-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,58 +37,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The mei driver is a child of i915 on discrete, but not on integrated.
-This means we want to unplug it before removing i915 in the former case
-but not in the latter. Therefore, instead of manually unloading the mei
-driver, we can unbind i915 and leave it to the kernel to unplug all the
-dependencies. This also means that we don't need to explicitly disable
-the vtcon anymore.
+== Series Details ==
 
-The other 2 dependencies are left untouched:
-- intel_ips uses symbol_get, so the automatic dependency detection won't
-  unload it.
-- the hotunplug test mentions that the sound driver can throw errors on
-  i915 unbind, so we need to keep the explicit unload.
+Series: core_getversion: Add raw-cards subtest
+URL   : https://patchwork.freedesktop.org/series/142804/
+State : failure
 
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
----
- lib/igt_kmod.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index a8b0339b9..fa9541d72 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -620,16 +620,9 @@ int __igt_intel_driver_unload(char **who, const char *driver)
- 	const char *aux[] = {
- 		/* gen5: ips uses symbol_get() so only a soft module dependency */
- 		"intel_ips",
--		/* mei_gsc uses an i915 aux dev and the other mei mods depend on it */
--		"mei_pxp",
--		"mei_hdcp",
--		"mei_gsc",
- 		NULL,
- 	};
- 
--	/* unbind vt */
--	bind_fbcon(false);
--
- 	ret = igt_audio_driver_unload(who);
- 	if (ret)
- 		return ret;
-@@ -648,6 +641,8 @@ int __igt_intel_driver_unload(char **who, const char *driver)
- 	}
- 
- 	if (igt_kmod_is_loaded(driver)) {
-+		igt_kmod_unbind(driver);
-+
- 		ret = igt_kmod_unload(driver);
- 		if (ret) {
- 			if (who)
--- 
-2.43.0
+CI Bug Log - changes from IGT_8164 -> IGTPW_12347
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12347 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12347, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12347:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-jsl-3:          [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-jsl-3/igt@i915_selftest@live@gt_pm.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/bat-jsl-3/igt@i915_selftest@live@gt_pm.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12347 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][3] +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/fi-pnv-d510/igt@debugfs_test@basic-hwmon.html
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [PASS][4] -> [INCOMPLETE][5] ([i915#12904]) +1 other test incomplete
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        NOTRUN -> [ABORT][6] ([i915#13169])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][7] -> [ABORT][8] ([i915#12061]) +1 other test abort
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-mtlp-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-jsl-3:          [PASS][9] -> [INCOMPLETE][10] ([i915#13241])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-jsl-3/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/bat-jsl-3/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][11] -> [ABORT][12] ([i915#12061]) +1 other test abort
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - fi-pnv-d510:        [ABORT][13] ([i915#13203]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-pnv-d510/igt@i915_module_load@load.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/fi-pnv-d510/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][15] ([i915#11621]) -> [PASS][16] +132 other tests pass
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [ABORT][17] ([i915#12061]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - {bat-mtlp-9}:       [ABORT][19] ([i915#12061]) -> [PASS][20] +1 other test pass
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13169]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13169
+  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
+  [i915#13241]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13241
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8164 -> IGTPW_12347
+  * Linux: CI_DRM_15864 -> CI_DRM_15865
+
+  CI-20190529: 20190529
+  CI_DRM_15864: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15865: d8f0c44e2ed948dcc45d04a0dfa83612995a702b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12347: 79cccbe59fa7731277f13fe4a0de853f866a5c8b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12347/index.html
