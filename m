@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533E1E77187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 19:30:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639F5E77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 19:31:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D79110E337;
-	Wed, 18 Dec 2024 19:30:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2461010E333;
+	Wed, 18 Dec 2024 19:31:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BdXuBZZf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T1GFSKZb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32D5910E337
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 19:30:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79F5F10E333
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 19:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734550216; x=1766086216;
+ t=1734550261; x=1766086261;
  h=date:message-id:from:to:subject:in-reply-to:references:
- mime-version; bh=9sfXy+UHNIWPr5T6aneyk4NjFcvzuCzYYkonQUxUMIQ=;
- b=BdXuBZZfEtgsprEUZCzwi0x3ClZi+Dqkb5b8B+eDVykJbfAomEcE7zms
- Rm6JI65/TIN3k5UWKm2RSlIfc4/ntb6dhUEexUdt+UQaQT1iPe/1m/fWc
- VQ+NYXd2M/mBsvyC33bdEEk3OKK5M7C7a+VWaa41tv6eKDtnE0uqSLemf
- s7sfcCKnTD/tzLdAj27DT1XTGD+XvwPMgiwrwVD5kqcASP7RydgKuE7YS
- QXsrMoApiCGLYnb+jCa77r+VZYSEnYdwhT/lw/FotaACZ9Ux15SeLJybI
- 8eyqOg3R9PEq/Qrrsl8QGuQTTi5AVDUVkLQB0Dnbeqflx2XCFmyD+5FSa A==;
-X-CSE-ConnectionGUID: FtopAjJsSh+uN05M4RhfAQ==
-X-CSE-MsgGUID: QW7aX9iQTRun9rVhUyPfSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="52570321"
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="52570321"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 11:30:16 -0800
-X-CSE-ConnectionGUID: U4lGwNEFQ+WGPZcIqIQMFw==
-X-CSE-MsgGUID: zubcvl/vRd2gfHZ6958dmg==
+ mime-version; bh=3Yg4ICI7nkPy08SAN6LS1y0loTYL8BWlSU6mUXnaYLk=;
+ b=T1GFSKZbRQLlXgR3GO+r3RkDff5GdFlYKcMNXuKz2vRk8lNYjkDR8oST
+ ee6qU/paAQh5NnFS/gkyIgSl581PZoHYTNH1Ti9V1ZVAkNmr7CVoEkDwB
+ m/zFCBfuEqNytXii8CqkZwGOQ7LufN5nCftD1h7AWjOmyKeVbcZh8QmLM
+ 6b5W93N4YEcknYbzry3RFcWhQhUQY0vmyGof/Jfk4Hs7/Nj5BGSFfeCj5
+ wAgBcTnoIy2R2yWtreOhXOi5oddIwxcvGx217ghsZOKVG5Z75RdMDTxSX
+ 3FhwJW6dOzjdmNnXi7wZ8zqvTxH8/opwBQk4pr3d/5iJHh2OtRcRY1g2U A==;
+X-CSE-ConnectionGUID: IfO7CgxeTlixY1Bows8HnA==
+X-CSE-MsgGUID: E3+6r06jRheF4+kldWG55g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="38979056"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="38979056"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 11:31:01 -0800
+X-CSE-ConnectionGUID: jq6h9091TTerm+2vuidrjA==
+X-CSE-MsgGUID: B+kguVgwSkKlvyZOCqv+mQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="97787518"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128945663"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 11:30:15 -0800
-Date: Wed, 18 Dec 2024 11:30:14 -0800
-Message-ID: <85zfks23i1.wl-ashutosh.dixit@intel.com>
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 11:31:01 -0800
+Date: Wed, 18 Dec 2024 11:31:00 -0800
+Message-ID: <85y10c23gr.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  igt-dev@lists.freedesktop.org
 Subject: Re: [PATCH] lib/core: Let ftrace know when the test started
-In-Reply-To: <20241218191340.b4h6fflpjyys67m7@kamilkon-desk.igk.intel.com>
+In-Reply-To: <85zfks23i1.wl-ashutosh.dixit@intel.com>
 References: <20241217183910.1855657-1-umesh.nerlige.ramappa@intel.com>
  <8534il3nj4.wl-ashutosh.dixit@intel.com>
  <20241218191340.b4h6fflpjyys67m7@kamilkon-desk.igk.intel.com>
+ <85zfks23i1.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,38 +74,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 18 Dec 2024 11:13:40 -0800, Kamil Konieczny wrote:
+On Wed, 18 Dec 2024 11:30:14 -0800, Dixit, Ashutosh wrote:
 >
-> Hi Dixit,,
-> On 2024-12-17 at 15:19:59 -0800, Dixit, Ashutosh wrote:
-> > On Tue, 17 Dec 2024 10:39:10 -0800, Umesh Nerlige Ramappa wrote:
+> On Wed, 18 Dec 2024 11:13:40 -0800, Kamil Konieczny wrote:
+> >
+> > Hi Dixit,,
+> > On 2024-12-17 at 15:19:59 -0800, Dixit, Ashutosh wrote:
+> > > On Tue, 17 Dec 2024 10:39:10 -0800, Umesh Nerlige Ramappa wrote:
+> > > >
+> > > > It's useful to know the start and end of the test in ftrace to be able
+> > > > to debug some issues. Not sure where to add igt_trace for end, so
+> > > > posting this patch to get some comments.
 > > >
-> > > It's useful to know the start and end of the test in ftrace to be able
-> > > to debug some issues. Not sure where to add igt_trace for end, so
-> > > posting this patch to get some comments.
+> > > Isn't it this (at least looking at dmesg):
+> > >
+> > > __noreturn static void exit_subtest(const char *result)
+> > > {
+> > >	...
+> > >	igt_kmsg(KMSG_INFO "%s: finished subtest %s, %s\n",
+> > >		 command_str, *subtest_name, result);
 > >
-> > Isn't it this (at least looking at dmesg):
+> > I also think it is already printed in logs.
+> > Umesh if you find out cases where it is not please drop a link
+> > to CI log(s) to look into.
 > >
-> > __noreturn static void exit_subtest(const char *result)
-> > {
-> >	...
-> >	igt_kmsg(KMSG_INFO "%s: finished subtest %s, %s\n",
-> >		 command_str, *subtest_name, result);
+> > Now that I look at it again the only diff is a place when it is
+> > printed, this one is after (dynamic) subtest ends but I still
+> > think it is also printed in dmesg before a dynamic subtest starts.
+> >
+> > For example look into this log:
+> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12333/shard-snb5/igt@kms_flip@flip-vs-fences@a-vga1.html
+> >
+> > there is:
+> > <7> [377.462024] i915 0000:00:02.0: [drm:drm_helper_probe_single_connector_modes [drm_kms_helper]] [CONNECTOR:75:DP-1] disconnected
+> > <6> [377.463784] [IGT] kms_flip: starting subtest flip-vs-fences
+> > <6> [377.465812] [IGT] kms_flip: starting dynamic subtest A-VGA1
 >
-> I also think it is already printed in logs.
-> Umesh if you find out cases where it is not please drop a link
-> to CI log(s) to look into.
->
-> Now that I look at it again the only diff is a place when it is
-> printed, this one is after (dynamic) subtest ends but I still
-> think it is also printed in dmesg before a dynamic subtest starts.
->
-> For example look into this log:
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12333/shard-snb5/igt@kms_flip@flip-vs-fences@a-vga1.html
->
-> there is:
-> <7> [377.462024] i915 0000:00:02.0: [drm:drm_helper_probe_single_connector_modes [drm_kms_helper]] [CONNECTOR:75:DP-1] disconnected
-> <6> [377.463784] [IGT] kms_flip: starting subtest flip-vs-fences
-> <6> [377.465812] [IGT] kms_flip: starting dynamic subtest A-VGA1
+> Umesh wants to print in ftrace not dmesg.
 
-Umesh wants to print in ftrace not dmesg.
+Sorry, better to say ftrace as well as dmesg.
