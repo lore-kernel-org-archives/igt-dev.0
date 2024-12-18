@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D985E77187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 12:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8756E77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 12:50:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E4D910E0B1;
-	Wed, 18 Dec 2024 12:45:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hMhk/K81";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BA2110E0B1
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 12:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734525935; x=1766061935;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ChpANKLrJ+T08fmQicr/MmHdmkMemjXwW+Zsf7zBLEw=;
- b=hMhk/K81LIg6SkLlbNBiKdKhEyp54oYRVnLUvxXKNuBm3+zM7ZdtX81z
- C5se+hosNs0SpnZN6VTO4qx5fuCmh99SIsp+V6UOdE0/MLmFK80sdg1rc
- emtcXSEhWtviHhH7AJHdb4JUSmci8IusQ1MdrQgWI30iAeYCCN/XIO7AD
- plRmVVLYHcXSA9+PUK04rYAe/GsFJxouEzBh/OuEYZci45O7gmyj63kS4
- iOoU1dNWS02NSbLnwYglB4YLTwV++J5CqKbXzeBinG7dfSehpJTp3Lsj6
- V1r6vPGMLYAzoIBx6zNg9BTs382u6DHS0ptC0lq7n5vsqkJaRG2R0+u10 Q==;
-X-CSE-ConnectionGUID: /lkk7BFcSrGijioy9ISzgw==
-X-CSE-MsgGUID: UssBShexSqSZlQTGK8Tadg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="38934674"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="38934674"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 04:45:34 -0800
-X-CSE-ConnectionGUID: hh81NBLWTh+yNX0bvL6D0w==
-X-CSE-MsgGUID: narhscqQTre9/bVRs+i21g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="98084538"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO fedora..)
- ([10.245.246.105])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 04:45:33 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>, akshata.jahagirdar@intel.com
-Subject: [PATCH i-g-t] xe-ci: Disable xe_evict subtests that are expected to
- possibly fail
-Date: Wed, 18 Dec 2024 13:45:19 +0100
-Message-ID: <20241218124519.4697-1-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.47.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6A3EB10E315;
+	Wed, 18 Dec 2024 12:50:30 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C8EF10E1C5;
+ Wed, 18 Dec 2024 12:50:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3258869350918552059=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fhangman?=
+ =?utf-8?q?=3A_Fix_spin_engine_hang_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mikolaj Wasiak" <mikolaj.wasiak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Dec 2024 12:50:30 -0000
+Message-ID: <173452623011.47295.9626408767357193233@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <ewfsrzwiwey464lvqix4apzswvmfs4vvwbnndxdbrvtmtyjev5@p3lqcqy6sxve>
+In-Reply-To: <ewfsrzwiwey464lvqix4apzswvmfs4vvwbnndxdbrvtmtyjev5@p3lqcqy6sxve>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,63 +37,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Threads may compete over VRAM resources, and since there is no
-serialization in TTM, threaded evict tests may have a high
-possibility of failing.
+--===============3258869350918552059==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Disable such tests until we have a working exhaustive eviction
-implementation in place.
+== Series Details ==
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <akshata.jahagirdar@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 5 -----
- tests/intel-ci/xe.blocklist.txt          | 7 +++++++
- 2 files changed, 7 insertions(+), 5 deletions(-)
+Series: tests/intel/i915_hangman: Fix spin engine hang (rev5)
+URL   : https://patchwork.freedesktop.org/series/141694/
+State : success
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 727be9230..f16ca9188 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -263,19 +263,14 @@ igt@xe_exec_threads@threads-mixed-shared-vm-basic
- igt@xe_exec_threads@threads-mixed-fd-basic
- igt@xe_exec_threads@threads-mixed-userptr-invalidate
- igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
- igt@xe_evict@evict-beng-small
- igt@xe_evict@evict-beng-small-cm
- igt@xe_evict@evict-beng-small-external
- igt@xe_evict@evict-beng-small-external-cm
- igt@xe_evict@evict-beng-small-multi-vm
- igt@xe_evict@evict-cm-threads-small
--igt@xe_evict@evict-mixed-threads-small
--igt@xe_evict@evict-mixed-threads-small-multi-vm
- igt@xe_evict@evict-small
- igt@xe_evict@evict-small-cm
- igt@xe_evict@evict-small-external
- igt@xe_evict@evict-small-external-cm
- igt@xe_evict@evict-small-multi-vm
--igt@xe_evict@evict-small-multi-vm-cm
--igt@xe_evict@evict-threads-small
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index e29e745a0..ed9e572a5 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -90,3 +90,10 @@ igt@sriov_basic@enable-vfs-autoprobe-on$
- igt@sriov_basic@enable-vfs-bind-unbind-each$
- igt@sriov_basic@bind-unbind-vf$
- ##################################################################
-+# Exclude xe_evict tests that are not expected to succeed
-+# due to missing TTM exhaustive eviction
-+##################################################################
-+igt@xe_evict@*-multi-vm-cm*
-+igt@xe_evict@*-threads-*
-+# igt@xe_evict@*-cm* # Rebind and VM_BIND may race.
-+##################################################################
--- 
-2.47.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8161_BAT -> XEIGTPW_12334_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12334_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#3429]) -> [PASS][2] +31 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#3429]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8161 -> IGTPW_12334
+  * Linux: xe-2393-561947cbde53a2d22434977709610f42e4f0229b -> xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c
+
+  IGTPW_12334: 5194cc6ea9165ad67e87a2961f588bb7b86048a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8161: f7cc6398cc4f21b2647138fa190695b65cfe9e15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2393-561947cbde53a2d22434977709610f42e4f0229b: 561947cbde53a2d22434977709610f42e4f0229b
+  xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c: 1d0ef0c9b38ec3433a841e26e6fb553d820ba32c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/index.html
+
+--===============3258869350918552059==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/i915_hangman: Fix spin engine hang (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141694/">https://patchwork.freedesktop.org/series/141694/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8161_BAT -&gt; XEIGTPW_12334_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12334_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@bad-pitch-0:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429">Intel XE#3429</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> +31 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12334/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8161 -&gt; IGTPW_12334</li>
+<li>Linux: xe-2393-561947cbde53a2d22434977709610f42e4f0229b -&gt; xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c</li>
+</ul>
+<p>IGTPW_12334: 5194cc6ea9165ad67e87a2961f588bb7b86048a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8161: f7cc6398cc4f21b2647138fa190695b65cfe9e15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2393-561947cbde53a2d22434977709610f42e4f0229b: 561947cbde53a2d22434977709610f42e4f0229b<br />
+  xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c: 1d0ef0c9b38ec3433a841e26e6fb553d820ba32c</p>
+
+</body>
+</html>
+
+--===============3258869350918552059==--
