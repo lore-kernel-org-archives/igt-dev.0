@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38EC7E77188
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 12:01:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7E7E77188
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 12:01:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E48DE10EB8A;
-	Wed, 18 Dec 2024 12:01:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3CC8810E26C;
+	Wed, 18 Dec 2024 12:01:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R/yjJm+x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dUtGBtqN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8627610EB8A
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 12:01:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F32610E26C
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 12:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734523281; x=1766059281;
+ t=1734523292; x=1766059292;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=mWBYE7VybTRVucjNeS/xDcr+T1u7qrunjS8XWohxkDA=;
- b=R/yjJm+xVLKUw7uvwVl861zCDPbtv01t77ol2Am/bju+x2T+dkVl4od5
- 6a9vQ9iOBJRA+tF3s05vpndqMaN3MtACFFXpO/8ZKgB8XhI+Lppegyl/b
- p8+wsAAp/ofxuP+i77zRVskO1Ngk7Uh6jR4MVIHBms9hmtIUaigIMFPwt
- r3+bPLuLC3nqplooZKW9OoaN28EwxsrwXvUhK+TwPchKrAGFdDIMnSMlz
- w6kUhMgGCDwr8le/Zw8RrdoO97F8DbaBbpuUY3V1TAYjUIF+x9Ya+W7Q3
- 0MVFNn5kDyAq954WK2n3Vt0FcTzrGbO9aVHGZYaoOODjJLoeE4fWqpG7W Q==;
-X-CSE-ConnectionGUID: RjyEZumJTBqnZ8rHkrI/Ng==
-X-CSE-MsgGUID: SWTKhVJkSLWQE4ghcP5K9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35143183"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="35143183"
+ bh=eFFoELOmicXp7eOlUYllQHMUNgtn/vRtAHegfe59JvI=;
+ b=dUtGBtqNIY1b5RAAeJgS5jPQVvLdlzNGvUQpGlUbm0+2ZTH288R3wW1L
+ RxV8UmtOyn3VFug4QfKckW78lvj9TS69cFc+D4FNv0XQmbxooIUo48CQU
+ a29HYjykD4h9JpwNqo7+zOwJeoCq38uQE+fyuFMGJ7NJSRotJcpKgTqcU
+ LAdcKVV/EuDU86vsml1w+GX51zHoVRgPuY2swtyksZEeAVnYofB3Nvaox
+ 290oisHyjDKQ1G9rPDmC8N2V2cXGlwj0Ot6g3+IvWSYu/lAYDw19talx3
+ Q7qlUgkYmvgt7Xq/dV2k9uBNi0RkCGJ8dasMrGR8f1ueYXxvMBYTlDvrs w==;
+X-CSE-ConnectionGUID: Fe63puRGRjG2oaxSSrST+Q==
+X-CSE-MsgGUID: bb0o/AbXR4aRBn7fhQqoRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35143192"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="35143192"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 04:01:21 -0800
-X-CSE-ConnectionGUID: MdvykGN3TjGsjGSAHwkdoA==
-X-CSE-MsgGUID: +TS5Knx4R+WYMwMkOr5sYg==
+ 18 Dec 2024 04:01:32 -0800
+X-CSE-ConnectionGUID: JmfPsdxZToC0Oa8H7CWNDA==
+X-CSE-MsgGUID: 7Emk4nXMQiCC3cFMS1A99g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="98076170"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="98076252"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.116.91])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 04:01:14 -0800
+ 18 Dec 2024 04:01:23 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -54,10 +54,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH i-g-t 2/5] lib/xe/xe_sriov_provisioning: Add accessors for
- quota/spare attributes
-Date: Wed, 18 Dec 2024 13:00:53 +0100
-Message-Id: <20241218120056.779962-3-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 3/5] lib/xe/xe_sriov_provisioning: Add shared resource
+ provisionability check
+Date: Wed, 18 Dec 2024 13:00:54 +0100
+Message-Id: <20241218120056.779962-4-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241218120056.779962-1-marcin.bernatowicz@linux.intel.com>
 References: <20241218120056.779962-1-marcin.bernatowicz@linux.intel.com>
@@ -79,12 +79,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce functions to get and set SR-IOV provisioning quota and spare
-attributes. These functions provide access to shared resource attributes
-such as GGTT, LMEM, contexts, and doorbells for both PF and VF contexts.
+Introduce a helper `xe_sriov_is_shared_res_provisionable` to determine
+if a shared resource can be provisioned.
 
-Add returning and asserting variants to allow flexible error handling
-based on usage scenarios.
+Add macros `xe_sriov_for_each_shared_res` and
+`xe_sriov_for_each_provisionable_shared_res` to iterate over shared
+resources and provisionable shared resources, respectively.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -97,173 +97,94 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/xe/xe_sriov_provisioning.c | 124 +++++++++++++++++++++++++++++++++
- lib/xe/xe_sriov_provisioning.h |  14 ++++
- 2 files changed, 138 insertions(+)
+ lib/xe/xe_sriov_provisioning.c | 22 ++++++++++++++++++++++
+ lib/xe/xe_sriov_provisioning.h | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
 diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index 67ae9cf54..536121931 100644
+index 536121931..22035ffd8 100644
 --- a/lib/xe/xe_sriov_provisioning.c
 +++ b/lib/xe/xe_sriov_provisioning.c
 @@ -9,6 +9,7 @@
  #include "intel_chipset.h"
  #include "linux_scaffold.h"
  #include "xe/xe_mmio.h"
-+#include "xe/xe_sriov_debugfs.h"
++#include "xe/xe_query.h"
+ #include "xe/xe_sriov_debugfs.h"
  #include "xe/xe_sriov_provisioning.h"
  
- /**
-@@ -150,3 +151,126 @@ int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio
- 
- 	return 0;
+@@ -274,3 +275,24 @@ void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
+ {
+ 	igt_fail_on(__xe_sriov_pf_set_shared_res_attr(pf, res, vf_num, gt_num, value));
  }
 +
 +/**
-+ * xe_sriov_shared_res_attr_name - Retrieve the attribute name for a shared resource
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ *
-+ * Returns the attribute name corresponding to the specified
-+ * shared resource type and VF number. For VF (vf_num > 0), the "quota"
-+ * attribute name is returned (e.g., "contexts_quota"). For PF (vf_num == 0),
-+ * the "spare" attribute name is returned (e.g., "contexts_spare").
-+ *
-+ * Return:
-+ * The attribute name as a string if the resource type is valid.
-+ * NULL if the resource type is invalid.
-+ */
-+const char *xe_sriov_shared_res_attr_name(enum xe_sriov_shared_res res,
-+					  unsigned int vf_num)
-+{
-+	switch (res) {
-+	case XE_SRIOV_SHARED_RES_CONTEXTS:
-+		return vf_num ? "contexts_quota" : "contexts_spare";
-+	case XE_SRIOV_SHARED_RES_DOORBELLS:
-+		return vf_num ? "doorbells_quota" : "doorbells_spare";
-+	case XE_SRIOV_SHARED_RES_GGTT:
-+		return vf_num ? "ggtt_quota" : "ggtt_spare";
-+	case XE_SRIOV_SHARED_RES_LMEM:
-+		return vf_num ? "lmem_quota" : "lmem_spare";
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * __xe_sriov_pf_get_shared_res_attr - Read shared resource attribute
++ * xe_sriov_is_shared_res_provisionable - Check if a shared resource is provisionable
 + * @pf: PF device file descriptor
 + * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read attribute value
-+ *
-+ * Reads the specified shared resource attribute for the given PF device @pf,
-+ * VF number @vf_num, and GT @gt_num. The attribute depends on @vf_num:
-+ * - For VF (vf_num > 0), reads the "quota" attribute.
-+ * - For PF (vf_num == 0), reads the "spare" attribute.
-+ *
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_pf_get_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+				      unsigned int vf_num, unsigned int gt_num,
-+				      uint64_t *value)
-+{
-+	return __xe_sriov_pf_debugfs_get_u64(pf, vf_num, gt_num,
-+					     xe_sriov_shared_res_attr_name(res, vf_num),
-+					     value);
-+}
-+
-+/**
-+ * xe_sriov_pf_get_shared_res_attr - Read shared resource attribute
-+ * @pf: PF device file descriptor
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based) or 0 for PF
 + * @gt_num: GT number
 + *
-+ * A throwing version of __xe_sriov_pf_get_shared_res_attr().
-+ * Instead of returning an error code, it returns the quota value and asserts
-+ * in case of an error.
++ * Determines whether a specified shared resource can be provisioned.
 + *
-+ * Return: The value for the given shared resource attribute.
-+ *         Asserts in case of failure.
++ * Return: true if the shared resource is provisionable, false otherwise.
 + */
-+uint64_t xe_sriov_pf_get_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+					 unsigned int vf_num,
-+					 unsigned int gt_num)
++bool xe_sriov_is_shared_res_provisionable(int pf, enum xe_sriov_shared_res res,
++					  unsigned int gt_num)
 +{
-+	uint64_t value;
++	if (res == XE_SRIOV_SHARED_RES_LMEM)
++		return xe_has_vram(pf) && !xe_is_media_gt(pf, gt_num);
++	else if (res == XE_SRIOV_SHARED_RES_GGTT)
++		return !xe_is_media_gt(pf, gt_num);
 +
-+	igt_fail_on(__xe_sriov_pf_get_shared_res_attr(pf, res, vf_num, gt_num, &value));
-+
-+	return value;
-+}
-+
-+/**
-+ * __xe_sriov_pf_set_shared_res_attr - Set a shared resource attribute
-+ * @pf: PF device file descriptor
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Value to set for the shared resource attribute
-+ *
-+ * Sets the specified shared resource attribute for the given PF device @pf,
-+ * VF number @vf_num, and GT @gt_num. The attribute depends on @vf_num:
-+ * - For VF (vf_num > 0), reads the "quota" attribute.
-+ * - For PF (vf_num == 0), reads the "spare" attribute.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+				      unsigned int vf_num, unsigned int gt_num,
-+				      uint64_t value)
-+{
-+	return __xe_sriov_pf_debugfs_set_u64(pf, vf_num, gt_num,
-+					     xe_sriov_shared_res_attr_name(res, vf_num),
-+					     value);
-+}
-+
-+/**
-+ * xe_sriov_pf_set_shared_res_attr - Set the shared resource attribute value
-+ * @pf: PF device file descriptor
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Value to set
-+ *
-+ * A throwing version of __xe_sriov_pf_set_shared_res_attr().
-+ * Instead of returning an error code, it asserts in case of an error.
-+ */
-+void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+				     unsigned int vf_num, unsigned int gt_num,
-+				     uint64_t value)
-+{
-+	igt_fail_on(__xe_sriov_pf_set_shared_res_attr(pf, res, vf_num, gt_num, value));
++	return true;
 +}
 diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
-index aa2f08f52..168b50394 100644
+index 168b50394..b4300ec2e 100644
 --- a/lib/xe/xe_sriov_provisioning.h
 +++ b/lib/xe/xe_sriov_provisioning.h
-@@ -46,5 +46,19 @@ const char *xe_sriov_shared_res_to_string(enum xe_sriov_shared_res res);
+@@ -27,6 +27,34 @@ enum xe_sriov_shared_res {
+ 	XE_SRIOV_SHARED_RES_LMEM,
+ };
+ 
++/**
++ * XE_SRIOV_SHARED_RES_NUM - Number of shared resource types
++ */
++#define XE_SRIOV_SHARED_RES_NUM (XE_SRIOV_SHARED_RES_LMEM + 1)
++
++/**
++ * xe_sriov_for_each_shared_res - Iterate over all shared resource types
++ * @res: Loop counter variable of type `enum xe_sriov_shared_res`
++ *
++ * Iterates over each shared resource type defined in the `enum xe_sriov_shared_res`.
++ */
++#define xe_sriov_for_each_shared_res(res) \
++	for ((res) = 0; (res) < XE_SRIOV_SHARED_RES_NUM; (res)++)
++
++/**
++ * xe_sriov_for_each_provisionable_shared_res - Iterate over provisionable shared
++ * resource types
++ * @res: Loop counter variable of type `enum xe_sriov_shared_res`
++ * @pf: PF device file descriptor of type int
++ * @gt: GT number of type unsigned int
++ *
++ * Iterates over each provisionable shared resource type for the given PF device
++ * and GT number.
++ */
++#define xe_sriov_for_each_provisionable_shared_res(res, pf, gt) \
++	for ((res) = 0; (res) < XE_SRIOV_SHARED_RES_NUM; (res)++) \
++		for_if(xe_sriov_is_shared_res_provisionable((pf), (res), (gt)))
++
+ /**
+  * struct xe_sriov_provisioned_range - Provisioned range for a Virtual Function (VF)
+  * @vf_id: The ID of the VF
+@@ -43,6 +71,7 @@ struct xe_sriov_provisioned_range {
+ };
+ 
+ const char *xe_sriov_shared_res_to_string(enum xe_sriov_shared_res res);
++bool xe_sriov_is_shared_res_provisionable(int pf, enum xe_sriov_shared_res res, unsigned int gt);
  int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio *mmio,
  					       struct xe_sriov_provisioned_range **ranges,
  					       unsigned int *nr_ranges);
-+const char *xe_sriov_shared_res_attr_name(enum xe_sriov_shared_res res,
-+					  unsigned int vf_num);
-+int __xe_sriov_pf_get_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+				      unsigned int vf_num, unsigned int gt_num,
-+				      uint64_t *value);
-+uint64_t xe_sriov_pf_get_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+					 unsigned int vf_num,
-+					 unsigned int gt_num);
-+int __xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+				      unsigned int vf_num, unsigned int gt_num,
-+				      uint64_t value);
-+void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
-+				     unsigned int vf_num, unsigned int gt_num,
-+				     uint64_t value);
- 
- #endif /* __XE_SRIOV_PROVISIONING_H__ */
 -- 
 2.31.1
 
