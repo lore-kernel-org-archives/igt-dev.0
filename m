@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A020E77188
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 15:36:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9108E77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 15:37:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19D9E10E32C;
-	Wed, 18 Dec 2024 15:36:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UuarK9HH";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1D310E32C
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 15:36:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734536179; x=1766072179;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=hjded+OaekvTJioKPHEZKFELGcWFKv/UvcttW4BfFsI=;
- b=UuarK9HHcc32WEAqLZPwejzlTaQoiOQJUs/Z0RqPcGM1Hj5/WOV6BDU/
- 7yhyYKcp0o4oL0Hj6nT6b2JC+zdy/7q40fsZybwb8g118etKv4eghgzaE
- XBYvFkdP1efeEOBmhY0XdYZPcxYYxCjZ8oB69RD2mfQjOtV7K/91EZskH
- F1luw3VDUdx0YPEDHODYGklLHjr6bSt6xXUY3fmehLa3XIry9OfS9inZ4
- lZfuXOgbDnOBMC5X2qrEAPDd/RX/ykL2yW/Nb/4zpIbX+pGtVQgKt4Zz1
- fc19C+YELmDJRdbmZNBmVBogGp5Oe95xNKfCGWLF54jMKTahpv5YFX7ai w==;
-X-CSE-ConnectionGUID: LjvomKC2ST6stI0yRtDHvg==
-X-CSE-MsgGUID: BnRKkcp+Tl6SLEsvTKGoow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="46436520"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="46436520"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 07:36:19 -0800
-X-CSE-ConnectionGUID: 1SXsGJlkSX6F+Aw9ECQNJw==
-X-CSE-MsgGUID: 4OyvzpvoTaS2QrEvzosdow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="98714953"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO fedora..)
- ([10.245.246.105])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 07:36:17 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>, akshata.jahagirdar@intel.com,
- Nirmoy Das <nirmoy.das@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2] tests/intel-ci/xe*: Disable a few xe_evict subtests
-Date: Wed, 18 Dec 2024 16:35:47 +0100
-Message-ID: <20241218153547.11346-1-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.47.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8469610EC00;
+	Wed, 18 Dec 2024 15:37:16 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D56F310E32C;
+ Wed, 18 Dec 2024 15:37:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/xe=3A_Add_xe=5Fcgro?=
+ =?utf-8?q?up_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Dec 2024 15:37:14 -0000
+Message-ID: <173453623486.95103.917544743853289357@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241217141601.369613-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20241217141601.369613-1-maarten.lankhorst@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,70 +37,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Threads may compete over VRAM resources, and since there is no
-serialization in TTM, threaded evict tests may have a high
-possibility of failing.
+== Series Details ==
 
-Disable such tests until we have a working exhaustive eviction
-implementation in place.
+Series: tests/xe: Add xe_cgroup test
+URL   : https://patchwork.freedesktop.org/series/142725/
+State : success
 
-v2:
-- Disable also xe_evict@evict-cm-threads-small in BAT.
-(Kamil).
+== Summary ==
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <akshata.jahagirdar@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 6 ------
- tests/intel-ci/xe.blocklist.txt          | 7 +++++++
- 2 files changed, 7 insertions(+), 6 deletions(-)
+CI Bug Log - changes from IGT_8163 -> IGTPW_12336
+====================================================
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 727be9230..0234d3e72 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -263,19 +263,13 @@ igt@xe_exec_threads@threads-mixed-shared-vm-basic
- igt@xe_exec_threads@threads-mixed-fd-basic
- igt@xe_exec_threads@threads-mixed-userptr-invalidate
- igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
- igt@xe_evict@evict-beng-small
- igt@xe_evict@evict-beng-small-cm
- igt@xe_evict@evict-beng-small-external
- igt@xe_evict@evict-beng-small-external-cm
- igt@xe_evict@evict-beng-small-multi-vm
--igt@xe_evict@evict-cm-threads-small
--igt@xe_evict@evict-mixed-threads-small
--igt@xe_evict@evict-mixed-threads-small-multi-vm
- igt@xe_evict@evict-small
- igt@xe_evict@evict-small-cm
- igt@xe_evict@evict-small-external
- igt@xe_evict@evict-small-external-cm
- igt@xe_evict@evict-small-multi-vm
--igt@xe_evict@evict-small-multi-vm-cm
--igt@xe_evict@evict-threads-small
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index e29e745a0..ed9e572a5 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -90,3 +90,10 @@ igt@sriov_basic@enable-vfs-autoprobe-on$
- igt@sriov_basic@enable-vfs-bind-unbind-each$
- igt@sriov_basic@bind-unbind-vf$
- ##################################################################
-+# Exclude xe_evict tests that are not expected to succeed
-+# due to missing TTM exhaustive eviction
-+##################################################################
-+igt@xe_evict@*-multi-vm-cm*
-+igt@xe_evict@*-threads-*
-+# igt@xe_evict@*-cm* # Rebind and VM_BIND may race.
-+##################################################################
--- 
-2.47.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12336/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12336 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [INCOMPLETE][1] ([i915#12904]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8163/bat-apl-1/igt@dmabuf@all-tests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12336/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8163/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12336/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - {bat-mtlp-9}:       [FAIL][5] ([i915#11989]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8163/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12336/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#11989]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11989
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8163 -> IGTPW_12336
+
+  CI-20190529: 20190529
+  CI_DRM_15863: 78526dfb8799485890dae3877fea308e9501879c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12336: faa5b0e692d8a5ce48e95a259d48c05f6239921c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8163: 535c26685134adffa6d391432cb10391d6971501 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12336/index.html
