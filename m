@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C002CE7718A
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 21:37:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F0EE77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 21:50:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7968910EC5A;
-	Wed, 18 Dec 2024 21:37:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y3UMPhAK";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CB8410E6BD
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 21:37:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734557820; x=1766093820;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=yp4KjloujhOVQk/RYG0A6ARo8bZJDyE+v9fxBQZauvI=;
- b=Y3UMPhAK2IFK88dQzFX3/mfyEdU28OrlcJDmqX4M1IdRC8f48Qf94Xn7
- Xo3rDYZDp5vm/PZ2IYpiXapVX9W94wk03ZsNppTvQ6jdf6+1nDX3vxZO1
- ByEZBbVQg91v6QbPfNzAB2onnu6yRj1+sWogkDgyhqOSmlPmUDOuzhZfv
- qZei4O7kGuECkLrkiOH2I18i538kVxPmdAqx1eimR25D21eBTFODMsd0x
- uawwao4ymESni+pHK7Mxi/27V0V/mbeWeO0MgGsA4ZK+6TAiib++qeppI
- 9cKLVWaR9H4Z1qf2LUNp+wwknwCmbYAy0K4OOJ28GrKaSFXIslz8R52Uz g==;
-X-CSE-ConnectionGUID: T+88Y/YpT7aKLBPjqddGyQ==
-X-CSE-MsgGUID: YkFVs8tgRPaqcLWgkGDW/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34379761"
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="34379761"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 13:36:58 -0800
-X-CSE-ConnectionGUID: lAHYXHEYTFWKh8MtOtuXxw==
-X-CSE-MsgGUID: 1hpAZ5bmQNG7JX/SHIkGtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128973921"
-Received: from cataylo2-desk.jf.intel.com ([10.165.21.140])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 13:36:58 -0800
-From: Clint Taylor <clinton.a.taylor@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v5 6/7] tests/kms_cursor_legacy: flip_vs_cursor_busy_crc
- was requiring any driver but used intel x-tile
-Date: Wed, 18 Dec 2024 13:36:53 -0800
-Message-Id: <20241218213654.2734573-7-clinton.a.taylor@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
-References: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BAABC10E24C;
+	Wed, 18 Dec 2024 21:50:10 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 318F010E24C;
+ Wed, 18 Dec 2024 21:50:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_test/kms=5Fcontent=5Fprot?=
+ =?utf-8?q?ection=3A_Add_HDCP_retry_after_LIC_failure?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Suraj Kandpal" <suraj.kandpal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Dec 2024 21:50:09 -0000
+Message-ID: <173455860919.164096.7394025107018525956@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241218091826.3014999-1-suraj.kandpal@intel.com>
+In-Reply-To: <20241218091826.3014999-1-suraj.kandpal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,32 +37,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
+== Series Details ==
 
-switch flip_vs_cursor_busy_crc to use linear framebuffer instead of x-tile. Xe3 not longer supports x-tiled modifier.
+Series: test/kms_content_protection: Add HDCP retry after LIC failure
+URL   : https://patchwork.freedesktop.org/series/142776/
+State : failure
 
-Signed-off-by: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
-Signed-off-by: Clint Taylor <Clinton.A.Taylor@intel.com>
----
- tests/kms_cursor_legacy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 4e2cfde17..1f082df2d 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1679,7 +1679,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
- 	set_fb_on_crtc(display, pipe, output, &fb_info[0]);
- 	plane_primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_create_color_pattern_fb(display->drm_fd, fb_info[0].width, fb_info[0].height,
--				    DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED, .1, .1, .1, &fb_info[1]);
-+				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, &fb_info[1]);
- 
- 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
- 			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
--- 
-2.25.1
+CI Bug Log - changes from IGT_8164 -> IGTPW_12343
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12343 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12343, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12343:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live:
+    - bat-adlm-1:         [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-adlm-1/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/bat-adlm-1/igt@i915_selftest@live.html
+
+  * igt@runner@aborted:
+    - bat-twl-1:          NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/bat-twl-1/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12343 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [PASS][4] -> [INCOMPLETE][5] ([i915#12904]) +1 other test incomplete
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-apl-1/igt@dmabuf@all-tests.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-adlp-9:         [PASS][6] -> [ABORT][7] ([i915#9413]) +1 other test abort
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-adlp-9/igt@i915_selftest@live@workarounds.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/bat-adlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][8] ([i915#11621]) -> [PASS][9] +132 other tests pass
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [ABORT][10] ([i915#12061]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8164 -> IGTPW_12343
+  * Linux: CI_DRM_15864 -> CI_DRM_15865
+
+  CI-20190529: 20190529
+  CI_DRM_15864: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15865: d8f0c44e2ed948dcc45d04a0dfa83612995a702b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12343: d3d7581d47a9f09c7fe740e48d5f941f8734cf60 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12343/index.html
