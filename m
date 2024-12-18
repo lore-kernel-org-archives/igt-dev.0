@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FD96E77188
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 23:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78DA2E77188
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 23:39:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF78710E346;
-	Wed, 18 Dec 2024 23:29:52 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87C5010E040;
- Wed, 18 Dec 2024 23:29:51 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 135C610E0DD;
+	Wed, 18 Dec 2024 23:39:13 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DZu9b+o7";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F207110E0DD
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 23:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734565152; x=1766101152;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sBmBBxI55HOqpqCLznAl8pCRwoAmdtV6yjfPMutTt4Q=;
+ b=DZu9b+o7B1/Fhwnr4x9tq37q7s+ttEgxdS7hJap/W/L70TzVXlirwPEf
+ XkbJ19XMFQUzsTLkDXxcGqV2Ien04eSsPYyglKPyMRJ6raY+4W44QTMH7
+ xpC6RyktFtQmcGJCDuO90afvoaUDvxoH1fJtEggapSXarBjJZv3eNmD2H
+ fBgyn/92H+5PukXMwLrP7kDV6EfCLl2uUjwZ2juI0Ci/j2EpgNwNpbS6c
+ DKA6YQXAOQReJEtYGGrWRpwGAIP7gCHcIILzpchP7GYSA82VlZZSxXqgT
+ 96f+4fEjArEfuiGUnUmfvCuI0eBT7FPFBepns7Whm4TdwnUsm/H0s4UAy A==;
+X-CSE-ConnectionGUID: JLHS1H6eTWuQzoRUBAJmMQ==
+X-CSE-MsgGUID: oFu+xzXhRnSsTHCkwfbQ4A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="38844372"
+X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="38844372"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 15:39:12 -0800
+X-CSE-ConnectionGUID: jcMUg0IUQgmiwCM+ZnXfRQ==
+X-CSE-MsgGUID: EDJrirFqRAGmWuqwyqgXqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="97800865"
+Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 15:39:09 -0800
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t 1/2] lib/igt_kmod: fix check to confirm correct driver
+ unload
+Date: Wed, 18 Dec 2024 15:38:29 -0800
+Message-ID: <20241218233830.2444510-1-daniele.ceraolospurio@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fdrm=5Ffd?=
- =?utf-8?q?info=3A_Do_not_destroy_NULL_xe=5Fcork?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Dec 2024 23:29:51 -0000
-Message-ID: <173456459155.212155.398582714929753119@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241218160808.65340-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20241218160808.65340-1-jonathan.cavitt@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,107 +65,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+The driver variable is a string, so we need to pass it in as a variable
+for the driver name instead of stringifying it.
 
-Series: tests/intel/xe_drm_fdinfo: Do not destroy NULL xe_cork
-URL   : https://patchwork.freedesktop.org/series/142799/
-State : failure
+Fixes: e5edf7ea7 ("lib/igt_kmod: add support for Xe driver")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/igt_kmod.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index d58867d7e..a8b0339b9 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -731,7 +731,7 @@ igt_intel_driver_unload(const char *driver)
+ 	igt_kmod_unload("drm_kms_helper");
+ 	igt_kmod_unload("drm");
+ 
+-	if (igt_kmod_is_loaded("driver")) {
++	if (igt_kmod_is_loaded(driver)) {
+ 		igt_warn("%s.ko still loaded!\n", driver);
+ 		return -EBUSY;
+ 	}
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_8164 -> IGTPW_12346
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12346 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12346, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12346:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-adlp-11:        [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-adlp-11/igt@i915_selftest@live@gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-adlp-11/igt@i915_selftest@live@gt_pm.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12346 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-adlp-11:        [PASS][3] -> [DMESG-FAIL][4] ([i915#12435])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-adlp-11/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-adlp-11/igt@i915_selftest@live.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][5] ([i915#11621]) -> [PASS][6] +132 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [ABORT][7] ([i915#12061]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - {bat-mtlp-9}:       [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8164 -> IGTPW_12346
-  * Linux: CI_DRM_15864 -> CI_DRM_15865
-
-  CI-20190529: 20190529
-  CI_DRM_15864: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15865: d8f0c44e2ed948dcc45d04a0dfa83612995a702b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12346: e0bdee76b128153a559de450199ebd3fec2ac24c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/index.html
