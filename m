@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1BDE77188
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 15:09:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2735BE77188
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 15:09:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC28B10E0D4;
-	Wed, 18 Dec 2024 15:09:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB8AA10E0D4;
+	Wed, 18 Dec 2024 15:09:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="C5/Q+BRO";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Ujeuo+I2";
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D79810E0D4
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 15:09:04 +0000 (UTC)
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2ef8c012913so4770807a91.3
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 07:09:04 -0800 (PST)
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D7D710E0D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 15:09:46 +0000 (UTC)
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2ee50ffcf14so769708a91.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 07:09:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734534543; x=1735139343; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1734534585; x=1735139385; darn=lists.freedesktop.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9VrwgSCSkKyOTKQxRQ8gibOfIY/O4sVLwEHqfgR/Ph4=;
- b=C5/Q+BROo58eHiGQKk1hCwMC0hLoNp8kufwlGCbcIeGMjyhLvS27cWAmIl7lY34GEI
- no8mzulFPSqnF3Pd3sIuloRs41c2oZPLT9U92lwoeoCzbypW4E13TB8Yyi/5dv6vQ6dI
- xxBwoAdbi1k3KUi/Y7yhaqAvBmBJ/3CSCw67mkCSK9HCQ9U7TSXJwslxyVDdLG2Q1449
- tSIV+jIKzDX9NxAhhNQ7uDScsWM4Ti43o+9B5CQwaYVMo710nOD8IKtctti7EAM+ENCN
- pK9c3R+Po+ftUYqXbiQ2eKHy/MLScp7rPXkWSTRqn964f4+Ye4KTFEX2fM+dZvs0urfC
- L3Ug==
+ bh=pWziDCR0HGgEx3RsORey+qU9r6GqzKZPL7sSysacikg=;
+ b=Ujeuo+I21clHFvjEnm3GelVHfv35LRqcmHB6GhxwJod5xvwKOtOKHDa3M5EVIaAZzh
+ fwNH1/iLC+9nT4jdItttYFbGnJvBQhkqthCmYV0G60WC8Jb6PqwZ3MFarkCMkKoUmlwD
+ C9mw9jmKGI0d6Hths2mQ/8LerC9rrLbxTUpBgBBPDRAJjrAGT9upMDvv+BsLmQrzn/Oj
+ LifnXoubVl/sRNfny7OxuEUyskgvSx/EAsFvlht+I0o0+XmESZW3OAKxlNqSUbhrJWGq
+ +fMKl0k2Fnr9Fv6LjYo3Ls/fdeoS0zg0365cNfEr9RN7hjvr0JIW/UZvLDxdvPCYH6uW
+ SbJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734534543; x=1735139343;
+ d=1e100.net; s=20230601; t=1734534585; x=1735139385;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9VrwgSCSkKyOTKQxRQ8gibOfIY/O4sVLwEHqfgR/Ph4=;
- b=cGGaEGmDDQ7BLrIHRKavNFUKAJiejcpt7BDIImEFIAoDxZj9O1wUXxFRwb3CQGUuiB
- ZgG6TNmZ2X/pKAeHbah7ilLOWhNUmwJ9noaHCUcpuXgskfMhqskZYSfkjp++vPAu6aM7
- osiGq+nROg2S5YJyyIyCrZrmf49xCCDUL/1QMriX29ZjtHhhY1h9eORJNlYOsm0E5IQf
- rmJip0n2SLJthlKfaAd3ZuO2Y+Hxr0Xa96jCdKlojyzz8/v9Y0g9RQCdwgfC77DGeP22
- Zbp4PS/erT3YhVbQyzXNJgJ2dh/Th2eDhimtuovq+YJ1eqHyhka1Lxkk5F0TbVHuJP/N
- OBBQ==
-X-Gm-Message-State: AOJu0YxSRvCBFIrDLHLmZ0xmYy59GHn7KSudx7YUKhB7gV7MsI7U0OOU
- +Y9Ow0ioAg8OvhHr31hFopNTbl5yaODioA1ZZpaLcIxDlqWxg5/ANawgulXnczob6elHruZlrBC
- GPechCQ+WZ6QeTBlRBeM6mH4oqkN7X2KDA3c=
-X-Gm-Gg: ASbGnctfqS0Jn4yvD0aAAX6jR7FTKfgslDgzJlQpGwe8IvqUfFaAZcASs75cvNFEWd5
- 8aR4mN83t4ZXsZowZn9UnhtJ67tG6vCsDMbbIyFJY
-X-Google-Smtp-Source: AGHT+IHgbSFpa/+Tlu1SIASCen4lOHh+yzm/vYdfCCqJi8s5xL1T+oiloqzOTP/QPtJOo2Ncndj4ZglbwK96tsGQeB4=
-X-Received: by 2002:a17:90b:2f0e:b0:2ee:ed07:d6d2 with SMTP id
- 98e67ed59e1d1-2f2e938a7c0mr4746355a91.37.1734534543377; Wed, 18 Dec 2024
- 07:09:03 -0800 (PST)
+ bh=pWziDCR0HGgEx3RsORey+qU9r6GqzKZPL7sSysacikg=;
+ b=ep65PB7xCbf2u0zYuuB8c2VHgw5f5ivIkjUhgq6ljxvU/fBBn19bR850k4S8XjlLWG
+ UThDXYVfo9lfwGJmhWZyJiHX/zQqTemIqw8DoI2vuQx20TftdIqS47YYW5Y3IubflSOd
+ Oml3HRzrIBNw7Hi+K3OtJ3Mqv7ZGRob+YDmF+5gmcRa4eYMCYXQC4KWhOcuUpyAsGk/N
+ KwY7jlS+s0ZOT087YEw5S/g291Sk722xq10PUIwzcLDie3lra+9eVHLzM+uuA3b42xis
+ o1Y3iEBIbS3vto74gdA27cKz1JAUYXE/KKdQHaS1dEVJeytzvHk5yMBmcop7uIO7CA3H
+ sfag==
+X-Gm-Message-State: AOJu0YzH2uNvp6tpC63ZmXRlsFl+pGcBqHYBoqC+JtdZbFkrIUorwcKG
+ DM9VxT6sGuOBIiBwRc82KNo9IaYwhIqKs39oD8oyzLUi3f+wLShDni625QfVYdcYvVc2BoDZcwC
+ wDE7oXkI4iUe0ZLaaiinIIZLWi2A=
+X-Gm-Gg: ASbGnctxfXb9rZzOS9rFptnvMuPS+iA5WzdDY8TzeUOPMYiP93LxhUk+HoRQHG5GOMP
+ hnAkJTetSB+9Qk9SNUHNNcPIsTnK+zBi583RyYhGD
+X-Google-Smtp-Source: AGHT+IFDRdHba4KLcsz9kiZcG7BzLTVo1EGV8yUwLe/DbfMnK+vVbTMir1B2h3fjH76T2IkEf8dJxMA65nCrm4kaUeo=
+X-Received: by 2002:a17:90b:38ca:b0:2ef:9dbc:38d1 with SMTP id
+ 98e67ed59e1d1-2f2d87bd3d7mr10387304a91.5.1734534585505; Wed, 18 Dec 2024
+ 07:09:45 -0800 (PST)
 MIME-Version: 1.0
 References: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
- <20241122084804.29669-3-ville.syrjala@linux.intel.com>
-In-Reply-To: <20241122084804.29669-3-ville.syrjala@linux.intel.com>
+ <20241122084804.29669-5-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241122084804.29669-5-ville.syrjala@linux.intel.com>
 From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 18 Dec 2024 17:08:51 +0200
-Message-ID: <CAJ=qYWT7NmG3wxUYGJ0QgOG4kUjsLUmhoTnKr0UVwyQv0CT=Zw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2 2/4] lib/intel_bufops: Provide pread/pwrite based
- fallback when we don't have WC
+Date: Wed, 18 Dec 2024 17:09:33 +0200
+Message-ID: <CAJ=qYWTmeNvM6ZR5LbZvqb106HHoLfBVPHBYQTN67SEdVDMBxw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v2 4/4] tests/intel/gem_draw: Test igt_draw without
+ kms
 To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -88,208 +87,296 @@ On Fri, Nov 22, 2024 at 10:48=E2=80=AFAM Ville Syrjala
 >
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> The linear<->tiled conversion code currently assume that we may
-> be able to use either cpu or wc mmaps. That is not true on all
-> systems. As a last resort provide a pread/pwrite based fallback.
+> kms_draw_crc is our only way to confirm that igt_draw
+> linear<->tiled conversion routines are correct. That may
+> not cover every case as we could be hitting display
+> specific limitations that prevent testing everything.
 >
-> v2: Add missing *malloced=3Dtrue (Kamil)
+> Introduce a new gem_draw test case that compares igt_draw
+> mmap/pwrite methods against GTT mmaps. This will verify that
+> the software conversion routines match the hardware (de)tiling
+> peformed via the fenced region.
 >
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> TODO: could verify against blt/rendercopy
+>       when gtt mmaps are not available...
+>
+> v2: Drop the "driver requirement: i915" to make it past
+>     the documentation build scripts
+>
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > ---
->  lib/intel_bufops.c | 68 ++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 56 insertions(+), 12 deletions(-)
+>  tests/intel/gem_draw.c | 233 +++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build      |   1 +
+>  2 files changed, 234 insertions(+)
+>  create mode 100644 tests/intel/gem_draw.c
 >
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 619222019fd8..15f23d0e1375 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -549,10 +549,12 @@ static void __copy_ccs(struct buf_ops *bops, struct=
- intel_buf *buf,
->         munmap(map, size);
->  }
->
-> -static void *mmap_write(int fd, struct intel_buf *buf)
-> +static void *mmap_write(int fd, const struct intel_buf *buf, bool *mallo=
-ced)
->  {
->         void *map =3D NULL;
->
-> +       *malloced =3D false;
+> diff --git a/tests/intel/gem_draw.c b/tests/intel/gem_draw.c
+> new file mode 100644
+> index 000000000000..86df7c33ff2d
+> --- /dev/null
+> +++ b/tests/intel/gem_draw.c
+> @@ -0,0 +1,233 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright =C2=A9 2024 Intel Corporation
+> + */
 > +
->         if (buf->bops->driver =3D=3D INTEL_DRIVER_XE)
->                 return xe_bo_map(fd, buf->handle, buf->surface[0].size);
->
-> @@ -580,7 +582,7 @@ static void *mmap_write(int fd, struct intel_buf *buf=
-)
->                                        I915_GEM_DOMAIN_CPU);
->         }
->
-> -       if (!map) {
-> +       if (!map && gem_mmap__has_wc(fd)) {
->                 map =3D __gem_mmap_offset__wc(fd, buf->handle, 0, buf->su=
-rface[0].size,
->                                             PROT_READ | PROT_WRITE);
->                 if (!map)
-> @@ -591,13 +593,31 @@ static void *mmap_write(int fd, struct intel_buf *b=
-uf)
->                                I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
->         }
->
-> +       if (!map) {
-> +               map =3D malloc(buf->surface[0].size);
-> +               igt_assert(map);
-> +               *malloced =3D true;
+> +/**
+> + * TEST: gem draw
+> + * Category: GEM
+> + * Description: Tests whether the igt_draw library actually works.
+> + * Functionality: tiling
+> + * Test category: functionality test
+> + */
+> +
+> +/**
+> + * SUBTEST: draw-method-%s
+> + * Description: Verify that igt draw library works for the %arg[1] metho=
+d with
+> + *              different tilings and color depths.
+> + *
+> + * arg[1]:
+> + *
+> + * @mmap-cpu:     MMAP-CPU
+> + * @mmap-wc:      MMAP-WC
+> + * @pwrite:       PWRITE
+> + */
+> +
+> +#include "i915/gem.h"
+> +#include "i915/gem_create.h"
+> +#include "igt.h"
+> +#include "igt_halffloat.h"
+> +#include "igt_primes.h"
+> +
+> +int drm_fd;
+> +struct buf_ops *bops;
+> +
+> +static const enum igt_draw_method draw_methods[] =3D {
+> +       IGT_DRAW_MMAP_CPU,
+> +       IGT_DRAW_MMAP_WC,
+> +       IGT_DRAW_PWRITE,
+> +};
+> +
+> +static const uint32_t tilings[] =3D {
+> +       I915_TILING_NONE,
+> +       I915_TILING_X,
+> +       I915_TILING_Y,
+> +};
+> +
+> +static uint64_t read_pixel(const void *ptr, int stride, int x, int y, in=
+t bpp)
+> +{
+> +       ptr +=3D y * stride + x * bpp / 8;
+> +
+> +       switch (bpp) {
+> +       case 8:
+> +               return *(const uint8_t*)ptr;
+> +       case 16:
+> +               return *(const uint16_t*)ptr;
+> +       case 32:
+> +               return *(const uint32_t*)ptr;
+> +       case 64:
+> +               return *(const uint64_t*)ptr;
+> +       default:
+> +               return 0;
+> +       }
+> +}
+> +
+> +static void check_rect(const void *ptr, int stride,
+> +                      int x0, int y0, int w, int h,
+> +                      uint64_t color, int bpp)
+> +{
+> +       int x1 =3D x0 + w - 1;
+> +       int y1 =3D y0 + h - 1;
+> +
+> +       if (bpp < 64)
+> +               color &=3D (1ull << bpp) - 1;
+> +
+> +       /* only check the corners to speed this up a bit */
+> +       igt_assert_eq(read_pixel(ptr, stride, x0, y0, bpp), color);
+> +       igt_assert_eq(read_pixel(ptr, stride, x0, y1, bpp), color);
+> +       igt_assert_eq(read_pixel(ptr, stride, x1, y0, bpp), color);
+> +       igt_assert_eq(read_pixel(ptr, stride, x1, y1, bpp), color);
+> +}
+> +
+> +static void draw(enum igt_draw_method method,
+> +                int width, int height,
+> +                uint32_t stride, int bpp, uint32_t tiling)
+> +{
+> +       uint64_t size =3D stride * height;
+> +       uint64_t color;
+> +       uint32_t handle;
+> +       void *ptr;
+> +
+> +       igt_require(buf_ops_has_tiling_support(bops, tiling));
+> +
+> +       handle =3D gem_create(drm_fd, size);
+> +       gem_set_tiling(drm_fd, handle, tiling, stride);
+> +
+> +       color =3D 0x0123456789abcdef;
+> +       for (int y =3D 0 ; y < height;) {
+> +               int y_next =3D min(height, (int)igt_next_prime_number(y))=
+;
+> +               int h =3D y_next - y;
+> +
+> +               for (int x =3D 0; x < width; ) {
+> +                       int x_next =3D min(width, (int)igt_next_prime_num=
+ber(x));
+> +                       int w =3D x_next - x;
+> +
+> +                       igt_draw_rect(drm_fd, bops, 0, handle, size, stri=
+de,
+> +                                     width, height, tiling, method,
+> +                                     x, y, w, h, color, bpp);
+> +
+> +                       color =3D igt_ror(color, 1, 64);
+> +
+> +                       x =3D x_next;
+> +               }
+> +
+> +               y =3D y_next;
 > +       }
 > +
->         return map;
->  }
->
-> -static void *mmap_read(int fd, struct intel_buf *buf)
-> +static void munmap_write(void *map, int fd, const struct intel_buf *buf,=
- bool malloced)
+> +       gem_set_domain(drm_fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMA=
+IN_GTT);
+> +
+> +       ptr =3D gem_mmap__gtt(drm_fd, handle, size, PROT_READ);
+> +
+> +       color =3D 0x0123456789abcdef;
+> +       for (int y =3D 0 ; y < height;) {
+> +               int y_next =3D min(height, (int)igt_next_prime_number(y))=
+;
+> +               int h =3D y_next - y;
+> +
+> +               for (int x =3D 0; x < width; ) {
+> +                       int x_next =3D min(width, (int)igt_next_prime_num=
+ber(x));
+> +                       int w =3D x_next - x;
+> +
+> +                       check_rect(ptr, stride, x, y, w, h, color, bpp);
+> +
+> +                       color =3D igt_ror(color, 1, 64);
+> +
+> +                       x =3D x_next;
+> +               }
+> +
+> +               y =3D y_next;
+> +       }
+> +
+> +       munmap(ptr, size);
+> +
+> +       gem_close(drm_fd, handle);
+> +}
+> +
+> +static void draw_method_subtest(enum igt_draw_method method,
+> +                               int bpp, uint32_t tiling)
 > +{
-> +       if (malloced) {
-> +               igt_assert(__gem_write(fd, buf->handle, 0, map, buf->surf=
-ace[0].size) =3D=3D 0);
-> +               free(map);
+> +       const struct intel_device_info *info =3D
+> +               intel_get_device_info(intel_get_drm_devid(drm_fd));
+> +       int width, height, stride;
+> +       int tile_w, tile_h;
+> +
+> +       if (info->graphics_ver =3D=3D 2) {
+> +               tile_w =3D 128;
+> +               tile_h =3D 16;
+> +       } else if (tiling =3D=3D I915_TILING_X ||
+> +                  info->is_grantsdale || info->is_alviso) {
+> +               tile_w =3D 512;
+> +               tile_h =3D 8;
 > +       } else {
-> +               munmap(map, buf->surface[0].size);
+> +               tile_w =3D 128;
+> +               tile_h =3D 32;
 > +       }
+> +
+> +       stride =3D 4 * tile_w;
+> +       width =3D stride * 8 / bpp;
+> +       height =3D 4 * tile_h;
+> +
+> +       draw(method, width, height, stride, bpp, tiling);
 > +}
 > +
-> +static void *mmap_read(int fd, struct intel_buf *buf, bool *malloced)
->  {
->         void *map =3D NULL;
->
-> +       *malloced =3D false;
-> +
->         if (buf->bops->driver =3D=3D INTEL_DRIVER_XE)
->                 return xe_bo_map(fd, buf->handle, buf->surface[0].size);
->
-> @@ -622,7 +642,7 @@ static void *mmap_read(int fd, struct intel_buf *buf)
->                         gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_C=
-PU, 0);
->         }
->
-> -       if (!map) {
-> +       if (!map && gem_mmap__has_wc(fd)) {
->                 map =3D __gem_mmap_offset__wc(fd, buf->handle, 0, buf->su=
-rface[0].size,
->                                             PROT_READ);
->                 if (!map)
-> @@ -632,9 +652,25 @@ static void *mmap_read(int fd, struct intel_buf *buf=
-)
->                 gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_WC, 0);
->         }
->
-> +       if (!map) {
-> +               map =3D malloc(buf->surface[0].size);
-> +               igt_assert(map);
-> +               *malloced =3D true;
-> +
-> +               igt_assert(__gem_read(fd, buf->handle, 0, map, buf->surfa=
-ce[0].size) =3D=3D 0);
-> +       }
-> +
->         return map;
->  }
->
-> +static void munmap_read(void *map, int fd, const struct intel_buf *buf, =
-bool malloced)
+> +static void setup_environment(void)
 > +{
-> +       if (malloced)
-> +               free(map);
-> +       else
-> +               munmap(map, buf->surface[0].size);
+> +       drm_fd =3D drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+> +       igt_require(drm_fd >=3D 0);
+> +       bops =3D buf_ops_create(drm_fd);
+> +
+> +       /* need hardware to untile for verification */
+> +       gem_require_mappable_ggtt(drm_fd);
 > +}
 > +
->  static void __copy_linear_to(int fd, struct intel_buf *buf,
->                              const uint32_t *linear,
->                              int tiling, uint32_t swizzle)
-> @@ -642,7 +678,10 @@ static void __copy_linear_to(int fd, struct intel_bu=
-f *buf,
->         const tile_fn fn =3D __get_tile_fn_ptr(fd, tiling);
->         int height =3D intel_buf_height(buf);
->         int width =3D intel_buf_width(buf);
-> -       void *map =3D mmap_write(fd, buf);
-> +       bool malloced;
-> +       void *map;
+> +static void teardown_environment(void)
+> +{
+> +       buf_ops_destroy(bops);
+> +       drm_close_driver(drm_fd);
+> +}
 > +
-> +       map =3D mmap_write(fd, buf, &malloced);
->
->         for (int y =3D 0; y < height; y++) {
->                 for (int x =3D 0; x < width; x++) {
-> @@ -655,7 +694,7 @@ static void __copy_linear_to(int fd, struct intel_buf=
- *buf,
->                 }
->         }
->
-> -       munmap(map, buf->surface[0].size);
-> +       munmap_write(map, fd, buf, malloced);
->  }
->
->  static void copy_linear_to_none(struct buf_ops *bops, struct intel_buf *=
-buf,
-> @@ -706,7 +745,10 @@ static void __copy_to_linear(int fd, struct intel_bu=
-f *buf,
->         const tile_fn fn =3D __get_tile_fn_ptr(fd, tiling);
->         int height =3D intel_buf_height(buf);
->         int width =3D intel_buf_width(buf);
-> -       void *map =3D mmap_write(fd, buf);
-> +       bool malloced;
-> +       void *map;
+> +static const char *tiling_str(uint32_t tiling)
+> +{
+> +       switch (tiling) {
+> +       case I915_TILING_NONE :
+> +               return "untiled";
+> +       case I915_TILING_X :
+> +               return "xtiled";
+> +       case I915_TILING_Y :
+> +               return "ytiled";
+> +       default:
+> +               igt_assert(false);
+> +       }
+> +}
 > +
-> +       map =3D mmap_write(fd, buf, &malloced);
->
->         for (int y =3D 0; y < height; y++) {
->                 for (int x =3D 0; x < width; x++) {
-> @@ -719,7 +761,7 @@ static void __copy_to_linear(int fd, struct intel_buf=
- *buf,
->                 }
->         }
->
-> -       munmap(map, buf->surface[0].size);
-> +       munmap_write(map, fd, buf, malloced);
->  }
->
->  static void copy_none_to_linear(struct buf_ops *bops, struct intel_buf *=
-buf,
-> @@ -803,25 +845,27 @@ static void copy_gtt_to_linear(struct buf_ops *bops=
-, struct intel_buf *buf,
->  static void copy_linear_to_wc(struct buf_ops *bops, struct intel_buf *bu=
-f,
->                               uint32_t *linear)
->  {
-> +       bool malloced;
->         void *map;
->
->         DEBUGFN();
->
-> -       map =3D mmap_write(bops->fd, buf);
-> +       map =3D mmap_write(bops->fd, buf, &malloced);
->         memcpy(map, linear, buf->surface[0].size);
-> -       munmap(map, buf->surface[0].size);
-> +       munmap_write(map, bops->fd, buf, malloced);
->  }
->
->  static void copy_wc_to_linear(struct buf_ops *bops, struct intel_buf *bu=
-f,
->                               uint32_t *linear)
->  {
-> +       bool malloced;
->         void *map;
->
->         DEBUGFN();
->
-> -       map =3D mmap_read(bops->fd, buf);
-> +       map =3D mmap_read(bops->fd, buf, &malloced);
->         igt_memcpy_from_wc(linear, map, buf->surface[0].size);
-> -       munmap(map, buf->surface[0].size);
-> +       munmap_read(map, bops->fd, buf, malloced);
->  }
->
->  void intel_buf_to_linear(struct buf_ops *bops, struct intel_buf *buf,
+> +igt_main
+> +{
+> +       int method_idx, tiling_idx;
+> +
+> +       igt_fixture
+> +               setup_environment();
+> +
+> +       for (method_idx =3D 0; method_idx < ARRAY_SIZE(draw_methods); met=
+hod_idx++) {
+> +               enum igt_draw_method method =3D draw_methods[method_idx];
+> +
+> +               igt_describe_f("Verify that igt draw library works for th=
+e draw "
+> +                              "method (%s) with different tilings and co=
+lor depths.",
+> +                              igt_draw_get_method_name(method));
+> +
+> +               igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get=
+_method_name(method)) {
+> +                       if (!igt_draw_supports_method(drm_fd, method))
+> +                               continue;
+> +
+> +                       for (tiling_idx =3D 0; tiling_idx < ARRAY_SIZE(ti=
+lings); tiling_idx++) {
+> +                               uint32_t tiling =3D tilings[tiling_idx];
+> +
+> +                               for (int bpp =3D 8; bpp <=3D 64; bpp *=3D=
+ 2) {
+> +                                       igt_dynamic_f("%dbpp-%s", bpp, ti=
+ling_str(tiling))
+> +                                               draw_method_subtest(metho=
+d, bpp, tiling);
+> +                               }
+> +                       }
+> +               }
+> +       }
+> +
+> +       igt_fixture
+> +               teardown_environment();
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 2724c7a9a6e6..9bcace851c33 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -118,6 +118,7 @@ intel_i915_progs =3D [
+>         'gem_ctx_shared',
+>         'gem_ctx_sseu',
+>         'gem_ctx_switch',
+> +       'gem_draw',
+>         'gem_eio',
+>         'gem_evict_alignment',
+>         'gem_evict_everything',
 > --
 > 2.45.2
 >
