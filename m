@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24FDE77187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 21:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62045E77188
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 21:18:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 42F5010E24C;
-	Wed, 18 Dec 2024 21:18:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10C6F10E24C;
+	Wed, 18 Dec 2024 21:18:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hTo0MKa9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QBcY2cw1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 255BD10E24C
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 21:18:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F93E10E256
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 21:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734556686; x=1766092686;
+ t=1734556733; x=1766092733;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=p4ngUTbmADVWiW1M2N2TDoB0R8YApdL4pLBuyjDMYlw=;
- b=hTo0MKa9JcPWS0MK+Gr9ZfBWTS5RQBfQZPe+ocTEoezw3p1AlCwJG9BW
- TyfZk2tWUECmkk//m2f3ucMdp+gGTuvZ2iM5p5Rbg4tybCAXjXPdgARu7
- v87KYeeIdJ8ip/u+Uxx/qLLACnR1d3bEL2ER7C8PM3NRopQ6zlyUCtzCq
- vEFpxNRekqE2Fi1z2I+D6wYOkMSxqW72z75F/3p4e+Fdi365vAAU1BoRN
- CCDGSpEIdqoW0u81O5RWS6Kr+fNxfwdfgvKr/E+2o5X3xh+wVhAq/qmwt
- alC23xfeptFDb4658L27zkwM8nW8Ba7Z3zOkDwlRVpqnbZauDsU0UiF2T A==;
-X-CSE-ConnectionGUID: +lmIv8ZKQoi0OL3VvZn4Tw==
-X-CSE-MsgGUID: LYcF0vppQv+dvId5PZf0Pw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="57529389"
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="57529389"
+ bh=RD7ugADSOfnBHNA5ESTBeZ0hFKyQky4vAL7hrYpDugY=;
+ b=QBcY2cw1uhjUJdhBKWVKqEuTh8c8R8sg5our2OSFldOcD0zNRe+8o8UG
+ IY/edbecyR0l598435HqWTHY/hdCUyhKdmOMOhfJpq7PFrKBRg30/QVns
+ DCVM1NsKgWTiBlZbGN4WulGE5KAV7rJHwOMSGw4fRhBNTbDpmuEag4Ccm
+ /El31hdZD5ml2c7pzZ180uo6XrabtoDqyMNiih/7uqb2UavLaWDx4AgtV
+ YLWVmDGoJ5m2cF+HK/VG+3D8WEM6KvBjquwUgeuY2vvDTurOlVba3v/fZ
+ 68XcWsMXwkMG4L5mqvGIskGKpfbPAtbsiMUG/Yf4LCTP0ZTFioPnVcVlR g==;
+X-CSE-ConnectionGUID: SS23kZVBR3KtAiNlyiLm8w==
+X-CSE-MsgGUID: 2pl6u14ITGm7xJ5Q8gyEqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="57529506"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="57529506"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 13:18:05 -0800
-X-CSE-ConnectionGUID: 5gOrny9cSiW+GUpsVT6Esw==
-X-CSE-MsgGUID: RuhtJ3qfTAiK53uOthlJiA==
+ 18 Dec 2024 13:18:52 -0800
+X-CSE-ConnectionGUID: 0/15nr/KT7u9gZ5KEYQGeA==
+X-CSE-MsgGUID: GHcnCsmSTzOFhliW13gGow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="98462361"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="98462496"
 Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Dec 2024 13:18:05 -0800
+ 18 Dec 2024 13:18:48 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
  ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 18 Dec 2024 13:18:04 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.1.2507.44; Wed, 18 Dec 2024 13:18:46 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 18 Dec 2024 13:18:04 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.49) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.44 via Frontend Transport; Wed, 18 Dec 2024 13:18:46 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 18 Dec 2024 13:18:04 -0800
+ 15.1.2507.44; Wed, 18 Dec 2024 13:18:44 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FazvLk5TUYvFIjbkOyJ46HW1hD4ztBltHq4ehxMQHjCmAwrIGWPmdXGw9Fb49DoW1B1Gx/gX7rcUmxSdTMSfSeHvDxH6w+gSAzuVNSgMkdGYCgt1csFGqkSsmw1WVJJD0oM3b8eiF/ot/gUcb06b52V3ZMouHUMoDYJyNYvwvbSkohm6H1TKJ/iTLVmF8ChCjx0uYkbY174j4kssuWVuQKUS3fBTKSx9Nb9KU76RLiisyTK24LjBF57RdOVlXYxF21cbxaCGFwMDXbiB56A6FWEMONsbnDDbs6t2XNIx4goNr7t/pYOM7xffoO8EvASEHs8bIVBpY30plfmEd5Vhog==
+ b=xKNaT4/Bx8GMqKUQohrNxRnrHgF/wXfWvdWqrWFk0yWVfBLgRCCYdgp1BuR2AYQbNEY2MQb4p0iB8EwDNNY7CDS8DWNcMGZVVj+X0zqG+YZiucatKRGrCQFTsm7aif4xCad0WznbMGyw2wD8HtILyJFtfWvE+igOezIRIeSJLyEF1qgXB1m0eboss8Q2/R2YBFctOSA34lwvFFoZ1yP+xRuNNFUzVEUtEjBz4FZ8+1eBKZihBiI5n3/2nzwVYL/6U2QTpEXjLkB1lpH237J1XTDnrEJC1VgPlU4ufswIGNyYuH9dFbq+d8jQrnAI+QCqT7LBmdQZGTYhJwcWyRs/HA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D9cnFVcONKFgQ/D+ncrR7ubYf2pS1mZ5ldRZx/CHNrs=;
- b=gRfPN6k6/kNBiqc2OHUwOgCBvzj+Th2TB1x7pJ3eSKK+0IBU42shMUOmBkHvN5+ZkL6h53A8e/xTD/bz4U8aHjw/4rdhLMZ+/28bzZYkp8ZFdidBjm+TVF1+TTfzPONmTVTJH9oc0+zm6GmlrA8V3ZfghjtOHU6K1FNSQbWnMgn/G6ktqvS8TCR3SZy4acvLmJWdGdKVzo/0dcu40wXDQmkhNNMkbOGS5S8hAIJshQtj4yTapF3nrxK6/d2b5nkqDQN5n1/duk9+i7zkdBZto2CVTFqINqGmEkQuTd/PFeLI0x0Wtdt8/dn/GjiDepTo+GoozGBPAezuczWFDZvWrQ==
+ bh=lUzv7cw8+DBAJ/i6nMxhQaEcck4xaoKWpLzTqIjUYAs=;
+ b=PKwrdZmwIiBytpRYsbLt2KINHdN2GIVtjtngobmDp2JMP4C+Qjc3c6bvBLdchDXHFh2ToHDWq5rSJTb06bKRoPvDeuUeOA8e6nWuxs4ObJ7KyJgCw7qqLiCMKw3x6o7T8SgspBin6ZXZLtFTwAs8MvkRvgCwVU5MxVxf7IvUkSqCypXtZ59z0pBDEVKSZib4p6qLGDjx1yCwyEbLPu4In5VT0tzc8eR+5IrC0Y8Z0FJig3rW1/UBrAfXkctUAQ0rjpy3s5rHIXjPWdz9J6N3tu6K29NjHR0pre8NWXGgi5Ky0q8GVf28wMvX/wJ3xvRfofC9ZocRw5YPtl23j2QrVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from CH0PR11MB5444.namprd11.prod.outlook.com (2603:10b6:610:d3::13)
- by CH3PR11MB8212.namprd11.prod.outlook.com (2603:10b6:610:164::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.12; Wed, 18 Dec
- 2024 21:17:49 +0000
+ by DS0PR11MB8739.namprd11.prod.outlook.com (2603:10b6:8:1bb::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Wed, 18 Dec
+ 2024 21:18:39 +0000
 Received: from CH0PR11MB5444.namprd11.prod.outlook.com
  ([fe80::5f89:ba81:ff70:bace]) by CH0PR11MB5444.namprd11.prod.outlook.com
  ([fe80::5f89:ba81:ff70:bace%6]) with mapi id 15.20.8272.005; Wed, 18 Dec 2024
- 21:17:48 +0000
+ 21:18:39 +0000
 From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
 To: "Pottumuttu, Sai Teja" <sai.teja.pottumuttu@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "Pottumuttu, Sai Teja"
  <sai.teja.pottumuttu@intel.com>, "Cavitt, Jonathan"
  <jonathan.cavitt@intel.com>
-Subject: RE: [PATCH i-g-t 2/2] tests/intel/xe_oa: Remove hardcoded time
- heuristics
-Thread-Topic: [PATCH i-g-t 2/2] tests/intel/xe_oa: Remove hardcoded time
- heuristics
-Thread-Index: AQHbUSoVSycmXffZfEKUiM5dwvIyRbLsgEJQ
-Date: Wed, 18 Dec 2024 21:17:48 +0000
-Message-ID: <CH0PR11MB54448EF96A103E4FA33CB6FCE5052@CH0PR11MB5444.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 1/2] tests/intel/xe_oa: Remove unused function
+ arguments
+Thread-Topic: [PATCH i-g-t 1/2] tests/intel/xe_oa: Remove unused function
+ arguments
+Thread-Index: AQHbUSoRGy92bTgHv0OhrmKDpIh8n7LsgdRQ
+Date: Wed, 18 Dec 2024 21:18:39 +0000
+Message-ID: <CH0PR11MB544408688D23A884690E1A64E5052@CH0PR11MB5444.namprd11.prod.outlook.com>
 References: <20241218084134.2898703-1-sai.teja.pottumuttu@intel.com>
- <20241218084134.2898703-3-sai.teja.pottumuttu@intel.com>
-In-Reply-To: <20241218084134.2898703-3-sai.teja.pottumuttu@intel.com>
+ <20241218084134.2898703-2-sai.teja.pottumuttu@intel.com>
+In-Reply-To: <20241218084134.2898703-2-sai.teja.pottumuttu@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,81 +95,81 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|CH3PR11MB8212:EE_
-x-ms-office365-filtering-correlation-id: c7c2f740-a6ae-4b03-3ce8-08dd1fa96c8d
+x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|DS0PR11MB8739:EE_
+x-ms-office365-filtering-correlation-id: 4c331152-b6ff-4a4e-245b-08dd1fa98af1
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?AB6Twk8Kl33bUHZNlAzY1di2ZkgEZMQfgFnABpqq1zbB6UXzc4TkaaLwr4YU?=
- =?us-ascii?Q?0tLyhvloh39Udjzfyj7o93Jb9iBae+CGvQsjRqKHJToE/GAU5kGkI8+Wpi1D?=
- =?us-ascii?Q?8HuK7xbAMbhaHK1pdyU0GPQMBgTbuEE4v8v4tvUFZ5Zccr0rWHYedwQt14eB?=
- =?us-ascii?Q?NY0SU+hYjcpb0ToYRImfr/JqzI7ppxpz51lhRKlfinMaXKib1RlhwZf8q0X7?=
- =?us-ascii?Q?lJh9jgvTEHkKeTl4rgtIUMRBteT5bjT40enAB8fSJgK1jllGD6+i2qDG60qR?=
- =?us-ascii?Q?9hvA9fS8qvzNyd0HgNCJGytJzqC25wIPdf/u3qhwOL1OQxzGjlGLN0EfaVAt?=
- =?us-ascii?Q?sy9LrvJVt46q3NN9xZRK1dTs+Mqpa5ryyDMMjlnKa0ceRyqyjRdVIpFAIHO6?=
- =?us-ascii?Q?2pPiLQDDkrMijedsvH/uZjnLjHDyEixxQXDPUUvqXAJWXaJ+LttGuBu+EoxW?=
- =?us-ascii?Q?mbDssEvbt5sMvU8ePv5Ug29pFYt19Wo5nwsnuEXp6aMni5+mb1cUQQWT7gGI?=
- =?us-ascii?Q?VgYo/68Mx9kueylp/iFY+HtPYKl+QcwoYflE71bzaRgaWsKOlJ2ed6ZvGm+P?=
- =?us-ascii?Q?1wIMe2vvZUmgo5axtP9obqDmIpOOif8+srylDyVwb7Ypf946Lo67c0wjvNj9?=
- =?us-ascii?Q?YkMPnLHaZyupAKelgQ+qBSvOUDn7ijA72xVI/jch5zQOINJdLk4VXWj1T2f7?=
- =?us-ascii?Q?S3lY3X3jYpo5mEtTVYfgHmuuRZJnsfICdcWAYVT9mzUxaB8jjG2+XhlI5gv1?=
- =?us-ascii?Q?yng2oKUKaGkw3q7xLPpVVHnIikwxOF7F0Fp9LUxbzGx4q7F1KXmOLD4aMbg/?=
- =?us-ascii?Q?xJrQdyyYjoENwQrZIrucHJSol1DI94lSNLuwpiQ5O44NcH4Czt5s+N668icL?=
- =?us-ascii?Q?4ID3TL4MY7sLkgvH3B1xnpxlyASueZlCpQ2vz68M+5q7i2XhkHoHtrH4RMEN?=
- =?us-ascii?Q?6FCyArPF7fleR5mdotGxAiaqkxjfaiqY3+EjZI+xIV7+stJJLKXlvh7bF+Jq?=
- =?us-ascii?Q?UAh7odR1j2VPuobVY/979H+yDtopfzCkRoOYElnOXUIxDCE9OPWhcI8jR/f6?=
- =?us-ascii?Q?dUSMQVomAidHUElnCQqgufZKvVaDFJv2NCgKv2uvdeFJBZU2f+U340DgKYjc?=
- =?us-ascii?Q?fyZ7KxyPk4nEteecJfKx+tB7MfcPEeY4EZLTWPXNtZc7g9H7yd+5cDKqme/c?=
- =?us-ascii?Q?fiK6MdCyY5YEMJa5iQ4BIxwV6L6dihNodM2pvTaPgh5S53PPxHxE7kgxEPIi?=
- =?us-ascii?Q?X/K7UI9QEVnlpKxAgzxqGb7N/dHJ0vS9D7AHRovBmNjJyj+Ep2q8k1nHExNp?=
- =?us-ascii?Q?YNRRsZLDM0uaBi8v851wTbNOz8mEes4rBW6+ZXi8lNy6Ay2TCWJeU6kHXs4K?=
- =?us-ascii?Q?4E0pEHUiVEe9X46G/RBOSFXrthU0kdOo5stt6x2CkcyiLTn3fv+cUpDibrMG?=
- =?us-ascii?Q?tYvZgdGyS5HzrsVmfHron5U0LNx9hPwY?=
+ ARA:13230040|376014|1800799024|366016|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?VxVrPL6E1y5tVhvVmWtUunjh25CQYN4Fk2sA0sPWtm+NlbwnSwMnsQAfacT5?=
+ =?us-ascii?Q?Geo6dRYLGzKjEweLov9OZB/wVDbD3F4IokaKV+Og6Fd+pf/hF5tr52zmEzjw?=
+ =?us-ascii?Q?fbtkVg9rAWFKZ0IzvX5b1nxgPuS3kkGXaUaq4KaQBkwoWXmucvHFnUIiJzRc?=
+ =?us-ascii?Q?EgmuvxhX7MxAK4S/0MjGZSsBD6YnzIc7lKu3vignT6O5Iw6rL1s6xwDo0nGS?=
+ =?us-ascii?Q?J7ry3nTmrO3TN0FfPmLoB6aXimFE8RZ7KcX7U0VOtV6PbxkVC1jR1MiXlmVb?=
+ =?us-ascii?Q?WDLH03gW11qzIZkkSh2iEJrdp1uwYzmwjYh3cuWrE2sZ/75T8qmipzpTpjvh?=
+ =?us-ascii?Q?Q2+zeqmfoK2C6uV7d2fiFwkYIo3iYRitB6VWN67b3fZ0KRjQ9YqeFiu2zomV?=
+ =?us-ascii?Q?AjBEabP7OM/46RHhaG/4Nsv6MVFKf7FxV+czDa/A9zT6DKaX/i7myADwNk+v?=
+ =?us-ascii?Q?tPdY0BXMY82ZG86YgbcDGYm+VsnyquBU54Bmf8XhHKBCB2/WPF+fNOSWrNA8?=
+ =?us-ascii?Q?Mil82T9Fu02J5GLc099tp46LtvuPLEaBsSChnc8DTmdRU1OoHckeRIi/TJed?=
+ =?us-ascii?Q?3bz1RlC1epEExDb5I2sfLDDUtWD+bMpLQ3rVppufMItSfVaKUYokWCeUwim1?=
+ =?us-ascii?Q?7n0W9ESfU/t7Q2sldeBvHX1zTARJT3QCbQh1bN6CQSb5+Bln+gKqRpQ56ei0?=
+ =?us-ascii?Q?arba3Rys455/vcRF++SlFDQnKBdhhksjdNCKq86BsdXk6FT7L0HTOl4RwvM/?=
+ =?us-ascii?Q?e/xVy2gHJoAbBroXZhKoaQEU+jwLb/oYF/kK62zW1flc/y17BSUN8EXcd4Jm?=
+ =?us-ascii?Q?yFF42uQIbdEEk3tOBwf7z8MoXTlv8NH7by2o3fyzQSopONlQauePQdDFKQjZ?=
+ =?us-ascii?Q?bGIydOJfKFg6RQggyAUXZvfiSrXT2iqVP3n1aSKRk3oAvUW9OKUKVsn/+932?=
+ =?us-ascii?Q?j/g3euoNh6MK0XBvIEY/YX4w1QZ0hYztLYxlwj7QIIPBGvjBXP49YmAEXke8?=
+ =?us-ascii?Q?Bbcp2BX6jtWQif9W5KipXCgqqaraj3h2vUuAUn5nmjPZWnhVhGa+UkeA0igw?=
+ =?us-ascii?Q?baZEiRJNHUtx0oPGk97J2x/uCSPgbWs7F0YPCUJgbWqp3L1YsvAdKXjv/bWf?=
+ =?us-ascii?Q?/VTO66pkLbmeugcjwxiXYdbiC7F8S2/J/yRjX3qyf3bRPv+8lKLXkpl/ZYni?=
+ =?us-ascii?Q?BMY5VJjpw56UJi/7htaLiFrSrqtfrg386EoOi1OFLCul0IIhE4/qV/q2GJ+0?=
+ =?us-ascii?Q?snuptaFL7QgC/ER7nA3WD+abU7AGAI6lF1lhwcJ54BJhCrzCTEaKkAyz+TxD?=
+ =?us-ascii?Q?GUZoo77/lnAVDdCNnvrLsFQ9+WMzLu2NOKirsiFdii9Af4UhEMczvo7McJFY?=
+ =?us-ascii?Q?lV4cJD0VhVRuOb5gdsf22ozzDhkYIUUTbVvTxgLqkzxxMEIuh64tlioT3NCB?=
+ =?us-ascii?Q?jLSkOyrksPrm9NGnDkgxPNvhHs9IU/2T?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR11MB5444.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700018); DIR:OUT;
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(38070700018); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ofTXDJD32tPDyWhSDZtm4Cdl1Um4+//nIKhKl+orKhVuF82Nt/Cvl/TC0Hoz?=
- =?us-ascii?Q?r59f7ATwKmg8RSjTasxkbdG9ZBHHh8tviK6pMabIXgIvGtT+FIL4JtNEc8Fp?=
- =?us-ascii?Q?+HKGOs39MRUXf8E7p4WelZeeY4IclVxTZJH4bLVXYnieJel8OpNJ5ejLMPbG?=
- =?us-ascii?Q?hAaPVV8rIRkc+bnGpUfo9BnBScpcaV57/KkhH+dAemuaj3IVB2xyAY9+cXNh?=
- =?us-ascii?Q?Kl+/6ub7lePYMcURZbOgwuS3rMHXkh0xQUGMjcsF8aekunefvQBpQAeEWrjc?=
- =?us-ascii?Q?wjxJD+RdLqpUKE/1NUle1z0GDZCVmVWGyj4bcJ8tLlk4eUOu3jH1omdGHtbI?=
- =?us-ascii?Q?dGmwZbOMT/YWffFr9eWshOkB3n1CQVxt7sVHgt3ehAPsj9jnWT2cfyOpHj6r?=
- =?us-ascii?Q?sCbjm6ZNv0/gfgTh9Zi7k+n7IPAVn/mM+hc6xd7+7aWnrfGoPtm75B7zWGmN?=
- =?us-ascii?Q?cRalDR+28RIobOcA5p+MW5Ojwi4ARijx8oz4/eBfv6AhH+pvxg9YjmK+H04Z?=
- =?us-ascii?Q?mF7wUeASUaH2LY1LxHxqtc2Yup3z2myHhJISr0TKaMkVwZMGv+AwYknaBSTP?=
- =?us-ascii?Q?J9xVN4oAcK7pEVZoDTS7V+lBVT0XOv45DWKoEJn6cyDLkoRk8QAJN9qoC2Mk?=
- =?us-ascii?Q?ecAtzIdzMLmssV9K2UvIr/G7/XSHBXdjw4e7StP7UHrxTCskJoRGPq+/mQoi?=
- =?us-ascii?Q?LjUMo7hfZLFwGo9P4oUbwAPCXoZpq6aB1Y8K7/dNwag4ItHaz/H4ZirBTdUj?=
- =?us-ascii?Q?2KhDJ5FImjV/ckYuR1Fv26YOL5qun+Q6RBXLhYatcveAnLmxoG+G//RzkTgy?=
- =?us-ascii?Q?0UeklgEu8O0Mch9dHcoepjgs6lpZo+HdIqKqgXEgc20dC87s62wCSzMXUEHl?=
- =?us-ascii?Q?Z3wlPBPbdzkTR+HAMn1rCVidQzaUKNF0BXa6lFjUHKI2sRY6rG5404IkQoZH?=
- =?us-ascii?Q?c7o9reudPGnTTWOYrzN0B3gMeqCRtS2gXy3A9ZUc0ZEJBI7rep+j3TSEum/4?=
- =?us-ascii?Q?8hFSOxkWhaovioRhLKHocXmBB71Wg6TUGjWBJAbTU0o1LAY5c9YXeK3KEkTR?=
- =?us-ascii?Q?QMJ9wLosJJEp5MNdfvcMJKJyrF3/Xc2UFxx/HM3bfBLulf4TexXu7Fqz0sav?=
- =?us-ascii?Q?SDtGwaeNPpd19tHp8nC9H4JYtww4MujaD1KkdUr8hHh6zjbrNcfqTDp0H+0W?=
- =?us-ascii?Q?Qq1OzlGJZItH/8R56X8s2bLJs/B4v/ecUrlp7m/wytVDh2B+sP1PU4tLiJaX?=
- =?us-ascii?Q?oJyty8jCtkkqEP6M7h5BUp7fyB0k2iaVt6ebmtU4RQa4zBRFhht5EH46pwpq?=
- =?us-ascii?Q?9pq2xC0hjSeI0CaH806CQ77USc/ud5iU1+J39yo4l55ppQsuSLISc3j3tmMz?=
- =?us-ascii?Q?hPmEeDcXhdTrOZo8NRZc9vyG1sESJuc2RjLNuXLxitq3XbuGcWxMsXDIziMX?=
- =?us-ascii?Q?olFXbZ9p3g6sOj9zV4arAIVUFYNP+vMpx2SSgZK2l7RKeBKvlaH8yGhnsBEp?=
- =?us-ascii?Q?HhUN2P+vJmb2A+G6tGUGvdiWo7ZLvQaldKtK5P6WBID6dlXnFSRJVzs/dn+s?=
- =?us-ascii?Q?GODWuvvsPdTF5vkCOh5qjeT5pgTcB3wKUbXOYnYV?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?4o7lMkORxMmJkptjYj0krulzP2fQnezixzp2sqDHVrTYmqjINnCXiJI+1Dxw?=
+ =?us-ascii?Q?57pd3M0Urq4MC2XSmLm3juqAQL6lcEqg4PFMfChUouBqcMsD3fkQs5ecdDfO?=
+ =?us-ascii?Q?Ozb0dArfsVahrJo+bfCOQ0y6U0Xp3eiu4nonZDOUWJFBYPkUDSzX7TLa5dZK?=
+ =?us-ascii?Q?es74k29WhJMmxocwCVuJEVd+y33ZWog8kwP+ShaTdfOnRfdjS673IjZzaplr?=
+ =?us-ascii?Q?U5aLCEwKcc72HkCOB0ialdG99VnXVx/T8IIfa38/NVJDiW3nQX+ajLcL0OcI?=
+ =?us-ascii?Q?QJw5eG7M59CxEEhh3fvLAfrRD4j9GVk5mQPcMC3qvHARVK3fBhSxZFFfGXPs?=
+ =?us-ascii?Q?JkbfzoFUuw/dRfaIB+Ht0maBKpVQPeGDFnkFH5otBlam+SwO0HNTt+dQSB2L?=
+ =?us-ascii?Q?lZ4wPfRe2suHlH7k7rO+F/YR8yPUG6V8RXsaeBMI8zx8AhHCl+cal6kirmZB?=
+ =?us-ascii?Q?72mAyDZN48KLebOgiYVzeAPZScMjo2166u7YQnUHi5b//njj81dGA/vhNzaW?=
+ =?us-ascii?Q?Um5SsZ1uWgSUBbJ+wz12plj4r/z8J82+eGwYukg5oPoUfENkJ8Tlm6LvI7C7?=
+ =?us-ascii?Q?ZHD1dDtvXQXpGfIABKPIrPXMa27OmVArnaunzOVKnAp3tvCQNwGvzsh6ixs0?=
+ =?us-ascii?Q?9aFvy2dKFh8bLmmfMJExM8wzYbPL8+XqW98ZrwPZpfoXabntXMR8QagKipnT?=
+ =?us-ascii?Q?FIvtUUdkXjxqXZqdkCCCe1hpR69fVR51jRkfOR5VsCkDNiMVAhYWP80Fx2Hh?=
+ =?us-ascii?Q?qHai4oMM6bncuRNhurtGUX9YUEq/h0R2ztbjo52vQAZWBDY+VAASdQ0E9C5q?=
+ =?us-ascii?Q?DBY0TZPpxsbgqilNV4UV11Ytm/PC3AXZ4RxT8/pIhAQ0cLNtmprB6q99AI6i?=
+ =?us-ascii?Q?zptVF4w8BbnjLm1Pa3ZbWX9TVVUzoCFK95oAAuLCWHkgxUQ/XwN1b1+mY9gG?=
+ =?us-ascii?Q?uHUCW1AS1/pH2T5exGbednJU25JvA1MHNbwZjWxPC/38fk/7gRcTxS6YfCzB?=
+ =?us-ascii?Q?9HD0MgsG+Juqq92FvjUgggKCJXVEszjmcxYzZNLBg97pzYDwvdbyo+HeliQM?=
+ =?us-ascii?Q?Tlc7xr0sW0i4hBgq22K/onPYwgubvshQnO/jYfQmpx+Tvc9FHaMdHaC8ro8F?=
+ =?us-ascii?Q?KaNCHVK/WaUhet32FetRT7gyWUhtbqC7iqUAMi0t//pbYmKEOkxez2Ph7H/5?=
+ =?us-ascii?Q?4hs526BwN62pzuJmawMXOc7j5jjTusL7XbudmADRHOAzbI62mSoJpUI0vq+m?=
+ =?us-ascii?Q?xrmP4olYNrVfLUOhvJ3B4/pBXAEtO9xpBbGoVrz2GSmGhXfo2ATmtkWSqkmM?=
+ =?us-ascii?Q?PmbSH3bMA7kp6jEir+WDF7waSErGOFOiXqhS/ISlGX7GsDVcHtuvwedDpfPa?=
+ =?us-ascii?Q?8H2+QbckdhSAscFszkxfOWBcnNqMwrjbgKTc6Dzpv4Q4nxRxF+eY9jMVadE3?=
+ =?us-ascii?Q?4MODe35dPSrqA6wwUCHMUd0hYc5uptOxUT9EdwgPDVjueVIeYeiRpb5uU/LL?=
+ =?us-ascii?Q?P2FFpEXSmyoWVu4ORZbbmDQS3LRKj0+SrIAMbM80cYcadki7M14+evAHHzaw?=
+ =?us-ascii?Q?vec4/zTnqxHe12R7tKu7FWQcwlxGtuVRi93Whepw?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5444.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7c2f740-a6ae-4b03-3ce8-08dd1fa96c8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2024 21:17:48.6978 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c331152-b6ff-4a4e-245b-08dd1fa98af1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2024 21:18:39.6965 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Mo5aB2+jvXAnro8S9CrpZXZLEa6hrHkIfm3eFgPKsjkPrBz0bLoaNbiHgrbV2VCxAhNf8N8jqDTXiwtCAVRaqtXf/c79JMayYgzyMMJaAQQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8212
+X-MS-Exchange-CrossTenant-userprincipalname: IqQBS2YSZdhbsZLFkZsXeYmORN9Q3QpqNqQNUoTTqWZTrWjYCerKYNmlwvhkEZXukXe3c554A7PIz98S5yZ8jH63CuqY77RW0pPKuTaDVfw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8739
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -193,101 +193,122 @@ Sent: Wednesday, December 18, 2024 12:42 AM
 To: igt-dev@lists.freedesktop.org
 Cc: Dixit, Ashutosh <ashutosh.dixit@intel.com>; Pottumuttu, Sai Teja <sai.t=
 eja.pottumuttu@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_oa: Remove hardcoded time heurist=
-ics
+Subject: [PATCH i-g-t 1/2] tests/intel/xe_oa: Remove unused function argume=
+nts
 >=20
-> Some tests in xe_oa tests have hardcoded timing heuristics. Refactor it t=
-o
-> make it more robust and reliable.
+> The oa_exponent argument is unused in oa_report_is_periodic
+> function. Thus remove it.
 >=20
 > Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-> ---
->  tests/intel/xe_oa.c | 29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
->=20
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index ad3526406..2cae56b47 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -4367,6 +4367,28 @@ static void map_oa_buffer_forked_access(const stru=
-ct drm_xe_engine_class_instanc
->  	munmap(vaddr, size);
->  }
-> =20
-> +static void wait_for_20_periodic_reports(void *oa_vaddr,
-> +					 const struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t period_us =3D oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
-> +	struct intel_xe_perf_metric_set *test_set =3D metric_set(hwe);
-> +	uint64_t fmt =3D test_set->perf_oa_format;
-> +	struct oa_format format =3D get_oa_format(fmt);
-> +	uint32_t num_periodic_reports =3D 0;
-> +	uint32_t *reports;
-> +
-> +	while (num_periodic_reports < 20) {
-> +		usleep(100 * period_us);
-> +		num_periodic_reports =3D 0;
-> +		for (reports =3D (uint32_t *)oa_vaddr;
-> +		     reports[0] && oa_timestamp(reports, fmt);
-> +		     reports +=3D format.size) {
-> +			if (oa_report_is_periodic(reports))
-> +				num_periodic_reports++;
-> +		}
-> +	}
 
-It might be worthwhile to have an early escape in case num_periodic_reports
-never reaches 20.  Something like:
-"""
-	struct timespec ts =3D { };
-
-	igt_nsec_elapsed(&ts);
-	while (num_periodic_reports < 20 &&
-	       igt_nsec_elapsed(&ts) < 30 * NSEC_PER_SEC) {
-		...
-"""
-Though, I guess the test itself will time out and escape if it runs for too=
- long anyways,
-and I can't think of any circumstances where we'd hit this exit case.  So I=
- won't block
-on it.
+LGTM.
 Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 -Jonathan Cavitt
 
-> +}
-> +
->  static void check_reports(void *oa_vaddr, uint32_t oa_size,
->  			  const struct drm_xe_engine_class_instance *hwe)
+> ---
+>  tests/intel/xe_oa.c | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 492a6b5d6..ad3526406 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -791,7 +791,7 @@ emit_report_perf_count(struct intel_bb *ibb,
+>  }
+> =20
+>  static bool
+> -oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
+> +oa_report_is_periodic(const uint32_t *report)
 >  {
-> @@ -4396,12 +4418,10 @@ static void check_reports_from_mapped_buffer(cons=
-t struct drm_xe_engine_class_in
->  {
->  	void *vaddr;
->  	uint32_t size;
-> -	uint32_t period_us =3D oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>  	if (report_reason(report) & OAREPORT_REASON_TIMER)
+>  		return true;
+> @@ -1342,7 +1342,7 @@ read_2_oa_reports(int format_id,
+>  			igt_assert_neq_u64(oa_timestamp(report, format_id), 0);
 > =20
->  	vaddr =3D map_oa_buffer(&size);
+>  			if (timer_only) {
+> -				if (!oa_report_is_periodic(exponent, report)) {
+> +				if (!oa_report_is_periodic(report)) {
+>  					igt_debug("skipping non timer report\n");
+>  					continue;
+>  				}
+> @@ -1752,7 +1752,7 @@ static void test_oa_exponents(const struct drm_xe_e=
+ngine_class_instance *hwe)
+>  				if (oa_status & DRM_XE_OASTATUS_REPORT_LOST)
+>  					igt_debug("report loss\n");
 > =20
-> -	/* wait for approx 100 reports */
-> -	usleep(100 * period_us);
-> +	wait_for_20_periodic_reports(vaddr, hwe);
->  	check_reports(vaddr, size, hwe);
+> -				if (!oa_report_is_periodic(exponent, report))
+> +				if (!oa_report_is_periodic(report))
+>  					continue;
 > =20
->  	munmap(vaddr, size);
-> @@ -4426,12 +4446,11 @@ static void closed_fd_and_unmapped_access(const s=
-truct drm_xe_engine_class_insta
->  	};
->  	void *vaddr;
->  	uint32_t size;
-> -	uint32_t period_us =3D oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>  				memcpy(timer_reports, report, format_size);
+> @@ -1969,7 +1969,7 @@ static void test_blocking(uint64_t requested_oa_per=
+iod,
+>  		for (int offset =3D 0; offset < ret; offset +=3D format_size) {
+>  			uint32_t *report =3D (void *)(buf + offset);
 > =20
->  	stream_fd =3D __perf_open(drm_fd, &param, false);
->  	vaddr =3D map_oa_buffer(&size);
+> -			if (oa_report_is_periodic(oa_exponent, report))
+> +			if (oa_report_is_periodic(report))
+>  				timer_report_read =3D true;
+>  			else
+>  				non_timer_report_read =3D true;
+> @@ -2142,7 +2142,7 @@ static void test_polling(uint64_t requested_oa_peri=
+od,
+>  		for (int offset =3D 0; offset < ret; offset +=3D format_size) {
+>  			uint32_t *report =3D (void *)(buf + offset);
 > =20
-> -	usleep(100 * period_us);
-> +	wait_for_20_periodic_reports(vaddr, hwe);
->  	check_reports(vaddr, size, hwe);
+> -			if (oa_report_is_periodic(oa_exponent, report))
+> +			if (oa_report_is_periodic(report))
+>  				timer_report_read =3D true;
+>  			else
+>  				non_timer_report_read =3D true;
+> @@ -2463,7 +2463,7 @@ again_1:
+>  					  " ts_delta_last_periodic=3D%"PRIu64" is_timer=3D%i ctx_id=3D%8x n=
+b_periodic=3D%u\n",
+>  					  oa_timestamp(report, fmt),
+>  					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodi=
+c_report, fmt) : 0,
+> -					  oa_report_is_periodic(oa_exponent, report),
+> +					  oa_report_is_periodic(report),
+>  					  oa_report_get_ctx_id(report),
+>  					  n_periodic_reports);
 > =20
->  	munmap(vaddr, size);
+> @@ -2471,7 +2471,7 @@ again_1:
+>  					first_timestamp =3D oa_timestamp(report, fmt);
+>  				last_timestamp =3D oa_timestamp(report, fmt);
+> =20
+> -				if (oa_report_is_periodic(oa_exponent, report)) {
+> +				if (oa_report_is_periodic(report)) {
+>  					memcpy(last_periodic_report, report, report_size);
+>  					n_periodic_reports++;
+>  				}
+> @@ -2677,12 +2677,12 @@ test_enable_disable(const struct drm_xe_engine_cl=
+ass_instance *hwe)
+>  					  " ts_delta_last_periodic=3D%s%"PRIu64""
+>  					  " is_timer=3D%i ctx_id=3D0x%8x\n",
+>  					  oa_timestamp(report, fmt),
+> -					  oa_report_is_periodic(oa_exponent, report) ? " " : "*",
+> +					  oa_report_is_periodic(report) ? " " : "*",
+>  					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodi=
+c_report, fmt) : 0,
+> -					  oa_report_is_periodic(oa_exponent, report),
+> +					  oa_report_is_periodic(report),
+>  					  oa_report_get_ctx_id(report));
+> =20
+> -				if (oa_report_is_periodic(oa_exponent, report)) {
+> +				if (oa_report_is_periodic(report)) {
+>  					memcpy(last_periodic_report, report, report_size);
+> =20
+>  					/* We want to measure only the periodic reports,
+> @@ -4380,7 +4380,7 @@ static void check_reports(void *oa_vaddr, uint32_t =
+oa_size,
+>  	for (reports =3D (uint32_t *)oa_vaddr;
+>  	     timer_reports < 20 && reports[0] && oa_timestamp(reports, fmt);
+>  	     reports +=3D report_words) {
+> -		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
+> +		if (!oa_report_is_periodic(reports))
+>  			continue;
+> =20
+>  		timer_reports++;
 > --=20
 > 2.34.1
 >=20
