@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1241E77188
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 22:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68758E77188
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 22:40:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C9EE10E043;
-	Wed, 18 Dec 2024 22:29:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E86AC10E040;
+	Wed, 18 Dec 2024 22:40:13 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D5E710E040;
- Wed, 18 Dec 2024 22:29:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB8EC10E040;
+ Wed, 18 Dec 2024 22:40:12 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6419985825709939842=="
+ boundary="===============7659705772485466083=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_RFC=3A_tests/intel/kms=5Fjo?=
- =?utf-8?q?iner=3A_Add_a_new_test_to_validate_non-joiner_mode?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel-ci/xe*=3A_Disab?=
+ =?utf-8?q?le_a_few_xe=5Fevict_subtests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Dec 2024 22:29:42 -0000
-Message-ID: <173456098250.164096.4402309185973615411@b555e5b46a47>
+Date: Wed, 18 Dec 2024 22:40:12 -0000
+Message-ID: <173456161282.164096.7461266876934543627@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20241217191657.2102779-1-jeevan.b@intel.com>
-In-Reply-To: <20241217191657.2102779-1-jeevan.b@intel.com>
+References: <20241218153547.11346-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20241218153547.11346-1-thomas.hellstrom@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,76 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6419985825709939842==
+--===============7659705772485466083==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: RFC: tests/intel/kms_joiner: Add a new test to validate non-joiner mode
-URL   : https://patchwork.freedesktop.org/series/142749/
-State : success
+Series: tests/intel-ci/xe*: Disable a few xe_evict subtests
+URL   : https://patchwork.freedesktop.org/series/142798/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8164_BAT -> XEIGTPW_12339_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12339_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-adlp-7:         [PASS][1] -> [SKIP][2] ([Intel XE#455]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@kms_psr@psr-primary-page-flip@edp-1:
-    - bat-adlp-7:         [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3517]) +1 other test dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-
-  
-  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+Series 142798 revision 1 was fully merged or fully failed: no git log
 
 
-Build changes
--------------
 
-  * IGT: IGT_8164 -> IGTPW_12339
-  * Linux: xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec -> xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b
-
-  IGTPW_12339: 77abbe3a40634905b8e2e0015e6d3a12a55f4451 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec
-  xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b: d8f0c44e2ed948dcc45d04a0dfa83612995a702b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/index.html
-
---===============6419985825709939842==
+--===============7659705772485466083==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,50 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>RFC: tests/intel/kms_joiner: Add a new test to validate non-joiner mode</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142749/">https://patchwork.freedesktop.org/series/142749/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/index.html</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel-ci/xe*: Disable a few xe_evict subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142798/">https://patchwork.freedesktop.org/series/142798/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8164_BAT -&gt; XEIGTPW_12339_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12339_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12339/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8164 -&gt; IGTPW_12339</li>
-<li>Linux: xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec -&gt; xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b</li>
-</ul>
-<p>IGTPW_12339: 77abbe3a40634905b8e2e0015e6d3a12a55f4451 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec<br />
-  xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b: d8f0c44e2ed948dcc45d04a0dfa83612995a702b</p>
+    <p>Series 142798 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============6419985825709939842==--
+--===============7659705772485466083==--
