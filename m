@@ -4,67 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2735BE77188
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 15:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9246E77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 15:28:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB8AA10E0D4;
-	Wed, 18 Dec 2024 15:09:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 77FE010EBE9;
+	Wed, 18 Dec 2024 15:28:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Ujeuo+I2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kfpmkLz+";
 	dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D7D710E0D4
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 15:09:46 +0000 (UTC)
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2ee50ffcf14so769708a91.0
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 07:09:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734534585; x=1735139385; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pWziDCR0HGgEx3RsORey+qU9r6GqzKZPL7sSysacikg=;
- b=Ujeuo+I21clHFvjEnm3GelVHfv35LRqcmHB6GhxwJod5xvwKOtOKHDa3M5EVIaAZzh
- fwNH1/iLC+9nT4jdItttYFbGnJvBQhkqthCmYV0G60WC8Jb6PqwZ3MFarkCMkKoUmlwD
- C9mw9jmKGI0d6Hths2mQ/8LerC9rrLbxTUpBgBBPDRAJjrAGT9upMDvv+BsLmQrzn/Oj
- LifnXoubVl/sRNfny7OxuEUyskgvSx/EAsFvlht+I0o0+XmESZW3OAKxlNqSUbhrJWGq
- +fMKl0k2Fnr9Fv6LjYo3Ls/fdeoS0zg0365cNfEr9RN7hjvr0JIW/UZvLDxdvPCYH6uW
- SbJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734534585; x=1735139385;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pWziDCR0HGgEx3RsORey+qU9r6GqzKZPL7sSysacikg=;
- b=ep65PB7xCbf2u0zYuuB8c2VHgw5f5ivIkjUhgq6ljxvU/fBBn19bR850k4S8XjlLWG
- UThDXYVfo9lfwGJmhWZyJiHX/zQqTemIqw8DoI2vuQx20TftdIqS47YYW5Y3IubflSOd
- Oml3HRzrIBNw7Hi+K3OtJ3Mqv7ZGRob+YDmF+5gmcRa4eYMCYXQC4KWhOcuUpyAsGk/N
- KwY7jlS+s0ZOT087YEw5S/g291Sk722xq10PUIwzcLDie3lra+9eVHLzM+uuA3b42xis
- o1Y3iEBIbS3vto74gdA27cKz1JAUYXE/KKdQHaS1dEVJeytzvHk5yMBmcop7uIO7CA3H
- sfag==
-X-Gm-Message-State: AOJu0YzH2uNvp6tpC63ZmXRlsFl+pGcBqHYBoqC+JtdZbFkrIUorwcKG
- DM9VxT6sGuOBIiBwRc82KNo9IaYwhIqKs39oD8oyzLUi3f+wLShDni625QfVYdcYvVc2BoDZcwC
- wDE7oXkI4iUe0ZLaaiinIIZLWi2A=
-X-Gm-Gg: ASbGnctxfXb9rZzOS9rFptnvMuPS+iA5WzdDY8TzeUOPMYiP93LxhUk+HoRQHG5GOMP
- hnAkJTetSB+9Qk9SNUHNNcPIsTnK+zBi583RyYhGD
-X-Google-Smtp-Source: AGHT+IFDRdHba4KLcsz9kiZcG7BzLTVo1EGV8yUwLe/DbfMnK+vVbTMir1B2h3fjH76T2IkEf8dJxMA65nCrm4kaUeo=
-X-Received: by 2002:a17:90b:38ca:b0:2ef:9dbc:38d1 with SMTP id
- 98e67ed59e1d1-2f2d87bd3d7mr10387304a91.5.1734534585505; Wed, 18 Dec 2024
- 07:09:45 -0800 (PST)
-MIME-Version: 1.0
-References: <20241122084804.29669-1-ville.syrjala@linux.intel.com>
- <20241122084804.29669-5-ville.syrjala@linux.intel.com>
-In-Reply-To: <20241122084804.29669-5-ville.syrjala@linux.intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 18 Dec 2024 17:09:33 +0200
-Message-ID: <CAJ=qYWTmeNvM6ZR5LbZvqb106HHoLfBVPHBYQTN67SEdVDMBxw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2 4/4] tests/intel/gem_draw: Test igt_draw without
- kms
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA11B10EBE9
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 15:28:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734535688; x=1766071688;
+ h=message-id:subject:from:to:date:in-reply-to:references:
+ content-transfer-encoding:mime-version;
+ bh=tlH0z2iMLtvbTSWVJbOYEkz87cDg5/0HxP5gZ117iVo=;
+ b=kfpmkLz+pOuEE74xlOouidi/kQQs/CSEHKyR5LSyyxUuuK0gsyiniDQI
+ 3b55mkw3/j/m17shQrXxrQMsZniFD2TWzFVacvOPj/wv1Bk/85oRJXGHU
+ 5aYYy14zx1bpN2fEt3thAh14XCZ8tCnmXPDwMlOnojDLlUd6M6pCY/uIJ
+ /SneEFFB/51aTA15wY/TJjTrLLX7eP80fGQMYrL6T5Vbup8Vv9sIYCmUa
+ QifmsGP69pCaXmftITcJE2ZxzuTIWUu6oNSUlrP6cT0rU14fUGith77u9
+ VRhcXWXVevv+USAuyrsElBcth/TTFhI5FtROL79zTpyeW7yHXYg5v79+t g==;
+X-CSE-ConnectionGUID: /qW6pCRqTVSI00hkqQ/pKA==
+X-CSE-MsgGUID: WiZWjrS+TOSBmSLRHpA7JQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="60402480"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="60402480"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 07:28:08 -0800
+X-CSE-ConnectionGUID: GdtCpZ1WTf2mNW7cwsQhvA==
+X-CSE-MsgGUID: CGh1cJvjTbewP4+9P1A1Dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="135229074"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO [10.245.246.105])
+ ([10.245.246.105])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 07:28:06 -0800
+Message-ID: <9eb3a748b698533d4a58f546eaf123a3f933625e.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t] xe-ci: Disable xe_evict subtests that are
+ expected to possibly fail
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>, 
+ akshata.jahagirdar@intel.com
+Date: Wed, 18 Dec 2024 16:28:03 +0100
+In-Reply-To: <20241218141839.cosbnxdmkg6eeh2j@kamilkon-desk.igk.intel.com>
+References: <20241218124519.4697-1-thomas.hellstrom@linux.intel.com>
+ <20241218141839.cosbnxdmkg6eeh2j@kamilkon-desk.igk.intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+MIME-Version: 1.0
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,303 +73,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+On Wed, 2024-12-18 at 15:18 +0100, Kamil Konieczny wrote:
+> Hi Thomas,
+> On 2024-12-18 at 13:45:19 +0100, Thomas Hellstr=C3=B6m wrote:
+> > Threads may compete over VRAM resources, and since there is no
+> > serialization in TTM, threaded evict tests may have a high
+> > possibility of failing.
+> >=20
+> > Disable such tests until we have a working exhaustive eviction
+> > implementation in place.
+> >=20
+> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> > Cc: Matthew Brost <matthew.brost@intel.com>
+> > Cc: <akshata.jahagirdar@intel.com>
+>=20
+> Looks reasonable, please only change prefix into
+> tests/intel-ci/xe*:
+>=20
+> also consider writing it a little shorter, like:
+> [PATCH i-g-t] tests/intel-ci/xe*: Disable few xe_evict subtests
+>=20
+> With this
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>=20
+> Please also see one nit below.
+>=20
+> > ---
+> > =C2=A0tests/intel-ci/xe-fast-feedback.testlist | 5 -----
+> > =C2=A0tests/intel-ci/xe.blocklist.txt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 7 +++++++
+> > =C2=A02 files changed, 7 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/tests/intel-ci/xe-fast-feedback.testlist
+> > b/tests/intel-ci/xe-fast-feedback.testlist
+> > index 727be9230..f16ca9188 100644
+> > --- a/tests/intel-ci/xe-fast-feedback.testlist
+> > +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> > @@ -263,19 +263,14 @@
+> > igt@xe_exec_threads@threads-mixed-shared-vm-basic
+> > =C2=A0igt@xe_exec_threads@threads-mixed-fd-basic
+> > =C2=A0igt@xe_exec_threads@threads-mixed-userptr-invalidate
+> > =C2=A0
+> > igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
+> > -igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
+> > =C2=A0igt@xe_evict@evict-beng-small
+> > =C2=A0igt@xe_evict@evict-beng-small-cm
+> > =C2=A0igt@xe_evict@evict-beng-small-external
+> > =C2=A0igt@xe_evict@evict-beng-small-external-cm
+> > =C2=A0igt@xe_evict@evict-beng-small-multi-vm
+> > =C2=A0igt@xe_evict@evict-cm-threads-small
+> > -igt@xe_evict@evict-mixed-threads-small
+> > -igt@xe_evict@evict-mixed-threads-small-multi-vm
+> > =C2=A0igt@xe_evict@evict-small
+> > =C2=A0igt@xe_evict@evict-small-cm
+> > =C2=A0igt@xe_evict@evict-small-external
+> > =C2=A0igt@xe_evict@evict-small-external-cm
+> > =C2=A0igt@xe_evict@evict-small-multi-vm
+> > -igt@xe_evict@evict-small-multi-vm-cm
+> > -igt@xe_evict@evict-threads-small
+> > diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-
+> > ci/xe.blocklist.txt
+> > index e29e745a0..ed9e572a5 100644
+> > --- a/tests/intel-ci/xe.blocklist.txt
+> > +++ b/tests/intel-ci/xe.blocklist.txt
+> > @@ -90,3 +90,10 @@ igt@sriov_basic@enable-vfs-autoprobe-on$
+> > =C2=A0igt@sriov_basic@enable-vfs-bind-unbind-each$
+> > =C2=A0igt@sriov_basic@bind-unbind-vf$
+> > =C2=A0#################################################################=
+#
+> > +# Exclude xe_evict tests that are not expected to succeed
+> > +# due to missing TTM exhaustive eviction
+> > +##################################################################
+> > +igt@xe_evict@*-multi-vm-cm*
+> > +igt@xe_evict@*-threads-*
+> > +# igt@xe_evict@*-cm* # Rebind and VM_BIND may race.
+>=20
+> Did you mean that
+> igt@xe_evict@evict-cm-threads-small
+>=20
+> should stay in BAT?
 
-On Fri, Nov 22, 2024 at 10:48=E2=80=AFAM Ville Syrjala
-<ville.syrjala@linux.intel.com> wrote:
->
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->
-> kms_draw_crc is our only way to confirm that igt_draw
-> linear<->tiled conversion routines are correct. That may
-> not cover every case as we could be hitting display
-> specific limitations that prevent testing everything.
->
-> Introduce a new gem_draw test case that compares igt_draw
-> mmap/pwrite methods against GTT mmaps. This will verify that
-> the software conversion routines match the hardware (de)tiling
-> peformed via the fenced region.
->
-> TODO: could verify against blt/rendercopy
->       when gtt mmaps are not available...
->
-> v2: Drop the "driver requirement: i915" to make it past
->     the documentation build scripts
->
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> ---
->  tests/intel/gem_draw.c | 233 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  2 files changed, 234 insertions(+)
->  create mode 100644 tests/intel/gem_draw.c
->
-> diff --git a/tests/intel/gem_draw.c b/tests/intel/gem_draw.c
-> new file mode 100644
-> index 000000000000..86df7c33ff2d
-> --- /dev/null
-> +++ b/tests/intel/gem_draw.c
-> @@ -0,0 +1,233 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright =C2=A9 2024 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: gem draw
-> + * Category: GEM
-> + * Description: Tests whether the igt_draw library actually works.
-> + * Functionality: tiling
-> + * Test category: functionality test
-> + */
-> +
-> +/**
-> + * SUBTEST: draw-method-%s
-> + * Description: Verify that igt draw library works for the %arg[1] metho=
-d with
-> + *              different tilings and color depths.
-> + *
-> + * arg[1]:
-> + *
-> + * @mmap-cpu:     MMAP-CPU
-> + * @mmap-wc:      MMAP-WC
-> + * @pwrite:       PWRITE
-> + */
-> +
-> +#include "i915/gem.h"
-> +#include "i915/gem_create.h"
-> +#include "igt.h"
-> +#include "igt_halffloat.h"
-> +#include "igt_primes.h"
-> +
-> +int drm_fd;
-> +struct buf_ops *bops;
-> +
-> +static const enum igt_draw_method draw_methods[] =3D {
-> +       IGT_DRAW_MMAP_CPU,
-> +       IGT_DRAW_MMAP_WC,
-> +       IGT_DRAW_PWRITE,
-> +};
-> +
-> +static const uint32_t tilings[] =3D {
-> +       I915_TILING_NONE,
-> +       I915_TILING_X,
-> +       I915_TILING_Y,
-> +};
-> +
-> +static uint64_t read_pixel(const void *ptr, int stride, int x, int y, in=
-t bpp)
-> +{
-> +       ptr +=3D y * stride + x * bpp / 8;
-> +
-> +       switch (bpp) {
-> +       case 8:
-> +               return *(const uint8_t*)ptr;
-> +       case 16:
-> +               return *(const uint16_t*)ptr;
-> +       case 32:
-> +               return *(const uint32_t*)ptr;
-> +       case 64:
-> +               return *(const uint64_t*)ptr;
-> +       default:
-> +               return 0;
-> +       }
-> +}
-> +
-> +static void check_rect(const void *ptr, int stride,
-> +                      int x0, int y0, int w, int h,
-> +                      uint64_t color, int bpp)
-> +{
-> +       int x1 =3D x0 + w - 1;
-> +       int y1 =3D y0 + h - 1;
-> +
-> +       if (bpp < 64)
-> +               color &=3D (1ull << bpp) - 1;
-> +
-> +       /* only check the corners to speed this up a bit */
-> +       igt_assert_eq(read_pixel(ptr, stride, x0, y0, bpp), color);
-> +       igt_assert_eq(read_pixel(ptr, stride, x0, y1, bpp), color);
-> +       igt_assert_eq(read_pixel(ptr, stride, x1, y0, bpp), color);
-> +       igt_assert_eq(read_pixel(ptr, stride, x1, y1, bpp), color);
-> +}
-> +
-> +static void draw(enum igt_draw_method method,
-> +                int width, int height,
-> +                uint32_t stride, int bpp, uint32_t tiling)
-> +{
-> +       uint64_t size =3D stride * height;
-> +       uint64_t color;
-> +       uint32_t handle;
-> +       void *ptr;
-> +
-> +       igt_require(buf_ops_has_tiling_support(bops, tiling));
-> +
-> +       handle =3D gem_create(drm_fd, size);
-> +       gem_set_tiling(drm_fd, handle, tiling, stride);
-> +
-> +       color =3D 0x0123456789abcdef;
-> +       for (int y =3D 0 ; y < height;) {
-> +               int y_next =3D min(height, (int)igt_next_prime_number(y))=
-;
-> +               int h =3D y_next - y;
-> +
-> +               for (int x =3D 0; x < width; ) {
-> +                       int x_next =3D min(width, (int)igt_next_prime_num=
-ber(x));
-> +                       int w =3D x_next - x;
-> +
-> +                       igt_draw_rect(drm_fd, bops, 0, handle, size, stri=
-de,
-> +                                     width, height, tiling, method,
-> +                                     x, y, w, h, color, bpp);
-> +
-> +                       color =3D igt_ror(color, 1, 64);
-> +
-> +                       x =3D x_next;
-> +               }
-> +
-> +               y =3D y_next;
-> +       }
-> +
-> +       gem_set_domain(drm_fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMA=
-IN_GTT);
-> +
-> +       ptr =3D gem_mmap__gtt(drm_fd, handle, size, PROT_READ);
-> +
-> +       color =3D 0x0123456789abcdef;
-> +       for (int y =3D 0 ; y < height;) {
-> +               int y_next =3D min(height, (int)igt_next_prime_number(y))=
-;
-> +               int h =3D y_next - y;
-> +
-> +               for (int x =3D 0; x < width; ) {
-> +                       int x_next =3D min(width, (int)igt_next_prime_num=
-ber(x));
-> +                       int w =3D x_next - x;
-> +
-> +                       check_rect(ptr, stride, x, y, w, h, color, bpp);
-> +
-> +                       color =3D igt_ror(color, 1, 64);
-> +
-> +                       x =3D x_next;
-> +               }
-> +
-> +               y =3D y_next;
-> +       }
-> +
-> +       munmap(ptr, size);
-> +
-> +       gem_close(drm_fd, handle);
-> +}
-> +
-> +static void draw_method_subtest(enum igt_draw_method method,
-> +                               int bpp, uint32_t tiling)
-> +{
-> +       const struct intel_device_info *info =3D
-> +               intel_get_device_info(intel_get_drm_devid(drm_fd));
-> +       int width, height, stride;
-> +       int tile_w, tile_h;
-> +
-> +       if (info->graphics_ver =3D=3D 2) {
-> +               tile_w =3D 128;
-> +               tile_h =3D 16;
-> +       } else if (tiling =3D=3D I915_TILING_X ||
-> +                  info->is_grantsdale || info->is_alviso) {
-> +               tile_w =3D 512;
-> +               tile_h =3D 8;
-> +       } else {
-> +               tile_w =3D 128;
-> +               tile_h =3D 32;
-> +       }
-> +
-> +       stride =3D 4 * tile_w;
-> +       width =3D stride * 8 / bpp;
-> +       height =3D 4 * tile_h;
-> +
-> +       draw(method, width, height, stride, bpp, tiling);
-> +}
-> +
-> +static void setup_environment(void)
-> +{
-> +       drm_fd =3D drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-> +       igt_require(drm_fd >=3D 0);
-> +       bops =3D buf_ops_create(drm_fd);
-> +
-> +       /* need hardware to untile for verification */
-> +       gem_require_mappable_ggtt(drm_fd);
-> +}
-> +
-> +static void teardown_environment(void)
-> +{
-> +       buf_ops_destroy(bops);
-> +       drm_close_driver(drm_fd);
-> +}
-> +
-> +static const char *tiling_str(uint32_t tiling)
-> +{
-> +       switch (tiling) {
-> +       case I915_TILING_NONE :
-> +               return "untiled";
-> +       case I915_TILING_X :
-> +               return "xtiled";
-> +       case I915_TILING_Y :
-> +               return "ytiled";
-> +       default:
-> +               igt_assert(false);
-> +       }
-> +}
-> +
-> +igt_main
-> +{
-> +       int method_idx, tiling_idx;
-> +
-> +       igt_fixture
-> +               setup_environment();
-> +
-> +       for (method_idx =3D 0; method_idx < ARRAY_SIZE(draw_methods); met=
-hod_idx++) {
-> +               enum igt_draw_method method =3D draw_methods[method_idx];
-> +
-> +               igt_describe_f("Verify that igt draw library works for th=
-e draw "
-> +                              "method (%s) with different tilings and co=
-lor depths.",
-> +                              igt_draw_get_method_name(method));
-> +
-> +               igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get=
-_method_name(method)) {
-> +                       if (!igt_draw_supports_method(drm_fd, method))
-> +                               continue;
-> +
-> +                       for (tiling_idx =3D 0; tiling_idx < ARRAY_SIZE(ti=
-lings); tiling_idx++) {
-> +                               uint32_t tiling =3D tilings[tiling_idx];
-> +
-> +                               for (int bpp =3D 8; bpp <=3D 64; bpp *=3D=
- 2) {
-> +                                       igt_dynamic_f("%dbpp-%s", bpp, ti=
-ling_str(tiling))
-> +                                               draw_method_subtest(metho=
-d, bpp, tiling);
-> +                               }
-> +                       }
-> +               }
-> +       }
-> +
-> +       igt_fixture
-> +               teardown_environment();
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 2724c7a9a6e6..9bcace851c33 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -118,6 +118,7 @@ intel_i915_progs =3D [
->         'gem_ctx_shared',
->         'gem_ctx_sseu',
->         'gem_ctx_switch',
-> +       'gem_draw',
->         'gem_eio',
->         'gem_evict_alignment',
->         'gem_evict_everything',
-> --
-> 2.45.2
->
+No it shouldn't. Good catch. I'll update.
+
+>=20
+> Regards,
+> Kamil
+>=20
+> > +##################################################################
+> > --=20
+> > 2.47.1
+> >=20
+
