@@ -4,58 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F8AE77187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 08:56:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEA04E77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 09:18:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B26310EB03;
-	Wed, 18 Dec 2024 08:56:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F27B10EB27;
+	Wed, 18 Dec 2024 09:18:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g3b/tn7v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RmxuLf5E";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A047A10EB03
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 08:56:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3AEE10EB2E
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2024 09:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734512185; x=1766048185;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=4FzE/vSxdq9C6C8dMx3DBMnWZG820cn8ULqGJKrevYs=;
- b=g3b/tn7vAflt4epkPPNzdGL7SP7rzEB+gs5lByYOGJZlMuLSVCUkObj0
- LVzTO2yi1WWCchdkQ72JzyDI7ThiRxCa03ZWFfiGiUVaTFOULQvm4m48n
- Ih1XP5ONbczdkaYXnwhBwuWzhhZh+FPMA4g79/IwyIH4PXB0przLQIXK4
- sEO8bMB0Hffwkhak8yUXVA58Dn9/4WUAt+PPpl81NVDNpSkoJwQuWCL9d
- PKi/sXxsKS7Fpvw2/lN0cX3dp/620jTsk17GLA9AlQmy2OCuNsBRGC6vu
- w08xIX2lnS6+bQ7olto/YJ2f+/Yp6tg+GPWgls/gE+dVLY99ZyhjJG2BY w==;
-X-CSE-ConnectionGUID: ynp5hYByTOeWF3eNzFpWIQ==
-X-CSE-MsgGUID: 2ojAHGO4Twqo6rL/EdYOZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="60365071"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="60365071"
+ t=1734513507; x=1766049507;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=KnLoSE78FyVmV7PDXNrSVMp/iMGG2Dbhtc1yYYehZX8=;
+ b=RmxuLf5EExsEfS5GSgrtCFdXHEEHHZWObIluawKfqebh0f0DSGqMe5HX
+ IFHtz+bmtItK/bJ6CfIYWVKWZ5L5EJZ8gybL2rPxo7Pmyl+z61FtrI5+Y
+ DTr6X6jo14SB8kTiT4mt5bC/6aj4KjYqU7lywKn22EMOgDuD+mrr7yo1j
+ Xw8v1oJJqGG/8wvded3mp4bYbrGZNmcTBZps1M4g3ngY2ihk2a83bf/S3
+ OiS0RruRWT2QJeeb1MzGclbEMmsbFN6zq4Yr0BKiwhk8noFbDOyzMXAdc
+ sk/1JkD+CureEQNKAux3inQxzfXAck2J184XagqUBWHuhfdRDWw2jPvTu Q==;
+X-CSE-ConnectionGUID: /VAYJpUES2mPGati+9ZNrQ==
+X-CSE-MsgGUID: J7l8o4MrT5eWi0YDS1kswA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="37816167"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="37816167"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 00:56:25 -0800
-X-CSE-ConnectionGUID: 92jghLj4RWaj9DiELg4zxw==
-X-CSE-MsgGUID: vDoYokVwRAutv/ofaurtZw==
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 01:18:27 -0800
+X-CSE-ConnectionGUID: mbkHwHZ+SUe9GppjPQMe3w==
+X-CSE-MsgGUID: sRXx4KVdTLmTcfPXX4A7dA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="128605617"
-Received: from sshkruni-mobl2.ger.corp.intel.com (HELO [10.213.202.48])
- ([10.213.202.48])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 00:56:25 -0800
-Message-ID: <55894817-9c88-4e95-b648-72e3f031e10c@linux.intel.com>
-Date: Wed, 18 Dec 2024 09:56:22 +0100
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="128607874"
+Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.10])
+ by orviesa002.jf.intel.com with ESMTP; 18 Dec 2024 01:18:26 -0800
+From: Suraj Kandpal <suraj.kandpal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: santhosh.reddy.guddati@intel.com, Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t] test/kms_content_protection: Add HDCP retry after LIC
+ failure
+Date: Wed, 18 Dec 2024 14:48:26 +0530
+Message-Id: <20241218091826.3014999-1-suraj.kandpal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] tests/intel/xe_debugfs: Extend gt test to check few
- debugfs entries
-To: Pravalika Gurram <pravalika.gurram@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20241217135659.673564-1-pravalika.gurram@intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20241217135659.673564-1-pravalika.gurram@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,93 +65,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pravalika,
+After LIC failure HDCP should be reenabled when retried in the
+subsequent commits add function to re enable HDCP when LIC fails
+in IGT.
 
-Please see my comment below.
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+---
+ tests/kms_content_protection.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-On 17.12.2024 14:56, Pravalika Gurram wrote:
-> Read and dump  below debugfs entries.
-> ggtt
-> register-save-restore
-> workarounds
-> default_lrc_rcs
-> default_lrc_ccs
-> default_lrc_bcs
-> default_lrc_vcs
-> default_lrc_vecs
-> hwconfig"
-> 
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
-> ---
->  tests/intel/xe_debugfs.c | 46 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
-> 
-> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-> index 700575031..bcbb5036a 100644
-> --- a/tests/intel/xe_debugfs.c
-> +++ b/tests/intel/xe_debugfs.c
-> @@ -162,6 +162,16 @@ test_gt(int fd, int gt_id)
->  		"pat",
->  		"mocs",
->  //		"force_reset"
-> +		"ggtt",
-> +		"register-save-restore",
-> +		"workarounds",
-> +		"default_lrc_rcs",
-> +		"default_lrc_ccs",
-> +		"default_lrc_bcs",
-> +		"default_lrc_vcs",
-> +		"default_lrc_vecs",
-> +		"hwconfig"
-> +
->  	};
->  	static const char * const expected_files_uc[] = {
->  		"huc_info",
-> @@ -194,6 +204,42 @@ test_gt(int fd, int gt_id)
->  	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->  	igt_debugfs_dump(fd, name);
->  
-> +	sprintf(name, "gt%d/ggtt", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/register-save-restore", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/workarounds", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_rcs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_ccs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_bcs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_vecs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_vcs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/hwconfig", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 04dff7a05..5b3e8f00f 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -373,21 +373,22 @@ static bool igt_pipe_is_free(igt_display_t *display, enum pipe pipe)
+ 	return true;
+ }
+ 
+-static void test_cp_lic(igt_output_t *output)
++static void test_cp_lic(igt_output_t *output,
++			enum igt_commit_style commit_style,
++			int content_type)
+ {
+ 	bool ret;
+-	uint64_t val;
+ 
+ 	/* Wait for 4Secs (min 2 cycles of Link Integrity Check) */
+ 	ret = wait_for_prop_value(output, CP_DESIRED, LIC_PERIOD_MSEC);
+-	val = igt_output_get_prop(output,
+-				  IGT_CONNECTOR_CONTENT_PROTECTION);
+-	if (val == CP_DESIRED) {
++	if (ret) {
+ 		igt_debug("Link Integrity Check failed, waiting for reauthentication\n");
+-		ret = wait_for_prop_value(output, CP_DESIRED, LIC_PERIOD_MSEC);
++		test_cp_enable_with_retry(output, commit_style, 3,
++					  content_type, false, false);
++	} else {
++		igt_assert_f(!ret, "Content Protection LIC Failed\n");
+ 	}
+ 
+-	igt_assert_f(!ret, "Content Protection LIC Failed\n");
+ }
+ 
+ static bool write_srm_as_fw(const __u8 *srm, int len)
+@@ -452,7 +453,7 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 	}
+ 
+ 	if (data.cp_tests & CP_LIC)
+-		test_cp_lic(output);
++		test_cp_lic(output, commit_style, content_type);
+ 
+ 	if (data.cp_tests & CP_DPMS) {
+ 		igt_pipe_set_prop_value(display, pipe,
+-- 
+2.34.1
 
-Would something like the following work and clean up the code a bit?
-
-	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
-		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
-		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-		igt_debugfs_dump(fd, name);
-	}
