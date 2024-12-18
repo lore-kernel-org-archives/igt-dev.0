@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C965E77187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 12:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2227E77187
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Dec 2024 12:24:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B3EAB10EBA4;
-	Wed, 18 Dec 2024 12:22:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F47210EB93;
+	Wed, 18 Dec 2024 12:24:48 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F25D010EB9F;
- Wed, 18 Dec 2024 12:22:48 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3856610EB8A;
+ Wed, 18 Dec 2024 12:24:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4987894355775072402=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fhangma?=
- =?utf-8?q?n=3A_Fix_spin_engine_hang_=28rev5=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Chec?=
+ =?utf-8?q?k_negative_cases_for_vm=5Fcreate/destroy_ioctl_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mikolaj Wasiak" <mikolaj.wasiak@intel.com>
+To: "Gurram, Pravalika" <pravalika.gurram@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Dec 2024 12:22:48 -0000
-Message-ID: <173452456898.36144.4288968859817858342@b555e5b46a47>
+Date: Wed, 18 Dec 2024 12:24:47 -0000
+Message-ID: <173452468722.36144.18290410067918291742@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <ewfsrzwiwey464lvqix4apzswvmfs4vvwbnndxdbrvtmtyjev5@p3lqcqy6sxve>
-In-Reply-To: <ewfsrzwiwey464lvqix4apzswvmfs4vvwbnndxdbrvtmtyjev5@p3lqcqy6sxve>
+References: <20241217130429.673208-1-pravalika.gurram@intel.com>
+In-Reply-To: <20241217130429.673208-1-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,15 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4987894355775072402==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/intel/i915_hangman: Fix spin engine hang (rev5)
-URL   : https://patchwork.freedesktop.org/series/141694/
+Series: tests/intel/xe_vm: Check negative cases for vm_create/destroy ioctl (rev2)
+URL   : https://patchwork.freedesktop.org/series/142580/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8161 -> IGTPW_12334
+CI Bug Log - changes from XEIGT_8161_BAT -> XEIGTPW_12333_BAT
 ====================================================
 
 Summary
@@ -59,67 +64,116 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/index.html
+  
 
-Participating hosts (45 -> 43)
+Participating hosts (9 -> 9)
 ------------------------------
 
-  Missing    (2): bat-arls-6 fi-snb-2520m 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12334 that come from known issues:
+  Here are the changes found in XEIGTPW_12333_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][1] -> [ABORT][2] ([i915#12061]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8161/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arlh-2:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8161/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-6:         [PASS][5] -> [ABORT][6] ([i915#12061]) +1 other test abort
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8161/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
 #### Possible fixes ####
 
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [INCOMPLETE][7] ([i915#12904]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8161/bat-apl-1/igt@dmabuf@all-tests.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/bat-apl-1/igt@dmabuf@all-tests.html
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#3429]) -> [PASS][2] +31 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
 
-  * igt@i915_selftest@live@workarounds:
-    - {bat-mtlp-9}:       [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8161/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#3429]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8161 -> IGTPW_12334
-  * Linux: CI_DRM_15861 -> CI_DRM_15862
+  * IGT: IGT_8161 -> IGTPW_12333
+  * Linux: xe-2393-561947cbde53a2d22434977709610f42e4f0229b -> xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c
 
-  CI-20190529: 20190529
-  CI_DRM_15861: 561947cbde53a2d22434977709610f42e4f0229b @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15862: 1d0ef0c9b38ec3433a841e26e6fb553d820ba32c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12334: 5194cc6ea9165ad67e87a2961f588bb7b86048a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12333: b318689d8d76b1ba8eb0f54d6f930e76e3ece206 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8161: f7cc6398cc4f21b2647138fa190695b65cfe9e15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2393-561947cbde53a2d22434977709610f42e4f0229b: 561947cbde53a2d22434977709610f42e4f0229b
+  xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c: 1d0ef0c9b38ec3433a841e26e6fb553d820ba32c
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12334/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/index.html
+
+--===============4987894355775072402==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Check negative cases for vm_create/destroy ioctl (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142580/">https://patchwork.freedesktop.org/series/142580/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8161_BAT -&gt; XEIGTPW_12333_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12333_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@bad-pitch-0:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3429">Intel XE#3429</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> +31 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8161/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12333/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8161 -&gt; IGTPW_12333</li>
+<li>Linux: xe-2393-561947cbde53a2d22434977709610f42e4f0229b -&gt; xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c</li>
+</ul>
+<p>IGTPW_12333: b318689d8d76b1ba8eb0f54d6f930e76e3ece206 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8161: f7cc6398cc4f21b2647138fa190695b65cfe9e15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2393-561947cbde53a2d22434977709610f42e4f0229b: 561947cbde53a2d22434977709610f42e4f0229b<br />
+  xe-2394-1d0ef0c9b38ec3433a841e26e6fb553d820ba32c: 1d0ef0c9b38ec3433a841e26e6fb553d820ba32c</p>
+
+</body>
+</html>
+
+--===============4987894355775072402==--
