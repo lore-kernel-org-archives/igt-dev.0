@@ -4,27 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BABEDE77184
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 19:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1AC7E77184
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 19:12:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B63610E292;
-	Thu, 19 Dec 2024 19:05:16 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67D1B10E030;
- Thu, 19 Dec 2024 19:05:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A82910E030;
+	Thu, 19 Dec 2024 19:12:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WnfMBVcL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1778B10E292
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 19:12:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734635557; x=1766171557;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=YB+1qk6bkygp+2p/rIytBA9igl5JY6bI47BxXfFVxMo=;
+ b=WnfMBVcLIiJY+a2K/n05EXJzX/PvLU4lS83CFuHNRo95UX94cXpPs1nx
+ f1Bv3QRIi9ItNXRvfkc8TivcQB3dRSkR042AmhHYCxq3+AXGEzQWfQVtw
+ 5VoY6W/yQDZ78hSeYerWHXaKWMsQx2476ElF9kFneyIdeyZhlrYGqDtUq
+ OYsB6HmaoGx13V9ic5ix/fE5xZDDalc/MysA2ojs56lo9wTRo0VaAOXys
+ 0rD9nAue5Usl9F+a1YbIo6fUtP21zH34QJ+ZOWXSoRdMl89a9WD2qt8S2
+ CKT7dmto9kXzXoX2Q+gsMFSz3DOVm3tzFfG5B/LQO4NwBu1oEiBilZrqP Q==;
+X-CSE-ConnectionGUID: YDw50u1MRoy5ukBlecQZYA==
+X-CSE-MsgGUID: 0hQrMQr5QdyPedbOe8P9Fg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="46548497"
+X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; d="scan'208";a="46548497"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2024 11:12:37 -0800
+X-CSE-ConnectionGUID: s5U0neAaSpGrDZhOOLiDcg==
+X-CSE-MsgGUID: Pb0oGe31TV6uKDTh27YZdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="129252301"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2024 11:12:33 -0800
+Date: Thu, 19 Dec 2024 20:12:31 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@igmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ nicolejadeyee@google.com, seanpaul@google.com,
+ jeremie.dautheribes@bootlin.com, markyacoub@google.com,
+ Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/5] lib/igt_kms: Add a detect timeout value
+Message-ID: <20241219191231.loqlfntlzlj7knqc@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ igt-dev@lists.freedesktop.org,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@igmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ nicolejadeyee@google.com, seanpaul@google.com,
+ jeremie.dautheribes@bootlin.com, markyacoub@google.com,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+References: <20241122-b4-cv3-01-igt-kms-v3-0-c5ced6976e11@bootlin.com>
+ <20241122-b4-cv3-01-igt-kms-v3-1-c5ced6976e11@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Flease=3A_Add_?=
- =?utf-8?q?vblank_count_to_avoind_resource_busy?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Dec 2024 19:05:15 -0000
-Message-ID: <173463511542.514324.9930642586660613285@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241219163938.475114-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20241219163938.475114-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241122-b4-cv3-01-igt-kms-v3-1-c5ced6976e11@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,98 +86,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi Louis,
+On 2024-11-22 at 16:19:04 +0100, Louis Chauvet wrote:
 
-Series: tests/kms_lease: Add vblank count to avoind resource busy
-URL   : https://patchwork.freedesktop.org/series/142838/
-State : success
+sorry for late response.
 
-== Summary ==
+> Some tests need to wait for a specific connector status. In order to make
+> the timeout customisable for each target, add an option in the
+> configuration file.
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
-CI Bug Log - changes from IGT_8167 -> IGTPW_12356
-====================================================
+I changed Bhanu address to: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+Also +cc Swati and Khartik
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
 
-Summary
--------
+> ---
+>  lib/igt_core.c |  3 +++
+>  lib/igt_kms.c  | 33 +++++++++++++++++++++++++++++++++
+>  lib/igt_kms.h  |  9 +++++++++
+>  3 files changed, 45 insertions(+)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 407f7b55187ceac4cbc0645c629a7fbb17f89575..22d80a1497a9faca85def70d688427cd7d553d60 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -265,6 +265,9 @@
+>   *	&num; It is not mandatory and allows overriding default values.
+>   *	[DUT]
+>   *	SuspendResumeDelay=10
 
-  **SUCCESS**
+Add newline here to separate this:
 
-  No regressions found.
+    *
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/index.html
+> + *	&num; The following option define the timeout for detection feature
+> + *	&num; (waiting for a connector status)
+> + *	DisplayDetectTimeout=10.0
+>   * ]|
+>   *
+>   * Some specific configuration options may be used by specific parts of IGT,
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5d8096a17596ca592a274800140804edec6d7422..0b76a47eb2135cca21881d97c2fd78e724d9a30e 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -58,6 +58,7 @@
+>  #include "intel_chipset.h"
+>  #include "igt_debugfs.h"
+>  #include "igt_device.h"
+> +#include "igt_rc.h"
+>  #include "igt_sysfs.h"
+>  #include "sw_sync.h"
+>  #ifdef HAVE_CHAMELIUM
+> @@ -7185,3 +7186,35 @@ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *c
+>  
+>  	return 0;
+>  }
+> +
+> +/**
+> + * igt_default_detect_timeout:
+> + *
+> + * Get the default timeout value for detection feature
+> + *
+> + * Some tests requires to wait for a specific connector status. This value will determine the
+> + * timeout value for this waiting.
+> + */
+> +float igt_default_detect_timeout(void)
 
-Participating hosts (45 -> 44)
-------------------------------
+Please rename to igt_default_display_detect_timeout(void)
 
-  Missing    (1): fi-snb-2520m 
+Why not returning double?
 
-Known issues
-------------
+> +{
+> +	static double timeout = 0.0;
+> +	static bool first_call = true;
+> +	GError *error = NULL;
+> +
+> +	if (first_call) {
+> +		if (igt_key_file) {
+> +			timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout", &error);
+> +			if (error) {
+> +				igt_warn("Failed to read DisplayDetectTimeout, defaulting to %f\n", DEFAULT_DETECT_TIMEOUT);
 
-  Here are the changes found in IGTPW_12356 that come from known issues:
+Why warn? Is this mandatory?
 
-### IGT changes ###
+> +				g_clear_error(&error);
+> +				timeout = DEFAULT_DETECT_TIMEOUT;
+> +			}
+> +		} else {
+> +			timeout = DEFAULT_DETECT_TIMEOUT;
+> +		}
+> +
+> +		first_call = false;
+> +	}
+> +
+> +	return timeout;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index bd154d1c19e9f36ec61f29d953df149b0642465d..3509283b6da5b3fdbd70ebdc9bdd241326bc5073 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -40,6 +40,13 @@
+>  #include "igt_fb.h"
+>  #include "ioctl_wrappers.h"
+>  
+> +/**
+> + * define DEFAULT_DETECT_TIMEOUT - Default timeout used for some detection functions
 
-#### Issues hit ####
+Please add also quontities used, I guess it is seconds but write
+it down.
 
-  * igt@i915_selftest@live:
-    - bat-arls-5:         NOTRUN -> [ABORT][1] ([i915#12061])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-arls-5/igt@i915_selftest@live.html
+> + *
+> + * It can be overiden by option DetectTimeout in the .igtrc file.
+> + */
+> +#define DEFAULT_DETECT_TIMEOUT 10.0
 
-  * igt@i915_selftest@live@gt_pm:
-    - bat-jsl-3:          [PASS][2] -> [DMESG-FAIL][3] ([i915#13132]) +1 other test dmesg-fail
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-jsl-3/igt@i915_selftest@live@gt_pm.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-jsl-3/igt@i915_selftest@live@gt_pm.html
+Is it ok to have 10 seconds as a default?
+Overall looks good.
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][4] -> [ABORT][5] ([i915#12061])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-6:         [PASS][6] -> [ABORT][7] ([i915#12061]) +1 other test abort
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+Regards,
+Kamil
 
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arls-6}:       [ABORT][8] ([i915#12061]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@reload:
-    - fi-cfl-8109u:       [DMESG-WARN][10] ([i915#11621] / [i915#1982]) -> [DMESG-WARN][11] ([i915#11621])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/fi-cfl-8109u/igt@i915_module_load@reload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/fi-cfl-8109u/igt@i915_module_load@reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13132]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13132
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8167 -> IGTPW_12356
-
-  CI-20190529: 20190529
-  CI_DRM_15873: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12356: 486f1e93e4f826d7726958594774cad4eee0a076 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8167: 6e93c2e807b398f24673d010f3f71986a09fef8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/index.html
+> +
+>  /* Low-level helpers with kmstest_ prefix */
+>  
+>  /**
+> @@ -1266,4 +1273,6 @@ void igt_reset_link_params(int drm_fd, igt_output_t *output);
+>  int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
+>  int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+>  
+> +float igt_default_detect_timeout(void);
+> +
+>  #endif /* __IGT_KMS_H__ */
+> 
+> -- 
+> 2.47.0
+> 
