@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E2F9E77184
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 18:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BABEDE77184
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 19:05:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4458010ED9E;
-	Thu, 19 Dec 2024 18:48:42 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lwNQ1VXI";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D513710ED9E
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 18:48:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734634121; x=1766170121;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=uK1Nqpdk/aJdDCcH+X4He1VTE5g8qDAMxWhf/3y2c1M=;
- b=lwNQ1VXIPJRYGOZZKrOVJBM+rJQ+jL0Ppvz5OKYjEGBjgTpHJq9shujg
- 4CPyM32AgAahLG9fARAw4SmW00o5vmdyZIV9UkF2WRd3il5uHcDKf59qk
- fledoNnrAnj9bJf4zf9JTCKmqIaxYwXbcIiB9zMvjaoFqZxv6s57YeY03
- 54vsLXQm482fNGR+38hID/5i3r0+pEX8uvHTOIrx/g+VcAmtjn+Tp7+ZY
- 7uprG0JFu7aEVxQikQTqu4B65Qr7hCH4+a7Q+lsEZg5iD4+BWIGLkls6M
- Hx9VcJ4OLmMJtaeBtzJC7JUF8OqwWNLrr9UAqaoaipmuBso8auIHOCy4m Q==;
-X-CSE-ConnectionGUID: 0l8eIM0qT8+CC+Y9UhuMRw==
-X-CSE-MsgGUID: LYPE9/c+Q7mp4+B9Nxyw7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="60545596"
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; d="scan'208";a="60545596"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 10:48:40 -0800
-X-CSE-ConnectionGUID: 4qybIP7hTHuZW/dgYJsRmQ==
-X-CSE-MsgGUID: GhtewWlhTBupUhmUgofp1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; d="scan'208";a="98174090"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO dgrzegor-mobl2..)
- ([10.245.245.65])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 10:48:37 -0800
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: mika.kuoppala@linux.intel.com,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t] tests/xe_eudebug.c: Enhance memory access testcases
-Date: Thu, 19 Dec 2024 19:48:26 +0100
-Message-Id: <20241219184826.603072-1-dominik.grzegorzek@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B63610E292;
+	Thu, 19 Dec 2024 19:05:16 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67D1B10E030;
+ Thu, 19 Dec 2024 19:05:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Flease=3A_Add_?=
+ =?utf-8?q?vblank_count_to_avoind_resource_busy?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Dec 2024 19:05:15 -0000
+Message-ID: <173463511542.514324.9930642586660613285@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241219163938.475114-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20241219163938.475114-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,57 +37,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-UMD tests revealed issues with memory read/write operations when
-accessing data at any nonzero offset within a VMA. Address this by
-verifying access to a buffer object at random unaligned offset.
+== Series Details ==
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/intel/xe_eudebug.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+Series: tests/kms_lease: Add vblank count to avoind resource busy
+URL   : https://patchwork.freedesktop.org/series/142838/
+State : success
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index d9281f78f..51d02e06c 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -1556,6 +1556,7 @@ static void debugger_test_vma(struct xe_eudebug_debugger *d,
- 	struct drm_xe_eudebug_vm_open vo = { 0, };
- 	uint64_t *v1, *v2;
- 	uint64_t items = va_length / sizeof(uint64_t);
-+	uint64_t offset;
- 	int fd;
- 	int r, i;
- 
-@@ -1573,14 +1574,24 @@ static void debugger_test_vma(struct xe_eudebug_debugger *d,
- 	r = pread(fd, v1, va_length, va_start);
- 	igt_assert_eq(r, va_length);
- 
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v1[i], va_start + i);
-+
-+	/* random unaligned offset within the vm */
-+	offset = 1 + random() % (va_length / 2);
-+	r = pread(fd, (char *)v1 + offset, va_length - offset, va_start + offset);
-+	igt_assert_eq(r, va_length - offset);
- 	for (i = 0; i < items; i++)
- 		igt_assert_eq(v1[i], va_start + i);
- 
- 	for (i = 0; i < items; i++)
- 		v1[i] = va_start + i + 1;
- 
--	r = pwrite(fd, v1, va_length, va_start);
--	igt_assert_eq(r, va_length);
-+	r = pwrite(fd, v1, offset, va_start);
-+	igt_assert_eq(r, offset);
-+
-+	r = pwrite(fd, (char *)v1 + offset, va_length - offset, va_start + offset);
-+	igt_assert_eq(r, va_length - offset);
- 
- 	lseek(fd, va_start, SEEK_SET);
- 	r = read(fd, v2, va_length);
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8167 -> IGTPW_12356
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12356 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-5:         NOTRUN -> [ABORT][1] ([i915#12061])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-arls-5/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-jsl-3:          [PASS][2] -> [DMESG-FAIL][3] ([i915#13132]) +1 other test dmesg-fail
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-jsl-3/igt@i915_selftest@live@gt_pm.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-jsl-3/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][4] -> [ABORT][5] ([i915#12061])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-6:         [PASS][6] -> [ABORT][7] ([i915#12061]) +1 other test abort
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-arls-6}:       [ABORT][8] ([i915#12061]) -> [PASS][9] +1 other test pass
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@reload:
+    - fi-cfl-8109u:       [DMESG-WARN][10] ([i915#11621] / [i915#1982]) -> [DMESG-WARN][11] ([i915#11621])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/fi-cfl-8109u/igt@i915_module_load@reload.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/fi-cfl-8109u/igt@i915_module_load@reload.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13132]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13132
+  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8167 -> IGTPW_12356
+
+  CI-20190529: 20190529
+  CI_DRM_15873: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12356: 486f1e93e4f826d7726958594774cad4eee0a076 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8167: 6e93c2e807b398f24673d010f3f71986a09fef8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12356/index.html
