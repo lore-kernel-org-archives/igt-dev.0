@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F0DFE77188
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 01:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B58E77188
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 01:30:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF86710E43D;
-	Thu, 19 Dec 2024 01:00:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B7D810E23D;
+	Thu, 19 Dec 2024 01:30:15 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F05A10EC4F;
- Thu, 19 Dec 2024 01:00:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2160410E23D;
+ Thu, 19 Dec 2024 01:30:14 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1937210096341552652=="
+ boundary="===============0582972638227218938=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_xe=5Fsriov=5Fauto=5Fpro?=
- =?utf-8?q?visioning_tests?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fdrm=5Ffdin?=
+ =?utf-8?q?fo=3A_Do_not_destroy_NULL_xe=5Fcork?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Dec 2024 01:00:11 -0000
-Message-ID: <173457001105.221388.5301890070664448257@b555e5b46a47>
+Date: Thu, 19 Dec 2024 01:30:14 -0000
+Message-ID: <173457181412.221388.14529223170418143515@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20241218120056.779962-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20241218120056.779962-1-marcin.bernatowicz@linux.intel.com>
+References: <20241218160808.65340-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20241218160808.65340-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1937210096341552652==
+--===============0582972638227218938==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add xe_sriov_auto_provisioning tests
-URL   : https://patchwork.freedesktop.org/series/142781/
+Series: tests/intel/xe_drm_fdinfo: Do not destroy NULL xe_cork
+URL   : https://patchwork.freedesktop.org/series/142799/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8164_BAT -> XEIGTPW_12344_BAT
+CI Bug Log - changes from XEIGT_8164_BAT -> XEIGTPW_12346_BAT
 ====================================================
 
 Summary
@@ -74,7 +74,7 @@ Participating hosts (9 -> 9)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_12344_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_12346_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -83,12 +83,12 @@ Known issues
   * igt@kms_psr@psr-cursor-plane-move:
     - bat-adlp-7:         [PASS][1] -> [SKIP][2] ([Intel XE#455]) +1 other test skip
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
 
   * igt@kms_psr@psr-primary-page-flip@edp-1:
     - bat-adlp-7:         [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3517]) +1 other test dmesg-warn
    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
 
   
   [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
@@ -98,19 +98,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_8164 -> IGTPW_12344
+  * IGT: IGT_8164 -> IGTPW_12346
   * Linux: xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec -> xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b
 
-  IGTPW_12344: f2c153c4a567369dd10c22c3d8b8cb8ce10d3a85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12346: e0bdee76b128153a559de450199ebd3fec2ac24c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec
   xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b: d8f0c44e2ed948dcc45d04a0dfa83612995a702b
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/index.html
 
---===============1937210096341552652==
+--===============0582972638227218938==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,45 +130,45 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add xe_sriov_auto_provisioning tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142781/">https://patchwork.freedesktop.org/series/142781/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Do not destroy NULL xe_cork</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142799/">https://patchwork.freedesktop.org/series/142799/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8164_BAT -&gt; XEIGTPW_12344_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8164_BAT -&gt; XEIGTPW_12346_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (9 -&gt; 9)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12344_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_12346_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
 <p>igt@kms_psr@psr-cursor-plane-move:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12344/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +1 other test dmesg-warn</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12346/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +1 other test dmesg-warn</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8164 -&gt; IGTPW_12344</li>
+<li>IGT: IGT_8164 -&gt; IGTPW_12346</li>
 <li>Linux: xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec -&gt; xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b</li>
 </ul>
-<p>IGTPW_12344: f2c153c4a567369dd10c22c3d8b8cb8ce10d3a85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_12346: e0bdee76b128153a559de450199ebd3fec2ac24c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec<br />
   xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b: d8f0c44e2ed948dcc45d04a0dfa83612995a702b</p>
@@ -176,4 +176,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1937210096341552652==--
+--===============0582972638227218938==--
