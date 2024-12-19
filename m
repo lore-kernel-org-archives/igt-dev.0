@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC305E7718A
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 16:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 099F7E7718A
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 16:49:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5763A10E353;
-	Thu, 19 Dec 2024 16:42:48 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G4J1NIbI";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D9EE10E0DB
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 16:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734626567; x=1766162567;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=LzcHHIaMa//mioWsvMJx8c5jbBvppvtJfmt/GJc0yVA=;
- b=G4J1NIbIzUL+NG82B4sx3IESAzP93DUHyTmFOD1DDSx5aTaUlRltgmdR
- OY7TLg7/AUzyStgcH2Z535/3/rc7hzyX9nKce53576qBxeIVz7LkdY5ks
- GhOGmjPIMTu2jFhVm/fE6bUDsJN9N+gXUlj1qFy4L0UZFZM2yk4+vV3WN
- aeA2ePi3zFlCy92r96A8Iakp/0l2sRyEmrzyUrmdNaX3a6PSjOibpabvG
- Yc06stYC832U2MlXO2wxalq2qlsBFm3WKB3Wj/HFv7j8+UFADFZBXtNvS
- PkyAamY9PJBtwCHdBQVhXU/0v86Zh9z9vQYJMqpJ1gDrq/dN5L5EtmfyQ g==;
-X-CSE-ConnectionGUID: vpNUnmRxQomqF3fSxXvB/A==
-X-CSE-MsgGUID: QrtO4qJiQByouDVScizEnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="35362642"
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; d="scan'208";a="35362642"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 08:42:46 -0800
-X-CSE-ConnectionGUID: KpwYKmrSTVq3yxkK1G4zNQ==
-X-CSE-MsgGUID: VWs81xtiTZuLKCuuFWwJZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="99069637"
-Received: from unknown (HELO
- dg2adlp-Alder-Lake-Client-Platform.iind.intel.com) ([10.145.162.161])
- by orviesa008.jf.intel.com with ESMTP; 19 Dec 2024 08:42:44 -0800
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/kms_lease: Add vblank count to avoind resource
- busy
-Date: Thu, 19 Dec 2024 22:09:38 +0530
-Message-Id: <20241219163938.475114-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFB8210ED44;
+	Thu, 19 Dec 2024 16:49:16 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 037F410E4A9;
+ Thu, 19 Dec 2024 16:49:16 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4639251283484654529=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=5Feudebug=3A_add_b?=
+ =?utf-8?q?asic-vm-access-parameters-userptr?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mika Kuoppala" <mika.kuoppala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Dec 2024 16:49:16 -0000
+Message-ID: <173462695600.467596.2843715087778711111@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241219133926.2334476-1-mika.kuoppala@linux.intel.com>
+In-Reply-To: <20241219133926.2334476-1-mika.kuoppala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,32 +37,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add vblank count to avoind resource busy so that page flip to be
-happen without any sync issue while setting a mode on leased output.
+--===============4639251283484654529==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_lease.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 0f3a68fed..0fbf5b0ba 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -378,8 +378,8 @@ static void page_flip_implicit_plane(data_t *data)
- 
- 	display = &data->master.display;
- 
--	igt_wait_for_vblank(data->master.fd,
--			display->pipes[pipe].crtc_offset);
-+	igt_wait_for_vblank_count(data->master.fd,
-+				  display->pipes[pipe].crtc_offset, 2);
- 
- 	do_or_die(drmModePageFlip(data->lease.fd, data->crtc_id,
- 			      data->master.primary_fb.fb_id,
--- 
-2.25.1
+Series: tests/xe_eudebug: add basic-vm-access-parameters-userptr
+URL   : https://patchwork.freedesktop.org/series/142829/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8166_BAT -> XEIGTPW_12353_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-lnl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12353_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3517]) +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8166/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-adlp-7:         [PASS][3] -> [SKIP][4] ([Intel XE#455]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8166/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+
+  
+  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8166 -> IGTPW_12353
+  * Linux: xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e -> xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165
+
+  IGTPW_12353: e48d3c1bb08b656f4da7ad8eedaa206b33d67534 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8166: 197cca38ae5c494511843112d43351aeab2314be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e: 995cd30a4e222b6a7b4b40c36219e4937fd7109e
+  xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165: 26e6464dff2b3fe53049bd3b6e426cec43beb165
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/index.html
+
+--===============4639251283484654529==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_eudebug: add basic-vm-access-parameters-userptr</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142829/">https://patchwork.freedesktop.org/series/142829/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8166_BAT -&gt; XEIGTPW_12353_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-lnl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12353_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8166/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +2 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8166/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12353/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8166 -&gt; IGTPW_12353</li>
+<li>Linux: xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e -&gt; xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165</li>
+</ul>
+<p>IGTPW_12353: e48d3c1bb08b656f4da7ad8eedaa206b33d67534 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8166: 197cca38ae5c494511843112d43351aeab2314be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e: 995cd30a4e222b6a7b4b40c36219e4937fd7109e<br />
+  xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165: 26e6464dff2b3fe53049bd3b6e426cec43beb165</p>
+
+</body>
+</html>
+
+--===============4639251283484654529==--
