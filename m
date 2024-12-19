@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2053E77184
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 23:05:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ADACE77184
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 23:05:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 870D010E2CE;
-	Thu, 19 Dec 2024 23:05:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C070B10E4B2;
+	Thu, 19 Dec 2024 23:05:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mxjvsTN1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cjlG1kk0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B400C10E4B2
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 23:05:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D73EC10E4B2
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 23:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734649530; x=1766185530;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=eBGwUkUbf8jbrxT9BMrjvAqu1qqHBa+nszgO87cJv78=;
- b=mxjvsTN1r1yEUORlO/QWM/Q8LhfRJoHlqC42vKufKa6M5gppBz4CFVBX
- CUSUryNRzelXcUV2EM4SiozGDmC+eTGkN4boAfVof2T9Z8E/yYmlmbLX9
- XOEDHhZD0OunpHWO7GBuuUxmY4rWaG49beePnTDeNUUyRr5NPC8+wkndc
- 1Q2ngR63+UCztij2uA21SVTQrvqjlTJ1ibEyr/WAA88oWnS8XfxlqGslI
- 5p5ohNKN0vMzGdF/gNnGy48x8HtVTC3Ub7s2Ri92JGReC0lBIKYjarOs4
- q/sGdwnj2duLIG76fNwSyottjLBGHanWBSEehAq1IMtGeL86pmqGnM6QP A==;
-X-CSE-ConnectionGUID: YJXFmDlWTzazDCmMmy3NIA==
-X-CSE-MsgGUID: ImamuRxTTNinMrIdge2iyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="45874515"
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; d="scan'208";a="45874515"
+ t=1734649535; x=1766185535;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=aYKCj6KFr7Lm70kV20Lr2OB6Mfm0oolGICtSeWS0sx0=;
+ b=cjlG1kk00darHndLLyhvtbdhEmfbaNqZWHiivbz5tr3k3PGB+Lmd5XtM
+ UhinI16Cc89cgwE9Z8l6aH6pSjVI7h4q9CekN1N5KqRizrYe14NQ7K0Ay
+ LOQmAXe4pxRF24kKUjkPAqqeAxe8BXW/twzVW3rfWGu43sXdUcMGxJJHR
+ qetZJxVq+Yzl6MYsL8M7+VX5YK6tq4LDq+7sKe+6pgfcU4/ROEBJ2FdaW
+ f6dXZa+h/7dr+gTW9ndwBNXgEaswEU1vDWaV4htn9T7diQZ1qcUawVZ+k
+ g6uGL4FWPRizXVOyavAD9/LkXlw2viSyBxmKl3IIMlt7TBzA+Vi3C8AO1 g==;
+X-CSE-ConnectionGUID: ZHXBXsvvQCyCbO/ZeG3qlA==
+X-CSE-MsgGUID: Ehc4cMHPTvS9Sk1D2zzcHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="45874521"
+X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; d="scan'208";a="45874521"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 15:05:30 -0800
-X-CSE-ConnectionGUID: 3sjQmx2tQLGjrhuzwLckhw==
-X-CSE-MsgGUID: vTCboR7WQzeEUcVSfpBxkA==
+ 19 Dec 2024 15:05:34 -0800
+X-CSE-ConnectionGUID: Kehw5TpbQRG0ZNEUYMRNIw==
+X-CSE-MsgGUID: ZY1yDLcqSKanZggkrchw2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,249,1728975600"; d="scan'208";a="98141500"
+X-IronPort-AV: E=Sophos;i="6.12,249,1728975600"; d="scan'208";a="98141515"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 15:05:30 -0800
+ 19 Dec 2024 15:05:34 -0800
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 1/3] lib/igt_kmod: fix check to confirm correct
- driver unload
-Date: Thu, 19 Dec 2024 15:05:15 -0800
-Message-ID: <20241219230517.2492196-1-daniele.ceraolospurio@intel.com>
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v2 2/3] lib/igt_kmod: Make sure errno is not already set
+ before unbinding
+Date: Thu, 19 Dec 2024 15:05:16 -0800
+Message-ID: <20241219230517.2492196-2-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241219230517.2492196-1-daniele.ceraolospurio@intel.com>
+References: <20241219230517.2492196-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,31 +69,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The driver variable is a string, so we need to pass it in as a variable
-for the driver name instead of stringifying it.
+We assert that errno is zero after unbinding, so we need to make sure it
+wasn't already non-zero beforehand or we might incorrectly fail.
 
-Fixes: e5edf7ea7 ("lib/igt_kmod: add support for Xe driver")
 Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_kmod.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The non-zero starting errno hitting the assert is reproed when using
+unbind in the 1915 reload-with-fault-injection test:
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12349/shard-snb5/igt@i915_module_load@reload-with-fault-injection.html
+
+ lib/igt_kmod.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index ed283c14b..d73cb4101 100644
+index d73cb4101..a008b3c29 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -723,7 +723,7 @@ igt_intel_driver_unload(const char *driver)
- 	igt_kmod_unload("drm_kms_helper");
- 	igt_kmod_unload("drm");
+@@ -662,6 +662,8 @@ int igt_kmod_unbind(const char *mod_name)
+ 	int dirlen;
+ 	DIR *dir;
  
--	if (igt_kmod_is_loaded("driver")) {
-+	if (igt_kmod_is_loaded(driver)) {
- 		igt_warn("%s.ko still loaded!\n", driver);
- 		return -EBUSY;
- 	}
++	errno = 0;
++
+ 	dirlen = snprintf(path, sizeof(path), "/sys/module/%s/drivers/pci:%s/",
+ 			  mod_name, mod_name);
+ 	igt_assert(dirlen < sizeof(path));
 -- 
 2.43.0
 
