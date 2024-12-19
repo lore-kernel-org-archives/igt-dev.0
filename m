@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3955BE77184
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 04:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A548AE77184
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 05:06:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1AAF10E46E;
-	Thu, 19 Dec 2024 04:56:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SK18ARqf";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F4CF10E0AA;
- Thu, 19 Dec 2024 04:56:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734584206; x=1766120206;
- h=message-id:date:mime-version:subject:from:to:references:
- in-reply-to:content-transfer-encoding;
- bh=UdnPFv/a4n/RcJXGZBb64jzS1rcrAK2WPriEArw6x08=;
- b=SK18ARqf3w+H3m7U1LK7zve1OVPe8BiaEOl9x964cJ3LaxF3xf6fbOSa
- iabaCLSqIcy5cfzqk8+QHTY0OE0arzjQQM2xoxs8iGH7AywOx5tVGNI3c
- pB60ZLP4Gamrs3gLdxGOIJxNw6aPN5ltwyA64boel24QIJIyu1Zf939Pi
- aFYjSl6TjIOVI8RCytKF/vvkviPVye8RC32xnHIfNpVsu4oq5kbrz20G7
- m20RGbCHwRBRrHrxtmdAdXfCQlIF1arkpKNXaekfhQYMHZe4BQPxUC9fJ
- DFPyo+rkqvhoxr6O96BjAnaM5GnzLWktBuihFbXsUDRnFulbHMQduSqM3 w==;
-X-CSE-ConnectionGUID: uKxDjTMdS2yow+yNM30wmQ==
-X-CSE-MsgGUID: 9tw8FBaBQByLC9zB4i+9AQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="45679597"
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="45679597"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 20:56:46 -0800
-X-CSE-ConnectionGUID: CmUGAQPDRFeEGKqrxACK0Q==
-X-CSE-MsgGUID: jat7BxaJQ7eezVJ0USJ1AA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="98306416"
-Received: from gkelly-mobl.ger.corp.intel.com (HELO [10.213.202.21])
- ([10.213.202.21])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 20:56:45 -0800
-Message-ID: <35c82d13-1c04-46ae-b674-bd287bf5b958@linux.intel.com>
-Date: Thu, 19 Dec 2024 05:56:39 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F39E10E0AA;
+	Thu, 19 Dec 2024 05:06:50 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8C9C10E46E;
+ Thu, 19 Dec 2024 05:06:48 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8942168089250302627=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOKclyBpOTE1LkNJLkZ1bGw6IGZhaWx1cmUgZm9yIGlndF9mYWN0?=
- =?UTF-8?Q?s_for_fact_tracking_=28rev2=29?=
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20241216151420.43042-1-peter.senna@linux.intel.com>
- <173444554570.3847390.6842367390907416387@b555e5b46a47>
- <472d9a63-8ab9-435c-9a7b-48865ca617d0@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <472d9a63-8ab9-435c-9a7b-48865ca617d0@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fdebugfs=3A?=
+ =?utf-8?q?_Extend_gt_test_to_check_few_debugfs_entries_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pravalika Gurram" <pravalika.gurram@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Dec 2024 05:06:48 -0000
+Message-ID: <173458480888.300870.9290729926864127889@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241219035609.680347-1-pravalika.gurram@intel.com>
+In-Reply-To: <20241219035609.680347-1-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,104 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dear I915,
+--===============8942168089250302627==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Did you receive my previous email?
+== Series Details ==
 
-Thank you.
+Series: tests/intel/xe_debugfs: Extend gt test to check few debugfs entries (rev2)
+URL   : https://patchwork.freedesktop.org/series/142724/
+State : success
 
-On 18.12.2024 06:18, Peter Senna Tschudin wrote:
-> Dear I915,
-> 
-> 
-> On 17.12.2024 15:25, Patchwork wrote:
->> == Series Details ==
->>
->> Series: igt_facts for fact tracking (rev2)
->> URL   : https://patchwork.freedesktop.org/series/142628/
->> State : failure
->>
->> == Summary ==
->>
->> CI Bug Log - changes from CI_DRM_15854_full -> IGTPW_12325_full
->> ====================================================
->>
->> Summary
->> -------
->>
->>   **FAILURE**
->>
->>   Serious unknown changes coming with IGTPW_12325_full absolutely need to be
->>   verified manually.
->>   
->>   If you think the reported changes have nothing to do with the changes
->>   introduced in IGTPW_12325_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->>   to document this new failure mode, which will reduce false positives in CI.
->>
->>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/index.html
->>
->> Participating hosts (11 -> 12)
->> ------------------------------
->>
->>   Additional (1): shard-dg2-set2 
->>
->> Possible new issues
->> -------------------
->>
->>   Here are the unknown changes that may have been introduced in IGTPW_12325_full:
->>
->> ### IGT changes ###
->>
->> #### Possible regressions ####
->>
->>   * igt@gem_eio@in-flight-contexts-10ms:
->>     - shard-snb:          NOTRUN -> [FAIL][1]
->>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-snb7/igt@gem_eio@in-flight-contexts-10ms.html
->>
->>   * igt@gem_eio@in-flight-suspend:
->>     - shard-glk:          NOTRUN -> [INCOMPLETE][2]
->>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-glk7/igt@gem_eio@in-flight-suspend.html
->>
->>   * igt@kms_color@invalid-degamma-lut-sizes:
->>     - shard-snb:          NOTRUN -> [INCOMPLETE][3]
->>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-snb1/igt@kms_color@invalid-degamma-lut-sizes.html
->>
->>   * igt@perf_pmu@busy-accuracy-98@vcs1:
->>     - shard-mtlp:         [PASS][4] -> [FAIL][5]
->>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15854/shard-mtlp-8/igt@perf_pmu@busy-accuracy-98@vcs1.html
->>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-mtlp-5/igt@perf_pmu@busy-accuracy-98@vcs1.html
->>
->>   * igt@perf_pmu@busy-accuracy-98@vecs1:
->>     - shard-dg2:          [PASS][6] -> [FAIL][7] +1 other test fail
->>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15854/shard-dg2-7/igt@perf_pmu@busy-accuracy-98@vecs1.html
->>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-dg2-10/igt@perf_pmu@busy-accuracy-98@vecs1.html
-> 
-> These are not related to my change.
-> 
->>
->>   
->> #### Warnings ####
->>
->>   * igt@gem_tiled_swapping@non-threaded:
->>     - shard-tglu:         [FAIL][8] ([i915#12941]) -> [FAIL][9]
->>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15854/shard-tglu-3/igt@gem_tiled_swapping@non-threaded.html
->>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-tglu-6/igt@gem_tiled_swapping@non-threaded.html
->>
->>   * igt@kms_async_flips@crc-atomic:
->>     - shard-glk:          [INCOMPLETE][10] ([i915#13287]) -> [INCOMPLETE][11] +1 other test incomplete
->>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15854/shard-glk1/igt@kms_async_flips@crc-atomic.html
->>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12325/shard-glk6/igt@kms_async_flips@crc-atomic.html
-> 
-> These are not related to my change.
-> 
-> Please fix and re-run.
-> 
-> Thank you,
-> 
-> Peter
-> 
-> [...]
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8164_BAT -> XEIGTPW_12350_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12350_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-adlp-7:         [SKIP][1] ([Intel XE#455]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12350/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8164 -> IGTPW_12350
+  * Linux: xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec -> xe-2398-c64cc9dddd1a7374d0095df0bf0c591d959302fa
+
+  IGTPW_12350: dbb494a0c95380e550afcbbac30cce0217d86a87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec
+  xe-2398-c64cc9dddd1a7374d0095df0bf0c591d959302fa: c64cc9dddd1a7374d0095df0bf0c591d959302fa
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12350/index.html
+
+--===============8942168089250302627==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_debugfs: Extend gt test to check few debugfs entries (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142724/">https://patchwork.freedesktop.org/series/142724/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12350/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12350/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8164_BAT -&gt; XEIGTPW_12350_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12350_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_psr@psr-sprite-plane-onoff:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8164/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12350/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8164 -&gt; IGTPW_12350</li>
+<li>Linux: xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec -&gt; xe-2398-c64cc9dddd1a7374d0095df0bf0c591d959302fa</li>
+</ul>
+<p>IGTPW_12350: dbb494a0c95380e550afcbbac30cce0217d86a87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2396-e9a5d74b7f60fe6f7d55ebe636ff871214b6caec: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec<br />
+  xe-2398-c64cc9dddd1a7374d0095df0bf0c591d959302fa: c64cc9dddd1a7374d0095df0bf0c591d959302fa</p>
+
+</body>
+</html>
+
+--===============8942168089250302627==--
