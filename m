@@ -4,162 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 386FAE77184
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 03:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9492E77184
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Dec 2024 03:57:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C850C10E870;
-	Thu, 19 Dec 2024 03:48:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DE2F10E046;
+	Thu, 19 Dec 2024 03:57:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WSbh5EjT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RBUs8aUX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B928E10E870
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 03:48:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4015510E046
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Dec 2024 03:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734580098; x=1766116098;
+ t=1734580624; x=1766116624;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=g8+NJQONmKZwLRN615GsCWOW73feDGpPNXa30QVY/Hw=;
- b=WSbh5EjTShVe+6+8U0YzRpYP5c9SUGnNnvxN5Sw4e9AEAyb/DDoZnn9m
- FXBuGCpayX3QAdvIFY2HDTHFiXdDojsceGdDqiFT9ZNcTcNks4JL7UFX9
- 36R5LfJ01vXFWlTfZr6PK1W1K5oniSgB0wYRJSx3rPEKtTnK699450Fvt
- RAT3fIxQwn4p0wJDFSaM3rvT9GEJa/uY3gGU4F+3xEb0ZMrsIvsJqUVEn
- lmT8B6hFKHjtFkarculip4srnuB2uLhl2bHSrExoxMjinIDjlvzAhSJCC
- B1X2ZSCa1nUnS2BVHI1GXqCtzLpMCJFUEAy3j+eO0Et27mXXZnVtIM8ip Q==;
-X-CSE-ConnectionGUID: IQiyBIGzSSO38cQaoLY2PA==
-X-CSE-MsgGUID: nDAhtjpoQ8mMzYc0uxuOcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35207495"
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="35207495"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 19:48:18 -0800
-X-CSE-ConnectionGUID: TPmeVStHQsGnpf89Kx9Oag==
-X-CSE-MsgGUID: 3zGpqzwKS/aHHrEbRgNJIg==
+ bh=9asjc1Oc0US/FxKCVGI5e64DjaNnTUZDGAlPtQ7bDmA=;
+ b=RBUs8aUX+7vTjjd2gpVshBfFCEBt0VIKVQTrrs/TWke0rPtydtl0j1qO
+ xqnrXe7IkEZEXtYgVwM8h5wWRSWdPVJjQ3ADg137iUR7WpYEZFKWYuv9X
+ UbbxLpD3rXRPPbO/Cq2I+wJ8aiARY2XhLVtyEepIH6xNzPIx4LiL4L2Ip
+ SkrN2xckKhv3InnntE8xhXrdsT0rjaS7z3jNy8nrY8Fri3zEVUIk1XoHG
+ K/VMOU3L5WnB99j0SQ3aIgE9xErUer+VufO47G7hNDV0prSo/XkfIQpfK
+ 6ghGxGZ6vC8l9cmpRXvefU2wjuxapIoCDHcxRwRxVLcOHCqi7rQzxAcaF w==;
+X-CSE-ConnectionGUID: j0LbEQPITS+nC0B8bT+xPA==
+X-CSE-MsgGUID: 1/QGsI7/Rji8U58ZEtTbZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="52602997"
+X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="52602997"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 19:56:51 -0800
+X-CSE-ConnectionGUID: Qo/juoNMTzOyo4f77jlS9w==
+X-CSE-MsgGUID: 9GhGBsHaQX2OlU2bX0nQ2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; d="scan'208";a="97901302"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Dec 2024 19:48:17 -0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121336040"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 18 Dec 2024 19:56:51 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 18 Dec 2024 19:48:16 -0800
+ 15.1.2507.44; Wed, 18 Dec 2024 19:56:49 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 18 Dec 2024 19:48:16 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.177)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.44 via Frontend Transport; Wed, 18 Dec 2024 19:56:49 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.43) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 18 Dec 2024 19:48:15 -0800
+ 15.1.2507.44; Wed, 18 Dec 2024 19:56:49 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JG9P1kSbO5m1YbZEbaiktcaSsy4hou12Ckn4Iy+4BT/Gz0g3zWoSg4hYja526V4HW4euRrK78N1L5ZyCtFfpLPscPKee7Yauhgp92+yaQcrK3Hmq96YSW4zwSO9wx7W6i6xT9rcTDIZd2uy1bI2Wwczi5lQN8LOibH41F6sh4HQ8NokKeGVx3LUrL9pdQ6ZE3uGrqxERL8AXX7IOcuUX/giaZu+bnSrb3jOqXAlBzyBwRolNWSjUVCAcfm/WL66zORfedRyUXqLaA4gxZmUyAfqt7HOIyMd8uZ+iZr0LW6dCozAi0VdKTqRgp9/2B54P+LcnLZ/IfzIySg+tkMa3oQ==
+ b=lWGtd8nCgu0h4nnSOW5VQggPC3O0FUe9j4MS9WbjeHikSWy07eOXzYSgpsJC8rBu7LNz6Cd+auOnUW2yeEUCjVkuQHXt2GI2gzDEbIYFJJirKKDn2XYEzug3xEWz+/G6L5/Gg91GmPPtP3Y0fgHkmiFwexjUAXv0FQHkEs7idt3Sej0HZPUvNsfKtYUQvVRCX9kVeb01ng1EC6zrupv7vVWYjgdhkQvDty5JuvfFI41Fs1Punf1MyIubWSaUoHeBxPo5W6N5VrYoZPcSEBxeVSE6c2xT3i3fJUJdczXGU1iLlYQNl+SgVm12TMVfmnYl5TWHXwlsZccH/TufIq3m2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RE6A9uFfEirxplwffY4PK8+TZ9UbBVjIlm5cthwBX7o=;
- b=AKjzNxu6MECa7I/8zNGJAlbA5XR54f4DvXugg+dfXm0cQzH3U9mO9Ruj7OD3gK66CL6EKrBid6X2FBRlCsz9IC/a7MY3g4EGtQMcx8ct5SKHgmLn45y7nkWvPMFI+BxiNSP+KWrb0kL2PWbs4wqEhZb1u2u+GlmE1ury7TYle1NVru+aMTaJN1hat6WTfHIO3WadhOVcI+w4fI2dDoorLpmf9TQB5pgn1oR9lSyLvGX0RDJXlFgzp5zdbn7sPsr2vBqla5VpApZjUlAy72j5mvy7kXx2nxa02XSlOLetBmgIe8ZEKVMiqSwp5AWGluAPn9dvDk+EWSuHKKDUqBUrYA==
+ bh=zlZUWEUUU+MdS0dQcWiPEGe3RG99Irho3iEB6rNGvDc=;
+ b=waUEqnsiXSaE6vmK45ehnbIE5eLgWe/SGbaR61w4V4GN4FXNdmCOrtz9cPfCTW2KJPSKfdgu1chtZLge3MF4kQ5jNkJUEApVDgB76FGCBIyG16Aym7i0LtxIsQIcUV8AwGIxZPhrQeHG9/C4MLgLIx7m0He0oVnNLyScrD8WO18HBD3nZfRSzmCu9jYVgu0YSCLdmr7xtwRY5wJOtJ/ezxKlnW8+G/Jwy4wcQSqFg1cJgfP0pk+vvScKSN0c4oTbB9UrAzsyGtOkUGCVG0s8tGqlk5SUra3zsgFp/OsTURU8cy0bMgB8Cz+7ptJ17HPEWF+v3pgB50DVnCkmTH7oZw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SJ0PR11MB6790.namprd11.prod.outlook.com (2603:10b6:a03:483::22)
+ by SJ0PR11MB4815.namprd11.prod.outlook.com (2603:10b6:a03:2dd::8)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.14; Thu, 19 Dec
- 2024 03:47:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Thu, 19 Dec
+ 2024 03:56:19 +0000
 Received: from PH7PR11MB6522.namprd11.prod.outlook.com
  ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
  ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.8251.015; Thu, 19 Dec 2024
- 03:47:47 +0000
-Date: Wed, 18 Dec 2024 19:48:31 -0800
+ 03:56:19 +0000
+Date: Wed, 18 Dec 2024 19:57:03 -0800
 From: Matthew Brost <matthew.brost@intel.com>
-To: Pravalika Gurram <pravalika.gurram@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+CC: "Gurram, Pravalika" <pravalika.gurram@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH v1] tests/intel/xe_debugfs: Extend gt test to check few
  debugfs entries
-Message-ID: <Z2OXj5eO+l2kgycr@lstrano-desk.jf.intel.com>
+Message-ID: <Z2OZj5P6p1oQW/2e@lstrano-desk.jf.intel.com>
 References: <20241217135659.673564-1-pravalika.gurram@intel.com>
+ <55894817-9c88-4e95-b648-72e3f031e10c@linux.intel.com>
+ <17f7620a-c797-447a-8eea-f9120e8af98f@linux.intel.com>
+ <BL1PR11MB55254606B8D1785DBE18402E84052@BL1PR11MB5525.namprd11.prod.outlook.com>
+ <BL1PR11MB55258BBC7DA922DF4D9DCC8C84052@BL1PR11MB5525.namprd11.prod.outlook.com>
+ <34038e2e-b9c0-4a87-be51-6f3619b35ba4@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20241217135659.673564-1-pravalika.gurram@intel.com>
-X-ClientProxiedBy: BYAPR08CA0043.namprd08.prod.outlook.com
- (2603:10b6:a03:117::20) To PH7PR11MB6522.namprd11.prod.outlook.com
+In-Reply-To: <34038e2e-b9c0-4a87-be51-6f3619b35ba4@linux.intel.com>
+X-ClientProxiedBy: BYAPR21CA0003.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::13) To PH7PR11MB6522.namprd11.prod.outlook.com
  (2603:10b6:510:212::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ0PR11MB6790:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63a6bb9f-d2da-4227-8077-08dd1fdfe6e3
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ0PR11MB4815:EE_
+X-MS-Office365-Filtering-Correlation-Id: c43ef9c0-c9fb-40b0-c2b0-08dd1fe11805
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?KjN8Zq86PEIGq8W/y36mFBE0nz0WeGFvrZp/HAr6s7S+TpL4yYcQ6jOKLmgJ?=
- =?us-ascii?Q?Nt4c30i/a/kAdk4MQVzdtKB9Mg95uan68a2pURB7FwnDpY8+DgKyK540TFnm?=
- =?us-ascii?Q?3RZGN5RJFufVXuWhBw1z+4e3iekIDRmcCwocIXfU64OxwwauVI8WHNlKJmYH?=
- =?us-ascii?Q?uW9YwTkp8GZ3ZF+5TSs3atxaFRj2mH7oRBe60DBTgt/uLT+XdVC6d2yBt+g2?=
- =?us-ascii?Q?rBtmHLCdo5B4x4PEIw0ENMWxiFC1VjL9a9AakGOnc9KewA9bHGsiS9eKY53J?=
- =?us-ascii?Q?n/7vu+5LLUnLrtNqOLnUPs8GX2qazbKRl92eht9Y6pzLjlwabMD/rO3+V3a8?=
- =?us-ascii?Q?F5VREQnnNFoxMW6H0bZTGy/lIMmfACEWeijuN+nWeuGTjP1V4quICKDjEPSl?=
- =?us-ascii?Q?D30Tx7n8c83P/qay623F8mvQbbZB6LChvFh78Q3h6gWqWs7cijp35RI/sXmq?=
- =?us-ascii?Q?nUSUchp9tbqMaW/OVfG2VlD4zuFKYF2LDoKvIrwWR8rP/hHpA+sUo1d+ffXQ?=
- =?us-ascii?Q?O/5DgcBpDE2/oTY9987YJI3DroN8y+ki4eHFp4ZvfYD23FobQhfL/Tgm9C5B?=
- =?us-ascii?Q?CH/M95/KVp6w8COtxcrbRVpmErXlUBO7IWfsjS8SS8ilmT2YmUzzaWjVsRhW?=
- =?us-ascii?Q?4T3tCNF0xff+OMms21XfgZkdrLqHv0LlBH0yvSxrSh7+WdV+p8X72VXzhaW6?=
- =?us-ascii?Q?/yHml4EnzBTsVcA4cYIEI+lIU5NbQ94RrpZqsvA3+v3yp9rKchEMZ7QR1J0x?=
- =?us-ascii?Q?L9qnjXLZRyvVnn0iVNUwjJuShNzzGY9Jxkkvi9Nig/KFrNPcgjo8PXfSWcEG?=
- =?us-ascii?Q?vy+UI6Zl+QG92UhClp/5V+CSjgBfaTfI1DAg2BVX/3vD483ekbDBnr5uQnR4?=
- =?us-ascii?Q?HxFvWVylySCy5hV8GOjVkNNkjey00inqxfgcpfxK04JdR4SOoCuTwdPDkqxI?=
- =?us-ascii?Q?tJFLcA1peCLCKZpG2TInA6rtIETdUbFetrxAsWEf+NXUkGXi1/fn6TTULkKA?=
- =?us-ascii?Q?0qpkRWW6Oadrpr9KGMAixvRMLwGirOlYSZ+XGh0tw61rVH5zrze53jo4xyup?=
- =?us-ascii?Q?r/Wu7Fco92vGC7HeTrFo2pGCGxo2Sz9uk7fX0Xt+vGAMNOUtO4NGhIR2XYEI?=
- =?us-ascii?Q?3pKfrxlwXR45pdYk/cKbyla1q9y173+3anVtRp8j3//PUtStLWj00v4JSzCV?=
- =?us-ascii?Q?oY5Z+lu2pJ/xUjFlQF9D1Mr3TayfyQ78JTRuy3RDb1CthcEO/kyPyxgjvTFR?=
- =?us-ascii?Q?6h4V7cW9xiiG/TcIlc1sMV+OUTNS8q5xT6grKQm+t6bXOXW7UYbi4ZPNgwtc?=
- =?us-ascii?Q?MM773NbLcWthaeug+Im/lPf6+qn4mlZ9gGYSNNM5XIM/mErQPcMSWWWg6lwe?=
- =?us-ascii?Q?yVWP7fY2dg0gpmFJ+bkdhajImZp4?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?iE30jhnzJzl2eX2EUXQhREKx4piVQRTOoi2R18SZuvgmIWlokZtaBa1et723?=
+ =?us-ascii?Q?zec4dTRMzX6Dox12k2nBdMZAvpHUKfXXGf7jXWWUFeX2t0g4Ead68/Ufsac2?=
+ =?us-ascii?Q?hEp7HilRN8QrOBJ6LiUX3Y5j7IyiNueL3GWB3+fy77xiaXeuv1IHwm9Fk6Rf?=
+ =?us-ascii?Q?r2Zd1NS06n9uVTFMGVsoThRrGFpxqQnFnBjFHwEVE9soaktJ3b8VWEmuzs6l?=
+ =?us-ascii?Q?ik67cnaT/LcC9TJeRgEIclEAS1YvQsbZ4tsOpwqmtuYVJvtzi01YLr4i/q3B?=
+ =?us-ascii?Q?wRpGj1WlY6y7B+4/A+mIAozesXhWspZ3PlJWe7XQOvrpujK7kmFEmI+JFJMP?=
+ =?us-ascii?Q?w9gAS8jWE1QzmBGH36xUHhgwMqQID8CKaFVvbIp2cLuD5dMrBUTi5URsqOc2?=
+ =?us-ascii?Q?nKP6SxfeQfFXg+wiQQUqJZbYxZ6AoisxhNp6cOrAvryxtA78WoQqzmsGUPrs?=
+ =?us-ascii?Q?lI0ifmnhEY+qJmBPeMqipJWYJN/uY2WbKlo4aOkrLuvjeOdgRUfHUDps2Lqw?=
+ =?us-ascii?Q?QUudmASnDw2eBoRy47rCZ+ma8cE7ItK/SgWm62lyrkTxX03cdWzVV5vyp55b?=
+ =?us-ascii?Q?Ai1O8Mef+eT+r6UcoIRRM/gdpLKufbt04g9q3lV+HGK1/z8gs0I5lI/fQwry?=
+ =?us-ascii?Q?zri9dmR7O/SXMeUSpV9kORzFqmhZUgIGHOkBaAp/Hhr8TWBbCxS+yvpB9Tir?=
+ =?us-ascii?Q?bVZJmDgZNmL5Jeeu1lgibwZNF4zqJQAzcp6sO/5bdCT+r1u8FYoNOCDOp3CW?=
+ =?us-ascii?Q?rlRWSaEwamUvUGHFF2LD2gQdgfsPoew9+n+fFXMBmImFzN/cEqteCHDWNFoX?=
+ =?us-ascii?Q?d/LYJg97WbIGV5Honk/m5Xp3ybTLz2ORglsoS0BccXNl8YY9ntBLX0ZpOmY/?=
+ =?us-ascii?Q?fQGYaW97Uv5nRn16DmMh3yMI8NVHaasydRoqjdTlO2zlzZw2skrGJESctLaN?=
+ =?us-ascii?Q?qzM4hD5w8N/xJQM+2t9FfxLBY9qWvBJ7Lh4akt79JNz6ryuz2yUnpUPAlRyj?=
+ =?us-ascii?Q?EK5EVaGQkJwZMYRa5Bha1IvjNCpZTv3DDsZus6yk3R8XnhBukfuCLoOmsw2e?=
+ =?us-ascii?Q?Eog6H95Lb5yYqfRgdhrkrJMDHhth520DudBOuuMEeosJg71977kky9FenypZ?=
+ =?us-ascii?Q?kcvy+kqsY8NNnEw5EYPsAjS2JhUSYLLhtGbmfw8Ep3+r19O23Ae+x4UKI4fQ?=
+ =?us-ascii?Q?lMZeeaG2cGr0cuPkNuyd3RYHZ0VDMjXYWwsrvFSoQ58CA1AKIihBqodiHClv?=
+ =?us-ascii?Q?eLnbLbJq4ILhNs0kP8iZ/+X8ON7CglYgpyN1sN06d0pyDF4dV1xbR1u+Gg2l?=
+ =?us-ascii?Q?kP60nTNiv0GEUeszDjfkuDWSvdzfeQhkzksIRKfKzM4mBdYutqyM+NFI4dj/?=
+ =?us-ascii?Q?PRIMpnmQGgQCI+1TxHCv7Uk4ZMWL?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7cQ67KfBYxfRqkwzscP0/0S2BdVFPUNUbUPnPYkRBCwAmFfV6X7JCf9cvqH4?=
- =?us-ascii?Q?y36Z5erBCa07/VmA1mpqpJFl+RwC2g6/IfVXzCy7vMYs3053iRzhagCSZdNr?=
- =?us-ascii?Q?4z1sKsZvkEYQQcGR4bchoWUbBeWaf1yuqKzFaeXSNvw64Jb71YPXKkqUZ6fQ?=
- =?us-ascii?Q?e1wPMG4UsKevO2ZFCv49xSVE+AJt6+WrExFWVA6HHyDXigva1eQWE+d0FPlQ?=
- =?us-ascii?Q?XNchQ63CiowyezIiBjvW0z6TVErBiIO28bngMR4+R6fmLGyBocGaL8Vwk4yY?=
- =?us-ascii?Q?gWcDwJT26fKADa5zT3wmcKJvCQZOVuEe/2vAS+nFdwZRn+mZhUQPayEzo0Mb?=
- =?us-ascii?Q?Q8S4ErN2THkvNgMIn4osy1edeC50hQpAE22ETqqvqOEbLakpiMLn7Rzrl9lG?=
- =?us-ascii?Q?r6+zzw7MHXuKGFyGgcTqW7mbNRogdALc4Wpk/2Ei0PQ3BkUStDiPt2QPZqbY?=
- =?us-ascii?Q?dRJ6ssVrkF7sucDJjAL7rNOr3yUtBe6P/g6QO8FaXZWY8IIgWZ66Y+90qoUm?=
- =?us-ascii?Q?D3Cqro0E3BknE/ssrJcdbI4xEfcCr7hhmqIq0f3qTnCDn99stbYOyq82adRH?=
- =?us-ascii?Q?msPT2OeVH7GIm4iTjFGCeboCI1QTDIIkxt/ZoPJVifulF2N+/jq1ovs7j9pC?=
- =?us-ascii?Q?ojDwm7CrUb+awfRYMW0ALnH9rpDLjtfd8lebluJ+xUurhOsYaDh/nqe84M2w?=
- =?us-ascii?Q?WMFYMFp1GOofMXYY+2oGG3t5cwBA7wWOJqmOTRM+/w3zcgBIbr7H19QUx1cR?=
- =?us-ascii?Q?sclcR7yoAuuj4uJ6XseSZNrSLsomqpgfipkVNY4L4mygjqhFXdj48qafgMKZ?=
- =?us-ascii?Q?xuBVcHSB56UgA0TDNSTn7l9hxC8iKYEYWgu99ZkVLoWIiJch7hWn0evRCu7e?=
- =?us-ascii?Q?pq+idX+EMhpTHEFGy5aQ84msk9quCPJA3yH34hWkSu7FZfUizl5bg+DcrptE?=
- =?us-ascii?Q?twyNMCkHHnCbyxhKjnYNYVNJpAalS7RKTz7VIQCblfmE9V8mZMjeZV7CtIvT?=
- =?us-ascii?Q?Xx3cEcmz7vL9q3ked/BrZc+ULVnT6BIskBn4uJsJJJJobQSwg8wSUlox37P/?=
- =?us-ascii?Q?pdtclbQuZ78AfT1lsI3qCKhYwTFu0eoordqb3FOB5TLGyjY1CbSzFmnIgBDQ?=
- =?us-ascii?Q?9yCEn3aINTskD1YaqBnJGQp/Gq/vnp5cxpQjdHxh9FbHscrN6C8XntHXzkme?=
- =?us-ascii?Q?5NmUBwrN+CLrU1AHWhS25QbpaC3BnA1+Y+GILDFrMXxKnq8tio6j+vdqug3t?=
- =?us-ascii?Q?fOCUiGfjx40vc1eZQk2Y1iZbJlq5tb6XkTQTZQu5pXi44za4BGxzL6NuZLd5?=
- =?us-ascii?Q?ijm+hf1DdNh/bU7F9k6CulfX4ipgWOYBifX1yhz8Qn4Kkl9G4OFthjZOJFmG?=
- =?us-ascii?Q?iiKYmyEywMZ437W7E/nLWbVy+2haNUJ67Bg/39dnSGClqUe/zIUy9MlKv0/g?=
- =?us-ascii?Q?yAjEQQ1oEbJ9VCqoXucacucw44Bepnid2gn56twUZP2EgHdAlqky+p08WUAu?=
- =?us-ascii?Q?b90Ohhza5hgseVoxMCPazpeNhQSZzcJ+yUchE+TUwTYw+d1qKrEg5gDqSGW3?=
- =?us-ascii?Q?17zW6q95jDny9Fl8m2au7UqHFaQn7AfQazSJKFyE9PUrGm2fV0GuBEvv/iqi?=
- =?us-ascii?Q?aQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63a6bb9f-d2da-4227-8077-08dd1fdfe6e3
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QgEmd4F0AbJ3Yq0OV3X8U0SuWHsVZmIN3MOUDaC/8fe+W4jVQC25IRv2EDUU?=
+ =?us-ascii?Q?ZxC7Z1RCOdZHlEeA7wQytl5zbHbpePBV4hOTL/tSIXzsL4lzLheI8fOhhe6s?=
+ =?us-ascii?Q?MQLTueBItc+rgtN3DGwwQhxTZSLCdWzaN6Miibi8+QI0UwMMp6yQPZfYOO9c?=
+ =?us-ascii?Q?+StPw71/CemeWne03IqrS02JQSak/iDLMlYHuwCeLvlcXuP+GUCpOqV9TU6Y?=
+ =?us-ascii?Q?XB7jjhwkpHumLKpeIGZhzXflS384PU4Z1ZaAqQDSOikxVprtV/4iWp+6xrSL?=
+ =?us-ascii?Q?HGYSnOtAQF39Sv+gVXfsSwoDBxgnipi6Q5rfyawV0+3heciFb0Ar58eTEGQ7?=
+ =?us-ascii?Q?+vYJrqWc7IwTgSZP0u5LIDiuq4yygAMFtVPzXYQnBJERCcPnZ6MKGplKxpJF?=
+ =?us-ascii?Q?urVXZRXUNhsi3ic3LSfwG/jG3+Z3FyLG2bcHsPXzlSXfdgNB0lFbXqw9sWyv?=
+ =?us-ascii?Q?b5ccX7RXK+TzDnV6vtsvYI/xlF3oUXrnrWVo2da8EhxjUBQqQWxog5TK5H5I?=
+ =?us-ascii?Q?DEIzIxXgVIRD0JRL0eGKQrXyLg8NmSbzzqJ8yjQMkwHXYZReETOZSR6tkuW6?=
+ =?us-ascii?Q?zl8xxIZp8DHvfuWhNvFXPc2xRuriwPWaMGh5bgJudATYi2xwqCguSuFu95LX?=
+ =?us-ascii?Q?HFDd28S2T1xA0Ujl7dxfaa05jbaT+XLg4V3RNqsdjHZGfQ8/nDIFlx3S+Etu?=
+ =?us-ascii?Q?JDArhYvc8cKYzg89Lt5cfCd5kchvZkq6Av2xGwxtfDuRiiA48dU6PTF7jG+l?=
+ =?us-ascii?Q?07DRQO794+pHfITOxIUybG9ece0LzB6tU2xS07HK584d+lwgBkuNnYjzHXoL?=
+ =?us-ascii?Q?1m3BcBww722DVkFNdkqop5/0XPSmUYo0NK/38bkhzSLMF2FQ9jybzS/Zf7Sv?=
+ =?us-ascii?Q?W+qVUXLlfLhq7HjlJqqqfcUaVEsC7OmuGPEi2ki+bH6StHmWb34hQUdnnGHr?=
+ =?us-ascii?Q?Vn3spnw2JW0YppkYkDk8mZXP1/yIw6Q/SMhQVUJETSPso2aahKUBI5lWbG3S?=
+ =?us-ascii?Q?LI+GIvT4NOwwklPL2ZPo+uwC/FdihHsMhUh6q2nZt/3aIoThmQJle5kZHvdB?=
+ =?us-ascii?Q?zNH7dqy+iC3Mg8kMNh5od0anJpAr6aY/JwTS+cjCizAoqBSsNsX8eIdI8xyX?=
+ =?us-ascii?Q?sPEwVSJIw9irOdIr2IW62i5nt6vSI/YqMxcULXKwBXoVXSVbG+R8Q4C8ZPTI?=
+ =?us-ascii?Q?421CcuYVa3y5fP5k+9E3FsiGAGqVagLB5H0i3j96i5WiDngWHTVQGuoaJlhO?=
+ =?us-ascii?Q?Ff9s5B38uCKRcJC/KiOtUIhVqdWwYU/5XOP/by+ICvGuHgqXp74tvHx/VMUr?=
+ =?us-ascii?Q?w0VJgCqALYNY/KCo5MjMoabfFPmqFw7sTfME9qCgQKxzpT34PBMjSmjbHuU9?=
+ =?us-ascii?Q?pHHEBxEZmIrFigBn2QoB24Gs/R8ziqGyXrxtxScOPAz3hmXKFMqagzn39a+R?=
+ =?us-ascii?Q?bczYzGZKZXiThvskEPKy4MbqhDBAm8GKctNmXHbNTiNsqleSf4j73BgO8z+j?=
+ =?us-ascii?Q?Tjfy/IUjVM0siIZ01x4RXg3nUgyc43upRp64yXD/GzeiPlOq1B3esjMQ9j61?=
+ =?us-ascii?Q?eUYfaAMrxfZA2PsWWzf07NW3jQNLja95gotNJyyZNIVx5NsRCo6LwDz7uw6D?=
+ =?us-ascii?Q?Bg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c43ef9c0-c9fb-40b0-c2b0-08dd1fe11805
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2024 03:47:46.9833 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2024 03:56:18.8980 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u9xWy83ZxOQ5pQuj26pnjki2ebDcyN9TiPHQGt/1y0aK3KiEU9WG9RfiTWVqmapkLszHH914a6pvjpRKUQzeQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6790
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5VER9DS9npykFtUoNi2w57xM9sGpzWD3SRsqYPnt4a51b2Ooq2ch+ZgXhR6TAE/gJQZCDMGqLYCV2k7v0yPB4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4815
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -176,90 +182,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Dec 17, 2024 at 07:26:59PM +0530, Pravalika Gurram wrote:
-> Read and dump  below debugfs entries.
-> ggtt
-> register-save-restore
-> workarounds
-> default_lrc_rcs
-> default_lrc_ccs
-> default_lrc_bcs
-> default_lrc_vcs
-> default_lrc_vecs
-> hwconfig"
+On Wed, Dec 18, 2024 at 03:32:06PM +0100, Peter Senna Tschudin wrote:
 > 
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+> 
+> On 18.12.2024 12:57, Gurram, Pravalika wrote:
+> > 
+> > 
+> >> -----Original Message-----
+> >> From: Gurram, Pravalika
+> >> Sent: Wednesday, December 18, 2024 3:42 PM
+> >> To: Peter Senna Tschudin <peter.senna@linux.intel.com>; igt-
+> >> dev@lists.freedesktop.org
+> >> Subject: RE: [PATCH v1] tests/intel/xe_debugfs: Extend gt test to check few
+> >> debugfs entries
+> >>
+> >>
+> >>
+> >>> -----Original Message-----
+> >>> From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> >>> Sent: Wednesday, December 18, 2024 3:07 PM
+> >>> To: Gurram, Pravalika <pravalika.gurram@intel.com>; igt-
+> >>> dev@lists.freedesktop.org
+> >>> Subject: Re: [PATCH v1] tests/intel/xe_debugfs: Extend gt test to
+> >>> check few debugfs entries
+> >>>
+> >>> Hi Pravalika,
+> >>>
+> >>> Two more cents.
+> >>>
+> >>> On 18.12.2024 09:56, Peter Senna Tschudin wrote:
+> >>>> Hi Pravalika,
+> >>>>
+> >>>> Please see my comment below.
+> >>>>
+> >>>> On 17.12.2024 14:56, Pravalika Gurram wrote:
+> >>>>> Read and dump  below debugfs entries.
+> >>>>> ggtt
+> >>>>> register-save-restore
+> >>>>> workarounds
+> >>>>> default_lrc_rcs
+> >>>>> default_lrc_ccs
+> >>>>> default_lrc_bcs
+> >>>>> default_lrc_vcs
+> >>>>> default_lrc_vecs
+> >>>>> hwconfig"
+> >>>>>
+> >>>>> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+> >>>>> ---
+> >>>>>  tests/intel/xe_debugfs.c | 46
+> >>>>> ++++++++++++++++++++++++++++++++++++++++
+> >>>>>  1 file changed, 46 insertions(+)
+> >>>>>
+> >>>>> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+> >>>>> index 700575031..bcbb5036a 100644
+> >>>>> --- a/tests/intel/xe_debugfs.c
+> >>>>> +++ b/tests/intel/xe_debugfs.c
+> >>>>> @@ -162,6 +162,16 @@ test_gt(int fd, int gt_id)
+> >>>>>  		"pat",
+> >>>>>  		"mocs",
+> >>>>>  //		"force_reset"
+> >>>>> +		"ggtt",
+> >>>>> +		"register-save-restore",
+> >>>>> +		"workarounds",
+> >>>>> +		"default_lrc_rcs",
+> >>>>> +		"default_lrc_ccs",
+> >>>>> +		"default_lrc_bcs",
+> >>>>> +		"default_lrc_vcs",
+> >>>>> +		"default_lrc_vecs",
+> >>>>> +		"hwconfig"
+> >>>>> +
+> >>>
+> >>> 1. Are we confident that these will always be present? I am asking because
+> >>>    of the igt_assert() that will abort when an entry is not found.
+> >>>
 
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+If the driver has loaded those entries will be present with the current
+code base. ofc, debugfs entries are not uAPI so can change at anytime.
+With that, the IGT needs to be changed in step with the KMD. It seems
+fine to me to have a hard coded in table in an IGT asserting entries are
+present.
 
-> ---
->  tests/intel/xe_debugfs.c | 46 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
+Matt
+
+> >> From kernel code point of view these debugfs need to be created on device
+> >> boot up
+> >>
+> >> static const struct drm_info_list debugfs_list[] = {
+> >>         {"hw_engines", .show = xe_gt_debugfs_simple_show, .data =
+> >> hw_engines},
+> >>         {"force_reset", .show = xe_gt_debugfs_simple_show, .data =
+> >> force_reset},
+> >>         {"force_reset_sync", .show = xe_gt_debugfs_simple_show, .data =
+> >> force_reset_sync},
+> >>         {"sa_info", .show = xe_gt_debugfs_simple_show, .data = sa_info},
+> >>         {"topology", .show = xe_gt_debugfs_simple_show, .data = topology},
+> >>         {"steering", .show = xe_gt_debugfs_simple_show, .data = steering},
+> >>         {"ggtt", .show = xe_gt_debugfs_simple_show, .data = ggtt},
+> >>         {"powergate_info", .show = xe_gt_debugfs_simple_show, .data =
+> >> powergate_info},
+> >>         {"register-save-restore", .show = xe_gt_debugfs_simple_show, .data =
+> >> register_save_restore},
+> >>         {"workarounds", .show = xe_gt_debugfs_simple_show, .data =
+> >> workarounds},
+> >>         {"pat", .show = xe_gt_debugfs_simple_show, .data = pat},
+> >>         {"mocs", .show = xe_gt_debugfs_simple_show, .data = mocs},
+> >>         {"default_lrc_rcs", .show = xe_gt_debugfs_simple_show, .data =
+> >> rcs_default_lrc},
+> >>         {"default_lrc_ccs", .show = xe_gt_debugfs_simple_show, .data =
+> >> ccs_default_lrc},
+> >>         {"default_lrc_bcs", .show = xe_gt_debugfs_simple_show, .data =
+> >> bcs_default_lrc},
+> >>         {"default_lrc_vcs", .show = xe_gt_debugfs_simple_show, .data =
+> >> vcs_default_lrc},
+> >>         {"default_lrc_vecs", .show = xe_gt_debugfs_simple_show, .data =
+> >> vecs_default_lrc},
+> >>         {"stats", .show = xe_gt_debugfs_simple_show, .data =
+> >> xe_gt_stats_print_info},
+> >>         {"hwconfig", .show = xe_gt_debugfs_simple_show, .data = hwconfig}, };
+> >>> 2. Why don't we simply scan for available files instead of hard coding
+> >>>    expected files?
+> >>>
+> >>> Thanks
+> >> The test scope itself is like we need to check whether hard-coded entries
+> >> that are created are present or not if not assert.
+> >> and these changes are to improve the code coverage
+> >>
+> >> -- Pravlika
+> > @Brost, Matthew could you please comment on question asked by peter
 > 
-> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-> index 700575031..bcbb5036a 100644
-> --- a/tests/intel/xe_debugfs.c
-> +++ b/tests/intel/xe_debugfs.c
-> @@ -162,6 +162,16 @@ test_gt(int fd, int gt_id)
->  		"pat",
->  		"mocs",
->  //		"force_reset"
-> +		"ggtt",
-> +		"register-save-restore",
-> +		"workarounds",
-> +		"default_lrc_rcs",
-> +		"default_lrc_ccs",
-> +		"default_lrc_bcs",
-> +		"default_lrc_vcs",
-> +		"default_lrc_vecs",
-> +		"hwconfig"
-> +
->  	};
->  	static const char * const expected_files_uc[] = {
->  		"huc_info",
-> @@ -194,6 +204,42 @@ test_gt(int fd, int gt_id)
->  	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->  	igt_debugfs_dump(fd, name);
->  
-> +	sprintf(name, "gt%d/ggtt", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/register-save-restore", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/workarounds", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_rcs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_ccs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_bcs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_vecs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/default_lrc_vcs", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
-> +	sprintf(name, "gt%d/hwconfig", gt_id);
-> +	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> +	igt_debugfs_dump(fd, name);
-> +
->  	sprintf(name, "gt%d/uc/guc_info", gt_id);
->  	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->  	igt_debugfs_dump(fd, name);
-> -- 
-> 2.34.1
+> The problem is that the version of the kernel determines which files to create
+> and IGT will always be lagging behind. If code coverage is the main objective,
+> implementing something similar in C is likely to do the job:
 > 
+> $ cd /sys/kernel/debug/dri/0000:00:02.0/gt0
+> $ find . -type f -exec cat {} \;
+> 
+> Matt, am I missing something or can we simply scan for files at the right
+> directories?
