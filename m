@@ -4,64 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 678A0E7718B
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 17:37:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48787E77188
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 17:56:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0ADF510F009;
-	Fri, 20 Dec 2024 17:37:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0595E10F021;
+	Fri, 20 Dec 2024 17:56:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CG42BY5+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lOg+DGCm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6632C10F009
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 17:37:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B01410F01F
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 17:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734716266; x=1766252266;
- h=date:from:to:subject:message-id:references:mime-version:
- content-transfer-encoding:in-reply-to;
- bh=Oy6Oiyxhs6J8bKsPKJOYvRWHGv7qeT97XC2VGeg7vWA=;
- b=CG42BY5+/viFMxhCFIZWFN22GPlxl6dmQVb3V0ICAQwe2art2nzORveF
- tn6lPGtchoYbfCNxdp82fWa8RhgTtOYyeEO4wTmBe89FgI4N+Q4pD1Pq7
- QqMzXW7X8ekfFZP5ZFVTIWn/2MbR9ZSRZ7qiGOSFk4Csp3ps/wzQER4df
- XN6NcO1cEJCkMy/EYpQIVyR2fLFxVZkR9u3oIYPthoF5ucKx9nGwiWZhN
- 05qLSpswNtCOkvJH+vrqCT1bHnl2WyMh4WMJfYwS2dqBHWA2vJDGIULCM
- YhSsyofoigIut5aN3VGJqCgryefgRILdMi+oomPXv1kV1fS/6ZM8Df/sZ A==;
-X-CSE-ConnectionGUID: XSfBbgfVREOC6LC7Y8W96A==
-X-CSE-MsgGUID: Jvkh/C4ZQm6EzN8HKvpC1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="22862436"
-X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="22862436"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ t=1734717390; x=1766253390;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=AnQn9MOBs9uTTgZe6Gu7HYZ+QYrUFNmfFnMZcMEXXY8=;
+ b=lOg+DGCmidMqkfbPwoTwdjvoagje2ZDg0msyVJCSSiE4xecdWyVcmXTX
+ YhNaTV5ceHoJ8M36Huz95LTbjzuZHQ7CFYWedIRYcBzj/AjDs35SznNGt
+ V7J8PQE9B+V08MF9in73iTzn2ZGwg92YyejSQ5zkXI2TE5io3xsypoUyR
+ hRQkF4zz2R8qScWnjb0XwwA6Wun2z84qpNt8SxxS4HYNMWydFxvjhmj2Q
+ qBlCHqTBeC9st8N/PQv+Xj6qoAd3lbYVk7ZkQEvFv5VVrKUetcvu9Q32h
+ lPG8dMF+udkdKy0Z8laPo0O2jiQs3xVHdAFExtC/NHq7CaqC+38SLycf+ A==;
+X-CSE-ConnectionGUID: 3A2Ui3MzSZuUT+wsoUo9Pg==
+X-CSE-MsgGUID: LhL5sps1TP6IAr9eNapR5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="22864194"
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="22864194"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2024 09:37:45 -0800
-X-CSE-ConnectionGUID: Q561DLDjQEi5HXZUdcNm3A==
-X-CSE-MsgGUID: NNnWOmSBSmeOp0FRSr4Phg==
+ 20 Dec 2024 09:56:30 -0800
+X-CSE-ConnectionGUID: kbB13gXfRcysgWGNgnshyQ==
+X-CSE-MsgGUID: XMVwwZe8Rj6hI7IpUvbp8w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="98619114"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
- ([10.125.108.128])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2024 09:37:44 -0800
-Date: Fri, 20 Dec 2024 11:37:39 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org, 
- Francois Dugast <francois.dugast@intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>, 
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>, 
- ryszard.knop@intel.com, jari.tahvanainen@intel.com
-Subject: Re: Add env info to igt_runner (was: Re: [PATCH i-g-t 4/4]
- lib/igt_device_scan: Fix scan vs bind/unbind/reload)
-Message-ID: <lhhpaph27pearysh6cjbujywofndoo634vcy4duiszqcarzrsx@t5ft2rrtbbfo>
-References: <ujidcfwjkj5mvdc7nsfhbl76gk4vswl7ibqkwy24xieiwlpfer@ly57qp226qsh>
- <20241220170522.3nevqraywqmhlix2@kamilkon-desk.igk.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="135925446"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2024 09:56:28 -0800
+Date: Fri, 20 Dec 2024 18:56:24 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ nicolejadeyee@google.com, seanpaul@google.com,
+ jeremie.dautheribes@bootlin.com, markyacoub@google.com
+Subject: Re: [PATCH i-g-t v3 1/5] lib/monitor_edids: Add helper functions for
+ using monitor_edid objects
+Message-ID: <20241220175624.37p2auricwcstiqk@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ igt-dev@lists.freedesktop.org,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ nicolejadeyee@google.com, seanpaul@google.com,
+ jeremie.dautheribes@bootlin.com, markyacoub@google.com
+References: <20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com>
+ <20241122-b4-cv3-02-monitor-edids-v3-1-1798f58167ef@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241220170522.3nevqraywqmhlix2@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20241122-b4-cv3-02-monitor-edids-v3-1-1798f58167ef@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,145 +87,225 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Dec 20, 2024 at 06:05:22PM +0100, Kamil Konieczny wrote:
->Hi Lucas,
->On 2024-12-19 at 11:24:09 -0600, Lucas De Marchi wrote:
->> hijacking the thread and adding some people to Cc for the igt_runner question.
->> Previously In-Reply-To: <rnw3q6mhthnwyvowvszr2gllyjtbb2mozk4em272xlmkvm7pyl@szbhtg3sd7d7>
->>
->> On Thu, Dec 19, 2024 at 10:35:00AM -0600, Lucas De Marchi wrote:
->> > On Wed, Dec 18, 2024 at 07:34:19AM +0100, Zbigniew Kempczyński wrote:
->> > > On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
->> > > > There's no guarantee a card will end up with the same device node when
->> > > > modules are loaded/unloaded and drivers bound/unbound. There's some
->> > > > fundamental issue with the igt's the way it is and it's also puzzling
->> > > > from the logs it looks like the device vanished from the bus, when in
->> > > > reality is just the SW state out of sync with what the kernel is
->> > > > exporting.
->> > > >
->> > > > Re-scanning when trying to match a device is not expensive compared to
->> > > > what most tests are doing, so simply force it to occur whenever trying
->> > > > to match a card.
->> > >
->> > > I also should comment the above. It is generally true, but I've noticed
->> > > getting attributes might be expensive. Even it may take up to few
->> > > seconds, that's why I've added some attributes we don't fetch from udev
->> > > (see is_on_blacklist()). If I'm not wrong getting 'config' was a cause
->> > > to limit attributes we fetch.
->> >
->> > why would we get all attributes and exclude some?  Shouldn't we get only
->> > the attributes we actually use? AFAIK this logic is basically used by
->> > --device/IGT_DEVICE, right? What filters we normally use?
->> >
->> > I usually pass the pci slot (because I know that won't change
->> > dynamically and cause surprises). Apparently CI passes vendor/devid:
->> >
->> > 	export IGT_DEVICE=pci:vendor=$1,device=$2
->> >
->> > (but it seems to vary depending on pipeline)
->> >
->> > Some devs pass the device node directly too as in a lot of places
->> > there's only ever card0 possible.
->>
->>
->> Could we dump the env and args somewhere so we know how igt_runner or
->> individual tests are being called without looking at the CI piepeline
->> sources? I was thinking about either having that info in the stdout
->> output of igt_runner or in the json. Another possibility would be in
->> dmesg, but I'm not sure it's a good option. Thoughts?
->
->Not only that, also parameters used to start igt_runner,
->what was in .igtrc file (if any), current wall time,
+Hi Louis,
+On 2024-11-22 at 16:51:34 +0100, Louis Chauvet wrote:
+> Introduce the functions edid_from_monitor_edid() and
+> get_edids_for_connector_type(). The former converts a monitor_edid object
+> to a struct edid, which can then be utilized by igt_kms helpers. The
+> latter returns a list of monitor_edid objects for a specific connector
+> with certain characteristics
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>  lib/monitor_edids/dp_edids.h             |  4 ++
+>  lib/monitor_edids/hdmi_edids.h           |  4 ++
+>  lib/monitor_edids/monitor_edids_helper.c | 77 ++++++++++++++++++++++++++++++++
+>  lib/monitor_edids/monitor_edids_helper.h |  7 ++-
+>  4 files changed, 91 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
+> index 144907558be1faa306b646ce3b47b24c13050968..8192520c89e61d3d38c508ca97a61040cea4ba90 100644
+> --- a/lib/monitor_edids/dp_edids.h
+> +++ b/lib/monitor_edids/dp_edids.h
+> @@ -12,6 +12,7 @@
+>  #ifndef TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_
+>  #define TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_
+>  
+> +#include "drmtest.h"
 
-does CI actually have an .igtrc? We can add, but I'd prioritize
-things that are used and that we don't have annotated anywhere (with
-easy/public access).
+Why do you need this include here? Imho proper place
+is in .c helper
 
->testlist prepared to run, free memory and free disk.
->metadata file for igt_resume, it will enable with prepared
->teslist to re-execute run.
+>  #include "monitor_edids_helper.h"
+>  
+>  monitor_edid DP_EDIDS_4K[] = {
+> @@ -194,4 +195,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
+>  
+>   };
+>  
+> +#define DP_EDIDS_4K_COUNT = ARRAY_SIZE(DP_EDIDS_4K);
+> +#define DP_EDIDS_NON_4K_COUNT = ARRAY_SIZE(DP_EDIDS_NON_4K);
+> +
+>  #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
+> diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
+> index f6cfe82ff6e1c4419160bcdcc851a5e28eb08726..23ac04d94b6f672572e34b8059ff1b47d0730839 100644
+> --- a/lib/monitor_edids/hdmi_edids.h
+> +++ b/lib/monitor_edids/hdmi_edids.h
+> @@ -12,6 +12,7 @@
+>  #ifndef TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_
+>  #define TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_
+>  
+> +#include "drmtest.h"
 
-talking about igt_resume, there may be some issues doing this at
-the igt_runner level: it may not match from one test to another if the
-env didn't match when it started running from when it finished.
+Same here.
 
-1) it may have gone through igt_resume after a reboot (hopefully in the
-    same machine)
+>  #include "monitor_edids_helper.h"
+>  
+>  monitor_edid HDMI_EDIDS_4K[] = {
+> @@ -604,4 +605,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
+>  		  "1620582c2500baac4200009e0000006b" },
+>  };
+>  
+> +#define HDMI_EDIDS_4K_COUNT = ARRAY_SIZE(HDMI_EDIDS_4K);
+> +#define HDMI_EDIDS_NON_4K_COUNT = ARRAY_SIZE(HDMI_EDIDS_NON_4K);
+> +
+>  #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
+> diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+> index 1cbf1c22f0bbc5fb4047ce42bde2042ec8170efb..a7a945659f751be99ecd9d55f9b7307df256d543 100644
+> --- a/lib/monitor_edids/monitor_edids_helper.c
+> +++ b/lib/monitor_edids/monitor_edids_helper.c
+> @@ -15,6 +15,9 @@
+>  #include <assert.h>
+>  
+>  #include "igt_core.h"
+> +#include "igt_edid.h"
+> +#include "dp_edids.h"
+> +#include "hdmi_edids.h"
+>  
+>  static uint8_t convert_hex_char_to_byte(char c)
+>  {
+> @@ -90,3 +93,77 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
+>  	free(edid);
+>  	edid = NULL;
+>  }
+> +
+> +/*
 
-2) for shards we slice the testlist and give it to different machines.
-    Ideally they have the same env, config, etc, but that also is not
-    guaranteed.
+Start with '/**', also function names in description ends with ':'
+without any '()' - please look into lib/drmtest.c for example
 
-    Checking random tests in https://intel-gfx-ci.01.org/tree/intel-xe/shards-all.html?
+/**
+ * edid_from_monitor_edid:
+ * @mon_edid: Monitor EDID to convert
+ *
+ * Get a pointer to struct edid from a monitor_edid
+ *
+ * The caller must free the returned pointer
+ */
 
-    https://intel-gfx-ci.01.org/tree/intel-xe/xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165/shard-bmg-1/igt@kms_async_flips@async-flip-with-page-flip-events-atomic@pipe-a-dp-2-4-rc-ccs.html
-    https://intel-gfx-ci.01.org/tree/intel-xe/xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165/shard-bmg-1/igt@core_auth@basic-auth.html
+Sorry I missed that in my few previous mails, please
+reformat your descriptions like above.
 
-    Do I understand it right that we simply have multiple resultsXX.json
-    for different runs so it's fine to create it at the global level?
-    What about a resume (1)?
+> + * edid_from_monitor_edid() - Get a struct edid from a monitor_edid
+> + * @mon_edid: Monitor EDId to convert
+> + *
+> + * The caller must free the returned pointer
 
->
->Also kernel config from /boot ? Or should it be in shard
->run info (avoided duplication).
+Describe what you return.
 
-may be too much as we could extract it from the kernel used by CI
-since we have CONFIG_IKCONFIG=y. If we want igt_runner to collect this
-info and save in the results, then it should probably grab it from
-/proc/config.gz to make sure it's guaranteed to be in sync with the
-actual kernel being used.  Quick check on what we'd need:
+> + */
+> +struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
+> +{
+> +	uint8_t *raw_edid;
+> +	size_t edid_size;
+> +	int i;
+> +
+> +	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
+> +	raw_edid = malloc(edid_size);
+> +	igt_assert(raw_edid);
+> +
+> +	for (i = 0; i < edid_size; i++) {
+> +		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
+> +			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
+> +	}
+> +
+> +	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
+> +		uint8_t *new_edid;
+> +
+> +		igt_debug("The edid size stored in the raw edid is shorter than the edid stored in the table.");
 
-$ # simulate grabbing the /proc/config.gz and piping it through base64
-$ # to be able to add in the json
-$ ./scripts/extract-ikconfig build64/arch/x86/boot/compressed/vmlinux | gzip | base64 > config.gz.b64
-$ ls -lh config.gz.b64
--rw-rw-r-- 1 lucas lucas 70K Dec 20 09:30 config.gz.b64
+Isn't it opposite here? raw edid size is bigger then edid_size,
+not shorter? Why not:
 
+	if (edid_get_size((struct edid *)raw_edid) != edid_size) {
 
-Humn... I would concentrate on things that aren't currently available
-anywhere.
+> +		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
 
->
->Maybe some other info, either igt_facts or lspci output?
+Isn't it a bug here or in that 'for' loop above?
+Could you first decode data up to point where you could
+call edid_get_size() and then decide if you have correct data
+in mon_edid?
 
-for lscpci output it seems there's already a TODO comment that nobody
-ever tackled :). And "Options" may is a reference to what we are talking
-here wrt env and args:
+> +		igt_assert(new_edid);
+> +		raw_edid = new_edid;
+> +	}
+> +
+> +	return (struct edid *)raw_edid;
+> +}
+> +
+> +/*
 
-$ git grep -A2 -B2 lspci  runner/
-runner/resultgen.c-      * Result fields that are TODO:
-runner/resultgen.c-      *
-runner/resultgen.c:      * - lspci
-runner/resultgen.c-      * - options
-runner/resultgen.c-      */
+Same here.
 
-Lucas De Marchi
+> + * get_edids_for_connector_type() - Get the list of EDIDS for a
 
->Should we ask also display team and our CI?
->
->+cc Jari from display
->
->Regards,
->Kamil
->
->>
->> My preferred option would be to have e.g.:
->>
->> {
->>   "__type__": "TestrunResult",
->>   "results_version": 10,
->>   "name": "xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e\/bat-bmg-1\/0",
->>   "uname": "Linux bat-bmg-1 6.13.0-rc3-xe+ #1 SMP PREEMPT_DYNAMIC Thu Dec 19 14:40:51 UTC 2024 x86_64",
->>   "time_elapsed": {
->>     "__type__": "TimeAttribute",
->>     "start": 1734621126.8734231,
->>     "end": 1734621288.5994539
->>   },
->>   "environment": {
->>     "IGT_DEVICE": ...
->>     <any IGT_* env var>
->>   },
->>   "argv": [ ... ]
->>
->>
->> Lucas De Marchi
+Same here.
+
+Regards,
+Kamil
+
+> + * specific connector type.
+> + *
+> + * @type: The connector type to get the EDIDs from
+> + * @count: Used to store the number of EDIDs in the returned list
+> + * @four_k: Use true to fetch 4k EDIDs, false to fetch non-4k EDIDs
+> + */
+> +struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
+> +{
+> +	if (four_k) {
+> +		switch (type) {
+> +		case DRM_MODE_CONNECTOR_DisplayPort:
+> +			*count = DP_EDIDS_4K_COUNT;
+> +			return DP_EDIDS_4K;
+> +		case DRM_MODE_CONNECTOR_HDMIA:
+> +			*count = HDMI_EDIDS_4K_COUNT;
+> +			return HDMI_EDIDS_4K;
+> +		default:
+> +			*count = 0;
+> +			igt_debug("No 4k EDID for the connector %s\n",
+> +				  kmstest_connector_type_str(type));
+> +			return NULL;
+> +		}
+> +	} else {
+> +		switch (type) {
+> +		case DRM_MODE_CONNECTOR_DisplayPort:
+> +			*count = DP_EDIDS_NON_4K_COUNT;
+> +			return DP_EDIDS_NON_4K;
+> +		case DRM_MODE_CONNECTOR_HDMIA:
+> +			*count = HDMI_EDIDS_NON_4K_COUNT;
+> +			return HDMI_EDIDS_NON_4K;
+> +		default:
+> +			*count = 0;
+> +			igt_debug("No EDID for the connector %s\n",
+> +				  kmstest_connector_type_str(type));
+> +			return NULL;
+> +		}
+> +	}
+> +}
+> diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+> index 05679f0897f3d0618d656cc071b565b48d31da28..e5069868683d97053d8e66666e83692f1b733db3 100644
+> --- a/lib/monitor_edids/monitor_edids_helper.h
+> +++ b/lib/monitor_edids/monitor_edids_helper.h
+> @@ -12,6 +12,8 @@
+>  #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
+>  
+>  #include <stdint.h>
+> +#include <stddef.h>
+> +#include <stdbool.h>
+>  
+>  #include "igt_chamelium.h"
+>  
+> @@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
+>  				     const monitor_edid *edid);
+>  void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+>  
+> -#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+> \ No newline at end of file
+> +struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+> +struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
+> +
+> +#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+> 
+> -- 
+> 2.47.0
+> 
