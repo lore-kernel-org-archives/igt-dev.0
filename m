@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5F77E7718A
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 00:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 112DAE77184
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 01:45:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80B5C10E4C9;
-	Fri, 20 Dec 2024 00:49:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A265E10E357;
+	Fri, 20 Dec 2024 01:45:46 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C272310E4BC;
- Fri, 20 Dec 2024 00:49:38 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C15910E357;
+ Fri, 20 Dec 2024 01:45:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1566707506595968660=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2Cv2=2C1/3=5D_lib/igt=5Fkmod=3A_fix_check_to_confirm_correct?=
- =?utf-8?q?_driver_unload?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv2=2C1/3=5D_lib/igt=5Fkmod=3A_fix_check_to_confirm_correct_d?=
+ =?utf-8?q?river_unload?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Dec 2024 00:49:38 -0000
-Message-ID: <173465577879.605245.9850681684590166317@b555e5b46a47>
+Date: Fri, 20 Dec 2024 01:45:45 -0000
+Message-ID: <173465914517.618726.14242257661546412002@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20241219230517.2492196-1-daniele.ceraolospurio@intel.com>
 In-Reply-To: <20241219230517.2492196-1-daniele.ceraolospurio@intel.com>
@@ -42,6 +42,11 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1566707506595968660==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: series starting with [i-g-t,v2,1/3] lib/igt_kmod: fix check to confirm correct driver unload
@@ -50,7 +55,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8167 -> IGTPW_12358
+CI Bug Log - changes from XEIGT_8167_BAT -> XEIGTPW_12358_BAT
 ====================================================
 
 Summary
@@ -60,70 +65,83 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/index.html
+  
 
-Participating hosts (45 -> 42)
+Participating hosts (8 -> 8)
 ------------------------------
 
-  Missing    (3): fi-glk-j4005 bat-arlh-3 fi-snb-2520m 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_12358 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-arls-5:         NOTRUN -> [ABORT][1] ([i915#12061])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/bat-arls-5/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][2] -> [ABORT][3] ([i915#12061])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - fi-cfl-8109u:       [DMESG-WARN][4] ([i915#11621] / [i915#1982]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/fi-cfl-8109u/igt@i915_module_load@reload.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/fi-cfl-8109u/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][6] ([i915#11621]) -> [PASS][7] +131 other tests pass
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arls-6}:       [ABORT][8] ([i915#12061]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8167/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#11989]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11989
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8167 -> IGTPW_12358
+  * Linux: xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 -> xe-2406-08a1cca88fef345cd29ee5f00fac2963b3647e99
 
-  CI-20190529: 20190529
-  CI_DRM_15873: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12358: 3e2708c1f488e47d8255ea03d057d6a3ce956c03 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8167: 6e93c2e807b398f24673d010f3f71986a09fef8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58
+  xe-2406-08a1cca88fef345cd29ee5f00fac2963b3647e99: 08a1cca88fef345cd29ee5f00fac2963b3647e99
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12358/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12358/index.html
+
+--===============1566707506595968660==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/3] lib/igt_kmod: fix check to confirm correct driver unload</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142858/">https://patchwork.freedesktop.org/series/142858/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12358/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12358/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8167_BAT -&gt; XEIGTPW_12358_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8167 -&gt; IGTPW_12358</li>
+<li>Linux: xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 -&gt; xe-2406-08a1cca88fef345cd29ee5f00fac2963b3647e99</li>
+</ul>
+<p>IGTPW_12358: 3e2708c1f488e47d8255ea03d057d6a3ce956c03 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8167: 6e93c2e807b398f24673d010f3f71986a09fef8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58<br />
+  xe-2406-08a1cca88fef345cd29ee5f00fac2963b3647e99: 08a1cca88fef345cd29ee5f00fac2963b3647e99</p>
+
+</body>
+</html>
+
+--===============1566707506595968660==--
