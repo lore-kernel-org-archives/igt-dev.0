@@ -4,79 +4,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A880FE7718A
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 10:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4017EE77188
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 10:16:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 337FB10EF52;
-	Fri, 20 Dec 2024 10:15:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="XrJ7RdTf";
-	dkim-atps=neutral
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com
- [IPv6:2a00:1450:4864:20::330])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A93110EF52
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 10:15:08 +0000 (UTC)
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-436281c8a38so12280245e9.3
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 02:15:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1734689707; x=1735294507;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/2BXmEdFFl9JkvSyGGJF+UN3Vbswx2MMIvD1YNGhOpU=;
- b=XrJ7RdTfJo53EK6bTADZL0mDjKDjh4/xCeEt55Pvug34NTMTVojG+KSZ6aUppEMQjF
- iEMACydGjgARMF8xnIwDjN5iRXqHDXVXLeEwssGX6lVNdQ4LJvQ5gkJMeJ+d40InD8WF
- UfdOaQ+t9rWL0x3JlVJ+5lb0XvwZIVKsb57rVPyGDBst6gne9/BqGUuPToofsKwBfzOC
- tm9ImekbyyHaW5cqQAg9xVcM+fVBhjaHX23zrQm49xQ4S1ybzgwHBZaU1FK0u+4e6JIQ
- oOLqJTRz7Jl62BNMf/IuUNlQ/9yC08B5f1SSM5ntBugLrZwKUn50MbR+6cCqEKhZUyL/
- 52fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734689707; x=1735294507;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/2BXmEdFFl9JkvSyGGJF+UN3Vbswx2MMIvD1YNGhOpU=;
- b=RcsqirIrJ87ab/Hhi2LKW8NTEyj5YKQf2iOdEqeQRyONsIDhGKORGQ89vf28i6v8jL
- CsbPuW5PBJ4TiADkZXYG3xKFAxO7aB9NUb8YCGLCqDgdy6jIgRbRN/UqcqGVP1ld4OIS
- zkYzj6Hca0TjbnuorNraynDpKiUStNkfSa4/GWhLa9vsrv07JSyeBlbq+HaMXtJTc91F
- S2ferprwILe7pboS0KhwLyoF9ATBC7/gLCqWjpqkkBXGko5CsTawMTZGwprBxZYu5/IH
- lH5GyIkGv8umQWQjNCg42V9pilWp0KdOkrBnQFwEBYtKHeb53DWnkeAm/deo/qw4DMpt
- twHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUx/j+EQ/tGi6jUQY7CxQbLKsVpDGYQNiub24ZF+F6D/fEJqsBC7WimuA6NFxK7V85Afkp+hzCY@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YzS6nk96dQ9ir2OaEixk3ONI9aisss4Odzj/r61fucWVveo2SnC
- MuEO4sYZkO5VoKSHvepI88N2/HhY3wU35QHGpzGdrnCnVFKWTFwEzlM10HadOfs=
-X-Gm-Gg: ASbGnctW51CMVINXlxZBipWJK0fY/ETGLi+YPJnBPJ4kK41MYtzf4r8mP34mWGREQMw
- BYgp3P9vNy8NtYIwh9O5Z39hVM5aydyvYW0wmpmHUHssqDeyAs9dt7ydY6++kiXVyqzHfhgCdwJ
- lkZqMAFvI1YeqKgUg9LRlixvZnKogUozWbBt95L2hmpycz1xBOaM9vnATrIqEcB4dB+q/KajA9w
- vasBhAfwlsXKsZC2OuQ9/irX/T67Xcn7EmJL0g4rSKiJSHVcZ6UIvrHtCM42YKvScvzHhJB
-X-Google-Smtp-Source: AGHT+IEhLs7l4M2iucwP0LBIVLQXErxDIdfGVuE6OiYMUpZspGL2E/zjijIDJYzCJsBJmoPAl5P/Aw==
-X-Received: by 2002:a5d:64c8:0:b0:388:c75c:e839 with SMTP id
- ffacd0b85a97d-38a223f7167mr2145163f8f.42.1734689706801; 
- Fri, 20 Dec 2024 02:15:06 -0800 (PST)
-Received: from [192.168.0.101] ([90.241.98.187])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4365c08afcbsm52232025e9.21.2024.12.20.02.15.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Dec 2024 02:15:06 -0800 (PST)
-Message-ID: <7d77e830-54c1-42c0-9402-16937697d2bb@ursulin.net>
-Date: Fri, 20 Dec 2024 10:15:04 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC1B310EF52;
+	Fri, 20 Dec 2024 10:16:10 +0000 (UTC)
+Received: from coelho.fi (coelho.fi [88.99.146.29])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64B0910EF52
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 10:16:09 +0000 (UTC)
+Received: from 91-155-254-69.elisa-laajakaista.fi ([91.155.254.69]
+ helo=[192.168.100.137])
+ by coelho.fi with esmtpsa (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (Exim 4.97) (envelope-from <luca@coelho.fi>)
+ id 1tOa3C-000000038my-2gnd; Fri, 20 Dec 2024 12:16:07 +0200
+Message-ID: <3fee23488664a489d31013d5080d70d463c0e6be.camel@coelho.fi>
+From: Luca Coelho <luca@coelho.fi>
+To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "B, Jeevan" <jeevan.b@intel.com>, "Joshi, Kunal1"
+ <kunal1.joshi@intel.com>,  "Murthy, Arun R" <arun.r.murthy@intel.com>
+Date: Fri, 20 Dec 2024 12:16:05 +0200
+In-Reply-To: <SN6PR11MB2704BA34578734826B3A656ADB072@SN6PR11MB2704.namprd11.prod.outlook.com>
+References: <20241219155453.24946-1-santhosh.reddy.guddati@intel.com>
+ <b53da129da1f2eafb7733ac7eb0f22b1246a6178.camel@coelho.fi>
+ <SN6PR11MB2704BA34578734826B3A656ADB072@SN6PR11MB2704.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2-1 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 0/4] tools/gputop: Add PMU stats
-To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20241220003734.69174-1-vinay.belgaumkar@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20241220003734.69174-1-vinay.belgaumkar@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH i-g-t v1] lib/igt_kms: Backup connector modes before
+ sorting
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,42 +49,153 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Fri, 2024-12-20 at 10:06 +0000, Reddy Guddati, Santhosh wrote:
+>=20
+>=20
+>=20
+>=20
+>=20
+> From:=C2=A0Luca Coelho <luca@coelho.fi>
+> Sent:=C2=A0Friday, December 20, 2024 3:13 PM
+> To:=C2=A0Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>; igt-=
+dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+> Cc:=C2=A0B, Jeevan <jeevan.b@intel.com>; Joshi, Kunal1 <kunal1.joshi@inte=
+l.com>; Murthy, Arun R <arun.r.murthy@intel.com>
+> Subject:=C2=A0Re: [PATCH i-g-t v1] lib/igt_kms: Backup connector modes be=
+fore sorting
+> =C2=A0
+> On Thu, 2024-12-19 at 21:24 +0530, Santhosh Reddy Guddati wrote:
+> > Backup connector modes before sorting to ensure the original mode
+> > is not changed if the joiner is not found.This will skip updating
+> > connector->mode[0] if joiner is not available.
+> >=20
+> > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13287
+> > Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com=
+>
+> > ---
+> > =C2=A0 lib/igt_kms.c | 26 ++++++++++++++++++++++++--
+> > =C2=A0 1 file changed, 24 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > index 3d061abc5..21a6a4639 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -6394,6 +6394,11 @@ bool bigjoiner_mode_found(int drm_fd, drmModeCon=
+nector *connector,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 int max_dotclock, drmModeModeInfo *mode)
+> > =C2=A0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool found =3D false;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 drmModeModeInfo *modes_backup;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 modes_backup =3D malloc(connector->count_mode=
+s * sizeof(drmModeModeInfo));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 igt_assert(modes_backup);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 memcpy(modes_backup, connector->modes, connec=
+tor->count_modes * sizeof(drmModeModeInfo));
+>=20
+> It's usually considered safer to use the size of the instance and not
+> of the structure itself (though in practice it doesn't make much
+> difference): sizeof(*modes_backup).
+>=20
+>=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 igt_sort_connector_modes(con=
+nector, sort_drm_modes_by_res_dsc);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 found =3D igt_bigjoiner_poss=
+ible(drm_fd, &connector->modes[0], max_dotclock);
+> > @@ -6401,8 +6406,14 @@ bool bigjoiner_mode_found(int drm_fd, drmModeCon=
+nector *connector,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 igt_sort_connector_modes(connector, sort_drm_modes_by=
+_clk_dsc);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 found =3D igt_bigjoiner_possible(drm_fd, &connector->=
+modes[0], max_dotclock);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > -=C2=A0=C2=A0=C2=A0=C2=A0 if (found)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 if (found) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 *mode =3D connector->modes[0];
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 memcpy(connector->modes, modes_backup,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 connector->count_modes * size=
+of(drmModeModeInfo));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 free(modes_backup);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return found;
+> > =C2=A0 }
+> > =C2=A0
+> > @@ -6438,6 +6449,11 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeC=
+onnector *connector,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 int max_dotclock, drmModeModeInfo *mode)
+> > =C2=A0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool found =3D false;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 drmModeModeInfo *modes_backup;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 modes_backup =3D malloc(connector->count_mode=
+s * sizeof(drmModeModeInfo));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 igt_assert(modes_backup);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 memcpy(modes_backup, connector->modes, connec=
+tor->count_modes * sizeof(drmModeModeInfo));
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 igt_sort_connector_modes(con=
+nector, sort_drm_modes_by_res_dsc);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 found =3D igt_ultrajoiner_po=
+ssible(&connector->modes[0], max_dotclock);
+> > @@ -6445,8 +6461,14 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeC=
+onnector *connector,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 igt_sort_connector_modes(connector, sort_drm_modes_by=
+_clk_dsc);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 found =3D igt_ultrajoiner_possible(&connector->modes[=
+0], max_dotclock);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > -=C2=A0=C2=A0=C2=A0=C2=A0 if (found)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 if (found) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 *mode =3D connector->modes[0];
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 memcpy(connector->modes, modes_backup,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 connector->count_modes * size=
+of(drmModeModeInfo));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 free(modes_backup);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return found;
+> > =C2=A0 }
+> > =C2=A0
+>=20
+> Generally this looks okay to fix the bug, but IMHO the actual problem
+> is that we shouldn't really be sorting the modes in order to find them.
+> Maybe it would be better to use an find_max_res_mode() or something
+> similar instead of using the sort function to find the mode you want?
+>=20
+> The intention of the original change was to identify if the output suppor=
+ts joiner, as part of this we are checking this is_joiner_mode, While doing=
+ so identified the problem to be sorting all the modes on the connector ins=
+ide `ultrajoiner_mode_found`, this change avoids sorting the passed connect=
+or modes.
+>=20
+> Please let me know your thoughts or questions.
+>=20
+> https://patchwork.freedesktop.org/patch/627125/?series=3D141614&rev=3D6
 
-On 20/12/2024 00:37, Vinay Belgaumkar wrote:
-> Use the PMU support being added in
-> https://patchwork.freedesktop.org/series/139121/ to add freq/c6 stats.
+You patch will work, of course, but what I'm trying to say is that
+you're sorting the list and then reverting the sort in case it's not
+supported.  And the only reason why you're sorting it, is to find the
+largest possible mode.  It's unnecessary to sort the list.  If you
+don't sort, but just look for what you want in the existing list, you
+don't need to "backup" and "restore" the list in case of failures.
 
-Brace yourself for the customary "why". So yes, why?
-
-Gputop so far was a reference showcase for DRM fdinfo, nothing more. Why 
-add a _subset_ of PMU stats to it? Any other drivers could be wired up? 
-How far do people intend to grow it, considering alternatives with nicer 
-UI and more featureful exist?
-
-Or in case the conclusion ends up being "yes", then lets at least share 
-some more code between intel_gpu_top and this work. Ie. make it in a way 
-gputop completely subsumes and replaces intel_gpu_top might be an idea.
-
-Regards,
-
-Tvrtko
-
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> 
-> Vinay Belgaumkar (4):
->    tools/gputop: Define data structs for PMU stats
->    lib/igt_drm_clients: Add pdev and driver info
->    lib/igt_perf: Add utils to extract PMU event info
->    tools/gputop: Add GT freq and c6 stats
-> 
->   lib/igt_drm_clients.c |   6 ++
->   lib/igt_drm_clients.h |   4 +
->   lib/igt_perf.c        |  68 +++++++++++++
->   lib/igt_perf.h        |   2 +
->   tools/gputop.c        | 225 ++++++++++++++++++++++++++++++++++++++++++
->   tools/meson.build     |   2 +-
->   6 files changed, 306 insertions(+), 1 deletion(-)
-> 
+--
+Cheers,
+Luca.
