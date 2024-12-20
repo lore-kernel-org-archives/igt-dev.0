@@ -4,184 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A900E77188
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 19:10:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B730E77188
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 19:10:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 279B710E4C0;
-	Fri, 20 Dec 2024 19:10:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BAFCD10E4CB;
+	Fri, 20 Dec 2024 19:10:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f8/OXANx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G6OC+vPV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF0FF10E4C0
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 19:09:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81B4B10E4CB
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 19:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734721799; x=1766257799;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=R5+pY52QmLdWmx7C1mIsVC2f7/uYlfokV4ziNKdUGP8=;
- b=f8/OXANxQ0fPy8QetvBv3RK62om2idTMQWthkp+dxK0f0v2AzBb0/hnc
- 3E12i5V/e2KAx8PyySy+RH/FLLufmQKPga+1vDiO1AQfGJp0Zp1yQ+V/t
- O/tnvbT5Vnmf3Z8xvYkhGZU6SJog4utnMTjY/UtaSP7lgY41Ur0wgiqkU
- wXNjbFYRjiPs1c3gZeNm+JjAFab9vr0YGnAwdWIJppYm3aBD9c+sO27Bx
- xUGZvop2W6PPVJilNxMjXmBggjoCdsQHWjj9x4W7iGEo+ycBfL52C9QEy
- pZdElA7M1yWtCIFj28YeWaDlltwrNIo06ezPK39/esQFXNhCE1afFzo0Y Q==;
-X-CSE-ConnectionGUID: iv6X+ynqQ6+ZgWJByLuutQ==
-X-CSE-MsgGUID: mRgAkqY0RpStbRSCqiLTIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="45771318"
-X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="45771318"
+ t=1734721840; x=1766257840;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=XwHqq/jp7Z9yM0pkNvPqcI1whzbCJj+Zt+nKDZCOJ6s=;
+ b=G6OC+vPVmJDDLBfNJn4wfpdxvuyyUSMJO6KFw+BfCF6bn0vu4+OY2cx9
+ Nyhq+udxlRwOQ98her+sU3GEqVeOLETlMhFwHD3g04cAua4Yw/GcmWLvF
+ zTIjV1G+ab8ZnalY2DYhDCNRqkOxg3aJl6lqLPsbfE+feWKmxClV8tq4p
+ krzfI1Si6DNqzVrnHHcDypJC5aAO7p7pCAPulLwNHGTMCVS47bVq2yiD4
+ d/o0FZh2e4aCB8VVj80JoDw6DMYtmdyvlC3KaROfLTegdNnqeZDce0UyJ
+ n5yEPDdhl3L8UoY2hr8/c+rzneEO2QFxy8K0tLv8eZMy+zzy5+4fg1WVN A==;
+X-CSE-ConnectionGUID: d0s0ehFWTuWJCfkbQFkkzQ==
+X-CSE-MsgGUID: NSQzL72wQBeQBThK/jqmsA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="45771402"
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="45771402"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2024 11:09:59 -0800
-X-CSE-ConnectionGUID: h3cWfynPQ56qBcF+78csug==
-X-CSE-MsgGUID: GEWsFe3+RLaW9/Ng7Xeo8A==
+ 20 Dec 2024 11:10:39 -0800
+X-CSE-ConnectionGUID: nS0Lw4eITuydXXQOXL7gBA==
+X-CSE-MsgGUID: G1xT5+ZATqyAoGbtW0028A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="103561161"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Dec 2024 11:09:59 -0800
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 20 Dec 2024 11:09:58 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Fri, 20 Dec 2024 11:09:58 -0800
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.48) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 20 Dec 2024 11:09:57 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NfdhkkrVftA1iBGXunnnT50o5HoEvp8h3Jz42718ld7gmiZgiTdNiM7buA+LYgNTQjk9NfVbFXUnsvAu3B8r/FRGewyQpz2yvIWpOWH5X49xNlgE+c9o5MTNAEkOfmzsZhUQh+LDwsvX1OKtXi2l0YzbA8FFlbNgfwXNl8IR0I8GTi7cptSc7sqlYdA3coAkAwavnmdGnsWCUV3u5uaGlE0ttzxkWoXY+P7t4o9ivLS5A+P+sxfbUDMTawsF9HDfBz++XPRwJOsgnr74FTKOHngDE9W7xCr8v5HCQe3/iD3tSx3ojtX5lYtHKXQWTP/nZ1O4/NqnZa3oeI2yS8xm7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YWPRDCAvYnN2Oo+LQ6dLscc/r6eKtNdohlZ+7ClhmBM=;
- b=tYqTFu1YykBEMF7l8eiYnPYWnhHZWL/tkzhRAMzeu6PbZLOwGKolJHlIm8nkm97eaj1EAesVNtzAMaVPYd4eVPqDfXJqZXJ96jX5zDGXtlD5ErZkk/3HjQrOADPUAxuJgLev+ZgEa4W8UesCFpY5iwVzUN/bnOTzjicTFtuyOgJbEPJn2Oh5z5Rs4BDkYzHnzJSx2se+mLyBnDGXO3An9Phsbpw3btm30mPkzYZAR7xBuL0tNZGklanqkpujgZ3e5V8VHZTkqTnDfBXxPG0m3/MLp4jpioNdjLzlHoUk7fotZAUDtSSG9xDaofht9Be0WGV29KncJgJiokMew3IDBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB7605.namprd11.prod.outlook.com (2603:10b6:510:277::5)
- by DS7PR11MB6126.namprd11.prod.outlook.com (2603:10b6:8:9e::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8272.14; Fri, 20 Dec 2024 19:09:41 +0000
-Received: from PH7PR11MB7605.namprd11.prod.outlook.com
- ([fe80::d720:25db:67bb:6f50]) by PH7PR11MB7605.namprd11.prod.outlook.com
- ([fe80::d720:25db:67bb:6f50%4]) with mapi id 15.20.8272.005; Fri, 20 Dec 2024
- 19:09:41 +0000
-Message-ID: <f48f64de-0c08-492f-bcfa-8fdcd674bffd@intel.com>
-Date: Fri, 20 Dec 2024 11:09:39 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] lib/igt_kmod: Do not explicitly unload intel
- mei driver
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Lucas De Marchi <lucas.demarchi@intel.com>
-References: <20241218233830.2444510-1-daniele.ceraolospurio@intel.com>
- <20241218233830.2444510-2-daniele.ceraolospurio@intel.com>
- <20241220181026.lq6msnxgrcgemy4h@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-In-Reply-To: <20241220181026.lq6msnxgrcgemy4h@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR17CA0020.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::33) To PH7PR11MB7605.namprd11.prod.outlook.com
- (2603:10b6:510:277::5)
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="103561348"
+Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
+ ([10.125.108.128])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2024 11:10:39 -0800
+Date: Fri, 20 Dec 2024 13:10:33 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Francois Dugast <francois.dugast@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: Re: [PATCH i-g-t 4/4] lib/igt_device_scan: Fix scan vs
+ bind/unbind/reload
+Message-ID: <7agpjl3vxb5rcosfdwo6fcsgfpig5b4sm6rdrz5q4u2vbqh6ql@jt2s4hdi2alu>
+References: <20241218051324.2696557-1-lucas.demarchi@intel.com>
+ <20241218051324.2696557-5-lucas.demarchi@intel.com>
+ <20241218061748.5pc5ac7i3el477kp@zkempczy-mobl2>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB7605:EE_|DS7PR11MB6126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e2b84af-ab31-4ca4-9c13-08dd2129db2d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NnlWSHB3dmEvQ2g5bElmemFNTUNVZ1BrdUhqZzhkL2lvN2VOdWZKbTNtRFJB?=
- =?utf-8?B?NFl3NlZiWjVIZGJ6blRDS1daTUNYRVZpUTBtTjUxU1ZyWm8yVzgyQnJ6UGEz?=
- =?utf-8?B?SEljUExQTVBVblZEYVZXVW5FSzVsRTlhUmk0dlZlSGFzRDlQT2YvTkZQZXg5?=
- =?utf-8?B?dFFWaXUwU3dodzlsM2xmdUlVRTUrRVRIS3hzdVBsakpSRFhWakNjWEJTQVFi?=
- =?utf-8?B?MFFzOGlhZ05HVytEdnVjUnI3RU5pNnpnYmZ0RUphbmRKT1ZKUFVsdTFaZlgy?=
- =?utf-8?B?Nk9zMXc4OXg1b2hHUGl6Nyt3ZGw5Yy9vaDA0dzl2RG9oZmFyZnd3LzBsZ3l0?=
- =?utf-8?B?d2lrOXU3WG1FSzVodU9RMnpoVHpob1NuQk41cXVRK3JXUXB5Q0h6QjJSL3Vr?=
- =?utf-8?B?eE5yWmtTc1RKS0FoczlNb2s5aVp4MmRaVFNGNWJxd25abHhZMGZFb0dYZTkx?=
- =?utf-8?B?OHR4M1cwdGhqSXdFa2lkRms5NmZtZS9NM010L2dZK2YvK0VaUytRc3Bzbzhj?=
- =?utf-8?B?MiszSDNpQmhjR2xYZk9kN0dpNjBkT0U5RGJaNGY2SDdWdU1aMGFiTWI3TCtu?=
- =?utf-8?B?aTBIeU5vbExoSk5odk9jdWxoNUk5dTF1UVoyTG9iLyt5YjljTEtEY2c2ZVRL?=
- =?utf-8?B?REtOQzVmQzRvWmxuanQ3L3dCYmlObTJ3SGJIYnNwdTZlR1lYbTFJK2h5MDZO?=
- =?utf-8?B?endOQ0JHWGRjQU9QbnkxeERrclpFSGJnbEp0QlZ5c1ZiS3JXeCsrSGdGR2RG?=
- =?utf-8?B?d1hZZHVCdE9zR0o0alVrWXZjTU9sSElGb0VKSmZOL1BSaVZhNUZRd2doOGlw?=
- =?utf-8?B?L3RmdUhPSXJrUmdiUHM1NWpBbVNqUFpzZ0wvRkorRkdpb2RMUzlGMUdnM282?=
- =?utf-8?B?R3JaNmZRZEtPaEEwMVBqWEk3dnhRdzlPN243WTYzKzM2VXhwR1dkMWNXWXEz?=
- =?utf-8?B?NTB1QUZUSCt4UXFNdDRZVVc5MUI4bGZRdkhTRUFjQVNhQjcvcmpwV2Z3L0NB?=
- =?utf-8?B?YVgyalhXQVhPWm9lRFZ6Yk5zRERSQUdFUVNhdlE1cnFtaVFhaUFnUC83R3dH?=
- =?utf-8?B?VlhPMzJGbWFyaWNoTEYyRVg4czBSV3ZhcFFkaFVndDZnSGxPcXFhN0JnbFpr?=
- =?utf-8?B?MDJPVnJxcEZWODFzZmpvNUEyT1UzeUsvbHpKbjJiSjYyYk95dWk1dU9YV1o1?=
- =?utf-8?B?bVgwZTMwcGFKQ0VwcDBPdGNDN1AyWGNPRkxmOHhnR2pUZ1djUjhKL2Rpakdk?=
- =?utf-8?B?VHFmeDliRURvaWxKVVVwR1lLcDZRVVAyNEs3TU9yaFpXb1dDSDBJN1ZHaG9Y?=
- =?utf-8?B?dVN4ZUp2Rm55Z3B1cXBzY2JZY0dkd3dTajNGTlJIeDdJbzJmR0JXdmJYZHdL?=
- =?utf-8?B?MUhKTkgvdVJjUWZhSHFaei9IaWRHN0Z6V29pZEpxRDQ1Q2tiRUFQc0pQQzBK?=
- =?utf-8?B?QW4zbXd2NkZ4YmtJVm9CYU1WRnVuMGo1bFlYRlFkWTNzSlJVQ1MxS3Z4MXRW?=
- =?utf-8?B?cnBDQnBVQWFvOEZ4TVJCYmpZS0IzRHlGM1FmTHF3cld5T3dmY1VuYXE0cjZl?=
- =?utf-8?B?cG9YdDZoQXYxSUgxVjhpYmJhcWtCTjBnMHA2Q1BVRWdwWHBXZGZ2ZDVVRk5D?=
- =?utf-8?B?UmFLUHNyN1JOQlZRZUIveXlyb2pOSEFRUFpqY0NWTng1b0pJZXQzYmRSQVZV?=
- =?utf-8?B?MTc4bUtCanZCaHllZ1lMKzZ6OE5sbHVsUXk2WHhVc21mK1RDbHZqbGd1N24x?=
- =?utf-8?B?MkhyMGNpaG1lRjZ2cGNOL1VkMEN1eEpNMkR0dVQ4NkZNK0xUTFVFS1U5VmF6?=
- =?utf-8?B?OWE3ZkNaYVl6aENXSzF4M1RIR0ZDclpnN2UwbVJoRDM0ekNHWGVGcXM4OUZt?=
- =?utf-8?Q?VIxfQ+dhB25Wf?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB7605.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bWtPdzJST24zWGdsTWF1R2grNUdYS0ZnU3dMcEV6VDIvd3IwQS9wNUorcVYz?=
- =?utf-8?B?ZTJPZ2YvYlpYZ1JJcjZ2dXJnd2tyVVdJeHlSNnNqMEJ3OW4rOU1BY2lLYnow?=
- =?utf-8?B?STFncGQyRlMzNGlJanI2ckIwUlM4aFRBSUY3Mm5hWllDMktsUFhSSlhJSTFo?=
- =?utf-8?B?M3BYbG5uNi8rWVVIUElCbVdtWGNlNzlsSjkraStKczV1Z0ZjSWFrc3RCMm8x?=
- =?utf-8?B?eU5ZeFNva2tHYXkvZjRXdXcvY1dIVXROaU9kYStxRkJTTENyVWszZndjbS8r?=
- =?utf-8?B?aXhJMHhEaytnQ21pSHhSMnVCdUxjVkVxREVKNlRTV2JHMmZTYmttaW1iZVky?=
- =?utf-8?B?UnlpUXd1YjBIcTg2OFRvbGY3OHhyUjJLQ0pmRnVPYnhuVzcxekJxbFFuZUUw?=
- =?utf-8?B?R2pEanRTQitMY3VJTUJ4eVkwME5McU82K3VVeTM0SitOSU1SNXhtVTIwUGpM?=
- =?utf-8?B?NTlHYmdlKzZYTmlPSjBEM0hMeE9XLzB2bFRuTGZlRlluL2dzUUZrbnlkTXdV?=
- =?utf-8?B?dmcyWWVoa2NSTU9IM0llSFB1ejB5Y0l5MlcxL0JwRzZudHNuVS9va2ZxV2Q2?=
- =?utf-8?B?L1hjVHE5Q1Z3Qk90WWJmb1RvNjVibGQ2Y2VFODJiZGxRZ0IxNjIvanV3MDlL?=
- =?utf-8?B?aG9nUDBIakJMY0lpS2loTDgyM0M2RllVaDJsZjNMb3ppejdDcURrV0Flc3M4?=
- =?utf-8?B?NTFsbkFWbUR6dHg2a0hSRWhqUzdONXhPSnpIMTBjQ3lsOXBkcVp4SXJVZURk?=
- =?utf-8?B?UDRMeDJzbU92VWI5d09vUHRycGVXVzE5TGhiWUlOd3Nwd2txcTlZSys3dG9Q?=
- =?utf-8?B?UEFTelUyaVl5YmU4ejR4TmtmNit5MXJtMlpCNUVrTjl5NnV4S2UwdldkSksw?=
- =?utf-8?B?VnpFS1BsM0NPeExZQjlkTkVVRUVGSSs3RTlYWFFWem5GMDRqVzVtelZ4dER0?=
- =?utf-8?B?NHhzM0kvblVSbGorR282ekdmU2x5T2l5NytOUWNMTXRMR1M4aG03RkJ2b2R1?=
- =?utf-8?B?MENKV3ZLYW0rZzJma0I2SEFMcnh2MFZQVGJiUFY4T05lK3BIa01vTUZ2YlpY?=
- =?utf-8?B?R05vV0hCNVlqWFUrdGNXZXk1SWpBbDBPdXhhM2Qxb2hwTVVuVHYzRUpsVm5r?=
- =?utf-8?B?TGs3U2tWWDg4WGx5M0RaL2doUTUxcmV3Z0pIaWhrbFBqd29pMkdxRkJ5QlRy?=
- =?utf-8?B?WVA4eFVnNS9JelE1S2dmVWRoNDZGYlRiSzk2NEpJeVJmSXp1Q3FjcjlTdjYz?=
- =?utf-8?B?NHNBWitqNC9ucW1PQmI5Q0NGanF5SVVNa1hIS1JoenhtRXBhRjZ2T09qdzdk?=
- =?utf-8?B?aFU1RktZUjFBZUI4dmwwSkVFZ0F3STNxQ2FvVEFQSzBjb2p3cmV4NlZxd3ZL?=
- =?utf-8?B?ZDgyRlpuc242Tnd2UW44V2pvM1BLSjh3Smw5aU9DYkd3MzhiU1FvZGw0UE1u?=
- =?utf-8?B?ekZuOTJEZ1QvK3pKVzlEZUR0VCtBak5SVXVqUDkwb3FGOTg1ZVNnU1FUbkh5?=
- =?utf-8?B?MmVwSWx5aDNTOE42RU5FbXBUTUZOMU9Xb1hhS0dxZGxIM1FkUWdnanVXY01F?=
- =?utf-8?B?Sk9DQ2hyUnQzQjBEd3dQUHl5QzQxNlJ3ajB5OFhvMzZnaDZGR3NsYWtadUJB?=
- =?utf-8?B?em5nZTRiRGNOZW9sMmVNWUFTTVhwTEtQdEhqQXJMTDJuRUxGc054UDI2RlM5?=
- =?utf-8?B?T0RIdHB4SFk4TGVkS3lHS0VoTko3QnBEekNRUzJJZGN6Zm1hQ3M3ZStDYWRU?=
- =?utf-8?B?c2hhcjkvVmRONE5BZ3FzMnBYVXpseCt6bWxhSVF2VXo3OHZVYU9NbGNpVHVa?=
- =?utf-8?B?QUhlYWpjQmlQNWVseHZtZnl5Rmk3dDRWOXNVVGRFK0t3c2d5NytCbEJXUE42?=
- =?utf-8?B?QjNBVHg5QTl0L05DSEFCQU9QSFNHaGtkRzBDWDFnRDUrWlpNRUtxQUhFQXFU?=
- =?utf-8?B?NUFlVFQ2aDJxZlRWQ25DbTVaaDNqK1dOSzB0VUhPRk1OMUxuNmRvQU1Mb1lY?=
- =?utf-8?B?ZzkvNFF0bEQ1b1dLVDhxY1l4QUZTWXY4blNOS1E0dEhLQ05JR1ZHOEZMV3RY?=
- =?utf-8?B?WDlsVWh1NjJmV3JWckFJOThnVUV0Qyt3S0xodnl6U1JEbWJ3LzRPWjNuWm85?=
- =?utf-8?B?YjBhajV0R1Yyc1hSVWRlZzN6d3pFKzc0ZWFBV0VKa0Vmc1FNekNXMTZQUFdx?=
- =?utf-8?B?K3c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e2b84af-ab31-4ca4-9c13-08dd2129db2d
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB7605.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 19:09:41.2906 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nz2OYHbPFl/3ctyMbjw6nkhikqmOOJFyZ9u192KeAO/sM7qy9YsUSzidh0zvFzdyBp9YcEKtcc9py9jc+4d77BGT9Ejjowea3qKC7rnWasE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6126
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241218061748.5pc5ac7i3el477kp@zkempczy-mobl2>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,79 +74,456 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-
-On 12/20/2024 10:10 AM, Kamil Konieczny wrote:
-> Hi Daniele,
-> On 2024-12-18 at 15:38:30 -0800, Daniele Ceraolo Spurio wrote:
->> The mei driver is a child of i915 on discrete, but not on integrated.
->> This means we want to unplug it before removing i915 in the former case
->> but not in the latter. Therefore, instead of manually unloading the mei
->> driver, we can unbind i915 and leave it to the kernel to unplug all the
->> dependencies. This also means that we don't need to explicitly disable
->> the vtcon anymore.
-> Will it work also in case of both iGPU + dGPU present?
-
-It should work, yes. The i915/xe unbind will not unload the mei drivers, 
-it will just unbind them if they're bound to a gfx child device. So in 
-the case of having both igpu and dgpu the mei driver will keep being 
-bound to the CPU mei device, which is what we want.
-
-> Should we provide a tool to unload an i915 driver?
-
-A subtest of i915_module_load that just unloads could be useful. We have 
-that for Xe.
-
-Daniele
-
->
-> Regards,
-> Kamil
->
->> The other 2 dependencies are left untouched:
->> - intel_ips uses symbol_get, so the automatic dependency detection won't
->>    unload it.
->> - the hotunplug test mentions that the sound driver can throw errors on
->>    i915 unbind, so we need to keep the explicit unload.
+On Wed, Dec 18, 2024 at 07:17:48AM +0100, Zbigniew Kempczyński wrote:
+>On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
+>> There's no guarantee a card will end up with the same device node when
+>> modules are loaded/unloaded and drivers bound/unbound. There's some
+>> fundamental issue with the igt's the way it is and it's also puzzling
+>> from the logs it looks like the device vanished from the bus, when in
+>> reality is just the SW state out of sync with what the kernel is
+>> exporting.
 >>
->> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
->> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+>> Re-scanning when trying to match a device is not expensive compared to
+>> what most tests are doing, so simply force it to occur whenever trying
+>> to match a card.
+>>
+>> Example for xe_wedged:
+>>
+>> 	$ sudo ./build/tests/xe_wedged --device pci:0000:03:00.0 --r wedged-at-any-timeout
+>> 	(xe_wedged:11173) drmtest-DEBUG: Looking for devices to open using filter 0: pci:0000:03:00.0
+>> 	(xe_wedged:11173) drmtest-DEBUG: Filter matched /dev/dri/card1 | /dev/dri/renderD129
+>>
+>> 	... [ wedge and rebind here ]
+>>
+>> 	(xe_wedged:11173) drmtest-DEBUG: Looking for devices to open using filter 0: pci:0000:03:00.0
+>> 	(xe_wedged:11173) drmtest-DEBUG: Filter matched /dev/dri/card2 | /dev/dri/renderD130
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 >> ---
->>   lib/igt_kmod.c | 9 ++-------
->>   1 file changed, 2 insertions(+), 7 deletions(-)
+>>  lib/igt_device_scan.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
->> index a8b0339b9..fa9541d72 100644
->> --- a/lib/igt_kmod.c
->> +++ b/lib/igt_kmod.c
->> @@ -620,16 +620,9 @@ int __igt_intel_driver_unload(char **who, const char *driver)
->>   	const char *aux[] = {
->>   		/* gen5: ips uses symbol_get() so only a soft module dependency */
->>   		"intel_ips",
->> -		/* mei_gsc uses an i915 aux dev and the other mei mods depend on it */
->> -		"mei_pxp",
->> -		"mei_hdcp",
->> -		"mei_gsc",
->>   		NULL,
->>   	};
->>   
->> -	/* unbind vt */
->> -	bind_fbcon(false);
->> -
->>   	ret = igt_audio_driver_unload(who);
->>   	if (ret)
->>   		return ret;
->> @@ -648,6 +641,8 @@ int __igt_intel_driver_unload(char **who, const char *driver)
->>   	}
->>   
->>   	if (igt_kmod_is_loaded(driver)) {
->> +		igt_kmod_unbind(driver);
->> +
->>   		ret = igt_kmod_unload(driver);
->>   		if (ret) {
->>   			if (who)
->> -- 
->> 2.43.0
->>
+>> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+>> index 8e2297087..956719fba 100644
+>> --- a/lib/igt_device_scan.c
+>> +++ b/lib/igt_device_scan.c
+>> @@ -1983,7 +1983,7 @@ static bool __igt_device_card_match(const char *filter,
+>>  	 * Scan devices in case the user hasn't yet,
+>>  	 * but leave a decision on forced rescan on the user side.
+>>  	 */
+>> -	igt_devices_scan(false);
+>> +	igt_devices_scan(true);
+>
+>Please don't. Check igt_device_filter_add() and for loop inside. This
+>would trigger a lot of rescans instead of one.
+>
+>If whatever is causing changes from drm (udev) perspective it should be
+>targeted there, not in the library.
 
+I wanted to get some numbers on "does the multiple scans matter that we
+need to cache?" Looking at BAT for this series, I'd say no. Using these
+2 as before (a.json) and after (b.json):
+
+https://intel-gfx-ci.01.org/tree/intel-xe/xe-2397-d8f0c44e2ed948dcc45d04a0dfa83612995a702b/bat-bmg-1/results0.json.bz2   
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12340/bat-bmg-1/results0.json.bz2                                        
+
+Checking runtimes:
+$ jq -r '.tests[].time.end' a.json  > /tmp/a.txt 
+$ jq -r '.tests[].time.end' b.json  > /tmp/b.txt
+$ while IFS= read -r a && IFS= read -r b <&3; do
+	delta=$(echo "$b - $a" | bc -l)
+	perc=$(echo "($delta/($a+0.001))*100" | bc -l)
+	printf "%.3f %.3f % .3f % .2f%%\n" $a $b $delta $perc
+done < /tmp/a.txt 3< /tmp/b.txt
+
+0.974 0.891 -0.083 -8.51%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+10.150 10.141 -0.009 -0.09%
+6.676 6.673 -0.003 -0.04%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+1.081 1.079 -0.002 -0.18%
+0.973 1.000  0.027  2.77%
+0.995 0.999  0.004  0.40%
+0.986 0.986  0.000  0.00%
+0.971 0.998  0.027  2.78%
+0.995 1.008  0.013  1.31%
+0.001 0.000 -0.001 -50.00%
+2.884 2.850 -0.034 -1.18%
+0.758 0.752 -0.006 -0.79%
+0.706 0.695 -0.011 -1.56%
+0.702 0.696 -0.006 -0.85%
+0.707 0.697 -0.010 -1.41%
+2.878 2.893  0.015  0.52%
+0.773 0.778  0.005  0.65%
+0.707 0.704 -0.003 -0.42%
+0.699 0.705  0.006  0.86%
+0.687 0.696  0.009  1.31%
+4.169 4.155 -0.014 -0.34%
+1.046 1.032 -0.014 -1.34%
+1.030 1.038  0.008  0.78%
+1.038 1.027 -0.011 -1.06%
+1.038 1.041  0.003  0.29%
+3.034 3.048  0.014  0.46%
+0.762 0.759 -0.003 -0.39%
+0.753 0.756  0.003  0.40%
+0.746 0.764  0.018  2.41%
+0.755 0.752 -0.003 -0.40%
+0.311 0.311  0.000  0.00%
+0.017 0.017  0.000  0.00%
+0.019 0.018 -0.001 -5.00%
+1.880 1.885  0.005  0.27%
+0.099 0.102  0.003  3.00%
+1.763 1.783  0.020  1.13%
+0.469 0.479  0.010  2.13%
+0.434 0.440  0.006  1.38%
+0.424 0.431  0.007  1.65%
+0.422 0.419 -0.003 -0.71%
+5.606 5.581 -0.025 -0.45%
+1.503 1.488 -0.015 -1.00%
+1.477 1.492  0.015  1.01%
+1.315 1.289 -0.026 -1.98%
+1.296 1.300  0.004  0.31%
+4.451 4.480  0.029  0.65%
+1.145 1.174  0.029  2.53%
+1.074 1.090  0.016  1.49%
+1.094 1.089 -0.005 -0.46%
+1.122 1.113 -0.009 -0.80%
+2.547 2.537 -0.010 -0.39%
+0.670 0.663 -0.007 -1.04%
+0.624 0.622 -0.002 -0.32%
+0.615 0.612 -0.003 -0.49%
+0.619 0.625  0.006  0.97%
+2.557 2.559  0.002  0.08%
+0.672 0.687  0.015  2.23%
+0.622 0.625  0.003  0.48%
+0.616 0.607 -0.009 -1.46%
+0.628 0.625 -0.003 -0.48%
+2.286 2.245 -0.041 -1.79%
+0.621 0.591 -0.030 -4.82%
+0.562 0.549 -0.013 -2.31%
+0.549 0.543 -0.006 -1.09%
+0.535 0.551  0.016  2.99%
+2.277 2.277  0.000  0.00%
+0.598 0.605  0.007  1.17%
+0.558 0.559  0.001  0.18%
+0.548 0.549  0.001  0.18%
+0.554 0.556  0.002  0.36%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.012 0.013  0.001  7.69%
+0.451 0.401 -0.050 -11.06%
+0.418 0.428  0.010  2.39%
+0.000 0.000  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.078 0.080  0.002  2.53%
+0.001 0.001  0.000  0.00%
+0.013 0.034  0.021  150.00%
+0.011 0.033  0.022  183.33%
+0.012 0.035  0.023  176.92%
+0.012 0.034  0.022  169.23%
+0.198 0.204  0.006  3.02%
+2.936 3.190  0.254  8.65%
+0.028 0.028  0.000  0.00%
+0.003 0.003  0.000  0.00%
+0.003 0.003  0.000  0.00%
+0.003 0.003  0.000  0.00%
+0.003 0.003  0.000  0.00%
+0.003 0.003  0.000  0.00%
+0.003 0.004  0.001  25.00%
+0.005 0.003 -0.002 -33.33%
+0.018 0.020  0.002  10.53%
+0.004 0.003 -0.001 -20.00%
+0.002 0.002  0.000  0.00%
+0.002 0.002  0.000  0.00%
+0.002 0.002  0.000  0.00%
+0.002 0.002  0.000  0.00%
+0.002 0.002  0.000  0.00%
+0.002 0.002  0.000  0.00%
+0.004 0.005  0.001  20.00%
+0.005 0.005  0.000  0.00%
+0.009 0.009  0.000  0.00%
+0.006 0.007  0.001  14.29%
+0.005 0.005  0.000  0.00%
+0.007 0.006 -0.001 -12.50%
+0.009 0.010  0.001  10.00%
+0.009 0.009  0.000  0.00%
+0.009 0.009  0.000  0.00%
+0.008 0.008  0.000  0.00%
+0.008 0.008  0.000  0.00%
+0.547 0.545 -0.002 -0.36%
+0.009 0.010  0.001  10.00%
+0.008 0.007 -0.001 -11.11%
+0.008 0.007 -0.001 -11.11%
+0.012 0.012  0.000  0.00%
+0.011 0.011  0.000  0.00%
+0.009 0.010  0.001  10.00%
+0.022 0.021 -0.001 -4.35%
+0.017 0.019  0.002  11.11%
+0.019 0.023  0.004  20.00%
+0.016 0.024  0.008  47.06%
+0.021 0.019 -0.002 -9.09%
+0.032 0.033  0.001  3.03%
+0.026 0.030  0.004  14.81%
+0.020 0.021  0.001  4.76%
+0.018 0.019  0.001  5.26%
+0.028 0.029  0.001  3.45%
+0.027 0.026 -0.001 -3.57%
+0.032 0.026 -0.006 -18.18%
+0.046 0.039 -0.007 -14.89%
+0.025 0.040  0.015  57.69%
+0.030 0.029 -0.001 -3.23%
+0.023 0.025  0.002  8.33%
+0.025 0.023 -0.002 -7.69%
+0.021 0.019 -0.002 -9.09%
+0.029 0.038  0.009  30.00%
+0.028 0.027 -0.001 -3.45%
+1.905 1.909  0.004  0.21%
+0.029 0.032  0.003  10.00%
+0.023 0.029  0.006  25.00%
+0.040 0.045  0.005  12.20%
+0.031 0.041  0.010  31.25%
+1.922 1.917 -0.005 -0.26%
+0.005 0.005  0.000  0.00%
+1.267 1.304  0.037  2.92%
+1.273 1.292  0.019  1.49%
+0.351 0.456  0.105  29.83%
+0.005 0.004 -0.001 -16.67%
+0.003 0.004  0.001  25.00%
+0.010 0.010  0.000  0.00%
+0.623 0.625  0.002  0.32%
+0.208 0.208  0.000  0.00%
+0.010 0.007 -0.003 -27.27%
+0.004 0.004  0.000  0.00%
+0.003 0.003  0.000  0.00%
+0.007 0.007  0.000  0.00%
+0.007 0.006 -0.001 -12.50%
+0.008 0.008  0.000  0.00%
+0.003 0.004  0.001  25.00%
+0.004 0.003 -0.001 -20.00%
+0.003 0.004  0.001  25.00%
+0.008 0.007 -0.001 -11.11%
+0.117 0.120  0.003  2.54%
+0.106 0.111  0.005  4.67%
+0.136 0.146  0.010  7.30%
+0.059 0.058 -0.001 -1.67%
+0.006 0.007  0.001  14.29%
+0.001 0.001  0.000  0.00%
+0.034 0.033 -0.001 -2.86%
+0.009 0.009  0.000  0.00%
+0.007 0.007  0.000  0.00%
+0.007 0.007  0.000  0.00%
+0.007 0.007  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.004 0.004  0.000  0.00%
+0.007 0.007  0.000  0.00%
+0.001 0.000 -0.001 -50.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.249 0.271  0.022  8.80%
+0.100 0.123  0.023  22.77%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.001 0.000 -0.001 -50.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.004 0.004  0.000  0.00%
+0.024 0.023 -0.001 -4.00%
+0.000 0.000  0.000  0.00%
+0.006 0.006  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.001 0.000 -0.001 -50.00%
+0.000 0.000  0.000  0.00%
+0.004 0.005  0.001  20.00%
+0.000 0.001  0.001  100.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.007 0.007  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.004 0.003 -0.001 -20.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.006 0.006  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.004 0.004  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.007 0.006 -0.001 -12.50%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.001 0.001  0.000  0.00%
+0.078 0.089  0.011  13.92%
+0.069 0.067 -0.002 -2.86%
+0.053 0.055  0.002  3.70%
+0.069 0.077  0.008  11.43%
+0.055 0.058  0.003  5.36%
+0.023 0.024  0.001  4.17%
+0.005 0.007  0.002  33.33%
+0.005 0.006  0.001  16.67%
+0.006 0.005 -0.001 -14.29%
+0.005 0.006  0.001  16.67%
+0.005 0.006  0.001  16.67%
+0.006 0.005 -0.001 -14.29%
+0.006 0.006  0.000  0.00%
+0.005 0.007  0.002  33.33%
+0.004 0.004  0.000  0.00%
+0.010 0.032  0.022  200.00%
+0.048 0.067  0.019  38.78%
+0.046 0.051  0.005  10.64%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+0.000 0.000  0.000  0.00%
+9.122 9.016 -0.106 -1.16%
+1.540 1.496 -0.044 -2.86%
+2.902 2.919  0.017  0.59%
+4.678 4.598 -0.080 -1.71%
+0.048 0.046 -0.002 -4.08%
+0.005 0.005  0.000  0.00%
+0.004 0.004  0.000  0.00%
+3.620 3.653  0.033  0.91%
+6.879 6.838 -0.041 -0.60%
+0.116 0.113 -0.003 -2.56%
+6.754 6.717 -0.037 -0.55%
+0.129 0.104 -0.025 -19.23%
+0.127 0.102 -0.025 -19.53%
+0.255 0.262  0.007  2.73%
+0.122 0.115 -0.007 -5.69%
+0.128 0.141  0.013  10.08%
+0.036 0.037  0.001  2.70%
+0.064 0.061 -0.003 -4.62%
+0.039 0.029 -0.010 -25.00%
+0.034 0.043  0.009  25.71%
+0.048 0.040 -0.008 -16.33%
+0.042 0.037 -0.005 -11.63%
+0.040 0.048  0.008  19.51%
+0.037 0.050  0.013  34.21%
+0.044 0.045  0.001  2.22%
+0.046 0.044 -0.002 -4.26%
+0.053 0.043 -0.010 -18.52%
+0.034 0.031 -0.003 -8.57%
+0.032 0.032  0.000  0.00%
+0.038 0.039  0.001  2.56%
+0.034 0.033 -0.001 -2.86%
+0.042 0.050  0.008  18.60%
+0.044 0.040 -0.004 -8.89%
+0.038 0.042  0.004  10.26%
+0.045 0.036 -0.009 -19.57%
+0.046 0.041 -0.005 -10.64%
+0.054 0.034 -0.020 -36.36%
+0.046 0.043 -0.003 -6.38%
+0.044 0.029 -0.015 -33.33%
+0.045 0.051  0.006  13.04%
+0.037 0.035 -0.002 -5.26%
+0.034 0.041  0.007  20.00%
+0.069 0.046 -0.023 -32.86%
+0.033 0.038  0.005  14.71%
+0.061 0.054 -0.007 -11.29%
+0.047 0.044 -0.003 -6.25%
+0.042 0.041 -0.001 -2.33%
+0.043 0.039 -0.004 -9.09%
+0.035 0.027 -0.008 -22.22%
+0.255 0.212 -0.043 -16.80%
+0.261 0.259 -0.002 -0.76%
+0.313 0.318  0.005  1.59%
+0.288 0.271 -0.017 -5.88%
+0.859 0.862  0.003  0.35%
+0.343 0.325 -0.018 -5.23%
+1.447 1.225 -0.222 -15.33%
+1.515 1.499 -0.016 -1.06%
+1.621 1.662  0.041  2.53%
+1.498 1.516  0.018  1.20%
+5.231 5.216 -0.015 -0.29%
+0.941 0.967  0.026  2.76%
+1.416 1.499  0.083  5.86%
+1.619 1.620  0.001  0.06%
+1.500 1.539  0.039  2.60%
+5.229 5.216 -0.013 -0.25%
+
+
+Although there are some big numbers showing e.g. 200%, numbers are so
+small here that they are all noise to what the tests are doing. It
+doesn't make sense that some of them are showing improved performance
+when we are doing more work. Also if I get the information from
+.runtimes rather than .tests to consider a test granualarity, I still
+have the same conclusion.
+
+
+Lucas De Marchi
+
+>
+>--
+>Zbigniew
+>
+>>
+>>  	if (igt_device_filter_apply(filter) == false)
+>>  		return false;
+>> --
+>> 2.47.0
+>>
