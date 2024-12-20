@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8127E77188
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 06:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D400FE77188
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 06:59:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 92E3810E06F;
-	Fri, 20 Dec 2024 06:04:15 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F32310E06F;
- Fri, 20 Dec 2024 06:04:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2983891186491498623=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68CFD10E100;
+	Fri, 20 Dec 2024 06:59:40 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NRDrF9B7";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DD1610E100
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 06:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734677978; x=1766213978;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=4jM3AuLlQIvsK8q8mSNrBl92bPbRI0WpfGBXlgE4iqc=;
+ b=NRDrF9B7Gyis/wZ0ATUOa/8as+DlCX7NYtkHIkhvgW8OjkibBWpvISfg
+ 5wf9/0UWD+LCXIdo0gDpBumpbIaqtRIkPXJJG1QUJC5H1Mj7VXoojRuKA
+ 4wJo6Dr9sdUJq/fyqerpPjg1373/51vmeNhtEHElZQqY+Xx+QFl6ZCAes
+ 4gUvJYKNRJqN+vFYeW8PaJZ2jPk7Gc0L7WFVtEYyKWfzff/CZEcnH0Lko
+ UC1QHom7FkHANEcPpa/MruygryeVjdlXra7v5gpvuCnArS7o6ujYpjKvT
+ SQqS1LoJyat+W3PuUNpHid6wY/Ima1/5jJRasD7wDEyyO51QGPDfWQ/CW g==;
+X-CSE-ConnectionGUID: xvMujWJuShWu4LE9EHXCpA==
+X-CSE-MsgGUID: PlfQD/Q0RxOupcQ+NVRzDQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="46227530"
+X-IronPort-AV: E=Sophos;i="6.12,250,1728975600"; d="scan'208";a="46227530"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2024 22:59:38 -0800
+X-CSE-ConnectionGUID: mDII4Z4WS52LPP8rXNTksQ==
+X-CSE-MsgGUID: GXicQ7JkQtWN4zPj9PJp0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="99251618"
+Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.218])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2024 22:59:36 -0800
+Date: Fri, 20 Dec 2024 07:59:33 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Francois Dugast <francois.dugast@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: Re: [PATCH i-g-t 4/4] lib/igt_device_scan: Fix scan vs
+ bind/unbind/reload
+Message-ID: <20241220065933.k3outjjmfgvpuxjn@zkempczy-mobl2>
+References: <20241218051324.2696557-1-lucas.demarchi@intel.com>
+ <20241218051324.2696557-5-lucas.demarchi@intel.com>
+ <20241218063419.zqikqynzuvi5vake@zkempczy-mobl2>
+ <rnw3q6mhthnwyvowvszr2gllyjtbb2mozk4em272xlmkvm7pyl@szbhtg3sd7d7>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fflip=5Fsc?=
- =?utf-8?q?aled=5Fcrc=3A_Add_more_logs_to_skips/failure?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Samala, Pranay" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Dec 2024 06:04:13 -0000
-Message-ID: <173467465364.689801.8071624851462567065@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241220033042.2394330-1-pranay.samala@intel.com>
-In-Reply-To: <20241220033042.2394330-1-pranay.samala@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <rnw3q6mhthnwyvowvszr2gllyjtbb2mozk4em272xlmkvm7pyl@szbhtg3sd7d7>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,159 +71,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2983891186491498623==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Dec 19, 2024 at 10:35:00AM -0600, Lucas De Marchi wrote:
+> On Wed, Dec 18, 2024 at 07:34:19AM +0100, Zbigniew Kempczyński wrote:
+> > On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
+> > > There's no guarantee a card will end up with the same device node when
+> > > modules are loaded/unloaded and drivers bound/unbound. There's some
+> > > fundamental issue with the igt's the way it is and it's also puzzling
+> > > from the logs it looks like the device vanished from the bus, when in
+> > > reality is just the SW state out of sync with what the kernel is
+> > > exporting.
+> > > 
+> > > Re-scanning when trying to match a device is not expensive compared to
+> > > what most tests are doing, so simply force it to occur whenever trying
+> > > to match a card.
+> > 
+> > I also should comment the above. It is generally true, but I've noticed
+> > getting attributes might be expensive. Even it may take up to few
+> > seconds, that's why I've added some attributes we don't fetch from udev
+> > (see is_on_blacklist()). If I'm not wrong getting 'config' was a cause
+> > to limit attributes we fetch.
+> 
+> why would we get all attributes and exclude some?  Shouldn't we get only
+> the attributes we actually use? AFAIK this logic is basically used by
+> --device/IGT_DEVICE, right? What filters we normally use?
 
-== Series Details ==
+At moment of developing I didn't know how this code might be used by others
+to write filters. I had only in my mind sriov scenario and I assumed
+more attributes might be useful in the meaning - lets see how it goes.
 
-Series: tests/intel/kms_flip_scaled_crc: Add more logs to skips/failure
-URL   : https://patchwork.freedesktop.org/series/142867/
-State : success
+Currently we use three attributes: driver, sriov_numvfs and physfn.
+I would rewrite this for support both - fetching all attributes without
+excluding anything (for lsgpu -p) and second for normal use so we would
+get only attributes we use in filters. We would achieve two goals - keep
+lsgpu list of props/attrs almost intact (with exception we'll fetch them
+all now) and have current state of drm device nodes in the test.
 
-== Summary ==
+Question - will you write this or you want from me to do this? I can
+do this on the beginning of the year. If you're wondering what for
+-p in lsgpu - it is convinient for me to use it instead of udevadm.
 
-CI Bug Log - changes from XEIGT_8167_BAT -> XEIGTPW_12360_BAT
-====================================================
+> 
+> I usually pass the pci slot (because I know that won't change
+> dynamically and cause surprises). Apparently CI passes vendor/devid:
+> 
+> 	export IGT_DEVICE=pci:vendor=$1,device=$2
+> 
+> (but it seems to vary depending on pipeline)
+> 
+> Some devs pass the device node directly too as in a lot of places
+> there's only ever card0 possible.
+> 
+> Are there other uses?
 
-Summary
--------
+In Intel likely not, outside - I don't know.
 
-  **SUCCESS**
+BTW I've checked the problematic attribute 'config' and it seems it
+is immediately fetched on nvidia card now. Still it is binary, so it
+will require to be ignored (...) or ascii encoded.
 
-  No regressions found.
+--
+Zbigniew
 
-  
-
-Participating hosts (8 -> 7)
-------------------------------
-
-  Missing    (1): bat-lnl-2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12360_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8167/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-adlp-7:         [SKIP][3] ([Intel XE#455]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8167/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@kms_psr@psr-primary-page-flip@edp-1:
-    - bat-adlp-7:         [DMESG-WARN][5] ([Intel XE#3517]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8167/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8167 -> IGTPW_12360
-  * Linux: xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 -> xe-2408-ab84fe2ea6aa04785306a9c4b095e4390627cba8
-
-  IGTPW_12360: aed430abdd7c4d76c226839614beb8207f5cb535 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8167: 6e93c2e807b398f24673d010f3f71986a09fef8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58
-  xe-2408-ab84fe2ea6aa04785306a9c4b095e4390627cba8: ab84fe2ea6aa04785306a9c4b095e4390627cba8
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/index.html
-
---===============2983891186491498623==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_flip_scaled_crc: Add more logs to skips/failure</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142867/">https://patchwork.freedesktop.org/series/142867/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8167_BAT -&gt; XEIGTPW_12360_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 7)</h2>
-<p>Missing    (1): bat-lnl-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12360_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8167/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8167/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8167/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12360/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8167 -&gt; IGTPW_12360</li>
-<li>Linux: xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58 -&gt; xe-2408-ab84fe2ea6aa04785306a9c4b095e4390627cba8</li>
-</ul>
-<p>IGTPW_12360: aed430abdd7c4d76c226839614beb8207f5cb535 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8167: 6e93c2e807b398f24673d010f3f71986a09fef8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2405-a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58: a5b4c40929f3263a92e34e3f6b3c3c0de57e0e58<br />
-  xe-2408-ab84fe2ea6aa04785306a9c4b095e4390627cba8: ab84fe2ea6aa04785306a9c4b095e4390627cba8</p>
-
-</body>
-</html>
-
---===============2983891186491498623==--
+> 
+> thanks
+> Lucas De Marchi
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > Example for xe_wedged:
+> > > 
+> > > 	$ sudo ./build/tests/xe_wedged --device pci:0000:03:00.0 --r wedged-at-any-timeout
+> > > 	(xe_wedged:11173) drmtest-DEBUG: Looking for devices to open using filter 0: pci:0000:03:00.0
+> > > 	(xe_wedged:11173) drmtest-DEBUG: Filter matched /dev/dri/card1 | /dev/dri/renderD129
+> > > 
+> > > 	... [ wedge and rebind here ]
+> > > 
+> > > 	(xe_wedged:11173) drmtest-DEBUG: Looking for devices to open using filter 0: pci:0000:03:00.0
+> > > 	(xe_wedged:11173) drmtest-DEBUG: Filter matched /dev/dri/card2 | /dev/dri/renderD130
+> > > 
+> > > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> > > ---
+> > >  lib/igt_device_scan.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> > > index 8e2297087..956719fba 100644
+> > > --- a/lib/igt_device_scan.c
+> > > +++ b/lib/igt_device_scan.c
+> > > @@ -1983,7 +1983,7 @@ static bool __igt_device_card_match(const char *filter,
+> > >  	 * Scan devices in case the user hasn't yet,
+> > >  	 * but leave a decision on forced rescan on the user side.
+> > >  	 */
+> > > -	igt_devices_scan(false);
+> > > +	igt_devices_scan(true);
+> > > 
+> > >  	if (igt_device_filter_apply(filter) == false)
+> > >  		return false;
+> > > --
+> > > 2.47.0
+> > > 
