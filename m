@@ -4,61 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB166E7718C
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 16:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFAE1E77188
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 17:05:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8387410E229;
-	Fri, 20 Dec 2024 16:22:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 52E7410E2CF;
+	Fri, 20 Dec 2024 17:05:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U7jPImsV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DQ9Jsf57";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4F410E118;
- Fri, 20 Dec 2024 16:22:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1AC910E2CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 17:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734711767; x=1766247767;
+ t=1734714329; x=1766250329;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=uxsCXHXUW38cVzIajkZGcy15PRnyf07Xih4TcmpjH0o=;
- b=U7jPImsVt+Y7fqu7331KIuN9gWPK+oJFJ8WPABwfkB98GQwJGCpZ4S81
- KO33ck3ZoR+5150e0M3hbv2MPXrcVStBTfK5U1n2apdvb/ulNsVkuG1VZ
- Bj5K+cmV25GrAso5Za3JbS3pU6uy/hRMvvlkI92pc9uh1JEywmrqmKKq5
- y/IMJZb1DzftMFkV/fzY1yrkcl/Wqylg0ByQ93EFkzEnfD7ctz4XcwNnQ
- ibYUaiPHkULQuJWAAHbjnE4BFbgB7B+Eu77GmetQrcTNHFUfRodGo5w3u
- sN2lOMHFMKnS8thZ+zt0jXnXwulTLuJdS8g+wxGOAlsDkD3W8w7gRJxto A==;
-X-CSE-ConnectionGUID: X6i2ZTfAQ/qvswg3oKr6yw==
-X-CSE-MsgGUID: 2MoppoRVRZWZho7NAiubeg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="38948212"
-X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="38948212"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2024 08:22:47 -0800
-X-CSE-ConnectionGUID: C0HhWJ6eR3evM2t720iHyA==
-X-CSE-MsgGUID: r5IIMsMuSMulY9UskRCTgg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=/kvOACRyfB1iVEEoxHQQnwSyKecpopkTh+N+cj5jnCs=;
+ b=DQ9Jsf57GcH7qPABK8ZHco3E5xULDlTWmzyH9bKAbUwkbe+ymE/4QxE1
+ o8fLvfgj7UXntEDRjOkj+aap16+cTpMEpD3VtabKjyB64mBxtErcf2YQe
+ 3XXhpkhvu/B6/h5Z7r0lgNAx2wk9wOI9a0dq2+ymXMqX3Q6a+1RLoLZg3
+ ZpnuAmGpIkIgAAxjdC7ZSm8cgIVC+2cvFDI74SCXSSUVGX3ifGHJUO5hz
+ /9GHymm4L3W3HiwXDL8K+Nlynpx0cTV83QW9JmXNzM99Ey65t3Y18kCtH
+ H8T7JEePeb4aD6F/O8D8Lwd0NNCfVaanSU8k6GpxwlMD3ZTnFTKRdJsM1 g==;
+X-CSE-ConnectionGUID: ozufG0WTQNi8N4f9LLeFAQ==
+X-CSE-MsgGUID: tPCOjiULSvazQJD8w5P2nA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="34983778"
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="34983778"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2024 09:05:27 -0800
+X-CSE-ConnectionGUID: jLyiaHPeQpSIqy9QhXZIaQ==
+X-CSE-MsgGUID: jfDhDdeWTpGNqBGTgp5nLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="99383329"
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="129372768"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 08:22:46 -0800
-Date: Fri, 20 Dec 2024 17:22:43 +0100
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 09:05:25 -0800
+Date: Fri, 20 Dec 2024 18:05:22 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXI=?= =?utf-8?Q?e?= for
- tests/intel/xe_drm_fdinfo: Do not destroy NULL xe_cork
-Message-ID: <20241220162243.z2kwwzldwdmcpp5p@kamilkon-desk.igk.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org, Francois Dugast <francois.dugast@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, ryszard.knop@intel.com,
+ jari.tahvanainen@intel.com
+Subject: Re: Add env info to igt_runner (was: Re: [PATCH i-g-t 4/4]
+ lib/igt_device_scan: Fix scan vs bind/unbind/reload)
+Message-ID: <20241220170522.3nevqraywqmhlix2@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  igt-dev@lists.freedesktop.org,
- "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20241218160808.65340-1-jonathan.cavitt@intel.com>
- <173456459155.212155.398582714929753119@b555e5b46a47>
+ Francois Dugast <francois.dugast@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, ryszard.knop@intel.com,
+ jari.tahvanainen@intel.com
+References: <ujidcfwjkj5mvdc7nsfhbl76gk4vswl7ibqkwy24xieiwlpfer@ly57qp226qsh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173456459155.212155.398582714929753119@b555e5b46a47>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ujidcfwjkj5mvdc7nsfhbl76gk4vswl7ibqkwy24xieiwlpfer@ly57qp226qsh>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,111 +83,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-12-18 at 23:29:51 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Lucas,
+On 2024-12-19 at 11:24:09 -0600, Lucas De Marchi wrote:
+> hijacking the thread and adding some people to Cc for the igt_runner question.
+> Previously In-Reply-To: <rnw3q6mhthnwyvowvszr2gllyjtbb2mozk4em272xlmkvm7pyl@szbhtg3sd7d7>
 > 
-> Series: tests/intel/xe_drm_fdinfo: Do not destroy NULL xe_cork
-> URL   : https://patchwork.freedesktop.org/series/142799/
-> State : failure
+> On Thu, Dec 19, 2024 at 10:35:00AM -0600, Lucas De Marchi wrote:
+> > On Wed, Dec 18, 2024 at 07:34:19AM +0100, Zbigniew Kempczyński wrote:
+> > > On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
+> > > > There's no guarantee a card will end up with the same device node when
+> > > > modules are loaded/unloaded and drivers bound/unbound. There's some
+> > > > fundamental issue with the igt's the way it is and it's also puzzling
+> > > > from the logs it looks like the device vanished from the bus, when in
+> > > > reality is just the SW state out of sync with what the kernel is
+> > > > exporting.
+> > > > 
+> > > > Re-scanning when trying to match a device is not expensive compared to
+> > > > what most tests are doing, so simply force it to occur whenever trying
+> > > > to match a card.
+> > > 
+> > > I also should comment the above. It is generally true, but I've noticed
+> > > getting attributes might be expensive. Even it may take up to few
+> > > seconds, that's why I've added some attributes we don't fetch from udev
+> > > (see is_on_blacklist()). If I'm not wrong getting 'config' was a cause
+> > > to limit attributes we fetch.
+> > 
+> > why would we get all attributes and exclude some?  Shouldn't we get only
+> > the attributes we actually use? AFAIK this logic is basically used by
+> > --device/IGT_DEVICE, right? What filters we normally use?
+> > 
+> > I usually pass the pci slot (because I know that won't change
+> > dynamically and cause surprises). Apparently CI passes vendor/devid:
+> > 
+> > 	export IGT_DEVICE=pci:vendor=$1,device=$2
+> > 
+> > (but it seems to vary depending on pipeline)
+> > 
+> > Some devs pass the device node directly too as in a lot of places
+> > there's only ever card0 possible.
 > 
-> == Summary ==
 > 
-> CI Bug Log - changes from IGT_8164 -> IGTPW_12346
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_12346 absolutely need to be
->   verified manually.
+> Could we dump the env and args somewhere so we know how igt_runner or
+> individual tests are being called without looking at the CI piepeline
+> sources? I was thinking about either having that info in the stdout
+> output of igt_runner or in the json. Another possibility would be in
+> dmesg, but I'm not sure it's a good option. Thoughts?
 
-Not related to change in Xe test.
+Not only that, also parameters used to start igt_runner,
+what was in .igtrc file (if any), current wall time,
+testlist prepared to run, free memory and free disk.
+metadata file for igt_resume, it will enable with prepared
+teslist to re-execute run.
+
+Also kernel config from /boot ? Or should it be in shard
+run info (avoided duplication).
+
+Maybe some other info, either igt_facts or lspci output?
+Should we ask also display team and our CI?
+
++cc Jari from display
 
 Regards,
 Kamil
 
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12346, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/index.html
+> My preferred option would be to have e.g.:
 > 
-> Participating hosts (45 -> 44)
-> ------------------------------
-> 
->   Missing    (1): fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_12346:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@gt_pm:
->     - bat-adlp-11:        [PASS][1] -> [DMESG-FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-adlp-11/igt@i915_selftest@live@gt_pm.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-adlp-11/igt@i915_selftest@live@gt_pm.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_12346 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@i915_selftest@live:
->     - bat-adlp-11:        [PASS][3] -> [DMESG-FAIL][4] ([i915#12435])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-adlp-11/igt@i915_selftest@live.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-adlp-11/igt@i915_selftest@live.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@i915_selftest@live@late_gt_pm:
->     - fi-cfl-8109u:       [DMESG-WARN][5] ([i915#11621]) -> [PASS][6] +132 other tests pass
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-> 
->   * igt@i915_selftest@live@workarounds:
->     - bat-arls-5:         [ABORT][7] ([i915#12061]) -> [PASS][8]
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-arls-5/igt@i915_selftest@live@workarounds.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-arls-5/igt@i915_selftest@live@workarounds.html
->     - {bat-mtlp-9}:       [ABORT][9] ([i915#12061]) -> [PASS][10] +1 other test pass
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8164/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-> 
->   
->   {name}: This element is suppressed. This means it is ignored when computing
->           the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
->   [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
->   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
->   [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+> {
+>   "__type__": "TestrunResult",
+>   "results_version": 10,
+>   "name": "xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e\/bat-bmg-1\/0",
+>   "uname": "Linux bat-bmg-1 6.13.0-rc3-xe+ #1 SMP PREEMPT_DYNAMIC Thu Dec 19 14:40:51 UTC 2024 x86_64",
+>   "time_elapsed": {
+>     "__type__": "TimeAttribute",
+>     "start": 1734621126.8734231,
+>     "end": 1734621288.5994539
+>   },
+>   "environment": {
+>     "IGT_DEVICE": ...
+>     <any IGT_* env var>
+>   },
+>   "argv": [ ... ]
 > 
 > 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8164 -> IGTPW_12346
->   * Linux: CI_DRM_15864 -> CI_DRM_15865
-> 
->   CI-20190529: 20190529
->   CI_DRM_15864: e9a5d74b7f60fe6f7d55ebe636ff871214b6caec @ git://anongit.freedesktop.org/gfx-ci/linux
->   CI_DRM_15865: d8f0c44e2ed948dcc45d04a0dfa83612995a702b @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_12346: e0bdee76b128153a559de450199ebd3fec2ac24c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8164: e9d9934c7c6dc6878792d82424fc928e7f6996cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12346/index.html
+> Lucas De Marchi
