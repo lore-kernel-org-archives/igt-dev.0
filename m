@@ -4,74 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23D2E7718B
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 17:31:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 678A0E7718B
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Dec 2024 17:37:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 819F710E3AF;
-	Fri, 20 Dec 2024 17:31:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0ADF510F009;
+	Fri, 20 Dec 2024 17:37:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GdqsHHBl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CG42BY5+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E65C10E3AF
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 17:31:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6632C10F009
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2024 17:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734715871; x=1766251871;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=s+MRztdGokLK7aepQGZCOgIkP//0NJehUCcP5lu3cMc=;
- b=GdqsHHBlRQNl43VObJ1xtkZRs1PNZ2oMg22KYd+nDxhAG9/blx3cZXjB
- fW9PQ6URtJJo46VijyBdSXKjtEJQvpG/LruyQulX0A+Y+eQR2+nULUaic
- 3x/1ECDuXCiD44B71SJGEJ+Ad4q3EoVQNU6opiUM2rYN2+6MBQh6mTVy9
- OLCNwN8Y/eN4u0u6stlzyRhM7FXBzhpe5al0nFtDTVgEFCDfntY21BSws
- ZV1cO3God4SSxd5HcILaIthS74KuhVw1VVnRPbLUlFqahO2Zn/KSMDL0M
- mIXCEXo2NUmGYYGAQTrRs7+QLxhXDGcDZBadmQjyMMUMDhNgoiM07M3wV Q==;
-X-CSE-ConnectionGUID: VTCb9dqYTW+ylN/VqpLhAA==
-X-CSE-MsgGUID: lep9zE3WTPu60SnSEcXjtw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="45961658"
-X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="45961658"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2024 09:31:11 -0800
-X-CSE-ConnectionGUID: mjzwDymOTHGoIHK5/DdiIQ==
-X-CSE-MsgGUID: gTnQfvusTLm1DlVPtJAGcw==
+ t=1734716266; x=1766252266;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=Oy6Oiyxhs6J8bKsPKJOYvRWHGv7qeT97XC2VGeg7vWA=;
+ b=CG42BY5+/viFMxhCFIZWFN22GPlxl6dmQVb3V0ICAQwe2art2nzORveF
+ tn6lPGtchoYbfCNxdp82fWa8RhgTtOYyeEO4wTmBe89FgI4N+Q4pD1Pq7
+ QqMzXW7X8ekfFZP5ZFVTIWn/2MbR9ZSRZ7qiGOSFk4Csp3ps/wzQER4df
+ XN6NcO1cEJCkMy/EYpQIVyR2fLFxVZkR9u3oIYPthoF5ucKx9nGwiWZhN
+ 05qLSpswNtCOkvJH+vrqCT1bHnl2WyMh4WMJfYwS2dqBHWA2vJDGIULCM
+ YhSsyofoigIut5aN3VGJqCgryefgRILdMi+oomPXv1kV1fS/6ZM8Df/sZ A==;
+X-CSE-ConnectionGUID: XSfBbgfVREOC6LC7Y8W96A==
+X-CSE-MsgGUID: Jvkh/C4ZQm6EzN8HKvpC1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="22862436"
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="22862436"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2024 09:37:45 -0800
+X-CSE-ConnectionGUID: Q561DLDjQEi5HXZUdcNm3A==
+X-CSE-MsgGUID: NNnWOmSBSmeOp0FRSr4Phg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="135919995"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2024 09:31:08 -0800
-Date: Fri, 20 Dec 2024 18:31:05 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- nicolejadeyee@google.com, seanpaul@google.com,
- jeremie.dautheribes@bootlin.com, markyacoub@google.com
-Subject: Re: [PATCH i-g-t v3 3/5] lib/monitor_edids: Add helper to print all
- available EDID names
-Message-ID: <20241220173105.caot5qotjtxusklz@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- igt-dev@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- nicolejadeyee@google.com, seanpaul@google.com,
- jeremie.dautheribes@bootlin.com, markyacoub@google.com
-References: <20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com>
- <20241122-b4-cv3-02-monitor-edids-v3-3-1798f58167ef@bootlin.com>
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; d="scan'208";a="98619114"
+Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
+ ([10.125.108.128])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2024 09:37:44 -0800
+Date: Fri, 20 Dec 2024 11:37:39 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org, 
+ Francois Dugast <francois.dugast@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>, 
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, 
+ ryszard.knop@intel.com, jari.tahvanainen@intel.com
+Subject: Re: Add env info to igt_runner (was: Re: [PATCH i-g-t 4/4]
+ lib/igt_device_scan: Fix scan vs bind/unbind/reload)
+Message-ID: <lhhpaph27pearysh6cjbujywofndoo634vcy4duiszqcarzrsx@t5ft2rrtbbfo>
+References: <ujidcfwjkj5mvdc7nsfhbl76gk4vswl7ibqkwy24xieiwlpfer@ly57qp226qsh>
+ <20241220170522.3nevqraywqmhlix2@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20241122-b4-cv3-02-monitor-edids-v3-3-1798f58167ef@bootlin.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241220170522.3nevqraywqmhlix2@kamilkon-desk.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,66 +77,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
-On 2024-11-22 at 16:51:36 +0100, Louis Chauvet wrote:
-> During the chamelium v3 configuration, it may be required to know the list
-> of supported EDID names, so add an helper to print them.
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->  lib/monitor_edids/monitor_edids_helper.c | 15 +++++++++++++++
->  lib/monitor_edids/monitor_edids_helper.h |  2 ++
->  2 files changed, 17 insertions(+)
-> 
-> diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-> index 4d739937ede1e8f09eb6e8bf225f047d5c3dfd04..9de8aa06a45c164e928ae3821f841414b437eaac 100644
-> --- a/lib/monitor_edids/monitor_edids_helper.c
-> +++ b/lib/monitor_edids/monitor_edids_helper.c
-> @@ -195,3 +195,18 @@ struct edid *get_edid_by_name(char *name)
->  
->  	return NULL;
->  }
-> +
-> +
-> +/*
+On Fri, Dec 20, 2024 at 06:05:22PM +0100, Kamil Konieczny wrote:
+>Hi Lucas,
+>On 2024-12-19 at 11:24:09 -0600, Lucas De Marchi wrote:
+>> hijacking the thread and adding some people to Cc for the igt_runner question.
+>> Previously In-Reply-To: <rnw3q6mhthnwyvowvszr2gllyjtbb2mozk4em272xlmkvm7pyl@szbhtg3sd7d7>
+>>
+>> On Thu, Dec 19, 2024 at 10:35:00AM -0600, Lucas De Marchi wrote:
+>> > On Wed, Dec 18, 2024 at 07:34:19AM +0100, Zbigniew Kempczyński wrote:
+>> > > On Tue, Dec 17, 2024 at 09:13:24PM -0800, Lucas De Marchi wrote:
+>> > > > There's no guarantee a card will end up with the same device node when
+>> > > > modules are loaded/unloaded and drivers bound/unbound. There's some
+>> > > > fundamental issue with the igt's the way it is and it's also puzzling
+>> > > > from the logs it looks like the device vanished from the bus, when in
+>> > > > reality is just the SW state out of sync with what the kernel is
+>> > > > exporting.
+>> > > >
+>> > > > Re-scanning when trying to match a device is not expensive compared to
+>> > > > what most tests are doing, so simply force it to occur whenever trying
+>> > > > to match a card.
+>> > >
+>> > > I also should comment the above. It is generally true, but I've noticed
+>> > > getting attributes might be expensive. Even it may take up to few
+>> > > seconds, that's why I've added some attributes we don't fetch from udev
+>> > > (see is_on_blacklist()). If I'm not wrong getting 'config' was a cause
+>> > > to limit attributes we fetch.
+>> >
+>> > why would we get all attributes and exclude some?  Shouldn't we get only
+>> > the attributes we actually use? AFAIK this logic is basically used by
+>> > --device/IGT_DEVICE, right? What filters we normally use?
+>> >
+>> > I usually pass the pci slot (because I know that won't change
+>> > dynamically and cause surprises). Apparently CI passes vendor/devid:
+>> >
+>> > 	export IGT_DEVICE=pci:vendor=$1,device=$2
+>> >
+>> > (but it seems to vary depending on pipeline)
+>> >
+>> > Some devs pass the device node directly too as in a lot of places
+>> > there's only ever card0 possible.
+>>
+>>
+>> Could we dump the env and args somewhere so we know how igt_runner or
+>> individual tests are being called without looking at the CI piepeline
+>> sources? I was thinking about either having that info in the stdout
+>> output of igt_runner or in the json. Another possibility would be in
+>> dmesg, but I'm not sure it's a good option. Thoughts?
+>
+>Not only that, also parameters used to start igt_runner,
+>what was in .igtrc file (if any), current wall time,
 
-Start with '/**'
+does CI actually have an .igtrc? We can add, but I'd prioritize
+things that are used and that we don't have annotated anywhere (with
+easy/public access).
 
-With this
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>testlist prepared to run, free memory and free disk.
+>metadata file for igt_resume, it will enable with prepared
+>teslist to re-execute run.
 
-> + * list_edid_names() - Print all the EDID available in igt
-> + * @level: Log level to write the names on
-> + */
-> +void list_edid_names(enum igt_log_level level)
-> +{
-> +	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
-> +		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
-> +			igt_log(IGT_LOG_DOMAIN, level, " - \"%s\"\n",
-> +				ALL_EDIDS[i].edid_list[j].name);
-> +		}
-> +	}
-> +}
-> diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-> index a45dca870eb20f66c9472be6643019d23bc18b9a..04a639f47b49ab176e914f6044bba6769dc84ccb 100644
-> --- a/lib/monitor_edids/monitor_edids_helper.h
-> +++ b/lib/monitor_edids/monitor_edids_helper.h
-> @@ -15,6 +15,7 @@
->  #include <stddef.h>
->  #include <stdbool.h>
->  
-> +#include "igt_core.h"
->  #include "igt_chamelium.h"
->  
->  /* Max Length can be increased as needed, when new EDIDs are added. */
-> @@ -35,5 +36,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
->  struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
->  struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
->  struct edid *get_edid_by_name(char *name);
-> +void list_edid_names(enum igt_log_level level);
->  
->  #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
-> 
-> -- 
-> 2.47.0
-> 
+talking about igt_resume, there may be some issues doing this at
+the igt_runner level: it may not match from one test to another if the
+env didn't match when it started running from when it finished.
+
+1) it may have gone through igt_resume after a reboot (hopefully in the
+    same machine)
+
+2) for shards we slice the testlist and give it to different machines.
+    Ideally they have the same env, config, etc, but that also is not
+    guaranteed.
+
+    Checking random tests in https://intel-gfx-ci.01.org/tree/intel-xe/shards-all.html?
+
+    https://intel-gfx-ci.01.org/tree/intel-xe/xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165/shard-bmg-1/igt@kms_async_flips@async-flip-with-page-flip-events-atomic@pipe-a-dp-2-4-rc-ccs.html
+    https://intel-gfx-ci.01.org/tree/intel-xe/xe-2404-26e6464dff2b3fe53049bd3b6e426cec43beb165/shard-bmg-1/igt@core_auth@basic-auth.html
+
+    Do I understand it right that we simply have multiple resultsXX.json
+    for different runs so it's fine to create it at the global level?
+    What about a resume (1)?
+
+>
+>Also kernel config from /boot ? Or should it be in shard
+>run info (avoided duplication).
+
+may be too much as we could extract it from the kernel used by CI
+since we have CONFIG_IKCONFIG=y. If we want igt_runner to collect this
+info and save in the results, then it should probably grab it from
+/proc/config.gz to make sure it's guaranteed to be in sync with the
+actual kernel being used.  Quick check on what we'd need:
+
+$ # simulate grabbing the /proc/config.gz and piping it through base64
+$ # to be able to add in the json
+$ ./scripts/extract-ikconfig build64/arch/x86/boot/compressed/vmlinux | gzip | base64 > config.gz.b64
+$ ls -lh config.gz.b64
+-rw-rw-r-- 1 lucas lucas 70K Dec 20 09:30 config.gz.b64
+
+
+Humn... I would concentrate on things that aren't currently available
+anywhere.
+
+>
+>Maybe some other info, either igt_facts or lspci output?
+
+for lscpci output it seems there's already a TODO comment that nobody
+ever tackled :). And "Options" may is a reference to what we are talking
+here wrt env and args:
+
+$ git grep -A2 -B2 lspci  runner/
+runner/resultgen.c-      * Result fields that are TODO:
+runner/resultgen.c-      *
+runner/resultgen.c:      * - lspci
+runner/resultgen.c-      * - options
+runner/resultgen.c-      */
+
+Lucas De Marchi
+
+>Should we ask also display team and our CI?
+>
+>+cc Jari from display
+>
+>Regards,
+>Kamil
+>
+>>
+>> My preferred option would be to have e.g.:
+>>
+>> {
+>>   "__type__": "TestrunResult",
+>>   "results_version": 10,
+>>   "name": "xe-2403-995cd30a4e222b6a7b4b40c36219e4937fd7109e\/bat-bmg-1\/0",
+>>   "uname": "Linux bat-bmg-1 6.13.0-rc3-xe+ #1 SMP PREEMPT_DYNAMIC Thu Dec 19 14:40:51 UTC 2024 x86_64",
+>>   "time_elapsed": {
+>>     "__type__": "TimeAttribute",
+>>     "start": 1734621126.8734231,
+>>     "end": 1734621288.5994539
+>>   },
+>>   "environment": {
+>>     "IGT_DEVICE": ...
+>>     <any IGT_* env var>
+>>   },
+>>   "argv": [ ... ]
+>>
+>>
+>> Lucas De Marchi
