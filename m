@@ -4,83 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E26EDE7718E
-	for <igt-dev@archiver.kernel.org>; Sun, 22 Dec 2024 17:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC6F2E7718B
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Dec 2024 06:50:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4301D10E1F8;
-	Sun, 22 Dec 2024 17:47:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 720B110E417;
+	Mon, 23 Dec 2024 06:50:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="R1k9D2B6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bJMmu/aR";
 	dkim-atps=neutral
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
- [IPv6:2a00:1450:4864:20::42b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D832610E231
- for <igt-dev@lists.freedesktop.org>; Sun, 22 Dec 2024 17:47:42 +0000 (UTC)
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-385d7b4da2bso3059171f8f.1
- for <igt-dev@lists.freedesktop.org>; Sun, 22 Dec 2024 09:47:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1734889661; x=1735494461;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=r/Wh7dlsTtSyOie9T2Y+OYC2xDaQ+RuOrcEN30bMdgw=;
- b=R1k9D2B65XwaUvugdPvwW0U2IaRWpSJBZzB5ygp6R9a8maN9kY6xFGllQeUW6qtcvt
- qsPgWkLzEcSdaCchODTiyaFk2k7Ra0UsVcivQrjGrXQ17w1pyCEyZRcVsUfgREpfXDnq
- 39kCvkReTmmBalim0YFyi//blIGhRfe45CFN9x66renokV1RLBIRZaVNCXASc6oAOo8n
- r0VQECHtD1qQ8+K8kytM9cPSp5ymlMkz6GmvYwcGsNYJdgPUkTFVdc+6dRXaiDvV1ENu
- Ft+IJ8u+Binc6shxFgipcn/btH1YzF4onPBM6HrBqF509VmX13H1V/Vpa7T5ETsXWgmh
- J1/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734889661; x=1735494461;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=r/Wh7dlsTtSyOie9T2Y+OYC2xDaQ+RuOrcEN30bMdgw=;
- b=EnwFczgUPKwSPIfaL+T0i6CrkOm7233v47dPkEVd5FCUJo1ts6ID+M4XD/KmxUHt+J
- FoumkzuZOGuR79yT7iiAiRM68MiueAKTO/dcWJDYgDR6hpJynm7r/oycXLQCF00Jm6Hi
- 17SJgsGVUL7e4rvspbz4fi3esOMAp3sqNCyZZ/tLmhKrHfh2Jrxk01DQ/6+eTE9pRKtA
- DpWA5mWz75RAReXc0+P8A9Tf9Fl+CYKS1tmrL4jPl0ThofgxshDU48cAqD3n1Hb03+xY
- J5tger/3uscEFt3EjEtxwFrPc/vT7+Xis9l7RT31BYdeys/VMP7F1tiVbE19Kq6xYcGV
- hCVw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWpB7Qa40f9cef48XX+J6atuDLvDRoV4ZRtyqmlhBDPyqxJI6ZTvaO+psXaGkUXG+fHmVcRDWEf@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YxnVE95HFMTMsZ74O9zQqSCoRJgVhHEdhcTKl4UqBG6je2kTdRY
- 8gNaDNMGizuMGXavNuh87PRvSPATdMQGVJHWOHA3KauITQkeHz7l+tOLeIJ2wjw=
-X-Gm-Gg: ASbGnctDuk5OMzer79A7/RDUkKIK7F72cFSijSNaNBl8fwhkAHwQfk/YGa1mncRPwwb
- IFnRLsbD/W5LMAk2ABKTGzPKScWeZeWJFvWXlg2rZfCo+aqU9jQY3S9JYNjleXQMZHEKM5mgXK5
- aTDKc0YM8QCSa8B2RNouWEEevMp4Tz1jWkNiX7724ZVBrwxpcjNbvxknx0iAxh0NmaZ7RzP6JzY
- JfdyHqSx77gdy58ItsJ60738YntrurDK++FbvfxODFaRfOVb71VUJhCChiLxoDGLeubQDyL
-X-Google-Smtp-Source: AGHT+IHJL+6yNjathF2Ee9lE1rkdeYP9xHaeXikSysNI6MlFHislk/kp0Zrr2gSlMiO63k3f6I9rRQ==
-X-Received: by 2002:a05:6000:1886:b0:38a:1ba4:d066 with SMTP id
- ffacd0b85a97d-38a221f3228mr9229094f8f.27.1734889661029; 
- Sun, 22 Dec 2024 09:47:41 -0800 (PST)
-Received: from [192.168.0.101] ([90.241.98.187])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c848a47sm9269719f8f.62.2024.12.22.09.47.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Dec 2024 09:47:39 -0800 (PST)
-Message-ID: <681ada21-204a-47b3-b071-418e02455012@ursulin.net>
-Date: Sun, 22 Dec 2024 17:47:39 +0000
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 530BA10E417
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Dec 2024 06:50:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734936620; x=1766472620;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=OrdiG3xrdl2jn0OKLeKqpjn4mJi71i40K/785JMUqeA=;
+ b=bJMmu/aRbEBC5CSjrNFzigqy1r/pc6MVszdjENU+oB9WZuFJYjz8uQXW
+ uZ1FVJBdcKDMoYlfdHOllpesIG6GTd5lOJEK2dqyfVnrDGHquqDxY+Q28
+ 9dxFGS7LdgOg8H6KbDSDlFmoYBqh/XKjaLHDHcaZ/NJEgToLYwinpe7s2
+ cKKZBXBwFN0V6wZmCSy5lJFL0Nin4b9xKCQMNpRToiFmf2a7Soyc+zBee
+ ygi8WzZm9D7bnHNxwaJDQINrK49fWLssLFf1VQD8w6kFppywWg9bcAnI+
+ 2cKb+y6oCJBpwHTY78NY6OcrbbDdFdQIvwhQbFh94sESDB6LXjhjeb2mj w==;
+X-CSE-ConnectionGUID: r85jGJhsSfeoEhEWCRDZDQ==
+X-CSE-MsgGUID: seLsVuGzQ2ipMt3Plq86bA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11294"; a="39175686"
+X-IronPort-AV: E=Sophos;i="6.12,256,1728975600"; d="scan'208";a="39175686"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Dec 2024 22:50:19 -0800
+X-CSE-ConnectionGUID: qsGetNabTB2sCw7JNRFeiw==
+X-CSE-MsgGUID: 9uv5M6jjTFSfzYG7wkEyMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="99980285"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Dec 2024 22:50:18 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Sun, 22 Dec 2024 22:50:18 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Sun, 22 Dec 2024 22:50:18 -0800
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Sun, 22 Dec 2024 22:50:17 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YXAVAFk9ZDo/2PYwdQuXyGBUtoK2srMPgR2XO5YLQt41MokVKyoHfeLeSofdYfHufj/1OwnREoBqYjKMsmWQ0hDaUH7mOzzGYbUgWG0X7gctXOxGdm+DDVLJCJFeGerIuhyKPmK4p3SO36Oh/BzfkCpSa965WWCxtiD9bXquzxmXZSkkEV+oPjdxTutmFG3PsyCxhHHgMDOTWwq23fzcL7mAv/9vTJnUN9XWyk8mQ4PBnmr+qI7TUpm6rW+4joA7TCJ8DeU6+/g6h5VccEZqLPCobj5nD3PvKPaiPL3nE/sqFmwKaicqQanmYlBPGxHEEb7cREymPXCTwKlGgNIJoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DhZCzdhnuNuMlKMRfwfTzxJxxxBiA7n/Iumr0OXDZJs=;
+ b=FVpg7yUBvIBiBN+1EczErOCyzsX/WTVCmRooEkh5TDz/cxhfzXrNIQZBjwPRwiRTtttPiS/OvcSkRCwpchn/IyFaMqOfHQhLNs+dSV50xM+d97EdsOoXjByunBRAkF0Ytg+iUXteyT4OOemeaMuu035LTh6PGyb2TxH7i1JvAoeyIHNd0u0x6wKOtxK2pDc7HFCDmH07fKSf6OkWRkpv8UP0aiRGEuzStoM0vi33feXjN4x89kFVm1fwRuxek3Vi6PAEMsU+/tzlrVcjYLtg9QT8xDpUQvqVTcuoKU4ssRWeiJqwg1FK4cq8CThfli5KVmFxsiluVCyreymzLgA9VQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by DM6PR11MB4724.namprd11.prod.outlook.com (2603:10b6:5:2ad::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.21; Mon, 23 Dec
+ 2024 06:50:12 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8272.005; Mon, 23 Dec 2024
+ 06:50:11 +0000
+Message-ID: <d8cdb59f-1a68-49ef-9b66-5508527c159f@intel.com>
+Date: Mon, 23 Dec 2024 12:20:06 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 0/4] tools/gputop: Add PMU stats
-To: Lucas De Marchi <lucas.demarchi@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20241220003734.69174-1-vinay.belgaumkar@intel.com>
- <7d77e830-54c1-42c0-9402-16937697d2bb@ursulin.net>
- <Z2XB1jhvfreb3kME@intel.com>
- <vpa2hxt64wyt3og363grrorkdebintntwrtsv5uvgxput3m3oj@t7yldrdsv7ca>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <vpa2hxt64wyt3og363grrorkdebintntwrtsv5uvgxput3m3oj@t7yldrdsv7ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH i-g-t] tests/intel/kms_cdclk: Refactor mode setting and CD
+ clock verification
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20241213060225.2144633-1-swati2.sharma@intel.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20241213060225.2144633-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0112.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:96::20) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|DM6PR11MB4724:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03b2b9a7-1fcc-4fd4-eaa1-08dd231e0c0b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bGUwWFFZV0dpdmVvU21SVHBWRllnNXcwZ3RXU3IzTTlqMGVHWDhnaWx1MU1q?=
+ =?utf-8?B?UnhUalhKZ0NwWnFYSmVhdDVhM3pNY2tFQmNDN0Uvbzk5OWNDVHFpVTBXTGwy?=
+ =?utf-8?B?SU1wSzE1WHU5c2xJTDJwcmRmOVdRaCthSlNibk9PUnBnS3dSYjdqQVg2d1Ay?=
+ =?utf-8?B?SlU1M1dOSVE0aXc2Uk5vL2xqUTVLVnJ0T0ZQZFo5ejZkL2lXSWozRVJvRERF?=
+ =?utf-8?B?Z2w4ck9yUFZuenVvY25STVVJczI2RGVJYzUzcEJZYnJnL1VtZkJkSlRzNEpB?=
+ =?utf-8?B?QXk0VHR5Witaa1FvTGllNnNXVU9DbjBCM1N4RjB6SzR5WWlyN0JRWitodGdV?=
+ =?utf-8?B?VUp1ckw3WHNwcXoySGtLd0c3TFB2N01wMTcwc3Brdm9LK0txTE1ybWZSbDV6?=
+ =?utf-8?B?Uno3azhRUlN2SnBvL2pPWDhiQkNYRmhSUE92NWRzdVlvRnRjdnBjLzFGM0xR?=
+ =?utf-8?B?S0YxWXU3UlVZaXdtWVdsODJ3YkQ2cncrU3lUOUlzd3hDNFhUdVNXc25CWFM1?=
+ =?utf-8?B?Mk1nTXl1MEx1VTNldWxLQ0s2TWd1L2lZcGxEN1AyblVvNExJdzhKNkFUN3VD?=
+ =?utf-8?B?WWN3dG1IeWpuZjdKV0RVaHZpejFLd0Z0OUJnOUtSZkJsY0drQnNGVXRXTkli?=
+ =?utf-8?B?RE9hMkNxbWxsb3Z4UExxRmp1YTdqaURMNDFxV3FoVDFNUmlzUjRIWVltaFl5?=
+ =?utf-8?B?a0lBc2hTZi9yanFqZ3dpRTFBdFdSVGQ1Qk5TQ20wbVFqWWc1Tk9PVlV6Z25n?=
+ =?utf-8?B?MDJ3bXhUYzBmTWJwNDRObFhQN3REV3pzRTJOaXRkdjRKRThtRnZsQ2JYbVhB?=
+ =?utf-8?B?NTZNTllOSXk5V0pTbHpaTVE5NXdyNWZGbExad1Bnd01xenk1Z0VydEhYcUtD?=
+ =?utf-8?B?M1dqTDJ5OElkTy9iTXkvY05aNmFkYjltQSt4QmVGMHc4MlVSSHJZQXRqWEx1?=
+ =?utf-8?B?WnJ5T2FHamQ5TktSUG9iV01id3paWVlkZG02bVQ2RW1iUGV2bTNvNzA0cFJh?=
+ =?utf-8?B?SUNybjlwemErVTBDdjhwcUVPNnRtSlVlUmluRWNUMW95RjEzbXlrRERXcnBR?=
+ =?utf-8?B?RStKdmlVVnQ2WFY3cTFiTWFxTm1wdkl2SkpsZ2hhNmdXcDQwbGVLaUs4aytD?=
+ =?utf-8?B?Y1k3UVIxU1M0WGFoR2ZrY0wwbFRlWWRBNDl2dENKR21WazhSUUdGTU8xTmRa?=
+ =?utf-8?B?VUY0cUdMcG1kVlNZdlc0cWNwenJZeFBOdGE2cXBNcHppNFk0OHJoTmc0bER0?=
+ =?utf-8?B?QlllbnFlMmtJRWd6ekFWV1VDU0FnOUNSSDBER3h4eFZER2ljM2ZWWWgrS3NK?=
+ =?utf-8?B?TThybFJuMFlOdFN2RnlmNnRWSmhIRU5Cemt3U3A0T0F2WDVGOTlRdmdUN0dn?=
+ =?utf-8?B?OGovN25DcW4rVHB1WFJQcTFha3lVb2g4OFZvRVhWcXBKOFZtdUkwVWNyOHBG?=
+ =?utf-8?B?dGFrSXVCd1lscnUxMS9MOFpHYXVlbjAzb0gyWXJDWUgvWnZBSXU2U2Z1d2dR?=
+ =?utf-8?B?ZDcvN3ZuUHhHRkFsWnlWYTlnTHczdkRFT3grMDdrRDQ2aGhqVjNuZXdvQTV4?=
+ =?utf-8?B?SFFwUlBBMzZQazJOeTh6SlA5eEdEeWRld2VLczI1ZUZ1UDZ4N1lKc012RmZE?=
+ =?utf-8?B?MDJ5M3AvNkxueEpKTXIwcEw5TjRDQVFPM1FlTExGc04wL09QVkM3d3pXS2d6?=
+ =?utf-8?B?OUpXSXk0Z2RmVWNuOHZVaW96ZUFEd01WMEdVMlBjNWhOOTJYK0xiTzNUeDc4?=
+ =?utf-8?B?Y2RiM3hFNFNLY21hSUljQVQvb1FSZUt0ZmVRVXNYMTM5NXFkT3plM2VLRlVU?=
+ =?utf-8?B?NUc1dnJ6Vm1VK1plaUdyQWduaGpsRHJxclJyZFBGNG1qMy9tNzRmVU5oK0Fi?=
+ =?utf-8?Q?G1BDkBCypslkb?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?czE1Y2xpRFo1UXVOZ2dWZ2FMZTFxcXJ4Uk9GZ2NVY3FFNTVZSHJsRnpwcldK?=
+ =?utf-8?B?U05rT0FUczhnKzhVU1JCaXBMbG95VWlydTQycUF0ek80V1JPL1hjVFdaZE1v?=
+ =?utf-8?B?MWdwUTVwSlQ3N0lFbGovTzllRTJVUys5cENGQTN6WWI1cWJ1ckpURUVhVVdL?=
+ =?utf-8?B?SG5hZzdYQ0ZwRFBtZTNjeEZDb0NHWXZMSDFlcTU4ZkZqL09EbmdNVFd3SVpm?=
+ =?utf-8?B?UjFPOXBMSy85UkFwaS9FWHlZaC9ZWm5sWFRGcW0rdHNNcEZUaG90dFlLZDBY?=
+ =?utf-8?B?T2pCRUQ4bEw3UHVQb1Bzd1dXOHJjbDYrRXpnMlA4ZHRPVlpZNzZEeTV5c0NI?=
+ =?utf-8?B?YUpzc3V4amwzaU1kMmVhS2g4enJmZTBkU2hSc0U4cEtQbjRYOGhUYzBqNkJy?=
+ =?utf-8?B?d01KYk8yQ0lIZzk4R1lXTkRJWUgyWmdvZ3VVZVAzMnhDM3JsZlc1MHNxVUlV?=
+ =?utf-8?B?dUtUS0lRdExoRjlaVk5xMEFuWXhHT0k2ZUt5NnlxRHBZdUVnSjVTT0E2T3g3?=
+ =?utf-8?B?QW5PZUlXZkRMdGNZbWNoVjBWcjMwNmlDSncwOE9qcUp1ckpRYzBYaERNNzZu?=
+ =?utf-8?B?d3pYOGt0RGRVYkpqUlJkUmIvUjMvZUVlSi93ek4zMzVpZHhIKyszMWpYL2Na?=
+ =?utf-8?B?dUZORmhWQUlnV1R4NW9nbGV0RnlMK0RlVWl4a00rTnNmcm5YQWx6MVRwU1Rv?=
+ =?utf-8?B?QlhVMG0yNldrcHBQbXVDSktocHZiNU00SE5SUE1zUmpJUERwZld2RSt2SUJV?=
+ =?utf-8?B?ZTIvWStTdktKS3U2QVpKc1k0V2I1ZWJYbk5qdEFydUlYUGtoQm1CQnZlS0U1?=
+ =?utf-8?B?STBDKzFJV0pDS2x3THNIclFwQ1FzUmRHMWtycHo0NU9RcEhZeGFXL2o4L3Uv?=
+ =?utf-8?B?Qk1iUGtkakRRbWVSUzM2V0FKRitNUXFNMEcrMVkzSkR1Ri9lNGZyR1ljbzFT?=
+ =?utf-8?B?RWV0OGVjbFROWlRzZ0Y5QWtuZGhSeDh6SFlQaEtoK2huUUJlSGdzSThUYmlD?=
+ =?utf-8?B?MDRxaUY5QzArSHBHR21NcHhWb3c2UlpHb0kvV0dsVmNxaTNQTjFMMVNZODlM?=
+ =?utf-8?B?Y25iNjgzZFFaak00YVJNMlBRSkRKMGNuQWtHMWRPWjRLeVJYVDBxL042cUJh?=
+ =?utf-8?B?VXQ1VUthN3pQVDlwSDdTaE1SY2ZMN0M0WTU4QnNqTEZtUXBwTFZaRDNYdFhi?=
+ =?utf-8?B?UmM0dlA1U1lqSlhpaFlpSGJIbGNud2xlUWk1NFF2YitPaEt1WHcxYUVUVWZ3?=
+ =?utf-8?B?UUR0TEVDZ2Z2K3VOOXhZejZ1TmtaVzNDSFVvVkVkc2wzdkVreVh1K0pVTWh2?=
+ =?utf-8?B?c2xtWW0rQ1djYjNLcDZoQS9MdWZqVVpWYkVjSTVvS3htdi82akJhK0Y0b3Z6?=
+ =?utf-8?B?b0Z0K21PZnp1UGJaUlgwQWdQb3JTT1gvZGlIdjhFRnNwdG1ZL0RrME9TeUth?=
+ =?utf-8?B?SWc3TkhmWTRzNXZpZlpMVExrT2lNWGpEaHh5VEgwcktYN3FYY1VHa242VGZO?=
+ =?utf-8?B?Y21icjhTVWU4bTRCM1B2Vlp4MzJmYndGZkhjSlhHa0o4QTVtYVhEd3VrQXli?=
+ =?utf-8?B?SnAzTzJBWkdXekp2RUU0ajRZTUQrSkpTZ2h0MGZBai9MRkJvdENieG1hZzJz?=
+ =?utf-8?B?R1BWQTJob2FUbUcvaVRSYzVFNVBHYzhDVDZNbmV6QzZKcEVGVy92cSt0aXU1?=
+ =?utf-8?B?WUx3TTNLcDBNSlpIRER0MWxKcVJYMzdKS1EwUGxkRldzUUNnbFFUd1ZKb084?=
+ =?utf-8?B?S2xrdTRVbTdrUTMyUWYxbVJRSERRUEdjODk1Uit0Q2lBZWlzRUEyc3R3ZlZV?=
+ =?utf-8?B?VUtudHkyREFSY3NqT2JHOTNXbGF0ZWh5aTVrMWx6cE8xZEpsc0drSHdlRGdK?=
+ =?utf-8?B?VmdwbkkrUnF1RlQxVXlLVUpjUmlkbmRNQ0loVllqNjlqbFhsaFhkV2tEU2JU?=
+ =?utf-8?B?NllzZDdEczlRcVArNFp2blIwVkxzTlVSRXZPVEsxcTMyN2ZOcndua0t4bWF4?=
+ =?utf-8?B?UjhJaGV0blNVbkI1Ym11dWd6aThjZ0ZxWmFiQmpJc21Xb1haZEFlSGwwdUNs?=
+ =?utf-8?B?ZFpPWVczMEFPakdxMU1yMkl5ZkVwUFc0KzJhbGxyQXE2RjlLcEl0SVo3N084?=
+ =?utf-8?B?OTU1TXg1T2Q2VE8vVVhuR0FOL3Z3Qk5ReCtUK09SSGk1Y1ArZVBHUDU1OGV4?=
+ =?utf-8?B?V3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03b2b9a7-1fcc-4fd4-eaa1-08dd231e0c0b
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2024 06:50:11.8271 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qde7n1GTBuGzmlDUJdomfDiLXnTTkW28bg4AWjp6QG9pSKCYtdKHuTYJnXgXrHdseBv+9sVnN4dgcw1omaRKOdAZx+1KEM4gFz/QpZXev4c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4724
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,148 +195,219 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 20/12/2024 19:32, Lucas De Marchi wrote:
-> On Fri, Dec 20, 2024 at 02:13:26PM -0500, Rodrigo Vivi wrote:
->> On Fri, Dec 20, 2024 at 10:15:04AM +0000, Tvrtko Ursulin wrote:
->>>
->>> On 20/12/2024 00:37, Vinay Belgaumkar wrote:
->>> > Use the PMU support being added in
->>> > https://patchwork.freedesktop.org/series/139121/ to add freq/c6 stats.
->>>
->>> Brace yourself for the customary "why". So yes, why?
->>>
->>> Gputop so far was a reference showcase for DRM fdinfo, nothing more. 
->>> Why add
->>> a _subset_ of PMU stats to it? Any other drivers could be wired up? 
->>> How far
->>> do people intend to grow it, considering alternatives with nicer UI 
->>> and more
->>> featureful exist?
->>
->> Well, currently intel_gpu_top doesn't support Xe and we really don't
->> have any intention to add xe support there.
->>
->> We don't believe it is a better UI and more features.
+On 12/13/2024 11:32 AM, Swati Sharma wrote:
+> Add conditions to filter valid outputs. Encapsulate the
+> mode-setting functionality in the set_mode function to reduce
+> redundancy. Remove redundant framebuffer and size setting
+> operations for the plane. Simplify the CD clock frequency
+> checks to ensure it increases after the mode transition. Clean
+> up unnecessary plane operations and redundant framebuffer
+> handling. Enhance the readability and modularity of the mode
+> transition logic to handle multiple outputs more effectively.
 
-Hm what? :) With "nicer UI and more featureful" I was referring to the 
-alternatives Lucas later listed. All are nicer than intel_gpu_top, not 
-to mention than gputop.
+This patch is doing more things along with refactoring like skipping if 
+there is only one mode, and checking if there are minimum 2 displays.
 
->> Hopefully someday we can get qmassa [1] part of the distros and make 
->> that to
->> be our default to use the uapis that we add in Xe.
->>
->> But for now we were in the hope that we could use gputop for that 
->> which is
->> the current tool that supports Xe metrics. But well, I just noticed that
->> at least in Fedora it is not packaged :/
->>
->> $ rpm -ql igt-gpu-tools-1.27.1-0.4.20230215git45da871.fc40.x86_64 | 
->> grep top
->> /usr/bin/intel_gpu_top
->> /usr/share/man/man1/intel_gpu_top.1.gz
->>
->> [1] - https://github.com/ulissesf/qmassa
->>
->> So, our options are:
->>
->> 1. Add all the Xe support in intel_gpu_top
->> 2. Convince distros to build and package gputop along with 
->> intel_gpu_top in igt
->> 3. Convince distros to adopt qmaasa
-> 
-> 
-> I think we should handle gputop as a reference implementation for a
-> "top-like implementation for GPU".  I think end users have tools with
-> better UIs like qmassa, or nvtop, or htop or other graphical
-> applications and we shouldn't try to block that - doing something
-> beautiful in gputop would be a lot of effort for little benefit if end
-> users are already served by other tools.  Letting gputop as a reference
-> impl for these tools to borrow code or consult, would be ideal IMO.
-> 
-> 
-> As Tvrtko said, currently gputop is a reference showcase for DRM fdinfo.
-> I think it can grow some capabilities and be a reference
-> implementation for top-like application. If that means adding pmu, then
-> be it.  However the pmu support needs to be added in a proper way so
-> the tool always continue to be vendor-agnostic and that it's easy to
-> add support for events from other vendors. That probably means that
-> adding pmu-related things in the fdinfo or drm-client libs are probably
-> not the way to go as a) it's crossing unrelated abstraction and b)
-> breaking the vendor-agnostic nature of the tool.
+So lets refactor be one patch, with no functional change.
 
-100%.
+Then add other enhancements etc.
 
->>
->> Meanwhile our PMU are blocked...
-> 
-> I don't think they should be blocked. The kernel impl was blocked for a
-> long time in other things, not having PMU included somewhere like
-> gputop.  If you want to read pmu, the #1 application is perf
 
-Yes, perf was always enough and should still be.
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/intel/kms_cdclk.c | 112 +++++++++++++++++++---------------------
+>   1 file changed, 54 insertions(+), 58 deletions(-)
+>
+> diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
+> index 382b3e9d1..93276f45e 100644
+> --- a/tests/intel/kms_cdclk.c
+> +++ b/tests/intel/kms_cdclk.c
+> @@ -54,6 +54,7 @@ IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
+>   #define VDISPLAY_4K	2160
+>   #define VREFRESH	60
+>   #define MAX_CDCLK_4K	307200
+> +#define MIN_DISPLAYS	2
+>   
+>   /* Test flags */
+>   enum {
+> @@ -269,90 +270,86 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+>   	igt_remove_fb(display->drm_fd, &fb);
+>   }
+>   
+> +
+> +static void set_mode(data_t *data, drmModeModeInfo *mode, int count,
+> +		     struct igt_fb fb, igt_output_t **valid_outputs)
 
-> I think we can add pmu in gputop as a reference. If someone can grow
-> gputop to have all the intel_gpu_top capabilities, but doing it in a
-> proper vendor-agnostic way, awesome. At that time we may then retire
-> intel_gpu_top and only use gputop as reference.
+let count be after data, as this is count of modes and valid outputs. 
+Perhaps a better order will be:
 
-My 2p is that adding PMU support to gputop only makes sense if it will 
-work with more than only xe and if people kind of see that would make 
-having two top-like tools in IGT not great at that point. And that the 
-road to completely subsume intel_gpu_top in gputop is not a long one 
-once the first part is done properly.
+set_mode(data_t *data, int count, drmModeModeInfo *mode, igt_output_t **valid_outputs, struct igt_fb fb)
 
-I wasn't arguing for some nice UI if that was misunderstood somehow. 
-(Don't know how.)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	igt_pipe_t *pipe;
+> +	igt_plane_t *plane;
+> +
+> +	for (int k = 0; k < count; k++) {
 
-It may even come naturally because many of the nicer features of 
-intel_gpu_top came by user demand. So assuming some PMU support gets 
-added to xe users then might ask - "Hey can we have JSON/CSV output 
-modes so we can use it like we used intel_gpu_top?". Or any other 
-feature like sort modes or whatever.
+lets use i for iterator.
+
+
+> +		pipe = &display->pipes[k];
+> +		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +		igt_output_override_mode(valid_outputs[k], &mode[k]);
+> +
+> +		igt_plane_set_fb(plane, &fb);
+> +		igt_fb_set_size(&fb, plane, mode[k].hdisplay, mode[k].vdisplay);
+> +		igt_plane_set_size(plane, mode[k].hdisplay, mode[k].vdisplay);
+> +	}
+> +}
+> +
+>   static void test_mode_transition_on_all_outputs(data_t *data)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	int debugfs_fd = data->debugfs_fd;
+> -	drmModeModeInfo *mode, *mode_hi, *mode_lo;
+> +	drmModeModeInfo *mode, mode_hi[IGT_MAX_PIPES] = {0}, mode_lo[IGT_MAX_PIPES] = {0};
+> +	igt_output_t *valid_outputs[IGT_MAX_PIPES] = {NULL};
+>   	igt_output_t *output;
+> -	int valid_outputs = 0;
+> +	int count = 0;
+>   	int cdclk_ref, cdclk_new;
+>   	uint16_t width = 0, height = 0;
+>   	struct igt_fb fb;
+> -	igt_pipe_t *pipe;
+> -	igt_plane_t *plane;
+> -	int i = 0, j = 0;
+>   
+>   	do_cleanup_display(display);
+>   	igt_display_reset(display);
+>   
+> -	for_each_connected_output(&data->display, output)
+> -		valid_outputs++;
+> -
+> -	i = 0;
+>   	for_each_connected_output(display, output) {
+> -		mode = igt_output_get_mode(output);
+> -		igt_assert(mode);
+> +		const drmModeModeInfo *highres_mode;
+> +		const drmModeModeInfo *lowres_mode;
+>   
+> -		width = max(width, mode->hdisplay);
+> -		height = max(height, mode->vdisplay);
+> +		highres_mode = get_highres_mode(output);
+> +		igt_require(highres_mode != NULL);
+> +		mode_hi[count] = *highres_mode;
+>   
+> -		mode_hi = get_highres_mode(output);
+> -		igt_require(mode_hi != NULL);
+> +		lowres_mode = get_lowres_mode(output);
+> +		mode_lo[count] = *lowres_mode;
+
+I think it will be better to set the mode_hi and mode_lo later after we 
+set valid_output.
+
+If both are equal we are overwriting mode_hi and mode_lo.
+
+
+>   
+> -		igt_output_set_pipe(output, i);
+> -		igt_output_override_mode(output, mode_hi);
+> -		i++;
+> -	}
+> -	igt_require(intel_pipe_output_combo_valid(display));
+> -	igt_display_reset(display);
+> +		if (mode_hi[count].hdisplay == mode_lo[count].hdisplay &&
+> +		    mode_hi[count].vdisplay == mode_lo[count].vdisplay) {
+In line with above comment, use highres_mode and lowres_mode to compare.
+> +			igt_debug("Highest and lowest mode resolutions are same; no transition\n");
+> +			continue;
+> +		}
+>   
+> -	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> -			      DRM_FORMAT_MOD_LINEAR, &fb);
+> -	i = 0;
+> -	for_each_connected_output(display, output) {
+> -		pipe = &display->pipes[i];
+> -		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +		valid_outputs[count++] = output;
+> +	}
+>   
+> -		mode = NULL;
+> +	igt_skip_on_f(count < MIN_DISPLAYS,
+> +		      "Number of valid outputs (%d) must be greater than or equal to the "
+> +		      "minimum required displays (%d)\n", count, MIN_DISPLAYS);
+
+I think what we mean here is that the count should be more than 1, 
+meaning there should be more than 1 output.
+
+We dont need to have a macro MIN_DISPLAYS as count >= 1 is self explanatory.
 
 Regards,
 
-Tvrtko
+Ankit
 
-> 
-> Lucas De Marchi
-> 
->>
->> Lucas, Thomas, thoughts?
->>
->>>
->>> Or in case the conclusion ends up being "yes", then lets at least 
->>> share some
->>> more code between intel_gpu_top and this work. Ie. make it in a way 
->>> gputop
->>> completely subsumes and replaces intel_gpu_top might be an idea.
->>
->> with this I agree as well.
->>
->>>
->>> Regards,
->>>
->>> Tvrtko
->>>
->>> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->>> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->>> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>> > Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->>> >
->>> > Vinay Belgaumkar (4):
->>> >    tools/gputop: Define data structs for PMU stats
->>> >    lib/igt_drm_clients: Add pdev and driver info
->>> >    lib/igt_perf: Add utils to extract PMU event info
->>> >    tools/gputop: Add GT freq and c6 stats
->>> >
->>> >   lib/igt_drm_clients.c |   6 ++
->>> >   lib/igt_drm_clients.h |   4 +
->>> >   lib/igt_perf.c        |  68 +++++++++++++
->>> >   lib/igt_perf.h        |   2 +
->>> >   tools/gputop.c        | 225 
->>> ++++++++++++++++++++++++++++++++++++++++++
->>> >   tools/meson.build     |   2 +-
->>> >   6 files changed, 306 insertions(+), 1 deletion(-)
->>> >
+>   
+> -		igt_output_set_pipe(output, i);
+> -		mode = igt_output_get_mode(output);
+> +	for (int i = 0; i < count; i++) {
+> +		mode = igt_output_get_mode(valid_outputs[i]);
+>   		igt_assert(mode);
+>   
+> -		mode_lo = get_lowres_mode(output);
+> +		width = max(width, mode->hdisplay);
+> +		height = max(height, mode->vdisplay);
+>   
+> -		igt_output_override_mode(output, mode_lo);
+> -		igt_plane_set_fb(plane, &fb);
+> -		igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo->vdisplay);
+> -		igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisplay);
+> -		i++;
+> +		igt_output_set_pipe(valid_outputs[i], i);
+> +		igt_output_override_mode(valid_outputs[i], &mode_hi[i]);
+>   	}
+>   
+> -	igt_display_commit2(display, COMMIT_ATOMIC);
+> -	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+> -
+> -	j = 0;
+> -	for_each_connected_output(display, output) {
+> -		pipe = &display->pipes[j];
+> -		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> -
+> -		mode = NULL;
+> -
+> -		igt_output_set_pipe(output, j);
+> -		mode = igt_output_get_mode(output);
+> -		igt_assert(mode);
+> +	igt_require(intel_pipe_output_combo_valid(display));
+>   
+> -		mode_hi = get_highres_mode(output);
+> -		igt_require(mode_hi != NULL);
+> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> +			      DRM_FORMAT_MOD_LINEAR, &fb);
+>   
+> -		igt_output_override_mode(output, mode_hi);
+> -		igt_plane_set_fb(plane, &fb);
+> -		igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi->vdisplay);
+> -		igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisplay);
+> -		j++;
+> -	}
+> +	set_mode(data, mode_lo, count, fb, valid_outputs);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+>   
+> +	set_mode(data, mode_hi, count, fb, valid_outputs);
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   	cdclk_new = get_current_cdclk_freq(debugfs_fd);
+>   	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
+> @@ -360,7 +357,6 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+>   	/* cdclk should bump */
+>   	igt_assert_lt(cdclk_ref, cdclk_new);
+>   
+> -	igt_plane_set_fb(plane, NULL);
+>   	do_cleanup_display(display);
+>   	igt_remove_fb(data->drm_fd, &fb);
+>   }
