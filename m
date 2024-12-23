@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C6EE7718B
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Dec 2024 17:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4908EE7718B
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Dec 2024 17:55:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F57810E13B;
-	Mon, 23 Dec 2024 17:42:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0201B10E21C;
+	Mon, 23 Dec 2024 17:55:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FOoa7Aa9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SFYZP3ta";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F19810E13B
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Dec 2024 17:42:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27B7F10E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Dec 2024 17:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734975731; x=1766511731;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=FbIp7oV7GAoPO43usNKtFOnQAQnHChmDVL58F/f8NAM=;
- b=FOoa7Aa9G0QABlccgi0QfAgi0IS0Fg7W7X9Ti9sbc2sFfnTkfq/so5iS
- iOsZdsRfgjvPRithLDyIFlPnjLVGSBayZuZ1C8ohJCu0FBklKSb0XLAiK
- Dq0vUlbuM5Oq9MHjrrwfaAR5hlhHeMjLCRgLlnY0tIvO1QNF9gwugl0no
- IdUVKGJg38KT/bQ3TKIRSJT90SvbrBpeUqiRC84LtuZfgCISt3cJMvQZs
- FLms2GdNzfgUqQ0Usx/zhHhJ8aZJOx2h4pzlOJnH3YFQ2RITkNOjefL3U
- X1/G6NUEhPiO8KG/ct/g2mly6ALvB7Nxp8XFTTTsDmVq7rBzulRLnVP4k Q==;
-X-CSE-ConnectionGUID: AtcmV7LcTa+Jwatu5HOxiQ==
-X-CSE-MsgGUID: QU/QTwpLQN6PFQx3+koHMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11295"; a="45939057"
-X-IronPort-AV: E=Sophos;i="6.12,257,1728975600"; d="scan'208";a="45939057"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Dec 2024 09:42:11 -0800
-X-CSE-ConnectionGUID: dOr1hqLhTyKX1xFhdqm2MA==
-X-CSE-MsgGUID: aMiLV60pTVC6tiHk7/X8tg==
+ t=1734976548; x=1766512548;
+ h=message-id:subject:from:to:cc:date:in-reply-to:
+ references:content-transfer-encoding:mime-version;
+ bh=A2QsO+qv7M0mrDqAIap9lLhy3Bs9pJaNeQiA3ob+R48=;
+ b=SFYZP3taZpypHUuVcI0gM1QT+sKokaKuyoxpxCqISfIO2blh7fJFPgj2
+ 2FnrpbuOZSO8sqXof4zRDgRFp7GaXehpFw90eeoExX1FMmM1HRJ91sJd9
+ 3BobxwrzXTwFCmvLj4X2e9oCEqn04I/KjYkEIGB39kjHyj/7Cjr8MHVpn
+ D0YcRao9PKmQ64FWk7xf7FaGCcx9fRndafiOJspt9OuxodX4Vt4jonfaa
+ QbIrWVUtqWeqQ41n+BN1HtjlpzfmAK8kUmbgSYBNPgzMbIQRKvqCJpNRK
+ GknkYQTwge0JdgK4v7r7obX6CQix0Y76RLjX4m0UKc4gRBEdw8fsQijQ6 g==;
+X-CSE-ConnectionGUID: oAX5a0mbQYaNdkkM7U39oA==
+X-CSE-MsgGUID: 7dOf+fAXQvyV4M0zF82pjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11295"; a="34756361"
+X-IronPort-AV: E=Sophos;i="6.12,257,1728975600"; d="scan'208";a="34756361"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Dec 2024 09:55:48 -0800
+X-CSE-ConnectionGUID: XBzoPueeR1aU3y8VOVEbXw==
+X-CSE-MsgGUID: X6rCoh+YSjG5jaQ2YLQDgQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,257,1728975600"; d="scan'208";a="99029374"
-Received: from nirmoyda-desk.igk.intel.com ([10.211.135.230])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Dec 2024 09:42:09 -0800
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH i-g-t] tests/xe_live_ktest: Add xe_bo_shrink subtest
-Date: Mon, 23 Dec 2024 19:01:16 +0100
-Message-ID: <20241223180116.3857785-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.46.0
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="103882737"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.246.74])
+ ([10.245.246.74])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Dec 2024 09:55:46 -0800
+Message-ID: <671d8f0c726448ee10e652719e89152ee9b411cc.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/xe_live_ktest: Add xe_bo_shrink subtest
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Date: Mon, 23 Dec 2024 18:55:44 +0100
+In-Reply-To: <20241223180116.3857785-1-nirmoy.das@intel.com>
+References: <20241223180116.3857785-1-nirmoy.das@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
- 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
-Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,40 +70,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_bo_shrink_kunit, sub-dynamic test is now updated to be a subtest
-in the kernel so update this accordingly.
+On Mon, 2024-12-23 at 19:01 +0100, Nirmoy Das wrote:
+> xe_bo_shrink_kunit, sub-dynamic test is now updated to be a subtest
+> in the kernel so update this accordingly.
+>=20
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+> =C2=A0tests/intel/xe_live_ktest.c | 6 ++++++
+> =C2=A01 file changed, 6 insertions(+)
+>=20
+> diff --git a/tests/intel/xe_live_ktest.c
+> b/tests/intel/xe_live_ktest.c
+> index 50af97ecc..164c90501 100644
+> --- a/tests/intel/xe_live_ktest.c
+> +++ b/tests/intel/xe_live_ktest.c
+> @@ -16,6 +16,11 @@
+> =C2=A0 *	being handled properly.
+> =C2=A0 * Functionality: bo
+> =C2=A0 *
+> + * SUBTEST: xe_bo_shrink
+> + * Description:
+> + *	Kernel dynamic selftests to check BO swap path and shrinking
+> path.
+> + * Functionality: bo
+> + *
+> =C2=A0 * SUBTEST: xe_dma_buf
+> =C2=A0 * Description: Kernel dynamic selftests for dmabuf functionality.
+> =C2=A0 * Functionality: dmabuf test
+> @@ -39,6 +44,7 @@
+> =C2=A0
+> =C2=A0static const char *live_tests[] =3D {
+> =C2=A0	"xe_bo",
+> +	"xe_bo_shrink",
+> =C2=A0	"xe_dma_buf",
+> =C2=A0	"xe_migrate",
+> =C2=A0	"xe_mocs",
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/intel/xe_live_ktest.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
 
-diff --git a/tests/intel/xe_live_ktest.c b/tests/intel/xe_live_ktest.c
-index 50af97ecc..164c90501 100644
---- a/tests/intel/xe_live_ktest.c
-+++ b/tests/intel/xe_live_ktest.c
-@@ -16,6 +16,11 @@
-  *	being handled properly.
-  * Functionality: bo
-  *
-+ * SUBTEST: xe_bo_shrink
-+ * Description:
-+ *	Kernel dynamic selftests to check BO swap path and shrinking path.
-+ * Functionality: bo
-+ *
-  * SUBTEST: xe_dma_buf
-  * Description: Kernel dynamic selftests for dmabuf functionality.
-  * Functionality: dmabuf test
-@@ -39,6 +44,7 @@
- 
- static const char *live_tests[] = {
- 	"xe_bo",
-+	"xe_bo_shrink",
- 	"xe_dma_buf",
- 	"xe_migrate",
- 	"xe_mocs",
--- 
-2.46.0
 
