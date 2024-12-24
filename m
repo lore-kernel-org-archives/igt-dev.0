@@ -4,181 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77B1E77188
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Dec 2024 05:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E913CE77188
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Dec 2024 08:32:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6775810E046;
-	Tue, 24 Dec 2024 05:48:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7688F10E294;
+	Tue, 24 Dec 2024 08:32:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l/+swKSK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XUh53usH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A25DF10E046
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Dec 2024 05:48:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E734A10E294
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Dec 2024 08:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735019289; x=1766555289;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=ydjseNYRC1uLAUGyycj+jN+yuZ7ls66LX+l1xhaolKI=;
- b=l/+swKSKSO9L0ozTiP9aA6hkaEcgfNRWTLooYoSoNoi7leLeN/Fa/6aO
- GlOJRr7NTa/faT3TsI0ALd+MzVrs9MYmpjl8q0WRcCYg0k2sl1hz6J9vZ
- NeOasH2q7LvERjzHubAcOBbogLj+IdQTjoMFhcFTHGBOBR18A+yJ6jg7D
- r9yA6e2cpDuAn7BgjGTt/7VgYFqifIn+LEoA7XAnv8UySgvrSYfkE1HMG
- i6R/pZKhqfIe3o7sgRZ6ITWBCtGU/2sKCjiWrqWNcy0zsdRSSSogHbQZp
- 1R2SNLKNA7yQIeb9XXG62In57fSD+usrUzOSsNdJM4mWu4YN2mnMaEetr g==;
-X-CSE-ConnectionGUID: d4KULQRHRbCjNy7pxDwaiw==
-X-CSE-MsgGUID: mAa6wOO3QCGpT18ugPxgBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11295"; a="39264616"
-X-IronPort-AV: E=Sophos;i="6.12,259,1728975600"; d="scan'208";a="39264616"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Dec 2024 21:48:08 -0800
-X-CSE-ConnectionGUID: s1c6RbJHRNScgx0ja0SCqg==
-X-CSE-MsgGUID: P4ObScMFS1OhvramRxz04w==
+ t=1735029119; x=1766565119;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:mime-version;
+ bh=u/ZbkY1P2kd9ZF3ReptjgK6iqVf52QVIg3kkBeTNNtE=;
+ b=XUh53usHBtlcRDSzUttDw+MN4NW6nmMi3UY3mO5pHwXxsW8tJ/K7LOhw
+ gvu8JG3Eojrm3cnMCUjeInoqGYcLR0ipXer+bNTzEHW+Tt38C5AE++Z8c
+ KMjkhHz0d1542D46FHfsbyaZXrNHw+mb7iD1zoPXvhjunUtaoUIe6Bdwj
+ ku7c6YEC2Av0lFczHzwuugESDfLkBYnQyNbELsIpNwi9id+iZZ7PjVcPJ
+ AphpHGWsZ7xM35HxfmPl6dHI3JwA8bma3ufDqaJO9W32bcEvtYeu1c9Dw
+ qcBISxTP9eoE332CeINHutf5yoTXh+FaBZD53Q0rAYgQMsZm7yss69cfJ g==;
+X-CSE-ConnectionGUID: 8X4wGs2hS56wkz6wvpDQyw==
+X-CSE-MsgGUID: FaR7sn3ASLGnnOvPj4228A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11295"; a="46917186"
+X-IronPort-AV: E=Sophos;i="6.12,259,1728975600"; d="scan'208,217";a="46917186"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Dec 2024 00:31:58 -0800
+X-CSE-ConnectionGUID: XNdn5ZPRTo2Y3BfwOtsxWw==
+X-CSE-MsgGUID: hqo5njU6TF6KF+pDCPnQbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,259,1728975600"; d="scan'208";a="99765880"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 23 Dec 2024 21:48:08 -0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+ d="scan'208,217";a="104435665"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 24 Dec 2024 00:31:58 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 23 Dec 2024 21:48:07 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ 15.1.2507.44; Tue, 24 Dec 2024 00:31:56 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Mon, 23 Dec 2024 21:48:07 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.48) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ 15.1.2507.44 via Frontend Transport; Tue, 24 Dec 2024 00:31:56 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 23 Dec 2024 21:48:06 -0800
+ 15.1.2507.44; Tue, 24 Dec 2024 00:31:55 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J61+qMvzBfTBo4E6A+Sk1mlofRlUcZbqgN8kUF+EkDA3v7eNhMuK2Xwxlg23rCApjF5AWwlHhk5V4amCiFM2rb0ULAZKYxEkO7MEVO92lsmGt9oGC10AdMUN2yPlU/j71TeaQbz9KqVh3jut7HRyXKVWynJHpoHBClCmgCaffr2ya2RZZAxder6GfrVQsLAMbImYVOhizD6IgvZo25TnjsN0e93w2P8YzrpGgqMB2uvclvuszQK/TgLfCSdnToASbx7BZI+TK6OmvalXmU430Zf0rNE9Nm1BiO7HMLYnnYpegDT8tQPMET1yFB3czBF9wJ3O/g/yPdk+05IZpBp2cQ==
+ b=aqIR6fneU+BXw4EX977qCgtmZ1VjqTpaSFNQHF1vDLnvkVSYflYRWyID462f+RZEdVHLuh5HPYYgUJNhkq58kq9ASLdynGbMTrE9rJkiHThmtbk5fF7ybYd3BR1eflvRsg/rLQ632DLtOdum74ZjlO+bDTDA8QlbomYvKiVEW490lpdKdakAzntrPLvxY3IzjZyvD5WhpoV77Cw1Hu92P4SgRgWyXhahYc2YKbG+Rz0HUAIpmotyvfV79a5ocNErQ0LaK6FNoS4epOpJTSkg9SBhSqSyD/Ea/kuUWwQ39wAKIN8P40PGLE9tz6IR+nwso1YqFIQJ+HLcxIOsXbxd4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZjHxntAVNlE0R/QOvjKCDIH0OH1uvJCJtGjjJ4OiyKo=;
- b=QzKISgYfz6gedIVY9hrrN56UITwqqehqNwqHK7UctCi5SdyIsLfnO+wY3RbjHF+t+JsUr2NXJJOvcpgacqvOUCHiH5UydRQtkpVnox4ty4tLerTr5Gdya7IK9RC1ngokLYMSnR9OJ253RgmWPchuu7cLhyZlou5VdoR2aDDm21/d9xQECj+jKjXqYQZsCAgS+WAJg+acJO1PwWoas0tk08V4foe356sSHDivyD355sRS5GcKhhLdIQl9XL9ThFvTWyeBnmzSoSVd7clFh3u636zIbwiX+AcxRyBrwu13wV7UtMmbpNJGohEldH+qFn0mlyLXTTkPIrLY8E1+t94PQA==
+ bh=jIjWgOmN9hYYYURhoOo2afqPHzBqu+glIUETykCSgKo=;
+ b=aSAVNJBdsoIARAgrGm+YARCJLODZr8PbeAFqA7uSAE8E/zKsTUJuBYGC9+Qi2+It9PZncw/CKjxL5MI5oeLb2FI87I61hGIux1Ehk3MTdVxglhFPp3I6iY0Xjv23BXxhLtx+68QiMwD/sCraU+XgoWoNhvtPkW6BJ2Npukvel4gE+KO37NviKMpSh7Vaml+lhu0yAr2IaaQEQDqj8jC/YsSTyxaVZXfvTBtsNaFE+5rYnBbLBZjHcPFEmYc5/B/CZ96UVdYyyWMY/e+AhJVcKx1OPY+zDbw2NZcqkAblkNcUh07TlVxy6Zu07XEC1z5JINRGvwmQWbUgWMO1ImHtww==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from SN6PR11MB2704.namprd11.prod.outlook.com (2603:10b6:805:53::11)
- by CO1PR11MB5121.namprd11.prod.outlook.com (2603:10b6:303:98::24)
+ by SN7PR11MB8025.namprd11.prod.outlook.com (2603:10b6:806:2dc::19)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Tue, 24 Dec
- 2024 05:47:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.20; Tue, 24 Dec
+ 2024 08:31:36 +0000
 Received: from SN6PR11MB2704.namprd11.prod.outlook.com
  ([fe80::513d:aaea:b097:afb5]) by SN6PR11MB2704.namprd11.prod.outlook.com
  ([fe80::513d:aaea:b097:afb5%5]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
- 05:47:59 +0000
-Message-ID: <4a5e38d8-2c15-4729-a70e-b4a6450785a8@intel.com>
-Date: Tue, 24 Dec 2024 11:17:53 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/kms_cdclk: Refactor mode setting and CD
- clock verification
-To: <igt-dev@lists.freedesktop.org>
-References: <20241213060225.2144633-1-swati2.sharma@intel.com>
- <d8cdb59f-1a68-49ef-9b66-5508527c159f@intel.com>
-Content-Language: en-US
+ 08:31:36 +0000
 From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-In-Reply-To: <d8cdb59f-1a68-49ef-9b66-5508527c159f@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN0PR01CA0011.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:4f::16) To SN6PR11MB2704.namprd11.prod.outlook.com
- (2603:10b6:805:53::11)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR11MB2704:EE_|CO1PR11MB5121:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ab4ed7b-55a9-4b59-d1df-08dd23de85da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WjRZd09FOWlwWW1oZXVQdS84UGJMSUxNZ1Bkc25iVjNJSUtxSTVibitVTUQw?=
- =?utf-8?B?d2RkRzlSUUdqbm8wUlZyeld4T25va1RENE1XNysrZEdwOXpSVG1uYjg5NzFS?=
- =?utf-8?B?VmtVUjNPM0MzSjh5ODdUdDFCWXRJcG9sQVgwY0pYWUNPV2psWE53WnYramFy?=
- =?utf-8?B?bTdYYWt4SUIxMmVta1FSNVYzdFJPRXNvNGVmNWM0czJSb2VFZm5BZnQwdkE1?=
- =?utf-8?B?c2tYS0xHc05uNTlZTWd4LzErbHFxZzRCVnMrY1NZS3pLOVg0WDIxRU84emxq?=
- =?utf-8?B?UmZqM1lsMDZ4SVJCMXowaWtiVG9kd3FoR3d5S2cwblJtRjYrcFVsMEdRYjF3?=
- =?utf-8?B?WlliNGhZdVF2WCtpeTRuSmRtZUJ2TGF0SXlYWmNwSVVhcFRkWnhHMTZJd3Zt?=
- =?utf-8?B?YjZOZWlwVHY1REs4UHI3am93S0RYdzU5VTJsa2piR2tZaHNKdmRoV1pzc3o4?=
- =?utf-8?B?TUIrbG5Rek94LzlOZVpMN1hLQkNoZTVtcUphWm40aXNRREtpQ25nc0xlSnBp?=
- =?utf-8?B?SVU0MENMN2hrYnVsaUNkMDFlaDNXbzhsL25yVFpKL0hWczZaeHIrZDBiYzBM?=
- =?utf-8?B?NllwTG1iYU5lSkF1Q0NJa1hNTzFsZmtsczlObEFpVHFZTHBOZ3FrbzFieEFQ?=
- =?utf-8?B?NWJvOUxiNkxERjNhWWE5QU1wdHpmUElNWkJCL0JVMURVdTI1L2VTdzlHWk1B?=
- =?utf-8?B?MlhJSHhwMlpGaVdkZmp4cXFodm5JZWdkWi84d0lCUDFlZlptTU9FTkZRYzY2?=
- =?utf-8?B?ellXaE8xaHR5VHNDN213WUtXY2Fsck8vWFdaVjE2M2t5M3Jtc3ZkU2s1bCtl?=
- =?utf-8?B?NGQyZ0NaYXpzRmFibVpvL1Q1RzJwOERpNGtJV1dDWkJ6NWhWTHdIZGdUSm43?=
- =?utf-8?B?cTlrSkZ6U1ZzNnZmemxmTHI0emdzM3Vla0NTaU9ObjN4bHlzRkQvVEIxSTY0?=
- =?utf-8?B?ZjRVK3BPYStOb3Njbm9nWjZOTTN2VmtUWUNmRUh2dnRCbnN1UjZHQlpNNEpt?=
- =?utf-8?B?WTV1OTVrUU5uaFFnLzlEWmRIRDl0c2UxQ1VONjJsbEZFS2dFNU5uZ0FvRjd3?=
- =?utf-8?B?aWdxcDF6STkvbithQW55ZVRNTGNOL3FLYXNhUlRzbUxIcXg5ZXoremlaWVg5?=
- =?utf-8?B?eFlFSlZONEhzbThtMlR4eUZnUkU4QzJyRUFFQWlZK2xmckIvQ3RWbzI3ZzV0?=
- =?utf-8?B?SHYzR1RRY1NKQ1pxdDFUZWc5WW1FUkFpeEg3UmIxZHM1VGxqTUEwd2VHalZq?=
- =?utf-8?B?dlNkaEFVd2tCWTEwMTJPMGxQSnVOTytsNjBVK3hDZjJTajBtSldwbmZoQXEv?=
- =?utf-8?B?OGhhKzc1MGZzNzBRV3JxZGtjNkJyQ1VseFd5M3ZibkNVbG1LaXhMeTBVMWpV?=
- =?utf-8?B?WEVZSUNwcGVJbHpTRll2NEp1TDgzUmhFazBPTHh6NVRGeSttNUJ3ZUIvK0NU?=
- =?utf-8?B?UnlPMS9MSDJoVGlNUldvUUh2aDBtQkdGQnlYSEdCS2JBckZMSm92dlFHUEk5?=
- =?utf-8?B?c1A4ekJqRUdjKzhXUWw3TDRNcDlpanlTSjNNdjVycUZ5MGZZcXIzZW1rY2lu?=
- =?utf-8?B?eW50c2g3THNUSzA0c0UyNmN5blk0QmFPeFBKRjUyK3BReUFvcms0SVFKcUNk?=
- =?utf-8?B?TTh4S21naDIzUkZsbkQvWWJ5VU9lSzR2L1E3ZUtBZTA3Vk1ScXlWbDI0Z0dW?=
- =?utf-8?B?dHkveHdUS3Y0VVJTRk8wZ3p5TVV1R2JrODBpSzhWVmR3RHEvcC9vRVI2Y0RL?=
- =?utf-8?B?aXBuSFhBdVFlNkN1Zjk1WVFheHBCMDNWTEZMcHFPZGRUQ3ZXVGJXc2ZOck4r?=
- =?utf-8?B?QUovYm8vMXJ5c1NEbDJPMXNId2pGMDFhTzJJZGIyVVBRb0RnVkp2RzR3c0lD?=
- =?utf-8?Q?l3meidP/TKlNK?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kandpal, 
+ Suraj" <suraj.kandpal@intel.com>, "Nautiyal, Ankit K"
+ <ankit.k.nautiyal@intel.com>, "Thasleem, Mohammed"
+ <mohammed.thasleem@intel.com>
+Subject: Re: [PATCH i-g-t v1] tools/intel_hdcp: Introduce intel_hdcp tool
+Thread-Topic: [PATCH i-g-t v1] tools/intel_hdcp: Introduce intel_hdcp tool
+Thread-Index: AQHbRjOeUUbZzYfvkUm/AjZ4JktF0LLZeXcAgBuowEM=
+Date: Tue, 24 Dec 2024 08:31:36 +0000
+Message-ID: <SN6PR11MB2704C4588767DCA7E173E21CDB032@SN6PR11MB2704.namprd11.prod.outlook.com>
+References: <20241204095654.3185959-1-santhosh.reddy.guddati@intel.com>
+ <20241206171858.wtozqz4n2ntslj43@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20241206171858.wtozqz4n2ntslj43@kamilkon-desk.igk.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR11MB2704:EE_|SN7PR11MB8025:EE_
+x-ms-office365-filtering-correlation-id: 3f3afbe6-8b81-4082-7761-08dd23f5613a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|7053199007|8096899003|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?7+qbfAI33mt0oha9L+DmP+rsRu8D0xZ0mQo1t0f/DoVEm7CdiB0nxcz0l3?=
+ =?iso-8859-1?Q?rYIRjSvYZAY3UUEONSDQRmzNAujfIrQiz+0jIlfyfnV5lfe1dnLZXP08Je?=
+ =?iso-8859-1?Q?lNROyg0ca/ifWkZeux+LCvmR0mEVwQYXsoTKAo0KduOgEXZUeAYJlHtGeh?=
+ =?iso-8859-1?Q?MtLGOzTb/aO+SrJ9QME6v1DF1d9AbVX2+OgGiK2OceosE0vIHChD6FRmNd?=
+ =?iso-8859-1?Q?GhKP+DxU8JP6VnmrJbnxflXsThJWLKD5ujUtDyYEHqmTbtvoKrNNyP2WEX?=
+ =?iso-8859-1?Q?9tSeFao1apVz+DwybOcWHBKPxVN8ot35XlAdevof19147jBezRZ9hYL5xM?=
+ =?iso-8859-1?Q?BbO4uFVv0uu1BAJ08gIZh7sM02ntaTPOJEK4Df6wPY7A+US3oVteaEq96G?=
+ =?iso-8859-1?Q?Afkq5p6td5hjj0YBrAX1x6zXPk6KcQNOUAZZu3SdtZZqOcEgFKYI8wQu9O?=
+ =?iso-8859-1?Q?y2VQmufs0XLvn65lLicocpHGeDv6fMzTkjcmEKWDyWKPuLUrAdCLoTt0MK?=
+ =?iso-8859-1?Q?k/aTNj/YeCY1WNO6X0Z3+Wi0JN30FMEmtr9+fAhku0XVUlo+LrJCa+hXPv?=
+ =?iso-8859-1?Q?47OuykYFx8IsDH+TRHCdQENwcHvRzQi+MNTI2NwKYIYjbemE46Sirj6qzE?=
+ =?iso-8859-1?Q?p0QghQNGlMtVuzLy4xovS1xq+1WOvxKzdwJuVataySaZvjc+InpeItOiXI?=
+ =?iso-8859-1?Q?mjMW+2a+q7/SISjSzrAIRnoseZgZTSgpP3gt99Xd0Na7wXm+NzMO5q2jRs?=
+ =?iso-8859-1?Q?pV232HBiw5uHy75fGnLrw/+PlbVN9SISEkn+cmOaqLe+m2FjaSsPyBn33H?=
+ =?iso-8859-1?Q?7jGVPAGHJgUPaxckPENyHgvc5OlotbWSsfAsp31cjGK1zhHdfEL6NCcMt7?=
+ =?iso-8859-1?Q?WF95i5OpZMB7GIuPSsMH6xbVbgN07U5AtfQqfydr6Z4UIj0mVf7DJJ2I8O?=
+ =?iso-8859-1?Q?eoiX87udL+zj2E4LaYVYSw/g3u0IAPREA+5AqPLCTvLiOb0Lyd3MLQtzFH?=
+ =?iso-8859-1?Q?HXX2nTh8Z90TitQ3Q5wFYWZDKPiA8HZ/Nw6x5EF1wdYFSvQE4opUXOotng?=
+ =?iso-8859-1?Q?7SBZG8eAtp5xF4XcIJI1RxT8w2zqp7Wf2uEI9sFV/Lf1AAJkYtHfGK1iVD?=
+ =?iso-8859-1?Q?DDeqvWO8YdQjwqr/48OkQV0yLLkcKizMs3fXvUGoSWrExsxeqcBTmUSft3?=
+ =?iso-8859-1?Q?Jphh3OSuY2z4J0QHO4/GBJ4R1w5LjX48mQGz4DFvpbVmLOUuHNShXMRgGt?=
+ =?iso-8859-1?Q?N9gghZiDXvpYIZsi08SWnKT6JPF4TjF47zJFx398ekwXQRvkPiNofzSrBf?=
+ =?iso-8859-1?Q?JLuXYjDibpB925q2aIDvYx1XNy/iaeMKjPHg4FnoOwzPEnsFI87NiNlbPz?=
+ =?iso-8859-1?Q?PAuXmXrLhIS9WWP4JB4O9y0vCXfyM9NjWfzXjj8xYbPoSgyt9B1w0wS53z?=
+ =?iso-8859-1?Q?v969UFvXQOsW6SkSOFL528+QXKTGBoxvqz3scXIdIjm1+W63kRk9Qy2agG?=
+ =?iso-8859-1?Q?Gy5fMWt5na+eE481t0fDJC?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SN6PR11MB2704.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?KzFpVEVYUy9SVUx2bmZOekZ3QmtieGEyY0grMEszOXRJUnZMaG9mZ2NtZWk0?=
- =?utf-8?B?cG81QmxpYXhsRHMrM0djaXhMMnNzZGdMTS9mb3U1WHpiTTBEek9CMW1zUmVa?=
- =?utf-8?B?RUVuUHFQam04QmUxUktpWW9hbVh6eFRucmIxd1lPTVcydU5KY3hlUDFsditR?=
- =?utf-8?B?OExoMGd4MWFTcVliNzlpcEppaEJQOUVkV2xhYjUvZGRhSXpUWEMxbjlReVlr?=
- =?utf-8?B?UXFyRjJ5OEx2Q2d4K2p0MXVtbFA5Y3dRQjFNckJrN3Nvek0yM09GNWMwODBE?=
- =?utf-8?B?TWd3NWYxczVDNks4Z0RWbGVzWVUvK3RQOFUySkhiTXRvRDdXUlhaaVg0b25z?=
- =?utf-8?B?azhrd0N6dEhDQkpmMGRPeG9VeU40ZlNSVHdXbXJ3QlM3NUIxNTU4bUhYOVky?=
- =?utf-8?B?SEVwTDlGaEtBYjZNbEJ1S1lUYXNXUXg5WWxnMEY2b3hHQTZrWjJsb3Z4aGM2?=
- =?utf-8?B?R3lzcjRITkhITDB1VG1tZlVuTnFjUDdyTDNGSjRIb3UwZlVpY1I4bWNXNmpw?=
- =?utf-8?B?YXVtbWd2Uy9FeCt0NThNNmhpSVZXTjJCUFZrRDBPTXh1L29xUDBueFlTR3FK?=
- =?utf-8?B?YWpZMVF5dVJlUERGcmNidWxMOGh0ak4wU1pINnFoSVlFNHU0WEtWRmcvRE03?=
- =?utf-8?B?bCtHbDEzbm1TK3Z1RmwvWlpQOWV0OTVnalFrb3cySXRvbTZEamNBTzV6TWRX?=
- =?utf-8?B?VVl6RFVRWXR2ZVgyL3phQWtrTXQwazdEVGtaMXQ3VzlaYm1KOTBwRERuaTMr?=
- =?utf-8?B?amxuaFE2SXQ3cjlZL2JpUW56TjVMYlZDSU9NTzRpVzRpRWFYaDBOT1NRQkNO?=
- =?utf-8?B?ZzNEMUlDWGQ0RjhjVGV2RDFPNFZrTUU1TUZMVysyNlNSaEdwanJLaHZhZjho?=
- =?utf-8?B?UGZXWTdaMkVOMUlYK1NiVXROM010TEYzaEhaZ3pHUXBDNCtuV09qVTUvYTJa?=
- =?utf-8?B?K3lrZDFnS3RDQ0JjRnppRjhIWXZTRzFkU1dWN3g4QmlMUVlZNDhsSXc5dTBC?=
- =?utf-8?B?N2VISjNZM1pMWldYcEp3K2VhaFNJSzJvRGtqdk9IM0Y2SU5NZmN6UHJpYXdu?=
- =?utf-8?B?eWYrMS9RSDhOWVVWU0lnaTMrNzJaR3FnanVsd1hmelp5WStLc0VrRVZNRUhP?=
- =?utf-8?B?MVZtYnJPWkFWZ1pqUmpWVWxuVmRNOUxjYWp5eGh2Szc1UDRFcjZxVDZlcU1W?=
- =?utf-8?B?TjEwbnJ5ajN5bWd2VzRZQ0xPaWhqbjhZc2o5blpKQk5RT2lSYjdyenpUdUJz?=
- =?utf-8?B?RlFnS3lWWkFTODBpS0YxNWJRMkRyOEhPREhNbG1xMUowcUpkcFBJZFNZMjZX?=
- =?utf-8?B?WnVRelJzT3ljVmlHTG41aWo3dWFRY1RZTUh6UmlYazd1RllYR3plWEI0TzR3?=
- =?utf-8?B?QzdxQXcydEF1ekhoMWhIQURSZ3kvM3pCaDFpMTRXcHJTVzJsMkNmRDFMVGtS?=
- =?utf-8?B?d3h3SUZsMVZPeXlSWURjK2xrNDB1N2xCTDFVakJsamZHTXE5dkNNa2JrR1RE?=
- =?utf-8?B?NjMrbG1hYnJMWithcGo0dDRneDZQelIzSlphYmdUVkl3OXBWM3U5MmVsVjZL?=
- =?utf-8?B?Zit6NWdRSDg2NVRkS0ZLemRrRTFrUldwajhXOFlCMy8rUXZDaXZhUWJwbnM1?=
- =?utf-8?B?Mk81MlVCa2pncU14Y0tJekthOTliYWF3dElyZi96aDJZdXRXUnM4MjFFcGtM?=
- =?utf-8?B?MzFZY1M2K0kyNGwzM0VrT05SbGN5RkloZUh1MmljdUorbzNidW5pL0lxY1Fk?=
- =?utf-8?B?VmRKVmVkMU9LUVBqTFlVbVpsZCtSODR3VEJZNkMxVEMwckdkeTRzeTBSU2tj?=
- =?utf-8?B?NUpKbm1RWTA0cXdqYU1IbHNpZmRCaTJCZjV5eWtFN1hLWldGL3ZobnN2YUFI?=
- =?utf-8?B?emhJTXhzakNUSkpmNEFMd3BIVWFUNUVDTlpzSDJ2MlI2MHQ0Q0F0KzVxYk1B?=
- =?utf-8?B?OHFvSDBaaHI2UCtwenZPdHhyZkxQeHBzMU0rM1V0UDRzaG9ZZHNjSjA5LzFJ?=
- =?utf-8?B?QlA2OWJvaElzaWZwOGFGWG52YktBcUQxcUw4Kys4cG9wZWdBZitwWm9HQlc2?=
- =?utf-8?B?REFLWlloTkEwWWdlenF0VnlNNENwaDdpcUFlR2Q2Um9PalJ3TUk0aHVSZnY1?=
- =?utf-8?B?bGl2d1grbVZNWS9ncGRWZTI3YU9rNFB5TENaeDFHa1ZQWlNCbzhjQW9ITEYv?=
- =?utf-8?Q?cSbCU+FLQltoxZghzeK956Q=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ab4ed7b-55a9-4b59-d1df-08dd23de85da
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2704.namprd11.prod.outlook.com
+ SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(8096899003)(38070700018);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?PdRbungSldJrVuUagoOPGTglF6oP6j74Ves2EBcFszFkJqhe03iLaLZnkY?=
+ =?iso-8859-1?Q?gZrL8yoRqrVDJ0nKdg2YQlzTtr5f8nahqlhBtsYhOTZhpJa1pGcw1yUrWI?=
+ =?iso-8859-1?Q?SZ5jg1smaBqnvnvS9CSX1WgSGWBTJ2+jdzsRnw/YkZmR0O0e1XvGfiWWBm?=
+ =?iso-8859-1?Q?+ddosz9Ptj6cZpp6DOwPTrztZ0CYot5Tf5Ckx49raVa+4Y8X7Jka9puWev?=
+ =?iso-8859-1?Q?ZM/OxW2jhtzQOATNgaCgoSvxHAYkIJUPrQYUmNhropq3X4TdUK2SUzpiAp?=
+ =?iso-8859-1?Q?E9ioH8a4DzoOnudUKESyOtt3owwqtUZlDgxktDgoq85tD6sKv7WjcIqk3U?=
+ =?iso-8859-1?Q?e2LhetJw8SVKeJ7LXAS0882SCnsPH0AYQiBKO9bCiYHq5loNgqg2EbbY2+?=
+ =?iso-8859-1?Q?9JDs1pMU5Jx/0zbEQObTUM6fEc1E5k5pzt+qXz4bSSO8tuSMskM0xMG+Z9?=
+ =?iso-8859-1?Q?sC8el1V3+DZ14Mu2ArB5IrKzMub+2xLxJPKJMRwXJB5duVcoOcxCzA/ACg?=
+ =?iso-8859-1?Q?Yg58MW5ESsLg+JAyIaclAurzAuss5XC0AIkuPAP92pRgux6et7r4YK7Tg6?=
+ =?iso-8859-1?Q?zc5sxLAy8QcHv9rtLsUNwgqn+yFCP0fhGqwvpQP1L0M33Zc546MI95IHxm?=
+ =?iso-8859-1?Q?FNf+mbqEpaLJPdrOSP/C+hq/9aPhpLxBviymbsMhpxRQu9J0OXxd7UgQGL?=
+ =?iso-8859-1?Q?A7HhozjBdlztT8p+LcjeHLO6Dfa2zW6e93EK+/2zpPBm4O0UV1QNvgWqla?=
+ =?iso-8859-1?Q?LwMvXaElWFP77RH6m8TKH4kgxcE3+WS4EO08ALn4022fUFVcWQepOM3O6e?=
+ =?iso-8859-1?Q?SVeYelRuZlLLFh9QTSRYkBANvUZZPxSKYyHSB6eRDXhBcerthM2fGMqA0Q?=
+ =?iso-8859-1?Q?16+5/Bkn8w4263gJE8iACNSNVl1PNQreHfKug3/NRYRSa4F2hlUS5uDJmX?=
+ =?iso-8859-1?Q?rYiJeg7OaEEtRbXkV7qo4mXN+sypzcDIRSQL5CcmDryE5YbQ1AsziYNIhA?=
+ =?iso-8859-1?Q?ITWNSrwX0t44QoMGIAEO2uVqmHeg3ZIdNqoIQ0MBnmcXmEzVOnXIkFU5tg?=
+ =?iso-8859-1?Q?hR5wYWPIq5Ez0G8IYacgdGzIKZPu1TfqqofNw+nZcNKzA0bFDpaN/77xSn?=
+ =?iso-8859-1?Q?vbx54qp9/6+49Tmx3ZYrAdytA9UeA3Js+5/HdfMq5ckrm+OZFpEtCXeXPD?=
+ =?iso-8859-1?Q?Hat/YlYWPoktehShmhk3ceXgmqvVrtaZWOF5POP4Tn4D7iO9msCqGgZzSH?=
+ =?iso-8859-1?Q?FKEE/KGtHrlfQjhBTPySs2PM1Zlvc9B7rrhKiK5hEnlu/pmG7dKGzESrnf?=
+ =?iso-8859-1?Q?3L5Z93K7aUSREMBDW4MTh1onwZNczp/usPoyZOqYhU3T358dm8c3y85wu4?=
+ =?iso-8859-1?Q?Fyucf2mabIpgWlluFsq+HrLBZs7Knev+Ir+yBFoFAGBNY+mzkA/y7HkANx?=
+ =?iso-8859-1?Q?gyevqr7vwLLtu0vLGEzDXT6l7eOUKcYJLbyFH2NQeiqcuauu3M+svIYwvo?=
+ =?iso-8859-1?Q?MS/4s3RkLP9Ql1dfpAGPVi3HzPFh5S7auRfrSXYOq0ReeHWupK/WLVE5h5?=
+ =?iso-8859-1?Q?b0Vtq67OojkglyM+W6bEE/H5lGTsg5JAvViSVcxdPP2aaMYaZTwlSU877d?=
+ =?iso-8859-1?Q?EbbHfhfuLAArf1s4SqB27gte3RohRbMK3nf0su8VqC9OMxCK+0UuP5Zw?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: multipart/alternative;
+ boundary="_000_SN6PR11MB2704C4588767DCA7E173E21CDB032SN6PR11MB2704namp_"
+MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2024 05:47:59.5584 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LvadwJ/zrr+NcvkTyEUBLUhN7vHs4NfiypiHFTISW3oXtz/9Ml8WnD0suKNlSYK3Bj6PDYqiHJsINjvCnRPz/H5wZnVgKW2Cj0z28GmjyAFkgp+6pssHwd//hAvF2cMJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5121
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2704.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f3afbe6-8b81-4082-7761-08dd23f5613a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Dec 2024 08:31:36.1531 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xMVWoQ1IS6Gb13JK5aMDcTZXnIqjqeparxx1wPK35ttG7x6++39AItHEqju9rs+VHqRYHsZXCQ3QqRky6JAHTpoZpv8/2YNHRfQ70ijk/lLTfkvIknAkkUcrLgNvbfz/
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8025
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -195,224 +189,811 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--_000_SN6PR11MB2704C4588767DCA7E173E21CDB032SN6PR11MB2704namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kamil,
+
+________________________________
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Sent: Friday, December 6, 2024 10:48 PM
+To: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Kandpal,=
+ Suraj <suraj.kandpal@intel.com>; Nautiyal, Ankit K <ankit.k.nautiyal@intel=
+.com>; Thasleem, Mohammed <mohammed.thasleem@intel.com>
+Subject: Re: [PATCH i-g-t v1] tools/intel_hdcp: Introduce intel_hdcp tool
+
+Hi Santhosh,
+On 2024-12-04 at 15:26:54 +0530, Santhosh Reddy Guddati wrote:
+> Add a new HDCP tool for self-testing and easy deployment
+> to client machines. This tool helps diagnose issues,
+> determining whether the problem lies in the driver or user space.
+>
+> The current changes include tool skeleton and get hdcp info
+> on the connected outputs.
+>
+> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+> ---
+>  tools/intel_hdcp.c | 203 +++++++++++++++++++++++++++++++++++++++++++++
+>  tools/meson.build  |   1 +
+>  2 files changed, 204 insertions(+)
+>  create mode 100644 tools/intel_hdcp.c
+>
+> diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
+> new file mode 100644
+> index 000000000..8c0258092
+> --- /dev/null
+> +++ b/tools/intel_hdcp.c
+> @@ -0,0 +1,203 @@
+> +/*
+> + * Copyright =A9 2024 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+
+Use SPDX, see other recent C files.
+
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the =
+next
+> + * paragraph) shall be included in all copies or substantial portions of=
+ the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
+OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
+NG
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+> + * DEALINGS IN THE SOFTWARE.
+> + *
+> + * This tool designed to mimic an HDCP video player, capable of performi=
+ng
+> + * self-tests and easily deployable to client machines. This tool helps =
+identify
+> + * whether issues are rooted in the driver or user space.
+> + *
+> + */
+> +
+> +#include <stdio.h>
+> +#include "igt.h"
+> +#include <fcntl.h>
+
+Sort alphabetically, first system headers, then igt so:
+
+#include <fcntl.h>
+#include <stdio.h>
+
+#include "igt.h"
+
+Btw are you sure to include igt.h here?
+
+We need this to use the igt defintions here to stay consistent with the oth=
+er tools in the igt_gpu_tools repository, We are using the igt_* functions =
+in the existing tools like
+Igt_dp_compliance, igt_reg etc.
+
+Please let me know your thoughts or if my understanding is incorrect.
+> +
+> +#define MAX_HDCP_BUF_LEN     5000
+> +
+> +typedef struct data {
+> +     int fd;
+> +     igt_display_t display;
+> +     struct igt_fb red, green;
+> +     int height, width;
+> +} data_t;
+> +
+> +
+> +/* TODO: Implement the actual HDCP enabling logic here
+> + * Steps:
+> + * 1. Open the appropriate debugfs file for the connector.
+> + * 2. Enable HDCP on the output using connector properties
+> + *    IGT_CONNECTOR_CONTENT_PROTECTION and IGT_CONNECTOR_HDCP_CONTENT_TY=
+PE.
+> + * 3. Check the status to ensure HDCP is enabled.
+> + */
+> +static void enable_hdcp(void)
+> +{
+> +     igt_debug("TODO: Enable HDCP\n");
+
+Tools is not a test, so maybe just fprintf(stderr, ...)
+
+> +}
+> +
+> +/* TODO: Implement the actual HDCP disabling logic here */
+> +static void disable_hdcp(void)
+> +{
+> +     igt_debug("TODO: Disable HDCP\n");
+
+Same here.
+
+> +}
+> +
+> +static bool sink_hdcp2_capable(data_t *data, igt_output_t *output)
+> +{
+> +     char buf[MAX_HDCP_BUF_LEN];
+> +     int fd;
+> +
+> +     fd =3D igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
+
+You are using igt lib function here, make sure it will not assert.
+
+> +     if (fd < 0)
+> +             return false;
+> +
+> +     if (is_intel_device(data->fd))
+> +             igt_debugfs_simple_read(fd, "i915_hdcp_sink_capability", bu=
+f, sizeof(buf));
+
+Same here, using igt lib function intended for tests
+can bring an assert, it is no expected in a tool.
 
 
-On 23-12-2024 12:20, Nautiyal, Ankit K wrote:
-> 
-> On 12/13/2024 11:32 AM, Swati Sharma wrote:
->> Add conditions to filter valid outputs. Encapsulate the
->> mode-setting functionality in the set_mode function to reduce
->> redundancy. Remove redundant framebuffer and size setting
->> operations for the plane. Simplify the CD clock frequency
->> checks to ensure it increases after the mode transition. Clean
->> up unnecessary plane operations and redundant framebuffer
->> handling. Enhance the readability and modularity of the mode
->> transition logic to handle multiple outputs more effectively.
-> 
-> This patch is doing more things along with refactoring like skipping if 
-> there is only one mode, and checking if there are minimum 2 displays.
-> 
-> So lets refactor be one patch, with no functional change.
-> 
-> Then add other enhancements etc.
-> 
-> 
->>
->> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
->> ---
->>   tests/intel/kms_cdclk.c | 112 +++++++++++++++++++---------------------
->>   1 file changed, 54 insertions(+), 58 deletions(-)
->>
->> diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
->> index 382b3e9d1..93276f45e 100644
->> --- a/tests/intel/kms_cdclk.c
->> +++ b/tests/intel/kms_cdclk.c
->> @@ -54,6 +54,7 @@ IGT_TEST_DESCRIPTION("Test cdclk features : crawling 
->> and squashing");
->>   #define VDISPLAY_4K    2160
->>   #define VREFRESH    60
->>   #define MAX_CDCLK_4K    307200
->> +#define MIN_DISPLAYS    2
->>   /* Test flags */
->>   enum {
->> @@ -269,90 +270,86 @@ static void test_mode_transition(data_t *data, 
->> enum pipe pipe, igt_output_t *out
->>       igt_remove_fb(display->drm_fd, &fb);
->>   }
->> +
->> +static void set_mode(data_t *data, drmModeModeInfo *mode, int count,
->> +             struct igt_fb fb, igt_output_t **valid_outputs)
-> 
-> let count be after data, as this is count of modes and valid outputs. 
-> Perhaps a better order will be:
-> 
-> set_mode(data_t *data, int count, drmModeModeInfo *mode, igt_output_t 
-> **valid_outputs, struct igt_fb fb)
-> 
->> +{
->> +    igt_display_t *display = &data->display;
->> +    igt_pipe_t *pipe;
->> +    igt_plane_t *plane;
->> +
->> +    for (int k = 0; k < count; k++) {
-> 
-> lets use i for iterator.
-> 
-> 
->> +        pipe = &display->pipes[k];
->> +        plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->> +
->> +        igt_output_override_mode(valid_outputs[k], &mode[k]);
->> +
->> +        igt_plane_set_fb(plane, &fb);
->> +        igt_fb_set_size(&fb, plane, mode[k].hdisplay, mode[k].vdisplay);
->> +        igt_plane_set_size(plane, mode[k].hdisplay, mode[k].vdisplay);
->> +    }
->> +}
->> +
->>   static void test_mode_transition_on_all_outputs(data_t *data)
->>   {
->>       igt_display_t *display = &data->display;
->>       int debugfs_fd = data->debugfs_fd;
->> -    drmModeModeInfo *mode, *mode_hi, *mode_lo;
->> +    drmModeModeInfo *mode, mode_hi[IGT_MAX_PIPES] = {0}, 
->> mode_lo[IGT_MAX_PIPES] = {0};
->> +    igt_output_t *valid_outputs[IGT_MAX_PIPES] = {NULL};
->>       igt_output_t *output;
->> -    int valid_outputs = 0;
->> +    int count = 0;
->>       int cdclk_ref, cdclk_new;
->>       uint16_t width = 0, height = 0;
->>       struct igt_fb fb;
->> -    igt_pipe_t *pipe;
->> -    igt_plane_t *plane;
->> -    int i = 0, j = 0;
->>       do_cleanup_display(display);
->>       igt_display_reset(display);
->> -    for_each_connected_output(&data->display, output)
->> -        valid_outputs++;
->> -
->> -    i = 0;
->>       for_each_connected_output(display, output) {
->> -        mode = igt_output_get_mode(output);
->> -        igt_assert(mode);
->> +        const drmModeModeInfo *highres_mode;
->> +        const drmModeModeInfo *lowres_mode;
->> -        width = max(width, mode->hdisplay);
->> -        height = max(height, mode->vdisplay);
->> +        highres_mode = get_highres_mode(output);
- >> Can we move the get_highres_mode from test functions to lib and re 
-use in other tests kms_dsc, kms_display_modes, in fact here we are 
-restricting highest modes to 4k, imho it would be good to sort the modes
-to get highest mode.
 
->> +        igt_require(highres_mode != NULL);
->> +        mode_hi[count] = *highres_mode;
->> -        mode_hi = get_highres_mode(output);
->> -        igt_require(mode_hi != NULL);
->> +        lowres_mode = get_lowres_mode(output);
->> +        mode_lo[count] = *lowres_mode;
-> 
-> I think it will be better to set the mode_hi and mode_lo later after we 
-> set valid_output.
-> 
-> If both are equal we are overwriting mode_hi and mode_lo.
-> 
-> 
->> -        igt_output_set_pipe(output, i);
->> -        igt_output_override_mode(output, mode_hi);
->> -        i++;
->> -    }
->> -    igt_require(intel_pipe_output_combo_valid(display));
->> -    igt_display_reset(display);
->> +        if (mode_hi[count].hdisplay == mode_lo[count].hdisplay &&
->> +            mode_hi[count].vdisplay == mode_lo[count].vdisplay) {
-> In line with above comment, use highres_mode and lowres_mode to compare.
->> +            igt_debug("Highest and lowest mode resolutions are same; 
->> no transition\n");
->> +            continue;
->> +        }
->> -    igt_create_pattern_fb(data->drm_fd, width, height, 
->> DRM_FORMAT_XRGB8888,
->> -                  DRM_FORMAT_MOD_LINEAR, &fb);
->> -    i = 0;
->> -    for_each_connected_output(display, output) {
->> -        pipe = &display->pipes[i];
->> -        plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->> +        valid_outputs[count++] = output;
->> +    }
->> -        mode = NULL;
->> +    igt_skip_on_f(count < MIN_DISPLAYS,
->> +              "Number of valid outputs (%d) must be greater than or 
->> equal to the "
->> +              "minimum required displays (%d)\n", count, MIN_DISPLAYS);
-> 
-> I think what we mean here is that the count should be more than 1, 
-> meaning there should be more than 1 output.
-> 
-> We dont need to have a macro MIN_DISPLAYS as count >= 1 is self 
-> explanatory.
-> 
-> Regards,
-> 
-> Ankit
-> 
->> -        igt_output_set_pipe(output, i);
->> -        mode = igt_output_get_mode(output);
->> +    for (int i = 0; i < count; i++) {
->> +        mode = igt_output_get_mode(valid_outputs[i]);
->>           igt_assert(mode);
->> -        mode_lo = get_lowres_mode(output);
->> +        width = max(width, mode->hdisplay);
->> +        height = max(height, mode->vdisplay);
->> -        igt_output_override_mode(output, mode_lo);
->> -        igt_plane_set_fb(plane, &fb);
->> -        igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo- 
->> >vdisplay);
->> -        igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisplay);
->> -        i++;
->> +        igt_output_set_pipe(valid_outputs[i], i);
->> +        igt_output_override_mode(valid_outputs[i], &mode_hi[i]);
->>       }
->> -    igt_display_commit2(display, COMMIT_ATOMIC);
->> -    cdclk_ref = get_current_cdclk_freq(debugfs_fd);
->> -
->> -    j = 0;
->> -    for_each_connected_output(display, output) {
->> -        pipe = &display->pipes[j];
->> -        plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->> -
->> -        mode = NULL;
->> -
->> -        igt_output_set_pipe(output, j);
->> -        mode = igt_output_get_mode(output);
->> -        igt_assert(mode);
->> +    igt_require(intel_pipe_output_combo_valid(display));
->> -        mode_hi = get_highres_mode(output);
->> -        igt_require(mode_hi != NULL);
->> +    igt_create_pattern_fb(data->drm_fd, width, height, 
->> DRM_FORMAT_XRGB8888,
->> +                  DRM_FORMAT_MOD_LINEAR, &fb);
->> -        igt_output_override_mode(output, mode_hi);
->> -        igt_plane_set_fb(plane, &fb);
->> -        igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi- 
->> >vdisplay);
->> -        igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisplay);
->> -        j++;
->> -    }
->> +    set_mode(data, mode_lo, count, fb, valid_outputs);
->> +    igt_display_commit2(display, COMMIT_ATOMIC);
->> +    cdclk_ref = get_current_cdclk_freq(debugfs_fd);
->> +    set_mode(data, mode_hi, count, fb, valid_outputs);
->>       igt_display_commit2(display, COMMIT_ATOMIC);
->>       cdclk_new = get_current_cdclk_freq(debugfs_fd);
->>       igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
->> @@ -360,7 +357,6 @@ static void 
->> test_mode_transition_on_all_outputs(data_t *data)
->>       /* cdclk should bump */
->>       igt_assert_lt(cdclk_ref, cdclk_new);
->> -    igt_plane_set_fb(plane, NULL);
->>       do_cleanup_display(display);
->>       igt_remove_fb(data->drm_fd, &fb);
->>   }
+> +     else
+> +             igt_debugfs_simple_read(fd, "hdcp_sink_capability", buf, si=
+zeof(buf));
 
+Same here.
+
+> +
+> +     close(fd);
+> +
+> +     igt_debug("Sink capability: %s\n", buf);
+> +     return strstr(buf, "HDCP2.2");
+> +}
+> +
+> +static bool sink_hdcp_capable(data_t *data, igt_output_t *output)
+> +{
+> +     char buf[MAX_HDCP_BUF_LEN];
+> +     int fd;
+> +
+> +     fd =3D igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
+
+Same here.
+
+> +     if (fd < 0)
+> +             return false;
+> +
+> +     if (is_intel_device(data->fd))
+> +             igt_debugfs_simple_read(fd, "i915_hdcp_sink_capability", bu=
+f, sizeof(buf));
+
+Same here.
+
+> +     else
+> +             igt_debugfs_simple_read(fd, "hdcp_sink_capability", buf, si=
+zeof(buf));
+
+Same here.
+
+> +
+> +     close(fd);
+> +
+> +     igt_debug("Sink capability: %s\n", buf);
+> +     return strstr(buf, "HDCP1.4");
+> +}
+> +
+> +static const char *get_hdcp_version(igt_output_t *output, data_t *data)
+> +{
+> +     if (sink_hdcp2_capable(data, output))
+> +             return "HDCP 2.2";
+> +     else if (sink_hdcp_capable(data, output))
+> +             return "HDCP 1.4";
+> +     else
+> +             return "No HDCP support";
+> +}
+> +
+> +static void get_hdcp_info(data_t *data)
+> +{
+> +     igt_output_t *output;
+> +     igt_display_t *display =3D &data->display;
+> +
+> +     igt_info("\nHDCP Sink Information\n");
+> +     for_each_connected_output(display, output) {
+> +             igt_info("Output: %s\tHDCP Supported Version: %s\n",
+> +                       igt_output_name(output), get_hdcp_version(output,=
+ data));
+> +     }
+> +}
+> +
+> +static void print_usage(void)
+> +{
+> +     igt_info("Usage: intel_hdcp [OPTIONS]\n");
+
+Same here, imho better just printf() here.
+> +     igt_info("Options:\n");
+> +     igt_info("-i,   --info          Get HDCP Information\n");
+> +     igt_info("-e,   --enable        Enable HDCP on the output\n");
+> +     igt_info("-d,   --disable       Disable HDCP on the specific output=
+\n");
+> +     igt_info("-h,   --help          Display this help message\n");
+> +}
+> +
+> +static void create_frame_buffers(int fd, data_t *data)
+> +{
+> +     igt_output_t *output;
+> +     drmModeModeInfo *mode;
+> +     uint16_t width, height;
+> +     igt_display_t *display =3D &data->display;
+> +
+> +     for_each_connected_output(display, output) {
+> +             mode =3D igt_output_get_mode(output);
+> +             igt_assert(mode);
+> +
+> +             width =3D mode->hdisplay;
+> +             height =3D mode->vdisplay;
+> +     }
+> +
+> +     data->width =3D width;
+> +     data->height =3D height;
+> +
+> +     igt_create_color_fb(data->fd, width, height,
+> +                         DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +                         1.f, 0.f, 0.f, &data->red);
+> +     igt_create_color_fb(data->fd, width, height,
+> +                         DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +                         0.f, 1.f, 0.f, &data->green);
+> +}
+> +
+> +static void hdcp_init(data_t *data)
+> +{
+> +     data->fd =3D drm_open_driver_master(DRIVER_ANY);
+
+Imho you should do an open yourself.
+
+> +     if (data->fd < 0) {
+> +             fprintf(stderr, "Failed to open DRM driver\n");
+> +             exit(EXIT_FAILURE);
+> +     }
+> +     igt_display_require(&data->display, data->fd);
+
+You are not in test, you cannot 'require' a display in a tool,
+imho you should inform user that no displays were found and
+just exit, no igt SKIPs.
+
+We need this to use the igt defintions here to stay consistent with the oth=
+er tools in the igt_gpu_tools repository, We are using the igt_* functions =
+in the existing tools like
+Igt_dp_compliance, igt_reg etc.
+
+
+Regards,
+Kamil
+
+> +     igt_display_require_output(&data->display);
+> +     create_frame_buffers(data->fd, data);
+> +}
+> +
+> +int main(int argc, char **argv)
+> +{
+> +     data_t data;
+> +     int option;
+> +     static const char optstr[] =3D "hied";
+> +     struct option long_opts[] =3D {
+> +             {"help",        no_argument,    NULL, 'h'},
+> +             {"info",        no_argument,    NULL, 'i'},
+> +             {"enable",      no_argument,    NULL, 'e'},
+> +             {"disable",     no_argument,    NULL, 'd'},
+> +             {NULL,          0,              NULL,  0 }
+> +     };
+> +
+> +     hdcp_init(&data);
+> +
+> +     while ((option =3D getopt_long(argc, argv, optstr, long_opts, NULL)=
+) !=3D -1) {
+> +             switch (option) {
+> +             case 'i':
+> +                     get_hdcp_info(&data);
+> +                     break;
+> +             case 'e':
+> +                     enable_hdcp();
+> +                     break;
+> +             case 'd':
+> +                     disable_hdcp();
+> +                     break;
+> +             case 'h':
+> +             default:
+> +                     print_usage();
+> +                     break;
+> +             }
+> +     }
+> +}
+> diff --git a/tools/meson.build b/tools/meson.build
+> index 48c9a4b50..8e24005eb 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -27,6 +27,7 @@ tools_progs =3D [
+>        'intel_gpu_time',
+>        'intel_gtt',
+>        'intel_guc_logger',
+> +     'intel_hdcp',
+>        'intel_infoframes',
+>        'intel_lid',
+>        'intel_opregion_decode',
+> --
+> 2.34.1
+>
+
+--_000_SN6PR11MB2704C4588767DCA7E173E21CDB032SN6PR11MB2704namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Hi Kamil,</div>
+<div id=3D"appendonsend"></div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<hr style=3D"display: inline-block; width: 98%;">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><span style=3D"font-family: Calibri, =
+sans-serif; font-size: 11pt; color: rgb(0, 0, 0);"><b>From:</b>&nbsp;Kamil =
+Konieczny &lt;kamil.konieczny@linux.intel.com&gt;<br>
+<b>Sent:</b>&nbsp;Friday, December 6, 2024 10:48 PM<br>
+<b>To:</b>&nbsp;Reddy Guddati, Santhosh &lt;santhosh.reddy.guddati@intel.co=
+m&gt;<br>
+<b>Cc:</b>&nbsp;igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop=
+.org&gt;; Kandpal, Suraj &lt;suraj.kandpal@intel.com&gt;; Nautiyal, Ankit K=
+ &lt;ankit.k.nautiyal@intel.com&gt;; Thasleem, Mohammed &lt;mohammed.thasle=
+em@intel.com&gt;<br>
+<b>Subject:</b>&nbsp;Re: [PATCH i-g-t v1] tools/intel_hdcp: Introduce intel=
+_hdcp tool</span>
+<div>&nbsp;</div>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">Hi Santhosh,<br>
+On 2024-12-04 at 15:26:54 +0530, Santhosh Reddy Guddati wrote:<br>
+&gt; Add a new HDCP tool for self-testing and easy deployment<br>
+&gt; to client machines. This tool helps diagnose issues,<br>
+&gt; determining whether the problem lies in the driver or user space.<br>
+&gt;<br>
+&gt; The current changes include tool skeleton and get hdcp info<br>
+&gt; on the connected outputs.<br>
+&gt;<br>
+&gt; Signed-off-by: Santhosh Reddy Guddati &lt;santhosh.reddy.guddati@intel=
+.com&gt;<br>
+&gt; ---<br>
+&gt;&nbsp; tools/intel_hdcp.c | 203 +++++++++++++++++++++++++++++++++++++++=
+++++++<br>
+&gt;&nbsp; tools/meson.build&nbsp; |&nbsp;&nbsp; 1 +<br>
+&gt;&nbsp; 2 files changed, 204 insertions(+)<br>
+&gt;&nbsp; create mode 100644 tools/intel_hdcp.c<br>
+&gt;<br>
+&gt; diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c<br>
+&gt; new file mode 100644<br>
+&gt; index 000000000..8c0258092<br>
+&gt; --- /dev/null<br>
+&gt; +++ b/tools/intel_hdcp.c<br>
+&gt; @@ -0,0 +1,203 @@<br>
+&gt; +/*<br>
+&gt; + * Copyright =A9 2024 Intel Corporation<br>
+&gt; + *<br>
+&gt; + * Permission is hereby granted, free of charge, to any person obtain=
+ing a<br>
+<br>
+Use SPDX, see other recent C files.<br>
+<br>
+&gt; + * copy of this software and associated documentation files (the &quo=
+t;Software&quot;),<br>
+&gt; + * to deal in the Software without restriction, including without lim=
+itation<br>
+&gt; + * the rights to use, copy, modify, merge, publish, distribute, subli=
+cense,<br>
+&gt; + * and/or sell copies of the Software, and to permit persons to whom =
+the<br>
+&gt; + * Software is furnished to do so, subject to the following condition=
+s:<br>
+&gt; + *<br>
+&gt; + * The above copyright notice and this permission notice (including t=
+he next<br>
+&gt; + * paragraph) shall be included in all copies or substantial portions=
+ of the<br>
+&gt; + * Software.<br>
+&gt; + *<br>
+&gt; + * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF AN=
+Y KIND, EXPRESS OR<br>
+&gt; + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTAB=
+ILITY,<br>
+&gt; + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.&nbsp; IN NO =
+EVENT SHALL<br>
+&gt; + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES =
+OR OTHER<br>
+&gt; + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, AR=
+ISING<br>
+&gt; + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHE=
+R<br>
+&gt; + * DEALINGS IN THE SOFTWARE.<br>
+&gt; + *<br>
+&gt; + * This tool designed to mimic an HDCP video player, capable of perfo=
+rming<br>
+&gt; + * self-tests and easily deployable to client machines. This tool hel=
+ps identify<br>
+&gt; + * whether issues are rooted in the driver or user space.<br>
+&gt; + *<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +#include &lt;stdio.h&gt;<br>
+&gt; +#include &quot;igt.h&quot;<br>
+&gt; +#include &lt;fcntl.h&gt;<br>
+<br>
+Sort alphabetically, first system headers, then igt so:<br>
+<br>
+#include &lt;fcntl.h&gt;<br>
+#include &lt;stdio.h&gt;<br>
+<br>
+#include &quot;igt.h&quot;<br>
+<br>
+Btw are you sure to include igt.h here?</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">We need this to us=
+e the igt defintions here to stay consistent with the other tools in the ig=
+t_gpu_<span style=3D"color: rgb(0, 0, 0);">tools repository, We are using t=
+he igt_* functions in the existing tools
+ like&nbsp;</span></div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">Igt_dp_compliance,=
+ igt_reg etc.&nbsp;<br>
+<br>
+Please let me know your thoughts or if my understanding is incorrect.<br>
+&gt; +<br>
+&gt; +#define MAX_HDCP_BUF_LEN&nbsp;&nbsp;&nbsp;&nbsp; 5000<br>
+&gt; +<br>
+&gt; +typedef struct data {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int fd;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t display;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; struct igt_fb red, green;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int height, width;<br>
+&gt; +} data_t;<br>
+&gt; +<br>
+&gt; +<br>
+&gt; +/* TODO: Implement the actual HDCP enabling logic here<br>
+&gt; + * Steps:<br>
+&gt; + * 1. Open the appropriate debugfs file for the connector.<br>
+&gt; + * 2. Enable HDCP on the output using connector properties<br>
+&gt; + *&nbsp;&nbsp;&nbsp; IGT_CONNECTOR_CONTENT_PROTECTION and IGT_CONNECT=
+OR_HDCP_CONTENT_TYPE.<br>
+&gt; + * 3. Check the status to ensure HDCP is enabled.<br>
+&gt; + */<br>
+&gt; +static void enable_hdcp(void)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&quot;TODO: Enable HDCP\n&quot;);<=
+br>
+<br>
+Tools is not a test, so maybe just fprintf(stderr, ...)<br>
+<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +/* TODO: Implement the actual HDCP disabling logic here */<br>
+&gt; +static void disable_hdcp(void)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&quot;TODO: Disable HDCP\n&quot;);=
+<br>
+<br>
+Same here.<br>
+<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static bool sink_hdcp2_capable(data_t *data, igt_output_t *output)<br=
+>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char buf[MAX_HDCP_BUF_LEN];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int fd;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; fd =3D igt_debugfs_connector_dir(data-&gt;fd=
+, output-&gt;name, O_RDONLY);<br>
+<br>
+You are using igt lib function here, make sure it will not assert.<br>
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (fd &lt; 0)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return false;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (is_intel_device(data-&gt;fd))<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_debugfs_simple_read(fd, &quot;i915_hdcp_sink_capability&quot;, buf,=
+ sizeof(buf));<br>
+<br>
+Same here, using igt lib function intended for tests<br>
+can bring an assert, it is no expected in a tool.</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_debugfs_simple_read(fd, &quot;hdcp_sink_capability&quot;, buf, size=
+of(buf));<br>
+<br>
+Same here.<br>
+<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; close(fd);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&quot;Sink capability: %s\n&quot;,=
+ buf);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; return strstr(buf, &quot;HDCP2.2&quot;);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static bool sink_hdcp_capable(data_t *data, igt_output_t *output)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char buf[MAX_HDCP_BUF_LEN];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int fd;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; fd =3D igt_debugfs_connector_dir(data-&gt;fd=
+, output-&gt;name, O_RDONLY);<br>
+<br>
+Same here.<br>
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (fd &lt; 0)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return false;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (is_intel_device(data-&gt;fd))<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_debugfs_simple_read(fd, &quot;i915_hdcp_sink_capability&quot;, buf,=
+ sizeof(buf));<br>
+<br>
+Same here.<br>
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_debugfs_simple_read(fd, &quot;hdcp_sink_capability&quot;, buf, size=
+of(buf));<br>
+<br>
+Same here.<br>
+<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; close(fd);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&quot;Sink capability: %s\n&quot;,=
+ buf);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; return strstr(buf, &quot;HDCP1.4&quot;);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static const char *get_hdcp_version(igt_output_t *output, data_t *dat=
+a)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (sink_hdcp2_capable(data, output))<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return &quot;HDCP 2.2&quot;;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; else if (sink_hdcp_capable(data, output))<br=
+>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return &quot;HDCP 1.4&quot;;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return &quot;No HDCP support&quot;;<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static void get_hdcp_info(data_t *data)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t *display =3D &amp;data-&gt;dis=
+play;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;\nHDCP Sink Information\n&quo=
+t;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; for_each_connected_output(display, output) {=
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;Output: %s\tHDCP Supported Version: %s\n&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_=
+name(output), get_hdcp_version(output, data));<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static void print_usage(void)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;Usage: intel_hdcp [OPTIONS]\n=
+&quot;);<br>
+<br>
+Same here, imho better just printf() here.<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;Options:\n&quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;-i,&nbsp;&nbsp; --info&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get HDCP Information\n&quot=
+;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;-e,&nbsp;&nbsp; --enable&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enable HDCP on the output\n&quot;);<b=
+r>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;-d,&nbsp;&nbsp; --disable&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disable HDCP on the specific output\n&quot=
+;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;-h,&nbsp;&nbsp; --help&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Display this help message\n=
+&quot;);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static void create_frame_buffers(int fd, data_t *data)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; uint16_t width, height;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t *display =3D &amp;data-&gt;dis=
+play;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; for_each_connected_output(display, output) {=
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; mode =3D igt_output_get_mode(output);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(mode);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; width =3D mode-&gt;hdisplay;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; height =3D mode-&gt;vdisplay;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;width =3D width;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;height =3D height;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_create_color_fb(data-&gt;fd, width, heig=
+ht,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ 1.f, 0.f, 0.f, &amp;data-&gt;red);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_create_color_fb(data-&gt;fd, width, heig=
+ht,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ 0.f, 1.f, 0.f, &amp;data-&gt;green);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static void hdcp_init(data_t *data)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;fd =3D drm_open_driver_master(DRIVE=
+R_ANY);<br>
+<br>
+Imho you should do an open yourself.<br>
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (data-&gt;fd &lt; 0) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; fprintf(stderr, &quot;Failed to open DRM driver\n&quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; exit(EXIT_FAILURE);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_require(&amp;data-&gt;display, d=
+ata-&gt;fd);<br>
+<br>
+You are not in test, you cannot 'require' a display in a tool,<br>
+imho you should inform user that no displays were found and<br>
+just exit, no igt SKIPs.</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"text-align: left; text-indent: 0px; =
+margin: 0px; font-family: &quot;Segoe UI Web (West European)&quot;, &quot;S=
+egoe UI&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica N=
+eue&quot;, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
+We need this to use the igt defintions here to stay consistent with the oth=
+er tools in the igt_gpu_tools repository, We are using the igt_* functions =
+in the existing tools like&nbsp;</div>
+<div style=3D"text-align: left; text-indent: 0px; margin: 0px; font-family:=
+ &quot;Segoe UI Web (West European)&quot;, &quot;Segoe UI&quot;, -apple-sys=
+tem, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-serif; fo=
+nt-size: 11pt; color: rgb(0, 0, 0);">
+Igt_dp_compliance, igt_reg etc.&nbsp;</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+Regards,<br>
+Kamil<br>
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_require_output(&amp;data-&gt;dis=
+play);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; create_frame_buffers(data-&gt;fd, data);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +int main(int argc, char **argv)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; data_t data;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int option;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; static const char optstr[] =3D &quot;hied&qu=
+ot;;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; struct option long_opts[] =3D {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; {&quot;help&quot;,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no_argumen=
+t,&nbsp;&nbsp;&nbsp; NULL, 'h'},<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; {&quot;info&quot;,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no_argumen=
+t,&nbsp;&nbsp;&nbsp; NULL, 'i'},<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; {&quot;enable&quot;,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no_argument,&nbsp;&n=
+bsp;&nbsp; NULL, 'e'},<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; {&quot;disable&quot;,&nbsp;&nbsp;&nbsp;&nbsp; no_argument,&nbsp;&nbsp;&=
+nbsp; NULL, 'd'},<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; {NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0,&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NULL=
+,&nbsp; 0 }<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; };<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; hdcp_init(&amp;data);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; while ((option =3D getopt_long(argc, argv, o=
+ptstr, long_opts, NULL)) !=3D -1) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; switch (option) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; case 'i':<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_hdcp_info(&amp;data=
+);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; case 'e':<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enable_hdcp();<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; case 'd':<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; disable_hdcp();<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; case 'h':<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; default:<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print_usage();<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; }<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +}<br>
+&gt; diff --git a/tools/meson.build b/tools/meson.build<br>
+&gt; index 48c9a4b50..8e24005eb 100644<br>
+&gt; --- a/tools/meson.build<br>
+&gt; +++ b/tools/meson.build<br>
+&gt; @@ -27,6 +27,7 @@ tools_progs =3D [<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'intel_gpu_time',<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'intel_gtt',<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'intel_guc_logger',<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; 'intel_hdcp',<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'intel_infoframes',<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'intel_lid',<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'intel_opregion_decode',<br>
+&gt; --<br>
+&gt; 2.34.1<br>
+&gt;</div>
+</body>
+</html>
+
+--_000_SN6PR11MB2704C4588767DCA7E173E21CDB032SN6PR11MB2704namp_--
