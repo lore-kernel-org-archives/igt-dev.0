@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A92E77194
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88291E7718F
 	for <igt-dev@archiver.kernel.org>; Mon, 30 Dec 2024 18:58:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 32DE310E57E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4481010E57F;
 	Mon, 30 Dec 2024 18:58:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k6x8ue9M";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WI1ggnCC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABBA610E57E
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2024 18:58:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4203810E57B
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2024 18:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735585098; x=1767121098;
+ t=1735585094; x=1767121094;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sDV/7vHJBseYhW0nLzh911HDN+s2HiVoUTX2286mM7w=;
- b=k6x8ue9M/PV2obLI67S3B78C4M8APoXG+bAnmD7aIL1LGKiDfrUb1U6G
- 8R5XZd67yKQPaiceNRxl6G9kfSXc9RZ5rIgaRWWGP8nB0eET3KfRxJd2T
- bMb1seU3HfXu4D+2GlVFgRB3rz9hnOaF5igBWnJimkt65rY356o8GnueE
- r8umtC0EFxodGnrD929XCfxZukaq3MRTpcCCk107kF0t+o6NbzHkkcJsq
- 9Dfwoj9P2L93gV4cUuUkdIZAlr+MOhnjfs6qD4oYKJj94vf41eGkuetXn
- PeILlobr2y43vvagY311RIQtyg5ulIUOlL/DiUx4ny2FbOCI4lkfDnsj8 g==;
-X-CSE-ConnectionGUID: kzMEBvLdSg698g2yzRYssw==
-X-CSE-MsgGUID: kJ3c5Rq9Sri4qOT+rXjZ1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11301"; a="39803543"
-X-IronPort-AV: E=Sophos;i="6.12,277,1728975600"; d="scan'208";a="39803543"
+ bh=zgDqTHzou0P4L88Tvck1drLgxP/rWz+Tls6MnmB/GgI=;
+ b=WI1ggnCC4cr+jXUI9ytuBvHfcR+1XFY2i0ruVQZDlNS1V1pcxP7zVJuX
+ CGIYTH+UOOz4SIOsDmOtP90reSsLLv18zkVZ2fnYMF1mgtrzReeJH8qE0
+ QYFfjNzBiZMVO2mYf1uMwr160wKh/gKWljnGNesMt0Zp4E/lAatcd9L3Q
+ I+JIRk3o1cFBHJqB7gQeYE2V0JmHTwor6idDyPyBrRo1JkBeJ+iwYZM1R
+ PqfvB1L7RCnNDwco9l7YKjiftEieBcWCbSp8EOownAEtbhbAne+WnrvQD
+ 619brhiuS3ON+46YXiRWoOLy7ctaoYZ8WwBUwjh7/9dcTOb5JVIuxZ1nx w==;
+X-CSE-ConnectionGUID: Ys2RN6O6TP6VECIq81rzEQ==
+X-CSE-MsgGUID: 5wNaYu+DTmm1VHXDz0flmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11301"; a="39803541"
+X-IronPort-AV: E=Sophos;i="6.12,277,1728975600"; d="scan'208";a="39803541"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Dec 2024 10:58:18 -0800
-X-CSE-ConnectionGUID: gi7Y+Z7bT16/kBWfrBhDng==
-X-CSE-MsgGUID: B6VmbTlQTASELlc6NILg9w==
+ 30 Dec 2024 10:58:14 -0800
+X-CSE-ConnectionGUID: Fnw6DYlmS0OBoElYwE950w==
+X-CSE-MsgGUID: Yn7mmoxISRyWCcEsUM3goA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,277,1728975600"; d="scan'208";a="100728923"
+X-IronPort-AV: E=Sophos;i="6.12,277,1728975600"; d="scan'208";a="100728914"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Dec 2024 10:58:16 -0800
+ 30 Dec 2024 10:58:12 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com, santhosh.reddy.guddati@intel.com,
  Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 4/6] tests/intel/kms_cdclk: Introduce set_mode()
-Date: Tue, 31 Dec 2024 00:33:13 +0530
-Message-Id: <20241230190315.48821-5-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 2/6] tests/intel/kms_cdclk: Modify highest resolution
+ restriction
+Date: Tue, 31 Dec 2024 00:33:11 +0530
+Message-Id: <20241230190315.48821-3-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241230190315.48821-1-swati2.sharma@intel.com>
 References: <20241230190315.48821-1-swati2.sharma@intel.com>
@@ -69,123 +70,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Encapsulate the mode-setting functionality in the set_mode
-function to reduce redundancy.
+Currently, highres is considered as mode equal to 4K. Modify this
+restriction to consider highres as >= 4K.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/kms_cdclk.c | 71 +++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 49 deletions(-)
+ tests/intel/kms_cdclk.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-index dfc64ae2e..67efdaa3f 100644
+index f1a019eb7..e78d22e1d 100644
 --- a/tests/intel/kms_cdclk.c
 +++ b/tests/intel/kms_cdclk.c
-@@ -256,21 +256,36 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
- 	igt_remove_fb(display->drm_fd, &fb);
- }
+@@ -165,8 +165,8 @@ static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *outpu
  
-+static void set_mode(data_t *data, int count, drmModeModeInfo *mode,
-+		     igt_output_t **valid_outputs, struct igt_fb fb)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_pipe_t *pipe;
-+	igt_plane_t *plane;
-+
-+	for (int i = 0; i < count; i++) {
-+		pipe = &display->pipes[i];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+
-+		igt_output_override_mode(valid_outputs[i], &mode[i]);
-+
-+		igt_plane_set_fb(plane, &fb);
-+		igt_fb_set_size(&fb, plane, mode[i].hdisplay, mode[i].vdisplay);
-+		igt_plane_set_size(plane, mode[i].hdisplay, mode[i].vdisplay);
-+	}
-+}
-+
- static void test_mode_transition_on_all_outputs(data_t *data)
- {
- 	igt_display_t *display = &data->display;
- 	int debugfs_fd = data->debugfs_fd;
--	drmModeModeInfo *mode, mode_hi, mode_lo;
--	drmModeModeInfo mode_highres[IGT_MAX_PIPES] = {0}, mode_lowres[IGT_MAX_PIPES] = {0};
-+	drmModeModeInfo *mode, mode_highres[IGT_MAX_PIPES] = {0}, mode_lowres[IGT_MAX_PIPES] = {0};
- 	igt_output_t *valid_outputs[IGT_MAX_PIPES] = {NULL};
- 	igt_output_t *output;
- 	int count = 0;
- 	int cdclk_ref, cdclk_new;
- 	uint16_t width = 0, height = 0;
- 	struct igt_fb fb;
--	igt_pipe_t *pipe;
--	igt_plane_t *plane;
--	int i = 0, j = 0;
+ 		igt_output_set_pipe(output, pipe);
+ 		mode = *igt_output_get_highres_mode(output);
+-		igt_require_f(mode.hdisplay == HDISPLAY_4K && mode.vdisplay == VDISPLAY_4K &&
+-			      mode.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
++		igt_require_f(mode.hdisplay >= HDISPLAY_4K && mode.vdisplay >= VDISPLAY_4K &&
++			      mode.vrefresh >= VREFRESH, "Mode >= 4K not found on output %s.\n",
+ 			      igt_output_name(output));
  
- 	do_cleanup_display(display);
- 	igt_display_reset(display);
-@@ -320,52 +335,11 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 			      DRM_FORMAT_MOD_LINEAR, &fb);
+ 		igt_output_override_mode(output, &mode);
+@@ -219,8 +219,8 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+ 	mode = igt_output_get_mode(output);
+ 	mode_lo = *get_lowres_mode(output);
+ 	mode_hi = *igt_output_get_highres_mode(output);
+-	igt_require_f(mode_hi.hdisplay == HDISPLAY_4K && mode_hi.vdisplay == VDISPLAY_4K &&
+-		      mode_hi.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
++	igt_require_f(mode_hi.hdisplay >= HDISPLAY_4K && mode_hi.vdisplay >= VDISPLAY_4K &&
++		      mode_hi.vrefresh >= VREFRESH, "Mode >= 4K not found on output %s.\n",
+ 		      igt_output_name(output));
  
--	i = 0;
--	for_each_connected_output(display, output) {
--		pipe = &display->pipes[i];
--		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--		mode = NULL;
--
--		igt_output_set_pipe(output, i);
--		mode = igt_output_get_mode(output);
--		igt_assert(mode);
--
--		mode_lo = *get_lowres_mode(output);
--
--		igt_output_override_mode(output, &mode_lo);
--		igt_plane_set_fb(plane, &fb);
--		igt_fb_set_size(&fb, plane, mode_lo.hdisplay, mode_lo.vdisplay);
--		igt_plane_set_size(plane, mode_lo.hdisplay, mode_lo.vdisplay);
--		i++;
--	}
--
-+	set_mode(data, count, mode_lowres, valid_outputs, fb);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+ 	igt_skip_on_f(mode_hi.hdisplay == mode_lo.hdisplay && mode_hi.vdisplay == mode_lo.vdisplay,
+@@ -285,8 +285,8 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 		height = max(height, mode->vdisplay);
  
--	j = 0;
--	for_each_connected_output(display, output) {
--		pipe = &display->pipes[j];
--		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--		mode = NULL;
--
--		igt_output_set_pipe(output, j);
--		mode = igt_output_get_mode(output);
--		igt_assert(mode);
--
--		mode_hi = *igt_output_get_highres_mode(output);
--		igt_require_f(mode_hi.hdisplay >= HDISPLAY_4K && mode_hi.vdisplay >= VDISPLAY_4K &&
--			      mode_hi.vrefresh >= VREFRESH, "Mode >= 4K not found on output %s.\n",
--			      igt_output_name(output));
--
--		igt_output_override_mode(output, &mode_hi);
--		igt_plane_set_fb(plane, &fb);
--		igt_fb_set_size(&fb, plane, mode_hi.hdisplay, mode_hi.vdisplay);
--		igt_plane_set_size(plane, mode_hi.hdisplay, mode_hi.vdisplay);
--		j++;
--	}
--
-+	set_mode(data, count, mode_highres, valid_outputs, fb);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 	cdclk_new = get_current_cdclk_freq(debugfs_fd);
- 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
-@@ -373,7 +347,6 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	/* cdclk should bump */
- 	igt_assert_lt(cdclk_ref, cdclk_new);
+ 		mode_hi = *igt_output_get_highres_mode(output);
+-		igt_require_f(mode_hi.hdisplay == HDISPLAY_4K && mode_hi.vdisplay == VDISPLAY_4K &&
+-			      mode_hi.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
++		igt_require_f(mode_hi.hdisplay >= HDISPLAY_4K && mode_hi.vdisplay >= VDISPLAY_4K &&
++			      mode_hi.vrefresh >= VREFRESH, "Mode >= 4K not found on output %s.\n",
+ 			      igt_output_name(output));
  
--	igt_plane_set_fb(plane, NULL);
- 	do_cleanup_display(display);
- 	igt_remove_fb(data->drm_fd, &fb);
- }
+ 		igt_output_set_pipe(output, i);
+@@ -333,8 +333,8 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 		igt_assert(mode);
+ 
+ 		mode_hi = *igt_output_get_highres_mode(output);
+-		igt_require_f(mode_hi.hdisplay == HDISPLAY_4K && mode_hi.vdisplay == VDISPLAY_4K &&
+-			      mode_hi.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
++		igt_require_f(mode_hi.hdisplay >= HDISPLAY_4K && mode_hi.vdisplay >= VDISPLAY_4K &&
++			      mode_hi.vrefresh >= VREFRESH, "Mode >= 4K not found on output %s.\n",
+ 			      igt_output_name(output));
+ 
+ 		igt_output_override_mode(output, &mode_hi);
 -- 
 2.25.1
 
