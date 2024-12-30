@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F60E7718F
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Dec 2024 18:58:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6787FE77188
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Dec 2024 19:43:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 39B8210E580;
-	Mon, 30 Dec 2024 18:58:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EUShIHxE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22ECA10E580
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2024 18:58:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735585101; x=1767121101;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0IRH4TLA27saTrSwKZxXi1aXRswaDD/mhGE1bqGhJgw=;
- b=EUShIHxEIJJ/r+OEclL1SkvMeF8XX2TY4TVbGG8VDjmUjqX6mpHfyzjM
- QIW3jUK7OdYloLJJcwCZ0JQqV3TcGPTk57epq/XPsxu5kYzlVyY6vogC7
- p639xoqu/rYKFGPwH3S6DvnPzdlqY0EFDMjnikoE1aXwMWq0HYRXD43XY
- BvNOSmX01EgAnOZNfx3LJ8boT15PGO3NeriruzdNoA36lI5rpXmOyno3z
- fNqJGgSNIxh15LS0eWRYxdVykH+Jy23coYguM6sFKmSS98FgOYacsLD2E
- jfeeXOA8Q+ople8hsM2jxNmkW2OBk92+OCRCxKH7csyNPQvlFsYX1ENE7 g==;
-X-CSE-ConnectionGUID: vE3B4JZ3QJWmG8qyFglFrA==
-X-CSE-MsgGUID: jnKizNFYRWW2aWaZyk0Fsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11301"; a="39803545"
-X-IronPort-AV: E=Sophos;i="6.12,277,1728975600"; d="scan'208";a="39803545"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Dec 2024 10:58:21 -0800
-X-CSE-ConnectionGUID: ESXxRSi1SI2Xw4Jevdl6VA==
-X-CSE-MsgGUID: AVVzI6jIR5SeRMbLIVdY5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,277,1728975600"; d="scan'208";a="100728931"
-Received: from dut2122ptlh.iind.intel.com (HELO
- linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Dec 2024 10:58:19 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, santhosh.reddy.guddati@intel.com,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 6/6] tests/intel/kms_cdclk: Add get_max_cdclk_freq()
-Date: Tue, 31 Dec 2024 00:33:15 +0530
-Message-Id: <20241230190315.48821-7-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241230190315.48821-1-swati2.sharma@intel.com>
-References: <20241230190315.48821-1-swati2.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D728910E0C9;
+	Mon, 30 Dec 2024 19:43:31 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36ECE10E0C9;
+ Mon, 30 Dec 2024 19:43:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fcdclk?=
+ =?utf-8?q?=3A_Refactor_mode_setting_and_CD_clock_verification_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 30 Dec 2024 19:43:30 -0000
+Message-ID: <173558781021.1044586.6239718952425390876@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241230190315.48821-1-swati2.sharma@intel.com>
+In-Reply-To: <20241230190315.48821-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,83 +37,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace hardcoded max cdclk freq with one computed from debugfs.
-Also, add same condition for all_outputs subtest.
+== Series Details ==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel/kms_cdclk.c | 34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
+Series: tests/intel/kms_cdclk: Refactor mode setting and CD clock verification (rev2)
+URL   : https://patchwork.freedesktop.org/series/142515/
+State : success
 
-diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-index fcbfa3f37..2ea805b94 100644
---- a/tests/intel/kms_cdclk.c
-+++ b/tests/intel/kms_cdclk.c
-@@ -53,7 +53,6 @@ IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
- #define HDISPLAY_4K	3840
- #define VDISPLAY_4K	2160
- #define VREFRESH	60
--#define MAX_CDCLK_4K	307200
- 
- /* Test flags */
- enum {
-@@ -104,6 +103,34 @@ static int get_current_cdclk_freq(int debugfs_fd)
- 	return cdclk_freq_current;
- }
- 
-+static int get_max_cdclk_freq(int debugfs_fd)
-+{
-+	int cdclk_freq_max;
-+	char buf[1024];
-+	char *start_loc;
-+	int res;
-+
-+	/*
-+	 * Display specific clock frequency info is moved to i915_cdclk_info,
-+	 * On older kernels if this debugfs is not found, fallback to read from
-+	 * i915_frequency_info.
-+	 *
-+	 * FIXME: As of now, XE debugfs is still using i915 namespace, once the
-+	 * Kernel changes are landed, update this to use the XE specific debugfs.
-+	 */
-+	res = igt_debugfs_simple_read(debugfs_fd, "i915_cdclk_info",
-+				      buf, sizeof(buf));
-+	if (res <= 0)
-+		res = igt_debugfs_simple_read(debugfs_fd, "i915_frequency_info",
-+					      buf, sizeof(buf));
-+	igt_require(res > 0);
-+
-+	igt_assert(start_loc = strstr(buf, "Max CD clock frequency: "));
-+	igt_assert_eq(sscanf(start_loc, "Max CD clock frequency: %d", &cdclk_freq_max), 1);
-+
-+	return cdclk_freq_max;
-+}
-+
- static __u64 get_mode_data_rate(drmModeModeInfo *mode)
- {
- 	__u64 data_rate = (__u64)mode->hdisplay * (__u64)mode->vdisplay * (__u64)mode->vrefresh;
-@@ -250,7 +277,7 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
- 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
- 
- 	/* cdclk should bump */
--	if (cdclk_new != MAX_CDCLK_4K)
-+	if (cdclk_new != get_max_cdclk_freq(debugfs_fd))
- 		igt_assert_lt(cdclk_ref, cdclk_new);
- 
- 	/* cleanup */
-@@ -348,7 +375,8 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
- 
- 	/* cdclk should bump */
--	igt_assert_lt(cdclk_ref, cdclk_new);
-+	if (cdclk_new != get_max_cdclk_freq(debugfs_fd))
-+		igt_assert_lt(cdclk_ref, cdclk_new);
- 
- 	do_cleanup_display(display);
- 	igt_remove_fb(data->drm_fd, &fb);
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8172 -> IGTPW_12367
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/index.html
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Additional (1): bat-rplp-1 
+  Missing    (5): bat-adlm-1 fi-snb-2520m fi-glk-j4005 bat-twl-1 fi-skl-6600u 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12367:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - {bat-mtlp-9}:       [PASS][1] -> [FAIL][2] +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8172/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-mtlp-9/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12367 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-rplp-1:         NOTRUN -> [SKIP][3] ([i915#9318])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-rplp-1:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-rplp-1:         NOTRUN -> [SKIP][5] ([i915#3282])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-rplp-1:         NOTRUN -> [SKIP][6] ([i915#6621])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_chamelium_edid@hdmi-edid-read:
+    - bat-dg2-13:         [PASS][7] -> [DMESG-WARN][8] ([i915#12253])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8172/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-rplp-1:         NOTRUN -> [SKIP][9] ([i915#4103] / [i915#4213]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-rplp-1:         NOTRUN -> [SKIP][10] ([i915#3555] / [i915#3840])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-rplp-1:         NOTRUN -> [SKIP][11] ([i915#4093]) +3 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-rplp-1:         NOTRUN -> [SKIP][12] ([i915#4369])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - bat-rplp-1:         NOTRUN -> [SKIP][13] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rplp-1:         NOTRUN -> [SKIP][14] ([i915#3555])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-rplp-1:         NOTRUN -> [SKIP][15] ([i915#3708]) +2 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-rplp-1/igt@prime_vgem@basic-read.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [ABORT][16] ([i915#12061]) -> [PASS][17] +1 other test pass
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8172/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - {bat-mtlp-9}:       [ABORT][18] ([i915#12061]) -> [PASS][19] +1 other test pass
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8172/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12253]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253
+  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4093]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4093
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
+  [i915#4369]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4369
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8172 -> IGTPW_12367
+  * Linux: CI_DRM_15880 -> CI_DRM_15892
+
+  CI-20190529: 20190529
+  CI_DRM_15880: d574310669011e7ef8da6d7e17a2938cae06e077 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15892: 08bd590935a5258ffd79355c59adffd72fb2c642 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12367: 15e92e1b7ae0b4c0e860ddd36e13f7cf7664105e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8172: 9112581619aa198fa03041d5c7e18e02f42ac00f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12367/index.html
