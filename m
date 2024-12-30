@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BFC8E77188
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4631E7718B
 	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 04:15:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 08C3310E1F3;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F66E10E1F5;
 	Thu,  2 Jan 2025 04:15:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lef0S2Va";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iZd2bBmU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83A1310E0D7
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2024 08:29:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCF0710E0D7
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2024 08:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735547398; x=1767083398;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hew7ihM+KbET3q4emY504nj2au6aW4ZHSbnSzjVQ1n4=;
- b=Lef0S2VaCS1EPwzHOa5srsfWSeNbQyAnjRPmGHvNzSM21QHYIOT7o3pd
- YycVYuG431TaNWtCDQP+3dPwsecmYnmT1HxDc4tjllOhUdMpIpnbNklQa
- Q/Lh+T3mOJY0DlptPVS2nhd3Yt58lWqLyehHZbc1y3YxO7t4CBWrjUlot
- ymNXPZYO5DRL5xXfHbbdHq0fT/DFMIUsXxgLHDFy+UrtRig2sNIv4p/Zd
- cu7FPaCXmdGwSaGSiPnAj5bAfz7vvnQ1NIdagR1VLaHGceY4rnGm2H2S4
- kO+fyN4Ffl91eTINPYshj9T7LVGsSZnFydYnpv+yrEW/PWsoXETkyZSgG A==;
-X-CSE-ConnectionGUID: WPIeYtpgRbODzG1JeImuGA==
-X-CSE-MsgGUID: OYNiqQqFQUG4Z7kUx8d1Og==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="35994812"
-X-IronPort-AV: E=Sophos;i="6.12,275,1728975600"; d="scan'208";a="35994812"
+ t=1735547389; x=1767083389;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=6fb7Iu8H+iJzHoYCLWFP+eZi/6UKhBVjqObWj13c2T8=;
+ b=iZd2bBmUrZK32hGG2iyqKXImbFJ/H/RtNxPV76N2b4LhULEhejdMX6FF
+ /CWclUt7+puDQhyld3HJtROsnAwB6ttpVrIpeItgSDB1yfQnoCA1aejxG
+ VuLnyAIHdKrHn+jeqp9mFw8D1mQ1+bBOLXMCJbyeiFw8CBwqZY8nnBQ5B
+ 2MfSVeYSEW0VD6XgXZsZiQCmlxYCAEIBX24wKf8ClBVzCK1wyGf3NdYPa
+ 2O0qNhwcaCdegMY+wRz2iph59Ng75l66XbjgbOQAwjBgI1d6p+QZLewKY
+ YtKlvJYmvA6mNUkzthUtWCo/SfU5hKA5gttY8e4ZA3b39jGfqT6nGNsau Q==;
+X-CSE-ConnectionGUID: 7A7/WC46SW+kBFL1AiRtAQ==
+X-CSE-MsgGUID: S+sm26gJRKafwaWKZ81pUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="35994794"
+X-IronPort-AV: E=Sophos;i="6.12,275,1728975600"; d="scan'208";a="35994794"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Dec 2024 00:29:58 -0800
-X-CSE-ConnectionGUID: Qz9JAyWTTou8bQ7Ss5nyJQ==
-X-CSE-MsgGUID: N5VlxBRSREWpbBGk+4LgAA==
+ 30 Dec 2024 00:29:48 -0800
+X-CSE-ConnectionGUID: fOPW2R+sTjGBow31id8Sqw==
+X-CSE-MsgGUID: WaCqeHX9TK+0LD8tdBHO1w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,275,1728975600"; d="scan'208";a="101132747"
+X-IronPort-AV: E=Sophos;i="6.12,275,1728975600"; d="scan'208";a="101132704"
 Received: from unknown (HELO labhost1.iind.intel.com) ([10.190.230.69])
- by fmviesa010.fm.intel.com with ESMTP; 30 Dec 2024 00:29:57 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 30 Dec 2024 00:29:45 -0800
 From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Matthew Brost <matthew.brost@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH 1/2] tests/intel/xe_fault_injection: Inject errors during
+Subject: [PATCH 0/2] Inject errors during xe_guc_ct_send_recv &
  xe_guc_mmio_send_recv
-Date: Mon, 30 Dec 2024 14:14:50 +0530
-Message-Id: <20241230084451.17488-2-satyanarayana.k.v.p@intel.com>
+Date: Mon, 30 Dec 2024 14:14:49 +0530
+Message-Id: <20241230084451.17488-1-satyanarayana.k.v.p@intel.com>
 X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20241230084451.17488-1-satyanarayana.k.v.p@intel.com>
-References: <20241230084451.17488-1-satyanarayana.k.v.p@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -72,41 +70,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the kernel fault injection infrastructure to test error handling
-of xe at probe time when executing xe_guc_mmio_send_recv() so that
-more code paths are tested, such as error handling and unwinding.
+Use the kernel fault injection infrastructure to test error handling of xe
+at probe time when executing xe_guc_mmio_send_recv() and at enabling of VFs
+stage when executing xe_guc_ct_send_recv().
 
 Error can be injected using:
-./xe_fault_injection --run-subtest inject-fault-probe-function-xe_guc_mmio_send_recv
+    ./xe_fault_injection --run-subtest inject-fault-probe-function-xe_guc_mmio_send_recv
+	./xe_fault_injection --run-subtest guc-fail-xe_guc_ct_send_recv
+
+
+Satyanarayana K V P (2):
+  tests/intel/xe_fault_injection: Inject errors during
+    xe_guc_mmio_send_recv
+  tests/intel/xe_fault_injection: Inject errors during
+    xe_guc_ct_send_recv
+
+ tests/intel/xe_fault_injection.c | 61 ++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
 Cc: Matthew Brost <matthew.brost@intel.com>
 Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
----
- tests/intel/xe_fault_injection.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 7ae941367..ef3bbb7ec 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -170,6 +170,7 @@ static void set_retval(const char function_name[], long long retval)
-  * @xe_uc_fw_init:		xe_uc_fw_init
-  * @xe_wa_init:			xe_wa_init
-  * @xe_wopcm_init:		xe_wopcm_init
-+ * @xe_guc_mmio_send_recv:     xe_guc_mmio_send_recv
-  */
- static void
- inject_fault_probe(int fd, char pci_slot[], const char function_name[])
-@@ -301,6 +302,7 @@ igt_main
- 		{ "xe_uc_fw_init" },
- 		{ "xe_wa_init" },
- 		{ "xe_wopcm_init" },
-+		{ "xe_guc_mmio_send_recv" },
- 		{ }
- 	};
- 	const struct section vm_create_fail_functions[] = {
 -- 
 2.35.3
 
