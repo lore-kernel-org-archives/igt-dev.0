@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A751E77188
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Dec 2024 13:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628DDE77188
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Dec 2024 13:59:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAAAF10E035;
-	Tue, 31 Dec 2024 13:39:33 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56D4A10E035;
- Tue, 31 Dec 2024 13:39:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id E423510E0C4;
+	Tue, 31 Dec 2024 13:59:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cvg0tFN1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0EC410E0C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Dec 2024 13:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1735653584; x=1767189584;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fGJN2Eh8/vu5rvCnDySkxTLBv0IZHgadZ15R/Oh16Zw=;
+ b=cvg0tFN119pyecbhn2nDXaPcuQU7paXQzwmA7h7arx4aKzvYogXIoPfI
+ 1+Q5sCqCIbShVxwkRKxfKMDeW+S14cjmU6rsGICzLCsM78Jm2BYWaF9k3
+ s7lMYjIwGxTYZm5FHfM7mLq05TiBplY2X31nsuoQFtif9+CwA9OZ3Tpqa
+ OQLoSLRwtijBvCmFqha/Jo5hyM3d33nevdE4E6+rxSv+IvipI0joKTImr
+ JE+gMqKKdOOenmYp/5mNjl+fEecSHdvXlnVXtQy09rGzDThS86YYA6M9Q
+ K5CRYKh+Ovvhs03I78xVI4cInUi733T38dk/qqSQCdq3GnndjfEzlIoEP A==;
+X-CSE-ConnectionGUID: 7LNktLc9SAifFcxCkOeEDg==
+X-CSE-MsgGUID: oxFVxTD/QdKfIEDVQQVhBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="36047297"
+X-IronPort-AV: E=Sophos;i="6.12,279,1728975600"; d="scan'208";a="36047297"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Dec 2024 05:59:44 -0800
+X-CSE-ConnectionGUID: s2Ms7UvCT1C5xFH9DQsxwQ==
+X-CSE-MsgGUID: qdhmc3qNTnGfwlprw7gYmw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,279,1728975600"; d="scan'208";a="100820127"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Dec 2024 05:59:42 -0800
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 0/4] add test to validate uhbr/non-uhbr over sst/mst
+Date: Tue, 31 Dec 2024 19:45:14 +0530
+Message-Id: <20241231141518.765212-1-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Add_new_test_to_validate_?=
- =?utf-8?q?adaptive_sharpness_filter_=28rev11=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Dec 2024 13:39:32 -0000
-Message-ID: <173565237235.1308915.12741976468881100157@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20241231130241.69689-1-swati2.sharma@intel.com>
-In-Reply-To: <20241231130241.69689-1-swati2.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +62,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Add new test validating UHBR and non-UHBR link rates for
+both SST and MST configurations. The series comprises three patches:
 
-Series: Add new test to validate adaptive sharpness filter (rev11)
-URL   : https://patchwork.freedesktop.org/series/130218/
-State : failure
+1. tests/intel/kms_joiner_helper:
+   - Introduces kms_joiner_helper.c/h for pipe assignments taking care of joiners
+   - Moves common joiner-related logic out of kms_joiner.c.
 
-== Summary ==
+2. tests/intel/kms_mst_helper:
+   - Adds kms_mst_helper.c/h for MST-specific operations.
+   - Centralizes code for identifying and assigning MST outputs.
 
-CI Bug Log - changes from IGT_8173 -> IGTPW_12370
-====================================================
+3. tests/kms_feature_discovery:
+   - Implements tests verifying UHBR and non-UHBR link rates with SST and MST.
+   - Uses the new helpers for pipe assignments and topology discovery.
 
-Summary
--------
+Kunal Joshi (4):
+  tests/intel/kms_joiner_helper: helper for joiner-related functions
+  tests/intel/kms_mst_helper: Add helper for MST-related functions
+  tests/kms_feature_discovery: Add tests for UHBR/non-UHBR over SST/MST
+  HAX: DO NOT MERGE
 
-  **FAILURE**
+ tests/intel-ci/fast-feedback.testlist    |  14 ++
+ tests/intel-ci/xe-fast-feedback.testlist |  14 ++
+ tests/intel/kms_dp_linktrain_fallback.c  |  28 +---
+ tests/intel/kms_joiner.c                 |  15 +-
+ tests/intel/kms_joiner_helper.c          | 179 +++++++++++++++++++++++
+ tests/intel/kms_joiner_helper.h          |  15 ++
+ tests/intel/kms_mst_helper.c             |  48 ++++++
+ tests/intel/kms_mst_helper.h             |  10 ++
+ tests/kms_feature_discovery.c            | 171 ++++++++++++++++++++++
+ tests/meson.build                        |   6 +
+ 10 files changed, 463 insertions(+), 37 deletions(-)
+ create mode 100644 tests/intel/kms_joiner_helper.c
+ create mode 100644 tests/intel/kms_joiner_helper.h
+ create mode 100644 tests/intel/kms_mst_helper.c
+ create mode 100644 tests/intel/kms_mst_helper.h
 
-  Serious unknown changes coming with IGTPW_12370 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12370, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+-- 
+2.25.1
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12370:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-adlp-11:        [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8173/bat-adlp-11/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/bat-adlp-11/igt@i915_selftest@live@workarounds.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12370 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@load:
-    - fi-pnv-d510:        NOTRUN -> [ABORT][3] ([i915#13203])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/fi-pnv-d510/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][4] -> [DMESG-FAIL][5] ([i915#13393]) +1 other test dmesg-fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8173/bat-mtlp-8/igt@i915_selftest@live.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-adlp-11:        [PASS][6] -> [ABORT][7] ([i915#13399])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8173/bat-adlp-11/igt@i915_selftest@live.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/bat-adlp-11/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][8] -> [DMESG-FAIL][9] ([i915#13393]) +1 other test dmesg-fail
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8173/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][10] ([i915#13393]) -> [PASS][11] +1 other test pass
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8173/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
-  [i915#13393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393
-  [i915#13399]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13399
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8173 -> IGTPW_12370
-
-  CI-20190529: 20190529
-  CI_DRM_15892: 08bd590935a5258ffd79355c59adffd72fb2c642 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12370: c3c9eb0f20711926f884508f843474dfa05a06de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8173: 27eea833bac15d1507eb4a864308644a60d60dc7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12370/index.html
