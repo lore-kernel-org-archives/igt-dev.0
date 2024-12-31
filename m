@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FEACE7718B
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Dec 2024 12:57:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F3B3E77188
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Dec 2024 13:38:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0456110E679;
-	Tue, 31 Dec 2024 12:57:59 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oD+pNI8z";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EE9410E289
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Dec 2024 12:57:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735649868; x=1767185868;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=19qkFgE6tAZKLZb6SAAbft7nuBcEj8+d4bgA+dfA40M=;
- b=oD+pNI8z94qMLU24WsVMt0sIa9MZON5ewjLKNwLbEG111cCijVCwYqlW
- 3qLLSAT7sjxCJ6AmrZ4yqsGD8B/Ap7pJ0qLZ2gHq14k+geRHC20F1BMc1
- ofM1caJBAyDZL8YiBkyuJai2lmLYraraD9Z1lW/w1EBe+dAI3jxmJP+jK
- gic3bq4kHqfnX1yJHXQdQu4t/q747nogjOojtEklqi6ekis509H3f/lVy
- +9oLG+s5HIcn+5NjgvOpKOGslR0TZGPNtkwO02/gjOLRcIR6ZUVxK2nnn
- NHCLXUursOXVaef4X1G52bHXm0qBbC952SWWGBtfI9/EKN8fIuodzt9pm A==;
-X-CSE-ConnectionGUID: f+FQzmcKRT+gfaLpdp4YLw==
-X-CSE-MsgGUID: O1q+eHpoTSe1lacl/bZN8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="46518405"
-X-IronPort-AV: E=Sophos;i="6.12,279,1728975600"; d="scan'208";a="46518405"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Dec 2024 04:57:48 -0800
-X-CSE-ConnectionGUID: StcADfZhT7ukhc9O2rA48A==
-X-CSE-MsgGUID: 2w6G6+evQ9a1hVX8GFrEBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="100867245"
-Received: from dut2122ptlh.iind.intel.com (HELO
- linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Dec 2024 04:57:46 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com,
-	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,v2 7/9] tests/kms_sharpness_filter: Add scaler subtests
-Date: Tue, 31 Dec 2024 18:32:39 +0530
-Message-Id: <20241231130241.69689-8-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241231130241.69689-1-swati2.sharma@intel.com>
-References: <20241231130241.69689-1-swati2.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A57210E035;
+	Tue, 31 Dec 2024 13:38:42 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6514A10E035;
+ Tue, 31 Dec 2024 13:38:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3280949527245510230=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_new_test_to_validate_ad?=
+ =?utf-8?q?aptive_sharpness_filter_=28rev11=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 31 Dec 2024 13:38:41 -0000
+Message-ID: <173565232140.1308895.16412833825106714122@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241231130241.69689-1-swati2.sharma@intel.com>
+In-Reply-To: <20241231130241.69689-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,148 +37,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add upscale/downscale subtests to apply plane scaler and CASF
-together.
+--===============3280949527245510230==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: -Improve description (Ankit)
-    -Remove unused var (Ankit)
+== Series Details ==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_sharpness_filter.c | 68 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+Series: Add new test to validate adaptive sharpness filter (rev11)
+URL   : https://patchwork.freedesktop.org/series/130218/
+State : success
 
-diff --git a/tests/kms_sharpness_filter.c b/tests/kms_sharpness_filter.c
-index 32ad7a752..3451a9db4 100644
---- a/tests/kms_sharpness_filter.c
-+++ b/tests/kms_sharpness_filter.c
-@@ -49,6 +49,14 @@
-  * SUBTEST: filter-suspend
-  * Description: Verify content adaptive sharpness filter with suspend.
-  * Functionality: casf, suspend
-+ *
-+ * SUBTEST: filter-scaler-upscale
-+ * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled during upscaling.
-+ * Functionality: casf, scaling
-+ *
-+ * SUBTEST: filter-scaler-downscale
-+ * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled during downscaling.
-+ * Functionality: casf, scaling
- */
- 
- IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
-@@ -70,6 +78,9 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
- #define MAX_PIXELS_FOR_5_TAP_FILTER	(3840 * 2160)
- #define NROUNDS				10
- 
-+#define SET_PLANES ((type == TEST_FILTER_UPSCALE) \
-+		||  (type == TEST_FILTER_DOWNSCALE))
-+
- enum test_type {
- 	TEST_FILTER_BASIC,
- 	TEST_FILTER_MODIFIERS,
-@@ -80,6 +91,8 @@ enum test_type {
- 	TEST_FILTER_TAP,
- 	TEST_FILTER_DPMS,
- 	TEST_FILTER_SUSPEND,
-+	TEST_FILTER_UPSCALE,
-+	TEST_FILTER_DOWNSCALE,
- };
- 
- const int filter_strength_list[] = {
-@@ -170,6 +183,26 @@ static void cleanup_fbs(data_t *data)
- 		igt_remove_fb(data->drm_fd, &data->fb[i]);
- }
- 
-+static void set_planes(data_t *data, enum test_type type)
-+{
-+	drmModeModeInfo *mode = data->mode;
-+	igt_output_t *output = data->output;
-+
-+	data->plane[1] = igt_output_get_plane(output, 1);
-+
-+	if (type == TEST_FILTER_UPSCALE) {
-+		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[1]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_size(data->plane[1], mode->hdisplay, mode->vdisplay);
-+	}
-+
-+	if (type == TEST_FILTER_DOWNSCALE) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_size(data->plane[1], mode->hdisplay * 0.75, mode->vdisplay * 0.75);
-+	}
-+}
-+
- static void cleanup(data_t *data)
- {
- 	igt_display_reset(&data->display);
-@@ -244,6 +277,9 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 			igt_skip("No requested rotation on pipe %s\n", kmstest_pipe_name(data->pipe_id));
- 	}
- 
-+	if (SET_PLANES)
-+		set_planes(data, type);
-+
- 	set_filter_strength_on_pipe(data);
- 
- 	if (data->filter_strength != 0)
-@@ -278,6 +314,10 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 	if (type == TEST_FILTER_TOGGLE)
- 		ret |= test_filter_toggle(data);
- 
-+	if (type == TEST_FILTER_DOWNSCALE)
-+		igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
-+			      "Scaling op not supported, cdclk limits might be exceeded.\n");
-+
- 	igt_assert_eq(ret, 0);
- 
- 	/* clean-up */
-@@ -373,6 +413,12 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
- 			case TEST_FILTER_SUSPEND:
- 				snprintf(name, sizeof(name), "-suspend");
- 				break;
-+			case TEST_FILTER_UPSCALE:
-+				snprintf(name, sizeof(name), "-upscale");
-+				break;
-+			case TEST_FILTER_DOWNSCALE:
-+				snprintf(name, sizeof(name), "-downscale");
-+				break;
- 			default:
- 				igt_assert(0);
- 			}
-@@ -529,6 +575,28 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 		run_sharpness_filter_test(&data, TEST_FILTER_SUSPEND);
- 	}
- 
-+	igt_describe("Verify content adaptive sharpness filter "
-+		     "with 1 plane scaler enabled.");
-+	igt_subtest_with_dynamic("filter-scaler-upscale") {
-+		data.modifier = DRM_FORMAT_MOD_LINEAR;
-+		data.rotation = IGT_ROTATION_0;
-+		data.format = DRM_FORMAT_XRGB8888;
-+		data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		run_sharpness_filter_test(&data, TEST_FILTER_UPSCALE);
-+	}
-+
-+	igt_describe("Verify content adaptive sharpness filter "
-+		     "with 1 plane scaler enabled.");
-+	igt_subtest_with_dynamic("filter-scaler-downscale") {
-+		data.modifier = DRM_FORMAT_MOD_LINEAR;
-+		data.rotation = IGT_ROTATION_0;
-+		data.format = DRM_FORMAT_XRGB8888;
-+		data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		run_sharpness_filter_test(&data, TEST_FILTER_DOWNSCALE);
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8173_BAT -> XEIGTPW_12370_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12370_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3517]) +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8173/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][3] -> [DMESG-WARN][4] ([Intel XE#1033])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8173/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-adlp-7:         [PASS][5] -> [SKIP][6] ([Intel XE#455]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8173/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
+
+  
+  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
+  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8173 -> IGTPW_12370
+
+  IGTPW_12370: c3c9eb0f20711926f884508f843474dfa05a06de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8173: 27eea833bac15d1507eb4a864308644a60d60dc7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/index.html
+
+--===============3280949527245510230==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add new test to validate adaptive sharpness filter (rev11)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130218/">https://patchwork.freedesktop.org/series/130218/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8173_BAT -&gt; XEIGTPW_12370_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12370_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8173/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +2 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8173/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8173/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12370/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8173 -&gt; IGTPW_12370</li>
+</ul>
+<p>IGTPW_12370: c3c9eb0f20711926f884508f843474dfa05a06de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8173: 27eea833bac15d1507eb4a864308644a60d60dc7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642</p>
+
+</body>
+</html>
+
+--===============3280949527245510230==--
