@@ -4,182 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C337E77188
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 08:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA5DEE77188
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 10:38:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4C2A10E3AB;
-	Thu,  2 Jan 2025 08:15:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 62D2F10E40F;
+	Thu,  2 Jan 2025 10:38:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZHi2b+aN";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="WUjFGSfo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8AE610E3AB
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jan 2025 08:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735805718; x=1767341718;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=0yyI++x26K09pwc4sM6WRb7NWsapeNWWwMXb7hz2eBg=;
- b=ZHi2b+aNIWCnZi+Z1eV0gMQaiF+P8S+hP5YYykC4dUgZTZGq3K8ivOhv
- DNkZYHLkk//u1S2Qdq8HPMWx14EChWT87D9Sj57D64LvKJTpP82+q70Fj
- H5okTggNcSb+LsriNbaQChHLcHkW7uOJj8srPd3lSBWz5h4FONTa0fgXS
- GDqhMy7iyo6+3T4SU9aRsA1TevKMKOyB9T6X6J6MklR3Shxc4mow2HK1b
- l8AggnsidprVRQln1mwhiIDux69EwlaAaa9F6jF5rvHMZ730LB7JyyQDf
- bqstJTXAcEbcJSU2OzT7m1mG23IifV9tsFuuG/66ug+04/MLxRJhUV5OX g==;
-X-CSE-ConnectionGUID: qd1cSfAFTm2SETd0GOWUrQ==
-X-CSE-MsgGUID: QR3LccF3QmKT4pNXMPMo9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="36260778"
-X-IronPort-AV: E=Sophos;i="6.12,284,1728975600"; d="scan'208";a="36260778"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jan 2025 00:15:15 -0800
-X-CSE-ConnectionGUID: nWUDuVU2TVq1eljaTIC2ng==
-X-CSE-MsgGUID: mSEi36XOSHSMNCLJXtUjLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,284,1728975600"; d="scan'208";a="101288250"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 02 Jan 2025 00:15:14 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 2 Jan 2025 00:15:14 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 2 Jan 2025 00:15:14 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.48) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 2 Jan 2025 00:15:11 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2049.outbound.protection.outlook.com [40.107.220.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3C3A10E411
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jan 2025 10:38:00 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gXM3VW0z/xByUOQ8EO0o7xbFeDX68BQLUwDvrdSyUrVzG/x+mcMnCkJED4nDVeyfZLdpaz/8NtfT/1Niios0q/n1WwZymOdSBwmqs1HIUcSaJ9SXP092urYvygM2Cgtod3stovlZBObbhtwOs3uI37QZGrw+/Pba+e7/lzNJ3jgzhnjMXe+zsUnGWhkOgbjIkUxXnfY4bWzDtEJoj8U3VaYrDJVi3ewvkOmbJG7E2lENqXA7+D6rhnf87e467w2NO63ojghpLEDOnhEyfu7L09SYe1O/Xzhi97g/BGthgGv8X3XQeL9Y9EmtU+xCE8qObnkfLYlizz4AiGx/MLs57Q==
+ b=H1UWFaaYR5OszbaZB2XGYSAjbj3S5RfXoOTbxXb9p3Hk3OjlJaHd4Tk9x+Yk/lncOHfuwhRYBYtygcbeZBKu/GGCYJUgdeZCnWrS8GQrW651Vmov87VAMZzITRUgUsdu7uF7rkWSx7KBrrBLio76kDz8M6Ivy4k8WjBrT+dEOEgABMG0cgis6R1AoxG/BsAuvmU2YOhbIPm2U6l3jN3q3AwZOurVLFs9ZoMtN2OOvOW2U8k/8CFBc0BaAvogAXk9YRhVFMvM3e+y0zLPsgYEw9GnOmnCVeYJFo+ZIGv/XPyhsfFcg8AuD22UYpefNQGbdOGRVghx2IeVVrxucuDGQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EDS6e2R61Uzg9mR7hsUk2uTJTKFJ2fO2+6RY/BsTqdA=;
- b=dQF2KlMg6qa841MqkbUONcDbqOTVVD5vK/jiuGjnA2Krq9S5Wcw+7agLYjLaRjLNxpvUN0qfQgdaD6r8nPWAohgb9OZW3gsRAqOzI4TyYmDsGQgH/sgRVidlgPj6IRB2xAS1wyFxsTOrYh3FmvggdszvIqhCqI/jnHACzERPEV8pgQF2cZniNIv4yiGW01VuAUu38KQIa6KT1lQBSwU83WjeY9gGhGGJLrug2SQGUUDXJDY2m5YEqxAjm6QHNv/P0UjaTO0wkPiE52NMXddDuNyp8gmbTrz+/EvC776psiDS1b7Jzu8Q3H4b0ikVgwp1m9S4CVetOCYY2/KFmF4PQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by PH7PR11MB7551.namprd11.prod.outlook.com (2603:10b6:510:27c::12) with
+ bh=O1z65wilJfq4RqLzwTlMxdpn5mPhbFGMtcuujei8OZg=;
+ b=aHPmYUndqZkYKGQ1WtagjIuOM1+5D090ddZt3Xo7e0Yk4B+0Q3znoZUdC2FwDgVAEYeBOXPX+ajN7e54fUIqPEy+UazefVYKelZrAg0YeOnUAEDiTOzpwuxKHYPskS/LDyKaCJsYVQ33xVIlPdmWpXN8a3WAcGEeDMuDGDjRC9xi1pRe4ohOahObW9dtvzwyDxKncfiTy5FN31Oi4GkkvlQ1OnZKM0Mjbo3sME+R3ethcRLnxAboFLhwxqDnxXqP6vJDDW/QPrvHFKaF7qmYIkxl2eUr8ueknTdM/vOcH2BPNx3PHJNoFh9CyfOzBzJ24bi7cmg0+q9V6aBW3CGdRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O1z65wilJfq4RqLzwTlMxdpn5mPhbFGMtcuujei8OZg=;
+ b=WUjFGSfo0GIJd5a2gwD/vlnGpHUqyJdrMr6PPXoviiYyafFErcobQqOxgwwATdgRgjTSY1mwL0r1AZd4FyhuqaRpPqZtlRknnVn6Qyhi2nmoDXT9+oYMbxPzT4dDBI/20AOFZsNkzh9RUhe8skEDztN4bOq9oVhr3Y/nZ9EvyPw=
+Received: from BLAPR03CA0095.namprd03.prod.outlook.com (2603:10b6:208:32a::10)
+ by DS7PR12MB6165.namprd12.prod.outlook.com (2603:10b6:8:9a::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.12; Thu, 2 Jan
- 2025 08:14:25 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8293.000; Thu, 2 Jan 2025
- 08:14:25 +0000
-Message-ID: <e0b680c7-c7d4-45e5-9dbc-52f7cf83b9e1@intel.com>
-Date: Thu, 2 Jan 2025 13:44:18 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t,v2 7/9] tests/kms_sharpness_filter: Add scaler
- subtests
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20241231130241.69689-1-swati2.sharma@intel.com>
- <20241231130241.69689-8-swati2.sharma@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20241231130241.69689-8-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0002.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:95::22) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.22; Thu, 2 Jan
+ 2025 10:37:53 +0000
+Received: from BN2PEPF000044A5.namprd04.prod.outlook.com
+ (2603:10b6:208:32a:cafe::73) by BLAPR03CA0095.outlook.office365.com
+ (2603:10b6:208:32a::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8293.15 via Frontend Transport; Thu,
+ 2 Jan 2025 10:37:53 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BN2PEPF000044A5.mail.protection.outlook.com (10.167.243.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8314.11 via Frontend Transport; Thu, 2 Jan 2025 10:37:53 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 2 Jan
+ 2025 04:37:52 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 2 Jan
+ 2025 04:37:52 -0600
+Received: from tom-maple-halo.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Thu, 2 Jan 2025 04:37:50 -0600
+From: Tom Chung <chiahsuan.chung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <Rodrigo.Siqueira@amd.com>, <alex.hung@amd.com>, <sunpeng.li@amd.com>,
+ <chiahsuan.chung@amd.com>
+Subject: [PATCH i-g-t] tests/amdgpu/amd_vrr_range: Fix panel cannot light up
+ after test
+Date: Thu, 2 Jan 2025 18:37:26 +0800
+Message-ID: <20250102103741.2105-1-chiahsuan.chung@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB05.amd.com: chiahsuan.chung@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|PH7PR11MB7551:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a404458-b893-4906-a1ff-08dd2b05784c
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A5:EE_|DS7PR12MB6165:EE_
+X-MS-Office365-Filtering-Correlation-Id: f260a49c-b7be-4719-4a25-08dd2b198342
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?V1FpdWN2U2ZlSUJGR1JpZGdocDBGNWI0b25xdHNycHU2bU9KR2c5Z1Q4WVls?=
- =?utf-8?B?Z0NDUGdtS2RwY1RHREZPWUNta3lWWUpGd0w1OEo4VnIvTnc4QXpTS0V6c2dK?=
- =?utf-8?B?MDVLMkhvc2s0Z3U2VHlLYmM0dEt2V0tLbUI5MWFjZHQzWXVQaDZYMFZDUlc5?=
- =?utf-8?B?KzgwVUJsNVlSR2Eya2t6V3A1R2VSS2k5VDRCR2tKQ3RlckpnaHp1YzlpbW56?=
- =?utf-8?B?SGtPM1BrT2FnSFE0aUZPYUg3clMzLzFPZjUvaE9XeDZZRGFLNFVpTXd3Ukd6?=
- =?utf-8?B?dXZMN21pQ2p5cXhKeTlXa1oxOFVPNjA5QTdyd1JFSzJwd1o0RTA0YzVIVTU4?=
- =?utf-8?B?RnRFZWhjQ1d2RTVNVkY4UW5TNmpodE5IZjE3QkF5ZXYyUzlGNC9Nc0F6MXhj?=
- =?utf-8?B?dmN2dUh5MDhrUmV6bzNWREJuaEdoYmp6Z21wdnBWQ3NsTng0a2tpaGtJdnBJ?=
- =?utf-8?B?WXRRSVdhWmlsV0RhNXlLYng3R2k5bVg4bzJsUktUR0cxNEttdHJxekgrV0RM?=
- =?utf-8?B?TlNGZEdBdEgrdFFnbjVrYWxWK2dMUWtZYkhYU09taVRpNHBud0tNc1R3K0Iv?=
- =?utf-8?B?cGZQSWdSeUw5d0lHSnlaQzZzdkZ2a3pIMlVBZzJCTjlBVk1peHZmWm5oVk1D?=
- =?utf-8?B?SnBsN3MyZjJleWZKeUVYYmc1a3hCRDF2a3pCL0Y0Yi9xRjBsSXd3dENWWEhM?=
- =?utf-8?B?STRpVzFyVjAxN280RUd3VmNlTFVGeVBvK2RuVG5FeUl2WTZrODZpM3lTRU5q?=
- =?utf-8?B?YlQyRXRoZzJVeVRZVUswQUxaRGVOSlZGQ2FoRUc1YUtGY3RaY0NGWUUreWZz?=
- =?utf-8?B?V3Z5TFMyZEgweEdFUzNYeTlnWTVyTVc1VVhCeFRNUEdTYkJOYXFIcmlIQS94?=
- =?utf-8?B?c3d0UWhobGlmVDlDRVd6Z29NYm9nOENwR21GZ1pLL2ZlaUpUQmd5ejNDZTNT?=
- =?utf-8?B?cDBHemtYa3paVmNEanZLTjRoVU1sb083WDdDbjZYUWtlOU9OdXF6SGVjeGo0?=
- =?utf-8?B?STdlYmpUL3RsMlNpb1AraEh0ZDdOVXR3dGgxTk9uYkRQeENneUpRYUc1Uzl2?=
- =?utf-8?B?Yy9Zc1hWUmYwR05SekFxalNRdzhMMUFtcjJWL3d6OHIvUzFzc1pMWVhmanV3?=
- =?utf-8?B?RG1CQ3dOdndOVCtWY1FIellRSzIwNFV5ZDFqamYrR3JlLzJHcjQzM0M2TFhx?=
- =?utf-8?B?OEJibEE0U3FRKzFhWlduUkk5NW9zaHZ4TzY4bTJPSTAvMGNPMTFRK0pOd05H?=
- =?utf-8?B?aEt1QXlGSWxEeFNkUktXWnFmTWRFSDkzNzh1djBkaDNqZGdHTHV0MU9ueFFB?=
- =?utf-8?B?dXoyMDNza0RRamRwR3o4d1JNOVEwbnNENWgzVHU3NXdGT3h5QU1kZVloeHdl?=
- =?utf-8?B?eE9mRThLNHBFNEdzM29qZHM5cHlsWmxRa3hVU3JzRG5sb2cwVzVBS3BIT005?=
- =?utf-8?B?NUE2VDliYitIR1J4YUIwUlJTK0FlY0NQM1hRLzJINzBCaGQ0cTJJUWpFTTN3?=
- =?utf-8?B?WVZrMkwyVngzYUk5WU5NQm1FeWJ5K3M0bGwvOTRKUGl0MUtpUWl4eVFza1Zm?=
- =?utf-8?B?TTB5NGwxUFZyVjdaNEh0Uno4QzFDR0VCRTMvNUJaTVdvVEVsQys0dnFwNTlN?=
- =?utf-8?B?NVNHNzQ2V0ZiWG9WUmFkWVlSZEdZTVUyZytIQlB3MmZOZHRocnJXTkEvLytq?=
- =?utf-8?B?eFpZdlNCOVU1KzFWbmlwSzJBVzBneVRPbGFUeVJ3RFBtQ3NKelp1Vkdpelgz?=
- =?utf-8?B?cDhwUTFYL01NOGwxTlptQ01ITmVyQlJWY1dwMDdOeTVPcldteEtTYWgvWXpV?=
- =?utf-8?B?YnRVWGZaVGg5TjlYVUN5TUlMZEV4VjBOMHZIQTNiMjR5aDByUkx0Y0VmOFpj?=
- =?utf-8?Q?NBlgDj6SlI4WF?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K214NTFWQUVQM1IyV1ZxMjdIV2dlTHBPL3lIOEViZXRhall2bVkzUWJaSTVt?=
- =?utf-8?B?QXJVMSs4VmhLUzYwUTR3TUFKcFYweEVNeUxnc0hYcWFmd3Q5a2V6dnVSd1I3?=
- =?utf-8?B?SW5KN3JhU3VsRVdlb1Z6Z0VDY2czZ2x6V3p4QkFuWUNzcHRJajRvK3pOL2Q2?=
- =?utf-8?B?Q3BucmN2Qm9iOStsY1lZKytVczFwaVB2dkNkNFNwOVRsZi9seWN1TVVEUFo3?=
- =?utf-8?B?cjhEakU4MlhIeEhUNERQM0ZuSDRZVTBreCs1ZUxtOXRwWWY4dzdjRU9TMldr?=
- =?utf-8?B?b2ZtREwvSXlYREVOOTlSb1pUNyt1c0l0QzhDVEY4V1VnenVDMjB4bmMybGxa?=
- =?utf-8?B?SEcrZEpxblpxOVk5aVYzZjBoM3hvd1F3bVFjSlNSU1lYZGlYUXN6b3dEQTJZ?=
- =?utf-8?B?SDBiOUVxeDVlTnM4dnk1bWNZd0xabzdXalFvazRyUDRvTEtsbHFMM3BtYkI0?=
- =?utf-8?B?ekhyR1lpL2tjTnM3ZEl6OVl0NVpUZ3VzQ3llU1NUeDY3TVdiYnU1VUovYWdY?=
- =?utf-8?B?Sjd6dEw4ZnJ3d0R4Sm9tQmRRMm54c0cwQ0FTTFFJSUZHaVpLVXVKVXJodnp2?=
- =?utf-8?B?WWl5QXRKTXJreGxkUkRFVXo5TjA2TFUrem00VXI2ZlVvZXBUNXF5UjZwSlIz?=
- =?utf-8?B?RkFjTkQ2VEM4YXZPRDFGU3B5aTV3eVh5Y29HYUJIc3Q3c05kdDBYelBGOHY0?=
- =?utf-8?B?T3NDNzlyVHlOWCtuT1k2OGxFdkY4ZjNwL21zNTRnOXhKS0R5VFFqV2I1aUZ2?=
- =?utf-8?B?dU1SL3pRMjh0TGZaeUsvSlFVN1BNeUt2aEVMWHJmNTZjM3NLL2hFUDhuNHpx?=
- =?utf-8?B?cnlQbnVyM25DSUVtNWlJaEt1ZFFaWHNWajdPeEpvSXZFSjFsQTFNendkcitE?=
- =?utf-8?B?d1BXQzF1K2UwTG9qdVc4aXAzZkFvdEg5aktrbmJXT0RFNkRxNERGazNhVU51?=
- =?utf-8?B?eHJEa3dEcTJod1J5K0JreThpdCtPSlFrbnpvRmhldklTYWJETVJiOHBNclRm?=
- =?utf-8?B?ajhGdWV4QWZPdEpYT1hkNlZvUjRsaFFUT3N5TUtpK3RsMWprMmZnL0JPM0o2?=
- =?utf-8?B?c2dvSlh5NjhuTmZQeFhNbkt1cXZGaStJKzFsbllKYlFnUFBWUjRXd3dDS01R?=
- =?utf-8?B?b2ZsYXl2b2YwMi9leDFURFlKZjE0dFVSRFllWDFEc0dlcmhMN3E1bTNaUDI1?=
- =?utf-8?B?allqRVJDclNyK3J6VVFiVGtEVHp1QXJXQ1pQZGZOQkFhNDdycnZ5VXFhYkVW?=
- =?utf-8?B?cTZROHEzV3V6WUZ4d0xka3I4VnhqcFFtRHM4UnRVWUpxRVlZN1ZZaDIwWTBU?=
- =?utf-8?B?V1dTaHg5QTV1eE84c3Z0eFVpcEdZOFNmbHUyZjRnZVBKUkZ6WGRKdEtlMnl6?=
- =?utf-8?B?eGZuR3BObXcyU09TMCtYZDk1T1Y4STZaTkV2bGpMWS9JYmxmTFZGY1gxYUlP?=
- =?utf-8?B?WUtvaHU1RTRHZHhHNGtRSnNadUtUdmp1OGhBMjVUeUJJbkFPQjlzVEV4aWlY?=
- =?utf-8?B?YXoyNTRndmR4VWNHSUZBMEFpQXNwc1dLWG43MS9IZU9YRFdIS3NyYWZ6Z2RQ?=
- =?utf-8?B?L3RzSm1TM2dIYkFtZTY3Z3NtNnV3a2twdE5BYUd0cXdxTmhZN1UvN3R1bTRR?=
- =?utf-8?B?a3ptbGRtQ0FKNHhiRnJpaE1mdkRLVFRGeU42QzY5QWkzRW80eTZLakgxK3l3?=
- =?utf-8?B?eFpneTdwWWxWR0dJcXVZdVVLN0I0ZndhMUNzRGNmdVNETkdUUFJ4eFFKNlBv?=
- =?utf-8?B?TXRNSXAxaElvRzRlNkl2RGgwSHBoajZaZXYrNFQ0TkdYN2MySDhrRG84d2Jt?=
- =?utf-8?B?dEhMSlhNR09oVFlKSUFQeFNwSUJzdmljbFptYnZCbFBjdXJNMzlCSXpERFMx?=
- =?utf-8?B?TGVVdks4cXFyR2p6MWtkdEZnTTdYNXZJeU1nblIwN0wvb3VXQk1MYittYlVC?=
- =?utf-8?B?VjZIUGVzN256UDU5WlN5emIxQWZHZE53UkZpeE5GR0xRckZIRUo2U3R0amZp?=
- =?utf-8?B?Rnd0N0hrbiszVHZJZmRDM0Fwc2lNdURVOG9oYmdXRmRpSUVDZURHR3E0Ymx5?=
- =?utf-8?B?a3V5Qi9CSWRhMGtEUnVNNHdtTmt0a1lsN0l3dzhwSm40MGFQeWRoNzVaRk9h?=
- =?utf-8?B?dS9CZ2h1ZDZlV2lhSmRlbEVyb0lkYlZxTFdrNHkvbUs5YXdtLy9VQmtRZGZT?=
- =?utf-8?B?WWc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a404458-b893-4906-a1ff-08dd2b05784c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2025 08:14:25.3171 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /bSan09be1qB4bKAGEk4fzZYLcvBQgFOFctabo5h5XS0ZEPxcXAiJZzJtlo3XwwSd47mHLJSSQ0KEcMYMCLzvQtrGYabsrol621Q2hUpVMo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7551
-X-OriginatorOrg: intel.com
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TXZTQi9MUlU3bmY3STFrb2pLS0U5NmxCZW14M2tOZFpiMWtEcEs1UUhIcUVk?=
+ =?utf-8?B?WjZDZmc5ekVoelhJZENpQ2xCREdRcWJSdWhwSFpNRm5XZFZST25tOEZuaWhN?=
+ =?utf-8?B?aGM4aC9XT1Z0Y3FjS1RFYmZWYXp6c2NiYkI4MFlGY3dUNEZOaWd6T1RCZmdR?=
+ =?utf-8?B?YzZNdUkzWjlYY3IwdnBvVGplc1dLTlNFTDBqM0U4aTBKYTRKZ0FQTnc1VnBX?=
+ =?utf-8?B?TWMrd2R2anJtUVJhRVBtRDFaZGkvYlo3NjZzL051VnB0WVQzaUc1U1ZqMWdn?=
+ =?utf-8?B?S3JqOUowUjdUUXRCMG5FN3lvRGt5SklPUXpGYVArdC9Nb3l3cCtSTnMvNnEv?=
+ =?utf-8?B?SXJlRnNjYmFTd0k2RmxseWtaUGJZOWZIZE9aTHNNN3BwREVLYnZGNDlSaExT?=
+ =?utf-8?B?LzU0dVNiMFVDdGkwNDY5UGc4eTdoRkcrK3J0SG5jdHVPdWE5Z2ZnL1lWRTZ1?=
+ =?utf-8?B?c2s4eG16ZU1vaXMvZWFWenIvVFRYcWFvQmp5RkFCdGlNc0tjQ2NoZ2phdXd5?=
+ =?utf-8?B?eHVKWnhFay9wV3BXL2hDQmVEVXlpRGE0K1BFRCsyMHFySExMcE5kcy9vMnUy?=
+ =?utf-8?B?anhwQ3pBb0pJMGF3VG4zTytlUnhrSGlTUW9OV3VoNkh6WkNzQUtaQnNFMndL?=
+ =?utf-8?B?NkVPYVpTL1BKVDRhbG83MjdyRFR2dmozRkw0U1JoQjJMaGdPdmUzTFErM3k4?=
+ =?utf-8?B?dWNlNHVQV2FqRjljbEwrcG5kNEJYWFlIa3l0YXJNN2FDNzRpYlpJUmNxbWNI?=
+ =?utf-8?B?NkpBQlVFVnI0TzNySEJWa0F6azFPOTZRWllSdWg5aG4vZzFlUnNKSS82eDNq?=
+ =?utf-8?B?Yk01SDJuZk1jczJ6M0hvVjBBK1ZaVXRZNmp4dWROTytONTJkUTBpajBlVVU2?=
+ =?utf-8?B?VDhURHoyVUZLcURDVjZacFdwNUdHbFhydit0RXB5Mk9NUDhiWE9lNm1tSnB3?=
+ =?utf-8?B?UU53bzcySjNrNjZqeGxjS1dkNU9WZWhHR2dTZGc4OWhneGtMZ3NSYU1VSGcw?=
+ =?utf-8?B?Y3ViZFlneEUxaE5PcXdiMU9OZndESHMwR2NrSDBhNDFySElRV3l4UGtVaXRn?=
+ =?utf-8?B?dmdhWFJMNjVjU3Q5QXZtVXJrd21KTkRxOUN1cGsrd1FjK0JHODhxKzhFWWsz?=
+ =?utf-8?B?VVU0MW9jeHRCeDVvbVVpN0RKMHZlMjhOZ2RtbzErUXRBMHlxaVpVMTY5c0dN?=
+ =?utf-8?B?bUcxM2JydERid1VkWks1eEN5ZndLN0VCMmRjYjBGWjhFZzZsUkdrNDNWTlBw?=
+ =?utf-8?B?UjFxZVFrenlvNWtGSGJQVFZxZDc1Wkp5STVoanBvTExZS0ZFeVd2SzRFVUtS?=
+ =?utf-8?B?Z2oyWmdhMkxSSE1HbXVxNHlWZUVwRjlCem9aVmozZ3VIYkRrUnd6d2tWTG9D?=
+ =?utf-8?B?elhDaFFCekNWL1FpOFdJRmIxb3JUNi9PSmpCQVNCczdwd2IrK2RKbXE4S2Nv?=
+ =?utf-8?B?OGEyTHQ1WVRmK2F4bkRZaVFwOUhIdUdpajYvVityT2lERHFHYkVzYWo1THhr?=
+ =?utf-8?B?QWNuclAwdWFjOEVGdk93aUxaMGp2cnBISW82bzhVandkdmUvOUd0cGNBUlcv?=
+ =?utf-8?B?aGRIdC9zS2NYUjFWZ3d3eUQzOU41V0dKdkVSNDM4ZEM0UG1wWmlhemYvNFFW?=
+ =?utf-8?B?UkZxaDgxb3J5SFZaWTBWS3Y0RHljMGdzOWhXMVVMUmlhN3puMXJkcHlYczQx?=
+ =?utf-8?B?emt6ZHZtSGJWSXZGWTFYRnlrc3RET0JzYlVRV0t2bGZZTXZBSkp1K0E3VWJH?=
+ =?utf-8?B?VmlzMWhBR2p0dlBTcEFDMVRPWVJnTU5FVi8wVEJ5d21JKzhQTVFCYmtlbzJN?=
+ =?utf-8?B?c3VvYVZydG5EQ0NYMjRTUzA2djQ4aHQ0bU1KcVhxbUc1R0plbUFyZHFTbkJK?=
+ =?utf-8?B?MWQyRTdTZ04yZU5yKzg2U0FtYjBGVmNpdmxQNHJnZ2tvWitUKzB2eHVSVS81?=
+ =?utf-8?B?THh3c3JESXdBcituNVV4Yk84MGJkaHU1c0FmT1E1akNDUk11VUV1ZXFKYkhD?=
+ =?utf-8?Q?FeBx92qm0yUnTkzhj2vIo7hXc83Em8=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2025 10:37:53.2033 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f260a49c-b7be-4719-4a25-08dd2b198342
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A5.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6165
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -195,148 +147,218 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+[Why]
+If the sink side support VRR, override the EDID may cause sink
+side cannot light up.
 
-On 12/31/2024 6:32 PM, Swati Sharma wrote:
-> Add upscale/downscale subtests to apply plane scaler and CASF
-> together.
->
-> v2: -Improve description (Ankit)
->      -Remove unused var (Ankit)
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+[How]
+Just parsing the VRR range from sink side EDID without override it
+if the sink side support VRR.
 
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+---
+ tests/amdgpu/amd_vrr_range.c | 125 ++++++++++++++++++++++++++++-------
+ 1 file changed, 102 insertions(+), 23 deletions(-)
 
+diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
+index 79db6f9c4..15bebbfa7 100644
+--- a/tests/amdgpu/amd_vrr_range.c
++++ b/tests/amdgpu/amd_vrr_range.c
+@@ -29,20 +29,23 @@ IGT_TEST_DESCRIPTION("Test EDID parsing and debugfs reporting on Freesync displa
+ 
+ /* Maximumm pipes on any AMD ASIC. */
+ #define MAX_PIPES 6
++#define EDID_SIZE 256
++#define EDID_PATH "/sys/class/drm/card0-%s/edid"
+ 
+ /* Common test data. */
++struct vrr_range {
++	unsigned int min;
++	unsigned int max;
++};
++
+ typedef struct data {
+ 	igt_display_t display;
+ 	igt_plane_t *primary;
+ 	igt_output_t *output[MAX_PIPES];
+ 	int fd;
++	struct vrr_range expected_range;
+ } data_t;
+ 
+-typedef struct range {
+-	unsigned int min;
+-	unsigned int max;
+-} range_t;
+-
+ /* Test flags. */
+ enum {
+ 	TEST_NONE = 1 << 0,
+@@ -53,7 +56,7 @@ struct {
+ 	const char *name;
+ 	uint32_t connector_type;
+ 	const unsigned char edid[256];
+-	const range_t range;
++	const struct vrr_range range;
+ } edid_database[] = {
+ 	{
+ 		/* EDID Version 1.4. Timing requires 2 DP lanes. */
+@@ -212,12 +215,12 @@ static int find_test_edid_index(uint32_t connector_type)
+ }
+ 
+ /* Returns the min and max vrr range from the connector debugfs. */
+-static range_t get_freesync_range(data_t *data, igt_output_t *output)
++static struct vrr_range get_freesync_range(data_t *data, igt_output_t *output)
+ {
+ 	char buf[256];
+ 	char *start_loc;
+ 	int fd, res;
+-	range_t range;
++	struct vrr_range range;
+ 
+ 	fd = igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
+ 	igt_assert(fd >= 0);
+@@ -249,13 +252,84 @@ static void trigger_edid_parse(data_t *data, igt_output_t *output, uint32_t test
+ 	usleep(1500000);
+ }
+ 
++/* Returns true if an output supports VRR. */
++static bool has_vrr(igt_output_t *output)
++{
++	return igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
++	       igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
++}
++
++static void parse_vrr_gange_from_edid(data_t *data, uint8_t *edid, int index)
++{
++	bool max_rate_offset = false;
++	bool min_rate_offset = false;
++
++	/* Check Bytes 4 Vertical rate offsets
++	 * Vertical rate offsets:
++	 * 00 = none;
++	 * 10 = +255 Hz for max. rate;
++	 * 11 = +255 Hz for max. and min. rates.
++	 */
++	if ((edid[index + 4] & 0b10) == 0b10)
++		max_rate_offset = true;
++	else if ((edid[index + 4] & 0b11) == 0b11) {
++		max_rate_offset = true;
++		min_rate_offset = true;
++	}
++
++	/* Bytes 5 Min vertical field rate (1–255 Hz; 256–510 Hz, if offset).*/
++	data->expected_range.min =
++		min_rate_offset ? edid[index + 5] + 255 : edid[index + 5];
++	/* Bytes 6 Max vertical field rate (1–255 Hz; 256–510 Hz, if offset).*/
++	data->expected_range.max =
++		max_rate_offset ? edid[index + 6] + 255 : edid[index + 6];
++}
++
++static bool find_vrr_range_from_edid(data_t *data, igt_output_t *output)
++{
++	char edid_path[PATH_MAX] = "\0";
++	uint8_t sink_edid[EDID_SIZE] = "\0";
++	const uint8_t range_limits_head[4] = {0x00, 0x00, 0x00, 0xFD};
++	const unsigned int range_head_size = sizeof(range_limits_head);
++	int fd, i, read_size, index = 0;
++
++	/* Get EDID */
++	igt_assert(snprintf(edid_path, PATH_MAX, EDID_PATH,
++			   output->name) < PATH_MAX);
++
++	fd = open(edid_path, O_RDONLY);
++	if (fd == -1)
++		return false;
++
++	read_size = read(fd, sink_edid, EDID_SIZE);
++	close(fd);
++	if (read_size < 0)
++		return false;
++
++	/* Find Display Range Limits Descriptor block */
++	while (index < EDID_SIZE - range_head_size) {
++		for (i = 0; i < range_head_size; i++) {
++			if (sink_edid[index+i] != range_limits_head[i])
++				break;
++			else if (i == range_head_size-1) {
++				/* Found Display Range Limits Descriptor block */
++				parse_vrr_gange_from_edid(data, sink_edid, index);
++				return true;
++			}
++		}
++		index++;
++	}
++
++	return false;
++}
++
+ /* Check if EDID parsing is correctly reporting Freesync capability
+  * by overriding EDID with ones from golden sample.
+  */
+ static void test_freesync_parsing_base(data_t *data, uint32_t test_flags)
+ {
+ 	const struct edid *edid;
+-	range_t range, expected_range;
++	struct vrr_range range, expected_range;
+ 	igt_output_t *output;
+ 	int j, test_conn_cnt = 0;
+ 	igt_display_t *display = &data->display;
+@@ -277,15 +351,27 @@ static void test_freesync_parsing_base(data_t *data, uint32_t test_flags)
+ 		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP)
+ 			igt_amd_allow_edp_hotplug_detect(data->fd, output->name, true);
+ 
+-		/* force to use hard coded VRR EDID */
+-		kmstest_force_edid(data->fd, output->config.connector, edid);
++		if (has_vrr(output)) {
++			/* A VRR sink, just parsing range from EDID directly */
++			trigger_edid_parse(data, output, test_flags);
+ 
+-		trigger_edid_parse(data, output, test_flags);
++			igt_assert_f(find_vrr_range_from_edid(data, output),
++				"Cannot parsing VRR range from EDID\n");
+ 
+-		range = get_freesync_range(data, output);
++			expected_range.min = data->expected_range.min;
++			expected_range.max = data->expected_range.max;
++			range = get_freesync_range(data, output);
++		} else {
++			/* force to use hard coded VRR EDID */
++			kmstest_force_edid(data->fd, output->config.connector, edid);
+ 
+-		/* undo EDID override. re-parse EDID of display */
+-		kmstest_force_edid(data->fd, output->config.connector, NULL);
++			trigger_edid_parse(data, output, test_flags);
++
++			range = get_freesync_range(data, output);
++
++			/* undo EDID override. re-parse EDID of display */
++			kmstest_force_edid(data->fd, output->config.connector, NULL);
++		}
+ 
+ 		igt_amd_trigger_hotplug(data->fd, output->name);
+ 
+@@ -317,20 +403,13 @@ static inline void test_freesync_parsing_suspend(data_t *data)
+ 	test_freesync_parsing_base(data, TEST_SUSPEND);
+ }
+ 
+-/* Returns true if an output supports VRR. */
+-static bool has_vrr(igt_output_t *output)
+-{
+-	return igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
+-	       igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
+-}
+-
+ /* More relaxed checking on Freesync capability.
+  * Only checks if frame rate range is within legal range.
+  * Display under test MUST be VRR capable.
+  */
+ static void test_freesync_range_base(data_t *data, uint32_t test_flags)
+ {
+-	range_t range;
++	struct vrr_range range;
+ 	igt_output_t *output;
+ 	int test_conn_cnt = 0;
+ 	igt_display_t *display = &data->display;
+-- 
+2.43.0
 
-> ---
->   tests/kms_sharpness_filter.c | 68 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 68 insertions(+)
->
-> diff --git a/tests/kms_sharpness_filter.c b/tests/kms_sharpness_filter.c
-> index 32ad7a752..3451a9db4 100644
-> --- a/tests/kms_sharpness_filter.c
-> +++ b/tests/kms_sharpness_filter.c
-> @@ -49,6 +49,14 @@
->    * SUBTEST: filter-suspend
->    * Description: Verify content adaptive sharpness filter with suspend.
->    * Functionality: casf, suspend
-> + *
-> + * SUBTEST: filter-scaler-upscale
-> + * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled during upscaling.
-> + * Functionality: casf, scaling
-> + *
-> + * SUBTEST: filter-scaler-downscale
-> + * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled during downscaling.
-> + * Functionality: casf, scaling
->   */
->   
->   IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
-> @@ -70,6 +78,9 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
->   #define MAX_PIXELS_FOR_5_TAP_FILTER	(3840 * 2160)
->   #define NROUNDS				10
->   
-> +#define SET_PLANES ((type == TEST_FILTER_UPSCALE) \
-> +		||  (type == TEST_FILTER_DOWNSCALE))
-> +
->   enum test_type {
->   	TEST_FILTER_BASIC,
->   	TEST_FILTER_MODIFIERS,
-> @@ -80,6 +91,8 @@ enum test_type {
->   	TEST_FILTER_TAP,
->   	TEST_FILTER_DPMS,
->   	TEST_FILTER_SUSPEND,
-> +	TEST_FILTER_UPSCALE,
-> +	TEST_FILTER_DOWNSCALE,
->   };
->   
->   const int filter_strength_list[] = {
-> @@ -170,6 +183,26 @@ static void cleanup_fbs(data_t *data)
->   		igt_remove_fb(data->drm_fd, &data->fb[i]);
->   }
->   
-> +static void set_planes(data_t *data, enum test_type type)
-> +{
-> +	drmModeModeInfo *mode = data->mode;
-> +	igt_output_t *output = data->output;
-> +
-> +	data->plane[1] = igt_output_get_plane(output, 1);
-> +
-> +	if (type == TEST_FILTER_UPSCALE) {
-> +		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[1]);
-> +		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-> +		igt_plane_set_size(data->plane[1], mode->hdisplay, mode->vdisplay);
-> +	}
-> +
-> +	if (type == TEST_FILTER_DOWNSCALE) {
-> +		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-> +		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-> +		igt_plane_set_size(data->plane[1], mode->hdisplay * 0.75, mode->vdisplay * 0.75);
-> +	}
-> +}
-> +
->   static void cleanup(data_t *data)
->   {
->   	igt_display_reset(&data->display);
-> @@ -244,6 +277,9 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
->   			igt_skip("No requested rotation on pipe %s\n", kmstest_pipe_name(data->pipe_id));
->   	}
->   
-> +	if (SET_PLANES)
-> +		set_planes(data, type);
-> +
->   	set_filter_strength_on_pipe(data);
->   
->   	if (data->filter_strength != 0)
-> @@ -278,6 +314,10 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
->   	if (type == TEST_FILTER_TOGGLE)
->   		ret |= test_filter_toggle(data);
->   
-> +	if (type == TEST_FILTER_DOWNSCALE)
-> +		igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
-> +			      "Scaling op not supported, cdclk limits might be exceeded.\n");
-> +
->   	igt_assert_eq(ret, 0);
->   
->   	/* clean-up */
-> @@ -373,6 +413,12 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
->   			case TEST_FILTER_SUSPEND:
->   				snprintf(name, sizeof(name), "-suspend");
->   				break;
-> +			case TEST_FILTER_UPSCALE:
-> +				snprintf(name, sizeof(name), "-upscale");
-> +				break;
-> +			case TEST_FILTER_DOWNSCALE:
-> +				snprintf(name, sizeof(name), "-downscale");
-> +				break;
->   			default:
->   				igt_assert(0);
->   			}
-> @@ -529,6 +575,28 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
->   		run_sharpness_filter_test(&data, TEST_FILTER_SUSPEND);
->   	}
->   
-> +	igt_describe("Verify content adaptive sharpness filter "
-> +		     "with 1 plane scaler enabled.");
-> +	igt_subtest_with_dynamic("filter-scaler-upscale") {
-> +		data.modifier = DRM_FORMAT_MOD_LINEAR;
-> +		data.rotation = IGT_ROTATION_0;
-> +		data.format = DRM_FORMAT_XRGB8888;
-> +		data.filter_strength = MID_FILTER_STRENGTH;
-> +
-> +		run_sharpness_filter_test(&data, TEST_FILTER_UPSCALE);
-> +	}
-> +
-> +	igt_describe("Verify content adaptive sharpness filter "
-> +		     "with 1 plane scaler enabled.");
-> +	igt_subtest_with_dynamic("filter-scaler-downscale") {
-> +		data.modifier = DRM_FORMAT_MOD_LINEAR;
-> +		data.rotation = IGT_ROTATION_0;
-> +		data.format = DRM_FORMAT_XRGB8888;
-> +		data.filter_strength = MID_FILTER_STRENGTH;
-> +
-> +		run_sharpness_filter_test(&data, TEST_FILTER_DOWNSCALE);
-> +	}
-> +
->   	igt_fixture {
->   		igt_display_fini(&data.display);
->   		drm_close_driver(data.drm_fd);
