@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACE5E77188
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 11:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96528E7718B
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 13:07:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2DFE10E6DC;
-	Thu,  2 Jan 2025 11:51:22 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C39610E6D9;
- Thu,  2 Jan 2025 11:51:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5087923889859412924=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38F9A10E268;
+	Thu,  2 Jan 2025 13:07:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hNigsXCD";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DFCE10E24F
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jan 2025 13:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1735823261; x=1767359261;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=6AUeGA1QjPIZCc+CZN5G14MudvvwOUMi1USvkspX1mc=;
+ b=hNigsXCDrxdNQ3N7LDkFvt7FQhngvEA1XWJWKoToMlobgReED1AtjkvL
+ 7Kt4pzI9oRN3Oi9cptOoPbxysqG8CmMrI9mXFO3Ir1WCVoW+phm8nMs8d
+ FZnI0E88JLXhVrjxaF22VLugZ9hbM+UYF9hjVgjiVdoo+4cp0ZmjUdqTX
+ vUpBdDh0/Pcf2ntJjRzkLJwxZ/PpFO0RSKg7+T6+HANlQA9LCH6QGsZHi
+ BcBcU3SZxS2N2QKyq2JyQgZQSYCv4QLMD9OwcMB8APIzhHRyl/A8rJgFd
+ I9UJyTTp31cnzSxTioLcdmxBygQAd01AxbV/rZrSV6oLZN5J0kzrjNQ1+ w==;
+X-CSE-ConnectionGUID: VZi2Z+d6Q7i5mX8JB5/P/Q==
+X-CSE-MsgGUID: ou40FRaBRsSV7GP0AIgrDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="35364693"
+X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; d="scan'208";a="35364693"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jan 2025 05:07:40 -0800
+X-CSE-ConnectionGUID: MNWzfYy1QUeQVFwzTG9dHw==
+X-CSE-MsgGUID: PCNBjT30T8WjwXJEckFN2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; d="scan'208";a="101939483"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by fmviesa010.fm.intel.com with ESMTP; 02 Jan 2025 05:07:38 -0800
+From: Pranay Samala <pranay.samala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com
+Subject: [PATCH i-g-t] tests/intel/kms_dirtyfb: Add logs to skips
+Date: Thu,  2 Jan 2025 18:42:47 +0530
+Message-Id: <20250102131247.258388-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Fvrr=5Fra?=
- =?utf-8?q?nge=3A_Fix_panel_cannot_light_up_after_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tom Chung" <chiahsuan.chung@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Jan 2025 11:51:22 -0000
-Message-ID: <173581868210.2022203.17554435600508648722@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250102103741.2105-1-chiahsuan.chung@amd.com>
-In-Reply-To: <20250102103741.2105-1-chiahsuan.chung@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,162 +62,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5087923889859412924==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Having some logs for test failures & skips would
+make debugging much easier.
 
-== Series Details ==
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+---
+ tests/intel/kms_dirtyfb.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-Series: tests/amdgpu/amd_vrr_range: Fix panel cannot light up after test
-URL   : https://patchwork.freedesktop.org/series/143059/
-State : success
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 35df9be3b..19dd283d5 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -102,21 +102,40 @@ static bool check_support(data_t *data)
+ 	case FEATURE_NONE:
+ 		return true;
+ 	case FEATURE_FBC:
+-		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->pipe))
++		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->pipe)) {
++			igt_info("FBC is not supported on this chipset\n");
+ 			return false;
++		}
++
++		if (!intel_fbc_plane_size_supported(data->drm_fd,
++						    data->mode->hdisplay,
++						    data->mode->vdisplay)) {
++			igt_info("Plane size not supported as per FBC size restrictions\n");
++			return false;
++		}
++		return true;
+ 
+-		return intel_fbc_plane_size_supported(data->drm_fd,
+-						      data->mode->hdisplay,
+-						      data->mode->vdisplay);
+ 	case FEATURE_PSR:
+ 		if (data->output->config.connector->connector_type !=
+-		    DRM_MODE_CONNECTOR_eDP)
++		    DRM_MODE_CONNECTOR_eDP) {
++			igt_info("Output is not an eDP\n");
++			return false;
++		}
++		if (!psr_sink_support(data->drm_fd, data->debugfs_fd,
++				      PSR_MODE_1, NULL)) {
++			igt_info("Output doesn't supports PSR\n");
+ 			return false;
+-		return psr_sink_support(data->drm_fd, data->debugfs_fd,
+-					PSR_MODE_1, NULL);
++		}
++		return true;
++
+ 	case FEATURE_DRRS:
+-		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
+-			intel_output_has_drrs(data->drm_fd, data->output);
++		if (!(intel_is_drrs_supported(data->drm_fd, data->pipe) &&
++		      intel_output_has_drrs(data->drm_fd, data->output))) {
++			igt_info("Output doesn't supports DRRS\n");
++			return false;
++		}
++		return true;
++
+ 	case FEATURE_DEFAULT:
+ 		return true;
+ 	default:
+-- 
+2.34.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8174_BAT -> XEIGTPW_12375_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12375_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-adlp-7:         [PASS][3] -> [SKIP][4] ([Intel XE#455]) +1 other test skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@kms_psr@psr-primary-page-flip@edp-1:
-    - bat-adlp-7:         [PASS][5] -> [DMESG-WARN][6] ([Intel XE#3517]) +1 other test dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind:
-    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#288]) +13 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#3517]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8174 -> IGTPW_12375
-
-  IGTPW_12375: 68d66f27cde01eabd5c007ba0c20c15c7c7716b0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/index.html
-
---===============5087923889859412924==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_vrr_range: Fix panel cannot light up after test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143059/">https://patchwork.freedesktop.org/series/143059/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8174_BAT -&gt; XEIGTPW_12375_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12375_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@kms_psr@psr-primary-page-flip@edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3517">Intel XE#3517</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12375/bat-adlp-7/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +13 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8174 -&gt; IGTPW_12375</li>
-</ul>
-<p>IGTPW_12375: 68d66f27cde01eabd5c007ba0c20c15c7c7716b0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642</p>
-
-</body>
-</html>
-
---===============5087923889859412924==--
