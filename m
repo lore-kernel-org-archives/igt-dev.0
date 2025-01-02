@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D5CBE77188
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 13:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ECE8E77188
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 13:44:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC33410E314;
-	Thu,  2 Jan 2025 13:22:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0182D10E316;
+	Thu,  2 Jan 2025 13:44:32 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1236510E314;
- Thu,  2 Jan 2025 13:22:49 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F51710E316;
+ Thu,  2 Jan 2025 13:44:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1778272794308304833=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/kms=5Fdirty?=
- =?utf-8?q?fb=3A_Add_logs_to_skips?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdirtyfb?=
+ =?utf-8?q?=3A_Add_logs_to_skips?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Jan 2025 13:22:49 -0000
-Message-ID: <173582416906.2041221.4053553759937607196@b555e5b46a47>
+Date: Thu, 02 Jan 2025 13:44:30 -0000
+Message-ID: <173582547051.2041201.848463146328204163@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250102131247.258388-1-pranay.samala@intel.com>
 In-Reply-To: <20250102131247.258388-1-pranay.samala@intel.com>
@@ -41,39 +41,102 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1778272794308304833==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/intel/kms_dirtyfb: Add logs to skips
 URL   : https://patchwork.freedesktop.org/series/143063/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_8174_BAT -> XEIGTPW_12376_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1338365 for the overview.
+Summary
+-------
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/68766786):
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1735824031:get_sources
-  section_start:1735824031:download_artifacts
-  Downloading artifacts
-  Downloading artifacts for build:tests-fedora (68766771)...
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=68766771 responseStatus=200 OK token=glcbt-64
-  section_end:1735824040:download_artifacts
-  section_start:1735824040:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
-  Checking if the user of the pipeline is allowed...
-  section_end:1735824045:step_script
-  section_start:1735824045:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1735824046:cleanup_file_variables
-  ERROR: Job failed: exit code 137
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-adlp-7 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8174 -> IGTPW_12376
+
+  IGTPW_12376: 2f8ddabf274fb24c38be71f39a28fde8a67c19f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1338365
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12376/index.html
+
+--===============1778272794308304833==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_dirtyfb: Add logs to skips</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143063/">https://patchwork.freedesktop.org/series/143063/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12376/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12376/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8174_BAT -&gt; XEIGTPW_12376_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8174 -&gt; IGTPW_12376</li>
+</ul>
+<p>IGTPW_12376: 2f8ddabf274fb24c38be71f39a28fde8a67c19f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642</p>
+
+</body>
+</html>
+
+--===============1778272794308304833==--
