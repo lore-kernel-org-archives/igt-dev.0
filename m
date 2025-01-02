@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1233E77188
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 16:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 742F4E77194
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jan 2025 17:11:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC0A110E747;
-	Thu,  2 Jan 2025 16:25:42 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CruK408D";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6236610E747
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jan 2025 16:25:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735835141; x=1767371141;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2Hu5WAtugicYm3rLblnmgFc/dE896ePF56Mdih/YP8Y=;
- b=CruK408DonQrLIuhJUkhS026yjqb1+s/8bbCR30wdkLQSJA5bRulvgkI
- Oo6ZWt1mdiDNKXSCLuC8ntYku7TnySV22ly8ShzHCbx07egHHXkrZOpAj
- J9PoIt78ec7RhzT6usakjwrh5P9oy+PnJyzmRKHrxtRuiprnht1Pivs4C
- 8yy27kY8rASldQKz3H/yR/rjfaCPeekK8+PEhKA0KAlIl5MfLtDxWmvI+
- 8PtdAdcUId5i/mp3og7DaCC0d8Xz7jTV5GaASyhytmibyJ8kJlYGu7t6n
- di9GWDSMEj7y/zsngHF5FIkK5M1f/U7T/JBi7lciFT2zdcB0BPv9te7Vq w==;
-X-CSE-ConnectionGUID: dNUJOVF2Q8iwrgUavaehzw==
-X-CSE-MsgGUID: 87HVCQITReuvqB8Lj0jAtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="36233472"
-X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; d="scan'208";a="36233472"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jan 2025 08:25:41 -0800
-X-CSE-ConnectionGUID: LeN1ED+wSvGd7AENpyxzSw==
-X-CSE-MsgGUID: KA7iVz1cR6+wmNqSqI+tQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; d="scan'208";a="101633717"
-Received: from dut138lnl.fm.intel.com ([10.105.23.14])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jan 2025 08:25:41 -0800
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
- zbigniew.kempczynski@intel.com, pravalika.gurram@intel.com,
- daniel.stenka@intel.com
-Subject: [PATCH] tests/intel/xe_drm_fdinfo: Do not end NULL xe_cork
-Date: Thu,  2 Jan 2025 16:25:40 +0000
-Message-ID: <20250102162540.81162-1-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDD8010E753;
+	Thu,  2 Jan 2025 17:11:49 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3291410E753;
+ Thu,  2 Jan 2025 17:11:48 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6279987242628421434=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fdrm=5Ffdin?=
+ =?utf-8?q?fo=3A_Do_not_end_NULL_xe=5Fcork?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 02 Jan 2025 17:11:48 -0000
+Message-ID: <173583790819.2097694.1071676479695604766@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250102162540.81162-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20250102162540.81162-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,56 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-An earlier commit prevented the execution of the xe_cork_destroy
-function when the xe_cork is not initialized via xe_cork_create in
-xe_drm_fdinfo.  This must also be done with the xe_cork_sync_end
-function in some places.
+--===============6279987242628421434==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fixes: 2feb1d67 ("lib/xe/xe_spin: move the spinner related functions to lib")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3869
-CC: Pravalika Gurram <pravalika.gurram@intel.com>
-CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-CC: Daniel Stenka <daniel.stenka@intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
----
- tests/intel/xe_drm_fdinfo.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index e83c55c646..0d1cbfe59e 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -532,8 +532,11 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	xe_for_each_engine_class(class)
--		xe_cork_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class) {
-+		if (ctx[class])
-+			xe_cork_sync_end(fd, ctx[class]);
-+	}
-+
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
-@@ -573,8 +576,11 @@ utilization_all_full_load(int fd)
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	xe_for_each_engine_class(class)
--		xe_cork_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class) {
-+		if (ctx[class])
-+			xe_cork_sync_end(fd, ctx[class]);
-+	}
-+
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
--- 
-2.43.0
+Series: tests/intel/xe_drm_fdinfo: Do not end NULL xe_cork
+URL   : https://patchwork.freedesktop.org/series/143066/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8174_BAT -> XEIGTPW_12377_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-adlp-7 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8174 -> IGTPW_12377
+  * Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -> xe-2425-59c846c00dda72adf1a68bf7e76bdc57039371e3
+
+  IGTPW_12377: 12377
+  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
+  xe-2425-59c846c00dda72adf1a68bf7e76bdc57039371e3: 59c846c00dda72adf1a68bf7e76bdc57039371e3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12377/index.html
+
+--===============6279987242628421434==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Do not end NULL xe_cork</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143066/">https://patchwork.freedesktop.org/series/143066/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12377/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12377/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8174_BAT -&gt; XEIGTPW_12377_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8174 -&gt; IGTPW_12377</li>
+<li>Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -&gt; xe-2425-59c846c00dda72adf1a68bf7e76bdc57039371e3</li>
+</ul>
+<p>IGTPW_12377: 12377<br />
+  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642<br />
+  xe-2425-59c846c00dda72adf1a68bf7e76bdc57039371e3: 59c846c00dda72adf1a68bf7e76bdc57039371e3</p>
+
+</body>
+</html>
+
+--===============6279987242628421434==--
