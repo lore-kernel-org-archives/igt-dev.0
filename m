@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E639E77198
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Jan 2025 14:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0AAE77188
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Jan 2025 15:33:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1E1D710E8D9;
-	Fri,  3 Jan 2025 14:29:26 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F58510E8D6;
- Fri,  3 Jan 2025 14:29:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4029120177065554936=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 82BD610E8E4;
+	Fri,  3 Jan 2025 15:33:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P1Q4rao1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9A5E10E8E4
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jan 2025 15:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1735918426; x=1767454426;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=mmaYfpjJ51yf3q2xkxEAbyrIo7mz0grqAJ0iVcVzhRw=;
+ b=P1Q4rao1loRjiBa09qb1jAJgrYt05KBQEiU3OYjs8s+A90HJLCzfBi6D
+ 1VTAQcty53frcZxVVjXhsoUwIttfIoyO0w4vwbqDB6ylBefGtfQ8VPDT8
+ IR8MZN0Lod0nraDjfQpBukXQ26210VMDCmPqQLbf+tKHHHFBIgnqfoLpr
+ e7KkzsikHQQ9nXy/z7fFASBhPJ8jNEa2pCqSGIwT7o2sqVvH2HyArR0LQ
+ XUP236bV365oU2cUjzTd7g8aWmttM5h+P+3rgRqw8a2khTeW9R6lALUZD
+ INfijuqrhiKwvGluuBmML//NRKOHcgzJSy39IOP2wukCyYYqTqhqrfsvP Q==;
+X-CSE-ConnectionGUID: iSdTL+KrRLONPcxa4fAexg==
+X-CSE-MsgGUID: +0cBm6uIT7+yRh6vUWmsHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11304"; a="39847999"
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="39847999"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2025 07:33:46 -0800
+X-CSE-ConnectionGUID: 4uF7RRMSSWy4R/kQVTOCDA==
+X-CSE-MsgGUID: 1R3goqe6QeOg31fWaK5TfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="105867565"
+Received: from unknown (HELO rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com)
+ ([10.227.89.206])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2025 07:33:43 -0800
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: arun.r.murthy@intel.com, karthik.b.s@intel.com, jeevan.b@intel.com,
+ kunal1.joshi@intel.com, luca@coelho.fi,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] lib/igt_kms: Backup connector modes before sorting
+Date: Fri,  3 Jan 2025 21:03:33 +0530
+Message-Id: <20250103153333.4253-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel=3A_Enhance_the_?=
- =?utf-8?q?wedged=5Fmode_sysfs_support?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 03 Jan 2025 14:29:24 -0000
-Message-ID: <173591456426.2661123.3308337839077047765@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250103124115.765794-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250103124115.765794-1-pravalika.gurram@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,160 +65,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4029120177065554936==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Backup connector modes before sorting to ensure the original mode
+is not changed if the joiner is not found.This will skip updating
+connector->mode[0] if joiner is not available.
 
-== Series Details ==
+v2: Dont sort the modes, instead check for the required modes (Luca Coelho)
 
-Series: tests/intel: Enhance the wedged_mode sysfs support
-URL   : https://patchwork.freedesktop.org/series/143094/
-State : success
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13287
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ lib/igt_kms.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index a67d17c4f..95e3059f7 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6418,14 +6418,13 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ {
+ 	bool found = false;
+ 
+-	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+-	found = igt_bigjoiner_possible(drm_fd, &connector->modes[0], max_dotclock);
+-	if (!found) {
+-		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+-		found = igt_bigjoiner_possible(drm_fd, &connector->modes[0], max_dotclock);
++	for (int i=0; i< connector->count_modes; i++) {
++		if (igt_bigjoiner_possible(drm_fd, &connector->modes[i], max_dotclock)) {
++			*mode = connector->modes[i];
++			found = true;
++			break;
++		}
+ 	}
+-	if (found)
+-		*mode = connector->modes[0];
+ 	return found;
+ }
+ 
+@@ -6462,14 +6461,14 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ {
+ 	bool found = false;
+ 
+-	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+-	found = igt_ultrajoiner_possible(&connector->modes[0], max_dotclock);
+-	if (!found) {
+-		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+-		found = igt_ultrajoiner_possible(&connector->modes[0], max_dotclock);
++	for (int i = 0; i < connector->count_modes; i++) {
++		if (igt_ultrajoiner_possible(&connector->modes[i], max_dotclock)) {
++			*mode = connector->modes[i];
++			found = true;
++			break;
++		}
+ 	}
+-	if (found)
+-		*mode = connector->modes[0];
++
+ 	return found;
+ }
+ 
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8174_BAT -> XEIGTPW_12383_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 8)
-------------------------------
-
-  Missing    (1): bat-adlp-7 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12383_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#1192]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  * igt@xe_pat@pat-index-xelp@render:
-    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3958]) +1 other test dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3958]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8174 -> IGTPW_12383
-  * Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -> xe-2430-901262fb6987b4fa0dbb26979a6c4e25f0ba8fd2
-
-  IGTPW_12383: 18dc2133030940556ad75ee0c12c4801627b5280 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
-  xe-2430-901262fb6987b4fa0dbb26979a6c4e25f0ba8fd2: 901262fb6987b4fa0dbb26979a6c4e25f0ba8fd2
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/index.html
-
---===============4029120177065554936==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel: Enhance the wedged_mode sysfs support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143094/">https://patchwork.freedesktop.org/series/143094/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8174_BAT -&gt; XEIGTPW_12383_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 8)</h2>
-<p>Missing    (1): bat-adlp-7 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12383_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp@render:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958">Intel XE#3958</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12383/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8174 -&gt; IGTPW_12383</li>
-<li>Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -&gt; xe-2430-901262fb6987b4fa0dbb26979a6c4e25f0ba8fd2</li>
-</ul>
-<p>IGTPW_12383: 18dc2133030940556ad75ee0c12c4801627b5280 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642<br />
-  xe-2430-901262fb6987b4fa0dbb26979a6c4e25f0ba8fd2: 901262fb6987b4fa0dbb26979a6c4e25f0ba8fd2</p>
-
-</body>
-</html>
-
---===============4029120177065554936==--
