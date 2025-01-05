@@ -4,50 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDDD8E77188
-	for <igt-dev@archiver.kernel.org>; Sat,  4 Jan 2025 21:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8DC9E77197
+	for <igt-dev@archiver.kernel.org>; Sun,  5 Jan 2025 07:16:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 63FA210E07A;
-	Sat,  4 Jan 2025 21:44:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2891110E050;
+	Sun,  5 Jan 2025 07:16:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="XW5RdtSG";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="5gMQCA/4";
 	dkim-atps=neutral
-X-Greylist: delayed 83879 seconds by postgrey-1.36 at gabe;
- Sat, 04 Jan 2025 21:44:32 UTC
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60BD110E011
- for <igt-dev@lists.freedesktop.org>; Sat,  4 Jan 2025 21:44:32 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 30CEF1C0002;
- Sat,  4 Jan 2025 21:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1736027070;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2UW9j0l0ZWQW7tlWgdH+dxrBgAn7YO8mX3Mf2WTBwyc=;
- b=XW5RdtSGLNA0QMAiB/TXDjE7aQ+5ASMHrQyqvcUWl3/w8jzeLIaGNQdHZtjCzJP0Rnq91I
- ndKINaFNhMGm5qp9JxnxU3V+/rlkZ7dVMR73Ti2lfjUpfL77mJo455L9t0dttqAEO7k3Oo
- 7C99lQWM+HjtB17bTCCjNPrkaMkHSyfzQU/nE9lTmZeTUkTrH40hyTX+dAFyJDkRt5Fxa0
- LWsjiKJy4zBy5LkOD+7EO/CY3LR8/WczA4zhoyQ+wqD9FgavCht+TZE/1+tQ0+XQpFUuAd
- wB6PJjaCHKBC27HsUf+/nnXvR+sB9yov+LXtMZNQZ82xzWrnX0YPbap+ebEsDg==
-Date: Sat, 4 Jan 2025 22:44:29 +0100
-From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] lib/igt_aux.c: since procps-ng 4.0.5, PIDS_VAL()
- takes 3 arguments, not 4
-Message-ID: <20250104224429.0d3d00de@windsurf>
-In-Reply-To: <BL1PR11MB5445B391A20BFCB58D2EE8D7E5152@BL1PR11MB5445.namprd11.prod.outlook.com>
-References: <20250103222628.4069004-1-thomas.petazzoni@bootlin.com>
- <BL1PR11MB5445B391A20BFCB58D2EE8D7E5152@BL1PR11MB5445.namprd11.prod.outlook.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2053.outbound.protection.outlook.com [40.107.92.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B59310E050
+ for <igt-dev@lists.freedesktop.org>; Sun,  5 Jan 2025 07:16:38 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QxABY6noWqyNNxbStoVaoEEC2+hZsMdT4lCDGrqHSopTfxpCLj9SNx9Rxknua/ugl8t28Jcp57qJCpOAvxv4GQ0nr0y7jUn7sybX3daK3c6YX6G14S6HguESjPWfED98q9eEQKJeV5q2D0N8peqgEc3WDvUyYDIrrnnAZAjfpgT2WKH5sxW+9PdJwfDqjjjEHjG9/6J4twESoNuFb5e5GOZIZbH59+6KlrTrxrbgG9UdV3kDVT7H/53Tkj0ldWGXaQQvaVZ1my+ZzroEZwEJRB4ovuK3JFM/+8kHxJ2GKNRftQ9SLUBPZ2CfeFW88VUMh4H9I6Xf84FEaxI+HlI6NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/CVhYG8LJBX0OwPWmwGtJqdsYEkVQdbt2orJzuNfqVc=;
+ b=uHGNubYBi4UnrUC4YitaM+5oAcEEtq0x4LHrLsWRhQ3T8g10eJCJum/+zlN9RpAnz3aSWxq2KHDNOBTfwy9aNP0L9eQ4dlUDR/pp5ZLuJ/aVOt75qRr7nuwyxz0gp1O4kvtDbkdJ34wZp7krIoikwtHC/PVyIfxs7MW59eHX+OOPZGMhE4yh5tG681D0Xmml5U4VN1Da0VA29Lpl3qHMALtIy1xE2DZrNCWVEsMBVS2Sb18E1Orzq1+HFbOsRW1ztDk8UL5Vl0GoK+1O5M/xLf6EVG5zlnu9grddVt5jMPwSwRiOJ0lO65Qj8hDWzkqBPi3HQpDUayNGUvkorNKVag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/CVhYG8LJBX0OwPWmwGtJqdsYEkVQdbt2orJzuNfqVc=;
+ b=5gMQCA/4RRHT6B/Pn31kyU0kCI9fBarTzwqHXMHH3kYPAmApN3KdyZtpAm7wRf120Jflgd1WLK04WUidHbudGWXhkzJPZyhsFbWMHCWNZnrAZCoTafSOdZ6ilpseJZzh6vP/U6mptlySCYcwiW1+Of8sArLjDUmREdXCCCBMP4Y=
+Received: from BYAPR05CA0022.namprd05.prod.outlook.com (2603:10b6:a03:c0::35)
+ by IA0PR12MB9012.namprd12.prod.outlook.com (2603:10b6:208:485::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.16; Sun, 5 Jan
+ 2025 07:16:30 +0000
+Received: from SJ1PEPF0000231E.namprd03.prod.outlook.com
+ (2603:10b6:a03:c0:cafe::94) by BYAPR05CA0022.outlook.office365.com
+ (2603:10b6:a03:c0::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8293.10 via Frontend Transport; Sun,
+ 5 Jan 2025 07:16:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF0000231E.mail.protection.outlook.com (10.167.242.230) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8335.7 via Frontend Transport; Sun, 5 Jan 2025 07:16:29 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 5 Jan
+ 2025 01:16:29 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 5 Jan
+ 2025 01:15:58 -0600
+Received: from AB350-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Sun, 5 Jan 2025 01:15:53 -0600
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: "Jesse.zhang@amd.com" <Jesse.zhang@amd.com>, Vitaly Prosyak
+ <vitaly.prosyak@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Alexander Deucher <alexander.deucher@amd.com>, Jesse Zhang
+ <jesse.zhang@amd.com>
+Subject: [PATCH 1/3] lib/amdgpu: Extract PCI device address from file
+ descriptor
+Date: Sun, 5 Jan 2025 02:15:49 -0500
+Message-ID: <20250105071551.113830-1-vitaly.prosyak@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: thomas.petazzoni@bootlin.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB05.amd.com: vitaly.prosyak@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231E:EE_|IA0PR12MB9012:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37101405-8918-423f-7536-08dd2d58dffb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mqUqKSo+h2lJthxt51NAdpG35+QxRTrKLk7k9oGBu/2SgZEnjaT8byrV+svH?=
+ =?us-ascii?Q?gzxB1HgUl2vjT8NQe+ypg4P0gUiADIhMytHgq3ibi1midMgun+DeyllyNob0?=
+ =?us-ascii?Q?l7dA9LxXSjd4bXCUXzMYtIJLrFZMAURcphCGPpNysm2hWVNvjT8p8W8QUt7O?=
+ =?us-ascii?Q?toK4yz7aAZO9B1Mz91gdGDGpNmv6PKhnunPMtH3ygChqOasM2UGjCUNLoWr4?=
+ =?us-ascii?Q?a4X0q6bavuIf3G1/bwOIrrjreHo7st7GC3aQ4qGw6H91QJVFi6CfknDPK29O?=
+ =?us-ascii?Q?VZ43c/27ZQN+jcBU74YRl47zTe5ahtPNhLzwWu4RyIjr8v6Qdw5ECipnU0Hy?=
+ =?us-ascii?Q?Lk35ctlmyKRO5oghxilTzM/ZtZTG2FFEbjJa87pr/KaJEADid4Nz7ZLyphp6?=
+ =?us-ascii?Q?m8k/alvx9wnym58rBBjhQ/60tLCKU2tiZyWeQCdyUuiuA/AQnAkuNpvc5U/D?=
+ =?us-ascii?Q?Cu121kf6puxiiMdcknsZo3Ariy+mHhHt/3K9YfI3cz21hKCFFXOdGeUE1M+n?=
+ =?us-ascii?Q?WkZ9tUJtxoHb/Ip/35davshygnF1CKrjBByHAtkMUsLw1kzqTIZwOy+oh/kz?=
+ =?us-ascii?Q?H4x8ahf/yG6FaBZX6Yosl9dBiDw8YbPSSpKfKVuwmerz4cIAOJlQwtyalwrY?=
+ =?us-ascii?Q?KbKvzTy4iBEhsw+gJFGqdqJrsb07kV0wGzDCQydwzIa8G9ooOIKfr1Kh1J9A?=
+ =?us-ascii?Q?w6DY8xCvXNAR7iBy18cZAGhqstMXZoQV3AiiFwUYmmD819qpKt2Ec/2LVc1g?=
+ =?us-ascii?Q?9r023BUVGZDpkb9W+p37Aj2cy8xoZbR48ZRh8EEPDQl0JjRzoWcRSby2Ugg2?=
+ =?us-ascii?Q?s8e+MaQLg8oufbmtFdmZS/7YCX3WftMCDPn5fHpyxjgCN5GVB99ENkgl79Qr?=
+ =?us-ascii?Q?0yO6uG4NwsW4mRLxvOkEkUsL7md4lKR25lN0kWBAXYzLaH6NsrGrw5E7XIE6?=
+ =?us-ascii?Q?zdjZa6z4DSl3i1/frMOoQ50w57BLlvVkBvPE/qiujMvYR2nB+uQL7sQeBQLR?=
+ =?us-ascii?Q?geG0701FyuxZtnAvijPQNYp46lsEk9Cik9zB/SHwaTNinnKgy9UFPaBIZTjA?=
+ =?us-ascii?Q?GCNS0g6/7jlMRh97J0P4kHtNslQvAhf8fb3lgOX3jRuPWNAmYecyWp/4M/Sq?=
+ =?us-ascii?Q?tX+75i8aTIiyANGtsmWeGhGzCMibG70RTIjDMdE7JAyWMDxqE/NKxBXkMdXO?=
+ =?us-ascii?Q?osLGzT8to5Hv2YLP2QW1x7JDuqj+tKEF5M4ZnnsoNswhHjKSMu03xmKkgzR7?=
+ =?us-ascii?Q?3/okAcuFW8afOxZw0sxmalrSxjbuTUKrIR2go+7Foq7705OKgZp68H8soVaq?=
+ =?us-ascii?Q?WN1ugroUAa/GTV1nYfHbUwLU3/7qr36IiWIhKg42RTEJ7ZSkkoLbJqU0d1dp?=
+ =?us-ascii?Q?eUGQN40DicDpM0f4eOgGCPRyrIQZLx19cHElt1KwtxfSVTf0LWjX4U0R44IQ?=
+ =?us-ascii?Q?6v3kRGU9+Tj1tUUyfp/0ilPKC1nQMEIFXhIwmeTdcTMYdDt3lslI4U90kllP?=
+ =?us-ascii?Q?0Vq/MDu9Us8ls90=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2025 07:16:29.3711 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37101405-8918-423f-7536-08dd2d58dffb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF0000231E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9012
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,49 +141,225 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hello Jonathan,
+From: "Jesse.zhang@amd.com" <Jesse.zhang@amd.com>
 
-Thanks for the quick feedback!
+Extract the PCI domain, device, and function numbers from
+the file descriptor associated with the amdgpu device.
 
-On Fri, 3 Jan 2025 23:33:27 +0000
-"Cavitt, Jonathan" <jonathan.cavitt@intel.com> wrote:
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alexander Deucher <alexander.deucher@amd.com>
 
-> "HAVE_LIBPROC2_POST_4_0_5_API" works as a name for this new tag,
-> though I wonder if "HAVE_LIBPROC2_NO_INFO" would also work?
+v2 : improve commit message, formatting and some coding (Vitaly)
 
-I don't have a strong opinion on the macro name, but "NO_INFO" sounds
-very generic. Here we're just talking about the "info" argument of this
-specific PIDS_VAL() macro.
+Suggest-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Jesse Zhang  <jesse.zhang@amd.com>
+Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ lib/amdgpu/amd_ip_blocks.c | 143 ++++++++++++++++++++++++++-----------
+ lib/amdgpu/amd_ip_blocks.h |  17 +++++
+ 2 files changed, 118 insertions(+), 42 deletions(-)
 
-It is worth mentioning that I had reported the issue to upstream
-procps-ng and they don't consider it as a bug:
-
-  https://gitlab.com/procps-ng/procps/-/issues/366
-
-Also, they said that the SONAME has changed. Which they indeed did in:
-
-  https://gitlab.com/procps-ng/procps/-/commit/f8d20531f840e280fcbe1f3a0634ab72c9b4e74d
-
-So maybe our macro name should be based somehow on this SONAME, which
-identifies the API version?
-
-> I don't see any other granular version checks in the meson build file (at
-> least, I don't see any that aren't strict version requirements for certain
-> dependencies), so AFAICT this type of tag is fairly novel.  So whatever
-> name we end up choosing may end up inadvertently becoming a 
-> standard naming convention for future tags like this one.
-
-Note that I am not entirely happy with it being a version check.
-Ideally, we shouldn't check the version, but rather test the feature
-itself: build a simple program that uses the 4 argument variant of
-PIDS_VAL() and decide depending on the success/failure which variant we
-should use. This is generally less fragile than a version check, at
-least IMO.
-
-Best regards,
-
-Thomas
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index cc4163bfc..9749e2072 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -810,10 +810,9 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+ 		igt_info("amdgpu: unknown (family_id, chip_external_rev): (%u, %u)\n",
+ 			 amdinfo->family_id, amdinfo->chip_external_rev);
+ 		return -1;
+-	} else {
+-		igt_info("amdgpu: %s (family_id, chip_external_rev): (%u, %u)\n",
+-				info->name, amdinfo->family_id, amdinfo->chip_external_rev);
+ 	}
++	igt_info("amdgpu: %s (family_id, chip_external_rev): (%u, %u)\n",
++				info->name, amdinfo->family_id, amdinfo->chip_external_rev);
+ 
+ 	if (info->family >= CHIP_GFX1100) {
+ 		info->chip_class = GFX11;
+@@ -1007,43 +1006,103 @@ asic_rings_readness(amdgpu_device_handle device_handle, uint32_t mask,
+ bool
+ is_reset_enable(enum amd_ip_block_type ip_type, uint32_t reset_type)
+ {
+-        char cmd[256];
+-        FILE *fp, *fp2;
+-        char buffer[100];
+-        bool enable = false;
+-        char reset_mask[100];
+-
+-        if(ip_type == AMD_IP_GFX)
+-                snprintf(reset_mask, sizeof(reset_mask) - 1, "gfx_reset_mask");
+-        else if (ip_type == AMD_IP_COMPUTE)
+-                snprintf(reset_mask, sizeof(reset_mask) - 1, "compute_reset_mask");
+-        else
+-                snprintf(reset_mask, sizeof(reset_mask) - 1, "sdma_reset_mask");
+-
+-        snprintf(cmd, sizeof(cmd) - 1, "sudo cat /sys/kernel/debug/dri/0/name |grep -oP '(?<=dev=)[0-9:.]+'");
+-        fp = popen(cmd, "r");
+-        if (fp == NULL)
+-                return false;
+-
+-        if (fgets(buffer, 13, fp) != NULL) {
+-                snprintf(cmd,sizeof(cmd) - 1,"sudo cat /sys/bus/pci/devices/%s/%s | grep -oP '%s'",
+-                        buffer,reset_mask,
+-			reset_type & AMDGPU_RESET_TYPE_FULL ? "full":
+-			reset_type & AMDGPU_RESET_TYPE_SOFT_RESET ? "soft":
+-			reset_type & AMDGPU_RESET_TYPE_PER_QUEUE ? "queue": "pipe");
+-
+-                fp2 = popen(cmd, "r");
+-                if (fp2 == NULL) {
+-                        pclose(fp);
+-                        return false;
+-                }
+-
+-                if (fgets(buffer, 13, fp2) != NULL) {
+-                        enable = true;
+-                }
+-                pclose(fp2);
+-        }
+-        pclose(fp);
+-
+-        return enable;
++	char cmd[256];
++	FILE *fp, *fp2;
++	char buffer[100];
++	bool enable = false;
++	char reset_mask[100];
++
++	if (ip_type == AMD_IP_GFX)
++		snprintf(reset_mask, sizeof(reset_mask) - 1, "gfx_reset_mask");
++	else if (ip_type == AMD_IP_COMPUTE)
++		snprintf(reset_mask, sizeof(reset_mask) - 1, "compute_reset_mask");
++	else
++		snprintf(reset_mask, sizeof(reset_mask) - 1, "sdma_reset_mask");
++
++	snprintf(cmd, sizeof(cmd) - 1, "sudo cat /sys/kernel/debug/dri/0/name |grep -oP '(?<=dev=)[0-9:.]+'");
++	fp = popen(cmd, "r");
++	if (fp == NULL)
++		return false;
++
++	if (fgets(buffer, 13, fp) != NULL) {
++		snprintf(cmd, sizeof(cmd) - 1, "sudo cat /sys/bus/pci/devices/%s/%s | grep -oP '%s'",
++			buffer, reset_mask,
++			reset_type & AMDGPU_RESET_TYPE_FULL ? "full" :
++			reset_type & AMDGPU_RESET_TYPE_SOFT_RESET ? "soft" :
++			reset_type & AMDGPU_RESET_TYPE_PER_QUEUE ? "queue" : "pipe");
++
++		fp2 = popen(cmd, "r");
++		if (fp2 == NULL) {
++			pclose(fp);
++			return false;
++		}
++
++		if (fgets(buffer, 13, fp2) != NULL)
++			enable = true;
++		pclose(fp2);
++	}
++	pclose(fp);
++
++	return enable;
++}
++
++/**
++ * get_pci_addr_from_fd - Extracts the PCI device address from a file descriptor.
++ * @fd: The file descriptor to extract the address from.
++ * @pci: Pointer to a pci_addr struct to store the extracted address.
++ *
++ * Returns 0 on success, or a negative error code on failure.
++ */
++int get_pci_addr_from_fd(int fd, struct pci_addr *pci)
++{
++	char path[80];
++	struct stat st;
++	char link[20], pci_path[256];
++	char *buf;
++	int len, sysfs;
++	int ret;
++
++	// Check if the file descriptor is a character device and can be accessed
++	if (fstat(fd, &st) < 0 || !S_ISCHR(st.st_mode))
++		return -1;
++
++	snprintf(path, sizeof(path), "/sys/dev/char/%d:%d",
++			major(st.st_rdev), minor(st.st_rdev));
++
++	// Check if the sysfs path exists
++	if (access(path, F_OK) < 0)
++		return -1;
++
++	// Open the sysfs directory
++	sysfs = open(path, O_RDONLY);
++	if (sysfs < 0)
++		return -1;
++
++	// Read the "device" link from the sysfs directory
++	snprintf(link, sizeof(link), "device");
++	len = readlinkat(sysfs, link, pci_path, sizeof(pci_path) - 1);
++	if (len == -1) {
++		close(sysfs);
++		return -ENOENT;
++	}
++	close(sysfs);
++ // Null-terminate the extracted path
++	pci_path[len] = '\0';
++
++	// Find the last occurrence of '/' in the extracted path
++	buf = strrchr(pci_path, '/');
++	if (!buf)
++		return -ENOENT;
++
++	// Extract the PCI device address from the path using sscanf
++	ret = sscanf(buf, "/%4x:%2x:%2x.%2x", &pci->domain, &pci->bus,
++			&pci->device, &pci->function);
++
++	if (ret != 4) {
++		igt_info("error %s Unable to extract PCI device address from '%s\n",
++				__FUNCTION__, buf);
++		return -ENOENT;
++	}
++
++	return 0;
+ }
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 337ef3c25..dc4d87151 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -8,6 +8,13 @@
+ #define AMD_IP_BLOCKS_H
+ 
+ #include <amdgpu_drm.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include "amd_registers.h"
+ #include "amd_family.h"
+@@ -183,6 +190,13 @@ struct chip_info {
+ 	amdgpu_device_handle dev;
+ };
+ 
++struct pci_addr {
++    unsigned int domain;
++    unsigned int bus;
++    unsigned int device;
++    unsigned int function;
++};
++
+ extern  struct amdgpu_ip_blocks_device amdgpu_ips;
+ extern const struct chip_info  *g_pChip;
+ int
+@@ -220,4 +234,7 @@ asic_rings_readness(amdgpu_device_handle device_handle, uint32_t mask, bool arr[
+ 
+ bool
+ is_reset_enable(enum amd_ip_block_type ip_type, uint32_t reset_type);
++
++int
++get_pci_addr_from_fd(int fd, struct pci_addr *pci);
+ #endif
 -- 
-Thomas Petazzoni, co-owner and CEO, Bootlin
-Embedded Linux and Kernel engineering and training
-https://bootlin.com
+2.34.1
+
