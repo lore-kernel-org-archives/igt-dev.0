@@ -4,24 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 977B2E77197
-	for <igt-dev@archiver.kernel.org>; Sun,  5 Jan 2025 08:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D45E77197
+	for <igt-dev@archiver.kernel.org>; Sun,  5 Jan 2025 08:30:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0256610E42C;
-	Sun,  5 Jan 2025 08:26:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70B5B10E050;
+	Sun,  5 Jan 2025 08:30:12 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6ABE110E050;
- Sun,  5 Jan 2025 08:26:46 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0702250180617720610=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8294710E050;
+ Sun,  5 Jan 2025 08:30:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1/3?=
- =?utf-8?q?=5D_lib/amdgpu=3A_Extract_PCI_device_address_from_file_descriptor?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1?=
+ =?utf-8?q?/3=5D_lib/amdgpu=3A_Extract_PCI_device_address_from_file_descript?=
+ =?utf-8?q?or?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Sun, 05 Jan 2025 08:26:46 -0000
-Message-ID: <173606560642.3656620.949004558269202567@b555e5b46a47>
+Date: Sun, 05 Jan 2025 08:30:10 -0000
+Message-ID: <173606581053.3665830.304262069810895456@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250105071551.113830-1-vitaly.prosyak@amd.com>
 In-Reply-To: <20250105071551.113830-1-vitaly.prosyak@amd.com>
@@ -41,11 +42,6 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0702250180617720610==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
 Series: series starting with [1/3] lib/amdgpu: Extract PCI device address from file descriptor
@@ -54,7 +50,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8174_BAT -> XEIGTPW_12388_BAT
+CI Bug Log - changes from IGT_8174 -> IGTPW_12388
 ====================================================
 
 Summary
@@ -64,83 +60,47 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12388/index.html
 
-Participating hosts (9 -> 8)
+Participating hosts (40 -> 38)
 ------------------------------
 
-  Missing    (1): bat-adlp-7 
+  Missing    (2): bat-atsm-1 fi-snb-2520m 
 
+Known issues
+------------
 
-Changes
--------
+  Here are the changes found in IGTPW_12388 that come from known issues:
 
-  No changes found
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [DMESG-FAIL][1] ([i915#13393]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8174/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12388/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-6:         [DMESG-FAIL][3] ([i915#13393]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8174/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12388/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#13393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8174 -> IGTPW_12388
-  * Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -> xe-2435-3491399dc8f0c0c3bcec5316c66e60f5f44e1f10
+  * Linux: CI_DRM_15892 -> CI_DRM_15903
 
+  CI-20190529: 20190529
+  CI_DRM_15892: 08bd590935a5258ffd79355c59adffd72fb2c642 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15903: 3491399dc8f0c0c3bcec5316c66e60f5f44e1f10 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12388: 12388
   IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
-  xe-2435-3491399dc8f0c0c3bcec5316c66e60f5f44e1f10: 3491399dc8f0c0c3bcec5316c66e60f5f44e1f10
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12388/index.html
-
---===============0702250180617720610==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/3] lib/amdgpu: Extract PCI device address from file descriptor</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143116/">https://patchwork.freedesktop.org/series/143116/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12388/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12388/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8174_BAT -&gt; XEIGTPW_12388_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 8)</h2>
-<p>Missing    (1): bat-adlp-7 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8174 -&gt; IGTPW_12388</li>
-<li>Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -&gt; xe-2435-3491399dc8f0c0c3bcec5316c66e60f5f44e1f10</li>
-</ul>
-<p>IGTPW_12388: 12388<br />
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642<br />
-  xe-2435-3491399dc8f0c0c3bcec5316c66e60f5f44e1f10: 3491399dc8f0c0c3bcec5316c66e60f5f44e1f10</p>
-
-</body>
-</html>
-
---===============0702250180617720610==--
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12388/index.html
