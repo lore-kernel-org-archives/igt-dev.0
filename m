@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A33FE77188
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 17:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB047E77188
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 17:21:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4053510E99C;
-	Mon,  6 Jan 2025 17:20:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="novgOO2G";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E45110E99C
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 17:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736184048; x=1767720048;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=6bjuV+L6I9lWp3XW8cJOBUxh06XDFyYmtimYs4ckTHg=;
- b=novgOO2GLW1ccJmNxwhsHhlbIoBVrAVozF0VEDShtCMWr6M+Yd+Z979L
- YTZo/Ot5c14/GWCIbHrnCPlWsMeVO19a8BxWE00wewajo6SsVysYnNYkZ
- oFN75PgSxFn3vHGRdvcnWmhYG4xwJWaGR9Rdp3oau6ovTBxTkDqCpoKXC
- DfY7+9Suu3RiJHKIPtRNDgrl0bGNkFQjewBBM2QY7Zeelb5bcx8Co48JF
- MYxThQeb6Zu6fnkAfOKnnMX4pTJXSZm4OLBejCa19I+yVe716/+MMT8JB
- dDpkGss5HTcwsiEk5U9rHO/qQKR1Szu8Oi0kbbpJIVZ3N1jkJtwFDBiIb A==;
-X-CSE-ConnectionGUID: mkoF31kiR+CBLGtgr/s7Mg==
-X-CSE-MsgGUID: x+tLCfHtSomG+9dxtEN8pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="36494989"
-X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="36494989"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2025 09:20:48 -0800
-X-CSE-ConnectionGUID: 01LOcapMTxK2JzeA4MnFTA==
-X-CSE-MsgGUID: 3C0VMc+aSJ6wfN51R5/1JA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="133413742"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
- ([10.125.110.91])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2025 09:20:47 -0800
-Date: Mon, 6 Jan 2025 11:20:42 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: igt-dev@lists.freedesktop.org, saurabhg.gupta@intel.com, 
- alex.zuo@intel.com, zbigniew.kempczynski@intel.com, pravalika.gurram@intel.com,
- daniel.stenka@intel.com
-Subject: Re: [PATCH] tests/intel/xe_drm_fdinfo: Do not end NULL xe_cork
-Message-ID: <grhezcm6z7eph2vnwyigerhldgccitqyxmdvx4a7mryw3p5qp6@4y2hbdujaj43>
-References: <20250102162540.81162-1-jonathan.cavitt@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7121B10E99C;
+	Mon,  6 Jan 2025 17:21:32 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE39F10E99C;
+ Mon,  6 Jan 2025 17:21:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250102162540.81162-1-jonathan.cavitt@intel.com>
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EFull=3A_success_for_Add_pci=5Fmembarrier_tes?=
+ =?utf-8?q?t_in_xe=5Fmmap_=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 06 Jan 2025 17:21:31 -0000
+Message-ID: <173618409184.278991.14357801783344554567@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250106151441.2598949-1-tejas.upadhyay@intel.com>
+In-Reply-To: <20250106151441.2598949-1-tejas.upadhyay@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,24 +37,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jan 02, 2025 at 04:25:40PM +0000, Jonathan Cavitt wrote:
->An earlier commit prevented the execution of the xe_cork_destroy
->function when the xe_cork is not initialized via xe_cork_create in
->xe_drm_fdinfo.  This must also be done with the xe_cork_sync_end
->function in some places.
->
->Fixes: 2feb1d67 ("lib/xe/xe_spin: move the spinner related functions to lib")
->Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3869
->CC: Pravalika Gurram <pravalika.gurram@intel.com>
->CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->CC: Daniel Stenka <daniel.stenka@intel.com>
->Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+== Series Details ==
 
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Series: Add pci_membarrier test in xe_mmap (rev8)
+URL   : https://patchwork.freedesktop.org/series/141296/
+State : success
 
-and pushed, thanks.
+== Summary ==
 
-Lucas De Marchi
+CI Bug Log - changes from CI_DRM_15908_full -> IGTPW_12394_full
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/index.html
+
+Participating hosts (12 -> 10)
+------------------------------
+
+  Missing    (2): pig-kbl-iris shard-glk-0 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12394_full that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - shard-glk:          ([PASS][1], [PASS][2], [DMESG-WARN][3], [PASS][4], [PASS][5], [PASS][6], [PASS][7], [PASS][8], [PASS][9], [PASS][10], [PASS][11], [PASS][12], [PASS][13], [PASS][14], [PASS][15], [PASS][16], [PASS][17], [PASS][18], [PASS][19], [PASS][20], [PASS][21], [PASS][22], [PASS][23], [PASS][24], [PASS][25]) ([i915#118]) -> ([PASS][26], [PASS][27], [PASS][28], [PASS][29], [PASS][30], [PASS][31], [PASS][32], [PASS][33], [PASS][34], [PASS][35], [PASS][36], [PASS][37], [PASS][38], [PASS][39], [PASS][40], [PASS][41], [PASS][42], [PASS][43], [PASS][44], [PASS][45], [PASS][46], [PASS][47], [PASS][48], [PASS][49], [PASS][50])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk5/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk6/igt@i915_module_load@load.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk5/igt@i915_module_load@load.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk2/igt@i915_module_load@load.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk1/igt@i915_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk3/igt@i915_module_load@load.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk4/igt@i915_module_load@load.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk1/igt@i915_module_load@load.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk3/igt@i915_module_load@load.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk5/igt@i915_module_load@load.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk3/igt@i915_module_load@load.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk2/igt@i915_module_load@load.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk1/igt@i915_module_load@load.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk2/igt@i915_module_load@load.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk1/igt@i915_module_load@load.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk7/igt@i915_module_load@load.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk8/igt@i915_module_load@load.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk7/igt@i915_module_load@load.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk6/igt@i915_module_load@load.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk9/igt@i915_module_load@load.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk7/igt@i915_module_load@load.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk9/igt@i915_module_load@load.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk6/igt@i915_module_load@load.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk7/igt@i915_module_load@load.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15908/shard-glk9/igt@i915_module_load@load.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk3/igt@i915_module_load@load.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk6/igt@i915_module_load@load.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk6/igt@i915_module_load@load.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk1/igt@i915_module_load@load.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk4/igt@i915_module_load@load.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk8/igt@i915_module_load@load.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk1/igt@i915_module_load@load.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk9/igt@i915_module_load@load.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk3/igt@i915_module_load@load.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk5/igt@i915_module_load@load.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk3/igt@i915_module_load@load.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk1/igt@i915_module_load@load.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk9/igt@i915_module_load@load.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk6/igt@i915_module_load@load.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk7/igt@i915_module_load@load.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk4/igt@i915_module_load@load.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk5/igt@i915_module_load@load.html
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk2/igt@i915_module_load@load.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk8/igt@i915_module_load@load.html
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk4/igt@i915_module_load@load.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk9/igt@i915_module_load@load.html
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk7/igt@i915_module_load@load.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk2/igt@i915_module_load@load.html
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk5/igt@i915_module_load@load.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/shard-glk8/igt@i915_module_load@load.html
+
+  
+  [i915#118]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/118
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8174 -> IGTPW_12394
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_15908: f06efdfad9d0e9f5cb74404ac98e1a5b3b246567 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12394: 5b3a3f40864395417cbd202512fd61577b461e47 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12394/index.html
