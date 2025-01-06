@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FB96E77188
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 22:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D1DEE77198
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 22:58:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE38F10E1E9;
-	Mon,  6 Jan 2025 22:58:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F11F810E0E8;
+	Mon,  6 Jan 2025 22:58:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ByeAhylX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="idWQhJk4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 235A510E0E8
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 22:58:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAE9510E0E8
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 22:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1736204323; x=1767740323;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=GnWjy5KaNiXVEYj0POTxb7TfUBzjVd8ms46bzWLy7Ec=;
- b=ByeAhylXTq4H/G//+dh4axiwuIVQsqCyV5ulwIa2KfChPViWtrzsMedy
- OSxmhoMnIbjA3wvkzD4AXUogYCtyQoIjD3sZGKlQk/wDFbIiTKKE1hZ6C
- wqb1Ry7a+6uZLJwXAtiWbC5lL9K6nECke9OpdkbpjCQTXR+RHeKAEoky7
- AF9fzd+F197AQUsIB1TuZ7tJIa7kzyNw+amDAIsjGzkW779HEfHsBkItp
- 7TjtU0IS7HW9S1yrd3Yu2Z7CgGBkknnmN3hOwZmj1yUWDKH/ny2ItA0eQ
- AQU3A8McreXR26q8xKyBfKtwKf/fgDKjpay5eJqEbaJgc8rK5Zjntgz3y A==;
-X-CSE-ConnectionGUID: j1Iwkvt1RCumYbH4ZG6kjg==
-X-CSE-MsgGUID: qOf5jSopR42mQfXBUacOtA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="36479811"
-X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="36479811"
+ bh=/J8tqtjIPrIQzp3CIx168G6xqHegQYCqBijeFJmpy30=;
+ b=idWQhJk4X7+Wa8oAIL0KzaBHaaeludjQBhw9ZeOytP7GeGw0fClsJp9T
+ 27SEmWg3Q3dEK6ccYOoh8x41lEfzT3VYb/qseSb6udgXjsv/x0mOShG4G
+ LAK3O5vO+RN0KlX8PIjhOXA1wuNEQRMUTQdfeimK08CePP8mHJZjvSMAA
+ bjm+6pQOq/1+7YyXMBGYGCpN7umptv3ZinHhXdsVR3vD0yCpML60y6iy8
+ U3UD1fJWvGuNcFo0wRghJ8GANd9nnMRLELGg+2bN38viAEY3vG3jaHRhJ
+ st2mp4ZsgyLr1Al6Ti5PlajoNKwrvJqGnRjF+9BmEoLQuHItvk52kjV8v A==;
+X-CSE-ConnectionGUID: znfpq0v3Qm2GARGGfVijdg==
+X-CSE-MsgGUID: yT3TOirPRYKZbVALPkIVtQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="36479810"
+X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="36479810"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  06 Jan 2025 14:58:43 -0800
-X-CSE-ConnectionGUID: B+3Y8RDqRhCqAZtnOUcqbA==
-X-CSE-MsgGUID: PtG973RHSu62awoW67wHJA==
+X-CSE-ConnectionGUID: ltWDYgJcTNqOC/S03NkBCA==
+X-CSE-MsgGUID: IV5FwdEgRautPsomW/0tLg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102440226"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102440220"
 Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 06 Jan 2025 14:58:43 -0800
+ 06 Jan 2025 14:58:42 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
  ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -52,14 +52,14 @@ Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
 Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.172)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 6 Jan 2025 14:58:42 -0800
+ 15.1.2507.44; Mon, 6 Jan 2025 14:58:41 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xVNWsI1A0X/xQDGf3u+BTszI7Xd52dRkrocD0Kz+SamVysro88oc5fJN6kPSoxfcNOg3kcGSLJETHFZiaq3Bkb5Z9KaJgJoQQIsMSFZgFeEfo8LKJInvbVy/1xa2Pj1m1c8HsSpoN4hQfcUW5BfwJxNTQkrpg98UfL7SH6YQOkPL9Qo57y89gEgzvc/l7/9Hb0pE/wrbMaHAlxzh6DyxlhQBqDH4PnzU+4MiTeHfmaGuMMf63o7DAiSLWeiyMOFeMLjZ/4SBEG42VyYhLWYrNLk6O89x/8wCYAex5NLLDSyOMRiTAJq/8z/EkXyFtS8bAnPVm/gfI3snDxUUFkAGBg==
+ b=qA6aa/Qtu6VpaN0msWWGqepa4CJDQ6dKowrC3LLPmSb0lTVFrY7i+91oUHVPoQGaNysgUf1Xf2AXJYrFCGoA/HAFDLE7LRGn1P697G4vtewLSLx5g9UXUGB/Ryf19Gslwr1ENxlyOM0sujSGE6GTg0eIbzTBZGfnP5h38hHS4nKlsMJEKF+LUpis2hDm4cpU/YoNzJJlU4ZZ6bicwNm3L1OnwEIpy/A7UN0v7pf4i1Cpqi+tQe5z4zdffARKZiQHv8S3OjHgoKUvKCFk7whUT6Lq+zxasO9gKM0hJDrciyPcxwBpQTxrVIvgvW61fJMF2S7MgO/WtUop/6zFbWEDaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AqdIAn4UwbblhJ8nTimcfYk4sA21HcVEEWWvDaf++Mk=;
- b=FuYQce+EbJeZ1PqtDgA5a+W9FFCMC3jA8Cc4XgfzDRVsH4VJ3lchmCGSeUqeG41xjL0Z46b7pGEvvG03Swy0kyIRgKDx8hki8P/ESWWh5ArvZijMX2DkzhQGvHtrfJvttlQZPAmJ12ysN6UL5agcUtF16HmFPZgOHXTd6Oes3YBkOLnbprqRnvPzh2pwxPwGHSKJKdayTborHZVQvmBPhhL4qfHcHGMOKIcGYXvzro8dc95NFSCPnQV5wIjziG6Z5MZk5Q2l7Rp2PQ4AJ/HwqIUczjONCVma+1zqFBbm7t0CbtR1xLfSCEGVVlxCXRGPjBPDqG/yQHY/h8D2bD59IQ==
+ bh=jryVfG50TofvNDt65aidnSKhuz2pwn0nkDQNPjlnZGk=;
+ b=q/DDCBfH7Mqh4SCH4jpykWnJO/FcWgKpnWM6dbQD2teQEiXgFdP9Q+DLnPdAIJLm7LrZmupaNSRcIW+z9uBk9zWwXZk/sbUhzzCVxTPjXYJjp9CQ3TJdUQKHzxEosZffatg7ZmhehA/U7QsiEaRtfRwOjD2AWh4nHTCSoyOt/iTVYI/tPREP+GGJBEhpM7N5focc55wYt9IZ/NN/73P8qzTUYacHqYlNMQejELpzZ3BqzX1jdP//Fr+QSb8tQzbA0PMIQ0lN5rcvQz2TlJsMJsopqI63l8BU9y9DS2s+MjSguTh3QMvCoq1ecDmWXuntm18W59j8QnI3mdbG/Xg9RA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -67,24 +67,24 @@ Received: from CH0PR11MB5444.namprd11.prod.outlook.com (2603:10b6:610:d3::13)
  by SA0PR11MB4622.namprd11.prod.outlook.com (2603:10b6:806:9c::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 22:58:26 +0000
+ 2025 22:58:23 +0000
 Received: from CH0PR11MB5444.namprd11.prod.outlook.com
  ([fe80::5f89:ba81:ff70:bace]) by CH0PR11MB5444.namprd11.prod.outlook.com
  ([fe80::5f89:ba81:ff70:bace%6]) with mapi id 15.20.8314.018; Mon, 6 Jan 2025
- 22:58:26 +0000
+ 22:58:23 +0000
 From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
 To: "De Marchi, Lucas" <lucas.demarchi@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "De Marchi, Lucas" <lucas.demarchi@intel.com>, "Cavitt, Jonathan"
  <jonathan.cavitt@intel.com>
-Subject: RE: [PATCH i-g-t 6/8] lib/xe/xe_spin: Move declarations around
-Thread-Topic: [PATCH i-g-t 6/8] lib/xe/xe_spin: Move declarations around
-Thread-Index: AQHbXniPn/UPDUdnxUCNkWsGuQxw2rMKVQCw
-Date: Mon, 6 Jan 2025 22:58:26 +0000
-Message-ID: <CH0PR11MB54447CFAF69F0029702F45E3E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 5/8] lib/xe: Split nsec to ticks abstraction
+Thread-Topic: [PATCH i-g-t 5/8] lib/xe: Split nsec to ticks abstraction
+Thread-Index: AQHbXniOSJ1EQSRPCka0DCeN46OQvbMKUNdA
+Date: Mon, 6 Jan 2025 22:58:23 +0000
+Message-ID: <CH0PR11MB54441882DB91BD490BFD9B90E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
 References: <20250104071548.737612-1-lucas.demarchi@intel.com>
- <20250104071548.737612-6-lucas.demarchi@intel.com>
-In-Reply-To: <20250104071548.737612-6-lucas.demarchi@intel.com>
+ <20250104071548.737612-5-lucas.demarchi@intel.com>
+In-Reply-To: <20250104071548.737612-5-lucas.demarchi@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -93,79 +93,79 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|SA0PR11MB4622:EE_
-x-ms-office365-filtering-correlation-id: 9a7c07c8-7856-4d03-8908-08dd2ea5a14e
+x-ms-office365-filtering-correlation-id: 1cfd412c-f287-4bff-6fa0-08dd2ea59f25
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|366016|376014|1800799024|38070700018|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?6b/JHiesZMfyiIqIazFR5tJrS5eK0omYPKeZ1Bj7Zuv9l49F3A/zQpDBP6GN?=
- =?us-ascii?Q?mXKKWdgk/nli5b/EyzgO05CB4MUGOWu2v5h40y84rrY0vDo6y7vP3+2PW0PW?=
- =?us-ascii?Q?8qSb1ldEByP6TEh+o++tCl+vOcyKgLL8aM/qkPWr/ajduJg34O6CkNA0KP7H?=
- =?us-ascii?Q?6SYPqJXxA/WYzXVnNFq1XgnYt2ZEzuXzRvTgvmY3fKnju9OzBlMh/psSBG4f?=
- =?us-ascii?Q?TXDmN/PogGdtvLuulcrzk+QaHurFTQqxSjM4ZW2YtAQ8VizlT4lasD+qy4O6?=
- =?us-ascii?Q?JfJYJ+5udJVpnY3+qQ8rd3m0lV0h4KY1wRF7UfLObKApoVuYTo5L0naFbBya?=
- =?us-ascii?Q?KFQBOuGro383VgFiGiFJi6wHdUPIsU4urDFy4zSDv1ZA5HgPX+nguBHBWRp2?=
- =?us-ascii?Q?8Yr+/KdyoCgSoIhKPuoNsCT3+DXZbGoufNcSPSuTGNzVu+Zh6T3ZN+A0LcnD?=
- =?us-ascii?Q?F9J3Rmt09XZbJj6XAi9fBk1hboDUO96Notr4uEf7jjf/uG5DmVIDkVTsAUJi?=
- =?us-ascii?Q?V566xcj9b1EtYu56TTW4MZI+JG28UuRSD0hZXhsBL4HHEUsgNK6VN3wMk9iJ?=
- =?us-ascii?Q?sReoQ2MGAf/ZawbfC+MRt19mUdXxVrmA8VoBZCXY49sFdVSGA5PlHXSdYxc4?=
- =?us-ascii?Q?FK7DGiwNCfB4LA9b8/BLSSoC0iPv3ySxLR/75YBefvqDReEgMHyDIkTkn/WG?=
- =?us-ascii?Q?x2STn7OuUZ+3+U2lPf1ECqQjJjDjRmJYWfToeTG7eTVHzJGSBp1KfTnQS1Mz?=
- =?us-ascii?Q?ekpSqK+SSUHiUXCoud8XJm7P57FoCPnLH4rz9EdMrCWus93Owr99HVHkTyWy?=
- =?us-ascii?Q?vv1nZ9FiY/w8KOAAcurw2pHxc4QXBLNaHnx6HhCgPQ3mXrDdSY2H5bH2WDYy?=
- =?us-ascii?Q?u2Qo7tAISMvtQtuugRmhbUFOrocsPPLrkflXuvdpzTPnj9NhNGXSMKVBo/Kc?=
- =?us-ascii?Q?OsmbZZD5j9C9aKguYl1C/Qvah6hBPq6dICmgvz9qMza76tpwB4PKKxgtCYzd?=
- =?us-ascii?Q?vgpNfJ/bzsrGyvo3PwW4q4q19m9JYiLkO4RLqtYrej8In3+yJ5SVtECP5rD6?=
- =?us-ascii?Q?Nju+PFkN11mFkroVceIfjGFe1ba/22L/E8DnNyji71OQQc4162pfB6/+Zk/b?=
- =?us-ascii?Q?CmtN5R3OW527PSmzNSHFIXudQD2e0PfkTUGHbuOutpEShNJDD2P/XX/YIGsl?=
- =?us-ascii?Q?jA67Ev13JIMFHVg92LMLp7FWS8JEiF9AxipXqadvL8YAceINrP4PsgN+mQqK?=
- =?us-ascii?Q?HXhIdbrKzibc7BDFO0576MExmghWTxxQsfwFXwdCf8/ttN/D7HKfxOcfUQxJ?=
- =?us-ascii?Q?ouzlNMvjDQwBPpbt4InA3pekKMltJj24k3QhSyPJt0qN+kZ7UKF+0ZXFEzwY?=
- =?us-ascii?Q?9X8agmsS91WYOQWJhc5bB7niwOkIdzohmm/dgCZHZrmzo8O4UMwkQ6UlCY+K?=
- =?us-ascii?Q?dTWq1H6JU1VlxoUgm3LWK638QyKR3tXB?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?ftR9+shQMrdQ+R/qhSe4Z0/Gn7J94ms9Y9whbUUtgiPuTwcmSJlT0kQwgEwz?=
+ =?us-ascii?Q?5Q6/tJXV2fh3VVHfyXdLgZFw3KunlTjbPaZoAP7vYKk49dzjWyRiXJLT1enB?=
+ =?us-ascii?Q?Wba0R+SmDHqFx0kErnjn8Gd51IHxIRrprIQr29gd+5ida2pdv/N/BytsWxuE?=
+ =?us-ascii?Q?S+oXFPtKJfLifBroWYa7SCAH5e9zhkgilDdA8ggQoc6yU/O+LwVFRkorTNdh?=
+ =?us-ascii?Q?OtjJOw8eZqUqgWilE0DQgTi/OktQRITNY8tPJ5z2pX4at3lKvwT5P5XCpJ3t?=
+ =?us-ascii?Q?HEZYkif6pOxsLS3AxsuEronprlB3Gp9Ou6iEkxwgMz9t/7IUnm3lkDvCCev3?=
+ =?us-ascii?Q?1/Sps86vMoEWN1jcgb8Kcs7iqUdTdshCzPIXZv2YKVwtowQDsvsNC/dJwWTE?=
+ =?us-ascii?Q?xzbNq9xx9aFWiKGl3lQmEt+cRlRSJ6Hcw5WP9P485wIVF+UoDo7Z1hai/Ghv?=
+ =?us-ascii?Q?bVauSKOdsH57ERlBbba0SsD/B1s2dzjQkRe8F46pokc+Fom2ZQY/yVwvEjFq?=
+ =?us-ascii?Q?gWlP8oBUNmRjwJ/9V5P5aJqT2KzpmGIPL+q4zLEkjhDqgskD5+BhVfDk9wSi?=
+ =?us-ascii?Q?HBNjN0+iDy9E9+wUdrEQ9cxRyKsx41XhDz6krq5VSdnR+E0UmFPAlnVYosB4?=
+ =?us-ascii?Q?pjBTmysbybX5MRH/70pfN8v0TO9m8epia+WgvK2GFpf5QAdR3eObKWQW3N3J?=
+ =?us-ascii?Q?vAci7AcM12HP+080zbUBMSPXU1kar3OLVsOjgOxZJ1jQJDBJ5r30Yz6V1yNV?=
+ =?us-ascii?Q?Rl+mjnlqZY3mTzXpFjlxGa0U5hbBceinxXH1OVkVJVT5yha9Wz6OxX6jn8H0?=
+ =?us-ascii?Q?UGHjMv6zhsPBWfCIuDmtg52luzqz2eIq15HBWQSHT7+gec5mcVJKFGFRgovR?=
+ =?us-ascii?Q?y8ZLwl4EKoTBSxf0ZGicyqnqbQsRC3BObb1gWXvtyVShoRIM3nYYFbWwIbFI?=
+ =?us-ascii?Q?mambvEw/NIh5Mvc30vxkowQQEfOCNd5RwrAxSM13XZeAk5YhAxMt+dYaAAOl?=
+ =?us-ascii?Q?/BWdBzk+ZpHwJa4pdil8dfB+i8j4+VnQv+ptd1pD3mvr0b8ZnAUKmTRzB2cp?=
+ =?us-ascii?Q?YBXJIYC4XFzUQnwqawpIxdwGmyyWR26sYIOg5Xi9IGXphA+DbNbOE3PkxEuU?=
+ =?us-ascii?Q?g6TkN5qWynSQ9uLwfIx24gmpp7fSl9e8++leCPaGZP4DvKDT2mvdrPfiUs8u?=
+ =?us-ascii?Q?6n2HOJOxBGo37ct0Cn5pmZRpz28BvC17ZOQWbYcd11Q1Z0odeMZNG7TIe8Fc?=
+ =?us-ascii?Q?Bsr5+f1Hf9exJlxsTABakgSfY10rpkCBIpLGAz5SGn6bZ+ssCniXsNSVLbYm?=
+ =?us-ascii?Q?pZv7ZN5Q4ytwF8/+y3JQ+oe2TPd30E3Q7SW0TtwoVs9kMWMiBM8ZZ2lVE5qV?=
+ =?us-ascii?Q?EH07S/v5xkjxVcxGO3JfmFKFpLaK43mcceYQM9FHCL90xEfbzdDQoMjGeDg+?=
+ =?us-ascii?Q?Ak0ml1OHY00gyGoMv4soEW3gz3QICA9R?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR11MB5444.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(7053199007); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?6+dsSjcSgsQsTJUIZzew7tblQDSsXyR2THHRzlfRB57cq5H5U4IHBEXaeoRK?=
- =?us-ascii?Q?QEBxNpE6GNpWuwV59NXYArDyBVHQRQCtesipG4ddmxnfM0Rik93279eSaApB?=
- =?us-ascii?Q?MhpclfguAvsSpp5fZXe95fxB9zYZLoEz4Bjoha9bna99lv8rcT7tb3JYiJ48?=
- =?us-ascii?Q?uf5ympY8kAZ7nUmXt4Be6DTWXziQn3KPjcW/K6RVvkBt81KP0BfbQxhoozaK?=
- =?us-ascii?Q?M5wglQUfXPC8CAo+txcNjbaFcESDLiWvxtIhh3iNn+ZepO/xvFPs/tKAJZb5?=
- =?us-ascii?Q?wubwEl6nBxtmSNzoleRd5HjhHHwL9B+RjWa1gtYkITt+I8/moCJmc5y3WWKr?=
- =?us-ascii?Q?hTrrhrx7zwr9U97hLzxbYzdelxOyUiLVScag+Toc6WgX3b4W0Xs39YUP+2qO?=
- =?us-ascii?Q?gNZhayGC4LlHPwUMEZdVPmutwktbGzdkY+e70fI9Faa64VeynkficUBym7lq?=
- =?us-ascii?Q?AIPTNdbxYoDR9r1UU4VC/ii4bPd4j0qCCO32d3PzAukKeL9xBEhveYpsTrpN?=
- =?us-ascii?Q?deNk2mAQbpB6dkrWA5wdnir12CsLiXRsnZ2co0hmN0plAruH/K5jyVCHEXCA?=
- =?us-ascii?Q?MNUoy7jiRbFexelzs35lj3ek/hGJSXtcpEio/7ugDo1ql1j8LpfPpbTPXII9?=
- =?us-ascii?Q?YhMfxCS5w56cGIBPTMwbgXNzA2JaRg/yFGYl2w9sH1RJTvGwzRQiZNnzI2gt?=
- =?us-ascii?Q?6bIcKP1ek1Gt6aPHEGid4xbuOmQfAzfXO6d9RbAQ+r6wgUQYMbeuK93oDw7t?=
- =?us-ascii?Q?Bj83atzm7HXcvHf0cg7UuUDrcsghj1AAB7Is6pbGxuJvTJ/bOK8NyzHqvEh9?=
- =?us-ascii?Q?Y9z/3qwx1sgY/2j3kOqJ9DlElGuM7nsfbo8fkajYZuWtfegWhGL11dLDfcX7?=
- =?us-ascii?Q?cntooNTnRpUIuftc7tQwcUKec7lfCbgCM2CGZDK5JauH2sS6BM7g4NPJfHjx?=
- =?us-ascii?Q?o72PTjMqzT/e/0MR3kZE3+HG1xxZZDw/tXZbHv0tVThxMXNh0zx3tnUYjAH5?=
- =?us-ascii?Q?fnnNtKeaEzH5bsbod9ed8Sb70gwvm0S4GE+2i0zaSkdOM0SqXL44WIMWLpCc?=
- =?us-ascii?Q?J9pBO5FbvOL4Ar++9aX95vd74nCQy/d3kEE+FqLJ6O2E0p3ChmzGNy8ITEoE?=
- =?us-ascii?Q?8hamF9sSLr2Q3Wkzyj7FeAe+lC5Tj5Ei1yQmufarFbSkyzOCnVjmGzsD4Bss?=
- =?us-ascii?Q?wlvYl+Sw1i/NpDLyY5EYy5KSqqzEJvCL+0hCmrTcFy94KK7+YgHrrwU5/UDT?=
- =?us-ascii?Q?puN86k+MKugc937dm/3knEFwryaIN2DOjnhkJcGOijXzKv7KvREylmtlpr6N?=
- =?us-ascii?Q?bRz0v9P98/s41dULjEzBPzQHU338qjhcYYFucV5ICH7YgCJ4FtcE0IHG87ag?=
- =?us-ascii?Q?wTIstFwN8ZnmmDQVaKn85imowAa7OBHxYUpHw3Z6+BmG9RdPUkK0t7gPG1LK?=
- =?us-ascii?Q?MM/rTq36UTxtKuYsVGxD2iCIjUVriIcPCZoiBNLlnYO3yqREyojpmjuHvSgd?=
- =?us-ascii?Q?NQ8sPjPwWAPj7ITGmX1wD7jRoLRBqwxW7Q5eAr2vDoRm10tpvipPVK33Y537?=
- =?us-ascii?Q?v0kpe7DYh1/6xn6rJ5INQPyjoDyqJv5i6qBNQWri?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?oh9YL121RM1Zrih2qoeekP9YkDAHHehDONBhF/aL20a2wiSxcTmENwNrdx2s?=
+ =?us-ascii?Q?JeDlm3NB7lXj0IRyAeAcFCfUCInCvpuO28AlWUZpdciElbdDSEVuOQwQZ1Qw?=
+ =?us-ascii?Q?D7Nvf//p/ebQeFfY3+58fIYRELcO5P70vokjBou7eOfjHaQIENiBOoqo/C+e?=
+ =?us-ascii?Q?LIxXSkCCEV5hyuREk31j99PSaxZ1K/iqt6Y2LW5jacKw+VM/TbdDdnqpO6ig?=
+ =?us-ascii?Q?3wbcfKePkp5TKRYda2Tg1gVB/FK+0nPgMUeFI+tPI9c/KO+NanLt5WzUWvFH?=
+ =?us-ascii?Q?6UDWI+Gv/TH2n4L4y+LDLxU3hceO5fVNKOwLESpa1Uks9AkTo1d9bytLn8nA?=
+ =?us-ascii?Q?D9LrSDaujSjEqPvBkQ1SN7EoPT8CdndMe/bPyBrUP2BU4HQr+8N35B0yj1U+?=
+ =?us-ascii?Q?pEoGdwqMfBn/8X4M3WI4wDw+JXYzFYdb/ZhVKjCWoa6bGaZdD0hTijrlFUQO?=
+ =?us-ascii?Q?vGhbXQDqGnj64pNl+qL155rm9vdcAInHrMF7JmlKIM4moj7T5gh9jbM6ZZjl?=
+ =?us-ascii?Q?kJVMF0bp530j49rVng7OcuDRNredZdBW/lJSQf+PCVS6NLLIOSIch2+zUaSM?=
+ =?us-ascii?Q?HT3uQ4JcjqZP2vYmM7y2qL5EHMbm3SiyfcdG1Pv7k7t3ePenibeXW3QyeNor?=
+ =?us-ascii?Q?+o6ANjQmv4wsFa+R2otUye/4gxVRAU1X8LnXJAaYKwQQNKzlbcVFhHBXZ351?=
+ =?us-ascii?Q?ACIdjeNEQHkJb6ja4C5s6FvZd1ZU5zYqtrlUtbDEwAXHckPOmSgQOF9jjM6T?=
+ =?us-ascii?Q?+ZKx7bnYGPg8cci8FduJnkL7rLkBiYqhcQ+X0JcnxuUA3zqgdkDGTFsZDF5j?=
+ =?us-ascii?Q?HNj3puSm3ANB0aQ8nB1UxuU3wOgK6ZyuBbClv3TGFJHg9vn4oT8RDMJ3H1Tt?=
+ =?us-ascii?Q?E60LGym1iXWlbjM1SSy9grGu9TtxkH+pJl+xszoOiRrwFt+cQkf4IkNi340m?=
+ =?us-ascii?Q?aGPf2f/WleD5/f5E0KPXYfqHEVuxUcE5el+ih0vWx8qFCKfdqvxg934otNlI?=
+ =?us-ascii?Q?xVuD2TMLWqryOMqXzp+1OUZs11WzCdCeYEVdeqdpaPVDJHpiuAaW8oNSwFj9?=
+ =?us-ascii?Q?b3rGLnxDMXeVqj5FE3q2/24N3uSdCGV00yEPwOmZB8G+nBr+YfA68RsT9DUr?=
+ =?us-ascii?Q?f0/pKlSY9rJOOelEc4rIBDxlWlmbT82v9gsPrl6wpeCG+2UdVFYrV4YQQFwJ?=
+ =?us-ascii?Q?n6zXFK1EATamEwWZMYdfC79Gy3vLQU1iuT3b7VPY4+LFd8Unl+SsFFWWGNim?=
+ =?us-ascii?Q?SZz7fNStjFSJLZc7nYOKLcizEdNhezak2Fn0iVqP8E57Ty9I3bzG9dhYMcXQ?=
+ =?us-ascii?Q?V/vDhpajYGNuOZeYbOQRKyseqGBOcuqPnNNTQ3izuPHe7QX/OMtAlQvXuGMW?=
+ =?us-ascii?Q?PpUZ4AlJtikJdnWF2xrCgwW3nmkL9io6YYX/1AmxiGbVFKkY7dPD1u/5jkD/?=
+ =?us-ascii?Q?kmrWj5DGMPcQpln3OBFQHVKp+TBEiQHWzfUQ1zhnRzsKbUkifqlxpC4Vn6rY?=
+ =?us-ascii?Q?1l8qwGdh4uTaDx9/tQjxvdXtGx2FJcJJlbaXxkPPwOmh/7+KYiq9J0JTLOGi?=
+ =?us-ascii?Q?cha2tZk9KGl7RoukY0ViShxib9pM1yDj2Q7nIxi4?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5444.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a7c07c8-7856-4d03-8908-08dd2ea5a14e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 22:58:26.6927 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cfd412c-f287-4bff-6fa0-08dd2ea59f25
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 22:58:23.0461 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fJkwoxhEuEd3wfBq9/1KU3wSOXwGMPQAOXKeGGWkXsQ4IiIDhyb1L4bomfG5GzCPFaaDtfmyBfd1jjujz4H1HclBEoFVJXDOYaRzA6Jl3YM=
+X-MS-Exchange-CrossTenant-userprincipalname: httUcha6hOzi8aET9L54DFwslcr7rc3w7lVfXWlPOxz0B9SzoeS5oHQb8AkxGbbgKddcKWTTYhUMu2RYDKhwnWFfe6ohccQr+iuM2F+fcU0=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4622
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -189,142 +189,288 @@ From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Lucas De=
 Sent: Friday, January 3, 2025 11:16 PM
 To: igt-dev@lists.freedesktop.org
 Cc: De Marchi, Lucas <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 6/8] lib/xe/xe_spin: Move declarations around
+Subject: [PATCH i-g-t 5/8] lib/xe: Split nsec to ticks abstraction
 >=20
-> xe_spin.h has 3 abstractions:
+> There are 2 things happening here: one is converting time in nanoseconds
+> to ticks by using the refclock, and another asserting a spin duration is
+> not so close to the maximum duration since there needs to be room for
+> context switch.
 >=20
-> 1) the integration with igt_dummyload
-> 2) xe_spin, the bo to be exec'ed somewhere
-> 3) xe_cork, that resembles more the igt_spin, abstracting the fd, vm,
->    bind, etc
->=20
-> Group them so it's easier to understand each one.
+> Move the time conversion to xe_util.c and adjust it to maintain
+> namespace and have better names.  Places that do the time conversion to
+> pass to xe_spin then use the xe_spin_nsec_to_ticks() wrapper to
+> calculate the ticks.
 >=20
 > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-Okay, I think I get it.  We're bundling the various functions declared in x=
-e_spin.h
-by their purpose/interaction with the various structures, yeah?  That makes=
- sense
-to me.
-And even if my understanding of the purpose of this patch is wrong, I don't=
- see
-any harm in applying it, so:
+I only have a single minor nit below, but otherwise:
 Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
--Jonathan Cavitt
 
 > ---
->  lib/xe/xe_spin.c |  2 +-
->  lib/xe/xe_spin.h | 54 +++++++++++++++++++++++++++---------------------
->  2 files changed, 32 insertions(+), 24 deletions(-)
+>  benchmarks/gem_wsim.c           |  8 +++---
+>  lib/xe/xe_spin.c                | 47 +++++++++------------------------
+>  lib/xe/xe_spin.h                |  9 +++----
+>  lib/xe/xe_util.c                | 40 ++++++++++++++++++++++++++++
+>  lib/xe/xe_util.h                |  2 ++
+>  tests/intel/xe_exec_mix_modes.c |  3 ++-
+>  tests/intel/xe_spin_batch.c     |  2 +-
+>  7 files changed, 66 insertions(+), 45 deletions(-)
 >=20
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 333f8d7d8..bb6318cef 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -232,7 +232,7 @@ xe_spin_create(int fd, const struct igt_spin_factory =
-*opt)
->  	return spin;
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index c4fd00a6a..454b6f017 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -1797,8 +1797,8 @@ xe_alloc_step_batch(struct workload *wrk, struct w_=
+step *w)
+>  	xe_vm_bind_sync(fd, vm->id, w->bb_handle, 0, w->xe.exec.address, w->bb_=
+size);
+>  	xe_spin_init_opts(&w->xe.data->spin, .addr =3D w->xe.exec.address,
+>  				   .preempt =3D (w->preempt_us > 0),
+> -				   .ctx_ticks =3D duration_to_ctx_ticks(fd, eq->hwe_list[0].gt_id,
+> -								1000LL * get_duration(wrk, w)));
+> +				   .ctx_ticks =3D xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
+> +								      1000LL * get_duration(wrk, w)));
+>  	w->xe.exec.exec_queue_id =3D eq->id;
+>  	w->xe.exec.num_batch_buffer =3D 1;
+>  	/* always at least one out fence */
+> @@ -2655,8 +2655,8 @@ static void do_xe_exec(struct workload *wrk, struct=
+ w_step *w)
+>  		xe_spin_init_opts(&w->xe.data->spin,
+>  				  .addr =3D w->xe.exec.address,
+>  				  .preempt =3D (w->preempt_us > 0),
+> -				  .ctx_ticks =3D duration_to_ctx_ticks(fd, eq->hwe_list[0].gt_id,
+> -								1000LL * get_duration(wrk, w)));
+> +				  .ctx_ticks =3D xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
+> +								     1000LL * get_duration(wrk, w)));
+>  	xe_exec(fd, &w->xe.exec);
 >  }
 > =20
-> -void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-> +static void xe_spin_sync_wait(int fd, struct igt_spin *spin)
->  {
->  	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0, NULL));
->  }
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 2bde55856..333f8d7d8 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -13,43 +13,12 @@
+>  #include "igt_core.h"
+>  #include "igt_syncobj.h"
+>  #include "intel_reg.h"
+> +
+>  #include "xe_ioctl.h"
+>  #include "xe_spin.h"
+> +#include "xe_util.h"
+> =20
+> -static uint32_t read_timestamp_frequency(int fd, int gt_id)
+> -{
+> -	struct xe_device *dev =3D xe_device_get(fd);
+> -
+> -	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
+> -	igt_assert(gt_id >=3D 0 && gt_id <=3D dev->gt_list->num_gt);
+> -
+> -	return dev->gt_list->gt_list[gt_id].reference_clock;
+> -}
+> -
+> -static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+> -{
+> -	igt_assert(y > 0);
+> -	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
+> -
+> -	return (x + y - 1) / y;
+> -}
+> -
+> -/**
+> - * duration_to_ctx_ticks:
+> - * @fd: opened device
+> - * @gt_id: tile id
+> - * @duration_ns: duration in nanoseconds to be converted to context time=
+stamp ticks
+> - * @return: duration converted to context timestamp ticks.
+> - */
+> -uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
+> -{
+> -	uint32_t f =3D read_timestamp_frequency(fd, gt_id);
+> -	uint64_t ctx_ticks =3D div64_u64_round_up(duration_ns * f, NSEC_PER_SEC=
+);
+> -
+> -	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
+> -
+> -	return ctx_ticks;
+> -}
+> +#define XE_SPIN_MAX_CTX_TICKS (UINT32_MAX - 1000)
+> =20
+>  #define MI_SRM_CS_MMIO				(1 << 19)
+>  #define MI_LRI_CS_MMIO				(1 << 19)
+> @@ -60,6 +29,16 @@ uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint=
+64_t duration_ns)
+> =20
+>  enum { START_TS, NOW_TS };
+> =20
+> +
+> +uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
+> +{
+> +	uint32_t ticks =3D xe_nsec_to_ticks(fd, gt_id, nsec);
+> +
+> +	igt_assert_lt_u64(ticks, XE_SPIN_MAX_CTX_TICKS);
+> +
+> +	return ticks;
+> +}
+> +
+>  /**
+>   * xe_spin_init:
+>   * @spin: pointer to mapped bo in which spinner code will be written
 > diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index 01f45eaeb..7c95996c3 100644
+> index 593065bc0..01f45eaeb 100644
 > --- a/lib/xe/xe_spin.h
 > +++ b/lib/xe/xe_spin.h
-> @@ -15,6 +15,15 @@
+> @@ -15,10 +15,8 @@
 >  #include "xe_query.h"
 >  #include "lib/igt_dummyload.h"
 > =20
-> +/* Wrapper to integrate with igt_dummyload, aka igt_spin */
-> +igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-> +void xe_spin_free(int fd, struct igt_spin *spin);
-> +
-> +/*
-> + * xe_spin: abstract a bo mapped in the GPU that when exec'ed will spin =
-the
-> + * engine in which it's exec'ed
-> + */
-> +
->  /**
->   * struct xe_spin_opts
+> -#define XE_SPIN_MAX_CTX_TICKS (UINT32_MAX - 1000)
+> -
+> -/** struct xe_spin_opts
+> - *
+> +/**
+> + * struct xe_spin_opts
+
+Nit:
+This change (correcting the comment style for the xe_spin_opts declaration)
+might be better suited for the next patch in this series, as we're already =
+cleaning
+up the other abstractions in the xe_spin.h file at that time.  But either w=
+ay
+works for me.
+-Jonathan Cavitt
+
 >   * @addr: offset of spinner within vm
-> @@ -30,11 +39,6 @@ struct xe_spin_opts {
->  	bool write_timestamp;
+>   * @preempt: allow spinner to be preempted or not
+>   * @ctx_ticks: number of ticks after which spinner is stopped, applied i=
+f > 0
+> @@ -68,7 +66,6 @@ struct xe_cork {
 >  };
 > =20
-> -struct xe_cork_opts {
-> -	uint64_t ahnd;
-> -	bool debug;
-> -};
-> -
->  /* Mapped GPU object */
->  struct xe_spin {
->  	uint32_t batch[128];
-> @@ -46,6 +50,24 @@ struct xe_spin {
->  	uint32_t timestamp;
->  };
+>  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+> -uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
+>  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+>  struct xe_cork *
+>  xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe, uint32_=
+t vm,
+> @@ -82,6 +79,8 @@ void xe_cork_destroy(int fd, struct xe_cork *ctx);
+>  #define xe_spin_init_opts(fd, ...) \
+>  	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
 > =20
 > +uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec);
-> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
-> +#define xe_spin_init_opts(fd, ...) \
-> +	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
-> +bool xe_spin_started(struct xe_spin *spin);
-> +void xe_spin_wait_started(struct xe_spin *spin);
-> +void xe_spin_end(struct xe_spin *spin);
 > +
-> +/*
-> + * xe_cork: higher level API that simplifies exec'ing an xe_spin by taki=
-ng care
-> + * of vm creation, exec call, etc.
-> + */
-> +
-> +struct xe_cork_opts {
-> +	uint64_t ahnd;
-> +	bool debug;
-> +};
-> +
->  struct xe_cork {
->  	struct xe_spin *spin;
->  	int fd;
-> @@ -65,27 +87,13 @@ struct xe_cork {
->  	uint16_t num_placements;
->  };
+>  bool xe_spin_started(struct xe_spin *spin);
+>  void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>  void xe_spin_wait_started(struct xe_spin *spin);
+> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+> index f0b6bbb2d..06b378ce0 100644
+> --- a/lib/xe/xe_util.c
+> +++ b/lib/xe/xe_util.c
+> @@ -4,9 +4,11 @@
+>   */
 > =20
-> -igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-> -void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
-> -struct xe_cork *
-> -xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe, uint32_=
-t vm,
-> -	      uint16_t width, uint16_t num_placements, struct xe_cork_opts *opt=
-s);
-> -void xe_cork_destroy(int fd, struct xe_cork *ctx);
-> -
-> +struct xe_cork *xe_cork_create(int fd, struct drm_xe_engine_class_instan=
-ce *hwe,
-> +			       uint32_t vm, uint16_t width, uint16_t num_placements,
-> +			       struct xe_cork_opts *opts);
->  #define xe_cork_create_opts(fd, hwe, vm, width, num_placements, ...) \
->  	xe_cork_create(fd, hwe, vm, width, num_placements, \
->  			&((struct xe_cork_opts){__VA_ARGS__}))
-> -
-> -#define xe_spin_init_opts(fd, ...) \
-> -	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
-> -
-> -uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec);
-> -
-> -bool xe_spin_started(struct xe_spin *spin);
-> -void xe_spin_sync_wait(int fd, struct igt_spin *spin);
-> -void xe_spin_wait_started(struct xe_spin *spin);
-> -void xe_spin_end(struct xe_spin *spin);
-> -void xe_spin_free(int fd, struct igt_spin *spin);
-> +void xe_cork_destroy(int fd, struct xe_cork *ctx);
->  void xe_cork_sync_start(int fd, struct xe_cork *ctx);
->  void xe_cork_sync_end(int fd, struct xe_cork *ctx);
+>  #include "igt.h"
+> +#include "igt_core.h"
+>  #include "igt_syncobj.h"
+>  #include "igt_sysfs.h"
+>  #include "intel_pat.h"
+> +
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+> @@ -235,3 +237,41 @@ void xe_bind_unbind_async(int xe, uint32_t vm, uint3=
+2_t bind_engine,
+> =20
+>  	free(bind_ops);
+>  }
+> +
+> +static uint32_t reference_clock(int fd, int gt_id)
+> +{
+> +	struct xe_device *dev =3D xe_device_get(fd);
+> +	uint32_t refclock;
+> +
+> +	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
+> +	igt_assert(gt_id >=3D 0 && gt_id <=3D dev->gt_list->num_gt);
+> +
+> +	refclock =3D dev->gt_list->gt_list[gt_id].reference_clock;
+> +
+> +	igt_assert_lt(0, refclock);
+> +
+> +	return refclock;
+> +}
+> +
+> +static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+> +{
+> +	igt_assert(y > 0);
+> +	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
+> +
+> +	return (x + y - 1) / y;
+> +}
+> +
+> +/**
+> + * xe_nsec_to_ticks: convert time in nanoseconds to timestamp ticks
+> + * @fd: opened device
+> + * @gt_id: tile id
+> + * @nsec: time in nanoseconds
+> + *
+> + * Return: Time converted to context timestamp ticks.
+> + */
+> +uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
+> +{
+> +	uint32_t refclock =3D reference_clock(fd, gt_id);
+> +
+> +	return div64_u64_round_up(nsec * refclock, NSEC_PER_SEC);
+> +}
+> diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+> index c544d912f..06ebd3c2a 100644
+> --- a/lib/xe/xe_util.h
+> +++ b/lib/xe/xe_util.h
+> @@ -47,4 +47,6 @@ void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t=
+ bind_engine,
+>  			  struct igt_list_head *obj_list,
+>  			  uint32_t sync_in, uint32_t sync_out);
+> =20
+> +uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t ns);
+> +
+>  #endif /* XE_UTIL_H */
+> diff --git a/tests/intel/xe_exec_mix_modes.c b/tests/intel/xe_exec_mix_mo=
+des.c
+> index eeae9d122..0bcd49cc0 100644
+> --- a/tests/intel/xe_exec_mix_modes.c
+> +++ b/tests/intel/xe_exec_mix_modes.c
+> @@ -22,6 +22,7 @@
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_spin.h"
+> +#include "xe/xe_util.h"
+>  #include <string.h>
+> =20
+>  #define FLAG_EXEC_MODE_LR	(0x1 << 0)
+> @@ -132,7 +133,7 @@ run_job(int fd, struct drm_xe_engine_class_instance *=
+hwe,
+> =20
+>  	if (job_type =3D=3D SPINNER_INTERRUPTED) {
+>  		spin_opts.addr =3D addr + (char *)&data[SPIN_DATA].spin - (char *)data=
+;
+> -		spin_opts.ctx_ticks =3D duration_to_ctx_ticks(fd, 0, duration_ns);
+> +		spin_opts.ctx_ticks =3D xe_spin_nsec_to_ticks(fd, 0, duration_ns);
+>  		xe_spin_init(&data[SPIN_DATA].spin, &spin_opts);
+>  		if (engine_execution_mode =3D=3D EXEC_MODE_LR)
+>  			sync[0].addr =3D addr + (char *)&data[SPIN_DATA].exec_sync - (char *)=
+data;
+> diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+> index 0ad2490a0..5d9afaf3d 100644
+> --- a/tests/intel/xe_spin_batch.c
+> +++ b/tests/intel/xe_spin_batch.c
+> @@ -277,7 +277,7 @@ static void xe_spin_fixed_duration(int fd, int gt, in=
+t class, int flags)
+>  	xe_vm_bind_sync(fd, vm, bo, 0, spin_addr, bo_size);
+>  	xe_spin_init_opts(spin, .addr =3D spin_addr,
+>  				.preempt =3D true,
+> -				.ctx_ticks =3D duration_to_ctx_ticks(fd, 0, duration_ns));
+> +				.ctx_ticks =3D xe_spin_nsec_to_ticks(fd, 0, duration_ns));
+>  	exec.address =3D spin_addr;
+>  	exec.exec_queue_id =3D exec_queue;
 > =20
 > --=20
 > 2.47.0
