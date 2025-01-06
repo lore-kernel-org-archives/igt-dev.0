@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21B5E77188
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 03:53:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F859E77188
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 03:57:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 803CA10E12B;
-	Mon,  6 Jan 2025 03:53:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A14A10E12B;
+	Mon,  6 Jan 2025 03:57:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m8OrdtqF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kov5/6ft";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9D6410E12B
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 03:53:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0846A10E12B
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 03:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736135630; x=1767671630;
+ t=1736135833; x=1767671833;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=TPmpVO/20mmIH0ITguc+orMg2EbctNH3auL4ZAODLEI=;
- b=m8OrdtqFlRsU3tBuY51LOfyenjYxeRCgx0Bg9lvLXckm+1FyAzV8R8ip
- iSMZl43Ejz7cwE6SlAxmilMmZqPLwRETa9aurSm8oZHzNRzEFYd07H1b9
- ot1uJDOm9jKddNhxIpeQsVfKCiwES6m184rBrGEBOMTokNCYKCCZefeR9
- DGf9bfChaV5r6r+pUDy56zPLzowcNrzxrhNso/S88pNgxmXftidmpGqg6
- XkVgIgqUjQbV129Uhys1vOQCj/ULA4r7zs+DRawwijgkrd8Tmf68803WW
- 72AossarSBkp1FCpGssheeDhQ2A3e98CNg2qLeXGfWCmmuSrFW9MtQfEG A==;
-X-CSE-ConnectionGUID: RrXmU4VMQ2iCLAewCAxsUg==
-X-CSE-MsgGUID: YRK4ZYVkT9WPTB2MUNPl8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11306"; a="39960951"
-X-IronPort-AV: E=Sophos;i="6.12,292,1728975600"; d="scan'208";a="39960951"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2025 19:53:50 -0800
-X-CSE-ConnectionGUID: 2ioA6FV1TuKojD4B36dkMQ==
-X-CSE-MsgGUID: ugUAAONsQFGNm7tIoqFaHg==
+ bh=6gdY51oyrTP8aiP8guC/BI88ZrWKP/1YAVYICExuBGM=;
+ b=kov5/6ftVAi4fuV9ULcLJJj63v84f7wBrNN8tG+OzTUjKx1UkgxiAUWp
+ +lxoM+S33LgMq3jWoh/BqQPoSQA08xhFeSQ0+9hPzAqbanFi1Fi1MKlY6
+ eYLgtpCsuC99Jqda4Piq88zLMgu5yPuONEvXHktaxz2YZfgItN71/Wh3h
+ Xl2R4PRvLzTAno98eFJb+Vplkxr1CgixK1CgCPVHSSjkjGY+M4RQhdk+x
+ HjXweBddIwnL9HPN0FWMIpLYlB9WmTXvgBxEMmrBl0HUd5S97VBYLpURo
+ WU3tmWp9DyMjioKWjImm9uffTVd/ICCfbF7fYqtOrr9IYAwRJSmJjAisU g==;
+X-CSE-ConnectionGUID: P4EOGVhES+mP5fD9bIJ/3w==
+X-CSE-MsgGUID: lOmuEwx6S7C2TRdjVdxUYw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11306"; a="46858235"
+X-IronPort-AV: E=Sophos;i="6.12,292,1728975600"; d="scan'208";a="46858235"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jan 2025 19:57:13 -0800
+X-CSE-ConnectionGUID: 8+xCWGdKTjKdpKGhVCLI6A==
+X-CSE-MsgGUID: 4d+A50XKT4WPya7gCOBJag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="106364816"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa003.fm.intel.com with ESMTP; 05 Jan 2025 19:53:47 -0800
-From: Pranay Samala <pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="139669309"
+Received: from spottumu-desk.iind.intel.com ([10.145.152.200])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jan 2025 19:57:09 -0800
+From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, jeevan.b@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t v2] tests/intel/kms_dirtyfb: Add logs to skips
-Date: Mon,  6 Jan 2025 09:29:03 +0530
-Message-Id: <20250106035903.22776-1-pranay.samala@intel.com>
+Cc: ashutosh.dixit@intel.com, sai.teja.pottumuttu@intel.com,
+ lucas.demarchi@intel.com, jonathan.cavitt@intel.com
+Subject: [PATCH i-g-t v2 0/2] Miscellaneous OA Refactors
+Date: Mon,  6 Jan 2025 09:16:36 +0530
+Message-Id: <20250106034638.1746051-1-sai.teja.pottumuttu@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,68 +66,16 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Having some logs for test failures & skips would
-make debugging much easier.
+The patch series cleans up some unused arguments and also removes
+hardcoded time heuristics.
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/intel/kms_dirtyfb.c | 37 ++++++++++++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 9 deletions(-)
+Sai Teja Pottumuttu (2):
+  tests/intel/xe_oa: Remove unused function arguments
+  tests/intel/xe_oa: Remove hardcoded time heuristics
 
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index 35df9be3b..4cbd1a2f9 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -102,21 +102,40 @@ static bool check_support(data_t *data)
- 	case FEATURE_NONE:
- 		return true;
- 	case FEATURE_FBC:
--		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->pipe))
-+		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->pipe)) {
-+			igt_info("FBC is not supported on this chipset\n");
- 			return false;
-+		}
-+
-+		if (!intel_fbc_plane_size_supported(data->drm_fd,
-+						    data->mode->hdisplay,
-+						    data->mode->vdisplay)) {
-+			igt_info("Plane size not supported as per FBC size restrictions\n");
-+			return false;
-+		}
-+		return true;
- 
--		return intel_fbc_plane_size_supported(data->drm_fd,
--						      data->mode->hdisplay,
--						      data->mode->vdisplay);
- 	case FEATURE_PSR:
- 		if (data->output->config.connector->connector_type !=
--		    DRM_MODE_CONNECTOR_eDP)
-+		    DRM_MODE_CONNECTOR_eDP) {
-+			igt_info("Output is not an eDP\n");
-+			return false;
-+		}
-+		if (!psr_sink_support(data->drm_fd, data->debugfs_fd,
-+				      PSR_MODE_1, NULL)) {
-+			igt_info("Output doesn't support PSR\n");
- 			return false;
--		return psr_sink_support(data->drm_fd, data->debugfs_fd,
--					PSR_MODE_1, NULL);
-+		}
-+		return true;
-+
- 	case FEATURE_DRRS:
--		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
--			intel_output_has_drrs(data->drm_fd, data->output);
-+		if (!(intel_is_drrs_supported(data->drm_fd, data->pipe) &&
-+		      intel_output_has_drrs(data->drm_fd, data->output))) {
-+			igt_info("Output doesn't support DRRS\n");
-+			return false;
-+		}
-+		return true;
-+
- 	case FEATURE_DEFAULT:
- 		return true;
- 	default:
+ tests/intel/xe_oa.c | 52 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
+
 -- 
 2.34.1
 
