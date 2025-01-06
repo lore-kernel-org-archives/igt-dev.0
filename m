@@ -4,28 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95B4E77188
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 15:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BA14E77188
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 15:09:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7201710E698;
-	Mon,  6 Jan 2025 15:05:45 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67FD910E69A;
- Mon,  6 Jan 2025 15:05:44 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0048521301193187291=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2419B10E6AE;
+	Mon,  6 Jan 2025 15:09:31 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nYL9E6l6";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41CFC10E6A7;
+ Mon,  6 Jan 2025 15:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736176170; x=1767712170;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uyLZKDVIBeGC0LXdl7MS0Ao1NGbrcUiYDJ8v8+p0mro=;
+ b=nYL9E6l6prZVozhoVgBBkoJizUS8d0pcEB1/JdQdJirGwhs8F1OkYXP2
+ WDsmkFofG0ar/iimHu+5rk0m8FaV9/TPNnh6vgb0enQYly4TRh7nL0C/+
+ UTDFnvsBZR0Qd3WeBGjkZWdQizy80BpGzMlCR8fEyYQ4hyFmkBccPAuXY
+ 7HEaaLf4htG28bzm4VG6S/3Wd6qSN7C8ier2Q7AtJrf0Qsbg5bMDD5qHP
+ Y6oPrBbeQHcbXy/fP7vcvjpVFOsp/wtfL7AQ2qA4Ky5yL0ZG7bUiVzrBT
+ 2icUj2c8/UcuwNzKSl5zd5ULK34kNubov/yKAMhXZbsOYS3mNeL9+1XPx Q==;
+X-CSE-ConnectionGUID: azk5tuAaQqye2yzQecZ+pQ==
+X-CSE-MsgGUID: aMeBJDa8RRGU6VgkFcYXLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="40266386"
+X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="40266386"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2025 07:09:30 -0800
+X-CSE-ConnectionGUID: fIuVXmN8RKiATRmBFVb95w==
+X-CSE-MsgGUID: U0XzliZRT6K6af7QCxdjAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="107424689"
+Received: from tejas-super-server.iind.intel.com ([10.145.169.166])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2025 07:09:28 -0800
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: Auld@freedesktop.org, Matthew <matthew.auld@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [PATCH V7 0/4] Add pci_membarrier test in xe_mmap
+Date: Mon,  6 Jan 2025 20:44:37 +0530
+Message-Id: <20250106151441.2598949-1-tejas.upadhyay@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/8=5D_tests/intel/xe=5Fdrm=5Ffdinfo=3A_Do_not_end_cork_not_?=
- =?utf-8?q?started_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 06 Jan 2025 15:05:44 -0000
-Message-ID: <173617594442.263390.7467012079639709067@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250104071548.737612-1-lucas.demarchi@intel.com>
-In-Reply-To: <20250104071548.737612-1-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,217 +64,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0048521301193187291==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Series adds,
+1. Remove all local defines which are landed from upstream kernel
+include. Keeping include in igt_gt.h as its common header for all
+such defines.
+2. New flag in mmap_offset ioctl to provide query
+support for special offset.
+3. Adds pci_membarrier subtests xe_mmap test
 
-== Series Details ==
+Note: Similar drm-uapi change made here is under review
+in KMD as well
 
-Series: series starting with [i-g-t,1/8] tests/intel/xe_drm_fdinfo: Do not end cork not started (rev2)
-URL   : https://patchwork.freedesktop.org/series/143108/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8174_BAT -> XEIGTPW_12393_BAT
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with XEIGTPW_12393_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_12393_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (9 -> 8)
-------------------------------
-
-  Missing    (1): bat-adlp-7 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_12393_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@xe_gt_freq@freq_fixed_idle:
-    - bat-pvc-2:          [SKIP][1] ([Intel XE#1021]) -> [SKIP][2] +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-pvc-2/igt@xe_gt_freq@freq_fixed_idle.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-pvc-2/igt@xe_gt_freq@freq_fixed_idle.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12393_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-pvc-2:          [PASS][3] -> [SKIP][4] ([Intel XE#1192]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-pvc-2/igt@xe_live_ktest@xe_bo.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-pvc-2/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_live_ktest@xe_dma_buf:
-    - bat-bmg-2:          [PASS][5] -> [SKIP][6] ([Intel XE#1192]) +2 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-bmg-1:          [PASS][7] -> [SKIP][8] ([Intel XE#1192]) +2 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html
-    - bat-dg2-oem2:       [PASS][9] -> [SKIP][10] ([Intel XE#1192]) +2 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
-    - bat-atsm-2:         [PASS][11] -> [SKIP][12] ([Intel XE#1192]) +2 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
-    - bat-adlp-vf:        [PASS][13] -> [SKIP][14] ([Intel XE#1192]) +1 other test skip
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][15] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][16] ([Intel XE#1192])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1021]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+V7:
+ - Modify parallel test to update random number every test 
+ - Update cross client value check
+V6:
+ - Modify parallel test to check only diff cross client value
+V5:
+ - Add pci-membarrier-parallel subtest
+V4:
+ - Check if pci memory barrier is supported
 
 
-Build changes
--------------
+Tejas Upadhyay (4):
+  lib/i915_drm_local: Remove macros added via merged kernel
+  include/drm-uapi-experimental: Move i915_drm_local.h to
+    drm-uapi-experimental
+  include/intel_drm_local.h: Add DRM_XE_MMAP_OFFSET_FLAG_PCI_BARRIER
+  tests/xe/mmap: add tests for pci mem barrier
 
-  * IGT: IGT_8174 -> IGTPW_12393
-  * Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -> xe-2440-f06efdfad9d0e9f5cb74404ac98e1a5b3b246567
+ .../drm-uapi-experimental/intel_drm_local.h   |  29 +++
+ lib/i915/gem_scheduler.c                      |   1 -
+ lib/i915/i915_drm_local.h                     |   6 -
+ lib/i915/intel_memory_region.h                |   1 -
+ lib/igt_gt.h                                  |   2 +-
+ tests/intel/xe_mmap.c                         | 171 ++++++++++++++++++
+ tools/i915-perf/i915_perf_recorder.c          |   2 -
+ 7 files changed, 201 insertions(+), 11 deletions(-)
+ create mode 100644 include/drm-uapi-experimental/intel_drm_local.h
 
-  IGTPW_12393: 5ff4f2c7478a332586c48137da1a34f34ba5337d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642
-  xe-2440-f06efdfad9d0e9f5cb74404ac98e1a5b3b246567: f06efdfad9d0e9f5cb74404ac98e1a5b3b246567
+-- 
+2.34.1
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/index.html
-
---===============0048521301193187291==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/8] tests/intel/xe_drm_fdinfo: Do not end cork not started (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143108/">https://patchwork.freedesktop.org/series/143108/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8174_BAT -&gt; XEIGTPW_12393_BAT</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_12393_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_12393_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 8)</h2>
-<p>Missing    (1): bat-adlp-7 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_12393_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_gt_freq@freq_fixed_idle:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-pvc-2/igt@xe_gt_freq@freq_fixed_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021">Intel XE#1021</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-pvc-2/igt@xe_gt_freq@freq_fixed_idle.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12393_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-pvc-2/igt@xe_live_ktest@xe_bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-pvc-2/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_dma_buf:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8174/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12393/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8174 -&gt; IGTPW_12393</li>
-<li>Linux: xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642 -&gt; xe-2440-f06efdfad9d0e9f5cb74404ac98e1a5b3b246567</li>
-</ul>
-<p>IGTPW_12393: 5ff4f2c7478a332586c48137da1a34f34ba5337d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2424-08bd590935a5258ffd79355c59adffd72fb2c642: 08bd590935a5258ffd79355c59adffd72fb2c642<br />
-  xe-2440-f06efdfad9d0e9f5cb74404ac98e1a5b3b246567: f06efdfad9d0e9f5cb74404ac98e1a5b3b246567</p>
-
-</body>
-</html>
-
---===============0048521301193187291==--
