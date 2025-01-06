@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D8F5E77199
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 22:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0F5FE77188
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 22:59:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 494E410EA3A;
-	Mon,  6 Jan 2025 22:58:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B52510E0E8;
+	Mon,  6 Jan 2025 22:59:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OlhG/BWN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E8uRoHwV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B524C10E0E8
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 22:58:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEEEC10E0E8
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jan 2025 22:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736204324; x=1767740324;
+ t=1736204350; x=1767740350;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=0ieTwopwqFAhNOu/TLmTuR0Z1vyYd5zGStTADxBOzK0=;
- b=OlhG/BWNevRSGBNfSwYeL47kZAFLHqIStvNxVAvgHXj036PxCxLn3Qkl
- qykzqzAO5t6annYJ49VrqAb/iARODhQYZlGX3jvkTl+vjOmcWKI1F6TRh
- 3UHvgGwl6zVDVmJVVnma6LOHDP0dvBtmshXemkpdJ8aeL4dhRT8INil4X
- meBbLTXxf1JdFQ16TxgSjSmhSacijY7YxqrRDAza6bspVbnyumcCI9VKP
- 7cvs3DuXpouc8L3j5sYwkTzY4Q/mwlKcb3iTlNkStUDDDKkSqcDUwJcRH
- CkKlso/NP7rIwsFpazm1vzCB5nWfNTVul+xhTZcMN7c0BzGpYtmB+9PNk A==;
-X-CSE-ConnectionGUID: AbRCBBBbTp2ag8Ie2rnmrg==
-X-CSE-MsgGUID: bX50JbQhT8eoGAQQkPtHNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="36479813"
-X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="36479813"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2025 14:58:44 -0800
-X-CSE-ConnectionGUID: arV2wtGsQruIPtI84iw44A==
-X-CSE-MsgGUID: VVUE2dNHTPG4GgycS/OosA==
+ bh=WkjfarHuEiRn0r6DTGQBgdkRtNOurHHFnNb4CQTWRe0=;
+ b=E8uRoHwVkcAsNWjnrNiQxLz7Juh5W5vYTXnO1SUMfKz1/ldXF8CT7WmG
+ 51rlC9L2ZsZOyfDrZgFzg0apiXX/HKPAFfHAl0LUzEjJfpSQ8S38fDP3z
+ YLjybVfMmx66jdfHCFKcvf+xv2x3897lWj6u1LpoDiS0OKydEaE2YPslZ
+ haUFl7JIzMLYOUiq5IfkMkuHgxBsEMEfrlmhlH6GxzaCseb/9YSh6md0P
+ u3SfPB2FSPJsiSOA82aG0WPmVnBGrVzMyBfbqWvg/rvIJbKrhiJbFEk3V
+ akp6LjKeLThh+8fZv9bv9tQkekJluBPF6ozalgEqLtKU5C5JvMgHyiUT1 g==;
+X-CSE-ConnectionGUID: eF/ym6ZiQvSmu2fbyde9yA==
+X-CSE-MsgGUID: yJT80kVQRz2yoAvBwVE5MQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="36383179"
+X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="36383179"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2025 14:58:45 -0800
+X-CSE-ConnectionGUID: Sj8j1CEaQpewuJlSwtBQqQ==
+X-CSE-MsgGUID: sdaw8cdCTF+yLYraYC83Uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102440232"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 06 Jan 2025 14:58:43 -0800
+X-IronPort-AV: E=Sophos;i="6.12,293,1728975600"; d="scan'208";a="107535788"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 06 Jan 2025 14:58:44 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2507.44; Mon, 6 Jan 2025 14:58:43 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
@@ -54,12 +54,12 @@ Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.172)
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.1.2507.44; Mon, 6 Jan 2025 14:58:43 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uQMmfQgwA+qIoJhNVsKU1bQpc3udYK6E0xaV56GWXgIz+/zX0n4r4HpvM6oFapJD7V0gO5Yz5WdPtAklp9TLG4jiQElVr23ULgFM23s/1T/fSluJaBZw8kOWjIesbE3ne5YPs5FNSI0cce/446Ujgd+dPP/K1q4ly00T2qSehsLVnLBdBTRVUAF8yBfuaZHAUH4oFT6yZeLnN/iagcY7/VK9v266y29JzprshhNI9MIImPndNxqWe/c/vX3XQydnxQr8BFYkEazQC/UlxtVFpFhJOgYV19s68Z1U7xH534ret0rW7YmL7yg08kwwOQ1jkZarF4prVAGvUD/jdMKLiA==
+ b=JcL/fK0Tf5eMP8X2cPKC7lOlq3P8W+O2aabwzOfbao6HViFM2I665iTkNH9ePNyZu59VdcuuwzSQO/1WgnCfsgiH5WnrncdtqYeL1NXky9gbr0h5J5OT8q3Qyv1SB0oZY+tfo6zrzB7E2nSKmNychwCGs3wtDGGOk0rQoJDxs5lMUn2hMF1sGtojXZWcwbB8zYYS7NY5zgqSmi+2Nti/0cSUHUOr1CdkpW9zDft7HfetaNcI5VECoxmRFGjvpQl15SS755ReuPV3M6K9VLqWrqo5FVOOHkTw323UP653msMZCaD2jxjZiG1s83hzm4laks3qPnmBpjec3HElA02EfA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ajMyTrF9edI0ZvxpqCEWNa1FQfFuuJov9fXARx5/r/k=;
- b=jOTVWM/TbNvTPWS4+xb/Op0dWz9vx7O1Dnb3Lo9K/3TOy3pHBRrT86sgTB96+9mKrZeLLWqBazTVSkyKM9SG95CqezbBVNK2NI9sNwVpoi91b6B3bNUsTZwBBFKe7ssq3WRYjDACPlVb8T0iT+HYwYgimGy81pYmxJjn1OS1cE9nhhkE8INloVBv/jjx+8/8DjDy19luKb7RN5sDP4Co+qE/0egGXV2bUccbuYmsDaz+kK+gNxksKHXgI1lIq/MKW4ggUkMdktTsmNSzPHsjDR71M5jXlkt46+vxYBfmw2niCXa4veXozZ9VjQEw/u8a50LdCWdPmDVzfMApvJkTmw==
+ bh=zV0XPp5nGt8Hr5u/mIrg/DkxqjT9nP+Ww2Ju1TvUhqc=;
+ b=IFDIXOs4prUtr1RBKKgpPfeTwrayXE7NoY+zTdh4OOw9aTZRTTlhqWwGUZZFpIAp3TH1+7/8S1u9FqqSniOIRgwnEVfSRa2r50wtlTq/h3wQXup7sVx6BCkakBVjEz8luYcwQNNGMdOYk624q1zcuvoezwbuaJRcQFEuLkjMvn1LP6lQpk6RW05bvybPmqV9bmRwzK1ZRkYnjR54UXeTvMkqXYuhjkRpemjfyOtAnUaW/tmQp6kODBhfLZP4PpIHu62EffHchpY7gpLFtsv3FiQTNrzCL5gUqYvt3Vr+EdLeC5S21PksKw+7YnPED1rMpSI5yTKmNFmJgqVVLz/tnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -67,24 +67,27 @@ Received: from CH0PR11MB5444.namprd11.prod.outlook.com (2603:10b6:610:d3::13)
  by SA0PR11MB4622.namprd11.prod.outlook.com (2603:10b6:806:9c::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 22:58:31 +0000
+ 2025 22:58:34 +0000
 Received: from CH0PR11MB5444.namprd11.prod.outlook.com
  ([fe80::5f89:ba81:ff70:bace]) by CH0PR11MB5444.namprd11.prod.outlook.com
  ([fe80::5f89:ba81:ff70:bace%6]) with mapi id 15.20.8314.018; Mon, 6 Jan 2025
- 22:58:31 +0000
+ 22:58:34 +0000
 From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
 To: "De Marchi, Lucas" <lucas.demarchi@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "De Marchi, Lucas" <lucas.demarchi@intel.com>, "Cavitt, Jonathan"
+CC: "De Marchi, Lucas" <lucas.demarchi@intel.com>, "Nerlige Ramappa, Umesh"
+ <umesh.nerlige.ramappa@intel.com>, "Cavitt, Jonathan"
  <jonathan.cavitt@intel.com>
-Subject: RE: [PATCH i-g-t 7/8] treewide: s/ctx/cork/ when referring to xe_cork
-Thread-Topic: [PATCH i-g-t 7/8] treewide: s/ctx/cork/ when referring to xe_cork
-Thread-Index: AQHbXniPN4EvvRaXu0uq3yBpXL1e5bMKVjWQ
-Date: Mon, 6 Jan 2025 22:58:30 +0000
-Message-ID: <CH0PR11MB5444BA289824CB7856268D2EE5102@CH0PR11MB5444.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on
+ usage percentage
+Thread-Topic: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on
+ usage percentage
+Thread-Index: AQHbXnllwQdOlzoXN0mzgOp8aaFBirMKWVDA
+Date: Mon, 6 Jan 2025 22:58:34 +0000
+Message-ID: <CH0PR11MB54446EFE4FE2FA4E88C65025E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
 References: <20250104071548.737612-1-lucas.demarchi@intel.com>
- <20250104071548.737612-7-lucas.demarchi@intel.com>
-In-Reply-To: <20250104071548.737612-7-lucas.demarchi@intel.com>
+ <20250104071548.737612-8-lucas.demarchi@intel.com>
+In-Reply-To: <20250104071548.737612-8-lucas.demarchi@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -93,79 +96,79 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|SA0PR11MB4622:EE_
-x-ms-office365-filtering-correlation-id: d1a18e67-233d-4810-274b-08dd2ea5a3d7
+x-ms-office365-filtering-correlation-id: 7122dd14-9429-4657-bd20-08dd2ea5a5f6
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|366016|376014|1800799024|38070700018|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?pWtEE5WRt/vDDgaqtcSZrcayqL83F2jTwyBD5qrNRrOEYSTz/DU7wSQdZWVJ?=
- =?us-ascii?Q?sEZDLW2fHRqGG8EbUvNA960f4loCX+2/g8t4DWMJrha/5WvJF9UmSy7nvbcx?=
- =?us-ascii?Q?aCRLrxNmA0CqrmaFDGJItOjJUvGcsCetC3TQv9V0f4p8jLBtSRnIB+AcDi8v?=
- =?us-ascii?Q?7ZcTxLHXgyGkpFw+zShY+Dl2WqJ5r33mnE/8WD8UVP08Yzxz/ljVWpuxhrKv?=
- =?us-ascii?Q?i7Ns1EOYABOfojUBq7UMwHLOnhg49ZfY/J0WzXLFGSSI1VtwYTK93t4EqNlg?=
- =?us-ascii?Q?HTeYlvWjMB7l2kmTJRbdVgko86R1eXYEni2CAdQNxbYWzSy5dyrTNYtNjFxH?=
- =?us-ascii?Q?tmN+1xM/phQR3SFL19BxJaH9DEP6hKkRr4oFgjmtw4K83sk10uKMUWVLjnW3?=
- =?us-ascii?Q?99tBmrJJ9LfLphpzGQNIvYIQeDyMEb0Yr6sLkCJ4FDl9TsOZrNesjOujGUXl?=
- =?us-ascii?Q?ZT4xCYYYNgbYvRDCTrd0sfnR33Xs1R3nsvA7WS98Dg4/nrW7Huy0GR6g/XmB?=
- =?us-ascii?Q?8Uj8FIgjV3sJhWhceOjzyzhpxhQkebLeS1CCYJYBpXGZTQMYaPepef7OjUKw?=
- =?us-ascii?Q?u3fdc1lQmjXyjQ4vCvIk+5Zb5YeQvaz4VGJsyljAiHKclVKFeaR9eyiJ+f2f?=
- =?us-ascii?Q?RBwDNm2I0aM6vlRts64ii308GZfLhcLZMEg9/+Y8YGOBeyFvWTMbWdx/+gUf?=
- =?us-ascii?Q?WyRgrFYUpPYQTYHZjI25Aun884mjXq3SD5/yXqdthOaVFj9intafkXPWt6Zm?=
- =?us-ascii?Q?BVF+ccDkMfjNM5JrCP6E2HYbCdHC/wOYQQ76m5Zqkc6qoarrFoGhCIdvjHft?=
- =?us-ascii?Q?ZZbF73Wc6cz1MH5Oz09Il248L/gbpxWFVnVi2bExgmLfKwQh5mQmiDoA4KAB?=
- =?us-ascii?Q?FrUx9Echc9dPxEDVl42XWY1PufFrjJa+EXO5bviVahmO0v9FgU8Q32yY4LcC?=
- =?us-ascii?Q?pDA5cFtbEav/RU1Wd4oaLgb3o76WsbTfghDn1CWnupzREryIjKdyxlI9V8eV?=
- =?us-ascii?Q?M97Elr6OGsJ4+f4V1FvyRwuhZ6FnswJ/g5JjmhlsopzRJSygXsRLiKSsxeZz?=
- =?us-ascii?Q?Wvf7v7t4pgoIZCUXN9ZSQSHekpqyO3Gd6+9mLqAwze69C10Non7GU5xPzpZi?=
- =?us-ascii?Q?b9AsZw9AzzUYtaPHNwhXgm57H4uAxwkEhvVHUdboaabfBP3AYl5gFeeB7ILb?=
- =?us-ascii?Q?rNiCCKi6euh47XDyoNye3akaEqSqv/t+yRFppTNpci6+SoM7NrmOg6ZAE/gD?=
- =?us-ascii?Q?qNQnrcdtZqh/j1bL7oSPrFacwOrwRWfeEsWzC6BBF1kKuiC7e/tOyPpZT8n7?=
- =?us-ascii?Q?lKfrouiP3KmdWHKLPSE39TfCft3KIwKS4Fvl8+1RT4DK0bkNM69wGjQDUfuz?=
- =?us-ascii?Q?rZEyuoI8nzjdOQ2Ydqf7v2rXvONz+J22dkxA9yBGcmPVPkPPIIw+Y3/dnmbZ?=
- =?us-ascii?Q?KKKTxQ2KjtJZ83GwVAGSbhL+K7v+pYOU?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?8MYDWRnckytyDIwJDRANOdSS2lZkY+ya38rQOo8Itamh7kJGWCf7InpCmZ8A?=
+ =?us-ascii?Q?KMrR4PoiCOIW8vvs8XH7vgzDagK7w9R5NUNf0TvC2iiqgjpfx0+fgABhSMxd?=
+ =?us-ascii?Q?f9zHXntyI/xHcKWO6XypbBVaGNJ+TnSgpiV15/fccw3aLR3IyljsWOillZry?=
+ =?us-ascii?Q?pKGD3VGgWi4vAVX8ifVryzz2iJXRTIFX+9laP09K8zarVvGz0UG3M28NrHIb?=
+ =?us-ascii?Q?NnetwB8Y+MSoWG8NBldsQ1GmeIsDR+2IFrjBkM8U0Twi+7XFFXHJrpBogz11?=
+ =?us-ascii?Q?ffROBP34Fy6NS1TDo2T5rPqjmG5irAavrUdp/Bl2N51OOvFkBeBljpTISCAh?=
+ =?us-ascii?Q?DT/9sLB+tQj/WlkMCgf/72SQ2P+H5Vz6h6nod1RgEMols9lTKFDZ3ApLQ3mT?=
+ =?us-ascii?Q?scFJ7PFbOuDU3LL3YE6Pgcg44JGK03y0IPa9M+tGsSUUVhaV3Zt5wnz+YuEv?=
+ =?us-ascii?Q?6Yb9n+59hUaNjK0S9oF2ciTqFN23ksz269QxkTy/aq+ZlSFPG2ARkDRWtI9U?=
+ =?us-ascii?Q?6u+8uPFLaN1flPqkORn8xnwapQmiqBiDPkl1xFUqZ0Mu2imIVh6EQ7IGPpcl?=
+ =?us-ascii?Q?Mt7wpq2Y0Q/1m6SuFtSiYsUA/4sO2If73VHUmgJqmgFIHInE/0nAv27UXEus?=
+ =?us-ascii?Q?TJr/NnaJuZl72Vn//Bbn3+Z0WzgCkdz69X9awfmBqZKRq0jeISJtaWPUyY+R?=
+ =?us-ascii?Q?p0ML2fDcQ3gBBvE0CXNnSn4qxcQcD1bd8xeg23b1U72k/O+aqX33R66/5MOu?=
+ =?us-ascii?Q?25UIpZhOP3u4saFl9EEWaKk1j5K8pPdAxL/+5Bo5MAFUectJxguPQUxGf5NL?=
+ =?us-ascii?Q?GmgxVuAcKtpXlpfGB74rKbxurU+Z5Z1CBwlblZAaeuAkI6IjjG/sID5ys6He?=
+ =?us-ascii?Q?ouKCLkim078hkG+yQFZa6SzO06/eLBgbnKCJTZ5peVN6WJWFaW1wgvVB0jIc?=
+ =?us-ascii?Q?U1Y6Q09+385A3plS7nK4WROjlN6ALYCY5zf2HNOCfW/0B0IhLzXDemZPn8XL?=
+ =?us-ascii?Q?mCZbNlMl0JlebOU/FLslT1CPmcr3P9lJXy/POQCfbNyFBUZRgvaO1nB/y4Ou?=
+ =?us-ascii?Q?yAivxV3lD6xsBZCxtPDJq5WYvkfjOWgmThoLBddlgwMD8x9vYIjndZEbIWzc?=
+ =?us-ascii?Q?sP1XKvVe9RLn+PejdcowtU7xUvpdfAAKKYKfhdZMq5EsgIyI4pbREpdNpkwE?=
+ =?us-ascii?Q?5+rBnHU1V9yAx0yriFTN9uLyUjzd/h0BgggV60iowKU1swDKcJaVraMO0BxC?=
+ =?us-ascii?Q?YQAtki5amRbUXTSLig0l5FPWZ5t71BqLC2u1EvMFLrC7IaHAYrD3yXdhhyTO?=
+ =?us-ascii?Q?sZC/RC2cH8qHgV5c7OwXCUuP+JsHVYGC5II9xyu8n0n53ZCHWBxJSk+y2uta?=
+ =?us-ascii?Q?G2BenPSvAcpMPTrf20sp3z4Hv7xp8CKFH5m6tDCJ3mVfD+d5A9KlCtjWEItj?=
+ =?us-ascii?Q?1sC4Lt6erj7T5o0zpHwVhIMlw+D1Uv4V?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR11MB5444.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(7053199007); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?czojwt8beZJFSgSJFNW5ox7ZzC0R3c/E4kVY+bDXrl57fmJaH20xME/OV1H9?=
- =?us-ascii?Q?w2DIBY8HN7N3+aj6dUGum2BIyN+G7WeMFUHp0WjZObg0aZh3cSj/9L0tRCs5?=
- =?us-ascii?Q?H0kPz9/AoeX6zogpbH1cesABGkBwKvRLDzMtheg6S0Gyjz7GAU7/Z/U6XNzZ?=
- =?us-ascii?Q?HxT3zpNu8no+ejEIItNDH15IIr0HFPl65otm+7drz2A/ap2In0CCmBk29pLv?=
- =?us-ascii?Q?rxlxOWW09IWzfLLoF3XwKESvqXcAsdt5qqLBC88WnWlF6/ZULI3bguWzXW40?=
- =?us-ascii?Q?f39KArhKvseGBj/pIhPxMDfcUcP4iQmizxTgBzxEH27lvcfhV70pJWdz6gBZ?=
- =?us-ascii?Q?qJiTl8JxWP2pYUPTjE2REUM1ubAGWpZD1uae80gJZW2Q9uR/CPJ3PfY1QaZw?=
- =?us-ascii?Q?wsWWL2sEoDArW5PxDovlC5Gh6Sk4Vy9i/WlDOhhvK/l66/X2qKbPL9FTICDH?=
- =?us-ascii?Q?Y240evVdZ8w3eQJaRRwtTYaj6xd8FS82d86cEujDjWDVbx/HSJ+hOxDAnJTD?=
- =?us-ascii?Q?s12eBTEpvWX7J63kmJop3ykChJojWeYaaq6+I6ei7pP8xxqpd6cXof2dS9O4?=
- =?us-ascii?Q?1yX55EuGTi84w/cB8HVIjn2V1sosetEtHOZhUcOz/kY2q23QT1vT+wtthDFP?=
- =?us-ascii?Q?N5ioebUUHaeoAyVLkRDhQ/xripkzxXv63Kai8YuoGEURRgQdJ24ATJ7QWv1j?=
- =?us-ascii?Q?n13ByFMq9ApEL+8aJ+GPlBT/eMMd/6QwOoJilbKlWbeVBCJRnKegF20NVNHf?=
- =?us-ascii?Q?MKXthVPMzCasG3HqN/ilu04zQWIQX5SXw16pEy6ZlIHiv4UcgfIopc2q+ywP?=
- =?us-ascii?Q?DU36RfkYpe0PblrDuMoeU9xefjG9uSzUhWEN5o1q+gc8RjFsSQrexbl1rsyb?=
- =?us-ascii?Q?ZLXL4l8yssO3anoLehD57Msfxgcimb/44rcmwHHsvL9tVzNadcgjcbBS/XCN?=
- =?us-ascii?Q?+B5DY1592KVT4mEigMOxjVavs3MFY4MZHHC1WLfn/Sfygh33P0hyVPShZNuH?=
- =?us-ascii?Q?Vo6uxc7rtpdBWv58YAz9vcINFA8jU5c09+iHuHSkNZ4kn1wdyAcLh9SjhB79?=
- =?us-ascii?Q?ugnOzX4E32EsctW13fenu7Jsevj4Yqz+EcycUX3uXKrIz/xCM74yMo1am+aH?=
- =?us-ascii?Q?strSbGI2v+7s4oRP2+e0e7GvyCDYyisDzmU5z/FhZNsCInmXW/3D+fUb2J4y?=
- =?us-ascii?Q?chRZcZxAk7b7Kg6zFx3vdbSctNfaSFQwMTeiDHuBG1zOz8qX4We9GBnEeN51?=
- =?us-ascii?Q?HQ+/z6gWonyhndynvmqdUIWYFkAyxkAmcGVxYnNfVmfSIHocdLvcGQhjFdi5?=
- =?us-ascii?Q?yd4xuOgYTM6LBv7k+L4eBo4s7Sy8Y7OU/QcsZkYpERF2CaGPsxqd84bRKTF3?=
- =?us-ascii?Q?FQrIO1c2TMHyYmDzInzWexbrxyUTmJNizmAxuhty8qY4597DxWfCl/I5+6IU?=
- =?us-ascii?Q?u6xfxtNU230a1zs6vYsShvGhwu6xSezPbS4dKEK/WshmjDVtBda8/PyeA3bS?=
- =?us-ascii?Q?6GgdS5+Fl4IANEOsWIxxKnm5iue9GuDPjgye8kX//kaRRe8dXbOJ6gEtkvQ9?=
- =?us-ascii?Q?YSVxGsQ6/lwDiq7dKZsULl3mjdxKVaNak77MwwDe?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?21jAzT/CNvB8VXpFxYU5x+7iSXFx05jI2h1GsSrbtzciiLw6xfrZJR5RRde7?=
+ =?us-ascii?Q?gsv/vWk1QuvuM52tjEsVlaF77M4xS1MlrpCUAQY8OKn8+hyDIK6o16g48/JC?=
+ =?us-ascii?Q?0v7DXEHhbcZW7apZ57PTgB9lCB33wdZK89v6wKesbkH26v3pwEyFJujVFvKt?=
+ =?us-ascii?Q?QHG/TKTbadASx+KQeGqgs6LYJN02Zxb/jR61KA4bFbNm48tocc8U/uL3QAbt?=
+ =?us-ascii?Q?k43w/b4LC3dyIIVD/8Z3yhLQg7B5ax+uK19Ao2Zxkm2+8vt72FVdwYqLKxDK?=
+ =?us-ascii?Q?2vBgM2nvwxhG9mgmBN+zZBAIyIdPBPtoSJoJjPXMQWkZT4FJw2jioVDc5Tem?=
+ =?us-ascii?Q?rX0Bn0o60cB+Fe2MBlwceJcDVS0hh0cyDQo4o/dLItV2ECm/c7u8jeK4FgZc?=
+ =?us-ascii?Q?Pbxu+a6k33T4QE8X++IXK0MeivD+wlftbCBu+IaDFKFilzMHp5QQM4sy/irj?=
+ =?us-ascii?Q?Nn3KhC8PBFnWy13QF1nfDFuG+8nW2BGlb/jHdnpGzTCXa8vDGD656vFQ75yT?=
+ =?us-ascii?Q?EZRQEBiSMQsKAnZfE39f/nKj3On7XPZxy0E8qKDBJrUuglNmk9tP2SG/q4GH?=
+ =?us-ascii?Q?+jOyos6yxnQWtw5KmSuNQfSITSd1TLtXUdmOa+yBcQaVrNXbzFdqNlUimlSL?=
+ =?us-ascii?Q?kATwdIysJ3fqQ3QC7cJ8batuTO/xMXia/JHj52K/4pSrEXLF8RhGd8mGZ6+2?=
+ =?us-ascii?Q?iActZjrfNTKSi6CfGrNS9jvr7eV0N856yAEEY23AQoEcsszQwgBMVZHmuGI+?=
+ =?us-ascii?Q?zQKvqdk+F/7As7bXLTQOtCf1us1WuGTXH+lVsJU723ps6qH1U0e5hogN4ryH?=
+ =?us-ascii?Q?kZzkN3SjWHty+Et7PcUf7xr+rTDz9G9r+nJcaceSTTDqnLsBP6Cbn4/jboyB?=
+ =?us-ascii?Q?MEX7wdgvhPEjYKjhy7+xLdw2znwbmdCDWVYXRT8i0WoceiCe9SG6q0spB+mT?=
+ =?us-ascii?Q?+c/HyjxqOWZwtWcQlkGY7YC3GRtS87kBqXz3ISGeuLplwYaOOdF6t8GyHpgV?=
+ =?us-ascii?Q?z1QSljVm5XO+DuQGHsjObUjzr0RpzOXMRz36+bsfrXy4mtb998qDs+T92iIX?=
+ =?us-ascii?Q?Ji28U9yq6UTvAodxFvKFLGCkZzSXn/ZaIKH4b94aGPjO2loMHpr3iOGCs7T1?=
+ =?us-ascii?Q?j54WXYc3AFWRV8pp6LqZFcSHrIY1nNY4BDBjhxJ+NSWwKyufbj6JvR5++83k?=
+ =?us-ascii?Q?UUDCFu4BKkIzBgVavlS4OHymdw9SEuST1BSEpdgzDPCEw9h06BmJ5fKmYpNt?=
+ =?us-ascii?Q?gItGDvyxnws6dLhZDemRc9lHfRtL8ViU4l/5Twm/uwE1fYocvjNpxmQKStu9?=
+ =?us-ascii?Q?pXbJ1vTPFsg/tYxl6r+TacTTykz1PwYkUNPkgqhiCa/irI6A5dfobB8jWp2W?=
+ =?us-ascii?Q?4GSHWBKh512IdeHR4L345QvFVW5JeNj0QwEnlkR1pQrO+Z2i5BGpd+03iQWS?=
+ =?us-ascii?Q?KNm4deQWwqnuLfvjvj3J2+4l7AxqQm7fhBsc35YNMmHAeIijM6pWDGWnQFi/?=
+ =?us-ascii?Q?/rRyL5Lvpf1C6FqwVBjYeHfarQZfiBdlf3410TB28KKDKu0vJWBd1+OLOwFB?=
+ =?us-ascii?Q?Neh26M3pr2ldI+7N4drLiE4QojGTaEeNKetXedmY?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5444.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1a18e67-233d-4810-274b-08dd2ea5a3d7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 22:58:30.9516 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7122dd14-9429-4657-bd20-08dd2ea5a5f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 22:58:34.5074 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +6mZmgQjIVCK49SWGwaR3VC3xSt0rB/Pm/r6eRv4PwECUq/i8sB84qtZH7zK9LY0w2+8RxFBC7nfwj7nXsxsMUoTrBAH8a7CcVzN/huWnS8=
+X-MS-Exchange-CrossTenant-userprincipalname: Mr6mW3QUimdhCffrUjHfWh8nkqQZQ36cmSF/rRvCzoME9cj5TDl4MR8TSaMF85/z4ix36J08HtuRe1FNDjDXGAQRbKu7HkP8GQ61W8DhegE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4622
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -188,591 +191,213 @@ From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Lucas De=
  Marchi
 Sent: Friday, January 3, 2025 11:16 PM
 To: igt-dev@lists.freedesktop.org
-Cc: De Marchi, Lucas <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 7/8] treewide: s/ctx/cork/ when referring to xe_cork
+Cc: De Marchi, Lucas <lucas.demarchi@intel.com>; Nerlige Ramappa, Umesh <um=
+esh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on usa=
+ge percentage
 >=20
-> Commit 2feb1d6718a1 ("lib/xe/xe_spin: move the spinner related functions
-> to lib") extracted the spin_ctx abstraction from xe_drm_fdinfo to be
-> re-used in other places as part of the xe_cork. Complement it by also
-> renaming the variable s/ctx/cork/ when referring to struct xe_cork.
+> It's unreliable to assert on the usage percentage considering 2 data
+> points as it still depends on the CPU scheduling not preempting tasks in
+> the wrong moment. On a normal use case of a top-like application, the
+> value not accounted for would simply show up in the next sample without
+> much issue. For a test assertion, it's better to check that the value
+> reported via fdinfo is reasonably close to the one saved by the GPU in
+> the spin. It's still allowed some error because there are a few GPU
+> ticks of difference due to the **GPU** scheduling the contexts.
 >=20
+> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-LGTM.
-
+There's a few nits/questions below, but I trust that everything is in
+order, so nothing below is particularly blocking.  If I did manage to
+catch something that needs fixing, then of course that should be
+fixed, but otherwise:
 Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
-By the way, this RB also applies to the inevitable rebase that this will
-require after commit c982ba23a3 ("tests/intel/xe_drm_fdinfo: Do not end NUL=
-L xe_cork")
-landed.
-
--Jonathan Cavitt
-
 > ---
->  lib/xe/xe_spin.c            | 158 ++++++++++++++++++------------------
->  tests/intel/xe_drm_fdinfo.c |  74 ++++++++---------
->  tests/intel/xe_spin_batch.c |  14 ++--
->  tests/intel/xe_vm.c         |  12 +--
->  4 files changed, 129 insertions(+), 129 deletions(-)
+>  tests/intel/xe_drm_fdinfo.c | 49 +++++++++++++++++++++++--------------
+>  1 file changed, 31 insertions(+), 18 deletions(-)
 >=20
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index bb6318cef..0de0b1f2e 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -291,148 +291,148 @@ xe_cork_create(int fd, struct drm_xe_engine_class=
-_instance *hwe,
->  		uint32_t vm, uint16_t width, uint16_t num_placements,
->  		struct xe_cork_opts *opts)
->  {
-> -	struct xe_cork *ctx =3D calloc(1, sizeof(*ctx));
-> +	struct xe_cork *cork =3D calloc(1, sizeof(*cork));
-> =20
-> -	igt_assert(ctx);
-> +	igt_assert(cork);
->  	igt_assert(width && num_placements &&
->  		   (width =3D=3D 1 || num_placements =3D=3D 1));
->  	igt_assert_lt(width, XE_MAX_ENGINE_INSTANCE);
-> =20
-> -	ctx->class =3D hwe->engine_class;
-> -	ctx->width =3D width;
-> -	ctx->num_placements =3D num_placements;
-> -	ctx->vm =3D vm;
-> -	ctx->cork_opts =3D *opts;
-> -
-> -	ctx->exec.num_batch_buffer =3D width;
-> -	ctx->exec.num_syncs =3D 2;
-> -	ctx->exec.syncs =3D to_user_pointer(ctx->sync);
-> -
-> -	ctx->sync[0].type =3D DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -	ctx->sync[0].flags =3D DRM_XE_SYNC_FLAG_SIGNAL;
-> -	ctx->sync[0].handle =3D syncobj_create(fd, 0);
-> -
-> -	ctx->sync[1].type =3D DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -	ctx->sync[1].flags =3D DRM_XE_SYNC_FLAG_SIGNAL;
-> -	ctx->sync[1].handle =3D syncobj_create(fd, 0);
-> -
-> -	ctx->bo_size =3D sizeof(struct xe_spin);
-> -	ctx->bo_size =3D xe_bb_size(fd, ctx->bo_size);
-> -	ctx->bo =3D xe_bo_create(fd, ctx->vm, ctx->bo_size,
-> -			       vram_if_possible(fd, hwe->gt_id),
-> -			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> -	if (ctx->cork_opts.ahnd) {
-> +	cork->class =3D hwe->engine_class;
-> +	cork->width =3D width;
-> +	cork->num_placements =3D num_placements;
-> +	cork->vm =3D vm;
-> +	cork->cork_opts =3D *opts;
-> +
-> +	cork->exec.num_batch_buffer =3D width;
-> +	cork->exec.num_syncs =3D 2;
-> +	cork->exec.syncs =3D to_user_pointer(cork->sync);
-> +
-> +	cork->sync[0].type =3D DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +	cork->sync[0].flags =3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +	cork->sync[0].handle =3D syncobj_create(fd, 0);
-> +
-> +	cork->sync[1].type =3D DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +	cork->sync[1].flags =3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +	cork->sync[1].handle =3D syncobj_create(fd, 0);
-> +
-> +	cork->bo_size =3D sizeof(struct xe_spin);
-> +	cork->bo_size =3D xe_bb_size(fd, cork->bo_size);
-> +	cork->bo =3D xe_bo_create(fd, cork->vm, cork->bo_size,
-> +				vram_if_possible(fd, hwe->gt_id),
-> +				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	if (cork->cork_opts.ahnd) {
->  		for (unsigned int i =3D 0; i < width; i++)
-> -			ctx->addr[i] =3D intel_allocator_alloc_with_strategy(ctx->cork_opts.a=
-hnd,
-> -					ctx->bo, ctx->bo_size, 0,
-> +			cork->addr[i] =3D intel_allocator_alloc_with_strategy(cork->cork_opts=
-.ahnd,
-> +					cork->bo, cork->bo_size, 0,
->  					ALLOC_STRATEGY_LOW_TO_HIGH);
->  	} else {
->  		for (unsigned int i =3D 0; i < width; i++)
-> -			ctx->addr[i] =3D 0x100000 + 0x100000 * hwe->engine_class;
-> +			cork->addr[i] =3D 0x100000 + 0x100000 * hwe->engine_class;
->  	}
-> =20
-> -	ctx->spin =3D xe_bo_map(fd, ctx->bo, ctx->bo_size);
-> +	cork->spin =3D xe_bo_map(fd, cork->bo, cork->bo_size);
-> =20
-> -	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, width, num_placements=
-,
-> -					     hwe, 0, &ctx->exec_queue), 0);
-> +	igt_assert_eq(__xe_exec_queue_create(fd, cork->vm, width, num_placement=
-s,
-> +					     hwe, 0, &cork->exec_queue), 0);
-> =20
-> -	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr[0], ctx->bo_size=
-,
-> -			 ctx->sync, 1);
-> +	xe_vm_bind_async(fd, cork->vm, 0, cork->bo, 0, cork->addr[0], cork->bo_=
-size,
-> +			 cork->sync, 1);
-> =20
-> -	return ctx;
-> +	return cork;
->  }
-> =20
->  /**
->   * xe_cork_sync_start:
->   *
->   * @fd: xe device fd
-> - * @ctx: pointer to xe_cork structure
-> + * @cork: pointer to xe_cork structure
->   *
->   * run the spinner using xe_spin_init submit batch using xe_exec
->   * and wait for fence using syncobj_wait
->   */
-> -void xe_cork_sync_start(int fd, struct xe_cork *ctx)
-> +void xe_cork_sync_start(int fd, struct xe_cork *cork)
->  {
-> -	igt_assert(ctx);
-> +	igt_assert(cork);
-> =20
-> -	ctx->spin_opts.addr =3D ctx->addr[0];
-> -	ctx->spin_opts.write_timestamp =3D true;
-> -	ctx->spin_opts.preempt =3D true;
-> -	xe_spin_init(ctx->spin, &ctx->spin_opts);
-> +	cork->spin_opts.addr =3D cork->addr[0];
-> +	cork->spin_opts.write_timestamp =3D true;
-> +	cork->spin_opts.preempt =3D true;
-> +	xe_spin_init(cork->spin, &cork->spin_opts);
-> =20
->  	/* reuse sync[0] as in-fence for exec */
-> -	ctx->sync[0].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +	cork->sync[0].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
-> =20
-> -	ctx->exec.exec_queue_id =3D ctx->exec_queue;
-> +	cork->exec.exec_queue_id =3D cork->exec_queue;
-> =20
-> -	if (ctx->width > 1)
-> -		ctx->exec.address =3D to_user_pointer(ctx->addr);
-> +	if (cork->width > 1)
-> +		cork->exec.address =3D to_user_pointer(cork->addr);
->  	else
-> -		ctx->exec.address =3D ctx->addr[0];
-> +		cork->exec.address =3D cork->addr[0];
-> =20
-> -	xe_exec(fd, &ctx->exec);
-> +	xe_exec(fd, &cork->exec);
-> =20
-> -	xe_spin_wait_started(ctx->spin);
-> -	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
-> +	xe_spin_wait_started(cork->spin);
-> +	igt_assert(!syncobj_wait(fd, &cork->sync[1].handle, 1, 1, 0, NULL));
-> =20
-> -	if (ctx->cork_opts.debug)
-> -		igt_info("%d: spinner started\n", ctx->class);
-> +	if (cork->cork_opts.debug)
-> +		igt_info("%d: spinner started\n", cork->class);
->  }
-> =20
->  /*
->   * xe_cork_sync_end
->   *
->   * @fd: xe device fd
-> - * @ctx: pointer to xe_cork structure
-> + * @cork: pointer to xe_cork structure
->   *
->   * Wrapper to end spinner created by xe_cork_create. It will
->   * unbind the vm which was binded to the exec_queue and bo.
->   */
-> -void xe_cork_sync_end(int fd, struct xe_cork *ctx)
-> +void xe_cork_sync_end(int fd, struct xe_cork *cork)
->  {
-> -	igt_assert(ctx);
-> +	igt_assert(cork);
-> =20
-> -	if (ctx->ended)
-> -		igt_warn("Don't attempt call end twice %d\n", ctx->ended);
-> +	if (cork->ended)
-> +		igt_warn("Don't attempt call end twice %d\n", cork->ended);
-> =20
-> -	xe_spin_end(ctx->spin);
-> +	xe_spin_end(cork->spin);
-> =20
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL=
-));
-> +	igt_assert(syncobj_wait(fd, &cork->sync[1].handle, 1, INT64_MAX, 0, NUL=
-L));
-> =20
-> -	ctx->sync[0].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> -	syncobj_reset(fd, &ctx->sync[0].handle, 1);
-> +	cork->sync[0].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +	syncobj_reset(fd, &cork->sync[0].handle, 1);
-> =20
-> -	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr[0], ctx->bo_size, ctx->=
-sync, 1);
-> -	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL=
-));
-> +	xe_vm_unbind_async(fd, cork->vm, 0, 0, cork->addr[0], cork->bo_size, co=
-rk->sync, 1);
-> +	igt_assert(syncobj_wait(fd, &cork->sync[0].handle, 1, INT64_MAX, 0, NUL=
-L));
-> =20
-> -	ctx->ended =3D true;
-> +	cork->ended =3D true;
-> =20
-> -	if (ctx->cork_opts.debug)
-> -		igt_info("%d: spinner ended (timestamp=3D%u)\n", ctx->class,
-> -			ctx->spin->timestamp);
-> +	if (cork->cork_opts.debug)
-> +		igt_info("%d: spinner ended (timestamp=3D%u)\n", cork->class,
-> +			cork->spin->timestamp);
->  }
-> =20
->  /*
->   * xe_cork_destroy
->   *
->   * @fd: xe device fd
-> - * @ctx: pointer to xe_cork structure
-> + * @cork: pointer to xe_cork structure
->   *
-> - * It will destroy vm, exec_queue and free the ctx.
-> + * It will destroy vm, exec_queue and free the cork.
->   */
-> -void xe_cork_destroy(int fd, struct xe_cork *ctx)
-> +void xe_cork_destroy(int fd, struct xe_cork *cork)
->  {
-> -	igt_assert(ctx);
-> +	igt_assert(cork);
-> =20
-> -	syncobj_destroy(fd, ctx->sync[0].handle);
-> -	syncobj_destroy(fd, ctx->sync[1].handle);
-> -	xe_exec_queue_destroy(fd, ctx->exec_queue);
-> +	syncobj_destroy(fd, cork->sync[0].handle);
-> +	syncobj_destroy(fd, cork->sync[1].handle);
-> +	xe_exec_queue_destroy(fd, cork->exec_queue);
-> =20
-> -	if (ctx->cork_opts.ahnd)
-> -		intel_allocator_free(ctx->cork_opts.ahnd, ctx->bo);
-> +	if (cork->cork_opts.ahnd)
-> +		intel_allocator_free(cork->cork_opts.ahnd, cork->bo);
-> =20
-> -	munmap(ctx->spin, ctx->bo_size);
-> -	gem_close(fd, ctx->bo);
-> +	munmap(cork->spin, cork->bo_size);
-> +	gem_close(fd, cork->bo);
-> =20
-> -	free(ctx);
-> +	free(cork);
->  }
 > diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-> index f4264aadb..1089e5119 100644
+> index 1089e5119..120436fbe 100644
 > --- a/tests/intel/xe_drm_fdinfo.c
 > +++ b/tests/intel/xe_drm_fdinfo.c
-> @@ -410,7 +410,7 @@ utilization_single(int fd, struct drm_xe_engine_class=
-_instance *hwe, unsigned in
+> @@ -3,6 +3,8 @@
+>   * Copyright (c) 2023 Intel Corporation
+>   */
+> =20
+> +#include <math.h>
+> +
+>  #include "igt.h"
+>  #include "igt_core.h"
+>  #include "igt_device.h"
+> @@ -371,7 +373,8 @@ static void basic_engine_utilization(int xe)
+> =20
+>  static void
+>  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+> -	      int class, int width, enum expected_load expected_load)
+> +	      int class, int width, uint32_t spin_stamp,
+> +	      enum expected_load expected_load)
 >  {
->  	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct xe_cork *ctx =3D NULL;
-> +	struct xe_cork *cork =3D NULL;
->  	enum expected_load expected_load;
->  	uint32_t vm;
->  	int new_fd;
-> @@ -420,8 +420,8 @@ utilization_single(int fd, struct drm_xe_engine_class=
-_instance *hwe, unsigned in
+>  	double percent;
+>  	u64 den, num;
+> @@ -383,12 +386,9 @@ check_results(struct pceu_cycles *s1, struct pceu_cy=
+cles *s2,
 > =20
->  	vm =3D xe_vm_create(fd, 0, 0);
->  	if (flags & TEST_BUSY) {
-> -		ctx =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> -		xe_cork_sync_start(fd, ctx);
-> +		cork =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +		xe_cork_sync_start(fd, cork);
+>  	num =3D s2[class].cycles - s1[class].cycles;
+>  	den =3D s2[class].total_cycles - s1[class].total_cycles;
+> -	percent =3D (num * 100.0) / (den + 1);
+> -
+> -	/* for parallel submission scale the busyness with width */
+> -	percent /=3D width;
+> =20
+> -	igt_debug("%s: percent: %f\n", engine_map[class], percent);
+> +	percent =3D (num * 100.0) / (den + 1) / width;
+
+Nit:
+There's probably an argument to be made that we didn't need to modify
+the calculation here because the end result is still the same and it loses
+a (presumably) helpful comment, but I won't block on it.
+
+Also, is this percentage correct given the test modifications?
+Maybe we should be dividing by spin_stamp + 1 instead, since that's what
+we're using to calculate the percentage later?
+
+> +	igt_debug("%s: percent: %.2f%%\n", engine_map[class], percent);
+> =20
+>  	switch (expected_load) {
+>  	case EXPECTED_LOAD_IDLE:
+> @@ -396,11 +396,12 @@ check_results(struct pceu_cycles *s1, struct pceu_c=
+ycles *s2,
+>  		break;
+>  	case EXPECTED_LOAD_FULL:
+>  		/*
+> -		 * We are still relying on CPU sleep time and there could be
+> -		 * some imprecision when calculating the load. Use a 5% margin.
+> +		 * percentage error between value saved by gpu in xe_spin and what
+> +		 * is reported via fdinfo
+
+Nit:
+s/percentage/Percentage
+
+>  		 */
+> -		igt_assert_lt_double(95.0, percent);
+> -		igt_assert_lt_double(percent, 105.0);
+> +		percent =3D fabs((num - spin_stamp) * 100.0) / (spin_stamp + 1);
+
+Nit:
+Shouldn't we also be dividing by width here?  I'm just asking because that'=
+s
+what we were doing before, and it looks like spin_stamp is being used here
+as a stand-in for the "den" variable in the earlier percent calculation.
+
+> +		igt_debug("%s: error: %.2f%%\n", engine_map[class], percent);
+> +		igt_assert_lt_double(percent, 5.0);
+>  		break;
 >  	}
+>  }
+> @@ -438,14 +439,17 @@ utilization_single(int fd, struct drm_xe_engine_cla=
+ss_instance *hwe, unsigned in
 > =20
->  	read_engine_cycles(fd, pceu1[0]);
-> @@ -430,7 +430,7 @@ utilization_single(int fd, struct drm_xe_engine_class=
-_instance *hwe, unsigned in
+>  	expected_load =3D flags & TEST_BUSY ?
+>  	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
+> -	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1, expected_load);
+> +
+> +	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1,
+> +		      cork ? cork->spin->timestamp : 0, expected_load);
 > =20
->  	usleep(batch_duration_usec);
->  	if (flags & TEST_TRAILING_IDLE)
-> -		xe_cork_sync_end(fd, ctx);
-> +		xe_cork_sync_end(fd, cork);
-> =20
->  	read_engine_cycles(fd, pceu2[0]);
->  	if (flags & TEST_ISOLATION)
-> @@ -449,8 +449,8 @@ utilization_single(int fd, struct drm_xe_engine_class=
-_instance *hwe, unsigned in
+>  	if (flags & TEST_ISOLATION) {
+>  		/*
+>  		 * Load from one client shouldn't spill on another,
+>  		 * so check for idle
+>  		 */
+> -		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, EXPECTED_LOAD_=
+IDLE);
+> +		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, 0,
+> +			      EXPECTED_LOAD_IDLE);
 >  		close(new_fd);
 >  	}
 > =20
-> -	if (flags & TEST_BUSY)
-> -		xe_cork_destroy(fd, ctx);
-> +	if (cork)
-> +		xe_cork_destroy(fd, cork);
-> =20
->  	xe_vm_destroy(fd, vm);
->  }
-> @@ -460,19 +460,19 @@ utilization_single_destroy_queue(int fd, struct drm=
-_xe_engine_class_instance *hw
->  {
+> @@ -461,6 +465,7 @@ utilization_single_destroy_queue(int fd, struct drm_x=
+e_engine_class_instance *hw
 >  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
 >  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct xe_cork *ctx =3D NULL;
-> +	struct xe_cork *cork;
+>  	struct xe_cork *cork;
+> +	uint32_t timestamp;
 >  	uint32_t vm;
 > =20
 >  	vm =3D xe_vm_create(fd, 0, 0);
-> -	ctx =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> -	xe_cork_sync_start(fd, ctx);
-> +	cork =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +	xe_cork_sync_start(fd, cork);
-> =20
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
+> @@ -472,13 +477,15 @@ utilization_single_destroy_queue(int fd, struct drm=
+_xe_engine_class_instance *hw
 > =20
 >  	/* destroy queue before sampling again */
-> -	xe_cork_sync_end(fd, ctx);
-> -	xe_cork_destroy(fd, ctx);
-> +	xe_cork_sync_end(fd, cork);
-> +	xe_cork_destroy(fd, cork);
+>  	xe_cork_sync_end(fd, cork);
+> +	timestamp =3D cork->spin->timestamp;
+>  	xe_cork_destroy(fd, cork);
 > =20
 >  	read_engine_cycles(fd, pceu2);
 > =20
-> @@ -486,17 +486,17 @@ utilization_others_idle(int fd, struct drm_xe_engin=
-e_class_instance *hwe)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct xe_cork *ctx =3D NULL;
-> +	struct xe_cork *cork;
->  	uint32_t vm;
->  	int class;
-> =20
->  	vm =3D xe_vm_create(fd, 0, 0);
-> -	ctx =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> -	xe_cork_sync_start(fd, ctx);
-> +	cork =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +	xe_cork_sync_start(fd, cork);
-> =20
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
-> -	xe_cork_sync_end(fd, ctx);
-> +	xe_cork_sync_end(fd, cork);
->  	read_engine_cycles(fd, pceu2);
-> =20
->  	xe_for_each_engine_class(class) {
-> @@ -506,7 +506,7 @@ utilization_others_idle(int fd, struct drm_xe_engine_=
-class_instance *hwe)
->  		check_results(pceu1, pceu2, class, 1, expected_load);
->  	}
-> =20
-> -	xe_cork_destroy(fd, ctx);
-> +	xe_cork_destroy(fd, cork);
 >  	xe_vm_destroy(fd, vm);
+> =20
+> -	check_results(pceu1, pceu2, hwe->engine_class, 1, EXPECTED_LOAD_FULL);
+> +	check_results(pceu1, pceu2, hwe->engine_class, 1, timestamp,
+> +		      EXPECTED_LOAD_FULL);
 >  }
 > =20
-> @@ -515,7 +515,7 @@ utilization_others_full_load(int fd, struct drm_xe_en=
-gine_class_instance *hwe)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] =3D {};
-> +	struct xe_cork *cork[DRM_XE_ENGINE_CLASS_COMPUTE + 1] =3D {};
->  	struct drm_xe_engine_class_instance *_hwe;
->  	uint32_t vm;
->  	int class;
-> @@ -526,17 +526,17 @@ utilization_others_full_load(int fd, struct drm_xe_=
-engine_class_instance *hwe)
->  	xe_for_each_engine(fd, _hwe) {
->  		int _class =3D _hwe->engine_class;
-> =20
-> -		if (_class =3D=3D hwe->engine_class || ctx[_class])
-> +		if (_class =3D=3D hwe->engine_class || cork[_class])
->  			continue;
-> -		ctx[_class] =3D xe_cork_create_opts(fd, _hwe, vm, 1, 1);
-> -		xe_cork_sync_start(fd, ctx[_class]);
-> +		cork[_class] =3D xe_cork_create_opts(fd, _hwe, vm, 1, 1);
-> +		xe_cork_sync_start(fd, cork[_class]);
->  	}
-> =20
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  	xe_for_each_engine_class(class)
-> -		if (ctx[class])
-> -			xe_cork_sync_end(fd, ctx[class]);
-> +		if (cork[class])
-> +			xe_cork_sync_end(fd, cork[class]);
-> =20
->  	read_engine_cycles(fd, pceu2);
-> =20
-> @@ -544,11 +544,11 @@ utilization_others_full_load(int fd, struct drm_xe_=
-engine_class_instance *hwe)
->  		enum expected_load expected_load =3D hwe->engine_class =3D=3D class ?
+>  static void
+> @@ -503,7 +510,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_=
+class_instance *hwe)
+>  		enum expected_load expected_load =3D hwe->engine_class !=3D class ?
 >  			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
 > =20
-> -		if (!ctx[class])
-> +		if (!cork[class])
+> -		check_results(pceu1, pceu2, class, 1, expected_load);
+> +		check_results(pceu1, pceu2, class, 1, cork->spin->timestamp,
+> +			      expected_load);
+>  	}
+> =20
+>  	xe_cork_destroy(fd, cork);
+> @@ -547,7 +555,8 @@ utilization_others_full_load(int fd, struct drm_xe_en=
+gine_class_instance *hwe)
+>  		if (!cork[class])
 >  			continue;
 > =20
->  		check_results(pceu1, pceu2, class, 1, expected_load);
-> -		xe_cork_destroy(fd, ctx[class]);
-> +		xe_cork_destroy(fd, cork[class]);
+> -		check_results(pceu1, pceu2, class, 1, expected_load);
+> +		check_results(pceu1, pceu2, class, 1, cork[class]->spin->timestamp,
+> +			      expected_load);
+>  		xe_cork_destroy(fd, cork[class]);
 >  	}
 > =20
->  	xe_vm_destroy(fd, vm);
-> @@ -559,7 +559,7 @@ utilization_all_full_load(int fd)
->  {
->  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-> -	struct xe_cork *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] =3D {};
-> +	struct xe_cork *cork[DRM_XE_ENGINE_CLASS_COMPUTE + 1] =3D {};
->  	struct drm_xe_engine_class_instance *hwe;
->  	uint32_t vm;
->  	int class;
-> @@ -569,24 +569,24 @@ utilization_all_full_load(int fd)
->  	/* spin on one hwe per class */
->  	xe_for_each_engine(fd, hwe) {
->  		class =3D hwe->engine_class;
-> -		if (ctx[class])
-> +		if (cork[class])
->  			continue;
-> -		ctx[class] =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> -		xe_cork_sync_start(fd, ctx[class]);
-> +		cork[class] =3D xe_cork_create_opts(fd, hwe, vm, 1, 1);
-> +		xe_cork_sync_start(fd, cork[class]);
->  	}
-> =20
->  	read_engine_cycles(fd, pceu1);
->  	usleep(batch_duration_usec);
->  	xe_for_each_engine_class(class)
-> -		xe_cork_sync_end(fd, ctx[class]);
-> +		xe_cork_sync_end(fd, cork[class]);
->  	read_engine_cycles(fd, pceu2);
-> =20
->  	xe_for_each_engine_class(class) {
-> -		if (!ctx[class])
-> +		if (!cork[class])
+> @@ -585,7 +594,9 @@ utilization_all_full_load(int fd)
+>  		if (!cork[class])
 >  			continue;
 > =20
->  		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
-> -		xe_cork_destroy(fd, ctx[class]);
-> +		xe_cork_destroy(fd, cork[class]);
+> -		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
+> +		check_results(pceu1, pceu2, class, 1,
+> +			      cork[class]->spin->timestamp,
+> +			      EXPECTED_LOAD_FULL);
+>  		xe_cork_destroy(fd, cork[class]);
 >  	}
 > =20
->  	xe_vm_destroy(fd, vm);
-> @@ -613,7 +613,7 @@ utilization_multi(int fd, int gt, int class, unsigned=
- int flags)
->  	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->  	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
-> -	struct xe_cork *ctx =3D NULL;
-> +	struct xe_cork *cork =3D NULL;
->  	enum expected_load expected_load;
->  	int fd_spill, num_placements;
->  	uint32_t vm;
-> @@ -639,8 +639,8 @@ utilization_multi(int fd, int gt, int class, unsigned=
- int flags)
+> @@ -657,14 +668,16 @@ utilization_multi(int fd, int gt, int class, unsign=
+ed int flags)
 > =20
->  	vm =3D xe_vm_create(fd, 0, 0);
->  	if (flags & TEST_BUSY) {
-> -		ctx =3D xe_cork_create_opts(fd, eci, vm, width, num_placements);
-> -		xe_cork_sync_start(fd, ctx);
-> +		cork =3D xe_cork_create_opts(fd, eci, vm, width, num_placements);
-> +		xe_cork_sync_start(fd, cork);
->  	}
+>  	expected_load =3D flags & TEST_BUSY ?
+>  	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
+> -	check_results(pceu[0], pceu[1], class, width, expected_load);
+> +
+> +	check_results(pceu[0], pceu[1], class, width,
+> +		      cork ? cork->spin->timestamp : 0, expected_load);
 > =20
->  	read_engine_cycles(fd, pceu[0]);
-> @@ -649,7 +649,7 @@ utilization_multi(int fd, int gt, int class, unsigned=
- int flags)
-> =20
->  	usleep(batch_duration_usec);
->  	if (flags & TEST_TRAILING_IDLE)
-> -		xe_cork_sync_end(fd, ctx);
-> +		xe_cork_sync_end(fd, cork);
-> =20
->  	read_engine_cycles(fd, pceu[1]);
->  	if (flags & TEST_ISOLATION)
-> @@ -669,8 +669,8 @@ utilization_multi(int fd, int gt, int class, unsigned=
- int flags)
+>  	if (flags & TEST_ISOLATION) {
+>  		/*
+>  		 * Load from one client shouldn't spill on another,
+>  		 * so check for idle
+>  		 */
+> -		check_results(pceu_spill[0], pceu_spill[1], class, width,
+> +		check_results(pceu_spill[0], pceu_spill[1], class, width, 0,
+>  			      EXPECTED_LOAD_IDLE);
 >  		close(fd_spill);
 >  	}
-> =20
-> -	if (flags & TEST_BUSY)
-> -		xe_cork_destroy(fd, ctx);
-> +	if (cork)
-> +		xe_cork_destroy(fd, cork);
-> =20
->  	xe_vm_destroy(fd, vm);
->  }
-> diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-> index 5d9afaf3d..e4000f50e 100644
-> --- a/tests/intel/xe_spin_batch.c
-> +++ b/tests/intel/xe_spin_batch.c
-> @@ -384,25 +384,25 @@ static void exec_store(int fd, struct drm_xe_engine=
-_class_instance *eci,
-> =20
->  static void run_spinner(int fd, struct drm_xe_engine_class_instance *eci=
-)
->  {
-> -	struct xe_cork *ctx =3D NULL;
-> +	struct xe_cork *cork;
->  	uint32_t vm;
->  	uint32_t ts_1, ts_2;
->  	uint64_t ahnd;
-> =20
->  	vm =3D xe_vm_create(fd, 0, 0);
->  	ahnd =3D intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> -	ctx =3D xe_cork_create_opts(fd, eci, vm, 1, 1, .ahnd =3D ahnd);
-> -	xe_cork_sync_start(fd, ctx);
-> +	cork =3D xe_cork_create_opts(fd, eci, vm, 1, 1, .ahnd =3D ahnd);
-> +	xe_cork_sync_start(fd, cork);
-> =20
->  	/* Collect and check timestamps before stopping the spinner */
->  	usleep(50000);
-> -	ts_1 =3D READ_ONCE(ctx->spin->timestamp);
-> +	ts_1 =3D READ_ONCE(cork->spin->timestamp);
->  	usleep(50000);
-> -	ts_2 =3D READ_ONCE(ctx->spin->timestamp);
-> +	ts_2 =3D READ_ONCE(cork->spin->timestamp);
->  	igt_assert_neq_u32(ts_1, ts_2);
-> =20
-> -	xe_cork_sync_end(fd, ctx);
-> -	xe_cork_destroy(fd, ctx);
-> +	xe_cork_sync_end(fd, cork);
-> +	xe_cork_destroy(fd, cork);
-> =20
->  	xe_vm_destroy(fd, vm);
->  	put_ahnd(ahnd);
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index b10269191..9e524578a 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -945,21 +945,21 @@ test_bind_array(int fd, struct drm_xe_engine_class_=
-instance *eci, int n_execs,
-> =20
->  	sync[0].handle =3D syncobj_create(fd, 0);
->  	if (flags & BIND_ARRAY_ENOBUFS_FLAG) {
-> -		struct xe_cork *ctx =3D NULL;
-> +		struct xe_cork *cork;
->  		uint32_t vm_cork;
-> =20
->  		vm_cork =3D xe_vm_create(fd, 0, 0);
-> -		ctx =3D xe_cork_create_opts(fd, eci, vm_cork, 1, 1);
-> -		xe_cork_sync_start(fd, ctx);
-> +		cork =3D xe_cork_create_opts(fd, eci, vm_cork, 1, 1);
-> +		xe_cork_sync_start(fd, cork);
-> =20
-> -		sync[1].handle =3D ctx->sync[1].handle;
-> +		sync[1].handle =3D cork->sync[1].handle;
->  		sync[1].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
-> =20
->  		xe_vm_bind_array_err(fd, vm, bind_exec_queue, bind_ops,
->  				     n_execs, sync, 2, ENOBUFS);
->  		/* destroy queue before sampling again */
-> -		xe_cork_sync_end(fd, ctx);
-> -		xe_cork_destroy(fd, ctx);
-> +		xe_cork_sync_end(fd, cork);
-> +		xe_cork_destroy(fd, cork);
->  		xe_vm_destroy(fd, vm_cork);
-> =20
->  		n_execs =3D n_execs / 4;
 > --=20
 > 2.47.0
 >=20
