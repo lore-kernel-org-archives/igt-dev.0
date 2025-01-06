@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CA5AE77188
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 11:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38125E77188
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jan 2025 12:01:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1153910E642;
-	Mon,  6 Jan 2025 11:48:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E15CE10E646;
+	Mon,  6 Jan 2025 12:01:34 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CC3310E645;
- Mon,  6 Jan 2025 11:48:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DC0210E645;
+ Mon,  6 Jan 2025 12:01:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Remove_redundant_hotplug_?=
- =?utf-8?q?detection_assertion?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fhistogram=3A_?=
+ =?utf-8?q?Add_check_for_ghe_api_call?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 06 Jan 2025 11:48:28 -0000
-Message-ID: <173616410824.120825.8034844735065599147@b555e5b46a47>
+Date: Mon, 06 Jan 2025 12:01:34 -0000
+Message-ID: <173616489425.133956.6088469870388684962@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250106094259.931356-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20250106094259.931356-1-ramanaidu.naladala@intel.com>
+References: <20250106095154.243459-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250106095154.243459-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,13 +43,13 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Remove redundant hotplug detection assertion
-URL   : https://patchwork.freedesktop.org/series/143141/
+Series: tests/kms_histogram: Add check for ghe api call
+URL   : https://patchwork.freedesktop.org/series/143142/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8174 -> IGTPW_12391
+CI Bug Log - changes from IGT_8174 -> IGTPW_12392
 ====================================================
 
 Summary
@@ -59,7 +59,7 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/index.html
 
 Participating hosts (40 -> 37)
 ------------------------------
@@ -69,7 +69,7 @@ Participating hosts (40 -> 37)
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12391 that come from known issues:
+  Here are the changes found in IGTPW_12392 that come from known issues:
 
 ### IGT changes ###
 
@@ -77,80 +77,81 @@ Known issues
 
   * igt@runner@aborted:
     - fi-kbl-x1275:       NOTRUN -> [FAIL][1] ([i915#13462])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-kbl-x1275/igt@runner@aborted.html
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-kbl-x1275/igt@runner@aborted.html
     - bat-adlp-11:        NOTRUN -> [FAIL][2] ([i915#13462])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-adlp-11/igt@runner@aborted.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-adlp-11/igt@runner@aborted.html
     - fi-hsw-4770:        NOTRUN -> [FAIL][3] ([i915#13462])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-hsw-4770/igt@runner@aborted.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-hsw-4770/igt@runner@aborted.html
     - fi-cfl-8109u:       NOTRUN -> [FAIL][4] ([i915#13462])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-cfl-8109u/igt@runner@aborted.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-cfl-8109u/igt@runner@aborted.html
     - fi-kbl-8809g:       NOTRUN -> [FAIL][5] ([i915#13462])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-kbl-8809g/igt@runner@aborted.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-kbl-8809g/igt@runner@aborted.html
     - fi-ivb-3770:        NOTRUN -> [FAIL][6] ([i915#13462])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-ivb-3770/igt@runner@aborted.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-ivb-3770/igt@runner@aborted.html
     - bat-mtlp-8:         NOTRUN -> [FAIL][7] ([i915#13462])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-mtlp-8/igt@runner@aborted.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-mtlp-8/igt@runner@aborted.html
     - bat-dg1-6:          NOTRUN -> [FAIL][8] ([i915#13462])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-dg1-6/igt@runner@aborted.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-dg1-6/igt@runner@aborted.html
     - fi-elk-e7500:       NOTRUN -> [FAIL][9] ([i915#13462])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-elk-e7500/igt@runner@aborted.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-elk-e7500/igt@runner@aborted.html
     - bat-dg2-8:          NOTRUN -> [FAIL][10] ([i915#13462])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-dg2-8/igt@runner@aborted.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-dg2-8/igt@runner@aborted.html
     - fi-kbl-guc:         NOTRUN -> [FAIL][11] ([i915#13462])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-kbl-guc/igt@runner@aborted.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-kbl-guc/igt@runner@aborted.html
     - bat-adls-6:         NOTRUN -> [FAIL][12] ([i915#13462])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-adls-6/igt@runner@aborted.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-adls-6/igt@runner@aborted.html
     - fi-ilk-650:         NOTRUN -> [FAIL][13] ([i915#13462])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-ilk-650/igt@runner@aborted.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-ilk-650/igt@runner@aborted.html
     - bat-jsl-1:          NOTRUN -> [FAIL][14] ([i915#13462])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-jsl-1/igt@runner@aborted.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-jsl-1/igt@runner@aborted.html
     - fi-tgl-1115g4:      NOTRUN -> [FAIL][15] ([i915#13462])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-tgl-1115g4/igt@runner@aborted.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-tgl-1115g4/igt@runner@aborted.html
     - fi-blb-e6850:       NOTRUN -> [FAIL][16] ([i915#13462])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-blb-e6850/igt@runner@aborted.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-blb-e6850/igt@runner@aborted.html
     - bat-mtlp-6:         NOTRUN -> [FAIL][17] ([i915#13462])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-mtlp-6/igt@runner@aborted.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-mtlp-6/igt@runner@aborted.html
     - bat-arlh-3:         NOTRUN -> [FAIL][18] ([i915#13462])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-arlh-3/igt@runner@aborted.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][19] ([i915#13462])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-pnv-d510/igt@runner@aborted.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-arlh-3/igt@runner@aborted.html
+    - fi-pnv-d510:        NOTRUN -> [FAIL][19] ([i915#13350])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-pnv-d510/igt@runner@aborted.html
     - bat-dg1-7:          NOTRUN -> [FAIL][20] ([i915#13462])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-dg1-7/igt@runner@aborted.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-dg1-7/igt@runner@aborted.html
     - bat-adlp-9:         NOTRUN -> [FAIL][21] ([i915#13462])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-adlp-9/igt@runner@aborted.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-adlp-9/igt@runner@aborted.html
     - bat-twl-2:          NOTRUN -> [FAIL][22] ([i915#13462])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-twl-2/igt@runner@aborted.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-twl-2/igt@runner@aborted.html
     - bat-dg2-11:         NOTRUN -> [FAIL][23] ([i915#13462])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-dg2-11/igt@runner@aborted.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-dg2-11/igt@runner@aborted.html
     - bat-rpls-4:         NOTRUN -> [FAIL][24] ([i915#13462])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-rpls-4/igt@runner@aborted.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-rpls-4/igt@runner@aborted.html
     - fi-kbl-7567u:       NOTRUN -> [FAIL][25] ([i915#13462])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-kbl-7567u/igt@runner@aborted.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-kbl-7567u/igt@runner@aborted.html
     - fi-cfl-8700k:       NOTRUN -> [FAIL][26] ([i915#13462])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-cfl-8700k/igt@runner@aborted.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-cfl-8700k/igt@runner@aborted.html
     - bat-dg2-14:         NOTRUN -> [FAIL][27] ([i915#13462])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-dg2-14/igt@runner@aborted.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-dg2-14/igt@runner@aborted.html
     - bat-kbl-2:          NOTRUN -> [FAIL][28] ([i915#13462])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-kbl-2/igt@runner@aborted.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-kbl-2/igt@runner@aborted.html
     - bat-arls-5:         NOTRUN -> [FAIL][29] ([i915#13462])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-arls-5/igt@runner@aborted.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-arls-5/igt@runner@aborted.html
     - bat-rplp-1:         NOTRUN -> [FAIL][30] ([i915#13462])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-rplp-1/igt@runner@aborted.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-rplp-1/igt@runner@aborted.html
     - bat-arlh-2:         NOTRUN -> [FAIL][31] ([i915#13462])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-arlh-2/igt@runner@aborted.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-arlh-2/igt@runner@aborted.html
     - fi-rkl-11600:       NOTRUN -> [FAIL][32] ([i915#13462])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-rkl-11600/igt@runner@aborted.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-rkl-11600/igt@runner@aborted.html
     - fi-cfl-guc:         NOTRUN -> [FAIL][33] ([i915#13462])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/fi-cfl-guc/igt@runner@aborted.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/fi-cfl-guc/igt@runner@aborted.html
     - bat-dg2-13:         NOTRUN -> [FAIL][34] ([i915#13462])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-dg2-13/igt@runner@aborted.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-dg2-13/igt@runner@aborted.html
     - bat-jsl-3:          NOTRUN -> [FAIL][35] ([i915#13462])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/bat-jsl-3/igt@runner@aborted.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/bat-jsl-3/igt@runner@aborted.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
+  [i915#13350]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13350
   [i915#13462]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13462
 
 
@@ -158,15 +159,15 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_8174 -> IGTPW_12391
+  * IGT: IGT_8174 -> IGTPW_12392
   * Linux: CI_DRM_15892 -> CI_DRM_15908
 
   CI-20190529: 20190529
   CI_DRM_15892: 08bd590935a5258ffd79355c59adffd72fb2c642 @ git://anongit.freedesktop.org/gfx-ci/linux
   CI_DRM_15908: f06efdfad9d0e9f5cb74404ac98e1a5b3b246567 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12391: b30c905319556f0f67860479cd2d1f5c6586bab5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12392: bde46610a2c68df5fd154cbefd26bf4a506e1a6e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8174: d2004b0623dbccd08502525849b4eef881aa199e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12391/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12392/index.html
