@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6264E7719B
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 20:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48B73E77198
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 20:28:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7350D10E79F;
-	Tue,  7 Jan 2025 20:28:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EEB0110E793;
+	Tue,  7 Jan 2025 20:28:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GIq6Ht4d";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J26rMx2H";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 348AA10E31D
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 20:28:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2866610E31D
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 20:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736281686; x=1767817686;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CL8uzbEbEU7fEFLnnOmpdyqC1PdG2AZKSmkMt8koi8Q=;
- b=GIq6Ht4drFK7FAbcsZGgRqu32sAoJO3Tj3vyXh5QNpTe95BvT1xfpvmr
- stAA379g4hCqxgoqjWFQWdSk6mvFimF0zib8EkqSTbhD9VuBwsys2IS6p
- vnn5CARgy7PqDWj+ld28CjZw5C82Tso9lrvNCUVbAB2QtTG+d61ymPvTA
- DhWzxJtJUZX7go6bYvCqtXIqsgONC7rQx1nbnmN+o/t5FK4VNQQv5jVeW
- efA01IMBMDxMB3UAWy2hg5ddmnKTgoj8DSku/CI/Rp7IuS+Byt5SaFpYO
- ZC/oMip6Q/iyIyS+3V2+gYgcA8vMxaUTHaQcuYTGL6Fl1p15X54frXbmf g==;
-X-CSE-ConnectionGUID: FTSSdd86Q3St8KMD/rF6wQ==
-X-CSE-MsgGUID: 6PgtP3DrQ2aReuNTbg+KKA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="39309015"
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="39309015"
+ t=1736281685; x=1767817685;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jQ9IqVxHzh46wi+sTRzykFaQK8o0J52yAWArv70KvTs=;
+ b=J26rMx2HyIQ10yC6edGvjT+0M2/v2kYJticynwneL/HB1rqnaWYMIFlE
+ uCXzDLa+2b0mW473wIc20Ib18pFhDn8LTG6+qC1T++S2hhjLcJWiQU0nE
+ M11+NFsXTWKR6mRrbl6BpOHLgMhrhUsZ0xcuJ3yTYvuyd8eR8bWKMEDHK
+ 2rx/0W6xYAyi39f8HLISmEojSK2xK+/it+4/9k39f9fLxvO3T0atNtzNV
+ sbcihR9Bbi9fAc5t/0vh3c1PUX0WMfrLI3PJlZZMIyrTIPYLSwgciBgB/
+ TF8aGdQ5ZQLt4/5EAVn7harPqhj3Zpsci5QVcY96fLJx1RjNwRjSzo+8B Q==;
+X-CSE-ConnectionGUID: IVm3jk/3QfG0IOBVyYk5+Q==
+X-CSE-MsgGUID: 9IIhSoaKQ5WKhDS5WF4F5A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="39309007"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="39309007"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 12:28:05 -0800
-X-CSE-ConnectionGUID: +EAq/LioTBSsBSRau45s7g==
-X-CSE-MsgGUID: 3x7tMgq1R/mHCFouU+KN2Q==
+ 07 Jan 2025 12:28:04 -0800
+X-CSE-ConnectionGUID: YYM7ab/JSD6p5xm7fAfdvg==
+X-CSE-MsgGUID: Ia33D3LhRxKG5mWimz9MKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133725695"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133725672"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 12:28:05 -0800
+ 07 Jan 2025 12:28:04 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jonathan.cavitt@intel.com,
 	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 8/8] tests/intel/xe_drm_fdinfo: Also test target
- class with others-*
-Date: Tue,  7 Jan 2025 12:26:15 -0800
-Message-ID: <20250107202615.1306306-8-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v2 1/8] lib/xe/xe_gt: Fix header guards and boilerplate
+Date: Tue,  7 Jan 2025 12:26:08 -0800
+Message-ID: <20250107202615.1306306-1-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250107202615.1306306-1-lucas.demarchi@intel.com>
-References: <20250107202615.1306306-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,91 +67,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Like is done for others-idle, also check the target class in
-others-full-load. Start printing the target class as debug so it's easy
-to check what should be compared to 0 versus what should be compared to
-full load.
+Add proper header guard and remove author from comment: authorship is
+maintained in git, not as comment.
 
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ lib/xe/xe_gt.c | 3 ---
+ lib/xe/xe_gt.h | 8 +++++---
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index f9eca25ed..7330b4330 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -423,6 +423,8 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
- 	uint32_t vm;
- 	int new_fd;
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+index 1f4b42ed9..53554beb0 100644
+--- a/lib/xe/xe_gt.c
++++ b/lib/xe/xe_gt.c
+@@ -1,9 +1,6 @@
+ /* SPDX-License-Identifier: MIT */
+ /*
+  * Copyright © 2023 Intel Corporation
+- *
+- * Authors:
+- *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+  */
  
-+	igt_debug("Target class: %s\n", engine_map[hwe->engine_class]);
+ #include <fcntl.h>
+diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+index a4bb85679..756b5f38e 100644
+--- a/lib/xe/xe_gt.h
++++ b/lib/xe/xe_gt.h
+@@ -1,11 +1,11 @@
+ /* SPDX-License-Identifier: MIT */
+ /*
+  * Copyright © 2023 Intel Corporation
+- *
+- * Authors:
+- *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+  */
+ 
++#ifndef XE_GT_H
++#define XE_GT_H
 +
- 	if (flags & TEST_ISOLATION)
- 		new_fd = drm_reopen_driver(fd);
+ #include "lib/igt_gt.h"
  
-@@ -475,6 +477,8 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
- 	uint32_t timestamp;
- 	uint32_t vm;
- 
-+	igt_debug("Target class: %s\n", engine_map[hwe->engine_class]);
+ bool has_xe_gt_reset(int fd);
+@@ -14,3 +14,5 @@ igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 				unsigned int flags);
+ void xe_post_hang_ring(int fd, igt_hang_t arg);
+ int xe_gt_stats_get_count(int fd, int gt, const char *stat);
 +
- 	vm = xe_vm_create(fd, 0, 0);
- 	cork = xe_cork_create_opts(fd, hwe, vm, 1, 1);
- 	xe_cork_sync_start(fd, cork);
-@@ -504,6 +508,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
- 	uint32_t vm;
- 	int class;
- 
-+	igt_debug("Target class: %s\n", engine_map[hwe->engine_class]);
-+
- 	vm = xe_vm_create(fd, 0, 0);
- 	cork = xe_cork_create_opts(fd, hwe, vm, 1, 1);
- 	xe_cork_sync_start(fd, cork);
-@@ -535,6 +541,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
- 	uint32_t vm;
- 	int class;
- 
-+	igt_debug("Target class: %s\n", engine_map[hwe->engine_class]);
-+
- 	vm = xe_vm_create(fd, 0, 0);
- 
- 	/* spin on one hwe per class except the target class hwes */
-@@ -543,6 +551,7 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
- 
- 		if (_class == hwe->engine_class || cork[_class])
- 			continue;
-+
- 		cork[_class] = xe_cork_create_opts(fd, _hwe, vm, 1, 1);
- 		xe_cork_sync_start(fd, cork[_class]);
- 	}
-@@ -560,12 +569,12 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
- 		enum expected_load expected_load = hwe->engine_class == class ?
- 			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
- 
--		if (!cork[class])
--			continue;
--
--		check_results(pceu1, pceu2, class, 1, cork[class]->spin->timestamp,
-+		check_results(pceu1, pceu2, class, 1,
-+			      cork[class] ? cork[class]->spin->timestamp : 0,
- 			      expected_load);
--		xe_cork_destroy(fd, cork[class]);
-+
-+		if (cork[class])
-+			xe_cork_destroy(fd, cork[class]);
- 	}
- 
- 	xe_vm_destroy(fd, vm);
-@@ -649,6 +658,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
- 	if (num_placements < 2)
- 		return;
- 
-+	igt_debug("Target class: %s\n", engine_map[class]);
-+
- 	if (parallel) {
- 		width = num_placements;
- 		num_placements = 1;
++#endif
 -- 
 2.47.0
 
