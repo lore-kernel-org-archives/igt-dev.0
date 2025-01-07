@@ -4,59 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48FBBE77197
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 19:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 826D8E77198
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 19:55:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02DF110E76E;
-	Tue,  7 Jan 2025 19:07:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 22CE410E318;
+	Tue,  7 Jan 2025 19:55:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lsTmcz0B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lskBnWNI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67B7E10E76E
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 19:07:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F28910E318
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 19:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736276822; x=1767812822;
+ t=1736279707; x=1767815707;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=bCfjgWeD5sgiNQtOv1lijQO4nbqPh0RAlHNFH7ZX/2A=;
- b=lsTmcz0BweCvVaaIyBXh1K8igfEpUcSBPcpvV71G5ewtzWvQHV3yViBj
- hD6CUPewvvhoVPIfRtnT7djoI1eYsv3Gw6MVrfZgyqCaO66bEW58vEAYu
- M39NTmlxU9NgBOTPtYIDXDsXGKS6JXTRXnpGYB4nHWO8sbDGRPDSsc86R
- FGXxBdDpKh/bXVHc3cKEbwaRrwPTqQMpXVyGM8MSyslf37XasGwyB2BUI
- cr/gHzOFzwemGBsqbJQzrATnSpNdU3PObXFqLkSLQFX5stupWczoVEj0b
- 6S1oZobptUhfYHiaZ9QSX6TWUw4fGlv/0ywvNMaWlp4bkBMvXPk6qcVpv Q==;
-X-CSE-ConnectionGUID: 3JOfkUeUQ1yI+S/qXzkI3A==
-X-CSE-MsgGUID: QGUtWJY9SJe6pI9xNEIh3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="24084895"
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="24084895"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 11:07:02 -0800
-X-CSE-ConnectionGUID: PtEWDDN2T7CP2M47Yx05xA==
-X-CSE-MsgGUID: zxnMQ1nASM+sQy+6oQ308w==
+ bh=dQoT0aQj70EtYy5+GvKWg8YEN9iwQw37EbkSQ9qvGN4=;
+ b=lskBnWNIhmUHIS8E37SsDL+ABvmthaOY/95Y0O+0/1XCYIqxt9AF9dwl
+ Jd/Qsr/rtsC4eGDRKPoSgFXHBtRiOHy65yVkhsI/h6zR3qEa3mgRfV6Vc
+ dszcLkVIfu87rKokl3XT5USfmaFH0JgnnuIvFrml7070FTVgkfVxGR1SN
+ oT6rKLhUdjT8E8Lm9l1nyOfWW8AaNJU6znCKgYL5zhSWJe9x3vxaecoyy
+ gGfYGwWP6WUJKoMyxsAoNmwqBXhX3wOCqwV0M9wtcP8iXDI9x4r/R0HLT
+ D2QEy3Rz/uwrM0+x3U4RvDVwT5x4z7PFknZEfpmOP4itJtNXgN9VR7GwH Q==;
+X-CSE-ConnectionGUID: 6h2fLCF1SOuR09oaAFC/dQ==
+X-CSE-MsgGUID: mml4qDkhTo2bXLE4oZ0xrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="36504840"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="36504840"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2025 11:55:06 -0800
+X-CSE-ConnectionGUID: 63BC926lTLKM8HxdBIf67A==
+X-CSE-MsgGUID: 0HfYlYO9Tl28cmv44VVCZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133710556"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
- ([10.125.110.171])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 11:07:02 -0800
-Date: Tue, 7 Jan 2025 13:06:54 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
- "Nerlige Ramappa, Umesh" <umesh.nerlige.ramappa@intel.com>
-Subject: Re: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on
- usage percentage
-Message-ID: <akco7iuptjbgq4bkysj4vzdlf22alilycmdn4by5mimte3tmoi@qu5fo7nnxl6v>
-References: <20250104071548.737612-1-lucas.demarchi@intel.com>
- <20250104071548.737612-8-lucas.demarchi@intel.com>
- <CH0PR11MB54446EFE4FE2FA4E88C65025E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="107738253"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 11:55:04 -0800
+Date: Tue, 7 Jan 2025 20:54:47 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ DeX77 <dex@dragonslave.de>, Jim Warner <james.warner@comcast.net>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_aux.c: since procps-ng 4.0.5, PIDS_VAL()
+ takes 3 arguments, not 4
+Message-ID: <20250107195447.v5fvx2jbg2jduyxa@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ DeX77 <dex@dragonslave.de>, Jim Warner <james.warner@comcast.net>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+References: <20250103222628.4069004-1-thomas.petazzoni@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CH0PR11MB54446EFE4FE2FA4E88C65025E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
+In-Reply-To: <20250103222628.4069004-1-thomas.petazzoni@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,225 +77,96 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jan 06, 2025 at 10:58:34PM +0000, Cavitt, Jonathan wrote:
->-----Original Message-----
->From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Lucas De Marchi
->Sent: Friday, January 3, 2025 11:16 PM
->To: igt-dev@lists.freedesktop.org
->Cc: De Marchi, Lucas <lucas.demarchi@intel.com>; Nerlige Ramappa, Umesh <umesh.nerlige.ramappa@intel.com>
->Subject: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on usage percentage
->>
->> It's unreliable to assert on the usage percentage considering 2 data
->> points as it still depends on the CPU scheduling not preempting tasks in
->> the wrong moment. On a normal use case of a top-like application, the
->> value not accounted for would simply show up in the next sample without
->> much issue. For a test assertion, it's better to check that the value
->> reported via fdinfo is reasonably close to the one saved by the GPU in
->> the spin. It's still allowed some error because there are a few GPU
->> ticks of difference due to the **GPU** scheduling the contexts.
->>
->> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->
->There's a few nits/questions below, but I trust that everything is in
->order, so nothing below is particularly blocking.  If I did manage to
->catch something that needs fixing, then of course that should be
->fixed, but otherwise:
->Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
->
->> ---
->>  tests/intel/xe_drm_fdinfo.c | 49 +++++++++++++++++++++++--------------
->>  1 file changed, 31 insertions(+), 18 deletions(-)
->>
->> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
->> index 1089e5119..120436fbe 100644
->> --- a/tests/intel/xe_drm_fdinfo.c
->> +++ b/tests/intel/xe_drm_fdinfo.c
->> @@ -3,6 +3,8 @@
->>   * Copyright (c) 2023 Intel Corporation
->>   */
->>
->> +#include <math.h>
->> +
->>  #include "igt.h"
->>  #include "igt_core.h"
->>  #include "igt_device.h"
->> @@ -371,7 +373,8 @@ static void basic_engine_utilization(int xe)
->>
->>  static void
->>  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
->> -	      int class, int width, enum expected_load expected_load)
->> +	      int class, int width, uint32_t spin_stamp,
->> +	      enum expected_load expected_load)
->>  {
->>  	double percent;
->>  	u64 den, num;
->> @@ -383,12 +386,9 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
->>
->>  	num = s2[class].cycles - s1[class].cycles;
->>  	den = s2[class].total_cycles - s1[class].total_cycles;
->> -	percent = (num * 100.0) / (den + 1);
->> -
->> -	/* for parallel submission scale the busyness with width */
->> -	percent /= width;
->>
->> -	igt_debug("%s: percent: %f\n", engine_map[class], percent);
->> +	percent = (num * 100.0) / (den + 1) / width;
->
->Nit:
->There's probably an argument to be made that we didn't need to modify
->the calculation here because the end result is still the same and it loses
->a (presumably) helpful comment, but I won't block on it.
+Hi Thomas,
+On 2025-01-03 at 23:26:28 +0100, Thomas Petazzoni wrote:
 
-ok, adding that back
+I have few small nits (could be addressed at merge) and
+one question to Jim.
 
->
->Also, is this percentage correct given the test modifications?
->Maybe we should be dividing by spin_stamp + 1 instead, since that's what
->we're using to calculate the percentage later?
+In subject, you do not need to cite file extensions, so better:
 
-nah.. there are 2 percentages here. This one I decided to leave as a
-debug print... it's still useful to check we are ~100% utilization. I
-just don't want the test to assert that anymore as it's noisy when there
-are things disrupting the test execution.
+[PATCH i-g-t] lib/igt_aux: since procps-ng 4.0.5, PIDS_VAL() takes 3 arguments, not 4
 
->
->> +	igt_debug("%s: percent: %.2f%%\n", engine_map[class], percent);
->>
->>  	switch (expected_load) {
->>  	case EXPECTED_LOAD_IDLE:
->> @@ -396,11 +396,12 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
->>  		break;
->>  	case EXPECTED_LOAD_FULL:
->>  		/*
->> -		 * We are still relying on CPU sleep time and there could be
->> -		 * some imprecision when calculating the load. Use a 5% margin.
->> +		 * percentage error between value saved by gpu in xe_spin and what
->> +		 * is reported via fdinfo
->
->Nit:
->s/percentage/Percentage
->
->>  		 */
->> -		igt_assert_lt_double(95.0, percent);
->> -		igt_assert_lt_double(percent, 105.0);
->> +		percent = fabs((num - spin_stamp) * 100.0) / (spin_stamp + 1);
->
->Nit:
->Shouldn't we also be dividing by width here?  I'm just asking because that's
+> Unfortunately, the API of procps-ng has changed between procps-ng
+> 4.0.4 and procps-ng 4.0.5, with the PIDS_VAL() macro changing in
+> upstream commit
+> https://gitlab.com/procps-ng/procps/-/commit/967fdcfb06e20aad0f31073474cb94545c9bdea5.
 
-actually spin_stamp should be multiplied by width, which should also
-fix the errors reported by CI - I happened to test it only on machines
-that had 1 CCS so didn't reproduce any issue on virtual/parallel. My
-bad.  I'm adding a fix and sending as v2.
+Please do not use dots '.' nor commas ',' at end of links, so better:
 
-thanks
-Lucas De Marchi
+https://gitlab.com/procps-ng/procps/-/commit/967fdcfb06e20aad0f31073474cb94545c9bdea5
 
->what we were doing before, and it looks like spin_stamp is being used here
->as a stand-in for the "den" variable in the earlier percent calculation.
->
->> +		igt_debug("%s: error: %.2f%%\n", engine_map[class], percent);
->> +		igt_assert_lt_double(percent, 5.0);
->>  		break;
->>  	}
->>  }
->> @@ -438,14 +439,17 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
->>
->>  	expected_load = flags & TEST_BUSY ?
->>  	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
->> -	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1, expected_load);
->> +
->> +	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1,
->> +		      cork ? cork->spin->timestamp : 0, expected_load);
->>
->>  	if (flags & TEST_ISOLATION) {
->>  		/*
->>  		 * Load from one client shouldn't spill on another,
->>  		 * so check for idle
->>  		 */
->> -		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, EXPECTED_LOAD_IDLE);
->> +		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, 0,
->> +			      EXPECTED_LOAD_IDLE);
->>  		close(new_fd);
->>  	}
->>
->> @@ -461,6 +465,7 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
->>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
->>  	struct xe_cork *cork;
->> +	uint32_t timestamp;
->>  	uint32_t vm;
->>
->>  	vm = xe_vm_create(fd, 0, 0);
->> @@ -472,13 +477,15 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
->>
->>  	/* destroy queue before sampling again */
->>  	xe_cork_sync_end(fd, cork);
->> +	timestamp = cork->spin->timestamp;
->>  	xe_cork_destroy(fd, cork);
->>
->>  	read_engine_cycles(fd, pceu2);
->>
->>  	xe_vm_destroy(fd, vm);
->>
->> -	check_results(pceu1, pceu2, hwe->engine_class, 1, EXPECTED_LOAD_FULL);
->> +	check_results(pceu1, pceu2, hwe->engine_class, 1, timestamp,
->> +		      EXPECTED_LOAD_FULL);
->>  }
->>
->>  static void
->> @@ -503,7 +510,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
->>  		enum expected_load expected_load = hwe->engine_class != class ?
->>  			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
->>
->> -		check_results(pceu1, pceu2, class, 1, expected_load);
->> +		check_results(pceu1, pceu2, class, 1, cork->spin->timestamp,
->> +			      expected_load);
->>  	}
->>
->>  	xe_cork_destroy(fd, cork);
->> @@ -547,7 +555,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
->>  		if (!cork[class])
->>  			continue;
->>
->> -		check_results(pceu1, pceu2, class, 1, expected_load);
->> +		check_results(pceu1, pceu2, class, 1, cork[class]->spin->timestamp,
->> +			      expected_load);
->>  		xe_cork_destroy(fd, cork[class]);
->>  	}
->>
->> @@ -585,7 +594,9 @@ utilization_all_full_load(int fd)
->>  		if (!cork[class])
->>  			continue;
->>
->> -		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
->> +		check_results(pceu1, pceu2, class, 1,
->> +			      cork[class]->spin->timestamp,
->> +			      EXPECTED_LOAD_FULL);
->>  		xe_cork_destroy(fd, cork[class]);
->>  	}
->>
->> @@ -657,14 +668,16 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
->>
->>  	expected_load = flags & TEST_BUSY ?
->>  	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
->> -	check_results(pceu[0], pceu[1], class, width, expected_load);
->> +
->> +	check_results(pceu[0], pceu[1], class, width,
->> +		      cork ? cork->spin->timestamp : 0, expected_load);
->>
->>  	if (flags & TEST_ISOLATION) {
->>  		/*
->>  		 * Load from one client shouldn't spill on another,
->>  		 * so check for idle
->>  		 */
->> -		check_results(pceu_spill[0], pceu_spill[1], class, width,
->> +		check_results(pceu_spill[0], pceu_spill[1], class, width, 0,
->>  			      EXPECTED_LOAD_IDLE);
->>  		close(fd_spill);
->>  	}
->> --
->> 2.47.0
->>
->>
+> 
+> This API breakage has been reported upstream as of
+> https://gitlab.com/procps-ng/procps/-/issues/366, but in the mean
+> time, the build of igt-gpu-tools breaks with:
+
+Same here, no ',' so better:
+
+https://gitlab.com/procps-ng/procps/-/issues/366
+but in the mean time, the build of igt-gpu-tools breaks with:
+
+And last question to Jim, do we really need an ABI break in lib?
+Why not just make new macro PIDS_VAL3 with three params?
+And change old one to drop 4th param?
+
+> 
+> ../lib/igt_aux.c:1358:78: error: macro "PIDS_VAL" passed 4 arguments, but takes just 3
+> 
+> We fix this by detecting the version of the libproc2 library, and
+> adjusting accordingly how PIDS_VAL() gets used.
+> 
+
++cc
+Cc: DeX77 <dex@dragonslave.de>
+Cc: Jim Warner <james.warner@comcast.net>
+
+Regards,
+Kamil
+
+
+> Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+> ---
+>  lib/igt_aux.c | 7 +++++++
+>  meson.build   | 3 +++
+>  2 files changed, 10 insertions(+)
+> 
+> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+> index 3407cc4f2..f5bf48da6 100644
+> --- a/lib/igt_aux.c
+> +++ b/lib/igt_aux.c
+> @@ -1358,10 +1358,17 @@ static bool get_process_ids(struct igt_process *prcs)
+>  	prcs->comm = NULL;
+>  	prcs->stack = procps_pids_get(prcs->info, PIDS_FETCH_TASKS_ONLY);
+>  	if (prcs->stack) {
+> +#if defined(HAVE_LIBPROC2_POST_4_0_5_API)
+> +		prcs->tid = PIDS_VAL(EU_PID, s_int, prcs->stack);
+> +		prcs->euid = PIDS_VAL(EU_EUID, s_int, prcs->stack);
+> +		prcs->egid = PIDS_VAL(EU_EGID, s_int, prcs->stack);
+> +		prcs->comm = PIDS_VAL(EU_CMD, str, prcs->stack);
+> +#else
+>  		prcs->tid = PIDS_VAL(EU_PID, s_int, prcs->stack, prcs->info);
+>  		prcs->euid = PIDS_VAL(EU_EUID, s_int, prcs->stack, prcs->info);
+>  		prcs->egid = PIDS_VAL(EU_EGID, s_int, prcs->stack, prcs->info);
+>  		prcs->comm = PIDS_VAL(EU_CMD, str, prcs->stack, prcs->info);
+> +#endif
+>  	}
+>  #endif
+>  	return prcs->tid != 0;
+> diff --git a/meson.build b/meson.build
+> index 8b2a2a64a..f3e645c4d 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -139,6 +139,9 @@ if libprocps.found()
+>    config.set('HAVE_LIBPROCPS', 1)
+>  elif libproc2.found()
+>    config.set('HAVE_LIBPROC2', 1)
+> +  if libproc2.version().version_compare('>= 4.0.5')
+> +    config.set('HAVE_LIBPROC2_POST_4_0_5_API', 1)
+> +  endif
+>  else
+>    error('Either libprocps or libproc2 is required')
+>  endif
+> -- 
+> 2.47.1
+> 
