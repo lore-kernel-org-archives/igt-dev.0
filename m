@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93147E77197
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C1CE77199
 	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 20:28:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 49E3F10E790;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A2D0610E31D;
 	Tue,  7 Jan 2025 20:28:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nc/0rvU8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VIozSu8R";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6B1C10E790
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D77D10E790
  for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 20:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1736281685; x=1767817685;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=X+L+pSlP8h4S0t54zmp0jdWq8yJW8AhWCKoyRcHglvk=;
- b=Nc/0rvU8STlaeYxYFd9hRKs/Kk/2zlB2IpLmqn69DwTDaLLAXhrir11O
- 2X7ooMxCYlXh0Rlv3b+nCd/2BZXwLl8030EEuLJBohDBb9D8RQF+Vgs/M
- 3Djp0PLl5sLjucpxw0zPbpOqSYwJGIDn7I8qv8sAdX4NigSS9UrjuA/Xm
- gNbfveoiUJ4NqzMliVrI+4VrC/bNMxeahjy29q60XlG47BnNDLswYldog
- P9k+YI2qSfXkn41tJb5R6bMQli7uKa6fAfGDC/vGCWZeUWWdnpCpKPxJi
- mC96hWoKQMks9m+mK4bnf8hYAgeFt3oKB0L3EAZmNFpjDPgWFJQAs4HTk Q==;
-X-CSE-ConnectionGUID: MhPsdOswTiqX+Jh+Jl3DIw==
-X-CSE-MsgGUID: 2DmlRjO3RZ+phmSDQj3VcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="39309011"
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="39309011"
+ bh=W+/tvZoMP7qpqP10aSmCtEAUBgIRAUGP7d+zwrSpDk8=;
+ b=VIozSu8RbOOT2TLQyTo95kiKcXdRrpielgWGiScl6Fv48h4QcmH+/mHu
+ yBfGiRzB8zzSFCNHOvASAN94vbDAAvUziJQCoA/GfV3oadXpv7I3TuO8b
+ 5Y9YYYWdbLdLAMvkR/5yzqUY5mNYGoKNYSfttpxgsJ9YQ+6kQhjuZxL/s
+ mB54aE4qQJ9ny7OIwoZ2lk20Il1qovuz4LCgwWu6D6ayz4w10n4cYRcev
+ /qK9KXMpfN6J6vY8QG/oidrEuHn6g7NSPM5/gJd9xuufD1JvgneHHdSjf
+ 2gvTlEmOPikEgLryEyCpjdqT3AaiIye4q+NVp/B0c4+6vKWCK9Tv9gffM A==;
+X-CSE-ConnectionGUID: EqEGc2N8RwmxzkUFVsUzUQ==
+X-CSE-MsgGUID: 7FIYHcnqSeaeO8hrS9aIkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="39309009"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="39309009"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Jan 2025 12:28:05 -0800
-X-CSE-ConnectionGUID: juvYuPXDQRa23OW+wQfeGA==
-X-CSE-MsgGUID: Wz0mQ0NcQAyS5OeBIOYd6Q==
+X-CSE-ConnectionGUID: Tpv992OVTvq2g8dz4Q2+SQ==
+X-CSE-MsgGUID: 62+mK3kPTgmnxa33bGznfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133725683"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133725677"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 12:28:05 -0800
+ 07 Jan 2025 12:28:04 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jonathan.cavitt@intel.com,
 	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 4/8] lib/xe: Split nsec to ticks abstraction
-Date: Tue,  7 Jan 2025 12:26:11 -0800
-Message-ID: <20250107202615.1306306-4-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v2 2/8] lib/xe: Move functions from xe_util to xe_gt
+Date: Tue,  7 Jan 2025 12:26:09 -0800
+Message-ID: <20250107202615.1306306-2-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250107202615.1306306-1-lucas.demarchi@intel.com>
 References: <20250107202615.1306306-1-lucas.demarchi@intel.com>
@@ -68,255 +68,307 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are 2 things happening here: one is converting time in nanoseconds
-to ticks by using the refclock, and another asserting a spin duration is
-not so close to the maximum duration since there needs to be room for
-context switch.
-
-Move the time conversion to xe_util.c and adjust it to maintain
-namespace and have better names.  Places that do the time conversion to
-pass to xe_spin then use the xe_spin_nsec_to_ticks() wrapper to
-calculate the ticks.
+Some functions are clearly gt-related, so move them to xe_gt.
 
 Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- benchmarks/gem_wsim.c           |  8 +++---
- lib/xe/xe_spin.c                | 47 +++++++++------------------------
- lib/xe/xe_spin.h                |  5 ++--
- lib/xe/xe_util.c                | 40 ++++++++++++++++++++++++++++
- lib/xe/xe_util.h                |  2 ++
- tests/intel/xe_exec_mix_modes.c |  3 ++-
- tests/intel/xe_spin_batch.c     |  2 +-
- 7 files changed, 64 insertions(+), 43 deletions(-)
+ lib/xe/xe_gt.c                 | 67 ++++++++++++++++++++++++++++++++++
+ lib/xe/xe_gt.h                 |  8 ++++
+ lib/xe/xe_util.c               | 67 ----------------------------------
+ lib/xe/xe_util.h               |  7 ----
+ tests/intel/xe_drm_fdinfo.c    |  3 +-
+ tests/intel/xe_exec_balancer.c |  2 +-
+ tests/intel/xe_exec_reset.c    |  2 +-
+ tests/intel/xe_exec_threads.c  |  2 +-
+ tests/intel/xe_gt_freq.c       |  2 +-
+ tests/intel/xe_pm_residency.c  |  3 +-
+ 10 files changed, 83 insertions(+), 80 deletions(-)
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index c4fd00a6a..454b6f017 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -1797,8 +1797,8 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	xe_vm_bind_sync(fd, vm->id, w->bb_handle, 0, w->xe.exec.address, w->bb_size);
- 	xe_spin_init_opts(&w->xe.data->spin, .addr = w->xe.exec.address,
- 				   .preempt = (w->preempt_us > 0),
--				   .ctx_ticks = duration_to_ctx_ticks(fd, eq->hwe_list[0].gt_id,
--								1000LL * get_duration(wrk, w)));
-+				   .ctx_ticks = xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
-+								      1000LL * get_duration(wrk, w)));
- 	w->xe.exec.exec_queue_id = eq->id;
- 	w->xe.exec.num_batch_buffer = 1;
- 	/* always at least one out fence */
-@@ -2655,8 +2655,8 @@ static void do_xe_exec(struct workload *wrk, struct w_step *w)
- 		xe_spin_init_opts(&w->xe.data->spin,
- 				  .addr = w->xe.exec.address,
- 				  .preempt = (w->preempt_us > 0),
--				  .ctx_ticks = duration_to_ctx_ticks(fd, eq->hwe_list[0].gt_id,
--								1000LL * get_duration(wrk, w)));
-+				  .ctx_ticks = xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
-+								     1000LL * get_duration(wrk, w)));
- 	xe_exec(fd, &w->xe.exec);
- }
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+index 53554beb0..e1f353b41 100644
+--- a/lib/xe/xe_gt.c
++++ b/lib/xe/xe_gt.c
+@@ -174,3 +174,70 @@ int xe_gt_stats_get_count(int fd, int gt, const char *stat)
  
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 2bde55856..333f8d7d8 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -13,43 +13,12 @@
- #include "igt_core.h"
- #include "igt_syncobj.h"
- #include "intel_reg.h"
-+
- #include "xe_ioctl.h"
- #include "xe_spin.h"
-+#include "xe_util.h"
- 
--static uint32_t read_timestamp_frequency(int fd, int gt_id)
--{
--	struct xe_device *dev = xe_device_get(fd);
--
--	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
--	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
--
--	return dev->gt_list->gt_list[gt_id].reference_clock;
--}
--
--static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
--{
--	igt_assert(y > 0);
--	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
--
--	return (x + y - 1) / y;
--}
--
--/**
-- * duration_to_ctx_ticks:
-- * @fd: opened device
-- * @gt_id: tile id
-- * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
-- * @return: duration converted to context timestamp ticks.
-- */
--uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
--{
--	uint32_t f = read_timestamp_frequency(fd, gt_id);
--	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
--
--	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
--
--	return ctx_ticks;
--}
-+#define XE_SPIN_MAX_CTX_TICKS (UINT32_MAX - 1000)
- 
- #define MI_SRM_CS_MMIO				(1 << 19)
- #define MI_LRI_CS_MMIO				(1 << 19)
-@@ -60,6 +29,16 @@ uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
- 
- enum { START_TS, NOW_TS };
- 
-+
-+uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
-+{
-+	uint32_t ticks = xe_nsec_to_ticks(fd, gt_id, nsec);
-+
-+	igt_assert_lt_u64(ticks, XE_SPIN_MAX_CTX_TICKS);
-+
-+	return ticks;
-+}
-+
- /**
-  * xe_spin_init:
-  * @spin: pointer to mapped bo in which spinner code will be written
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index 593065bc0..f104fbaf5 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -15,8 +15,6 @@
- #include "xe_query.h"
- #include "lib/igt_dummyload.h"
- 
--#define XE_SPIN_MAX_CTX_TICKS (UINT32_MAX - 1000)
--
- /** struct xe_spin_opts
-  *
-  * @addr: offset of spinner within vm
-@@ -68,7 +66,6 @@ struct xe_cork {
- };
- 
- igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
--uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
- void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
- struct xe_cork *
- xe_cork_create(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
-@@ -82,6 +79,8 @@ void xe_cork_destroy(int fd, struct xe_cork *ctx);
- #define xe_spin_init_opts(fd, ...) \
- 	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
- 
-+uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec);
-+
- bool xe_spin_started(struct xe_spin *spin);
- void xe_spin_sync_wait(int fd, struct igt_spin *spin);
- void xe_spin_wait_started(struct xe_spin *spin);
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index f0b6bbb2d..06b378ce0 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -4,9 +4,11 @@
-  */
- 
- #include "igt.h"
-+#include "igt_core.h"
- #include "igt_syncobj.h"
- #include "igt_sysfs.h"
- #include "intel_pat.h"
-+
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
-@@ -235,3 +237,41 @@ void xe_bind_unbind_async(int xe, uint32_t vm, uint32_t bind_engine,
- 
- 	free(bind_ops);
+ 	return count;
  }
 +
-+static uint32_t reference_clock(int fd, int gt_id)
++/**
++ * xe_is_gt_in_c6:
++ * @fd: pointer to xe drm fd
++ * @gt: gt number
++ *
++ * Check if GT is in C6 state
++ */
++bool xe_is_gt_in_c6(int fd, int gt)
 +{
-+	struct xe_device *dev = xe_device_get(fd);
-+	uint32_t refclock;
++	char gt_c_state[16];
++	int gt_fd;
 +
-+	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
-+	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
++	gt_fd = xe_sysfs_gt_open(fd, gt);
++	igt_assert(gt_fd >= 0);
++	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_status", "%s", gt_c_state) == 1);
++	close(gt_fd);
 +
-+	refclock = dev->gt_list->gt_list[gt_id].reference_clock;
-+
-+	igt_assert_lt(0, refclock);
-+
-+	return refclock;
-+}
-+
-+static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-+{
-+	igt_assert(y > 0);
-+	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
-+
-+	return (x + y - 1) / y;
++	return strcmp(gt_c_state, "gt-c6") == 0;
 +}
 +
 +/**
-+ * xe_nsec_to_ticks: convert time in nanoseconds to timestamp ticks
-+ * @fd: opened device
-+ * @gt_id: tile id
-+ * @nsec: time in nanoseconds
++ * xe_gt_fill_engines_by_class:
++ * @fd: pointer to xe drm fd
++ * @gt: gt number
++ * @class: engine class to use to filter engines
++ * @eci: output argument to copy engines to
 + *
-+ * Return: Time converted to context timestamp ticks.
++ * Fill out @drm_xe_engine_class_instance with all the engines in @gt that have
++ * a certain @class.
++ *
++ * Return: number of engines that match the gt and clas
 + */
-+uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
++int xe_gt_fill_engines_by_class(int fd, int gt, int class,
++				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE])
 +{
-+	uint32_t refclock = reference_clock(fd, gt_id);
++	struct drm_xe_engine_class_instance *hwe;
++	int n = 0;
 +
-+	return div64_u64_round_up(nsec * refclock, NSEC_PER_SEC);
++	xe_for_each_engine(fd, hwe)
++		if (hwe->engine_class == class && hwe->gt_id == gt)
++			eci[n++] = *hwe;
++
++	return n;
 +}
++
++/**
++ * xe_gt_count_engines_by_class:
++ * @fd: pointer to xe drm fd
++ * @gt: gt number
++ * @class: engine class to use to filter engines
++ *
++ * Count number of engines in @gt that have a certain @class.
++ *
++ * Return: number of engines that match the gt and clas
++ */
++int xe_gt_count_engines_by_class(int fd, int gt, int class)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	int n = 0;
++
++	xe_for_each_engine(fd, hwe)
++		if (hwe->engine_class == class && hwe->gt_id == gt)
++			n++;
++
++	return n;
++}
+diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+index 756b5f38e..47569cec3 100644
+--- a/lib/xe/xe_gt.h
++++ b/lib/xe/xe_gt.h
+@@ -8,6 +8,8 @@
+ 
+ #include "lib/igt_gt.h"
+ 
++#include "xe_query.h"
++
+ bool has_xe_gt_reset(int fd);
+ void xe_force_gt_reset_all(int fd);
+ igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+@@ -15,4 +17,10 @@ igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ void xe_post_hang_ring(int fd, igt_hang_t arg);
+ int xe_gt_stats_get_count(int fd, int gt, const char *stat);
+ 
++bool xe_is_gt_in_c6(int fd, int gt);
++
++int xe_gt_fill_engines_by_class(int fd, int gt, int class,
++				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE]);
++int xe_gt_count_engines_by_class(int fd, int gt, int class);
++
+ #endif
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 9482819c2..f0b6bbb2d 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -235,70 +235,3 @@ void xe_bind_unbind_async(int xe, uint32_t vm, uint32_t bind_engine,
+ 
+ 	free(bind_ops);
+ }
+-
+-/**
+- * xe_is_gt_in_c6:
+- * @fd: pointer to xe drm fd
+- * @gt: gt number
+- *
+- * Check if GT is in C6 state
+- */
+-bool xe_is_gt_in_c6(int fd, int gt)
+-{
+-	char gt_c_state[16];
+-	int gt_fd;
+-
+-	gt_fd = xe_sysfs_gt_open(fd, gt);
+-	igt_assert(gt_fd >= 0);
+-	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_status", "%s", gt_c_state) == 1);
+-	close(gt_fd);
+-
+-	return strcmp(gt_c_state, "gt-c6") == 0;
+-}
+-
+-/**
+- * xe_gt_fill_engines_by_class:
+- * @fd: pointer to xe drm fd
+- * @gt: gt number
+- * @class: engine class to use to filter engines
+- * @eci: output argument to copy engines to
+- *
+- * Fill out @drm_xe_engine_class_instance with all the engines in @gt that have
+- * a certain @class.
+- *
+- * Return: number of engines that match the gt and clas
+- */
+-int xe_gt_fill_engines_by_class(int fd, int gt, int class,
+-				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE])
+-{
+-	struct drm_xe_engine_class_instance *hwe;
+-	int n = 0;
+-
+-	xe_for_each_engine(fd, hwe)
+-		if (hwe->engine_class == class && hwe->gt_id == gt)
+-			eci[n++] = *hwe;
+-
+-	return n;
+-}
+-
+-/**
+- * xe_gt_count_engines_by_class:
+- * @fd: pointer to xe drm fd
+- * @gt: gt number
+- * @class: engine class to use to filter engines
+- *
+- * Count number of engines in @gt that have a certain @class.
+- *
+- * Return: number of engines that match the gt and clas
+- */
+-int xe_gt_count_engines_by_class(int fd, int gt, int class)
+-{
+-	struct drm_xe_engine_class_instance *hwe;
+-	int n = 0;
+-
+-	xe_for_each_engine(fd, hwe)
+-		if (hwe->engine_class == class && hwe->gt_id == gt)
+-			n++;
+-
+-	return n;
+-}
 diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-index c544d912f..06ebd3c2a 100644
+index b9fbfc5cd..c544d912f 100644
 --- a/lib/xe/xe_util.h
 +++ b/lib/xe/xe_util.h
-@@ -47,4 +47,6 @@ void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
+@@ -47,11 +47,4 @@ void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
  			  struct igt_list_head *obj_list,
  			  uint32_t sync_in, uint32_t sync_out);
  
-+uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t ns);
-+
+-bool xe_is_gt_in_c6(int fd, int gt);
+-
+-int xe_gt_fill_engines_by_class(int fd, int gt, int class,
+-				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE]);
+-int xe_gt_count_engines_by_class(int fd, int gt, int class);
+-
+-
  #endif /* XE_UTIL_H */
-diff --git a/tests/intel/xe_exec_mix_modes.c b/tests/intel/xe_exec_mix_modes.c
-index eeae9d122..0bcd49cc0 100644
---- a/tests/intel/xe_exec_mix_modes.c
-+++ b/tests/intel/xe_exec_mix_modes.c
-@@ -22,6 +22,7 @@
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index 0d1cbfe59..6144caafc 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -8,11 +8,12 @@
+ #include "igt_device.h"
+ #include "igt_drm_fdinfo.h"
+ #include "lib/igt_syncobj.h"
++
+ #include "xe_drm.h"
++#include "xe/xe_gt.h"
  #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
  #include "xe/xe_spin.h"
-+#include "xe/xe_util.h"
+-#include "xe/xe_util.h"
+ 
+ /**
+  * TEST: xe drm fdinfo
+diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+index 1e552e9ef..bc15cc0f8 100644
+--- a/tests/intel/xe_exec_balancer.c
++++ b/tests/intel/xe_exec_balancer.c
+@@ -19,10 +19,10 @@
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+ 
++#include "xe/xe_gt.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xe/xe_spin.h"
+-#include "xe/xe_util.h"
  #include <string.h>
  
- #define FLAG_EXEC_MODE_LR	(0x1 << 0)
-@@ -132,7 +133,7 @@ run_job(int fd, struct drm_xe_engine_class_instance *hwe,
+ /**
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index a3eaf8bbf..e2557f345 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -21,8 +21,8 @@
  
- 	if (job_type == SPINNER_INTERRUPTED) {
- 		spin_opts.addr = addr + (char *)&data[SPIN_DATA].spin - (char *)data;
--		spin_opts.ctx_ticks = duration_to_ctx_ticks(fd, 0, duration_ns);
-+		spin_opts.ctx_ticks = xe_spin_nsec_to_ticks(fd, 0, duration_ns);
- 		xe_spin_init(&data[SPIN_DATA].spin, &spin_opts);
- 		if (engine_execution_mode == EXEC_MODE_LR)
- 			sync[0].addr = addr + (char *)&data[SPIN_DATA].exec_sync - (char *)data;
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index 0ad2490a0..5d9afaf3d 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -277,7 +277,7 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
- 	xe_vm_bind_sync(fd, vm, bo, 0, spin_addr, bo_size);
- 	xe_spin_init_opts(spin, .addr = spin_addr,
- 				.preempt = true,
--				.ctx_ticks = duration_to_ctx_ticks(fd, 0, duration_ns));
-+				.ctx_ticks = xe_spin_nsec_to_ticks(fd, 0, duration_ns));
- 	exec.address = spin_addr;
- 	exec.exec_queue_id = exec_queue;
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_gt.h"
+ #include "xe/xe_spin.h"
+-#include "xe/xe_util.h"
+ #include <string.h>
  
+ #define SYNC_OBJ_SIGNALED	(0x1 << 0)
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 661117bed..be5549c84 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -21,8 +21,8 @@
+ 
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_gt.h"
+ #include "xe/xe_spin.h"
+-#include "xe/xe_util.h"
+ #include <string.h>
+ 
+ #define MAX_N_EXEC_QUEUES	16
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index de4d111ea..a4791071f 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -17,10 +17,10 @@
+ #include "igt_sysfs.h"
+ 
+ #include "xe_drm.h"
++#include "xe/xe_gt.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_spin.h"
+ #include "xe/xe_query.h"
+-#include "xe/xe_util.h"
+ 
+ #include <string.h>
+ #include <sys/time.h>
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index d4b26b231..8a9e2c89e 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -21,9 +21,10 @@
+ #include "igt_sysfs.h"
+ 
+ #include "lib/igt_syncobj.h"
++
+ #include "xe/xe_ioctl.h"
++#include "xe/xe_gt.h"
+ #include "xe/xe_query.h"
+-#include "xe/xe_util.h"
+ 
+ #define NUM_REPS 16 /* No of Repetitions */
+ #define SLEEP_DURATION 3 /* in seconds */
 -- 
 2.47.0
 
