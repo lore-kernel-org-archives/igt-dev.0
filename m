@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E162DE77199
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 20:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26F1DE7719C
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 20:28:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F96310E7A1;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF80610E7A2;
 	Tue,  7 Jan 2025 20:28:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MPYrmRTT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tn5lgqus";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A17A10E31D
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 20:28:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 348EB10E793
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 20:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736281685; x=1767817685;
+ t=1736281686; x=1767817686;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/pbHShNdVZCPTZBLiAoSzYXcYWsXyYaf8n+1oKI8sG8=;
- b=MPYrmRTT9v4QACkjaY/AVqmUDiPCrOGkij5VzwYBwo23HQAyKp5bOA/z
- H+Umuluj6O9sVp0iOeYy0wUcH7orKgFRYFVWUhxeiHgK3id8R6YT8DFx9
- tMVoxbhb8C/McYdHnbhg1CJw6ySi4STspORdvR7NMABBmV6lk6VLhPnua
- rHycpATtU3kvCkoCF3QPMFQWpXla9HU3neDXWnRNllwrci24om6PPx3Uv
- sTB6r0ZquDzJGFHrvR6I8gqRAy2yZBhWqtrhi2ybj9SHO21TRS/M6/Jy2
- FgHD12lCeP2XG8h1nHU6TDuJqM0yosoB/C/EB4sMKw9BfiIavmIgAgQvB Q==;
-X-CSE-ConnectionGUID: p6kzEAdCStSw+lA/UjtJzA==
-X-CSE-MsgGUID: 9KeiE3YvQf258BY8Auyc2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="39309010"
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="39309010"
+ bh=bfWn5bSGFZGfTgSKrKTOWkUvdLskgity3l6S+f7UolY=;
+ b=Tn5lgqusO9C4QKEvsWGcMPEFpGEW9TWYP0IMYxtU2B+AMwhJovB6mkVe
+ SI6DE/b6BhCdxFxcfAC6oWI5dyOW4Ro7TRCA2Fi+EFuciI1ImcKkKCGs1
+ TMQg+fEIAUcIVKBPcTnEesJUqmNMCJhlMm5ckemb76uHLsOoDeDE2x6mi
+ y5Ug0Bun3gP0cBrA6dGakwwCovl/FeQC5Eo3JI7htr7pqSNsFdRfKFzu0
+ 1V/hRVWBDJ75GgkUn1UhGQBPJPu8yRuLL5KGs72ol2aYKrS1Pw5YVmCBQ
+ 2oOPoTp31sPzi41PKFLpYpAe8l47KNDt9q5G0MZgBdgvh/JVA0vcpA48X Q==;
+X-CSE-ConnectionGUID: uae3meMFQX+oiL3KdDKOwA==
+X-CSE-MsgGUID: oWDhmcNZQLGQlGe0Ui0NyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="39309014"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="39309014"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Jan 2025 12:28:05 -0800
-X-CSE-ConnectionGUID: qwW7sZXETV6iSnJyAjxeoA==
-X-CSE-MsgGUID: /BoPmIK2TTC0Tc65eQb08g==
+X-CSE-ConnectionGUID: Y0NNCSfvSB+Ep9TEeiEABA==
+X-CSE-MsgGUID: WqLIBGsURiKMAiJvUbNrMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133725680"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133725692"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 12:28:04 -0800
+ 07 Jan 2025 12:28:05 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 3/8] lib/xe: Rename xe_is_gt_in_c6()
-Date: Tue,  7 Jan 2025 12:26:10 -0800
-Message-ID: <20250107202615.1306306-3-lucas.demarchi@intel.com>
+Cc: jonathan.cavitt@intel.com, Lucas De Marchi <lucas.demarchi@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 7/8] tests/intel/xe_drm_fdinfo: Stop asserting on
+ usage percentage
+Date: Tue,  7 Jan 2025 12:26:14 -0800
+Message-ID: <20250107202615.1306306-7-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250107202615.1306306-1-lucas.demarchi@intel.com>
 References: <20250107202615.1306306-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,148 +70,186 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use xe_gt_ as namespace.
+It's unreliable to assert on the usage percentage considering 2 data
+points as it still depends on the CPU scheduling not preempting tasks in
+the wrong moment. On a normal use case of a top-like application, the
+value not accounted for would simply show up in the next sample without
+much issue. For a test assertion, it's better to check that the value
+reported via fdinfo is reasonably close to the one saved by the GPU in
+the spin. It's still allowed some error because there are a few GPU
+ticks of difference due to the **GPU** scheduling the contexts.
 
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+v2:
+  - Fix parallel tests due to not checking width and other minor nits
+    (Jonathan Cavitt)
+  - Fix negative delta computation
+
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/xe/xe_gt.c                |  4 ++--
- lib/xe/xe_gt.h                |  2 +-
- tests/intel/xe_gt_freq.c      | 12 ++++++------
- tests/intel/xe_pm_residency.c |  8 ++++----
- 4 files changed, 13 insertions(+), 13 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 53 ++++++++++++++++++++++++++-----------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
-diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-index e1f353b41..6f1475be0 100644
---- a/lib/xe/xe_gt.c
-+++ b/lib/xe/xe_gt.c
-@@ -176,13 +176,13 @@ int xe_gt_stats_get_count(int fd, int gt, const char *stat)
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index 39519fa52..f9eca25ed 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -3,6 +3,8 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
++#include <math.h>
++
+ #include "igt.h"
+ #include "igt_core.h"
+ #include "igt_device.h"
+@@ -370,36 +372,43 @@ static void basic_engine_utilization(int xe)
+ 
+ static void
+ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+-	      int class, int width, enum expected_load expected_load)
++	      int class, int width, uint32_t spin_stamp,
++	      enum expected_load expected_load)
+ {
+ 	double percent;
+-	u64 den, num;
++	uint64_t den, num;
+ 
+ 	igt_debug("%s: sample 1: cycles %"PRIu64", total_cycles %"PRIu64"\n",
+ 		  engine_map[class], s1[class].cycles, s1[class].total_cycles);
+ 	igt_debug("%s: sample 2: cycles %"PRIu64", total_cycles %"PRIu64"\n",
+ 		  engine_map[class], s2[class].cycles, s2[class].total_cycles);
++	igt_debug("spin_stamp: %u width: %d\n", spin_stamp, width);
+ 
+ 	num = s2[class].cycles - s1[class].cycles;
+ 	den = s2[class].total_cycles - s1[class].total_cycles;
++
+ 	percent = (num * 100.0) / (den + 1);
+ 
+-	/* for parallel submission scale the busyness with width */
++	/* For parallel submission scale the busyness with width */
+ 	percent /= width;
+ 
+-	igt_debug("%s: percent: %f\n", engine_map[class], percent);
++	igt_debug("%s: percent: %.2f%%\n", engine_map[class], percent);
+ 
+ 	switch (expected_load) {
+ 	case EXPECTED_LOAD_IDLE:
+ 		igt_assert_eq(num, 0);
+ 		break;
+ 	case EXPECTED_LOAD_FULL:
++		/* For parallel submission scale the busyness with width */
++		spin_stamp *= width;
++
+ 		/*
+-		 * We are still relying on CPU sleep time and there could be
+-		 * some imprecision when calculating the load. Use a 5% margin.
++		 * Percentage error between value saved by gpu in xe_spin and what
++		 * is reported via fdinfo
+ 		 */
+-		igt_assert_lt_double(95.0, percent);
+-		igt_assert_lt_double(percent, 105.0);
++		percent = fabs((int64_t)(num - spin_stamp) * 100.0) / (spin_stamp + 1);
++		igt_debug("%s: error: %.2f%%\n", engine_map[class], percent);
++		igt_assert_lt_double(percent, 5.0);
+ 		break;
+ 	}
+ }
+@@ -437,14 +446,17 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ 
+ 	expected_load = flags & TEST_BUSY ?
+ 	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
+-	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1, expected_load);
++
++	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1,
++		      cork ? cork->spin->timestamp : 0, expected_load);
+ 
+ 	if (flags & TEST_ISOLATION) {
+ 		/*
+ 		 * Load from one client shouldn't spill on another,
+ 		 * so check for idle
+ 		 */
+-		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, EXPECTED_LOAD_IDLE);
++		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, 0,
++			      EXPECTED_LOAD_IDLE);
+ 		close(new_fd);
+ 	}
+ 
+@@ -460,6 +472,7 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+ 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct xe_cork *cork;
++	uint32_t timestamp;
+ 	uint32_t vm;
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+@@ -471,13 +484,15 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+ 
+ 	/* destroy queue before sampling again */
+ 	xe_cork_sync_end(fd, cork);
++	timestamp = cork->spin->timestamp;
+ 	xe_cork_destroy(fd, cork);
+ 
+ 	read_engine_cycles(fd, pceu2);
+ 
+ 	xe_vm_destroy(fd, vm);
+ 
+-	check_results(pceu1, pceu2, hwe->engine_class, 1, EXPECTED_LOAD_FULL);
++	check_results(pceu1, pceu2, hwe->engine_class, 1, timestamp,
++		      EXPECTED_LOAD_FULL);
  }
  
- /**
-- * xe_is_gt_in_c6:
-+ * xe_gt_is_in_c6:
-  * @fd: pointer to xe drm fd
-  * @gt: gt number
-  *
-  * Check if GT is in C6 state
-  */
--bool xe_is_gt_in_c6(int fd, int gt)
-+bool xe_gt_is_in_c6(int fd, int gt)
- {
- 	char gt_c_state[16];
- 	int gt_fd;
-diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-index 47569cec3..511b31149 100644
---- a/lib/xe/xe_gt.h
-+++ b/lib/xe/xe_gt.h
-@@ -17,7 +17,7 @@ igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
- void xe_post_hang_ring(int fd, igt_hang_t arg);
- int xe_gt_stats_get_count(int fd, int gt, const char *stat);
+ static void
+@@ -502,7 +517,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+ 		enum expected_load expected_load = hwe->engine_class != class ?
+ 			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
  
--bool xe_is_gt_in_c6(int fd, int gt);
-+bool xe_gt_is_in_c6(int fd, int gt);
- 
- int xe_gt_fill_engines_by_class(int fd, int gt, int class,
- 				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE]);
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index a4791071f..1fb6d2b53 100644
---- a/tests/intel/xe_gt_freq.c
-+++ b/tests/intel/xe_gt_freq.c
-@@ -199,7 +199,7 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
- 
- 	if (gt_idle) {
- 		/* Wait for GT to go in C6 as previous get_freq wakes up GT*/
--		igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt_id), 1000, 10),
-+		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
- 			     "GT %d should be in C6\n", gt_id);
- 		igt_assert(get_freq(fd, gt_id, "act") == 0);
- 	} else {
-@@ -214,7 +214,7 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
- 	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ), cur_freq);
- 
- 	if (gt_idle) {
--		igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt_id), 1000, 10),
-+		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
- 			     "GT %d should be in C6\n", gt_id);
- 		igt_assert(get_freq(fd, gt_id, "act") == 0);
- 	} else {
-@@ -233,7 +233,7 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
- 	igt_assert_eq_u32(get_freq(fd, gt_id, "cur"), rp0);
- 
- 	if (gt_idle) {
--		igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt_id), 1000, 10),
-+		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
- 			     "GT %d should be in C6\n", gt_id);
- 		igt_assert(get_freq(fd, gt_id, "act") == 0);
+-		check_results(pceu1, pceu2, class, 1, expected_load);
++		check_results(pceu1, pceu2, class, 1, cork->spin->timestamp,
++			      expected_load);
  	}
-@@ -264,7 +264,7 @@ static void test_freq_range(int fd, int gt_id, bool gt_idle)
- 	igt_assert(rpn <= cur && cur <= rpmid + FREQ_UNIT_MHZ);
  
- 	if (gt_idle) {
--		igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt_id), 1000, 10),
-+		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
- 			     "GT %d should be in C6\n", gt_id);
- 		igt_assert(get_freq(fd, gt_id, "act") == 0);
- 	} else {
-@@ -465,7 +465,7 @@ igt_main
+ 	xe_cork_destroy(fd, cork);
+@@ -547,7 +563,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+ 		if (!cork[class])
+ 			continue;
  
- 	igt_subtest("freq_fixed_idle") {
- 		xe_for_each_gt(fd, gt) {
--			igt_require_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 10),
-+			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
- 				      "GT %d should be in C6\n", gt);
- 			test_freq_fixed(fd, gt, true);
- 		}
-@@ -483,7 +483,7 @@ igt_main
+-		check_results(pceu1, pceu2, class, 1, expected_load);
++		check_results(pceu1, pceu2, class, 1, cork[class]->spin->timestamp,
++			      expected_load);
+ 		xe_cork_destroy(fd, cork[class]);
+ 	}
  
- 	igt_subtest("freq_range_idle") {
- 		xe_for_each_gt(fd, gt) {
--			igt_require_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 10),
-+			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
- 				      "GT %d should be in C6\n", gt);
- 			test_freq_range(fd, gt, true);
- 		}
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 8a9e2c89e..06f4a0bc6 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -209,7 +209,7 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
- {
- 	unsigned long elapsed_ms, residency_start, residency_end;
+@@ -588,7 +605,9 @@ utilization_all_full_load(int fd)
+ 		if (!cork[class])
+ 			continue;
  
--	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
-+	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
+-		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
++		check_results(pceu1, pceu2, class, 1,
++			      cork[class]->spin->timestamp,
++			      EXPECTED_LOAD_FULL);
+ 		xe_cork_destroy(fd, cork[class]);
+ 	}
  
- 	if (flag == TEST_S2IDLE) {
+@@ -660,14 +679,16 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+ 
+ 	expected_load = flags & TEST_BUSY ?
+ 	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
+-	check_results(pceu[0], pceu[1], class, width, expected_load);
++
++	check_results(pceu[0], pceu[1], class, width,
++		      cork ? cork->spin->timestamp : 0, expected_load);
+ 
+ 	if (flags & TEST_ISOLATION) {
  		/*
-@@ -299,7 +299,7 @@ static void toggle_gt_c6(int fd, int n)
- 		igt_assert_lte(0, fw_handle);
- 		/* check if all gts are in C0 after forcewake is acquired */
- 		xe_for_each_gt(fd, gt)
--			igt_assert_f(!xe_is_gt_in_c6(fd, gt),
-+			igt_assert_f(!xe_gt_is_in_c6(fd, gt),
- 				     "Forcewake acquired, GT %d should be in C0\n", gt);
- 
- 		if (n == NUM_REPS)
-@@ -308,7 +308,7 @@ static void toggle_gt_c6(int fd, int n)
- 		close(fw_handle);
- 		/* check if all gts are in C6 after forcewake is released */
- 		xe_for_each_gt(fd, gt)
--			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
-+			igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
- 				     "Forcewake released, GT %d should be in C6\n", gt);
- 
- 		if (n == NUM_REPS)
-@@ -405,7 +405,7 @@ igt_main
- 	igt_subtest_with_dynamic("gt-c6-on-idle") {
- 		xe_for_each_gt(fd, gt)
- 			igt_dynamic_f("gt%u", gt)
--				igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
-+				igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
- 					     "GT %d not in C6\n", gt);
+ 		 * Load from one client shouldn't spill on another,
+ 		 * so check for idle
+ 		 */
+-		check_results(pceu_spill[0], pceu_spill[1], class, width,
++		check_results(pceu_spill[0], pceu_spill[1], class, width, 0,
+ 			      EXPECTED_LOAD_IDLE);
+ 		close(fd_spill);
  	}
- 
 -- 
 2.47.0
 
