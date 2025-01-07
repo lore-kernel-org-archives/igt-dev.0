@@ -4,57 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75288E77199
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 18:52:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48FBBE77197
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Jan 2025 19:07:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3241E10E77B;
-	Tue,  7 Jan 2025 18:52:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 02DF110E76E;
+	Tue,  7 Jan 2025 19:07:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MtvoJw6p";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lsTmcz0B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E837510E77B
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 18:52:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67B7E10E76E
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jan 2025 19:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736275927; x=1767811927;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+Mff+PoefvBr12K+YlgAbYzd0MjVP7yfjo6sMDqIZJY=;
- b=MtvoJw6pLHVdekwJUzMY0bV+NuRvMoWLqZKpTeCAs8kVioFgVCMuoLvT
- ZdXVqIfLWoPajmw7r57jEAUdO6cDPzIacmlUZXq5AJI+/x0weAFVZMq/m
- 7XoacBDmlCaME8RtS/VeB0LrPPWIyxqvXQ11NkHFt1PGYfKZFj4Et8HDk
- 9U7PleQtsm9ufGxFOSey2JfctQq8Z0XMOoKuXpyrLaZEbU23vIBBxRLp/
- kHry7MKL15BXtcZ5nUdoGtZCB+XY1nfLJk0WrjOo0Bb/ubkAsXP1SQFVo
- /z29Xtb4t99AnGFrqKwAG97o7gqiikiWKXaSYGuk5iOmd4sm4Os4p3CFK g==;
-X-CSE-ConnectionGUID: gPZJYTJsTGGN7IalP9Rfpw==
-X-CSE-MsgGUID: KvSqw5qxTTqyxPd0vT2VjQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="58942027"
-X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="58942027"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 10:52:07 -0800
-X-CSE-ConnectionGUID: qOITqQ4jQZ6ma+qiykJDxA==
-X-CSE-MsgGUID: PJFbDK+VSLO1mYGgRqyjeg==
+ t=1736276822; x=1767812822;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=bCfjgWeD5sgiNQtOv1lijQO4nbqPh0RAlHNFH7ZX/2A=;
+ b=lsTmcz0BweCvVaaIyBXh1K8igfEpUcSBPcpvV71G5ewtzWvQHV3yViBj
+ hD6CUPewvvhoVPIfRtnT7djoI1eYsv3Gw6MVrfZgyqCaO66bEW58vEAYu
+ M39NTmlxU9NgBOTPtYIDXDsXGKS6JXTRXnpGYB4nHWO8sbDGRPDSsc86R
+ FGXxBdDpKh/bXVHc3cKEbwaRrwPTqQMpXVyGM8MSyslf37XasGwyB2BUI
+ cr/gHzOFzwemGBsqbJQzrATnSpNdU3PObXFqLkSLQFX5stupWczoVEj0b
+ 6S1oZobptUhfYHiaZ9QSX6TWUw4fGlv/0ywvNMaWlp4bkBMvXPk6qcVpv Q==;
+X-CSE-ConnectionGUID: 3JOfkUeUQ1yI+S/qXzkI3A==
+X-CSE-MsgGUID: QGUtWJY9SJe6pI9xNEIh3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="24084895"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="24084895"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2025 11:07:02 -0800
+X-CSE-ConnectionGUID: PtEWDDN2T7CP2M47Yx05xA==
+X-CSE-MsgGUID: zxnMQ1nASM+sQy+6oQ308w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="103706864"
-Received: from dut2122ptlh.iind.intel.com (HELO
- linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 10:52:05 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com,
-	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 4/4] tests/intel/kms_dsc: Add force dsc and joiner test
- cases
-Date: Wed,  8 Jan 2025 00:27:09 +0530
-Message-Id: <20250107185709.116756-5-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250107185709.116756-1-swati2.sharma@intel.com>
-References: <20250107185709.116756-1-swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; d="scan'208";a="133710556"
+Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
+ ([10.125.110.171])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2025 11:07:02 -0800
+Date: Tue, 7 Jan 2025 13:06:54 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "Nerlige Ramappa, Umesh" <umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on
+ usage percentage
+Message-ID: <akco7iuptjbgq4bkysj4vzdlf22alilycmdn4by5mimte3tmoi@qu5fo7nnxl6v>
+References: <20250104071548.737612-1-lucas.demarchi@intel.com>
+ <20250104071548.737612-8-lucas.demarchi@intel.com>
+ <CH0PR11MB54446EFE4FE2FA4E88C65025E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CH0PR11MB54446EFE4FE2FA4E88C65025E5102@CH0PR11MB5444.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,290 +72,225 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test cases where we are validating force dsc and force
-joiner.
+On Mon, Jan 06, 2025 at 10:58:34PM +0000, Cavitt, Jonathan wrote:
+>-----Original Message-----
+>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Lucas De Marchi
+>Sent: Friday, January 3, 2025 11:16 PM
+>To: igt-dev@lists.freedesktop.org
+>Cc: De Marchi, Lucas <lucas.demarchi@intel.com>; Nerlige Ramappa, Umesh <umesh.nerlige.ramappa@intel.com>
+>Subject: [PATCH i-g-t 8/8] tests/intel/xe_drm_fdinfo: Stop asserting on usage percentage
+>>
+>> It's unreliable to assert on the usage percentage considering 2 data
+>> points as it still depends on the CPU scheduling not preempting tasks in
+>> the wrong moment. On a normal use case of a top-like application, the
+>> value not accounted for would simply show up in the next sample without
+>> much issue. For a test assertion, it's better to check that the value
+>> reported via fdinfo is reasonably close to the one saved by the GPU in
+>> the spin. It's still allowed some error because there are a few GPU
+>> ticks of difference due to the **GPU** scheduling the contexts.
+>>
+>> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>
+>There's a few nits/questions below, but I trust that everything is in
+>order, so nothing below is particularly blocking.  If I did manage to
+>catch something that needs fixing, then of course that should be
+>fixed, but otherwise:
+>Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+>
+>> ---
+>>  tests/intel/xe_drm_fdinfo.c | 49 +++++++++++++++++++++++--------------
+>>  1 file changed, 31 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+>> index 1089e5119..120436fbe 100644
+>> --- a/tests/intel/xe_drm_fdinfo.c
+>> +++ b/tests/intel/xe_drm_fdinfo.c
+>> @@ -3,6 +3,8 @@
+>>   * Copyright (c) 2023 Intel Corporation
+>>   */
+>>
+>> +#include <math.h>
+>> +
+>>  #include "igt.h"
+>>  #include "igt_core.h"
+>>  #include "igt_device.h"
+>> @@ -371,7 +373,8 @@ static void basic_engine_utilization(int xe)
+>>
+>>  static void
+>>  check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+>> -	      int class, int width, enum expected_load expected_load)
+>> +	      int class, int width, uint32_t spin_stamp,
+>> +	      enum expected_load expected_load)
+>>  {
+>>  	double percent;
+>>  	u64 den, num;
+>> @@ -383,12 +386,9 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+>>
+>>  	num = s2[class].cycles - s1[class].cycles;
+>>  	den = s2[class].total_cycles - s1[class].total_cycles;
+>> -	percent = (num * 100.0) / (den + 1);
+>> -
+>> -	/* for parallel submission scale the busyness with width */
+>> -	percent /= width;
+>>
+>> -	igt_debug("%s: percent: %f\n", engine_map[class], percent);
+>> +	percent = (num * 100.0) / (den + 1) / width;
+>
+>Nit:
+>There's probably an argument to be made that we didn't need to modify
+>the calculation here because the end result is still the same and it loses
+>a (presumably) helpful comment, but I won't block on it.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel/kms_dsc.c | 192 ++++++++++++++++++++++++++----------------
- 1 file changed, 120 insertions(+), 72 deletions(-)
+ok, adding that back
 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 5508e7a9e..b88a4875e 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -57,7 +57,27 @@
-  * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
-  * @fractional-bpp:               DSC with fractional bpp with default parameters
-  * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
-- */
-+ *
-+ * SUBTEST: dsc-%s-%s
-+ * Description: Tests Display Stream Compression functionality if supported by a
-+ *              connector by forcing %arg[1] and %arg[2] on all connectors that support it
-+ *
-+ * arg[1]:
-+ *
-+ * @basic:                        DSC with default parameters
-+ * @with-bpc:                     DSC with certain input BPC for the connector
-+ * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
-+ * @with-formats:                 DSC with default parameters and creating fb with diff formats
-+ * @with-output-formats:          DSC with output formats
-+ * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
-+ * @fractional-bpp:               DSC with fractional bpp with default parameters
-+ * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
-+ *
-+ * arg[2]:
-+ *
-+ * @big-joiner:			  big joiner
-+ * @ultra-joiner:		  ultra joiner
-+*/
- 
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- 
-@@ -83,11 +103,13 @@ typedef struct {
- 	int disp_ver;
- 	enum pipe pipe;
- 	bool limited;
-+	int joined_pipes;
- } data_t;
- 
- static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
- static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
- static uint32_t bpc_list[] = {8, 10, 12};
-+static int joiner_tests[] = {JOINED_PIPES_DEFAULT, JOINED_PIPES_BIG_JOINER, JOINED_PIPES_ULTRA_JOINER};
- 
- static inline void manual(const char *expected)
- {
-@@ -149,6 +171,7 @@ static void update_display(data_t *data, uint32_t test_type)
- 	int current_bpc = 0;
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
-+	bool status;
- 	igt_output_t *output = data->output;
- 	igt_display_t *display = &data->display;
- 	drmModeConnector *connector = output->config.connector;
-@@ -161,6 +184,11 @@ static void update_display(data_t *data, uint32_t test_type)
- 	save_force_dsc_en(data->drm_fd, data->output);
- 	force_dsc_enable(data->drm_fd, data->output);
- 
-+	if (data->joined_pipes == JOINED_PIPES_BIG_JOINER || data->joined_pipes == JOINED_PIPES_ULTRA_JOINER) {
-+		status = kmstest_force_connector_joiner(data->drm_fd, connector, data->joined_pipes);
-+		igt_assert_f(status, "Failed to toggle force joiner\n");
-+	}
-+
- 	if (test_type & TEST_DSC_BPC) {
- 		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
- 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
-@@ -260,17 +288,22 @@ reset:
- 
- static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		     unsigned int plane_format,
--		     enum dsc_output_format output_format)
-+		     enum dsc_output_format output_format,
-+		     int joined_pipes)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	int n_pipes = 0;
- 	char name[3][LEN] = {
- 				{0},
- 				{0},
- 				{0},
- 			    };
- 
-+	for_each_pipe(display, pipe)
-+		n_pipes++;
-+
- 	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-@@ -279,6 +312,7 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		data->input_bpc = bpc;
- 		data->output = output;
- 		data->pipe = pipe;
-+		data->joined_pipes = joined_pipes;
- 
- 		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
- 		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
-@@ -299,6 +333,16 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 						      data->drm_fd, data->output)))
- 			continue;
- 
-+		if (((joined_pipes == JOINED_PIPES_BIG_JOINER) && (data->pipe == n_pipes - 1)) ||
-+		    ((joined_pipes == JOINED_PIPES_BIG_JOINER) && (!check_bigjoiner_constraints(data->disp_ver, n_pipes,
-+						 data->drm_fd, data->output))))
-+			continue;
-+
-+		if (((joined_pipes == JOINED_PIPES_ULTRA_JOINER) && (data->pipe == n_pipes - 1)) ||
-+		    ((joined_pipes == JOINED_PIPES_ULTRA_JOINER) && (!check_ultrajoiner_constraints(data->disp_ver, n_pipes,
-+						 data->drm_fd, data->output))))
-+			continue;
-+
- 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
- 			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
- 		if (test_type & TEST_DSC_FORMAT)
-@@ -348,85 +392,89 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 		igt_require(is_dsc_supported_by_source(data.drm_fd));
- 	}
- 
--	igt_describe("Tests basic display stream compression functionality if supported "
--		     "by a connector by forcing DSC on all connectors that support it "
--		     "with default parameters");
--	igt_subtest_with_dynamic("dsc-basic")
--			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
--				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
--
--	igt_describe("Tests basic display stream compression functionality if supported "
--		     "by a connector by forcing DSC on all connectors that support it "
--		     "with default parameters and creating fb with diff formats");
--	igt_subtest_with_dynamic("dsc-with-formats") {
--		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
--			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
--				 format_list[k], DSC_FORMAT_RGB);
--	}
- 
--	igt_describe("Tests basic display stream compression functionality if supported "
--		     "by a connector by forcing DSC on all connectors that support it "
--		     "with certain input BPC for the connector");
--	igt_subtest_with_dynamic("dsc-with-bpc") {
--		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
--			test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
--				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
--	}
-+	for (int i = 0; i < ARRAY_SIZE(joiner_tests) ; i++) {
-+		igt_describe("Tests basic display stream compression functionality if supported "
-+			     "by a connector by forcing DSC on all connectors that support it "
-+			     "with default parameters");
-+		igt_subtest_with_dynamic_f("dsc-basic%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-+				test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
-+					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
-+		}
- 
--	igt_describe("Tests basic display stream compression functionality if supported "
--		     "by a connector by forcing DSC on all connectors that support it "
--		     "with certain input BPC for the connector with diff formats");
--	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
--		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
--			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
--				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
--				bpc_list[j], format_list[k],
--				DSC_FORMAT_RGB);
--			}
-+		igt_describe("Tests basic display stream compression functionality if supported "
-+			     "by a connector by forcing DSC on all connectors that support it "
-+			     "with default parameters and creating fb with diff formats");
-+		igt_subtest_with_dynamic_f("dsc-with-formats%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-+			for (int k = 0; k < ARRAY_SIZE(format_list); k++)
-+				test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
-+					 format_list[k], DSC_FORMAT_RGB, joiner_tests[i]);
- 		}
--	}
- 
--	igt_describe("Tests basic display stream compression functionality if supported "
--		     "by a connector by forcing DSC and output format on all connectors "
--		     "that support it");
--	igt_subtest_with_dynamic("dsc-with-output-formats") {
--		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
--			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
--				 DRM_FORMAT_XRGB8888,
--				 output_format_list[k]);
--	}
-+		igt_describe("Tests basic display stream compression functionality if supported "
-+			     "by a connector by forcing DSC on all connectors that support it "
-+			     "with certain input BPC for the connector");
-+		igt_subtest_with_dynamic_f("dsc-with-bpc%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-+			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-+				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
-+					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
-+		}
- 
--	igt_describe("Tests basic display stream compression functionality if supported "
--		     "by a connector by forcing DSC and output format on all connectors "
--		     "that support it with certain input BPC for the connector");
--	igt_subtest_with_dynamic("dsc-with-output-formats-with-bpc") {
--		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
-+		igt_describe("Tests basic display stream compression functionality if supported "
-+			     "by a connector by forcing DSC on all connectors that support it "
-+			     "with certain input BPC for the connector with diff formats");
-+		igt_subtest_with_dynamic_f("dsc-with-bpc-formats%s", igt_get_joined_pipes_name(joiner_tests[i])) {
- 			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
--				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
--					 bpc_list[j], DRM_FORMAT_XRGB8888,
--					 output_format_list[k]);
-+				for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
-+					test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
-+					bpc_list[j], format_list[k],
-+					DSC_FORMAT_RGB, joiner_tests[i]);
-+				}
- 			}
- 		}
--	}
- 
--	igt_describe("Tests fractional compressed bpp functionality if supported "
--		     "by a connector by forcing fractional_bpp on all connectors that support it "
--		     "with default parameter. While finding the optimum compressed bpp, driver will "
--		     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
--		     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
--	igt_subtest_with_dynamic("dsc-fractional-bpp")
--			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
--				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
--				 DSC_FORMAT_RGB);
--
--	igt_describe("Tests fractional compressed bpp functionality if supported "
--		     "by a connector by forcing fractional_bpp on all connectors that support it "
--		     "with certain input BPC for the connector.");
--	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
--		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
--			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
--				 bpc_list[j], DRM_FORMAT_XRGB8888,
--				 DSC_FORMAT_RGB);
-+		igt_describe("Tests basic display stream compression functionality if supported "
-+			     "by a connector by forcing DSC and output format on all connectors "
-+			     "that support it");
-+		igt_subtest_with_dynamic_f("dsc-with-output-formats%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-+			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
-+				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
-+					 DRM_FORMAT_XRGB8888,
-+					 output_format_list[k], joiner_tests[i]);
-+		}
-+
-+		igt_describe("Tests basic display stream compression functionality if supported "
-+			     "by a connector by forcing DSC and output format on all connectors "
-+			     "that support it with certain input BPC for the connector");
-+		igt_subtest_with_dynamic_f("dsc-with-output-formats-with-bpc%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-+			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
-+				for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
-+					test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
-+						 bpc_list[j], DRM_FORMAT_XRGB8888,
-+						 output_format_list[k], joiner_tests[i]);
-+				}
-+			}
-+		}
-+
-+		igt_describe("Tests fractional compressed bpp functionality if supported "
-+			     "by a connector by forcing fractional_bpp on all connectors that support it "
-+			     "with default parameter. While finding the optimum compressed bpp, driver will "
-+			     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
-+			     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
-+		igt_subtest_with_dynamic_f("dsc-fractional-bpp%s", igt_get_joined_pipes_name(joiner_tests[i]))
-+				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
-+					 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
-+					 DSC_FORMAT_RGB, joiner_tests[i]);
-+
-+		igt_describe("Tests fractional compressed bpp functionality if supported "
-+			     "by a connector by forcing fractional_bpp on all connectors that support it "
-+			     "with certain input BPC for the connector.");
-+		igt_subtest_with_dynamic_f("dsc-fractional-bpp-with-bpc%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-+			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-+				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
-+					 bpc_list[j], DRM_FORMAT_XRGB8888,
-+					 DSC_FORMAT_RGB, joiner_tests[i]);
-+			}
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
+>
+>Also, is this percentage correct given the test modifications?
+>Maybe we should be dividing by spin_stamp + 1 instead, since that's what
+>we're using to calculate the percentage later?
 
+nah.. there are 2 percentages here. This one I decided to leave as a
+debug print... it's still useful to check we are ~100% utilization. I
+just don't want the test to assert that anymore as it's noisy when there
+are things disrupting the test execution.
+
+>
+>> +	igt_debug("%s: percent: %.2f%%\n", engine_map[class], percent);
+>>
+>>  	switch (expected_load) {
+>>  	case EXPECTED_LOAD_IDLE:
+>> @@ -396,11 +396,12 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+>>  		break;
+>>  	case EXPECTED_LOAD_FULL:
+>>  		/*
+>> -		 * We are still relying on CPU sleep time and there could be
+>> -		 * some imprecision when calculating the load. Use a 5% margin.
+>> +		 * percentage error between value saved by gpu in xe_spin and what
+>> +		 * is reported via fdinfo
+>
+>Nit:
+>s/percentage/Percentage
+>
+>>  		 */
+>> -		igt_assert_lt_double(95.0, percent);
+>> -		igt_assert_lt_double(percent, 105.0);
+>> +		percent = fabs((num - spin_stamp) * 100.0) / (spin_stamp + 1);
+>
+>Nit:
+>Shouldn't we also be dividing by width here?  I'm just asking because that's
+
+actually spin_stamp should be multiplied by width, which should also
+fix the errors reported by CI - I happened to test it only on machines
+that had 1 CCS so didn't reproduce any issue on virtual/parallel. My
+bad.  I'm adding a fix and sending as v2.
+
+thanks
+Lucas De Marchi
+
+>what we were doing before, and it looks like spin_stamp is being used here
+>as a stand-in for the "den" variable in the earlier percent calculation.
+>
+>> +		igt_debug("%s: error: %.2f%%\n", engine_map[class], percent);
+>> +		igt_assert_lt_double(percent, 5.0);
+>>  		break;
+>>  	}
+>>  }
+>> @@ -438,14 +439,17 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+>>
+>>  	expected_load = flags & TEST_BUSY ?
+>>  	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
+>> -	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1, expected_load);
+>> +
+>> +	check_results(pceu1[0], pceu2[0], hwe->engine_class, 1,
+>> +		      cork ? cork->spin->timestamp : 0, expected_load);
+>>
+>>  	if (flags & TEST_ISOLATION) {
+>>  		/*
+>>  		 * Load from one client shouldn't spill on another,
+>>  		 * so check for idle
+>>  		 */
+>> -		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, EXPECTED_LOAD_IDLE);
+>> +		check_results(pceu1[1], pceu2[1], hwe->engine_class, 1, 0,
+>> +			      EXPECTED_LOAD_IDLE);
+>>  		close(new_fd);
+>>  	}
+>>
+>> @@ -461,6 +465,7 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+>>  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>>  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>>  	struct xe_cork *cork;
+>> +	uint32_t timestamp;
+>>  	uint32_t vm;
+>>
+>>  	vm = xe_vm_create(fd, 0, 0);
+>> @@ -472,13 +477,15 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
+>>
+>>  	/* destroy queue before sampling again */
+>>  	xe_cork_sync_end(fd, cork);
+>> +	timestamp = cork->spin->timestamp;
+>>  	xe_cork_destroy(fd, cork);
+>>
+>>  	read_engine_cycles(fd, pceu2);
+>>
+>>  	xe_vm_destroy(fd, vm);
+>>
+>> -	check_results(pceu1, pceu2, hwe->engine_class, 1, EXPECTED_LOAD_FULL);
+>> +	check_results(pceu1, pceu2, hwe->engine_class, 1, timestamp,
+>> +		      EXPECTED_LOAD_FULL);
+>>  }
+>>
+>>  static void
+>> @@ -503,7 +510,8 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
+>>  		enum expected_load expected_load = hwe->engine_class != class ?
+>>  			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
+>>
+>> -		check_results(pceu1, pceu2, class, 1, expected_load);
+>> +		check_results(pceu1, pceu2, class, 1, cork->spin->timestamp,
+>> +			      expected_load);
+>>  	}
+>>
+>>  	xe_cork_destroy(fd, cork);
+>> @@ -547,7 +555,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+>>  		if (!cork[class])
+>>  			continue;
+>>
+>> -		check_results(pceu1, pceu2, class, 1, expected_load);
+>> +		check_results(pceu1, pceu2, class, 1, cork[class]->spin->timestamp,
+>> +			      expected_load);
+>>  		xe_cork_destroy(fd, cork[class]);
+>>  	}
+>>
+>> @@ -585,7 +594,9 @@ utilization_all_full_load(int fd)
+>>  		if (!cork[class])
+>>  			continue;
+>>
+>> -		check_results(pceu1, pceu2, class, 1, EXPECTED_LOAD_FULL);
+>> +		check_results(pceu1, pceu2, class, 1,
+>> +			      cork[class]->spin->timestamp,
+>> +			      EXPECTED_LOAD_FULL);
+>>  		xe_cork_destroy(fd, cork[class]);
+>>  	}
+>>
+>> @@ -657,14 +668,16 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+>>
+>>  	expected_load = flags & TEST_BUSY ?
+>>  	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
+>> -	check_results(pceu[0], pceu[1], class, width, expected_load);
+>> +
+>> +	check_results(pceu[0], pceu[1], class, width,
+>> +		      cork ? cork->spin->timestamp : 0, expected_load);
+>>
+>>  	if (flags & TEST_ISOLATION) {
+>>  		/*
+>>  		 * Load from one client shouldn't spill on another,
+>>  		 * so check for idle
+>>  		 */
+>> -		check_results(pceu_spill[0], pceu_spill[1], class, width,
+>> +		check_results(pceu_spill[0], pceu_spill[1], class, width, 0,
+>>  			      EXPECTED_LOAD_IDLE);
+>>  		close(fd_spill);
+>>  	}
+>> --
+>> 2.47.0
+>>
+>>
