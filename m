@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A31CE77188
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Jan 2025 15:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C2DE77188
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Jan 2025 15:16:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC1D810EBDE;
-	Wed,  8 Jan 2025 15:05:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8717E10EBE8;
+	Wed,  8 Jan 2025 15:16:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a4L3ZhX/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gm2IN2Ny";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A76910EBDE
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jan 2025 15:05:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5050810EBE8
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jan 2025 15:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736348704; x=1767884704;
+ t=1736349382; x=1767885382;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9nWOcyRyPNuvtNMdKlXXFU8YJiVML9LIhQFeANKzX4Y=;
- b=a4L3ZhX/IgLI9a90Cp6QC4H4Z+kjy+31cWGWXn8UvDg9ngY3M6vlDm83
- QOr0evLI+HbEcjyBx5TcZU5OzbYP2i/F6vabB7hw8Ss8/xX9xguQetk6e
- KXdER+uxAyW4fdFLAE1DOynRUu3hdiX23qdfbeEo37UglTbZISKoUKzYM
- QL5d5SkHatUypXqbO3BL+QMOGYHg7J/wB7clIVeptSfDY1EOu4cCHUCTs
- Cbq+vdoJQiJz7kp6iUgqssUrJN1CK47hUq83E2C7n8NG2wowiX39TucaS
- 6nAvXSC8+1rT8U40tpbtSYilwMMDj+xdq4WcKKSdmdgd+Qkf+ZUTYHFQF A==;
-X-CSE-ConnectionGUID: 1eNeKdBuRfisPcwk256dpQ==
-X-CSE-MsgGUID: HixevLSsQwi7T0D+SspcGA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36460934"
-X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="36460934"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2025 07:05:04 -0800
-X-CSE-ConnectionGUID: JtSkZ40ySt6y1eCC2GOtRA==
-X-CSE-MsgGUID: YRA3VC9qS3erIHecTOjAAg==
+ bh=PTE0OImZHqngIwLzS/8gYQRXC6FDCEhhjXPWMt8MJSs=;
+ b=gm2IN2NyC2AAAyL3gvd2VhcOFLon5mlCNFeiiqhu+Q5FWEhx+LyZ8XFX
+ R7C8D6l8AAZEpZK9kYs3507p2Qc6YTGAbdXojTYs8C4/5W2fXnAZIY9Vp
+ sAxjfbff44iFsnWL2meHvVWZ4XAozeNtbQLSxSbYFi458EFlc21aMUmpq
+ PCGEhTtPt9Vj+Zjwfqg/Q7XIJ+N24GRVnkA/5bwyF+pM6X8vhRugG6Dri
+ olIbOk93rz/mQILSBNyjCVvwWlNL0n5e/LFHQqSOHVIF50qmBtoFOHe4v
+ a+f81gogrUTW+eh9+aClmyt6/CfZ0+ve4LdNO2zIR8SnlPNQkbJEaUEOd Q==;
+X-CSE-ConnectionGUID: mpEPLoh3S72Rrcr+JbR2sQ==
+X-CSE-MsgGUID: GQi8lAo7RWimfjHW5QFVyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36742528"
+X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="36742528"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2025 07:16:21 -0800
+X-CSE-ConnectionGUID: uZWHf43jQO+CqSKULaKghA==
+X-CSE-MsgGUID: or3UfyaOStijd/YrqJzC2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="108178032"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107743429"
 Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
  lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
- by orviesa003.jf.intel.com with ESMTP; 08 Jan 2025 07:05:02 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 08 Jan 2025 07:16:19 -0800
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@intel.com, lucas.demarchi@intel.com,
  Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/kms_histogram: Add check for ghe api call
-Date: Wed,  8 Jan 2025 20:34:48 +0530
-Message-ID: <20250108150448.329219-1-mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/kms_histogram: Add check for libghe version
+Date: Wed,  8 Jan 2025 20:46:06 +0530
+Message-ID: <20250108151606.333202-1-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250108124637.291978-1-mohammed.thasleem@intel.com>
-References: <20250108124637.291978-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250108150448.329219-1-mohammed.thasleem@intel.com>
+References: <20250108150448.329219-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,11 +68,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Check ghe algo for the function called by ghe igt while compiling.
+Update check for libghe version to avoid compilation issue.
 
 v2: Update version check and remove warning message. (Lucas)
     Print messae at api else check. (Kamil)
 v3: Remove special case and update dependency declaration. (Lucas)
+v4: Update subject and discription.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
