@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14D52E77197
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Jan 2025 01:43:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91885E77197
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Jan 2025 02:08:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC5F510E7D0;
-	Wed,  8 Jan 2025 01:43:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F7D010E7CB;
+	Wed,  8 Jan 2025 02:08:04 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78D0C10E7D0;
- Wed,  8 Jan 2025 01:43:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C182F10E7CB;
+ Wed,  8 Jan 2025 02:08:02 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5353137204856742299=="
+ boundary="===============9173515549073905935=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Remove_redundant_hotplug_de?=
- =?utf-8?q?tection_assertion_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fcap?=
+ =?utf-8?q?ture=3A_Add_xe=5Fexec=5Fcapture_test_=28rev9=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+To: "Zhanjun Dong" <zhanjun.dong@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 08 Jan 2025 01:43:38 -0000
-Message-ID: <173630061849.1135633.8334849004238606193@b555e5b46a47>
+Date: Wed, 08 Jan 2025 02:08:02 -0000
+Message-ID: <173630208278.1135626.2022906240108273177@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250107205434.969797-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20250107205434.969797-1-ramanaidu.naladala@intel.com>
+References: <20250108000410.469269-1-zhanjun.dong@intel.com>
+In-Reply-To: <20250108000410.469269-1-zhanjun.dong@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,28 +41,33 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5353137204856742299==
+--===============9173515549073905935==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Remove redundant hotplug detection assertion (rev2)
-URL   : https://patchwork.freedesktop.org/series/143141/
-State : success
+Series: tests/intel/xe_exec_capture: Add xe_exec_capture test (rev9)
+URL   : https://patchwork.freedesktop.org/series/140007/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8179_BAT -> XEIGTPW_12399_BAT
+CI Bug Log - changes from XEIGT_8179_BAT -> XEIGTPW_12400_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_12400_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12400_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
   
 
@@ -71,62 +76,63 @@ Participating hosts (8 -> 8)
 
   No changes in participating hosts
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_12400_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_exec_basic@twice-userptr-rebind:
+    - bat-adlp-vf:        [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8179/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_12399_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_12400_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@kms_chamelium_edid@dp-edid-change-during-hibernate:
-    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2252]) +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-bmg-2/igt@kms_chamelium_edid@dp-edid-change-during-hibernate.html
-    - bat-bmg-1:          NOTRUN -> [SKIP][2] ([Intel XE#2252]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-bmg-1/igt@kms_chamelium_edid@dp-edid-change-during-hibernate.html
-
-  * igt@kms_chamelium_edid@dp-edid-change-during-suspend:
-    - bat-lnl-1:          NOTRUN -> [SKIP][3] ([Intel XE#373]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-lnl-1/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html
-    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-pvc-2/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#373]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-dg2-oem2/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html
-    - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#1024]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-atsm-2/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html
-
-  * igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#2463]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-adlp-vf/igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate.html
-
-  * igt@kms_chamelium_edid@hdmi-edid-change-during-suspend:
-    - bat-lnl-2:          NOTRUN -> [SKIP][8] ([Intel XE#373]) +3 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-lnl-2/igt@kms_chamelium_edid@hdmi-edid-change-during-suspend.html
+  * igt@xe_exec_balancer@twice-parallel-userptr-rebind:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3958])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8179/bat-adlp-vf/igt@xe_exec_balancer@twice-parallel-userptr-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/bat-adlp-vf/igt@xe_exec_balancer@twice-parallel-userptr-rebind.html
 
   
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#2252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252
-  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
-  [Intel XE#373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/373
+#### Possible fixes ####
+
+  * igt@xe_intel_bb@render@render-ymajor-256:
+    - bat-adlp-vf:        [DMESG-WARN][5] ([Intel XE#3958]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8179/bat-adlp-vf/igt@xe_intel_bb@render@render-ymajor-256.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/bat-adlp-vf/igt@xe_intel_bb@render@render-ymajor-256.html
+
+  
+  [Intel XE#3958]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8179 -> IGTPW_12399
+  * IGT: IGT_8179 -> IGTPW_12400
   * Linux: xe-2447-89042e0bb417f4d67280e1d7fa9bbcca51734571 -> xe-2452-8f14ac27d7b0ff9ff973fa44a67cc9a0ff3acad5
 
-  IGTPW_12399: 4a988bee49dc8aa63788fc23ca223ff62aec856c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12400: 12400
   IGT_8179: 183b33f81365dd4a57fe3100a13d3fb13788d158 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-2447-89042e0bb417f4d67280e1d7fa9bbcca51734571: 89042e0bb417f4d67280e1d7fa9bbcca51734571
   xe-2452-8f14ac27d7b0ff9ff973fa44a67cc9a0ff3acad5: 8f14ac27d7b0ff9ff973fa44a67cc9a0ff3acad5
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/index.html
 
---===============5353137204856742299==
+--===============9173515549073905935==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -146,61 +152,58 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Remove redundant hotplug detection assertion (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143141/">https://patchwork.freedesktop.org/series/143141/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_capture: Add xe_exec_capture test (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140007/">https://patchwork.freedesktop.org/series/140007/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8179_BAT -&gt; XEIGTPW_12399_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8179_BAT -&gt; XEIGTPW_12400_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12400_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12400_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
 <h2>Participating hosts (8 -&gt; 8)</h2>
 <p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12400_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_exec_basic@twice-userptr-rebind:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8179/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12399_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_12400_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@kms_chamelium_edid@dp-edid-change-during-hibernate:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-bmg-2/igt@kms_chamelium_edid@dp-edid-change-during-hibernate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252">Intel XE#2252</a>) +3 other tests skip</li>
-<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-bmg-1/igt@kms_chamelium_edid@dp-edid-change-during-hibernate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252">Intel XE#2252</a>) +3 other tests skip</li>
+<li>igt@xe_exec_balancer@twice-parallel-userptr-rebind:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8179/bat-adlp-vf/igt@xe_exec_balancer@twice-parallel-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/bat-adlp-vf/igt@xe_exec_balancer@twice-parallel-userptr-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958">Intel XE#3958</a>)</li>
 </ul>
 </li>
-<li>
-<p>igt@kms_chamelium_edid@dp-edid-change-during-suspend:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-lnl-1/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/373">Intel XE#373</a>) +3 other tests skip</li>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-pvc-2/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +3 other tests skip</li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-dg2-oem2/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/373">Intel XE#373</a>) +3 other tests skip</li>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-atsm-2/igt@kms_chamelium_edid@dp-edid-change-during-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +3 other tests skip</li>
 </ul>
-</li>
-<li>
-<p>igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate:</p>
+<h4>Possible fixes</h4>
 <ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-adlp-vf/igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_edid@hdmi-edid-change-during-suspend:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12399/bat-lnl-2/igt@kms_chamelium_edid@hdmi-edid-change-during-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/373">Intel XE#373</a>) +3 other tests skip</li>
+<li>igt@xe_intel_bb@render@render-ymajor-256:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8179/bat-adlp-vf/igt@xe_intel_bb@render@render-ymajor-256.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958">Intel XE#3958</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12400/bat-adlp-vf/igt@xe_intel_bb@render@render-ymajor-256.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8179 -&gt; IGTPW_12399</li>
+<li>IGT: IGT_8179 -&gt; IGTPW_12400</li>
 <li>Linux: xe-2447-89042e0bb417f4d67280e1d7fa9bbcca51734571 -&gt; xe-2452-8f14ac27d7b0ff9ff973fa44a67cc9a0ff3acad5</li>
 </ul>
-<p>IGTPW_12399: 4a988bee49dc8aa63788fc23ca223ff62aec856c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_12400: 12400<br />
   IGT_8179: 183b33f81365dd4a57fe3100a13d3fb13788d158 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-2447-89042e0bb417f4d67280e1d7fa9bbcca51734571: 89042e0bb417f4d67280e1d7fa9bbcca51734571<br />
   xe-2452-8f14ac27d7b0ff9ff973fa44a67cc9a0ff3acad5: 8f14ac27d7b0ff9ff973fa44a67cc9a0ff3acad5</p>
@@ -208,4 +211,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5353137204856742299==--
+--===============9173515549073905935==--
