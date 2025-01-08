@@ -4,53 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE809E77188
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Jan 2025 20:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12ACBE77188
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Jan 2025 20:53:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A021710E326;
-	Wed,  8 Jan 2025 20:38:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFF6110EC84;
+	Wed,  8 Jan 2025 20:53:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifV2UjMk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="buR6nslp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5B1110E5CF
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jan 2025 20:38:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73BBE10EC84
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jan 2025 20:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736368736; x=1767904736;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=x9I4uzfDrfkgR8RKhetMAVBkQ/Z7TAACd3i236oqrtA=;
- b=ifV2UjMkjb2EmtCdHl/g0UM+uOpRTi3EwCiP1CttoKWiSmDXa5Ox/re1
- i7P8AoyY6h+iEIiNAHEgD8UlxI2s9UwH2Rpsf6y6L2enknTPrkmxiH1AK
- 2VB1+NCEoviRMK793tzjXpnLurrV7/ZKN3XCP1TOh8rdOMhewDYMW81zt
- qmbjqlzvq2y8dcivytnIMCZzMoU3Jq4LPP47umaoqBdQbqJj0vKSl4nhM
- 1tOKAzDRtioa3AmiXimvffy7m3VeiWlu1+1LQdLVei5ZOrPJjFurH/oyQ
- AsSFHmdcPgGF42AtjgoeXOI10bbzlCfu/eK7KRSvaCKIUnFqft5B599vi A==;
-X-CSE-ConnectionGUID: sYqClLz7QOOmGiKggzeDIg==
-X-CSE-MsgGUID: zItRszndQ2a7w0XWbeH3Eg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="35838606"
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; d="scan'208";a="35838606"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2025 12:38:56 -0800
-X-CSE-ConnectionGUID: 3hjF+p+jTXqYYnWwIGAH8g==
-X-CSE-MsgGUID: H22S5dibSDizjcL3PbrR1g==
+ t=1736369584; x=1767905584;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Wd1/fpcNX6JxxT0tIJ4ndmitwi5qfiLxaBiainKmm8s=;
+ b=buR6nslpja9KJARijiypTses1K6KtjjDQPx2/UI5Ev35qCrexPSJI/XR
+ fo5iPT4ZM3bPpv3aAWwEHuOX/KQEQAZDoek4g94ynzVoRXKV2usffR0Du
+ OvoW5uxJ+Syvbip14MSINboBVj4N2ilU/Umsx9VWwcYnoqADKgHhQeYyC
+ LDm3vOPZXM9NxE3FzaeXGmMQSoziUqDRvVbqeGGbHAT20KOIRuxbXavgx
+ 2dQAnazb4cadgCrEGPLqIcop8YxbaK1gNOngXZ0Xy3/1Im4Q57Uree6f/
+ 8lj0sPPUdDhzeDf30SsO/5VfSTUnzHinOVBUfYvZhj8ao2liT9hkrUDKN g==;
+X-CSE-ConnectionGUID: Mq8SKN75RtW6Sr+5yaijzA==
+X-CSE-MsgGUID: 33NPZHjjSpyvj090rRBB0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="47971952"
+X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; d="scan'208";a="47971952"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2025 12:53:04 -0800
+X-CSE-ConnectionGUID: cGj1U3igSOyIPTqo/AmtvA==
+X-CSE-MsgGUID: DcGuoeNeQumWooKA1WAuXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; d="scan'208";a="103007961"
-Received: from unknown (HELO linux-System-Product-Name.iind.intel.com)
- ([10.190.239.15])
- by fmviesa006.fm.intel.com with ESMTP; 08 Jan 2025 12:38:54 -0800
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="108256180"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2025 12:53:04 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t 2/2] HAX: DO NOT MERGE
-Date: Thu,  9 Jan 2025 02:09:19 +0530
-Message-Id: <20250108203919.120910-2-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250108203919.120910-1-mohammed.thasleem@intel.com>
-References: <20250108203919.120910-1-mohammed.thasleem@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Kamil Konieczny <kamil.konieczny@intel.com>,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>,
+ Nemesa Garg <nemesa.garg@intel.com>
+Subject: [PATCH i-g-t] Revert tests/kms_histogram: Fix build breakage
+Date: Wed,  8 Jan 2025 12:52:51 -0800
+Message-ID: <20250108205251.1645069-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,1910 +70,494 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel-ci/fast-feedback.testlist    | 887 ++++++++++++++++----
- tests/intel-ci/xe-fast-feedback.testlist | 994 ++++++++++++++++-------
- 2 files changed, 1442 insertions(+), 439 deletions(-)
+This reverts commits
+8911eff2c6c0 ("tests/kms_histogram: Add check for libghe version")
+6e93c2e807b3 ("tests/kms_histogram: Added IGT support to validate global histogram")
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..8a9ac87a0 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -2,170 +2,725 @@
- igt@i915_module_load@load
+Ths addition of libghe version check didn't really work as the released
+libghe exposes a 1.0.0 version:
+
+	Run-time dependency libghe found: YES 1.0
+
+Let's revert this and come back to that when there's a released libghe
+that works and doesn't keep changing the API.
+
+Cc: Kamil Konieczny <kamil.konieczny@intel.com>
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Cc: Nemesa Garg <nemesa.garg@intel.com>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ lib/igt_kms.c         |  23 ---
+ lib/igt_kms.h         |   5 -
+ meson.build           |   5 -
+ tests/kms_histogram.c | 349 ------------------------------------------
+ tests/meson.build     |   2 -
+ 5 files changed, 384 deletions(-)
+ delete mode 100644 tests/kms_histogram.c
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 95e3059f7..9d21cce1e 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -714,9 +714,6 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+ 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
+ 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
+ 	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
+-	[IGT_CRTC_HISTOGRAM] = "HISTOGRAM_ENABLE",
+-	[IGT_CRTC_GLOBAL_HISTOGRAM] = "HISTOGRAM_DATA",
+-	[IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR] = "HISTOGRAM_IET",
+ };
  
- # Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@debugfs_test@read_all_entries
--igt@debugfs_test@basic-hwmon
--igt@debugfs_test@sysfs
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all-engines
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
--igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all-engines
--igt@gem_wait@wait@all-engines
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_frontbuffer_tracking@fbc-1p-rte
-+igt@kms_frontbuffer_tracking@fbc-2p-rte
-+igt@kms_frontbuffer_tracking@psr-1p-rte
-+igt@kms_frontbuffer_tracking@psr-2p-rte
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-rte
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-rte
-+igt@kms_frontbuffer_tracking@drrs-1p-rte
-+igt@kms_frontbuffer_tracking@drrs-2p-rte
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-rte
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-rte
-+igt@kms_frontbuffer_tracking@plane-fbc-rte
-+igt@kms_frontbuffer_tracking@pipe-fbc-rte
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbc-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbc-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@psr-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@psr-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@drrs-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@drrs-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbc-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@fbc-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbc-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@psr-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@psr-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcpsr-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcpsr-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@drrs-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@drrs-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcdrrs-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcdrrs-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbc-modesetfrombusy
-+igt@kms_frontbuffer_tracking@fbc-stridechange
-+igt@kms_frontbuffer_tracking@fbc-tiling-linear
-+igt@kms_frontbuffer_tracking@fbc-tiling-y
-+igt@kms_frontbuffer_tracking@fbc-tiling-4
-+igt@kms_frontbuffer_tracking@fbc-suspend
-+igt@kms_frontbuffer_tracking@psr-modesetfrombusy
-+igt@kms_frontbuffer_tracking@psr-slowdraw
-+igt@kms_frontbuffer_tracking@psr-suspend
-+igt@kms_frontbuffer_tracking@fbcpsr-modesetfrombusy
-+igt@kms_frontbuffer_tracking@fbcpsr-stridechange
-+igt@kms_frontbuffer_tracking@fbcpsr-tiling-linear
-+igt@kms_frontbuffer_tracking@fbcpsr-tiling-y
-+igt@kms_frontbuffer_tracking@fbcpsr-tiling-4
-+igt@kms_frontbuffer_tracking@fbcpsr-slowdraw
-+igt@kms_frontbuffer_tracking@fbcpsr-suspend
-+igt@kms_frontbuffer_tracking@drrs-modesetfrombusy
-+igt@kms_frontbuffer_tracking@drrs-slowdraw
-+igt@kms_frontbuffer_tracking@drrs-suspend
-+igt@kms_frontbuffer_tracking@fbcdrrs-modesetfrombusy
-+igt@kms_frontbuffer_tracking@fbcdrrs-stridechange
-+igt@kms_frontbuffer_tracking@fbcdrrs-tiling-linear
-+igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y
-+igt@kms_frontbuffer_tracking@fbcdrrs-tiling-4
-+igt@kms_frontbuffer_tracking@fbcdrrs-slowdraw
-+igt@kms_frontbuffer_tracking@fbcdrrs-suspend
- igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_pm_backlight@basic-brightness
--igt@kms_pm_rpm@basic-pci-d3-state
--igt@kms_pm_rpm@basic-rte
--igt@kms_psr@psr-primary-page-flip
--igt@kms_psr@psr-cursor-plane-move
--igt@kms_psr@psr-sprite-plane-onoff
--igt@kms_psr@psr-primary-mmap-gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
+ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+@@ -2618,9 +2615,6 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
+ 	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_VRR_ENABLED))
+ 		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_VRR_ENABLED, 0);
+ 
+-	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_HISTOGRAM))
+-		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_HISTOGRAM, 0);
 -
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
+ 	pipe->out_fence_fd = -1;
+ }
+ 
+@@ -5649,23 +5643,6 @@ bool igt_lease_change_detected(struct udev_monitor *mon, int timeout_secs)
+ 			      ARRAY_SIZE(props));
+ }
+ 
+-/**
+- * igt_global_histogram_event_detected:
+- * @mon: A udev monitor initialized with #igt_watch_uevents
+- * @timeout_secs: How long to wait for a lease change event to occur.
+- *
+- * Detect if a global Histogram event was received since we last checked the monitor.
+- *
+- * Returns: true if a sysfs global Histogram event was received, false if we timed out
+- */
+-bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs)
+-{
+-	const char *props[1] = {"HISTOGRAM"};
+-	int expected_val = 1;
 -
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
+-	return event_detected(mon, timeout_secs, props, &expected_val, ARRAY_SIZE(props));
+-}
 -
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all-tests
-+igt@meta_test@fail-result
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 8952faec5..165c4c85e 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,276 +1,724 @@
- # Should be the first test
- igt@xe_module_load@load
+ /**
+  * igt_flush_uevents:
+  * @mon: A udev monitor initialized with #igt_watch_uevents
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 1e2a927ab..8810123fb 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -165,9 +165,6 @@ enum igt_atomic_crtc_properties {
+        IGT_CRTC_OUT_FENCE_PTR,
+        IGT_CRTC_VRR_ENABLED,
+        IGT_CRTC_SCALING_FILTER,
+-       IGT_CRTC_HISTOGRAM,
+-       IGT_CRTC_GLOBAL_HISTOGRAM,
+-       IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
+        IGT_NUM_CRTC_PROPS
+ };
+ 
+@@ -1143,8 +1140,6 @@ void igt_cleanup_uevents(struct udev_monitor *mon);
+ bool igt_display_has_format_mod(igt_display_t *display, uint32_t format, uint64_t modifier);
+ bool igt_plane_has_format_mod(igt_plane_t *plane, uint32_t format, uint64_t modifier);
+ 
+-bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs);
 -
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
+ /**
+  * igt_vblank_after_eq:
+  * @a: First vblank sequence number.
+diff --git a/meson.build b/meson.build
+index 5eda2d582..ed2a79d5a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -197,11 +197,6 @@ else
+ 	chamelium = disabler()
+ endif
+ 
+-libghe = dependency('libghe', version : '>=0.2.0', required : false)
+-if libghe.found()
+-      config.set('HAVE_LIBGHE', 1)
+-endif
 -
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_frontbuffer_tracking@fbc-1p-rte
-+igt@kms_frontbuffer_tracking@fbc-2p-rte
-+igt@kms_frontbuffer_tracking@psr-1p-rte
-+igt@kms_frontbuffer_tracking@psr-2p-rte
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-rte
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-rte
-+igt@kms_frontbuffer_tracking@drrs-1p-rte
-+igt@kms_frontbuffer_tracking@drrs-2p-rte
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-rte
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-rte
-+igt@kms_frontbuffer_tracking@plane-fbc-rte
-+igt@kms_frontbuffer_tracking@pipe-fbc-rte
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-render
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-indfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-indfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-indfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-pgflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-msflip-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-plflip-blt
-+igt@kms_frontbuffer_tracking@fbc-1p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-2p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-indfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-shrfb-fliptrack-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-move
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-onoff
-+igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-fullscreen
-+igt@kms_frontbuffer_tracking@fbc-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbc-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@psr-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@psr-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcpsr-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@drrs-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@drrs-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcdrrs-1p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbcdrrs-2p-pri-indfb-multidraw
-+igt@kms_frontbuffer_tracking@fbc-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-farfromfence-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@fbc-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@psr-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@psr-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@drrs-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-cpu
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-gtt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-wc
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-pwrite
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-blt
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-render
-+igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-render
-+igt@kms_frontbuffer_tracking@fbc-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbc-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@psr-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@psr-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcpsr-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcpsr-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@drrs-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@drrs-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcdrrs-indfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbcdrrs-shrfb-scaledprimary
-+igt@kms_frontbuffer_tracking@fbc-modesetfrombusy
-+igt@kms_frontbuffer_tracking@fbc-stridechange
-+igt@kms_frontbuffer_tracking@fbc-tiling-linear
-+igt@kms_frontbuffer_tracking@fbc-tiling-y
-+igt@kms_frontbuffer_tracking@fbc-tiling-4
-+igt@kms_frontbuffer_tracking@fbc-suspend
-+igt@kms_frontbuffer_tracking@psr-modesetfrombusy
-+igt@kms_frontbuffer_tracking@psr-slowdraw
-+igt@kms_frontbuffer_tracking@psr-suspend
-+igt@kms_frontbuffer_tracking@fbcpsr-modesetfrombusy
-+igt@kms_frontbuffer_tracking@fbcpsr-stridechange
-+igt@kms_frontbuffer_tracking@fbcpsr-tiling-linear
-+igt@kms_frontbuffer_tracking@fbcpsr-tiling-y
-+igt@kms_frontbuffer_tracking@fbcpsr-tiling-4
-+igt@kms_frontbuffer_tracking@fbcpsr-slowdraw
-+igt@kms_frontbuffer_tracking@fbcpsr-suspend
-+igt@kms_frontbuffer_tracking@drrs-modesetfrombusy
-+igt@kms_frontbuffer_tracking@drrs-slowdraw
-+igt@kms_frontbuffer_tracking@drrs-suspend
-+igt@kms_frontbuffer_tracking@fbcdrrs-modesetfrombusy
-+igt@kms_frontbuffer_tracking@fbcdrrs-stridechange
-+igt@kms_frontbuffer_tracking@fbcdrrs-tiling-linear
-+igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y
-+igt@kms_frontbuffer_tracking@fbcdrrs-tiling-4
-+igt@kms_frontbuffer_tracking@fbcdrrs-slowdraw
-+igt@kms_frontbuffer_tracking@fbcdrrs-suspend
- igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_prop_blob@basic
--igt@kms_psr@psr-primary-page-flip
--igt@kms_psr@psr-cursor-plane-move
--igt@kms_psr@psr-sprite-plane-onoff
--igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
--igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
--igt@xe_compute@compute-square
--igt@xe_create@create-execqueues-noleak
--igt@xe_create@create-execqueues-leak
--igt@xe_create@create-invalid-mbz
--igt@xe_create@create-massive-size
--igt@xe_debugfs@base
--igt@xe_debugfs@gt
--igt@xe_debugfs@forcewake
--igt@xe_dma_buf_sync@export-dma-buf-once-write-sync
--igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
--igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync
--igt@xe_dma_buf_sync@export-dma-buf-once-write-read-sync
--igt@xe_evict_ccs@evict-overcommit-simple
--igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
--igt@xe_exec_atomic@basic-dec-all
--igt@xe_exec_atomic@basic-inc-all
--igt@xe_exec_balancer@twice-virtual-basic
--igt@xe_exec_balancer@no-exec-virtual-basic
--igt@xe_exec_balancer@twice-cm-virtual-basic
--igt@xe_exec_balancer@no-exec-cm-virtual-basic
--igt@xe_exec_balancer@twice-virtual-userptr
--igt@xe_exec_balancer@twice-cm-virtual-userptr
--igt@xe_exec_balancer@twice-virtual-rebind
--igt@xe_exec_balancer@twice-cm-virtual-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-parallel-basic
--igt@xe_exec_balancer@no-exec-parallel-basic
--igt@xe_exec_balancer@twice-parallel-userptr
--igt@xe_exec_balancer@twice-parallel-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-invalidate
--igt@xe_exec_basic@twice-basic
--igt@xe_exec_basic@no-exec-basic
--igt@xe_exec_basic@twice-basic-defer-mmap
--igt@xe_exec_basic@twice-basic-defer-bind
--igt@xe_exec_basic@twice-userptr
--igt@xe_exec_basic@twice-rebind
--igt@xe_exec_basic@twice-userptr-rebind
--igt@xe_exec_basic@twice-userptr-invalidate
--igt@xe_exec_basic@no-exec-userptr-invalidate
--igt@xe_exec_basic@twice-bindexecqueue
--igt@xe_exec_basic@no-exec-bindexecqueue
--igt@xe_exec_basic@twice-bindexecqueue-userptr
--igt@xe_exec_basic@twice-bindexecqueue-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_compute_mode@twice-basic
--igt@xe_exec_compute_mode@twice-preempt-fence-early
--igt@xe_exec_compute_mode@twice-userptr
--igt@xe_exec_compute_mode@twice-rebind
--igt@xe_exec_compute_mode@twice-userptr-rebind
--igt@xe_exec_compute_mode@twice-userptr-invalidate
--igt@xe_exec_compute_mode@twice-bindexecqueue
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
--igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_queue_property@invalid-property
--igt@xe_exec_reset@close-fd-no-exec
--igt@xe_exec_reset@cm-close-fd-no-exec
--igt@xe_exec_reset@virtual-close-fd-no-exec
--igt@xe_exec_store@basic-store
--igt@xe_gpgpu_fill@basic
--igt@xe_gt_freq@freq_basic_api
--igt@xe_gt_freq@freq_fixed_idle
--igt@xe_gt_freq@freq_range_idle
--igt@xe_huc_copy@huc_copy
--igt@xe_intel_bb@add-remove-objects
--igt@xe_intel_bb@bb-with-allocator
--igt@xe_intel_bb@blit-reloc
--igt@xe_intel_bb@blit-simple
--igt@xe_intel_bb@create-in-region
--igt@xe_intel_bb@delta-check
--igt@xe_intel_bb@destroy-bb
--igt@xe_intel_bb@intel-bb-blit-none
--igt@xe_intel_bb@intel-bb-blit-x
--igt@xe_intel_bb@intel-bb-blit-y
--igt@xe_intel_bb@lot-of-buffers
--igt@xe_intel_bb@offset-control
--igt@xe_intel_bb@purge-bb
--igt@xe_intel_bb@render
--igt@xe_intel_bb@reset-bb
--igt@xe_intel_bb@simple-bb
--igt@xe_intel_bb@simple-bb-ctx
--igt@xe_mmap@bad-extensions
--igt@xe_mmap@bad-flags
--igt@xe_mmap@bad-object
--igt@xe_mmap@cpu-caching
--igt@xe_mmap@system
--igt@xe_mmap@vram
--igt@xe_mmap@vram-system
--igt@xe_pm_residency@gt-c6-on-idle
--igt@xe_prime_self_import@basic-with_one_bo
--igt@xe_prime_self_import@basic-with_fd_dup
--#igt@xe_prime_self_import@basic-llseek-size
--igt@xe_query@query-engines
--igt@xe_query@query-mem-usage
--igt@xe_query@query-gt-list
--igt@xe_query@query-config
--igt@xe_query@query-hwconfig
--igt@xe_query@query-topology
--igt@xe_query@query-invalid-extension
--igt@xe_query@query-invalid-query
--igt@xe_query@query-invalid-size
--igt@xe_spin_batch@spin-basic
--igt@xe_spin_batch@spin-batch
--igt@xe_sriov_flr@flr-vf1-clear
--igt@xe_sysfs_defaults@engine-defaults
--igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
--igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
--igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
--igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
--igt@xe_sysfs_scheduler@job_timeout_ms-invalid
--igt@xe_sysfs_scheduler@job_timeout_ms-min-max
--#igt@xe_vm@bind-once
--#igt@xe_vm@scratch
--igt@xe_vm@shared-pte-page
--igt@xe_vm@shared-pde-page
--igt@xe_vm@shared-pde2-page
--igt@xe_vm@shared-pde3-page
--igt@xe_vm@bind-execqueues-independent
--igt@xe_vm@large-split-binds-268435456
--igt@xe_vm@munmap-style-unbind-one-partial
--igt@xe_vm@munmap-style-unbind-end
--igt@xe_vm@munmap-style-unbind-front
--igt@xe_vm@munmap-style-unbind-userptr-one-partial
--igt@xe_vm@munmap-style-unbind-userptr-end
--igt@xe_vm@munmap-style-unbind-userptr-front
--igt@xe_vm@munmap-style-unbind-userptr-inval-end
--igt@xe_vm@munmap-style-unbind-userptr-inval-front
--igt@xe_pat@userptr-coh-none
--igt@xe_pat@prime-self-import-coh
--igt@xe_pat@prime-external-import-coh
--igt@xe_pat@pat-index-all
--igt@xe_pat@pat-index-xelp
--igt@xe_pat@pat-index-xehpc
--igt@xe_pat@pat-index-xelpg
--igt@xe_pat@pat-index-xe2
--igt@xe_pat@pat-index-xe3p-xpc
--igt@xe_waitfence@abstime
--igt@xe_waitfence@engine
--igt@xe_waitfence@reltime
+ build_info += 'Build Chamelium test: @0@'.format(chamelium.found())
+ 
+ pthreads = dependency('threads')
+diff --git a/tests/kms_histogram.c b/tests/kms_histogram.c
+deleted file mode 100644
+index 3d59304ba..000000000
+--- a/tests/kms_histogram.c
++++ /dev/null
+@@ -1,349 +0,0 @@
+-// SPDX-License-Identifier: MIT
+-/*
+- * Copyright © 2024 Intel Corporation
+- */
 -
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--igt@core_hotunplug@unbind-rebind
+-/**
+- * TEST: kms histogram
+- * Category: Display
+- * Description: Test to verify histogram features.
+- * Functionality: histogram
+- * Mega feature: Display
+- * Test category: functionality test
+- */
 -
--# Run KUnit tests at the end
--igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit
--igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit
--igt@xe_live_ktest@xe_dma_buf
--igt@xe_live_ktest@xe_migrate
+-#include <errno.h>
+-#include <fcntl.h>
+-#include <limits.h>
+-#include <stdbool.h>
+-#include <stdio.h>
+-#include <string.h>
 -
--# Move fault_mode tests at the end to unblock execution
--igt@xe_exec_fault_mode@twice-basic
--igt@xe_exec_fault_mode@many-basic
--igt@xe_exec_fault_mode@twice-userptr
--igt@xe_exec_fault_mode@twice-rebind
--igt@xe_exec_fault_mode@twice-userptr-rebind
--igt@xe_exec_fault_mode@twice-userptr-invalidate
--igt@xe_exec_fault_mode@twice-bindexecqueue
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_fault_mode@twice-basic-imm
--igt@xe_exec_fault_mode@twice-userptr-imm
--igt@xe_exec_fault_mode@twice-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-basic-prefetch
--igt@xe_exec_fault_mode@twice-userptr-prefetch
--igt@xe_exec_fault_mode@twice-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-invalid-fault
--igt@xe_exec_fault_mode@twice-invalid-userptr-fault
--igt@xe_exec_threads@threads-basic
--igt@xe_exec_threads@threads-mixed-basic
--igt@xe_exec_threads@threads-mixed-shared-vm-basic
--igt@xe_exec_threads@threads-mixed-fd-basic
--igt@xe_exec_threads@threads-mixed-userptr-invalidate
--igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_evict@evict-beng-small
--igt@xe_evict@evict-beng-small-cm
--igt@xe_evict@evict-beng-small-external
--igt@xe_evict@evict-beng-small-external-cm
--igt@xe_evict@evict-beng-small-multi-vm
--igt@xe_evict@evict-small
--igt@xe_evict@evict-small-cm
--igt@xe_evict@evict-small-external
--igt@xe_evict@evict-small-external-cm
--igt@xe_evict@evict-small-multi-vm
-+igt@meta_test@fail-result
+-#include "igt.h"
+-#include "igt_vec.h"
+-#ifdef HAVE_LIBGHE
+-#include "ghe.h"
+-#endif
+-
+-#define GLOBAL_HIST_DISABLE		0
+-#define GLOBAL_HIST_ENABLE		1
+-#define GLOBAL_HIST_DELAY		2
+-#define FLIP_COUNT			20
+-
+-/**
+- * SUBTEST: global-basic
+- * Description: Test to enable histogram, flip monochrome fbs, wait for
+- *		histogram event and then read the histogram data
+- *
+- * SUBTEST: global-color
+- * Description: Test to enable histogram, flip color fbs, wait for
+- *		histogram event and then read the histogram data
+- *
+- * SUBTEST: algo-basic
+- * Description: Test to enable histogram, flip monochrome fbs, wait for
+- *		histogram event and then read the histogram data and enhance pixels by
+- *		multiplying by a pixel factor using algo
+- *
+- * SUBTEST: algo-color
+- * Description: Test to enable histogram, flip color fbs, wait for histogram event
+- *		and then read the histogram data and enhance pixels by multiplying
+- *		by a pixel factor using algo
+- */
+-
+-IGT_TEST_DESCRIPTION("This test will verify the display histogram.");
+-
+-typedef struct data {
+-	igt_display_t display;
+-	int drm_fd;
+-	igt_fb_t fb[5];
+-} data_t;
+-
+-typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, drmModePropertyBlobRes*);
+-
+-static void enable_and_verify_global_histogram(data_t *data, enum pipe pipe)
+-{
+-	uint32_t global_hist_value;
+-
+-	/* Enable global_hist */
+-	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_ENABLE);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-
+-	/* Verify if global_hist is enabled */
+-	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
+-	igt_assert_f(global_hist_value == GLOBAL_HIST_ENABLE, "Failed to enable global_hist\n");
+-}
+-
+-static void disable_and_verify_global_histogram(data_t *data, enum pipe pipe)
+-{
+-	uint32_t global_hist_value;
+-
+-	/* Disable global_hist */
+-	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_DISABLE);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-
+-	/* Verify if global_hist is disabled */
+-	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
+-	igt_assert_f(global_hist_value == GLOBAL_HIST_DISABLE, "Failed to disable global_hist\n");
+-}
+-
+-static void cleanup_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+-{
+-	igt_plane_t *plane;
+-
+-	disable_and_verify_global_histogram(data, pipe);
+-
+-	for_each_plane_on_pipe(&data->display, pipe, plane)
+-		igt_plane_set_fb(plane, NULL);
+-	igt_output_set_pipe(output, PIPE_NONE);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-	igt_remove_fb(data->display.drm_fd, &data->fb[0]);
+-	igt_remove_fb(data->display.drm_fd, &data->fb[1]);
+-	igt_remove_fb(data->display.drm_fd, &data->fb[2]);
+-	igt_remove_fb(data->display.drm_fd, &data->fb[3]);
+-	igt_remove_fb(data->display.drm_fd, &data->fb[4]);
+-}
+-
+-static drmModePropertyBlobRes *get_global_histogram_data(data_t *data, enum pipe pipe)
+-{
+-	uint64_t blob_id;
+-
+-	blob_id = igt_pipe_obj_get_prop(&data->display.pipes[pipe],
+-					IGT_CRTC_GLOBAL_HISTOGRAM);
+-	if (blob_id == 0)
+-		return NULL;
+-
+-	return drmModeGetPropertyBlob(data->drm_fd, blob_id);
+-}
+-
+-static void read_global_histogram(data_t *data, enum pipe pipe,
+-				  drmModePropertyBlobRes **hist_blob_ptr)
+-{
+-	uint32_t *histogram_ptr;
+-	drmModePropertyBlobRes *global_hist_blob = NULL;
+-
+-	igt_set_timeout(GLOBAL_HIST_DELAY, "Waiting to read global histogram blob.\n");
+-	do {
+-		global_hist_blob = get_global_histogram_data(data, pipe);
+-	} while (!global_hist_blob);
+-
+-	igt_reset_timeout();
+-
+-	*hist_blob_ptr = global_hist_blob;
+-	histogram_ptr = (uint32_t *)global_hist_blob->data;
+-	for (int i = 0; i < global_hist_blob->length / sizeof(*histogram_ptr); i++)
+-		igt_debug("Histogram[%d] = %d\n", i, *(histogram_ptr++));
+-}
+-
+-#ifdef HAVE_LIBGHE
+-static void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size)
+-{
+-	uint32_t i;
+-
+-	for (i = 0; i < size; i++) {
+-		/* Displaying IET LUT */
+-		igt_debug("Pixel Factor[%d] = %d\n", i, *(dietfactor + i));
+-	}
+-
+-	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
+-				       dietfactor, size);
+-}
+-
+-static struct globalhist_args *algo_get_pixel_factor(drmModePropertyBlobRes *global_hist_blob,
+-						     igt_output_t *output)
+-{
+-	struct globalhist_args *argsPtr =
+-		(struct globalhist_args *)malloc(sizeof(struct globalhist_args));
+-
+-	drmModeModeInfo *mode;
+-
+-	mode = igt_output_get_mode(output);
+-
+-	memcpy(argsPtr->histogram, global_hist_blob->data, global_hist_blob->length);
+-	argsPtr->resolution_x = mode->hdisplay;
+-	argsPtr->resolution_y = mode->vdisplay;
+-
+-	igt_debug("Making call to global histogram algorithm.\n");
+-	histogram_compute_generate_data_bin(argsPtr);
+-
+-	return argsPtr;
+-}
+-
+-static void algo_image_enhancement_factor(data_t *data, enum pipe pipe,
+-					  igt_output_t *output,
+-					  drmModePropertyBlobRes *global_hist_blob)
+-{
+-	struct globalhist_args *args = algo_get_pixel_factor(global_hist_blob, output);
+-
+-	igt_assert(args);
+-	igt_debug("Writing pixel factor blob.\n");
+-
+-	set_pixel_factor(&data->display.pipes[pipe], args->dietfactor,
+-			 ARRAY_SIZE(args->dietfactor));
+-	free(args);
+-
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-}
+-#endif
+-
+-static void create_monochrome_fbs(data_t *data, drmModeModeInfo *mode)
+-{
+-	/* TODO: Extend the tests for different formats/modifiers. */
+-	/* These frame buffers used to flip monochrome fbs to get histogram event. */
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       0, 0, 0, &data->fb[0]));
+-
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       1, 1, 1, &data->fb[1]));
+-}
+-
+-static void create_color_fbs(data_t *data, drmModeModeInfo *mode)
+-{
+-	/* TODO: Extend the tests for different formats/modifiers. */
+-	/* These frame buffers used to flip color fbs to get histogram event. */
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       0.5, 0, 0.5, &data->fb[0]));
+-
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       1, 0, 0, &data->fb[1]));
+-
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       0, 1, 0, &data->fb[2]));
+-
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       0, 0, 1, &data->fb[3]));
+-
+-	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-					       1, 0, 1, &data->fb[4]));
+-}
+-
+-static void flip_fb(data_t *data, enum pipe pipe, igt_output_t *output, struct igt_fb *fb)
+-{
+-	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), fb);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-}
+-
+-static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, bool color_fb)
+-{
+-	int i;
+-	struct udev_monitor *mon = igt_watch_uevents();
+-	drmModeModeInfo *mode = igt_output_get_mode(output);
+-	bool event_detected = false;
+-	int fb_count = color_fb ? 5 : 2;
+-
+-	if (color_fb)
+-		create_color_fbs(data, mode);
+-	else
+-		create_monochrome_fbs(data, mode);
+-
+-	flip_fb(data, pipe, output, &data->fb[0]);
+-	enable_and_verify_global_histogram(data, pipe);
+-
+-	igt_flush_uevents(mon);
+-	for (i = 1; i <= FLIP_COUNT; i++) {
+-		flip_fb(data, pipe, output, &data->fb[i % fb_count]);
+-
+-		/* Check for histogram event on every flip and break the loop if detected. */
+-		if (igt_global_histogram_event_detected(mon, 0)) {
+-			event_detected = true;
+-			break;
+-		}
+-	}
+-
+-	igt_cleanup_uevents(mon);
+-	igt_assert_f(event_detected, "Histogram event not generated.\n");
+-}
+-
+-static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_output_t *output,
+-					  bool color_fb, test_t test_pixel_factor)
+-{
+-	drmModePropertyBlobRes *global_hist_blob = NULL;
+-
+-	prepare_pipe(data, pipe, output, color_fb);
+-
+-	read_global_histogram(data, pipe, &global_hist_blob);
+-
+-	if (test_pixel_factor)
+-		test_pixel_factor(data, pipe, output, global_hist_blob);
+-
+-	drmModeFreePropertyBlob(global_hist_blob);
+-	cleanup_pipe(data, pipe, output);
+-}
+-
+-static void run_tests_for_global_histogram(data_t *data, bool color_fb,
+-					   test_t test_pixel_factor)
+-{
+-	enum pipe pipe;
+-	igt_output_t *output;
+-
+-	for_each_connected_output(&data->display, output) {
+-		for_each_pipe(&data->display, pipe) {
+-			if (!igt_pipe_obj_has_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM))
+-				continue;
+-
+-			igt_display_reset(&data->display);
+-
+-			igt_output_set_pipe(output, pipe);
+-			if (!intel_pipe_output_combo_valid(&data->display))
+-				continue;
+-
+-			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+-				run_global_histogram_pipeline(data, pipe, output, color_fb, test_pixel_factor);
+-		}
+-	}
+-}
+-
+-static void run_algo_test(data_t *data, bool color_fb)
+-{
+-#ifdef HAVE_LIBGHE
+-	run_tests_for_global_histogram(data, color_fb, algo_image_enhancement_factor);
+-#else
+-	igt_skip("Histogram algorithm library not found.\n");
+-#endif
+-}
+-
+-igt_main
+-{
+-	data_t data = {};
+-
+-	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+-		kmstest_set_vt_graphics_mode();
+-		igt_display_require(&data.display, data.drm_fd);
+-		igt_display_require_output(&data.display);
+-		igt_require(data.display.is_atomic);
+-	}
+-
+-	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
+-		     "event and then read the histogram data.");
+-	igt_subtest_with_dynamic("global-basic")
+-		run_tests_for_global_histogram(&data, false, NULL);
+-
+-	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
+-		     "and then read the histogram data.");
+-	igt_subtest_with_dynamic("global-color")
+-		run_tests_for_global_histogram(&data, true, NULL);
+-
+-	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
+-		     "event and then read the histogram data and enhance pixels by multiplying "
+-		     "by a pixel factor using algo.");
+-	igt_subtest_with_dynamic("algo-basic")
+-		run_algo_test(&data, false);
+-
+-	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
+-		     "and then read the histogram data and enhance pixels by multiplying "
+-		     "by a pixel factor using algo.");
+-	igt_subtest_with_dynamic("algo-color")
+-		run_algo_test(&data, true);
+-
+-	igt_fixture {
+-		igt_display_fini(&data.display);
+-		drm_close_driver(data.drm_fd);
+-	}
+-}
+diff --git a/tests/meson.build b/tests/meson.build
+index 89bba6454..2724c7a9a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -37,7 +37,6 @@ test_progs = [
+ 	'kms_getfb',
+ 	'kms_hdmi_inject',
+ 	'kms_hdr',
+-	'kms_histogram',
+ 	'kms_invalid_mode',
+ 	'kms_lease',
+ 	'kms_multipipe_modeset',
+@@ -381,7 +380,6 @@ extra_dependencies = {
+ 	'gem_eio': [ realtime ],
+ 	'gem_exec_balancer': [ lib_igt_perf ],
+ 	'gem_mmap_offset': [ libatomic ],
+-	'kms_histogram': [ libghe ],
+ 	'i915_pm_freq_mult': [ lib_igt_perf ],
+ 	'i915_pm_rc6_residency': [ lib_igt_perf ],
+ 	'perf': [ lib_igt_i915_perf ],
 -- 
-2.34.1
+2.47.0
 
