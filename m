@@ -4,55 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60667E77197
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 17:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02154E77199
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 17:05:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 077D010EE51;
-	Thu,  9 Jan 2025 17:02:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4B4410EE95;
+	Thu,  9 Jan 2025 17:05:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WkYyXuG7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nk7bqdL3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBCA410EE51
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jan 2025 17:02:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B06CC10EE95
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jan 2025 17:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736442157; x=1767978157;
+ t=1736442352; x=1767978352;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=B438ncnnXouuZQzPQRPCyqVgvxC8Q600R5KgP2BlGbc=;
- b=WkYyXuG7FVlh6jA6tuhP04rCWVF126Qeu43pTcJvEdoVE7sNxGH878pi
- iPcZykhwaVHzNFKKI8G4uULtAAahucWpyRg0qBY2oipMf2qgkPlq2n5Dw
- 6NhrKg7XiJj6zLa6frsv61M1GgBz0IfVfG8Ctiw7Wf3/NmojwTeZIRt19
- vJ5utoUqTk8b+7WrimlDf+zv9shxohjwpXs89q1W5gVBj18IORtVCoWt8
- PRwieEVJ/arJTyaKkyVXtkeeSwQWqMWfp2Cj1TKtmqlZM6d0ZxRj2DSDB
- 8kLQRTjTXJ50EiKJhNM3OIXYfMls3rUMrf+J+DVGs1wKn66oSJTTNVnDE g==;
-X-CSE-ConnectionGUID: ugWMMbKISAOKeHkhSDMr1w==
-X-CSE-MsgGUID: o0OCSHUZR4O185ECE/L+pQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36946344"
-X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; d="scan'208";a="36946344"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2025 09:02:36 -0800
-X-CSE-ConnectionGUID: j/AzYy0VRA+yb4XnY/f3uA==
-X-CSE-MsgGUID: ZSVCEbYKSJOR/GEGpRoqZg==
+ bh=/Df1tGxacvhT/5lDE2EkS7YJ9VvYtgh0telZUr4qqzw=;
+ b=Nk7bqdL3tLsNJjYS8ODDC9cGQLpshSL3csHBhZ9yfNY4PWYP57f4kHsE
+ 034qcfJY6M2MmfZIRJnEzJPq2MO2DYuWmVyoF6/eCB5tujnjkL3gHkIgt
+ TpX9XyhzbF/t2hIEXCx9cu4nSQYZFf6FRKtPlZR7TJffj00C+sew8VgEa
+ L29u1k+dL269xRFcyhZiMW9TaxzaQlTolhWY6wu7Sr6M5hNBMB1ohVYvm
+ 0lSP0kO44lcoRYq7rAkCkEerWqTocE+FI4P6087VO2pie151b7cAaXfZ4
+ gkPuyBANG+HX/I8iG/n/AkBsL6D15PewAVQ8uCTEoh1YlvbzLt6tq/QEX g==;
+X-CSE-ConnectionGUID: O29n05gPRwmaPMthkCKekA==
+X-CSE-MsgGUID: /BvOP0gITDWREWyQIT2tSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36612918"
+X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; d="scan'208";a="36612918"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jan 2025 09:05:51 -0800
+X-CSE-ConnectionGUID: NWUpPCV2Tk6QyRRV8hFoOQ==
+X-CSE-MsgGUID: t+SlLKa5ST2M3okt+cdO2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="108096768"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
- ([10.125.111.77])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2025 09:02:36 -0800
-Date: Thu, 9 Jan 2025 11:02:30 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Pravalika Gurram <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH v1] tests/xe_debugfs: Improve test_gt subtest
-Message-ID: <v6a252t6spq7j4siiftwiasbi7jl3ognhqinhnwknr4e5xqeyi@awzm247ebwi2>
-References: <20250109105721.914096-1-pravalika.gurram@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; d="scan'208";a="134299024"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 09:05:50 -0800
+Date: Thu, 9 Jan 2025 18:05:36 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH v2] lib/meson.build: allow build IGT with link time
+ optimization
+Message-ID: <20250109170536.ze5mia3thuop4ios@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+References: <20250109-fix-lto-v2-1-3dc74d60a124@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250109105721.914096-1-pravalika.gurram@intel.com>
+In-Reply-To: <20250109-fix-lto-v2-1-3dc74d60a124@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,119 +73,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jan 09, 2025 at 04:27:21PM +0530, Pravalika Gurram wrote:
->Read the debugfs entries in the loop to improve
->the readability.
->
->Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
->---
-> tests/intel/xe_debugfs.c | 84 +++++++---------------------------------
-> 1 file changed, 13 insertions(+), 71 deletions(-)
->
->diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
->index bcbb5036a..3d8c17921 100644
->--- a/tests/intel/xe_debugfs.c
->+++ b/tests/intel/xe_debugfs.c
->@@ -180,77 +180,19 @@ test_gt(int fd, int gt_id)
-> //		"guc_ct_selftest"
-> 	};
->
->-	sprintf(name, "gt%d/hw_engines", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/sa_info", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/steering", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/topology", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/pat", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/mocs", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/ggtt", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/register-save-restore", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/workarounds", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/default_lrc_rcs", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/default_lrc_ccs", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/default_lrc_bcs", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/default_lrc_vecs", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/default_lrc_vcs", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/hwconfig", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/uc/guc_info", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/uc/huc_info", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->-
->-	sprintf(name, "gt%d/uc/guc_log", gt_id);
->-	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->-	igt_debugfs_dump(fd, name);
->+	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
->+		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
->+		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->+		if (!strstr(name, "uc")) {
+Hi Andrzej,
+On 2025-01-09 at 17:26:30 +0100, Andrzej Hajda wrote:
+> Some distributions use -flto gcc flag to build IGT. With this flag
+> enabled variables declared with section attribute do not appear in
+> correct section in .o files. Since iga64 assembly helper script relies
+> on it we need to use -ffat-lto-objects in case of files containing
+> iga64 assembly. According to documentation this option is effective
+> only in case lto is in use, so it should not affect non-lto builds.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/165
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
-strstr will find any substring "uc". You could do a strcmp() instead,
-but I don't understand why we are doing this here.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-I'd just remove 'uc' from the array and update validate_entries to
-ignore directories.
-
-Lucas De Marchi
-
->+			igt_debugfs_dump(fd, name);
->+		} else {
->+			for (int j = 0; j < ARRAY_SIZE(expected_files_uc); j++) {
->+				sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[j]);
->+				igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->+				igt_debugfs_dump(fd, name);
->+			}
->+		}
->+	}
->
-> 	sprintf(name, "/gt%d", gt_id);
-> 	validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
->-- 
->2.34.1
->
+> ---
+> This patch 'fixes' building IGT with link-time-optimization. I am not
+> sure it is or should be supported by IGT, but build scripts can be
+> modified to allow it for testing.
+> Grepping internet shows at least Gentoo and Arch Linux builds IGT with
+> LTO, so I guess it is working for them.
+> ---
+> Changes in v2:
+>  - added Closes tag
+> - Link to v1: https://lore.kernel.org/r/20241216-fix-lto-v1-1-1280b17dc70f@intel.com
+> ---
+>  lib/meson.build | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 1704ed1e1c17..9fffdd3c6218 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -240,7 +240,7 @@ foreach f: lib_sources
+>  	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
+>  	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
+>  	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
+> -	])
+> +	] + (iga64_assembly_sources.contains(f) ? [ '-ffat-lto-objects' ] : []))
+>  
+>      lib_intermediates += lib
+>      if iga64_assembly_sources.contains(f)
+> 
+> ---
+> base-commit: ee7a3ac616f55f6ed1b959ff951237099bda86d8
+> change-id: 20241216-fix-lto-8d3bc1488c6a
+> 
+> Best regards,
+> -- 
+> Andrzej Hajda <andrzej.hajda@intel.com>
+> 
