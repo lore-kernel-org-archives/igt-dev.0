@@ -4,183 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47F30E77197
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 08:40:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 921E3E77199
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 08:58:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DFE6210ED2F;
-	Thu,  9 Jan 2025 08:40:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UgKlmwvT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E04CB10ED2A
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jan 2025 08:40:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736412046; x=1767948046;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=goYg3j0Examp3L2yZYCQaQgz1L5PH1VJau4wxv99WVA=;
- b=UgKlmwvTyx4GbDFl58z2ZSsiBZnz4nC3KuUEh1Sr0XsS2nOskNJI75P5
- suV7ViR8DRPzyuJhY417mY0CBxzWv+vbUqXzNspF5wBfpPMXYYt2QEDGi
- 4SorpTevAEauSz2+falirwLT4AQSFiFSyH2K9XaqCixwD8OFmVTNDgNEe
- uhC+ru6jgSCHrqdMTtDQDsNH18ojAV1qwSm/KPgdgjUEnppWYp11YMOnd
- 00RW/S0AW/n0vsVfQk6CTIAxrDEBfZt/sfb7Lvq43faUwvGw2cl9HayV2
- FyL7DEfYfbkiu5tcLvMllBMcMPw00SsPkH0hwYG9RYV13MbkPTY3K2nrI g==;
-X-CSE-ConnectionGUID: 51t0r/n6SH+UN4zUJc8EFA==
-X-CSE-MsgGUID: mu22FPVFR0Kwuys35sIESQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="35948584"
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; d="scan'208";a="35948584"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2025 00:40:45 -0800
-X-CSE-ConnectionGUID: hf+FlxhTQ7qFrwY1nc7NLw==
-X-CSE-MsgGUID: 47RmsW2KTaad22NZ9+t8AQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; d="scan'208";a="103537411"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 09 Jan 2025 00:40:43 -0800
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 9 Jan 2025 00:40:41 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 9 Jan 2025 00:40:41 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.170)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 9 Jan 2025 00:40:41 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lj2k8GksUGHiLLwgQ5ekc4Y2RGfgxZ0DhpLLQ/hBGkISgZMWqyRH5cluulf+s6+izbvWwfXkwwtPHecHsJX2TA/wR1QgfJwrm7KEVqzWDi0jwKgQoOsDHiGZiDZAqm2+cfdPGH/T3mMS+xET5POV6Ojo0+p9nNWy183oUvdb/7QSXf1Cg+hwSr4G+vj5a2dORpuMEr8IVtvq8nhlvTADaps6Tdxrws2NLi2YoFNOFC32tYQlkpF0DkNp+MMAUR8nu6cdIuzRBerp/5l2KLyQRaczpzGjdq4BG+akJXe+aG5CIZLHwm3v6wuy7BEf3iV4MACNQOi0i5W9unIlNPEojg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=goYg3j0Examp3L2yZYCQaQgz1L5PH1VJau4wxv99WVA=;
- b=DYhVhJZD6e5jKK/cBfshYGkX6+AB5ZrGx3/Kwv5kCxqHBQk/LQS+9srO/LbFkxRESMrbmglAENjYU+plN+3vxXy0r08q9jBdGTCS3zBDwFJni3n9dmk3n/KlOSzqf0tlV9jbbFpJSzIZaT5C0lnKrhw8ccw/Gd7ah9EMGrxHDkurkKee8PCi8P4lPNDyoyEdmaIgK086kZ0TpDEeZ7Af+z0b2Yg2D8QPF/mP8Oc7iwUjLMjOWL8e9bYNa8kqA6bly7q0aXnUUolt0Or44/Qf59dmFm5upsvSmtbGZ3mnq2eND2HVghcWtzMilkxx5yxqnLnkz09j1ql6B3wZECNGWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6097.namprd11.prod.outlook.com (2603:10b6:208:3d7::17)
- by MN0PR11MB6136.namprd11.prod.outlook.com (2603:10b6:208:3c8::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Thu, 9 Jan
- 2025 08:40:39 +0000
-Received: from IA1PR11MB6097.namprd11.prod.outlook.com
- ([fe80::8f29:c6c9:9eb2:6392]) by IA1PR11MB6097.namprd11.prod.outlook.com
- ([fe80::8f29:c6c9:9eb2:6392%7]) with mapi id 15.20.8335.011; Thu, 9 Jan 2025
- 08:40:38 +0000
-From: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>
-To: "Gurram, Pravalika" <pravalika.gurram@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH v2] tests/intel/xe_vm: Fixed documentation
-Thread-Topic: [PATCH v2] tests/intel/xe_vm: Fixed documentation
-Thread-Index: AQHbYmoRqOPN8UxWREagLilZvG3ZyLMOHyyA
-Date: Thu, 9 Jan 2025 08:40:38 +0000
-Message-ID: <IA1PR11MB609785F52B5D791CB584665F86132@IA1PR11MB6097.namprd11.prod.outlook.com>
-References: <20250109073929.913205-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250109073929.913205-1-pravalika.gurram@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6097:EE_|MN0PR11MB6136:EE_
-x-ms-office365-filtering-correlation-id: c86de812-1c07-41d2-f149-08dd30894b53
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?RXRqTWM2a2ZNZFRWV2JaenVWZ013aU1QbmlpbmQ3RXp6N1B6RUpxWkVDUHBt?=
- =?utf-8?B?V3dtcTRlOUk4QjNyQk9wVTB1TDI4TkU2WjFkRDZ5ODF1ZHdXdHNvVnBNYnor?=
- =?utf-8?B?UHpCcjFEbTc5ckFVWGdhTHVvVkRqVjJQYS9MTWJ4VUt6aGNDc3JGbk93QkhV?=
- =?utf-8?B?Y3daYXAwOTZsaDlEd0syZktBTG9lRWpPdVdRY0NDOUlGaUZkalplaFc1Z3hr?=
- =?utf-8?B?MlVZYlhyNTNxc29XaGNkMVhZNUJNNThpb0E2TWh0cVZ1UzV4N1lmTE0veUxo?=
- =?utf-8?B?anF5RG5CRllTVUpaUTk3WUIrVEVMVGczdDNoekx6dTcwSjE3bmZWVXFROTdw?=
- =?utf-8?B?dHlqZE12cjBXdDN6Y2IyT3FaNzJ2OTFzb2ttZkhnbHFYV0g2QUhCSXB3ampT?=
- =?utf-8?B?QXdDRlVhcUQrMDNXWDIrelE0RkM4cFJmR0tNRmR4cnFPT0l3cW9OSnNQOGk3?=
- =?utf-8?B?aVEvbzJwQ2JZSU4vZFRrRGc4VHNGWFlFTTBpV0phbE5lb3V0cHZDVGtpeEhD?=
- =?utf-8?B?dkpYNGdRTS8vNmhmNVRnSkRxQ0x6TEVXZ2E3dmRITVFITUxUamI0ajNFVTdS?=
- =?utf-8?B?TjZKdzBiemlrdlIxMkVEdGV5Mm4vczhxVE5Zek5yTWQ5cWQzZlRlemJsOWhE?=
- =?utf-8?B?dTVUZFpiNkFVbUxoU1N1TWt1dmVFNjNSRzRlcER0N0RSRWR4RkR6c25MWjdB?=
- =?utf-8?B?dWt0S0xyYisvYjAyZWk4WEx0V05Ub0lFOWc0SUhLNERkUmJaSEI2MUhzaDRU?=
- =?utf-8?B?aHZtcEM3R0lMakk2Z0Fid3FvU0FrSFJYbW00ZjNtYWgzeGJFM0k2VnErci9L?=
- =?utf-8?B?WWZUcHBhWWNjZzJtbDJZWFowZlk1Tkl6SVZRL25JR0M5UnV5WGFZY0dKYWFS?=
- =?utf-8?B?YnRUTVAyVS8yWS9ZdEJJdkRyOVNSa1Z4Zy9sNzl2MnhZSWVrMmFCbGZ3USta?=
- =?utf-8?B?RG1EeVFYREIxcWpOWWxUYm9vaUk3UHRrRElEYUo0czkxREdCUlh3OHAxZms5?=
- =?utf-8?B?a2RGTXl2eXVtR3NTNDl4MWlRRWlNcjhULzdNblpjZi9NM1Fka1R1Q0NWd3U4?=
- =?utf-8?B?UkJIczlVcUxlalY3NWwwWGJ6b2tRUzR6SUZRMFY3eG5YMXF6clBic0U0aUNG?=
- =?utf-8?B?Sm1LUms4ZEJ1TXF3OU9veU5rRFdhZVhxU01IZzA1S0VCaVE0TDF1cys2L3pw?=
- =?utf-8?B?Uy9RYlVENDh1RUJreWZKU0xLZ2pXT0lIVkhsOGdPL1RkdDh5eXNhanUrdGIx?=
- =?utf-8?B?RUxCWFVMMk5YZG9UZkc1RG0rY2kxMFFxS2lzUzlpdU5GWEpSdXR4dndmclBS?=
- =?utf-8?B?VkU4bksyQU9FZmpMQzkzbndvY1o4YitSOWlEUzlEUnZ5Qkp3NlMxb2xRYWdM?=
- =?utf-8?B?QytYZkRXSGh5N1lhZXpDdThXM0hQSGoxdlFxOHVPK1F5R0FWVWhSYnVmbC9Y?=
- =?utf-8?B?MGlwbWJ2anMwRkd2N3FpbnBtYTBTWGYrM2JRRzhoZWFITDVMNXMxczdFMm1k?=
- =?utf-8?B?cVB0Sk9NR0VKODN6QlY5ZS9leTJBSVdGUUFGQmpoZlc5QmMxWDhMTU5nR1lm?=
- =?utf-8?B?QW5oL01iclFMTzRtaDMybWpPbDFNT0RDdW44TWRiRlMyMzFoemFTUmFlNG1p?=
- =?utf-8?B?V2thUGl4NzUvM3NZMzlRODJSWUZkVW9PUDZ4djdGbFR5Q1ppWUpyelJZS004?=
- =?utf-8?B?Vk0yUDVWZ1drdjBWOHU4cjFBZmpjMTY4RUtnM28rRTgrT0dJcHlPZGdWRm9H?=
- =?utf-8?B?bnZsMnR6Y2Y1V3VVMElVZnBCekRUQkJySUE5M1pNeUZmNDJJSnpDcXpOUHhS?=
- =?utf-8?B?MGJvbnFEVTU4S0w3MEhpV0Myenk3Y3lkMll6emQxOUI2eE5wcFF5SUtLeEo3?=
- =?utf-8?B?YWxHbjJ5b3BtSnZVSkJTbTZ5SkZwK0NqMVJ6UWNLL21BRFpmb3o4MU9vbEZh?=
- =?utf-8?Q?iGcR5vHaqMGj3kwdSPNYJqnExEhjC836?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB6097.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VEpGZ2pBRTZwc3pUTDlUODRoTjR0ZEtIUVVJa3o2KzRGN2dwamIwRmdaMkVn?=
- =?utf-8?B?RWJKUkJmVWxjc3o5NFRZM2tDNUQ2Uzd0ZUZVUk1xMmhWTzJDWGVnRmliQnFr?=
- =?utf-8?B?Y01pclI3Y0o2aEhTSHczaVhnZTlwajYyMGFDMGxGVTFNa2NhMkRnd2wzckNC?=
- =?utf-8?B?QzVIT0tEVlZPT0ZIWG9vaTR1YUZvNFNBQm42MWNXYmd2RGFUbmNSUFF3WGQ3?=
- =?utf-8?B?amFGa0JXa3VLcG1LS1MrUXc1eXFwTWczRmNMYTMzUkZjdDlIUXFicDI0SVBz?=
- =?utf-8?B?ZWJHcVlqdVM4UU1BQkhLdWZHMUhTdWQvcXhPejRJZVJQbFd3TTVvVEZraUV0?=
- =?utf-8?B?M0dPNnBEYVBod1VuaFdxQnhOZnQ3Wll3MFZYY2FTR2d2Q045WmgrODI5ZzZl?=
- =?utf-8?B?NHM2Y1JxNU9ZbUoxZlBIU0NwbDRvNEpsMU9xZCtPKzk0Z1pBclcwdXdxY21M?=
- =?utf-8?B?MmhycU16VUVKM2dOV052aHl2aDAzVWxyaUdWMW9QYXYxSHVpcEd5OXV5aFIw?=
- =?utf-8?B?eW1WYWszMWpVVEhrbUs0MW9xSmJoem1SV1EyVUNuMCtoMXRHWEZ1Tmp4Z2lG?=
- =?utf-8?B?aHNIR3ZSTWRYejQyZmp6STdFS2FEeGlaNXF6S1ZwU1FNS1g3dUc4ekh6Mzk2?=
- =?utf-8?B?N0ZtaXNwYUZySTBOQ0k1d0Z6YzBrMy96OHZvNUpHSzNWUTYyVGZXVFBUSjlE?=
- =?utf-8?B?citqZmc2QjFZSzJuN2VzUThPNitzQjY1Rnh0NWpaRmN2em1TdlFmQjB0RHRF?=
- =?utf-8?B?b2k0R1N3ekh1RnYxSWx0WFJCVit5TWgrY0kzcDNyOHhuYWpkRjI5eklld3N6?=
- =?utf-8?B?NDJ2QUVzTnJONWFkOWNhMU5NNytDSmxLa3JWWEc1WEJBZmJQdG9paGZOWUJZ?=
- =?utf-8?B?YmROc3YvcTN2T2E2NERLb054UmV5MnA0YXI0MHRUb3JFL1o1cFR4UXJTTDZL?=
- =?utf-8?B?VklQb0tyb3haWjRNMDdEcm8rWFZwN1hNY1ZmQUxPK1RvR3hzUUM0ZE9NektF?=
- =?utf-8?B?b1ZZNXhVM2dhRlcyTTU0Sm54R2N3bzJPMlZJZ1VpSDBGUTMvSkNtTXFtM1Jz?=
- =?utf-8?B?Q3hXSUZ1aCtFR3FhdDlxK243elg5OUM2K0pkQXpxVVBtT3VENytoYk45ZnZm?=
- =?utf-8?B?YmRWY2ZsaFVxWS9vZTRLMll0QTdrS1R5bXk1Z2ZHeCtId0hpYmlnbHAzREUr?=
- =?utf-8?B?WklNdzRTRVZ1T0JzQmE5bWdlRTNqWjMxL3NKaTN6aEVYVkl0bzJ5T3VvWjQw?=
- =?utf-8?B?VjRSblB4eFBBNnVIeVBnRzBrZTRzaWpQNCtrVVpqZjNWckttNEJUbTgwdXFW?=
- =?utf-8?B?UFNEVWI5bmtnb1h5VHo5a2MrWnhDZVc5U2FjenMyZDZIWC9aOG1RWXhuYnZu?=
- =?utf-8?B?ejl6WWVNQnlqa2hKSktpbHlkRE5Rb3IwQU5rMXJGVm5EalhCcnp6T2dtUFdX?=
- =?utf-8?B?aFVWZmRwVTZnZGsyeUozelhlUXVoN1JWQWk2S1dlZ0tMb1hzb3dNNUdjcDcr?=
- =?utf-8?B?THQyMWdnT3hmQjBzT1pJZUZXdytwRmpRcGlzVExWUTU0blViYW53cnBEdUdR?=
- =?utf-8?B?bkVSdWlpZlBGVWpZdTNTMURzYXgzeDZDcU5hd1JqOGVWRlh6SDM0UmNmR2Q1?=
- =?utf-8?B?Q25LM2JZOWJFZytIUkpTbWtVYWRkRW9MZDJkdVU4ZFMzMm9qWFhNL2hZN1RU?=
- =?utf-8?B?UXYxZVFiM3RiOXJ1bkF2eGY3TlFUV2plMVM0Q0xRVzZITWFyVjY3SGRvNW5F?=
- =?utf-8?B?b3JSWGhTM2FZU0NETk14L0hKUU91T2J2TG52MlZnZEpGRnBjeWFYZE1KVTYz?=
- =?utf-8?B?T1h4bW1JbHljKytQcFI2cmtmRCt6c1M5KzJBa2VmM2ErcWJEWmxVUmlEZEhQ?=
- =?utf-8?B?a2trSTJ5TUZ2WnZjc1ljSm9ZZElteURMTW1TY2thRXVENVFIK2xYUjd5YnBS?=
- =?utf-8?B?RmJtOFRCRDV2SSszNzg1SUFLL0JUVkNZMlJ4SlJUbUVPRVFpQVk0MkoyK0hQ?=
- =?utf-8?B?QlBDZlluY3lGT2J0NUVlY1VZQVFxMXVVT0ZXaC9vem0ySVZlNWhTMWFEMFZN?=
- =?utf-8?B?TTRZdU4yUGt6UHNraUtKQjRTMXFRUHFGOWI3SjMySlVmcTltQjVuc0FlSVlZ?=
- =?utf-8?B?NHA2N29XNlk3anA5ZXk3WWRpMHV0bkZ3YlNvWUZtcUFDWnZhYjdpZTBuSHZv?=
- =?utf-8?B?d1E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A85810E370;
+	Thu,  9 Jan 2025 08:58:01 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DED3710ED2A;
+ Thu,  9 Jan 2025 08:57:59 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0878013462262686190=="
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6097.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c86de812-1c07-41d2-f149-08dd30894b53
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2025 08:40:38.8555 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oUYh7euBfK/eIc2E810MJuohx1535VA1xnJoWTl/+L7Dnq3sgSrlZ9QsF7qf2My4yXGe1dwI2UnZTbzv78M9OYo43ZsYjvsgnlD5QCHFqOA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6136
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bv?=
+ =?utf-8?q?3=2C1/2=5D_tests/intel/kms=5Ffrontbuffer=5Ftracking=3A_Add_skip_c?=
+ =?utf-8?q?ondition_for_bmg_platform?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 09 Jan 2025 08:57:59 -0000
+Message-ID: <173641307990.1570160.15706937400613974498@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250109055652.405793-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250109055652.405793-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -193,48 +38,1602 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-RWFjaCB0ZXN0IHNob3VsZCBjb250YWluIG9ubHkgb25lIFRFU1QgZmllbGQuDQpBZGQgdGhlIEZ1
-bmN0aW9uYWxpdHkgZmllbGQgaW4gdGhlIHN1YnRlc3Qgc2VjdGlvbiB0byBmaXggdGhlIHdhcm5p
-bmdzIGR1cmluZyB0aGUgYWRkaXRpb24gb2Ygc3VidGVzdHMuDQoNCkZpeGVzOiA0ZDYzMGRiOGI4
-Y2YgKCJDaGVjayBuZWdhdGl2ZSBjYXNlcyBmb3Igdm1fY3JlYXRlL2Rlc3Ryb3kgaW9jdGwiKQ0K
-DQpDYzogS2F0YXJ6eW5hIFBpZWNpZWxza2EgPGthdGFyenluYS5waWVjaWVsc2thQGludGVsLmNv
-bT4NClNpZ25lZC1vZmYtYnk6IFByYXZhbGlrYSBHdXJyYW0gPHByYXZhbGlrYS5ndXJyYW1AaW50
-ZWwuY29tPg0KLS0tDQogdGVzdHMvaW50ZWwveGVfdm0uYyB8IDE1ICsrKysrKy0tLS0tLS0tLQ0K
-IDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQoNCmRpZmYg
-LS1naXQgYS90ZXN0cy9pbnRlbC94ZV92bS5jIGIvdGVzdHMvaW50ZWwveGVfdm0uYyBpbmRleCBi
-MTAyNjkxOTEuLjQyYTQ3Y2VhYyAxMDA2NDQNCi0tLSBhL3Rlc3RzL2ludGVsL3hlX3ZtLmMNCisr
-KyBiL3Rlc3RzL2ludGVsL3hlX3ZtLmMNCkBAIC0yMjQ3LDE4ICsyMjQ3LDEwIEBAIHN0YXRpYyB2
-b2lkIGJpbmRfZmxhZ19pbnZhbGlkKGludCBmZCkNCiAJeGVfdm1fZGVzdHJveShmZCwgdm0pOw0K
-IH0NCiANCi0vKioNCi0gKiBURVNUOiBOZWdhdGl2ZSB0ZXN0IGZvciB2bSBjcmVhdGUvZGVzdHJv
-eSBpb2N0bA0KLSAqIENhdGVnb3J5OiBDb3JlDQotICogTWVnYSBmZWF0dXJlOiBHZW5lcmFsIENv
-cmUgZmVhdHVyZXMNCi0gKiBTdWItY2F0ZWdvcnk6IFN5bmNocm9uaXphdGlvbg0KLSAqIEZ1bmN0
-aW9uYWxpdHk6IHZtIGNyZWF0ZQ0KLSAqIFRlc3QgY2F0ZWdvcnk6IG5lZ2F0aXZlIHRlc3QNCi0g
-Ki8NCi0NCiAvKioNCiAgKiBTVUJURVNUOiBpbnZhbGlkLWZsYWctJXMNCiAgKiBEZXNjcmlwdGlv
-bjogIGZ1bmN0aW9uICVhcmdbMV0gdXNlZCBpbiB2bSBjcmVhdGUgSU9DVEwgdG8gbWFrZSBpdCBm
-YWlsDQorICogRnVuY3Rpb25hbGl0eTogaW9jdGxfaW5wdXRfdmFsaWRhdGlvbg0KICAqIEZ1bmN0
-aW9uYWxpdHk6IGZhdWx0DQpeXl4gWW91IGhhdmUgZG91YmxlIGZ1bmN0aW9uYWxpdHkgaGVyZS4g
-UGxlYXNlIHJlbW92ZSBsaW5lIHdpdGggJ2ZhdWx0Jw0KV2l0aCB0aGF0IGZpeGVkOg0KUmV2aWV3
-ZWQtYnk6IEthdGFyenluYSBQaWVjaWVsc2thIDxrYXRhcnp5bmEucGllY2llbHNrYUBpbnRlbC5j
-b20+DQoNCkthc2lhIPCfmIoNCg0KICAqDQogICogYXJnWzFdOg0KQEAgLTIyNzksOSArMjI3MSwx
-MSBAQCBzdGF0aWMgdm9pZCBpbnZhbGlkX2ZsYWcoaW50IGZkLCBfX3UzMiBmbGFncykNCiAvKioN
-CiAgKiBTVUJURVNUOiBpbnZhbGlkLWV4dGVuc2lvbnMNCiAgKiBEZXNjcmlwdGlvbjogQ2hlY2sg
-cXVlcnkgd2l0aCBpbnZhbGlkIGV4dGVuc2lvbnMgcmV0dXJucyBleHBlY3RlZCBlcnJvciBjb2Rl
-DQorICogRnVuY3Rpb25hbGl0eTogaW9jdGxfaW5wdXRfdmFsaWRhdGlvbg0KICAqDQogICogU1VC
-VEVTVDogdm0tY3JlYXRlLWludmFsaWQtcmVzZXJ2ZWQNCiAgKiBEZXNjcmlwdGlvbjogU2VuZCBx
-dWVyeSB3aXRoIGludmFsaWQgcmVzZXJ2ZWQgdmFsdWUgZm9yIHZtX2NyZWF0ZSBpb2N0bA0KKyAq
-IEZ1bmN0aW9uYWxpdHk6IGlvY3RsX2lucHV0X3ZhbGlkYXRpb24NCiAgKi8NCiANCiBzdGF0aWMg
-dm9pZCBpbnZhbGlkX2V4dGVuc2lvbnMoaW50IGZkKQ0KQEAgLTIzMDksMTIgKzIzMDMsMTUgQEAg
-c3RhdGljIHZvaWQgdm1fY3JlYXRlX2ludmFsaWRfcmVzZXJ2ZWQoaW50IGZkKQ0KIC8qKg0KICAq
-IFNVQlRFU1Q6IHZtLWRlc3Ryb3ktaW52YWxpZC1yZXNlcnZlZA0KICAqIERlc2NyaXB0aW9uOiBT
-ZW5kIHF1ZXJ5IHdpdGggaW52YWxpZCByZXNlcnZlZCB2YWx1ZSBmb3Igdm1fZGVzdHJveSBpb2N0
-bA0KKyAqIEZ1bmN0aW9uYWxpdHk6IGlvY3RsX2lucHV0X3ZhbGlkYXRpb24NCiAgKg0KICAqIFNV
-QlRFU1Q6IGludmFsaWQtcGFkDQogICogRGVzY3JpcHRpb246IENoZWNrIHF1ZXJ5IHdpdGggaW52
-YWxpZCBwYWQgcmV0dXJucyBleHBlY3RlZCBlcnJvciBjb2RlDQorICogRnVuY3Rpb25hbGl0eTog
-aW9jdGxfaW5wdXRfdmFsaWRhdGlvbg0KICAqDQogICogU1VCVEVTVDogaW52YWxpZC12bS1pZA0K
-ICAqIERlc2NyaXB0aW9uOiBDaGVjayBxdWVyeSB3aXRoIGludmFsaWQgdm1faWQgcmV0dXJucyBl
-eHBlY3RlZCBlcnJvciBjb2RlDQorICogRnVuY3Rpb25hbGl0eTogaW9jdGxfaW5wdXRfdmFsaWRh
-dGlvbg0KICAqLw0KIA0KIHN0YXRpYyB2b2lkIHZtX2Rlc3Ryb3lfaW52YWxpZF9yZXNlcnZlZChp
-bnQgZmQpDQotLQ0KMi4zNC4xDQoNCg==
+--===============0878013462262686190==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: series starting with [v3,1/2] tests/intel/kms_frontbuffer_tracking: Add skip condition for bmg platform
+URL   : https://patchwork.freedesktop.org/series/143304/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8182 -> IGTPW_12412
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12412 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12412, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12412:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@objects:
+    - bat-dg2-11:         [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg2-11/igt@i915_selftest@live@objects.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg2-11/igt@i915_selftest@live@objects.html
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu (NEW):
+    - fi-ivb-3770:        NOTRUN -> [INCOMPLETE][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ivb-3770/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-blt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] +247 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-blt.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-dg2-14:         [PASS][5] -> [INCOMPLETE][6] +1 other test incomplete
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg2-14/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg2-14/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@meta_test@fail-result (NEW):
+    - bat-arlh-2:         NOTRUN -> [FAIL][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@meta_test@fail-result.html
+
+  * igt@xe_module_load@load:
+    - fi-ivb-3770:        NOTRUN -> [FAIL][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ivb-3770/igt@xe_module_load@load.html
+    - fi-kbl-guc:         NOTRUN -> [FAIL][9] +1 other test fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-guc/igt@xe_module_load@load.html
+    - fi-hsw-4770:        NOTRUN -> [FAIL][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-hsw-4770/igt@xe_module_load@load.html
+    - fi-ilk-650:         NOTRUN -> [FAIL][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ilk-650/igt@xe_module_load@load.html
+    - bat-mtlp-6:         NOTRUN -> [ABORT][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-mtlp-6/igt@xe_module_load@load.html
+    - fi-kbl-x1275:       NOTRUN -> [FAIL][13] +1 other test fail
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-x1275/igt@xe_module_load@load.html
+    - fi-blb-e6850:       NOTRUN -> [FAIL][14] +1 other test fail
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-blb-e6850/igt@xe_module_load@load.html
+    - bat-kbl-2:          NOTRUN -> [FAIL][15]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-kbl-2/igt@xe_module_load@load.html
+    - bat-dg1-6:          NOTRUN -> [DMESG-WARN][16]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@xe_module_load@load.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_8182 and IGTPW_12412:
+
+### New IGT tests (104) ###
+
+  * igt@i915_pm_rpm:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu:
+    - Statuses : 1 incomplete(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-gtt:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-pwrite:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-cpu:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-gtt:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-pwrite:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-pwrite:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-cpu:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-gtt:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-pwrite:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-farfromfence-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-cpu:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-pwrite:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-cpu:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@drrs-rgb565-draw-pwrite:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-indfb-fliptrack-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-shrfb-fliptrack-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-indfb-fliptrack-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-cpu:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-gtt:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-pwrite:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-shrfb-fliptrack-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-farfromfence-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-cpu:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-pwrite:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-cpu:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-gtt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-pwrite:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@meta_test@fail-result:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.01, 0.04] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12412 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-11:         [PASS][17] -> [ABORT][18] ([i915#12435] / [i915#13172])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg2-11/igt@i915_selftest@live.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg2-11/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][19] -> [DMESG-FAIL][20] ([i915#13393])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-blt:
+    - bat-arlh-2:         NOTRUN -> [SKIP][21] ([i915#11346]) +719 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-fullscreen:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][22] +719 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-x1275/igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-fullscreen.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-render:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][23] +206 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-rte:
+    - bat-kbl-2:          NOTRUN -> [SKIP][24] +160 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-kbl-2/igt@kms_frontbuffer_tracking@fbc-2p-rte.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-wc:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][25] +275 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ivb-3770/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-onoff:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][26] +719 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-guc/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-onoff.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-gtt:
+    - fi-ilk-650:         NOTRUN -> [SKIP][27] +285 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ilk-650/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@pipe-fbc-rte:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][28] ([i915#9766])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@pipe-fbc-rte.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][29] ([i915#12311] / [i915#4342])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@kms_frontbuffer_tracking@pipe-fbc-rte.html
+
+  * igt@kms_frontbuffer_tracking@plane-fbc-rte:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][30] ([i915#10070])
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@plane-fbc-rte.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-pwrite:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][31] +140 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-hsw-4770/igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-pwrite.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-move:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][32] +719 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-blb-e6850/igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-move.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-pwrite:
+    - bat-dg1-6:          NOTRUN -> [SKIP][33] ([i915#12311]) +274 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-pwrite.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-arls-6}:       [DMESG-FAIL][34] ([i915#13393]) -> [PASS][35]
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_addfb_basic@basic-x-tiled-legacy:
+    - bat-arlh-2:         [SKIP][36] ([i915#10200] / [i915#11346] / [i915#11666]) -> [PASS][37] +1 other test pass
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+    - bat-dg1-6:          [SKIP][38] ([i915#12311] / [i915#4212]) -> [PASS][39] +1 other test pass
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg1-6/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+
+  
+#### Warnings ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-arlh-2:         [SKIP][40] ([i915#10200] / [i915#11346] / [i915#11666] / [i915#12203]) -> [SKIP][41] ([i915#11346] / [i915#12203])
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10070]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10070
+  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#11666]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666
+  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
+  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#13172]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13172
+  [i915#13393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393
+  [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
+  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
+  [i915#9766]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9766
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8182 -> IGTPW_12412
+  * Linux: CI_DRM_15924 -> CI_DRM_15927
+
+  CI-20190529: 20190529
+  CI_DRM_15924: 9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15927: 9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12412: 12412
+  IGT_8182: 8911eff2c6c06d2929c6072f3ba72d2d991985ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/index.html
+
+--===============0878013462262686190==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [v3,1/2] tests/intel/kms_frontbuffer_tracking: Add skip condition for bmg platform</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143304/">https://patchwork.freedesktop.org/series/143304/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8182 -&gt; IGTPW_12412</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12412 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12412, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12412:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@objects:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg2-11/igt@i915_selftest@live@objects.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg2-11/igt@i915_selftest@live@objects.html">ABORT</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu (NEW):</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ivb-3770/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-blt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-blt.html">SKIP</a> +247 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg2-14/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg2-14/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@meta_test@fail-result (NEW):</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@meta_test@fail-result.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ivb-3770/igt@xe_module_load@load.html">FAIL</a></li>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-guc/igt@xe_module_load@load.html">FAIL</a> +1 other test fail</li>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-hsw-4770/igt@xe_module_load@load.html">FAIL</a></li>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ilk-650/igt@xe_module_load@load.html">FAIL</a></li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-mtlp-6/igt@xe_module_load@load.html">ABORT</a></li>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-x1275/igt@xe_module_load@load.html">FAIL</a> +1 other test fail</li>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-blb-e6850/igt@xe_module_load@load.html">FAIL</a> +1 other test fail</li>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-kbl-2/igt@xe_module_load@load.html">FAIL</a></li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@xe_module_load@load.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_8182 and IGTPW_12412:</p>
+<h3>New IGT tests (104)</h3>
+<ul>
+<li>
+<p>igt@i915_pm_rpm:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-offscren-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 1 incomplete(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-farfromfence-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-pwrite:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-rgb565-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-rgb565-draw-pwrite:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-indfb-fliptrack-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-shrfb-fliptrack-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-indfb-fliptrack-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-shrfb-fliptrack-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-farfromfence-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-pwrite:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-cpu:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-mmap-gtt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-rgb565-draw-pwrite:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@meta_test@fail-result:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.01, 0.04] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12412 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg2-11/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg2-11/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13172">i915#13172</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393">i915#13393</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-blt:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +719 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-fullscreen:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-x1275/igt@kms_frontbuffer_tracking@drrs-2p-primscrn-spr-indfb-fullscreen.html">SKIP</a> +719 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-render:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-render.html">SKIP</a> +206 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-rte:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-kbl-2/igt@kms_frontbuffer_tracking@fbc-2p-rte.html">SKIP</a> +160 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-wc:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ivb-3770/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-mmap-wc.html">SKIP</a> +275 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-onoff:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-kbl-guc/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-onoff.html">SKIP</a> +719 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-ilk-650/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-mmap-gtt.html">SKIP</a> +285 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@pipe-fbc-rte:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@pipe-fbc-rte.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9766">i915#9766</a>)</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@kms_frontbuffer_tracking@pipe-fbc-rte.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342">i915#4342</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@plane-fbc-rte:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-tgl-1115g4/igt@kms_frontbuffer_tracking@plane-fbc-rte.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10070">i915#10070</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-pwrite:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-hsw-4770/igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-pwrite.html">SKIP</a> +140 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-move:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/fi-blb-e6850/igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-move.html">SKIP</a> +719 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-pwrite.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +274 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-arls-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393">i915#13393</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-x-tiled-legacy:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200">i915#10200</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666">i915#11666</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html">PASS</a> +1 other test pass</li>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-dg1-6/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212">i915#4212</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-dg1-6/igt@kms_addfb_basic@basic-x-tiled-legacy.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200">i915#10200</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666">i915#11666</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203">i915#12203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12412/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203">i915#12203</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8182 -&gt; IGTPW_12412</li>
+<li>Linux: CI_DRM_15924 -&gt; CI_DRM_15927</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15924: 9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15927: 9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12412: 12412<br />
+  IGT_8182: 8911eff2c6c06d2929c6072f3ba72d2d991985ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0878013462262686190==--
