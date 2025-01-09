@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 551C2E77188
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 00:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1794E77188
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 00:58:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEFA110E030;
-	Thu,  9 Jan 2025 00:44:09 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DtrGkG+U";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9DFF10E030
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jan 2025 00:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736383448; x=1767919448;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=S8GkXlxF7QWRVEkqS+a4PqmTMz25RDCmbM5tZMZi2RQ=;
- b=DtrGkG+UHDxDDHT9wIQ1wPSxX4loq9ZU5UBGNDk0cJCRUCd0OAQ0CoLT
- 1oIGfSNBMMDhbsmf3IEO1bQ1G53PWMjP6QdFigDiEM6mghxUTWdFg3ldj
- 6sit8bNg8EABoJowGZsdSirjcCoUEu/f+K+UXX6qEUyklGT9s2Z88va+B
- sLV9J3z+uiltrKQfJDo+vODm6dTDd+sXaKUbroYXPYgs95LkIVbopO2hY
- XOtABT8JlNkNT31E9GwKjovK/BVo8grXtZk91qclmYvQKX18yGJqeC1x0
- Uwue+sT6GGwKUdjkduZK2HwIi8SiGJOCEi/H8DC14JVrYPvNElzhjm0m5 g==;
-X-CSE-ConnectionGUID: LayiQSY1TPmd0bKDDQV2+A==
-X-CSE-MsgGUID: l5HNXlqoQqeuvMaQ4+8/GA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36791328"
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; d="scan'208";a="36791328"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2025 16:44:08 -0800
-X-CSE-ConnectionGUID: 8zGu5lhyQ/CM/L83YAZzNA==
-X-CSE-MsgGUID: 958PkaVRR7Wns0kHUbL2gg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; d="scan'208";a="108237709"
-Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.27.7])
- by orviesa004.jf.intel.com with ESMTP; 08 Jan 2025 16:44:07 -0800
-From: Zhanjun Dong <zhanjun.dong@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Zhanjun Dong <zhanjun.dong@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: [PATCH i-g-t v11] tests/intel/xe_exec_capture: Add xe_exec_capture
- test
-Date: Wed,  8 Jan 2025 16:44:03 -0800
-Message-Id: <20250109004403.58162-1-zhanjun.dong@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9625510E14E;
+	Thu,  9 Jan 2025 00:58:33 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 826A910E14E;
+ Thu,  9 Jan 2025 00:58:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3241665556870589842=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_meson=3A_Add_check_for_li?=
+ =?utf-8?q?bghe_histogram_function?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 09 Jan 2025 00:58:32 -0000
+Message-ID: <173638431253.1462883.16274317688985836555@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250108230017.212621-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250108230017.212621-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,596 +37,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Submit cmds to GPU to cause engine reset, check generated devcoredump
-register dump, check against expected values or within the range.
+--===============3241665556870589842==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
----
+== Series Details ==
 
-Changes from prior revs:
- v11:- Add assertion after jobtimeout restore, abort test if readout mismatched
- v10:- Move job timeout save/restore out of subtest, to avoid being bypassed
-       by failed assertion
-       Save/restore job timeout for each engine class
-       Remove testing on multiple GPUs, to be put back after further discussion.
- v9:-  Reduced job timeout to 2 seconds to speedup test
-       Add info print to show test is running on single/multiple GPU
- v8:-  Move change list below ---
- v7:-  Fix typo and removed unused macros
- v6:-  Adjust start_line to start from 0
-       Use 7 bit engine_cid, start with random number
-       Add ioerror detect on fgets
-       Reorgnize the regular expression
-       Remove unnecessary radom seed init
- v5:-  Detect devcoredump matches the testing engine
-       Engine will run with random cid
- v4:-  Support runs on multiple GPU
-       Load all devcoredump content to buffer
-       Alloc line buffer dynamic vs static global memory
-       Changed to igt_assert_f to provide more info if failed
- v3:-  Remove call to bash and awk
-       Add regular express parse
-       Detect devcoredump through card index
-       Add devcoredump removal check
- v2:-  Fix CI.build error
-       Add multiple GPU card support
----
- tests/intel/xe_exec_capture.c | 529 ++++++++++++++++++++++++++++++++++
- tests/meson.build             |   1 +
- 2 files changed, 530 insertions(+)
- create mode 100644 tests/intel/xe_exec_capture.c
+Series: meson: Add check for libghe histogram function
+URL   : https://patchwork.freedesktop.org/series/143289/
+State : success
 
-diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
-new file mode 100644
-index 000000000..55ec3d4bd
---- /dev/null
-+++ b/tests/intel/xe_exec_capture.c
-@@ -0,0 +1,529 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Basic tests for GuC based register capture
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: Debug
-+ * Test category: functionality test
-+ */
-+
-+#include <ctype.h>
-+#include <fcntl.h>
-+#include <regex.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "igt_sysfs.h"
-+#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+#include "linux_scaffold.h"
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_spin.h"
-+
-+#define MAX_N_EXECQUEUES		16
-+#define CAPTURE_JOB_TIMEOUT		2000
-+#define JOB_TIMOUT_ENTRY		"job_timeout_ms"
-+
-+#define BASE_ADDRESS			0x1a0000
-+#define ADDRESS_SHIFT			39
-+#define CID_ADDRESS_MASK		0x7F
-+/* Batch buffer element count, in number of dwords(u32) */
-+#define BATCH_DW_COUNT			16
-+
-+#define MAX_TEMP_LEN			80
-+#define MAX_SYSFS_PATH_LEN		128
-+#define MAX_LINES			4096
-+/* Max line buffer size (includes last '\0') */
-+#define MAX_LINE_LEN			1024
-+#define MAIN_BUF_SIZE			(MAX_LINES * MAX_LINE_LEN * sizeof(char))
-+/*
-+ * Devcoredump might have long line this test don't care.
-+ * This buffer size used when load dump content
-+ */
-+#define LINE_BUF_SIZE			(64 * 1024)
-+
-+#define DUMP_PATH			"/sys/class/drm/card%d/device/devcoredump/data"
-+#define START_TAG			"**** Job ****"
-+#define END_TAG				"**** VM state ****"
-+
-+/* Optional Space */
-+#define SPC_O				"[ \t]*"
-+/* Required Space */
-+#define SPC				"[ \t]+"
-+/* Optional Non-Space */
-+#define NSPC_O				"([^ \t]*)"
-+/* Required Non-Space */
-+#define NSPC				"([^ \t]+)"
-+#define BEG				"^" SPC_O
-+#define REQ_FIELD			NSPC SPC
-+#define REQ_FIELD_LAST			NSPC SPC_O
-+#define OPT_FIELD			NSPC_O SPC_O
-+#define END				SPC_O "$"
-+
-+#define REGEX_NON_SPACE_GROUPS	BEG REQ_FIELD REQ_FIELD_LAST OPT_FIELD OPT_FIELD OPT_FIELD END
-+#define REGEX_NON_SPACE_GROUPS_COUNT	6
-+
-+#define INDEX_KEY			1
-+#define INDEX_VALUE			2
-+#define INDEX_ENGINE_PHYSICAL		2
-+#define INDEX_ENGINE_NAME		1
-+#define INDEX_ENGINE_INSTANCE		4
-+
-+static u64
-+xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	int engine_fd = -1;
-+	u64 ret;
-+
-+	engine_fd = xe_sysfs_engine_open(fd, eci->gt_id, eci->engine_class);
-+	ret = igt_sysfs_get_u64(engine_fd, JOB_TIMOUT_ENTRY);
-+	close(engine_fd);
-+
-+	return ret;
-+}
-+
-+static void xe_sysfs_set_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci,
-+					u64 timeout)
-+{
-+	int engine_fd = -1;
-+
-+	engine_fd = xe_sysfs_engine_open(fd, eci->gt_id, eci->engine_class);
-+	igt_sysfs_set_u64(engine_fd, JOB_TIMOUT_ENTRY, timeout);
-+	close(engine_fd);
-+}
-+
-+static char *safe_strncpy(char *dst, const char *src, int n)
-+{
-+	char *s;
-+
-+	igt_assert(n > 0);
-+	igt_assert(dst && src);
-+
-+	s = strncpy(dst, src, n - 1);
-+	s[n - 1] = '\0';
-+
-+	return s;
-+}
-+
-+static const char *xe_engine_class_name(u32 engine_class)
-+{
-+	switch (engine_class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		return "rcs";
-+	case DRM_XE_ENGINE_CLASS_COPY:
-+		return "bcs";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-+		return "vcs";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-+		return "vecs";
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		return "ccs";
-+	default:
-+		igt_warn("Engine class 0x%x unknown\n", engine_class);
-+		return "unknown";
-+	}
-+}
-+
-+static void
-+test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_queues, int n_execs,
-+		 unsigned int flags, u64 addr)
-+{
-+	u32 vm;
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	u32 exec_queues[MAX_N_EXECQUEUES];
-+	u32 syncobjs[MAX_N_EXECQUEUES];
-+	size_t bo_size;
-+	u32 bo = 0;
-+	struct {
-+		struct xe_spin spin;
-+		u32 batch[BATCH_DW_COUNT];
-+		u64 pad;
-+		u32 data;
-+	} *data;
-+	struct xe_spin_opts spin_opts = { .preempt = false };
-+	int i, b;
-+
-+	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo_size = sizeof(*data) * n_execs;
-+	bo_size = xe_bb_size(fd, bo_size);
-+
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  vram_if_possible(fd, eci->gt_id),
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		syncobjs[i] = syncobj_create(fd, 0);
-+	};
-+
-+	sync[0].handle = syncobj_create(fd, 0);
-+	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-+
-+	for (i = 0; i < n_execs; i++) {
-+		u64 base_addr = addr;
-+		u64 batch_offset = (char *)&data[i].batch - (char *)data;
-+		u64 batch_addr = base_addr + batch_offset;
-+		u64 spin_offset = (char *)&data[i].spin - (char *)data;
-+		u64 sdi_offset = (char *)&data[i].data - (char *)data;
-+		u64 sdi_addr = base_addr + sdi_offset;
-+		u64 exec_addr;
-+		int e = i % n_exec_queues;
-+
-+		if (!i) {
-+			spin_opts.addr = base_addr + spin_offset;
-+			xe_spin_init(&data[i].spin, &spin_opts);
-+			exec_addr = spin_opts.addr;
-+		} else {
-+			b = 0;
-+			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+			data[i].batch[b++] = sdi_addr;
-+			data[i].batch[b++] = sdi_addr >> 32;
-+			data[i].batch[b++] = 0xc0ffee;
-+			data[i].batch[b++] = MI_BATCH_BUFFER_END;
-+			igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+			exec_addr = batch_addr;
-+		}
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].handle = syncobjs[e];
-+
-+		exec.exec_queue_id = exec_queues[e];
-+		exec.address = exec_addr;
-+		if (e != i)
-+			syncobj_reset(fd, &syncobjs[e], 1);
-+		xe_exec(fd, &exec);
-+	}
-+
-+	for (i = 0; i < n_exec_queues && n_execs; i++)
-+		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
-+					NULL));
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	syncobj_destroy(fd, sync[0].handle);
-+	for (i = 0; i < n_exec_queues; i++) {
-+		syncobj_destroy(fd, syncobjs[i]);
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+	}
-+
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+static char **alloc_lines_buffer(void)
-+{
-+	int i;
-+	char **lines = (char **)malloc(MAX_LINES * sizeof(char *));
-+	char *main_buf =  (char *)malloc(MAIN_BUF_SIZE);
-+
-+	igt_assert_f(lines, "Out of memory.\n");
-+	igt_assert_f(main_buf, "Out of memory.\n");
-+
-+	/* set string array pointers */
-+	for (i = 0; i < MAX_LINES; i++)
-+		lines[i] = main_buf + i * MAX_LINE_LEN;
-+
-+	return lines;
-+}
-+
-+static char *get_devcoredump_path(int card_id, char *buf)
-+{
-+	sprintf(buf, DUMP_PATH, card_id);
-+	return buf;
-+}
-+
-+static int load_all(FILE *fd, char **lines, char *buf)
-+{
-+	int start_line = 0, i = 0;
-+	bool skip = true;
-+
-+	memset(lines[0], 0, MAIN_BUF_SIZE);
-+	while (!feof(fd) && i < MAX_LINES) {
-+		/*
-+		 * Devcoredump might have long lines, load up to
-+		 * LINE_BUF_SIZE for a single line
-+		 */
-+		if (!fgets(buf, LINE_BUF_SIZE, fd))
-+			if (ferror(fd) != 0) {
-+				igt_warn("Failed to read devcoredump file, error: %d\n",
-+					 ferror(fd));
-+				break;
-+			}
-+
-+		if (skip) {
-+			start_line++;
-+			/* Skip all lines before START_TAG */
-+			if (strncmp(START_TAG, buf, strlen(START_TAG)))
-+				continue;
-+			else
-+				skip = false;
-+		}
-+
-+		/* Only save up to MAX_LINE_LEN to buffer */
-+		safe_strncpy(lines[i++], buf, MAX_LINE_LEN);
-+
-+		/* Stop on END_TAG */
-+		if (!strncmp(END_TAG, buf, strlen(END_TAG)))
-+			break;
-+	}
-+	return start_line;
-+}
-+
-+static int access_devcoredump(char *path, char **lines, char *line_buf)
-+{
-+	int start_line = -1;
-+	FILE *fd = fopen(path, "r");
-+
-+	if (!fd)
-+		return false;
-+
-+	igt_debug("Devcoredump found: %s\n", path);
-+
-+	/* Clear memory before load file */
-+	if (lines)
-+		start_line = load_all(fd, lines, line_buf);
-+
-+	fclose(fd);
-+	return start_line;
-+}
-+
-+static bool rm_devcoredump(char *path)
-+{
-+	int fd = open(path, O_WRONLY);
-+
-+	if (fd != -1) {
-+		igt_debug("Clearing devcoredump.\n");
-+		write(fd, "0", 1);
-+		close(fd);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+static char
-+*get_coredump_item(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index)
-+{
-+	int i;
-+	regmatch_t match[REGEX_NON_SPACE_GROUPS_COUNT];
-+
-+	for (i = 0; i < MAX_LINES; i++) {
-+		char *line = lines[i];
-+
-+		/* Skip lines without tag */
-+		if (!strstr(line, tag))
-+			continue;
-+
-+		if ((regexec(regex, line, REGEX_NON_SPACE_GROUPS_COUNT, match, 0)) == 0) {
-+			char *key = NULL, *value = NULL;
-+
-+			if (match[tag_index].rm_so >= 0) {
-+				key = &line[match[tag_index].rm_so];
-+				line[match[tag_index].rm_eo] = '\0';
-+			}
-+			if (match[target_index].rm_so >= 0) {
-+				value = &line[match[target_index].rm_so];
-+				line[match[target_index].rm_eo] = '\0';
-+			}
-+
-+			if (key && value && strcmp(tag, key) == 0)
-+				return value;
-+			/* if key != tag,  keep searching and loop to next line */
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+static void
-+check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo, u64 addr_hi)
-+{
-+	u64 result;
-+	char *output;
-+
-+	igt_assert_f((output = get_coredump_item(regex, lines, tag, INDEX_KEY, INDEX_VALUE)),
-+		     "Target not found:%s\n", tag);
-+	result = strtoul(output, NULL, 16);
-+	igt_debug("Compare %s %s vs [0x%lX-0x%lX]\n", tag, output, addr_lo, addr_hi);
-+	igt_assert_f((addr_lo <= result) && (result <= addr_hi),
-+		     "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
-+}
-+
-+static void
-+check_item_str(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index,
-+	       const char *target, bool up_to_target_len)
-+{
-+	char buf[MAX_TEMP_LEN] = {0};
-+	char *output;
-+	int code;
-+
-+	igt_assert_f(output = get_coredump_item(regex, lines, tag, tag_index, target_index),
-+		     "Target not found:%s\n", tag);
-+
-+	if (up_to_target_len) {
-+		igt_assert_f(strlen(target) < MAX_TEMP_LEN, "Target too long.\n");
-+		safe_strncpy(buf, output, MAX_TEMP_LEN);
-+		buf[strlen(target)] = 0;
-+		output = buf;
-+	}
-+	code = strncmp(output, target, strlen(target));
-+	igt_debug("From tag '%s' found %s vs %s\n", tag, output, target);
-+	igt_assert_f(code == 0, "Expected value:%s, received:%s\n", target, output);
-+}
-+
-+/**
-+ * SUBTEST: reset
-+ * Description: Reset GuC, check devcoredump output values
-+ */
-+static void test_card(int fd)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	regex_t regex;
-+	int start_line;
-+	int engine_cid = rand();
-+	char **lines;
-+	char *single_line_buf =  (char *)malloc(LINE_BUF_SIZE);
-+	char temp[MAX_TEMP_LEN];
-+	char path[MAX_SYSFS_PATH_LEN];
-+
-+	igt_assert_f(single_line_buf, "Out of memory.\n");
-+
-+	regcomp(&regex, REGEX_NON_SPACE_GROUPS, REG_EXTENDED | REG_NEWLINE);
-+	get_devcoredump_path(igt_device_get_card_index(fd), path);
-+	lines = alloc_lines_buffer();
-+
-+	/* clear old devcoredump, if any */
-+	rm_devcoredump(path);
-+
-+	xe_for_each_engine(fd, hwe) {
-+		/*
-+		 * To test devcoredump register data, the test batch address is
-+		 * used to compare with the dump, address bit 40 to 46 act as
-+		 * context id, which start with an random number, increased 1
-+		 * per engine. By this way, the address is unique for each
-+		 * engine, and start with an random number on each run.
-+		 */
-+		const u64 addr = BASE_ADDRESS | ((u64)(engine_cid++ % CID_ADDRESS_MASK) <<
-+						 ADDRESS_SHIFT);
-+
-+		igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
-+			  hwe->engine_instance);
-+
-+		test_legacy_mode(fd, hwe, 1, 1, 0, addr);
-+		/* Wait 1 sec for devcoredump complete */
-+		sleep(1);
-+
-+		/* assert devcoredump created */
-+		igt_assert_f((start_line = access_devcoredump(path, lines, single_line_buf)) > 0,
-+			     "Devcoredump not exist, errno=%d.\n", errno);
-+
-+		sprintf(temp, "instance=%d", hwe->engine_instance);
-+		check_item_str(&regex, lines, "(physical),", INDEX_ENGINE_PHYSICAL,
-+			       INDEX_ENGINE_INSTANCE, temp, false);
-+		check_item_str(&regex, lines, "(physical),", INDEX_ENGINE_PHYSICAL,
-+			       INDEX_ENGINE_NAME, xe_engine_class_name(hwe->engine_class), true);
-+
-+		check_item_str(&regex, lines, "Capture_source:", INDEX_KEY, INDEX_VALUE,
-+			       "GuC", false);
-+		check_item_u64(&regex, lines, "ACTHD:", addr,
-+			       addr + BATCH_DW_COUNT * sizeof(u32));
-+		check_item_u64(&regex, lines, "RING_BBADDR:", addr,
-+			       addr + BATCH_DW_COUNT * sizeof(u32));
-+
-+		/* clear devcoredump */
-+		rm_devcoredump(path);
-+		sleep(1);
-+		/* Assert devcoredump removed */
-+		igt_assert_f(!access_devcoredump(path, NULL, NULL), "Devcoredump not removed\n");
-+	}
-+	/* Free lines buffer */
-+	free(lines);
-+	free(single_line_buf);
-+	regfree(&regex);
-+}
-+
-+igt_main
-+{
-+	int xe;
-+	struct drm_xe_engine_class_instance *hwe;
-+	u64 timeouts[DRM_XE_ENGINE_CLASS_VM_BIND] = {0};
-+
-+	igt_fixture {
-+		xe = drm_open_driver(DRIVER_XE);
-+		xe_for_each_engine(xe, hwe) {
-+			/* Skip kernel only classes */
-+			if (hwe->engine_class >= DRM_XE_ENGINE_CLASS_VM_BIND)
-+				continue;
-+			/* Skip classes already set */
-+			if (timeouts[hwe->engine_class])
-+				continue;
-+			/* Save original timeout value */
-+			timeouts[hwe->engine_class] = xe_sysfs_get_job_timeout_ms(xe, hwe);
-+			/* Reduce timeout value to speedup test */
-+			xe_sysfs_set_job_timeout_ms(xe, hwe, CAPTURE_JOB_TIMEOUT);
-+
-+			igt_debug("Reduced %s class timeout from %ld to %d\n",
-+				  xe_engine_class_name(hwe->engine_class),
-+				  timeouts[hwe->engine_class], CAPTURE_JOB_TIMEOUT);
-+		}
-+	}
-+
-+	igt_subtest("reset")
-+		test_card(xe);
-+
-+	igt_fixture {
-+		xe_for_each_engine(xe, hwe) {
-+			u64 store, timeout;
-+
-+			/* Skip kernel only classes */
-+			if (hwe->engine_class >= DRM_XE_ENGINE_CLASS_VM_BIND)
-+				continue;
-+
-+			timeout = timeouts[hwe->engine_class];
-+			/* Skip classes already set */
-+			if (!timeout)
-+				continue;
-+
-+			/* Restore original timeout value */
-+			xe_sysfs_set_job_timeout_ms(xe, hwe, timeout);
-+
-+			/* Assert successful restore */
-+			store = xe_sysfs_get_job_timeout_ms(xe, hwe);
-+			igt_abort_on_f(timeout != store, "job_timeout_ms not restored!\n");
-+
-+			igt_debug("Restored %s class timeout to %ld\n",
-+				  xe_engine_class_name(hwe->engine_class),
-+				  timeouts[hwe->engine_class]);
-+
-+			timeouts[hwe->engine_class] = 0;
-+		}
-+
-+		drm_close_driver(xe);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 89bba6454..895d911f8 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -286,6 +286,7 @@ intel_xe_progs = [
- 	'xe_exec_atomic',
- 	'xe_exec_balancer',
- 	'xe_exec_basic',
-+	'xe_exec_capture',
- 	'xe_exec_compute_mode',
- 	'xe_exec_fault_mode',
- 	'xe_exec_mix_modes',
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8182 -> IGTPW_12406
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12406 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@ring_submission:
+    - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2] ([i915#11621]) +132 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-mtlp-9}:       [DMESG-FAIL][3] ([i915#13393]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#13393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8182 -> IGTPW_12406
+  * Linux: CI_DRM_15924 -> CI_DRM_15927
+
+  CI-20190529: 20190529
+  CI_DRM_15924: 9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15927: 9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12406: c23565bd2be743399f6d643793682b058cb007d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8182: 8911eff2c6c06d2929c6072f3ba72d2d991985ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/index.html
+
+--===============3241665556870589842==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>meson: Add check for libghe histogram function</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143289/">https://patchwork.freedesktop.org/series/143289/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8182 -&gt; IGTPW_12406</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12406 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@ring_submission:<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) +132 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8182/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393">i915#13393</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12406/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8182 -&gt; IGTPW_12406</li>
+<li>Linux: CI_DRM_15924 -&gt; CI_DRM_15927</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15924: 9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15927: 9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12406: c23565bd2be743399f6d643793682b058cb007d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8182: 8911eff2c6c06d2929c6072f3ba72d2d991985ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3241665556870589842==--
