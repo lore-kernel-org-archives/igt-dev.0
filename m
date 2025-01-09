@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C66BE77197
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 09:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10293E77197
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 09:03:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04BC110E458;
-	Thu,  9 Jan 2025 09:00:49 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A9BC10E458;
- Thu,  9 Jan 2025 09:00:47 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4426663686611924686=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C0FFA10E374;
+	Thu,  9 Jan 2025 09:03:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FQbUg6EF";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C055B10E374
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jan 2025 09:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736413432; x=1767949432;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=b37SSLE/9WJrV0lS+F6BU7/+RHG+gwhZOLYoetQNfA4=;
+ b=FQbUg6EFlWv1kmc1Fm9c0yrzRktocyUsNxFpFnBfxH8sKnDaoLGTELzl
+ lRvLjl01crZLdtk4poI1PmK+dzcW7eskaXLekk+A5q4DSgoKFlk31L3X5
+ d0nsaHxj+nDFrION+o0vYgDguEO2Vmp0nrRsxzboS5MD5S/pkLXFfns1P
+ 8gjr3hQJzN94L0Zq5K7r5uApUOn7qdf6i2UE8y+NTK7I1qWM9GgDl8XWf
+ kJMBS2+8qRSVFiWRdJERyvKmeCiIJxTK9hRokAL1vmlXuE/BYkD7iRb4n
+ UTa69l8pjpywfulXiZYHRrTa70n/s+RwqBOfrMPLISFpcPQ6N49ryyCx1 A==;
+X-CSE-ConnectionGUID: sO2r0bdwQ+Wbg/zYsDYxrg==
+X-CSE-MsgGUID: HCaG9zrbQQm9/lY8qZGGnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36684185"
+X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; d="scan'208";a="36684185"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jan 2025 01:03:52 -0800
+X-CSE-ConnectionGUID: qfPyTVx5R2u5++JEuKGu0w==
+X-CSE-MsgGUID: O+B5sxZTRfmh2cUh9dr6pA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; d="scan'208";a="108334287"
+Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
+ by orviesa004.jf.intel.com with ESMTP; 09 Jan 2025 01:03:50 -0800
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: katarzyna.piecielska@intel.com,
+ Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH v2] tests/intel/xe_vm: Fixed documentation
+Date: Thu,  9 Jan 2025 14:30:44 +0530
+Message-Id: <20250109090044.913444-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Fixe?=
- =?utf-8?q?d_documentation?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 09 Jan 2025 09:00:47 -0000
-Message-ID: <173641324736.1570160.2735921754449919464@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250109073929.913205-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250109073929.913205-1-pravalika.gurram@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,186 +62,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4426663686611924686==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Each test should contain only one TEST field.
+Add the Functionality field in the subtest section
+to fix the warnings during the addition of subtests.
 
-== Series Details ==
+Fixes: 4d630db8b8cf ("Check negative cases for vm_create/destroy ioctl")
 
-Series: tests/intel/xe_vm: Fixed documentation
-URL   : https://patchwork.freedesktop.org/series/143310/
-State : success
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Reviewed-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ tests/intel/xe_vm.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index b10269191..ad9a17cc6 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -2247,19 +2247,10 @@ static void bind_flag_invalid(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
+-/**
+- * TEST: Negative test for vm create/destroy ioctl
+- * Category: Core
+- * Mega feature: General Core features
+- * Sub-category: Synchronization
+- * Functionality: vm create
+- * Test category: negative test
+- */
+-
+ /**
+  * SUBTEST: invalid-flag-%s
+  * Description:  function %arg[1] used in vm create IOCTL to make it fail
+- * Functionality: fault
++ * Functionality: ioctl_input_validation
+  *
+  * arg[1]:
+  * @xe_vm_create_fault:  xe_vm_create_fault
+@@ -2279,9 +2270,11 @@ static void invalid_flag(int fd, __u32 flags)
+ /**
+  * SUBTEST: invalid-extensions
+  * Description: Check query with invalid extensions returns expected error code
++ * Functionality: ioctl_input_validation
+  *
+  * SUBTEST: vm-create-invalid-reserved
+  * Description: Send query with invalid reserved value for vm_create ioctl
++ * Functionality: ioctl_input_validation
+  */
+ 
+ static void invalid_extensions(int fd)
+@@ -2309,12 +2302,15 @@ static void vm_create_invalid_reserved(int fd)
+ /**
+  * SUBTEST: vm-destroy-invalid-reserved
+  * Description: Send query with invalid reserved value for vm_destroy ioctl
++ * Functionality: ioctl_input_validation
+  *
+  * SUBTEST: invalid-pad
+  * Description: Check query with invalid pad returns expected error code
++ * Functionality: ioctl_input_validation
+  *
+  * SUBTEST: invalid-vm-id
+  * Description: Check query with invalid vm_id returns expected error code
++ * Functionality: ioctl_input_validation
+  */
+ 
+ static void vm_destroy_invalid_reserved(int fd)
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8182_BAT -> XEIGTPW_12414_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12414_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#2229] / [Intel XE#455]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#2229])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_intel_bb@intel-bb-blit-x:
-    - bat-adlp-vf:        [DMESG-WARN][3] ([Intel XE#3958]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8182/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-x.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-x.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8182/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][7] ([Intel XE#1192]) -> [SKIP][8] ([Intel XE#2229] / [Intel XE#455])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8182/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3958]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8182 -> IGTPW_12414
-  * Linux: xe-2456-9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48 -> xe-2459-9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a
-
-  IGTPW_12414: 12414
-  IGT_8182: 8911eff2c6c06d2929c6072f3ba72d2d991985ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2456-9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48: 9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48
-  xe-2459-9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a: 9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/index.html
-
---===============4426663686611924686==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Fixed documentation</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143310/">https://patchwork.freedesktop.org/series/143310/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8182_BAT -&gt; XEIGTPW_12414_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12414_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_intel_bb@intel-bb-blit-x:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8182/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-x.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958">Intel XE#3958</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-x.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8182/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8182/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12414/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8182 -&gt; IGTPW_12414</li>
-<li>Linux: xe-2456-9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48 -&gt; xe-2459-9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a</li>
-</ul>
-<p>IGTPW_12414: 12414<br />
-  IGT_8182: 8911eff2c6c06d2929c6072f3ba72d2d991985ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2456-9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48: 9cbe590862ef629f35ce9f4c2dc5c0a6a4553f48<br />
-  xe-2459-9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a: 9e5828f71dbb3bf6dff6a2bcfaa761d048344b2a</p>
-
-</body>
-</html>
-
---===============4426663686611924686==--
