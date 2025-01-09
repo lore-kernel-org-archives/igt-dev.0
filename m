@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C270E77199
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 14:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBC4AE77197
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jan 2025 14:52:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA50C10EE14;
-	Thu,  9 Jan 2025 14:49:20 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62A0710EE1D;
- Thu,  9 Jan 2025 14:49:19 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7164246997078783563=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Initial_PTL_support_=28rev6?=
- =?utf-8?q?=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Clint Taylor" <clinton.a.taylor@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 09 Jan 2025 14:49:19 -0000
-Message-ID: <173643415940.1655378.3975928000756234192@b555e5b46a47>
-X-Patchwork-Hint: ignore
+	by gabe.freedesktop.org (Postfix) with ESMTP id 66D4910EE1A;
+	Thu,  9 Jan 2025 14:52:42 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xq4MNCza";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 471B510EE14;
+ Thu,  9 Jan 2025 14:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736434360; x=1767970360;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=bp0lVbj0kuTLg2tAzmcZtco6dhF8x/Afw6W7rydpT2M=;
+ b=Xq4MNCzaIsgLWnm6msHfzFceTxz10VMVVmfS+aQE0FZsUBLLeH2WqWnA
+ 0sGyMcxiGmQqgOQeylwACJ1qeZYtC5yO7d6K8UWeQHBYvYfCl5+Gr6/7H
+ kaVAs9o53+YKZ07a3Ed71OLKFwbTc2eejfAjZ+P30DbJsEa1qR6LQfsTX
+ s/2fqWodIN4gySXHt1C//MssQQ+WWJKzXySsfHL/AE3kV3xAodKNywZY3
+ V7gcUS5HhCbux7ZLlD4ij2GfOVN/FFCpTWD/QlZGkKXCUNP2zFLedfdzm
+ dnbIweX49XqxvPHVxh7pqD8ZQFsI66uG59d1edSu/QwjJXVmDpkWRPBB3 w==;
+X-CSE-ConnectionGUID: JfJavzT0RuqYVOH8iekVww==
+X-CSE-MsgGUID: qDTeigerRvW4YQgol4j/cA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36855800"
+X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; d="scan'208";a="36855800"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jan 2025 06:52:40 -0800
+X-CSE-ConnectionGUID: j7KMKAKeQui4Tryq4dGWyQ==
+X-CSE-MsgGUID: QR/IxDLsQg6tGPqdKIyVNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; d="scan'208";a="103975474"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 06:52:39 -0800
+Date: Thu, 9 Jan 2025 15:52:36 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Clint Taylor <clinton.a.taylor@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
+ Initial PTL support (rev6)
+Message-ID: <20250109145236.ep4l3jj5kgzmeaix@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Clint Taylor <clinton.a.taylor@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
 References: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
-In-Reply-To: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
+ <173643279483.1645445.6728014542556156152@b555e5b46a47>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <173643279483.1645445.6728014542556156152@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,156 +71,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7164246997078783563==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi igt-dev,
+On 2025-01-09 at 14:26:34 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Initial PTL support (rev6)
+> URL   : https://patchwork.freedesktop.org/series/141325/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8183 -> IGTPW_12418
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_12418 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12418, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html
+> 
+> Participating hosts (38 -> 37)
+> ------------------------------
+> 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_12418:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@core_hotunplug@unbind-rebind:
+>     - fi-cfl-guc:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/fi-cfl-guc/igt@core_hotunplug@unbind-rebind.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/fi-cfl-guc/igt@core_hotunplug@unbind-rebind.html
+> 
+>   * igt@i915_selftest@live@gt_heartbeat:
+>     - bat-arlh-2:         [PASS][3] -> [INCOMPLETE][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html
+> 
 
-== Series Details ==
+These are unrelated,
 
-Series: Initial PTL support (rev6)
-URL   : https://patchwork.freedesktop.org/series/141325/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8183_BAT -> XEIGTPW_12418_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12418_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#1192]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8183/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  * igt@xe_pat@pat-index-xelp@render:
-    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3958]) +1 other test dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8183/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8183/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3958]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8183 -> IGTPW_12418
-
-  IGTPW_12418: 23052ace3ac04fd0203b573736255ba4919c63d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8183: b2dbc6f22815128c0dd5c737504f42e1f1a6ad62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2461-14e0c4a8247c9514dc57b2231602fb6d9455802b: 14e0c4a8247c9514dc57b2231602fb6d9455802b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/index.html
-
---===============7164246997078783563==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Initial PTL support (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141325/">https://patchwork.freedesktop.org/series/141325/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8183_BAT -&gt; XEIGTPW_12418_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12418_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8183/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp@render:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8183/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958">Intel XE#3958</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8183/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12418/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8183 -&gt; IGTPW_12418</li>
-</ul>
-<p>IGTPW_12418: 23052ace3ac04fd0203b573736255ba4919c63d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8183: b2dbc6f22815128c0dd5c737504f42e1f1a6ad62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2461-14e0c4a8247c9514dc57b2231602fb6d9455802b: 14e0c4a8247c9514dc57b2231602fb6d9455802b</p>
-
-</body>
-</html>
-
---===============7164246997078783563==--
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_12418 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-arlh-2:         [PASS][5] -> [INCOMPLETE][6] ([i915#13050])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arlh-2/igt@i915_selftest@live.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arlh-2/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-arls-5:         [PASS][7] -> [DMESG-FAIL][8] ([i915#13393]) +1 other test dmesg-fail
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arls-5/igt@i915_selftest@live@workarounds.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arls-5/igt@i915_selftest@live@workarounds.html
+> 
+>   * igt@runner@aborted:
+>     - fi-pnv-d510:        NOTRUN -> [FAIL][9] ([i915#13350])
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/fi-pnv-d510/igt@runner@aborted.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - {bat-mtlp-9}:       [DMESG-FAIL][10] ([i915#13393]) -> [PASS][11] +1 other test pass
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [i915#13050]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050
+>   [i915#13350]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13350
+>   [i915#13393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8183 -> IGTPW_12418
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_15929: 14e0c4a8247c9514dc57b2231602fb6d9455802b @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_12418: 23052ace3ac04fd0203b573736255ba4919c63d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8183: b2dbc6f22815128c0dd5c737504f42e1f1a6ad62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html
