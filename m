@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1FFEE7719C
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 19:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F79DE77188
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 19:45:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E72310E51F;
-	Fri, 10 Jan 2025 19:45:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D585310E522;
+	Fri, 10 Jan 2025 19:45:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c5VROwVV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EW/OjXlC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54CBE10E51D
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 19:45:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0672F10E522
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 19:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736538352; x=1768074352;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=wHwcRDZrgAOac0+Y6eDoS6H1376WFPhldt8Rn3ScsbM=;
- b=c5VROwVVLbxC8WF/qwLOr1N+fr0nBXqu3ArYdrmOLHShyU1jShWxLuQl
- zNACZBHVDG7FLcxhuzpnM4TJLIeKxsmJcvyChH/exW5mOLKpuZ4aoSl/V
- WbRvrDpwcTw3lKpjZFI1yx6VaOow6iTiuHUJtnmjbyBsTWm2sUoWTZiae
- PfkPomoenY/2uusxte8jqjFc09lWVtHWtPfHHNChk8wKR0yDbNWV9HL7H
- wQbBVOoBM+cdR4mbCR4+t3Mrn/FbujpyQ3e+rDlOHztjAyDuOodKpU05e
- gmwRvzFgL5K/mNFPqFyOsM779h8vF3fcg6VjO4+M71flbFSCSOYD7SOF5 A==;
-X-CSE-ConnectionGUID: M9pFHn8dQ/mp+CTHq7YZQA==
-X-CSE-MsgGUID: 6Emsy95ZSomIZE47KbnVyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="47419794"
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="47419794"
+ t=1736538354; x=1768074354;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=L7DWWY/nHZzX/MAKVluMv1jFET/VQvgbcKtSnZqTI+8=;
+ b=EW/OjXlClgS0LXJKyDSAsvt6uTMkRiHiLUdgkKZaqxvTD0KaWcOU1XMR
+ WyjAviqwqkemKBTC1te4DQDGW7uZQca14ew+dpm41nfn8Ex9UtEath5Ra
+ ZWeU+Q9LsFg3G6EgPLmizP5sCtRTLYbQoRf/MfX5mKXUgr8JgfBXR/M7o
+ 9dRlq9N1357a3ClRQvK20XnnPa2aq2kNzSzP7k0C9QzEQ3vz6LzRCOPvT
+ Sz4sdC9vhdHoLb6gLWAOg3GL/fdwHesKwnd67AEIAaeJLYEC8pJc5s50G
+ rjAtJ8xXApwKVgtb0uqQZU1KIzN6Pa96w+x4gG+sQwq3p++1qaCZuW+A4 Q==;
+X-CSE-ConnectionGUID: 8Jhnizk/S1yWr8fUEVdDow==
+X-CSE-MsgGUID: 37GQGaoYR7u1wI7ez+21Gw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="47419795"
+X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="47419795"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 11:45:52 -0800
-X-CSE-ConnectionGUID: MIGEh2zAT5umdrhm7v2dMg==
-X-CSE-MsgGUID: D5L4iFH/SDm2VC3a1tAIkA==
+ 10 Jan 2025 11:45:54 -0800
+X-CSE-ConnectionGUID: 49U60ZmNQh2nUyiSQ0hG+Q==
+X-CSE-MsgGUID: 3bI9kicFTe6nJ+YbF70XiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="104334404"
+X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="104334410"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 11:45:51 -0800
+ 10 Jan 2025 11:45:52 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 0/8] New sharpness tool
-Date: Sat, 11 Jan 2025 01:20:52 +0530
-Message-Id: <20250110195100.150301-1-swati2.sharma@intel.com>
+Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 1/8] data: Move PNG images to new data directory
+Date: Sat, 11 Jan 2025 01:20:53 +0530
+Message-Id: <20250110195100.150301-2-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250110195100.150301-1-swati2.sharma@intel.com>
+References: <20250110195100.150301-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,53 +69,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New sharpness tool is introduced to validate basic functionality
-of content adaptive sharpness filter supported with intel LNL platform.
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 
-Tool has following 2 main functions:
-1. input user defined strength value (1-255)
-2. input incr/decr factor for setting strength and use up/down
-   arrow keys to increase/decrease strength during run time
+Placing png images inside "tests/" directory seems wrong, as these
+are not source files. These images should ideally be in a directory
+with other non-exec files, so creating a new "data/" directory to
+store such non-exec files.
 
-Naladala Ramanaidu (5):
-  data: Move PNG images to new data directory
-  runner/settings: Constify absolute_path parameter
-  runner/settings: Add function to set IGT_RUNNER_DATA environment
-    variable
-  lib/igt_core: Enhance __igt_fopen_data to support additional
-    directories
-  meson: Add sharpness tool
+v2: Update commit message subject (Kamil)
 
-Swati Sharma (3):
-  lib/igt_kms: Add "sharpness strength" as crtc property
-  tools: Add new sharpness tool
-  data: Add image
-
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
  {tests => data}/1080p-left.png  | Bin
  {tests => data}/1080p-right.png | Bin
- data/default_hd_image.png       | Bin 0 -> 657520 bytes
- data/meson.build                |  12 ++
+ data/meson.build                |  11 +++++++++++
  {tests => data}/pass.png        | Bin
- lib/igt_core.c                  |  31 ++-
- lib/igt_core.h                  |   6 +-
- lib/igt_kms.c                   |   4 +
- lib/igt_kms.h                   |   1 +
  lib/meson.build                 |   1 +
- meson.build                     |   2 +
- runner/runner.c                 |   8 +
- runner/settings.c               |  11 +-
- runner/settings.h               |   3 +-
- tests/meson.build               |   6 -
- tools/intel_sharpness_tool.c    | 370 ++++++++++++++++++++++++++++++++
- tools/meson.build               |  11 +
- 17 files changed, 439 insertions(+), 27 deletions(-)
+ meson.build                     |   2 ++
+ tests/meson.build               |   6 ------
+ 7 files changed, 14 insertions(+), 6 deletions(-)
  rename {tests => data}/1080p-left.png (100%)
  rename {tests => data}/1080p-right.png (100%)
- create mode 100644 data/default_hd_image.png
  create mode 100644 data/meson.build
  rename {tests => data}/pass.png (100%)
- create mode 100644 tools/intel_sharpness_tool.c
 
+diff --git a/tests/1080p-left.png b/data/1080p-left.png
+similarity index 100%
+rename from tests/1080p-left.png
+rename to data/1080p-left.png
+diff --git a/tests/1080p-right.png b/data/1080p-right.png
+similarity index 100%
+rename from tests/1080p-right.png
+rename to data/1080p-right.png
+diff --git a/data/meson.build b/data/meson.build
+new file mode 100644
+index 000000000..9490d20ac
+--- /dev/null
++++ b/data/meson.build
+@@ -0,0 +1,11 @@
++image_files = [
++  '1080p-left.png',
++  '1080p-right.png',
++  'pass.png',
++]
++
++foreach img : image_files
++      configure_file(output:img, input:img, copy:true)
++endforeach
++
++install_data(sources : image_files, install_dir : datadir)
+diff --git a/tests/pass.png b/data/pass.png
+similarity index 100%
+rename from tests/pass.png
+rename to data/pass.png
+diff --git a/lib/meson.build b/lib/meson.build
+index 1704ed1e1..afa09ae02 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -240,6 +240,7 @@ foreach f: lib_sources
+ 	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
+ 	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
+ 	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
++	    '-DIGT_IMGDIR="@0@"'.format(imgdir),
+ 	])
+ 
+     lib_intermediates += lib
+diff --git a/meson.build b/meson.build
+index 5eda2d582..2c2c304b1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -293,6 +293,7 @@ vmwgfxdir = join_paths(libexecdir, 'vmwgfx')
+ mandir = get_option('mandir')
+ pkgconfigdir = join_paths(libdir, 'pkgconfig')
+ python3 = find_program('python3', required : true)
++imgdir = join_paths(build_root, 'data')
+ 
+ if get_option('use_rpath')
+ 	# Set up runpath for the test executables towards libigt.so.
+@@ -388,6 +389,7 @@ endif
+ subdir('overlay')
+ subdir('man')
+ subdir('docs')
++subdir('data')
+ 
+ message('Build options')
+ message('=============')
+diff --git a/tests/meson.build b/tests/meson.build
+index 89bba6454..a8d875d36 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -510,11 +510,5 @@ if not meson.is_cross_build()
+ 			output : 'gem_stress.testlist')
+ endif
+ 
+-image_files = [
+-  '1080p-left.png',
+-  '1080p-right.png',
+-  'pass.png',
+-]
+-install_data(sources : image_files, install_dir : datadir)
+ 
+ subdir('intel-ci')
 -- 
 2.25.1
 
