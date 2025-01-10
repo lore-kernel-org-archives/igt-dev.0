@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52532E77188
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 21:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7D5E77188
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 22:20:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E700510E133;
-	Fri, 10 Jan 2025 21:22:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fiKHwnKg";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A32FA10E133
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 21:22:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736544167; x=1768080167;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ea92bse/rZrHwF1Yae9yvM+ubi3GTUayAkj+tlmw+aw=;
- b=fiKHwnKgGAl01qy8aPekQyyd7xRad6ADTE3d8EiBrgu728PcY44LJKrc
- /+YvlyYtlPSzQk63/CY55wykv1dOkouV+W1onqqRpgPYXXP8tQkn0lYfa
- PqgJavU62NVlnpGnfRQTolw9I1N7IENE1Md6+hKo7Vc0WbhjTXhx/xeUm
- k/q+quSaBeOyUNeOkuSBc3CWAHMhBoIYP42wEoqtPSsERYquX4SWZ5SQ6
- h49sB7oK6c4Z5U790+CnbJx9S8vn/kgb8vNmZCVj2p0lRe0Z3MXkhLOMG
- iWCAOVJD8Hc7IiFdtTyp94ADp9Levkyo+4vIZtqmNBdf+Kj2JYznUhtV7 g==;
-X-CSE-ConnectionGUID: ZLusXKmaQD6j1ZPip7fGAw==
-X-CSE-MsgGUID: NVHntv1iSEiFsF8xbClkpQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="40790198"
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="40790198"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 13:22:37 -0800
-X-CSE-ConnectionGUID: e86QNtSXSe6OwjWH5XpDjw==
-X-CSE-MsgGUID: 4DsIc0/5QLSbtPgUQe4fgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="103650756"
-Received: from dut4066lnl.fm.intel.com ([10.105.10.33])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 13:22:37 -0800
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
- kamil.konieczny@linux.intel.com, riana.tauro@intel.com
-Subject: [PATCH v4] tests/intel/xe_pm_residency: Skip on igt_power_open failure
-Date: Fri, 10 Jan 2025 21:22:37 +0000
-Message-ID: <20250110212237.4052-1-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 362C310E477;
+	Fri, 10 Jan 2025 22:20:24 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02DEB10E477;
+ Fri, 10 Jan 2025 22:20:23 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1146023929308326830=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=5Fresid?=
+ =?utf-8?q?ency=3A_Skip_on_igt=5Fpower=5Fopen_failure_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 10 Jan 2025 22:20:23 -0000
+Message-ID: <173654762300.2078847.74449552863195716@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250110212237.4052-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20250110212237.4052-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,61 +37,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The xe_pm_residency@toggle-gt-c6 test fails when
-gt_c6_power >= gt_c0_power.  These values are reported by
-igt_power_get_mW, which will always report 0 in the case that
-igt_power_open fails to open either the hwmon_fd or rapl.fd.  Since the
-expected result will always be a failure in this case, skip the
-assertion that gt_c6_power < gt_c0_power.
+--===============1146023929308326830==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Do not skip the full test, and instead only ignore the part that is
-guaranteed to fail.
+== Series Details ==
 
-v3: Use || instead of && (Riana)
+Series: tests/intel/xe_pm_residency: Skip on igt_power_open failure (rev5)
+URL   : https://patchwork.freedesktop.org/series/139352/
+State : success
 
-v4: Reprovision
+== Summary ==
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/958
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/xe_pm_residency.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+CI Bug Log - changes from XEIGT_8188_BAT -> XEIGTPW_12432_BAT
+====================================================
 
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 06f4a0bc6b..f9e96d6087 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -289,10 +289,14 @@ static void measure_power(struct igt_power *gpu, double *power)
- static void toggle_gt_c6(int fd, int n)
- {
- 	double gt_c0_power, gt_c6_power;
--	int gt;
-+	int gt, ret;
- 	struct igt_power gpu;
- 
--	igt_power_open(fd, &gpu, "gpu");
-+	/*
-+	 * igt_power_get_mW will always return 0 if igt_power_open fails,
-+	 * so skip the power check in this case.
-+	 */
-+	ret = igt_power_open(fd, &gpu, "gpu");
- 
- 	do {
- 		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-@@ -319,7 +323,7 @@ static void toggle_gt_c6(int fd, int n)
- 	igt_info("GPU consumed %fmW in GT C6 and %fmW in GT C0\n", gt_c6_power, gt_c0_power);
- 
- 	/* FIXME: Remove dgfx check after hwmon is added */
--	if (!xe_has_vram(fd))
-+	if (!(xe_has_vram(fd) || ret))
- 		igt_assert_f(gt_c6_power < gt_c0_power,
- 			     "Power consumed in GT C6 should be lower than GT C0\n");
- }
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12432_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#1192]) +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8188/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3958] / [Intel XE#3970]) +1 other test dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8188/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8188/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#3958]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8188 -> IGTPW_12432
+
+  IGTPW_12432: ac3f47ff32488da8eae3c2be7a6bfd68dddd5ce0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8188: ef0abf7f39a7ef0ecf2f08c62b90b852c435c755 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2474-00f4619246294b1de4bac42742cfef95c1f37fde: 00f4619246294b1de4bac42742cfef95c1f37fde
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/index.html
+
+--===============1146023929308326830==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Skip on igt_power_open failure (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139352/">https://patchwork.freedesktop.org/series/139352/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8188_BAT -&gt; XEIGTPW_12432_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12432_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8188/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@render:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8188/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3958">Intel XE#3958</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8188/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12432/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8188 -&gt; IGTPW_12432</li>
+</ul>
+<p>IGTPW_12432: ac3f47ff32488da8eae3c2be7a6bfd68dddd5ce0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8188: ef0abf7f39a7ef0ecf2f08c62b90b852c435c755 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2474-00f4619246294b1de4bac42742cfef95c1f37fde: 00f4619246294b1de4bac42742cfef95c1f37fde</p>
+
+</body>
+</html>
+
+--===============1146023929308326830==--
