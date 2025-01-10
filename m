@@ -4,46 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E77FE77188
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F91DE7719D
 	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 18:05:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 06A9610E50D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2776010E50F;
 	Fri, 10 Jan 2025 18:05:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NIw/nH2J";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="iTv1d17n";
 	dkim-atps=neutral
-X-Greylist: delayed 1371 seconds by postgrey-1.36 at gabe;
- Fri, 10 Jan 2025 18:05:50 UTC
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
  [217.70.183.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A6F810E514
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 18:05:49 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3E91DFF807;
- Fri, 10 Jan 2025 18:05:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FA3310E517
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 18:05:50 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8A81CFF80A;
+ Fri, 10 Jan 2025 18:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1736532348;
+ t=1736532349;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=nY8ntw7OWTYb++44NrzrGxaqOO/Gh+pQpUCgHBJGWOQ=;
- b=NIw/nH2Jd60Y1QdnY+JiknwPR3i687gWgmaSmnN6myhyPQIzBFyzje10ku8Omqd6mNJvq0
- Etd/Y5Bf1/RyJg5M0/BHeYCUy2ugjlppNJ/M4ySQ83EJ84rmNc/nKYfef86OjxH76BWybJ
- Ew+v/lTxpgc7TntxUPq8Ja9POQGL/w1D3hF+8hRmZQ5Fd6ilbaH1bPxDyLaXfB1Owr7YhP
- AL0aPbkfZFQZePyiqwWy+inTeRJjaDQQHCDz0vfVI+Gqjg4eDiTgl6gFulMIQO2rGbYSqZ
- Mh32msl3AeM0SL+WktUaGz0zM3TB0b7ZIP9jXdENx/P2OhT/KQEtIgKJRF/AtA==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+jZDGgzUVXgg9UyUCFZqH4AOaju+kI9TvsRXuCLZpMA=;
+ b=iTv1d17n7ID5yLzzo1tVAkr6WkTLDBiNIhoyrQlrTu3CKou0KGNP1E2I8JpBkH/x78v+ZU
+ UALM6yWaLka9HPrLET5xqByY5b71EOiLrpIOFwtvlxZpLqCanTuZHTINMufGQ/dRTwK/Po
+ bsm+WyLHuWJzO3JnPLNvyugak3zG+hm1vyCpdVxXTuX5jQumsn2EcTfGI3s08Oks3PJWuQ
+ 92kDn8Zlfqz09sQq/RsiVisnh7nDebnEoTEm/J5maWsY2bzDUA6nJ5CPq+ZMhHpbzh7VN1
+ LBzE/H5U4f2F7JNzu9fzQIvdnEky2evWZtiI6yf+Qkvbv4HXeaVWx3NXrQf1xg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: [PATCH i-g-t v4 0/5] lib/igt_kms: Helpers for monitor edid managment
-Date: Fri, 10 Jan 2025 19:05:40 +0100
-Message-Id: <20250110-b4-cv3-02-monitor-edids-v4-0-aef77d3e0f50@bootlin.com>
+Date: Fri, 10 Jan 2025 19:05:41 +0100
+Subject: [PATCH i-g-t v4 1/5] lib/monitor_edids: Add helper functions for
+ using monitor_edid objects
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHVhgWcC/4XQQU7EMAwF0KtUWWNo3LRNZ8U9Riza1O1YogkkI
- Ro0mrtjFQRCCFja1n9R/kUlikxJHaqLilQ4cfAymJtKudPoVwKeZVZYo6ktWpgMuNJAjbAFzzl
- EoJnnBO0w2qXVrbNWK0k/RVr4vMtHxbBCVg+yPnGSzOv+XtH78V+6aKgBB2dNN7kFW30/hZAf2
- d+6sO1qwU9J14i/SyhS3zWmt51DTd1PqfmS9F+S7ED3g/zZ6q6n5bt0fW8g0vOLVJo/apjGRCD
- 3jfOhCpFX9nfbmDJFSVzfAI2YjcWMAQAA
-X-Change-ID: 20240828-b4-cv3-02-monitor-edids-59a8f515c881
+Message-Id: <20250110-b4-cv3-02-monitor-edids-v4-1-aef77d3e0f50@bootlin.com>
+References: <20250110-b4-cv3-02-monitor-edids-v4-0-aef77d3e0f50@bootlin.com>
+In-Reply-To: <20250110-b4-cv3-02-monitor-edids-v4-0-aef77d3e0f50@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
@@ -54,21 +50,21 @@ Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  seanpaul@google.com, jeremie.dautheribes@bootlin.com, markyacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1779;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5675;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=0D2KoH0HmcPit0nOjAFYfkYwAb7CJpyVOrvke0fwCzI=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBngWF5X+XjdwtJBr8mJyORBqJGVtMEYwaOuEfES
- llX6Hfj2bCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZ4FheQAKCRAgrS7GWxAs
- 4jtmEACB2kpWqWhfKoW7h9ifCRC1h/sHeI5cJPFcGemQzRaOi+fDikfemqhA3QkjHeAqe3EoHu8
- lBbVfUKDrcmyHYjxaTL71rqy1r77ASa+UxKB0LCfUK/AY+chP2amSkPixYuJJY4DoxKjE5HrBbX
- 5BR6iehZrARxzfe22MdVYNV8BoXwtBdkRPCXarlmzKQTPAtb2plIqPq47AV2RjctVqFvWg4f/LZ
- tTRgDIvEo5UcWwTktMG9sUShwjlLAbgrHkDolNVaZihjlH+b/B+E22KZ8cd3AcHefGo186AcMgU
- pnX/0Y6IUwI3Sa7eSUolI1/bhTrwKvF6QAvCvsxmXR2Z3a/mTTzZ2IUoG8+S/jB5OtvicLkTDi+
- 7r81I2ut7dWxm3shzhUT/Uf61l8kmekPo6MhLJJhQKOk9MTBkJEMi22ZDsapMi2LrY2dsqGyFas
- U8CfMt0Ip2j5ddF0JqaDXYryCC8hogT1wmn6WGpXWvZocQc+wUf+8uDapL34z58fx51Azt3p7Lz
- z/52tGnN3NgBwPsRQD16Vweu+BbXDXgYgbcwyrU9Vw+E2ok8WFcPoa7wB5SCnyYtpDn05g7QuRn
- wOV74Yfos7nfNj99QgD5bWcoQDUrieokm38aECQnD9mvNHd04p+izeatHVqY7/Zh4jQwwidUPfD
- Bk+YvOYNbW3anbA==
+ bh=hD5nFtn9uGgcBFObf8vDs9vGuPYJCh9/oYlCLsJq34c=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBngWF5F+fIWRcq80bb1qGj65Jtxl2UeJ4gC3j8Y
+ kgjCcOE4s6JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZ4FheQAKCRAgrS7GWxAs
+ 4oBLD/48M73JFUAjl3NKEkAQuKfyEzYmTTwlCpiT4RW2cPRJo3i91NQa3z8BkFEbnnxGXjnL6bx
+ joC2kYi5y5uVcJUWiFnvye2/ZXmh3GNEkKxAXASwzftx+ilStkbE4vE9WQWe1WYvyGViq0k8f8F
+ iD7rYNLeWg5AzyQKaF79y4hEGDyDoHgbl+Yiedbp+CVHKjINkomlXS1mfqPT9GuxtcOVryPEE2O
+ dxHX8o1KErFEFE0Iabf2XOcCJ+hVddNFkkAEzO9tDnC3p+dKA5++GivWLkkS9K5+9bMqDl+3Lhw
+ 3FO1zQyi29rJW67OBeBVymwhSh7Rj9/m0lTQpNFfZHDcin04C90uKpy9+PlGPCk4xaRBQ+wpbUs
+ JSvZtPw9zLNmCsBHqwog94wcdTMcCFtfjm89wkTAZ5rmWh4mdxZLxuLJmUUxRvT4ZQ8U4bBNgTr
+ Z/MQjR3Kz/dfs2EI0fRzm/e/L97rzrgs10r9wwZxqnSupLpSmV4+d4WmuCRvPzur7YbzWevrAW0
+ fEJWlQz5h3RGNW1Dqf+q00/vIZlAdqdrRWfFC5J0uTOgngttnR6m5hQ/ph9Mw7LDXX0tR9XG+ww
+ brPT71hK+GnHEZy6zJvPyLHRs37Q84CMmXkClCvHIwv+MpXc6wwrXXipnrCBNC0utnELQX1u7ih
+ PljUmdRKJC7lpqQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -87,50 +83,163 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In preparation for the introduction of Chameleon v3, this series will add
-a few helper functions that will be used:
-
-- Helper to convert monitor edid to edid
-- Helper to fetch monitor edid from its name
-- Helper to display all monitor edids
-- Few fixes and addition in edid list
+Introduce the functions edid_from_monitor_edid() and
+get_edids_for_connector_type(). The former converts a monitor_edid object
+to a struct edid, which can then be utilized by igt_kms helpers. The
+latter returns a list of monitor_edid objects for a specific connector
+with certain characteristics
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
-Changes in v4:
-- Fix documentations
-- Style issues
-- Link to v3: https://lore.kernel.org/r/20241122-b4-cv3-02-monitor-edids-v3-0-1798f58167ef@bootlin.com
+ lib/monitor_edids/dp_edids.h             |  3 ++
+ lib/monitor_edids/hdmi_edids.h           |  3 ++
+ lib/monitor_edids/monitor_edids_helper.c | 80 ++++++++++++++++++++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  7 ++-
+ 4 files changed, 92 insertions(+), 1 deletion(-)
 
-Changes in v3:
-- PATCH 3/5: Add function documentation
-- PATCH 1/5: Replace igt_assert_f by igt_debug
-- PATCH 1/5: Add const to the returned monitor_edid list
-- PATCH 1/5: Add documentation
-- Link to v2: https://lore.kernel.org/r/20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
+diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
+index 144907558be1faa306b646ce3b47b24c13050968..07793381257e0082a1fa7b4321fcef7e5aeaa5a9 100644
+--- a/lib/monitor_edids/dp_edids.h
++++ b/lib/monitor_edids/dp_edids.h
+@@ -194,4 +194,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
+ 
+  };
+ 
++#define DP_EDIDS_4K_COUNT ARRAY_SIZE(DP_EDIDS_4K)
++#define DP_EDIDS_NON_4K_COUNT ARRAY_SIZE(DP_EDIDS_NON_4K)
++
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
+diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
+index f6cfe82ff6e1c4419160bcdcc851a5e28eb08726..3984241775c3d8e0f39732bdc41cb44f491ce62b 100644
+--- a/lib/monitor_edids/hdmi_edids.h
++++ b/lib/monitor_edids/hdmi_edids.h
+@@ -604,4 +604,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
+ 		  "1620582c2500baac4200009e0000006b" },
+ };
+ 
++#define HDMI_EDIDS_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_4K)
++#define HDMI_EDIDS_NON_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_NON_4K)
++
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index 1cbf1c22f0bbc5fb4047ce42bde2042ec8170efb..6043e7a084b320263f1c0525369aaa59a5d32bcc 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -15,6 +15,10 @@
+ #include <assert.h>
+ 
+ #include "igt_core.h"
++#include "igt_edid.h"
++#include "dp_edids.h"
++#include "drmtest.h"
++#include "hdmi_edids.h"
+ 
+ static uint8_t convert_hex_char_to_byte(char c)
+ {
+@@ -90,3 +94,79 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
+ 	free(edid);
+ 	edid = NULL;
+ }
++
++/**
++ * edid_from_monitor_edid:
++ * @mon_edid: Monitor EDID to convert
++ *
++ * Get a struct edid from a monitor_edid. This returns a pointer to a newly allocated struct edid.
++ * The caller is in charge to free this pointer when required.
++ */
++struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
++{
++	uint8_t *raw_edid;
++	size_t edid_size;
++	int i;
++
++	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
++	raw_edid = malloc(edid_size);
++	igt_assert(raw_edid);
++
++	for (i = 0; i < edid_size; i++) {
++		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
++			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
++	}
++
++	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
++		uint8_t *new_edid;
++
++		igt_debug("The edid size stored in the raw edid is longer than the edid stored in the table.");
++		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
++		igt_assert(new_edid);
++		raw_edid = new_edid;
++	}
++
++	return (struct edid *)raw_edid;
++}
++
++/**
++ * get_edids_for_connector_type:
++ * @type: The connector type to get the EDIDs from
++ * @count: Used to store the number of EDIDs in the returned list
++ * @four_k: Use true to fetch 4k EDIDs, false to fetch non-4k EDIDs
++ *
++ * Get the list of EDIDS for a specific connector type. This returns a pointer to a static list,
++ * so no need to free the pointer.
++ */
++struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
++{
++	if (four_k) {
++		switch (type) {
++		case DRM_MODE_CONNECTOR_DisplayPort:
++			*count = DP_EDIDS_4K_COUNT;
++			return DP_EDIDS_4K;
++		case DRM_MODE_CONNECTOR_HDMIA:
++			*count = HDMI_EDIDS_4K_COUNT;
++			return HDMI_EDIDS_4K;
++		default:
++			*count = 0;
++			igt_debug("No 4k EDID for the connector %s\n",
++				  kmstest_connector_type_str(type));
++			return NULL;
++		}
++	} else {
++		switch (type) {
++		case DRM_MODE_CONNECTOR_DisplayPort:
++			*count = DP_EDIDS_NON_4K_COUNT;
++			return DP_EDIDS_NON_4K;
++		case DRM_MODE_CONNECTOR_HDMIA:
++			*count = HDMI_EDIDS_NON_4K_COUNT;
++			return HDMI_EDIDS_NON_4K;
++		default:
++			*count = 0;
++			igt_debug("No EDID for the connector %s\n",
++				  kmstest_connector_type_str(type));
++			return NULL;
++		}
++	}
++}
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index 05679f0897f3d0618d656cc071b565b48d31da28..e5069868683d97053d8e66666e83692f1b733db3 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -12,6 +12,8 @@
+ #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
+ 
+ #include <stdint.h>
++#include <stddef.h>
++#include <stdbool.h>
+ 
+ #include "igt_chamelium.h"
+ 
+@@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
+ 				     const monitor_edid *edid);
+ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ 
+-#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+\ No newline at end of file
++struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
++struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
++
++#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
-Changes in v2:
-- Rebased
-- Link to v1: https://lore.kernel.org/r/20240828-b4-cv3-02-monitor-edids-v1-0-29c846bcf251@bootlin.com
-
----
-Louis Chauvet (5):
-      lib/monitor_edids: Add helper functions for using monitor_edid objects
-      lib/monitor_edids: Add helper to get an EDID by its name
-      lib/monitor_edids: Add helper to print all available EDID names
-      lib/monitor_edids: Fix missing names in some monitor EDID
-      lib/monitor_edids: Add new EDID for HDMI 4k
-
- lib/monitor_edids/dp_edids.h             |   3 +
- lib/monitor_edids/hdmi_edids.h           |  27 ++++++-
- lib/monitor_edids/monitor_edids_helper.c | 127 +++++++++++++++++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  10 ++-
- 4 files changed, 162 insertions(+), 5 deletions(-)
----
-base-commit: fb343db7fc59c760ef0a0c19303e7bcec177dbd9
-change-id: 20240828-b4-cv3-02-monitor-edids-59a8f515c881
-
-Best regards,
 -- 
-Louis Chauvet <louis.chauvet@bootlin.com>
+2.47.1
 
