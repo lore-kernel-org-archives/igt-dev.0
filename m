@@ -4,62 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A4B2E77188
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 14:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E91E7719C
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 14:55:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB19A10F0E9;
-	Fri, 10 Jan 2025 14:30:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D46510F0F2;
+	Fri, 10 Jan 2025 14:55:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ECca1YYT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n680vJEF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71F2F10F0E9
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 14:30:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B68010F0F2
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 14:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736519401; x=1768055401;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Q+eDzAjyr/p6ZJCWYxtBDwv0+xQTeASEO7PBRJ1XbRw=;
- b=ECca1YYT3DEk/hdO63UIkixktdPJQyIte3yzhsDCoM7biIlzhG4JBTm2
- 5qNB4MA2FFnUvz/WzU0shZAYAdw+yrDrag1Gahb1F1VTd0PjfpUUsUjko
- 7fXL/hqt0pAzq9S9wDwdaI58jyr+BLDwiSUPouVF02MGhTE4/fXWBYW/i
- vIwnd4sztZsglp/OK2dagfGaju49s2oYymkiLQPhXEedVq5HG3fmU7Mns
- n0KnZ8UVbNsFXYWwhDuEBXFCnLqaUy+YgmNV1d7O3xncAq1jJaLqeBq9Q
- K07OOF2JjaYN8nvdiZpnH9PE6L/56vgPo+5u6NCWArMyjMrcveG5YmnCR A==;
-X-CSE-ConnectionGUID: lUAWoDBNSSaMbnxszK3t4w==
-X-CSE-MsgGUID: dij1zo1lTX+qGQAGPvH8DQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="36696327"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="36696327"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 06:30:01 -0800
-X-CSE-ConnectionGUID: OKQIePjUREWDzhXgYZ5Gug==
-X-CSE-MsgGUID: Cc1uO9dHSZukSwWZwFhx0g==
+ t=1736520936; x=1768056936;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=q79brUCUJGGtAtQ9f7KRYgpmwcf3miT7OaBDzgXK854=;
+ b=n680vJEFNYVTOLWwMorMVck61Q55uzqTm7g8+yCHJrqqOmEW72/zfKsM
+ KynwtG0QrRoANdK00h6CIQn+GNs5NsA1rao8nxYshxXoFpJd51IeyvdUZ
+ cKs71RiQGJVmONJb4xZHmBJ+JO69TFT0ZNLhykzN944k/b9VTdc7vaMcs
+ bnl7wOVLCLGxLzNn07nq+RaNkz+6oMRAzDgrC5KVe5dqyRbcpWaoV+ipZ
+ rWkDGf67aZ2zTtzRUu1rVMfqRiK3ilFE1oVr6cXKDN7nlQ9i40DL5kb6/
+ fOHhaT9AjYYk3jUFeUemsGCPOrBEbL6Qxa/mnQQ0b5S8j/o0hRan/xwxq A==;
+X-CSE-ConnectionGUID: aanh+cGwTByOh1XPrWKNUQ==
+X-CSE-MsgGUID: D0EcW0fFRvGvZu4h/gAM1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="59294809"
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="59294809"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2025 06:55:35 -0800
+X-CSE-ConnectionGUID: n+OiLRJHSfqv00rQKzVl5g==
+X-CSE-MsgGUID: jYjLoSrwSO21NxeNsDLHRw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107789371"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 06:29:59 -0800
-Date: Fri, 10 Jan 2025 15:29:57 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Samala, Pranay" <pranay.samala@intel.com>,
- "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Subject: Re: [PATCH i-g-t v3] tests/intel/kms_fbcon_fbt: Add skip condition
- for bmg platform
-Message-ID: <20250110142957.4wwqkewpdctxgrhc@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Samala, Pranay" <pranay.samala@intel.com>,
- "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-References: <20230328023811.46847-1-mohammed.thasleem@intel.com>
- <20250103115710.84108-1-mohammed.thasleem@intel.com>
- <PH7PR11MB6053C2A03BA98B141B4EF65EE7152@PH7PR11MB6053.namprd11.prod.outlook.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="108797525"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2025 06:55:35 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@intel.com>,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>,
+ Nemesa Garg <nemesa.garg@intel.com>
+Subject: Re: [PATCH i-g-t] Revert tests/kms_histogram: Fix build breakage
+Date: Fri, 10 Jan 2025 06:55:22 -0800
+Message-ID: <173652090306.2395795.2062650229973862214.b4-ty@intel.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250108205251.1645069-1-lucas.demarchi@intel.com>
+References: <20250108205251.1645069-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <PH7PR11MB6053C2A03BA98B141B4EF65EE7152@PH7PR11MB6053.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,105 +71,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Thasleem,
-On 2025-01-03 at 14:22:39 +0000, Samala, Pranay wrote:
-> Hi Thasleem,
+
+On Wed, 08 Jan 2025 12:52:51 -0800, Lucas De Marchi wrote:
+> This reverts commits
+> 8911eff2c6c0 ("tests/kms_histogram: Add check for libghe version")
+> 6e93c2e807b3 ("tests/kms_histogram: Added IGT support to validate global histogram")
 > 
-> > -----Original Message-----
-> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Mohammed
-> > Thasleem
-> > Sent: Friday, January 3, 2025 5:27 PM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>
-> > Subject: [PATCH i-g-t v3] tests/intel/kms_fbcon_fbt: Add skip condition for bmg
-> > platform
-
-Please improve subject a little:
-[PATCH i-g-t v3] tests/intel/kms_fbcon_fbt: Skip FBC testing on BMG platform
-
-> > 
-> > FBC test isn't supported on bmg, skip the test on this platform.
-> > 
-> > v2: Add workaround id: Wa_16023588340. (Pranay)
-> >     Use IS_BATTLEMAGE check instead using devid.
-> > v3: Add workaround id in code.
-> > 
-> > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> Please add Reviewed-by as RB is not reflecting.
+> Ths addition of libghe version check didn't really work as the released
+> libghe exposes a 1.0.0 version:
 > 
-> Thanks and Regards,
-> Pranay Samala
+> [...]
 
-This and above could be done at merge but first please also
-reply to CI failure and inform that SKIP on BMG is desired,
-so our bug filing team could improve filters.
+Applied, thanks!
 
-Inform them also about non-related reported failures.
+[1/1] Revert tests/kms_histogram: Fix build breakage
+      commit: ec6262ea1c05ac7371f45948cca875dc06852838
 
-Regards,
-Kamil
-
-> > ---
-> >  tests/intel/kms_fbcon_fbt.c | 17 ++++++++++++++---
-> >  1 file changed, 14 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c index
-> > ab4819d23..9c3ff7a21 100644
-> > --- a/tests/intel/kms_fbcon_fbt.c
-> > +++ b/tests/intel/kms_fbcon_fbt.c
-> > @@ -73,7 +73,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between
-> > fbcon and the frontbuffer "
-> >  #define MAX_CONNECTORS 32
-> > 
-> >  struct drm_info {
-> > -	int fd, debugfs_fd, crtc_id;
-> > +	int fd, debugfs_fd, crtc_id, devid;
-> >  	struct igt_fb fb;
-> >  	drmModeResPtr res;
-> >  	drmModeConnectorPtr connectors[MAX_CONNECTORS]; @@ -418,6
-> > +418,8 @@ static void setup_environment(struct drm_info *drm)
-> >  	igt_require(drm->fd >= 0);
-> >  	drm->debugfs_fd = igt_debugfs_dir(drm->fd);
-> >  	igt_require(drm->debugfs_fd >= 0);
-> > +	drm->devid = intel_get_drm_devid(drm->fd);
-> > +	igt_require(drm->devid >= 0);
-> > 
-> >  	drm->res = drmModeGetResources(drm->fd);
-> >  	igt_require(drm->res);
-> > @@ -457,16 +459,25 @@ igt_main
-> > 
-> >  	igt_describe("Test the relationship between fbcon and the frontbuffer "
-> >  		     "tracking infrastructure with fbc enabled.");
-> > -	igt_subtest("fbc")
-> > +	igt_subtest("fbc") {
-> > +		/* FBC disabled: Wa_16023588340 */
-> > +		igt_require_f(!IS_BATTLEMAGE(drm.devid), "FBC isn't supported
-> > on
-> > +BMG\n");
-> >  		subtest(&drm, &fbc, false);
-> > +	}
-> > +
-> >  	igt_describe("Test the relationship between fbcon and the frontbuffer "
-> >  		     "tracking infrastructure with psr enabled.");
-> >  	igt_subtest("psr")
-> >  		subtest(&drm, &psr, false);
-> > +
-> >  	igt_describe("Suspend test to validate  the relationship between fbcon
-> > and the frontbuffer "
-> >  		     "tracking infrastructure with fbc enabled.");
-> > -	igt_subtest("fbc-suspend")
-> > +	igt_subtest("fbc-suspend") {
-> > +		/* FBC disabled: Wa_16023588340 */
-> > +		igt_require_f(!IS_BATTLEMAGE(drm.devid), "FBC isn't supported
-> > on
-> > +BMG\n");
-> >  		subtest(&drm, &fbc, true);
-> > +	}
-> > +
-> >  	igt_describe("Suspend test to validate the relationship between fbcon
-> > and the frontbuffer "
-> >  		     "tracking infrastructure with psr enabled.");
-> >  	igt_subtest("psr-suspend")
-> > --
-> > 2.34.1
-> 
+Best regards,
+-- 
+Lucas De Marchi <lucas.demarchi@intel.com>
