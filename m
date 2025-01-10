@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5655BE77188
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 19:45:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3FB0E77188
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jan 2025 19:46:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 14CC110E524;
-	Fri, 10 Jan 2025 19:45:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F92D10E52B;
+	Fri, 10 Jan 2025 19:46:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d2pvLEeS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HvORvcw4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0710310E524
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 19:45:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDA6B10E52B
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2025 19:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736538357; x=1768074357;
+ t=1736538359; x=1768074359;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=291czU+7Yrx6HUkZ7yIQ2QJd9BM4mnFfNueZOtyyxig=;
- b=d2pvLEeSQ4tm6IBTkhjNcVmO9biPU51xKZdhRgAH97A416EbzGyOoOpy
- bLp5e3rYxX+EHlpcoLcONisvDgoTb+6mmdsF0Qc4ecTMwKeT7E38QkBYI
- f1NiwUqyOIITizQwZ702BUxOk0PCialD9pZyPjB5HLnLz4r9/Bvns7FR2
- k6fZTGS2H+CflzTyEsoGoHLVrQ6Yg7x6Vcx6jnWjL2mB6Z4/79orZUa1C
- YHWHrCpjGXnqEQESZf3j6FhFRK2GPjQuWPx9gYOkWTaCn70BmFZjb/hwq
- 6dJGIcDZWunrankbgDLEm1hc/N3VV1o5OInfEG7WWbKZuWbgGftDUCNjf w==;
-X-CSE-ConnectionGUID: Pt8Nup5PQciwD2IuGJdf4g==
-X-CSE-MsgGUID: gRwl82mhQrujhF31IUABrw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="47419802"
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="47419802"
+ bh=2OG9g2W1/JAiP5u3CU6rDsndglvfIuCWFWycXDdweIk=;
+ b=HvORvcw4vSYX+jHnrDJ3PSeJwy+ocBGmjVjL1RCP9xVDSaTKffVmAj9Y
+ wJPPvv//wXe/vcc6rz76+1HkehE7Kms3a5c8tSTSMCg//vHIKMESPxppW
+ T2d4Wf7Biu2Rd9PIh8529tHo/g2OYNMXWOktNF6/KcBGljKLer00NtAVQ
+ pssVQGawlKW7QRa28x5kL9Vq/CbQF0X5zxeB0U4Vf6H2jntN54/jwPMlA
+ utS/vmWQRkQT+YJtJ83W+jrRp1xelAujDKK1qvQs98gl/RjOY7iifHeAE
+ jRQdrTc8jJUzEN8mTSd7AUaL8fXdcpsbOKpM39cX+KZm/tRpcel7CEMcx g==;
+X-CSE-ConnectionGUID: LCYbGTNYS7uM3LSbMNL4iw==
+X-CSE-MsgGUID: GYcHgunwSD6X/Q8d3bCjJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="47419805"
+X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="47419805"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 11:45:57 -0800
-X-CSE-ConnectionGUID: 49pQ6BJKSbeyOJ6OZUKOLw==
-X-CSE-MsgGUID: HWuCxr2hSFqQzL+F3QDLHA==
+ 10 Jan 2025 11:45:59 -0800
+X-CSE-ConnectionGUID: JYfxBk/ZRVyDi8cKrk6IHQ==
+X-CSE-MsgGUID: PgaEk2KFQYaeBOgaUvit7Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="104334426"
+X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; d="scan'208";a="104334432"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 11:45:55 -0800
+ 10 Jan 2025 11:45:57 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t 3/8] runner/settings: Add function to set
- IGT_RUNNER_DATA environment variable
-Date: Sat, 11 Jan 2025 01:20:55 +0530
-Message-Id: <20250110195100.150301-4-swati2.sharma@intel.com>
+Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 4/8] lib/igt_core: Enhance __igt_fopen_data to support
+ additional directories
+Date: Sat, 11 Jan 2025 01:20:56 +0530
+Message-Id: <20250110195100.150301-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250110195100.150301-1-swati2.sharma@intel.com>
 References: <20250110195100.150301-1-swati2.sharma@intel.com>
@@ -71,80 +72,91 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 
-Introduced set_runner_datadir() to set the IGT_RUNNER_DATA environment
-variable. This function uses absolute_path() to convert the relative
-path "../share/igt-gpu-tools" to an absolute path. Update the
-runner/runner code to call set_runner_datadir() and handle errors
-appropriately.
+Add an additional parameter for the image directory. Refactor the
+function to use an array of directories to iterate through, reducing
+redundancy. Include a check for the "IGT_RUNNER_DATA" environment
+variable.
 
-v2: Fix review comments. (Kamil)
+v2: Fix review comments.   (Santhosh, Kamil)
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- runner/runner.c   | 8 ++++++++
- runner/settings.c | 9 +++++++++
- runner/settings.h | 1 +
- 3 files changed, 18 insertions(+)
+ lib/igt_core.c | 31 +++++++++++++++----------------
+ lib/igt_core.h |  6 +++---
+ 2 files changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/runner/runner.c b/runner/runner.c
-index 4855ad641..950eb5662 100644
---- a/runner/runner.c
-+++ b/runner/runner.c
-@@ -12,8 +12,13 @@ int main(int argc, char **argv)
- 	struct job_list job_list;
- 	struct execute_state state;
- 	int exitcode = 0;
-+	int data_flag = 0;
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 407f7b551..cd43d276a 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -3305,27 +3305,26 @@ void igt_reset_timeout(void)
+ 	igt_set_timeout(0, NULL);
+ }
  
- 	init_settings(&settings);
-+	data_flag = set_runner_datadir();
-+	if (data_flag)
-+		fprintf(stderr, "Data dir path not set\n");
+-FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
+-		       const char* filename)
++FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
++		       const char *igt_imgdir, const char *filename)
+ {
+ 	char path[PATH_MAX];
+ 	FILE *fp;
+-
+-	snprintf(path, sizeof(path), "%s/%s", igt_datadir, filename);
+-	fp = fopen(path, "r");
+-	if (!fp) {
+-		snprintf(path, sizeof(path), "%s/%s", igt_srcdir, filename);
+-		fp = fopen(path, "r");
+-	}
+-	if (!fp) {
+-		snprintf(path, sizeof(path), "./%s", filename);
+-		fp = fopen(path, "r");
++	size_t i;
++	const char *dirs[] = {igt_datadir, igt_srcdir, igt_imgdir,
++				     getenv("IGT_RUNNER_DATA"), "./data"};
 +
- 	init_job_list(&job_list);
- 
- 	if (!parse_options(argc, argv, &settings)) {
-@@ -49,6 +54,9 @@ int main(int argc, char **argv)
- 		exitcode = 1;
++	for (i = 0; i < ARRAY_SIZE(dirs); i++) {
++		if (dirs[i]) {
++			snprintf(path, sizeof(path), "%s/%s", dirs[i], filename);
++			fp = fopen(path, "r");
++			if (fp)
++				return fp;
++		}
  	}
  
-+	if (!data_flag)
-+		unsetenv("IGT_RUNNER_DATA");
-+
- 	printf("Done.\n");
- 	return exitcode;
- }
-diff --git a/runner/settings.c b/runner/settings.c
-index bea0c3059..c8220be32 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -589,6 +589,15 @@ char *absolute_path(const char *path)
- 	return result;
+-	if (!fp)
+-		igt_critical("Could not open data file \"%s\": %m\n", filename);
+-
+-	return fp;
++	igt_critical("Could not open data file \"%s\": %m\n", filename);
++	return NULL;
  }
  
-+int set_runner_datadir(void)
-+{
-+	const char *datapath = "../share/igt-gpu-tools";
-+	char *abpath;
-+
-+	abpath = absolute_path(datapath);
-+	return setenv("IGT_RUNNER_DATA", abpath, 1);
-+}
-+
- static char *bin_path(char *fname)
- {
- 	char *path, *p;
-diff --git a/runner/settings.h b/runner/settings.h
-index 7e6cd11e2..5926817b6 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -150,5 +150,6 @@ bool serialize_settings(struct settings *settings);
+ static void log_output(int *fd, enum igt_log_level level)
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index f0ba1a381..05134a104 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1456,8 +1456,8 @@ static inline uint32_t igt_seconds_elapsed(struct timespec *start)
  
- bool read_settings_from_file(struct settings *settings, FILE* f);
- bool read_settings_from_dir(struct settings *settings, int dirfd);
-+int set_runner_datadir(void);
+ void igt_reset_timeout(void);
  
- #endif
+-FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
+-		       const char* filename);
++FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
++		       const char *igt_imgdir, const char *filename);
+ /**
+  * igt_fopen_data:
+  * @filename: filename to open.
+@@ -1466,7 +1466,7 @@ FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
+  * then from build directory, and finally from current directory.
+  */
+ #define igt_fopen_data(filename) \
+-	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, filename)
++	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, IGT_IMGDIR, filename)
+ 
+ int igt_system(const char *command);
+ int igt_system_quiet(const char *command);
 -- 
 2.25.1
 
