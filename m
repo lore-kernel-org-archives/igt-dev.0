@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7969DE7719F
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jan 2025 13:49:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B538E7719F
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jan 2025 13:54:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 32F4610E317;
-	Mon, 13 Jan 2025 13:49:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D13EF10E68F;
+	Mon, 13 Jan 2025 13:54:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PjWVsmfq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Df5R8Udl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F069C10E317
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2025 13:49:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8E6310E298
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2025 13:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736776153; x=1768312153;
+ t=1736776462; x=1768312462;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=YQgvLZp540SXDjaK5pO7xx1+gR6XeX4bxCkNfp9dIcM=;
- b=PjWVsmfqpaH4aglO6L4mivIj7skIFrbLvvPjUZShQfQ/baDIdhCml0cv
- DU733klPwjVDCre856D3QUMKYukymePgXn/PRss82Ok8uB0pswkyTdIky
- 5UQMfXj9G3hOjSLUfr8GGUdSv0safiL4LValUxO5+9jDComwaEUM2gtfA
- Fvy5xy3+b9IjBrRwEgzrKXXJ8KxIB67AwLo4V8CXoT7u2UOgulhI7v0iR
- Rg+tPvAIgHDmyCBBG8PWeodUgnIzyyWuylt1OX88f0TJ4kwz7sivG+uXg
- 1R426tanGx5zhYMJC/pxOd2sserB6jPULhx9CYYbm0ev1yv6O2thAfumH Q==;
-X-CSE-ConnectionGUID: nDn2sUa3TG++g9kyRWsUTQ==
-X-CSE-MsgGUID: /OsUvAByTqyjKCwr8LVo2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37269711"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="37269711"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2025 05:49:13 -0800
-X-CSE-ConnectionGUID: plkZc9l0RX2iHcQ25OTDGA==
-X-CSE-MsgGUID: W3/Tp+ZMQ0mTRADLQ4l4Zw==
+ bh=220K613BbOcQSUN2PlGRc3WM14LdPTWqOvo9mfH5PGE=;
+ b=Df5R8UdlRxSW6NvTshRGfr3yGAgV6sBLjq8T0KvXykJbu+gGCUvO5we2
+ XJGtkjf6FWdU4z4rMTjGXVpK7kj0ZnS/5m7h6PkxdRLIlWCfdkFnzU41O
+ axMkzN65r+981vaTIALnPFT5q1z9zcYBWrre0mu12iXkEbPgVuu7L+DZN
+ L23NpmxN9FyUYpwJlWm0O9uCPkd8f6+JRKDCyJQDfBZQoHEIMh4hj94kR
+ B4u7l6d6z5+MPHhbm8t2x8cBWnDXBy8yOMDDBYpOmVsGRf3MEgYCnRgDM
+ WKx3Xzcpseqw0LQb6EujmLBAfUlHbMaXVQgpiLNoOrUfgpHm9ZBAPLJwz g==;
+X-CSE-ConnectionGUID: fXIs1h32SmS+hKlzwP10zw==
+X-CSE-MsgGUID: dtGWIoxrTVe8rS19ghXz8w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37153402"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="37153402"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2025 05:54:17 -0800
+X-CSE-ConnectionGUID: 0fjVzZ5YSouN4rl7fehc5g==
+X-CSE-MsgGUID: eTWhAVKnRYiEFKEcDmeaDg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="104998374"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="109623876"
 Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
- by fmviesa010.fm.intel.com with ESMTP; 13 Jan 2025 05:49:11 -0800
+ by orviesa005.jf.intel.com with ESMTP; 13 Jan 2025 05:54:15 -0800
 From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: lucas.demarchi@intel.com, kamil.konieczny@linux.intel.com,
- Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH v2] tests/xe_debugfs: Improve test_gt subtest
-Date: Mon, 13 Jan 2025 19:15:58 +0530
-Message-Id: <20250113134558.947544-1-pravalika.gurram@intel.com>
+Cc: kamil.konieczny@linux.intel.com,
+ Pravalika Gurram <pravalika.gurram@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: [PATCH v3] tests/intel: Enhance the wedged_mode sysfs support
+Date: Mon, 13 Jan 2025 19:21:03 +0530
+Message-Id: <20250113135103.947823-1-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,160 +66,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Read the debugfs entries in the loop to improve the readability.
-Added library function to check whether the debugfs is a directory or not.
+Added support to read the wedged_mode sysfs
 
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- lib/igt_debugfs.c        | 27 +++++++++++++
- lib/igt_debugfs.h        |  1 +
- tests/intel/xe_debugfs.c | 82 ++++++----------------------------------
- 3 files changed, 40 insertions(+), 70 deletions(-)
+ tests/intel/xe_wedged.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index f4f749e30..cd604e7c6 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -376,6 +376,33 @@ igt_debugfs_gt_open(int device, unsigned int gt, const char *filename, int mode)
- 	return ret;
- }
- 
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index 613d571b4..844ab2809 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -203,11 +203,16 @@ simple_hang(int fd, struct drm_xe_sync *sync)
+  * SUBTEST: wedged-mode-toggle
+  * Description: Test wedged.mode=1 after testing wedged.mode=2
+  */
 +/**
-+ * igt_debugfs_is_dir:
-+ * @drm_fd: fd of the device
-+ * @name: name of the debugfs node to check
-+ * @gt: gt instance number
-+ *
-+ * This helps to find the debugfs file is  a directory or not
-+ *
-+ * Returns:
-+ * true if the debugfs is a directory
++ * SUBTEST: basic-wedged-read
++ * Description: Read wedged debugfs
 + */
-+bool igt_debugfs_is_dir(int drm_fd, const char *name, int gt_id)
-+{
-+	char path[128];
-+	struct stat st;
-+
-+	if (fstat(drm_fd, &st) != 0)
-+		return false;
-+
-+	snprintf(path, sizeof(path), "/sys/kernel/debug/dri/%d/gt%d/%s",
-+						minor(st.st_rdev), gt_id, name);
-+	if (!stat(path, &st) && S_ISDIR(st.st_mode))
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * igt_debugfs_simple_read:
-  * @dir: fd of the debugfs directory
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 3e6194ade..f4044d545 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -39,6 +39,7 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
- int igt_debugfs_pipe_dir(int device, int pipe, int mode);
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	int fd;
+ 	char pci_slot[NAME_MAX];
++	char str[150];
  
- int igt_debugfs_open(int fd, const char *filename, int mode);
-+bool igt_debugfs_is_dir(int drm_fd, const char *name, int gt_id);
- bool igt_debugfs_exists(int fd, const char *filename, int mode);
- void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
- void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size);
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index bcbb5036a..c653daae4 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -180,77 +180,19 @@ test_gt(int fd, int gt_id)
- //		"guc_ct_selftest"
- 	};
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -279,6 +284,13 @@ igt_main
+ 		igt_assert_eq(simple_ioctl(fd), 0);
+ 	}
  
--	sprintf(name, "gt%d/hw_engines", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/sa_info", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/steering", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/topology", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/pat", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/mocs", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/ggtt", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/register-save-restore", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/workarounds", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/default_lrc_rcs", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/default_lrc_ccs", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/default_lrc_bcs", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/default_lrc_vecs", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/default_lrc_vcs", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/hwconfig", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/uc/guc_info", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
--
--	sprintf(name, "gt%d/uc/huc_info", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
-+	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
-+		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
-+		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-+		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
-+			continue;
-+		igt_debugfs_dump(fd, name);
++	igt_subtest_f("basic-wedged-read") {
++		igt_require(igt_debugfs_exists(fd, "wedged_mode", O_RDONLY));
++
++		igt_debugfs_read(fd, "wedged_mode", str);
++		igt_assert_f(str[0] != '\0', "Failed to read wedged_mode from debugfs!\n");
 +	}
- 
--	sprintf(name, "gt%d/uc/guc_log", gt_id);
--	igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
--	igt_debugfs_dump(fd, name);
-+	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
-+		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
-+		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-+		igt_debugfs_dump(fd, name);
-+	}
- 
- 	sprintf(name, "/gt%d", gt_id);
- 	validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
++
+ 	igt_fixture {
+ 		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
+ 			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
 -- 
 2.34.1
 
