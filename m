@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2750AC02180
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jan 2025 19:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3639AC02180
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jan 2025 19:37:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B376210E7C3;
-	Mon, 13 Jan 2025 19:22:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E6FB710E1ED;
+	Mon, 13 Jan 2025 19:37:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mVyI/cjq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m2uw6eyu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5F9410E7C3
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2025 19:22:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BA0E10E1ED
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2025 19:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736796126; x=1768332126;
+ t=1736797057; x=1768333057;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=hZPjFrbjyZxUWJAKLVDMLYSK5WptKGAQfgODtSoAyYY=;
- b=mVyI/cjqJXnKTp53zZA58QBr++EAsL6dDbwg3XPsO1809YTb2pTdvS2M
- IIcCvalzEPJBJ3SAInbE/rSsMDnNnAfE3ewtIwoKHd/zC7jvMVh/hW/+D
- ar4EiwKxEYpsPl+IcR7K5MmJqtz5gqzbB17uz4VoHEAS48ygMGfulU0ph
- P9tgfwS4S1N9lGgBxbb4RSYML7tbDl8LWon4v02iAf//keOnF1YhjOxDZ
- 9e+cMMaNLqu8X1g2yfaIoBWMXi1tMo5YtsK4Dq5uo5H1jd9hckdyi+9bY
- 6sHTxQuOLolgomn6f3hvRk3eMasvYXTQdCDW5e1v9DNyJzsyXmumB/o/B w==;
-X-CSE-ConnectionGUID: 4S6xOFQcTPutJXjVQE128A==
-X-CSE-MsgGUID: N9kWypzWQKO1yYBxGCrCCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="48077933"
-X-IronPort-AV: E=Sophos;i="6.12,312,1728975600"; d="scan'208";a="48077933"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2025 11:22:06 -0800
-X-CSE-ConnectionGUID: qpypHKEjTH2AxT56VTWXvA==
-X-CSE-MsgGUID: Wb+JWUJTSiiJ5k/PlN5nyg==
+ bh=C0audpxSzquiZTq+fde126QuICSHDh5alP7jqyENsUs=;
+ b=m2uw6eyuKNp3h51SZy/MQjIQ2uQpDsSfk0PYsW9lp4mUAlNkLjwtGmTp
+ 13AezaM4MM3h9IQN5o32gR9nqQeNekmtUZEHmiKBE4VGQlutFHo0uts1E
+ eRkCINW7lDKlcgt5+Qsi6o4h66HezFx4QKpovMU+wtvb+i6e/SMCAgvNI
+ YpUixwzk4qWuJs3ckH/Alvj1vgTrAf1UB/gG2/GAWlTDA0S30PMWzBmQP
+ v9nLWUX/nrtay3ZAvxTUHgPmGGGicMR68cCiwadtO9vYDGGuLzJ2Dsp3r
+ nbrEGYvUcHO0wUk7PkML+RkOynWhw8uMZZRgPAoIw6yIXbNq1G/EMz9T2 A==;
+X-CSE-ConnectionGUID: EZFlHojVQfOjiYQuAYM/yQ==
+X-CSE-MsgGUID: o7PLuUCoRZqeePjLlBN8Yg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37192213"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="37192213"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2025 11:37:37 -0800
+X-CSE-ConnectionGUID: imMDZ4pNTom8uVKL1BNcbw==
+X-CSE-MsgGUID: CJzB/v4HREG7GXEQ0eQk7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="108630720"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="109210197"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2025 11:22:05 -0800
-Date: Mon, 13 Jan 2025 11:22:05 -0800
-Message-ID: <85y0zeecyq.wl-ashutosh.dixit@intel.com>
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2025 11:37:36 -0800
+Date: Mon, 13 Jan 2025 11:37:36 -0800
+Message-ID: <85wmeyec8v.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v3 2/3] tests/intel/xe_oa: Reduce the number of mmap
- reports checked
-In-Reply-To: <20250113061949.753864-3-sai.teja.pottumuttu@intel.com>
+Subject: Re: [PATCH i-g-t v3 3/3] tests/intel/xe_oa: Remove hardcoded time
+ heuristics
+In-Reply-To: <20250113061949.753864-4-sai.teja.pottumuttu@intel.com>
 References: <20250113061949.753864-1-sai.teja.pottumuttu@intel.com>
- <20250113061949.753864-3-sai.teja.pottumuttu@intel.com>
+ <20250113061949.753864-4-sai.teja.pottumuttu@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,32 +72,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Sun, 12 Jan 2025 22:19:48 -0800, Sai Teja Pottumuttu wrote:
+On Sun, 12 Jan 2025 22:19:49 -0800, Sai Teja Pottumuttu wrote:
 >
-> Currently, 20 mmap periodic reports are checked which seems unnecessary,
-> reduce it to 10.
+> Some tests in xe_oa tests have hardcoded timing heuristics. Refactor it to
+> make it more robust and reliable. The patch extends the wait time logically
+> but usually it would take a single iteration for the required reports to be
+> available so wait time doesn't change much.
+>
+> v2:
+>  - Extend commit message [Lucas]
+>  - Make wait function more generic [Lucas]
+>
+> v3:
+>  - Change wait function name [Ashutosh]
+>  - Address nits [Ashutosh]
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
->
 > Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 > ---
->  tests/intel/xe_oa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  tests/intel/xe_oa.c | 27 ++++++++++++++++++++++-----
+>  1 file changed, 22 insertions(+), 5 deletions(-)
 >
 > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index ad3526406..cd081ecff 100644
+> index cd081ecff..df7fa3229 100644
 > --- a/tests/intel/xe_oa.c
 > +++ b/tests/intel/xe_oa.c
-> @@ -4378,7 +4378,7 @@ static void check_reports(void *oa_vaddr, uint32_t oa_size,
->	uint32_t timer_reports = 0;
+> @@ -4367,6 +4367,26 @@ static void map_oa_buffer_forked_access(const struct drm_xe_engine_class_instanc
+>	munmap(vaddr, size);
+>  }
 >
->	for (reports = (uint32_t *)oa_vaddr;
-> -	     timer_reports < 20 && reports[0] && oa_timestamp(reports, fmt);
-> +	     timer_reports < 10 && reports[0] && oa_timestamp(reports, fmt);
->	     reports += report_words) {
->		if (!oa_report_is_periodic(reports))
->			continue;
+> +static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
+> +					   const struct drm_xe_engine_class_instance *hwe)
+> +{
+> +	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+> +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> +	uint64_t fmt = test_set->perf_oa_format;
+> +	uint32_t num_periodic_reports = 0;
+> +	uint32_t *reports;
+> +
+> +	while (num_periodic_reports < n) {
+> +		usleep(4 * n * period_us);
+> +		num_periodic_reports = 0;
+> +		for (reports = (uint32_t *)oa_vaddr;
+> +		     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
+> +		     reports += get_oa_format(fmt).size) {
+> +			num_periodic_reports++;
+> +		}
+> +	}
+> +}
+> +
+>  static void check_reports(void *oa_vaddr, uint32_t oa_size,
+>			  const struct drm_xe_engine_class_instance *hwe)
+>  {
+> @@ -4396,12 +4416,10 @@ static void check_reports_from_mapped_buffer(const struct drm_xe_engine_class_in
+>  {
+>	void *vaddr;
+>	uint32_t size;
+> -	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>
+>	vaddr = map_oa_buffer(&size);
+>
+> -	/* wait for approx 100 reports */
+> -	usleep(100 * period_us);
+> +	mmap_wait_for_periodic_reports(vaddr, 10, hwe);
+>	check_reports(vaddr, size, hwe);
+>
+>	munmap(vaddr, size);
+> @@ -4426,12 +4444,11 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_insta
+>	};
+>	void *vaddr;
+>	uint32_t size;
+> -	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>
+>	stream_fd = __perf_open(drm_fd, &param, false);
+>	vaddr = map_oa_buffer(&size);
+>
+> -	usleep(100 * period_us);
+> +	mmap_wait_for_periodic_reports(vaddr, 10, hwe);
+>	check_reports(vaddr, size, hwe);
+>
+>	munmap(vaddr, size);
 > --
 > 2.34.1
 >
