@@ -4,47 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94384C02183
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Jan 2025 15:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 726C1E77188
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Jan 2025 15:11:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 531BA10E362;
-	Tue, 14 Jan 2025 15:10:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 308B510E362;
+	Tue, 14 Jan 2025 15:11:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m9CPFR9X";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Srg8zYX+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF2F910E362
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2025 15:10:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA31310E37C
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2025 15:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736867437; x=1768403437;
+ t=1736867460; x=1768403460;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=v+eYoGYN/uBjbMrbI/YP3KkcURhAkZldG1Zh4ca2nOU=;
- b=m9CPFR9XPQXcm9xwvAD97xENY6zFbHE0jVxU87FR10ptb79ZxmjhOHOI
- wklZ2JAJ5kkQUXDICy/tNct/RHI0gLnnuQH6U8ZJRW7qcbGCbnRktK9L9
- aciEBJpKCWfaxxecNxaGwZA/e0P9wO8ZUxqMTelK1oM28aPovADQ21OZJ
- H4YOXJSCed0LAqmz0ShAOUeN7lw1o2Rp5ESBPE2WFcQcejxKBBeipYgK4
- PdIPRzpsXAMwtrH21nFwKkwWVhxermovQZ+aNU+KjWBY/+zRT7L3TDQQf
- v6/0OsXeDKTHWMjyBqfgRms5cVt+cgIQOcPziKhcDKY+Kl6H9uU1P4UJf w==;
-X-CSE-ConnectionGUID: wqmo4DUcS6KGAy5mULiGqQ==
-X-CSE-MsgGUID: VzhcjdSEScGOWokPjj5gDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="37323273"
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="37323273"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2025 07:10:37 -0800
-X-CSE-ConnectionGUID: Put0uKdsRF+Qsv8c/p7+iQ==
-X-CSE-MsgGUID: CxToK7QMRGG8q7AUSMOnnw==
+ bh=Pup2MVAImnwLXZ+LwtShqJCbq7r2LMj6hdlkNOKgk4k=;
+ b=Srg8zYX+PkLVWXAsTRLJjlgbH8ysHv56CDzjdS+VdsibVUrb9AlcjTQd
+ SXoBnegtFa8Nlk4pNm/ya4YgBcjoE3UaSR+r0g/571P7nSPssDqPBWFEk
+ roOqp42L9rakr6hk9ZlgvyMxxLF2xbTheh7Pdu/bIf435JSsih27XH+DW
+ R/pIndLHq8JmoQWCDAVrQlQ4aL58/WW4YwtcxHZnHY1vc+meIGsFrJhTT
+ oarozrE38TaPzdrxwclu8QOWj4iNFDwQwHURa8tqSZv21M/0NjhiK+vZI
+ LoBVOlzD9KIxABiLZLOImr1xi/ZwEQXA4LECYPatG6884pFUChCM0AX+M w==;
+X-CSE-ConnectionGUID: yUntvaJUSN2cJHsIFFe94A==
+X-CSE-MsgGUID: n7QAKwZDQpmz/dCy0A+TSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="62540136"
+X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="62540136"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2025 07:10:38 -0800
+X-CSE-ConnectionGUID: GPg8fEVYQiyPLyjLfWvSWQ==
+X-CSE-MsgGUID: mb+xLWeXQ3GUHYoCozQ8WQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="104661595"
+X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="105346221"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.246.1.29])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2025 07:10:28 -0800
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2025 07:10:35 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@intel.com>,
  Lukasz Laguna <lukasz.laguna@intel.com>,
  Adam Miszczak <adam.miszczak@linux.intel.com>,
  Jakub Kolakowski <jakub1.kolakowski@intel.com>,
@@ -54,10 +55,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH v2 i-g-t 4/7] lib/xe/xe_sriov_provisioning: Add shared
- resource provisionability check
-Date: Tue, 14 Jan 2025 16:08:45 +0100
-Message-Id: <20250114150848.332708-5-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 5/7] lib/igt_sriov_device: Add helper functions for
+ VF range validation
+Date: Tue, 14 Jan 2025 16:08:46 +0100
+Message-Id: <20250114150848.332708-6-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250114150848.332708-1-marcin.bernatowicz@linux.intel.com>
 References: <20250114150848.332708-1-marcin.bernatowicz@linux.intel.com>
@@ -79,14 +80,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a helper `xe_sriov_is_shared_res_provisionable` to determine
-if a shared resource can be provisioned.
+Add __is_valid_range() to check if a VF range is valid. Introduce
+igt_sriov_random_vf_in_range() to get a random VF number within a
+specified range. Update for_random_sriov_vf to use the new helper
+functions for better range handling.
 
-Add macros `xe_sriov_for_each_shared_res` and
-`xe_sriov_for_each_provisionable_shared_res` to iterate over shared
-resources and provisionable shared resources, respectively.
-
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
@@ -97,95 +96,115 @@ Cc: Narasimha C V <narasimha.c.v@intel.com>
 Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- lib/xe/xe_sriov_provisioning.c | 22 ++++++++++++++++++++++
- lib/xe/xe_sriov_provisioning.h | 29 +++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ lib/igt_sriov_device.h | 82 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 75 insertions(+), 7 deletions(-)
 
-diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index 536121931..22035ffd8 100644
---- a/lib/xe/xe_sriov_provisioning.c
-+++ b/lib/xe/xe_sriov_provisioning.c
-@@ -9,6 +9,7 @@
- #include "intel_chipset.h"
- #include "linux_scaffold.h"
- #include "xe/xe_mmio.h"
-+#include "xe/xe_query.h"
- #include "xe/xe_sriov_debugfs.h"
- #include "xe/xe_sriov_provisioning.h"
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index 4b63ceb22..de25a7d98 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -34,6 +34,45 @@ int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
+ bool igt_sriov_device_reset_exists(int pf, unsigned int vf_num);
+ bool igt_sriov_device_reset(int pf, unsigned int vf_num);
  
-@@ -274,3 +275,24 @@ void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
- {
- 	igt_fail_on(__xe_sriov_pf_set_shared_res_attr(pf, res, vf_num, gt_num, value));
- }
-+
 +/**
-+ * xe_sriov_is_shared_res_provisionable - Check if a shared resource is provisionable
-+ * @pf: PF device file descriptor
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @gt_num: GT number
++ * __is_valid_range - Helper to check VF range is valid
++ * @start_vf: Starting VF number
++ * @end_vf: Ending VF number
++ * @total_vfs: Total number of VFs
 + *
-+ * Determines whether a specified shared resource can be provisioned.
-+ *
-+ * Return: true if the shared resource is provisionable, false otherwise.
++ * Return: true if the range is valid, false otherwise.
 + */
-+bool xe_sriov_is_shared_res_provisionable(int pf, enum xe_sriov_shared_res res,
-+					  unsigned int gt_num)
++static inline bool __is_valid_range(unsigned int start_vf, unsigned int end_vf,
++				    unsigned int total_vfs)
 +{
-+	if (res == XE_SRIOV_SHARED_RES_LMEM)
-+		return xe_has_vram(pf) && !xe_is_media_gt(pf, gt_num);
-+	else if (res == XE_SRIOV_SHARED_RES_GGTT)
-+		return !xe_is_media_gt(pf, gt_num);
-+
-+	return true;
++	return !igt_warn_on_f(start_vf > end_vf || end_vf > total_vfs || start_vf == 0,
++			      "start_vf=%u, end_vf=%u, total_vfs=%u\n",
++			      start_vf, end_vf, total_vfs);
 +}
-diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
-index 168b50394..b4300ec2e 100644
---- a/lib/xe/xe_sriov_provisioning.h
-+++ b/lib/xe/xe_sriov_provisioning.h
-@@ -27,6 +27,34 @@ enum xe_sriov_shared_res {
- 	XE_SRIOV_SHARED_RES_LMEM,
- };
- 
-+/**
-+ * XE_SRIOV_SHARED_RES_NUM - Number of shared resource types
-+ */
-+#define XE_SRIOV_SHARED_RES_NUM (XE_SRIOV_SHARED_RES_LMEM + 1)
 +
 +/**
-+ * xe_sriov_for_each_shared_res - Iterate over all shared resource types
-+ * @res: Loop counter variable of type `enum xe_sriov_shared_res`
++ * igt_sriov_random_vf_in_range - Get a random VF number within a specified range
++ * @pf_fd: PF device file descriptor
++ * @start: Starting VF number in the range
++ * @end: Ending VF number in the range
 + *
-+ * Iterates over each shared resource type defined in the `enum xe_sriov_shared_res`.
++ * Returns a random VF number within the specified range [start, end].
++ * If the range is invalid (start > end, end > total VFs,
++ * or start == 0), the function returns 0.
++ *
++ * Return: A random VF number within the range, or 0 if the range is invalid.
 + */
-+#define xe_sriov_for_each_shared_res(res) \
-+	for ((res) = 0; (res) < XE_SRIOV_SHARED_RES_NUM; (res)++)
++static inline unsigned int
++igt_sriov_random_vf_in_range(int pf_fd, unsigned int start, unsigned int end)
++{
++	unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
 +
-+/**
-+ * xe_sriov_for_each_provisionable_shared_res - Iterate over provisionable shared
-+ * resource types
-+ * @res: Loop counter variable of type `enum xe_sriov_shared_res`
-+ * @pf: PF device file descriptor of type int
-+ * @gt: GT number of type unsigned int
-+ *
-+ * Iterates over each provisionable shared resource type for the given PF device
-+ * and GT number.
-+ */
-+#define xe_sriov_for_each_provisionable_shared_res(res, pf, gt) \
-+	for ((res) = 0; (res) < XE_SRIOV_SHARED_RES_NUM; (res)++) \
-+		for_if(xe_sriov_is_shared_res_provisionable((pf), (res), (gt)))
++	if (!__is_valid_range(start, end, total_vfs))
++		return 0;
++
++	return start + random() % (end - start + 1);
++}
 +
  /**
-  * struct xe_sriov_provisioned_range - Provisioned range for a Virtual Function (VF)
-  * @vf_id: The ID of the VF
-@@ -43,6 +71,7 @@ struct xe_sriov_provisioned_range {
- };
+  * for_each_sriov_vf - Helper for running code on each VF
+  * @__pf_fd: PF device file descriptor
+@@ -48,17 +87,46 @@ bool igt_sriov_device_reset(int pf, unsigned int vf_num);
+ #define for_each_sriov_num_vfs for_each_sriov_vf
  
- const char *xe_sriov_shared_res_to_string(enum xe_sriov_shared_res res);
-+bool xe_sriov_is_shared_res_provisionable(int pf, enum xe_sriov_shared_res res, unsigned int gt);
- int xe_sriov_find_ggtt_provisioned_pte_offsets(int pf_fd, int gt, struct xe_mmio *mmio,
- 					       struct xe_sriov_provisioned_range **ranges,
- 					       unsigned int *nr_ranges);
+ /**
+- * for_random_sriov_vf - Helper for running code on random VF
++ * for_random_sriov_vf_in_range - Iterate over a random VF in a specified range
++ * @__pf_fd: PF device file descriptor
++ * @__start: Starting VF number in the range
++ * @__end: Ending VF number in the range
++ * @__vf_num: Variable to store the random VF number
++ *
++ * Iterates over a random VF number within the specified range [__start, __end].
++ * The loop runs only if the range is valid and a random
++ * VF number is successfully selected.
++ */
++#define for_random_sriov_vf_in_range(__pf_fd, __start, __end, __vf_num) \
++	for (unsigned int __vf_num = igt_sriov_random_vf_in_range(__pf_fd, __start, __end); \
++	     __vf_num != 0; __vf_num = 0)
++
++/**
++ * for_random_sriov_vf_starting_from - Iterate over a random VF starting from a specified VF
++ * @__pf_fd: PF device file descriptor
++ * @__start: Starting VF number
++ * @__vf_num: Variable to store the random VF number
++ *
++ * This macro iterates over a random VF number starting from the specified
++ * VF number @__start to the total number of VFs associated with the given
++ * PF @__pf_fd.
++ */
++#define for_random_sriov_vf_starting_from(__pf_fd, __start, __vf_num) \
++	for_random_sriov_vf_in_range(__pf_fd, __start, igt_sriov_get_total_vfs(__pf_fd), __vf_num)
++
++/**
++ * for_random_sriov_vf - Iterate over a random VF for a given PF
+  * @__pf_fd: PF device file descriptor
+- * @__vf_num: stores random VF
++ * @__vf_num: Variable to store the random VF number
+  *
+- * Helper allows to run code using random VF number (stored in @__vf_num)
+- * picked from the range of all VFs associated with given PF @__pf_fd.
++ * Iterates over a random VF number selected from the range
++ * of all VFs associated with the given PF @__pf_fd. The loop runs only
++ * if a random VF number is successfully selected.
+  */
+ #define for_random_sriov_vf(__pf_fd, __vf_num) \
+-	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
+-	     __tmp < 1; \
+-	     ++__tmp)
++	for_random_sriov_vf_in_range(__pf_fd, 1, igt_sriov_get_total_vfs(__pf_fd), __vf_num)
++
++/* for_random_sriov_num_vfs - Alias for for_random_sriov_vf */
+ #define for_random_sriov_num_vfs for_random_sriov_vf
+ 
+ /**
 -- 
 2.31.1
 
