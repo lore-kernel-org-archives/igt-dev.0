@@ -4,60 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26348E77188
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Jan 2025 14:42:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 204A0E77188
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Jan 2025 15:10:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA6F510E362;
-	Tue, 14 Jan 2025 14:42:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D39EE10E362;
+	Tue, 14 Jan 2025 15:10:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TLrXwJVX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HLi2n628";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6A2B10E362
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2025 14:42:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9A1910E362
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2025 15:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736865745; x=1768401745;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+s25Sc3PuSBhUO2INFn7W4yOK/22waF/cRwjagDOqW8=;
- b=TLrXwJVX+taKgbGDbZFHi8kD/MMBaE3WUbh9ByWEkoYetztGXud9xiEw
- QM8nC5XPhRRhrpSdc/9nhnyXZliwOPXpAA0FgQzhJaR4npyjjTZuFGPAo
- IyYG7oV05KKSFwUzst+91wfYRIJfdCDcYTrXWx+bCZ0as4bpQL74wtSpc
- JawkKonWKuYZeB/9Gqp9BlWJIDULXj54u/kCXHcHDIJBOZT6p9P4+s3wd
- SoilJ4nErU7yC2rpaqFgk2QAwEHZsH+lhJ+TvqpjnevIc04rMTj6U5lXO
- 4sJBU5EB7+/FNdrAnjJzfeBrr+Bxw9KpxosQNdgRoU/nwtGitYWelZTg0 A==;
-X-CSE-ConnectionGUID: NPQeIN2kSBWbOpkieoagMQ==
-X-CSE-MsgGUID: SJlEizIxQs+VEpjfHecBww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="36857333"
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="36857333"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2025 06:42:24 -0800
-X-CSE-ConnectionGUID: oH7jfa5oSHyRc3TBiKOOXg==
-X-CSE-MsgGUID: XNoi+RKLR7KV/8y5G3t+VQ==
+ t=1736867421; x=1768403421;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7FJksURJJT5urE96Gq+Dhc68LTUO4q67MvsIqPD6VZQ=;
+ b=HLi2n628FJ6KO21OU46WMoBTlXT2wv/hFEjn2EXtsWIOuiTR3tMJJYGV
+ RQoqIPuIsKyu4+WNA4smQIV2UTTuXmPxrHItU9zg3WTr63/3iosZCm2XU
+ BheEHjEMork7Z59ABZQQB1RN+VUT1dda8UCexd9mqna+k+2EkP5DRdVc2
+ HbCC/FhiA01xa91rXZ08oN/3VTH7sVzhx8GNnoXOn68G7U73p1ZtXP1s+
+ acTysdtD5E72a09iZCTUCQ2ufyxEIHamqFAfOKGYxiH39w+wz7xS6FCdX
+ Zfy5277aqfdtpEegJsVR5NiHrhxcR9R8A536YJGewE1c2/HW6I8oKWmOi g==;
+X-CSE-ConnectionGUID: 20JaYEQkSdq0sVqiwHzd3w==
+X-CSE-MsgGUID: w4pzItPVRRymh2TEQjIoGA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="37323208"
+X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="37323208"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2025 07:10:01 -0800
+X-CSE-ConnectionGUID: mBfNofgdQOqpYw+/JTeLYQ==
+X-CSE-MsgGUID: FdJ1goAWQEK3D8HnPK8aLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="104682906"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 06:42:24 -0800
-Date: Tue, 14 Jan 2025 15:42:20 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH v2] lib/meson.build: allow build IGT with link time
- optimization
-Message-ID: <20250114144220.rrvfaaqqfvyomhvn@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-References: <20250109-fix-lto-v2-1-3dc74d60a124@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="104660427"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.246.1.29])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2025 07:09:58 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+ Narasimha C V <narasimha.c.v@intel.com>,
+ =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ Tomasz Lis <tomasz.lis@intel.com>
+Subject: [PATCH v2 i-g-t 0/7] Add xe_sriov_auto_provisioning tests
+Date: Tue, 14 Jan 2025 16:08:41 +0100
+Message-Id: <20250114150848.332708-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250109-fix-lto-v2-1-3dc74d60a124@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,56 +76,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andrzej,
-On 2025-01-09 at 17:26:30 +0100, Andrzej Hajda wrote:
-> Some distributions use -flto gcc flag to build IGT. With this flag
-> enabled variables declared with section attribute do not appear in
-> correct section in .o files. Since iga64 assembly helper script relies
-> on it we need to use -ffat-lto-objects in case of files containing
-> iga64 assembly. According to documentation this option is effective
-> only in case lto is in use, so it should not affect non-lto builds.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/165
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> ---
-> This patch 'fixes' building IGT with link-time-optimization. I am not
-> sure it is or should be supported by IGT, but build scripts can be
-> modified to allow it for testing.
-> Grepping internet shows at least Gentoo and Arch Linux builds IGT with
-> LTO, so I guess it is working for them.
+This patch series introduces several enhancements to the SR-IOV
+provisioning and validation functionalities. The changes include
+debugfs accessors, quota/spare attribute accessors, shared resource
+provisionability checks, and helper functions for VF range validation.
 
-Applied, thanks!
+Additionally, the xe_sriov_auto_provisioning tests validate the
+following scenarios:
+- Auto-provisioned resources are allocated by the PF driver in a fair
+  manner.
+- Auto-provisioned resources are released once VFs are disabled.
+- Verify that ranges of auto-provisioned resources are exclusive.
 
-Regards,
-Kamil
+v2:
+- Update DEFINE_XE_SRIOV_PF_DEBUGFS_FUNC macro comment (Lukasz)
+- Simplify range validation in test (Lukasz)
+  (moved validation of provisioned ranges to library
+  `xe_sriov_pf_debugfs_read_check_ranges`)
+- Rename subtests for clarity (Lukasz)
+- Add 'extended' command line option to enable dynamic subtests with
+  arbitrary num_vfs
 
-> ---
-> Changes in v2:
->  - added Closes tag
-> - Link to v1: https://lore.kernel.org/r/20241216-fix-lto-v1-1-1280b17dc70f@intel.com
-> ---
->  lib/meson.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 1704ed1e1c17..9fffdd3c6218 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -240,7 +240,7 @@ foreach f: lib_sources
->  	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
->  	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
->  	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
-> -	])
-> +	] + (iga64_assembly_sources.contains(f) ? [ '-ffat-lto-objects' ] : []))
->  
->      lib_intermediates += lib
->      if iga64_assembly_sources.contains(f)
-> 
-> ---
-> base-commit: ee7a3ac616f55f6ed1b959ff951237099bda86d8
-> change-id: 20241216-fix-lto-8d3bc1488c6a
-> 
-> Best regards,
-> -- 
-> Andrzej Hajda <andrzej.hajda@intel.com>
-> 
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Narasimha C V <narasimha.c.v@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Tomasz Lis <tomasz.lis@intel.com>
+
+Marcin Bernatowicz (7):
+  lib/xe/xe_sriov_debugfs: Add debugfs get/set functions for u32, u64,
+    bool
+  lib/xe/xe_sriov_debugfs: Add validation for provisioned ranges
+  lib/xe/xe_sriov_provisioning: Add accessors for quota/spare attributes
+  lib/xe/xe_sriov_provisioning: Add shared resource provisionability
+    check
+  lib/igt_sriov_device: Add helper functions for VF range validation
+  tests/xe_sriov_auto_provisioning: Add tests for SR-IOV
+    auto-provisioning
+  tests/xe_sriov_auto_provisioning: Add 'extended' command line option
+
+ lib/igt_sriov_device.h                   |  82 +++++-
+ lib/xe/xe_sriov_debugfs.c                | 267 ++++++++++++++++++
+ lib/xe/xe_sriov_debugfs.h                |  22 ++
+ lib/xe/xe_sriov_provisioning.c           | 146 ++++++++++
+ lib/xe/xe_sriov_provisioning.h           |  43 +++
+ tests/intel/xe_sriov_auto_provisioning.c | 328 +++++++++++++++++++++++
+ tests/meson.build                        |   1 +
+ 7 files changed, 882 insertions(+), 7 deletions(-)
+ create mode 100644 tests/intel/xe_sriov_auto_provisioning.c
+
+-- 
+2.31.1
+
