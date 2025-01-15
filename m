@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D04DC02180
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jan 2025 07:17:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CFB8C02185
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jan 2025 07:17:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 99C7610E4E1;
-	Wed, 15 Jan 2025 07:17:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB22D10E4E2;
+	Wed, 15 Jan 2025 07:17:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gf7Kb8ld";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fv1ywSUD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C68510E4E1
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 07:17:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BADA10E4E2
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 07:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736925431; x=1768461431;
+ t=1736925433; x=1768461433;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nAbcFwvKaUFHEIWvbi+DKuw3AtJkuMRPbX51snHU7bU=;
- b=gf7Kb8ld2HIqEaneXhmv5Hci+n3WmfXqlAxbXKTnYqgukOAEl51WrTDn
- rbf9mSGx4OOjQLvBH2bZZSTYm7Mr9Ewg8DiVOF716m/rF1Y5is21ebctU
- mleM26bkvVs0QH7xM+irqsS8YkQt+rUV6BWj05dcZ0dZs3N8nIz4MzJXI
- KiXfCxOIN2Hkl0vpI2Y2n98tzG2sL09qg8S5flQCEg8hzTtn2zl0Wltpq
- 6Lvp0kgMzy7/Pg/Mfwns4PzHRnuHfGUeBRP1an7ir/06i4pnZCJFteUlp
- KrcqTs+CkKQY1rDwfUaw6vf3qxPKo6da6GVemEZxJQrEiDH6Q9Ikf10GV g==;
-X-CSE-ConnectionGUID: sBQgOfzZQ/+M8tGym1lUQA==
-X-CSE-MsgGUID: 4K4ekuebScuL5r2dld6xDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40927879"
-X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; d="scan'208";a="40927879"
+ bh=fQ7JHgWjcrQ2VOLkqR4Er6VKorfrqBNt/Ph5JKFLRfw=;
+ b=fv1ywSUDJRF5dW3g/i+KDyudm6bcQuGyZLP6fH5tJKSXbSHQMrQyVmAD
+ 9A2p39bAq4Fdfb/+HzRa5/w7zsyqpaRX2QjhrIgKVCI4dFdwOGrao8djX
+ imB56L4xd/TRXX4+RouOdvnj8804hJntBLOrt6YMvzi3sAaOviIRqt9PI
+ Rs1+ke6DNC8uv8REURVgec2ZBPNwKQcqDVRASIZR9VtcemXIGaO8Qt3Es
+ luXebYXeG9UXLJAr2+7+KfW0aGptIOYZglxmvqox4S9IrrnIinIlzPOqm
+ Tf+7VfT1xhroAfF9/5ocAvY6xAfhhKYFbgVOI/cqhtcpL0+Y1mPUZwMOf A==;
+X-CSE-ConnectionGUID: mcuiRei8RCunqCrDHVzWEA==
+X-CSE-MsgGUID: EXoaXGjaR2SCMGgykI6xpA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40927885"
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; d="scan'208";a="40927885"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2025 23:17:11 -0800
-X-CSE-ConnectionGUID: MhgbW7h7SEOmWTkxftHCnQ==
-X-CSE-MsgGUID: 0jUrVUYXRvaqMmwb3i6rrA==
+ 14 Jan 2025 23:17:13 -0800
+X-CSE-ConnectionGUID: 1OLFRxs+Qv+Jo0pkeS9qYw==
+X-CSE-MsgGUID: qfT26CnESBeqL01DGGYb5g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; d="scan'208";a="110008230"
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; d="scan'208";a="110008241"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:17:10 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:17:11 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH 2/4] tests/intel/kms_mst_helper: Add helper for MST-related
- functions
-Date: Wed, 15 Jan 2025 13:02:41 +0530
-Message-Id: <20250115073243.2002014-3-kunal1.joshi@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH 3/4] tests/kms_feature_discovery: Add tests for UHBR/non-UHBR
+ over SST/MST
+Date: Wed, 15 Jan 2025 13:02:42 +0530
+Message-Id: <20250115073243.2002014-4-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250115073243.2002014-1-kunal1.joshi@intel.com>
 References: <20250115073243.2002014-1-kunal1.joshi@intel.com>
@@ -69,162 +68,245 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch introduces kms_mst_helper.c and kms_mst_helper.h
-to centralize commonly used MST-related logic.
-The new function igt_find_all_mst_output_in_topology()
-enumerates MST outputs that share the same root connector,
-simplifying code reuse across tests needing outputs on
-same MST topology. The existing MST-related code in
-kms_dp_linktrain_fallback.c is updated to use the new helper,
-removing duplication. Additionally, meson.build is modified
-to include kms_mst_helper.c in the build process.
+This patch introduces subtests in kms_feature_discovery.c
+to validate both UHBR and non-UHBR link rates over SST
+and MST configurations. It adds four new subtests
+(uhbr-sst, uhbr-mst, non-uhbr-sst, non-uhbr-mst) that check if
+the link rates match the expected UHBR or non-UHBR capability
+and whether the outputs are MST or SST. The new test logic
+integrates with recently introduced helpers
+(kms_joiner_helper and kms_mst_helper) for display
+setup and pipe assignment. The meson build script is also
+updated to compile these helper sources for kms_feature_discovery.
+
+v2: Add definition for UHBR_LINK_RATE
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/kms_dp_linktrain_fallback.c | 28 +++------------
- tests/intel/kms_mst_helper.c            | 48 +++++++++++++++++++++++++
- tests/intel/kms_mst_helper.h            | 10 ++++++
- tests/meson.build                       |  1 +
- 4 files changed, 63 insertions(+), 24 deletions(-)
- create mode 100644 tests/intel/kms_mst_helper.c
- create mode 100644 tests/intel/kms_mst_helper.h
+ tests/kms_feature_discovery.c | 177 ++++++++++++++++++++++++++++++++++
+ tests/meson.build             |   4 +
+ 2 files changed, 181 insertions(+)
 
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index a05e2015f..b10946781 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -16,6 +16,7 @@
- #include <sys/types.h>
- 
- #include "igt.h"
-+#include "kms_mst_helper.h"
+diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
+index 5bca9ad76..48e655c6d 100644
+--- a/tests/kms_feature_discovery.c
++++ b/tests/kms_feature_discovery.c
+@@ -42,6 +42,8 @@
+ #include "igt_psr.h"
+ #include "igt_sysfs.h"
+ #include "igt_types.h"
++#include "intel/kms_joiner_helper.h"
++#include "intel/kms_mst_helper.h"
  
  /**
-  * SUBTEST: dp-fallback
-@@ -47,28 +48,6 @@ typedef int (*condition_check_fn)(int drm_fd, igt_output_t *output);
- 
- IGT_TEST_DESCRIPTION("Test link training fallback");
- 
--static void find_mst_outputs(int drm_fd, data_t *data,
--			     igt_output_t *output,
--			     igt_output_t *mst_outputs[],
--			     int *num_mst_outputs)
--{
--	int output_root_id, root_id;
--	igt_output_t *connector_output;
--
--	output_root_id = igt_get_dp_mst_connector_id(output);
--	/*
--	 * If output is MST check all other connected output which shares
--	 * same path and fill mst_outputs and num_mst_outputs
--	 */
--	for_each_connected_output(&data->display, connector_output) {
--		if (!igt_check_output_is_dp_mst(connector_output))
--			continue;
--		root_id = igt_get_dp_mst_connector_id(connector_output);
--		if (((*num_mst_outputs) < IGT_MAX_PIPES) && root_id == output_root_id)
--			mst_outputs[(*num_mst_outputs)++] = connector_output;
--	}
--}
--
- static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
- 			      int *output_count)
- {
-@@ -83,8 +62,9 @@ static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
- 		    traversed_mst_outputs[i] == data->output->config.connector->connector_id)
- 			return false;
- 
--	find_mst_outputs(data->drm_fd, data, data->output,
--			 mst_output, output_count);
-+       igt_assert_f(igt_find_all_mst_output_in_topology(data->drm_fd, &data->display, data->output,
-+							mst_output, output_count),
-+		    "Unable to find mst outputs\n");
- 
- 	for (i = 0; i < *output_count; i++) {
- 		output = mst_output[i];
-diff --git a/tests/intel/kms_mst_helper.c b/tests/intel/kms_mst_helper.c
-new file mode 100644
-index 000000000..9d52068f7
---- /dev/null
-+++ b/tests/intel/kms_mst_helper.c
-@@ -0,0 +1,48 @@
-+#include "kms_mst_helper.h"
+  * SUBTEST: display
+@@ -71,10 +73,164 @@
+  * Test category: functionality test
+  *
+  * arg[1].values: 1, 2, 3, 4
++ *
++ * SUBTEST: uhbr-sst
++ * Description: Test we can drive UHBR rates over SST.
++ * Functionality: feature_discovery, uhbr, sst
++ * Test category: functionality test
++ *
++ * SUBTEST: uhbr-mst
++ * Description: Test we can drive UHBR rates over MST.
++ * Functionality: feature_discovery, uhbr, mst
++ * Test category: functionality test
++ *
++ * SUBTEST: non-uhbr-sst
++ * Description: Test we can drive non-UHBR rates over SST.
++ * Functionality: feature_discovery, sst
++ * Test category: functionality test
++ *
++ * SUBTEST: non-uhbr-mst
++ * Description: Test we can drive non-UHBR rates over MST.
++ * Functionality: feature_discovery, mst
++ * Test category: functionality test
++ */
 +
 +/*
-+ * @drm_fd: DRM file descriptor
-+ * @display: pointer to an #igt_display_t structure
-+ * @output: target output
-+ * @mst_outputs: filled with mst output of same toplogy as @output
-+ * @num_mst_outputs: filled with count of mst outputs found in topology
-+ * @n_pipes: total number of pipes available
-+ * @used_pipes_mask: pointer to a bitmask (in/out) of already-used pipes
-+ * @master_pipes_mask: bitmask of valid "master" pipes
-+ * @valid_pipes_mask: bitmask of valid (non-fused) pipes
-+ *
-+ * Assign pipes to outputs based on the number of required pipes.
-+ * This function will assign 1, 2, or 4 consecutive pipes to each output.
-+ * It will also mark the used pipes in the bitmask.
-+ *
-+ * Returns: true if all outputs can be assigned successfully; false otherwise.
-+ */
-+bool igt_find_all_mst_output_in_topology(int drm_fd, igt_display_t *display,
-+					 igt_output_t *output,
-+					 igt_output_t *mst_outputs[],
-+					 int *num_mst_outputs)
++ * DP Spec defines 10, 13.5, and 20 Gbps as UHBR
++ * So considering all below as NON-UHBR
+  */
++#define UHBR_LINK_RATE 1000000
+ 
+ static igt_display_t display;
+ 
++static void setup_planes_fbs(int fd, igt_output_t *outputs[],
++			     int output_count, drmModeModeInfo * mode[],
++			     struct igt_fb fbs[], struct igt_plane *primarys[])
 +{
-+	int output_root_id, root_id;
-+	igt_output_t *connector_output;
++	int i;
 +
-+	if (!igt_check_output_is_dp_mst(output))
-+		return false;
++	for (i = 0; i < output_count; i++) {
++		mode[i] = igt_output_get_mode(outputs[i]);
++		igt_info("Mode %dx%d@%d on output %s\n",
++				mode[i]->hdisplay, mode[i]->vdisplay,
++				mode[i]->vrefresh,
++				igt_output_name(outputs[i]));
++		primarys[i] = igt_output_get_plane_type(outputs[i],
++				DRM_PLANE_TYPE_PRIMARY);
++		igt_create_color_fb(fd, mode[i]->hdisplay,
++				mode[i]->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fbs[i]);
++		igt_plane_set_fb(primarys[i], &fbs[i]);
++	}
++}
 +
-+	output_root_id = igt_get_dp_mst_connector_id(output);
-+	if (output_root_id == -EINVAL)
-+		return false;
++static bool fit_modes_in_bw(void)
++{
++	bool found;
++	int ret;
 +
-+	/*
-+	 * If output is MST, check all other connected output which shares
-+	 * same path and fill mst_outputs and num_mst_outputs
-+	 */
-+	for_each_connected_output(display, connector_output) {
-+		if (!igt_check_output_is_dp_mst(connector_output))
-+			continue;
-+
-+		root_id = igt_get_dp_mst_connector_id(connector_output);
-+		if (((*num_mst_outputs) < IGT_MAX_PIPES) && root_id == output_root_id)
-+			mst_outputs[(*num_mst_outputs)++] = connector_output;
++	ret = igt_display_try_commit_atomic(&display,
++			DRM_MODE_ATOMIC_TEST_ONLY |
++			DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (ret != 0) {
++		found = igt_override_all_active_output_modes_to_fit_bw(&display);
++		igt_require_f(found,
++				"No valid mode combo found for modeset\n");
 +	}
 +	return true;
 +}
-diff --git a/tests/intel/kms_mst_helper.h b/tests/intel/kms_mst_helper.h
-new file mode 100644
-index 000000000..291fcebfe
---- /dev/null
-+++ b/tests/intel/kms_mst_helper.h
-@@ -0,0 +1,10 @@
-+#ifndef KMS_MST_HELPER_H
-+#define KMS_MST_HELPER_H
 +
-+#include "igt.h"
++static void do_modeset(int fd, igt_output_t *output,
++		       bool mst, bool uhbr)
++{
++	int output_count = 0, n_pipes = 0, i;
++	uint32_t master_pipes_mask = 0, valid_pipes_mask = 0, used_pipes_mask = 0;
++	igt_output_t *outputs[IGT_MAX_PIPES];
++	drmModeModeInfo * modes[IGT_MAX_PIPES];
++	struct igt_fb fbs[IGT_MAX_PIPES];
++	struct igt_plane *primarys[IGT_MAX_PIPES];
 +
-+bool igt_find_all_mst_output_in_topology(int drm_fd, igt_display_t *display,
-+					 igt_output_t *output,
-+					 igt_output_t *mst_outputs[],
-+					 int *num_mst_outputs);
-+#endif
++	for_each_pipe(&display, i) {
++		n_pipes++;
++		valid_pipes_mask = valid_pipes_mask | BIT(i);
++	}
++
++	if (mst)
++		igt_assert_f(igt_find_all_mst_output_in_topology(fd,
++					&display,
++					output,
++					outputs,
++					&output_count),
++				"Unable to find mst outputs\n");
++	else
++		outputs[output_count++] = output;
++
++	igt_assert_f(output_count > 0, "Require at least 1 output\n");
++	igt_set_all_master_pipes_for_platform(&display, &master_pipes_mask);
++	igt_assert_f(igt_assign_pipes_for_outputs(fd, outputs,
++				output_count, n_pipes,
++				&used_pipes_mask,
++				master_pipes_mask,
++				valid_pipes_mask),
++			"Unable to assign pipes for outputs\n");
++	igt_assert_f(fit_modes_in_bw(), "Unable to fit modes in bw\n");
++	setup_planes_fbs(fd, outputs, output_count, modes, fbs, primarys);
++	igt_display_commit2(&display, COMMIT_ATOMIC);
++}
++
++static bool run_link_rate_test(int fd, igt_output_t *output,
++			       bool mst, bool uhbr)
++{
++	bool is_uhbr, is_output_mst;
++
++	igt_display_reset(&display);
++	igt_reset_link_params(fd, output);
++
++	is_output_mst = igt_check_output_is_dp_mst(output);
++	is_uhbr = igt_get_max_link_rate(fd, output) >= UHBR_LINK_RATE;
++
++	if ((mst && !is_output_mst) || (!mst && is_output_mst)) {
++		igt_info("Skipping %s as test expects %s output and output is %s\n", output->name,
++				mst ? "mst" : "sst", is_output_mst ? "mst" : "sst");
++		return false;
++	}
++
++	if ((uhbr && !is_uhbr) || (!uhbr && is_uhbr)) {
++		igt_info("Test expects %s but output %s is %s\n",
++				uhbr ? "uhbr" : "non-uhbr", output->name,
++				is_uhbr ? "uhbr" : "non-uhbr");
++		return false;
++	}
++
++	do_modeset(fd, output, mst, uhbr);
++
++	if (uhbr)
++		return igt_get_current_link_rate(fd, output) >= UHBR_LINK_RATE;
++	else
++		return igt_get_current_link_rate(fd, output) < UHBR_LINK_RATE;
++}
++
++static bool test_link_rate(int fd, bool mst, bool uhbr)
++{
++	bool ran = false;
++	igt_output_t *output;
++
++	igt_skip_on_f(!is_intel_device(fd),
++			"Test supported only on intel platforms\n");
++
++	for_each_connected_output(&display, output) {
++		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
++			ran = ran | run_link_rate_test(fd, output, mst, uhbr);
++		else
++			igt_info("Skipping non DisplayPort output %s\n", output->name);
++	}
++
++	return ran;
++}
++
+ IGT_TEST_DESCRIPTION("A metatest that checks for \"features\" presence. "
+ 		     "The subtests here should only skip or pass, "
+ 		     "anything else means we have a serious problem.");
+@@ -177,5 +333,26 @@ igt_main {
+ 			}
+ 			igt_require_f(ret == 0, "No DP-MST configuration found.\n");
+ 		}
++
++		igt_describe("Test we can drive UHBR rates over SST");
++		igt_subtest("uhbr-sst")
++			igt_require_f(test_link_rate(fd, false, true),
++					"Didn't find any SST output with uhbr rates");
++
++		igt_describe("Test we can drive UHBR rates over MST");
++		igt_subtest("uhbr-mst")
++			igt_require_f(test_link_rate(fd, true, true),
++					"Didn't find any MST output with uhbr rates");
++
++		igt_describe("Test we can drive non uhbr rates over SST");
++		igt_subtest("non-uhbr-sst")
++			igt_require_f(test_link_rate(fd, false, false),
++					"Didn't find any SST output with non-uhbr rates");
++
++		igt_describe("Test we can drive non uhbr rates over MST");
++		igt_subtest("non-uhbr-mst")
++			igt_require_f(test_link_rate(fd, true, false),
++					"Didn't find any MST output with non-uhbr rates");
++
+ 	}
+ }
 diff --git a/tests/meson.build b/tests/meson.build
-index cb09df288..6418899ca 100644
+index 6418899ca..851ca8fa5 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -367,6 +367,7 @@ extra_sources = {
+@@ -366,6 +366,10 @@ extra_sources = {
+ 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
  	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
  	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
++	'kms_feature_discovery': [
++		join_paths ('intel', 'kms_joiner_helper.c'),
++		join_paths ('intel', 'kms_mst_helper.c')
++	],
  	'kms_joiner': [join_paths ('intel', 'kms_joiner_helper.c')],
-+	'kms_dp_linktrain_fallback': [join_paths ('intel', 'kms_mst_helper.c')],
+ 	'kms_dp_linktrain_fallback': [join_paths ('intel', 'kms_mst_helper.c')],
  	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
- }
- 
 -- 
 2.25.1
 
