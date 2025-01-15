@@ -4,53 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F312C02180
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jan 2025 14:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5741DC02180
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jan 2025 15:01:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EECC510E05B;
-	Wed, 15 Jan 2025 14:59:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 15A5110E6ED;
+	Wed, 15 Jan 2025 15:01:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j65NmUFS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jok54+s3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC10B10E05B
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 14:59:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 522A310E6ED
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 15:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736953173; x=1768489173;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=//SOpV7kWesS/WmwqVFbgTtYQL3eSaMpbe7FAWdIBlw=;
- b=j65NmUFSCu9hc9g6CpWPArz9C3Ibl/8Fm6x7GM+9vmIRBsrc6Xhh5y/o
- 0zRP6MRm1hG1l5LUwWrXjFsm8rvBuCCAChBstDm3pr1pbv2qUIxAyHYg3
- Is8A/cNBr9nxclqTom56nlach7uFxRx70GzuN6Zvkr+XG6Bu3mUwc/ogs
- JLf5ksmwz1y/VrJtbyGjmm+D2l7fCNwGdNA1+ezfBP2YAeSShImfY+/yK
- BgHhS4Lnnfd1M3WXjEo2Clf6l5eBEL2nKT8pEtgD6W76C+Ejhv2wSwmFC
- s6cnLCQic+u3St8B3k7iTmE1m+siyVvJstwo6b5Tlf6yp3jgyooudIF69 A==;
-X-CSE-ConnectionGUID: T8d2F1aFSHGjAC8qHeKvVA==
-X-CSE-MsgGUID: DMGSp8hQSguLZLDnM0m3Xw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="36505899"
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; d="scan'208";a="36505899"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2025 06:59:32 -0800
-X-CSE-ConnectionGUID: 6O+gNLz+SgSVJA2RU4BEpg==
-X-CSE-MsgGUID: H2H7fYtERnG6HBUc1ilyYQ==
+ t=1736953312; x=1768489312;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=afXzuXpEkbpBJMz+5ymfqO0kWmSsKSnCBjNc6d2duNE=;
+ b=jok54+s3QptnJXzL1w90qRfXAwxjGoFXpJUraTq7RpQqMlXRqqyVamv3
+ 30tvaqkAC9tm7BWSzLMwT1eMSCnsk7XXwi3fGalx75itt3z4kiYUD1OJp
+ +2yzFe9sCB+4H0QaL6bWA739h9arnKR0GmmkX929V633WyndFzkQ6q4H6
+ 27FTQI58HBXdLIVys7D1mfji+2FICFKyNbYEmcP0iPlZ4h0pUNL7xLaUN
+ pFBfZGI5ptU8YgIcHkAn69JrxcTedDxJ414iHlWr9Vt7Zqk9tagIllmls
+ tXALjfZhiPFofIy2av4dFxkwrQ6l6QrESdd2iPSdw2239pPRgSignvpu5 A==;
+X-CSE-ConnectionGUID: 2e2DU7VOSyGOJ1jKvzJEHw==
+X-CSE-MsgGUID: +zHw0v+zTEmRSdgl4LcjKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37449602"
+X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; d="scan'208";a="37449602"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2025 07:01:52 -0800
+X-CSE-ConnectionGUID: WxUt1pZGQ9+6AeW9p9ZJFw==
+X-CSE-MsgGUID: Lousigk+QPimD0h16ONFCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; d="scan'208";a="136015181"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 06:59:31 -0800
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH] tests/chamelium/kms_chamelium_color: force connector reprobe
- after plugging ports
-Date: Wed, 15 Jan 2025 20:45:07 +0530
-Message-Id: <20250115151507.2023293-1-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; d="scan'208";a="105113616"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 07:01:50 -0800
+Date: Wed, 15 Jan 2025 16:01:48 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>, igt-dev@lists.freedesktop.org,
+ krzysztof.karas@intel.com
+Subject: Re: [PATCH] tests/intel/gem_exec_balancer: Decrease required load in
+ `full` test
+Message-ID: <20250115150148.xuntqr2bbaznz2tv@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
+References: <uupn5abwcptf6p4zdaz4ozl5utjcwij2sjlebrlgkqw3xupxma@nvacr67vd6tf>
+ <20241217162302.u52qy7ji5zlfahm5@kamilkon-desk.igk.intel.com>
+ <Z2G-ELt9yrHygP6-@ashyti-mobl2.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z2G-ELt9yrHygP6-@ashyti-mobl2.lan>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,35 +75,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Force reprobe connector status after plugging to assure
-we always have DRM_MODE_CONNECTED status for the connector
-before proceding with the test.
+Hi,
+On 2024-12-17 at 19:08:16 +0100, Andi Shyti wrote:
+> Hi,
+> 
+> this patch is wrongly formatted:
+> 
+>  - where is the versioning? (git format patch -v <N>). I think
+>    this is v4.
+>  - where is the changelog? (please after the '---' section).
+> 
+> Please don't overlook at them next time.
+> 
+> On Tue, Dec 17, 2024 at 05:23:02PM +0100, Kamil Konieczny wrote:
+> > Hi Sebastian,
+> > On 2024-12-17 at 15:06:41 +0000, Sebastian Brzezinka wrote:
+> > > Adjust the minimal load in the `full` test. It's a minor tolerance
+> > > issue expected 90% got 86.6%.
+> > > 
+> > > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13003
+> > 
+> > Remove empty line, with this
+> 
+> Can you fix it before merging to avoid another resend?
+> 
+> In any case:
+> 
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+> 
+> Thanks,
+> Andi
+> 
 
-Fixes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2371
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/chamelium/kms_chamelium_color.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 5550cec22..7c88c022c 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -749,8 +749,13 @@ igt_main
- 		 * discovered ports, just incase they are not plugged
- 		 * we currently skip in test_setup
- 		 */
--		for( i = 0; i < data.port_count; i++)
-+		for (i = 0; i < data.port_count; i++) {
- 			chamelium_plug(data.chamelium, data.ports[i]);
-+			igt_assert_f(chamelium_reprobe_connector(&data.display,
-+								 data.chamelium,
-+								 data.ports[i]) == DRM_MODE_CONNECTED,
-+								 "Output not connected\n");
-+		}
- 
- 		kmstest_set_vt_graphics_mode();
- 	}
--- 
-2.25.1
+Regards,
+Kamil
 
+> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > > 
+> > > Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> > > ---
+> > >  tests/intel/gem_exec_balancer.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+> > > index c3f0c938b..46ea19a2a 100644
+> > > --- a/tests/intel/gem_exec_balancer.c
+> > > +++ b/tests/intel/gem_exec_balancer.c
+> > > @@ -1815,7 +1815,7 @@ static void full(int i915, unsigned int flags)
+> > >  
+> > >  		free(ci);
+> > >  
+> > > -		igt_assert_f(load > 0.90,
+> > > +		igt_assert_f(load > 0.85,
+> > >  			     "minimum load for %d x class:%d was found to be only %.1f%% busy\n",
+> > >  			     count, class, load*100);
+> > >  		gem_quiescent_gpu(i915);
+> > > -- 
+> > > 2.34.1
+> > > 
