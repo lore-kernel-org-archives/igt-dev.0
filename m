@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00266C02180
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jan 2025 15:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE5F6C02180
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jan 2025 15:58:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF4EC10E744;
-	Wed, 15 Jan 2025 15:56:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8904210E744;
+	Wed, 15 Jan 2025 15:58:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q3wK/8Q7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GJpK3VsS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DFFA10E744
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 15:56:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18D1C10E744
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 15:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736956569; x=1768492569;
+ t=1736956687; x=1768492687;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:mime-version;
- bh=FEzS+UyQs6g1OxAwwi/IAy8lOhaEyETaXyc6xRdMfwU=;
- b=Q3wK/8Q7/TegsGT5Gx7l+J8tzfPk+4YKj27le6d2SsBJzY3IeLSiJY3H
- E8TS0zYwp5R2qxLCYRuoMABhMDQJSbZhrkJDWbdrkFZNev9zqvYlWObHB
- vEt9JR+vR9PQ2tiGqb1QahA7O2/wZ4u4RHCoCUR27/zyQPH+2Jebuy7l8
- +FJmXRV4GKdzqP3a0Z3saNVu5/tiHdVgEZ4mePFk2mV6qYTxV6HbW2wVr
- FzbsvK2I7VX/8OJLt4M+x0EbqaLfKQZwK/6yErygravGIFZdOHh+w+iE7
- tkFYCm03trtcXKef23VtNu+p5UkJjaZcccbGEm6NrZP6QHZG9j+ESjZ9q Q==;
-X-CSE-ConnectionGUID: QdeHuU5tRtO/6+fqwaty0Q==
-X-CSE-MsgGUID: J8/QRewlTDiA7fSZGeiq3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="41233851"
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; d="scan'208,217";a="41233851"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2025 07:56:09 -0800
-X-CSE-ConnectionGUID: AvuMhTXkR4Ss2aq5GJQojA==
-X-CSE-MsgGUID: mJPC4DHKTC6QN4n7Aw0/Vg==
+ bh=ilkUQPpA0esr5ShG/HiFCaQ8Y9g0UN3QN/OBr7sSVx4=;
+ b=GJpK3VsSEjzIhBSE12fSUYRMBOeDt1+plhjkoshk5FeNpWLZB83P43Mg
+ OSgU9sTDC2dqVUtOpPa/RpX05biVNKbLEZCXJnNhTMlgoHZe8KZU8RSJn
+ vbMGEkuTJieKUXEljNflgEumIkmN6AU8xxDkf5TaKN7oVh2wMyvnSBPj/
+ LR485/4eq+RKCIuEO137eUKp4EWyycmu7qsMBhEgBE3j6KWEUN6CGtNLh
+ unnMkI+dS3uyE0veKEJpTnyxsx7MnrkU6VIib23vAQOwQlRIIflpZn4gJ
+ E8+paaszcz3r2ANvuoZ9trvp2fv8ElNiIJ5fShMXcughQ0Cf3UT1aL5pH Q==;
+X-CSE-ConnectionGUID: eNJdUe7vQjaDWHKgc/eM3g==
+X-CSE-MsgGUID: fHGcoonGTvS80tKc7xrtXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37327298"
+X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; d="scan'208,217";a="37327298"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2025 07:58:07 -0800
+X-CSE-ConnectionGUID: jofvC13dTiGrqOjiqbYcPA==
+X-CSE-MsgGUID: wj4je93qTnuDsSsaksf8yw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; 
- d="scan'208,217";a="105123721"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 15 Jan 2025 07:56:08 -0800
+ d="scan'208,217";a="105708214"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 15 Jan 2025 07:58:06 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 15 Jan 2025 07:56:04 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.1.2507.44; Wed, 15 Jan 2025 07:58:06 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 15 Jan 2025 07:56:04 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.44 via Frontend Transport; Wed, 15 Jan 2025 07:58:06 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.170)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 15 Jan 2025 07:56:03 -0800
+ 15.1.2507.44; Wed, 15 Jan 2025 07:58:05 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HoQ04VhrB8vYk2YUzyaCgdli9M5z45IuHiYmao+oQnyUwz+A74ueWmXqckr7N5bgLmosq/ryaVNvq84uyuGqg/wv7j7IJqAx0xnOIWa7HzW0R+sbzf/Mx3QNyZ//N+pOAyBAQDSo8ZcvpZ3FmJs1zXXxmlXEh5xcDWeOL6Lc7nRGiEslCiPwMO1gl3XhuNyeWIn85OvhOZiLXn5B+WcfJiwXSxZ8Qj7nUDchlwZAKU0kZ4WTPjo4WsVTwncic9t4pDagffiOSToY5X0oFqH4+103TK16z7YGcto+6hhClEF2TykSZHCEYrUStr1ny8iqUNte13C0LNLVoOKEZYrXhg==
+ b=JPRvHc/8WCfQQsFaaILyYm4xiD9pjm7ZaXuk0zGPDfMjgt2T8j9POjoyI+Z0fkr8J3PhOUvrUHq6++uvs82DAyrZpMpoA6Gvu65eAQB/VIEizYuWnXhSXFWKzIsDHS8nmw8oESiqiM+LAMOArb73GfRA4G7NZWtw4HpzTeXDsQBkkYejXnSMd/5JP9+38zCkCmt6tl6ewXP6Wm/3wWtlasoJoUaR9a/0GuEWA5y38gurO2VqcEqQlRQBBIZy9JNGhAdNv7OsU3r2XBBEc0TqS3tvyDG6R5i868uEcYJN4Nz4zN5J6FoXRNSbhW9bCz2RCOXfU7NG4YAs9bsG1t5EGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D9OhkabNDwInc5KXGej15DxUlYnKXdLeyrOMVTnEJYA=;
- b=lji8LQRyqoRF0tObjt7q5oEP5z9XY90aGmZ7Zb5ZsYrxVRI8jKhf+sGxHSMjlzSRPJtPl3Vk8Rtk8IAvVjK6cj6OcgANjUPGYjfGENAMtS3/nneWljHsqv1Pl4FtH5Iw4mKxXlwJ4kecR5zodxF8z+qbldKjQkkMharlnqoPKrXCzKHJck8tonOPQdQ5wvzX2OFsNBf/lX9mtjsaTyMgx8cBWz/WsJq8Z8v/+Qkt7PmxPr7CJ5347vqd/6Vv6kDNu5Y55Mb3nowIXHV6OnB0VXyOVD+mcMCvADI8gMz5CVXrXW9Ungx5BIkn253HBtvyhLL/3ZOiqt1bCVzXu3cPdA==
+ bh=OXgQDRAHwlr5bvkqcvX6Iv8rRN/GkHpKnqrYLcI+FoM=;
+ b=gemyqoOXJjbQSEHbyvFlQiux9LUzXy/NKCJOLj5CXcgeG6UtMgs2IHPC2R1DZ88Cz+0NzzWlgiZv8/46T1/0ITeJ2JC2LwjUskldCZW4vCvBECgl+YJUgwAdHjv0VDi6J0za8EjwO/4GVDcMQpU9S7vf6HEXRQ4nC8O33CRctbi9R+UDTNi43CsWnfB/AHRzYqRaShzKUVS6x/7hIzLTizAjNGrqaZT/tpLZMAGq7RnJ1oz6C01isLiR1FbuVf77RM3ZKOhXIDxI/olLYv+bXkg5/Z4rnx7dcFSUR0s+Tf28KfW8O1GIH44ah04vFpqIYsv36czJl1SxSnIfZyiTPw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
- by SA1PR11MB8794.namprd11.prod.outlook.com (2603:10b6:806:46a::5)
+ by SA3PR11MB7627.namprd11.prod.outlook.com (2603:10b6:806:320::10)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
- 2025 15:56:01 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Wed, 15 Jan
+ 2025 15:58:02 +0000
 Received: from BN9PR11MB5482.namprd11.prod.outlook.com
  ([fe80::158b:b258:5e7:c229]) by BN9PR11MB5482.namprd11.prod.outlook.com
  ([fe80::158b:b258:5e7:c229%4]) with mapi id 15.20.8356.010; Wed, 15 Jan 2025
- 15:55:59 +0000
+ 15:58:02 +0000
 Content-Type: multipart/alternative;
- boundary="------------v4q9mnVYImAHaiFeC01d5Ias"
-Message-ID: <90a12c2a-0ee5-4270-aac0-afdae2530f4e@intel.com>
-Date: Wed, 15 Jan 2025 16:55:55 +0100
+ boundary="------------jV1kHTeFcU0ggWamnrUK117n"
+Message-ID: <cba48ddf-23d5-4117-8877-8f38c5828dbf@intel.com>
+Date: Wed, 15 Jan 2025 16:57:58 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 i-g-t 2/7] lib/xe/xe_sriov_debugfs: Add validation for
- provisioned ranges
+Subject: Re: [PATCH v2 i-g-t 6/7] tests/xe_sriov_auto_provisioning: Add tests
+ for SR-IOV auto-provisioning
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: Adam Miszczak <adam.miszczak@linux.intel.com>, Jakub Kolakowski
@@ -92,103 +92,103 @@ CC: Adam Miszczak <adam.miszczak@linux.intel.com>, Jakub Kolakowski
  "Satyanarayana K V P" <satyanarayana.k.v.p@intel.com>, Tomasz Lis
  <tomasz.lis@intel.com>
 References: <20250114150848.332708-1-marcin.bernatowicz@linux.intel.com>
- <20250114150848.332708-3-marcin.bernatowicz@linux.intel.com>
-From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
+ <20250114150848.332708-7-marcin.bernatowicz@linux.intel.com>
 Content-Language: en-US
-In-Reply-To: <20250114150848.332708-3-marcin.bernatowicz@linux.intel.com>
-X-ClientProxiedBy: VI1PR0102CA0069.eurprd01.prod.exchangelabs.com
- (2603:10a6:803::46) To BN9PR11MB5482.namprd11.prod.outlook.com
+From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
+In-Reply-To: <20250114150848.332708-7-marcin.bernatowicz@linux.intel.com>
+X-ClientProxiedBy: VE1PR03CA0003.eurprd03.prod.outlook.com
+ (2603:10a6:802:a0::15) To BN9PR11MB5482.namprd11.prod.outlook.com
  (2603:10b6:408:103::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|SA1PR11MB8794:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c27d25c-7724-4de4-9212-08dd357d1aff
+X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|SA3PR11MB7627:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6c6a8f3-5111-4d2e-5153-08dd357d63f9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|8096899003|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?dWdJVFl1KzRRazliRXI2bXdJb2hScGJGbmkxWUtTelZEcWMrbCtBNmNUcDlM?=
- =?utf-8?B?em9PTm90RUJJYU1Ea0V0Q2hIVWs1V2pRN1BLZzZJMWEyeDZEVU4rdGVtemk1?=
- =?utf-8?B?YnRvdUNwNnk5REdtNm11d1MyeHdzRTk1ZlhvdFFPMkp5Y0o1TG9vemxSYlh2?=
- =?utf-8?B?cXZNTXJtSHIwNzl3M3lWMFlKcTlNem9VaVNPM0YwNCs2elRmenlOaytVQkRa?=
- =?utf-8?B?eDI1clZLL0x6OG00ZFVqYTdtNnBCRERyRWdXZDg0Y0hGTm90WFFPRS9ObnFz?=
- =?utf-8?B?YUpjTWRLVlI5cnRIbGF4bHdCb2oxbnNYcTRaYTFRTjBWa2V1ZXlXZVJ3YUJ6?=
- =?utf-8?B?TEY4RkhSNTRWenM3Z2FDSFNuK2tKclIyN3JoU2YwdjhNSFJueUFidENIRm1K?=
- =?utf-8?B?MFBzZzF2OXBDcjVWdGVHeGoyZld6djJSZGRVekxnYm1VL1VuS2ZiNHN6VWhy?=
- =?utf-8?B?SmtLZ29wZWFlaGNYSGR1dloyRHhTQ1hoeThEaXNLc1lSQ3N5alNxQlZGUko0?=
- =?utf-8?B?NVNiRTUzeGNBdkU4VTlCczdnRTl6NHhWMzFnSkZkMjRNNExIT1I5OW9JekJ0?=
- =?utf-8?B?KzZxS2ZTbERqUUdieWhwWERtMVBMWkNUNzltVmNCRmtTQVZQY0JxbkpscWQy?=
- =?utf-8?B?ZHZ3b21ydllqOXRLOCs5djJuTTBHVDFGWVBCcUZqSVE0RVJaenhoMzZmUk1Z?=
- =?utf-8?B?TVB2UzE3QlhsU2pjWjk0LzJPc3htcUFYSjl0bzdyRmZqcFQ2aXBmanB5QW5l?=
- =?utf-8?B?L0FtMGdzRlFhdkZobmhIN2VVUmk4WEU2THRCVjE1aEVENEpqdDlSSG5CdUZi?=
- =?utf-8?B?L1BMeTFPd01uSEQ2cmdYQ3hjTmpoeWpqc25sSmpGaWpQNUh2bHFyY2VpMllm?=
- =?utf-8?B?VnRtV2h3ODRVNEJjUFd6WitUNGcrV0Y1OHRPTUxpcnpMRDB1NURvK2NjYlh6?=
- =?utf-8?B?YzcvcFJqWUFLOHJyQXBLTGJsM3czcUJNT0RhLzNXY2dGdC80MnFWcVZQdXpa?=
- =?utf-8?B?WUFocTNVZWxRQ3N2UHVpbmZCR3hyWTRxUmFNU0puSmFjWlhtSGZaQkVxVENk?=
- =?utf-8?B?VWVNSXFEQm5zd1l1SmpoQWc3NzU4akhGM2FsN3IxVWdKcm1kUzVFVXpvK085?=
- =?utf-8?B?M0Nxa0QxeTFlNE5PcU9HZ2IvRnVtekprT0phOTR1Ymt5K2dobUl6MXBQNEhS?=
- =?utf-8?B?amZrblBZOHVlT1FPUHBTVytGMGJVQUo1ajVxckNXTTNHWEFPeGZ1MzJvZVZq?=
- =?utf-8?B?N3hDTnpIa0JjTU9VVkdYVkdtbmVyUWIwMVZBdEMwd2x5dEFrMi9RNEZkbzFk?=
- =?utf-8?B?QjVRTGNYQTByUng0bW45alBJMDNRTlI5U0lQd3ZEclE5bGNwY1lPRkxveG1a?=
- =?utf-8?B?Y1RWcGNTUHpQTXRCTkRrUTFCZ04yd2xyTHlaS1pnZTVTK0o3Q2xwdTRneEkx?=
- =?utf-8?B?RTY3OFc4ZjBKODlKUmVMUGpXTUR2a2xKT0tsbGg5VnVpLzdhZE9hQjM0elJD?=
- =?utf-8?B?b014YmY4bUtzSEtGVkxGOXFvSW1kN3pQTnVHaUZKa2ZxSitQMTFFK200UVRt?=
- =?utf-8?B?T3REVCs2YmJoY2p0YzQ3Z0dxU2lqbGpQdE9TK01WSGZWZktHcnc3cVJGQnZH?=
- =?utf-8?B?ZlF4cFVrMmptV1hYcU13aTh0VmZHd21QOGdPcTludldRSUUwby9lSkV3cWQ5?=
- =?utf-8?B?Z0p6aXV4dzBsM2lYNE5yRXE5by9naDZkRkhaU1ZNa1ZRNTIvWkdCRDBMbW5s?=
- =?utf-8?B?TFh4a1d0YUZGYUZuV3pSMUNvOHExRGJ3eGVuOXR6QXZscW9odXU3U0Ura3FC?=
- =?utf-8?B?WEdGc3M4Z053aS82b29xbDFENjJkQUZZVUVqcGVRRnVvYWNINHBIRnFJVHlE?=
- =?utf-8?Q?MA7qSAr2kkduJ?=
+ ARA:13230040|366016|1800799024|376014|7053199007|8096899003; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RDNhQkxwSzF1bUd3blZGSG1UQ0NRcDFKZjZ3aEtuTUgvMDZ6OXFuMkVKMndH?=
+ =?utf-8?B?TXhuODZGYk5ZT1p0eEZWMFM5Uk1PaXFvbGR1Z3FKME1KR1pZSjUzV3ZBS211?=
+ =?utf-8?B?TGQ0WVg1SmJZcVZVQ0cyWnRPVTlWOFIxVFh6LzlJUnZXbWJnUCs5UDVwZjJG?=
+ =?utf-8?B?RmhxN0M5LzZDKzNXVlFldHVJVFV3YURwQ2h1bmU0cEJySERBaG1LWHR0em1K?=
+ =?utf-8?B?ekFMQ0Nob2s5cmYrVU05M005OEpoMDJQQjY5a3pobVhac0ZXMGQ4bEpERHl6?=
+ =?utf-8?B?d2p0ZEMzNVdOYUFjZDF3U2lHcGRlSUJsK2VSVll0OUxVSlNEWWVkT05wbHln?=
+ =?utf-8?B?TXZRN2FHVHBDbjVOS0dvemxmM2JTVDhGQXQ2MXdXKzV1UXdmZkk5MVlUYWdp?=
+ =?utf-8?B?V1dwS2VrRDRGaVhaczRKMlVUTHdqZkhrUUVqd0x1MlpSTGNXazJpaHJELzBY?=
+ =?utf-8?B?UzRHbGF5L3lxdjU0MFNhS2JoeU14ZzR4UXFiZFQyYkR3VFAyR2NVYndLOEg0?=
+ =?utf-8?B?MWpTZlZEQ2Q4UExaeU5RV0pvbWNKVXBxMzdjSXVJZkY2TXk3dWF5U1Vjbjdl?=
+ =?utf-8?B?VTFvZGhUOWh5ZmNFVkkvRGhXekgxT2REcmFDaG1EeXRyMFZNMkVVbXA1b2l1?=
+ =?utf-8?B?N2RqQmVlS0RpQkJjdkJ4U2JkTGNsRDZEYkprUC9Iamt5a3ZwWU1jV0prRGFW?=
+ =?utf-8?B?MGV3eHY1c3I0anpaWnluL01iblF3aSs2aVYwL0dEYWt2aTcrMXJoNUcvREtn?=
+ =?utf-8?B?TTRJYk9QRXBsNHQzTFpyL25PVlc2bjJ4SmgwMG1TRUE4SnBaUytQQTEycUhF?=
+ =?utf-8?B?Ujl6amsrME8yK0pFNzFGdjhTNDBxb3JDSGE2NmdKNURHemJkSm5mL0g3QVM2?=
+ =?utf-8?B?cjYxZlBMckszTHFRUjZHRU5reU1ud0pIblBDMzFnM01waTcrUzd2Y0tCYXBW?=
+ =?utf-8?B?RGRvdGgvSzVqRFMwMm1Ic0RLVmVGYmlBTlpyTWUyVUJtYmFlbldYNU14eC8y?=
+ =?utf-8?B?VEg1YmJBUzJmd1hCUjVSQWN1bnBIQTdhWU5kc0VoQXlQelQ0SXJ2Yyt0S0Y5?=
+ =?utf-8?B?RmFWaHJnSTJSUk1ZbEVtZUpVTzdIWFM0Y3ZkWjlWL1RoNjZtMFkybEVQOVUy?=
+ =?utf-8?B?R3FzQWZoMisyWEE1aVJ3c2tadGkvN3BCOGFOUnFkbzNVNEhDbWRsNnlROUxi?=
+ =?utf-8?B?c1IzaVo2QlgrOWN1eFM1cEpmRWZnUEphL2h6YTZSRUNtWTVVemlpOGtiVE1m?=
+ =?utf-8?B?ck1pVDgvU0NNcWVnTE5FYVRnMjlPWjF3eXFyZ1BsUVRxOW1YOUZwSEtGcFhz?=
+ =?utf-8?B?S0NIZS9BbkEweE0wUWhhOG5EbXdwZXNQVExmUWZqbXJBb3ZMeUtBelRzSnRW?=
+ =?utf-8?B?ekZxOHRxNGhzWU5SaFh5aFZPdkZWcy8vc05xT1Fvd2NRRkhlU3FtL0hSYm1S?=
+ =?utf-8?B?L0x2WXFoeU4xeHEwT1JLWDQ4QUVLb0F5cFViaGJlb0hRL1MwRzRaekEyY2Y0?=
+ =?utf-8?B?YzMxMHBvRy9HQ242WmhnbTR4Szkvb3FNUFZqK0kzQ21WeW84QUczL2IwZ29P?=
+ =?utf-8?B?NTRMcUI5MmdHZVJHWUdVSjBZOHJNN0pCZ2ZjcVVoWkg4Y3o0SlpubDh2WE5C?=
+ =?utf-8?B?QWNyYUFzQ0EzTzloNHJZTjNsVWgxTk9rTzdhTEhJZGRFN2pvNDhRM0ZPem9v?=
+ =?utf-8?B?N0lzY2VYdlhzRE1DdFRJWDBpa3VOVTJHNVV5NGQ3V0hEdWd2SjlCN3U3YnBG?=
+ =?utf-8?B?eEg4NXdka0k2VHpBY1lhbkpxRWRneHp6S0NqM2tZN25KaGRsWlFydm9IMzVF?=
+ =?utf-8?B?ZG1OUXoxbmpSa2U2YkwrUWVJS3gyWittVWVFd3BOaVoxUmJ5NC9rL3hsRS9i?=
+ =?utf-8?Q?iRwb7z2l69X6b?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(8096899003)(7053199007); DIR:OUT;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007)(8096899003); DIR:OUT;
  SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QytORGFBNmcwQmJlTFNFWGlFM3JuUXZlc0xoakZIdkd3VnZxeXNIakkvSHpo?=
- =?utf-8?B?MG1lYmdZdXNMVXZ4Y2JxWXlWYmlpM1poamNJY2VQcnpaUHB4c29nM2Y2dkdC?=
- =?utf-8?B?Nm8rWWw5V0RtbzljbVdCbytyYldXOFJZek9ITENlbVRycE1lNHhYWXVSNjBV?=
- =?utf-8?B?cks5Szg1Y3JvRzZRUERERE1xUlJWckFBeXdEc2k0NFl5Y2tBeElGbU5IQUl4?=
- =?utf-8?B?MVVpRXpJR2gyUUwrLzB0ZkVGRmF4azlTWWYwbW1pMDNVS2Fsb1E2eVlLMjRS?=
- =?utf-8?B?R1lzWWpQdy9iRmFid2RVUnRSRlQ5WTRqZkpUeW1LMThBUG8rd1BlcS8xYTZ4?=
- =?utf-8?B?VUdDUUJKREVjZzNqY1ZSTjdmSXBKeVdMQUZJbVAyclZhSkZOZ29yMHZSUGdR?=
- =?utf-8?B?LzVWOGxORVlJei9BaElUNmNOb3VhSk4zcGYwUWpiSGIzZVFWbW9UYkl0S09B?=
- =?utf-8?B?YWxyaTJlUXc3WU03VHZ6V01TREVsRDVPU0hXZ0Z4dEprOGoySk1MR1VhMFo2?=
- =?utf-8?B?VU81OHhseWZVSis5dlZFOURDL3NCTFBnMVNVVEJsVnVJVmptMVR6aGR0ckQv?=
- =?utf-8?B?WU51Z1U1VTdXOXRJMkg1Q0dyaHdvYUxUVm9KbXVLdUVvNGNMRmJKUHQ3dFFF?=
- =?utf-8?B?NWJZbHR3VjYzREZkTzd4KzBWN2krOVBoL1FnSUhQMTRUaWFQdHh1N3JzWTF4?=
- =?utf-8?B?OXFTRW5uTmJJTlZ4T0VIOXI0eVNCTGhhNnRGTFpwRFR3MWxIZXI5SDh0Qm0v?=
- =?utf-8?B?ejdsU25GR011NE9Dc2xrQWVlQ2liUmR1aHVZTzBPZnlHQzU2UEpCbEdIeE5p?=
- =?utf-8?B?d0xSMGdyeUJhUGZTdW1lMVkzSmt2NTJBNTBWa21iYWZEMXVMcFdDUDZsOG9B?=
- =?utf-8?B?YWRUb1hwRXF3Zko4R3orVUpnTndyd3RIMmM5RFhMajBGQ2Z1bUdWMG5zemNK?=
- =?utf-8?B?eEE0c2pFSVFEQkkyZnBKTTYrQXVPYjBCTkRsMWdUZ2t0ME41QWZiSzFwR0Zx?=
- =?utf-8?B?NHdrZ0pFcWhkVUx0NjZEcGhPanNUVnE1L0xydStackd2MndWb21rNTh0cjI5?=
- =?utf-8?B?UTN1TGlXaTVwN2tjbEo2eGVwbWNDd3BQWWErOExVM0VwamRGVlJvMFk3WTBl?=
- =?utf-8?B?ak1aejZjME1aU01rUmtSQzlOM1UxSGdNaTdjYzJFbE9uZ2RPUmFjNzZ4ZkFR?=
- =?utf-8?B?ZVdEdGJvS0ZjSXA4anVUTVhKQ3I2aHAvK2lDY0JBMzFNZWxkN2p3NnFvQVJa?=
- =?utf-8?B?VFBXRmRqdVliYm80b1IzNTBUMlBuSWdFNW5CUitaQ3ZYeUVCREVmVFdUR1Q5?=
- =?utf-8?B?RWhLZW43ckRGd2NoaVNVdDJLWmVQMUFhOUhvSk5uR0VmYVhXZjg2NE5QcWdz?=
- =?utf-8?B?QU5sMjdvbHFBVDRNdFhsT2FIZEhSN3g0aDhJelA4ZmZVNE4vQ3k4WHhweENm?=
- =?utf-8?B?VkcwcFBYaXNlcFBsQW5tbVZvUmN0bktKc1BnTVRoaVJqR080NmVYN05YNlV3?=
- =?utf-8?B?UlZtUVFLaExYZzc5OUdmcHpkU3kyMitTS1RJZEJiZm9qRXpIOWdOdTlpVGJO?=
- =?utf-8?B?Smw2VjN2clB0MXpSd2RuMm5wUU94bytYaVFtMHA1endsRld2WEpXQWhhbVpT?=
- =?utf-8?B?M2xuZWNFUGpjcnh0SGlVRHVEZG5nN3lkN09XYkMrbGl4N2E1OXRxUXhMd2Ru?=
- =?utf-8?B?N0h6V0JjNEdxOEFRRkhaa3dKeHM1U2ppTXY3NkIwVkRHNXlBTTVneVEyTkRT?=
- =?utf-8?B?cUl4YjRsQStpcStuR0VBVlpSWUJOVW51YUFabjY5bW5CQWRNN2VwQ0JWVUQ5?=
- =?utf-8?B?eDhrelVtUUZWc2FRSTZxYnovNG1NRzhsbm9Fc2lqS1V6K2Zmc1Jqd2ErQXVQ?=
- =?utf-8?B?UHFQWHc5VHF2MVhkZmRLWGVmNmxoYis2OHR6ekVRcHowalloOFM1Y0hXQ0FS?=
- =?utf-8?B?OHNiMGp6M0ZKeU10THNySUR1WHlqZ0F2U2dVc1NFNEFiM0F5dE9SWllQM1Fo?=
- =?utf-8?B?ditVMkE5Q3hCZTN6aUdsMVIwQkc1eE5hVE42NVNpNE5XWnN2bW1lbmhvYkcz?=
- =?utf-8?B?QzQvTW12a29zcmRQdHV1bThSUVl5NTQ1K004cEQwVEpCZ2pDSW9WcmNNSTVx?=
- =?utf-8?Q?hlgkomVKx1GjCzWql8uwT++WK?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c27d25c-7724-4de4-9212-08dd357d1aff
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eWxZaTBLZko3bUFhc2FsWDlXZVlBMXVBendUKzFuOEFMKytkaWVPcjNRR3I1?=
+ =?utf-8?B?ZkkrMmM4NkNqT3RpWEtWZXVwc1hjdmdJV1JtN1RLQ2pHaU5ncG9TaGZQR3A0?=
+ =?utf-8?B?amlZL2hDeHdLWXEwZDlrcXhOVXp2a1NiSHlwR0lNSjVCVlpON2tYTGpZWktL?=
+ =?utf-8?B?d2hkdjJnc0VZalVja1oraWFNYmYvamRsckpheVdpVnQwQjRWYzQrWHBhT2NI?=
+ =?utf-8?B?REVqNmVTRnp4aGozOStQZ0x0V2JOSzJmUStLbWlBNjNCR0RaaGRXcExNRXFS?=
+ =?utf-8?B?Z21mSCsyUGRNcjNrbk8xTWMzS05MRTNFUklvUlpFeEE3cVVxYktKaUx2NStL?=
+ =?utf-8?B?TGlKUDJqUVY0blVIZlFsRzl3ZGd6SkFmT0NLMzhIQzFoYnk2OG1Cc1l0QjZP?=
+ =?utf-8?B?RjFEU0UxODlHVnAyZkJRUkJkaVZabDA2RVNVTXBYSjFXL2MwZnpEM202L3RH?=
+ =?utf-8?B?R3BpVlhyTHIvenVJT3ZvT1c1RmhyK3ppVFdtck1sYUVna1M2cDRvMG8xcU5p?=
+ =?utf-8?B?VEo4MHpzVDl3Zk9wNFlmbDhhLzRSZ0tTN0RMK2tLMWVYRW11SENlamFuUFAx?=
+ =?utf-8?B?TGZPSzQxQnF1YnhZUmovR1MzeE8wTW1uNGY1OVFwRHNVQTdRY0dVcHR1Ly9X?=
+ =?utf-8?B?RGlDd1RSMzQzdkhFdlVPckh3VGNsNkxGekNrQkRKV3IxRWxiaVdNTkxYYXI3?=
+ =?utf-8?B?YXBMRlIvdHNPcGR6VWdQNGxSZ0MyMHl1WjN1S1YvVHFTYi9tV05XUytNTXVa?=
+ =?utf-8?B?dk03L1JYZjdEd2puNjNFQlc5U21uQlM3dXoyYzF2UGVhcGpyeU16cFluU3dB?=
+ =?utf-8?B?dkhoZlpVOU8xakF2aHpKc3cwNk0zVDYzc21RUFZkV0RvbmVaSlZCUFh3TGl0?=
+ =?utf-8?B?NFJ3ZWdHOW9RYi9Mc1RkTC9iWXI2Q1BqNW5QSEx3TjJzRGZpQzBoczUyNzNr?=
+ =?utf-8?B?NWFOYXdkcVpyY242RU5ucFdZWWdlVUpxZHZVZ0UrQ2RNS1QvMERxYzFsRU9O?=
+ =?utf-8?B?UkxpSFgvT3ZTRnRiS1hBVWtQTGcxQ0wvbm5iTkp3akI3bnV4ejBTUmJyM3d5?=
+ =?utf-8?B?Zlo4ZzAvY2h5UmhQdk1CODIweWg2aXY1OUNjalVWdzJkZFlNMkRRZHlmb2Zt?=
+ =?utf-8?B?REtJNUprTis5QXM5ZnowaHJnTGl6YzQ1TG9HMWsvL09ScEp2Q1BHQUlUdzRh?=
+ =?utf-8?B?U0J5ZXk1eDZ4SWNBNmR0WDl6MC8rd1pWZVRlaEo0NzZDR04zZTN5U09hbEFu?=
+ =?utf-8?B?YWNsSTZRbWtKcHN4dG9UVTlZWjh1L3JKd2NpWU1SK2Y1YStFTjhGQTN5OE9L?=
+ =?utf-8?B?TzZCWXZLTGZNWWFWVXJ5cmw5TjFseU02MEloSDFjSGQzeXJrTmhkZVVKQWlG?=
+ =?utf-8?B?QUMzV25oYklFa0QvQ1YrQjJmTGUybU1QZTR2MElRcmw3V0RLWUUyaDk1aFoz?=
+ =?utf-8?B?ZGxuNTl0S1RjdUhkekJvZmJ4cVlsemY1anE3OWJBeVk1YzRpQW1SUlhQMHRw?=
+ =?utf-8?B?OFdhc3RlMGFMNkRRRTlQNFlrd3RjUG9GL2hWQkt6aTBNS2Y1SkFGalcxeXhj?=
+ =?utf-8?B?UUdYcjYxVFJHbjNpSnF4VCtpVHBCMWNhaVdhemE3YnNnU1hTcjE1cEJ1eFB4?=
+ =?utf-8?B?SW9hbUUrZVJjYlZCblFhMmFGbmhOdWMwNm44VjFKWWZmSG1nWWYyZFVSZC8x?=
+ =?utf-8?B?T2FJbkFBdkpDMHZraXZudWZYNVBnR3dscktIZC9PZTFENGVOcjRmZnRhbEZC?=
+ =?utf-8?B?d0wxeVJ2TUtjbERMbXpvMmpiSjhSMTYwNDJ2dU5PamhqUllnRFY5TW1GcFI2?=
+ =?utf-8?B?VCtRK0RCUitIZmhubUMvK3c5UGkwTElGcHBjOVhLSE1iQjh0Ymw1NXZ1Mm5C?=
+ =?utf-8?B?dkhScHYxVEdLNWVCeURyM1NudVFyQm83NHgvTmJWMURpQ2YzSnczSmhsUWVF?=
+ =?utf-8?B?YkdBYzBOd2N6TlpKKzV2SDI1K3lxL2lUQUJLMjlvbFd6QitQTzJhRFJQdWdU?=
+ =?utf-8?B?OWkvbExIY3pWVGpvaGZTL2Q4dU9NeCtqcjlMSW5zNUdJWUxrK1ZLTGRQTWZC?=
+ =?utf-8?B?SHJEQ0x1QmF4MTFUN2JKV1pSQ1dFZm9EZ0xOcHR6VEdIQ3RZL0pMSTJ0TzU2?=
+ =?utf-8?Q?rorNtXANIIxCa6FHdGFBbAZ74?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6c6a8f3-5111-4d2e-5153-08dd357d63f9
 X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 15:55:59.8965 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 15:58:02.3286 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rBF8VcVjXeucPL65HEy/6bAItokgidLZ0XgrOErsv4tsNCRbALkxMslJmwtQMxojWxFr0Wmc5YXPUJ5gQPmOfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8794
+X-MS-Exchange-CrossTenant-UserPrincipalName: mk6lfdZ9UWfrwdExk1DaqgsdBkA5YFS029w5AYZz783K+wTLRmzx643Kf6/duvqDSZ1YhWgTlbUQeD98pTlpjQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7627
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -205,20 +205,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------v4q9mnVYImAHaiFeC01d5Ias
+--------------jV1kHTeFcU0ggWamnrUK117n
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 On 1/14/2025 16:08, Marcin Bernatowicz wrote:
-> Introduce `xe_sriov_pf_debugfs_read_check_ranges`, adding a validation
-> step on top of `xe_sriov_pf_debugfs_read_provisioned_ranges`.
+> Added subtests validating below scenarios:
+> - auto-provisioned resources are allocated by PF driver in fairly manner,
+> - auto-provisioned resources are released once VFs are disabled,
+> - verify that ranges of auto-provisioned resources are exclusive.
 >
-> Enforce checks for:
-> - Ranges when no VFs are expected.
-> - Duplicate, missing, or out-of-range VF IDs.
+> The tests rely on ggtt_provisioned, lmem_provisioned,
+> contexts_provisioned and doorbells_provisioned debugfs attributes.
 >
-> The function ensures the returned ranges are sorted by VF ID.
+> v2:
+> - Simplify range validation by using
+>    xe_sriov_pf_debugfs_read_check_ranges (Lukasz)
+> - Rename subtests for clarity (Lukasz)
 >
 > Signed-off-by: Marcin Bernatowicz<marcin.bernatowicz@linux.intel.com>
 > Cc: Adam Miszczak<adam.miszczak@linux.intel.com>
@@ -231,157 +235,324 @@ On 1/14/2025 16:08, Marcin Bernatowicz wrote:
 > Cc: Satyanarayana K V P<satyanarayana.k.v.p@intel.com>
 > Cc: Tomasz Lis<tomasz.lis@intel.com>
 > ---
->   lib/xe/xe_sriov_debugfs.c | 116 ++++++++++++++++++++++++++++++++++++++
->   lib/xe/xe_sriov_debugfs.h |   4 ++
->   2 files changed, 120 insertions(+)
+>   tests/intel/xe_sriov_auto_provisioning.c | 290 +++++++++++++++++++++++
+>   tests/meson.build                        |   1 +
+>   2 files changed, 291 insertions(+)
+>   create mode 100644 tests/intel/xe_sriov_auto_provisioning.c
 >
-> diff --git a/lib/xe/xe_sriov_debugfs.c b/lib/xe/xe_sriov_debugfs.c
-> index 92a477764..abb1bf7d5 100644
-> --- a/lib/xe/xe_sriov_debugfs.c
-> +++ b/lib/xe/xe_sriov_debugfs.c
-> @@ -206,6 +206,122 @@ cleanup:
->   	return ret;
->   }
->   
-> +static int compare_ranges_by_vf_id(const void *a, const void *b)
+> diff --git a/tests/intel/xe_sriov_auto_provisioning.c b/tests/intel/xe_sriov_auto_provisioning.c
+> new file mode 100644
+> index 000000000..1d2aa8624
+> --- /dev/null
+> +++ b/tests/intel/xe_sriov_auto_provisioning.c
+> @@ -0,0 +1,290 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
+> + */
+> +
+> +#include <stdbool.h>
+> +
+> +#include "drmtest.h"
+> +#include "igt_core.h"
+> +#include "igt_sriov_device.h"
+> +#include "igt_sysfs.h"
+> +#include "xe/xe_sriov_debugfs.h"
+> +#include "xe/xe_sriov_provisioning.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * TEST: xe_sriov_auto_provisioning
+> + * Category: Core
+> + * Mega feature: SR-IOV
+> + * Sub-category: provisioning
+> + * Functionality: auto-provisioning
+> + * Run type: FULL
+> + * Description: Examine behavior of SR-IOV auto-provisioning
+> + *
+> + * SUBTEST: fair-allocation
+> + * Description:
+> + *   Verify that auto-provisioned resources are allocated by PF driver in fairly manner
+> + *
+> + * SUBTEST: resources-released-on-vfs-disabling
+> + * Description:
+> + *   Verify that auto-provisioned resources are released once VFs are disabled
+> + *
+> + * SUBTEST: exclusive-ranges
+> + * Description:
+> + *   Verify that ranges of auto-provisioned resources are exclusive
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Xe tests for SR-IOV auto-provisioning");
+> +
+> +/* Expects ranges sorted by VF IDs */
+> +static int ranges_fair_allocation(enum xe_sriov_shared_res res,
+> +				  struct xe_sriov_provisioned_range *ranges,
+> +				  unsigned int nr_ranges)
 > +{
-> +	const struct xe_sriov_provisioned_range *range_a = a;
-> +	const struct xe_sriov_provisioned_range *range_b = b;
+> +	uint64_t expected_allocation = ranges[0].end - ranges[0].start + 1;
 > +
-> +	return (range_a->vf_id - range_b->vf_id);
-> +}
+> +	for (unsigned int i = 1; i < nr_ranges; i++) {
+> +		uint64_t current_allocation = ranges[i].end - ranges[i].start + 1;
 > +
-> +#define MAX_DEBUG_ENTRIES 70U
-> +
-> +static int validate_vf_ids(enum xe_sriov_shared_res res,
-> +			   struct xe_sriov_provisioned_range *ranges,
-> +			   unsigned int nr_ranges, unsigned int expected_num_vfs)
-> +{
-> +	unsigned int current_vf_id = 0;
-> +
-> +	/* If no VFs are expected, ensure no ranges are provided */
-> +	if (expected_num_vfs == 0) {
-> +		if (nr_ranges > 0) {
-> +			unsigned int limit = min(nr_ranges, MAX_DEBUG_ENTRIES);
-> +
-> +			igt_debug("%s: Unexpected %u ranges when expected num_vfs == 0\n",
-> +				  xe_sriov_debugfs_provisioned_attr_name(res),
-> +				  nr_ranges);
-> +			for (unsigned int i = 0; i < limit; i++) {
-> +				igt_debug((res == XE_SRIOV_SHARED_RES_GGTT) ?
-> +						  "%s:VF%u: %lx-%lx\n" :
-> +						  "%s:VF%u: %lu-%lu\n",
-> +					  xe_sriov_shared_res_to_string(res),
-> +					  ranges[i].vf_id, ranges[i].start, ranges[i].end);
-> +			}
-> +			igt_debug_on_f(nr_ranges > MAX_DEBUG_ENTRIES,
-> +				       "%s: Output truncated to first %u ranges out of %u\n",
-> +				       xe_sriov_debugfs_provisioned_attr_name(res),
-> +				       MAX_DEBUG_ENTRIES, nr_ranges);
-> +
-> +			return -ERANGE;
-> +		}
-> +		return 0; /* Valid case: no VFs, no ranges */
-> +	}
-> +
-> +	if (igt_debug_on_f(nr_ranges == 0,
-> +			   "%s: No VF ranges\n",
-> +			   xe_sriov_debugfs_provisioned_attr_name(res)))
-> +		return -ENOENT;
-> +
-> +	igt_assert(ranges);
-> +	qsort(ranges, nr_ranges, sizeof(ranges[0]), compare_ranges_by_vf_id);
-> +
-> +	for (unsigned int i = 0; i < nr_ranges; i++) {
-> +		unsigned int vf_id = ranges[i].vf_id;
-> +
-> +		if (igt_debug_on_f(vf_id == current_vf_id,
-> +				   "%s: Duplicate VF%u entry found\n",
-> +				   xe_sriov_debugfs_provisioned_attr_name(res), vf_id))
-> +			return -EEXIST;
-> +
-> +		if (igt_debug_on_f(vf_id < 1 || vf_id > expected_num_vfs,
-> +				   "%s: Out of range VF%u\n",
-> +				   xe_sriov_debugfs_provisioned_attr_name(res), vf_id))
-> +			return -ERANGE;
-> +
-> +		if (igt_debug_on_f(vf_id > current_vf_id + 1,
-> +				   "%s: Missing VF%u\n",
+> +		if (igt_debug_on_f(current_allocation != expected_allocation,
+> +				   "%s: Allocation mismatch, expected=%lu VF%u=%lu\n",
 > +				   xe_sriov_debugfs_provisioned_attr_name(res),
-> +				   current_vf_id + 1))
-> +			return -ESRCH;
-> +
-> +		current_vf_id = vf_id;
+> +				   expected_allocation, ranges[i].vf_id,
+> +				   current_allocation)) {
+> +			return -1;
+> +		}
 > +	}
-> +
-> +	if (igt_debug_on_f(current_vf_id != expected_num_vfs,
-> +			   "%s: Missing VF%u\n",
-> +			   xe_sriov_debugfs_provisioned_attr_name(res), expected_num_vfs))
-> +		return -ESRCH;
 > +
 > +	return 0;
 > +}
 > +
-> +/**
-> + * xe_sriov_pf_debugfs_read_check_ranges:
-> + * @pf_fd: PF device file descriptor
-> + * @res: resource
-> + * @gt_id: GT number
-> + * @ranges: pointer to array of provisioned ranges
-> + * @expected_num_vfs: expected number of provisioned VFs
-> + *
-> + * Reads and validates provisioned ranges of shared resources.
-> + * If successfully validated, returns num_vfs allocated ranges
-> + * sorted by VF id.
-> + * The caller should free the allocated space.
-> + *
-> + * Return: 0 if successful in reading valid ranges, otherwise negative error code.
-> + */
-> +int xe_sriov_pf_debugfs_read_check_ranges(int pf_fd, enum xe_sriov_shared_res res,
-> +					  unsigned int gt_id,
-> +					  struct xe_sriov_provisioned_range **ranges,
-> +					  unsigned int expected_num_vfs)
+> +static int check_fair_allocation(int pf_fd, unsigned int num_vfs, unsigned int gt_id,
+> +				 enum xe_sriov_shared_res res)
 > +{
-> +	unsigned int nr_ranges;
+> +	struct xe_sriov_provisioned_range *ranges;
 > +	int ret;
 > +
-> +	ret = xe_sriov_pf_debugfs_read_provisioned_ranges(pf_fd, res, gt_id,
-> +							  ranges, &nr_ranges);
+> +	ret = xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt_id, &ranges, num_vfs);
+> +	if (igt_debug_on_f(ret, "%s: Failed ranges check on GT%u (%d)\n",
+> +			   xe_sriov_debugfs_provisioned_attr_name(res), gt_id, ret))
+> +		return ret;
+> +
+> +	ret = ranges_fair_allocation(res, ranges, num_vfs);
+> +	if (ret) {
+> +		free(ranges);
+> +		return ret;
+> +	}
+> +
+> +	free(ranges);
+> +
+> +	return 0;
+> +}
+> +
+> +static void fair_allocation(int pf_fd, unsigned int num_vfs)
+> +{
+> +	enum xe_sriov_shared_res res;
+> +	unsigned int gt;
+> +	int fails = 0;
+> +
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +
+> +	xe_for_each_gt(pf_fd, gt) {
+> +		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
+> +			if (igt_debug_on_f(check_fair_allocation(pf_fd, num_vfs, gt, res),
+> +					   "%s fair allocation failed on gt%u\n",
+> +					   xe_sriov_shared_res_to_string(res), gt))
+> +				fails++;
+> +		}
+> +	}
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +
+> +	igt_fail_on_f(fails, "fair allocation failed\n");
+> +}
+> +
+> +static void resources_released_on_vfs_disabling(int pf_fd, unsigned int num_vfs)
+> +{
+> +	struct xe_sriov_provisioned_range *ranges;
+> +	enum xe_sriov_shared_res res;
+> +	unsigned int gt;
+> +	int fails = 0;
+> +
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +
+> +	xe_for_each_gt(pf_fd, gt) {
+> +		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
+> +			if (igt_warn_on_f(xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res,
+> +										gt,
+> +										&ranges,
+> +										num_vfs),
+> +					  "%s: Failed ranges check on gt%u\n",
+> +					  xe_sriov_debugfs_provisioned_attr_name(res), gt))
+> +				continue;
+> +
+> +			free(ranges);
+> +		}
+> +	}
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +
+> +	xe_for_each_gt(pf_fd, gt) {
+> +		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
+> +			if (igt_debug_on_f(xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res,
+> +										 gt,
+> +										 &ranges,
+> +										 0),
+> +					   "%s: Failed ranges check on gt%u\n",
+> +					   xe_sriov_debugfs_provisioned_attr_name(res), gt))
+> +				fails++;
+> +		}
+> +	}
+> +
+> +	igt_fail_on_f(fails, "shared resource release check failed\n");
+> +}
+> +
+> +static int compare_ranges_by_start(const void *a, const void *b)
+> +{
+> +	const struct xe_sriov_provisioned_range *range_a = a;
+> +	const struct xe_sriov_provisioned_range *range_b = b;
+> +
+> +	if (range_a->start < range_b->start)
+> +		return -1;
+> +	if (range_a->start > range_b->start)
+> +		return 1;
+> +	return 0;
+> +}
+> +
+> +static int check_no_overlap(int pf_fd, unsigned int num_vfs, unsigned int gt_id,
+> +			    enum xe_sriov_shared_res res)
+> +{
+> +	struct xe_sriov_provisioned_range *ranges;
+> +	int ret;
+> +
+> +	ret = xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt_id, &ranges, num_vfs);
 > +	if (ret)
 > +		return ret;
 > +
-> +	ret = validate_vf_ids(res, *ranges, nr_ranges, expected_num_vfs);
-> +	if (ret) {
-> +		free(*ranges);
-> +		*ranges = NULL;
-> +	}
+> +	igt_assert(ranges);
+> +	qsort(ranges, num_vfs, sizeof(ranges[0]), compare_ranges_by_start);
 > +
-> +	return ret;
+> +	for (unsigned int i = 0; i < num_vfs - 1; i++)
+> +		if (ranges[i].end >= ranges[i + 1].start) {
+> +			igt_debug((res == XE_SRIOV_SHARED_RES_GGTT) ?
+> +				  "Overlapping ranges: VF%u [%lx-%lx] and VF%u [%lx-%lx]\n" :
+> +				  "Overlapping ranges: VF%u [%lu-%lu] and VF%u [%lu-%lu]\n",
+> +				  ranges[i].vf_id, ranges[i].start, ranges[i].end,
+> +				  ranges[i + 1].vf_id, ranges[i + 1].start, ranges[i + 1].end);
+> +			free(ranges);
+> +			return -1;
+> +		}
+> +
+> +	free(ranges);
+> +
+> +	return 0;
 > +}
 > +
->   static int xe_sriov_pf_debugfs_path_open(int pf, unsigned int vf_num,
->   					 unsigned int gt_num)
->   {
-> diff --git a/lib/xe/xe_sriov_debugfs.h b/lib/xe/xe_sriov_debugfs.h
-> index 2db965f9b..cd5f932be 100644
-> --- a/lib/xe/xe_sriov_debugfs.h
-> +++ b/lib/xe/xe_sriov_debugfs.h
-> @@ -16,6 +16,10 @@ int xe_sriov_pf_debugfs_read_provisioned_ranges(int pf_fd, enum xe_sriov_shared_
->   						unsigned int gt_id,
->   						struct xe_sriov_provisioned_range **ranges,
->   						unsigned int *nr_ranges);
-> +int xe_sriov_pf_debugfs_read_check_ranges(int pf_fd, enum xe_sriov_shared_res res,
-> +					  unsigned int gt_id,
-> +					  struct xe_sriov_provisioned_range **ranges,
-> +					  unsigned int expected_num_vfs);
->   int __xe_sriov_pf_debugfs_get_u32(int pf, unsigned int vf_num,
->   				  unsigned int gt_num, const char *attr,
->   				  uint32_t *value);
+> +static void exclusive_ranges(int pf_fd, unsigned int num_vfs)
+> +{
+> +	enum xe_sriov_shared_res res;
+> +	unsigned int gt;
+> +	int fails = 0;
+> +
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +
+> +	xe_for_each_gt(pf_fd, gt) {
+> +		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
+> +			if (res == XE_SRIOV_SHARED_RES_LMEM)
+> +				/*
+> +				 * lmem_provisioned is not applicable for this test,
+> +				 * as it does not expose ranges
+> +				 */
+> +				continue;
+> +
+> +			if (igt_debug_on_f(check_no_overlap(pf_fd, num_vfs, gt, res),
+> +					   "%s overlap check failed on gt%u\n",
+> +					   xe_sriov_shared_res_to_string(res), gt))
+> +				fails++;
+> +		}
+> +	}
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +
+> +	igt_fail_on_f(fails, "exclusive ranges check failed\n");
+> +}
+> +
+> +igt_main
+> +{
+> +	enum xe_sriov_shared_res res;
+> +	unsigned int gt;
+> +	bool autoprobe;
+> +	int pf_fd;
+> +
+> +	igt_fixture {
+> +		struct xe_sriov_provisioned_range *ranges;
+> +		int ret;
+> +
+> +		pf_fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +
+> +		xe_for_each_gt(pf_fd, gt) {
+> +			xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
+> +				ret = xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt,
+> +									    &ranges, 0);
+> +				igt_skip_on_f(ret, "%s: Failed ranges check on gt%u (%d)\n",
+> +					      xe_sriov_debugfs_provisioned_attr_name(res),
+> +					      gt, ret);
+> +			}
+> +		}
+> +		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+> +	}
+> +
+> +	igt_describe("Verify that auto-provisioned resources are allocated by PF driver in fairly manner");
+> +	igt_subtest_with_dynamic("fair-allocation") {
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				igt_debug("numvfs=%u\n", num_vfs);
+> +				fair_allocation(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_describe("Verify that auto-provisioned resources are released once VFs are disabled");
+> +	igt_subtest_with_dynamic("resources-released-on-vfs-disabling") {
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				igt_debug("numvfs=%u\n", num_vfs);
+> +				resources_released_on_vfs_disabling(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_describe("Verify that ranges of auto-provisioned resources are exclusive");
+> +	igt_subtest_with_dynamic_f("exclusive-ranges") {
+> +		unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +
+> +		igt_skip_on(total_vfs < 2);
+> +
+> +		for_random_sriov_vf_in_range(pf_fd, 2, total_vfs, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				igt_debug("numvfs=%u\n", num_vfs);
+> +				exclusive_ranges(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		/* abort to avoid execution of next tests with enabled VFs */
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
+> +			    igt_sriov_disable_driver_autoprobe(pf_fd);
+> +		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
+> +			       "Failed to restore sriov_drivers_autoprobe value\n");
+> +		drm_close_driver(pf_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 2724c7a9a..01076f401 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -315,6 +315,7 @@ intel_xe_progs = [
+>   	'xe_vm',
+>   	'xe_waitfence',
+>   	'xe_spin_batch',
+> +	'xe_sriov_auto_provisioning',
+>   	'xe_sriov_flr',
+>   	'xe_sysfs_defaults',
+>   	'xe_sysfs_preempt_timeout',
 
 LGTM,
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 
---------------v4q9mnVYImAHaiFeC01d5Ias
+--------------jV1kHTeFcU0ggWamnrUK117n
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
@@ -394,15 +565,19 @@ Content-Transfer-Encoding: 8bit
     <div class="moz-cite-prefix">On 1/14/2025 16:08, Marcin Bernatowicz
       wrote:<br>
     </div>
-    <blockquote type="cite" cite="mid:20250114150848.332708-3-marcin.bernatowicz@linux.intel.com">
-      <pre wrap="" class="moz-quote-pre">Introduce `xe_sriov_pf_debugfs_read_check_ranges`, adding a validation
-step on top of `xe_sriov_pf_debugfs_read_provisioned_ranges`.
+    <blockquote type="cite" cite="mid:20250114150848.332708-7-marcin.bernatowicz@linux.intel.com">
+      <pre wrap="" class="moz-quote-pre">Added subtests validating below scenarios:
+- auto-provisioned resources are allocated by PF driver in fairly manner,
+- auto-provisioned resources are released once VFs are disabled,
+- verify that ranges of auto-provisioned resources are exclusive.
 
-Enforce checks for:
-- Ranges when no VFs are expected.
-- Duplicate, missing, or out-of-range VF IDs.
+The tests rely on ggtt_provisioned, lmem_provisioned,
+contexts_provisioned and doorbells_provisioned debugfs attributes.
 
-The function ensures the returned ranges are sorted by VF ID.
+v2:
+- Simplify range validation by using
+  xe_sriov_pf_debugfs_read_check_ranges (Lukasz)
+- Rename subtests for clarity (Lukasz)
 
 Signed-off-by: Marcin Bernatowicz <a class="moz-txt-link-rfc2396E" href="mailto:marcin.bernatowicz@linux.intel.com">&lt;marcin.bernatowicz@linux.intel.com&gt;</a>
 Cc: Adam Miszczak <a class="moz-txt-link-rfc2396E" href="mailto:adam.miszczak@linux.intel.com">&lt;adam.miszczak@linux.intel.com&gt;</a>
@@ -415,152 +590,319 @@ Cc: Piotr Piórkowski <a class="moz-txt-link-rfc2396E" href="mailto:piotr.piorko
 Cc: Satyanarayana K V P <a class="moz-txt-link-rfc2396E" href="mailto:satyanarayana.k.v.p@intel.com">&lt;satyanarayana.k.v.p@intel.com&gt;</a>
 Cc: Tomasz Lis <a class="moz-txt-link-rfc2396E" href="mailto:tomasz.lis@intel.com">&lt;tomasz.lis@intel.com&gt;</a>
 ---
- lib/xe/xe_sriov_debugfs.c | 116 ++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_sriov_debugfs.h |   4 ++
- 2 files changed, 120 insertions(+)
+ tests/intel/xe_sriov_auto_provisioning.c | 290 +++++++++++++++++++++++
+ tests/meson.build                        |   1 +
+ 2 files changed, 291 insertions(+)
+ create mode 100644 tests/intel/xe_sriov_auto_provisioning.c
 
-diff --git a/lib/xe/xe_sriov_debugfs.c b/lib/xe/xe_sriov_debugfs.c
-index 92a477764..abb1bf7d5 100644
---- a/lib/xe/xe_sriov_debugfs.c
-+++ b/lib/xe/xe_sriov_debugfs.c
-@@ -206,6 +206,122 @@ cleanup:
- 	return ret;
- }
- 
-+static int compare_ranges_by_vf_id(const void *a, const void *b)
+diff --git a/tests/intel/xe_sriov_auto_provisioning.c b/tests/intel/xe_sriov_auto_provisioning.c
+new file mode 100644
+index 000000000..1d2aa8624
+--- /dev/null
++++ b/tests/intel/xe_sriov_auto_provisioning.c
+@@ -0,0 +1,290 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2023 Intel Corporation. All rights reserved.
++ */
++
++#include &lt;stdbool.h&gt;
++
++#include &quot;drmtest.h&quot;
++#include &quot;igt_core.h&quot;
++#include &quot;igt_sriov_device.h&quot;
++#include &quot;igt_sysfs.h&quot;
++#include &quot;xe/xe_sriov_debugfs.h&quot;
++#include &quot;xe/xe_sriov_provisioning.h&quot;
++#include &quot;xe/xe_query.h&quot;
++
++/**
++ * TEST: xe_sriov_auto_provisioning
++ * Category: Core
++ * Mega feature: SR-IOV
++ * Sub-category: provisioning
++ * Functionality: auto-provisioning
++ * Run type: FULL
++ * Description: Examine behavior of SR-IOV auto-provisioning
++ *
++ * SUBTEST: fair-allocation
++ * Description:
++ *   Verify that auto-provisioned resources are allocated by PF driver in fairly manner
++ *
++ * SUBTEST: resources-released-on-vfs-disabling
++ * Description:
++ *   Verify that auto-provisioned resources are released once VFs are disabled
++ *
++ * SUBTEST: exclusive-ranges
++ * Description:
++ *   Verify that ranges of auto-provisioned resources are exclusive
++ */
++
++IGT_TEST_DESCRIPTION(&quot;Xe tests for SR-IOV auto-provisioning&quot;);
++
++/* Expects ranges sorted by VF IDs */
++static int ranges_fair_allocation(enum xe_sriov_shared_res res,
++				  struct xe_sriov_provisioned_range *ranges,
++				  unsigned int nr_ranges)
 +{
-+	const struct xe_sriov_provisioned_range *range_a = a;
-+	const struct xe_sriov_provisioned_range *range_b = b;
++	uint64_t expected_allocation = ranges[0].end - ranges[0].start + 1;
 +
-+	return (range_a-&gt;vf_id - range_b-&gt;vf_id);
-+}
++	for (unsigned int i = 1; i &lt; nr_ranges; i++) {
++		uint64_t current_allocation = ranges[i].end - ranges[i].start + 1;
 +
-+#define MAX_DEBUG_ENTRIES 70U
-+
-+static int validate_vf_ids(enum xe_sriov_shared_res res,
-+			   struct xe_sriov_provisioned_range *ranges,
-+			   unsigned int nr_ranges, unsigned int expected_num_vfs)
-+{
-+	unsigned int current_vf_id = 0;
-+
-+	/* If no VFs are expected, ensure no ranges are provided */
-+	if (expected_num_vfs == 0) {
-+		if (nr_ranges &gt; 0) {
-+			unsigned int limit = min(nr_ranges, MAX_DEBUG_ENTRIES);
-+
-+			igt_debug(&quot;%s: Unexpected %u ranges when expected num_vfs == 0\n&quot;,
-+				  xe_sriov_debugfs_provisioned_attr_name(res),
-+				  nr_ranges);
-+			for (unsigned int i = 0; i &lt; limit; i++) {
-+				igt_debug((res == XE_SRIOV_SHARED_RES_GGTT) ?
-+						  &quot;%s:VF%u: %lx-%lx\n&quot; :
-+						  &quot;%s:VF%u: %lu-%lu\n&quot;,
-+					  xe_sriov_shared_res_to_string(res),
-+					  ranges[i].vf_id, ranges[i].start, ranges[i].end);
-+			}
-+			igt_debug_on_f(nr_ranges &gt; MAX_DEBUG_ENTRIES,
-+				       &quot;%s: Output truncated to first %u ranges out of %u\n&quot;,
-+				       xe_sriov_debugfs_provisioned_attr_name(res),
-+				       MAX_DEBUG_ENTRIES, nr_ranges);
-+
-+			return -ERANGE;
-+		}
-+		return 0; /* Valid case: no VFs, no ranges */
-+	}
-+
-+	if (igt_debug_on_f(nr_ranges == 0,
-+			   &quot;%s: No VF ranges\n&quot;,
-+			   xe_sriov_debugfs_provisioned_attr_name(res)))
-+		return -ENOENT;
-+
-+	igt_assert(ranges);
-+	qsort(ranges, nr_ranges, sizeof(ranges[0]), compare_ranges_by_vf_id);
-+
-+	for (unsigned int i = 0; i &lt; nr_ranges; i++) {
-+		unsigned int vf_id = ranges[i].vf_id;
-+
-+		if (igt_debug_on_f(vf_id == current_vf_id,
-+				   &quot;%s: Duplicate VF%u entry found\n&quot;,
-+				   xe_sriov_debugfs_provisioned_attr_name(res), vf_id))
-+			return -EEXIST;
-+
-+		if (igt_debug_on_f(vf_id &lt; 1 || vf_id &gt; expected_num_vfs,
-+				   &quot;%s: Out of range VF%u\n&quot;,
-+				   xe_sriov_debugfs_provisioned_attr_name(res), vf_id))
-+			return -ERANGE;
-+
-+		if (igt_debug_on_f(vf_id &gt; current_vf_id + 1,
-+				   &quot;%s: Missing VF%u\n&quot;,
++		if (igt_debug_on_f(current_allocation != expected_allocation,
++				   &quot;%s: Allocation mismatch, expected=%lu VF%u=%lu\n&quot;,
 +				   xe_sriov_debugfs_provisioned_attr_name(res),
-+				   current_vf_id + 1))
-+			return -ESRCH;
-+
-+		current_vf_id = vf_id;
++				   expected_allocation, ranges[i].vf_id,
++				   current_allocation)) {
++			return -1;
++		}
 +	}
-+
-+	if (igt_debug_on_f(current_vf_id != expected_num_vfs,
-+			   &quot;%s: Missing VF%u\n&quot;,
-+			   xe_sriov_debugfs_provisioned_attr_name(res), expected_num_vfs))
-+		return -ESRCH;
 +
 +	return 0;
 +}
 +
-+/**
-+ * xe_sriov_pf_debugfs_read_check_ranges:
-+ * @pf_fd: PF device file descriptor
-+ * @res: resource
-+ * @gt_id: GT number
-+ * @ranges: pointer to array of provisioned ranges
-+ * @expected_num_vfs: expected number of provisioned VFs
-+ *
-+ * Reads and validates provisioned ranges of shared resources.
-+ * If successfully validated, returns num_vfs allocated ranges
-+ * sorted by VF id.
-+ * The caller should free the allocated space.
-+ *
-+ * Return: 0 if successful in reading valid ranges, otherwise negative error code.
-+ */
-+int xe_sriov_pf_debugfs_read_check_ranges(int pf_fd, enum xe_sriov_shared_res res,
-+					  unsigned int gt_id,
-+					  struct xe_sriov_provisioned_range **ranges,
-+					  unsigned int expected_num_vfs)
++static int check_fair_allocation(int pf_fd, unsigned int num_vfs, unsigned int gt_id,
++				 enum xe_sriov_shared_res res)
 +{
-+	unsigned int nr_ranges;
++	struct xe_sriov_provisioned_range *ranges;
 +	int ret;
 +
-+	ret = xe_sriov_pf_debugfs_read_provisioned_ranges(pf_fd, res, gt_id,
-+							  ranges, &amp;nr_ranges);
++	ret = xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt_id, &amp;ranges, num_vfs);
++	if (igt_debug_on_f(ret, &quot;%s: Failed ranges check on GT%u (%d)\n&quot;,
++			   xe_sriov_debugfs_provisioned_attr_name(res), gt_id, ret))
++		return ret;
++
++	ret = ranges_fair_allocation(res, ranges, num_vfs);
++	if (ret) {
++		free(ranges);
++		return ret;
++	}
++
++	free(ranges);
++
++	return 0;
++}
++
++static void fair_allocation(int pf_fd, unsigned int num_vfs)
++{
++	enum xe_sriov_shared_res res;
++	unsigned int gt;
++	int fails = 0;
++
++	igt_sriov_disable_driver_autoprobe(pf_fd);
++	igt_sriov_enable_vfs(pf_fd, num_vfs);
++
++	xe_for_each_gt(pf_fd, gt) {
++		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
++			if (igt_debug_on_f(check_fair_allocation(pf_fd, num_vfs, gt, res),
++					   &quot;%s fair allocation failed on gt%u\n&quot;,
++					   xe_sriov_shared_res_to_string(res), gt))
++				fails++;
++		}
++	}
++
++	igt_sriov_disable_vfs(pf_fd);
++
++	igt_fail_on_f(fails, &quot;fair allocation failed\n&quot;);
++}
++
++static void resources_released_on_vfs_disabling(int pf_fd, unsigned int num_vfs)
++{
++	struct xe_sriov_provisioned_range *ranges;
++	enum xe_sriov_shared_res res;
++	unsigned int gt;
++	int fails = 0;
++
++	igt_sriov_disable_driver_autoprobe(pf_fd);
++	igt_sriov_enable_vfs(pf_fd, num_vfs);
++
++	xe_for_each_gt(pf_fd, gt) {
++		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
++			if (igt_warn_on_f(xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res,
++										gt,
++										&amp;ranges,
++										num_vfs),
++					  &quot;%s: Failed ranges check on gt%u\n&quot;,
++					  xe_sriov_debugfs_provisioned_attr_name(res), gt))
++				continue;
++
++			free(ranges);
++		}
++	}
++
++	igt_sriov_disable_vfs(pf_fd);
++
++	xe_for_each_gt(pf_fd, gt) {
++		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
++			if (igt_debug_on_f(xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res,
++										 gt,
++										 &amp;ranges,
++										 0),
++					   &quot;%s: Failed ranges check on gt%u\n&quot;,
++					   xe_sriov_debugfs_provisioned_attr_name(res), gt))
++				fails++;
++		}
++	}
++
++	igt_fail_on_f(fails, &quot;shared resource release check failed\n&quot;);
++}
++
++static int compare_ranges_by_start(const void *a, const void *b)
++{
++	const struct xe_sriov_provisioned_range *range_a = a;
++	const struct xe_sriov_provisioned_range *range_b = b;
++
++	if (range_a-&gt;start &lt; range_b-&gt;start)
++		return -1;
++	if (range_a-&gt;start &gt; range_b-&gt;start)
++		return 1;
++	return 0;
++}
++
++static int check_no_overlap(int pf_fd, unsigned int num_vfs, unsigned int gt_id,
++			    enum xe_sriov_shared_res res)
++{
++	struct xe_sriov_provisioned_range *ranges;
++	int ret;
++
++	ret = xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt_id, &amp;ranges, num_vfs);
 +	if (ret)
 +		return ret;
 +
-+	ret = validate_vf_ids(res, *ranges, nr_ranges, expected_num_vfs);
-+	if (ret) {
-+		free(*ranges);
-+		*ranges = NULL;
-+	}
++	igt_assert(ranges);
++	qsort(ranges, num_vfs, sizeof(ranges[0]), compare_ranges_by_start);
 +
-+	return ret;
++	for (unsigned int i = 0; i &lt; num_vfs - 1; i++)
++		if (ranges[i].end &gt;= ranges[i + 1].start) {
++			igt_debug((res == XE_SRIOV_SHARED_RES_GGTT) ?
++				  &quot;Overlapping ranges: VF%u [%lx-%lx] and VF%u [%lx-%lx]\n&quot; :
++				  &quot;Overlapping ranges: VF%u [%lu-%lu] and VF%u [%lu-%lu]\n&quot;,
++				  ranges[i].vf_id, ranges[i].start, ranges[i].end,
++				  ranges[i + 1].vf_id, ranges[i + 1].start, ranges[i + 1].end);
++			free(ranges);
++			return -1;
++		}
++
++	free(ranges);
++
++	return 0;
 +}
 +
- static int xe_sriov_pf_debugfs_path_open(int pf, unsigned int vf_num,
- 					 unsigned int gt_num)
- {
-diff --git a/lib/xe/xe_sriov_debugfs.h b/lib/xe/xe_sriov_debugfs.h
-index 2db965f9b..cd5f932be 100644
---- a/lib/xe/xe_sriov_debugfs.h
-+++ b/lib/xe/xe_sriov_debugfs.h
-@@ -16,6 +16,10 @@ int xe_sriov_pf_debugfs_read_provisioned_ranges(int pf_fd, enum xe_sriov_shared_
- 						unsigned int gt_id,
- 						struct xe_sriov_provisioned_range **ranges,
- 						unsigned int *nr_ranges);
-+int xe_sriov_pf_debugfs_read_check_ranges(int pf_fd, enum xe_sriov_shared_res res,
-+					  unsigned int gt_id,
-+					  struct xe_sriov_provisioned_range **ranges,
-+					  unsigned int expected_num_vfs);
- int __xe_sriov_pf_debugfs_get_u32(int pf, unsigned int vf_num,
- 				  unsigned int gt_num, const char *attr,
- 				  uint32_t *value);</pre>
++static void exclusive_ranges(int pf_fd, unsigned int num_vfs)
++{
++	enum xe_sriov_shared_res res;
++	unsigned int gt;
++	int fails = 0;
++
++	igt_sriov_disable_driver_autoprobe(pf_fd);
++	igt_sriov_enable_vfs(pf_fd, num_vfs);
++
++	xe_for_each_gt(pf_fd, gt) {
++		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
++			if (res == XE_SRIOV_SHARED_RES_LMEM)
++				/*
++				 * lmem_provisioned is not applicable for this test,
++				 * as it does not expose ranges
++				 */
++				continue;
++
++			if (igt_debug_on_f(check_no_overlap(pf_fd, num_vfs, gt, res),
++					   &quot;%s overlap check failed on gt%u\n&quot;,
++					   xe_sriov_shared_res_to_string(res), gt))
++				fails++;
++		}
++	}
++
++	igt_sriov_disable_vfs(pf_fd);
++
++	igt_fail_on_f(fails, &quot;exclusive ranges check failed\n&quot;);
++}
++
++igt_main
++{
++	enum xe_sriov_shared_res res;
++	unsigned int gt;
++	bool autoprobe;
++	int pf_fd;
++
++	igt_fixture {
++		struct xe_sriov_provisioned_range *ranges;
++		int ret;
++
++		pf_fd = drm_open_driver(DRIVER_XE);
++		igt_require(igt_sriov_is_pf(pf_fd));
++		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++
++		xe_for_each_gt(pf_fd, gt) {
++			xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
++				ret = xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt,
++									    &amp;ranges, 0);
++				igt_skip_on_f(ret, &quot;%s: Failed ranges check on gt%u (%d)\n&quot;,
++					      xe_sriov_debugfs_provisioned_attr_name(res),
++					      gt, ret);
++			}
++		}
++		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
++	}
++
++	igt_describe(&quot;Verify that auto-provisioned resources are allocated by PF driver in fairly manner&quot;);
++	igt_subtest_with_dynamic(&quot;fair-allocation&quot;) {
++		for_random_sriov_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f(&quot;numvfs-random&quot;) {
++				igt_debug(&quot;numvfs=%u\n&quot;, num_vfs);
++				fair_allocation(pf_fd, num_vfs);
++			}
++		}
++	}
++
++	igt_describe(&quot;Verify that auto-provisioned resources are released once VFs are disabled&quot;);
++	igt_subtest_with_dynamic(&quot;resources-released-on-vfs-disabling&quot;) {
++		for_random_sriov_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f(&quot;numvfs-random&quot;) {
++				igt_debug(&quot;numvfs=%u\n&quot;, num_vfs);
++				resources_released_on_vfs_disabling(pf_fd, num_vfs);
++			}
++		}
++	}
++
++	igt_describe(&quot;Verify that ranges of auto-provisioned resources are exclusive&quot;);
++	igt_subtest_with_dynamic_f(&quot;exclusive-ranges&quot;) {
++		unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
++
++		igt_skip_on(total_vfs &lt; 2);
++
++		for_random_sriov_vf_in_range(pf_fd, 2, total_vfs, num_vfs) {
++			igt_dynamic_f(&quot;numvfs-random&quot;) {
++				igt_debug(&quot;numvfs=%u\n&quot;, num_vfs);
++				exclusive_ranges(pf_fd, num_vfs);
++			}
++		}
++	}
++
++	igt_fixture {
++		igt_sriov_disable_vfs(pf_fd);
++		/* abort to avoid execution of next tests with enabled VFs */
++		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) &gt; 0, &quot;Failed to disable VF(s)&quot;);
++		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
++			    igt_sriov_disable_driver_autoprobe(pf_fd);
++		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
++			       &quot;Failed to restore sriov_drivers_autoprobe value\n&quot;);
++		drm_close_driver(pf_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 2724c7a9a..01076f401 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -315,6 +315,7 @@ intel_xe_progs = [
+ 	'xe_vm',
+ 	'xe_waitfence',
+ 	'xe_spin_batch',
++	'xe_sriov_auto_provisioning',
+ 	'xe_sriov_flr',
+ 	'xe_sysfs_defaults',
+ 	'xe_sysfs_preempt_timeout',</pre>
     </blockquote>
     <br>
     LGTM,<br>
@@ -571,4 +913,4 @@ index 2db965f9b..cd5f932be 100644
   </body>
 </html>
 
---------------v4q9mnVYImAHaiFeC01d5Ias--
+--------------jV1kHTeFcU0ggWamnrUK117n--
