@@ -4,25 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3166CC02180
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 09:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA400C02180
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 09:14:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BED0610E1CB;
-	Thu, 16 Jan 2025 09:10:59 +0000 (UTC)
-Received: from mblankhorst.nl (lankhorst.se [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BE7C10E4F3
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2025 11:55:19 +0000 (UTC)
-From: Maarten Lankhorst <dev@lankhorst.se>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8DC2D10E908;
+	Thu, 16 Jan 2025 09:14:13 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AAIDKhLp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0405210E90A;
+ Thu, 16 Jan 2025 09:14:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737018853; x=1768554853;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=RNP122IOeWm7+c6NPdvz1QlyaDwMkoQ5zA4IUIsNfPU=;
+ b=AAIDKhLp3Ui0glBmbrtAM3MkrXkkvIkEpOn6Ejv95kPV4uSUVUjtfo23
+ SeoJC6KlqidcdIxBds/jXLFO4p5ocMwWjGDMK+4otKpHG6KHQ+uWl25B7
+ SCCqVW6IZD/cHw9YyzHt8hPzqAQnMJPmXHuH3PGqmDWA9bN3gpLbFOtKk
+ hGcu7KvAUkHCW25PzCLuTEn4mzfKs/HNUdXG/UrZDW11xHRaJ+BzBC1Jg
+ 1dP4uohmlZW+AkST4YguMEuyCvDUMF+PjJ5z2fxxMPIBlInlvZ9jBlJx7
+ gsu5zXlXnwko05icauht2P+a5E+Ckpg4e7wJtKsoAXpwkgXd/sEG/iVGp g==;
+X-CSE-ConnectionGUID: YAdl2AiSRMapxm7YkNLCyg==
+X-CSE-MsgGUID: nA99P9AETL+nbsiOtqInkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="48051326"
+X-IronPort-AV: E=Sophos;i="6.13,208,1732608000"; d="scan'208";a="48051326"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jan 2025 01:14:05 -0800
+X-CSE-ConnectionGUID: 51Kr1j2/TwC05qb73hSgVg==
+X-CSE-MsgGUID: OXq8Ybw7Qt+2nZPeP0ednA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128680485"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 01:14:04 -0800
+Date: Thu, 16 Jan 2025 10:13:49 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>
-Subject: [PATCH i-g-t] tests/xe: Add xe_cg_dmem test
-Date: Wed, 15 Jan 2025 12:55:11 +0100
-Message-ID: <20250115115512.84520-1-dev@lankhorst.se>
-X-Mailer: git-send-email 2.43.0
+Cc: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests=2Fint?=
+ =?utf-8?Q?el=2Fxe=5Fpm=5Fresidency?= =?utf-8?Q?=3A?= Skip on igt_power_open
+ failure (rev6)
+Message-ID: <20250116091349.6ounyoplgxsfgtno@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20250110212237.4052-1-jonathan.cavitt@intel.com>
+ <173701756780.202820.14978393074699290892@b555e5b46a47>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 16 Jan 2025 09:10:58 +0000
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <173701756780.202820.14978393074699290892@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,413 +75,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This adds test to ensure the basic functionality of dmem works as
-expected on discrete platforms.
+Hi igt-dev,
+On 2025-01-16 at 08:52:47 -0000, Patchwork wrote:
 
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
----
- tests/intel/xe_cg_dmem.c | 379 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 380 insertions(+)
- create mode 100644 tests/intel/xe_cg_dmem.c
+below failures are unrelated,
 
-diff --git a/tests/intel/xe_cg_dmem.c b/tests/intel/xe_cg_dmem.c
-new file mode 100644
-index 000000000..2924fd973
---- /dev/null
-+++ b/tests/intel/xe_cg_dmem.c
-@@ -0,0 +1,379 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Check cgroup VRAM allocation limits
-+ * Category: Software building block
-+ * Sub-category: cgroup
-+ * Test category: functionality test
-+ * Run type: BAT
-+ * Description: Test that the dmem cgroup works as intended.
-+ * Mega feature: General Core features
-+ * Functionality: cgroup
-+*/
-+
-+#include <string.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "igt_sysfs.h"
-+
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+static int cgfd = -1, igtcg = -1, cg1 = -1, cg1_1 = -1, cg1_2 = -1, cg2 = -1;
-+static char cgid[64];
-+
-+/*
-+ * cgroups:
-+ *                                      / cg1_1
-+ * /sys/fs/cgroup (cgfd) / igtcg / cg1 /- cg1_2
-+ *                               / cg2
-+ */
-+
-+static void set_cgrp(int cg)
-+{
-+	igt_sysfs_set_u32(cg, "cgroup.procs", getpid());
-+}
-+
-+static inline void set_cg_val(int cg, const char *resource, int64_t val)
-+{
-+	if (val >= 0)
-+		igt_assert(igt_sysfs_printf(cg, resource, "%s %"PRIu64, cgid, val));
-+	else
-+		igt_assert(igt_sysfs_printf(cg, resource, "%s max", cgid));
-+}
-+
-+static void set_cgrp_min(int cg, int64_t min)
-+{
-+	set_cg_val(cg, "dmem.min", min);
-+}
-+
-+static void set_cgrp_low(int cg, int64_t low)
-+{
-+	set_cg_val(cg, "dmem.low", low);
-+}
-+
-+static void set_cgrp_max(int cg, int64_t max)
-+{
-+	set_cg_val(cg, "dmem.max", max);
-+}
-+
-+static int64_t get_cg_val(int cg, const char *resource)
-+{
-+	char *devstr, *valstr, *str;
-+	int64_t val;
-+
-+	str = igt_sysfs_get(cg, resource);
-+	igt_assert(str);
-+	devstr = strstr(str, cgid);
-+	igt_assert(devstr);
-+
-+	/* Only care about the line describing this region, terminate if needed */
-+	devstr = strtok(devstr, "\n");
-+
-+	valstr = strstr(devstr, " ") + 1;
-+	if (!strcmp(valstr, "max"))
-+		val = INT64_MAX;
-+	else
-+		val = strtoll(valstr, NULL, 10);
-+
-+	free(str);
-+	return val;
-+}
-+
-+static int64_t get_cgrp_min(int cg)
-+{
-+	return get_cg_val(cg, "dmem.min");
-+}
-+
-+static int64_t get_cgrp_low(int cg)
-+{
-+	return get_cg_val(cg, "dmem.low");
-+}
-+
-+static int64_t get_cgrp_max(int cg)
-+{
-+	return get_cg_val(cg, "dmem.max");
-+}
-+
-+static int64_t get_cgrp_current(int cg)
-+{
-+	return get_cg_val(cg, "dmem.current");
-+}
-+
-+static void assert_all_cgs_empty(void)
-+{
-+	igt_assert(!get_cgrp_current(igtcg));
-+}
-+
-+static void reset_cgs(void)
-+{
-+	int i, fds[] = { igtcg, cg1, cg1_1, cg1_2, cg2 };
-+	set_cgrp(cgfd);
-+
-+	for (i = 0; i < ARRAY_SIZE(fds); i++) {
-+		int cg = fds[i];
-+
-+		set_cgrp_min(cg, 0);
-+		set_cgrp_low(cg, 0);
-+		set_cgrp_max(cg, -1);
-+	}
-+}
-+
-+static void cleanup_cg(int sig)
-+{
-+	/* Move self to root so we can rmdir */
-+	set_cgrp(cgfd);
-+
-+	unlinkat(cg1, "cg1_1", AT_REMOVEDIR);
-+	unlinkat(cg1, "cg1_2", AT_REMOVEDIR);
-+	unlinkat(igtcg, "cg1", AT_REMOVEDIR);
-+	unlinkat(igtcg, "cg2", AT_REMOVEDIR);
-+	unlinkat(cgfd, "igtcg", AT_REMOVEDIR);
-+
-+	/* leak fd's at exit, nobody cares */
-+}
-+
-+static int mkcgrp(int fd, const char *name)
-+{
-+	int err;
-+
-+	/* Check and enable controller */
-+	igt_require(igt_sysfs_set(fd, "cgroup.subtree_control", "+dmem"));
-+
-+	err = mkdirat(fd, name, 0755);
-+	if (!err || (err == -1 && errno == EEXIST))
-+		err = openat(fd, name, O_RDONLY);
-+	igt_assert(err >= 0);
-+	return err;
-+}
-+
-+static void create_cgroups(void)
-+{
-+	char *controllers;
-+	cgfd = open("/sys/fs/cgroup", O_RDONLY);
-+	igt_require(cgfd >= 0);
-+
-+	controllers = igt_sysfs_get(cgfd, "cgroup.controllers");
-+	igt_require(controllers && strstr(controllers, "dmem"));
-+	free(controllers);
-+
-+	igt_install_exit_handler(cleanup_cg);
-+
-+	/* Populate cg's */
-+	igtcg = mkcgrp(cgfd, "igtcg");
-+	cg1 = mkcgrp(igtcg, "cg1");
-+	cg1_1 = mkcgrp(cg1, "cg1_1");
-+	cg1_2 = mkcgrp(cg1, "cg1_2");
-+	cg2 = mkcgrp(igtcg, "cg2");
-+}
-+
-+static int bo_create_at(struct xe_device *xe, int cg, uint64_t bo_size)
-+{
-+	struct drm_xe_gem_create create = {
-+		.placement = vram_if_possible(xe->fd, 0),
-+		.cpu_caching = __xe_default_cpu_caching(xe->fd, create.placement, 0),
-+		.size = bo_size,
-+	};
-+
-+	set_cgrp(cg);
-+
-+	if (igt_ioctl(xe->fd, DRM_IOCTL_XE_GEM_CREATE, &create) < 0) {
-+		igt_debug("Creating bo with size %"PRIu64" returned -1/%m\n", bo_size);
-+		return -errno;
-+	}
-+
-+	igt_debug("Creating bo with size %"PRIu64" and handle %u\n", bo_size, create.handle);
-+	return create.handle;
-+}
-+
-+/**
-+ * SUBTEST: functional
-+ * Description: Test if written values can be read back,
-+ * 	to rule out copy/paste errors.
-+ */
-+static void test_functional(void)
-+{
-+	set_cgrp_min(igtcg, 12345);
-+	set_cgrp_low(igtcg, 54321);
-+	set_cgrp_max(igtcg, 67890);
-+
-+	igt_assert_eq_u64(get_cgrp_min(igtcg), 12345);
-+	igt_assert_eq_u64(get_cgrp_low(igtcg), 54321);
-+	igt_assert_eq_u64(get_cgrp_max(igtcg), 67890);
-+
-+	set_cgrp_min(igtcg, -1);
-+	set_cgrp_low(igtcg, -1);
-+	set_cgrp_max(igtcg, -1);
-+
-+	igt_assert_eq_u64(get_cgrp_min(igtcg), INT64_MAX);
-+	igt_assert_eq_u64(get_cgrp_low(igtcg), INT64_MAX);
-+	igt_assert_eq_u64(get_cgrp_max(igtcg), INT64_MAX);
-+
-+	set_cgrp_min(igtcg, 0);
-+	set_cgrp_low(igtcg, 0);
-+	set_cgrp_max(igtcg, 0);
-+	igt_assert_eq_u64(get_cgrp_low(igtcg), 0);
-+	igt_assert_eq_u64(get_cgrp_max(igtcg), 0);
-+	igt_assert_eq_u64(get_cgrp_min(igtcg), 0);
-+}
-+
-+/**
-+ * SUBTEST: test-simple-max
-+ * Description: Test that cgroup max limits are respected between
-+ * 	various nestings of cgroups, and correct cgroups are evicted.
-+ */
-+static void test_simple_max(struct xe_device *xe)
-+{
-+	uint64_t bo_size = xe->default_alignment;
-+	int bo1, bo1_1, bo1_2;
-+
-+	/* Test if we set cgroup limits, that they are respected */
-+	assert_all_cgs_empty();
-+
-+	reset_cgs();
-+
-+	set_cgrp_max(igtcg, 0);
-+	igt_assert(get_cgrp_max(igtcg) == 0);
-+	set_cgrp_max(cg1, 2 * bo_size);
-+	set_cgrp_max(cg1_1, 2 * bo_size);
-+	set_cgrp_max(cg1_2, bo_size);
-+	set_cgrp_max(cg2, -1);
-+	igt_assert(get_cgrp_max(cg2) == INT64_MAX);
-+
-+	/* First check if top cg limit (of igtcg) is not ignored */
-+	igt_assert_eq(-ENOMEM, bo_create_at(xe, cg1_1, bo_size));
-+
-+	assert_all_cgs_empty();
-+	set_cgrp_max(igtcg, 4 * bo_size);
-+
-+	/* Same cg limit? */
-+	bo1_1 = bo_create_at(xe, cg1_1, 2 * bo_size);
-+	igt_assert(bo1_1 > 0);
-+
-+	set_cgrp_max(cg1, 3 * bo_size);
-+	bo1_2 = bo_create_at(xe, cg1_2, bo_size);
-+	igt_assert(bo1_2 > 0);
-+
-+	/* Create a too big bo and check if 1_2 is evicted */
-+	igt_assert_eq(-ENOMEM, bo_create_at(xe, cg1_2, 4 * bo_size));
-+	igt_assert_eq_u64(0, get_cgrp_current(cg1_2));
-+
-+	gem_close(xe->fd, bo1_2);
-+	bo1_2 = bo_create_at(xe, cg1_2, bo_size);
-+	igt_assert(bo1_2 > 0);
-+
-+	set_cgrp_max(cg1, 4 * bo_size);
-+	bo1 = bo_create_at(xe, cg1_1, bo_size);
-+	igt_assert(bo1 > 0);
-+
-+	gem_close(xe->fd, bo1_2);
-+	gem_close(xe->fd, bo1_1);
-+	gem_close(xe->fd, bo1);
-+}
-+
-+static void create_cg1_min(struct xe_device *xe, int *bo1_1, int *bo1_2)
-+{
-+	uint64_t bo_size = xe->default_alignment;
-+
-+	if (*bo1_1 > 0)
-+		gem_close(xe->fd, *bo1_1);
-+
-+	if (*bo1_2 > 0)
-+		gem_close(xe->fd, *bo1_2);
-+
-+	*bo1_1 = bo_create_at(xe, cg1_1, bo_size);
-+	igt_assert(*bo1_1 > 0);
-+
-+	*bo1_2 = bo_create_at(xe, cg1_2, bo_size);
-+	igt_assert(*bo1_2 > 0);
-+}
-+
-+/**
-+ * SUBTEST: test-simple-min
-+ * Description: Test that cgroup min limits are respected between
-+ * 	various nestings of cgroups, and correct cgroups are evicted.
-+ */
-+static void test_simple_min(struct xe_device *xe)
-+{
-+	uint64_t bo_size = xe->default_alignment;
-+	int bo1_1 = -1, bo1_2 = -1, bo2;
-+
-+	assert_all_cgs_empty();
-+	reset_cgs();
-+
-+	/* set static max of 2 bo's for testing, allow protection as well on cg1 */
-+	set_cgrp_max(igtcg, 2 * bo_size);
-+	set_cgrp_min(igtcg, 2 * bo_size);
-+	set_cgrp_min(cg1, 2 * bo_size);
-+	set_cgrp_min(cg1_1, bo_size);
-+	set_cgrp_min(cg1_2, bo_size);
-+
-+	create_cg1_min(xe, &bo1_1, &bo1_2);
-+
-+	igt_assert_eq_u64(get_cgrp_current(cg1), 2 * bo_size);
-+
-+	bo2 = bo_create_at(xe, cg2, bo_size);
-+	igt_assert_eq_u64(get_cgrp_current(cg1), 2 * bo_size);
-+	igt_assert_eq(bo2, -ENOMEM);
-+
-+	/* Unprotect one */
-+	set_cgrp_min(cg1, bo_size);
-+	set_cgrp_min(cg1_2, 0);
-+
-+	bo2 = bo_create_at(xe, cg2, bo_size);
-+	/* Verify cg1_2 is evicted, cg1_1 not */
-+	igt_assert_eq_u64(get_cgrp_current(cg1_2), 0);
-+	igt_assert_eq_u64(get_cgrp_current(cg1), bo_size);
-+	igt_assert_eq_u64(get_cgrp_current(igtcg), 2 * bo_size);
-+	igt_assert(bo2 > 0);
-+
-+	gem_close(xe->fd, bo2);
-+	gem_close(xe->fd, bo1_1);
-+	gem_close(xe->fd, bo1_2);
-+}
-+
-+igt_main
-+{
-+	struct xe_device *xe;
-+	int fd;
-+
-+	igt_fixture {
-+		char *data;
-+		char busid[32];
-+
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe = xe_device_get(fd);
-+
-+		/* XXX: Easier way to determine busid? */
-+		igt_device_get_pci_slot_name(fd, busid);
-+
-+		/* For now, require VRAM as shared memory lacks support */
-+		igt_require(xe->has_vram);
-+		sprintf(cgid, "drm/%s/vram0", busid);
-+
-+		create_cgroups();
-+
-+		data = igt_sysfs_get(cgfd, "dmem.capacity");
-+		igt_debug("Contents: %s\n", data);
-+		/* Ensure our driver is found" */
-+		igt_require_f(strstr(data, busid), "Is driver xe/%s supported by dmem controller?\n", busid);
-+		free(data);
-+	}
-+
-+	igt_subtest("functional")
-+		test_functional();
-+
-+	igt_subtest("test-simple-max")
-+		test_simple_max(xe);
-+
-+	igt_subtest("test-simple-min")
-+		test_simple_min(xe);
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index a6750d523..f2a0dea88 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -273,6 +273,7 @@ intel_kms_progs = [
- intel_xe_progs = [
- 	'xe_wedged',
- 	'xe_ccs',
-+	'xe_cg_dmem',
- 	'xe_create',
- 	'xe_compute',
- 	'xe_compute_preempt',
--- 
-2.43.0
+Regards,
+Kamil
 
+> == Series Details ==
+> 
+> Series: tests/intel/xe_pm_residency: Skip on igt_power_open failure (rev6)
+> URL   : https://patchwork.freedesktop.org/series/139352/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8193_full -> XEIGTPW_12443_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_12443_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_12443_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12443_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a3:
+>     - shard-bmg:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/shard-bmg-8/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a3.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12443/shard-bmg-6/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a3.html
+> 
+>   * igt@kms_flip@flip-vs-suspend-interruptible@d-dp4:
+>     - shard-dg2-set2:     [PASS][3] -> [INCOMPLETE][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/shard-dg2-436/igt@kms_flip@flip-vs-suspend-interruptible@d-dp4.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12443/shard-dg2-464/igt@kms_flip@flip-vs-suspend-interruptible@d-dp4.html
+> 
+>   * igt@kms_sequence@get-busy:
+>     - shard-bmg:          [PASS][5] -> [INCOMPLETE][6] +1 other test incomplete
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/shard-bmg-4/igt@kms_sequence@get-busy.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12443/shard-bmg-4/igt@kms_sequence@get-busy.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@kms_flip@flip-vs-expired-vblank:
+>     - shard-bmg:          [FAIL][7] ([Intel XE#2882]) -> [FAIL][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/shard-bmg-8/igt@kms_flip@flip-vs-expired-vblank.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12443/shard-bmg-6/igt@kms_flip@flip-vs-expired-vblank.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_12443_full that come from known issues:
+> 
+...cut...
+
+>   [Intel XE#944]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/944
+>   [i915#2575]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2575
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_8193 -> IGTPW_12443
+> 
+>   IGTPW_12443: 04c5fd7cf2157d2ace31eae2ea3ee2420bddd284 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8193: 84511e278c1c6e598ccc21287a733cfc83d13e8a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-2495-4cea1f90028925afcf1a0f8a0ef301f90349688c: 4cea1f90028925afcf1a0f8a0ef301f90349688c
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12443/index.html
