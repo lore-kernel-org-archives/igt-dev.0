@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC066C02180
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 12:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93220C02180
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 12:57:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 666C610E587;
-	Thu, 16 Jan 2025 12:55:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CA0210E01F;
+	Thu, 16 Jan 2025 12:57:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qaj+ujjd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ew1NT+iX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D2E510E587
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 12:55:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB66310E01F
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 12:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737032134; x=1768568134;
+ t=1737032269; x=1768568269;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=BRybhWsTCqvOKDjxPBFLLQqdQlz0cHrSvCia/xhINzw=;
- b=Qaj+ujjddl7Kvk3oG6C0LZaz3tah67plBxlNAb3NnNDrLRLBvoTuTJ3c
- NPDlfUZvDmiKWevkAw5z/oXruN4ydUSicL8ofB+Eb4jYQet3BpzuOcyaY
- 6zh40tNG6XhiDsxi0BQIbZWKhWRdjoZDYTUdQkUSGS/sxFSoMHFVH+VaG
- EizLdem2mTva2X0b4Rj94VlV60pMvfMndJaePgu+TNl760Ba346vh5GaV
- X6KhOmiISSrUyi1iA4am2xyqtHpmHcsBIG/fqBC8X1jPg/QCA4Bi/NGtU
- ebnNkT7zn36sykf/C4s8cWhrwwo9AqlLqVdyG4hHI6iorDeXCOlSMsn+y g==;
-X-CSE-ConnectionGUID: dadWSzCdRvS2eL8nRk03/g==
-X-CSE-MsgGUID: 6YsH9pHsTUOL3fDCPTMW9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37570294"
-X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; d="scan'208";a="37570294"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 04:55:34 -0800
-X-CSE-ConnectionGUID: k+zcJDmpS7yqj92shdbHZQ==
-X-CSE-MsgGUID: PAUHhDClRlez8WHuGO3lpg==
+ bh=juZTLtePA9IXdSrxgqiSIdyNpqCedQckK8W7YKa3yik=;
+ b=ew1NT+iXmGwFZmKdpb5zYZQtPBYkTjgczAALogpQ5f/3lxyUmPGV22f3
+ g8JvjcoEWnzdzXKyfUID8dQACs0G1//ALvkbevHOgHu6YzJ7Td+JQWqkY
+ XfbEf4JGh8QhuGmW/Z72rXD0gc49nMg/VoHcgLHqe0WVNBoaZMVXTwEZt
+ NCTy2aLbgZTIv3bIOCpS+qrfLtefdld3y6fIkDmfRIL9ZWBLkIAecHLev
+ 2qi53yUjMAmKjThnn/HyOTe/2KxBWdWqc4AUF3rEoHqlm2INgGtFR2llw
+ vZBr6QjPO+Q9wwgUSahgg7Pw1MjYMy4HOGGFQtW945LJXxvRdwBLgIMVl Q==;
+X-CSE-ConnectionGUID: /ZfjsvvWQSOARtoormCl9A==
+X-CSE-MsgGUID: E0hRl7JXQNmOhvsvUv17/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="54829907"
+X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; d="scan'208";a="54829907"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jan 2025 04:57:48 -0800
+X-CSE-ConnectionGUID: 0pOEqXWiQ12n4xWp4anVFw==
+X-CSE-MsgGUID: /Yr6Xz+hRKm0X1KA7f4oRQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110112572"
+X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; d="scan'208";a="110465894"
 Received: from artdev273.igk.intel.com ([172.28.176.8])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 04:55:33 -0800
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jan 2025 04:57:47 -0800
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jan Sokolowski <jan.sokolowski@intel.com>
-Subject: [PATCH i-g-t v1 1/1] tests/xe_eudebug: refactor exec-queue-placements
- test
-Date: Thu, 16 Jan 2025 12:55:22 +0000
-Message-Id: <20250116125522.146533-1-jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t v2 1/1] tests/intel/xe_eudebug: refactor
+ exec-queue-placements test
+Date: Thu, 16 Jan 2025 12:57:38 +0000
+Message-Id: <20250116125738.146610-1-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -77,6 +77,10 @@ Move the test to the end in the execution list and add
 a proper cleanup method, ccs_mode_restore;
 
 Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+---
+
+v2: Forgot proper path in title
+
 ---
  tests/intel/xe_eudebug.c | 46 ++++++++++++++++++++++++++++++----------
  1 file changed, 35 insertions(+), 11 deletions(-)
