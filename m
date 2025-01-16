@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B9EC02183
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 15:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DABFC02183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 15:18:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 87F0610E9A8;
-	Thu, 16 Jan 2025 15:11:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18ADA10E9AC;
+	Thu, 16 Jan 2025 15:18:39 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 756DF10E9A7;
- Thu, 16 Jan 2025 15:11:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B74FB10E9A8;
+ Thu, 16 Jan 2025 15:18:38 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8965363654923514976=="
+ boundary="===============5421087281614100835=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/xe=3A_Add_xe=5Fcg=5F?=
  =?utf-8?q?dmem_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Maarten Lankhorst" <dev@lankhorst.se>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Jan 2025 15:11:48 -0000
-Message-ID: <173704030844.304946.17049174548091758725@b555e5b46a47>
+Date: Thu, 16 Jan 2025 15:18:38 -0000
+Message-ID: <173704071871.304946.8483521205721552703@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250115115512.84520-1-dev@lankhorst.se>
 In-Reply-To: <20250115115512.84520-1-dev@lankhorst.se>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8965363654923514976==
+--===============5421087281614100835==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -2535,7 +2535,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12447/index.html
 
---===============8965363654923514976==
+--===============5421087281614100835==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -7924,4 +7924,4 @@ cc83b094540e5efa0</p>
 </body>
 </html>
 
---===============8965363654923514976==--
+--===============5421087281614100835==--
