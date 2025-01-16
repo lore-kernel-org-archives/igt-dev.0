@@ -4,22 +4,20 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EFEE77188
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B0DC02183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 329F210E8B4;
-	Thu, 16 Jan 2025 07:01:43 +0000 (UTC)
-X-Greylist: delayed 442 seconds by postgrey-1.36 at gabe;
- Thu, 16 Jan 2025 07:01:41 UTC
+	by gabe.freedesktop.org (Postfix) with ESMTP id 58FE010E8B5;
+	Thu, 16 Jan 2025 07:01:44 +0000 (UTC)
 Received: from rtg-sunil-navi33 (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD78710E1B1
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC45D10E1B1
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:42 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33 (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 50G6sEGP1883258; Thu, 16 Jan 2025 12:24:14 +0530
+ 50G6sE5j1883299; Thu, 16 Jan 2025 12:24:14 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sDOT1883257;
- Thu, 16 Jan 2025 12:24:13 +0530
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEVE1883298;
+ Thu, 16 Jan 2025 12:24:14 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Alex Deucher <alexander.deucher@amd.com>,
@@ -28,10 +26,12 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Shashank Sharma <shashank.sharma@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH 0/8] The series add support for UMQ submission
-Date: Thu, 16 Jan 2025 12:22:03 +0530
-Message-Id: <20250116065211.1882469-1-sunil.khatri@amd.com>
+Subject: [PATCH 7/8] tests/amdgpu: Add UMQ submission tests for gfx and compute
+Date: Thu, 16 Jan 2025 12:22:10 +0530
+Message-Id: <20250116065211.1882469-8-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
+References: <20250116065211.1882469-1-sunil.khatri@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -49,38 +49,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Here we are enabling UMQ submission framework along with 3 new test
-cases which validated gfx and compute with UMQ Submission
+We already have the gfx and compute ip user mode submission
+support added in the IGT and hence with this patch we are
+adding a new test case for gfx and compute using UMQ
+submission.
 
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com>
+---
+ tests/amdgpu/amd_basic.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Sunil Khatri (8):
-  drm-uapi/amdgpu: sync with drm-next
-  drm-uapi/amdgpu: sync with drm-next
-  lib/amdgpu: Add user mode queue support in ring context
-  lib/amdgpu: Add support of amd user queues
-  lib/amdgpu: add func amdgpu_bo_alloc_and_map_sync
-  tests/amdgpu: Add user queue support for gfx and compute
-  tests/amdgpu: Add UMQ submission tests for gfx and compute
-  tests/amdgpu: Add amdgpu_sync_dependency_test with UMQ
-
- include/drm-uapi/amdgpu_drm.h       | 240 ++++++++++++++++
- lib/amdgpu/amd_PM4.h                |   3 +
- lib/amdgpu/amd_command_submission.c | 313 ++++++++++++++-------
- lib/amdgpu/amd_command_submission.h |   8 +-
- lib/amdgpu/amd_compute.c            | 100 ++++---
- lib/amdgpu/amd_compute.h            |   2 +-
- lib/amdgpu/amd_ip_blocks.h          |  36 +++
- lib/amdgpu/amd_memory.c             |  19 ++
- lib/amdgpu/amd_memory.h             |   8 +
- lib/amdgpu/amd_user_queue.c         | 418 ++++++++++++++++++++++++++++
- lib/amdgpu/amd_user_queue.h         |  48 ++++
- lib/meson.build                     |   3 +-
- tests/amdgpu/amd_basic.c            | 168 ++++++++---
- tests/amdgpu/amd_security.c         |   4 +-
- 14 files changed, 1187 insertions(+), 183 deletions(-)
- create mode 100644 lib/amdgpu/amd_user_queue.c
- create mode 100644 lib/amdgpu/amd_user_queue.h
-
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index b05633b8e..2b339c74b 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -747,6 +747,22 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
++	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
++		if (arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("cs-gfx-with-umq")
++			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
++		}
++	}
++
++	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
++	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
++		if (arr_cap[AMD_IP_COMPUTE]) {
++			igt_dynamic_f("cs-compute-with-umq")
++			amdgpu_command_submission_compute(device, true);
++		}
++	}
++
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
 -- 
 2.34.1
 
