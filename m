@@ -4,19 +4,19 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C6AC02187
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADD06E77188
 	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9079210E8BB;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6ACC010E8BA;
 	Thu, 16 Jan 2025 07:01:52 +0000 (UTC)
 Received: from rtg-sunil-navi33 (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C933C10E8B8
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01F1E10E8B9
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:49 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33 (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 50G6sEX81883269; Thu, 16 Jan 2025 12:24:14 +0530
+ 50G6sEkd1883284; Thu, 16 Jan 2025 12:24:14 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEZx1883265;
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEXR1883283;
  Thu, 16 Jan 2025 12:24:14 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
@@ -26,9 +26,9 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Shashank Sharma <shashank.sharma@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH 1/8] drm-uapi/amdgpu: sync with drm-next
-Date: Thu, 16 Jan 2025 12:22:04 +0530
-Message-Id: <20250116065211.1882469-2-sunil.khatri@amd.com>
+Subject: [PATCH 4/8] lib/amdgpu: Add support of amd user queues
+Date: Thu, 16 Jan 2025 12:22:07 +0530
+Message-Id: <20250116065211.1882469-5-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
 References: <20250116065211.1882469-1-sunil.khatri@amd.com>
@@ -49,170 +49,550 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sync with drm-next commit ("e0400bf7d91ed477b827a674e5d64406c78ffd48")
+This is the first patch set to add support of
+UMQ(User mode queues) submission in IGT.
 
-This patch introduces new UAPI/IOCTL for usermode graphics
-queue. IGT test cases fill this structure and request
-the graphics driver to add a graphics work queue for it.
-The output of this UAPI is a queue id.
+UMQ allows users to directly create a user queue and
+submit workload to the GPU h/w to directly instead
+of sending the workload to kernel and then to GPU h/w.
 
-This UAPI maps the queue into GPU, so the graphics app can start
-submitting work to the queue as soon as the call returns.
+This will be used by test cases which will be testing
+the UMQ queues for gfx/compute and sdma to start with.
 
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com>
 ---
- include/drm-uapi/amdgpu_drm.h | 123 ++++++++++++++++++++++++++++++++++
- 1 file changed, 123 insertions(+)
+ lib/amdgpu/amd_PM4.h        |   3 +
+ lib/amdgpu/amd_ip_blocks.h  |   5 +
+ lib/amdgpu/amd_user_queue.c | 418 ++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_user_queue.h |  48 +++++
+ lib/meson.build             |   3 +-
+ 5 files changed, 476 insertions(+), 1 deletion(-)
+ create mode 100644 lib/amdgpu/amd_user_queue.c
+ create mode 100644 lib/amdgpu/amd_user_queue.h
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index efe5de6ce..d780e1f2a 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -54,6 +54,7 @@ extern "C" {
- #define DRM_AMDGPU_VM			0x13
- #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
- #define DRM_AMDGPU_SCHED		0x15
-+#define DRM_AMDGPU_USERQ		0x16
+diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
+index 5bc3cb783..8f59b4223 100644
+--- a/lib/amdgpu/amd_PM4.h
++++ b/lib/amdgpu/amd_PM4.h
+@@ -192,6 +192,9 @@
+ 		 * 1 - pfp
+ 		 */
  
- #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
- #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
-@@ -71,6 +72,7 @@ extern "C" {
- #define DRM_IOCTL_AMDGPU_VM		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_VM, union drm_amdgpu_vm)
- #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
- #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
-+#define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
- 
- /**
-  * DOC: memory domains
-@@ -319,6 +321,127 @@ union drm_amdgpu_ctx {
- 	union drm_amdgpu_ctx_out out;
- };
- 
-+/* user queue IOCTL operations */
-+#define AMDGPU_USERQ_OP_CREATE	1
-+#define AMDGPU_USERQ_OP_FREE	2
++#define PACKET3_INDIRECT_BUFFER                         0x3F
++#define PACKET3_PROTECTED_FENCE_SIGNAL                  0xd0
 +
+ #define	PACKET3_WRITE_DATA				0x37
+ #define		WRITE_DATA_DST_SEL(x)                   ((x) << 8)
+ 		/* 0 - register
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 9d110d402..9b22206cb 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -27,6 +27,11 @@
+ #define AMDGPU_RESET_TYPE_PER_QUEUE (1 << 2) /* per queue */
+ #define AMDGPU_RESET_TYPE_PER_PIPE (1 << 3) /* per pipe */
+ 
++/* User queue */
++#define   S_3F3_INHERIT_VMID_MQD_GFX(x) 	(((unsigned int)(x)&0x1) << 22)/* userqueue only */
++#define   S_3F3_VALID_COMPUTE(x)		(((unsigned int)(x)&0x1) << 23)/* userqueue only */
++#define   S_3F3_INHERIT_VMID_MQD_COMPUTE(x)	(((unsigned int)(x)&0x1) << 30)/* userqueue only */
++
+ enum amd_ip_block_type {
+ 	AMD_IP_GFX = 0,
+ 	AMD_IP_COMPUTE,
+diff --git a/lib/amdgpu/amd_user_queue.c b/lib/amdgpu/amd_user_queue.c
+new file mode 100644
+index 000000000..9412a37e8
+--- /dev/null
++++ b/lib/amdgpu/amd_user_queue.c
+@@ -0,0 +1,418 @@
++// SPDX-License-Identifier: MIT
 +/*
-+ * This structure is a container to pass input configuration
-+ * info for all supported userqueue related operations.
-+ * For operation AMDGPU_USERQ_OP_CREATE: user is expected
-+ *  to set all fields, excep the parameter 'queue_id'.
-+ * For operation AMDGPU_USERQ_OP_FREE: the only input parameter expected
-+ *  to be set is 'queue_id', eveything else is ignored.
++ * Copyright 2025 Advanced Micro Devices, Inc.
 + */
-+struct drm_amdgpu_userq_in {
-+	/** AMDGPU_USERQ_OP_* */
-+	__u32	op;
-+	/** Queue id passed for operation USERQ_OP_FREE */
-+	__u32	queue_id;
-+	/** the target GPU engine to execute workload (AMDGPU_HW_IP_*) */
-+	__u32   ip_type;
-+	/**
-+	 * @doorbell_handle: the handle of doorbell GEM object
-+	 * associated with this userqueue client.
-+	 */
-+	__u32   doorbell_handle;
-+	/**
-+	 * @doorbell_offset: 32-bit offset of the doorbell in the doorbell bo.
-+	 * Kernel will generate absolute doorbell offset using doorbell_handle
-+	 * and doorbell_offset in the doorbell bo.
-+	 */
-+	__u32   doorbell_offset;
-+	__u32 _pad;
-+	/**
-+	 * @queue_va: Virtual address of the GPU memory which holds the queue
-+	 * object. The queue holds the workload packets.
-+	 */
-+	__u64   queue_va;
-+	/**
-+	 * @queue_size: Size of the queue in bytes, this needs to be 256-byte
-+	 * aligned.
-+	 */
-+	__u64   queue_size;
-+	/**
-+	 * @rptr_va : Virtual address of the GPU memory which holds the ring RPTR.
-+	 * This object must be at least 8 byte in size and aligned to 8-byte offset.
-+	 */
-+	__u64   rptr_va;
-+	/**
-+	 * @wptr_va : Virtual address of the GPU memory which holds the ring WPTR.
-+	 * This object must be at least 8 byte in size and aligned to 8-byte offset.
-+	 *
-+	 * Queue, RPTR and WPTR can come from the same object, as long as the size
-+	 * and alignment related requirements are met.
-+	 */
-+	__u64   wptr_va;
-+	/**
-+	 * @mqd: MQD (memory queue descriptor) is a set of parameters which allow
-+	 * the GPU to uniquely define and identify a usermode queue.
-+	 *
-+	 * MQD data can be of different size for different GPU IP/engine and
-+	 * their respective versions/revisions, so this points to a __u64 *
-+	 * which holds IP specific MQD of this usermode queue.
-+	 */
-+	__u64 mqd;
-+	/**
-+	 * @size: size of MQD data in bytes, it must match the MQD structure
-+	 * size of the respective engine/revision defined in UAPI for ex, for
-+	 * gfx11 workloads, size = sizeof(drm_amdgpu_userq_mqd_gfx11).
-+	 */
-+	__u64 mqd_size;
-+};
 +
-+/* The structure to carry output of userqueue ops */
-+struct drm_amdgpu_userq_out {
-+	/**
-+	 * For operation AMDGPU_USERQ_OP_CREATE: This field contains a unique
-+	 * queue ID to represent the newly created userqueue in the system, otherwise
-+	 * it should be ignored.
-+	 */
-+	__u32	queue_id;
-+	__u32 _pad;
-+};
++#include "amd_user_queue.h"
++#include "amd_memory.h"
++#include "amd_PM4.h"
++#include "ioctl_wrappers.h"
 +
-+union drm_amdgpu_userq {
-+	struct drm_amdgpu_userq_in in;
-+	struct drm_amdgpu_userq_out out;
-+};
++void amdgpu_alloc_doorbell(amdgpu_device_handle device_handle, struct amdgpu_userq_bo *doorbell_bo,
++			   unsigned int size, unsigned int domain)
++{
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle buf_handle;
++	int r;
 +
-+/* GFX V11 IP specific MQD parameters */
-+struct drm_amdgpu_userq_mqd_gfx11 {
-+	/**
-+	 * @shadow_va: Virtual address of the GPU memory to hold the shadow buffer.
-+	 * Use AMDGPU_INFO_IOCTL to find the exact size of the object.
-+	 */
-+	__u64   shadow_va;
-+	/**
-+	 * @csa_va: Virtual address of the GPU memory to hold the CSA buffer.
-+	 * Use AMDGPU_INFO_IOCTL to find the exact size of the object.
-+	 */
-+	__u64   csa_va;
-+};
++	req.alloc_size = ALIGN(size, PAGE_SIZE);
++	req.preferred_heap = domain;
++	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
++	igt_assert_eq(r, 0);
 +
-+/* GFX V11 SDMA IP specific MQD parameters */
-+struct drm_amdgpu_userq_mqd_sdma_gfx11 {
-+	/**
-+	 * @csa_va: Virtual address of the GPU memory to hold the CSA buffer.
-+	 * This must be a from a separate GPU object, and use AMDGPU_INFO IOCTL
-+	 * to get the size.
-+	 */
-+	__u64   csa_va;
-+};
++	doorbell_bo->handle = buf_handle;
++	doorbell_bo->size = req.alloc_size;
 +
-+/* GFX V11 Compute IP specific MQD parameters */
-+struct drm_amdgpu_userq_mqd_compute_gfx11 {
-+	/**
-+	 * @eop_va: Virtual address of the GPU memory to hold the EOP buffer.
-+	 * This must be a from a separate GPU object, and use AMDGPU_INFO IOCTL
-+	 * to get the size.
-+	 */
-+	__u64   eop_va;
-+};
++	r = amdgpu_bo_cpu_map(doorbell_bo->handle,
++			      (void **)&doorbell_bo->ptr);
++	igt_assert_eq(r, 0);
++}
 +
- /* vm ioctl */
- #define AMDGPU_VM_OP_RESERVE_VMID	1
- #define AMDGPU_VM_OP_UNRESERVE_VMID	2
++int
++amdgpu_bo_alloc_and_map_uq(amdgpu_device_handle device_handle, unsigned int size,
++			   unsigned int alignment, unsigned int heap, uint64_t alloc_flags,
++			   uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
++			   uint64_t *mc_address, amdgpu_va_handle *va_handle,
++			   uint32_t timeline_syncobj_handle, uint64_t point)
++{
++	struct amdgpu_bo_alloc_request request = {};
++	amdgpu_bo_handle buf_handle;
++	uint64_t vmc_addr;
++	int r;
++
++	request.alloc_size = size;
++	request.phys_alignment = alignment;
++	request.preferred_heap = heap;
++	request.flags = alloc_flags;
++
++	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
++	if (r)
++		return r;
++
++	r = amdgpu_va_range_alloc(device_handle,
++				  amdgpu_gpu_va_range_general,
++				  size, alignment, 0, &vmc_addr,
++				  va_handle, 0);
++	if (r)
++		goto error_va_alloc;
++
++	r = amdgpu_bo_va_op_raw2(device_handle, buf_handle, 0,
++				 ALIGN(size, getpagesize()), vmc_addr,
++				 AMDGPU_VM_PAGE_READABLE |
++				 AMDGPU_VM_PAGE_WRITEABLE |
++				 AMDGPU_VM_PAGE_EXECUTABLE |
++				 mapping_flags,
++				 AMDGPU_VA_OP_MAP,
++				 timeline_syncobj_handle,
++				 point, 0, 0);
++	if (r)
++		goto error_va_map;
++
++	if (cpu) {
++		r = amdgpu_bo_cpu_map(buf_handle, cpu);
++		if (r)
++			goto error_cpu_map;
++	}
++
++	*bo = buf_handle;
++	*mc_address = vmc_addr;
++
++	return 0;
++
++error_cpu_map:
++	amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
++error_va_map:
++	amdgpu_va_range_free(*va_handle);
++error_va_alloc:
++	amdgpu_bo_free(buf_handle);
++	return r;
++}
++
++void amdgpu_bo_unmap_and_free_uq(amdgpu_device_handle device_handle, amdgpu_bo_handle bo,
++			    amdgpu_va_handle va_handle, uint64_t mc_addr, uint64_t size,
++			    uint32_t timeline_syncobj_handle, uint64_t point,
++			    uint64_t syncobj_handles_array, uint32_t num_syncobj_handles)
++{
++	amdgpu_bo_cpu_unmap(bo);
++	amdgpu_bo_va_op_raw2(device_handle, bo, 0, size, mc_addr, 0, AMDGPU_VA_OP_UNMAP,
++				  timeline_syncobj_handle, point,
++				  syncobj_handles_array, num_syncobj_handles);
++	amdgpu_va_range_free(va_handle);
++	amdgpu_bo_free(bo);
++}
++
++int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
++				 uint32_t timeline_syncobj_handle, uint64_t point)
++{
++	uint32_t flags = DRM_SYNCOBJ_QUERY_FLAGS_LAST_SUBMITTED;
++	int r;
++
++	r = amdgpu_cs_syncobj_query2(device_handle, &timeline_syncobj_handle,
++				     &point, 1, flags);
++	if (r)
++		return r;
++
++	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &timeline_syncobj_handle,
++					    &point, 1, INT64_MAX,
++					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
++					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
++					    NULL);
++	if (r)
++		igt_warn("Timeline timed out\n");
++	return r;
++}
++
++void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
++			      unsigned int ip_type, uint64_t mc_address)
++{
++	int r;
++	uint32_t *npkt = &ring_context->npkt;
++	uint32_t *queue_cpu = ring_context->queue_cpu;
++	uint32_t control = ring_context->pm4_dw;
++	uint32_t syncarray[1];
++
++	struct drm_amdgpu_userq_signal signal_data;
++
++	/* Prepare the Indirect IB to submit the IB to user queue */
++	queue_cpu[(*npkt)++] = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
++	queue_cpu[(*npkt)++] = lower_32_bits(mc_address);
++	queue_cpu[(*npkt)++] = upper_32_bits(mc_address);
++
++	if (ip_type == AMD_IP_GFX)
++		queue_cpu[(*npkt)++] = control | S_3F3_INHERIT_VMID_MQD_GFX(1);
++	else
++		queue_cpu[(*npkt)++] = control | S_3F3_VALID_COMPUTE(1)
++					       | S_3F3_INHERIT_VMID_MQD_COMPUTE(1);
++
++	queue_cpu[(*npkt)++] = PACKET3(PACKET3_PROTECTED_FENCE_SIGNAL, 0);
++	/* empty dword is needed for fence signal pm4 */
++	++*npkt;
++
++	*ring_context->wptr_cpu = *npkt;
++	ring_context->doorbell_cpu[DOORBELL_INDEX] = *npkt;
++
++	/* Add a fence packet for signal */
++	syncarray[0] = ring_context->timeline_syncobj_handle;
++	signal_data.queue_id = ring_context->queue_id;
++	signal_data.syncobj_handles = (uintptr_t)syncarray;
++	signal_data.num_syncobj_handles = 1;
++	signal_data.bo_read_handles = 0;
++	signal_data.bo_write_handles = 0;
++	signal_data.num_bo_read_handles = 0;
++	signal_data.num_bo_write_handles = 0;
++
++	r = amdgpu_userq_signal(device, &signal_data);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1, INT64_MAX,
++				   DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
++	igt_assert_eq(r, 0);
++}
++
++void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
++			       unsigned int type)
++{
++	int r;
++
++	if (type > AMD_IP_DMA) {
++		igt_info("Invalid IP not supported for UMQ Submission\n");
++		return;
++	}
++
++	/* Free the Usermode Queue */
++	r = amdgpu_free_userqueue(device_handle, ctxt->queue_id);
++	igt_assert_eq(r, 0);
++
++	switch (type) {
++	case AMD_IP_GFX:
++		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->csa.handle,
++					    ctxt->csa.va_handle,
++					    ctxt->csa.mc_addr, ctxt->dev_info.csa_size,
++					    ctxt->timeline_syncobj_handle, ++ctxt->point,
++					    0, 0);
++
++		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->shadow.handle,
++					    ctxt->shadow.va_handle,
++					    ctxt->shadow.mc_addr, ctxt->dev_info.shadow_size,
++					    ctxt->timeline_syncobj_handle, ++ctxt->point,
++					    0, 0);
++
++		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
++						 ctxt->point);
++		igt_assert_eq(r, 0);
++		break;
++
++	case AMD_IP_COMPUTE:
++		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->eop.handle,
++					    ctxt->eop.va_handle,
++					    ctxt->eop.mc_addr, 256,
++					    ctxt->timeline_syncobj_handle, ++ctxt->point,
++					    0, 0);
++
++		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
++						 ctxt->point);
++		igt_assert_eq(r, 0);
++		break;
++
++	case AMD_IP_DMA:
++		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->csa.handle,
++					    ctxt->csa.va_handle,
++					    ctxt->csa.mc_addr, ctxt->dev_info.csa_size,
++					    ctxt->timeline_syncobj_handle, ++ctxt->point,
++					    0, 0);
++
++		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
++						 ctxt->point);
++		igt_assert_eq(r, 0);
++		break;
++
++	default:
++		igt_info("IP invalid for cleanup\n");
++	}
++
++	r = amdgpu_cs_destroy_syncobj(device_handle, ctxt->timeline_syncobj_handle);
++	igt_assert_eq(r, 0);
++
++	/* Clean up doorbell*/
++	r = amdgpu_bo_cpu_unmap(ctxt->doorbell.handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_free(ctxt->doorbell.handle);
++	igt_assert_eq(r, 0);
++
++	/* Clean up rptr wptr queue */
++	amdgpu_bo_unmap_and_free(ctxt->rptr.handle, ctxt->rptr.va_handle,
++				 ctxt->rptr.mc_addr, 8);
++
++	amdgpu_bo_unmap_and_free(ctxt->wptr.handle, ctxt->wptr.va_handle,
++				 ctxt->wptr.mc_addr, 8);
++
++	amdgpu_bo_unmap_and_free(ctxt->queue.handle, ctxt->queue.va_handle,
++				 ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE);
++}
++
++void amdgpu_user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
++			      unsigned int type)
++{
++	int r;
++	uint64_t gtt_flags = 0;
++	struct drm_amdgpu_userq_mqd_gfx11 gfx_mqd;
++	struct drm_amdgpu_userq_mqd_sdma_gfx11 sdma_mqd;
++	struct drm_amdgpu_userq_mqd_compute_gfx11 compute_mqd;
++	void *mqd;
++
++	if (type > AMD_IP_DMA) {
++		igt_info("Invalid IP not supported for UMQ Submission\n");
++		return;
++	}
++
++	r = amdgpu_query_info(device_handle, AMDGPU_INFO_DEV_INFO,
++			      sizeof(ctxt->dev_info), &ctxt->dev_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_cs_create_syncobj2(device_handle, 0, &ctxt->timeline_syncobj_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map_uq(device_handle, USERMODE_QUEUE_SIZE,
++				       ALIGNMENT,
++				       AMDGPU_GEM_DOMAIN_GTT,
++				       gtt_flags,
++				       AMDGPU_VM_MTYPE_UC,
++				       &ctxt->queue.handle, &ctxt->queue.ptr,
++				       &ctxt->queue.mc_addr, &ctxt->queue.va_handle,
++				       ctxt->timeline_syncobj_handle, ++ctxt->point);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map_uq(device_handle, 8,
++				       ALIGNMENT,
++				       AMDGPU_GEM_DOMAIN_GTT,
++				       gtt_flags,
++				       AMDGPU_VM_MTYPE_UC,
++				       &ctxt->wptr.handle, &ctxt->wptr.ptr,
++				       &ctxt->wptr.mc_addr, &ctxt->wptr.va_handle,
++				       ctxt->timeline_syncobj_handle, ++ctxt->point);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map_uq(device_handle, 8,
++				       ALIGNMENT,
++				       AMDGPU_GEM_DOMAIN_GTT,
++				       gtt_flags,
++				       AMDGPU_VM_MTYPE_UC,
++				       &ctxt->rptr.handle, &ctxt->rptr.ptr,
++				       &ctxt->rptr.mc_addr, &ctxt->rptr.va_handle,
++				       ctxt->timeline_syncobj_handle, ++ctxt->point);
++	igt_assert_eq(r, 0);
++
++	switch (type) {
++	case AMD_IP_GFX:
++		r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->dev_info.shadow_size,
++					       ctxt->dev_info.shadow_alignment,
++					       AMDGPU_GEM_DOMAIN_GTT,
++					       gtt_flags,
++					       AMDGPU_VM_MTYPE_UC,
++					       &ctxt->shadow.handle, NULL,
++					       &ctxt->shadow.mc_addr, &ctxt->shadow.va_handle,
++					       ctxt->timeline_syncobj_handle, ++ctxt->point);
++		igt_assert_eq(r, 0);
++
++		r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->dev_info.csa_size,
++					       ctxt->dev_info.csa_alignment,
++					       AMDGPU_GEM_DOMAIN_GTT,
++					       gtt_flags,
++					       AMDGPU_VM_MTYPE_UC,
++					       &ctxt->csa.handle, NULL,
++					       &ctxt->csa.mc_addr, &ctxt->csa.va_handle,
++					       ctxt->timeline_syncobj_handle, ++ctxt->point);
++		igt_assert_eq(r, 0);
++
++		gfx_mqd.shadow_va = ctxt->shadow.mc_addr;
++		gfx_mqd.csa_va = ctxt->csa.mc_addr;
++		mqd = &gfx_mqd;
++		break;
++
++	case AMD_IP_COMPUTE:
++		r = amdgpu_bo_alloc_and_map_uq(device_handle, 256,
++					       ALIGNMENT,
++					       AMDGPU_GEM_DOMAIN_GTT,
++					       gtt_flags,
++					       AMDGPU_VM_MTYPE_UC,
++					       &ctxt->eop.handle, NULL,
++					       &ctxt->eop.mc_addr, &ctxt->eop.va_handle,
++					       ctxt->timeline_syncobj_handle, ++ctxt->point);
++		igt_assert_eq(r, 0);
++		compute_mqd.eop_va = ctxt->eop.mc_addr;
++		mqd = &compute_mqd;
++		break;
++
++	case AMD_IP_DMA:
++		r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->dev_info.csa_size,
++					       ctxt->dev_info.csa_alignment,
++					       AMDGPU_GEM_DOMAIN_GTT,
++					       gtt_flags,
++					       AMDGPU_VM_MTYPE_UC,
++					       &ctxt->csa.handle, NULL,
++					       &ctxt->csa.mc_addr, &ctxt->csa.va_handle,
++					       ctxt->timeline_syncobj_handle, ++ctxt->point);
++		igt_assert_eq(r, 0);
++		sdma_mqd.csa_va = ctxt->csa.mc_addr;
++		mqd = &sdma_mqd;
++		break;
++
++	default:
++		igt_info("Unsupported IP for UMQ submission\n");
++		return;
++
++	}
++
++	r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
++					 ctxt->point);
++	igt_assert_eq(r, 0);
++
++	amdgpu_alloc_doorbell(device_handle, &ctxt->doorbell, PAGE_SIZE,
++			      AMDGPU_GEM_DOMAIN_DOORBELL);
++
++	ctxt->doorbell_cpu = (uint64_t *)ctxt->doorbell.ptr;
++
++	ctxt->wptr_cpu = (uint64_t *)ctxt->wptr.ptr;
++
++	ctxt->queue_cpu = (uint32_t *)ctxt->queue.ptr;
++	memset(ctxt->queue_cpu, 0, USERMODE_QUEUE_SIZE);
++
++	/* get db bo handle */
++	amdgpu_bo_export(ctxt->doorbell.handle, amdgpu_bo_handle_type_kms, &ctxt->db_handle);
++
++	/* Create the Usermode Queue */
++	switch (type) {
++	case AMD_IP_GFX:
++		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
++					    ctxt->db_handle, DOORBELL_INDEX,
++					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
++					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
++					    mqd, &ctxt->queue_id);
++		igt_assert_eq(r, 0);
++		break;
++
++	case AMD_IP_COMPUTE:
++		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_COMPUTE,
++					    ctxt->db_handle, DOORBELL_INDEX,
++					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
++					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
++					    mqd, &ctxt->queue_id);
++		igt_assert_eq(r, 0);
++		break;
++
++	case AMD_IP_DMA:
++		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_DMA,
++					    ctxt->db_handle, DOORBELL_INDEX,
++					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
++					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
++					    mqd, &ctxt->queue_id);
++		igt_assert_eq(r, 0);
++		break;
++
++	default:
++		igt_info("Unsupported IP, failed to create user queue\n");
++		return;
++
++	}
++}
+diff --git a/lib/amdgpu/amd_user_queue.h b/lib/amdgpu/amd_user_queue.h
+new file mode 100644
+index 000000000..355f16f19
+--- /dev/null
++++ b/lib/amdgpu/amd_user_queue.h
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: MIT
++ * Copyright 2025 Advanced Micro Devices, Inc.
++ */
++
++#ifndef _AMD_USER_QUEUE_
++#define _AMD_USER_QUEUE_
++
++#include <amdgpu_drm.h>
++#include <amdgpu.h>
++#include <time.h>
++#include "amd_ip_blocks.h"
++
++
++#ifndef PAGE_SIZE
++#define PAGE_SIZE 4096
++#endif
++
++#define USERMODE_QUEUE_SIZE		(PAGE_SIZE * 256)   //In bytes
++#define ALIGNMENT			4096
++#define DOORBELL_INDEX			4
++
++void amdgpu_alloc_doorbell(amdgpu_device_handle device_handle, struct amdgpu_userq_bo *doorbell_bo,
++			   unsigned int size, unsigned int domain);
++
++int amdgpu_bo_alloc_and_map_uq(amdgpu_device_handle device_handle, unsigned int size,
++			       unsigned int alignment, unsigned int heap, uint64_t alloc_flags,
++			       uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
++			       uint64_t *mc_address, amdgpu_va_handle *va_handle,
++			       uint32_t timeline_syncobj_handle, uint64_t point);
++
++void amdgpu_bo_unmap_and_free_uq(amdgpu_device_handle device_handle, amdgpu_bo_handle bo,
++				 amdgpu_va_handle va_handle, uint64_t mc_addr, uint64_t size,
++				 uint32_t timeline_syncobj_handle, uint64_t point,
++				 uint64_t syncobj_handles_array, uint32_t num_syncobj_handles);
++
++int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
++				 uint32_t timeline_syncobj_handle, uint64_t point);
++
++void amdgpu_user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
++			      unsigned int ip_type);
++
++void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
++			       unsigned int ip_type);
++
++void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
++			      unsigned int ip_type, uint64_t mc_address);
++
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 1704ed1e1..80482967b 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -164,7 +164,8 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_shared_process.c',
+ 		'amdgpu/xalloc.h',
+ 		'amdgpu/amd_cp_dma.c',
+-		'amdgpu/amd_mmd_shared.c'
++		'amdgpu/amd_mmd_shared.c',
++		'amdgpu/amd_user_queue.c'
+ 	]
+ 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
+ 		lib_sources +=[ 'amdgpu/amd_dispatch.c',]
 -- 
 2.34.1
 
