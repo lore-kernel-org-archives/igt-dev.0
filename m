@@ -4,19 +4,19 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B0DC02183
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 961EEC02180
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 58FE010E8B5;
-	Thu, 16 Jan 2025 07:01:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 55C9E10E1B1;
+	Thu, 16 Jan 2025 07:01:46 +0000 (UTC)
 Received: from rtg-sunil-navi33 (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC45D10E1B1
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4352D10E1B1
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:45 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33 (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 50G6sE5j1883299; Thu, 16 Jan 2025 12:24:14 +0530
+ 50G6sEIo1883289; Thu, 16 Jan 2025 12:24:14 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEVE1883298;
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEnC1883288;
  Thu, 16 Jan 2025 12:24:14 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
@@ -26,9 +26,9 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Shashank Sharma <shashank.sharma@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH 7/8] tests/amdgpu: Add UMQ submission tests for gfx and compute
-Date: Thu, 16 Jan 2025 12:22:10 +0530
-Message-Id: <20250116065211.1882469-8-sunil.khatri@amd.com>
+Subject: [PATCH 5/8] lib/amdgpu: add func amdgpu_bo_alloc_and_map_sync
+Date: Thu, 16 Jan 2025 12:22:08 +0530
+Message-Id: <20250116065211.1882469-6-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
 References: <20250116065211.1882469-1-sunil.khatri@amd.com>
@@ -49,44 +49,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We already have the gfx and compute ip user mode submission
-support added in the IGT and hence with this patch we are
-adding a new test case for gfx and compute using UMQ
-submission.
+Add amdgpu_bo_alloc_and_map_sync func which
+is synchronised version of amdgpu_bo_alloc_and_map.
+It wait till the timeline is signaled and page tables
+are updated for the bo.
 
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_basic.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ lib/amdgpu/amd_memory.c | 19 +++++++++++++++++++
+ lib/amdgpu/amd_memory.h |  8 ++++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index b05633b8e..2b339c74b 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -747,6 +747,22 @@ igt_main
- 		}
- 	}
+diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
+index 92ddc9fe2..d1ff57085 100644
+--- a/lib/amdgpu/amd_memory.c
++++ b/lib/amdgpu/amd_memory.c
+@@ -25,6 +25,8 @@
  
-+	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
-+	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("cs-gfx-with-umq")
-+			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
-+		}
-+	}
+ #include "amd_memory.h"
+ #include "amd_PM4.h"
++#include "amd_user_queue.h"
 +
-+	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
-+	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
-+		if (arr_cap[AMD_IP_COMPUTE]) {
-+			igt_dynamic_f("cs-compute-with-umq")
-+			amdgpu_command_submission_compute(device, true);
-+		}
-+	}
+ /**
+  *
+  * @param device_handle
+@@ -193,6 +195,23 @@ error_va_alloc:
+ 	return r;
+ }
+ 
++int
++amdgpu_bo_alloc_and_map_sync(amdgpu_device_handle dev, unsigned int size,
++			     unsigned int alignment, unsigned int heap, uint64_t flags,
++			     uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
++			     uint64_t *mc_address, amdgpu_va_handle *va_handle,
++			     uint32_t timeline_syncobj_handle, uint64_t point, bool sync)
++{
++	if (sync)
++		return amdgpu_bo_alloc_and_map_uq(dev, size, alignment, heap, flags,
++						  mapping_flags, bo, cpu,
++						  mc_address, va_handle,
++						  timeline_syncobj_handle, point);
++	else
++		return amdgpu_bo_alloc_and_map(dev, size, alignment, heap, flags,
++					       bo, cpu, mc_address, va_handle);
++}
 +
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		drm_close_driver(fd);
+ int
+ amdgpu_bo_alloc_and_map_raw(amdgpu_device_handle dev, unsigned size,
+ 			unsigned alignment, unsigned heap, uint64_t alloc_flags,
+diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
+index a06f88923..9b0e3f392 100644
+--- a/lib/amdgpu/amd_memory.h
++++ b/lib/amdgpu/amd_memory.h
+@@ -55,6 +55,14 @@ amdgpu_bo_alloc_and_map(amdgpu_device_handle dev, unsigned size,
+ 			amdgpu_bo_handle *bo, void **cpu, uint64_t *mc_address,
+ 			amdgpu_va_handle *va_handle);
+ 
++int
++amdgpu_bo_alloc_and_map_sync(amdgpu_device_handle dev, unsigned int size,
++			     unsigned int alignment, unsigned int heap, uint64_t flags,
++			     uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
++			     uint64_t *mc_address, amdgpu_va_handle *va_handle,
++			     uint32_t timeline_syncobj_handle, uint64_t point,
++			     bool sync);
++
+ int
+ amdgpu_bo_alloc_and_map_raw(amdgpu_device_handle dev, unsigned size,
+ 			unsigned alignment, unsigned heap, uint64_t alloc_flags,
 -- 
 2.34.1
 
