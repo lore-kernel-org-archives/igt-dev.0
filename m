@@ -4,19 +4,19 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB65BC02180
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C6AC02187
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AA32810E8B8;
-	Thu, 16 Jan 2025 07:01:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9079210E8BB;
+	Thu, 16 Jan 2025 07:01:52 +0000 (UTC)
 Received: from rtg-sunil-navi33 (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C3EC10E8B6
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C933C10E8B8
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:48 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33 (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 50G6sEAq1883304; Thu, 16 Jan 2025 12:24:14 +0530
+ 50G6sEX81883269; Thu, 16 Jan 2025 12:24:14 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEjl1883303;
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEZx1883265;
  Thu, 16 Jan 2025 12:24:14 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
@@ -26,9 +26,9 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Shashank Sharma <shashank.sharma@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH 8/8] tests/amdgpu: Add amdgpu_sync_dependency_test with UMQ
-Date: Thu, 16 Jan 2025 12:22:11 +0530
-Message-Id: <20250116065211.1882469-9-sunil.khatri@amd.com>
+Subject: [PATCH 1/8] drm-uapi/amdgpu: sync with drm-next
+Date: Thu, 16 Jan 2025 12:22:04 +0530
+Message-Id: <20250116065211.1882469-2-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
 References: <20250116065211.1882469-1-sunil.khatri@amd.com>
@@ -49,179 +49,170 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add UMQ support in amdgpu_sync_dependency_test and also
-add a new test case which will run this test for UMQ
-submission.
+Sync with drm-next commit ("e0400bf7d91ed477b827a674e5d64406c78ffd48")
+
+This patch introduces new UAPI/IOCTL for usermode graphics
+queue. IGT test cases fill this structure and request
+the graphics driver to add a graphics work queue for it.
+The output of this UAPI is a queue id.
+
+This UAPI maps the queue into GPU, so the graphics app can start
+submitting work to the queue as soon as the call returns.
 
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_basic.c | 94 ++++++++++++++++++++++++++++++----------
- 1 file changed, 71 insertions(+), 23 deletions(-)
+ include/drm-uapi/amdgpu_drm.h | 123 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 2b339c74b..bb715e06e 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -475,7 +475,7 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
- }
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index efe5de6ce..d780e1f2a 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -54,6 +54,7 @@ extern "C" {
+ #define DRM_AMDGPU_VM			0x13
+ #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
+ #define DRM_AMDGPU_SCHED		0x15
++#define DRM_AMDGPU_USERQ		0x16
  
- static void
--amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
-+amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
- {
- 	const unsigned const_size = 8192;
- 	const unsigned const_alignment = 4096;
-@@ -498,25 +498,44 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
+ #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
+ #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
+@@ -71,6 +72,7 @@ extern "C" {
+ #define DRM_IOCTL_AMDGPU_VM		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_VM, union drm_amdgpu_vm)
+ #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
+ #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
++#define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
  
- 	uint32_t size_bytes, code_offset, data_offset;
- 	const uint32_t *shader;
-+	struct amdgpu_ring_context *ring_context;
+ /**
+  * DOC: memory domains
+@@ -319,6 +321,127 @@ union drm_amdgpu_ctx {
+ 	union drm_amdgpu_ctx_out out;
+ };
  
- 	struct amdgpu_cmd_base *base = get_cmd_base();
- 	const struct amdgpu_ip_block_version *ip_block = get_ip_block(device_handle, AMD_IP_GFX);
- 
--	r = amdgpu_cs_ctx_create(device_handle, &context_handle[0]);
--	igt_assert_eq(r, 0);
--	r = amdgpu_cs_ctx_create(device_handle, &context_handle[1]);
--	igt_assert_eq(r, 0);
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	igt_assert(ring_context);
- 
--	r = amdgpu_bo_alloc_and_map(device_handle, const_size, const_alignment,
--			AMDGPU_GEM_DOMAIN_GTT, 0,
--			&ib_result_handle, &ib_result_cpu,
--			&ib_result_mc_address, &va_handle);
-+	if (user_queue) {
-+		amdgpu_user_queue_create(device_handle, ring_context, ip_block->type);
-+	} else {
-+		r = amdgpu_cs_ctx_create(device_handle, &context_handle[0]);
-+		igt_assert_eq(r, 0);
++/* user queue IOCTL operations */
++#define AMDGPU_USERQ_OP_CREATE	1
++#define AMDGPU_USERQ_OP_FREE	2
 +
-+		r = amdgpu_cs_ctx_create(device_handle, &context_handle[1]);
-+		igt_assert_eq(r, 0);
-+	}
++/*
++ * This structure is a container to pass input configuration
++ * info for all supported userqueue related operations.
++ * For operation AMDGPU_USERQ_OP_CREATE: user is expected
++ *  to set all fields, excep the parameter 'queue_id'.
++ * For operation AMDGPU_USERQ_OP_FREE: the only input parameter expected
++ *  to be set is 'queue_id', eveything else is ignored.
++ */
++struct drm_amdgpu_userq_in {
++	/** AMDGPU_USERQ_OP_* */
++	__u32	op;
++	/** Queue id passed for operation USERQ_OP_FREE */
++	__u32	queue_id;
++	/** the target GPU engine to execute workload (AMDGPU_HW_IP_*) */
++	__u32   ip_type;
++	/**
++	 * @doorbell_handle: the handle of doorbell GEM object
++	 * associated with this userqueue client.
++	 */
++	__u32   doorbell_handle;
++	/**
++	 * @doorbell_offset: 32-bit offset of the doorbell in the doorbell bo.
++	 * Kernel will generate absolute doorbell offset using doorbell_handle
++	 * and doorbell_offset in the doorbell bo.
++	 */
++	__u32   doorbell_offset;
++	__u32 _pad;
++	/**
++	 * @queue_va: Virtual address of the GPU memory which holds the queue
++	 * object. The queue holds the workload packets.
++	 */
++	__u64   queue_va;
++	/**
++	 * @queue_size: Size of the queue in bytes, this needs to be 256-byte
++	 * aligned.
++	 */
++	__u64   queue_size;
++	/**
++	 * @rptr_va : Virtual address of the GPU memory which holds the ring RPTR.
++	 * This object must be at least 8 byte in size and aligned to 8-byte offset.
++	 */
++	__u64   rptr_va;
++	/**
++	 * @wptr_va : Virtual address of the GPU memory which holds the ring WPTR.
++	 * This object must be at least 8 byte in size and aligned to 8-byte offset.
++	 *
++	 * Queue, RPTR and WPTR can come from the same object, as long as the size
++	 * and alignment related requirements are met.
++	 */
++	__u64   wptr_va;
++	/**
++	 * @mqd: MQD (memory queue descriptor) is a set of parameters which allow
++	 * the GPU to uniquely define and identify a usermode queue.
++	 *
++	 * MQD data can be of different size for different GPU IP/engine and
++	 * their respective versions/revisions, so this points to a __u64 *
++	 * which holds IP specific MQD of this usermode queue.
++	 */
++	__u64 mqd;
++	/**
++	 * @size: size of MQD data in bytes, it must match the MQD structure
++	 * size of the respective engine/revision defined in UAPI for ex, for
++	 * gfx11 workloads, size = sizeof(drm_amdgpu_userq_mqd_gfx11).
++	 */
++	__u64 mqd_size;
++};
 +
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle, const_size,
-+					 const_alignment, AMDGPU_GEM_DOMAIN_GTT, 0,
-+					 AMDGPU_VM_MTYPE_UC,
-+					 &ib_result_handle, &ib_result_cpu,
-+					 &ib_result_mc_address, &va_handle,
-+					 ring_context->timeline_syncobj_handle,
-+					 ++ring_context->point, user_queue);
- 
- 	igt_assert_eq(r, 0);
- 
--	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
-+	if (user_queue) {
-+		r = amdgpu_timeline_syncobj_wait(device_handle,
-+						 ring_context->timeline_syncobj_handle,
-+						 ring_context->point);
-+		igt_assert_eq(r, 0);
-+	} else {
-+		r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
- 			       &bo_list);
--	igt_assert_eq(r, 0);
-+		igt_assert_eq(r, 0);
-+	}
- 
- 	shader = get_shader_bin(&size_bytes, &code_offset, &data_offset);
- 
-@@ -585,7 +604,14 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	ibs_request.resources = bo_list;
- 	ibs_request.fence_info.handle = NULL;
- 
--	r = amdgpu_cs_submit(context_handle[1], 0, &ibs_request, 1);
-+	if (user_queue) {
-+		ring_context->pm4_dw = ib_info.size;
-+		amdgpu_user_queue_submit(device_handle, ring_context, ip_block->type,
-+					 ib_result_mc_address);
-+	} else {
-+		r = amdgpu_cs_submit(context_handle[1], 0, &ibs_request, 1);
-+	}
++/* The structure to carry output of userqueue ops */
++struct drm_amdgpu_userq_out {
++	/**
++	 * For operation AMDGPU_USERQ_OP_CREATE: This field contains a unique
++	 * queue ID to represent the newly created userqueue in the system, otherwise
++	 * it should be ignored.
++	 */
++	__u32	queue_id;
++	__u32 _pad;
++};
 +
- 	igt_assert_eq(r, 0);
- 	seq_no = ibs_request.seq_no;
- 
-@@ -618,8 +644,14 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	ibs_request.dependencies[0].ring = 0;
- 	ibs_request.dependencies[0].fence = seq_no;
- 
--	r = amdgpu_cs_submit(context_handle[0], 0, &ibs_request, 1);
--	igt_assert_eq(r, 0);
-+	if (user_queue) {
-+		ring_context->pm4_dw = ib_info.size;
-+		amdgpu_user_queue_submit(device_handle, ring_context, ip_block->type,
-+					ib_info.ib_mc_address);
-+	} else {
-+		r = amdgpu_cs_submit(context_handle[0], 0, &ibs_request, 1);
-+		igt_assert_eq(r, 0);
-+	}
- 
- 	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
- 	fence_status.context = context_handle[0];
-@@ -628,21 +660,29 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	fence_status.ring = 0;
- 	fence_status.fence = ibs_request.seq_no;
- 
--	r = amdgpu_cs_query_fence_status(&fence_status,
-+	if (!user_queue) {
-+		r = amdgpu_cs_query_fence_status(&fence_status,
- 		       AMDGPU_TIMEOUT_INFINITE, 0, &expired);
--	igt_assert_eq(r, 0);
-+		igt_assert_eq(r, 0);
-+	}
- 
- 	/* Expect the second command to wait for shader to complete */
- 	igt_assert_eq(base->buf[data_offset], 99);
- 
--	r = amdgpu_bo_list_destroy(bo_list);
--	igt_assert_eq(r, 0);
-+	if (!user_queue) {
-+		r = amdgpu_bo_list_destroy(bo_list);
-+		igt_assert_eq(r, 0);
-+	}
- 
--	 amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
--				     ib_result_mc_address, const_alignment);
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, const_alignment);
- 
--	amdgpu_cs_ctx_free(context_handle[0]);
--	amdgpu_cs_ctx_free(context_handle[1]);
-+	if (user_queue) {
-+		amdgpu_user_queue_destroy(device_handle, ring_context, ip_block->type);
-+	} else {
-+		amdgpu_cs_ctx_free(context_handle[0]);
-+		amdgpu_cs_ctx_free(context_handle[1]);
-+	}
- 
- 	free(ibs_request.dependencies);
- 	free_cmd_base(base);
-@@ -743,7 +783,7 @@ igt_main
- 	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("sync-dependency-test")
--			amdgpu_sync_dependency_test(device);
-+			amdgpu_sync_dependency_test(device, false);
- 		}
- 	}
- 
-@@ -763,6 +803,14 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check-sync-dependency-using-GFX-ring");
-+	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX-UMQ") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("sync-dependency-test-with-umq")
-+			amdgpu_sync_dependency_test(device, true);
-+		}
-+	}
++union drm_amdgpu_userq {
++	struct drm_amdgpu_userq_in in;
++	struct drm_amdgpu_userq_out out;
++};
 +
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		drm_close_driver(fd);
++/* GFX V11 IP specific MQD parameters */
++struct drm_amdgpu_userq_mqd_gfx11 {
++	/**
++	 * @shadow_va: Virtual address of the GPU memory to hold the shadow buffer.
++	 * Use AMDGPU_INFO_IOCTL to find the exact size of the object.
++	 */
++	__u64   shadow_va;
++	/**
++	 * @csa_va: Virtual address of the GPU memory to hold the CSA buffer.
++	 * Use AMDGPU_INFO_IOCTL to find the exact size of the object.
++	 */
++	__u64   csa_va;
++};
++
++/* GFX V11 SDMA IP specific MQD parameters */
++struct drm_amdgpu_userq_mqd_sdma_gfx11 {
++	/**
++	 * @csa_va: Virtual address of the GPU memory to hold the CSA buffer.
++	 * This must be a from a separate GPU object, and use AMDGPU_INFO IOCTL
++	 * to get the size.
++	 */
++	__u64   csa_va;
++};
++
++/* GFX V11 Compute IP specific MQD parameters */
++struct drm_amdgpu_userq_mqd_compute_gfx11 {
++	/**
++	 * @eop_va: Virtual address of the GPU memory to hold the EOP buffer.
++	 * This must be a from a separate GPU object, and use AMDGPU_INFO IOCTL
++	 * to get the size.
++	 */
++	__u64   eop_va;
++};
++
+ /* vm ioctl */
+ #define AMDGPU_VM_OP_RESERVE_VMID	1
+ #define AMDGPU_VM_OP_UNRESERVE_VMID	2
 -- 
 2.34.1
 
