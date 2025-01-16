@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F090C02188
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 00:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C323C02187
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 00:20:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E35210E864;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4AF2A10E860;
 	Thu, 16 Jan 2025 00:20:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c2mMcp9B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hiiqRGXN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 455ED10E85B
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 00:20:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 906A110E85B
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 00:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736986812; x=1768522812;
+ t=1736986811; x=1768522811;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7SraApm4bNPdCBPyafgQPrc8LUcKhAAP7kBtjTavVw4=;
- b=c2mMcp9Baqsis7iwLLi0nLMxfmvRFtAbPDfiD4MbatvlGAGm6HRa8FVX
- w12CG8vzH87fBMNQdtKDO/gYRgNcOgLBxK7J4wp86HHLHUG/AQN0pBMdh
- v8eukVNn4X8rzJQPpG2/MuWEpT8kHNx2I85+aGJcIwogKyDjbx0PA6uw3
- Tg6AD7PCosECQ8m1asmQO4lP420nkdxIF6qCD3V1nzT9PNywGzau2PI62
- qlLXNFTigD2JR47brhSxaTT0jpapHWkq82JewyE9AtnkZ7esRP3+y7OhX
- 7XVD2ZOB2kHw7hofjCxwLnpLkF6buVCZpd7anTIeMEXX6N/N+g0q1p5xx g==;
-X-CSE-ConnectionGUID: WQSvg+zVTCunRp0mjuvrNQ==
-X-CSE-MsgGUID: e7TIYIuaRlmMN4UjNds25Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37374274"
-X-IronPort-AV: E=Sophos;i="6.13,207,1732608000"; d="scan'208";a="37374274"
+ bh=w5mf6lyvTM2QICnokr+ZTmebls7Ef1Jcj4Hl565+V/A=;
+ b=hiiqRGXNxljPPBFjs21byikSf9T3HLJQLsoQDoOKACT6d24/yQA79P2/
+ ROg/qx3TkKGMaatX3VixYYhDQU91kYLQs7oEkZ2NGhe+zsDiReZ3YBwCu
+ g3PWqJQZEEBuOjfp5xKobT1dquHZ8A9GhJ+rLcjE8Dz8m5u6fdFSCrhQA
+ CG9PhIQ0AV4i3DuF16FYckyYZ28G5fOwJYF4BKxgVzOiCf7QasgS89YMV
+ YCEKrqKVYyZQWYaHgXzRXi1NfwHpaDnPcSqK35mNmblxjU1eeTVf0Mi0k
+ bpK3LzVFLeXJ8adlSxA+fXFe4ZVOHbPpRC+bsDIVvJH148oxJ+79sxMkl w==;
+X-CSE-ConnectionGUID: iCMpb5LeQ/uTgbr1lr+yQQ==
+X-CSE-MsgGUID: PsSwtWxqTpivRVqCMfBoCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37374273"
+X-IronPort-AV: E=Sophos;i="6.13,207,1732608000"; d="scan'208";a="37374273"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2025 16:20:12 -0800
-X-CSE-ConnectionGUID: Q8y/qBkbS4SW1VbvDBEndg==
-X-CSE-MsgGUID: kvgFEgCqTzGBy44NSg9h4Q==
+ 15 Jan 2025 16:20:11 -0800
+X-CSE-ConnectionGUID: 1ztRS+IPS46JO8f8axxQ6w==
+X-CSE-MsgGUID: k/tnNNUIT9OWmkIHH1vFsA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="105146800"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="105146794"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2025 16:20:12 -0800
+ 15 Jan 2025 16:20:11 -0800
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: [PATCH i-g-t v2 5/9] tests/intel/xe_exec_queue_property: Update first
- invalid property value
-Date: Wed, 15 Jan 2025 16:19:36 -0800
-Message-ID: <20250116001951.4159243-6-daniele.ceraolospurio@intel.com>
+Subject: [PATCH i-g-t v2 4/9] tests/intel/xe_create: Stop treating the
+ extension field as MBZ
+Date: Wed, 15 Jan 2025 16:19:35 -0800
+Message-ID: <20250116001951.4159243-5-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250116001951.4159243-1-daniele.ceraolospurio@intel.com>
 References: <20250116001951.4159243-1-daniele.ceraolospurio@intel.com>
@@ -68,30 +68,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A new property was added with ID 2, so the invalid property testing
-should start from ID 3.
-
-No new tests are added to test the new property as that will be
-covered by the PXP tests.
+A new extension for the xe_create ioctl was added to support PXP, so the
+field is no longer expected to always be zero.
 
 Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 ---
- tests/intel/xe_exec_queue_property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_create.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
-index 25a7e7abb..885d5bcc9 100644
---- a/tests/intel/xe_exec_queue_property.c
-+++ b/tests/intel/xe_exec_queue_property.c
-@@ -183,7 +183,7 @@ static void invalid_property(int xe)
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 07e11036d..0907a8a8a 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -127,11 +127,6 @@ static void create_invalid_mbz(int fd)
+ 	gem_close(fd, create.handle);
+ 	create.handle = 0;
  
- 	/* This will fail as soon as a new property is introduced. It is
- 	 * expected and the test will have to be updated. */
--	for (int i = 2; i < 16; i++ ) {
-+	for (int i = 3; i < 16; i++ ) {
- 		ext.property = i;
- 		igt_assert_eq(__xe_exec_queue_create(xe, vm, 1, 1, &instance,
- 						     to_user_pointer(&ext), &exec_queue_id), -EINVAL);
+-	/* No supported extensions yet */
+-	create.extensions = -1;
+-	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
+-	create.extensions = 0;
+-
+ 	/* Make sure KMD rejects non-zero padding/reserved fields */
+ 	for (i = 0; i < ARRAY_SIZE(create.pad); i++) {
+ 		create.pad[i] = -1;
 -- 
 2.43.0
 
