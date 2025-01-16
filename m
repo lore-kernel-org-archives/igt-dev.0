@@ -4,19 +4,19 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 961EEC02180
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97916C02183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55C9E10E1B1;
-	Thu, 16 Jan 2025 07:01:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CACE10E8B6;
+	Thu, 16 Jan 2025 07:01:48 +0000 (UTC)
 Received: from rtg-sunil-navi33 (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4352D10E1B1
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FC8710E8B6
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:46 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33 (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 50G6sEIo1883289; Thu, 16 Jan 2025 12:24:14 +0530
+ 50G6sERb1883274; Thu, 16 Jan 2025 12:24:14 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEnC1883288;
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sERB1883273;
  Thu, 16 Jan 2025 12:24:14 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
@@ -26,9 +26,9 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Shashank Sharma <shashank.sharma@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH 5/8] lib/amdgpu: add func amdgpu_bo_alloc_and_map_sync
-Date: Thu, 16 Jan 2025 12:22:08 +0530
-Message-Id: <20250116065211.1882469-6-sunil.khatri@amd.com>
+Subject: [PATCH 2/8] drm-uapi/amdgpu: sync with drm-next
+Date: Thu, 16 Jan 2025 12:22:05 +0530
+Message-Id: <20250116065211.1882469-3-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
 References: <20250116065211.1882469-1-sunil.khatri@amd.com>
@@ -49,74 +49,160 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add amdgpu_bo_alloc_and_map_sync func which
-is synchronised version of amdgpu_bo_alloc_and_map.
-It wait till the timeline is signaled and page tables
-are updated for the bo.
+Sync with drm-next commit ("866fc4f7e772c4a397f9459754ed1b1872b3a3c6")
+
+Added support of UAPI for user queue secure semaphore.
+The semaphore is used to synchronize between the caller and
+the gpu hw and user wait for the semaphore.
 
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_memory.c | 19 +++++++++++++++++++
- lib/amdgpu/amd_memory.h |  8 ++++++++
- 2 files changed, 27 insertions(+)
+ include/drm-uapi/amdgpu_drm.h | 117 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-index 92ddc9fe2..d1ff57085 100644
---- a/lib/amdgpu/amd_memory.c
-+++ b/lib/amdgpu/amd_memory.c
-@@ -25,6 +25,8 @@
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index d780e1f2a..fed39c9b4 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -55,6 +55,8 @@ extern "C" {
+ #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
+ #define DRM_AMDGPU_SCHED		0x15
+ #define DRM_AMDGPU_USERQ		0x16
++#define DRM_AMDGPU_USERQ_SIGNAL		0x17
++#define DRM_AMDGPU_USERQ_WAIT		0x18
  
- #include "amd_memory.h"
- #include "amd_PM4.h"
-+#include "amd_user_queue.h"
-+
+ #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
+ #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
+@@ -73,6 +75,8 @@ extern "C" {
+ #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
+ #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
+ #define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
++#define DRM_IOCTL_AMDGPU_USERQ_SIGNAL	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_SIGNAL, struct drm_amdgpu_userq_signal)
++#define DRM_IOCTL_AMDGPU_USERQ_WAIT	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_WAIT, struct drm_amdgpu_userq_wait)
+ 
  /**
-  *
-  * @param device_handle
-@@ -193,6 +195,23 @@ error_va_alloc:
- 	return r;
- }
+  * DOC: memory domains
+@@ -442,6 +446,119 @@ struct drm_amdgpu_userq_mqd_compute_gfx11 {
+ 	__u64   eop_va;
+ };
  
-+int
-+amdgpu_bo_alloc_and_map_sync(amdgpu_device_handle dev, unsigned int size,
-+			     unsigned int alignment, unsigned int heap, uint64_t flags,
-+			     uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
-+			     uint64_t *mc_address, amdgpu_va_handle *va_handle,
-+			     uint32_t timeline_syncobj_handle, uint64_t point, bool sync)
-+{
-+	if (sync)
-+		return amdgpu_bo_alloc_and_map_uq(dev, size, alignment, heap, flags,
-+						  mapping_flags, bo, cpu,
-+						  mc_address, va_handle,
-+						  timeline_syncobj_handle, point);
-+	else
-+		return amdgpu_bo_alloc_and_map(dev, size, alignment, heap, flags,
-+					       bo, cpu, mc_address, va_handle);
-+}
++/* userq signal/wait ioctl */
++struct drm_amdgpu_userq_signal {
++	/**
++	 * @queue_id: Queue handle used by the userq fence creation function
++	 * to retrieve the WPTR.
++	 */
++	__u32	queue_id;
++	__u32	pad;
++	/**
++	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
++	 * job to be signaled.
++	 */
++	__u64	syncobj_handles;
++	/**
++	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
++	 * @syncobj_handles.
++	 */
++	__u64	num_syncobj_handles;
++	/**
++	 * @bo_read_handles: The list of BO handles that the submitted user queue job
++	 * is using for read only. This will update BO fences in the kernel.
++	 */
++	__u64	bo_read_handles;
++	/**
++	 * @bo_write_handles: The list of BO handles that the submitted user queue job
++	 * is using for write only. This will update BO fences in the kernel.
++	 */
++	__u64	bo_write_handles;
++	/**
++	 * @num_bo_read_handles: A count that represents the number of read BO handles in
++	 * @bo_read_handles.
++	 */
++	__u32	num_bo_read_handles;
++	/**
++	 * @num_bo_write_handles: A count that represents the number of write BO handles in
++	 * @bo_write_handles.
++	 */
++	__u32	num_bo_write_handles;
++};
 +
- int
- amdgpu_bo_alloc_and_map_raw(amdgpu_device_handle dev, unsigned size,
- 			unsigned alignment, unsigned heap, uint64_t alloc_flags,
-diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
-index a06f88923..9b0e3f392 100644
---- a/lib/amdgpu/amd_memory.h
-+++ b/lib/amdgpu/amd_memory.h
-@@ -55,6 +55,14 @@ amdgpu_bo_alloc_and_map(amdgpu_device_handle dev, unsigned size,
- 			amdgpu_bo_handle *bo, void **cpu, uint64_t *mc_address,
- 			amdgpu_va_handle *va_handle);
- 
-+int
-+amdgpu_bo_alloc_and_map_sync(amdgpu_device_handle dev, unsigned int size,
-+			     unsigned int alignment, unsigned int heap, uint64_t flags,
-+			     uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
-+			     uint64_t *mc_address, amdgpu_va_handle *va_handle,
-+			     uint32_t timeline_syncobj_handle, uint64_t point,
-+			     bool sync);
++struct drm_amdgpu_userq_fence_info {
++	/**
++	 * @va: A gpu address allocated for each queue which stores the
++	 * read pointer (RPTR) value.
++	 */
++	__u64	va;
++	/**
++	 * @value: A 64 bit value represents the write pointer (WPTR) of the
++	 * queue commands which compared with the RPTR value to signal the
++	 * fences.
++	 */
++	__u64	value;
++};
 +
- int
- amdgpu_bo_alloc_and_map_raw(amdgpu_device_handle dev, unsigned size,
- 			unsigned alignment, unsigned heap, uint64_t alloc_flags,
++struct drm_amdgpu_userq_wait {
++	/**
++	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	syncobj_handles;
++	/**
++	 * @syncobj_timeline_handles: The list of timeline syncobj handles submitted by
++	 * the user queue job to get the va/value pairs at given @syncobj_timeline_points.
++	 */
++	__u64	syncobj_timeline_handles;
++	/**
++	 * @syncobj_timeline_points: The list of timeline syncobj points submitted by the
++	 * user queue job for the corresponding @syncobj_timeline_handles.
++	 */
++	__u64	syncobj_timeline_points;
++	/**
++	 * @bo_read_handles: The list of read BO handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	bo_read_handles;
++	/**
++	 * @bo_write_handles: The list of write BO handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	bo_write_handles;
++	/**
++	 * @num_syncobj_timeline_handles: A count that represents the number of timeline
++	 * syncobj handles in @syncobj_timeline_handles.
++	 */
++	__u16	num_syncobj_timeline_handles;
++	/**
++	 * @num_fences: This field can be used both as input and output. As input it defines
++	 * the maximum number of fences that can be returned and as output it will specify
++	 * how many fences were actually returned from the ioctl.
++	 */
++	__u16	num_fences;
++	/**
++	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
++	 * @syncobj_handles.
++	 */
++	__u32	num_syncobj_handles;
++	/**
++	 * @num_bo_read_handles: A count that represents the number of read BO handles in
++	 * @bo_read_handles.
++	 */
++	__u32	num_bo_read_handles;
++	/**
++	 * @num_bo_write_handles: A count that represents the number of write BO handles in
++	 * @bo_write_handles.
++	 */
++	__u32	num_bo_write_handles;
++	/**
++	 * @out_fences: The field is a return value from the ioctl containing the list of
++	 * address/value pairs to wait for.
++	 */
++	__u64	out_fences;
++};
++
+ /* vm ioctl */
+ #define AMDGPU_VM_OP_RESERVE_VMID	1
+ #define AMDGPU_VM_OP_UNRESERVE_VMID	2
 -- 
 2.34.1
 
