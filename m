@@ -4,19 +4,19 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADD06E77188
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4666C02180
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:01:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6ACC010E8BA;
-	Thu, 16 Jan 2025 07:01:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9565110E8BC;
+	Thu, 16 Jan 2025 07:01:54 +0000 (UTC)
 Received: from rtg-sunil-navi33 (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01F1E10E8B9
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EC7010E8B9
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 07:01:50 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33 (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 50G6sEkd1883284; Thu, 16 Jan 2025 12:24:14 +0530
+ 50G6sEZa1883294; Thu, 16 Jan 2025 12:24:14 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEXR1883283;
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 50G6sEXr1883293;
  Thu, 16 Jan 2025 12:24:14 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
@@ -26,9 +26,9 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Shashank Sharma <shashank.sharma@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH 4/8] lib/amdgpu: Add support of amd user queues
-Date: Thu, 16 Jan 2025 12:22:07 +0530
-Message-Id: <20250116065211.1882469-5-sunil.khatri@amd.com>
+Subject: [PATCH 6/8] tests/amdgpu: Add user queue support for gfx and compute
+Date: Thu, 16 Jan 2025 12:22:09 +0530
+Message-Id: <20250116065211.1882469-7-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
 References: <20250116065211.1882469-1-sunil.khatri@amd.com>
@@ -49,550 +49,822 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is the first patch set to add support of
-UMQ(User mode queues) submission in IGT.
+Add support of user queue command submission for
+a. amdgpu_command_submission_gfx
+b. amdgpu_command_submission_compute
 
-UMQ allows users to directly create a user queue and
-submit workload to the GPU h/w to directly instead
-of sending the workload to kernel and then to GPU h/w.
+Also add support of user queues in all the helper
+functions used by the above functions.
 
-This will be used by test cases which will be testing
-the UMQ queues for gfx/compute and sdma to start with.
+Also since helper functions are same for sdma too
+so update the function call to accommodate the changes.
 
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_PM4.h        |   3 +
- lib/amdgpu/amd_ip_blocks.h  |   5 +
- lib/amdgpu/amd_user_queue.c | 418 ++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_user_queue.h |  48 +++++
- lib/meson.build             |   3 +-
- 5 files changed, 476 insertions(+), 1 deletion(-)
- create mode 100644 lib/amdgpu/amd_user_queue.c
- create mode 100644 lib/amdgpu/amd_user_queue.h
+ lib/amdgpu/amd_command_submission.c | 313 +++++++++++++++++++---------
+ lib/amdgpu/amd_command_submission.h |   8 +-
+ lib/amdgpu/amd_compute.c            | 100 ++++++---
+ lib/amdgpu/amd_compute.h            |   2 +-
+ tests/amdgpu/amd_basic.c            |  58 ++++--
+ tests/amdgpu/amd_security.c         |   4 +-
+ 6 files changed, 326 insertions(+), 159 deletions(-)
 
-diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-index 5bc3cb783..8f59b4223 100644
---- a/lib/amdgpu/amd_PM4.h
-+++ b/lib/amdgpu/amd_PM4.h
-@@ -192,6 +192,9 @@
- 		 * 1 - pfp
- 		 */
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+index cd7240058..7550fa8bc 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -5,10 +5,14 @@
+  * Copyright 2023 Advanced Micro Devices, Inc.
+  */
  
-+#define PACKET3_INDIRECT_BUFFER                         0x3F
-+#define PACKET3_PROTECTED_FENCE_SIGNAL                  0xd0
-+
- #define	PACKET3_WRITE_DATA				0x37
- #define		WRITE_DATA_DST_SEL(x)                   ((x) << 8)
- 		/* 0 - register
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 9d110d402..9b22206cb 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -27,6 +27,11 @@
- #define AMDGPU_RESET_TYPE_PER_QUEUE (1 << 2) /* per queue */
- #define AMDGPU_RESET_TYPE_PER_PIPE (1 << 3) /* per pipe */
- 
-+/* User queue */
-+#define   S_3F3_INHERIT_VMID_MQD_GFX(x) 	(((unsigned int)(x)&0x1) << 22)/* userqueue only */
-+#define   S_3F3_VALID_COMPUTE(x)		(((unsigned int)(x)&0x1) << 23)/* userqueue only */
-+#define   S_3F3_INHERIT_VMID_MQD_COMPUTE(x)	(((unsigned int)(x)&0x1) << 30)/* userqueue only */
-+
- enum amd_ip_block_type {
- 	AMD_IP_GFX = 0,
- 	AMD_IP_COMPUTE,
-diff --git a/lib/amdgpu/amd_user_queue.c b/lib/amdgpu/amd_user_queue.c
-new file mode 100644
-index 000000000..9412a37e8
---- /dev/null
-+++ b/lib/amdgpu/amd_user_queue.c
-@@ -0,0 +1,418 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2025 Advanced Micro Devices, Inc.
-+ */
-+
-+#include "amd_user_queue.h"
-+#include "amd_memory.h"
-+#include "amd_PM4.h"
++#include <amdgpu.h>
+ #include "lib/amdgpu/amd_memory.h"
+ #include "lib/amdgpu/amd_sdma.h"
+ #include "lib/amdgpu/amd_PM4.h"
+ #include "lib/amdgpu/amd_command_submission.h"
++#include "lib/amdgpu/amd_user_queue.h"
 +#include "ioctl_wrappers.h"
 +
-+void amdgpu_alloc_doorbell(amdgpu_device_handle device_handle, struct amdgpu_userq_bo *doorbell_bo,
-+			   unsigned int size, unsigned int domain)
-+{
-+	struct amdgpu_bo_alloc_request req = {0};
-+	amdgpu_bo_handle buf_handle;
-+	int r;
-+
-+	req.alloc_size = ALIGN(size, PAGE_SIZE);
-+	req.preferred_heap = domain;
-+	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
-+	igt_assert_eq(r, 0);
-+
-+	doorbell_bo->handle = buf_handle;
-+	doorbell_bo->size = req.alloc_size;
-+
-+	r = amdgpu_bo_cpu_map(doorbell_bo->handle,
-+			      (void **)&doorbell_bo->ptr);
-+	igt_assert_eq(r, 0);
-+}
-+
-+int
-+amdgpu_bo_alloc_and_map_uq(amdgpu_device_handle device_handle, unsigned int size,
-+			   unsigned int alignment, unsigned int heap, uint64_t alloc_flags,
-+			   uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
-+			   uint64_t *mc_address, amdgpu_va_handle *va_handle,
-+			   uint32_t timeline_syncobj_handle, uint64_t point)
-+{
-+	struct amdgpu_bo_alloc_request request = {};
-+	amdgpu_bo_handle buf_handle;
-+	uint64_t vmc_addr;
-+	int r;
-+
-+	request.alloc_size = size;
-+	request.phys_alignment = alignment;
-+	request.preferred_heap = heap;
-+	request.flags = alloc_flags;
-+
-+	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	if (r)
-+		return r;
-+
-+	r = amdgpu_va_range_alloc(device_handle,
-+				  amdgpu_gpu_va_range_general,
-+				  size, alignment, 0, &vmc_addr,
-+				  va_handle, 0);
-+	if (r)
-+		goto error_va_alloc;
-+
-+	r = amdgpu_bo_va_op_raw2(device_handle, buf_handle, 0,
-+				 ALIGN(size, getpagesize()), vmc_addr,
-+				 AMDGPU_VM_PAGE_READABLE |
-+				 AMDGPU_VM_PAGE_WRITEABLE |
-+				 AMDGPU_VM_PAGE_EXECUTABLE |
-+				 mapping_flags,
-+				 AMDGPU_VA_OP_MAP,
-+				 timeline_syncobj_handle,
-+				 point, 0, 0);
-+	if (r)
-+		goto error_va_map;
-+
-+	if (cpu) {
-+		r = amdgpu_bo_cpu_map(buf_handle, cpu);
-+		if (r)
-+			goto error_cpu_map;
+ 
+ /*
+  *
+@@ -28,82 +32,100 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
+ 	uint64_t ib_result_mc_address;
+ 	struct amdgpu_cs_fence fence_status = {0};
+ 	amdgpu_va_handle va_handle;
++	bool user_queue = ring_context->user_queue;
+ 
+ 	amdgpu_bo_handle *all_res = alloca(sizeof(ring_context->resources[0]) * (ring_context->res_cnt + 1));
+ 
+ 	if (expect_failure) {
+ 		/* allocate IB */
+-		r = amdgpu_bo_alloc_and_map(device, ring_context->write_length, 4096,
+-					    AMDGPU_GEM_DOMAIN_GTT, 0,
+-					    &ib_result_handle, &ib_result_cpu,
+-					    &ib_result_mc_address, &va_handle);
++		r = amdgpu_bo_alloc_and_map_sync(device, ring_context->write_length, 4096,
++						 AMDGPU_GEM_DOMAIN_GTT, 0, AMDGPU_VM_MTYPE_UC,
++						 &ib_result_handle, &ib_result_cpu,
++						 &ib_result_mc_address, &va_handle,
++						 ring_context->timeline_syncobj_handle,
++						 ++ring_context->point, user_queue);
+ 	} else {
+ 		/* prepare CS */
+ 		igt_assert(ring_context->pm4_dw <= 1024);
+ 		/* allocate IB */
+-		r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
+-					    AMDGPU_GEM_DOMAIN_GTT, 0,
+-					    &ib_result_handle, &ib_result_cpu,
+-					    &ib_result_mc_address, &va_handle);
+-
+-
++		r = amdgpu_bo_alloc_and_map_sync(device, 4096, 4096,
++						 AMDGPU_GEM_DOMAIN_GTT, 0, AMDGPU_VM_MTYPE_UC,
++						 &ib_result_handle, &ib_result_cpu,
++						 &ib_result_mc_address, &va_handle,
++						 ring_context->timeline_syncobj_handle,
++						 ++ring_context->point, user_queue);
+ 	}
+ 	igt_assert_eq(r, 0);
+ 
++	if (user_queue) {
++		r = amdgpu_timeline_syncobj_wait(device, ring_context->timeline_syncobj_handle,
++						 ring_context->point);
++		igt_assert_eq(r, 0);
 +	}
 +
-+	*bo = buf_handle;
-+	*mc_address = vmc_addr;
+ 	/* copy PM4 packet to ring from caller */
+ 	ring_ptr = ib_result_cpu;
+ 	memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*ring_context->pm4));
+ 
+-	ring_context->ib_info.ib_mc_address = ib_result_mc_address;
+-	ring_context->ib_info.size = ring_context->pm4_dw;
+-	if (ring_context->secure)
+-		ring_context->ib_info.flags |= AMDGPU_IB_FLAGS_SECURE;
+-
+-	ring_context->ibs_request.ip_type = ip_type;
+-	ring_context->ibs_request.ring = ring_context->ring_id;
+-	ring_context->ibs_request.number_of_ibs = 1;
+-	ring_context->ibs_request.ibs = &ring_context->ib_info;
+-	ring_context->ibs_request.fence_info.handle = NULL;
+-
+-	memcpy(all_res, ring_context->resources, sizeof(ring_context->resources[0]) * ring_context->res_cnt);
+-	all_res[ring_context->res_cnt] = ib_result_handle;
+-
+-	r = amdgpu_bo_list_create(device, ring_context->res_cnt+1, all_res,
+-				  NULL, &ring_context->ibs_request.resources);
+-	igt_assert_eq(r, 0);
+-
+-	/* submit CS */
+-	r = amdgpu_cs_submit(ring_context->context_handle, 0, &ring_context->ibs_request, 1);
+-	ring_context->err_codes.err_code_cs_submit = r;
+-	if (expect_failure)
+-		igt_info("amdgpu_cs_submit %d PID %d\n", r, getpid());
++	if (user_queue)
++		amdgpu_user_queue_submit(device, ring_context, ip_type, ib_result_mc_address);
+ 	else {
+-		if (r != -ECANCELED && r != -ENODATA && r != -EHWPOISON) /* we allow ECANCELED, ENODATA or -EHWPOISON for good jobs temporally */
+-			igt_assert_eq(r, 0);
+-	}
+-
+-
+-	r = amdgpu_bo_list_destroy(ring_context->ibs_request.resources);
+-	igt_assert_eq(r, 0);
++		ring_context->ib_info.ib_mc_address = ib_result_mc_address;
++		ring_context->ib_info.size = ring_context->pm4_dw;
++		if (ring_context->secure)
++			ring_context->ib_info.flags |= AMDGPU_IB_FLAGS_SECURE;
 +
-+	return 0;
++		ring_context->ibs_request.ip_type = ip_type;
++		ring_context->ibs_request.ring = ring_context->ring_id;
++		ring_context->ibs_request.number_of_ibs = 1;
++		ring_context->ibs_request.ibs = &ring_context->ib_info;
++		ring_context->ibs_request.fence_info.handle = NULL;
 +
-+error_cpu_map:
-+	amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
-+error_va_map:
-+	amdgpu_va_range_free(*va_handle);
-+error_va_alloc:
-+	amdgpu_bo_free(buf_handle);
-+	return r;
-+}
++		memcpy(all_res, ring_context->resources,
++		       sizeof(ring_context->resources[0]) * ring_context->res_cnt);
 +
-+void amdgpu_bo_unmap_and_free_uq(amdgpu_device_handle device_handle, amdgpu_bo_handle bo,
-+			    amdgpu_va_handle va_handle, uint64_t mc_addr, uint64_t size,
-+			    uint32_t timeline_syncobj_handle, uint64_t point,
-+			    uint64_t syncobj_handles_array, uint32_t num_syncobj_handles)
-+{
-+	amdgpu_bo_cpu_unmap(bo);
-+	amdgpu_bo_va_op_raw2(device_handle, bo, 0, size, mc_addr, 0, AMDGPU_VA_OP_UNMAP,
-+				  timeline_syncobj_handle, point,
-+				  syncobj_handles_array, num_syncobj_handles);
-+	amdgpu_va_range_free(va_handle);
-+	amdgpu_bo_free(bo);
-+}
++		all_res[ring_context->res_cnt] = ib_result_handle;
 +
-+int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
-+				 uint32_t timeline_syncobj_handle, uint64_t point)
-+{
-+	uint32_t flags = DRM_SYNCOBJ_QUERY_FLAGS_LAST_SUBMITTED;
-+	int r;
++		r = amdgpu_bo_list_create(device, ring_context->res_cnt + 1, all_res,
++					  NULL, &ring_context->ibs_request.resources);
++		igt_assert_eq(r, 0);
 +
-+	r = amdgpu_cs_syncobj_query2(device_handle, &timeline_syncobj_handle,
-+				     &point, 1, flags);
-+	if (r)
-+		return r;
++		/* submit CS */
++		r = amdgpu_cs_submit(ring_context->context_handle, 0,
++				     &ring_context->ibs_request, 1);
 +
-+	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &timeline_syncobj_handle,
-+					    &point, 1, INT64_MAX,
-+					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
-+					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-+					    NULL);
-+	if (r)
-+		igt_warn("Timeline timed out\n");
-+	return r;
-+}
++		ring_context->err_codes.err_code_cs_submit = r;
++		if (expect_failure)
++			igt_info("amdgpu_cs_submit %d PID %d\n", r, getpid());
++		else {
++			/* we allow ECANCELED, ENODATA or -EHWPOISON for good jobs temporally */
++			if (r != -ECANCELED && r != -ENODATA && r != -EHWPOISON)
++				igt_assert_eq(r, 0);
++		}
+ 
+-	fence_status.ip_type = ip_type;
+-	fence_status.ip_instance = 0;
+-	fence_status.ring = ring_context->ibs_request.ring;
+-	fence_status.context = ring_context->context_handle;
+-	fence_status.fence = ring_context->ibs_request.seq_no;
+-
+-	/* wait for IB accomplished */
+-	r = amdgpu_cs_query_fence_status(&fence_status,
+-					 AMDGPU_TIMEOUT_INFINITE,
+-					 0, &expired);
+-	ring_context->err_codes.err_code_wait_for_fence = r;
+-	if (expect_failure) {
+-		igt_info("EXPECT FAILURE amdgpu_cs_query_fence_status %d expired %d PID %d\n", r,  expired, getpid());
+-	} else {
+-		if (r != -ECANCELED && r != -ENODATA) /* we allow ECANCELED or ENODATA for good jobs temporally */
+-			igt_assert_eq(r, 0);
++		r = amdgpu_bo_list_destroy(ring_context->ibs_request.resources);
++		igt_assert_eq(r, 0);
 +
-+void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
-+			      unsigned int ip_type, uint64_t mc_address)
-+{
-+	int r;
-+	uint32_t *npkt = &ring_context->npkt;
-+	uint32_t *queue_cpu = ring_context->queue_cpu;
-+	uint32_t control = ring_context->pm4_dw;
-+	uint32_t syncarray[1];
++		fence_status.ip_type = ip_type;
++		fence_status.ip_instance = 0;
++		fence_status.ring = ring_context->ibs_request.ring;
++		fence_status.context = ring_context->context_handle;
++		fence_status.fence = ring_context->ibs_request.seq_no;
 +
-+	struct drm_amdgpu_userq_signal signal_data;
-+
-+	/* Prepare the Indirect IB to submit the IB to user queue */
-+	queue_cpu[(*npkt)++] = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
-+	queue_cpu[(*npkt)++] = lower_32_bits(mc_address);
-+	queue_cpu[(*npkt)++] = upper_32_bits(mc_address);
-+
-+	if (ip_type == AMD_IP_GFX)
-+		queue_cpu[(*npkt)++] = control | S_3F3_INHERIT_VMID_MQD_GFX(1);
-+	else
-+		queue_cpu[(*npkt)++] = control | S_3F3_VALID_COMPUTE(1)
-+					       | S_3F3_INHERIT_VMID_MQD_COMPUTE(1);
-+
-+	queue_cpu[(*npkt)++] = PACKET3(PACKET3_PROTECTED_FENCE_SIGNAL, 0);
-+	/* empty dword is needed for fence signal pm4 */
-+	++*npkt;
-+
-+	*ring_context->wptr_cpu = *npkt;
-+	ring_context->doorbell_cpu[DOORBELL_INDEX] = *npkt;
-+
-+	/* Add a fence packet for signal */
-+	syncarray[0] = ring_context->timeline_syncobj_handle;
-+	signal_data.queue_id = ring_context->queue_id;
-+	signal_data.syncobj_handles = (uintptr_t)syncarray;
-+	signal_data.num_syncobj_handles = 1;
-+	signal_data.bo_read_handles = 0;
-+	signal_data.bo_write_handles = 0;
-+	signal_data.num_bo_read_handles = 0;
-+	signal_data.num_bo_write_handles = 0;
-+
-+	r = amdgpu_userq_signal(device, &signal_data);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1, INT64_MAX,
-+				   DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-+	igt_assert_eq(r, 0);
-+}
-+
-+void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
-+			       unsigned int type)
-+{
-+	int r;
-+
-+	if (type > AMD_IP_DMA) {
-+		igt_info("Invalid IP not supported for UMQ Submission\n");
-+		return;
++		/* wait for IB accomplished */
++		r = amdgpu_cs_query_fence_status(&fence_status,
++						 AMDGPU_TIMEOUT_INFINITE,
++						 0, &expired);
++		ring_context->err_codes.err_code_wait_for_fence = r;
++		if (expect_failure) {
++			igt_info("EXPECT FAILURE amdgpu_cs_query_fence_status%d"
++				 "expired %d PID %d\n", r, expired, getpid());
++		} else {
++			/* we allow ECANCELED or ENODATA for good jobs temporally */
++			if (r != -ECANCELED && r != -ENODATA)
++				igt_assert_eq(r, 0);
++		}
+ 	}
+-
+ 	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+ 				 ib_result_mc_address, 4096);
+ 	return r;
+@@ -111,10 +133,9 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
+ 
+ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 						   const struct amdgpu_ip_block_version *ip_block,
+-						   bool secure)
++						   bool secure, bool user_queue)
+ 
+ {
+-
+ 	const int sdma_write_length = 128;
+ 	const int pm4_dw = 256;
+ 
+@@ -131,6 +152,7 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 	ring_context->secure = secure;
+ 	ring_context->pm4_size = pm4_dw;
+ 	ring_context->res_cnt = 1;
++	ring_context->user_queue = user_queue;
+ 	igt_assert(ring_context->pm4);
+ 
+ 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
+@@ -139,30 +161,51 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 	for (i = 0; secure && (i < 2); i++)
+ 		gtt_flags[i] |= AMDGPU_GEM_CREATE_ENCRYPTED;
+ 
+-	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
++	if (user_queue) {
++		amdgpu_user_queue_create(device, ring_context, ip_block->type);
++	} else {
++		r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
++		igt_assert_eq(r, 0);
 +	}
 +
-+	/* Free the Usermode Queue */
-+	r = amdgpu_free_userqueue(device_handle, ctxt->queue_id);
-+	igt_assert_eq(r, 0);
+ 
+-	igt_assert_eq(r, 0);
+ 
++/* Dont need but check with vitaly if for KMS also we need ring id or not */
+ 	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
+ 		loop = 0;
+ 		ring_context->ring_id = ring_id;
+ 		while (loop < 2) {
+ 			/* allocate UC bo for sDMA use */
+-			r = amdgpu_bo_alloc_and_map(device,
+-						    ring_context->write_length * sizeof(uint32_t),
+-						    4096, AMDGPU_GEM_DOMAIN_GTT,
+-						    gtt_flags[loop], &ring_context->bo,
+-						    (void **)&ring_context->bo_cpu,
+-						    &ring_context->bo_mc,
+-						    &ring_context->va_handle);
++			r = amdgpu_bo_alloc_and_map_sync(device,
++							 ring_context->write_length *
++							 sizeof(uint32_t),
++							 4096, AMDGPU_GEM_DOMAIN_GTT,
++							 gtt_flags[loop],
++							 AMDGPU_VM_MTYPE_UC,
++							 &ring_context->bo,
++							 (void **)&ring_context->bo_cpu,
++							 &ring_context->bo_mc,
++							 &ring_context->va_handle,
++							 ring_context->timeline_syncobj_handle,
++							 ++ring_context->point, user_queue);
 +
-+	switch (type) {
-+	case AMD_IP_GFX:
-+		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->csa.handle,
-+					    ctxt->csa.va_handle,
-+					    ctxt->csa.mc_addr, ctxt->dev_info.csa_size,
-+					    ctxt->timeline_syncobj_handle, ++ctxt->point,
-+					    0, 0);
+ 			igt_assert_eq(r, 0);
+ 
++			if (user_queue) {
++				r = amdgpu_timeline_syncobj_wait(device,
++					ring_context->timeline_syncobj_handle,
++					ring_context->point);
++				igt_assert_eq(r, 0);
++			}
 +
-+		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->shadow.handle,
-+					    ctxt->shadow.va_handle,
-+					    ctxt->shadow.mc_addr, ctxt->dev_info.shadow_size,
-+					    ctxt->timeline_syncobj_handle, ++ctxt->point,
-+					    0, 0);
+ 			/* clear bo */
+-			memset((void *)ring_context->bo_cpu, 0, ring_context->write_length * sizeof(uint32_t));
++			memset((void *)ring_context->bo_cpu, 0,
++			       ring_context->write_length * sizeof(uint32_t));
+ 
+ 			ring_context->resources[0] = ring_context->bo;
+ 
+-			ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
++			ip_block->funcs->write_linear(ip_block->funcs, ring_context,
++						      &ring_context->pm4_dw);
+ 
+ 			ring_context->ring_id = ring_id;
+ 
+@@ -200,9 +243,14 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 	}
+ 	/* clean resources */
+ 	free(ring_context->pm4);
+-	/* end of test */
+-	r = amdgpu_cs_ctx_free(ring_context->context_handle);
+-	igt_assert_eq(r, 0);
 +
-+		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
-+						 ctxt->point);
++	if (user_queue) {
++		amdgpu_user_queue_destroy(device, ring_context, ip_block->type);
++	} else {
++		r = amdgpu_cs_ctx_free(ring_context->context_handle);
 +		igt_assert_eq(r, 0);
-+		break;
-+
-+	case AMD_IP_COMPUTE:
-+		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->eop.handle,
-+					    ctxt->eop.va_handle,
-+					    ctxt->eop.mc_addr, 256,
-+					    ctxt->timeline_syncobj_handle, ++ctxt->point,
-+					    0, 0);
-+
-+		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
-+						 ctxt->point);
-+		igt_assert_eq(r, 0);
-+		break;
-+
-+	case AMD_IP_DMA:
-+		amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->csa.handle,
-+					    ctxt->csa.va_handle,
-+					    ctxt->csa.mc_addr, ctxt->dev_info.csa_size,
-+					    ctxt->timeline_syncobj_handle, ++ctxt->point,
-+					    0, 0);
-+
-+		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
-+						 ctxt->point);
-+		igt_assert_eq(r, 0);
-+		break;
-+
-+	default:
-+		igt_info("IP invalid for cleanup\n");
 +	}
 +
-+	r = amdgpu_cs_destroy_syncobj(device_handle, ctxt->timeline_syncobj_handle);
-+	igt_assert_eq(r, 0);
-+
-+	/* Clean up doorbell*/
-+	r = amdgpu_bo_cpu_unmap(ctxt->doorbell.handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_free(ctxt->doorbell.handle);
-+	igt_assert_eq(r, 0);
-+
-+	/* Clean up rptr wptr queue */
-+	amdgpu_bo_unmap_and_free(ctxt->rptr.handle, ctxt->rptr.va_handle,
-+				 ctxt->rptr.mc_addr, 8);
-+
-+	amdgpu_bo_unmap_and_free(ctxt->wptr.handle, ctxt->wptr.va_handle,
-+				 ctxt->wptr.mc_addr, 8);
-+
-+	amdgpu_bo_unmap_and_free(ctxt->queue.handle, ctxt->queue.va_handle,
-+				 ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE);
-+}
-+
-+void amdgpu_user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
-+			      unsigned int type)
-+{
-+	int r;
-+	uint64_t gtt_flags = 0;
-+	struct drm_amdgpu_userq_mqd_gfx11 gfx_mqd;
-+	struct drm_amdgpu_userq_mqd_sdma_gfx11 sdma_mqd;
-+	struct drm_amdgpu_userq_mqd_compute_gfx11 compute_mqd;
-+	void *mqd;
-+
-+	if (type > AMD_IP_DMA) {
-+		igt_info("Invalid IP not supported for UMQ Submission\n");
-+		return;
+ 	free(ring_context);
+ }
+ 
+@@ -211,9 +259,11 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+  *
+  * @param device
+  * @param ip_type
++ * @param user_queue
+  */
+ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+-						 const struct amdgpu_ip_block_version *ip_block)
++						 const struct amdgpu_ip_block_version *ip_block,
++						 bool user_queue)
+ {
+ 	const int sdma_write_length = 1024 * 1024;
+ 	const int pm4_dw = 256;
+@@ -229,25 +279,43 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+ 	ring_context->secure = false;
+ 	ring_context->pm4_size = pm4_dw;
+ 	ring_context->res_cnt = 1;
++	ring_context->user_queue = user_queue;
+ 	igt_assert(ring_context->pm4);
+ 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
+ 	igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
+-	igt_assert_eq(r, 0);
++	if (user_queue) {
++		amdgpu_user_queue_create(device, ring_context, ip_block->type);
++	} else {
++		r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
++		igt_assert_eq(r, 0);
 +	}
 +
-+	r = amdgpu_query_info(device_handle, AMDGPU_INFO_DEV_INFO,
-+			      sizeof(ctxt->dev_info), &ctxt->dev_info);
-+	igt_assert_eq(r, 0);
+ 	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
+ 		/* prepare resource */
+ 		loop = 0;
+ 		ring_context->ring_id = ring_id;
+ 		while (loop < 2) {
+ 			/* allocate UC bo for sDMA use */
+-			r = amdgpu_bo_alloc_and_map(device,
+-					    ring_context->write_length, 4096,
+-					    AMDGPU_GEM_DOMAIN_GTT,
+-					    gtt_flags[loop], &ring_context->bo, (void **)&ring_context->bo_cpu,
+-					    &ring_context->bo_mc, &ring_context->va_handle);
++			r = amdgpu_bo_alloc_and_map_sync(device, ring_context->write_length,
++							 4096, AMDGPU_GEM_DOMAIN_GTT,
++							 gtt_flags[loop],
++							 AMDGPU_VM_MTYPE_UC,
++							 &ring_context->bo,
++							 (void **)&ring_context->bo_cpu,
++							 &ring_context->bo_mc,
++							 &ring_context->va_handle,
++							 ring_context->timeline_syncobj_handle,
++							 ++ring_context->point, user_queue);
+ 			igt_assert_eq(r, 0);
+ 
++			if (user_queue) {
++				r = amdgpu_timeline_syncobj_wait(device,
++					ring_context->timeline_syncobj_handle,
++					ring_context->point);
++				igt_assert_eq(r, 0);
++			}
 +
-+	r = amdgpu_cs_create_syncobj2(device_handle, 0, &ctxt->timeline_syncobj_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map_uq(device_handle, USERMODE_QUEUE_SIZE,
-+				       ALIGNMENT,
-+				       AMDGPU_GEM_DOMAIN_GTT,
-+				       gtt_flags,
-+				       AMDGPU_VM_MTYPE_UC,
-+				       &ctxt->queue.handle, &ctxt->queue.ptr,
-+				       &ctxt->queue.mc_addr, &ctxt->queue.va_handle,
-+				       ctxt->timeline_syncobj_handle, ++ctxt->point);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map_uq(device_handle, 8,
-+				       ALIGNMENT,
-+				       AMDGPU_GEM_DOMAIN_GTT,
-+				       gtt_flags,
-+				       AMDGPU_VM_MTYPE_UC,
-+				       &ctxt->wptr.handle, &ctxt->wptr.ptr,
-+				       &ctxt->wptr.mc_addr, &ctxt->wptr.va_handle,
-+				       ctxt->timeline_syncobj_handle, ++ctxt->point);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map_uq(device_handle, 8,
-+				       ALIGNMENT,
-+				       AMDGPU_GEM_DOMAIN_GTT,
-+				       gtt_flags,
-+				       AMDGPU_VM_MTYPE_UC,
-+				       &ctxt->rptr.handle, &ctxt->rptr.ptr,
-+				       &ctxt->rptr.mc_addr, &ctxt->rptr.va_handle,
-+				       ctxt->timeline_syncobj_handle, ++ctxt->point);
-+	igt_assert_eq(r, 0);
-+
-+	switch (type) {
-+	case AMD_IP_GFX:
-+		r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->dev_info.shadow_size,
-+					       ctxt->dev_info.shadow_alignment,
-+					       AMDGPU_GEM_DOMAIN_GTT,
-+					       gtt_flags,
-+					       AMDGPU_VM_MTYPE_UC,
-+					       &ctxt->shadow.handle, NULL,
-+					       &ctxt->shadow.mc_addr, &ctxt->shadow.va_handle,
-+					       ctxt->timeline_syncobj_handle, ++ctxt->point);
+ 			/* clear bo */
+ 			memset((void *)ring_context->bo_cpu, 0, ring_context->write_length);
+ 
+@@ -270,9 +338,13 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+ 	/* clean resources */
+ 	free(ring_context->pm4);
+ 
+-	/* end of test */
+-	r = amdgpu_cs_ctx_free(ring_context->context_handle);
+-	igt_assert_eq(r, 0);
++	if (user_queue) {
++		amdgpu_user_queue_destroy(device, ring_context, ip_block->type);
++	} else {
++		r = amdgpu_cs_ctx_free(ring_context->context_handle);
 +		igt_assert_eq(r, 0);
-+
-+		r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->dev_info.csa_size,
-+					       ctxt->dev_info.csa_alignment,
-+					       AMDGPU_GEM_DOMAIN_GTT,
-+					       gtt_flags,
-+					       AMDGPU_VM_MTYPE_UC,
-+					       &ctxt->csa.handle, NULL,
-+					       &ctxt->csa.mc_addr, &ctxt->csa.va_handle,
-+					       ctxt->timeline_syncobj_handle, ++ctxt->point);
-+		igt_assert_eq(r, 0);
-+
-+		gfx_mqd.shadow_va = ctxt->shadow.mc_addr;
-+		gfx_mqd.csa_va = ctxt->csa.mc_addr;
-+		mqd = &gfx_mqd;
-+		break;
-+
-+	case AMD_IP_COMPUTE:
-+		r = amdgpu_bo_alloc_and_map_uq(device_handle, 256,
-+					       ALIGNMENT,
-+					       AMDGPU_GEM_DOMAIN_GTT,
-+					       gtt_flags,
-+					       AMDGPU_VM_MTYPE_UC,
-+					       &ctxt->eop.handle, NULL,
-+					       &ctxt->eop.mc_addr, &ctxt->eop.va_handle,
-+					       ctxt->timeline_syncobj_handle, ++ctxt->point);
-+		igt_assert_eq(r, 0);
-+		compute_mqd.eop_va = ctxt->eop.mc_addr;
-+		mqd = &compute_mqd;
-+		break;
-+
-+	case AMD_IP_DMA:
-+		r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->dev_info.csa_size,
-+					       ctxt->dev_info.csa_alignment,
-+					       AMDGPU_GEM_DOMAIN_GTT,
-+					       gtt_flags,
-+					       AMDGPU_VM_MTYPE_UC,
-+					       &ctxt->csa.handle, NULL,
-+					       &ctxt->csa.mc_addr, &ctxt->csa.va_handle,
-+					       ctxt->timeline_syncobj_handle, ++ctxt->point);
-+		igt_assert_eq(r, 0);
-+		sdma_mqd.csa_va = ctxt->csa.mc_addr;
-+		mqd = &sdma_mqd;
-+		break;
-+
-+	default:
-+		igt_info("Unsupported IP for UMQ submission\n");
-+		return;
-+
 +	}
 +
-+	r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
-+					 ctxt->point);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_alloc_doorbell(device_handle, &ctxt->doorbell, PAGE_SIZE,
-+			      AMDGPU_GEM_DOMAIN_DOORBELL);
-+
-+	ctxt->doorbell_cpu = (uint64_t *)ctxt->doorbell.ptr;
-+
-+	ctxt->wptr_cpu = (uint64_t *)ctxt->wptr.ptr;
-+
-+	ctxt->queue_cpu = (uint32_t *)ctxt->queue.ptr;
-+	memset(ctxt->queue_cpu, 0, USERMODE_QUEUE_SIZE);
-+
-+	/* get db bo handle */
-+	amdgpu_bo_export(ctxt->doorbell.handle, amdgpu_bo_handle_type_kms, &ctxt->db_handle);
-+
-+	/* Create the Usermode Queue */
-+	switch (type) {
-+	case AMD_IP_GFX:
-+		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
-+					    ctxt->db_handle, DOORBELL_INDEX,
-+					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
-+					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
-+					    mqd, &ctxt->queue_id);
+ 	free(ring_context);
+ }
+ 
+@@ -280,9 +352,11 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+  *
+  * @param device
+  * @param ip_type
++ * @param user_queue
+  */
+ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+-						  const struct amdgpu_ip_block_version *ip_block)
++						  const struct amdgpu_ip_block_version *ip_block,
++						  bool user_queue)
+ {
+ 	const int sdma_write_length = 1024;
+ 	const int pm4_dw = 256;
+@@ -299,13 +373,18 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ 	ring_context->secure = false;
+ 	ring_context->pm4_size = pm4_dw;
+ 	ring_context->res_cnt = 2;
++	ring_context->user_queue = user_queue;
+ 	igt_assert(ring_context->pm4);
+ 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
+ 	igt_assert_eq(r, 0);
+ 
+ 
+-	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
+-	igt_assert_eq(r, 0);
++	if (user_queue) {
++		amdgpu_user_queue_create(device, ring_context, ip_block->type);
++	} else {
++		r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
 +		igt_assert_eq(r, 0);
-+		break;
-+
-+	case AMD_IP_COMPUTE:
-+		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_COMPUTE,
-+					    ctxt->db_handle, DOORBELL_INDEX,
-+					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
-+					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
-+					    mqd, &ctxt->queue_id);
-+		igt_assert_eq(r, 0);
-+		break;
-+
-+	case AMD_IP_DMA:
-+		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_DMA,
-+					    ctxt->db_handle, DOORBELL_INDEX,
-+					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
-+					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
-+					    mqd, &ctxt->queue_id);
-+		igt_assert_eq(r, 0);
-+		break;
-+
-+	default:
-+		igt_info("Unsupported IP, failed to create user queue\n");
-+		return;
-+
 +	}
-+}
-diff --git a/lib/amdgpu/amd_user_queue.h b/lib/amdgpu/amd_user_queue.h
-new file mode 100644
-index 000000000..355f16f19
---- /dev/null
-+++ b/lib/amdgpu/amd_user_queue.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: MIT
-+ * Copyright 2025 Advanced Micro Devices, Inc.
-+ */
+ 
+ 	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
+ 		loop1 = loop2 = 0;
+@@ -313,27 +392,50 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ 	/* run 9 circle to test all mapping combination */
+ 		while (loop1 < 2) {
+ 			while (loop2 < 2) {
+-			/* allocate UC bo1for sDMA use */
+-				r = amdgpu_bo_alloc_and_map(device,
+-						    ring_context->write_length, 4096,
+-						    AMDGPU_GEM_DOMAIN_GTT,
+-						    gtt_flags[loop1], &ring_context->bo,
+-						    (void **)&ring_context->bo_cpu, &ring_context->bo_mc,
+-						    &ring_context->va_handle);
++				/* allocate UC bo1for sDMA use */
++				r = amdgpu_bo_alloc_and_map_sync(device, ring_context->write_length,
++							4096, AMDGPU_GEM_DOMAIN_GTT,
++							gtt_flags[loop1],
++							AMDGPU_VM_MTYPE_UC,
++							&ring_context->bo,
++							(void **)&ring_context->bo_cpu,
++							&ring_context->bo_mc,
++							&ring_context->va_handle,
++							ring_context->timeline_syncobj_handle,
++							++ring_context->point, user_queue);
+ 				igt_assert_eq(r, 0);
+ 
++				if (user_queue) {
++					r = amdgpu_timeline_syncobj_wait(device,
++						ring_context->timeline_syncobj_handle,
++						ring_context->point);
++					igt_assert_eq(r, 0);
++				}
 +
-+#ifndef _AMD_USER_QUEUE_
-+#define _AMD_USER_QUEUE_
+ 				/* set bo_cpu */
+ 				memset((void *)ring_context->bo_cpu, ip_block->funcs->pattern, ring_context->write_length);
+ 
+ 				/* allocate UC bo2 for sDMA use */
+-				r = amdgpu_bo_alloc_and_map(device,
+-						    ring_context->write_length, 4096,
+-						    AMDGPU_GEM_DOMAIN_GTT,
+-						    gtt_flags[loop2], &ring_context->bo2,
+-						    (void **)&ring_context->bo2_cpu, &ring_context->bo_mc2,
+-						    &ring_context->va_handle2);
++				r = amdgpu_bo_alloc_and_map_sync(device,
++							ring_context->write_length,
++							4096, AMDGPU_GEM_DOMAIN_GTT,
++							gtt_flags[loop2],
++							AMDGPU_VM_MTYPE_UC,
++							&ring_context->bo2,
++							(void **)&ring_context->bo2_cpu,
++							&ring_context->bo_mc2,
++							&ring_context->va_handle2,
++							ring_context->timeline_syncobj_handle,
++							++ring_context->point, user_queue);
+ 				igt_assert_eq(r, 0);
+ 
++				if (user_queue) {
++					r = amdgpu_timeline_syncobj_wait(device,
++						ring_context->timeline_syncobj_handle,
++						ring_context->point);
++					igt_assert_eq(r, 0);
++				}
 +
-+#include <amdgpu_drm.h>
-+#include <amdgpu.h>
-+#include <time.h>
-+#include "amd_ip_blocks.h"
+ 				/* clear bo2_cpu */
+ 				memset((void *)ring_context->bo2_cpu, 0, ring_context->write_length);
+ 
+@@ -357,11 +459,16 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ 			loop1++;
+ 		}
+ 	}
 +
+ 	/* clean resources */
+ 	free(ring_context->pm4);
+ 
+-	/* end of test */
+-	r = amdgpu_cs_ctx_free(ring_context->context_handle);
+-	igt_assert_eq(r, 0);
++	if (user_queue) {
++		amdgpu_user_queue_destroy(device, ring_context, ip_block->type);
++	} else {
++		r = amdgpu_cs_ctx_free(ring_context->context_handle);
++		igt_assert_eq(r, 0);
++	}
 +
-+#ifndef PAGE_SIZE
-+#define PAGE_SIZE 4096
-+#endif
+ 	free(ring_context);
+ }
+diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
+index e3139a402..d0139b364 100644
+--- a/lib/amdgpu/amd_command_submission.h
++++ b/lib/amdgpu/amd_command_submission.h
+@@ -34,11 +34,13 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device,
+ 
+ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 						   const struct amdgpu_ip_block_version *ip_block,
+-						   bool secure);
++						   bool secure, bool user_queue);
+ 
+ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+-						 const struct amdgpu_ip_block_version *ip_block);
++						 const struct amdgpu_ip_block_version *ip_block,
++						 bool user_queue);
+ 
+ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+-						 const struct amdgpu_ip_block_version *ip_block);
++						 const struct amdgpu_ip_block_version *ip_block,
++						 bool user_queue);
+ #endif
+diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
+index 6e61f1820..5d7040d80 100644
+--- a/lib/amdgpu/amd_compute.c
++++ b/lib/amdgpu/amd_compute.c
+@@ -25,12 +25,14 @@
+ #include "amd_PM4.h"
+ #include "amd_memory.h"
+ #include "amd_compute.h"
++#include "amd_user_queue.h"
+ 
+ /**
+  *
+  * @param device
++ * @param user_queue
+  */
+-void amdgpu_command_submission_compute_nop(amdgpu_device_handle device)
++void amdgpu_command_submission_compute_nop(amdgpu_device_handle device, bool user_queue)
+ {
+ 	amdgpu_context_handle context_handle;
+ 	amdgpu_bo_handle ib_result_handle;
+@@ -46,19 +48,38 @@ void amdgpu_command_submission_compute_nop(amdgpu_device_handle device)
+ 	amdgpu_bo_list_handle bo_list;
+ 	amdgpu_va_handle va_handle;
+ 
++	struct amdgpu_ring_context *ring_context;
 +
-+#define USERMODE_QUEUE_SIZE		(PAGE_SIZE * 256)   //In bytes
-+#define ALIGNMENT			4096
-+#define DOORBELL_INDEX			4
++	ring_context = calloc(1, sizeof(*ring_context));
++	igt_assert(ring_context);
 +
-+void amdgpu_alloc_doorbell(amdgpu_device_handle device_handle, struct amdgpu_userq_bo *doorbell_bo,
-+			   unsigned int size, unsigned int domain);
+ 	r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_COMPUTE, 0, &info);
+ 	igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_cs_ctx_create(device, &context_handle);
+-	igt_assert_eq(r, 0);
++	if (user_queue) {
++		amdgpu_user_queue_create(device, ring_context, AMD_IP_COMPUTE);
++	} else {
++		r = amdgpu_cs_ctx_create(device, &context_handle);
++		igt_assert_eq(r, 0);
++	}
+ 
+ 	for (instance = 0; info.available_rings & (1 << instance); instance++) {
+-		r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
+-					    AMDGPU_GEM_DOMAIN_GTT, 0,
+-					    &ib_result_handle, &ib_result_cpu,
+-					    &ib_result_mc_address, &va_handle);
++		r = amdgpu_bo_alloc_and_map_sync(device, 4096, 4096,
++						 AMDGPU_GEM_DOMAIN_GTT, 0,
++						 AMDGPU_VM_MTYPE_UC,
++						 &ib_result_handle, (void **)&ib_result_cpu,
++						 &ib_result_mc_address, &va_handle,
++						 ring_context->timeline_syncobj_handle,
++						 ++ring_context->point, user_queue);
+ 		igt_assert_eq(r, 0);
+ 
++		if (user_queue) {
++			r = amdgpu_timeline_syncobj_wait(device,
++							 ring_context->timeline_syncobj_handle,
++							 ring_context->point);
++			igt_assert_eq(r, 0);
++		}
 +
-+int amdgpu_bo_alloc_and_map_uq(amdgpu_device_handle device_handle, unsigned int size,
-+			       unsigned int alignment, unsigned int heap, uint64_t alloc_flags,
-+			       uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
-+			       uint64_t *mc_address, amdgpu_va_handle *va_handle,
-+			       uint32_t timeline_syncobj_handle, uint64_t point);
+ 		r = amdgpu_get_bo_list(device, ib_result_handle, NULL,
+ 				       &bo_list);
+ 		igt_assert_eq(r, 0);
+@@ -66,42 +87,53 @@ void amdgpu_command_submission_compute_nop(amdgpu_device_handle device)
+ 		ptr = ib_result_cpu;
+ 		memset(ptr, 0, 16);
+ 		ptr[0] = PACKET3(PACKET3_NOP, 14);
++		ring_context->pm4_dw = 16;
+ 
+-		memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
+-		ib_info.ib_mc_address = ib_result_mc_address;
+-		ib_info.size = 16;
+-
+-		memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
+-		ibs_request.ip_type = AMDGPU_HW_IP_COMPUTE;
+-		ibs_request.ring = instance;
+-		ibs_request.number_of_ibs = 1;
+-		ibs_request.ibs = &ib_info;
+-		ibs_request.resources = bo_list;
+-		ibs_request.fence_info.handle = NULL;
++		if (user_queue) {
++			amdgpu_user_queue_submit(device, ring_context, AMD_IP_COMPUTE,
++						 ib_result_mc_address);
++		} else {
++			memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
++			ib_info.ib_mc_address = ib_result_mc_address;
++			ib_info.size = 16;
+ 
+-		memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
+-		r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
+-		igt_assert_eq(r, 0);
++			memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
++			ibs_request.ip_type = AMDGPU_HW_IP_COMPUTE;
++			ibs_request.ring = instance;
++			ibs_request.number_of_ibs = 1;
++			ibs_request.ibs = &ib_info;
++			ibs_request.resources = bo_list;
++			ibs_request.fence_info.handle = NULL;
+ 
+-		fence_status.context = context_handle;
+-		fence_status.ip_type = AMDGPU_HW_IP_COMPUTE;
+-		fence_status.ip_instance = 0;
+-		fence_status.ring = instance;
+-		fence_status.fence = ibs_request.seq_no;
++			memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++			r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
++			igt_assert_eq(r, 0);
+ 
+-		r = amdgpu_cs_query_fence_status(&fence_status,
+-						 AMDGPU_TIMEOUT_INFINITE,
+-						 0, &expired);
+-		igt_assert_eq(r, 0);
++			fence_status.context = context_handle;
++			fence_status.ip_type = AMDGPU_HW_IP_COMPUTE;
++			fence_status.ip_instance = 0;
++			fence_status.ring = instance;
++			fence_status.fence = ibs_request.seq_no;
+ 
+-		r = amdgpu_bo_list_destroy(bo_list);
+-		igt_assert_eq(r, 0);
++			r = amdgpu_cs_query_fence_status(&fence_status,
++							 AMDGPU_TIMEOUT_INFINITE,
++							 0, &expired);
++			igt_assert_eq(r, 0);
+ 
++			r = amdgpu_bo_list_destroy(bo_list);
++			igt_assert_eq(r, 0);
++		}
+ 		amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+ 					 ib_result_mc_address, 4096);
+ 	}
+ 
+-	r = amdgpu_cs_ctx_free(context_handle);
+-	igt_assert_eq(r, 0);
++	if (user_queue) {
++		amdgpu_user_queue_destroy(device, ring_context, AMD_IP_COMPUTE);
++	} else {
++		r = amdgpu_cs_ctx_free(context_handle);
++		igt_assert_eq(r, 0);
++	}
 +
-+void amdgpu_bo_unmap_and_free_uq(amdgpu_device_handle device_handle, amdgpu_bo_handle bo,
-+				 amdgpu_va_handle va_handle, uint64_t mc_addr, uint64_t size,
-+				 uint32_t timeline_syncobj_handle, uint64_t point,
-+				 uint64_t syncobj_handles_array, uint32_t num_syncobj_handles);
++	free(ring_context);
+ }
+ 
+diff --git a/lib/amdgpu/amd_compute.h b/lib/amdgpu/amd_compute.h
+index f27be5f17..41ed225b8 100644
+--- a/lib/amdgpu/amd_compute.h
++++ b/lib/amdgpu/amd_compute.h
+@@ -26,6 +26,6 @@
+ #define AMD_COMPUTE_H
+ 
+ 
+-void amdgpu_command_submission_compute_nop(amdgpu_device_handle device);
++void amdgpu_command_submission_compute_nop(amdgpu_device_handle device, bool user_queue);
+ 
+ #endif
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 8819b9cd4..b05633b8e 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -13,6 +13,7 @@
+ #include "lib/amdgpu/amd_gfx.h"
+ #include "lib/amdgpu/amd_shaders.h"
+ #include "lib/amdgpu/amd_dispatch.h"
++#include "lib/amdgpu/amd_user_queue.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+@@ -67,14 +68,25 @@ static void amdgpu_memory_alloc(amdgpu_device_handle device)
+  * AMDGPU_HW_IP_GFX
+  * @param device
+  */
+-static void amdgpu_command_submission_gfx(amdgpu_device_handle device, bool ce_avails)
++static void amdgpu_command_submission_gfx(amdgpu_device_handle device,
++					  bool ce_avails,
++					  bool user_queue)
+ {
 +
-+int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
-+				 uint32_t timeline_syncobj_handle, uint64_t point);
+ 	/* write data using the CP */
+-	amdgpu_command_submission_write_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX), false);
++	amdgpu_command_submission_write_linear_helper(device,
++						      get_ip_block(device, AMDGPU_HW_IP_GFX),
++						      false, user_queue);
 +
-+void amdgpu_user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
-+			      unsigned int ip_type);
+ 	/* const fill using the CP */
+-	amdgpu_command_submission_const_fill_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
++	amdgpu_command_submission_const_fill_helper(device,
++						    get_ip_block(device, AMDGPU_HW_IP_GFX),
++						    user_queue);
 +
-+void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
-+			       unsigned int ip_type);
+ 	/* copy data using the CP */
+-	amdgpu_command_submission_copy_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
++	amdgpu_command_submission_copy_linear_helper(device,
++						     get_ip_block(device, AMDGPU_HW_IP_GFX),
++						     user_queue);
+ 	if (ce_avails) {
+ 		/* separate IB buffers for multi-IB submission */
+ 		amdgpu_command_submission_gfx_separate_ibs(device);
+@@ -89,27 +101,41 @@ static void amdgpu_command_submission_gfx(amdgpu_device_handle device, bool ce_a
+  * AMDGPU_HW_IP_COMPUTE
+  * @param device
+  */
+-static void amdgpu_command_submission_compute(amdgpu_device_handle device)
++static void amdgpu_command_submission_compute(amdgpu_device_handle device, bool user_queue)
+ {
+ 	/* write data using the CP */
+-	amdgpu_command_submission_write_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE), false);
++	amdgpu_command_submission_write_linear_helper(device,
++						      get_ip_block(device, AMDGPU_HW_IP_COMPUTE),
++						      false, user_queue);
+ 	/* const fill using the CP */
+-	amdgpu_command_submission_const_fill_helper(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE));
++	amdgpu_command_submission_const_fill_helper(device,
++						    get_ip_block(device, AMDGPU_HW_IP_COMPUTE),
++						    user_queue);
+ 	/* copy data using the CP */
+-	amdgpu_command_submission_copy_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE));
++	amdgpu_command_submission_copy_linear_helper(device,
++						     get_ip_block(device, AMDGPU_HW_IP_COMPUTE),
++						     user_queue);
+ 	/* nop test */
+-	amdgpu_command_submission_compute_nop(device);
++	amdgpu_command_submission_compute_nop(device, user_queue);
+ }
+ 
+ /**
+  * AMDGPU_HW_IP_DMA
+  * @param device
+  */
+-static void amdgpu_command_submission_sdma(amdgpu_device_handle device)
++static void amdgpu_command_submission_sdma(amdgpu_device_handle device, bool user_queue)
+ {
+-	amdgpu_command_submission_write_linear_helper(device,  get_ip_block(device, AMDGPU_HW_IP_DMA), false);
+-	amdgpu_command_submission_const_fill_helper(device,  get_ip_block(device, AMDGPU_HW_IP_DMA));
+-	amdgpu_command_submission_copy_linear_helper(device,  get_ip_block(device, AMDGPU_HW_IP_DMA));
++	amdgpu_command_submission_write_linear_helper(device,
++						      get_ip_block(device, AMDGPU_HW_IP_DMA),
++						      false, user_queue);
 +
-+void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
-+			      unsigned int ip_type, uint64_t mc_address);
++	amdgpu_command_submission_const_fill_helper(device,
++						    get_ip_block(device, AMDGPU_HW_IP_DMA),
++						    user_queue);
 +
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 1704ed1e1..80482967b 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -164,7 +164,8 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_shared_process.c',
- 		'amdgpu/xalloc.h',
- 		'amdgpu/amd_cp_dma.c',
--		'amdgpu/amd_mmd_shared.c'
-+		'amdgpu/amd_mmd_shared.c',
-+		'amdgpu/amd_user_queue.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
- 		lib_sources +=[ 'amdgpu/amd_dispatch.c',]
++	amdgpu_command_submission_copy_linear_helper(device,
++						     get_ip_block(device, AMDGPU_HW_IP_DMA),
++						     user_queue);
+ }
+ 
+ /**
+@@ -667,7 +693,7 @@ igt_main
+ 	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX") {
+ 		if (arr_cap[AMD_IP_GFX]) {
+ 			igt_dynamic_f("cs-gfx")
+-			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11);
++			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, false);
+ 		}
+ 	}
+ 
+@@ -675,7 +701,7 @@ igt_main
+ 	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE") {
+ 		if (arr_cap[AMD_IP_COMPUTE]) {
+ 			igt_dynamic_f("cs-compute")
+-			amdgpu_command_submission_compute(device);
++			amdgpu_command_submission_compute(device, false);
+ 		}
+ 	}
+ 
+@@ -693,7 +719,7 @@ igt_main
+ 	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA") {
+ 		if (arr_cap[AMD_IP_DMA]) {
+ 			igt_dynamic_f("cs-sdma")
+-			amdgpu_command_submission_sdma(device);
++			amdgpu_command_submission_sdma(device, false);
+ 		}
+ 	}
+ 
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+index 024cadc05..19baaaea0 100644
+--- a/tests/amdgpu/amd_security.c
++++ b/tests/amdgpu/amd_security.c
+@@ -341,12 +341,12 @@ igt_main
+ 	igt_describe("amdgpu sdma command submission write linear helper");
+ 	igt_subtest("sdma-write-linear-helper-secure")
+ 	amdgpu_command_submission_write_linear_helper(device,
+-			get_ip_block(device, AMDGPU_HW_IP_DMA), is_secure);
++			get_ip_block(device, AMDGPU_HW_IP_DMA), is_secure, false);
+ 
+ 	igt_describe("amdgpu gfx command submission write linear helper");
+ 	igt_subtest("gfx-write-linear-helper-secure")
+ 	 amdgpu_command_submission_write_linear_helper(device,
+-			get_ip_block(device, AMDGPU_HW_IP_GFX), is_secure);
++			get_ip_block(device, AMDGPU_HW_IP_GFX), is_secure, false);
+ 
+ 	/* dynamic test based on sdma_info.available rings */
+ 	igt_describe("amdgpu secure bounce");
 -- 
 2.34.1
 
