@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7319C02183
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEFAE77188
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 07:29:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B62710E8DE;
-	Thu, 16 Jan 2025 07:28:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C9B610E8E6;
+	Thu, 16 Jan 2025 07:29:58 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F0CA10E8DB;
- Thu, 16 Jan 2025 07:28:38 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3241751823752748546=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A3A310E8E5;
+ Thu, 16 Jan 2025 07:29:57 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fdisplay=5Fmodes?=
- =?utf-8?q?=3A_fit_modes_in_mst_bw?=
+Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_The_series_add_support_?=
+ =?utf-8?q?for_UMQ_submission?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
+To: "Sunil Khatri" <sunil.khatri@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Jan 2025 07:28:38 -0000
-Message-ID: <173701251825.189358.10782175195257546212@b555e5b46a47>
+Date: Thu, 16 Jan 2025 07:29:57 -0000
+Message-ID: <173701259703.189358.12734611678622990358@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250116061749.2082287-1-kunal1.joshi@intel.com>
-In-Reply-To: <20250116061749.2082287-1-kunal1.joshi@intel.com>
+References: <20250116065211.1882469-1-sunil.khatri@amd.com>
+In-Reply-To: <20250116065211.1882469-1-sunil.khatri@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,155 +41,193 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3241751823752748546==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/kms_display_modes: fit modes in mst bw
-URL   : https://patchwork.freedesktop.org/series/143585/
-State : failure
+Series: The series add support for UMQ submission
+URL   : https://patchwork.freedesktop.org/series/143586/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8193_BAT -> XEIGTPW_12445_BAT
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1346611 for the overview.
 
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_12445_BAT absolutely need to be
-  verified manually.
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437776):
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_destroy’:
+  ../lib/amdgpu/amd_user_queue.c:183:6: error: implicit declaration of function ‘amdgpu_free_userqueue’; did you mean ‘amdgpu_open_devices’? [-Werror=implicit-function-declaration]
+    r = amdgpu_free_userqueue(device_handle, ctxt->queue_id);
+        ^~~~~~~~~~~~~~~~~~~~~
+        amdgpu_open_devices
+  ../lib/amdgpu/amd_user_queue.c:183:6: warning: nested extern declaration of ‘amdgpu_free_userqueue’ [-Wnested-externs]
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_create’:
+  ../lib/amdgpu/amd_user_queue.c:387:7: error: implicit declaration of function ‘amdgpu_create_userqueue’; did you mean ‘amdgpu_cs_create_semaphore’? [-Werror=implicit-function-declaration]
+     r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
+         ^~~~~~~~~~~~~~~~~~~~~~~
+         amdgpu_cs_create_semaphore
+  ../lib/amdgpu/amd_user_queue.c:387:7: warning: nested extern declaration of ‘amdgpu_create_userqueue’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1737012393:step_script
+  section_start:1737012393:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012394:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_12445_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437779):
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out b1b83419 as detached HEAD (ref is intel/IGTPW_12446)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing lib/xe/oa-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1737012396:get_sources
+  section_start:1737012396:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-b1b83419cb66f61b2cb566c4521b0568d442947f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64@sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f ...
+  section_end:1737012399:step_script
+  section_start:1737012399:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012401:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c: image not known (docker.go:650:0s)
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437778):
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_destroy’:
+  ../lib/amdgpu/amd_user_queue.c:183:6: error: implicit declaration of function ‘amdgpu_free_userqueue’; did you mean ‘amdgpu_open_devices’? [-Werror=implicit-function-declaration]
+    r = amdgpu_free_userqueue(device_handle, ctxt->queue_id);
+        ^~~~~~~~~~~~~~~~~~~~~
+        amdgpu_open_devices
+  ../lib/amdgpu/amd_user_queue.c:183:6: warning: nested extern declaration of ‘amdgpu_free_userqueue’ [-Wnested-externs]
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_create’:
+  ../lib/amdgpu/amd_user_queue.c:387:7: error: implicit declaration of function ‘amdgpu_create_userqueue’; did you mean ‘amdgpu_cs_create_semaphore’? [-Werror=implicit-function-declaration]
+     r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
+         ^~~~~~~~~~~~~~~~~~~~~~~
+         amdgpu_cs_create_semaphore
+  ../lib/amdgpu/amd_user_queue.c:387:7: warning: nested extern declaration of ‘amdgpu_create_userqueue’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1737012411:step_script
+  section_start:1737012411:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012412:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
 
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_12445_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_basic@twice-userptr-rebind:
-    - bat-adlp-vf:        [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html
-
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437780):
+  section_start:1737012390:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out b1b83419 as detached HEAD (ref is intel/IGTPW_12446)...
   
-Known issues
-------------
+  Skipping Git submodules setup
+  section_end:1737012393:get_sources
+  section_start:1737012393:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-b1b83419cb66f61b2cb566c4521b0568d442947f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
+  section_end:1737012399:step_script
+  section_start:1737012399:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012401:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:650:0s)
 
-  Here are the changes found in XEIGTPW_12445_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind:
-    - bat-adlp-vf:        [DMESG-WARN][3] ([Intel XE#3970]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
-
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437771):
+        |      amdgpu_query_info
+  ../lib/amdgpu/amd_user_queue.c:164:6: warning: nested extern declaration of ‘amdgpu_userq_signal’ [-Wnested-externs]
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_destroy’:
+  ../lib/amdgpu/amd_user_queue.c:183:6: error: implicit declaration of function ‘amdgpu_free_userqueue’ [-Werror=implicit-function-declaration]
+    183 |  r = amdgpu_free_userqueue(device_handle, ctxt->queue_id);
+        |      ^~~~~~~~~~~~~~~~~~~~~
+  ../lib/amdgpu/amd_user_queue.c:183:6: warning: nested extern declaration of ‘amdgpu_free_userqueue’ [-Wnested-externs]
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_create’:
+  ../lib/amdgpu/amd_user_queue.c:387:7: error: implicit declaration of function ‘amdgpu_create_userqueue’ [-Werror=implicit-function-declaration]
+    387 |   r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
+        |       ^~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/amdgpu/amd_user_queue.c:387:7: warning: nested extern declaration of ‘amdgpu_create_userqueue’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1737012392:step_script
+  section_start:1737012392:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012393:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
 
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437775):
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out b1b83419 as detached HEAD (ref is intel/IGTPW_12446)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing lib/xe/oa-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1737012393:get_sources
+  section_start:1737012393:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-b1b83419cb66f61b2cb566c4521b0568d442947f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1737012399:step_script
+  section_start:1737012399:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012401:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:650:0s)
 
-Build changes
--------------
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437772):
+  section_start:1737012388:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out b1b83419 as detached HEAD (ref is intel/IGTPW_12446)...
+  
+  Skipping Git submodules setup
+  section_end:1737012393:get_sources
+  section_start:1737012393:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-b1b83419cb66f61b2cb566c4521b0568d442947f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1737012399:step_script
+  section_start:1737012399:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012401:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:650:0s)
 
-  * IGT: IGT_8193 -> IGTPW_12445
-
-  IGTPW_12445: 12445
-  IGT_8193: 84511e278c1c6e598ccc21287a733cfc83d13e8a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2495-4cea1f90028925afcf1a0f8a0ef301f90349688c: 4cea1f90028925afcf1a0f8a0ef301f90349688c
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69437773):
+        |      amdgpu_query_info
+  ../lib/amdgpu/amd_user_queue.c:164:6: warning: nested extern declaration of ‘amdgpu_userq_signal’ [-Wnested-externs]
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_destroy’:
+  ../lib/amdgpu/amd_user_queue.c:183:6: error: implicit declaration of function ‘amdgpu_free_userqueue’ [-Werror=implicit-function-declaration]
+    183 |  r = amdgpu_free_userqueue(device_handle, ctxt->queue_id);
+        |      ^~~~~~~~~~~~~~~~~~~~~
+  ../lib/amdgpu/amd_user_queue.c:183:6: warning: nested extern declaration of ‘amdgpu_free_userqueue’ [-Wnested-externs]
+  ../lib/amdgpu/amd_user_queue.c: In function ‘amdgpu_user_queue_create’:
+  ../lib/amdgpu/amd_user_queue.c:387:7: error: implicit declaration of function ‘amdgpu_create_userqueue’ [-Werror=implicit-function-declaration]
+    387 |   r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
+        |       ^~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/amdgpu/amd_user_queue.c:387:7: warning: nested extern declaration of ‘amdgpu_create_userqueue’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1737012391:step_script
+  section_start:1737012391:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1737012391:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/index.html
-
---===============3241751823752748546==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_display_modes: fit modes in mst bw</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143585/">https://patchwork.freedesktop.org/series/143585/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8193_BAT -&gt; XEIGTPW_12445_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_12445_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_12445_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_12445_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_exec_basic@twice-userptr-rebind:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/bat-adlp-vf/igt@xe_exec_basic@twice-userptr-rebind.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12445_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_exec_basic@twice-bindexecqueue-rebind:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8193/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12445/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8193 -&gt; IGTPW_12445</li>
-</ul>
-<p>IGTPW_12445: 12445<br />
-  IGT_8193: 84511e278c1c6e598ccc21287a733cfc83d13e8a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2495-4cea1f90028925afcf1a0f8a0ef301f90349688c: 4cea1f90028925afcf1a0f8a0ef301f90349688c</p>
-
-</body>
-</html>
-
---===============3241751823752748546==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1346611
