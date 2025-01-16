@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30426C02187
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 09:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD34C02180
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jan 2025 10:09:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E298110E91D;
-	Thu, 16 Jan 2025 09:51:06 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JQ1eKMj0";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B808110E91D
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2025 09:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737021065; x=1768557065;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ii3CXyaE2z6ePqGbJtWfsOn2W7NHk5tUnLSsHxXJKes=;
- b=JQ1eKMj0dCHU11Nqbw1aFK6X0/6JJ9gGrrDzCpexbyJxHTFo9/BbgcfI
- skX6fJ47Es2OVryMmY0bUC48EFFbZl4nY56TdzunUMDLH27uLgzgrNWDb
- 4jCCmWvffuAPtl8cxjnZbZQjbvD7hKQqE5YBP0zYVGQOeW46618Hr+wy0
- qZAbYb/s5c5LSyhbd+d9jEJad8CK72qHYOwXN98AauIuce+vux8lvnlNk
- OBrhwwm/wXYTHFOYqAFTrYJY2wAdWoU4XezSSADSB5N5uKIq3b7y0+uUa
- Dw2f9m2TNh/ZAiKrq/GmOgNzhvAhn+ABhQLDtvv3fPGJ50FZX9U/J3uky Q==;
-X-CSE-ConnectionGUID: tYzw76EnRx6wQUH9o8Oj+Q==
-X-CSE-MsgGUID: TNYPtwpISwKgHbmDQPs5Ug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="48056689"
-X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; d="scan'208";a="48056689"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 01:51:05 -0800
-X-CSE-ConnectionGUID: nCVKrC1ETdmc3RdeYSawgg==
-X-CSE-MsgGUID: Mcqe+rlZQmGxKVwaJK4OmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="109468971"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 01:51:04 -0800
-Date: Thu, 16 Jan 2025 10:51:01 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
- santhosh.reddy.guddati@intel.com
-Subject: Re: [PATCH i-g-t v2 3/5] runner/settings: Add function to set
- IGT_RUNNER_DATA environment variable
-Message-ID: <20250116095101.vnp2j6k44qxxoosh@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
- igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
- santhosh.reddy.guddati@intel.com
-References: <20250107200614.963199-1-ramanaidu.naladala@intel.com>
- <20250107200614.963199-4-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCC3710E928;
+	Thu, 16 Jan 2025 10:09:28 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD7810E928;
+ Thu, 16 Jan 2025 10:09:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2287802077576076862=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250107200614.963199-4-ramanaidu.naladala@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Initial_PTL_support_=28re?=
+ =?utf-8?q?v6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Clint Taylor" <clinton.a.taylor@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 16 Jan 2025 10:09:27 -0000
+Message-ID: <173702216730.218583.6280263282946818543@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
+In-Reply-To: <20241218213654.2734573-1-clinton.a.taylor@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,92 +37,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Naladala,
-On 2025-01-08 at 01:36:12 +0530, Naladala Ramanaidu wrote:
-> Introduced set_runner_datadir() to set the IGT_RUNNER_DATA environment
+--===============2287802077576076862==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-enviroment could be also read by test itself so imho better
-name for it would be IGT_DATA_PATH
+== Series Details ==
 
-Regards,
-Kamil
+Series: Initial PTL support (rev6)
+URL   : https://patchwork.freedesktop.org/series/141325/
+State : success
 
-> variable. This function uses absolute_path() to convert the relative
-> path "../share/igt-gpu-tools" to an absolute path. Update the
-> runner/runner code to call set_runner_datadir() and handle errors
-> appropriately.
-> 
-> v2: Fix review comments. (Kamil)
-> 
-> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-> ---
->  runner/runner.c   | 8 ++++++++
->  runner/settings.c | 9 +++++++++
->  runner/settings.h | 1 +
->  3 files changed, 18 insertions(+)
-> 
-> diff --git a/runner/runner.c b/runner/runner.c
-> index 4855ad641..950eb5662 100644
-> --- a/runner/runner.c
-> +++ b/runner/runner.c
-> @@ -12,8 +12,13 @@ int main(int argc, char **argv)
->  	struct job_list job_list;
->  	struct execute_state state;
->  	int exitcode = 0;
-> +	int data_flag = 0;
->  
->  	init_settings(&settings);
-> +	data_flag = set_runner_datadir();
-> +	if (data_flag)
-> +		fprintf(stderr, "Data dir path not set\n");
-> +
->  	init_job_list(&job_list);
->  
->  	if (!parse_options(argc, argv, &settings)) {
-> @@ -49,6 +54,9 @@ int main(int argc, char **argv)
->  		exitcode = 1;
->  	}
->  
-> +	if (!data_flag)
-> +		unsetenv("IGT_RUNNER_DATA");
-> +
->  	printf("Done.\n");
->  	return exitcode;
->  }
-> diff --git a/runner/settings.c b/runner/settings.c
-> index bea0c3059..c8220be32 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -589,6 +589,15 @@ char *absolute_path(const char *path)
->  	return result;
->  }
->  
-> +int set_runner_datadir(void)
-> +{
-> +	const char *datapath = "../share/igt-gpu-tools";
-> +	char *abpath;
-> +
-> +	abpath = absolute_path(datapath);
-> +	return setenv("IGT_RUNNER_DATA", abpath, 1);
-> +}
-> +
->  static char *bin_path(char *fname)
->  {
->  	char *path, *p;
-> diff --git a/runner/settings.h b/runner/settings.h
-> index 7e6cd11e2..5926817b6 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -150,5 +150,6 @@ bool serialize_settings(struct settings *settings);
->  
->  bool read_settings_from_file(struct settings *settings, FILE* f);
->  bool read_settings_from_dir(struct settings *settings, int dirfd);
-> +int set_runner_datadir(void);
->  
->  #endif
-> -- 
-> 2.43.0
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8183 -> IGTPW_12418
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12418 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-cfl-guc:         [PASS][1] -> [ABORT][2] ([i915#13508])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/fi-cfl-guc/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/fi-cfl-guc/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         [PASS][3] -> [INCOMPLETE][4] ([i915#13050])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arlh-2/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - bat-arlh-2:         [PASS][5] -> [INCOMPLETE][6] ([i915#12445])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][7] -> [DMESG-FAIL][8] ([i915#13393]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][9] ([i915#13350])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/fi-pnv-d510/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-mtlp-9}:       [DMESG-FAIL][10] ([i915#13393]) -> [PASS][11] +1 other test pass
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#13050]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050
+  [i915#13350]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13350
+  [i915#13393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393
+  [i915#13508]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13508
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8183 -> IGTPW_12418
+
+  CI-20190529: 20190529
+  CI_DRM_15929: 14e0c4a8247c9514dc57b2231602fb6d9455802b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12418: 23052ace3ac04fd0203b573736255ba4919c63d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8183: b2dbc6f22815128c0dd5c737504f42e1f1a6ad62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html
+
+--===============2287802077576076862==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Initial PTL support (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141325/">https://patchwork.freedesktop.org/series/141325/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8183 -&gt; IGTPW_12418</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12418 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/fi-cfl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/fi-cfl-guc/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13508">i915#13508</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arlh-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13050">i915#13050</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393">i915#13393</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13350">i915#13350</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8183/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13393">i915#13393</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12418/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8183 -&gt; IGTPW_12418</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15929: 14e0c4a8247c9514dc57b2231602fb6d9455802b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12418: 23052ace3ac04fd0203b573736255ba4919c63d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8183: b2dbc6f22815128c0dd5c737504f42e1f1a6ad62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2287802077576076862==--
