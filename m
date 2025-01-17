@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 054AFC02183
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jan 2025 20:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6DEC02185
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jan 2025 22:35:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5329810EB78;
-	Fri, 17 Jan 2025 20:51:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ATnW/iGW";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B98110EB78
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jan 2025 20:51:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737147109; x=1768683109;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sa2d4KdA1WebI9go7DOUxizlI/qZHel4v/Ly+fbKvQc=;
- b=ATnW/iGWLwAuGLUHrAJY3Ym+XYJwXdYcJ/uwce5ePh7X7ZT2ECPFKvqw
- S1uOj6mu57QZ8nQFtzNcanp3dVwvTaibWOclVC1+ccVtMPh/+wfAnIarz
- FeKzh996elsNIL5ZFTMX9GIqRk9aE0sGC8GVAOzzHu3u2Se9XOyxovqzC
- Fv/jH9mdHKQdpfzFNDjpePrFG5nyPwp7uBF2sSd67Nv2EyJNEag8LZEdP
- AtS8mpUrqnzpYaHJ5mqBrwoo1HftfT1xgU+6kXcUWfWcAhcGccuq8H8nn
- or3Thajah6ibmgBx9+6/Sy2dxorcHcvGg4XAak0J5cE+ss7FNTtO8iuWv Q==;
-X-CSE-ConnectionGUID: 5JekC3WnS6myhuY1ngPRNQ==
-X-CSE-MsgGUID: 1EDgXt/ZRkWbUcWqdkBU9g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="36869559"
-X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; d="scan'208";a="36869559"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jan 2025 12:51:48 -0800
-X-CSE-ConnectionGUID: oEWBZkoVQvGplrjrRLE/hA==
-X-CSE-MsgGUID: dyJqZe5xQySf/JpukoFLvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; d="scan'208";a="110902930"
-Received: from nakshtra-system-product-name.iind.intel.com ([10.145.169.86])
- by orviesa004.jf.intel.com with ESMTP; 17 Jan 2025 12:51:47 -0800
-From: nakshtra.goyal@intel.com
-To: igt-dev@lists.freedesktop.org,
-	ramadevi.gandi@intel.com
-Cc: pravalika.gurram@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_create: Check negative cases for
- exec_queue create/destroy ioctl
-Date: Sat, 18 Jan 2025 02:23:19 +0530
-Message-Id: <20250117205319.3359797-1-nakshtra.goyal@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id B655410E0BD;
+	Fri, 17 Jan 2025 22:35:54 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C40E110E322;
+ Fri, 17 Jan 2025 22:35:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6216518646040686092=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fcreate=3A_?=
+ =?utf-8?q?Check_negative_cases_for_exec=5Fqueue_create/destroy_ioctl?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nakshtra.goyal@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jan 2025 22:35:53 -0000
+Message-ID: <173715335379.897408.7499319820187562896@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250117205319.3359797-1-nakshtra.goyal@intel.com>
+In-Reply-To: <20250117205319.3359797-1-nakshtra.goyal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,178 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nakshtra Goyal <nakshtra.goyal@intel.com>
+--===============6216518646040686092==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Negetive test cases to check expected errors using invalid
-flags, width, pad, reserved bits, num_placements, extensions, exec_queue_id
+== Series Details ==
 
-Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
----
- tests/intel/xe_create.c | 141 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 141 insertions(+)
+Series: tests/intel/xe_create: Check negative cases for exec_queue create/destroy ioctl
+URL   : https://patchwork.freedesktop.org/series/143692/
+State : success
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 07e11036d..edc2a6178 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -59,6 +59,123 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t placement,
- 	return ret;
- }
- 
-+/**
-+ * TEST: Negative test for exec-queue create/destroy ioctl
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: Synchronization
-+ * Functionality: exec-queue create
-+ * Test category: negative test
-+ */
-+
-+/**
-+ * SUBTEST: invalid-flag
-+ * Description: Check ioctl with invalid flag returns expected error code
-+ *
-+ * SUBTEST: exec-queue-create-invalid-reserved
-+ * Description: Send query with invalid reserved value for exec_queue_destroy ioctl
-+ *
-+ * SUBTEST: invalid-width
-+ * Description: Check query with invalid width returns expected error code
-+ *
-+ * SUBTEST: invalid-num-placements
-+ * Description: Check query with invalid num-placements returns expected error code
-+ *
-+ * SUBTEST: invalid-extensions
-+ * Description: Check query with invalid extensions returns expected error code
-+ */
-+
-+static void invalid_flag(int fd)
-+{
-+	struct drm_xe_exec_queue_create create = {
-+		.flags = -1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create, EINVAL);
-+}
-+
-+static void exec_queue_create_invalid_reserved(int fd)
-+{
-+	struct drm_xe_exec_queue_create create = {
-+		.reserved[0] = 0xffff,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create, EINVAL);
-+
-+	create.reserved[0] = 0;
-+	create.reserved[1] = 0xffff;
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create, EINVAL);
-+}
-+
-+static void invalid_width(int fd)
-+{
-+	struct drm_xe_exec_queue_create create = {
-+		.width = 1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create, EINVAL);
-+}
-+
-+static void invalid_num_placements(int fd)
-+{
-+	struct drm_xe_exec_queue_create create = {
-+		.num_placements = 1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create, EINVAL);
-+}
-+
-+static void invalid_extensions(int fd)
-+{
-+	struct drm_xe_exec_queue_create create = {
-+		.extensions = -1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create, EINVAL);
-+}
-+
-+/**
-+ * SUBTEST: invalid-pad
-+ * Description: Check query with invalid pad returns expected error code
-+ *
-+ * SUBTEST: exec-queue-destroy-invalid-reserved
-+ * Description: Send query with invalid reserved value for exec_queue_destroy ioctl
-+ *
-+ * SUBTEST: invalid-exec-queue-id
-+ * Description: Check query with invalid exec_queue_id returns expected error code
-+ */
-+
-+static void invalid_pad(int fd)
-+{
-+	struct drm_xe_exec_queue_destroy destroy = {
-+		.pad = 1,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy, EINVAL);
-+}
-+
-+static void exec_queue_destroy_invalid_reserved(int fd)
-+{
-+	struct drm_xe_exec_queue_destroy destroy = {
-+		.reserved[0] = 0xffff,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy, EINVAL);
-+
-+	destroy.reserved[0] = 0;
-+	destroy.reserved[1] = 0xffff;
-+	do_ioctl_err(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy, EINVAL);
-+}
-+
-+static void invalid_exec_queue_id(int xe)
-+{
-+	struct drm_xe_exec_queue_destroy args = {
-+		.exec_queue_id = 0xffff,
-+	};
-+
-+	do_ioctl_err(xe, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &args, ENOENT);
-+}
-+
- /**
-  * SUBTEST: create-invalid-size
-  * Functionality: ioctl
-@@ -392,6 +509,30 @@ igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
- 	igt_fixture
- 		xe = drm_open_driver(DRIVER_XE);
- 
-+	igt_subtest("invalid-flag")
-+		invalid_flag(xe);
-+
-+	igt_subtest("exec-queue-create-invalid-reserved")
-+		exec_queue_create_invalid_reserved(xe);
-+
-+	igt_subtest("invalid-width")
-+		invalid_width(xe);
-+
-+	igt_subtest("invalid-num-placements")
-+		invalid_num_placements(xe);
-+
-+	igt_subtest("invalid-extensions")
-+		invalid_extensions(xe);
-+
-+	igt_subtest("invalid-pad")
-+		invalid_pad(xe);
-+
-+	igt_subtest("exec-queue-destroy-invalid-reserved")
-+		exec_queue_destroy_invalid_reserved(xe);
-+
-+	igt_subtest("invalid-exec-queue-id")
-+		invalid_exec_queue_id(xe);
-+
- 	igt_subtest("create-invalid-mbz")
- 		create_invalid_mbz(xe);
- 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8198_BAT -> XEIGTPW_12456_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8198 -> IGTPW_12456
+  * Linux: xe-2508-9033a16532f74ae36c48d729d0855a6e189039df -> xe-2510-4fc988de9f5e17d19edb5fc0a0fbc15a8fc837f4
+
+  IGTPW_12456: 12456
+  IGT_8198: 1d1ae626601119d249b530547b9e226c6a684144 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2508-9033a16532f74ae36c48d729d0855a6e189039df: 9033a16532f74ae36c48d729d0855a6e189039df
+  xe-2510-4fc988de9f5e17d19edb5fc0a0fbc15a8fc837f4: 4fc988de9f5e17d19edb5fc0a0fbc15a8fc837f4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12456/index.html
+
+--===============6216518646040686092==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_create: Check negative cases for exec_queue create/destroy ioctl</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143692/">https://patchwork.freedesktop.org/series/143692/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12456/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12456/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8198_BAT -&gt; XEIGTPW_12456_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8198 -&gt; IGTPW_12456</li>
+<li>Linux: xe-2508-9033a16532f74ae36c48d729d0855a6e189039df -&gt; xe-2510-4fc988de9f5e17d19edb5fc0a0fbc15a8fc837f4</li>
+</ul>
+<p>IGTPW_12456: 12456<br />
+  IGT_8198: 1d1ae626601119d249b530547b9e226c6a684144 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2508-9033a16532f74ae36c48d729d0855a6e189039df: 9033a16532f74ae36c48d729d0855a6e189039df<br />
+  xe-2510-4fc988de9f5e17d19edb5fc0a0fbc15a8fc837f4: 4fc988de9f5e17d19edb5fc0a0fbc15a8fc837f4</p>
+
+</body>
+</html>
+
+--===============6216518646040686092==--
