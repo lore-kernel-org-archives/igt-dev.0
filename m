@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 238EBC02183
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jan 2025 00:58:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2219CC02183
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jan 2025 01:00:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD4FE10E048;
-	Fri, 17 Jan 2025 00:58:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D06AE10E048;
+	Fri, 17 Jan 2025 01:00:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hrk/U17f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bcozjT44";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00A3710E048
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jan 2025 00:58:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F27910E048
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jan 2025 01:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737075512; x=1768611512;
+ t=1737075642; x=1768611642;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=56WlyXjrMgnsSIwHtSDAsCwvaExqX+k7riNttpCnWoo=;
- b=hrk/U17fKVkp5iEMMCaT2EFDg+X2glxh7im7zW5tF5dYYubFO62hpsmr
- 1jLkHzF5H4PlcUzo0CyGVKjX5ldX94OXwZ0V5QHL4FDI3O6TSyZBRt3q/
- wGfF89ialtngBeqULPtzOZI39z2z5VgUKVFZvwvbyveIu5YM3S5Vwe2QM
- vzK19rLFE9PQfzyJ+2vQ4jAhGaLxFW6Piubmu5isQj/k0FocHFYwb78MJ
- uBCIWIWlCPKUsT67+FParg9+Q13TNA5YfuEeJF0iKZTOC3cAKprizp28A
- B76QFGNRCdsJqUXAdTfHKrGnwZAOdk1kfdfiy6RY52BoJkv/MdlcL8zXK Q==;
-X-CSE-ConnectionGUID: o2eyvrmkT1OUc/kzds96Jg==
-X-CSE-MsgGUID: 3vYDmi2XS3+R8qQ1HSIsrA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="48154308"
-X-IronPort-AV: E=Sophos;i="6.13,210,1732608000"; d="scan'208";a="48154308"
+ bh=V48m5jHxYp06mnpys4E428Y5J4PBCA1+3UO/x20hpvE=;
+ b=bcozjT44S6AFqsiUIBhivw4Y+k2d9iKcsw+ZpLj2m+hAGJnvYYUfQVNN
+ DQVWle4lJT8RYSPUzjX5SyAw8L7kepPjbvHLJu4WF8GOrhyXGtO05aqVx
+ JQwoAO/bfbfpjuiZtlJ83zXmSC1MN10r9l+Nj8zj05LAzcS/G3VWHYjLv
+ BpQhwhIAMQIJkzfmwzW4JMlqRs2Hf92hjVNFMnG2X3v6foYEaPNL6w2yb
+ wJ3fkmU/u7qIOdsLJf5BMgfI3kt8uKpVW/Be7dq9OF45fEmuYMlrSacvd
+ 30VSOjPG13HMfzBevF5fllOdZ8MiCCuhrfhD+DWjTBKQn7Ns/mb+l5dNn Q==;
+X-CSE-ConnectionGUID: TK57432DSWaHItN43EB0PQ==
+X-CSE-MsgGUID: XQEWDPP6TsG8j0lj21hfQw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="48154500"
+X-IronPort-AV: E=Sophos;i="6.13,210,1732608000"; d="scan'208";a="48154500"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 16:58:31 -0800
-X-CSE-ConnectionGUID: WmuI7bInTne8+++74V+c2w==
-X-CSE-MsgGUID: DTCmHpo/QW6aR/556yP4vw==
+ 16 Jan 2025 17:00:42 -0800
+X-CSE-ConnectionGUID: 5fn0Eyo9QvqXDx+62lyzyw==
+X-CSE-MsgGUID: PyQJyuZcQs+UE0CCiIxqAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110762527"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110762805"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 16:58:31 -0800
-Date: Thu, 16 Jan 2025 16:58:31 -0800
-Message-ID: <85o706dzns.wl-ashutosh.dixit@intel.com>
+ 16 Jan 2025 17:00:42 -0800
+Date: Thu, 16 Jan 2025 17:00:41 -0800
+Message-ID: <85msfqdzk6.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH i-g-t v2 1/1] tests/intel/xe_oa: Extend non-zero-reason
  test
-In-Reply-To: <20250116135456.4066677-2-sai.teja.pottumuttu@intel.com>
+In-Reply-To: <85o706dzns.wl-ashutosh.dixit@intel.com>
 References: <20250116135456.4066677-1-sai.teja.pottumuttu@intel.com>
  <20250116135456.4066677-2-sai.teja.pottumuttu@intel.com>
+ <85o706dzns.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,99 +73,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 16 Jan 2025 05:54:56 -0800, Sai Teja Pottumuttu wrote:
+On Thu, 16 Jan 2025 16:58:31 -0800, Dixit, Ashutosh wrote:
 >
+> On Thu, 16 Jan 2025 05:54:56 -0800, Sai Teja Pottumuttu wrote:
+> >
+>
+> Hi Sai Teja,
+>
+> > Extend non-zero-reason test to use configurable OA buffer sizes and
+> > execute the test for three different sizes 8,16 and 32MB.
+>
+> I made a few changes to the patch and posted a v2. Please take a look. I
+> have tested these changes, so no need to test again.
+>
+> A single patch generally doesn't need a cover letter.
+>
+> I am seeing consistent failures with 32 MB OA buffer size (reason seems to
+> 0 somehow) on Xe1. Did you see these failures on Xe2? So I think we should
+> drop the 32 MB size test.
+>
+> Rest looks good and I have R-b'd the v2. If you like my changes you can R-b
+> v2 too :-)
 
-Hi Sai Teja,
+v2 seems to have ended here:
 
-> Extend non-zero-reason test to use configurable OA buffer sizes and
-> execute the test for three different sizes 8,16 and 32MB.
+https://patchwork.freedesktop.org/series/143640/
 
-I made a few changes to the patch and posted a v2. Please take a look. I
-have tested these changes, so no need to test again.
-
-A single patch generally doesn't need a cover letter.
-
-I am seeing consistent failures with 32 MB OA buffer size (reason seems to
-0 somehow) on Xe1. Did you see these failures on Xe2? So I think we should
-drop the 32 MB size test.
-
-Rest looks good and I have R-b'd the v2. If you like my changes you can R-b
-v2 too :-)
-
-Thanks.
---
-Ashutosh
+because I didn't include the cover letter. Sorry!
 
 
 >
-> Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-> ---
->  tests/intel/xe_oa.c | 30 +++++++++++++++++++++++++++---
->  1 file changed, 27 insertions(+), 3 deletions(-)
->
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 492a6b5d6..f28156a66 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -2504,7 +2504,7 @@ again_1:
->   * Description: Test reason field is non-zero. Can also check OA buffer wraparound issues
->   */
->  static void
-> -test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
-> +test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_buffer_size)
->  {
->	/* ~20 micro second period */
->	int oa_exponent = max_oa_exponent_for_period_lte(20000);
-> @@ -2522,6 +2522,7 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
->		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
->		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
->		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-> +		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, oa_buffer_size,
->	};
->	struct intel_xe_oa_open_prop param = {
->		.num_properties = ARRAY_SIZE(properties) / 2,
-> @@ -2541,6 +2542,9 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
->	load_helper_init();
->	load_helper_run(HIGH);
->
-> +	if (!oa_buffer_size)
-> +		param.num_properties = param.num_properties - 1;
-> +
->	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
->          set_fd_flags(stream_fd, O_CLOEXEC);
->
-> @@ -4867,8 +4871,28 @@ igt_main
->			test_buffer_fill(hwe);
->
->	igt_subtest_with_dynamic("non-zero-reason") {
-> -		__for_one_hwe_in_oag(hwe)
-> -			test_non_zero_reason(hwe);
-> +		struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-> +		struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
-> +
-> +		if (oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE) {
-> +			hwe = oa_unit_engine(drm_fd, 0);
-> +			if (hwe) {
-> +				igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class),
-> +					      hwe->engine_instance, "8MB")
-> +					test_non_zero_reason(hwe, SZ_8M);
-> +
-> +				igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class),
-> +					      hwe->engine_instance, "16MB")
-> +					test_non_zero_reason(hwe, SZ_16M);
-> +
-> +				igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class),
-> +					      hwe->engine_instance, "32MB")
-> +					test_non_zero_reason(hwe, SZ_32M);
-> +			}
-> +		} else {
-> +			__for_one_hwe_in_oag(hwe)
-> +				test_non_zero_reason(hwe, 0);
-> +		}
->	}
->
->	igt_subtest("disabled-read-error")
+> Thanks.
 > --
-> 2.34.1
+> Ashutosh
 >
+>
+> >
+> > Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+> > ---
+> >  tests/intel/xe_oa.c | 30 +++++++++++++++++++++++++++---
+> >  1 file changed, 27 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> > index 492a6b5d6..f28156a66 100644
+> > --- a/tests/intel/xe_oa.c
+> > +++ b/tests/intel/xe_oa.c
+> > @@ -2504,7 +2504,7 @@ again_1:
+> >   * Description: Test reason field is non-zero. Can also check OA buffer wraparound issues
+> >   */
+> >  static void
+> > -test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
+> > +test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_buffer_size)
+> >  {
+> >	/* ~20 micro second period */
+> >	int oa_exponent = max_oa_exponent_for_period_lte(20000);
+> > @@ -2522,6 +2522,7 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
+> >		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+> >		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+> >		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+> > +		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, oa_buffer_size,
+> >	};
+> >	struct intel_xe_oa_open_prop param = {
+> >		.num_properties = ARRAY_SIZE(properties) / 2,
+> > @@ -2541,6 +2542,9 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
+> >	load_helper_init();
+> >	load_helper_run(HIGH);
+> >
+> > +	if (!oa_buffer_size)
+> > +		param.num_properties = param.num_properties - 1;
+> > +
+> >	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+> >          set_fd_flags(stream_fd, O_CLOEXEC);
+> >
+> > @@ -4867,8 +4871,28 @@ igt_main
+> >			test_buffer_fill(hwe);
+> >
+> >	igt_subtest_with_dynamic("non-zero-reason") {
+> > -		__for_one_hwe_in_oag(hwe)
+> > -			test_non_zero_reason(hwe);
+> > +		struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
+> > +		struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
+> > +
+> > +		if (oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE) {
+> > +			hwe = oa_unit_engine(drm_fd, 0);
+> > +			if (hwe) {
+> > +				igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class),
+> > +					      hwe->engine_instance, "8MB")
+> > +					test_non_zero_reason(hwe, SZ_8M);
+> > +
+> > +				igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class),
+> > +					      hwe->engine_instance, "16MB")
+> > +					test_non_zero_reason(hwe, SZ_16M);
+> > +
+> > +				igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class),
+> > +					      hwe->engine_instance, "32MB")
+> > +					test_non_zero_reason(hwe, SZ_32M);
+> > +			}
+> > +		} else {
+> > +			__for_one_hwe_in_oag(hwe)
+> > +				test_non_zero_reason(hwe, 0);
+> > +		}
+> >	}
+> >
+> >	igt_subtest("disabled-read-error")
+> > --
+> > 2.34.1
+> >
