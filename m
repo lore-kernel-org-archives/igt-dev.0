@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D33BAC02188
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0803C02183
 	for <igt-dev@archiver.kernel.org>; Fri, 17 Jan 2025 23:18:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B00E10E095;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 544CA10E327;
 	Fri, 17 Jan 2025 23:18:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j6UJQRjv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fj69uSBX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C31E10E095
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 625C410EB85
  for <igt-dev@lists.freedesktop.org>; Fri, 17 Jan 2025 23:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1737155890; x=1768691890;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1kG55AapD4jyTd134hYXGnVHtH1WcV54cb+xmypPWXQ=;
- b=j6UJQRjvlO/KAfQJxQHN+SSvH7pFB2NZaqrFbcY9+pAfEa4OFgGo9XPC
- UbfUzTmvTjs7yepfnP5hDo4ZocEx98n5tosezxJBUA8q150ww6clEJd/S
- bTbQa4qToQyDv689XdyZ883CwKAmT7iF/NxJGMeGeLxBMRBxGpXMobLQ0
- gp4rDRitgY6DFciSvGW9gGJr6QV9bWyPMah36AwjWuLGkZvLHeYpcQYkQ
- qoiLKphSJaDioV+jQGz0KveJAL++uIa6ReiD3gaKFba2d8qsprvvkSxgc
- CokIE/BEaD8p1upghqBskRvQ9Y8mIYeMXCylcHQ6QhteW1Q8d45m2IfJS A==;
-X-CSE-ConnectionGUID: yYS0xtr6QhuKhW6OCRNujQ==
-X-CSE-MsgGUID: zVOTga0tRdqZXRDchwsmgw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="37627811"
-X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; d="scan'208";a="37627811"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=0bIpqpRGXhdt7dZ7o9w0zG5EDwuYRTm21SM0zRihHV4=;
+ b=fj69uSBXDmslpQ3xMGqnTDk9xd82qsIR22TwXdpt2HkgfCw52hP2zPU/
+ 7FJN/2Ynpax2jm1EDX0Tee0zRAbwfIu/t8urnMr9TFiiNKfXEwTolHaNF
+ CEMqhfAj5rxyzeLgJXlCzkF1wTfuo0Da695Qnzo8gFProYx7hkTQLt0bu
+ cpJcs7XSyyKPAbae+rbeIR63+WC2R743SN/PjBOQ0RBRKBOOIzKocE8sV
+ yfLxhe4r3HVvnoPJJETTGQP1eIIBqExDQijsQZPfteOhiTrT9gEl32ano
+ D/QSn5AOar35rcvTghkAytWKuq7gahiDZwHcC8f2Ujh9rY/LBKBWM5LBG A==;
+X-CSE-ConnectionGUID: wH8S7k/NRjOL9ZuZMxjhnA==
+X-CSE-MsgGUID: HR02s3WZSP6Jyu6mha1i2g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="37627815"
+X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; d="scan'208";a="37627815"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  17 Jan 2025 15:18:10 -0800
-X-CSE-ConnectionGUID: Q6PprCmrQTK43oZH+l/kaA==
-X-CSE-MsgGUID: YPgyOBQqRiaCvv4+47uERw==
+X-CSE-ConnectionGUID: 0vg8QBfkSFK6OGg1EIxwmQ==
+X-CSE-MsgGUID: zjbGQ4w+ROC97aKFKWVQVQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="106819351"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="106819365"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  17 Jan 2025 15:18:10 -0800
@@ -48,10 +48,12 @@ Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 0/5] Add igt_runner's cmdline to results
-Date: Fri, 17 Jan 2025 15:17:41 -0800
-Message-ID: <20250117231751.429703-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 4/5] runner/settings: Serialize command line
+Date: Fri, 17 Jan 2025 15:17:45 -0800
+Message-ID: <20250117231751.429703-5-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.48.0
+In-Reply-To: <20250117231751.429703-1-lucas.demarchi@intel.com>
+References: <20250117231751.429703-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,30 +71,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Help devs to reproduce what CI is running by dumping what is the command
-line being used. While it's true that in the shard case we don't have
-the testlist, just seeing the right incantation of command line is a
-great improvement.
+Serialize the command line to metadata.txt. The expected format in the
+metadata.txt is like below:
 
-I plan to follow this with the env vars, but first want to get this
-in. It seems we already have an environment.txt saved, however that
-doesn't contain the igt_runner's env, only options passed via -e to
-igt_runner which is then forwarded to each test. I'm wondering if this
-is a source of bugs when using igt_resume:  if the environment doesn't
-match, it will run with different options on each execution.
+	cmdline.argc : 6
+	cmdline.argv[0] : ./build/runner/igt_runner
+	cmdline.argv[1] : -o
+	cmdline.argv[2] : --test-list
+	cmdline.argv[3] : /tmp/testlist.txt
+	cmdline.argv[4] : build/tests/
+	cmdline.argv[5] : /tmp/results
 
-Lucas De Marchi (5):
-  runner/settings: Deduplicate cleanup
-  runner/settings: Use wrapper functions for each type
-  runner/settings: Drop extra strdup
-  runner/settings: Serialize command line
-  runner/resultgen: Add cmdline to results.json
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ runner/settings.c | 27 +++++++++++++++++++++++++++
+ runner/settings.h |  4 ++++
+ 2 files changed, 31 insertions(+)
 
- runner/resultgen.c |   7 ++-
- runner/settings.c  | 114 +++++++++++++++++++++++++++++++--------------
- runner/settings.h  |   4 ++
- 3 files changed, 90 insertions(+), 35 deletions(-)
-
+diff --git a/runner/settings.c b/runner/settings.c
+index 96377f1de..1d65195c9 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -874,6 +874,8 @@ bool parse_options(int argc, char **argv,
+ 		goto error;
+ 	}
+ 
++	settings->cmdline.argc = argc;
++	settings->cmdline.argv = argv;
+ 
+ 	return true;
+ 
+@@ -1054,6 +1056,7 @@ static bool serialize_hook_strs(struct settings *settings, int dirfd)
+ bool serialize_settings(struct settings *settings)
+ {
+ #define SERIALIZE_LINE(f, s, name, format) fprintf(f, "%s : " format "\n", #name, s->name)
++#define SERIALIZE_ARRAY_ITEM(f, s, name, _i, format) fprintf(f, "%s[%d] : " format "\n", #name, _i, s->name[_i])
+ 
+ 	FILE *f;
+ 	int dirfd, covfd;
+@@ -1122,6 +1125,10 @@ bool serialize_settings(struct settings *settings)
+ 	SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
+ 	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
+ 
++	SERIALIZE_LINE(f, settings, cmdline.argc, "%d");
++	for (int i = 0; i < settings->cmdline.argc; i++)
++		SERIALIZE_ARRAY_ITEM(f, settings, cmdline.argv, i, "%s");
++
+ 	if (settings->sync) {
+ 		fflush(f);
+ 		fsync(fileno(f));
+@@ -1176,9 +1183,21 @@ static char *parse_str(char **pval)
+ 		s->field = _f(&val);		\
+ 		goto cleanup;			\
+ 	}
++#define PARSE_LINE_ARRAY(s, name, val, field, _f, _max)		\
++	do {							\
++		int idx;					\
++		if (sscanf(name, #field "[%u]", &idx) == 1 &&	\
++		    idx < s->_max) {				\
++			s->field[idx] = _f(&val);		\
++			goto cleanup;				\
++		}						\
++	} while (0)
++
+ #define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, val, field, parse_int)
+ #define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, val, field, parse_ul)
+ #define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, val, field, parse_str)
++#define PARSE_ARRAY_STR(s, name, val, field, _max) \
++	PARSE_LINE_ARRAY(s, name, val, field, parse_str, _max)
+ 
+ bool read_settings_from_file(struct settings *settings, FILE *f)
+ {
+@@ -1210,6 +1229,13 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ 		PARSE_INT(settings, name, val, enable_code_coverage);
+ 		PARSE_INT(settings, name, val, cov_results_per_test);
+ 		PARSE_STR(settings, name, val, code_coverage_script);
++		PARSE_INT(settings, name, val, cmdline.argc);
++
++		if (settings->cmdline.argc && !settings->cmdline.argv)
++			settings->cmdline.argv = calloc(settings->cmdline.argc,
++							sizeof(*settings->cmdline.argv));
++
++		PARSE_ARRAY_STR(settings, name, val, cmdline.argv, cmdline.argc);
+ 
+ 		printf("Warning: Unknown field in settings file: %s = %s\n",
+ 		       name, val);
+@@ -1233,6 +1259,7 @@ cleanup:
+ 	return true;
+ }
+ #undef PARSE_LINE
++#undef PARSE_LINE_ARRAY
+ 
+ /**
+  * read_env_vars_from_file() - load env vars from a file
+diff --git a/runner/settings.h b/runner/settings.h
+index f69f09778..2266118a7 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -75,6 +75,10 @@ struct settings {
+ 	char *code_coverage_script;
+ 	bool enable_code_coverage;
+ 	bool cov_results_per_test;
++	struct {
++		int argc;
++		char **argv;
++	} cmdline;
+ };
+ 
+ /**
 -- 
 2.48.0
 
