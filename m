@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14468C02182
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jan 2025 13:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95D69C02181
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jan 2025 13:13:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9118C10E3ED;
-	Mon, 20 Jan 2025 13:13:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D43910E3FC;
+	Mon, 20 Jan 2025 13:13:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hzszXeye";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jo8A8xzj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31DA010E3FC
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2025 13:13:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6E3B10E3ED
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2025 13:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737378836; x=1768914836;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nwkE6RRw9KHW0ux9QVl7t4w1Pz+WLkpnsUKjhtZv47I=;
- b=hzszXeyekui5yd7yiDN3w5S0Xkk0nhgKwQNCrmJMlwk1Vby3m+L+1UHo
- 1MkdQlXvq5NEFfB3doxgtYVO2Ph9K9Clo3h30rXoB8X8U0X1pl6zp0X9K
- 1NS3Ql6PZ63ihC43ZX+2FF4wiABwqgbRPQuxLJDutzfPJKKs3s/+RmWrp
- lcwx90UGWWxo2wkNdp/oUlTtUWyTLowwNIzjP4MnzSngP0qXkJDbN8jqv
- f3D5GfbxtGNUuoZey/dlXSUZ/LzNNuFs51yyQNn+b/gb6DqeIZCT5pN8O
- lv6chr8GAWAPRfuq4VShLbc5adj3kMufWTJ7Yx7GnWx8R0svkzacqidef w==;
-X-CSE-ConnectionGUID: DCau15FBTyWY+9fQ20d8PQ==
-X-CSE-MsgGUID: VxcTtxm0TMyK+W32w3pxAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37045735"
-X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="37045735"
+ t=1737378838; x=1768914838;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ir/Nsbh0FOn3MropykLuluaILEr6oZBJ7NfjcoX0T2A=;
+ b=jo8A8xzjfkWLeyHWMvo6Ob2s3QPfa6k2BZm81e0FoYxR4AuYrjnAJhOb
+ CnmE5Lx2nD4QoC7IM9Mhgkjo5g3cNNU2RT7iZxk6yzU8bgOpUaGZ+DJF7
+ Sb26TRzR5qF8rbM8pcJyFGtl0MpRfdPQVkyW24wQRhVsL/Iw6VZb7N2C6
+ 3+jOdfueRC2RDCXyJaGk27zWZx+/yY7nbhaVFSiuAha4ClhXLsZl56I4A
+ TkCpmsCTAqH3+B/Ns6rej5H0fOkLZCyDYbcxGe0ay8ZeTxdAi5QA5Nf6b
+ ncybATNRjgiApascVjs0ePbSwXBNZeufPbMn16ZHPu0XNCVbqBxADY7BP Q==;
+X-CSE-ConnectionGUID: J7MBQMWwTRSKV4fXWp9+ug==
+X-CSE-MsgGUID: WZEXDMW2TM2JKN+kzSZ49w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37045739"
+X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="37045739"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 05:13:56 -0800
-X-CSE-ConnectionGUID: OdKpWInrSZOAifkz/oyQ1w==
-X-CSE-MsgGUID: Rd4ubKddTEmsLYRjT5h4Hw==
+ 20 Jan 2025 05:13:58 -0800
+X-CSE-ConnectionGUID: 3UoA7movTiWHlJ/4eXwg6Q==
+X-CSE-MsgGUID: aKPWS/QsSSGksvgqJmgsAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="107122135"
+X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="107122144"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
  ([10.245.245.4])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 05:13:54 -0800
+ 20 Jan 2025 05:13:56 -0800
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jordan.l.justen@intel.com, christoph.manszewski@intel.com,
  Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t 1/2] lib/xe_eudebug: Fix 32b compilation warnings/errors
-Date: Mon, 20 Jan 2025 14:13:37 +0100
-Message-Id: <20250120131338.131713-1-dominik.grzegorzek@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_eudebug_online: Fix 32b compilation
+ warnings/errors
+Date: Mon, 20 Jan 2025 14:13:38 +0100
+Message-Id: <20250120131338.131713-2-dominik.grzegorzek@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250120131338.131713-1-dominik.grzegorzek@intel.com>
+References: <20250120131338.131713-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,115 +70,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix instances casting using proper from_user_pointer macro and
-correct all debug prints which were causing compilation warnings
-on 32b archs.
+Fix metadata allocation so it is properly sized on 32b and
+correct all debug prints which were causing compilation warnings.
 
 Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/xe/xe_eudebug.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ tests/intel/xe_eudebug_online.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 24062e399..19bec2d25 100644
---- a/lib/xe/xe_eudebug.c
-+++ b/lib/xe/xe_eudebug.c
-@@ -324,14 +324,14 @@ static uint64_t __wait_token(int pipe[2], const uint64_t token, int timeout_ms)
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index f532387af..41a01c02f 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -569,7 +569,7 @@ static void get_aips_offset_table(struct online_debug_data *data, int threads)
  
- 	ret = safe_pipe_read(pipe, &in, sizeof(in), timeout_ms);
- 	igt_assert_f(ret > 0,
--		     "Pipe read timeout waiting for token '%s:(%ld)'\n",
-+		     "Pipe read timeout waiting for token '%s:(%" PRId64 ")'\n",
- 		     token_to_str(token), token);
- 
- 	igt_assert_eq(in, token);
- 
- 	ret = safe_pipe_read(pipe, &in, sizeof(in), timeout_ms);
- 	igt_assert_f(ret > 0,
--		     "Pipe read timeout waiting for token value '%s:(%ld)'\n",
-+		     "Pipe read timeout waiting for token value '%s:(%" PRId64 ")'\n",
- 		     token_to_str(token), token);
- 
- 	return in;
-@@ -828,7 +828,8 @@ xe_eudebug_event_log_find_seqno(struct xe_eudebug_event_log *l, uint64_t seqno)
- 	xe_eudebug_for_each_event(e, l) {
- 		if (e->seqno == seqno) {
- 			if (found) {
--				igt_warn("Found multiple events with the same seqno %lu\n", seqno);
-+				igt_warn("Found multiple events with the same seqno %" PRIu64 "\n",
-+					 seqno);
- 				xe_eudebug_event_log_print(l, false);
- 				igt_assert(!found);
- 			}
-@@ -1238,7 +1239,7 @@ int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d,
- 	d->p_client[0] = c->p_in[0];
- 	d->p_client[1] = c->p_in[1];
- 
--	igt_debug("debugger connected to %lu\n", d->target_pid);
-+	igt_debug("debugger connected to %" PRIu64 "\n", d->target_pid);
- 
- 	return 0;
+ 	igt_debug("AIPs offset table:\n");
+ 	for (int i = 0; i < threads; i++)
+-		igt_debug("%lx\n", data->aips_offset_table[i]);
++		igt_debug("%" PRIx64 "\n", data->aips_offset_table[i]);
  }
-@@ -1391,11 +1392,11 @@ void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s, uint64_t stage
- {
- 	u64 stage_in;
  
--	igt_debug("debugger xe client fd: %d pausing for stage %lu\n", s->debugger->master_fd,
-+	igt_debug("debugger xe client fd: %d pausing for stage %" PRIu64 "\n", s->debugger->master_fd,
- 		  stage);
+ static int get_stepped_threads_count(struct online_debug_data *data, int threads)
+@@ -1063,8 +1063,8 @@ static void run_online_client(struct xe_eudebug_client *c)
+ 	uint32_t *ptr;
+ 	int fd, vm_flags;
  
- 	stage_in = wait_from_client(s->client, DEBUGGER_STAGE);
--	igt_debug("debugger xe client fd: %d stage %lu, expected %lu, stage\n",
-+	igt_debug("debugger xe client fd: %d stage %" PRIu64 ", expected %" PRIu64 ", stage\n",
- 		  s->debugger->master_fd, stage_in, stage);
+-	metadata[0] = calloc(2, sizeof(*metadata));
+-	metadata[1] = calloc(2, sizeof(*metadata));
++	metadata[0] = calloc(2, sizeof(**metadata));
++	metadata[1] = calloc(2, sizeof(**metadata));
+ 	igt_assert(metadata[0]);
+ 	igt_assert(metadata[1]);
  
- 	igt_assert_eq(stage_in, stage);
-@@ -1584,14 +1585,15 @@ void xe_eudebug_client_wait_stage(struct xe_eudebug_client *c, uint64_t stage)
- 	u64 stage_in;
+@@ -2328,11 +2328,11 @@ static void test_many_sessions_on_tiles(int fd, bool multi_tile)
  
- 	if (c->done) {
--		igt_warn("client: %d already done before %lu\n", c->pid, stage);
-+		igt_warn("client: %d already done before %" PRIu64 "\n", c->pid, stage);
- 		return;
+ 		if (multi_tile)
+ 			igt_assert_f(diff < WORKLOAD_DELAY_US,
+-				     "Expected to execute workloads concurrently. Actual delay: %lu ms\n",
++				     "Expected to execute workloads concurrently. Actual delay: %" PRIu64 " ms\n",
+ 				     diff);
+ 		else
+ 			igt_assert_f(diff >= WORKLOAD_DELAY_US,
+-				     "Expected a serialization of workloads. Actual delay: %lu ms\n",
++				     "Expected a serialization of workloads. Actual delay: %" PRIu64 " ms\n",
+ 				     diff);
  	}
  
--	igt_debug("client: %d pausing for stage %lu\n", c->pid, stage);
-+	igt_debug("client: %d pausing for stage %" PRIu64 "\n", c->pid, stage);
- 
- 	stage_in = client_wait_token(c, CLIENT_STAGE);
--	igt_debug("client: %d stage %lu, expected %lu, stage\n", c->pid, stage_in, stage);
-+	igt_debug("client: %d stage %" PRIu64 ", expected %" PRIu64 ", stage\n", c->pid,
-+		  stage_in, stage);
- 
- 	igt_assert_eq(stage_in, stage);
- }
-@@ -1949,7 +1951,7 @@ uint32_t xe_eudebug_client_exec_queue_create(struct xe_eudebug_client *c, int fd
- 	igt_assert(c);
- 	igt_assert(create);
- 
--	instances = (struct drm_xe_engine_class_instance *)(create->instances);
-+	instances = from_user_pointer(create->instances);
- 	class = instances[0].engine_class;
- 
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, create), 0);
-@@ -1988,6 +1990,7 @@ uint32_t xe_eudebug_client_exec_queue_create(struct xe_eudebug_client *c, int fd
- void xe_eudebug_client_exec_queue_destroy(struct xe_eudebug_client *c, int fd,
- 					  struct drm_xe_exec_queue_create *create)
- {
-+	struct drm_xe_engine_class_instance *instances;
- 	struct drm_xe_exec_queue_destroy destroy = {};
- 	struct drm_xe_ext_set_property *ext;
- 	bool send = false;
-@@ -1997,7 +2000,8 @@ void xe_eudebug_client_exec_queue_destroy(struct xe_eudebug_client *c, int fd,
- 	igt_assert(create);
- 
- 	destroy.exec_queue_id = create->exec_queue_id;
--	class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
-+	instances = from_user_pointer(create->instances);
-+	class = instances[0].engine_class;
- 
- 	for (ext = from_user_pointer(create->extensions); ext;
- 	     ext = from_user_pointer(ext->base.next_extension))
 -- 
 2.34.1
 
