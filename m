@@ -4,65 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A408C02182
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jan 2025 12:49:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86087C02181
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jan 2025 12:59:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1E8D10E3DA;
-	Mon, 20 Jan 2025 12:49:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40DA410E3ED;
+	Mon, 20 Jan 2025 12:59:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pbeay6Qv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e2mwt67i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B73D10E3DA
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2025 12:49:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 782EF10E3ED
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2025 12:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737377397; x=1768913397;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=NRjWbT/lKXJ0PC04xZTnOBnt8IV6HIBj2RWBcJCAJ7k=;
- b=Pbeay6QvSwq5x1ceFlpXVRbNf0B4RANpHmJDaHRSHILKpFuy8v/b9X6h
- +PTJl7TFfyo5BCJLpukk1vAeWXrR2exgTT2FpfMI/8sO8IysIV+aLMKGr
- DgHJ7SFRAF73NsLRqXvv/+9vF348Ck7vdchAOwayUxeI3c/6dnERUESQ2
- 4OmoRbRH9SOwdZcHHeKFQZ9hQ0ykeixVfRmFlIWsXaKtT/imfNLfzRDZ+
- dJtJE3zMcQJzsSZKw+nApWGtcDgR9qoN6Sz4R/a/mZQbyLY3qweJfNdXk
- FFhqmqUbC8tDGbqZvY3mwIs5X4eadRHi1shTGAT1uv/t0E6OBZbnLHBbc Q==;
-X-CSE-ConnectionGUID: TnSlHXoQSd+3GZJG7hTBfg==
-X-CSE-MsgGUID: ybf+DWJqSWmyiSTyO6EpWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="41694547"
-X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="41694547"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 04:49:57 -0800
-X-CSE-ConnectionGUID: UiGjuSq8Qa+zscAogTgLSg==
-X-CSE-MsgGUID: iMgwiJTYTwGMOzYYTim47g==
+ t=1737377986; x=1768913986;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jUWs48DC1ayH6fBOheqC2R1GxDmOnekFhm/7s1N12No=;
+ b=e2mwt67iCOKUHto8nyzu44KTsS+IhHEZnl04qRCUjaQj2yIaUdBgR21y
+ 7Rr8NM9oY8MCvmnHHFL9ZaTCrnqMuF8mPbuTnCfi3RnsXcI9bFnBFfMgL
+ ZWVJj8XoUucjuVIoAyCYQJd8JCa08yHEYQ+Tedm1ezr9Hpi2fRHztuHFq
+ Ex9Q/3uwUlz7K62zSllzjAi4/OOXv7sdUdQn7z2P1eS1zJ3ntv/wOWZUJ
+ ABv42TpzJWFPRlgkcjfWDvPSe/fKFxnFS3rqA6zDC+P4QinwWs0tpJ7Cr
+ xbusbp+DckkW+52LP/AASDSWefTGW9TSFfcczsZTHqDxCxlWqFN4vNbFW Q==;
+X-CSE-ConnectionGUID: oOJbZporTceMs/1YFXyuqw==
+X-CSE-MsgGUID: 1OHqJe1FSEO63sWDy++2AA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="49183980"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="49183980"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2025 04:59:43 -0800
+X-CSE-ConnectionGUID: zOzKXo16SOWaG0w31anmmg==
+X-CSE-MsgGUID: mogxUmVsTUKlrKqu88V8Bw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="143785015"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 04:49:55 -0800
-Date: Mon, 20 Jan 2025 13:49:51 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_util: introduce helper for enabling
- ccs mode
-Message-ID: <20250120124951.bujiuec4bwo4rsrb@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- "Manszewski, Christoph" <christoph.manszewski@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
-References: <20241216131137.50945-1-dominik.grzegorzek@intel.com>
- <e2c35d58-f033-45a9-8d95-1c90ed60d0e7@intel.com>
- <2208c434-10f1-4fb3-ba89-1f7bcfd8d03a@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="137356395"
+Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
+ by orviesa002.jf.intel.com with ESMTP; 20 Jan 2025 04:59:41 -0800
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: [PATCH v3] tests/intel/xe_wedged: Read wedged_mode debugfs
+Date: Mon, 20 Jan 2025 18:39:27 +0530
+Message-Id: <20250120130927.65919-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2208c434-10f1-4fb3-ba89-1f7bcfd8d03a@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,107 +66,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Manszewski,,
-On 2025-01-17 at 14:18:53 +0100, Manszewski, Christoph wrote:
-> On 17.01.2025 14:07, Manszewski, Christoph wrote:
-> > Hi Dominik,
-> > 
-> > On 16.12.2024 14:11, Dominik Grzegorzek wrote:
-> > > From: Andrzej Hajda <andrzej.hajda@intel.com>
-> > > 
-> > > Multiple tests will require enabled ccs mode. Add special helper to
-> > > avoid code duplication.
-> > > 
-> > > Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> > > ---
-> > >   lib/xe/xe_util.c | 31 +++++++++++++++++++++++++++++++
-> > >   lib/xe/xe_util.h |  1 +
-> > >   2 files changed, 32 insertions(+)
-> > > 
-> > > diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-> > > index 9482819c2..f7ae19f08 100644
-> > > --- a/lib/xe/xe_util.c
-> > > +++ b/lib/xe/xe_util.c
-> > > @@ -302,3 +302,34 @@ int xe_gt_count_engines_by_class(int fd, int
-> > > gt, int class)
-> > >       return n;
-> > >   }
-> > > +
-> > > +/**
-> > > + * xe_sysfs_enable_ccs_mode:
-> > > + * @fd: pointer to xe drm fd, can reopened multiple times
-> > > + *
-> > > + * Enables ccs_mode on all GTs, it must succeed for at least one GT.
-> > > + * Since function requires the driver to be closed during ccs_mode
-> > > change
-> > > + * @fd will be closed then re-opened.
-> > > + */
-> > > +void xe_sysfs_enable_ccs_mode(int *fd)
-> > > +{
-> > > +    int gt, gt_fd, num_slices, ccs_mode, num_gt, enabled_count = 0;
-> > > +
-> > > +    num_gt = xe_number_gt(*fd);
-> > > +
-> > > +    for (gt = 0; gt < num_gt; gt++) {
-> > > +        gt_fd = xe_sysfs_gt_open(*fd, gt);
-> > > +        drm_close_driver(*fd);
-> > 
-> > Why not outside the loop?
+Added support to read the wedged_mode debugfs
 
-imho this is a valid question, why not collect all gt_fd
-and use them later, so drm_close_driver/open_driver will
-be called only once? Second concern is that this lib function
-assumes a caller have only one open drm fd, this also needs
-to be documented.
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ tests/intel/xe_wedged.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-> 
-> Nevermind
-> 
-> > 
-> > Thanks,
-> > Christoph
-> > 
-> > > +
-> > > +        if (!igt_debug_on(igt_sysfs_scanf(gt_fd, "num_cslices",
-> > > "%u", &num_slices) <= 0) &&
-> > > +            !igt_debug_on(igt_sysfs_printf(gt_fd, "ccs_mode", "%u",
-> > > num_slices) <= 0) &&
-> > > +            !igt_debug_on(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u",
-> > > &ccs_mode) <= 0) &&
-> > > +            !igt_debug_on(num_slices != ccs_mode))
-> > > +            enabled_count++;
-> > > +        close(gt_fd);
-> > > +        *fd = drm_open_driver(DRIVER_XE);
-> > > +    }
-> > > +
-> > > +    if (!enabled_count)
-> > > +        igt_require_f(0, "Cannot enable ccs mode for any GT\n");
-> 
-> Unless I am missing something (again):
-> igt_require_f(enabled_count, "Cannot enable ccs mode for any GT\n")?
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index 613d571b4..22ff75367 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -203,6 +203,10 @@ simple_hang(int fd, struct drm_xe_sync *sync)
+  * SUBTEST: wedged-mode-toggle
+  * Description: Test wedged.mode=1 after testing wedged.mode=2
+  */
++/**
++ * SUBTEST: basic-wedged-read
++ * Description: Read wedged_mode debugfs
++ */
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -279,6 +283,15 @@ igt_main
+ 		igt_assert_eq(simple_ioctl(fd), 0);
+ 	}
+ 
++	igt_subtest_f("basic-wedged-read") {
++		char str[150] = {0};
++
++		igt_require(igt_debugfs_exists(fd, "wedged_mode", O_RDONLY));
++
++		igt_debugfs_read(fd, "wedged_mode", str);
++		igt_assert_f(str[0] != '\0', "Failed to read wedged_mode from debugfs!\n");
++	}
++
+ 	igt_fixture {
+ 		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
+ 			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
+-- 
+2.34.1
 
-And this one is also tricky, it was ok in a test but in library imho
-it should be avoided. Why not returning bitfield with bits sets for
-each gt with ccs enabled? So in case of no css just return zero and
-igt_require will be called in a test, not in a lib.
-
-Also it should have a counterpart with _disable()
-
-Regards,
-Kamil
-
-> 
-> Reviewed-by: Chritoph Manszewski <christoph.manszewski@intel.com>
-> 
-> > > +}
-> > > diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-> > > index b9fbfc5cd..a82c44a2a 100644
-> > > --- a/lib/xe/xe_util.h
-> > > +++ b/lib/xe/xe_util.h
-> > > @@ -53,5 +53,6 @@ int xe_gt_fill_engines_by_class(int fd, int gt,
-> > > int class,
-> > >                   struct drm_xe_engine_class_instance eci[static
-> > > XE_MAX_ENGINE_INSTANCE]);
-> > >   int xe_gt_count_engines_by_class(int fd, int gt, int class);
-> > > +void xe_sysfs_enable_ccs_mode(int *fd);
-> > >   #endif /* XE_UTIL_H */
