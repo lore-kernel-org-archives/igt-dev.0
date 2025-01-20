@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83BA5C02182
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jan 2025 20:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9114CC02182
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jan 2025 20:35:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 42C1010E029;
-	Mon, 20 Jan 2025 20:35:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4906410E0DE;
+	Mon, 20 Jan 2025 20:35:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nhNdkoIZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ModDze+F";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EB8210E101
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2025 20:35:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 040C710E0DE
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2025 20:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737405307; x=1768941307;
+ t=1737405314; x=1768941314;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zd6EQPf3uUst2s5PuvkMghS1KxjxHctOB148FwmBEtE=;
- b=nhNdkoIZ9Igg8iFsGgyNY7KLxreCxPgjFmztbg84efTpno27HkuTFSoJ
- SK4iaXwVRJJ0p0PFLhwlDe/kECYq9IuUDS6y8iohvwJTa/9/gSOZWyMM0
- 1XIX03pI1lTVhCgT3OHqq2v5jRL5WFkPFPVvYHB2dsD6oR1qNv/vQrvc2
- xIZpxqsQ7ktpZjtOtkewzlcqGV3IJgzuPHV+edUU2XcIFCsZB866b6Ofm
- ldNOgz9ioGdrakgF1WOE+2cSE8ajOEd1oXPEf7CqxkeiBY0VpiHoiRWI4
- BS07+QaV5UT/fPlJB6+rSVy1FK/d9pp7CruE3RD3kCmPml5UFtT5/5mtM Q==;
-X-CSE-ConnectionGUID: KKoDTk5UT8uys5rN1qfg+g==
-X-CSE-MsgGUID: 5an3gjJCRIyfkNemXE6k+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37723118"
-X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; d="scan'208";a="37723118"
+ bh=qO+C6dD6651vuouSY29/ig1ApJEYlPy9e3m8ZyS/gck=;
+ b=ModDze+Fvs4hpliSCWkx3RjymmQxZX+mjTg+Vge3c4finoprAP9pGGCq
+ 0wN384lwiMCOqIldQgxaJNLYMvFObomb4qf9LRHlbAHLC5DZMCSRjEtnn
+ kGJzUjC4sDOB+CGo3s9E319c+DwcFlMtQ/sHnMQfeiPBy3CwpPlnEnLSG
+ U90WvkMTqR0HCa5v7d5efT/pguLlWTsaCgQglyxGm2Z3gWMra491ysY34
+ 2PVpX2Mi/4tIbJCW6lGD3UluRP7F0vrwNqddk1S59lroOVici5uKSBjXg
+ qIMVf9ve2YrQ0uU5IalvdC3uCMRvfJEuc+Iwi+JS4OdniRa8ccHwv4TlH w==;
+X-CSE-ConnectionGUID: FX9d+MdQT/GMXmrvdFd+kQ==
+X-CSE-MsgGUID: Goq942LaTsmox9U5DJKYYg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37723120"
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; d="scan'208";a="37723120"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 12:35:07 -0800
-X-CSE-ConnectionGUID: HoiSPcDQSI+knAS5tcAYcw==
-X-CSE-MsgGUID: JSmPj8oARyiM7FT+/9cUQQ==
+ 20 Jan 2025 12:35:13 -0800
+X-CSE-ConnectionGUID: 7HTmMcTHSSu4nUpNXsGT6g==
+X-CSE-MsgGUID: iH4pF5L4SI2SOCqMAskabA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107519781"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107519788"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.116.103])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 12:35:04 -0800
+ 20 Jan 2025 12:35:11 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -54,10 +54,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH i-g-t 2/4] lib/xe/xe_sriov_provisioning: Add helper to check
- default scheduling attributes
-Date: Mon, 20 Jan 2025 21:34:43 +0100
-Message-Id: <20250120203445.16285-3-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 3/4] tests/xe_sriov_scheduling: VF equal-throughput
+ validation
+Date: Mon, 20 Jan 2025 21:34:44 +0100
+Message-Id: <20250120203445.16285-4-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250120203445.16285-1-marcin.bernatowicz@linux.intel.com>
 References: <20250120203445.16285-1-marcin.bernatowicz@linux.intel.com>
@@ -79,15 +79,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a function to validate default SR-IOV scheduling attributes
-for VFs and PF. This function skips the test if non-default attributes
-are detected. The default attributes verified include:
-
-- exec_quantum_ms set to 0 (infinite execution quantum)
-- preempt_timeout_us set to 0 (infinite preemption timeout)
-- sched_if_idle set to false
-- reset_engine set to false
-- sched_priority set to XE_SRIOV_SCHED_PRIORITY_LOW
+Implement equal-throughput validation for VFs (PF is treated as VF0)
+with identical workloads and scheduling settings.
+Scheduling settings are adjusted to consider execution quantum, job
+duration, and the number of VFs, while adhering to timeout constraints
+and aiming for a sufficient number of job repeats. This approach
+balances overall test duration with accuracy.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -100,71 +97,727 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/xe/xe_sriov_provisioning.c | 42 ++++++++++++++++++++++++++++++++++
- lib/xe/xe_sriov_provisioning.h |  1 +
- 2 files changed, 43 insertions(+)
+ tests/intel/xe_sriov_scheduling.c | 698 ++++++++++++++++++++++++++++++
+ tests/meson.build                 |   1 +
+ 2 files changed, 699 insertions(+)
+ create mode 100644 tests/intel/xe_sriov_scheduling.c
 
-diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index 4e3fbaae2..da580144d 100644
---- a/lib/xe/xe_sriov_provisioning.c
-+++ b/lib/xe/xe_sriov_provisioning.c
-@@ -663,3 +663,45 @@ void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_nu
- {
- 	igt_fail_on(__xe_sriov_set_sched_priority(pf, vf_num, gt_num, value));
- }
+diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
+new file mode 100644
+index 000000000..20ec15b22
+--- /dev/null
++++ b/tests/intel/xe_sriov_scheduling.c
+@@ -0,0 +1,698 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++#include "igt.h"
++#include "igt_sriov_device.h"
++#include "igt_syncobj.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_spin.h"
++#include "xe/xe_sriov_provisioning.h"
 +
 +/**
-+ * xe_sriov_require_default_scheduling_attributes - Ensure default SR-IOV scheduling attributes
-+ * @pf_fd: PF device file descriptor
-+ *
-+ * Skips the current test if non-default SR-IOV scheduling attributes are set.
-+ *
-+ * Default scheduling attributes are as follows for each VF and PF:
-+ * - exec_quantum_ms equals zero (meaning infinity)
-+ * - preempt_timeout_us equals zero (meaning infinity)
-+ * - sched_if_idle equals false
-+ * - reset_engine equals false
-+ * - sched_priority equals XE_SRIOV_SCHED_PRIORITY_LOW
++ * TEST: Tests for SR-IOV scheduling parameters.
++ * Category: Core
++ * Mega feature: SR-IOV
++ * Sub-category: scheduling
++ * Functionality: vGPU profiles scheduling parameters
++ * Run type: FULL
++ * Description: Verify the occurrence of engine resets
++ *   when non-preemptible workloads surpass the combined
++ *   duration of execution quantum and preemption timeout.
 + */
-+void xe_sriov_require_default_scheduling_attributes(int pf)
++
++enum subm_sync_method { SYNC_NONE, SYNC_BARRIER };
++
++struct subm_opts {
++	enum subm_sync_method sync_method;
++	uint32_t exec_quantum_ms;
++	uint32_t preempt_timeout_us;
++	double outlier_treshold;
++};
++
++struct subm_work_desc {
++	uint64_t duration_ms;
++	bool preempt;
++	unsigned int repeats;
++};
++
++struct subm_stats {
++	igt_stats_t samples;
++	uint64_t start_timestamp;
++	uint64_t end_timestamp;
++	unsigned int num_early_finish;
++	unsigned int concurrent_execs;
++	double concurrent_rate;
++	double concurrent_mean;
++};
++
++struct subm {
++	char id[32];
++	int fd;
++	int vf_num;
++	struct subm_work_desc work;
++	uint32_t expected_ticks;
++	uint64_t addr;
++	uint32_t vm;
++	struct drm_xe_engine_class_instance hwe;
++	uint32_t exec_queue_id;
++	uint32_t bo;
++	size_t bo_size;
++	struct xe_spin *spin;
++	struct drm_xe_sync sync[1];
++	struct drm_xe_exec exec;
++};
++
++struct subm_thread_data {
++	struct subm subm;
++	struct subm_stats stats;
++	const struct subm_opts *opts;
++	pthread_t thread;
++	pthread_barrier_t *barrier;
++};
++
++struct subm_set {
++	struct subm_thread_data *data;
++	int ndata;
++	enum subm_sync_method sync_method;
++	pthread_barrier_t barrier;
++};
++
++static void subm_init(struct subm *s, int fd, int vf_num, uint64_t addr,
++		      struct drm_xe_engine_class_instance hwe)
 +{
-+	unsigned int totalvfs = igt_sriov_get_total_vfs(pf);
-+	enum xe_sriov_sched_priority sched_priority;
-+	bool sched_if_idle, reset_engine;
-+	uint32_t eq, pt;
++	memset(s, 0, sizeof(*s));
++	s->fd = fd;
++	s->vf_num = vf_num;
++	s->hwe = hwe;
++	snprintf(s->id, sizeof(s->id), "VF%d %d:%d:%d", vf_num,
++		 hwe.engine_class, hwe.engine_instance, hwe.gt_id);
++	s->addr = addr ? addr : 0x1a0000;
++	s->vm = xe_vm_create(s->fd, 0, 0);
++	s->exec_queue_id = xe_exec_queue_create(s->fd, s->vm, &s->hwe, 0);
++	s->bo_size = ALIGN(sizeof(struct xe_spin) + xe_cs_prefetch_size(s->fd),
++			   xe_get_default_alignment(s->fd));
++	s->bo = xe_bo_create(s->fd, s->vm, s->bo_size,
++			     vram_if_possible(fd, s->hwe.gt_id),
++			     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	s->spin = xe_bo_map(s->fd, s->bo, s->bo_size);
++	xe_vm_bind_sync(s->fd, s->vm, s->bo, 0, s->addr, s->bo_size);
++	/* out fence */
++	s->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
++	s->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
++	s->sync[0].handle = syncobj_create(s->fd, 0);
++	s->exec.num_syncs = 1;
++	s->exec.syncs = to_user_pointer(&s->sync[0]);
++	s->exec.num_batch_buffer = 1;
++	s->exec.exec_queue_id = s->exec_queue_id;
++	s->exec.address = s->addr;
++}
++
++static void subm_fini(struct subm *s)
++{
++	xe_vm_unbind_sync(s->fd, s->vm, 0, s->addr, s->bo_size);
++	gem_munmap(s->spin, s->bo_size);
++	gem_close(s->fd, s->bo);
++	xe_exec_queue_destroy(s->fd, s->exec_queue_id);
++	xe_vm_destroy(s->fd, s->vm);
++	syncobj_destroy(s->fd, s->sync[0].handle);
++}
++
++static void subm_workload_init(struct subm *s, struct subm_work_desc *work)
++{
++	s->work = *work;
++	s->expected_ticks = xe_spin_nsec_to_ticks(s->fd, s->hwe.gt_id,
++						  s->work.duration_ms * 1000000);
++	xe_spin_init_opts(s->spin, .addr = s->addr, .preempt = s->work.preempt,
++			  .ctx_ticks = s->expected_ticks);
++}
++
++static void subm_wait(struct subm *s, uint64_t abs_timeout_nsec)
++{
++	igt_assert(syncobj_wait(s->fd, &s->sync[0].handle, 1, abs_timeout_nsec,
++				0, NULL));
++}
++
++static void subm_exec(struct subm *s)
++{
++	syncobj_reset(s->fd, &s->sync[0].handle, 1);
++	xe_exec(s->fd, &s->exec);
++}
++
++static bool subm_is_work_complete(struct subm *s)
++{
++	return s->expected_ticks <= ~s->spin->ticks_delta;
++}
++
++static bool subm_is_exec_queue_banned(struct subm *s)
++{
++	struct drm_xe_exec_queue_get_property args = {
++		.exec_queue_id = s->exec_queue_id,
++		.property = DRM_XE_EXEC_QUEUE_GET_PROPERTY_BAN,
++	};
++	int ret = igt_ioctl(s->fd, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args);
++
++	return ret || args.value;
++}
++
++static void subm_exec_loop(struct subm *s, struct subm_stats *stats,
++			   const struct subm_opts *opts)
++{
++	struct timespec tv;
++	unsigned int i;
++
++	igt_gettime(&tv);
++	stats->start_timestamp =
++		tv.tv_sec * (uint64_t)NSEC_PER_SEC + tv.tv_nsec;
++	igt_debug("[%s] start_timestamp: %f\n", s->id, stats->start_timestamp * 1e-9);
++
++	for (i = 0; i < s->work.repeats; ++i) {
++		igt_gettime(&tv);
++
++		subm_exec(s);
++
++		subm_wait(s, INT64_MAX);
++
++		igt_stats_push(&stats->samples, igt_nsec_elapsed(&tv));
++
++		if (!subm_is_work_complete(s)) {
++			stats->num_early_finish++;
++
++			igt_debug("[%s] subm #%d early_finish=%u\n",
++				  s->id, i, stats->num_early_finish);
++
++			if (subm_is_exec_queue_banned(s))
++				break;
++		}
++	}
++
++	igt_gettime(&tv);
++	stats->end_timestamp = tv.tv_sec * (uint64_t)NSEC_PER_SEC + tv.tv_nsec;
++	igt_debug("[%s] end_timestamp: %f\n", s->id, stats->end_timestamp * 1e-9);
++}
++
++static void *subm_thread(void *thread_data)
++{
++	struct subm_thread_data *td = thread_data;
++	struct timespec tv;
++
++	igt_gettime(&tv);
++	igt_debug("[%s] thread started %ld.%ld\n", td->subm.id, tv.tv_sec,
++		  tv.tv_nsec);
++
++	if (td->barrier)
++		pthread_barrier_wait(td->barrier);
++
++	subm_exec_loop(&td->subm, &td->stats, td->opts);
++
++	return NULL;
++}
++
++static void subm_set_dispatch_and_wait_threads(struct subm_set *set)
++{
++	int i;
++
++	for (i = 0; i < set->ndata; ++i)
++		igt_assert_eq(0, pthread_create(&set->data[i].thread, NULL,
++						subm_thread, &set->data[i]));
++
++	for (i = 0; i < set->ndata; ++i)
++		pthread_join(set->data[i].thread, NULL);
++}
++
++static void subm_set_alloc_data(struct subm_set *set, unsigned int ndata)
++{
++	igt_assert(!set->data);
++	set->ndata = ndata;
++	set->data = calloc(set->ndata, sizeof(struct subm_thread_data));
++	igt_assert(set->data);
++}
++
++static void subm_set_free_data(struct subm_set *set)
++{
++	free(set->data);
++	set->data = NULL;
++	set->ndata = 0;
++}
++
++static void subm_set_init_sync_method(struct subm_set *set, enum subm_sync_method sm)
++{
++	set->sync_method = sm;
++	if (set->sync_method == SYNC_BARRIER)
++		pthread_barrier_init(&set->barrier, NULL, set->ndata);
++}
++
++static void subm_set_fini(struct subm_set *set)
++{
++	int i;
++
++	if (!set->ndata)
++		return;
++
++	for (i = 0; i < set->ndata; ++i) {
++		igt_stats_fini(&set->data[i].stats.samples);
++		subm_fini(&set->data[i].subm);
++		drm_close_driver(set->data[i].subm.fd);
++	}
++	subm_set_free_data(set);
++
++	if (set->sync_method == SYNC_BARRIER)
++		pthread_barrier_destroy(&set->barrier);
++}
++
++struct init_vf_ids_opts {
++	bool shuffle;
++	bool shuffle_pf;
++};
++
++static void init_vf_ids(uint8_t *array, size_t n,
++			const struct init_vf_ids_opts *opts)
++{
++	size_t i, j;
++
++	if (!opts->shuffle_pf && n) {
++		array[0] = 0;
++		n -= 1;
++		array = array + 1;
++	}
++
++	for (i = 0; i < n; i++) {
++		j = (opts->shuffle) ? rand() % (i + 1) : i;
++
++		if (j != i)
++			array[i] = array[j];
++
++		array[j] = i + (opts->shuffle_pf ? 0 : 1);
++	}
++}
++
++struct vf_sched_params {
++	uint32_t exec_quantum_ms;
++	uint32_t preempt_timeout_us;
++};
++
++static void set_vfs_scheduling_params(int pf_fd, int num_vfs,
++				      const struct vf_sched_params *p)
++{
 +	unsigned int gt;
 +
-+	xe_for_each_gt(pf, gt) {
-+		igt_skip_on(__xe_sriov_get_sched_if_idle(pf, gt, &sched_if_idle));
-+		igt_require_f(!sched_if_idle, "sched_if_idle != false on gt%u\n", gt);
-+		igt_skip_on(__xe_sriov_get_engine_reset(pf, gt, &reset_engine));
-+		igt_require_f(!reset_engine, "reset_engine != false on gt%u\n", gt);
-+
-+		for (unsigned int vf_num = 0; vf_num <= totalvfs; ++vf_num) {
-+			igt_skip_on(__xe_sriov_get_exec_quantum_ms(pf, vf_num, gt, &eq));
-+			igt_require_f(eq == 0, "exec_quantum_ms != 0 on gt%u/VF%u\n", gt, vf_num);
-+
-+			igt_skip_on(__xe_sriov_get_preempt_timeout_us(pf, vf_num, gt, &pt));
-+			igt_require_f(pt == 0, "preempt_timeout_us != 0 on gt%u/VF%u\n",
-+				      gt, vf_num);
-+
-+			igt_skip_on(__xe_sriov_get_sched_priority(pf, vf_num, gt, &sched_priority));
-+			igt_require_f(sched_priority == XE_SRIOV_SCHED_PRIORITY_LOW,
-+				      "sched_priority != LOW on gt%u/VF%u\n", gt, vf_num);
++	xe_for_each_gt(pf_fd, gt) {
++		for (int vf = 0; vf <= num_vfs; ++vf) {
++			xe_sriov_set_exec_quantum_ms(pf_fd, vf, gt, p->exec_quantum_ms);
++			xe_sriov_set_preempt_timeout_us(pf_fd, vf, gt, p->preempt_timeout_us);
 +		}
 +	}
 +}
-diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
-index b22f96d88..4382f528f 100644
---- a/lib/xe/xe_sriov_provisioning.h
-+++ b/lib/xe/xe_sriov_provisioning.h
-@@ -142,5 +142,6 @@ int __xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_n
- 				  enum xe_sriov_sched_priority value);
- void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
- 				 enum xe_sriov_sched_priority value);
-+void xe_sriov_require_default_scheduling_attributes(int pf);
- 
- #endif /* __XE_SRIOV_PROVISIONING_H__ */
++
++static bool check_within_epsilon(const double x, const double ref, const double tol)
++{
++	return x <= (1.0 + tol) * ref && x >= (1.0 - tol) * ref;
++}
++
++static void compute_common_time_frame_stats(struct subm_set *set)
++{
++	struct subm_thread_data *data = set->data;
++	int i, j, ndata = set->ndata;
++	struct subm_stats *stats;
++	uint64_t common_start = 0;
++	uint64_t common_end = UINT64_MAX;
++
++	/* Find the common time frame */
++	for (i = 0; i < ndata; i++) {
++		stats = &data[i].stats;
++
++		if (stats->start_timestamp > common_start)
++			common_start = stats->start_timestamp;
++
++		if (stats->end_timestamp < common_end)
++			common_end = stats->end_timestamp;
++	}
++
++	igt_info("common time frame: [%lu;%lu] %.2fms\n",
++		 common_start, common_end, (common_end - common_start) / 1e6);
++
++	if (igt_warn_on_f(common_end <= common_start, "No common time frame for all sets found\n"))
++		return;
++
++	/* Compute concurrent_rate for each sample set within the common time frame */
++	for (i = 0; i < ndata; i++) {
++		uint64_t total_samples_duration = 0;
++		uint64_t samples_duration_in_common_frame = 0;
++
++		stats = &data[i].stats;
++		stats->concurrent_execs = 0;
++		stats->concurrent_rate = 0.0;
++		stats->concurrent_mean = 0.0;
++
++		for (j = 0; j < stats->samples.n_values; j++) {
++			uint64_t sample_start = stats->start_timestamp + total_samples_duration;
++			uint64_t sample_end = sample_start + stats->samples.values_u64[j];
++
++			if (sample_start >= common_start &&
++			    sample_end <= common_end) {
++				stats->concurrent_execs++;
++				samples_duration_in_common_frame +=
++					stats->samples.values_u64[j];
++			}
++
++			total_samples_duration += stats->samples.values_u64[j];
++		}
++
++		stats->concurrent_rate = samples_duration_in_common_frame ?
++				     (double)stats->concurrent_execs /
++					     (samples_duration_in_common_frame *
++					      1e-9) :
++				     0.0;
++		stats->concurrent_mean = stats->concurrent_execs ?
++				      (double)samples_duration_in_common_frame /
++					      stats->concurrent_execs :
++				      0.0;
++		igt_info("[%s] Throughput = %.4f execs/s mean duration=%.4fms nsamples=%d\n",
++			 data[i].subm.id, stats->concurrent_rate, stats->concurrent_mean * 1e-6,
++			 stats->concurrent_execs);
++	}
++}
++
++static void log_sample_values(char *id, struct subm_stats *stats,
++			      double comparison_mean, double outlier_treshold)
++{
++	const uint64_t *values = stats->samples.values_u64;
++	unsigned int n = stats->samples.n_values;
++	char buffer[2048];
++	char *p = buffer, *pend = buffer + sizeof(buffer);
++	unsigned int i;
++	const unsigned int edge_items = 3;
++	bool is_outlier;
++	double tolerance = outlier_treshold * comparison_mean;
++
++	p += snprintf(p, pend - p,
++		      "[%s] start=%f end=%f nsamples=%u comparison_mean=%.2fms\n",
++		      id, stats->start_timestamp * 1e-9, stats->end_timestamp * 1e-9, n,
++		      comparison_mean * 1e-6);
++
++	for (i = 0; i < n && p < pend; ++i) {
++		is_outlier = fabs(values[i] - comparison_mean) > tolerance;
++
++		if (n <= 2 * edge_items || i < edge_items ||
++		    i >= n - edge_items || is_outlier) {
++			if (is_outlier) {
++				double pct_diff =
++					100 *
++					(comparison_mean ?
++						 (values[i] - comparison_mean) /
++							 comparison_mean :
++						 1.0);
++
++				p += snprintf(p, pend - p,
++					      "%0.2f @%d Pct Diff %0.2f%%\n",
++					      values[i] * 1e-6, i,
++					      pct_diff);
++			} else {
++				p += snprintf(p, pend - p, "%0.2f\n",
++					      values[i] * 1e-6);
++			}
++		}
++
++		if (i == edge_items && n > 2 * edge_items)
++			p += snprintf(p, pend - p, "...\n");
++	}
++
++	igt_debug("%s\n", buffer);
++}
++
++#define MIN_NUM_REPEATS 25
++#define MIN_EXEC_QUANTUM_MS 8
++#define MAX_EXEC_QUANTUM_MS 32
++#define MIN_JOB_DURATION_MS 16
++#define JOB_TIMEOUT_MS 5000
++#define MAX_TOTAL_DURATION_MS 15000
++#define PREFERRED_TOTAL_DURATION_MS 10000
++#define MAX_PREFERRED_REPEATS 100
++
++struct job_sched_params {
++	int duration_ms;
++	int num_repeats;
++	struct vf_sched_params sched_params;
++};
++
++static int calculate_job_duration_ms(int execution_ms)
++{
++	return execution_ms * 2 > MIN_JOB_DURATION_MS ? execution_ms * 2 :
++							MIN_JOB_DURATION_MS;
++}
++
++static bool compute_max_exec_quantum_ms(struct job_sched_params *params,
++					int num_threads)
++{
++	for (int test_execution_ms = MAX_EXEC_QUANTUM_MS;
++	     test_execution_ms >= MIN_EXEC_QUANTUM_MS; test_execution_ms--) {
++		int test_duration_ms =
++			calculate_job_duration_ms(test_execution_ms);
++		int max_delay_ms = (num_threads - 1) * test_execution_ms;
++
++		/*
++		 * Check if the job can complete within JOB_TIMEOUT_MS,
++		 * including the maximum scheduling delay
++		 */
++		if (test_duration_ms + max_delay_ms <= JOB_TIMEOUT_MS) {
++			int estimated_num_repeats =
++				MAX_TOTAL_DURATION_MS /
++				(num_threads * test_duration_ms);
++
++			if (estimated_num_repeats >= MIN_NUM_REPEATS) {
++				params->sched_params.exec_quantum_ms = test_execution_ms;
++				return true;
++			}
++		}
++	}
++	return false;
++}
++
++static void adjust_num_repeats(struct job_sched_params *params, int num_threads)
++{
++	int preferred_max_repeats = PREFERRED_TOTAL_DURATION_MS /
++				    (num_threads * params->duration_ms);
++	int optimal_repeats = min(preferred_max_repeats, MAX_PREFERRED_REPEATS);
++
++	params->num_repeats = max(optimal_repeats, MIN_NUM_REPEATS);
++}
++
++static struct job_sched_params
++prepare_job_sched_params(int num_threads, const struct subm_opts *opts)
++{
++	struct job_sched_params params = { MIN_NUM_REPEATS,
++					   MIN_JOB_DURATION_MS,
++					   { MIN_EXEC_QUANTUM_MS,
++					     MIN_EXEC_QUANTUM_MS * 2000 } };
++
++	if (opts->exec_quantum_ms || opts->preempt_timeout_us) {
++		if (opts->exec_quantum_ms)
++			params.sched_params.exec_quantum_ms =
++				opts->exec_quantum_ms;
++		if (opts->preempt_timeout_us)
++			params.sched_params.preempt_timeout_us =
++				opts->preempt_timeout_us;
++	} else {
++		if (igt_debug_on(!compute_max_exec_quantum_ms(&params, num_threads)))
++			return params;
++
++		/*
++		 * After computing a feasible max_exec_quantum_ms,
++		 * select a random exec_quantum_ms within the new range
++		 */
++		params.sched_params.exec_quantum_ms =
++			MIN_EXEC_QUANTUM_MS +
++			rand() % (params.sched_params.exec_quantum_ms -
++				  MIN_EXEC_QUANTUM_MS + 1);
++		params.sched_params.preempt_timeout_us =
++			params.sched_params.exec_quantum_ms * 2000;
++	}
++	params.duration_ms =
++		calculate_job_duration_ms(params.sched_params.exec_quantum_ms);
++
++	adjust_num_repeats(&params, num_threads);
++
++	return params;
++}
++
++/**
++ * SUBTEST: equal-throughput
++ * Description:
++ *   Check all VFs with same scheduling settings running same workload
++ *   achieve the same throughput.
++ */
++static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opts)
++{
++	struct subm_set set_ = {}, *set = &set_;
++	uint8_t vf_ids[num_vfs + 1 /*PF*/];
++	struct job_sched_params job_sched_params = prepare_job_sched_params(num_vfs + 1, opts);
++
++	igt_info("eq=%ums pt=%uus duration=%ums repeats=%d num_vfs=%d\n",
++		 job_sched_params.sched_params.exec_quantum_ms,
++		 job_sched_params.sched_params.preempt_timeout_us,
++		 job_sched_params.duration_ms, job_sched_params.num_repeats,
++		 num_vfs + 1);
++
++	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
++		    &(struct init_vf_ids_opts){ .shuffle = true,
++						.shuffle_pf = true });
++	xe_sriov_require_default_scheduling_attributes(pf_fd);
++	/* enable VFs */
++	igt_sriov_disable_driver_autoprobe(pf_fd);
++	igt_sriov_enable_vfs(pf_fd, num_vfs);
++	/* set scheduling params (PF and VFs) */
++	set_vfs_scheduling_params(pf_fd, num_vfs, &job_sched_params.sched_params);
++	/* probe VFs */
++	igt_sriov_enable_driver_autoprobe(pf_fd);
++	for (int vf = 1; vf <= num_vfs; ++vf)
++		igt_sriov_bind_vf_drm_driver(pf_fd, vf);
++
++	/* init subm_set */
++	subm_set_alloc_data(set, num_vfs + 1 /*PF*/);
++	subm_set_init_sync_method(set, opts->sync_method);
++
++	for (int n = 0; n < set->ndata; ++n) {
++		int vf_fd =
++			vf_ids[n] ?
++				igt_sriov_open_vf_drm_device(pf_fd, vf_ids[n]) :
++				drm_reopen_driver(pf_fd);
++
++		igt_assert_fd(vf_fd);
++		set->data[n].opts = opts;
++		subm_init(&set->data[n].subm, vf_fd, vf_ids[n], 0,
++			  xe_engine(vf_fd, 0)->instance);
++		subm_workload_init(&set->data[n].subm,
++				   &(struct subm_work_desc){
++					.duration_ms = job_sched_params.duration_ms,
++					.preempt = true,
++					.repeats = job_sched_params.num_repeats });
++		igt_stats_init_with_size(&set->data[n].stats.samples,
++					 set->data[n].subm.work.repeats);
++		if (set->sync_method == SYNC_BARRIER)
++			set->data[n].barrier = &set->barrier;
++	}
++
++	/* dispatch spinners, wait for results */
++	subm_set_dispatch_and_wait_threads(set);
++
++	/* verify results */
++	compute_common_time_frame_stats(set);
++	for (int n = 0; n < set->ndata; ++n) {
++		struct subm_stats *stats = &set->data[n].stats;
++		const double ref_rate = set->data[0].stats.concurrent_rate;
++
++		igt_assert_eq(0, stats->num_early_finish);
++		if (!check_within_epsilon(stats->concurrent_rate, ref_rate,
++					  opts->outlier_treshold)) {
++			log_sample_values(set->data[0].subm.id,
++					  &set->data[0].stats,
++					  set->data[0].stats.concurrent_mean,
++					  opts->outlier_treshold);
++			log_sample_values(set->data[n].subm.id, stats,
++					  set->data[0].stats.concurrent_mean,
++					  opts->outlier_treshold);
++			igt_assert_f(false,
++				     "Throughput=%.3f execs/s not within +-%.0f%% of expected=%.3f execs/s\n",
++				     stats->concurrent_rate,
++				     opts->outlier_treshold * 100, ref_rate);
++		}
++	}
++
++	/* cleanup */
++	subm_set_fini(set);
++	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
++	igt_sriov_disable_vfs(pf_fd);
++}
++
++static struct subm_opts subm_opts = {
++	.sync_method = SYNC_BARRIER,
++	.outlier_treshold = 0.1,
++};
++
++static bool extended_scope;
++
++static int subm_opts_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'e':
++		extended_scope = true;
++		break;
++	case 's':
++		subm_opts.sync_method = atoi(optarg);
++		igt_info("Sync method: %d\n", subm_opts.sync_method);
++		break;
++	case 'q':
++		subm_opts.exec_quantum_ms = atoi(optarg);
++		igt_info("Execution quantum ms: %u\n", subm_opts.exec_quantum_ms);
++		break;
++	case 'p':
++		subm_opts.preempt_timeout_us = atoi(optarg);
++		igt_info("Preempt timeout us: %u\n", subm_opts.preempt_timeout_us);
++		break;
++	case 't':
++		subm_opts.outlier_treshold = atoi(optarg) / 100.0;
++		igt_info("Outlier threshold: %.2f\n", subm_opts.outlier_treshold);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++static const struct option long_opts[] = {
++	{ .name = "extended", .has_arg = false, .val = 'e', },
++	{ .name = "sync", .has_arg = true, .val = 's', },
++	{ .name = "threshold", .has_arg = true, .val = 't', },
++	{ .name = "eq_ms", .has_arg = true, .val = 'q', },
++	{ .name = "pt_us", .has_arg = true, .val = 'p', },
++	{}
++};
++
++static const char help_str[] =
++	"  --extended\tRun the extended test scope\n"
++	"  --sync\tThreads synchronization method: 0 - none 1 - barrier (Default 1)\n"
++	"  --threshold\tSample outlier threshold (Default 0.1)\n"
++	"  --eq_ms\texec_quantum_ms\n"
++	"  --pt_us\tpreempt_timeout_us\n";
++
++igt_main_args("s:e:p:", long_opts, help_str, subm_opts_handler, NULL)
++{
++	int pf_fd;
++	bool autoprobe;
++
++	igt_fixture {
++		pf_fd = drm_open_driver(DRIVER_XE);
++		igt_require(igt_sriov_is_pf(pf_fd));
++		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
++		xe_sriov_require_default_scheduling_attributes(pf_fd);
++	}
++
++	igt_describe("Check VFs achieve equal throughput");
++	igt_subtest_with_dynamic("equal-throughput") {
++		if (extended_scope)
++			for_each_sriov_num_vfs(pf_fd, vf)
++				igt_dynamic_f("numvfs-%d", vf)
++					throughput_ratio(pf_fd, vf, &subm_opts);
++
++		for_random_sriov_vf(pf_fd, vf)
++			igt_dynamic("numvfs-random")
++				throughput_ratio(pf_fd, vf, &subm_opts);
++	}
++
++	igt_fixture {
++		set_vfs_scheduling_params(pf_fd, igt_sriov_get_total_vfs(pf_fd),
++					  &(struct vf_sched_params){});
++		igt_sriov_disable_vfs(pf_fd);
++		/* abort to avoid execution of next tests with enabled VFs */
++		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0,
++			       "Failed to disable VF(s)");
++		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
++			    igt_sriov_disable_driver_autoprobe(pf_fd);
++		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
++			       "Failed to restore sriov_drivers_autoprobe value\n");
++		drm_close_driver(pf_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 33dffad31..c8868d5ab 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -318,6 +318,7 @@ intel_xe_progs = [
+ 	'xe_spin_batch',
+ 	'xe_sriov_auto_provisioning',
+ 	'xe_sriov_flr',
++	'xe_sriov_scheduling',
+ 	'xe_sysfs_defaults',
+ 	'xe_sysfs_preempt_timeout',
+ 	'xe_sysfs_scheduler',
 -- 
 2.31.1
 
