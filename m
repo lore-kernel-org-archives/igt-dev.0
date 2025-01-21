@@ -4,61 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BCFC0218B
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 11:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18F68C02182
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 11:52:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E896510E59D;
-	Tue, 21 Jan 2025 11:30:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 37D4410E144;
+	Tue, 21 Jan 2025 11:52:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AnY7C1gk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ITJuRsh0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBCB310E5A6
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 11:30:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA3410E144
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 11:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737459037; x=1768995037;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=JdzHXiosWi37OI1zNgnThpDUAOqowyg0QDAA4jQS7kU=;
- b=AnY7C1gkboTplZtE8iMStvJtZXqY/wr9vyh+yQkAfpA5cuSHfxtN8Ri3
- /pQe0x3OJ3ZXJ1WzgoHVg6SEIu0mlP3dM6lFuQbYqRaXwgRUusMWPErWK
- cq3UnOFgJyQ+7onxIkMvf6CUWbi0dNNJq4kYcGxmi5BLGZvNjZDXxE+Al
- icZNosIRirOGA8koyJOB41izbJmBD0dl8TbZAhaQHF6EnuD5rVoxZYZOp
- 8bZqr/lajy9brxjnbIQYUSDhNkCjQylRCX05SO0ysezRYMBvtuOno2Tqx
- c8gp8myghdJ6wxJkagZeDcUtPpjPEpRz8R24/SFKw9Z8KlOKWy0UGe1qB g==;
-X-CSE-ConnectionGUID: k4bCyvAiSzSmy8YlmyPx9Q==
-X-CSE-MsgGUID: F1ykwB/WSKyeGN8lhaGbAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37564331"
-X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; d="scan'208";a="37564331"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 03:30:37 -0800
-X-CSE-ConnectionGUID: WmJRqp2tS1OmfnC9p2EmWQ==
-X-CSE-MsgGUID: zP9b/sxyRemNelBwcG4qBQ==
+ t=1737460366; x=1768996366;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=iLa9PMvUAaJ5jdxcCDu+7uoJ0Yz8wi+oKLlUFbBoymk=;
+ b=ITJuRsh0UOTqwAC7SJ9BMBndYPq29SLl5eCiduIdUixmSUeL8PEUb+lj
+ ebF6/rMdORk+FqYmsDgCyD4L9i/PyXlHIjiVQp1DE3qtW6BO7qN00XTX0
+ qe0rabIM6wcSNpU/d3gte1BIjOpzcTcZASVWo62pEPT4K0weZcJaGw4Jt
+ awMwQzhvTLs++ffxgrwVShgaDDPNsCET+sX9aNx3wjME+6Au/PRo/gt31
+ vPbhrMbxP2Djwqg7febkmpsmUgTWvh4F2GWIGQpYafOfKJdGVqPmnkBQo
+ pD/YEAWQpeNcicSOuW/+/oqmCH0+H2VpNEaoWEOXD6l6psdMolhBInh3t A==;
+X-CSE-ConnectionGUID: X54ixgf3RU6u5k+9LJ5kLA==
+X-CSE-MsgGUID: C12nlNxQRZ+4w2hmOyAEdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37894189"
+X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; d="scan'208";a="37894189"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 03:52:45 -0800
+X-CSE-ConnectionGUID: 6tml/dfJQzex96/5mq5XIw==
+X-CSE-MsgGUID: 771NBWpoQzuWWOTc9VUnFg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107680710"
-Received: from zhenyiz1-mobl.ccr.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.113.241])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 03:30:34 -0800
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>, stylon.wang@amd.com,
- Rodrigo.Siqueira@amd.com, ramadevi.gandi@intel.com, ryszard.knop@intel.com,
- sameer.lattannavar@intel.com, lucas.demarchi@intel.com,
- jani.saarinen@intel.com, katarzyna.piecielska@intel.com,
- matthew.d.roper@intel.com, gregory.f.germano@intel.com,
- clinton.a.taylor@intel.com, balasubramani.vivekanandan@intel.com,
- jianshui.yu@intel.com, jonathan.cavitt@intel.com
-Subject: [PATCH i-g-t 2/2] runner/executor: Integrate igt_kmemleak scans
-Date: Tue, 21 Jan 2025 12:29:44 +0100
-Message-Id: <20250121112944.115491-3-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250121112944.115491-1-peter.senna@linux.intel.com>
-References: <20250121112944.115491-1-peter.senna@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; d="scan'208";a="111786193"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 03:52:40 -0800
+Date: Tue, 21 Jan 2025 12:52:28 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Helen Koike <helen.koike@collabora.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Jani Saarinen <jani.saarinen@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
+ Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
+ Rob Clark <robdclark@chromium.org>, Ryszard Knop <ryszard.knop@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ dominik.karol.piatkowski@intel.com, himal.prasad.ghimiray@intel.com,
+ katarzyna.piecielska@intel.com, luciano.coelho@intel.com,
+ nirmoy.das@intel.com, stuart.summers@intel.com
+Subject: Re: [PATCH i-g-t v14 resend 1/3] lib/igt_facts: Library and unit
+ testing for fact tracking
+Message-ID: <20250121115228.6vlijshl7mz2tt6m@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Helen Koike <helen.koike@collabora.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Jani Saarinen <jani.saarinen@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
+ Melissa Wen <mwen@igalia.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Rob Clark <robdclark@chromium.org>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ dominik.karol.piatkowski@intel.com, himal.prasad.ghimiray@intel.com,
+ katarzyna.piecielska@intel.com, luciano.coelho@intel.com,
+ nirmoy.das@intel.com, stuart.summers@intel.com
+References: <20241216151420.43042-1-peter.senna@linux.intel.com>
+ <20241216151420.43042-2-peter.senna@linux.intel.com>
+ <20241219124015.57unqsj6kiun3bff@kamilkon-desk.igk.intel.com>
+ <23457bf4-ee02-4da4-8c98-33866bdb56a7@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <23457bf4-ee02-4da4-8c98-33866bdb56a7@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,290 +103,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Modifies igt_runner to include calls to igt_kmemleak(). Kmemleak
-scanning is disabled by default, so add command line options to
-igt_runner to enable kmemleak scanning:  -k, -k<option>, --kmemleak,
---kmemleak=<option>. The options are:
- - once: run one kmemleak scan after all tests from the test-list
-         complete.
- - each: run one kmemleak scan after each test completes.
+Hi Peter,
+On 2025-01-21 at 09:16:19 +0100, Peter Senna Tschudin wrote:
+> 
+> Hi Kamil,
+> 
+> 
+> On 19.12.2024 13:40, Kamil Konieczny wrote:
+> > Hi Peter,
+> > On 2024-12-16 at 16:14:18 +0100, Peter Senna Tschudin wrote:
+> > 
+> > I have few nits about a code, I checked it with checkpatch.pl
+> > and looks like some warnings are left, why not removing them?
+> > Here are some found by it:
+> > 
+> > 0001-lib-igt_facts-Library-and-unit-testing-for-fact-trac.patch:824: CHECK:COMPARISON_TO_NULL: Comparison to NULL could be written "fact"
+> > #824: FILE: lib/igt_facts.c:736:
+> > +       igt_assert(fact != NULL);
+> > 
+> > 0001-lib-igt_facts-Library-and-unit-testing-for-fact-trac.patch:825: CHECK:BOOL_COMPARISON: Using comparison to true is error prone
+> > #825: FILE: lib/igt_facts.c:737:
+> > +       igt_assert(fact->present == true);
+> 
+> There is a very important detail here. It is error prone only when
+> the type is not bool. My code is not error prone.
+> 
+> 
 
-If kmemleaks are found they will be saved to the igt_runner results
-directory in a file named kmemleak.txt.
+It was error prone maybe some twenty years ago, I checked
+current gcc on Ubuntu and it is ok. Despite that, it is
+a code style issue. For boolean var bool_var in C language
+we write:
 
-Updates serialize_settings() and read_settings_from_file() to save
-and restore igt_runner settings to and from disk. This is used when
-calling igt_runner with '--dry-run' and then by calling igt_resume
-instead of igt_runner.
+	if (bool_var) { ... some code }
 
-Updates unit testing for igt_runner to test that:
- - Kmemleak scans are disabled by default
- - Kmemleak scans  be enabled by command line arguments
- - The choice about kmemleaks being enabled or not is saved to disk
-   and restored from disk
+We do _not_ write
 
-CC: stylon.wang@amd.com
-CC: Rodrigo.Siqueira@amd.com>
-CC: ramadevi.gandi@intel.com
-CC: ryszard.knop@intel.com
-CC: sameer.lattannavar@intel.com
-CC: lucas.demarchi@intel.com
-CC: jani.saarinen@intel.com
-CC: katarzyna.piecielska@intel.com
-CC: matthew.d.roper@intel.com
-CC: gregory.f.germano@intel.com
-CC: clinton.a.taylor@intel.com
-CC: balasubramani.vivekanandan@intel.com
-CC: jianshui.yu@intel.com
-CC: jonathan.cavitt@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- runner/executor.c     | 23 +++++++++++++++++++++--
- runner/runner_tests.c | 18 ++++++++++++++++--
- runner/settings.c     | 31 ++++++++++++++++++++++++++++++-
- runner/settings.h     |  2 ++
- 4 files changed, 69 insertions(+), 5 deletions(-)
+	if (bool_var == true) // correct but style issue
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 999e7f719..11c97639e 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -31,6 +31,7 @@
- #include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_facts.h"
-+#include "igt_kmemleak.h"
- #include "igt_taints.h"
- #include "igt_vec.h"
- #include "executor.h"
-@@ -2370,6 +2371,13 @@ bool execute(struct execute_state *state,
- 	if (settings->facts)
- 		igt_facts_lists_init();
- 
-+	if (settings->kmemleak)
-+		if (!igt_kmemleak_init(NULL, settings->sync)) {
-+			errf("Failed to initialize kmemleak. Is kernel support enabled?\n");
-+			errf("Disabling kmemleak on igt_runner and continuing...\n");
-+			settings->kmemleak = settings->kmemleak_each = false;
-+		}
-+
- 	if (state->next >= job_list->size) {
- 		outf("All tests already executed.\n");
- 		return true;
-@@ -2497,10 +2505,17 @@ bool execute(struct execute_state *state,
- 		bool already_written = false;
- 
- 		/* Collect facts before running each test */
--		if (settings->facts) {
-+		if (settings->facts)
- 			igt_facts(last_test);
-+
-+		if (settings->kmemleak_each)
-+			if (!igt_kmemleak(last_test, resdirfd,
-+					  settings->kmemleak_each))
-+				errf("Failed to collect kmemleak logs after %s\n",
-+				     last_test);
-+
-+		if (settings->facts || settings->kmemleak_each)
- 			last_test = entry_display_name(&job_list->entries[state->next]);
--		}
- 
- 		if (should_die_because_signal(sigfd)) {
- 			status = false;
-@@ -2595,6 +2610,10 @@ bool execute(struct execute_state *state,
- 	if (settings->facts)
- 		igt_facts(last_test);
- 
-+	if (settings->kmemleak)
-+		if (!igt_kmemleak(last_test, resdirfd, settings->kmemleak_each))
-+			errf("Failed to collect kmemleak logs after the last test\n");
-+
- 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
- 		dprintf(timefd, "%f\n", timeofday_double());
- 		close(timefd);
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index 8441763f2..a072a92c7 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -191,6 +191,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
- 	igt_assert_eq(one->dry_run, two->dry_run);
- 	igt_assert_eq(one->allow_non_root, two->allow_non_root);
- 	igt_assert_eq(one->facts, two->facts);
-+	igt_assert_eq(one->kmemleak, two->kmemleak);
- 	igt_assert_eq(one->sync, two->sync);
- 	igt_assert_eq(one->log_level, two->log_level);
- 	igt_assert_eq(one->overwrite, two->overwrite);
-@@ -304,6 +305,7 @@ igt_main
- 		igt_assert(igt_list_empty(&settings->env_vars));
- 		igt_assert(!igt_vec_length(&settings->hook_strs));
- 		igt_assert(!settings->facts);
-+		igt_assert(!settings->kmemleak);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -426,6 +428,7 @@ igt_main
- 		igt_assert_eq(settings->include_regexes.size, 0);
- 		igt_assert_eq(settings->exclude_regexes.size, 0);
- 		igt_assert(!settings->facts);
-+		igt_assert(!settings->kmemleak);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -464,6 +467,7 @@ igt_main
- 				       "-b", blacklist_name,
- 				       "--blacklist", blacklist2_name,
- 				       "-f",
-+				       "-k",
- 				       "-s",
- 				       "-l", "verbose",
- 				       "--overwrite",
-@@ -523,6 +527,7 @@ igt_main
- 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 1)), "echo world");
- 
- 		igt_assert(settings->facts);
-+		igt_assert(settings->kmemleak);
- 		igt_assert(settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_VERBOSE);
- 		igt_assert(settings->overwrite);
-@@ -718,30 +723,39 @@ igt_main
- 	igt_subtest("parse-clears-old-data") {
- 		const char *argv[] = { "runner",
- 				       "-n", "foo",
-+				       "--overwrite",
- 				       "--dry-run",
- 				       "--allow-non-root",
- 				       "test-root-dir",
--				       "results-path",
-+				       "results-path"
- 		};
- 
- 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
- 
- 		igt_assert_eqstr(settings->name, "foo");
-+		igt_assert(settings->overwrite);
- 		igt_assert(settings->dry_run);
- 		igt_assert(!settings->test_list);
- 		igt_assert(!settings->facts);
-+		igt_assert(!settings->kmemleak);
- 		igt_assert(!settings->sync);
- 
- 		argv[1] = "--test-list";
-+		argv[2] = "foo"; /* Unchanged */
- 		argv[3] = "--facts";
--		argv[4] = "--sync";
-+		argv[4] = "--kmemleak";
-+		argv[5] = "--sync";
-+		argv[6] = "test-root-dir"; /* Unchanged */
-+		argv[7] = "results-path"; /* Unchanged */
- 
- 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
- 
- 		igt_assert_eqstr(settings->name, "results-path");
- 		igt_assert(!settings->dry_run);
-+		igt_assert(!settings->overwrite);
- 		igt_assert(strstr(settings->test_list, "foo") != NULL);
- 		igt_assert(settings->facts);
-+		igt_assert(settings->kmemleak);
- 		igt_assert(settings->sync);
- 	}
- 
-diff --git a/runner/settings.c b/runner/settings.c
-index 92fd42ea6..560bc2b5e 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -41,6 +41,7 @@ enum {
- 	OPT_EXCLUDE = 'x',
- 	OPT_ENVIRONMENT = 'e',
- 	OPT_FACTS = 'f',
-+	OPT_KMEMLEAK = 'k',
- 	OPT_SYNC = 's',
- 	OPT_LOG_LEVEL = 'l',
- 	OPT_OVERWRITE = 'o',
-@@ -232,6 +233,16 @@ static const char *usage_str =
- 	"                                   not respond to ping.\n"
- 	"                         all     - abort for all of the above.\n"
- 	"  -f, --facts           Enable facts tracking\n"
-+	"  -k, -k<option>, --kmemleak, --kmemleak=<option>\n"
-+	"                        Enable kmemleak tracking. Each kmemleak scan\n"
-+	"                        can take from 5 to 60 seconds, slowing down\n"
-+	"                        the run considerably. The default is to scan\n"
-+	"                        only once after the last test. It is also\n"
-+	"                        possible to scan after each test. Possible\n"
-+	"                        options:\n"
-+	"                         once - The default is to run one kmemleak\n"
-+	"                                scan after the last test\n"
-+	"                         each - Run one kmemleak scan after each test\n"
- 	"  -s, --sync            Sync results to disk after every test\n"
- 	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
- 	"                        Set the logger verbosity level\n"
-@@ -668,6 +679,7 @@ bool parse_options(int argc, char **argv,
- 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
- 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
- 		{"facts", no_argument, NULL, OPT_FACTS},
-+		{"kmemleak", optional_argument, NULL, OPT_KMEMLEAK},
- 		{"sync", no_argument, NULL, OPT_SYNC},
- 		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
- 		{"test-list", required_argument, NULL, OPT_TEST_LIST},
-@@ -698,7 +710,7 @@ bool parse_options(int argc, char **argv,
- 	settings->dmesg_warn_level = -1;
- 	settings->prune_mode = -1;
- 
--	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
-+	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:Lk::",
- 				long_options, NULL)) != -1) {
- 		switch (c) {
- 		case OPT_VERSION:
-@@ -742,6 +754,19 @@ bool parse_options(int argc, char **argv,
- 		case OPT_FACTS:
- 			settings->facts = true;
- 			break;
-+		case OPT_KMEMLEAK:
-+			settings->kmemleak = true;
-+			if (optarg) {
-+				if (strcmp(optarg, "once") == 0)
-+					settings->kmemleak_each = false;
-+				else if (strcmp(optarg, "each") == 0)
-+					settings->kmemleak_each = true;
-+				else {
-+					usage(stderr, "Invalid kmemleak option");
-+					goto error;
-+				}
-+			}
-+			break;
- 		case OPT_SYNC:
- 			settings->sync = true;
- 			break;
-@@ -1105,6 +1130,8 @@ bool serialize_settings(struct settings *settings)
- 	SERIALIZE_LINE(f, settings, dry_run, "%d");
- 	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
- 	SERIALIZE_LINE(f, settings, facts, "%d");
-+	SERIALIZE_LINE(f, settings, kmemleak, "%d");
-+	SERIALIZE_LINE(f, settings, kmemleak_each, "%d");
- 	SERIALIZE_LINE(f, settings, sync, "%d");
- 	SERIALIZE_LINE(f, settings, log_level, "%d");
- 	SERIALIZE_LINE(f, settings, overwrite, "%d");
-@@ -1176,6 +1203,8 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_LINE(settings, name, val, dry_run, numval);
- 		PARSE_LINE(settings, name, val, allow_non_root, numval);
- 		PARSE_LINE(settings, name, val, facts, numval);
-+		PARSE_LINE(settings, name, val, kmemleak, numval);
-+		PARSE_LINE(settings, name, val, kmemleak_each, numval);
- 		PARSE_LINE(settings, name, val, sync, numval);
- 		PARSE_LINE(settings, name, val, log_level, numval);
- 		PARSE_LINE(settings, name, val, overwrite, numval);
-diff --git a/runner/settings.h b/runner/settings.h
-index f69f09778..ab00b3e32 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -58,6 +58,8 @@ struct settings {
- 	struct igt_list_head env_vars;
- 	struct igt_vec hook_strs;
- 	bool facts;
-+	bool kmemleak;
-+	bool kmemleak_each;
- 	bool sync;
- 	int log_level;
- 	bool overwrite;
--- 
-2.34.1
+Same goes for assertions, they are used for checking that
+a condition is _true_, so
 
+	assert(bool_var); // better then assert(bool_var == true);
+
+Regards,
+Kamil
+
+> > 
+> > 0001-lib-igt_facts-Library-and-unit-testing-for-fact-trac.patch:913: CHECK:LINE_SPACING: Please use a blank line after function/struct/union/enum declarations
+> > #913: FILE: lib/igt_facts.h:40:
+> > +};
+> > +extern struct igt_facts_config igt_facts_config;
+> 
+> Good catch, thank you.
+> 
+> > 
+> > total: 0 errors, 3 warnings, 23 checks, 858 lines checked
+> > 
+> > 0001-lib-igt_facts-Library-and-unit-testing-for-fact-trac.patch has style problems, please review.
+> > 
+> > Especially when there are many it is easy to overlook an issue,
+> > one such is comparision with 'true', I searched your code for '== true'
+> > and one place needs fixing:
+> > 
+> > grep -n '== true' lib/igt_facts.c
+> > 680:    igt_assert(ret == true);
+> > 690:    igt_assert(fact->present == true);
+> > 733:    igt_assert(fact->present == true);
+> > 737:    igt_assert(fact->present == true);
+> > 769:    igt_assert(igt_list_empty(&igt_facts_list_pci_gpu_head) == true);
+> > 
+> > Last line may be an issue, as sometimes pointer comparision could
+> > be implemented in runtime as 'return (src - dest)' so please fix all
+> > using template:
+> 
+> I don't think so as the type is bool. I can't imagine a way to make this go
+> wrong. Can you give me an example showing how a bool type can be evaluated
+> incorrectly? What am I missing here?
+> 
+> > 
+> > igt_assert(val == true); --> igt_assert(val);
+> > 
+> > In summary, please fix BOOL_COMPARISON, COMPARISON_TO_NULL,
+> > LINE_SPACING, PARENTHESIS_ALIGNMENT.
+> > 
+> > Please remove extern from header, it is not needed:
+> > 
+> > extern struct igt_facts_config igt_facts_config;
+> 
+> yep yep, this is twice on the email...
+> 
+> [...]
