@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21E06C0218F
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 22:57:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B73B3C0218B
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 22:57:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1B8C10E651;
-	Tue, 21 Jan 2025 22:57:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7157C10E2ED;
+	Tue, 21 Jan 2025 22:57:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NGKPWA3E";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RgPEr8jP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2947610E644
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DC5B10E640
  for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 22:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1737500272; x=1769036272;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2gW+ZTjO8bef0MFiouiOS+W3RhWEG//Hvi/5rT4V/ug=;
- b=NGKPWA3EZroB053hR9PpXH+eQG5VYY1crVkKYgvzNkARJVoy5LKlOdR6
- g1v+mDN0dm7b6GWe5s00EpizKlmYtlgRkZjap16wJlBGJM0v3GrLjTmDJ
- 5NecaDmVGWWnbvunQMxeKRlJawkqUFXxwkYM63f2sMD0qt7gS8IrOhsw6
- pLJn43Dx10TSQ1ktl91h6M+X/m1J1c5hY2u+HtdI4mTBY4LplCwQ6fARI
- P/x18CYGtfoioj0dlalOGZVQnv6C1aSnG7SIsWlQtIMn8NaCo2UGCXQug
- 9QoDUUT0gwMQleej7qlYzLEvifX6ae/RkMD+7TBw6YBYwXT8Z0rJRxSQS Q==;
-X-CSE-ConnectionGUID: q/CcrvKrT0aLJd7rGgOD/Q==
-X-CSE-MsgGUID: fj0NHsfrQsielDHB96ytVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="55352727"
-X-IronPort-AV: E=Sophos;i="6.13,223,1732608000"; d="scan'208";a="55352727"
+ bh=BokH82vtDqPrx4BXhXtCW9MDlZJyHlaH6rTR4AtaCSw=;
+ b=RgPEr8jPZRiHQj9Ok1Pb8iAXbII8MPVqWnYkvFexc2RJS3IvNz2lL991
+ c9CqkZHIF8hgSnJmaEHIUKt8Da7P7oHw04PLO/fdBasp/LLP8Jev+wcM8
+ TTAHvnT4fi7gm2M+XC0IkNdl/thF62uCKp5mmsvnAnwnV6KFS9XJmfeLm
+ uKznTgmqvdiJKnZXilLECAYXRrL/BsDyFvDYfT0GZ9bnWBQ41v1sdpZSU
+ B9NIydOKZWkqJqgzRp1dfRSsltmggfzJshVCqripkTjIFgvoW7lQhg9hn
+ jz0kT9AR0aT3j3lqMbi7Y+ujIdbJtZN5Get7CEVrHxMR0crbFNDEZR1wT Q==;
+X-CSE-ConnectionGUID: BI/jeGrIT665OTueqrDfjw==
+X-CSE-MsgGUID: Twpkuf06TGSxf2O0RreoCA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="55352726"
+X-IronPort-AV: E=Sophos;i="6.13,223,1732608000"; d="scan'208";a="55352726"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Jan 2025 14:57:52 -0800
-X-CSE-ConnectionGUID: Tb/yb1p/TNWpaBD0IOkeBA==
-X-CSE-MsgGUID: d8adzK3oRe2UxnhuiC6u0A==
+X-CSE-ConnectionGUID: W0mww6fTQCeMOGgiPMkUJA==
+X-CSE-MsgGUID: DUDAvuCEQwaCz2N57SmmcA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="111933678"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="111933675"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Jan 2025 14:57:52 -0800
@@ -48,9 +48,9 @@ Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 5/7] runner: Free settings at the end
-Date: Tue, 21 Jan 2025 14:57:31 -0800
-Message-ID: <20250121225733.808978-6-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v2 4/7] runner/settings: Fix code_coverage_script leak
+Date: Tue, 21 Jan 2025 14:57:30 -0800
+Message-ID: <20250121225733.808978-5-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250121225733.808978-1-lucas.demarchi@intel.com>
 References: <20250121225733.808978-1-lucas.demarchi@intel.com>
@@ -71,47 +71,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Keep valgrind happy with the normal allocations so we can find the real
-leaks. Avoid this kind of leak:
-
-	==806592== 8 bytes in 1 blocks are definitely lost in loss record 46 of 188
-	==806592==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-	==806592==    by 0x4BD534E: strdup (strdup.c:42)
-	==806592==    by 0x10E6AA: parse_options (settings.c:863)
-	==806592==    by 0x10D2DD: main (runner.c:19)
+Make sure to free it when clearing settings.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- runner/resume.c | 2 ++
- runner/runner.c | 2 ++
- 2 files changed, 4 insertions(+)
+ runner/settings.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/runner/resume.c b/runner/resume.c
-index 0f4e42bfa..ed17351c6 100644
---- a/runner/resume.c
-+++ b/runner/resume.c
-@@ -55,6 +55,8 @@ int main(int argc, char **argv)
- 		exitcode = 3;
- 	}
+diff --git a/runner/settings.c b/runner/settings.c
+index 96377f1de..2787869ee 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -640,6 +640,7 @@ void clear_settings(struct settings *settings)
+ 	free(settings->name);
+ 	free(settings->test_root);
+ 	free(settings->results_path);
++	free(settings->code_coverage_script);
  
-+	clear_settings(&settings);
-+
- 	printf("Done.\n");
- 	return exitcode;
- }
-diff --git a/runner/runner.c b/runner/runner.c
-index 4855ad641..258b30b36 100644
---- a/runner/runner.c
-+++ b/runner/runner.c
-@@ -49,6 +49,8 @@ int main(int argc, char **argv)
- 		exitcode = 1;
- 	}
- 
-+	clear_settings(&settings);
-+
- 	printf("Done.\n");
- 	return exitcode;
- }
+ 	free_regexes(&settings->include_regexes);
+ 	free_regexes(&settings->exclude_regexes);
 -- 
 2.48.0
 
