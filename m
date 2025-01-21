@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8556C02182
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 16:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EE85C02182
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 16:40:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 62A5810E0BE;
-	Tue, 21 Jan 2025 16:17:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4186F10E1B0;
+	Tue, 21 Jan 2025 16:40:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F86/WWy1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PoGyAtyU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2273610E0BE
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 16:17:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7762D10E5A0
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 16:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737476275; x=1769012275;
+ t=1737477602; x=1769013602;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=QFJv0dQG3RjOpuZmqPF7uBQIWINAoSb+w3flKgC9EdI=;
- b=F86/WWy15Sjy8uQjEDrDvg+5HUmi5G7bVz8gdLEVP2aG0T4CdXSqTROE
- A7tffQ69nbfPFnVa19B7UygtS9Wxgopmfbzs+fB0bV4Ae0G5zULAD6hdL
- YWykE5nlyYstCH00KM1bYS7UILmGyaOZ+vyC9ujPgIQLZF0he3bF2roji
- e+WA4nWazO4zx/iJxOpPE3CzwqhrQoM1sLOmxey9RzbRWKmsPFJ8phu6E
- 8s1n77vw/KOz3o97gtUeuY7QkMa9EcbQg/8NtbzT7RrpX5ikL84Z1XzzD
- 7OICDVvelPp1fY/4y+a99aT5Fv6aqDXxEGlQJrzhflzz3H++n3r9khBxZ A==;
-X-CSE-ConnectionGUID: JXabwXDvSJuxqVbbH2Bu9g==
-X-CSE-MsgGUID: yjdD3i7YSQOQqhutgJ3PBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37167283"
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="37167283"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 08:17:55 -0800
-X-CSE-ConnectionGUID: 4eUrTcp5SE+TLFVYHeHEKQ==
-X-CSE-MsgGUID: LvKX3/6+Qnu/m+JZiJAuZA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=WFotjPiX9yhuiG0Rnes5dk1hZXMKTMeoKQzPqf1uTjk=;
+ b=PoGyAtyUnhwB1I2QciQL2QXCR8aRrrTRj851s8qtCWFX0KDBQJQUJDtG
+ s0Ha7lQrH7QLTAA1UarP80PQocrwvL1uKk5uT4CuGwE8s6s8w7rvGgoNM
+ /biw6ODTK/XpX0/bw94LlO7Z+vQu+lD838iOdIPyAo/jLWRRTlQOEuEFR
+ enLR6dq9jWFaYNkwKX//OGrBY3YBpDWXmLbV9R+9RK1NWCze5A8Re+1On
+ QHHkcEobgUYYUbymNsJqRkFQteCGP53womz5SsPReMzExqngsx7uIFjL/
+ V5Wt0OiEJGqf5WRkDQnqQh9W59PfpxRlZKbGwwihG7mJdnHhVOGOW6+eA w==;
+X-CSE-ConnectionGUID: vc9HUsdBR1+scodnp/EHOQ==
+X-CSE-MsgGUID: c6kSZ4ysTIyJn6bWP+Lttw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37775721"
+X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="37775721"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 08:40:02 -0800
+X-CSE-ConnectionGUID: OkLDQR1PTkCKTHtt8zImfg==
+X-CSE-MsgGUID: HccpuvDRR+OO742w0V6MCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="106860622"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="137724331"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 08:17:54 -0800
-Date: Tue, 21 Jan 2025 17:17:51 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 08:40:01 -0800
+Date: Tue, 21 Jan 2025 17:39:59 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- jordan.l.justen@intel.com, christoph.manszewski@intel.com
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_eudebug_online: Fix 32b
- compilation warnings/errors
-Message-ID: <20250121161751.aqotrwo6pzgyzl73@kamilkon-desk.igk.intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/xe: Add xe_cgroup test
+Message-ID: <20250121163959.k4u5627bxnrxeidv@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- jordan.l.justen@intel.com, christoph.manszewski@intel.com
-References: <20250120131338.131713-1-dominik.grzegorzek@intel.com>
- <20250120131338.131713-2-dominik.grzegorzek@intel.com>
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20241217141601.369613-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250120131338.131713-2-dominik.grzegorzek@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241217141601.369613-1-maarten.lankhorst@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,62 +71,425 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dominik,
-On 2025-01-20 at 14:13:38 +0100, Dominik Grzegorzek wrote:
-> Fix metadata allocation so it is properly sized on 32b and
-> correct all debug prints which were causing compilation warnings.
-> 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> ---
->  tests/intel/xe_eudebug_online.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-> index f532387af..41a01c02f 100644
-> --- a/tests/intel/xe_eudebug_online.c
-> +++ b/tests/intel/xe_eudebug_online.c
-> @@ -569,7 +569,7 @@ static void get_aips_offset_table(struct online_debug_data *data, int threads)
->  
->  	igt_debug("AIPs offset table:\n");
->  	for (int i = 0; i < threads; i++)
-> -		igt_debug("%lx\n", data->aips_offset_table[i]);
-> +		igt_debug("%" PRIx64 "\n", data->aips_offset_table[i]);
->  }
->  
->  static int get_stepped_threads_count(struct online_debug_data *data, int threads)
-> @@ -1063,8 +1063,8 @@ static void run_online_client(struct xe_eudebug_client *c)
->  	uint32_t *ptr;
->  	int fd, vm_flags;
->  
-> -	metadata[0] = calloc(2, sizeof(*metadata));
-> -	metadata[1] = calloc(2, sizeof(*metadata));
-> +	metadata[0] = calloc(2, sizeof(**metadata));
-> +	metadata[1] = calloc(2, sizeof(**metadata));
+Hi Maarten,
+On 2024-12-17 at 15:16:00 +0100, Maarten Lankhorst wrote:
 
-There are other places with similar pattern 'sizeof(*metadata)'
-If they are also bugs, imho this patch should be splitted into
-PRIu64/other prints and other one for fixing those sizeof.
+looks like your other patch is also floating fox xe_cg_dmem,
+imho this name is much better for a test.
+
+Please write a desciption here.
+
+If you could also describe with a little more details how you
+tested it, also provide link to lore.kernel.org for kernel patches.
 
 Regards,
 Kamil
 
->  	igt_assert(metadata[0]);
->  	igt_assert(metadata[1]);
->  
-> @@ -2328,11 +2328,11 @@ static void test_many_sessions_on_tiles(int fd, bool multi_tile)
->  
->  		if (multi_tile)
->  			igt_assert_f(diff < WORKLOAD_DELAY_US,
-> -				     "Expected to execute workloads concurrently. Actual delay: %lu ms\n",
-> +				     "Expected to execute workloads concurrently. Actual delay: %" PRIu64 " ms\n",
->  				     diff);
->  		else
->  			igt_assert_f(diff >= WORKLOAD_DELAY_US,
-> -				     "Expected a serialization of workloads. Actual delay: %lu ms\n",
-> +				     "Expected a serialization of workloads. Actual delay: %" PRIu64 " ms\n",
->  				     diff);
->  	}
->  
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> ---
+>  tests/intel/xe_cgroup.c | 380 ++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build       |   1 +
+>  2 files changed, 381 insertions(+)
+>  create mode 100644 tests/intel/xe_cgroup.c
+> 
+> diff --git a/tests/intel/xe_cgroup.c b/tests/intel/xe_cgroup.c
+> new file mode 100644
+> index 000000000..e8899c16e
+> --- /dev/null
+> +++ b/tests/intel/xe_cgroup.c
+> @@ -0,0 +1,380 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Check cgroup VRAM allocation limits
+> + * Category: Software building block
+> + * Sub-category: cgroup
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Description: Test that the dmem cgroup works as intended.
+> + */
+> +
+> +#include <string.h>
+> +#include <unistd.h>
+> +#include <fcntl.h>
+> +#include <sys/stat.h>
+> +
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "igt_sysfs.h"
+> +
+> +#include "xe_drm.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+> +static int cgfd = -1, igtcg = -1, cg1 = -1, cg1_1 = -1, cg1_2 = -1, cg2 = -1;
+> +static char cgid[64];
+> +
+> +/*
+> + * cgroups:
+> + *                                      / cg1_1
+> + * /sys/fs/cgroup (cgfd) / igtcg / cg1 /- cg1_2
+> + *                               / cg2
+> + */
+> +
+> +static void set_cgrp(int cg)
+> +{
+> +	igt_sysfs_set_u32(cg, "cgroup.procs", getpid());
+> +}
+> +
+> +static inline void set_cg_val(int cg, const char *resource, int64_t val)
+> +{
+> +	if (val >= 0)
+> +		igt_assert(igt_sysfs_printf(cg, resource, "%s %"PRIu64, cgid, val));
+> +	else
+> +		igt_assert(igt_sysfs_printf(cg, resource, "%s max", cgid));
+> +}
+> +
+> +static void set_cgrp_min(int cg, int64_t min)
+> +{
+> +	set_cg_val(cg, "dmem.min", min);
+> +}
+> +
+> +static void set_cgrp_low(int cg, int64_t low)
+> +{
+> +	set_cg_val(cg, "dmem.low", low);
+> +}
+> +
+> +static void set_cgrp_max(int cg, int64_t max)
+> +{
+> +	set_cg_val(cg, "dmem.max", max);
+> +}
+> +
+> +static int64_t get_cg_val(int cg, const char *resource)
+> +{
+> +	char *devstr, *valstr, *str;
+> +	int64_t val;
+> +
+> +	str = igt_sysfs_get(cg, resource);
+> +	igt_assert(str);
+> +	devstr = strstr(str, cgid);
+> +	igt_assert(devstr);
+> +
+> +	/* Only care about the line describing this region, terminate if needed */
+> +	devstr = strtok(devstr, "\n");
+> +
+> +	valstr = strstr(devstr, " ") + 1;
+> +	if (!strcmp(valstr, "max"))
+> +		val = INT64_MAX;
+> +	else
+> +		val = strtoll(valstr, NULL, 10);
+> +
+> +	free(str);
+> +	return val;
+> +}
+> +
+> +static int64_t get_cgrp_min(int cg)
+> +{
+> +	return get_cg_val(cg, "dmem.min");
+> +}
+> +
+> +static int64_t get_cgrp_low(int cg)
+> +{
+> +	return get_cg_val(cg, "dmem.low");
+> +}
+> +
+> +static int64_t get_cgrp_max(int cg)
+> +{
+> +	return get_cg_val(cg, "dmem.max");
+> +}
+> +
+> +static int64_t get_cgrp_current(int cg)
+> +{
+> +	return get_cg_val(cg, "dmem.current");
+> +}
+> +
+> +static void assert_all_cgs_empty(void)
+> +{
+> +	igt_assert(!get_cgrp_current(igtcg));
+> +}
+> +
+> +static void reset_cgs(void)
+> +{
+> +	int i, fds[] = { igtcg, cg1, cg1_1, cg1_2, cg2 };
+> +	set_cgrp(cgfd);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(fds); i++) {
+> +		int cg = fds[i];
+> +
+> +		set_cgrp_min(cg, 0);
+> +		set_cgrp_low(cg, 0);
+> +		set_cgrp_max(cg, -1);
+> +	}
+> +}
+> +
+> +static void cleanup_cg(int sig)
+> +{
+> +	/* Move self to root so we can rmdir */
+> +	set_cgrp(cgfd);
+> +
+> +	unlinkat(cg1, "cg1_1", AT_REMOVEDIR);
+> +	unlinkat(cg1, "cg1_2", AT_REMOVEDIR);
+> +	unlinkat(igtcg, "cg1", AT_REMOVEDIR);
+> +	unlinkat(igtcg, "cg2", AT_REMOVEDIR);
+> +	unlinkat(cgfd, "igtcg", AT_REMOVEDIR);
+> +
+> +	/* leak fd's at exit, nobody cares */
+> +}
+> +
+> +static int mkcgrp(int fd, const char *name)
+> +{
+> +	int err;
+> +
+> +	/* Check and enable controller */
+> +	igt_require(igt_sysfs_set(fd, "cgroup.subtree_control", "+dmem"));
+> +
+> +	err = mkdirat(fd, name, 0755);
+> +	if (!err || (err == -1 && errno == EEXIST))
+> +		err = openat(fd, name, O_RDONLY);
+> +	igt_assert(err >= 0);
+> +	return err;
+> +}
+> +
+> +static void create_cgroups(void)
+> +{
+> +	char *controllers;
+> +	cgfd = open("/sys/fs/cgroup", O_RDONLY);
+> +	igt_require(cgfd >= 0);
+> +
+> +	controllers = igt_sysfs_get(cgfd, "cgroup.controllers");
+> +	igt_require(controllers && strstr(controllers, "dmem"));
+> +	free(controllers);
+> +
+> +	igt_install_exit_handler(cleanup_cg);
+> +
+> +	/* Populate cg's */
+> +	igtcg = mkcgrp(cgfd, "igtcg");
+> +	cg1 = mkcgrp(igtcg, "cg1");
+> +	cg1_1 = mkcgrp(cg1, "cg1_1");
+> +	cg1_2 = mkcgrp(cg1, "cg1_2");
+> +	cg2 = mkcgrp(igtcg, "cg2");
+> +}
+> +
+> +static int bo_create_at(struct xe_device *xe, int cg, uint64_t bo_size)
+> +{
+> +	struct drm_xe_gem_create create = {
+> +		.placement = vram_if_possible(xe->fd, 0),
+> +		.cpu_caching = __xe_default_cpu_caching(xe->fd, create.placement, 0),
+> +		.size = bo_size,
+> +	};
+> +
+> +	set_cgrp(cg);
+> +
+> +	if (igt_ioctl(xe->fd, DRM_IOCTL_XE_GEM_CREATE, &create) < 0) {
+> +		igt_debug("Creating bo with size %"PRIu64" returned -1/%m\n", bo_size);
+> +		return -errno;
+> +	}
+> +
+> +	igt_debug("Creating bo with size %"PRIu64" and handle %u\n", bo_size, create.handle);
+> +	return create.handle;
+> +}
+> +
+> +/**
+> + * SUBTEST: functional
+> + * Description: Test if written values can be read back,
+> + * 	to rule out copy/paste errors.
+> + */
+> +static void test_functional(void)
+> +{
+> +	set_cgrp_min(igtcg, 12345);
+> +	set_cgrp_low(igtcg, 54321);
+> +	set_cgrp_max(igtcg, 67890);
+> +
+> +	igt_assert_eq_u64(get_cgrp_min(igtcg), 12345);
+> +	igt_assert_eq_u64(get_cgrp_low(igtcg), 54321);
+> +	igt_assert_eq_u64(get_cgrp_max(igtcg), 67890);
+> +
+> +	set_cgrp_min(igtcg, -1);
+> +	set_cgrp_low(igtcg, -1);
+> +	set_cgrp_max(igtcg, -1);
+> +
+> +	igt_assert_eq_u64(get_cgrp_min(igtcg), INT64_MAX);
+> +	igt_assert_eq_u64(get_cgrp_low(igtcg), INT64_MAX);
+> +	igt_assert_eq_u64(get_cgrp_max(igtcg), INT64_MAX);
+> +
+> +	set_cgrp_min(igtcg, 0);
+> +	set_cgrp_low(igtcg, 0);
+> +	set_cgrp_max(igtcg, 0);
+> +	igt_assert_eq_u64(get_cgrp_low(igtcg), 0);
+> +	igt_assert_eq_u64(get_cgrp_max(igtcg), 0);
+> +	igt_assert_eq_u64(get_cgrp_min(igtcg), 0);
+> +}
+> +
+> +/**
+> + * SUBTEST: test-simple-max
+> + * Description: Test that cgroup max limits are respected between
+> + * 	various nestings of cgroups, and correct cgroups are evicted.
+> + */
+> +static void test_simple_max(struct xe_device *xe)
+> +{
+> +	uint64_t bo_size = xe->default_alignment;
+> +	int bo1, bo1_1, bo1_2;
+> +
+> +	/* Test if we set cgroup limits, that they are respected */
+> +	assert_all_cgs_empty();
+> +
+> +	reset_cgs();
+> +
+> +	set_cgrp_max(igtcg, 0);
+> +	igt_assert(get_cgrp_max(igtcg) == 0);
+> +	set_cgrp_max(cg1, 2 * bo_size);
+> +	set_cgrp_max(cg1_1, 2 * bo_size);
+> +	set_cgrp_max(cg1_2, bo_size);
+> +	set_cgrp_max(cg2, -1);
+> +	igt_assert(get_cgrp_max(cg2) == INT64_MAX);
+> +
+> +	/* First check if top cg limit (of igtcg) is not ignored */
+> +	igt_assert_eq(-ENOMEM, bo_create_at(xe, cg1_1, bo_size));
+> +
+> +	assert_all_cgs_empty();
+> +	set_cgrp_max(igtcg, 4 * bo_size);
+> +
+> +	/* Same cg limit? */
+> +	bo1_1 = bo_create_at(xe, cg1_1, 2 * bo_size);
+> +	igt_assert(bo1_1 > 0);
+> +
+> +	set_cgrp_max(cg1, 3 * bo_size);
+> +	bo1_2 = bo_create_at(xe, cg1_2, bo_size);
+> +	igt_assert(bo1_2 > 0);
+> +
+> +	/* Create a too big bo and check if 1_2 is evicted */
+> +	igt_assert_eq(-ENOMEM, bo_create_at(xe, cg1_2, 4 * bo_size));
+> +	igt_assert_eq_u64(0, get_cgrp_current(cg1_2));
+> +
+> +	gem_close(xe->fd, bo1_2);
+> +	bo1_2 = bo_create_at(xe, cg1_2, bo_size);
+> +	igt_assert(bo1_2 > 0);
+> +
+> +	set_cgrp_max(cg1, 4 * bo_size);
+> +	bo1 = bo_create_at(xe, cg1_1, bo_size);
+> +	igt_assert(bo1 > 0);
+> +
+> +	gem_close(xe->fd, bo1_2);
+> +	gem_close(xe->fd, bo1_1);
+> +	gem_close(xe->fd, bo1);
+> +
+> +	assert_all_cgs_empty();
+> +}
+> +
+> +static void create_cg1_min(struct xe_device *xe, int *bo1_1, int *bo1_2)
+> +{
+> +	uint64_t bo_size = xe->default_alignment;
+> +
+> +	if (*bo1_1 > 0)
+> +		gem_close(xe->fd, *bo1_1);
+> +
+> +	if (*bo1_2 > 0)
+> +		gem_close(xe->fd, *bo1_2);
+> +
+> +	*bo1_1 = bo_create_at(xe, cg1_1, bo_size);
+> +	igt_assert(*bo1_1 > 0);
+> +
+> +	*bo1_2 = bo_create_at(xe, cg1_2, bo_size);
+> +	igt_assert(*bo1_2 > 0);
+> +}
+> +
+> +/**
+> + * SUBTEST: test-simple-min
+> + * Description: Test that cgroup min limits are respected between
+> + * 	various nestings of cgroups, and correct cgroups are evicted.
+> + */
+> +static void test_simple_min(struct xe_device *xe)
+> +{
+> +	uint64_t bo_size = xe->default_alignment;
+> +	int bo1_1 = -1, bo1_2 = -1, bo2;
+> +
+> +	assert_all_cgs_empty();
+> +	reset_cgs();
+> +
+> +	/* set static max of 2 bo's for testing, allow protection as well on cg1 */
+> +	set_cgrp_max(igtcg, 2 * bo_size);
+> +	set_cgrp_min(igtcg, 2 * bo_size);
+> +	set_cgrp_min(cg1, 2 * bo_size);
+> +	set_cgrp_min(cg1_1, bo_size);
+> +	set_cgrp_min(cg1_2, bo_size);
+> +
+> +	create_cg1_min(xe, &bo1_1, &bo1_2);
+> +
+> +	igt_assert_eq_u64(get_cgrp_current(cg1), 2 * bo_size);
+> +
+> +	bo2 = bo_create_at(xe, cg2, bo_size);
+> +	igt_assert_eq_u64(get_cgrp_current(cg1), 2 * bo_size);
+> +	igt_assert_eq(bo2, -ENOMEM);
+> +
+> +	/* Unprotect one */
+> +	set_cgrp_min(cg1, bo_size);
+> +	set_cgrp_min(cg1_2, 0);
+> +
+> +	bo2 = bo_create_at(xe, cg2, bo_size);
+> +	/* Verify cg1_2 is evicted, cg1_1 not */
+> +	igt_assert_eq_u64(get_cgrp_current(cg1_2), 0);
+> +	igt_assert_eq_u64(get_cgrp_current(cg1), bo_size);
+> +	igt_assert_eq_u64(get_cgrp_current(igtcg), 2 * bo_size);
+> +	igt_assert(bo2 > 0);
+> +
+> +	gem_close(xe->fd, bo2);
+> +	gem_close(xe->fd, bo1_1);
+> +	gem_close(xe->fd, bo1_2);
+> +	assert_all_cgs_empty();
+> +}
+> +
+> +igt_main
+> +{
+> +	struct xe_device *xe;
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		char *data;
+> +		char busid[32];
+> +
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		xe = xe_device_get(fd);
+> +
+> +		/* XXX: Easier way to determine busid? */
+> +		igt_device_get_pci_slot_name(fd, busid);
+> +
+> +		/* For now, require VRAM as shared memory lacks support */
+> +		igt_require(xe->has_vram);
+> +		sprintf(cgid, "drm/%s/vram0", busid);
+> +
+> +		create_cgroups();
+> +
+> +		data = igt_sysfs_get(cgfd, "dmem.capacity");
+> +		igt_debug("Contents: %s\n", data);
+> +		/* Ensure our driver is found" */
+> +		igt_require_f(strstr(data, busid), "Is driver xe/%s supported by dmem controller?\n", busid);
+> +		free(data);
+> +	}
+> +
+> +	igt_subtest("functional")
+> +		test_functional();
+> +
+> +	igt_subtest("test-simple-max")
+> +		test_simple_max(xe);
+> +
+> +	igt_subtest("test-simple-min")
+> +		test_simple_min(xe);
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 2724c7a9a..84b3e955c 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -273,6 +273,7 @@ intel_kms_progs = [
+>  intel_xe_progs = [
+>  	'xe_wedged',
+>  	'xe_ccs',
+> +	'xe_cgroup',
+>  	'xe_create',
+>  	'xe_compute',
+>  	'xe_compute_preempt',
 > -- 
-> 2.34.1
+> 2.43.0
 > 
