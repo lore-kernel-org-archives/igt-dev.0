@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F29C02182
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 14:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273EAC02182
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 14:21:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1EDE410E596;
-	Tue, 21 Jan 2025 14:02:52 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YF4kEO6T";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82F6210E596
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 14:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737468170; x=1769004170;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8In7NKZBx+IoEqm2RNJYPGoxVG0XzJE9YWcKtepHJBc=;
- b=YF4kEO6TgfiK9jbOCJPqTLDrN0q6HlouJg4tC+4WuYRLuiN7Wtf/nsWJ
- aEnGMx9dBn4oOy7OiUwauOz9327AYNPWo215wzM6cOCxn4/oi0X5lEunH
- avfMGkKcbYF+dY10GMCktOXhpCTmpmQAqyuh+yXStUyWAdRpvF4WxZnpJ
- iQOLPjl09oV4B2l/80EIUe3IEGwS3dymO0gIwk+2XRS+toOdVj/9NhN92
- XAu4Y7NUm/rii+jcIdKFzPNB4nxjFtYgEiyG8c05iMNnf1YwgrJ0k9+bx
- JBMjXoObU3of9NHuCUEFfLanMkjVIn1X2gn0X/lCCtGC0XBIUe8PsT11W A==;
-X-CSE-ConnectionGUID: 9zNWFKjQQlmY9O0mWWL6Qg==
-X-CSE-MsgGUID: iDZkcU+DQXGXw/2+MWJ+Hw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="25482075"
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="25482075"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 06:02:50 -0800
-X-CSE-ConnectionGUID: pf1UXpSwRvqFo92DgKecng==
-X-CSE-MsgGUID: BUyk1aJfROiNojAu4eXh2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="106739400"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 06:02:49 -0800
-Date: Tue, 21 Jan 2025 15:02:46 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Pravalika Gurram <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org, peter.senna@linux.intel.com
-Subject: Re: [PATCH 1/2] lib/igt_facts: Make igt_facts_test noreturn
-Message-ID: <20250121140246.4bsxhscnpwrsskoq@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Pravalika Gurram <pravalika.gurram@intel.com>,
- igt-dev@lists.freedesktop.org, peter.senna@linux.intel.com
-References: <20250121063207.71737-1-pravalika.gurram@intel.com>
- <20250121063207.71737-2-pravalika.gurram@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 80A2310E5C5;
+	Tue, 21 Jan 2025 14:21:02 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 641BD10E1F2;
+ Tue, 21 Jan 2025 14:21:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2453744383162483841=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250121063207.71737-2-pravalika.gurram@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_test_for_configurable_O?=
+ =?utf-8?q?A_buffer_size_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sai Teja Pottumuttu" <sai.teja.pottumuttu@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 21 Jan 2025 14:21:01 -0000
+Message-ID: <173746926140.2621096.4191840630380105898@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250121115935.1654625-1-sai.teja.pottumuttu@intel.com>
+In-Reply-To: <20250121115935.1654625-1-sai.teja.pottumuttu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,59 +37,186 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pravalika,
-On 2025-01-21 at 12:02:06 +0530, Pravalika Gurram wrote:
-> noreturn attribute is used to improve the optimization by informing to
-> the compiler that function does not return .
-> 
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
-> ---
->  lib/igt_facts.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_facts.c b/lib/igt_facts.c
-> index 2e04a7c86..bd6742065 100644
-> --- a/lib/igt_facts.c
-> +++ b/lib/igt_facts.c
-> @@ -748,7 +748,7 @@ static void igt_facts_test_mark_and_sweep(struct igt_list_head *head)
->   *
->   * Returns: bool indicating if the tests passed
->   */
-> -void igt_facts_test(void)
-> +__noreturn void igt_facts_test(void)
+--===============2453744383162483841==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This makes our CI pieline fails, see:
+== Series Details ==
 
-https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1349299
+Series: Add test for configurable OA buffer size (rev3)
+URL   : https://patchwork.freedesktop.org/series/142128/
+State : success
 
-https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69671923
+== Summary ==
 
- 9/443 lib igt_exit_handler                    OK       2.14 s 
-10/443 lib igt_facts                           FAIL     0.33 s (exit status 98)
-11/443 lib igt_fork                            OK       6.65 s 
+CI Bug Log - changes from XEIGT_8202_BAT -> XEIGTPW_12474_BAT
+====================================================
 
-Imho it is better to test it first on your machine locally with:
+Summary
+-------
 
-meson test -C build --num-processes 4
+  **SUCCESS**
 
-then send it as a separate patch.
+  No regressions found.
 
-Regards,
-Kamil
+  
 
->  {
->  	const char *last_test = "Unit Testing";
->  
-> @@ -776,4 +776,6 @@ void igt_facts_test(void)
->  	/* Clean up the list and call igt_facts(). This should not crash */
->  	igt_facts_list_mark_and_sweep(&igt_facts_list_pci_gpu_head);
->  	igt_facts(last_test);
-> +
-> +	igt_exit();
->  }
-> -- 
-> 2.34.1
-> 
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12474_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#2229] / [Intel XE#455]) +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#2229])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [SKIP][3] ([Intel XE#1192]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_vm@munmap-style-unbind-userptr-front:
+    - bat-adlp-vf:        [DMESG-WARN][5] ([Intel XE#4078]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-front.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-front.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][7] ([Intel XE#1192]) -> [SKIP][8] ([Intel XE#2229] / [Intel XE#455])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#4078]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8202 -> IGTPW_12474
+  * Linux: xe-2518-bb123c6e757601d42f71952d879b35f97472d56b -> xe-2519-3c328e144cb5e41131a265c4fc4bce222e5112e2
+
+  IGTPW_12474: e1a498bc18017ac6c62ae13ee78d6cd38f1833dd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8202: 9106f62ab151804d5f545bc0707a37c3512a2476 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2518-bb123c6e757601d42f71952d879b35f97472d56b: bb123c6e757601d42f71952d879b35f97472d56b
+  xe-2519-3c328e144cb5e41131a265c4fc4bce222e5112e2: 3c328e144cb5e41131a265c4fc4bce222e5112e2
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/index.html
+
+--===============2453744383162483841==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add test for configurable OA buffer size (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142128/">https://patchwork.freedesktop.org/series/142128/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8202_BAT -&gt; XEIGTPW_12474_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12474_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@munmap-style-unbind-userptr-front:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-front.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078">Intel XE#4078</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-front.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12474/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8202 -&gt; IGTPW_12474</li>
+<li>Linux: xe-2518-bb123c6e757601d42f71952d879b35f97472d56b -&gt; xe-2519-3c328e144cb5e41131a265c4fc4bce222e5112e2</li>
+</ul>
+<p>IGTPW_12474: e1a498bc18017ac6c62ae13ee78d6cd38f1833dd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8202: 9106f62ab151804d5f545bc0707a37c3512a2476 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2518-bb123c6e757601d42f71952d879b35f97472d56b: bb123c6e757601d42f71952d879b35f97472d56b<br />
+  xe-2519-3c328e144cb5e41131a265c4fc4bce222e5112e2: 3c328e144cb5e41131a265c4fc4bce222e5112e2</p>
+
+</body>
+</html>
+
+--===============2453744383162483841==--
