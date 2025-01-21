@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFACDC0218E
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802BFC0218D
 	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 22:57:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95C6710E2F8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 77ADF10E650;
 	Tue, 21 Jan 2025 22:57:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CV7vIDuz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QPuba1O+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E28AE10E640
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 22:57:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11C6510E1FF
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 22:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1737500272; x=1769036272;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=x2u2i9yXEjfgG9gBPA1mq90PNnZUmuXr52121sc0T1I=;
- b=CV7vIDuzwTJwcGehiibgMIvJaAbkc7nJk2jpwW+4Bul0cCylDoHHH4Ze
- oZysrYDiyt+4Zs0bHzHpn1IwbbozQvjDwV2Ou+lADTEW+xOAd5D3FlY0D
- QjIfgLLEQTy46lk0ONaH/C6ccB2yV19N2gW7i8vP7UbKSDGz9J3hFIjjG
- PevG9eH6uumjGP+w5CqSx0b9fX2dIDOyCtt5MkpYGZmZMpra0mgwKQrP2
- jwqVCtILAoTB6s8OY9emaDaipGpk/GKoWwAuDGhxbBvjaZXkz5b+w41GP
- /CaTvo7gsaLQn4HZ0ij43wCiupyIwu4YGCChTxr+sYbAywXhX2yux9/oK w==;
-X-CSE-ConnectionGUID: OeRwB8V9QEChgiyxd/Q0/g==
-X-CSE-MsgGUID: t2p5YOITT3OjyPxWB05QbQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="55352723"
-X-IronPort-AV: E=Sophos;i="6.13,223,1732608000"; d="scan'208";a="55352723"
+ bh=SrahTO/2hrb9E9gGLSZmjHUOIvmz2Q4iHKGUXIUKNPM=;
+ b=QPuba1O+xvmnwqFHeg3Hqxu0wuDrJ+xPUH7uOJzkUKWndSu6JEJxLaFo
+ W4VEY5Szk3CDdMqrkc9Ek329EUmLYaMEgrauiAF42qsUFbWDBeeeWFAdi
+ 5kA6jxmAR3H+lfV1JReQx+TdmRW5XrMaOxGhsRxtfwap8DEitsHJGCwz/
+ ZhSXQ7nP+6l5O6p+eTWwtMA5X3XyLiVlLaNOZ5gUc7UVfBoZaTmZr/5SR
+ eGQzE1RUl5unYHEvhEIb1SV+BG/ktxVwekxGETYPFQ9LPE7u1y1cuIKsQ
+ 8xrslB7D69ruNuhcNBDEyfLuavu/TtY2kfow7xrOwJeHnYPow7ywL++rF Q==;
+X-CSE-ConnectionGUID: kvD1fVSJQpS9Xwe+W0GnKA==
+X-CSE-MsgGUID: 4qH1JB6LQA6iQPCR7sw2iA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="55352725"
+X-IronPort-AV: E=Sophos;i="6.13,223,1732608000"; d="scan'208";a="55352725"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Jan 2025 14:57:52 -0800
-X-CSE-ConnectionGUID: 7EmpIrlAQlypZjwNuSEA5A==
-X-CSE-MsgGUID: ivFUP5rNR2iYDWYIYkZucg==
+X-CSE-ConnectionGUID: 09AP0ZlpSjeof0V7+Fp4Vw==
+X-CSE-MsgGUID: 1FxkqcErQ96EYRU1jVhkBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="111933666"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="111933672"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Jan 2025 14:57:52 -0800
@@ -48,9 +48,9 @@ Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 1/7] runner/settings: Deduplicate cleanup
-Date: Tue, 21 Jan 2025 14:57:27 -0800
-Message-ID: <20250121225733.808978-2-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v2 3/7] runner/settings: Drop extra strdup
+Date: Tue, 21 Jan 2025 14:57:29 -0800
+Message-ID: <20250121225733.808978-4-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250121225733.808978-1-lucas.demarchi@intel.com>
 References: <20250121225733.808978-1-lucas.demarchi@intel.com>
@@ -71,45 +71,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Deduplicate cleanup so it's also easy to parse the line in a different
-way.
+No need to strdup() again since the fscanf() function is already
+allocating the variable. Just set the pointer to NULL so we "leak" our
+variable to be saved in the settings.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- runner/settings.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ runner/settings.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/runner/settings.c b/runner/settings.c
-index 92fd42ea6..80d95be5b 100644
+index 13694a51c..96377f1de 100644
 --- a/runner/settings.c
 +++ b/runner/settings.c
-@@ -1154,13 +1154,10 @@ bool serialize_settings(struct settings *settings)
+@@ -1164,7 +1164,11 @@ static unsigned long parse_ul(char **pval)
  
- bool read_settings_from_file(struct settings *settings, FILE *f)
+ static char *parse_str(char **pval)
  {
--#define PARSE_LINE(s, name, val, field, write) \
--	if (!strcmp(name, #field)) {	       \
--		s->field = write;	       \
--		free(name);		       \
--		free(val);		       \
--		name = val = NULL;	       \
--		continue;		       \
-+#define PARSE_LINE(s, name, val, field, write)	\
-+	if (!strcmp(name, #field)) {		\
-+		s->field = write;		\
-+		goto cleanup;			\
- 	}
- 
- 	char *name = NULL, *val = NULL;
-@@ -1195,6 +1192,8 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 
- 		printf("Warning: Unknown field in settings file: %s = %s\n",
- 		       name, val);
+-	return *pval ? strdup(*pval) : NULL;
++	char *ret = *pval;
 +
-+cleanup:
- 		free(name);
- 		free(val);
- 		name = val = NULL;
++	*pval = NULL;
++
++	return ret;
+ }
+ 
+ #define PARSE_LINE(s, name, val, field, _f)	\
 -- 
 2.48.0
 
