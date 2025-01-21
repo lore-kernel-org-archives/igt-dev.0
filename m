@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A74D5C02182
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 09:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6978EC02187
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 09:23:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60FF710E520;
-	Tue, 21 Jan 2025 09:18:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 136C510E1D6;
+	Tue, 21 Jan 2025 09:23:13 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BD7F10E51D;
- Tue, 21 Jan 2025 09:18:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B8E810E1D6;
+ Tue, 21 Jan 2025 09:23:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4877560709867572172=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Make_igt=5Ffacts=5Ftest?=
- =?utf-8?q?_noreturn_and_cleanup?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Make_igt=5Ffacts=5Ftest_n?=
+ =?utf-8?q?oreturn_and_cleanup?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Pravalika Gurram" <pravalika.gurram@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Jan 2025 09:18:57 -0000
-Message-ID: <173745113763.2528870.10068986420789503642@b555e5b46a47>
+Date: Tue, 21 Jan 2025 09:23:11 -0000
+Message-ID: <173745139117.2537476.14072847684311085292@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250121063207.71737-1-pravalika.gurram@intel.com>
 In-Reply-To: <20250121063207.71737-1-pravalika.gurram@intel.com>
@@ -41,83 +41,204 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4877560709867572172==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Make igt_facts_test noreturn and cleanup
 URL   : https://patchwork.freedesktop.org/series/143776/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_8201 -> IGTPW_12472
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1349299 for the overview.
+Summary
+-------
 
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69671923):
-  439/443 assembler test/rnde-intsrc              OK       0.01 s 
-  440/443 assembler test/rndz                     OK       0.01 s 
-  441/443 assembler test/lzd                      OK       0.01 s 
-  442/443 assembler test/not                      OK       0.01 s 
-  443/443 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  438
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1737450521:step_script
-  section_start:1737450521:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1737450529:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  **SUCCESS**
 
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69672350):
-  439/443 assembler test/rnde-intsrc              OK       0.02 s 
-  440/443 assembler test/rndz                     OK       0.03 s 
-  441/443 assembler test/lzd                      OK       0.02 s 
-  442/443 assembler test/not                      OK       0.02 s 
-  443/443 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  438
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1737451010:step_script
-  section_start:1737451010:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1737451011:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  No regressions found.
 
-test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69671924):
-  27/31 lib i915_perf_data_alignment            OK       0.53 s 
-  28/31 lib bad_subtest_type                    EXPECTEDFAIL 0.48 s 
-  29/31 lib igt_no_subtest                      EXPECTEDFAIL 0.24 s 
-  30/31 lib igt_simple_test_subtests            EXPECTEDFAIL 0.24 s 
-  31/31 lib igt_timeout                         EXPECTEDFAIL 1.21 s 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/index.html
+
+Participating hosts (41 -> 36)
+------------------------------
+
+  Missing    (5): fi-hsw-4770 bat-rplp-1 bat-arls-6 bat-arlh-2 bat-mtlp-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12472 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][1] +3 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/fi-pnv-d510/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        NOTRUN -> [ABORT][2] ([i915#13169])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
   
-  Ok:                   26
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - fi-pnv-d510:        [ABORT][3] ([i915#13203]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/fi-pnv-d510/igt@i915_module_load@load.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/fi-pnv-d510/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-mtlp-8/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-dg2-11:         [INCOMPLETE][7] ([i915#12435] / [i915#12445]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-dg2-11/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-dg2-11/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@hugepages:
+    - bat-dg2-11:         [INCOMPLETE][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-dg2-11/igt@i915_selftest@live@hugepages.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-dg2-11/igt@i915_selftest@live@hugepages.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - {bat-mtlp-9}:       [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
   
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1737450451:step_script
-  section_start:1737450451:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1737450451:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#13169]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13169
+  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8201 -> IGTPW_12472
+
+  CI-20190529: 20190529
+  CI_DRM_15986: e48abf2c0aa4813a4629aeebd0547eb86f0f1a91 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12472: d00a9eb6fbffafc283fff85eab99cf7352de3c54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8201: dcc73646ce05a91bb4537e50ee6fa7ac5e8ff4ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1349299
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/index.html
+
+--===============4877560709867572172==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Make igt_facts_test noreturn and cleanup</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143776/">https://patchwork.freedesktop.org/series/143776/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8201 -&gt; IGTPW_12472</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/index.html</p>
+<h2>Participating hosts (41 -&gt; 36)</h2>
+<p>Missing    (5): fi-hsw-4770 bat-rplp-1 bat-arls-6 bat-arlh-2 bat-mtlp-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12472 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/fi-pnv-d510/igt@debugfs_test@basic-hwmon.html">SKIP</a> +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13169">i915#13169</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/fi-pnv-d510/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203">i915#13203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/fi-pnv-d510/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-dg2-11/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-dg2-11/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hugepages:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-dg2-11/igt@i915_selftest@live@hugepages.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-dg2-11/igt@i915_selftest@live@hugepages.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8201/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12472/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8201 -&gt; IGTPW_12472</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15986: e48abf2c0aa4813a4629aeebd0547eb86f0f1a91 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12472: d00a9eb6fbffafc283fff85eab99cf7352de3c54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8201: dcc73646ce05a91bb4537e50ee6fa7ac5e8ff4ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4877560709867572172==--
