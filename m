@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0C0BC02182
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 09:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 168B8C0218B
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jan 2025 10:48:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8623610E216;
-	Tue, 21 Jan 2025 09:51:58 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T653M6ta";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55E0310E216
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2025 09:51:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737453117; x=1768989117;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=exsp1r/dU5yrICs7RFr3x7YjB/KsLw1MxZJCYZbeFHU=;
- b=T653M6ta6bsejkNySr0wVbdWkFvl4jihCkDOq6xZud0HZfllGPh/tgLD
- h44YtSh4uCfSC1mD1a/QPAcPIS/V/Mib41zmyi8OQ6dIibKQ6UphN7+QT
- 2D04Gr9NY04wvzrZJA5dySv8H+xNSHu3gXLjeVT0tpHRdCHK2InM8iorB
- 7kuk1odr3myZMGYBDlBlESssyvclUkA0r/HOPXXNlXJ34yDmvMWQpwbj2
- JIE3BHfH1SmyBl8Ew4zY9CUuhFKaADzNgzSaQjbFHRG8s+ook3NaF+27N
- u6PNqIoCaDShZY96Vyp3CqnGvdTpKXgZq4Njbb4ScVgEehGKVcNyyZA8W w==;
-X-CSE-ConnectionGUID: JO2/CstGSc679PDF+cDJlQ==
-X-CSE-MsgGUID: UaGHrpWdQ9CzELQM2r7Bsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="55407122"
-X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; d="scan'208";a="55407122"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 01:51:57 -0800
-X-CSE-ConnectionGUID: My9JcYBBTOGe+haxLih1ew==
-X-CSE-MsgGUID: f40SrLolQfGC8ISXjz1aYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111374210"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.18.132])
- ([10.246.18.132])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 01:51:55 -0800
-Message-ID: <5c952476-2810-4937-ad16-397c0f2e5c17@linux.intel.com>
-Date: Tue, 21 Jan 2025 10:51:28 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD12710E555;
+	Tue, 21 Jan 2025 10:48:26 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B01410E55D;
+ Tue, 21 Jan 2025 10:48:25 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6421346260916838812=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/xe_fault_injection: Inject
- errors during xe_guc_ct_send_recv
-To: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Micha=C5=82_Wajdeczko?= <michal.wajdeczko@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250120122835.10511-1-satyanarayana.k.v.p@intel.com>
- <20250120122835.10511-3-satyanarayana.k.v.p@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250120122835.10511-3-satyanarayana.k.v.p@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Make_igt=5Ffacts=5Ftest_nor?=
+ =?utf-8?q?eturn_and_cleanup?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gurram, Pravalika" <pravalika.gurram@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 21 Jan 2025 10:48:25 -0000
+Message-ID: <173745650542.2564997.6052121051058954154@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250121063207.71737-1-pravalika.gurram@intel.com>
+In-Reply-To: <20250121063207.71737-1-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,144 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============6421346260916838812==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Make igt_facts_test noreturn and cleanup
+URL   : https://patchwork.freedesktop.org/series/143776/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8201_BAT -> XEIGTPW_12472_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12472_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8201/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12472/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
 
 
-On 1/20/2025 1:28 PM, Satyanarayana K V P wrote:
-> Use the kernel fault injection infrastructure to test error handling
-> of xe at enabling of VFs stage when executing xe_guc_ct_send_recv()
-> so that more code paths are tested, such as error handling and unwinding.
-> 
-> Error can be injected using:
-> igt@xe_fault_injection@enable-vfs-fail-xe_guc_ct_send_recv
-> 
-> v2: Updated guc_fail_* to enable_vfs_*
-> Added igt_skip_on(!igt_sriov_is_pf(fd)) to skip test when run without
-> enabling sriov.
-> 
-> v3: Fixed documentation build error
-> ERROR: Missing documentation for igt@xe_fault_injection@enable-vfs-fail-xe_guc_ct_send_recv
-> ERROR: Unneeded documentation for igt@xe_fault_injection@guc-fail-xe_guc_ct_send_recv
-> 
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-> ---
->   tests/intel/xe_fault_injection.c | 63 ++++++++++++++++++++++++++++++++
->   1 file changed, 63 insertions(+)
-> 
-> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-> index 3a0e2aa29..81ecc1131 100644
-> --- a/tests/intel/xe_fault_injection.c
-> +++ b/tests/intel/xe_fault_injection.c
-> @@ -19,12 +19,14 @@
->   #include "igt_sysfs.h"
->   #include "lib/igt_syncobj.h"
->   #include "lib/intel_pat.h"
-> +#include "lib/igt_sriov_device.h"
->   #include "xe/xe_ioctl.h"
->   #include "xe/xe_query.h"
->   
->   #define INJECT_ERRNO	-ENOMEM
->   #define BO_ADDR		0x1a0000
->   #define BO_SIZE		(1024*1024)
-> +#define NUM_VFS		1
->   
->   enum injection_list_action {
->   	INJECTION_LIST_ADD,
-> @@ -281,6 +283,55 @@ vm_bind_fail(int fd, const char function_name[])
->   	igt_assert_eq(simple_vm_bind(fd, vm), 0);
->   }
->   
-> +static int sriov_enable_vfs(int fd, int num_vfs)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	sysfs = igt_sysfs_open(fd);
-> +	igt_assert_fd(sysfs);
-> +
-> +	ret = __igt_sysfs_set_u32(sysfs, "device/sriov_numvfs", num_vfs);
-> +	close(sysfs);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * SUBTEST: enable-vfs-fail-%s
-> + * Description: inject an error in function %arg[1] used when xe interacts with guc to make it fail
-> + * Functionality: fault
-> + *
-> + * arg[1]:
-> + * @xe_guc_ct_send_recv:               xe_guc_ct_send_recv
-> + */
-> +
-> +static void
-> +enable_vfs_fail(int fd, int num_vfs, const char function_name[])
-> +{
-> +	bool autoprobe_en = 0;
+Build changes
+-------------
 
-NIT: maybe just bool autoprobe = 0 ?
+  * IGT: IGT_8201 -> IGTPW_12472
 
-> +
-> +	ignore_faults_in_dmesg(function_name);
-> +	injection_list_do(INJECTION_LIST_ADD, function_name);
-> +	set_retval(function_name, INJECT_ERRNO);
-> +
-> +	autoprobe_en = igt_sriov_is_driver_autoprobe_enabled(fd);
-> +
-> +	if (autoprobe_en)
-> +		igt_sriov_disable_driver_autoprobe(fd);
-> +
-> +	/* igt_sriov_enable_vfs can't be used here as it is causing abort on any error.
-> +	 * Since error in this test is expected, we have written our own static function here.
-> +	 */
-> +	sriov_enable_vfs(fd, num_vfs);
-> +
-> +	igt_assert_eq(-errno, INJECT_ERRNO);
-> +	injection_list_do(INJECTION_LIST_REMOVE, function_name);
-> +
-> +	if (autoprobe_en)
-> +		igt_sriov_enable_driver_autoprobe(fd);
-> +}
-> +
->   igt_main
->   {
->   	int fd;
-> @@ -319,6 +370,10 @@ igt_main
->   		{ "xe_vma_ops_alloc" },
->   		{ }
->   	};
-> +	const struct section enable_vfs_fail_functions[] = {
-> +		{ "xe_guc_ct_send_recv" },
-> +		{ }
-> +	};
->   
->   	igt_fixture {
->   		igt_require(fail_function_injection_enabled());
-> @@ -335,6 +390,14 @@ igt_main
->   		igt_subtest_f("vm-bind-fail-%s", s->name)
->   			vm_bind_fail(fd, s->name);
->   
-> +	for (const struct section *s = enable_vfs_fail_functions; s->name; s++)
-> +		igt_subtest_f("enable-vfs-fail-%s", s->name) {
-> +			/* Skip the test if not running with SRIOV
-> +			 */
-> +			igt_skip_on(!igt_sriov_is_pf(fd));
+  IGTPW_12472: d00a9eb6fbffafc283fff85eab99cf7352de3c54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8201: dcc73646ce05a91bb4537e50ee6fa7ac5e8ff4ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2517-e48abf2c0aa4813a4629aeebd0547eb86f0f1a91: e48abf2c0aa4813a4629aeebd0547eb86f0f1a91
 
-NIT: Using igt_require without negation improves readability
+== Logs ==
 
-igt_require(igt_sriov_is_pf(fd));
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12472/index.html
 
-> +			enable_vfs_fail(fd, NUM_VFS, s->name);
-> +		}
-> +
->   	igt_fixture {
->   		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
->   	}
+--===============6421346260916838812==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-With small nits,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Make igt_facts_test noreturn and cleanup</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143776/">https://patchwork.freedesktop.org/series/143776/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12472/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12472/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8201_BAT -&gt; XEIGTPW_12472_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12472_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@hang-read-crc:<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8201/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12472/bat-bmg-1/igt@kms_pipe_crc_basic@hang-read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8201 -&gt; IGTPW_12472</li>
+</ul>
+<p>IGTPW_12472: d00a9eb6fbffafc283fff85eab99cf7352de3c54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8201: dcc73646ce05a91bb4537e50ee6fa7ac5e8ff4ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2517-e48abf2c0aa4813a4629aeebd0547eb86f0f1a91: e48abf2c0aa4813a4629aeebd0547eb86f0f1a91</p>
+
+</body>
+</html>
+
+--===============6421346260916838812==--
