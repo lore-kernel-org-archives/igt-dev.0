@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C700AC02181
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 08:22:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39AFBC02181
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 08:23:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5588B10E68A;
-	Wed, 22 Jan 2025 08:22:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDCB310E1DE;
+	Wed, 22 Jan 2025 08:23:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Isvy/cyK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RTEBscqJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0E0410E199;
- Wed, 22 Jan 2025 08:22:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 341B510E1DE;
+ Wed, 22 Jan 2025 08:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737534159; x=1769070159;
+ t=1737534236; x=1769070236;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=ODTuhpHzpirxMQRMmyLJzYvF5CPnlm57xz878L83S8Y=;
- b=Isvy/cyKZBCPAzG86IGNC2YN9UouuefnpF3BYKKkrT0fD6LxM7DCackx
- 6bt6Rt2eTIKSqvDMV4HK04xXGhHEg9CwNa/TUHYzMBvEw5vtwA9IoaUal
- 83uPYy2yVZMaD01lDcRzOYHdjgg30koEvDLxQpGdXDtg1laeSdpgpipIF
- ons/OT6m1yoY/6AFWGvMqhzhTjhw/zDQdRiR9n3+tfoOpYRhV4/r8MQF1
- qMUchrObDIQLddAoPSqV79EnYgBfj8gRrfC1/VC+fkOFUjg0aOeEH2ffD
- mcLZirITpZ/nrfHzsL6w2OapO9MBVc06KOl6dQNJ7cHJLX+ReJGXPOLB2 g==;
-X-CSE-ConnectionGUID: cGZ1GT2iT6yIyL2W2xP5Dg==
-X-CSE-MsgGUID: H3yQhmASR9Cjh77Naqaeqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="48968590"
-X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="48968590"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 00:22:39 -0800
-X-CSE-ConnectionGUID: /Lt9MWYrSOSWwA+4UkBdmw==
-X-CSE-MsgGUID: MgHEZ6yKTV2SIPio+zy4nA==
+ bh=xU/NNEpZYHIOLu1Fbcc8ej+dKx6XxsWJT2YFCAbzVVA=;
+ b=RTEBscqJuK+VJ2J8KTv5KOIyu21icNofYWj+J1bmc4vWfo8pcl3qVPIV
+ mazkFKLwVdtl4xIGDz41tBoRuO3n4Jw92GYnGQTSVIjFJAMNlT+kORETy
+ +3sQOfDfR6qv53w0Ky1AxSPUAOwHA5bQ/RluchAjrhbE+y6e+kLdiH/yA
+ cihN3/QjeBvU64l3vrTqz1M6royBd5nLDidCM+owG1N1iEBnz8cGOMfQ4
+ 2NMsA4TpI4ktsAe6hsQUGmyM/x0xKXVN++dpDoPp0bVr4zPAddVB7aEv/
+ rEb38EWL9KUDo8lapeAaUPe2RBYFVzuHk4A9wvMU9ooKqscZ9FS/r3h1L g==;
+X-CSE-ConnectionGUID: sTLbQRjHRv2pBUmaxTvfWw==
+X-CSE-MsgGUID: d5cerglTQe+QeGUF2YFAbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37856242"
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="37856242"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 00:23:51 -0800
+X-CSE-ConnectionGUID: R20hIBwTS4Kv7T3YMmT4Yw==
+X-CSE-MsgGUID: fvsPKbAiRXG7ug1SEtx9Ug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="107593714"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111686427"
 Received: from hpabst-mobl.ger.corp.intel.com (HELO [10.246.21.97])
  ([10.246.21.97])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 00:22:37 -0800
-Message-ID: <c9040883-6aec-438c-9725-dfd6c4de69fb@linux.intel.com>
-Date: Wed, 22 Jan 2025 09:22:34 +0100
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 00:23:50 -0800
+Message-ID: <69a971ce-3503-4119-ae7a-d6b66322ff0a@linux.intel.com>
+Date: Wed, 22 Jan 2025 09:23:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Integrat?=
- =?UTF-8?Q?_kmemleak_scans_in_igt=5Frunner?=
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Integrat_km?=
+ =?UTF-8?Q?emleak_scans_in_igt=5Frunner?=
 To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20250121112944.115491-1-peter.senna@linux.intel.com>
- <173746202588.2580601.867186536034401178@b555e5b46a47>
+ <173748418205.2687243.16683826694177507557@b555e5b46a47>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <173746202588.2580601.867186536034401178@b555e5b46a47>
+In-Reply-To: <173748418205.2687243.16683826694177507557@b555e5b46a47>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,47 +71,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dear i915,
+Dear I915,
 
-
-
-On 21.01.2025 13:20, Patchwork wrote:
+On 21.01.2025 19:29, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: Integrat kmemleak scans in igt_runner
 > URL   : https://patchwork.freedesktop.org/series/143791/
-> State : warning
+> State : failure
 > 
 > == Summary ==
 > 
-> Pipeline status: FAILED.
+> CI Bug Log - changes from XEIGT_8202_full -> XEIGTPW_12473_full
+> ====================================================
 > 
-> see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1349443 for the overview.
+> Summary
+> -------
 > 
-> build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69686593):
->   section_start:1737461819:get_sources
->   Getting source from Git repository
->   $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
->   Checking if the user of the pipeline is allowed...
->   Checking if the job's project is part of a well-known group...
->   Thank you for contributing to freedesktop.org
->   Fetching changes...
->   Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
->   Checking out a9e69f72 as detached HEAD (ref is intel/IGTPW_12473)...
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_12473_full absolutely need to be
+>   verified manually.
 >   
->   Skipping Git submodules setup
->   section_end:1737461830:get_sources
->   section_start:1737461830:step_script
->   Executing "step_script" stage of the job script
->   Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
->   section_end:1737461834:step_script
->   section_start:1737461834:cleanup_file_variables
->   Cleaning up project directory and file based variables
->   section_end:1737461835:cleanup_file_variables
->   ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176: image not known (docker.go:650:0s)
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_12473_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
-> == Logs ==
+>   
 > 
-> For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1349443
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12473_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@core_setmaster@master-drop-set-root:
+>     - shard-bmg:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-bmg-8/igt@core_setmaster@master-drop-set-root.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-bmg-3/igt@core_setmaster@master-drop-set-root.html
+> 
+>   * igt@kms_flip@2x-plain-flip-ts-check@bd-dp2-hdmi-a3:
+>     - shard-bmg:          [PASS][3] -> [INCOMPLETE][4] +2 other tests incomplete
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-bmg-8/igt@kms_flip@2x-plain-flip-ts-check@bd-dp2-hdmi-a3.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-bmg-7/igt@kms_flip@2x-plain-flip-ts-check@bd-dp2-hdmi-a3.html
+> 
+>   * igt@kms_flip@plain-flip-ts-check-interruptible@d-hdmi-a3:
+>     - shard-bmg:          [PASS][5] -> [DMESG-WARN][6] +51 other tests dmesg-warn
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-bmg-1/igt@kms_flip@plain-flip-ts-check-interruptible@d-hdmi-a3.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-bmg-3/igt@kms_flip@plain-flip-ts-check-interruptible@d-hdmi-a3.html
+> 
+>   * igt@kms_hdr@bpc-switch-suspend:
+>     - shard-dg2-set2:     [PASS][7] -> [DMESG-WARN][8] +1 other test dmesg-warn
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-dg2-463/igt@kms_hdr@bpc-switch-suspend.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-dg2-436/igt@kms_hdr@bpc-switch-suspend.html
+> 
+>   * igt@xe_gt_freq@freq_suspend:
+>     - shard-dg2-set2:     [PASS][9] -> [INCOMPLETE][10]
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-dg2-435/igt@xe_gt_freq@freq_suspend.html
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-dg2-466/igt@xe_gt_freq@freq_suspend.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs:
+>     - shard-dg2-set2:     [DMESG-WARN][11] ([Intel XE#1033]) -> [DMESG-WARN][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-dg2-433/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs.html
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-dg2-466/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs.html
+> 
+>   * igt@kms_dirtyfb@fbc-dirtyfb-ioctl:
+>     - shard-bmg:          [SKIP][13] ([Intel XE#2136] / [Intel XE#2231]) -> [SKIP][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-bmg-1/igt@kms_dirtyfb@fbc-dirtyfb-ioctl.html
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-bmg-7/igt@kms_dirtyfb@fbc-dirtyfb-ioctl.html
+> 
+>   * igt@kms_flip@plain-flip-ts-check-interruptible:
+>     - shard-bmg:          [FAIL][15] ([Intel XE#2882]) -> [DMESG-WARN][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-bmg-1/igt@kms_flip@plain-flip-ts-check-interruptible.html
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-bmg-3/igt@kms_flip@plain-flip-ts-check-interruptible.html
+> 
+>   * igt@kms_pm_rpm@drm-resources-equal:
+>     - shard-bmg:          [SKIP][17] ([Intel XE#2446]) -> [DMESG-WARN][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8202/shard-bmg-1/igt@kms_pm_rpm@drm-resources-equal.html
+>    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12473/shard-bmg-2/igt@kms_pm_rpm@drm-resources-equal.html
 
-The error is unrelated to my change. Can you please re-run?
+These are unrelated to my change. Can you fix and re-run?
