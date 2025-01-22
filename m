@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB967C02181
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 18:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C55C02181
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 18:53:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A25110E72D;
-	Wed, 22 Jan 2025 18:35:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E514110E73F;
+	Wed, 22 Jan 2025 18:53:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JYIY3Wvc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GRBpBfNN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A512C10E72D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 18:35:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C958D10E73F
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 18:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737570936; x=1769106936;
+ t=1737572028; x=1769108028;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=kP+NFwn2g6W/nt9194vGQRZUHnBj4qYz5tbxIOFkQSA=;
- b=JYIY3Wvc0yY9V/t6Eqs6HlMsZc29VuFVvvQe2e77fmyLK8acyM4wTaXg
- 2LsfpHn/OaDMgnwYaXs2jlQyyVEEZBclrAAs47MxegqS2Do4GESj8HoRy
- OUku0V/a2WkrOb3vAxZsx1B9DtR5iv5/ojjqoNV4vCw4PIsrQzyVyTp5t
- 0js8zJ+OnfBGIoEQSrWbxnmCrziKdGzUKmGzAXyEicWog9qQODIVqd2Rg
- ha9250Ig6Vn5jJfGgheqVPxkyzqw8P0DOlcKy/X988RrcR+6mkmIHkqvz
- J0VsAJuFQHs/lZYE2zF/7FvwrwxOvTMO/MgbDQEi9s4ZzZFQE+SKBVZB6 w==;
-X-CSE-ConnectionGUID: 0zf9+CsQS/O5Yvv009b6Zw==
-X-CSE-MsgGUID: cj8hCMz8QlC+8OHLATBWig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="48640692"
-X-IronPort-AV: E=Sophos;i="6.13,226,1732608000"; d="scan'208";a="48640692"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 10:35:35 -0800
-X-CSE-ConnectionGUID: BDIcZ+X8Quaes+F83jL5nQ==
-X-CSE-MsgGUID: SzRo5IE7S52PLbE44nkcYQ==
+ bh=2larGmHLWyeePp1sMIsss+d+OOqiqgNHwDmOs4e5Bjs=;
+ b=GRBpBfNNFLu995Ku4LGLBLAgOcRd5+YFpbkbu3/ykSsTHO10kECKWcls
+ 7IhFMl0oVkRef0fwzYydgeDVExVgT4mz81NxziXla56jGDBIUvkMFJSKC
+ rWUiS2t/ZmT8QQxDUDEdN7zKoYj4sWwiDu1pejL6b/U0fkUMkkNVh4c0u
+ t3XBk1HDurJpMg2MRLYyIh/hKZqVFgz7nLS5EjyHx82mYX1ewZTG0V2/s
+ I55LMmIoYXBfsNmC2tUwo9N5hpQtGKYLi6vUg1g+j4l42ymlN3YXuffLa
+ jUobwp/9ISuldzbpTsg/dH51zJVxdttkmds8DupiND/gLDnDu38bYlpuL g==;
+X-CSE-ConnectionGUID: Id4CksO4TaqP+0oDYearuQ==
+X-CSE-MsgGUID: tmsZaa2WTSylodtYmBBzNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="38297378"
+X-IronPort-AV: E=Sophos;i="6.13,226,1732608000"; d="scan'208";a="38297378"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 10:53:47 -0800
+X-CSE-ConnectionGUID: ROozzZkbTSO64pECVKLOHQ==
+X-CSE-MsgGUID: Zx4RyWBbRYe3YK3ODnBN9g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144482211"
+X-IronPort-AV: E=Sophos;i="6.13,226,1732608000"; d="scan'208";a="107326364"
 Received: from hpabst-mobl.ger.corp.intel.com (HELO [10.246.21.97])
  ([10.246.21.97])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 10:35:34 -0800
-Message-ID: <8b23c314-4a4b-4583-8cb1-1efc20ff8ca3@linux.intel.com>
-Date: Wed, 22 Jan 2025 19:35:30 +0100
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 10:53:46 -0800
+Message-ID: <82111261-e32c-47f1-965d-cfb4d0504da7@linux.intel.com>
+Date: Wed, 22 Jan 2025 19:53:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t v2 6/7] runner/settings: Serialize command line
@@ -114,10 +114,8 @@ On 22.01.2025 19:26, Gustavo Sousa wrote:
 >   foo
 >   bar
 
-No no, I am looking for an example that I can pass to igt_runner. If there
-is no way to pass a newline character to igt_runner, then there is no
-problem. :-) At least not a blocker for this patch, and we can create a
-Jira for improving special character handling.
+Passing -t $'(?m)\b\w*exec\w*\b\n' makes igt_runner crash with and without
+the patch series. So no regression was introduced by this series...
 
 
-[...]
+
