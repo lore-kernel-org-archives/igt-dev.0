@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2C5C02181
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 12:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 877B2C02181
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 12:23:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F0DF10E1BA;
-	Wed, 22 Jan 2025 12:23:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DB2B10E300;
+	Wed, 22 Jan 2025 12:23:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WpC3+g1s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IjOF4jvB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24C0B10E300
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 12:23:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B534810E300
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 12:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737548597; x=1769084597;
+ t=1737548625; x=1769084625;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=tIc6BEZcPXgTGNzhbYdvOocD5okZX9SkmYv/4aDp/uc=;
- b=WpC3+g1sek/QFJispHCSNQP5R7dQlDKB9Ko/evys5OinvedOj6q4VDdk
- DIFBoQ4gDLrPClhirtgitl6fGE7OluRMJ4zPEMrqXIgPm4xEMSYbRu3DM
- Oexh83lDcScKp3TrqWZTuBhf0efeZ0vcQrv3oVtPdmSwUrr0G1DFdQ+Cl
- Iz2MNPPAo5SWxqKbsSSU9bHgW8Q5EYR6jH7Qw4pynhd10/1MbDirq+Q4X
- lzZi+MG7qH7bAp2JDOMcJWkHBP15pxoUfbvg/D2auBUXUA3iiorGrQZ2s
- ByNe3NHbLltEY5iJZ3FSPMG20FkcDdXPfPwlowWt+q0lOqDKd1fpeGQro g==;
-X-CSE-ConnectionGUID: TQPJ4+QDRD+3azrYOSRsbQ==
-X-CSE-MsgGUID: FRdqCOY+TB+Q06hCXpYkJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="48988011"
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="48988011"
+ bh=wf8Z4vN9sbZ0cJkcHtb8vs1PPACoZwH2l8rW5Sah4Yw=;
+ b=IjOF4jvB3MXECn0PTAOLnO94n5JWYIqgo0Uyvmtl+1ZwwGovENLIOZob
+ pyI3GdeL/EypXhJ1HO2m+50luVjXiKY+rC9W3vOlzVyqrZTUTAinhwZB3
+ JayMmG956m58nuyp/m/NR1stiVv0ttWtlcYqn9xEjYVM9VnHfOOpwDJdb
+ fsJt8Q1pxjVLIt8kHZ9AZ4bv8N/KOrCQsxCfmqIWRnO4KoP8r/lPqH/Q7
+ gazkFdNjvIA38JROQk0BRf3Kuv18eWMA0KEmElFbSqF5PhsxaeAbVnuR1
+ tNn2LhKkxvhQAqhxDK99xeieIPAfl52eNeqy6dYusqhrS9qt2IqsRd9rm w==;
+X-CSE-ConnectionGUID: Z97q2/bzShCpNUr3/ieSEg==
+X-CSE-MsgGUID: UVL3XGAgTwq4WkyPtcyBUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="48988063"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="48988063"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 04:23:17 -0800
-X-CSE-ConnectionGUID: 8UH2pJU2QkuZH7mA1CYxsQ==
-X-CSE-MsgGUID: Fwfk5JmNR9GB+Nm+0/vmjg==
+ 22 Jan 2025 04:23:45 -0800
+X-CSE-ConnectionGUID: jzSUMcsdQXyVv6uoJgwDnQ==
+X-CSE-MsgGUID: +0wBraKyS0as6pDFB4ucew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144380577"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144380618"
 Received: from hpabst-mobl.ger.corp.intel.com (HELO [10.246.21.97])
  ([10.246.21.97])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 04:23:15 -0800
-Message-ID: <49adad36-8f4c-499c-9f2f-7034e1a8f420@linux.intel.com>
-Date: Wed, 22 Jan 2025 13:23:12 +0100
+ 22 Jan 2025 04:23:43 -0800
+Message-ID: <6fc646e3-1094-4f8b-805f-4d0450d49b45@linux.intel.com>
+Date: Wed, 22 Jan 2025 13:23:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 4/7] runner/settings: Fix code_coverage_script
- leak
+Subject: Re: [PATCH i-g-t v2 5/7] runner: Free settings at the end
 To: Gustavo Sousa <gustavo.sousa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>
 References: <20250121225733.808978-1-lucas.demarchi@intel.com>
- <20250121225733.808978-5-lucas.demarchi@intel.com>
- <173754587225.5500.1182733749364345922@intel.com>
+ <20250121225733.808978-6-lucas.demarchi@intel.com>
+ <173754639369.5500.6720737629497603639@intel.com>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <173754587225.5500.1182733749364345922@intel.com>
+In-Reply-To: <173754639369.5500.6720737629497603639@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -77,32 +76,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 22.01.2025 12:37, Gustavo Sousa wrote:
-> Quoting Lucas De Marchi (2025-01-21 19:57:30-03:00)
->> Make sure to free it when clearing settings.
+On 22.01.2025 12:46, Gustavo Sousa wrote:
+> Quoting Lucas De Marchi (2025-01-21 19:57:31-03:00)
+>> Keep valgrind happy with the normal allocations so we can find the real
+>> leaks. Avoid this kind of leak:
+>>
+>>        ==806592== 8 bytes in 1 blocks are definitely lost in loss record 46 of 188
+>>        ==806592==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+>>        ==806592==    by 0x4BD534E: strdup (strdup.c:42)
+>>        ==806592==    by 0x10E6AA: parse_options (settings.c:863)
+>>        ==806592==    by 0x10D2DD: main (runner.c:19)
 >>
 >> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> 
+> This looks correct, so:
 > 
 > Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > 
+> , but it seems we also need to make initialize_execute_state() and
+> initialize_execute_state_from_resume() properly clear_settings() when
+> things go wrong internally.
+> 
+> --
+> Gustavo Sousa
+> 
 >> ---
->> runner/settings.c | 1 +
->> 1 file changed, 1 insertion(+)
+>> runner/resume.c | 2 ++
+>> runner/runner.c | 2 ++
+>> 2 files changed, 4 insertions(+)
 >>
->> diff --git a/runner/settings.c b/runner/settings.c
->> index 96377f1de..2787869ee 100644
->> --- a/runner/settings.c
->> +++ b/runner/settings.c
->> @@ -640,6 +640,7 @@ void clear_settings(struct settings *settings)
->>         free(settings->name);
->>         free(settings->test_root);
->>         free(settings->results_path);
->> +        free(settings->code_coverage_script);
+>> diff --git a/runner/resume.c b/runner/resume.c
+>> index 0f4e42bfa..ed17351c6 100644
+>> --- a/runner/resume.c
+>> +++ b/runner/resume.c
+>> @@ -55,6 +55,8 @@ int main(int argc, char **argv)
+>>                 exitcode = 3;
+>>         }
 >>
->>         free_regexes(&settings->include_regexes);
->>         free_regexes(&settings->exclude_regexes);
+>> +        clear_settings(&settings);
+>> +
+>>         printf("Done.\n");
+>>         return exitcode;
+>> }
+>> diff --git a/runner/runner.c b/runner/runner.c
+>> index 4855ad641..258b30b36 100644
+>> --- a/runner/runner.c
+>> +++ b/runner/runner.c
+>> @@ -49,6 +49,8 @@ int main(int argc, char **argv)
+>>                 exitcode = 1;
+>>         }
+>>
+>> +        clear_settings(&settings);
+>> +
+>>         printf("Done.\n");
+>>         return exitcode;
+>> }
 >> -- 
 >> 2.48.0
 >>
