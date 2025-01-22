@@ -4,60 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED38C02181
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 12:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDBDEC02182
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 12:41:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7642610E1BA;
-	Wed, 22 Jan 2025 12:25:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8654510E1E3;
+	Wed, 22 Jan 2025 12:41:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mWuDS9g3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DdbHjof4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AF7E10E1BA
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 12:25:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A59910E1E3
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 12:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737548746; x=1769084746;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=msdzKd89AeGaogpw2XWTZJKWutIBzSR4Lsv67haLuYU=;
- b=mWuDS9g3IDikRNTB28NENRlU+PJpTQ1uqO8C2frp0Y5ZpVXk6fukYdwA
- u7BaILc01nvvVN4rtoZsctkBV9fv98hjR2qmR6FSUlu5N9qZjNC8D6exU
- BlqOZ+AhZ5kpG7QNvUBKX8o/A302Gk0y+we6dIzE5lWdWFME/b+vQ9/sm
- DuzQtyVMWeF74gV/h43wppkgRxn9yUb4pSJ6jpzkW5gBhns6+WhpfB5jS
- XKCf+q3VeBi6TAbEQhi1KRHbcs3+sf7gJAcYnQe77Luz5/nOfKp69C/3o
- mu1OHIzHov391C4EJD8K73beYlYRD8InELZ7uPuphNGSuz3GX+xuyY61r g==;
-X-CSE-ConnectionGUID: sidTdiR6Rh2cqBnQ+87S4Q==
-X-CSE-MsgGUID: BakB9IW7SJqb1KODxR/59Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37882673"
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="37882673"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 04:25:46 -0800
-X-CSE-ConnectionGUID: IJ1lzU4XRKmUIh3BkGb+Iw==
-X-CSE-MsgGUID: T7n+C6iPRDqvgR3dDjJYGQ==
+ t=1737549666; x=1769085666;
+ h=content-transfer-encoding:in-reply-to:references:subject:
+ from:cc:to:date:message-id:mime-version;
+ bh=EFu78uDcND1CF/2RBI59WSnVXbLZNQZOLfk7jX8y8Uw=;
+ b=DdbHjof4xs1bwi1cITI67HGiYu5LKyCtRPsV57E0Iwh/ljFsa6xqgQ/8
+ Vj+8obQV4hfiWFUPVCtUbN06PSEK7QLH0GXIdtjaXfmc3WJSDA3xQrZOD
+ eMq5BVABegf/Y5yUTL/i4rTTvAMHE6otLa4JZ/BvzksXOqRy5blo9tA3R
+ Iot/I0rr4qzLbbsSoD4ro/egabwmexefdDYHPQMYPFg5iWEKIbalyRPsY
+ FH1fhBRqieAoueZb1mk5tFpRdHBQx8EUFshRu8t/CQaSObQ8P9azT++Nt
+ 8GAwqVQjUe/xkKsoYrCyijqwimt5rPnE8x85iSq0aE9fikrtKlUQzsjpA A==;
+X-CSE-ConnectionGUID: LJnAR9hnTwKx2uidfxXTmg==
+X-CSE-MsgGUID: UQDq8D5KS26mgpSLwr5t2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="38153390"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="38153390"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 04:41:05 -0800
+X-CSE-ConnectionGUID: rUn1sPE3S4qh85m/RNC3lw==
+X-CSE-MsgGUID: cp9XyTneSI2KEBnC6jQ18A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="112142750"
-Received: from hpabst-mobl.ger.corp.intel.com (HELO [10.246.21.97])
- ([10.246.21.97])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 04:25:44 -0800
-Message-ID: <0495a9f4-1251-4bb1-b59b-87044202a60a@linux.intel.com>
-Date: Wed, 22 Jan 2025 13:25:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 7/7] runner/resultgen: Add cmdline to results.json
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="107047810"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Jan 2025 04:41:05 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Wed, 22 Jan 2025 04:41:04 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 22 Jan 2025 04:41:04 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.45) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 22 Jan 2025 04:41:03 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ik/1TdJzgEphrxteRLrXOl9Ird3Xk7aezJS0d53yiKtNz2UCaYOdK0nPkYyH/IJuX121S9K0fiole3n15pVp1iPQHTtgiO2omwa6XOBrXuUxNTmqd657OcX2iSqrqryi3ws9NjwVj+l9aoaI5GAc/nQTD3rbg3s3W5G5SNTSQ0biZ00COFl2hd8shqICieVEbLoiPqbfpg/ZB2+DICnWQ+pngnEjSUc9B3i+U9kNcNTcg01qcpaeqXaTMCuPnQCdNuNmujz9iB4L4aiQlGEcIkK3rcUqseHuKaQgkHMRL69k8ywrTMp7RQCYGLFibyYYmIyOj3RalJeoc7qWv8/S0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8BTKDlzTtLkTm9MNkhzE1MrxboJefwtgt/Te9Swg1ew=;
+ b=VigOmrHjn7HRE5Ud6fqhgS2xIphlFUiLrFvbHsmsbKRV9Opc48+eIkRSWz0R9EGGn4nR2wtyPoLQL1rdNalU3VYTMgZOoo6Xl/HZcK7dOTwYPVH2kp/eCxVXyyj09cS7m58xMgHfK0A4p53gF94rvYlUsrJxtDsAd457kn21gRRsuld8G+1g4k2W2GgF8FIOgmQYpUFfJW5UJjdiNHAlVBbY+CZ/8Rp3FLCcdmTigXraABzHwyqb4TYxbdxlRSLxkPbpWMU3uJPcdklnxJeXZiGnUyrmkTPwj+UahwtQ1traD5XwB85vMKz6uKK0ZgnOLYromvC9TCVX5oahJdJeGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com (2603:10b6:510:1c7::14)
+ by SA2PR11MB5177.namprd11.prod.outlook.com (2603:10b6:806:11c::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.16; Wed, 22 Jan
+ 2025 12:40:20 +0000
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::7e8b:2e5:8ce4:2350]) by PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::7e8b:2e5:8ce4:2350%5]) with mapi id 15.20.8356.020; Wed, 22 Jan 2025
+ 12:40:20 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250121225733.808978-7-lucas.demarchi@intel.com>
 References: <20250121225733.808978-1-lucas.demarchi@intel.com>
- <20250121225733.808978-8-lucas.demarchi@intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250121225733.808978-8-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20250121225733.808978-7-lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v2 6/7] runner/settings: Serialize command line
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+CC: Peter Senna Tschudin <peter.senna@linux.intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Ryszard Knop <ryszard.knop@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>, <igt-dev@lists.freedesktop.org>
+Date: Wed, 22 Jan 2025 09:40:15 -0300
+Message-ID: <173754961509.5500.8834900644999128777@intel.com>
+User-Agent: alot/0.12.dev27+gd21c920b07eb
+X-ClientProxiedBy: MW4PR02CA0028.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::7) To PH8PR11MB8287.namprd11.prod.outlook.com
+ (2603:10b6:510:1c7::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|SA2PR11MB5177:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bbf5082-b1df-4dc6-105a-08dd3ae1eea0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NHNaaWpQcTIrZ0xMclpkUTZKRnlvRTlXOENueFlkZVloZ2pBTlU1ZkQxZVQ2?=
+ =?utf-8?B?U1ZTbFdSTGN2YTl2YktLZlhkNVRQMWdLRzBCdzlScmpuczUyUUV5U1VHcEky?=
+ =?utf-8?B?NnlyNmUzM3VjbUpyVnBOazNiZW5RelVVekI2M0dwUUFiM0trUm1kK2hsRFdZ?=
+ =?utf-8?B?Ukk1U0Z0Wm9uR2NyOHBTY0JMbHRka0xsOTdrdXkxaldxOURvNmFSclNOZm9L?=
+ =?utf-8?B?SmVGM3BkWm9rQXVYeHVvV3ExNDM3ZnBFRFZxZlU0bDdyNXFKWndvbXd4S0xw?=
+ =?utf-8?B?K2svd1IwTVFlV0Y5aVdCUjdDWEpzaVNWTVdEZHZDSHpwZ2pzVWpSS3NoYmhL?=
+ =?utf-8?B?a0JnN1ZEazlyS21OOHUwTzNSMUhhSkFzWXZTcUJ2UW1mdEtaa1ViNjFEYWRF?=
+ =?utf-8?B?RGNlS2J0M3E3ckF2T1pWTE42TFJVcTdFYXRiN2s0cytNK0pEWFprck5oQlM2?=
+ =?utf-8?B?TzRoVmxjZk16SHcyMWZ6UWEwWkJhdGJLYVdWSnQ5YTd1NktSNGgwRlI3cjYv?=
+ =?utf-8?B?SnhQSTg5L2hXNDJDVE9OdHRpS2h1SUU3Y1NjajBJY0FJMnlETGltSEFlR0E0?=
+ =?utf-8?B?ck9rcnZxVDNSZjF6T0VJK1hrajl2TkIwTXFJN1dJZER1NVI3UXJHeTR5Wmli?=
+ =?utf-8?B?VlhHRG9yU011Y21WRFhJemFLY2lZQWdkL1NpYkV1alFLbXZnL3VITzl4RHNZ?=
+ =?utf-8?B?cXVoM2N0UDZDMmE4MmRxVmN1WTA1bmp5ZWF5TkExZ0VVcEpDRmtWb3I2M2NS?=
+ =?utf-8?B?ay9EYUsyTVh0SFRkdnEwWFhLbE4zb0ZBejZVekYrdDNtd1FNd29wTVA2UWVM?=
+ =?utf-8?B?Yk43bWlnMmc4bi9LSTJ6WHNXOGVRQTdvbkNTRUZWNk5YUFpwcGNHSWlaTjNa?=
+ =?utf-8?B?QTlra1R2VE9tZkJEclVxQkVoUWpsMUI2aHlDM1hzamFrS2ZFbFlhakFXc3k1?=
+ =?utf-8?B?VlVLWTR2cUFWYmtxOGFKbnhmbmkyUE80QnJoNGJCNDVPQ1NXa3Y2aWZ0Wk45?=
+ =?utf-8?B?aFZsTklJeHNNRE4rbTN3UFE4Ti80SkozLy9SYUppWXIwd1FYc0JMMzRzL3Iz?=
+ =?utf-8?B?a2d3aytBNXFUa3A4SDB2SlFyN0FPaTF1bkZ3Z04ySGxUbVBrWVhYcDUxQ00r?=
+ =?utf-8?B?VGpzamw1TjFRcWR4dXF1a1YvU0ljL3JSWWZETkxHSElCaU1WSVBmQndtSFJG?=
+ =?utf-8?B?S2MyYVFObzQ5MVd2eUdLM3pEOVh3dml3cWlGeDhlMDBxS2FGcW1lQXk4blAw?=
+ =?utf-8?B?OC9LZ1JMUnJrQkk2N0ZJczdRd0ZVTU9vb1pzN3czU09DK0c2NStTNjNkcjRI?=
+ =?utf-8?B?dTJPQTVCcHFMcHJ4ZUZKdGdQZnFGZVUvTUx2bFF0b1hFMFlzZ3R6RVkzaGxY?=
+ =?utf-8?B?VEU1UEI3dktVUmxVejMzL1BvNHZrd0VrbTdZcE5uWU9kUXU0blpaeXo5SEpk?=
+ =?utf-8?B?UFkxdjVSUWlzQ0c4STMxTUVadktmdUZjQlA3WFRheTYvcGNjRjhhVVB3WWgv?=
+ =?utf-8?B?RmZXam56b29QS1MyNWRqWGJqV3dFeExvOFpqU3lzTk9TaHFjWWY5M3JqdDlh?=
+ =?utf-8?B?YlNxZzR0N1FDUDNnaXFVNzEybVduTTdTZXRaMHZNK3VwUVVaNk8zM3pCR1p5?=
+ =?utf-8?B?dXdQdWpGTkEvTFA5d2JyMVFBVUlLbms3NFl1TmlTM2IwUW9HTUFKTDRZcFFY?=
+ =?utf-8?B?WDArRG1wWktneHF0eEdKbGpnOU9LN1p1bExkT3QzdzBwSmRYTXNjcGpyWVNN?=
+ =?utf-8?B?MFoyZUVxdHJKWXZQa2VjV1BTaVppK3RKM2Q0b0RyQ1JObEdLWkhGWDgvMmpE?=
+ =?utf-8?B?RWR3QzRmZVptRXdUY1hkYjhQOXU0ZGlnRHBqbjIzTnY4bC9MVGZHQ3VNQ1FX?=
+ =?utf-8?Q?zTUr032t6Alwk?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB8287.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UlM4NTFtOFpzTHpOdGlyZm0vRkw0R1duaWpoS0Z4UUpxSmRQczlDbWl1K3VP?=
+ =?utf-8?B?cjByKzlocEdyOXlnMnhjSlY1NUkxUjk1cWo3S24rWlFnNVY0MWROKytRemtx?=
+ =?utf-8?B?S05FZ3ZuK0R4d1Z4Z2dTL3VmL0M4MzJUN1p5L1FwRkdueTBpQlJ1T0F4dE5a?=
+ =?utf-8?B?QnpSYjlVNVlXdVI2ZFpRRFdEQld6Tnd5Tml4dDVqcXl6SjNzdWl6eWFvQytF?=
+ =?utf-8?B?YXZYT0d5dDZDVm5kcXJwRHNjV0Q2MWtNWE5FYWJEbXlHem9YbXVHejNiNUJk?=
+ =?utf-8?B?SmpqT2cxRlRYMUJkaTlUZWRIN2hiK3E0d09aT0tTdisxQW1yNGdqd3B2S0JR?=
+ =?utf-8?B?MTN1ZG4wWStlaG92NkhCM3pHVmpXNit6VHhrVDd4aGVaZVQ2L3IwNHMrU2Fu?=
+ =?utf-8?B?T21KNHdBSW00Ri9BRlJaNk94M1BRK1VVNVhuUUIrOVN4WC9qM3FhUTNaVStN?=
+ =?utf-8?B?STVQY3lpaW9HUEQ2OFQ1SkVuRjFuVFJZK3RHVlF6RmdBK2Q4Q2hKd0RiTDdI?=
+ =?utf-8?B?NUdKRU8xS043SmNBYlM5eTNiRnVqek1ZQjZJTi9SbXNIZFlOYzFCdDBLTU9p?=
+ =?utf-8?B?bFVHSTZKRlE2YjZyYkNhaVJEejZZNDNiUVNvVHFwVHBJbXA1d09sWFFJaWZr?=
+ =?utf-8?B?eUdGZVh3OUpqL0hQQlFmQUNmUjZBZzlEUXBPaCs1TzA4TmtCdlRaamQ5STVr?=
+ =?utf-8?B?ekViR2NySG1MOE5WMTB0dzJvWlJLaWtiOHNnZWUrL1cvQ2l5V21mNXNESmcy?=
+ =?utf-8?B?NENxd2p6ekxoM2FpRmUwZnlsMXpSdmVGRU4vRG5YUThVMHdCMW1tVFNMOHpr?=
+ =?utf-8?B?SmcxZ2xKN1V1UFpkUncvbTBLVnpvZ1YxcmlQRGdFUXlpZDBJdFhXYklFWkk1?=
+ =?utf-8?B?WjRWTS9iV2kxNkRZemNSOXJSWlRaRWt4YVlMZUo5QjlBM2VnR0sxWDVsRVVD?=
+ =?utf-8?B?ZlR4aURNL0VqOEYyalNlanF1Z0xrQ1AzMzJ4RHNPQzRLcFhiYmJpNFFSL3ph?=
+ =?utf-8?B?dVR6dk1lOGoyS29hVituNk5wMFFmaGloVzExOS9LenJYZlRtdTFtY2ZRTEVW?=
+ =?utf-8?B?eWt5WGFvNEdCeWdEMzZLV1ZCK1dSZEo2OUZHSTNnc0IybVRRbnRESGxDWVEx?=
+ =?utf-8?B?cTFxS0FjUURacVFZZzh6b2N2ck52aXloVXl4dnFaSjdsSkVCTk5tUzJaczc4?=
+ =?utf-8?B?Ny9VZG96aTAyeHlYdG1GN3J2Y2dCWGNocmlGc3k4UVgrcTFMQWhpbnYwM3lW?=
+ =?utf-8?B?RTJNank2bTdOc2lubktRbjZkaUJvVmR1T2dMVUVtdEhCank3d1lxNStJR0dE?=
+ =?utf-8?B?R0FoUjlnSENUdG02dklDWXdmdUJCSWNDYlBUd1RWRTBhUU1HQ0JVQytHV3Ey?=
+ =?utf-8?B?NVhKcDhnaTJyNEIzQW95ZXl4ekJuaG42ZEZVanc4VmxDOE1mbW82dUExSW9H?=
+ =?utf-8?B?NnN1cG1IcWVuV2k5OU04T00rcDhCb2lIMW0rR2NVeWhveWNOTGd5NlNzYjJX?=
+ =?utf-8?B?YnBIa2pIclVLMlM3WmRwNnJWMEFTVERBMW01MHdIN0VtRUVEa0xJOFRUV085?=
+ =?utf-8?B?czBmMWpWWDFjL0c5Mm02QkZtNWRESG5OVFpEYUxlMEdUWmtNdzZ0MFdjaHZQ?=
+ =?utf-8?B?eFB2cm9iOWRtcmNQMlhSbHdHZmcweGdGZjNjVVA2TzVKNkYzU2hDVWhzeElM?=
+ =?utf-8?B?R0JhVXR6TkVRNEE1c3BoRzlyK0w1a3NNbUJHeFMyd2hYSEVCVVV4aW41TVRU?=
+ =?utf-8?B?c1VVRDZ3dFZ3K3JLQnNxY25pUDJXdTVUM0Vyc05ZQ3FXUWk0MjRIRW9mUkQx?=
+ =?utf-8?B?OXBRODhzMDA5SGxaTTNGVTRhZm0xSC9BSFdaSGdrMFgxb2RnVkdKQkJWdk56?=
+ =?utf-8?B?cmpUWStOb0xlN3BsaW1senA0blRzVlo1WFFlcmVNRUdCNXVEMjNrQnhpL2dT?=
+ =?utf-8?B?NFlpSVNQR1dKZXhZQWVsMTlWbVIvWC84emk0R2g4cFVsalBQVmJLYXIvUzNP?=
+ =?utf-8?B?REhtUkNOc1g2aXBDZ2UxamhadU9xOTYxQkRYOG5jQU1OczJnQlN0akFkdzFP?=
+ =?utf-8?B?R2FPOXN3eWtrd1F3TGxINS9mamJuaUppdXpOei8xNjhGRW1MTXhpV0YvZFhr?=
+ =?utf-8?B?NDc5T1FsdUVRNEJ2cTl2Q0MwVCt1cnkrRURHWndRU29lUTNuTSs3V2pIMFJN?=
+ =?utf-8?B?M2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bbf5082-b1df-4dc6-105a-08dd3ae1eea0
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8287.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2025 12:40:20.5365 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ngsev1IKKOLV5DlaRc/fVlLIDr8vwo3ATvcZ4JBWmk/54LNd5NPrsi8n/jOZ6RPg7lEKfAasmDsJO6KBiiZjgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5177
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,350 +196,185 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Quoting Lucas De Marchi (2025-01-21 19:57:32-03:00)
+>Serialize the command line to metadata.txt. The expected format in the
+>metadata.txt is like below:
+>
+>        cmdline.argc : 6
+>        cmdline.argv[0] : ./build/runner/igt_runner
+>        cmdline.argv[1] : -o
+>        cmdline.argv[2] : --test-list
+>        cmdline.argv[3] : /tmp/testlist.txt
+>        cmdline.argv[4] : build/tests/
+>        cmdline.argv[5] : /tmp/results
 
+One limitation here is that we would run into problems if one of the
+arguments contains a newline character. We need to have a proper way of
+handling that.
 
-On 21.01.2025 23:57, Lucas De Marchi wrote:
-> For easier repro scenarios, add the cmdline to the json: one can see the
-> exact command executed to try to reproduce a CI failure without needing
-> extra files.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> ---
->  runner/json_tests_data/aborted-after-a-test/reference.json | 1 +
->  runner/json_tests_data/aborted-on-boot/reference.json      | 1 +
->  runner/json_tests_data/dmesg-escapes/reference.json        | 1 +
->  runner/json_tests_data/dmesg-results/reference.json        | 1 +
->  .../dmesg-warn-level-one-piglit-style/reference.json       | 1 +
->  .../dmesg-warn-level-piglit-style/reference.json           | 1 +
->  runner/json_tests_data/dmesg-warn-level/reference.json     | 1 +
->  .../reference.json                                         | 1 +
->  .../dynamic-subtests-keep-all/reference.json               | 3 ++-
->  .../dynamic-subtests-keep-dynamic/reference.json           | 1 +
->  .../dynamic-subtests-keep-requested/reference.json         | 3 ++-
->  .../dynamic-subtests-keep-subtests/reference.json          | 3 ++-
->  runner/json_tests_data/empty-result-files/reference.json   | 1 +
->  runner/json_tests_data/graceful-notrun/reference.json      | 1 +
->  .../incomplete-before-any-subtests/reference.json          | 1 +
->  runner/json_tests_data/normal-run/reference.json           | 1 +
->  .../notrun-results-multiple-mode/reference.json            | 1 +
->  runner/json_tests_data/notrun-results/reference.json       | 1 +
->  runner/json_tests_data/piglit-style-dmesg/reference.json   | 1 +
->  .../json_tests_data/unprintable-characters/reference.json  | 1 +
->  .../warnings-with-dmesg-warns/reference.json               | 1 +
->  runner/json_tests_data/warnings/reference.json             | 1 +
->  runner/resultgen.c                                         | 7 ++++++-
->  23 files changed, 31 insertions(+), 4 deletions(-)
-> 
-> diff --git a/runner/json_tests_data/aborted-after-a-test/reference.json b/runner/json_tests_data/aborted-after-a-test/reference.json
-> index 0776f7582..50ba9e6e1 100644
-> --- a/runner/json_tests_data/aborted-after-a-test/reference.json
-> +++ b/runner/json_tests_data/aborted-after-a-test/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/aborted-on-boot/reference.json b/runner/json_tests_data/aborted-on-boot/reference.json
-> index 75f194660..238ec6fff 100644
-> --- a/runner/json_tests_data/aborted-on-boot/reference.json
-> +++ b/runner/json_tests_data/aborted-on-boot/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/dmesg-escapes/reference.json b/runner/json_tests_data/dmesg-escapes/reference.json
-> index 91c573106..e74dc89e4 100644
-> --- a/runner/json_tests_data/dmesg-escapes/reference.json
-> +++ b/runner/json_tests_data/dmesg-escapes/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/dmesg-results/reference.json b/runner/json_tests_data/dmesg-results/reference.json
-> index e9e011853..81890f7d2 100644
-> --- a/runner/json_tests_data/dmesg-results/reference.json
-> +++ b/runner/json_tests_data/dmesg-results/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-> index 8d266cdfa..16c97d3a1 100644
-> --- a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-> +++ b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json
-> index 4a1e8b313..e40000a27 100644
-> --- a/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json
-> +++ b/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/dmesg-warn-level/reference.json b/runner/json_tests_data/dmesg-warn-level/reference.json
-> index 400e9cfbc..fca3f1a54 100644
-> --- a/runner/json_tests_data/dmesg-warn-level/reference.json
-> +++ b/runner/json_tests_data/dmesg-warn-level/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json b/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json
-> index 514de06a4..e3a6ffe3b 100644
-> --- a/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json
-> +++ b/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"dynamic-subtest-name-in-multiple-subtests",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1560163492.266377,
-> diff --git a/runner/json_tests_data/dynamic-subtests-keep-all/reference.json b/runner/json_tests_data/dynamic-subtests-keep-all/reference.json
-> index b2b716288..20e626144 100644
-> --- a/runner/json_tests_data/dynamic-subtests-keep-all/reference.json
-> +++ b/runner/json_tests_data/dynamic-subtests-keep-all/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"dynamic-subtests",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1560163492.266377,
-> @@ -168,4 +169,4 @@
->        }
->      }
->    }
-> -}
-> \ No newline at end of file
-> +}
-> diff --git a/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json b/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json
-> index c013d2821..37bd91e84 100644
-> --- a/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json
-> +++ b/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"dynamic-subtests",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1560163492.266377,
-> diff --git a/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json b/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json
-> index c33c7ce7c..3a717f699 100644
-> --- a/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json
-> +++ b/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"dynamic-subtests",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1560163492.266377,
-> @@ -120,4 +121,4 @@
->        }
->      }
->    }
-> -}
-> \ No newline at end of file
-> +}
-> diff --git a/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json b/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json
-> index e53daa5a5..e4c320a0f 100644
-> --- a/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json
-> +++ b/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"dynamic-subtests",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1560163492.266377,
-> @@ -120,4 +121,4 @@
->        }
->      }
->    }
-> -}
-> \ No newline at end of file
-> +}
-> diff --git a/runner/json_tests_data/empty-result-files/reference.json b/runner/json_tests_data/empty-result-files/reference.json
-> index f81ffb81c..332e20693 100644
-> --- a/runner/json_tests_data/empty-result-files/reference.json
-> +++ b/runner/json_tests_data/empty-result-files/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"empty-result-files",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/graceful-notrun/reference.json b/runner/json_tests_data/graceful-notrun/reference.json
-> index c95bdfecc..ddad3d925 100644
-> --- a/runner/json_tests_data/graceful-notrun/reference.json
-> +++ b/runner/json_tests_data/graceful-notrun/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"graceful-notrun",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/incomplete-before-any-subtests/reference.json b/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-> index 2a4bd4560..5fc1978eb 100644
-> --- a/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-> +++ b/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/normal-run/reference.json b/runner/json_tests_data/normal-run/reference.json
-> index 0a00b1ca8..814e46920 100644
-> --- a/runner/json_tests_data/normal-run/reference.json
-> +++ b/runner/json_tests_data/normal-run/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/notrun-results-multiple-mode/reference.json b/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-> index 3f8b7fb09..80ba5ec2c 100644
-> --- a/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-> +++ b/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/notrun-results/reference.json b/runner/json_tests_data/notrun-results/reference.json
-> index 800de38c5..42fcd0017 100644
-> --- a/runner/json_tests_data/notrun-results/reference.json
-> +++ b/runner/json_tests_data/notrun-results/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/piglit-style-dmesg/reference.json b/runner/json_tests_data/piglit-style-dmesg/reference.json
-> index bf5d86ee3..6c751dc53 100644
-> --- a/runner/json_tests_data/piglit-style-dmesg/reference.json
-> +++ b/runner/json_tests_data/piglit-style-dmesg/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/unprintable-characters/reference.json b/runner/json_tests_data/unprintable-characters/reference.json
-> index 88c62c34d..e1b3302a5 100644
-> --- a/runner/json_tests_data/unprintable-characters/reference.json
-> +++ b/runner/json_tests_data/unprintable-characters/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/warnings-with-dmesg-warns/reference.json b/runner/json_tests_data/warnings-with-dmesg-warns/reference.json
-> index bd0bb3a3d..67797e789 100644
-> --- a/runner/json_tests_data/warnings-with-dmesg-warns/reference.json
-> +++ b/runner/json_tests_data/warnings-with-dmesg-warns/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/json_tests_data/warnings/reference.json b/runner/json_tests_data/warnings/reference.json
-> index a2b79da9e..2c483fdf5 100644
-> --- a/runner/json_tests_data/warnings/reference.json
-> +++ b/runner/json_tests_data/warnings/reference.json
-> @@ -3,6 +3,7 @@
->    "results_version":10,
->    "name":"normal-run",
->    "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> +  "cmdline":[],
->    "time_elapsed":{
->      "__type__":"TimeAttribute",
->      "start":1539953735.1110389,
-> diff --git a/runner/resultgen.c b/runner/resultgen.c
-> index 87847bf5b..0d3a569cf 100644
-> --- a/runner/resultgen.c
-> +++ b/runner/resultgen.c
-> @@ -2281,7 +2281,7 @@ struct json_object *generate_results_json(int dirfd)
->  {
->  	struct settings settings;
->  	struct job_list job_list;
-> -	struct json_object *obj, *elapsed;
-> +	struct json_object *obj, *elapsed, *arr;
->  	struct results results;
->  	int testdirfd, fd;
->  	size_t i;
-> @@ -2319,6 +2319,11 @@ struct json_object *generate_results_json(int dirfd)
->  		close(fd);
->  	}
->  
-> +	arr = json_object_new_array();
-> +	for (i = 0; i < settings.cmdline.argc; i++)
-> +		json_object_array_add(arr, json_object_new_string(settings.cmdline.argv[i]));
-> +	json_object_object_add(obj, "cmdline", arr);
-> +
->  	elapsed = json_object_new_object();
->  	json_object_object_add(elapsed, "__type__", json_object_new_string("TimeAttribute"));
->  	if ((fd = openat(dirfd, "starttime.txt", O_RDONLY)) >= 0) {
+One option would be to have string serialization to escape newlines
+characters, and string parsing to undo the escaping.
 
+Another one would be to generalize read_hook_strs_from_file() (and with
+a proper rename) to be reusable for both hook strings and argv.
+
+>
+>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>---
+> runner/settings.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+> runner/settings.h |  5 +++++
+> 2 files changed, 47 insertions(+)
+>
+>diff --git a/runner/settings.c b/runner/settings.c
+>index 2787869ee..ed1afc205 100644
+>--- a/runner/settings.c
+>+++ b/runner/settings.c
+>@@ -529,6 +529,18 @@ static void free_hook_strs(struct igt_vec *hook_strs)
+>         igt_vec_fini(hook_strs);
+> }
+>=20
+>+static void free_cmdline(struct settings *settings)
+>+{
+>+        if (!settings->cmdline.allocated)
+>+                return;
+
+I would just make life simpler and have cmdline being always allocated.
+But I'm not blocking on this...
+
+>+
+>+        for (size_t i =3D 0; i < settings->cmdline.argc; i++)
+>+                free(settings->cmdline.argv[i]);
+>+
+>+        free(settings->cmdline.argv);
+>+}
+>+
+>+
+> static bool file_exists_at(int dirfd, const char *filename)
+> {
+>         return faccessat(dirfd, filename, F_OK, 0) =3D=3D 0;
+>@@ -646,6 +658,7 @@ void clear_settings(struct settings *settings)
+>         free_regexes(&settings->exclude_regexes);
+>         free_env_vars(&settings->env_vars);
+>         free_hook_strs(&settings->hook_strs);
+>+        free_cmdline(settings);
+>=20
+>         init_settings(settings);
+> }
+>@@ -875,6 +888,8 @@ bool parse_options(int argc, char **argv,
+>                 goto error;
+>         }
+>=20
+>+        settings->cmdline.argc =3D argc;
+>+        settings->cmdline.argv =3D argv;
+>=20
+>         return true;
+>=20
+>@@ -1055,6 +1070,7 @@ static bool serialize_hook_strs(struct settings *set=
+tings, int dirfd)
+> bool serialize_settings(struct settings *settings)
+> {
+> #define SERIALIZE_LINE(f, s, name, format) fprintf(f, "%s : " format "\n"=
+, #name, s->name)
+>+#define SERIALIZE_ARRAY_ITEM(f, s, name, _i, format) fprintf(f, "%s[%d] :=
+ " format "\n", #name, _i, s->name[_i])
+>=20
+>         FILE *f;
+>         int dirfd, covfd;
+>@@ -1123,6 +1139,10 @@ bool serialize_settings(struct settings *settings)
+>         SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
+>         SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
+>=20
+>+        SERIALIZE_LINE(f, settings, cmdline.argc, "%d");
+>+        for (int i =3D 0; i < settings->cmdline.argc; i++)
+>+                SERIALIZE_ARRAY_ITEM(f, settings, cmdline.argv, i, "%s");
+>+
+>         if (settings->sync) {
+>                 fflush(f);
+>                 fsync(fileno(f));
+>@@ -1177,9 +1197,21 @@ static char *parse_str(char **pval)
+>                 s->field =3D _f(&val);                \
+>                 goto cleanup;                        \
+>         }
+>+#define PARSE_LINE_ARRAY(s, name, val, field, _f, _max)                \
+>+        do {                                                        \
+>+                int idx;                                        \
+>+                if (sscanf(name, #field "[%u]", &idx) =3D=3D 1 &&        =
+\
+>+                    idx < s->_max) {                                \
+>+                        s->field[idx] =3D _f(&val);                \
+>+                        goto cleanup;                                \
+>+                }                                                \
+>+        } while (0)
+>+
+> #define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, val, field, pa=
+rse_int)
+> #define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, val, field, pa=
+rse_ul)
+> #define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, val, field, pa=
+rse_str)
+>+#define PARSE_ARRAY_STR(s, name, val, field, _max) \
+>+        PARSE_LINE_ARRAY(s, name, val, field, parse_str, _max)
+>=20
+> bool read_settings_from_file(struct settings *settings, FILE *f)
+> {
+>@@ -1211,6 +1243,15 @@ bool read_settings_from_file(struct settings *setti=
+ngs, FILE *f)
+>                 PARSE_INT(settings, name, val, enable_code_coverage);
+>                 PARSE_INT(settings, name, val, cov_results_per_test);
+>                 PARSE_STR(settings, name, val, code_coverage_script);
+>+                PARSE_INT(settings, name, val, cmdline.argc);
+>+
+>+                if (settings->cmdline.argc && !settings->cmdline.argv) {
+>+                        settings->cmdline.allocated =3D true;
+>+                        settings->cmdline.argv =3D calloc(settings->cmdli=
+ne.argc,
+>+                                                        sizeof(*settings-=
+>cmdline.argv));
+>+                }
+
+I think we could have a PARSE_ARRAY_LENGTH() that would encapsulate
+reading the int and allocating the array. Of course, that would require
+having a "known format" for an array structure in settings to be used by
+others in the future.
+
+The advantage of such a macro, is that we don't need to keep checking if
+we already have the length and that we haven't done the allocation yet,
+like done above.
+
+--
+Gustavo Sousa
+
+>+
+>+                PARSE_ARRAY_STR(settings, name, val, cmdline.argv, cmdlin=
+e.argc);
+>=20
+>                 printf("Warning: Unknown field in settings file: %s =3D %=
+s\n",
+>                        name, val);
+>@@ -1234,6 +1275,7 @@ cleanup:
+>         return true;
+> }
+> #undef PARSE_LINE
+>+#undef PARSE_LINE_ARRAY
+>=20
+> /**
+>  * read_env_vars_from_file() - load env vars from a file
+>diff --git a/runner/settings.h b/runner/settings.h
+>index f69f09778..d563a0d16 100644
+>--- a/runner/settings.h
+>+++ b/runner/settings.h
+>@@ -75,6 +75,11 @@ struct settings {
+>         char *code_coverage_script;
+>         bool enable_code_coverage;
+>         bool cov_results_per_test;
+>+        struct {
+>+                bool allocated;
+>+                int argc;
+>+                char **argv;
+>+        } cmdline;
+> };
+>=20
+> /**
+>--=20
+>2.48.0
+>
