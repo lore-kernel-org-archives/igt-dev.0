@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0E5C0218C
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 07:23:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61128C02181
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 07:23:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A04D10E1DD;
-	Wed, 22 Jan 2025 07:23:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FB7C10E673;
+	Wed, 22 Jan 2025 07:23:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SaICN0ig";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k/dbvrfE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38B3210E1DD
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 07:23:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C015F10E673
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 07:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737530613; x=1769066613;
+ t=1737530615; x=1769066615;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NKNQbaDOfhzkbN+Pv/apZEHksqI6/ETRUbLX5obebKY=;
- b=SaICN0igqjvcllu6Z1Y1+bGbhmo+aae370a59inXH61b5kXj4N8Y0Ero
- ZpwqaZwbLNw0tEOBvr5tj6peBp5hA5aWjvH/IQwzpFyJM++9ts03QthT1
- 55wH8KMPj5/wvEKW8sOaaa/1FgL7NJxyN12aq4MfeTLo1eTu8ghdNfXvX
- Uwmv2Fsj0pFXTB+UPG1NBCF88u371nvlCeXoXFQTwNUzS5CB6ohDjdlHM
- 9bBXbTmP4x3xLuXw8XvJYMPhCexyNEdNWC5U1MBXkyAx+lfjboHKuwVK7
- gLyWq+XLVuAD53mquQunrGTeFtX6aKAqy0cPhJ0tSZ7LPq62kFt0Ff8YY Q==;
-X-CSE-ConnectionGUID: srDVX0CrRvGeT1BG7kdgyg==
-X-CSE-MsgGUID: lE17eMyaSy+rme7QDuek5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="41903696"
-X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="41903696"
+ bh=487OuHwrMNG1HaugXn7bP+hTFFuKNLA9OAOQp7KXTW4=;
+ b=k/dbvrfEiSIYFNAq8gKtmlVxX7/Y2v37G8pjwvqekomvEyqKSAaSr4W1
+ DDziean1tnVskQ9OGJGU7Axo6QPmZFDehs5E2VGFQVFKZaI40OB12XLmu
+ xAcKFQZayn21RwHkEqaNAcSdKRNm07yJhSmqDz3zku2P0UcwEFWN/7I21
+ KIhqxiI77HWASXeVRa/B1vEhS8CkRe21SUN1xByWQcXzF68acCpXO1R/Z
+ V2mbKjF2TS25HVmE27l6v0zCOHhKKAhRi3e89XvHJHXGwTV6J4pEdC1FA
+ O1kZHyT2UNX7eDn/lfGvtAyHsPRzBl0T6wmYdOVVHkWGvM3kBxukeiB62 Q==;
+X-CSE-ConnectionGUID: 4RIzs5mIRryqWN6B/5gKUA==
+X-CSE-MsgGUID: 6evnJkM/SwO9+K42U7wDBg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="41903698"
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="41903698"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 23:23:33 -0800
-X-CSE-ConnectionGUID: XNZjPlGzT6qg2AVopduopw==
-X-CSE-MsgGUID: 03/eu4FgQYGxWHgiUQvFug==
+ 21 Jan 2025 23:23:35 -0800
+X-CSE-ConnectionGUID: FMkfbbN1QKmwMToIuw/4VA==
+X-CSE-MsgGUID: JIqX79D6Szyu22fZ89BkTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="106959601"
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="106959610"
 Received: from labhost1.iind.intel.com ([10.190.230.69])
- by fmviesa007.fm.intel.com with ESMTP; 21 Jan 2025 23:23:31 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 21 Jan 2025 23:23:33 -0800
 From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Matthew Brost <matthew.brost@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v4 1/2] tests/intel/xe_fault_injection: Inject errors
- during xe_guc_mmio_send_recv
-Date: Wed, 22 Jan 2025 13:08:07 +0530
-Message-Id: <20250122073808.16288-2-satyanarayana.k.v.p@intel.com>
+ Francois Dugast <francois.dugast@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t v4 2/2] tests/intel/xe_fault_injection: Inject errors
+ during xe_guc_ct_send_recv
+Date: Wed, 22 Jan 2025 13:08:08 +0530
+Message-Id: <20250122073808.16288-3-satyanarayana.k.v.p@intel.com>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250122073808.16288-1-satyanarayana.k.v.p@intel.com>
 References: <20250122073808.16288-1-satyanarayana.k.v.p@intel.com>
@@ -72,43 +73,133 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Use the kernel fault injection infrastructure to test error handling
-of xe at probe time when executing xe_guc_mmio_send_recv() so that
-more code paths are tested, such as error handling and unwinding.
+of xe at enabling of VFs stage when executing xe_guc_ct_send_recv()
+so that more code paths are tested, such as error handling and unwinding.
 
 Error can be injected using:
-igt@xe_fault_injection@inject-fault-probe-function-xe_guc_mmio_send_recv
+igt@xe_fault_injection@enable-vfs-fail-xe_guc_ct_send_recv
 
-v2: Sorted the entry xe_guc_mmio_send_recv in inject-fault-probe-function-* list
+v2: Updated guc_fail_* to enable_vfs_*
+Added igt_skip_on(!igt_sriov_is_pf(fd)) to skip test when run without
+enabling sriov.
+
+v3: Fixed documentation build error
+ERROR: Missing documentation for igt@xe_fault_injection@enable-vfs-fail-xe_guc_ct_send_recv
+ERROR: Unneeded documentation for igt@xe_fault_injection@guc-fail-xe_guc_ct_send_recv
+
+v4: Fixed review comments.
+Updated igt_skip_on to igt_require.
 
 Cc: Matthew Brost <matthew.brost@intel.com>
 Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- tests/intel/xe_fault_injection.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/xe_fault_injection.c | 62 ++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
 diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 7ae941367..3a0e2aa29 100644
+index 3a0e2aa29..f92f955cd 100644
 --- a/tests/intel/xe_fault_injection.c
 +++ b/tests/intel/xe_fault_injection.c
-@@ -163,6 +163,7 @@ static void set_retval(const char function_name[], long long retval)
-  * @xe_guc_ads_init:		xe_guc_ads_init
-  * @xe_guc_ct_init:		xe_guc_ct_init
-  * @xe_guc_log_init:		xe_guc_log_init
-+ * @xe_guc_mmio_send_recv:     xe_guc_mmio_send_recv
-  * @xe_guc_relay_init:		xe_guc_relay_init
-  * @xe_pm_init_early:		xe_pm_init_early
-  * @xe_sriov_init:		xe_sriov_init
-@@ -294,6 +295,7 @@ igt_main
- 		{ "xe_guc_ads_init" },
- 		{ "xe_guc_ct_init" },
- 		{ "xe_guc_log_init" },
-+		{ "xe_guc_mmio_send_recv" },
- 		{ "xe_guc_relay_init" },
- 		{ "xe_pm_init_early" },
- 		{ "xe_sriov_init" },
+@@ -19,12 +19,14 @@
+ #include "igt_sysfs.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_pat.h"
++#include "lib/igt_sriov_device.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
+ #define INJECT_ERRNO	-ENOMEM
+ #define BO_ADDR		0x1a0000
+ #define BO_SIZE		(1024*1024)
++#define NUM_VFS		1
+ 
+ enum injection_list_action {
+ 	INJECTION_LIST_ADD,
+@@ -281,6 +283,55 @@ vm_bind_fail(int fd, const char function_name[])
+ 	igt_assert_eq(simple_vm_bind(fd, vm), 0);
+ }
+ 
++static int sriov_enable_vfs(int fd, int num_vfs)
++{
++	int sysfs;
++	bool ret;
++
++	sysfs = igt_sysfs_open(fd);
++	igt_assert_fd(sysfs);
++
++	ret = __igt_sysfs_set_u32(sysfs, "device/sriov_numvfs", num_vfs);
++	close(sysfs);
++
++	return ret;
++}
++
++/**
++ * SUBTEST: enable-vfs-fail-%s
++ * Description: inject an error in function %arg[1] used when xe interacts with guc to make it fail
++ * Functionality: fault
++ *
++ * arg[1]:
++ * @xe_guc_ct_send_recv:               xe_guc_ct_send_recv
++ */
++
++static void
++enable_vfs_fail(int fd, int num_vfs, const char function_name[])
++{
++	bool autoprobe = 0;
++
++	ignore_faults_in_dmesg(function_name);
++	injection_list_do(INJECTION_LIST_ADD, function_name);
++	set_retval(function_name, INJECT_ERRNO);
++
++	autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
++
++	if (autoprobe)
++		igt_sriov_disable_driver_autoprobe(fd);
++
++	/* igt_sriov_enable_vfs can't be used here as it is causing abort on any error.
++	 * Since error in this test is expected, we have written our own static function here.
++	 */
++	sriov_enable_vfs(fd, num_vfs);
++
++	igt_assert_eq(-errno, INJECT_ERRNO);
++	injection_list_do(INJECTION_LIST_REMOVE, function_name);
++
++	if (autoprobe)
++		igt_sriov_enable_driver_autoprobe(fd);
++}
++
+ igt_main
+ {
+ 	int fd;
+@@ -319,6 +370,10 @@ igt_main
+ 		{ "xe_vma_ops_alloc" },
+ 		{ }
+ 	};
++	const struct section enable_vfs_fail_functions[] = {
++		{ "xe_guc_ct_send_recv" },
++		{ }
++	};
+ 
+ 	igt_fixture {
+ 		igt_require(fail_function_injection_enabled());
+@@ -335,6 +390,13 @@ igt_main
+ 		igt_subtest_f("vm-bind-fail-%s", s->name)
+ 			vm_bind_fail(fd, s->name);
+ 
++	for (const struct section *s = enable_vfs_fail_functions; s->name; s++)
++		igt_subtest_f("enable-vfs-fail-%s", s->name) {
++			/* Skip the test if not running with SRIOV */
++			igt_require(igt_sriov_is_pf(fd));
++			enable_vfs_fail(fd, NUM_VFS, s->name);
++		}
++
+ 	igt_fixture {
+ 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
+ 	}
 -- 
 2.35.3
 
