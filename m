@@ -4,57 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE796C02182
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 14:44:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD2FC02181
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 14:54:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E9E110E6F5;
-	Wed, 22 Jan 2025 14:44:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAF7710E6FB;
+	Wed, 22 Jan 2025 14:54:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HhiTXBmQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O7gJsqL8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0380B10E6F5
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 14:44:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49E9310E6FB
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 14:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737557085; x=1769093085;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3gj/hdliwM/AiqlPkNaBYjCHa3WOkch9mt0eTqQ3RPY=;
- b=HhiTXBmQ6jGwsXvWHXRf/EpoEu0cqs/NJoM5anSGxtAp13VIzhuq0u5F
- YMwXr4RpQbKPQOxjbEt0qARlu2EkPBOVZeko0V+3Z31E9WJEKJ8HBqfiM
- +rtF4D4doZ/NBttA8GbASichbUK6jV0i3ERKajL3JGmxfF+BoEoXwXXcE
- GxR5a5N0v9tZZiWyQxU0cG7B9LKIFMflxSPK6a9yhn7SYxKMzLHxZlYU6
- otP7Zs9r4b/uGYF853Nfw6zGORMifx/A76MKdGfdGijGUk9uLjbYwOBRo
- P2ZJRVgk+SV8tGOgDtWL1+s3m9sGtZdtpphb3TjrrT6n7oSy/MSqWMsQe Q==;
-X-CSE-ConnectionGUID: xGxYvAnwT8i2oLOFsBx5mg==
-X-CSE-MsgGUID: zTSqtiQXQIKp3M5p9dp9WA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="48612198"
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="48612198"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 06:44:45 -0800
-X-CSE-ConnectionGUID: +rMzYyT+SamlmUjV4Vs6ZA==
-X-CSE-MsgGUID: Lhv88cjdT++y4JJy4CMhWg==
+ t=1737557693; x=1769093693;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=p60IWQaxn9LOguckHMLsAkS3p9r6ivB10HApYw66i0A=;
+ b=O7gJsqL8Ur3HousXtokNtP2VoGV4CuhSCZmX+c8r+xUNlBn2faUzXJCR
+ QS6nnEm0XKjuerNcANIKMh6JYTwWfpuQKPwaobYEH2lZ6kqqvMM4IKWN9
+ JoSeBB88qpMdqjd+FY9XA4mWw4wrPvmkGTk8FkU1I+8recQZjFKB14aCr
+ ejFASJ14YxdmdpRxgywofWoTw6Ccvrwb0szoaL4b5rh3VteD/QZuc3Rx0
+ zVhhDkKcY9Py6TuzuViGQi1YWHfhHtbzALuQMLDaw9ZNPmFL+AEdJN7wZ
+ loBdd3XDw/Pu+d++oQU982RtT2atshFlrECFSa36t+PX8sAL/DcLH6fQK g==;
+X-CSE-ConnectionGUID: vU2pijdHQTW1oxXxkQz0FQ==
+X-CSE-MsgGUID: UViTXzq/SEKqEgXTQbig8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="41947347"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="41947347"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 06:54:53 -0800
+X-CSE-ConnectionGUID: R+2MsebCQJiNA+7OspFCow==
+X-CSE-MsgGUID: C6UQqgyqTyuQP3IckZugpQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="112175441"
-Received: from apaszkie-mobl2.apaszkie-mobl2 (HELO dgrzegor-mobl2..)
- ([10.245.244.100])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 06:44:42 -0800
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jordan.l.justen@intel.com, christoph.manszewski@intel.com,
- kamil.konieczny@linux.intel.com,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/intel/xe_eudebug_online: Fix 32b compilation
- errors
-Date: Wed, 22 Jan 2025 15:44:19 +0100
-Message-Id: <20250122144419.327706-3-dominik.grzegorzek@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250122144419.327706-1-dominik.grzegorzek@intel.com>
-References: <20250122144419.327706-1-dominik.grzegorzek@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="107771585"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+ by fmviesa009.fm.intel.com with ESMTP; 22 Jan 2025 06:54:52 -0800
+Received: from [10.245.80.89] (mwajdecz-MOBL.ger.corp.intel.com [10.245.80.89])
+ by irvmail002.ir.intel.com (Postfix) with ESMTP id A4B7F2FC42;
+ Wed, 22 Jan 2025 14:54:50 +0000 (GMT)
+Message-ID: <d40d4dd7-ab68-4bfc-8a12-6ff5ddf7dea0@intel.com>
+Date: Wed, 22 Jan 2025 15:54:49 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 1/2] tests/intel/xe_fault_injection: Inject
+ errors during xe_guc_mmio_send_recv
+To: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250122073808.16288-1-satyanarayana.k.v.p@intel.com>
+ <20250122073808.16288-2-satyanarayana.k.v.p@intel.com>
+Content-Language: en-US
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+In-Reply-To: <20250122073808.16288-2-satyanarayana.k.v.p@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,55 +75,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix metadata allocation so it is properly sized on 32b and further
-calculations of its size.
+Hi,
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/intel/xe_eudebug_online.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+some late comments below:
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 1a146d8c4..726fc55b1 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -1063,8 +1063,8 @@ static void run_online_client(struct xe_eudebug_client *c)
- 	uint32_t *ptr;
- 	int fd, vm_flags;
- 
--	metadata[0] = calloc(2, sizeof(*metadata));
--	metadata[1] = calloc(2, sizeof(*metadata));
-+	metadata[0] = calloc(2, sizeof(**metadata));
-+	metadata[1] = calloc(2, sizeof(**metadata));
- 	igt_assert(metadata[0]);
- 	igt_assert(metadata[1]);
- 
-@@ -1086,10 +1086,10 @@ static void run_online_client(struct xe_eudebug_client *c)
- 	metadata[1][0] = target_offset;
- 	metadata[1][1] = buf->size;
- 	metadata_id[0] = xe_eudebug_client_metadata_create(c, fd, DRM_XE_DEBUG_METADATA_ELF_BINARY,
--							   2 * sizeof(*metadata), metadata[0]);
-+							   2 * sizeof(**metadata), metadata[0]);
- 	metadata_id[1] = xe_eudebug_client_metadata_create(c, fd,
- 							   DRM_XE_DEBUG_METADATA_PROGRAM_MODULE,
--							   2 * sizeof(*metadata), metadata[1]);
-+							   2 * sizeof(**metadata), metadata[1]);
- 
- 	vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
- 	vm_flags |= c->flags & SHADER_PAGEFAULT ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
-@@ -1144,10 +1144,10 @@ static void run_online_client(struct xe_eudebug_client *c)
- 	xe_eudebug_client_vm_destroy(c, fd, create.vm_id);
- 
- 	xe_eudebug_client_metadata_destroy(c, fd, metadata_id[0], DRM_XE_DEBUG_METADATA_ELF_BINARY,
--					   2 * sizeof(*metadata));
-+					   2 * sizeof(**metadata));
- 	xe_eudebug_client_metadata_destroy(c, fd, metadata_id[1],
- 					   DRM_XE_DEBUG_METADATA_PROGRAM_MODULE,
--					   2 * sizeof(*metadata));
-+					   2 * sizeof(**metadata));
- 
- 	intel_buf_destroy(buf);
- 
--- 
-2.34.1
+On 22.01.2025 08:38, Satyanarayana K V P wrote:
+> Use the kernel fault injection infrastructure to test error handling
+> of xe at probe time when executing xe_guc_mmio_send_recv() so that
+> more code paths are tested, such as error handling and unwinding.
+> 
+> Error can be injected using:
+> igt@xe_fault_injection@inject-fault-probe-function-xe_guc_mmio_send_recv
+> 
+> v2: Sorted the entry xe_guc_mmio_send_recv in inject-fault-probe-function-* list
+> 
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  tests/intel/xe_fault_injection.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 7ae941367..3a0e2aa29 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -163,6 +163,7 @@ static void set_retval(const char function_name[], long long retval)
+>   * @xe_guc_ads_init:		xe_guc_ads_init
+>   * @xe_guc_ct_init:		xe_guc_ct_init
+>   * @xe_guc_log_init:		xe_guc_log_init
+> + * @xe_guc_mmio_send_recv:     xe_guc_mmio_send_recv
+
+hmm, I know that you are trying to follow existing comment style, but
+what is the actual purpose of typing a function name twice here?
+
+and why this sub-test documentation is so separate from the actual place
+where this function is used (in igt_main far below) ?
+
+>   * @xe_guc_relay_init:		xe_guc_relay_init
+>   * @xe_pm_init_early:		xe_pm_init_early
+>   * @xe_sriov_init:		xe_sriov_init
+> @@ -294,6 +295,7 @@ igt_main
+>  		{ "xe_guc_ads_init" },
+>  		{ "xe_guc_ct_init" },
+>  		{ "xe_guc_log_init" },
+> +		{ "xe_guc_mmio_send_recv" },
+>  		{ "xe_guc_relay_init" },
+>  		{ "xe_pm_init_early" },
+>  		{ "xe_sriov_init" },
 
