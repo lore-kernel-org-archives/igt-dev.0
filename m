@@ -4,28 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EB5FC02181
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 17:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D4EBC02181
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jan 2025 18:17:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A50A10E1AE;
-	Wed, 22 Jan 2025 17:26:10 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA1FB10E1AE;
- Wed, 22 Jan 2025 17:26:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6782110090913435622=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2A6E810E73C;
+	Wed, 22 Jan 2025 18:17:05 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RP1YKw6F";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44DAD10E72D
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2025 18:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737569824; x=1769105824;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=whSeMWehx9GTOjVNZvJvvxmoEYEg3yVvA8A5zK/2Xhs=;
+ b=RP1YKw6FTT2DCbNMnan+/Xc4lxWFxPxGycFcSV32Zug9hRrg8fhJAKmg
+ CcxepkIONnfUcicGWlfWLEHiFd60HdYVnGxQo8/mKB2SbI4ulNj7AkuFT
+ XTkXSOK1WhO0UOy69/4ilHV5J123cjjxLFUATIs04hIi4wDuplyT9uTy+
+ Q9VjdHh/cCVqP22CBWHspb1Lx4VchYb9JWKUBd/chDTJ8WHe7y+06lvzt
+ wQB6MkYO9ZcVoDQVFPVsIzbUS1pZdBz4XPgei7snk+9rxoXcKzvNtTJhX
+ zI5ullr2kv8PwuOYCr00KaSBjsMOmdO/KJlYJGcXkJjur9uQAnANIQy9v A==;
+X-CSE-ConnectionGUID: DP73GVdJQXuWrc0AhlxiLg==
+X-CSE-MsgGUID: hk1+/8CGTjKO267PB11cTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38146008"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="38146008"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 10:17:04 -0800
+X-CSE-ConnectionGUID: HoTylZIZSP+qL063nHai9g==
+X-CSE-MsgGUID: gZvOai9rRBeNtSV5NYDQ8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111859620"
+Received: from hpabst-mobl.ger.corp.intel.com (HELO [10.246.21.97])
+ ([10.246.21.97])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 10:17:02 -0800
+Message-ID: <e740cbcf-7794-4b2f-866b-49c265f701b1@linux.intel.com>
+Date: Wed, 22 Jan 2025 19:16:59 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2C1/3=5D_lib/xe=5Feudebug=3A_Fix_32b_compilation_warnings/er?=
- =?utf-8?q?rors?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Jan 2025 17:26:08 -0000
-Message-ID: <173756676875.3153572.10963664050556712927@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250122144419.327706-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20250122144419.327706-1-dominik.grzegorzek@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 6/7] runner/settings: Serialize command line
+To: Gustavo Sousa <gustavo.sousa@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>
+References: <20250121225733.808978-1-lucas.demarchi@intel.com>
+ <20250121225733.808978-7-lucas.demarchi@intel.com>
+ <173754961509.5500.8834900644999128777@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <173754961509.5500.8834900644999128777@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,198 +71,211 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6782110090913435622==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [i-g-t,1/3] lib/xe_eudebug: Fix 32b compilation warnings/errors
-URL   : https://patchwork.freedesktop.org/series/143854/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8206 -> IGTPW_12478
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/index.html
-
-Participating hosts (45 -> 43)
-------------------------------
-
-  Missing    (2): fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12478 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-apl-1/igt@dmabuf@all-tests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live:
-    - bat-twl-2:          NOTRUN -> [ABORT][3] ([i915#12919])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-twl-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-twl-2:          NOTRUN -> [ABORT][4] ([i915#13493])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-twl-2/igt@i915_selftest@live@reset.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-adlp-9:         [DMESG-WARN][5] -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-adlp-9/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-adlp-9/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-twl-1:          [ABORT][7] ([i915#12919]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-twl-1/igt@i915_selftest@live@gt_pm.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-twl-1/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13493]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13493
 
 
-Build changes
--------------
+On 22.01.2025 13:40, Gustavo Sousa wrote:
+> Quoting Lucas De Marchi (2025-01-21 19:57:32-03:00)
+>> Serialize the command line to metadata.txt. The expected format in the
+>> metadata.txt is like below:
+>>
+>>        cmdline.argc : 6
+>>        cmdline.argv[0] : ./build/runner/igt_runner
+>>        cmdline.argv[1] : -o
+>>        cmdline.argv[2] : --test-list
+>>        cmdline.argv[3] : /tmp/testlist.txt
+>>        cmdline.argv[4] : build/tests/
+>>        cmdline.argv[5] : /tmp/results
+> 
+> One limitation here is that we would run into problems if one of the
+> arguments contains a newline character. We need to have a proper way of
+> handling that.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8206 -> IGTPW_12478
-  * Linux: CI_DRM_16000 -> CI_DRM_16001
+I tested this by adding -t '(?m)\b\w*exec\w*\b\n', is that what you mean?
+Here is the full json:
 
-  CI-20190529: 20190529
-  CI_DRM_16000: 9f946e94bec6e5e488407c5ff6a638850e0418a7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16001: 6834acba715b85cbecfeb660b9695806e98c9a0a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12478: 12478
-  IGT_8206: 48d7780a026179e5de232142df3ac59fec6487ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  "cmdline":[
+    ".\/build\/runner\/igt_runner",
+    "-o",
+    "-f",
+    "--per-test-timeout",
+    "100",
+    "--dry-run",
+    "--test-list",
+    "build\/docs\/testplan\/intel-ci-tests\/xe\/default\/bat.testlist",
+    "-t",
+    "(?m)\\b\\w*exec\\w*\\b\\n",
+    "\/home\/gta\/igt\/3"
+  ],
 
-== Logs ==
+The newline Looks good to me...
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/index.html
+I also tried adding a multi line regex, and that fails. However it fails without
+this change as well so Lucas did not introduce any regression. So maybe it is ok
+to accept this patch as is. Here is what I tried with and without Lucas' patches:
 
---===============6782110090913435622==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+$ time sudo IGT_TEST_ROOT='/home/gta/UPSTREAM/igt-gpu-tools/build/tests/' ./build/runner/igt_runner -o -f --per-test-timeout 100 --dry-run --test-list 'build/docs/testplan/intel-ci-tests/xe/default/bat.testlist' -t '(?s) \
+\b \
+\w*exec\w*\b' /home/gta/igt/4
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+If my example is wrong, please help me with a good one.
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] lib/xe_eudebug: Fix 32b compilation warnings/errors</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143854/">https://patchwork.freedesktop.org/series/143854/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+> 
+> One option would be to have string serialization to escape newlines
+> characters, and string parsing to undo the escaping.
+> 
+> Another one would be to generalize read_hook_strs_from_file() (and with
+> a proper rename) to be reusable for both hook strings and argv.
+> 
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>> ---
+>> runner/settings.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>> runner/settings.h |  5 +++++
+>> 2 files changed, 47 insertions(+)
+>>
+>> diff --git a/runner/settings.c b/runner/settings.c
+>> index 2787869ee..ed1afc205 100644
+>> --- a/runner/settings.c
+>> +++ b/runner/settings.c
+>> @@ -529,6 +529,18 @@ static void free_hook_strs(struct igt_vec *hook_strs)
+>>         igt_vec_fini(hook_strs);
+>> }
+>>
+>> +static void free_cmdline(struct settings *settings)
+>> +{
+>> +        if (!settings->cmdline.allocated)
+>> +                return;
+> 
+> I would just make life simpler and have cmdline being always allocated.
+> But I'm not blocking on this...
+> 
+>> +
+>> +        for (size_t i = 0; i < settings->cmdline.argc; i++)
+>> +                free(settings->cmdline.argv[i]);
+>> +
+>> +        free(settings->cmdline.argv);
+>> +}
+>> +
+>> +
+>> static bool file_exists_at(int dirfd, const char *filename)
+>> {
+>>         return faccessat(dirfd, filename, F_OK, 0) == 0;
+>> @@ -646,6 +658,7 @@ void clear_settings(struct settings *settings)
+>>         free_regexes(&settings->exclude_regexes);
+>>         free_env_vars(&settings->env_vars);
+>>         free_hook_strs(&settings->hook_strs);
+>> +        free_cmdline(settings);
+>>
+>>         init_settings(settings);
+>> }
+>> @@ -875,6 +888,8 @@ bool parse_options(int argc, char **argv,
+>>                 goto error;
+>>         }
+>>
+>> +        settings->cmdline.argc = argc;
+>> +        settings->cmdline.argv = argv;
+>>
+>>         return true;
+>>
+>> @@ -1055,6 +1070,7 @@ static bool serialize_hook_strs(struct settings *settings, int dirfd)
+>> bool serialize_settings(struct settings *settings)
+>> {
+>> #define SERIALIZE_LINE(f, s, name, format) fprintf(f, "%s : " format "\n", #name, s->name)
+>> +#define SERIALIZE_ARRAY_ITEM(f, s, name, _i, format) fprintf(f, "%s[%d] : " format "\n", #name, _i, s->name[_i])
+>>
+>>         FILE *f;
+>>         int dirfd, covfd;
+>> @@ -1123,6 +1139,10 @@ bool serialize_settings(struct settings *settings)
+>>         SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
+>>         SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
+>>
+>> +        SERIALIZE_LINE(f, settings, cmdline.argc, "%d");
+>> +        for (int i = 0; i < settings->cmdline.argc; i++)
+>> +                SERIALIZE_ARRAY_ITEM(f, settings, cmdline.argv, i, "%s");
+>> +
+>>         if (settings->sync) {
+>>                 fflush(f);
+>>                 fsync(fileno(f));
+>> @@ -1177,9 +1197,21 @@ static char *parse_str(char **pval)
+>>                 s->field = _f(&val);                \
+>>                 goto cleanup;                        \
+>>         }
+>> +#define PARSE_LINE_ARRAY(s, name, val, field, _f, _max)                \
+>> +        do {                                                        \
+>> +                int idx;                                        \
+>> +                if (sscanf(name, #field "[%u]", &idx) == 1 &&        \
+>> +                    idx < s->_max) {                                \
+>> +                        s->field[idx] = _f(&val);                \
+>> +                        goto cleanup;                                \
+>> +                }                                                \
+>> +        } while (0)
+>> +
+>> #define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, val, field, parse_int)
+>> #define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, val, field, parse_ul)
+>> #define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, val, field, parse_str)
+>> +#define PARSE_ARRAY_STR(s, name, val, field, _max) \
+>> +        PARSE_LINE_ARRAY(s, name, val, field, parse_str, _max)
+>>
+>> bool read_settings_from_file(struct settings *settings, FILE *f)
+>> {
+>> @@ -1211,6 +1243,15 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+>>                 PARSE_INT(settings, name, val, enable_code_coverage);
+>>                 PARSE_INT(settings, name, val, cov_results_per_test);
+>>                 PARSE_STR(settings, name, val, code_coverage_script);
+>> +                PARSE_INT(settings, name, val, cmdline.argc);
+>> +
+>> +                if (settings->cmdline.argc && !settings->cmdline.argv) {
+>> +                        settings->cmdline.allocated = true;
+>> +                        settings->cmdline.argv = calloc(settings->cmdline.argc,
+>> +                                                        sizeof(*settings->cmdline.argv));
+>> +                }
+> 
+> I think we could have a PARSE_ARRAY_LENGTH() that would encapsulate
+> reading the int and allocating the array. Of course, that would require
+> having a "known format" for an array structure in settings to be used by
+> others in the future.
+> 
+> The advantage of such a macro, is that we don't need to keep checking if
+> we already have the length and that we haven't done the allocation yet,
+> like done above.
+> 
+> --
+> Gustavo Sousa
+> 
+>> +
+>> +                PARSE_ARRAY_STR(settings, name, val, cmdline.argv, cmdline.argc);
+>>
+>>                 printf("Warning: Unknown field in settings file: %s = %s\n",
+>>                        name, val);
+>> @@ -1234,6 +1275,7 @@ cleanup:
+>>         return true;
+>> }
+>> #undef PARSE_LINE
+>> +#undef PARSE_LINE_ARRAY
+>>
+>> /**
+>>  * read_env_vars_from_file() - load env vars from a file
+>> diff --git a/runner/settings.h b/runner/settings.h
+>> index f69f09778..d563a0d16 100644
+>> --- a/runner/settings.h
+>> +++ b/runner/settings.h
+>> @@ -75,6 +75,11 @@ struct settings {
+>>         char *code_coverage_script;
+>>         bool enable_code_coverage;
+>>         bool cov_results_per_test;
+>> +        struct {
+>> +                bool allocated;
+>> +                int argc;
+>> +                char **argv;
+>> +        } cmdline;
+>> };
+>>
+>> /**
+>> -- 
+>> 2.48.0
+>>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8206 -&gt; IGTPW_12478</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/index.html</p>
-<h2>Participating hosts (45 -&gt; 43)</h2>
-<p>Missing    (2): fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12478 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-twl-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13493">i915#13493</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-adlp-9/igt@i915_selftest@live.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-adlp-9/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-twl-1/igt@i915_selftest@live@gt_pm.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-twl-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8206/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12478/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8206 -&gt; IGTPW_12478</li>
-<li>Linux: CI_DRM_16000 -&gt; CI_DRM_16001</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16000: 9f946e94bec6e5e488407c5ff6a638850e0418a7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16001: 6834acba715b85cbecfeb660b9695806e98c9a0a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12478: 12478<br />
-  IGT_8206: 48d7780a026179e5de232142df3ac59fec6487ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6782110090913435622==--
