@@ -4,64 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF095C02182
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 06:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF865C02182
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 06:50:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E57610E3D4;
-	Thu, 23 Jan 2025 06:44:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4536810E171;
+	Thu, 23 Jan 2025 06:50:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NFyrxYXI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WJezouY8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24BF010E08E
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 06:44:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F8A110E171
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 06:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737614642; x=1769150642;
+ t=1737615029; x=1769151029;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=iMxM/+x5Pm1TEwfsMkv3zIm77WXd28/PhgP5x5u23io=;
- b=NFyrxYXIzmv2D/NvKXcU0lvk6nnbf5o1ql/3zOdzKVQz4XvPER8Qp8ZB
- X1TZ36anHIGuITO1DH8xw+wa0Zcc2G0HabhKzLHAcN0dEz2oDt6cbxbaK
- 4beW+ZbjV2nyfDZgWQsPW1bSvvmLP5JNHUHnItWEB3K5xxD8joTsPjWQ3
- gtfivPRwaygWJDrvVFBshCenHyYoVwLQWy1BwBo2bHBLDb/WGl5oeFi+Y
- W6q8mg9DS31AqZZXsLdR4fNHmIfDww3WgBw/LZpsYgyoCtc1nGEKkEgKl
- y+JOXXqph4DLfRO5BPTMF7BKnlmHvIfkIzsNc/HQxKoaI7hLf3Ib6jgtM A==;
-X-CSE-ConnectionGUID: K1UaUhPfQZK+EaTpnv56rg==
-X-CSE-MsgGUID: HHRmR+OnT3Gc9gDcJttRDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="60571158"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="60571158"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 22:44:02 -0800
-X-CSE-ConnectionGUID: 8gRahwzfQfui2EyxS/0fdw==
-X-CSE-MsgGUID: 5PnkigBOSsqPkywFYATHuA==
+ bh=7GtbsGOeoXM7NlSPv4nF4LumqdaycnoqKKB67eZKTB4=;
+ b=WJezouY85O4R6aOKziDU1F+xUPT/Iu4MOIok9q9Sj/HXkXoTWzsQ0wva
+ nfcq5RAG5Wq/UEpnG/xy3+THdJDQgwWkh7ULZXyXI/nQ0CH3Hl5QWWtRQ
+ 2sYFd20IzPvn3r+qG6dHpyKdG5N2WoxbjnSL2f8KA53vCTk3neLU1erHY
+ zGwh/4M+kzeYvm34ESzlygJQrCCaljYzvwztd58ekYSYBrIM+qA9+RAHX
+ Em4iN49cQW1Fb7WhoCZ7JpDh3DappaHYHZAocIMOfAwL0uzIZGJJUBQ5h
+ 5Vx4it0ec+uLsNAR2sM/13L9Z2/O2R03Aj6fRONvyQWuO8z2o9MAbAhmS w==;
+X-CSE-ConnectionGUID: DlOyXAxlQ26Yu4NbshZNAQ==
+X-CSE-MsgGUID: nfFvaJv3SGCZrodTpq+tNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37309129"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="37309129"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 22:50:29 -0800
+X-CSE-ConnectionGUID: kLYFNP+jTuiD3X/YZCnwug==
+X-CSE-MsgGUID: 9IR11UGFS8OBs64BEK8dwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144615169"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="107479636"
 Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
  ([10.125.110.196])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 22:44:01 -0800
-Date: Thu, 23 Jan 2025 00:43:55 -0600
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 22:50:28 -0800
+Date: Thu, 23 Jan 2025 00:50:20 -0600
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: Gustavo Sousa <gustavo.sousa@intel.com>
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>, 
- igt-dev@lists.freedesktop.org,
+Cc: igt-dev@lists.freedesktop.org, 
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Ryszard Knop <ryszard.knop@intel.com>
-Subject: Re: [PATCH i-g-t v2 6/7] runner/settings: Serialize command line
-Message-ID: <vvmcb5hwgdibtiovxw4sey3uwhk4dp6ixltocncow3qdasilyf@f37q44pja6xb>
+Subject: Re: [PATCH i-g-t v2 7/7] runner/resultgen: Add cmdline to results.json
+Message-ID: <omwtasmowswuhnn4l65qmvq5zscdjury2ezkmlw4mp7twbu26t@m4sxloefokeu>
 References: <20250121225733.808978-1-lucas.demarchi@intel.com>
- <20250121225733.808978-7-lucas.demarchi@intel.com>
- <173754961509.5500.8834900644999128777@intel.com>
- <e740cbcf-7794-4b2f-866b-49c265f701b1@linux.intel.com>
- <173757039426.5500.1181401747974476563@intel.com>
- <8b23c314-4a4b-4583-8cb1-1efc20ff8ca3@linux.intel.com>
- <173757213461.5500.236986883013364364@intel.com>
+ <20250121225733.808978-8-lucas.demarchi@intel.com>
+ <173755030291.5500.6239544066129101929@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <173757213461.5500.236986883013364364@intel.com>
+In-Reply-To: <173755030291.5500.6239544066129101929@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,100 +73,139 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 22, 2025 at 03:55:34PM -0300, Gustavo Sousa wrote:
->Quoting Peter Senna Tschudin (2025-01-22 15:35:30-03:00)
+On Wed, Jan 22, 2025 at 09:51:42AM -0300, Gustavo Sousa wrote:
+>Quoting Lucas De Marchi (2025-01-21 19:57:33-03:00)
+>>For easier repro scenarios, add the cmdline to the json: one can see the
+>>exact command executed to try to reproduce a CI failure without needing
+>>extra files.
 >>
+>>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>---
+>> runner/json_tests_data/aborted-after-a-test/reference.json | 1 +
+>> runner/json_tests_data/aborted-on-boot/reference.json      | 1 +
+>> runner/json_tests_data/dmesg-escapes/reference.json        | 1 +
+>> runner/json_tests_data/dmesg-results/reference.json        | 1 +
+>> .../dmesg-warn-level-one-piglit-style/reference.json       | 1 +
+>> .../dmesg-warn-level-piglit-style/reference.json           | 1 +
+>> runner/json_tests_data/dmesg-warn-level/reference.json     | 1 +
+>> .../reference.json                                         | 1 +
+>> .../dynamic-subtests-keep-all/reference.json               | 3 ++-
+>> .../dynamic-subtests-keep-dynamic/reference.json           | 1 +
+>> .../dynamic-subtests-keep-requested/reference.json         | 3 ++-
+>> .../dynamic-subtests-keep-subtests/reference.json          | 3 ++-
+>> runner/json_tests_data/empty-result-files/reference.json   | 1 +
+>> runner/json_tests_data/graceful-notrun/reference.json      | 1 +
+>> .../incomplete-before-any-subtests/reference.json          | 1 +
+>> runner/json_tests_data/normal-run/reference.json           | 1 +
+>> .../notrun-results-multiple-mode/reference.json            | 1 +
+>> runner/json_tests_data/notrun-results/reference.json       | 1 +
+>> runner/json_tests_data/piglit-style-dmesg/reference.json   | 1 +
+>> .../json_tests_data/unprintable-characters/reference.json  | 1 +
+>> .../warnings-with-dmesg-warns/reference.json               | 1 +
+>> runner/json_tests_data/warnings/reference.json             | 1 +
+>> runner/resultgen.c                                         | 7 ++++++-
+>> 23 files changed, 31 insertions(+), 4 deletions(-)
 >>
->>On 22.01.2025 19:26, Gustavo Sousa wrote:
->>> Quoting Peter Senna Tschudin (2025-01-22 15:16:59-03:00)
->>>>
->>>>
->>>> On 22.01.2025 13:40, Gustavo Sousa wrote:
->>>>> Quoting Lucas De Marchi (2025-01-21 19:57:32-03:00)
->>>>>> Serialize the command line to metadata.txt. The expected format in the
->>>>>> metadata.txt is like below:
->>>>>>
->>>>>>        cmdline.argc : 6
->>>>>>        cmdline.argv[0] : ./build/runner/igt_runner
->>>>>>        cmdline.argv[1] : -o
->>>>>>        cmdline.argv[2] : --test-list
->>>>>>        cmdline.argv[3] : /tmp/testlist.txt
->>>>>>        cmdline.argv[4] : build/tests/
->>>>>>        cmdline.argv[5] : /tmp/results
->>>>>
->>>>> One limitation here is that we would run into problems if one of the
->>>>> arguments contains a newline character. We need to have a proper way of
->>>>> handling that.
->>>>
->>>> I tested this by adding -t '(?m)\b\w*exec\w*\b\n', is that what you mean?
->>>
->>> If you are using bash, I'm afraid '\n' in '(?m)\b\w*exec\w*\b\n' is not
->>> turned into a real newline character. Something like $'foo\nbar'
->>> would.
->>>
->>> Example:
->>>
->>>   $ echo 'foo\nbar'
->>>   foo\nbar
->>>
->>>   $ echo $'foo\nbar'
->>>   foo
->>>   bar
->>
->>No no, I am looking for an example that I can pass to igt_runner.
+>>diff --git a/runner/json_tests_data/aborted-after-a-test/reference.json b/runner/json_tests_data/aborted-after-a-test/reference.json
+>>index 0776f7582..50ba9e6e1 100644
+>>--- a/runner/json_tests_data/aborted-after-a-test/reference.json
+>>+++ b/runner/json_tests_data/aborted-after-a-test/reference.json
+>>@@ -3,6 +3,7 @@
+>>   "results_version":10,
+>>   "name":"normal-run",
+>>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
+>>+  "cmdline":[],
+>>   "time_elapsed":{
+>>     "__type__":"TimeAttribute",
+>>     "start":1539953735.1110389,
+>>diff --git a/runner/json_tests_data/aborted-on-boot/reference.json b/runner/json_tests_data/aborted-on-boot/reference.json
+>>index 75f194660..238ec6fff 100644
+>>--- a/runner/json_tests_data/aborted-on-boot/reference.json
+>>+++ b/runner/json_tests_data/aborted-on-boot/reference.json
+>>@@ -3,6 +3,7 @@
+>>   "results_version":10,
+>>   "name":"normal-run",
+>>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
+>>+  "cmdline":[],
+>>   "time_elapsed":{
+>>     "__type__":"TimeAttribute",
+>>     "start":1539953735.1110389,
+>>diff --git a/runner/json_tests_data/dmesg-escapes/reference.json b/runner/json_tests_data/dmesg-escapes/reference.json
+>>index 91c573106..e74dc89e4 100644
+>>--- a/runner/json_tests_data/dmesg-escapes/reference.json
+>>+++ b/runner/json_tests_data/dmesg-escapes/reference.json
+>>@@ -3,6 +3,7 @@
+>>   "results_version":10,
+>>   "name":"normal-run",
+>>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
+>>+  "cmdline":[],
+>>   "time_elapsed":{
+>>     "__type__":"TimeAttribute",
+>>     "start":1539953735.1110389,
+>>diff --git a/runner/json_tests_data/dmesg-results/reference.json b/runner/json_tests_data/dmesg-results/reference.json
+>>index e9e011853..81890f7d2 100644
+>>--- a/runner/json_tests_data/dmesg-results/reference.json
+>>+++ b/runner/json_tests_data/dmesg-results/reference.json
+>>@@ -3,6 +3,7 @@
+>>   "results_version":10,
+>>   "name":"normal-run",
+>>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
+>>+  "cmdline":[],
+>>   "time_elapsed":{
+>>     "__type__":"TimeAttribute",
+>>     "start":1539953735.1110389,
+>>diff --git a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
+>>index 8d266cdfa..16c97d3a1 100644
+>>--- a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
+>>+++ b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
+>>@@ -3,6 +3,7 @@
+>>   "results_version":10,
+>
+>Hm... Are we going to continue with 10 as the version after including
+>another field? Are there guidelines on how results_version should be
+>handled?
 
-sudo ./build/runner/igt_runner -e FOO='this is a
-very
-weird
-env
-var
-with 
-newlines' -o --test-list /tmp/testlist.txt build/tests/ /tmp/results
+good question.... last time it was updated was in 2018, to be compatible
+with piglit.
 
-it crashes for me when generating the json with:
+commit 2c793666d8c8328733f5769b16ae5858fee97f3f
+Author: Petri Latvala <petri.latvala@intel.com>
+Date:   Wed Dec 5 14:53:43 2018 +0200
 
-Program received signal SIGSEGV, Segmentation fault.
-__strlen_avx2 () at ../sysdeps/x86_64/multiarch/strlen-avx2.S:76
-warning: 76     ../sysdeps/x86_64/multiarch/strlen-avx2.S: No such file or directory
-(gdb) bt
-#0  __strlen_avx2 () at ../sysdeps/x86_64/multiarch/strlen-avx2.S:76
-#1  0x00007ffff7cfcd95 in json_object_new_string () from /lib/x86_64-linux-gnu/libjson-c.so.5
-#2  0x00005555555659a5 in generate_results_json (dirfd=dirfd@entry=3) at ../runner/resultgen.c:2324
-#3  0x0000555555567e81 in generate_results (dirfd=3) at ../runner/resultgen.c:2408
-#4  0x0000555555567ff3 in generate_results_path (resultspath=<optimized out>) at ../runner/resultgen.c:2447
-#5  0x00005555555593d2 in main (argc=<optimized out>, argv=0x7fffffffe3c8) at ../runner/runner.c:48
+     runner: Produce json with results_version=10
+     
+     New piglit bumped its results_version to 10, making glxinfo and pals
+     optional in practice, not just by accident. Unfortunately reading
+     results with newer piglit attempts to convert the results to version
+     10, reading glxinfo and pals, and thus fails. In a hilarious summary:
+     A commit to piglit making glxinfo optional makes it mandatory for us.
+     
+     v2: json unit tests confirmed to be working...
+     
+     Reported-by: Andi Shyti <andi.shyti@intel.com>
+     Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+     Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+     Cc: Andi Shyti <andi.shyti@intel.com>
+     Tested-by: Andi Shyti <andi.shyti@intel.com>
+     Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 
-
-metadata.txt:
-cmdline.argv[2] : FOO=this is a
-very
-weirld
-env
-var
-with 
-newlines
-cmdline.argv[3] : -o
-cmdline.argv[4] : --test-list
-cmdline.argv[5] : /tmp/testlist.txt
-cmdline.argv[6] : build/tests/
-cmdline.argv[7] : /tmp/results
+Does this still work with piglit?  something I didn't test yet.
+Thanks for noticing
 
 >
->Perhaps that would be possible for --hook and --env, since the user is
->free to pass anything there, so I would prefer that we are prepared for
->that.
+>>   "name":"normal-run",
+>>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
+>>+  "cmdline":[],
 >
->> If there
->>is no way to pass a newline character to igt_runner, then there is no
->>problem. :-) At least not a blocker for this patch, and we can create a
->>Jira for improving special character handling.
->
->If the majority thinks not supporting newlines right now is okay, then
->I won't object. :-)
+>Well, cmdline is not supposed to be empty. Shouldn't we have at least a
+>fake command here? E.g. ["igt_runner"] or even with some common
+>arguments...
 
-well... we should at least no crash :)
+if I remember well, I tried that, but then it tries to match the number
+of members in the array - it won't match since igt_runner may be
+called in different ways. Maybe there's a way to tell the test suite to
+ignore the elements of the array. I will check.
 
-thanks
 Lucas De Marchi
 
 >
