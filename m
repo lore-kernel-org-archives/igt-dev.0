@@ -4,60 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C59DC02182
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 17:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F28C0218B
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 17:46:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAD8110E2B0;
-	Thu, 23 Jan 2025 17:38:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 62BEB10E348;
+	Thu, 23 Jan 2025 17:46:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GE+GPXiY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e38+KcZ4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0ACE10E2B0
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 17:38:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACAE510E348
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 17:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737653884; x=1769189884;
+ t=1737654362; x=1769190362;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=9xGYSZzG0nuhWbzeiPp/5HH982SUR87EEh1qlYSGRoE=;
- b=GE+GPXiYLSvWn+7X7MaCSS8u4hPZ4wzDW36cP65Ip+8fY5JoDAago+L/
- +L8c8+2m9JrlnzlFVN1fIvYLSuibrJTicNZHrrpd82qi5SwzG5H+bZAVc
- AuGm7hYq0RbEcoo5v1eeGnjrjQS0kHKQsx1eAm4mdNO3VSGAYTwngIZSW
- LHxSYD8CYxKtmsPDQO0VeEar7erBgneh2LyTz64Uhq8pjrE6C25kOTS75
- G9vcQjAL3pJe5i3jA9Yte4hFsJTsL4Bm6FKiEIA21oaNr6R22IKN1O4o5
- eOmcteaUdmeo23gx7g4dz5jyYGJKnllIh5AqAXdzk5/D4W/Tj47JfxyWx Q==;
-X-CSE-ConnectionGUID: xWhbnCFlStqcD71dDJJxLg==
-X-CSE-MsgGUID: W30SR3zQRnC19dCzYkR7xA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="25771942"
-X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; d="scan'208";a="25771942"
+ mime-version:in-reply-to;
+ bh=b4/RgFYo4UZ+gTnKnsqhHMsF/f1O7qLaZBHi29Zhqkg=;
+ b=e38+KcZ4KclMsK/D2VTbCkBpUWAwr4Epq3Q6LLxzrvhBYOKtgVoygx5C
+ dgW2+N4mWd5CvSSfW3bn6zV3cWolXNcrUaSIDuB9nsAK3bsb+FXeOsqgy
+ vGQ8xZNBgSMOs08mHpjA/sFaIEpMeFuWXWVoTsdZRtmOXTCkCfC3dyLT5
+ U/hsEdfR/6jv2dwWazzmYBOsSRxkVosGlEkdvob3iRsnOvO94kR8ciJg9
+ Rty0s+vwB/xbnM8f48fwPr6e/DGZuKGzjpGBM++xkg+aq8iRSvqLR/MsE
+ wXVvJnsbMM/QZIjtb7QhlUBI5cOxbsw2oIXbt3ZUQEM3aLEI4XsvvaCIH A==;
+X-CSE-ConnectionGUID: lKw7f334QAq7KVYPmVUrLw==
+X-CSE-MsgGUID: iCa56zRJS7yTlWx8cA/Cnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="25772791"
+X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; d="scan'208";a="25772791"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2025 09:38:03 -0800
-X-CSE-ConnectionGUID: ORuX5NtGRoCnbfpmx/ifuQ==
-X-CSE-MsgGUID: QnUDzPuETByprsodHgpHJw==
+ 23 Jan 2025 09:46:02 -0800
+X-CSE-ConnectionGUID: l/Vd0c5lSF++G0PdlW+ZKQ==
+X-CSE-MsgGUID: N/NYw4CRSMifr9FAwzPv/w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; d="scan'208";a="107344121"
+X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; d="scan'208";a="107345690"
 Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
  ([10.125.110.196])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2025 09:38:03 -0800
-Date: Thu, 23 Jan 2025 11:37:57 -0600
+ 23 Jan 2025 09:46:01 -0800
+Date: Thu, 23 Jan 2025 11:45:55 -0600
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t 3/3] tests/xe_intel_bb: check multithreading
- rescans won't segfault
-Message-ID: <dtxet5t5im2vpq3eoqymauw6rtrzofeldompj2ogxmnyvqvrmr@2t6vzcsrtt4z>
-References: <20250123092210.48249-1-zbigniew.kempczynski@intel.com>
- <20250123092210.48249-4-zbigniew.kempczynski@intel.com>
- <vxlfzulhelvgvdwk4k42faads3imojdsj5vtka2sxu6qdoghqd@v5y7efkybzbj>
+To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH i-g-t] tests/intel/perf_pmu: Drop cpu-hotplug subtest
+Message-ID: <3espfbwzjk7b6hapbi5pgdlrtketnlbidyclxezzpdbq22cybe@t2otyvqm7cdi>
+References: <20250123053039.1948302-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <vxlfzulhelvgvdwk4k42faads3imojdsj5vtka2sxu6qdoghqd@v5y7efkybzbj>
+In-Reply-To: <20250123053039.1948302-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,114 +68,213 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jan 23, 2025 at 11:34:36AM -0600, Lucas De Marchi wrote:
->On Thu, Jan 23, 2025 at 10:22:10AM +0100, Zbigniew Kempczyński wrote:
->>This test is likely only for checking purposes, it doesn't makes
->>sense to merge it after series review.
->>
->>Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->>Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->>Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>---
->>tests/intel-ci/xe-fast-feedback.testlist |  1 +
->>tests/intel/xe_intel_bb.c                | 47 ++++++++++++++++++++++++
->>2 files changed, 48 insertions(+)
->>
->>diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
->>index 0234d3e72d..7adb9a3436 100644
->>--- a/tests/intel-ci/xe-fast-feedback.testlist
->>+++ b/tests/intel-ci/xe-fast-feedback.testlist
->>@@ -7,6 +7,7 @@ igt@fbdev@nullptr
->>igt@fbdev@read
->>igt@fbdev@write
->>
->>+igt@xe_intel_bb@multithread-open
->>igt@kms_addfb_basic@addfb25-4-tiled
->>igt@kms_addfb_basic@addfb25-bad-modifier
->>igt@kms_addfb_basic@addfb25-modifier-no-flag
->>diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
->>index 845052bf26..5df009f9ed 100644
->>--- a/tests/intel/xe_intel_bb.c
->>+++ b/tests/intel/xe_intel_bb.c
->>@@ -18,6 +18,7 @@
->>
->>#include "igt.h"
->>#include "igt_crc.h"
->>+#include "igt_device_scan.h"
->>#include "intel_blt.h"
->>#include "intel_bufops.h"
->>#include "intel_mocs.h"
->>@@ -950,6 +951,49 @@ static int render(struct buf_ops *bops, uint32_t tiling,
->>	return fails;
->>}
->>
->>+/**
->>+ * SUBTEST: multithread-open
->>+ * Description: check device scanning when multiple threads are involved
->>+ */
->>+static void *__single_open(void *data)
->>+{
->>+	struct igt_device_card card;
->>+	int fd;
->>+
->>+	igt_info("Thread: %d\n", (int)to_user_pointer(data));
->>+
->>+	for (int i = 0; i < 5; i++)
->>+		igt_devices_scan();
->>+
->>+	igt_assert_eq(igt_device_card_match("pci:vendor=intel", &card), true);
->>+	igt_info("Device detail: %s, %s, %s\n", card.subsystem, card.card, card.render);
->>+
->>+	fd = igt_open_card(&card);
->
->can you point what test needs this? In this scenario, don't we usually
->use igt_fork() for the tests?
+On Wed, Jan 22, 2025 at 09:30:39PM -0800, Lucas De Marchi wrote:
+>This test has been skipping since a long time (forever?) in CI. The
 
-I re-read patch 2 and they are mentioned there. Yeah, makes sense.
+s/(forever?)//
+
+looking at the CI repo it was actually tested because it had a kconfig
+set for making CPU0 hotpluggable. That capability went way in the kernel
+by ...
+
+>reason is that cpu0 is not really hot pluggable. There was an initial
+>attempt that got removed with kernel commits 5475abbde77f ("x86/smpboot:
+>Remove the CPU0 hotplug kludge") and e59e74dc48a3 ("x86/topology: Remove
+>CPU0 hotplug option").
+
+^ these commits, so it's dead code since then.
 
 Lucas De Marchi
 
 >
->Lucas De Marchi
+>With those commits there are no more cpu0_hotplug kernel parameter and
+>no more BOOTPARAM_HOTPLUG_CPU0 build config.
 >
->>+	igt_info("Fd: %d\n", fd);
->>+	igt_assert(fd >= 0);
->>+	close(fd);
->>+
->>+	return NULL;
->>+}
->>+
->>+#define NUM_THREADS 100
->>+static void multithread_open(void)
->>+{
->>+	pthread_t pth[NUM_THREADS];
->>+	int i, ret;
->>+
->>+	for (i = 0; i < NUM_THREADS; i++) {
->>+		ret = pthread_create(&pth[i], NULL, __single_open,
->>+				     from_user_pointer(i));
->>+		igt_assert_eq(ret, 0);
->>+	}
->>+
->>+	for (i = 0; i < NUM_THREADS; i++) {
->>+		ret = pthread_join(pth[i], NULL);
->>+		igt_assert_eq(ret, 0);
->>+	}
->>+}
->>+
->>static int opt_handler(int opt, int opt_index, void *data)
->>{
->>	switch (opt) {
->>@@ -1063,6 +1107,9 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
->>		}
->>	}
->>
->>+	igt_subtest("multithread-open")
->>+		multithread_open();
->>+
->>	igt_fixture {
->>		buf_ops_destroy(bops);
->>		drm_close_driver(xe);
->>-- 
->>2.34.1
->>
+>The current i915 pmu integration always returns the first cpu in the
+>system, which means that it's always cpu0.  The cpu migration is also
+>currently wrong and was never detected by this test: it tries to find a
+>sibling cpu rather than allowing to migrate to any cpu in the system.
+>In order to clean up the i915 side, the hotplug code is being removed in
+>favor of the generic one, provided by perf infra. That too has the same
+>"issue" that there's no easy way to test, but hopefully receives more
+>visibility since it's shared by several drivers.
+>
+>If we ever find a way to instrument the kernel to test the hotplug, this
+>code can be partially restored.
+>
+>References: https://lore.kernel.org/all/20250116222426.77757-1-lucas.demarchi@intel.com/
+>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>---
+> tests/intel/perf_pmu.c | 142 -----------------------------------------
+> 1 file changed, 142 deletions(-)
+>
+>diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+>index 5d0467c02..084ef9631 100644
+>--- a/tests/intel/perf_pmu.c
+>+++ b/tests/intel/perf_pmu.c
+>@@ -101,9 +101,6 @@
+>  * SUBTEST: busy-start
+>  * Description: Test to verify gpu busyness through engine business pmu counters
+>  *
+>- * SUBTEST: cpu-hotplug
+>- * Description: Test the i915 pmu perf interface
+>- *
+>  * SUBTEST: enable-race
+>  * Description: Test the i915 pmu perf interface
+>  *
+>@@ -1362,139 +1359,6 @@ static void open_invalid(int i915)
+> 	igt_assert_lt(fd, 0);
+> }
+>
+>-static bool cpu0_hotplug_support(void)
+>-{
+>-	return access("/sys/devices/system/cpu/cpu0/online", W_OK) == 0;
+>-}
+>-
+>-static void cpu_hotplug(int gem_fd)
+>-{
+>-	igt_spin_t *spin[2];
+>-	uint64_t ts[2];
+>-	uint64_t val;
+>-	int link[2];
+>-	int fd, ret;
+>-	int cur = 0;
+>-	char buf;
+>-	uint64_t ahnd = get_reloc_ahnd(gem_fd, 0);
+>-
+>-	igt_require(cpu0_hotplug_support());
+>-
+>-	fd = open_pmu(gem_fd,
+>-		      I915_PMU_ENGINE_BUSY(I915_ENGINE_CLASS_RENDER, 0));
+>-
+>-	/*
+>-	 * Create two spinners so test can ensure shorter gaps in engine
+>-	 * busyness as it is terminating one and re-starting the other.
+>-	 */
+>-	spin[0] = igt_spin_new(gem_fd, .ahnd = ahnd,
+>-			       .engine = I915_EXEC_DEFAULT);
+>-	spin[1] = __igt_spin_new(gem_fd, .ahnd = ahnd,
+>-				 .engine = I915_EXEC_DEFAULT);
+>-
+>-	val = __pmu_read_single(fd, &ts[0]);
+>-
+>-	ret = pipe2(link, O_NONBLOCK);
+>-	igt_assert_eq(ret, 0);
+>-
+>-	/*
+>-	 * Toggle online status of all the CPUs in a child process and ensure
+>-	 * this has not affected busyness stats in the parent.
+>-	 */
+>-	igt_fork(child, 1) {
+>-		int cpu = 0;
+>-
+>-		close(link[0]);
+>-
+>-		for (;;) {
+>-			char name[128];
+>-			int cpufd;
+>-
+>-			igt_assert_lt(snprintf(name, sizeof(name),
+>-					       "/sys/devices/system/cpu/cpu%d/online",
+>-					       cpu), sizeof(name));
+>-			cpufd = open(name, O_WRONLY);
+>-			if (cpufd == -1) {
+>-				igt_assert_lt(0, cpu);
+>-				/*
+>-				 * Signal parent that we cycled through all
+>-				 * CPUs and we are done.
+>-				 */
+>-				igt_assert_eq(write(link[1], "*", 1), 1);
+>-				break;
+>-			}
+>-
+>-			/* Offline followed by online a CPU. */
+>-
+>-			ret = write(cpufd, "0", 2);
+>-			if (ret < 0) {
+>-				/*
+>-				 * If we failed to offline a CPU we don't want
+>-				 * to proceed.
+>-				 */
+>-				igt_warn("Failed to offline cpu%u! (%d)\n",
+>-					 cpu, errno);
+>-				igt_assert_eq(write(link[1], "s", 1), 1);
+>-				break;
+>-			}
+>-
+>-			usleep(1e6);
+>-
+>-			ret = write(cpufd, "1", 2);
+>-			if (ret < 0) {
+>-				/*
+>-				 * Failed to bring a CPU back online is fatal
+>-				 * for the sanity of a test run so stop further
+>-				 * testing.
+>-				 */
+>-				igt_warn("Failed to online cpu%u! (%d)\n",
+>-					 cpu, errno);
+>-				igt_fatal_error();
+>-			}
+>-
+>-			close(cpufd);
+>-			cpu++;
+>-		}
+>-	}
+>-
+>-	close(link[1]);
+>-
+>-	/*
+>-	 * Very long batches can be declared as GPU hangs so emit shorter ones
+>-	 * until the CPU core shuffler finishes one loop.
+>-	 */
+>-	for (;;) {
+>-		usleep(500e3);
+>-		end_spin(gem_fd, spin[cur], 0);
+>-
+>-		/* Check if the child is signaling completion. */
+>-		ret = read(link[0], &buf, 1);
+>-		if ( ret == 1 || (ret < 0 && errno != EAGAIN))
+>-			break;
+>-
+>-		igt_spin_free(gem_fd, spin[cur]);
+>-		spin[cur] = __igt_spin_new(gem_fd, .ahnd = ahnd,
+>-					   .engine = I915_EXEC_DEFAULT);
+>-		cur ^= 1;
+>-	}
+>-
+>-	val = __pmu_read_single(fd, &ts[1]) - val;
+>-
+>-	end_spin(gem_fd, spin[0], FLAG_SYNC);
+>-	end_spin(gem_fd, spin[1], FLAG_SYNC);
+>-	igt_spin_free(gem_fd, spin[0]);
+>-	igt_spin_free(gem_fd, spin[1]);
+>-	igt_waitchildren();
+>-	close(fd);
+>-	close(link[0]);
+>-	put_ahnd(ahnd);
+>-
+>-	/* Skip if child signals a problem with offlining a CPU. */
+>-	igt_skip_on(buf == 's');
+>-
+>-	assert_within_epsilon(val, ts[1] - ts[0], tolerance);
+>-}
+>-
+> static int target_num_interrupts(int i915)
+> {
+> 	const intel_ctx_cfg_t cfg = intel_ctx_cfg_all_physical(i915);
+>@@ -2650,12 +2514,6 @@ igt_main
+> 		all_busy_check_all(fd, ctx, num_engines,
+> 				   TEST_BUSY | TEST_TRAILING_IDLE);
+>
+>-	/**
+>-	 * Test counters are not affected by CPU offline/online events.
+>-	 */
+>-	igt_subtest("cpu-hotplug")
+>-		cpu_hotplug(fd);
+>-
+> 	/**
+> 	 * Test GPU frequency.
+> 	 */
+>-- 
+>2.48.0
+>
