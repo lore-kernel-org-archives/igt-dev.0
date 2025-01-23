@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E78CC02182
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 09:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B78C02182
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 09:22:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4AE410E164;
-	Thu, 23 Jan 2025 09:22:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD31410E240;
+	Thu, 23 Jan 2025 09:22:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KwEcuZ43";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ll5zyljU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA86E10E164
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 09:22:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3855210E240
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 09:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737624136; x=1769160136;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0nyttgDDPjzY0k3ezHFFJ5gYrvy+iObhUX11vz09LpM=;
- b=KwEcuZ43R4ElVOcUl7ty3jBFbKghOa1AFdwZ0ZGBh1lRWE8j9NnLWjul
- 0LihWJbskkeiH7zS4kXggi+j4HwgXEUvnN3TdCfRXZHI21608DyxvFahO
- xlrQK4YErYl+yMPKr6zq8+qlzTBWxYQkTI4C1XYnnY6ndd8i7nII+t70s
- uTAFKKtSZeIGKj3Y9fovt6Ohz6vVvAzZBVMa3520BdkaXTKGXek6FRNmZ
- 6mhAG+/9IPDtQaZ56Pz4EO5uDC29VSbquDEQxGP0D0cP4ArC90aOn1I0G
- f9u6w+B6mPW4xfnpy4uuUXz4wQWdaLWcXNiMa+0WWnDyd6gHX+SkDEfst w==;
-X-CSE-ConnectionGUID: cgV0QAgaTu2fnjG6FSi8Tg==
-X-CSE-MsgGUID: 2Y68250kS2SaBzO1fNEwDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="40938347"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="40938347"
+ t=1737624140; x=1769160140;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=H+1oQfbzi+VcrlcgmK5hL5+jEHVeYX7NnoPfXu7QutU=;
+ b=ll5zyljU828Bbne7AvY1ol6gyu97UF4M6mfxp/5/FgH2pQddmYm+dTiv
+ UePXNvuU4QnTOxE/lPIqJHFRjqJIUO84GV1I17LDcbaU9ALVQqL6+nRbo
+ D9wAv1TzXAEDsugCrjFEWGxeCvUR+THF8Wnl5kC4XqCdssxuB4HgK6oQ2
+ nCb7u6IFACslnFzeePX744OyDXaml45MYaD6enGT1TlQYpU9gvpXIrpFk
+ ALDSILpgl3nPcMwEOHRPFArONjqvBwuFB8C1zte+CE39sU6rW1ifV66m9
+ 51XaFyhXNGW9ms1e5aKFT49FpbJkCEq0KqnHdJHRYSUVs3+sByFdjZsni w==;
+X-CSE-ConnectionGUID: iaumVP9iQe+WO9kO33CVWQ==
+X-CSE-MsgGUID: YULwudJ0SvSL4oNYRYZJ8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="40938351"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="40938351"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2025 01:22:16 -0800
-X-CSE-ConnectionGUID: R5CsdbYIQxye5Lfr6EUarw==
-X-CSE-MsgGUID: vbUEamJyQjO5e+LPHyV9+w==
+ 23 Jan 2025 01:22:20 -0800
+X-CSE-ConnectionGUID: DX/LoDJFQ62NMSJz7cW6YQ==
+X-CSE-MsgGUID: KhfakIHuQ7C0QWyJ6A/92Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="130694482"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="130694488"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.85])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2025 01:22:14 -0800
+ 23 Jan 2025 01:22:18 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Lucas De Marchi <lucas.demarchi@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 0/3] Drop device scan cache logic
-Date: Thu, 23 Jan 2025 10:22:07 +0100
-Message-Id: <20250123092210.48249-1-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/igt_device_scan: drop device scan cache logic
+Date: Thu, 23 Jan 2025 10:22:08 +0100
+Message-Id: <20250123092210.48249-2-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250123092210.48249-1-zbigniew.kempczynski@intel.com>
+References: <20250123092210.48249-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -69,46 +71,219 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In this series I haven't added limiting fetching attributes - after
-reading udevadm-info.c I'm not sure it makes sense to limit it. Udevadm
-in general does same things current igt_device_scan does, especially
-it also skips some attributes. Additionally it skips attributes which
-are binaries but I've some resistence to do this similar as strlen()
-on blob is imo risky and it may result in segfault. I may send attrs
-limiting in separate patch after this series will be reviewed (and
-hopefully merged).
+Tests which plays with module unload/load/reload must ensure scanned
+device list cache is up-to-date. Missing direct calling of device scan
+after module operations may lead to use stale data and use invalid
+device name if it was changed in the meantime.
 
-Series addresses main concern - stale device cache. Now rescans are
-unconditional what prevents from opening old device after operations
-on module.
+Lucas noticed device scanning overhead is minimal and we may drop
+caching logic and scan (get drm data from udev) unconditionally.
+From igt_runner perspective where single subtest is a separate process
+device scan cost might likely be ignored.
 
-Test added which checks device scanning in multithreading code likely
-is not needed for merge. Adding to BAT should reveal early potential
-problems with the series.
-
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ benchmarks/gem_wsim.c      |  2 +-
+ lib/drmtest.c              |  2 +-
+ lib/igt_device_scan.c      | 18 ++++--------------
+ lib/igt_device_scan.h      |  2 +-
+ lib/igt_multigpu.c         |  2 +-
+ tests/core_hotunplug.c     |  2 +-
+ tests/device_reset.c       |  2 +-
+ tests/intel/i915_suspend.c |  4 ++--
+ tools/intel_gpu_top.c      |  2 +-
+ tools/intel_pm_rpm.c       |  2 +-
+ tools/lsgpu.c              |  2 +-
+ 11 files changed, 15 insertions(+), 25 deletions(-)
 
-Zbigniew Kempczyński (3):
-  lib/igt_device_scan: drop device scan cache logic
-  lib/igt_device_scan: change device list variable visibility
-  tests/xe_intel_bb: check multithreading rescans won't segfault
-
- benchmarks/gem_wsim.c                    |  2 +-
- lib/drmtest.c                            |  2 +-
- lib/igt_device_scan.c                    | 20 +++-------
- lib/igt_device_scan.h                    |  2 +-
- lib/igt_multigpu.c                       |  2 +-
- tests/core_hotunplug.c                   |  2 +-
- tests/device_reset.c                     |  2 +-
- tests/intel-ci/xe-fast-feedback.testlist |  1 +
- tests/intel/i915_suspend.c               |  4 +-
- tests/intel/xe_intel_bb.c                | 47 ++++++++++++++++++++++++
- tools/intel_gpu_top.c                    |  2 +-
- tools/intel_pm_rpm.c                     |  2 +-
- tools/lsgpu.c                            |  2 +-
- 13 files changed, 64 insertions(+), 26 deletions(-)
-
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index 454b6f017b..7a6b100288 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -3178,7 +3178,7 @@ int main(int argc, char **argv)
+ 		}
+ 	}
+ 
+-	igt_devices_scan(false);
++	igt_devices_scan();
+ 
+ 	if (list_devices_arg) {
+ 		struct igt_devices_print_format fmt = {
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 2dd4540b85..436b6de780 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -475,7 +475,7 @@ void drm_load_module(unsigned int chipset)
+ 	}
+ 
+ 	pthread_mutex_unlock(&mutex);
+-	igt_devices_scan(true);
++	igt_devices_scan();
+ }
+ 
+ static int __open_driver(const char *base, int offset, unsigned int chipset, int as_idx)
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 8e2297087e..304cfa17a8 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -1083,30 +1083,20 @@ void igt_devices_free(void)
+ 		igt_device_free(dev);
+ 		free(dev);
+ 	}
+-	igt_devs.devs_scanned = false;
+ }
+ 
+ /**
+  * igt_devices_scan
+  * @force: enforce scanning devices
+  *
+- * Function scans udev in search of gpu devices. For first run it can be
+- * called with @force = false. If something changes during the the test
+- * or test does some module loading (new drm devices occurs during execution)
+- * function must be called again with @force = true to refresh device array.
++ * Function scans udev in search of gpu devices.
+  */
+-void igt_devices_scan(bool force)
++void igt_devices_scan(void)
+ {
+-	if (force && igt_devs.devs_scanned)
+-		igt_devices_free();
+-
+ 	if (igt_devs.devs_scanned)
+-		return;
+-
++		igt_devices_free();
+ 	prepare_scan();
+ 	scan_drm_devices();
+-
+-	igt_devs.devs_scanned = true;
+ }
+ 
+ static inline void _pr_simple(const char *k, const char *v)
+@@ -1983,7 +1973,7 @@ static bool __igt_device_card_match(const char *filter,
+ 	 * Scan devices in case the user hasn't yet,
+ 	 * but leave a decision on forced rescan on the user side.
+ 	 */
+-	igt_devices_scan(false);
++	igt_devices_scan();
+ 
+ 	if (igt_device_filter_apply(filter) == false)
+ 		return false;
+diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+index 9087337458..fa90134aa3 100644
+--- a/lib/igt_device_scan.h
++++ b/lib/igt_device_scan.h
+@@ -63,7 +63,7 @@ struct igt_device_card {
+ 	uint16_t pci_vendor, pci_device;
+ };
+ 
+-void igt_devices_scan(bool force);
++void igt_devices_scan(void);
+ 
+ void igt_devices_print(const struct igt_devices_print_format *fmt);
+ void igt_devices_print_vendors(void);
+diff --git a/lib/igt_multigpu.c b/lib/igt_multigpu.c
+index be0c113322..d4b89d706a 100644
+--- a/lib/igt_multigpu.c
++++ b/lib/igt_multigpu.c
+@@ -37,7 +37,7 @@ static int print_gpus(int count, int gpu_num)
+ 
+ 	igt_info("PCI devices available in the system:\n");
+ 
+-	igt_devices_scan(true);
++	igt_devices_scan();
+ 	devices = igt_device_filter_pci();
+ 	igt_devices_print(&fmt);
+ 
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 7f17f4423d..18e9dfc346 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -488,7 +488,7 @@ static bool healthcheck(struct hotunplug *priv, bool recover)
+ 	sleep(1);
+ 
+ 	/* device name may have changed, rebuild IGT device list */
+-	igt_devices_scan(true);
++	igt_devices_scan();
+ 
+ 	node_healthcheck(priv, recover ? FLAG_RECOVER : 0);
+ 	if (!priv->failure)
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index 40681931c2..6c93a96c21 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -399,7 +399,7 @@ static void healthcheck(struct device_fds *dev)
+ 		/* give the kernel a breath for re-creating device nodes in devtmpfs */
+ 		sleep(1);
+ 		/* refresh device list */
+-		igt_devices_scan(true);
++		igt_devices_scan();
+ 		igt_debug("reopen the device\n");
+ 		dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+ 	}
+diff --git a/tests/intel/i915_suspend.c b/tests/intel/i915_suspend.c
+index 3398b372b5..fae1031a23 100644
+--- a/tests/intel/i915_suspend.c
++++ b/tests/intel/i915_suspend.c
+@@ -265,7 +265,7 @@ test_suspend_without_i915(int state)
+ 	int fd;
+ 
+ 	fd = __drm_open_driver(DRIVER_INTEL);
+-	igt_devices_scan(false);
++	igt_devices_scan();
+ 
+ 	/*
+ 	 * When module is unloaded and s2idle is triggered, PCI core leaves the endpoint
+@@ -317,7 +317,7 @@ igt_main
+ 		 * instead of reloading the i915 module.
+ 		 */
+ 		if (igt_device_filter_count())
+-			igt_devices_scan(true);
++			igt_devices_scan();
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 	}
+ 
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index a608b894d3..68d27089b9 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -2701,7 +2701,7 @@ int main(int argc, char **argv)
+ 		break;
+ 	};
+ 
+-	igt_devices_scan(false);
++	igt_devices_scan();
+ 
+ 	if (list_device) {
+ 		struct igt_devices_print_format fmt = {
+diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+index 17cd2bc1d6..08c25ca8a6 100644
+--- a/tools/intel_pm_rpm.c
++++ b/tools/intel_pm_rpm.c
+@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	env_device = getenv("IGT_DEVICE");
+-	igt_devices_scan(false);
++	igt_devices_scan();
+ 
+ 	if (env_device) {
+ 		if (!igt_device_card_match(env_device, &card)) {
+diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+index 2bf2cf5f05..e482ca6b75 100644
+--- a/tools/lsgpu.c
++++ b/tools/lsgpu.c
+@@ -362,7 +362,7 @@ int main(int argc, char *argv[])
+ 		printf("Notice: Using filter from .igtrc\n");
+ 	}
+ 
+-	igt_devices_scan(false);
++	igt_devices_scan();
+ 
+ 	if (igt_device != NULL) {
+ 		struct igt_device_card card;
 -- 
 2.34.1
 
