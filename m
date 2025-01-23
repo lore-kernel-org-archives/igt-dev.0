@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE8FC02182
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 09:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F922C02182
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 09:52:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5916410E7A5;
-	Thu, 23 Jan 2025 09:39:40 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDE0F10E164;
- Thu, 23 Jan 2025 09:39:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id B789210E7B4;
+	Thu, 23 Jan 2025 09:52:22 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XvZA1J+R";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B92010E7B4
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 09:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737625942; x=1769161942;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=y+lKzcQ0mEm5LkRq5/AxteGAxtBNO6uq6sH996+XbPE=;
+ b=XvZA1J+RcyWgA9ZUS2j/SWmpZohl3uOgkfdbwqTb7AokhS2P+IgLigaz
+ JZs6Zz+rNi+zOcGGG3fI3boft84bgWULdxMtfASDaK8uPe5Stii+U9UYp
+ f0BAr1vQph9Ij3KMho1Gvv2jeQJPa1B/77pTvJGmtGftdWZIcL/LJCO+v
+ L23KYQYKwyA5mu9WvTEKzBsQA/EQnVcebL4xkErwcmGg65P0yT2aWApu9
+ GUM6PiBGZIajA/A7yXNbn0yqcWzPVPcKrpdsYowm3/KiRSt6qvcSUcGdy
+ ywv4vkdgOuBPws96KO5Rg0Z4sSF1RWXnskIQ/DziJqUmluFom94BJ84ir g==;
+X-CSE-ConnectionGUID: t2pzM+sDT2WGDzo09VPeew==
+X-CSE-MsgGUID: qQT7RbDIQ0imk98blVmgbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37814764"
+X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; d="scan'208";a="37814764"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2025 01:52:15 -0800
+X-CSE-ConnectionGUID: DxlUIOcAS8+P2IqCi15wGA==
+X-CSE-MsgGUID: x5h1HRXwTFadEPJ+H7YGAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; d="scan'208";a="107407497"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.85])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2025 01:52:13 -0800
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 0/3] Drop device scan cache logic
+Date: Thu, 23 Jan 2025 10:52:05 +0100
+Message-Id: <20250123095208.72984-1-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/kms=5Fpm=5F?=
- =?utf-8?q?rpm=3A_Update_modifier_to_linear_for_display_version_30+?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Jan 2025 09:39:39 -0000
-Message-ID: <173762517996.3480643.9653778095113345065@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250123091546.3126819-1-jeevan.b@intel.com>
-In-Reply-To: <20250123091546.3126819-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,88 +66,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+In this series I haven't added limiting fetching attributes - after
+reading udevadm-info.c I'm not sure it makes sense to limit it. Udevadm
+in general does same things current igt_device_scan does, especially
+it also skips some attributes. Additionally it skips attributes which
+are binaries but I've some resistence to do this similar as strlen()
+on blob is imo risky and it may result in segfault. I may send attrs
+limiting in separate patch after this series will be reviewed (and
+hopefully merged).
 
-Series: tests/intel/kms_pm_rpm: Update modifier to linear for display version 30+
-URL   : https://patchwork.freedesktop.org/series/143879/
-State : warning
+Series addresses main concern - stale device cache. Now rescans are
+unconditional what prevents from opening old device after operations
+on module.
 
-== Summary ==
+Test added which checks device scanning in multithreading code likely
+is not needed for merge. Adding to BAT should reveal early potential
+problems with the series.
 
-Pipeline status: FAILED.
+v2: retrieve missing scanning state variable (used for freeing
+    on multiple scans)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1350733 for the overview.
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69826991):
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 700db7c9 as detached HEAD (ref is intel/IGTPW_12486)...
-  Removing build/
-  
-  Skipping Git submodules setup
-  section_end:1737624853:get_sources
-  section_start:1737624853:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-700db7c9672ce0b720418028e6c6f61350ac3fda with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian@sha256:b9fe73c6ff5d68f5692fd18b9076735679c8bfa7ed393e752dd4927a2cdf9874 ...
-  section_end:1737624858:step_script
-  section_start:1737624858:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1737624860:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078: image not known (docker.go:650:0s)
+Zbigniew Kempczyński (3):
+  lib/igt_device_scan: drop device scan cache logic
+  lib/igt_device_scan: change device list variable visibility
+  tests/xe_intel_bb: check multithreading rescans won't segfault
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69826993):
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 700db7c9 as detached HEAD (ref is intel/IGTPW_12486)...
-  Removing build/
-  Removing installdir/
-  
-  Skipping Git submodules setup
-  section_end:1737624855:get_sources
-  section_start:1737624855:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-700db7c9672ce0b720418028e6c6f61350ac3fda with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf@sha256:3a0ffeb305cdc6ef081dde81d86afee76102e74f76c0f7bd5685fc2457ec707b ...
-  section_end:1737624858:step_script
-  section_start:1737624858:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1737624859:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8: image not known (docker.go:650:0s)
+ benchmarks/gem_wsim.c                    |  2 +-
+ lib/drmtest.c                            |  2 +-
+ lib/igt_device_scan.c                    | 16 +++-----
+ lib/igt_device_scan.h                    |  2 +-
+ lib/igt_multigpu.c                       |  2 +-
+ tests/core_hotunplug.c                   |  2 +-
+ tests/device_reset.c                     |  2 +-
+ tests/intel-ci/xe-fast-feedback.testlist |  1 +
+ tests/intel/i915_suspend.c               |  4 +-
+ tests/intel/xe_intel_bb.c                | 47 ++++++++++++++++++++++++
+ tools/intel_gpu_top.c                    |  2 +-
+ tools/intel_pm_rpm.c                     |  2 +-
+ tools/lsgpu.c                            |  2 +-
+ 13 files changed, 64 insertions(+), 22 deletions(-)
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/69826995):
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 700db7c9 as detached HEAD (ref is intel/IGTPW_12486)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing lib/xe/oa-configs/__pycache__/
-  Removing scripts/__pycache__/
-  
-  Skipping Git submodules setup
-  section_end:1737624853:get_sources
-  section_start:1737624853:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-700db7c9672ce0b720418028e6c6f61350ac3fda with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
-  section_end:1737624858:step_script
-  section_start:1737624858:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1737624859:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:650:0s)
+-- 
+2.34.1
 
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1350733
