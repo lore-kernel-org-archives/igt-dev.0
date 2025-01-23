@@ -4,52 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 227F1C02182
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 05:30:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C339C02182
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 06:07:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C5F2110E350;
-	Thu, 23 Jan 2025 05:30:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 269B710E277;
+	Thu, 23 Jan 2025 06:07:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WMwxeC19";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Iz5PHlun";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C76310E379
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 05:30:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7979E10E277
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 06:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737610251; x=1769146251;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=R0BmOBdhojVm17aQwVJUhNmnek3DvA+Twl+myi/IRO0=;
- b=WMwxeC19nKHiihLnC4GO0mFUnOl6VwdCtOI54S7R+3+P2hG0b9jr88mE
- MJsJymsTnfVZjvseZZxYrDb4zT6Q4UFO1Y2ctrFASzUMpppU6x5cZMs/H
- HoOtGq7/sAq/4lbWmZc5SiKcJmEmNkKrj3uaSw7fgEz4+NaMSQEZzL0dm
- sHVh/Z8XLcxlaQ8OUGsGI4mXh2xdF6j04+Pq2K0r5mOzmF2X40eSNBCDJ
- k3F6LLVJdOFb3FaTAq+i9CtlXhZ8mP0eFOQ7M+5TWYEQSVunNy2RKVU/y
- pqnQk3If9QVijmYwwL0mCVCsjDxslBnwNkOYhmZP6QzyO/LQlxtsFNIZu A==;
-X-CSE-ConnectionGUID: 3OPCuMuhRY2EMJ7kiYECBg==
-X-CSE-MsgGUID: Wtg+Qp0lTU6r9Z2vavQvWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="63443995"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="63443995"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 21:30:51 -0800
-X-CSE-ConnectionGUID: Z0bTl+LzQ5uzWhqfgoiZ9w==
-X-CSE-MsgGUID: ruWEAV9hTY6HVeA5n6TjcA==
+ t=1737612438; x=1769148438;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=yZdLRfy19rnMECMB1fLFkuZXP31AMEXU5H2b5LUerDs=;
+ b=Iz5PHlunxVd6oBmBbycvTIPF0t8mPMFYhsiS2u6xzChvntPCcsb8Qo8i
+ ofunBUt16nB2ll8Oij9gEN2PkDk88SPCGaNvbgowY6EDOQ8oZ2RAf5+Fl
+ nSjexe0dI5PweHeOPxEuRs0dr44wg8rEax6/Dq2DR39NkHNd6fFc5xGAL
+ jnnoUmRZ1OBDFAMl7JSu1VoRE/V0r97vX0L5Ocu3+PXJuv+rCv9LgLowS
+ FN8Xi3PPZw/IqDoEahF4PWlIWd/mSpPJoX3i/k3f2j7kXeqJMGK9FIZKS
+ FdaJj5jQjZC1Mobsc/sJLZKCdDMyB8oKpQqGjmReqiUBQGNAEKT0pz1Y7 A==;
+X-CSE-ConnectionGUID: C42UE8pcQKqruhg4AiEcBw==
+X-CSE-MsgGUID: 0GmNB6taQDSfCT2yddnJkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="38127105"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="38127105"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 22:07:18 -0800
+X-CSE-ConnectionGUID: h8uS59adQAanNzIAiEx/6Q==
+X-CSE-MsgGUID: h7B3tDuASYSq6xRPWNfaSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="112001898"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 21:30:51 -0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107794418"
+Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
+ ([10.125.110.196])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 22:07:17 -0800
+Date: Thu, 23 Jan 2025 00:07:09 -0600
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] tests/intel/perf_pmu: Drop cpu-hotplug subtest
-Date: Wed, 22 Jan 2025 21:30:39 -0800
-Message-ID: <20250123053039.1948302-1-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.48.0
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Ryszard Knop <ryszard.knop@intel.com>
+Subject: Re: [PATCH i-g-t v2 2/7] runner/settings: Use wrapper functions for
+ each type
+Message-ID: <bzvok6b64e22nudscgjfoomev6pq3rb35felx4yhmqmqdqid4w@dfaoanffylov>
+References: <20250121225733.808978-1-lucas.demarchi@intel.com>
+ <20250121225733.808978-3-lucas.demarchi@intel.com>
+ <173754482486.5500.2959553679406990943@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <173754482486.5500.2959553679406990943@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,200 +74,172 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test has been skipping since a long time (forever?) in CI. The
-reason is that cpu0 is not really hot pluggable. There was an initial
-attempt that got removed with kernel commits 5475abbde77f ("x86/smpboot:
-Remove the CPU0 hotplug kludge") and e59e74dc48a3 ("x86/topology: Remove
-CPU0 hotplug option").
+On Wed, Jan 22, 2025 at 08:20:24AM -0300, Gustavo Sousa wrote:
+>Quoting Lucas De Marchi (2025-01-21 19:57:28-03:00)
+>>Simplify assigning the variables by using wrapper functions. This avoids
+>>calling atoi() on every iteration and will allow to simplify the
+>>strdup() calls in future.
+>>
+>>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>---
+>> runner/settings.c | 74 ++++++++++++++++++++++++++++-------------------
+>> 1 file changed, 45 insertions(+), 29 deletions(-)
+>>
+>>diff --git a/runner/settings.c b/runner/settings.c
+>>index 80d95be5b..13694a51c 100644
+>>--- a/runner/settings.c
+>>+++ b/runner/settings.c
+>>@@ -1152,43 +1152,60 @@ bool serialize_settings(struct settings *settings)
+>> #undef SERIALIZE_LINE
+>> }
+>>
+>>-bool read_settings_from_file(struct settings *settings, FILE *f)
+>>+static int parse_int(char **pval)
+>>+{
+>>+        return atoi(*pval);
+>>+}
+>>+
+>>+static unsigned long parse_ul(char **pval)
+>>+{
+>>+        return strtoul(*pval, NULL, 10);
+>>+}
+>>+
+>>+static char *parse_str(char **pval)
+>> {
+>>-#define PARSE_LINE(s, name, val, field, write)        \
+>>+        return *pval ? strdup(*pval) : NULL;
+>>+}
+>
+>Why do we need char **pval for those functions instead of simply char
+>*val?
 
-With those commits there are no more cpu0_hotplug kernel parameter and
-no more BOOTPARAM_HOTPLUG_CPU0 build config.
+you will see on next patch, but :
 
-The current i915 pmu integration always returns the first cpu in the
-system, which means that it's always cpu0.  The cpu migration is also
-currently wrong and was never detected by this test: it tries to find a
-sibling cpu rather than allowing to migrate to any cpu in the system.
-In order to clean up the i915 side, the hotplug code is being removed in
-favor of the generic one, provided by perf infra. That too has the same
-"issue" that there's no easy way to test, but hopefully receives more
-visibility since it's shared by several drivers.
+>
+>>+
+>>+#define PARSE_LINE(s, name, val, field, _f)        \
+>>         if (!strcmp(name, #field)) {                \
+>>-                s->field = write;                \
+>>+                s->field = _f(&val);                \
 
-If we ever find a way to instrument the kernel to test the hotplug, this
-code can be partially restored.
+right now it does this ^ and in the cleanup it does the free and assign
+the variable back to NULL. In the end we are doing
 
-References: https://lore.kernel.org/all/20250116222426.77757-1-lucas.demarchi@intel.com/
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/intel/perf_pmu.c | 142 -----------------------------------------
- 1 file changed, 142 deletions(-)
+foo = alloc()
+bar == strdup(foo)
+free(foo)
 
-diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-index 5d0467c02..084ef9631 100644
---- a/tests/intel/perf_pmu.c
-+++ b/tests/intel/perf_pmu.c
-@@ -101,9 +101,6 @@
-  * SUBTEST: busy-start
-  * Description: Test to verify gpu busyness through engine business pmu counters
-  *
-- * SUBTEST: cpu-hotplug
-- * Description: Test the i915 pmu perf interface
-- *
-  * SUBTEST: enable-race
-  * Description: Test the i915 pmu perf interface
-  *
-@@ -1362,139 +1359,6 @@ static void open_invalid(int i915)
- 	igt_assert_lt(fd, 0);
- }
- 
--static bool cpu0_hotplug_support(void)
--{
--	return access("/sys/devices/system/cpu/cpu0/online", W_OK) == 0;
--}
--
--static void cpu_hotplug(int gem_fd)
--{
--	igt_spin_t *spin[2];
--	uint64_t ts[2];
--	uint64_t val;
--	int link[2];
--	int fd, ret;
--	int cur = 0;
--	char buf;
--	uint64_t ahnd = get_reloc_ahnd(gem_fd, 0);
--
--	igt_require(cpu0_hotplug_support());
--
--	fd = open_pmu(gem_fd,
--		      I915_PMU_ENGINE_BUSY(I915_ENGINE_CLASS_RENDER, 0));
--
--	/*
--	 * Create two spinners so test can ensure shorter gaps in engine
--	 * busyness as it is terminating one and re-starting the other.
--	 */
--	spin[0] = igt_spin_new(gem_fd, .ahnd = ahnd,
--			       .engine = I915_EXEC_DEFAULT);
--	spin[1] = __igt_spin_new(gem_fd, .ahnd = ahnd,
--				 .engine = I915_EXEC_DEFAULT);
--
--	val = __pmu_read_single(fd, &ts[0]);
--
--	ret = pipe2(link, O_NONBLOCK);
--	igt_assert_eq(ret, 0);
--
--	/*
--	 * Toggle online status of all the CPUs in a child process and ensure
--	 * this has not affected busyness stats in the parent.
--	 */
--	igt_fork(child, 1) {
--		int cpu = 0;
--
--		close(link[0]);
--
--		for (;;) {
--			char name[128];
--			int cpufd;
--
--			igt_assert_lt(snprintf(name, sizeof(name),
--					       "/sys/devices/system/cpu/cpu%d/online",
--					       cpu), sizeof(name));
--			cpufd = open(name, O_WRONLY);
--			if (cpufd == -1) {
--				igt_assert_lt(0, cpu);
--				/*
--				 * Signal parent that we cycled through all
--				 * CPUs and we are done.
--				 */
--				igt_assert_eq(write(link[1], "*", 1), 1);
--				break;
--			}
--
--			/* Offline followed by online a CPU. */
--
--			ret = write(cpufd, "0", 2);
--			if (ret < 0) {
--				/*
--				 * If we failed to offline a CPU we don't want
--				 * to proceed.
--				 */
--				igt_warn("Failed to offline cpu%u! (%d)\n",
--					 cpu, errno);
--				igt_assert_eq(write(link[1], "s", 1), 1);
--				break;
--			}
--
--			usleep(1e6);
--
--			ret = write(cpufd, "1", 2);
--			if (ret < 0) {
--				/*
--				 * Failed to bring a CPU back online is fatal
--				 * for the sanity of a test run so stop further
--				 * testing.
--				 */
--				igt_warn("Failed to online cpu%u! (%d)\n",
--					 cpu, errno);
--				igt_fatal_error();
--			}
--
--			close(cpufd);
--			cpu++;
--		}
--	}
--
--	close(link[1]);
--
--	/*
--	 * Very long batches can be declared as GPU hangs so emit shorter ones
--	 * until the CPU core shuffler finishes one loop.
--	 */
--	for (;;) {
--		usleep(500e3);
--		end_spin(gem_fd, spin[cur], 0);
--
--		/* Check if the child is signaling completion. */
--		ret = read(link[0], &buf, 1);
--		if ( ret == 1 || (ret < 0 && errno != EAGAIN))
--			break;
--
--		igt_spin_free(gem_fd, spin[cur]);
--		spin[cur] = __igt_spin_new(gem_fd, .ahnd = ahnd,
--					   .engine = I915_EXEC_DEFAULT);
--		cur ^= 1;
--	}
--
--	val = __pmu_read_single(fd, &ts[1]) - val;
--
--	end_spin(gem_fd, spin[0], FLAG_SYNC);
--	end_spin(gem_fd, spin[1], FLAG_SYNC);
--	igt_spin_free(gem_fd, spin[0]);
--	igt_spin_free(gem_fd, spin[1]);
--	igt_waitchildren();
--	close(fd);
--	close(link[0]);
--	put_ahnd(ahnd);
--
--	/* Skip if child signals a problem with offlining a CPU. */
--	igt_skip_on(buf == 's');
--
--	assert_within_epsilon(val, ts[1] - ts[0], tolerance);
--}
--
- static int target_num_interrupts(int i915)
- {
- 	const intel_ctx_cfg_t cfg = intel_ctx_cfg_all_physical(i915);
-@@ -2650,12 +2514,6 @@ igt_main
- 		all_busy_check_all(fd, ctx, num_engines,
- 				   TEST_BUSY | TEST_TRAILING_IDLE);
- 
--	/**
--	 * Test counters are not affected by CPU offline/online events.
--	 */
--	igt_subtest("cpu-hotplug")
--		cpu_hotplug(fd);
--
- 	/**
- 	 * Test GPU frequency.
- 	 */
--- 
-2.48.0
+when we actually only need the first allocation and pass the ownership
+to the outside. When coding this I thought about calling the function
+leak_str() instead of parse_str(), which would probably clarify (but
+should be done only in the subsequent patch).
 
+
+
+>>                 goto cleanup;                        \
+>>         }
+>>+#define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, val, field, parse_int)
+>>+#define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, val, field, parse_ul)
+>>+#define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, val, field, parse_str)
+>
+>I would have kept these inside read_settings_from_file(), since it is
+>very specific for that function.
+>
+>(And in a follow-up patch even remove the s, name and val parameters to
+>make it simpler.)
+
+Matter of preference, but the defines inside the function pollutes a lot
+the variable declaration. Particularly when we increase the number of
+macros. No reason not to keep them just above the
+function and undefine them just below the function. You will see in the
+next patches I didn't bother undefining them all since just undefining
+a few gives enough protection that those macros can't be used anymore.
+
+As for the arguments, I also don't really like macros that use variables
+not passed as argument. This leads to unmaintainable code - we used to
+have macros in i915 that depended on having a "dev_priv" variable
+somewhere - it took years to cleanup that to rename to i915 and allow
+the driver to run with more than 1 devices (we made a mess with some
+files, declaring a file-scoped variables).
+
+Lucas De Marchi
+
+>
+>>
+>>+bool read_settings_from_file(struct settings *settings, FILE *f)
+>>+{
+>>         char *name = NULL, *val = NULL;
+>>
+>>         settings->dmesg_warn_level = -1;
+>>
+>>         while (fscanf(f, "%ms : %m[^\n]", &name, &val) == 2) {
+>>-                int numval = atoi(val);
+>>-                PARSE_LINE(settings, name, val, abort_mask, numval);
+>>-                PARSE_LINE(settings, name, val, disk_usage_limit, strtoul(val, NULL, 10));
+>>-                PARSE_LINE(settings, name, val, test_list, val ? strdup(val) : NULL);
+>>-                PARSE_LINE(settings, name, val, name, val ? strdup(val) : NULL);
+>>-                PARSE_LINE(settings, name, val, dry_run, numval);
+>>-                PARSE_LINE(settings, name, val, allow_non_root, numval);
+>>-                PARSE_LINE(settings, name, val, facts, numval);
+>>-                PARSE_LINE(settings, name, val, sync, numval);
+>>-                PARSE_LINE(settings, name, val, log_level, numval);
+>>-                PARSE_LINE(settings, name, val, overwrite, numval);
+>>-                PARSE_LINE(settings, name, val, multiple_mode, numval);
+>>-                PARSE_LINE(settings, name, val, inactivity_timeout, numval);
+>>-                PARSE_LINE(settings, name, val, per_test_timeout, numval);
+>>-                PARSE_LINE(settings, name, val, overall_timeout, numval);
+>>-                PARSE_LINE(settings, name, val, use_watchdog, numval);
+>>-                PARSE_LINE(settings, name, val, piglit_style_dmesg, numval);
+>>-                PARSE_LINE(settings, name, val, dmesg_warn_level, numval);
+>>-                PARSE_LINE(settings, name, val, prune_mode, numval);
+>>-                PARSE_LINE(settings, name, val, test_root, val ? strdup(val) : NULL);
+>>-                PARSE_LINE(settings, name, val, results_path, val ? strdup(val) : NULL);
+>>-                PARSE_LINE(settings, name, val, enable_code_coverage, numval);
+>>-                PARSE_LINE(settings, name, val, cov_results_per_test, numval);
+>>-                PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
+>>+                PARSE_INT(settings, name, val, abort_mask);
+>>+                PARSE_UL(settings, name, val, disk_usage_limit);
+>>+                PARSE_STR(settings, name, val, test_list);
+>>+                PARSE_STR(settings, name, val, name);
+>>+                PARSE_INT(settings, name, val, dry_run);
+>>+                PARSE_INT(settings, name, val, allow_non_root);
+>>+                PARSE_INT(settings, name, val, facts);
+>>+                PARSE_INT(settings, name, val, sync);
+>>+                PARSE_INT(settings, name, val, log_level);
+>>+                PARSE_INT(settings, name, val, overwrite);
+>>+                PARSE_INT(settings, name, val, multiple_mode);
+>>+                PARSE_INT(settings, name, val, inactivity_timeout);
+>>+                PARSE_INT(settings, name, val, per_test_timeout);
+>>+                PARSE_INT(settings, name, val, overall_timeout);
+>>+                PARSE_INT(settings, name, val, use_watchdog);
+>>+                PARSE_INT(settings, name, val, piglit_style_dmesg);
+>>+                PARSE_INT(settings, name, val, dmesg_warn_level);
+>>+                PARSE_INT(settings, name, val, prune_mode);
+>>+                PARSE_STR(settings, name, val, test_root);
+>>+                PARSE_STR(settings, name, val, results_path);
+>>+                PARSE_INT(settings, name, val, enable_code_coverage);
+>>+                PARSE_INT(settings, name, val, cov_results_per_test);
+>>+                PARSE_STR(settings, name, val, code_coverage_script);
+>>
+>>                 printf("Warning: Unknown field in settings file: %s = %s\n",
+>>                        name, val);
+>>@@ -1210,9 +1227,8 @@ cleanup:
+>>         free(val);
+>>
+>>         return true;
+>>-
+>>-#undef PARSE_LINE
+>> }
+>>+#undef PARSE_LINE
+>
+>Missing undef for the other macros here?
+>
+>--
+>Gustavo Sousa
+>
+>>
+>> /**
+>>  * read_env_vars_from_file() - load env vars from a file
+>>--
+>>2.48.0
+>>
