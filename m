@@ -4,60 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF865C02182
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 06:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1482CC0218B
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jan 2025 07:21:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4536810E171;
-	Thu, 23 Jan 2025 06:50:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B44E410E777;
+	Thu, 23 Jan 2025 07:21:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WJezouY8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S98C3enu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F8A110E171
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 06:50:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D494D10E777
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2025 07:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737615029; x=1769151029;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=7GtbsGOeoXM7NlSPv4nF4LumqdaycnoqKKB67eZKTB4=;
- b=WJezouY85O4R6aOKziDU1F+xUPT/Iu4MOIok9q9Sj/HXkXoTWzsQ0wva
- nfcq5RAG5Wq/UEpnG/xy3+THdJDQgwWkh7ULZXyXI/nQ0CH3Hl5QWWtRQ
- 2sYFd20IzPvn3r+qG6dHpyKdG5N2WoxbjnSL2f8KA53vCTk3neLU1erHY
- zGwh/4M+kzeYvm34ESzlygJQrCCaljYzvwztd58ekYSYBrIM+qA9+RAHX
- Em4iN49cQW1Fb7WhoCZ7JpDh3DappaHYHZAocIMOfAwL0uzIZGJJUBQ5h
- 5Vx4it0ec+uLsNAR2sM/13L9Z2/O2R03Aj6fRONvyQWuO8z2o9MAbAhmS w==;
-X-CSE-ConnectionGUID: DlOyXAxlQ26Yu4NbshZNAQ==
-X-CSE-MsgGUID: nfFvaJv3SGCZrodTpq+tNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37309129"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="37309129"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 22:50:29 -0800
-X-CSE-ConnectionGUID: kLYFNP+jTuiD3X/YZCnwug==
-X-CSE-MsgGUID: 9IR11UGFS8OBs64BEK8dwQ==
+ t=1737616886; x=1769152886;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=gxZP1Co67n4KEtcP1bsF6pBvllFGrnzSduGAlom9fWw=;
+ b=S98C3enuqJ+dRRCHEBGQLY1ebW+rexu0Y5jFK/QY+36+QyrEYBk2FpBN
+ TlCpPbGkGN8wS7DtE2EHjFV4a9gjVZVV+T4pso/eybxA7Nc7E/BWU/2vt
+ zGNS+9KC75HFZfY90IAfckNkOJFcAr5R3p5I5imXkeu9eZqGNbprHMBZ0
+ Nt2rcPAXXOfj+YEhmmT86vQp5XTRKpv8NE5ZLmCpM++Lml2vVrI2vW0ct
+ MItMIpJM8ShELeY6vnqmnt7wacyuJP/VeAeDUaK5gJ6/jmScYIJwN3Ikl
+ 2CkiIqZCu5ohIrV1ffoxe4sth+exj3q8l6KpLdel0Bk5msQTg/WC6MyyC A==;
+X-CSE-ConnectionGUID: nSrkUa96Rw+28fuWYgM3QA==
+X-CSE-MsgGUID: djXIqpdUT/m3mNyjGdc/eQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37984907"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="37984907"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 23:21:26 -0800
+X-CSE-ConnectionGUID: RzF8QVurQ+SCOVrng1aMRA==
+X-CSE-MsgGUID: j7sTWkr0TVu310sJkj1zuw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="107479636"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2)
- ([10.125.110.196])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 22:50:28 -0800
-Date: Thu, 23 Jan 2025 00:50:20 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Gustavo Sousa <gustavo.sousa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Ryszard Knop <ryszard.knop@intel.com>
-Subject: Re: [PATCH i-g-t v2 7/7] runner/resultgen: Add cmdline to results.json
-Message-ID: <omwtasmowswuhnn4l65qmvq5zscdjury2ezkmlw4mp7twbu26t@m4sxloefokeu>
-References: <20250121225733.808978-1-lucas.demarchi@intel.com>
- <20250121225733.808978-8-lucas.demarchi@intel.com>
- <173755030291.5500.6239544066129101929@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111392557"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2025 23:21:25 -0800
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/3] tests/intel/kms_mst_helper: Add helper for
+ MST-related functions
+Date: Thu, 23 Jan 2025 13:06:59 +0530
+Message-Id: <20250123073701.3113428-2-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250123073701.3113428-1-kunal1.joshi@intel.com>
+References: <20250123073701.3113428-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <173755030291.5500.6239544066129101929@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,141 +68,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 22, 2025 at 09:51:42AM -0300, Gustavo Sousa wrote:
->Quoting Lucas De Marchi (2025-01-21 19:57:33-03:00)
->>For easier repro scenarios, add the cmdline to the json: one can see the
->>exact command executed to try to reproduce a CI failure without needing
->>extra files.
->>
->>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>---
->> runner/json_tests_data/aborted-after-a-test/reference.json | 1 +
->> runner/json_tests_data/aborted-on-boot/reference.json      | 1 +
->> runner/json_tests_data/dmesg-escapes/reference.json        | 1 +
->> runner/json_tests_data/dmesg-results/reference.json        | 1 +
->> .../dmesg-warn-level-one-piglit-style/reference.json       | 1 +
->> .../dmesg-warn-level-piglit-style/reference.json           | 1 +
->> runner/json_tests_data/dmesg-warn-level/reference.json     | 1 +
->> .../reference.json                                         | 1 +
->> .../dynamic-subtests-keep-all/reference.json               | 3 ++-
->> .../dynamic-subtests-keep-dynamic/reference.json           | 1 +
->> .../dynamic-subtests-keep-requested/reference.json         | 3 ++-
->> .../dynamic-subtests-keep-subtests/reference.json          | 3 ++-
->> runner/json_tests_data/empty-result-files/reference.json   | 1 +
->> runner/json_tests_data/graceful-notrun/reference.json      | 1 +
->> .../incomplete-before-any-subtests/reference.json          | 1 +
->> runner/json_tests_data/normal-run/reference.json           | 1 +
->> .../notrun-results-multiple-mode/reference.json            | 1 +
->> runner/json_tests_data/notrun-results/reference.json       | 1 +
->> runner/json_tests_data/piglit-style-dmesg/reference.json   | 1 +
->> .../json_tests_data/unprintable-characters/reference.json  | 1 +
->> .../warnings-with-dmesg-warns/reference.json               | 1 +
->> runner/json_tests_data/warnings/reference.json             | 1 +
->> runner/resultgen.c                                         | 7 ++++++-
->> 23 files changed, 31 insertions(+), 4 deletions(-)
->>
->>diff --git a/runner/json_tests_data/aborted-after-a-test/reference.json b/runner/json_tests_data/aborted-after-a-test/reference.json
->>index 0776f7582..50ba9e6e1 100644
->>--- a/runner/json_tests_data/aborted-after-a-test/reference.json
->>+++ b/runner/json_tests_data/aborted-after-a-test/reference.json
->>@@ -3,6 +3,7 @@
->>   "results_version":10,
->>   "name":"normal-run",
->>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
->>+  "cmdline":[],
->>   "time_elapsed":{
->>     "__type__":"TimeAttribute",
->>     "start":1539953735.1110389,
->>diff --git a/runner/json_tests_data/aborted-on-boot/reference.json b/runner/json_tests_data/aborted-on-boot/reference.json
->>index 75f194660..238ec6fff 100644
->>--- a/runner/json_tests_data/aborted-on-boot/reference.json
->>+++ b/runner/json_tests_data/aborted-on-boot/reference.json
->>@@ -3,6 +3,7 @@
->>   "results_version":10,
->>   "name":"normal-run",
->>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
->>+  "cmdline":[],
->>   "time_elapsed":{
->>     "__type__":"TimeAttribute",
->>     "start":1539953735.1110389,
->>diff --git a/runner/json_tests_data/dmesg-escapes/reference.json b/runner/json_tests_data/dmesg-escapes/reference.json
->>index 91c573106..e74dc89e4 100644
->>--- a/runner/json_tests_data/dmesg-escapes/reference.json
->>+++ b/runner/json_tests_data/dmesg-escapes/reference.json
->>@@ -3,6 +3,7 @@
->>   "results_version":10,
->>   "name":"normal-run",
->>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
->>+  "cmdline":[],
->>   "time_elapsed":{
->>     "__type__":"TimeAttribute",
->>     "start":1539953735.1110389,
->>diff --git a/runner/json_tests_data/dmesg-results/reference.json b/runner/json_tests_data/dmesg-results/reference.json
->>index e9e011853..81890f7d2 100644
->>--- a/runner/json_tests_data/dmesg-results/reference.json
->>+++ b/runner/json_tests_data/dmesg-results/reference.json
->>@@ -3,6 +3,7 @@
->>   "results_version":10,
->>   "name":"normal-run",
->>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
->>+  "cmdline":[],
->>   "time_elapsed":{
->>     "__type__":"TimeAttribute",
->>     "start":1539953735.1110389,
->>diff --git a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
->>index 8d266cdfa..16c97d3a1 100644
->>--- a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
->>+++ b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
->>@@ -3,6 +3,7 @@
->>   "results_version":10,
->
->Hm... Are we going to continue with 10 as the version after including
->another field? Are there guidelines on how results_version should be
->handled?
+This patch introduces kms_mst_helper.c and kms_mst_helper.h
+to centralize commonly used MST-related logic.
+The new function igt_find_all_mst_output_in_topology()
+enumerates MST outputs that share the same root connector,
+simplifying code reuse across tests needing outputs on
+same MST topology. The existing MST-related code in
+kms_dp_linktrain_fallback.c is updated to use the new helper,
+removing duplication. Additionally, meson.build is modified
+to include kms_mst_helper.c in the build process.
 
-good question.... last time it was updated was in 2018, to be compatible
-with piglit.
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/intel/kms_dp_linktrain_fallback.c | 28 ++++---------------------
+ tests/meson.build                       |  1 +
+ 2 files changed, 5 insertions(+), 24 deletions(-)
 
-commit 2c793666d8c8328733f5769b16ae5858fee97f3f
-Author: Petri Latvala <petri.latvala@intel.com>
-Date:   Wed Dec 5 14:53:43 2018 +0200
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index a05e2015f..b10946781 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -16,6 +16,7 @@
+ #include <sys/types.h>
+ 
+ #include "igt.h"
++#include "kms_mst_helper.h"
+ 
+ /**
+  * SUBTEST: dp-fallback
+@@ -47,28 +48,6 @@ typedef int (*condition_check_fn)(int drm_fd, igt_output_t *output);
+ 
+ IGT_TEST_DESCRIPTION("Test link training fallback");
+ 
+-static void find_mst_outputs(int drm_fd, data_t *data,
+-			     igt_output_t *output,
+-			     igt_output_t *mst_outputs[],
+-			     int *num_mst_outputs)
+-{
+-	int output_root_id, root_id;
+-	igt_output_t *connector_output;
+-
+-	output_root_id = igt_get_dp_mst_connector_id(output);
+-	/*
+-	 * If output is MST check all other connected output which shares
+-	 * same path and fill mst_outputs and num_mst_outputs
+-	 */
+-	for_each_connected_output(&data->display, connector_output) {
+-		if (!igt_check_output_is_dp_mst(connector_output))
+-			continue;
+-		root_id = igt_get_dp_mst_connector_id(connector_output);
+-		if (((*num_mst_outputs) < IGT_MAX_PIPES) && root_id == output_root_id)
+-			mst_outputs[(*num_mst_outputs)++] = connector_output;
+-	}
+-}
+-
+ static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
+ 			      int *output_count)
+ {
+@@ -83,8 +62,9 @@ static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
+ 		    traversed_mst_outputs[i] == data->output->config.connector->connector_id)
+ 			return false;
+ 
+-	find_mst_outputs(data->drm_fd, data, data->output,
+-			 mst_output, output_count);
++       igt_assert_f(igt_find_all_mst_output_in_topology(data->drm_fd, &data->display, data->output,
++							mst_output, output_count),
++		    "Unable to find mst outputs\n");
+ 
+ 	for (i = 0; i < *output_count; i++) {
+ 		output = mst_output[i];
+diff --git a/tests/meson.build b/tests/meson.build
+index 33dffad31..2cbd21c2a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -367,6 +367,7 @@ extra_sources = {
+ 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
++	'kms_dp_linktrain_fallback': [join_paths ('intel', 'kms_mst_helper.c')],
+ 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
+ }
+ 
+-- 
+2.25.1
 
-     runner: Produce json with results_version=10
-     
-     New piglit bumped its results_version to 10, making glxinfo and pals
-     optional in practice, not just by accident. Unfortunately reading
-     results with newer piglit attempts to convert the results to version
-     10, reading glxinfo and pals, and thus fails. In a hilarious summary:
-     A commit to piglit making glxinfo optional makes it mandatory for us.
-     
-     v2: json unit tests confirmed to be working...
-     
-     Reported-by: Andi Shyti <andi.shyti@intel.com>
-     Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-     Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-     Cc: Andi Shyti <andi.shyti@intel.com>
-     Tested-by: Andi Shyti <andi.shyti@intel.com>
-     Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-
-Does this still work with piglit?  something I didn't test yet.
-Thanks for noticing
-
->
->>   "name":"normal-run",
->>   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
->>+  "cmdline":[],
->
->Well, cmdline is not supposed to be empty. Shouldn't we have at least a
->fake command here? E.g. ["igt_runner"] or even with some common
->arguments...
-
-if I remember well, I tried that, but then it tries to match the number
-of members in the array - it won't match since igt_runner may be
-called in different ways. Maybe there's a way to tell the test suite to
-ignore the elements of the array. I will check.
-
-Lucas De Marchi
-
->
->--
->Gustavo Sousa
