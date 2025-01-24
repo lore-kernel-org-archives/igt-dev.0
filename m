@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2586C02181
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Jan 2025 08:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DBBCC02181
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Jan 2025 08:11:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5006710E917;
-	Fri, 24 Jan 2025 08:10:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA0E510E918;
+	Fri, 24 Jan 2025 08:10:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h4sYzB73";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IfgPTq/t";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 067EB10E917
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Jan 2025 08:10:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAE2310E918
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Jan 2025 08:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737706255; x=1769242255;
+ t=1737706259; x=1769242259;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=22p5ortkHOVXe9+sTxVFIGEUTesCaygSDh6Kbt/FaWM=;
- b=h4sYzB73+Ap9DctSFxSghP+kf76+Qin+NOL+PSxlMJB+21CkoBR2NKdG
- nZmd34SgWH8Rtv8NhsJ1MEBnbSZIW0Cg7+NUxAQU02KnTx9RPGhvsHUXa
- aYHJ4shM1Vgg3vmfQR2t8IUXeQdW+VCMeDLITUW8HPMNky80YhaoYEoaO
- hxD6fwO7BHyMMc4uKBwLOiACarNRNyDEIRlVFUkh/M2dghA5w11K4uBcJ
- VANV/zYiY3QG8GDwJt6GuZY87b1ydEWIBOwaBSgyRl2kcJJbs8FVZPBfG
- TBBREeYOUVY/dkge96mvQIeWh3bIrNxQjeRaNnyUla6k1FE+rFqW6H6cn g==;
-X-CSE-ConnectionGUID: xKDwuOFkTqS0FOim59I/gQ==
-X-CSE-MsgGUID: w4xs5/7fTUuOWM52J5A8MQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="63587303"
-X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; d="scan'208";a="63587303"
+ bh=AubzypeZb1fzYLlz+OTHzPSSWwz0x2OU4seMqF1Ncp8=;
+ b=IfgPTq/tB3kRSXy5OD7t0+SIVZ0nD2W7wq9QBacaeHBr7k1Eg93AW7Eq
+ LIBTEizuKBpdv7yid1XOvmlqx4VtkbT3qXr9T8s1FdcOvkZcMpGxwSMay
+ idLSLoZPuB7knuNDKCM2EcFDCRC622cywoJm6PokLVloMR1igiSbA5S3l
+ wJ+YhRGtX1T/ohbQ33yB7gcmNAITAftsCWeK90aLlI5qOT+0JhlvAHFw9
+ n3hLZsZN1R+649rkQrfWPo6WO9GIVOnKqidihDtQl1vCo0nwZE33Hr6un
+ cDBsrnWV879BY8XUIChXlHxZz/2itOYtfXeS6LA7gF+JvA6TsP0+NJaey A==;
+X-CSE-ConnectionGUID: LTpk1S3NR+iSFqIMFDhi0A==
+X-CSE-MsgGUID: ZpQ56qQYThSZ7nrARXM8vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="63587306"
+X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; d="scan'208";a="63587306"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 00:10:55 -0800
-X-CSE-ConnectionGUID: SfhnzggeTPSBKnVEnVmy4A==
-X-CSE-MsgGUID: ThVGYXgWSeq+ryy1EQJXBw==
+ 24 Jan 2025 00:10:59 -0800
+X-CSE-ConnectionGUID: uP/jUHf6T4aKEZL3eN1YYQ==
+X-CSE-MsgGUID: 2mUxeb9FT3OyMhJgV6Fm1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="112340324"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="112340331"
 Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 00:10:53 -0800
+ 24 Jan 2025 00:10:57 -0800
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@linux.intel.com, lukasz.laguna@intel.com,
  satyanarayana.k.v.p@intel.com, michal.wajdeczko@intel.com,
  adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com
-Subject: [PATCH i-g-t v1 2/4] lib/xe/xe_sriov_provisioning: Add helper to get
- VF's provisioned quota
-Date: Fri, 24 Jan 2025 09:10:37 +0100
-Message-Id: <20250124081039.31201-3-lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t v1 3/4] lib/igt_sriov_device: Add helper to iterate over
+ VFs from starting number
+Date: Fri, 24 Jan 2025 09:10:38 +0100
+Message-Id: <20250124081039.31201-4-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20250124081039.31201-1-lukasz.laguna@intel.com>
 References: <20250124081039.31201-1-lukasz.laguna@intel.com>
@@ -70,106 +70,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper allowing to get VF's provisioned quota based on provisioned
-ranges exposed in debugfs.
+Helper allows to iterate over VFs associated with given PF, starting
+from a specified VF number.
 
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- lib/xe/xe_sriov_provisioning.c | 56 ++++++++++++++++++++++++++++++++++
- lib/xe/xe_sriov_provisioning.h |  6 ++++
- 2 files changed, 62 insertions(+)
+ lib/igt_sriov_device.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index 5ba348131..aedf9bd91 100644
---- a/lib/xe/xe_sriov_provisioning.c
-+++ b/lib/xe/xe_sriov_provisioning.c
-@@ -8,6 +8,7 @@
- 
- #include "igt_core.h"
- #include "igt_debugfs.h"
-+#include "igt_sriov_device.h"
- #include "intel_chipset.h"
- #include "linux_scaffold.h"
- #include "xe/xe_mmio.h"
-@@ -299,6 +300,61 @@ bool xe_sriov_is_shared_res_provisionable(int pf, enum xe_sriov_shared_res res,
- 	return true;
- }
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index de25a7d98..741b1bcec 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -86,6 +86,21 @@ igt_sriov_random_vf_in_range(int pf_fd, unsigned int start, unsigned int end)
+ 	     ++__vf_num)
+ #define for_each_sriov_num_vfs for_each_sriov_vf
  
 +/**
-+ * __xe_sriov_pf_get_provisioned_quota - Get VF's provisioned quota.
-+ * @pf: PF device file descriptor
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based)
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read value
++ * for_each_sriov_vf_starting_from - Iterate over VFs starting from a specified VF
++ * @__pf_fd: PF device file descriptor
++ * @__start: Starting VF number
++ * @__vf_num: VFs iterator
 + *
-+ * Gets VF's provisioning value for the specified shared resource @res,
-+ * VF number @vf_num and GT number @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
++ * For loop that iterates over VFs associated with given PF @__pf_fd,
++ * starting from a specified VF number @__start.
 + */
-+int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
-+					unsigned int vf_num, unsigned int gt_num,
-+					uint64_t *value)
-+{
-+	struct xe_sriov_provisioned_range *ranges;
-+	int ret;
-+
-+	ret = xe_sriov_pf_debugfs_read_check_ranges(pf, res, gt_num, &ranges,
-+						    igt_sriov_get_enabled_vfs(pf));
-+	if (igt_debug_on_f(ret, "%s: Failed ranges check on GT%u (%d)\n",
-+			   xe_sriov_debugfs_provisioned_attr_name(res), gt_num, ret))
-+		return ret;
-+
-+	*value = ranges[vf_num - 1].end - ranges[vf_num - 1].start + 1;
-+
-+	return 0;
-+}
-+
-+/**
-+ * xe_sriov_pf_get_provisioned_quota - Get VF's provisioned quota.
-+ * @pf: PF device file descriptor
-+ * @res: Shared resource type (see enum xe_sriov_shared_res)
-+ * @vf_num: VF number (1-based)
-+ * @gt_num: GT number
-+ *
-+ * A throwing version of __xe_sriov_pf_get_provisioned_quota().
-+ * Instead of returning an error code, it returns the quota value and asserts
-+ * in case of an error.
-+ *
-+ * Return: The provisioned quota for the given shared resource.
-+ *         Asserts in case of failure.
-+ */
-+uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
-+					   unsigned int vf_num, unsigned int gt_num)
-+{
-+	uint64_t value;
-+
-+	igt_fail_on(__xe_sriov_pf_get_provisioned_quota(pf, res, vf_num, gt_num, &value));
-+
-+	return value;
-+}
++#define for_each_sriov_vf_starting_from(__pf_fd, __start, __vf_num) \
++	for (unsigned int __vf_num = __start, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
++	     __vf_num <= __total_vfs; \
++	     ++__vf_num)
++#define for_each_sriov_num_vfs_starting_from for_each_sriov_vf_starting_from
 +
  /**
-  * __xe_sriov_vf_get_shared_res_selfconfig - Read VF's configuration data.
-  * @vf: VF device file descriptor
-diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
-index 1a05c2c59..0381b564c 100644
---- a/lib/xe/xe_sriov_provisioning.h
-+++ b/lib/xe/xe_sriov_provisioning.h
-@@ -90,6 +90,12 @@ void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
- 				     unsigned int vf_num, unsigned int gt_num,
- 				     uint64_t value);
- 
-+int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
-+					unsigned int vf_num, unsigned int gt_num,
-+					uint64_t *value);
-+uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
-+					   unsigned int vf_num, unsigned int gt_num);
-+
- int __xe_sriov_vf_get_shared_res_selfconfig(int vf, enum xe_sriov_shared_res res,
- 					    unsigned int gt_num, uint64_t *value);
- uint64_t xe_sriov_vf_get_shared_res_selfconfig(int vf, enum xe_sriov_shared_res res,
+  * for_random_sriov_vf_in_range - Iterate over a random VF in a specified range
+  * @__pf_fd: PF device file descriptor
 -- 
 2.40.0
 
