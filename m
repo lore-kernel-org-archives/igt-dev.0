@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC5C4C02188
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 10:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DE2C02188
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 10:54:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69F9E10E08F;
-	Mon, 27 Jan 2025 10:18:01 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D434410E08F;
- Mon, 27 Jan 2025 10:18:00 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3022305251423987693=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1748610E2A4;
+	Mon, 27 Jan 2025 10:54:26 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TjgKnfp9";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5A9010E2A4
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 10:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737975264; x=1769511264;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=JXu3C72/UuqamIjgVECrzCljBocR+l01mJkoHTld7vw=;
+ b=TjgKnfp9EyGE+k+U1W40BfRRacENcr1RlWr/I8dOsPgyE2Jl+l5c/3az
+ GSZBh9sPkLIS1XnoowubUy777jekP+lc9N662/m/I6rWClhPvjfr8It8K
+ FTjBGPNLkwTKuHCebm1ujAAkO5Y5Rz7dktRL9tmB/LV7AAib68Fa1k5po
+ /F8oxfIczmghPIKWWQJ3YJ2h1VhfgzZ0ooP7n2qxeKMqYxA914ZZjLIUU
+ 7mN8eqz8HPc8DMiAWXefxN++Y0AG/NCcFscQgNnXit8b5k+f62qo5LsvD
+ D2zDJMt9gZFeMM5Mx3uu9xqpHTmzfU4AamGFhjsKErTojUpdcJUPehtyZ Q==;
+X-CSE-ConnectionGUID: MQ6kq8cqRQ6CSIs/BE+hcg==
+X-CSE-MsgGUID: x8WIQIjxSd+XjuWkxv6EoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="48933362"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="48933362"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 02:54:23 -0800
+X-CSE-ConnectionGUID: VL6cC8aJSJmGMlACbKesEQ==
+X-CSE-MsgGUID: yGJp5xzlRMCCyDNdmSKALQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="145620413"
+Received: from nwochtma-mobl.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.83.54])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 02:54:20 -0800
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>, stylon.wang@amd.com,
+ Rodrigo.Siqueira@amd.com, ramadevi.gandi@intel.com, ryszard.knop@intel.com,
+ sameer.lattannavar@intel.com, lucas.demarchi@intel.com,
+ jani.saarinen@intel.com, katarzyna.piecielska@intel.com,
+ matthew.d.roper@intel.com, gregory.f.germano@intel.com,
+ clinton.a.taylor@intel.com, jianshui.yu@intel.com,
+ balasubramani.vivekanandan@intel.com, jonathan.cavitt@intel.com
+Subject: [PATCH i-g-t v2 0/2] Integrate kmemleak scans in igt_runner
+Date: Mon, 27 Jan 2025 11:53:39 +0100
+Message-Id: <20250127105341.181527-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250121112944.115491-1-peter.senna@linux.intel.com>
+References: <20250121112944.115491-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpmu=3A_A?=
- =?utf-8?q?dd_PMU_tests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinay Belgaumkar" <vinay.belgaumkar@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Jan 2025 10:18:00 -0000
-Message-ID: <173797308086.1329374.16428878272747187471@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250127081402.2587605-1-vinay.belgaumkar@intel.com>
-In-Reply-To: <20250127081402.2587605-1-vinay.belgaumkar@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,156 +71,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3022305251423987693==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This patch series introduces a library to interact with the Linux
+kernel's kmemleak feature and integrates it into igt_runner. If
+kmemleaks are detected, they will be saved in the igt_runner results
+directory in a file named kmemleak.txt.
 
-== Series Details ==
+During testing, the size of the kmemleak.txt file varied significantly.
+Larger files, up to 2 MB, were observed when running i915-BAT on a
+Tiger Lake DUT. Conversely, smaller files, typically under 100 KB, were
+generated when running Xe BAT on the same DUT.
 
-Series: tests/intel/xe_pmu: Add PMU tests
-URL   : https://patchwork.freedesktop.org/series/143985/
-State : success
+Large files often contain numerous false positives, with the e1000
+driver being a frequent source of noise. The time required for the
+Linux kernel to complete a kmemleak scan ranges from 5 to 60 seconds.
+This variability can cause igt_runner to slow down by a factor of 4
+when using the -keach option.
 
-== Summary ==
+Transient leaks are a common phenomenon but are mostly undetected by
+the current version of this library. A typical transient leak occurs
+when pointers are reused, such as in linked lists. For example, if 10
+calls to kmalloc are made, storing the address in the same variable
+and freeing only the final allocation, the previous 9 allocations
+become transient leaks. These leaks will go undetected unless the
+kernel thread performs continuous scanning.
 
-CI Bug Log - changes from IGT_8209 -> IGTPW_12496
-====================================================
+To enable continuous scanning:
+ # echo scan=1 > /sys/kernel/debug/kmemleak
 
-Summary
--------
+This configures the kmemleak kernel thread to scan the memory
+continuously with 1 second pauses. While this may increase the
+likelihood of detecting transient leaks, it can significantly impact
+system performance. In most cases, the igt_runner slowdown remains in
+the 4x range, but the kernel thread will consume 100% of a CPU core,
+as observed with tools like top.
 
-  **SUCCESS**
+When using scan=1, transient leaks that exist during an active scan
+will be detected. However, detection remains non-deterministic due
+to timing. It is recommended to reset the scan interval to the
+default value of 600 seconds after completing your tests.
 
-  No regressions found.
+v2:
+ - Pass igt_kmemleak_sync as a function variable to igt_kmemleak instead of
+   keeping it stored as a global variable
+ - igt_kmemleak_found_leaks(): Remove call to fseek() after close()
+ - igt_kmemleak_write(): Increase retry counter when writing 0 bytes
+ - igt_kmemleak_write(): change type to bool
+ - Unit Testing: Move the call to igt_kmemleak_init() to a fixture.
+ - igt_kmemleak_append_to(): Add brackets to the if statement for improved
+   readability
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/index.html
+CC: stylon.wang@amd.com
+CC: Rodrigo.Siqueira@amd.com>
+CC: ramadevi.gandi@intel.com
+CC: ryszard.knop@intel.com
+CC: sameer.lattannavar@intel.com
+CC: lucas.demarchi@intel.com
+CC: jani.saarinen@intel.com
+CC: katarzyna.piecielska@intel.com
+CC: matthew.d.roper@intel.com
+CC: gregory.f.germano@intel.com
+CC: clinton.a.taylor@intel.com
+CC: jianshui.yu@intel.com
+CC: balasubramani.vivekanandan@intel.com
+CC: jonathan.cavitt@intel.com
 
-Participating hosts (38 -> 35)
-------------------------------
+Peter Senna Tschudin (2):
+  lib/igt_kmemleak: library to interact with kmemleak
+  runner/executor: Integrate igt_kmemleak scans
 
-  Missing    (3): bat-dg2-14 bat-arlh-2 fi-snb-2520m 
+ lib/igt_kmemleak.c       | 274 +++++++++++++++++++++++++++++++++++++++
+ lib/igt_kmemleak.h       |  16 +++
+ lib/meson.build          |   1 +
+ lib/tests/igt_kmemleak.c | 267 ++++++++++++++++++++++++++++++++++++++
+ lib/tests/meson.build    |   1 +
+ runner/executor.c        |  25 +++-
+ runner/runner_tests.c    |  18 ++-
+ runner/settings.c        |  31 ++++-
+ runner/settings.h        |   2 +
+ 9 files changed, 630 insertions(+), 5 deletions(-)
+ create mode 100644 lib/igt_kmemleak.c
+ create mode 100644 lib/igt_kmemleak.h
+ create mode 100644 lib/tests/igt_kmemleak.c
 
-Known issues
-------------
+-- 
+2.34.1
 
-  Here are the changes found in IGTPW_12496 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8209/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-mtlp-9}:       [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8209/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13577]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13577
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8209 -> IGTPW_12496
-  * Linux: CI_DRM_16017 -> CI_DRM_16023
-
-  CI-20190529: 20190529
-  CI_DRM_16017: 897537fb818365733977947214c799d61675895f @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16023: 006a892140827b356eb4ad5a5e9b947477791ba8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12496: 12496
-  IGT_8209: 07ec14a8b00849e82a6ee7aff433c8f564787bf0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/index.html
-
---===============3022305251423987693==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pmu: Add PMU tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143985/">https://patchwork.freedesktop.org/series/143985/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8209 -&gt; IGTPW_12496</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/index.html</p>
-<h2>Participating hosts (38 -&gt; 35)</h2>
-<p>Missing    (3): bat-dg2-14 bat-arlh-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12496 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8209/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8209/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12496/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8209 -&gt; IGTPW_12496</li>
-<li>Linux: CI_DRM_16017 -&gt; CI_DRM_16023</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16017: 897537fb818365733977947214c799d61675895f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16023: 006a892140827b356eb4ad5a5e9b947477791ba8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12496: 12496<br />
-  IGT_8209: 07ec14a8b00849e82a6ee7aff433c8f564787bf0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3022305251423987693==--
