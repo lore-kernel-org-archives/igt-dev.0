@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17FC4C0218F
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 07:46:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F07C0218C
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 07:47:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ACE1910E1D9;
-	Mon, 27 Jan 2025 07:46:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 22F6610E11C;
+	Mon, 27 Jan 2025 07:47:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q4L5UY+J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PPKo4gK2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9501C10E1D9
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 07:46:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA8DA10E11C
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 07:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737964012; x=1769500012;
+ t=1737964047; x=1769500047;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=0aPAki5Nsf7txW5pQ4kbgogDz10nec467rs+iazoBzA=;
- b=Q4L5UY+JYG7nUG73ZRpp1LFJ8cAfmHXc/THeyR+td1x0PZGn8Abmma/J
- Ww9E8U+5rFTZEnqgl6WEx+LYv+J6V4Gx4iZB6COUmtxGTIH1l8SGzFLBC
- VvQ5N6EJhvdl/mcR/Y1X4sNWSqhupiyikwpcMM+kT7KPNLmyBEJTkaV+E
- uNkIvK3DbqApmYLCAwk5kQE98qFFka3YLKHkQq8q07ryttFG+Enal2KT5
- I1/VAOi0O6lTTbhZdHfgAKTHDjTAAWb8Qo2EpKFYEbxgb8lJEJ+7bVSJj
- vOUegS5HxCC7WUnFSv4YAWPIMXDINc8hLXybDsjpLqaVqg/vcre2cTOyu w==;
-X-CSE-ConnectionGUID: dyCEgfxgRBOGzQGXp/ZI5A==
-X-CSE-MsgGUID: EpU3ifa7SEKAAZQe5/TAlA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="37669020"
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="37669020"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2025 23:46:52 -0800
-X-CSE-ConnectionGUID: th2ObFf1TPG4LIGOaHxTfw==
-X-CSE-MsgGUID: LSfgs28xTu6118ci8lQVZw==
+ bh=XQs2QMeDZbwTEigN4OsP7IeBlM6inOzVvhGdJCleiis=;
+ b=PPKo4gK2099OCUPaRJCKGaTuefZiMf/l7Rw2xTFTma1La5dPznRIEkpG
+ k+IytLwnJnQoesccWD7AWlkab8IV+Z94No2Yd3P3G+F7fn5LpXNUuew/A
+ gNH4QuPSmFteANZ4fKqgyjEmWzHVCfx0MXBkvsSKvnG3ll+LBMpQSjSwh
+ 9tK9lDbPI8oKKnHqFh5gIEW2UcQ+uxMY7RcZt5vCXucYQE7jXNhwiDJDu
+ CC7RzeIXbMpec5xzDsczv7LMZKGn4eNYQHDbp+LZOIJzhbl71HD4qarnt
+ bN4MiENU2Ztd1RAaI3FB/hxFqxnowYTUdGBbvJnMHq7PZTQu6uej36zuX Q==;
+X-CSE-ConnectionGUID: ZfrbQaeqTimXWrVqq6D45w==
+X-CSE-MsgGUID: lcEDxP1oSjSSlna9LKbEkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="42346820"
+X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="42346820"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2025 23:47:26 -0800
+X-CSE-ConnectionGUID: B5h2k1UzSNamsFH+updJJQ==
+X-CSE-MsgGUID: JTbKVyUcSSKyQ74V9DEHBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="113504305"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="145591633"
 Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 26 Jan 2025 23:46:52 -0800
+ by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 26 Jan 2025 23:47:27 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
  ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Sun, 26 Jan 2025 23:46:51 -0800
+ 15.1.2507.44; Sun, 26 Jan 2025 23:47:25 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Sun, 26 Jan 2025 23:46:51 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.48) by
+ 15.1.2507.44 via Frontend Transport; Sun, 26 Jan 2025 23:47:25 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.41) by
  edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Sun, 26 Jan 2025 23:46:51 -0800
+ 15.1.2507.44; Sun, 26 Jan 2025 23:47:24 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HqxXS/0ijEXtMeitG83HzRLNPBD+64vTPU6GKAmjtxOPmOfmKRxXkj2lShMPg2vFHgNOFUXLdsj5OD3a8h6OmsAOhGiZ1csDqk4wS0csgrcO2MUJBZidq6MVx0FG1PBlIpDlQJ10vU5MVom7Zl8bz2QYZRDFJlKdABWeNWkB2dxbTjPQKOH/bCwAY+Ksy4TzUxcq1yvUYLUSv8zxz7mx7LHCnjiBj45wfCWmfuzupsOLq8gSEHWZhLuV8wlJHmu2G4BEmQyH3n/+17qY/lVpLKqNTcAiWKoNwu79DXG5CUXnRqiU1jdLZmbYS6lYUkz1Nn8z/jnXf/OzErGJv+fETQ==
+ b=jNynBqa+PgGyQUvxJOFQfQWxfZRM/NrTsQFrjHSgzHoRvDIiARr7Ce9RkFrlEFTjkWATcGNpo/sAuqscd0ZVD5IV4X63B5qvcPbwqELqNE85LJxXNgD0m2mFuK/oQht/vxQdRJxi9s6OwShXBLIArjqbZQ8i4zCqjM5D7kMl/TiYSjnTY5Y7mEIcy6CgpbPHsXpc/SJ7qhjoxH+1BYrleHKmfTztZzWNZOY+lKqEb99yOGljxPCnI40p/zN6tUjjRn6XxjaOjqWodRAVAMTK7Oyh/YYJLSLTN4YWMBUXgfin75UVUbeg6tIPbDVxyKLrx8ckDuiTqgAlSKz1wDb6hg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XBkUl6yV/Tqa4TMB67Fw/cMTLSJTmO7egcNq3R8VnwU=;
- b=Ein8R6QHLrPQnDS8VBL76wGOaUrLEXQETdm/7Y8MmF+RxXbkU3DSPc4CxOYt5o9QLMSFnNj55n2lRauBqsDPHt75naOH1m1WauITLvqc89kSA+eNO+8G+YC9hBa9fekVUyD/3ML9xNelBReqeJFCnGqxYr6H542zetXZiqYfvgEGeKYJY/FEiaXry81xiH3ka0svboQcMyXDsE8tU3XiXyZ37c94N8aIRAMINeOGHhou+qmF/DGA+AzlVgLyQ+6AOehOWWyFB+brlRgXUX5pNKznfxa7dXtnr6SLABLi2WosDY5mT323RYQ1lPHHc82KWoAkXoqybRUPGqs2pYZcbQ==
+ bh=xxTrFhfNXeY3U4/Xdm3abwLoCMmU+iIvC9l0yCZKEjM=;
+ b=jSs/+ypQLF83EfbEPuE8w/TkhV940ANba1PuBQ5+3WnN4Hx5ZO4LcJlEGYETh4sjo6Sczwi9V75/XP9KzKlBJ9tn8chiflFGoOEseGj3bznaQA8ht6tOq7eAnG4FEwWr8zR14p+gYrvgPBjZHmk4VUH1Z1geZUx75ZO4+cZfrfaIOjfAZB+HuyB5fC6fENRBJP+qvqC/nKb3S+q+1LYBplGQlVLlZzy7Se8FxHmed1bobc3lX4zunHBlQ693l4WP3JG2Qhcdo+jclPzI8uIE4PWLTSSSy/fhho/EOm9e/rbkP/zwtxj7VlP5c7HLyf1/dyqMeGXp/j93fWpifyqC2g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -67,11 +67,11 @@ Received: from LV3PR11MB8695.namprd11.prod.outlook.com (2603:10b6:408:211::15)
  by MN2PR11MB4744.namprd11.prod.outlook.com (2603:10b6:208:263::17)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Mon, 27 Jan
- 2025 07:46:09 +0000
+ 2025 07:47:23 +0000
 Received: from LV3PR11MB8695.namprd11.prod.outlook.com
  ([fe80::4858:d790:3ac6:8541]) by LV3PR11MB8695.namprd11.prod.outlook.com
  ([fe80::4858:d790:3ac6:8541%4]) with mapi id 15.20.8377.021; Mon, 27 Jan 2025
- 07:46:09 +0000
+ 07:47:23 +0000
 From: "K V P, Satyanarayana" <satyanarayana.k.v.p@intel.com>
 To: "Laguna, Lukasz" <lukasz.laguna@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
@@ -80,16 +80,16 @@ CC: "marcin.bernatowicz@linux.intel.com" <marcin.bernatowicz@linux.intel.com>,
  "adam.miszczak@linux.intel.com" <adam.miszczak@linux.intel.com>, "Kolakowski, 
  Jakub1" <jakub1.kolakowski@intel.com>, "K V P, Satyanarayana"
  <satyanarayana.k.v.p@intel.com>
-Subject: RE: [PATCH i-g-t v1 2/4] lib/xe/xe_sriov_provisioning: Add helper to
- get VF's provisioned quota
-Thread-Topic: [PATCH i-g-t v1 2/4] lib/xe/xe_sriov_provisioning: Add helper to
- get VF's provisioned quota
-Thread-Index: AQHbbjeBdeaFwodZs0y6py46vxQprbMqQnWA
-Date: Mon, 27 Jan 2025 07:46:09 +0000
-Message-ID: <LV3PR11MB869562530D2B98FFD63D8072F9EC2@LV3PR11MB8695.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t v1 3/4] lib/igt_sriov_device: Add helper to iterate
+ over VFs from starting number
+Thread-Topic: [PATCH i-g-t v1 3/4] lib/igt_sriov_device: Add helper to iterate
+ over VFs from starting number
+Thread-Index: AQHbbjeC8lBCA+U5r0+8qLZ6c0Gmf7MqQueQ
+Date: Mon, 27 Jan 2025 07:47:23 +0000
+Message-ID: <LV3PR11MB869502E647D73E7766EA387AF9EC2@LV3PR11MB8695.namprd11.prod.outlook.com>
 References: <20250124081039.31201-1-lukasz.laguna@intel.com>
- <20250124081039.31201-3-lukasz.laguna@intel.com>
-In-Reply-To: <20250124081039.31201-3-lukasz.laguna@intel.com>
+ <20250124081039.31201-4-lukasz.laguna@intel.com>
+In-Reply-To: <20250124081039.31201-4-lukasz.laguna@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -98,80 +98,80 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LV3PR11MB8695:EE_|MN2PR11MB4744:EE_
-x-ms-office365-filtering-correlation-id: 7f059ed1-064c-47e5-3259-08dd3ea6a9eb
+x-ms-office365-filtering-correlation-id: 0fef3fb7-ccbd-49b1-99a8-08dd3ea6d61c
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|1800799024|366016|376014|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?qyulq59kGuQHzC4QDiD5K993XCAsPH17vYyxCbzDeKC9eoH++3RrPCxs7e9n?=
- =?us-ascii?Q?NTvy7Mf8Rz/tLD9UIx4edbceS6p3yfj8yDeSWLuLiYYdbE/TzR0a8eskVttR?=
- =?us-ascii?Q?stRVSi4i3vYFL63feR60qdCSwzoYzoMLx/29wKedp/5Cfq5EK/P86w7AhLcU?=
- =?us-ascii?Q?j2oWMqDB7YJ6K/yjYeuBWtXVUq8VgciYQ85gy8eTorzWNqzUSG9KJLLbJXs1?=
- =?us-ascii?Q?qiCzIw6RahGCbH31zxGpSeuEK8ZnSLyFTn9sOxqy7QNQ5EmbCbdHq0BiIoBi?=
- =?us-ascii?Q?SnuL5Wp3A2QnHivM8Wf4U1N68EMGs5CkIqE32kI/P3ZxsRymz6QBYB0J0SU5?=
- =?us-ascii?Q?pYHgS9baS2OcPdzlVGtgqilsg5GIieNyMCbRRsZmsoYU5xw5JHMrYKnqwJgv?=
- =?us-ascii?Q?mltlbUvqo087i58qDX6/pfm1ziV/2uEHvciNIAsBzWpIrbI5CjBtKUBw9/Df?=
- =?us-ascii?Q?Ahhwzm3wMFJndsJpugnLdfE3PYR/HaVfifG6GyycD1pWAtgI7CuzQHOjYiFn?=
- =?us-ascii?Q?lY+CkAe0aORcKhfEwTIK2bqrQa7MajRsfnZa3bREXMaF/RGOp8AP1JipOve8?=
- =?us-ascii?Q?sD4VULYRT49kv6SxiVx+tQ8uApkX4NZ0WDD3tXCba+3BVxmzK/ONOxIaPYh5?=
- =?us-ascii?Q?xzZNICn+e1qbZMdMlv5UzlztRja4e181I0hRVkc7TkrH+xsVg8dcCV2wC33Z?=
- =?us-ascii?Q?OQqXTrs9prC6qPLpHo2QSWWSEHz/Dfw89eoi+glRM3XtBFBncuo26P7/9iLx?=
- =?us-ascii?Q?IKLF7gXrLl3rVUniUwC6qkbYlQ+dIa89eIXiTmNLzsfoRi4TB1Mn+az8RodW?=
- =?us-ascii?Q?xf0NUUKvCeP963IOZXvsO6q+ZWYlx7sEFY9KOt+kp0dkZl+CDZaqCI0sAc4i?=
- =?us-ascii?Q?3PqEx02LksoOLsh37M6VzVAzi+B4po7lbwv9R3woisBT4udXDZ+8K5Jy+bZf?=
- =?us-ascii?Q?sgpAVIWjk4Tt7JHBRxDDJR+lkaBnOs4yU58PazbSNRWQ69uPAGyWG38o4dlz?=
- =?us-ascii?Q?jgA1Cwe0e44B5keINXEw1YB/5WiI8aW6UV8V4mVbF+FxmNG3mR1FUl4RMgCM?=
- =?us-ascii?Q?vcQSVnJfkSkflfswsFvLcH9a5WLirOPrRzTsoA7QvTuvyMpRKOPNu87vl6jj?=
- =?us-ascii?Q?inS8/2iRBnZMQXXCU+xdBaH1hYihJsl58v3mpkwgaa4o1tDtn2WIAaeDWyzQ?=
- =?us-ascii?Q?gKaUE5lrd6/nJs+1R1aOnrQoB9MBRt3872LJKnB9CLk8TsVFXbQKvny/yxTu?=
- =?us-ascii?Q?fQ7RKUDqcpH+seO42iRSWTDODlxzyUe+V9if4N90jQikTEe3xNpzonKsB8ZD?=
- =?us-ascii?Q?C4I71gWwA3BJYaq5Pr0jwEjUsQWZFhHM5YixE/YxYd/ArAIdoLd3/4gJCi9L?=
- =?us-ascii?Q?lW5WHWGcfV9dXaBKDS+9UKghejJ3HaeVPIXPcZs9we30k//MMCW+tbKUCyAb?=
- =?us-ascii?Q?OVnPzgjyEv2Fvp35BkaiX6bKjpoSvv/q?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?CtfeRAewqvIAJNrn+Yl5GGvEXQqm2fklND/wwop6OycA9sMv3830KdGSJnZd?=
+ =?us-ascii?Q?LWEytPpi7tk0S/iGuCCxwxC96eKRn/qNpy3qXtVlO6EkC1CI7ymRHwAD+Y78?=
+ =?us-ascii?Q?0tIDh16m7K2RUWk86tXU0IiDGdmRQpXgtbbXJ7aoAA86oZZwxk/9xQdKzf8P?=
+ =?us-ascii?Q?ISHOKivMMN5X+q5N+XomfYSSl1cxu/frj5TXFKky3xNbuP4fZbN1QvoBKJR/?=
+ =?us-ascii?Q?Borymj+Pbeawe+1Nm7UzicQ79svOhzpN8i4BggsVj1VtBqWeOh4ttkTQhZq6?=
+ =?us-ascii?Q?V0X7602yTh590jPaKNTV9sXT7sjqtfB4fQON/hebgWZa4rSWrBaLXeJv/0bg?=
+ =?us-ascii?Q?nwDQSnef8DYogDYKsWpLAvvkTjpq8fZoOFxqyQGeqcb0+ReEe+9OciN52Fo6?=
+ =?us-ascii?Q?QG9WsMDWp37kkuxxUCgHP5qcQCaoEg73CsPKUxd0zH55xQyyJ1aPzJafpcnj?=
+ =?us-ascii?Q?nRBIpUDw3eQf9wCOrlGi77DMWhLrpuDE8VqLdfCW0LVc/HQF1OLulEXbEkao?=
+ =?us-ascii?Q?WNisCci1lgPTRV4i7GL+NGF7KMIAUKhpId+gttc8SjG03x61Wl0a4i5xLiNv?=
+ =?us-ascii?Q?t2vjwJGUU42g1kanrAo9N6Bd2qCKOEWFU38V/D9yNF5k0ceaqUKBUI41CjMh?=
+ =?us-ascii?Q?eQxhX0yiDkM9rVBseXUBkr0DetNnOTK39gqbE+QxWYcV0clvgJpw6yB9jj/o?=
+ =?us-ascii?Q?6NXkXR0E4F2o2E5D19cdNpAzQVWa6+Djfq373UlQ39ZHxzyoWFaB49KH7Snj?=
+ =?us-ascii?Q?6TYQlxCPqiVQScLEeGgPSUUK8g2xxzO3u6O8zNK7rknkeJiY45bnICul1ECu?=
+ =?us-ascii?Q?78UNEztVBvlYCfUJILGYKtso28R1BarJgvj8c8xcrNt6cqOWs/q31DFSt57z?=
+ =?us-ascii?Q?xt444B4KxWTysO9uwRmkc91SfsgALgoqMdlKsOs8NNWQ6Q+UBMAQcC81jdZ8?=
+ =?us-ascii?Q?/Y1+MIgaXpSenW6yEWMAn2Lyhw0dXCE6IAvsEDUvlQfwwq1P2cBTpHguK+ss?=
+ =?us-ascii?Q?DRz1Y2KtuhVV3E5oHMJ84a425+crqZWS5GDa7F+Pmq4cAJuc34VahEmGrXfD?=
+ =?us-ascii?Q?1DG9TlrBZ7OK9LZHoLMKK3B7xrb9CXtlTKOnnQBnVtLpwmyQPsxLsosujRzr?=
+ =?us-ascii?Q?Kw29YAVjVxac0FgNgBdxaeTaWMqjh9o4GY480IlqtFyvTtNhLaZhj0e7FMze?=
+ =?us-ascii?Q?2hXlFcBA/zpz4QfjEDown0MMALAVtKH3jN27snJMzUoZGGzNbB2oRvzb9g21?=
+ =?us-ascii?Q?oAO1jGnIYRk7LKk/B/l8TxgUL5oGwu0JFVIB916rIfIkklwgSfDSOl2ZJbZN?=
+ =?us-ascii?Q?CHpjjaEqhefSJQspPu5q3zr77lmbd5W+3uOOdSm62CMFCWPQTaDTP0T1aU7t?=
+ =?us-ascii?Q?pDpGegiXn53J6iJ5pj7C9rmXb7P8a9f89N/Y+ZaXPVecFZWHI4/+iNztkRyI?=
+ =?us-ascii?Q?J9iqZtebJQqLCUSa5KlAkCnSWUxUK4GV?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:LV3PR11MB8695.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700018); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?a4Mlv2x/yHceRV6GRlP5aLhtNeEubV3Sxlk+PKL6wjuKpcx+5/xVdwaMi1Nv?=
- =?us-ascii?Q?kEK/ZCqAkJcC3oJuggnDCqkIiRQ9aDAPuU14NtsO1f/7YBGaGuMvK/jDpyP8?=
- =?us-ascii?Q?xw1BNxKaB5dcRAArdubbJFTRHdJWyUe/Tkx7sTXi3noqKGRFOvk7IB2wECCg?=
- =?us-ascii?Q?yaBLqz2Ocp34lg0GO2T6in1Dj4t96jOgBDI9IIxKxV9j/kPLuYBIDdEdgxgR?=
- =?us-ascii?Q?jlryrt38uSy9q7OG8n5nKtXC1449Ah4ySvmHp6l9pXePL98MIa75yX39SRtR?=
- =?us-ascii?Q?a1daGyZ7w4lJLJO57xGcSACR+zKMbGmKoG6lkR2EhqX0dpg/hihD6hfIZ1OB?=
- =?us-ascii?Q?AYyA+jlWZ9s8x6M8yGYQy5VO8fLuImqW6xXLqh0H7wyrmmyvGn8OnqaKwgC9?=
- =?us-ascii?Q?Z5XDZUGr+I6Wo5BdKOXy42EwSa88T3p6BjaXViGk5y8zldlp2qBGkiX2FMR1?=
- =?us-ascii?Q?tHAAW554JNe5LS4m8ibSDVr4imXAZPdkGFJ47wK3sq/xl617OdXzHNmdMHIX?=
- =?us-ascii?Q?tPARfsY7NDVznm1xr7rscDtMRMUl2/4Yl4mz7XEfZAkHAAxQYSNy01+JTm8Y?=
- =?us-ascii?Q?kVxcIawA3h7UoivNfzgNfaA05rMbFDa2sr7o2VJH0jMSeuItn1MFlb+dsWu+?=
- =?us-ascii?Q?Pl8ciEBlfvV2eHB5KdgsF3bwKNQBhu9OhXAjWnjWMDpCEVnD7ox5hg+WSTc3?=
- =?us-ascii?Q?U1Hjy+nSNEmM0GquXUrGrPMRmFdcD3fB0i8dyPUuWzkLwLa2NL+7nqmJUaCj?=
- =?us-ascii?Q?t63bxwG4JkL5P5hzA+HAk08e6D0soTV8f16D/Gk4kjVFYwU9ZB2hEcT5jPrp?=
- =?us-ascii?Q?ZK767Vc3gFFYqPqq37hcpwrgIlKkD9Kwo280iKbGnLcKY8Pv7bQsJCKd8WJP?=
- =?us-ascii?Q?M4DUqBrDC7m1TGnAjleo8Wr0IYDljtWZ8lwtRcq71l7WC31+prI6KH6GxrrK?=
- =?us-ascii?Q?f2fC2670p2fr6g7ldVUNVY/of5d0LgW6JYN9qVRb7p1D9kXYfwEmqkXlTSAe?=
- =?us-ascii?Q?s8FI7wQxCVNgNA1elw4XKxAiK9Oty8Ntr0Y1tD/YqeG0VkOWYBocmKpUgCUv?=
- =?us-ascii?Q?VgzcmE9yUPlLJWgz9sx4QtsmIFXGuQ4MAbBh/sfP6ROckQ0+5Rgvp+uSkQGl?=
- =?us-ascii?Q?8t+NFwnBJL/RSrSw/PgXq2P+yW/BhvgiWhRrDEOQAwulkLcl01DX+jWcxZiC?=
- =?us-ascii?Q?py9GpUbph7AtBHk+4g/K183/LJuJGarYkLIazYG2L+d/UUEIVbtaXYqSNyfH?=
- =?us-ascii?Q?mX99cASBaB+qnK70leK6cB93keTcQ/5ExgXjYKZmoYwsjyH2zdnMrZJOsPgH?=
- =?us-ascii?Q?tuCR3SpbnTVV5qeNBswp6vcnQtDSryjJkhlOng4D8L1FxffprXgzQXQToS5F?=
- =?us-ascii?Q?C9rGSVG/pRbti73zwX7q0mGOO6Dh3bb8yWvQtgRrRHGtjTxLYYDQoswoQHSo?=
- =?us-ascii?Q?8XcDZ+7bUJ2Ldpybts/I6024cflmx5HH43ev1djUgDoGcQdhkn8HQbSqgU8b?=
- =?us-ascii?Q?OqltU/XlWFgEq5aVQSaQ8g0pkU3ImXtU0YmDpkaEFdo29DPM6/jUcstm614r?=
- =?us-ascii?Q?2Jb6/I5n6w6o/mFxZQm5FeGorH6Mk2GcCgK/l67q2dvScM+g8uJ6YySTsFoa?=
- =?us-ascii?Q?+A=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VNw8rKoqmHekE0mZXXIZtc9vwZstr+OIAEehEqR24nNolDDNVtKC2/VPcV3W?=
+ =?us-ascii?Q?uFmslmebuTMvVTk1n+inyLW7lnlG6Y7LmD77Nx/T+TOn5jENgswUYhP5GPib?=
+ =?us-ascii?Q?iQFRyf9JMBCJH7RY4K9i50cuaqCApd87Fv/2lhGoxbtVrlf+TaMFD8zOXtCx?=
+ =?us-ascii?Q?peEkPJsn5k6/JYSc1dFbFNg1mH2w251eEKG6ilwaghHnb9uZKH2wAdT56LTz?=
+ =?us-ascii?Q?i7QzB8CJDaYxEuqa0iGKVnNBG87JNmYR49679Wna6JKiG39sW8hd1PorsdBB?=
+ =?us-ascii?Q?0rRP6/imflcGkXxYwMJmR6KkSk0uyWoHsUb4aEQqBDg1Y3aBslj5id8B3j4g?=
+ =?us-ascii?Q?uipT02jSo36Sb/MUgYPF4TQDaYJkfo16ugwg74Pn5mjV26SGIA5OiGOQ+KXg?=
+ =?us-ascii?Q?wsoLX1rNFYvTQUEXqA8l2SNjFA7dD2wPcQVOJcydMMYhVNF+9G+xS/GvHNrp?=
+ =?us-ascii?Q?+/oYZT5pI3LMSIx0DefTz2WQ3h2w1KUdWdsqxWTW18q3M4WflqxNrM5KoZ//?=
+ =?us-ascii?Q?wcQGIFfjSxqBHAPpPTdQCT5/Fr1jTPBCmMcgwE9ft7R0Hq5GpzB0EbHa4LEt?=
+ =?us-ascii?Q?xh5Z89Wck6MMdaLDff/fDF6MaWnvGoPsiTW6GsrgbN1XErA1kgGVXn2acGEG?=
+ =?us-ascii?Q?BivCgqrJ+y1jQgk7hY3oG8YtbAHjmPI/IYM52iVYwc/Uc08ozfw/ujDUCZyY?=
+ =?us-ascii?Q?JQBVP6GFA5tSwCQdImy6J7PGVFkcTVAnoN0NcVQj9WmTHi1j7ooNfFn/c+qV?=
+ =?us-ascii?Q?YGjERJTJ8pxJ0/Hr0H+FEMSbNIHPYopEfNxT03gZ9IJ/dbwI0pLQqwQ9ZITq?=
+ =?us-ascii?Q?C2nWt3Fs8YIzHjacV4wWmfv0iixtG6puvbhf9GlQ//xbKA3GxrllZe18FbtA?=
+ =?us-ascii?Q?spNwlVVEzyzclATYcqCLmQqvJYYS/Nn5rXascsN3REj77ev0jih1apNjGz7c?=
+ =?us-ascii?Q?eg4yrdnrRTGizUo0AZcD/IT+wXdx0lFr+1PdQd7zjT7dpkpBvJ7AOmD4IBqG?=
+ =?us-ascii?Q?ujQaw7s6ffiTRV9csW/7RM4tH98xo5Vo2cRGNzIvYRe/Mp8AdlVH04kNjJsp?=
+ =?us-ascii?Q?RN80jfV9bmx73N1gRnNkTeHGFZLKcn7bLoSEm/YZJvABT8ymrx9kcqAi2Ca9?=
+ =?us-ascii?Q?fUT3ZVlNvQKiM+2OinPXCv1xd/G+QNGyAqK77N54fH0wWl/LLB3qid8Wa6Ga?=
+ =?us-ascii?Q?Kym1hzChufWm1tBDXcUOtUOw2tMzmsuQmX2z8MwGtzdI444ZV6Jmw4rqXiG8?=
+ =?us-ascii?Q?3A7IbijVaeDHYOjOTwx572LfrO7UnaBg1czcpRUK0xcPaqVQa3Qn0WExByJS?=
+ =?us-ascii?Q?GZNaLPXmPzks8+b2dxJGaSnDuQvxMB3A+OWdd14ZDtA4KLeS18WU9deEKiiD?=
+ =?us-ascii?Q?iYOyXHmzFcTmfs3HQOomM/YUQsdljorvFxXf7lf62Ue5r4LB0/utj+fz9Paa?=
+ =?us-ascii?Q?cLIZNrR4J+s3lvfg4kdM24RDNbDf7UBeWU1eQMFxJGuIbWX0Rj3RiZaFvlwq?=
+ =?us-ascii?Q?EdMq9FPM6HwdmvpzWi6mxu6fsDJYgRwu2PWPSUp8T3IPhkysweATolMsPRIw?=
+ =?us-ascii?Q?X0LMp2RoNMXzHvlMcnRWLDz3fSHN6LLsn7JJWlIcmEvuvYWQ4jMsdu9HN1MO?=
+ =?us-ascii?Q?CQ=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8695.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f059ed1-064c-47e5-3259-08dd3ea6a9eb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2025 07:46:09.2277 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fef3fb7-ccbd-49b1-99a8-08dd3ea6d61c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2025 07:47:23.4054 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gyx3jNxDiLx7ejqeLK85XupB7l1pkzaIQizuMx1Jn9bF1+T5yXxg0zbzmaawOiZ33/+a6VOBovlSm4g5qxiFiGw6Xkx/1SPfou3uV5zY8UI=
+X-MS-Exchange-CrossTenant-userprincipalname: NjcuzwQtah6aqF5e0P1uXNoOcM2igskxhWVWW3nwpxOhyUum4c/BMyChw840MLuOX6QGS6mHWTUoQ49mZnnogW7T9pYk+bFc/uL4wHtP/BU=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4744
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -197,134 +197,51 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 > <satyanarayana.k.v.p@intel.com>; Wajdeczko, Michal
 > <Michal.Wajdeczko@intel.com>; adam.miszczak@linux.intel.com; Kolakowski,
 > Jakub1 <jakub1.kolakowski@intel.com>
-> Subject: [PATCH i-g-t v1 2/4] lib/xe/xe_sriov_provisioning: Add helper to=
- get
-> VF's provisioned quota
+> Subject: [PATCH i-g-t v1 3/4] lib/igt_sriov_device: Add helper to iterate=
+ over
+> VFs from starting number
 >=20
-> Add helper allowing to get VF's provisioned quota based on provisioned
-> ranges exposed in debugfs.
+> Helper allows to iterate over VFs associated with given PF, starting
+> from a specified VF number.
 >=20
 > Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
 Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
->  lib/xe/xe_sriov_provisioning.c | 56
-> ++++++++++++++++++++++++++++++++++
->  lib/xe/xe_sriov_provisioning.h |  6 ++++
->  2 files changed, 62 insertions(+)
+> ---
+>  lib/igt_sriov_device.h | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 >=20
-> diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisionin=
-g.c
-> index 5ba348131..aedf9bd91 100644
-> --- a/lib/xe/xe_sriov_provisioning.c
-> +++ b/lib/xe/xe_sriov_provisioning.c
-> @@ -8,6 +8,7 @@
->=20
->  #include "igt_core.h"
->  #include "igt_debugfs.h"
-> +#include "igt_sriov_device.h"
->  #include "intel_chipset.h"
->  #include "linux_scaffold.h"
->  #include "xe/xe_mmio.h"
-> @@ -299,6 +300,61 @@ bool xe_sriov_is_shared_res_provisionable(int pf,
-> enum xe_sriov_shared_res res,
->  	return true;
->  }
+> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+> index de25a7d98..741b1bcec 100644
+> --- a/lib/igt_sriov_device.h
+> +++ b/lib/igt_sriov_device.h
+> @@ -86,6 +86,21 @@ igt_sriov_random_vf_in_range(int pf_fd, unsigned int
+> start, unsigned int end)
+>  	     ++__vf_num)
+>  #define for_each_sriov_num_vfs for_each_sriov_vf
 >=20
 > +/**
-> + * __xe_sriov_pf_get_provisioned_quota - Get VF's provisioned quota.
-> + * @pf: PF device file descriptor
-> + * @res: Shared resource type (see enum xe_sriov_shared_res)
-> + * @vf_num: VF number (1-based)
-> + * @gt_num: GT number
-> + * @value: Pointer to store the read value
+> + * for_each_sriov_vf_starting_from - Iterate over VFs starting from a
+> specified VF
+> + * @__pf_fd: PF device file descriptor
+> + * @__start: Starting VF number
+> + * @__vf_num: VFs iterator
 > + *
-> + * Gets VF's provisioning value for the specified shared resource @res,
-> + * VF number @vf_num and GT number @gt_num.
-> + *
-> + * Return: 0 on success, negative error code on failure.
+> + * For loop that iterates over VFs associated with given PF @__pf_fd,
+> + * starting from a specified VF number @__start.
 > + */
-> +int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res
-> res,
-> +					unsigned int vf_num, unsigned int
-> gt_num,
-> +					uint64_t *value)
-> +{
-> +	struct xe_sriov_provisioned_range *ranges;
-> +	int ret;
-> +
-> +	ret =3D xe_sriov_pf_debugfs_read_check_ranges(pf, res, gt_num,
-> &ranges,
-> +
-> igt_sriov_get_enabled_vfs(pf));
-> +	if (igt_debug_on_f(ret, "%s: Failed ranges check on GT%u (%d)\n",
-> +			   xe_sriov_debugfs_provisioned_attr_name(res),
-> gt_num, ret))
-> +		return ret;
-> +
-> +	*value =3D ranges[vf_num - 1].end - ranges[vf_num - 1].start + 1;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * xe_sriov_pf_get_provisioned_quota - Get VF's provisioned quota.
-> + * @pf: PF device file descriptor
-> + * @res: Shared resource type (see enum xe_sriov_shared_res)
-> + * @vf_num: VF number (1-based)
-> + * @gt_num: GT number
-> + *
-> + * A throwing version of __xe_sriov_pf_get_provisioned_quota().
-> + * Instead of returning an error code, it returns the quota value and as=
-serts
-> + * in case of an error.
-> + *
-> + * Return: The provisioned quota for the given shared resource.
-> + *         Asserts in case of failure.
-> + */
-> +uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum
-> xe_sriov_shared_res res,
-> +					   unsigned int vf_num, unsigned int
-> gt_num)
-> +{
-> +	uint64_t value;
-> +
-> +	igt_fail_on(__xe_sriov_pf_get_provisioned_quota(pf, res, vf_num,
-> gt_num, &value));
-> +
-> +	return value;
-> +}
+> +#define for_each_sriov_vf_starting_from(__pf_fd, __start, __vf_num) \
+> +	for (unsigned int __vf_num =3D __start, __total_vfs =3D
+> igt_sriov_get_total_vfs(__pf_fd); \
+> +	     __vf_num <=3D __total_vfs; \
+> +	     ++__vf_num)
+> +#define for_each_sriov_num_vfs_starting_from
+> for_each_sriov_vf_starting_from
 > +
 >  /**
->   * __xe_sriov_vf_get_shared_res_selfconfig - Read VF's configuration dat=
-a.
->   * @vf: VF device file descriptor
-> diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisionin=
-g.h
-> index 1a05c2c59..0381b564c 100644
-> --- a/lib/xe/xe_sriov_provisioning.h
-> +++ b/lib/xe/xe_sriov_provisioning.h
-> @@ -90,6 +90,12 @@ void xe_sriov_pf_set_shared_res_attr(int pf, enum
-> xe_sriov_shared_res res,
->  				     unsigned int vf_num, unsigned int gt_num,
->  				     uint64_t value);
->=20
-> +int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res
-> res,
-> +					unsigned int vf_num, unsigned int
-> gt_num,
-> +					uint64_t *value);
-> +uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum
-> xe_sriov_shared_res res,
-> +					   unsigned int vf_num, unsigned int
-> gt_num);
-> +
->  int __xe_sriov_vf_get_shared_res_selfconfig(int vf, enum xe_sriov_shared=
-_res
-> res,
->  					    unsigned int gt_num, uint64_t
-> *value);
->  uint64_t xe_sriov_vf_get_shared_res_selfconfig(int vf, enum
-> xe_sriov_shared_res res,
+>   * for_random_sriov_vf_in_range - Iterate over a random VF in a specifie=
+d
+> range
+>   * @__pf_fd: PF device file descriptor
 > --
 > 2.40.0
 
