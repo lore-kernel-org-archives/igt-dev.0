@@ -4,56 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37067C0218C
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 05:13:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0921BC0218C
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 05:51:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DCAF110E23E;
-	Mon, 27 Jan 2025 05:13:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7505110E23E;
+	Mon, 27 Jan 2025 05:51:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jKPotiZf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TJe6jzgI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C6D710E23E
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 05:13:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D640E10E23E
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 05:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737954814; x=1769490814;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=CiX1h4q+mfoHfkO/oXQIainOxbb/MdzrcALHY8CoVO4=;
- b=jKPotiZfukMnDsFMjGJSMfHF2RS2c2hESIJc7hv3xR3b3ZrsXicKqomL
- ofYhBs4tFSfzFeCpnFp8/V8rzXz37oll84KGugM7HXe3ob0uI872v9L/g
- hZwsOtEf6Del9F6Y8qEWT4Si5FYzkODSFKrg4UdPc05fm1eZhA5mE8X2q
- SvZdxNz2dR5EbiUTmy9gPhKkLnp3b/+gWf7xAiztYlZEwmNMiKQp+Hnv+
- kxO0qEQyh5IN3/HSvw5uS/Zx55mpa+sh56DJk3W9mI3zL4a+hiRSV9Gt2
- TxMxYtXePliWggxHVfaibZDbmrMyIo/uJ6FiBqUBTSx2mrBK/uBeoRyRQ w==;
-X-CSE-ConnectionGUID: WcXsmjHhQ4qrknA4YlAIqw==
-X-CSE-MsgGUID: t1GHBRNDQdqGhiCv1PIc5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="38545275"
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="38545275"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2025 21:13:34 -0800
-X-CSE-ConnectionGUID: u0MgrkluTQKyOI+ipAZ/yg==
-X-CSE-MsgGUID: izeNLMx0RtyKfb3KRpy5Sw==
+ t=1737957105; x=1769493105;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=5UJ5NjGYFbHD/j2oFkQAcVis+baKdwR+38qip7Quevk=;
+ b=TJe6jzgIJbJ4T4I4K6Sh0THJkiRwRtrltboD9j3OcDyvDvA24xKFtwtd
+ YJangTL3aomEFMHoh6cbd8ceH+c13Q+64xgb5LElvaSD12zAIMyAwnsc3
+ eNHM/ZmrgENLgZWGw8eH1lB/SrWlwJ28/KQVIXnuHg9T1AVCAr18xtTpw
+ jPwtI+PgXdKusSnxKlFV2ID4V4BIJmuFMA8jihUojkM3iNzumXrs8DVNS
+ cfQCp+3cLiI0r3pJJuEuYgxGVnOjCe1U2k94X1O2M6eOFoddexCM0JmeP
+ BEqwSqLqwKQOS7QncVtjC/5FI4F8pW7zw7UQq/GTFdrERVrq5FlK/7P1W g==;
+X-CSE-ConnectionGUID: WQSAHc7+SX+CIahiF8vJ7g==
+X-CSE-MsgGUID: DjduYZ5MTnmNiK15O7j9gw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="42340364"
+X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="42340364"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2025 21:51:44 -0800
+X-CSE-ConnectionGUID: WymmlIlDR6qsEKGSyoFSUQ==
+X-CSE-MsgGUID: yItx0AiYQzCpnsYY+tEDiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="113328376"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.231])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2025 21:13:32 -0800
-Date: Mon, 27 Jan 2025 06:13:29 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t, v2] lib/intel_compute: Use LR mode for compute
- when using Xe
-Message-ID: <20250127051329.a6dkqga5g5uycjkq@zkempczy-mobl2>
-References: <20250124113140.2525323-1-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="108781374"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 26 Jan 2025 21:51:43 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Sun, 26 Jan 2025 21:51:43 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Sun, 26 Jan 2025 21:51:43 -0800
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.172)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Sun, 26 Jan 2025 21:51:43 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bRACqhoroWK1lb08TBv4SG3QgtKLcyZGHfthEhpT7LcQ+8/mzffMWL+azbBWkmh4cG9+rvBYZEQb0iXobzdz9Eubd70dstSkDzPkvJERl2p2PSEmj+ApQO5erzA8G+QlQP6DcA8ZR3Ldj7cH9XRpE5ETfIOzqnhK7mViE82OBM5mYIXWyNGmmfK09Ky9CAw+Vp3HJQWqUa2VzPQsFSUqF8RpAre+2TjhTk+WX/p0xPBCm6B6Rq/Q7fjsyPfCCY+QnZT78z2mYEepfjK9CZ/Q1Xu9JDNU6dJlA4m/HDNx0KZSi8dJFxRt/6oRMkh76UdgG+ee5mx8u/HDnOaVdjcRmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5UJ5NjGYFbHD/j2oFkQAcVis+baKdwR+38qip7Quevk=;
+ b=lK/wDWVk9g/GHKYHJ2RHPbSMiC1M8Z5A83ghSEgJn8q0leZCBOgFWl7zu3Ti9M8G/f7XAFLnJFohBBMzqXEu9vJjfD+FdofYZdsd2EC/AeIzOk8aOEAkabreLvZ2TVtNL80a+A+CWgvookGgIk50qt6uMjAHGUTOW3Tv3/e33JW3ngrOjjW2BVMZB79EkT3sXUB5fgpCi4zcnrGO94xxp/ngqBK87Z2YLINvtwj+45uU9i1WM7L81/2XTC+7vCTD1rJBAOJfQ0oXImmEzTCFTwqPAAGmkg/FBsIX2ZW2U4Rkn71xgOE/1HOC8VasyzD4GBvN2Nw/Nhrd0YpZ+9C5MA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ LV1PR11MB8842.namprd11.prod.outlook.com (2603:10b6:408:2b3::8) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8377.22; Mon, 27 Jan 2025 05:51:00 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba%4]) with mapi id 15.20.8377.021; Mon, 27 Jan 2025
+ 05:50:59 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "B S, Karthik" <karthik.b.s@intel.com>
+Subject: RE: [PATCH i-g-t] tests/intel/kms_joiner: Add a new test to validate
+ non-joiner mode
+Thread-Topic: [PATCH i-g-t] tests/intel/kms_joiner: Add a new test to validate
+ non-joiner mode
+Thread-Index: AQHbcByy//qIMZJTiE61zE9/7w3fUbMqHdWA
+Date: Mon, 27 Jan 2025 05:50:59 +0000
+Message-ID: <DM4PR11MB63121D29207E8875D958452590EC2@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20250126181931.3356853-1-jeevan.b@intel.com>
+In-Reply-To: <20250126181931.3356853-1-jeevan.b@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|LV1PR11MB8842:EE_
+x-ms-office365-filtering-correlation-id: c365853a-2c47-4575-7f36-08dd3e969379
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?giy8C4JFXIr/9nhTJrof9cJyoZhx8j2w6f5enHFZhGyIuc3JicpX6Itnwn5/?=
+ =?us-ascii?Q?uVFhfcW3Jlt97NZRP7OLfkWryP7wme5OkGJGOsDUM3aoDp2FuFsMT6d656LB?=
+ =?us-ascii?Q?e1tzDnGkM/GpTY7+0MqxlxNFJh5FR8KVvhg65+ZtzJgcwZkcuphTXA/LCRaU?=
+ =?us-ascii?Q?Og1QRU1+swCMkbfwkRHyRubGE7LatBOPPcBng0bUcXj0FPuKTx8GZB9UJFtR?=
+ =?us-ascii?Q?g6ZxRsMlrVZIPzMr8WMx04Gz3V1RQPrbS3bOZsznNRATK0Wr6rR3H2QbNwZ9?=
+ =?us-ascii?Q?N3fQp7yLYyy1gFnuPNguB91UlPVxcWsrlbmp8/OKd2DZhQXf37sizH8I/Ecq?=
+ =?us-ascii?Q?sQ4LAx9zkCAM3w1jG/waRrk7scDaz1YR0tPy40tRig8eZ2kvxIHE4+CFB906?=
+ =?us-ascii?Q?tbsXBaED0BOmGKlrLOitJdaL85Nxu4xmm4vKPXrflOmdYtu2J/DNTrwAOrcX?=
+ =?us-ascii?Q?3lHuQEW5aHy9yLLDPFxxo1qteA8suqohYZT/mX5fx4t40lNIBU8Dwl13W0O/?=
+ =?us-ascii?Q?UZjzh76T6I6wdHbZs/v5UrQC6gyhZ9DrNWLo2l5BB9hI8yt+/H/aB9iccsTN?=
+ =?us-ascii?Q?G3tui0lcAxaIMPq8mQAshC3WCIVXMqD79B4yqM30E1LbBQzcrS+TuQq3IF4K?=
+ =?us-ascii?Q?K+czuc85mqm/hLI2URvRPutVBA3bl7pdGVOdrfpohoV6Fd2mTV1Wcl6DoLu7?=
+ =?us-ascii?Q?fonrNZr6iI6ps+ZaHOXJhDrZj+rbH4WR261UWn8CqYiepg6wB1Y7YxNVsWaL?=
+ =?us-ascii?Q?8rHvExbDRLJy0IUAu6HN+ctQ+yTKfI4MTmpUk4J1+lW8zg/5iZf4IsjJ3pjU?=
+ =?us-ascii?Q?U0iAIJ918FWwvCWPEfF6k/MFsKCjeBID64lyNcysbY9ZnxOAOk+P3tvnk5eM?=
+ =?us-ascii?Q?V6ssRJCbFK3CY7c94+w08Rlpg56vQQl1U1LBHJJ9Fpa74g8w1FmeUWq3gU0W?=
+ =?us-ascii?Q?rz3IOomEuCt1lBRnQ/ewzclv7uYHpagyj9O55+Q+UCwE3hFkE7J+YoXZ7lvf?=
+ =?us-ascii?Q?VhRquNN/aqOKOaGLnDhqKRmby5A3YpZw34lVGqlIWaUWIo70zenlC/s4fPnL?=
+ =?us-ascii?Q?Vja9nq92o3zRxhiZtFIK30x2b8UcEmQyUEQnwQ0HJI7K/zzaarS5LFjSTNrj?=
+ =?us-ascii?Q?kP/ppUZLmZBmixwFMQEdIO16Srnj6SUIsC0S0V7jPSMAE0opReNKvxOQbDSu?=
+ =?us-ascii?Q?Is6kz/XPs7KOt/g25Rpde7MQN0uo0Mo5fwk6t2llOkI3hxGltdmeXZCNBbwF?=
+ =?us-ascii?Q?1L0vDUslAPYo4SHDtGgmScKW4tgnGisEuwfdcSjnU6MgVRniZ2zuw0e3V8l9?=
+ =?us-ascii?Q?R/lmzZB4bCAQBH9m/nKQu1Diql4Wqk0AUS9hX9bwLUKdRKx65Y/BbRaRu0WW?=
+ =?us-ascii?Q?Jp1dgvMyemGTEWY4j6sL6DrUH7BaspL8dbs8HzAgTd/gaEovm7zt9AYj5D5k?=
+ =?us-ascii?Q?5eTwREiU7cEVPqxYqQmG8Qn8FcysSr36?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7S4ddXWITxGnY6d7rpAATOjMBQs7yKpRKc+/2dASFrptblRewrlA+D3b/XJp?=
+ =?us-ascii?Q?ujLYPnsSQHDLXyIzBuRBDK/2sILJMdtqTiCRGFUtk4GlRuR2d2kUAAye35Pe?=
+ =?us-ascii?Q?HjhRWRSrHw3R3zDznnGIUwvALc3JDGMgOVEOsHvZUiwte5FvBR+8nJtq2FSE?=
+ =?us-ascii?Q?NYEJt4bLZlBxUxvA0Iv+WfQ7QevIafuUUMVR8mOowNm7N2iGmyJwQ7Qpww5/?=
+ =?us-ascii?Q?1ItyYUyZd4QwJ96Hj14Q1LomsbS/natUDiuLn2T4jPuXgKPoaXm+Q6xv18gs?=
+ =?us-ascii?Q?mwb5+yqX5caJs+OSYbIIHbooF+ZzM9HIAPpFaiX2F+Z+KbW8vJZiU4vh1QEl?=
+ =?us-ascii?Q?T2FLRlB44xQF72AqEswDZ8dXSEMPGDkiWr2B4LMH61v2dEoWsP09qC0bdatA?=
+ =?us-ascii?Q?J50WXrDLIoszVKsrnIPzVK6/ZAbv95BrhC0llBxXxtUcavDg2DJ4b8J7Hnas?=
+ =?us-ascii?Q?5cVS8Vqnr0SMdkA2uhXcGdCgPopWvNLTajHWWRjVfO5LcdE4i7wNsbYovQtg?=
+ =?us-ascii?Q?BGlkvLOLlJOfpUp5BCosGOi4MH0p+xJXukT67OjET7ULsSoPMz4IVNGZYsYK?=
+ =?us-ascii?Q?HxH5ilO6jAfGsVc+8Ryl2joGHkCWzMwVYGt+R1Cq2ZP3q5MgFrtZ6dacJw3+?=
+ =?us-ascii?Q?aA2LKG7KU9pmdUjDBkH0bri5Hv9fkzpfzZtWy0V3U7s1bldrRIXZ/oxVkAFM?=
+ =?us-ascii?Q?398eI9kRpnT+/T3nepbtLENkmw88btvQYyn4RMdtNYtERWexX8jU/Uu1ZM5g?=
+ =?us-ascii?Q?/hd4IFiUKBffxpZk6sZfkX12BIWqZvZmyk1/B9dmdaGcfiWRDNJ65a5AWhXJ?=
+ =?us-ascii?Q?QMHHa/PzsUFTl6Q4YAlS9tf8uFnGkBEmypimxDTJ22OvhrBmsAoqZV85sr7g?=
+ =?us-ascii?Q?DLQF8JpGOt3ExPpLh/YAkP6KQlCIO1ZYcmNvfy8LopEPj9HetuSovVgUIz9d?=
+ =?us-ascii?Q?JiUHgeU7zzsRNneefgx5WnLMulZgyno6pjrs+zXCobGkoWCcXuGylWHmcpbP?=
+ =?us-ascii?Q?6WT2NqM9MTNns6syfxFlNu5I+P95N2qJpVHgO7bOMdYZJ35d95GJAh+P2447?=
+ =?us-ascii?Q?HQ7/buXSujJBCHSdvk1ZypQOeruR0viR21vMOjPCBcAbl62rP8Y5OvmFI310?=
+ =?us-ascii?Q?dD/MLAlKY2tb/C8Hh0BkjFLc9K9ACBvCXG58rKdApu0fXzS7BKiVM17WhAtw?=
+ =?us-ascii?Q?G23SD9AUMZZIriOtwlFtPpAP7Dn3D/R9jO4TNORS+G8Z1AwPDUdVOWhIqb6X?=
+ =?us-ascii?Q?Cup3mYO4mVf3P51yapbHSr455qsKPOiNWlM7hRocNt1e6p5yuKoi1cRi+rC1?=
+ =?us-ascii?Q?cRqfta9SRTspg7yQ7DTb5R96rQgwqS83H3mQktEuZ+BJJQg4aGyoPKz/6rtE?=
+ =?us-ascii?Q?kxAtK/WTIk7H/h2UwCdfTtfpm4VoTcwylp565pUfKx1q1vcAaRse8XzFD5pl?=
+ =?us-ascii?Q?7fL7uzFg9MQBMYlrwBOqX1Wd0ezYwbjCCPOy9HYXWblqpzBEhPdvxROrVies?=
+ =?us-ascii?Q?DSHNtvOsqTvK+8j+Fudyc4YP6q/yeNhFcauF0UDlRY0tco3QTGjVrfJcpyK4?=
+ =?us-ascii?Q?l1cjsyk6cugDVIsGunI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250124113140.2525323-1-francois.dugast@intel.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c365853a-2c47-4575-7f36-08dd3e969379
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2025 05:50:59.6197 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZvOaOox/Na+RyyyBK+X+xQmwUMpXzPGMPIxJIrlDtNCR7IrHsqHbjyBxGk41qJDDW3/N41BSKfkEgjmUkwJkZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8842
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,203 +180,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jan 24, 2025 at 12:31:40PM +0100, Francois Dugast wrote:
-> When Xe is used, create the VM in LR mode as this is what the
-> compute UMD does to run compute kernels. This makes those tests
-> more representative of real world scenarios. A side effect is
-> that user fences must be used.
-> 
-> v2: Minimize changes, stick to xe_vm_bind_userptr_async()
-> 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  lib/intel_compute.c | 98 +++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 81 insertions(+), 17 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index f1520aad4..a7d5d3e0d 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -27,6 +27,7 @@
->  #define SIZE_BATCH			0x1000
->  #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
->  #define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
-> +#define ADDR_SYNC			0x010000ULL
->  #define ADDR_BATCH			0x100000ULL
->  #define ADDR_INPUT			0x200000ULL
->  #define ADDR_OUTPUT			0x300000ULL
-> @@ -43,6 +44,8 @@
->  #define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000ULL
->  #define OFFSET_STATE_SIP			0xFFFF0000
->  
-> +#define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
-> +
->  /*
->   * TGP  - ThreadGroup Preemption
->   * WMTP - Walker Mid Thread Preemption
-> @@ -58,6 +61,10 @@ struct bo_dict_entry {
->  	uint32_t handle;
->  };
->  
-> +struct bo_sync {
-> +	uint64_t sync;
-> +};
-> +
->  struct bo_execenv {
->  	int fd;
->  	enum intel_driver driver;
-> @@ -81,7 +88,7 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
->  	execenv->driver = get_intel_driver(fd);
->  
->  	if (execenv->driver == INTEL_DRIVER_XE) {
-> -		execenv->vm = xe_vm_create(fd, 0, 0);
-> +		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
->  
->  		if (eci) {
->  			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
-> @@ -107,8 +114,8 @@ static void bo_execenv_destroy(struct bo_execenv *execenv)
->  	igt_assert(execenv);
->  
->  	if (execenv->driver == INTEL_DRIVER_XE) {
-> -		xe_vm_destroy(execenv->fd, execenv->vm);
->  		xe_exec_queue_destroy(execenv->fd, execenv->exec_queue);
-> +		xe_vm_destroy(execenv->fd, execenv->vm);
->  	}
 
-What's for this reorder?
+Hi Karthik,=20
 
---
-Zbigniew
+I have addressed couple of comments you had given me regarding sorting can =
+mode selection.=20
+But for validation method apart from commit failure I was trying to find al=
+ternate methods but couldn't find any lead, I have couple of opens. 1. Is t=
+here any debugfs entry where we get to know joiner is enabled or not. 2. Is=
+ it possible to get pipe active status after modeset/commit. Based on this =
+we can validate.=20
 
->  }
->  
-> @@ -119,18 +126,30 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
->  
->  	if (execenv->driver == INTEL_DRIVER_XE) {
->  		uint32_t vm = execenv->vm;
-> +		uint32_t exec_queue = execenv->exec_queue;
->  		uint64_t alignment = xe_get_default_alignment(fd);
-> -		struct drm_xe_sync sync = { 0 };
-> -
-> -		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> -		sync.handle = syncobj_create(fd, 0);
-> +		struct bo_sync *bo_sync;
-> +		size_t bo_size = sizeof(*bo_sync);
-> +		uint32_t bo = 0;
-> +		struct drm_xe_sync sync = {
-> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +			.timeline_value = USER_FENCE_VALUE,
-> +		};
-> +
-> +		bo_size = xe_bb_size(fd, bo_size);
-> +		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
-> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		bo_sync = xe_bo_map(fd, bo, bo_size);
-> +		sync.addr = to_user_pointer(&bo_sync->sync);
->  
->  		for (int i = 0; i < entries; i++) {
-> +			bo_sync->sync = 0;
->  			bo_dict[i].data = aligned_alloc(alignment, bo_dict[i].size);
->  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(bo_dict[i].data),
->  						 bo_dict[i].addr, bo_dict[i].size, &sync, 1);
-> -			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-> +			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
-> +				       NSEC_PER_SEC);
->  			memset(bo_dict[i].data, 0, bo_dict[i].size);
->  
->  			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
-> @@ -139,7 +158,8 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
->  				  (long long)bo_dict[i].size);
->  		}
->  
-> -		syncobj_destroy(fd, sync.handle);
-> +		munmap(bo_sync, bo_size);
-> +		gem_close(fd, bo);
->  	} else {
->  		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
->  		struct drm_i915_gem_exec_object2 *obj;
-> @@ -177,19 +197,32 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
->  
->  	if (execenv->driver == INTEL_DRIVER_XE) {
->  		uint32_t vm = execenv->vm;
-> -		struct drm_xe_sync sync = { 0 };
-> -
-> -		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> -		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> -		sync.handle = syncobj_create(fd, 0);
-> +		uint32_t exec_queue = execenv->exec_queue;
-> +		struct bo_sync *bo_sync;
-> +		size_t bo_size = sizeof(*bo_sync);
-> +		uint32_t bo = 0;
-> +		struct drm_xe_sync sync = {
-> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +			.timeline_value = USER_FENCE_VALUE,
-> +		};
-> +
-> +		bo_size = xe_bb_size(fd, bo_size);
-> +		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
-> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		bo_sync = xe_bo_map(fd, bo, bo_size);
-> +		sync.addr = to_user_pointer(&bo_sync->sync);
->  
->  		for (int i = 0; i < entries; i++) {
-> +			bo_sync->sync = 0;
->  			xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
-> -			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-> +			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
-> +				       NSEC_PER_SEC);
->  			free(bo_dict[i].data);
->  		}
->  
-> -		syncobj_destroy(fd, sync.handle);
-> +		munmap(bo_sync, bo_size);
-> +		gem_close(fd, bo);
->  	} else {
->  		for (int i = 0; i < entries; i++) {
->  			gem_close(fd, bo_dict[i].handle);
-> @@ -204,7 +237,38 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
->  	int fd = execenv->fd;
->  
->  	if (execenv->driver == INTEL_DRIVER_XE) {
-> -		xe_exec_wait(fd, execenv->exec_queue, start_addr);
-> +		uint32_t exec_queue = execenv->exec_queue;
-> +		struct bo_sync *bo_sync;
-> +		size_t bo_size = sizeof(*bo_sync);
-> +		uint32_t bo = 0;
-> +		struct drm_xe_sync sync = {
-> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +			.timeline_value = USER_FENCE_VALUE,
-> +		};
-> +		struct drm_xe_exec exec = {
-> +			.num_batch_buffer = 1,
-> +			.num_syncs = 1,
-> +			.syncs = to_user_pointer(&sync),
-> +			.exec_queue_id = exec_queue,
-> +			.address = start_addr,
-> +		};
-> +
-> +		bo_size = xe_bb_size(fd, bo_size);
-> +		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
-> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		bo_sync = xe_bo_map(fd, bo, bo_size);
-> +		sync.addr = to_user_pointer(&bo_sync->sync);
-> +		xe_vm_bind_async(fd, execenv->vm, 0, bo, 0, ADDR_SYNC, bo_size, &sync, 1);
-> +		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, NSEC_PER_SEC);
-> +
-> +		sync.addr = ADDR_SYNC;
-> +		bo_sync->sync = 0;
-> +		xe_exec(fd, &exec);
-> +		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, NSEC_PER_SEC);
-> +
-> +		munmap(bo_sync, bo_size);
-> +		gem_close(fd, bo);
->  	} else {
->  		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
->  		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
-> -- 
-> 2.43.0
-> 
+Thanks=20
+Jeevan B=20
+
