@@ -4,63 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2F1EC0218C
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 15:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB25EC02188
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 15:32:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ADEA310E562;
-	Mon, 27 Jan 2025 15:28:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D03F10E310;
+	Mon, 27 Jan 2025 15:32:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gIUNW639";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SfByy9lW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD7C510E310
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 15:28:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F53310E310
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 15:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737991731; x=1769527731;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XylKkZ2N/V8PCnrvkh36LCru0BKETtEi4sb94UAj7Bs=;
- b=gIUNW639xUblt9iffOgZnsIj2PicNj4QDOlLuRp6evZLEIdKFklB88uC
- XVrwp8SitBqOBIcdEMKjf3VgwJYYICNXiCRgteaf6WJ0COXyESq8DtZ/U
- DlvLjC3bsH+g+8No7Ti78EZvu9jYU1h9SN4IkrQ/J9nsQ63bkAEVKS+sh
- rrfNvWrHgEm9OOPoNd07fNgYdVtJCSQUFHHs1jvDoblA0Wa67HNZqqVSA
- JeTKWAy29DNzGw81LHlwlarF0vyXVRz4NaE1BshQXQ12NUdqmL9ZgmDKj
- btO3zvFl8UBzO+IQ3PU8+bxKi/7AmW+9MpDJDeTpN3VPWm9CUWLt8EMxJ g==;
-X-CSE-ConnectionGUID: hMInsHYzTbKVF7uGsglBJg==
-X-CSE-MsgGUID: GQ0aAzVVRtqCsAp9WCZWgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="38488701"
-X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="38488701"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ t=1737991929; x=1769527929;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=USN9yYEWRAuQkLRI25K2cz322uUwFH8Dx6GQF6N3T7k=;
+ b=SfByy9lW1zCPp0aP0mfa95vH7xy7UPeu5gngI2C8v6Fn5uQ5LaHGlQjm
+ UfqdrOq3ac9Ypcf51In4EAOMaFSJDiwOLALQFFJu1yN709oE/w3gdkHgL
+ dEmmR70URdQeFhMNBQ3cldG9cEq2zcA7BvSyRUjvcSlmeeeWYcKgVyfdS
+ PA0BEqfHKXkasVKdQxuDNgbDxbBjf9tvvyULOr5GnbpXDqXT1qeIQdFxU
+ /KcKn11GBmn7FNIH101G6u7EueGQ+vrAmCHCpp+Of6SxzB+A1C/NC78kI
+ +E3pQgUM7o9ZbuXR/PHERq76ausC00h3/bzQLxr0eHhnSHgkWzLEh4biU A==;
+X-CSE-ConnectionGUID: J2pFlc8HQC6A+jZsJmEq0Q==
+X-CSE-MsgGUID: b5mGKy0RS0CQ+X2NGjSYFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="38489564"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="38489564"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 07:28:51 -0800
-X-CSE-ConnectionGUID: E1G24PWWTCGdz58qfD2JoA==
-X-CSE-MsgGUID: bQEdh5DBScaA2xj3eYFSKg==
+ 27 Jan 2025 07:32:09 -0800
+X-CSE-ConnectionGUID: 5aGiS1hjTUab6yldtb2Xpg==
+X-CSE-MsgGUID: N5/G9KTISGSCdhYS9M/rDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="113605744"
-Received: from nwochtma-mobl.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.83.54])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 07:28:48 -0800
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Rodrigo.Siqueira@amd.com, ramadevi.gandi@intel.com, ryszard.knop@intel.com,
- sameer.lattannavar@intel.com, lucas.demarchi@intel.com,
- jani.saarinen@intel.com, katarzyna.piecielska@intel.com,
- matthew.d.roper@intel.com, clinton.a.taylor@intel.com,
- jianshui.yu@intel.com, balasubramani.vivekanandan@intel.com,
- jonathan.cavitt@intel.com
-Subject: [PATCH i-g-t v2 resend 2/2] runner/executor: Integrate igt_kmemleak
- scans
-Date: Mon, 27 Jan 2025 16:28:13 +0100
-Message-Id: <20250127152813.293529-3-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250127152813.293529-1-peter.senna@linux.intel.com>
-References: <20250121112944.115491-1-peter.senna@linux.intel.com>
- <20250127152813.293529-1-peter.senna@linux.intel.com>
-MIME-Version: 1.0
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="113494909"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 27 Jan 2025 07:32:08 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 27 Jan 2025 07:32:08 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Mon, 27 Jan 2025 07:32:08 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.174)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 27 Jan 2025 07:32:04 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F0oEFXKaeHTECC8etbzb/qNcQr6vf9lYEROYDM7xUaE/1MEysNODHZHJElWHtajg4mjabyZKdLtUL3IPTc2abfBl42LB3li3vKs2cYYxSYy/+gHLhkwFoeY+63LTB8hN4Jazv8PneZG9LlNKiJacqOO136XV8uAa+UaSIMxEzhfw3UW8DUIeWpeP4REdbVNTRSjlMr/mcg7wsLXnbcQAcAViJYE0GR7BPCqV4lE5HBb6y8gvdRZvQFjidqowo8Rv+Jn8p8yQ0F4d20+MST0/iLLw+DV41B0S/dpTKzumkTyOWo6qItTHsPZpLorcVF7RUzXzHa8IKe0R8KAoYOLTSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=osaSPDLzLYUWNUC0PevlHP/37YU79c9xPKESbrpS3yU=;
+ b=GMzWW/TwC8uvp52fiFty3j+7xdw2q8gfQjxyMFM77pVXAGk4rhICs30oLw2DMc3Zh1hkAhO2uqm7dQHDLk5sUg50QVObj2kYWbWqMblk9ycGcQJCjfUSc9jrfR+F+mQTivclbBDIbt1nhpylTexAaDwPTIV2n9J3me9KeFUlhCVR1nwl5BZrBlco7wB4bP9ucz7VuqxyMGAUaFuzrjPPIZKtARJrY0Uh6T4LOxbKWGvg8H7r67T9Y3uFsfIuEICoIaC8482QtLia9EU8UKbThU+c0jr0Clbk1FuQDHJcEAGfMSWqQINH0/loOJHb9mSmeOt3VWw3VKKH02ZRraGFCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by DM4PR11MB5245.namprd11.prod.outlook.com (2603:10b6:5:388::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Mon, 27 Jan
+ 2025 15:31:49 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8377.021; Mon, 27 Jan 2025
+ 15:31:49 +0000
+Date: Mon, 27 Jan 2025 09:31:46 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2 2/3] lib/igt_device_scan: change device list
+ variable visibility
+Message-ID: <rjrjaq5o2c5ip7ejg22vqzntrnqvhztpvozufv6yvwmlvzygue@t6t6wtmmwcc3>
+References: <20250123095208.72984-1-zbigniew.kempczynski@intel.com>
+ <20250123095208.72984-3-zbigniew.kempczynski@intel.com>
+ <20250124162625.2lz3spps6vgfmie6@kamilkon-desk.igk.intel.com>
+ <20250127044915.izkpkskylqw4gdyn@zkempczy-mobl2>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250127044915.izkpkskylqw4gdyn@zkempczy-mobl2>
+X-ClientProxiedBy: MW2PR16CA0017.namprd16.prod.outlook.com (2603:10b6:907::30)
+ To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DM4PR11MB5245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2aac5f5c-17d8-42fd-a87c-08dd3ee7b76c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TDNuQUNxcXFXeU1RRFdPb2hHS2xUNzliOS9XeGY3YkFidHVZS3ZqYTRsUkpH?=
+ =?utf-8?B?QS9JYzRYUVdsL3l1TmVadzRJY0dFeVY5MkpqZm9YUVVhQytUWnZhd0dxMnFj?=
+ =?utf-8?B?N2ZtWXd4YjJFOWFKNGhLajJ6M2ZtUE1uYW43ZjJobHErZURNcER5ZUJqMTk4?=
+ =?utf-8?B?ekdpZ1RqOGs3WWhKWTAvc2JPa2ltUFR3by9ZMEVjVTFUSFFRUnVCZHcrT01B?=
+ =?utf-8?B?RGtQdE1mQnd5WlNKVTdJbmpBeHFJRFI2cmtrZ2NiZ1RJT1k4SXcwQUxuRFpK?=
+ =?utf-8?B?Wms3dXJDQnM4WjR6dTZ0anVHZ2VQK2hGazRKMUh1c00vTXEwMWcrSmZFWFJj?=
+ =?utf-8?B?NWdxQng3cUtBRzF5MVZhVDBYUWlVbVJuczFtbjFsV1FDc3AwTmNOSWRUZ1hX?=
+ =?utf-8?B?S0xQMmhKeERqL1JVT2crOXlaekZFK0JlL3RUbmpKQ3hEeDZIQWEydFBiSlhT?=
+ =?utf-8?B?eW5DZ29mZTU3RmhGL3lhcVE0Z2JhNUNRUXE3WFdBZ3VKSnl4YjAwTFBUeGZQ?=
+ =?utf-8?B?WnlxZlkxcExnbGRuNWk0MU9SRTA3NEdleE5WcWxDTFFmcnY5bHdlczlsUzNS?=
+ =?utf-8?B?TWRZUzBUWkdkZE5GLzBkSHJZcy92NjJVaGNpNWJZUG96THVGakVSTm5KL3F2?=
+ =?utf-8?B?TC9DN2N6QjZEREtucmJNRGV2Rkptbk84Qm5YKy8yZ29HdERQQmFYSTFkeWVp?=
+ =?utf-8?B?SWNibzlUM3FXeDJVTmszd2ZKckJmQnVLdDQ4Y1g3d1pJMlVWRHF2UzVJOG90?=
+ =?utf-8?B?d0FZb0ZtUjBVM2hZY1cyTnRBdVl3RStwcVIwMHJqV1BJNmdvNGlqRFZPUFpS?=
+ =?utf-8?B?TGp6ZlhFb0xmQTBhc1NrbUo2Sjl6OEdDUlcvQ2NPY1RxaDRZa1ZWVmdkUkRE?=
+ =?utf-8?B?c0pIdWZDYlZwQ3oySzloVnZJWkdxK2xycmFXRGw5WXBVeUplQjZCKzBpc05h?=
+ =?utf-8?B?UFdDL0M0WFNpRDBlLzZiTlJTODBWMVhPZjN2VHpkVW14WHNheklLbXZGcXhI?=
+ =?utf-8?B?dG9jTHVWakx1RmNjaWlNRjU3QjVJUnZTODB4YW9yclVkaDEyTmJuMlNwZm9F?=
+ =?utf-8?B?TEVPbjBkbFBiajNGUWh1bmQ5ZFUwUHBDNU95cXI3Syt2aHBnWnhkVXNodGIv?=
+ =?utf-8?B?dE5aYzEvRUQ5dGUzU3RBeHNyOWY1WXJuazNjR2NsQ1BZbmt1YzBhNGZrVEIv?=
+ =?utf-8?B?cnNINGhtKzBIaTkvL2pCeXk3bzc4bGZ3c3NVNUFWUW4zWGk4MjF2NWhLb3hR?=
+ =?utf-8?B?aGR6a3BHTXpVbW5ld3luNjUrYzF2VDN5UkFLVEdLaHdGVUo0OHlmQTJ3aXF1?=
+ =?utf-8?B?Mk1DWkxJRk5qalo4aElRM0c3SEd0cWtyM0kwRjJwaXJDbll3ckQwb0Jzek5i?=
+ =?utf-8?B?U3FLYk1CblVNVzZ2Qytwemxod3lWNEJ6OGt5alhycmlrTUg1Z1BZZUV4RFBV?=
+ =?utf-8?B?WDR2VXpMOXlXZ3huWGJrMEs1WmFETCsrTnVIQUhIeDNBOFArcXUvM1FvYXdJ?=
+ =?utf-8?B?aGd6VC9ZVU5hUGVsLzhMV0NBaVNHaGhmY0tsUjgyQlB6dEkyUHpQcm9zQWIy?=
+ =?utf-8?B?ZlhuZEVrQ0Vtc3A5MUcwT2xTQmhET204ckFyNFNoOTZaQm80bnJvYzlsNUlK?=
+ =?utf-8?B?TU1uTkJlMXJ5ckxYZUV4NitkcE95Zll2dzhjUStDUTQ5QXZKZE5sdXcrMzE0?=
+ =?utf-8?B?N2dDdkd2Zlh5bW9WMUF6VW9pbXdzRmhiTTg3L2RCeFV2NWRCRE43N05VYXlQ?=
+ =?utf-8?B?UkRSSE9jcVU5dGRibTRLRVhVb2hBU2hxWG5SaXlhdjdIZzlJUmVGL3JLYlh5?=
+ =?utf-8?B?aXJwTjNkNllIaEtYMmw3TVdkNFhUZjJSVW1jR1cyRXNrY0JUQ20vYUpOOXAv?=
+ =?utf-8?Q?8spwIh82bXAoF?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHpiNWs2aW81OXRvcWREUEFjUjlBbExKeFRtVVRLQWxoUnNEV1ZmOXFOWnJ1?=
+ =?utf-8?B?a0dqbGNVRXFoVkpSMGw5WUhDeDMrRTZQd3NBenZ1aDI0djFYRXRKejhVcFJP?=
+ =?utf-8?B?UG4xcFBpd3l1Z2xndUFQQ1J6cmdXbS9CM1N6SmNXa250WXhYdElCT3lrS2pv?=
+ =?utf-8?B?V1BPVERUczA4WVVhczBEaHZTUTRtdkU4RG9BekxUblVWa0dSZ2JsUXlKWW5D?=
+ =?utf-8?B?NWxSdzZTdlhwWVdoS2k1OU93R1ZpZHdpZWExTkU0QjkwblpMNzM5YzN0SG9L?=
+ =?utf-8?B?cEh1Qm12WmtZUmZEVkEwUlJab1R4OVVYR080Qm82SEJlc1hERG40S2RNWjUw?=
+ =?utf-8?B?MW80eDhuMmFDdHY2aFFrOVM3a01IMUNOaDBCODJTbUNHRGFtVGpPdnVkVlk1?=
+ =?utf-8?B?OWFZcTJ6STZsZnp6MzZBMXpYKy9mR0drWkFjYUE1dlM5MXhmOFE2aDNTOWsw?=
+ =?utf-8?B?WkdvZVc3SzY0MktvSmVIQjFwUmVjSFFVU2JiOXRvM1VWWGxrUUM3TWdlamQ4?=
+ =?utf-8?B?RHlQNVFTOWNZamlNRXZldmpmb1JGaUZsck1abGhOMUhIN1J0SUJxRzB6L2JE?=
+ =?utf-8?B?K3BVYlJsWGs4QWZFWDlBeE1RWTlWVTZGR3JSYmRMUUt1dElZUkdQdytWcEdk?=
+ =?utf-8?B?K201REJJWEpmam5oYjFhZU5UdU5JTDlpVitCUkdSaXlmMjYyNFJtLzFWUlIy?=
+ =?utf-8?B?bGx1ZXNWd0lrM3BrUDQwTDQ1SXhrVkFKOVBwR1AzTktSZGozblNYbE5HUXVm?=
+ =?utf-8?B?VUJSVlhvNWp5ZzcxN3BNQkFiczBsY1N3L0dBZnZIYXlMVGgyYVdwRW92alF2?=
+ =?utf-8?B?ejVPMnRmMENNL2c0VFd0bmdtMTRBSks1MkhsYVJCUU8zWlF1K2FSNEdHaUl2?=
+ =?utf-8?B?cnRZNm44TFFaeHVnMW9hQUlkbjZpdGFXMnA4RHQ1blo5dGVXZmtWYmZRZWd3?=
+ =?utf-8?B?T0s2dk5pWW1HVnpvTUVBZ29wMzdhQURxV3lUWEJOWWhRSW11MTFtMkVpUDlZ?=
+ =?utf-8?B?V1pFTXRraEI0ZjBkZlVNQ2hPQ0dCYmtrem1XdHpGa0tjVTlmK1oxRDBublVx?=
+ =?utf-8?B?T0oyQlhOTE54OE5OMGVTRUV3VDNEOE5tZFo4M2VIVFlneVI1MG1td0dsL2E3?=
+ =?utf-8?B?eEViclE4VTdSM0FNUDdzK1BHS1I4Vm9EYnhyWjRlM0ZjZGVHczE0TWNvSktj?=
+ =?utf-8?B?R3FLblhWVlhYQVRmK2lFcSt5bGJVOEdQZVp6eGU1RnRsdGQwU3phNk91Z0pY?=
+ =?utf-8?B?WnhTRVlNREVUWTVHY2JZbkZ4VEpKdjhTUDVuSjVJdWxEZjh6TWxHbHU1SlVo?=
+ =?utf-8?B?Y3pmcDVRY0lmUlh6R29SRDdNa3duRjRabzI3S3Qzc2Z3dXlJcjU1VS90TWwr?=
+ =?utf-8?B?U0JNRnU5S1pXajZBL2ZzZ0hPVDRZRDFpVTZkWENDSGZyTS9PUFVUTWMxZldm?=
+ =?utf-8?B?Z3p1dDBzeHVOUUdXT2FWRVRjL3JLd2JaZ1Z1NlF0YnRPOU1tbUxwd3FzVHZy?=
+ =?utf-8?B?SE9aUzRTME52Qkl1b1d6NnV5L3AzcHg2VXJxV0V3ZXl6Q1hTdWt6cmVZMFNW?=
+ =?utf-8?B?S2VWbG9HdWRnYXBxa3pIdTlBRlJSdjFNallFNG1uYUFodi9jYXJzSTJKL0Rp?=
+ =?utf-8?B?enN0cFFocmVSVENjd2pmTXZsRnFUOWdLK0UybFVtT2VoNmkwRTd3V2FlM3lK?=
+ =?utf-8?B?ZlUzbFhWclkrQlRaTEgyTGdud3NQdHFkM2Qrb1JZZlpkRVZhRi9CcittYmFz?=
+ =?utf-8?B?SWdQMVhmZGFmVCtteWd3V3QwVmZqeERYVkYwVG90ejdYU2JYWCtsZ0M3YlBP?=
+ =?utf-8?B?TjJzSXV4RFBTcGNoOU41eHFFVzhVT09kaVU2K21ldzQweFBlOXRES3RKaUVO?=
+ =?utf-8?B?NERLcElBWk9aUGxpSExTVUYwTlFsdktVZTltdmczbEkzWVdqM0VYSW5WMDBM?=
+ =?utf-8?B?M2JXTm56OXhobnhHZUt2L2pvY3NPUFQ4ei84ZUsvUE5oQ1VFcUxOTGF3Y0k0?=
+ =?utf-8?B?L3p0R0RpcVBSelEzRVVYS1AvRDl3WEpGdjlENmpNanUzTG1uVVZpMXZQVGZE?=
+ =?utf-8?B?d2JyMzRUaVc5dDlJQnVCWFZvZ2tydE9SLzV3TEhKK09mMHJHMFdsalNDOTBv?=
+ =?utf-8?B?N2c3ZmF2QURYYlZybkVmbDN1S1Vpa04xbld5MjZldnhuSUdZN1g2dkNrcWQ1?=
+ =?utf-8?B?T0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2aac5f5c-17d8-42fd-a87c-08dd3ee7b76c
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2025 15:31:49.5144 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MdyT09kwL8do+aW+GM6/f1TERc+OTf+iKYSVZBeR7Mm0O8ySFsa2w5dbbzT5ODQBA+NjnN3xBBwPaZdpBqgcG/+xFsdsi0axuPSPqwYKOPM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5245
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,291 +198,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Modifies igt_runner to include calls to igt_kmemleak(). Kmemleak
-scanning is disabled by default, so add command line options to
-igt_runner to enable kmemleak scanning:  -k, -k<option>, --kmemleak,
---kmemleak=<option>. The options are:
- - once: run one kmemleak scan after all tests from the test-list
-         complete. This is the default when not using option.
- - each: run one kmemleak scan after each test completes.
+On Mon, Jan 27, 2025 at 05:49:15AM +0100, Zbigniew Kempczyński wrote:
+>On Fri, Jan 24, 2025 at 05:26:25PM +0100, Kamil Konieczny wrote:
+>> Hi Zbigniew,
+>> On 2025-01-23 at 10:52:07 +0100, Zbigniew Kempczyński wrote:
+>>
+>> could you improve subject? something like:
+>>
+>> lib/igt_device_scan: Fix multithreading for Xe
+>
+>Yes, I can change it to sth like
+>
+>'lib/igt_device_scan: fix multithreading support in device scanning'
+>
+>because it also affects i915 even if there's not used there.
+>
+>>
+>> > In commit: 2e8f3e06fb (tests/xe_evict|exec_threads: Use fd reopen
+>> > to avoid corrupting global data) I simply changed tests which
+>> > corrupted device list global variable. i915 didn't use opening
+>> > devices in multithreaded tests but this changed with xe.
+>> >
+>> > Device scan is now unconditional so we may change device list
+>> > variable visibility to TLS. With this reverting of above commit
+>> > should be safe (but I'm not sure is it worth to do this).
+>> >
+>>
+>> What about adding Fixes: tag? It is not a kernel so no strict
+>> rules here, up to you.
+>
+>I don't if any freedesktop issue was created for this, maybe Lucas
+>knows about it.
 
-If kmemleaks are found they will be saved to the igt_runner results
-directory in a file named kmemleak.txt.
+fdo issue would use a Closes:, not Fixes:
 
-Updates serialize_settings() and read_settings_from_file() to save
-and restore igt_runner settings to and from disk. This is used when
-calling igt_runner with '--dry-run' and then by calling igt_resume
-instead of igt_runner.
+We do have some issues in which the device "disappears" after certain
+tests. They are usually created and closed as "cannot reproduce" after
+some time.
 
-Updates unit testing for igt_runner to test that:
- - Kmemleak scans are disabled by default
- - Kmemleak scans  be enabled by command line arguments
- - The choice about kmemleaks being enabled or not is saved to disk
-   and restored from disk
+I don't think we can point to any bug with 100% confidence it actually
+closes it - there may be other bugs lurking around on either kernel or
+igt.
 
-CC: Rodrigo.Siqueira@amd.com
-CC: ramadevi.gandi@intel.com
-CC: ryszard.knop@intel.com
-CC: sameer.lattannavar@intel.com
-CC: lucas.demarchi@intel.com
-CC: jani.saarinen@intel.com
-CC: katarzyna.piecielska@intel.com
-CC: matthew.d.roper@intel.com
-CC: clinton.a.taylor@intel.com
-CC: jianshui.yu@intel.com
-CC: balasubramani.vivekanandan@intel.com
+For this specific commit (not the one before) maybe we can point to the
+commit first using multiple threads, but I don't think it's really
+accurate.
 
-Reviewed-by: jonathan.cavitt@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- runner/executor.c     | 25 +++++++++++++++++++++++--
- runner/runner_tests.c | 18 ++++++++++++++++--
- runner/settings.c     | 31 ++++++++++++++++++++++++++++++-
- runner/settings.h     |  2 ++
- 4 files changed, 71 insertions(+), 5 deletions(-)
+Lucas De Marchi
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 999e7f719..992366312 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -31,6 +31,7 @@
- #include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_facts.h"
-+#include "igt_kmemleak.h"
- #include "igt_taints.h"
- #include "igt_vec.h"
- #include "executor.h"
-@@ -2370,6 +2371,13 @@ bool execute(struct execute_state *state,
- 	if (settings->facts)
- 		igt_facts_lists_init();
- 
-+	if (settings->kmemleak)
-+		if (!igt_kmemleak_init(NULL)) {
-+			errf("Failed to initialize kmemleak. Is kernel support enabled?\n");
-+			errf("Disabling kmemleak on igt_runner and continuing...\n");
-+			settings->kmemleak = settings->kmemleak_each = false;
-+		}
-+
- 	if (state->next >= job_list->size) {
- 		outf("All tests already executed.\n");
- 		return true;
-@@ -2497,10 +2505,18 @@ bool execute(struct execute_state *state,
- 		bool already_written = false;
- 
- 		/* Collect facts before running each test */
--		if (settings->facts) {
-+		if (settings->facts)
- 			igt_facts(last_test);
-+
-+		if (settings->kmemleak_each)
-+			if (!igt_kmemleak(last_test, resdirfd,
-+					  settings->kmemleak_each,
-+					  settings->sync))
-+				errf("Failed to collect kmemleak logs after %s\n",
-+				     last_test);
-+
-+		if (settings->facts || settings->kmemleak_each)
- 			last_test = entry_display_name(&job_list->entries[state->next]);
--		}
- 
- 		if (should_die_because_signal(sigfd)) {
- 			status = false;
-@@ -2595,6 +2611,11 @@ bool execute(struct execute_state *state,
- 	if (settings->facts)
- 		igt_facts(last_test);
- 
-+	if (settings->kmemleak)
-+		if (!igt_kmemleak(last_test, resdirfd,
-+				  settings->kmemleak_each, settings->sync))
-+			errf("Failed to collect kmemleak logs after the last test\n");
-+
- 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
- 		dprintf(timefd, "%f\n", timeofday_double());
- 		close(timefd);
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index 8441763f2..a072a92c7 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -191,6 +191,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
- 	igt_assert_eq(one->dry_run, two->dry_run);
- 	igt_assert_eq(one->allow_non_root, two->allow_non_root);
- 	igt_assert_eq(one->facts, two->facts);
-+	igt_assert_eq(one->kmemleak, two->kmemleak);
- 	igt_assert_eq(one->sync, two->sync);
- 	igt_assert_eq(one->log_level, two->log_level);
- 	igt_assert_eq(one->overwrite, two->overwrite);
-@@ -304,6 +305,7 @@ igt_main
- 		igt_assert(igt_list_empty(&settings->env_vars));
- 		igt_assert(!igt_vec_length(&settings->hook_strs));
- 		igt_assert(!settings->facts);
-+		igt_assert(!settings->kmemleak);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -426,6 +428,7 @@ igt_main
- 		igt_assert_eq(settings->include_regexes.size, 0);
- 		igt_assert_eq(settings->exclude_regexes.size, 0);
- 		igt_assert(!settings->facts);
-+		igt_assert(!settings->kmemleak);
- 		igt_assert(!settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
- 		igt_assert(!settings->overwrite);
-@@ -464,6 +467,7 @@ igt_main
- 				       "-b", blacklist_name,
- 				       "--blacklist", blacklist2_name,
- 				       "-f",
-+				       "-k",
- 				       "-s",
- 				       "-l", "verbose",
- 				       "--overwrite",
-@@ -523,6 +527,7 @@ igt_main
- 		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 1)), "echo world");
- 
- 		igt_assert(settings->facts);
-+		igt_assert(settings->kmemleak);
- 		igt_assert(settings->sync);
- 		igt_assert_eq(settings->log_level, LOG_LEVEL_VERBOSE);
- 		igt_assert(settings->overwrite);
-@@ -718,30 +723,39 @@ igt_main
- 	igt_subtest("parse-clears-old-data") {
- 		const char *argv[] = { "runner",
- 				       "-n", "foo",
-+				       "--overwrite",
- 				       "--dry-run",
- 				       "--allow-non-root",
- 				       "test-root-dir",
--				       "results-path",
-+				       "results-path"
- 		};
- 
- 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
- 
- 		igt_assert_eqstr(settings->name, "foo");
-+		igt_assert(settings->overwrite);
- 		igt_assert(settings->dry_run);
- 		igt_assert(!settings->test_list);
- 		igt_assert(!settings->facts);
-+		igt_assert(!settings->kmemleak);
- 		igt_assert(!settings->sync);
- 
- 		argv[1] = "--test-list";
-+		argv[2] = "foo"; /* Unchanged */
- 		argv[3] = "--facts";
--		argv[4] = "--sync";
-+		argv[4] = "--kmemleak";
-+		argv[5] = "--sync";
-+		argv[6] = "test-root-dir"; /* Unchanged */
-+		argv[7] = "results-path"; /* Unchanged */
- 
- 		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
- 
- 		igt_assert_eqstr(settings->name, "results-path");
- 		igt_assert(!settings->dry_run);
-+		igt_assert(!settings->overwrite);
- 		igt_assert(strstr(settings->test_list, "foo") != NULL);
- 		igt_assert(settings->facts);
-+		igt_assert(settings->kmemleak);
- 		igt_assert(settings->sync);
- 	}
- 
-diff --git a/runner/settings.c b/runner/settings.c
-index 92fd42ea6..560bc2b5e 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -41,6 +41,7 @@ enum {
- 	OPT_EXCLUDE = 'x',
- 	OPT_ENVIRONMENT = 'e',
- 	OPT_FACTS = 'f',
-+	OPT_KMEMLEAK = 'k',
- 	OPT_SYNC = 's',
- 	OPT_LOG_LEVEL = 'l',
- 	OPT_OVERWRITE = 'o',
-@@ -232,6 +233,16 @@ static const char *usage_str =
- 	"                                   not respond to ping.\n"
- 	"                         all     - abort for all of the above.\n"
- 	"  -f, --facts           Enable facts tracking\n"
-+	"  -k, -k<option>, --kmemleak, --kmemleak=<option>\n"
-+	"                        Enable kmemleak tracking. Each kmemleak scan\n"
-+	"                        can take from 5 to 60 seconds, slowing down\n"
-+	"                        the run considerably. The default is to scan\n"
-+	"                        only once after the last test. It is also\n"
-+	"                        possible to scan after each test. Possible\n"
-+	"                        options:\n"
-+	"                         once - The default is to run one kmemleak\n"
-+	"                                scan after the last test\n"
-+	"                         each - Run one kmemleak scan after each test\n"
- 	"  -s, --sync            Sync results to disk after every test\n"
- 	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
- 	"                        Set the logger verbosity level\n"
-@@ -668,6 +679,7 @@ bool parse_options(int argc, char **argv,
- 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
- 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
- 		{"facts", no_argument, NULL, OPT_FACTS},
-+		{"kmemleak", optional_argument, NULL, OPT_KMEMLEAK},
- 		{"sync", no_argument, NULL, OPT_SYNC},
- 		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
- 		{"test-list", required_argument, NULL, OPT_TEST_LIST},
-@@ -698,7 +710,7 @@ bool parse_options(int argc, char **argv,
- 	settings->dmesg_warn_level = -1;
- 	settings->prune_mode = -1;
- 
--	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
-+	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:Lk::",
- 				long_options, NULL)) != -1) {
- 		switch (c) {
- 		case OPT_VERSION:
-@@ -742,6 +754,19 @@ bool parse_options(int argc, char **argv,
- 		case OPT_FACTS:
- 			settings->facts = true;
- 			break;
-+		case OPT_KMEMLEAK:
-+			settings->kmemleak = true;
-+			if (optarg) {
-+				if (strcmp(optarg, "once") == 0)
-+					settings->kmemleak_each = false;
-+				else if (strcmp(optarg, "each") == 0)
-+					settings->kmemleak_each = true;
-+				else {
-+					usage(stderr, "Invalid kmemleak option");
-+					goto error;
-+				}
-+			}
-+			break;
- 		case OPT_SYNC:
- 			settings->sync = true;
- 			break;
-@@ -1105,6 +1130,8 @@ bool serialize_settings(struct settings *settings)
- 	SERIALIZE_LINE(f, settings, dry_run, "%d");
- 	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
- 	SERIALIZE_LINE(f, settings, facts, "%d");
-+	SERIALIZE_LINE(f, settings, kmemleak, "%d");
-+	SERIALIZE_LINE(f, settings, kmemleak_each, "%d");
- 	SERIALIZE_LINE(f, settings, sync, "%d");
- 	SERIALIZE_LINE(f, settings, log_level, "%d");
- 	SERIALIZE_LINE(f, settings, overwrite, "%d");
-@@ -1176,6 +1203,8 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_LINE(settings, name, val, dry_run, numval);
- 		PARSE_LINE(settings, name, val, allow_non_root, numval);
- 		PARSE_LINE(settings, name, val, facts, numval);
-+		PARSE_LINE(settings, name, val, kmemleak, numval);
-+		PARSE_LINE(settings, name, val, kmemleak_each, numval);
- 		PARSE_LINE(settings, name, val, sync, numval);
- 		PARSE_LINE(settings, name, val, log_level, numval);
- 		PARSE_LINE(settings, name, val, overwrite, numval);
-diff --git a/runner/settings.h b/runner/settings.h
-index f69f09778..ab00b3e32 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -58,6 +58,8 @@ struct settings {
- 	struct igt_list_head env_vars;
- 	struct igt_vec hook_strs;
- 	bool facts;
-+	bool kmemleak;
-+	bool kmemleak_each;
- 	bool sync;
- 	int log_level;
- 	bool overwrite;
--- 
-2.34.1
-
+>
+>--
+>Zbigniew
+>
+>>
+>> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+>> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>
+>> You forgot about:
+>> Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>
+>> LGTM so also:
+>> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>
+>> > ---
+>> >  lib/igt_device_scan.c | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+>> > index 44b632008b..c36b0efa90 100644
+>> > --- a/lib/igt_device_scan.c
+>> > +++ b/lib/igt_device_scan.c
+>> > @@ -247,7 +247,7 @@ struct igt_device {
+>> >  };
+>> >
+>> >  /* Scanned devices */
+>> > -static struct {
+>> > +static __thread struct {
+>> >  	struct igt_list_head all;
+>> >  	struct igt_list_head filtered;
+>> >  	bool devs_scanned;
+>> > --
+>> > 2.34.1
+>> >
