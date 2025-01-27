@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BFCCC02188
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 12:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA70C02188
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 12:56:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F036910E50B;
-	Mon, 27 Jan 2025 12:31:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C5F210E50F;
+	Mon, 27 Jan 2025 12:56:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bx327G8u";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ibfkhmhK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16BA510E50F
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 12:31:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C71210E50F
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 12:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737981073; x=1769517073;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=itarjibEtB3kNUwNeY9EqAoXdqDT0cBte2hEbT+WaNk=;
- b=bx327G8u3Quqkj/dUXMMVRqfDil0ddAD+0rj6BoFU/RDvdFwmt+FqI80
- HuqxAtwaANqDGtI2xLGNLCSKZynSh866l3cfcwgCHIgAKwbxewUV0g54g
- Ysj7FHFc9z4M23AcJ2w4tRIrLQZIhHfdHzbPMDlJIoX0wPqjViKsVhy+u
- rkK7z4TApDltrKaCJNzvkC8qtxHvfqauAxwTxlj3s6IdaBo1ke+3CW9dx
- FA51a6Tsxg7svqmss5GpJQCMbMMqYlha8fyfWxI8Qtl67pxQ5Bh7mkRfk
- mOjYYhfM/nBvj2VVnNOID2d4grA+kRraB3n4ZP289FisKZz2LCfqK00hf A==;
-X-CSE-ConnectionGUID: sEF6gvXtTQabMNbdzFuD0g==
-X-CSE-MsgGUID: iJCdsXBgR4eNzDh4sR0T9g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="49033091"
-X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="49033091"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 04:31:12 -0800
-X-CSE-ConnectionGUID: p7V2h4zZRGeZqDH+ovJUZQ==
-X-CSE-MsgGUID: 1Oz51eOCQMaPyeE92UQ7uw==
+ t=1737982582; x=1769518582;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=O7SUh36ZVvyliVvrSYCbKgYR/qI1aEddqTd1calX5P4=;
+ b=ibfkhmhKD1Az/bomTHHrpC9sB+KF2XLsnq44XdaJEAofSUugiVRYfORX
+ zvSNtWnQLO69Yf47CvIbRAwgb2RpfdxK5AWBZNPMaaSs/E60GCbZvn+9C
+ uoD0bNdlb8Sdc2c6MMuVPImBcPK+nY6hCmEH/WQsFqSoeJcbRkVy77ohY
+ FblyKjPbC1JL/Fwk74e/vQmuy4c3JJFr9kB/vkOKvQU3InBEkEiszMnKe
+ pupImiNVTV2/z1lsWQz25HPRqCEg5yWNehJT0k2t8RbFLbih39ZBmRpCJ
+ GOR+jC8+hesvumKbszJBf+9fi8vb+ESwXW2JDFWBFhuNClTe2slLHzhCP Q==;
+X-CSE-ConnectionGUID: v2ohrL01Tr+ohL4hMsoFEQ==
+X-CSE-MsgGUID: x6kUyU1qSvS6m2LpkL/IbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="38690546"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="38690546"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 04:56:22 -0800
+X-CSE-ConnectionGUID: UMecAcpiQiyEk6AQeW3Lmg==
+X-CSE-MsgGUID: eO8qysopTKaTzz4wYnYqFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="108219155"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.14])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 04:31:11 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: Re: [PATCH 0/4] add test to validate uhbr/non-uhbr over sst/mst
-In-Reply-To: <20250115073243.2002014-1-kunal1.joshi@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250115073243.2002014-1-kunal1.joshi@intel.com>
-Date: Mon, 27 Jan 2025 14:31:08 +0200
-Message-ID: <87tt9ka16b.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="108539411"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 04:56:21 -0800
+Date: Mon, 27 Jan 2025 13:56:03 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_mix_modes: Use IGT comparison
+ functions
+Message-ID: <20250127125603.wzwklpmq2ipicq53@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250127101425.21082-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250127101425.21082-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,52 +71,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 15 Jan 2025, Kunal Joshi <kunal1.joshi@intel.com> wrote:
-> Add new test validating UHBR and non-UHBR link rates for
-> both SST and MST configurations. The series comprises three patches:
->
-> 1. tests/intel/kms_joiner_helper:
->    - Introduces kms_joiner_helper.c/h for pipe assignments taking care of joiners
->    - Moves common joiner-related logic out of kms_joiner.c.
->
-> 2. tests/intel/kms_mst_helper:
->    - Adds kms_mst_helper.c/h for MST-specific operations.
->    - Centralizes code for identifying and assigning MST outputs.
->
-> 3. tests/kms_feature_discovery:
->    - Implements tests verifying UHBR and non-UHBR link rates with SST and MST.
->    - Uses the new helpers for pipe assignments and topology discovery.
+Hi Francois,
+On 2025-01-27 at 11:14:25 +0100, Francois Dugast wrote:
+> With igt_assert() the logs were only telling us that the comparison had
+> failed. With igt_assert_lt() the logs provide the actual values that
+> were compared, which helps debugging.
+> 
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
-AFAICT this adapts to what the driver reports. If the driver never
-enables DP SST UHBR, it'll happily pass, and just skip the tests. Am I
-right? Is that the kind of testing you want?
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-
-BR,
-Jani.
-
-
-> Kunal Joshi (4):
->   tests/intel/kms_joiner_helper: helper for joiner-related functions
->   tests/intel/kms_mst_helper: Add helper for MST-related functions
->   tests/kms_feature_discovery: Add tests for UHBR/non-UHBR over SST/MST
->   HAX: DO NOT MERGE
->
->  tests/intel-ci/fast-feedback.testlist    |  14 ++
->  tests/intel-ci/xe-fast-feedback.testlist |  14 ++
->  tests/intel/kms_dp_linktrain_fallback.c  |  28 +---
->  tests/intel/kms_joiner.c                 |  15 +-
->  tests/intel/kms_joiner_helper.c          | 179 +++++++++++++++++++++++
->  tests/intel/kms_joiner_helper.h          |  15 ++
->  tests/intel/kms_mst_helper.c             |  48 ++++++
->  tests/intel/kms_mst_helper.h             |  10 ++
->  tests/kms_feature_discovery.c            | 177 ++++++++++++++++++++++
->  tests/meson.build                        |   6 +
->  10 files changed, 469 insertions(+), 37 deletions(-)
->  create mode 100644 tests/intel/kms_joiner_helper.c
->  create mode 100644 tests/intel/kms_joiner_helper.h
->  create mode 100644 tests/intel/kms_mst_helper.c
->  create mode 100644 tests/intel/kms_mst_helper.h
-
--- 
-Jani Nikula, Intel
+> ---
+>  tests/intel/xe_exec_mix_modes.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_mix_modes.c b/tests/intel/xe_exec_mix_modes.c
+> index 0bcd49cc0..59887d2aa 100644
+> --- a/tests/intel/xe_exec_mix_modes.c
+> +++ b/tests/intel/xe_exec_mix_modes.c
+> @@ -169,10 +169,10 @@ run_job(int fd, struct drm_xe_engine_class_instance *hwe,
+>  			 * depending on the execution mode.
+>  			 */
+>  			if (engine_execution_mode == EXEC_MODE_LR)
+> -				igt_assert(igt_nsec_elapsed(&tv) < 0.5 * duration_ns);
+> +				igt_assert_lt(igt_nsec_elapsed(&tv), 0.5 * duration_ns);
+>  			else if (engine_execution_mode == EXEC_MODE_DMA_FENCE &&
+>  				 job_type == SPINNER_INTERRUPTED)
+> -				igt_assert(igt_nsec_elapsed(&tv) > duration_ns);
+> +				igt_assert_lt(duration_ns, igt_nsec_elapsed(&tv));
+>  		}
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
