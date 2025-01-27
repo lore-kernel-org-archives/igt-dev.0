@@ -4,168 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E100DC02188
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 23:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7752C0218C
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 23:56:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 599AC10E0BF;
-	Mon, 27 Jan 2025 23:31:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B05B10E5EE;
+	Mon, 27 Jan 2025 23:56:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JRuqErDT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wp8sGMFC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C74F10E0BF;
- Mon, 27 Jan 2025 23:31:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66EC010E5ED;
+ Mon, 27 Jan 2025 23:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738020697; x=1769556697;
+ t=1738022180; x=1769558180;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=zqOQoCGBIjp3jkDdTWBT/4Qk5fFXpeN+2/v0JnD131Q=;
- b=JRuqErDTrJ2FsqeQTiZ7ACIlzXHgqFcqSGKqv+y8ZSi9NUVMJFkAVqhc
- 1WKutk+xWyr5iXoZgP3KFtjqLNMUvJOc9ZjFIVym1gp0QMsQ6QcC57phM
- JQDO76C/uYRPQ2A1e83/xsWeFGNPNHWPpOqtqtKL9YyffPsqkoYVP/kge
- wI+rG3tnce+kAqLhpJDytvJFpK4YR1yojCGs3FJYVapmNfNtioz2k7N0q
- 2PQbCBTIcdQRKiAiOVbDlBj1Ej3/caFhv/uVVAgx2hDAXa24xmqkMKeyp
- 5uPPeX0FuqSvipVhiTy6sUrxr+xO6RTjxv3psTXiKSRdi8//fQqju+U/b Q==;
-X-CSE-ConnectionGUID: VXQqsSKsTs6DLbY4H6OM9g==
-X-CSE-MsgGUID: 3Dofn/AsRV2x2e2B1Dn32A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="48993350"
-X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; d="scan'208";a="48993350"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 15:31:37 -0800
-X-CSE-ConnectionGUID: Evdbh4EBTPyhsimONR6UmA==
-X-CSE-MsgGUID: QshP1BiOTf6X4cOWpyIgRQ==
+ bh=kaA7TNoXfl3UE/NeJXaED6vmtHAr+hpyHxtCY/nujtE=;
+ b=Wp8sGMFC2uatlCjZ2R79JI+yftc73yW7ModVet9qHZPbS9yKc3/tZPpP
+ Xr7wahgK01hxYu5uSLyYLx+4LH1I7aKGEMBnz233KMRFoJajbNiieJI9U
+ 6uIdnUI3n/Ug6W/86cToVXXktCSkFzv5sDu24reBTtmlKtwmSWLMNUSPB
+ +XpRwtbW5Qzqsb0FGXtZhyRK3gOG30FbjEny1nOtJfzMnEtiIBh+oQf5R
+ XPRc+MChEnoTR/60Q7vtSgYmKqhkeZ/wQDANnuMU07HFzMGEFjmTz5KYz
+ +O4Nn9NLDq289qkusomNBaSERq09SXp/Do5FyeBDGdF/rRGxkx1fRuh4c w==;
+X-CSE-ConnectionGUID: Y73aFwiVQ8CEWPJ/CPnhuA==
+X-CSE-MsgGUID: fwZAau7fQiG/6WRpVeTTFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="41340786"
+X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; d="scan'208";a="41340786"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 15:56:20 -0800
+X-CSE-ConnectionGUID: D2d5PFX3QN+9G7dBXZarBA==
+X-CSE-MsgGUID: V4dCkoVkTiyiGYLgm6U0qg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="113205724"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 27 Jan 2025 15:31:37 -0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="108432300"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 27 Jan 2025 15:56:20 -0800
 Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 27 Jan 2025 15:31:36 -0800
+ 15.1.2507.44; Mon, 27 Jan 2025 15:56:19 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Mon, 27 Jan 2025 15:31:36 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.44 via Frontend Transport; Mon, 27 Jan 2025 15:56:19 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 27 Jan 2025 15:31:35 -0800
+ 15.1.2507.44; Mon, 27 Jan 2025 15:56:19 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XPKMjg4OYMhmimHgQ3grlcprK/qqVe7Se0DgT5gAyCFqOwsG9ODgEyUSjyPXKDeyuECsa9aXAKCYdQHBeAjidMTOfNbzFACUfY62BKRlM7qsvYjpKQ9/7KmfSGbvSJaamtFspPvktgcWhE/CU7QlVtyIOwhrNyqCqDPtu5z4cKPZLvF3T+XXmOVMGXBfudVgxw/fn+CRDNt2k4IfALoTFX6DxuWczWd1vwzsAWJ4gf/ZfJxRHKr8CBdH+qY8xBmdSurIv7g/S6LPOdcpcv/ALhGTvAzC+6yYyJXTQYbkbqplBRiSnU4iOrvfaNuskPbMnq0VrlDRFME6rFMnztHY0A==
+ b=kIjMUOHUtBi/uP7RWP6DrQM+CB6m023usPgp1dk2Xvt0B6jEqUrBdf8Evjz+5L+LSgeNEOvJDpg585yicI4tSA2wM9Dc/1TE13e+fcA7WokdRPTs7j1Lc6ERkt03dmT5LJlt0vJfnvPcTr+Heo5zNq1G1vwwm6x0eebTjrTJEk/R9qniqaJHVWOEh365EhZ24ksD3U5Wlwfe+okMywyw/XFQUOYRTQLxYwho3AwW57hPxzQFj4gBeRdBKjXJF8/hmJJHdYejXrI1Bk7BD7b8KMPy46tnq2RXJv8qnp3h9V5fTiv+jE6LWLx9tF5yYcRu2IxXz1+vY13lp9DHkXW3EQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uuu1MqesBfmaiNZhv14hn1dG6ABaBToyVfkNh//7/6Y=;
- b=F8xlhv73AL3jUlwK4QyCYv+OlBdV+subz57h72LoYwYgCUp8l6O8mtSFP1ZJxt414vCBfKlgMNRAHtZNFU2YsQUdZI9EDD7+GgPmouG8FKxURa+9xkBQez++EWOnB+L068ioWVD0PFC+C/zLedRbR8eun1Bg9OL0L3AvFfp2HTcYn4owdcuX/LTV2oimK6pgXF2nCHFnLOgl57T2gFLUU7tzlgLOLkuQikQbQBp/D588V6qozHbeTI5wmsXmqvnk7WkE/DCiP4WPcnFxSKVXzEWlxSud+Qqc8VlKMRpe8UNgV7CSD7a3vU0kjV20BdwY44eREcJKqnCnMlHAHmjofg==
+ bh=0Mr+1vc7lSVZiVlyHVf4YYUrq1TijlB8Tv6Y0CIJ0Wg=;
+ b=CLG4J1kS7jKtJy16vgbul8DhBzn5452XohWbVL9ou+X7hKGFZhikjbP2Fj7A9mljjGUz8TRzp/+0pjJnf40wGipFdYSvSCmdMT0Kf0fz3TLmyVnDBgj4ZteixYGxRIrUrexnFKG2XF9cy8tcKZ1R7OzUE1fDa+el/FsvUSouIlNZnISj4dBwFMBDbg8qe7FDdlv2SDRGXHislXjyMWUFbqs8I6PHtQD6lsn+b6SflpfNNSg8vc0hUBVbscIEWFbnhBIgXlsTu47ghWEJNyfDa1VK3NlUuMv6F6j4bYwCFI4fwg7TX/3ONOz+dPi9Z6bz1MfIYaqHVUZKssYmjZkZgA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by DS0PR11MB7830.namprd11.prod.outlook.com (2603:10b6:8:f2::21) with
+ by DM6PR11MB4676.namprd11.prod.outlook.com (2603:10b6:5:2a7::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Mon, 27 Jan
- 2025 23:30:50 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.23; Mon, 27 Jan
+ 2025 23:56:17 +0000
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8377.021; Mon, 27 Jan 2025
- 23:30:50 +0000
-Date: Mon, 27 Jan 2025 17:30:42 -0600
+ 23:56:17 +0000
+Date: Mon, 27 Jan 2025 17:56:11 -0600
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 CC: <intel-gfx@lists.freedesktop.org>, <igt-dev@lists.freedesktop.org>, "Riana
- Tauro" <riana.tauro@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [PATCH i-g-t v6 1/2] lib/igt_perf: Add utils to extract PMU
- event info
-Message-ID: <ci2sl6gcfnwqd7o7pi4js5sduwx22szch4lx4sghugixipexhb@4ajmfxfbngr5>
+ Tauro" <riana.tauro@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: Re: [PATCH i-g-t v6 2/2] tests/xe/pmu: Add pmu tests
+Message-ID: <md6vuvm5lsafcode7uhy2tq4udsavxlqqtm3gtdddqm3fu3oem@vhyu2ysimdzx>
 References: <20250127223301.2819108-1-vinay.belgaumkar@intel.com>
- <20250127223301.2819108-2-vinay.belgaumkar@intel.com>
+ <20250127223301.2819108-3-vinay.belgaumkar@intel.com>
 Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250127223301.2819108-2-vinay.belgaumkar@intel.com>
-X-ClientProxiedBy: MW3PR05CA0025.namprd05.prod.outlook.com
- (2603:10b6:303:2b::30) To CY5PR11MB6139.namprd11.prod.outlook.com
+In-Reply-To: <20250127223301.2819108-3-vinay.belgaumkar@intel.com>
+X-ClientProxiedBy: MW4PR03CA0307.namprd03.prod.outlook.com
+ (2603:10b6:303:dd::12) To CY5PR11MB6139.namprd11.prod.outlook.com
  (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DS0PR11MB7830:EE_
-X-MS-Office365-Filtering-Correlation-Id: 337e0afa-4322-43fd-91b1-08dd3f2aa252
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DM6PR11MB4676:EE_
+X-MS-Office365-Filtering-Correlation-Id: d76ff39c-9ddc-44c5-b20a-08dd3f2e307b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?lf4/Yvwk1sFyxPp8Ms5y7CoN8k0HEs5cyLpDCNmg3n8t7u1nOqTaSdD1Jb?=
- =?iso-8859-1?Q?vIlkofjoWAqH2fE6Y6es7pwI1/hPMVNi0U1yJElcXxatLQL4A9BL9LlQqu?=
- =?iso-8859-1?Q?3NApQOqXhrb25utGye0R9Y8TON0FqHqpHgx0EY3oHbb7azgjmZoOeZfa8B?=
- =?iso-8859-1?Q?k1pU4HJ23a8z9cWHCoGtaxmnjf8g0SgbPxDTcvZ3AdQXzJW5zpMu2pko/t?=
- =?iso-8859-1?Q?zmpdnnuZR3GqIhWtpL6eoMrpVhBztfphmTsXwGPpEQvppWgqsSuuuwbmA7?=
- =?iso-8859-1?Q?6OhunM0UxdH91+p5aeO1ns3GGmIOl17FWrMbNwUGXGxxMfl55GTmHvDh0K?=
- =?iso-8859-1?Q?mtrg5gZpZE9EeEVaAGvRPoAenphF5V7VXHrqRtl6xr6Cov3gZ4s8B9W9DK?=
- =?iso-8859-1?Q?AyEWb8geQRdWmeds/K0dRS80zIMG6EtSPR6f2nxNR/qpHudV45P1E3dvc7?=
- =?iso-8859-1?Q?EEoPmU84ZpEavKIpYtzKjUujkew/4uTKNdaad3DZBa0u+ynG324TNfo3ns?=
- =?iso-8859-1?Q?woUywulmyS50yaPmHHCizbXkIL8W12gm9/TrcwdszyZ/YVGOOJG7eU4a21?=
- =?iso-8859-1?Q?OgfZ/7GZSQNKt8J+37pokz23RqYG2Ziht8FwBvpyh5tkx9PbHg/h1yLfvc?=
- =?iso-8859-1?Q?u2URPLmhtcRTzhzSm3E1BsJI+lFDs5C4aR8GAduEf2VGt1xuVXCh2M81h3?=
- =?iso-8859-1?Q?Ff/Vi+KJp/J7NX3r/6ajOzKJpDAxbZy/ClT25CZwOZzuyvZiU4G4wRW1Du?=
- =?iso-8859-1?Q?+p9XF8fujVwVCgDp2azzZzsTKlJPHtiKk4+xSvRPZBopP3Ky91UUEU3ae3?=
- =?iso-8859-1?Q?GvwK6A9TpfvNtH6QeTgU6n5+OAUU0Ny7Pi3ZLHMK2hc9PcYmnqt7OSbyba?=
- =?iso-8859-1?Q?/8eGJQtrr0Y5EesXXw9AomyOWrxKy6IFv1hJroNw21RYPwCGImV425TADk?=
- =?iso-8859-1?Q?CeV07mv96PPy5z/0PLJAM96oDI4EneaKeD899KETHvUlVTHho2ahJ8ZBHj?=
- =?iso-8859-1?Q?kSkW2+fPSZST5kZzJYy1P8bDtfvRtxOhEhJQKDHRkT50lWPxRPTCNuiEiC?=
- =?iso-8859-1?Q?ucBIkZg/iRoLh6ap2dCmAAN72XzTE3xCMH/lpvixyqhlAYPIq6tc5awuSs?=
- =?iso-8859-1?Q?6wBOR2vInXMVHT8ZPJUZOwooDaLUK0iixc6GNwRiGfjDbAXmteAJEIRgWt?=
- =?iso-8859-1?Q?Q2CXd9SAL9lxXinuSWXDkKImAZ41hOfxEzV3exUo+OMIg6lTQKECD+JzyZ?=
- =?iso-8859-1?Q?nzmFC/G+Jh0/dVjx+DRRMPYo0r9A87UgaBOx3nwcKovo5LOmMxK7R009Zl?=
- =?iso-8859-1?Q?pNlK9FInhpgKpDi3u/rC8flofrZPcGEAg5U0ctw7c80Sk/c6E0+Kndiff5?=
- =?iso-8859-1?Q?IbRYpWKI/uIl2XOtqO1+hfm6VKpPwK/kSVJxEM3LpR0E12510/Mv6xY1gE?=
- =?iso-8859-1?Q?EYkP38athGGiLSu5?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?ZPMXuFeDfKhtJuL038qRxnhvuTss9lG6IypmD7KPAGZQIOx4wny6YqtfKS?=
+ =?iso-8859-1?Q?2dPuH+8olLBwncnK+rxe/DJE4j4N+WegFzCC4AsiyTwjSVEDOrjtuUKE66?=
+ =?iso-8859-1?Q?ic52Xp2FvfCbBsf4SOqQq83NRnLGhI+FIS+d0KLRpN9+epofOgU3UVNSsV?=
+ =?iso-8859-1?Q?S00UnNbr6L3lrxKAZhBTLFeMvEkZ/piAyN01VlFZ++sQ+Gm4xuSPKRUkHk?=
+ =?iso-8859-1?Q?j06vjRYvzh3PmwzDoJRCDMCDSHSUKnRsBbTLu/QEfXK7N4F8Io2N37Gt47?=
+ =?iso-8859-1?Q?107ouFfjFIISpa/WxqzHYJGhqisjZKiiAtAgu9w6tmnxZJGyliCTTYagrK?=
+ =?iso-8859-1?Q?HY6pWYNaDkFmTN/S3SmwVi2fK4wdIMuT00ExAyjGWbNPBM434FUWut4Z9U?=
+ =?iso-8859-1?Q?TBCbprq4Q9mZ36aHd1EQ/i94EQ+Akcj+w16qPyvYxcnnZHhQd3HwkhKkMU?=
+ =?iso-8859-1?Q?hsn0Omzfr8KqVjyNoxujIRJemwwOnX2BJqUrOL7wY4vW+t2T1OYCT8bxCh?=
+ =?iso-8859-1?Q?Xu6xoDZXHoyosl09NvwridI2gwqQNAdK51UN/BHvjtPi640AIcH9Xtvrnt?=
+ =?iso-8859-1?Q?KGoJPTihiRo3Iusn/NlbF77AeY4XM2V0aCh5BfxuaBbQeg9s4a/g9g2XhC?=
+ =?iso-8859-1?Q?UePKcPinRWHXmT3Pgkwi5UQHe092p1Dxr8qPUiKzBVOCZQKLPaQTG45oWl?=
+ =?iso-8859-1?Q?AaummsCSvkp3BqPXx7lvw2Y8BtFRuO+/5sVuYE2kmSV2tjcEh5Skzh2bOD?=
+ =?iso-8859-1?Q?xit97imeuH8BhcKVucf//eRWvlszDGJzJwWow4rNJaoIpzDMWZMfLfx6Ls?=
+ =?iso-8859-1?Q?UZF1Vkjs2JJE17KoP4WwAzI7maR4gwIdD24FAt+yfKnLG8gvWpqLj53nTs?=
+ =?iso-8859-1?Q?M7oFNoyykWbI55/TDUlxzw7XRgJzjIn/ccuewhgnBJmw0UEu6Wk8psGA3j?=
+ =?iso-8859-1?Q?o19QH1UhymM3CVGxQxWjuMsIa0Pnw4cdpRzs2sE9VH88mFjQ95zUZXktVR?=
+ =?iso-8859-1?Q?6kKITlrUjCWbk3JDR1hhgdM4ekI0zpjMLW2yoqBCuPobIjSEMkbz/aPp37?=
+ =?iso-8859-1?Q?yDexHau9R0aN4FgK0U95J+fyIElmu3AEja8HRWr4fugHG2cq8BULWPT44G?=
+ =?iso-8859-1?Q?P5oeCwjj39Ny/24wQPX2uEUobD0+tWt2LxhhzV3Rjaf8STpjPwmlPH+jZy?=
+ =?iso-8859-1?Q?Yb09GO0r+qBC/0CgIiMPy4ZAMaLP+vrpb4mvpAC7JnNiCscJOBu71hjC3L?=
+ =?iso-8859-1?Q?twTbkLRgI8mV0PQlI3MgevQKtoOi7yqkVN/WKssSBmCXPmm14e0q0uD9ov?=
+ =?iso-8859-1?Q?1lgBw+oq6oejOB+8FFSnocNBoochxEi+p5vSvnWkGh0OaDbLbVslOVYUbX?=
+ =?iso-8859-1?Q?IuqJvY8dhZjsRpz/7pIM3d0fesN5IejdqCuEEdB4ueOE2eH55qn8744ZZl?=
+ =?iso-8859-1?Q?usjyhsV1CAI/kz+I?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?WX7Thm5CJZU7ItVkVzfWS+owf3KqU38a8CiokCTWtDlomuHeCtZuhKj/hQ?=
- =?iso-8859-1?Q?eo/RZbych3TgZRe31LtsdMvC+kAfVdzDpeeGssx7F0P2O7zm1QE5iDr3/E?=
- =?iso-8859-1?Q?4HrB5Ki4C7WaRWX52hclYE1ozHFhUPkhk6Y4Tp02kFziMHZeSoLrngdy2j?=
- =?iso-8859-1?Q?lDM0kgHmFYV2SlDTIM8Ud6/S65mIwuTA4LNFtRsgWAqZ5BaHZX0d4gaX5I?=
- =?iso-8859-1?Q?6z183q0ZQyiqFBDPTGuUA/St3JuPG8iBTmx1q5IH1HtuYeriN5Jl0q5kii?=
- =?iso-8859-1?Q?LZFNdQay5a4S0wL6/l658PBQuRs6Haa27meYlqKHs/lBwL7ScjdGbz5kv8?=
- =?iso-8859-1?Q?CjxRFF6Jwj4ARhDLTHFqSu+JReuv3E8IkBLIu2dyuNB1H2nDmiEyYa0CTc?=
- =?iso-8859-1?Q?cXYGqmp9jzuaW3ix/O8G6gZF4xPCTKS+HcB40TfJKlJrGhVRv1ZNCaWEqD?=
- =?iso-8859-1?Q?pIQ2bFN79SbRBxUiJD+7iuH9g6tkww2/UXbS1LAuEvYaEz/TB0ZhK2Ut1j?=
- =?iso-8859-1?Q?O2w8sO+XeYABnuPpnacaIUhoTyq5srhVZCTtBhn2kje3keRkh/uDq/c2Pc?=
- =?iso-8859-1?Q?P/LOQHHpZqaoHnFVgeHkybFwILTKeLraV6rafojKZyLMf2Bjqf0aS38baR?=
- =?iso-8859-1?Q?hb9qF3EzvLGVOvQ3JO/LWyjLtx8ygiW6aHFBuQwPNpQtb4aCwFnL+WIw7l?=
- =?iso-8859-1?Q?gid94UHhzUFBabJaV8zPTalHlnVhSLXnk8rSxg0+M07lq/jiLlbC9cF8am?=
- =?iso-8859-1?Q?AVngLcrCDXtIK1BVrqKwmvabwyKcSra8njChQN21/DnU3ALa0MtpO3Pthx?=
- =?iso-8859-1?Q?lMnwmk/MRIokbHtT+4JW6fUG/GsDw2ZeKC6rjJW5Tv/QEAUMmjsGc5rGLi?=
- =?iso-8859-1?Q?xKxokhP7VJ2dlYf1XcxVjjCpzx34jiC5kH5V+5FPlEwqADnvPJGAhYX2RN?=
- =?iso-8859-1?Q?HypGPCMbeVKpS42kuUMhCLHhYnUb6RdNmF5NgmJsVwCIjvzXKh9iidKN2n?=
- =?iso-8859-1?Q?qasdC/d1lvLweUa0E7dgwse7EPJKbBHjaDXzoBeqKBjM6SvoQXIYjbcFct?=
- =?iso-8859-1?Q?zknKDsDB1POoJnGi0KNRKOd+8OAM2Gmc4eGjqkgKP4Qr2Yft5p8COxyZVk?=
- =?iso-8859-1?Q?VL/hTfd4DI0y1NIV5HJp+qxXqDp5dzH0s9mgtT8Pyx4Q5GcEXj/9KDuwIM?=
- =?iso-8859-1?Q?oW8H/Wnftd68X0O8FXfJoHBGFE3iiFMZYSgkJmQHwsWYE9X89S1hCZLFPw?=
- =?iso-8859-1?Q?2euVWhMe0XNq5CiCz31hbAaF3yC+r+Zy3Q+poYiXNPMAS2wWnZEggNZs0Z?=
- =?iso-8859-1?Q?QgLmOcAcPQe2kjBnfwZuexdtjECI1C+QssM+p7b4NLKzyR5nAAxGaSzrkS?=
- =?iso-8859-1?Q?8HVn4/beLC835et9kEJjdi++o0fX3wbVFSe9a0is6LTn1O6tTOQjAsvJrp?=
- =?iso-8859-1?Q?hcGikIn5i/k7AgRrCg0NdXz38dm2P3Ug+TNi0yyUF10pO+hDTANHvGnaDd?=
- =?iso-8859-1?Q?I4g9knkR3Ejoj7mPIHOUYoM1a4jb8otI7iKNc4laZy7SjNfyoM3BoUHxMd?=
- =?iso-8859-1?Q?7NqZzRiYG2lJJjNgWR2rxBFbQSYLCwopFqZnNzPOXt5AZVFOlwdinRlleX?=
- =?iso-8859-1?Q?hy/tpgq0/so/J7/x+7P0Rqth6XcOK/m4rzxLW/BKfzdeCw37M0D/7l8g?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?TmkRdsZ1MM5QVNyNIgULSRz/RGhU4sXWEsL2D+RsyeBk0Oc89cBGrRuQ8X?=
+ =?iso-8859-1?Q?y7PyhEVtZKfG9d1wKi8c29zjTBYIIsiCycX0GcUyGho3wYtdJSnrWPG7H8?=
+ =?iso-8859-1?Q?WEBDu56CNLm7f5E7t6lNIqF2K300uN4Vp6GrZi7AqRA3Wdo+UUDTTK3jn0?=
+ =?iso-8859-1?Q?iiD5GjkIBp9qUdERSH8A/N7naRYRIZN/AgsEUdUKm7UqjXlyLoldyP8QnT?=
+ =?iso-8859-1?Q?P/K8MFtYbTCWq+PWiSLvxqVy1PDeESNqhUVd+yB74jIebbQi8h0mFKQEzz?=
+ =?iso-8859-1?Q?TI3u1CbQu8bY+2DoxD9V83yd2wHevZ6VNX+9Mi6gCSBRwmfCWmBw23gScm?=
+ =?iso-8859-1?Q?HJVW8UANkE4KhtIFWSjfhvCRgf461ipHWIQXID6h7Fv9JDv2UVM9q4i1aU?=
+ =?iso-8859-1?Q?a4lehiHMVCAzKkq1lz3PBaIAJa0Be2y+l7l+SZV/xc4yTymXCACxIQvRgA?=
+ =?iso-8859-1?Q?3j1IXCyQg2p40zVcHIYaAyDKqJ8Okpe8Pc+5dnnPH//+iUjnGsym+8hLsq?=
+ =?iso-8859-1?Q?t4y+4Hxly4cOhl/U0o89b1KLABqUI4rrvElw+YTEJj5UqUtRkqvwKt4C7m?=
+ =?iso-8859-1?Q?5f2/dipTFNPRqwiaH/l+5WLItDMT2N+YWhFTZCf8QsJTOblX3Hqstd2eqg?=
+ =?iso-8859-1?Q?fQ74MrSevivg25HFBuwfs5dPitwFCDij10A1WC+yKOJ/4yxo2WSoO1GmwH?=
+ =?iso-8859-1?Q?ys5IqpbaER0cztTarn1uLiLi+wIOsaAPpHy40K6L4PKUDwAIw+zctELoVw?=
+ =?iso-8859-1?Q?J0CfN8X9fpxH9zs1+78z3+1r6JyKL9eNp6PLsSlsyj+O2cU4+sWK/C1o3Q?=
+ =?iso-8859-1?Q?sVf0HTTS9gdGwiwLahT8M+1OAs+IEZ7RdTIVcrrOCStL1L4A1uH9/w4mCl?=
+ =?iso-8859-1?Q?FIUXU2vosxp9TF4M1zhPan/NyTQRSgcQBSkb2bJ4F0vxWi0KRCHY5/exqE?=
+ =?iso-8859-1?Q?itBqLBQfU2lRDRr/2VFyhikmv6F57vA5kcW+Usq6KVh0bG3f64hJn+OXlG?=
+ =?iso-8859-1?Q?ctMWQF4M4aaiAr0+tPgvbC9gm073GYnNEUSrgnZp9kC2lxmQniD9TWaW5x?=
+ =?iso-8859-1?Q?RWUfb+dYMydguFIjke7lTeyBqjRBSnPPEErcLcJaRr244ucu1ZyWy44yjR?=
+ =?iso-8859-1?Q?auUlp6XxMPuoHAs/tz5D/rU9Zuzx+NT7/PJecWpSOGpCNtOfhMyGtDam98?=
+ =?iso-8859-1?Q?wOzNY2TZrNUJwBYQGl/UZOFdCBeUvGDsU5DdFfa6PtrbUbL6rK792t9SHz?=
+ =?iso-8859-1?Q?mUbSqKd6IQ4P7VkEi816l/ZAAaI0/3l8y04UTaP/4kE8vMEJvkGn4qAXM4?=
+ =?iso-8859-1?Q?msLgMqlFUW23Tw1sl6162c2yb9yRWozLNs962ml9nrleM10HUh0G8TzVQa?=
+ =?iso-8859-1?Q?CERd3b3aICw+Iq4tZjxuM2zIMgxDRSglBAwDaXR8WxiH/EOH4JjXHkOe5N?=
+ =?iso-8859-1?Q?P+R3eKO95QWaNMi0XAfKOIDbQyP4Nzpn7khDJm5kokQ7p4y/EL3yFY7q3K?=
+ =?iso-8859-1?Q?wq4fYL84sl0iI3EeCCC7d+/xyJjLB/BSOU2DfEPsqSK4Yq0cHlgkS4cc15?=
+ =?iso-8859-1?Q?gcE43kAyl+YdeQiToPAm7E7VJ8Y2cEFp8PlMu5eVBUIeP/t/vbRvtNOkQC?=
+ =?iso-8859-1?Q?K4zGQQS6zEEunzMCZ2xyeWf1L17FbWAkYmIYNye2p/AMJgyNqXeJMaPQ?=
  =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 337e0afa-4322-43fd-91b1-08dd3f2aa252
+X-MS-Exchange-CrossTenant-Network-Message-Id: d76ff39c-9ddc-44c5-b20a-08dd3f2e307b
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2025 23:30:50.3955 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2025 23:56:17.3801 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fbuh4S20sigzJ3Dqp/FjJCn/m1z10J/NhAjShtwi6D0wQps9QWjlhvcb/luMbb1ExoIcLWsg3jSm5YN5nOyKyt8B0LAneaehMr7oAoUCE+w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7830
+X-MS-Exchange-CrossTenant-UserPrincipalName: xAO2xC/DCLvOJqutLLzSpnmt/n0J3AqzSKULx8sTgkywYhuDNmTFME2HD+hoKkYsIGEj3HplyqYwmdzJNy26o52s86mP/IZq1QCIOe0VhEw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4676
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -182,150 +180,273 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jan 27, 2025 at 02:33:00PM -0800, Vinay Belgaumkar wrote:
->Functions to parse event ID and GT bit shift for PMU events.
+On Mon, Jan 27, 2025 at 02:33:01PM -0800, Vinay Belgaumkar wrote:
+>Simple tests for validating the PMU implementation for GT C6
+>residencies.
 >
->v2: Review comments (Riana)
+>v2: Rename rc6-residency-* to gt-c6-residency and remove freq tests.
+>v3: Keep just gt-c6 tests, add frequency tests later.
+>v4: Review comments (Riana)
 >
->Cc: Riana Tauro <riana.tauro@intel.com>
 >Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>Cc: Riana Tauro <riana.tauro@intel.com>
 >Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 >Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 >---
-> lib/igt_perf.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++++++
-> lib/igt_perf.h |  2 ++
-> 2 files changed, 72 insertions(+)
+> tests/intel/xe_pmu.c | 176 +++++++++++++++++++++++++++++++++++++++++++
+> tests/meson.build    |   1 +
+> 2 files changed, 177 insertions(+)
+> create mode 100644 tests/intel/xe_pmu.c
 >
->diff --git a/lib/igt_perf.c b/lib/igt_perf.c
->index 3866c6d77..7e81d5516 100644
->--- a/lib/igt_perf.c
->+++ b/lib/igt_perf.c
->@@ -92,6 +92,76 @@ const char *xe_perf_device(int xe, char *buf, int buflen)
-> 	return buf;
-> }
->
->+/**
->+ * perf_event_format: Returns the start/end positions of an event format param
->+ * @device: Device string in driver:pci format
-
-driver:pci seems wrong and is not true neither for i915 or xe.
-This is actually the pmu_device:
-
-/sys/bus/event_source/devices/{pmu_device}/events/{event_name}
-
-and
-
-/sys/bus/event_source/devices/{pmu_device}/format/{field}
-
-
-
->+ * @param: Parameter for which you need the format start/end bits
->+ * Returns: Start/end bit positions for a event parameter format
-
-	Returns 0 on success, or a negative error code on failure. 
-
-would be more accurate to the int return of this function
-
-
+>diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+>new file mode 100644
+>index 000000000..61a7a7e38
+>--- /dev/null
+>+++ b/tests/intel/xe_pmu.c
+>@@ -0,0 +1,176 @@
+>+// SPDX-License-Identifier: MIT
+>+/*
+>+ * Copyright © 2025 Intel Corporation
 >+ */
->+int perf_event_format(const char *device, const char *param, uint32_t *start, uint32_t *end)
+>+
+>+/**
+>+ * TEST: Test Xe PMU functionality
+>+ * Category: Perf Monitoring Unit
+>+ * Mega feature: Perf Monitoring Unit
+>+ * Sub-category: Power Management
+
+this is not accurate... power management is 1 of the possible counters
+we can expose from kernel to userspace.
+
+>+ * Functionality: Power/Perf
+>+ * Test category: Functional tests
+>+ */
+>+
+>+#include <fcntl.h>
+>+#include <limits.h>
+>+#include <time.h>
+>+#include <errno.h>
+>+#include <dirent.h>
+>+#include <string.h>
+>+#include <sys/time.h>
+>+
+>+#include "igt.h"
+>+#include "igt_device.h"
+>+#include "igt_power.h"
+>+#include "igt_sysfs.h"
+>+#include "igt_perf.h"
+>+
+>+#include "lib/igt_syncobj.h"
+>+#include "xe/xe_ioctl.h"
+>+#include "xe/xe_gt.h"
+>+#include "xe/xe_query.h"
+>+#include "xe/xe_spin.h"
+>+#include "xe/xe_util.h"
+>+
+>+#define SLEEP_DURATION 2 /* in seconds */
+>+const double tolerance = 0.1;
+>+const unsigned long batch_duration_ns = 500e6;
+
+unused
+
+>+const char *no_debug_data = "\0";
+
+no idea what this is for
+
+>+
+>+#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
+>+	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+>+		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+>+		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n%s\n",\
+>+		     #x, #ref, (double)(x), \
+>+		     (tol_up) * 100.0, (tol_down) * 100.0, \
+>+		     (double)(ref), debug_data)
+>+
+>+#define assert_within_epsilon(x, ref, tolerance) \
+>+	__assert_within_epsilon(x, ref, tolerance, tolerance, no_debug_data)
+
+git grep __assert_within_epsilon
+
+we already have too much of these copy and paste. Please, don't add
+more.
+
+>+
+>+static int open_pmu(int xe, uint64_t config)
 >+{
->+	char buf[NAME_MAX];
-
-it seems this was part of a previous review, but I don't understand how
-NAME_MAX is related to the buffer size here. You use it for the entire
-**path** size and then re-use it for the buffer content.
-
-Well... don´t really care much: as long as we don't overflow and when we
-do we fail accordingly, should be good enough **for IGT**
-
->+	ssize_t bytes;
->+	int ret;
 >+	int fd;
 >+
->+	snprintf(buf, sizeof(buf),
->+		 "/sys/bus/event_source/devices/%s/format/%s",
->+		 device, param);
+>+	fd = perf_xe_open(xe, config);
+>+	igt_skip_on(fd < 0 && errno == ENODEV);
+>+	igt_assert(fd >= 0);
 >+
->+	fd = open(buf, O_RDONLY);
+>+	return fd;
+>+}
+>+
+>+static uint64_t __pmu_read_single(int fd, uint64_t *ts)
+>+{
+>+	uint64_t data[2];
+>+
+>+	igt_assert_eq(read(fd, data, sizeof(data)), sizeof(data));
+>+	if (ts)
+>+		*ts = data[1];
+>+
+>+	return data[0];
+>+}
+>+
+>+/**
+>+ * SUBTEST: gt-c6
+>+ * Description: Basic residency test to validate idle residency
+>+ *		measured over a time interval is within the tolerance
 
-O_CLOEXEC
+why is this comment on top of measured_usleep()?
 
-we have igt_sysfs_read() that could be used here (note dirfd is ignored
-when path is absolute).
+>+ */
+>+static unsigned int measured_usleep(unsigned int usec)
+>+{
+>+	struct timespec ts = { };
+>+	unsigned int slept;
+>+
+>+	slept = igt_nsec_elapsed(&ts);
 
-not really blocking this as is though.
+this function is another copy and paste that is wrong everywhere.
 
+
+>+	igt_assert(slept == 0);
+>+	do {
+>+		usleep(usec - slept);
+
+slept is in nanosec, while usec is in usec.
+
+>+		slept = igt_nsec_elapsed(&ts) / 1000;
+>+	} while (slept < usec);
+>+
+>+	return igt_nsec_elapsed(&ts) / 1000;
+
+we have macros to convert usec/msec/nsec
+
+>+}
+>+
+>+static unsigned long read_idle_residency(int fd, int gt)
+>+{
+>+	unsigned long residency = 0;
+>+	int gt_fd;
+>+
+>+	gt_fd = xe_sysfs_gt_open(fd, gt);
+>+	igt_assert(gt_fd >= 0);
+>+	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_residency_ms", "%lu", &residency) == 1);
+>+	close(gt_fd);
+>+
+>+	return residency;
+>+}
+>+
+>+static u64 get_event_config(int xe, unsigned int gt, char *event)
+>+{
+>+	int ret;
+>+	char xe_device[100];
+>+	u64 pmu_config;
+>+	u32 start, end;
+>+
+>+	xe_perf_device(xe, xe_device, sizeof(xe_device));
+>+	ret = perf_event_config(xe_device, event, &pmu_config);
+>+	igt_assert(ret >= 0);
+>+	ret = perf_event_format(xe_device, "gt", &start, &end);
+>+	igt_assert(ret >= 0);
+>+	pmu_config |= (u64) gt << start;
+>+
+>+	return pmu_config;
+>+}
+>+
+>+static void test_gt_c6(int xe, unsigned int gt)
+>+{
+>+	int pmu_fd;
+>+	u64 pmu_config;
+>+	char event[100];
+>+	uint64_t ts[2];
+>+	unsigned long slept, start, end;
+>+	uint64_t val;
+>+
+>+	/* Get the PMU config for the gt-c6 event */
+>+	sprintf(event, "gt-c6-residency");
+>+	pmu_config = get_event_config(xe, gt, event);
+>+
+>+	pmu_fd = open_pmu(xe, pmu_config);
+>+
+>+	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10), "GT %d should be in C6\n", gt);
+>+
+>+	/* While idle check full RC6. */
+>+	start = read_idle_residency(xe, gt);
+>+	val = __pmu_read_single(pmu_fd, &ts[0]);
+>+	slept = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+>+	end = read_idle_residency(xe, gt);
+>+	val = __pmu_read_single(pmu_fd, &ts[1]) - val;
+
+I actually expected 2 subtests:
+
+1) gt_c6_idle
+
+	we should be in rc6 for the entire time when nothing is running
+
+2) gt_c6_full_load
+
+	we should not be in rc6 when something is keeping the engine
+	busy
+
+For (2), we can start a work load with xe_cork
+
+
+>+
+>+	igt_debug("gt%u: slept=%lu, perf=%"PRIu64"\n",
+>+		  gt, slept,  val);
+>+
+>+	igt_debug("Start res: %lu, end_res: %lu", start, end);
+
+is this reading the value from sysfs to aid debugging?
+
+
+I tested this with the kernel implementation, before merging it, and it
+worked. I don't mind if this is merged and cleaned on top. I will leave
+it for you and Riana to decide.
+
+thanks
 Lucas De Marchi
 
->+	if (fd < 0)
->+		return -EINVAL;
 >+
->+	bytes = read(fd, buf, sizeof(buf) - 1);
->+	close(fd);
->+	if (bytes < 1)
->+		return -EINVAL;
->+
->+	buf[bytes] = '\0';
->+	ret = sscanf(buf, "config:%u-%u", start, end);
->+	if (ret != 2)
->+		return -EINVAL;
->+
->+	return ret;
+>+	assert_within_epsilon(val,
+>+			      (ts[1] - ts[0])/USEC_PER_SEC,
+>+			      tolerance);
+>+	close(pmu_fd);
 >+}
 >+
->+/**
->+ * perf_event_config:
->+ * @device: Device string in driver:pci format
->+ * @event: The event name
->+ * @config: Pointer to the config
->+ * Returns: 0 for success, negative value on error
->+ */
->+int perf_event_config(const char *device, const char *event, uint64_t *config)
+>+igt_main
 >+{
->+	char buf[NAME_MAX];
->+	ssize_t bytes;
->+	int ret;
->+	int fd;
+>+	int fd, gt;
 >+
->+	snprintf(buf, sizeof(buf),
->+		 "/sys/bus/event_source/devices/%s/events/%s",
->+		 device,
->+		 event);
+>+	igt_fixture {
+>+		fd = drm_open_driver(DRIVER_XE);
+>+		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+>+	}
 >+
->+	fd = open(buf, O_RDONLY);
->+	if (fd < 0)
->+		return -EINVAL;
+>+	igt_describe("Validate PMU gt-c6 residency counters");
+>+	igt_subtest("gt-c6")
+>+		xe_for_each_gt(fd, gt)
+>+			test_gt_c6(fd, gt);
 >+
->+	bytes = read(fd, buf, sizeof(buf) - 1);
->+	close(fd);
->+	if (bytes < 1)
->+		return ret;
->+
->+	buf[bytes] = '\0';
->+	ret = sscanf(buf, "event=0x%lx", config);
->+	if (ret != 1)
->+		return -EINVAL;
->+
->+	return 0;
+>+	igt_fixture {
+>+		close(fd);
+>+	}
 >+}
->+
-> uint64_t xe_perf_type_id(int xe)
-> {
-> 	char buf[80];
->diff --git a/lib/igt_perf.h b/lib/igt_perf.h
->index 3d9ba2917..69f7a3d74 100644
->--- a/lib/igt_perf.h
->+++ b/lib/igt_perf.h
->@@ -71,5 +71,7 @@ int perf_i915_open(int i915, uint64_t config);
-> int perf_i915_open_group(int i915, uint64_t config, int group);
->
-> int perf_xe_open(int xe, uint64_t config);
->+int perf_event_config(const char *device, const char *event, uint64_t *config);
->+int perf_event_format(const char *device, const char *param, uint32_t *start, uint32_t *end);
->
-> #endif /* I915_PERF_H */
+>diff --git a/tests/meson.build b/tests/meson.build
+>index 33dffad31..d20f50766 100644
+>--- a/tests/meson.build
+>+++ b/tests/meson.build
+>@@ -309,6 +309,7 @@ intel_xe_progs = [
+> 	'xe_pat',
+> 	'xe_peer2peer',
+> 	'xe_pm',
+>+	'xe_pmu',
+> 	'xe_pm_residency',
+> 	'xe_prime_self_import',
+> 	'xe_query',
 >-- 
 >2.38.1
 >
