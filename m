@@ -4,73 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32036C02188
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 11:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2E8CC02188
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 11:32:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E122B10E2F0;
-	Mon, 27 Jan 2025 11:19:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE25010E2F0;
+	Mon, 27 Jan 2025 11:32:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k5G3tm4q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bI+oitpo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 922F310E2F0
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 11:19:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D69210E2F0
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 11:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737976787; x=1769512787;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=zF4BVr+nIurAKsCc4uZGiFLyGqLv1jpDQsYFgFyf3H8=;
- b=k5G3tm4qKy0ZFhj3lqaNP1dg0OGoZsnFnM+frx3bAvVyxUAoz3Vx/hCf
- DySGorggBOkzmFcIL3KX65yZ/qMgnigSGiJEQWAnsJEQ3gB+/V3JXD/rB
- sG7v89gxsifG9Ldc+QDGxb0fj0TR7ft8lRzjEQgsN+ln8Ju+PPrrTXtbF
- ltWic8YkPoF+612ISTJcFzzvugGqkir83oURzqtsxdf8o6EAzH2mWkILm
- A7fdkaBUe3qovAQJrscX3rSzk4OBBaHjHCz5qAQnytd0wH37tqstkBd0E
- rBeZr925qQYnOML2qLhaiOd9eIISnOG4u78ngnGdfI4saEdN2OQwhEGtK w==;
-X-CSE-ConnectionGUID: K4xMLIPHS2GDfn4ERepezw==
-X-CSE-MsgGUID: V5xJeG8/R6uzjqc5jEozHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="26032417"
-X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="26032417"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 03:19:46 -0800
-X-CSE-ConnectionGUID: u3ryuZMgS7mEJd3y58FT3w==
-X-CSE-MsgGUID: 4r7NzexbRuK6i22XhHI1rA==
+ t=1737977547; x=1769513547;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:mime-version;
+ bh=lizHX3TPYJ9A83VbfYToK29d+k1FSp2JV0En/hAmNRs=;
+ b=bI+oitpoMyRf5ePEKVdrb2RuJF2XDOi2KJJF3RD/GlulGpop8W/3WQZt
+ wDLwBoIXUlakdSsSievldXyUuKoVt3ec6FXDv5z9A9TGZaR8oj9bZkI4Q
+ 9aKEynRDMYshGYnS+mRqOk91YQayMyH/Uw4cN7mg4DNPlvvMSkaJs0Rd5
+ /uHiysckhPup/cJuA9Xd05cUfpt960cdeO+Cvzf3XRZdbWFYWQ3pdMFV4
+ GOPySUi1SKnDbM/Bf0ipH0WhwlRNHTPRBuyCnuLqxeUNdmue/4xHWVqrh
+ PETa20TLSv5McGX9Kb66RDVy6rYvMlyQt2Bo3r1pNhOzCoUZpnsTSb/aq g==;
+X-CSE-ConnectionGUID: WxBbHgqiR/SGw8P8py8hJw==
+X-CSE-MsgGUID: QhWKqt52Qg6AFB5S36a3uQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="63788705"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208,217";a="63788705"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 03:32:26 -0800
+X-CSE-ConnectionGUID: uazpUKtmRdGtonSCF616KA==
+X-CSE-MsgGUID: u21zvberT9Wsm3ZCfz/4cQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="112435172"
-Received: from nwochtma-mobl.ger.corp.intel.com (HELO [10.245.83.54])
- ([10.245.83.54])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 03:19:42 -0800
-Message-ID: <5b250520-3043-4b0c-9555-b613d7f99ffa@linux.intel.com>
-Date: Mon, 27 Jan 2025 12:19:39 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kmemleak: library to interact with
- kmemleak
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+ d="scan'208,217";a="113553218"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 27 Jan 2025 03:32:26 -0800
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 27 Jan 2025 03:32:25 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Mon, 27 Jan 2025 03:32:25 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 27 Jan 2025 03:32:25 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HhGGnqF8dSi+TIWlYG2+nZqKXbq0oC/CSZiZ3HS+2ximtK1ldXw4UbZuFpWLm5QMNOnP5N3KcY2R33bP9zWGprG7P7aPU5DtZpwzgz/bPsqv1dOzmKnsqatisSxUjcn1vgPJNzP+CXvbZcPOMjSXbMYd2zs8TuwwhAqzCoXtc+CxiX4u4OtZWsSMgrMjVfyOjRCpoarpx6+2d0ji7MOcfZohfS9qlkvG4aAeYOrzBgXiHnb52CP8p7OHb8/sOk5NXDRoS+fKM3vjaD5FoSk3L3Zf3iBSba2/X2v1hiq5XTAkuo2j5FoFmlV17lSjLhLsEp6I1a1tFnFQ7RnJ9WhqbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PJPriklzHaUntIhY2s7rfszCjWUx9WT+2205EkgMI5c=;
+ b=ZtP+nfuzxT/BGnkhWUDjWVRJh8ZBvkJ+r2WunTk3o12IK5J3VwFcmINAwBSSMOlvQHXjHCbxPjwS8CqbCRf96IfDFDhUV6FZ2Ec1iwXmM1bFeX6PsjZ93FAYpv6hxkVOKoiPagcD3dStJdcnrQzmIbeT6aR9P+YN2e6k1aFhQrWQAcuKn+oQNF2DZ715EGW2bA5rluOsACy0skMhLl0KfvOgAKHMKPQ9ze3p87+Dbe3x0IjBw5ax+g1qa7uRNHg08UtrkS8fXj7l/8LyO7gkXD9KlozQqdzTc1CU3pz0OxorI+sPnDBSyvWOqCOixkUlBNVe11lq0FHcaGo34BewSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN7PR11MB2691.namprd11.prod.outlook.com (2603:10b6:406:b3::12)
+ by MW4PR11MB6862.namprd11.prod.outlook.com (2603:10b6:303:220::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Mon, 27 Jan
+ 2025 11:32:23 +0000
+Received: from BN7PR11MB2691.namprd11.prod.outlook.com
+ ([fe80::1b22:8ff7:ef00:803b]) by BN7PR11MB2691.namprd11.prod.outlook.com
+ ([fe80::1b22:8ff7:ef00:803b%3]) with mapi id 15.20.8377.021; Mon, 27 Jan 2025
+ 11:32:23 +0000
+From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "stylon.wang@amd.com" <stylon.wang@amd.com>,
- "Rodrigo.Siqueira@amd.com" <Rodrigo.Siqueira@amd.com>,
- "Gandi, Ramadevi" <ramadevi.gandi@intel.com>,
- "Knop, Ryszard" <ryszard.knop@intel.com>,
- "Lattannavar, Sameer" <sameer.lattannavar@intel.com>,
- "De Marchi, Lucas" <lucas.demarchi@intel.com>,
- "Saarinen, Jani" <jani.saarinen@intel.com>,
- "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>,
- "Roper, Matthew D" <matthew.d.roper@intel.com>,
- "gregory.f.germano@intel.com" <gregory.f.germano@intel.com>,
- "Taylor, Clinton A" <clinton.a.taylor@intel.com>,
- "Yu, Jianshui" <jianshui.yu@intel.com>,
- "Vivekanandan, Balasubramani" <balasubramani.vivekanandan@intel.com>
-References: <20250121112944.115491-1-peter.senna@linux.intel.com>
- <20250121112944.115491-2-peter.senna@linux.intel.com>
- <CH0PR11MB54448F91732885E4871ECEF2E5E12@CH0PR11MB5444.namprd11.prod.outlook.com>
+CC: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Subject: Re: [PATCH i-g-t 1/6] lib/igt_kms: Add highres() and lowres() func
+Thread-Topic: [PATCH i-g-t 1/6] lib/igt_kms: Add highres() and lowres() func
+Thread-Index: AQHbWuzLexbsXzKjoUuBQcvGqGtgo7MqphUZ
+Date: Mon, 27 Jan 2025 11:32:23 +0000
+Message-ID: <SN6PR11MB27042CD0D6A738304905546FDBEC2@SN6PR11MB2704.namprd11.prod.outlook.com>
+References: <20241230190315.48821-1-swati2.sharma@intel.com>
+ <20241230190315.48821-2-swati2.sharma@intel.com>
+In-Reply-To: <20241230190315.48821-2-swati2.sharma@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <CH0PR11MB54448F91732885E4871ECEF2E5E12@CH0PR11MB5444.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN7PR11MB2691:EE_|MW4PR11MB6862:EE_
+x-ms-office365-filtering-correlation-id: 0afb4f62-bf35-4003-2853-08dd3ec64494
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|8096899003|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?uDx43KyOnVqIFIHhgC/3XJyaSDCO/VkixNo60ULQZwctAm6LxC5s0hRO7B?=
+ =?iso-8859-1?Q?5YxUsjC24gMxrkhoQydLRlj0uaN7i4Oo8m7belwD27U1saQ3ytyRmEsBOx?=
+ =?iso-8859-1?Q?7+/x6hMy71OpnSei2zCcBkzovK9RLB65bCs8QYAvI6j4Vy4B0if0AoaR1I?=
+ =?iso-8859-1?Q?9hM+7N8Js5z1hydUHQoeVGRfzTrU9hw/v0QGSZlqJ25heKC4Fot2LVGtd6?=
+ =?iso-8859-1?Q?h2OuP55fBQMY1Y9cqRCGqqvqNMA8U/oWlyaryEG0H2Ae1T/zxpdHjJU+zu?=
+ =?iso-8859-1?Q?1LALd4U8alhu14ST94cdBF2qmylRYHBrrE57GmcrZCEhwEEzjHzWE73MF1?=
+ =?iso-8859-1?Q?BCv9O5b6F/9eu72QKxBcZ0SVC6pNDyv2/nNNXOmgHvj4IP1143i7AJqNwV?=
+ =?iso-8859-1?Q?8dCxUl2ytk5DxK1v+lqSWvIk+wEclng+iSg6VvEn7B3TrxvM82ZClKtrp9?=
+ =?iso-8859-1?Q?xJTLbu0HtuvSxcEEH2R9qJsnKyyBAttDFZrG5ikG0Yo4k6rEDwaZUiv8mc?=
+ =?iso-8859-1?Q?I0ETMLAfOiRSZZB7Zc/FlYoSpv2oa3F8yPNfnW0I8BxVE0SbC4I0QjNBiO?=
+ =?iso-8859-1?Q?3QN51JXqo9K3QJOi2lVj9oHXCJC6V+OXf4KOGRoswzezonTzu5CDGTFc0N?=
+ =?iso-8859-1?Q?SVGfuVGFAaedfiMa/J29fxDIepW1gT8V47hXWMwuQz84EAwypvDy36AVUf?=
+ =?iso-8859-1?Q?BqiVA7FsN5yAzTkKhCXdroLQ1MxbPQa0BEC/rWM9YhzGqvTuW5NnlSPZtC?=
+ =?iso-8859-1?Q?UBpdx4Bhdxu05jNRn5sEZQKr+axDT2j+NTC2zQmJueT5PrOjl3upY37jLu?=
+ =?iso-8859-1?Q?1mpfeuInqVns3ZGTlBW7IIBbb02Y+FVQ9usszz1t+8c8tMxl96JKrK+CJ9?=
+ =?iso-8859-1?Q?C15gmkbY7h11NeCwnqWtgVLjhZWpphVTx+CwS5Al8engL2GhUdDHARpBt9?=
+ =?iso-8859-1?Q?ItxEIT7VDODpiRd8838QNM/PChoId+3QiI1HAwL0SlrkQalOuXcNU40OyI?=
+ =?iso-8859-1?Q?Xu/7cSsN1sKChoXKYFr7t6giS0GZ3lU0mi2BZy1Fa4gF3Ebbqsh3izFBoQ?=
+ =?iso-8859-1?Q?cCcXzP5Fq16PLFnT5f2Da7wsq8S6JfPoTkbxardOHvkYCUBhKtdhEwSSL+?=
+ =?iso-8859-1?Q?BA3ZNV77WWCmkbisVU6oGlcd+SoFj4YNRpNFYXc2qWqNLim0o0dwKsm0MA?=
+ =?iso-8859-1?Q?NORTCJ9GIcl2Dae2miKupviUQ98wSdIr1OWi/nsU7a8Tf8RnzEs2txs+DM?=
+ =?iso-8859-1?Q?0at37XUUO7C7ry0YRZwZrGeJAWbEW2Eq2i3O7Q3FvbzfkA1Hcmw2iaZhy1?=
+ =?iso-8859-1?Q?/EKE+Z3E2iWbES8R7ZAfLiHtqOc2/Ov7s3ujAAGE+82HAJ3Q01N55F48sF?=
+ =?iso-8859-1?Q?RmCmbz2Lhjinat9iiaGThpnVZKXjAkFEg8CJ/DVc9H3SyCJ/UAm3au3opm?=
+ =?iso-8859-1?Q?j0Pma/+mHlWcqRExWnFSq/PTQhTD8Vw9WifYZS4YnDuKhRG588Aj/QijOD?=
+ =?iso-8859-1?Q?BVRT/MaOgfqG8Cs08N2u8y?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BN7PR11MB2691.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(8096899003)(7053199007)(38070700018);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?5jvaE37IzU+w5R7Pv2oe29y7WeByPvyRtrCvsxAHCH+GOUCnHcafS1P2n7?=
+ =?iso-8859-1?Q?OgiMuhsJ1cjDvcfGlVG2hMQM3E9k1Hmo8Vb+nQwnvSchqDZLJY8f3kd2ux?=
+ =?iso-8859-1?Q?YUmwb+As7S/G1iZCXbJslUzoRXPIzuBm31v0ibUjLZFyXYnjnoI8SgnsWE?=
+ =?iso-8859-1?Q?eVF4cJ2QpmAQspa9jcxKnhcHT/hCCN1rDIircMbKGIvVqfBZESa+lxR2K/?=
+ =?iso-8859-1?Q?p/Fiq//tWwwZ7p5s8YLaK9I6/nfMPwK6WEx2W4sCkzYNQH4zi0hWO3s/pN?=
+ =?iso-8859-1?Q?Xx4vBuI1SILwPPa2+ipZzn/V1a5Swy4HwEiBxQ4DbGeNAaqgrgc0KPQf+t?=
+ =?iso-8859-1?Q?oKUhLMcS5sudLRF9naDtvVN4gY+o6zTEzI2545wXuxPpQoTJhNA+gbnVVn?=
+ =?iso-8859-1?Q?OaUipMkKNFdTI3ZzEbse16SMWB5MMFjtu9fd4CFwlLYhr4CPBm9w9CMbdg?=
+ =?iso-8859-1?Q?bup0Ad4kFMrBysd+975XEHtXmUdCX+fFmApQqlI2y1WOwi8mHEDhvVGpup?=
+ =?iso-8859-1?Q?Wutk4NaZvYDnAgWGrC/xspq2PbH0QubSViq73btA/Mmn4xOVnR7NytwYxE?=
+ =?iso-8859-1?Q?HTxOBEOvU7tHxb4CI5yUEgZuVBPKM5TchnXGU6XEEgPphiZw3yOPEKIV6W?=
+ =?iso-8859-1?Q?SVTQNQlgNM/GAclXz8Pi5Xwq61//ll5CO/X+M7qWRwdbf2exvupTLmt0PA?=
+ =?iso-8859-1?Q?RfDWAd7gYKZpF9jaAXPrHj8S66/g6aPcGjZvAq1h+4uFVp9Rn1y+It0vt7?=
+ =?iso-8859-1?Q?+PW1HsMP0HnbVmjiOjyZepVI4z8t/M4FLpzTVwhpswSrq5b5ykg8EpPNXH?=
+ =?iso-8859-1?Q?uYcpLuOtFAtMhmVKAWeFbAyI9IC6aiQBy2xh3+xT+R5m6VfiaEiIJZAeQd?=
+ =?iso-8859-1?Q?D+dm4ANvUjRxicpv3OV1nf45VGtM0eoOk/MQlKRvAQHnxAL+sS3GP3qmzB?=
+ =?iso-8859-1?Q?cutR0NqkFRJudAsYCdylCogZvK/rFrPvd86dfxnuUs+JonTEoPUOOEteah?=
+ =?iso-8859-1?Q?Z96p1TAVFMaQ97mF0Z+W5B1d/Q1kSinevYGixpKwuXK1Br9k04KkAsex6V?=
+ =?iso-8859-1?Q?QnLmrORurc0qCOtXvdS7DyAoXsdM1qSAThXAIFf1prmEMU2/GsGNwDpYeF?=
+ =?iso-8859-1?Q?Io6+xB7DmFvledSAvAPG+TdAKWZxmDQTRLPh9OfUm32ybKapaZLX6fAATR?=
+ =?iso-8859-1?Q?eeMC09Yz9nYA10eZMKcS29oZItCQ9pXqK1Tl+Nr39ZGpQ4JShZ6oDxyKW8?=
+ =?iso-8859-1?Q?UEiJ5BT+fEgaaJd31o16Xx7wWX/+Itt/iyO085AFnBUNJA1eLIOkPMXeJR?=
+ =?iso-8859-1?Q?ijLV6vuBlx1K/BrfcMuQ3DG9OQ1ruFPwZHwBEfs89x0DuvO5An+DxRcBHw?=
+ =?iso-8859-1?Q?MZ4w5dulp+tBGUGON4jTqul1gsBPchqB2u0ZXhV/dNDnjYTXoXtrNZykVE?=
+ =?iso-8859-1?Q?hMgb9+mF8jPtlnDpqKKKcQn3a/8Czuo2HjA0mJ6Yy4fW6Wn2+L6vsQOMXK?=
+ =?iso-8859-1?Q?RpBrGQQ14a0VpPSWN4IuGl620Bj2cLqN3t1ED/8UN4qdwGNx8Llit86kKz?=
+ =?iso-8859-1?Q?qf0i8tFkrSyNZSvmifyQBH3tUed66APRPlzhw9VSdx+jqbMT0i8+deiKrt?=
+ =?iso-8859-1?Q?/ZtI/tNMmsM64lYVLyp8ccYSVFx9hoBvXE/VzF+CPdwXVglmzZxybpvg?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: multipart/alternative;
+ boundary="_000_SN6PR11MB27042CD0D6A738304905546FDBEC2SN6PR11MB2704namp_"
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2691.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0afb4f62-bf35-4003-2853-08dd3ec64494
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2025 11:32:23.0932 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Rf3sPwJ8V1D7EkrqjPaMeLnAAoFAhoGHlHQHQpJ0N43y1OEFVCK5+JcZ9om7AhPEh7QAZHR4VcqELlSlUeV90+EYPx5N4ocHHoMTwGJLbKnhYujFmyZG3fx8f1t50ccQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6862
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,838 +187,925 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
+--_000_SN6PR11MB27042CD0D6A738304905546FDBEC2SN6PR11MB2704namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I sent v2 that took care of all but one of your comments here. Please see below.
+Hi Swati,
 
-On 22.01.2025 18:09, Cavitt, Jonathan wrote:
-> I left some notes below, though there are only two required changes:
-> 1. Move fclose in igt_kmemleak_found_leaks to after the conditional lseek to
->     avoid undefined behavior.
+________________________________
+From: Sharma, Swati2 <swati2.sharma@intel.com>
+Sent: Tuesday, December 31, 2024 12:33 AM
+To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+Cc: Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>; Reddy Guddati, Santhosh=
+ <santhosh.reddy.guddati@intel.com>; Sharma, Swati2 <swati2.sharma@intel.co=
+m>
+Subject: [PATCH i-g-t 1/6] lib/igt_kms: Add highres() and lowres() func
 
-Thank you for that. Fixed on v2.
+Functions returning highest and lowest mode are added to lib.
+Corresponding changes are done in relevant binaries.
 
-> 2. Pass igt_kmemleak_sync as a function variable to igt_kmemleak instead
->     of keeping it stored as a global variable initialized during igt_kmemelak_init.
+LGTM
 
-Fixed on v2 as well.
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ lib/igt_kms.c             | 34 +++++++++++++++++
+ lib/igt_kms.h             |  2 +
+ tests/intel/kms_cdclk.c   | 77 +++++++++++++++++----------------------
+ tests/intel/kms_dsc.c     | 14 +------
+ tests/kms_display_modes.c | 14 +------
+ 5 files changed, 72 insertions(+), 69 deletions(-)
 
-> Once those are fixed:
-> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> 
-> -----Original Message-----
-> From: Peter Senna Tschudin <peter.senna@linux.intel.com> 
-> Sent: Tuesday, January 21, 2025 3:30 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>; stylon.wang@amd.com; Rodrigo.Siqueira@amd.com; Gandi, Ramadevi <ramadevi.gandi@intel.com>; Knop, Ryszard <ryszard.knop@intel.com>; Lattannavar, Sameer <sameer.lattannavar@intel.com>; De Marchi, Lucas <lucas.demarchi@intel.com>; Saarinen, Jani <jani.saarinen@intel.com>; Piecielska, Katarzyna <katarzyna.piecielska@intel.com>; Roper, Matthew D <matthew.d.roper@intel.com>; gregory.f.germano@intel.com; Taylor, Clinton A <clinton.a.taylor@intel.com>; Yu, Jianshui <jianshui.yu@intel.com>; Vivekanandan, Balasubramani <balasubramani.vivekanandan@intel.com>; Cavitt, Jonathan <jonathan.cavitt@intel.com>
-> Subject: [PATCH i-g-t 1/2] lib/igt_kmemleak: library to interact with kmemleak
->>
->> Adds a simple library for interacting with kmemleak and add
->> unit testing for the library. There are two modes intended to
->> integrate with igt_runner:
->> - once: collect kmemleaks after all test completed
->> - each: collect kmemleaks after eachb test completes
->>
->> To use the library include "igt_kmemleak.h", call
->> igt_kmemleak_init(NULL) to check if kmemleak is enabled and finally
->> call igt_kmemleak() to collect kmemleaks. igt_kmemleak() expect the
->> following arguments:
->>   - const char *last_test: Name of the last lest or NULL
->>   - int resdirfd: file descriptor of the results directory
->>   - bool kmemleak_each: Are we scanning once or scanning after
->>     each test?
->>
->> CC: stylon.wang@amd.com
->> CC: Rodrigo.Siqueira@amd.com>
->> CC: ramadevi.gandi@intel.com
->> CC: ryszard.knop@intel.com
->> CC: sameer.lattannavar@intel.com
->> CC: lucas.demarchi@intel.com
->> CC: jani.saarinen@intel.com
->> CC: katarzyna.piecielska@intel.com
->> CC: matthew.d.roper@intel.com
->> CC: gregory.f.germano@intel.com
->> CC: clinton.a.taylor@intel.com
->> CC: jianshui.yu@intel.com
->> CC: balasubramani.vivekanandan@intel.com
->> CC: jonathan.cavitt@intel.com
->>
->> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
->> ---
->>  lib/igt_kmemleak.c       | 268 +++++++++++++++++++++++++++++++++++++++
->>  lib/igt_kmemleak.h       |  15 +++
->>  lib/meson.build          |   1 +
->>  lib/tests/igt_kmemleak.c | 259 +++++++++++++++++++++++++++++++++++++
->>  lib/tests/meson.build    |   1 +
->>  5 files changed, 544 insertions(+)
->>  create mode 100644 lib/igt_kmemleak.c
->>  create mode 100644 lib/igt_kmemleak.h
->>  create mode 100644 lib/tests/igt_kmemleak.c
->>
->> diff --git a/lib/igt_kmemleak.c b/lib/igt_kmemleak.c
->> new file mode 100644
->> index 000000000..ff9543b58
->> --- /dev/null
->> +++ b/lib/igt_kmemleak.c
->> @@ -0,0 +1,268 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright (c) 2024 Intel Corporation
->> + */
->> +
->> +#include <stdio.h>
->> +#include <string.h>
->> +#include <unistd.h>
->> +#include <fcntl.h>
->> +#include <errno.h>
->> +
->> +#include "igt_core.h"
->> +#include "igt_kmemleak.h"
->> +
->> +/* We can change the path for unit testing, see igt_kmemleak_init() */
->> +static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
->> +static bool igt_kmemleak_sync;
-> 
-> This variable (igt_kmemleak_sync) seems to only be used in
-> igt_kmemleak_append_to.  Does it need to be a global variable?
-> 
-> I think we could pass the sync value to igt_kmemleak instead of
-> igt_kmemleak_init, and from there we'd pass the value directly to
-> igt_kmemleak_append_to.
-> 
->> +
->> +#define MAX_WRITE_RETRIES 5
->> +/**
->> + * igt_kmemleak_write - Writes the buffer to the file descriptor retrying when
->> + * possible.
->> + * @fd: The file descriptor to write to.
->> + * @buf: Pointer to the data to write.
->> + * @count: Total number of bytes to write.
->> + *
->> + * Returns the total number of bytes written on success, or -1 on failure.
->> + */
->> +static ssize_t igt_kmemleak_write(int fd, const void *buf, size_t count)
->> +{
->> +	const char *ptr = buf;
->> +	size_t remaining = count;
->> +	ssize_t written;
->> +	int retries = 0;
->> +
->> +	while (remaining > 0) {
->> +		written = write(fd, ptr, remaining);
->> +		if (written > 0) {
-> 
-> NIT:
-> Debatably, this should be "if (written != -1)", though adding and subtracting
-> zero from these pointers/values isn't the most helpful operation, so it's okay
-> to skip the operation in that case.
-> 
-> I've also read that some older versions of IEEE standard use a return value of
-> 0 as their error value, though perhaps that's a bit out of scope here.
-> 
-> There's also an argument to be made that a return value of 0 should
-> increment the "retries" value.  However, I'll leave that up to your
-> discretion.
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index a67d17c4f..4f2a5ca0f 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -4851,6 +4851,40 @@ drmModeModeInfo *igt_output_get_mode(igt_output_t *o=
+utput)
+                 return &output->config.default_mode;
+ }
 
-Doing the retry logic for written == 0 on v2.
++/**
++ * igt_output_get_highres_mode:
++ * @output: Target output
++ *
++ * Returns: A #drmModeModeInfo struct representing the highest mode
++ */
++drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output)
++{
++       drmModeConnector *connector =3D output->config.connector;
++       drmModeModeInfo *highest_mode =3D NULL;
++
++       igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++       highest_mode =3D &connector->modes[0];
++
++       return highest_mode;
++}
++
++/**
++ * igt_output_get_lowres_mode:
++ * @output: Target output
++ *
++ * Returns: A #drmModeModeInfo struct representing the lowest mode
++ */
++drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output)
++{
++       drmModeConnector *connector =3D output->config.connector;
++       drmModeModeInfo *lowest_mode =3D NULL;
++
++       igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
++       lowest_mode =3D &connector->modes[0];
++
++       return lowest_mode;
++}
++
+ /**
+  * igt_output_override_mode:
+  * @output: Output of which the mode will be overridden
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 1e2a927ab..18c480ce5 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -546,6 +546,8 @@ void igt_display_require_output_on_pipe(igt_display_t *=
+display, enum pipe pipe);
 
-> 
->> +			ptr += written;
->> +			remaining -= written;
->> +		} else if (written == -1) {
->> +			if (errno == EINTR || errno == EAGAIN) {
->> +				/* Retry for recoverable errors */
->> +				if (++retries > MAX_WRITE_RETRIES) {
->> +					igt_warn("igt_write: Exceeded retry limit\n");
->> +					return -1;
->> +				}
->> +				continue;
->> +			} else {
->> +				/* Log unrecoverable error */
->> +				igt_warn("igt_write: unrecoverable write error");
->> +				return -1;
->> +			}
->> +		}
->> +	}
->> +	return count;
-> 
-> NIT:
-> This function only has two return values: count and -1.
-> Maybe we could return a Boolean here instead?
+ const char *igt_output_name(igt_output_t *output);
+ drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
++drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
++drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output);
+ void igt_output_override_mode(igt_output_t *output, const drmModeModeInfo =
+*mode);
+ int igt_output_preferred_vrefresh(igt_output_t *output);
+ void igt_output_set_pipe(igt_output_t *output, enum pipe pipe);
+diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
+index 382b3e9d1..f1a019eb7 100644
+--- a/tests/intel/kms_cdclk.c
++++ b/tests/intel/kms_cdclk.c
+@@ -110,24 +110,6 @@ static __u64 get_mode_data_rate(drmModeModeInfo *mode)
+         return data_rate;
+ }
 
-Converted to bool.
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+-{
+-       drmModeModeInfo *highest_mode =3D NULL;
+-       drmModeConnector *connector =3D output->config.connector;
+-       int j;
+-
+-       for (j =3D 0; j < connector->count_modes; j++) {
+-               if (connector->modes[j].vdisplay =3D=3D VDISPLAY_4K &&
+-                   connector->modes[j].hdisplay =3D=3D HDISPLAY_4K &&
+-                   connector->modes[j].vrefresh =3D=3D VREFRESH) {
+-                       highest_mode =3D &connector->modes[j];
+-                       break;
+-               }
+-       }
+-
+-       return highest_mode;
+-}
+-
+ static drmModeModeInfo *get_lowres_mode(igt_output_t *output)
+ {
+         drmModeModeInfo *lowest_mode =3D NULL;
+@@ -172,7 +154,7 @@ static void test_plane_scaling(data_t *data, enum pipe =
+pipe, igt_output_t *outpu
+         int cdclk_ref, cdclk_new;
+         struct igt_fb fb;
+         igt_plane_t *primary;
+-       drmModeModeInfo *mode;
++       drmModeModeInfo mode;
+         int scaling =3D 50;
+         int ret;
+         bool test_complete =3D false;
+@@ -182,14 +164,17 @@ static void test_plane_scaling(data_t *data, enum pip=
+e pipe, igt_output_t *outpu
+                 igt_display_reset(display);
 
-> 
->> +}
->> +
->> +/**
->> + * igt_kmemeak_cmd:
->> + * @cmd: command to send to kmemleak
->> + *
->> + * Send a command to kmemleak.
->> + *
->> + * Returns: true if sending the command was successful, false otherwise.
->> + */
->> +static bool igt_kmemleak_cmd(const char *cmd)
->> +{
->> +	int fp;
->> +	size_t wlen;
->> +	int cmdlen = strlen(cmd);
->> +
->> +	fp = open(igt_kmemleak_file, O_RDWR);
->> +	if (!fp)
->> +		return false;
->> +
->> +	wlen = igt_kmemleak_write(fp, cmd, cmdlen);
->> +	close(fp);
->> +
->> +	return wlen == cmdlen;
->> +}
->> +
->> +/**
->> + * igt_kmemeak_clear:
->> + *
->> + * Trigger an immediate clear on kmemleak.
->> + *
->> + * Returns: true if sending the command to clear was successful, false
->> + * otherwise.
->> + */
->> +static bool igt_kmemleak_clear(void)
->> +{
->> +	return igt_kmemleak_cmd("clear");
->> +}
->> +
->> +/**
->> + * igt_kmemeak_found_leaks:
->> + *
->> + * Check if kmemleak found any leaks by trying to read one byte from the
->> + * kmemleak file.
->> + *
->> + * Returns: true if kmemleak found any leaks, false otherwise.
->> + */
->> +static bool igt_kmemleak_found_leaks(void)
->> +{
->> +	FILE *fp;
->> +	char buf[1];
->> +	size_t rlen;
->> +
->> +	fp = fopen(igt_kmemleak_file, "r");
->> +	if (!fp)
->> +		return false;
->> +
->> +	rlen = fread(buf, 1, 1, fp);
->> +	fclose(fp);
->> +
->> +	if (rlen == 1)
->> +		lseek(fileno(fp), 0, SEEK_SET);
-> 
-> I don't think we should be calling fileno on a closed file stream, as I'm
-> fairly certain the behavior there is undefined.  Please perform the above
-> fclose after this 'if' block has been completed:
-> """
-> 	if (rlen == 1)
-> 		lseek(fileno(fp), 0, SEEK_SET);
-> 
-> 	fclose(fp);
-> """
+                 igt_output_set_pipe(output, pipe);
+-               mode =3D get_highres_mode(output);
+-               igt_require(mode !=3D NULL);
+-               igt_output_override_mode(output, mode);
++               mode =3D *igt_output_get_highres_mode(output);
++               igt_require_f(mode.hdisplay =3D=3D HDISPLAY_4K && mode.vdis=
+play =3D=3D VDISPLAY_4K &&
++                             mode.vrefresh =3D=3D VREFRESH, "4K mode not f=
+ound on output %s.\n",
++                             igt_output_name(output));
++
++               igt_output_override_mode(output, &mode);
 
-Thank you for that, fixed on v2.
+                 primary =3D igt_output_get_plane_type(output, DRM_PLANE_TY=
+PE_PRIMARY);
 
-> 
->> +
->> +	return rlen == 1;
->> +}
->> +
->> +/**
->> + * igt_kmemeak_scan:
->> + *
->> + * Trigger an immediate scan on kmemleak.
->> + *
->> + * Returns: true if leaks are found. False on failure and when no leaks are
->> + * found.
->> + */
->> +static bool igt_kmemleak_scan(void)
->> +{
->> +	if (!igt_kmemleak_cmd("scan"))
->> +		return false;
->> +
->> +	/* kmemleak documentation states that "the memory scanning is only
->> +	 * performed when the /sys/kernel/debug/kmemleak file is read." Read
->> +	 * a byte to trigger the scan now.
->> +	 */
->> +	return igt_kmemleak_found_leaks();
->> +}
->> +
->> +/**
->> + * igt_kmemleak_append_to:
->> + * @last_test: last test name to append to the file
->> + * @resdirfd: file descriptor of the results directory
->> + * @kmemleak_each: Are we scanning once or scanning after each test?
->> + *
->> + * Append the kmemleak file to the result file adding a header indicating if
->> + * the leaks are for all tests or for a single one.
->> + *
->> + * Returns: true if appending to the file was successful, false otherwise.
->> + */
->> +static bool igt_kmemleak_append_to(const char *last_test, int resdirfd,
->> +				   bool kmemleak_each)
->> +{
->> +	const char *before = "kmemleaks found before running any test\n\n";
->> +	const char *once = "kmemleaks found after running all tests\n";
->> +	int kmemleakfd, resfilefd;
->> +	char buf[4096];
->> +	size_t rlen;
->> +
->> +	kmemleakfd = open(igt_kmemleak_file, O_RDONLY);
->> +	if (kmemleakfd < 0)
->> +		return false;
->> +
->> +	/* Seek back to first byte */
->> +	lseek(kmemleakfd, 0, SEEK_SET);
->> +
->> +	/* Open text file to append */
->> +	resfilefd = openat(resdirfd, KMEMLEAKRESFILENAME,
->> +			   O_RDWR | O_CREAT | O_APPEND, 0666);
->> +	if (!resfilefd) {
->> +		close(kmemleakfd);
->> +		return false;
->> +	}
->> +
->> +	/* This is the header added before the content of the kmemleak file */
->> +	if (kmemleak_each)
-> 
-> NIT:
-> I think it would be better style to use brackets during this if statement.
+                 igt_create_color_pattern_fb(display->drm_fd,
+-                                           mode->hdisplay, mode->vdisplay,
++                                           mode.hdisplay, mode.vdisplay,
+                                             DRM_FORMAT_XRGB8888,
+                                             DRM_FORMAT_MOD_LINEAR,
+                                             0.0, 0.0, 0.0, &fb);
+@@ -225,18 +210,20 @@ static void test_mode_transition(data_t *data, enum p=
+ipe pipe, igt_output_t *out
+         int cdclk_ref, cdclk_new;
+         struct igt_fb fb;
+         igt_plane_t *primary;
+-       drmModeModeInfo *mode_hi, *mode_lo, *mode;
++       drmModeModeInfo mode_hi, mode_lo, *mode;
 
-Fixed on v2.
+         do_cleanup_display(display);
+         igt_display_reset(display);
 
-> 
->> +		if (!last_test)
->> +			igt_kmemleak_write(resfilefd, before, strlen(before));
->> +		else {
->> +			/* Write \n\n last_test \n to buf */
->> +			snprintf(buf, sizeof(buf),
->> +				 "\n\nkmemleaks found after running %s:\n",
->> +				 last_test);
->> +
->> +			igt_kmemleak_write(resfilefd, buf, strlen(buf));
->> +			memset(buf, 0, sizeof(buf));
->> +		}
->> +	else
->> +		igt_kmemleak_write(resfilefd, once, strlen(once));
->> +
->> +	if (igt_kmemleak_sync)
->> +		fsync(resfilefd);
->> +
->> +	while ((rlen = read(kmemleakfd, buf, sizeof(buf))) > 0) {
->> +		if (igt_kmemleak_write(resfilefd, buf, rlen) != rlen) {
->> +			close(resfilefd);
->> +			close(kmemleakfd);
->> +			return false;
->> +		}
->> +		if (igt_kmemleak_sync)
->> +			fsync(resfilefd);
->> +	}
->> +
->> +	close(resfilefd);
->> +	close(kmemleakfd);
->> +
->> +	return true;
->> +}
->> +
->> +/**
->> + * igt_kmemeak_init:
->> + * @unit_test_kmemleak_file: path to kmemleak file for unit testing
->> + * @sync: sync the kmemleak file often
->> + *
->> + * Check if kmemleak is enabled in the kernel, if debugfs is mounted and
->> + * if kmemleak file is present and readable. Also sets the igt_kmemleak_sync.
->> + *
->> + * Returns: true if kmemleak is enabled, false otherwise.
->> + */
->> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file, bool sync)
->> +{
->> +	FILE *fp;
->> +
->> +	igt_kmemleak_sync = sync;
->> +
->> +	if (unit_test_kmemleak_file)
->> +		snprintf(igt_kmemleak_file,
->> +			 sizeof(igt_kmemleak_file),
->> +			 "%s",
->> +			 unit_test_kmemleak_file);
->> +
->> +	fp = fopen(igt_kmemleak_file, "r");
->> +	if (!fp)
->> +		return false;
->> +
->> +	fclose(fp);
->> +
->> +	return true;
->> +}
->> +
->> +/**
->> + * igt_kmemleak:
->> + * @last_test: last test name to append to the file
->> + * @resdirfd: file descriptor of the results directory
->> + * @kmemleak_each: Are we scanning once or scanning after each test?
->> + *
->> + * This is the main function that should be called when integrating igt_kmemleak
->> + * into igt_runner or elsewhere. There are two flows:
->> + *  - run once: runs only once after all tests are completed
->> + *  - run for each test: runs after every test
->> + *
->> + * Returns: true on success, false otherwise.
->> + */
->> +bool igt_kmemleak(const char *last_test, int resdirfd, bool kmemleak_each)
-> 
-> NIT:
-> Ideally, we'd want to get rid of the global igt_kmemleak_sync variable and add
-> it as an option here.  This is partially what that would look like:
-> 
-> """
-> static bool igt_kmemleak_append_to(const char *last_test, int resdirfd,
-> 				   bool kmemleak_each, bool igt_kmemleak_sync)
-> ...
-> bool igt_kmemleak(const char *last_test, int resdirfd,
-> 		bool kmemleak_each, bool sync)
-> {
-> 	/* Scan to collect results */
-> 	if (igt_kmemleak_scan())
-> 		if (!igt_kmemleak_append_to(last_test, resdirfd,
-> 					kmemleak_each, sync))
-> 			return false;
-> 
-> 	if (kmemleak_each)
-> 		igt_kmemleak_clear();
-> 
-> 	return true;
-> }
-> """
-> 
-> However, that could cause some clutter here in the
-> arguments list.  We might want to consider unifying kmemleak_each and
-> igt_kmemleak_sync under a series of flags.  Say:
-> 
-> """
-> #define KMEMLEAK_EACH	(1 << 0)
-> #define KMEMLEAK_SYNC	(1 << 1)
-> ...
-> static bool igt_kmemleak_append_to(const char *last_test, int resdirfd, int flags)
-> {
-> ...
-> 	/* This is the header added before the content of the kmemleak file */
-> 	if (flags & KMEMLEAK_EACH) {
-> 		if (!last_test)
-> ...
-> 	}
-> 
-> 	if (flags & KMEMLEAK_SYNC)
-> 		fsync(resfilefd);
-> ...
-> 			return false;
-> 		}
-> 		if (flags & KMEMLEAK_SYNC)
-> 			fsync(resfilefd);
-> ...
-> bool igt_kmemleak(const char *last_test, int resdirfd, int flags)
-> {
-> 	/* Scan to collect results */
-> 	if (igt_kmemleak_scan())
-> 		if (!igt_kmemleak_append_to(last_test, resdir, flags))
-> 			return false;
-> 
-> 	if (flags & KMEMLEAK_EACH)
-> 		igt_kmemleak_clear();
-> 
-> 	return true;
-> }
-> """
-> 
-> Though honestly, I think just adding an extra argument wouldn't be
-> too bad.
+         igt_output_set_pipe(output, pipe);
+         mode =3D igt_output_get_mode(output);
+-       mode_lo =3D get_lowres_mode(output);
+-       mode_hi =3D get_highres_mode(output);
+-       igt_require(mode_hi !=3D NULL);
++       mode_lo =3D *get_lowres_mode(output);
++       mode_hi =3D *igt_output_get_highres_mode(output);
++       igt_require_f(mode_hi.hdisplay =3D=3D HDISPLAY_4K && mode_hi.vdispl=
+ay =3D=3D VDISPLAY_4K &&
++                     mode_hi.vrefresh =3D=3D VREFRESH, "4K mode not found =
+on output %s.\n",
++                     igt_output_name(output));
 
-I have opted for adding a new parameter for sync and got rid of the
-global variable. I was temped for using flag, but lets wait for a 
-third value before we go there.
+-       igt_skip_on_f(mode_hi->hdisplay =3D=3D mode_lo->hdisplay && mode_hi=
+->vdisplay =3D=3D mode_lo->vdisplay,
++       igt_skip_on_f(mode_hi.hdisplay =3D=3D mode_lo.hdisplay && mode_hi.v=
+display =3D=3D mode_lo.vdisplay,
+                       "Highest and lowest mode resolutions are same; no tr=
+ansition\n");
 
-> 
->> +{
->> +	/* Scan to collect results */
->> +	if (igt_kmemleak_scan())
-> 
-> NIT:
-> Should this function also fail if igt_kmemleak_scan fails?  AFAICT,
-> igt_kmemleak_scan fails in one of two cases:
-> 
-> 1. Error when sending command.  This should probably result in a failure
-> because an error has occurred.
-> 2. No leaks found.  Assuming we're expecting to find leaks, this should
-> probably also constitute a failure.
-> 
-> Though in the case where only one of the two above causes issues, maybe
-> we should add return values to igt_kmemleak_scan?  Perhaps 0 on success,
-> -EBUSY for a write failure, and -EIO if no leaks are found?  I'm just choosing
-> some arbitrary error values here; these aren't set in stone.
+         primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMA=
+RY);
+@@ -248,13 +235,13 @@ static void test_mode_transition(data_t *data, enum p=
+ipe pipe, igt_output_t *out
+                                     0.0, 0.0, 0.0, &fb);
 
-This is the one I did not act upon. First we do not want igt_runner to crash or
-abort if something goes wrong with kmemleak. So we don't really need the extra
-details about the error. Currently if the call to igt_kmemleak_init() fails, it
-will disable kmemleaks on the runner. My take was that errors detected on
-igt_kmemleak() would either mean that the system is in a really bad shape or
-that something unimportant happend. Either way nothing to worry about.
+         /* switch to lower resolution */
+-       igt_output_override_mode(output, mode_lo);
++       igt_output_override_mode(output, &mode_lo);
+         igt_plane_set_fb(primary, &fb);
+         igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, =
+NULL);
+         cdclk_ref =3D get_current_cdclk_freq(debugfs_fd);
 
-Second, we actually expect that no mem leaks will be found on the vast majority
-of calls. It took me hundreds of attempts to learn how to trigger one reliably,
-and with xe tests it happens but not that often.
+         /* switch to higher resolution */
+-       igt_output_override_mode(output, mode_hi);
++       igt_output_override_mode(output, &mode_hi);
+         igt_plane_set_fb(primary, &fb);
+         igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, =
+NULL);
+         cdclk_new =3D get_current_cdclk_freq(debugfs_fd);
+@@ -273,7 +260,7 @@ static void test_mode_transition_on_all_outputs(data_t =
+*data)
+ {
+         igt_display_t *display =3D &data->display;
+         int debugfs_fd =3D data->debugfs_fd;
+-       drmModeModeInfo *mode, *mode_hi, *mode_lo;
++       drmModeModeInfo *mode, mode_hi, mode_lo;
+         igt_output_t *output;
+         int valid_outputs =3D 0;
+         int cdclk_ref, cdclk_new;
+@@ -297,11 +284,13 @@ static void test_mode_transition_on_all_outputs(data_=
+t *data)
+                 width =3D max(width, mode->hdisplay);
+                 height =3D max(height, mode->vdisplay);
 
-So I left this as is for now. Please let me know if any of this is nonsensical.
+-               mode_hi =3D get_highres_mode(output);
+-               igt_require(mode_hi !=3D NULL);
++               mode_hi =3D *igt_output_get_highres_mode(output);
++               igt_require_f(mode_hi.hdisplay =3D=3D HDISPLAY_4K && mode_h=
+i.vdisplay =3D=3D VDISPLAY_4K &&
++                             mode_hi.vrefresh =3D=3D VREFRESH, "4K mode no=
+t found on output %s.\n",
++                             igt_output_name(output));
 
-> 
->> +		if (!igt_kmemleak_append_to(last_test, resdirfd, kmemleak_each))
->> +			return false;
->> +
->> +	if (kmemleak_each)
->> +		igt_kmemleak_clear();
->> +
->> +	return true;
->> +}
->> diff --git a/lib/igt_kmemleak.h b/lib/igt_kmemleak.h
->> new file mode 100644
->> index 000000000..a3c142827
->> --- /dev/null
->> +++ b/lib/igt_kmemleak.h
->> @@ -0,0 +1,15 @@
->> +/* SPDX-License-Identifier: MIT
->> + * Copyright (c) 2024 Intel Corporation
->> + */
->> +
->> +#ifndef IGT_KMEMLEAK_H
->> +#define IGT_KMEMLEAK_H
->> +
->> +#include <stdbool.h>
->> +
->> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file, bool sync);
->> +bool igt_kmemleak(const char *last_test, int resdirfd, bool kmemleak_each);
->> +
->> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
->> +
->> +#endif /* IGT_KMEMLEAK_H */
->> diff --git a/lib/meson.build b/lib/meson.build
->> index 9fffdd3c6..7959dcacb 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -97,6 +97,7 @@ lib_sources = [
->>  	'igt_dummyload.c',
->>  	'igt_store.c',
->>  	'uwildmat/uwildmat.c',
->> +	'igt_kmemleak.c',
->>  	'igt_kmod.c',
->>  	'igt_ktap.c',
->>  	'igt_panfrost.c',
->> diff --git a/lib/tests/igt_kmemleak.c b/lib/tests/igt_kmemleak.c
->> new file mode 100644
->> index 000000000..717ba2852
->> --- /dev/null
->> +++ b/lib/tests/igt_kmemleak.c
->> @@ -0,0 +1,259 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright (c) 2024 Intel Corporation
->> + */
->> +
->> +#include <ctype.h>
->> +#include <fcntl.h>
->> +#include <stdio.h>
->> +#include <zlib.h>
->> +
->> +#include "igt.h"
->> +#include "igt_kmemleak.h"
->> +
->> +const char *kmemleak_file_example =
->> +"unreferenced object 0xffff888102a2e638 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   00 00 00 00 00 00 00 00 0d 01 a2 00 00 00 00 00  ................\n"
->> +"   f0 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
->> +" backtrace (crc 2df71a7e):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2ed18 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   38 e6 a2 02 81 88 ff ff 0d 11 2d 00 00 00 00 00  8.........-.....\n"
->> +"   f2 7c 03 00 00 c9 ff ff 58 ea a2 02 81 88 ff ff  .|......X.......\n"
->> +" backtrace (crc ec2a8bdc):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2ea58 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   38 e6 a2 02 81 88 ff ff 0d 01 a0 00 00 00 00 00  8...............\n"
->> +"   f6 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
->> +" backtrace (crc f911c0d1):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2e428 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   58 ea a2 02 81 88 ff ff 0d 01 35 00 00 00 00 00  X.........5.....\n"
->> +"   fc 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
->> +" backtrace (crc cb8aaffd):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2e008 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   28 e4 a2 02 81 88 ff ff 0d 01 2d 00 00 00 00 00  (.........-.....\n"
->> +"   fc 7c 03 00 00 c9 ff ff c8 e2 a2 02 81 88 ff ff  .|..............\n"
->> +" backtrace (crc 7f883e78):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2b9e5>] acpi_ps_get_next_namepath+0x1f5/0x390\n"
->> +"   [<ffffffff81c2cc15>] acpi_ps_parse_loop+0x4a5/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2e2c8 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   28 e4 a2 02 81 88 ff ff 0d 01 73 00 00 00 00 00  (.........s.....\n"
->> +"   00 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
->> +" backtrace (crc 338c016):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2e378 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   c8 e2 a2 02 81 88 ff ff 0d 01 0d 00 00 00 00 00  ................\n"
->> +"   01 7d 03 00 00 c9 ff ff 98 e7 a2 02 81 88 ff ff  .}..............\n"
->> +" backtrace (crc 665fb8a7):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2e798 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   7c8 e2 a2 02 81 88 ff ff 0d 01 98 00 00 00 00 00  ................\n"
->> +"   1b 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
->> +" backtrace (crc b7a23a1c):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
->> +"unreferenced object 0xffff888102a2e0b8 (size 80):\n"
->> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
->> +" hex dump (first 32 bytes):\n"
->> +"   98 e7 a2 02 81 88 ff ff 0d 01 2d 00 00 00 00 00  ..........-.....\n"
->> +"   1c 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
->> +" backtrace (crc 14d67a9c):\n"
->> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
->> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
->> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
->> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
->> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
->> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
->> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
->> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
->> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
->> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
->> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
->> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
->> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
->> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
->> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
->> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170\n";
->> +
->> +static const char *igt_kmemleak_unit_testing_resdir = "/tmp";
->> +
->> +igt_main
->> +{
->> +	int resdirfd = 0;
->> +
->> +	igt_subtest_group {
->> +		igt_subtest("test_igt_kmemleak_init") {
->> +			char unit_testing_kmemleak_filepath[256] = "/tmp/igt_kmemleak_test_XXXXXX";
->> +			int written_bytes;
->> +			bool res;
->> +			int fd;
->> +
->> +			fd = mkstemp(unit_testing_kmemleak_filepath);
->> +			igt_assert(fd >= 0);
->> +
->> +			written_bytes = write(fd, kmemleak_file_example,
->> +					strlen(kmemleak_file_example));
->> +			igt_assert_eq(written_bytes, strlen(kmemleak_file_example));
->> +
->> +			close(fd);
->> +
->> +			res = igt_kmemleak_init(unit_testing_kmemleak_filepath, true);
->> +			igt_assert(res);
-> 
-> NIT:
-> We can probably just do a direct assessment of the return value from
-> igt_kmemleak_init instead of storing the result in an intermediary:
-> """
-> 			igt_assert(igt_kmemleak_init(unit_testing_kmemleak_filepath, true));
-> """
+                 igt_output_set_pipe(output, i);
+-               igt_output_override_mode(output, mode_hi);
++               igt_output_override_mode(output, &mode_hi);
+                 i++;
+         }
+         igt_require(intel_pipe_output_combo_valid(display));
+@@ -320,12 +309,12 @@ static void test_mode_transition_on_all_outputs(data_=
+t *data)
+                 mode =3D igt_output_get_mode(output);
+                 igt_assert(mode);
 
-Did that on v2.
+-               mode_lo =3D get_lowres_mode(output);
++               mode_lo =3D *get_lowres_mode(output);
 
-> 
->> +		}
->> +		igt_fixture
->> +			igt_assert(resdirfd = open(igt_kmemleak_unit_testing_resdir,
->> +						   O_DIRECTORY | O_RDONLY));
->> +
->> +		igt_subtest("test_igt_kmemleak_once")
->> +			igt_assert(igt_kmemleak(NULL, resdirfd, false));
->> +
->> +		igt_fixture {
->> +			/* Delete the result file */
->> +			unlinkat(resdirfd, KMEMLEAKRESFILENAME, 0);
->> +		}
->> +		igt_subtest("test_igt_kmemleak_each") {
->> +			igt_assert(igt_kmemleak("test_name_1", resdirfd, true));
->> +			igt_assert(igt_kmemleak("test_name_2", resdirfd, true));
->> +			igt_assert(igt_kmemleak("test_name_3", resdirfd, true));
-> 
-> I'm suspecting the test_igt_kmemleak_once and test_igt_kmemleak_each
-> subtests are relying on igt_kmemleak_init having run prior, if only because
-> we set igt_kmemleak_sync during initialization.  So we either need to run
-> igt_kmemleak_init as a part of the fixture, or start passing the sync
-> parameter to igt_kmemleak instead.
+-               igt_output_override_mode(output, mode_lo);
++               igt_output_override_mode(output, &mode_lo);
+                 igt_plane_set_fb(plane, &fb);
+-               igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo->vdi=
+splay);
+-               igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisp=
+lay);
++               igt_fb_set_size(&fb, plane, mode_lo.hdisplay, mode_lo.vdisp=
+lay);
++               igt_plane_set_size(plane, mode_lo.hdisplay, mode_lo.vdispla=
+y);
+                 i++;
+         }
 
-The call to _init is in a fixture on v2.
+@@ -343,13 +332,15 @@ static void test_mode_transition_on_all_outputs(data_=
+t *data)
+                 mode =3D igt_output_get_mode(output);
+                 igt_assert(mode);
 
-Thank you Jonathan!
+-               mode_hi =3D get_highres_mode(output);
+-               igt_require(mode_hi !=3D NULL);
++               mode_hi =3D *igt_output_get_highres_mode(output);
++               igt_require_f(mode_hi.hdisplay =3D=3D HDISPLAY_4K && mode_h=
+i.vdisplay =3D=3D VDISPLAY_4K &&
++                             mode_hi.vrefresh =3D=3D VREFRESH, "4K mode no=
+t found on output %s.\n",
++                             igt_output_name(output));
 
-> -Jonathan Cavitt
-> 
->> +		}
->> +		igt_fixture {
->> +			close(resdirfd);
->> +		}
->> +	}
->> +}
->> diff --git a/lib/tests/meson.build b/lib/tests/meson.build
->> index 1ce19f63c..5c42408d5 100644
->> --- a/lib/tests/meson.build
->> +++ b/lib/tests/meson.build
->> @@ -16,6 +16,7 @@ lib_tests = [
->>          'igt_ktap_parser',
->>  	'igt_list_only',
->>  	'igt_invalid_subtest_name',
->> +	'igt_kmemleak',
->>  	'igt_nesting',
->>  	'igt_no_exit',
->>  	'igt_runnercomms_packets',
->> -- 
->> 2.34.1
->>
->>
+-               igt_output_override_mode(output, mode_hi);
++               igt_output_override_mode(output, &mode_hi);
+                 igt_plane_set_fb(plane, &fb);
+-               igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi->vdi=
+splay);
+-               igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisp=
+lay);
++               igt_fb_set_size(&fb, plane, mode_hi.hdisplay, mode_hi.vdisp=
+lay);
++               igt_plane_set_size(plane, mode_hi.hdisplay, mode_hi.vdispla=
+y);
+                 j++;
+         }
 
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index 5508e7a9e..1392e1cd4 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -94,18 +94,6 @@ static inline void manual(const char *expected)
+         igt_debug_interactive_mode_check("all", expected);
+ }
+
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+-{
+-       drmModeConnector *connector =3D output->config.connector;
+-       drmModeModeInfo *highest_mode =3D NULL;
+-
+-       igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+-
+-       highest_mode =3D &connector->modes[0];
+-
+-       return highest_mode;
+-}
+-
+ static drmModeModeInfo *get_next_mode(igt_output_t *output, int index)
+ {
+         drmModeConnector *connector =3D output->config.connector;
+@@ -184,7 +172,7 @@ static void update_display(data_t *data, uint32_t test_=
+type)
+         igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
+                     DRM_FORMAT_MOD_LINEAR));
+
+-       mode =3D get_highres_mode(output);
++       mode =3D igt_output_get_highres_mode(output);
+
+         do {
+                 if (data->output_format !=3D DSC_FORMAT_RGB && index > 0)
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index e41c60cc0..6ea44944a 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -60,18 +60,6 @@ typedef struct {
+         int n_pipes;
+ } data_t;
+
+-/* Get higher mode supported by panel. */
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+-{
+-       drmModeConnector *connector =3D output->config.connector;
+-       drmModeModeInfo *highest_mode =3D NULL;
+-
+-       igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+-       highest_mode =3D &connector->modes[0];
+-
+-       return highest_mode;
+-}
+-
+ /* Get the 4k or less then 4k mode of connected panel. */
+ static drmModeModeInfo *get_mode(igt_output_t *output)
+ {
+@@ -344,7 +332,7 @@ igt_main
+                 igt_require_f(dp_mst_outputs > 1, "MST not found more then=
+ one\n");
+
+                 memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), si=
+zeof(drmModeModeInfo));
+-               memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[=
+1]),
++               memcpy(&data.mode_mst[1], igt_output_get_highres_mode(data.=
+mst_output[1]),
+                                 sizeof(drmModeModeInfo));
+                 igt_require_f((data.mode_mst[1].hdisplay >=3D HDISPLAY_4K =
+&&
+                                data.mode_mst[1].vdisplay >=3D VDISPLAY_4K)=
+, "4k panel not found\n");
+--
+2.25.1
+
+
+--_000_SN6PR11MB27042CD0D6A738304905546FDBEC2SN6PR11MB2704namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Hi Swati,</div>
+<div id=3D"appendonsend"></div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<hr style=3D"display: inline-block; width: 98%;">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><span style=3D"font-family: Calibri, =
+sans-serif; font-size: 11pt; color: rgb(0, 0, 0);"><b>From:</b>&nbsp;Sharma=
+, Swati2 &lt;swati2.sharma@intel.com&gt;<br>
+<b>Sent:</b>&nbsp;Tuesday, December 31, 2024 12:33 AM<br>
+<b>To:</b>&nbsp;igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop=
+.org&gt;<br>
+<b>Cc:</b>&nbsp;Nautiyal, Ankit K &lt;ankit.k.nautiyal@intel.com&gt;; Reddy=
+ Guddati, Santhosh &lt;santhosh.reddy.guddati@intel.com&gt;; Sharma, Swati2=
+ &lt;swati2.sharma@intel.com&gt;<br>
+<b>Subject:</b>&nbsp;[PATCH i-g-t 1/6] lib/igt_kms: Add highres() and lowre=
+s() func</span>
+<div>&nbsp;</div>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">Functions returnin=
+g highest and lowest mode are added to lib.<br>
+Corresponding changes are done in relevant binaries.<br>
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">LGTM</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+Reviewed-by: Santhosh Reddy Guddati &lt;santhosh.reddy.guddati@intel.com&gt=
+;</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">Signed-off-by: Swa=
+ti Sharma &lt;swati2.sharma@intel.com&gt;<br>
+---<br>
+&nbsp;lib/igt_kms.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; | 34 +++++++++++++++++<br>
+&nbsp;lib/igt_kms.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; |&nbsp; 2 +<br>
+&nbsp;tests/intel/kms_cdclk.c&nbsp;&nbsp; | 77 +++++++++++++++++-----------=
+-----------<br>
+&nbsp;tests/intel/kms_dsc.c&nbsp;&nbsp;&nbsp;&nbsp; | 14 +------<br>
+&nbsp;tests/kms_display_modes.c | 14 +------<br>
+&nbsp;5 files changed, 72 insertions(+), 69 deletions(-)<br>
+<br>
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c<br>
+index a67d17c4f..4f2a5ca0f 100644<br>
+--- a/lib/igt_kms.c<br>
++++ b/lib/igt_kms.c<br>
+@@ -4851,6 +4851,40 @@ drmModeModeInfo *igt_output_get_mode(igt_output_t *o=
+utput)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; return &amp;output-&gt;config.default_mode;<br>
+&nbsp;}<br>
+&nbsp;<br>
++/**<br>
++ * igt_output_get_highres_mode:<br>
++ * @output: Target output<br>
++ *<br>
++ * Returns: A #drmModeModeInfo struct representing the highest mode<br>
++ */<br>
++drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output)<br>
++{<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeConnector *connector =3D outpu=
+t-&gt;config.connector;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *highest_mode =3D NUL=
+L;<br>
++<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_sort_connector_modes(connector, s=
+ort_drm_modes_by_res_dsc);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; highest_mode =3D &amp;connector-&gt;m=
+odes[0];<br>
++<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return highest_mode;<br>
++}<br>
++<br>
++/**<br>
++ * igt_output_get_lowres_mode:<br>
++ * @output: Target output<br>
++ *<br>
++ * Returns: A #drmModeModeInfo struct representing the lowest mode<br>
++ */<br>
++drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output)<br>
++{<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeConnector *connector =3D outpu=
+t-&gt;config.connector;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *lowest_mode =3D NULL=
+;<br>
++<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_sort_connector_modes(connector, s=
+ort_drm_modes_by_res_asc);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lowest_mode =3D &amp;connector-&gt;mo=
+des[0];<br>
++<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return lowest_mode;<br>
++}<br>
++<br>
+&nbsp;/**<br>
+&nbsp; * igt_output_override_mode:<br>
+&nbsp; * @output: Output of which the mode will be overridden<br>
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h<br>
+index 1e2a927ab..18c480ce5 100644<br>
+--- a/lib/igt_kms.h<br>
++++ b/lib/igt_kms.h<br>
+@@ -546,6 +546,8 @@ void igt_display_require_output_on_pipe(igt_display_t *=
+display, enum pipe pipe);<br>
+&nbsp;<br>
+&nbsp;const char *igt_output_name(igt_output_t *output);<br>
+&nbsp;drmModeModeInfo *igt_output_get_mode(igt_output_t *output);<br>
++drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);<br>
++drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output);<br>
+&nbsp;void igt_output_override_mode(igt_output_t *output, const drmModeMode=
+Info *mode);<br>
+&nbsp;int igt_output_preferred_vrefresh(igt_output_t *output);<br>
+&nbsp;void igt_output_set_pipe(igt_output_t *output, enum pipe pipe);<br>
+diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c<br>
+index 382b3e9d1..f1a019eb7 100644<br>
+--- a/tests/intel/kms_cdclk.c<br>
++++ b/tests/intel/kms_cdclk.c<br>
+@@ -110,24 +110,6 @@ static __u64 get_mode_data_rate(drmModeModeInfo *mode)=
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return data_rate;<br>
+&nbsp;}<br>
+&nbsp;<br>
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)<br>
+-{<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *highest_mode =3D NUL=
+L;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeConnector *connector =3D outpu=
+t-&gt;config.connector;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int j;<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (j =3D 0; j &lt; connector-&gt;co=
+unt_modes; j++) {<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; if (connector-&gt;modes[j].vdisplay =3D=3D VDISPLAY_4K &amp;&amp=
+;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; connector-&gt;modes[j].hdisplay =3D=3D H=
+DISPLAY_4K &amp;&amp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; connector-&gt;modes[j].vrefresh =3D=3D V=
+REFRESH) {<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; highest_mode =3D=
+ &amp;connector-&gt;modes[j];<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; }<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return highest_mode;<br>
+-}<br>
+-<br>
+&nbsp;static drmModeModeInfo *get_lowres_mode(igt_output_t *output)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *lowest_mo=
+de =3D NULL;<br>
+@@ -172,7 +154,7 @@ static void test_plane_scaling(data_t *data, enum pipe =
+pipe, igt_output_t *outpu<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int cdclk_ref, cdclk_new;<=
+br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; struct igt_fb fb;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *primary;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo mode;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int scaling =3D 50;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int ret;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool test_complete =3D fal=
+se;<br>
+@@ -182,14 +164,17 @@ static void test_plane_scaling(data_t *data, enum pip=
+e pipe, igt_output_t *outpu<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_display_reset(display);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_output_set_pipe(output, pipe);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode =3D get_highres_mode(output);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_require(mode !=3D NULL);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, mode);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode =3D *igt_output_get_highres_mode(output);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_require_f(mode.hdisplay =3D=3D HDISPLAY_4K &amp;&amp; mode.v=
+display =3D=3D VDISPLAY_4K &amp;&amp;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; mode.vrefresh =3D=3D VREFRESH, &quot;4K mode not found =
+on output %s.\n&quot;,<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_output_name(output));<br>
++<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, &amp;mode);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; primary =3D igt_output_get_plane_type(output, DRM_PLA=
+NE_TYPE_PRIMARY);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_create_color_pattern_fb(display-&gt;drm_fd,<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; mode-&gt;hdisplay, mode-&gt;vdisplay,<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; mode.hdisplay, mode.vdisplay,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_FORMAT_XRGB8888,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_FORMAT_MOD_LINEAR,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.0, 0.0, 0.0, &amp;fb);<br>
+@@ -225,18 +210,20 @@ static void test_mode_transition(data_t *data, enum p=
+ipe pipe, igt_output_t *out<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int cdclk_ref, cdclk_new;<=
+br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; struct igt_fb fb;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *primary;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode_hi, *mode_lo, *=
+mode;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo mode_hi, mode_lo, *mo=
+de;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do_cleanup_display(display=
+);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_reset(display)=
+;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_set_pipe(output=
+, pipe);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode =3D igt_output_get_mo=
+de(output);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_lo =3D get_lowres_mode(output);<=
+br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_hi =3D get_highres_mode(output);=
+<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(mode_hi !=3D NULL);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_lo =3D *get_lowres_mode(output);=
+<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_hi =3D *igt_output_get_highres_m=
+ode(output);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require_f(mode_hi.hdisplay =3D=3D=
+ HDISPLAY_4K &amp;&amp; mode_hi.vdisplay =3D=3D VDISPLAY_4K &amp;&amp;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_hi.vrefresh =3D=3D VREF=
+RESH, &quot;4K mode not found on output %s.\n&quot;,<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_name(output));<br=
+>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_skip_on_f(mode_hi-&gt;hdisplay =
+=3D=3D mode_lo-&gt;hdisplay &amp;&amp; mode_hi-&gt;vdisplay =3D=3D mode_lo-=
+&gt;vdisplay,<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_skip_on_f(mode_hi.hdisplay =3D=3D=
+ mode_lo.hdisplay &amp;&amp; mode_hi.vdisplay =3D=3D mode_lo.vdisplay,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Highest and=
+ lowest mode resolutions are same; no transition\n&quot;);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; primary =3D igt_output_get=
+_plane_type(output, DRM_PLANE_TYPE_PRIMARY);<br>
+@@ -248,13 +235,13 @@ static void test_mode_transition(data_t *data, enum p=
+ipe pipe, igt_output_t *out<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.0, 0.0=
+, 0.0, &amp;fb);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* switch to lower resolut=
+ion */<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output, mode=
+_lo);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output, &amp=
+;mode_lo);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(primary, =
+&amp;fb);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_commit_atomic(=
+display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cdclk_ref =3D get_current_=
+cdclk_freq(debugfs_fd);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* switch to higher resolu=
+tion */<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output, mode=
+_hi);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output, &amp=
+;mode_hi);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(primary, =
+&amp;fb);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_commit_atomic(=
+display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cdclk_new =3D get_current_=
+cdclk_freq(debugfs_fd);<br>
+@@ -273,7 +260,7 @@ static void test_mode_transition_on_all_outputs(data_t =
+*data)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t *display =3D=
+ &amp;data-&gt;display;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int debugfs_fd =3D data-&g=
+t;debugfs_fd;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode, *mode_hi, *mod=
+e_lo;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode, mode_hi, mode_=
+lo;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int valid_outputs =3D 0;<b=
+r>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int cdclk_ref, cdclk_new;<=
+br>
+@@ -297,11 +284,13 @@ static void test_mode_transition_on_all_outputs(data_=
+t *data)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; width =3D max(width, mode-&gt;hdisplay);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; height =3D max(height, mode-&gt;vdisplay);<br>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode_hi =3D get_highres_mode(output);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_require(mode_hi !=3D NULL);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode_hi =3D *igt_output_get_highres_mode(output);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_require_f(mode_hi.hdisplay =3D=3D HDISPLAY_4K &amp;&amp; mod=
+e_hi.vdisplay =3D=3D VDISPLAY_4K &amp;&amp;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; mode_hi.vrefresh =3D=3D VREFRESH, &quot;4K mode not fou=
+nd on output %s.\n&quot;,<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_output_name(output));<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_output_set_pipe(output, i);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, mode_hi);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, &amp;mode_hi);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; i++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(intel_pipe_out=
+put_combo_valid(display));<br>
+@@ -320,12 +309,12 @@ static void test_mode_transition_on_all_outputs(data_=
+t *data)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; mode =3D igt_output_get_mode(output);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_assert(mode);<br>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode_lo =3D get_lowres_mode(output);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode_lo =3D *get_lowres_mode(output);<br>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, mode_lo);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, &amp;mode_lo);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(plane, &amp;fb);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_fb_set_size(&amp;fb, plane, mode_lo-&gt;hdisplay, mode_lo-&g=
+t;vdisplay);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_plane_set_size(plane, mode_lo-&gt;hdisplay, mode_lo-&gt;vdis=
+play);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_fb_set_size(&amp;fb, plane, mode_lo.hdisplay, mode_lo.vdispl=
+ay);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_plane_set_size(plane, mode_lo.hdisplay, mode_lo.vdisplay);<b=
+r>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; i++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;<br>
+@@ -343,13 +332,15 @@ static void test_mode_transition_on_all_outputs(data_=
+t *data)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; mode =3D igt_output_get_mode(output);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_assert(mode);<br>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode_hi =3D get_highres_mode(output);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_require(mode_hi !=3D NULL);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; mode_hi =3D *igt_output_get_highres_mode(output);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_require_f(mode_hi.hdisplay =3D=3D HDISPLAY_4K &amp;&amp; mod=
+e_hi.vdisplay =3D=3D VDISPLAY_4K &amp;&amp;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; mode_hi.vrefresh =3D=3D VREFRESH, &quot;4K mode not fou=
+nd on output %s.\n&quot;,<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_output_name(output));<br>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, mode_hi);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_output_override_mode(output, &amp;mode_hi);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(plane, &amp;fb);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_fb_set_size(&amp;fb, plane, mode_hi-&gt;hdisplay, mode_hi-&g=
+t;vdisplay);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_plane_set_size(plane, mode_hi-&gt;hdisplay, mode_hi-&gt;vdis=
+play);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_fb_set_size(&amp;fb, plane, mode_hi.hdisplay, mode_hi.vdispl=
+ay);<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; igt_plane_set_size(plane, mode_hi.hdisplay, mode_hi.vdisplay);<b=
+r>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; j++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;<br>
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c<br>
+index 5508e7a9e..1392e1cd4 100644<br>
+--- a/tests/intel/kms_dsc.c<br>
++++ b/tests/intel/kms_dsc.c<br>
+@@ -94,18 +94,6 @@ static inline void manual(const char *expected)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_debug_interactive_mode=
+_check(&quot;all&quot;, expected);<br>
+&nbsp;}<br>
+&nbsp;<br>
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)<br>
+-{<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeConnector *connector =3D outpu=
+t-&gt;config.connector;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *highest_mode =3D NUL=
+L;<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_sort_connector_modes(connector, s=
+ort_drm_modes_by_clk_dsc);<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; highest_mode =3D &amp;connector-&gt;m=
+odes[0];<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return highest_mode;<br>
+-}<br>
+-<br>
+&nbsp;static drmModeModeInfo *get_next_mode(igt_output_t *output, int index=
+)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeConnector *connecto=
+r =3D output-&gt;config.connector;<br>
+@@ -184,7 +172,7 @@ static void update_display(data_t *data, uint32_t test_=
+type)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_skip_on(!igt_plane_has=
+_format_mod(primary, data-&gt;plane_format,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_FORMAT_MOD_LINEAR));<br>
+&nbsp;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode =3D get_highres_mode(output);<br=
+>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode =3D igt_output_get_highres_mode(=
+output);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; if (data-&gt;output_format !=3D DSC_FORMAT_RGB &amp;&=
+amp; index &gt; 0)<br>
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c<br>
+index e41c60cc0..6ea44944a 100644<br>
+--- a/tests/kms_display_modes.c<br>
++++ b/tests/kms_display_modes.c<br>
+@@ -60,18 +60,6 @@ typedef struct {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int n_pipes;<br>
+&nbsp;} data_t;<br>
+&nbsp;<br>
+-/* Get higher mode supported by panel. */<br>
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)<br>
+-{<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeConnector *connector =3D outpu=
+t-&gt;config.connector;<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *highest_mode =3D NUL=
+L;<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_sort_connector_modes(connector, s=
+ort_drm_modes_by_res_dsc);<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; highest_mode =3D &amp;connector-&gt;m=
+odes[0];<br>
+-<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return highest_mode;<br>
+-}<br>
+-<br>
+&nbsp;/* Get the 4k or less then 4k mode of connected panel. */<br>
+&nbsp;static drmModeModeInfo *get_mode(igt_output_t *output)<br>
+&nbsp;{<br>
+@@ -344,7 +332,7 @@ igt_main<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_require_f(dp_mst_outputs &gt; 1, &quot;MST not fo=
+und more then one\n&quot;);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; memcpy(&amp;data.mode_mst[0], get_mode(data.mst_outpu=
+t[0]), sizeof(drmModeModeInfo));<br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; memcpy(&amp;data.mode_mst[1], get_highres_mode(data.mst_output[1=
+]),<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; memcpy(&amp;data.mode_mst[1], igt_output_get_highres_mode(data.m=
+st_output[1]),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizeof(drmModeModeInfo));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; igt_require_f((data.mode_mst[1].hdisplay &gt;=3D HDIS=
+PLAY_4K &amp;&amp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data.mode_mst[1].vdisplay &gt;=3D VDIS=
+PLAY_4K), &quot;4k panel not found\n&quot;);<br>
+--<br>
+2.25.1<br>
+<br>
+</div>
+</body>
+</html>
+
+--_000_SN6PR11MB27042CD0D6A738304905546FDBEC2SN6PR11MB2704namp_--
