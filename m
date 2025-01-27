@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525B0C0218C
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 04:49:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C4FC0218C
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jan 2025 04:50:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E56C310E194;
-	Mon, 27 Jan 2025 04:49:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B1D9E10E194;
+	Mon, 27 Jan 2025 04:50:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="etuMkC9r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XJCFrsqe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB04B10E194
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 04:49:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C26C10E194
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2025 04:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737953360; x=1769489360;
+ t=1737953446; x=1769489446;
  h=date:from:to:subject:message-id:references:mime-version:
  content-transfer-encoding:in-reply-to;
- bh=0TJlXNzD+AF36sfhQjHagjEdy0duxWZ3gCOfbiOKA0o=;
- b=etuMkC9rYPSUbfm7sxhb5x/tovJ3Aw988+TiTJrxeJ/5PiUXy0FdVihu
- w+5PUl+f14bAIXTG7CdvCgJS+oE5+nyaiuNSCT4mmh5eZYr19KuL5Kk2j
- tcekWwXwOKP1P50VV/JWcB+R+YL4/u2b+tO+cJGIu06y0EvHNELIlmJE7
- JTgL3g3nkGB4jEiCuTq7EWIDwkrNeFBk+WwAbCR49pTPRwo46l5u9hdNq
- xhTrH9gSbsI2Zwq16Rdbp63OwZg+/jk460HruKd1TFX44aaEuoGfC3CtR
- J/t0XlTGATLX4uOSr6LbO2J1HMAZc9x801rxfaSYcqngeUam9hzM8Xtkf A==;
-X-CSE-ConnectionGUID: twsdoP8BQD2NGj2eXhfQWg==
-X-CSE-MsgGUID: RYboyKpARv2V5cSkO0kgCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="38543603"
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="38543603"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2025 20:49:20 -0800
-X-CSE-ConnectionGUID: cfBEnnayQLayvuvcshATEA==
-X-CSE-MsgGUID: HStDozRnRxS417J8yXlLNw==
+ bh=X9q3QO0F8DKTiJuM7KguzabOhaCDpXUmF28HjPtfD88=;
+ b=XJCFrsqeRI6qryVxZ9y9VcTEgXhXMsawqo2qC8oXwwsRUbW9wGO2WyrI
+ Disw3TMsfyWEmsH6i9lGSXNR23Ac/mi+mkcFr7DoEt1tjOoCS/UIsDGAy
+ C9nXao+A9e8vTk7sW25XNa923N5/t89OK76km9PeXy7nmiBjZxRYS00T0
+ APIpxR6mK56Jkwu1z+/09AmPXu0jnZAppbkd2YEVboETK6mBvSopobweR
+ g7CrQDv5tOlC8QdZqt3dgTAynWMkUYankvJJZdF98A5TdE3imcyxCOftn
+ 2yTG52dxXFmmHhNpn957KnY3ql0Vrmeq7kIpbpV/7o0ydeN1A+WPLmNWc A==;
+X-CSE-ConnectionGUID: ed39T4eaQIyfV/RRQY2Gsw==
+X-CSE-MsgGUID: /qs03/VhS4m2IDQ4cayfdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="42337178"
+X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="42337178"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2025 20:50:46 -0800
+X-CSE-ConnectionGUID: JBKp8z4tSMylu6iq1/yiYQ==
+X-CSE-MsgGUID: rgiPfLOVSCmA+ga8Hf+bgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="113312830"
+X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="108848290"
 Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.231])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2025 20:49:18 -0800
-Date: Mon, 27 Jan 2025 05:49:15 +0100
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2025 20:50:45 -0800
+Date: Mon, 27 Jan 2025 05:50:42 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/3] lib/igt_device_scan: change device list
- variable visibility
-Message-ID: <20250127044915.izkpkskylqw4gdyn@zkempczy-mobl2>
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v2 3/3] tests/xe_intel_bb: check multithreading
+ rescans won't segfault
+Message-ID: <20250127045042.ovehwzuc6hbaqdgh@zkempczy-mobl2>
 References: <20250123095208.72984-1-zbigniew.kempczynski@intel.com>
- <20250123095208.72984-3-zbigniew.kempczynski@intel.com>
- <20250124162625.2lz3spps6vgfmie6@kamilkon-desk.igk.intel.com>
+ <20250123095208.72984-4-zbigniew.kempczynski@intel.com>
+ <20250124162858.vuqe4pcpa2rt7imt@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250124162625.2lz3spps6vgfmie6@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20250124162858.vuqe4pcpa2rt7imt@kamilkon-desk.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,68 +72,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jan 24, 2025 at 05:26:25PM +0100, Kamil Konieczny wrote:
+On Fri, Jan 24, 2025 at 05:28:58PM +0100, Kamil Konieczny wrote:
 > Hi Zbigniew,
-> On 2025-01-23 at 10:52:07 +0100, Zbigniew Kempczyński wrote:
+> On 2025-01-23 at 10:52:08 +0100, Zbigniew Kempczyński wrote:
+> > This test is likely only for checking purposes, it doesn't makes
+> > sense to merge it after series review.
 > 
-> could you improve subject? something like:
-> 
-> lib/igt_device_scan: Fix multithreading for Xe
+> In such cases please add prefix in subject, something like:
 
-Yes, I can change it to sth like 
-
-'lib/igt_device_scan: fix multithreading support in device scanning'
-
-because it also affects i915 even if there's not used there.
-
-> 
-> > In commit: 2e8f3e06fb (tests/xe_evict|exec_threads: Use fd reopen
-> > to avoid corrupting global data) I simply changed tests which
-> > corrupted device list global variable. i915 didn't use opening
-> > devices in multithreaded tests but this changed with xe.
-> > 
-> > Device scan is now unconditional so we may change device list
-> > variable visibility to TLS. With this reverting of above commit
-> > should be safe (but I'm not sure is it worth to do this).
-> > 
-> 
-> What about adding Fixes: tag? It is not a kernel so no strict
-> rules here, up to you.
-
-I don't if any freedesktop issue was created for this, maybe Lucas
-knows about it.
+Ack, noticed for future patches.
 
 --
 Zbigniew
 
 > 
+> [PATCH i-g-t v2 3/3] DO_NOT_MERGE: tests/xe_intel_bb: check multithreading rescans won't segfault
+> 
+> Regards,
+> Kamil
+> 
+> > 
 > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> You forgot about:
-> Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> 
-> LGTM so also:
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
 > > ---
-> >  lib/igt_device_scan.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >  tests/intel-ci/xe-fast-feedback.testlist |  1 +
+> >  tests/intel/xe_intel_bb.c                | 47 ++++++++++++++++++++++++
+> >  2 files changed, 48 insertions(+)
 > > 
-> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > index 44b632008b..c36b0efa90 100644
-> > --- a/lib/igt_device_scan.c
-> > +++ b/lib/igt_device_scan.c
-> > @@ -247,7 +247,7 @@ struct igt_device {
-> >  };
-> >  
-> >  /* Scanned devices */
-> > -static struct {
-> > +static __thread struct {
-> >  	struct igt_list_head all;
-> >  	struct igt_list_head filtered;
-> >  	bool devs_scanned;
-> > -- 
-> > 2.34.1
-> > 
+> ...cut...
