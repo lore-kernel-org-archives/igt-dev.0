@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36465C02192
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Jan 2025 20:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C43DFC0218A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Jan 2025 20:49:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA6F110E3EC;
-	Tue, 28 Jan 2025 20:48:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 77EDC10E3EC;
+	Tue, 28 Jan 2025 20:49:05 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B30910E3EC;
- Tue, 28 Jan 2025 20:48:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D89D10E335;
+ Tue, 28 Jan 2025 20:49:04 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1481978664503735849=="
+ boundary="===============0592349537442348926=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Integrate_kmemleak_scans_?=
  =?utf-8?q?in_igt=5Frunner_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Jan 2025 20:48:32 -0000
-Message-ID: <173809731246.2090902.17919344398188683885@b555e5b46a47>
+Date: Tue, 28 Jan 2025 20:49:04 -0000
+Message-ID: <173809734416.2090929.16957208717741511036@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250128151537.515639-1-peter.senna@linux.intel.com>
 In-Reply-To: <20250128151537.515639-1-peter.senna@linux.intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1481978664503735849==
+--===============0592349537442348926==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -167,7 +167,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12508/index.html
 
---===============1481978664503735849==
+--===============0592349537442348926==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -296,4 +296,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1481978664503735849==--
+--===============0592349537442348926==--
