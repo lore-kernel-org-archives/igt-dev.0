@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF82C0218D
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Jan 2025 07:00:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C7DBC0218D
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Jan 2025 07:05:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 816A610E379;
-	Tue, 28 Jan 2025 07:00:53 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B59DC10E379;
- Tue, 28 Jan 2025 07:00:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AB2F10E277;
+	Tue, 28 Jan 2025 07:05:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Isj4X/Py";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE71910E277
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jan 2025 07:05:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738047929; x=1769583929;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to; bh=54vlIEqysZv6UNiiDcluUUI5XWJTiPdenBkzJsL3Sc0=;
+ b=Isj4X/PyShC/UJbGuJWjNGVAIeBaxeBCwaBndhsO/klHfpBSmnXxu+bu
+ xF9FR8nNgF2TBMZTmoXHMi4bw0DbgQnVMfrMbWi/2x+qiZwFXgeC9zoCE
+ p9J6zXynFw4DHbyj++uVYQm2bqhT8Vve7Jtbqm7uewryUldF1D+E+WPZV
+ X179BHOEaA2uE+MsmIqogebEbew7vnYlH5QDPFzfv5GescEkhb4Qq4iAz
+ +Gg7VFGWaa+qdTchyu/GZIWbvTieQg5hHFuJEY1SGsB8cY1/+Ct+rdlld
+ 5xsKCqLDcOBDBBf4f2u7zkDf5BmyD/nAZb0+c5fRhqY1yw159+Zo1nDzz Q==;
+X-CSE-ConnectionGUID: XtTNBBhRSb+BY24qugs8Dw==
+X-CSE-MsgGUID: fgQbb3+xTTGcD6fEvivUlQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="60991131"
+X-IronPort-AV: E=Sophos;i="6.13,240,1732608000"; d="scan'208,217";a="60991131"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 23:05:29 -0800
+X-CSE-ConnectionGUID: I7LlDEbdRJ6gvPW6kGMZCg==
+X-CSE-MsgGUID: EcXqE9T0Ro+EPN3sxAVxCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,240,1732608000"; 
+ d="scan'208,217";a="108459384"
+Received: from rajivsar-mobl.gar.corp.intel.com (HELO [10.247.228.36])
+ ([10.247.228.36])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 23:05:27 -0800
 Content-Type: multipart/alternative;
- boundary="===============5385891443204736329=="
+ boundary="------------ryZUqd1lXUX06qcXZw3iBUqE"
+Message-ID: <3cd82d89-a31b-4784-8b39-a87158e565e6@intel.com>
+Date: Tue, 28 Jan 2025 12:35:24 +0530
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/kms=5Fcursor=5Flega?=
- =?utf-8?q?cy=3A_Reduce_debug_loglevel_dynamically?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Jan 2025 07:00:51 -0000
-Message-ID: <173804765173.1784460.7993871187705211941@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250128052825.424586-1-pranay.samala@intel.com>
-In-Reply-To: <20250128052825.424586-1-pranay.samala@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] add test to validate uhbr/non-uhbr over sst/mst
+To: Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
+References: <20250115073243.2002014-1-kunal1.joshi@intel.com>
+ <87tt9ka16b.fsf@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <87tt9ka16b.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,399 +67,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5385891443204736329==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+This is a multi-part message in MIME format.
+--------------ryZUqd1lXUX06qcXZw3iBUqE
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+Hello Jani,
 
-Series: tests/kms_cursor_legacy: Reduce debug loglevel dynamically
-URL   : https://patchwork.freedesktop.org/series/144014/
-State : failure
+Thanks for taking a look,
 
-== Summary ==
+On 27-01-2025 18:01, Jani Nikula wrote:
+> On Wed, 15 Jan 2025, Kunal Joshi<kunal1.joshi@intel.com> wrote:
+>> Add new test validating UHBR and non-UHBR link rates for
+>> both SST and MST configurations. The series comprises three patches:
+>>
+>> 1. tests/intel/kms_joiner_helper:
+>>     - Introduces kms_joiner_helper.c/h for pipe assignments taking care of joiners
+>>     - Moves common joiner-related logic out of kms_joiner.c.
+>>
+>> 2. tests/intel/kms_mst_helper:
+>>     - Adds kms_mst_helper.c/h for MST-specific operations.
+>>     - Centralizes code for identifying and assigning MST outputs.
+>>
+>> 3. tests/kms_feature_discovery:
+>>     - Implements tests verifying UHBR and non-UHBR link rates with SST and MST.
+>>     - Uses the new helpers for pipe assignments and topology discovery.
+> AFAICT this adapts to what the driver reports. If the driver never
+> enables DP SST UHBR, it'll happily pass, and just skip the tests. Am I
+> right? Is that the kind of testing you want?
+>
+>
+> BR,
+> Jani.
+The purpose of the |kms_feature_discovery| test is to verify that all 
+necessary configurations are in place. If a DP 2.1 SST monitor is not 
+connected in the CI environment, the test will be skipped, indicating 
+that SST UHBR coverage is missing. Since DP 2.1 SST support is already 
+provided by existing tests, this test simply confirms whether the 
+appropriate monitor is available to enable that coverage.
 
-CI Bug Log - changes from IGT_8210 -> IGTPW_12503
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12503 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12503, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/index.html
-
-Participating hosts (36 -> 35)
-------------------------------
-
-  Additional (1): bat-adlp-11 
-  Missing    (2): fi-snb-2520m bat-adls-6 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12503:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-guc:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12503 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-adlp-11:        NOTRUN -> [SKIP][3] ([i915#9318])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@info:
-    - bat-adlp-11:        NOTRUN -> [SKIP][4] ([i915#1849] / [i915#2582])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@fbdev@info.html
-
-  * igt@fbdev@nullptr:
-    - bat-adlp-11:        NOTRUN -> [SKIP][5] ([i915#2582]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@fbdev@nullptr.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - bat-adlp-11:        NOTRUN -> [SKIP][6] ([i915#4613]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-adlp-11:        NOTRUN -> [SKIP][7] ([i915#3282])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_module_load@load:
-    - fi-pnv-d510:        NOTRUN -> [ABORT][8] ([i915#13203])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/fi-pnv-d510/igt@i915_module_load@load.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-adlp-11:        NOTRUN -> [SKIP][9] ([i915#6621])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-6:         [PASS][10] -> [DMESG-FAIL][11] ([i915#12061]) +1 other test dmesg-fail
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-mtlp-6/igt@i915_selftest@live.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-mtlp-6/igt@i915_selftest@live.html
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - bat-adlp-11:        NOTRUN -> [SKIP][12] ([i915#3637]) +3 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-adlp-11:        NOTRUN -> [SKIP][13] ([i915#4093]) +3 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-11:        NOTRUN -> [SKIP][14] ([i915#4342] / [i915#5354])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-adlp-11:        NOTRUN -> [SKIP][15] ([i915#4369])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - bat-adlp-11:        NOTRUN -> [SKIP][16] ([i915#10470]) +16 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-adlp-11:        NOTRUN -> [SKIP][17] ([i915#9812])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - bat-adlp-11:        NOTRUN -> [SKIP][18] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-adlp-11:        NOTRUN -> [SKIP][19] ([i915#3555])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-adlp-11:        NOTRUN -> [SKIP][20] ([i915#10470] / [i915#3708])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-adlp-11:        NOTRUN -> [SKIP][21] ([i915#3291] / [i915#3708]) +2 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@prime_vgem@basic-fence-read.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][22] ([i915#12061]) -> [PASS][23] +1 other test pass
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - {bat-mtlp-9}:       [DMESG-FAIL][24] ([i915#12061]) -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_chamelium_edid@dp-edid-read:
-    - bat-dg2-13:         [FAIL][26] ([i915#13590]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10470]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203
-  [i915#13590]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13590
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#2582]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
-  [i915#4093]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4093
-  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
-  [i915#4369]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4369
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8210 -> IGTPW_12503
-  * Linux: CI_DRM_16024 -> CI_DRM_16031
-
-  CI-20190529: 20190529
-  CI_DRM_16024: 9606e7472e23df21b5a4ad0c4845643eed592132 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16031: 73c0fe019ff4bf312f6ae1114f0ca63bd13ea4b7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12503: 12503
-  IGT_8210: 6ccdcffdb1aa67cf90a3f9cae99502ae327de57a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/index.html
-
---===============5385891443204736329==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
+Thanks and Regards
+Kunal Joshi
+>
+>
+>> Kunal Joshi (4):
+>>    tests/intel/kms_joiner_helper: helper for joiner-related functions
+>>    tests/intel/kms_mst_helper: Add helper for MST-related functions
+>>    tests/kms_feature_discovery: Add tests for UHBR/non-UHBR over SST/MST
+>>    HAX: DO NOT MERGE
+>>
+>>   tests/intel-ci/fast-feedback.testlist    |  14 ++
+>>   tests/intel-ci/xe-fast-feedback.testlist |  14 ++
+>>   tests/intel/kms_dp_linktrain_fallback.c  |  28 +---
+>>   tests/intel/kms_joiner.c                 |  15 +-
+>>   tests/intel/kms_joiner_helper.c          | 179 +++++++++++++++++++++++
+>>   tests/intel/kms_joiner_helper.h          |  15 ++
+>>   tests/intel/kms_mst_helper.c             |  48 ++++++
+>>   tests/intel/kms_mst_helper.h             |  10 ++
+>>   tests/kms_feature_discovery.c            | 177 ++++++++++++++++++++++
+>>   tests/meson.build                        |   6 +
+>>   10 files changed, 469 insertions(+), 37 deletions(-)
+>>   create mode 100644 tests/intel/kms_joiner_helper.c
+>>   create mode 100644 tests/intel/kms_joiner_helper.h
+>>   create mode 100644 tests/intel/kms_mst_helper.c
+>>   create mode 100644 tests/intel/kms_mst_helper.h
+--------------ryZUqd1lXUX06qcXZw3iBUqE
+Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>Hello Jani,<br>
+      <br>
+      Thanks for taking a look,<br>
+    </p>
+    <div class="moz-cite-prefix">On 27-01-2025 18:01, Jani Nikula wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:87tt9ka16b.fsf@intel.com">
+      <pre wrap="" class="moz-quote-pre">On Wed, 15 Jan 2025, Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a> wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">Add new test validating UHBR and non-UHBR link rates for
+both SST and MST configurations. The series comprises three patches:
+
+1. tests/intel/kms_joiner_helper:
+   - Introduces kms_joiner_helper.c/h for pipe assignments taking care of joiners
+   - Moves common joiner-related logic out of kms_joiner.c.
+
+2. tests/intel/kms_mst_helper:
+   - Adds kms_mst_helper.c/h for MST-specific operations.
+   - Centralizes code for identifying and assigning MST outputs.
+
+3. tests/kms_feature_discovery:
+   - Implements tests verifying UHBR and non-UHBR link rates with SST and MST.
+   - Uses the new helpers for pipe assignments and topology discovery.
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+AFAICT this adapts to what the driver reports. If the driver never
+enables DP SST UHBR, it'll happily pass, and just skip the tests. Am I
+right? Is that the kind of testing you want?
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_legacy: Reduce debug loglevel dynamically</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144014/">https://patchwork.freedesktop.org/series/144014/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+BR,
+Jani.</pre>
+    </blockquote>
+    The purpose of the <code>kms_feature_discovery</code> test is to
+    verify that all necessary configurations are in place. If a DP 2.1
+    SST monitor is not connected in the CI environment, the test will be
+    skipped, indicating that SST UHBR coverage is missing. Since DP 2.1
+    SST support is already provided by existing tests, this test simply
+    confirms whether the appropriate monitor is available to enable that
+    coverage.<br>
+    <br>
+    Thanks and Regards<br>
+    Kunal Joshi<br>
+    <blockquote type="cite" cite="mid:87tt9ka16b.fsf@intel.com">
+      <pre wrap="" class="moz-quote-pre">
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/index.html</a></td></tr>
 
-</table>
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">Kunal Joshi (4):
+  tests/intel/kms_joiner_helper: helper for joiner-related functions
+  tests/intel/kms_mst_helper: Add helper for MST-related functions
+  tests/kms_feature_discovery: Add tests for UHBR/non-UHBR over SST/MST
+  HAX: DO NOT MERGE
 
-
-    <h1>CI Bug Log - changes from IGT_8210 -&gt; IGTPW_12503</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_12503 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12503, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/index.html</p>
-<h2>Participating hosts (36 -&gt; 35)</h2>
-<p>Additional (1): bat-adlp-11 <br />
-  Missing    (2): fi-snb-2520m bat-adls-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12503:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12503 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318">i915#9318</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@nullptr:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/fi-pnv-d510/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13203">i915#13203</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-mtlp-6/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-mtlp-6/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4093">i915#4093</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342">i915#4342</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4369">i915#4369</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a>) +16 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812">i915#9812</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-adlp-11/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_edid@dp-edid-read:</p>
-<ul>
-<li>bat-dg2-13:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8210/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13590">i915#13590</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12503/bat-dg2-13/igt@kms_chamelium_edid@dp-edid-read.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8210 -&gt; IGTPW_12503</li>
-<li>Linux: CI_DRM_16024 -&gt; CI_DRM_16031</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16024: 9606e7472e23df21b5a4ad0c4845643eed592132 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16031: 73c0fe019ff4bf312f6ae1114f0ca63bd13ea4b7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12503: 12503<br />
-  IGT_8210: 6ccdcffdb1aa67cf90a3f9cae99502ae327de57a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
+ tests/intel-ci/fast-feedback.testlist    |  14 ++
+ tests/intel-ci/xe-fast-feedback.testlist |  14 ++
+ tests/intel/kms_dp_linktrain_fallback.c  |  28 +---
+ tests/intel/kms_joiner.c                 |  15 +-
+ tests/intel/kms_joiner_helper.c          | 179 +++++++++++++++++++++++
+ tests/intel/kms_joiner_helper.h          |  15 ++
+ tests/intel/kms_mst_helper.c             |  48 ++++++
+ tests/intel/kms_mst_helper.h             |  10 ++
+ tests/kms_feature_discovery.c            | 177 ++++++++++++++++++++++
+ tests/meson.build                        |   6 +
+ 10 files changed, 469 insertions(+), 37 deletions(-)
+ create mode 100644 tests/intel/kms_joiner_helper.c
+ create mode 100644 tests/intel/kms_joiner_helper.h
+ create mode 100644 tests/intel/kms_mst_helper.c
+ create mode 100644 tests/intel/kms_mst_helper.h
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+</pre>
+    </blockquote>
+  </body>
 </html>
 
---===============5385891443204736329==--
+--------------ryZUqd1lXUX06qcXZw3iBUqE--
