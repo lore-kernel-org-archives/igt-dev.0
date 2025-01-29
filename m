@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D977C0218D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD88EC0218F
 	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 03:31:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 089AD10E05C;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 57A7C10E73B;
 	Wed, 29 Jan 2025 03:31:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="mMWsjdG9";
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="btXleZCk";
 	dkim-atps=neutral
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D053110E73B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF9AE10E05C
  for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 03:31:14 +0000 (UTC)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T2gKDC025534;
- Wed, 29 Jan 2025 03:31:05 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T2gtgp023518;
+ Wed, 29 Jan 2025 03:31:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=qcppdkim1; bh=5A/1nXReeXT1gMkLRXfwel
- DdxXfAoN9i6I+flxkUY8Q=; b=mMWsjdG9uKuRj6zIUF+WnYEJp5G+6JoZLJuocr
- DeojZVSUKMeDevL9VESAgVrVOdcEsmj/oAu4sgpdhTvpuC0dmL38ys9E+kMgGCeA
- q403lye1Oz8wZfj4AG8KWeuR+ZoXK7YPdt2Ump0pTxyNKJw3HqJ60vS06UM2uGZ6
- OBXitvYcT2Njnw9La2e0vsFR5UxV1mvjl3lAtjOYiUS8oeALmWHg8L31d4UKwq54
- vjZQelyjT8QEZkBsAUizfkKdoBC1fVWoI1JAaPIgiq4ivxyN+8vRY806HZEBLBIb
- PTViWaR+s+zG8D+lnKFdkLLmnZFab29eNU/NvY9oSkIU5sHw==
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ 05JA61MvUIbU2qncpxt2hwnR9/xhgJpRkfXOFFw+eTQ=; b=btXleZCkknB7XduA
+ sv91+10145EQ63cfsvfsMEMkjJZnMEKSThYNoQmqHE7t8obqcf8vAaRE2Qwz5lxy
+ 99n0/O9AN5fJf6PT0haOfHy8249+brzav2zvzUrO8GE+56VkCfAbcW4seMVPLtHI
+ 9qcz16g1OIfVx0lJ3DxrcWecTR/7K8gFQF8xWNSgMwL2dy7/nEpRZTBo86KNu1Nx
+ O7U2uNKXoaCQhDHW6LfGQa19mXXpbHJhldyP4/b/Kj7ei8mR0Df3P8zx9ImcNXbJ
+ dWhUEcKHOD5WnejberiCGA88eS196N0PBvfKkn/T2xkEvqf4bMOj+UV6mxCvYws0
+ 4nFQpQ==
 Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
  [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44f54dgsxk-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44eygu9rx2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 29 Jan 2025 03:31:05 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
  [10.46.141.250])
- by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50T3V4eQ012581
+ by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50T3V4VS012718
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 29 Jan 2025 03:31:04 GMT
 Received: from jesszhan-linux.qualcomm.com (10.80.80.8) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 28 Jan 2025 19:31:03 -0800
+ 15.2.1544.9; Tue, 28 Jan 2025 19:31:04 -0800
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Subject: [PATCH i-g-t v5 0/3] tests/kms_writeback: Add clone mode subtest
-Date: Tue, 28 Jan 2025 19:29:46 -0800
-Message-ID: <20250128-igt-cwb-v5-0-82652cec29a3@quicinc.com>
+Date: Tue, 28 Jan 2025 19:29:49 -0800
+Subject: [PATCH i-g-t v5 3/3] tests/kms_writeback: Add subtest for valid
+ clone mode
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKqgmWcC/3XQwU7DMAyA4VeZciaodpIm5cR7oB1a1+l8oIWkd
- ENT352oQxQ0cbST7z/4qjIn4ayeDleVeJEs01gG93BQdGrHgbX0ZVZYoa0Cei3DrOncaTSxD9C
- b1rdWld9viaNcttKLEj3oWR3L+iR5ntLn1l9ge/xOhZ/UArrSNrTMFiFS45/fP4RkpEeaXrfKg
- v9ILNJ36Bx5U5Fz99LssoFml6ZI7DoDNUSITX0v7S+Jbpe2SHZQUw8cQuC/cr3dInHZZplvBzm
- u6xe9yNa1agEAAA==
-X-Change-ID: 20240827-igt-cwb-23fd81d3a7a4
+Message-ID: <20250128-igt-cwb-v5-3-82652cec29a3@quicinc.com>
+References: <20250128-igt-cwb-v5-0-82652cec29a3@quicinc.com>
+In-Reply-To: <20250128-igt-cwb-v5-0-82652cec29a3@quicinc.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
  <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
@@ -63,11 +61,11 @@ CC: <quic_abhinavk@quicinc.com>, <igt-dev@lists.freedesktop.org>, Alex Hung
  <alex.hung@amd.com>, Esha Bharadwaj <quic_ebharadw@quicinc.com>, "Jessica
  Zhang" <quic_jesszhan@quicinc.com>
 X-Mailer: b4 0.15-dev-1b0d6
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738121463; l=3018;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738121463; l=5665;
  i=quic_jesszhan@quicinc.com; s=20230329; h=from:subject:message-id;
- bh=Ok6ciTn+GCvJWHjVs2z/UIj6VVQlvl/+DhfhRpqCSU8=;
- b=/Knvwq3We8ktUphygYo42eBYObYp+9ngljUypDDG4UbqlYA0P0vjvzcN78XZ/AbbdXyVfwMEn
- 1phBqcj5HDHAJ/CjZvfxOmS8d7a+8xHBEXrcVZ2MbuKt0LfdvXVIm3M
+ bh=qe+SsymasZEosziW6mUSrP4b1UEadM9bVy1VSCTPBNY=;
+ b=6KCkqTCMscu7JUuIfN3NELyCVTRSI+zNpEnQxocXe9I2uyGGacVWXavi3oaURm5uhiUqr7O1P
+ j4r1ZbK1PQSDxeh7vhVHiNXVvX7F+B58y4af5T6KllT/TMuZXxlGB7+
 X-Developer-Key: i=quic_jesszhan@quicinc.com; a=ed25519;
  pk=gAUCgHZ6wTJOzQa3U0GfeCDH7iZLlqIEPo4rrjfDpWE=
 X-Originating-IP: [10.80.80.8]
@@ -76,16 +74,16 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: 3-vincr0Ftcd1Xfx8mDDFYblSuJ2WCof
-X-Proofpoint-ORIG-GUID: 3-vincr0Ftcd1Xfx8mDDFYblSuJ2WCof
+X-Proofpoint-GUID: airkGIlj8MBlJARGu6d41brx2fKfmxFL
+X-Proofpoint-ORIG-GUID: airkGIlj8MBlJARGu6d41brx2fKfmxFL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- priorityscore=1501 bulkscore=0 malwarescore=0 suspectscore=0 spamscore=0
- clxscore=1011 phishscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0 bulkscore=0
+ spamscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=835 impostorscore=0 clxscore=1011 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2501290026
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -102,80 +100,160 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a subtest that will iterate through all pairs of
-non-writeback and writeback cloned outputs and dump the writeback
-framebuffer for each pair. It also supports performing CRC validation on
-each cloned WB pair.
+From: Esha Bharadwaj <quic_ebharadw@quicinc.com>
 
-This series includes:
+Move the regular writeback dump into its own subtest. Also add a subtest to
+dump pairs of cloned non-writeback and writeback encoders if the dump
+flag is set or check the writeback output if the dump flag isn't set
 
-- Adjust the duplicate pipe check in igt_display_refresh() to allow for
-  combinations of valid clones
-- Moving the writeback dump to its own subtest
-- Adding a subtest to dump or perform CRC validation on all
-  writeback+non-writeback cloned pairs
-
-To validate the clone mode buffer via CRC, run the following command:
-
-./build/tests/kms_writeback [--run-subtest check-valid-clones]
-
-To dump the clone mode buffer, run the following command:
-
-IGT_FRAME_DUMP_PATH=<dump path> FRAME_PNG_FILE_NAME=<file name> \
-	./build/tests/kms_writeback [--run-subtest check-valid-clones] -d
-
-This will output a file named <file name>-encoder<writeback encoder
-id>-encoder<primary display encoder id>
-
+Signed-off-by: Esha Bharadwaj <quic_ebharadw@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 ---
-Changes in v6:
-- igt_output_clone_invalid -> igt_output_is_valid_clone (for
-  readability)
-- Refresh output before checking if nonwb_output and writeback output
-  are valid clones so that the check-valid-clones subtest doesn't fail
-  for drivers where there are no clones
-- Added num_clones counter to mark check-valid-clones subtest as skipped
-  for drivers with no clones
-
-Changes in v5:
-- Added check for pipes in use back to igt_display_refresh (Abhinav)
-- igt_output_clone_valid -> igt_output_clone_invalid (the check returns
-  true if the encoder bit *isn't* in the possible_clones mask
-- Added support for CRC validation of cloned WB output
-- Link to v4: https://lore.kernel.org/r/20240925-igt-cwb-v4-0-e516cd1e888e@quicinc.com
-
-Changes in v4:
-- Fix compiler issues with igt_output_clone_valid()
-- Add a NULL commit to clean up each non-writeback output
-- Link to v3: https://lore.kernel.org/r/20240919-igt-cwb-v3-0-2bb3161f1f96@quicinc.com
-
-Changes in v3:
-- Dropped change to force a modeset after igt_display_require()
-- Fixed incorrect author name
-- Grab the primary display mode as part of the clone mode subtest
-  (instead of requiring user to specify the mode)
-- Link to v2: https://lore.kernel.org/r/20240828-igt-cwb-v2-0-7b255c730c55@quicinc.com
-
-Changes in v2:
-- Corrected author email
-- Link to v1: https://lore.kernel.org/r/20240828-igt-cwb-v1-0-48aee421fc97@quicinc.com
-
----
-Esha Bharadwaj (3):
-      lib/igt_kms: Add helper to get encoder index
-      lib/igt_kms: loosen duplicate check in igt_display_refresh
-      tests/kms_writeback: Add subtest for valid clone mode
-
- lib/igt_kms.c         |  64 ++++++++++++++++++++++++++++++--
- lib/igt_kms.h         |   2 +
- tests/kms_setmode.c   |  14 +------
  tests/kms_writeback.c | 101 ++++++++++++++++++++++++++++++++++++++++++++++++--
- 4 files changed, 162 insertions(+), 19 deletions(-)
----
-base-commit: 76102a17560c6e6fc6528db29286b0266ccc48ef
-change-id: 20240827-igt-cwb-23fd81d3a7a4
+ 1 file changed, 97 insertions(+), 4 deletions(-)
 
-Best regards,
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 1775986fe85b2b951a65355b16d5dae623d6d975..27bfadaa28783043602833903742f94c26d0f7a4 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -47,6 +47,13 @@
+ #include "sw_sync.h"
+ 
+ /**
++ * SUBTEST: dump-writeback
++ * Description: Dump a non-cloned writeback buffer
++ *
++ * SUBTEST: check-valid-clones
++ * Description: Dump all valid clone pairs of writeback and non-writeback
++ *              connectors
++ *
+  * SUBTEST: writeback-check-output-XRGB2101010
+  * Description: Check XRGB2101010 writeback output with CRC validation
+  *
+@@ -450,7 +457,7 @@ static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t
+ }
+ 
+ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt_plane_t *plane,
+-			        igt_fb_t *input_fb, drmModeModeInfo *mode)
++			       igt_fb_t *input_fb, drmModeModeInfo *mode, char *suffix)
+ {
+ 	cairo_surface_t *fb_surface_out;
+ 	char filepath_out[PATH_MAX];
+@@ -471,7 +478,8 @@ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt
+ 	do_single_commit(output, plane, input_fb, &output_fb);
+ 
+ 	fb_surface_out = igt_get_cairo_surface(display->drm_fd, &output_fb);
+-	snprintf(filepath_out, PATH_MAX, "%s/%s.png", path_name, file_name);
++	snprintf(filepath_out, PATH_MAX, "%s/%s-%s.png", path_name, file_name, suffix);
++
+ 	status = cairo_surface_write_to_png(fb_surface_out, filepath_out);
+ 	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
+ 	cairo_surface_destroy(fb_surface_out);
+@@ -555,6 +563,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 	drmModeModeInfo mode;
+ 	unsigned int fb_id;
+ 	int ret;
++	char dump_suffix[PATH_MAX];
+ 
+ 	memset(&display, 0, sizeof(display));
+ 
+@@ -603,9 +612,93 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 
+ 		if (data.list_modes)
+ 			list_writeback_modes(&display);
+-		if (data.dump_check)
+-			commit_and_dump_fb(&display, output, plane, &input_fb, &mode);
+ 	}
++
++	/*
++	 * When dump_check is high, the following subtests will be run.
++	 * These tests will be skipped if list_modes flag is high.
++	 */
++	igt_describe("Dump a non-cloned writeback buffer");
++	igt_subtest("dump-writeback") {
++		igt_skip_on(!data.dump_check || data.list_modes);
++		snprintf(dump_suffix, PATH_MAX, "encoder%d", output->id);
++		commit_and_dump_fb(&display, output, plane, &input_fb, &mode, dump_suffix);
++	}
++
++	igt_describe("Dump valid clone pairs of writeback and non-writeback"
++		     " connectors; This test will check the output of each pair"
++		     " if the dump flag isn't set");
++	igt_subtest("check-valid-clones") {
++		igt_output_t *nonwb_output;
++		enum pipe curr_pipe;
++		drmModeModeInfo *nonwb_mode;
++		igt_fb_t clone_fb, output_fb;
++		int num_clones = 0;
++
++		/*
++		 * Drop the dump flag check once calling writeback_sequence() is
++		 * supported
++		 */
++		igt_skip_on(data.list_modes);
++		igt_skip_on_f(!(data.supported_colors & XRGB8888), "DRM_FORMAT_XRGB8888 is unsupported\n");
++		igt_require(fb_id > 0);
++		for_each_output(&display, nonwb_output) {
++			if (nonwb_output->config.connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
++				continue;
++
++			/* Set up non-writeback cloned output */
++			curr_pipe = output->pending_pipe;
++			igt_output_set_pipe(nonwb_output, curr_pipe);
++
++			if (!igt_output_is_valid_clone(display.drm_fd, output, nonwb_output)) {
++				igt_output_set_pipe(nonwb_output, PIPE_NONE);
++				igt_debug("Output %s not a valid clone\n",
++					  nonwb_output->name);
++				igt_output_override_mode(output, &mode);
++				continue;
++			}
++
++			num_clones++;
++
++			nonwb_mode = igt_output_get_mode(nonwb_output);
++			igt_output_override_mode(output, nonwb_mode);
++
++			fb_id = igt_create_fb(display.drm_fd, nonwb_mode->hdisplay,
++				      nonwb_mode->vdisplay,
++				      DRM_FORMAT_XRGB8888,
++				      DRM_FORMAT_MOD_LINEAR,
++				      &clone_fb);
++			igt_assert(fb_id >= 0);
++			fb_id = igt_create_fb(display.drm_fd, nonwb_mode->hdisplay,
++					      nonwb_mode->vdisplay,
++					      DRM_FORMAT_XRGB8888,
++					      DRM_FORMAT_MOD_LINEAR,
++					      &output_fb);
++			igt_assert(fb_id >= 0);
++
++			if (data.dump_check) {
++				snprintf(dump_suffix, PATH_MAX, "encoder%d-encoder%d",
++						output->id, nonwb_output->id);
++				commit_and_dump_fb(&display, output, plane, &clone_fb,
++						nonwb_mode, dump_suffix);
++			} else {
++				igt_fb_t *out_fbs[1] = { &output_fb };
++				writeback_sequence(output, plane, &clone_fb,
++						   out_fbs, 1,
++						   DRM_FORMAT_XRGB8888);
++			}
++
++			igt_output_set_pipe(nonwb_output, PIPE_NONE);
++			igt_output_override_mode(output, &mode);
++			igt_display_commit_atomic(output->display,
++						  DRM_MODE_ATOMIC_ALLOW_MODESET,
++						  NULL);
++			igt_remove_fb(display.drm_fd, &output_fb);
++			igt_remove_fb(display.drm_fd, &clone_fb);
++		}
++		igt_require(num_clones > 0);
++	}
++
+ 	/*
+ 	 * When dump_check or list_modes flag is high, then the following subtests will be skipped
+ 	 * as we do not want to do CRC validation.
+
 -- 
-Jessica Zhang <quic_jesszhan@quicinc.com>
+2.34.1
 
