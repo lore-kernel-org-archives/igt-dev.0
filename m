@@ -4,51 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D757C0218D
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 17:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 202CBC02192
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 17:26:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC21010E84D;
-	Wed, 29 Jan 2025 17:26:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CDA4C10E84F;
+	Wed, 29 Jan 2025 17:26:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b8DSkO0x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wfo3wlSP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 405A110E84D
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 17:26:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26C0010E84F
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 17:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738171590; x=1769707590;
+ t=1738171594; x=1769707594;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Sgg1SkzrrJHalU9FLPoEOFNKdU+mTo8b+o3PMY1L2S8=;
- b=b8DSkO0xHysLFM0BDhfgfAxrn+mGHDthlZKoMs2BCD0ES5WCa/35qy5j
- rjfuDnDv3+8Ttleg600CZoWIsH1xoWooM3ewTFKlgEeEN4oZGJwZHEe2/
- xbtsif4j3IK+F1rDIk60yAm2Id+TS0p4e0GoW8mcnUicX69HYdYGrjq2M
- URYcHj06Whr4nuaJoReQIQZ72a3rAc+ZyEgAjlSQHrKpOs4609oDT6dze
- hi+SMVLxqTjPblqoiFuq7MmTYKQeiqVVVi+V3ATIUt/+RLlnPbp50wOGd
- QQ31jeI/DJ1uPRn3GKziJ4Qwa78hj4dJO2QixMV1Bl4c6vd7dVUnY4Je3 Q==;
-X-CSE-ConnectionGUID: 6NwpuwG+SIiAFhD8ct6Ljg==
-X-CSE-MsgGUID: x+xCLWBVRYmBkMMoGkvQaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38580383"
-X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; d="scan'208";a="38580383"
+ bh=vemfwcI0CUMuFqwsgaWcWPAI+3BBaJGkQ4g1M0Nwkqo=;
+ b=Wfo3wlSPCUpivFsfDTiFFxhXWGHW5dTs6b4Hhxs+e6k1tl+0nGKNmcpw
+ SjZuJZkzkJjXFy76jZ5xSmuAnbBwgnk7P8mePX4UpOQbpDouaLQRMpwB4
+ ZvV80ifux3LzwEn1aeb5uM8QtpnohtWUSEbqruOZtGT6h6Y/IeVokiLtM
+ VRgBupUTCSE50NuK8UecyHWYxmBwhStysjn6/mbhlw08WlBsKjT87FzQK
+ RZjJMRmGabE69qt/7UeL1gwfWVhcJoF6dWhbYW8zx8PIOPJdCrvNFb/LL
+ 2LpjAJ7lHuOH53HSDRdAtVQ1VNl4CBJFtp+poAsYQYun+gA6SEa3fHpCI g==;
+X-CSE-ConnectionGUID: IXNKaa/XQbyFgDo2ZRrIug==
+X-CSE-MsgGUID: GxlLlQ3iRjqjXNrtpmM3/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38580390"
+X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; d="scan'208";a="38580390"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2025 09:26:30 -0800
-X-CSE-ConnectionGUID: B0sClz9GTJKhmhfP5KrzQA==
-X-CSE-MsgGUID: piG0g9CpR5a7JgRoa4GvZg==
+ 29 Jan 2025 09:26:34 -0800
+X-CSE-ConnectionGUID: yHDdQpwWQ+SmuOmlzwViNQ==
+X-CSE-MsgGUID: kFrugeC6S2qcNppAPdoL4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110008001"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110008014"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 09:26:29 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 09:26:33 -0800
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jeevan B <jeevan.b@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/kms_pm_rpm: Restrict cursor tests to
- I915 driver
-Date: Wed, 29 Jan 2025 23:11:52 +0530
-Message-Id: <20250129174153.3654881-2-jeevan.b@intel.com>
+Cc: Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t 2/2] intel-ci/xe.blocklist: add i915 specific tests
+Date: Wed, 29 Jan 2025 23:11:53 +0530
+Message-Id: <20250129174153.3654881-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250129174153.3654881-1-jeevan.b@intel.com>
 References: <20250129174153.3654881-1-jeevan.b@intel.com>
@@ -69,29 +67,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-change accounts for the limitations of gem_set_tiling, which
-no longer works on recent platforms and will not be supported
-on Xe drivers, so updated the tests to run only for i915 driver.
+Add i915 pm specific tests to blocklist.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_rpm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel-ci/xe.blocklist.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-index 990c50915..24f527c2a 100644
---- a/tests/intel/kms_pm_rpm.c
-+++ b/tests/intel/kms_pm_rpm.c
-@@ -1189,6 +1189,8 @@ static void cursor_subtest(bool dpms)
- 	struct igt_fb cursor_fb1, cursor_fb2, cursor_fb3;
- 	uint32_t crtc_id;
- 
-+	igt_require_i915(drm_fd);
-+	gem_require_mappable_ggtt(drm_fd);
- 	disable_all_screens_and_wait(&ms_data);
- 
- 	igt_require(default_mode_params);
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index fc270198f..6964628f1 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -74,6 +74,7 @@ igt@kms_rotation_crc@exhaust-fences
+ igt@kms_pm_lpsp@screens-disabled
+ igt@kms_pm_rpm@(fences|fences-dpms|pm-caching|pm-tiling)
+ igt@kms_pm_rpm@.*pc8-residency.*
++igt@kms_pm_rpm@cursor.*
+ ##################################################################
+ # KMS: Yet to add/missing XE support
+ ##################################################################
 -- 
 2.25.1
 
