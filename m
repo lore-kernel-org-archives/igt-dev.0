@@ -4,162 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD3C7C0218D
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 14:29:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08AB2C02190
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 14:51:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 812CA10E1C4;
-	Wed, 29 Jan 2025 14:29:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B16D510E0F8;
+	Wed, 29 Jan 2025 14:51:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QYAhUQ0q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HH8u/1mu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7183C10E1C4
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 14:29:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5989710E0F8
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 14:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738160971; x=1769696971;
+ t=1738162315; x=1769698315;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=qPxnXvlBWdDYky2D/oVOAmQv0KSrJPRTwS6swQl/NNU=;
- b=QYAhUQ0qGr0gpI7d6VROviMKNUmlfJQCDCScDGDqmxNKaEzkR+ZoueOh
- qoYN6YZMApSnxJdA5tMDE4vIOxD+Br/IASNtwK3Zjf8rUHAPQAOGa7wQx
- ARzyH+A6SkpxT+wsc7Tvd0uVZ53KGH0r0xu4RrYY7IIx+shn0OnqjJZT3
- HTdou9XWo4C2+Qk0wwmKikGan2UEtyEN+rdc6nDBU8ZhcJZtJ4HAjmJdB
- nwZRVcDMqaJOY0F4ZGK2/vwQdbScnjVt85ElSsJlAUX9YoIM4VcLPKzjs
- 955zxNyS7/n/WeQRR/H6l03XYJqhxf626nPQTdm3RzOMuXCxOgUu5lgxc g==;
-X-CSE-ConnectionGUID: TMAOPY9cTfmeVjDBdJZfwg==
-X-CSE-MsgGUID: B8MJhyzrSjS7+3NR1Yu2nw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38705729"
-X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; d="scan'208";a="38705729"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2025 06:26:52 -0800
-X-CSE-ConnectionGUID: tGXZoIAAS9OwYOOvAS9Dog==
-X-CSE-MsgGUID: bZTbGnWqS7iLOwqjkBs8ng==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=kEFjHzMqwhBzjnSVUnECgUuBwmXlaZYIML8OnDcxnPM=;
+ b=HH8u/1muVzmy5lkpFYJ6WtgsAgmZ/O9SA8XfDBvb0EpJUR835ICZ+SHs
+ sJIwCgCAnij6HF3NtaCXcsHwFmdPDZ0iIBla5URPqpOUAay7kvZGLQZcp
+ +5qpmtNMia3F5nk1Zzf1gXIclljQrzm2Cx305hRicL2fBHLQv5mXUKMpR
+ HjIoYzj6/VCTjw8zicj/II3gtl7kEAI1n5qVQHMiOgXazlH0f1aqTqh3O
+ ig0X5mUGbJA/W6SXiKXJmmfKdNmz7h3cYxAlY3vAhvOo0wl4al8QfwZsD
+ u6KEqfcuAUDiZNFJeQWWkO79Z6YEYhtnPyjKizCgf0yznRzXm9vPomtQD Q==;
+X-CSE-ConnectionGUID: cUhLIjOfQgSGEnEW1yNoew==
+X-CSE-MsgGUID: +g50G+rDTWGQiLBKgE3iDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38817054"
+X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; d="scan'208";a="38817054"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2025 06:49:06 -0800
+X-CSE-ConnectionGUID: IhDpq9OkROqu3LPcUwkRcQ==
+X-CSE-MsgGUID: BGry0Mh+TXiafWMdSDcXOQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="132314438"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 29 Jan 2025 06:26:52 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 29 Jan 2025 06:26:51 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 29 Jan 2025 06:26:51 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 29 Jan 2025 06:26:51 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ojudaRmfLW7m5IUHDTQ8GHwvdlp/VqYRUDdKp0Nl9n246ixn5EBAr2W/DrLK0zfKAl2nXuZOXjj2+xjdV3iHrDFf0uCSQEr4LQtMzhYcwAF3T5655wkA3+zB6qIodOgdoWsAQZSsl7t1nn2yMLw+AgZjZfA0wki3yVUqMdyzrMuooSzkXIzQzOJpuZpqmEZ7EhD0yPb1vB8SrrT10aV+z6TMm0jmQHridWW4wPydiaKYTCHhKG2xvSSI3jPNquACIo0zgKkqrfu8N+f5jr5jL4a0JDKK6DSCiHq9d+/0S5kkQTTjolsy0SGYezims2llKFi1gApgEFnfygeS2R5K5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L35lWxPp62LzXn8jdKyxsaaQTKay6Dvkl/yhu4nwrUU=;
- b=wgX/5UEvBVMi4G4K2/hNBq8YLaiNTJ0fvW20dwzlV9kdbC2oGStfXC2caiCrPGC6Lj0vyo+SPoSYtv6DLAnnjeNI5x2I1r4xMWJBF9DH94dhmkTj4BYpCbYw/1XwGYZFRfEVTuJRx84jc7jCT4W8JqRtb+LQUqza2BW7IV0r56ON7IcsCSu+I5iHlWFOPJm+pS7nkk3yTtvkpy0sJcZp8UJEijNe+apXjyD8rJbKjn9j9fDAUccx0WTtf8RNG8RdVcLa6XwftyB9iU09RGUcwwOZ4APlo1sTsW4H9j160xolo8JvC24gPCv7jX+CyrstuacxxZbf2X5OFS3HJB7Qow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SN7PR11MB8282.namprd11.prod.outlook.com (2603:10b6:806:269::11)
- by SA1PR11MB6822.namprd11.prod.outlook.com (2603:10b6:806:29f::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Wed, 29 Jan
- 2025 14:26:49 +0000
-Received: from SN7PR11MB8282.namprd11.prod.outlook.com
- ([fe80::f9d9:8daa:178b:3e72]) by SN7PR11MB8282.namprd11.prod.outlook.com
- ([fe80::f9d9:8daa:178b:3e72%5]) with mapi id 15.20.8377.021; Wed, 29 Jan 2025
- 14:26:48 +0000
-Date: Wed, 29 Jan 2025 09:26:45 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Matt Atwood <matthew.s.atwood@intel.com>, 
- Shekhar Chauhan <shekhar.chauhan@intel.com>
-Subject: Re: [PATCH i-g-t] lib/pciids: sync with kernel
-Message-ID: <Z5o6pf5VPssrPQPV@intel.com>
-References: <20250129105902.120630-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250129105902.120630-1-kamil.konieczny@linux.intel.com>
-X-ClientProxiedBy: MW4PR03CA0084.namprd03.prod.outlook.com
- (2603:10b6:303:b6::29) To SN7PR11MB8282.namprd11.prod.outlook.com
- (2603:10b6:806:269::11)
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="146249087"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2025 06:49:04 -0800
+Date: Wed, 29 Jan 2025 15:48:49 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_device_scan: limit fetched device
+ attributes from udev
+Message-ID: <20250129144849.qqedsxwloqtsikhg@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20250128083014.27713-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR11MB8282:EE_|SA1PR11MB6822:EE_
-X-MS-Office365-Filtering-Correlation-Id: b61884f9-77a4-44b9-cbbf-08dd4070f706
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PdS13yquKRbfvtv4ogfYT2ZR9CkQnzaVAuecvRxm34D6JzarVQnDRrePDb/1?=
- =?us-ascii?Q?MSJ9AQNgGvHYA6kKjeqC/zGYmvHJ4Ctviaz39xlznu45QZlEMRPMvpG/bA0H?=
- =?us-ascii?Q?9W8X8WDW3ZVWMIkqCS6cDSzc+9Gr8i/6l1K/MnDOXy766zH0UldIKFHaJ6iU?=
- =?us-ascii?Q?H2JG9oHAepGRICQiHfb3qRQztPdI7CxL3cVPiV6DFHu3ugKZoRQ9gWyIXGRr?=
- =?us-ascii?Q?X+G62HM4dM0kbxAi1VpXUlXk0mfT9krO10G9dTMKpLZ1gGId2l9VZJmvg1oF?=
- =?us-ascii?Q?88lE5/GXdUbAF0tZ3pQPsGDK3axrni11yYKbuv29j9dp4512sJHGy9dlVtxo?=
- =?us-ascii?Q?ocVgQCz0n42uMoSTsfZ10wFk039jbxxVMP7IMZTeHE/7dSJfiNVaG1BON+eq?=
- =?us-ascii?Q?oySza636jGMU0Bp2nxUdLqi73iWZeQJfLRSC6+m3uCSZ8+i0sFHcEbaFFNWf?=
- =?us-ascii?Q?D2lqBuYbaTHhx3wyq5J4rCt98TmMd8jpp/r4eXqWCWfCAxgcYTdrJwgqWLlV?=
- =?us-ascii?Q?1BZ8BFmBAmk88JWvswsSLML4DjKWpQaaeB09uJI3qbw9McFpjQ1rV4/1ofOJ?=
- =?us-ascii?Q?LB1PxRz+jEZH+6PadJeswe75rVNl2H9nCp/eAmxunbhB+qSuWX3oknExpuUR?=
- =?us-ascii?Q?5ExhQh9KKkp9ukP7dxiVnX754tQpkhD3Jmv7tAeY3C6leH0C5nAtGBkkHvax?=
- =?us-ascii?Q?rii5wzIjADN/2YQZCIu56e8JP2OicZUQfK2sYLrG+9nEG7cmpgoDs5cuhDTr?=
- =?us-ascii?Q?GnFk8PTKjU5A3t25siA16ZJXlawrQ1eZ3APrICw08BkhKzGCVLLoOuL/MMjD?=
- =?us-ascii?Q?T+bHoVqedyQd3nzwj4G7DWK2j3qMAMIV5pmE0T+ssZr0i7HcZ2UpVPjTtYIR?=
- =?us-ascii?Q?o9yAlaC4qthBIwVI9iMihQKCUybbo2vFAYlpkdiBihYY/Y4SqMdfEAeb868v?=
- =?us-ascii?Q?aa3G5sq77EKSL4mCxTc9AIY0nuAIjxn6Bug1u+yz5oKzw0SYRbqLSBZj4sB9?=
- =?us-ascii?Q?OMkqML7TzwS8Ige6qLTKbwup0RX2jhBEROIV7e0BiFJNy3ngjOya68pW+EFX?=
- =?us-ascii?Q?m6PVAC+CF6lpTTxP/1qgfJSazS7PZ1bCrPuJNDZE5A54aps8jY/oWFvsrKrj?=
- =?us-ascii?Q?8n3oirajBaiNbglWg9yLGzLOfHKokQzv2HWachqD7wn80ZJL0DRFmega87U3?=
- =?us-ascii?Q?PmH3pK0ha4anDquvdLNNw9pVG9NAGujQUdGtJ7VpG3uihFZ4+ClfzCENv9wD?=
- =?us-ascii?Q?87K9774Y6wYVtRp3MinNHYyFW+vQsXWPiRP4FPOBNjQTvey/+UDntJrP3rUV?=
- =?us-ascii?Q?0dmB2oXryO3Dyy4pl62pxC2662LqXg7F3aqMSJz3oOzfFQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN7PR11MB8282.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?E//WZc75in48I6CuW6OpT9sjQ99xWKSHAMcQiEKxxuaMvHP4Zvpc8IBsF6TV?=
- =?us-ascii?Q?chC3dXjex5u1QAoJvluA81uL+I/GFdQ0Kv2RTDt5cTckZDZ1Z3Vp0ELeY237?=
- =?us-ascii?Q?xAvGwAKhIAO5a5KL6ncAPtyVYqbvQXFcVvO7Ktf9Q/CnL0dY87NgdnULR27A?=
- =?us-ascii?Q?8EpPYJFbrrNty37LRMmwrEUMIJDT6fvF454fsowH5pe1E8uTKWmb08ZQMgSK?=
- =?us-ascii?Q?fUJrTrf8OiKyd1cs/eKGqK54SizZBBgs+WKpl2Xl3hFDtAQS0rAuOY+QEQFg?=
- =?us-ascii?Q?TQU68LTYa6ruWAV2pwfNA0urlRZpBqkYtL1LohOlbypyh/LHhud8MZwocqkT?=
- =?us-ascii?Q?i/cXyNKfYjhncxc6lR/UMQuVjBVI7A9gvBbaCxt5xKrBapfNKuvnFP+9ODu/?=
- =?us-ascii?Q?c68XHYKbUOdNAO4/7UolIXK5Irk0sRxSVdqkdQYtgmAS/CEo8TK0wDk4b4ng?=
- =?us-ascii?Q?UazHzFL6Gi/WYlldOndyqZya7O62hK0iTnim/frExi4vBGG1Ii28Haga2MwB?=
- =?us-ascii?Q?KcGZp7K8goZk/B+bxNr3ZIDLWW2qBTbQqEzgmy7qDCKxd0h5KW2Au4E+09Y7?=
- =?us-ascii?Q?H8sV1Yf+VsJ13Q9k7E45GnBtywxtNlfZqARUVEVhlWduLGLOUBHw1FICTh21?=
- =?us-ascii?Q?Si/tUEQ57X5R1jNMGK2yX0TG2P9dDpleAUv4bGtdUZ7qzVxYCn2kf5Wxchp1?=
- =?us-ascii?Q?y97zP0ES2U44OOu+rxnL8Gmay5coentEbf7Th/NNw49YhRmMB/cjP3WHdsk8?=
- =?us-ascii?Q?Cd4EcxSXGJW5qK5X/pjshknqoVhJLU5xNBSr2UyaRgmSCJa39ereH7dNscnL?=
- =?us-ascii?Q?3yTR4OVpowflxDiK3j9GxKbtlA+hDhzX5O0bxoNhKE4x3NSmxuVB/+vUb5iG?=
- =?us-ascii?Q?ZxQbtTWSfD0ZAeOZQQeY49LOvV4zHrCtfTYDCbbCNd3w2g25keOLHfeKFBKo?=
- =?us-ascii?Q?86LyAapTOZqRfeab4Uk2fhl6QFXszVlUMQxSPGV+PR7LE9wQF9l1AxqUiQ6x?=
- =?us-ascii?Q?a62hybY3hDQcH4yHkaJvhmBDo+m2C1zO4Is9o7tpB4GtiFZ6TYr1MF7YQSZX?=
- =?us-ascii?Q?HIXhZjcUgpvgjOm9bsJkZhObkN2lfbqavKwq3x77+P/w07q4mv+5Fu/IiiqU?=
- =?us-ascii?Q?PySbGWV62G7eeJGw7vUADbggAV6kz87LE6R+h6KbFgVS1yYO1sFaQuWxwMWk?=
- =?us-ascii?Q?dLISuf3kUETthM2CCVDPxuFwRm1Wuw/bwIGZNjvG+dnfDTAqPiAeXB5RrzBM?=
- =?us-ascii?Q?VnR82X0HZ+sxxV6mMiotEFNmp0UF+KXC2sjoIo+PL7r4cEHdbeuGOHum4T6v?=
- =?us-ascii?Q?ArlS+YbyKNgmd261cyLfTvsJyRhxUfTE9hz4l/+Zgf+u565M48uUEbstwzVd?=
- =?us-ascii?Q?Hkre3ZJvI/BZH2etvFQACYGNawpdQUuONmZM0gPeNHx66IdfblD6JiFTXXRg?=
- =?us-ascii?Q?FtbmDxI8m1OTI18+LCp+XMIa5h8ERHp5pu5CcQrnSttSOULALYey+ZE5e8Ol?=
- =?us-ascii?Q?Z6kyTpbMVn9lx66wkVpIS+ebW+T81o/EC1YI8yO6YHWWFFjHZE9WJYKaVkZ6?=
- =?us-ascii?Q?MqOLfhxXYUEkEgjB9clXOvDl4hkGoo3qQhB1DIcPKutz5IxWQA96izwZ73QJ?=
- =?us-ascii?Q?Rw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b61884f9-77a4-44b9-cbbf-08dd4070f706
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB8282.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2025 14:26:48.4552 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kVxXXJA099rPeyKrcL0gMi9/XOtyKxh2Ibp4nLxyF0NFIw8fPt9AXdOQjrdWT7rYoGgfbRxOF3iqvkmu5BsdjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6822
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250128083014.27713-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -175,53 +74,234 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 29, 2025 at 11:59:02AM +0100, Kamil Konieczny wrote:
-> Align with kernel commit 16016ade13f6 ("drm/xe/ptl: Update the PTL pci id table").
+Hi Zbigniew,
+On 2025-01-28 at 09:30:14 +0100, Zbigniew Kempczyński wrote:
+> Tests don't need all attributes so default device scanning is now
+> limited to small list directly used in device filters. To be backward
+> compatible tools like lsgpu still may scan whole attribute list what
+> keeps this behavior intact.
 > 
-> It adds PTL pci ids and also brings few BMG from previous commit.
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-> 
-> Cc: Matt Atwood <matthew.s.atwood@intel.com>
-> Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Link: https://lore.kernel.org/intel-xe/20250128175102.45797-1-matthew.s.atwood@intel.com/
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  lib/pciids.h | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
+>  lib/igt_device_scan.c | 69 ++++++++++++++++++++++++++++++-------------
+>  lib/igt_device_scan.h |  1 +
+>  tools/lsgpu.c         |  2 +-
+>  3 files changed, 50 insertions(+), 22 deletions(-)
 > 
-> diff --git a/lib/pciids.h b/lib/pciids.h
-> index 7883384ac..23f349f65 100644
-> --- a/lib/pciids.h
-> +++ b/lib/pciids.h
-> @@ -817,19 +817,20 @@
->  	MACRO__(0xE20B, ## __VA_ARGS__), \
->  	MACRO__(0xE20C, ## __VA_ARGS__), \
->  	MACRO__(0xE20D, ## __VA_ARGS__), \
-> -	MACRO__(0xE212, ## __VA_ARGS__)
-> +	MACRO__(0xE210, ## __VA_ARGS__), \
-> +	MACRO__(0xE212, ## __VA_ARGS__), \
-> +	MACRO__(0xE215, ## __VA_ARGS__), \
-> +	MACRO__(0xE216, ## __VA_ARGS__)
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index c36b0efa90..15f6bf5728 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -22,6 +22,7 @@
+>   *
+>   */
 >  
->  /* PTL */
->  #define INTEL_PTL_IDS(MACRO__, ...) \
->  	MACRO__(0xB080, ## __VA_ARGS__), \
->  	MACRO__(0xB081, ## __VA_ARGS__), \
->  	MACRO__(0xB082, ## __VA_ARGS__), \
-> +	MACRO__(0xB083, ## __VA_ARGS__), \
-> +	MACRO__(0xB08F, ## __VA_ARGS__), \
->  	MACRO__(0xB090, ## __VA_ARGS__), \
-> -	MACRO__(0xB091, ## __VA_ARGS__), \
-> -	MACRO__(0xB092, ## __VA_ARGS__), \
->  	MACRO__(0xB0A0, ## __VA_ARGS__), \
-> -	MACRO__(0xB0A1, ## __VA_ARGS__), \
-> -	MACRO__(0xB0A2, ## __VA_ARGS__), \
->  	MACRO__(0xB0B0, ## __VA_ARGS__)
+> +#include "drmtest.h"
+
+Could you add a note here why this is needed? Something like
+
+#include "drmtest.h" /* for macro ARRAY_SIZE */
+
+>  #include "igt_core.h"
+>  #include "igt_device_scan.h"
+>  #include "igt_list.h"
+> @@ -206,6 +207,8 @@ enum dev_type {
+>  #define STR_INTEGRATED "integrated"
+>  #define STR_DISCRETE "discrete"
 >  
->  #endif /* __PCIIDS_H__ */
+> +static const char * const attrs[] = { "driver", "sriov_numvfs", "physfn" };
+> +
+>  static inline bool strequal(const char *a, const char *b)
+>  {
+>  	if (a == NULL || b == NULL)
+> @@ -548,24 +551,35 @@ static void get_props(struct udev_device *dev, struct igt_device *idev)
+>   * Function skips sysattrs from blacklist ht (acquiring some values can take
+>   * seconds).
+>   */
+> -static void get_attrs(struct udev_device *dev, struct igt_device *idev)
+> +static void get_attrs(struct udev_device *dev, struct igt_device *idev,
+> +		      bool limit_attrs)
+
+Why not just two functions instead of a bool var? Below
+you split control flow between two separate paths, imho
+it is better to have two separate functions instead. So
+there will be two functions:
+
+get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
+
+get_attrs_all(struct udev_device *dev, struct igt_device *idev)
+
+and used below.
+
+>  {
+>  	struct udev_list_entry *entry;
+> +	const char *value;
+>  
+> -	entry = udev_device_get_sysattr_list_entry(dev);
+> -	while (entry) {
+> -		const char *key = udev_list_entry_get_name(entry);
+> -		const char *value;
+> +	if (limit_attrs) {
+> +		for (int i = 0; i < ARRAY_SIZE(attrs); i++) {
+> +			value = udev_device_get_sysattr_value(dev, attrs[i]);
+> +			if (!value)
+> +				continue;
+> +			igt_device_add_attr(idev, attrs[i], value);
+> +			DBG("attr: %s, val: %s\n", attrs[i], value);
+> +		}
+> +	} else {
+> +		entry = udev_device_get_sysattr_list_entry(dev);
+> +		while (entry) {
+> +			const char *key = udev_list_entry_get_name(entry);
+>  
+> -		if (is_on_blacklist(key)) {
+> +			if (is_on_blacklist(key)) {
+> +				entry = udev_list_entry_get_next(entry);
+> +				continue;
+> +			}
+> +
+> +			value = udev_device_get_sysattr_value(dev, key);
+> +			igt_device_add_attr(idev, key, value);
+>  			entry = udev_list_entry_get_next(entry);
+> -			continue;
+> +			DBG("attr: %s, val: %s\n", key, value);
+>  		}
+> -
+> -		value = udev_device_get_sysattr_value(dev, key);
+> -		igt_device_add_attr(idev, key, value);
+> -		entry = udev_list_entry_get_next(entry);
+> -		DBG("attr: %s, val: %s\n", key, value);
+>  	}
+>  }
+>  
+> @@ -639,7 +653,8 @@ static char* strdup_nullsafe(const char* str)
+>   * Fills structure with most usable udev device variables, properties
+>   * and sysattrs.
+>   */
+> -static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
+> +static struct igt_device *igt_device_new_from_udev(struct udev_device *dev,
+> +						   bool limit_attrs)
+>  {
+>  	struct igt_device *idev = igt_device_new();
+>  
+> @@ -654,7 +669,7 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
+>  		idev->drm_render = strdup(idev->devnode);
+>  
+>  	get_props(dev, idev);
+> -	get_attrs(dev, idev);
+> +	get_attrs(dev, idev, limit_attrs);
+
+So here:
+	limit_attrs ? get_attrs_limited(dev, idev) :
+		      get_attrs_all(dev, idev);
+
+It is not a blocker so with or without it
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+
+>  
+>  	if (is_pci_subsystem(idev)) {
+>  		uint16_t vendor, device;
+> @@ -868,7 +883,8 @@ static struct igt_device *igt_device_from_syspath(const char *syspath)
+>   */
+>  static void update_or_add_parent(struct udev *udev,
+>  				 struct udev_device *dev,
+> -				 struct igt_device *idev)
+> +				 struct igt_device *idev,
+> +				 bool limit_attrs)
+>  {
+>  	struct udev_device *parent_dev;
+>  	struct igt_device *parent_idev;
+> @@ -899,7 +915,7 @@ static void update_or_add_parent(struct udev *udev,
+>  		 * return fresh udev device.
+>  		 */
+>  		parent_dev = udev_device_new_from_syspath(udev, syspath);
+> -		parent_idev = igt_device_new_from_udev(parent_dev);
+> +		parent_idev = igt_device_new_from_udev(parent_dev, limit_attrs);
+>  		udev_device_unref(parent_dev);
+>  
+>  		if (parent_idev)
+> @@ -1000,7 +1016,7 @@ static void index_pci_devices(void)
+>   * Function sorts all found devices to keep same order of bus devices
+>   * for providing predictable search.
+>   */
+> -static void scan_drm_devices(void)
+> +static void scan_drm_devices(bool limit_attrs)
+>  {
+>  	struct udev *udev;
+>  	struct udev_enumerate *enumerate;
+> @@ -1035,9 +1051,9 @@ static void scan_drm_devices(void)
+>  
+>  		path = udev_list_entry_get_name(dev_list_entry);
+>  		udev_dev = udev_device_new_from_syspath(udev, path);
+> -		idev = igt_device_new_from_udev(udev_dev);
+> +		idev = igt_device_new_from_udev(udev_dev, limit_attrs);
+>  		igt_list_add_tail(&idev->link, &igt_devs.all);
+> -		update_or_add_parent(udev, udev_dev, idev);
+> +		update_or_add_parent(udev, udev_dev, idev, limit_attrs);
+>  
+>  		udev_device_unref(udev_dev);
+>  	}
+> @@ -1092,17 +1108,28 @@ void igt_devices_free(void)
+>   *
+>   * Function scans udev in search of gpu devices.
+>   */
+> -void igt_devices_scan(void)
+> +
+> +static void __igt_devices_scan(bool limit_attrs)
+>  {
+>  	if (igt_devs.devs_scanned)
+>  		igt_devices_free();
+>  
+>  	prepare_scan();
+> -	scan_drm_devices();
+> +	scan_drm_devices(limit_attrs);
+>  
+>  	igt_devs.devs_scanned = true;
+>  }
+>  
+> +void igt_devices_scan(void)
+> +{
+> +	__igt_devices_scan(true);
+> +}
+> +
+> +void igt_devices_scan_all_attrs(void)
+> +{
+> +	__igt_devices_scan(false);
+> +}
+> +
+>  static inline void _pr_simple(const char *k, const char *v)
+>  {
+>  	printf("    %-16s: %s\n", k, v);
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index fa90134aa3..92741fe3c7 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -64,6 +64,7 @@ struct igt_device_card {
+>  };
+>  
+>  void igt_devices_scan(void);
+> +void igt_devices_scan_all_attrs(void);
+>  
+>  void igt_devices_print(const struct igt_devices_print_format *fmt);
+>  void igt_devices_print_vendors(void);
+> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+> index e482ca6b75..e683900833 100644
+> --- a/tools/lsgpu.c
+> +++ b/tools/lsgpu.c
+> @@ -362,7 +362,7 @@ int main(int argc, char *argv[])
+>  		printf("Notice: Using filter from .igtrc\n");
+>  	}
+>  
+> -	igt_devices_scan();
+> +	igt_devices_scan_all_attrs();
+>  
+>  	if (igt_device != NULL) {
+>  		struct igt_device_card card;
 > -- 
-> 2.48.1
+> 2.34.1
 > 
