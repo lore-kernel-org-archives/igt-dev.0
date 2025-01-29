@@ -4,86 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F529C0218D
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 18:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D19C0218D
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 19:12:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7F7C10E85B;
-	Wed, 29 Jan 2025 18:14:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=adrinael-net.20230601.gappssmtp.com header.i=@adrinael-net.20230601.gappssmtp.com header.b="MqNy5tf+";
-	dkim-atps=neutral
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com
- [209.85.208.177])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9315110E85B
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 18:14:46 +0000 (UTC)
-Received: by mail-lj1-f177.google.com with SMTP id
- 38308e7fff4ca-3061f1e534bso72128501fa.1
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 10:14:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adrinael-net.20230601.gappssmtp.com; s=20230601; t=1738174485; x=1738779285;
- darn=lists.freedesktop.org; 
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=80c/ArnVfofGl7d23S8usl7DroFOJMeJTecQJgCkgOI=;
- b=MqNy5tf+Vgx2gF+Q+rySSw7U409ph1NkG8RR7lNcro/8YQOejv0mG7dH5/tuhIonP/
- EV7UkgmJVf1+MPXFOLKPUnN4pzvwvqrFxUG4Rx/gslR4xVjntHms2pREi8IqpyP0T4m/
- 8ZoAaIEnR67Um4VYgq8kz1izy90u3IlAUlkkYfzRm9PFivUp6jPB2h52wPxsxZFCfB1V
- xClwNWkEA72z/dai9whtQUOu29nmXxFjCr6tDQHqZSitFah1eMVFmIn3mz9+pMUmmgNd
- LRwa++DNtdllOV2H54DuHqyovFB3pAtcR7FQRYvSed/GQ8LgqRc5s+GGd/68LEeHn1vH
- ERjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738174485; x=1738779285;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=80c/ArnVfofGl7d23S8usl7DroFOJMeJTecQJgCkgOI=;
- b=XQe8paNPKiW8I60hsWlvGQJE9seS5NP+mUCu5R4dbc+iodEhVgm7qBR3RpwE6DWVp7
- x0CIvXvnjg5pPTjOaNXFp3sadCXz+fjOysl9g92AsUnMntHnG5+pUlPFjWs34oqsJAcr
- PfflW2xIDd8P89DXtdJI678kuy5Dfl2BQoJ6wrTtIUegmAUN+8kxxyvIJJL/Clmaqagg
- XIpAk9Ht9TRl4ZLardzG22phAhXn9f0aBMS0lvgYckyBxJ9bS/R0pJNjyOLZbhluZ8wv
- 2O6tFLV/x6pB3/KcIMZvvlKu1PwZ7qMlvWbU8nBLC/UBUkCUZ5amJziO/4YmxYeyWyjo
- v64A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXA92BWNcRxi4zL/YAjY9/2n3uZcqaOPAkJBPCYhq0nfaP0cIn/u+Sy3Zs8Kq0KshOeAJMrcL/z@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yww2vrspwYnKEFHAqj956pYc2JAFTJxlq6/N2yV3TWVzmtZ4fUm
- 47L5iK2uXGK2/t5xCdK9tBkBbxWpA/AUpsLxeqNy4KuvAFwCPiI0JRTgD5Qx1a2Sxgvux7CvnOP
- 2WKs=
-X-Gm-Gg: ASbGncuPjZwyN5CbUumcVw7GsjN2bdlIHI5jk3wbmQXDvJkr5jv1ypRzsxxAPDssbyI
- zUZUhO55KKLJl+ckvHpR7GzDEJiXmyiMht0/9SwSp8h43AKsBmjKBeReNbs4Ae9z0uikjSTfrBd
- 9vffbwa1w2Cb5lc2QVedIDMyWefrLwz/jt/8M6M55cgzeJ+IzfhMM67OW9HVlQZA9G8low0TnPP
- Wm8IeYNGLWZLyiNe1NduX8mwq4Z4wivBlDToHEaHJXksXW4LLHLbDHGIWSbmyS5Dy1vhCF1kvsD
- dARMxZDIr0KyqqjcRKrm6+yeWNlVcygaMlaMDgTwB4onI3WxfJCMXA==
-X-Google-Smtp-Source: AGHT+IGVn5kDlGHh/vyOgW2pr32CqQ55pJITmiWBl58XTejcJTV+rXsUULo9oyE5k6AfgZRpRcEgfQ==
-X-Received: by 2002:a2e:a10c:0:b0:302:336a:89f7 with SMTP id
- 38308e7fff4ca-3079686c915mr18981891fa.18.1738174484550; 
- Wed, 29 Jan 2025 10:14:44 -0800 (PST)
-Received: from hufflepuff.adrinael.net (87-92-169-37.rev.dnainternet.fi.
- [87.92.169.37]) by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-3076bacac7csm22601091fa.26.2025.01.29.10.14.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Jan 2025 10:14:44 -0800 (PST)
-Received: from adrinael by hufflepuff.adrinael.net with local (Exim 4.94.2)
- (envelope-from <adrinael@adrinael.net>)
- id 1tdCaJ-00BI5Z-Pg; Wed, 29 Jan 2025 20:14:43 +0200
-Date: Wed, 29 Jan 2025 20:14:43 +0200
-From: Petri Latvala <adrinael@adrinael.net>
-To: "Knop, Ryszard" <ryszard.knop@intel.com>
-Cc: "Sousa, Gustavo" <gustavo.sousa@intel.com>,
- "De Marchi, Lucas" <lucas.demarchi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "peter.senna@linux.intel.com" <peter.senna@linux.intel.com>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 7/7] runner/resultgen: Add cmdline to results.json
-Message-ID: <Z5pwE3PU/QYZZdOG@adrinael.net>
-References: <20250121225733.808978-1-lucas.demarchi@intel.com>
- <20250121225733.808978-8-lucas.demarchi@intel.com>
- <173755030291.5500.6239544066129101929@intel.com>
- <omwtasmowswuhnn4l65qmvq5zscdjury2ezkmlw4mp7twbu26t@m4sxloefokeu>
- <9f140fe0b463598af0af6cac95c613fa267fe225.camel@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9599D10E870;
+	Wed, 29 Jan 2025 19:12:35 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E33F210E870;
+ Wed, 29 Jan 2025 19:12:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7524023122976894756=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f140fe0b463598af0af6cac95c613fa267fe225.camel@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fjoiner=3A?=
+ =?utf-8?q?_Add_a_new_test_to_validate_non-joiner_mode_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 29 Jan 2025 19:12:34 -0000
+Message-ID: <173817795492.2530294.15180061591878710316@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250129171754.3654118-1-jeevan.b@intel.com>
+In-Reply-To: <20250129171754.3654118-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,139 +37,296 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jan 24, 2025 at 02:20:41PM +0000, Knop, Ryszard wrote:
-> On Thu, 2025-01-23 at 00:50 -0600, Lucas De Marchi wrote:
-> > On Wed, Jan 22, 2025 at 09:51:42AM -0300, Gustavo Sousa wrote:
-> > > Quoting Lucas De Marchi (2025-01-21 19:57:33-03:00)
-> > > > For easier repro scenarios, add the cmdline to the json: one can see the
-> > > > exact command executed to try to reproduce a CI failure without needing
-> > > > extra files.
-> > > > 
-> > > > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> > > > ---
-> > > > runner/json_tests_data/aborted-after-a-test/reference.json | 1 +
-> > > > runner/json_tests_data/aborted-on-boot/reference.json      | 1 +
-> > > > runner/json_tests_data/dmesg-escapes/reference.json        | 1 +
-> > > > runner/json_tests_data/dmesg-results/reference.json        | 1 +
-> > > > .../dmesg-warn-level-one-piglit-style/reference.json       | 1 +
-> > > > .../dmesg-warn-level-piglit-style/reference.json           | 1 +
-> > > > runner/json_tests_data/dmesg-warn-level/reference.json     | 1 +
-> > > > .../reference.json                                         | 1 +
-> > > > .../dynamic-subtests-keep-all/reference.json               | 3 ++-
-> > > > .../dynamic-subtests-keep-dynamic/reference.json           | 1 +
-> > > > .../dynamic-subtests-keep-requested/reference.json         | 3 ++-
-> > > > .../dynamic-subtests-keep-subtests/reference.json          | 3 ++-
-> > > > runner/json_tests_data/empty-result-files/reference.json   | 1 +
-> > > > runner/json_tests_data/graceful-notrun/reference.json      | 1 +
-> > > > .../incomplete-before-any-subtests/reference.json          | 1 +
-> > > > runner/json_tests_data/normal-run/reference.json           | 1 +
-> > > > .../notrun-results-multiple-mode/reference.json            | 1 +
-> > > > runner/json_tests_data/notrun-results/reference.json       | 1 +
-> > > > runner/json_tests_data/piglit-style-dmesg/reference.json   | 1 +
-> > > > .../json_tests_data/unprintable-characters/reference.json  | 1 +
-> > > > .../warnings-with-dmesg-warns/reference.json               | 1 +
-> > > > runner/json_tests_data/warnings/reference.json             | 1 +
-> > > > runner/resultgen.c                                         | 7 ++++++-
-> > > > 23 files changed, 31 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/runner/json_tests_data/aborted-after-a-test/reference.json b/runner/json_tests_data/aborted-after-a-test/reference.json
-> > > > index 0776f7582..50ba9e6e1 100644
-> > > > --- a/runner/json_tests_data/aborted-after-a-test/reference.json
-> > > > +++ b/runner/json_tests_data/aborted-after-a-test/reference.json
-> > > > @@ -3,6 +3,7 @@
-> > > >   "results_version":10,
-> > > >   "name":"normal-run",
-> > > >   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> > > > +  "cmdline":[],
-> > > >   "time_elapsed":{
-> > > >     "__type__":"TimeAttribute",
-> > > >     "start":1539953735.1110389,
-> > > > diff --git a/runner/json_tests_data/aborted-on-boot/reference.json b/runner/json_tests_data/aborted-on-boot/reference.json
-> > > > index 75f194660..238ec6fff 100644
-> > > > --- a/runner/json_tests_data/aborted-on-boot/reference.json
-> > > > +++ b/runner/json_tests_data/aborted-on-boot/reference.json
-> > > > @@ -3,6 +3,7 @@
-> > > >   "results_version":10,
-> > > >   "name":"normal-run",
-> > > >   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> > > > +  "cmdline":[],
-> > > >   "time_elapsed":{
-> > > >     "__type__":"TimeAttribute",
-> > > >     "start":1539953735.1110389,
-> > > > diff --git a/runner/json_tests_data/dmesg-escapes/reference.json b/runner/json_tests_data/dmesg-escapes/reference.json
-> > > > index 91c573106..e74dc89e4 100644
-> > > > --- a/runner/json_tests_data/dmesg-escapes/reference.json
-> > > > +++ b/runner/json_tests_data/dmesg-escapes/reference.json
-> > > > @@ -3,6 +3,7 @@
-> > > >   "results_version":10,
-> > > >   "name":"normal-run",
-> > > >   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> > > > +  "cmdline":[],
-> > > >   "time_elapsed":{
-> > > >     "__type__":"TimeAttribute",
-> > > >     "start":1539953735.1110389,
-> > > > diff --git a/runner/json_tests_data/dmesg-results/reference.json b/runner/json_tests_data/dmesg-results/reference.json
-> > > > index e9e011853..81890f7d2 100644
-> > > > --- a/runner/json_tests_data/dmesg-results/reference.json
-> > > > +++ b/runner/json_tests_data/dmesg-results/reference.json
-> > > > @@ -3,6 +3,7 @@
-> > > >   "results_version":10,
-> > > >   "name":"normal-run",
-> > > >   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-> > > > +  "cmdline":[],
-> > > >   "time_elapsed":{
-> > > >     "__type__":"TimeAttribute",
-> > > >     "start":1539953735.1110389,
-> > > > diff --git a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-> > > > index 8d266cdfa..16c97d3a1 100644
-> > > > --- a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-> > > > +++ b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-> > > > @@ -3,6 +3,7 @@
-> > > >   "results_version":10,
-> > > 
-> > > Hm... Are we going to continue with 10 as the version after including
-> > > another field? Are there guidelines on how results_version should be
-> > > handled?
-> > 
-> > good question.... last time it was updated was in 2018, to be compatible
-> > with piglit.
-> > 
-> > commit 2c793666d8c8328733f5769b16ae5858fee97f3f
-> > Author: Petri Latvala <petri.latvala@intel.com>
-> > Date:   Wed Dec 5 14:53:43 2018 +0200
-> > 
-> >      runner: Produce json with results_version=10
-> >      
-> >      New piglit bumped its results_version to 10, making glxinfo and pals
-> >      optional in practice, not just by accident. Unfortunately reading
-> >      results with newer piglit attempts to convert the results to version
-> >      10, reading glxinfo and pals, and thus fails. In a hilarious summary:
-> >      A commit to piglit making glxinfo optional makes it mandatory for us.
-> >      
-> >      v2: json unit tests confirmed to be working...
-> >      
-> >      Reported-by: Andi Shyti <andi.shyti@intel.com>
-> >      Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> >      Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> >      Cc: Andi Shyti <andi.shyti@intel.com>
-> >      Tested-by: Andi Shyti <andi.shyti@intel.com>
-> >      Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > 
-> > Does this still work with piglit?  something I didn't test yet.
-> > Thanks for noticing
-> 
-> In the past, there were some tools and CI runs that used piglit, but
-> they are no longer around for at least 3+ years. Mesa team works with
-> those now, we don't have a harness or parsing utilities that work with
-> piglit et al. If it's still compatible, it's only by accident,
-> considering that deqp-runner et al is under fairly active development.
+--===============7524023122976894756==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-IGT has for some time been able to produce results files that piglit
-cannot read. For one, anything involving test result "ABORT".
+== Series Details ==
+
+Series: tests/intel/kms_joiner: Add a new test to validate non-joiner mode (rev2)
+URL   : https://patchwork.freedesktop.org/series/143972/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8214_BAT -> XEIGTPW_12513_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 8)
+------------------------------
+
+  Additional (1): bat-bmg-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12513_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@nullptr:
+    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2134]) +4 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@fbdev@nullptr.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][2] ([Intel XE#2233])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#2489] / [Intel XE#3419]) +13 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-bmg-2:          NOTRUN -> [SKIP][4] ([Intel XE#2482]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-bmg-2:          NOTRUN -> [SKIP][5] ([Intel XE#2434] / [Intel XE#2548])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-bmg-2:          NOTRUN -> [SKIP][6] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-bmg-2:          NOTRUN -> [SKIP][8] ([Intel XE#2229])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][9] -> [SKIP][10] ([Intel XE#1192]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8214/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-bmg-2:          NOTRUN -> [SKIP][11] ([Intel XE#1420])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-bmg-2:          NOTRUN -> [SKIP][12] ([Intel XE#2245])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [PASS][13] -> [DMESG-WARN][14] ([Intel XE#3970] / [Intel XE#4078]) +1 other test dmesg-warn
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8214/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-bmg-2:          NOTRUN -> [SKIP][15] ([Intel XE#2236])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-bmg-2:          NOTRUN -> [SKIP][16] ([Intel XE#3342])
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][17] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][18] ([Intel XE#1192])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8214/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
+  [Intel XE#2434]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434
+  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [Intel XE#2489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489
+  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#4078]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
 
 
--- 
-Petri Latvala
+Build changes
+-------------
+
+  * IGT: IGT_8214 -> IGTPW_12513
+  * Linux: xe-2568-486bb0f2805b5fcc43e7cc609b9dd59ef1ffcd79 -> xe-2570-bdfc862a5c719d934efbdedb050ef891b9feef15
+
+  IGTPW_12513: 12513
+  IGT_8214: 7a8a3744466fbb89127201077f030033c72df948 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2568-486bb0f2805b5fcc43e7cc609b9dd59ef1ffcd79: 486bb0f2805b5fcc43e7cc609b9dd59ef1ffcd79
+  xe-2570-bdfc862a5c719d934efbdedb050ef891b9feef15: bdfc862a5c719d934efbdedb050ef891b9feef15
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/index.html
+
+--===============7524023122976894756==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_joiner: Add a new test to validate non-joiner mode (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143972/">https://patchwork.freedesktop.org/series/143972/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8214_BAT -&gt; XEIGTPW_12513_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 8)</h2>
+<p>Additional (1): bat-bmg-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12513_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489">Intel XE#2489</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434">Intel XE#2434</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8214/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@render:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8214/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078">Intel XE#4078</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-bmg-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8214/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12513/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8214 -&gt; IGTPW_12513</li>
+<li>Linux: xe-2568-486bb0f2805b5fcc43e7cc609b9dd59ef1ffcd79 -&gt; xe-2570-bdfc862a5c719d934efbdedb050ef891b9feef15</li>
+</ul>
+<p>IGTPW_12513: 12513<br />
+  IGT_8214: 7a8a3744466fbb89127201077f030033c72df948 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2568-486bb0f2805b5fcc43e7cc609b9dd59ef1ffcd79: 486bb0f2805b5fcc43e7cc609b9dd59ef1ffcd79<br />
+  xe-2570-bdfc862a5c719d934efbdedb050ef891b9feef15: bdfc862a5c719d934efbdedb050ef891b9feef15</p>
+
+</body>
+</html>
+
+--===============7524023122976894756==--
