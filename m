@@ -4,86 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF74C0218D
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 03:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 508E5C0218D
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jan 2025 04:05:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE5E510E05C;
-	Wed, 29 Jan 2025 03:31:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C328C10E2AC;
+	Wed, 29 Jan 2025 04:05:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="UBMyc4O9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dmNAvO9y";
 	dkim-atps=neutral
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
- [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BCED10E05C
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 03:31:32 +0000 (UTC)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T2hVfX003608;
- Wed, 29 Jan 2025 03:31:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 5ahicJto5MM8Dq9LTw7pvUNwCla/J5Bnoxc8NG1cJfU=; b=UBMyc4O9lF5QinHG
- KEcoTfmgSbBRKlspi+pSkiI1SbzlLYkM2Hlw/fziaMWsJUhlDdKycJVtCGItGkR+
- ALxfM4uWMK7j8Ol356ODWZRXWkn9gDCYWUV6KMgPZYVvu0ptT7FHGgn32OdMoaX3
- fgT1Ls2/20xr9HMOBC9YIW+CsQ+OjbfD8WF8Vhtsx9VRb7gqCjzKTniZkZ6vj76D
- 0zZVUtTvPX5m8YPpQdhRIqqrFO4MdlUSB/A05XRWlo9BfZwZEFBCY8DnNFCyn1H0
- aOYaYx6z0ygd8rvDh5hX4MgtLK3mU0bmPlEFCDK9ykS3NNVfuToflorPzPJmmyaR
- LilBDg==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44f97q09bm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jan 2025 03:31:24 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
- [10.46.141.250])
- by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50T3V4fr012589
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jan 2025 03:31:04 GMT
-Received: from jesszhan-linux.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE11A10E2AC
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2025 04:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738123542; x=1769659542;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=mcWSRM9NMvpaJDK838ATaUNUmRlsqecVDmpzvge2Sbk=;
+ b=dmNAvO9y+7h9FhldqaK6I+EZXcUqes5zmf28fZ2F3h+spmh2U3029P5p
+ DAmuV9V0JRyqsyL3tzZsqXSWAFBLrY4SVCd2pTB8tJ7Synt9QmZBtHwZN
+ MH9vsHF6wHeyljqCvPCJ7asv2sQ5DbbnsWn6H7EzNOrpj2WfBy/jHKlXV
+ b7m3oeUgwouuJzas9mP8IJpMH1h/FiFuKKWaai+mBwI61Zsw9ySTZAsnA
+ EP8FwTUuLm4jMMxLGO5YnS+QrpVD+7XMlTODBnytsIl4wB4ILQ2vIpunN
+ XH1ZfQvBx2mL0MHBRM0qNOuq9jEwc13xGdO5PxoBFpsitbJ8Ai9fQfrCq Q==;
+X-CSE-ConnectionGUID: kHDiZNVpQ2CA7qjp2tvLKg==
+X-CSE-MsgGUID: 3Se+Qqp+S2iMUhcjVBPVUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="38512117"
+X-IronPort-AV: E=Sophos;i="6.13,242,1732608000"; d="scan'208";a="38512117"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2025 20:05:42 -0800
+X-CSE-ConnectionGUID: AN8xohWsSM+SyhZpkttu7A==
+X-CSE-MsgGUID: cVhZcfyyTMOTr4T2sGlCdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="109837785"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 28 Jan 2025 20:05:41 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 28 Jan 2025 20:05:40 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 28 Jan 2025 20:05:40 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 28 Jan 2025 19:31:03 -0800
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Tue, 28 Jan 2025 19:29:47 -0800
-Subject: [PATCH i-g-t v5 1/3] lib/igt_kms: Add helper to get encoder index
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+ 15.1.2507.44; Tue, 28 Jan 2025 20:05:40 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qDUjW6JJJQ8wR/r0XX4k7pcO7piMrPomdGylVMkc1GIePXurwptPoY6z13OQw9KkF+L/tPOw9a0RQb5TNIBzsC8JpCSR/WELU+RY3S6TmtmaBpZucBflmyvRoVh7xyt2b0IpvCtfGa+Ck5rHglTMIbmckB1ItP1rI2hcmh0v0X5Ye9TQ1im4mhWwgZfal/jOowjE9/VFoLDUy7y2HJbnRXf9x+7v7bCQaZ2qQqIWo5jw7EyPlPjGd+c95v+My77YOLfVrgbwFT93xeB+f9bi6RuXKrODswb/HPihujKEtsj2LNQDhZTCkL7XetlBn8/lOyyrvFizwFmvkFUKS5uBVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2wRxUuj3bB85bipbx4DoQ82JtiJ9GWKiePtYMwuLW60=;
+ b=q/Itq8G6yduSEa2eqwN5JdjeNjqqTs9YqI7ywdOBvoTULjCmCedhjugfgIKEuKG2TZklj5oMPfAG5KL0v4WvNu5zzTudqIRT8QmKjwP3mC7ASYLO7FtaCmp54madMtD9I6EaxIHzz9yDN45yS5wVmYp8cOsjuCIdKmoMaJe6FmOKaF5cyCaqQio+MmIKBAyAK4R07VBfgNwbKqzUnPQXTeXJR4HXAPxH2FLxWrtH8ceM7E8MOfKIKODFPn5aoAx8OCUEppbnADqLAxOos9wN+GKaigOLGgyKxP3LXKXtU/P82ub0jMcFiiFXavTtE3MijLyq4V3rUf1sjwKdMxWLmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV8PR11MB8607.namprd11.prod.outlook.com (2603:10b6:408:1ec::18)
+ by CY8PR11MB7897.namprd11.prod.outlook.com (2603:10b6:930:7d::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.20; Wed, 29 Jan
+ 2025 04:05:05 +0000
+Received: from LV8PR11MB8607.namprd11.prod.outlook.com
+ ([fe80::55b1:592:df13:a9f3]) by LV8PR11MB8607.namprd11.prod.outlook.com
+ ([fe80::55b1:592:df13:a9f3%6]) with mapi id 15.20.8398.014; Wed, 29 Jan 2025
+ 04:05:05 +0000
+Message-ID: <d9470a0c-0011-4b25-b06f-1e7c96a7fc87@intel.com>
+Date: Wed, 29 Jan 2025 09:34:59 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib: sync intel PCI ID macros with kernel
+To: Matt Atwood <matthew.s.atwood@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20250129003155.91475-1-matthew.s.atwood@intel.com>
+Content-Language: en-US
+From: "Chauhan, Shekhar" <shekhar.chauhan@intel.com>
+In-Reply-To: <20250129003155.91475-1-matthew.s.atwood@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250128-igt-cwb-v5-1-82652cec29a3@quicinc.com>
-References: <20250128-igt-cwb-v5-0-82652cec29a3@quicinc.com>
-In-Reply-To: <20250128-igt-cwb-v5-0-82652cec29a3@quicinc.com>
-To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
-CC: <quic_abhinavk@quicinc.com>, <igt-dev@lists.freedesktop.org>, Alex Hung
- <alex.hung@amd.com>, Esha Bharadwaj <quic_ebharadw@quicinc.com>, "Jessica
- Zhang" <quic_jesszhan@quicinc.com>
-X-Mailer: b4 0.15-dev-1b0d6
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738121463; l=3100;
- i=quic_jesszhan@quicinc.com; s=20230329; h=from:subject:message-id;
- bh=iFpbcE5FqujJjgYi3d8vX0BFtdmaro2SYjPRtR8T+94=;
- b=HO5r/SciFvMnsuyR7cz+krqPHRkyORVgYmuZ2kNEehBqM9RdPTx5a9M8i6ASXnmN6KrBlwyyC
- HSOepDhU63XCg42Evh9FKG55n5oJpUPINQFrfgp8uCZEH64RC/GcgUG
-X-Developer-Key: i=quic_jesszhan@quicinc.com; a=ed25519;
- pk=gAUCgHZ6wTJOzQa3U0GfeCDH7iZLlqIEPo4rrjfDpWE=
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: x6L1hEKJO88ra0IEW0MjZ2RkMI1HTXK6
-X-Proofpoint-ORIG-GUID: x6L1hEKJO88ra0IEW0MjZ2RkMI1HTXK6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- adultscore=0 clxscore=1011 mlxscore=0 mlxlogscore=826 suspectscore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501290027
+X-ClientProxiedBy: PN3PR01CA0129.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:bf::8) To LV8PR11MB8607.namprd11.prod.outlook.com
+ (2603:10b6:408:1ec::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR11MB8607:EE_|CY8PR11MB7897:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b757da4-2870-4bd1-9ffb-08dd401a1c8f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?b3dUV1pMdDVmUWdjWE5mYWZlZlhVT1J4dllMaU5WN1lnc0RmTW55RTZPYjIy?=
+ =?utf-8?B?K045bnlVQzh2UFhxME1UL3VmZjdWYmVpM09kak5aMWNXRno4M0djcWZpTXVa?=
+ =?utf-8?B?NDhYVHhPVVU3RWdXcU9iNG02OXZ1S1hGYTJ3K3NVTk5oNU9nRlZSanB3dGYz?=
+ =?utf-8?B?QXRWMU83VnVTeEIxZXBOTEJrYk91M25XQ3RBWmdFbzJMS0w3blBMQkJ0Wklr?=
+ =?utf-8?B?RzJtRTBWQkg1dnY0WE1lZHdBMUxHRG9XL1QvTnlUU3ZRYVhQR1RyNERIMWZX?=
+ =?utf-8?B?RFNRME5Bd3lBSDhZY0tXNVFiRWNRblFGUnYvUjRHdVRSMHh0V3hid2xwRjZY?=
+ =?utf-8?B?K3RmMDhZS2JzcS82dlZyRUY1Z2g2TmQyajFqQWtZQktuOXhBVlh5OTlBck9l?=
+ =?utf-8?B?OWZTMU90V054NWc5RXo2TEJpVEY0MnUrMFpxaTlXa1RMSlVhWXczc1Jva2sr?=
+ =?utf-8?B?VXg4ODk4NEo2V2VpdXB5MGVJSUZEYzBselM5T25wOHBpRWFUdE95KzV6WEJj?=
+ =?utf-8?B?ZFN4ZGs0bkJ0NkUyOEJWcWRyazRJb0k0MG1VTTVwbHRhRmYwOUpjTi9YRTgv?=
+ =?utf-8?B?T1RQMEhSKzJDMXR3NjYzMGhBNVlSTGFHeTdTZEZLRmQ5Z3pCcGdYNVpxTFVj?=
+ =?utf-8?B?QndsZVkyR1R1TkR2VzFIdTV2bXRQRmlxOC9OVjZNWHFEQ3QyUmg3aUJLQVlU?=
+ =?utf-8?B?WklERXdIZDB6TjcrdzJZMUFDMFRQRVFIclJPd2lETWZiNVNHV2RaNUQzckpR?=
+ =?utf-8?B?b3lRVnNCQmpaSW94WnZSd2ZQWFJhNTlWTUo1eDJXSHpOZ2VxUFYrZVFNKy9v?=
+ =?utf-8?B?QUErcVZYUVMrQ3RYN0grMnJZSlMwcjM2TlJ6T0tMeCtqdDFwNXlQK3BPdUNu?=
+ =?utf-8?B?bXBRQytOQXpKU0ZCQWRHOWV1QnlQZzRtU0NIVXkrSEt3MFFTdWpmYzZudHNS?=
+ =?utf-8?B?ODllWlpCa2FGYTNxYUhJR3BYUE1JZ2VIVXA3S0F5VGJpcFA0VlBPbkpWRW1a?=
+ =?utf-8?B?dUNDK1p4MlNxYnc4WFdodVdGekFxYjVieVpjRTZoWTZxS2t0RkZWeG8vN0Ru?=
+ =?utf-8?B?NHJWSENxazZqVW45SUN5MmovWVFYSFZtb29sRzhiWW9MR05SL2NXYzV6ZERE?=
+ =?utf-8?B?TXFneFp2V1hNbGVVV2FNSlAwdzh5MzBpY2xkY0JXaVU4LzMvQTFKZ1BlSWJK?=
+ =?utf-8?B?ZHpVeXRleUIyQW9FTXV2SjFFeFNXYUljc3J2V2c1VDJCUnZXdXpmVnRuWGZl?=
+ =?utf-8?B?WDhOYjBDV3BCSjVsY0dVQ29JSXBtZlM1NWhIcUZjVWtWUHcwcFZhTnd3QjBW?=
+ =?utf-8?B?SmpTOStOYkxxZmpPOWhzQ1d6a3BaYUtyakd6a2I0ZnVJN0JRYzFRUXVXNStX?=
+ =?utf-8?B?MjkyR1JXMGd3N2tKQUtKcjhIbm1sT2pETlVBdkgySE5lVVlDZXFiZVRYRkZR?=
+ =?utf-8?B?YVJnN3BSVHNIYVNTWlIvRGM2d2x5emZsSGs2dzQ0QkdhT2YrSk5RZEhLZUEz?=
+ =?utf-8?B?clVrd0JiWmFOYVBtTkE4dFVUZlJ1V08zNHZYL1ozVzlhOENaNnJabER3UFRH?=
+ =?utf-8?B?eVZWOFg0ZGpKRTArbDlZcllaM2FYa2hlcnpPWmNqRjlDMncxTDBTditRYmNy?=
+ =?utf-8?B?Q2ZNQ0VnTDRIRU9GMnZQN0xUdFZVekIzay95UXI3QWs4a3VrN2FOWlJRTUdB?=
+ =?utf-8?B?Q1Q3dlpTNUN2QUJXV1RXQS91aHlUa2h0Z1hIakp4aE5BYTdQOXBGWUgxcSs4?=
+ =?utf-8?B?T3F5YzFzdWozME5wSHdNMzQ2WXduVlI4aVF1VytycnMvUkNSd0VOekQxUlgw?=
+ =?utf-8?B?TzVpbXZwdDZGSjBnY3FMQ2dITnpoT3JEMllScnNEd1UwNm5NMjdueWtDZFZ4?=
+ =?utf-8?Q?jJ1S8jV9n+p4D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:ca; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV8PR11MB8607.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QWNkT3RsUlhjaGJRSi9WWGtuNmF1LzdwZXpkUHp2eDZoeGNkNkx6QmxZbStJ?=
+ =?utf-8?B?U2F2VXRzTjVSMEJmN2R3MlMwNjBZdkUzR0tPU2pxZnVOVXo3UnBkOEUvK0Fy?=
+ =?utf-8?B?aFhKb3M2Z1d5ZWkxY0dGWUd5aTg2OXFUNE5UTG15SGVqYWUybEExTW5PSUM4?=
+ =?utf-8?B?ZkhnWVZxR1hFKy83UWJtVENwS2RHdndNVk1JOEpEeVJGZWZGNi9HdlFqZEpR?=
+ =?utf-8?B?VDVmZlg0YjV1anpSR0pwNUlnWmlzcEgzNWhqUFZJb0VDSnJlbncxcmJsamRz?=
+ =?utf-8?B?ZS9TaHd4cjR4bWh4R0N1bldCTlk4aTZOaEsweHhzNFJ3a1FNdm1tZzBJOTBp?=
+ =?utf-8?B?QloyNzBQWWZlVVVkcWw0NlBsRENQbGovQjUwSDk0YWoxRHIvN3FxRGhldHVE?=
+ =?utf-8?B?T0RDSHBlSlplVGwwU0J4dzVQclVGUkNwN09neTdJZmszWlB2aDNzakRQbjBY?=
+ =?utf-8?B?WUUzb2VZbXY3TFdtWlF3M3cvYklhU0dMOWcwM3J6Z241YUs1WUlyM3RqbGJ1?=
+ =?utf-8?B?eURMY1U5blZYZHpPbmxmbm55NnBkRFd0UXlVTWNjb2F0Z1NLcXVVSWplUTlI?=
+ =?utf-8?B?ZFk4dE5aUzF1ZjJYTlRWRmNxL2Fwbkgwb2VMaDhqS3B5empFdytoeW5DSTVs?=
+ =?utf-8?B?SkxRQ2RlV0diY2twQnlLS3U1UU4zTkc5QUdXWjB2WXRscVZvMk42eW4yKzcx?=
+ =?utf-8?B?eWd0dzhvOURRQUtQSytweWRzMVFKaUduM1FrZWVzbnpRUVIvRGJwaFZmTFJE?=
+ =?utf-8?B?Y2I3MjlhL3RqWm1abStBV2YwY055VEN0TUd6OG14bGJOd3BlcndLWUVML2Nv?=
+ =?utf-8?B?R0tMemlvaDRxTHAzQnBKTGdQNzMyT0p5KzN6ajR5elZTaXFGWFRvWWF3VzNZ?=
+ =?utf-8?B?bXhlT2V3Rk5SVXF0SndwZXRaVTNLdUJ3SUVTN3B3SnptL1M1Q1dNTWRBekhF?=
+ =?utf-8?B?dVBYbWlDU0Z0aEJzWEVjZitZOXR5ekpaWkovdWtpY09seWlSdmNJem5KYjBU?=
+ =?utf-8?B?MGphRDZLMlNUalNCZXA5ZW5uenpjL3NPZlpmM0Z2NHpiSzVUblRqMXE5aGxk?=
+ =?utf-8?B?T05vaStUd0xBSy9yOElkV01TNDFKSGM3NUxWTlRFV1J6R1ZzOEJoQm1SM0hw?=
+ =?utf-8?B?VHlxemMzSUxXTXZrYmRuQXpsZGZ4ek1ETUphY3pWOVhtVVl2dDJaTFhrYTRD?=
+ =?utf-8?B?VUFRTUtjSXlUZzI2M0wydnNqb1RpSVFZT2phc3FlWjBERlhuWHdNWFFnTDRO?=
+ =?utf-8?B?S1M0aGt5RjlWKzZtb3loR2FMTzZDMTBFWE1DVUpoOGNNZ0l0YlkvSUt0eUpl?=
+ =?utf-8?B?Wmc1LzZZeFNvcXFiTjB3eTlGY2M2TTlhQkdWU3htMmcrUVFZS1FUZkFwRGd2?=
+ =?utf-8?B?dld6WWJZTHlWVTB0eityNitWcnhYNkVIZThhaDhFbGJZcituSmJlVFA1MDhV?=
+ =?utf-8?B?ZmJiU1dzeGI0dkdJUDNIMnlpRFIwME1sV3NzaWQvY25QZ0Q5RW93Z0RHQmM4?=
+ =?utf-8?B?dEYzSDA2SGREQytZYm9hejlCMHBQU05WbDBkYnJDVzk4bjFBeEgxZHdoaCt6?=
+ =?utf-8?B?aFRZaE5lR0ZxTDlJdDM4KzZ3QitpekhsWmthNzVsbzVnVndtTU01OUxEY1N5?=
+ =?utf-8?B?dTZCNWd2aE92Zk9QU3ZUU0VhNkk0MGU5dGN2UWZEdW5oOHE3emxqZG1pVit2?=
+ =?utf-8?B?dFdZb2hNb1FuU0p1WTVSSGc4ajFuOXdVeWtQTW4xemxkNCsxVGRzRzB5Wnhl?=
+ =?utf-8?B?RmFOWGlKY0VsTm5zT29ybnVrRlJUaDVCeEFwY1VyRENsZFY4elphT1dKWmN2?=
+ =?utf-8?B?TkxlNmZvZjNtcWZRRS9uRHAwN3pwblRoNlRDOVlFanpVYzlwaTBCbW1JWm51?=
+ =?utf-8?B?WUp4YWhNRUJOc3BSVEdCTFBSRlVGUU1kWGRoSDRwMGRMMTBrSmFNaDQvNkdE?=
+ =?utf-8?B?TWxUWkp3NGszeTUwQkM4elpjMkhmbkZCajU1cFAzT3ArdWxVS256R21WZHNJ?=
+ =?utf-8?B?TEtYODh5TitvT09pdCtxL1lEVHY2VGhVaEZDa3NRV3VpNGNUMHVsYzNpdkZH?=
+ =?utf-8?B?MDllRk5FMHdwa0hzWHVFUWtpOCtqNStqMFlIazhVdndxeVRGRWhHTUcvbEhx?=
+ =?utf-8?B?SERzTVZDVlMwSEFwZ2hDUDJiVkl5ZnBUQ25WMmhpMUlIRFZiYmZBZTNyUFU1?=
+ =?utf-8?B?WWc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b757da4-2870-4bd1-9ffb-08dd401a1c8f
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8607.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2025 04:05:05.1820 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: msAAy8I83DBwkGYvDDDjhgtNz/2u6RS4gJLJTV+lGfSt6+yOH0Ra2ROORCDv2jLjbJcXyjeAEbEOjE27R21+JCegmK7nazHT4VEUrwfMxCc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7897
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,97 +193,159 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Esha Bharadwaj <quic_ebharadw@quicinc.com>
 
-Move the get_encoder_idx() helper within the kms_setmode test to
-lib/igt_kms
+On 1/29/2025 6:01, Matt Atwood wrote:
+> lib: sync PCI ID macros with kernel
+>
+> Sync with kernel commit:
+> 16016ade13f6 ("drm/xe/ptl: Update the PTL pci id table")
 
-Signed-off-by: Esha Bharadwaj <quic_ebharadw@quicinc.com>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
----
- lib/igt_kms.c       | 15 +++++++++++++++
- lib/igt_kms.h       |  1 +
- tests/kms_setmode.c | 14 ++------------
- 3 files changed, 18 insertions(+), 12 deletions(-)
+Can we have a simpler commit description, something like: "Sync PCI IDs 
+of various platforms with the Xe-KMD."
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 90f44b4d3a8607d1caedccf50691fae7aaf2d079..4b14c94e226a9a103bc3a3bc26099566a6eb274b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -3324,6 +3324,21 @@ void igt_display_fini(igt_display_t *display)
- 	display->planes = NULL;
- }
- 
-+/**
-+ * kmstest_get_encoder_idx:
-+ * @resources: libdrm resources pointer
-+ * @encoder: libdrm encoder pointer
-+ *
-+ * Get encoder index from encoder_id
-+ */
-+int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
-+{
-+	for (int i = 0; i < resources->count_encoders; i++)
-+		if (resources->encoders[i] == encoder->encoder_id)
-+			return i;
-+	igt_assert(0);
-+}
-+
- static void igt_display_refresh(igt_display_t *display)
- {
- 	igt_output_t *output;
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 8810123fbebeb68f5c549c434d6ca69a123cfb90..e4f7b6c62fd536aa4ea3eb3153d8e1935cf560fd 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -314,6 +314,7 @@ void kmstest_dumb_destroy(int fd, uint32_t handle);
- void kmstest_wait_for_pageflip(int fd);
- void kmstest_wait_for_pageflip_timeout(int fd, uint64_t timeout_us);
- unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags);
-+int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder);
- 
- bool kms_has_vblank(int fd);
- 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index d61cfeb9af22c12ae1f5aad5d06ccb9e01fc52d3..600524d98359fbf713be99de931e53b8ecf167b0 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -268,16 +268,6 @@ found:
- 	*mode_ret = *mode;
- }
- 
--static int get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
--{
--	int i;
--
--	for (i = 0; i < resources->count_encoders; i++)
--		if (resources->encoders[i] == encoder->encoder_id)
--			return i;
--	igt_assert(0);
--}
--
- static void get_crtc_config_str(struct crtc_config *crtc, char *buf,
- 				size_t buf_size)
- {
-@@ -370,7 +360,7 @@ static void setup_crtcs(const struct test_config *tconf,
- 			config_valid &= !!(encoder->possible_crtcs &
- 					  (1 << crtc->crtc_idx));
- 
--			encoder_mask |= 1 << get_encoder_idx(resources,
-+			encoder_mask |= 1 << kmstest_get_encoder_idx(resources,
- 							     encoder);
- 			config_valid &= !(encoder_mask &
- 					  ~encoder->possible_clones);
-@@ -396,7 +386,7 @@ static void setup_crtcs(const struct test_config *tconf,
- 			idx = cconf[i].crtc_idx;
- 
- 		encoder = drmModeGetEncoder(drm_fd, connector->encoders[idx]);
--		encoder_usage_count[get_encoder_idx(resources, encoder)]++;
-+		encoder_usage_count[kmstest_get_encoder_idx(resources, encoder)]++;
- 		drmModeFreeEncoder(encoder);
- 	}
- 	for (i = 0; i < resources->count_encoders; i++)
+Reason being: The structural modifications below aren't really a part of 
+the kernel commit mentioned.
+
+>
+> Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
+> ---
+>   lib/pciids.h | 73 ++++++++++++++++++++++++++++++++++++++--------------
+>   1 file changed, 53 insertions(+), 20 deletions(-)
+>
+> diff --git a/lib/pciids.h b/lib/pciids.h
+> index 7883384ac..4736ea525 100644
+> --- a/lib/pciids.h
+> +++ b/lib/pciids.h
+> @@ -717,37 +717,66 @@
+>   	MACRO__(0xA7AB, ## __VA_ARGS__)
+>   
+>   /* DG2 */
+> -#define INTEL_DG2_G10_IDS(MACRO__, ...) \
+> -	MACRO__(0x5690, ## __VA_ARGS__), \
+> -	MACRO__(0x5691, ## __VA_ARGS__), \
+> -	MACRO__(0x5692, ## __VA_ARGS__), \
+> +#define INTEL_DG2_G10_D_IDS(MACRO__, ...) \
+>   	MACRO__(0x56A0, ## __VA_ARGS__), \
+>   	MACRO__(0x56A1, ## __VA_ARGS__), \
+> -	MACRO__(0x56A2, ## __VA_ARGS__), \
+> +	MACRO__(0x56A2, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G10_E_IDS(MACRO__, ...) \
+>   	MACRO__(0x56BE, ## __VA_ARGS__), \
+>   	MACRO__(0x56BF, ## __VA_ARGS__)
+>   
+> -#define INTEL_DG2_G11_IDS(MACRO__, ...) \
+> -	MACRO__(0x5693, ## __VA_ARGS__), \
+> -	MACRO__(0x5694, ## __VA_ARGS__), \
+> -	MACRO__(0x5695, ## __VA_ARGS__), \
+> +#define INTEL_DG2_G10_M_IDS(MACRO__, ...) \
+> +	MACRO__(0x5690, ## __VA_ARGS__), \
+> +	MACRO__(0x5691, ## __VA_ARGS__), \
+> +	MACRO__(0x5692, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G10_IDS(MACRO__, ...) \
+> +	INTEL_DG2_G10_D_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G10_E_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G10_M_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G11_D_IDS(MACRO__, ...) \
+>   	MACRO__(0x56A5, ## __VA_ARGS__), \
+>   	MACRO__(0x56A6, ## __VA_ARGS__), \
+>   	MACRO__(0x56B0, ## __VA_ARGS__), \
+> -	MACRO__(0x56B1, ## __VA_ARGS__), \
+> +	MACRO__(0x56B1, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G11_E_IDS(MACRO__, ...) \
+>   	MACRO__(0x56BA, ## __VA_ARGS__), \
+>   	MACRO__(0x56BB, ## __VA_ARGS__), \
+>   	MACRO__(0x56BC, ## __VA_ARGS__), \
+>   	MACRO__(0x56BD, ## __VA_ARGS__)
+>   
+> -#define INTEL_DG2_G12_IDS(MACRO__, ...) \
+> -	MACRO__(0x5696, ## __VA_ARGS__), \
+> -	MACRO__(0x5697, ## __VA_ARGS__), \
+> +#define INTEL_DG2_G11_M_IDS(MACRO__, ...) \
+> +	MACRO__(0x5693, ## __VA_ARGS__), \
+> +	MACRO__(0x5694, ## __VA_ARGS__), \
+> +	MACRO__(0x5695, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G11_IDS(MACRO__, ...) \
+> +	INTEL_DG2_G11_D_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G11_E_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G11_M_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G12_D_IDS(MACRO__, ...) \
+>   	MACRO__(0x56A3, ## __VA_ARGS__), \
+>   	MACRO__(0x56A4, ## __VA_ARGS__), \
+>   	MACRO__(0x56B2, ## __VA_ARGS__), \
+>   	MACRO__(0x56B3, ## __VA_ARGS__)
+>   
+> +#define INTEL_DG2_G12_M_IDS(MACRO__, ...) \
+> +	MACRO__(0x5696, ## __VA_ARGS__), \
+> +	MACRO__(0x5697, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_G12_IDS(MACRO__, ...) \
+> +	INTEL_DG2_G12_D_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G12_M_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +#define INTEL_DG2_D_IDS(MACRO__, ...) \
+> +	INTEL_DG2_G10_D_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G11_D_IDS(MACRO__, ## __VA_ARGS__), \
+> +	INTEL_DG2_G12_D_IDS(MACRO__, ## __VA_ARGS__)
+> +
+>   #define INTEL_DG2_IDS(MACRO__, ...) \
+>   	INTEL_DG2_G10_IDS(MACRO__, ## __VA_ARGS__), \
+>   	INTEL_DG2_G11_IDS(MACRO__, ## __VA_ARGS__), \
+Although the DG2 IDs look clean to me, but mind explaining me why are we 
+creating these sub-defines for DG2_D / DG2_E / DG2_M
+> @@ -782,9 +811,12 @@
+>   	INTEL_ARL_S_IDS(MACRO__, ## __VA_ARGS__)
+>   
+>   /* MTL */
+> -#define INTEL_MTL_IDS(MACRO__, ...) \
+> +#define INTEL_MTL_U_IDS(MACRO__, ...) \
+>   	MACRO__(0x7D40, ## __VA_ARGS__), \
+> -	MACRO__(0x7D45, ## __VA_ARGS__), \
+> +	MACRO__(0x7D45, ## __VA_ARGS__)
+> +
+> +#define INTEL_MTL_IDS(MACRO__, ...) \
+> +	INTEL_MTL_U_IDS(MACRO__, ## __VA_ARGS__), \
+>   	MACRO__(0x7D55, ## __VA_ARGS__), \
+>   	MACRO__(0x7D60, ## __VA_ARGS__), \
+>   	MACRO__(0x7DD5, ## __VA_ARGS__)
+
+Following up on my last comment, if we are creating sub-defines, the 
+design isn't followed here in MTL. MTL_IDS extends to MTL_U_IDS and a 
+bunch of singletons. Or, if there's a reason behind doing so, please 
+help me understand.
+
+> @@ -817,19 +849,20 @@
+>   	MACRO__(0xE20B, ## __VA_ARGS__), \
+>   	MACRO__(0xE20C, ## __VA_ARGS__), \
+>   	MACRO__(0xE20D, ## __VA_ARGS__), \
+> -	MACRO__(0xE212, ## __VA_ARGS__)
+> +	MACRO__(0xE210, ## __VA_ARGS__), \
+> +	MACRO__(0xE212, ## __VA_ARGS__), \
+> +	MACRO__(0xE215, ## __VA_ARGS__), \
+> +	MACRO__(0xE216, ## __VA_ARGS__)
+>   
+>   /* PTL */
+>   #define INTEL_PTL_IDS(MACRO__, ...) \
+>   	MACRO__(0xB080, ## __VA_ARGS__), \
+>   	MACRO__(0xB081, ## __VA_ARGS__), \
+>   	MACRO__(0xB082, ## __VA_ARGS__), \
+> +	MACRO__(0xB083, ## __VA_ARGS__), \
+> +	MACRO__(0xB08F, ## __VA_ARGS__), \
+>   	MACRO__(0xB090, ## __VA_ARGS__), \
+> -	MACRO__(0xB091, ## __VA_ARGS__), \
+> -	MACRO__(0xB092, ## __VA_ARGS__), \
+>   	MACRO__(0xB0A0, ## __VA_ARGS__), \
+> -	MACRO__(0xB0A1, ## __VA_ARGS__), \
+> -	MACRO__(0xB0A2, ## __VA_ARGS__), \
+>   	MACRO__(0xB0B0, ## __VA_ARGS__)
+>   
+>   #endif /* __PCIIDS_H__ */
 
 -- 
-2.34.1
+-shekhar
 
