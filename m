@@ -4,49 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D56EEC02193
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 22:15:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B282C0218D
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 22:15:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D28D10E9F2;
-	Thu, 30 Jan 2025 22:15:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0552810E9EA;
+	Thu, 30 Jan 2025 22:15:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U/BRAsLX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dGh/ZuYA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D0E210E9EA
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 22:15:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7F7010E9F1
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 22:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738275309; x=1769811309;
+ t=1738275311; x=1769811311;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Sv62XT6MqT3ZMYisne2JieTMmNhSyuB8/jklr/asYGg=;
- b=U/BRAsLXSqFHgk4cJZz3lgtunEBx5ZkiuTDnF1mQpzDsxetHNlTP1LdT
- FihHhwkzrzqvijEE6NEr5TJvasule8PsKVQN/c+AicDmgr+PNhOn++kUX
- mzKVBTqQuJEkmlcCF92dPTp+xMuYVR02IzGtsy72tYwoWEQ/SxREp44xI
- qJijNxKwYopIiS0X6o3YrSI68uZcIa+vJeHPSmdCGIw+XLxct5oaJhxae
- HXfNIv23T7lSfgMMV3z/dGf//b5URkVqcV5Im5HUtvoLsSXXk6GK34a8B
- lWZUJNfUzCcsGU+LQdONlNL0LtCH9pvD+l0Z6f63HLT3U8U14ywX+vc3g g==;
-X-CSE-ConnectionGUID: SiD8aaLiQBqybt9uX4t9sg==
-X-CSE-MsgGUID: 3rfPI8ZZSyulRujFGP30CA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="49502776"
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="49502776"
+ bh=jhZDUP9GyHZ89J496br6RHEtuY/w/cfUQJW3dRCDbLA=;
+ b=dGh/ZuYAJ1Oc/lP2IW2eYAMpqgZX/if3QetyNteANAdbUgCxwkIaeWNz
+ sTUh5JV3pJZ8oMTffTVKQdz6yozZc0mnqOofTuFDpPYSrVUAxuEPpXl2z
+ QxEJ0z2T5mGxvYxIA/hGCyxqV/cfG6OXyDHSNTmIMP5jE9CbPREQatqO8
+ b3HtmdBiDT3duJUHxocpaaMKTESaDUm/wMi+nm/kiBMc54cPKkCUtjrmQ
+ mLhApFnD4iF2I6j+KZBummE8n5eQgySRKzEeeIHfHQLP1Svc/ik0WzvEK
+ XS4vL7UYV3bCqBfOvPX1Mi/HHYmMwji7QW7DDm9zlemm13huXhOZUYHOe Q==;
+X-CSE-ConnectionGUID: 27MbFMA4R0aSnNZCVbE9oQ==
+X-CSE-MsgGUID: jjmyVZzFRbCcH2QvoNTSxg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="49502782"
+X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="49502782"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 14:15:09 -0800
-X-CSE-ConnectionGUID: A+gMpKCcSvGUQ2+4nYUVdQ==
-X-CSE-MsgGUID: 7HfThSnMS/WjUTDGWdPUeQ==
+ 30 Jan 2025 14:15:10 -0800
+X-CSE-ConnectionGUID: mGI2E53rSj2r9+xT/E9+1Q==
+X-CSE-MsgGUID: azRepMUiSsKu4+PKJOcBJQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="140347243"
+X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="140347257"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 14:15:08 -0800
+ 30 Jan 2025 14:15:10 -0800
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: [PATCH i-g-t 1/3] tests/intel/xe_vm: Update first invalid flag number
-Date: Thu, 30 Jan 2025 14:14:55 -0800
-Message-ID: <20250130221457.1092670-2-daniele.ceraolospurio@intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/intel/xe_exec_queue_property: Update first
+ invalid property value
+Date: Thu, 30 Jan 2025 14:14:57 -0800
+Message-ID: <20250130221457.1092670-4-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250130221457.1092670-1-daniele.ceraolospurio@intel.com>
 References: <20250130221457.1092670-1-daniele.ceraolospurio@intel.com>
@@ -67,30 +69,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-PXP introduces a new valid flag [1], so to avoid the invalid_flag test
-failing we need to prepare by shifting the first invalid bit left by one.
-The testing of the valid flag will be added later once the PXP kernel side
-is merged.
+A new property will be added to support PXP [1], so we need to update
+the invalid property testing to start from the next ID to avoid it from
+failing once the PXP code is merged.
 
-[1] https://patchwork.freedesktop.org/patch/634550/
+No new subtests are required to test the new property as that will be
+covered by the PXP tests.
+
+[1] https://patchwork.freedesktop.org/patch/634546/
 Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/intel/xe_vm.c | 2 +-
+ tests/intel/xe_exec_queue_property.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 6ee3f4634..0730dd3d3 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -2234,7 +2234,7 @@ static void bind_flag_invalid(int fd)
- 	syncobj_reset(fd, &sync[0].handle, 1);
+diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+index 25a7e7abb..885d5bcc9 100644
+--- a/tests/intel/xe_exec_queue_property.c
++++ b/tests/intel/xe_exec_queue_property.c
+@@ -183,7 +183,7 @@ static void invalid_property(int xe)
  
- 	/* Using invalid flags should not work */
--	bind.bind.flags = 1 << 4;
-+	bind.bind.flags = 1 << 5;
- 	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
- 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_BIND, &bind, EINVAL);
- 
+ 	/* This will fail as soon as a new property is introduced. It is
+ 	 * expected and the test will have to be updated. */
+-	for (int i = 2; i < 16; i++ ) {
++	for (int i = 3; i < 16; i++ ) {
+ 		ext.property = i;
+ 		igt_assert_eq(__xe_exec_queue_create(xe, vm, 1, 1, &instance,
+ 						     to_user_pointer(&ext), &exec_queue_id), -EINVAL);
 -- 
 2.43.0
 
