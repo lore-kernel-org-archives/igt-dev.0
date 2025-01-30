@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FF21C02195
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 17:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD694C02197
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 17:22:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E4AF10E9B3;
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE1D610E9BC;
 	Thu, 30 Jan 2025 17:22:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kH8+Z52o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gnhFZeCv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A229810E36D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9606210E06B
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 17:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1738257736; x=1769793736;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8dC+DofVqGLKEQFufSZIGh5sG/iE2j/yubueF4c6yls=;
- b=kH8+Z52oL/5dgVnwpfsueZT1TJZUIVTAWPtzdHVKyzIfmwQOzmyA9Wuf
- bYTUiOrTALt9aiys5k7WZo+zL8is8yEqSPJETFL/hWYRpN3akhXUuX7wu
- tbFUWYkm7YxDzCfYn8qxyYvUsXQ5LG/uVnjsvKqohWTWiHyQWI58XdN2f
- LS3j/QeeVpGazeNSbqHn2EEphneLVlc5HunqhyZqDYiXxIonKgxTNo4LM
- 46uKtIINXaHhZxZJz4pZg37ikez8oH1X7f1g8YRXqCJomZVLyMyxt0bRe
- t6QBNonbNSDhhZA17sPBGqr3pmYgFO7w62mK6l231yzg3jHpacmZ5/Meh g==;
-X-CSE-ConnectionGUID: YtmBTCQSSzmiin4nrE394Q==
-X-CSE-MsgGUID: +5+xPFjARyaSCowFLzwPBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="42567087"
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="42567087"
+ bh=n5oOKzBoQch4bYHgJ9KSiuHu8oduFyXVf2XTvJGnDNo=;
+ b=gnhFZeCv5/4J4V/rU53TK7/BUURixcIA/9CvKJ/rHUNAlkhw0VT++BAE
+ QxEOj6MRZcsGfkHO50UpMdkL3OO0Q6VJKwNTNAXy80bx4R1SFopyo7UOj
+ neuF1LpTJn3H3BfM5Iir36j2rvsq7tC5BL7VgdGdpaZgevtGght82Nohn
+ u1OlU6YTwXHNxwKr8gMtdAmHIMY70ooxd/kFoTCx+Ehoegprrj9KBQnej
+ vsgy9cseD/gyxrjsNro1cPdQfwwswMLDXwNPzmH5m+UsFZ3Sl93KZa5pd
+ hoI7ei5JHqIGWUPq4YOAlDjYsMGCz7CYNzvYXgVDO2h60EDhFVtnl6VAC Q==;
+X-CSE-ConnectionGUID: 3V4PMPHSQIWtVrnPb0bVcg==
+X-CSE-MsgGUID: SKYeKkzATtKF1d4/bnqzSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="42567085"
+X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="42567085"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Jan 2025 09:22:13 -0800
-X-CSE-ConnectionGUID: p7eHXC0dS06miGTThZjtVA==
-X-CSE-MsgGUID: 8K1/NN75SEawqYjhD5q13Q==
+X-CSE-ConnectionGUID: Dc9YRuC6TjmYqhcm9e2n/w==
+X-CSE-MsgGUID: /YMqg47VQaujxKeD+gyOuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="109539677"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="109539673"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 09:22:13 -0800
+ 30 Jan 2025 09:22:12 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
@@ -48,9 +48,9 @@ Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v3 10/10] runner/resultgen: Add cmdline to results.json
-Date: Thu, 30 Jan 2025 09:21:49 -0800
-Message-ID: <20250130172149.3657144-11-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3 09/10] runner/settings: Serialize command line
+Date: Thu, 30 Jan 2025 09:21:48 -0800
+Message-ID: <20250130172149.3657144-10-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250130172149.3657144-1-lucas.demarchi@intel.com>
 References: <20250130172149.3657144-1-lucas.demarchi@intel.com>
@@ -71,352 +71,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For easier repro scenarios, add the cmdline to the json: one can see the
-exact command executed to try to reproduce a CI failure without needing
-extra files.
+Serialize the command line to metadata.txt. The expected format in the
+metadata.txt is like below:
 
-Adding cmdline to the results.json doesn't need a version upgrade:
-piglit can still parse the file.
+	cmdline.argc : 6
+	cmdline.argv[0] : ./build/runner/igt_runner
+	cmdline.argv[1] : -o
+	cmdline.argv[2] : --test-list
+	cmdline.argv[3] : /tmp/testlist.txt
+	cmdline.argv[4] : build/tests/
+	cmdline.argv[5] : /tmp/results
 
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- runner/json_tests_data/aborted-after-a-test/reference.json | 1 +
- runner/json_tests_data/aborted-on-boot/reference.json      | 1 +
- runner/json_tests_data/dmesg-escapes/reference.json        | 1 +
- runner/json_tests_data/dmesg-results/reference.json        | 1 +
- .../dmesg-warn-level-one-piglit-style/reference.json       | 1 +
- .../dmesg-warn-level-piglit-style/reference.json           | 1 +
- runner/json_tests_data/dmesg-warn-level/reference.json     | 1 +
- .../reference.json                                         | 1 +
- .../dynamic-subtests-keep-all/reference.json               | 3 ++-
- .../dynamic-subtests-keep-dynamic/reference.json           | 1 +
- .../dynamic-subtests-keep-requested/reference.json         | 3 ++-
- .../dynamic-subtests-keep-subtests/reference.json          | 3 ++-
- runner/json_tests_data/empty-result-files/reference.json   | 1 +
- runner/json_tests_data/graceful-notrun/reference.json      | 1 +
- .../incomplete-before-any-subtests/reference.json          | 1 +
- runner/json_tests_data/normal-run/reference.json           | 1 +
- .../notrun-results-multiple-mode/reference.json            | 1 +
- runner/json_tests_data/notrun-results/reference.json       | 1 +
- runner/json_tests_data/piglit-style-dmesg/reference.json   | 1 +
- .../json_tests_data/unprintable-characters/reference.json  | 1 +
- .../warnings-with-dmesg-warns/reference.json               | 1 +
- runner/json_tests_data/warnings/reference.json             | 1 +
- runner/resultgen.c                                         | 7 ++++++-
- 23 files changed, 31 insertions(+), 4 deletions(-)
+ runner/settings.c | 21 +++++++++++++++++++++
+ runner/settings.h |  4 ++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/runner/json_tests_data/aborted-after-a-test/reference.json b/runner/json_tests_data/aborted-after-a-test/reference.json
-index 0776f7582..50ba9e6e1 100644
---- a/runner/json_tests_data/aborted-after-a-test/reference.json
-+++ b/runner/json_tests_data/aborted-after-a-test/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/aborted-on-boot/reference.json b/runner/json_tests_data/aborted-on-boot/reference.json
-index 75f194660..238ec6fff 100644
---- a/runner/json_tests_data/aborted-on-boot/reference.json
-+++ b/runner/json_tests_data/aborted-on-boot/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/dmesg-escapes/reference.json b/runner/json_tests_data/dmesg-escapes/reference.json
-index 91c573106..e74dc89e4 100644
---- a/runner/json_tests_data/dmesg-escapes/reference.json
-+++ b/runner/json_tests_data/dmesg-escapes/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/dmesg-results/reference.json b/runner/json_tests_data/dmesg-results/reference.json
-index e9e011853..81890f7d2 100644
---- a/runner/json_tests_data/dmesg-results/reference.json
-+++ b/runner/json_tests_data/dmesg-results/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-index 8d266cdfa..16c97d3a1 100644
---- a/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-+++ b/runner/json_tests_data/dmesg-warn-level-one-piglit-style/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json b/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json
-index 4a1e8b313..e40000a27 100644
---- a/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json
-+++ b/runner/json_tests_data/dmesg-warn-level-piglit-style/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/dmesg-warn-level/reference.json b/runner/json_tests_data/dmesg-warn-level/reference.json
-index 400e9cfbc..fca3f1a54 100644
---- a/runner/json_tests_data/dmesg-warn-level/reference.json
-+++ b/runner/json_tests_data/dmesg-warn-level/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json b/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json
-index 514de06a4..e3a6ffe3b 100644
---- a/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json
-+++ b/runner/json_tests_data/dynamic-subtest-name-in-multiple-subtests/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"dynamic-subtest-name-in-multiple-subtests",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1560163492.266377,
-diff --git a/runner/json_tests_data/dynamic-subtests-keep-all/reference.json b/runner/json_tests_data/dynamic-subtests-keep-all/reference.json
-index b2b716288..20e626144 100644
---- a/runner/json_tests_data/dynamic-subtests-keep-all/reference.json
-+++ b/runner/json_tests_data/dynamic-subtests-keep-all/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"dynamic-subtests",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1560163492.266377,
-@@ -168,4 +169,4 @@
-       }
-     }
-   }
--}
-\ No newline at end of file
+diff --git a/runner/settings.c b/runner/settings.c
+index 62afd3534..84d8c85e9 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -529,6 +529,14 @@ static void free_hook_strs(struct igt_vec *hook_strs)
+ 	igt_vec_fini(hook_strs);
+ }
+ 
++static void free_array_deep(void **arr, size_t n)
++{
++	for (size_t i = 0; i < n; i++)
++		free(arr[i]);
++
++	free(arr);
 +}
-diff --git a/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json b/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json
-index c013d2821..37bd91e84 100644
---- a/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json
-+++ b/runner/json_tests_data/dynamic-subtests-keep-dynamic/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"dynamic-subtests",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1560163492.266377,
-diff --git a/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json b/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json
-index c33c7ce7c..3a717f699 100644
---- a/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json
-+++ b/runner/json_tests_data/dynamic-subtests-keep-requested/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"dynamic-subtests",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1560163492.266377,
-@@ -120,4 +121,4 @@
-       }
-     }
-   }
--}
-\ No newline at end of file
-+}
-diff --git a/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json b/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json
-index e53daa5a5..e4c320a0f 100644
---- a/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json
-+++ b/runner/json_tests_data/dynamic-subtests-keep-subtests/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"dynamic-subtests",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1560163492.266377,
-@@ -120,4 +121,4 @@
-       }
-     }
-   }
--}
-\ No newline at end of file
-+}
-diff --git a/runner/json_tests_data/empty-result-files/reference.json b/runner/json_tests_data/empty-result-files/reference.json
-index f81ffb81c..332e20693 100644
---- a/runner/json_tests_data/empty-result-files/reference.json
-+++ b/runner/json_tests_data/empty-result-files/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"empty-result-files",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/graceful-notrun/reference.json b/runner/json_tests_data/graceful-notrun/reference.json
-index c95bdfecc..ddad3d925 100644
---- a/runner/json_tests_data/graceful-notrun/reference.json
-+++ b/runner/json_tests_data/graceful-notrun/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"graceful-notrun",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/incomplete-before-any-subtests/reference.json b/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-index 2a4bd4560..5fc1978eb 100644
---- a/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-+++ b/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/normal-run/reference.json b/runner/json_tests_data/normal-run/reference.json
-index 0a00b1ca8..814e46920 100644
---- a/runner/json_tests_data/normal-run/reference.json
-+++ b/runner/json_tests_data/normal-run/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/notrun-results-multiple-mode/reference.json b/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-index 3f8b7fb09..80ba5ec2c 100644
---- a/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-+++ b/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/notrun-results/reference.json b/runner/json_tests_data/notrun-results/reference.json
-index 800de38c5..42fcd0017 100644
---- a/runner/json_tests_data/notrun-results/reference.json
-+++ b/runner/json_tests_data/notrun-results/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/piglit-style-dmesg/reference.json b/runner/json_tests_data/piglit-style-dmesg/reference.json
-index bf5d86ee3..6c751dc53 100644
---- a/runner/json_tests_data/piglit-style-dmesg/reference.json
-+++ b/runner/json_tests_data/piglit-style-dmesg/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/unprintable-characters/reference.json b/runner/json_tests_data/unprintable-characters/reference.json
-index 88c62c34d..e1b3302a5 100644
---- a/runner/json_tests_data/unprintable-characters/reference.json
-+++ b/runner/json_tests_data/unprintable-characters/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/warnings-with-dmesg-warns/reference.json b/runner/json_tests_data/warnings-with-dmesg-warns/reference.json
-index bd0bb3a3d..67797e789 100644
---- a/runner/json_tests_data/warnings-with-dmesg-warns/reference.json
-+++ b/runner/json_tests_data/warnings-with-dmesg-warns/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/json_tests_data/warnings/reference.json b/runner/json_tests_data/warnings/reference.json
-index a2b79da9e..2c483fdf5 100644
---- a/runner/json_tests_data/warnings/reference.json
-+++ b/runner/json_tests_data/warnings/reference.json
-@@ -3,6 +3,7 @@
-   "results_version":10,
-   "name":"normal-run",
-   "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "cmdline":[],
-   "time_elapsed":{
-     "__type__":"TimeAttribute",
-     "start":1539953735.1110389,
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 87847bf5b..0d3a569cf 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -2281,7 +2281,7 @@ struct json_object *generate_results_json(int dirfd)
++
+ static bool file_exists_at(int dirfd, const char *filename)
  {
- 	struct settings settings;
- 	struct job_list job_list;
--	struct json_object *obj, *elapsed;
-+	struct json_object *obj, *elapsed, *arr;
- 	struct results results;
- 	int testdirfd, fd;
- 	size_t i;
-@@ -2319,6 +2319,11 @@ struct json_object *generate_results_json(int dirfd)
- 		close(fd);
+ 	return faccessat(dirfd, filename, F_OK, 0) == 0;
+@@ -646,6 +654,7 @@ void clear_settings(struct settings *settings)
+ 	free_regexes(&settings->exclude_regexes);
+ 	free_env_vars(&settings->env_vars);
+ 	free_hook_strs(&settings->hook_strs);
++	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
+ 
+ 	init_settings(settings);
+ }
+@@ -875,6 +884,16 @@ bool parse_options(int argc, char **argv,
+ 		goto error;
  	}
  
-+	arr = json_object_new_array();
-+	for (i = 0; i < settings.cmdline.argc; i++)
-+		json_object_array_add(arr, json_object_new_string(settings.cmdline.argv[i]));
-+	json_object_object_add(obj, "cmdline", arr);
++	settings->cmdline.argv = calloc(argc, sizeof(*settings->cmdline.argv));
++	if (!settings->cmdline.argv)
++		goto error;
 +
- 	elapsed = json_object_new_object();
- 	json_object_object_add(elapsed, "__type__", json_object_new_string("TimeAttribute"));
- 	if ((fd = openat(dirfd, "starttime.txt", O_RDONLY)) >= 0) {
++	settings->cmdline.argc = argc;
++	for (int i = 0; i < argc; i++) {
++		settings->cmdline.argv[i] = strdup(argv[i]);
++		if (!settings->cmdline.argv[i])
++			goto error;
++	}
+ 
+ 	return true;
+ 
+@@ -1202,6 +1221,7 @@ bool serialize_settings(struct settings *settings)
+ 	SERIALIZE_INT(f, settings, enable_code_coverage);
+ 	SERIALIZE_INT(f, settings, cov_results_per_test);
+ 	SERIALIZE_STR(f, settings, code_coverage_script);
++	SERIALIZE_STR_ARRAY(f, settings, cmdline.argv, cmdline.argc);
+ 
+ 	if (settings->sync) {
+ 		fflush(f);
+@@ -1315,6 +1335,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ 		PARSE_INT(settings, name, val, enable_code_coverage);
+ 		PARSE_INT(settings, name, val, cov_results_per_test);
+ 		PARSE_STR(settings, name, val, code_coverage_script);
++		PARSE_STR_ARRAY(settings, name, val, cmdline.argv, cmdline.argc);
+ 
+ 		printf("Warning: Unknown field in settings file: %s = %s\n",
+ 		       name, val);
+diff --git a/runner/settings.h b/runner/settings.h
+index f69f09778..2266118a7 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -75,6 +75,10 @@ struct settings {
+ 	char *code_coverage_script;
+ 	bool enable_code_coverage;
+ 	bool cov_results_per_test;
++	struct {
++		int argc;
++		char **argv;
++	} cmdline;
+ };
+ 
+ /**
 -- 
 2.48.0
 
