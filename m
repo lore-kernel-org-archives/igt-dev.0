@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE180C0218A
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 12:51:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DDDC0218F
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 12:59:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CAC910E95A;
-	Thu, 30 Jan 2025 12:51:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A5A110E33D;
+	Thu, 30 Jan 2025 12:59:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y7r2iVVD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E3RjYVge";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F2C510E22E
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 12:51:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D74810E22E
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 12:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738241470; x=1769777470;
+ t=1738241982; x=1769777982;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=7qk+idPE66lRu95GLNtjNhFxjzEVakwZKvv1xZw1Aas=;
- b=Y7r2iVVD+4ohKAvWNMZVxjP2I+Ga8i4bp+b3YSJebM6USI4I0jypvyTV
- 0uX8ODV/Gp7VyK5iH5uFqe5xliEtqTTfwRfg3RfBAJejS/XNlAQ+x15W6
- YyhFLUT1BrSEWF+gdc8oJID4dUdGZtFwZYq9rJ/fat6ExDCSYgQHtWqrU
- HHPxjurcY0FFT9lxLvyxR5t9Zf+JU7CUdmfEwMKxedFerTR9Y6lU0hZq9
- dHJf8VdDjF09T38Zr1/yV1vcK5fzcKYFe1hNwD0gaHy0SOFpgaTLlPxcg
- 3ZzHBX0L7RWShJ0m7JvPPdockTdVRO+mkikNzk5etvtGTW4RaBUGRLqKd Q==;
-X-CSE-ConnectionGUID: jMgdTHj4RqGdlAyKjijxmQ==
-X-CSE-MsgGUID: b7T8wvxMTRuARMAgsCLDhw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="56320940"
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="56320940"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ bh=AVY//o7lTIN+OGm9Uvf//32O6rrP8ZIcw44jaAKFA9Q=;
+ b=E3RjYVgeNZN6ADcVDK0UfaABrCVcJuYPyEOLvaU4LD9BFG4A7iK8GAOM
+ rp3B61og1Cz3PXlsHmo702dLszZYkyurgLWLHBN5vRCf/FZrSXHPscXxr
+ ZwGXn/z20yru7qPvt2D7fjM3hrrSzUG4eFWeRrTdPwAtiIwaYAp53yLPH
+ HCyD/rr+KCszyizukiZBYkKI4l2Qd+49Myo2mm/mHoy8YRQvCQrUKZUaU
+ s8JyLAGrgmAebUnxTxfc7Sx/knLlU3VutRFGak2YXDyIE5XZne7f0vidI
+ njIEniPepsBYza0jRs5ld4+bsS61JiLzPJyGF2qY3htXvZ3x+fIAGWiWt w==;
+X-CSE-ConnectionGUID: pcKvCpxWQs2tSF4SDL+qdQ==
+X-CSE-MsgGUID: rbZEsg0NREiD2AF02XEzbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="56321749"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="56321749"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 04:51:09 -0800
-X-CSE-ConnectionGUID: b/lKHQdcRharbyhCjpfY4A==
-X-CSE-MsgGUID: 7A67wBr9RD6oSLqqVkwR9w==
+ 30 Jan 2025 04:59:41 -0800
+X-CSE-ConnectionGUID: p/0n4vl4Q0K8Al4Vh0NVhQ==
+X-CSE-MsgGUID: rBvOsqwoQv6/A95qFOXyKA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="109123784"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="114347570"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 04:51:07 -0800
-Date: Thu, 30 Jan 2025 13:51:04 +0100
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 04:59:39 -0800
+Date: Thu, 30 Jan 2025 13:59:37 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Jessica Zhang <quic_jesszhan@quicinc.com>
 Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
@@ -50,8 +50,9 @@ Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
  quic_abhinavk@quicinc.com, igt-dev@lists.freedesktop.org,
  Alex Hung <alex.hung@amd.com>, Esha Bharadwaj <quic_ebharadw@quicinc.com>
-Subject: Re: [PATCH i-g-t v5 1/3] lib/igt_kms: Add helper to get encoder index
-Message-ID: <20250130125104.gcgyyfd5yex525ti@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v5 2/3] lib/igt_kms: loosen duplicate check in
+ igt_display_refresh
+Message-ID: <20250130125937.mp6trwnb2tzcas4f@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jessica Zhang <quic_jesszhan@quicinc.com>,
  Petri Latvala <adrinael@adrinael.net>,
@@ -63,11 +64,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Alex Hung <alex.hung@amd.com>,
  Esha Bharadwaj <quic_ebharadw@quicinc.com>
 References: <20250128-igt-cwb-v5-0-82652cec29a3@quicinc.com>
- <20250128-igt-cwb-v5-1-82652cec29a3@quicinc.com>
+ <20250128-igt-cwb-v5-2-82652cec29a3@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250128-igt-cwb-v5-1-82652cec29a3@quicinc.com>
+In-Reply-To: <20250128-igt-cwb-v5-2-82652cec29a3@quicinc.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,117 +85,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jessica,
-On 2025-01-28 at 19:29:47 -0800, Jessica Zhang wrote:
+On 2025-01-28 at 19:29:48 -0800, Jessica Zhang wrote:
 > From: Esha Bharadwaj <quic_ebharadw@quicinc.com>
-> 
-> Move the get_encoder_idx() helper within the kms_setmode test to
-> lib/igt_kms
 
-please correct Bhanu address to:
-	Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
-
+See one nit about documentaion below.
 
 > 
+> Change the duplicate check in igt_display_refresh() so it allows for
+> pipes to be shared by encoders that are valid clones of each other.
+> 
+
+please correct Bhanuprakash e-mail
+Cc: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+
+Juha-Pekka or Swati or Karthik - could you find someone from KMS team and
+help with review of this and next patch? Thanks!
+
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+
 > Signed-off-by: Esha Bharadwaj <quic_ebharadw@quicinc.com>
 > Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 > ---
->  lib/igt_kms.c       | 15 +++++++++++++++
->  lib/igt_kms.h       |  1 +
->  tests/kms_setmode.c | 14 ++------------
->  3 files changed, 18 insertions(+), 12 deletions(-)
+>  lib/igt_kms.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++---
+>  lib/igt_kms.h |  1 +
+>  2 files changed, 47 insertions(+), 3 deletions(-)
 > 
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 90f44b4d3a8607d1caedccf50691fae7aaf2d079..4b14c94e226a9a103bc3a3bc26099566a6eb274b 100644
+> index 4b14c94e226a9a103bc3a3bc26099566a6eb274b..5471f906a98f62aec285bf50d9c48f2ec6c1009e 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -3324,6 +3324,21 @@ void igt_display_fini(igt_display_t *display)
->  	display->planes = NULL;
+> @@ -3339,6 +3339,48 @@ int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
+>  	igt_assert(0);
 >  }
 >  
-> +/**
-> + * kmstest_get_encoder_idx:
-> + * @resources: libdrm resources pointer
-> + * @encoder: libdrm encoder pointer
-> + *
-> + * Get encoder index from encoder_id
-> + */
-> +int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
-> +{
-> +	for (int i = 0; i < resources->count_encoders; i++)
-> +		if (resources->encoders[i] == encoder->encoder_id)
-> +			return i;
 
-Add newline here.
+Please document each new library function.
 
-> +	igt_assert(0);
-
-imho it is better to print more info here, like:
-	igt_assert_f(0, "Error: cannot find encoder id %d in range of 0...%d\n",
-		     encoder->encoder_id, resources->count_encoders - 1);
-
-This should improve debugging a little. With this
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
+Reagrds,
 Kamil
 
+> +bool igt_output_is_valid_clone(int drm_fd, igt_output_t *target, igt_output_t *clone)
+> +{
+> +	drmModeEncoder *target_enc;
+> +	drmModeEncoder *clone_enc;
+> +	drmModeRes *resources = drmModeGetResources(drm_fd);
+> +	uint32_t clone_mask;
+> +
+> +	if (!target || !clone)
+> +		return false;
+> +
+> +	target_enc = target->config.encoder;
+> +	clone_enc = clone->config.encoder;
+> +
+> +	if (!target_enc || !clone_enc)
+> +		return false;
+> +
+> +	clone_mask = 1 << kmstest_get_encoder_idx(resources, clone_enc);
+> +
+> +	return ((target_enc->possible_clones & clone_mask) == clone_mask);
+> +}
+> +
+> +static bool igt_output_has_duplicates(igt_display_t *display, igt_output_t *output,
+> +				      unsigned long pipes_in_use, int start_idx)
+> +{
+> +	igt_output_t *clone_output;
+> +
+> +	for (int j = start_idx + 1; j < display->n_outputs; j++) {
+> +		clone_output = &display->outputs[j];
+> +
+> +		/*
+> +		 * Check that any encoders with duplicated pipes
+> +		 * are possible clones of each other. If they
+> +		 * aren't, report the pipe as duplicated
+> +		 */
+> +		if ((pipes_in_use & (1 << output->pending_pipe)) &&
+> +		    !igt_output_is_valid_clone(display->drm_fd, output, clone_output))
+> +			return true;
+> +	}
+> +
+> +	return false;
 > +}
 > +
 >  static void igt_display_refresh(igt_display_t *display)
 >  {
 >  	igt_output_t *output;
+> @@ -3346,13 +3388,14 @@ static void igt_display_refresh(igt_display_t *display)
+>  
+>  	unsigned long pipes_in_use = 0;
+>  
+> -       /* Check that two outputs aren't trying to use the same pipe */
+> +	/* Check that two non-clone outputs aren't trying to use the same pipe */
+>  	for (i = 0; i < display->n_outputs; i++) {
+>  		output = &display->outputs[i];
+>  
+>  		if (output->pending_pipe != PIPE_NONE) {
+> -			if (pipes_in_use & (1 << output->pending_pipe))
+> -				goto report_dup;
+> +			if (igt_output_has_duplicates(display, output,
+> +						      pipes_in_use, i))
+> +					goto report_dup;
+>  
+>  			pipes_in_use |= 1 << output->pending_pipe;
+>  		}
 > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 8810123fbebeb68f5c549c434d6ca69a123cfb90..e4f7b6c62fd536aa4ea3eb3153d8e1935cf560fd 100644
+> index e4f7b6c62fd536aa4ea3eb3153d8e1935cf560fd..932e5818364ca74cb86b1ba58c5f3ede0b8abf18 100644
 > --- a/lib/igt_kms.h
 > +++ b/lib/igt_kms.h
-> @@ -314,6 +314,7 @@ void kmstest_dumb_destroy(int fd, uint32_t handle);
->  void kmstest_wait_for_pageflip(int fd);
->  void kmstest_wait_for_pageflip_timeout(int fd, uint64_t timeout_us);
->  unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags);
-> +int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder);
->  
->  bool kms_has_vblank(int fd);
->  
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index d61cfeb9af22c12ae1f5aad5d06ccb9e01fc52d3..600524d98359fbf713be99de931e53b8ecf167b0 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -268,16 +268,6 @@ found:
->  	*mode_ret = *mode;
->  }
->  
-> -static int get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i < resources->count_encoders; i++)
-> -		if (resources->encoders[i] == encoder->encoder_id)
-> -			return i;
-> -	igt_assert(0);
-> -}
-> -
->  static void get_crtc_config_str(struct crtc_config *crtc, char *buf,
->  				size_t buf_size)
->  {
-> @@ -370,7 +360,7 @@ static void setup_crtcs(const struct test_config *tconf,
->  			config_valid &= !!(encoder->possible_crtcs &
->  					  (1 << crtc->crtc_idx));
->  
-> -			encoder_mask |= 1 << get_encoder_idx(resources,
-> +			encoder_mask |= 1 << kmstest_get_encoder_idx(resources,
->  							     encoder);
->  			config_valid &= !(encoder_mask &
->  					  ~encoder->possible_clones);
-> @@ -396,7 +386,7 @@ static void setup_crtcs(const struct test_config *tconf,
->  			idx = cconf[i].crtc_idx;
->  
->  		encoder = drmModeGetEncoder(drm_fd, connector->encoders[idx]);
-> -		encoder_usage_count[get_encoder_idx(resources, encoder)]++;
-> +		encoder_usage_count[kmstest_get_encoder_idx(resources, encoder)]++;
->  		drmModeFreeEncoder(encoder);
->  	}
->  	for (i = 0; i < resources->count_encoders; i++)
+> @@ -554,6 +554,7 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
+>  					     int plane_type, int index);
+>  igt_output_t *igt_output_from_connector(igt_display_t *display,
+>      drmModeConnector *connector);
+> +bool igt_output_is_valid_clone(int drm_fd, igt_output_t *target, igt_output_t *clone);
+>  void igt_output_refresh(igt_output_t *output);
+>  drmModeModeInfo *igt_std_1024_mode_get(int vrefresh);
+>  void igt_output_set_writeback_fb(igt_output_t *output, struct igt_fb *fb);
 > 
 > -- 
 > 2.34.1
