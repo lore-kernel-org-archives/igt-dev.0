@@ -4,57 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DF8CC0218A
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 10:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBB68C0218D
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 11:45:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E46FD10E926;
-	Thu, 30 Jan 2025 10:27:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7395810E93E;
+	Thu, 30 Jan 2025 11:45:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L+lWxQtd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gl1Jo634";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E828710E936
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 10:27:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E36E10E93E;
+ Thu, 30 Jan 2025 11:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738232866; x=1769768866;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=6HCJxkrDpQktqf/6nrQ2K4hxhdH+bzRuk5Urtsdn+qg=;
- b=L+lWxQtd5pOeU+/tSzgEOYBgHcOtV2qQu1VLPtWgn+ON5SryDuAv4Gi7
- 4yAgDwV1mVq1Zj1cj6QRaXydh+34FJs2fPiXqnW4T1xT1pwnSKgKfkSwi
- MSz0eSltKJ3Qs9S8EEdHN+twiJWstXPqkeNWgxMg/uxkJisMdLDkY3oJ5
- ki/qJy692dQmdRwLUIUfow7wh1i0sXzbhXTkxdZI6BPfHah9V/k1TbG3h
- ZhWI4fZqfNlf55UcmSx5IWLOHsuXUPweiAIUMbsbboe1MPKjf/zN+SfLr
- CCSmwbfPcQ9WQERS3H+ekFgtNHv8vUEPnQ9cZ+LS0xqGjsiKYf01TbrQB Q==;
-X-CSE-ConnectionGUID: IQWRJMffSWGVBfMWbdeQRA==
-X-CSE-MsgGUID: pQ9X/4veTR6zNUQ0Mxj8cQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="56309736"
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="56309736"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 02:27:46 -0800
-X-CSE-ConnectionGUID: GiRtFOloQKq27YdTB7tnBw==
-X-CSE-MsgGUID: 0oOJHadzQ1K3G7m1TTJcKA==
+ t=1738237523; x=1769773523;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=2kRuGto7934nKtPtiMal7FsI+mahxki6A/jFZdKcSZk=;
+ b=gl1Jo634StuweBJnExhGSBevs+I2ARzm/SaC8zO508K7pmMeidCEGFS5
+ IKI2vtp3f8fgeVffmV9BdHps5uXtYELW/ulETiskquUJuKZ92fQLQ4FBg
+ TRvMMfMmIFSlMWB1OrSSH/9zDzjIGWN9HZ7ycBdrw7BN/DZX+jMiKwaBE
+ Yg3eIY4tlX6RSFBV4y1tWk0O79NskcTwNorviwLvCMZYIwfwgV8bgD4dO
+ QdnmLKyiMGYpPsxPopuMwh4kcKzPBsWT90yrloQ6RClgQzE1sKjiqiD6l
+ upxO6Se4dl5OUy1D2x4xQ2kQwRiDX+6iZbLK3LLRmQzbN1rXSSJBn224B w==;
+X-CSE-ConnectionGUID: E0OXsFJrTASnSUwTIClQTg==
+X-CSE-MsgGUID: +7zk+x7GTeG21dOCWQcNgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="38017797"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="38017797"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2025 03:45:23 -0800
+X-CSE-ConnectionGUID: bNv6t8foS46PkBIvPnp66A==
+X-CSE-MsgGUID: f9j2hRWxSdC+1wiuAXzH2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="109193546"
-Received: from dprybysh-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.246.58])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 02:27:44 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="114285475"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 03:45:22 -0800
+Date: Thu, 30 Jan 2025 12:45:06 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t] lib/igt_device_scan: limit fetched device attributes
- from udev
-Date: Thu, 30 Jan 2025 11:27:41 +0100
-Message-Id: <20250130102741.38454-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Matthew Auld <matthew.auld@intel.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
+ lib/pciids: sync with kernel (rev2)
+Message-ID: <20250130114506.nwskobdn7nbh5fnc@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Matthew Auld <matthew.auld@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20250129105902.120630-1-kamil.konieczny@linux.intel.com>
+ <173817006756.2503324.12809547340176412547@b555e5b46a47>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <173817006756.2503324.12809547340176412547@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,188 +73,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Tests don't need all attributes so default device scanning is now
-limited to small list directly used in device filters. To be backward
-compatible tools like lsgpu still may scan whole attribute list what
-keeps this behavior intact.
+Hi igt-dev,
+On 2025-01-29 at 17:01:07 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib/pciids: sync with kernel (rev2)
+> URL   : https://patchwork.freedesktop.org/series/141981/
+> State : failure
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
-v2: refactor code a bit (Kamil)
----
- lib/igt_device_scan.c | 50 ++++++++++++++++++++++++++++++++++---------
- lib/igt_device_scan.h |  1 +
- tools/lsgpu.c         |  2 +-
- 3 files changed, 42 insertions(+), 11 deletions(-)
+these are unrelated to a change, no need for respin.
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index c36b0efa90..711bedc5c8 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -22,6 +22,7 @@
-  *
-  */
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_device_scan.h"
- #include "igt_list.h"
-@@ -206,6 +207,8 @@ enum dev_type {
- #define STR_INTEGRATED "integrated"
- #define STR_DISCRETE "discrete"
- 
-+static const char * const attrs[] = { "driver", "sriov_numvfs", "physfn" };
-+
- static inline bool strequal(const char *a, const char *b)
- {
- 	if (a == NULL || b == NULL)
-@@ -548,7 +551,7 @@ static void get_props(struct udev_device *dev, struct igt_device *idev)
-  * Function skips sysattrs from blacklist ht (acquiring some values can take
-  * seconds).
-  */
--static void get_attrs(struct udev_device *dev, struct igt_device *idev)
-+static void get_attrs_all(struct udev_device *dev, struct igt_device *idev)
- {
- 	struct udev_list_entry *entry;
- 
-@@ -569,6 +572,19 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
- 	}
- }
- 
-+static void get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
-+{
-+	const char *value;
-+
-+	for (int i = 0; i < ARRAY_SIZE(attrs); i++) {
-+		value = udev_device_get_sysattr_value(dev, attrs[i]);
-+		if (!value)
-+			continue;
-+		igt_device_add_attr(idev, attrs[i], value);
-+		DBG("attr: %s, val: %s\n", attrs[i], value);
-+	}
-+}
-+
- #define get_prop(dev, prop) ((char *) g_hash_table_lookup(dev->props_ht, prop))
- #define get_attr(dev, attr) ((char *) g_hash_table_lookup(dev->attrs_ht, attr))
- #define get_prop_subsystem(dev) get_prop(dev, "SUBSYSTEM")
-@@ -639,7 +655,8 @@ static char* strdup_nullsafe(const char* str)
-  * Fills structure with most usable udev device variables, properties
-  * and sysattrs.
-  */
--static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
-+static struct igt_device *igt_device_new_from_udev(struct udev_device *dev,
-+						   bool limit_attrs)
- {
- 	struct igt_device *idev = igt_device_new();
- 
-@@ -654,7 +671,8 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
- 		idev->drm_render = strdup(idev->devnode);
- 
- 	get_props(dev, idev);
--	get_attrs(dev, idev);
-+	limit_attrs ? get_attrs_limited(dev, idev) :
-+		      get_attrs_all(dev, idev);
- 
- 	if (is_pci_subsystem(idev)) {
- 		uint16_t vendor, device;
-@@ -868,7 +886,8 @@ static struct igt_device *igt_device_from_syspath(const char *syspath)
-  */
- static void update_or_add_parent(struct udev *udev,
- 				 struct udev_device *dev,
--				 struct igt_device *idev)
-+				 struct igt_device *idev,
-+				 bool limit_attrs)
- {
- 	struct udev_device *parent_dev;
- 	struct igt_device *parent_idev;
-@@ -899,7 +918,7 @@ static void update_or_add_parent(struct udev *udev,
- 		 * return fresh udev device.
- 		 */
- 		parent_dev = udev_device_new_from_syspath(udev, syspath);
--		parent_idev = igt_device_new_from_udev(parent_dev);
-+		parent_idev = igt_device_new_from_udev(parent_dev, limit_attrs);
- 		udev_device_unref(parent_dev);
- 
- 		if (parent_idev)
-@@ -1000,7 +1019,7 @@ static void index_pci_devices(void)
-  * Function sorts all found devices to keep same order of bus devices
-  * for providing predictable search.
-  */
--static void scan_drm_devices(void)
-+static void scan_drm_devices(bool limit_attrs)
- {
- 	struct udev *udev;
- 	struct udev_enumerate *enumerate;
-@@ -1035,9 +1054,9 @@ static void scan_drm_devices(void)
- 
- 		path = udev_list_entry_get_name(dev_list_entry);
- 		udev_dev = udev_device_new_from_syspath(udev, path);
--		idev = igt_device_new_from_udev(udev_dev);
-+		idev = igt_device_new_from_udev(udev_dev, limit_attrs);
- 		igt_list_add_tail(&idev->link, &igt_devs.all);
--		update_or_add_parent(udev, udev_dev, idev);
-+		update_or_add_parent(udev, udev_dev, idev, limit_attrs);
- 
- 		udev_device_unref(udev_dev);
- 	}
-@@ -1092,17 +1111,28 @@ void igt_devices_free(void)
-  *
-  * Function scans udev in search of gpu devices.
-  */
--void igt_devices_scan(void)
-+
-+static void __igt_devices_scan(bool limit_attrs)
- {
- 	if (igt_devs.devs_scanned)
- 		igt_devices_free();
- 
- 	prepare_scan();
--	scan_drm_devices();
-+	scan_drm_devices(limit_attrs);
- 
- 	igt_devs.devs_scanned = true;
- }
- 
-+void igt_devices_scan(void)
-+{
-+	__igt_devices_scan(true);
-+}
-+
-+void igt_devices_scan_all_attrs(void)
-+{
-+	__igt_devices_scan(false);
-+}
-+
- static inline void _pr_simple(const char *k, const char *v)
- {
- 	printf("    %-16s: %s\n", k, v);
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index fa90134aa3..92741fe3c7 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -64,6 +64,7 @@ struct igt_device_card {
- };
- 
- void igt_devices_scan(void);
-+void igt_devices_scan_all_attrs(void);
- 
- void igt_devices_print(const struct igt_devices_print_format *fmt);
- void igt_devices_print_vendors(void);
-diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-index e482ca6b75..e683900833 100644
---- a/tools/lsgpu.c
-+++ b/tools/lsgpu.c
-@@ -362,7 +362,7 @@ int main(int argc, char *argv[])
- 		printf("Notice: Using filter from .igtrc\n");
- 	}
- 
--	igt_devices_scan();
-+	igt_devices_scan_all_attrs();
- 
- 	if (igt_device != NULL) {
- 		struct igt_device_card card;
--- 
-2.34.1
+Regards,
+Kamil
 
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_16038_full -> IGTPW_12512_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_12512_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12512_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12512/index.html
+> 
+> Participating hosts (11 -> 11)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_12512_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@core_setmaster@master-drop-set-root:
+>     - shard-tglu:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16038/shard-tglu-6/igt@core_setmaster@master-drop-set-root.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12512/shard-tglu-5/igt@core_setmaster@master-drop-set-root.html
+> 
+>   * igt@i915_hangman@gt-error-state-capture@vcs0:
+>     - shard-mtlp:         [PASS][3] -> [ABORT][4] +1 other test abort
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16038/shard-mtlp-5/igt@i915_hangman@gt-error-state-capture@vcs0.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12512/shard-mtlp-7/igt@i915_hangman@gt-error-state-capture@vcs0.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_12512_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@crc32:
+>     - shard-tglu:         NOTRUN -> [SKIP][5] ([i915#6230])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12512/shard-tglu-8/igt@api_intel_bb@crc32.html
+> 
+
+...cut...
+
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12512/index.htmlgggg
