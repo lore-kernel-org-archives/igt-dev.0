@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EAE6C0218A
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 10:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE51C0218A
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 10:17:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1CF010E921;
-	Thu, 30 Jan 2025 10:04:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1F3DB10E928;
+	Thu, 30 Jan 2025 10:17:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YvjOYQxV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ngu4Q4eN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59E8410E921
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 10:04:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62E0710E928
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 10:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738231466; x=1769767466;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=TMk9kaZ17AJ/Da7gr57bfMfNzOS/vkNKwOqN1513kLk=;
- b=YvjOYQxVc0BsMJ6mMu+augseTpRmFIjb3xq1OgqsWTBmWpPCyFikyVYD
- cMGBhp7Hc3or50sP599/11NsTVmBRrnWx8cdJjM7n4SoZg2tJVt/SuTrl
- DSxcYHgX2n6Ge3OU7Xl8Sg88aTGwnn4jFHNOGzqWzxg0OlwUF/sEekRvS
- jwtpQ3zgzBVMDPYl5JtV36vWGchma8eQk12Yd3+8frjNrMavV9T9N4fTb
- BvzricK2fxIu9QChLCYuyg0nYqPFNqYrZW7xGpNEFio953lSGb71i//g5
- 1w/U+qzCjeGfQ/yhc4xt7nynIzbaQJgkg9QA/VngYCLIvR1gyU6n+tGxh Q==;
-X-CSE-ConnectionGUID: Rt3x5E/uRZ+7EFed3ymwBg==
-X-CSE-MsgGUID: +oFq5uAIQu6hxC6FPA7m0g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38473527"
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="38473527"
+ t=1738232226; x=1769768226;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=LQniiUIC5q+qO2wLtQK4KeMDnb3xM8TCrLmxP72ARPc=;
+ b=Ngu4Q4eNo09o3zf7GxDVlFG4Hcj+9GGlhFMiQcIfC2uwa2a5zlJC/Ou1
+ 0/Dus2p9vO5LsQN8TsmdlMqus4Xt2JWn/oSs/gbTNGbmvYFrdKAvXVDlV
+ Oxugs5goHreif42GGoRlJOF4GHKhHQhnd1fO1anfFXMl0hNebjM8bmM2N
+ lSkXXP0Mmi3EAgW0AjjT4NLmnYPFitc/opNYdXZDCQwOFBZl0rDSpS8q5
+ Z8B3SXHlJzmS/cLa3XHPlclfILal4LFgutvD0Ek4ObIORQX1g02KrJcZ0
+ QvueRvDlRTd+Gd58I+knII7+/mgfrs3gp6Opph6T9vYSDH7dZ6RU47lqG w==;
+X-CSE-ConnectionGUID: JT3YoCxSS8u6QHLo75keQw==
+X-CSE-MsgGUID: e2OmmxNXTHSXVRPZz2SfrA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="39036932"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="39036932"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 02:04:25 -0800
-X-CSE-ConnectionGUID: ZVoSYVV/TlKv1ObVJyxtFw==
-X-CSE-MsgGUID: coLiPLDzTq29WHkY2TQH4Q==
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2025 02:17:05 -0800
+X-CSE-ConnectionGUID: hc42jQttQ0+b4ZK45LzVnQ==
+X-CSE-MsgGUID: tlf5CwWeSECMG0h77FoN5g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="109423162"
-Received: from pravalika-nuc8i7beh.iind.intel.com ([10.145.169.177])
- by fmviesa008.fm.intel.com with ESMTP; 30 Jan 2025 02:04:23 -0800
-From: pravalika gurram <pravalika.gurram@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	francois.dugast@intel.com
-Cc: pravalika gurram <pravalika.gurram@intel.com>
-Subject: [PATCH] tests/intel/xe_fault_injection: Inject errors during exec
- queue create IOCTL
-Date: Thu, 30 Jan 2025 15:15:14 +0530
-Message-Id: <20250130094514.3282423-1-pravalika.gurram@intel.com>
-X-Mailer: git-send-email 2.37.1
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="109425885"
+Received: from dprybysh-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.58])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2025 02:17:04 -0800
+Date: Thu, 30 Jan 2025 11:17:02 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_device_scan: limit fetched device
+ attributes from udev
+Message-ID: <20250130101702.fhs766qx3ynr27kx@zkempczy-mobl2>
+References: <20250128083014.27713-1-zbigniew.kempczynski@intel.com>
+ <20250129144849.qqedsxwloqtsikhg@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250129144849.qqedsxwloqtsikhg@kamilkon-desk.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,81 +71,242 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the fault injection infrastructure to make targeted internal KMD
-functions fail when executing xe_exec_queue_create_ioctl()
-so that more code paths are tested, such as error handling and unwinding.
+On Wed, Jan 29, 2025 at 03:48:49PM +0100, Kamil Konieczny wrote:
+> Hi Zbigniew,
+> On 2025-01-28 at 09:30:14 +0100, Zbigniew Kempczyński wrote:
+> > Tests don't need all attributes so default device scanning is now
+> > limited to small list directly used in device filters. To be backward
+> > compatible tools like lsgpu still may scan whole attribute list what
+> > keeps this behavior intact.
+> > 
+> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> >  lib/igt_device_scan.c | 69 ++++++++++++++++++++++++++++++-------------
+> >  lib/igt_device_scan.h |  1 +
+> >  tools/lsgpu.c         |  2 +-
+> >  3 files changed, 50 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> > index c36b0efa90..15f6bf5728 100644
+> > --- a/lib/igt_device_scan.c
+> > +++ b/lib/igt_device_scan.c
+> > @@ -22,6 +22,7 @@
+> >   *
+> >   */
+> >  
+> > +#include "drmtest.h"
+> 
+> Could you add a note here why this is needed? Something like
+> 
+> #include "drmtest.h" /* for macro ARRAY_SIZE */
+> 
+> >  #include "igt_core.h"
+> >  #include "igt_device_scan.h"
+> >  #include "igt_list.h"
+> > @@ -206,6 +207,8 @@ enum dev_type {
+> >  #define STR_INTEGRATED "integrated"
+> >  #define STR_DISCRETE "discrete"
+> >  
+> > +static const char * const attrs[] = { "driver", "sriov_numvfs", "physfn" };
+> > +
+> >  static inline bool strequal(const char *a, const char *b)
+> >  {
+> >  	if (a == NULL || b == NULL)
+> > @@ -548,24 +551,35 @@ static void get_props(struct udev_device *dev, struct igt_device *idev)
+> >   * Function skips sysattrs from blacklist ht (acquiring some values can take
+> >   * seconds).
+> >   */
+> > -static void get_attrs(struct udev_device *dev, struct igt_device *idev)
+> > +static void get_attrs(struct udev_device *dev, struct igt_device *idev,
+> > +		      bool limit_attrs)
+> 
+> Why not just two functions instead of a bool var? Below
+> you split control flow between two separate paths, imho
+> it is better to have two separate functions instead. So
+> there will be two functions:
+> 
+> get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
+> 
+> get_attrs_all(struct udev_device *dev, struct igt_device *idev)
+> 
+> and used below.
+> 
+> >  {
+> >  	struct udev_list_entry *entry;
+> > +	const char *value;
+> >  
+> > -	entry = udev_device_get_sysattr_list_entry(dev);
+> > -	while (entry) {
+> > -		const char *key = udev_list_entry_get_name(entry);
+> > -		const char *value;
+> > +	if (limit_attrs) {
+> > +		for (int i = 0; i < ARRAY_SIZE(attrs); i++) {
+> > +			value = udev_device_get_sysattr_value(dev, attrs[i]);
+> > +			if (!value)
+> > +				continue;
+> > +			igt_device_add_attr(idev, attrs[i], value);
+> > +			DBG("attr: %s, val: %s\n", attrs[i], value);
+> > +		}
+> > +	} else {
+> > +		entry = udev_device_get_sysattr_list_entry(dev);
+> > +		while (entry) {
+> > +			const char *key = udev_list_entry_get_name(entry);
+> >  
+> > -		if (is_on_blacklist(key)) {
+> > +			if (is_on_blacklist(key)) {
+> > +				entry = udev_list_entry_get_next(entry);
+> > +				continue;
+> > +			}
+> > +
+> > +			value = udev_device_get_sysattr_value(dev, key);
+> > +			igt_device_add_attr(idev, key, value);
+> >  			entry = udev_list_entry_get_next(entry);
+> > -			continue;
+> > +			DBG("attr: %s, val: %s\n", key, value);
+> >  		}
+> > -
+> > -		value = udev_device_get_sysattr_value(dev, key);
+> > -		igt_device_add_attr(idev, key, value);
+> > -		entry = udev_list_entry_get_next(entry);
+> > -		DBG("attr: %s, val: %s\n", key, value);
+> >  	}
+> >  }
+> >  
+> > @@ -639,7 +653,8 @@ static char* strdup_nullsafe(const char* str)
+> >   * Fills structure with most usable udev device variables, properties
+> >   * and sysattrs.
+> >   */
+> > -static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
+> > +static struct igt_device *igt_device_new_from_udev(struct udev_device *dev,
+> > +						   bool limit_attrs)
+> >  {
+> >  	struct igt_device *idev = igt_device_new();
+> >  
+> > @@ -654,7 +669,7 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
+> >  		idev->drm_render = strdup(idev->devnode);
+> >  
+> >  	get_props(dev, idev);
+> > -	get_attrs(dev, idev);
+> > +	get_attrs(dev, idev, limit_attrs);
+> 
+> So here:
+> 	limit_attrs ? get_attrs_limited(dev, idev) :
+> 		      get_attrs_all(dev, idev);
+> 
+> It is not a blocker so with or without it
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: pravalika gurram <pravalika.gurram@intel.com>
----
- tests/intel/xe_fault_injection.c | 41 ++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+Yeah, we may have two different functions instead of adding conditional
+inside. I'll rework it.
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 7ae941367..37aca6d8c 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -185,6 +185,38 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 	injection_list_do(INJECTION_LIST_REMOVE, function_name);
- }
- 
-+/**
-+ * SUBTEST: exec-queue-create-fail-%s
-+ * Description: inject an error in function %arg[1] used in exec queue create IOCTL to make it fail
-+ * Functionality: fault
-+ *
-+ * arg[1]:
-+ * @xe_exec_queue_create_bind:	xe_exec_queue_create_bind
-+ */
-+static void
-+exec_queue_create_fail(int fd, const char function_name[])
-+{
-+	struct drm_xe_engine_class_instance instance = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
-+	};
-+	uint32_t exec_queue_id;
-+	uint32_t vm = xe_vm_create(fd, 0, 0);
-+
-+	/* sanity check */
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, &instance, 0, &exec_queue_id), 0);
-+	xe_exec_queue_destroy(fd, exec_queue_id);
-+
-+	ignore_faults_in_dmesg(function_name);
-+	injection_list_do(INJECTION_LIST_ADD, function_name);
-+	set_retval(function_name, INJECT_ERRNO);
-+	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, &instance, 0, &exec_queue_id) != 0);
-+	injection_list_do(INJECTION_LIST_REMOVE, function_name);
-+
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, &instance, 0, &exec_queue_id), 0);
-+	xe_exec_queue_destroy(fd, exec_queue_id);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- static int
- simple_vm_create(int fd, unsigned int flags)
- {
-@@ -318,6 +350,11 @@ igt_main
- 		{ }
- 	};
- 
-+	const struct section exec_queue_create_fail_functions[] = {
-+		{ "xe_exec_queue_create_bind" },
-+		{ }
-+	};
-+
- 	igt_fixture {
- 		igt_require(fail_function_injection_enabled());
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -333,6 +370,10 @@ igt_main
- 		igt_subtest_f("vm-bind-fail-%s", s->name)
- 			vm_bind_fail(fd, s->name);
- 
-+	for (const struct section *s = exec_queue_create_fail_functions; s->name; s++)
-+		igt_subtest_f("exec-queue-create-fail-%s", s->name)
-+			exec_queue_create_fail(fd, s->name);
-+
- 	igt_fixture {
- 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
- 	}
--- 
-2.37.1
+--
+Zbigniew
 
+> 
+> Regards,
+> Kamil
+> 
+> >  
+> >  	if (is_pci_subsystem(idev)) {
+> >  		uint16_t vendor, device;
+> > @@ -868,7 +883,8 @@ static struct igt_device *igt_device_from_syspath(const char *syspath)
+> >   */
+> >  static void update_or_add_parent(struct udev *udev,
+> >  				 struct udev_device *dev,
+> > -				 struct igt_device *idev)
+> > +				 struct igt_device *idev,
+> > +				 bool limit_attrs)
+> >  {
+> >  	struct udev_device *parent_dev;
+> >  	struct igt_device *parent_idev;
+> > @@ -899,7 +915,7 @@ static void update_or_add_parent(struct udev *udev,
+> >  		 * return fresh udev device.
+> >  		 */
+> >  		parent_dev = udev_device_new_from_syspath(udev, syspath);
+> > -		parent_idev = igt_device_new_from_udev(parent_dev);
+> > +		parent_idev = igt_device_new_from_udev(parent_dev, limit_attrs);
+> >  		udev_device_unref(parent_dev);
+> >  
+> >  		if (parent_idev)
+> > @@ -1000,7 +1016,7 @@ static void index_pci_devices(void)
+> >   * Function sorts all found devices to keep same order of bus devices
+> >   * for providing predictable search.
+> >   */
+> > -static void scan_drm_devices(void)
+> > +static void scan_drm_devices(bool limit_attrs)
+> >  {
+> >  	struct udev *udev;
+> >  	struct udev_enumerate *enumerate;
+> > @@ -1035,9 +1051,9 @@ static void scan_drm_devices(void)
+> >  
+> >  		path = udev_list_entry_get_name(dev_list_entry);
+> >  		udev_dev = udev_device_new_from_syspath(udev, path);
+> > -		idev = igt_device_new_from_udev(udev_dev);
+> > +		idev = igt_device_new_from_udev(udev_dev, limit_attrs);
+> >  		igt_list_add_tail(&idev->link, &igt_devs.all);
+> > -		update_or_add_parent(udev, udev_dev, idev);
+> > +		update_or_add_parent(udev, udev_dev, idev, limit_attrs);
+> >  
+> >  		udev_device_unref(udev_dev);
+> >  	}
+> > @@ -1092,17 +1108,28 @@ void igt_devices_free(void)
+> >   *
+> >   * Function scans udev in search of gpu devices.
+> >   */
+> > -void igt_devices_scan(void)
+> > +
+> > +static void __igt_devices_scan(bool limit_attrs)
+> >  {
+> >  	if (igt_devs.devs_scanned)
+> >  		igt_devices_free();
+> >  
+> >  	prepare_scan();
+> > -	scan_drm_devices();
+> > +	scan_drm_devices(limit_attrs);
+> >  
+> >  	igt_devs.devs_scanned = true;
+> >  }
+> >  
+> > +void igt_devices_scan(void)
+> > +{
+> > +	__igt_devices_scan(true);
+> > +}
+> > +
+> > +void igt_devices_scan_all_attrs(void)
+> > +{
+> > +	__igt_devices_scan(false);
+> > +}
+> > +
+> >  static inline void _pr_simple(const char *k, const char *v)
+> >  {
+> >  	printf("    %-16s: %s\n", k, v);
+> > diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> > index fa90134aa3..92741fe3c7 100644
+> > --- a/lib/igt_device_scan.h
+> > +++ b/lib/igt_device_scan.h
+> > @@ -64,6 +64,7 @@ struct igt_device_card {
+> >  };
+> >  
+> >  void igt_devices_scan(void);
+> > +void igt_devices_scan_all_attrs(void);
+> >  
+> >  void igt_devices_print(const struct igt_devices_print_format *fmt);
+> >  void igt_devices_print_vendors(void);
+> > diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+> > index e482ca6b75..e683900833 100644
+> > --- a/tools/lsgpu.c
+> > +++ b/tools/lsgpu.c
+> > @@ -362,7 +362,7 @@ int main(int argc, char *argv[])
+> >  		printf("Notice: Using filter from .igtrc\n");
+> >  	}
+> >  
+> > -	igt_devices_scan();
+> > +	igt_devices_scan_all_attrs();
+> >  
+> >  	if (igt_device != NULL) {
+> >  		struct igt_device_card card;
+> > -- 
+> > 2.34.1
+> > 
