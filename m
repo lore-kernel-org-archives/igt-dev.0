@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C60C0218A
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 08:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE049C0218A
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 09:03:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 304EB10E2CF;
-	Thu, 30 Jan 2025 08:57:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74D7410E2F1;
+	Thu, 30 Jan 2025 09:03:17 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5FBF10E2CF;
- Thu, 30 Jan 2025 08:57:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D6D010E0C0;
+ Thu, 30 Jan 2025 09:03:17 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5349601834675373833=="
+ boundary="===============1354744002170211914=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_lib/intel=5Fcompute=3A_Use?=
  =?utf-8?q?_LR_mode_for_compute_when_using_Xe_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Francois Dugast" <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Jan 2025 08:57:32 -0000
-Message-ID: <173822745285.2759477.13356567193877890274@b555e5b46a47>
+Date: Thu, 30 Jan 2025 09:03:17 -0000
+Message-ID: <173822779723.2759477.18244508578616254451@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250128102504.128723-1-francois.dugast@intel.com>
 In-Reply-To: <20250128102504.128723-1-francois.dugast@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5349601834675373833==
+--===============1354744002170211914==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -998,7 +998,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12505/index.html
 
---===============5349601834675373833==
+--===============1354744002170211914==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -2825,4 +2825,4 @@ esktop.org/drm/igt-gpu-tools.git<br />
 </body>
 </html>
 
---===============5349601834675373833==--
+--===============1354744002170211914==--
