@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF88C0218A
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 23:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E38C02193
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 23:37:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 46B6F10E9F8;
-	Thu, 30 Jan 2025 23:37:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E84310E0ED;
+	Thu, 30 Jan 2025 23:37:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="koMq3Bx4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hvuyWLhQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EE1010E0ED
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 23:37:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3191710E0ED
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 23:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738280233; x=1769816233;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Xv3w3budoPeQoYEYblAO/VXiuSsFZkSOJKhjUtUdLqg=;
- b=koMq3Bx4PfUJWDE6JHJkA2Wnet8ejNdQKdLmQ3VFaZcHLP4kluuwGiI0
- wCk6B9iuBhQIf8bt2zrNjffWo88DENVKKKv4WKPjncNWC2LMFnFR/2vbR
- TNDn1y8PZAVjwnJM4dhA2ge2GtLmqDSQ8R7JEYjlKQgb+VJdq3LsF6Sjp
- 5SxPXkoXrYQLXTziGQlhMzph4QZI6jq6cqmRbRzuwLlTRMOLY+iwUzD7j
- E1WcGrBCT0h3N05bOiak7iUXnvC7n7rgEbBy8YbZ5HxsZFirOyyJkvBiv
- apvw9phNB77bLXWHobHZSNZJCddDWbfMdddhCjkVkablVo0gEtPFLrkpj Q==;
-X-CSE-ConnectionGUID: iDTEI1kjQpCeTXLMcWrMNg==
-X-CSE-MsgGUID: oQRWzbkdTDOVbIEUDgDfxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="56278794"
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="56278794"
+ t=1738280235; x=1769816235;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ela7+jy5O8HvUHbW3tqcbADV4Gd5WVOeiU2eVt1u9Fc=;
+ b=hvuyWLhQGr6f/KMzr6P4OpJmo/pHz3tS2mImc502tkuFzqJvD20lBZLw
+ Llo2AxFQeGodm+vZCMfzI4pW5POrPFGDW3ZOZ6F9mbqARFZXARMxafY5M
+ KeRg7asDxNX+7xaZqCCTEKUCf/1so0L5qFnKP82iEEQoaj81/cumQE1QM
+ fQPkdMtk8PiQbJrSEmwmc1q7XE0EqDU/n0CJyb7w3BSzH5yoq7zPuixoH
+ DGiI7hNYBOxfnIEsLrnT8IvS9xMlKxEVWKd+bNX77nvHDyhDfBg7u1LeV
+ StmYPsJ/r2bKwNNIO/7rW/qr0RS2t948oFg65EDjkkgqFnqNF3vGsxQ5R w==;
+X-CSE-ConnectionGUID: +ftrpy4NRyqv04VOCEpt+g==
+X-CSE-MsgGUID: S85MmD94SNWlD7v5Qvd0qw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="56278800"
+X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="56278800"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 15:37:13 -0800
-X-CSE-ConnectionGUID: cHNUuecaSq+84j1NHA5G9g==
-X-CSE-MsgGUID: dRoTDz7lRgetSylurtwi1w==
+ 30 Jan 2025 15:37:15 -0800
+X-CSE-ConnectionGUID: m+cbmIvSTFuab9SzNZewGQ==
+X-CSE-MsgGUID: 4q2DMkZdSOyzsNY10OUkiA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="109619102"
+X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="109619112"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 15:37:11 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 15:37:13 -0800
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mitulkumar.ajitkumar.golani@intel.com, swati2.sharma@intel.com,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 0/2] Add DRRS verification in VRR test
-Date: Fri, 31 Jan 2025 05:22:44 +0530
-Message-Id: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 1/2] tests/kms_vrr: Add function to return vblank
+ timestamp
+Date: Fri, 31 Jan 2025 05:22:45 +0530
+Message-Id: <20250130235246.4142758-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
+References: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,15 +69,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check to validate DRRS switching.
+This is useful for subtests that require precise vblank
+timestamps.
 
-Naladala Ramanaidu (2):
-  tests/kms_vrr: Add function to return vblank timestamp
-  tests/kms_vrr: Add DRRS verification in seamless RR test
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/kms_vrr.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
- tests/kms_vrr.c | 64 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 58 insertions(+), 6 deletions(-)
-
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index e7d2ff1db..fac7cb4f7 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -172,6 +172,27 @@ static uint64_t get_kernel_event_ns(data_t *data, uint32_t event)
+ 	return ev.tv_sec * NSECS_PER_SEC + ev.tv_usec * 1000ull;
+ }
+ 
++/*
++ * Wait for an vblank event and return its timestamp in microseconds.
++ *
++ * This blocks untill the event is received.
++ */
++static uint64_t wait_for_vblank(data_t *data, int pipe)
++{
++	uint32_t pipe_id_flag;
++	drmVBlank vbl;
++
++	memset(&vbl, 0, sizeof(vbl));
++
++	pipe_id_flag = kmstest_get_vbl_flag(pipe);
++
++	vbl.request.type = DRM_VBLANK_RELATIVE | pipe_id_flag;
++	vbl.request.sequence = 1;
++	do_ioctl(data->drm_fd, DRM_IOCTL_WAIT_VBLANK, &vbl);
++
++	return (vbl.reply.tval_sec * 1000000 + vbl.reply.tval_usec);
++}
++
+ /*
+  * Returns the current CLOCK_MONOTONIC time in nanoseconds.
+  * The regular IGT helpers can't be used since they default to
 -- 
 2.25.1
 
