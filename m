@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6C1C0218F
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 17:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98BA3C0218A
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 17:05:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34ECB10E02D;
-	Thu, 30 Jan 2025 17:05:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 44A1810E36D;
+	Thu, 30 Jan 2025 17:05:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DwwrZEAL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hZF83Enb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B59AA10E02D
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 17:04:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED32110E36D
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 17:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738256700; x=1769792700;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=USWVds63mCcFflsPnAnafGiwPQsO3OY+ySHF9SGBL7I=;
- b=DwwrZEAL2/jNe7sC4qN8vcVla3TOGdo9VY/3Dnzwrh46nGAU5eB6EzOE
- DYHFyroTSxFNNEUiJ5/puKqBDl/pRgNdXwAWNshyyAPqrAVDK1RO9v9UU
- SxhcHTMurVQlovrOjI3UalAYtdFRnyimJrWzWEbF/D7rASMEHNeMuRqaM
- +7ouhestXngHlpgfnrgZE4XZCVtHARDqKGlUiSd5yyRbgOG4IpkuYgopT
- XFD69mFvyiRmFkiPWZlAhhCfQ0SyEWAzxJ6dflzie5TA48aOCZ6WsYY0V
- MT3dWL1uRto35JASQVpprOIYdZXAshR+BpltMNunSlxHnnx2XpC7g38Yx Q==;
-X-CSE-ConnectionGUID: E6ICqXL2RJ+5LI1teiK/Gw==
-X-CSE-MsgGUID: 0U5ftlEKQJ+L/qRBKVtyVg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="38953330"
-X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="38953330"
+ t=1738256704; x=1769792704;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=6OljOftopGyHa6GEMePgvO0EbqC/ho+ITvcx7Sjb0RU=;
+ b=hZF83EnbDk6mwSb1qojiOHt3mn2X7KhyN9zvfxZHMyrmM1oFgcnHCAMg
+ ZhvTzOe9oPM4T7IDLCweAkZIaGWqRVZch6AziwJPc8yuOI+GVr5q4IUdN
+ baW59IufpcU8u09y8+80ugxPhDVOZlGZGSPY41DwWvT5Tj17JaDK4EqqY
+ 9xFLIwZvaKdbq1YbaIZbpGc/1/9D4e6lET3KLBzA2H0i+xyg+fcYVgKvM
+ G/V57oyJXSafBcaCYsogbyWkw14DT68Jf2IB2XuLLEtcO8NaJKjSk8JD5
+ U/dZanb5k+/KwMC5sihOxUr+AvII4vzGPeEykGyDwng3TEFJhHrKDxY57 Q==;
+X-CSE-ConnectionGUID: 6lOt4c0wQXWxrZ6/g3l+ew==
+X-CSE-MsgGUID: wSw1HLgTT0iH3AS5UDXBKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="38953349"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; d="scan'208";a="38953349"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 09:05:00 -0800
-X-CSE-ConnectionGUID: bCfEk3fwRXiHBJhpOcA8pw==
-X-CSE-MsgGUID: gkDIf3YYRty0rWsltiIkpA==
+ 30 Jan 2025 09:05:04 -0800
+X-CSE-ConnectionGUID: MzSxL0E/QhmEbco9kdRYkw==
+X-CSE-MsgGUID: PnoRpjVfS6GNz9VI0WUtBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="109241020"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="109241046"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 09:04:57 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 09:05:01 -0800
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 0/6] tests/intel/kms_joiner: Add a new test to validate
- non-joiner mode
-Date: Thu, 30 Jan 2025 22:50:25 +0530
-Message-Id: <20250130172031.4126606-1-jeevan.b@intel.com>
+ Kunal Joshi <kunal1.joshi@intel.com>, Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t 1/6] tests/intel/kms_joiner_helper: helper for
+ joiner-related functions
+Date: Thu, 30 Jan 2025 22:50:26 +0530
+Message-Id: <20250130172031.4126606-2-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250130172031.4126606-1-jeevan.b@intel.com>
+References: <20250130172031.4126606-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,35 +69,289 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added my changes on top of Kunal lib changes.
+From: Kunal Joshi <kunal1.joshi@intel.com>
 
-Jeevan B (2):
-  tests/intel/kms_joiner_helper: Add lib changes to check joiner is
-    enabled
-  tests/intel/kms_joiner: Add a new test to validate non-joiner mode
+This patch introduces a new kms_joiner_helper.c and kms_joiner_helper.h to
+handle Big Joiner and Ultra Joiner logic in a centralized manner. It provides
+utility functions to set and manage master pipes, as well as to assign
+consecutive pipes for multi-pipe configurations. By moving these operations
+into helper files, we improve code clarity and enable reuse across multiple
+tests requiring joiner capabilities.
 
-Kunal Joshi (4):
-  tests/intel/kms_joiner_helper: helper for joiner-related functions
-  tests/intel/kms_mst_helper: Add helper for MST-related functions
-  tests/kms_feature_discovery: Add tests for UHBR/non-UHBR over SST/MST
-  HAX: DO NOT MERGE
+The patch also updates kms_joiner.c to use igt_set_all_master_pipes_for_platform()
+instead of the local set_all_master_pipes_for_platform() function. This
+unifies the approach to pipe assignments for joiner scenarios. Finally, it
+updates meson.build to include kms_joiner_helper.c.
 
- tests/intel-ci/fast-feedback.testlist    |  13 ++
- tests/intel-ci/xe-fast-feedback.testlist |  14 ++
- tests/intel/kms_dp_linktrain_fallback.c  |  28 +--
- tests/intel/kms_joiner.c                 |  93 ++++++++--
- tests/intel/kms_joiner_helper.c          | 217 +++++++++++++++++++++++
- tests/intel/kms_joiner_helper.h          |  17 ++
- tests/intel/kms_mst_helper.c             |  48 +++++
- tests/intel/kms_mst_helper.h             |  10 ++
- tests/kms_feature_discovery.c            | 177 ++++++++++++++++++
- tests/meson.build                        |   6 +
- 10 files changed, 586 insertions(+), 37 deletions(-)
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/intel/kms_joiner.c        |  15 +--
+ tests/intel/kms_joiner_helper.c | 179 ++++++++++++++++++++++++++++++++
+ tests/intel/kms_joiner_helper.h |  15 +++
+ tests/meson.build               |   1 +
+ 4 files changed, 197 insertions(+), 13 deletions(-)
  create mode 100644 tests/intel/kms_joiner_helper.c
  create mode 100644 tests/intel/kms_joiner_helper.h
- create mode 100644 tests/intel/kms_mst_helper.c
- create mode 100644 tests/intel/kms_mst_helper.h
 
+diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+index 086cfeb71..0a9910046 100644
+--- a/tests/intel/kms_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -37,6 +37,7 @@
+ #include "igt.h"
+ #include "xe/xe_query.h"
+ #include "kms_dsc_helper.c"
++#include "kms_joiner_helper.h"
+ 
+ /**
+  * SUBTEST: invalid-modeset-big-joiner
+@@ -100,18 +101,6 @@ typedef struct {
+ 
+ static int max_dotclock;
+ 
+-static void set_all_master_pipes_for_platform(data_t *data)
+-{
+-	enum pipe pipe;
+-
+-	for (pipe = PIPE_A; pipe < IGT_MAX_PIPES - 1; pipe++) {
+-		if (data->display.pipes[pipe].enabled && data->display.pipes[pipe + 1].enabled) {
+-			data->master_pipes |= BIT(pipe);
+-			igt_info("Found master pipe %s\n", kmstest_pipe_name(pipe));
+-		}
+-	}
+-}
+-
+ static void enable_force_joiner_on_all_non_big_joiner_outputs(data_t *data)
+ {
+ 	bool status;
+@@ -512,7 +501,7 @@ igt_main
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+-		set_all_master_pipes_for_platform(&data);
++		igt_set_all_master_pipes_for_platform(&data.display, &data.master_pipes);
+ 		igt_require(data.display.is_atomic);
+ 		max_dotclock = igt_get_max_dotclock(data.drm_fd);
+ 
+diff --git a/tests/intel/kms_joiner_helper.c b/tests/intel/kms_joiner_helper.c
+new file mode 100644
+index 000000000..af89be777
+--- /dev/null
++++ b/tests/intel/kms_joiner_helper.c
+@@ -0,0 +1,179 @@
++#include "kms_joiner_helper.h"
++#include "igt.h"
++#include "igt_kms.h"
++#include "intel_chipset.h"
++
++/*
++ * Detect if the output needs 1, 2, or 4 pipes (non-joiner, big joiner, ultra).
++ * This re-uses your existing logic from:
++ * bigjoiner_mode_found(), ultrajoiner_mode_found(),
++ * is_intel_device(), igt_get_max_dotclock(), etc.
++ */
++static int get_required_pipes(int drm_fd, igt_output_t *output)
++{
++	bool is_big = false, is_ultra = false;
++	int max_dotclock;
++	drmModeModeInfo mode;
++
++	if (!is_intel_device(drm_fd))
++		return -1;
++
++	max_dotclock = igt_get_max_dotclock(drm_fd);
++
++	is_ultra = ultrajoiner_mode_found(drm_fd,
++			output->config.connector,
++			max_dotclock,
++			&mode);
++	is_big = bigjoiner_mode_found(drm_fd,
++			output->config.connector,
++			max_dotclock,
++			&mode);
++
++	if (is_ultra)
++		return 4;
++	if (is_big)
++		return 2;
++
++	return 1;
++}
++
++/*
++ * Internal helper to find a block of consecutive free pipes
++ * in available_pipes_mask. If count > 1, the first pipe must also
++ * be in master_pipes_mask.
++ *
++ * Returns the starting pipe index or -1 if not found.
++ */
++static int find_consecutive_pipes(int n_pipes,
++				  uint32_t available_pipes_mask,
++				  uint32_t master_pipes_mask,
++				  int count)
++{
++	int i = 0, pipe_idx = 0;
++	bool can_use;
++
++	for (int start = 0; start < n_pipes; start++) {
++		if (((start + count) - 1) >= n_pipes)
++			break;
++
++		if ((count > 1) && (!(BIT(start) & master_pipes_mask)))
++			continue;
++
++		can_use = true;
++		for (i = 0; i < count; i++) {
++			pipe_idx = start + i;
++			if (!(BIT(pipe_idx) & available_pipes_mask)) {
++				can_use = false;
++				break;
++			}
++		}
++		if (can_use)
++			return start;
++	}
++	return -1;
++}
++
++static enum pipe get_next_master_pipe(uint32_t pipe_mask)
++{
++	int i;
++
++	if (!pipe_mask)
++		return PIPE_NONE;
++
++	i = ffs(pipe_mask) - 1;
++
++	if (i < 0)
++		return PIPE_NONE;
++
++	return i;
++}
++
++/**
++ * igt_set_all_master_pipes_for_platform:
++ * @master_pipes: Pointer to the variable to store the master pipes bitmask.
++ * @display: The display structure containing pipe information.
++ *
++ * This function sets the master pipes for the platform by checking if consecutive
++ * pipes are enabled. If both pipe and the next pipe are enabled, the pipe is
++ * considered a master pipe.
++ */
++void igt_set_all_master_pipes_for_platform(igt_display_t *display, uint32_t *master_pipes)
++{
++	enum pipe pipe;
++
++	*master_pipes = 0;
++	for (pipe = PIPE_A; pipe < IGT_MAX_PIPES - 1; pipe++) {
++		if (display->pipes[pipe].enabled && display->pipes[pipe + 1].enabled) {
++			*master_pipes |= BIT(pipe);
++			igt_info("Found master pipe %s\n", kmstest_pipe_name(pipe));
++		}
++	}
++}
++
++/*
++ * @drm_fd: DRM file descriptor
++ * @outputs: array of pointers to igt_output_t
++ * @num_outputs: how many outputs in the array
++ * @n_pipes: total number of pipes available
++ * @used_pipes_mask: pointer to a bitmask (in/out) of already-used pipes
++ * @master_pipes_mask: bitmask of valid "master" pipes
++ * @valid_pipes_mask: bitmask of valid (non-fused) pipes
++ *
++ * Assign pipes to outputs based on the number of required pipes.
++ * This function will assign 1, 2, or 4 consecutive pipes to each output.
++ * It will also mark the used pipes in the bitmask.
++ *
++ * Returns: true if all outputs can be assigned successfully; false otherwise.
++ */
++bool igt_assign_pipes_for_outputs(int drm_fd,
++				  igt_output_t **outputs,
++				  int num_outputs,
++				  int n_pipes,
++				  uint32_t *used_pipes_mask,
++				  uint32_t master_pipes_mask,
++				  uint32_t valid_pipes_mask)
++{
++	int i = 0, idx  = 0, needed = 0, start = 0;
++	uint32_t available_pipes_mask = 0;
++	enum pipe mp = PIPE_NONE;
++	igt_output_t *out;
++
++	for (idx = 0; idx < num_outputs; idx++) {
++		out = outputs[idx];
++		needed = get_required_pipes(drm_fd, out);
++		if (needed < 0)
++			return false;
++
++		available_pipes_mask = (~(*used_pipes_mask)) & valid_pipes_mask;
++		start = find_consecutive_pipes(n_pipes, available_pipes_mask,
++				master_pipes_mask, needed);
++
++		if (start < 0) {
++			igt_debug("Cannot allocate %d consecutive pipes for output %s\n",
++					needed, out->name);
++			return false;
++		}
++
++		igt_info("Assigning %d pipes [start=%s..%s] to output %s\n",
++				needed, kmstest_pipe_name(start),
++				kmstest_pipe_name(start + needed - 1), out->name);
++
++		if (needed > 1) {
++			mp = get_next_master_pipe(BIT(start));
++
++			if (mp == PIPE_NONE) {
++				igt_debug("Failed to confirm master pipe for %s\n",
++						out->name);
++				return false;
++			}
++			igt_output_set_pipe(out, start);
++			igt_debug("Using pipe %s as master.\n",
++					kmstest_pipe_name(start));
++		} else
++			igt_output_set_pipe(out, start);
++
++		for (i = 0; i < needed; i++)
++			*used_pipes_mask |= BIT(start + i);
++	}
++	return true;
++}
+diff --git a/tests/intel/kms_joiner_helper.h b/tests/intel/kms_joiner_helper.h
+new file mode 100644
+index 000000000..95e71a229
+--- /dev/null
++++ b/tests/intel/kms_joiner_helper.h
+@@ -0,0 +1,15 @@
++#ifndef KMS_JOINER_HELPER_H
++#define KMS_JOINER_HELPER_H
++
++#include "igt_kms.h"
++
++void igt_set_all_master_pipes_for_platform(igt_display_t *display,
++					   uint32_t *master_pipes);
++bool igt_assign_pipes_for_outputs(int drm_fd,
++				  igt_output_t **outputs,
++				  int num_outputs,
++				  int n_pipes,
++				  uint32_t *used_pipes_mask,
++				  uint32_t master_pipes_mask,
++				  uint32_t valid_pipes_mask);
++#endif
+diff --git a/tests/meson.build b/tests/meson.build
+index 33dffad31..40e75b671 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -367,6 +367,7 @@ extra_sources = {
+ 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
++	'kms_joiner': [join_paths ('intel', 'kms_joiner_helper.c')],
+ 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
+ }
+ 
 -- 
 2.25.1
 
