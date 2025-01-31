@@ -4,63 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7359CC0218F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 17:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC715C02194
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 19:00:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3078F10E409;
-	Fri, 31 Jan 2025 17:29:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 683A310E431;
+	Fri, 31 Jan 2025 19:00:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dNmOYxSr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R9omZQP1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B40010E409
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 17:29:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2EEB10E430
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 19:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738344544; x=1769880544;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Ri5bGdkgcW7gS1l5SEjNqsQWsYZ+7ZbjLW4ruNZfhh8=;
- b=dNmOYxSr7ZOjgqPhcIicRLODCde2YLwLMdfEkouGUn+fWGS84FSB5EJD
- HmPdTPJC55HfQECwQKCksTX+dVoRNSBW3l+RD1zTSJEtuFmtWK/YLT+KG
- WQqvFUG9/8ren95cRNWgJGIlW0UOvkVZU3VLrOY/gsdErD/83fYU/zDXi
- GV8LY0fe4TBj5CUGbbAuh7xx8yqUencuYfmnNKkur3DSFHxbaIxSw2IgR
- WS9DmHZ/erCTyIqHo1ueotwscRVfQsv/J7sHGY7Yd/8gkGkCBwx4957if
- YvUb6iMZ6poMhusUdWXsk4qClIqcTHMEvOB6TWJLNuHCrqZJHDU31XxdF A==;
-X-CSE-ConnectionGUID: L584RhqPSZqpCqN/h36Zcg==
-X-CSE-MsgGUID: S1oHY0jfSlqu2HK1Ljv2wQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="49578509"
-X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="49578509"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 09:29:04 -0800
-X-CSE-ConnectionGUID: 7HKS8FUbRLSDqfe05KwrRw==
-X-CSE-MsgGUID: ZPcQCVp2RTCaHG/9x6rIkA==
+ t=1738350055; x=1769886055;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=wDiYURF/JCJZWjIxIQzbqRo10HCgr+6jxYHs4rljgHs=;
+ b=R9omZQP19m04Yl0wJMMwJ5iPwp4cCg2PFFje+lGhtiPRAbm6rsmonBkE
+ Eq2FMRnEtzWw68EDFWuziTitfdqG/1OkuCjaKVVkz9XTMLMljbE7CWhXd
+ 26rCMvkEn8bQs5ZBu/kxemxpkuH24Pcxhl5g6hzaWvQjP/7GppyvNEz5I
+ LdIe7zObVhub/DcSI3wHHKpVr17vvgg8fXs441Rxm0fuEzOzzJLFYU2Q2
+ Rkq26qVwP33FAyiqxpQRnyzXqnE01e297Piynr31yakcN8PZyYp67y6zG
+ ItJx3MG5heCfs8bT9htG7D+Rznmv7xFKFcpxXSg79pDq83qmI2gTADbsH w==;
+X-CSE-ConnectionGUID: bN1ZXPO8SmW/EYzf4wDDng==
+X-CSE-MsgGUID: BO7tckp7RWKgThV4aVtK7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="38630667"
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="38630667"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 11:00:41 -0800
+X-CSE-ConnectionGUID: NhEWkwpuSI6VCTBhO1Gzcw==
+X-CSE-MsgGUID: 90hAMocnQh2IHcfRwozb2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="114683403"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 09:29:02 -0800
-Date: Fri, 31 Jan 2025 18:28:48 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: Re: [PATCH i-g-t 2/3] tests/intel/xe_create: Stop treating the
- extension field as MBZ
-Message-ID: <20250131172848.btsuno7ilopsoaud@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- igt-dev@lists.freedesktop.org,
- Alan Previn <alan.previn.teres.alexis@intel.com>
-References: <20250130221457.1092670-1-daniele.ceraolospurio@intel.com>
- <20250130221457.1092670-3-daniele.ceraolospurio@intel.com>
- <20250131125928.ivnojwqamlsvem6s@kamilkon-desk.igk.intel.com>
- <008c9383-5022-4f5e-8a85-022100d15242@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="114855371"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 11:00:40 -0800
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 0/2] tests/kms_atomic: Free up CRC resources
+Date: Sat,  1 Feb 2025 00:46:11 +0530
+Message-Id: <20250131191613.447979-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <008c9383-5022-4f5e-8a85-022100d15242@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,61 +65,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Daniele,
-On 2025-01-31 at 09:09:43 -0800, Daniele Ceraolo Spurio wrote:
-> 
-> 
-> On 1/31/2025 4:59 AM, Kamil Konieczny wrote:
-> > Hi Daniele,
-> > On 2025-01-30 at 14:14:56 -0800, Daniele Ceraolo Spurio wrote:
-> > > A new extension for the xe_create ioctl will be added to support PXP [1],
-> > > so in preparation for that to be merged stop expecting the field to always
-> > > be zero.
-> > > 
-> > > [1] https://patchwork.freedesktop.org/patch/634550/
-> > Please add also lore.kernel.org link (could be done at merge)
-> > here and in next patch, Thanks!
-> 
-> Should I just replace this link instead of adding a new one?
+Add necessary checks to ensure proper cleanup CRC.
 
-Write both links or only lore, up to you.
-Please note that sometimes links get lost so it could help giving
-also a subject of patch(series) (for example above in next line
-after [1]).
+Naladala Ramanaidu (2):
+  tests/kms_atomic: Add necessary checks to ensure proper cleanup
+  HAX patch do not merge
 
-Regards,
-Kamil
+ tests/intel-ci/fast-feedback.testlist    | 168 +-------------
+ tests/intel-ci/xe-fast-feedback.testlist | 273 +----------------------
+ tests/kms_atomic.c                       |  10 +
+ 3 files changed, 12 insertions(+), 439 deletions(-)
 
-> 
-> Thanks,
-> Daniele
-> 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-> > > Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> > > ---
-> > >   tests/intel/xe_create.c | 5 -----
-> > >   1 file changed, 5 deletions(-)
-> > > 
-> > > diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> > > index e3be6b774..e3ebb9fd4 100644
-> > > --- a/tests/intel/xe_create.c
-> > > +++ b/tests/intel/xe_create.c
-> > > @@ -243,11 +243,6 @@ static void create_invalid_mbz(int fd)
-> > >   	gem_close(fd, create.handle);
-> > >   	create.handle = 0;
-> > > -	/* No supported extensions yet */
-> > > -	create.extensions = -1;
-> > > -	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
-> > > -	create.extensions = 0;
-> > > -
-> > >   	/* Make sure KMD rejects non-zero padding/reserved fields */
-> > >   	for (i = 0; i < ARRAY_SIZE(create.pad); i++) {
-> > >   		create.pad[i] = -1;
-> > > -- 
-> > > 2.43.0
-> > > 
-> 
+-- 
+2.25.1
+
