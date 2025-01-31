@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A85FC0218F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 19:40:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64ACAC0218F
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 20:29:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C98EF10E1D1;
-	Fri, 31 Jan 2025 19:40:15 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF87C10E1D1;
- Fri, 31 Jan 2025 19:40:14 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7829349680873417161=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 08CF210E19C;
+	Fri, 31 Jan 2025 20:29:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZG/1ETro";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C23CF10E19C
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 20:29:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738355383; x=1769891383;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=EpUphCBTEcS0Otwixd15nkOXQiM26wyLkDnf+9bUQW4=;
+ b=ZG/1ETrovaSAeJ8mOeDC1Vio3NC3Qx7paafiSDOyp1BnL45cxnvgFtmh
+ I1J4TnjRfCEV6XKDWHHLwgcjHF5p8hPDATNd5nL7pe3MaohdR8KRBXVYk
+ aQAuOembibFH35U1z7wQoEYNlNdMXmWaLf+Z0GL+KuGIjZh8D/M7PGJE8
+ Wd13hyE4XOxetF5Ng0llOH329U+BNICN35NE7VyXB5BmBmcRmb+q4Eu+n
+ h2T+DlZlbX54eTJHyn1wMtZoH1bZ+dWrlM2Yd7cru9XTDQb/oRSetaz+Q
+ IRAHSeX3/9Tf3q2FHnz6zQQ3svZSwKWPJxcBZkMvin9kyDu4+tFYkPBtP Q==;
+X-CSE-ConnectionGUID: Lct2eQIkSrqvAsLS9Vra3A==
+X-CSE-MsgGUID: REcViPEATumuah6X7j9ODg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="56361409"
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="56361409"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 12:29:43 -0800
+X-CSE-ConnectionGUID: 9BUhkU/6T421lD0yp2awVw==
+X-CSE-MsgGUID: DtlgpvZHRS+bgNt8tga3pQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="109659434"
+Received: from dut2949atsm.iind.intel.com ([10.49.63.13])
+ by orviesa006.jf.intel.com with ESMTP; 31 Jan 2025 12:29:42 -0800
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org,
+	sai.gowtham.ch@intel.com
+Subject: [PATCH 0/2] Extend intel_error_decode tool to work with xe
+Date: Fri, 31 Jan 2025 20:29:38 +0000
+Message-Id: <20250131202940.1124460-1-sai.gowtham.ch@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=3A_Free_?=
- =?utf-8?q?up_CRC_resources?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 31 Jan 2025 19:40:14 -0000
-Message-ID: <173835241484.3301340.4636648693136986886@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250131191613.447979-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20250131191613.447979-1-ramanaidu.naladala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,162 +61,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7829349680873417161==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-== Series Details ==
+This Series has changes of lib support of error dumps decode for xe,
+intel_error_decode_xe has wrappers which reads the xe dumps and prints
+details of the error dumps, just like we had for i915.
 
-Series: tests/kms_atomic: Free up CRC resources
-URL   : https://patchwork.freedesktop.org/series/144203/
-State : success
+These libs had being  extended in existing intel_error_decode tool, to
+make them work for decoding of xe dumps.
 
-== Summary ==
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-CI Bug Log - changes from XEIGT_8219_BAT -> XEIGTPW_12529_BAT
-====================================================
+Sai Gowtham Ch (2):
+  lib/xe/intel_error_decode_xe: error decode support for xe driver
+  tools/intel_error_decode: Enable support for xe driver in the tool
 
-Summary
--------
+ lib/meson.build                    |   1 +
+ lib/xe/intel_error_decode_xe.c     | 287 +++++++++++++++++++++++++++++
+ lib/xe/intel_error_decode_xe_lib.h |  26 +++
+ tools/intel_error_decode.c         | 156 +++++++++++-----
+ 4 files changed, 421 insertions(+), 49 deletions(-)
+ create mode 100644 lib/xe/intel_error_decode_xe.c
+ create mode 100644 lib/xe/intel_error_decode_xe_lib.h
 
-  **SUCCESS**
+-- 
+2.34.1
 
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-New tests
----------
-
-  New tests have been introduced between XEIGT_8219_BAT and XEIGTPW_12529_BAT:
-
-### New IGT tests (1) ###
-
-  * igt@kms_atomic@plane-immutable-zpos@pipe-a-dp-3:
-    - Statuses : 1 pass(s)
-    - Exec time: [1.73] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12529_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_atomic@plane-immutable-zpos:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#2463])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-adlp-vf/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-atsm-2:         NOTRUN -> [SKIP][2] ([Intel XE#1024])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-atsm-2/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#3419])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-bmg-2/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-lnl-2:          NOTRUN -> [SKIP][4] ([Intel XE#2235])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-lnl-2/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#1024])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-pvc-2/igt@kms_atomic@plane-immutable-zpos.html
-
-  
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
-  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
-  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
-
-
-Build changes
--------------
-
-  * IGT: IGT_8219 -> IGTPW_12529
-
-  IGTPW_12529: eada2b49181e06e8d3ed1916acea2728b8ffc878 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8219: d92c8eadff2a4e5b4d90cf8c8c52936263d29394 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2583-12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a: 12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/index.html
-
---===============7829349680873417161==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic: Free up CRC resources</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144203/">https://patchwork.freedesktop.org/series/144203/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8219_BAT -&gt; XEIGTPW_12529_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8219_BAT and XEIGTPW_12529_BAT:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@kms_atomic@plane-immutable-zpos@pipe-a-dp-3:<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [1.73] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12529_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_atomic@plane-immutable-zpos:<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-adlp-vf/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>)</li>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-atsm-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</li>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-bmg-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>)</li>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-lnl-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>)</li>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-pvc-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8219 -&gt; IGTPW_12529</li>
-</ul>
-<p>IGTPW_12529: eada2b49181e06e8d3ed1916acea2728b8ffc878 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8219: d92c8eadff2a4e5b4d90cf8c8c52936263d29394 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2583-12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a: 12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a</p>
-
-</body>
-</html>
-
---===============7829349680873417161==--
