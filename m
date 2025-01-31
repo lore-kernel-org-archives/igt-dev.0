@@ -4,64 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4166C0218F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 13:20:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82981C02192
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 14:27:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59E5210E0D6;
-	Fri, 31 Jan 2025 13:20:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F8C610E1EC;
+	Fri, 31 Jan 2025 14:27:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nU1dqzGb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AV2FV02T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B13C310E0D6;
- Fri, 31 Jan 2025 13:20:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E270E10E1EC
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 14:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738329637; x=1769865637;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=2gEK3Cb9hDt2qG3j0O7vjscRXRPJ83prGAXMUxSW8pQ=;
- b=nU1dqzGbB2OWdgT52DrLUaRcrpfp4nD/Oqe4hIeoCJupkJct3pzJQS7I
- nCYAE4G22upr8nFYpcFoySoWmDFKZ87QCoKBqe2OEgYII7M6Npc2rcAcu
- ev+A1RGEmoYz9HnK1dfQT75jINyLi4lNEvVshC5BUkQjxJZyg9AGAPzuy
- WCN9G7kdxuHivsH/to6IcBUMrSloLEGptaAKFZ4q94plGcIBbfwftPR+C
- zRzNeAci35rD0e3ZdRGtkk+v2md9KY/EWMElea/H8gjkvlxJ4OytxDsX6
- PuKqIurXbVhaHbC471EY3Y7pZxyHwrcou3XVxxtcqOxHE0CyeushlN0/2 w==;
-X-CSE-ConnectionGUID: v4XwJmlvSWKkDe1C0o4CQQ==
-X-CSE-MsgGUID: frDhinfiTFiXyzqekqFIoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="38778971"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="38778971"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 05:20:37 -0800
-X-CSE-ConnectionGUID: TCTEr135SH2RHKMnM/gKsA==
-X-CSE-MsgGUID: aJYWC4KnQwylvhPjEWUBFQ==
+ t=1738333641; x=1769869641;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5smfggSkvb2/SWrVQ2um2r5/aoOtbf41cQdRcUXJz68=;
+ b=AV2FV02TFUX0LD2wNvAOHSozSwrU2pW3xTlQS+ckwl+Jtp0P+dqWul64
+ wzegF8U8NeAyh56G9g8djJBYeY2NaOHXcBonAE27e6y01OOCwxP7gahCO
+ aALmrXSzj8XFlXWoIh9LC0m/px9wSM+VUyW0Oh+BoTlDQlWV0e2ouEDIt
+ Y4USv5VbvhsE1XeLH4hDBvVDDmrZy+ZeXBudHXPVB1bmYm/CshQMJKCuU
+ IqxSdUkbEpusMKCvf2ztbCOG2T+HrPbymWNd/xJvPKZ4NKgNM+ZWkCuuS
+ Z5CMCn/1u3ZEkU69D33zWSzS5WnPiJTOGxeIzlfx1SrLqIR/fhbQdeX4A w==;
+X-CSE-ConnectionGUID: +36cJmm/TDihePVTzYjWog==
+X-CSE-MsgGUID: EthfKCatSMOj7Y1Wy/xNyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="41734416"
+X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="41734416"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 06:27:20 -0800
+X-CSE-ConnectionGUID: 3Y4pPFLLSnalq1RhbAdAXg==
+X-CSE-MsgGUID: dwRxk2Y0RbS5wh38/552Ew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="140513698"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 05:20:35 -0800
-Date: Fri, 31 Jan 2025 14:20:33 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Riana Tauro <riana.tauro@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [PATCH i-g-t v7 3/3] tests/xe/pmu: Add pmu tests for gt-c6
-Message-ID: <20250131132033.zdkvyozu7qobob4b@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-References: <20250130213028.3852086-1-vinay.belgaumkar@intel.com>
- <20250130213028.3852086-4-vinay.belgaumkar@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110088180"
+Received: from dut7077atsm.jf.intel.com ([10.75.201.71])
+ by orviesa007.jf.intel.com with ESMTP; 31 Jan 2025 06:27:18 -0800
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
+ zbigniew.kempczynski@intel.com, matthew.d.roper@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_multi_tile: Multi-Tile support in IGT
+Date: Fri, 31 Jan 2025 14:27:12 +0000
+Message-Id: <20250131142712.86716-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250130213028.3852086-4-vinay.belgaumkar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,208 +65,245 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vinay,
-On 2025-01-30 at 13:30:28 -0800, Vinay Belgaumkar wrote:
-> Simple tests for validating the PMU implementation for GT C6
-> residencies.
-> 
-> v2: Rename rc6-residency-* to gt-c6-residency and remove freq tests.
-> v3: Keep just gt-c6 tests, add frequency tests later.
-> v4: Review comments (Riana)
-> v5: Review comments (Lucas)
-> 
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> ---
->  tests/intel/xe_pmu.c | 149 +++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build    |   1 +
->  2 files changed, 150 insertions(+)
->  create mode 100644 tests/intel/xe_pmu.c
-> 
-> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-> new file mode 100644
-> index 000000000..44589cb86
-> --- /dev/null
-> +++ b/tests/intel/xe_pmu.c
-> @@ -0,0 +1,149 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Test Xe PMU functionality
-> + * Category: Perf Monitoring Unit
-> + * Mega feature: Perf Monitoring Unit
-> + * Sub-category: Telemetry
-> + * Functionality: Power/Perf
-> + * Test category: Functional tests
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Sort this alphabetically, also add description with PMU deciphered:
+Added functionality to get Tile ID, GT ID, GT belongs to which tile ID
+in multi-tile/single-tile platforms. Added functionality to check if any
+tile_ID information not provided by driver. E.g.tile available in platforms in order tile0,
+tile1...tileX in serial order, If tile1 tile2 tile4...tileX populated
+than will get Warning tile3 not available.
 
- * Description: Tests Performance Monitoring Unit PMU
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ lib/igt_sysfs.c             |   3 +-
+ tests/intel/xe_multi_tile.c | 191 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 3 files changed, 194 insertions(+), 1 deletion(-)
+ create mode 100644 tests/intel/xe_multi_tile.c
 
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 00d5822fd..37f1716e2 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -234,7 +234,8 @@ char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen)
+ 
+ 	if (IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)))
+ 		snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d",
+-			 major(st.st_rdev), minor(st.st_rdev), gt, gt);
++			 major(st.st_rdev), minor(st.st_rdev),
++			 xe_gt_get_tile_id(xe_device, gt), gt);
+ 	else
+ 		snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile0/gt%d",
+ 			 major(st.st_rdev), minor(st.st_rdev), gt);
+diff --git a/tests/intel/xe_multi_tile.c b/tests/intel/xe_multi_tile.c
+new file mode 100644
+index 000000000..7ca40f1fe
+--- /dev/null
++++ b/tests/intel/xe_multi_tile.c
+@@ -0,0 +1,191 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ *
++ * Authors:
++ *      Nishit Sharma <nishit.sharma@intel.com>
++ */
++
++#include <dirent.h>
++#include <fcntl.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "igt.h"
++#include "igt_sysfs.h"
++
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#define MAX_TILES	8
++#define MAX_SLICES	2
++
++struct xe_gt_info {
++	/** @type: GT type: Main or Media */
++	uint16_t type;
++
++	/** @tile_id: Tile ID where this GT lives (Information only) */
++	uint16_t  tile_id;
++
++	/** @gt_id: Unique ID of this GT within the PCI Device */
++	uint16_t gt_id;
++};
++
++/** @info: tile-gt info */
++struct xe_tile_info {
++	uint8_t tile_count;
++	uint8_t gt_count;
++	uint8_t mis_tile:1;
++	uint8_t mis_tile_id;
++	struct xe_gt_info gt_info[];
++};
++
++/**
++ * TEST: Test to get tile_id by iterating gt on xe
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: mapping tile/s with slices available
++ * Functionality: gt operation
++ */
++
++/**
++ * SUBTEST: show-tile-info
++ * SUBTEST: gt-configuration
++ * Description: Test iniitialize xe_tile_info structure with tile_id
++ * Test category: functionality test
++ *
++ */
++struct drm_xe_query_gt_list *xe_gt_list(int fd)
++{
++	struct drm_xe_query_gt_list *gt_list;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_GT_LIST,
++		.size = 0,
++		.data = 0,
++	};
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_assert_neq(query.size, 0);
++
++	gt_list = malloc(query.size);
++	igt_assert(gt_list);
++
++	query.data = to_user_pointer(gt_list);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	return gt_list;
++}
++
++static void igt_get_gt_info(int fd, struct xe_tile_info *tile_info)
++{
++	uint8_t iteration = 0;
++	uint8_t gt_id = 0;
++
++	igt_info("GT iteration\n");
++
++	for (int tile_id = 0; tile_id < tile_info->tile_count; tile_id++) {
++		for (gt_id += iteration; gt_id < tile_info->gt_count; gt_id++) {
++			if (tile_id == tile_info->gt_info[gt_id].tile_id) {
++				igt_info("GT :gt%d belongs to :tile%d\n",
++						tile_info->gt_info[gt_id].gt_id,
++						tile_info->gt_info[gt_id].tile_id);
++				iteration++;
++			}
++			else {
++				igt_info("GT :gt%d belongs to :tile%d\n",
++						tile_info->gt_info[gt_id].gt_id,
++						tile_info->gt_info[gt_id].tile_id);
++				continue;
++			}
++		}
++	}
++}
++
++static void igt_check_if_missingtile(int fd, struct xe_tile_info *tile_info)
++{
++	if (tile_info->mis_tile == true)
++		igt_warn("Missing :tile%d\n", tile_info->mis_tile_id);
++}
++
++static void igt_check_if_multitile(int fd, struct xe_tile_info *tile_info)
++{
++	igt_info("Check for Multi-tile support in Platform\n");
++
++	igt_skip_on_f(tile_info->tile_count == 0,
++		      "No Tile :%d found in platform\n",
++		      tile_info->tile_count);
++
++	if (tile_info->tile_count == 1)
++		igt_info("Single tile :tile%d found in platform\n",
++			 tile_info->tile_count);
++	else {
++		igt_info("Tile count :%d in Multi-Tile platform\n",
++			 tile_info->tile_count);
++
++		for (int tile_id = 0; tile_id < tile_info->tile_count; tile_id++)
++			igt_info("Tile :tile%d available in platform\n", tile_id);
++	}
++}
++
++static void igt_get_tile_info(int fd, struct drm_xe_query_gt_list *gt_list,
++			 struct xe_tile_info *tile_info)
++{
++	uint8_t tile_mis_count = -1;
++	int prev_tile = -1, tile_id;
++
++	tile_info->tile_count = 0;
++	tile_info->mis_tile = false;
++	for (int index = 0; index < gt_list->num_gt; index++) {
++		tile_id = gt_list->gt_list[index].tile_id;
++		if (prev_tile != tile_id) {
++			if (++tile_mis_count != tile_id) {
++				tile_info->mis_tile = true;
++				tile_info->mis_tile_id = tile_mis_count;
++				tile_mis_count = tile_id;
++			}
++			prev_tile = tile_id;
++			tile_info->tile_count++;
++			tile_info->gt_info[index].tile_id = prev_tile;
++			tile_info->gt_info[index].gt_id = index;
++		}
++		else {
++			tile_info->gt_info[index].tile_id = tile_id;
++			tile_info->gt_info[index].gt_id = index;
++		}
++		tile_info->gt_info[index].type = xe_is_media_gt(fd, index);
++	}
++	tile_info->gt_count = gt_list->num_gt;
++}
++
++igt_main
++{
++	int fd;
++	struct xe_engine_list_entry *en;
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_query_gt_list *gt_list;
++	struct xe_tile_info *tile_info;
++
++	tile_info = malloc(sizeof(*tile_info));
++	igt_assert(tile_info);
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
++	}
++
++	igt_subtest("multi-tile-info") {
++		gt_list = xe_gt_list(fd);
++
++		igt_get_tile_info(fd, gt_list, tile_info);
++		igt_check_if_multitile(fd, tile_info);
++		igt_check_if_missingtile(fd, tile_info);
++		igt_get_gt_info(fd, tile_info);
++	}
++
++	igt_fixture {
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 2724c7a9a..2cc01aa0c 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -292,6 +292,7 @@ intel_xe_progs = [
+ 	'xe_exec_reset',
+ 	'xe_exec_sip',
+ 	'xe_exec_store',
++	'xe_multi_tile',
+ 	'xe_exec_threads',
+ 	'xe_exercise_blt',
+ 	'xe_fault_injection',
+-- 
+2.34.1
 
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <time.h>
-> +#include <errno.h>
-> +#include <dirent.h>
-> +#include <string.h>
-> +#include <sys/time.h>
-
-Sort these headers.
-
-> +
-> +#include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_power.h"
-> +#include "igt_sysfs.h"
-> +#include "igt_perf.h"
-> +
-> +#include "lib/igt_syncobj.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_gt.h"
-> +#include "xe/xe_query.h"
-> +#include "xe/xe_spin.h"
-> +#include "xe/xe_util.h"
-> +
-> +#define SLEEP_DURATION 2 /* in seconds */
-> +const double tolerance = 0.1;
-> +const char *no_debug_data = "\0";
-> +
-> +static int open_pmu(int xe, uint64_t config)
-> +{
-> +	int fd;
-> +
-> +	fd = perf_xe_open(xe, config);
-> +	igt_skip_on(fd < 0 && errno == ENODEV);
-> +	igt_assert(fd >= 0);
-> +
-> +	return fd;
-> +}
-> +
-> +static uint64_t __pmu_read_single(int fd, uint64_t *ts)
-> +{
-> +	uint64_t data[2];
-> +
-> +	igt_assert_eq(read(fd, data, sizeof(data)), sizeof(data));
-> +	if (ts)
-> +		*ts = data[1];
-> +
-> +	return data[0];
-> +}
-> +
-> +static unsigned long read_idle_residency(int fd, int gt)
-> +{
-> +	unsigned long residency = 0;
-> +	int gt_fd;
-> +
-> +	gt_fd = xe_sysfs_gt_open(fd, gt);
-> +	igt_assert(gt_fd >= 0);
-> +	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_residency_ms", "%lu", &residency) == 1);
-> +	close(gt_fd);
-> +
-> +	return residency;
-> +}
-> +
-> +static u64 get_event_config(int xe, unsigned int gt, char *event)
-> +{
-> +	int ret;
-> +	char xe_device[100];
-> +	u64 pmu_config;
-> +	u32 start, end;
-> +
-> +	xe_perf_device(xe, xe_device, sizeof(xe_device));
-> +	ret = perf_event_config(xe_device, event, &pmu_config);
-> +	igt_assert(ret >= 0);
-> +	ret = perf_event_format(xe_device, "gt", &start, &end);
-> +	igt_assert(ret >= 0);
-> +	pmu_config |= (u64) gt << start;
-> +
-> +	return pmu_config;
-> +}
-> +
-> +/**
-> + * SUBTEST: gt-c6-idle
-> + * Description: Basic residency test to validate idle residency
-> + *		measured over a time interval is within the tolerance
-> + */
-> +static void test_gt_c6_idle(int xe, unsigned int gt)
-> +{
-> +	int pmu_fd;
-> +	u64 pmu_config;
-> +	char event[100];
-> +	uint64_t ts[2];
-> +	unsigned long slept, start, end;
-> +	uint64_t val;
-> +
-> +	/* Get the PMU config for the gt-c6 event */
-> +	sprintf(event, "gt-c6-residency");
-> +	pmu_config = get_event_config(xe, gt, event);
-> +
-> +	pmu_fd = open_pmu(xe, pmu_config);
-> +
-> +	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10), "GT %d should be in C6\n", gt);
-> +
-> +	/* While idle check full RC6. */
-> +	start = read_idle_residency(xe, gt);
-> +	val = __pmu_read_single(pmu_fd, &ts[0]);
-> +	slept = igt_measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
-> +	end = read_idle_residency(xe, gt);
-> +	val = __pmu_read_single(pmu_fd, &ts[1]) - val;
-> +
-> +	igt_debug("gt%u: slept=%lu, perf=%"PRIu64"\n",
-> +		  gt, slept,  val);
-> +
-> +	igt_debug("Start res: %lu, end_res: %lu", start, end);
-> +
-> +	assert_within_epsilon(val,
-> +			      (ts[1] - ts[0])/USEC_PER_SEC,
-> +			      tolerance);
-> +	close(pmu_fd);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd, gt;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
-> +	}
-> +
-> +	igt_describe("Validate PMU gt-c6 residency counters when idle");
-> +	igt_subtest("gt-c6-idle")
-> +		xe_for_each_gt(fd, gt)
-> +			test_gt_c6_idle(fd, gt);
-> +
-> +	igt_fixture {
-> +		close(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 33dffad31..d20f50766 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -309,6 +309,7 @@ intel_xe_progs = [
->  	'xe_pat',
->  	'xe_peer2peer',
->  	'xe_pm',
-> +	'xe_pmu',
->  	'xe_pm_residency',
-
-Why not after xe_pm_residency?
-
-Regards,
-Kamil
-
->  	'xe_prime_self_import',
->  	'xe_query',
-> -- 
-> 2.38.1
-> 
