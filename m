@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD94C0218A
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jan 2025 23:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C32C0218A
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 01:22:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 794EB10E9FA;
-	Thu, 30 Jan 2025 23:37:18 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gxf53RwU";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3408610E9FA
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2025 23:37:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738280237; x=1769816237;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1Z+PONyzHhD9s1v3QSbabUywA/rpSvm8BEtSiTU/ezw=;
- b=Gxf53RwU3T2WdbK0kRU5vw0kZY3ANqRU36LTNQKnGuXgTECFXkB/AOZe
- xLhHuOOAsAuoljRZftYcgLEjwUWsIEZZ02lLVWft66avJw17pG2H0OYd8
- Pk6HXBHz3aUsCho5pPCQTafYkawKjg9n4QdhZVGYdPd1Bh8EKkoybjjEq
- UJEDLFtYV0P5s2p0o8H8f5mP5THRzb1MID44RQHxWGwg1g8/uOnf1EghO
- /V8hYSHG+q9TTASMVaICpbhpGErNzHXHum1rdfDRLnR4TSchkd5a8SAOl
- TqZnPu3rRxyrwfrj4s5EQzfgOq1+VXFtv2daNxgIY2MGK9DLyRUV8XMMn g==;
-X-CSE-ConnectionGUID: NZJq2eFzQDugHUpmrZbPQw==
-X-CSE-MsgGUID: NHMzP9/ySamII6LXbt6NPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="56278811"
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="56278811"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2025 15:37:17 -0800
-X-CSE-ConnectionGUID: BgLHjx1KSjGV4mKKJZp8nw==
-X-CSE-MsgGUID: nV76zaobSuuLvs8/jTtnAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,246,1732608000"; d="scan'208";a="109619118"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 15:37:15 -0800
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: mitulkumar.ajitkumar.golani@intel.com, swati2.sharma@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 2/2] tests/kms_vrr: Add DRRS verification in seamless
- RR test
-Date: Fri, 31 Jan 2025 05:22:46 +0530
-Message-Id: <20250130235246.4142758-3-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
-References: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1395710E17F;
+	Fri, 31 Jan 2025 01:22:23 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9568110E116;
+ Fri, 31 Jan 2025 01:22:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7428382370489510225=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_DRRS_verification_in_VR?=
+ =?utf-8?q?R_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 31 Jan 2025 01:22:22 -0000
+Message-ID: <173828654260.3040793.4818290585414238973@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250130235246.4142758-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,85 +37,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check to see if DRRS has switched to a lower refresh rate
-when the display is idle.
+--===============7428382370489510225==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_vrr.c | 43 +++++++++++++++++++++++++++++++++++++------
- 1 file changed, 37 insertions(+), 6 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index fac7cb4f7..731f0c77a 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -707,6 +707,12 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	vtest_ns_t vtest_ns;
- 	uint64_t rate[] = {0};
- 	bool vrr = !!(flags & TEST_SEAMLESS_VRR);
-+	uint64_t last_vb_event_us, vb_event_us;
-+	uint64_t diff_us[5];
-+	uint64_t result_us, min_rate_us;
-+	uint64_t threshold = 1000;
-+	bool drrs_flag;
-+	int i;
- 
- 	igt_info("Use HIGH_RR Mode as default (VRR: %s): ", vrr ? "ON" : "OFF");
- 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-@@ -717,6 +723,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	if (vrr)
- 		set_vrr_on_pipe(data, pipe, false, true);
- 	else {
-+		set_vrr_on_pipe(data, pipe, false, false);
- 		/*
- 		 * Sink with DRRS and VRR can be in downclock mode.
- 		 * so switch to High clock mode as test preparation
-@@ -749,12 +756,36 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
- 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
- 
--	rate[0] = vtest_ns.rate_ns;
--	result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
--	igt_assert_f(vrr ? (result > 75) : (result < 10),
--		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
--		     ((data->range.max + data->range.min) / 2), rate[0],
--		     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
-+	if (vrr) {
-+		rate[0] = vtest_ns.rate_ns;
-+		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
-+		igt_assert_f(vrr ? (result > 75) : (result < 10),
-+			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
-+			     ((data->range.max + data->range.min) / 2), rate[0],
-+			     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
-+	} else {
-+		min_rate_us = (vtest_ns.min/1000);
-+
-+		sleep(5);
-+
-+		last_vb_event_us = vb_event_us = wait_for_vblank(data, pipe);
-+
-+		for (i = 0; i < 5; i++) {
-+			vb_event_us = wait_for_vblank(data, pipe);
-+			diff_us[i] = vb_event_us - last_vb_event_us;
-+			last_vb_event_us = vb_event_us;
-+		}
-+
-+		for (i = 0; i < 5; i++)
-+			result_us += diff_us[i];
-+
-+		result_us = (result_us/5);
-+
-+		drrs_flag = (llabs((long long)(result_us - min_rate_us)) <= threshold);
-+
-+		igt_assert_f(drrs_flag, "DRRS not switch to lower RR\n");
-+		igt_info("DRRS switch to lower RR\n");
-+	}
- }
- 
- static void
--- 
-2.25.1
+Series: Add DRRS verification in VRR test
+URL   : https://patchwork.freedesktop.org/series/144160/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8218_BAT -> XEIGTPW_12523_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 7)
+------------------------------
+
+  Missing    (1): bat-bmg-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12523_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#2229] / [Intel XE#455]) +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#2229])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind:
+    - bat-adlp-vf:        [DMESG-WARN][3] ([Intel XE#3970] / [Intel XE#4078]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8218/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8218/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][7] ([Intel XE#1192]) -> [SKIP][8] ([Intel XE#2229] / [Intel XE#455])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8218/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#4078]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8218 -> IGTPW_12523
+  * Linux: xe-2572-c2a5da40b8b1c5af77dcdabed8516069949fea3b -> xe-2578-0c2a60e7f1e779d87754254d9e3443beedbb684e
+
+  IGTPW_12523: 12523
+  IGT_8218: fafef52e0a83fec5f8c4f8df851d27319467762b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2572-c2a5da40b8b1c5af77dcdabed8516069949fea3b: c2a5da40b8b1c5af77dcdabed8516069949fea3b
+  xe-2578-0c2a60e7f1e779d87754254d9e3443beedbb684e: 0c2a60e7f1e779d87754254d9e3443beedbb684e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/index.html
+
+--===============7428382370489510225==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add DRRS verification in VRR test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144160/">https://patchwork.freedesktop.org/series/144160/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8218_BAT -&gt; XEIGTPW_12523_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 7)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12523_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8218/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078">Intel XE#4078</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8218/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8218/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12523/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8218 -&gt; IGTPW_12523</li>
+<li>Linux: xe-2572-c2a5da40b8b1c5af77dcdabed8516069949fea3b -&gt; xe-2578-0c2a60e7f1e779d87754254d9e3443beedbb684e</li>
+</ul>
+<p>IGTPW_12523: 12523<br />
+  IGT_8218: fafef52e0a83fec5f8c4f8df851d27319467762b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2572-c2a5da40b8b1c5af77dcdabed8516069949fea3b: c2a5da40b8b1c5af77dcdabed8516069949fea3b<br />
+  xe-2578-0c2a60e7f1e779d87754254d9e3443beedbb684e: 0c2a60e7f1e779d87754254d9e3443beedbb684e</p>
+
+</body>
+</html>
+
+--===============7428382370489510225==--
