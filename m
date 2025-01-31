@@ -4,63 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 805E4C02192
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 12:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC589C0218F
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 12:52:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95FE910EA90;
-	Fri, 31 Jan 2025 12:50:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D8CB10EA9C;
+	Fri, 31 Jan 2025 12:52:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I0McaUCu";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDfoyjIX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F63F10EA85
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 12:50:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2F0510EA9C
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 12:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738327823; x=1769863823;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=PH/l2dmFsaHiwubZN5yckJcV4ylsVfhKIig45xNcxmM=;
- b=I0McaUCuEVRTYOEx4jzQxo0CoA+VipveeUqta2VsuMbgpZ1ggwG0fJiN
- 9oo1i93RC4QNBvNDaSdh1kK7nl+l7YmfcLIeO1g5BvrgV8ugpBru3YbMB
- 0EL9c2CAe3p9FvvTdsMYXeUNjw5JycE+bLPfpXx0HZ73iFxMr6zR8xT5b
- a6ZABU5nigNx3x0OavCtve5atdcyp3iePRbjpQ/YGGGyAYiv0PsVc7o7K
- fk1eyUWck9Ts/paJgb5OBS1KpVefsgUfXlJnydhnyqkAtjAoBF0xhrLn5
- FwPE/hcuLbrAI1v6EDaUGUDkwt5pjEUthJxiWEzal85tdBXp6jEIug/wu g==;
-X-CSE-ConnectionGUID: iVqGETMXTbWh7P5c6OdRmQ==
-X-CSE-MsgGUID: e+oO4lNgRqasQIFTYyMkTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="42645156"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="42645156"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 04:50:23 -0800
-X-CSE-ConnectionGUID: ZID9CedkT2iCigr2qv3tBg==
-X-CSE-MsgGUID: KwfDAn7dSkC3jyix08s8AQ==
+ t=1738327928; x=1769863928;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=pZKUd3EeRrcMsMyERSqU6GD9ESndXOyCy9L2ftBE0RU=;
+ b=aDfoyjIXUPk3TkEp7yXr04kj/7mzxs1txPXkmJ/TdsMrM2MSbktQkiOu
+ wQW2WeR+nd18v18e43e+YdD/5VxGGpQ3fHLyIQqm4sGZkt12kyIyJdx4Z
+ +tIkAIaxhNeO2Y5eePexTOYTF5CNpNr+lyR3W9/V97fSYkdGxbjNJHnLS
+ y0tEVG3BnfH1XwHZr2cyvm4l8Nig1plyLhHAhUIB8UCYm/c2LhNOFdZ3f
+ l1L4UftCKAIn7BFBQ8OLGVtVcY1rRjBd/4ryozrH4UvC/2kI5WxiiyQap
+ N6g8PMz3EGjJUWNf2uFXTo5Os5hyhrjD22Xf6g4IFZ+iEh0mgobNS1yJl w==;
+X-CSE-ConnectionGUID: RFSBFVsDSUaMS59oArnxAg==
+X-CSE-MsgGUID: cqgPCWKWRUWgw85wuNcPAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="38599614"
+X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="38599614"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 04:52:08 -0800
+X-CSE-ConnectionGUID: vyfaV8Q5RfSIudTixyZdXQ==
+X-CSE-MsgGUID: iLOH3Z0STz+EcZG+a9FKmA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="132879276"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 04:50:21 -0800
-Date: Fri, 31 Jan 2025 13:50:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110500323"
+Received: from dprybysh-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.246.151])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 04:52:06 -0800
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- ryszard.knop@intel.com, lucas.demarchi@intel.com,
- katarzyna.piecielska@intel.com, Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: Re: [PATCH i-g-t v4 2/2] runner/executor: Integrate igt_kmemleak scans
-Message-ID: <20250131125018.daqboesdcfuvsqrw@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- ryszard.knop@intel.com, lucas.demarchi@intel.com,
- katarzyna.piecielska@intel.com,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-References: <20250128151537.515639-1-peter.senna@linux.intel.com>
- <20250128151537.515639-3-peter.senna@linux.intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t,
+ v4] lib/intel_compute: Use LR mode for compute when using Xe
+Date: Fri, 31 Jan 2025 13:51:56 +0100
+Message-ID: <20250131125156.577530-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250128151537.515639-3-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,324 +69,292 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-01-28 at 16:15:37 +0100, Peter Senna Tschudin wrote:
-> Modifies igt_runner to include calls to igt_kmemleak(). Kmemleak
-> scanning is disabled by default, so add command line options to
-> igt_runner to enable kmemleak scanning:  -k, -k<option>, --kmemleak,
-> --kmemleak=<option>. The options are:
->  - once: run one kmemleak scan after all tests from the test-list
->          complete.
->  - each: run one kmemleak scan after each test completes.
-> 
-> If kmemleaks are found they will be saved to the igt_runner results
-> directory in a file named kmemleak.txt.
-> 
-> Updates serialize_settings() and read_settings_from_file() to save
-> and restore igt_runner settings to and from disk. This is used when
-> calling igt_runner with '--dry-run' and then by calling igt_resume
-> instead of igt_runner.
-> 
-> Updates unit testing for igt_runner to test that:
->  - Kmemleak scans are disabled by default
->  - Kmemleak scans  be enabled by command line arguments
->  - The choice about kmemleaks being enabled or not is saved to disk
->    and restored from disk
-> 
-> CC: ryszard.knop@intel.com
-> CC: lucas.demarchi@intel.com
-> CC: katarzyna.piecielska@intel.com
-> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> ---
->  runner/executor.c     | 25 +++++++++++++++++++++++--
->  runner/runner_tests.c | 16 +++++++++++++++-
->  runner/settings.c     | 31 ++++++++++++++++++++++++++++++-
->  runner/settings.h     |  2 ++
->  4 files changed, 70 insertions(+), 4 deletions(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 999e7f719..992366312 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -31,6 +31,7 @@
->  #include "igt_aux.h"
->  #include "igt_core.h"
->  #include "igt_facts.h"
-> +#include "igt_kmemleak.h"
->  #include "igt_taints.h"
->  #include "igt_vec.h"
->  #include "executor.h"
-> @@ -2370,6 +2371,13 @@ bool execute(struct execute_state *state,
->  	if (settings->facts)
->  		igt_facts_lists_init();
->  
-> +	if (settings->kmemleak)
-> +		if (!igt_kmemleak_init(NULL)) {
-> +			errf("Failed to initialize kmemleak. Is kernel support enabled?\n");
-> +			errf("Disabling kmemleak on igt_runner and continuing...\n");
+When Xe is used, create the VM in LR mode as this is what the
+compute UMD does to run compute kernels. This makes those tests
+more representative of real world scenarios. A side effect is
+that user fences must be used.
 
-Make it one errf() call, split string if needed.
+v2: Minimize changes, stick to xe_vm_bind_userptr_async()
 
-> +			settings->kmemleak = settings->kmemleak_each = false;
+v3: Also use user fences in preempt exec
 
-Avoid this, write two assinments here.
+v4: Do not rely on user pointers due to atomics use in sip,
+    Fix waiting times and order in preempt exec (Zbigniew)
 
-> +		}
-> +
->  	if (state->next >= job_list->size) {
->  		outf("All tests already executed.\n");
->  		return true;
-> @@ -2497,10 +2505,18 @@ bool execute(struct execute_state *state,
->  		bool already_written = false;
->  
->  		/* Collect facts before running each test */
-> -		if (settings->facts) {
-> +		if (settings->facts)
->  			igt_facts(last_test);
-> +
-> +		if (settings->kmemleak_each)
-> +			if (!igt_kmemleak(last_test, resdirfd,
-> +					  settings->kmemleak_each,
-> +					  settings->sync))
-> +				errf("Failed to collect kmemleak logs after %s\n",
-> +				     last_test);
-> +
-> +		if (settings->facts || settings->kmemleak_each)
->  			last_test = entry_display_name(&job_list->entries[state->next]);
-> -		}
->  
->  		if (should_die_because_signal(sigfd)) {
->  			status = false;
-> @@ -2595,6 +2611,11 @@ bool execute(struct execute_state *state,
->  	if (settings->facts)
->  		igt_facts(last_test);
->  
-> +	if (settings->kmemleak)
-> +		if (!igt_kmemleak(last_test, resdirfd,
-> +				  settings->kmemleak_each, settings->sync))
-> +			errf("Failed to collect kmemleak logs after the last test\n");
-> +
->  	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
->  		dprintf(timefd, "%f\n", timeofday_double());
->  		close(timefd);
-> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-> index 8441763f2..769fa2929 100644
-> --- a/runner/runner_tests.c
-> +++ b/runner/runner_tests.c
-> @@ -191,6 +191,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
->  	igt_assert_eq(one->dry_run, two->dry_run);
->  	igt_assert_eq(one->allow_non_root, two->allow_non_root);
->  	igt_assert_eq(one->facts, two->facts);
-> +	igt_assert_eq(one->kmemleak, two->kmemleak);
->  	igt_assert_eq(one->sync, two->sync);
->  	igt_assert_eq(one->log_level, two->log_level);
->  	igt_assert_eq(one->overwrite, two->overwrite);
-> @@ -304,6 +305,7 @@ igt_main
->  		igt_assert(igt_list_empty(&settings->env_vars));
->  		igt_assert(!igt_vec_length(&settings->hook_strs));
->  		igt_assert(!settings->facts);
-> +		igt_assert(!settings->kmemleak);
->  		igt_assert(!settings->sync);
->  		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
->  		igt_assert(!settings->overwrite);
-> @@ -426,6 +428,7 @@ igt_main
->  		igt_assert_eq(settings->include_regexes.size, 0);
->  		igt_assert_eq(settings->exclude_regexes.size, 0);
->  		igt_assert(!settings->facts);
-> +		igt_assert(!settings->kmemleak);
->  		igt_assert(!settings->sync);
->  		igt_assert_eq(settings->log_level, LOG_LEVEL_NORMAL);
->  		igt_assert(!settings->overwrite);
-> @@ -464,6 +467,7 @@ igt_main
->  				       "-b", blacklist_name,
->  				       "--blacklist", blacklist2_name,
->  				       "-f",
-> +				       "-k",
->  				       "-s",
->  				       "-l", "verbose",
->  				       "--overwrite",
-> @@ -523,6 +527,7 @@ igt_main
->  		igt_assert_eqstr(*((char **)igt_vec_elem(&settings->hook_strs, 1)), "echo world");
->  
->  		igt_assert(settings->facts);
-> +		igt_assert(settings->kmemleak);
->  		igt_assert(settings->sync);
->  		igt_assert_eq(settings->log_level, LOG_LEVEL_VERBOSE);
->  		igt_assert(settings->overwrite);
-> @@ -718,6 +723,7 @@ igt_main
->  	igt_subtest("parse-clears-old-data") {
->  		const char *argv[] = { "runner",
->  				       "-n", "foo",
-> +				       "--overwrite",
+CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ lib/intel_compute.c | 164 +++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 133 insertions(+), 31 deletions(-)
 
-Do not make unrelated changes, add only kmemleak.
-You also didn't write about this change in description, if you
-think it is a fix it should go in separate patch, not here.
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index f1520aad4..3defe92e5 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -27,6 +27,8 @@
+ #define SIZE_BATCH			0x1000
+ #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
+ #define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
++#define ADDR_SYNC			0x010000ULL
++#define ADDR_SYNC2			0x020000ULL
+ #define ADDR_BATCH			0x100000ULL
+ #define ADDR_INPUT			0x200000ULL
+ #define ADDR_OUTPUT			0x300000ULL
+@@ -43,6 +45,8 @@
+ #define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000ULL
+ #define OFFSET_STATE_SIP			0xFFFF0000
+ 
++#define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
++
+ /*
+  * TGP  - ThreadGroup Preemption
+  * WMTP - Walker Mid Thread Preemption
+@@ -58,6 +62,10 @@ struct bo_dict_entry {
+ 	uint32_t handle;
+ };
+ 
++struct bo_sync {
++	uint64_t sync;
++};
++
+ struct bo_execenv {
+ 	int fd;
+ 	enum intel_driver driver;
+@@ -81,7 +89,7 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
+ 	execenv->driver = get_intel_driver(fd);
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+-		execenv->vm = xe_vm_create(fd, 0, 0);
++		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 
+ 		if (eci) {
+ 			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
+@@ -107,8 +115,8 @@ static void bo_execenv_destroy(struct bo_execenv *execenv)
+ 	igt_assert(execenv);
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+-		xe_vm_destroy(execenv->fd, execenv->vm);
+ 		xe_exec_queue_destroy(execenv->fd, execenv->exec_queue);
++		xe_vm_destroy(execenv->fd, execenv->vm);
+ 	}
+ }
+ 
+@@ -119,18 +127,32 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+ 		uint32_t vm = execenv->vm;
+-		uint64_t alignment = xe_get_default_alignment(fd);
+-		struct drm_xe_sync sync = { 0 };
+-
+-		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+-		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
+-		sync.handle = syncobj_create(fd, 0);
++		uint32_t exec_queue = execenv->exec_queue;
++		struct bo_sync *bo_sync;
++		size_t bo_size = sizeof(*bo_sync);
++		uint32_t bo = 0;
++		struct drm_xe_sync sync = {
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE,
++		};
++
++		bo_size = xe_bb_size(fd, bo_size);
++		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		bo_sync = xe_bo_map(fd, bo, bo_size);
++		sync.addr = to_user_pointer(&bo_sync->sync);
+ 
+ 		for (int i = 0; i < entries; i++) {
+-			bo_dict[i].data = aligned_alloc(alignment, bo_dict[i].size);
+-			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(bo_dict[i].data),
+-						 bo_dict[i].addr, bo_dict[i].size, &sync, 1);
+-			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
++			bo_sync->sync = 0;
++			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
++							 vram_if_possible(fd, 0),
++							 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
++			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
++					 bo_dict[i].size, &sync, 1);
++			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
++				       INT64_MAX);
+ 			memset(bo_dict[i].data, 0, bo_dict[i].size);
+ 
+ 			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
+@@ -139,7 +161,8 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 				  (long long)bo_dict[i].size);
+ 		}
+ 
+-		syncobj_destroy(fd, sync.handle);
++		munmap(bo_sync, bo_size);
++		gem_close(fd, bo);
+ 	} else {
+ 		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
+ 		struct drm_i915_gem_exec_object2 *obj;
+@@ -177,19 +200,33 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+ 		uint32_t vm = execenv->vm;
+-		struct drm_xe_sync sync = { 0 };
+-
+-		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+-		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
+-		sync.handle = syncobj_create(fd, 0);
++		uint32_t exec_queue = execenv->exec_queue;
++		struct bo_sync *bo_sync;
++		size_t bo_size = sizeof(*bo_sync);
++		uint32_t bo = 0;
++		struct drm_xe_sync sync = {
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE,
++		};
++
++		bo_size = xe_bb_size(fd, bo_size);
++		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		bo_sync = xe_bo_map(fd, bo, bo_size);
++		sync.addr = to_user_pointer(&bo_sync->sync);
+ 
+ 		for (int i = 0; i < entries; i++) {
++			bo_sync->sync = 0;
+ 			xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
+-			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
+-			free(bo_dict[i].data);
++			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
++				       INT64_MAX);
++			munmap(bo_dict[i].data, bo_dict[i].size);
++			gem_close(fd, bo_dict[i].handle);
+ 		}
+ 
+-		syncobj_destroy(fd, sync.handle);
++		munmap(bo_sync, bo_size);
++		gem_close(fd, bo);
+ 	} else {
+ 		for (int i = 0; i < entries; i++) {
+ 			gem_close(fd, bo_dict[i].handle);
+@@ -204,7 +241,32 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
+ 	int fd = execenv->fd;
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+-		xe_exec_wait(fd, execenv->exec_queue, start_addr);
++		uint32_t exec_queue = execenv->exec_queue;
++		struct bo_sync *bo_sync;
++		size_t bo_size = sizeof(*bo_sync);
++		uint32_t bo = 0;
++		struct drm_xe_sync sync = {
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE,
++		};
++
++		bo_size = xe_bb_size(fd, bo_size);
++		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		bo_sync = xe_bo_map(fd, bo, bo_size);
++		sync.addr = to_user_pointer(&bo_sync->sync);
++		xe_vm_bind_async(fd, execenv->vm, 0, bo, 0, ADDR_SYNC, bo_size, &sync, 1);
++		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
++
++		sync.addr = ADDR_SYNC;
++		bo_sync->sync = 0;
++
++		xe_exec_sync(fd, exec_queue, start_addr, &sync, 1);
++		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
++
++		munmap(bo_sync, bo_size);
++		gem_close(fd, bo);
+ 	} else {
+ 		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
+ 		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
+@@ -1803,15 +1865,22 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	float *dinput;
+ 	unsigned int long_kernel_loop_count;
+ 	struct drm_xe_sync sync_long = {
+-		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+ 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+-		.handle = syncobj_create(fd, 0),
++		.timeline_value = USER_FENCE_VALUE,
+ 	};
++	struct bo_sync *bo_sync_long;
++	size_t bo_size_long = sizeof(*bo_sync_long);
++	uint32_t bo_long = 0;
+ 	struct drm_xe_sync sync_short = {
+-		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+ 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+-		.handle = syncobj_create(fd, 0),
++		.timeline_value = USER_FENCE_VALUE,
+ 	};
++	struct bo_sync *bo_sync_short;
++	size_t bo_size_short = sizeof(*bo_sync_short);
++	uint32_t bo_short = 0;
++	int64_t timeout_short = 1;
+ 
+ 	if (threadgroup_preemption)
+ 		long_kernel_loop_count = TGP_long_kernel_loop_count;
+@@ -1824,6 +1893,32 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	bo_execenv_create(fd, &execenv_short, eci);
+ 	bo_execenv_create(fd, &execenv_long, eci);
+ 
++	/* Prepare sync object for long */
++	bo_size_long = xe_bb_size(fd, bo_size_long);
++	bo_long = xe_bo_create(fd, execenv_long.vm, bo_size_long, vram_if_possible(fd, 0),
++			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bo_sync_long = xe_bo_map(fd, bo_long, bo_size_long);
++	sync_long.addr = to_user_pointer(&bo_sync_long->sync);
++	xe_vm_bind_async(fd, execenv_long.vm, 0, bo_long, 0, ADDR_SYNC, bo_size_long,
++			 &sync_long, 1);
++	xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE, execenv_long.exec_queue,
++		       INT64_MAX);
++	bo_sync_long->sync = 0;
++	sync_long.addr = ADDR_SYNC;
++
++	/* Prepare sync object for short */
++	bo_size_short = xe_bb_size(fd, bo_size_short);
++	bo_short = xe_bo_create(fd, execenv_short.vm, bo_size_short, vram_if_possible(fd, 0),
++			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bo_sync_short = xe_bo_map(fd, bo_short, bo_size_short);
++	sync_short.addr = to_user_pointer(&bo_sync_short->sync);
++	xe_vm_bind_async(fd, execenv_short.vm, 0, bo_short, 0, ADDR_SYNC2, bo_size_short,
++			 &sync_short, 1);
++	xe_wait_ufence(fd, &bo_sync_short->sync, USER_FENCE_VALUE, execenv_short.exec_queue,
++		       INT64_MAX);
++	bo_sync_short->sync = 0;
++	sync_short.addr = ADDR_SYNC2;
++
+ 	bo_dict_long[0].size = ALIGN(long_kernel_size, 0x1000);
+ 	bo_dict_short[0].size = ALIGN(short_kernel_size, 0x1000);
+ 
+@@ -1872,14 +1967,21 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP, false);
+ 
+ 	xe_exec_sync(fd, execenv_long.exec_queue, ADDR_BATCH, &sync_long, 1);
+-
+ 	xe_exec_sync(fd, execenv_short.exec_queue, ADDR_BATCH, &sync_short, 1);
+ 
+-	igt_assert(syncobj_wait(fd, &sync_short.handle, 1, INT64_MAX, 0, NULL));
+-	syncobj_destroy(fd, sync_short.handle);
++	xe_wait_ufence(fd, &bo_sync_short->sync, USER_FENCE_VALUE, execenv_short.exec_queue,
++		       INT64_MAX);
++	/* Check that the long kernel has not completed yet */
++	igt_assert_neq(0, __xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE,
++					   execenv_long.exec_queue, &timeout_short));
++	xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE, execenv_long.exec_queue,
++		       INT64_MAX);
++
++	munmap(bo_sync_long, bo_size_long);
++	gem_close(fd, bo_long);
+ 
+-	igt_assert(syncobj_wait(fd, &sync_long.handle, 1, INT64_MAX, 0, NULL));
+-	syncobj_destroy(fd, sync_long.handle);
++	munmap(bo_sync_short, bo_size_short);
++	gem_close(fd, bo_short);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+ 		float f1, f2;
+-- 
+2.43.0
 
->  				       "--dry-run",
->  				       "--allow-non-root",
->  				       "test-root-dir",
-> @@ -727,21 +733,29 @@ igt_main
->  		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
->  
->  		igt_assert_eqstr(settings->name, "foo");
-> +		igt_assert(settings->overwrite);
-
-Same here, unrelated.
-
->  		igt_assert(settings->dry_run);
->  		igt_assert(!settings->test_list);
->  		igt_assert(!settings->facts);
-> +		igt_assert(!settings->kmemleak);
->  		igt_assert(!settings->sync);
->  
->  		argv[1] = "--test-list";
-> +		argv[2] = "foo"; /* Unchanged */
-
-Same here, unrelated.
-
->  		argv[3] = "--facts";
-> -		argv[4] = "--sync";
-
-Same here, unrelated.
-
-> +		argv[4] = "--kmemleak";
-> +		argv[5] = "--sync";
-
-Same here, unrelated.
-
-> +		argv[6] = "test-root-dir"; /* Unchanged */
-
-Same here, unrelated.
-
-> +		argv[7] = "results-path"; /* Unchanged */
-
-Same here, unrelated.
-
->  
->  		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
->  
->  		igt_assert_eqstr(settings->name, "results-path");
->  		igt_assert(!settings->dry_run);
-> +		igt_assert(!settings->overwrite);
-
-Same here, unrelated.
-
->  		igt_assert(strstr(settings->test_list, "foo") != NULL);
->  		igt_assert(settings->facts);
-> +		igt_assert(settings->kmemleak);
->  		igt_assert(settings->sync);
->  	}
->  
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 92fd42ea6..560bc2b5e 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -41,6 +41,7 @@ enum {
->  	OPT_EXCLUDE = 'x',
->  	OPT_ENVIRONMENT = 'e',
->  	OPT_FACTS = 'f',
-> +	OPT_KMEMLEAK = 'k',
->  	OPT_SYNC = 's',
->  	OPT_LOG_LEVEL = 'l',
->  	OPT_OVERWRITE = 'o',
-> @@ -232,6 +233,16 @@ static const char *usage_str =
->  	"                                   not respond to ping.\n"
->  	"                         all     - abort for all of the above.\n"
->  	"  -f, --facts           Enable facts tracking\n"
-> +	"  -k, -k<option>, --kmemleak, --kmemleak=<option>\n"
-> +	"                        Enable kmemleak tracking. Each kmemleak scan\n"
-> +	"                        can take from 5 to 60 seconds, slowing down\n"
-> +	"                        the run considerably. The default is to scan\n"
-> +	"                        only once after the last test. It is also\n"
-> +	"                        possible to scan after each test. Possible\n"
-> +	"                        options:\n"
-> +	"                         once - The default is to run one kmemleak\n"
-> +	"                                scan after the last test\n"
-> +	"                         each - Run one kmemleak scan after each test\n"
->  	"  -s, --sync            Sync results to disk after every test\n"
->  	"  -l {quiet,verbose,dummy}, --log-level {quiet,verbose,dummy}\n"
->  	"                        Set the logger verbosity level\n"
-> @@ -668,6 +679,7 @@ bool parse_options(int argc, char **argv,
->  		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
->  		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
->  		{"facts", no_argument, NULL, OPT_FACTS},
-> +		{"kmemleak", optional_argument, NULL, OPT_KMEMLEAK},
->  		{"sync", no_argument, NULL, OPT_SYNC},
->  		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
->  		{"test-list", required_argument, NULL, OPT_TEST_LIST},
-> @@ -698,7 +710,7 @@ bool parse_options(int argc, char **argv,
->  	settings->dmesg_warn_level = -1;
->  	settings->prune_mode = -1;
->  
-> -	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:L",
-> +	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fsl:omb:Lk::",
-
-Why there are two colons at end? Also imho 'k' should be placed after 'f'
-like below:
-
-	while ((c = getopt_long(argc, argv, "hn:dt:x:e:fk:sl:omb:L",
-
-especially that you add its code after OPT_FACTS below.
-
->  				long_options, NULL)) != -1) {
->  		switch (c) {
->  		case OPT_VERSION:
-> @@ -742,6 +754,19 @@ bool parse_options(int argc, char **argv,
->  		case OPT_FACTS:
->  			settings->facts = true;
->  			break;
-> +		case OPT_KMEMLEAK:
-> +			settings->kmemleak = true;
-> +			if (optarg) {
-> +				if (strcmp(optarg, "once") == 0)
-> +					settings->kmemleak_each = false;
-> +				else if (strcmp(optarg, "each") == 0)
-> +					settings->kmemleak_each = true;
-> +				else {
-> +					usage(stderr, "Invalid kmemleak option");
-> +					goto error;
-> +				}
-
-Use braces here: if () { ... } else if (...) { ... } else { ... }
-
-> +			}
-> +			break;
->  		case OPT_SYNC:
->  			settings->sync = true;
->  			break;
-> @@ -1105,6 +1130,8 @@ bool serialize_settings(struct settings *settings)
->  	SERIALIZE_LINE(f, settings, dry_run, "%d");
->  	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
->  	SERIALIZE_LINE(f, settings, facts, "%d");
-> +	SERIALIZE_LINE(f, settings, kmemleak, "%d");
-> +	SERIALIZE_LINE(f, settings, kmemleak_each, "%d");
->  	SERIALIZE_LINE(f, settings, sync, "%d");
->  	SERIALIZE_LINE(f, settings, log_level, "%d");
->  	SERIALIZE_LINE(f, settings, overwrite, "%d");
-> @@ -1176,6 +1203,8 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
->  		PARSE_LINE(settings, name, val, dry_run, numval);
->  		PARSE_LINE(settings, name, val, allow_non_root, numval);
->  		PARSE_LINE(settings, name, val, facts, numval);
-> +		PARSE_LINE(settings, name, val, kmemleak, numval);
-> +		PARSE_LINE(settings, name, val, kmemleak_each, numval);
->  		PARSE_LINE(settings, name, val, sync, numval);
->  		PARSE_LINE(settings, name, val, log_level, numval);
->  		PARSE_LINE(settings, name, val, overwrite, numval);
-> diff --git a/runner/settings.h b/runner/settings.h
-> index f69f09778..ab00b3e32 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -58,6 +58,8 @@ struct settings {
->  	struct igt_list_head env_vars;
->  	struct igt_vec hook_strs;
->  	bool facts;
-> +	bool kmemleak;
-> +	bool kmemleak_each;
->  	bool sync;
->  	int log_level;
->  	bool overwrite;
-> -- 
-> 2.34.1
-> 
