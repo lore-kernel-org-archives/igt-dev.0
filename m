@@ -4,58 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CD06C02193
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 09:21:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7359DC0218F
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 09:31:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3757F10E169;
-	Fri, 31 Jan 2025 09:21:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CFAD10EA60;
+	Fri, 31 Jan 2025 09:31:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HvXobxcF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="esnFLKk7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 570B810E169
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 09:21:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68DEE10EA6E
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 09:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738315298; x=1769851298;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=mYAwuu/OP68/MSA2NrXdOZzz4x1/BE4F4rNgtXxUxbg=;
- b=HvXobxcF8MFdfjnFIf9kUFKyMbL+K9D44jIuTdqWpycrCvL7OWGmZVAr
- PwGtoYVEnxx3hD8q9/HRbv+CEaMvhJRPcfnzG/882D8nXw3JYh8WRbUkJ
- rFKPMo+bQw5x4sWb2HDaJnH+dU7+gvC0axUoPd50b+IUccTlDlUZeJpGt
- FXG+WceoGiOOqzSEnOYonSCeh8MdE+2t3OnehiTWVwWx5bP4k+eiYrycu
- p3AIhOkQk5DrTJC/RcQS0cRdSiAuIfFeSrDj/kG4b5d4JjsqKTmLzGIEt
- nsd+gKXHgNHsaSOGF2brFYvuhhpzKqHzmanB7LZGUYhqYt3gK52qBdBLJ A==;
-X-CSE-ConnectionGUID: i5mBstA8SKGS9dy5Cq9t+A==
-X-CSE-MsgGUID: MVKmR8ElSSqgfU+i2/FjEQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="38762075"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="38762075"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 01:21:38 -0800
-X-CSE-ConnectionGUID: c/JHUxD+QGSI+e7kZSe+2g==
-X-CSE-MsgGUID: 3PlaF03XTUyLbhi9ka9bJg==
+ t=1738315897; x=1769851897;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=6VRcusG67l+Mrye9gmEnPb7aGtZ6V/KiHZjBzuEPp64=;
+ b=esnFLKk7AchQfjY7ZZ8FQz7tBiFzTaMGZPxvRkytIaInrS9E6jd7J+aC
+ cfFl2k8oatY5F1LTqJzjXCfS/fwQKBIf+nwXD5ne1tp5MIQSOCoiK9cEg
+ oIkq0WKDVq8f9tHoqSsqCVe2Ab6wDCMtgPZOb2s75AcQojn46EOVVwjbo
+ Emrzt40uNSphyH7wq2JP3QFpvwnRcTg5ZWb2IQOrK7DpWkOL2KtS+Gg7p
+ Nh0qx5TWn8mjlcwFyRNc8HtEd7RCpgYYg/AHaWvTT5dXdKaKAQS+2JGgQ
+ WjSNOs2XRlhUKz8IEl6mQZuKVjhsyLe9O/QOIrA/ih7kmVL/4DB3yILvl A==;
+X-CSE-ConnectionGUID: f0M0KlxyT/iVgvl8qQPPrw==
+X-CSE-MsgGUID: V1zPOiqESIKRU4OySRSXXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="39042736"
+X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="39042736"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 01:31:37 -0800
+X-CSE-ConnectionGUID: DOQvMi2PS7muIpZkWwX1YA==
+X-CSE-MsgGUID: l8q1KrjRQ4+gg8okfLZSmA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="114576324"
+X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; d="scan'208";a="110169330"
 Received: from kvaradha-mobl.amr.corp.intel.com (HELO [10.245.118.246])
  ([10.245.118.246])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 01:21:36 -0800
-Message-ID: <9d00ce60-74a0-4392-87e8-9107a76e644d@linux.intel.com>
-Date: Fri, 31 Jan 2025 10:21:33 +0100
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 01:31:36 -0800
+Message-ID: <96b339b4-b1e0-46d8-9220-68284c48b0ab@linux.intel.com>
+Date: Fri, 31 Jan 2025 10:31:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 07/10] runner: Fix use of newline on arguments
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
+Subject: Re: [PATCH i-g-t v3 10/10] runner/resultgen: Add cmdline to
+ results.json
+To: Lucas De Marchi <lucas.demarchi@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Ewelina Musial <ewelina.musial@intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
  Petri Latvala <adrinael@adrinael.net>
 References: <20250130172149.3657144-1-lucas.demarchi@intel.com>
- <20250130172149.3657144-8-lucas.demarchi@intel.com>
+ <20250130172149.3657144-11-lucas.demarchi@intel.com>
+ <20250130190055.qn4xxd4y4za6ehuz@kamilkon-desk.igk.intel.com>
+ <nhqlawqsr7kwrsuvwtxq5s6yafbcmtawotaxarp3amng5dospx@n6i3bf7zp7jp>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250130172149.3657144-8-lucas.demarchi@intel.com>
+In-Reply-To: <nhqlawqsr7kwrsuvwtxq5s6yafbcmtawotaxarp3amng5dospx@n6i3bf7zp7jp>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -75,169 +79,38 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 30.01.2025 18:21, Lucas De Marchi wrote:
-> Currently there's no support for newlines on arguments passed to runner.
-> However it's also a silent failure:
+On 30.01.2025 20:17, Lucas De Marchi wrote:
+> On Thu, Jan 30, 2025 at 08:00:55PM +0100, Kamil Konieczny wrote:
+>> Hi Lucas,
+>> On 2025-01-30 at 09:21:49 -0800, Lucas De Marchi wrote:
+>>> For easier repro scenarios, add the cmdline to the json: one can see the
+>>> exact command executed to try to reproduce a CI failure without needing
+>>> extra files.
+>>>
+>>> Adding cmdline to the results.json doesn't need a version upgrade:
+>>> piglit can still parse the file.
+>>
+>> Why not just printing this into stdout before executing test loop?
+>> The same way which is already used by igt_facts, so it will go
+>> into runnerNN.txt log and will not be duplicated in each and every
+>> results.json
 > 
-> 	# igt_runner --test-list '/tmp/test
-> 	list2.txt' build/tests/ /tmp/results
+> igt_facts print things that is happening between the tests. It's
+> monitoring the execution.
 > 
-> 	# head /tmp/results/metadata.txt
-> 	disk_usage_limit : 0
-> 	test_list : /tmp/test
-> 	list2.txt
-> 	name : results
-> 	...
-> 
-> 	# ./build/runner/igt_resume /tmp/results
-> 	[9840425.334900] All tests already executed.
-> 	resume failed at generating results
-> 	Done.
-> 
-> Embedding a newline like this is very dubious for test-list, but it's
-> used for e.g. hooks. In future we will add the command line to the
-> metadata and possibly migrate the hooks, so add support for
-> escaping/unescaping the string on save/restore.
-> 
-> The method chosen is slightly different than the one used for hooks:
-> instead of adding a escape char and keeping the char escaped, this just
-> prefers using an hex representation of the char with a \x<HEX>h
-> sequence. This makes it easier when unescaping since the reader can
-> continue reading one line per iteration. In future this can also be
-> adopted by the hooks or even migrating the hooks to use metadata.txt.
-> 
-> For compatibility with previous parsing, it still prints "(null)" for
-> NULL pointers: ideally there would be nothing printed to avoid the
-> special case for this string.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  runner/settings.c | 77 ++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 76 insertions(+), 1 deletion(-)
-> 
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 693c5484e..b527c01d9 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -1052,10 +1052,79 @@ static bool serialize_hook_strs(struct settings *settings, int dirfd)
->  	return true;
->  }
->  
-> +/*
-> + * Serialize @s to @f, escaping '\' and '\n'. See unescape_str()
-> + */
-> +static void escape_str(const char *s, FILE *f)
-> +{
-> +	if (!s) {
-> +		fputs("(null)", f);
-> +		return;
-> +	}
-> +
-> +	while (*s) {
-> +		size_t len = strcspn(s, "\\\n");
-> +
-> +		if (len > 0) {
-> +			fwrite(s, len, 1, f);
-> +			s += len;
-> +		}
-> +
-> +		if (*s) {
-> +			fprintf(f, "\\x%xh", *s);
-> +			s++;
-> +		}
-> +	}
-> +}
-> +
-> +/*
-> + * Unescape a '\' and '\n': undo escape_str
+> I don't understand the push back here when we already add things
+> like version, uname, execution time, etc. You could use the same argument and say "look at the runner.log"
+> to see the execution time.
 
-Nit: there is a specific format for documenting new functions. I have the impression
-that the arguments are not properly documented.
+I buy the value of having it at the json because:
+ - The json and its derivatives seems to be the longest living artifacts.
+   Having runtime setup in the json may indeed help us reproduce issues
+   even weeks down the line.
+ - For those who have tools consuming the json, the new field makes it
+   convenient to extract information. The extra fields makes little
+   difference for those who don't.
+ - The size overhead for the json is insignificant
 
-> + *
-> + * Exacpe chars using the form '\x<hex>h' so they don't interfere with the line
-> + * parser.
-> + *
-> + * Return the number of chars saved in buf and optionally
-> + * the number of chars scanned in @n_src if that is non-nul.
-> + */
-> +static size_t unescape_str(char *buf, size_t *n_src)
-> +{
-> +	size_t dst_len = 0;
-> +	char *s = buf;
-> +
-> +	while (*s) {
-> +		char next = *(s + 1);
-> +
-> +		if (*s != '\\') {
-> +			buf[dst_len++] = *s++;
-> +		} else if (*s == '\\' && next == 'x') {
-> +			s += 2;
-> +			buf[dst_len++] = strtoul(s, &s, 16);
-> +			if (*s != 'h') {
-> +				/* this shouldn't happen */
-> +				return 0;
-> +			}
-> +			s++;
-> +		} else {
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	buf[dst_len] = '\0';
-> +
-> +	if (n_src)
-> +		*n_src = s - buf;
-> +
-> +	return dst_len;
-> +}
+Peter
 
-Have you considered  json_tokener_parse() / json_object_get_string() ?
-Glib' g_strescape () / g_strcompress() ? Not a fan of Glib,
-but it is currently used anyway. Or even libcurl' curl_easy_escape() /
-curl_easy_unescape()? Meson probes for the lib, but I did not see it in use.
-
-My point being that it would be better to reuse instead of reinventing this
-wheel. If you prefer to use your own, please add unit testing, I found at least
-one issue:
-
-Lorem ipsum dolor sit amet
-Lorem ipsum dolor sit amet (26)
-
-Lorem \xZZh ipsum dolor sit amet
-Lorem  (0)
-
-Lorem \x41h ipsum dolor sit amet
-Lorem A ipsum dolor sit amet (32)
-
-I guess you want to check strtoul() output for errors(can it cause an infinite
-loop on error?), check buffer limits to prevent writing past allocated size,
-and using error code such as -1 instead of failing with 0.
-
-> +
->  #define SERIALIZE_LINE(f, s, name, fmt) fprintf(f, "%s : " fmt "\n", #name, s->name)
->  #define SERIALIZE_INT(f, s, name) SERIALIZE_LINE(f, s, name, "%d")
->  #define SERIALIZE_UL(f, s, name) SERIALIZE_LINE(f, s, name, "%lu")
-> -#define SERIALIZE_STR(f, s, name) SERIALIZE_LINE(f, s, name, "%s")
-> +#define SERIALIZE_STR(f, s, name) do {	\
-> +		fputs(#name " : ", f);	\
-> +		escape_str(s->name, f);	\
-> +		fputc('\n', f);		\
-> +	} while (0)
->  bool serialize_settings(struct settings *settings)
->  {
->  	FILE *f;
-> @@ -1171,6 +1240,12 @@ static char *parse_str(char **val)
->  {
->  	char *ret = *val;
->  
-> +	/*
-> +	 * Unescaping a string is guaranteed to produce a string that is
-> +	 * smaller or of the same size. Just modify it in place and leak the
-> +	 * buffer
-> +	 */
-> +	unescape_str(ret, NULL);
->  	*val = NULL;
->  
->  	return ret;
-
+[...]
