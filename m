@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B48EBC0218F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 17:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7359CC0218F
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 17:29:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7166710E401;
-	Fri, 31 Jan 2025 17:14:40 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3643910E1C9;
- Fri, 31 Jan 2025 17:14:40 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2476352566747193398=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3078F10E409;
+	Fri, 31 Jan 2025 17:29:05 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dNmOYxSr";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B40010E409
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 17:29:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738344544; x=1769880544;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Ri5bGdkgcW7gS1l5SEjNqsQWsYZ+7ZbjLW4ruNZfhh8=;
+ b=dNmOYxSr7ZOjgqPhcIicRLODCde2YLwLMdfEkouGUn+fWGS84FSB5EJD
+ HmPdTPJC55HfQECwQKCksTX+dVoRNSBW3l+RD1zTSJEtuFmtWK/YLT+KG
+ WQqvFUG9/8ren95cRNWgJGIlW0UOvkVZU3VLrOY/gsdErD/83fYU/zDXi
+ GV8LY0fe4TBj5CUGbbAuh7xx8yqUencuYfmnNKkur3DSFHxbaIxSw2IgR
+ WS9DmHZ/erCTyIqHo1ueotwscRVfQsv/J7sHGY7Yd/8gkGkCBwx4957if
+ YvUb6iMZ6poMhusUdWXsk4qClIqcTHMEvOB6TWJLNuHCrqZJHDU31XxdF A==;
+X-CSE-ConnectionGUID: L584RhqPSZqpCqN/h36Zcg==
+X-CSE-MsgGUID: S1oHY0jfSlqu2HK1Ljv2wQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="49578509"
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="49578509"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 09:29:04 -0800
+X-CSE-ConnectionGUID: 7HKS8FUbRLSDqfe05KwrRw==
+X-CSE-MsgGUID: ZPcQCVp2RTCaHG/9x6rIkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="114683403"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 09:29:02 -0800
+Date: Fri, 31 Jan 2025 18:28:48 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: Re: [PATCH i-g-t 2/3] tests/intel/xe_create: Stop treating the
+ extension field as MBZ
+Message-ID: <20250131172848.btsuno7ilopsoaud@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+References: <20250130221457.1092670-1-daniele.ceraolospurio@intel.com>
+ <20250130221457.1092670-3-daniele.ceraolospurio@intel.com>
+ <20250131125928.ivnojwqamlsvem6s@kamilkon-desk.igk.intel.com>
+ <008c9383-5022-4f5e-8a85-022100d15242@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/intel=5Fcompute=3A_Us?=
- =?utf-8?q?e_LR_mode_for_compute_when_using_Xe_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 31 Jan 2025 17:14:40 -0000
-Message-ID: <173834368021.3259839.9227532005851107491@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250131125156.577530-1-francois.dugast@intel.com>
-In-Reply-To: <20250131125156.577530-1-francois.dugast@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <008c9383-5022-4f5e-8a85-022100d15242@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,148 +73,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2476352566747193398==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Daniele,
+On 2025-01-31 at 09:09:43 -0800, Daniele Ceraolo Spurio wrote:
+> 
+> 
+> On 1/31/2025 4:59 AM, Kamil Konieczny wrote:
+> > Hi Daniele,
+> > On 2025-01-30 at 14:14:56 -0800, Daniele Ceraolo Spurio wrote:
+> > > A new extension for the xe_create ioctl will be added to support PXP [1],
+> > > so in preparation for that to be merged stop expecting the field to always
+> > > be zero.
+> > > 
+> > > [1] https://patchwork.freedesktop.org/patch/634550/
+> > Please add also lore.kernel.org link (could be done at merge)
+> > here and in next patch, Thanks!
+> 
+> Should I just replace this link instead of adding a new one?
 
-== Series Details ==
+Write both links or only lore, up to you.
+Please note that sometimes links get lost so it could help giving
+also a subject of patch(series) (for example above in next line
+after [1]).
 
-Series: lib/intel_compute: Use LR mode for compute when using Xe (rev4)
-URL   : https://patchwork.freedesktop.org/series/143899/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8218 -> IGTPW_12527
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/index.html
-
-Participating hosts (44 -> 41)
-------------------------------
-
-  Missing    (3): bat-rplp-1 bat-mtlp-8 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12527 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8218/bat-apl-1/igt@dmabuf@all-tests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8218/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8218 -> IGTPW_12527
-  * Linux: CI_DRM_16041 -> CI_DRM_16051
-
-  CI-20190529: 20190529
-  CI_DRM_16041: c2a5da40b8b1c5af77dcdabed8516069949fea3b @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16051: ff5661561b2b7d03b8e8b3ae0028269801cff5e6 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12527: cdd14673a931ea9cbce4b82c2fd7bb1e6a41fd55 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8218: fafef52e0a83fec5f8c4f8df851d27319467762b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/index.html
-
---===============2476352566747193398==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/intel_compute: Use LR mode for compute when using Xe (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143899/">https://patchwork.freedesktop.org/series/143899/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8218 -&gt; IGTPW_12527</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/index.html</p>
-<h2>Participating hosts (44 -&gt; 41)</h2>
-<p>Missing    (3): bat-rplp-1 bat-mtlp-8 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12527 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8218/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8218/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12527/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8218 -&gt; IGTPW_12527</li>
-<li>Linux: CI_DRM_16041 -&gt; CI_DRM_16051</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16041: c2a5da40b8b1c5af77dcdabed8516069949fea3b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16051: ff5661561b2b7d03b8e8b3ae0028269801cff5e6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12527: cdd14673a931ea9cbce4b82c2fd7bb1e6a41fd55 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8218: fafef52e0a83fec5f8c4f8df851d27319467762b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2476352566747193398==--
+> 
+> Thanks,
+> Daniele
+> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> > > Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> > > ---
+> > >   tests/intel/xe_create.c | 5 -----
+> > >   1 file changed, 5 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> > > index e3be6b774..e3ebb9fd4 100644
+> > > --- a/tests/intel/xe_create.c
+> > > +++ b/tests/intel/xe_create.c
+> > > @@ -243,11 +243,6 @@ static void create_invalid_mbz(int fd)
+> > >   	gem_close(fd, create.handle);
+> > >   	create.handle = 0;
+> > > -	/* No supported extensions yet */
+> > > -	create.extensions = -1;
+> > > -	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
+> > > -	create.extensions = 0;
+> > > -
+> > >   	/* Make sure KMD rejects non-zero padding/reserved fields */
+> > >   	for (i = 0; i < ARRAY_SIZE(create.pad); i++) {
+> > >   		create.pad[i] = -1;
+> > > -- 
+> > > 2.43.0
+> > > 
+> 
