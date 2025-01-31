@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2774C0218F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 19:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A85FC0218F
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 19:40:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C60A10E430;
-	Fri, 31 Jan 2025 19:30:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C98EF10E1D1;
+	Fri, 31 Jan 2025 19:40:15 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A98C010E1D1;
- Fri, 31 Jan 2025 19:30:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF87C10E1D1;
+ Fri, 31 Jan 2025 19:40:14 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6195180103110940927=="
+ boundary="===============7829349680873417161=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=3A_Fre?=
- =?utf-8?q?e_up_CRC_resources?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=3A_Free_?=
+ =?utf-8?q?up_CRC_resources?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 31 Jan 2025 19:30:46 -0000
-Message-ID: <173835184668.3301340.1479008381020638231@b555e5b46a47>
+Date: Fri, 31 Jan 2025 19:40:14 -0000
+Message-ID: <173835241484.3301340.4636648693136986886@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250131191613.447979-1-ramanaidu.naladala@intel.com>
 In-Reply-To: <20250131191613.447979-1-ramanaidu.naladala@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6195180103110940927==
+--===============7829349680873417161==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8219 -> IGTPW_12529
+CI Bug Log - changes from XEIGT_8219_BAT -> XEIGTPW_12529_BAT
 ====================================================
 
 Summary
@@ -64,87 +64,68 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/index.html
+  
 
-Participating hosts (43 -> 42)
+Participating hosts (8 -> 8)
 ------------------------------
 
-  Missing    (1): fi-snb-2520m 
+  No changes in participating hosts
 
 New tests
 ---------
 
-  New tests have been introduced between IGT_8219 and IGTPW_12529:
+  New tests have been introduced between XEIGT_8219_BAT and XEIGTPW_12529_BAT:
 
 ### New IGT tests (1) ###
 
   * igt@kms_atomic@plane-immutable-zpos@pipe-a-dp-3:
     - Statuses : 1 pass(s)
-    - Exec time: [0.57] s
+    - Exec time: [1.73] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12529 that come from known issues:
+  Here are the changes found in XEIGTPW_12529_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
   * igt@kms_atomic@plane-immutable-zpos:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-kbl-8809g/igt@kms_atomic@plane-immutable-zpos.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-bsw-nick/igt@kms_atomic@plane-immutable-zpos.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-kbl-guc/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-atsm-1:         NOTRUN -> [SKIP][4] ([i915#6078])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-atsm-1/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][5] ([i915#9792])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-mtlp-6/igt@kms_atomic@plane-immutable-zpos.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-kbl-x1275/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][7] ([i915#10470] / [i915#10501])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-adlp-11/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-dg1-6:          NOTRUN -> [SKIP][8] ([i915#12311])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-dg1-6/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-kbl-2/igt@kms_atomic@plane-immutable-zpos.html
-    - bat-arlh-2:         NOTRUN -> [SKIP][10] ([i915#11346])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-arlh-2/igt@kms_atomic@plane-immutable-zpos.html
-
-  * igt@kms_atomic@plane-immutable-zpos@pipe-a-edp-1:
-    - bat-twl-1:          NOTRUN -> [DMESG-WARN][11] ([i915#1982]) +1 other test dmesg-warn
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-twl-1/igt@kms_atomic@plane-immutable-zpos@pipe-a-edp-1.html
+    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#2463])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-adlp-vf/igt@kms_atomic@plane-immutable-zpos.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][2] ([Intel XE#1024])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-atsm-2/igt@kms_atomic@plane-immutable-zpos.html
+    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#3419])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-bmg-2/igt@kms_atomic@plane-immutable-zpos.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][4] ([Intel XE#2235])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-lnl-2/igt@kms_atomic@plane-immutable-zpos.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#1024])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-pvc-2/igt@kms_atomic@plane-immutable-zpos.html
 
   
-  [i915#10470]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470
-  [i915#10501]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10501
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8219 -> IGTPW_12529
 
-  CI-20190529: 20190529
-  CI_DRM_16052: 12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12529: eada2b49181e06e8d3ed1916acea2728b8ffc878 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8219: d92c8eadff2a4e5b4d90cf8c8c52936263d29394 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2583-12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a: 12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/index.html
 
---===============6195180103110940927==
+--===============7829349680873417161==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -168,66 +149,50 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144203/">https://patchwork.freedesktop.org/series/144203/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8219 -&gt; IGTPW_12529</h1>
+    <h1>CI Bug Log - changes from XEIGT_8219_BAT -&gt; XEIGTPW_12529_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
 <h2>New tests</h2>
-<p>New tests have been introduced between IGT_8219 and IGTPW_12529:</p>
+<p>New tests have been introduced between XEIGT_8219_BAT and XEIGTPW_12529_BAT:</p>
 <h3>New IGT tests (1)</h3>
 <ul>
 <li>igt@kms_atomic@plane-immutable-zpos@pipe-a-dp-3:<ul>
 <li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.57] s</li>
+<li>Exec time: [1.73] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12529 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_12529_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@kms_atomic@plane-immutable-zpos:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-kbl-8809g/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a></li>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-bsw-nick/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a></li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-kbl-guc/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a></li>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-atsm-1/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>)</li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-mtlp-6/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/fi-kbl-x1275/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a></li>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-adlp-11/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10501">i915#10501</a>)</li>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-dg1-6/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>)</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-kbl-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a></li>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-arlh-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_atomic@plane-immutable-zpos@pipe-a-edp-1:</p>
-<ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12529/bat-twl-1/igt@kms_atomic@plane-immutable-zpos@pipe-a-edp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) +1 other test dmesg-warn</li>
+<li>igt@kms_atomic@plane-immutable-zpos:<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-adlp-vf/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>)</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-atsm-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-bmg-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>)</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-lnl-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>)</li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12529/bat-pvc-2/igt@kms_atomic@plane-immutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8219 -&gt; IGTPW_12529</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16052: 12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12529: eada2b49181e06e8d3ed1916acea2728b8ffc878 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8219: d92c8eadff2a4e5b4d90cf8c8c52936263d29394 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_12529: eada2b49181e06e8d3ed1916acea2728b8ffc878 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8219: d92c8eadff2a4e5b4d90cf8c8c52936263d29394 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2583-12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a: 12fb3dcbf0667f1ed3c3caff321de4a1ad3d4a7a</p>
 
 </body>
 </html>
 
---===============6195180103110940927==--
+--===============7829349680873417161==--
