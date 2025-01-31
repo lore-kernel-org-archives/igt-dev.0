@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7FAC0218F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 20:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4B4CC0218F
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jan 2025 20:54:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FB4010E207;
-	Fri, 31 Jan 2025 20:36:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5973010E19C;
+	Fri, 31 Jan 2025 20:54:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KXknyeGe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Im4VP9zI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 931A510E207
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 20:36:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F155310E19C
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2025 20:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738355806; x=1769891806;
+ t=1738356863; x=1769892863;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=yIt6PUEnhshpTpD6c9veqotLfBcZu9pOMrPiodPpc6Q=;
- b=KXknyeGeVKRNYiA6gRmwkN6DjtrRp2BHzTJI4J05FVt1Nl3/AHI925Mf
- ICaBYYC5gFXTdG1vPw/MahugOtYGVpKqZGGWsyW3hxRqUZaUTZSpkA6S2
- VGtemwNm1r66vk6Lujje5lD933TpfQVFjxDhIcvdkZlFRnXcBnIZLsUb0
- 4Ni+TLhJmtJdjFe7SNl6I9eyiqwGQtXH8HXFbiosG7zN7PTFhvOa7PkjH
- kmZUDOTv/WWu4V1FpTAqCnW8CSUZEP10pMeNRmdXQ2Fv+xg+w2/EP9uQa
- 0prcsN37UCsoLVy6L8T0QmbKp2VbY6k6ZGFxw+RFWFVWovbW+1vsxsDKI w==;
-X-CSE-ConnectionGUID: FunaTBdAT06IJh3L/B73hQ==
-X-CSE-MsgGUID: TXxgFgFlTda7Rp4+DWD9bA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="41767392"
-X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="41767392"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 12:36:46 -0800
-X-CSE-ConnectionGUID: 63o4JxXxS4y4Ll19hA4O1g==
-X-CSE-MsgGUID: GzGAhLWtSoS9DSFTT/b1Vg==
+ bh=ir2da/o+XP985AtPbbN8TDTkJN4cOdlkkft2Hify+N4=;
+ b=Im4VP9zI/rVKEHuS9Iv9yBrWX9apSNVq3IGGuzfYddgRYmosVh/vQNP5
+ fP46ZPoOa17/AUuwvGun+lbTruzcNYPZjUXktGx2vGkIFy4WZuQz/l+oh
+ Xo3C3xbX2I5GlFkS13ZMcDGiVZaALd44XkyU+/RjZC18h2pYmop1gYJD8
+ L+IefV2fufabdCMISGsEOVvV5f/bdSYIMPuXg+Z9P55uyZJHruPCljxzQ
+ wnulCSRvC+5rnSWmVQQ1FIXVSTxOxnkf8umTa+fi4q+V9TkJKedxFX4P9
+ y3AkGYQ15IxnvI6IjYRGMo2bOxsgjP8/wmEbf9SDFrFLjqsMdD8WlyhYp w==;
+X-CSE-ConnectionGUID: 7LHqcKVKRG6mUzbORGAsrg==
+X-CSE-MsgGUID: JV4vX+qMTyGIZfYfdSk0yg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="42855110"
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="42855110"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 12:54:22 -0800
+X-CSE-ConnectionGUID: +TNcaia0QhGAL0AZ/hEEOw==
+X-CSE-MsgGUID: fFN5n9XXSYGUFj824eDJcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="110303270"
+X-IronPort-AV: E=Sophos;i="6.13,249,1732608000"; d="scan'208";a="109864885"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2025 12:36:46 -0800
-Date: Fri, 31 Jan 2025 12:36:45 -0800
-Message-ID: <85tt9een4y.wl-ashutosh.dixit@intel.com>
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2025 12:54:22 -0800
+Date: Fri, 31 Jan 2025 12:54:22 -0800
+Message-ID: <85seoyembl.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Harish Chegondi <harish.chegondi@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH i-g-t 1/2] lib/xe/oa: Add observation type input to
  intel_xe_perf_ioctl and intel_xe_perf_ioctl_err
-In-Reply-To: <85v7tuen8o.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <85tt9een4y.wl-ashutosh.dixit@intel.com>
 References: <cover.1735637542.git.harish.chegondi@intel.com>
  <e7b0c66e339243308f6072fd44f40afe8003a3e1.1735637542.git.harish.chegondi@intel.com>
  <85v7tuen8o.wl-ashutosh.dixit@intel.com>
+ <85tt9een4y.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,32 +74,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 31 Jan 2025 12:34:31 -0800, Dixit, Ashutosh wrote:
+On Fri, 31 Jan 2025 12:36:45 -0800, Dixit, Ashutosh wrote:
 >
-> On Tue, 31 Dec 2024 01:46:28 -0800, Harish Chegondi wrote:
+> On Fri, 31 Jan 2025 12:34:31 -0800, Dixit, Ashutosh wrote:
 > >
-> > In order to reuse intel_xe_perf_ioctl() and intel_xe_perf_ioctl_err()
-> > functions for EU stall sampling, add observation type as an input
-> > parameter to these functions and set the input observation type to
-> > observation_type in struct drm_xe_observation_param.
+> > On Tue, 31 Dec 2024 01:46:28 -0800, Harish Chegondi wrote:
+> > >
+> > > In order to reuse intel_xe_perf_ioctl() and intel_xe_perf_ioctl_err()
+> > > functions for EU stall sampling, add observation type as an input
+> > > parameter to these functions and set the input observation type to
+> > > observation_type in struct drm_xe_observation_param.
+> > >
+> > > Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+> > > ---
+> > >  lib/xe/xe_oa.c                   | 18 +++++++---
+> > >  lib/xe/xe_oa.h                   | 11 ++++--
+> > >  tests/intel/xe_oa.c              | 57 +++++++++++++++++++++-----------
+> > >  tools/xe-perf/xe_perf_configs.c  |  2 +-
+> > >  tools/xe-perf/xe_perf_recorder.c |  3 +-
 > >
-> > Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
-> > ---
-> >  lib/xe/xe_oa.c                   | 18 +++++++---
-> >  lib/xe/xe_oa.h                   | 11 ++++--
-> >  tests/intel/xe_oa.c              | 57 +++++++++++++++++++++-----------
-> >  tools/xe-perf/xe_perf_configs.c  |  2 +-
-> >  tools/xe-perf/xe_perf_recorder.c |  3 +-
+> > Why would EU stall want to use functions from lib/xe/xe_oa.c, which is a
+> > library specific to OA. Why don't you just copy these functions into
+> > tests/intel/xe_eu_stall.c stall, rename them and use them?
+> >
+> > The functions are in the library for OA because of use by other OA/perf
+> > tools, they are not meant for use by EU stall.
+> >
+> > So this is a NAK on this patch.
 >
-> Why would EU stall want to use functions from lib/xe/xe_oa.c, which is a
-> library specific to OA. Why don't you just copy these functions into
-> tests/intel/xe_eu_stall.c stall, rename them and use them?
->
-> The functions are in the library for OA because of use by other OA/perf
-> tools, they are not meant for use by EU stall.
->
-> So this is a NAK on this patch.
+> Also I don't want to create any cross dependencies between OA and EU stall
+> (in case there are changes in the future). It is better to keep them
+> completely separate.
 
-Also I don't want to create any cross dependencies between OA and EU stall
-(in case there are changes in the future). It is better to keep them
-completely separate.
+And also I forgot there are external tools such as Gpuvis which depened on
+these library functions, so this is breaking that too:
+
+https://github.com/mikesart/gpuvis/commit/7daaa26eb02a96b1c2802421858e1fb32e568984
