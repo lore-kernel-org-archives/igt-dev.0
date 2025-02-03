@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C2CC02193
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Feb 2025 09:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C48C02193
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Feb 2025 09:23:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6648210E034;
-	Mon,  3 Feb 2025 09:14:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 13B2910E2BE;
+	Mon,  3 Feb 2025 09:23:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PMQrGzmI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="csLl9a5L";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C2DB10E034
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2025 09:14:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB1A410E2BE
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2025 09:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738574064; x=1770110064;
+ t=1738574585; x=1770110585;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=zM0UosEn4YtTCYxwd69p6CjHkvuZXsxr6ePghphrrD8=;
- b=PMQrGzmIe4QAv8aako/9SV+F3wTikS38dQVVcr8J07OvQRoiAOmsO8/N
- T2RfEUkEmnuGuY1jODHHg1tqkkMD/0uSbqsv6YOXBum5Jzo18+4/XyIdY
- zfbgVVRaPabq0Q3ZNbXcHfjQzpVtxTRSuVJezXTtL1OiaitbA009cWcHO
- IBXevZ7O5En/mZ/JO3sG2vV9KhLjsD0xWT7sFr6he7HfNnNImXLRE0hDb
- zx/vTZhbKWfduc/KzBc+rtQSPuh8iBV9wlQB0XOVl+VXUfex93yHBkEEY
- CpDgi6LumMRSMp0jDXS8Jv1nlVGkOJcsPIq06oyH7lFKRzwfvwv/06ogu Q==;
-X-CSE-ConnectionGUID: yHesuCeOSYGf50HU0UGThw==
-X-CSE-MsgGUID: Lr7ybfqlSXaM+0H57CzKpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="38964018"
-X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="38964018"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 01:14:24 -0800
-X-CSE-ConnectionGUID: ttVvbP03RJmzw+sSkZll4w==
-X-CSE-MsgGUID: tElHx4y6SvCwsKlhtN3duw==
+ bh=mv5L2QjFOtqemfX6+jPO/wYklEoyQLG5grht61AOD/Y=;
+ b=csLl9a5L9bVH8V4OFugygugju+8Ios0pHx4/tM6NK7Hq+MlbQvGyuKmP
+ RIAGnzglkUblfEqhf3Sq7stu9rqpn+8e0qd1Gc41TMfdjIok89fWfvcen
+ oTwu/bI+kYBFdOjTXnObnkhsjBepk3tlgfektC1KSFWBAyPEzNCb51MP+
+ CfAKLAKIHjeemEFAatt0kJ5kIoy8chzVnZClemMt28OfrUbb0r0vIZX23
+ b39LOLWW1mijcfjGTnR9jZLhZQ6VT+qb5eC7ebWb495z76pL1MfUuvkjF
+ LuRFNEhbbYxA8D5Knh3gEbu6USLvrVaVVwjgisNmh+FOAQKr3F0cAqBVR g==;
+X-CSE-ConnectionGUID: awRze0EkSOG+TeWCyfxx9A==
+X-CSE-MsgGUID: 2Z6kYJ+1TamGwbutOSU71A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="42715499"
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="42715499"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 01:23:05 -0800
+X-CSE-ConnectionGUID: p2ztwJWQQwOLDXZw5ZOsAw==
+X-CSE-MsgGUID: BPrp8PUDRcaMCP4WNOggkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="110183294"
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="110814676"
 Received: from nwochtma-mobl.ger.corp.intel.com (HELO [10.245.83.54])
  ([10.245.83.54])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 01:14:22 -0800
-Message-ID: <e433618c-2571-48e0-a120-2016246ae367@linux.intel.com>
-Date: Mon, 3 Feb 2025 10:14:19 +0100
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 01:23:02 -0800
+Message-ID: <17fe9952-7b2e-46fd-af1f-cd7cbea2cebd@linux.intel.com>
+Date: Mon, 3 Feb 2025 10:23:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t v4 1/2] lib/igt_kmemleak: library to interact with
@@ -54,10 +54,10 @@ To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jonathan Cavitt <jonathan.cavitt@intel.com>
 References: <20250128151537.515639-1-peter.senna@linux.intel.com>
  <20250128151537.515639-2-peter.senna@linux.intel.com>
- <20250131123845.ng5b2cbzyqfulm5o@kamilkon-desk.igk.intel.com>
+ <20250131123454.ilhzogs6a2w7s3on@kamilkon-desk.igk.intel.com>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250131123845.ng5b2cbzyqfulm5o@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20250131123454.ilhzogs6a2w7s3on@kamilkon-desk.igk.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -77,146 +77,131 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Kamil,
 
-Thank you, please see my comments.
+Thank you for your review. Please see below.
 
-On 31.01.2025 13:38, Kamil Konieczny wrote:
-> Hi Peter,
-> On 2025-01-28 at 16:15:36 +0100, Peter Senna Tschudin wrote:
+On 31.01.2025 13:34, Kamil Konieczny wrote:
+
+[...]
+
+>> +#include <stdio.h>
+>> +#include <string.h>
+>> +#include <unistd.h>
+>> +#include <fcntl.h>
+>> +#include <errno.h>
 > 
-> sorry one more nit, found by checkpatch, see below.
-> 
->> Adds a simple library for interacting with kmemleak and add
->> unit testing for the library. There are two modes intended to
->> integrate with igt_runner:
->> - once: collect kmemleaks after all test completed
->> - each: collect kmemleaks after eachb test completes
->>
->> To use the library include "igt_kmemleak.h", call
->> igt_kmemleak_init(NULL) to check if kmemleak is enabled and finally
->> call igt_kmemleak() to collect kmemleaks. igt_kmemleak() expect the
->> following arguments:
->>   - const char *last_test: Name of the last lest or NULL
->>   - int resdirfd: file descriptor of the results directory
->>   - bool kmemleak_each: Are we scanning once or scanning after
->>     each test?
->>   - bool sync: sync after each write?
->>
->> CC: ryszard.knop@intel.com
->> CC: lucas.demarchi@intel.com
->> CC: katarzyna.piecielska@intel.com
->> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
->> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
->> ---
->>  lib/igt_kmemleak.c       | 274 +++++++++++++++++++++++++++++++++++++++
->>  lib/igt_kmemleak.h       |  16 +++
->>  lib/meson.build          |   1 +
->>  lib/tests/igt_kmemleak.c | 267 ++++++++++++++++++++++++++++++++++++++
->>  lib/tests/meson.build    |   1 +
->>  5 files changed, 559 insertions(+)
->>  create mode 100644 lib/igt_kmemleak.c
->>  create mode 100644 lib/igt_kmemleak.h
->>  create mode 100644 lib/tests/igt_kmemleak.c
->>
-> 
-> ...cut...
+> Sort this alphabetically with exception of unistd.h - this
+> header could be first.
+
+That is picky, but ok.
+
+
 > 
 >> +
->> +static const char *igt_kmemleak_unit_testing_resdir = "/tmp";
+>> +#include "igt_core.h"
+>> +#include "igt_kmemleak.h"
 >> +
->> +igt_main
+>> +/* We can change the path for unit testing, see igt_kmemleak_init() */
+>> +static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
+>> +
+>> +#define MAX_WRITE_RETRIES 5
+>> +/**
+>> + * igt_kmemleak_write - Writes the buffer to the file descriptor retrying when
+>> + * possible.
+>> + * @fd: The file descriptor to write to.
+>> + * @buf: Pointer to the data to write.
+>> + * @count: Total number of bytes to write.
+>> + *
+>> + * Returns the total number of bytes written on success, or -1 on failure.
+>> + */
+>> +static bool igt_kmemleak_write(int fd, const void *buf, size_t count)
 >> +{
->> +	char unit_testing_kmemleak_filepath[256] = "/tmp/igt_kmemleak_test_XXXXXX";
->> +	int written_bytes;
->> +	int resdirfd;
->> +	int fd;
+>> +	const char *ptr = buf;
+>> +	size_t remaining = count;
+>> +	ssize_t written;
+>> +	int retries = 0;
 >> +
->> +	igt_fixture {
->> +		/* resdirfd is used by igt_kmemleak() to store results */
->> +		igt_assert(resdirfd = open(igt_kmemleak_unit_testing_resdir,
->> +					   O_DIRECTORY | O_RDONLY));
->> +
->> +		/* Try to delete results file in case of leftovers,
->> +		 * ignoring errors as the file may not exist
->> +		 */
->> +		unlinkat(resdirfd, KMEMLEAKRESFILENAME, 0);
->> +
->> +		/* Creating a fake kmemleak file for unit testing */
->> +		fd = mkstemp(unit_testing_kmemleak_filepath);
->> +		igt_assert(fd >= 0);
->> +
->> +		written_bytes = write(fd, kmemleak_file_example,
->> +				strlen(kmemleak_file_example));
+>> +	while (remaining > 0) {
+>> +		written = write(fd, ptr, remaining);
+>> +		if (written > 0) {
+>> +			ptr += written;
+>> +			remaining -= written;
+>> +		} else if (written == -1) {
+>> +			if (errno == EINTR || errno == EAGAIN) {
+>> +				/* Retry for recoverable errors */
+>> +				if (++retries > MAX_WRITE_RETRIES) {
+>> +					igt_warn("igt_write: Exceeded retry limit\n");
 > 
-> Align here or just write this in one line:
-> 		written_bytes = write(fd, kmemleak_file_example, strlen(kmemleak_file_example));
-> or
-> 		written_bytes = write(fd, kmemleak_file_example,
-> 				      strlen(kmemleak_file_example));
+> Do not use test prints in lib, especially those used by runner.
 
-Good catch, curious why my checkpatch did not catch this one:
+Oh, I will. kmemleak is about writing to disk. If that fails, I will tell the user.
+Why does this restriction applies only to me? See:
 
 ---
-psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ ../linux/scripts/checkpatch.pl 0001-lib-igt_kmemleak-library-to-interact-with-kmemleak.patch
-WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
-#39:
-new file mode 100644
+psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ git grep igt_warn|wc -l
+164
+psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ cd ..
+psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep igt_warn|wc -l
+324
+---
 
-WARNING: quoted string split across lines
-#394: FILE: lib/tests/igt_kmemleak.c:37:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2ed18 (size 80):\n"
+About 50% of all references to igt_warn are in lib, what is the problem with my code?
 
-WARNING: quoted string split across lines
-#416: FILE: lib/tests/igt_kmemleak.c:59:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2ea58 (size 80):\n"
 
-WARNING: quoted string split across lines
-#438: FILE: lib/tests/igt_kmemleak.c:81:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2e428 (size 80):\n"
+> 
+>> +					return false;
+>> +				}
+>> +				continue;
+>> +			} else {
+>> +				/* Log unrecoverable error */
+>> +				igt_warn("igt_write: unrecoverable write error");
+> 
+> Same here.
+We should not remove this one.
 
-WARNING: quoted string split across lines
-#460: FILE: lib/tests/igt_kmemleak.c:103:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2e008 (size 80):\n"
+> 
+>> +				return false;
+>> +			}
+>> +		} else if (written == 0) {
+>> +			if (++retries > MAX_WRITE_RETRIES) {
+>> +				igt_warn("igt_write: Exceeded retry limit\n");
+> 
+> Same here.
+We should not remove this one.
 
-WARNING: quoted string split across lines
-#482: FILE: lib/tests/igt_kmemleak.c:125:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2e2c8 (size 80):\n"
+[...]
 
-WARNING: quoted string split across lines
-#504: FILE: lib/tests/igt_kmemleak.c:147:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2e378 (size 80):\n"
+>> +	FILE *fp;
+> 
+> Why FILE* and fopen? Could you just use open/read?
 
-WARNING: quoted string split across lines
-#526: FILE: lib/tests/igt_kmemleak.c:169:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2e798 (size 80):\n"
+Why not?
 
-WARNING: quoted string split across lines
-#548: FILE: lib/tests/igt_kmemleak.c:191:
-+"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
-+"unreferenced object 0xffff888102a2e0b8 (size 80):\n"
-
-total: 0 errors, 9 warnings, 571 lines checked
-
-NOTE: For some of the reported defects, checkpatch may be able to
-      mechanically convert to the typical style using --fix or --fix-inplace.
-
-0001-lib-igt_kmemleak-library-to-interact-with-kmemleak.patch has style problems, please review.
-
-NOTE: If any of the errors are false positives, please report
-      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+---
+psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+97
 ---
 
 
+[...]
 
+>> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file)
+>> +{
+>> +	FILE *fp;
 > 
-> Regards,
-> Kamil
-> 
-> ...cut...
+> Same here, open/read.
 
+Same here, why not?
+---
+psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+97
+---
+
+[...]
+
+>> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
+> 
+> imho better: IGT_KMEMLEAK_RESFILENAME
+
+It reads better indeed. Thanks.
+
+[...]
