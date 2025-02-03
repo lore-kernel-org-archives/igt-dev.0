@@ -4,58 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D24FC02194
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Feb 2025 13:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FDBBC02192
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Feb 2025 13:48:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B16E10E4CB;
-	Mon,  3 Feb 2025 13:39:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09BA910E4E7;
+	Mon,  3 Feb 2025 13:48:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EltnStVr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hw1+71BZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 020DA10E4CB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2025 13:39:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B6A110E4E7
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2025 13:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738589987; x=1770125987;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EdN8UVvOAbcPNybvqPWQbra90wuB+Bd0M5Eo70rl+m4=;
- b=EltnStVrtoNh55C8yL93U4rI+uqQuPxTTXe4nQ4izKWwMUhkszgxxrtj
- 07zDapGW1eN6MBUMoiLDFxMGzKgRGqnrIAkY9BbRlB+GtTIT6r5cKRuqn
- t5uw/vxcJEwz+Tw5A0FD182dn2aaGuyA3Ss4QxsGVY3S89+RT0AVcmDIF
- 5z6zLIX9oM4EdiIFXJvr3hZaqma/WTyWavKwbBLf4sI0LF9SnRLBk/y5V
- CogajbW4Msmu5uHHJRlEOFLXlDKQlkJ0PNZ3s8IvwkJ+fkTZK23PMH/8w
- GgkxzoKwtYCbRTtMGWkJmob5zMZejBPz/tQuTlX8FV2+QlEuEShLgu++1 w==;
-X-CSE-ConnectionGUID: Mn4K2kxYShCvdjrW7niqbQ==
-X-CSE-MsgGUID: maFt8T8iTM2feXwoMgS2IA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="26682920"
-X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="26682920"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 05:39:46 -0800
-X-CSE-ConnectionGUID: mEujFsioT8uO9PqGLoXS5g==
-X-CSE-MsgGUID: ykmSvfFgSAyy8Q1D+muRgw==
+ t=1738590481; x=1770126481;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=yla0lH36ltN0ofkttDu4hg077qhPD+MaMYvRTRp+EDY=;
+ b=Hw1+71BZ7AFqAFeNuUf+WoWjRbpCNWLVw/kIbF14leDUW80jprhCpCJB
+ UfxSP1jt/8hmGT3hLXHQxtCBoo15mqrE2rn44H81DYuO0XJTH6RWVGuj3
+ 1raSzn8Z2eNXdOoMYnyxepxxR3bi+QvUjcbAscyCYylqmLBSQDTHw2x4d
+ 3o+9IwD5nKqClWidRMCkzdAjQaPetvJZPx0AHf6sBxkA8grw/M9iucA0h
+ 8nMA5o4kYN5lEYw90go4jvTTGuKHJv6g3bI3B3OXwIbeQb07iJ3/egkRs
+ m/7jzMskD+SMs4NHEx/7KZYh2au5MLTCUA96KM9ZAphk05BNBIoKhBhXI Q==;
+X-CSE-ConnectionGUID: UPhbutSNQ9Gn0BIvKJCA1g==
+X-CSE-MsgGUID: gUSo9+NqTB6bbvzAHNA+bw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="49686030"
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="49686030"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 05:48:01 -0800
+X-CSE-ConnectionGUID: CYUvx/i6SzCacfR7p9L+Lw==
+X-CSE-MsgGUID: Xn82knqJQtqTtoaWIE2Mbg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="110242874"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.246.66])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 05:39:45 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t 3/3] lib/intel_compute: Use LR mode for compute when
- using Xe
-Date: Mon,  3 Feb 2025 14:38:48 +0100
-Message-ID: <20250203133916.843931-4-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250203133916.843931-1-francois.dugast@intel.com>
-References: <20250203133916.843931-1-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="110109175"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 03 Feb 2025 05:48:00 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 3 Feb 2025 05:48:00 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Mon, 3 Feb 2025 05:48:00 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.174)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 3 Feb 2025 05:48:00 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UJLMRQ5tvG5oamiMb83a3yKJB5OTXMF+yKM4JtMkWFxxZj+Ne7uUe9ZV74dSQxGY7kColkJf4PkoX4EYQx3O5J9vervkgkva/Fpk1hQl+kReQlBuObn6Mu6lPQtqjYzQdYngMST88pZE4kPYmiMlnM1mwwTCME0dJvayQUztvsn6x4sMY3d0G+/ujJ2udLP0UB5xFG2z3GbmgHjxaOlsCkLAJJhHDi7jNIwGMvs6h+f0Y3WqgLDUAMT4EL22wVHNcOZEl/8rN/2C1AjaA1tBJHIflslH0j0zSy9VoMkEJ+z6kYCrtOxtfN5XyPa/Q/A2vPLXmtdPPfh1D39Q8G7K5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eKgaroSzwnin04TaaN+kiLKkEDpYNAGC1Oo5KN3xuLY=;
+ b=O6uS2Jh73e3HarGDbTDfnS3Thq2J3zRkv3/c8aT1koyaNePWR/NDFrBC7wA5IG/tl9oFh9Q7yE0qQR7BIN1ugIm0akCSSWxuO7oXQ1WJsodnbNSVJmrrIeEtPlXZisypCweQ9qBfYpUyo0lMH439/xr17QbwFMeCob4JkIaJoL25lSwkNgwBdc+JOONlaMTwMmigWdl2W6zknMQHp2297SgLMRl14wCiVxoDwN/fRj6Av7Rt6DcHsBblxsOIrn+GN0bgymh0VCaP++kNnOwLsIY18K13jinDzWjMNUwVMezFhWnR4W82Qtkh06FvT8Rns1m9ltuomhgVPfhDXe66Jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by CH0PR11MB8213.namprd11.prod.outlook.com (2603:10b6:610:18b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
+ 2025 13:47:31 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8398.017; Mon, 3 Feb 2025
+ 13:47:31 +0000
+Message-ID: <6ea5f553-a9b6-4bd3-8bd9-20837ce5e8cd@intel.com>
+Date: Mon, 3 Feb 2025 19:17:24 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/6] lib/igt_kms: Add highres() and lowres() func
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <santhosh.reddy.guddati@intel.com>
+References: <20241230190315.48821-1-swati2.sharma@intel.com>
+ <20241230190315.48821-2-swati2.sharma@intel.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20241230190315.48821-2-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0P287CA0012.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::11) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|CH0PR11MB8213:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2b638cc-9dfc-477f-9f90-08dd44594e39
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZFNBNUVvNy9adERBUDY4TG13UFhXdlZoMU0vdHRRenRzRVVSR1JLWkloZU5V?=
+ =?utf-8?B?THMydXpCeTJvc2pSVE05R2dpb0pJTjgxTC81b1dnK3hPaURsMGhSQ1JkNURT?=
+ =?utf-8?B?OW01M3FQdFM3RzZGU0gyZmpBelMwUVRDWlh3STVnU25vdHBHSmlncWtMY202?=
+ =?utf-8?B?Tlc0Q0x5bkxqd2FtZmJUTkNjaWVwUFdUTmlmU0JMaVZ3bm8wbkt5QXlzbFE4?=
+ =?utf-8?B?d1RSMjJnWHZNeFhWRDdrSzRkVGNUY3pYZWxWcUVyanZtd0VsempLQURFTE53?=
+ =?utf-8?B?a2NCeDU3cTAwRk03cnhVNTNVNmF2dUg3NzlteUYzOTRqZzhUbGlyTmRaaHl3?=
+ =?utf-8?B?T3M0REtrMmJNaENWWmI4SSt2M2hsYVNjMWgyeVg5UW5NK3N5Q1BscmYwMURX?=
+ =?utf-8?B?TWlkbHplOUowSG9GS3FTZnpNVVF5bFVFMVBaYTVIZ1piSGd3SUhPcE02cTdX?=
+ =?utf-8?B?eXBzUjhyckp6UlJMQWpuMnArOEllS3BFVERXbHhna3hGdEVZc1plcUhIZ2xy?=
+ =?utf-8?B?Uk83aTN3eFZiYmRJZ0dPb1VEM1FVR1UyZXNQQTY1U3l4eG5taGRBWFk2SkRI?=
+ =?utf-8?B?SjNKeHl0RlIrYkZWZU5HU09aNmNkNUsyUlYrQVM5dE5XaGxpU3ZPN29oMkNW?=
+ =?utf-8?B?ZGJGcTRIbEIwNzhOWlVjL2ZLRFVhcmlYOFd5WlRkU2EwYWl3dHBrSTF5REtR?=
+ =?utf-8?B?NlFGOGpEVFljRGtxQ1QyamNQUElwVzgwNlNISnBiVWFXSWE1dVpYRGlEODU3?=
+ =?utf-8?B?SUhUU0JINjRSVEttUmNYUkFncDBQa05ObjR3dWpzRk9SZEJHWFRZNTlNeE9o?=
+ =?utf-8?B?MXhaa2krUTNBcnNKa25EY0VXODFRUE9JTFlYZ3lSUzZLL3VwOFBhWjBURE9v?=
+ =?utf-8?B?R0VjeG5HU0ZrU09kNGJ3bFhrVnBySlJSbWpkMVgwU1B4cjJzbE9KdVF2NGFi?=
+ =?utf-8?B?eEhtYmFsRnd1c0FxVm5oZ0FndHltYVlraW1kYjlEM2M0eE9OdjBqWC90SHY3?=
+ =?utf-8?B?N1l4Vm1hWkQ0ZGpxZE01Q3BTbUlDL3p6bkhGMUU0V0hnMG5CNTNMbE92OWw0?=
+ =?utf-8?B?VStsNVBxN1NMejJ6QnNJZ2RwTll1ZENnR2FZWkRodm83dEwyemxNUXAxMUdH?=
+ =?utf-8?B?NnBWMFRFakRFWUQycmYxUlVTQXBUSFhQNm1RMUttRUJ2Y0xEelV1VnYydC9x?=
+ =?utf-8?B?anB6YnlvaThCZDhFWHhtQ1BuVHE3WHJEVWVsSmFCS05aV3NJTjdWZzE1cFhF?=
+ =?utf-8?B?aEFGK3hBS2lOMklMMDhWMCszeVBUYzl1RjVwdHl0V1AyckxDb0h3KzBkN0Q4?=
+ =?utf-8?B?L20rMTR3VWxzQXBiZ1RxT2g2bDYySGd0cE1jeS85NVk2ODZQL0FnbklwWnl4?=
+ =?utf-8?B?UDFYYURqS3FIWjEvNzk0S2RQbDdQQXMvRk1KbS8rWEhjYU0rb3FqTlQzNTRL?=
+ =?utf-8?B?aHJOYVhOdDhiYmovZWkyMlFLaFFCaUZDREQ3QUV3T0tPTzEyS0xJRlFkd0l4?=
+ =?utf-8?B?YVBuNFNzeGZaaVB2Um1ycDUxZW5VbStQbWI2U1Z4cU1ua1JUL3VmT1VEYUxC?=
+ =?utf-8?B?ay9EdlFJcHpBUU84SW45WERlTmdrSGdUdm95VW1wVytWQjJzNFlycUdtQkdD?=
+ =?utf-8?B?Ky9qUXBJL2hFMnpaTHZ2WEJQckZ6aEc5M2tNMEwrY1M4bG1zYUJSallJQ0U0?=
+ =?utf-8?B?YXNMR29KTGFjeDNpMzBkcFhhLzVoR2hWcHFqaTFldkZwVFhadmI1cU1IMUxX?=
+ =?utf-8?B?OVBZRDVSVzJVcTFLZkNYbldjZkF6NmlCQVRNNmxLelg0cGEvNForQ2NlVk85?=
+ =?utf-8?B?UFNhMlRwbGNuekV3ZkMvTm91M0xtQ3lyd3RDVVZjSWs2dHk3akovVDNCald3?=
+ =?utf-8?Q?dp58jUOdFtiWj?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eXlmd09tR2x0OEpNdi82aE9pOGZtU1lqaXVUSjZCQzNRWkNLV2hNWFRoUVZ4?=
+ =?utf-8?B?U2hLR0E5Z2s5WjJrQWhXVVlYUVhZS1ZGakl3cXNMZUlvSnU1SUp0SjBmSWlO?=
+ =?utf-8?B?OVh6RnlidW9YV1A5TmN6K3pSY1F2SlVWMk9qalpONkNKaFJkOWh3TDFFcXJS?=
+ =?utf-8?B?K0w5RlJjZ2h4SW05d1hRbWUwOUZUTUdlL0Y5NTZzczA1TmlpMCs3TjhTSTc5?=
+ =?utf-8?B?V2N0cGw0eFZZYjdqd1hyMjJJb3ZZZEFEVDBtc3NCUFdSSkdScXR2UGY2RTBC?=
+ =?utf-8?B?b2xwRzBmUDFnYzNkaXF1N3ArQ0ZpODEybmdWbHFLRjZIbkFlcCtOb2xFOXlo?=
+ =?utf-8?B?L2tuOU5WektvcCswS2ZFejR6NTdRbzhGWTVCNTRPOWdSMit4T2NRRGc2dFgy?=
+ =?utf-8?B?djI4Q3UxYVEvbEV6TUUrQ3hGTUhnNTRDbXlrenJNUnRrQmx1UFUyaXJYNWRh?=
+ =?utf-8?B?YWVhcndUZnFUUi8xSi8zY0VyT0tCb0JWM0d3N2VUYTJVMEJ1eEF6MVNKdUla?=
+ =?utf-8?B?V2FRbVVpUjVVc3Q4bEFCZWpVUEFrMDVNMVEwRmlGVy9IWEJtcnY2SmxrbStL?=
+ =?utf-8?B?eUxPR1Q2R3RCZktqTHd5WFVBUEZjc2hhQVVxa2tnbjRBSmpka3plTUJYaVp4?=
+ =?utf-8?B?S21qM2t2Tyt2ZmhTV2FWZzZId29MaGZTei9OaEc1bE43S0s5MVFmZ1E2VHNs?=
+ =?utf-8?B?Yzk4UjJFQW0zMitCVXRac0VUS3RNMC9KMTQzbzFlejBNNE91ZjMyV2R2Zk9l?=
+ =?utf-8?B?TlB4cjJwRGo2RjVnMytTVzZiMEM0WklFc25GaVFLWXZGU3R0TnFFMzJVYzJu?=
+ =?utf-8?B?T2JtVHhQNFY2TzI3RlpDVGVMamIwbmdOaGE3QTRvQVVUVFdodFdpdm1wZTB0?=
+ =?utf-8?B?WE92MjdQOFFUTVdzNTBHaWNTVVpMR0RwZmxwTDlVVDNxQXo3QjI0L3R3cDJR?=
+ =?utf-8?B?dlVEcXZpMGQ2VTJHUm4xYVRGUVFmV2hlYlhSbEtaS01DYmEya01yQlZNM2Jj?=
+ =?utf-8?B?S0o5NW9ob2pxYk5QN3pTOHA4YUFLanU2WTlxUkswamdPY3R6NUM4YmNXT3No?=
+ =?utf-8?B?bjBUVWVPQzAwcDJaa2xBa0VXK2JKVnd3dEdpQ25YN00wSDJEN1QwUVNGRUla?=
+ =?utf-8?B?bGNyUEFCZEg5TmcycmtYTkM0Yms2SERDR1dhNU1PRmU0SFJuQ3dITFk5NXhM?=
+ =?utf-8?B?VVhyNE96akEyNmNpMTl0b2Rld0lnSWxTdVdZMkNKY1Z4YXIvUEExV3UyOHZV?=
+ =?utf-8?B?eWlYRytnS3VQNVlRZkpYd1NPbmUySDMvcmRHMEd5NGtRT1dVZzVwclA5c0Rk?=
+ =?utf-8?B?cTNSMUc2bC9NVDdUNWpGNUFiekJsWHNFcVBqVVFBdXZIQVFrdFZaNmZlTWNE?=
+ =?utf-8?B?TEJFY01KSG03RlBleFBaTUprOWtSaDVTeXF2ckxTQ2loRy9sZVdXckl3Um9a?=
+ =?utf-8?B?ZU1DRnh0V2FqbFFHdFQ3NmFaWjk2b20zUy9OK29UMXF5d0huMGZuU2RoekFM?=
+ =?utf-8?B?VUNvOEZPbmFQanNySFFuZ2ozNnVpNGh3TFN6Znl0bW9tRTZXVU5JSFRnRGpM?=
+ =?utf-8?B?dmVFNzFDMWp3bzN5eDZ5S1MrdXU4cCtxQUVoY2pvMDFvZ1Vocm5wcTVncnNH?=
+ =?utf-8?B?NGFPOTJNd0I0U3I1V203a204QkhpeEFKRlQzMU9Qb1R2cTM2ZU5BZHpJUDUx?=
+ =?utf-8?B?aEt6R2dwQVl5bXRiMnMwVEpNd01VQktOQWNoT0gybHRMZnhLM0pUL2pBL2lK?=
+ =?utf-8?B?Z3FEMGdhQlM3VHY2VzFrUjBPRXRMeXY1a2JydEdZbytRTVNTZ0NSM0dlTnlj?=
+ =?utf-8?B?VHAxNGpLZWRrbmJPN3hOcGdrT3JFVWNmYkJMMmxraE45VUdFTEZWcDNlMVhy?=
+ =?utf-8?B?M01uSWdCUTkrLzlTZDNLSEgrQmJEblJHT09JOGV1bG5XWFNQbzhJWER1TElZ?=
+ =?utf-8?B?YzVsUE9yek81QkpLQ1NVS2o1cWNQSWcrMVZwTWxVWHF0YW9BVGI1V1Z5SkM4?=
+ =?utf-8?B?RmgweUt3RUJKNFowVnpJL0JUU2ZBWUxEVENSU3o1MVJRdEdXb05pNFRDWGll?=
+ =?utf-8?B?RTdjT3dSdFIrWkhndWVwbjRqTDJOY0loYTJNOGFYenJNSXhEMTZDdXdyZThY?=
+ =?utf-8?B?S2ZvbjVnT2NxVWhPbE0vdzd5enI1R0owYWRHYnBYNExVZzYyZ1dHazkrVVFZ?=
+ =?utf-8?B?L0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2b638cc-9dfc-477f-9f90-08dd44594e39
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 13:47:31.5289 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r+LkrOlNmAcO4SoVGq7cJzX6IO3bpeSGVXDtvwk477UZFdNPAUtD4dyYCsiX70PYhqIbPK/qtD6l9IOnbxQfNyrbWV3ioLGeV1vz8mamBw8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB8213
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,293 +195,343 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When Xe is used, create the VM in LR mode as this is what the
-compute UMD does to run compute kernels. This makes those tests
-more representative of real world scenarios. A side effect is
-that user fences must be used.
 
-v2: Minimize changes, stick to xe_vm_bind_userptr_async()
+On 12/31/2024 12:33 AM, Swati Sharma wrote:
+> Functions returning highest and lowest mode are added to lib.
+> Corresponding changes are done in relevant binaries.
 
-v3: Also use user fences in preempt exec
+Use imperative mood.
 
-v4: Do not rely on user pointers due to atomics use in sip,
-    rebase after 64K alignment, fix waiting times and order
-    in preempt exec (Zbigniew)
 
-CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- lib/intel_compute.c | 164 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 133 insertions(+), 31 deletions(-)
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   lib/igt_kms.c             | 34 +++++++++++++++++
+>   lib/igt_kms.h             |  2 +
+>   tests/intel/kms_cdclk.c   | 77 +++++++++++++++++----------------------
+>   tests/intel/kms_dsc.c     | 14 +------
+>   tests/kms_display_modes.c | 14 +------
+>   5 files changed, 72 insertions(+), 69 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index a67d17c4f..4f2a5ca0f 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -4851,6 +4851,40 @@ drmModeModeInfo *igt_output_get_mode(igt_output_t *output)
+>   		return &output->config.default_mode;
+>   }
+>   
+> +/**
+> + * igt_output_get_highres_mode:
+> + * @output: Target output
+> + *
+> + * Returns: A #drmModeModeInfo struct representing the highest mode
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 0e1179b62..6f6b4006d 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -27,6 +27,8 @@
- #define SIZE_BATCH			0x10000
- #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
- #define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
-+#define ADDR_SYNC			0x010000ULL
-+#define ADDR_SYNC2			0x020000ULL
- #define ADDR_BATCH			0x100000ULL
- #define ADDR_INPUT			0x200000ULL
- #define ADDR_OUTPUT			0x300000ULL
-@@ -43,6 +45,8 @@
- #define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000ULL
- #define OFFSET_STATE_SIP			0xFFFF0000
- 
-+#define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
-+
- /*
-  * TGP  - ThreadGroup Preemption
-  * WMTP - Walker Mid Thread Preemption
-@@ -58,6 +62,10 @@ struct bo_dict_entry {
- 	uint32_t handle;
- };
- 
-+struct bo_sync {
-+	uint64_t sync;
-+};
-+
- struct bo_execenv {
- 	int fd;
- 	enum intel_driver driver;
-@@ -81,7 +89,7 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
- 	execenv->driver = get_intel_driver(fd);
- 
- 	if (execenv->driver == INTEL_DRIVER_XE) {
--		execenv->vm = xe_vm_create(fd, 0, 0);
-+		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
- 
- 		if (eci) {
- 			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
-@@ -107,8 +115,8 @@ static void bo_execenv_destroy(struct bo_execenv *execenv)
- 	igt_assert(execenv);
- 
- 	if (execenv->driver == INTEL_DRIVER_XE) {
--		xe_vm_destroy(execenv->fd, execenv->vm);
- 		xe_exec_queue_destroy(execenv->fd, execenv->exec_queue);
-+		xe_vm_destroy(execenv->fd, execenv->vm);
- 	}
- }
- 
-@@ -119,18 +127,32 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 
- 	if (execenv->driver == INTEL_DRIVER_XE) {
- 		uint32_t vm = execenv->vm;
--		uint64_t alignment = xe_get_default_alignment(fd);
--		struct drm_xe_sync sync = { 0 };
--
--		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
--		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
--		sync.handle = syncobj_create(fd, 0);
-+		uint32_t exec_queue = execenv->exec_queue;
-+		struct bo_sync *bo_sync;
-+		size_t bo_size = sizeof(*bo_sync);
-+		uint32_t bo = 0;
-+		struct drm_xe_sync sync = {
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE,
-+		};
-+
-+		bo_size = xe_bb_size(fd, bo_size);
-+		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		bo_sync = xe_bo_map(fd, bo, bo_size);
-+		sync.addr = to_user_pointer(&bo_sync->sync);
- 
- 		for (int i = 0; i < entries; i++) {
--			bo_dict[i].data = aligned_alloc(alignment, bo_dict[i].size);
--			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(bo_dict[i].data),
--						 bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+			bo_sync->sync = 0;
-+			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-+							 vram_if_possible(fd, 0),
-+							 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
-+			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
-+					 bo_dict[i].size, &sync, 1);
-+			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
-+				       INT64_MAX);
- 			memset(bo_dict[i].data, 0, bo_dict[i].size);
- 
- 			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
-@@ -139,7 +161,8 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 				  (long long)bo_dict[i].size);
- 		}
- 
--		syncobj_destroy(fd, sync.handle);
-+		munmap(bo_sync, bo_size);
-+		gem_close(fd, bo);
- 	} else {
- 		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
- 		struct drm_i915_gem_exec_object2 *obj;
-@@ -177,19 +200,33 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
- 
- 	if (execenv->driver == INTEL_DRIVER_XE) {
- 		uint32_t vm = execenv->vm;
--		struct drm_xe_sync sync = { 0 };
--
--		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
--		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
--		sync.handle = syncobj_create(fd, 0);
-+		uint32_t exec_queue = execenv->exec_queue;
-+		struct bo_sync *bo_sync;
-+		size_t bo_size = sizeof(*bo_sync);
-+		uint32_t bo = 0;
-+		struct drm_xe_sync sync = {
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE,
-+		};
-+
-+		bo_size = xe_bb_size(fd, bo_size);
-+		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		bo_sync = xe_bo_map(fd, bo, bo_size);
-+		sync.addr = to_user_pointer(&bo_sync->sync);
- 
- 		for (int i = 0; i < entries; i++) {
-+			bo_sync->sync = 0;
- 			xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
--			free(bo_dict[i].data);
-+			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
-+				       INT64_MAX);
-+			munmap(bo_dict[i].data, bo_dict[i].size);
-+			gem_close(fd, bo_dict[i].handle);
- 		}
- 
--		syncobj_destroy(fd, sync.handle);
-+		munmap(bo_sync, bo_size);
-+		gem_close(fd, bo);
- 	} else {
- 		for (int i = 0; i < entries; i++) {
- 			gem_close(fd, bo_dict[i].handle);
-@@ -204,7 +241,32 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
- 	int fd = execenv->fd;
- 
- 	if (execenv->driver == INTEL_DRIVER_XE) {
--		xe_exec_wait(fd, execenv->exec_queue, start_addr);
-+		uint32_t exec_queue = execenv->exec_queue;
-+		struct bo_sync *bo_sync;
-+		size_t bo_size = sizeof(*bo_sync);
-+		uint32_t bo = 0;
-+		struct drm_xe_sync sync = {
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE,
-+		};
-+
-+		bo_size = xe_bb_size(fd, bo_size);
-+		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		bo_sync = xe_bo_map(fd, bo, bo_size);
-+		sync.addr = to_user_pointer(&bo_sync->sync);
-+		xe_vm_bind_async(fd, execenv->vm, 0, bo, 0, ADDR_SYNC, bo_size, &sync, 1);
-+		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
-+
-+		sync.addr = ADDR_SYNC;
-+		bo_sync->sync = 0;
-+
-+		xe_exec_sync(fd, exec_queue, start_addr, &sync, 1);
-+		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
-+
-+		munmap(bo_sync, bo_size);
-+		gem_close(fd, bo);
- 	} else {
- 		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
- 		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
-@@ -1803,15 +1865,22 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	float *dinput;
- 	unsigned int long_kernel_loop_count;
- 	struct drm_xe_sync sync_long = {
--		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
- 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
--		.handle = syncobj_create(fd, 0),
-+		.timeline_value = USER_FENCE_VALUE,
- 	};
-+	struct bo_sync *bo_sync_long;
-+	size_t bo_size_long = sizeof(*bo_sync_long);
-+	uint32_t bo_long = 0;
- 	struct drm_xe_sync sync_short = {
--		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
- 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
--		.handle = syncobj_create(fd, 0),
-+		.timeline_value = USER_FENCE_VALUE,
- 	};
-+	struct bo_sync *bo_sync_short;
-+	size_t bo_size_short = sizeof(*bo_sync_short);
-+	uint32_t bo_short = 0;
-+	int64_t timeout_short = 1;
- 
- 	if (threadgroup_preemption)
- 		long_kernel_loop_count = TGP_long_kernel_loop_count;
-@@ -1824,6 +1893,32 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	bo_execenv_create(fd, &execenv_short, eci);
- 	bo_execenv_create(fd, &execenv_long, eci);
- 
-+	/* Prepare sync object for long */
-+	bo_size_long = xe_bb_size(fd, bo_size_long);
-+	bo_long = xe_bo_create(fd, execenv_long.vm, bo_size_long, vram_if_possible(fd, 0),
-+			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	bo_sync_long = xe_bo_map(fd, bo_long, bo_size_long);
-+	sync_long.addr = to_user_pointer(&bo_sync_long->sync);
-+	xe_vm_bind_async(fd, execenv_long.vm, 0, bo_long, 0, ADDR_SYNC, bo_size_long,
-+			 &sync_long, 1);
-+	xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE, execenv_long.exec_queue,
-+		       INT64_MAX);
-+	bo_sync_long->sync = 0;
-+	sync_long.addr = ADDR_SYNC;
-+
-+	/* Prepare sync object for short */
-+	bo_size_short = xe_bb_size(fd, bo_size_short);
-+	bo_short = xe_bo_create(fd, execenv_short.vm, bo_size_short, vram_if_possible(fd, 0),
-+			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	bo_sync_short = xe_bo_map(fd, bo_short, bo_size_short);
-+	sync_short.addr = to_user_pointer(&bo_sync_short->sync);
-+	xe_vm_bind_async(fd, execenv_short.vm, 0, bo_short, 0, ADDR_SYNC2, bo_size_short,
-+			 &sync_short, 1);
-+	xe_wait_ufence(fd, &bo_sync_short->sync, USER_FENCE_VALUE, execenv_short.exec_queue,
-+		       INT64_MAX);
-+	bo_sync_short->sync = 0;
-+	sync_short.addr = ADDR_SYNC2;
-+
- 	bo_dict_long[0].size = ALIGN(long_kernel_size, 0x1000);
- 	bo_dict_short[0].size = ALIGN(short_kernel_size, 0x1000);
- 
-@@ -1872,14 +1967,21 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP, false);
- 
- 	xe_exec_sync(fd, execenv_long.exec_queue, ADDR_BATCH, &sync_long, 1);
--
- 	xe_exec_sync(fd, execenv_short.exec_queue, ADDR_BATCH, &sync_short, 1);
- 
--	igt_assert(syncobj_wait(fd, &sync_short.handle, 1, INT64_MAX, 0, NULL));
--	syncobj_destroy(fd, sync_short.handle);
-+	xe_wait_ufence(fd, &bo_sync_short->sync, USER_FENCE_VALUE, execenv_short.exec_queue,
-+		       INT64_MAX);
-+	/* Check that the long kernel has not completed yet */
-+	igt_assert_neq(0, __xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE,
-+					   execenv_long.exec_queue, &timeout_short));
-+	xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE, execenv_long.exec_queue,
-+		       INT64_MAX);
-+
-+	munmap(bo_sync_long, bo_size_long);
-+	gem_close(fd, bo_long);
- 
--	igt_assert(syncobj_wait(fd, &sync_long.handle, 1, INT64_MAX, 0, NULL));
--	syncobj_destroy(fd, sync_long.handle);
-+	munmap(bo_sync_short, bo_size_short);
-+	gem_close(fd, bo_short);
- 
- 	for (int i = 0; i < SIZE_DATA; i++) {
- 		float f1, f2;
--- 
-2.43.0
+Returns NULL otherwise
 
+
+> + */
+> +drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output)
+> +{
+> +	drmModeConnector *connector = output->config.connector;
+> +	drmModeModeInfo *highest_mode = NULL;
+> +
+> +	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+> +	highest_mode = &connector->modes[0];
+> +
+> +	return highest_mode;
+> +}
+> +
+> +/**
+> + * igt_output_get_lowres_mode:
+> + * @output: Target output
+> + *
+> + * Returns: A #drmModeModeInfo struct representing the lowest mode
+
+ditto
+
+
+> + */
+> +drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output)
+> +{
+> +	drmModeConnector *connector = output->config.connector;
+> +	drmModeModeInfo *lowest_mode = NULL;
+> +
+> +	igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
+> +	lowest_mode = &connector->modes[0];
+> +
+> +	return lowest_mode;
+> +}
+> +
+>   /**
+>    * igt_output_override_mode:
+>    * @output: Output of which the mode will be overridden
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 1e2a927ab..18c480ce5 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -546,6 +546,8 @@ void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe);
+>   
+>   const char *igt_output_name(igt_output_t *output);
+>   drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
+> +drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
+> +drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output);
+>   void igt_output_override_mode(igt_output_t *output, const drmModeModeInfo *mode);
+>   int igt_output_preferred_vrefresh(igt_output_t *output);
+>   void igt_output_set_pipe(igt_output_t *output, enum pipe pipe);
+> diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
+> index 382b3e9d1..f1a019eb7 100644
+> --- a/tests/intel/kms_cdclk.c
+> +++ b/tests/intel/kms_cdclk.c
+> @@ -110,24 +110,6 @@ static __u64 get_mode_data_rate(drmModeModeInfo *mode)
+>   	return data_rate;
+>   }
+>   
+> -static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+> -{
+> -	drmModeModeInfo *highest_mode = NULL;
+> -	drmModeConnector *connector = output->config.connector;
+> -	int j;
+> -
+> -	for (j = 0; j < connector->count_modes; j++) {
+> -		if (connector->modes[j].vdisplay == VDISPLAY_4K &&
+> -		    connector->modes[j].hdisplay == HDISPLAY_4K &&
+> -		    connector->modes[j].vrefresh == VREFRESH) {
+> -			highest_mode = &connector->modes[j];
+> -			break;
+> -		}
+> -	}
+> -
+> -	return highest_mode;
+> -}
+> -
+>   static drmModeModeInfo *get_lowres_mode(igt_output_t *output)
+>   {
+>   	drmModeModeInfo *lowest_mode = NULL;
+> @@ -172,7 +154,7 @@ static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *outpu
+>   	int cdclk_ref, cdclk_new;
+>   	struct igt_fb fb;
+>   	igt_plane_t *primary;
+> -	drmModeModeInfo *mode;
+> +	drmModeModeInfo mode;
+>   	int scaling = 50;
+>   	int ret;
+>   	bool test_complete = false;
+> @@ -182,14 +164,17 @@ static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *outpu
+>   		igt_display_reset(display);
+>   
+>   		igt_output_set_pipe(output, pipe);
+> -		mode = get_highres_mode(output);
+> -		igt_require(mode != NULL);
+> -		igt_output_override_mode(output, mode);
+> +		mode = *igt_output_get_highres_mode(output);
+> +		igt_require_f(mode.hdisplay == HDISPLAY_4K && mode.vdisplay == VDISPLAY_4K &&
+> +			      mode.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
+> +			      igt_output_name(output));
+
+
+This is functionally different than what was happening earlier. Earlier 
+the test was only getting the 4K mode from the list of modes.
+
+Now the patch is getting highest mode and checking if its 4K or not. 
+With 8k config, this will result in skip now.
+
+I understand you are trying to solve two existing problems.
+
+1. if a config has say 8k mode the current code will always take 4K mode.
+
+For cdclk transition, as I understand you want to have anything more 
+than 4K (as done in next patch).
+
+2. For finding such a mode we iterate through the modes several times, 
+you want to avoid this and just sort the mode once and get highest mode.
+
+If this is the case, you can combine patch#1 and 2 with the above 
+reasoning clearly called out.
+
+
+Regards,
+
+Ankit
+
+> +
+> +		igt_output_override_mode(output, &mode);
+>   
+>   		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   
+>   		igt_create_color_pattern_fb(display->drm_fd,
+> -					    mode->hdisplay, mode->vdisplay,
+> +					    mode.hdisplay, mode.vdisplay,
+>   					    DRM_FORMAT_XRGB8888,
+>   					    DRM_FORMAT_MOD_LINEAR,
+>   					    0.0, 0.0, 0.0, &fb);
+> @@ -225,18 +210,20 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+>   	int cdclk_ref, cdclk_new;
+>   	struct igt_fb fb;
+>   	igt_plane_t *primary;
+> -	drmModeModeInfo *mode_hi, *mode_lo, *mode;
+> +	drmModeModeInfo mode_hi, mode_lo, *mode;
+>   
+>   	do_cleanup_display(display);
+>   	igt_display_reset(display);
+>   
+>   	igt_output_set_pipe(output, pipe);
+>   	mode = igt_output_get_mode(output);
+> -	mode_lo = get_lowres_mode(output);
+> -	mode_hi = get_highres_mode(output);
+> -	igt_require(mode_hi != NULL);
+> +	mode_lo = *get_lowres_mode(output);
+> +	mode_hi = *igt_output_get_highres_mode(output);
+> +	igt_require_f(mode_hi.hdisplay == HDISPLAY_4K && mode_hi.vdisplay == VDISPLAY_4K &&
+> +		      mode_hi.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
+> +		      igt_output_name(output));
+>   
+> -	igt_skip_on_f(mode_hi->hdisplay == mode_lo->hdisplay && mode_hi->vdisplay == mode_lo->vdisplay,
+> +	igt_skip_on_f(mode_hi.hdisplay == mode_lo.hdisplay && mode_hi.vdisplay == mode_lo.vdisplay,
+>   		      "Highest and lowest mode resolutions are same; no transition\n");
+>   
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> @@ -248,13 +235,13 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+>   				    0.0, 0.0, 0.0, &fb);
+>   
+>   	/* switch to lower resolution */
+> -	igt_output_override_mode(output, mode_lo);
+> +	igt_output_override_mode(output, &mode_lo);
+>   	igt_plane_set_fb(primary, &fb);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>   	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+>   
+>   	/* switch to higher resolution */
+> -	igt_output_override_mode(output, mode_hi);
+> +	igt_output_override_mode(output, &mode_hi);
+>   	igt_plane_set_fb(primary, &fb);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>   	cdclk_new = get_current_cdclk_freq(debugfs_fd);
+> @@ -273,7 +260,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	int debugfs_fd = data->debugfs_fd;
+> -	drmModeModeInfo *mode, *mode_hi, *mode_lo;
+> +	drmModeModeInfo *mode, mode_hi, mode_lo;
+>   	igt_output_t *output;
+>   	int valid_outputs = 0;
+>   	int cdclk_ref, cdclk_new;
+> @@ -297,11 +284,13 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+>   		width = max(width, mode->hdisplay);
+>   		height = max(height, mode->vdisplay);
+>   
+> -		mode_hi = get_highres_mode(output);
+> -		igt_require(mode_hi != NULL);
+> +		mode_hi = *igt_output_get_highres_mode(output);
+> +		igt_require_f(mode_hi.hdisplay == HDISPLAY_4K && mode_hi.vdisplay == VDISPLAY_4K &&
+> +			      mode_hi.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
+> +			      igt_output_name(output));
+>   
+>   		igt_output_set_pipe(output, i);
+> -		igt_output_override_mode(output, mode_hi);
+> +		igt_output_override_mode(output, &mode_hi);
+>   		i++;
+>   	}
+>   	igt_require(intel_pipe_output_combo_valid(display));
+> @@ -320,12 +309,12 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+>   		mode = igt_output_get_mode(output);
+>   		igt_assert(mode);
+>   
+> -		mode_lo = get_lowres_mode(output);
+> +		mode_lo = *get_lowres_mode(output);
+>   
+> -		igt_output_override_mode(output, mode_lo);
+> +		igt_output_override_mode(output, &mode_lo);
+>   		igt_plane_set_fb(plane, &fb);
+> -		igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo->vdisplay);
+> -		igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisplay);
+> +		igt_fb_set_size(&fb, plane, mode_lo.hdisplay, mode_lo.vdisplay);
+> +		igt_plane_set_size(plane, mode_lo.hdisplay, mode_lo.vdisplay);
+>   		i++;
+>   	}
+>   
+> @@ -343,13 +332,15 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+>   		mode = igt_output_get_mode(output);
+>   		igt_assert(mode);
+>   
+> -		mode_hi = get_highres_mode(output);
+> -		igt_require(mode_hi != NULL);
+> +		mode_hi = *igt_output_get_highres_mode(output);
+> +		igt_require_f(mode_hi.hdisplay == HDISPLAY_4K && mode_hi.vdisplay == VDISPLAY_4K &&
+> +			      mode_hi.vrefresh == VREFRESH, "4K mode not found on output %s.\n",
+> +			      igt_output_name(output));
+>   
+> -		igt_output_override_mode(output, mode_hi);
+> +		igt_output_override_mode(output, &mode_hi);
+>   		igt_plane_set_fb(plane, &fb);
+> -		igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi->vdisplay);
+> -		igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisplay);
+> +		igt_fb_set_size(&fb, plane, mode_hi.hdisplay, mode_hi.vdisplay);
+> +		igt_plane_set_size(plane, mode_hi.hdisplay, mode_hi.vdisplay);
+>   		j++;
+>   	}
+>   
+> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+> index 5508e7a9e..1392e1cd4 100644
+> --- a/tests/intel/kms_dsc.c
+> +++ b/tests/intel/kms_dsc.c
+> @@ -94,18 +94,6 @@ static inline void manual(const char *expected)
+>   	igt_debug_interactive_mode_check("all", expected);
+>   }
+>   
+> -static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+> -{
+> -	drmModeConnector *connector = output->config.connector;
+> -	drmModeModeInfo *highest_mode = NULL;
+> -
+> -	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+> -
+> -	highest_mode = &connector->modes[0];
+> -
+> -	return highest_mode;
+> -}
+> -
+>   static drmModeModeInfo *get_next_mode(igt_output_t *output, int index)
+>   {
+>   	drmModeConnector *connector = output->config.connector;
+> @@ -184,7 +172,7 @@ static void update_display(data_t *data, uint32_t test_type)
+>   	igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
+>   		    DRM_FORMAT_MOD_LINEAR));
+>   
+> -	mode = get_highres_mode(output);
+> +	mode = igt_output_get_highres_mode(output);
+>   
+>   	do {
+>   		if (data->output_format != DSC_FORMAT_RGB && index > 0)
+> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+> index e41c60cc0..6ea44944a 100644
+> --- a/tests/kms_display_modes.c
+> +++ b/tests/kms_display_modes.c
+> @@ -60,18 +60,6 @@ typedef struct {
+>   	int n_pipes;
+>   } data_t;
+>   
+> -/* Get higher mode supported by panel. */
+> -static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+> -{
+> -	drmModeConnector *connector = output->config.connector;
+> -	drmModeModeInfo *highest_mode = NULL;
+> -
+> -	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+> -	highest_mode = &connector->modes[0];
+> -
+> -	return highest_mode;
+> -}
+> -
+>   /* Get the 4k or less then 4k mode of connected panel. */
+>   static drmModeModeInfo *get_mode(igt_output_t *output)
+>   {
+> @@ -344,7 +332,7 @@ igt_main
+>   		igt_require_f(dp_mst_outputs > 1, "MST not found more then one\n");
+>   
+>   		memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), sizeof(drmModeModeInfo));
+> -		memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[1]),
+> +		memcpy(&data.mode_mst[1], igt_output_get_highres_mode(data.mst_output[1]),
+>   				sizeof(drmModeModeInfo));
+>   		igt_require_f((data.mode_mst[1].hdisplay >= HDISPLAY_4K &&
+>   			       data.mode_mst[1].vdisplay >= VDISPLAY_4K), "4k panel not found\n");
