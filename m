@@ -4,182 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5730CC02194
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Feb 2025 14:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 296D7C02192
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Feb 2025 18:22:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB22310E4EB;
-	Mon,  3 Feb 2025 14:13:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BDB8E10E087;
+	Mon,  3 Feb 2025 18:22:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HrpxFpaW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q6aj2OpD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7000C10E4EB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2025 14:13:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E14D510E087
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2025 18:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738591990; x=1770127990;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=3z+A9PRjD2CZhdB8Wgyn2GK15H9ZxVoDqUu2h2cRIYs=;
- b=HrpxFpaWhQeAR8LYdCp3IsUsyM15Ht6zUH/MshPa7iko3klGv4NHoi9V
- zTFCewOI0aJijaCWiTaXmuGHiO5mrttYtbNe2gW7AJ6jVeC6PhOIHhWMM
- +eEQCBkHvZgXME1vyq2nP4Kn8URXJgGJ1TKsXsSNQ1nQpEYNOXCgiYklt
- zLgOM1SvBv+y0PCt9QDuc7Yq6bmge+NN9jfFd0AyMJL0MQ15gdOkJ+AT7
- HuhyFOBukrQJh0xjol6r9cENYUAD+qshNM/Kw8kQcuGTJkdDNkwUhduE5
- DFvaG8HQ0KLlVjw3lfCYqlH0sLzMES4NQl0NMgK/t9ML5M+bBIr9SlUfx w==;
-X-CSE-ConnectionGUID: Dtf+4HeWQhyODx2Kx8Qrng==
-X-CSE-MsgGUID: lQpYHLy5QLu6oRntbEZ4gA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="42834182"
-X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; d="scan'208";a="42834182"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 06:13:10 -0800
-X-CSE-ConnectionGUID: Cc3jFAyTQKOel/iaLTTq4Q==
-X-CSE-MsgGUID: YXi0k/lnQd6VAbg7MC21Ew==
+ t=1738606931; x=1770142931;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=gFffuY90jmKMFP7qdqnZqH4h9cftSaKM0rRKof+u1O0=;
+ b=Q6aj2OpDqsYxMgVXl/MsXgvgT6sGt9/1P0LudL9h+EYLLTyORWhvfa2C
+ STOv6uPpvGz/jPTVQUGRNeNmAFvVUupl7nTM8LFK9zWHj1F+M+NgBdywf
+ 0AQZsC2sVoEUaDrxHOD4Bw38RHAFQ4mH/HQRQBc9+RNkqToFTEvHyWq1P
+ 4gvFB2oK/H1MAKGtm4yCOVTcCQAMawj9yEK6nPbQDl0gcCa2+B26MmJYt
+ wpA1/uGHbZzyvihp/Gv5ssDdv8SQ1hEDpMJIys8QFFGxG5HNx0l3ojKIO
+ az1ZiCCsn96pZ39NJTq64+OqS5lqTL6MBJIQu3A35mrcKuVfgDE8jHNtt g==;
+X-CSE-ConnectionGUID: fbn0jb6qSxWJ9YdjDvGtVQ==
+X-CSE-MsgGUID: jKquxH8oTjykCnMqZQlfVg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="38820093"
+X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; d="scan'208";a="38820093"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 10:22:11 -0800
+X-CSE-ConnectionGUID: yTI1/a8VQkyemdbOUNENlQ==
+X-CSE-MsgGUID: SPoPpSyjTf2DKBaTc2KolA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="114918809"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 03 Feb 2025 06:13:09 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 3 Feb 2025 06:13:09 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Mon, 3 Feb 2025 06:13:09 -0800
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.48) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 3 Feb 2025 06:13:09 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E5cPYk2GyII+3O6mN5KsfoJFPZ7bZasZlSUwrDeHtNNSW4TtA1gcvwURzvii318bgCUo06lpA0rCxVG20J9RdCX/fYUk0XEWz5IK6S4afJZN2iqAS4/8G24eJTo/epYtNBMnJR4pLSX344kr3Ekp2RR8QbbvxQgJSoabHOvV/SspZs7YMlGaVWfgVpgs46FQrUMW25gfoFtGlOcLUjhwbN/l1Sv7k4Vkb+PvREyi/EiuzfU0qHpHOLiKXxgP1pwgar4t8LG9q7x1lZM2SZy+51YpIE5iuc5fS4E5xtC3OGfnP+r9BAMA0s2JedJQjs8a5gtPraViU81903f3LDwe7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iuD7OifoCG+enLBC9imuJUopPkyEmV/e8wOdyyxYH9s=;
- b=tlKZcL/ikbk6mYy9oBxJ1sbAavCXXpF/qKq9zXZYrpzTbPD9eyikiP53gHAoIrnIupnLr4+fNEqUooHhCtU8bHSjYkrKEYK0JYkz3HCLaB0uBszTzNaNtwJZgRgxGgwA3hvR3fNB8s7O/2YW2MbkzCTrrkde7cST+Nu+qGEDJEhXASvkwKsJOf6kk8JYcM45DgxsJluuigeLQGHMWAwquZOdiJFBUiPN7uL+wil/iUS/vgcJi2HRbWp2yRQ70jZJW+K5vmm6EJTc3C4J33l+3bOu699BeaNIExy00rY7v6CV6wCNp3Mjwqf2WReOpdNkIl3vvLv2eEUN4A7F1YkcuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by SA2PR11MB5146.namprd11.prod.outlook.com (2603:10b6:806:116::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.23; Mon, 3 Feb
- 2025 14:12:53 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8398.017; Mon, 3 Feb 2025
- 14:12:53 +0000
-Message-ID: <fd581a1d-755c-4140-9be1-519ce90be050@intel.com>
-Date: Mon, 3 Feb 2025 19:42:47 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 5/6] tests/intel/kms_cdclk.c: Modify skip condition
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <santhosh.reddy.guddati@intel.com>
-References: <20241230190315.48821-1-swati2.sharma@intel.com>
- <20241230190315.48821-6-swati2.sharma@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20241230190315.48821-6-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0031.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:b8::18) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; d="scan'208";a="110923761"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 10:22:10 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3 07/10] runner: Fix use of newline on arguments
+Date: Mon,  3 Feb 2025 10:09:04 -0800
+Message-ID: <20250203182141.617229-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <yeb7toxw7aqtrwlncbuhsuhdlpmckwve2iwhz2crep62fqdifn@by2yiutcan4f>
+References: <yeb7toxw7aqtrwlncbuhsuhdlpmckwve2iwhz2crep62fqdifn@by2yiutcan4f>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|SA2PR11MB5146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e8cf80e-e4c9-4c68-2c2c-08dd445cd94b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TTFVRjVZaDZGZ1ZhWTN3cTRMK25WeE5CVi9rdTVOVTFDNnBVY0NhcWJtZVdE?=
- =?utf-8?B?NWYzNHVJZHJmR2kzemY4S1FQRm5qaWYyUDlHbG5zR2NrUzlpblBVNXpsWmRC?=
- =?utf-8?B?YXYvNFpYT1VjYjhkdEtkcURzcUJ4WFZrV1JwbGI5azJrRURud1B3TUJ6QnZ3?=
- =?utf-8?B?RExuUUlDcHp1TFpjczRtdkx5NkVYSUpMa3RyU0kwYkFUTW1Za1pWT3FTYmxI?=
- =?utf-8?B?NzVWbjY4ZUVPQmJKS1hQd29QMkpaSnVLSTZLWm9oNi8ydTdsaEJqVmdXV0o2?=
- =?utf-8?B?TWFvMVJQd2RTcUtlTWNUL3RuL09hL1c3Rzc3cVdOaHpIZkhqZDc3QU50ZmpL?=
- =?utf-8?B?SjMwYVE0NFJJcnFvMHI3Uy9URERyTlUrSkdnNVMvV2VuOXBSanVWWFZwTiti?=
- =?utf-8?B?dHZFdXF3bGhrZkcvMGYwcTk3bmJraXM2U0JORG8yT2pXbFArUDN5Mk1DaHg5?=
- =?utf-8?B?U2gzTjR0VGNNMFd5c0RiQ2xOZmdpR21oOTA2dDJab1lxbHFYUEsrNlZCWlRS?=
- =?utf-8?B?UE1GMjdzcGlHdVp2ajVsV2Y5eUlscW9IR0pPNU1oU0dyZW00UWxPeTVnTXpD?=
- =?utf-8?B?Yi9aUENLWWpHYjRsaGR2TWZUckt2SWlaVnJqclVCWnVrSmlzNERQb1U4elJU?=
- =?utf-8?B?c0FiS3hNZCtnYUZuQk9oNno5bDRkVGJEdkhHdXVoSjBkUDJaTFFVd1RyT3h1?=
- =?utf-8?B?a1E0dTJQamp1MzdDR21STW9GeW9rMnVSVStZeHhJYWRjS2hoRzFkai9EUlVt?=
- =?utf-8?B?Sk5zVDlLSyt1cW9yeTV1dHFDTnJiOTRCWis0MzZuejVMNThFbk9ITXRzQjdx?=
- =?utf-8?B?elA0ZlZWbmZ6NjR6VCtCeStqY2VrTTd0SGlTdHM5S1BYSXJpRzNLMk5NTits?=
- =?utf-8?B?eTFhVTkrQzI3b2RJOVdPdEt1ZEhuR1RpaGRBY3ZmcHNxZ0FLZTJ3MnkrZnNz?=
- =?utf-8?B?VmtoYVRzTDVXcDZqM0dSWkZ4cHNTdVlYTFZKd21Zd1l5eHNnSHZLa3REM0dP?=
- =?utf-8?B?a3YvNG91THhUVFlwN0NGN0FPZXQwQktNQmlreTFpdnd5OEE0alpzT3haRVda?=
- =?utf-8?B?MGFIbmFnblorNHVIengrcC9xcWd2YzJJZnZXOTVuUllQRnFFT1g4MGlJUytm?=
- =?utf-8?B?R0U5bGp5azYvWEROYWFydTUzVHlkamc2UER0eFQ4VitMNUZQelRtWUJoZE94?=
- =?utf-8?B?VUtYWnRCY2Z5Y0hMUHNybFJnMFBOdmNiTVRJSlFyM0RmNlFMVXVHK3VaeFNs?=
- =?utf-8?B?UWR0MTkrMGo2ZFBtUy9yVGdrMUxZTzJYM1ZtelFVL2JiSVg5ZHF1L2lSaTRN?=
- =?utf-8?B?TWNkUFcwOTN3RVJrRUZZTnZuaWF2SmxXWVBHaGNWdG1jN3pxeGpjbkx3K2py?=
- =?utf-8?B?RnhqRW5vNmJyQ1NXMDJnV3BIckpyV2FVMTVJUzBrTTVUTFh0OTA4cHByM2Zw?=
- =?utf-8?B?QjlRc1ZLVjRTcHp1Vk9xdXJrMS84OElMMGtyRXAvRmdhYUtnMXJBZjljMzYz?=
- =?utf-8?B?SUFmQzg3MXpJd0NIa0VaaUNyQkJnckkxZW41a2puTWMzZ0pnUXFPejJ6QWdn?=
- =?utf-8?B?SFFKTEZFMXJvM2prTE0wdUx3M2Z5aVZFcnlONW41UnFiYWh0Mk80d1F4WktC?=
- =?utf-8?B?UTJvUFZXTDdpTVVlVG5TOGwxRmtnV1lvZmVSTXZrQ2p6cUt0UTJjbXN6WTFW?=
- =?utf-8?B?N25HVjJIZmdOdFZGRVFUa216c040dXBTUFA2cWNTNXJmc250YXA1T3ZQUFpC?=
- =?utf-8?B?M3RDY0pWZmJnUXoxRnNDek1SSFVyd0xjV014QTJWdGxHWHV4WitRQTN1TXB0?=
- =?utf-8?B?NzBOUFJSZXdrM2ZtMmZ4b05GaTQ5cTkrMzdGNlhjU2d2cEtibzY2TUNlaTlF?=
- =?utf-8?Q?XZCCUP7gHcRZQ?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?STRQWUpXbEsrMldjbHRXYmZUVXYydll1MWV1RkFVQzdRdFFzS2NyeEFVM0c2?=
- =?utf-8?B?a2s1QU9NQStkNnNzNUROdndRREZCTEVuYjgyN1FhMEEvR2MyNmwwSCthWkRT?=
- =?utf-8?B?Rm5ZVGhqSjdoaGtwY04yTWNheGJWd21DSDJNTXV0UjA5MnlLVlVFMnhvR2h0?=
- =?utf-8?B?a0NzVzV4MDg5dTh6ei8wY0gweWgzSFVHVXpNM3BWMEtzL1V5SS9qRGRobmtk?=
- =?utf-8?B?YThONE53ampXR2RveFBOVlpORjlXZFZsNE12L1pQQ1JQcXZMM2hYdTh3ZnEw?=
- =?utf-8?B?SWdBa1JJWTlHQTdJaEpaUWo5SzRDaXI2SnkwMTZWWEZlUHZuTUp3VmpYeXBk?=
- =?utf-8?B?cURPZTU4N3RSQ3ZQbmlIc21nazRKbE9VUzlCMTdEM2hOSWVudWhBRjY4L3Jv?=
- =?utf-8?B?aE5sQmM4UnNzOVdINzJaVzY1SEQyWS9ndUwraHNZK0dUay9mdU5zdXhxcUdP?=
- =?utf-8?B?MlRYdE9MZ2NzMitkbytMMEhtNFVSV3VkcElvRk1oWk1tM0NVT2kvRlV5Y0xC?=
- =?utf-8?B?L2VaaG9PT1Fmald1cnFpZkZwdXlnWHM0ZzNxK3hKU2RoRFJ6NmllSXUrS0Q2?=
- =?utf-8?B?VUo4MHNETUhYSkp0T3hYa0E4RXM4cXFqVVJWU0U5T3RCUkJ6TWsxN2JUMnRa?=
- =?utf-8?B?TWtqVllaZWp2ZkYxQnA5Sm1GQlBBOStHZmpPbEdyUVZuTjhBU1haNG13cVMz?=
- =?utf-8?B?dmkrSDgyZkFZWS93dUtER3VmVGFOMkV2b3lXTTNLT01nRDJLWWhLNDhUcG94?=
- =?utf-8?B?SlJJMFhDTnJzVUdTSjJXb2F6NGJTaGFkLzRxeTZPdDBuQ3BndnBLdFJ5OHQ2?=
- =?utf-8?B?WHlOZHVHVFFKK0hQQVQzWW5aandmazVnZkVxT3Nub3lEV2Zvd2ZieXV4TnJn?=
- =?utf-8?B?cWZaQlBhWitGdU9KZkVoc3Z1SytQVE9jaFdPQllnNTJrQ2k5QjJyWFUzTHJv?=
- =?utf-8?B?NGQwckEyUFlNTEJ2SGd0L29jMm9kS0RjUmZxbkhoRUdtcXN1cWxTTkwvM3lv?=
- =?utf-8?B?amoyUWt2dU9sSkRMV1pLOVc3cFZ4cXZJeVZLeHlEMVRpaWcwYlYwUFdxcG5u?=
- =?utf-8?B?eUd2UUttWVNLVCt0UzF2VjRpdXFkS2dYd1IzRWV5TUIyMDRSeFNWVlJMOGoz?=
- =?utf-8?B?U01nb0pJR3R2UTJGZHNoQnJrYytTWGdwaXFIV2FFL2JuazNDM2tPYlpHQndm?=
- =?utf-8?B?ZWRlblpHTE14TXk0S1JYdGdMUXFuS0hQeUNUWDZ1UjBtZ0xoVVUzWENDQVQy?=
- =?utf-8?B?U2tNWVBUdlRTTmJJYVVnTmtmcTRQTGNoWm1IMi80eTRKRHF1K0g1SVlXeE14?=
- =?utf-8?B?N1crcnhYa1FmTXUyU0w4WGltZHRCSG5WZGxHVDdOa3NTR1NmVHYwUXZXVFo0?=
- =?utf-8?B?d0NOL2IzdXdHaGF6dk5jQlVON3lCYkprT1RCcHFBc2VRZFhjeWl1YzRVWVBY?=
- =?utf-8?B?LzZFci84YTNiMXhaSHlsRkxZRk40cjJ5NGZzb2szM01FeXZhRFVCR1AwMVBz?=
- =?utf-8?B?MmZJaDRHelBWY2RGT3pjZElubFYrVVkvSXdHS3pneFJCM0pQVmhLOFNqMjkw?=
- =?utf-8?B?ZzVsbE50VW1kUTdqeStMeXVyWWRGSWE2UmpxbmJSYnBhYlZwR0pKd3NrMHFV?=
- =?utf-8?B?NUVqeGY1dWkvcmJWRTBnYWZWT2JHVXV0UHlMTDl2bCtYVnY3Y3ZydUwrY3ll?=
- =?utf-8?B?UEFDd1hlcnRPN0JRTmxsK3R5VitsV2xkelUrN011QTBzVklhU1l4UFBsWFNk?=
- =?utf-8?B?OHRqOHMrTW1tT1pmYnhhNkNuNkM1TGdkY0EyZHg5TUw3SzZHbDU5VWxrVHdr?=
- =?utf-8?B?a0t0eEk3SSs4TlFqamNDbUZETkNveVI0K0NhZEtNN05laHZPakdkV2JQdkY1?=
- =?utf-8?B?aDZiWE9sWUlwN0MvQktWMlRQOGxQMUpMQ1lHTFVUK2JBQWZKQk1HL3VxbE1h?=
- =?utf-8?B?NXNTaGlURHpGZXFrN0I4VDhQdlE3ZnlrUTJqYXZFOVo2N29xVUJ3WDM5QXZo?=
- =?utf-8?B?YVBTNHBueitaa2hPWWZtcnFWQWE0UlZwUnFMaWdSWVQxN05VZjhKaGlnKzNs?=
- =?utf-8?B?akc4bm9UZEwwcXpib1FyV2U1cTJuN2I3M1pLNVhpaVBrVzhqTnpjeUJCRWxJ?=
- =?utf-8?B?bnU3T1VQSGUxZzAwTUEzcVBmTGYyY3lpckppTG5BcEZrcndhQ3cybE51bzhV?=
- =?utf-8?B?SkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e8cf80e-e4c9-4c68-2c2c-08dd445cd94b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 14:12:53.3158 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kpsbU6leDRVt5TmlUvvcA65z+GkOJEi759keEWkyrlZIMpI2N9usfZw6+ANmln8zjAtsp3RH9Q6Clbq9KiWzW7u3vkgP69QayOmYvtcT0gc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5146
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -195,45 +67,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Currently there's no support for newlines on arguments passed to runner.
+However it's also a silent failure:
 
-On 12/31/2024 12:33 AM, Swati Sharma wrote:
-> Add vrefresh also as a parameter to check if highest and
-> lowest refresh rates are identical.
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/intel/kms_cdclk.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-> index 67efdaa3f..fcbfa3f37 100644
-> --- a/tests/intel/kms_cdclk.c
-> +++ b/tests/intel/kms_cdclk.c
-> @@ -223,7 +223,9 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
->   		      mode_hi.vrefresh >= VREFRESH, "Mode >= 4K not found on output %s.\n",
->   		      igt_output_name(output));
->   
-> -	igt_skip_on_f(mode_hi.hdisplay == mode_lo.hdisplay && mode_hi.vdisplay == mode_lo.vdisplay,
-> +	igt_skip_on_f(mode_hi.hdisplay == mode_lo.hdisplay &&
-> +		      mode_hi.vdisplay == mode_lo.vdisplay &&
+	# igt_runner --test-list '/tmp/test
+	list2.txt' build/tests/ /tmp/results
 
-This can be part of patch were the condition is introduced Patch#3.
+	# head /tmp/results/metadata.txt
+	disk_usage_limit : 0
+	test_list : /tmp/test
+	list2.txt
+	name : results
+	...
 
-Regards,
+	# ./build/runner/igt_resume /tmp/results
+	[9840425.334900] All tests already executed.
+	resume failed at generating results
+	Done.
 
-Ankit
+Embedding a newline like this is very dubious for test-list, but it's
+used for e.g. hooks. In future we will add the command line to the
+metadata and possibly migrate the hooks, so add support for
+escaping/unescaping the string on save/restore.
 
-> +		      mode_hi.vrefresh == mode_lo.vrefresh,
->   		      "Highest and lowest mode resolutions are same; no transition\n");
->   
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> @@ -302,7 +304,8 @@ static void test_mode_transition_on_all_outputs(data_t *data)
->   		lowres_mode = *get_lowres_mode(output);
->   
->   		if (highres_mode.hdisplay == lowres_mode.hdisplay &&
-> -		    highres_mode.vdisplay == lowres_mode.vdisplay) {
-> +		    highres_mode.vdisplay == lowres_mode.vdisplay &&
-> +		    highres_mode.vrefresh == lowres_mode.vrefresh) {
->   			igt_info("Highest and lowest mode resolutions are same on output %s; no transition will occur, skipping\n",
->   				  igt_output_name(output));
->   			continue;
+The method chosen is slightly different than the one used for hooks:
+instead of adding a escape char and keeping the char escaped, this just
+prefers using an hex representation of the char with a \x<HEX>h
+sequence. This makes it easier when unescaping since the reader can
+continue reading one line per iteration. In future this can also be
+adopted by the hooks or even migrating the hooks to use metadata.txt.
+
+Another fix is that now we just skip null values on the serialization
+side.  Previously it would serialize "(null)" and then load that string
+instead of NULL. Add code_coverage_script to the runner_test to cover
+that, which would previously fail.
+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+
+- Fix NULL string (bug already present)
+- Add sanity check on the unescape_str() side to differentiate invalid
+  from empty strings. Now unescape_str() returns negative in cases of
+  error and there's better validation for the escaped char
+
+ runner/runner_tests.c |  1 +
+ runner/settings.c     | 85 +++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 83 insertions(+), 3 deletions(-)
+
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index 8441763f2..93b3ebc9f 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -200,6 +200,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
+ 	igt_assert_eq(one->use_watchdog, two->use_watchdog);
+ 	igt_assert_eqstr(one->test_root, two->test_root);
+ 	igt_assert_eqstr(one->results_path, two->results_path);
++	igt_assert_eqstr(one->code_coverage_script, two->code_coverage_script);
+ 	igt_assert_eq(one->piglit_style_dmesg, two->piglit_style_dmesg);
+ 	igt_assert_eq(one->dmesg_warn_level, two->dmesg_warn_level);
+ 	igt_assert_eq(one->prune_mode, two->prune_mode);
+diff --git a/runner/settings.c b/runner/settings.c
+index 693c5484e..03402a385 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -7,6 +7,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <getopt.h>
++#include <inttypes.h>
+ #include <libgen.h>
+ #include <limits.h>
+ #include <stdio.h>
+@@ -1052,10 +1053,80 @@ static bool serialize_hook_strs(struct settings *settings, int dirfd)
+ 	return true;
+ }
+ 
++/*
++ * Serialize @s to @f, escaping '\' and '\n'. See unescape_str()
++ */
++static void escape_str(const char *s, FILE *f)
++{
++	while (*s) {
++		size_t len = strcspn(s, "\\\n");
++
++		if (len > 0) {
++			fwrite(s, len, 1, f);
++			s += len;
++		}
++
++		if (*s) {
++			fprintf(f, "\\x%xh", *s);
++			s++;
++		}
++	}
++}
++
++/*
++ * Unescape a '\' and '\n': undo escape_str
++ *
++ * Exacpe chars using the form '\x<hex>h' so they don't interfere with the line
++ * parser.
++ *
++ * Return the number of chars saved in buf and optionally
++ * the number of chars scanned in @n_src if that is non-nul.
++ */
++static ssize_t unescape_str(char *buf, size_t *n_src)
++{
++	size_t dst_len = 0;
++	char *s = buf;
++
++	while (*s) {
++		char next = *(s + 1);
++
++		if (*s != '\\') {
++			buf[dst_len++] = *s++;
++		} else if (next == 'x') {
++			unsigned long num;
++
++			s += 2;
++
++			num = strtoul(s, &s, 16);
++			/* cover both error due to overflow or invalid char */
++			if (num > UINT8_MAX || *s != 'h')
++				return -EINVAL;
++
++			buf[dst_len++] = num;
++			s++;
++		} else {
++			return -EINVAL;
++		}
++	}
++
++	buf[dst_len] = '\0';
++
++	if (n_src)
++		*n_src = s - buf;
++
++	return dst_len;
++}
++
+ #define SERIALIZE_LINE(f, s, name, fmt) fprintf(f, "%s : " fmt "\n", #name, s->name)
+ #define SERIALIZE_INT(f, s, name) SERIALIZE_LINE(f, s, name, "%d")
+ #define SERIALIZE_UL(f, s, name) SERIALIZE_LINE(f, s, name, "%lu")
+-#define SERIALIZE_STR(f, s, name) SERIALIZE_LINE(f, s, name, "%s")
++#define SERIALIZE_STR(f, s, name) do {		\
++		if (s->name) {			\
++			fputs(#name " : ", f);	\
++			escape_str(s->name, f);	\
++			fputc('\n', f);		\
++		}				\
++	} while (0)
+ bool serialize_settings(struct settings *settings)
+ {
+ 	FILE *f;
+@@ -1171,9 +1242,17 @@ static char *parse_str(char **val)
+ {
+ 	char *ret = *val;
+ 
+-	*val = NULL;
++	/*
++	 * Unescaping a string is guaranteed to produce a string that is
++	 * smaller or of the same size. Just modify it in place and leak the
++	 * buffer
++	 */
++	if (unescape_str(ret, NULL) >= 0) {
++		*val = NULL;
++		return ret;
++	}
+ 
+-	return ret;
++	return NULL;
+ }
+ 
+ #define PARSE_LINE(s, name, val, field, _f)	\
+-- 
+2.48.1
+
