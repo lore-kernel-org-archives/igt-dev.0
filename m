@@ -4,41 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2606CC02193
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Feb 2025 17:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D830C02194
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Feb 2025 17:53:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD5BB10E02D;
-	Tue,  4 Feb 2025 17:39:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B45F10E044;
+	Tue,  4 Feb 2025 17:53:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="JPZVHVR4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PzRQqAWb";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A856C10E02D;
- Tue,  4 Feb 2025 17:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=jnLbw6zLT2w3VpZcFxS9fDj+1ony8crhdtBiG1TyMao=; b=JPZVHVR4TfGCtAmVbZ22ffVi6j
- XGASUXr7TS7PKmR8s3MO2z6fSUWqX/7WrBPotk4lehziQfwNXqnm6HxLsWOKNVDlE4oeLMuGx1//G
- gOYanY4OFSOH6MZZ/iaSVfxqRsmc7GWK23SSWJBbnLFyB3TpNCDUmbLLssvKIOrSnDxAK16ernfbZ
- mjZCPUEHuJwigmbSVCyppqkACdBCtiUPf3ubDIqL/hv4bs3DRTm3uHBPpJ3BWOCVM/uZgcoL1XlgM
- 9weUEn/RMQuVA74M1pbi7k+OiUInGFqVmVZKpMxq7Zz90rTwFn5JttflQ243Y7Nd1rB5lyLlMsJv4
- v2CQeqPg==;
-Received: from [90.241.98.187] (helo=localhost)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1tfMtW-003WU4-KG; Tue, 04 Feb 2025 18:39:36 +0100
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0927410E044
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2025 17:53:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738691587; x=1770227587;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=KVlb2eU59sd7ojG9UndEO3WqwrtOk4sXUmi4IWZ+wpQ=;
+ b=PzRQqAWbtS59ONb0xw4FPab8CRSPwJYRblxwyIZALGYKlZ1zCJX3xi7q
+ 3kUUh9LQO7J1rKInJ8jQRPELZGsKYgkjdsfQdy0eTd+kHQxDHTKJ4g46G
+ 2aeezarJ4lDQS58enbnZTp8SK4muKG1jzDMvVLxljSpSfOwKxewQhEH/a
+ L3x5ihhOuu+6dovIc6YVSCAZcMRefF9dO11btBMR9yVeHnkwmNcPtcv9u
+ IZNiVi5d/L1htvPffqWXMmXd+BaAIh7fXmBpy100GJIkQBGzI2l1Ha8zq
+ BR7JMBWG/+4AimpSaufFZFx065rOhYzOjm7zMrXUVRA+hYGeV7zMQSpqn Q==;
+X-CSE-ConnectionGUID: aUatccydRAKCQ9vaNiSuNg==
+X-CSE-MsgGUID: TU5cCd8bRv+4nsnYTPvjsg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="42071666"
+X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; d="scan'208";a="42071666"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2025 09:53:06 -0800
+X-CSE-ConnectionGUID: C8y1hyeEQYC7cd3t2IfgaQ==
+X-CSE-MsgGUID: dsMhaxf5Sjab3yyEszUU0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111096109"
+Received: from msatwood-mobl.amr.corp.intel.com (HELO
+ msatwood-mobl.hsd1.or.comcast.net) ([10.125.110.73])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2025 09:53:06 -0800
+From: Matt Atwood <matthew.s.atwood@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH i-g-t] lib/xe: Make running under Valgrind quiet
-Date: Tue,  4 Feb 2025 17:39:33 +0000
-Message-ID: <20250204173933.95751-1-tvrtko.ursulin@igalia.com>
-X-Mailer: git-send-email 2.48.0
+Cc: rodrigo.vivi@intel.com,
+	Matt Atwood <matthew.s.atwood@intel.com>
+Subject: [PATCH] lib/pciids: Sync pci id changes for DG2/MTL/BMG/PTL
+Date: Tue,  4 Feb 2025 09:53:02 -0800
+Message-ID: <20250204175302.18147-1-matthew.s.atwood@intel.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -56,109 +67,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let Valgrind know which memory is initialised by ioctls so running tests
-under it becomes less noisy.
+There have been several changes to pciids upstream that need to be
+sync'd into igt.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Sync with the following kernel commits:
+f9a15b968dce ("drm/intel/pciids: Refactor DG2 PCI IDs into segment
+ranges")
+e35ecd95ecf2 ("drm/i915/display: Add MTL subplatforms definition")
+fa8ffaae1b15 ("drm/xe/bmg: Add new PCI IDs")
+16016ade13f6 ("drm/xe/ptl: Update the PTL pci id table")
+
+Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
 ---
- lib/igt_syncobj.c |  4 +---
- lib/xe/xe_query.c | 21 +++++++++++++++++++++
- 2 files changed, 22 insertions(+), 3 deletions(-)
+ lib/pciids.h | 62 +++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 47 insertions(+), 15 deletions(-)
 
-diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-index a53393bd7245..4a62890b4bbf 100644
---- a/lib/igt_syncobj.c
-+++ b/lib/igt_syncobj.c
-@@ -197,14 +197,12 @@ int
- syncobj_wait_err(int fd, uint32_t *handles, uint32_t count,
- 		 uint64_t abs_timeout_nsec, uint32_t flags)
- {
--	struct drm_syncobj_wait wait;
-+	struct drm_syncobj_wait wait = { };
+diff --git a/lib/pciids.h b/lib/pciids.h
+index 23f349f65..4736ea525 100644
+--- a/lib/pciids.h
++++ b/lib/pciids.h
+@@ -717,37 +717,66 @@
+ 	MACRO__(0xA7AB, ## __VA_ARGS__)
  
- 	wait.handles = to_user_pointer(handles);
- 	wait.timeout_nsec = abs_timeout_nsec;
- 	wait.count_handles = count;
- 	wait.flags = flags;
--	wait.first_signaled = 0;
--	wait.pad = 0;
- 
- 	return __syncobj_wait(fd, &wait);
- }
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index ec2b127b7e87..0d2e4805c8ee 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -9,6 +9,15 @@
- #include <stdlib.h>
- #include <pthread.h>
- 
-+#ifdef HAVE_VALGRIND
-+#include <valgrind/valgrind.h>
-+#include <valgrind/memcheck.h>
+ /* DG2 */
+-#define INTEL_DG2_G10_IDS(MACRO__, ...) \
+-	MACRO__(0x5690, ## __VA_ARGS__), \
+-	MACRO__(0x5691, ## __VA_ARGS__), \
+-	MACRO__(0x5692, ## __VA_ARGS__), \
++#define INTEL_DG2_G10_D_IDS(MACRO__, ...) \
+ 	MACRO__(0x56A0, ## __VA_ARGS__), \
+ 	MACRO__(0x56A1, ## __VA_ARGS__), \
+-	MACRO__(0x56A2, ## __VA_ARGS__), \
++	MACRO__(0x56A2, ## __VA_ARGS__)
 +
-+#define VG(x) x
-+#else
-+#define VG(x) do {} while (0)
-+#endif
++#define INTEL_DG2_G10_E_IDS(MACRO__, ...) \
+ 	MACRO__(0x56BE, ## __VA_ARGS__), \
+ 	MACRO__(0x56BF, ## __VA_ARGS__)
+ 
+-#define INTEL_DG2_G11_IDS(MACRO__, ...) \
+-	MACRO__(0x5693, ## __VA_ARGS__), \
+-	MACRO__(0x5694, ## __VA_ARGS__), \
+-	MACRO__(0x5695, ## __VA_ARGS__), \
++#define INTEL_DG2_G10_M_IDS(MACRO__, ...) \
++	MACRO__(0x5690, ## __VA_ARGS__), \
++	MACRO__(0x5691, ## __VA_ARGS__), \
++	MACRO__(0x5692, ## __VA_ARGS__)
 +
- #include "drmtest.h"
- #include "ioctl_wrappers.h"
- #include "igt_map.h"
-@@ -34,6 +43,8 @@ static struct drm_xe_query_config *xe_query_config_new(int fd)
- 	query.data = to_user_pointer(config);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
-+	VG(VALGRIND_MAKE_MEM_DEFINED(config, query.size));
++#define INTEL_DG2_G10_IDS(MACRO__, ...) \
++	INTEL_DG2_G10_D_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G10_E_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G10_M_IDS(MACRO__, ## __VA_ARGS__)
 +
- 	igt_assert(config->num_params > 0);
- 
- 	return config;
-@@ -62,6 +73,8 @@ static uint32_t *xe_query_hwconfig_new(int fd, uint32_t *hwconfig_size)
- 	/* Perform the query to get the actual data */
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
-+	VG(VALGRIND_MAKE_MEM_DEFINED(hwconfig, query.size));
++#define INTEL_DG2_G11_D_IDS(MACRO__, ...) \
+ 	MACRO__(0x56A5, ## __VA_ARGS__), \
+ 	MACRO__(0x56A6, ## __VA_ARGS__), \
+ 	MACRO__(0x56B0, ## __VA_ARGS__), \
+-	MACRO__(0x56B1, ## __VA_ARGS__), \
++	MACRO__(0x56B1, ## __VA_ARGS__)
 +
- 	*hwconfig_size = query.size;
- 	return hwconfig;
- }
-@@ -84,6 +97,8 @@ static struct drm_xe_query_gt_list *xe_query_gt_list_new(int fd)
- 	query.data = to_user_pointer(gt_list);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++#define INTEL_DG2_G11_E_IDS(MACRO__, ...) \
+ 	MACRO__(0x56BA, ## __VA_ARGS__), \
+ 	MACRO__(0x56BB, ## __VA_ARGS__), \
+ 	MACRO__(0x56BC, ## __VA_ARGS__), \
+ 	MACRO__(0x56BD, ## __VA_ARGS__)
  
-+	VG(VALGRIND_MAKE_MEM_DEFINED(gt_list, query.size));
+-#define INTEL_DG2_G12_IDS(MACRO__, ...) \
+-	MACRO__(0x5696, ## __VA_ARGS__), \
+-	MACRO__(0x5697, ## __VA_ARGS__), \
++#define INTEL_DG2_G11_M_IDS(MACRO__, ...) \
++	MACRO__(0x5693, ## __VA_ARGS__), \
++	MACRO__(0x5694, ## __VA_ARGS__), \
++	MACRO__(0x5695, ## __VA_ARGS__)
 +
- 	return gt_list;
- }
- 
-@@ -117,6 +132,8 @@ static struct drm_xe_query_engines *xe_query_engines(int fd)
- 	query.data = to_user_pointer(engines);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
-+	VG(VALGRIND_MAKE_MEM_DEFINED(engines, query.size));
++#define INTEL_DG2_G11_IDS(MACRO__, ...) \
++	INTEL_DG2_G11_D_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G11_E_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G11_M_IDS(MACRO__, ## __VA_ARGS__)
 +
- 	return engines;
- }
++#define INTEL_DG2_G12_D_IDS(MACRO__, ...) \
+ 	MACRO__(0x56A3, ## __VA_ARGS__), \
+ 	MACRO__(0x56A4, ## __VA_ARGS__), \
+ 	MACRO__(0x56B2, ## __VA_ARGS__), \
+ 	MACRO__(0x56B3, ## __VA_ARGS__)
  
-@@ -138,6 +155,8 @@ static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
- 	query.data = to_user_pointer(mem_regions);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
-+	VG(VALGRIND_MAKE_MEM_DEFINED(mem_regions, query.size));
++#define INTEL_DG2_G12_M_IDS(MACRO__, ...) \
++	MACRO__(0x5696, ## __VA_ARGS__), \
++	MACRO__(0x5697, ## __VA_ARGS__)
 +
- 	return mem_regions;
- }
- 
-@@ -161,6 +180,8 @@ static struct drm_xe_query_oa_units *xe_query_oa_units_new(int fd)
- 	query.data = to_user_pointer(oa_units);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
-+	VG(VALGRIND_MAKE_MEM_DEFINED(oa_units, query.size));
++#define INTEL_DG2_G12_IDS(MACRO__, ...) \
++	INTEL_DG2_G12_D_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G12_M_IDS(MACRO__, ## __VA_ARGS__)
 +
- 	return oa_units;
- }
++#define INTEL_DG2_D_IDS(MACRO__, ...) \
++	INTEL_DG2_G10_D_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G11_D_IDS(MACRO__, ## __VA_ARGS__), \
++	INTEL_DG2_G12_D_IDS(MACRO__, ## __VA_ARGS__)
++
+ #define INTEL_DG2_IDS(MACRO__, ...) \
+ 	INTEL_DG2_G10_IDS(MACRO__, ## __VA_ARGS__), \
+ 	INTEL_DG2_G11_IDS(MACRO__, ## __VA_ARGS__), \
+@@ -782,9 +811,12 @@
+ 	INTEL_ARL_S_IDS(MACRO__, ## __VA_ARGS__)
  
+ /* MTL */
+-#define INTEL_MTL_IDS(MACRO__, ...) \
++#define INTEL_MTL_U_IDS(MACRO__, ...) \
+ 	MACRO__(0x7D40, ## __VA_ARGS__), \
+-	MACRO__(0x7D45, ## __VA_ARGS__), \
++	MACRO__(0x7D45, ## __VA_ARGS__)
++
++#define INTEL_MTL_IDS(MACRO__, ...) \
++	INTEL_MTL_U_IDS(MACRO__, ## __VA_ARGS__), \
+ 	MACRO__(0x7D55, ## __VA_ARGS__), \
+ 	MACRO__(0x7D60, ## __VA_ARGS__), \
+ 	MACRO__(0x7DD5, ## __VA_ARGS__)
 -- 
-2.48.0
+2.45.0
 
