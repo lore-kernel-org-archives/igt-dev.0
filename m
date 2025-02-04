@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D830C02194
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Feb 2025 17:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD5FAC02197
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Feb 2025 18:02:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B45F10E044;
-	Tue,  4 Feb 2025 17:53:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D82E10E36D;
+	Tue,  4 Feb 2025 18:02:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PzRQqAWb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EIfEJSPT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0927410E044
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2025 17:53:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF4F410E36D
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2025 18:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738691587; x=1770227587;
+ t=1738692138; x=1770228138;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=KVlb2eU59sd7ojG9UndEO3WqwrtOk4sXUmi4IWZ+wpQ=;
- b=PzRQqAWbtS59ONb0xw4FPab8CRSPwJYRblxwyIZALGYKlZ1zCJX3xi7q
- 3kUUh9LQO7J1rKInJ8jQRPELZGsKYgkjdsfQdy0eTd+kHQxDHTKJ4g46G
- 2aeezarJ4lDQS58enbnZTp8SK4muKG1jzDMvVLxljSpSfOwKxewQhEH/a
- L3x5ihhOuu+6dovIc6YVSCAZcMRefF9dO11btBMR9yVeHnkwmNcPtcv9u
- IZNiVi5d/L1htvPffqWXMmXd+BaAIh7fXmBpy100GJIkQBGzI2l1Ha8zq
- BR7JMBWG/+4AimpSaufFZFx065rOhYzOjm7zMrXUVRA+hYGeV7zMQSpqn Q==;
-X-CSE-ConnectionGUID: aUatccydRAKCQ9vaNiSuNg==
-X-CSE-MsgGUID: TU5cCd8bRv+4nsnYTPvjsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="42071666"
-X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; d="scan'208";a="42071666"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Feb 2025 09:53:06 -0800
-X-CSE-ConnectionGUID: C8y1hyeEQYC7cd3t2IfgaQ==
-X-CSE-MsgGUID: dsMhaxf5Sjab3yyEszUU0g==
+ bh=0y22Ctrvuqx1cb4l00U0vAiV3H3LFyqr06zO2BJWpPA=;
+ b=EIfEJSPT+o5zUqT4dCzYobuvyCHi9cGwO8AmW1ry0/rch6JkIswvsb+A
+ fbCnIKL59lQSrdX8Kv9E/CYJLkroC5vP2nqHZ4SyRPtLimBqu+XVU0uiY
+ dsm/lhrGCTnfRrn8I7Qfs01xGW5vMZU/jh38FzqG0WIuHqHQrg/Y6bCyE
+ jD/IJaAPKcHHUJIgZosjKvxVwnGln6gpm/3uwkvb9ThKHABD0GunQB11y
+ Pzl6jMl1tOCv2XzO/DL48Tav5vz9/cvA5QpMELHtkGfVrgsMD7BdOPPLe
+ eke/UyjWzPvNSQihnAwTYnfuiUy4ECGOhW4meXJfMSkeEbv1qIKo2ZpiG w==;
+X-CSE-ConnectionGUID: 6bxGAEe2RM2prUnB7WbrWw==
+X-CSE-MsgGUID: +FvkRgJwRJ+ZHjaCUMP7gA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39373152"
+X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; d="scan'208";a="39373152"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2025 10:02:18 -0800
+X-CSE-ConnectionGUID: /67mMz4lQCSPoOAPN7B3eg==
+X-CSE-MsgGUID: 1S/+WABBQES6Tkp36FiSgQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111096109"
-Received: from msatwood-mobl.amr.corp.intel.com (HELO
- msatwood-mobl.hsd1.or.comcast.net) ([10.125.110.73])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Feb 2025 09:53:06 -0800
-From: Matt Atwood <matthew.s.atwood@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; d="scan'208";a="110653733"
+Received: from szeng-desk.jf.intel.com ([10.165.21.160])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2025 10:02:18 -0800
+From: Oak Zeng <oak.zeng@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: rodrigo.vivi@intel.com,
-	Matt Atwood <matthew.s.atwood@intel.com>
-Subject: [PATCH] lib/pciids: Sync pci id changes for DG2/MTL/BMG/PTL
-Date: Tue,  4 Feb 2025 09:53:02 -0800
-Message-ID: <20250204175302.18147-1-matthew.s.atwood@intel.com>
-X-Mailer: git-send-email 2.45.0
+Cc: Thomas.Hellstrom@linux.intel.com,
+	matthew.brost@intel.com
+Subject: [i-g-t 1/2] tests/intel/xe_vm: Exclude invalid_flags tests from LNL
+ and BMG
+Date: Tue,  4 Feb 2025 13:17:41 -0500
+Message-Id: <20250204181742.4055152-1-oak.zeng@intel.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,120 +67,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There have been several changes to pciids upstream that need to be
-sync'd into igt.
+Due to a fix of out of bound prefetch issue, we now allow scratch
+page coexist with fault mode on LNL and BMG, thus exclude those
+tests on such HW.
 
-Sync with the following kernel commits:
-f9a15b968dce ("drm/intel/pciids: Refactor DG2 PCI IDs into segment
-ranges")
-e35ecd95ecf2 ("drm/i915/display: Add MTL subplatforms definition")
-fa8ffaae1b15 ("drm/xe/bmg: Add new PCI IDs")
-16016ade13f6 ("drm/xe/ptl: Update the PTL pci id table")
-
-Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
+Signed-off-by: Oak Zeng <oak.zeng@intel.com>
 ---
- lib/pciids.h | 62 +++++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 47 insertions(+), 15 deletions(-)
+ tests/intel/xe_vm.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/lib/pciids.h b/lib/pciids.h
-index 23f349f65..4736ea525 100644
---- a/lib/pciids.h
-+++ b/lib/pciids.h
-@@ -717,37 +717,66 @@
- 	MACRO__(0xA7AB, ## __VA_ARGS__)
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 0730dd3d3..3b74717a3 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -2349,6 +2349,7 @@ igt_main
+ 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
+ 	uint64_t bind_size;
+ 	int fd;
++	uint16_t dev_id;
+ 	const struct section {
+ 		const char *name;
+ 		int bo_n_pages;
+@@ -2444,8 +2445,12 @@ igt_main
+         const struct vm_create_section {
+                 const char *name;
+                 __u32 flags;
+-        } xe_vm_create_invalid_flags[] = {
++        } xe_vm_create_invalid_flags1[] = {
+                 { "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
++                { }
++        };
++
++        const struct vm_create_section xe_vm_create_invalid_flags2[] = {
+                 { "xe_vm_create_scratch_fault",
+                         DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
+                         DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
+@@ -2458,6 +2463,7 @@ igt_main
  
- /* DG2 */
--#define INTEL_DG2_G10_IDS(MACRO__, ...) \
--	MACRO__(0x5690, ## __VA_ARGS__), \
--	MACRO__(0x5691, ## __VA_ARGS__), \
--	MACRO__(0x5692, ## __VA_ARGS__), \
-+#define INTEL_DG2_G10_D_IDS(MACRO__, ...) \
- 	MACRO__(0x56A0, ## __VA_ARGS__), \
- 	MACRO__(0x56A1, ## __VA_ARGS__), \
--	MACRO__(0x56A2, ## __VA_ARGS__), \
-+	MACRO__(0x56A2, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_G10_E_IDS(MACRO__, ...) \
- 	MACRO__(0x56BE, ## __VA_ARGS__), \
- 	MACRO__(0x56BF, ## __VA_ARGS__)
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
++		dev_id = intel_get_drm_devid(fd);
  
--#define INTEL_DG2_G11_IDS(MACRO__, ...) \
--	MACRO__(0x5693, ## __VA_ARGS__), \
--	MACRO__(0x5694, ## __VA_ARGS__), \
--	MACRO__(0x5695, ## __VA_ARGS__), \
-+#define INTEL_DG2_G10_M_IDS(MACRO__, ...) \
-+	MACRO__(0x5690, ## __VA_ARGS__), \
-+	MACRO__(0x5691, ## __VA_ARGS__), \
-+	MACRO__(0x5692, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_G10_IDS(MACRO__, ...) \
-+	INTEL_DG2_G10_D_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G10_E_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G10_M_IDS(MACRO__, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_G11_D_IDS(MACRO__, ...) \
- 	MACRO__(0x56A5, ## __VA_ARGS__), \
- 	MACRO__(0x56A6, ## __VA_ARGS__), \
- 	MACRO__(0x56B0, ## __VA_ARGS__), \
--	MACRO__(0x56B1, ## __VA_ARGS__), \
-+	MACRO__(0x56B1, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_G11_E_IDS(MACRO__, ...) \
- 	MACRO__(0x56BA, ## __VA_ARGS__), \
- 	MACRO__(0x56BB, ## __VA_ARGS__), \
- 	MACRO__(0x56BC, ## __VA_ARGS__), \
- 	MACRO__(0x56BD, ## __VA_ARGS__)
+ 		xe_for_each_engine(fd, hwe)
+ 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY) {
+@@ -2715,11 +2721,19 @@ igt_main
+ 		}
+ 	}
  
--#define INTEL_DG2_G12_IDS(MACRO__, ...) \
--	MACRO__(0x5696, ## __VA_ARGS__), \
--	MACRO__(0x5697, ## __VA_ARGS__), \
-+#define INTEL_DG2_G11_M_IDS(MACRO__, ...) \
-+	MACRO__(0x5693, ## __VA_ARGS__), \
-+	MACRO__(0x5694, ## __VA_ARGS__), \
-+	MACRO__(0x5695, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_G11_IDS(MACRO__, ...) \
-+	INTEL_DG2_G11_D_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G11_E_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G11_M_IDS(MACRO__, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_G12_D_IDS(MACRO__, ...) \
- 	MACRO__(0x56A3, ## __VA_ARGS__), \
- 	MACRO__(0x56A4, ## __VA_ARGS__), \
- 	MACRO__(0x56B2, ## __VA_ARGS__), \
- 	MACRO__(0x56B3, ## __VA_ARGS__)
+-	for (const struct vm_create_section *s = xe_vm_create_invalid_flags; s->name; s++) {
++	for (const struct vm_create_section *s = xe_vm_create_invalid_flags1; s->name; s++) {
+ 		igt_subtest_f("invalid-flag-%s", s->name)
+ 			invalid_flag(fd, s->flags);
+ 	}
  
-+#define INTEL_DG2_G12_M_IDS(MACRO__, ...) \
-+	MACRO__(0x5696, ## __VA_ARGS__), \
-+	MACRO__(0x5697, ## __VA_ARGS__)
++	for (const struct vm_create_section *s = xe_vm_create_invalid_flags2; s->name; s++) {
++		igt_subtest_f("invalid-flag-%s", s->name) {
++			igt_skip_on_f(IS_LUNARLAKE(dev_id) || IS_BATTLEMAGE(dev_id),
++				      "Skip test on this platform\n");
++			invalid_flag(fd, s->flags);
++		}
++	}
 +
-+#define INTEL_DG2_G12_IDS(MACRO__, ...) \
-+	INTEL_DG2_G12_D_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G12_M_IDS(MACRO__, ## __VA_ARGS__)
-+
-+#define INTEL_DG2_D_IDS(MACRO__, ...) \
-+	INTEL_DG2_G10_D_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G11_D_IDS(MACRO__, ## __VA_ARGS__), \
-+	INTEL_DG2_G12_D_IDS(MACRO__, ## __VA_ARGS__)
-+
- #define INTEL_DG2_IDS(MACRO__, ...) \
- 	INTEL_DG2_G10_IDS(MACRO__, ## __VA_ARGS__), \
- 	INTEL_DG2_G11_IDS(MACRO__, ## __VA_ARGS__), \
-@@ -782,9 +811,12 @@
- 	INTEL_ARL_S_IDS(MACRO__, ## __VA_ARGS__)
+ 	igt_subtest("invalid-extensions")
+ 		invalid_extensions(fd);
  
- /* MTL */
--#define INTEL_MTL_IDS(MACRO__, ...) \
-+#define INTEL_MTL_U_IDS(MACRO__, ...) \
- 	MACRO__(0x7D40, ## __VA_ARGS__), \
--	MACRO__(0x7D45, ## __VA_ARGS__), \
-+	MACRO__(0x7D45, ## __VA_ARGS__)
-+
-+#define INTEL_MTL_IDS(MACRO__, ...) \
-+	INTEL_MTL_U_IDS(MACRO__, ## __VA_ARGS__), \
- 	MACRO__(0x7D55, ## __VA_ARGS__), \
- 	MACRO__(0x7D60, ## __VA_ARGS__), \
- 	MACRO__(0x7DD5, ## __VA_ARGS__)
 -- 
-2.45.0
+2.26.3
 
