@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C4CBC0218F
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Feb 2025 05:55:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F8EC0218F
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Feb 2025 06:49:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9BB0810E13B;
-	Tue,  4 Feb 2025 05:55:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7BED110E252;
+	Tue,  4 Feb 2025 06:49:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TnYfDRWB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jIhL4ts+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C50E10E13B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2025 05:55:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2474910E252
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2025 06:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738648535; x=1770184535;
+ t=1738651763; x=1770187763;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=sB5OQRQVq5y3TjWMHI9rnss3P2/o26igH8imKN30QxE=;
- b=TnYfDRWBYLYhqZUOYTW5eAzHo1TQLYO3g3qcueP/KA3CD21ypm5xKPkr
- RumzA2w1qb7USSO/rQ8BPpJs3zpuN+jcSEu10Pzc2af5KmzFLOJ7T5ZIe
- faCZlx7LFfDSysfHnv65+5MqAnl1A45OrwH1MpTtNiPsfpIqNeCvAlP6/
- WBnRPthhrVPi3ntxzHBUAwinAljGw6InFDwdGlVxbsHPtYDogINFqmfhL
- v18lVeXXBosJmLmUNfHUMOTr9Tlae78TxBoPrJoPXa7QwN+zBmmq2LWmT
- uBlG8qXEqjoEtoQPgMR45/Vsy2+LfBgZ3rbe2x89OywaizXEpLHrILLDU A==;
-X-CSE-ConnectionGUID: ygm7jsapQ3Own/Q++FuzTA==
-X-CSE-MsgGUID: TcAdmnVSR8OOS1Hr6gfPiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="38391581"
-X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; d="scan'208";a="38391581"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 21:55:35 -0800
-X-CSE-ConnectionGUID: hULX5dMKQzmyGHyMMAmzaQ==
-X-CSE-MsgGUID: qlQzvRvMTAi9We6lTd5riA==
+ bh=KXOVuzyggC7knQsaG25s2w700Kt60XEU89/O2XXqzpo=;
+ b=jIhL4ts+22ere9zlsF6R3TT9MecRsAAJjEyT6YlKXIgR24RWL5pgL/vP
+ KGzXL10Qdc+mwD+AKXyeuKPoLw6tPLKdK4DKOPV8bQ0TkRFgnZr7bwfUZ
+ EgjuE1uLcgww02Y4QtRzPLWEFkpkekrgxthiBYwKzpU1iA1zNDA5R44Uq
+ 9DvDbeuoRW+BWoRQJR0aK7FstHY6f5nBYsiKB7cn15YGeBZaQhEImjxa/
+ 4mTwSaAH7gOgMamuKMbfPIE3fWyupWCkhBR+2hb8dgvOxGoyaeFcdeBGI
+ 8k75oEL0fA9QchjzMR++eo+++cURBkyWMfZlrJ2KNUUwE9r4O/1vO1yAq Q==;
+X-CSE-ConnectionGUID: VNPqFaVBQ6WV0mXOtM9CZQ==
+X-CSE-MsgGUID: 50VIM5RDT4u9aYlWnkk2vA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="41996060"
+X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; d="scan'208";a="41996060"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 22:49:22 -0800
+X-CSE-ConnectionGUID: TPgxUMDyRg2rFAMO0Qn77w==
+X-CSE-MsgGUID: q6+DiiF5Sle5jK2yXGbGbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; d="scan'208";a="110384367"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="115675715"
 Received: from carterle-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.111])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2025 21:55:34 -0800
-Date: Tue, 4 Feb 2025 06:55:31 +0100
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2025 22:49:20 -0800
+Date: Tue, 4 Feb 2025 07:49:17 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/3] lib/intel_compute: Align objects on 64K for xehp
-Message-ID: <20250204055531.njw5xxuaybfiobqx@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t 3/3] lib/intel_compute: Use LR mode for compute
+ when using Xe
+Message-ID: <20250204064917.kixaxem3kijmn2kp@zkempczy-mobl2>
 References: <20250203133916.843931-1-francois.dugast@intel.com>
- <20250203133916.843931-2-francois.dugast@intel.com>
+ <20250203133916.843931-4-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250203133916.843931-2-francois.dugast@intel.com>
+In-Reply-To: <20250203133916.843931-4-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,113 +71,305 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 03, 2025 at 02:38:46PM +0100, Francois Dugast wrote:
-> Some of the buffers are aligned on 4K. Ensure 64K alignment
-> in preparation for a switch to using xe_bo_create() during
-> buffers creation.
+On Mon, Feb 03, 2025 at 02:38:48PM +0100, Francois Dugast wrote:
+> When Xe is used, create the VM in LR mode as this is what the
+> compute UMD does to run compute kernels. This makes those tests
+> more representative of real world scenarios. A side effect is
+> that user fences must be used.
 > 
+> v2: Minimize changes, stick to xe_vm_bind_userptr_async()
+> 
+> v3: Also use user fences in preempt exec
+> 
+> v4: Do not rely on user pointers due to atomics use in sip,
+>     rebase after 64K alignment, fix waiting times and order
+>     in preempt exec (Zbigniew)
+> 
+> CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 > ---
->  lib/intel_compute.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
+>  lib/intel_compute.c | 164 +++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 133 insertions(+), 31 deletions(-)
 > 
 > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index f1520aad4..983b2e2c3 100644
+> index 0e1179b62..6f6b4006d 100644
 > --- a/lib/intel_compute.c
 > +++ b/lib/intel_compute.c
-> @@ -24,9 +24,9 @@
->  #define MEDIA_STATE_FLUSH		0x0
->  #define MAX(X, Y)			(((X) > (Y)) ? (X) : (Y))
->  #define SIZE_DATA			64
-> -#define SIZE_BATCH			0x1000
-> -#define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
-> -#define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
-> +#define SIZE_BATCH			0x10000
-> +#define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
-> +#define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
+> @@ -27,6 +27,8 @@
+>  #define SIZE_BATCH			0x10000
+>  #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
+>  #define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
+> +#define ADDR_SYNC			0x010000ULL
+> +#define ADDR_SYNC2			0x020000ULL
 >  #define ADDR_BATCH			0x100000ULL
 >  #define ADDR_INPUT			0x200000ULL
 >  #define ADDR_OUTPUT			0x300000ULL
-> @@ -38,7 +38,7 @@
->  
->  #define ADDR_GENERAL_STATE_BASE		0x80000000ULL
->  #define ADDR_INSTRUCTION_STATE_BASE	0x90000000ULL
-> -#define OFFSET_BINDING_TABLE		0x1000
-> +#define OFFSET_BINDING_TABLE		0x10000
->  
+> @@ -43,6 +45,8 @@
 >  #define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000ULL
 >  #define OFFSET_STATE_SIP			0xFFFF0000
-> @@ -746,8 +746,8 @@ static void xehp_create_surface_state(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
 >  
-> -	addr_bo_buffer_batch[b++] = 0x00001000;
-> -	addr_bo_buffer_batch[b++] = 0x00001040;
-> +	addr_bo_buffer_batch[b++] = 0x00010000;
-> +	addr_bo_buffer_batch[b++] = 0x00010040;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
-> @@ -825,7 +825,7 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = GEN8_3DSTATE_BINDING_TABLE_POOL_ALLOC | 2;
->  	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x6;
->  	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> -	addr_bo_buffer_batch[b++] = 0x00002000;
-> +	addr_bo_buffer_batch[b++] = 0x00012000;
+> +#define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
+> +
+>  /*
+>   * TGP  - ThreadGroup Preemption
+>   * WMTP - Walker Mid Thread Preemption
+> @@ -58,6 +62,10 @@ struct bo_dict_entry {
+>  	uint32_t handle;
+>  };
+>  
+> +struct bo_sync {
+> +	uint64_t sync;
+> +};
+> +
+>  struct bo_execenv {
+>  	int fd;
+>  	enum intel_driver driver;
+> @@ -81,7 +89,7 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
+>  	execenv->driver = get_intel_driver(fd);
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+> -		execenv->vm = xe_vm_create(fd, 0, 0);
+> +		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+>  
+>  		if (eci) {
+>  			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
+> @@ -107,8 +115,8 @@ static void bo_execenv_destroy(struct bo_execenv *execenv)
+>  	igt_assert(execenv);
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+> -		xe_vm_destroy(execenv->fd, execenv->vm);
+>  		xe_exec_queue_destroy(execenv->fd, execenv->exec_queue);
+> +		xe_vm_destroy(execenv->fd, execenv->vm);
+>  	}
+>  }
+>  
+> @@ -119,18 +127,32 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+>  		uint32_t vm = execenv->vm;
+> -		uint64_t alignment = xe_get_default_alignment(fd);
+> -		struct drm_xe_sync sync = { 0 };
+> -
+> -		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> -		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> -		sync.handle = syncobj_create(fd, 0);
+> +		uint32_t exec_queue = execenv->exec_queue;
+> +		struct bo_sync *bo_sync;
+> +		size_t bo_size = sizeof(*bo_sync);
+> +		uint32_t bo = 0;
+> +		struct drm_xe_sync sync = {
+> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +			.timeline_value = USER_FENCE_VALUE,
+> +		};
+> +
+> +		bo_size = xe_bb_size(fd, bo_size);
+> +		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
+> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +		bo_sync = xe_bo_map(fd, bo, bo_size);
+> +		sync.addr = to_user_pointer(&bo_sync->sync);
+>  
+>  		for (int i = 0; i < entries; i++) {
+> -			bo_dict[i].data = aligned_alloc(alignment, bo_dict[i].size);
+> -			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(bo_dict[i].data),
+> -						 bo_dict[i].addr, bo_dict[i].size, &sync, 1);
+> -			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
+> +			bo_sync->sync = 0;
+> +			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
+> +							 vram_if_possible(fd, 0),
+> +							 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
+> +			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
+> +					 bo_dict[i].size, &sync, 1);
+> +			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
+> +				       INT64_MAX);
 
-I've checked this and it seems this line should be removed
-(0x001ff000 is enough and pool alloc has 4 and not 5 dwords).
-I mean this dword stays here by accident during reversing.
-Rest looks good to me. With this nit:
+This binding/unbinding pattern occurs couple of time in the code,
+maybe it is worth to add some helpers to avoid code duplication.
+
+Code looks good to me, if there will be no regression on CI:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
->  	addr_bo_buffer_batch[b++] = 0x001ff000;
+>  			memset(bo_dict[i].data, 0, bo_dict[i].size);
 >  
->  	addr_bo_buffer_batch[b++] = XEHP_COMPUTE_WALKER | 0x25;
-> @@ -852,7 +852,7 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00180000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
-> -	addr_bo_buffer_batch[b++] = 0x00001080;
-> +	addr_bo_buffer_batch[b++] = 0x00010080;
->  	addr_bo_buffer_batch[b++] = 0x0c000002;
+>  			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
+> @@ -139,7 +161,8 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+>  				  (long long)bo_dict[i].size);
+>  		}
 >  
->  	addr_bo_buffer_batch[b++] = 0x00000008;
-> @@ -895,10 +895,10 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  		  .size = 0x100000,
->  		  .name = "dynamic state base"},
->  		{ .addr = ADDR_SURFACE_STATE_BASE,
-> -		  .size = 0x1000,
-> +		  .size = 0x10000,
->  		  .name = "surface state base"},
->  		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-> -		  .size =  0x1000,
-> +		  .size =  0x10000,
->  		  .name = "indirect object base"},
->  		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
->  		  .name = "addr input"},
-> @@ -907,7 +907,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
->  		  .name = "general state base" },
->  		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
-> -		  .size = 0x1000,
-> +		  .size = 0x10000,
->  		  .name = "binding table" },
->  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH,
->  		  .name = "batch" },
-> @@ -918,7 +918,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_create(fd, &execenv, eci);
+> -		syncobj_destroy(fd, sync.handle);
+> +		munmap(bo_sync, bo_size);
+> +		gem_close(fd, bo);
+>  	} else {
+>  		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
+>  		struct drm_i915_gem_exec_object2 *obj;
+> @@ -177,19 +200,33 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
 >  
->  	/* Sets Kernel size */
-> -	bo_dict[0].size = ALIGN(size, 0x1000);
-> +	bo_dict[0].size = ALIGN(size, 0x10000);
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+>  		uint32_t vm = execenv->vm;
+> -		struct drm_xe_sync sync = { 0 };
+> -
+> -		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> -		sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> -		sync.handle = syncobj_create(fd, 0);
+> +		uint32_t exec_queue = execenv->exec_queue;
+> +		struct bo_sync *bo_sync;
+> +		size_t bo_size = sizeof(*bo_sync);
+> +		uint32_t bo = 0;
+> +		struct drm_xe_sync sync = {
+> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +			.timeline_value = USER_FENCE_VALUE,
+> +		};
+> +
+> +		bo_size = xe_bb_size(fd, bo_size);
+> +		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
+> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +		bo_sync = xe_bo_map(fd, bo, bo_size);
+> +		sync.addr = to_user_pointer(&bo_sync->sync);
 >  
->  	bo_execenv_bind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
+>  		for (int i = 0; i < entries; i++) {
+> +			bo_sync->sync = 0;
+>  			xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
+> -			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
+> -			free(bo_dict[i].data);
+> +			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
+> +				       INT64_MAX);
+> +			munmap(bo_dict[i].data, bo_dict[i].size);
+> +			gem_close(fd, bo_dict[i].handle);
+>  		}
 >  
+> -		syncobj_destroy(fd, sync.handle);
+> +		munmap(bo_sync, bo_size);
+> +		gem_close(fd, bo);
+>  	} else {
+>  		for (int i = 0; i < entries; i++) {
+>  			gem_close(fd, bo_dict[i].handle);
+> @@ -204,7 +241,32 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
+>  	int fd = execenv->fd;
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+> -		xe_exec_wait(fd, execenv->exec_queue, start_addr);
+> +		uint32_t exec_queue = execenv->exec_queue;
+> +		struct bo_sync *bo_sync;
+> +		size_t bo_size = sizeof(*bo_sync);
+> +		uint32_t bo = 0;
+> +		struct drm_xe_sync sync = {
+> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +			.timeline_value = USER_FENCE_VALUE,
+> +		};
+> +
+> +		bo_size = xe_bb_size(fd, bo_size);
+> +		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
+> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +		bo_sync = xe_bo_map(fd, bo, bo_size);
+> +		sync.addr = to_user_pointer(&bo_sync->sync);
+> +		xe_vm_bind_async(fd, execenv->vm, 0, bo, 0, ADDR_SYNC, bo_size, &sync, 1);
+> +		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
+> +
+> +		sync.addr = ADDR_SYNC;
+> +		bo_sync->sync = 0;
+> +
+> +		xe_exec_sync(fd, exec_queue, start_addr, &sync, 1);
+> +		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
+> +
+> +		munmap(bo_sync, bo_size);
+> +		gem_close(fd, bo);
+>  	} else {
+>  		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
+>  		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
+> @@ -1803,15 +1865,22 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+>  	float *dinput;
+>  	unsigned int long_kernel_loop_count;
+>  	struct drm_xe_sync sync_long = {
+> -		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+>  		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> -		.handle = syncobj_create(fd, 0),
+> +		.timeline_value = USER_FENCE_VALUE,
+>  	};
+> +	struct bo_sync *bo_sync_long;
+> +	size_t bo_size_long = sizeof(*bo_sync_long);
+> +	uint32_t bo_long = 0;
+>  	struct drm_xe_sync sync_short = {
+> -		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+>  		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> -		.handle = syncobj_create(fd, 0),
+> +		.timeline_value = USER_FENCE_VALUE,
+>  	};
+> +	struct bo_sync *bo_sync_short;
+> +	size_t bo_size_short = sizeof(*bo_sync_short);
+> +	uint32_t bo_short = 0;
+> +	int64_t timeout_short = 1;
+>  
+>  	if (threadgroup_preemption)
+>  		long_kernel_loop_count = TGP_long_kernel_loop_count;
+> @@ -1824,6 +1893,32 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+>  	bo_execenv_create(fd, &execenv_short, eci);
+>  	bo_execenv_create(fd, &execenv_long, eci);
+>  
+> +	/* Prepare sync object for long */
+> +	bo_size_long = xe_bb_size(fd, bo_size_long);
+> +	bo_long = xe_bo_create(fd, execenv_long.vm, bo_size_long, vram_if_possible(fd, 0),
+> +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	bo_sync_long = xe_bo_map(fd, bo_long, bo_size_long);
+> +	sync_long.addr = to_user_pointer(&bo_sync_long->sync);
+> +	xe_vm_bind_async(fd, execenv_long.vm, 0, bo_long, 0, ADDR_SYNC, bo_size_long,
+> +			 &sync_long, 1);
+> +	xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE, execenv_long.exec_queue,
+> +		       INT64_MAX);
+> +	bo_sync_long->sync = 0;
+> +	sync_long.addr = ADDR_SYNC;
+> +
+> +	/* Prepare sync object for short */
+> +	bo_size_short = xe_bb_size(fd, bo_size_short);
+> +	bo_short = xe_bo_create(fd, execenv_short.vm, bo_size_short, vram_if_possible(fd, 0),
+> +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	bo_sync_short = xe_bo_map(fd, bo_short, bo_size_short);
+> +	sync_short.addr = to_user_pointer(&bo_sync_short->sync);
+> +	xe_vm_bind_async(fd, execenv_short.vm, 0, bo_short, 0, ADDR_SYNC2, bo_size_short,
+> +			 &sync_short, 1);
+> +	xe_wait_ufence(fd, &bo_sync_short->sync, USER_FENCE_VALUE, execenv_short.exec_queue,
+> +		       INT64_MAX);
+> +	bo_sync_short->sync = 0;
+> +	sync_short.addr = ADDR_SYNC2;
+> +
+>  	bo_dict_long[0].size = ALIGN(long_kernel_size, 0x1000);
+>  	bo_dict_short[0].size = ALIGN(short_kernel_size, 0x1000);
+>  
+> @@ -1872,14 +1967,21 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+>  				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP, false);
+>  
+>  	xe_exec_sync(fd, execenv_long.exec_queue, ADDR_BATCH, &sync_long, 1);
+> -
+>  	xe_exec_sync(fd, execenv_short.exec_queue, ADDR_BATCH, &sync_short, 1);
+>  
+> -	igt_assert(syncobj_wait(fd, &sync_short.handle, 1, INT64_MAX, 0, NULL));
+> -	syncobj_destroy(fd, sync_short.handle);
+> +	xe_wait_ufence(fd, &bo_sync_short->sync, USER_FENCE_VALUE, execenv_short.exec_queue,
+> +		       INT64_MAX);
+> +	/* Check that the long kernel has not completed yet */
+> +	igt_assert_neq(0, __xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE,
+> +					   execenv_long.exec_queue, &timeout_short));
+> +	xe_wait_ufence(fd, &bo_sync_long->sync, USER_FENCE_VALUE, execenv_long.exec_queue,
+> +		       INT64_MAX);
+> +
+> +	munmap(bo_sync_long, bo_size_long);
+> +	gem_close(fd, bo_long);
+>  
+> -	igt_assert(syncobj_wait(fd, &sync_long.handle, 1, INT64_MAX, 0, NULL));
+> -	syncobj_destroy(fd, sync_long.handle);
+> +	munmap(bo_sync_short, bo_size_short);
+> +	gem_close(fd, bo_short);
+>  
+>  	for (int i = 0; i < SIZE_DATA; i++) {
+>  		float f1, f2;
 > -- 
 > 2.43.0
 > 
