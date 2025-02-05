@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B96C02192
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Feb 2025 13:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A443C02192
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Feb 2025 13:47:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7E2710E1EA;
-	Wed,  5 Feb 2025 13:34:12 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9521910E1EA;
- Wed,  5 Feb 2025 13:32:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3547708676161364673=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D8C4410E7B8;
+	Wed,  5 Feb 2025 13:47:21 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZYWrnmmR";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27F7B10E7B0
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Feb 2025 13:47:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738763240; x=1770299240;
+ h=message-id:date:mime-version:to:cc:from:subject:
+ content-transfer-encoding;
+ bh=5I9WcCapPFvuNDlP9RyCeVTZyVmQFeEVadBVZ6uTsY4=;
+ b=ZYWrnmmRlMha9z6I5MWwMrwMXoJjAqQHXa3vn+xZ8V6KIQNDGIwuB5cF
+ l426+0qkIG0/+AHFDTqgJdjk8zQQ7nCayFa77CMVXAHolxxccDDCS+cSc
+ osVJjVG4yw1DTX+dRJGaSIUXpHUXRjI/+ER0nQn4fQvDrzMWxTkauLW4r
+ U+CjHik0+gaU/ghoKMv/p4Nr/bewtQ6zT4EikCXMjTxx5KmOcopI8IS+E
+ l/5caNVu+6wNoQ6zyUrPfolcDFKTMJgIDLZ5gjveoKaJo67KL+PCB3/YL
+ Ryi7/9OfKWuW+AF7h4TOSVfK0kAC+Nwh0KOG6ArPTsnMzLNyStu2+cfFM g==;
+X-CSE-ConnectionGUID: /DWF1DepSzOFPheDHeCjVA==
+X-CSE-MsgGUID: z6lC7uSZT92Dm/xZknNXqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39592646"
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; d="scan'208";a="39592646"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2025 05:47:19 -0800
+X-CSE-ConnectionGUID: gEeWXVDPQiWh+TtqWJg63g==
+X-CSE-MsgGUID: gwmuwZphTSy+hRme/M3H6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; d="scan'208";a="111443215"
+Received: from srosenki-mobl1.ger.corp.intel.com (HELO [10.246.0.202])
+ ([10.246.0.202])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2025 05:47:17 -0800
+Message-ID: <7b080c57-3ba1-474e-aa77-4f6b6655052c@linux.intel.com>
+Date: Wed, 5 Feb 2025 14:47:14 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Prepare_lib/intel=5Fcompute?=
- =?utf-8?q?_for_SVM/system_allocator?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 05 Feb 2025 13:32:02 -0000
-Message-ID: <173876232260.1444719.16956786629236334864@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250205101748.1117809-1-francois.dugast@intel.com>
-In-Reply-To: <20250205101748.1117809-1-francois.dugast@intel.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Petri Latvala <adrinael@adrinael.net>
+Cc: arkadiusz.hiler@intel.com, martin.peres@linux.intel.com,
+ tomi.p.sarvela@intel.com, simona@ffwll.ch, arkadiusz.hiler@intel.com,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: Can we increase the ping timeout from 20?
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,187 +69,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3547708676161364673==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+This is about:
 
-Series: Prepare lib/intel_compute for SVM/system allocator
-URL   : https://patchwork.freedesktop.org/series/144360/
-State : success
+commit ddfde25f16ba31fb480d2e83b29631aaa56526cb
+Author: Petri Latvala <petri.latvala@intel.com>
+Date:   Mon Sep 9 14:38:07 2019 +0300
 
-== Summary ==
+runner: Add support for aborting on network failure
 
-CI Bug Log - changes from XEIGT_8223_BAT -> XEIGTPW_12547_BAT
-====================================================
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/runner/executor.c?ref_type=heads#L225
 
-Summary
--------
+In that commit there was a seemingly arbitrary timeout of 20 seconds for the
+network to come to life after a resume. We are facing issues from time to
+time where it will take more than 20 seconds for the network to resume after
+a resume.
 
-  **SUCCESS**
+20 seconds seems to be adequate for many scenarios, but not all of them. I
+have experienced DUTS taking way more than that to get the network up during
+boot for reasons completely unrelated to what we are checking here.
 
-  No regressions found.
+So my question is what would be the upper reasonable limit for the timeout?
+Would bumping it to 60 seconds defy the original intention? Reading the commit
+message gives me the impression that as long as CI does not pull the plug
+because the network is down we are fine increasing the time out.
 
-  
+In other words, the upper limit seems to be the amount of time that CI waits
+for the network to come back to life after a suspend / resume.
 
-Participating hosts (8 -> 8)
-------------------------------
+Should I make this number configurable so that CI can match it with their
+timeout for the network to come up after a suspend/resume cycle? If not,
+can I bump it to say, 60 seconds?
 
-  No changes in participating hosts
+Thank you!
 
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12547_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#2229] / [Intel XE#455]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#2229])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [SKIP][3] ([Intel XE#1192]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8223/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  * igt@xe_pat@pat-index-xelp@render:
-    - bat-adlp-vf:        [DMESG-WARN][5] ([Intel XE#3970] / [Intel XE#4078]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8223/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][7] ([Intel XE#1192]) -> [SKIP][8] ([Intel XE#2229] / [Intel XE#455])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8223/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-  [Intel XE#4078]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8223 -> IGTPW_12547
-  * Linux: xe-2591-d3f7add53c15ed866828937f140ac252c19f2411 -> xe-2600-5f025a38e4ddb453bfbf89d4ab37facf07427721
-
-  IGTPW_12547: bf8488bfc3faf15daae1dde444700d4420355b71 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8223: ccfe042787b082c06402ff9af257f8338b8edd5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2591-d3f7add53c15ed866828937f140ac252c19f2411: d3f7add53c15ed866828937f140ac252c19f2411
-  xe-2600-5f025a38e4ddb453bfbf89d4ab37facf07427721: 5f025a38e4ddb453bfbf89d4ab37facf07427721
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/index.html
-
---===============3547708676161364673==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Prepare lib/intel_compute for SVM/system allocator</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144360/">https://patchwork.freedesktop.org/series/144360/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8223_BAT -&gt; XEIGTPW_12547_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12547_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8223/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp@render:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8223/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4078">Intel XE#4078</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8223/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12547/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8223 -&gt; IGTPW_12547</li>
-<li>Linux: xe-2591-d3f7add53c15ed866828937f140ac252c19f2411 -&gt; xe-2600-5f025a38e4ddb453bfbf89d4ab37facf07427721</li>
-</ul>
-<p>IGTPW_12547: bf8488bfc3faf15daae1dde444700d4420355b71 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8223: ccfe042787b082c06402ff9af257f8338b8edd5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2591-d3f7add53c15ed866828937f140ac252c19f2411: d3f7add53c15ed866828937f140ac252c19f2411<br />
-  xe-2600-5f025a38e4ddb453bfbf89d4ab37facf07427721: 5f025a38e4ddb453bfbf89d4ab37facf07427721</p>
-
-</body>
-</html>
-
---===============3547708676161364673==--
+Peter
