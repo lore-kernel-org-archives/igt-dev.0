@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D0FDC02192
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Feb 2025 13:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E65C02194
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Feb 2025 13:31:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D158F10E161;
-	Wed,  5 Feb 2025 13:04:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC16710E144;
+	Wed,  5 Feb 2025 13:31:56 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF53710E161;
- Wed,  5 Feb 2025 13:04:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5001510E144;
+ Wed,  5 Feb 2025 13:31:09 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0921827135686615198=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Prepare_lib/intel=5Fcom?=
- =?utf-8?q?pute_for_SVM/system_allocator?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Prepare_lib/intel=5Fcompu?=
+ =?utf-8?q?te_for_SVM/system_allocator?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Francois Dugast" <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 05 Feb 2025 13:04:27 -0000
-Message-ID: <173876066771.1442162.8442878202724380891@b555e5b46a47>
+Date: Wed, 05 Feb 2025 13:31:09 -0000
+Message-ID: <173876226932.1442162.16771581051968256657@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250205101748.1117809-1-francois.dugast@intel.com>
 In-Reply-To: <20250205101748.1117809-1-francois.dugast@intel.com>
@@ -41,121 +41,183 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============0921827135686615198==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
 
 Series: Prepare lib/intel_compute for SVM/system allocator
 URL   : https://patchwork.freedesktop.org/series/144360/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_8223 -> IGTPW_12547
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1358438 f=
-or the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/70559146):
-  ninja: Entering directory `build'
-  [1/1359] Generating version.h with a custom command.
-  [2/1357] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_c=
-ompute.c.o'.
-  FAILED: lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-intel_compute_c@sta -=
-Ilib -I../lib -I../include -I../include/drm-uapi -I../include/drm-uapi-expe=
-rimental -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/i=
-nclude/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.=
-0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freety=
-pe2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nou=
-veau -I/usr/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/usr/incl=
-ude/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall =
--Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -=
-D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wfo=
-rmat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wm=
-issing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-ex=
-terns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Ws=
-trict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uniniti=
-alized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare=
- -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddres=
-s -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Di=
-nt-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissin=
-g-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-t=
-ype -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -f=
-no-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthr=
-ead '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/bu=
-ilds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"intel_compute"'  -MD -=
-MQ 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o' -MF 'lib/76b5a3=
-5@@igt-intel_compute_c@sta/intel_compute.c.o.d' -o 'lib/76b5a35@@igt-intel_=
-compute_c@sta/intel_compute.c.o' -c ../lib/intel_compute.c
-  ../lib/intel_compute.c: In function =E2=80=98xe2lpg_compute_exec=E2=80=99:
-  ../lib/intel_compute.c:1682:16: error: cast to pointer from integer of di=
-fferent size [-Werror=3Dint-to-pointer-cast]
-     input_data =3D (float *) user->input_addr;
-                  ^
-  ../lib/intel_compute.c:1692:17: error: cast to pointer from integer of di=
-fferent size [-Werror=3Dint-to-pointer-cast]
-     output_data =3D (float *) user->output_addr;
-                   ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1738760265:step_script
-  section_start:1738760265:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1738760266:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/70559148):
-  [1/1371] Generating version.h with a custom command.
-  [2/1369] Linking static target lib/libigt-intel_batchbuffer_c.a.
-  [3/1369] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_c=
-ompute.c.o'.
-  FAILED: lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-intel_compute_c@sta -Ilib =
--I../lib -I../include -I../include/drm-uapi -I../include/drm-uapi-experimen=
-tal -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/includ=
-e/cairo -I/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/include =
--I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr=
-/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/us=
-r/include/mips-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiag=
-nostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -=
-Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURC=
-E=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimpl=
-icit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-a=
-ttribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-sty=
-le-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototype=
-s -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-mis=
-sing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limi=
-ts -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darr=
-ay-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -=
-Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werro=
-r=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Ds=
-equence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-mall=
-oc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATA=
-DIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt=
--ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"intel_compute"'  -MD -MQ 'lib/76b5a35=
-@@igt-intel_compute_c@sta/intel_compute.c.o' -MF 'lib/76b5a35@@igt-intel_co=
-mpute_c@sta/intel_compute.c.o.d' -o 'lib/76b5a35@@igt-intel_compute_c@sta/i=
-ntel_compute.c.o' -c ../lib/intel_compute.c
-  ../lib/intel_compute.c: In function =E2=80=98xe2lpg_compute_exec=E2=80=99:
-  ../lib/intel_compute.c:1682:16: error: cast to pointer from integer of di=
-fferent size [-Werror=3Dint-to-pointer-cast]
-     input_data =3D (float *) user->input_addr;
-                  ^
-  ../lib/intel_compute.c:1692:17: error: cast to pointer from integer of di=
-fferent size [-Werror=3Dint-to-pointer-cast]
-     output_data =3D (float *) user->output_addr;
-                   ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1738760262:step_script
-  section_start:1738760262:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1738760262:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No regressions found.
 
-=3D=3D Logs =3D=3D
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/index.html
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1358438
+Participating hosts (43 -> 37)
+------------------------------
+
+  Missing    (6): bat-dg2-9 bat-adlp-6 fi-snb-2520m bat-atsm-1 bat-apl-1 bat-arlh-2 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12547 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] ([i915#11621] / [i915#180] / [i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#11621]) +81 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-6:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [PASS][7] -> [DMESG-WARN][8] ([i915#11621] / [i915#180]) +52 other tests dmesg-warn
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_tiled_blits@basic:
+    - fi-pnv-d510:        [SKIP][9] -> [PASS][10] +2 other tests pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-pnv-d510/igt@gem_tiled_blits@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-pnv-d510/igt@gem_tiled_blits@basic.html
+
+  
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8223 -> IGTPW_12547
+  * Linux: CI_DRM_16060 -> CI_DRM_16069
+
+  CI-20190529: 20190529
+  CI_DRM_16060: d3f7add53c15ed866828937f140ac252c19f2411 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16069: 5f025a38e4ddb453bfbf89d4ab37facf07427721 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12547: bf8488bfc3faf15daae1dde444700d4420355b71 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8223: ccfe042787b082c06402ff9af257f8338b8edd5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/index.html
+
+--===============0921827135686615198==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Prepare lib/intel_compute for SVM/system allocator</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144360/">https://patchwork.freedesktop.org/series/144360/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8223 -&gt; IGTPW_12547</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/index.html</p>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): bat-dg2-9 bat-adlp-6 fi-snb-2520m bat-atsm-1 bat-apl-1 bat-arlh-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12547 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) +81 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_tiled_blits@basic:<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8223/fi-pnv-d510/igt@gem_tiled_blits@basic.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12547/fi-pnv-d510/igt@gem_tiled_blits@basic.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8223 -&gt; IGTPW_12547</li>
+<li>Linux: CI_DRM_16060 -&gt; CI_DRM_16069</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16060: d3f7add53c15ed866828937f140ac252c19f2411 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16069: 5f025a38e4ddb453bfbf89d4ab37facf07427721 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12547: bf8488bfc3faf15daae1dde444700d4420355b71 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8223: ccfe042787b082c06402ff9af257f8338b8edd5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0921827135686615198==--
