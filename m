@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F37C02192
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Feb 2025 19:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE00C02192
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Feb 2025 19:14:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B48AE10E3A0;
-	Wed,  5 Feb 2025 19:03:25 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JW6K2GU9";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8452310E3DD
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Feb 2025 19:01:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738782075; x=1770318075;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fENTH2JhanlyKZW0Z7OCwSyxaB7u3K7zMGnzJK2AfIY=;
- b=JW6K2GU9+TXmahGPN9tuyWi+AVxwROzhTXPOO6vIHEmStzFrE/BsOqhJ
- IIVT1IUrkBUz1RJIHsN7OaoR+PnYY6OqXM1nRQmB17fdSN7jRQpXEH7Ci
- OjqibSQ7sIpXQTIVbPjvx1H/JY6tVh4iMdxX4kP01699lsQJfUXVEsvaO
- SzZWbTi7WG2l2lIttCsjIIF5FVklryhWMtaJWsoDKLuVDl8XE+UKto1hr
- Q7EaFPI4FJhIeUR8m35fmW16TMgC8aTilYzGC5PTf1/dJHEVznz4e8b5c
- KF9H7/ewX4zVhRHVEsiFX77WmJX9XeTyrF9ZkjSZ7vmmPTYtFomRKPbtk A==;
-X-CSE-ConnectionGUID: EZb+s+0LStGtFTQI+6Bu3Q==
-X-CSE-MsgGUID: emUy5PBMQDygxaIoUejtJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="26967086"
-X-IronPort-AV: E=Sophos;i="6.13,262,1732608000"; d="scan'208";a="26967086"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2025 11:01:15 -0800
-X-CSE-ConnectionGUID: x325ZxqGQdKO18OX1V6gAQ==
-X-CSE-MsgGUID: u/SG7SeAROKOvw8CuWun1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="148191262"
-Received: from unknown (HELO pravalika-NUC8i7BEH.iind.intel.com)
- ([10.145.169.156])
- by orviesa001.jf.intel.com with ESMTP; 05 Feb 2025 11:01:13 -0800
-From: pravalika gurram <pravalika.gurram@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	zhanjun.dong@intel.com
-Cc: pravalika gurram <pravalika.gurram@intel.com>
-Subject: [PATCH] tests/intel/xe_exec_capture: Enhance test to check with
- DUMPABLE flag
-Date: Thu,  6 Feb 2025 00:11:43 +0530
-Message-Id: <20250205184143.233197-1-pravalika.gurram@intel.com>
-X-Mailer: git-send-email 2.37.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3217510E16E;
+	Wed,  5 Feb 2025 19:14:48 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CDFD10E16E;
+ Wed,  5 Feb 2025 19:13:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7261819253812237217=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsriov=5Ffl?=
+ =?utf-8?q?r=3A_Add_parallel_FLR_subtest_for_SR-IOV_VFs_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 05 Feb 2025 19:13:41 -0000
+Message-ID: <173878282156.1588790.15126810254524758961@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250205171819.2485976-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250205171819.2485976-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,155 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-check if the VM is there when DRM_XE_VM_BIND_FLAG_DUMPABLE is set
-in the generated devcoredump.
-check VM address within the range
+--===============7261819253812237217==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: pravalika gurram <pravalika.gurram@intel.com>
----
- tests/intel/xe_exec_capture.c | 64 +++++++++++++++++++++++++----------
- 1 file changed, 46 insertions(+), 18 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
-index 55ec3d4bd..4eaa3f4d1 100644
---- a/tests/intel/xe_exec_capture.c
-+++ b/tests/intel/xe_exec_capture.c
-@@ -53,16 +53,15 @@
- 
- #define DUMP_PATH			"/sys/class/drm/card%d/device/devcoredump/data"
- #define START_TAG			"**** Job ****"
--#define END_TAG				"**** VM state ****"
- 
- /* Optional Space */
--#define SPC_O				"[ \t]*"
-+#define SPC_O				"[ \t\\.]*"
- /* Required Space */
--#define SPC				"[ \t]+"
-+#define SPC				"[ \t\\.]+"
- /* Optional Non-Space */
--#define NSPC_O				"([^ \t]*)"
-+#define NSPC_O				"([^ \t\\.]*)"
- /* Required Non-Space */
--#define NSPC				"([^ \t]+)"
-+#define NSPC				"([^ \t\\.]+)"
- #define BEG				"^" SPC_O
- #define REQ_FIELD			NSPC SPC
- #define REQ_FIELD_LAST			NSPC SPC_O
-@@ -77,6 +76,8 @@
- #define INDEX_ENGINE_PHYSICAL		2
- #define INDEX_ENGINE_NAME		1
- #define INDEX_ENGINE_INSTANCE		4
-+#define INDEX_VM_LENGTH			2
-+#define INDEX_VM_SIZE			3
- 
- static u64
- xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
-@@ -177,7 +178,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_qu
- 	};
- 
- 	sync[0].handle = syncobj_create(fd, 0);
--	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-+	__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, bo_size,
-+				DRM_XE_VM_BIND_OP_MAP, flags, sync, 1, 0, 0);
- 
- 	for (i = 0; i < n_execs; i++) {
- 		u64 base_addr = addr;
-@@ -287,10 +289,6 @@ static int load_all(FILE *fd, char **lines, char *buf)
- 
- 		/* Only save up to MAX_LINE_LEN to buffer */
- 		safe_strncpy(lines[i++], buf, MAX_LINE_LEN);
--
--		/* Stop on END_TAG */
--		if (!strncmp(END_TAG, buf, strlen(END_TAG)))
--			break;
- 	}
- 	return start_line;
- }
-@@ -351,7 +349,6 @@ static char
- 				value = &line[match[target_index].rm_so];
- 				line[match[target_index].rm_eo] = '\0';
- 			}
--
- 			if (key && value && strcmp(tag, key) == 0)
- 				return value;
- 			/* if key != tag,  keep searching and loop to next line */
-@@ -361,16 +358,44 @@ static char
- 	return NULL;
- }
- 
-+static uint64_t
-+compare_hex_value(const char *output)
-+{
-+	char result[64];
-+	uint64_t ret_val;
-+	char *src = (char *)output, *dst = result;
-+
-+	if (src[0] == '0' && (src[1] == 'x' || src[1] == 'X'))
-+		src += 2;
-+
-+	while (*src) {
-+		if (*src == '[' || *src == ']') {
-+			src++;
-+			continue;
-+		}
-+
-+		*dst = toupper((unsigned char)*src);
-+		dst++;
-+		src++;
-+	}
-+	*dst = '\0';
-+	ret_val = strtoull(result, NULL, 16);
-+	return ret_val;
-+}
-+
- static void
--check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo, u64 addr_hi)
-+check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo,
-+	      u64 addr_hi, int tag_index, int target_index)
- {
- 	u64 result;
- 	char *output;
- 
--	igt_assert_f((output = get_coredump_item(regex, lines, tag, INDEX_KEY, INDEX_VALUE)),
-+	igt_assert_f((output = get_coredump_item(regex, lines, tag, tag_index, target_index)),
- 		     "Target not found:%s\n", tag);
--	result = strtoul(output, NULL, 16);
--	igt_debug("Compare %s %s vs [0x%lX-0x%lX]\n", tag, output, addr_lo, addr_hi);
-+
-+	result = compare_hex_value(output);
-+	igt_debug("Compare %s %s vs [0x%lX-0x%lX] result %lX\n", tag, output,
-+		addr_lo, addr_hi, result);
- 	igt_assert_f((addr_lo <= result) && (result <= addr_hi),
- 		     "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
- }
-@@ -435,7 +460,7 @@ static void test_card(int fd)
- 		igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
- 			  hwe->engine_instance);
- 
--		test_legacy_mode(fd, hwe, 1, 1, 0, addr);
-+		test_legacy_mode(fd, hwe, 1, 1, DRM_XE_VM_BIND_FLAG_DUMPABLE, addr);
- 		/* Wait 1 sec for devcoredump complete */
- 		sleep(1);
- 
-@@ -451,10 +476,13 @@ static void test_card(int fd)
- 
- 		check_item_str(&regex, lines, "Capture_source:", INDEX_KEY, INDEX_VALUE,
- 			       "GuC", false);
-+
- 		check_item_u64(&regex, lines, "ACTHD:", addr,
--			       addr + BATCH_DW_COUNT * sizeof(u32));
-+			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_KEY, INDEX_VALUE);
- 		check_item_u64(&regex, lines, "RING_BBADDR:", addr,
--			       addr + BATCH_DW_COUNT * sizeof(u32));
-+			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_KEY, INDEX_VALUE);
-+		check_item_u64(&regex, lines, "length:", addr,
-+			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_VALUE, INDEX_KEY);
- 
- 		/* clear devcoredump */
- 		rm_devcoredump(path);
--- 
-2.37.1
+Series: tests/intel/xe_sriov_flr: Add parallel FLR subtest for SR-IOV VFs (rev4)
+URL   : https://patchwork.freedesktop.org/series/142042/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8224_BAT -> XEIGTPW_12548_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8224 -> IGTPW_12548
+  * Linux: xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380 -> xe-2604-9831501a0c70f94565d0874560e61718edc3b8a4
+
+  IGTPW_12548: 57bed37c12b70280013ab91f59901946a251454c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8224: c659b986ba648584d36b3cfece897bc84a33dcbb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380: a7df3eccb725a8d72f8f3ed87ee7ad9419b17380
+  xe-2604-9831501a0c70f94565d0874560e61718edc3b8a4: 9831501a0c70f94565d0874560e61718edc3b8a4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12548/index.html
+
+--===============7261819253812237217==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sriov_flr: Add parallel FLR subtest for SR-IOV VFs (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142042/">https://patchwork.freedesktop.org/series/142042/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12548/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12548/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8224_BAT -&gt; XEIGTPW_12548_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8224 -&gt; IGTPW_12548</li>
+<li>Linux: xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380 -&gt; xe-2604-9831501a0c70f94565d0874560e61718edc3b8a4</li>
+</ul>
+<p>IGTPW_12548: 57bed37c12b70280013ab91f59901946a251454c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8224: c659b986ba648584d36b3cfece897bc84a33dcbb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380: a7df3eccb725a8d72f8f3ed87ee7ad9419b17380<br />
+  xe-2604-9831501a0c70f94565d0874560e61718edc3b8a4: 9831501a0c70f94565d0874560e61718edc3b8a4</p>
+
+</body>
+</html>
+
+--===============7261819253812237217==--
