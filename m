@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA5FC02194
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 19:48:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F89C02194
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 20:13:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D81010E291;
-	Fri,  7 Feb 2025 19:48:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1399610E1F1;
+	Fri,  7 Feb 2025 20:13:23 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 420B610E290;
- Fri,  7 Feb 2025 19:47:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB54010E1F1;
+ Fri,  7 Feb 2025 20:13:16 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8568936537631457977=="
+ boundary="===============8014931594384758664=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_eudebug=3A_drop_support_for?=
- =?utf-8?q?_exec_queue_placements?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel/kms=5Fccs=3A_ad?=
+ =?utf-8?q?d_missed_include?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mika Kuoppala" <mika.kuoppala@linux.intel.com>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Feb 2025 19:47:11 -0000
-Message-ID: <173895763126.2808371.16459439757105989012@b555e5b46a47>
+Date: Fri, 07 Feb 2025 20:13:16 -0000
+Message-ID: <173895919695.2817582.5555296468099868960@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250207114935.1996323-1-mika.kuoppala@linux.intel.com>
-In-Reply-To: <20250207114935.1996323-1-mika.kuoppala@linux.intel.com>
+References: <20250207155152.2506970-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20250207155152.2506970-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8568936537631457977==
+--===============8014931594384758664==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: eudebug: drop support for exec queue placements
-URL   : https://patchwork.freedesktop.org/series/144501/
+Series: tests/intel/kms_ccs: add missed include
+URL   : https://patchwork.freedesktop.org/series/144516/
 State : failure
 
 == Summary ==
 
-Series 144501 revision 1 was fully merged or fully failed: no git log
+Series 144516 revision 1 was fully merged or fully failed: no git log
 
 
 
---===============8568936537631457977==
+--===============8014931594384758664==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>eudebug: drop support for exec queue placements</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144501/">https://patchwork.freedesktop.org/series/144501/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_ccs: add missed include</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144516/">https://patchwork.freedesktop.org/series/144516/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <p>Series 144501 revision 1 was fully merged or fully failed: no git log</p>
+    <p>Series 144516 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============8568936537631457977==--
+--===============8014931594384758664==--
