@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50932C02199
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 12:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13BAFC02194
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 12:56:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A19110EA7C;
-	Fri,  7 Feb 2025 12:48:41 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EF0B10EA7C;
- Fri,  7 Feb 2025 12:48:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2432751692699373494=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B254310EAF0;
+	Fri,  7 Feb 2025 12:56:21 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cvBsCS8O";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30D0A10E372
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 12:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738932853; x=1770468853;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=PrEhWMMxvyDhZC18KJJid7NTfDbF27BWsamG3pETdpo=;
+ b=cvBsCS8O1M55C3A4r4CdFhMphwaVok+gkJSdvMNT/FGCHfA9IEjXn/hL
+ y2ZLGiEkAFRfHBxBRmW7iEKNRLtnObp9HLkmPGp+O6dse8NxiS77qPdA3
+ SyRmuBk502kTMiABS9ClxBiHNIjujTZMOkgcHxX7ZzDpYMRPq9opMqmCZ
+ CtFWDoFDXN/SC7U6J/vz1U7NzxV4EAGm3buUZ/Wvk0mfT4rOMrCSczLcf
+ usXOUwm/+kCi+GWV4ayqfQBQEm84SBGZe+/AZEKmLdYXJ542WB2jAEUWQ
+ HVa0GoA0dCWChMlZjk1Fp/qXJiU6u/v8aUgMEzVeugKcc5khocLI+hftY g==;
+X-CSE-ConnectionGUID: aipm/L+hR3CdZycBYfOq2A==
+X-CSE-MsgGUID: H6qPrb15Scm9JY6RYZFfQw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="56987248"
+X-IronPort-AV: E=Sophos;i="6.13,267,1732608000"; d="scan'208";a="56987248"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Feb 2025 04:54:13 -0800
+X-CSE-ConnectionGUID: yp4EB7CoSl+TzDYJHLZgTw==
+X-CSE-MsgGUID: jyOWj7CFSfWD6rS/f10nNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116132248"
+Received: from mwiniars-desk2.ger.corp.intel.com (HELO [10.245.246.126])
+ ([10.245.246.126])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Feb 2025 04:54:11 -0800
+Message-ID: <b96a5570-8f85-444d-b37d-6ed5319e5f67@intel.com>
+Date: Fri, 7 Feb 2025 13:54:00 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_xe=5Feudebug=5Fonline=3A_?=
- =?utf-8?q?Adjust_bitmask_calculation?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Feb 2025 12:48:39 -0000
-Message-ID: <173893251905.2638319.13210714694133894357@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250206133003.618882-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20250206133003.618882-1-dominik.grzegorzek@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/4] Revert "tests/xe_eudebug: Validate exec queue
+ placements"
+To: Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250207114935.1996323-1-mika.kuoppala@linux.intel.com>
+ <20250207114935.1996323-2-mika.kuoppala@linux.intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20250207114935.1996323-2-mika.kuoppala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,259 +71,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2432751692699373494==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mika,
 
-== Series Details ==
+On 7.02.2025 12:49, Mika Kuoppala wrote:
+> Exec queue placements support was dropped as unused.
+> 
+> This reverts commit 05659c7f2840938c4977668143e6c60a46ca509d.
+> 
+> Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 
-Series: xe_eudebug_online: Adjust bitmask calculation
-URL   : https://patchwork.freedesktop.org/series/144417/
-State : success
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8224 -> IGTPW_12554
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_12554 need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12554, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/index.html
-
-Participating hosts (44 -> 42)
-------------------------------
-
-  Missing    (2): bat-apl-1 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12554:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - bat-mtlp-9:         [ABORT][1] ([i915#13641]) -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-mtlp-9/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-mtlp-9/igt@i915_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12554 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-2:          [PASS][3] -> [ABORT][4] ([i915#12919] / [i915#13503])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-twl-2/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-twl-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-twl-2:          [PASS][5] -> [ABORT][6] ([i915#12919])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-7567u:       [DMESG-WARN][9] ([i915#11621] / [i915#180] / [i915#1982]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_contexts:
-    - bat-twl-1:          [ABORT][11] ([i915#12919]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-twl-1/igt@i915_selftest@live@gt_contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-twl-1/igt@i915_selftest@live@gt_contexts.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][13] ([i915#11621]) -> [PASS][14] +81 other tests pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][17] ([i915#11621] / [i915#180]) -> [PASS][18] +52 other tests pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
-  [i915#13641]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13641
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8224 -> IGTPW_12554
-  * Linux: CI_DRM_16071 -> CI_DRM_16080
-
-  CI-20190529: 20190529
-  CI_DRM_16071: 48642a04502e4e6e86a83360bea6472bfa1233e1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16080: 68225b9bc1d285bd2ab63355e94f9e661d2f895e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12554: 034f30fcd0babd1f4d89ad27ce760c10fde8463d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8224: c659b986ba648584d36b3cfece897bc84a33dcbb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/index.html
-
---===============2432751692699373494==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe_eudebug_online: Adjust bitmask calculation</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144417/">https://patchwork.freedesktop.org/series/144417/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8224 -&gt; IGTPW_12554</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_12554 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12554, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/index.html</p>
-<h2>Participating hosts (44 -&gt; 42)</h2>
-<p>Missing    (2): bat-apl-1 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12554:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-mtlp-9/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13641">i915#13641</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-mtlp-9/igt@i915_module_load@load.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12554 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-twl-2/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-twl-2/igt@i915_selftest@live@gt_engines.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_contexts:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-twl-1/igt@i915_selftest@live@gt_contexts.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-twl-1/igt@i915_selftest@live@gt_contexts.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +81 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8224/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12554/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +52 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8224 -&gt; IGTPW_12554</li>
-<li>Linux: CI_DRM_16071 -&gt; CI_DRM_16080</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16071: 48642a04502e4e6e86a83360bea6472bfa1233e1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16080: 68225b9bc1d285bd2ab63355e94f9e661d2f895e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12554: 034f30fcd0babd1f4d89ad27ce760c10fde8463d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8224: c659b986ba648584d36b3cfece897bc84a33dcbb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2432751692699373494==--
+Thanks,
+Christoph
+> ---
+>   tests/intel/xe_eudebug.c | 129 ++-------------------------------------
+>   1 file changed, 4 insertions(+), 125 deletions(-)
+> 
+> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+> index da53aa881..76870805c 100644
+> --- a/tests/intel/xe_eudebug.c
+> +++ b/tests/intel/xe_eudebug.c
+> @@ -20,7 +20,6 @@
+>   #include <sys/prctl.h>
+>   
+>   #include "igt.h"
+> -#include "igt_sysfs.h"
+>   #include "intel_pat.h"
+>   #include "lib/igt_syncobj.h"
+>   #include "xe/xe_eudebug.h"
+> @@ -62,10 +61,9 @@ static void test_sysfs_toggle(int fd)
+>   #define VM_METADATA			(1 << 5)
+>   #define VM_BIND_METADATA		(1 << 6)
+>   #define VM_BIND_OP_MAP_USERPTR		(1 << 7)
+> -#define EXEC_QUEUES_PLACEMENTS		(1 << 8)
+> -#define VM_BIND_DELAY_UFENCE_ACK	(1 << 9)
+> -#define VM_BIND_UFENCE_RECONNECT	(1 << 10)
+> -#define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 11)
+> +#define VM_BIND_DELAY_UFENCE_ACK	(1 << 8)
+> +#define VM_BIND_UFENCE_RECONNECT	(1 << 9)
+> +#define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 10)
+>   #define TEST_DISCOVERY			(1 << 31)
+>   
+>   #define PAGE_SIZE SZ_4K
+> @@ -426,80 +424,6 @@ static void vm_bind_client(int fd, struct xe_eudebug_client *c)
+>   	xe_eudebug_client_vm_destroy(c, fd, vm);
+>   }
+>   
+> -static void placements_client(int fd, struct xe_eudebug_client *c)
+> -{
+> -	struct drm_xe_ext_set_property eq_ext = {
+> -		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> -		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
+> -		.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
+> -	};
+> -	struct drm_xe_exec_queue_create create = {
+> -		.extensions = to_user_pointer(&eq_ext),
+> -	};
+> -	struct drm_xe_engine_class_instance *eci;
+> -	bool at_least_4_ccs = false;
+> -	uint32_t vm;
+> -	int i, gt;
+> -
+> -	xe_for_each_gt(fd, gt) {
+> -		int count = 0;
+> -
+> -		xe_for_each_engine(fd, eci)
+> -			if (eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
+> -			    eci->gt_id == gt)
+> -				count++;
+> -
+> -		if (count < 4)
+> -			continue;
+> -
+> -		at_least_4_ccs = true;
+> -
+> -		vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> -
+> -		eci = calloc(count * count - 2, sizeof(*eci));
+> -
+> -		for (i = 0; i < count * count - 2; i++) {
+> -			eci[i].engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+> -			eci[i].gt_id = gt;
+> -		}
+> -
+> -		for (i = 0; i < count; i++)
+> -			eci[i].engine_instance = i;
+> -
+> -		create.instances = to_user_pointer(eci);
+> -		create.vm_id = vm;
+> -		create.width = 1;
+> -		create.num_placements = count;
+> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
+> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
+> -
+> -		create.width = count;
+> -		create.num_placements = 1;
+> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
+> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
+> -
+> -		/* every other instance (logical_mask ~ 1010, 0101) */
+> -		create.width = 2;
+> -		create.num_placements = count/2;
+> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
+> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
+> -
+> -		/* logically contigous placement (logical_mask ~ 1100, 0110, 0011) */
+> -		for (i = 0; i < count * count - 2; i++)
+> -			eci[i].engine_instance = i / 2 + i % 2;
+> -
+> -		create.width = 2;
+> -		create.num_placements = count - 1;
+> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
+> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
+> -
+> -		xe_eudebug_client_vm_destroy(c, fd, vm);
+> -		free(eci);
+> -	}
+> -
+> -	igt_require(at_least_4_ccs);
+> -}
+> -
+>   static void run_basic_client(struct xe_eudebug_client *c)
+>   {
+>   	int fd, i;
+> @@ -550,9 +474,6 @@ static void run_basic_client(struct xe_eudebug_client *c)
+>   		xe_eudebug_client_vm_destroy(c, fd, vm);
+>   	}
+>   
+> -	if (c->flags & EXEC_QUEUES_PLACEMENTS)
+> -		placements_client(fd, c);
+> -
+>   	if (c->flags & VM_BIND || c->flags & VM_BIND_METADATA)
+>   		basic_vm_bind_client(fd, c);
+>   
+> @@ -991,11 +912,6 @@ static void test_read_event(int fd)
+>    *	Attach the debugger to a process that performs bind, bind array, rebind,
+>    *	partial unbind, unbind and unbind all operations.
+>    *
+> - * SUBTEST: exec-queue-placements
+> - * Description:
+> - *	Create compute exec_queues with various placements and compare them against
+> - *	event sent to the debugger.
+> - *
+>    * SUBTEST: multigpu-basic-client
+>    * Description:
+>    *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
+> @@ -2794,40 +2710,14 @@ static void test_basic_exec_queues_enable(int fd)
+>   	xe_vm_destroy(fd, vm_non_lr);
+>   }
+>   
+> -static void ccs_mode_all_engines(int num_gt)
+> -{
+> -	int fd, gt, gt_fd, num_slices, ccs_mode;
+> -	int num_gts_with_ccs_mode = 0;
+> -
+> -	for (gt = 0; gt < num_gt; gt++) {
+> -		fd = drm_open_driver(DRIVER_XE);
+> -		gt_fd = xe_sysfs_gt_open(fd, gt);
+> -		close(fd);
+> -
+> -		if (igt_sysfs_scanf(gt_fd, "num_cslices", "%u", &num_slices) <= 0)
+> -			continue;
+> -
+> -		num_gts_with_ccs_mode++;
+> -
+> -		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
+> -		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
+> -		igt_assert(num_slices == ccs_mode);
+> -		close(gt_fd);
+> -	}
+> -
+> -	errno = 0;
+> -	igt_require(num_gts_with_ccs_mode > 0);
+> -}
+> -
+>   igt_main
+>   {
+>   	bool was_enabled;
+>   	bool *multigpu_was_enabled;
+> -	int fd, gpu_count, gt_count;
+> +	int fd, gpu_count;
+>   
+>   	igt_fixture {
+>   		fd = drm_open_driver(DRIVER_XE);
+> -		gt_count = xe_number_gt(fd);
+>   		was_enabled = xe_eudebug_enable(fd, true);
+>   	}
+>   
+> @@ -2936,17 +2826,6 @@ igt_main
+>   	igt_subtest("discovery-empty-clients")
+>   		test_empty_discovery(fd, DISCOVERY_DESTROY_RESOURCES, 16);
+>   
+> -	igt_subtest_group {
+> -		igt_fixture {
+> -			drm_close_driver(fd);
+> -			ccs_mode_all_engines(gt_count);
+> -			fd = drm_open_driver(DRIVER_XE);
+> -		}
+> -
+> -		igt_subtest("exec-queue-placements")
+> -			test_basic_sessions(fd, EXEC_QUEUES_PLACEMENTS, 1, true);
+> -	}
+> -
+>   	igt_fixture {
+>   		xe_eudebug_enable(fd, was_enabled);
+>   		drm_close_driver(fd);
