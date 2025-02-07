@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3376C02199
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 23:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1545CC0219D
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 23:13:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C91D10E335;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B379310E337;
 	Fri,  7 Feb 2025 23:13:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nrRF+uDW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QI2ifcu3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6ACE210E334
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9356110E348
  for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 23:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1738969870; x=1770505870;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=NzHNFKXSOt2UBttSevcZNyFPNQpXOKQ9XWuLe9pBhUU=;
- b=nrRF+uDWqMmVo3JLIxa/y3RIYtWtd3vrEHwHhyVVCvHM+UOJuW/KeKNS
- 3omjJeHjg5VIZky+YFDaJtaDN8ifBk0uZtmqyiT0Gs1xX5Nb+kH07WOaB
- Yfw2vPUHpvQnpb26IwBtDqe4+1WUmcu0JRwHnXI+R4OTnlnmcX7B332Cf
- ceQIX/i44X3E3E9JIZDX51ionu2BT3D3AR3dvNFh/G8C/J/UkIkzUl36o
- 2bZ0gewR9pfk6Ftggc5Kf/sVRPDW1u+IV2vhYLfFqXru71e7Ra19vWGDs
- Uw2rJJYQXDLzIkR+3A2she8wdTripLntZf2KXRvWSpVBsKBI3AYwoDb0Q A==;
-X-CSE-ConnectionGUID: LPlxeluYQGu9JS1ndfh8fw==
-X-CSE-MsgGUID: YNMDLYo/Q7yq8s5Eh4CfOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="43281775"
-X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="43281775"
+ bh=phVVPDHOCRCBADY/eqGV0GQlSPWtjjUeMlUbn5imzBM=;
+ b=QI2ifcu3/O8ZLLmyPcrYGmbKdO8p35vj3hKlpRtbT+i9WiN3qFVztye3
+ aBY9VfeINFCLntmLdAMlObbYMQb+qIL/zB1qJayCxc0Fhnsq4BihA3dym
+ jtJ3fmiOCkEMB0T/zk1dPqnbqZE+Onzu5lAR5hDAKbQmdlAGwmfvOy4RM
+ jWh3/H3CHayZ7WqOeIqAbqn93TiY6Wg+FSksdTWeJAKAhOWWuQPuQx2YG
+ 9/rXYEDdmalbQ3ooEHkVXDvzH69//KDncqbz1Tv8gnRxhYwhjOfEEdZps
+ vV6cWRPqFjcpGnmDgESr5JUCOngp/pg0SYdY+QaYZOAm7JDKg6ZHakmaX Q==;
+X-CSE-ConnectionGUID: tzj1wjlETXCCFfv9jtrP/Q==
+X-CSE-MsgGUID: SuxHd+9MS2qEWPaDhLrCuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="43281778"
+X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="43281778"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Feb 2025 15:11:09 -0800
-X-CSE-ConnectionGUID: QWSV6X8eSs2DBL3rM2yr0A==
-X-CSE-MsgGUID: EO1elV+bRwiI902JGa41qA==
+X-CSE-ConnectionGUID: w1o9bZeJSEOhNZU70/xdYQ==
+X-CSE-MsgGUID: sKXSsk/AT6evbunAv6YkRQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="111425870"
+X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="111425879"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Feb 2025 15:11:09 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [CI i-g-t 06/10] runner/settings: Drop extra strdup
-Date: Fri,  7 Feb 2025 15:09:40 -0800
-Message-ID: <20250207231039.2883195-8-lucas.demarchi@intel.com>
+Subject: [CI i-g-t 09/10] runner/settings: Serialize command line
+Date: Fri,  7 Feb 2025 15:09:43 -0800
+Message-ID: <20250207231039.2883195-11-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250207231039.2883195-2-lucas.demarchi@intel.com>
 References: <20250207231039.2883195-2-lucas.demarchi@intel.com>
@@ -66,35 +66,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-No need to strdup() again since the fscanf() function is already
-allocating the variable. Just set the pointer to NULL so we "leak" our
-variable to be saved in the settings.
+Serialize the command line to metadata.txt. The expected format in the
+metadata.txt is like below:
 
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+	cmdline.argc : 6
+	cmdline.argv[0] : ./build/runner/igt_runner
+	cmdline.argv[1] : -o
+	cmdline.argv[2] : --test-list
+	cmdline.argv[3] : /tmp/testlist.txt
+	cmdline.argv[4] : build/tests/
+	cmdline.argv[5] : /tmp/results
+
 Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- runner/settings.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ runner/settings.c | 24 ++++++++++++++++++++++++
+ runner/settings.h |  4 ++++
+ 2 files changed, 28 insertions(+)
 
 diff --git a/runner/settings.c b/runner/settings.c
-index 73d8aa13d..693c5484e 100644
+index 1da005806..a2fddcaf6 100644
 --- a/runner/settings.c
 +++ b/runner/settings.c
-@@ -1169,7 +1169,11 @@ static unsigned long parse_ul(char **val)
- 
- static char *parse_str(char **val)
- {
--	return *val ? strdup(*val) : NULL;
-+	char *ret = *val;
-+
-+	*val = NULL;
-+
-+	return ret;
+@@ -530,6 +530,17 @@ static void free_hook_strs(struct igt_vec *hook_strs)
+ 	igt_vec_fini(hook_strs);
  }
  
- #define PARSE_LINE(s, name, val, field, _f)	\
++static void free_array_deep(void **arr, size_t n)
++{
++	if (!arr)
++		return;
++
++	for (size_t i = 0; i < n; i++)
++		free(arr[i]);
++
++	free(arr);
++}
++
+ static bool file_exists_at(int dirfd, const char *filename)
+ {
+ 	return faccessat(dirfd, filename, F_OK, 0) == 0;
+@@ -647,6 +658,7 @@ void clear_settings(struct settings *settings)
+ 	free_regexes(&settings->exclude_regexes);
+ 	free_env_vars(&settings->env_vars);
+ 	free_hook_strs(&settings->hook_strs);
++	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
+ 
+ 	init_settings(settings);
+ }
+@@ -876,6 +888,16 @@ bool parse_options(int argc, char **argv,
+ 		goto error;
+ 	}
+ 
++	settings->cmdline.argv = calloc(argc, sizeof(*settings->cmdline.argv));
++	if (!settings->cmdline.argv)
++		goto error;
++
++	settings->cmdline.argc = argc;
++	for (int i = 0; i < argc; i++) {
++		settings->cmdline.argv[i] = strdup(argv[i]);
++		if (!settings->cmdline.argv[i])
++			goto error;
++	}
+ 
+ 	return true;
+ 
+@@ -1204,6 +1226,7 @@ bool serialize_settings(struct settings *settings)
+ 	SERIALIZE_INT(f, settings, enable_code_coverage);
+ 	SERIALIZE_INT(f, settings, cov_results_per_test);
+ 	SERIALIZE_STR(f, settings, code_coverage_script);
++	SERIALIZE_STR_ARRAY(f, settings, cmdline.argv, cmdline.argc);
+ 
+ 	if (settings->sync) {
+ 		fflush(f);
+@@ -1319,6 +1342,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ 		PARSE_INT(settings, name, val, enable_code_coverage);
+ 		PARSE_INT(settings, name, val, cov_results_per_test);
+ 		PARSE_STR(settings, name, val, code_coverage_script);
++		PARSE_STR_ARRAY(settings, name, val, cmdline.argv, cmdline.argc);
+ 
+ 		printf("Warning: Unknown field in settings file: %s = %s\n",
+ 		       name, val);
+diff --git a/runner/settings.h b/runner/settings.h
+index f69f09778..2266118a7 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -75,6 +75,10 @@ struct settings {
+ 	char *code_coverage_script;
+ 	bool enable_code_coverage;
+ 	bool cov_results_per_test;
++	struct {
++		int argc;
++		char **argv;
++	} cmdline;
+ };
+ 
+ /**
 -- 
 2.48.1
 
