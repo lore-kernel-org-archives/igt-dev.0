@@ -4,27 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED70EC02194
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 15:27:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA02C02194
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 15:48:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A935110EB47;
-	Fri,  7 Feb 2025 15:27:02 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A56F410EB47;
- Fri,  7 Feb 2025 15:27:01 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0511426088014371112=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB39110EB5D;
+	Fri,  7 Feb 2025 15:48:56 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="UH4TuMWs";
+	dkim-atps=neutral
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com
+ [209.85.214.181])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52A9010EB5D
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 15:47:02 +0000 (UTC)
+Received: by mail-pl1-f181.google.com with SMTP id
+ d9443c01a7336-21634338cfdso55251585ad.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 07 Feb 2025 07:47:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1738943221; x=1739548021; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=j7SdGJnhri/MCoynMmVlcp8tzLVZ1rZRggrVISJua7s=;
+ b=UH4TuMWsKAZGNCI7BsdnTs/fOEAzqKaVE5azYwocECnQV5WyIt/8Efma09wWYV5/1C
+ XPiqUBom1FbDYkvf68QxjcF69mhWQ49y9CpMUciE2zfB7Q/oCkxigSDGJL/WfeAh9iuN
+ fgJZoaRssM0cg4NMfggkO4ooXXkGteyScVQJkBIT5U/W9sHoZvaMcF0kG4xeebPUfmau
+ GWrV2aX9f3SDtS/Zu1Y8Et4g6fNJS9zBF6zaZJYpu+/q/aVFQM4O3raa5Ly3npCJWchC
+ q0ZGrLfp+RgqlEuGJbicaCNuPnpIU1Fb8taq0Q6lXrM4j5tTtmJ8JmvHSjc+Gt7s68v3
+ dcrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738943221; x=1739548021;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j7SdGJnhri/MCoynMmVlcp8tzLVZ1rZRggrVISJua7s=;
+ b=EPnapQEjwr8FHQWn+S58y+n5tRa/miRJeaEbDMZA/vGSa5Ko4RkCZp5w/Kn0kLqX2f
+ fPBj5NSJLt5zPzFm1fCk2ZJIrMGU6/EYmp1JFaAmcWBOCc9lHKr0L+ukW3J6pYKrDnFJ
+ 0Is+je0lxYgS4is+jhu6pvhw9C96hACYAP7Uk0VS4XbNJzI4/bxv/Frf2npP5gzFjkW4
+ RlnUwnyOHSKSR9C5m+7HsbpJtbSsJDZte3GknKo9sx/vqgHA6EyWzv/MZv/RvhiUiSqA
+ bGqbKRnbs0MioUcDvToBNk90rFLp83ymlvnpzj0/lzpkX0iHoZTJP0gzw6WmcMpjXmwr
+ Q0rA==
+X-Gm-Message-State: AOJu0Yz5roIYoenQlTmQthAQ683I+ZluVGIVxJi2DK3ZvLSTeVSLD1OR
+ pSx5mct2btBd6qthxNRqE9poxXlvFdbUV0F3JA/mG1AKZBN//v3nHgUGPcnzSgU=
+X-Gm-Gg: ASbGncsezUyjnJAb/zKOaO+devFr3BMbzN4YoRcJnVCndfGFGOgDsjPK94WirAQB0Ge
+ L4gG90NaSpPCt04Psle89VUB69/NMMDgAXSfAke5B3g92YsR5hhfKr/6P3hENtByM6O5eu0Mhc8
+ Qo/XVcewW4QnoOpA55s6sUmFBRUcHgMiLyRq6s81TVZxnE4qgEYJ45vRRUZ7tbEJnqZJwwhJ/FC
+ N8dYyHayulRcbrIPucHMlRB/51f8oNNn2QaanCOa36RfKxvyAI6ofFHPUXOH3/9aKU3VRXrpOaM
+ WNCYz6/84Q1MDkw3dKHo0mUu
+X-Google-Smtp-Source: AGHT+IFsumVSuxu4toyXRCGBSqtRd/VPFoiPOrD6uCrDlgluKAfCiZRCc1Tz3qBjT/lg3xSp4aTm6A==
+X-Received: by 2002:a05:6a20:394e:b0:1e1:384e:20f1 with SMTP id
+ adf61e73a8af0-1ee03a9b2e4mr6456597637.25.1738943221522; 
+ Fri, 07 Feb 2025 07:47:01 -0800 (PST)
+Received: from localhost ([134.134.137.72]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73048ad2841sm3140005b3a.41.2025.02.07.07.47.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Feb 2025 07:47:01 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t] tests/intel/kms_ccs: add missed include
+Date: Fri,  7 Feb 2025 17:51:52 +0200
+Message-ID: <20250207155152.2506970-1-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Fdc?=
- =?utf-8?q?=3A_Ensure_eDP_detection_before_skipping_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Feb 2025 15:27:01 -0000
-Message-ID: <173894202167.2687487.14751781425579189598@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250206155947.973010-1-jeevan.b@intel.com>
-In-Reply-To: <20250206155947.973010-1-jeevan.b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +78,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0511426088014371112==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+seems <fcntl.h> is needed for O_RDONLY flag on some platforms.
 
-== Series Details ==
+Fixes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commit/d3602c12b73fc950da9ea575a95d8b923c7a27ec
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/intel/kms_ccs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Series: tests/intel/kms_pm_dc: Ensure eDP detection before skipping test
-URL   : https://patchwork.freedesktop.org/series/144427/
-State : success
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 8be3c063a..ad0ffe589 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -33,6 +33,7 @@
+  * Mega feature: E2E Compression
+  * Test category: functionality test
+  */
++#include <fcntl.h>
+ 
+ #include "igt.h"
+ #include "igt_halffloat.h"
+-- 
+2.45.2
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8224_BAT -> XEIGTPW_12557_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8224 -> IGTPW_12557
-  * Linux: xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380 -> xe-2612-2aff25306def7c151be69b338bc1f5a27733c93e
-
-  IGTPW_12557: 12557
-  IGT_8224: c659b986ba648584d36b3cfece897bc84a33dcbb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380: a7df3eccb725a8d72f8f3ed87ee7ad9419b17380
-  xe-2612-2aff25306def7c151be69b338bc1f5a27733c93e: 2aff25306def7c151be69b338bc1f5a27733c93e
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12557/index.html
-
---===============0511426088014371112==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Ensure eDP detection before skipping test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144427/">https://patchwork.freedesktop.org/series/144427/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12557/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12557/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8224_BAT -&gt; XEIGTPW_12557_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8224 -&gt; IGTPW_12557</li>
-<li>Linux: xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380 -&gt; xe-2612-2aff25306def7c151be69b338bc1f5a27733c93e</li>
-</ul>
-<p>IGTPW_12557: 12557<br />
-  IGT_8224: c659b986ba648584d36b3cfece897bc84a33dcbb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2601-a7df3eccb725a8d72f8f3ed87ee7ad9419b17380: a7df3eccb725a8d72f8f3ed87ee7ad9419b17380<br />
-  xe-2612-2aff25306def7c151be69b338bc1f5a27733c93e: 2aff25306def7c151be69b338bc1f5a27733c93e</p>
-
-</body>
-</html>
-
---===============0511426088014371112==--
