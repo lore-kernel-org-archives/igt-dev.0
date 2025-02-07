@@ -4,51 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 370A8C021A1
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66B5EC021A2
 	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 23:13:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C844F10E34E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id F372C10EBB5;
 	Fri,  7 Feb 2025 23:13:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dGiXa9Xn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ajbmr0sg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB2C810E334
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 23:11:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 258BA10E335
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 23:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738969869; x=1770505869;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=SzbpXFQU+f+b2WRsF4RpcPtRi4T+lqZCVmS8s5k6Mqs=;
- b=dGiXa9XnwRp+8/AzmIAjRjaVEuU7HAgXaIHTiaBwYcMUEyDzYFWyV8rc
- 2ndk10fxfRrZ14ktthWzNCnCABisL5sC7PAv4LZ1Jro7W9smgeFrIg/hj
- RlbtCAyHTImyrdMSTjNqjp5+575D0gI5RJq4DsTbBuSrD1NumyBC2PADB
- UrgoFzSYgTXdqxUTueMaTsrzyOztYJBNgHHKCAV/UcMvavcJe9m7vMxYh
- rQ3YgzZ1IZxqBaY5I6A8Yqi1X1y6rKkEI8I/sz8qGOrqshRn/aJs88FO7
- 1yM/YS/VNIs1CXybwy+YkgidX11PBXCrcU0c4MxGXx5o3kHkmmke2Ykg7 g==;
-X-CSE-ConnectionGUID: dPHQlF57S5CK6Inp4hxO3A==
-X-CSE-MsgGUID: wfRzj7pxTK+L7tfmjwjqJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="43281770"
-X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="43281770"
+ t=1738969870; x=1770505870;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=F2egTIJ+kvBI57u3nW5TloWODVa/8m+GSSzz+gZp6ZM=;
+ b=Ajbmr0sgfB1LZzrp1b8YjEguXVz5mU8wIYDJ5Lt1SE/48b8avrgw+7be
+ ERICVG6cqPdGe/rYo58d/x21tQURD9/D/JztF1nKvJlqMRVtlljRETlN7
+ hDyi5WTv6bgmOlaUvLVoNRhR5rywq/hFxEJPnmLfwl12qvo+QrEdbPOX8
+ qJywAB0NvKJcRBzIWg8wRDkNiR7TBxRyG8sP2aGa36dBp3anqlEEXV6v2
+ dU1wHZA940HCBOX42aV0dbOx3hrzieVqG7nbLh8suvcn/5iOF9L5edEZ2
+ 4gpHtXF61bREf6eCg6OsRm67wcusNHeOWfMSGgHjQ/GTdYlSKOOhepFJS Q==;
+X-CSE-ConnectionGUID: MxgHpx1hTJuntZu0HJWjTQ==
+X-CSE-MsgGUID: ZWa6JEGwSdiCA8VQ/2I3cA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="43281769"
+X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="43281769"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Feb 2025 15:11:09 -0800
-X-CSE-ConnectionGUID: 2v6XN68ITaOcaxUXzj4XiA==
-X-CSE-MsgGUID: jAvZ4ZQhSsuMFt+Ty8JQdg==
+X-CSE-ConnectionGUID: oFQI+SgBRhuCEh1JSWSxlA==
+X-CSE-MsgGUID: bcIH6aLqQpSbMnNNpskjtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="111425856"
+X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; d="scan'208";a="111425853"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Feb 2025 15:11:09 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [CI i-g-t 01/10] runner/settings: Fix code_coverage_script leak
-Date: Fri,  7 Feb 2025 15:09:35 -0800
-Message-ID: <20250207231039.2883195-3-lucas.demarchi@intel.com>
+Subject: [CI i-g-t 00/10] Add igt_runner's cmdline to results
+Date: Fri,  7 Feb 2025 15:09:34 -0800
+Message-ID: <20250207231039.2883195-2-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250207231039.2883195-2-lucas.demarchi@intel.com>
-References: <20250207231039.2883195-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,28 +64,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make sure to free it when clearing settings.
+Help devs to reproduce what CI is running by dumping what is the command
+line being used. While it's true that in the shard case we don't have
+the testlist, just seeing the right incantation of command line is a
+great improvement.
 
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- runner/settings.c | 1 +
- 1 file changed, 1 insertion(+)
+I plan to follow this with the env vars, but first want to get this
+in. It seems we already have an environment.txt saved, however that
+doesn't contain the igt_runner's env, only options passed via -e to
+igt_runner which is then forwarded to each test. I'm wondering if this
+is a source of bugs when using igt_resume:  if the environment doesn't
+match, it will run with different options on each execution. (answer:
+yes, it is a source of bugs if the exact environment is not re-created
+for running igt_resume)
 
-diff --git a/runner/settings.c b/runner/settings.c
-index 92fd42ea6..afb312dc1 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -640,6 +640,7 @@ void clear_settings(struct settings *settings)
- 	free(settings->name);
- 	free(settings->test_root);
- 	free(settings->results_path);
-+	free(settings->code_coverage_script);
- 
- 	free_regexes(&settings->include_regexes);
- 	free_regexes(&settings->exclude_regexes);
+v2:
+  - Fix more leaks as prep commits
+  - Fix leaking argv that got lost in all other pre-existent leaks
+  - Add dummy array to the reference.json files so it passes runner's
+    own tests.
+
+v3:
+  - Better split patches and reword commit messages according to reviews
+    by Gustavo and Peter
+  - Add generic escape/unescape functions to be used for metadata.txt.
+    Besides preparing for cmdline, it fixes other uses of \n.
+  - Provide a single macro to parse array, which adds the proper code
+    to parse both the array items and the length
+
+CI: minor adjustements. Let's make sure it passes CI.
+
+Lucas De Marchi (10):
+  runner/settings: Fix code_coverage_script leak
+  runner: Free settings at the end
+  runner/settings: Deduplicate cleanup
+  runner/settings: Use wrapper macros for each type
+  runner/settings: Match serialization to parse
+  runner/settings: Drop extra strdup
+  runner: Fix use of newline on arguments
+  runner/settings: Add helpers to serialize/parse array
+  runner/settings: Serialize command line
+  runner/resultgen: Add cmdline to results.json
+
+ .../aborted-after-a-test/reference.json       |   1 +
+ .../aborted-on-boot/reference.json            |   1 +
+ .../dmesg-escapes/reference.json              |   1 +
+ .../dmesg-results/reference.json              |   1 +
+ .../reference.json                            |   1 +
+ .../reference.json                            |   1 +
+ .../dmesg-warn-level/reference.json           |   1 +
+ .../reference.json                            |   1 +
+ .../dynamic-subtests-keep-all/reference.json  |   3 +-
+ .../reference.json                            |   1 +
+ .../reference.json                            |   3 +-
+ .../reference.json                            |   3 +-
+ .../empty-result-files/reference.json         |   1 +
+ .../graceful-notrun/reference.json            |   1 +
+ .../reference.json                            |   1 +
+ .../json_tests_data/normal-run/reference.json |   1 +
+ .../reference.json                            |   1 +
+ .../notrun-results/reference.json             |   1 +
+ .../piglit-style-dmesg/reference.json         |   1 +
+ .../unprintable-characters/reference.json     |   1 +
+ .../warnings-with-dmesg-warns/reference.json  |   1 +
+ .../json_tests_data/warnings/reference.json   |   1 +
+ runner/resultgen.c                            |   7 +-
+ runner/resume.c                               |   2 +
+ runner/runner.c                               |   2 +
+ runner/runner_tests.c                         |   1 +
+ runner/settings.c                             | 277 ++++++++++++++----
+ runner/settings.h                             |   4 +
+ 28 files changed, 257 insertions(+), 64 deletions(-)
+
 -- 
 2.48.1
 
