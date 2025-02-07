@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13BAFC02194
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 12:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FE7EC02194
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Feb 2025 12:58:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B254310EAF0;
-	Fri,  7 Feb 2025 12:56:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D049A10E372;
+	Fri,  7 Feb 2025 12:58:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cvBsCS8O";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QGl5NiMF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30D0A10E372
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 12:54:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE12A10E372
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2025 12:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738932853; x=1770468853;
+ t=1738933095; x=1770469095;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=PrEhWMMxvyDhZC18KJJid7NTfDbF27BWsamG3pETdpo=;
- b=cvBsCS8O1M55C3A4r4CdFhMphwaVok+gkJSdvMNT/FGCHfA9IEjXn/hL
- y2ZLGiEkAFRfHBxBRmW7iEKNRLtnObp9HLkmPGp+O6dse8NxiS77qPdA3
- SyRmuBk502kTMiABS9ClxBiHNIjujTZMOkgcHxX7ZzDpYMRPq9opMqmCZ
- CtFWDoFDXN/SC7U6J/vz1U7NzxV4EAGm3buUZ/Wvk0mfT4rOMrCSczLcf
- usXOUwm/+kCi+GWV4ayqfQBQEm84SBGZe+/AZEKmLdYXJ542WB2jAEUWQ
- HVa0GoA0dCWChMlZjk1Fp/qXJiU6u/v8aUgMEzVeugKcc5khocLI+hftY g==;
-X-CSE-ConnectionGUID: aipm/L+hR3CdZycBYfOq2A==
-X-CSE-MsgGUID: H6qPrb15Scm9JY6RYZFfQw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="56987248"
-X-IronPort-AV: E=Sophos;i="6.13,267,1732608000"; d="scan'208";a="56987248"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Feb 2025 04:54:13 -0800
-X-CSE-ConnectionGUID: yp4EB7CoSl+TzDYJHLZgTw==
-X-CSE-MsgGUID: jyOWj7CFSfWD6rS/f10nNw==
+ bh=ELljPxNUe6ouOgH73Opy1rQcP9rO81OXorfAfOzMS6U=;
+ b=QGl5NiMFBrfJ9MI6EBxmDb5+I6DlmgY9P5tG2siJWKBnnwICR3tuW3kQ
+ xqPSqrwT32ZZp9Rz4LgchMwNA1OlPufMswvihBpmNhgriLZVFy6HwZcqK
+ mSce/5a8wngQDJqfPpv+Z+cD0bj7cJT2BT5p/qS32gn3gxFGhcpPXClhL
+ xPqu/bNblKdwYh5xfdDy4IPkycp6LKulHPBSE7nvQCJ9ftsC2oBDxV3zu
+ sJ6RYYyL3ve+33+CYf1FLI8UNRAcU9dVcsjGe5MBmPuu2HXXX9QPxD+LQ
+ RkqknLGGa2YO5jj4CnoyrKI7DlauwdcojwKncue4U9QpzstZrJWwJc26f w==;
+X-CSE-ConnectionGUID: AmaxiXcrSDqu0PlD/uZ0ow==
+X-CSE-MsgGUID: FT9OKXUNR56phYZOZeo52A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="39700877"
+X-IronPort-AV: E=Sophos;i="6.13,267,1732608000"; d="scan'208";a="39700877"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Feb 2025 04:58:14 -0800
+X-CSE-ConnectionGUID: lFz8kTEbRTuDgFOG9yglOA==
+X-CSE-MsgGUID: NzxXdH9pSYSdKVRlzlcxPQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116132248"
+X-IronPort-AV: E=Sophos;i="6.13,267,1732608000"; d="scan'208";a="112032515"
 Received: from mwiniars-desk2.ger.corp.intel.com (HELO [10.245.246.126])
  ([10.245.246.126])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Feb 2025 04:54:11 -0800
-Message-ID: <b96a5570-8f85-444d-b37d-6ed5319e5f67@intel.com>
-Date: Fri, 7 Feb 2025 13:54:00 +0100
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Feb 2025 04:58:13 -0800
+Message-ID: <4a20dd51-a139-49c4-9624-7e2f484d6ca7@intel.com>
+Date: Fri, 7 Feb 2025 13:58:10 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/4] Revert "tests/xe_eudebug: Validate exec queue
- placements"
+Subject: Re: [PATCH i-g-t 2/4] Revert "lib/xe_eudebug: Add support for exec
+ queue placements events"
 To: Mika Kuoppala <mika.kuoppala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20250207114935.1996323-1-mika.kuoppala@linux.intel.com>
- <20250207114935.1996323-2-mika.kuoppala@linux.intel.com>
+ <20250207114935.1996323-3-mika.kuoppala@linux.intel.com>
 Content-Language: en-US
 From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
  Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20250207114935.1996323-2-mika.kuoppala@linux.intel.com>
+In-Reply-To: <20250207114935.1996323-3-mika.kuoppala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -79,7 +79,7 @@ Hi Mika,
 On 7.02.2025 12:49, Mika Kuoppala wrote:
 > Exec queue placements support was dropped as unused.
 > 
-> This reverts commit 05659c7f2840938c4977668143e6c60a46ca509d.
+> This reverts commit 8c550873064f46ccc17661572f1aeec70a533213.
 > 
 > Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 
@@ -87,196 +87,155 @@ Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
 Thanks,
 Christoph
+
 > ---
->   tests/intel/xe_eudebug.c | 129 ++-------------------------------------
->   1 file changed, 4 insertions(+), 125 deletions(-)
+>   lib/xe/xe_eudebug.c | 89 ++-------------------------------------------
+>   1 file changed, 3 insertions(+), 86 deletions(-)
 > 
-> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-> index da53aa881..76870805c 100644
-> --- a/tests/intel/xe_eudebug.c
-> +++ b/tests/intel/xe_eudebug.c
-> @@ -20,7 +20,6 @@
->   #include <sys/prctl.h>
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index 19bec2d25..1205d945b 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -78,8 +78,6 @@ static const char *type_to_str(unsigned int type)
+>   		return "vm";
+>   	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE:
+>   		return "exec_queue";
+> -	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS:
+> -		return "exec_queue_placements";
+>   	case DRM_XE_EUDEBUG_EVENT_EU_ATTENTION:
+>   		return "attention";
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND:
+> @@ -150,27 +148,6 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *bu
+>   			ee->exec_queue_handle, ee->engine_class, ee->width);
+>   		break;
+>   	}
+> -	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS: {
+> -		struct drm_xe_eudebug_event_exec_queue_placements *ee = igt_container_of(e, ee,
+> -											 base);
+> -		struct drm_xe_engine_class_instance *instances = (void *)(ee->instances);
+> -		int i, l;
+> -
+> -		l = sprintf(buf, "client_handle=%llu, vm_handle=%llu, "
+> -			    "exec_queue_handle=%llu, lrc_handle=%llu, "
+> -			    "num_placements=%d, gt_id=%d, mask=[",
+> -			    ee->client_handle, ee->vm_handle,
+> -			    ee->exec_queue_handle, ee->lrc_handle,
+> -			    ee->num_placements, instances[0].gt_id);
+> -
+> -		for (i = 0; i < ee->num_placements; i++)
+> -			l += sprintf(buf + l, "%s%d pad%d, ",
+> -				     xe_engine_class_short_string(instances[i].engine_class),
+> -				     instances[i].engine_instance, instances[i].pad);
+> -		buf[l - 2] = ']';
+> -
+> -		break;
+> -	}
+>   	case DRM_XE_EUDEBUG_EVENT_EU_ATTENTION: {
+>   		struct drm_xe_eudebug_event_eu_attention *ea = igt_container_of(e, ea, base);
 >   
->   #include "igt.h"
-> -#include "igt_sysfs.h"
->   #include "intel_pat.h"
->   #include "lib/igt_syncobj.h"
->   #include "xe/xe_eudebug.h"
-> @@ -62,10 +61,9 @@ static void test_sysfs_toggle(int fd)
->   #define VM_METADATA			(1 << 5)
->   #define VM_BIND_METADATA		(1 << 6)
->   #define VM_BIND_OP_MAP_USERPTR		(1 << 7)
-> -#define EXEC_QUEUES_PLACEMENTS		(1 << 8)
-> -#define VM_BIND_DELAY_UFENCE_ACK	(1 << 9)
-> -#define VM_BIND_UFENCE_RECONNECT	(1 << 10)
-> -#define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 11)
-> +#define VM_BIND_DELAY_UFENCE_ACK	(1 << 8)
-> +#define VM_BIND_UFENCE_RECONNECT	(1 << 9)
-> +#define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 10)
->   #define TEST_DISCOVERY			(1 << 31)
+> @@ -458,19 +435,6 @@ static int match_fields(struct drm_xe_eudebug_event *a, void *data)
+>   			ret = 1;
+>   		break;
+>   	}
+> -	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS: {
+> -		struct drm_xe_eudebug_event_exec_queue_placements *ae = igt_container_of(a, ae,
+> -											 base);
+> -		struct drm_xe_eudebug_event_exec_queue_placements *be = igt_container_of(b, be,
+> -											 base);
+> -
+> -		if (ae->num_placements == be->num_placements &&
+> -		    memcmp(ae->instances, be->instances,
+> -			   sizeof(uint64_t) * ae->num_placements) == 0)
+> -			ret = 1;
+> -
+> -		break;
+> -	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND: {
+>   		struct drm_xe_eudebug_event_vm_bind *ea = igt_container_of(a, ea, base);
+>   		struct drm_xe_eudebug_event_vm_bind *eb = igt_container_of(b, eb, base);
+> @@ -538,14 +502,6 @@ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+>   			return 1;
+>   		break;
+>   	}
+> -	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS: {
+> -		struct drm_xe_eudebug_event_exec_queue_placements *ee = igt_container_of(e, ee,
+> -											 base);
+> -
+> -		if (ee->client_handle == h)
+> -			return 1;
+> -		break;
+> -	}
+>   	case DRM_XE_EUDEBUG_EVENT_VM_BIND: {
+>   		struct drm_xe_eudebug_event_vm_bind *evmb = igt_container_of(e, evmb, base);
 >   
->   #define PAGE_SIZE SZ_4K
-> @@ -426,80 +424,6 @@ static void vm_bind_client(int fd, struct xe_eudebug_client *c)
->   	xe_eudebug_client_vm_destroy(c, fd, vm);
+> @@ -1044,11 +1000,10 @@ xe_eudebug_event_log_match_opposite(struct xe_eudebug_event_log *l, uint32_t fil
+>   			if (XE_EUDEBUG_EVENT_IS_FILTERED(ev1->type, filter))
+>   				continue;
+>   
+> -			/* No opposite matching for some events */
+> +			/* No opposite matching for binds */
+>   			if ((ev1->type >= DRM_XE_EUDEBUG_EVENT_VM_BIND &&
+>   			     ev1->type <= DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE) ||
+> -			    ev1->type == DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA ||
+> -			    ev1->type == DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS)
+> +			    ev1->type == DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA)
+>   				continue;
+>   
+>   			ev2 = opposite_event_match(l, ev1, ev1);
+> @@ -1739,36 +1694,6 @@ static void exec_queue_event(struct xe_eudebug_client *c, uint32_t flags,
+>   	xe_eudebug_event_log_write(c->log, (void *)&ee);
 >   }
 >   
-> -static void placements_client(int fd, struct xe_eudebug_client *c)
+> -static void exec_queue_placements_event(struct xe_eudebug_client *c,
+> -					int client_fd, uint32_t vm_id,
+> -					uint32_t exec_queue_handle,
+> -					uint16_t width, uint16_t lrc_no,
+> -					uint16_t num_placements,
+> -					struct drm_xe_engine_class_instance *eci)
 > -{
-> -	struct drm_xe_ext_set_property eq_ext = {
-> -		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
-> -		.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
-> -	};
-> -	struct drm_xe_exec_queue_create create = {
-> -		.extensions = to_user_pointer(&eq_ext),
-> -	};
-> -	struct drm_xe_engine_class_instance *eci;
-> -	bool at_least_4_ccs = false;
-> -	uint32_t vm;
-> -	int i, gt;
+> -	struct drm_xe_eudebug_event_exec_queue_placements *ee;
+> -	struct drm_xe_engine_class_instance *instances;
+> -	size_t sz = sizeof(*ee) + num_placements * sizeof(uint64_t);
 > -
-> -	xe_for_each_gt(fd, gt) {
-> -		int count = 0;
+> -	ee = calloc(1, sz);
+> -	igt_assert(ee);
 > -
-> -		xe_for_each_engine(fd, eci)
-> -			if (eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
-> -			    eci->gt_id == gt)
-> -				count++;
+> -	base_event(c, to_base(*ee), DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE_PLACEMENTS,
+> -		   DRM_XE_EUDEBUG_EVENT_CREATE, sz);
 > -
-> -		if (count < 4)
-> -			continue;
+> -	ee->client_handle = client_fd;
+> -	ee->vm_handle = vm_id;
+> -	ee->exec_queue_handle = exec_queue_handle;
+> -	ee->num_placements = num_placements;
 > -
-> -		at_least_4_ccs = true;
+> -	instances = (struct drm_xe_engine_class_instance *)(ee->instances);
+> -	for (int j = 0; j < num_placements; j++)
+> -		instances[j] = eci[j * width + lrc_no];
 > -
-> -		vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-> -
-> -		eci = calloc(count * count - 2, sizeof(*eci));
-> -
-> -		for (i = 0; i < count * count - 2; i++) {
-> -			eci[i].engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
-> -			eci[i].gt_id = gt;
-> -		}
-> -
-> -		for (i = 0; i < count; i++)
-> -			eci[i].engine_instance = i;
-> -
-> -		create.instances = to_user_pointer(eci);
-> -		create.vm_id = vm;
-> -		create.width = 1;
-> -		create.num_placements = count;
-> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
-> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-> -
-> -		create.width = count;
-> -		create.num_placements = 1;
-> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
-> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-> -
-> -		/* every other instance (logical_mask ~ 1010, 0101) */
-> -		create.width = 2;
-> -		create.num_placements = count/2;
-> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
-> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-> -
-> -		/* logically contigous placement (logical_mask ~ 1100, 0110, 0011) */
-> -		for (i = 0; i < count * count - 2; i++)
-> -			eci[i].engine_instance = i / 2 + i % 2;
-> -
-> -		create.width = 2;
-> -		create.num_placements = count - 1;
-> -		xe_eudebug_client_exec_queue_create(c, fd, &create);
-> -		xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-> -
-> -		xe_eudebug_client_vm_destroy(c, fd, vm);
-> -		free(eci);
-> -	}
-> -
-> -	igt_require(at_least_4_ccs);
+> -	xe_eudebug_event_log_write(c->log, (void *)ee);
+> -	free(ee);
 > -}
 > -
->   static void run_basic_client(struct xe_eudebug_client *c)
+>   static void metadata_event(struct xe_eudebug_client *c, uint32_t flags,
+>   			   int client_fd, uint32_t id, uint64_t type, uint64_t len)
 >   {
->   	int fd, i;
-> @@ -550,9 +474,6 @@ static void run_basic_client(struct xe_eudebug_client *c)
->   		xe_eudebug_client_vm_destroy(c, fd, vm);
->   	}
+> @@ -1963,18 +1888,10 @@ uint32_t xe_eudebug_client_exec_queue_create(struct xe_eudebug_client *c, int fd
+>   		    ext->value & DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE)
+>   			send = true;
 >   
-> -	if (c->flags & EXEC_QUEUES_PLACEMENTS)
-> -		placements_client(fd, c);
+> -	if (send) {
+> +	if (send)
+>   		exec_queue_event(c, DRM_XE_EUDEBUG_EVENT_CREATE, fd, create->vm_id,
+>   				 create->exec_queue_id, class, create->width);
+>   
+> -		for (int i = 0; i < create->width; i++) {
+> -			exec_queue_placements_event(c, fd, create->vm_id, create->exec_queue_id,
+> -						    create->width, i,
+> -						    create->num_placements,
+> -						    instances);
+> -		}
+> -	}
 > -
->   	if (c->flags & VM_BIND || c->flags & VM_BIND_METADATA)
->   		basic_vm_bind_client(fd, c);
->   
-> @@ -991,11 +912,6 @@ static void test_read_event(int fd)
->    *	Attach the debugger to a process that performs bind, bind array, rebind,
->    *	partial unbind, unbind and unbind all operations.
->    *
-> - * SUBTEST: exec-queue-placements
-> - * Description:
-> - *	Create compute exec_queues with various placements and compare them against
-> - *	event sent to the debugger.
-> - *
->    * SUBTEST: multigpu-basic-client
->    * Description:
->    *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
-> @@ -2794,40 +2710,14 @@ static void test_basic_exec_queues_enable(int fd)
->   	xe_vm_destroy(fd, vm_non_lr);
+>   	return create->exec_queue_id;
 >   }
 >   
-> -static void ccs_mode_all_engines(int num_gt)
-> -{
-> -	int fd, gt, gt_fd, num_slices, ccs_mode;
-> -	int num_gts_with_ccs_mode = 0;
-> -
-> -	for (gt = 0; gt < num_gt; gt++) {
-> -		fd = drm_open_driver(DRIVER_XE);
-> -		gt_fd = xe_sysfs_gt_open(fd, gt);
-> -		close(fd);
-> -
-> -		if (igt_sysfs_scanf(gt_fd, "num_cslices", "%u", &num_slices) <= 0)
-> -			continue;
-> -
-> -		num_gts_with_ccs_mode++;
-> -
-> -		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-> -		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-> -		igt_assert(num_slices == ccs_mode);
-> -		close(gt_fd);
-> -	}
-> -
-> -	errno = 0;
-> -	igt_require(num_gts_with_ccs_mode > 0);
-> -}
-> -
->   igt_main
->   {
->   	bool was_enabled;
->   	bool *multigpu_was_enabled;
-> -	int fd, gpu_count, gt_count;
-> +	int fd, gpu_count;
->   
->   	igt_fixture {
->   		fd = drm_open_driver(DRIVER_XE);
-> -		gt_count = xe_number_gt(fd);
->   		was_enabled = xe_eudebug_enable(fd, true);
->   	}
->   
-> @@ -2936,17 +2826,6 @@ igt_main
->   	igt_subtest("discovery-empty-clients")
->   		test_empty_discovery(fd, DISCOVERY_DESTROY_RESOURCES, 16);
->   
-> -	igt_subtest_group {
-> -		igt_fixture {
-> -			drm_close_driver(fd);
-> -			ccs_mode_all_engines(gt_count);
-> -			fd = drm_open_driver(DRIVER_XE);
-> -		}
-> -
-> -		igt_subtest("exec-queue-placements")
-> -			test_basic_sessions(fd, EXEC_QUEUES_PLACEMENTS, 1, true);
-> -	}
-> -
->   	igt_fixture {
->   		xe_eudebug_enable(fd, was_enabled);
->   		drm_close_driver(fd);
