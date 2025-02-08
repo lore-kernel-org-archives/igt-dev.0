@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D279C02198
-	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47949C02198
+	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:10:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 54C5F10E030;
-	Sat,  8 Feb 2025 13:08:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09D7410E030;
+	Sat,  8 Feb 2025 13:10:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="abQeloh8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EwIh+/BV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E28E510E030
- for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:08:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EB1910E030
+ for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739020130; x=1770556130;
+ t=1739020229; x=1770556229;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=TChTkJ1fUlewHHA7GAQU4GuYadp5fx8lYLXJjkyjqlA=;
- b=abQeloh8o1XHZ53CwINujtM3/NLWQu/SJlitms+3QYAkFe4n4KR9IJ1P
- /+6+4uDvt0laJyEZrvXW7mNZH8kdlbibo6Vk5mD0A4wWp14BY8aX0BRik
- gqsHHd2VUflbpz1i2bDGNrP5UWKXSw9DQJAlezgQU4MNw0thSRSwT06O5
- H1ag844pTbBn6G0fE7f18DPrbtAMIVmZ/PgtAHE57+akvQe8JRyQ5sMXa
- WyUT4mBs0QmMonKBo5oOh6HcJEcdjc0xSUjBrTxgfdOR44tFMisexgYku
- RhQc/EMc687EAW5IsLmDFB6T7d93GF++W68Yr0CaCD0ADd2hgnuj3c6TJ g==;
-X-CSE-ConnectionGUID: 2LCtFfguTje0qtV00XqL8Q==
-X-CSE-MsgGUID: LlImLKM2SoeywXA0MObFpg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="51042206"
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="51042206"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2025 05:08:50 -0800
-X-CSE-ConnectionGUID: 68druHzrT/S7l/90+RJtww==
-X-CSE-MsgGUID: t0iItKzzQBmMZNQbpxT3Yw==
+ bh=sLixABrlVTG1DF1mfuf+3LdiYk4bvCKHLnv4ETniwLI=;
+ b=EwIh+/BViX2jAJU4O4uMwgte6s6F9pj50xx+4F2NXO0f+/t712yw9GwN
+ SsXuIzCeRFFu6uKeGXVXYEKQ4tcbcdZHc/1AGONEqbCtWAkxcAiWO2d86
+ TPoe/OYvQfNJ6CbYz7Vs9HZ5al+O7BuFmGc1oBtVNBOsSo5CgCSnZ38JR
+ oHivPfUn7NceXR/uC7GU1Ea5X64ch6w5P5TVe1eY0i/aR35DnmPHKKfu/
+ cYeoZe9nSSKA9IMcJMFu/sZ98h46uEEFC4USepqSQ9MsnbEFoPlXxn6xC
+ LwG/SdibpZCAwB0x6ckEuqkujbdwNPijO+2QGJ+JiG902mNIOE2MnJMj9 A==;
+X-CSE-ConnectionGUID: 5/r+E+RAROaxSQwsIRBt3w==
+X-CSE-MsgGUID: KwCALIcYQkS93UawJRBoiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="39561027"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="39561027"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2025 05:10:29 -0800
+X-CSE-ConnectionGUID: VUPJ6XDfSF2VZhd13VfwQA==
+X-CSE-MsgGUID: URi153sBRJ2hldCdwQraoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="142638459"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="116712367"
 Received: from arossa-mobl1.ger.corp.intel.com (HELO [10.245.98.254])
  ([10.245.98.254])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2025 05:08:49 -0800
-Message-ID: <4e69d895-05b6-4749-ade1-ae2344384618@linux.intel.com>
-Date: Sat, 8 Feb 2025 14:08:46 +0100
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2025 05:10:28 -0800
+Message-ID: <7ad63a47-aacb-4d0f-a705-5ad47607970e@linux.intel.com>
+Date: Sat, 8 Feb 2025 14:10:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [CI i-g-t 09/10] runner/settings: Serialize command line
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [CI i-g-t 00/10] Add igt_runner's cmdline to results
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
 References: <20250207231039.2883195-2-lucas.demarchi@intel.com>
- <20250207231039.2883195-11-lucas.demarchi@intel.com>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250207231039.2883195-11-lucas.demarchi@intel.com>
+In-Reply-To: <20250207231039.2883195-2-lucas.demarchi@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,106 +69,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Lucas,
 
+Re-reviewed and re-tested. I send replies to the patches that did not have
+my tags.
+
+Thanks
 
 On 08.02.2025 00:09, Lucas De Marchi wrote:
-> Serialize the command line to metadata.txt. The expected format in the
-> metadata.txt is like below:
+> Help devs to reproduce what CI is running by dumping what is the command
+> line being used. While it's true that in the shard case we don't have
+> the testlist, just seeing the right incantation of command line is a
+> great improvement.
 > 
-> 	cmdline.argc : 6
-> 	cmdline.argv[0] : ./build/runner/igt_runner
-> 	cmdline.argv[1] : -o
-> 	cmdline.argv[2] : --test-list
-> 	cmdline.argv[3] : /tmp/testlist.txt
-> 	cmdline.argv[4] : build/tests/
-> 	cmdline.argv[5] : /tmp/results
+> I plan to follow this with the env vars, but first want to get this
+> in. It seems we already have an environment.txt saved, however that
+> doesn't contain the igt_runner's env, only options passed via -e to
+> igt_runner which is then forwarded to each test. I'm wondering if this
+> is a source of bugs when using igt_resume:  if the environment doesn't
+> match, it will run with different options on each execution. (answer:
+> yes, it is a source of bugs if the exact environment is not re-created
+> for running igt_resume)
 > 
-
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  runner/settings.c | 24 ++++++++++++++++++++++++
->  runner/settings.h |  4 ++++
->  2 files changed, 28 insertions(+)
+> v2:
+>   - Fix more leaks as prep commits
+>   - Fix leaking argv that got lost in all other pre-existent leaks
+>   - Add dummy array to the reference.json files so it passes runner's
+>     own tests.
 > 
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 1da005806..a2fddcaf6 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -530,6 +530,17 @@ static void free_hook_strs(struct igt_vec *hook_strs)
->  	igt_vec_fini(hook_strs);
->  }
->  
-> +static void free_array_deep(void **arr, size_t n)
-> +{
-> +	if (!arr)
-> +		return;
-> +
-> +	for (size_t i = 0; i < n; i++)
-> +		free(arr[i]);
-> +
-> +	free(arr);
-> +}
-> +
->  static bool file_exists_at(int dirfd, const char *filename)
->  {
->  	return faccessat(dirfd, filename, F_OK, 0) == 0;
-> @@ -647,6 +658,7 @@ void clear_settings(struct settings *settings)
->  	free_regexes(&settings->exclude_regexes);
->  	free_env_vars(&settings->env_vars);
->  	free_hook_strs(&settings->hook_strs);
-> +	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
->  
->  	init_settings(settings);
->  }
-> @@ -876,6 +888,16 @@ bool parse_options(int argc, char **argv,
->  		goto error;
->  	}
->  
-> +	settings->cmdline.argv = calloc(argc, sizeof(*settings->cmdline.argv));
-> +	if (!settings->cmdline.argv)
-> +		goto error;
-> +
-> +	settings->cmdline.argc = argc;
-> +	for (int i = 0; i < argc; i++) {
-> +		settings->cmdline.argv[i] = strdup(argv[i]);
-> +		if (!settings->cmdline.argv[i])
-> +			goto error;
-> +	}
->  
->  	return true;
->  
-> @@ -1204,6 +1226,7 @@ bool serialize_settings(struct settings *settings)
->  	SERIALIZE_INT(f, settings, enable_code_coverage);
->  	SERIALIZE_INT(f, settings, cov_results_per_test);
->  	SERIALIZE_STR(f, settings, code_coverage_script);
-> +	SERIALIZE_STR_ARRAY(f, settings, cmdline.argv, cmdline.argc);
->  
->  	if (settings->sync) {
->  		fflush(f);
-> @@ -1319,6 +1342,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
->  		PARSE_INT(settings, name, val, enable_code_coverage);
->  		PARSE_INT(settings, name, val, cov_results_per_test);
->  		PARSE_STR(settings, name, val, code_coverage_script);
-> +		PARSE_STR_ARRAY(settings, name, val, cmdline.argv, cmdline.argc);
->  
->  		printf("Warning: Unknown field in settings file: %s = %s\n",
->  		       name, val);
-> diff --git a/runner/settings.h b/runner/settings.h
-> index f69f09778..2266118a7 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -75,6 +75,10 @@ struct settings {
->  	char *code_coverage_script;
->  	bool enable_code_coverage;
->  	bool cov_results_per_test;
-> +	struct {
-> +		int argc;
-> +		char **argv;
-> +	} cmdline;
->  };
->  
->  /**
+> v3:
+>   - Better split patches and reword commit messages according to reviews
+>     by Gustavo and Peter
+>   - Add generic escape/unescape functions to be used for metadata.txt.
+>     Besides preparing for cmdline, it fixes other uses of \n.
+>   - Provide a single macro to parse array, which adds the proper code
+>     to parse both the array items and the length
+> 
+> CI: minor adjustements. Let's make sure it passes CI.
+> 
+> Lucas De Marchi (10):
+>   runner/settings: Fix code_coverage_script leak
+>   runner: Free settings at the end
+>   runner/settings: Deduplicate cleanup
+>   runner/settings: Use wrapper macros for each type
+>   runner/settings: Match serialization to parse
+>   runner/settings: Drop extra strdup
+>   runner: Fix use of newline on arguments
+>   runner/settings: Add helpers to serialize/parse array
+>   runner/settings: Serialize command line
+>   runner/resultgen: Add cmdline to results.json
+> 
+>  .../aborted-after-a-test/reference.json       |   1 +
+>  .../aborted-on-boot/reference.json            |   1 +
+>  .../dmesg-escapes/reference.json              |   1 +
+>  .../dmesg-results/reference.json              |   1 +
+>  .../reference.json                            |   1 +
+>  .../reference.json                            |   1 +
+>  .../dmesg-warn-level/reference.json           |   1 +
+>  .../reference.json                            |   1 +
+>  .../dynamic-subtests-keep-all/reference.json  |   3 +-
+>  .../reference.json                            |   1 +
+>  .../reference.json                            |   3 +-
+>  .../reference.json                            |   3 +-
+>  .../empty-result-files/reference.json         |   1 +
+>  .../graceful-notrun/reference.json            |   1 +
+>  .../reference.json                            |   1 +
+>  .../json_tests_data/normal-run/reference.json |   1 +
+>  .../reference.json                            |   1 +
+>  .../notrun-results/reference.json             |   1 +
+>  .../piglit-style-dmesg/reference.json         |   1 +
+>  .../unprintable-characters/reference.json     |   1 +
+>  .../warnings-with-dmesg-warns/reference.json  |   1 +
+>  .../json_tests_data/warnings/reference.json   |   1 +
+>  runner/resultgen.c                            |   7 +-
+>  runner/resume.c                               |   2 +
+>  runner/runner.c                               |   2 +
+>  runner/runner_tests.c                         |   1 +
+>  runner/settings.c                             | 277 ++++++++++++++----
+>  runner/settings.h                             |   4 +
+>  28 files changed, 257 insertions(+), 64 deletions(-)
+> 
 
