@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DDA8C02198
-	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D279C02198
+	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:08:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD4C110E030;
-	Sat,  8 Feb 2025 13:08:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54C5F10E030;
+	Sat,  8 Feb 2025 13:08:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bXdiXARo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="abQeloh8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5919710E030
- for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:08:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E28E510E030
+ for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739020110; x=1770556110;
+ t=1739020130; x=1770556130;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=Ie0Sh45SYHAMFuCZOH4HmMxR+I2a1mnqEzUfwoRcQR0=;
- b=bXdiXARo9wgiQc7tvo5O6SmcCQT/evgD/tg0GsanthWBNQ5/SOLlGcz4
- d0k34+0XkcNipnXXMoZlnp6OGWtyYtCAD/camzHACPSZU2fJ9X73zS9Mk
- KUVEv1dMcUIzGFHIqirOdHQfolDG7QXkMhE4JXooZwWuV10OuXoTpFBFa
- 9WNFHBnSkpmIpmTFckLfmlI12KS+/8oe/U1PgjiFwk5R2qNk9C0nIhbYo
- ks5+/Ate42sjKnHWtthh+I3pdwlMGSIFBz6ynEwSVy9EzcQ69D9O3zHWE
- 7i0WuaUnGn7R/S01tkXnLvVkRs49XrPu/ZuyA801ARNikfgohTzzkoi5y w==;
-X-CSE-ConnectionGUID: 2+4JaoTaT72hByQHm97U7A==
-X-CSE-MsgGUID: Gz5+5etgQOGSLzFdP3cuVw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="51042184"
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="51042184"
+ bh=TChTkJ1fUlewHHA7GAQU4GuYadp5fx8lYLXJjkyjqlA=;
+ b=abQeloh8o1XHZ53CwINujtM3/NLWQu/SJlitms+3QYAkFe4n4KR9IJ1P
+ /+6+4uDvt0laJyEZrvXW7mNZH8kdlbibo6Vk5mD0A4wWp14BY8aX0BRik
+ gqsHHd2VUflbpz1i2bDGNrP5UWKXSw9DQJAlezgQU4MNw0thSRSwT06O5
+ H1ag844pTbBn6G0fE7f18DPrbtAMIVmZ/PgtAHE57+akvQe8JRyQ5sMXa
+ WyUT4mBs0QmMonKBo5oOh6HcJEcdjc0xSUjBrTxgfdOR44tFMisexgYku
+ RhQc/EMc687EAW5IsLmDFB6T7d93GF++W68Yr0CaCD0ADd2hgnuj3c6TJ g==;
+X-CSE-ConnectionGUID: 2LCtFfguTje0qtV00XqL8Q==
+X-CSE-MsgGUID: LlImLKM2SoeywXA0MObFpg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="51042206"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="51042206"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2025 05:08:30 -0800
-X-CSE-ConnectionGUID: 01SAAs7XSOiP0xLUnz3F0A==
-X-CSE-MsgGUID: 5q8BvpuYTFWYEEQxGDXGxg==
+ 08 Feb 2025 05:08:50 -0800
+X-CSE-ConnectionGUID: 68druHzrT/S7l/90+RJtww==
+X-CSE-MsgGUID: t0iItKzzQBmMZNQbpxT3Yw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="142638383"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="142638459"
 Received: from arossa-mobl1.ger.corp.intel.com (HELO [10.245.98.254])
  ([10.245.98.254])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2025 05:08:30 -0800
-Message-ID: <4cbd97a1-c354-415a-8d49-816d4850398b@linux.intel.com>
-Date: Sat, 8 Feb 2025 14:08:26 +0100
+ 08 Feb 2025 05:08:49 -0800
+Message-ID: <4e69d895-05b6-4749-ade1-ae2344384618@linux.intel.com>
+Date: Sat, 8 Feb 2025 14:08:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [CI i-g-t 08/10] runner/settings: Add helpers to serialize/parse
- array
+Subject: Re: [CI i-g-t 09/10] runner/settings: Serialize command line
 To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
 References: <20250207231039.2883195-2-lucas.demarchi@intel.com>
- <20250207231039.2883195-10-lucas.demarchi@intel.com>
+ <20250207231039.2883195-11-lucas.demarchi@intel.com>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250207231039.2883195-10-lucas.demarchi@intel.com>
+In-Reply-To: <20250207231039.2883195-11-lucas.demarchi@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,7 +73,16 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 08.02.2025 00:09, Lucas De Marchi wrote:
-> Prepare parser/serialize to handle arrays.
+> Serialize the command line to metadata.txt. The expected format in the
+> metadata.txt is like below:
+> 
+> 	cmdline.argc : 6
+> 	cmdline.argv[0] : ./build/runner/igt_runner
+> 	cmdline.argv[1] : -o
+> 	cmdline.argv[2] : --test-list
+> 	cmdline.argv[3] : /tmp/testlist.txt
+> 	cmdline.argv[4] : build/tests/
+> 	cmdline.argv[5] : /tmp/results
 > 
 
 Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
@@ -82,73 +90,86 @@ Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 > ---
->  runner/settings.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
+>  runner/settings.c | 24 ++++++++++++++++++++++++
+>  runner/settings.h |  4 ++++
+>  2 files changed, 28 insertions(+)
 > 
 > diff --git a/runner/settings.c b/runner/settings.c
-> index 97b62ed36..1da005806 100644
+> index 1da005806..a2fddcaf6 100644
 > --- a/runner/settings.c
 > +++ b/runner/settings.c
-> @@ -1127,6 +1127,15 @@ static ssize_t unescape_str(char *buf, size_t *n_src)
->  			fputc('\n', f);		\
->  		}				\
->  	} while (0)
-> +#define SERIALIZE_STR_ARRAY(f, s, name, name_len)		\
-> +	do {							\
-> +		SERIALIZE_INT(f, s, name_len);			\
-> +		for (int _i = 0; _i < s->name_len; _i++) {	\
-> +			fprintf(f, #name "[%d] : ", _i);	\
-> +			escape_str(s->name[_i], f);		\
-> +			fputc('\n', f);				\
-> +		}						\
-> +	} while (0)
->  bool serialize_settings(struct settings *settings)
->  {
->  	FILE *f;
-> @@ -1223,6 +1232,7 @@ bool serialize_settings(struct settings *settings)
->  	close(dirfd);
->  	return true;
+> @@ -530,6 +530,17 @@ static void free_hook_strs(struct igt_vec *hook_strs)
+>  	igt_vec_fini(hook_strs);
 >  }
-> +#undef SERIALIZE_STR_ARRAY
->  #undef SERIALIZE_STR
->  #undef SERIALIZE_UL
->  #undef SERIALIZE_INT
-> @@ -1260,9 +1270,25 @@ static char *parse_str(char **val)
->  		s->field = _f(val);		\
->  		goto cleanup;			\
->  	}
-> +#define PARSE_LINE_ARRAY(s, name, val, field, field_len, _f)		\
-> +	do {								\
-> +		int idx;						\
-> +		if (!strcmp(name, #field_len)) {			\
-> +			s->field_len = parse_int(val);			\
-> +			s->field = calloc(s->field_len,			\
-> +					  sizeof(*s->field));		\
-> +			goto cleanup;					\
-> +		} else if (sscanf(name, #field "[%u]", &idx) == 1 &&	\
-> +			   idx < s->field_len) {			\
-> +			s->field[idx] = _f(val);			\
-> +			goto cleanup;					\
-> +		}							\
-> +	} while (0)
->  #define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, &val, field, parse_int)
->  #define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, &val, field, parse_ul)
->  #define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, &val, field, parse_str)
-> +#define PARSE_STR_ARRAY(s, name, val, field, field_len) \
-> +	PARSE_LINE_ARRAY(s, name, &val, field, field_len, parse_str)
->  bool read_settings_from_file(struct settings *settings, FILE *f)
+>  
+> +static void free_array_deep(void **arr, size_t n)
+> +{
+> +	if (!arr)
+> +		return;
+> +
+> +	for (size_t i = 0; i < n; i++)
+> +		free(arr[i]);
+> +
+> +	free(arr);
+> +}
+> +
+>  static bool file_exists_at(int dirfd, const char *filename)
 >  {
->  	char *name = NULL, *val = NULL;
-> @@ -1315,9 +1341,11 @@ cleanup:
+>  	return faccessat(dirfd, filename, F_OK, 0) == 0;
+> @@ -647,6 +658,7 @@ void clear_settings(struct settings *settings)
+>  	free_regexes(&settings->exclude_regexes);
+>  	free_env_vars(&settings->env_vars);
+>  	free_hook_strs(&settings->hook_strs);
+> +	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
+>  
+>  	init_settings(settings);
+>  }
+> @@ -876,6 +888,16 @@ bool parse_options(int argc, char **argv,
+>  		goto error;
+>  	}
+>  
+> +	settings->cmdline.argv = calloc(argc, sizeof(*settings->cmdline.argv));
+> +	if (!settings->cmdline.argv)
+> +		goto error;
+> +
+> +	settings->cmdline.argc = argc;
+> +	for (int i = 0; i < argc; i++) {
+> +		settings->cmdline.argv[i] = strdup(argv[i]);
+> +		if (!settings->cmdline.argv[i])
+> +			goto error;
+> +	}
 >  
 >  	return true;
->  }
-> +#undef PARSE_STR_ARRAY
->  #undef PARSE_STR
->  #undef PARSE_UL
->  #undef PARSE_INT
-> +#undef PARSE_LINE_ARRAY
->  #undef PARSE_LINE
+>  
+> @@ -1204,6 +1226,7 @@ bool serialize_settings(struct settings *settings)
+>  	SERIALIZE_INT(f, settings, enable_code_coverage);
+>  	SERIALIZE_INT(f, settings, cov_results_per_test);
+>  	SERIALIZE_STR(f, settings, code_coverage_script);
+> +	SERIALIZE_STR_ARRAY(f, settings, cmdline.argv, cmdline.argc);
+>  
+>  	if (settings->sync) {
+>  		fflush(f);
+> @@ -1319,6 +1342,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+>  		PARSE_INT(settings, name, val, enable_code_coverage);
+>  		PARSE_INT(settings, name, val, cov_results_per_test);
+>  		PARSE_STR(settings, name, val, code_coverage_script);
+> +		PARSE_STR_ARRAY(settings, name, val, cmdline.argv, cmdline.argc);
+>  
+>  		printf("Warning: Unknown field in settings file: %s = %s\n",
+>  		       name, val);
+> diff --git a/runner/settings.h b/runner/settings.h
+> index f69f09778..2266118a7 100644
+> --- a/runner/settings.h
+> +++ b/runner/settings.h
+> @@ -75,6 +75,10 @@ struct settings {
+>  	char *code_coverage_script;
+>  	bool enable_code_coverage;
+>  	bool cov_results_per_test;
+> +	struct {
+> +		int argc;
+> +		char **argv;
+> +	} cmdline;
+>  };
 >  
 >  /**
 
