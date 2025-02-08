@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DF2CC02198
-	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 10:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A67C02198
+	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:07:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D19AC10E0CA;
-	Sat,  8 Feb 2025 10:43:37 +0000 (UTC)
-Received: from b555e5b46a47 (unknown [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91B2910E0CA;
- Sat,  8 Feb 2025 10:43:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0751253282562393285=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABB6110E284;
+	Sat,  8 Feb 2025 13:07:36 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aiDWIqM+";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E526510E030
+ for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739020045; x=1770556045;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=1AMZjCLY99sL29yqRkgq+AWS/C6aoD1t+JwKK2EkpXw=;
+ b=aiDWIqM+t58DH+QnHiGWAZvQYoeIL8+zPm5B33+WoJ0LpSzVnqnxZ56J
+ lt1HEdqTCYrPVxLBj7lkedf6O5A7ihNs9ACPXORCd2zlXOSqp+/hU+WH7
+ ytr06/2UkhoD5iDsF1li383gSLI5iaU+fMaA65WWubfTSfvCAVb9LdzKr
+ EbfqAg/6PeXIi14gLpNexJPtCChJZoJX/AchfqcayPaCjqrKTjyNrZo2T
+ qyROF2mpNFTV1ltQ9Jg7eTm2ERnNIHydF+TL2l8afE4ML/bbHsOkfYUib
+ 5eYD25iXrjHSBD3UxoapJV5ISaUJ+l14pUDPhuMOcamE87RBECNLNjClp g==;
+X-CSE-ConnectionGUID: Pi1vOtDrRzWhvcGU4UFqlw==
+X-CSE-MsgGUID: YsAAOY4MTqmao+vBk6IFcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="39560888"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="39560888"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2025 05:07:24 -0800
+X-CSE-ConnectionGUID: nflHfKWuQCWwJlEEQY5E7Q==
+X-CSE-MsgGUID: k0j1C8HuSLmAsobpMuZTBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111604823"
+Received: from arossa-mobl1.ger.corp.intel.com (HELO [10.245.98.254])
+ ([10.245.98.254])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2025 05:07:22 -0800
+Message-ID: <7635c655-034f-4616-9d76-c1377d2ed10c@linux.intel.com>
+Date: Sat, 8 Feb 2025 14:07:19 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_RFC_tests/intel/kms=5Ffro?=
- =?utf-8?q?ntbuffer=5Ftracking=3A_Introduce_plane-fbc-dr_test_=28rev8=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 08 Feb 2025 10:43:36 -0000
-Message-ID: <173901141658.3195306.2973074195991561191@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250208062133.844786-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250208062133.844786-1-santhosh.reddy.guddati@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [CI i-g-t 04/10] runner/settings: Use wrapper macros for each type
+To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
+References: <20250207231039.2883195-2-lucas.demarchi@intel.com>
+ <20250207231039.2883195-6-lucas.demarchi@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250207231039.2883195-6-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,295 +67,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0751253282562393285==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev8)
-URL   : https://patchwork.freedesktop.org/series/138218/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8227 -> IGTPW_12565
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/index.html
-
-Participating hosts (41 -> 40)
-------------------------------
-
-  Additional (2): fi-rkl-11600 fi-bsw-n3050 
-  Missing    (3): fi-blb-e6850 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12565 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][1] ([i915#9318])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][2] ([i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#3282])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_module_load@load:
-    - bat-mtlp-9:         [PASS][5] -> [DMESG-WARN][6] ([i915#13494])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8227/bat-mtlp-9/igt@i915_module_load@load.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/bat-mtlp-9/igt@i915_module_load@load.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#4103]) +1 other test skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][8] ([i915#3555] / [i915#3840])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][10] ([i915#5354])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-primary-mmap-gtt:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][11] +20 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-bsw-n3050/igt@kms_psr@psr-primary-mmap-gtt.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_psr@psr-primary-page-flip.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][13] ([i915#3555])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([i915#3291] / [i915#3708]) +2 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@prime_vgem@basic-read.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-rplp-1:         [DMESG-WARN][15] -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8227/bat-rplp-1/igt@i915_selftest@live.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/bat-rplp-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][17] ([i915#11621]) -> [PASS][18] +132 other tests pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8227/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
-  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
-  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
 
 
-Build changes
--------------
+On 08.02.2025 00:09, Lucas De Marchi wrote:
+> Simplify assigning the variables by using functions called by wrapper
+> macros. This avoids calling atoi() on every iteration and will help
+> future refactors on functions parsing the values.
+> 
+> The pointer to the value is passed to the parse function since it will
+> be useful later when parsing a string and leaking it to the settings
+> struct rather than duplicating.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8227 -> IGTPW_12565
+Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  runner/settings.c | 78 +++++++++++++++++++++++++++++------------------
+>  1 file changed, 48 insertions(+), 30 deletions(-)
+> 
+> diff --git a/runner/settings.c b/runner/settings.c
+> index 89df4990e..340d3802a 100644
+> --- a/runner/settings.c
+> +++ b/runner/settings.c
+> @@ -1153,43 +1153,59 @@ bool serialize_settings(struct settings *settings)
+>  #undef SERIALIZE_LINE
+>  }
+>  
+> -bool read_settings_from_file(struct settings *settings, FILE *f)
+> +static int parse_int(char **val)
+> +{
+> +	return atoi(*val);
+> +}
+> +
+> +static unsigned long parse_ul(char **val)
+>  {
+> -#define PARSE_LINE(s, name, val, field, write)	\
+> +	return strtoul(*val, NULL, 10);
+> +}
+> +
+> +static char *parse_str(char **val)
+> +{
+> +	return *val ? strdup(*val) : NULL;
+> +}
+> +
+> +#define PARSE_LINE(s, name, val, field, _f)	\
+>  	if (!strcmp(name, #field)) {		\
+> -		s->field = write;		\
+> +		s->field = _f(val);		\
+>  		goto cleanup;			\
+>  	}
+> -
+> +#define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, &val, field, parse_int)
+> +#define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, &val, field, parse_ul)
+> +#define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, &val, field, parse_str)
+> +bool read_settings_from_file(struct settings *settings, FILE *f)
+> +{
+>  	char *name = NULL, *val = NULL;
+>  
+>  	settings->dmesg_warn_level = -1;
+>  
+>  	while (fscanf(f, "%ms : %m[^\n]", &name, &val) == 2) {
+> -		int numval = atoi(val);
+> -		PARSE_LINE(settings, name, val, abort_mask, numval);
+> -		PARSE_LINE(settings, name, val, disk_usage_limit, strtoul(val, NULL, 10));
+> -		PARSE_LINE(settings, name, val, test_list, val ? strdup(val) : NULL);
+> -		PARSE_LINE(settings, name, val, name, val ? strdup(val) : NULL);
+> -		PARSE_LINE(settings, name, val, dry_run, numval);
+> -		PARSE_LINE(settings, name, val, allow_non_root, numval);
+> -		PARSE_LINE(settings, name, val, facts, numval);
+> -		PARSE_LINE(settings, name, val, sync, numval);
+> -		PARSE_LINE(settings, name, val, log_level, numval);
+> -		PARSE_LINE(settings, name, val, overwrite, numval);
+> -		PARSE_LINE(settings, name, val, multiple_mode, numval);
+> -		PARSE_LINE(settings, name, val, inactivity_timeout, numval);
+> -		PARSE_LINE(settings, name, val, per_test_timeout, numval);
+> -		PARSE_LINE(settings, name, val, overall_timeout, numval);
+> -		PARSE_LINE(settings, name, val, use_watchdog, numval);
+> -		PARSE_LINE(settings, name, val, piglit_style_dmesg, numval);
+> -		PARSE_LINE(settings, name, val, dmesg_warn_level, numval);
+> -		PARSE_LINE(settings, name, val, prune_mode, numval);
+> -		PARSE_LINE(settings, name, val, test_root, val ? strdup(val) : NULL);
+> -		PARSE_LINE(settings, name, val, results_path, val ? strdup(val) : NULL);
+> -		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
+> -		PARSE_LINE(settings, name, val, cov_results_per_test, numval);
+> -		PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
+> +		PARSE_INT(settings, name, val, abort_mask);
+> +		PARSE_UL(settings, name, val, disk_usage_limit);
+> +		PARSE_STR(settings, name, val, test_list);
+> +		PARSE_STR(settings, name, val, name);
+> +		PARSE_INT(settings, name, val, dry_run);
+> +		PARSE_INT(settings, name, val, allow_non_root);
+> +		PARSE_INT(settings, name, val, facts);
+> +		PARSE_INT(settings, name, val, sync);
+> +		PARSE_INT(settings, name, val, log_level);
+> +		PARSE_INT(settings, name, val, overwrite);
+> +		PARSE_INT(settings, name, val, multiple_mode);
+> +		PARSE_INT(settings, name, val, inactivity_timeout);
+> +		PARSE_INT(settings, name, val, per_test_timeout);
+> +		PARSE_INT(settings, name, val, overall_timeout);
+> +		PARSE_INT(settings, name, val, use_watchdog);
+> +		PARSE_INT(settings, name, val, piglit_style_dmesg);
+> +		PARSE_INT(settings, name, val, dmesg_warn_level);
+> +		PARSE_INT(settings, name, val, prune_mode);
+> +		PARSE_STR(settings, name, val, test_root);
+> +		PARSE_STR(settings, name, val, results_path);
+> +		PARSE_INT(settings, name, val, enable_code_coverage);
+> +		PARSE_INT(settings, name, val, cov_results_per_test);
+> +		PARSE_STR(settings, name, val, code_coverage_script);
+>  
+>  		printf("Warning: Unknown field in settings file: %s = %s\n",
+>  		       name, val);
+> @@ -1211,9 +1227,11 @@ cleanup:
+>  	free(val);
+>  
+>  	return true;
+> -
+> -#undef PARSE_LINE
+>  }
+> +#undef PARSE_STR
+> +#undef PARSE_UL
+> +#undef PARSE_INT
+> +#undef PARSE_LINE
+>  
+>  /**
+>   * read_env_vars_from_file() - load env vars from a file
 
-  CI-20190529: 20190529
-  CI_DRM_16090: 4f934139887fd60bd4ac9027b7eec3e86ade8085 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12565: 12565
-  IGT_8227: 8227
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/index.html
-
---===============0751253282562393285==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138218/">https://patchwork.freedesktop.org/series/138218/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8227 -&gt; IGTPW_12565</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/index.html</p>
-<h2>Participating hosts (41 -&gt; 40)</h2>
-<p>Additional (2): fi-rkl-11600 fi-bsw-n3050 <br />
-  Missing    (3): fi-blb-e6850 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12565 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318">i915#9318</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8227/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-bsw-n3050/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> +20 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8227/bat-rplp-1/igt@i915_selftest@live.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/bat-rplp-1/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8227/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12565/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +132 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8227 -&gt; IGTPW_12565</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16090: 4f934139887fd60bd4ac9027b7eec3e86ade8085 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12565: 12565<br />
-  IGT_8227: 8227</p>
-
-</body>
-</html>
-
---===============0751253282562393285==--
