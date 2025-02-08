@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E89C021A0
-	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 06:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAEE4C0219D
+	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 10:33:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59FA410E220;
-	Sat,  8 Feb 2025 06:25:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="miWhh+YT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50D9110E05C
- for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 06:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738995850; x=1770531850;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XVKw/YYtMSe73ryuVsfR3zqZlmJHroTjzlBAkkqf3Bw=;
- b=miWhh+YTExounco8BtY+2TLRMtxvySIBsB71G2zITCwXBu7aveIciSBE
- mk4YPoez6dlswiOdmXDlP9BsfIIY8HkIRXgHI8K2yBtoJn1wokacgxUgI
- 7ziBHaCAUptakdY8TTDYaNZ/BfzSZ+xyL2rcQh8VCFmYjUZCsr/H746N8
- PDqIF6CcBn85/o5mUHWwxAnX3hD9VWFUjRkgVtRM6GqRQgFHLWFUguCX8
- nTUR4H1u+Waa5FLpXL+4/xKx2HFjkijEXcd/eYcDAywqmVUhrqPNBE1VS
- PXLhH6kkpPFw6so/JVgKuzRjJ3PfS2fbzTCRvCw/AGYEZIdGY1HrHFybM w==;
-X-CSE-ConnectionGUID: ksmmSGENTnSWHXAYZv5hMA==
-X-CSE-MsgGUID: XKsPJRpfSCuXtTc9rn8uVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="43300911"
-X-IronPort-AV: E=Sophos;i="6.13,269,1732608000"; d="scan'208";a="43300911"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Feb 2025 22:24:10 -0800
-X-CSE-ConnectionGUID: ll8fBW09RmiOKpbFG+Q+bw==
-X-CSE-MsgGUID: uyNA57fCQeeyi/ckT6X67Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111559656"
-Received: from ifwibot07.gar.corp.intel.com (HELO
- rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Feb 2025 22:24:07 -0800
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, jeevan.b@intel.com, kunal1.joshi@intel.com,
- ramanaidu.naladala@intel.com, swati2.sharma@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v8 1/1] tests/intel/kms_dirty_fbc: Add kms_dirty_fbc
- test for DIRTYFB ioctl with fbc
-Date: Sat,  8 Feb 2025 11:51:33 +0530
-Message-Id: <20250208062133.844786-2-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250208062133.844786-1-santhosh.reddy.guddati@intel.com>
-References: <20250208062133.844786-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4EBCD10E2B8;
+	Sat,  8 Feb 2025 10:33:20 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9413810E2B8;
+ Sat,  8 Feb 2025 10:32:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2577652945983419938=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=a
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_RFC_tests/intel/kms=5Ffront?=
+ =?utf-8?q?buffer=5Ftracking=3A_Introduce_plane-fbc-dr_test_=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 08 Feb 2025 10:32:19 -0000
+Message-ID: <173901073960.3175803.15973398843887609696@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250208062133.844786-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250208062133.844786-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,715 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce new test file kms_fbc_dirty_rect.c to verify
-DIRTYFB ioctl functionality with FBC enabled.
+--===============2577652945983419938==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The subtests perform full-screen updates and capture their CRCs as reference values.
-Subsequent screen updates utilize the FBC dirty rectangle feature,
-using the FP_DAMAGE_CLIPS property, and the resulting CRCs are compared
-against the reference values.
+== Series Details ==
 
-v2: Fix typo , add version check for feature support,
-    extend support for all pipes (Rama Naidu).
+Series: RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev8)
+URL   : https://patchwork.freedesktop.org/series/138218/
+State : success
 
-v3: Add new subtest to scatter dirty rectangles at differnt places in a
-    frame and commit all rectangles at once (Rama Naidu).
-    Add a negative case with invalid coordinates (Vinod)
+== Summary ==
 
-v4: Add subtest `fbc-dirty-rectangle-basic` to perform sanity checks
-    by sending multiple damaged areas with non-PSR modes.(Vinod)
-    Update `meson.build` to include the new test.
+CI Bug Log - changes from XEIGT_8227_BAT -> XEIGTPW_12565_BAT
+====================================================
 
-v5: Include checks to ensure FBC is enabled during tests.(Vinod)
-    Add dynamic subtests for fbc-dirty-rectangle-different-formats
-    and fbc-dirty-rectangle-dirtyfb-ioctl. (Vinod)
+Summary
+-------
 
-v6: Update meson.build to include kms_fbc_dirty_rect.
+  **SUCCESS**
 
-v7: Add commit description, remove i915 check and remove
-    redundant checks (Swathi)
-    Reformat code by removing redundant usage.
-    Add new test to verify dirty rect outside-visible-region.
+  No regressions found.
 
-v8: Include test description and documentation for subtests.
-    Updated framebuffer to target the specific area,
-    avoiding a full screen update and making the damage area
-    check effective (Vinod).
-    Add new subtest fbc-dirty-rectangle-dirtyfb-tests (Vinod)
+  
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_fbc_dirty_rect.c | 645 +++++++++++++++++++++++++++++++
- tests/meson.build                |   1 +
- 2 files changed, 646 insertions(+)
- create mode 100644 tests/intel/kms_fbc_dirty_rect.c
+Participating hosts (8 -> 7)
+------------------------------
 
-diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
-new file mode 100644
-index 000000000..13e330ccd
---- /dev/null
-+++ b/tests/intel/kms_fbc_dirty_rect.c
-@@ -0,0 +1,645 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms dirty fbc
-+ * Category: Display
-+ * Description: Test DIRTYFB ioctl functionality with FBC enabled.
-+ * Driver requirement: i915, xe
-+ * Functionality: dirtyfb, fbc
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
-+#include <sys/types.h>
-+
-+#include "igt.h"
-+
-+#include "igt_sysfs.h"
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "i915/intel_drrs.h"
-+#include "igt_psr.h"
-+
-+#include "i915/intel_fbc.h"
-+#include "intel_mocs.h"
-+#include "intel_pat.h"
-+
-+#include "xe/xe_query.h"
-+
-+/**
-+ * SUBTEST: fbc-dirty-rectangle-basic
-+ * Description: Sanity test to verify FBC DR by sending multiple damaged areas with non psr modes
-+ * Functionality: fbc
-+ *
-+ * SUBTEST: fbc-dirty-rectangle-out-visible-area
-+ * Description: Sanity test to verify FBC DR by sending multiple damaged areas with non psr modes
-+ * Functionality: fbc
-+ *
-+ * SUBTEST: fbc-dirty-rectangle-dirtyfb-tests
-+ * Description: Sanity test to verify FBC DR by sending multiple damaged areas with non psr modes
-+ * Functionality: fbc
-+ *
-+ * SUBTEST: fbc-dirty-rectangle-different-formats
-+ * Description: Sanity test to verify FBC DR by sending multiple
-+ *              damaged areas with different formats.
-+ * Functionality: fbc
-+ *
-+ */
-+
-+#ifndef PAGE_SIZE
-+#define PAGE_SIZE 4096
-+#endif
-+
-+#define SQUARE_SIZE 100
-+#define SQUARE_OFFSET 100
-+#define SQUARE_OFFSET_2 600
-+#define SQUARE_OFFSET_OUTSIDE_Y 1850
-+
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	igt_display_t display;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+	igt_pipe_crc_t *pipe_crc;
-+	enum pipe pipe;
-+	u32 format;
-+
-+	igt_crc_t ref_crc;
-+
-+	enum {
-+		FEATURE_NONE  = 0,
-+		FEATURE_PSR   = 1,
-+		FEATURE_FBC   = 2,
-+		FEATURE_DRRS  = 4,
-+		FEATURE_COUNT = 8,
-+		FEATURE_DEFAULT = 8,
-+	} feature;
-+} data_t;
-+
-+enum color {
-+	BLACK,
-+	RED,
-+	GREEN,
-+	BLUE,
-+	WHITE,
-+};
-+
-+static void set_damage_clip(struct drm_mode_rect *damage, int x1, int y1, int x2, int y2)
-+{
-+	damage->x1 = x1;
-+	damage->y1 = y1;
-+	damage->x2 = x2;
-+	damage->y2 = y2;
-+}
-+
-+static void set_damage_clip_w(struct drm_mode_rect *damage, int x1, int y1, int width, int height)
-+{
-+	set_damage_clip(damage, x1, y1, x1 + width, y1 + height);
-+}
-+
-+static void dirty_rect_draw_white_rects(data_t *data, struct igt_fb *fb,
-+					int nrects, struct drm_mode_rect *rect)
-+{
-+	cairo_t *cr;
-+
-+	if (!nrects || !rect)
-+		return;
-+
-+	cr = igt_get_cairo_ctx(data->drm_fd, fb);
-+
-+	for (int i = 0; i < nrects; i++) {
-+		igt_paint_color_alpha(cr, rect[i].x1, rect[i].y1,
-+				      rect[i].x2 - rect[i].x1,
-+				      rect[i].y2 - rect[i].y1,
-+				      1.0, 1.0, 1.0, 1.0);
-+	}
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
-+static void dirty_rect_create_fb(data_t *data, struct igt_fb *fb, int fb_width,
-+				 int fb_height, enum color bg_color)
-+{
-+	switch (bg_color) {
-+	case RED:
-+		igt_create_color_fb(data->drm_fd, fb_width, fb_height,
-+				    data->format, DRM_FORMAT_MOD_LINEAR,
-+				    1.0, 0.0, 0.0, fb);
-+		break;
-+	case GREEN:
-+		igt_create_color_fb(data->drm_fd, fb_width, fb_height,
-+				    data->format, DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 1.0, 0.0, fb);
-+		break;
-+	case BLUE:
-+		igt_create_color_fb(data->drm_fd, fb_width, fb_height,
-+				    data->format, DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 0.0, 1.0, fb);
-+		break;
-+	case WHITE:
-+		igt_create_color_fb(data->drm_fd, fb_width, fb_height,
-+				    data->format, DRM_FORMAT_MOD_LINEAR,
-+				    1.0, 1.0, 1.0, fb);
-+		break;
-+	default:
-+	case BLACK:
-+		igt_create_color_fb(data->drm_fd, fb_width, fb_height,
-+				    data->format, DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 0.0, 0.0, fb);
-+		break;
-+	}
-+}
-+
-+static void
-+set_damage_area(igt_plane_t *plane,  struct drm_mode_rect *rects,
-+		size_t length)
-+{
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, rects, length);
-+}
-+
-+static void
-+set_fb_and_collect_crc(data_t *data, igt_plane_t *plane, struct igt_fb *fb,
-+		       igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
-+{
-+	igt_plane_set_fb(plane, fb);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_pipe_crc_collect_crc(pipe_crc, crc);
-+	igt_assert_f(intel_fbc_is_enabled(data->drm_fd, data->pipe,
-+					  IGT_LOG_WARN),
-+					  "FBC is not enabled\n");
-+}
-+
-+static void
-+update_rect_with_dirtyfb(data_t *data, struct igt_fb *fb1, struct igt_fb *fb2,
-+			 struct drm_mode_rect *rect)
-+{
-+	struct intel_buf *src, *dst;
-+	struct intel_bb *ibb;
-+	igt_spin_t *spin;
-+	int r;
-+	struct buf_ops *bops;
-+	igt_render_copyfunc_t rendercopy;
-+
-+	bops = buf_ops_create(data->drm_fd);
-+	rendercopy = igt_get_render_copyfunc(intel_get_drm_devid(data->drm_fd));
-+
-+	src = intel_buf_create_full(bops, fb1->gem_handle, fb1->width,
-+				    fb1->height,
-+				    igt_drm_format_to_bpp(fb1->drm_format),
-+				    0,
-+				    igt_fb_mod_to_tiling(fb1->modifier),
-+				    0, fb1->size, 0, system_memory(data->drm_fd),
-+				    intel_get_pat_idx_uc(data->drm_fd),
-+				    DEFAULT_MOCS_INDEX);
-+	dst = intel_buf_create_full(bops, fb2->gem_handle,
-+				    fb2->width, fb2->height,
-+				    igt_drm_format_to_bpp(fb2->drm_format),
-+				    0, igt_fb_mod_to_tiling(fb2->modifier),
-+				    0, fb2->size, 0, system_memory(data->drm_fd),
-+				    intel_get_pat_idx_uc(data->drm_fd),
-+				    DEFAULT_MOCS_INDEX);
-+	ibb = intel_bb_create(data->drm_fd, PAGE_SIZE);
-+
-+	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
-+	igt_spin_set_timeout(spin, NSEC_PER_SEC);
-+
-+	rendercopy(ibb, src, rect->x1, rect->y1, rect->x2 - rect->x1,
-+		   rect->y2 - rect->y1, dst, rect->x1, rect->y1);
-+
-+	/* Perfom dirtyfb right after initiating rendercopy/blitter */
-+	r = drmModeDirtyFB(data->drm_fd, fb2->fb_id, NULL, 0);
-+	igt_assert(r == 0 || r == -ENOSYS);
-+
-+	/* Ensure rendercopy/blitter is complete */
-+	intel_bb_sync(ibb);
-+
-+	igt_spin_free(data->drm_fd, spin);
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(src);
-+	intel_buf_destroy(dst);
-+}
-+
-+static void fbc_dirty_rectangle_dirtyfb(data_t *data)
-+{
-+	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output = data->output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	struct igt_fb main_fb, fb2, fb3, fb4;
-+	struct drm_mode_rect full_rect, rect1, rect2;
-+	igt_crc_t main_crc, fb2_crc, fb3_crc, fb4_crc, crc;
-+
-+	mode = igt_output_get_mode(output);
-+	igt_output_set_pipe(output, data->pipe);
-+	if (!pipe_crc) {
-+		pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-+					    IGT_PIPE_CRC_SOURCE_AUTO);
-+		igt_assert(pipe_crc);
-+	}
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	set_damage_clip_w(&full_rect, 0, 0, mode->hdisplay, mode->vdisplay);
-+	set_damage_clip_w(&rect1, SQUARE_OFFSET, SQUARE_OFFSET, SQUARE_SIZE,
-+			  SQUARE_SIZE);
-+	set_damage_clip_w(&rect2, SQUARE_OFFSET_2, SQUARE_OFFSET_2,
-+			  SQUARE_SIZE, SQUARE_SIZE);
-+
-+	dirty_rect_create_fb(data, &main_fb, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+
-+	dirty_rect_create_fb(data, &fb2, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+	dirty_rect_draw_white_rects(data, &fb2, 1, &rect1);
-+
-+	dirty_rect_create_fb(data, &fb3, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+	dirty_rect_draw_white_rects(data, &fb3, 1, &rect2);
-+
-+	dirty_rect_create_fb(data, &fb4, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+	dirty_rect_draw_white_rects(data, &fb4, 1, &rect2);
-+
-+
-+	/* 1st screen - Empty blue screen*/
-+	set_damage_area(primary, &full_rect, sizeof(full_rect));
-+	set_fb_and_collect_crc(data, primary, &main_fb, pipe_crc, &main_crc);
-+
-+	/* 2nd screen - 1st white rect at 100, 100 - using damage area */
-+	set_damage_area(primary, &rect1, sizeof(rect1));
-+	set_fb_and_collect_crc(data, primary, &fb2, pipe_crc, &fb2_crc);
-+
-+	/* 3rd screen - 2nd white rect at 600, 600 - using damage area.
-+	 * Now two white rects on screen
-+	 */
-+	set_damage_area(primary, &rect2, sizeof(rect2));
-+	set_fb_and_collect_crc(data, primary, &fb3, pipe_crc, &fb3_crc);
-+
-+	/* 4th screen - clear the 2nd white rect at 600,600 with dirtyfb.
-+	 * Copy rect2 area from main_fb to fb3. Then fb3 becomes whole blue
-+	 */
-+	update_rect_with_dirtyfb(data, &main_fb, &fb3, &rect2);
-+	/* Now the screen must match 3rd screen - with both rects */
-+	igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &main_crc);
-+
-+	/* 5th screen - Copy the first rect at 100,100 with dirtyfb.
-+	 * Copy rect1 area from fb2 to fb3. Then fb3 becomes one rect at 100,100
-+	 */
-+	update_rect_with_dirtyfb(data, &fb2, &fb3, &rect1);
-+	/* Now the screen must match 2nd screen - with one rect 1t 100,100 */
-+	igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &fb2_crc);
-+
-+	/* 6th screen - 2nd white rect at 600, 600 - using damage area.
-+	 * Now two white rects on screen
-+	 */
-+	set_damage_area(primary, &rect2, sizeof(rect2));
-+	set_fb_and_collect_crc(data, primary, &fb4, pipe_crc, &fb4_crc);
-+	/* Now the screen must match 3rd screen - with both rects */
-+	igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &fb3_crc);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data->drm_fd, &main_fb);
-+	igt_remove_fb(data->drm_fd, &fb2);
-+	igt_remove_fb(data->drm_fd, &fb3);
-+	igt_remove_fb(data->drm_fd, &fb4);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+}
-+
-+/**
-+ * fbc_dirty_rectangle_outside_visible_region - Test dirty rectangle outside visible region
-+ * @data: Pointer to the test data structure
-+ *
-+ * This test verifies the behavior of the Frame Buffer Compression (FBC) when
-+ * dirty rectangles are set outside the visible region of the display. It creates
-+ * a main framebuffer and three additional framebuffers with dirty rectangles
-+ * positioned horizontally, vertically, and both horizontally and vertically
-+ * outside the visible region. The test then sets the damage area to these
-+ * rectangles and collects CRCs to ensure that the content outside the visible
-+ * region does not affect the main framebuffer's CRC.
-+ */
-+static void fbc_dirty_rectangle_outside_visible_region(data_t *data)
-+{
-+	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output = data->output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	struct igt_fb main_fb, rect_fb[3];
-+	struct drm_mode_rect rect[3], full_rect;
-+	igt_crc_t main_crc, rect_crc[3];
-+
-+	mode = igt_output_get_mode(output);
-+	igt_output_set_pipe(output, data->pipe);
-+	if (!pipe_crc) {
-+		pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-+						IGT_PIPE_CRC_SOURCE_AUTO);
-+		igt_assert(pipe_crc);
-+	}
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	set_damage_clip(&full_rect, 0, 0, mode->hdisplay + 200,
-+			mode->vdisplay + 200);
-+	/* Rect Horizontally outside visible region */
-+	set_damage_clip_w(&rect[0], data->mode->hdisplay + 10, 100,
-+			  SQUARE_SIZE, SQUARE_SIZE);
-+	/* Rect vertically outside visible region */
-+	set_damage_clip_w(&rect[1], 10, data->mode->vdisplay + 50,
-+			  SQUARE_SIZE, SQUARE_SIZE);
-+	/* Rect Horizontally and vertically outside visible region */
-+	set_damage_clip_w(&rect[2], data->mode->hdisplay + 10,
-+			  data->mode->vdisplay + 50, SQUARE_SIZE, SQUARE_SIZE);
-+
-+	dirty_rect_create_fb(data, &main_fb, data->mode->hdisplay + 200,
-+				 data->mode->vdisplay + 200, GREEN);
-+
-+	for (int i = 0; i < 3; i++) {
-+		dirty_rect_create_fb(data, &rect_fb[i], data->mode->hdisplay + 200,
-+					 data->mode->vdisplay + 200, GREEN);
-+		dirty_rect_draw_white_rects(data, &rect_fb[i], 1, &rect[i]);
-+	}
-+
-+	/* Main rect */
-+	set_damage_area(primary, &full_rect, sizeof(full_rect));
-+	set_fb_and_collect_crc(data, primary, &main_fb, pipe_crc, &main_crc);
-+
-+	for (int i = 0; i < 3; i++) {
-+		set_damage_area(primary, &rect[i], sizeof(rect[i]));
-+		set_fb_and_collect_crc(data, primary, &rect_fb[i], pipe_crc, &rect_crc[i]);
-+		igt_assert_crc_equal(&rect_crc[i], &main_crc);
-+	}
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data->drm_fd, &main_fb);
-+	for (int i = 0; i < 3; i++)
-+		igt_remove_fb(data->drm_fd, &rect_fb[i]);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+}
-+
-+/*
-+ * fbc_dirty_rectangle_basic
-+ * @data: data_t
-+ *
-+ * This test draws screens as full-screen updates and collects their CRCs
-+ * as reference values. Screens are then updated using the FBC
-+ * dirty rect feature and compared with the reference CRCs.
-+ * Matching CRCs indicate success.
-+ *
-+ * Steps to Collect Reference CRCs:
-+ * 1. Full Blue Screen
-+ *    - Frame Buffer: main_fb
-+ *    - CRC: main_fb_crc
-+ * 2. White Square on Upper Left
-+ *    - Frame Buffer: rect1_fb
-+ *    - CRC: rect1_fb_crc
-+ * 3. Second White Square Below First
-+ *    - Frame Buffer: rect2_fb
-+ *    - CRC: rect2_fb_crc
-+ * 4. Both Rectangles
-+ *    - Frame Buffer: rect_combined_fb
-+ *    - CRC: rect_combined_fb_crc
-+ *
-+ * Steps to Update Screen with FBC Dirty Rect:
-+ * 1. Full Blue Screen
-+ *    - Set rect_combined_fb with Damage Area Update
-+ *    - CRC should match rect_combined_fb_crc
-+ * 2. Clear First Rectangle Area
-+ *    - Use main_fb and damage area as rect1 coordinates
-+ *    - CRC should match rect2_fb_crc
-+ * 3. Clear Second Rectangle Area
-+ *    - Use main_fb and damage area as rect2 coordinates
-+ *    - CRC should match main_fb_crc
-+ */
-+static void fbc_dirty_rectangle_basic(data_t *data)
-+{
-+	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output = data->output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	struct igt_fb main_fb;
-+	struct igt_fb rect_1_fb;
-+	struct igt_fb rect_2_fb;
-+	struct igt_fb rect_combined_fb;
-+	struct drm_mode_rect rect1;
-+	struct drm_mode_rect rect2;
-+	struct drm_mode_rect rect_combined[2];
-+	struct drm_mode_rect full_rect;
-+	igt_crc_t main_fb_crc, rect_1_fb_crc, rect_2_fb_crc, rect_combined_fb_crc, crc;
-+
-+	mode = igt_output_get_mode(output);
-+	igt_output_set_pipe(output, data->pipe);
-+	if (!pipe_crc) {
-+		pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-+					    IGT_PIPE_CRC_SOURCE_AUTO);
-+		igt_assert(pipe_crc);
-+	}
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	set_damage_clip(&full_rect, 0, 0, mode->hdisplay-1, mode->vdisplay-1);
-+	set_damage_clip(&rect1, SQUARE_OFFSET, SQUARE_OFFSET,
-+			SQUARE_OFFSET + SQUARE_SIZE, SQUARE_OFFSET + SQUARE_SIZE);
-+	set_damage_clip(&rect2, SQUARE_OFFSET_2, SQUARE_OFFSET_2,
-+			SQUARE_OFFSET_2 + SQUARE_SIZE, SQUARE_OFFSET_2 + SQUARE_SIZE);
-+	set_damage_clip(&rect_combined[0], rect1.x1, rect1.y1, rect1.x2, rect1.y2);
-+	set_damage_clip(&rect_combined[1], rect2.x1, rect2.y1, rect2.x2, rect2.y2);
-+
-+	dirty_rect_create_fb(data, &main_fb, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+
-+	dirty_rect_create_fb(data, &rect_1_fb, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+	dirty_rect_draw_white_rects(data, &rect_1_fb, 1, &rect1);
-+
-+	dirty_rect_create_fb(data, &rect_2_fb, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+	dirty_rect_draw_white_rects(data, &rect_2_fb, 1, &rect2);
-+
-+	dirty_rect_create_fb(data, &rect_combined_fb, data->mode->hdisplay,
-+			     data->mode->vdisplay, BLUE);
-+	dirty_rect_draw_white_rects(data, &rect_combined_fb,
-+			     ARRAY_SIZE(rect_combined), rect_combined);
-+
-+	/* main_fb blank blue screen - get and store crc*/
-+	set_fb_and_collect_crc(data, primary, &main_fb, pipe_crc, &main_fb_crc);
-+
-+	/* Whole blue screen with one white rect and collect crc */
-+	set_damage_area(primary, &full_rect, sizeof(full_rect));
-+	set_fb_and_collect_crc(data, primary, &rect_1_fb, pipe_crc,
-+			       &rect_1_fb_crc);
-+
-+	/* Second white rect and collect crc */
-+	set_damage_area(primary, &full_rect, sizeof(full_rect));
-+	set_fb_and_collect_crc(data, primary, &rect_2_fb, pipe_crc,
-+			       &rect_2_fb_crc);
-+
-+	/* Both rects and collect crc */
-+	set_damage_area(primary, &full_rect, sizeof(full_rect));
-+	set_fb_and_collect_crc(data, primary, &rect_combined_fb, pipe_crc,
-+			       &rect_combined_fb_crc);
-+
-+	/* Put full blank screen back */
-+	set_damage_area(primary, &full_rect, sizeof(full_rect));
-+	set_fb_and_collect_crc(data, primary, &main_fb, pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &main_fb_crc);
-+
-+	/* Set combined rect - draw two white rects using damage area*/
-+	set_damage_area(primary, rect_combined, sizeof(rect_combined));
-+	set_fb_and_collect_crc(data, primary, &rect_combined_fb, pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &rect_combined_fb_crc);
-+
-+	/* Clear first rect using damage area. Only the second rect should be visible here! */
-+	set_damage_area(primary, &rect1, sizeof(rect1));
-+	set_fb_and_collect_crc(data, primary, &main_fb, pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &rect_2_fb_crc);
-+
-+	/* Clear the second rect as well. Now back to original blank screen */
-+	set_damage_area(primary, &rect2, sizeof(rect2));
-+	set_fb_and_collect_crc(data, primary, &main_fb, pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &main_fb_crc);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data->drm_fd, &main_fb);
-+	igt_remove_fb(data->drm_fd, &rect_1_fb);
-+	igt_remove_fb(data->drm_fd, &rect_2_fb);
-+	igt_remove_fb(data->drm_fd, &rect_combined_fb);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+}
-+
-+static void prepare_test(data_t *data, igt_output_t *output)
-+{
-+	bool is_fbc_supported = false;
-+
-+	is_fbc_supported = intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
-+
-+	igt_require_f(is_fbc_supported, "FBC not supported on this platform\n");
-+
-+	if (data->feature & FEATURE_FBC)
-+		intel_fbc_enable(data->drm_fd);
-+}
-+
-+static void fbc_dirty_rectangle_basic_test(data_t *data)
-+{
-+	prepare_test(data, NULL);
-+	return fbc_dirty_rectangle_basic(data);
-+}
-+
-+static void fbc_dirty_rectangle_out_visible(data_t *data)
-+{
-+	prepare_test(data, NULL);
-+	return fbc_dirty_rectangle_outside_visible_region(data);
-+}
-+
-+static void fbc_dirty_rectangle_dirtyfb_tests(data_t *data)
-+{
-+	prepare_test(data, NULL);
-+	return fbc_dirty_rectangle_dirtyfb(data);
-+}
-+
-+igt_main
-+{
-+	data_t data = {0};
-+	int display_ver;
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_XE);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		kmstest_set_vt_graphics_mode();
-+		igt_require_pipe_crc(data.drm_fd);
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+		display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
-+		igt_require_f(display_ver >= 30, "FBC with dirty region is not supported\n");
-+	}
-+
-+	igt_subtest_with_dynamic("fbc-dirty-rectangle-basic") {
-+		data.feature = FEATURE_FBC;
-+
-+		for_each_pipe(&data.display, data.pipe) {
-+			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
-+				data.mode = igt_output_get_mode(data.output);
-+				data.format = DRM_FORMAT_XRGB8888;
-+				igt_display_reset(&data.display);
-+				igt_output_set_pipe(data.output, data.pipe);
-+				igt_dynamic_f("pipe-%s-%s",
-+					       kmstest_pipe_name(data.pipe),
-+					       igt_output_name(data.output)) {
-+					fbc_dirty_rectangle_basic_test(&data);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("fbc-dirty-rectangle-out-visible-area") {
-+		data.feature = FEATURE_FBC;
-+
-+		for_each_pipe(&data.display, data.pipe) {
-+			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
-+				data.mode = igt_output_get_mode(data.output);
-+				data.format = DRM_FORMAT_XRGB8888;
-+				igt_display_reset(&data.display);
-+				igt_output_set_pipe(data.output, data.pipe);
-+				igt_dynamic_f("pipe-%s-%s",
-+					       kmstest_pipe_name(data.pipe),
-+					       igt_output_name(data.output)) {
-+					fbc_dirty_rectangle_out_visible(&data);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("fbc-dirty-rectangle-dirtyfb-tests") {
-+		data.feature = FEATURE_FBC;
-+
-+		for_each_pipe(&data.display, data.pipe) {
-+			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
-+				data.mode = igt_output_get_mode(data.output);
-+				data.format = DRM_FORMAT_XRGB8888;
-+				igt_display_reset(&data.display);
-+				igt_output_set_pipe(data.output, data.pipe);
-+				igt_dynamic_f("pipe-%s-%s",
-+					       kmstest_pipe_name(data.pipe),
-+					       igt_output_name(data.output)) {
-+					fbc_dirty_rectangle_dirtyfb_tests(&data);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("fbc-dirty-rectangle-different-formats") {
-+		uint32_t formats[] = {DRM_FORMAT_XRGB8888,
-+				      DRM_FORMAT_ARGB8888,
-+				      DRM_FORMAT_RGB565};
-+		int num_formats = ARRAY_SIZE(formats);
-+		data.feature = FEATURE_FBC;
-+
-+		for_each_pipe(&data.display, data.pipe) {
-+			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
-+				data.mode = igt_output_get_mode(data.output);
-+				igt_display_reset(&data.display);
-+				igt_output_set_pipe(data.output, data.pipe);
-+
-+				for (int i = 0; i < num_formats; i++) {
-+					igt_dynamic_f("pipe-%s-%s-format-%s",
-+						       kmstest_pipe_name(data.pipe),
-+						       igt_output_name(data.output),
-+						       igt_format_str(formats[i])) {
-+						data.format = formats[i];
-+						fbc_dirty_rectangle_basic_test(&data);
-+					}
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 33dffad31..2ac5ce309 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -268,6 +268,7 @@ intel_kms_progs = [
- 	'kms_psr2_su',
- 	'kms_psr_stress_test',
- 	'kms_pwrite_crc',
-+        'kms_fbc_dirty_rect',
- ]
- 
- intel_xe_progs = [
--- 
-2.34.1
+  Missing    (1): bat-bmg-2 
 
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8227 -> IGTPW_12565
+  * Linux: xe-2620-e886a5edb53ade13f69b5809cbe03d7aa73885a7 -> xe-2621-4f934139887fd60bd4ac9027b7eec3e86ade8085
+
+  IGTPW_12565: 12565
+  IGT_8227: 8227
+  xe-2620-e886a5edb53ade13f69b5809cbe03d7aa73885a7: e886a5edb53ade13f69b5809cbe03d7aa73885a7
+  xe-2621-4f934139887fd60bd4ac9027b7eec3e86ade8085: 4f934139887fd60bd4ac9027b7eec3e86ade8085
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12565/index.html
+
+--===============2577652945983419938==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138218/">https://patchwork.freedesktop.org/series/138218/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12565/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12565/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8227_BAT -&gt; XEIGTPW_12565_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 7)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8227 -&gt; IGTPW_12565</li>
+<li>Linux: xe-2620-e886a5edb53ade13f69b5809cbe03d7aa73885a7 -&gt; xe-2621-4f934139887fd60bd4ac9027b7eec3e86ade8085</li>
+</ul>
+<p>IGTPW_12565: 12565<br />
+  IGT_8227: 8227<br />
+  xe-2620-e886a5edb53ade13f69b5809cbe03d7aa73885a7: e886a5edb53ade13f69b5809cbe03d7aa73885a7<br />
+  xe-2621-4f934139887fd60bd4ac9027b7eec3e86ade8085: 4f934139887fd60bd4ac9027b7eec3e86ade8085</p>
+
+</body>
+</html>
+
+--===============2577652945983419938==--
