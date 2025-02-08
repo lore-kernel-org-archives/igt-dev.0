@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A67C02198
-	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AA00C02198
+	for <igt-dev@archiver.kernel.org>; Sat,  8 Feb 2025 13:07:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABB6110E284;
-	Sat,  8 Feb 2025 13:07:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDCC710E030;
+	Sat,  8 Feb 2025 13:07:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aiDWIqM+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gWHlWrny";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E526510E030
- for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:07:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 075A310E030
+ for <igt-dev@lists.freedesktop.org>; Sat,  8 Feb 2025 13:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739020045; x=1770556045;
+ t=1739020070; x=1770556070;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=1AMZjCLY99sL29yqRkgq+AWS/C6aoD1t+JwKK2EkpXw=;
- b=aiDWIqM+t58DH+QnHiGWAZvQYoeIL8+zPm5B33+WoJ0LpSzVnqnxZ56J
- lt1HEdqTCYrPVxLBj7lkedf6O5A7ihNs9ACPXORCd2zlXOSqp+/hU+WH7
- ytr06/2UkhoD5iDsF1li383gSLI5iaU+fMaA65WWubfTSfvCAVb9LdzKr
- EbfqAg/6PeXIi14gLpNexJPtCChJZoJX/AchfqcayPaCjqrKTjyNrZo2T
- qyROF2mpNFTV1ltQ9Jg7eTm2ERnNIHydF+TL2l8afE4ML/bbHsOkfYUib
- 5eYD25iXrjHSBD3UxoapJV5ISaUJ+l14pUDPhuMOcamE87RBECNLNjClp g==;
-X-CSE-ConnectionGUID: Pi1vOtDrRzWhvcGU4UFqlw==
-X-CSE-MsgGUID: YsAAOY4MTqmao+vBk6IFcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="39560888"
-X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="39560888"
+ bh=d7Su4pc7JyHLMxp37JYLhk0RbiFNeZQZj3MUfrPLmZs=;
+ b=gWHlWrnyQJ1PIcrj8ypXQMLq1QGNgYLOAlEJUzTHU/m3Bsm814Ccl/SZ
+ SXclpUxlXADwTvQ0sFUCTZEO+zu+9IITFa6ZQAMYP00InkItT7km0jPTf
+ 7VNg9HjwBDpYf1VizXwYYaq78iqngKfRQB6KUU5iQ2kfmk98GxSZLIT4v
+ v+Hm/YebZDhk8EMJ/Iy1WW+PurxTIoBlCEBBhwsDL7TUsflcIueDGBWn1
+ GyNh/3KhINW9GNa7fcG71E0cQNNOIo5NL7MfXsB4lk47c61GdHgGv+ysv
+ xbI25aPPTGtZFi2iU9ePtFICo9xOO49khrao902XoGaYHExVg8Ztsmfbj w==;
+X-CSE-ConnectionGUID: Hr61RBvlS3axmr7zM0svGQ==
+X-CSE-MsgGUID: /DpfR3dOSUmWk7lPg6orog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="39560910"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; d="scan'208";a="39560910"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2025 05:07:24 -0800
-X-CSE-ConnectionGUID: nflHfKWuQCWwJlEEQY5E7Q==
-X-CSE-MsgGUID: k0j1C8HuSLmAsobpMuZTBw==
+ 08 Feb 2025 05:07:49 -0800
+X-CSE-ConnectionGUID: 5aDegzNdSA2fmoe4Z6C0sQ==
+X-CSE-MsgGUID: r0UDBEARQMK9TILjhoIlYw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111604823"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111604843"
 Received: from arossa-mobl1.ger.corp.intel.com (HELO [10.245.98.254])
  ([10.245.98.254])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2025 05:07:22 -0800
-Message-ID: <7635c655-034f-4616-9d76-c1377d2ed10c@linux.intel.com>
-Date: Sat, 8 Feb 2025 14:07:19 +0100
+ 08 Feb 2025 05:07:48 -0800
+Message-ID: <35a27400-fe99-41e2-b1a5-73bf29e46c23@linux.intel.com>
+Date: Sat, 8 Feb 2025 14:07:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [CI i-g-t 04/10] runner/settings: Use wrapper macros for each type
+Subject: Re: [CI i-g-t 05/10] runner/settings: Match serialization to parse
 To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
 References: <20250207231039.2883195-2-lucas.demarchi@intel.com>
- <20250207231039.2883195-6-lucas.demarchi@intel.com>
+ <20250207231039.2883195-7-lucas.demarchi@intel.com>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250207231039.2883195-6-lucas.demarchi@intel.com>
+In-Reply-To: <20250207231039.2883195-7-lucas.demarchi@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,126 +73,103 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 08.02.2025 00:09, Lucas De Marchi wrote:
-> Simplify assigning the variables by using functions called by wrapper
-> macros. This avoids calling atoi() on every iteration and will help
-> future refactors on functions parsing the values.
+> Use similarly named macros on both sides of serialize/parse.
 > 
-> The pointer to the value is passed to the parse function since it will
-> be useful later when parsing a string and leaking it to the settings
-> struct rather than duplicating.
 
 Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 > ---
->  runner/settings.c | 78 +++++++++++++++++++++++++++++------------------
->  1 file changed, 48 insertions(+), 30 deletions(-)
+>  runner/settings.c | 58 +++++++++++++++++++++++++----------------------
+>  1 file changed, 31 insertions(+), 27 deletions(-)
 > 
 > diff --git a/runner/settings.c b/runner/settings.c
-> index 89df4990e..340d3802a 100644
+> index 340d3802a..73d8aa13d 100644
 > --- a/runner/settings.c
 > +++ b/runner/settings.c
-> @@ -1153,43 +1153,59 @@ bool serialize_settings(struct settings *settings)
->  #undef SERIALIZE_LINE
+> @@ -1052,10 +1052,12 @@ static bool serialize_hook_strs(struct settings *settings, int dirfd)
+>  	return true;
 >  }
 >  
-> -bool read_settings_from_file(struct settings *settings, FILE *f)
-> +static int parse_int(char **val)
-> +{
-> +	return atoi(*val);
-> +}
-> +
-> +static unsigned long parse_ul(char **val)
+> +#define SERIALIZE_LINE(f, s, name, fmt) fprintf(f, "%s : " fmt "\n", #name, s->name)
+> +#define SERIALIZE_INT(f, s, name) SERIALIZE_LINE(f, s, name, "%d")
+> +#define SERIALIZE_UL(f, s, name) SERIALIZE_LINE(f, s, name, "%lu")
+> +#define SERIALIZE_STR(f, s, name) SERIALIZE_LINE(f, s, name, "%s")
+>  bool serialize_settings(struct settings *settings)
 >  {
-> -#define PARSE_LINE(s, name, val, field, write)	\
-> +	return strtoul(*val, NULL, 10);
-> +}
-> +
-> +static char *parse_str(char **val)
-> +{
-> +	return *val ? strdup(*val) : NULL;
-> +}
-> +
-> +#define PARSE_LINE(s, name, val, field, _f)	\
->  	if (!strcmp(name, #field)) {		\
-> -		s->field = write;		\
-> +		s->field = _f(val);		\
->  		goto cleanup;			\
->  	}
+> -#define SERIALIZE_LINE(f, s, name, format) fprintf(f, "%s : " format "\n", #name, s->name)
 > -
-> +#define PARSE_INT(s, name, val, field) PARSE_LINE(s, name, &val, field, parse_int)
-> +#define PARSE_UL(s, name, val, field)  PARSE_LINE(s, name, &val, field, parse_ul)
-> +#define PARSE_STR(s, name, val, field) PARSE_LINE(s, name, &val, field, parse_str)
-> +bool read_settings_from_file(struct settings *settings, FILE *f)
-> +{
->  	char *name = NULL, *val = NULL;
+>  	FILE *f;
+>  	int dirfd, covfd;
+>  	char path[PATH_MAX];
+> @@ -1097,31 +1099,31 @@ bool serialize_settings(struct settings *settings)
+>  		return false;
+>  	}
 >  
->  	settings->dmesg_warn_level = -1;
+> -	SERIALIZE_LINE(f, settings, abort_mask, "%d");
+> -	SERIALIZE_LINE(f, settings, disk_usage_limit, "%zd");
+> +	SERIALIZE_INT(f, settings, abort_mask);
+> +	SERIALIZE_UL(f, settings, disk_usage_limit);
+>  	if (settings->test_list)
+> -		SERIALIZE_LINE(f, settings, test_list, "%s");
+> +		SERIALIZE_STR(f, settings, test_list);
+>  	if (settings->name)
+> -		SERIALIZE_LINE(f, settings, name, "%s");
+> -	SERIALIZE_LINE(f, settings, dry_run, "%d");
+> -	SERIALIZE_LINE(f, settings, allow_non_root, "%d");
+> -	SERIALIZE_LINE(f, settings, facts, "%d");
+> -	SERIALIZE_LINE(f, settings, sync, "%d");
+> -	SERIALIZE_LINE(f, settings, log_level, "%d");
+> -	SERIALIZE_LINE(f, settings, overwrite, "%d");
+> -	SERIALIZE_LINE(f, settings, multiple_mode, "%d");
+> -	SERIALIZE_LINE(f, settings, inactivity_timeout, "%d");
+> -	SERIALIZE_LINE(f, settings, per_test_timeout, "%d");
+> -	SERIALIZE_LINE(f, settings, overall_timeout, "%d");
+> -	SERIALIZE_LINE(f, settings, use_watchdog, "%d");
+> -	SERIALIZE_LINE(f, settings, piglit_style_dmesg, "%d");
+> -	SERIALIZE_LINE(f, settings, dmesg_warn_level, "%d");
+> -	SERIALIZE_LINE(f, settings, prune_mode, "%d");
+> -	SERIALIZE_LINE(f, settings, test_root, "%s");
+> -	SERIALIZE_LINE(f, settings, results_path, "%s");
+> -	SERIALIZE_LINE(f, settings, enable_code_coverage, "%d");
+> -	SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
+> -	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
+> +		SERIALIZE_STR(f, settings, name);
+> +	SERIALIZE_INT(f, settings, dry_run);
+> +	SERIALIZE_INT(f, settings, allow_non_root);
+> +	SERIALIZE_INT(f, settings, facts);
+> +	SERIALIZE_INT(f, settings, sync);
+> +	SERIALIZE_INT(f, settings, log_level);
+> +	SERIALIZE_INT(f, settings, overwrite);
+> +	SERIALIZE_INT(f, settings, multiple_mode);
+> +	SERIALIZE_INT(f, settings, inactivity_timeout);
+> +	SERIALIZE_INT(f, settings, per_test_timeout);
+> +	SERIALIZE_INT(f, settings, overall_timeout);
+> +	SERIALIZE_INT(f, settings, use_watchdog);
+> +	SERIALIZE_INT(f, settings, piglit_style_dmesg);
+> +	SERIALIZE_INT(f, settings, dmesg_warn_level);
+> +	SERIALIZE_INT(f, settings, prune_mode);
+> +	SERIALIZE_STR(f, settings, test_root);
+> +	SERIALIZE_STR(f, settings, results_path);
+> +	SERIALIZE_INT(f, settings, enable_code_coverage);
+> +	SERIALIZE_INT(f, settings, cov_results_per_test);
+> +	SERIALIZE_STR(f, settings, code_coverage_script);
 >  
->  	while (fscanf(f, "%ms : %m[^\n]", &name, &val) == 2) {
-> -		int numval = atoi(val);
-> -		PARSE_LINE(settings, name, val, abort_mask, numval);
-> -		PARSE_LINE(settings, name, val, disk_usage_limit, strtoul(val, NULL, 10));
-> -		PARSE_LINE(settings, name, val, test_list, val ? strdup(val) : NULL);
-> -		PARSE_LINE(settings, name, val, name, val ? strdup(val) : NULL);
-> -		PARSE_LINE(settings, name, val, dry_run, numval);
-> -		PARSE_LINE(settings, name, val, allow_non_root, numval);
-> -		PARSE_LINE(settings, name, val, facts, numval);
-> -		PARSE_LINE(settings, name, val, sync, numval);
-> -		PARSE_LINE(settings, name, val, log_level, numval);
-> -		PARSE_LINE(settings, name, val, overwrite, numval);
-> -		PARSE_LINE(settings, name, val, multiple_mode, numval);
-> -		PARSE_LINE(settings, name, val, inactivity_timeout, numval);
-> -		PARSE_LINE(settings, name, val, per_test_timeout, numval);
-> -		PARSE_LINE(settings, name, val, overall_timeout, numval);
-> -		PARSE_LINE(settings, name, val, use_watchdog, numval);
-> -		PARSE_LINE(settings, name, val, piglit_style_dmesg, numval);
-> -		PARSE_LINE(settings, name, val, dmesg_warn_level, numval);
-> -		PARSE_LINE(settings, name, val, prune_mode, numval);
-> -		PARSE_LINE(settings, name, val, test_root, val ? strdup(val) : NULL);
-> -		PARSE_LINE(settings, name, val, results_path, val ? strdup(val) : NULL);
-> -		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
-> -		PARSE_LINE(settings, name, val, cov_results_per_test, numval);
-> -		PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
-> +		PARSE_INT(settings, name, val, abort_mask);
-> +		PARSE_UL(settings, name, val, disk_usage_limit);
-> +		PARSE_STR(settings, name, val, test_list);
-> +		PARSE_STR(settings, name, val, name);
-> +		PARSE_INT(settings, name, val, dry_run);
-> +		PARSE_INT(settings, name, val, allow_non_root);
-> +		PARSE_INT(settings, name, val, facts);
-> +		PARSE_INT(settings, name, val, sync);
-> +		PARSE_INT(settings, name, val, log_level);
-> +		PARSE_INT(settings, name, val, overwrite);
-> +		PARSE_INT(settings, name, val, multiple_mode);
-> +		PARSE_INT(settings, name, val, inactivity_timeout);
-> +		PARSE_INT(settings, name, val, per_test_timeout);
-> +		PARSE_INT(settings, name, val, overall_timeout);
-> +		PARSE_INT(settings, name, val, use_watchdog);
-> +		PARSE_INT(settings, name, val, piglit_style_dmesg);
-> +		PARSE_INT(settings, name, val, dmesg_warn_level);
-> +		PARSE_INT(settings, name, val, prune_mode);
-> +		PARSE_STR(settings, name, val, test_root);
-> +		PARSE_STR(settings, name, val, results_path);
-> +		PARSE_INT(settings, name, val, enable_code_coverage);
-> +		PARSE_INT(settings, name, val, cov_results_per_test);
-> +		PARSE_STR(settings, name, val, code_coverage_script);
+>  	if (settings->sync) {
+>  		fflush(f);
+> @@ -1149,9 +1151,11 @@ bool serialize_settings(struct settings *settings)
 >  
->  		printf("Warning: Unknown field in settings file: %s = %s\n",
->  		       name, val);
-> @@ -1211,9 +1227,11 @@ cleanup:
->  	free(val);
->  
+>  	close(dirfd);
 >  	return true;
 > -
-> -#undef PARSE_LINE
+> -#undef SERIALIZE_LINE
 >  }
-> +#undef PARSE_STR
-> +#undef PARSE_UL
-> +#undef PARSE_INT
-> +#undef PARSE_LINE
+> +#undef SERIALIZE_STR
+> +#undef SERIALIZE_UL
+> +#undef SERIALIZE_INT
+> +#undef SERIALIZE_LINE
 >  
->  /**
->   * read_env_vars_from_file() - load env vars from a file
+>  static int parse_int(char **val)
+>  {
 
