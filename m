@@ -4,51 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C134C02198
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Feb 2025 18:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56435C0219E
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Feb 2025 18:40:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 421C410E5F1;
-	Mon, 10 Feb 2025 18:40:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED53E10E5F5;
+	Mon, 10 Feb 2025 18:40:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ddrzik/H";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kOCRP8u8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE3AD10E5F1
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2025 18:40:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA21910E5F5
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2025 18:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739212836; x=1770748836;
+ t=1739212838; x=1770748838;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=o+Xj0R73+RaQwbe/LzhlLRZUSCVh5sW8PGr4RrJSJlg=;
- b=Ddrzik/HzFj5J05eEze3QGd0Z/xl29CxVf2Gxa7MJCObsprJkUoiH29g
- AVAsM+L7lztol7nMwXcXObuHUqntVXtSdMcnk5qBa9RimbKrWlD48FOkH
- F9pdiSZCfWbudCahAKE2JcuM/zm7LhOYlSJAQOrKLDEEvkL8EA2nZX+/l
- 1xtISw/CK0B4iujJ6wxHEd9OrNtAtPT75AYBaN9Ic03M4GTzZYe8NYJ8g
- JE0ARpHQQUeJ+GZBtlDkIC4Pu5/sbbCoCENHvB680AntFyBHCrkN2s90J
- Yr+2o6CLtzZEDDqCQvIVGL6APyChVr0wr1fJic7MiffPx3nsV5rfqSnOA A==;
-X-CSE-ConnectionGUID: 1Xcr/rWlTz6wTVmapxQQ8g==
-X-CSE-MsgGUID: UVs6MB6vS5Chfr/p2Ctkrw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39497494"
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; d="scan'208";a="39497494"
+ bh=A/Kkm19iNMujfWtMGrmeN/m94vufiJSrqZM65B4V438=;
+ b=kOCRP8u8cFfSucSrpoVTuu26EppUEvVTS+1NynKUwBHkviJUVCjlSLcT
+ dzzkqS5QWcAoWxpRO4ClPBazaLCmmsrJLlw5aUKK2anukG8ITWpzyyVHG
+ q/YAWtokWsiYLMTYigxcJZSO24mVl2tbhU4v50DEJzHRUKJnJ6fZKISv7
+ hlSD/XDZ1+d9yKPDPrq8ZHrM0QKZ2nsrXcVpp2lLB3/hNSFaEFvvI7GAv
+ o4cFLlTSqk2+Zrgat++ev4pwMSnVj9n+sTP1GI4HAXtRIrRVZNVjxMBpx
+ 6rnJ+sDKguvJWlA6rPPPPiWmP/FtEBj+2zcrb+J/5pGm6VmNdwfz4v2B2 w==;
+X-CSE-ConnectionGUID: 5vyFmwxFQkGSAQ65dhqmNw==
+X-CSE-MsgGUID: 1YCd2F/gRHKEPJDWM13CYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39497503"
+X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; d="scan'208";a="39497503"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2025 10:40:35 -0800
-X-CSE-ConnectionGUID: bsSVL1c8QHG7dslkq9wiUA==
-X-CSE-MsgGUID: +Siye2JvS6CZksAEQqa/hw==
+ 10 Feb 2025 10:40:38 -0800
+X-CSE-ConnectionGUID: YcjFjZYNTYClUTHutgFp/g==
+X-CSE-MsgGUID: uohUgknhRaSIjZROKKNdkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; d="scan'208";a="112229454"
+X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; d="scan'208";a="112229475"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 10:40:33 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 10:40:37 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t 4/6] tests/intel/kms_dp_linktrain_fallback: add
- dsc-fallback test
-Date: Tue, 11 Feb 2025 00:26:04 +0530
-Message-Id: <20250210185606.1327892-5-kunal1.joshi@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 6/6] HAX: Do not merge
+Date: Tue, 11 Feb 2025 00:26:06 +0530
+Message-Id: <20250210185606.1327892-7-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250210185606.1327892-1-kunal1.joshi@intel.com>
 References: <20250210185606.1327892-1-kunal1.joshi@intel.com>
@@ -69,244 +67,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new dsc-fallback test to check whether DSC
-automatically kicks in while falling back to a
-lower rate/lane.
+Don't merge, just for CI testing
 
-v2: cosmetic changes (Swati)
-    make commit description clear (Ankit)
-    split refactor and dsc-fallback test (Ankit)
-    switch to igt_debug (Ankit)
-
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/kms_dp_linktrain_fallback.c | 161 +++++++++++++++++++++++-
- tests/meson.build                       |   4 +-
- 2 files changed, 161 insertions(+), 4 deletions(-)
+ tests/intel-ci/fast-feedback.testlist    | 3 ++-
+ tests/intel-ci/xe-fast-feedback.testlist | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index 284e6b9aa..69d48ca21 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -17,10 +17,14 @@
- #include "igt_sysfs.h"
- #include "igt.h"
- #include "kms_mst_helper.h"
-+#include "kms_dsc_helper.h"
- 
- /**
-  * SUBTEST: dp-fallback
-  * Description: Test fallback on DP connectors
-+ *
-+ * SUBTEST: dsc-fallback
-+ * Description: Test fallback to DSC when BW isn't sufficient
-  */
- 
- #define RETRAIN_COUNT 1
-@@ -46,7 +50,7 @@ typedef struct {
- 
- typedef int (*condition_check_fn)(int drm_fd, igt_output_t *output);
- 
--IGT_TEST_DESCRIPTION("Test link training fallback");
-+IGT_TEST_DESCRIPTION("Test link-training / dsc fallback");
- 
- static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
- 			      int *output_count)
-@@ -428,7 +432,116 @@ static void test_fallback(data_t *data, bool is_mst)
- 	}
- }
- 
--static bool run_test(data_t *data)
-+static void test_dsc_sst_fallback(data_t *data)
-+{
-+	bool non_dsc_mode_found = false;
-+	bool dsc_fallback_successful = false;
-+	int ret;
-+	struct udev_monitor *mon;
-+	drmModeModeInfo *mode_to_check;
-+	igt_output_t *outputs[IGT_MAX_PIPES];
-+	int output_count = 0;
-+
-+	igt_info("Checking DSC fallback on %s\n", igt_output_name(data->output));
-+	data->pipe = PIPE_A;
-+
-+	igt_display_reset(&data->display);
-+	igt_reset_link_params(data->drm_fd, data->output);
-+	igt_force_link_retrain(data->drm_fd, data->output, 1);
-+
-+	/* Find a mode that doesn't require DSC initially */
-+	for_each_connector_mode(data->output) {
-+		data->mode = &data->output->config.connector->modes[j__];
-+		igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+				    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+				    &data->fb);
-+		igt_output_override_mode(data->output, data->mode);
-+		igt_output_set_pipe(data->output, data->pipe);
-+		data->primary = igt_output_get_plane_type(data->output,
-+						DRM_PLANE_TYPE_PRIMARY);
-+		igt_plane_set_fb(data->primary, &data->fb);
-+
-+		ret = igt_display_try_commit_atomic(&data->display,
-+						    DRM_MODE_ATOMIC_TEST_ONLY |
-+						    DRM_MODE_ATOMIC_ALLOW_MODESET,
-+						    NULL);
-+		if (ret != 0) {
-+			igt_debug("Skipping mode %dx%d@%d on %s\n",
-+				 data->mode->hdisplay, data->mode->vdisplay,
-+				 data->mode->vrefresh,
-+				 igt_output_name(data->output));
-+			continue;
-+		}
-+		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+		if (!igt_is_dsc_enabled(data->drm_fd,
-+					data->output->name)) {
-+			drmModeModeInfo *non_dsc_mode
-+				= igt_output_get_mode(data->output);
-+			igt_info("Found mode %dx%d@%d %s that doesn't need DSC with link rate %d and lane count %d\n",
-+				 non_dsc_mode->hdisplay, non_dsc_mode->vdisplay,
-+				 non_dsc_mode->vrefresh, non_dsc_mode->name,
-+				 igt_get_current_link_rate(data->drm_fd, data->output),
-+				 igt_get_current_lane_count(data->drm_fd, data->output));
-+			non_dsc_mode_found = true;
-+			break;
-+		}
-+	}
-+	igt_require_f(non_dsc_mode_found,
-+		      "No non-DSC mode found on %s\n",
-+		      igt_output_name(data->output));
-+
-+	/* Repeatedly force link failure until DSC is required (or link is disabled) */
-+	while (!igt_get_dp_link_retrain_disabled(data->drm_fd, data->output)) {
-+		mon = igt_watch_uevents();
-+
-+		igt_assert_f(force_failure_and_wait(data, data->output,
-+						    LT_FAILURE_REDUCED_CAPS,
-+						    RETRAIN_COUNT, 1.0, 20.0),
-+			     "Forcing DSC fallback timed out\n");
-+
-+		if (igt_get_dp_link_retrain_disabled(data->drm_fd,
-+						     data->output)) {
-+			igt_reset_connectors();
-+			igt_flush_uevents(mon);
-+			return;
-+		}
-+
-+		igt_assert_f(wait_for_hotplug_and_check_bad(data->drm_fd,
-+							    data,
-+							    data->output,
-+							    mon,
-+							    20.0),
-+			     "Didn't get hotplug or link-status=BAD for DSC\n");
-+		igt_flush_uevents(mon);
-+
-+		outputs[output_count++] = data->output;
-+		set_connector_link_status_good(data, outputs, &output_count);
-+		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+		mode_to_check = igt_output_get_mode(data->output);
-+
-+		if (igt_is_dsc_enabled(data->drm_fd, data->output->name)) {
-+			igt_info("mode %dx%d@%d now requires DSC with link rate %d and lane count %d\n",
-+				 mode_to_check->hdisplay, mode_to_check->vdisplay,
-+				 mode_to_check->vrefresh,
-+				 igt_get_current_link_rate(data->drm_fd, data->output),
-+				 igt_get_current_lane_count(data->drm_fd, data->output));
-+			igt_info("DSC fallback successful on %s\n",
-+				 igt_output_name(data->output));
-+			dsc_fallback_successful = true;
-+			break;
-+		} else {
-+			igt_info("mode %dx%d@%d still doesn't require DSC\n",
-+				 mode_to_check->hdisplay, mode_to_check->vdisplay,
-+				 mode_to_check->vrefresh);
-+		}
-+	}
-+	igt_assert_f(dsc_fallback_successful, "DSC fallback unsuccessful\n");
-+}
-+
-+static bool run_lt_fallback_test(data_t *data)
- {
- 	bool ran = false;
- 	igt_output_t *output;
-@@ -466,6 +579,43 @@ static bool run_test(data_t *data)
- 	return ran;
- }
- 
-+static bool run_dsc_sst_fallaback_test(data_t *data)
-+{
-+	bool ran = false;
-+	igt_output_t *output;
-+
-+	if (!is_dsc_supported_by_source(data->drm_fd)) {
-+		igt_info("DSC not supported by source.\n");
-+		return ran;
-+	}
-+
-+	for_each_connected_output(&data->display, output) {
-+		data->output = output;
-+
-+		if (!igt_has_force_link_training_failure_debugfs(data->drm_fd,
-+								 data->output)) {
-+			igt_info("Output %s doesn't support forcing link training.\n",
-+				 igt_output_name(data->output));
-+			continue;
-+		}
-+
-+		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort) {
-+			igt_info("Skipping output %s as it's not DP\n", output->name);
-+			continue;
-+		}
-+
-+		if (!is_dsc_supported_by_sink(data->drm_fd, data->output)) {
-+			igt_info("Skipping output %s as DSC not supported by sink\n",
-+				 igt_output_name(data->output));
-+			continue;
-+		}
-+
-+		ran = true;
-+		test_dsc_sst_fallback(data);
-+	}
-+	return ran;
-+}
-+
- igt_main
- {
- 	data_t data = {};
-@@ -490,10 +640,15 @@ igt_main
- 	}
- 
- 	igt_subtest("dp-fallback") {
--		igt_require_f(run_test(&data),
-+		igt_require_f(run_lt_fallback_test(&data),
- 			      "Skipping test as no output found or none supports fallback\n");
- 	}
- 
-+	igt_subtest("dsc-fallback") {
-+		igt_require_f(run_dsc_sst_fallaback_test(&data),
-+			      "Skipping test: DSC fallback conditions not met.\n");
-+	}
-+
- 	igt_fixture {
- 		igt_remove_fb(data.drm_fd, &data.fb);
- 		igt_display_fini(&data.display);
-diff --git a/tests/meson.build b/tests/meson.build
-index a6f6ad560..95892762e 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -366,7 +366,9 @@ extra_sources = {
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
--	'kms_dp_linktrain_fallback': [ join_paths ('intel', 'kms_mst_helper.c') ],
-+	'kms_dp_linktrain_fallback': [
-+           join_paths ('intel', 'kms_mst_helper.c'),
-+           join_paths ('intel', 'kms_dsc_helper.c') ],
- 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
- 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
- }
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..668fb3888 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,7 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
+-
++igt@kms_dp_linktrain_fallback@dsc-fallback
++igt@kms_dp_linktrain_fallback@dp-fallbck
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 0234d3e72..28f8b5015 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,6 +1,7 @@
+ # Should be the first test
+ igt@xe_module_load@load
+-
++igt@kms_dp_linktrain_fallback@dsc-fallback
++igt@kms_dp_linktrain_fallback@dp-fallback
+ igt@fbdev@eof
+ igt@fbdev@info
+ igt@fbdev@nullptr
 -- 
 2.25.1
 
