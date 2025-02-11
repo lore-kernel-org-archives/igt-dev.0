@@ -4,27 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D00F8C0219E
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 18:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E68C0219B
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 19:12:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 670A110E268;
-	Tue, 11 Feb 2025 18:34:56 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A252410E0C6;
- Tue, 11 Feb 2025 18:34:55 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4690457002564698299=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 275EF10E213;
+	Tue, 11 Feb 2025 19:12:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EWV5y+On";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 128B910E213
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2025 19:12:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739301142; x=1770837142;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=s+f0TxdanvVHV2aDM6Mt6gelhk295iIP8ZoyUMSW25c=;
+ b=EWV5y+OnA4Gs1WuzG3lbB4nDBTCsxeCaYQyTVcQguEURDajRZXTuHEm8
+ sPIBP9pfj3At1COjMvpHkGGHPmdokJBm32MPQleEX76NrvGShkA2FYdVN
+ FhyhQGkbiigK+dfNyGXWAh6ea+pZLuZBBYh9aiUK2LtDBtTj30796qu7P
+ MdO+ljlQ8V0+zjImFWCBYvWX5ZAmA7QMqk3YZL93YC9712+hS8Rmfmt4z
+ J2bKNFS2OiwmkmzVmACHnoJN1VZGCc2EwUtcimp63bpZSf4U8FUYsqqiQ
+ BxN3nX8r8KWODwzrGhfze3SaZ3XUfqdur35xRrFI/UV8WidG0mnBuTCU8 w==;
+X-CSE-ConnectionGUID: GlNGBa7uSUSPKfKrz+TsAQ==
+X-CSE-MsgGUID: sEAe3QAjShmfqAEdjTZLCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="57347986"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="57347986"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2025 11:12:22 -0800
+X-CSE-ConnectionGUID: ZvAD385QQJWb0pBOx0OENg==
+X-CSE-MsgGUID: kw+P8jqsRzemI2gSBUTKDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="112562600"
+Received: from pnass-mobl.ger.corp.intel.com (HELO [10.245.112.60])
+ ([10.245.112.60])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2025 11:12:19 -0800
+Message-ID: <5f9f0b38-343b-4b1a-b5c7-ad1706fa2ddd@linux.intel.com>
+Date: Tue, 11 Feb 2025 20:12:16 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Verify_VF_configuration_d?=
- =?utf-8?q?ata_against_provisioned_values_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lukasz Laguna" <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Feb 2025 18:34:55 -0000
-Message-ID: <173929889565.1023817.5639444065590881726@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250211162919.15076-1-lukasz.laguna@intel.com>
-In-Reply-To: <20250211162919.15076-1-lukasz.laguna@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 1/2] lib/igt_kmemleak: library to interact with
+ kmemleak
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+References: <20250128151537.515639-1-peter.senna@linux.intel.com>
+ <20250128151537.515639-2-peter.senna@linux.intel.com>
+ <20250131123454.ilhzogs6a2w7s3on@kamilkon-desk.igk.intel.com>
+ <17fe9952-7b2e-46fd-af1f-cd7cbea2cebd@linux.intel.com>
+ <20250211161734.nm6dsq3ahhcn7hvz@zkempczy-mobl2>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250211161734.nm6dsq3ahhcn7hvz@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,199 +75,196 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4690457002564698299==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
 
-== Series Details ==
+Thank you for your comments, please see my answers below.
 
-Series: Verify VF configuration data against provisioned values (rev3)
-URL   : https://patchwork.freedesktop.org/series/143918/
-State : success
+On 11.02.2025 17:17, Zbigniew Kempczyński wrote:
+> On Mon, Feb 03, 2025 at 10:23:00AM +0100, Peter Senna Tschudin wrote:
+>> Hi Kamil,
+>>
+>> Thank you for your review. Please see below.
+>>
+>> On 31.01.2025 13:34, Kamil Konieczny wrote:
+>>
+>> [...]
+>>
+>>>> +#include <stdio.h>
+>>>> +#include <string.h>
+>>>> +#include <unistd.h>
+>>>> +#include <fcntl.h>
+>>>> +#include <errno.h>
+>>>
+>>> Sort this alphabetically with exception of unistd.h - this
+>>> header could be first.
+>>
+>> That is picky, but ok.
+>>
+>>
+>>>
+>>>> +
+>>>> +#include "igt_core.h"
+>>>> +#include "igt_kmemleak.h"
+>>>> +
+>>>> +/* We can change the path for unit testing, see igt_kmemleak_init() */
+>>>> +static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
+>>>> +
+>>>> +#define MAX_WRITE_RETRIES 5
+>>>> +/**
+>>>> + * igt_kmemleak_write - Writes the buffer to the file descriptor retrying when
+>>>> + * possible.
+>>>> + * @fd: The file descriptor to write to.
+>>>> + * @buf: Pointer to the data to write.
+>>>> + * @count: Total number of bytes to write.
+>>>> + *
+>>>> + * Returns the total number of bytes written on success, or -1 on failure.
+>>>> + */
+>>>> +static bool igt_kmemleak_write(int fd, const void *buf, size_t count)
+>>>> +{
+>>>> +	const char *ptr = buf;
+>>>> +	size_t remaining = count;
+>>>> +	ssize_t written;
+>>>> +	int retries = 0;
+>>>> +
+>>>> +	while (remaining > 0) {
+>>>> +		written = write(fd, ptr, remaining);
+>>>> +		if (written > 0) {
+>>>> +			ptr += written;
+>>>> +			remaining -= written;
+>>>> +		} else if (written == -1) {
+>>>> +			if (errno == EINTR || errno == EAGAIN) {
+>>>> +				/* Retry for recoverable errors */
+>>>> +				if (++retries > MAX_WRITE_RETRIES) {
+>>>> +					igt_warn("igt_write: Exceeded retry limit\n");
+>>>
+>>> Do not use test prints in lib, especially those used by runner.
+>>
+>> Oh, I will. kmemleak is about writing to disk. If that fails, I will tell the user.
+>> Why does this restriction applies only to me? See:
+>>
+>> ---
+>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ git grep igt_warn|wc -l
+>> 164
+>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ cd ..
+>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep igt_warn|wc -l
+>> 324
+>> ---
+>>
+>> About 50% of all references to igt_warn are in lib, what is the problem with my code?
+> 
+> I'm looking at the code and I have impression this should be part of
+> the runner, not igt library. Do I understand correctly that your
+> code will be used by the runner only and not by the tests?
 
-== Summary ==
+It is difficult to know for now. We have one test that will use the lib
+as is: `tests/amdgpu/amd_mem_leak.c`. But that is not the main potential
+use case.
 
-CI Bug Log - changes from IGT_8228 -> IGTPW_12575
-====================================================
+As I describe in the cover letter, transient leaks are kind of tricky,
+and we may require to request a scan from a test itself for better
+coverage. So in short I honestly do not know if we will have test
+integration in the future or not.
 
-Summary
--------
+> 
+> Regarding your above question, I think runner should use as much as
+> minimal from lib/ directory, because this is collection of functions
+> designed for tests, not for runner. I think generic code like data
+> structures (lists) are fine, but not the others. Imagine you'll
+> incidentally try to use igt_require() - follow the call and see
+> the pitfall there.
 
-  **SUCCESS**
+Currently the list of lib includes in the runner directory is not
+small (I used a dumb regex that looks for includes starting with igt_):
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (3): fi-hsw-4770 bat-arlh-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12575 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@load:
-    - bat-mtlp-9:         [PASS][1] -> [DMESG-WARN][2] ([i915#13494])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-9/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/bat-mtlp-9/igt@i915_module_load@load.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-cfl-8109u:       [PASS][3] -> [DMESG-WARN][4] ([i915#11621] / [i915#1982])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [PASS][5] -> [DMESG-WARN][6] ([i915#11621]) +131 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_psr@psr-primary-mmap-gtt:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][9] +33 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][10] ([i915#12061]) -> [PASS][11] +1 other test pass
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8228 -> IGTPW_12575
-  * Linux: CI_DRM_16103 -> CI_DRM_16108
-
-  CI-20190529: 20190529
-  CI_DRM_16103: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16108: 5a6f3d00770c0c384a79c34a74e049c80d8b235d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12575: 12575
-  IGT_8228: 8228
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/index.html
-
---===============4690457002564698299==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+#include "igt_aux.h"
+#include "igt_core.h"
+#include "igt_facts.h"
+#include "igt_hook.h"
+#include "igt_list.h"
+#include "igt_taints.h"
+#include "igt_vec.h"
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Verify VF configuration data against provisioned values (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143918/">https://patchwork.freedesktop.org/series/143918/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+> 
+> So if my understanding is correct and this code should be part of the
+> runner only your test might be moved to the runner_tests.c.
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/index.html</a></td></tr>
+It is difficult to know at this stage. At least the amd test I mentioned
+earlier will use it.
 
-</table>
+> 
+> BTW please rebase on top of current master, there were changes in
+> the runner/settings.c file that affects this series.
 
+As soon as I am confident this will be merged, I surely will.
 
-    <h1>CI Bug Log - changes from IGT_8228 -&gt; IGTPW_12575</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (3): fi-hsw-4770 bat-arlh-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12575 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) +131 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> +33 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12575/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8228 -&gt; IGTPW_12575</li>
-<li>Linux: CI_DRM_16103 -&gt; CI_DRM_16108</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16103: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16108: 5a6f3d00770c0c384a79c34a74e049c80d8b235d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12575: 12575<br />
-  IGT_8228: 8228</p>
+Thanks!
 
-</body>
-</html>
+> 
+> --
+> Zbigniew
+> 
+>>
+>>
+>>>
+>>>> +					return false;
+>>>> +				}
+>>>> +				continue;
+>>>> +			} else {
+>>>> +				/* Log unrecoverable error */
+>>>> +				igt_warn("igt_write: unrecoverable write error");
+>>>
+>>> Same here.
+>> We should not remove this one.
+>>
+>>>
+>>>> +				return false;
+>>>> +			}
+>>>> +		} else if (written == 0) {
+>>>> +			if (++retries > MAX_WRITE_RETRIES) {
+>>>> +				igt_warn("igt_write: Exceeded retry limit\n");
+>>>
+>>> Same here.
+>> We should not remove this one.
+>>
+>> [...]
+>>
+>>>> +	FILE *fp;
+>>>
+>>> Why FILE* and fopen? Could you just use open/read?
+>>
+>> Why not?
+>>
+>> ---
+>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+>> 97
+>> ---
+>>
+>>
+>> [...]
+>>
+>>>> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file)
+>>>> +{
+>>>> +	FILE *fp;
+>>>
+>>> Same here, open/read.
+>>
+>> Same here, why not?
+>> ---
+>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+>> 97
+>> ---
+>>
+>> [...]
+>>
+>>>> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
+>>>
+>>> imho better: IGT_KMEMLEAK_RESFILENAME
+>>
+>> It reads better indeed. Thanks.
+>>
+>> [...]
 
---===============4690457002564698299==--
