@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E68C0219B
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 19:12:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69799C021A2
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 20:09:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 275EF10E213;
-	Tue, 11 Feb 2025 19:12:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EWV5y+On";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 128B910E213
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2025 19:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739301142; x=1770837142;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=s+f0TxdanvVHV2aDM6Mt6gelhk295iIP8ZoyUMSW25c=;
- b=EWV5y+OnA4Gs1WuzG3lbB4nDBTCsxeCaYQyTVcQguEURDajRZXTuHEm8
- sPIBP9pfj3At1COjMvpHkGGHPmdokJBm32MPQleEX76NrvGShkA2FYdVN
- FhyhQGkbiigK+dfNyGXWAh6ea+pZLuZBBYh9aiUK2LtDBtTj30796qu7P
- MdO+ljlQ8V0+zjImFWCBYvWX5ZAmA7QMqk3YZL93YC9712+hS8Rmfmt4z
- J2bKNFS2OiwmkmzVmACHnoJN1VZGCc2EwUtcimp63bpZSf4U8FUYsqqiQ
- BxN3nX8r8KWODwzrGhfze3SaZ3XUfqdur35xRrFI/UV8WidG0mnBuTCU8 w==;
-X-CSE-ConnectionGUID: GlNGBa7uSUSPKfKrz+TsAQ==
-X-CSE-MsgGUID: sEAe3QAjShmfqAEdjTZLCg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="57347986"
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="57347986"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2025 11:12:22 -0800
-X-CSE-ConnectionGUID: ZvAD385QQJWb0pBOx0OENg==
-X-CSE-MsgGUID: kw+P8jqsRzemI2gSBUTKDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="112562600"
-Received: from pnass-mobl.ger.corp.intel.com (HELO [10.245.112.60])
- ([10.245.112.60])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2025 11:12:19 -0800
-Message-ID: <5f9f0b38-343b-4b1a-b5c7-ad1706fa2ddd@linux.intel.com>
-Date: Tue, 11 Feb 2025 20:12:16 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB5EA10E17D;
+	Tue, 11 Feb 2025 20:09:12 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E51AD10E17D;
+ Tue, 11 Feb 2025 20:09:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0697442972271339458=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 1/2] lib/igt_kmemleak: library to interact with
- kmemleak
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, ryszard.knop@intel.com,
- lucas.demarchi@intel.com, katarzyna.piecielska@intel.com,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-References: <20250128151537.515639-1-peter.senna@linux.intel.com>
- <20250128151537.515639-2-peter.senna@linux.intel.com>
- <20250131123454.ilhzogs6a2w7s3on@kamilkon-desk.igk.intel.com>
- <17fe9952-7b2e-46fd-af1f-cd7cbea2cebd@linux.intel.com>
- <20250211161734.nm6dsq3ahhcn7hvz@zkempczy-mobl2>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250211161734.nm6dsq3ahhcn7hvz@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_add_dsc-fallback_test_=28re?=
+ =?utf-8?q?v4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Feb 2025 20:09:11 -0000
+Message-ID: <173930455193.1042362.8015987166574885461@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250211180542.1430676-1-kunal1.joshi@intel.com>
+In-Reply-To: <20250211180542.1430676-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,196 +37,214 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
+--===============0697442972271339458==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for your comments, please see my answers below.
+== Series Details ==
 
-On 11.02.2025 17:17, Zbigniew Kempczyński wrote:
-> On Mon, Feb 03, 2025 at 10:23:00AM +0100, Peter Senna Tschudin wrote:
->> Hi Kamil,
->>
->> Thank you for your review. Please see below.
->>
->> On 31.01.2025 13:34, Kamil Konieczny wrote:
->>
->> [...]
->>
->>>> +#include <stdio.h>
->>>> +#include <string.h>
->>>> +#include <unistd.h>
->>>> +#include <fcntl.h>
->>>> +#include <errno.h>
->>>
->>> Sort this alphabetically with exception of unistd.h - this
->>> header could be first.
->>
->> That is picky, but ok.
->>
->>
->>>
->>>> +
->>>> +#include "igt_core.h"
->>>> +#include "igt_kmemleak.h"
->>>> +
->>>> +/* We can change the path for unit testing, see igt_kmemleak_init() */
->>>> +static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
->>>> +
->>>> +#define MAX_WRITE_RETRIES 5
->>>> +/**
->>>> + * igt_kmemleak_write - Writes the buffer to the file descriptor retrying when
->>>> + * possible.
->>>> + * @fd: The file descriptor to write to.
->>>> + * @buf: Pointer to the data to write.
->>>> + * @count: Total number of bytes to write.
->>>> + *
->>>> + * Returns the total number of bytes written on success, or -1 on failure.
->>>> + */
->>>> +static bool igt_kmemleak_write(int fd, const void *buf, size_t count)
->>>> +{
->>>> +	const char *ptr = buf;
->>>> +	size_t remaining = count;
->>>> +	ssize_t written;
->>>> +	int retries = 0;
->>>> +
->>>> +	while (remaining > 0) {
->>>> +		written = write(fd, ptr, remaining);
->>>> +		if (written > 0) {
->>>> +			ptr += written;
->>>> +			remaining -= written;
->>>> +		} else if (written == -1) {
->>>> +			if (errno == EINTR || errno == EAGAIN) {
->>>> +				/* Retry for recoverable errors */
->>>> +				if (++retries > MAX_WRITE_RETRIES) {
->>>> +					igt_warn("igt_write: Exceeded retry limit\n");
->>>
->>> Do not use test prints in lib, especially those used by runner.
->>
->> Oh, I will. kmemleak is about writing to disk. If that fails, I will tell the user.
->> Why does this restriction applies only to me? See:
->>
->> ---
->> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ git grep igt_warn|wc -l
->> 164
->> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ cd ..
->> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep igt_warn|wc -l
->> 324
->> ---
->>
->> About 50% of all references to igt_warn are in lib, what is the problem with my code?
-> 
-> I'm looking at the code and I have impression this should be part of
-> the runner, not igt library. Do I understand correctly that your
-> code will be used by the runner only and not by the tests?
+Series: add dsc-fallback test (rev4)
+URL   : https://patchwork.freedesktop.org/series/143877/
+State : failure
 
-It is difficult to know for now. We have one test that will use the lib
-as is: `tests/amdgpu/amd_mem_leak.c`. But that is not the main potential
-use case.
+== Summary ==
 
-As I describe in the cover letter, transient leaks are kind of tricky,
-and we may require to request a scan from a test itself for better
-coverage. So in short I honestly do not know if we will have test
-integration in the future or not.
+CI Bug Log - changes from XEIGT_8228_BAT -> XEIGTPW_12576_BAT
+====================================================
 
-> 
-> Regarding your above question, I think runner should use as much as
-> minimal from lib/ directory, because this is collection of functions
-> designed for tests, not for runner. I think generic code like data
-> structures (lists) are fine, but not the others. Imagine you'll
-> incidentally try to use igt_require() - follow the call and see
-> the pitfall there.
+Summary
+-------
 
-Currently the list of lib includes in the runner directory is not
-small (I used a dumb regex that looks for includes starting with igt_):
+  **FAILURE**
 
-#include "igt_aux.h"
-#include "igt_core.h"
-#include "igt_facts.h"
-#include "igt_hook.h"
-#include "igt_list.h"
-#include "igt_taints.h"
-#include "igt_vec.h"
+  Serious unknown changes coming with XEIGTPW_12576_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12576_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_12576_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):
+    - bat-lnl-1:          NOTRUN -> [SKIP][1] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-lnl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][2] +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-dg2-oem2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8228_BAT and XEIGTPW_12576_BAT:
+
+### New IGT tests (1) ###
+
+  * igt@kms_dp_linktrain_fallback@dsc-fallback:
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12576_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_dp_linktrain_fallback@dp-fallback:
+    - bat-atsm-2:         NOTRUN -> [SKIP][4] ([Intel XE#1024]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-atsm-2/igt@kms_dp_linktrain_fallback@dp-fallback.html
+    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#2463]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-adlp-vf/igt@kms_dp_linktrain_fallback@dp-fallback.html
+
+  * igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#1024]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-pvc-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#3419]) +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-bmg-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][8] ([Intel XE#2235]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-lnl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+
+  
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
 
 
-> 
-> So if my understanding is correct and this code should be part of the
-> runner only your test might be moved to the runner_tests.c.
+Build changes
+-------------
 
-It is difficult to know at this stage. At least the amd test I mentioned
-earlier will use it.
+  * IGT: IGT_8228 -> IGTPW_12576
+  * Linux: xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 -> xe-2641-e1c145994c41ed6dd5265bc0a7a276fe1834f3ee
 
-> 
-> BTW please rebase on top of current master, there were changes in
-> the runner/settings.c file that affects this series.
+  IGTPW_12576: 12576
+  IGT_8228: 8228
+  xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77
+  xe-2641-e1c145994c41ed6dd5265bc0a7a276fe1834f3ee: e1c145994c41ed6dd5265bc0a7a276fe1834f3ee
 
-As soon as I am confident this will be merged, I surely will.
+== Logs ==
 
-Thanks!
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/index.html
 
-> 
-> --
-> Zbigniew
-> 
->>
->>
->>>
->>>> +					return false;
->>>> +				}
->>>> +				continue;
->>>> +			} else {
->>>> +				/* Log unrecoverable error */
->>>> +				igt_warn("igt_write: unrecoverable write error");
->>>
->>> Same here.
->> We should not remove this one.
->>
->>>
->>>> +				return false;
->>>> +			}
->>>> +		} else if (written == 0) {
->>>> +			if (++retries > MAX_WRITE_RETRIES) {
->>>> +				igt_warn("igt_write: Exceeded retry limit\n");
->>>
->>> Same here.
->> We should not remove this one.
->>
->> [...]
->>
->>>> +	FILE *fp;
->>>
->>> Why FILE* and fopen? Could you just use open/read?
->>
->> Why not?
->>
->> ---
->> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
->> 97
->> ---
->>
->>
->> [...]
->>
->>>> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file)
->>>> +{
->>>> +	FILE *fp;
->>>
->>> Same here, open/read.
->>
->> Same here, why not?
->> ---
->> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
->> 97
->> ---
->>
->> [...]
->>
->>>> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
->>>
->>> imho better: IGT_KMEMLEAK_RESFILENAME
->>
->> It reads better indeed. Thanks.
->>
->> [...]
+--===============0697442972271339458==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>add dsc-fallback test (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143877/">https://patchwork.freedesktop.org/series/143877/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8228_BAT -&gt; XEIGTPW_12576_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12576_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12576_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12576_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-lnl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-dg2-oem2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8228_BAT and XEIGTPW_12576_BAT:</p>
+<h3>New IGT tests (1)</h3>
+<ul>
+<li>igt@kms_dp_linktrain_fallback@dsc-fallback:<ul>
+<li>Statuses : 8 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12576_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_dp_linktrain_fallback@dp-fallback:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-atsm-2/igt@kms_dp_linktrain_fallback@dp-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +1 other test skip</li>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-adlp-vf/igt@kms_dp_linktrain_fallback@dp-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-pvc-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +1 other test skip</li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-bmg-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +1 other test skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12576/bat-lnl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8228 -&gt; IGTPW_12576</li>
+<li>Linux: xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 -&gt; xe-2641-e1c145994c41ed6dd5265bc0a7a276fe1834f3ee</li>
+</ul>
+<p>IGTPW_12576: 12576<br />
+  IGT_8228: 8228<br />
+  xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77<br />
+  xe-2641-e1c145994c41ed6dd5265bc0a7a276fe1834f3ee: e1c145994c41ed6dd5265bc0a7a276fe1834f3ee</p>
+
+</body>
+</html>
+
+--===============0697442972271339458==--
