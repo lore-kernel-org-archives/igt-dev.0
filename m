@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B66C02198
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Feb 2025 23:59:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0997CC02198
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 00:04:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 62B6E10E401;
-	Mon, 10 Feb 2025 23:59:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAC9810E617;
+	Tue, 11 Feb 2025 00:04:50 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15C4210E401;
- Mon, 10 Feb 2025 23:59:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6847B10E40C;
+ Tue, 11 Feb 2025 00:04:50 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0127237433756150129=="
+ boundary="===============2763925832313416769=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_add_dsc-fallback_test_=28?=
- =?utf-8?q?rev3=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_add_dsc-fallback_test_=28re?=
+ =?utf-8?q?v3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kunal Joshi" <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Feb 2025 23:59:28 -0000
-Message-ID: <173923196808.552223.1484150130433173889@b555e5b46a47>
+Date: Tue, 11 Feb 2025 00:04:50 -0000
+Message-ID: <173923229041.552223.7007127701586445434@b555e5b46a47>
 X-Patchwork-Hint: ignore
 References: <20250210185606.1327892-1-kunal1.joshi@intel.com>
 In-Reply-To: <20250210185606.1327892-1-kunal1.joshi@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0127237433756150129==
+--===============2763925832313416769==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8228 -> IGTPW_12572
+CI Bug Log - changes from XEIGT_8228_BAT -> XEIGTPW_12572_BAT
 ====================================================
 
 Summary
@@ -62,202 +62,97 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_12572 absolutely need to be
+  Serious unknown changes coming with XEIGTPW_12572_BAT absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12572, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in XEIGTPW_12572_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/index.html
+  
 
-Participating hosts (43 -> 42)
+Participating hosts (8 -> 8)
 ------------------------------
 
-  Missing    (1): fi-snb-2520m 
+  No changes in participating hosts
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_12572:
+  Here are the unknown changes that may have been introduced in XEIGTPW_12572_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@kms_dp_linktrain_fallback@dp-fallbck (NEW):
-    - bat-mtlp-9:         NOTRUN -> [SKIP][1] +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-mtlp-9/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - bat-arls-6:         NOTRUN -> [SKIP][2] +1 other test skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arls-6/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - bat-dg2-8:          NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-8/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-mtlp-6/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - bat-dg2-9:          NOTRUN -> [SKIP][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-9/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-
   * igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):
-    - bat-adls-6:         NOTRUN -> [SKIP][6] +1 other test skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adls-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][8] +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-rkl-11600/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-arlh-3:         NOTRUN -> [SKIP][9] +1 other test skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arlh-3/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-dg1-7:          NOTRUN -> [SKIP][10] +1 other test skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg1-7/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-adlp-9:         NOTRUN -> [SKIP][11] +1 other test skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adlp-9/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-rpls-4:         NOTRUN -> [SKIP][12] +1 other test skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-rpls-4/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-twl-1:          NOTRUN -> [SKIP][13] +1 other test skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-arls-5:         NOTRUN -> [SKIP][14] +1 other test skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arls-5/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][15] +1 other test skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-rplp-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][16] +1 other test skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-tgl-1115g4/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-adlp-6:         NOTRUN -> [SKIP][17] +1 other test skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adlp-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-jsl-3:          NOTRUN -> [SKIP][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-3/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-twl-2:          NOTRUN -> [SKIP][19] +1 other test skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][20] +1 other test skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-11/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-dg2-14:         NOTRUN -> [SKIP][21] +1 other test skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-14/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-lnl-1:          NOTRUN -> [SKIP][1] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-lnl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][2] +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-dg2-oem2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
 
   
 New tests
 ---------
 
-  New tests have been introduced between IGT_8228 and IGTPW_12572:
+  New tests have been introduced between XEIGT_8228_BAT and XEIGTPW_12572_BAT:
 
-### New IGT tests (2) ###
-
-  * igt@kms_dp_linktrain_fallback@dp-fallbck:
-    - Statuses : 41 skip(s)
-    - Exec time: [0.0] s
+### New IGT tests (1) ###
 
   * igt@kms_dp_linktrain_fallback@dsc-fallback:
-    - Statuses : 2 pass(s) 39 skip(s)
-    - Exec time: [0.0, 1.40] s
+    - Statuses : 8 skip(s)
+    - Exec time: [0.0] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12572 that come from known issues:
+  Here are the changes found in XEIGTPW_12572_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][22] -> [DMESG-FAIL][23] ([i915#12061]) +1 other test dmesg-fail
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_dp_linktrain_fallback@dp-fallbck (NEW):
-    - bat-atsm-1:         NOTRUN -> [SKIP][24] ([i915#6078]) +1 other test skip
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-atsm-1/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][25] +1 other test skip
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-hsw-4770/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][26] +1 other test skip
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-ivb-3770/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][27] +1 other test skip
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-guc/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][28]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-1/igt@kms_dp_linktrain_fallback@dp-fallbck.html
-    - bat-jsl-3:          NOTRUN -> [SKIP][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-3/igt@kms_dp_linktrain_fallback@dp-fallbck.html
+  * igt@kms_dp_linktrain_fallback@dp-fallback:
+    - bat-atsm-2:         NOTRUN -> [SKIP][4] ([Intel XE#1024]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-atsm-2/igt@kms_dp_linktrain_fallback@dp-fallback.html
+    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#2463]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-adlp-vf/igt@kms_dp_linktrain_fallback@dp-fallback.html
 
   * igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][30] +1 other test skip
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-bsw-n3050/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-arlh-2:         NOTRUN -> [SKIP][31] ([i915#11346]) +1 other test skip
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arlh-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][32] +1 other test skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-glk-j4005/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][33] +1 other test skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-7567u/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][34] +1 other test skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-8809g/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-apl-1:          NOTRUN -> [SKIP][35] +1 other test skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-apl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][36] +1 other test skip
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-cfl-guc/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][37] ([i915#9792])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-mtlp-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][38] +1 other test skip
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-x1275/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][39] ([i915#10470]) +1 other test skip
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adlp-11/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][40] +1 other test skip
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-cfl-8109u/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-dg1-6:          NOTRUN -> [SKIP][41] ([i915#12311]) +1 other test skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg1-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][42] +1 other test skip
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-ilk-650/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][43] +1 other test skip
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-kbl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][44] +1 other test skip
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-cfl-8700k/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][45] +1 other test skip
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-elk-e7500/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][46] +1 other test skip
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-bsw-nick/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#1024]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-pvc-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#3419]) +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-bmg-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][8] ([Intel XE#2235]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-lnl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html
 
   
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [ABORT][47] ([i915#12919] / [i915#13503]) -> [PASS][48]
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_contexts:
-    - bat-twl-1:          [ABORT][49] ([i915#12919]) -> [PASS][50]
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live@gt_contexts.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-1/igt@i915_selftest@live@gt_contexts.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][51] ([i915#12061]) -> [PASS][52] +1 other test pass
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#10470]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8228 -> IGTPW_12572
+  * Linux: xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 -> xe-2635-2fc58ab10139895686001c7e1ee247f15226abc4
 
-  CI-20190529: 20190529
-  CI_DRM_16103: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12572: f7d77d89eaafeca3089eeba128535d35a73ef701 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8228: 8228
+  xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77
+  xe-2635-2fc58ab10139895686001c7e1ee247f15226abc4: 2fc58ab10139895686001c7e1ee247f15226abc4
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/index.html
 
---===============0127237433756150129==
+--===============2763925832313416769==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -281,155 +176,75 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143877/">https://patchwork.freedesktop.org/series/143877/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8228 -&gt; IGTPW_12572</h1>
+    <h1>CI Bug Log - changes from XEIGT_8228_BAT -&gt; XEIGTPW_12572_BAT</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_12572 absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_12572_BAT absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12572, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  introduced in XEIGTPW_12572_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12572:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12572_BAT:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>
-<p>igt@kms_dp_linktrain_fallback@dp-fallbck (NEW):</p>
-<ul>
-<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-mtlp-9/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a> +1 other test skip</li>
-<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arls-6/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-8/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a></li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-mtlp-6/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a></li>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-9/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adls-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a></li>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-rkl-11600/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arlh-3/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg1-7/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adlp-9/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-rpls-4/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arls-5/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-rplp-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-tgl-1115g4/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adlp-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-3/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a></li>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-11/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg2-14/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
+<li>igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-lnl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-dg2-oem2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a></li>
 </ul>
 </li>
 </ul>
 <h2>New tests</h2>
-<p>New tests have been introduced between IGT_8228 and IGTPW_12572:</p>
-<h3>New IGT tests (2)</h3>
+<p>New tests have been introduced between XEIGT_8228_BAT and XEIGTPW_12572_BAT:</p>
+<h3>New IGT tests (1)</h3>
 <ul>
-<li>
-<p>igt@kms_dp_linktrain_fallback@dp-fallbck:</p>
-<ul>
-<li>Statuses : 41 skip(s)</li>
+<li>igt@kms_dp_linktrain_fallback@dsc-fallback:<ul>
+<li>Statuses : 8 skip(s)</li>
 <li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dp_linktrain_fallback@dsc-fallback:</p>
-<ul>
-<li>Statuses : 2 pass(s) 39 skip(s)</li>
-<li>Exec time: [0.0, 1.40] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12572 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_12572_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@i915_selftest@live@workarounds:</p>
+<p>igt@kms_dp_linktrain_fallback@dp-fallback:</p>
 <ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dp_linktrain_fallback@dp-fallbck (NEW):</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-atsm-1/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +1 other test skip</li>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-hsw-4770/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a> +1 other test skip</li>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-ivb-3770/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a> +1 other test skip</li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-guc/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a> +1 other test skip</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-1/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a></li>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-jsl-3/igt@kms_dp_linktrain_fallback@dp-fallbck.html">SKIP</a></li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-atsm-2/igt@kms_dp_linktrain_fallback@dp-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +1 other test skip</li>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-adlp-vf/igt@kms_dp_linktrain_fallback@dp-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_dp_linktrain_fallback@dsc-fallback (NEW):</p>
 <ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-bsw-n3050/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arlh-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +1 other test skip</li>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-glk-j4005/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-7567u/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-8809g/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-apl-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-cfl-guc/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-mtlp-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-kbl-x1275/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-adlp-11/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a>) +1 other test skip</li>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-cfl-8109u/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-dg1-6/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +1 other test skip</li>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-ilk-650/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-kbl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-cfl-8700k/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-elk-e7500/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/fi-bsw-nick/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_contexts:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live@gt_contexts.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-twl-1/igt@i915_selftest@live@gt_contexts.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12572/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-pvc-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +1 other test skip</li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-bmg-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +1 other test skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12572/bat-lnl-2/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +1 other test skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8228 -&gt; IGTPW_12572</li>
+<li>Linux: xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 -&gt; xe-2635-2fc58ab10139895686001c7e1ee247f15226abc4</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16103: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12572: f7d77d89eaafeca3089eeba128535d35a73ef701 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8228: 8228</p>
+<p>IGTPW_12572: f7d77d89eaafeca3089eeba128535d35a73ef701 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8228: 8228<br />
+  xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77<br />
+  xe-2635-2fc58ab10139895686001c7e1ee247f15226abc4: 2fc58ab10139895686001c7e1ee247f15226abc4</p>
 
 </body>
 </html>
 
---===============0127237433756150129==--
+--===============2763925832313416769==--
