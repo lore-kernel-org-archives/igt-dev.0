@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 553F6C0219B
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 15:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC2EC0219B
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 16:17:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C00C110E6F4;
-	Tue, 11 Feb 2025 15:42:24 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A35710E0EE;
- Tue, 11 Feb 2025 15:42:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4657369248039003043=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5CD6889143;
+	Tue, 11 Feb 2025 16:17:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6SfdwUY";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99DCA10E700
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2025 16:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739290659; x=1770826659;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Ydu3KnMXNXhJYmU7jU/FpYRPob/1ZGbwz2T+k6hqosc=;
+ b=S6SfdwUYFyR64kzLCkyUlLcmwL15vGWThOfVTJhPoDQE1wJuwhwg1xB8
+ /T7p4XMaPW4cJ8mOKoxN6RFUuA/ppeRnMctbXI5T97+bGvHGbpQRSqOdA
+ JXjVTJfCbsK25+Ccxs6686Qni8g95p8A5hRy2UNzeCVvdHtOe0jx51T3+
+ Nc87ttCEv/gms4PgTWfQzmxWPJumOU8iIkfEEJC6OOxZ0E4DJIofms60y
+ acOivFAtfwuvreIzQiCGhsZtPZgHKYET7Dx/7R+m1/w6+O/TfmPyF+jSM
+ wxAl6P8kLdnbhOBbKydUoKYM+FXMQd2R3wWopSjBX+xAKSmJfhXWUJVGh Q==;
+X-CSE-ConnectionGUID: 9JTbU1+hT5WslvDCk45Miw==
+X-CSE-MsgGUID: uceHLwjQSIaxIktfynj/Aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="43576205"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="43576205"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2025 08:17:39 -0800
+X-CSE-ConnectionGUID: TqypE/gFRVCeT2/uE3oMQQ==
+X-CSE-MsgGUID: H9rCrNBKS1u8Toiog96ZiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117172213"
+Received: from dprybysh-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.61])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2025 08:17:37 -0800
+Date: Tue, 11 Feb 2025 17:17:34 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t v4 1/2] lib/igt_kmemleak: library to interact with
+ kmemleak
+Message-ID: <20250211161734.nm6dsq3ahhcn7hvz@zkempczy-mobl2>
+References: <20250128151537.515639-1-peter.senna@linux.intel.com>
+ <20250128151537.515639-2-peter.senna@linux.intel.com>
+ <20250131123454.ilhzogs6a2w7s3on@kamilkon-desk.igk.intel.com>
+ <17fe9952-7b2e-46fd-af1f-cd7cbea2cebd@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_XE_support_for_i915?=
- =?utf-8?q?=5Fpipe=5Fstress?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Feb 2025 15:42:24 -0000
-Message-ID: <173928854436.974576.12678144319497062554@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250211122743.329838-1-swati2.sharma@intel.com>
-In-Reply-To: <20250211122743.329838-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17fe9952-7b2e-46fd-af1f-cd7cbea2cebd@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,221 +72,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4657369248039003043==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Feb 03, 2025 at 10:23:00AM +0100, Peter Senna Tschudin wrote:
+> Hi Kamil,
+> 
+> Thank you for your review. Please see below.
+> 
+> On 31.01.2025 13:34, Kamil Konieczny wrote:
+> 
+> [...]
+> 
+> >> +#include <stdio.h>
+> >> +#include <string.h>
+> >> +#include <unistd.h>
+> >> +#include <fcntl.h>
+> >> +#include <errno.h>
+> > 
+> > Sort this alphabetically with exception of unistd.h - this
+> > header could be first.
+> 
+> That is picky, but ok.
+> 
+> 
+> > 
+> >> +
+> >> +#include "igt_core.h"
+> >> +#include "igt_kmemleak.h"
+> >> +
+> >> +/* We can change the path for unit testing, see igt_kmemleak_init() */
+> >> +static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
+> >> +
+> >> +#define MAX_WRITE_RETRIES 5
+> >> +/**
+> >> + * igt_kmemleak_write - Writes the buffer to the file descriptor retrying when
+> >> + * possible.
+> >> + * @fd: The file descriptor to write to.
+> >> + * @buf: Pointer to the data to write.
+> >> + * @count: Total number of bytes to write.
+> >> + *
+> >> + * Returns the total number of bytes written on success, or -1 on failure.
+> >> + */
+> >> +static bool igt_kmemleak_write(int fd, const void *buf, size_t count)
+> >> +{
+> >> +	const char *ptr = buf;
+> >> +	size_t remaining = count;
+> >> +	ssize_t written;
+> >> +	int retries = 0;
+> >> +
+> >> +	while (remaining > 0) {
+> >> +		written = write(fd, ptr, remaining);
+> >> +		if (written > 0) {
+> >> +			ptr += written;
+> >> +			remaining -= written;
+> >> +		} else if (written == -1) {
+> >> +			if (errno == EINTR || errno == EAGAIN) {
+> >> +				/* Retry for recoverable errors */
+> >> +				if (++retries > MAX_WRITE_RETRIES) {
+> >> +					igt_warn("igt_write: Exceeded retry limit\n");
+> > 
+> > Do not use test prints in lib, especially those used by runner.
+> 
+> Oh, I will. kmemleak is about writing to disk. If that fails, I will tell the user.
+> Why does this restriction applies only to me? See:
+> 
+> ---
+> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ git grep igt_warn|wc -l
+> 164
+> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ cd ..
+> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep igt_warn|wc -l
+> 324
+> ---
+> 
+> About 50% of all references to igt_warn are in lib, what is the problem with my code?
 
-== Series Details ==
+I'm looking at the code and I have impression this should be part of
+the runner, not igt library. Do I understand correctly that your
+code will be used by the runner only and not by the tests?
 
-Series: Add XE support for i915_pipe_stress
-URL   : https://patchwork.freedesktop.org/series/144665/
-State : success
+Regarding your above question, I think runner should use as much as
+minimal from lib/ directory, because this is collection of functions
+designed for tests, not for runner. I think generic code like data
+structures (lists) are fine, but not the others. Imagine you'll
+incidentally try to use igt_require() - follow the call and see
+the pitfall there.
 
-== Summary ==
+So if my understanding is correct and this code should be part of the
+runner only your test might be moved to the runner_tests.c.
 
-CI Bug Log - changes from IGT_8228 -> IGTPW_12574
-====================================================
+BTW please rebase on top of current master, there were changes in
+the runner/settings.c file that affects this series.
 
-Summary
--------
+--
+Zbigniew
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/index.html
-
-Participating hosts (43 -> 40)
-------------------------------
-
-  Missing    (3): fi-hsw-4770 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12574 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@load:
-    - bat-mtlp-9:         [PASS][1] -> [DMESG-WARN][2] ([i915#13494])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-9/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-mtlp-9/igt@i915_module_load@load.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg2-9:          [PASS][3] -> [ABORT][4] ([i915#13571])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-dg2-9/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-dg2-9/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-twl-2:          NOTRUN -> [ABORT][5] ([i915#12919] / [i915#13503])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-twl-2:          NOTRUN -> [ABORT][6] ([i915#12919])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [ABORT][9] ([i915#12919] / [i915#13503]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_contexts:
-    - bat-twl-1:          [ABORT][11] ([i915#12919]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live@gt_contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-1/igt@i915_selftest@live@gt_contexts.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14] +1 other test pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
-  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
-  [i915#13571]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8228 -> IGTPW_12574
-  * Linux: CI_DRM_16103 -> CI_DRM_16107
-
-  CI-20190529: 20190529
-  CI_DRM_16103: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16107: 27f9e4e3866556a4498e3b4ddebc27d4f6d0ae2f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12574: 12574
-  IGT_8228: 8228
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/index.html
-
---===============4657369248039003043==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add XE support for i915_pipe_stress</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144665/">https://patchwork.freedesktop.org/series/144665/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8228 -&gt; IGTPW_12574</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/index.html</p>
-<h2>Participating hosts (43 -&gt; 40)</h2>
-<p>Missing    (3): fi-hsw-4770 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12574 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-dg2-9/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-dg2-9/igt@i915_pm_rpm@module-reload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571">i915#13571</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-2/igt@i915_selftest@live@gt_engines.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_contexts:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-twl-1/igt@i915_selftest@live@gt_contexts.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-twl-1/igt@i915_selftest@live@gt_contexts.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8228/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12574/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8228 -&gt; IGTPW_12574</li>
-<li>Linux: CI_DRM_16103 -&gt; CI_DRM_16107</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16103: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16107: 27f9e4e3866556a4498e3b4ddebc27d4f6d0ae2f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12574: 12574<br />
-  IGT_8228: 8228</p>
-
-</body>
-</html>
-
---===============4657369248039003043==--
+> 
+> 
+> > 
+> >> +					return false;
+> >> +				}
+> >> +				continue;
+> >> +			} else {
+> >> +				/* Log unrecoverable error */
+> >> +				igt_warn("igt_write: unrecoverable write error");
+> > 
+> > Same here.
+> We should not remove this one.
+> 
+> > 
+> >> +				return false;
+> >> +			}
+> >> +		} else if (written == 0) {
+> >> +			if (++retries > MAX_WRITE_RETRIES) {
+> >> +				igt_warn("igt_write: Exceeded retry limit\n");
+> > 
+> > Same here.
+> We should not remove this one.
+> 
+> [...]
+> 
+> >> +	FILE *fp;
+> > 
+> > Why FILE* and fopen? Could you just use open/read?
+> 
+> Why not?
+> 
+> ---
+> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+> 97
+> ---
+> 
+> 
+> [...]
+> 
+> >> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file)
+> >> +{
+> >> +	FILE *fp;
+> > 
+> > Same here, open/read.
+> 
+> Same here, why not?
+> ---
+> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+> 97
+> ---
+> 
+> [...]
+> 
+> >> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
+> > 
+> > imho better: IGT_KMEMLEAK_RESFILENAME
+> 
+> It reads better indeed. Thanks.
+> 
+> [...]
