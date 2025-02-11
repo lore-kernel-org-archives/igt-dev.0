@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0F84C0219B
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 16:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD5CC0219B
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Feb 2025 16:29:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96D7F10E705;
-	Tue, 11 Feb 2025 16:29:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F3C810E708;
+	Tue, 11 Feb 2025 16:29:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jLJxxJMg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hCKpS5GI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F94310E705
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2025 16:29:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E621910E708
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2025 16:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739291369; x=1770827369;
+ t=1739291373; x=1770827373;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KOqohFcdSaxzcgn3BSbcUTga1u4AweGJ0u25UrC4HxE=;
- b=jLJxxJMgvVvDNr9VE9s24bOPClvnhU7x5bEa+SQLCzJBmy9cOrIFY2aF
- 2y3CbmNfqZAjuJ4xQexBGkJOpI6jiRYHWFjFWG3lA5qYb6hmL5t77kyfx
- 4dZRWWbyA48PLVexp8zO1gRwFA5g2+pS67EIMqiGFYsMFTsWviesTmgdc
- zgSH0sXLSZXGNXNc8ULY9kCGSWm34uF3tdLUV6l1tchDNzBrFolS5xY4h
- NFPam7tetqXk6q/eK3xxiuRRLxoS1ivJgilBJvHbvmiOisfh5PYVqD/P6
- M2WwucS2+GVi4WNUYz99U5KoUvSza3adhyBjvx0FJTXzumBevhBOHvlq5 Q==;
-X-CSE-ConnectionGUID: hdiffL53QAGYsFxKdR7uxQ==
-X-CSE-MsgGUID: VNXHai8MTfiPvytfTJwV8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39113941"
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="39113941"
+ bh=wqc8aIGDJMHzoAGnvqBG8cCsS4NAVsoxx75uFx1tZX8=;
+ b=hCKpS5GIbNqPOz96hifsNHw0uZb432OF3RVsK+3kbbOu3H+81xjTVMEd
+ dR40ctVZoRPMDCsR0lNZwneJQ88eX/nXzg5loMsRxftbrr1PmtQdUZekD
+ ktwjN6STTAqRz+4LyHwQRNZSq/Swr8Z3PpizODy2JmmZHoK7y64BQdjVg
+ S+Au2wLDKMe7cAqtRhf291bNli8OJ6OMWtKRK+U5M0AosU11naj8JDV4n
+ AeJuXxCV3brYDMfIBw+gK4QlNB1Hq6u/YvA5XOx/OPHKvM4dsHlf20zl3
+ +nWi4STVi+b1r7mOGnsiD4HXi7U5zWXE0vOPW2wsjdj8w/gc+9H2Uhllc Q==;
+X-CSE-ConnectionGUID: PxP9UsMyRs6TnE1K0bn9EA==
+X-CSE-MsgGUID: NiM/Gh5WQkOGQwZIbRTHyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39113942"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; d="scan'208";a="39113942"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2025 08:29:29 -0800
-X-CSE-ConnectionGUID: xbdAD9UySDO5rCUV5C1rUA==
-X-CSE-MsgGUID: BIToWkzWSPuIN8Uy8UoEOQ==
+ 11 Feb 2025 08:29:33 -0800
+X-CSE-ConnectionGUID: ef2eZiL6SNWWyFl7t2DQGA==
+X-CSE-MsgGUID: r5cteBwORLqMK1lxrHvW6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116643050"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116643055"
 Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2025 08:29:27 -0800
+ 11 Feb 2025 08:29:31 -0800
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@linux.intel.com, lukasz.laguna@intel.com,
  satyanarayana.k.v.p@intel.com, michal.wajdeczko@intel.com,
  adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com
-Subject: [PATCH i-g-t v3 1/4] lib/xe/xe_sriov_debugfs: Add helper to read VF's
- configuration data
-Date: Tue, 11 Feb 2025 17:29:16 +0100
-Message-Id: <20250211162919.15076-2-lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t v3 2/4] lib/xe/xe_sriov_provisioning: Add helper to get
+ VF's provisioned quota
+Date: Tue, 11 Feb 2025 17:29:17 +0100
+Message-Id: <20250211162919.15076-3-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20250211162919.15076-1-lukasz.laguna@intel.com>
 References: <20250211162919.15076-1-lukasz.laguna@intel.com>
@@ -70,123 +70,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper allowing to read configuration data that VF queried from GuC
-during probe.
+Add helper allowing to get VF's provisioned quota based on provisioned
+ranges exposed in debugfs.
 
 v2:
- - remove redundant fd closing (Marcin)
- - move helper to xe_sriov_debugfs lib (Marcin)
-v3:
- - apply style corrections reported by checkpatch (Marcin)
+ - release allocated struct (Marcin)
 
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- lib/xe/xe_sriov_debugfs.c | 78 +++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_sriov_debugfs.h |  5 +++
- 2 files changed, 83 insertions(+)
+ lib/xe/xe_sriov_provisioning.c | 59 ++++++++++++++++++++++++++++++++++
+ lib/xe/xe_sriov_provisioning.h |  6 ++++
+ 2 files changed, 65 insertions(+)
 
-diff --git a/lib/xe/xe_sriov_debugfs.c b/lib/xe/xe_sriov_debugfs.c
-index abb1bf7d5..8f30fa312 100644
---- a/lib/xe/xe_sriov_debugfs.c
-+++ b/lib/xe/xe_sriov_debugfs.c
-@@ -471,3 +471,81 @@ DEFINE_XE_SRIOV_PF_DEBUGFS_FUNC(bool *, get_boolean, __igt_sysfs_get_boolean)
-  * Return: 0 on success, negative error code on failure.
-  */
- DEFINE_XE_SRIOV_PF_DEBUGFS_FUNC(bool, set_boolean, __igt_sysfs_set_boolean)
+diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
+index 22035ffd8..f7d8c63d1 100644
+--- a/lib/xe/xe_sriov_provisioning.c
++++ b/lib/xe/xe_sriov_provisioning.c
+@@ -6,6 +6,8 @@
+ #include <errno.h>
+ 
+ #include "igt_core.h"
++#include "igt_debugfs.h"
++#include "igt_sriov_device.h"
+ #include "intel_chipset.h"
+ #include "linux_scaffold.h"
+ #include "xe/xe_mmio.h"
+@@ -296,3 +298,60 @@ bool xe_sriov_is_shared_res_provisionable(int pf, enum xe_sriov_shared_res res,
+ 
+ 	return true;
+ }
 +
 +/**
-+ * __xe_sriov_vf_debugfs_get_selfconfig - Read VF's configuration data.
-+ * @vf: VF device file descriptor
++ * __xe_sriov_pf_get_provisioned_quota - Get VF's provisioned quota.
++ * @pf: PF device file descriptor
 + * @res: Shared resource type (see enum xe_sriov_shared_res)
++ * @vf_num: VF number (1-based)
 + * @gt_num: GT number
 + * @value: Pointer to store the read value
 + *
-+ * Reads the specified shared resource @res from selfconfig of given VF device
-+ * @vf on GT @gt_num.
++ * Gets VF's provisioning value for the specified shared resource @res,
++ * VF number @vf_num and GT number @gt_num.
 + *
 + * Return: 0 on success, negative error code on failure.
 + */
-+int __xe_sriov_vf_debugfs_get_selfconfig(int vf, enum xe_sriov_shared_res res,
-+					 unsigned int gt_num, uint64_t *value)
++int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
++					unsigned int vf_num, unsigned int gt_num,
++					uint64_t *value)
 +{
-+	FILE *file;
-+	size_t n = 0;
-+	char *line = NULL;
-+	int fd, ret = 0;
++	struct xe_sriov_provisioned_range *ranges;
++	int ret;
 +
-+	fd = igt_debugfs_gt_open(vf, gt_num, "vf/self_config", O_RDONLY);
-+	if (fd < 0)
-+		return fd;
-+	file = fdopen(fd, "r");
-+	if (!file) {
-+		close(fd);
-+		return -errno;
-+	}
++	ret = xe_sriov_pf_debugfs_read_check_ranges(pf, res, gt_num, &ranges,
++						    igt_sriov_get_enabled_vfs(pf));
++	if (igt_debug_on_f(ret, "%s: Failed ranges check on GT%u (%d)\n",
++			   xe_sriov_debugfs_provisioned_attr_name(res), gt_num, ret))
++		return ret;
 +
-+	while (getline(&line, &n, file) >= 0) {
-+		switch (res) {
-+		case XE_SRIOV_SHARED_RES_CONTEXTS:
-+			ret = sscanf(line, "GuC contexts: %lu", value);
-+			break;
-+		case XE_SRIOV_SHARED_RES_DOORBELLS:
-+			ret = sscanf(line, "GuC doorbells: %lu", value);
-+			break;
-+		case XE_SRIOV_SHARED_RES_GGTT:
-+			ret = sscanf(line, "GGTT size: %lu", value);
-+			break;
-+		case XE_SRIOV_SHARED_RES_LMEM:
-+			ret = sscanf(line, "LMEM size: %lu", value);
-+			break;
-+		}
++	*value = ranges[vf_num - 1].end - ranges[vf_num - 1].start + 1;
 +
-+		if (ret > 0)
-+			break;
-+	}
++	free(ranges);
 +
-+	free(line);
-+	fclose(file);
-+
-+	return ret ? 0 : -1;
++	return 0;
 +}
 +
 +/**
-+ * xe_sriov_vf_debugfs_get_selfconfig - Read VF's configuration data.
++ * xe_sriov_pf_get_provisioned_quota - Get VF's provisioned quota.
 + * @pf: PF device file descriptor
 + * @res: Shared resource type (see enum xe_sriov_shared_res)
++ * @vf_num: VF number (1-based)
 + * @gt_num: GT number
 + *
-+ * A throwing version of __xe_sriov_vf_debugfs_get_selfconfig().
++ * A throwing version of __xe_sriov_pf_get_provisioned_quota().
 + * Instead of returning an error code, it returns the quota value and asserts
 + * in case of an error.
 + *
-+ * Return: The quota for the given shared resource.
++ * Return: The provisioned quota for the given shared resource.
 + *         Asserts in case of failure.
 + */
-+uint64_t xe_sriov_vf_debugfs_get_selfconfig(int vf, enum xe_sriov_shared_res res,
-+					    unsigned int gt_num)
++uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
++					   unsigned int vf_num, unsigned int gt_num)
 +{
 +	uint64_t value;
 +
-+	igt_fail_on(__xe_sriov_vf_debugfs_get_selfconfig(vf, res, gt_num, &value));
++	igt_fail_on(__xe_sriov_pf_get_provisioned_quota(pf, res, vf_num, gt_num, &value));
 +
 +	return value;
 +}
-diff --git a/lib/xe/xe_sriov_debugfs.h b/lib/xe/xe_sriov_debugfs.h
-index cd5f932be..4983afbb3 100644
---- a/lib/xe/xe_sriov_debugfs.h
-+++ b/lib/xe/xe_sriov_debugfs.h
-@@ -39,4 +39,9 @@ int __xe_sriov_pf_debugfs_set_boolean(int pf, unsigned int vf_num,
- 				      unsigned int gt_num, const char *attr,
- 				      bool value);
+diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
+index b4300ec2e..171e4f028 100644
+--- a/lib/xe/xe_sriov_provisioning.h
++++ b/lib/xe/xe_sriov_provisioning.h
+@@ -90,4 +90,10 @@ void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
+ 				     unsigned int vf_num, unsigned int gt_num,
+ 				     uint64_t value);
  
-+int __xe_sriov_vf_debugfs_get_selfconfig(int vf, enum xe_sriov_shared_res res,
-+					 unsigned int gt_num, uint64_t *value);
-+uint64_t xe_sriov_vf_debugfs_get_selfconfig(int vf, enum xe_sriov_shared_res res,
-+					    unsigned int gt_num);
++int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
++					unsigned int vf_num, unsigned int gt_num,
++					uint64_t *value);
++uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
++					   unsigned int vf_num, unsigned int gt_num);
 +
- #endif /* __XE_SRIOV_DEBUGFS_H__ */
+ #endif /* __XE_SRIOV_PROVISIONING_H__ */
 -- 
 2.40.0
 
