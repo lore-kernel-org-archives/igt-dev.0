@@ -4,53 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327E9C02198
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 15:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA78BC02198
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 18:48:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD62E10E8FA;
-	Wed, 12 Feb 2025 15:52:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9999510E960;
+	Wed, 12 Feb 2025 18:48:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jodpf2Iq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fibiALZ9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAF9310E8FA
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 15:52:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDEDD10E960
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 18:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739375559; x=1770911559;
+ t=1739386085; x=1770922085;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=53/01W0JsbyYfyxb+urEKhbLlXiKPJCzo9Ry8M5dYVk=;
- b=Jodpf2IqHA6iB8+58PgYnZNJVY9AFfeFwHFfQZlZvnbb9JPrMXHjE7eK
- g6uvLzvF3vYfqSVd/B/F6gPZB3sEP6vMmC4Z/Iai1qPsy58tVuvPOK7QI
- fEmE3rNAOHo6gAfxKoVnbd3ULDk3U0pEccBILLvrBva3qHMIYHC3m/F4c
- 2Ff0Y9gNGNac94AkaNPDw01C07yZVLZpVkFlz3Q1Q111DlXYu7hsyE00C
- WIZL8NbxglNmZrORcMkXncaTVECUZ9TTZDdZQwavqAsfoOFcL8oEVm3/Q
- +o5cmiP9udE9DaQH1wF8Iq+6yZm7bpgatfkcRec0l14LjoUllwpBBIu0U w==;
-X-CSE-ConnectionGUID: U2KvGV6hQoyE/aNly7gPeQ==
-X-CSE-MsgGUID: BrOlcFztSLOOOwk1jQkvAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="43696964"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="43696964"
+ bh=YAjdIdNAHBPpbDSRxY6Z5K+xCXdjWSUoeFQ6lLSskTU=;
+ b=fibiALZ9mRb5RMxoEFBQNyWMiTP6/Bx/F+xR4nxUN7tIFJ56BkqR1Rzu
+ CVd/pEnRgMlcJ8tnWtX+u4WYdOwMP+g0PNlPFw+TM/9bXEhUmiXApN0xr
+ i3sRO33AADA///mo5Y0/CgH1Jp1++Jqxh2/9y5M+NShBeniTTi2CqBZc+
+ oa1LNPi8nsLFmZopkBvp/SaxOXO2ux83NMKKIVwAvt0bLdp0YukwIVzKN
+ +D9Hk1krJCEd4lyk62ebHvNCFnUaMZAnWUDOndb7vH6Hqc79QHlaTwXt1
+ jtibtHurHDBgTWH7+RP1IG7pwzhRvkqfVK9uTVVcWKgpWy9Ycz3NIuQNY w==;
+X-CSE-ConnectionGUID: gDAdyo1oSjCPQL17IkDjHA==
+X-CSE-MsgGUID: K4lQAT2ORhmYSIRo6bgIOA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="40209766"
+X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="40209766"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 07:52:35 -0800
-X-CSE-ConnectionGUID: hBRU6H0cQ8Kgx3cOF7lupQ==
-X-CSE-MsgGUID: Yh7UUTUQTg63k+VGERAq9g==
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 10:48:04 -0800
+X-CSE-ConnectionGUID: UtZcgGg1SBCfOYe+dZJKag==
+X-CSE-MsgGUID: OixNukeBTRyQHDpSpxXeUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116979784"
-Received: from unknown (HELO pravalika-NUC8i7BEH.iind.intel.com)
- ([10.145.169.156])
- by fmviesa003.fm.intel.com with ESMTP; 12 Feb 2025 07:52:32 -0800
-From: pravalika gurram <pravalika.gurram@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	zhanjun.dong@intel.com
-Cc: pravalika gurram <pravalika.gurram@intel.com>
-Subject: [PATCH v3] tests/intel/xe_exec_capture: Enhance test to check with
- DUMPABLE flag
-Date: Wed, 12 Feb 2025 21:02:52 +0530
-Message-Id: <20250212153252.790029-1-pravalika.gurram@intel.com>
-X-Mailer: git-send-email 2.37.1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117028598"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.246.17.221])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 10:48:01 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+ Narasimha C V <narasimha.c.v@intel.com>,
+ =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ Tomasz Lis <tomasz.lis@intel.com>
+Subject: [PATCH v2 i-g-t 0/5] Add SR-IOV provisioning scheduling attributes
+ and tests
+Date: Wed, 12 Feb 2025 19:47:52 +0100
+Message-Id: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,152 +77,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-check if the VM is there when DRM_XE_VM_BIND_FLAG_DUMPABLE is set
-in the generated devcoredump. check VM address within the range.
-VM address is located after END_TAG and is at the end of dump, that's
-why "stop on END_TAG" is removed.
+Add helper functions to get and set SR-IOV provisioning scheduling
+attributes. These functions provide an interface for accessing
+provisioning attributes such as execution quantum, preemption timeout,
+schedule if idle policy, schedule priority, and engine reset policy.
+Include both returning and asserting versions to handle errors
+appropriately.
 
-Signed-off-by: pravalika gurram <pravalika.gurram@intel.com>
----
- tests/intel/xe_exec_capture.c | 63 +++++++++++++++++++++++++----------
- 1 file changed, 45 insertions(+), 18 deletions(-)
+Introduce a function to validate default SR-IOV scheduling attributes
+for VFs and PF. This function skips the test if non-default attributes
+are detected. The default attributes verified include:
+- exec_quantum_ms set to 0 (infinite execution quantum)
+- preempt_timeout_us set to 0 (infinite preemption timeout)
+- sched_if_idle set to false
+- reset_engine set to false
+- sched_priority set to XE_SRIOV_SCHED_PRIORITY_LOW
 
-diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
-index 55ec3d4bd..4cc58928e 100644
---- a/tests/intel/xe_exec_capture.c
-+++ b/tests/intel/xe_exec_capture.c
-@@ -53,16 +53,15 @@
- 
- #define DUMP_PATH			"/sys/class/drm/card%d/device/devcoredump/data"
- #define START_TAG			"**** Job ****"
--#define END_TAG				"**** VM state ****"
- 
- /* Optional Space */
--#define SPC_O				"[ \t]*"
-+#define SPC_O				"[ \t\\.]*"
- /* Required Space */
--#define SPC				"[ \t]+"
-+#define SPC				"[ \t\\.]+"
- /* Optional Non-Space */
--#define NSPC_O				"([^ \t]*)"
-+#define NSPC_O				"([^ \t\\.]*)"
- /* Required Non-Space */
--#define NSPC				"([^ \t]+)"
-+#define NSPC				"([^ \t\\.]+)"
- #define BEG				"^" SPC_O
- #define REQ_FIELD			NSPC SPC
- #define REQ_FIELD_LAST			NSPC SPC_O
-@@ -77,6 +76,8 @@
- #define INDEX_ENGINE_PHYSICAL		2
- #define INDEX_ENGINE_NAME		1
- #define INDEX_ENGINE_INSTANCE		4
-+#define INDEX_VM_LENGTH			2
-+#define INDEX_VM_SIZE			3
- 
- static u64
- xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
-@@ -177,7 +178,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_qu
- 	};
- 
- 	sync[0].handle = syncobj_create(fd, 0);
--	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-+	__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, bo_size,
-+				DRM_XE_VM_BIND_OP_MAP, flags, sync, 1, 0, 0);
- 
- 	for (i = 0; i < n_execs; i++) {
- 		u64 base_addr = addr;
-@@ -287,10 +289,6 @@ static int load_all(FILE *fd, char **lines, char *buf)
- 
- 		/* Only save up to MAX_LINE_LEN to buffer */
- 		safe_strncpy(lines[i++], buf, MAX_LINE_LEN);
--
--		/* Stop on END_TAG */
--		if (!strncmp(END_TAG, buf, strlen(END_TAG)))
--			break;
- 	}
- 	return start_line;
- }
-@@ -351,7 +349,6 @@ static char
- 				value = &line[match[target_index].rm_so];
- 				line[match[target_index].rm_eo] = '\0';
- 			}
--
- 			if (key && value && strcmp(tag, key) == 0)
- 				return value;
- 			/* if key != tag,  keep searching and loop to next line */
-@@ -361,16 +358,43 @@ static char
- 	return NULL;
- }
- 
-+/* example i/p : [1580001a0000].length: 0x10000 */
-+
-+static uint64_t
-+compare_hex_value(const char *output)
-+{
-+	char result[64];
-+	uint64_t ret_val;
-+	char *src = (char *)output, *dst = result;
-+
-+	while (*src) {
-+		if (*src == '[' || *src == ']') {
-+			src++;
-+			continue;
-+		}
-+
-+		*dst = toupper((unsigned char)*src);
-+		dst++;
-+		src++;
-+	}
-+	*dst = '\0';
-+	ret_val = strtoull(result, NULL, 16);
-+	return ret_val;
-+}
-+
- static void
--check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo, u64 addr_hi)
-+check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo,
-+	      u64 addr_hi, int tag_index, int target_index)
- {
- 	u64 result;
- 	char *output;
- 
--	igt_assert_f((output = get_coredump_item(regex, lines, tag, INDEX_KEY, INDEX_VALUE)),
-+	igt_assert_f((output = get_coredump_item(regex, lines, tag, tag_index, target_index)),
- 		     "Target not found:%s\n", tag);
--	result = strtoul(output, NULL, 16);
--	igt_debug("Compare %s %s vs [0x%lX-0x%lX]\n", tag, output, addr_lo, addr_hi);
-+
-+	result = compare_hex_value(output);
-+	igt_debug("Compare %s %s vs [0x%lX-0x%lX] result %lX\n", tag, output,
-+		addr_lo, addr_hi, result);
- 	igt_assert_f((addr_lo <= result) && (result <= addr_hi),
- 		     "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
- }
-@@ -435,7 +459,7 @@ static void test_card(int fd)
- 		igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
- 			  hwe->engine_instance);
- 
--		test_legacy_mode(fd, hwe, 1, 1, 0, addr);
-+		test_legacy_mode(fd, hwe, 1, 1, DRM_XE_VM_BIND_FLAG_DUMPABLE, addr);
- 		/* Wait 1 sec for devcoredump complete */
- 		sleep(1);
- 
-@@ -451,10 +475,13 @@ static void test_card(int fd)
- 
- 		check_item_str(&regex, lines, "Capture_source:", INDEX_KEY, INDEX_VALUE,
- 			       "GuC", false);
-+
- 		check_item_u64(&regex, lines, "ACTHD:", addr,
--			       addr + BATCH_DW_COUNT * sizeof(u32));
-+			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_KEY, INDEX_VALUE);
- 		check_item_u64(&regex, lines, "RING_BBADDR:", addr,
--			       addr + BATCH_DW_COUNT * sizeof(u32));
-+			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_KEY, INDEX_VALUE);
-+		check_item_u64(&regex, lines, "length:", addr,
-+			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_VALUE, INDEX_KEY);
- 
- 		/* clear devcoredump */
- 		rm_devcoredump(path);
+Implement equal-throughput validation for VFs (PF is treated as VF0)
+with identical workloads and scheduling settings.
+Scheduling settings are adjusted to consider execution quantum, job
+duration, and the number of VFs, while adhering to timeout constraints
+and aiming for a sufficient number of job repeats. This approach
+balances overall test duration with accuracy.
+
+Verify the occurrence of engine resets
+when non-preemptible workloads surpass the combined
+duration of execution quantum and preemption timeout.
+
+v2:
+- After review corrections (update description, remove magic numbers,
+  remove debug message for consistency with the remaining code,
+  remove short command line options) (Lukasz)
+- Refactor scheduling parameter preparation for reuse in other tests
+- Replace hardcoded JOB_TIMEOUT_MS with sysfs_get_job_timeout_ms() to
+  dynamically retrieve the value.
+
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Narasimha C V <narasimha.c.v@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Tomasz Lis <tomasz.lis@intel.com>
+
+Marcin Bernatowicz (5):
+  lib/xe/xe_sriov_provisioning: Add scheduling attributes accessors
+  lib/xe/xe_sriov_provisioning: Add helper to check default scheduling
+    attributes
+  tests/xe_sriov_scheduling: VF equal-throughput validation
+  tests/xe_sriov_scheduling: nonpreempt-engine-resets subtest
+  tests/xe_sriov_scheduling: Get job timeout from sysfs
+
+ lib/xe/xe_sriov_provisioning.c    | 410 ++++++++++++++-
+ lib/xe/xe_sriov_provisioning.h    |  55 +-
+ tests/intel/xe_sriov_scheduling.c | 821 ++++++++++++++++++++++++++++++
+ tests/meson.build                 |   1 +
+ 4 files changed, 1285 insertions(+), 2 deletions(-)
+ create mode 100644 tests/intel/xe_sriov_scheduling.c
+
 -- 
-2.37.1
+2.31.1
 
