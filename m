@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65370C02198
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 18:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EEDEC021A0
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 18:48:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 20C2910E960;
-	Wed, 12 Feb 2025 18:48:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BF0A10E966;
+	Wed, 12 Feb 2025 18:48:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I+zTb8K/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HO+GIwZj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F8D910E960
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 18:48:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C96B010E967
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 18:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739386112; x=1770922112;
+ t=1739386118; x=1770922118;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BC5WJTGQp4vut7GH7sofDqT1HE5f7lkcGVZPqvCyQvA=;
- b=I+zTb8K/hnJB73las1R9VF328kKKwSSAe+UetJEcFH245bQrPK4rEm/t
- j/05MZqaH7BxjBQ5WvIL6supA9y0JVjvKHgL90f0tquq2R5z6fn9PuWqz
- vtmPVZTF7gUwCW3thB5S4dlRT4iFcZLyp6HJ8RcKKkHsfAz/h2A1PYrRH
- 0O2mmnAh1rVaAyOPvqmXYLCNwuhlH2L3dZBbLWif8QPGRHW10mbvzBPJ2
- rYbigUkjN8WV87jVHA6L0lvhJVnlB2Fw9ZCmZT4WA78YXJ7rgWkLXZKQy
- RZy8KUH1Vgi7+SgrA9ofKoheDev67ZTvvCf6G0tJnS0/dAkUArfrDWCc1 Q==;
-X-CSE-ConnectionGUID: yEVEA1wMQLa9Sx/Vg71S6A==
-X-CSE-MsgGUID: pb5lwGnoRsCy7LW5LoFJYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="40209805"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="40209805"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 10:48:31 -0800
-X-CSE-ConnectionGUID: 496Mz9tlSNqYBk1pP6XR6g==
-X-CSE-MsgGUID: bV1or8ObT+Smy1dGz1xpQg==
+ bh=0Vj8pehjP4O2SdUY+b3x+o4PFYZ22x2rI2XjtVqv6xA=;
+ b=HO+GIwZjyQw69fXx5zlHnz7ih4VnKnNAAENdi1Njsf9hOBxyRTQXI9JS
+ GfSfDKqthIUvLyO+ZoOJXJS5mfsQ+OOQKUZDD1aXgP4aJiolhPo+G97iE
+ KAI1xzefbsp4o3kj6eBB6c4VPJ69e2xrZYGj2yerlgJVTnPB+0CLaiHUg
+ IilHFoYI1hDy17c7jDfLfI1hyxehrt/X9aqhAunWmeMPew1rxxHy6YRNk
+ 7LMUx1L/OZHIDyadp52q6i6erVpegCEblb464uGqugErUqSBQxwlc8ZQN
+ vyjzAvigbImB2FsJzOwhxbOgvgtJJh9MagnxhR1+EzKQVt3WW9NbqCuMz Q==;
+X-CSE-ConnectionGUID: uKpyeSAcQ2a+DWb5VCGXJw==
+X-CSE-MsgGUID: kztbwEb2S2+plCtR/zCkhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="39761989"
+X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="39761989"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 10:48:38 -0800
+X-CSE-ConnectionGUID: Y07Q27d0S2yD+9v91fYGfw==
+X-CSE-MsgGUID: YC66aVRYQ8CWYnD5JWpF/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117028661"
+X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="143750853"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.246.17.221])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 10:48:28 -0800
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 10:48:35 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -54,10 +54,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH v2 i-g-t 4/5] tests/xe_sriov_scheduling:
- nonpreempt-engine-resets subtest
-Date: Wed, 12 Feb 2025 19:47:56 +0100
-Message-Id: <20250212184757.586071-5-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 5/5] tests/xe_sriov_scheduling: Get job timeout from
+ sysfs
+Date: Wed, 12 Feb 2025 19:47:57 +0100
+Message-Id: <20250212184757.586071-6-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
 References: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
@@ -79,14 +79,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify the occurrence of engine resets
-when non-preemptible workloads surpass the combined
-duration of execution quantum and preemption timeout.
-
-v2:
-- Replace magic numbers with defines (Lukasz)
-- Reuse adjusted prepare_vf_sched_params
-- Remove redundant asserts
+Replace hardcoded JOB_TIMEOUT_MS with sysfs_get_job_timeout_ms() to
+dynamically retrieve the value.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -99,121 +93,90 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- tests/intel/xe_sriov_scheduling.c | 94 +++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ tests/intel/xe_sriov_scheduling.c | 30 ++++++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
 diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-index a9ac950cf..fe037c1dc 100644
+index fe037c1dc..82c525fe3 100644
 --- a/tests/intel/xe_sriov_scheduling.c
 +++ b/tests/intel/xe_sriov_scheduling.c
-@@ -620,6 +620,87 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
- 	igt_sriov_disable_vfs(pf_fd);
- }
+@@ -5,6 +5,7 @@
+ #include "igt.h"
+ #include "igt_sriov_device.h"
+ #include "igt_syncobj.h"
++#include "igt_sysfs.h"
+ #include "xe_drm.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_spin.h"
+@@ -423,7 +424,6 @@ static void log_sample_values(char *id, struct subm_stats *stats,
+ #define MIN_EXEC_QUANTUM_MS 8
+ #define MAX_EXEC_QUANTUM_MS 32
+ #define MIN_JOB_DURATION_MS 16
+-#define JOB_TIMEOUT_MS 5000
+ #define MAX_TOTAL_DURATION_MS 15000
+ #define PREFERRED_TOTAL_DURATION_MS 10000
+ #define MAX_PREFERRED_REPEATS 100
+@@ -434,6 +434,18 @@ struct job_sched_params {
+ 	struct vf_sched_params sched_params;
+ };
  
-+/**
-+ * SUBTEST: nonpreempt-engine-resets
-+ * Description:
-+ *   Check all VFs running a non-preemptible workload with a duration
-+ *   exceeding the sum of its execution quantum and preemption timeout,
-+ *   will experience engine reset due to preemption timeout.
-+ */
-+static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
-+				     const struct subm_opts *opts)
++static uint32_t sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
 +{
-+	struct subm_set set_ = {}, *set = &set_;
-+	struct vf_sched_params vf_sched_params = prepare_vf_sched_params(num_vfs, 1,
-+									 JOB_TIMEOUT_MS, opts);
-+	uint64_t duration_ms = 2 * vf_sched_params.exec_quantum_ms +
-+			       vf_sched_params.preempt_timeout_us / USEC_PER_MSEC;
-+	int preemptible_end = 1;
-+	uint8_t vf_ids[num_vfs + 1 /*PF*/];
++	int engine_dir;
++	uint32_t ret;
 +
-+	igt_info("eq=%ums pt=%uus duration=%lums num_vfs=%d\n",
-+		 vf_sched_params.exec_quantum_ms,
-+		 vf_sched_params.preempt_timeout_us, duration_ms, num_vfs);
++	engine_dir = xe_sysfs_engine_open(fd, eci->gt_id, eci->engine_class);
++	ret = igt_sysfs_get_u32(engine_dir, "job_timeout_ms");
++	close(engine_dir);
 +
-+	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
-+		    &(struct init_vf_ids_opts){ .shuffle = true,
-+						.shuffle_pf = true });
-+	xe_sriov_require_default_scheduling_attributes(pf_fd);
-+	/* enable VFs */
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	/* set scheduling params (PF and VFs) */
-+	set_vfs_scheduling_params(pf_fd, num_vfs, &vf_sched_params);
-+	/* probe VFs */
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+	for (int vf = 1; vf <= num_vfs; ++vf)
-+		igt_sriov_bind_vf_drm_driver(pf_fd, vf);
-+
-+	/* init subm_set */
-+	subm_set_alloc_data(set, num_vfs + 1 /*PF*/);
-+	subm_set_init_sync_method(set, opts->sync_method);
-+
-+	for (int n = 0; n < set->ndata; ++n) {
-+		int vf_fd =
-+			vf_ids[n] ?
-+				igt_sriov_open_vf_drm_device(pf_fd, vf_ids[n]) :
-+				drm_reopen_driver(pf_fd);
-+
-+		igt_assert_fd(vf_fd);
-+		set->data[n].opts = opts;
-+		subm_init(&set->data[n].subm, vf_fd, vf_ids[n], 0,
-+			  xe_engine(vf_fd, 0)->instance);
-+		subm_workload_init(&set->data[n].subm,
-+				   &(struct subm_work_desc){
-+					.duration_ms = duration_ms,
-+					.preempt = (n < preemptible_end),
-+					.repeats = MIN_NUM_REPEATS });
-+		igt_stats_init_with_size(&set->data[n].stats.samples,
-+					 set->data[n].subm.work.repeats);
-+		if (set->sync_method == SYNC_BARRIER)
-+			set->data[n].barrier = &set->barrier;
-+	}
-+
-+	/* dispatch spinners, wait for results */
-+	subm_set_dispatch_and_wait_threads(set);
-+
-+	/* verify results */
-+	for (int n = 0; n < set->ndata; ++n) {
-+		if (n < preemptible_end) {
-+			igt_assert_eq(0, set->data[n].stats.num_early_finish);
-+			igt_assert_eq(set->data[n].subm.work.repeats,
-+				      set->data[n].stats.samples.n_values);
-+		} else {
-+			igt_assert_eq(1, set->data[n].stats.num_early_finish);
-+		}
-+	}
-+
-+	/* cleanup */
-+	subm_set_fini(set);
-+	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
-+	igt_sriov_disable_vfs(pf_fd);
++	return ret;
 +}
 +
- static struct subm_opts subm_opts = {
- 	.sync_method = SYNC_BARRIER,
- 	.outlier_treshold = 0.1,
-@@ -697,6 +778,19 @@ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
- 				throughput_ratio(pf_fd, vf, &subm_opts);
- 	}
+ static uint32_t derive_preempt_timeout_us(const uint32_t exec_quantum_ms)
+ {
+ 	return exec_quantum_ms * 2 * USEC_PER_MSEC;
+@@ -539,15 +551,16 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
+ {
+ 	struct subm_set set_ = {}, *set = &set_;
+ 	uint8_t vf_ids[num_vfs + 1 /*PF*/];
++	uint32_t job_timeout_ms = sysfs_get_job_timeout_ms(pf_fd, &xe_engine(pf_fd, 0)->instance);
+ 	struct job_sched_params job_sched_params = prepare_job_sched_params(num_vfs + 1,
+-									    JOB_TIMEOUT_MS,
++									    job_timeout_ms,
+ 									    opts);
  
-+	igt_describe("Check VFs experience engine reset due to preemption timeout");
-+	igt_subtest_with_dynamic("nonpreempt-engine-resets") {
-+		if (extended_scope)
-+			for_each_sriov_num_vfs(pf_fd, vf)
-+				igt_dynamic_f("numvfs-%d", vf)
-+					nonpreempt_engine_resets(pf_fd, vf,
-+								 &subm_opts);
-+
-+		for_random_sriov_vf(pf_fd, vf)
-+			igt_dynamic("numvfs-random")
-+				nonpreempt_engine_resets(pf_fd, vf, &subm_opts);
-+	}
-+
- 	igt_fixture {
- 		set_vfs_scheduling_params(pf_fd, igt_sriov_get_total_vfs(pf_fd),
- 					  &(struct vf_sched_params){});
+-	igt_info("eq=%ums pt=%uus duration=%ums repeats=%d num_vfs=%d\n",
++	igt_info("eq=%ums pt=%uus duration=%ums repeats=%d num_vfs=%d job_timeout=%ums\n",
+ 		 job_sched_params.sched_params.exec_quantum_ms,
+ 		 job_sched_params.sched_params.preempt_timeout_us,
+ 		 job_sched_params.duration_ms, job_sched_params.num_repeats,
+-		 num_vfs + 1);
++		 num_vfs + 1, job_timeout_ms);
+ 
+ 	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
+ 		    &(struct init_vf_ids_opts){ .shuffle = true,
+@@ -631,16 +644,17 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
+ 				     const struct subm_opts *opts)
+ {
+ 	struct subm_set set_ = {}, *set = &set_;
++	uint32_t job_timeout_ms = sysfs_get_job_timeout_ms(pf_fd, &xe_engine(pf_fd, 0)->instance);
+ 	struct vf_sched_params vf_sched_params = prepare_vf_sched_params(num_vfs, 1,
+-									 JOB_TIMEOUT_MS, opts);
++									 job_timeout_ms, opts);
+ 	uint64_t duration_ms = 2 * vf_sched_params.exec_quantum_ms +
+ 			       vf_sched_params.preempt_timeout_us / USEC_PER_MSEC;
+ 	int preemptible_end = 1;
+ 	uint8_t vf_ids[num_vfs + 1 /*PF*/];
+ 
+-	igt_info("eq=%ums pt=%uus duration=%lums num_vfs=%d\n",
+-		 vf_sched_params.exec_quantum_ms,
+-		 vf_sched_params.preempt_timeout_us, duration_ms, num_vfs);
++	igt_info("eq=%ums pt=%uus duration=%lums num_vfs=%d job_timeout=%ums\n",
++		 vf_sched_params.exec_quantum_ms, vf_sched_params.preempt_timeout_us,
++		 duration_ms, num_vfs, job_timeout_ms);
+ 
+ 	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
+ 		    &(struct init_vf_ids_opts){ .shuffle = true,
 -- 
 2.31.1
 
