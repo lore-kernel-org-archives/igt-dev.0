@@ -4,63 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 817B1C02198
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 15:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327E9C02198
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 15:52:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 43C1210E8FC;
-	Wed, 12 Feb 2025 15:38:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD62E10E8FA;
+	Wed, 12 Feb 2025 15:52:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YTXWYHiu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jodpf2Iq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDB6110E8F7
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 15:38:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAF9310E8FA
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 15:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739374720; x=1770910720;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=BFgf9uifjH7MLemtL5BEJVhVrL5hhc0Jv0kEzLDSK6w=;
- b=YTXWYHiu7QTFxHeSakeehYgObdWSK6HajZO6xwLvnB+gaxzTkD1T+/Q/
- +JtTVsaFVSBgfaHu0VBrXWu5QWr7Zn3RmxXZ2k4pBPa/h3VjXiE8ggNuB
- S5IXOYgIgfv0F4cKRBnjRc+h1gDtx76lHRFyg1S4XNTzY4fk+ejJ/oUVq
- lsQX/DrutGavFg9g9pDR4684ibGX8IeWKQzFD1jOUhfHvrZuVPFTvKqtt
- 7Daz9G/U0UYGtEXQ8lwd6bBS2TwTi2olML6UL9iybKx6gIgK/hDMFaKWt
- 9j1oX57El5sfkcYyqjPVtNwRc59Wn5l3SwguhdMB3jM+hhBwfJsi4ssgE A==;
-X-CSE-ConnectionGUID: Lwi+pXKXTS2vs0UbKDk9+A==
-X-CSE-MsgGUID: hQCGPo36RMuqJJgk7Q8qtQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="40187348"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="40187348"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 07:38:39 -0800
-X-CSE-ConnectionGUID: gF/tP330Sve/PrHGBtwgUQ==
-X-CSE-MsgGUID: hbKwm0vgQRuf5iNWhEqiaw==
+ t=1739375559; x=1770911559;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=53/01W0JsbyYfyxb+urEKhbLlXiKPJCzo9Ry8M5dYVk=;
+ b=Jodpf2IqHA6iB8+58PgYnZNJVY9AFfeFwHFfQZlZvnbb9JPrMXHjE7eK
+ g6uvLzvF3vYfqSVd/B/F6gPZB3sEP6vMmC4Z/Iai1qPsy58tVuvPOK7QI
+ fEmE3rNAOHo6gAfxKoVnbd3ULDk3U0pEccBILLvrBva3qHMIYHC3m/F4c
+ 2Ff0Y9gNGNac94AkaNPDw01C07yZVLZpVkFlz3Q1Q111DlXYu7hsyE00C
+ WIZL8NbxglNmZrORcMkXncaTVECUZ9TTZDdZQwavqAsfoOFcL8oEVm3/Q
+ +o5cmiP9udE9DaQH1wF8Iq+6yZm7bpgatfkcRec0l14LjoUllwpBBIu0U w==;
+X-CSE-ConnectionGUID: U2KvGV6hQoyE/aNly7gPeQ==
+X-CSE-MsgGUID: BrOlcFztSLOOOwk1jQkvAQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="43696964"
+X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="43696964"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 07:52:35 -0800
+X-CSE-ConnectionGUID: hBRU6H0cQ8Kgx3cOF7lupQ==
+X-CSE-MsgGUID: Yh7UUTUQTg63k+VGERAq9g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="136125006"
-Received: from fzwolins-mobl.ger.corp.intel.com (HELO [10.246.0.226])
- ([10.246.0.226])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 07:38:37 -0800
-Message-ID: <fe66128f-aa56-4911-b2b1-3fbef4e0d007@linux.intel.com>
-Date: Wed, 12 Feb 2025 16:38:34 +0100
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116979784"
+Received: from unknown (HELO pravalika-NUC8i7BEH.iind.intel.com)
+ ([10.145.169.156])
+ by fmviesa003.fm.intel.com with ESMTP; 12 Feb 2025 07:52:32 -0800
+From: pravalika gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	zhanjun.dong@intel.com
+Cc: pravalika gurram <pravalika.gurram@intel.com>
+Subject: [PATCH v3] tests/intel/xe_exec_capture: Enhance test to check with
+ DUMPABLE flag
+Date: Wed, 12 Feb 2025 21:02:52 +0530
+Message-Id: <20250212153252.790029-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] Bump aborting on network failure deadline to 40
- seconds
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com,
- katarzyna.piecielska@intel.com, ryszard.knop@intel.com,
- ewelina.musial@intel.com, adrinael@adrinael.net, mateusz.grabski@intel.com,
- konrad.b.brodzik@intel.com
-References: <20250206152147.209277-1-peter.senna@linux.intel.com>
- <20250211092108.enj3kzrlh3rzh6rk@kamilkon-desk.igk.intel.com>
- <d137decd-4adf-474b-a56b-1398ef5472d1@linux.intel.com>
- <20250212145922.mw7obok46u2appzy@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250212145922.mw7obok46u2appzy@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -77,137 +67,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+check if the VM is there when DRM_XE_VM_BIND_FLAG_DUMPABLE is set
+in the generated devcoredump. check VM address within the range.
+VM address is located after END_TAG and is at the end of dump, that's
+why "stop on END_TAG" is removed.
 
+Signed-off-by: pravalika gurram <pravalika.gurram@intel.com>
+---
+ tests/intel/xe_exec_capture.c | 63 +++++++++++++++++++++++++----------
+ 1 file changed, 45 insertions(+), 18 deletions(-)
 
-On 12.02.2025 15:59, Kamil Konieczny wrote:
-> Hi Peter,
-> On 2025-02-11 at 10:55:37 +0100, Peter Senna Tschudin wrote:
->> Hi Kamil,
->>
->> Thank you for your review. Please see below.
->>
->> On 11.02.2025 10:21, Kamil Konieczny wrote:
->>> Hi Peter,
->>> On 2025-02-06 at 16:21:47 +0100, Peter Senna Tschudin wrote:
->>>> Commit ddfde25f16ba ("runner: Add support for aborting on network
->>>> failure") introduced a 20 second deadline for the DUT’s network
->>>> to recover after a suspend/resume cycle. If the network isn’t
->>>> back up within that time, igt_runner aborts the test run to save logs
->>>> and prevent potential log loss from an imminent power cycle.
->>>>
->>>> This deadline was set to accommodate our internal CI system, which
->>>> checks for DUT network connectivity every 5 seconds and retries up
->>>> to 3 times at 20 second intervals. If it fails 3 consecutive checks,
->>>
->>> This is a little confusing, you wrote in first paragraph about
->>> 20 second deadline and here it looks like 60 seconds (3*20).
->>
->> The first paragraph is explicitly about the deadline introduced by a
->> previous commit. The second paragraph is explicitly about the internal
->> CI mechanism that inspired the deadline. Can you explain what is
->> confusing?
->>
-> 
-> Using same value "20 seconds" confused me, sorry. imho
-> it is better to write something like:
-> 
-> External monitoring machine checks DUTs health and if it
-> cannot reach it over network for 60 seconds it will reboot DUT.
-> 
-> So no need to exactly describe how it is done, only what is
-> happening and why runner needs to adapt to that.
-> 
->>>
->>>> it triggers a power cycle on the DUT.
->>>>
->>>> Although our internal CI system can be configured with a longer
->>> -------------- ^^^^^^^^
->>> Remove this.
->>
->> No, why?
->>
-> 
-> Looks like it happened when Ci tested upstream commit:
-> https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10030
-> 
-> and it is one year old, do we have anything new?
-> 
->>>
->>>> wait time, extending it further would unnecessarily prolong tests
->>>> in cases of DUT hangs.
->>>>
->>>> Bumping the deadline to 40 seconds keeps the abort mechanism safely
->>>
->>> imho this should be option for igt-runner, I would prefer to not
->>> adjust it later, let CI team tune it. Option could be either time
->>> or retry counter or both.
->>
->> I disagree. We can add value now by potentially preventing premature
-> 
-> I would prefer actual case solved by this change, not 'potential' one.
-
-Unfortunately we are dealing with an issue that is not deterministic. There
-is no way to know how long it will take for the network to go up after a
-suspend and resume cycle.
-
-Our main assumption is that because 20 seconds is enough for the network to
-come up after most suspend/resume cycles, doubling it should considerably
-reduce premature aborts, solving the problem.
-
-Unfortunately for cases where the network takes more than 40 seconds to go
-up, this patch makes no difference. But then it is ok to abort.
-
-> 
->> aborts with very little risk of creating any issue. The people in CC
->> seems to agree with that.
->>
->> This patch is as simple as it can get. I don't buy the benefit of the
->> extra complexity of adding yet another command line option. It is way
->> more effective to send one of these every 6 years or so.
-> 
-> Sorry, I didn't look into code, after reading part of it setting this
-> is done not by runner options but by igtrc file or enviroment, see
-> my reply to Ryszard. imho it is better to put these into configs/options
-> then hard-coding into runner, we could keep old 20s as default.
-> 
->>
->> Am I correct that this is a nack from you?
->>
-> 
-> No, I am just not convinced it will solve anything, do you have
-> numbers? What are times needed for hibernate and resume? Because
-> it will be time-in-hibernate + time-for-resume + time-for-ping-deadline
-> and if this exceeds 60sec DUT will be rebooted.
-
-Unfortunately CI does not track how long the network takes to go up after
-a suspend and resume cycle.
-
-Statistically speaking, we expect that bumping the deadline to 40 seconds
-will reduce premature aborts meaningfully, solving the problem. We have an
-asymmetric situation, which is good: having this patch has potential to
-make a positive impact, while the patch risk is very low.
-
-Sorry but nothing is exact here, still this patch makes sense.
-
-> 
-> Regards,
-> Kamil
-> 
->>>
->>>> within our internal CI system retry window while improving chances
->>>> of preventing a premature abort. For upstream testing on Jenkins,
->>>> the deadlines vary from 16 and 25 minutes, and this change has
->>>> no impact.
->>>>
->>>> CC: juha-pekka.heikkila@intel.com
->>>> CC: katarzyna.piecielska@intel.com
->>>> CC: ryszard.knop@intel.com
->>>> CC: ewelina.musial@intel.com
->>>> CC: adrinael@adrinael.net
->>>> CC: mateusz.grabski@intel.com
->>>> CC: konrad.b.brodzik@intel.com
->>>
->>> imho better here 'Cc:'
->>
->> Thank you!
+diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
+index 55ec3d4bd..4cc58928e 100644
+--- a/tests/intel/xe_exec_capture.c
++++ b/tests/intel/xe_exec_capture.c
+@@ -53,16 +53,15 @@
+ 
+ #define DUMP_PATH			"/sys/class/drm/card%d/device/devcoredump/data"
+ #define START_TAG			"**** Job ****"
+-#define END_TAG				"**** VM state ****"
+ 
+ /* Optional Space */
+-#define SPC_O				"[ \t]*"
++#define SPC_O				"[ \t\\.]*"
+ /* Required Space */
+-#define SPC				"[ \t]+"
++#define SPC				"[ \t\\.]+"
+ /* Optional Non-Space */
+-#define NSPC_O				"([^ \t]*)"
++#define NSPC_O				"([^ \t\\.]*)"
+ /* Required Non-Space */
+-#define NSPC				"([^ \t]+)"
++#define NSPC				"([^ \t\\.]+)"
+ #define BEG				"^" SPC_O
+ #define REQ_FIELD			NSPC SPC
+ #define REQ_FIELD_LAST			NSPC SPC_O
+@@ -77,6 +76,8 @@
+ #define INDEX_ENGINE_PHYSICAL		2
+ #define INDEX_ENGINE_NAME		1
+ #define INDEX_ENGINE_INSTANCE		4
++#define INDEX_VM_LENGTH			2
++#define INDEX_VM_SIZE			3
+ 
+ static u64
+ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+@@ -177,7 +178,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_qu
+ 	};
+ 
+ 	sync[0].handle = syncobj_create(fd, 0);
+-	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++	__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, bo_size,
++				DRM_XE_VM_BIND_OP_MAP, flags, sync, 1, 0, 0);
+ 
+ 	for (i = 0; i < n_execs; i++) {
+ 		u64 base_addr = addr;
+@@ -287,10 +289,6 @@ static int load_all(FILE *fd, char **lines, char *buf)
+ 
+ 		/* Only save up to MAX_LINE_LEN to buffer */
+ 		safe_strncpy(lines[i++], buf, MAX_LINE_LEN);
+-
+-		/* Stop on END_TAG */
+-		if (!strncmp(END_TAG, buf, strlen(END_TAG)))
+-			break;
+ 	}
+ 	return start_line;
+ }
+@@ -351,7 +349,6 @@ static char
+ 				value = &line[match[target_index].rm_so];
+ 				line[match[target_index].rm_eo] = '\0';
+ 			}
+-
+ 			if (key && value && strcmp(tag, key) == 0)
+ 				return value;
+ 			/* if key != tag,  keep searching and loop to next line */
+@@ -361,16 +358,43 @@ static char
+ 	return NULL;
+ }
+ 
++/* example i/p : [1580001a0000].length: 0x10000 */
++
++static uint64_t
++compare_hex_value(const char *output)
++{
++	char result[64];
++	uint64_t ret_val;
++	char *src = (char *)output, *dst = result;
++
++	while (*src) {
++		if (*src == '[' || *src == ']') {
++			src++;
++			continue;
++		}
++
++		*dst = toupper((unsigned char)*src);
++		dst++;
++		src++;
++	}
++	*dst = '\0';
++	ret_val = strtoull(result, NULL, 16);
++	return ret_val;
++}
++
+ static void
+-check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo, u64 addr_hi)
++check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo,
++	      u64 addr_hi, int tag_index, int target_index)
+ {
+ 	u64 result;
+ 	char *output;
+ 
+-	igt_assert_f((output = get_coredump_item(regex, lines, tag, INDEX_KEY, INDEX_VALUE)),
++	igt_assert_f((output = get_coredump_item(regex, lines, tag, tag_index, target_index)),
+ 		     "Target not found:%s\n", tag);
+-	result = strtoul(output, NULL, 16);
+-	igt_debug("Compare %s %s vs [0x%lX-0x%lX]\n", tag, output, addr_lo, addr_hi);
++
++	result = compare_hex_value(output);
++	igt_debug("Compare %s %s vs [0x%lX-0x%lX] result %lX\n", tag, output,
++		addr_lo, addr_hi, result);
+ 	igt_assert_f((addr_lo <= result) && (result <= addr_hi),
+ 		     "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
+ }
+@@ -435,7 +459,7 @@ static void test_card(int fd)
+ 		igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
+ 			  hwe->engine_instance);
+ 
+-		test_legacy_mode(fd, hwe, 1, 1, 0, addr);
++		test_legacy_mode(fd, hwe, 1, 1, DRM_XE_VM_BIND_FLAG_DUMPABLE, addr);
+ 		/* Wait 1 sec for devcoredump complete */
+ 		sleep(1);
+ 
+@@ -451,10 +475,13 @@ static void test_card(int fd)
+ 
+ 		check_item_str(&regex, lines, "Capture_source:", INDEX_KEY, INDEX_VALUE,
+ 			       "GuC", false);
++
+ 		check_item_u64(&regex, lines, "ACTHD:", addr,
+-			       addr + BATCH_DW_COUNT * sizeof(u32));
++			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_KEY, INDEX_VALUE);
+ 		check_item_u64(&regex, lines, "RING_BBADDR:", addr,
+-			       addr + BATCH_DW_COUNT * sizeof(u32));
++			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_KEY, INDEX_VALUE);
++		check_item_u64(&regex, lines, "length:", addr,
++			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_VALUE, INDEX_KEY);
+ 
+ 		/* clear devcoredump */
+ 		rm_devcoredump(path);
+-- 
+2.37.1
 
