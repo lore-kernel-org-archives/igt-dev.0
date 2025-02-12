@@ -4,56 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEA1EC0219E
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 09:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1885CC02198
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 10:02:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 633F410E82D;
-	Wed, 12 Feb 2025 09:37:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE7C710E1C1;
+	Wed, 12 Feb 2025 10:02:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YQeAbY+b";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jxRba7z5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2577D10E82D
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 09:37:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CDEA10E1C1
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 10:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739353076; x=1770889076;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Pt3MkXT6MCXomnDj8//nGnNMx39PZX0yzg5V41yV/GA=;
- b=YQeAbY+bQKJkhbus/rItOgpvBKrcUeDmBE6hkZcQqYU8KW6XzSuhVOS5
- N2+Bm2ND0eBuF2E224T1yLTAy53JdCTxOIpbNHEogGSNxSTadkxI1lafy
- Oyy+qz1kgsDRMhg6flcFbn8FZHEuKIPqB0dHeww0wESi6FNIVNV+Xeiwb
- TZkMiuX5HBRC10gxq4DePo50vLzVvdmcrrZ+ycvvbxMM6pRCIxsipL0td
- 9t0eIquC67ocT4GZ1zIh9G9lAHMt3RbHJHbXX+BK94TKQ65+fuUN5AVq2
- tqe5Hjkl2lkYaoHp+cQRqNQme2iqFHlkJBcX/vFlpi2DzyKy8+xgYVAQK Q==;
-X-CSE-ConnectionGUID: QbCy8vI+Qx+1b8zylQ8koA==
-X-CSE-MsgGUID: SnGuSfNcR6iIi7TJwoXWQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="42842257"
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="42842257"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 01:37:56 -0800
-X-CSE-ConnectionGUID: r0LP7nLmS8aEzNIQyAgfZA==
-X-CSE-MsgGUID: rApql4QxRNC8GkglARH1Vg==
+ t=1739354522; x=1770890522;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=+TYWeiZrJ5kE658oHqx4SXDgEMJ8NOicYpzElJAM3kc=;
+ b=jxRba7z59Q1Ui7U3G6Q41v1MC1c9hARO7jc4J0DwEvg/nFrJPl9DGJGw
+ fhjMOtyjoxFkbRhHNtzQI/DGMwSbAM161crkDRkz0a31N5MMlSfFoTIqO
+ QEjeUephaTF7AZcA0Fu2Ikn9ZM8gEJBlixZmrzKyNM62ycTK7pxBIZ2JQ
+ mWACEXsJHAaFQuS2zGIpTLKpmvnxt5gOD4/7MC8QimKNOABMr+9vrx8Fx
+ Y/+x5wpiQ9bx/8fMixhhIYyYRApk4Sfzci8EfULeCfNDtuWPWnE3O5tEw
+ 3hvfAfz7G7x+kNkTSX6JcwVP50c+11EhfONX0NCy+fmLYHxP/Mmm3XSai w==;
+X-CSE-ConnectionGUID: 5v7jcjuZSGy+1O0yIknPLQ==
+X-CSE-MsgGUID: f+wEpso7SBKSCYilQVqufA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="40149459"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="40149459"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 02:02:02 -0800
+X-CSE-ConnectionGUID: 1Vg8WACgSvW1HmQCCKon3A==
+X-CSE-MsgGUID: 4dJyyUiXTOSh365nDo2KZg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117951792"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 01:37:53 -0800
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, vinay.belgaumkar@intel.com,
- soham.purkait@intel.com
-Subject: [PATCH i-g-t 3/3] tests/intel/xe_pmu: Add idle engine activity test
-Date: Wed, 12 Feb 2025 15:28:29 +0530
-Message-ID: <20250212095834.384508-4-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250212095834.384508-1-riana.tauro@intel.com>
-References: <20250212095834.384508-1-riana.tauro@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116877596"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.137])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 02:02:00 -0800
+Date: Wed, 12 Feb 2025 11:01:57 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t v4 1/2] lib/igt_kmemleak: library to interact with
+ kmemleak
+Message-ID: <20250212100157.zgzmorbk7rd3ogd3@zkempczy-mobl2>
+References: <20250128151537.515639-1-peter.senna@linux.intel.com>
+ <20250128151537.515639-2-peter.senna@linux.intel.com>
+ <20250131123454.ilhzogs6a2w7s3on@kamilkon-desk.igk.intel.com>
+ <17fe9952-7b2e-46fd-af1f-cd7cbea2cebd@linux.intel.com>
+ <20250211161734.nm6dsq3ahhcn7hvz@zkempczy-mobl2>
+ <5f9f0b38-343b-4b1a-b5c7-ad1706fa2ddd@linux.intel.com>
+ <20250212083614.w6nmqvkblab3ha4c@zkempczy-mobl2>
+ <5bbb923f-e81a-4c54-b1f7-10e6d8561369@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <5bbb923f-e81a-4c54-b1f7-10e6d8561369@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,100 +80,285 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to validate engine is idle by reading PMU counters
-(engine-active-ticks, engine-total-ticks) when idle
+On Wed, Feb 12, 2025 at 10:18:17AM +0100, Peter Senna Tschudin wrote:
+> 
+> 
+> On 12.02.2025 09:36, Zbigniew Kempczyński wrote:
+> > On Tue, Feb 11, 2025 at 08:12:16PM +0100, Peter Senna Tschudin wrote:
+> >> Hi Zbigniew,
+> >>
+> >> Thank you for your comments, please see my answers below.
+> >>
+> >> On 11.02.2025 17:17, Zbigniew Kempczyński wrote:
+> >>> On Mon, Feb 03, 2025 at 10:23:00AM +0100, Peter Senna Tschudin wrote:
+> >>>> Hi Kamil,
+> >>>>
+> >>>> Thank you for your review. Please see below.
+> >>>>
+> >>>> On 31.01.2025 13:34, Kamil Konieczny wrote:
+> >>>>
+> >>>> [...]
+> >>>>
+> >>>>>> +#include <stdio.h>
+> >>>>>> +#include <string.h>
+> >>>>>> +#include <unistd.h>
+> >>>>>> +#include <fcntl.h>
+> >>>>>> +#include <errno.h>
+> >>>>>
+> >>>>> Sort this alphabetically with exception of unistd.h - this
+> >>>>> header could be first.
+> >>>>
+> >>>> That is picky, but ok.
+> >>>>
+> >>>>
+> >>>>>
+> >>>>>> +
+> >>>>>> +#include "igt_core.h"
+> >>>>>> +#include "igt_kmemleak.h"
+> >>>>>> +
+> >>>>>> +/* We can change the path for unit testing, see igt_kmemleak_init() */
+> >>>>>> +static char igt_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
+> >>>>>> +
+> >>>>>> +#define MAX_WRITE_RETRIES 5
+> >>>>>> +/**
+> >>>>>> + * igt_kmemleak_write - Writes the buffer to the file descriptor retrying when
+> >>>>>> + * possible.
+> >>>>>> + * @fd: The file descriptor to write to.
+> >>>>>> + * @buf: Pointer to the data to write.
+> >>>>>> + * @count: Total number of bytes to write.
+> >>>>>> + *
+> >>>>>> + * Returns the total number of bytes written on success, or -1 on failure.
+> >>>>>> + */
+> >>>>>> +static bool igt_kmemleak_write(int fd, const void *buf, size_t count)
+> >>>>>> +{
+> >>>>>> +	const char *ptr = buf;
+> >>>>>> +	size_t remaining = count;
+> >>>>>> +	ssize_t written;
+> >>>>>> +	int retries = 0;
+> >>>>>> +
+> >>>>>> +	while (remaining > 0) {
+> >>>>>> +		written = write(fd, ptr, remaining);
+> >>>>>> +		if (written > 0) {
+> >>>>>> +			ptr += written;
+> >>>>>> +			remaining -= written;
+> >>>>>> +		} else if (written == -1) {
+> >>>>>> +			if (errno == EINTR || errno == EAGAIN) {
+> >>>>>> +				/* Retry for recoverable errors */
+> >>>>>> +				if (++retries > MAX_WRITE_RETRIES) {
+> >>>>>> +					igt_warn("igt_write: Exceeded retry limit\n");
+> >>>>>
+> >>>>> Do not use test prints in lib, especially those used by runner.
+> >>>>
+> >>>> Oh, I will. kmemleak is about writing to disk. If that fails, I will tell the user.
+> >>>> Why does this restriction applies only to me? See:
+> >>>>
+> >>>> ---
+> >>>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ git grep igt_warn|wc -l
+> >>>> 164
+> >>>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools/lib$ cd ..
+> >>>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep igt_warn|wc -l
+> >>>> 324
+> >>>> ---
+> >>>>
+> >>>> About 50% of all references to igt_warn are in lib, what is the problem with my code?
+> >>>
+> >>> I'm looking at the code and I have impression this should be part of
+> >>> the runner, not igt library. Do I understand correctly that your
+> >>> code will be used by the runner only and not by the tests?
+> >>
+> >> It is difficult to know for now. We have one test that will use the lib
+> >> as is: `tests/amdgpu/amd_mem_leak.c`. But that is not the main potential
+> >> use case.
+> >>
+> >> As I describe in the cover letter, transient leaks are kind of tricky,
+> >> and we may require to request a scan from a test itself for better
+> >> coverage. So in short I honestly do not know if we will have test
+> >> integration in the future or not.
+> > 
+> > Fundamental question is - where do you want to scan/clear - on the runner
+> > level or on the test? What will happen if you start to clear-scan/clear
+> > both from runner (-k) and from the test itself. I've intentionally
+> > added clear first to limit catched leaks to period where test was
+> > executed.
+> 
+> I do not know know. There may be uses for both. Currently I went for the
+> runner for two reasons: it is simple, and produced good results.
+> 
+> However for transient leaks the key seems to be timing and then igt_runner
+> does not offer enough granularity. We may need clears and scans at very
+> specific places in the code.
+> 
+> My goal is to have CI experiment with kmemleak on igt_runner, collect
+> developer feedback, and then decide if the next step of trying to figure
+> it out how to have a more granular test-level scan makes sense and if is
+> suitable for our use case.
+> 
+> Detecting transient leaks is an open problem.
+> 
+> > 
+> > On the runner level we would collect for all tests, on the test level
+> > I imagine command line argument passed to the test like -k which would
+> > enable the scan on the very beginning. But this would require to rewrite
+> > all tests which are using pure main() instead of igt_main.*().
+> > If really there's leak and someone wants to catch it, he can always
+> > simply wrap around script execution by kmemleak clear-scan/clear.
+> 
+> Currently we have -keach and -konce with -keach scanning between each test.
+> As I said, this produces results, but is not effective for transient leaks.
+> 
+> Again, I do not know. If the initial evaluation indicates that there may be
+> a benefit on extending the tests to trigger kmemleak scans, I see no reason
+> for not doing it.
+> 
+> 
+> > 
+> > Resume - I would stick to the runner level, I see no judgement to change
+> > igt_core / tests to use this library directly.
+> 
+> Resume: I prefer to wait until the initial feedback from CI and developers.
+> I will be happy to move this to runner later if we decide to not walk the
+> unknown road of trying to catch as many transient leaks as we can.
+> 
+> That being said, let me know how to move forward.
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/xe_pmu.c | 35 +++++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 8 deletions(-)
+Question is to CI folks, for me this scan should be executed as
+dedicated CI run with kmemleak on. And I repeat - I don't see reason
+we should add this support to the tests, as few line script which
+wraps around test by kmemleak clear/scan is enough. We already have
+scripts directory so it is good place for such wrapper.
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index cbb825755..b47be23ac 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -21,6 +21,9 @@
- #define SLEEP_DURATION 2 /* in seconds */
- const double tolerance = 0.1;
- 
-+/* flag masks */
-+#define TEST_BUSY	BIT(0)
-+
- #define assert_within_epsilon(x, ref, tolerance) \
- 	igt_assert_f((double)(x) <= (1.0 + (tolerance)) * (double)(ref) && \
- 		     (double)(x) >= (1.0 - (tolerance)) * (double)(ref), \
-@@ -79,11 +82,13 @@ static uint64_t get_event_config(int xe, unsigned int gt, struct drm_xe_engine_c
- }
- 
- /**
-+ * SUBTEST: engine-activity-idle
-+ * Description: Test to validate engine activity shows no load when idle
-+ *
-  * SUBTEST: engine-activity
-- * Description: Test to validate engine activity stats by running a workload and
-- *              reading the active ticks and total ticks PMU counters
-+ * Description: Test to validate engine activity stats by running full load
-  */
--static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
-+static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- {
- 	uint64_t config, busy_ticks, total_ticks, before[2], after[2];
- 	struct xe_cork *cork = NULL;
-@@ -97,14 +102,18 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
- 	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
--	xe_cork_sync_start(fd, cork);
-+
-+	if (flags & TEST_BUSY) {
-+		cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
-+		xe_cork_sync_start(fd, cork);
-+	}
- 
- 	pmu_read_multi(pmu_fd[0], 2, before);
- 	usleep(SLEEP_DURATION * USEC_PER_SEC);
- 	pmu_read_multi(pmu_fd[0], 2, after);
- 
--	xe_cork_sync_end(fd, cork);
-+	if (flags & TEST_BUSY)
-+		xe_cork_sync_end(fd, cork);
- 
- 	busy_ticks = after[0] - before[0];
- 	total_ticks = after[1] - before[1];
-@@ -122,7 +131,10 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
- 	close(pmu_fd[0]);
- 	close(pmu_fd[1]);
- 
--	assert_within_epsilon(busy_ticks, total_ticks, tolerance);
-+	if (flags & TEST_BUSY)
-+		assert_within_epsilon(busy_ticks, total_ticks, tolerance);
-+	else
-+		igt_assert(!busy_ticks);
- }
- 
- igt_main
-@@ -134,12 +146,19 @@ igt_main
- 		fd = drm_open_driver(DRIVER_XE);
- 	}
- 
-+	igt_describe("Validate there is no engine activity when idle");
-+	igt_subtest_with_dynamic("engine-activity-idle")
-+		xe_for_each_engine(fd, hwe)
-+			igt_dynamic_f("engine-%s%d", xe_engine_class_string(hwe->engine_class),
-+				      hwe->engine_instance)
-+				engine_activity(fd, hwe, 0);
-+
- 	igt_describe("Validate engine activity with workload running by reading pmu counters");
- 	igt_subtest_with_dynamic("engine-activity")
- 		xe_for_each_engine(fd, hwe)
- 			igt_dynamic_f("engine-%s%d", xe_engine_class_string(hwe->engine_class),
- 				      hwe->engine_instance)
--				engine_activity(fd, hwe);
-+				engine_activity(fd, hwe, TEST_BUSY);
- 
- 	igt_fixture {
- 		close(fd);
--- 
-2.47.1
+--
+Zbigniew
 
+> 
+> > 
+> >>
+> >>>
+> >>> Regarding your above question, I think runner should use as much as
+> >>> minimal from lib/ directory, because this is collection of functions
+> >>> designed for tests, not for runner. I think generic code like data
+> >>> structures (lists) are fine, but not the others. Imagine you'll
+> >>> incidentally try to use igt_require() - follow the call and see
+> >>> the pitfall there.
+> >>
+> >> Currently the list of lib includes in the runner directory is not
+> >> small (I used a dumb regex that looks for includes starting with igt_):
+> >>
+> >> #include "igt_aux.h"
+> >> #include "igt_core.h"
+> >> #include "igt_facts.h"
+> >> #include "igt_hook.h"
+> >> #include "igt_list.h"
+> >> #include "igt_taints.h"
+> >> #include "igt_vec.h"
+> >>
+> >>
+> >>>
+> >>> So if my understanding is correct and this code should be part of the
+> >>> runner only your test might be moved to the runner_tests.c.
+> >>
+> >> It is difficult to know at this stage. At least the amd test I mentioned
+> >> earlier will use it.
+> > 
+> > I've explored runner code even if it is not in the center of my
+> > interests. I've seen there're few places where it is tainted by igt
+> > library code which might call logging from igt domain like igt_warn()
+> > [igt_gettime()], or igt_assert() [igt_vec_elem()]. I've experimented
+> > how runner code behaves with those calls, igt_warn() just logs but
+> > output format differs than executor.c __logf__(). I think we should
+> > be consistent in this case. Asserting __igt_fail_assert() unfortunately
+> > uses igt logging but if we ever assert in the runner this will have
+> > fatal consequences. IGT library contains a lot of asserts, so functions
+> > from them should be meticulously reviewed before using in the runner.
+> 
+> I see, but there is a very important detail here. Enabling kmemleak scans
+> come at a very high runtime cost. The slowdown is expected to be 4X. So
+> my judgement tells me that if CI is enduring the pains of a 4X slowdown
+> to get kmemleaks results, the minimum we can do is tell them when
+> something goes wrong.
+> 
+> On top of that, those write errors are rare, very rare I would say. I can
+> use any other function you want. I am just not ok to fail silently in this
+> case.
+> 
+> A big thank you for your comments.
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> >>
+> >>>
+> >>> BTW please rebase on top of current master, there were changes in
+> >>> the runner/settings.c file that affects this series.
+> >>
+> >> As soon as I am confident this will be merged, I surely will.
+> >>
+> >> Thanks!
+> >>
+> >>>
+> >>> --
+> >>> Zbigniew
+> >>>
+> >>>>
+> >>>>
+> >>>>>
+> >>>>>> +					return false;
+> >>>>>> +				}
+> >>>>>> +				continue;
+> >>>>>> +			} else {
+> >>>>>> +				/* Log unrecoverable error */
+> >>>>>> +				igt_warn("igt_write: unrecoverable write error");
+> >>>>>
+> >>>>> Same here.
+> >>>> We should not remove this one.
+> >>>>
+> >>>>>
+> >>>>>> +				return false;
+> >>>>>> +			}
+> >>>>>> +		} else if (written == 0) {
+> >>>>>> +			if (++retries > MAX_WRITE_RETRIES) {
+> >>>>>> +				igt_warn("igt_write: Exceeded retry limit\n");
+> >>>>>
+> >>>>> Same here.
+> >>>> We should not remove this one.
+> >>>>
+> >>>> [...]
+> >>>>
+> >>>>>> +	FILE *fp;
+> >>>>>
+> >>>>> Why FILE* and fopen? Could you just use open/read?
+> >>>>
+> >>>> Why not?
+> >>>>
+> >>>> ---
+> >>>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+> >>>> 97
+> >>>> ---
+> >>>>
+> >>>>
+> >>>> [...]
+> >>>>
+> >>>>>> +bool igt_kmemleak_init(const char *unit_test_kmemleak_file)
+> >>>>>> +{
+> >>>>>> +	FILE *fp;
+> >>>>>
+> >>>>> Same here, open/read.
+> >>>>
+> >>>> Same here, why not?
+> >>>> ---
+> >>>> psennats@friendship7-home:~/UPSTREAM/igt-gpu-tools$ git grep fopen|wc -l
+> >>>> 97
+> >>>> ---
+> >>>>
+> >>>> [...]
+> >>>>
+> >>>>>> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
+> >>>>>
+> >>>>> imho better: IGT_KMEMLEAK_RESFILENAME
+> >>>>
+> >>>> It reads better indeed. Thanks.
+> >>>>
+> >>>> [...]
+> >>
+> 
