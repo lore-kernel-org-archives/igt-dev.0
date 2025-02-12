@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D1D4C02198
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 08:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E1BC02198
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 08:15:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF6F710E7ED;
-	Wed, 12 Feb 2025 08:09:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GHZJFQYd";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B5C010E7ED
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 08:09:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739347794; x=1770883794;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=t+vZ+v4s45NBCRxz3FKPcrDpCNHNevPO4gprObPqt10=;
- b=GHZJFQYdeZUxzKZJZs0teLUBJqb4+r0vxqus7kkZY1oceYFZnCzcUuTO
- YOVChy990ixKFT9PVxV+hROMvAbiqv2LnuTXhvxuhmehg111E5LiiYZxt
- uT5iykvDNMwsBCNviCiXlPnXFhwa1SjhmVauVYVzZHzllcgbF85kP8UWW
- iQdUkNoPiCwZmGljUESMm5kykMIzDIwg/UlDJpnaLe+yX1vNoR9G5xqF0
- KuIAzr6tnPIXluaYBnwAyXISEDzXkuY/VFNYIMv5CH8U+sDKZdcXtzpQy
- bnDCem9wF6VceH/aQ8dsPI6YJKZKxe4SOUXQi3CyiknvWYXalKlKnIWv8 A==;
-X-CSE-ConnectionGUID: 48y55zebR/2sHLAEjCJbQw==
-X-CSE-MsgGUID: mEqR047WRnevi4uNXWJJjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="62458411"
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="62458411"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 00:09:54 -0800
-X-CSE-ConnectionGUID: /Wdz6e5KRTGjjRcVGK49dw==
-X-CSE-MsgGUID: +pvoJV+0SPW4S+UE1BrHuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="113407297"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.17.221])
- ([10.246.17.221])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 00:09:52 -0800
-Message-ID: <0f9251f6-1e7e-4edc-b508-00906a8a84d0@linux.intel.com>
-Date: Wed, 12 Feb 2025 09:09:49 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id D54DD10E7F6;
+	Wed, 12 Feb 2025 08:15:55 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7334010E7F6;
+ Wed, 12 Feb 2025 08:15:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1166596015243132655=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 3/4] lib/igt_sriov_device: Add helper to iterate
- over VFs in specified range
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: satyanarayana.k.v.p@intel.com, michal.wajdeczko@intel.com,
- adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com
-References: <20250211162919.15076-1-lukasz.laguna@intel.com>
- <20250211162919.15076-4-lukasz.laguna@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250211162919.15076-4-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fjoiner=3A?=
+ =?utf-8?q?_Add_a_new_test_to_validate_non-joiner_mode_=28rev7=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 12 Feb 2025 08:15:54 -0000
+Message-ID: <173934815446.1222194.10471381840899003704@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250212073604.1580120-1-jeevan.b@intel.com>
+In-Reply-To: <20250212073604.1580120-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,53 +37,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1166596015243132655==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel/kms_joiner: Add a new test to validate non-joiner mode (rev7)
+URL   : https://patchwork.freedesktop.org/series/143972/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8228_BAT -> XEIGTPW_12577_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12577_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#1192]) +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8228/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_vm@shared-pde2-page:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3970])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8228/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8228/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
 
 
-On 2/11/2025 5:29 PM, Lukasz Laguna wrote:
-> Helper allows to iterate over VFs within the specified range.
-> 
-> v2:
->   - fix macro (Marcin)
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->   lib/igt_sriov_device.h | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
-> 
-> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-> index de25a7d98..2b6acb6d7 100644
-> --- a/lib/igt_sriov_device.h
-> +++ b/lib/igt_sriov_device.h
-> @@ -86,6 +86,25 @@ igt_sriov_random_vf_in_range(int pf_fd, unsigned int start, unsigned int end)
->   	     ++__vf_num)
->   #define for_each_sriov_num_vfs for_each_sriov_vf
->   
-> +/**
-> + * for_each_sriov_vf_in_range - Iterate over VFs in a specified range
-> + * @__pf_fd: PF device file descriptor
-> + * @__start: Starting VF number in the range
-> + * @__end: Ending VF number in the range
-> + * @__vf_num: Variable to store the random VF number
-> + *
-> + * For loop that iterates over VFs associated with given PF @__pf_fd,
-> + * within the specified range [__start, __end]. The loop runs only if
-> + * the range is valid.
-> + */
-> +#define for_each_sriov_vf_in_range(__pf_fd, __start, __end, __vf_num) \
-> +	for (unsigned int __vf_num = __is_valid_range((__start), (__end), \
-> +						      igt_sriov_get_total_vfs(__pf_fd)) ? \
-> +						      (__start) : 0; \
-> +	     __vf_num && __vf_num <= (__end); \
-> +	     ++__vf_num)
-> +#define for_each_sriov_num_vfs_in_range for_each_sriov_vf_in_range
-> +
+Build changes
+-------------
 
-LGTM,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->   /**
->    * for_random_sriov_vf_in_range - Iterate over a random VF in a specified range
->    * @__pf_fd: PF device file descriptor
+  * IGT: IGT_8228 -> IGTPW_12577
+  * Linux: xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 -> xe-2643-a5fe717b56653a6f5e5b98ed07d5fe54789465c9
 
+  IGTPW_12577: 12577
+  IGT_8228: 8228
+  xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77
+  xe-2643-a5fe717b56653a6f5e5b98ed07d5fe54789465c9: a5fe717b56653a6f5e5b98ed07d5fe54789465c9
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/index.html
+
+--===============1166596015243132655==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_joiner: Add a new test to validate non-joiner mode (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143972/">https://patchwork.freedesktop.org/series/143972/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8228_BAT -&gt; XEIGTPW_12577_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12577_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8228/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@shared-pde2-page:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8228/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8228/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12577/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8228 -&gt; IGTPW_12577</li>
+<li>Linux: xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77 -&gt; xe-2643-a5fe717b56653a6f5e5b98ed07d5fe54789465c9</li>
+</ul>
+<p>IGTPW_12577: 12577<br />
+  IGT_8228: 8228<br />
+  xe-2634-93f37b8d57cb5f1db7818eb395ad810ad1ed8b77: 93f37b8d57cb5f1db7818eb395ad810ad1ed8b77<br />
+  xe-2643-a5fe717b56653a6f5e5b98ed07d5fe54789465c9: a5fe717b56653a6f5e5b98ed07d5fe54789465c9</p>
+
+</body>
+</html>
+
+--===============1166596015243132655==--
