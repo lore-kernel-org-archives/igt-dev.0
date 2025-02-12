@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61157C02198
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 09:03:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 077D9C02198
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 09:04:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C98C10E80D;
-	Wed, 12 Feb 2025 09:03:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFCED10E80D;
+	Wed, 12 Feb 2025 09:04:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zmzu/TOt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hM5cD4vC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48F0210E80D
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 09:03:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7091210E80D
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 09:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739351023; x=1770887023;
+ t=1739351091; x=1770887091;
  h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=NSzuB+QpzgGs6xfHUsQu7iCMufX9OrIzsGphHQQmeY8=;
- b=Zmzu/TOttHqXbsCtu6qev1y7I0EQCOAsE2NZg6/ZcKjA3X25d/RFmj+e
- Oi7hCoZbr8v4PM0JpRvUA8zBtj2sYxnwXaPmVv4SxWEOim7tBQjdAX/qv
- NJzlWwqXOT1npDjQrHkSjPmgDS4BwPpjEkF0d3qqqexdhvkTsSlKk/H/Y
- O20wFRkbpplSxhtWs+OOSjDD5+EWZIZYeumYWdqsmLDAFABwFk3DPX1vT
- wsnAsIx+yS0BHQA83ZbXhXLhJ448PiyNcctCq89OHiSKDe7NO5Xkpogyu
- 2jwUeMbLk8XGDSeaFaAazkDy9wbG72AbAiZge/eAt+iBnYLqQAD6TQFnS A==;
-X-CSE-ConnectionGUID: KJbbmE5wSF2LDIUydhLZoQ==
-X-CSE-MsgGUID: sR9mx2eyTa6AkDWVL7Un9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="50631180"
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="50631180"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 01:03:43 -0800
-X-CSE-ConnectionGUID: qSN/9STHTQ+XJ2oviSYWFQ==
-X-CSE-MsgGUID: R5tuH5GNSEqwsgBrBY1ZbA==
+ bh=ISYRpYoI0YsbDkvXlbgTRLRWsQG91D/9fKJZnycrZCg=;
+ b=hM5cD4vCOBZXT1nexHKoZJIY2JJychoS2EUQyzLwk8QpjOOvcPOOm0l8
+ jvscGJErxl5oWcSZX3S3GLXbbJnYl5RnlTFGvk5PfQIRp8zDQ3HnIwf3g
+ R+4WcVPymEXDn1EUFp4ZSaezwMOQXllM24wNpKWdFd+rvt9OiWWEa1zcz
+ AbxqZt8RLwMBA5bWUPVgYfAd+7gPoDYx1fTv2udy3qlB1TBsr3g4stUGT
+ F1g8LRSNepCqWwVvnAbMpS9xdZnmQ4pduunECcjD5O3mMFhN0VQTR20wz
+ MLNH+A8bESq6VWTtxVbu2+us9RNnbfFodCpkahMtlSuT2onNJ8ljat6xD Q==;
+X-CSE-ConnectionGUID: q/ufMCA9QryZ8LUHn1QZNg==
+X-CSE-MsgGUID: 3j2dVPsXTruldgy91YG7Og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="40141966"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="40141966"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2025 01:04:50 -0800
+X-CSE-ConnectionGUID: rl/ex3TPRKySLLG8DNuTSQ==
+X-CSE-MsgGUID: Jb5AxeOCTbSTEiSqmlx3Kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="117779571"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; d="scan'208";a="112748311"
 Received: from dut1069atsm.igk.intel.com ([10.211.176.182])
- by orviesa004.jf.intel.com with ESMTP; 12 Feb 2025 01:03:42 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 12 Feb 2025 01:04:49 -0800
 From: priyanka.dandamudi@intel.com
 To: priyanka.dandamudi@intel.com, francois.dugast@intel.com,
  igt-dev@lists.freedesktop.org
-Subject: [PATCH] drm/xe: Add fault injection for xe_sync_entry_parse
-Date: Wed, 12 Feb 2025 09:03:40 +0000
-Message-Id: <20250212090340.3068899-1-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t] tests/xe_fault_injection: Inject error for
+ xe_sync_entry_parse
+Date: Wed, 12 Feb 2025 09:04:48 +0000
+Message-Id: <20250212090448.3068963-1-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -66,28 +67,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Add fault injection for xe_sync_entry_parse to allow it to fail while
-executing xe_vm_bind_ioctl().
-This need to be added as it cannot be reached by injecting error through
-IOCTL arguments.
+This will make xe_sync_entry_parse function fail to cover the unexplored
+path while executing xe_vm_create_ioctl().
 
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- drivers/gpu/drm/xe/xe_sync.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/intel/xe_fault_injection.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index 42f5bebd09e5..f87276df18f2 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -210,6 +210,7 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 7ae941367..ede483535 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -263,6 +263,7 @@ simple_vm_bind(int fd, uint32_t vm)
+  * @xe_pt_update_ops_prepare:		xe_pt_update_ops_prepare
+  * @xe_pt_update_ops_run:		xe_pt_update_ops_run
+  * @xe_vma_ops_alloc:			xe_vma_ops_alloc
++ * @xe_sync_entry_parse:		xe_sync_entry_parse
+  */
+ static void
+ vm_bind_fail(int fd, const char function_name[])
+@@ -315,6 +316,7 @@ igt_main
+ 		{ "xe_pt_update_ops_prepare" },
+ 		{ "xe_pt_update_ops_run" },
+ 		{ "xe_vma_ops_alloc" },
++		{ "xe_sync_entry_parse" },
+ 		{ }
+ 	};
  
- 	return 0;
- }
-+ALLOW_ERROR_INJECTION(xe_sync_entry_parse, ERRNO);
- 
- int xe_sync_entry_add_deps(struct xe_sync_entry *sync, struct xe_sched_job *job)
- {
 -- 
 2.34.1
 
