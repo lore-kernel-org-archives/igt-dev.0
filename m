@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F951C02198
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 18:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23746C02198
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Feb 2025 18:48:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E51ED10E967;
-	Wed, 12 Feb 2025 18:48:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D53B310E968;
+	Wed, 12 Feb 2025 18:48:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VgNIvVLY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OXbzwQ16";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 681CD10E966
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 18:48:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C43A10E968
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2025 18:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739386092; x=1770922092;
+ t=1739386098; x=1770922098;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Sw17vGu8EDW21uq3e/TsAI+xRpL2netjL60y+w8OBDs=;
- b=VgNIvVLYcAbtSOTaznChmA2CFfo3BXdajFY4FiwOarfqt7uyM7LZcZHv
- pm6ich7TFTWghDM82U5y3Hbh3wZDGOklPXRoPX/5tQU7bCIj+EYjOEDcN
- wBrZ6v3sem7cxGcLzxLKh0aNl7rzyAvT7cO3RP55H22W1foeeg6IPsFHF
- dR66kLfqMQOeg8rjGGDjAk2C8gPFZWCVKoJ4LQzmhKj8X7xFGT8aGeMLd
- VeagbpYRJfQfdkAFXvBs/3wILZuc66BbYTEPT+0BFpUMdVng+euWlqrDv
- yrc3IruJ3r5tPIsLjxArB2HnsNsf099pwq90l9wsThGGWoPcBRNzchN0f w==;
-X-CSE-ConnectionGUID: bwtJB2PxTaCK9mBpp3ukPA==
-X-CSE-MsgGUID: BN+xZZaaRk6GJw8Sk4/Y6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="40209776"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="40209776"
+ bh=7oBvYfiOfhbYtJwSIrCoEuWWU89bHH1H0oQ2dBytwJg=;
+ b=OXbzwQ16MZ7eF9Hp06PyqTP+X2VTiJziUyGmkzOaWZXKBOYfqIEgvhJq
+ HzzPcdgOQlOrj655sa6H1FAk+Sb+29FL+UNUjI/484Y6vFaQdOyQ5eA1k
+ d3wc/yklBMjfkZUV1qLwo5j50C9qfG5Q14hHScFyNA0hVlcz6BIgLNhA3
+ 1U/ZZK6Ltf6heUhfwcx7wh0tHR5BjitLftNBvt9N7drs431mztwc2RzNU
+ ZQJbcbyjtlPvC2P+hdsHhjS8knnzxnj08NzFrrynaIsdxZHU38N+eK+IR
+ MBzr5NopKnI4QWBiHApSXG2VJ1O7xnbbOxVxWc+iygba2H+VD+3PasJQl g==;
+X-CSE-ConnectionGUID: 22r/FH/gQHCywNxtAz49ow==
+X-CSE-MsgGUID: lP6V4GlZQ0O77XWZd/BVXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="40209781"
+X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; d="scan'208";a="40209781"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 10:48:12 -0800
-X-CSE-ConnectionGUID: jmd4daTOTCaBAb06GvlLRA==
-X-CSE-MsgGUID: J1/+Y4SiT1O5msQb+KKA6A==
+ 12 Feb 2025 10:48:18 -0800
+X-CSE-ConnectionGUID: EGMQRXmOSbe51MOPtlADyA==
+X-CSE-MsgGUID: zOhHgQ7JSYa5YSa94i662A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117028629"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117028637"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.246.17.221])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 10:48:09 -0800
+ 12 Feb 2025 10:48:15 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -54,10 +54,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH v2 i-g-t 1/5] lib/xe/xe_sriov_provisioning: Add scheduling
- attributes accessors
-Date: Wed, 12 Feb 2025 19:47:53 +0100
-Message-Id: <20250212184757.586071-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 2/5] lib/xe/xe_sriov_provisioning: Add helper to
+ check default scheduling attributes
+Date: Wed, 12 Feb 2025 19:47:54 +0100
+Message-Id: <20250212184757.586071-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
 References: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
@@ -79,18 +79,15 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper functions to get and set SR-IOV provisioning scheduling
-attributes. These functions provide an interface for accessing
-provisioning attributes such as execution quantum, preemption timeout,
-schedule if idle policy, schedule priority, and engine reset policy.
+Introduce a function to validate default SR-IOV scheduling attributes
+for VFs and PF. This function skips the test if non-default attributes
+are detected. The default attributes verified include:
 
-Include both returning and asserting versions to handle errors
-appropriately.
-
-v2:
-- Remove debug message for consistency with the remaining code (Lukasz)
-- Remove unnecessary cast when assigning priority to *value
-- Use early return for the out-of-range check to improve readability
+- exec_quantum_ms set to 0 (infinite execution quantum)
+- preempt_timeout_us set to 0 (infinite preemption timeout)
+- sched_if_idle set to false
+- reset_engine set to false
+- sched_priority set to XE_SRIOV_SCHED_PRIORITY_LOW
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
@@ -104,468 +101,69 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/xe/xe_sriov_provisioning.c | 368 ++++++++++++++++++++++++++++++++-
- lib/xe/xe_sriov_provisioning.h |  54 ++++-
- 2 files changed, 420 insertions(+), 2 deletions(-)
+ lib/xe/xe_sriov_provisioning.c | 42 ++++++++++++++++++++++++++++++++++
+ lib/xe/xe_sriov_provisioning.h |  1 +
+ 2 files changed, 43 insertions(+)
 
 diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
-index f7d8c63d1..4d6ad88ce 100644
+index 4d6ad88ce..aa265247e 100644
 --- a/lib/xe/xe_sriov_provisioning.c
 +++ b/lib/xe/xe_sriov_provisioning.c
-@@ -10,8 +10,8 @@
- #include "igt_sriov_device.h"
- #include "intel_chipset.h"
- #include "linux_scaffold.h"
--#include "xe/xe_mmio.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_mmio.h"
- #include "xe/xe_sriov_debugfs.h"
- #include "xe/xe_sriov_provisioning.h"
- 
-@@ -355,3 +355,369 @@ uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
- 
- 	return value;
+@@ -721,3 +721,45 @@ void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_nu
+ {
+ 	igt_fail_on(__xe_sriov_set_sched_priority(pf, vf_num, gt_num, value));
  }
 +
 +/**
-+ * __xe_sriov_get_exec_quantum_ms - Read the execution quantum in milliseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read value
++ * xe_sriov_require_default_scheduling_attributes - Ensure default SR-IOV scheduling attributes
++ * @pf_fd: PF device file descriptor
 + *
-+ * Reads the execution quantum in milliseconds for the given PF device @pf,
-+ * VF number @vf_num on GT @gt_num.
++ * Skips the current test if non-default SR-IOV scheduling attributes are set.
 + *
-+ * Return: 0 on success, negative error code on failure.
++ * Default scheduling attributes are as follows for each VF and PF:
++ * - exec_quantum_ms equals zero (meaning infinity)
++ * - preempt_timeout_us equals zero (meaning infinity)
++ * - sched_if_idle equals false
++ * - reset_engine equals false
++ * - sched_priority equals XE_SRIOV_SCHED_PRIORITY_LOW
 + */
-+int __xe_sriov_get_exec_quantum_ms(int pf, unsigned int vf_num,
-+				   unsigned int gt_num, uint32_t *value)
++void xe_sriov_require_default_scheduling_attributes(int pf)
 +{
-+	return __xe_sriov_pf_debugfs_get_u32(pf, vf_num, gt_num, "exec_quantum_ms", value);
-+}
++	unsigned int totalvfs = igt_sriov_get_total_vfs(pf);
++	enum xe_sriov_sched_priority sched_priority;
++	bool sched_if_idle, reset_engine;
++	uint32_t eq, pt;
++	unsigned int gt;
 +
-+/**
-+ * xe_sriov_get_exec_quantum_ms - Get the execution quantum in milliseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ *
-+ * A throwing version of __xe_sriov_get_exec_quantum_ms().
-+ * Instead of returning an error code, it returns the value read and
-+ * asserts in case of an error.
-+ *
-+ * Return: Execution quantum in milliseconds assigned to a given VF. Asserts in case of failure.
-+ */
-+uint32_t xe_sriov_get_exec_quantum_ms(int pf, unsigned int vf_num,
-+				      unsigned int gt_num)
-+{
-+	uint32_t value;
++	xe_for_each_gt(pf, gt) {
++		igt_skip_on(__xe_sriov_get_sched_if_idle(pf, gt, &sched_if_idle));
++		igt_require_f(!sched_if_idle, "sched_if_idle != false on gt%u\n", gt);
++		igt_skip_on(__xe_sriov_get_engine_reset(pf, gt, &reset_engine));
++		igt_require_f(!reset_engine, "reset_engine != false on gt%u\n", gt);
 +
-+	igt_fail_on(__xe_sriov_get_exec_quantum_ms(pf, vf_num, gt_num, &value));
++		for (unsigned int vf_num = 0; vf_num <= totalvfs; ++vf_num) {
++			igt_skip_on(__xe_sriov_get_exec_quantum_ms(pf, vf_num, gt, &eq));
++			igt_require_f(eq == 0, "exec_quantum_ms != 0 on gt%u/VF%u\n", gt, vf_num);
 +
-+	return value;
-+}
++			igt_skip_on(__xe_sriov_get_preempt_timeout_us(pf, vf_num, gt, &pt));
++			igt_require_f(pt == 0, "preempt_timeout_us != 0 on gt%u/VF%u\n",
++				      gt, vf_num);
 +
-+/**
-+ * __xe_sriov_set_exec_quantum_ms - Set the execution quantum in milliseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Value to set
-+ *
-+ * Sets the execution quantum in milliseconds for the given PF device @pf,
-+ * VF number @vf_num on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_set_exec_quantum_ms(int pf, unsigned int vf_num,
-+				   unsigned int gt_num, uint32_t value)
-+{
-+	return __xe_sriov_pf_debugfs_set_u32(pf, vf_num, gt_num, "exec_quantum_ms", value);
-+}
-+
-+/**
-+ * xe_sriov_set_exec_quantum_ms - Set the execution quantum in milliseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Value to set
-+ *
-+ * A throwing version of __xe_sriov_set_exec_quantum_ms().
-+ * Instead of returning an error code, it asserts in case of an error.
-+ */
-+void xe_sriov_set_exec_quantum_ms(int pf, unsigned int vf_num,
-+				  unsigned int gt_num, uint32_t value)
-+{
-+	igt_fail_on(__xe_sriov_set_exec_quantum_ms(pf, vf_num, gt_num, value));
-+}
-+
-+/**
-+ * __xe_sriov_get_preempt_timeout_us - Get the preemption timeout in microseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read value
-+ *
-+ * Reads the preemption timeout in microseconds for the given PF device @pf,
-+ * VF number @vf_num on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_get_preempt_timeout_us(int pf, unsigned int vf_num,
-+				      unsigned int gt_num, uint32_t *value)
-+{
-+	return __xe_sriov_pf_debugfs_get_u32(pf, vf_num, gt_num, "preempt_timeout_us", value);
-+}
-+
-+/**
-+ * xe_sriov_get_preempt_timeout_us - Get the preemption timeout in microseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ *
-+ * A throwing version of __xe_sriov_get_preempt_timeout_us().
-+ * Instead of returning an error code, it returns the value read and
-+ * asserts in case of an error.
-+ *
-+ * Return: Preemption timeout in microseconds assigned to a given VF.
-+ * Asserts in case of failure.
-+ */
-+uint32_t xe_sriov_get_preempt_timeout_us(int pf, unsigned int vf_num,
-+					 unsigned int gt_num)
-+{
-+	uint32_t value;
-+
-+	igt_fail_on(__xe_sriov_get_preempt_timeout_us(pf, vf_num, gt_num, &value));
-+
-+	return value;
-+}
-+
-+/**
-+ * __xe_sriov_set_preempt_timeout_us - Set the preemption timeout in microseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Value to set
-+ *
-+ * Sets the preemption timeout in microseconds for the given PF device @pf,
-+ * VF number @vf_num on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_set_preempt_timeout_us(int pf, unsigned int vf_num,
-+				      unsigned int gt_num, uint32_t value)
-+{
-+	return __xe_sriov_pf_debugfs_set_u32(pf, vf_num, gt_num, "preempt_timeout_us", value);
-+}
-+
-+/**
-+ * xe_sriov_set_preempt_timeout_us - Set the preemption timeout in microseconds for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Value to set
-+ *
-+ * A throwing version of __xe_sriov_set_preempt_timeout_us().
-+ * Instead of returning an error code, it asserts in case of an error.
-+ */
-+void xe_sriov_set_preempt_timeout_us(int pf, unsigned int vf_num,
-+				     unsigned int gt_num, uint32_t value)
-+{
-+	igt_fail_on(__xe_sriov_set_preempt_timeout_us(pf, vf_num, gt_num, value));
-+}
-+
-+/**
-+ * __xe_sriov_get_engine_reset - Get the engine reset policy status for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read engine reset policy status
-+ *
-+ * Reads the engine reset status for the given PF device @pf on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_get_engine_reset(int pf, unsigned int gt_num, bool *value)
-+{
-+	return __xe_sriov_pf_debugfs_get_boolean(pf, 0, gt_num, "reset_engine", value);
-+}
-+
-+/**
-+ * xe_sriov_get_engine_reset - Get the engine reset policy status for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ *
-+ * A throwing version of __xe_sriov_get_engine_reset().
-+ * Instead of returning an error code, it returns the engine reset status
-+ * and asserts in case of an error.
-+ *
-+ * Return: The engine reset status for the given GT.
-+ *         Asserts in case of failure.
-+ */
-+bool xe_sriov_get_engine_reset(int pf, unsigned int gt_num)
-+{
-+	bool value;
-+
-+	igt_fail_on(__xe_sriov_get_engine_reset(pf, gt_num, &value));
-+
-+	return value;
-+}
-+
-+/**
-+ * __xe_sriov_set_engine_reset - Set the engine reset policy for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ * @value: Engine reset policy status to set
-+ *
-+ * Sets the engine reset policy for the given PF device @pf on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value)
-+{
-+	return __xe_sriov_pf_debugfs_set_boolean(pf, 0, gt_num, "reset_engine", value);
-+}
-+
-+/**
-+ * xe_sriov_set_engine_reset - Set the engine reset policy for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ * @value: Engine reset policy status to set
-+ *
-+ * A throwing version of __xe_sriov_set_engine_reset().
-+ * Instead of returning an error code, it asserts in case of an error.
-+ */
-+void xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value)
-+{
-+	igt_fail_on(__xe_sriov_set_engine_reset(pf, gt_num, value));
-+}
-+
-+/**
-+ * __xe_sriov_get_sched_if_idle - Get the scheduling if idle policy for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read scheduling if idle policy status
-+ *
-+ * Reads the scheduling if idle policy status for the given PF device @pf on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num, bool *value)
-+{
-+	return __xe_sriov_pf_debugfs_get_boolean(pf, 0, gt_num, "sched_if_idle", value);
-+}
-+
-+/**
-+ * xe_sriov_get_sched_if_idle - Get the scheduling if idle policy for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ *
-+ * A throwing version of __xe_sriov_get_sched_if_idle().
-+ * Instead of returning an error code, it returns the scheduling if idle policy status
-+ * and asserts in case of an error.
-+ *
-+ * Return: The scheduling if idle status for the given GT.
-+ *         Asserts in case of failure.
-+ */
-+bool xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num)
-+{
-+	bool value;
-+
-+	igt_fail_on(__xe_sriov_get_sched_if_idle(pf, gt_num, &value));
-+
-+	return value;
-+}
-+
-+/**
-+ * __xe_sriov_set_sched_if_idle - Set the scheduling if idle policy status for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ * @value: Scheduling if idle policy status to set
-+ *
-+ * Sets the scheduling if idle policy status for the given PF device @pf on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_set_sched_if_idle(int pf, unsigned int gt_num, bool value)
-+{
-+	return __xe_sriov_pf_debugfs_set_boolean(pf, 0, gt_num, "sched_if_idle", value);
-+}
-+
-+/**
-+ * xe_sriov_set_sched_if_idle - Set the scheduling if idle status policy for a given GT
-+ * @pf: PF device file descriptor
-+ * @gt_num: GT number
-+ * @value: Scheduling if idle policy status to set
-+ *
-+ * A throwing version of __xe_sriov_set_sched_if_idle().
-+ * Instead of returning an error code, it asserts in case of an error.
-+ */
-+void xe_sriov_set_sched_if_idle(int pf, unsigned int gt_num, bool value)
-+{
-+	igt_fail_on(__xe_sriov_set_sched_if_idle(pf, gt_num, value));
-+}
-+
-+/**
-+ * __xe_sriov_get_sched_priority - Get the scheduling priority for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Pointer to store the read scheduling priority
-+ *
-+ * Reads the scheduling priority for the given PF device @pf,
-+ * VF number @vf_num on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_get_sched_priority(int pf, unsigned int vf_num,
-+				  unsigned int gt_num,
-+				  enum xe_sriov_sched_priority *value)
-+{
-+	uint32_t priority;
-+	int ret;
-+
-+	ret = __xe_sriov_pf_debugfs_get_u32(pf, vf_num, gt_num, "sched_priority", &priority);
-+	if (ret)
-+		return ret;
-+
-+	if (priority > XE_SRIOV_SCHED_PRIORITY_HIGH)
-+		return -ERANGE;
-+
-+	*value = priority;
-+
-+	return 0;
-+}
-+
-+/**
-+ * xe_sriov_get_sched_priority - Get the scheduling priority for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ *
-+ * A throwing version of __xe_sriov_get_sched_priority().
-+ * Instead of returning an error code, it returns the scheduling priority
-+ * and asserts in case of an error.
-+ *
-+ * Return: The scheduling priority for the given VF and GT.
-+ *         Asserts in case of failure.
-+ */
-+enum xe_sriov_sched_priority
-+xe_sriov_get_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num)
-+{
-+	enum xe_sriov_sched_priority priority;
-+
-+	igt_fail_on(__xe_sriov_get_sched_priority(pf, vf_num, gt_num, &priority));
-+
-+	return priority;
-+}
-+
-+/**
-+ * __xe_sriov_set_sched_priority - Set the scheduling priority for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Scheduling priority to set (enum xe_sriov_sched_priority)
-+ *
-+ * Sets the scheduling priority for the given PF device @pf, VF number @vf_num on GT @gt_num.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int __xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
-+				  enum xe_sriov_sched_priority value)
-+{
-+	return __xe_sriov_pf_debugfs_set_u32(pf, vf_num, gt_num, "sched_priority", value);
-+}
-+
-+/**
-+ * xe_sriov_set_sched_priority - Set the scheduling priority for a given VF
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based) or 0 for PF
-+ * @gt_num: GT number
-+ * @value: Scheduling priority to set (enum xe_sriov_sched_priority)
-+ *
-+ * A throwing version of __xe_sriov_set_sched_priority().
-+ * Instead of returning an error code, it asserts in case of an error.
-+ */
-+void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
-+				 enum xe_sriov_sched_priority value)
-+{
-+	igt_fail_on(__xe_sriov_set_sched_priority(pf, vf_num, gt_num, value));
++			igt_skip_on(__xe_sriov_get_sched_priority(pf, vf_num, gt, &sched_priority));
++			igt_require_f(sched_priority == XE_SRIOV_SCHED_PRIORITY_LOW,
++				      "sched_priority != LOW on gt%u/VF%u\n", gt, vf_num);
++		}
++	}
 +}
 diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
-index 171e4f028..9d0c2ed85 100644
+index 9d0c2ed85..4f2a4c13e 100644
 --- a/lib/xe/xe_sriov_provisioning.h
 +++ b/lib/xe/xe_sriov_provisioning.h
-@@ -55,6 +55,26 @@ enum xe_sriov_shared_res {
- 	for ((res) = 0; (res) < XE_SRIOV_SHARED_RES_NUM; (res)++) \
- 		for_if(xe_sriov_is_shared_res_provisionable((pf), (res), (gt)))
- 
-+/**
-+ * enum xe_sriov_sched_priority - SR-IOV scheduling priorities
-+ * @XE_SRIOV_SCHED_PRIORITY_LOW: Schedule VF only if it has active work and
-+ *                               VF-State is VF_STATE_RUNNING. This is the
-+ *                               default value.
-+ * @XE_SRIOV_SCHED_PRIORITY_NORMAL: Schedule VF always, irrespective of whether
-+ *                                  it has work or not, as long as VF-State is
-+ *                                  not VF_STATE_DISABLED. Once scheduled, VF
-+ *                                  will run for its entire execution quantum.
-+ * @XE_SRIOV_SCHED_PRIORITY_HIGH: Schedule VF in the next time-slice after the
-+ *                                current active time-slice completes. VF is
-+ *                                scheduled only if it has work and VF-State is
-+ *                                VF_STATE_RUNNING.
-+ */
-+enum xe_sriov_sched_priority {
-+	XE_SRIOV_SCHED_PRIORITY_LOW,
-+	XE_SRIOV_SCHED_PRIORITY_NORMAL,
-+	XE_SRIOV_SCHED_PRIORITY_HIGH
-+};
-+
- /**
-  * struct xe_sriov_provisioned_range - Provisioned range for a Virtual Function (VF)
-  * @vf_id: The ID of the VF
-@@ -89,11 +109,43 @@ int __xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
- void xe_sriov_pf_set_shared_res_attr(int pf, enum xe_sriov_shared_res res,
- 				     unsigned int vf_num, unsigned int gt_num,
- 				     uint64_t value);
--
- int __xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
- 					unsigned int vf_num, unsigned int gt_num,
- 					uint64_t *value);
- uint64_t xe_sriov_pf_get_provisioned_quota(int pf, enum xe_sriov_shared_res res,
- 					   unsigned int vf_num, unsigned int gt_num);
-+int __xe_sriov_get_exec_quantum_ms(int pf, unsigned int vf_num,
-+				   unsigned int gt_num, uint32_t *value);
-+uint32_t xe_sriov_get_exec_quantum_ms(int pf, unsigned int vf_num,
-+				      unsigned int gt_num);
-+int __xe_sriov_set_exec_quantum_ms(int pf, unsigned int vf_num,
-+				   unsigned int gt_num, uint32_t value);
-+void xe_sriov_set_exec_quantum_ms(int pf, unsigned int vf_num,
-+				  unsigned int gt_num, uint32_t value);
-+int __xe_sriov_get_preempt_timeout_us(int pf, unsigned int vf_num,
-+				      unsigned int gt_num, uint32_t *value);
-+uint32_t xe_sriov_get_preempt_timeout_us(int pf, unsigned int vf_num,
-+					 unsigned int gt_num);
-+int __xe_sriov_set_preempt_timeout_us(int pf, unsigned int vf_num,
-+				      unsigned int gt_num, uint32_t value);
-+void xe_sriov_set_preempt_timeout_us(int pf, unsigned int vf_num,
-+				     unsigned int gt_num, uint32_t value);
-+int __xe_sriov_get_engine_reset(int pf, unsigned int gt_num, bool *value);
-+bool xe_sriov_get_engine_reset(int pf, unsigned int gt_num);
-+int __xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value);
-+void xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value);
-+int __xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num, bool *value);
-+bool xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num);
-+int __xe_sriov_set_sched_if_idle(int pf, unsigned int gt_num, bool value);
-+void xe_sriov_set_sched_if_idle(int pf, unsigned int gt_num, bool value);
-+int __xe_sriov_get_sched_priority(int pf, unsigned int vf_num,
-+				  unsigned int gt_num,
-+				  enum xe_sriov_sched_priority *value);
-+enum xe_sriov_sched_priority xe_sriov_get_sched_priority(int pf, unsigned int vf_num,
-+							 unsigned int gt_num);
-+int __xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
-+				  enum xe_sriov_sched_priority value);
-+void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
-+				 enum xe_sriov_sched_priority value);
+@@ -147,5 +147,6 @@ int __xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_n
+ 				  enum xe_sriov_sched_priority value);
+ void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
+ 				 enum xe_sriov_sched_priority value);
++void xe_sriov_require_default_scheduling_attributes(int pf);
  
  #endif /* __XE_SRIOV_PROVISIONING_H__ */
 -- 
