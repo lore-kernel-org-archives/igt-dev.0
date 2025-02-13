@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AACAC0219D
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 08:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C568C0219D
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 09:42:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F5E510EA21;
-	Thu, 13 Feb 2025 08:36:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D68B10EA3A;
+	Thu, 13 Feb 2025 09:42:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WOA7UEEW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JqzG4fAC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A19D310EA21
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 08:36:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED33B10EA3A
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 09:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739435787; x=1770971787;
+ t=1739439728; x=1770975728;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=jVlY1NWlmmCiYkTyh89BIdBGmqSaNsOBRoHxVbtoSPI=;
- b=WOA7UEEWyj2OcdXmg1wcGPOmttlypBcutieeDs6mAmpNnLgJRzFAU00l
- c6k9Pdc+MF/U+5wHS/y0df4/SH9iIeuMh5B4V6LmNXXYoIv2U5HpVY46w
- mNz7SHwYoBL1JULx6pgLS6HwPuWfm6jGtfXXwyg+yzPAnDAjLQb6CekZT
- N3bRseobCDuQwRzt3tc8AjyPWe3MMUOURQkEe2P+GzsLRpIA5o50ej8Qm
- TLrpFyjcz8WfHR9r16TZJQm69IP/+DZq8okXIOVvfXaTL64R7ThKJvmkY
- S7ruZl6DFiIIuuQgJ3r6/AqCCc//cW+HruTTWJzof9Hs+i6C3mtANC3wO g==;
-X-CSE-ConnectionGUID: 0gbO+ehARQiGgnuat4/X+Q==
-X-CSE-MsgGUID: RXRQaA0lTnqDSolD55fxDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="43893951"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="43893951"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2025 00:36:26 -0800
-X-CSE-ConnectionGUID: 5sZBiC2rSPGQFJ/cTm6MaA==
-X-CSE-MsgGUID: 9Ho4RBpGRaSPUWnL2RarDw==
+ bh=lKc3hDRnEgDjMC/g4P7pflLtrZZAnKYL5ASYy7Jt1uE=;
+ b=JqzG4fACdFqolV+eOR/PY9UNs+WPDpCyWmU8m4LJEcvCdLxzIcJHBhA4
+ 5erPsCJqYai86mb3AgImc6AAMw18RNKhmpFhyeAc9mgIVS/xJEd0tNAvV
+ f8qccNAcAU0Epe2NeDJ3BoJwzvKaB7fj1wER3xLWUzyCU5d0JEqvQ7uGr
+ ZbuL2nN3uLm/QxKaxZ4/a47YQb6onuo5OkRpd2vGm/Jo4JLQb3TAHbbXV
+ yF9XPYsiRNDX7POg/9B8yU8qX1wx8CjxHwQalaiqIfC0S7RN6FtqjXEAF
+ lJQUxhSW2kEgu1ra2MLHc/onyProw1HP652oHnTqM3WnpZayv8TFAip2H g==;
+X-CSE-ConnectionGUID: rhLJMydNQB+YR+xeAWOhpA==
+X-CSE-MsgGUID: NxHHFOEfSUaC1ehHPGQQdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="27728337"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="27728337"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2025 01:42:07 -0800
+X-CSE-ConnectionGUID: 2lXwTOEhRW2dOiW0qtkT3g==
+X-CSE-MsgGUID: f0Z16Cj9TkCjh0MfiJhOQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="113035835"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118279981"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa006.jf.intel.com with ESMTP; 13 Feb 2025 00:36:24 -0800
+ by orviesa005.jf.intel.com with ESMTP; 13 Feb 2025 01:42:06 -0800
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t] tests/intel/kms_flip_scaled_crc: Add more logs to
- skips/failure
-Date: Thu, 13 Feb 2025 14:11:51 +0530
-Message-Id: <20250213084151.705298-1-pranay.samala@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_draw_crc: Add more logs to skips/failure
+Date: Thu, 13 Feb 2025 15:17:32 +0530
+Message-Id: <20250213094732.706414-1-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,21 +70,37 @@ make debugging much easier.
 
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- tests/intel/kms_flip_scaled_crc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/kms_draw_crc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-index 7dc07bc83..439723eea 100644
---- a/tests/intel/kms_flip_scaled_crc.c
-+++ b/tests/intel/kms_flip_scaled_crc.c
-@@ -709,6 +709,8 @@ static drmModeModeInfoPtr find_mode(data_t *data, igt_output_t *output)
+diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
+index 30a09389e..f8ce4f71f 100644
+--- a/tests/intel/kms_draw_crc.c
++++ b/tests/intel/kms_draw_crc.c
+@@ -333,6 +333,7 @@ igt_main
+ 	enum igt_draw_method method;
+ 	int format_idx, modifier_idx;
+ 	uint64_t modifier;
++	bool flag = false;
+ 
+ 	igt_fixture
+ 		setup_environment();
+@@ -352,6 +353,7 @@ igt_main
+ 					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+ 						continue;
+ 
++					flag = true;
+ 					igt_dynamic_f("%s-%s",
+ 						      format_str(format_idx),
+ 						      modifier_str(modifier_idx))
+@@ -359,6 +361,8 @@ igt_main
+ 								    modifier);
+ 				}
+ 			}
++			if (!flag)
++				igt_info("Display doesn't supports any required formats/modifiers.\n");
  		}
  	}
- 
-+	if (!modetoset)
-+		igt_info("Unable to find the required mode.\n");
- 	return modetoset;
- }
  
 -- 
 2.34.1
