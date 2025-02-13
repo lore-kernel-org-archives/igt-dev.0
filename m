@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD0EC02198
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 00:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A719C021A6
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 00:39:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B48410E9B8;
-	Thu, 13 Feb 2025 00:39:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 251B310E9BB;
+	Thu, 13 Feb 2025 00:39:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mC7/W0mX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WgHBHBJW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E41B910E9B8
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 00:39:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F218110E9BA
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 00:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739407158; x=1770943158;
+ t=1739407159; x=1770943159;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/b38dL1Np5pqFTiSCMdDza4R8aqpwCw/8hh6JD6X8Uk=;
- b=mC7/W0mX/KZP7o7BuRucZp/BqlXmTIK8fT5QS+SlPYjZNoKJjSIUUqt4
- zmR3JUIr1lm3IfYya/fWKCiL67Rae4VQLIuAGXB8UKvlAAQ3LlaXALlxj
- zjVvmfeFvpoyzohocunRZJBM7E5t/KtOT76xK1P7v93MB/fsFoou3FWZ5
- BLfJdMncHr6IppFQGJQzJ5MsiNIEI313qQ02ULxJK/mwJu86LUo6Z18nz
- rMgk8GRpewLrMQ9mYv+eZLVsLx7LQVdPjLzcNLdNqh9Qasm/t8ah5+om7
- bExl9XTH2xXA5rAbqRvsoRul1E/NGzfskPfz/YEO9LB/D0VvDbUQLXcRp Q==;
-X-CSE-ConnectionGUID: blRWhbFwRvyV17noyoegzQ==
-X-CSE-MsgGUID: 1npskHkASTqkdbL4C/ms+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="65447641"
-X-IronPort-AV: E=Sophos;i="6.13,281,1732608000"; d="scan'208";a="65447641"
+ bh=YMH5WSPC1JJg32kHc4fjLGj7Q9/Mta/WmVtcfSmN0tE=;
+ b=WgHBHBJWB/NBEcnM7twi6IktP6RMx9LSKkBNJRNfhLaZQlSIUFnfaXJJ
+ adhi1SlgVpI93c7g3B1+jNDeJyg35LCCqr3ccKL9Mxvigci9YE/aYiKNl
+ EhBwVUa6fLm35SqCgKknAsRhQHqqRGAHC7rKMEMelpq+5kwjTQIUz1C5Z
+ zACU2prVriaVwpx8n+Eg+cbFMDm7GV03hEzR/W4T6hmMAtrzmEj8vYE9S
+ eTELqCcx6s4H1ZJY3DaXkfNOcFfrsuvDNc19ux7+uzPiRSCRqYn443XEC
+ iKfUBrDWZfB4siDp9MLUEWkRWo2CfnFlnb6vgRNargo90/IPTIETdrRFS g==;
+X-CSE-ConnectionGUID: 4P7QkGbRRSmLrm8GR/+NYQ==
+X-CSE-MsgGUID: hs2i7MnsRW+X5hLELf+Kag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="65447642"
+X-IronPort-AV: E=Sophos;i="6.13,281,1732608000"; d="scan'208";a="65447642"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 16:39:17 -0800
-X-CSE-ConnectionGUID: 4R+TiEofSDCm5+aIhepeTQ==
-X-CSE-MsgGUID: X8wWXSkETMaHB9b31cwXDw==
+ 12 Feb 2025 16:39:18 -0800
+X-CSE-ConnectionGUID: 6JsCRgSuRGCRJrNHMnViqg==
+X-CSE-MsgGUID: aPP1bZH1TfyTo6XymclN5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="113887375"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="113887378"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 16:39:18 -0800
+ 12 Feb 2025 16:39:19 -0800
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
  Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: [PATCH i-g-t v3 2/7] tests/intel/xe_vm: Update invalid flag subtest
- with valid PXP flag
-Date: Wed, 12 Feb 2025 16:38:56 -0800
-Message-ID: <20250213003904.2059770-3-daniele.ceraolospurio@intel.com>
+Subject: [PATCH i-g-t v3 3/7] tests/intel/xe_query: Add test for PXP status
+ query
+Date: Wed, 12 Feb 2025 16:38:57 -0800
+Message-ID: <20250213003904.2059770-4-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250213003904.2059770-1-daniele.ceraolospurio@intel.com>
 References: <20250213003904.2059770-1-daniele.ceraolospurio@intel.com>
@@ -69,60 +69,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The invalid flag subtest also checks all the valid flags, so add the new
-PXP flag to it.
-
-v2: only test the new flag if the kernel supports it.
-v3: rebase on the split of the update on the first invalid flag number
-to its own patch.
+Add a new test to exercise the PXP status query.
 
 Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com> #v2
+Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/intel/xe_vm.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tests/intel/xe_query.c | 61 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 0730dd3d3..40e92d805 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -2173,6 +2173,22 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_vm_destroy(fd, vm);
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 1566680e7..0a2ff8d7f 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -1077,6 +1077,66 @@ static void test_query_oa_units(int fd)
+ 	}
  }
  
-+static bool pxp_interface_supported(int fd)
++/**
++ * SUBTEST: query-pxp-status
++ * Description: Display PXP supported types and current status
++ *
++ * SUBTEST: multigpu-query-pxp-status
++ * Description: Display fields for PXP unit query for all Xe devices
++ * Sub-category: MultiGPU
++ */
++static void test_query_pxp_status(int fd)
 +{
++	struct drm_xe_query_pxp_status *qpxp;
 +	struct drm_xe_device_query query = {
 +		.extensions = 0,
 +		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
 +		.size = 0,
 +		.data = 0,
 +	};
-+	int ret = 0;
++	int ret;
 +
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-+		ret = -errno;
++	/*
++	 * if we run this test on an older kernel that doesn't have the PXP
++	 * query, the ioctl will return -EINVAL.
++	 */
++	errno = 0;
++	ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
++	igt_require(errno != EINVAL);
++	igt_assert_eq(ret, 0);
 +
-+	return ret != -EINVAL;
-+}
++	/* make sure the returned size is big enough */
++	igt_assert(query.size >= sizeof(*qpxp));
 +
- /**
-  * SUBTEST: bind-flag-invalid
-  * Description:
-@@ -2221,6 +2237,13 @@ static void bind_flag_invalid(int fd)
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 	syncobj_reset(fd, &sync[0].handle, 1);
- 
-+	if (pxp_interface_supported(fd)) {
-+		bind.bind.flags = DRM_XE_VM_BIND_FLAG_CHECK_PXP;
-+		igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
-+		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+		syncobj_reset(fd, &sync[0].handle, 1);
++	qpxp = malloc(query.size);
++	igt_assert(qpxp);
++
++	memset(qpxp, 0, query.size);
++
++	query.data = to_user_pointer(qpxp);
++	ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
++	if (ret == -ENODEV) {
++		igt_info("PXP not supported\n");
++		return;
 +	}
 +
- 	bind.bind.flags = DRM_XE_VM_BIND_FLAG_NULL;
- 	bind.bind.obj = 0;
- 	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++	igt_assert_eq(ret, 0);
++	igt_assert_neq(qpxp->supported_session_types, 0);
++
++	switch (qpxp->status) {
++	case 0:
++		igt_info("PXP initialization still in progress\n");
++		break;
++	case 1:
++		igt_info("PXP initialization complete\n");
++		break;
++	default:
++		igt_assert_f(0, "unexpected PXP status %u\n", qpxp->status);
++	}
++
++	igt_info("PXP supported types mask 0x%x\n", qpxp->supported_session_types);
++}
++
+ igt_main
+ {
+ 	const struct {
+@@ -1094,6 +1154,7 @@ igt_main
+ 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
+ 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
+ 		{ "query-oa-units", test_query_oa_units },
++		{ "query-pxp-status", test_query_pxp_status },
+ 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
+ 		{ "query-invalid-query", test_query_invalid_query },
+ 		{ "query-invalid-size", test_query_invalid_size },
 -- 
 2.43.0
 
