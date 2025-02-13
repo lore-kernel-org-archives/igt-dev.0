@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3F83C0219D
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 14:30:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03696C0219D
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 14:32:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5991510E0EA;
-	Thu, 13 Feb 2025 14:30:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OMBXScNz";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F411E10E0EA
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 14:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739457030; x=1770993030;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=moX6p/lpmLB6HS5LqHnqcdYaIomR3Yo+9S2ObagGNTk=;
- b=OMBXScNzF/bcae482BPyFuzVxnIYSk873nzF0bKEF3WZhwgWJF4PW/MR
- rv5mSijvngK0OqA1ano/ZhXKkS/5oCeMtVW7fmjZ+pOQcXbUOnzACxPsq
- DbXemt5LYxH3wgOSJ3+kCfGU7U7CXJ3xgj6l18yU+R+6T1mRZGHxxsvJV
- xmzUpfPd/MZoBXgO0Xs+tfZqIZbzLuwpQnZM/ues6QA1C4DGl1DVXwgjD
- blQ8zsprzXtKKbkL3KWnw0LcOafRo/IOWARCqQe3QorGR8bZBN7Q/7WWN
- sxNR8evT6eGGNjjgUcUBre7J9tBTlgRer+hDY/w7uaV5FxdrWKvbESoLG A==;
-X-CSE-ConnectionGUID: NCj7/54aTl+0cziguA2l4A==
-X-CSE-MsgGUID: ZT0qCH9HQ5CYI2QU4HJ62Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39389834"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="39389834"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2025 06:30:30 -0800
-X-CSE-ConnectionGUID: OiUi40o6S5Gk/PrgP9vHzg==
-X-CSE-MsgGUID: q867oap1Q/CCSgwtXvMJeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117780752"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 06:30:27 -0800
-Date: Thu, 13 Feb 2025 15:30:25 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Riana Tauro <riana.tauro@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, vinay.belgaumkar@intel.com,
- soham.purkait@intel.com
-Subject: Re: [PATCH i-g-t 1/3] lib/igt_perf: Add utils to extract PMU event
- info
-Message-ID: <20250213143025.v72uky5bzddywe5t@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com,
- vinay.belgaumkar@intel.com, soham.purkait@intel.com
-References: <20250212095834.384508-1-riana.tauro@intel.com>
- <20250212095834.384508-2-riana.tauro@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B38F610E0EA;
+	Thu, 13 Feb 2025 14:32:56 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB37E10E0EA;
+ Thu, 13 Feb 2025 14:32:55 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1943037073027686557=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250212095834.384508-2-riana.tauro@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel-ci=3A_Add_kms?=
+ =?utf-8?q?=5Fsysfs=5Fedid=5Ftiming_to_blocklist?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Feb 2025 14:32:55 -0000
+Message-ID: <173945717569.1687769.12991694352951307415@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250213132802.357921-1-swati2.sharma@intel.com>
+In-Reply-To: <20250213132802.357921-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,140 +37,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Riana,
-On 2025-02-12 at 15:28:27 +0530, Riana Tauro wrote:
-> From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> 
-> Functions to parse event ID and GT bit shift for PMU events.
-> 
-> v2: Review comments (Riana)
-> v3: Review comments (Lucas)
-> 
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> ---
->  lib/igt_perf.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_perf.h |  2 ++
->  2 files changed, 72 insertions(+)
-> 
-> diff --git a/lib/igt_perf.c b/lib/igt_perf.c
-> index 3866c6d77..f021fc3ec 100644
-> --- a/lib/igt_perf.c
-> +++ b/lib/igt_perf.c
-> @@ -92,6 +92,76 @@ const char *xe_perf_device(int xe, char *buf, int buflen)
->  	return buf;
->  }
->  
-> +/**
-> + * perf_event_format: Returns the start/end positions of an event format param
-> + * @device: PMU device
-> + * @param: Parameter for which you need the format start/end bits
+--===============1943037073027686557==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You should describe here all params. Add also one empty line before ' * Returns'
-like:
+== Series Details ==
 
- * @end: last bit position
- *
- * Returns: 0 on success or negative error code
+Series: tests/intel-ci: Add kms_sysfs_edid_timing to blocklist
+URL   : https://patchwork.freedesktop.org/series/144795/
+State : success
 
-> + * Returns: 0 on success or negative error code
-> + */
-> +int perf_event_format(const char *device, const char *param, uint32_t *start, uint32_t *end)
-> +{
-> +	char buf[NAME_MAX];
-> +	ssize_t bytes;
-> +	int ret;
-> +	int fd;
-> +
-> +	snprintf(buf, sizeof(buf),
-> +		 "/sys/bus/event_source/devices/%s/format/%s",
-> +		 device, param);
-> +
-> +	fd = open(buf, O_RDONLY | O_CLOEXEC);
-> +	if (fd < 0)
-> +		return -EINVAL;
+== Summary ==
 
-imho here you could return -errno
+CI Bug Log - changes from XEIGT_8229_BAT -> XEIGTPW_12589_BAT
+====================================================
 
-> +
-> +	bytes = read(fd, buf, sizeof(buf) - 1);
-> +	close(fd);
-> +	if (bytes < 1)
-> +		return -EINVAL;
-> +
-> +	buf[bytes] = '\0';
-> +	ret = sscanf(buf, "config:%u-%u", start, end);
-> +	if (ret != 2)
-> +		return -EINVAL;
-> +
-> +	return ret;
+Summary
+-------
 
-From function description this should be zero?
-s/ret/0/
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
-> +}
-> +
-> +/**
-> + * perf_event_config:
-> + * @device: Device string in driver:pci format
-> + * @event: The event name
-> + * @config: Pointer to the config
-> + * Returns: 0 for success, negative value on error
-> + */
-> +int perf_event_config(const char *device, const char *event, uint64_t *config)
-> +{
-> +	char buf[NAME_MAX];
-> +	ssize_t bytes;
-> +	int ret;
-> +	int fd;
-> +
-> +	snprintf(buf, sizeof(buf),
-> +		 "/sys/bus/event_source/devices/%s/events/%s",
-> +		 device,
-> +		 event);
-> +
-> +	fd = open(buf, O_RDONLY);
-> +	if (fd < 0)
-> +		return -EINVAL;
-> +
-> +	bytes = read(fd, buf, sizeof(buf) - 1);
-> +	close(fd);
-> +	if (bytes < 1)
-> +		return ret;
-> +
-> +	buf[bytes] = '\0';
-> +	ret = sscanf(buf, "event=0x%lx", config);
-> +	if (ret != 1)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
->  uint64_t xe_perf_type_id(int xe)
->  {
->  	char buf[80];
-> diff --git a/lib/igt_perf.h b/lib/igt_perf.h
-> index 3d9ba2917..69f7a3d74 100644
-> --- a/lib/igt_perf.h
-> +++ b/lib/igt_perf.h
-> @@ -71,5 +71,7 @@ int perf_i915_open(int i915, uint64_t config);
->  int perf_i915_open_group(int i915, uint64_t config, int group);
->  
->  int perf_xe_open(int xe, uint64_t config);
-> +int perf_event_config(const char *device, const char *event, uint64_t *config);
-> +int perf_event_format(const char *device, const char *param, uint32_t *start, uint32_t *end);
->  
->  #endif /* I915_PERF_H */
-> -- 
-> 2.47.1
-> 
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12589_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_balancer@twice-virtual-userptr-rebind:
+    - bat-adlp-vf:        [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3970])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][3] -> [SKIP][4] ([Intel XE#1192]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8229 -> IGTPW_12589
+  * Linux: xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd -> xe-2657-dbf65862427b99b51ac5279560a1f7995779480b
+
+  IGTPW_12589: 12589
+  IGT_8229: 8229
+  xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd: b9696aa14a67620661572e94f4141df2a4b6b5cd
+  xe-2657-dbf65862427b99b51ac5279560a1f7995779480b: dbf65862427b99b51ac5279560a1f7995779480b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/index.html
+
+--===============1943037073027686557==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: Add kms_sysfs_edid_timing to blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144795/">https://patchwork.freedesktop.org/series/144795/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8229_BAT -&gt; XEIGTPW_12589_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12589_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_exec_balancer@twice-virtual-userptr-rebind:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12589/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8229 -&gt; IGTPW_12589</li>
+<li>Linux: xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd -&gt; xe-2657-dbf65862427b99b51ac5279560a1f7995779480b</li>
+</ul>
+<p>IGTPW_12589: 12589<br />
+  IGT_8229: 8229<br />
+  xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd: b9696aa14a67620661572e94f4141df2a4b6b5cd<br />
+  xe-2657-dbf65862427b99b51ac5279560a1f7995779480b: dbf65862427b99b51ac5279560a1f7995779480b</p>
+
+</body>
+</html>
+
+--===============1943037073027686557==--
