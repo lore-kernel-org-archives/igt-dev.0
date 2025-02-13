@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10CC6C0219D
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 03:38:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1884C021A0
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 03:56:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B0EE010E217;
-	Thu, 13 Feb 2025 03:38:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4F96D10E9DB;
+	Thu, 13 Feb 2025 03:56:46 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84EAE10E217;
- Thu, 13 Feb 2025 03:38:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CE4710E9DB;
+ Thu, 13 Feb 2025 03:56:44 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4492564017524367759=="
+ boundary="===============3551596730619411579=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_SR-IOV_provisioning_sch?=
- =?utf-8?q?eduling_attributes_and_tests_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/4=5D_lib/xe=3A_Fix_a_comment_error?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+To: "Oak Zeng" <oak.zeng@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Feb 2025 03:38:57 -0000
-Message-ID: <173941793753.1519959.9286620546389719227@b555e5b46a47>
+Date: Thu, 13 Feb 2025 03:56:44 -0000
+Message-ID: <173941900430.1533640.1018636270791740849@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250212184757.586071-1-marcin.bernatowicz@linux.intel.com>
+References: <20250213021915.264978-1-oak.zeng@intel.com>
+In-Reply-To: <20250213021915.264978-1-oak.zeng@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4492564017524367759==
+--===============3551596730619411579==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add SR-IOV provisioning scheduling attributes and tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/143762/
+Series: series starting with [i-g-t,1/4] lib/xe: Fix a comment error
+URL   : https://patchwork.freedesktop.org/series/144765/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8229_BAT -> XEIGTPW_12583_BAT
+CI Bug Log - changes from XEIGT_8229_BAT -> XEIGTPW_12585_BAT
 ====================================================
 
 Summary
@@ -71,56 +71,29 @@ Participating hosts (8 -> 8)
 
   No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in XEIGTPW_12583_BAT that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#1192]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  * igt@xe_vm@munmap-style-unbind-userptr-inval-front:
-    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3970])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#1192])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8229 -> IGTPW_12583
+  * IGT: IGT_8229 -> IGTPW_12585
   * Linux: xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd -> xe-2656-1be945721fec4f48df1fb728863be1b9a594b571
 
-  IGTPW_12583: 0eca773abedf68aaf27ad744292e81c8469f9ed8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12585: 70941eb9110c881f91f13f1ff46e6d8cb4fb0965 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8229: 8229
   xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd: b9696aa14a67620661572e94f4141df2a4b6b5cd
   xe-2656-1be945721fec4f48df1fb728863be1b9a594b571: 1be945721fec4f48df1fb728863be1b9a594b571
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12585/index.html
 
---===============4492564017524367759==
+--===============3551596730619411579==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -140,52 +113,29 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add SR-IOV provisioning scheduling attributes and tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143762/">https://patchwork.freedesktop.org/series/143762/</a></td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/4] lib/xe: Fix a comment error</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144765/">https://patchwork.freedesktop.org/series/144765/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12585/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12585/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8229_BAT -&gt; XEIGTPW_12583_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8229_BAT -&gt; XEIGTPW_12585_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (8 -&gt; 8)</h2>
 <p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12583_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_vm@munmap-style-unbind-userptr-inval-front:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/bat-adlp-vf/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8229/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12583/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
-</ul>
-</li>
-</ul>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8229 -&gt; IGTPW_12583</li>
+<li>IGT: IGT_8229 -&gt; IGTPW_12585</li>
 <li>Linux: xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd -&gt; xe-2656-1be945721fec4f48df1fb728863be1b9a594b571</li>
 </ul>
-<p>IGTPW_12583: 0eca773abedf68aaf27ad744292e81c8469f9ed8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_12585: 70941eb9110c881f91f13f1ff46e6d8cb4fb0965 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8229: 8229<br />
   xe-2652-b9696aa14a67620661572e94f4141df2a4b6b5cd: b9696aa14a67620661572e94f4141df2a4b6b5cd<br />
   xe-2656-1be945721fec4f48df1fb728863be1b9a594b571: 1be945721fec4f48df1fb728863be1b9a594b571</p>
@@ -193,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4492564017524367759==--
+--===============3551596730619411579==--
