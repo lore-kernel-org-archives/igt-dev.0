@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0E7C021A6
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 22:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C920C021A0
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 22:11:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3570710E14B;
-	Thu, 13 Feb 2025 22:11:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36E9F10E156;
+	Thu, 13 Feb 2025 22:11:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZlrIpFjz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oLB6bQgm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6E7910E076
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2E1210E151
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 22:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1739484691; x=1771020691;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=krT6dsey6RSBzD4ud569RNfs19+4RPlj4DauAQPN+xQ=;
- b=ZlrIpFjzD+5RWMQEFNcoBjrq7XwLc+PE3Zw9Chg1xZQR5fJ7K3h6ZU3z
- 9PZxhLDe1TgCul4Vc38OYuAGbm1ucgvqB9gSwnxZg0I8m2Yl4Cxfn3uV3
- 8tkEoazgDq+LSfxdRNoCKH8nIFlk6Y4qCbIJ4hU1FvUofq27Y+AE0lxri
- QofrjGXUnBi3c8H1IQRH9WkBuVL5rp3klN1AfX9HxVDv3CzOKWzaRNaOQ
- tu6YpfIBk9urt+5EPMuKfITsiOqhfJWuMsphiphvVJxF/LkbySEFNZunb
- qsDDSWdV7G9deemRqPiZRrWE+X6GXbuqTOEMSWVOGdG6KDEe9CazzbCLR g==;
-X-CSE-ConnectionGUID: cWonFYtvRXmxdDRNYHqfVw==
-X-CSE-MsgGUID: CAnvIH1xR8SXQeXa9NGZDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39920737"
-X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; d="scan'208";a="39920737"
+ bh=d5fYQ/95Wrs3T/GCPoOqsj8zpPzJEQSk96Zo/cHUNVY=;
+ b=oLB6bQgmz5xSD7VfbcI0nBQRiq9ANl0ZCMj/r0eLgdx+eC1C51zGwptW
+ wEvqzADlarhxt+JGHaOq/qZsaKi6yLwRkWvIUL+Xxf2QZOC2GVV1H8HnQ
+ tqGn4tW+bzIzMSb2JdatJCtQxo4CQqyeJsrvvt3akwOibJOVywIeK7S8H
+ BfN6FeA31G9o4wBOxNkgjvohT8np+Ojwe3aZlM9japyM5wORICisPAbBt
+ ZPqLlhjtZPlAmQGsDWW3klRaYrmgHpHiltoTPkAC+6SfXA6POMcdnRkgv
+ 6MYJu5UZU1RYP1XLXrqyQODQiPdypovxSk26Ib92ApHSMBODBD4Pv2HEe Q==;
+X-CSE-ConnectionGUID: PqaBxDvLQGKdY1CADxdlQw==
+X-CSE-MsgGUID: SZcnAllMR8mY3n22tAWPcA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39920738"
+X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; d="scan'208";a="39920738"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Feb 2025 14:11:30 -0800
-X-CSE-ConnectionGUID: XXii4KpmSPWDEOYwqY1mcA==
-X-CSE-MsgGUID: Jf9zx1/GT4qOfpYbkeczaw==
+X-CSE-ConnectionGUID: 6W8KZZXSRLG683z/+sgidA==
+X-CSE-MsgGUID: I59OYXamTAm+LNq/TE4+3A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="136509089"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="136509092"
 Received: from szeng-desk.jf.intel.com ([10.165.21.160])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Feb 2025 14:11:29 -0800
@@ -45,10 +45,10 @@ From: Oak Zeng <oak.zeng@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Thomas.Hellstrom@linux.intel.com,
 	matthew.brost@intel.com
-Subject: [i-g-t 3/4] tests/intel/xe_vm: Exclude invalid_flags tests from LNL
- and BMG
-Date: Thu, 13 Feb 2025 17:27:04 -0500
-Message-Id: <20250213222705.275364-3-oak.zeng@intel.com>
+Subject: [i-g-t 4/4] tests/intel/xe_exec_fault_mode: Test scratch page under
+ fault mode
+Date: Thu, 13 Feb 2025 17:27:05 -0500
+Message-Id: <20250213222705.275364-4-oak.zeng@intel.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20250213222705.275364-1-oak.zeng@intel.com>
 References: <20250213222705.275364-1-oak.zeng@intel.com>
@@ -69,94 +69,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Due to a fix of out of bound prefetch issue, we now allow scratch
-page coexist with fault mode on LNL and BMG, thus exclude those
-tests on such HW.
+On certain HW (such as lunarlake and battlemage), driver now allows
+scratch page be enabled under fault mode. Test this functionality
 
 Signed-off-by: Oak Zeng <oak.zeng@intel.com>
 ---
- tests/intel/xe_vm.c | 47 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 32 insertions(+), 15 deletions(-)
+ tests/intel/xe_exec_fault_mode.c | 63 ++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 0730dd3d3..834e0afd7 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -2349,6 +2349,7 @@ igt_main
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
- 	uint64_t bind_size;
- 	int fd;
-+	uint16_t dev_id;
- 	const struct section {
- 		const char *name;
- 		int bo_n_pages;
-@@ -2441,23 +2442,28 @@ igt_main
+diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+index ae40e099b..f787660ae 100644
+--- a/tests/intel/xe_exec_fault_mode.c
++++ b/tests/intel/xe_exec_fault_mode.c
+@@ -17,6 +17,7 @@
+ #include "igt.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
++#include "lib/xe/xe_util.h"
+ #include "xe_drm.h"
+ 
+ #include "xe/xe_ioctl.h"
+@@ -36,6 +37,60 @@
+ #define INVALID_VA	(0x1 << 8)
+ #define ENABLE_SCRATCH  (0x1 << 9)
+ 
++
++/**
++ * SUBTEST: scratch-fault
++ * Description: Test scratch page functionality
++ * Test category: functionality test
++ */
++static void test_scratch(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	size_t bb_size = xe_bb_size(fd, PAGE_ALIGN_UFENCE);
++	uint32_t vm;
++
++	struct xe_buffer dst_buf = {
++		.fd = fd,
++		.size = bb_size,
++		.gpu_addr = 0x1a0000,
++		.placement = vram_if_possible(fd, eci->gt_id),
++		.flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++	};
++
++	struct xe_buffer cmd_buf = {
++		.fd = fd,
++		.size = bb_size,
++		.gpu_addr = 0x10a0000,
++		.placement = vram_if_possible(fd, eci->gt_id),
++		.flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++	};
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
++			  DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
++			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++
++	dst_buf.vm = vm;
++	cmd_buf.vm = vm;
++	/* Submit a command to write 0x1a0000
++	 * Since 0x1a0000 is mapped scratch page, cmd execution should still
++	 * be successful. Write is either be dropped by HW (NULL PTE case) or
++	 * written to scratch page.
++	 */
++	xe_create_cmdbuf(&cmd_buf, insert_store, dst_buf.gpu_addr, 0xc0ffee, eci);
++	xe_submit_cmd(&cmd_buf);
++
++	/* Create a buffer object, vm_bind it to 0x1a0000, then re-submit
++	 * the command buffer. This should write to the buffer object.
++	 * Check the buffer object to see if the write was successful.
++	 */
++	xe_create_buffer(&dst_buf);
++	xe_submit_cmd(&cmd_buf);
++	igt_assert_eq(*(uint64_t *)dst_buf.cpu_addr, 0xc0ffee);
++
++	xe_destroy_cmdbuf(&cmd_buf);
++	xe_destroy_buffer(&dst_buf);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: invalid-va
+  * Description: Access invalid va and check for EIO through user fence.
+@@ -458,6 +513,7 @@ igt_main
  		{ NULL },
  	};
- 
--        const struct vm_create_section {
--                const char *name;
--                __u32 flags;
--        } xe_vm_create_invalid_flags[] = {
--                { "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
--                { "xe_vm_create_scratch_fault",
--                        DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
--                        DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
--                { "xe_vm_create_scratch_fault_lr",
--                        ~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
--                        DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
--                        DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
--                { }
--        };
-+	const struct vm_create_section {
-+		const char *name;
-+		__u32 flags;
-+	} xe_vm_create_invalid_flags1[] = {
-+		{ "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-+		{ }
-+	};
-+
-+	const struct vm_create_section xe_vm_create_invalid_flags2[] = {
-+		{ "xe_vm_create_scratch_fault",
-+			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-+			DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-+		{ "xe_vm_create_scratch_fault_lr",
-+			~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-+			DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
-+		{ }
-+	};
+ 	int fd;
++	uint32_t dev_id;
  
  	igt_fixture {
+ 		struct timespec tv = {};
+@@ -466,6 +522,7 @@ igt_main
+ 		int timeout = igt_run_in_simulation() ? 20 : 2;
+ 
  		fd = drm_open_driver(DRIVER_XE);
 +		dev_id = intel_get_drm_devid(fd);
- 
+ 		do {
+ 			if (ret)
+ 				usleep(5000);
+@@ -508,6 +565,12 @@ igt_main
  		xe_for_each_engine(fd, hwe)
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY) {
-@@ -2715,11 +2721,22 @@ igt_main
- 		}
- 	}
+ 			test_exec(fd, hwe, 1, 1, ENABLE_SCRATCH | INVALID_VA);
  
--	for (const struct vm_create_section *s = xe_vm_create_invalid_flags; s->name; s++) {
-+	for (const struct vm_create_section *s = xe_vm_create_invalid_flags1;
-+	     s->name; s++) {
- 		igt_subtest_f("invalid-flag-%s", s->name)
- 			invalid_flag(fd, s->flags);
- 	}
- 
-+	for (const struct vm_create_section *s = xe_vm_create_invalid_flags2;
-+	     s->name; s++) {
-+		igt_subtest_f("invalid-flag-%s", s->name) {
-+			igt_skip_on_f(IS_LUNARLAKE(dev_id) ||
-+				      IS_BATTLEMAGE(dev_id),
-+				      "Skip test on this platform\n");
-+			invalid_flag(fd, s->flags);
-+		}
++	igt_subtest("scratch-fault") {
++		igt_skip_on(!IS_LUNARLAKE(dev_id) && !IS_BATTLEMAGE(dev_id));
++		xe_for_each_engine(fd, hwe)
++			test_scratch(fd, hwe);
 +	}
 +
- 	igt_subtest("invalid-extensions")
- 		invalid_extensions(fd);
- 
+ 	igt_fixture {
+ 		drm_close_driver(fd);
+ 	}
 -- 
 2.26.3
 
