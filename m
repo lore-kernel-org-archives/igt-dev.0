@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05841C021A4
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 02:03:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3223EC02198
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 02:58:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3975E10E26B;
-	Thu, 13 Feb 2025 02:03:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JIH0Iria";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D452D10E24D
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 02:03:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739412222; x=1770948222;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=T/PJ4o23XM4XjAt3qvw501dJk9Ns24bS/mjT8mMOuCk=;
- b=JIH0Iria/0kksnCrZyGQSIWE46RNbjgsZib7jUBFE6T5wBJqgXbgAg8Y
- IWNQOk9d+KeLwxEi6dcI+Zkj08n27FLgu3BEYPKpLFzpJ08srk3e8GBAw
- GkOs/BYuA/06Cg7XYBoH5GfaU1OPMUK/UFYATb8ZIzUMzBnCYKAC2e3iT
- DOsn53ou6VvCn1qWTAH5gHFs0FGQbhuXJSXBlTK0AnBxfVXkYrxA4uwWO
- 6Klwd9RUo0UDY1C4IE/wqDP/Op6rNb7jX9NEXx5bjT8F086ci5tE6GrJY
- xd9YLWNNKUXpD54NdROtrCG0rzrDCqT0o+0/Z9FSlkh7olHj34EWPT4ht g==;
-X-CSE-ConnectionGUID: WWRvMV9MSKmjMdC4yUv0AQ==
-X-CSE-MsgGUID: zgp/y/jhTO+1TsFWEvBvlw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="39329683"
-X-IronPort-AV: E=Sophos;i="6.13,281,1732608000"; d="scan'208";a="39329683"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 18:03:41 -0800
-X-CSE-ConnectionGUID: 5jzNufVETXuwHyughMEP1A==
-X-CSE-MsgGUID: iQxvJlfhQd2XKJDvH7zQCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,281,1732608000"; d="scan'208";a="112856254"
-Received: from szeng-desk.jf.intel.com ([10.165.21.160])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 18:03:41 -0800
-From: Oak Zeng <oak.zeng@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Thomas.Hellstrom@linux.intel.com,
-	matthew.brost@intel.com
-Subject: [i-g-t 2/4] lib/xe/xe_util: Introduce helper functions for buffer
- creation and command submission etc
-Date: Wed, 12 Feb 2025 21:19:13 -0500
-Message-Id: <20250213021915.264978-2-oak.zeng@intel.com>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20250213021915.264978-1-oak.zeng@intel.com>
-References: <20250213021915.264978-1-oak.zeng@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF77B10E9BC;
+	Thu, 13 Feb 2025 02:58:29 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EC5710E0C2;
+ Thu, 13 Feb 2025 02:58:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Xe=3A_Add_tests_for_PXP?=
+ =?utf-8?q?_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Feb 2025 02:58:28 -0000
+Message-ID: <173941550811.1508100.11993597312473691142@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250213003904.2059770-1-daniele.ceraolospurio@intel.com>
+In-Reply-To: <20250213003904.2059770-1-daniele.ceraolospurio@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,259 +37,306 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+=3D=3D Series Details =3D=3D
 
-Introduce helper functions for buffer creation, binding, command submission, and
-destruction. With those helpers, writing a xe igt test will be much easier.
+Series: Xe: Add tests for PXP (rev3)
+URL   : https://patchwork.freedesktop.org/series/142450/
+State : warning
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Signed-off-by: Oak Zeng <oak.zeng@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
----
- lib/xe/xe_util.c | 182 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_util.h |  33 +++++++++
- 2 files changed, 215 insertions(+)
+=3D=3D Summary =3D=3D
 
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index 06b378ce0..0b6badeae 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -13,6 +13,188 @@
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
- 
-+/**
-+ * __xe_submit_cmd:
-+ * @cmdbuf Pointer to the command buffer structure
-+ *
-+ * Submits a command buffer to the GPU, waits for its completion, and verifies
-+ * the user fence value
-+ *
-+ * Return: The result of waiting for the user fence value
-+ */
-+int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf)
-+{
-+	int64_t timeout = NSEC_PER_SEC;
-+
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE,
-+			.addr = xe_cmdbuf_exec_ufence_gpuva(cmdbuf),},
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+		.exec_queue_id = cmdbuf->exec_queue,
-+		.address = (uint64_t)cmdbuf->gpu_addr,
-+	};
-+
-+	xe_exec(cmdbuf->fd, &exec);
-+	return __xe_wait_ufence(cmdbuf->fd, xe_cmdbuf_exec_ufence_cpuva(cmdbuf),USER_FENCE_VALUE, cmdbuf->exec_queue, &timeout);
-+}
-+
-+/**
-+ * xe_submit_cmd:
-+ * @cmdbuf Pointer to the command buffer structure
-+ *
-+ * Wrapper function to submit a command buffer and assert its successful
-+ * execution.
-+ */
-+void xe_submit_cmd(struct xe_buffer *cmdbuf)
-+{
-+	int64_t ret;
-+
-+	ret = __xe_submit_cmd(cmdbuf);
-+	igt_assert_eq(ret, 0);
-+}
-+
-+/**
-+ *xe_create_buffer:
-+ * @buffer Pointer to the xe_buffer structure containing buffer details.
-+ *
-+ * Creates a buffer, maps it to both CPU and GPU address spaces, and binds it
-+ * to a virtual memory (VM) space.
-+ */
-+void xe_create_buffer(struct xe_buffer *buffer)
-+{
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE },
-+	};
-+
-+	buffer->bind_queue = xe_bind_exec_queue_create(buffer->fd, buffer->vm, 0);
-+	buffer->bind_ufence = aligned_alloc(xe_get_default_alignment(buffer->fd), PAGE_ALIGN_UFENCE);
-+	sync->addr = (uint64_t)buffer->bind_ufence;
-+
-+
-+	/* create and bind the buffer->bo */
-+	buffer->bo = xe_bo_create(buffer->fd, 0, buffer->size, buffer->placement, buffer->flag);
-+	buffer->cpu_addr = xe_bo_map(buffer->fd, buffer->bo, buffer->size);
-+	xe_vm_bind_async(buffer->fd, buffer->vm, buffer->bind_queue, buffer->bo, 0, buffer->gpu_addr, buffer->size, sync, 1);
-+
-+	xe_wait_ufence(buffer->fd, (uint64_t *)buffer->bind_ufence, USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
-+	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
-+}
-+
-+/**
-+ * xe_destroy_buffer:
-+ * @buffer Pointer to the xe_buffer structure containing buffer details
-+ *
-+ * Destroys a buffer created by xe_create_buffer and releases associated
-+ * resources.
-+ */
-+void xe_destroy_buffer(struct xe_buffer *buffer)
-+{
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE },
-+	};
-+	sync->addr = (uint64_t)buffer->bind_ufence;
-+
-+	xe_vm_unbind_async(buffer->fd, buffer->vm, buffer->bind_queue, 0, buffer->gpu_addr, buffer->size, sync, 1);
-+	xe_wait_ufence(buffer->fd, (uint64_t *)buffer->bind_ufence, USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
-+	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
-+
-+	munmap(buffer->cpu_addr, buffer->size);
-+	gem_close(buffer->fd, buffer->bo);
-+
-+	free(buffer->bind_ufence);
-+	xe_exec_queue_destroy(buffer->fd, buffer->bind_queue);
-+}
-+
-+/**
-+ * insert_store:
-+ * @batch Pointer to the batch buffer where commands will be inserted.
-+ * @dst_va Destination virtual address to store the value.
-+ * @val Value to be stored.
-+ *
-+ * Inserts a MI_STORE_DWORD_IMM_GEN4 command into a batch buffer, which stores
-+ * an immediate value to a given destination virtual address.
-+ * */
-+void insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val)
-+{
-+	int i = 0;
-+
-+	batch[i] = MI_STORE_DWORD_IMM_GEN4;
-+	batch[++i] = dst_va;
-+	batch[++i] = dst_va >> 32;
-+	batch[++i] = val;
-+	batch[++i] = MI_BATCH_BUFFER_END;
-+}
-+
-+/**
-+ * xe_create_cmdbuf:
-+ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
-+ * @fill_func Pointer to the function that fills the command buffer.
-+ * @dst_va Virtual address of the memory location where val need to store.
-+ * @val Value to be written to the memory locations.
-+ * @eci Pointer to the engine class instance for execution.
-+ *
-+ * Creates a command buffer, fills it with commands using the provided fill
-+ * function, and sets up the execution queue for submission.
-+ */
-+void xe_create_cmdbuf(struct xe_buffer *cmd_buf, cmdbuf_fill_func_t fill_func, uint64_t dst_va, uint32_t val, struct drm_xe_engine_class_instance *eci)
-+{
-+	/*
-+	 * make some room for a exec_ufence, which will be used to sync the
-+	 * submission of this command....
-+	 */
-+	cmd_buf->size = xe_bb_size(cmd_buf->fd, cmd_buf->size + PAGE_ALIGN_UFENCE);
-+	xe_create_buffer(cmd_buf);
-+	cmd_buf->exec_queue = xe_exec_queue_create(cmd_buf->fd, cmd_buf->vm, eci, 0);
-+	fill_func(cmd_buf->cpu_addr, dst_va, val);
-+}
-+
-+/**
-+ * xe_destroy_cmdbuf:
-+ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
-+ *
-+ * Destroys a command buffer created by xe_create_cmdbuf and releases
-+ * associated resources.
-+ */
-+void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf)
-+{
-+	xe_exec_queue_destroy(cmd_buf->fd, cmd_buf->exec_queue);
-+	xe_destroy_buffer(cmd_buf);
-+}
-+
-+/**
-+ * xe_cmdbuf_exec_ufence_gpuva:
-+ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
-+ *
-+ * Returns the GPU virtual address of the execution user fence located at the
-+ * end of the command buffer.
-+ */
-+uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer *cmd_buf)
-+{
-+	/* the last 8 bytes of the cmd buffer is used as ufence */
-+	return (uint64_t)cmd_buf->gpu_addr + cmd_buf->size - 8;
-+}
-+
-+/**
-+ * xe_cmdbuf_exec_ufence_cpuva:
-+ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
-+ *
-+ * Returns the CPU virtual address of the execution user fence located at the
-+ * end of the command buffer.
-+ */
-+uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf)
-+{
-+	/* the last 8 bytes of the cmd buffer is used as ufence */
-+	return cmd_buf->cpu_addr + cmd_buf->size - 8;
-+}
-+
- static bool __region_belongs_to_regions_type(struct drm_xe_mem_region *region,
- 					     uint32_t *mem_regions_type,
- 					     int num_regions)
-diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-index 06ebd3c2a..719c314ee 100644
---- a/lib/xe/xe_util.h
-+++ b/lib/xe/xe_util.h
-@@ -13,6 +13,39 @@
- #include <xe_drm.h>
- 
- #include "xe_query.h"
-+#define DRM_XE_VM_BIND_FLAG_SYSTEM_ALLOCATOR	(1 << 4)
-+
-+#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-+#define PAGE_ALIGN_UFENCE 4096
-+
-+struct xe_buffer {
-+	void *cpu_addr;
-+	uint64_t gpu_addr;
-+	/*the user fence used to vm bind this buffer*/
-+	uint32_t *bind_ufence;
-+	uint64_t size;
-+	uint32_t flag;
-+	uint32_t vm;
-+	uint32_t bo;
-+	uint32_t placement;
-+	uint32_t bind_queue;
-+	/*only a cmd buffer has a exec queue*/
-+	uint32_t exec_queue;
-+	int fd;
-+	bool is_userptr;
-+};
-+
-+typedef void (*cmdbuf_fill_func_t) (uint32_t *batch, uint64_t dst_gpu_va, uint32_t val);
-+void xe_create_buffer(struct xe_buffer *buffer);
-+void xe_create_cmdbuf(struct xe_buffer *cmd_buf, cmdbuf_fill_func_t fill_func,
-+		uint64_t dst_va, uint32_t val, struct drm_xe_engine_class_instance *eci);
-+uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer *cmd_buf);
-+uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf);
-+void insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val);
-+void xe_submit_cmd(struct xe_buffer *cmdbuf);
-+int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf);
-+void xe_destroy_buffer(struct xe_buffer *buffer);
-+void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf);
- 
- #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
- 	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_SYSMEM)
--- 
-2.26.3
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1363685 f=
+or the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/71013675):
+   #1 [killpg+0x40]
+   #2 [gsignal+0x10b]
+   #3 [abort+0x121]
+   #4 [<unknown>+0x121]
+   #5 [__assert_fail+0x42]
+   #6 [internal_assert+0xe5]
+   #7 [igt_skip+0x169]
+   #8 [__igt_skip_check+0x1b5]
+   #9 [termination_tests+0x41e]
+   #10 [__igt_unique____real_main1097+0x2f6]
+   #11 [main+0x27]
+   #12 [__libc_start_main+0xeb]
+   #13 [_start+0x2a]
+  ninja: build stopped: subcommand failed.
+  section_end:1739415407:step_script
+  section_start:1739415407:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415407:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/71013678):
+  [2/406] Linking target tests/xe_pat.
+  [3/406] Linking target tests/xe_oa.
+  [4/406] Linking target tests/xe_pm_residency.
+  [5/406] Linking target tests/xe_pm.
+  [6/406] Compiling C object 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o'.
+  FAILED: tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o=20
+  /usr/bin/aarch64-linux-gnu-gcc -Itests/59830eb@@xe_pxp@exe -Itests -I../t=
+ests -I../include -I../include/drm-uapi -I../include/drm-uapi-experimental =
+-I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I=
+/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/gli=
+b-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/fr=
+eetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm=
+/nouveau -I/usr/include/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/in=
+clude/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wal=
+l -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h=
+ -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -W=
+format=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -=
+Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-=
+externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -=
+Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-unini=
+tialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compa=
+re -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddr=
+ess -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
+=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmi=
+ssing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretu=
+rn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-string=
+s -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthrea=
+d  -MD -MQ 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o' -MF 'tests/59830eb@=
+@xe_pxp@exe/intel_xe_pxp.c.o.d' -o 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.=
+c.o' -c ../tests/intel/xe_pxp.c
+  ../tests/intel/xe_pxp.c: In function =E2=80=98termination_tests=E2=80=99:
+  ../tests/intel/xe_pxp.c:1065:53: error: =E2=80=98O_RDONLY=E2=80=99 undecl=
+ared (first use in this function); did you mean =E2=80=98STA_RONLY=E2=80=99?
+     fw_handle =3D igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+                                                       ^~~~~~~~
+                                                       STA_RONLY
+  ../tests/intel/xe_pxp.c:1065:53: note: each undeclared identifier is repo=
+rted only once for each function it appears in
+  ninja: build stopped: subcommand failed.
+  section_end:1739415363:step_script
+  section_start:1739415363:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415364:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/71013677):
+  ninja: Entering directory `build'
+  [1/746] Generating version.h with a custom command.
+  [2/406] Linking target tests/xe_pat.
+  [3/406] Linking target tests/xe_oa.
+  [4/406] Compiling C object 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o'.
+  FAILED: tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o=20
+  /usr/bin/arm-linux-gnueabihf-gcc -Itests/59830eb@@xe_pxp@exe -Itests -I..=
+/tests -I../include -I../include/drm-uapi -I../include/drm-uapi-experimenta=
+l -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ =
+-I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf=
+/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/includ=
+e/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/li=
+bdrm/nouveau -I/usr/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/=
+usr/include/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D6=
+4 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include co=
+nfig.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statem=
+ent -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarat=
+ions -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wn=
+ested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wsh=
+adow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe=
+-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign=
+-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=
+=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -W=
+error=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=
+=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=
+=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite=
+-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 =
+-pthread  -MD -MQ 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o' -MF 'tests/5=
+9830eb@@xe_pxp@exe/intel_xe_pxp.c.o.d' -o 'tests/59830eb@@xe_pxp@exe/intel_=
+xe_pxp.c.o' -c ../tests/intel/xe_pxp.c
+  ../tests/intel/xe_pxp.c: In function =E2=80=98termination_tests=E2=80=99:
+  ../tests/intel/xe_pxp.c:1065:53: error: =E2=80=98O_RDONLY=E2=80=99 undecl=
+ared (first use in this function); did you mean =E2=80=98STA_RONLY=E2=80=99?
+     fw_handle =3D igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+                                                       ^~~~~~~~
+                                                       STA_RONLY
+  ../tests/intel/xe_pxp.c:1065:53: note: each undeclared identifier is repo=
+rted only once for each function it appears in
+  ninja: build stopped: subcommand failed.
+  section_end:1739415400:step_script
+  section_start:1739415400:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415401:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/71013679):
+  ninja: Entering directory `build'
+  [1/743] Generating version.h with a custom command.
+  [2/401] Linking target tests/xe_oa.
+  [3/401] Linking target tests/xe_pm.
+  [4/401] Compiling C object 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o'.
+  FAILED: tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o=20
+  /usr/bin/mips-linux-gnu-gcc -Itests/59830eb@@xe_pxp@exe -Itests -I../test=
+s -I../include -I../include/drm-uapi -I../include/drm-uapi-experimental -I.=
+./include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/us=
+r/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/=
+include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype=
+2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouve=
+au -I/usr/include/mips-linux-gnu -I/usr/include/valgrind -I/usr/include/als=
+a -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winval=
+id-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTI=
+FY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D=
+2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-=
+format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -=
+Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-p=
+rototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized =
+-Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-t=
+ype-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werr=
+or=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conv=
+ersion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-brace=
+s -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -We=
+rror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-buil=
+tin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD -MQ =
+'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o' -MF 'tests/59830eb@@xe_pxp@exe=
+/intel_xe_pxp.c.o.d' -o 'tests/59830eb@@xe_pxp@exe/intel_xe_pxp.c.o' -c ../=
+tests/intel/xe_pxp.c
+  ../tests/intel/xe_pxp.c: In function =E2=80=98termination_tests=E2=80=99:
+  ../tests/intel/xe_pxp.c:1065:53: error: =E2=80=98O_RDONLY=E2=80=99 undecl=
+ared (first use in this function); did you mean =E2=80=98STA_RONLY=E2=80=99?
+     fw_handle =3D igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+                                                       ^~~~~~~~
+                                                       STA_RONLY
+  ../tests/intel/xe_pxp.c:1065:53: note: each undeclared identifier is repo=
+rted only once for each function it appears in
+  ninja: build stopped: subcommand failed.
+  section_end:1739415396:step_script
+  section_start:1739415396:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415397:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
+-tags/-/jobs/71013670):
+   #1 [killpg+0x40]
+   #2 [gsignal+0x145]
+   #3 [abort+0x12b]
+   #4 [__assert_fail_base.cold+0xf]
+   #5 [__assert_fail+0x46]
+   #6 [internal_assert+0xe5]
+   #7 [igt_skip+0x16a]
+   #8 [__igt_skip_check+0x1bb]
+   #9 [termination_tests+0x3c8]
+   #10 [__igt_unique____real_main1097+0x246]
+   #11 [main+0x23]
+   #12 [__libc_start_main+0xf3]
+   #13 [_start+0x2e]
+  ninja: build stopped: subcommand failed.
+  section_end:1739415376:step_script
+  section_start:1739415376:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415377:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/71013674):
+   #0 [killpg+0x40]
+   #1 [gsignal+0x145]
+   #2 [abort+0x12b]
+   #3 [__assert_fail_base.cold+0xf]
+   #4 [__assert_fail+0x46]
+   #5 [internal_assert+0xe0]
+   #6 [igt_skip+0x150]
+   #7 [__igt_skip_check+0x127]
+   #8 [termination_tests+0x6ee]
+   #9 [__igt_unique____real_main1097+0x9c4]
+   #10 [main+0x29]
+   #11 [__libc_start_main+0xf3]
+   #12 [_start+0x2e]
+  ninja: build stopped: subcommand failed.
+  section_end:1739415424:step_script
+  section_start:1739415424:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415425:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
+.org/gfx-ci/igt-ci-tags/-/jobs/71013673):
+   #1 [killpg+0x40]
+   #2 [gsignal+0x145]
+   #3 [abort+0x12b]
+   #4 [__assert_fail_base.cold+0xf]
+   #5 [__assert_fail+0x46]
+   #6 [internal_assert+0xe5]
+   #7 [igt_skip+0x16a]
+   #8 [__igt_skip_check+0x1bb]
+   #9 [termination_tests+0x3c8]
+   #10 [__igt_unique____real_main1097+0x246]
+   #11 [main+0x23]
+   #12 [__libc_start_main+0xf3]
+   #13 [_start+0x2e]
+  ninja: build stopped: subcommand failed.
+  section_end:1739415409:step_script
+  section_start:1739415409:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415410:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/71013671):
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/1104] Generating version.h with a custom command.
+  [2/446] Linking target tests/xe_oa.
+  [3/446] Generating xe_oa.testlist with a meson_exe.py custom command.
+  [4/446] Generating xe_pxp.testlist with a meson_exe.py custom command.
+  FAILED: tests/xe_pxp.testlist=20
+  /usr/bin/meson --internal exe --capture tests/xe_pxp.testlist -- /builds/=
+gfx-ci/igt-ci-tags/build/tests/xe_pxp --show-testlist
+  skipping is allowed only in fixtures, subtests or igt_simple_main
+  please refer to lib/igt_core documentation
+  xe_pxp: ../lib/igt_core.c:450: internal_assert: Assertion `0' failed.
+  Received signal SIGABRT.
+  Stack trace:=20
+  ninja: build stopped: subcommand failed.
+  section_end:1739415363:step_script
+  section_start:1739415363:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415364:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/71013672):
+   #1 [killpg+0x40]
+   #2 [gsignal+0x145]
+   #3 [abort+0x12b]
+   #4 [__assert_fail_base.cold+0xf]
+   #5 [__assert_fail+0x46]
+   #6 [internal_assert+0xe5]
+   #7 [igt_skip+0x16a]
+   #8 [__igt_skip_check+0x1bb]
+   #9 [termination_tests+0x3c8]
+   #10 [__igt_unique____real_main1097+0x246]
+   #11 [main+0x23]
+   #12 [__libc_start_main+0xf3]
+   #13 [_start+0x2e]
+  ninja: build stopped: subcommand failed.
+  section_end:1739415360:step_script
+  section_start:1739415360:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1739415360:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+=3D=3D Logs =3D=3D
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/1363685
