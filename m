@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A587C021A4
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 07:00:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AACAC0219D
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Feb 2025 08:36:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5071510EA2D;
-	Thu, 13 Feb 2025 07:00:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F5E510EA21;
+	Thu, 13 Feb 2025 08:36:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BwNHPT94";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WOA7UEEW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FB7210EA2B
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 07:00:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A19D310EA21
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2025 08:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739430011; x=1770966011;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=jpkp6bq0rLaOSDInNFggJFKhKJWvHb8+z7pWyzaLZzE=;
- b=BwNHPT94RXlE0SXYpz/4ne6ANSPlEeDL024c7DfrC96FZh9fOwFzrf90
- TMp42PnQ5JtGJSYL5+UGn6XB8xw1Sc6b8S0hic+zi4T+auwo0LycjKRQV
- ojcCUlNYu/Qw6L/1KPJg/fk3d7GXZQgLzv6TQtHbugNQ7JnutOeNonLZI
- HmLaf/COwtKNuJWh1ohOyOnYrPcVIRVkvUq7p3wGS0jrTyB52rYTXR0FK
- nIFrYDUC+Wa8uud7e1C2HTURoXLcLavOHdOIs02xShJFf/sFW8aMc/f/t
- SKtzbeNK3T/rZZ7SdZ0a7cGFxN7cS1TBtZ4930m1S8cRwH2Sb+YdTjlep w==;
-X-CSE-ConnectionGUID: EsqZ6pciTl2aXtrHJiUbdw==
-X-CSE-MsgGUID: C+67FYq4R56CQiIdkv9TnA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="39348616"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="39348616"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 23:00:11 -0800
-X-CSE-ConnectionGUID: c2My5k4UTd6O5i56rRBZGA==
-X-CSE-MsgGUID: 3O/Phei3Seemu4VKfXsM+w==
+ t=1739435787; x=1770971787;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jVlY1NWlmmCiYkTyh89BIdBGmqSaNsOBRoHxVbtoSPI=;
+ b=WOA7UEEWyj2OcdXmg1wcGPOmttlypBcutieeDs6mAmpNnLgJRzFAU00l
+ c6k9Pdc+MF/U+5wHS/y0df4/SH9iIeuMh5B4V6LmNXXYoIv2U5HpVY46w
+ mNz7SHwYoBL1JULx6pgLS6HwPuWfm6jGtfXXwyg+yzPAnDAjLQb6CekZT
+ N3bRseobCDuQwRzt3tc8AjyPWe3MMUOURQkEe2P+GzsLRpIA5o50ej8Qm
+ TLrpFyjcz8WfHR9r16TZJQm69IP/+DZq8okXIOVvfXaTL64R7ThKJvmkY
+ S7ruZl6DFiIIuuQgJ3r6/AqCCc//cW+HruTTWJzof9Hs+i6C3mtANC3wO g==;
+X-CSE-ConnectionGUID: 0gbO+ehARQiGgnuat4/X+Q==
+X-CSE-MsgGUID: RXRQaA0lTnqDSolD55fxDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="43893951"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="43893951"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2025 00:36:26 -0800
+X-CSE-ConnectionGUID: 5sZBiC2rSPGQFJ/cTm6MaA==
+X-CSE-MsgGUID: 9Ho4RBpGRaSPUWnL2RarDw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="113583465"
-Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.246.228])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2025 23:00:09 -0800
-Date: Thu, 13 Feb 2025 08:00:06 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 3/5] lib/intel_compute: Allow the user to provide a
- custom compute kernel
-Message-ID: <20250213070006.szwhib7r3bompjfz@zkempczy-mobl2>
-References: <20250205101748.1117809-1-francois.dugast@intel.com>
- <20250205101748.1117809-4-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; d="scan'208";a="113035835"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by orviesa006.jf.intel.com with ESMTP; 13 Feb 2025 00:36:24 -0800
+From: Pranay Samala <pranay.samala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
+ pranay.samala@intel.com
+Subject: [PATCH i-g-t] tests/intel/kms_flip_scaled_crc: Add more logs to
+ skips/failure
+Date: Thu, 13 Feb 2025 14:11:51 +0530
+Message-Id: <20250213084151.705298-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205101748.1117809-4-francois.dugast@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,87 +66,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Feb 05, 2025 at 11:17:04AM +0100, Francois Dugast wrote:
-> Allow the user to provide a custom compute kernel which will be used
-> instead of the default compute square one. This will be helpful to
-> try out corner cases which require a specific compute kernel.
-> 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  lib/intel_compute.c | 26 ++++++++++++++++++--------
->  lib/intel_compute.h |  2 ++
->  2 files changed, 20 insertions(+), 8 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index e0776fb6d..a826d58c0 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -1770,6 +1770,8 @@ static bool __run_intel_compute_kernel(int fd,
->  	unsigned int batch;
->  	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
->  	enum intel_driver driver = get_intel_driver(fd);
-> +	const unsigned char *kernel;
-> +	unsigned int kernel_size;
->  
->  	for (batch = 0; batch < ARRAY_SIZE(intel_compute_batches); batch++) {
->  		if (ip_ver == intel_compute_batches[batch].ip_ver)
-> @@ -1787,16 +1789,24 @@ static bool __run_intel_compute_kernel(int fd,
->  		return false;
->  	}
->  
-> -	while (kernels->kernel) {
-> -		if (ip_ver == kernels->ip_ver)
-> -			break;
-> -		kernels++;
-> +	/* If the user provides a kernel, use it */
-> +	if (user && user->kernel) {
-> +		kernel = user->kernel;
-> +		kernel_size = user->kernel_size;
-> +	} else {
-> +		while (kernels->kernel) {
-> +			if (ip_ver == kernels->ip_ver)
-> +				break;
-> +			kernels++;
-> +		}
-> +		if (!kernels->kernel)
-> +			return false;
-> +		kernel = kernels->kernel;
-> +		kernel_size = kernels->size;
+Having some logs for test failures or skips would
+make debugging much easier.
 
-According to how we build pipeline indirect data we're limited to
-three arguments - *input, *output, count. Allowing the user to provide
-a custom kernel won't work unless type constraint will be met.
-I don't like this change, because someone who doesn't know how
-this work will start providing its own kernels will be surprised
-it doesn't work.
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+---
+ tests/intel/kms_flip_scaled_crc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---
-Zbigniew
+diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+index 7dc07bc83..439723eea 100644
+--- a/tests/intel/kms_flip_scaled_crc.c
++++ b/tests/intel/kms_flip_scaled_crc.c
+@@ -709,6 +709,8 @@ static drmModeModeInfoPtr find_mode(data_t *data, igt_output_t *output)
+ 		}
+ 	}
+ 
++	if (!modetoset)
++		igt_info("Unable to find the required mode.\n");
+ 	return modetoset;
+ }
+ 
+-- 
+2.34.1
 
->  	}
-> -	if (!kernels->kernel)
-> -		return false;
->  
-> -	intel_compute_batches[batch].compute_exec(fd, kernels->kernel,
-> -						  kernels->size, eci, user);
-> +	intel_compute_batches[batch].compute_exec(fd, kernel,
-> +						  kernel_size, eci, user);
->  
->  	return true;
->  }
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index c4b4ee5e1..6096bb83a 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -35,6 +35,8 @@ struct intel_compute_kernels {
->  
->  struct user_execenv {
->  	uint32_t vm;
-> +	const unsigned char *kernel;
-> +	unsigned int kernel_size;
->  };
->  
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
-> -- 
-> 2.43.0
-> 
