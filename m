@@ -4,59 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F00C02198
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 21:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72B2C021A4
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 21:43:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E259D10E37B;
-	Fri, 14 Feb 2025 21:05:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E2ED10E37B;
+	Fri, 14 Feb 2025 21:43:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="czXumyB9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bMoVJh8C";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89EB610E37B
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 21:04:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C1FB10E4A1
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 21:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739567099; x=1771103099;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=f0eaUVqDrN/ROuBPWxgMCHE7fZyRz5jVURLLOxZZw0w=;
- b=czXumyB9nyucwk+d+K/7DRO0lvT++vgPE70EjnzGAnAjKLDrTCvsQlMR
- frpepWLGi0xhCa164syCZlPIQRr3KHCPdLdqV5P51DM40VvP39cJZW0tz
- WAVlb9hgPoOVWyoxceRlOBMkauzhSKiBdMnB4ElhdxaWyaJVqaHqKcXdo
- s6J9iijC+JrJaVMncGU6zAoLIvr9cSSJZqoZTfuiKMA5o1THb2tQw32tS
- PR9YzCmihL5+6+3jHJwQ5AuwxWv4j5hh62K41DKSfiRi3xjLvsxIJKvWW
- 5QBB48zKs5AsPaRLvM9ovKITohPPmutuIvXlRs3kQ4Z2ZeNQxXGavEV22 Q==;
-X-CSE-ConnectionGUID: mMg1JgavSwee9m0lHdBbeQ==
-X-CSE-MsgGUID: jl6eGk8HRpu7tkLtkA6SoQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="44092957"
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; d="scan'208";a="44092957"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 13:04:59 -0800
-X-CSE-ConnectionGUID: IhdymUUeR/yBRrIMUzl8gQ==
-X-CSE-MsgGUID: wIMXjRJuRTK2+YNKddzrCg==
+ t=1739569420; x=1771105420;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ernZvxtV77Xy8k3Ga9d1ecaj7dFDGTPdShTzWlbpZdY=;
+ b=bMoVJh8CIpzuolJZ+D5EBxHZpKurZypuI/aBhzcUdRcPU4wcB2XP66Y+
+ nBZeIz8x7O4GJWh4fLECZs5pdk11N5WfkZzeqXdnvZMAixkTCPSVfnw1v
+ RJaqaMrMPJNQgUsyZhJn+hrLEPLupdMhAnpF2xhV5OkIYX9lp77t9/FPG
+ DgUYizfviK1oiJWtyWIk8PGqrHwOB7c4iyrVp0nnJlUZ04A7EOhHKlqXE
+ CfkYC89A0M8am9QtnWiKMVqiVqbEYlNJFfhLVXrvyVeRuS9xiS0oZIxry
+ qGmsKNykbcTCFQCGIjGRNDhvyLM+JG2hDM95LcLH/Q50kssku05+t8r6g A==;
+X-CSE-ConnectionGUID: c7KP+IeKRtahar6msU6nyA==
+X-CSE-MsgGUID: SxQkqc35QNejrsox/g3q8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40449638"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="40449638"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2025 13:43:40 -0800
+X-CSE-ConnectionGUID: kUw70BjmQQuNTuix5WvhvQ==
+X-CSE-MsgGUID: 4OBQZbBiRNukrd5L7CsWjQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; d="scan'208";a="113754492"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 14 Feb 2025 13:04:57 -0800
-Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 14 Feb 2025 23:04:56 +0200
-Date: Fri, 14 Feb 2025 23:04:56 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/kms_color: Enable ctm-limited-range subtest
-Message-ID: <Z6-v-I4F2Os8vXCa@intel.com>
-References: <20250214161011.363157-1-swati2.sharma@intel.com>
- <Z699roJnvD0kO4Ne@intel.com>
- <7f66b930-2061-4204-934c-fee454992ae9@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144489046"
+Received: from szeng-desk.jf.intel.com ([10.165.21.160])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2025 13:43:40 -0800
+From: Oak Zeng <oak.zeng@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Thomas.Hellstrom@linux.intel.com, matthew.brost@intel.com,
+ kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
+ ashutosh.dixit@intel.com, juha-pekka.heikkila@intel.com,
+ rodrigo.vivi@intel.com
+Subject: [i-g-t v2 1/4] lib/xe: Fix a comment error
+Date: Fri, 14 Feb 2025 16:59:17 -0500
+Message-Id: <20250214215920.282425-2-oak.zeng@intel.com>
+X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20250214215920.282425-1-oak.zeng@intel.com>
+References: <20250214215920.282425-1-oak.zeng@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7f66b930-2061-4204-934c-fee454992ae9@intel.com>
-X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,82 +70,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Feb 14, 2025 at 11:56:27PM +0530, Sharma, Swati2 wrote:
-> Hi Ville,
-> 
-> On 14-02-2025 11:00 pm, Ville Syrjälä wrote:
-> > On Fri, Feb 14, 2025 at 09:40:11PM +0530, Swati Sharma wrote:
-> >> This tests is currently disabled since CRC computed on Intel
-> >> hardware seems to include data on the lower bits, this is
-> >> preventing us to CRC checks.
-> >>
-> >> Let's try to enable it back and check behavior on newer Intel
-> >> platforms.
-> >>
-> >> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> >> ---
-> >>   tests/kms_color.c | 166 ++++++++++++++++++++++++++--------------------
-> >>   1 file changed, 93 insertions(+), 73 deletions(-)
-> >>
-> >> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> >> index 4b71d3dd3..c3b285b4e 100644
-> >> --- a/tests/kms_color.c
-> >> +++ b/tests/kms_color.c
-> >> @@ -58,6 +58,7 @@
-> >>    * @0-75:           for 0.75 transparency
-> >>    * @blue-to-red:    from blue to red
-> >>    * @green-to-red:   from green to red
-> >> + * @limited-range:  with identity matrix
-> >>    * @max:            for maximum transparency
-> >>    * @negative:       for negative transparency
-> >>    * @red-to-blue:    from red to blue
-> >> @@ -623,107 +624,97 @@ static bool test_pipe_ctm(data_t *data,
-> >>    * This test is currently disabled as the CRC computed on Intel hardware seems
-> >>    * to include data on the lower bits, this is preventing us to CRC checks.
-> >>    */
-> >> -#if 0
-> >> -static void test_pipe_limited_range_ctm(data_t *data,
-> >> +static bool test_pipe_limited_range_ctm(data_t *data,
-> >>   					igt_plane_t *primary)
-> >>   {
-> >>   	double limited_result = 235.0 / 255.0;
-> >> -	static const color_t red_green_blue_limited[] = {
-> >> +	color_t red_green_blue_limited[] = {
-> >>   		{ limited_result, 0.0, 0.0 },
-> >>   		{ 0.0, limited_result, 0.0 },
-> >> -		{ 0.0, 0.0, limited_result },
-> >> +		{ 0.0, 0.0, limited_result }
-> >>   	};
-> > This whole thing is fundementally broken. We can't generate
-> > limited range output without using the CSC post offsets,
-> > which are not exposed via the current CTM uapi.
-> We do have its equivalent test in kms_color_chamelium
-> and it seems its passing 
-> https://gfx-ci.igk.intel.com/cibuglog-ng/results/all?query_key=af49bc8e4e7d1c69ce04f9a1196c167456e8344a
-> Is it wrong?
+The timeout value of __xe_wait_ufence returns the
+remaining time, not elapsed time. Fix it.
 
-Hmm. Looks like the test has nothing really to do with the
-CTM (despite the name), and instead if just uses identity CTM
-and puts the limited range equivalent data directly into the
-fb. So I guess technically it could sort of work.
+Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+---
+ lib/xe/xe_ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For the chamelium version the port will chop off the extra
-low bits so I guess that explains why it works.
-
-The crc version is more tricky:
-- g4x presuambly won't work because the port color range
-  bit won't affect the pipe crc
-- ilk-ivb/vlv/chv won't work because TRANSCONF_COLOR_RANGE_SELECT
-  doesn't seem to affect the pipe crc either
-- icl+ uses the output csc for the limited range conversion
-  so the gamma LUT lsb chopping doesn't do anything, so we may
-  get some differences in the low bits
-- hsw-glk maybe could work if we do enable CTM+gamma since then
-  we'll end up doing the limited range adjustment on the gamma LUT
-  and thus it can chop off the low bits. If we didn't enable
-  both CTM and gamma then the limited range conversion would be
-  done on the pipe CSC and thus it would behave exactly like icl+.
-
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 6d8388918..028102aa2 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -496,7 +496,7 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+  *
+  * Function compares @value with memory pointed by @addr until they are equal.
+  *
+- * Returns (in @timeout), the elapsed time in nanoseconds if user fence was
++ * Returns (in @timeout), the remaining time in nanoseconds if user fence was
+  * signalled. Returns 0 on success, -errno of ioctl on error.
+  */
+ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
 -- 
-Ville Syrjälä
-Intel
+2.26.3
+
