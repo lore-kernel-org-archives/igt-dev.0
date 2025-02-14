@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0C47C021A9
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D0EC021A6
 	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 21:43:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A04A10ED43;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C52210ED44;
 	Fri, 14 Feb 2025 21:43:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cNIjIQ4x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dqLUTqDT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F16310E37B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A576D10E37B
  for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 21:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739569420; x=1771105420;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Ne+Tmin8UDhervcv8Pc/UUG2uj3DsIDC/LEmg2kGBNY=;
- b=cNIjIQ4x+nOtucsLiBPIn2FucgYoyg4iEgyD5GHjrBgEN7Zl5hOFbLju
- B7rt5MzbBPDqxPKrqIfT5fzPazJfl/bjYIjou72x6ioUg4t9YXL/gDPsF
- wL0JbaI2ifJh3/p/d1Wex6y6kuelLEpjm8UB7KfVPerHVNvdFQXJ0gFuz
- qBn7JJwW+gwFzazBLxonimgwzsH1CIdRLGwD02+NlMRnw3QcMj7QDJry5
- FMwDmt64MhVtBuau2Rf+p3Z62RtqriVI1FWRVpGhlmSJurcc2GWucqm7g
- VhNddJ4e4Hn05Gn3lgiXXqNyt17i6AqnFQ52LRMoohAO5N8GPjwWCYyYB Q==;
-X-CSE-ConnectionGUID: B890zcXiTEu2VTBE2f+eGw==
-X-CSE-MsgGUID: OYPPJ/g6S2+bBYX6uLYbDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40449637"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="40449637"
+ t=1739569421; x=1771105421;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=FwIHX+Tz13/JuPQzBO/2fwxj1R951zS006peGOIPbyA=;
+ b=dqLUTqDTj2Jfy63ExoMU+l6GIyREjpBfo9LZODTUY0y/V3SF6E4EVXOt
+ GUye2fyYrUxo+ttOhwBo8JyPFoyl4LJaXSjad+LJQbxFYU/vTP38K2Tsr
+ iGNftNQMYFwC424VVti4vh6CwXmtr+VLqvq/i46vpNqCqBybtrKtKOMNY
+ CG54ncPv1DOO600MWt9oDAgmp4C7woWnJ+dmXHKMVoDL3GAN00R0GynlH
+ mXD6QJFsTAwAkAY6MpXfDOoJ9vmTS5J/FBu2cg/rL1AKZci7/3akdL1y5
+ k9QRJ+1ODgBZNgQ3J+EjqfMYHXcKV4ly1R5jO/8u9RvFBN38XNh6fUFL1 A==;
+X-CSE-ConnectionGUID: aT29WnzCTS+wxTj+c2dGHw==
+X-CSE-MsgGUID: SPP9VfYNSCiawcFAWB/9zw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40449640"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="40449640"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 13:43:40 -0800
-X-CSE-ConnectionGUID: AnoMdfOXS663pL37H27/zg==
-X-CSE-MsgGUID: 3Z9dIGAQSTSIe2GgyNUO4Q==
+ 14 Feb 2025 13:43:41 -0800
+X-CSE-ConnectionGUID: 4t9NUJauQlmHmh2kwMxKUA==
+X-CSE-MsgGUID: UihSetPvS5eK7CbRp5vSCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144489043"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144489049"
 Received: from szeng-desk.jf.intel.com ([10.165.21.160])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 13:43:39 -0800
+ 14 Feb 2025 13:43:40 -0800
 From: Oak Zeng <oak.zeng@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Thomas.Hellstrom@linux.intel.com, matthew.brost@intel.com,
  kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
  ashutosh.dixit@intel.com, juha-pekka.heikkila@intel.com,
  rodrigo.vivi@intel.com
-Subject: [i-g-t v2 0/4] xe: Test scratch page under fault mode
-Date: Fri, 14 Feb 2025 16:59:16 -0500
-Message-Id: <20250214215920.282425-1-oak.zeng@intel.com>
+Subject: [i-g-t v2 2/4] lib/xe/xe_util: Introduce helper functions
+Date: Fri, 14 Feb 2025 16:59:18 -0500
+Message-Id: <20250214215920.282425-3-oak.zeng@intel.com>
 X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20250214215920.282425-1-oak.zeng@intel.com>
+References: <20250214215920.282425-1-oak.zeng@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,38 +70,281 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series intoduces a subtest for Xe to test scratch page under fault
-mode.
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 
-It also includes some helper functions to make the test easier.
+Introduce helper functions for buffer creation, binding,
+destruction and command submission etc. With those helpers,
+writing a xe igt test will be much easier, which will be
+showed in a coming example.
 
-Today most of igt tests use one single function to perform multiple
-subtests. flags are used to control the behavior of the test. While
-this is a good way to write efficient tests, it also makes the test
-difficult to maintain, especially when we add more and more subtests
-into single test function.
+v2: use to_user_pointer to cast a pointer (Kamil)
+    s/insert_store/xe_insert_store (Kamil)
+    s/cmdbuf_fill_func_t/xe_cmdbuf_fill_func_t (Kamil)
 
-This patch series introduces some helper functions with which we can
-write more readable tests. This is illustrated in patch 4 of this series.
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ lib/xe/xe_util.c | 201 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_util.h |  33 ++++++++
+ 2 files changed, 234 insertions(+)
 
-Note the intention of this patch series is not to replace the existing
-igt tests, but to provide an alternative way to write simple tests.
-
-Bommu Krishnaiah (1):
-  lib/xe/xe_util: Introduce helper functions
-
-Oak Zeng (3):
-  lib/xe: Fix a comment error
-  tests/intel/xe_vm: Exclude invalid_flags tests from LNL and BMG
-  tests/intel/xe_exec_fault_mode: Test scratch page under fault mode
-
- lib/xe/xe_ioctl.c                |   2 +-
- lib/xe/xe_util.c                 | 201 +++++++++++++++++++++++++++++++
- lib/xe/xe_util.h                 |  33 +++++
- tests/intel/xe_exec_fault_mode.c |  64 ++++++++++
- tests/intel/xe_vm.c              |  47 +++++---
- 5 files changed, 331 insertions(+), 16 deletions(-)
-
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 06b378ce0..fcb904ce7 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -13,6 +13,207 @@
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
+ 
++/**
++ * __xe_submit_cmd:
++ * @cmdbuf Pointer to the command buffer structure
++ *
++ * Submits a command buffer to the GPU, waits for its completion, and verifies
++ * the user fence value
++ *
++ * Return: The result of waiting for the user fence value
++ */
++int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf)
++{
++	int64_t timeout = NSEC_PER_SEC;
++	int ret;
++
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE,
++			.addr = xe_cmdbuf_exec_ufence_gpuva(cmdbuf),},
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++		.exec_queue_id = cmdbuf->exec_queue,
++		.address = cmdbuf->gpu_addr,
++	};
++
++	xe_exec(cmdbuf->fd, &exec);
++	ret = __xe_wait_ufence(cmdbuf->fd, xe_cmdbuf_exec_ufence_cpuva(cmdbuf),
++			       USER_FENCE_VALUE, cmdbuf->exec_queue, &timeout);
++	/* Reset the fence so next fence wait won't return immediately */
++	memset(xe_cmdbuf_exec_ufence_cpuva(cmdbuf), 0, UFENCE_LENGTH);
++	return ret;
++}
++
++/**
++ * xe_submit_cmd:
++ * @cmdbuf Pointer to the command buffer structure
++ *
++ * Wrapper function to submit a command buffer and assert its successful
++ * execution.
++ */
++void xe_submit_cmd(struct xe_buffer *cmdbuf)
++{
++	int64_t ret;
++
++	ret = __xe_submit_cmd(cmdbuf);
++	igt_assert_eq(ret, 0);
++}
++
++/**
++ *xe_create_buffer:
++ * @buffer Pointer to the xe_buffer structure containing buffer details.
++ *
++ * Creates a buffer, maps it to both CPU and GPU address spaces, and binds it
++ * to a virtual memory (VM) space.
++ */
++void xe_create_buffer(struct xe_buffer *buffer)
++{
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE },
++	};
++
++	buffer->bind_queue = xe_bind_exec_queue_create(buffer->fd,
++						       buffer->vm, 0);
++	buffer->bind_ufence = aligned_alloc(xe_get_default_alignment(buffer->fd),
++					    PAGE_ALIGN_UFENCE);
++	sync->addr = to_user_pointer(buffer->bind_ufence);
++
++
++	/* create and bind the buffer->bo */
++	buffer->bo = xe_bo_create(buffer->fd, 0, buffer->size,
++				  buffer->placement, buffer->flag);
++	buffer->cpu_addr = xe_bo_map(buffer->fd, buffer->bo, buffer->size);
++	xe_vm_bind_async(buffer->fd, buffer->vm, buffer->bind_queue,
++			 buffer->bo, 0, buffer->gpu_addr,
++			 buffer->size, sync, 1);
++
++	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
++		       USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
++	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
++}
++
++/**
++ * xe_destroy_buffer:
++ * @buffer Pointer to the xe_buffer structure containing buffer details
++ *
++ * Destroys a buffer created by xe_create_buffer and releases associated
++ * resources.
++ */
++void xe_destroy_buffer(struct xe_buffer *buffer)
++{
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE },
++	};
++	sync->addr = to_user_pointer(buffer->bind_ufence);
++
++	xe_vm_unbind_async(buffer->fd, buffer->vm, buffer->bind_queue,
++			   0, buffer->gpu_addr, buffer->size, sync, 1);
++	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
++		       USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
++	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
++
++	munmap(buffer->cpu_addr, buffer->size);
++	gem_close(buffer->fd, buffer->bo);
++
++	free(buffer->bind_ufence);
++	xe_exec_queue_destroy(buffer->fd, buffer->bind_queue);
++}
++
++/**
++ * xe_insert_store:
++ * @batch Pointer to the batch buffer where commands will be inserted.
++ * @dst_va Destination virtual address to store the value.
++ * @val Value to be stored.
++ *
++ * Inserts a MI_STORE_DWORD_IMM_GEN4 command into a batch buffer, which stores
++ * an immediate value to a given destination virtual address.
++ */
++void xe_insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val)
++{
++	int i = 0;
++
++	batch[i] = MI_STORE_DWORD_IMM_GEN4;
++	batch[++i] = dst_va;
++	batch[++i] = dst_va >> 32;
++	batch[++i] = val;
++	batch[++i] = MI_BATCH_BUFFER_END;
++}
++
++/**
++ * xe_create_cmdbuf:
++ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
++ * @fill_func Pointer to the function that fills the command buffer.
++ * @dst_va Virtual address of the memory location where val need to store.
++ * @val Value to be written to the memory locations.
++ * @eci Pointer to the engine class instance for execution.
++ *
++ * Creates a command buffer, fills it with commands using the provided fill
++ * function, and sets up the execution queue for submission.
++ */
++void xe_create_cmdbuf(struct xe_buffer *cmd_buf, xe_cmdbuf_fill_func_t fill_func,
++		      uint64_t dst_va, uint32_t val,
++		      struct drm_xe_engine_class_instance *eci)
++{
++	/*
++	 * make some room for a exec_ufence, which will be used to sync the
++	 * submission of this command....
++	 */
++	cmd_buf->size = xe_bb_size(cmd_buf->fd,
++				   cmd_buf->size + PAGE_ALIGN_UFENCE);
++	xe_create_buffer(cmd_buf);
++	cmd_buf->exec_queue = xe_exec_queue_create(cmd_buf->fd,
++						   cmd_buf->vm, eci, 0);
++	fill_func(cmd_buf->cpu_addr, dst_va, val);
++}
++
++/**
++ * xe_destroy_cmdbuf:
++ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
++ *
++ * Destroys a command buffer created by xe_create_cmdbuf and releases
++ * associated resources.
++ */
++void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf)
++{
++	xe_exec_queue_destroy(cmd_buf->fd, cmd_buf->exec_queue);
++	xe_destroy_buffer(cmd_buf);
++}
++
++/**
++ * xe_cmdbuf_exec_ufence_gpuva:
++ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
++ *
++ * Returns the GPU virtual address of the execution user fence located at the
++ * end of the command buffer.
++ */
++uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer *cmd_buf)
++{
++	/* the last 8 bytes of the cmd buffer is used as ufence */
++	return (uint64_t)cmd_buf->gpu_addr + cmd_buf->size - UFENCE_LENGTH;
++}
++
++/**
++ * xe_cmdbuf_exec_ufence_cpuva:
++ * @cmd_buf Pointer to the xe_buffer structure representing the command buffer.
++ *
++ * Returns the CPU virtual address of the execution user fence located at the
++ * end of the command buffer.
++ */
++uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf)
++{
++	/* the last 8 bytes of the cmd buffer is used as ufence */
++	return cmd_buf->cpu_addr + cmd_buf->size - UFENCE_LENGTH;
++}
++
+ static bool __region_belongs_to_regions_type(struct drm_xe_mem_region *region,
+ 					     uint32_t *mem_regions_type,
+ 					     int num_regions)
+diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+index 06ebd3c2a..df3d81801 100644
+--- a/lib/xe/xe_util.h
++++ b/lib/xe/xe_util.h
+@@ -14,6 +14,39 @@
+ 
+ #include "xe_query.h"
+ 
++#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
++#define PAGE_ALIGN_UFENCE	4096
++#define UFENCE_LENGTH		8
++
++struct xe_buffer {
++	void *cpu_addr;
++	uint64_t gpu_addr;
++	/*the user fence used to vm bind this buffer*/
++	uint64_t *bind_ufence;
++	uint64_t size;
++	uint32_t flag;
++	uint32_t vm;
++	uint32_t bo;
++	uint32_t placement;
++	uint32_t bind_queue;
++	/*only a cmd buffer has a exec queue*/
++	uint32_t exec_queue;
++	int fd;
++	bool is_userptr;
++};
++
++typedef void (*xe_cmdbuf_fill_func_t) (uint32_t *batch, uint64_t dst_gpu_va, uint32_t val);
++void xe_create_buffer(struct xe_buffer *buffer);
++void xe_create_cmdbuf(struct xe_buffer *cmd_buf, xe_cmdbuf_fill_func_t fill_func,
++		uint64_t dst_va, uint32_t val, struct drm_xe_engine_class_instance *eci);
++uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer *cmd_buf);
++uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf);
++void xe_insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val);
++void xe_submit_cmd(struct xe_buffer *cmdbuf);
++int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf);
++void xe_destroy_buffer(struct xe_buffer *buffer);
++void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf);
++
+ #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
+ 	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_SYSMEM)
+ #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
 -- 
 2.26.3
 
