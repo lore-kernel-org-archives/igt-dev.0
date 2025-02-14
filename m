@@ -4,60 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94718C02198
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 12:47:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6177FC02198
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 12:55:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4EBC010EC7A;
-	Fri, 14 Feb 2025 12:47:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 225DF10E03D;
+	Fri, 14 Feb 2025 12:55:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f6EyCxMB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A8452/rV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EE7910EC7A
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 12:47:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11FB010E03D
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 12:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739537238; x=1771073238;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=P3V+aw/hw0Xt44b9n/mveAav9tmsOJDFDjIhIFj98Tw=;
- b=f6EyCxMBY8wJYYH8Yf0YHas/oiQ9DMPbKCbQxZJ76VPHKS06tvEJqxkf
- 2UyCgZjf3iddHUXarMDWB4/GBOwLhSu2A8p32ki9eXpdAQLP33L55ibKf
- RjecSe3Jw3kUhoR4unGnd4sAieJWEHZu2Ewykn3BJzG0Y+IUYU4VHnXv5
- 8Jryt+jY7HaG4+XY0SR8IJn8GFUzriA5RPA8e5ZkZpOByshKhnG9rfamt
- dakN7nRuQsdDmWQNmLwdxFpy/WeMkPKg/UN6tRByni5gieAEG13629hxB
- 0okoTVWLbsQBAY55jmnV3fKhHKqI4aHDdh0r9xN/qXE/jHnrpHwCighBd g==;
-X-CSE-ConnectionGUID: ueymEMaJQRy+C1F1hOcbJg==
-X-CSE-MsgGUID: aC39Mf7lSh6/Qwx0yl0ABQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="62749318"
-X-IronPort-AV: E=Sophos;i="6.13,285,1732608000"; d="scan'208";a="62749318"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 04:47:17 -0800
-X-CSE-ConnectionGUID: ZayEfFR4QKKB3REy1xXNMQ==
-X-CSE-MsgGUID: V8qxUStXRVyzEaKLWqIxSg==
+ t=1739537720; x=1771073720;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=FrvLbxbnga3Vikgh9RdrCx/AZovpQfrd2vPoAA8BgYw=;
+ b=A8452/rV3jaz+P75s217YHDTyBk9a2YYTtckQWcIVCQPZV/FhNKXtdmK
+ 7zr869cS94mwNj3crCYL+tKvhqKqPc7QGgjXwFPUWhysyIQpDiAAvEZuj
+ veFLTFrpW7yc1VCQCUEhlEbEO4Z2251omuwoGgJj78/7olpQjDUzuvloS
+ VYJvbvtdoRWIywV1y+WT70bdeuSQ8CGcbRVM/7xMGznsdbmsCd5Nml68O
+ WSRr65uA45BaJGOUjP808TO1EFti0Wnr0DnDyU7RDeLjW85hwyuVMSDqV
+ PIWJ2fSESEJxDnY6kzYiYf+x+wRn2HDlvjmu4WrVy3JiFtdFZsMLHnpuW w==;
+X-CSE-ConnectionGUID: QTZJdWP/TyaUeb9HgKLJ6A==
+X-CSE-MsgGUID: hBLPcJlkRzet1Hb55ZW7Cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="40148918"
+X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; d="scan'208";a="40148918"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2025 04:55:18 -0800
+X-CSE-ConnectionGUID: Iqq8bl5lTyuTW8QfqPRlIQ==
+X-CSE-MsgGUID: ibMc3+oRSLOMRN/YddszTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="150625112"
-Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost.localdomain)
- ([10.245.246.71])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 04:47:15 -0800
-From: Christoph Manszewski <christoph.manszewski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="118385758"
+Received: from dut2122ptlh.iind.intel.com (HELO
+ linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2025 04:55:16 -0800
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
-	Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
-	Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
-	Laguna@freedesktop.org, Lukasz <lukasz.laguna@intel.com>,
-	Wajdeczko@freedesktop.org, Michal <Michal.Wajdeczko@intel.com>,
-	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-	Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/xe_eudebug.c: Add subtests for eudebug/SR-IOV
- exlusion
-Date: Fri, 14 Feb 2025 13:46:43 +0100
-Message-Id: <20250214124643.20908-3-christoph.manszewski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250214124643.20908-1-christoph.manszewski@intel.com>
-References: <20250214124643.20908-1-christoph.manszewski@intel.com>
+Cc: ville.syrjala@linux.intel.com,
+ Mohammed Thasleem <mohammed.thasleem@intet.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/kms_color: Enable ctm-limited-range subtest
+Date: Fri, 14 Feb 2025 18:30:31 +0530
+Message-Id: <20250214130031.362426-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -75,165 +68,246 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Eudebug is not supported in PF mode with VFs enabled and in VF mode.
-Provide subtests to ensure that:
-  1. enabling eudebug is not permitted in PF mode with VFs enabled
-  2. eudebug sysfs toggle is not available in VF mode
-  3. enabling VFs is not permitted when eudebug is enabled
+From: Mohammed Thasleem <mohammed.thasleem@intet.com>
 
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+This tests is currently disabled since CRC computed on Intel
+hardware seems to include data on the lower bits, this is
+preventing us to CRC checks.
+
+Let's try to enable it back and check behavior on newer Intel
+platforms.
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/xe_eudebug.c | 123 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 123 insertions(+)
+ tests/kms_color.c | 166 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 93 insertions(+), 73 deletions(-)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 76870805c..c2f32c03b 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -20,7 +20,9 @@
- #include <sys/prctl.h>
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 4b71d3dd3..c3b285b4e 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -58,6 +58,7 @@
+  * @0-75:           for 0.75 transparency
+  * @blue-to-red:    from blue to red
+  * @green-to-red:   from green to red
++ * @limited-range:  with identity matrix
+  * @max:            for maximum transparency
+  * @negative:       for negative transparency
+  * @red-to-blue:    from red to blue
+@@ -623,107 +624,97 @@ static bool test_pipe_ctm(data_t *data,
+  * This test is currently disabled as the CRC computed on Intel hardware seems
+  * to include data on the lower bits, this is preventing us to CRC checks.
+  */
+-#if 0
+-static void test_pipe_limited_range_ctm(data_t *data,
++static bool test_pipe_limited_range_ctm(data_t *data,
+ 					igt_plane_t *primary)
+ {
+ 	double limited_result = 235.0 / 255.0;
+-	static const color_t red_green_blue_limited[] = {
++	color_t red_green_blue_limited[] = {
+ 		{ limited_result, 0.0, 0.0 },
+ 		{ 0.0, limited_result, 0.0 },
+-		{ 0.0, 0.0, limited_result },
++		{ 0.0, 0.0, limited_result }
+ 	};
+-	static const color_t red_green_blue_full[] = {
++	color_t red_green_blue_full[] = {
+ 		{ 0.5, 0.0, 0.0 },
+ 		{ 0.0, 0.5, 0.0 },
+-		{ 0.0, 0.0, 0.5 },
+-	};
+-	static const double ctm[] = {
+-		1.0, 0.0, 0.0,
+-		0.0, 1.0, 0.0,
+-		0.0, 0.0, 1.0,
++		{ 0.0, 0.0, 0.5 }
+ 	};
++	double ctm[] = { 1.0, 0.0, 0.0,
++			0.0, 1.0, 0.0,
++			0.0, 0.0, 1.0 };
+ 	gamma_lut_t *degamma_linear, *gamma_linear;
+-	igt_output_t *output;
+-	bool has_broadcast_rgb_output = false;
++	igt_output_t *output = data->output;
++	drmModeModeInfo *mode = data->mode;
++	struct igt_fb fb_modeset, fb;
++	int fb_id, fb_modeset_id;
++	igt_crc_t crc_full, crc_limited;
+ 	igt_display_t *display = &data->display;
++	bool ret = false;
++
++	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
  
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include "intel_pat.h"
-+#include "lib/igt_sriov_device.h"
- #include "lib/igt_syncobj.h"
- #include "xe/xe_eudebug.h"
- #include "xe/xe_ioctl.h"
-@@ -2710,12 +2712,133 @@ static void test_basic_exec_queues_enable(int fd)
- 	xe_vm_destroy(fd, vm_non_lr);
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+ 
+-	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
+-		drmModeModeInfo *mode;
+-		struct igt_fb fb_modeset, fb;
+-		igt_crc_t crc_full, crc_limited;
+-		int fb_id, fb_modeset_id;
+-
+-		if (!igt_output_has_prop(output, IGT_CONNECTOR_BROADCAST_RGB))
+-			continue;
+-
+-		has_broadcast_rgb_output = true;
++	igt_output_set_pipe(output, primary->pipe->pipe);
+ 
+-		igt_output_set_pipe(output, primary->pipe->pipe);
+-		mode = igt_output_get_mode(output);
++	/* Create a framebuffer at the size of the output. */
++	fb_id = igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR,
++			      &fb);
++	igt_assert(fb_id);
+ 
+-		/* Create a framebuffer at the size of the output. */
+-		fb_id = igt_create_fb(data->drm_fd,
++	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+ 				      DRM_FORMAT_MOD_LINEAR,
+-				      &fb);
+-		igt_assert(fb_id);
+-
+-		fb_modeset_id = igt_create_fb(data->drm_fd,
+-					      mode->hdisplay,
+-					      mode->vdisplay,
+-					      DRM_FORMAT_XRGB8888,
+-					      DRM_FORMAT_MOD_LINEAR,
+-					      &fb_modeset);
+-		igt_assert(fb_modeset_id);
+-		igt_plane_set_fb(primary, &fb_modeset);
++				      &fb_modeset);
++	igt_assert(fb_modeset_id);
++	igt_plane_set_fb(primary, &fb_modeset);
+ 
+-		set_degamma(data, primary->pipe, degamma_linear);
+-		set_gamma(data, primary->pipe, gamma_linear);
+-		set_ctm(primary->pipe, ctm);
+-
+-		igt_output_set_prop_value(output, IGT_CONNECTOR_BROADCAST_RGB, BROADCAST_RGB_FULL);
+-		paint_rectangles(data, mode, red_green_blue_limited, &fb);
+-		igt_plane_set_fb(primary, &fb);
+-		igt_display_commit(&data->display);
+-		igt_wait_for_vblank(data->drm_fd,
+-				display->pipes[primary->pipe->pipe].crtc_offset);
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_full);
+-
+-		/* Set the output into limited range. */
+-		igt_output_set_prop_value(output, IGT_CONNECTOR_BROADCAST_RGB, BROADCAST_RGB_16_235);
+-		paint_rectangles(data, mode, red_green_blue_full, &fb);
+-		igt_plane_set_fb(primary, &fb);
+-		igt_display_commit(&data->display);
+-		igt_wait_for_vblank(data->drm_fd,
+-				display->pipes[primary->pipe->pipe].crtc_offset);
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_limited);
+-
+-		/* And reset.. */
+-		igt_output_set_prop_value(output, IGT_CONNECTOR_BROADCAST_RGB, BROADCAST_RGB_FULL);
+-		igt_plane_set_fb(primary, NULL);
+-		igt_output_set_pipe(output, PIPE_NONE);
+-
+-		/* Verify that the CRC of the software computed output is
+-		 * equal to the CRC of the CTM matrix transformation output.
+-		 */
+-		igt_assert_crc_equal(&crc_full, &crc_limited);
++	set_degamma(data, primary->pipe, degamma_linear);
++	set_gamma(data, primary->pipe, gamma_linear);
++	set_ctm(primary->pipe, ctm);
+ 
+-		igt_remove_fb(data->drm_fd, &fb);
+-		igt_remove_fb(data->drm_fd, &fb_modeset);
+-	}
++	igt_output_set_prop_value(output,
++				  IGT_CONNECTOR_BROADCAST_RGB,
++				  BROADCAST_RGB_FULL);
++	paint_rectangles(data, mode, red_green_blue_limited, &fb);
++	igt_plane_set_fb(primary, &fb);
++	igt_display_commit(&data->display);
++	igt_wait_for_vblank(data->drm_fd,
++			display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_full);
++
++	/* Set the output into limited range. */
++	igt_output_set_prop_value(output,
++				  IGT_CONNECTOR_BROADCAST_RGB,
++				  BROADCAST_RGB_16_235);
++	paint_rectangles(data, mode, red_green_blue_full, &fb);
++	igt_plane_set_fb(primary, &fb);
++	igt_display_commit(&data->display);
++	igt_wait_for_vblank(data->drm_fd,
++			display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_limited);
++
++	/* And reset.. */
++	igt_output_set_prop_value(output,
++				  IGT_CONNECTOR_BROADCAST_RGB,
++				  BROADCAST_RGB_FULL);
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(&data->display);
++
++	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_full, &crc_limited);
+ 
+ 	free_lut(gamma_linear);
+ 	free_lut(degamma_linear);
+ 
+-	igt_require(has_broadcast_rgb_output);
++	return ret;
+ }
+-#endif
+ 
+ static void
+ prep_pipe(data_t *data, enum pipe p)
+@@ -1000,6 +991,25 @@ run_invalid_tests_for_pipe(data_t *data)
+ 	}
  }
  
-+static bool has_enable_eudebug_attr(int pf_fd, unsigned int vf_num)
++static void
++run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
++		bool (*test_t)(data_t*, igt_plane_t*))
 +{
-+	char path[PATH_MAX];
-+	int sysfs;
-+	bool ret;
++	test_setup(data, p);
 +
-+	igt_assert(vf_num > 0);
++	igt_require(igt_output_has_prop(data->output, IGT_CONNECTOR_BROADCAST_RGB));
 +
-+	sysfs = igt_sysfs_open(pf_fd);
-+	igt_assert_fd(sysfs);
-+	/* vf_num is 1-based, but virtfn is 0-based */
-+	snprintf(path, sizeof(path), "device/virtfn%u/enable_eudebug", vf_num - 1);
-+	ret = igt_sysfs_has_attr(sysfs, path);
-+	close(sysfs);
++	data->color_depth = 8;
++	data->drm_format = DRM_FORMAT_XRGB8888;
++	data->mode = igt_output_get_mode(data->output);
 +
-+	return ret;
++	igt_require(pipe_output_combo_valid(data, p));
++
++	igt_assert(test_t(data, data->primary));
++
++	test_cleanup(data);
 +}
 +
-+/**
-+ * SUBTEST: deny-eudebug
-+ * Description:
-+ *	Check that eudebug toggle is not available for VFs, and that enabling
-+ *	eudebug with VFs enabled is not permitted.
-+ */
-+static void test_deny_eudebug(int pf_fd)
-+{
-+	unsigned int num_vfs = igt_sriov_get_total_vfs(pf_fd);
-+	bool eudebug_enable = true;
-+	bool err = false;
-+	int ret = 0;
-+
-+	igt_debug("Testing %u VFs\n", num_vfs);
-+
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
-+
-+	for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
-+		if (!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num)) {
-+			igt_debug("VF%u probe failed\n", vf_num);
-+			err = true;
-+		} else if (has_enable_eudebug_attr(pf_fd, vf_num)) {
-+			igt_debug("VF%u has enable_eudebug attribute\n", vf_num);
-+			err = true;
-+		}
-+	}
-+
-+	if (err) {
-+		igt_sriov_disable_vfs(pf_fd);
-+		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+		igt_fail_on(err);
-+	}
-+
-+	ret = __xe_eudebug_enable_getset(pf_fd, NULL, &eudebug_enable);
-+	igt_assert_eq(ret, -1);
-+	igt_assert_eq(errno, EPERM);
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+	igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+}
-+
-+/**
-+ * SUBTEST: deny-sriov
-+ * Description:
-+ *	Check that VFs cannot be enabled when eudebug is enabled.
-+ */
-+static void test_deny_sriov(int pf_fd)
-+{
-+	unsigned int num_vfs = igt_sriov_get_total_vfs(pf_fd);
-+	bool ret = false;
-+	int sysfs = 0;
-+
-+	igt_debug("Testing %u VFs\n", num_vfs);
-+
-+	sysfs = igt_sysfs_open(pf_fd);
-+	igt_assert_fd(sysfs);
-+
-+	ret = __igt_sysfs_set_u32(sysfs, "device/sriov_numvfs", num_vfs);
-+	close(sysfs);
-+
-+	if (!ret) {
-+		igt_sriov_disable_vfs(pf_fd);
-+		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+	}
-+	igt_assert_eq(ret, false);
-+	igt_assert_eq(errno, EPERM);
-+}
-+
- igt_main
+ static void
+ run_tests_for_pipe(data_t *data)
  {
- 	bool was_enabled;
- 	bool *multigpu_was_enabled;
- 	int fd, gpu_count;
+@@ -1156,6 +1166,16 @@ run_tests_for_pipe(data_t *data)
+ 		}
+ 	}
  
-+	/* sriov exclusivity */
-+	igt_subtest_group {
-+		igt_fixture {
-+			fd = drm_open_driver(DRIVER_XE);
-+			igt_require(igt_sriov_is_pf(fd));
-+			igt_require(igt_sriov_vfs_supported(fd));
-+			igt_require(igt_sriov_get_enabled_vfs(fd) == 0);
++	igt_describe("Compare after applying ctm matrix & identity matrix");
++	igt_subtest_with_dynamic("ctm-limited-range") {
++		for_each_pipe_with_valid_output(&data->display, pipe, data->output) {
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++				       igt_output_name(data->output))
++				run_limited_range_ctm_test_for_pipe(data, pipe,
++								    test_pipe_limited_range_ctm);
++			}
 +		}
 +
-+		igt_subtest("deny-eudebug") {
-+			bool vf_autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
-+
-+			was_enabled = xe_eudebug_enable(fd, false);
-+			test_deny_eudebug(fd);
-+			xe_eudebug_enable(fd, was_enabled);
-+
-+			vf_autoprobe ? igt_sriov_enable_driver_autoprobe(fd) :
-+				       igt_sriov_disable_driver_autoprobe(fd);
-+			igt_abort_on_f(vf_autoprobe != igt_sriov_is_driver_autoprobe_enabled(fd),
-+				       "Failed to restore sriov_drivers_autoprobe value\n");
-+		}
-+
-+		igt_subtest("deny-sriov") {
-+			was_enabled = xe_eudebug_enable(fd, true);
-+			test_deny_sriov(fd);
-+			xe_eudebug_enable(fd, was_enabled);
-+		}
-+
-+		igt_fixture {
-+			close(fd);
-+		}
-+	}
-+
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
- 		was_enabled = xe_eudebug_enable(fd, true);
+ 	igt_fixture
+ 		igt_require(data->display.is_atomic);
+ 
 -- 
-2.34.1
+2.25.1
 
