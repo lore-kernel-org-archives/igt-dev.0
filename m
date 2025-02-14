@@ -4,61 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89126C02198
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 20:08:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F00C02198
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Feb 2025 21:05:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EAF210ED38;
-	Fri, 14 Feb 2025 20:08:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E259D10E37B;
+	Fri, 14 Feb 2025 21:05:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DB1bCcvz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="czXumyB9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C73F10ED38
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 20:08:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89EB610E37B
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2025 21:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739563695; x=1771099695;
+ t=1739567099; x=1771103099;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=SQYu4WEtm/0FlEcxDiXeszrG4ZYV6wNQv7K289C1pG0=;
- b=DB1bCcvzis6lmh8bEpD87/MWcXldDi/ewVAQdlDAXQYSy5VuGtBDdBNh
- 7d0/juVcO44xOayWFJVcWLGIjbLtXjVquHPJ2cSAe9IsQZvhy3auwt9si
- 8fXcd6l8/7+m1q1nAB8OE2S0sHMoWR2b0dvpTXdGjS7LPi7s9Uk2SzAka
- PqmtS1bHdC0xRTSSgLAllViTiU6Py7niVR9LYWljhAdyCPAT6EiSgqQXv
- 5lf/2RjoXWpduljv4uDEVlykdNJSq8brb5DIrGvD5uJuWc2+NcCIuoqG4
- wWP8qcfof4J0grmTzFME2ZAKjYuq01+SYWgL+NVVn6Z/DhgurtdhJWjWD Q==;
-X-CSE-ConnectionGUID: Y8xo4/zwTnKd8lUBSyWKWw==
-X-CSE-MsgGUID: RzPCeSt+QTmFefTBNlMGFw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="50969369"
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; d="scan'208";a="50969369"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 12:08:14 -0800
-X-CSE-ConnectionGUID: aBNWfAWwQ9eDa2dbyzhlUw==
-X-CSE-MsgGUID: /P8qXgS2TeSMBWc4pz/nrQ==
+ bh=f0eaUVqDrN/ROuBPWxgMCHE7fZyRz5jVURLLOxZZw0w=;
+ b=czXumyB9nyucwk+d+K/7DRO0lvT++vgPE70EjnzGAnAjKLDrTCvsQlMR
+ frpepWLGi0xhCa164syCZlPIQRr3KHCPdLdqV5P51DM40VvP39cJZW0tz
+ WAVlb9hgPoOVWyoxceRlOBMkauzhSKiBdMnB4ElhdxaWyaJVqaHqKcXdo
+ s6J9iijC+JrJaVMncGU6zAoLIvr9cSSJZqoZTfuiKMA5o1THb2tQw32tS
+ PR9YzCmihL5+6+3jHJwQ5AuwxWv4j5hh62K41DKSfiRi3xjLvsxIJKvWW
+ 5QBB48zKs5AsPaRLvM9ovKITohPPmutuIvXlRs3kQ4Z2ZeNQxXGavEV22 Q==;
+X-CSE-ConnectionGUID: mMg1JgavSwee9m0lHdBbeQ==
+X-CSE-MsgGUID: jl6eGk8HRpu7tkLtkA6SoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="44092957"
+X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; d="scan'208";a="44092957"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2025 13:04:59 -0800
+X-CSE-ConnectionGUID: IhdymUUeR/yBRrIMUzl8gQ==
+X-CSE-MsgGUID: wIMXjRJuRTK2+YNKddzrCg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="118471901"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 12:08:14 -0800
-Date: Fri, 14 Feb 2025 21:07:54 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: Re: [PATCH i-g-t v3 6/7] tests/intel/xe_pxp: Termination tests
-Message-ID: <20250214200754.epzvsyei2oas4wei@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- igt-dev@lists.freedesktop.org,
- Alan Previn <alan.previn.teres.alexis@intel.com>
-References: <20250213003904.2059770-1-daniele.ceraolospurio@intel.com>
- <20250213003904.2059770-7-daniele.ceraolospurio@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; d="scan'208";a="113754492"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 14 Feb 2025 13:04:57 -0800
+Received: by stinkbox (sSMTP sendmail emulation);
+ Fri, 14 Feb 2025 23:04:56 +0200
+Date: Fri, 14 Feb 2025 23:04:56 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/kms_color: Enable ctm-limited-range subtest
+Message-ID: <Z6-v-I4F2Os8vXCa@intel.com>
+References: <20250214161011.363157-1-swati2.sharma@intel.com>
+ <Z699roJnvD0kO4Ne@intel.com>
+ <7f66b930-2061-4204-934c-fee454992ae9@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250213003904.2059770-7-daniele.ceraolospurio@intel.com>
+In-Reply-To: <7f66b930-2061-4204-934c-fee454992ae9@intel.com>
+X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,138 +72,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Daniele,
-On 2025-02-12 at 16:39:00 -0800, Daniele Ceraolo Spurio wrote:
-> There are several events that can cause the PXP key to be invalidated
-> and trigger a PXP termination (suspend, PXP termination irq). After a
-> termination, we expect the key to be different and the raw encrypted
-> data to change for the same source data.
-> Additionally, all PXP objects are invalidated during a termination and
-> can no longer be used in submission or kept mapped to VMs; we therefore
-> need to test both the execution and bind ioctls to make sure they work
-> as expected after a termination.
+On Fri, Feb 14, 2025 at 11:56:27PM +0530, Sharma, Swati2 wrote:
+> Hi Ville,
 > 
-> v2: move igt_require calls inside the subtest
-> v3: block rpm for tests trying a different type of termination, rework
-> invalid bind test to try a new vm as well (Alan)
+> On 14-02-2025 11:00 pm, Ville Syrjälä wrote:
+> > On Fri, Feb 14, 2025 at 09:40:11PM +0530, Swati Sharma wrote:
+> >> This tests is currently disabled since CRC computed on Intel
+> >> hardware seems to include data on the lower bits, this is
+> >> preventing us to CRC checks.
+> >>
+> >> Let's try to enable it back and check behavior on newer Intel
+> >> platforms.
+> >>
+> >> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> >> ---
+> >>   tests/kms_color.c | 166 ++++++++++++++++++++++++++--------------------
+> >>   1 file changed, 93 insertions(+), 73 deletions(-)
+> >>
+> >> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> >> index 4b71d3dd3..c3b285b4e 100644
+> >> --- a/tests/kms_color.c
+> >> +++ b/tests/kms_color.c
+> >> @@ -58,6 +58,7 @@
+> >>    * @0-75:           for 0.75 transparency
+> >>    * @blue-to-red:    from blue to red
+> >>    * @green-to-red:   from green to red
+> >> + * @limited-range:  with identity matrix
+> >>    * @max:            for maximum transparency
+> >>    * @negative:       for negative transparency
+> >>    * @red-to-blue:    from red to blue
+> >> @@ -623,107 +624,97 @@ static bool test_pipe_ctm(data_t *data,
+> >>    * This test is currently disabled as the CRC computed on Intel hardware seems
+> >>    * to include data on the lower bits, this is preventing us to CRC checks.
+> >>    */
+> >> -#if 0
+> >> -static void test_pipe_limited_range_ctm(data_t *data,
+> >> +static bool test_pipe_limited_range_ctm(data_t *data,
+> >>   					igt_plane_t *primary)
+> >>   {
+> >>   	double limited_result = 235.0 / 255.0;
+> >> -	static const color_t red_green_blue_limited[] = {
+> >> +	color_t red_green_blue_limited[] = {
+> >>   		{ limited_result, 0.0, 0.0 },
+> >>   		{ 0.0, limited_result, 0.0 },
+> >> -		{ 0.0, 0.0, limited_result },
+> >> +		{ 0.0, 0.0, limited_result }
+> >>   	};
+> > This whole thing is fundementally broken. We can't generate
+> > limited range output without using the CSC post offsets,
+> > which are not exposed via the current CTM uapi.
+> We do have its equivalent test in kms_color_chamelium
+> and it seems its passing 
+> https://gfx-ci.igk.intel.com/cibuglog-ng/results/all?query_key=af49bc8e4e7d1c69ce04f9a1196c167456e8344a
+> Is it wrong?
 
-I have few nits, one is from our CI fail:
+Hmm. Looks like the test has nothing really to do with the
+CTM (despite the name), and instead if just uses identity CTM
+and puts the limited range equivalent data directly into the
+fb. So I guess technically it could sort of work.
 
-../tests/intel/xe_pxp.c:1065:53: error: â€˜O_RDONLYâ€™ undeclared (first use in this function); did you mean â€˜STA_RONLYâ€™?
-fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-                                                  ^~~~~~~~
-						 STA_RONLY
-../tests/intel/xe_pxp.c:1065:53: note: each undeclared identifier is reported only once for each function it appears in
+For the chamelium version the port will chop off the extra
+low bits so I guess that explains why it works.
 
-Please include a proper lib header in a first patch which uses O_RDONLY.
+The crc version is more tricky:
+- g4x presuambly won't work because the port color range
+  bit won't affect the pipe crc
+- ilk-ivb/vlv/chv won't work because TRANSCONF_COLOR_RANGE_SELECT
+  doesn't seem to affect the pipe crc either
+- icl+ uses the output csc for the limited range conversion
+  so the gamma LUT lsb chopping doesn't do anything, so we may
+  get some differences in the low bits
+- hsw-glk maybe could work if we do enable CTM+gamma since then
+  we'll end up doing the limited range adjustment on the gamma LUT
+  and thus it can chop off the low bits. If we didn't enable
+  both CTM and gamma then the limited range conversion would be
+  done on the pipe CSC and thus it would behave exactly like icl+.
 
-Rest nits below.
-
-> 
-> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-> Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  lib/intel_batchbuffer.c |   8 +-
->  lib/intel_batchbuffer.h |   1 +
->  lib/xe/xe_ioctl.c       |  12 +-
->  lib/xe/xe_ioctl.h       |   2 +
->  tests/intel/xe_pxp.c    | 455 +++++++++++++++++++++++++++++++++++++++-
->  5 files changed, 465 insertions(+), 13 deletions(-)
-> 
-[...]
->  
-> +static void termination_tests(int fd, bool pxp_supported, uint32_t devid,
-> +			      enum termination_type type, const char *tag)
-> +{
-> +	int fw_handle;
-> +
-> +	if (type != PXP_TERMINATION_RPM) {
-> +		/* avoid rpm entry for non-rpm tests */
-> +		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-
-File or dir opens should happen in igt_fixture
-
-> +		igt_require(fw_handle >= 0);
-
-This should be in each subtest which needs this.
-
-> +	} else {
-> +		igt_setup_runtime_pm(fd);
-
-This should also be in fixture, consider creating xe_pxp_pm test.
-
-> +	}
-> +
-> +	igt_subtest_f("pxp-termination-key-update-post-%s", tag) {
-> +		require_pxp_render(pxp_supported, devid);
-> +		test_pxp_teardown_keychange(fd, type);
-> +	}
-> +	igt_subtest_f("pxp-stale-bo-bind-post-%s", tag) {
-> +		require_pxp(pxp_supported);
-> +		test_pxp_stale_bo_bind(fd, type);
-> +	}
-> +	igt_subtest_f("pxp-stale-bo-exec-post-%s", tag) {
-> +		require_pxp(pxp_supported);
-> +		test_pxp_stale_bo_exec(fd, type);
-> +	}
-> +
-> +	/* An active PXP queue holds an RPM ref, so we can't test RPM with it */
-> +	if (type != PXP_TERMINATION_RPM) {
-> +		igt_subtest_f("pxp-stale-queue-post-%s", tag) {
-> +			require_pxp(pxp_supported);
-> +			test_pxp_stale_queue_execution(fd, type);
-> +		}
-> +
-> +		close(fw_handle);
-> +	} else {
-> +		igt_restore_runtime_pm();
-> +	}
-
-Same here, both close() and ...restore...() should be done in
-igt_fixture { ... }
-
-To test if all is ok call your test with --show-testlist
-without sudo:
-
-./xe_pxp --show-testlist
-
-Regards,
-Kamil
-
-> +}
-> +
->  igt_main
->  {
->  	int xe_fd = -1;
-> @@ -470,6 +891,28 @@ igt_main
->  		}
->  	}
->  
-> +	igt_subtest_group {
-> +		const struct mode {
-> +			enum termination_type type;
-> +			const char *tag;
-> +		} modes[] = {
-> +			{ PXP_TERMINATION_IRQ, "termination-irq" },
-> +			{ PXP_TERMINATION_SUSPEND, "suspend" },
-> +			{ PXP_TERMINATION_RPM, "rpm" },
-> +			{ 0, NULL }
-> +		};
-> +
-> +		igt_describe("Verify teardown management");
-> +
-> +		for (const struct mode *m = modes; m->tag; m++)
-> +			termination_tests(xe_fd, pxp_supported, devid, m->type, m->tag);
-> +
-> +		igt_subtest("pxp-optout") {
-> +			require_pxp(pxp_supported);
-> +			test_pxp_optout(xe_fd);
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		close(xe_fd);
->  	}
-> -- 
-> 2.43.0
-> 
+-- 
+Ville Syrjälä
+Intel
