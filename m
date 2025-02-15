@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F39CC021A6
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692CEC021A4
 	for <igt-dev@archiver.kernel.org>; Sat, 15 Feb 2025 00:17:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEA9210E114;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D773410E119;
 	Sat, 15 Feb 2025 00:17:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="Rlv9GDYT";
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="GLZe0vyZ";
 	dkim-atps=neutral
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 589F110E03B
- for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2025 00:16:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E24F610E03B
+ for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2025 00:16:58 +0000 (UTC)
 Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51EBhBXB018588;
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51EBgoYj018077;
  Sat, 15 Feb 2025 00:16:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- qDXU3NyUIi1AFG5gPJpuCtQYq2GH7pKIaG0/IiioIk8=; b=Rlv9GDYTl93pMu3D
- lATcdtc44goAFECCHvW3GNV8ePrBwMtZ1pNZvjxR6mB2dc8fEOSu8n6x5kNKqx3W
- eAyMsDbuP4QJ6ZbO+7aL5ekaASK/lTGFC3p5bPXLhVYgYB9mg4NVOWwjV2ecPnvB
- smEaQlwPpGTdwyBw3R0ccuC2B127SmbEUzakYo5sDExAb5xMX2V95AYnvBWFjgEm
- ZGMeXyWnlLs+P3vy5L2OERrWhT3lfQhd23H0tZFnrHqUXEEQXntqQ6QUxZdKOa1V
- 9I8mJ9Ggn2YtjzjI+yPGK9z2nQkhgLlomHulWfyvTg9bULKru+thmhQ/ac5Pi5S6
- hISiOw==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ uwzqJTHNRn6Mr5CNyc6ZofHZLU9bxX5y8/d4AHkXgSM=; b=GLZe0vyZiIXWfYku
+ ENzaM5QV/wuIWRKAD1xj2jdQeQo9+HEuc6dPw4mzBIvYqZwuLdxnnp6jpfGeKk5P
+ R4FB2UyJ/mjj2fpex/ZSE8ZowBpE6K723Korx3JP44PGQIbCT0i2AMcOwvbgQILG
+ SxH/KAQjbrgSmPfI1r0Gk+HSAM/Uhlf1klkeEWMeNqXVHx9Dpp9rFHKiOwGc1AB8
+ uKU34iRJfUQ6YYmafOluR0M9AT3oFKUDLKRxLOLpc8tvdLd+LoPnoR8NvZN5LeAK
+ bPUTwbAJtxlJ1SsmX+a41TdYlwaHXF4yL6kYxVEhZXTdF0WQqZpYWJ/auc2bd8Wz
+ nvg9ZA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com
  [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44t56vhmbe-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44t56vhmbd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 15 Feb 2025 00:16:50 +0000 (GMT)
+ Sat, 15 Feb 2025 00:16:49 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
  [10.46.141.250])
- by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51F0GnQ2029848
+ by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51F0Gn6C014579
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Sat, 15 Feb 2025 00:16:49 GMT
 Received: from jesszhan-linux.qualcomm.com (10.80.80.8) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 14 Feb 2025 16:16:49 -0800
+ 15.2.1544.9; Fri, 14 Feb 2025 16:16:48 -0800
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Fri, 14 Feb 2025 16:15:53 -0800
-Subject: [PATCH i-g-t v7 3/3] tests/kms_writeback: Add subtest for valid
- clone mode
+Date: Fri, 14 Feb 2025 16:15:51 -0800
+Subject: [PATCH i-g-t v7 1/3] lib/igt_kms: Add helper to get encoder index
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250214-igt-cwb-v7-3-66cac72d0c38@quicinc.com>
+Message-ID: <20250214-igt-cwb-v7-1-66cac72d0c38@quicinc.com>
 References: <20250214-igt-cwb-v7-0-66cac72d0c38@quicinc.com>
 In-Reply-To: <20250214-igt-cwb-v7-0-66cac72d0c38@quicinc.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
@@ -62,11 +61,11 @@ CC: <quic_abhinavk@quicinc.com>, <igt-dev@lists.freedesktop.org>, Alex Hung
  <karthik.b.s@intel.com>, Esha Bharadwaj <quic_ebharadw@quicinc.com>,
  "Jessica Zhang" <quic_jesszhan@quicinc.com>
 X-Mailer: b4 0.15-dev-f0f05
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739578608; l=5603;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739578608; l=3344;
  i=quic_jesszhan@quicinc.com; s=20230329; h=from:subject:message-id;
- bh=UaTXiDyPR6a9vSftO2EF+mfxdwPxqOdD6U5RWEA60Ws=;
- b=ms+Qs+DnapSCOmY+2ybpE62SQCqRCf2fnxdPTG7WmQ0vXwu4cRKThqVfQG70+RW5PZCq9ltsm
- arar0KHVJDXDxciHX7FhYlmPjUO6Nm7Vdi46VXmKqWpflSSJE+1NTLY
+ bh=4Ad+wjSqMhDtRRn2L9oVPAkEr1dCOpI/3cVFBK1OPn8=;
+ b=OKFbRuzMJkaBlqRw87H3LUigHmAYLwu6P2MSRjf1LIeVTIyi/cWPEfeKz1MhPDxBwtGycDjuj
+ SuJ7ISX342iD2yJ+/d2+DBaGXSqEAGEPuD2g9UZcUitUj1ZMkWdWTpK
 X-Developer-Key: i=quic_jesszhan@quicinc.com; a=ed25519;
  pk=gAUCgHZ6wTJOzQa3U0GfeCDH7iZLlqIEPo4rrjfDpWE=
 X-Originating-IP: [10.80.80.8]
@@ -75,15 +74,15 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-ORIG-GUID: em7UAYGZaAFNTSvYNpE9_58DYz6bpXEe
-X-Proofpoint-GUID: em7UAYGZaAFNTSvYNpE9_58DYz6bpXEe
+X-Proofpoint-ORIG-GUID: cW0OxjOgPpHwvoICMLVJvUTpDI6J5_eO
+X-Proofpoint-GUID: cW0OxjOgPpHwvoICMLVJvUTpDI6J5_eO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-14_10,2025-02-13_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  adultscore=0 clxscore=1015
  impostorscore=0 lowpriorityscore=0 phishscore=0 spamscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 mlxlogscore=862 mlxscore=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 mlxlogscore=938 mlxscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
  definitions=main-2502150000
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -103,157 +102,105 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Esha Bharadwaj <quic_ebharadw@quicinc.com>
 
-Move the regular writeback dump into its own subtest. Also add a subtest to
-dump pairs of cloned non-writeback and writeback encoders if the dump
-flag is set or check the writeback output if the dump flag isn't set
+Move the get_encoder_idx() helper within the kms_setmode test to
+lib/igt_kms
 
 Signed-off-by: Esha Bharadwaj <quic_ebharadw@quicinc.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 ---
- tests/kms_writeback.c | 101 ++++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 97 insertions(+), 4 deletions(-)
+Changes in v7:
+- Added newline before igt_assert (Kamil)
+- Added error message for igt_assert (Kamil)
+- Fixed alignment issue in kms_setmode (Swati)
+---
+ lib/igt_kms.c       | 17 +++++++++++++++++
+ lib/igt_kms.h       |  1 +
+ tests/kms_setmode.c | 16 +++-------------
+ 3 files changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 1775986fe..27bfadaa2 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -47,6 +47,13 @@
- #include "sw_sync.h"
- 
- /**
-+ * SUBTEST: dump-writeback
-+ * Description: Dump a non-cloned writeback buffer
-+ *
-+ * SUBTEST: check-valid-clones
-+ * Description: Dump all valid clone pairs of writeback and non-writeback
-+ *              connectors
-+ *
-  * SUBTEST: writeback-check-output-XRGB2101010
-  * Description: Check XRGB2101010 writeback output with CRC validation
-  *
-@@ -450,7 +457,7 @@ static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0ba1afb08..ab35a11f8 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -3324,6 +3324,23 @@ void igt_display_fini(igt_display_t *display)
+ 	display->planes = NULL;
  }
  
- static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt_plane_t *plane,
--			        igt_fb_t *input_fb, drmModeModeInfo *mode)
-+			       igt_fb_t *input_fb, drmModeModeInfo *mode, char *suffix)
++/**
++ * kmstest_get_encoder_idx:
++ * @resources: libdrm resources pointer
++ * @encoder: libdrm encoder pointer
++ *
++ * Get encoder index from encoder_id
++ */
++int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
++{
++	for (int i = 0; i < resources->count_encoders; i++)
++		if (resources->encoders[i] == encoder->encoder_id)
++			return i;
++
++	igt_assert_f(0, "Error: cannot find encoder id %d in range of 0...%d\n",
++		     encoder->encoder_id, resources->count_encoders - 1);
++}
++
+ static void igt_display_refresh(igt_display_t *display)
  {
- 	cairo_surface_t *fb_surface_out;
- 	char filepath_out[PATH_MAX];
-@@ -471,7 +478,8 @@ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt
- 	do_single_commit(output, plane, input_fb, &output_fb);
+ 	igt_output_t *output;
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 7227f0b0e..55c24149a 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -314,6 +314,7 @@ void kmstest_dumb_destroy(int fd, uint32_t handle);
+ void kmstest_wait_for_pageflip(int fd);
+ void kmstest_wait_for_pageflip_timeout(int fd, uint64_t timeout_us);
+ unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags);
++int kmstest_get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder);
  
- 	fb_surface_out = igt_get_cairo_surface(display->drm_fd, &output_fb);
--	snprintf(filepath_out, PATH_MAX, "%s/%s.png", path_name, file_name);
-+	snprintf(filepath_out, PATH_MAX, "%s/%s-%s.png", path_name, file_name, suffix);
-+
- 	status = cairo_surface_write_to_png(fb_surface_out, filepath_out);
- 	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
- 	cairo_surface_destroy(fb_surface_out);
-@@ -555,6 +563,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 	drmModeModeInfo mode;
- 	unsigned int fb_id;
- 	int ret;
-+	char dump_suffix[PATH_MAX];
+ bool kms_has_vblank(int fd);
  
- 	memset(&display, 0, sizeof(display));
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index d61cfeb9a..b4c7c052b 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -268,16 +268,6 @@ found:
+ 	*mode_ret = *mode;
+ }
  
-@@ -603,9 +612,93 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+-static int get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
+-{
+-	int i;
+-
+-	for (i = 0; i < resources->count_encoders; i++)
+-		if (resources->encoders[i] == encoder->encoder_id)
+-			return i;
+-	igt_assert(0);
+-}
+-
+ static void get_crtc_config_str(struct crtc_config *crtc, char *buf,
+ 				size_t buf_size)
+ {
+@@ -370,8 +360,8 @@ static void setup_crtcs(const struct test_config *tconf,
+ 			config_valid &= !!(encoder->possible_crtcs &
+ 					  (1 << crtc->crtc_idx));
  
- 		if (data.list_modes)
- 			list_writeback_modes(&display);
--		if (data.dump_check)
--			commit_and_dump_fb(&display, output, plane, &input_fb, &mode);
+-			encoder_mask |= 1 << get_encoder_idx(resources,
+-							     encoder);
++			encoder_mask |= 1 << kmstest_get_encoder_idx(resources,
++								     encoder);
+ 			config_valid &= !(encoder_mask &
+ 					  ~encoder->possible_clones);
+ 
+@@ -396,7 +386,7 @@ static void setup_crtcs(const struct test_config *tconf,
+ 			idx = cconf[i].crtc_idx;
+ 
+ 		encoder = drmModeGetEncoder(drm_fd, connector->encoders[idx]);
+-		encoder_usage_count[get_encoder_idx(resources, encoder)]++;
++		encoder_usage_count[kmstest_get_encoder_idx(resources, encoder)]++;
+ 		drmModeFreeEncoder(encoder);
  	}
-+
-+	/*
-+	 * When dump_check is high, the following subtests will be run.
-+	 * These tests will be skipped if list_modes flag is high.
-+	 */
-+	igt_describe("Dump a non-cloned writeback buffer");
-+	igt_subtest("dump-writeback") {
-+		igt_skip_on(!data.dump_check || data.list_modes);
-+		snprintf(dump_suffix, PATH_MAX, "encoder%d", output->id);
-+		commit_and_dump_fb(&display, output, plane, &input_fb, &mode, dump_suffix);
-+	}
-+
-+	igt_describe("Dump valid clone pairs of writeback and non-writeback"
-+		     " connectors; This test will check the output of each pair"
-+		     " if the dump flag isn't set");
-+	igt_subtest("check-valid-clones") {
-+		igt_output_t *nonwb_output;
-+		enum pipe curr_pipe;
-+		drmModeModeInfo *nonwb_mode;
-+		igt_fb_t clone_fb, output_fb;
-+		int num_clones = 0;
-+
-+		/*
-+		 * Drop the dump flag check once calling writeback_sequence() is
-+		 * supported
-+		 */
-+		igt_skip_on(data.list_modes);
-+		igt_skip_on_f(!(data.supported_colors & XRGB8888), "DRM_FORMAT_XRGB8888 is unsupported\n");
-+		igt_require(fb_id > 0);
-+		for_each_output(&display, nonwb_output) {
-+			if (nonwb_output->config.connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+				continue;
-+
-+			/* Set up non-writeback cloned output */
-+			curr_pipe = output->pending_pipe;
-+			igt_output_set_pipe(nonwb_output, curr_pipe);
-+
-+			if (!igt_output_is_valid_clone(display.drm_fd, output, nonwb_output)) {
-+				igt_output_set_pipe(nonwb_output, PIPE_NONE);
-+				igt_debug("Output %s not a valid clone\n",
-+					  nonwb_output->name);
-+				igt_output_override_mode(output, &mode);
-+				continue;
-+			}
-+
-+			num_clones++;
-+
-+			nonwb_mode = igt_output_get_mode(nonwb_output);
-+			igt_output_override_mode(output, nonwb_mode);
-+
-+			fb_id = igt_create_fb(display.drm_fd, nonwb_mode->hdisplay,
-+				      nonwb_mode->vdisplay,
-+				      DRM_FORMAT_XRGB8888,
-+				      DRM_FORMAT_MOD_LINEAR,
-+				      &clone_fb);
-+			igt_assert(fb_id >= 0);
-+			fb_id = igt_create_fb(display.drm_fd, nonwb_mode->hdisplay,
-+					      nonwb_mode->vdisplay,
-+					      DRM_FORMAT_XRGB8888,
-+					      DRM_FORMAT_MOD_LINEAR,
-+					      &output_fb);
-+			igt_assert(fb_id >= 0);
-+
-+			if (data.dump_check) {
-+				snprintf(dump_suffix, PATH_MAX, "encoder%d-encoder%d",
-+						output->id, nonwb_output->id);
-+				commit_and_dump_fb(&display, output, plane, &clone_fb,
-+						nonwb_mode, dump_suffix);
-+			} else {
-+				igt_fb_t *out_fbs[1] = { &output_fb };
-+				writeback_sequence(output, plane, &clone_fb,
-+						   out_fbs, 1,
-+						   DRM_FORMAT_XRGB8888);
-+			}
-+
-+			igt_output_set_pipe(nonwb_output, PIPE_NONE);
-+			igt_output_override_mode(output, &mode);
-+			igt_display_commit_atomic(output->display,
-+						  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+						  NULL);
-+			igt_remove_fb(display.drm_fd, &output_fb);
-+			igt_remove_fb(display.drm_fd, &clone_fb);
-+		}
-+		igt_require(num_clones > 0);
-+	}
-+
- 	/*
- 	 * When dump_check or list_modes flag is high, then the following subtests will be skipped
- 	 * as we do not want to do CRC validation.
+ 	for (i = 0; i < resources->count_encoders; i++)
 
 -- 
 2.48.1
