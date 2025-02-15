@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B56AC021B0
-	for <igt-dev@archiver.kernel.org>; Sat, 15 Feb 2025 01:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A64BC02198
+	for <igt-dev@archiver.kernel.org>; Sat, 15 Feb 2025 01:06:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B1F7410ED5E;
-	Sat, 15 Feb 2025 01:06:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D37BF10ED63;
+	Sat, 15 Feb 2025 01:06:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n8WeLxn5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lCx9zvp6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5901410E4B3
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAF8810ED52
  for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2025 01:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1739581590; x=1771117590;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=3fHvpfb3J3hBRT+alxO/akJpyt9GUrNE60wmWB1uYxg=;
- b=n8WeLxn5imnDTptRXFMSJRBokygyfxaM3QvSllX1IoIb74vZmDh7J4xG
- Batd+y85sjnqFX4XDs/QgU3Cs7/NYKtZWlfBFaB/UWB3+DKDyupvXiRv8
- KyU82VxvY+cQPB7Zn+jXZ7OT/7+HA+fgsz+Qq3+tDW9tkRcFfkjahmvLc
- 9geztSpKWp+mKzu8WOo0r28NTxFYP/NtJgmDXw4wVrCgfPtOWGqEBkfyO
- IrLxLArLnkUi0oTVcYlqqBw/FmnK2IZm75C8FLLW9CxCAClNFvse7dS3S
- 5G+vJTVoE2rxM0Pe/fnS/A2Isxidvoy6s93VzVjNWv+kgBtSnDftLaVFp A==;
-X-CSE-ConnectionGUID: bzX5cBPcR0G+EpsPSVHYJQ==
-X-CSE-MsgGUID: MsmLBicgT+av/BBntwCrZw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="50555114"
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="50555114"
+ bh=iHRywJvrxArB3g0uLkTuGHax6ZWAzxlsxO/oXOhuyuc=;
+ b=lCx9zvp6kx7T907YS34Xv3AbaEQRxJCUApd+YTpHJpWzizWEpwJqpc/2
+ 86kfs9bkqJjqhu9EpA/+iEtFLgFSLwbRP/DIutBvhqQ9WSG+vViV4181O
+ OCnk6NbUSFceAlOEQDNwxQkYUMti4DDN9bXGScZJuHO/scBlXZmSu51NN
+ JcHTidHYbqux6xc9bmGqsp5ORYWl7jKi7Sk0lJIcqKNRgaLYa3t+3BG0m
+ fVZ2jDa21kYQNW1okojxZCd5nyyllS5BPePX0Pclpm1gVfcn97eA6+rir
+ 1/8Qc6USWI4fF9jzQ/7PUqqSY4Al2OjfEC7WBITA1Sq70AvIkuCUSMOln Q==;
+X-CSE-ConnectionGUID: AwrK/pUVQUO+jhHrh3vd4Q==
+X-CSE-MsgGUID: +z2EQ7zRRLSrwMrMKcDtcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="50555118"
+X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="50555118"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Feb 2025 17:06:30 -0800
-X-CSE-ConnectionGUID: M4L3thAQRgSJ7rQgruO72g==
-X-CSE-MsgGUID: S8rUEpYyQM2zQsUMmttXPA==
+X-CSE-ConnectionGUID: oYeampoWTZeWhJwHWNkp9A==
+X-CSE-MsgGUID: ydii8y8WSJm6audB9mGGEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="118711247"
+X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="118711264"
 Received: from dut4463arlhx.fm.intel.com ([10.105.10.25])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Feb 2025 17:06:28 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH 05/13] tests/intel/xe_oa: Use same render copy width and
- height across tests
-Date: Fri, 14 Feb 2025 17:06:20 -0800
-Message-Id: <20250215010628.1639986-6-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH 10/13] tests/intel/xe_oa: Rewrite enable-disable test
+Date: Fri, 14 Feb 2025 17:06:25 -0800
+Message-Id: <20250215010628.1639986-11-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
 References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
@@ -68,165 +67,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the same width and height for render copy frame across tests.
+Keep it simple and just check if enable/disable is working correctly
+using mmio.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ tests/intel/xe_oa.c | 129 +++++---------------------------------------
+ 1 file changed, 13 insertions(+), 116 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 7e40e9257..aaf92308a 100644
+index ee87b7338..c6c1c2358 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -303,6 +303,7 @@ static uint64_t oa_exponent_default;
- static size_t default_oa_buffer_size;
- static struct intel_mmio_data mmio_data;
- static igt_render_copyfunc_t render_copy;
-+static uint32_t rc_width, rc_height;
- 
- static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
+@@ -2534,21 +2534,13 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
+ static void
+ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
  {
-@@ -1089,6 +1090,8 @@ init_sys_info(void)
+-	/* ~5 micro second period */
+-	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+-	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+ 	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+-	uint64_t fmt = test_set->perf_oa_format;
+ 	uint64_t properties[] = {
+ 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+-
+-		/* Include OA reports in samples */
+ 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+-
+-		/* OA unit configuration */
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+-		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+-		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+ 		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+ 		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 	};
+@@ -2556,123 +2548,28 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+ 		.num_properties = ARRAY_SIZE(properties) / 2,
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+-	size_t report_size = get_oa_format(fmt).size;
+-	int buf_size = 65536 * report_size;
+-	uint8_t *buf = malloc(buf_size);
+-	int n_full_oa_reports = default_oa_buffer_size / report_size;
+-	uint64_t fill_duration = n_full_oa_reports * oa_period;
+-	uint32_t *last_periodic_report = malloc(report_size);
+-
+-	load_helper_init();
+-	load_helper_run(HIGH);
++	u32 oacontrol;
  
- 	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
+ 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+         set_fd_flags(stream_fd, O_CLOEXEC);
  
-+	rc_width = 1920;
-+	rc_height = 1080;
- 	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
+-	for (int i = 0; i < 5; i++) {
+-		int len;
+-		uint32_t n_periodic_reports;
+-		uint64_t first_timestamp = 0, last_timestamp = 0;
+-		u32 oa_status;
+-
+-		/* Giving enough time for an overflow might help catch whether
+-		 * the OA unit has been enabled even if the driver might at
+-		 * least avoid copying reports while disabled.
+-		 */
+-		nanosleep(&(struct timespec){ .tv_sec = 0,
+-					      .tv_nsec = fill_duration * 1.25 },
+-			  NULL);
+-
+-		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
+-		       (errno == EINTR || errno == EIO))
+-			;
+-
+-		igt_assert_eq(len, -1);
+-		igt_assert_eq(errno, EINVAL);
+-
+-		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
++#define OAG_OACONTROL	(0xdaf4)
++#define  OAG_OACONTROL_OA_COUNTER_ENABLE	(1 << 0)
  
- 	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
-@@ -1608,7 +1611,7 @@ static void load_helper_run(enum load load)
+-		nanosleep(&(struct timespec){ .tv_sec = 0,
+-					      .tv_nsec = fill_duration / 2 },
+-			NULL);
+-
+-		n_periodic_reports = 0;
+-
+-		/* Because of the race condition between notification of new
+-		 * reports and reports landing in memory, we need to rely on
+-		 * timestamps to figure whether we've read enough of them.
+-		 */
+-		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
+-
+-			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
+-				;
+-			if (errno == EIO) {
+-				oa_status = get_stream_status(stream_fd);
+-				igt_debug("oa_status %#x\n", oa_status);
+-				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
+-				continue;
+-			}
+-			igt_assert_neq(len, -1);
+-
+-			for (int offset = 0; offset < len; offset += report_size) {
+-				uint32_t *report = (void *) (buf + offset);
+-
+-				if (first_timestamp == 0)
+-					first_timestamp = oa_timestamp(report, fmt);
+-				last_timestamp = oa_timestamp(report, fmt);
+-
+-				igt_debug(" > report ts=%"PRIx64""
+-					  " ts_delta_last_periodic=%s%"PRIu64""
+-					  " is_timer=%i ctx_id=0x%8x\n",
+-					  oa_timestamp(report, fmt),
+-					  oa_report_is_periodic(report) ? " " : "*",
+-					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
+-					  oa_report_is_periodic(report),
+-					  oa_report_get_ctx_id(report));
+-
+-				if (oa_report_is_periodic(report)) {
+-					memcpy(last_periodic_report, report, report_size);
+-
+-					/* We want to measure only the periodic reports,
+-					 * ctx-switch might inflate the content of the
+-					 * buffer and skew or measurement.
+-					 */
+-					n_periodic_reports++;
+-				}
+-			}
+-		}
+-
+-		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
+-
+-		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
+-
+-		igt_debug("%f < %zu < %f\n",
+-			  report_size * n_full_oa_reports * 0.45,
+-			  n_periodic_reports * report_size,
+-			  report_size * n_full_oa_reports * 0.55);
+-
+-		igt_assert((n_periodic_reports * report_size) >
+-			   (report_size * n_full_oa_reports * 0.45));
+-		igt_assert((n_periodic_reports * report_size) <
+-			   report_size * n_full_oa_reports * 0.55);
++	intel_register_access_init(&mmio_data,
++				   igt_device_get_pci_device(drm_fd), 0);
  
- 		while (!lh.exit) {
- 			render_copy(lh.ibb,
--				    &lh.src, 0, 0, 1920, 1080,
-+				    &lh.src, 0, 0, rc_width, rc_height,
- 				    &lh.dst, 0, 0);
++	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
++	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 0);
  
- 			intel_bb_sync(lh.ibb);
-@@ -1645,8 +1648,8 @@ static void load_helper_init(void)
+-		/* It's considered an error to read a stream while it's disabled
+-		 * since it would block indefinitely...
+-		 */
+-		len = read(stream_fd, buf, buf_size);
++	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
  
- 	lh.ibb = intel_bb_create_with_context(drm_fd, lh.context_id, lh.vm, NULL, BATCH_SZ);
+-		igt_assert_eq(len, -1);
+-		igt_assert_eq(errno, EINVAL);
+-	}
++	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
  
--	scratch_buf_init(lh.bops, &lh.dst, 1920, 1080, 0);
--	scratch_buf_init(lh.bops, &lh.src, 1920, 1080, 0);
-+	scratch_buf_init(lh.bops, &lh.dst, rc_width, rc_height, 0);
-+	scratch_buf_init(lh.bops, &lh.src, rc_width, rc_height, 0);
+-	free(last_periodic_report);
+-	free(buf);
++	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 1);
+ 
++	intel_register_access_fini(&mmio_data);
+ 	__perf_close(stream_fd);
+-
+-	load_helper_stop();
+-	load_helper_fini();
  }
  
- static void load_helper_fini(void)
-@@ -3112,8 +3115,6 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	uint64_t delta_ts64, delta_oa32;
- 	uint64_t delta_ts64_ns, delta_oa32_ns;
- 	uint64_t delta_delta;
--	int width = 800;
--	int height = 600;
- #define INVALID_CTX_ID 0xffffffff
- 	uint32_t ctx0_id = INVALID_CTX_ID;
- 	uint32_t ctx1_id = INVALID_CTX_ID;
-@@ -3125,8 +3126,8 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	bops = buf_ops_create(drm_fd);
- 
- 	for (int i = 0; i < ARRAY_SIZE(src); i++) {
--		scratch_buf_init(bops, &src[i], width, height, 0xff0000ff);
--		scratch_buf_init(bops, &dst[i], width, height, 0x00ff00ff);
-+		scratch_buf_init(bops, &src[i], rc_width, rc_height, 0xff0000ff);
-+		scratch_buf_init(bops, &dst[i], rc_width, rc_height, 0x00ff00ff);
- 	}
- 
- 	vm = xe_vm_create(drm_fd, 0, 0);
-@@ -3139,7 +3140,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 
- 	/* Submit some early, unmeasured, work to the context we want */
- 	render_copy(ibb0,
--		    &src[0], 0, 0, width, height,
-+		    &src[0], 0, 0, rc_width, rc_height,
- 		    &dst[0], 0, 0);
- 
- 	/* Initialize the context parameter to the perf open ioctl here */
-@@ -3175,7 +3176,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 
- 	/* This is the work/context that is measured for counter increments */
- 	render_copy(ibb0,
--		    &src[0], 0, 0, width, height,
-+		    &src[0], 0, 0, rc_width, rc_height,
- 		    &dst[0], 0, 0);
- 	intel_bb_flush_render(ibb0);
- 
-@@ -3200,11 +3201,11 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	 * context1
- 	 */
- 	render_copy(ibb1,
--		    &src[1], 0, 0, width, height,
-+		    &src[1], 0, 0, rc_width, rc_height,
- 		    &dst[1], 0, 0);
- 
- 	render_copy(ibb1,
--		    &src[2], 0, 0, width, height,
-+		    &src[2], 0, 0, rc_width, rc_height,
- 		    &dst[2], 0, 0);
- 	intel_bb_flush_render(ibb1);
- 
-@@ -3325,7 +3326,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	igt_debug("n samples written = %"PRIu64"/%"PRIu64" (%ix%i)\n",
- 		  accumulator.deltas[2 + 21],
- 		  accumulator.deltas[2 + 26],
--		  width, height);
-+		  rc_width, rc_height);
- 	accumulator_print(&accumulator, "filtered");
- 
- 	/* Verify that the work actually happened by comparing the src
-@@ -3334,7 +3335,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	buf_map(drm_fd, &src[0], false);
- 	buf_map(drm_fd, &dst[0], false);
- 
--	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * width * height);
-+	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * rc_width * rc_height);
- 	intel_buf_unmap(&src[0]);
- 	intel_buf_unmap(&dst[0]);
- 
-@@ -3350,9 +3351,9 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	/* Check that this test passed. The test measures the number of 2x2
- 	 * samples written to the render target using the counter A26. For
- 	 * OAR, this counter will only have increments relevant to this specific
--	 * context. The value equals the width * height of the rendered work.
-+	 * context. The value equals the rc_width * rc_height of the rendered work.
- 	 */
--	igt_assert_eq(accumulator.deltas[2 + 26], width * height);
-+	igt_assert_eq(accumulator.deltas[2 + 26], rc_width * rc_height);
- 
-  skip_check:
- 	/* Clean up */
-@@ -4006,8 +4007,6 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
- 	uint32_t context, vm;
--	int height = 600;
--	int width = 800;
- 	uint8_t *buf;
- 
- 	bops = buf_ops_create(drm_fd);
-@@ -4019,8 +4018,8 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 	memset(dst_buf->ptr, 0, 4096);
- 	intel_buf_unmap(dst_buf);
- 
--	scratch_buf_init(bops, &src, width, height, 0xff0000ff);
--	scratch_buf_init(bops, &dst, width, height, 0x00ff00ff);
-+	scratch_buf_init(bops, &src, rc_width, rc_height, 0xff0000ff);
-+	scratch_buf_init(bops, &dst, rc_width, rc_height, 0x00ff00ff);
- 
- 	vm = xe_vm_create(drm_fd, 0, 0);
- 	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-@@ -4039,7 +4038,7 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 
- 	if (render_copy)
- 		render_copy(ibb,
--			    &src, 0, 0, width, height,
-+			    &src, 0, 0, rc_width, rc_height,
- 			    &dst, 0, 0);
- 
- 	emit_mmio_triggered_report(ibb, 0xc0ffee22);
+ /**
 -- 
 2.34.1
 
