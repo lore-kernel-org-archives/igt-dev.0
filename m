@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31745C021AC
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5909FC021AF
 	for <igt-dev@archiver.kernel.org>; Sat, 15 Feb 2025 01:06:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6493010ED56;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A115A10ED5C;
 	Sat, 15 Feb 2025 01:06:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vd16+ACY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fOEJAMGX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74D4010ED50
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3B3410E4B3
  for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2025 01:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1739581590; x=1771117590;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=EqKwRBm/oDzlIy+7OXXPiPlx0iqC8+DsxwM3zkTG6HQ=;
- b=Vd16+ACY888+XRhsPPurfGnhVip5VufYHGPKPsM4Wis5IrtVPD2w9MA/
- +tuIk9Xr0CdVi6Cs1dNzsZeCLrSvavg5+dmsgxrj9nrYOkgULMt4tLcYa
- uJjjqsZe+8ZJYvmDo1hnU9F7AXRJuDG2//n49pKdAvtN2CeBgO0+iKvv9
- VP8spMdwRW2Jexqr6Ywyg1njQc6EpPArJE+fVcLbU3Kef+egl9TUkk0Yt
- GqaAEmS7GRox1+lYATRRU6fWLiA4So6cR9qaPTsu4zFTkkQb9quKrsXH4
- UllJsXJJ3EaFLsu8vqmtDfwBYbzq+e9xXt2XrZxfa1skZAurTsovVX9FP Q==;
-X-CSE-ConnectionGUID: pv6RKdhAT7W6usVCeUIIGg==
-X-CSE-MsgGUID: h98fjU9aQkGSDvAXQ0fJQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="50555115"
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="50555115"
+ bh=DZb2i8QMw5NDKHApfg2YD2aDuzh8mkmKy1ij9Eu51Vs=;
+ b=fOEJAMGXZnhMGAtwQJdN6HKf8szkCYoJN9wbZ2oVEaAVi9NT7aPIMSum
+ Q92jTVJUQtmiJmkKyDSjkHZKtAVlq+F9oR2D5ieKlmxNbmSjosr64VDC9
+ zycCTzUVxtMHmyqtk09HmBielBZYnEOYx77dyZlh13LZXgciz6lIm5y3h
+ Ba2nlZ9ll8iIA54BLFurhrlYYGm7AI492IvgnyvA1SV3OF4tqLBj0gnJ9
+ ID+StDj2uVMzUeo94qgUTN09PVxiYvRB2IScUCRlsi061gDfuFfhtSHmc
+ o5rC/CNh3EeWOMs9ALDqrvT2xofnc467P8Z01m7h3YVysXTlzRAwMzlBa g==;
+X-CSE-ConnectionGUID: nxdD4PpDQhe6m1MPcjU8vg==
+X-CSE-MsgGUID: AOE/jkPvTW2lKZJzjF9NSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="50555119"
+X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="50555119"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Feb 2025 17:06:30 -0800
-X-CSE-ConnectionGUID: M3FEpZZVRd2ExJJVjxAupA==
-X-CSE-MsgGUID: tQtEy7Z7Q8i0AKYa0aBfhA==
+X-CSE-ConnectionGUID: JGNdwY82T6eu9xC0v9kzDQ==
+X-CSE-MsgGUID: iDNXxoETSsuYlHrAavyYqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="118711254"
+X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="118711267"
 Received: from dut4463arlhx.fm.intel.com ([10.105.10.25])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Feb 2025 17:06:28 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH 07/13] tests/intel/xe_oa: Simplify the buffer-fill test
-Date: Fri, 14 Feb 2025 17:06:22 -0800
-Message-Id: <20250215010628.1639986-8-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH 11/13] tests/intel/xe_oa: Enable
+ unprivileged-single-ctx-counters and fix it
+Date: Fri, 14 Feb 2025 17:06:26 -0800
+Message-Id: <20250215010628.1639986-12-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
 References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
@@ -67,198 +68,194 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We only want to test that the BUFFER OVERFLOW status is set when we do
-not read the OA stream data in time. To do so, keeping reading zero
-bytes of data until you hit a buffer overflow.
+unprivileged-single-ctx-counters was hardcoded for a format size of 256
+bytes. Fix it up for generic format size.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 135 +++++++++-----------------------------------
- 1 file changed, 26 insertions(+), 109 deletions(-)
+ tests/intel/xe_oa.c | 93 +++++++++++++++++++++++----------------------
+ 1 file changed, 48 insertions(+), 45 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 5792ffec2..fc03b74af 100644
+index c6c1c2358..ff1b873d5 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -304,6 +304,7 @@ static size_t default_oa_buffer_size;
- static struct intel_mmio_data mmio_data;
- static igt_render_copyfunc_t render_copy;
- static uint32_t rc_width, rc_height;
-+static uint32_t buffer_fill_size;
- 
- static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
- {
-@@ -1092,6 +1093,7 @@ init_sys_info(void)
- 
- 	rc_width = 1920;
- 	rc_height = 1080;
-+	buffer_fill_size = SZ_16M;
- 	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
- 
- 	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
-@@ -2370,11 +2372,7 @@ test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
- static void
- test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
- {
--	/* ~5 micro second period */
--	int oa_exponent = max_oa_exponent_for_period_lte(5000);
--	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
- 	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
--	uint64_t fmt = test_set->perf_oa_format;
- 	uint64_t properties[] = {
- 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
- 
-@@ -2383,126 +2381,45 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
- 
- 		/* OA unit configuration */
- 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
--		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
--		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
- 		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_fill_size,
+@@ -2961,6 +2961,16 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	struct accumulator accumulator = {
+ 		.format = fmt
  	};
- 	struct intel_xe_oa_open_prop param = {
- 		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
--	size_t report_size = get_oa_format(fmt).size;
--	int buf_size = 65536 * report_size;
--	uint8_t *buf = malloc(buf_size);
--	int len;
--	int n_full_oa_reports = default_oa_buffer_size / report_size;
--	uint64_t fill_duration = n_full_oa_reports * oa_period;
--	uint32_t *last_periodic_report = malloc(report_size);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent_default);
-+	char *buf = malloc(1024);
-+	bool overflow_seen;
- 	u32 oa_status;
-+	int len;
++	uint32_t ctx_id_offset, counter_offset, dst_buf_size;
++	struct oa_format format = get_oa_format(fmt);
++
++	if (format.report_hdr_64bit) {
++		ctx_id_offset = 4;
++		counter_offset = 8;
++	} else {
++		ctx_id_offset = 2;
++		counter_offset = 4;
++	}
  
--	igt_assert(fill_duration < 1000000000);
--
-+	igt_debug("oa_period %s\n", pretty_print_oa_period(oa_period));
- 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+ 	bops = buf_ops_create(drm_fd);
+ 
+@@ -2989,25 +2999,29 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	stream_fd = __perf_open(drm_fd, &param, false);
          set_fd_flags(stream_fd, O_CLOEXEC);
  
--	for (int i = 0; i < 5; i++) {
--		bool overflow_seen;
--		uint32_t n_periodic_reports;
--		uint32_t first_timestamp = 0, last_timestamp = 0;
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
--
--		nanosleep(&(struct timespec){ .tv_sec = 0,
--					      .tv_nsec = fill_duration * 1.25 },
--			  NULL);
--again:
--		oa_status = 0;
--		while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
--			;
--
--		if (errno == EIO) {
--			oa_status = get_stream_status(stream_fd);
--			igt_debug("oa_status %#x\n", oa_status);
--			overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
--			igt_assert_eq(overflow_seen, true);
--			goto again;
--		}
--		igt_assert_neq(len, -1);
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
--
--		igt_debug("fill_duration = %"PRIu64"ns, oa_exponent = %u\n",
--			  fill_duration, oa_exponent);
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
--
--		nanosleep(&(struct timespec){ .tv_sec = 0,
--					.tv_nsec = fill_duration / 2 },
--			NULL);
--
--		n_periodic_reports = 0;
--
--		/* Because of the race condition between notification of new
--		 * reports and reports landing in memory, we need to rely on
--		 * timestamps to figure whether we've read enough of them.
--		 */
--		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
--
--			igt_debug("dts=%u elapsed=%"PRIu64" duration=%"PRIu64"\n",
--				  last_timestamp - first_timestamp,
--				  (last_timestamp - first_timestamp) * oa_period,
--				  fill_duration / 2);
--again_1:
--			oa_status = 0;
--			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
--				;
--			if (errno == EIO) {
--				oa_status = get_stream_status(stream_fd);
--				igt_debug("oa_status %#x\n", oa_status);
--				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
--				goto again_1;
--			}
--			igt_assert_neq(len, -1);
--
--			for (int offset = 0; offset < len; offset += report_size) {
--				uint32_t *report = (void *) (buf + offset);
--
--				igt_debug(" > report ts=%"PRIu64""
--					  " ts_delta_last_periodic=%"PRIu64" is_timer=%i ctx_id=%8x nb_periodic=%u\n",
--					  oa_timestamp(report, fmt),
--					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
--					  oa_report_is_periodic(report),
--					  oa_report_get_ctx_id(report),
--					  n_periodic_reports);
--
--				if (first_timestamp == 0)
--					first_timestamp = oa_timestamp(report, fmt);
--				last_timestamp = oa_timestamp(report, fmt);
--
--				if (oa_report_is_periodic(report)) {
--					memcpy(last_periodic_report, report, report_size);
--					n_periodic_reports++;
--				}
--			}
--		}
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
--
--		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-+	/* OA buffer is disable, we do not expect any error status */
-+	oa_status = get_stream_status(stream_fd);
-+	overflow_seen = !!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW);
-+	igt_assert_eq(overflow_seen, 0);
+-	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
++#define FOUR_REPORTS (4 * format.size)
++#define BO_REPORT_OFFSET(_r) (_r * format.size)
++
++#define FOUR_TIMESTAMPS (4 * 8)
++#define BO_TIMESTAMP_OFFSET(_r) (FOUR_REPORTS + (_r * 8))
++
++	dst_buf_size = FOUR_REPORTS + FOUR_TIMESTAMPS;
++	dst_buf = intel_buf_create(bops, dst_buf_size, 1, 8, 64,
+ 				   I915_TILING_NONE,
+ 				   I915_COMPRESSION_NONE);
  
--		igt_debug("%f < %zu < %f\n",
--			  report_size * n_full_oa_reports * 0.45,
--			  n_periodic_reports * report_size,
--			  report_size * n_full_oa_reports * 0.55);
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+ 	/* Set write domain to cpu briefly to fill the buffer with 80s */
+ 	buf_map(drm_fd, dst_buf, true /* write enable */);
+-	memset(dst_buf->ptr, 0x80, 2048);
+-	memset((uint8_t *) dst_buf->ptr + 2048, 0, 2048);
++	memset(dst_buf->ptr, 0, dst_buf_size);
++	memset(dst_buf->ptr, 0x80, FOUR_REPORTS);
+ 	intel_buf_unmap(dst_buf);
  
--		igt_assert(n_periodic_reports * report_size >
--			   report_size * n_full_oa_reports * 0.45);
--		igt_assert(n_periodic_reports * report_size <
--			   report_size * n_full_oa_reports * 0.55);
-+	errno = 0;
-+	/* Read 0 bytes repeatedly until you see an EIO */
-+	while ((len = read(stream_fd, buf, 0)) == -1 && (errno == EINTR || errno == ENOSPC)) {
-+		usleep(100);
- 	}
-+	igt_assert_eq(len, -1);
-+	igt_assert_eq(errno, EIO);
+ 	/* Submit an mi-rpc to context0 before measurable work */
+-#define BO_TIMESTAMP_OFFSET0 1024
+-#define BO_REPORT_OFFSET0 0
+-#define BO_REPORT_ID0 0xdeadbeef
+ 	emit_stall_timestamp_and_rpc(ibb0,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET0,
+-				     BO_REPORT_OFFSET0,
+-				     BO_REPORT_ID0);
++				     BO_TIMESTAMP_OFFSET(0),
++				     BO_REPORT_OFFSET(0),
++				     0xdeadbeef);
+ 	intel_bb_flush_render(ibb0);
  
--	free(last_periodic_report);
--	free(buf);
-+	/* Ensure buffer overflowed */
-+	oa_status = get_stream_status(stream_fd);
-+	overflow_seen = !!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW);
-+	igt_assert(overflow_seen);
+ 	/* Remove intel_buf from ibb0 added implicitly in rendercopy */
+@@ -3025,14 +3039,11 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	 * all zeroes, since the counters will only increment for the
+ 	 * context passed to perf open ioctl
+ 	 */
+-#define BO_TIMESTAMP_OFFSET2 1040
+-#define BO_REPORT_OFFSET2 512
+-#define BO_REPORT_ID2 0x00c0ffee
+ 	emit_stall_timestamp_and_rpc(ibb1,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET2,
+-				     BO_REPORT_OFFSET2,
+-				     BO_REPORT_ID2);
++				     BO_TIMESTAMP_OFFSET(2),
++				     BO_REPORT_OFFSET(2),
++				     0x00c0ffee);
+ 	intel_bb_flush_render(ibb1);
  
- 	__perf_close(stream_fd);
- }
+ 	/* Submit two copies on the other context to avoid a false
+@@ -3049,28 +3060,22 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	intel_bb_flush_render(ibb1);
+ 
+ 	/* Submit an mi-rpc to context1 after all work */
+-#define BO_TIMESTAMP_OFFSET3 1048
+-#define BO_REPORT_OFFSET3 768
+-#define BO_REPORT_ID3 0x01c0ffee
+ 	emit_stall_timestamp_and_rpc(ibb1,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET3,
+-				     BO_REPORT_OFFSET3,
+-				     BO_REPORT_ID3);
++				     BO_TIMESTAMP_OFFSET(3),
++				     BO_REPORT_OFFSET(3),
++				     0x01c0ffee);
+ 	intel_bb_flush_render(ibb1);
+ 
+ 	/* Remove intel_buf from ibb1 added implicitly in rendercopy */
+ 	intel_bb_remove_intel_buf(ibb1, dst_buf);
+ 
+ 	/* Submit an mi-rpc to context0 after all measurable work */
+-#define BO_TIMESTAMP_OFFSET1 1032
+-#define BO_REPORT_OFFSET1 256
+-#define BO_REPORT_ID1 0xbeefbeef
+ 	emit_stall_timestamp_and_rpc(ibb0,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET1,
+-				     BO_REPORT_OFFSET1,
+-				     BO_REPORT_ID1);
++				     BO_TIMESTAMP_OFFSET(1),
++				     BO_REPORT_OFFSET(1),
++				     0xbeefbeef);
+ 	intel_bb_flush_render(ibb0);
+ 	intel_bb_sync(ibb0);
+ 	intel_bb_sync(ibb1);
+@@ -3090,33 +3095,32 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	report0_32 = dst_buf->ptr;
+ 	igt_assert_eq(report0_32[0], 0xdeadbeef);
+ 	igt_assert(oa_timestamp(report0_32, fmt));
+-	ctx0_id = report0_32[2];
++	ctx0_id = report0_32[ctx_id_offset];
+ 	igt_debug("MI_RPC(start) CTX ID: %u\n", ctx0_id);
+-	dump_report(report0_32, 64, "report0_32");
++	dump_report(report0_32, format.size / 4, "report0_32");
+ 
+-	report1_32 = report0_32 + 64;
++	report1_32 = report0_32 + format.size / 4;
+ 	igt_assert_eq(report1_32[0], 0xbeefbeef);
+ 	igt_assert(oa_timestamp(report1_32, fmt));
+-	ctx1_id = report1_32[2];
++	ctx1_id = report1_32[ctx_id_offset];
+ 	igt_debug("CTX ID1: %u\n", ctx1_id);
+-	dump_report(report1_32, 64, "report1_32");
++	dump_report(report1_32, format.size / 4, "report1_32");
+ 
+ 	/* Verify that counters in context1 are all zeroes */
+-	report2_32 = report0_32 + 128;
++	report2_32 = report1_32 + format.size / 4;
+ 	igt_assert_eq(report2_32[0], 0x00c0ffee);
+ 	igt_assert(oa_timestamp(report2_32, fmt));
+-	dump_report(report2_32, 64, "report2_32");
+-	igt_assert_eq(0, memcmp(&report2_32[4],
+-				(uint8_t *) dst_buf->ptr + 2048,
+-				240));
++	dump_report(report2_32, format.size / 4, "report2_32");
+ 
+-	report3_32 = report0_32 + 192;
++	report3_32 = report2_32 + format.size / 4;
+ 	igt_assert_eq(report3_32[0], 0x01c0ffee);
+ 	igt_assert(oa_timestamp(report3_32, fmt));
+-	dump_report(report3_32, 64, "report3_32");
+-	igt_assert_eq(0, memcmp(&report3_32[4],
+-				(uint8_t *) dst_buf->ptr + 2048,
+-				240));
++	dump_report(report3_32, format.size / 4, "report3_32");
++
++	for (int k = counter_offset; k < format.size / 4; k++) {
++		igt_assert_f(report2_32[k] == 0, "Failed counter %d check\n", k);
++		igt_assert_f(report3_32[k] == 0, "Failed counter %d check\n", k);
++	}
+ 
+ 	/* Accumulate deltas for counters - A0, A21 and A26 */
+ 	memset(accumulator.deltas, 0, sizeof(accumulator.deltas));
+@@ -3135,8 +3139,8 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	 * the OA report timestamps should be almost identical but
+ 	 * allow a 500 nanoseconds margin.
+ 	 */
+-	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET0);
+-	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET1);
++	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET(0));
++	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET(1));
+ 
+ 	igt_debug("ts_timestamp64 0 = %"PRIu64"\n", timestamp0_64);
+ 	igt_debug("ts_timestamp64 1 = %"PRIu64"\n", timestamp1_64);
+@@ -4781,7 +4785,6 @@ igt_main
+ 
+ 		igt_subtest_with_dynamic("unprivileged-single-ctx-counters") {
+ 			igt_require_f(render_copy, "no render-copy function\n");
+-			igt_require(intel_graphics_ver(devid) < IP_VER(20, 0));
+ 			__for_one_render_engine(hwe)
+ 				test_single_ctx_render_target_writes_a_counter(hwe);
+ 		}
 -- 
 2.34.1
 
