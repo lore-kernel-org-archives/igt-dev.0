@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A64BC02198
-	for <igt-dev@archiver.kernel.org>; Sat, 15 Feb 2025 01:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE6FC02198
+	for <igt-dev@archiver.kernel.org>; Sat, 15 Feb 2025 01:07:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D37BF10ED63;
-	Sat, 15 Feb 2025 01:06:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lCx9zvp6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAF8810ED52
- for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2025 01:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739581590; x=1771117590;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=iHRywJvrxArB3g0uLkTuGHax6ZWAzxlsxO/oXOhuyuc=;
- b=lCx9zvp6kx7T907YS34Xv3AbaEQRxJCUApd+YTpHJpWzizWEpwJqpc/2
- 86kfs9bkqJjqhu9EpA/+iEtFLgFSLwbRP/DIutBvhqQ9WSG+vViV4181O
- OCnk6NbUSFceAlOEQDNwxQkYUMti4DDN9bXGScZJuHO/scBlXZmSu51NN
- JcHTidHYbqux6xc9bmGqsp5ORYWl7jKi7Sk0lJIcqKNRgaLYa3t+3BG0m
- fVZ2jDa21kYQNW1okojxZCd5nyyllS5BPePX0Pclpm1gVfcn97eA6+rir
- 1/8Qc6USWI4fF9jzQ/7PUqqSY4Al2OjfEC7WBITA1Sq70AvIkuCUSMOln Q==;
-X-CSE-ConnectionGUID: AwrK/pUVQUO+jhHrh3vd4Q==
-X-CSE-MsgGUID: +z2EQ7zRRLSrwMrMKcDtcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="50555118"
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="50555118"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 17:06:30 -0800
-X-CSE-ConnectionGUID: oYeampoWTZeWhJwHWNkp9A==
-X-CSE-MsgGUID: ydii8y8WSJm6audB9mGGEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; d="scan'208";a="118711264"
-Received: from dut4463arlhx.fm.intel.com ([10.105.10.25])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2025 17:06:28 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH 10/13] tests/intel/xe_oa: Rewrite enable-disable test
-Date: Fri, 14 Feb 2025 17:06:25 -0800
-Message-Id: <20250215010628.1639986-11-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
-References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B27810ED45;
+	Sat, 15 Feb 2025 01:07:46 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95A1D10E4B3;
+ Sat, 15 Feb 2025 01:07:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8879163425499462785=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcolor=3A_Disabl?=
+ =?utf-8?q?e_CTM_at_the_end_of_CTM_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jessica Zhang" <quic_jesszhan@quicinc.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 15 Feb 2025 01:07:45 -0000
+Message-ID: <173958166560.2233567.16253217667453007370@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250214-disable-cwb-v2-1-d01f7a100748@quicinc.com>
+In-Reply-To: <20250214-disable-cwb-v2-1-d01f7a100748@quicinc.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,180 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Keep it simple and just check if enable/disable is working correctly
-using mmio.
+--===============8879163425499462785==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/xe_oa.c | 129 +++++---------------------------------------
- 1 file changed, 13 insertions(+), 116 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index ee87b7338..c6c1c2358 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -2534,21 +2534,13 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
- static void
- test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
- {
--	/* ~5 micro second period */
--	int oa_exponent = max_oa_exponent_for_period_lte(5000);
--	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
- 	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
--	uint64_t fmt = test_set->perf_oa_format;
- 	uint64_t properties[] = {
- 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
--
--		/* Include OA reports in samples */
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
--
--		/* OA unit configuration */
- 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
--		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
--		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
- 		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
- 		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
- 	};
-@@ -2556,123 +2548,28 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
- 		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
--	size_t report_size = get_oa_format(fmt).size;
--	int buf_size = 65536 * report_size;
--	uint8_t *buf = malloc(buf_size);
--	int n_full_oa_reports = default_oa_buffer_size / report_size;
--	uint64_t fill_duration = n_full_oa_reports * oa_period;
--	uint32_t *last_periodic_report = malloc(report_size);
--
--	load_helper_init();
--	load_helper_run(HIGH);
-+	u32 oacontrol;
- 
- 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-         set_fd_flags(stream_fd, O_CLOEXEC);
- 
--	for (int i = 0; i < 5; i++) {
--		int len;
--		uint32_t n_periodic_reports;
--		uint64_t first_timestamp = 0, last_timestamp = 0;
--		u32 oa_status;
--
--		/* Giving enough time for an overflow might help catch whether
--		 * the OA unit has been enabled even if the driver might at
--		 * least avoid copying reports while disabled.
--		 */
--		nanosleep(&(struct timespec){ .tv_sec = 0,
--					      .tv_nsec = fill_duration * 1.25 },
--			  NULL);
--
--		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
--		       (errno == EINTR || errno == EIO))
--			;
--
--		igt_assert_eq(len, -1);
--		igt_assert_eq(errno, EINVAL);
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-+#define OAG_OACONTROL	(0xdaf4)
-+#define  OAG_OACONTROL_OA_COUNTER_ENABLE	(1 << 0)
- 
--		nanosleep(&(struct timespec){ .tv_sec = 0,
--					      .tv_nsec = fill_duration / 2 },
--			NULL);
--
--		n_periodic_reports = 0;
--
--		/* Because of the race condition between notification of new
--		 * reports and reports landing in memory, we need to rely on
--		 * timestamps to figure whether we've read enough of them.
--		 */
--		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
--
--			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
--				;
--			if (errno == EIO) {
--				oa_status = get_stream_status(stream_fd);
--				igt_debug("oa_status %#x\n", oa_status);
--				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
--				continue;
--			}
--			igt_assert_neq(len, -1);
--
--			for (int offset = 0; offset < len; offset += report_size) {
--				uint32_t *report = (void *) (buf + offset);
--
--				if (first_timestamp == 0)
--					first_timestamp = oa_timestamp(report, fmt);
--				last_timestamp = oa_timestamp(report, fmt);
--
--				igt_debug(" > report ts=%"PRIx64""
--					  " ts_delta_last_periodic=%s%"PRIu64""
--					  " is_timer=%i ctx_id=0x%8x\n",
--					  oa_timestamp(report, fmt),
--					  oa_report_is_periodic(report) ? " " : "*",
--					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
--					  oa_report_is_periodic(report),
--					  oa_report_get_ctx_id(report));
--
--				if (oa_report_is_periodic(report)) {
--					memcpy(last_periodic_report, report, report_size);
--
--					/* We want to measure only the periodic reports,
--					 * ctx-switch might inflate the content of the
--					 * buffer and skew or measurement.
--					 */
--					n_periodic_reports++;
--				}
--			}
--		}
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
--
--		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
--
--		igt_debug("%f < %zu < %f\n",
--			  report_size * n_full_oa_reports * 0.45,
--			  n_periodic_reports * report_size,
--			  report_size * n_full_oa_reports * 0.55);
--
--		igt_assert((n_periodic_reports * report_size) >
--			   (report_size * n_full_oa_reports * 0.45));
--		igt_assert((n_periodic_reports * report_size) <
--			   report_size * n_full_oa_reports * 0.55);
-+	intel_register_access_init(&mmio_data,
-+				   igt_device_get_pci_device(drm_fd), 0);
- 
-+	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
-+	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 0);
- 
--		/* It's considered an error to read a stream while it's disabled
--		 * since it would block indefinitely...
--		 */
--		len = read(stream_fd, buf, buf_size);
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
- 
--		igt_assert_eq(len, -1);
--		igt_assert_eq(errno, EINVAL);
--	}
-+	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
- 
--	free(last_periodic_report);
--	free(buf);
-+	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 1);
- 
-+	intel_register_access_fini(&mmio_data);
- 	__perf_close(stream_fd);
--
--	load_helper_stop();
--	load_helper_fini();
- }
- 
- /**
--- 
-2.34.1
+Series: tests/kms_color: Disable CTM at the end of CTM tests
+URL   : https://patchwork.freedesktop.org/series/144911/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8230_BAT -> XEIGTPW_12605_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8230 -> IGTPW_12605
+  * Linux: xe-2665-57457d93f156d8b4bdff8d138127d81b8f97d8c9 -> xe-2669-cbd747025a1ef985e1ebfa040aa0da4a5d77aacd
+
+  IGTPW_12605: 958298e5eaff0eaeb07c632b08acf4cbb191e84e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8230: 8230
+  xe-2665-57457d93f156d8b4bdff8d138127d81b8f97d8c9: 57457d93f156d8b4bdff8d138127d81b8f97d8c9
+  xe-2669-cbd747025a1ef985e1ebfa040aa0da4a5d77aacd: cbd747025a1ef985e1ebfa040aa0da4a5d77aacd
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12605/index.html
+
+--===============8879163425499462785==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_color: Disable CTM at the end of CTM tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144911/">https://patchwork.freedesktop.org/series/144911/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12605/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12605/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8230_BAT -&gt; XEIGTPW_12605_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8230 -&gt; IGTPW_12605</li>
+<li>Linux: xe-2665-57457d93f156d8b4bdff8d138127d81b8f97d8c9 -&gt; xe-2669-cbd747025a1ef985e1ebfa040aa0da4a5d77aacd</li>
+</ul>
+<p>IGTPW_12605: 958298e5eaff0eaeb07c632b08acf4cbb191e84e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8230: 8230<br />
+  xe-2665-57457d93f156d8b4bdff8d138127d81b8f97d8c9: 57457d93f156d8b4bdff8d138127d81b8f97d8c9<br />
+  xe-2669-cbd747025a1ef985e1ebfa040aa0da4a5d77aacd: cbd747025a1ef985e1ebfa040aa0da4a5d77aacd</p>
+
+</body>
+</html>
+
+--===============8879163425499462785==--
