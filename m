@@ -4,58 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A801C021A9
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Feb 2025 14:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D20B6C021AA
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Feb 2025 14:36:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9CD8D10E4F0;
-	Mon, 17 Feb 2025 14:20:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F06A10E31D;
+	Mon, 17 Feb 2025 14:36:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cnBIGqzB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F+BtF9IB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA85F10E4F0
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2025 14:20:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 295B410E31D
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2025 14:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739802032; x=1771338032;
+ t=1739802977; x=1771338977;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=uI5UmrsO4j73ie17NfDHVM8nhboFEsVV6CQn+9lb3jE=;
- b=cnBIGqzBLu86vOFvS56Rncl95SmjA8T/NcqwCeqqmtkrr9d3rRuUUnp7
- ZpqRyJBj5MLh7aUxjBXZka36LjL1oby0paKenwyfeNQfh9crWpyVqGV6H
- j26AaCdEdWKLjgWONT+PActvAPKjOn1BMGBrWjiS4hhiybwX/f/Wfr+W+
- aVHKOAZuYjxAu1958dNarfPis+HNGGfUqYwSgnffm1px+ofnHu/f8Ev+S
- FUcKoooRoegUjqohwS0NturW/OcA2pcSHkC+RnKt65+m/1bhV2TwmEX5E
- 3rt1EKBq0kU2qvRcGP8H3G+IglbCg3SLSqHAMtUwv4BQpFMjgjEEYJrGQ w==;
-X-CSE-ConnectionGUID: lK46XlslTTqd69K9eTWybA==
-X-CSE-MsgGUID: MKv3FAHNTP+foF8igNo7Tw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51892833"
-X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; d="scan'208";a="51892833"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 06:20:31 -0800
-X-CSE-ConnectionGUID: bJz6Id3ZTgCfyHw4cRkn7A==
-X-CSE-MsgGUID: tjgCQNcaQyWT9G1PfhFbaw==
+ mime-version:in-reply-to;
+ bh=zPaFWmod4CYCehbYWWveyHLe42JZVnhLJivOmgHOgk0=;
+ b=F+BtF9IBxekxGhasxFZbLw3b9vrli3BC640boqg6BM0aPHtEHt7U8U4g
+ b4ldv7+MaBYjsss6N0cGptUqQPUuf95uHuppzhfkyLeFQ2GFl85yGq167
+ 5XcqH9kyKT6/OrKvC+WYL1qJd15GJ3I4zxFEmJbsayPDyFBfWpna0TvAu
+ sTD+q6MdY/5171YXGyNb1E+snEmE/Mp5x8eEu1mp3MoEWyiImXYdUjgCp
+ louf/8XZDYQl7BySzyES1vP/+AXVbNLcQ8C0F2ye6IYlaXguFS2d9uY4y
+ Zhj10PxKDe8+P3WsvZ61AzEKGV0o+i4/x6in+QKZgh80MqFVvZHmufLi2 A==;
+X-CSE-ConnectionGUID: Pu+ZR2bNQau5nB2g6LuoTg==
+X-CSE-MsgGUID: SP/3odssQMS3XvWlytA1PA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51912624"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="51912624"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2025 06:36:16 -0800
+X-CSE-ConnectionGUID: um27jbqFQoWdd1bmUOxP+w==
+X-CSE-MsgGUID: 0FA86YJJTA2xjPJrYpBTAw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118268478"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="137377735"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 06:20:30 -0800
-Date: Mon, 17 Feb 2025 15:20:27 +0100
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 06:36:14 -0800
+Date: Mon, 17 Feb 2025 15:36:12 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, matthew.d.roper@intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/xe_multi_tile: Multi-Tile support in IGT
-Message-ID: <20250217142027.vstw3rm6w5yndqy2@kamilkon-desk.igk.intel.com>
+To: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Laguna@freedesktop.org, Lukasz <lukasz.laguna@intel.com>,
+ Wajdeczko@freedesktop.org, Michal <Michal.Wajdeczko@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/xe_eudebug.c: Add subtests for
+ eudebug/SR-IOV exlusion
+Message-ID: <20250217143612.7wyvfw7ys3jm47th@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- matthew.d.roper@intel.com
-References: <20250215011155.196896-1-nishit.sharma@intel.com>
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Laguna@freedesktop.org, Lukasz <lukasz.laguna@intel.com>,
+ Wajdeczko@freedesktop.org, Michal <Michal.Wajdeczko@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>
+References: <20250214124643.20908-1-christoph.manszewski@intel.com>
+ <20250214124643.20908-3-christoph.manszewski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250215011155.196896-1-nishit.sharma@intel.com>
+In-Reply-To: <20250214124643.20908-3-christoph.manszewski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,58 +84,189 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi nishit.sharma,
-On 2025-02-15 at 01:11:55 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Christoph,
+On 2025-02-14 at 13:46:43 +0100, Christoph Manszewski wrote:
 
-only few nits, first please keep description to 65 columns
-(or max 80).
+please remove file suffix from subject, also fix typo:
 
+tests/xe_eudebug: Add subtests for eudebug/SR-IOV exclusion
+
+More nits below.
+
+> Eudebug is not supported in PF mode with VFs enabled and in VF mode.
+> Provide subtests to ensure that:
+>   1. enabling eudebug is not permitted in PF mode with VFs enabled
+>   2. eudebug sysfs toggle is not available in VF mode
+>   3. enabling VFs is not permitted when eudebug is enabled
 > 
-> Added functionality to check Multi-Tile available in system or not. Belonging to each Tile%d
-> GT%d gathered. Checked GT%d belongs to which tile%d in multi-tile/single-tile platforms.
-> Added functionality to check if any tile%d not provided by driver or missed.
-> E.g.tile available in platforms in order tile0, tile1...tileX in serial order, If
-> tile1 tile2 tile4...tileX populated than will get Warning tile3 not available.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 > ---
->  include/drm-uapi/xe_drm.h   | 169 ++++++++++++--
-
-Change for drm-uapi should go in separate patch, see git log.
-
->  lib/igt_sysfs.c             |   3 +-
->  lib/xe/xe_query.h           |  50 ++++-
->  tests/intel/xe_multi_tile.c | 432 ++++++++++++++++++++++++++++++++++++
->  tests/meson.build           |   1 +
->  5 files changed, 620 insertions(+), 35 deletions(-)
->  create mode 100644 tests/intel/xe_multi_tile.c
+>  tests/intel/xe_eudebug.c | 123 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 123 insertions(+)
 > 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 56163eb91..8b0869ce2 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -3,8 +3,8 @@
->   * Copyright © 2023 Intel Corporation
->   */
+> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+> index 76870805c..c2f32c03b 100644
+> --- a/tests/intel/xe_eudebug.c
+> +++ b/tests/intel/xe_eudebug.c
+> @@ -20,7 +20,9 @@
+>  #include <sys/prctl.h>
 >  
-> -#ifndef _XE_DRM_H_
-> -#define _XE_DRM_H_
-> +#ifndef _UAPI_XE_DRM_H_
-> +#define _UAPI_XE_DRM_H_
+>  #include "igt.h"
+> +#include "igt_sysfs.h"
+>  #include "intel_pat.h"
+> +#include "lib/igt_sriov_device.h"
+>  #include "lib/igt_syncobj.h"
+>  #include "xe/xe_eudebug.h"
+>  #include "xe/xe_ioctl.h"
+> @@ -2710,12 +2712,133 @@ static void test_basic_exec_queues_enable(int fd)
+>  	xe_vm_destroy(fd, vm_non_lr);
+>  }
+>  
+> +static bool has_enable_eudebug_attr(int pf_fd, unsigned int vf_num)
+> +{
+> +	char path[PATH_MAX];
+> +	int sysfs;
+> +	bool ret;
+> +
+> +	igt_assert(vf_num > 0);
+> +
+> +	sysfs = igt_sysfs_open(pf_fd);
+> +	igt_assert_fd(sysfs);
+> +	/* vf_num is 1-based, but virtfn is 0-based */
+> +	snprintf(path, sizeof(path), "device/virtfn%u/enable_eudebug", vf_num - 1);
+> +	ret = igt_sysfs_has_attr(sysfs, path);
+> +	close(sysfs);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * SUBTEST: deny-eudebug
+> + * Description:
+> + *	Check that eudebug toggle is not available for VFs, and that enabling
+> + *	eudebug with VFs enabled is not permitted.
+> + */
+> +static void test_deny_eudebug(int pf_fd)
+> +{
+> +	unsigned int num_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +	bool eudebug_enable = true;
+> +	bool err = false;
+> +	int ret = 0;
+> +
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	igt_sriov_enable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
+> +
+> +	for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
+> +		if (!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num)) {
+> +			igt_debug("VF%u probe failed\n", vf_num);
+> +			err = true;
+> +		} else if (has_enable_eudebug_attr(pf_fd, vf_num)) {
+> +			igt_debug("VF%u has enable_eudebug attribute\n", vf_num);
+> +			err = true;
+> +		}
+> +	}
+> +
+> +	if (err) {
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +		igt_fail_on(err);
+> +	}
+> +
+> +	ret = __xe_eudebug_enable_getset(pf_fd, NULL, &eudebug_enable);
+> +	igt_assert_eq(ret, -1);
+> +	igt_assert_eq(errno, EPERM);
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +	igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +}
+> +
+> +/**
+> + * SUBTEST: deny-sriov
+> + * Description:
+> + *	Check that VFs cannot be enabled when eudebug is enabled.
+> + */
+> +static void test_deny_sriov(int pf_fd)
+> +{
+> +	unsigned int num_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +	bool ret = false;
+> +	int sysfs = 0;
+> +
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	sysfs = igt_sysfs_open(pf_fd);
+> +	igt_assert_fd(sysfs);
+> +
+> +	ret = __igt_sysfs_set_u32(sysfs, "device/sriov_numvfs", num_vfs);
+> +	close(sysfs);
+> +
+> +	if (!ret) {
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +	}
+> +	igt_assert_eq(ret, false);
+> +	igt_assert_eq(errno, EPERM);
+> +}
+> +
+>  igt_main
+>  {
+>  	bool was_enabled;
+>  	bool *multigpu_was_enabled;
+>  	int fd, gpu_count;
+>  
+> +	/* sriov exclusivity */
+> +	igt_subtest_group {
+> +		igt_fixture {
+> +			fd = drm_open_driver(DRIVER_XE);
+> +			igt_require(igt_sriov_is_pf(fd));
+> +			igt_require(igt_sriov_vfs_supported(fd));
+> +			igt_require(igt_sriov_get_enabled_vfs(fd) == 0);
 
-This shouldn't change, see README.md about how to bring uapi
-changes into igt.
+Move all these igt_require into each subtest which needs them.
+
+> +		}
+> +
+> +		igt_subtest("deny-eudebug") {
+> +			bool vf_autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
+> +
+> +			was_enabled = xe_eudebug_enable(fd, false);
+> +			test_deny_eudebug(fd);
+> +			xe_eudebug_enable(fd, was_enabled);
+
+This will not run if test_deny_eudebug() will trigger igt_assert.
+
+> +
+> +			vf_autoprobe ? igt_sriov_enable_driver_autoprobe(fd) :
+> +				       igt_sriov_disable_driver_autoprobe(fd);
+> +			igt_abort_on_f(vf_autoprobe != igt_sriov_is_driver_autoprobe_enabled(fd),
+> +				       "Failed to restore sriov_drivers_autoprobe value\n");
+> +		}
+> +
+> +		igt_subtest("deny-sriov") {
+> +			was_enabled = xe_eudebug_enable(fd, true);
+> +			test_deny_sriov(fd);
+> +			xe_eudebug_enable(fd, was_enabled);
+
+This will not run if test_deny_sriov() will trigger igt_assert.
+
+> +		}
+> +
+> +		igt_fixture {
+> +			close(fd);
+
+Why closing when just below you will open it?
 
 Regards,
 Kamil
 
->  
->  #include "drm.h"
->  
-> @@ -118,6 +118,12 @@ extern "C" {
->  #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
->  #define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
->  
-[...cut...]
-
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+>  		was_enabled = xe_eudebug_enable(fd, true);
+> -- 
+> 2.34.1
+> 
