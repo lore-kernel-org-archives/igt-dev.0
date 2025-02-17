@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4426CC0219E
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Feb 2025 10:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8849C0219E
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Feb 2025 10:59:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D880710E0FA;
-	Mon, 17 Feb 2025 10:42:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FAD010E1C1;
+	Mon, 17 Feb 2025 10:59:53 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36A4E10E0FA;
- Mon, 17 Feb 2025 10:42:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EF2C10E1C1;
+ Mon, 17 Feb 2025 10:59:52 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3582133352978901857=="
+ boundary="===============0967974136449331053=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_add_test_to_validate_uhbr/n?=
- =?utf-8?q?on-uhbr_over_sst/mst_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_PTL_support_for_compute?=
+ =?utf-8?q?_preempt?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
+To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Feb 2025 10:42:46 -0000
-Message-ID: <173978896621.3229869.17615332197465146707@b555e5b46a47>
+Date: Mon, 17 Feb 2025 10:59:52 -0000
+Message-ID: <173978999225.3234429.17214815851428464751@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250217064239.2019316-1-kunal1.joshi@intel.com>
-In-Reply-To: <20250217064239.2019316-1-kunal1.joshi@intel.com>
+References: <20250217081854.3219791-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20250217081854.3219791-1-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3582133352978901857==
+--===============0967974136449331053==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: add test to validate uhbr/non-uhbr over sst/mst (rev4)
-URL   : https://patchwork.freedesktop.org/series/143039/
+Series: Add PTL support for compute preempt
+URL   : https://patchwork.freedesktop.org/series/144939/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8232_BAT -> XEIGTPW_12610_BAT
+CI Bug Log - changes from XEIGT_8232_BAT -> XEIGTPW_12612_BAT
 ====================================================
 
 Summary
@@ -71,29 +71,56 @@ Participating hosts (8 -> 8)
 
   No changes in participating hosts
 
+Known issues
+------------
 
-Changes
--------
+  Here are the changes found in XEIGTPW_12612_BAT that come from known issues:
 
-  No changes found
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind:
+    - bat-adlp-vf:        [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3970])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8232/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][3] -> [SKIP][4] ([Intel XE#4322]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8232/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#4322])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8232/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#4322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8232 -> IGTPW_12610
+  * IGT: IGT_8232 -> IGTPW_12612
   * Linux: xe-2673-6a9d2dbb5b88b9e6bf74aa2934f5280ca4a6f934 -> xe-2674-297dc497ff4e957b8a82d4d9f67631e322bdd2a5
 
-  IGTPW_12610: 7b1e4a024a748973cbc330f1d86abbd899fcb60e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12612: 538f049b1f6f4349c518d838a7bb852742c5a54f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8232: 8232
   xe-2673-6a9d2dbb5b88b9e6bf74aa2934f5280ca4a6f934: 6a9d2dbb5b88b9e6bf74aa2934f5280ca4a6f934
   xe-2674-297dc497ff4e957b8a82d4d9f67631e322bdd2a5: 297dc497ff4e957b8a82d4d9f67631e322bdd2a5
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12610/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/index.html
 
---===============3582133352978901857==
+--===============0967974136449331053==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,29 +140,52 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>add test to validate uhbr/non-uhbr over sst/mst (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143039/">https://patchwork.freedesktop.org/series/143039/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Add PTL support for compute preempt</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144939/">https://patchwork.freedesktop.org/series/144939/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12610/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12610/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8232_BAT -&gt; XEIGTPW_12610_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8232_BAT -&gt; XEIGTPW_12612_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (8 -&gt; 8)</h2>
 <p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12612_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8232/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8232/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8232/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12612/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>)</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8232 -&gt; IGTPW_12610</li>
+<li>IGT: IGT_8232 -&gt; IGTPW_12612</li>
 <li>Linux: xe-2673-6a9d2dbb5b88b9e6bf74aa2934f5280ca4a6f934 -&gt; xe-2674-297dc497ff4e957b8a82d4d9f67631e322bdd2a5</li>
 </ul>
-<p>IGTPW_12610: 7b1e4a024a748973cbc330f1d86abbd899fcb60e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_12612: 538f049b1f6f4349c518d838a7bb852742c5a54f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8232: 8232<br />
   xe-2673-6a9d2dbb5b88b9e6bf74aa2934f5280ca4a6f934: 6a9d2dbb5b88b9e6bf74aa2934f5280ca4a6f934<br />
   xe-2674-297dc497ff4e957b8a82d4d9f67631e322bdd2a5: 297dc497ff4e957b8a82d4d9f67631e322bdd2a5</p>
@@ -143,4 +193,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============3582133352978901857==--
+--===============0967974136449331053==--
