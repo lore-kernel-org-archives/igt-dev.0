@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2EB8C021B2
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0843BC021B3
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:32:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5265510E7CD;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DE5910E7D0;
 	Wed, 19 Feb 2025 09:32:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Fxx2MngQ";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="iqXdHurE";
 	dkim-atps=neutral
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
- [209.85.128.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD80110E3F4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:17 +0000 (UTC)
-Received: by mail-wm1-f44.google.com with SMTP id
- 5b1f17b1804b1-4394a823036so59857375e9.0
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:17 -0800 (PST)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+ [209.85.221.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4888D10E3F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:46 +0000 (UTC)
+Received: by mail-wr1-f47.google.com with SMTP id
+ ffacd0b85a97d-38f488f3161so1080573f8f.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739897416; x=1740502216; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1739897444; x=1740502244; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9wxKl9WTs10ezejb03qy5pDbX6Xecn2j5Jd2KLjCtrg=;
- b=Fxx2MngQD2G6n1CoVgablUxyZh7rY/uhQzoEw7nORdhCMHy02yWKAxcReuRxBNyIZX
- 0LM9VdGZWok0DXLYn5/D0S/j3GK+pM/id+ejzfa5XnxddGopgDQzZW4Zz4u8mrX07Upi
- 2Y2aX7+LP01Er8TKFzMyO2ZgGYLSSZIkjBqyMyO22SuDOc/r8hxY2GPyDi3H7ipBd9I2
- /i+wCYo7Xn6CglrV6umZHlBLpZ1HA6fTPB3XZtfaHELXCUMWKppxwQUhIKUVlWtAZ9Qp
- yoEyruKuWWee44TohdIn0BQc6WIHkxrfemWGYaP/hcszenL0xhgnhQNb05uDOTe/LaBl
- jdnw==
+ bh=4EZXHMbWsyyxpaxn/UFT7mjSxTphODTVukYNphnQzic=;
+ b=iqXdHurEMdQPisxP6v6TREtKj/JDUkfeP2LBlF8tHx2h0I/obxjlpl5HJte8qQr3Y4
+ qsy6jbeS9xIQr+texG8+LbzB+qsitTafE9dzjO4ngMENwMSF4uZ8SiEnVCMl45bAEf2b
+ k5cCqEgGv//u3nZ7YjI9+1t3CS4xfuFFvQjPBVsJf/HxlA0U06Du8f5ABsoPF/hJih09
+ pRmkkt54MG0I43d0b5f564B0GWFOPVUdJPZw4b6JBCmc3k0qWi3E2pNVbay/B8HesJ/c
+ QmqhWbAf/iSLexqrbnU2rWNf4WDmPZ8vgAcAyBMheiOOAHbdHTIMlpeHbCae6wabzBna
+ bLxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739897416; x=1740502216;
+ d=1e100.net; s=20230601; t=1739897444; x=1740502244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9wxKl9WTs10ezejb03qy5pDbX6Xecn2j5Jd2KLjCtrg=;
- b=j5u1j8GaCDJeRqYMnjU283U8hNN7hmCupBI6PyeJ07NreQUFYREoCmwFcMyAAaQ1Uj
- 6folK22qSkHxOtJ20SxDc6UdBPo6A1qC7+Vis9/v4Agcgb9XwQmrJduhUeUgP9T9LNA3
- i8OSBmB2XV+2jD0NzBnE0drKMG0zOmgYfbvpXOIK7tba0vZVZQL2U2oENh1MA9/EW3/h
- qpj9Va3b+tS/fgRiL+ZA362Oz1cgstrq0ToNFC78m7kVFPYVaPhz4YhCrKE7a0Vaqp1T
- GNS3Ys1KBm3jvELZzaQ5kkIGiKJ9X2pdZAM4jij90BRzlg9aHfcGvbKf+x++TUO4EbA8
- w3og==
-X-Gm-Message-State: AOJu0YxDaSwCJmV1XYMvbhSvNBT6/QDWggr7rYUcj17YeRKT5ZhbNvMG
- 3gj207oprpx3BzShfdWlQ/nqqR1cL7jIVxFLCVshGGn9tNgtr8mqrempCS6f
-X-Gm-Gg: ASbGncszfatDaaponKibLNttXe3VVOFM78YAgaF1RI6GzoSawMP0lcztgaBCC5PeCz8
- Ja6jFRoJldlNvv0byZ8jUeZY2W49xEb3jDjWt/Zqz2JytjUB7RmRqwr7Oe7bXiNwhS/xuv0wt7m
- LtQdDg1XM033apxtEdGXPz24XIQ5XvlsfQG8nHJx93RyuqtmYBLqjGhuR5KrXCpPGF3EkQAub+C
- Ua+tenWQ0o+Wty/JbPWztxn+m2W4pwvyt/+ItTkJJgDitrTNu/3r5qnnA7l8YkOTbQcmebKOyOt
- Sf9Wq8u05m8XzkArKQ==
-X-Google-Smtp-Source: AGHT+IFpR34/EJT87xBSlbnf4AKTiFCmbVRNhA8JNhvoD0PlHYw7E+zgiiBmFHj327VoV/OofeXaHw==
-X-Received: by 2002:a05:6000:188c:b0:38d:b6a9:2cd2 with SMTP id
- ffacd0b85a97d-38f3407371emr15723441f8f.46.1739897415646; 
- Tue, 18 Feb 2025 08:50:15 -0800 (PST)
+ bh=4EZXHMbWsyyxpaxn/UFT7mjSxTphODTVukYNphnQzic=;
+ b=vX9zlJ7fYjPGGXN9TlM/l1EKzjntwMopfEf6rRY/Oc5ZtygyAKgKc0F0U90G7y6ecT
+ tsoQ6+ZK2MPQf+qVJvKktBEyr93ISDp7c3hugNtMTnp+Cje+uI3slFQrMZ6U7lNh4TEs
+ /q4Y8QXWdv2XC7IceY91EGfmzCM0Y0OhJCUZWTwCL4Mfu0OrKMJDRZOyGidCqkBDm8U2
+ nIhN9P8lgv+Bavxxv0gktK5KiRSFz9xe9fPXMYJobgyPQ61QZ0J0oBplNwb5EBXr6/T0
+ 7jDxCPgG1KeJQUSSTgQGWjoYnvz83SmuHCkr22Ic3ol4IkiUS6v+fEMSNLQWqbp93C9q
+ 3b5A==
+X-Gm-Message-State: AOJu0YwS4wE7DUX2WSRwUkJgUoDIh+zte+VwVh/RaYU6RUiByOLn/urQ
+ dumjkxVTkMPZZdulavB7FEKloxXGNAFjdzP27wE7tXUSvsAxZLJMQFq79g4t
+X-Gm-Gg: ASbGnctA9YjxNAyfif4B/p2t3VXMJ8H37brBkN+0mXY19d1sZPN7jPPpT+ivjE0rc/x
+ 8UuQsgi/fILwPpK/OHWKkzW6IGosKLQpnjrVCG/kyQzizJaq2Ihxqkl49BBILtw/Pp0ECczQUeV
+ OSkCZ1zMRR9ffsCa3g57UzOT0mW4BH1DHqmYLFEF0CJUKcMT5MbcNuPxHCztbB8/p003NdJywWU
+ ub68WsffAHerOdIMnk307hqoCE09XcpTsWbaRIdIn5JRJdFszu46u0pl9l6X61USyDEyTi+qnEw
+ 4q4L8GXcVO1PPDHZ9A==
+X-Google-Smtp-Source: AGHT+IFepOijBvHCj1YBSPptkmT7nDz8CPgYH4T4Is+xUEqGGgnLgXf4xKUy5W8w9z5K2M4ASvr70g==
+X-Received: by 2002:a05:6000:1f87:b0:38f:3073:708 with SMTP id
+ ffacd0b85a97d-38f33f11888mr13595540f8f.3.1739897444432; 
+ Tue, 18 Feb 2025 08:50:44 -0800 (PST)
 Received: from fedora.. ([213.94.27.232]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.15
+ ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 08:50:15 -0800 (PST)
+ Tue, 18 Feb 2025 08:50:43 -0800 (PST)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
- =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
- Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
-Subject: [PATCH i-g-t 01/39] lib/drmtest: Add VKMS as a known driver type
-Date: Tue, 18 Feb 2025 17:49:33 +0100
-Message-ID: <20250218165011.9123-2-jose.exposito89@gmail.com>
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t 32/39] tests/vkms_configfs: Test adding a CRTC without
+ encoders
+Date: Tue, 18 Feb 2025 17:50:04 +0100
+Message-ID: <20250218165011.9123-33-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
@@ -88,78 +88,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As we are going to add VKMS specific tests, allow to check if it is
-available.
+Try to enable a VKMS device with a CRTC without encoders and test that
+it fails.
 
-Co-developed-by: Jim Shargo <jshargo@chromium.org>
-Signed-off-by: Jim Shargo <jshargo@chromium.org>
-Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
-Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/drmtest.c | 18 ++++++++++++++++++
- lib/drmtest.h |  8 ++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ tests/vkms/vkms_configfs.c | 51 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 436b6de78..2cc6e0c29 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -971,3 +971,21 @@ void igt_require_xe(int fd)
- {
- 	igt_require(is_xe_device(fd));
+diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+index 11ed6dbcb..e003e0ca0 100644
+--- a/tests/vkms/vkms_configfs.c
++++ b/tests/vkms/vkms_configfs.c
+@@ -1278,6 +1278,56 @@ static void test_enable_encoder_no_crtcs(void)
+ 	igt_vkms_device_destroy(dev);
  }
+ 
++/**
++ * SUBTEST: enable-crtc-no-encoder
++ * Description: Try to enable a VKMS device with a CRTC without encoders and
++ *              test that it fails.
++ */
 +
-+void igt_require_vkms(void)
++static void test_enable_crtc_no_encoder(void)
 +{
-+	/*
-+	 * Since VKMS can create and destroy virtual drivers at will, instead
-+	 * look to make sure the driver is installed.
-+	 */
-+	struct stat s = {};
-+	int ret;
-+	const char *vkms_module_dir = "/sys/module/vkms";
++	igt_vkms_t *dev;
 +
-+	ret = stat(vkms_module_dir, &s);
++	igt_vkms_config_t cfg = {
++		.device_name = __func__,
++		.planes = {
++			{
++				.name = "plane0",
++				.type = DRM_PLANE_TYPE_PRIMARY,
++				.possible_crtcs = { "crtc0" },
++			},
++			{
++				.name = "plane1",
++				.type = DRM_PLANE_TYPE_PRIMARY,
++				.possible_crtcs = { "crtc1" },
++			},
++		},
++		.crtcs = {
++			{ .name = "crtc0" },
++			{ .name = "crtc1" },
++		},
++		.encoders = {
++			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
++			{ .name = "encoder1", .possible_crtcs = { "crtc0" } },
++		},
++		.connectors = {
++			{
++				.name = "connector0",
++				.possible_encoders = { "encoder0", "encoder1" },
++			},
++		},
++	};
 +
-+	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
-+		      vkms_module_dir, ret, strerror(ret));
-+	igt_require_f(S_ISDIR(s.st_mode),
-+		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
++	dev = igt_vkms_device_create_from_config(&cfg);
++	igt_assert(dev);
++
++	igt_vkms_device_set_enabled(dev, true);
++	igt_assert(!igt_vkms_device_is_enabled(dev));
++	igt_assert(!device_exists(__func__));
++
++	igt_vkms_device_destroy(dev);
 +}
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 27e5a18e2..1b57e49ec 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -54,15 +54,18 @@ int __get_drm_device_name(int fd, char *name, int name_size);
- #define DRIVER_PANFROST	(1 << 5)
- #define DRIVER_MSM	(1 << 6)
- #define DRIVER_XE	(1 << 7)
--#define DRIVER_VMWGFX   (1 << 8)
-+#define DRIVER_VKMS	(1 << 8)
-+#define DRIVER_VMWGFX	(1 << 9)
++
+ igt_main
+ {
+ 	struct {
+@@ -1312,6 +1362,7 @@ igt_main
+ 		{ "enable-no-encoders", test_enable_no_encoders },
+ 		{ "enable-too-many-encoders", test_enable_too_many_encoders },
+ 		{ "enable-encoder-no-crtcs", test_enable_encoder_no_crtcs },
++		{ "enable-crtc-no-encoder", test_enable_crtc_no_encoder },
+ 	};
  
- /*
-  * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
-  * with vgem as well as a supported driver, you can end up with a
-  * near-100% skip rate if you don't explicitly specify the device,
-  * depending on device-load ordering.
-+ *
-+ * Exclude VKMS to prefer hardware drivers.
-  */
--#define DRIVER_ANY 	~(DRIVER_VGEM)
-+#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
- 
- /*
-  * Compile friendly enum for i915/xe.
-@@ -135,6 +138,7 @@ void igt_require_i915(int fd);
- void igt_require_nouveau(int fd);
- void igt_require_vc4(int fd);
- void igt_require_xe(int fd);
-+void igt_require_vkms(void);
- 
- bool is_amdgpu_device(int fd);
- bool is_i915_device(int fd);
+ 	igt_fixture {
 -- 
 2.48.1
 
