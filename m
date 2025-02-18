@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399D1C021AA
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 18:38:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41B10C021AF
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 18:40:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD5C510E06F;
-	Tue, 18 Feb 2025 18:38:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F36A510E737;
+	Tue, 18 Feb 2025 18:40:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bm+BF9wo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LKl/a0KC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73A0E10E06F
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 18:38:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4183010E737
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 18:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739903933; x=1771439933;
+ t=1739904036; x=1771440036;
  h=date:message-id:from:to:cc:subject:in-reply-to:
- references:mime-version;
- bh=k3FkTVAXTGzuPlWrEVT0T04ptU1M/y3M7p2YZ3MpAPo=;
- b=Bm+BF9woHrN7kkjO3nxWxiKe5ONTl4kXAIIf87F0a26Qz1WU/oQzumfO
- YvsunI6VLTx8X5z/DdogDF+C9PoDeza9RB26ahx7UYhU3yV2Ffrrq7l/y
- 50gttHqPbbgKsthtBkXRUj4E5waTJdRgX3oJHaE4eZpOZsCDL+wsfxMXa
- asEpuK7T/A0FxtjlP+OZXE/GopTrVd3tCtLHn3PfO607WgPhPGddg3xXe
- iFrg1kXIX7AXQ1F8Mhg0Wty5l+ZWNXKjw16aXVv/IHtAm5jJZWNROju9o
- /Hc7uc3t/atm2EJOCQuS4PJDC27VW8Os1Qqn0vvqq1IpHFOn1noX1fD3z A==;
-X-CSE-ConnectionGUID: Rl5ph6ZVTP64t7TKcZzeSQ==
-X-CSE-MsgGUID: Fy73igtWTySfe+cwApMLGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52045997"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="52045997"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 10:38:53 -0800
-X-CSE-ConnectionGUID: c/DGspW9Rn+pUUGoLhTpgA==
-X-CSE-MsgGUID: OZRtwbgNQSuhg7PaxId8Gg==
+ references:mime-version:content-transfer-encoding;
+ bh=z9DPGkPYGJvJaLxmdMngdgebQmgroIItBdSPkYW7zyI=;
+ b=LKl/a0KCLtAY+olPIXoDs3/KjtuWAvU6KsGAyyKmze1X9WJvIjYHMVMD
+ c9JQF1k6IafxvrgBJ+XZtnHZrJFRUtU2DCzQ4KFN5K6y3hyftbjjrNIET
+ 9jiQK5AZokbFDweH4VYfHJedsKmIuMzCgEaaM9Jf40ThrD5ZkLROUX7Nc
+ 2ACvIqGoNYOOY34JQknbQ00RAQ0lBBQbRuAmQR4vaEIVfrpYKOT7hJEcT
+ Ab+/ZY1YlaigP89vwpBRjXqswSBSh5nlhJWBaSRgGkoll77l+UjIPlt4F
+ IxfYEZH6WBzHI+t9PSEPLLwBGDPQO/yZYTIc8w+NnQka3RKvSsieM11JH Q==;
+X-CSE-ConnectionGUID: MahRfjXFTI+0erdyuc3kjA==
+X-CSE-MsgGUID: inkaUBPQRsehJmkQ14f6cg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="65972922"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="65972922"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 10:40:36 -0800
+X-CSE-ConnectionGUID: bUBdkkFqSjKQqiG3jf+Y6Q==
+X-CSE-MsgGUID: P4j5o7UvQKuGPn+wwlEYUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="114211800"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="114446447"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 10:38:53 -0800
-Date: Tue, 18 Feb 2025 10:38:52 -0800
-Message-ID: <85r03v14jn.wl-ashutosh.dixit@intel.com>
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 10:40:36 -0800
+Date: Tue, 18 Feb 2025 10:40:35 -0800
+Message-ID: <85pljf14gs.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 09/13] tests/intel/xe_oa: Test oa buffer sizes
-In-Reply-To: <85seob14qa.wl-ashutosh.dixit@intel.com>
+Subject: Re: =?UTF-8?B?4pyX?= Xe.CI.Full: failure for Some refactor, rewrite
+ and fixes for OA tests
+In-Reply-To: <Z7TTk8Raw5CxwwwD@orsosgc001>
 References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
- <20250215010628.1639986-10-umesh.nerlige.ramappa@intel.com>
- <85seob14qa.wl-ashutosh.dixit@intel.com>
+ <173969315217.2891932.116693029209058418@b555e5b46a47>
+ <Z7TTk8Raw5CxwwwD@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,111 +74,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 18 Feb 2025 10:34:53 -0800, Dixit, Ashutosh wrote:
+On Tue, 18 Feb 2025 10:38:11 -0800, Umesh Nerlige Ramappa wrote:
 >
-> On Fri, 14 Feb 2025 17:06:24 -0800, Umesh Nerlige Ramappa wrote:
+> Hi Ashutosh,
+> >  IGT changes
 > >
-> > Introduce oa buffer size test separately. Pick a random valid buffer
-> > size for the test.
+> >    Possible regressions
 > >
-> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> > ---
-> >  tests/intel/xe_oa.c | 30 ++++++++++++++++++++++++++++++
-> >  1 file changed, 30 insertions(+)
+> >     *=A0igt@kms_flip@2x-single-buffer-flip-vs-dpms-off-vs-modeset:
 > >
-> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index 03d223df4..ee87b7338 100644
-> > --- a/tests/intel/xe_oa.c
-> > +++ b/tests/intel/xe_oa.c
-> > @@ -93,6 +93,23 @@ struct accumulator {
-> >	uint64_t deltas[MAX_RAW_OA_COUNTERS];
-> >  };
+> >          *=A0shard-bmg: NOTRUN -> [3]DMESG-WARN
 > >
-> > +struct oa_buf_size {
-> > +	char name[12];
-> > +	uint32_t size;
-> > +} buf_sizes[] = {
-> > +	{ "128K", SZ_128K },
-> > +	{ "256K", SZ_256K },
-> > +	{ "512K", SZ_512K },
-> > +	{ "1M", SZ_1M },
-> > +	{ "2M", SZ_2M },
-> > +	{ "4M", SZ_4M },
-> > +	{ "8M", SZ_8M },
-> > +	{ "16M", SZ_16M },
-> > +	{ "32M", SZ_32M },
-> > +	{ "64M", SZ_64M },
-> > +	{ "128M", SZ_128M },
+> >     *=A0{igt@xe_oa@buffer-size} (NEW):
+> >
+> >          *=A0shard-dg2-set2: NOTRUN -> [4]SKIP
 >
-> Would you have the running time for these? Hopefully not too huge for the
-> large buffer sizes, even if we are running just one of them? And what about
-> slower platforms?
->
-> That was the reason we restricted OA buffer size to just 16 M.
->
-> This is what I measured here:
->
-> https://patchwork.freedesktop.org/patch/627269/?series=142128&rev=1
->
->	$ sudo ./build/tests/xe_oa --r oa-buffer-size
->	IGT-Version: 1.29-g724fd0b79 (x86_64) (Linux: 6.12.0-rc4+ x86_64)
->	Using IGT_SRANDOM=1733459091 for randomisation
->	Opened device: /dev/dri/card0
->	Starting subtest: oa-buffer-size
->	Starting dynamic subtest: 8MB
->	Dynamic subtest 8MB: SUCCESS (0.403s)
->	Starting dynamic subtest: 32MB
->	Dynamic subtest 32MB: SUCCESS (1.595s)
->	Starting dynamic subtest: 128MB
->	Dynamic subtest 128MB: SUCCESS (6.326s)
->	Subtest oa-buffer-size: SUCCESS (8.324s)
+> Should we enable OA tests for dg2 as well? Your call. If not, then this is
+> just an expected skip.
 
-Also iirc the 32 MB size kept failing because of the reason being zero HW
-bug:
-
-https://patchwork.freedesktop.org/patch/632685/?series=142128&rev=2
-
-
->
-> > +};
-> > +
-> >  /* OA unit types */
-> >  enum {
-> >	OAG,
-> > @@ -305,6 +322,7 @@ static struct intel_mmio_data mmio_data;
-> >  static igt_render_copyfunc_t render_copy;
-> >  static uint32_t rc_width, rc_height;
-> >  static uint32_t buffer_fill_size;
-> > +static uint32_t num_buf_sizes;
-> >
-> >  static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
-> >  {
-> > @@ -1094,6 +1112,7 @@ init_sys_info(void)
-> >	rc_width = 1920;
-> >	rc_height = 1080;
-> >	buffer_fill_size = SZ_16M;
-> > +	num_buf_sizes = ARRAY_SIZE(buf_sizes);
-> >	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
-> >
-> >	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
-> > @@ -4805,6 +4824,17 @@ igt_main
-> >		__for_one_hwe_in_oag(hwe)
-> >			test_buffer_fill(hwe);
-> >
-> > +	/**
-> > +	 * SUBTEST: buffer-size
-> > +	 * Description: Test various OA buffer sizes
-> > +	 */
-> > +	igt_subtest_with_dynamic("buffer-size") {
-> > +		long k = random() % num_buf_sizes;
-> > +
-> > +		__for_one_hwe_in_oag_w_arg(hwe, buf_sizes[k].name)
-> > +			test_non_zero_reason(hwe, buf_sizes[k].size);
-> > +	}
-> > +
-> >	igt_subtest_with_dynamic("non-zero-reason")
-> >		__for_one_hwe_in_oag(hwe)
-> >			test_non_zero_reason(hwe, 0);
-> > --
-> > 2.34.1
-> >
+Not till all tests are fixed and timing heuristics are gone. Don't want to
+deal with a bunch of Xe1 failures.
