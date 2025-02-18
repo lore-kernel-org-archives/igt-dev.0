@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7964CC021AA
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 17:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 936EAC021AA
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 17:28:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3344710E737;
-	Tue, 18 Feb 2025 17:25:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5113510E737;
+	Tue, 18 Feb 2025 17:28:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i2PVArHt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="euu/SPXx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0353D10E737
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 17:25:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C02310E737
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 17:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739899533; x=1771435533;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=yA6AQgtQQ3EikHoVfmQ1ENEnSoKxCHLQ4nl+NAP+Bmw=;
- b=i2PVArHtK2q5ZXfrWkK2x2R31HBUqOcesVxCj32GwCAMN5paHDKs0AlK
- Zhia3X3IsZ8+SHzSqrV+gY+fkH+zfGc63cOVvSFv6Lntcaoxd/B90HEBu
- TzpbnxzJkm3xBcJdnxCH/vdmibI81NQ0h5Sb1KXWYqTmgbqg/ACB4JCFe
- 3Tvigcob9COvVEVTrLLmkRxEa8a67sN/BSP8B41LPERr8nuZP0Q16C6bj
- PL6kHjh1ed8aV1uhDKHQf7huo8a8b+5DhVASKOOmps7HdBR2Td2WYaLag
- zPk06FQd8ou9q26ciR4KcCGh6NtgAyM8i3WNEYp5FOfPIDnfIR/vYs+tO A==;
-X-CSE-ConnectionGUID: Eu8oUsICTSeV3wh7qkEFkw==
-X-CSE-MsgGUID: jep3M9aZR2ucZYpCOjFojg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52038877"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="52038877"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 09:25:32 -0800
-X-CSE-ConnectionGUID: QdWWVLEITVm2xvA07pOnOw==
-X-CSE-MsgGUID: BCq6SA/1SceMdn/j+FS4SQ==
+ t=1739899697; x=1771435697;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=600ZaP/1QUGWJCY8nDFWx9sPTkJ+rJIpSIRZsGMTONw=;
+ b=euu/SPXx94SjmOiHIth/vwsFSLKoQNI/jqjQHer6a11VvRQX8jneYNaK
+ x88NgCj7Eop4hVtYur2MeHtoYhBiSiu+RBC4JhrggjuTooJ4XZOhAMRbP
+ EqXWgkyhvNrzTe7MuuWQNzyoGQVbY/4Pib72zqtpcr60XEFoZbQbqEN6c
+ pNZDMPyZ2g7eYwA0L9JGR19Bm0RTeWmLga8lxebRl06zAIRp2TJVI6eOr
+ VBXPDNTSf009e8JT7uJXcbZBoL3248BYxBZ/1V4O6x6PbX7YMiXRkF8/L
+ f6f4ptE1sVaZbPqHZ/I0XqjO+hHPLoj0bGKG3KpGHLTxfUSZYk/qbI6QJ w==;
+X-CSE-ConnectionGUID: OWU5eS/DQkGpDEsh3Mvr7g==
+X-CSE-MsgGUID: SVEG6m0lSaWwUHQQ0c+Dgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40748005"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="40748005"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 09:28:16 -0800
+X-CSE-ConnectionGUID: Vm0x4LQUTreV82pAxtJyAA==
+X-CSE-MsgGUID: N5Li2OPeQy+KRMmayuz6jQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="114929403"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 09:25:31 -0800
-Date: Tue, 18 Feb 2025 18:25:28 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tools/intel_reg: Add --pci-slot option
-Message-ID: <20250218172528.5lfrkvfsqji42ayg@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250131213733.142894-1-kamil.konieczny@linux.intel.com>
- <xc6requiewswst7w4vpl5beezwwotlqqrg4efy34ynvyexk6jk@bqndrc7rgmla>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <xc6requiewswst7w4vpl5beezwwotlqqrg4efy34ynvyexk6jk@bqndrc7rgmla>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="114319639"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 09:28:17 -0800
+Date: Tue, 18 Feb 2025 09:28:16 -0800
+Message-ID: <85v7t717tb.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH 01/13] tests/intel/xe_oa: Use static for global variables
+In-Reply-To: <20250215010628.1639986-2-umesh.nerlige.ramappa@intel.com>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
+ <20250215010628.1639986-2-umesh.nerlige.ramappa@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,119 +71,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2025-02-12 at 13:40:15 +0000, Krzysztof Karas wrote:
-> Hi Kamil,
-> 
-> [...]
-> >  	printf(" --all          Decode registers for all known platforms. Implies --decode\n");
-> > +	printf(" --pci-slot     Decode registers for platform described by PCI slot\n"
-> > +	       "		<domain>:<bus>:<device>[.<func>]\n");
-> You could include information that if PCI slot is not provided,
-> then the first matching Intel device (starting with 0000:00:02.0)
-> will be chosen.
-> 
+On Fri, 14 Feb 2025 17:06:16 -0800, Umesh Nerlige Ramappa wrote:
+>
+> Use static for mmio_data and hwe.
+>
 
-If user will not provide any input for slot she/he can just
-use it without this option and this is already a default
-behaviour but I agree, it could be clarified so I will add it.
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-Btw all options are optional (see printed help).
-
-> [...]
-> > +static int parse_pci_slot_name(struct igt_pci_slot *st, const char *slot_name)
-> > +{
-> > +	int i;
-> > +
-> > +	st->domain = 0;
-> > +	st->bus = 0;
-> > +	st->dev = 0;
-> > +	st->func = 0;
-> If you zeroed bdf: struct igt_pci_slot bdf = {}; before calling
-> parse_pci_slot_name(), then it could become:
-> 
-> return sscanf(slot_name, "%x:%x:%x.%x", &st->domain, &st->bus, &st->dev, &st->func);
-> 
-
-Right, will change.
-
-> > +	i = sscanf(slot_name, "%x:%x:%x.%x", &st->domain, &st->bus, &st->dev, &st->func);
-> > +
-> > +	return i;
-> > +}
-> > +
-> > +static bool is_graphics_card_valid(struct pci_device *pci_dev)
-> > +{
-> > +	if (!pci_dev) {
-> > +		fprintf(stderr, "Graphics card not found\n");
-> > +		return false;
-> > +	}
-> > +	if (pci_device_probe(pci_dev) != 0) {
-> > +		fprintf(stderr, "Couldn't probe graphics card\n");
-> > +		return false;
-> > +	}
-> > +	if (pci_dev->vendor_id != 0x8086) {
-> > +		fprintf(stderr, "Graphics card is non-intel\n");
-> > +		return false;
-> > +	}
-> > +	return true;
-> > +}
-> This function checks whether a pci_dev can be found, probed and
-> has Intel as vendor - there technically is no information about
-> this device being a GPU. You could change the name to something
-> like: "is_pci_device_valid" (unless there is a way to determine
-> a device is a GPU, then that addition would be better).
-> 
-> [...]
-
-Right, I will change this into is_intel_card_valid()
-and also improve error prints plus style (newlines after
-closing brackets).
-
-> >  int main(int argc, char *argv[])
-> >  {
-> > -	int ret, i, index;
-> > +	int i, index;
-> >  	char *endp;
-> > +	char *opt_slot = NULL;
-> >  	enum opt opt;
-> >  	const struct command *command = NULL;
-> >  	struct config config = {
-> > @@ -1191,6 +1264,7 @@ int main(int argc, char *argv[])
-> >  		.fd = -1,
-> >  	};
-> >  	bool help = false;
-> > +	int ret = EXIT_FAILURE;
-> this ret variable is not used up till ret = command->function(),
-> so I don't think there is a benefit to adding a certain error
-> code to it, unless you'd change all "return EXIT_FAILURE;"
-> to "return ret;".
-> 
-> [...]
-> > -	if (read_reg_spec(&config) < 0)
-> > -		return EXIT_FAILURE;
-> > -
-> > -	ret = command->function(&config, argc, argv);
-> > +	if (read_reg_spec(&config) >= 0)
-> > +		ret = command->function(&config, argc, argv);
-> This is unrelated to adding "--pci-slot" - it could be placed in
-> a separate patch or mentioned in commit message as a cleanup.
-
-Ah, good catch, I should resist unneeded refactoring, I will
-revert this so no big changes here.
-
-> 
-> I also noticed that the intel_reg program is not very resistant
-> to user misinput: if you attempt to use "read" option with
-> a device that does not have a certain register, then the program
-> crashes with assestion failures.
-> 
-> Best regards,
-> Krzysztof
-
-Please provide example(s) how did you run it so I could
-reproduce it.
-
-Regards,
-Kamil
-
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  tests/intel/xe_oa.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 0242fd594..3274d472d 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -296,12 +296,12 @@ static int pm_fd = -1;
+>  static int stream_fd = -1;
+>  static uint32_t devid;
+>
+> -struct drm_xe_engine_class_instance default_hwe;
+> +static struct drm_xe_engine_class_instance default_hwe;
+>
+>  static struct intel_xe_perf *intel_xe_perf;
+>  static uint64_t oa_exp_1_millisec;
+>  static size_t default_oa_buffer_size;
+> -struct intel_mmio_data mmio_data;
+> +static struct intel_mmio_data mmio_data;
+>  static igt_render_copyfunc_t render_copy;
+>
+>  static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
+> --
+> 2.34.1
+>
