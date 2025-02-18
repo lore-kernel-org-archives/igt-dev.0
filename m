@@ -4,58 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE81C021B1
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 18:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7493AC021AA
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 18:33:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 51D2710E06F;
-	Tue, 18 Feb 2025 18:21:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27C3410E06F;
+	Tue, 18 Feb 2025 18:33:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FUiUGf8K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZRyV3xVi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (unknown [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C53510E06F
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 18:21:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C39F510E06F
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 18:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739902894; x=1771438894;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=aidBXKmYFuqxCBi24zTx+7H5/N7veTjVCOKu44dSiWA=;
- b=FUiUGf8KzUscS0anDxYaKBZFi5XU6Mjfy7M9DaCd8d2GiiwS+KGPplgB
- 1Bb3HS1T8/8yFBn97FB9MIRhs3NwXsnFW/EkPMbH6OiWI0XUHpEtRcJjJ
- 7l0SicoP4hHE12z+XjmfvusDlBkh73AE/wfNHBlPMHeW5QWZr0R7ij1mv
- eWY7sfBrIGvmdX32hvEx16o3GYbqalY6JKT0gIMP9QeEKZzCCqPHS4rQC
- P26afyUxasEWzwfh1OUVg0+p922yaupfWZ5L7sgiO5P0e1ygnHdcUXwhG
- FT57+reygwTw7uXHKhAJMt8gIyrGbDYg0331UBktvjIqQinZsv2HJtaK4 Q==;
-X-CSE-ConnectionGUID: lhNbLVDfRqu9UBCMxpX5mw==
-X-CSE-MsgGUID: IG+16dIaS1i3rpP3rP45HA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40823140"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="40823140"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 10:21:33 -0800
-X-CSE-ConnectionGUID: bByCP7TbQ/6keqUl+gfC7A==
-X-CSE-MsgGUID: FfS3pdbLRqOUJP5wyca8VA==
+ t=1739903584; x=1771439584;
+ h=date:from:to:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=fbo4WMv4nw82auQVh5cfucJIT92mCy3bNXnoql+EmxE=;
+ b=ZRyV3xVie7313mciw7cLppSPuMShRxJUUZhlOhhrTI5bfIUscHYWcThy
+ fd/+VPwaJWkQrvMBBbRqpi/R2qd4+KFNWo/ZE53EsXz2WlZf1rUIFGGGQ
+ eE7XdSlhnbcz3eIqzm4h/DsFYs5SAdsDfT06b91xdGZr/Fu8QO3TObm5b
+ CdVobkkuI8NA5eD8RvDgWrqTU7cl5dShv1zgEg/RLf0OvTpXoQ0aEoqbe
+ DybEDO67NfbgUgSXMyopakKdvbAVWtuXuQh/ChxGCUx70O7jpCHYDg71I
+ 6gVYigf7TLHUO+/t/Q6nVTqDGY2m7OhY3rCP74Y4raVt3kLXdyeIuk48M A==;
+X-CSE-ConnectionGUID: jKNIULvOQPCDD/XQznFmRA==
+X-CSE-MsgGUID: yV9bNfgYTL24XvHhfhmhWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40538680"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="40538680"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 10:33:03 -0800
+X-CSE-ConnectionGUID: sVFLcLpKS5mX7PFm3bUJKg==
+X-CSE-MsgGUID: PaUYKo3dQMGmchh61s9uiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="145371700"
-Received: from hchegond-ivm1.jf.intel.com ([10.165.21.208])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 10:21:33 -0800
-From: Harish Chegondi <harish.chegondi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ashutosh.dixit@intel.com, james.ausmus@intel.com,
- felix.j.degrood@intel.com, shubham.kumar@intel.com,
- kamil.konieczny@linux.intel.com,
- Harish Chegondi <harish.chegondi@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_eu_stall: Add tests for EU stall
- sampling
-Date: Tue, 18 Feb 2025 10:21:27 -0800
-Message-ID: <97b6c6425406e966c8831aec0d26ef6d53c8b4dd.1739901972.git.harish.chegondi@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1739901972.git.harish.chegondi@intel.com>
-References: <cover.1739901972.git.harish.chegondi@intel.com>
-MIME-Version: 1.0
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="114657227"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 10:33:03 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Tue, 18 Feb 2025 10:33:02 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Tue, 18 Feb 2025 10:33:02 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.43) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 18 Feb 2025 10:33:01 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XnT2TX8jjWnD0VMpc0R6n1cAxyJTnQiXqAzWbJjS3io2qlM9IjPXC2/UDFD3ICrxVOO86fPBnfqExCDAHeJdD8j/VWSGhpNMT4+AlYNSOWxN6j+lj0iJnl8rtvB+Ay5DOrkGslheKACI7te/Ew0ov6Ief+xofn0SD9PfyCzAxeA7Jdiqii39Te3lYFLCg1IQCvyxfcDlsKvWO4YrGY+CJeodL4mpvuwsE92TruGZ1UefSngoCMTFon4tD3r29vQy2+HaV092jEcdIRDeCQpcjLvIcAwvBo9zWvuYc1WCdS0uKyvBzwO2+LcfOdNieB9vX5CEJitF/r71+c0kG+csgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OceRUuVBYjU/hTO330TYZBK/I/FfSO3+SKtY5pZTEBE=;
+ b=oEA+EWWT+IGDiKnawy/siJql+6fEcBU25iPDfVN3U3mMZa6ecDtVI6SiwJ/84vPluIU1ct4g65ZzOipO7CWB8c3vvQMc8FfVS/FGfTxgJTFl2GQpMBU6491W+S+Q1jJlTgNZMHvO/vpbReeDu7behBGS/FbcT7Qe7aAyAwbi9GxtyeSaRp4AYzK2SI+H0XXU7Soo8qpINejOtcN3Nk5Soj4U6OfNYmumeNbOIRG9eRh8xfH+bZ9lioErmqQffQnsytoVshpBrvyZFJujDClfs/TJnURUCa4gkdbk5sRDOwbDVUMfvHKuxC+LMB7EHPqz4EnuipZ0C8SUGN5mrYe2gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
+ by CO1PR11MB5155.namprd11.prod.outlook.com (2603:10b6:303:91::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Tue, 18 Feb
+ 2025 18:32:45 +0000
+Received: from DS0PR11MB7408.namprd11.prod.outlook.com
+ ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
+ ([fe80::6387:4b73:8906:7543%4]) with mapi id 15.20.8445.017; Tue, 18 Feb 2025
+ 18:32:45 +0000
+Date: Tue, 18 Feb 2025 10:32:43 -0800
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
+ Some refactor, rewrite and fixes for OA tests
+Message-ID: <Z7TSS/F0FjNhKIuj@orsosgc001>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
+ <173958621795.2265040.5679085843732439081@b555e5b46a47>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <173958621795.2265040.5679085843732439081@b555e5b46a47>
+X-ClientProxiedBy: MW4PR04CA0350.namprd04.prod.outlook.com
+ (2603:10b6:303:8a::25) To DS0PR11MB7408.namprd11.prod.outlook.com
+ (2603:10b6:8:136::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|CO1PR11MB5155:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4c874e2-9e17-4abc-a0bd-08dd504aa32d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0; ARA:13230040|376014|1800799024|366016|13003099007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WHZRTlIvS0Q4Y3Q2ODRrQ3lIL1cwaTEwT1JGRHNlWjE2cloyV1VSU2ovSmxQ?=
+ =?utf-8?B?YnBCNjlMVUxQOFp2c3Q1ekRBNkRpYml5aHNSbjdPelFrSUJBWFR4Mk00WkJD?=
+ =?utf-8?B?VkNZQnROZUUzdVdnbHE3a3RwYkcvcjM3M1dJZmdmdjMrOHdzbElsTlpvTzVP?=
+ =?utf-8?B?QnliNUJoK0FuVnlzTzhpTVJxaWc1OVRpb2ptWU9BNHRJNWIwRE50Y1ZUSVhX?=
+ =?utf-8?B?UWxheFZUaTZVejlzOGdxNGMzNHJUcUNRQ0dRVkhZS1lubVZKTWc4bVB4eC9k?=
+ =?utf-8?B?UmJnb0UvM09xT2FWcDJyMVNST0ZvK3Fpc0kzNzZlSmFjYll3dEV5cFZ6WVlp?=
+ =?utf-8?B?dkJJc3NhRnUxUzZ2VGpia2FNclNKcFphTm52QTBtVzJHYkc2WWpEZ3pCOEo1?=
+ =?utf-8?B?SkNyYWRCNnJqejRxMGpmNi8yczhoY1Nyb21tSXhTVGNSVVZqeGJTWkJsZWRS?=
+ =?utf-8?B?eWN1czV4SDcwOS91WTVBVkhrRHdBdEFzQ2NWRG54M3Raa2hkVXNMeDNQazBQ?=
+ =?utf-8?B?ank2aGg2b2NYMTFXRmJ4SStpR1BEd2tlWElRM1pzUlFUM2xST3BEVUxsZFR6?=
+ =?utf-8?B?UlBBeFppOGNZZ1Q2elZ6dG14MzV2M0FtS0FPLzROT1AycnR0N05YREpNUDZ4?=
+ =?utf-8?B?VVJQaXFodTBJNDdQZExKeEpqYUlvaDZHbzBOb213OTliWnk5aTEyTHR6dkNP?=
+ =?utf-8?B?YzZneEU5bXhocGRKLzQ2YXgyVHMzaW9SNWRXa2hLMzdrNlhCS2IzS0xVUEh1?=
+ =?utf-8?B?NE9oZDlXQ3NKKy93RXZab1RLNGVLUFFWSXJIMFhRakJJZWJHYzVmUlJUWVY2?=
+ =?utf-8?B?UkxrUW5OOFJVazZJZm52RXpCUTFudVJOdEEvMVptVlZIV284cC9Xb1N0cE1D?=
+ =?utf-8?B?QlpKK2FZQnZNdGFzanYxWTUvTG1CMmpXc2dwZE9WeUdGRnpranZ4eFVheHRS?=
+ =?utf-8?B?ZnJmOURrNjljUERna3NobmgvaHNYczhsbVhYM3ZJZFljL0UwRDEveVlQSlNG?=
+ =?utf-8?B?Um5wYzducFRaRGtHUnRtS0FpWklLMWdUV3czU0pmT0FMQ2ErQit1QVFMK28w?=
+ =?utf-8?B?c1R3blJzcVRpMFNyNFdBZDVPRFNBNVVQTnZ5NEtOaW5KWXlaTDkwMWZRWlhN?=
+ =?utf-8?B?Qkk3LzU3aGdlSUFYZXlrcWV6aHp2VEM3QXJTL1ZmUllycjR1K0xiV094UTRu?=
+ =?utf-8?B?UjRSVjhWcjA1eklkNkhxNGhIbTFsRmt3a0k0Y1g5UU5CbGRPNy8yeTRLazRR?=
+ =?utf-8?B?aEw0Ym82dFFZSUdOTUF0R2tvNklZV2w3RXhzRGR0d2RjdnBPa2syM2E3elFQ?=
+ =?utf-8?B?ZEJBbmhCdzF2RXJqbW1Zb2NBb3R6YnhQcVlTM0M2bTR0V1JJeTdoVVMzYkUx?=
+ =?utf-8?B?T0tSYkNXVEI5R1d3dnNRY3dHcTNNTkc0QzAzdmtvbkhpcEEwczFnZFJiY0VY?=
+ =?utf-8?B?S1lrOUFRcFRBNDdXbGJ1UFlQZlhxVDhSbEFPNEJsODIwdTA3Wm9aRjhLTnI1?=
+ =?utf-8?B?YVFyakRGV0NsdFY0QW9zbVhnYXcyMDlsMVlFandNdGh3SnNvbkRkcXQzSEF5?=
+ =?utf-8?B?Nk9Ib1M3UXRaUVIvV2JjV3F1QTFyakxnSzA2VStqLzdQWXJlSXJkbnVqNjhz?=
+ =?utf-8?B?Qk5MOUVQcldrQjYySTZSRkJza2UvYXhCdllGYVlyYXhRNjZXMHMwd1ZKdlVV?=
+ =?utf-8?B?TnhwUVY3bkFmbXpyWWxZekJDK2tnWUtzbmVMOExuelNtRHpyRHpNZDFvekpl?=
+ =?utf-8?Q?xhjwI2ucrNJLyyA1qmvwPuotnLe3OlcdW5uyEeU?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(13003099007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHdFdzdkcmJIY0NMczJGOFg5R1lKMXV3UzhHUHZPUEVqOCtlRHVXVDVwZFJI?=
+ =?utf-8?B?bEdBT1VSeG53NVZpUSttRHBBODYvKzhxaUZWRGp3ZGRObWF6MVJFVlpWZ0dB?=
+ =?utf-8?B?K2VGazR6cjhFTDR5M3U5WmxUS2pRcllPZGRTem1WZTR5bTNGc2NIQVczUnpy?=
+ =?utf-8?B?ekZZUHBlZ0Z6UmdZd0lPNTNMRmE5dmpyRmlBUnVTUHJPbm1ucG10WDFrbW1v?=
+ =?utf-8?B?SG5PekVEaFozNjdwY2YwN09SSjB4OGcxdTNDaWJHZUpCVGJ4bUtDYnc5Tmdy?=
+ =?utf-8?B?VnRwOG5vMDF4dk5rNEsvRnNhSzF5dGlRYlhiQmtOc1V4cENRRVdSak9jZk9B?=
+ =?utf-8?B?RU1Ba3ZUMWhsU2wydWNLTVhHTFlvanRxMTBERzh4K2ZKb00vRklxZkVYTzFH?=
+ =?utf-8?B?ZFY5dm9qOVViMW4zOTk0aXdvc3ZxN2tmV0YwQ2FidkdiT1ZXdWRDSDh4MlFq?=
+ =?utf-8?B?NmhSL0RHSktQNklwWDRQUFdadjNwanpjTGpjVEhRUjRpNk9ldldPRkpxSjF2?=
+ =?utf-8?B?YmV5WkJjZTRuWVdCcG5WaDRuclQwbjJaK2ttaXRsYldCekJFQzNBRllONVIv?=
+ =?utf-8?B?OFI1eWE3TnB2WENmOCsva0FheDUzYmNDaDBQeFZLUUJnaStTUTQ4KzlMZnFR?=
+ =?utf-8?B?NW03SExYK3R5OFFyeFhsWkIxUHFrWFptTGtiSE5ycmE3enFTZS9JdVlIZkgx?=
+ =?utf-8?B?em1Cb214UnpEUkxaOUlWRmFHMDU3WllhUk44OGdlMndPVXpJbWx4QjFCa29E?=
+ =?utf-8?B?WHZPR082U3VzbXA0OUZUNGduSm5QckwrVklEK3dDZlFmZ0NTUVR6ZjZoSm5C?=
+ =?utf-8?B?NzlhaDlQSW1LVUFDMEhzMllqR2FWam1oM081cjhaLzBGODRkRVNZRUltTmx4?=
+ =?utf-8?B?dWVqRGs5Qnh2NXJRMlBYY1FtenVVbGtIMGVucmZUMkJtUEo4aUthQnpsakVO?=
+ =?utf-8?B?YW00K09HWS8rNmhzZklUdURVZUZOeHpHK3pkbW41MlZyQmc3Z1JZcjdLL3pm?=
+ =?utf-8?B?YndBNUZyek5ENk9HMFlkZnJwSTZwbXVzeXd3Z1A5THdteUZUMnZWUVhQSytY?=
+ =?utf-8?B?ZmZOclJCWHRrVVFMT1JqVEd1Vlp4d1lIM3dBUUNSb2JlejdBMjZWeWtINFRr?=
+ =?utf-8?B?eHY1dWJGWm9VV3o1NHliS0tONWZkNHV3emQrc2h5c1lLS3pUQXhUd0pmVm5i?=
+ =?utf-8?B?My9xKy8xYlI3dFBONXhPQlJCaWJ3U1dQZXA3cWMzZTl0bEZBR2krblZldjIz?=
+ =?utf-8?B?YndzUnpwdlNTdHFJRmZ3K2ZrakV6Zmsxc1ZIVVY5SWtlTnUyZWQ5MjJQamVx?=
+ =?utf-8?B?czUzaU5pWEdyYzV5MUtYS0ZzbUsyblRhNzhGYW53VmVaRkFrb3IwK3pDUERM?=
+ =?utf-8?B?bVZHOTZlano0SFdSZjRWQXdMaW8vb2o3WGREQkVEOUlHY1BJaXhGKzF1Vzg5?=
+ =?utf-8?B?NUNCRit0bGFUZzg1MkZrTzJ0YlBWdklEeXM1WENxSlBOSUs2b2dSMXVyMVpJ?=
+ =?utf-8?B?SjJpSUltdi8yN0Z3WUl1QVRvcTdMZ21waGpTSWlxZDJTMnY1V2xiSE5va2RD?=
+ =?utf-8?B?aUIxYksxbm5QRHZjdW9rcjc5M1VQMy96d0RPZmdKMWdFN3VFb1NVajd3TGdO?=
+ =?utf-8?B?ZEpCeG55NHdZVDlXSmQxY2xCZG5QSU02a0x0VkhNMmc1bVhsaGRLYmZPQTd4?=
+ =?utf-8?B?dW5tc3ZlcEVSTjIyREt3Ym9FZU0rRHhYS0V2K3o1c2Y0QUU5eHVvbFdGa1Vy?=
+ =?utf-8?B?WC9QaEpaeU83SWdlUzQyaVBjTzhZN2tnc3cwL3ZXNUc1ZXJyM2Q3cHZ6NS9F?=
+ =?utf-8?B?MlM1bitIOHpHanJHMHVJM3hhbHZIOTRGbWo1OGhsYU5oSVFkd2ZORmRLMWtU?=
+ =?utf-8?B?ODFSVEdvejNnSGdGVlk3NDI0TlBtaWlLRTJrdXVkM3NzbXRSeGF2cDRnZzl3?=
+ =?utf-8?B?bklXbHhCMEtJT3ZTSmFvOTlLdmQvZDNXaWxMYXZNTmxlbXM2bjY2NnhEeXhW?=
+ =?utf-8?B?MC9lSE1mR3pYZTJpd3BoWUo5SytCSS9hcWcwaGtRZXFtU1BKVVlCTUVSYVg1?=
+ =?utf-8?B?N3BKZlNvc05QbzAvZ1JvMXV4a29WQ3N3OEFkQ1o1aXJXSDcrVjloZnZzYnBB?=
+ =?utf-8?B?L3Z4Y3JJYzZzc3NxeTFiVWRNWVhwRDNMRTIzbUlzM3FTd3kyR1J2eUhuUGsv?=
+ =?utf-8?Q?eNqT7hFhSehXM2rdDcws/BU=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4c874e2-9e17-4abc-a0bd-08dd504aa32d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 18:32:45.3937 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iv3BRJwAnmWDcf/zZWplGlFBcYXSwB/Gww8Mm+rI1B7X65odomoN1YFUihxemdkj1YLuUHpF6NeBP92fAFQUe7JBTHOVZNmEf8ZuBETzSkg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5155
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,675 +192,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A new hardware feature first introduced in PVC gives capability to
-periodically sample EU stall state and record counts for different stall
-reasons, on a per IP basis, aggregate across all EUs in a subslice and
-record the samples in a buffer in each subslice. Eventually, the aggregated
-data is written out to a buffer in the memory. This feature is also
-supported in XE2 and later architecture GPUs.
+On Sat, Feb 15, 2025 at 02:23:37AM +0000, Patchwork wrote:
+>   Patch Details
+>
+>   Series:  Some refactor, rewrite and fixes for OA tests
+>   URL:     [1]https://patchwork.freedesktop.org/series/144916/
+>   State:   failure
+>   Details: [2]https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12607/index.html
+>
+>               CI Bug Log - changes from IGT_8230 -> IGTPW_12607
+>
+>Summary
+>
+>   FAILURE
+>
+>   Serious unknown changes coming with IGTPW_12607 absolutely need to be
+>   verified manually.
+>
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12607, please notify your bug team
+>   (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in
+>   CI.
+>
+>   External URL:
+>   https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12607/index.html
+>
+>Participating hosts (42 -> 41)
+>
+>   Additional (1): bat-twl-1
+>   Missing (2): fi-snb-2520m bat-twl-2
+>
+>Possible new issues
+>
+>   Here are the unknown changes that may have been introduced in IGTPW_12607:
+>
+>  IGT changes
+>
+>    Possible regressions
+>
+>     * igt@i915_selftest@live:
+>
+>          * bat-adlp-6: [3]PASS -> [4]ABORT +1 other test abort
 
-Add tests to test EU stall sampling functionality in the Xe driver.
-These tests accept several inputs from the user, enable EU stall counters,
-run a given workload on a child process while the parent process reads
-the stall data and parses the data. The EU stall counters are disabled
-once the workload completes execution.
+Unrelated since this series is strictly touching OA tests only.
 
-If the user doesn't provide any input workload, GPGPU fill is used as
-the workload. gpgpu_fill() and related functions have been reused from
-xe_gpgpu_fill.c.
-
-v2: Addressed review feedback from v1
-    User can pass an output file to write the EU stall data
-    xe_drm.h file changes have been moved into a separate patch
-
-Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
----
- tests/intel/xe_eu_stall.c | 623 ++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |   1 +
- 2 files changed, 624 insertions(+)
- create mode 100644 tests/intel/xe_eu_stall.c
-
-diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-new file mode 100644
-index 000000000..964bb7c91
---- /dev/null
-+++ b/tests/intel/xe_eu_stall.c
-@@ -0,0 +1,623 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2025 Intel Corporation. All rights reserved.
-+ */
-+
-+/**
-+ * TEST: Basic tests for EU stall sampling functionality
-+ * Category: Core
-+ * Functionality: EU stall sampling
-+ * Mega feature: Performance interface
-+ * Sub-category: Performance
-+ * Test category: xe
-+ *
-+ * SUBTEST: non-blocking-read
-+ * Description: Verify non-blocking read of EU stall data during a workload run
-+ *
-+ * SUBTEST: blocking-read
-+ * Description: Verify blocking read of EU stall data during a workload run
-+ *
-+ * SUBTEST: unprivileged-access
-+ * Description: Verify unprivileged open of a EU stall data stream fd
-+ */
-+
-+#include <fcntl.h>
-+#include <poll.h>
-+#include <sys/ioctl.h>
-+#include <sys/wait.h>
-+
-+#include "igt.h"
-+#include "igt_core.h"
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+
-+#define OBSERVATION_PARANOID	"/proc/sys/dev/xe/observation_paranoid"
-+
-+#define NUM_ITERS_GPGPU_FILL	100
-+#define DEFAULT_NUM_REPORTS	1
-+#define DEFAULT_SAMPLE_RATE	(251 * 4)
-+#define DEFAULT_USER_BUF_SIZE	(64 * 512 * 1024)
-+
-+#define WIDTH		64
-+#define HEIGHT		64
-+#define COLOR_88	0x88
-+#define COLOR_4C	0x4c
-+
-+static FILE *output;
-+static char *p_args[8];
-+static char *output_file;
-+static uint8_t p_gt_id;
-+static uint32_t p_rate;
-+static uint32_t p_user = DEFAULT_USER_BUF_SIZE;
-+static uint32_t p_num_reports = DEFAULT_NUM_REPORTS;
-+
-+static volatile bool child_is_running = true;
-+
-+/*
-+ * EU stall data format for PVC
-+ */
-+struct xe_eu_stall_data_pvc {
-+	__u64 ip_addr:29;	  /* Bits 0  to 28  */
-+	__u64 active_count:8;	  /* Bits 29 to 36  */
-+	__u64 other_count:8;	  /* Bits 37 to 44  */
-+	__u64 control_count:8;	  /* Bits 45 to 52  */
-+	__u64 pipestall_count:8;  /* Bits 53 to 60  */
-+	__u64 send_count:8;	  /* Bits 61 to 68  */
-+	__u64 dist_acc_count:8;	  /* Bits 69 to 76  */
-+	__u64 sbid_count:8;	  /* Bits 77 to 84  */
-+	__u64 sync_count:8;	  /* Bits 85 to 92  */
-+	__u64 inst_fetch_count:8; /* Bits 93 to 100 */
-+	__u64 unused_bits:27;
-+	__u64 unused[6];
-+} __attribute__((packed));
-+
-+/*
-+ * EU stall data format for Xe2 arch GPUs (LNL, BMG).
-+ */
-+struct xe_eu_stall_data_xe2 {
-+	__u64 ip_addr:29;	  /* Bits 0  to 28  */
-+	__u64 tdr_count:8;	  /* Bits 29 to 36  */
-+	__u64 other_count:8;	  /* Bits 37 to 44  */
-+	__u64 control_count:8;	  /* Bits 45 to 52  */
-+	__u64 pipestall_count:8;  /* Bits 53 to 60  */
-+	__u64 send_count:8;	  /* Bits 61 to 68  */
-+	__u64 dist_acc_count:8;   /* Bits 69 to 76  */
-+	__u64 sbid_count:8;	  /* Bits 77 to 84  */
-+	__u64 sync_count:8;	  /* Bits 85 to 92  */
-+	__u64 inst_fetch_count:8; /* Bits 93 to 100 */
-+	__u64 active_count:8;	  /* Bits 101 to 108 */
-+	__u64 ex_id:3;		  /* Bits 109 to 111 */
-+	__u64 end_flag:1;	  /* Bit  112 */
-+	__u64 unused_bits:15;
-+	__u64 unused[6];
-+} __attribute__((packed));
-+
-+struct xe_eu_stall_open_prop {
-+	uint32_t num_properties;
-+	uint32_t reserved;
-+	uint64_t properties_ptr;
-+};
-+
-+union xe_eu_stall_data {
-+	struct xe_eu_stall_data_pvc pvc;
-+	struct xe_eu_stall_data_xe2 xe2;
-+};
-+
-+typedef struct {
-+	int drm_fd;
-+	uint32_t devid;
-+	struct buf_ops *bops;
-+} data_t;
-+
-+static struct intel_buf *
-+create_buf(data_t *data, int width, int height, uint8_t color, uint64_t region)
-+{
-+	struct intel_buf *buf;
-+	uint8_t *ptr;
-+	int i;
-+
-+	buf = calloc(1, sizeof(*buf));
-+	igt_assert(buf);
-+
-+	buf = intel_buf_create(data->bops, width / 4, height, 32, 0,
-+			       I915_TILING_NONE, 0);
-+
-+	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
-+
-+	for (i = 0; i < buf->surface[0].size; i++)
-+		ptr[i] = color;
-+
-+	munmap(ptr, buf->surface[0].size);
-+
-+	return buf;
-+}
-+
-+static void buf_check(uint8_t *ptr, int width, int x, int y, uint8_t color)
-+{
-+	uint8_t val;
-+
-+	val = ptr[y * width + x];
-+	igt_assert_f(val == color,
-+		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
-+		     color, val, x, y);
-+}
-+
-+static void gpgpu_fill(data_t *data, igt_fillfunc_t fill, uint32_t region,
-+		       uint32_t surf_width, uint32_t surf_height,
-+		       uint32_t x, uint32_t y,
-+		       uint32_t width, uint32_t height)
-+{
-+	struct intel_buf *buf;
-+	uint8_t *ptr;
-+	int i, j;
-+
-+	buf = create_buf(data, surf_width, surf_height, COLOR_88, region);
-+	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
-+
-+	for (i = 0; i < surf_width; i++)
-+		for (j = 0; j < surf_height; j++)
-+			buf_check(ptr, surf_width, i, j, COLOR_88);
-+
-+	fill(data->drm_fd, buf, x, y, width, height, COLOR_4C);
-+
-+	for (i = 0; i < surf_width; i++)
-+		for (j = 0; j < surf_height; j++)
-+			if (i >= x && i < width + x &&
-+			    j >= y && j < height + y)
-+				buf_check(ptr, surf_width, i, j, COLOR_4C);
-+			else
-+				buf_check(ptr, surf_height, i, j, COLOR_88);
-+
-+	munmap(ptr, buf->surface[0].size);
-+}
-+
-+static int run_gpgpu_fill(int drm_fd, uint32_t devid)
-+{
-+	data_t data = {drm_fd, devid, NULL};
-+	igt_fillfunc_t fill_fn = NULL;
-+	unsigned int i;
-+
-+	data.bops = buf_ops_create(drm_fd);
-+	fill_fn = igt_get_gpgpu_fillfunc(devid);
-+
-+	for (i = 0; i < NUM_ITERS_GPGPU_FILL; i++)
-+		gpgpu_fill(&data, fill_fn, 0, WIDTH, HEIGHT, 16, 16, WIDTH / 2, HEIGHT / 2);
-+
-+	buf_ops_destroy(data.bops);
-+
-+	return EXIT_SUCCESS;
-+}
-+
-+/**
-+ * xe_eu_stall_prop_to_ext:
-+ * @properties: pointer to internal IGT properties
-+ * @extn: Pointer to array of set_property uapi structs
-+ *
-+ * Convert 'struct xe_eu_stall_open_prop' properties used internally in IGT
-+ * into chained 'struct drm_xe_ext_set_property' structures used in
-+ * EU stall sampling uapi
-+ */
-+static void xe_eu_stall_prop_to_ext(struct xe_eu_stall_open_prop *properties,
-+				    struct drm_xe_ext_set_property *extn)
-+{
-+	__u64 *prop = from_user_pointer(properties->properties_ptr);
-+	struct drm_xe_ext_set_property *ext = extn;
-+	int i, j;
-+
-+	for (i = 0; i < properties->num_properties; i++) {
-+		ext->base.name = DRM_XE_EU_STALL_EXTENSION_SET_PROPERTY;
-+		ext->property = *prop++;
-+		ext->value = *prop++;
-+		ext++;
-+	}
-+
-+	igt_assert_lte(1, i);
-+	ext = extn;
-+	for (j = 0; j < i - 1; j++)
-+		ext[j].base.next_extension = to_user_pointer(&ext[j + 1]);
-+}
-+
-+static int xe_eu_stall_ioctl(int fd, enum drm_xe_observation_op op, void *arg)
-+{
-+#define XE_EU_STALL_MAX_SET_PROPERTIES 5
-+
-+	struct drm_xe_ext_set_property ext[XE_EU_STALL_MAX_SET_PROPERTIES] = {};
-+
-+	/* Chain the PERF layer struct */
-+	struct drm_xe_observation_param p = {
-+		.extensions = 0,
-+		.observation_type = DRM_XE_OBSERVATION_TYPE_EU_STALL,
-+		.observation_op = op,
-+		.param = to_user_pointer((op == DRM_XE_OBSERVATION_OP_STREAM_OPEN) ? ext : arg),
-+	};
-+
-+	if (op == DRM_XE_OBSERVATION_OP_STREAM_OPEN) {
-+		struct xe_eu_stall_open_prop *oprop = (struct xe_eu_stall_open_prop *)arg;
-+
-+		igt_assert_lte(oprop->num_properties, XE_EU_STALL_MAX_SET_PROPERTIES);
-+		xe_eu_stall_prop_to_ext(oprop, ext);
-+	}
-+
-+	return igt_ioctl(fd, DRM_IOCTL_XE_OBSERVATION, &p);
-+}
-+
-+static void xe_eu_stall_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err)
-+{
-+	igt_assert_eq(xe_eu_stall_ioctl(fd, op, arg), -1);
-+	igt_assert_eq(errno, err);
-+	errno = 0;
-+}
-+
-+static uint64_t read_u64_file(const char *path)
-+{
-+	FILE *f;
-+	uint64_t val;
-+
-+	f = fopen(path, "r");
-+	igt_assert(f);
-+
-+	igt_assert_eq(fscanf(f, "%"PRIu64, &val), 1);
-+
-+	fclose(f);
-+
-+	return val;
-+}
-+
-+static void write_u64_file(const char *path, uint64_t val)
-+{
-+	FILE *f;
-+
-+	f = fopen(path, "w");
-+	igt_assert(f);
-+
-+	igt_assert(fprintf(f, "%"PRIu64, val) > 0);
-+
-+	fclose(f);
-+}
-+
-+static void set_fd_flags(int fd, int flags)
-+{
-+	int old = fcntl(fd, F_GETFL, 0);
-+
-+	igt_assert_lte(0, old);
-+	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
-+}
-+
-+static inline void enable_paranoid(void)
-+{
-+	write_u64_file(OBSERVATION_PARANOID, 1);
-+}
-+
-+static inline void disable_paranoid(void)
-+{
-+	write_u64_file(OBSERVATION_PARANOID, 0);
-+}
-+
-+/*
-+ * Test to verify that only a privileged process can open
-+ * an EU stall data stream file descriptor.
-+ */
-+static void test_non_privileged_access(int drm_fd)
-+{
-+	int paranoid, stream_fd;
-+
-+	paranoid = read_u64_file(OBSERVATION_PARANOID);
-+
-+	igt_fork(child, 1) {
-+		uint64_t properties[] = {
-+			DRM_XE_EU_STALL_PROP_GT_ID, p_gt_id,
-+			DRM_XE_EU_STALL_PROP_SAMPLE_RATE, DEFAULT_SAMPLE_RATE,
-+			DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS, p_num_reports,
-+		};
-+
-+		struct xe_eu_stall_open_prop props = {
-+			.num_properties = ARRAY_SIZE(properties) / 2,
-+			.properties_ptr = to_user_pointer(properties),
-+		};
-+
-+		if (!paranoid)
-+			enable_paranoid();
-+
-+		igt_drop_root();
-+
-+		xe_eu_stall_ioctl_err(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props, EACCES);
-+	}
-+
-+	igt_waitchildren();
-+
-+	igt_fork(child, 1) {
-+		uint64_t properties[] = {
-+			DRM_XE_EU_STALL_PROP_GT_ID, p_gt_id,
-+			DRM_XE_EU_STALL_PROP_SAMPLE_RATE, DEFAULT_SAMPLE_RATE,
-+			DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS, p_num_reports,
-+		};
-+
-+		struct xe_eu_stall_open_prop props = {
-+			.num_properties = ARRAY_SIZE(properties) / 2,
-+			.properties_ptr = to_user_pointer(properties),
-+		};
-+
-+		disable_paranoid();
-+
-+		igt_drop_root();
-+
-+		stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
-+		igt_require_fd(stream_fd);
-+		close(stream_fd);
-+	}
-+
-+	igt_waitchildren();
-+
-+	/* restore paranoid state */
-+	if (paranoid)
-+		enable_paranoid();
-+}
-+
-+static int wait_child(struct igt_helper_process *child_proc)
-+{
-+	int status;
-+
-+	status = igt_wait_helper(child_proc);
-+	if (WIFEXITED(status))
-+		return WEXITSTATUS(status);
-+	if (WIFSIGNALED(status))
-+		return (128 + WTERMSIG(status));
-+	return 0;
-+}
-+
-+static void sighandler(int sig)
-+{
-+	child_is_running = false;
-+}
-+
-+static void print_eu_stall_data(uint32_t devid, uint8_t *buf, size_t size)
-+{
-+	int i;
-+	uint8_t *sample_addr;
-+	union xe_eu_stall_data stall_data;
-+
-+	for (i = 0; i < size / sizeof(stall_data); i++) {
-+		sample_addr = buf + (i * sizeof(stall_data));
-+		memcpy(&stall_data, sample_addr, sizeof(stall_data));
-+		if (IS_PONTEVECCHIO(devid)) {
-+			fprintf(output, "ip: 0x%08x ", stall_data.pvc.ip_addr);
-+			fprintf(output, "active: %u ", stall_data.pvc.active_count);
-+			fprintf(output, "other: %u ", stall_data.pvc.other_count);
-+			fprintf(output, "control: %u ", stall_data.pvc.control_count);
-+			fprintf(output, "pipestall: %u ", stall_data.pvc.pipestall_count);
-+			fprintf(output, "send: %u ", stall_data.pvc.send_count);
-+			fprintf(output, "dist_acc: %u ", stall_data.pvc.dist_acc_count);
-+			fprintf(output, "sbid: %u ", stall_data.pvc.sbid_count);
-+			fprintf(output, "sync: %u ", stall_data.pvc.sync_count);
-+			fprintf(output, "inst_fetch: %u\n", stall_data.pvc.inst_fetch_count);
-+		} else {
-+			fprintf(output, "ip: 0x%08x ", stall_data.xe2.ip_addr);
-+			fprintf(output, "tdr: %u ", stall_data.xe2.tdr_count);
-+			fprintf(output, "other: %u ", stall_data.xe2.other_count);
-+			fprintf(output, "control: %u ", stall_data.xe2.control_count);
-+			fprintf(output, "pipestall: %u ", stall_data.xe2.pipestall_count);
-+			fprintf(output, "send: %u ", stall_data.xe2.send_count);
-+			fprintf(output, "dist_acc: %u ", stall_data.xe2.dist_acc_count);
-+			fprintf(output, "sbid: %u ", stall_data.xe2.sbid_count);
-+			fprintf(output, "sync: %u ", stall_data.xe2.sync_count);
-+			fprintf(output, "inst_fetch: %u ", stall_data.xe2.inst_fetch_count);
-+			fprintf(output, "active: %u ", stall_data.xe2.active_count);
-+			fprintf(output, "ex_id: %u ", stall_data.xe2.ex_id);
-+			fprintf(output, "end_flag: %u\n", stall_data.xe2.end_flag);
-+		}
-+	}
-+}
-+
-+/*
-+ * Test enables EU stall counters, runs a given workload on a child process
-+ * while the parent process reads the stall counters data, disables EU stall
-+ * counters once the workload completes execution.
-+ */
-+static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
-+{
-+	uint32_t num_samples = 0, num_drops = 0;
-+	struct igt_helper_process work_load = {};
-+	struct sigaction sa = { 0 };
-+	int ret, flags, stream_fd;
-+	uint64_t total_size = 0;
-+	uint8_t *buf;
-+
-+	uint64_t properties[] = {
-+		DRM_XE_EU_STALL_PROP_GT_ID, p_gt_id,
-+		DRM_XE_EU_STALL_PROP_SAMPLE_RATE, p_rate,
-+		DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS, p_num_reports,
-+	};
-+
-+	struct xe_eu_stall_open_prop props = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+
-+	struct drm_xe_query_eu_stall *query_eu_stall_data;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_EU_STALL,
-+		.size = 0,
-+		.data = 0,
-+	};
-+
-+	igt_info("User buffer size: %u\n", p_user);
-+	if (p_args[0])
-+		igt_info("Workload: %s\n", p_args[0]);
-+	else
-+		igt_info("Workload: GPGPU fill\n");
-+
-+	buf = malloc(p_user);
-+	igt_assert(buf);
-+
-+	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	igt_assert_neq(query.size, 0);
-+
-+	query_eu_stall_data = malloc(query.size);
-+	igt_assert(query_eu_stall_data);
-+
-+	query.data = to_user_pointer(query_eu_stall_data);
-+	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	igt_assert(query_eu_stall_data->num_sampling_rates > 0);
-+	if (p_rate == 0)
-+		properties[3] = query_eu_stall_data->sampling_rates[0];
-+	igt_info("Sampling Rate: %lu\n", properties[3]);
-+
-+	stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
-+	igt_require_fd(stream_fd);
-+
-+	if (!blocking_read)
-+		flags = O_CLOEXEC | O_NONBLOCK;
-+	else
-+		flags = O_CLOEXEC;
-+
-+	set_fd_flags(stream_fd, flags);
-+
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-+
-+	sa.sa_handler = sighandler;
-+	if (sigaction(SIGCHLD, &sa, NULL) == -1) {
-+		igt_critical("Failed to register SIGCHLD signal handler\n");
-+		igt_fail(IGT_EXIT_FAILURE);
-+	}
-+
-+	child_is_running = true;
-+	/* Child process runs the workload */
-+	igt_fork_helper(&work_load) {
-+		setpgid(0, 0);
-+		if (p_args[0]) {
-+			execv(p_args[0], p_args);
-+			_exit(EXIT_FAILURE);
-+		} else {
-+			_exit(run_gpgpu_fill(drm_fd, devid));
-+		}
-+	}
-+	/* Parent process reads the EU stall counters data */
-+	do {
-+		if (!blocking_read) {
-+			struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
-+
-+			ret = poll(&pollfd, 1, 0);
-+			if (ret <= 0)
-+				continue;
-+			igt_assert_eq(ret, 1);
-+			igt_assert(pollfd.revents & POLLIN);
-+		}
-+		ret = read(stream_fd, buf, p_user);
-+		if (ret > 0) {
-+			total_size += ret;
-+			if (output)
-+				print_eu_stall_data(devid, buf, ret);
-+			num_samples += ret / query_eu_stall_data->record_size;
-+		} else if ((ret < 0) && (errno != EAGAIN)) {
-+			if (errno == EINTR)
-+				continue;
-+			if (errno == EIO) {
-+				num_drops++;
-+				continue;
-+			}
-+			igt_critical("read() - ret: %d, errno: %d\n", ret, errno);
-+			kill(-work_load.pid, SIGTERM);
-+			break;
-+		}
-+	} while (child_is_running);
-+
-+	igt_info("Total size read: %lu\n", total_size);
-+	igt_info("Number of samples: %u\n", num_samples);
-+	igt_info("Number of drops reported: %u\n", num_drops);
-+
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
-+
-+	close(stream_fd);
-+	free(buf);
-+
-+	ret = wait_child(&work_load);
-+	igt_assert_f(ret == 0, "waitpid() - ret: %d, errno: %d\n", ret, errno);
-+	igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'e':
-+		p_num_reports = strtoul(optarg, NULL, 0);
-+		break;
-+	case 'g':
-+		p_gt_id = strtoul(optarg, NULL, 0);
-+		break;
-+	case 'o':
-+		output_file = optarg;
-+		break;
-+	case 'r':
-+		p_rate = strtoul(optarg, NULL, 0);
-+		break;
-+	case 'u':
-+		p_user = strtoul(optarg, NULL, 0);
-+		break;
-+	case 'w':
-+		p_args[0] = optarg;
-+		p_args[1] = NULL;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =  "  --event_count | -e\t\tPoll event report count\n"
-+			"  --gt_id | -g\t\tGT ID for the GT to sample EU stalls\n"
-+			"  --output | -o\t\tOutput file to write EU stall data\n"
-+			"  --rate | -r\t\tSampling rate in GPU cycles\n"
-+			"  --user_buf_sz | -u\t\tUser buffer size\n"
-+			"  --workload | -w\t\tWorkload to run\n";
-+
-+static struct option long_options[] = {
-+	{"event_count", 0, 0, 'e'},
-+	{"gt_id", 0, 0, 'g'},
-+	{"output", 0, 0, 'o'},
-+	{"rate", 0, 0, 'r'},
-+	{"user_buf_sz", 0, 0, 'u'},
-+	{"workload", 0, 0, 'w'},
-+	{ NULL, 0, 0, 0 }
-+};
-+
-+igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
-+{
-+	int drm_fd;
-+	uint32_t devid;
-+	bool blocking_read = true;
-+
-+	igt_fixture {
-+		drm_fd = drm_open_driver(DRIVER_XE);
-+		igt_require_fd(drm_fd);
-+		devid = intel_get_drm_devid(drm_fd);
-+		igt_require(IS_PONTEVECCHIO(devid) || intel_graphics_ver(devid) >= IP_VER(20, 0));
-+		igt_require_f(igt_get_gpgpu_fillfunc(devid), "no gpgpu-fill function\n");
-+		if (output_file) {
-+			output = fopen(output_file, "w");
-+			igt_require(output);
-+		}
-+	}
-+
-+	igt_describe("Verify non-blocking read of EU stall data during a workload run");
-+	igt_subtest("non-blocking-read") {
-+		test_eustall(drm_fd, devid, !blocking_read);
-+	}
-+
-+	igt_describe("Verify blocking read of EU stall data during a workload run");
-+	igt_subtest("blocking-read") {
-+		test_eustall(drm_fd, devid, blocking_read);
-+	}
-+
-+	igt_describe("Verify that unprivileged open of a EU stall data fd fails");
-+	igt_subtest("unprivileged-access")
-+		test_non_privileged_access(drm_fd);
-+
-+	igt_fixture {
-+		if (output)
-+			fclose(output);
-+		drm_close_driver(drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index f8a0ab836..37e227e7a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -280,6 +280,7 @@ intel_xe_progs = [
- 	'xe_dma_buf_sync',
- 	'xe_debugfs',
- 	'xe_drm_fdinfo',
-+	'xe_eu_stall',
- 	'xe_evict',
- 	'xe_evict_ccs',
- 	'xe_exec_atomic',
--- 
-2.48.1
-
+Umesh
+>
+>Known issues
