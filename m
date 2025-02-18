@@ -4,67 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B357C021BB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57277C021B9
 	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:32:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D264D10E7CA;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B31FE10E7C8;
 	Wed, 19 Feb 2025 09:32:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Zszrkt0G";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="gr03jSDL";
 	dkim-atps=neutral
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
- [209.85.221.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1934A10E3F4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:17 +0000 (UTC)
-Received: by mail-wr1-f47.google.com with SMTP id
- ffacd0b85a97d-38a8b17d7a7so3231989f8f.2
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:17 -0800 (PST)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
+ [209.85.128.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0F6A10E3F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:21 +0000 (UTC)
+Received: by mail-wm1-f42.google.com with SMTP id
+ 5b1f17b1804b1-4393dc02b78so38802035e9.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739897415; x=1740502215; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FMnEyXGGJ3hdF0LnT2TQ09SgsTKrvsYugzpdN+NvrWU=;
- b=Zszrkt0GEhlva/IVDPvVK6q7yJhTvQDCvuJxBlxNKkFyErrK7t1rr1pDThVUGwkqhE
- YuYsN1nuSkA/4WWJc0pnrVAwsDqmejmxD2IZlqqlgXQ9lJB9PUGhN7WYxRdS6gSOoyre
- dP221tsIkzUoHN01TawKeajcfrhiJSlQGq6LgTJdd7V/QvP9MzxnZaxr9tM/TMah1hK8
- kEWTAHVKncGK5Ia7pXn5hUSqiLBdtLhVjI26GkAcs/EPnQ0g6l80V9G6mma91uosQOXS
- 7nB2X0UVXV9IVvik81bSp35DLXHVaJXJ0XxsXSihnaBuAmvJ82DpmMCizgqvnMLccO40
- R3Dw==
+ d=gmail.com; s=20230601; t=1739897420; x=1740502220; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zPXqSN5GvcL0/SfXIKezSy3bVEB6IKrsVJXHCcgwzL4=;
+ b=gr03jSDL6vH3gqSwX+NIYxCp32J98ZU8GtnpepsZq4l2UMu4Pru1qCgbnfGkqY2xb/
+ /Pxchaom6r43Zfula1xspJ6Vvqy7SFCo4ZYJYsYWETIkN2my0oe8E6iSMwzwJVc2kOg9
+ Q0RehJBu+NOOfjgzks4HlGYptUAGJWDz9lc1ltXeEI4714zc+n8DB12tAssH0DU+sStq
+ WF3UTpWUuvGF3fHaUIUVS9DQywjx2PzP4KxvPEj2jGI2gEWA//oW0mwtwjuDKgTLj1fL
+ hcvRBtKhpPsXqi2sw2osjqO1ztXU6DahnyoE4SVYSYm6w6nm1e4XnE0KYYOLU9YC7iSi
+ 3R1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739897415; x=1740502215;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FMnEyXGGJ3hdF0LnT2TQ09SgsTKrvsYugzpdN+NvrWU=;
- b=npfuQda/jGKBSLjBGlnpf3kqiRq45cqWlEiLfJyeik1DQBd4tCnbirnXeX6H9nF+yy
- KxDSM9VK4d67J9fNDN+vRWK6X7ezOOE/hMWbb78EHLoWAcSOn3/Cy3wxmJe+cIS48Op1
- lPPw/NIFXc73/uzEAUS0FmUZCtEVIn+wz7SdZSImm1/SkLt/1N3QdsWxpPvBiN7G73t7
- BgsrFf5/diVf+Ss9q9y31gXJl8j969uz2a4ITYF4k3ilLPeCiVmjkGSLyF61OcsJA+IW
- 0z8X411h+nFi1WvrMoOxMLY/3uAN6Vb/jCliF47kNrnJ9r2nw6pNqfZqcWYYYvxYgGRm
- 44GA==
-X-Gm-Message-State: AOJu0Yy7dWooRjSqi93D2YUffZKwHdjUFaJaZq1SspNqBQKCwq80VQSx
- i9vS5qaJ1hDkbJ3AlUAj3FBzm/rSxkyf1YndDjF85NfxEcjPAQAoOHm8VEfF
-X-Gm-Gg: ASbGncsnFf/CCiwmKxMe8H+Po0T8O+8PpTCtMuXthdNssKC6MEmtwOqX5fig+p8YcS1
- BCrn9ZncBEzJymY/+i8wSkBxiFrXt6W7Z2Al1U0U+Ww0dD4kkbriUf/2eXiUvdJLpsDV2R2lCAk
- CwHYBfgb6sCvUD859UrVFc4d1aYSijd2wDcYdS4lJpAUtPbDNWAdChxtP1G262lFQB0aFoIsGW8
- KL/FK/4XqhZBCX7u9IDewOV1BTgJbBc9IRMH2D4HPSSRSWkX2F+9OKeA7NGm/xwIrchvgkBTK1w
- Wnk6C0EV+2XEOQvlJg==
-X-Google-Smtp-Source: AGHT+IFo3C3gzBcDjQu51T2fbVMqalONayMi8LFPRYBo3SHsX+Z5J68IlnECe7WGxqb+E9hKAHV/jw==
-X-Received: by 2002:a5d:5f8d:0:b0:38f:4f25:1482 with SMTP id
- ffacd0b85a97d-38f587e4cd9mr137648f8f.42.1739897414843; 
- Tue, 18 Feb 2025 08:50:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739897420; x=1740502220;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zPXqSN5GvcL0/SfXIKezSy3bVEB6IKrsVJXHCcgwzL4=;
+ b=Mwx/1izqCrIFKs3vMZ30VLlqvt6JlpdxDhJILsOIFrND2HFM9GfENy1UkYj913Z3rb
+ dk4SCKO6ywwLlN/ME9ppaN2OviuaDPiVKWBfbJPgITmGBqj4gW1GqGAeAdf39XpSBfLC
+ /13ylarmdsBVoLZ33YEa4LUGOxr7Ni1Ek5Fce2AXZNMCaJ6d9NJfZIG3km3guvIVMIt9
+ SVxtViqVCui1WaeTexPnf+uPFblC/LGicxu3HqCxfM61m2Y/kElqgvBgWDOtCvEDushN
+ LtmN0M6WW3ZMgl8bj+sRijHMjQcGpzvE9qenM3z27BEo36FtaMsG7yRiKkQt8NLpeayB
+ XDWA==
+X-Gm-Message-State: AOJu0YwD337pZE2pHMQ5tFWZ4zUcIHxZJlfkpKNZ/Y80tkZxA5xv8kAn
+ 1vyJzsEOetFW/me1S36KaLrStWEeUM5zAQ6v993CFXFt3OK8yT5wVf4QbaP+
+X-Gm-Gg: ASbGncsEDCFBx8DMUG8+Sb+SLvpb0gAfMJQFvwhBOg6HczQfa7gUoaOzr7topMGfE72
+ DLFxibTQT/GYL6zlGt1JagC11G9EgI3WLZG69VVFR+voL3h2EXb6XIWyDUMgV7wEY2wmyjeavb2
+ K26Cqwu3fWJYKwHhn6dSOGB2II7g0Vj7T1uqj72dV4wQ5YBajmajh8PX7RVdEdBi+U9YiXj1ZsC
+ QeRyXTtj+KIaImIgCJDhu+gq2kwaLW29DD1HpUoYNQdVru22jl9S8rJnKiYUGfzUdCNT4R0zSHM
+ 8M3morR4q9NDpjvcdw==
+X-Google-Smtp-Source: AGHT+IHaEeMUrzuupPFwPTZzcA8kFOM4dX4kBrWX/4zpwpxwB1DY4/SIJk5B58Q/MBz6WzCuJvb5qQ==
+X-Received: by 2002:a05:600c:1e26:b0:439:7dfe:f12 with SMTP id
+ 5b1f17b1804b1-4397dfe11eamr104032495e9.5.1739897419962; 
+ Tue, 18 Feb 2025 08:50:19 -0800 (PST)
 Received: from fedora.. ([213.94.27.232]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.14
+ ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 08:50:14 -0800 (PST)
+ Tue, 18 Feb 2025 08:50:19 -0800 (PST)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t 00/39] VKMS configfs tests
-Date: Tue, 18 Feb 2025 17:49:32 +0100
-Message-ID: <20250218165011.9123-1-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t 06/39] tests/vkms_configfs: Test device invalid values
+Date: Tue, 18 Feb 2025 17:49:38 +0100
+Message-ID: <20250218165011.9123-7-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
+References: <20250218165011.9123-1-jose.exposito89@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -84,92 +87,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi everyone,
+For a VKMS device, it is only possible to set invalid values in two
+places:
 
-This series add tests for the VKMS + configfs work Louis Chauvet and I are doing
-in the kernel.
+- The device name: The "vkms" name is reserved for the default device
+  created by the driver.
+- The device enabled status: It should only accept boolean values.
 
-This new functionality allows to configure one or more VKMS instances without
-having to reload the driver using configfs.
+Test that setting wrong values fails and that the device is not
+accidentally enabled.
 
-For more details, have a look to the kernel patchset and the documentation in
-"vkms.rst" (not merged yet).
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+---
+ tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-There was a previous attempt to implement this tests [1] and I kept copyright
-were required.
-
-Best wishes,
-José Expósito
-
-[1] https://lists.freedesktop.org/archives/igt-dev/2023-September/060717.html
-
-José Expósito (39):
-  lib/drmtest: Add VKMS as a known driver type
-  lib/igt_debugfs: Move is_mountpoint() to igt_aux
-  lib/igt_configfs: Add helper to mount configfs
-  lib/vkms: Add minimal VKMS library and test device default files
-  lib/vkms: Allow to enable/disable VKMS devices
-  tests/vkms_configfs: Test device invalid values
-  lib/vkms: Test plane default files
-  lib/vkms: Test plane default values
-  lib/vkms: Test plane invalid values
-  lib/vkms: Test CRTC default files
-  lib/vkms: Test CRTC default values
-  lib/vkms: Test CRTC invalid values
-  lib/vkms: Test encoder default files
-  lib/vkms: Test connector default files
-  lib/vkms: Test connector default values
-  lib/vkms: Test plane connector invalid values
-  lib/vkms: Test attaching planes to CRTCs
-  lib/vkms: Test attaching encoders to CRTCs
-  lib/vkms: Test attaching connectors to encoders
-  tests/vkms_configfs: Test enablement without pipeline items
-  lib/vkms: Create VKMS device from static config
-  tests/vkms_configfs: Test adding too many planes
-  tests/vkms_configfs: Test not adding a primary plane
-  tests/vkms_configfs: Test adding multiple primary planes
-  tests/vkms_configfs: Test adding multiple cursor planes
-  tests/vkms_configfs: Test adding a plane without possible CRTCs
-  tests/vkms_configfs: Test enabling a device without CRTCs
-  tests/vkms_configfs: Test enabling a device with too many CRTCs
-  tests/vkms_configfs: Test enabling a device without encoders
-  tests/vkms_configfs: Test enabling a device with too many encoders
-  tests/vkms_configfs: Test adding an encoder without possible CRTCs
-  tests/vkms_configfs: Test adding a CRTC without encoders
-  tests/vkms_configfs: Test enabling a device without connectors
-  tests/vkms_configfs: Test enabling a device with too many connectors
-  lib/vkms: Test changing enabled device planes
-  lib/vkms: Test changing enabled device CRTCs
-  lib/vkms: Test changing enabled device encoders
-  lib/vkms: Test changing enabled device connectors
-  tests/vkms_configfs: Test connector hot-plug
-
- docs/testplan/meson.build        |    7 +-
- lib/drmtest.c                    |   18 +
- lib/drmtest.h                    |    8 +-
- lib/igt.h                        |    1 +
- lib/igt_aux.c                    |   25 +
- lib/igt_aux.h                    |    2 +
- lib/igt_configfs.c               |   57 +
- lib/igt_configfs.h               |   13 +
- lib/igt_debugfs.c                |   29 +-
- lib/igt_vkms.c                   |  794 +++++++++++++
- lib/igt_vkms.h                   |  109 ++
- lib/meson.build                  |    2 +
- meson.build                      |    8 +
- tests/meson.build                |    2 +
- tests/vkms/meson.build           |   13 +
- tests/vkms/vkms_configfs.c       | 1884 ++++++++++++++++++++++++++++++
- tests/vkms/vkms_test_config.json |   72 ++
- 17 files changed, 3013 insertions(+), 31 deletions(-)
- create mode 100644 lib/igt_configfs.c
- create mode 100644 lib/igt_configfs.h
- create mode 100644 lib/igt_vkms.c
- create mode 100644 lib/igt_vkms.h
- create mode 100644 tests/vkms/meson.build
- create mode 100644 tests/vkms/vkms_configfs.c
- create mode 100644 tests/vkms/vkms_test_config.json
-
+diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+index 6c7d0310c..79023359a 100644
+--- a/tests/vkms/vkms_configfs.c
++++ b/tests/vkms/vkms_configfs.c
+@@ -24,6 +24,11 @@
+ #include "igt.h"
+ #include "igt_vkms.h"
+ 
++struct invalid_value {
++	const char *value;
++	int size;
++};
++
+ static void assert_default_files(const char *path,
+ 				 const char **files, size_t n_files,
+ 				 const char **dirs, size_t n_dirs)
+@@ -63,6 +68,32 @@ static void assert_default_files(const char *path,
+ 	}
+ }
+ 
++static void assert_wrong_bool_values(const char *path)
++{
++	struct invalid_value invalid_bool_values[] = {
++		{ "", 0 },
++		{ "\0", 1 },
++		{ "-1", 2 },
++		{ "2", 1 },
++		{ "o", 1 },
++		{ "invalid", 8 },
++	};
++	int fd;
++	int ret;
++
++	for (int i = 0; i < ARRAY_SIZE(invalid_bool_values); i++) {
++		struct invalid_value v = invalid_bool_values[i];
++
++		fd = open(path, O_WRONLY);
++		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
++
++		ret = write(fd, v.value, v.size);
++		igt_assert(ret <= 0);
++
++		close(fd);
++	}
++}
++
+ /**
+  * SUBTEST: device-default-files
+  * Description: Test that creating a VKMS device creates the default files and
+@@ -111,6 +142,34 @@ static void test_device_default_values(void)
+ 	igt_vkms_device_destroy(dev);
+ }
+ 
++/**
++ * SUBTEST: device-wrong-values
++ * Description: Check that setting unexpected values doesn't work.
++ */
++
++static void test_device_wrong_values(void)
++{
++	igt_vkms_t *dev;
++	char path[PATH_MAX];
++
++	/* It is not possible to create devices named "vkms" to avoid clashes
++	 * with the default device created by VKMS
++	 */
++	dev = igt_vkms_device_create("vkms");
++	igt_assert(!dev);
++
++	/* Test invalid values for "enabled" */
++	dev = igt_vkms_device_create(__func__);
++	igt_assert(dev);
++
++	snprintf(path, sizeof(path), "%s/enabled", dev->path);
++
++	assert_wrong_bool_values(path);
++	igt_assert(!igt_vkms_device_is_enabled(dev));
++
++	igt_vkms_device_destroy(dev);
++}
++
+ igt_main
+ {
+ 	struct {
+@@ -119,6 +178,7 @@ igt_main
+ 	} tests[] = {
+ 		{ "device-default-files", test_device_default_files },
+ 		{ "device-default-values", test_device_default_values },
++		{ "device-wrong-values", test_device_wrong_values },
+ 	};
+ 
+ 	igt_fixture {
 -- 
 2.48.1
 
