@@ -4,64 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7429FC021AA
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FD02C021AA
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:31:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B133610E79B;
-	Wed, 19 Feb 2025 09:29:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BF1E10E7A1;
+	Wed, 19 Feb 2025 09:31:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kthbYxbG";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="aiq6dqxn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82C9910E10C
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 09:01:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739869295; x=1771405295;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GcQtq8o5jMWMW8qWsA7nZkFNjtF7zptkK8gr83epehc=;
- b=kthbYxbGtarc03bTlBt1gfo5ME0ctZPiSHw9Uy9CQ/bsexprsNvEIPdU
- Pj/pI7UCeY64/QJd758Me7y2nHhFaMivCvVXAI1GUbBVtSMoEgUePudhW
- 5MswLLAvhnrXDcJJOyDF3vrqCbaqBpTWyl+fQe6Jf/pyRMjUbTnd581E8
- D6t9advfZg04pQsCNG6kowce34srjAHTuP3OKzLC5geYpJnS/Lymg83MP
- u3mi5CtrlRi4AFX/BkE1sNRnStRbn2TCzYn+XS9BUG1VLoF/nGOT9MwEO
- JxFxrKY6OGI3EwwAlG+bSEyuxIGBF8dSQ5SwJfb7ANy3gwXX1tJrBGc6L Q==;
-X-CSE-ConnectionGUID: TZl/YlicRRGUjBvUO9yFqQ==
-X-CSE-MsgGUID: GVP8w9d0RmCWsxczrP9/7Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40810064"
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="40810064"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 01:01:34 -0800
-X-CSE-ConnectionGUID: QSiVzEB6SaG2Z7yyfFrhGA==
-X-CSE-MsgGUID: U2mKyTqdRE64yxLcUwMQZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="114076895"
-Received: from intelmailrelay-01.habana-labs.com ([10.111.11.20])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 01:01:33 -0800
-Received: internal info suppressed
-Received: from dhirschfeld-vm-u22.habana-labs.com (localhost [127.0.0.1])
- by dhirschfeld-vm-u22.habana-labs.com (8.15.2/8.15.2/Debian-22ubuntu3) with
- ESMTPS id 51I91NYC245676
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 18 Feb 2025 11:01:23 +0200
-Received: (from dhirschfeld@localhost)
- by dhirschfeld-vm-u22.habana-labs.com (8.15.2/8.15.2/Submit) id 51I91Nax245675;
- Tue, 18 Feb 2025 11:01:23 +0200
-From: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
+ [209.85.221.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D29410E3F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:28 +0000 (UTC)
+Received: by mail-wr1-f51.google.com with SMTP id
+ ffacd0b85a97d-38f1e8efef5so3166042f8f.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1739897426; x=1740502226; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bK5W7tsiARuIDpGEiob9w8oqt7VHZxUt05J1uaLCOXk=;
+ b=aiq6dqxnYjskCWxbKUhT39GIzBfU/SuKg8H+Zwz3fNP//TJWKrPmd0IHlbn4s8Cs6Q
+ cEq+nWvxRrib/5TqIYx+uZxxVV7IOuApo2dVC34X+ExG0rw8fB3xSexDj4yFXOYrVN9u
+ ZClpK82MzlMFojTIfPVWG5v24G6rzQGZa6DDNO+e2HL0yFjrmloR+rqiJ8HCTMiD9yXH
+ p54shzV6vWjUY69OCkbIX/A08qbqx63g7iDpTA1ux3M08jS388mv85WWagslhftWTcSq
+ oAgG++0M1/Meplgz3Fo2uZzjiEBgGlXUyQqMwITFyt41aJjlj/Cvlc+sVjCsC8vCqy/v
+ I/vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739897426; x=1740502226;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bK5W7tsiARuIDpGEiob9w8oqt7VHZxUt05J1uaLCOXk=;
+ b=PR8Z9/83AU1zArzIkqrRb677nhtOs92rOSBuqyGYBtZ4Sf4f5xMRXQa5Cq6KSURInu
+ Du3UDAOu2B0D3xAQLpvIyzaUJjpWUJgL+N7uRcm8cQ6MM1Ha8W/GGg98rxDmouSuW1qj
+ U+1e91IFPmQr3lfqh6HAx5axU85/bGu/EQ/zh610L0i7omqwdBX5B49kUNjcbXDiN8DJ
+ 01tbYvv0bUU0vCigWK7zitjDuLJgoVwsZogLPojIvzP3XByqTmAC4kRADH1flYQ48PdP
+ zXZgII5/Ee1z/LAzX3PHrxNeVwxCu9eepwCu+eI3HVqYUwpwILyFJH810NYKDBI0KQCS
+ c7+A==
+X-Gm-Message-State: AOJu0YzY7Dsw6ClPGYuaAI0JLj9FL3+l7INRDlfUZDihu/DDxo45zmjQ
+ oVjCtfup4YZXym38nf3u4AMfxzqpstmGC6I90B8tYF37gUneEQdddY3dE4cc
+X-Gm-Gg: ASbGncugqIFi2araEh+8PuK8Rl+Z/fMNz1msjxQgSPqL+FEv9fB7fCr0jnGO3RUm3ZT
+ iJnvUCuSTQDsYoo2L5SyITtjxNi/UMD8UGgtbufXlSKplLiiI2cW+iONiPHv2YO0x+I4MRTgdug
+ Uno26p8BXCNxIq2M++CBF5qBnd6W4W6+FPdUCMz+UUM2DGttyHZqZ/8h9iD5CaZr8LU6j+w8wNm
+ /jH7pAwkp7C2jmKwph7CheMDJUciygEjHJsttMQZnxPSJODNklOlJeFVfLiVQfSTppBXyEbfEEE
+ iWnC4zlOzOHjqQc42A==
+X-Google-Smtp-Source: AGHT+IGxLp7hVos6fXNxTmy0DY+1RTnW8fyDGBxhsvMZkoDW/YeLRBwHxeV1xBwIeVivzs1xvpMWFA==
+X-Received: by 2002:a05:6000:eca:b0:38d:a879:4778 with SMTP id
+ ffacd0b85a97d-38f33f357cemr12192672f8f.33.1739897426335; 
+ Tue, 18 Feb 2025 08:50:26 -0800 (PST)
+Received: from fedora.. ([213.94.27.232]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Feb 2025 08:50:25 -0800 (PST)
+From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com, koby.elbaz@intel.com, lucas.demarchi@intel.com,
- Dafna Hirschfeld <dafna.hirschfeld@intel.com>
-Subject: [PATCH] intel_reg: add support to reading reg with debugfs ioctl
-Date: Tue, 18 Feb 2025 11:01:22 +0200
-Message-Id: <20250218090122.245662-1-dafna.hirschfeld@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: louis.chauvet@bootlin.com,
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t 13/39] lib/vkms: Test encoder default files
+Date: Tue, 18 Feb 2025 17:49:45 +0100
+Message-ID: <20250218165011.9123-14-jose.exposito89@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
+References: <20250218165011.9123-1-jose.exposito89@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 19 Feb 2025 09:29:26 +0000
+X-Mailman-Approved-At: Wed, 19 Feb 2025 09:31:45 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,209 +87,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-use the new debugfs mmio ioctl in Xe driver to read/write
-registers in the intel_reg tool
+Add a helper to create a encoder and a test checking that the default
+files and directories are created.
 
-to use the debugfs ioctl, run:
-sudo intel_reg write debugfs:0x71D05000 1
-sudo intel_reg read debugfs:0x71D05000
-      debugfs:0x71d05000 (debugfs:0x71d05000): 0x00000001
-
-Signed-off-by: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
-The Xe driver patch is:
-https://patchwork.freedesktop.org/patch/594198/?series=133505
-(mailinglist archv) https://lore.kernel.org/intel-xe/20240515165244.156194-1-kelbaz@habana.ai/
+ lib/igt_vkms.c             | 12 ++++++++++++
+ lib/igt_vkms.h             |  2 ++
+ tests/vkms/vkms_configfs.c | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 43 insertions(+)
 
- lib/xe/xe_debugfs_mmio.h | 39 +++++++++++++++++++++++
- tools/intel_reg.c        | 69 ++++++++++++++++++++++++++++++++++++++++
- tools/intel_reg_spec.c   |  5 +++
- tools/intel_reg_spec.h   |  2 ++
- 4 files changed, 115 insertions(+)
- create mode 100644 lib/xe/xe_debugfs_mmio.h
-
-diff --git a/lib/xe/xe_debugfs_mmio.h b/lib/xe/xe_debugfs_mmio.h
-new file mode 100644
-index 000000000..a715487c7
---- /dev/null
-+++ b/lib/xe/xe_debugfs_mmio.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
+diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+index d881a2417..299891377 100644
+--- a/lib/igt_vkms.c
++++ b/lib/igt_vkms.c
+@@ -416,3 +416,15 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+ 
+ 	write_bool(path, writeback);
+ }
++
++/**
++ * igt_vkms_device_add_encoder:
++ * @dev: Device to add the encoder to
++ * @name: Encoder name
++ *
++ * Add a new encoder to the VKMS device.
 + */
-+
-+#ifndef _XE_DEBUGFS_MMIO_H_
-+#define _XE_DEBUGFS_MMIO_H_
-+
-+#include <drm/drm.h>
-+
-+#define XE_DEBUGFS_MMIO_32BIT		0x1
-+#define XE_DEBUGFS_MMIO_64BIT		0x2
-+#define XE_DEBUGFS_MMIO_BITS_MASK	(XE_DEBUGFS_MMIO_32BIT | XE_DEBUGFS_MMIO_64BIT)
-+#define XE_DEBUGFS_MMIO_READ		0x4
-+#define XE_DEBUGFS_MMIO_WRITE		0x8
-+#define XE_DEBUGFS_MMIO_OPS_MASK	(XE_DEBUGFS_MMIO_READ | XE_DEBUGFS_MMIO_WRITE)
-+
-+#define XE_DEBUGFS_MMIO_VALID_FLAGS (XE_DEBUGFS_MMIO_BITS_MASK | XE_DEBUGFS_MMIO_OPS_MASK)
-+
-+struct xe_debugfs_mmio_ioctl_data {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	__u32 addr;
-+
-+	__u32 flags;
-+
-+	__u64 value;
-+
-+	/** @reserved: Reserved */
-+	__u64 reserved[2];
-+};
-+
-+#define XE_DEBUGFS_MMIO_IOCTL_NR	0x00
-+
-+#define XE_DEBUGFS_MMIO_IOCTL \
-+	_IOWR(0x20, XE_DEBUGFS_MMIO_IOCTL_NR, struct xe_debugfs_mmio_ioctl_data)
-+
-+#endif /* _XE_DEBUGFS_MMIO_H_ */
-diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-index bb1ab2889..36f549385 100644
---- a/tools/intel_reg.c
-+++ b/tools/intel_reg.c
-@@ -31,6 +31,7 @@
- #include <sys/stat.h>
- #include <sys/types.h>
- #include <unistd.h>
-+#include <sys/ioctl.h>
++void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
++{
++	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
++}
+diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+index cb0278544..b4b048c6d 100644
+--- a/lib/igt_vkms.h
++++ b/lib/igt_vkms.h
+@@ -38,4 +38,6 @@ bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
+ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+ 					 bool writeback);
  
- #include "i915/gem_create.h"
- #include "igt.h"
-@@ -39,6 +40,7 @@
- #include "intel_chipset.h"
- 
- #include "intel_reg_spec.h"
-+#include "xe/xe_debugfs_mmio.h"
- 
- 
- #ifdef HAVE_SYS_IO_H
-@@ -497,6 +499,67 @@ static void vga_cr_write(uint8_t index, uint8_t value, bool mmio)
- 	vga_idx_write(vga_crx(mmio), vga_crd(mmio), index, value, mmio);
++void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
++
+ #endif /* __IGT_VKMS_H__ */
+diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+index af42e364d..753ea2d85 100644
+--- a/tests/vkms/vkms_configfs.c
++++ b/tests/vkms/vkms_configfs.c
+@@ -345,6 +345,34 @@ static void test_crtc_wrong_values(void)
+ 	igt_vkms_device_destroy(dev);
  }
  
-+static uint64_t debugfs_ioctl_write(uint64_t addr, uint32_t val)
++/**
++ * SUBTEST: encoder-default-files
++ * Description: Test that creating a encoder creates the default files and
++ *              directories.
++ */
++
++static void test_encoder_default_files(void)
 +{
-+	int ret, fd, fd_dbg;
-+	struct xe_debugfs_mmio_ioctl_data args;
++	igt_vkms_t *dev;
++	char path[PATH_MAX];
 +
-+	fd = __drm_open_driver(DRIVER_ANY);
-+	if (fd == -1)
-+		exit(EXIT_FAILURE);
++	const char *dirs[] = {
++		"possible_crtcs",
++	};
 +
-+	fd_dbg = igt_debugfs_open(fd, "mmio", O_RDWR);
-+	if (fd_dbg == -1)
-+		exit(EXIT_FAILURE);
++	dev = igt_vkms_device_create(__func__);
++	igt_assert(dev);
 +
-+	memset(&args, 0, sizeof(args));
-+	args.addr =  addr;
-+	args.flags = XE_DEBUGFS_MMIO_WRITE | XE_DEBUGFS_MMIO_32BIT;
-+	args.value = val;
++	igt_vkms_device_add_encoder(dev, "encoder0");
 +
-+	ret = ioctl(fd_dbg, XE_DEBUGFS_MMIO_IOCTL, &args);
-+	if (ret) {
-+		fprintf(stderr, "error writing register with debugfs ioctl: %s",
-+				strerror(errno));
-+		close(fd_dbg);
-+		close(fd);
-+		exit(EXIT_FAILURE);
-+	}
-+	close(fd_dbg);
-+	close(fd);
-+	return 0;
++	snprintf(path, sizeof(path), "%s/encoders/encoder0", dev->path);
++	assert_default_files(path,
++			     NULL, 0,
++			     dirs, ARRAY_SIZE(dirs));
++
++	igt_vkms_device_destroy(dev);
 +}
 +
-+static uint64_t debugfs_ioctl_read(uint64_t addr)
-+{
-+	int ret, fd, fd_dbg;
-+	struct xe_debugfs_mmio_ioctl_data args;
-+
-+	fd = __drm_open_driver(DRIVER_ANY);
-+	if (fd == -1)
-+		exit(EXIT_FAILURE);
-+
-+	fd_dbg = igt_debugfs_open(fd, "mmio", O_RDWR);
-+	if (fd_dbg == -1)
-+		exit(EXIT_FAILURE);
-+
-+	memset(&args, 0, sizeof(args));
-+	args.addr =  addr;
-+	args.flags = XE_DEBUGFS_MMIO_READ | XE_DEBUGFS_MMIO_32BIT;
-+
-+	ret = ioctl(fd_dbg, XE_DEBUGFS_MMIO_IOCTL, &args);
-+	if (ret) {
-+		fprintf(stderr, "error reading register with debugfs ioctl: %s",
-+				strerror(errno));
-+		close(fd_dbg);
-+		close(fd);
-+		exit(EXIT_FAILURE);
-+	}
-+	close(fd_dbg);
-+	close(fd);
-+	return args.value;
-+}
-+
- static int read_register(struct config *config, struct reg *reg, uint32_t *valp)
+ igt_main
  {
- 	uint32_t val = 0;
-@@ -546,6 +609,9 @@ static int read_register(struct config *config, struct reg *reg, uint32_t *valp)
- 	case PORT_PORTIO_VGA_CR:
- 		val = vga_cr_read(reg->addr, false);
- 		break;
-+	case PORT_DEBUGFS_IOCTL:
-+		val = debugfs_ioctl_read(reg->mmio_offset + reg->addr);
-+		break;
- 	case PORT_BUNIT:
- 	case PORT_PUNIT:
- 	case PORT_NC:
-@@ -650,6 +716,9 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
- 		}
- 		vga_cr_write(reg->addr, val, true);
- 		break;
-+	case PORT_DEBUGFS_IOCTL:
-+		val = debugfs_ioctl_write(reg->mmio_offset + reg->addr, val);
-+		break;
- 	case PORT_PORTIO:
- 		if (val > 0xff) {
- 			fprintf(stderr, "value 0x%08x out of range for port %s\n",
-diff --git a/tools/intel_reg_spec.c b/tools/intel_reg_spec.c
-index 632db6b9f..5c3ded213 100644
---- a/tools/intel_reg_spec.c
-+++ b/tools/intel_reg_spec.c
-@@ -108,6 +108,11 @@ static const struct port_desc port_descs[] = {
- 		.port = PORT_PORTIO_VGA_CR,
- 		.stride = 1,
- 	},
-+	{
-+		.name = "debugfs",
-+		.port = PORT_DEBUGFS_IOCTL,
-+		.stride = 4, /* we only support 4 bytes read for debufs */
-+	},
- 	{
- 		.name = "bunit",
- 		.port = PORT_BUNIT,
-diff --git a/tools/intel_reg_spec.h b/tools/intel_reg_spec.h
-index af396a294..39337e0e9 100644
---- a/tools/intel_reg_spec.h
-+++ b/tools/intel_reg_spec.h
-@@ -46,6 +46,8 @@ enum port_addr {
- 	PORT_PORTIO_VGA_GR,
- 	PORT_PORTIO_VGA_CR,
+ 	struct {
+@@ -360,6 +388,7 @@ igt_main
+ 		{ "crtc-default-files", test_crtc_default_files },
+ 		{ "crtc-default-values", test_crtc_default_values },
+ 		{ "crtc-wrong-values", test_crtc_wrong_values },
++		{ "encoder-default-files", test_encoder_default_files },
+ 	};
  
-+	PORT_DEBUGFS_IOCTL,
-+
- 	PORT_NONE = 0,
- 
- 	/* vlv */
+ 	igt_fixture {
 -- 
-2.34.1
+2.48.1
 
