@@ -4,181 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79225C02198
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 07:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AE7FC02198
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 07:23:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E88110E2A1;
-	Tue, 18 Feb 2025 07:14:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB49810E2A1;
+	Tue, 18 Feb 2025 07:23:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H/mY2bcf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hxbs52To";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37EBD10E2A1
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 07:14:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AEC210E2A1
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 07:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739862864; x=1771398864;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=SMQ8GYGbGp/R1JlgH+D82irpNQKOtytxQIIGr7I/EHk=;
- b=H/mY2bcfjzZQh6mRdJAi8ay+mc4beDAx4UwKHKaEb6ulRbt40P1e2QBK
- 41GtcZeg+sPOKDJ3nnOgFHhiX+Kt55QEaqkdzOyfS69GBe/gjkw7zGNqa
- T3Wa11ay6Jagntwu5sZ6Z1fv0DPfM0dLfDHDbWkhb+5jcRNz10v/xIgQ4
- aeS1cu65qdgyEObysYhEY7zHBXI5e+4DEEfec9qrLa+W+bM2bWFtRhZKD
- 2iYNd1l1+1kNV0TdEllZ4yeTD4boyc5HdN5ro8kCtk1tN3vIxJje304yK
- jMy9Zrhv+6JoPYezmfF+K0AyCbhlkmA9X4gP9K9qc/I68C5gFze55zowl w==;
-X-CSE-ConnectionGUID: 72OdXDjJRtGlntDyT4dGWQ==
-X-CSE-MsgGUID: 6Ur5uovSRFCY/FMfuT8Kaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="39781424"
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="39781424"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 23:14:23 -0800
-X-CSE-ConnectionGUID: BbM8tIACRISaYP/7kUEuxA==
-X-CSE-MsgGUID: PFgtxdtJTxatECycjIUBqg==
+ t=1739863414; x=1771399414;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=kCLHyN13mWU59zaEiznAT1OimppUemNE/vUla1u6iBo=;
+ b=Hxbs52ToVCQoLGmdIad5o+qCg38Qnmn6p1ubjalrsYOZB5dAD7cgMchr
+ GifpU+coFtbfHD3z5Gd9yrJNh4h1+glBsQtSr/cYGQBfdTfJB5tfnpSEx
+ Q+9IuODZHmpkTmZklxIxbQ8SxgiPI1TGAfl6WUGfcV/ztwAayquYyRsNV
+ CrpaXjPRjZzu845mvuQyw4NhWseh1g+81p8kYCrtefmbgjhQUbt1rR1Wo
+ D9Ou3aW7dNwp1u9iFWpmdJSeLjqgtMbJxeIcI1IXgJuEdYijx8l4Z+j0E
+ 26/4K/6N8zZzcN2SzTOnpUupXjhnMssjIV6FjcYyy/gk0cp69XJd2CIiq g==;
+X-CSE-ConnectionGUID: X6C2akOzRhuD6+bLwxI8gQ==
+X-CSE-MsgGUID: /Ulbse7zQGKoFdlmQ7PYow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51531741"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="51531741"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2025 23:23:33 -0800
+X-CSE-ConnectionGUID: ziAK2doPS4qmr1kl45vJjg==
+X-CSE-MsgGUID: /Iov9g43SJKdAt5BeTV84Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="145221335"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="119238032"
 Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 17 Feb 2025 23:14:19 -0800
+ by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 17 Feb 2025 23:23:33 -0800
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 17 Feb 2025 23:14:17 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.1.2507.44; Mon, 17 Feb 2025 23:23:32 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 17 Feb 2025 23:14:17 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.2.1544.14 via Frontend Transport; Mon, 17 Feb 2025 23:23:32 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.49) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 17 Feb 2025 23:14:16 -0800
+ 15.1.2507.44; Mon, 17 Feb 2025 23:23:32 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zDQ2y80yaz/piBykjiaU/xfzr/bJxR4d7bI4IzqQe4tafo90+WRvHyKk29T3dlnlPKhbllmi3QBAluFYUz7QqpHLuV+8aTAUSZtbAhZgS6qyqvR9d9BRMnKyKoWJ6aOwHqAczo4xP8DzNr5maVIBk8OdBeKNgnl2+Lu9jO7kYOP/EbwTb6wsdX9LZ9DTFkgfK8rrRZ/3aRsy4Q3fg4C4UEXuOiig2nR83rPfcXFQuy64313aJj5POvYXAC7w6F7KilQHN4HxAhKLkyjl0DwMUjmOldTLU/dxgSg1AuH6ZT4y6aIS3/aG97DOz4ynm15ROI7tAN2gXCAXEAU4I31hQg==
+ b=Zy0IZxhhKqUxJB5lWDchFUc+bqBRGY3+/KYoulfdCk/cyWLtQQYQYOWTxfqB7olxM0o+n+LXrKKucOteTqQtCbeIbDrxs2OEKdkDS6kyLQ1oYcInUx2k7h8R9XDhe7T5iAP3X9mCeDksJJpmLQ969uvvFGzsIXu6XSYzhQVka7ziGnpLVczK2uocECym+ru2O5I1yiiA48SpcpfoiooIqIi2XhWMDWLJPR6+E0FgUsMszIgP0Sd/zAwZaPEP3oASMC0tTDERv8g3efHoi4IcySJVrW8z5QbOuoSHtOUQiyrikJWVqHOcuR+CgT/kmBLTcV3OF28xH0PpKbnAsWO+dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EMIhdRsTApUxWVyUe/VFe5nQDsSw1yAZ6dMYSgRQf4A=;
- b=R8POq84P239fdbYehDJX6qbWXXq/GY9GY6VO73gY0Wz6lctmCsf/jvmYiaT4NtLFmdN5ELHSGv+HWLG8JFcG1LCi3VRP9d5eIT81HnEb3jAGGKBVphozac4nYGPHxVBJlCGNdKlOTYyvEwHRPLhxWST76FanC8VQ66PWk7Xnt9Bp6u1zgHiHAh3PXgCwL0SuLKVJgyjNBUXT97RIt9VFpEZM6E7/VFBXDTBzBlfxNqB6fUZ1N0R2EP1tZW4n+hYM5/S9i8+V40PnaF7oAD4UrAlp1xjrkPthBsvnkuwu9g355gFc+Pd/C28g6JPFaWacY/JcmUtrDx1up4VEqisTEw==
+ bh=BsnN74IroQDPAiLknbs+GFyK3t5iXfel0bCyzEnXXnc=;
+ b=JUyiMTulbyd8ILfUNjiGiyxeFbhpx0YDYnjRryZL70BilSKU/jNBYS7IS/g26MfOjPgcSz+LmpN2V8D64ZQS9y7f0SA//eXoXIkviu4AbRB6JW1av9ln/y//zM/7G4md+h5/564eE0vWUtV9SU03KW9UC53bHXXUzgzqDJMpUFYsbdJLxHyhYAGbfPici96FWgs7tBQVQG8zKMTkB1D3eBcdgzKOJKOTRM7XFIByeYmf+ycn/HHnTT94CzWMDlIqoxkxTfMIZUjWplXa5hUxgDn4tbisYNAJoAELXdB6d6zYz1uxHN/mm70EmmUJAZ2DJwxixo9knQrgedFTBr6wIA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by MW4PR11MB7162.namprd11.prod.outlook.com (2603:10b6:303:212::8)
+ by SJ1PR11MB6132.namprd11.prod.outlook.com (2603:10b6:a03:45d::8)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Tue, 18 Feb
- 2025 07:14:01 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Tue, 18 Feb
+ 2025 07:23:30 +0000
 Received: from BL1PR11MB5979.namprd11.prod.outlook.com
  ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
  ([fe80::b0f6:fbc:94be:2372%6]) with mapi id 15.20.8445.017; Tue, 18 Feb 2025
- 07:14:01 +0000
-Message-ID: <8bea967b-722e-4042-8033-5cf80e4fa54f@intel.com>
-Date: Tue, 18 Feb 2025 12:43:55 +0530
+ 07:23:30 +0000
+Message-ID: <e27a3141-311d-4c0f-99f4-bf6ca60e4b38@intel.com>
+Date: Tue, 18 Feb 2025 12:53:24 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/i915_fb_tiling: convert to subtest
- basic-x-tiling
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20250217173149.157360-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_color: Enable ctm-limited-range subtest
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+References: <20250214161011.363157-1-swati2.sharma@intel.com>
+ <Z699roJnvD0kO4Ne@intel.com> <7f66b930-2061-4204-934c-fee454992ae9@intel.com>
+ <Z6-v-I4F2Os8vXCa@intel.com>
 Content-Language: en-US
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20250217173149.157360-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <Z6-v-I4F2Os8vXCa@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA1PR01CA0156.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:71::26) To BL1PR11MB5979.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0PR01CA0062.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ac::20) To BL1PR11MB5979.namprd11.prod.outlook.com
  (2603:10b6:208:386::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|MW4PR11MB7162:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14d501c1-eaee-43c8-84fa-08dd4febd1b0
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SJ1PR11MB6132:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a51c1b9-9b2d-4515-ab33-08dd4fed24f2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?cEZGRkpmdkRDUkl1ZlVhZ3ljRE9pZ0krSk82dVpiSGlLL1g3dHArMk1OVVJH?=
- =?utf-8?B?aUxweGpDYWY2SWJ0eDJMSEEwWlhqWWZ3b3U5dm5KMDVLbC9UZGNqR3I5OUJO?=
- =?utf-8?B?c1RHWGYvM2FQQ2lGV3JleW53NWtmV1pXeno2WXhJbWxPUzBPZDFQekRsVFV0?=
- =?utf-8?B?L254cFQ3MnZEYkQzcEdsUCtrWEZKOVcwb3lpK1ljYmtIeW1WbUR1SDFqeE5V?=
- =?utf-8?B?M1pCY0dIbXY2dHkvODBnQTY0dWplQjkraFRBSmNGZUV5c3BkcmFvTzJXLzlC?=
- =?utf-8?B?TTM5YkIzZXRoK2g5bUp4TkdDcWVKK0VyYzZRVlRmNk9PRFJ1MEQrTVpQNXAx?=
- =?utf-8?B?SUxPMzQrUm9YNGFURUVhZEpLOUZ2dWxVQUxpVHBQZmhpeStiSWRpa2RReXUv?=
- =?utf-8?B?ZkM0WEQxZDkyTGwxUGNZTm56WDdxdC9Obnl3RjNRSFZFU3RJVXZ1Z3BVejA5?=
- =?utf-8?B?Y1ZlZk9lTVdiNjBjbldYM0drclFpUENKVFJxaFlxaVFZMlpFMnZqTk0zeDBI?=
- =?utf-8?B?SmxGTWY1OTBMcXJEeWVRb0RGMytSQjh4TWpCejZHYnliUFFTRC8wY0JaMFJQ?=
- =?utf-8?B?VjlFLytHOEQxdWMwLy9WWUtyWEFzK3FWRmp6V1F0d0xGZFJnYW9tSU5naTky?=
- =?utf-8?B?TGRnT2xmemdWKzlIdDRNdytaUkx1RG0wYUNST1BCaGhMSHJTVUpLSjJBTXE0?=
- =?utf-8?B?MEhIVUtIc2sxTndIOHBtMDJsY0RnK1kxbkVXUXJQMnFYMjlMUFVTYVI2blQ1?=
- =?utf-8?B?clBLNm12M2ExOVd2RzNnN1UzNWU4UWZraVJRa0J4NXNaVHJTWGgvMW1oOFc0?=
- =?utf-8?B?ZWJzNXRxUmVyanVLS3pJWnpXUG52Z3hYMzBGS1hBWXBtcXoxWG9xajhpL2xM?=
- =?utf-8?B?aHFNRkNjeUxuUUd3aVVHYysybGZsOHVNWFNRQ1R1NVY5YUp4NVgzemdKY2hv?=
- =?utf-8?B?NmVlazdaVE9URWx2N3dBd1ozWVJpckRPT1o3YW12OTlmaWVvR01DTXVTZ3BV?=
- =?utf-8?B?Y0VsbEFXcEZFY3h0YWRLSDAwVC8zdHlyNmFCNHNzV0JNZGpsQUhPNHlDVXQ1?=
- =?utf-8?B?UE1jZHp3cXZFcHIxUTNndEFzNlRhU0RqdmRiODdaVlhadVpST1JWc0lUMGE5?=
- =?utf-8?B?OUxQY3V4MVdEWERpbmZrREtRUys5T1QvRVlkMFI2VEtGNnlTQmd6UGxxcmtC?=
- =?utf-8?B?REx3YVVYUG96R2doc3JiYzhzZmNKemZtTFVmSlJwanRuUjc4QXJlaE1XT1NL?=
- =?utf-8?B?VjRtdXcvMDdvaTdhalV1Tk54ZEt6VHN3Z0d4L09EUFp5MzZNdnhrNWQrY2o3?=
- =?utf-8?B?RTZPdktha2pZNStnRXF1cWFYNXBpVUNhY3F2L1VDdk0vRCtjMVNaWTlSelVB?=
- =?utf-8?B?S2tkSmluNWxGMnJ6WGNLWXJoS29peE1ickxySTE2VWlDcko1MXpST2pScThL?=
- =?utf-8?B?Skp6UW1tSW94T1ZGMENhaUtzZHBuNUpuR01YVjVWK1dxeWdtTVhwN2dWcU1D?=
- =?utf-8?B?UWlhRzZZWkJHOCtacm1ydmMxYi9HYjNZbkRCT04yUkV3MHRZVndMM1F5cDVs?=
- =?utf-8?B?bjlpeDJBZ3pzWG5LNHhzNWlrd2svUHdrWnRZUDdJeHFOQkZmQnpkNEk0dE5P?=
- =?utf-8?B?MUFYUFE2OU0zMWFRTy9RZkkydjdtNVVZbVhFd1VFWEs2T3hpSjdKMkpqMVlG?=
- =?utf-8?B?V3NEbUxhV0NhcnJIT1BaczYvOWd3R1VFeU9TeStvWmNXa2xDb1NqQUpYclJm?=
- =?utf-8?B?OG44KzBjS0drRW9VYVllTlRvTitPZW00T2ppZXZ4czZ5aUlNcFcwWXBEay8x?=
- =?utf-8?B?SENtQ0gvclpNaXd5ek9zazM1amQ4aktFRXZyV0kxTjJ2dERyUUU1YWxYbnZE?=
- =?utf-8?Q?RqB8xSWf3LUXH?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?U2Fpa240U2xmMUh1WStGcmlHWm1hYWxuWFVJOVFKR3MweFhDa2JXOUE4Q3Bi?=
+ =?utf-8?B?QzNzaXkxazFmNHZmbnBlYzQwZ0RYaHE5Wk9maXpRa1BVWWFRMmFKdkZWVjdy?=
+ =?utf-8?B?akdITFg1ckhzY0txTVpmWGJOUGFEenBpQTRNYXp2c29Gb2JNa0xHM3I2WWpP?=
+ =?utf-8?B?SWZnQnUzOXpiUHVSOXFyQ1JOVkFvUWl0WHFibWpQZHBHL0p4NEVKY1AvQjhF?=
+ =?utf-8?B?RWZDWGh4TVpGWHcyVFpsTjhmbmpGZ1NBM296NHNWVWx3clQwWU5rcUVabzhG?=
+ =?utf-8?B?RVlnZnRsTEExOHNDVndEMnp0UUZMcjlDRWpWMWZOWFJXeEZHS1QxTzh3R0J6?=
+ =?utf-8?B?M3JuUjhrUVkveWx6NUl3RWVYMnRQS1E4UXBLYTA3RzdLdVhKSHovNUZLU2h3?=
+ =?utf-8?B?Q1A4VjVsVStlN01WU3BvMHEvOC91ZVQ2dDVsSldGVFptWWMrOHZKR3diS0Zj?=
+ =?utf-8?B?amZON3BoZk9QZVBTc0ZkSCtvWWtWcmNwTzViU2dKRExmWjNZb0drVXcyZGp1?=
+ =?utf-8?B?eGt3NU8wYit1bFlNdHllL0pzcXFTNkJ3azlJQkpTSXN1YnJHTmYzUzJnTm96?=
+ =?utf-8?B?OGhMaFBoa3ZnWDVIZXpDKzJER1NWUHBQbUtMbTBTVmJld1hib0V1bnFiRWt1?=
+ =?utf-8?B?R09ISzVOUDg0TkJEa1dJN2lSVHJEOVdiTUtuSlRPS1ZxaUNVY3VLUnFqZ1p1?=
+ =?utf-8?B?SERRaWZWQUJXUVF6em9qQVVheW1Bek15dWU3RUJKQlFVenQvK0k5NnhTcDZH?=
+ =?utf-8?B?UUc5eFlsSElLeTFHZzlEN0NGUUhXSmhwcDQyQXI4WHpEcVFxa2o3c21YVWdK?=
+ =?utf-8?B?VTJqdmhJcFdqRnJKME9sTCtWZk15SFkxaDJub3N3UkY5c3p6QWRlZ3l5SW5S?=
+ =?utf-8?B?cFJyaXRZYXdobzV1eVpzZU8rWVl1eGFEZmJ1Mng0ZjBpQlhpd2VkTEhRLy9p?=
+ =?utf-8?B?ZGE1dFUyc1JwWWd0bzA2c1RsazIvU082TVJwTm1vclJGYzdtbmpUU2NhMlQ2?=
+ =?utf-8?B?RG9LdDFib3Z4TklUS1pFOUlOMmhrN3hLUGhpbjA0VFRvOTFjbnpvSmpCQnJo?=
+ =?utf-8?B?YlNaNDF6YWNKNFZpNmhEQjhXcUJra1lwazltakVzODJVc2pGYVBvdEV2ZzMv?=
+ =?utf-8?B?WStCelFnUVZUQ1dVSkVqZHZRYmZLUFlsUCt4NldTY2hGc0JsMHRKV1BIODQz?=
+ =?utf-8?B?Tk5IRlY1UjhYMUJLaHhERWM2RmhQbzZNbG82dnpsTXBuS1JqUlhaZ0xWRXBv?=
+ =?utf-8?B?MXY1YXBaaHdtQ2NPbE5YZzF3V2VLWUxIc2pabW5XbDgrR2haMDlwQWdyZ1Rz?=
+ =?utf-8?B?UVZWR0lvRUM0UFV2WGNLVUpIWmF1d3ZyclczNjkzZ09nb1FKbjZiVno2ZnFW?=
+ =?utf-8?B?MU5DZy9FTS9IYXBRUEVwbGJ4VUY4V3R3MnhjWlpYN3Rud3pINkE5Z3hFNDBk?=
+ =?utf-8?B?WjhuZ29EZE1sN1ZKcjFNMEptVmtIcjhoKzJCYUdiMFQ1aWNzMXc5NGw5aVBN?=
+ =?utf-8?B?eWY1YWZmNk5zbGJBek53Nmo2MjlxOUVGazJPdWloWVVxQmh1UEFLbzd0SnBJ?=
+ =?utf-8?B?Ympta281UzhYdFdMc3dqWUJOcDhaQ2hvQ1RaQXM3R3ZRb05RZ29MVUxNbFFq?=
+ =?utf-8?B?S1pnSHM4RXBuNmVXU2NaY0h4ZFBmbU1VZForRG5naGFZQ011OVdKcWdqTTNy?=
+ =?utf-8?B?TWFEdlA4blhxMFAzNWIyenZpQ0dzN2lwNWRjbnJhUVZOaDNhYVRkREhsZjFR?=
+ =?utf-8?B?TXl0SWJwcDl3cDAxNzhMZFN1WkUvWGc5T1Z3dkltbjFoRlNoWUhTVUhncndE?=
+ =?utf-8?B?dXVGamlsdTN3VjEvMzhHY0t6VTdQSndHRm51QUZkc3d5a3dVSXA4RDR2L3Rr?=
+ =?utf-8?Q?gxW7sfmcS5VuO?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WC9tajhpai8yd2wwL0tzeGNVclBvTjhoQzFlZkhJQ05OaE5RWS9BL0VKMVg4?=
- =?utf-8?B?elRCWXc4REpBS1Y5UWZnNWxTWlVvclEzWnIrNjJMdG05SFVQaDdvUTNabzRU?=
- =?utf-8?B?TVdjMFJtZ0pMZUVJZGtCNG5kb0JlbmdBcXJXdzFsdkZLcFFKZlFVUjcraW5i?=
- =?utf-8?B?NGZyeFN5bTU0aDV5cHd4Z0F3QlZXTllDMEZWSWJJWmtHeFlTRWRwRU1IUWti?=
- =?utf-8?B?TU8yVFVYYUxFM1dmLzlGNjA3dFI0UkpWQ0pWQUo5Vk1XVjdsaXNnaFBRMmlV?=
- =?utf-8?B?bFZTQUYzNXQvbU1peElUbmxtdlY3MVhtbGFGTjFKZkl5Z0NnLzhOQ3R3QW10?=
- =?utf-8?B?REt1bHNoeXAvOE5Jdjk3SEhDOWRFYzB5d2JDbE9LYjVUT3o4MDhoTzVRYmE4?=
- =?utf-8?B?aE9wZVJPb3o3YncyNExQbk1qYXRFekhXTVlFMDltcHhLTVZpZVJhbFJUQ1Fr?=
- =?utf-8?B?TVBLYlQ4N0Nubm4zcUtSV1JjUDZoZmJPSHZ2L2I1NWJHSkt5MTVmTDlVSVRu?=
- =?utf-8?B?VElSRmJSakdjb1JGbC96akhPNENieTQvU21PWFJ4SXp6Z3U3clFnQUorV0g2?=
- =?utf-8?B?R1VCTWZxSHFxNWc2R09jOUcyaVM2a3hoUVZha2xqU3c1d3hhdUxVTjJJVk02?=
- =?utf-8?B?ZThzVS9LQnVzWjYzdzhnMTQxTjB2Y3Z5VGpCMjE2YlVneUlIcEt3cVVZaWI3?=
- =?utf-8?B?VndNWDZwT0I0VFFHOXZYUFg2b1g3eEVzdVlvOS9rNXlGZjR0bDVaL0NpaXNw?=
- =?utf-8?B?cy9nc2Q2bmRqZ05QTnpqVTVCcmZBM1EvRFplUUxSUWIxK3NoWUxWU0k0ZXFB?=
- =?utf-8?B?cENrTHoyUy8zUnloN2tvRGk3b0Zxd2ZvY0VncjJZU1FkdkxmSzhDR0ZFUUhI?=
- =?utf-8?B?OEhoQ2tqUmVRMk1xZGRpQ3hEL1NBME95TlRuejl6VDZ0blRSYU9KNUNGeWRy?=
- =?utf-8?B?VThRZTNUbFdKQUI2UVJWVnVOS3JWYzlrakI2d09SMnRiVm1XdzgvT3BzZ0M3?=
- =?utf-8?B?bjVFdHhjR1lQMXkrSVEvNWZxOHdGaGNuY3RNN0diWFJzblRWZURHSm5tVkNl?=
- =?utf-8?B?OFVmaUE5RTNTZE1IWWM0MEt6MkdxSjRpbEtaRnhEYlpYbVQ4UHFVVDNQVHFF?=
- =?utf-8?B?UEl1U3VXN3RwZHpheCtKeHhFY3EzWmVHamtTV01EWTl5azc5VHdnZ1hDWEJa?=
- =?utf-8?B?cGUrRmp6RUJiYVJUS0l2dnNNMkc4VUluL3JTZXh5aWNlRno1Y0JoN1poOHg0?=
- =?utf-8?B?SEg0aC9CQUtnb3g4cVdCM0J2OUR5YVN6ZG1ZaHk1U25xVVIyVWxVRmpKVWxO?=
- =?utf-8?B?UEMydnhHQ3NTUW5wbC9ZSVIwalNLd09qeFVHc25lNExicFhrWEZuRzFpVkRW?=
- =?utf-8?B?OE9jdEJHMVpmVUh3L0ZqMDdBOTJMWmo3cEpPRU1TUjVFMUdEUTFCSmVBZW1S?=
- =?utf-8?B?Qmk5ZDhuYm1JaFdlRExGQzZnY1pBNUF3MGFKU3dIY09La01ZM3k3TnE5RG1R?=
- =?utf-8?B?Y29idGhNOWtnTmhLclRsdWxYR2lLRDV5bDZFb054Q1VlUkoyZlhTazAwNGVi?=
- =?utf-8?B?dzlBSHRON3pjL2QxWFB6RE8waGt2TEdMZFY3UTRKSVpSU0pMNWhtcU91TDNC?=
- =?utf-8?B?b3BDTndIa0svL05vMUU4VnFMVjJNUjMxVEZQMVpwWHkrc1ZqRGl6ZWd3MzJr?=
- =?utf-8?B?dVUwMXVrYVRUWldvclVOdVp1cmkwL211UlMyYXZsRXU2MlZXeFBRTFZxRzd5?=
- =?utf-8?B?eDdjdHRjenZFZ1l3MzkvQ2FSSWZHQ2xNOUhHcVhPSUpELy9uNnY2bm9zUm50?=
- =?utf-8?B?VzVvaFFHVnlheDdPbzFVb05nKytuMUFTbE1RWW9DUzYrUVF2ZVRZRDI2bk12?=
- =?utf-8?B?Y2xWTitQYllUMXZCVnhIcFB3UWp4ME5OQXlQdG5ia0p3RjVMOEw1aDBpaXFs?=
- =?utf-8?B?OEJwZHpCL1paYmlDVFM5aVlZWFVyRXhMYkxuS2l6R1M0ZGNGdkdkdVY5bmhu?=
- =?utf-8?B?NE5IQ09BUFVlM1UyMW9abWprU3N6MHI4YmorM0dyMlQrZklib2dEYWRyOVFM?=
- =?utf-8?B?ejFxWjVFN1ppMjNHa3RydW9vOGttU0dnOHF4SERKdGMzRS8wOEIxdWVOY1ZZ?=
- =?utf-8?B?aWwzcjQ4R2JIdyt2K2h6L3VwaUQyREY5bXVkeEVhbmhWakJ3N2YwNkUzZG0x?=
- =?utf-8?B?K3c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14d501c1-eaee-43c8-84fa-08dd4febd1b0
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UXpFYXNBeHVaT250NW11c0lZelFCU2RDTWtnc045VTNKNFRESG9DZ0U0bUlE?=
+ =?utf-8?B?YldjTjJQK2pmSTlUMVI0UUtFWGhrWUxqcjk3Vks5VUVBQzl6LzFDOU1SNlh3?=
+ =?utf-8?B?SDV3a05EZmkvMTByZmV1SjByUmt0c0FyTkVEL0tMKzNXMWxETHlDcmxjTENx?=
+ =?utf-8?B?UUtQbkFONEJDNDltb0xwaFZGMjNZTVFoOVlZbnZnWC9jSCs2cFF0SkRsdWQx?=
+ =?utf-8?B?WlhNdW95aGV4NWhmZVNRUjIyVWJPQnJoZXVHQ0dIMm9CdThMbllFV0lRUjhj?=
+ =?utf-8?B?VytIdWdWY2NBc0FXRDkyNUN3ZzlBQVB0SmpNTGdPam1ZVmlTelR6aGlHU1FT?=
+ =?utf-8?B?RFpQb2Y2cGd0OVR3RFdIdjgzRmNWaVA1Q1pVZXFYTTVqZlg0ZFdkZ1FsbzZ4?=
+ =?utf-8?B?K1FNbklMSldSejNRY1pTY0ZObU8rVDJiUVl1NVdtMUxxNHVSSUl5aDJDQjIz?=
+ =?utf-8?B?VkJLL2k0dWRnUFVOUUduSU13b04zZUV0NUhybEp2dDYxTHd2K244bW9xN0hF?=
+ =?utf-8?B?ZFZrZ3N0MVdESm5zS2cxQmZ0L2Q4em9GRmdNaGI4V1VzVlNzNTlyemMxMHVG?=
+ =?utf-8?B?VEJyR3ZsNzhiMXpzRDJHdFdjanpITkFKVk4rTG9UcnJzQjdyeHpxa3VvRDdp?=
+ =?utf-8?B?WmRmSHdJQnhENzByVEkxWHZGTkVjWE1sYjlqWjlyZDJSQ2d6VlhzYkN3dUJn?=
+ =?utf-8?B?cDdkWEp4eTQwYitRaElTcVdoNEJyeHpTbUZob3hBMmxjRTl1aVkzVTI3OFdz?=
+ =?utf-8?B?bzVLdEVISUtUcTQyWE5PY2ZkcFVCeFg1dkRBQnpOYlowWjNwc0RJMjc0bGlG?=
+ =?utf-8?B?L0ZuVTVjZFpEajRiVTJhV2UzN0lVTkc2UmpmM3NqRCsrSS8zMkJRSlJac21N?=
+ =?utf-8?B?T3NpazM2ZkxBeml5aVpLM3hpcnFkUFc2di9xS1Bia2FjMnRCN2tiemkxNEli?=
+ =?utf-8?B?ckNqTzQ5UTVFZTNxWitXcGhzUXpENlJ5T0Y4UEVqL3J6OTltMkxEenJrQTR6?=
+ =?utf-8?B?Ly9UQi9zUnlLdE10cjNoSy8zK0FMY1ZNRGhJUXZ6ZGNDNk1QNWJVSWRrYm9s?=
+ =?utf-8?B?azNCRFI1MXdmUGlTWjczaHp1ZHNhUytkajhYTEtjU3pvSnM0N2hSSHM1SUJy?=
+ =?utf-8?B?UzZxZGhUbG5CTUlyY1F2UGk1c2FNUUw3cVh0bmtlaHhHV0RkWnliay9XMitF?=
+ =?utf-8?B?RHJNT1drT0hxc0Z1akJUOE5PdlB4d0YvYzJ1RndHRHRGQ05BTTVpMFhrcy9w?=
+ =?utf-8?B?RENJb3J5bnV6YnU0a3hRbDNtSVV2czBNbU53NDk4Lzg0V2tTaDhSZ2VEbmo3?=
+ =?utf-8?B?bFRsNzZ1N1U2Z0hweW9EL0t1SnUrcVJ0eFdvbUxQQURtcGpoNDB3MitXSnVR?=
+ =?utf-8?B?cVhmTFRjbGpxSE9nbkVYV0xITWo3S0VKWkI3V1NlQjd4dXlUalloRHBsMGMx?=
+ =?utf-8?B?anhPdE5SSnZJSVMrNThZVHF1b01VWFUraG0ydG5zZXpBVnFRcUVTQXdjVzRG?=
+ =?utf-8?B?RXp1Y2JocEVzT0ZCTmtSOFFzdGoxTlZacm9WZ3RiWUFYcGtxYkVoSFNKOVBS?=
+ =?utf-8?B?WTgzbC9OQ2xkUnpZWDhPTzlPanFwS21DUFlDTTJpdlVuOVNNK2NkSkFUM3V6?=
+ =?utf-8?B?UElSTmlXQmZCcm9VOXZMOHMrMTEwV3NQMFN1ZStneHhKL0JQaWJzU1hYeE1Q?=
+ =?utf-8?B?OERDaVJha1VzVU1BNEhmSEVUSjVmL1BhYis3RWxzNTJmSWNOVDZZRUlkQ1NF?=
+ =?utf-8?B?YjVDVWI0Z3VKRFpBSUVmbG1SY1VnczlsY3lnaUZPRktxUmZva1ZPMHNnK3px?=
+ =?utf-8?B?ckdMMGVMQWFqSmNna0FvTFd4ZVpOejNRd3V6L1hGVFptY1lFQ2ZZRENHbEVx?=
+ =?utf-8?B?TlNtclR1SWFOVFlENTlUeGRQVUJFK3dJc0R4N3h0R205ZmNPRUdJVFhjN25l?=
+ =?utf-8?B?T0g1YzB5YjFYV3FPRVlsRFRzYy91QlRTM3JkNXlXUE9pUVVJcEZwRnQ3RXVu?=
+ =?utf-8?B?WC9IK0cvMERpUDhVeGw5WHFtQUk5aEVqZVZSSkNwckZ0QklXS3VwN24wUkJT?=
+ =?utf-8?B?K3kzd00vSU1aMTI3c1hpTEtudmkyVlV6eWFEblRiVWk2ZzlNTzUrdEUrc0VJ?=
+ =?utf-8?B?M3dPSE14cVJ5eHlybDkxT3BUZUZIREhBeGFvNnFQaW5BMEJhVHg2dVROT2wy?=
+ =?utf-8?B?eUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a51c1b9-9b2d-4515-ab33-08dd4fed24f2
 X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 07:14:01.3471 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 07:23:30.5197 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: upBIDg4XqUy/oWmE1bg1kd1pPk6zXPtf+J5mrVMwJpX9US8plkwHkeVZjmEIlU0ctkaUM3JD6nMhsDknf+sGHA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7162
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3NDKBC1vj9mTK37nmW3FuCxIhZ1Yn53APsRiK5zUTO1xZYtUSZJdQdsoPBdExA9UxEYJEeTwvsfzxQUVJzpPNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6132
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -195,75 +196,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+Hi Ville,
 
-Patch LGTM
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
-On 17-02-2025 11:01 pm, Kamil Konieczny wrote:
-> Refactor test and create one subtest basic-x-tiling.
-> It should improve debugs logs in case of fails or skips,
-> also it shows which format is used for testing.
+On 15-02-2025 02:34 am, Ville Syrjälä wrote:
+> On Fri, Feb 14, 2025 at 11:56:27PM +0530, Sharma, Swati2 wrote:
+>> Hi Ville,
+>>
+>> On 14-02-2025 11:00 pm, Ville Syrjälä wrote:
+>>> On Fri, Feb 14, 2025 at 09:40:11PM +0530, Swati Sharma wrote:
+>>>> This tests is currently disabled since CRC computed on Intel
+>>>> hardware seems to include data on the lower bits, this is
+>>>> preventing us to CRC checks.
+>>>>
+>>>> Let's try to enable it back and check behavior on newer Intel
+>>>> platforms.
+>>>>
+>>>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>>>> ---
+>>>>    tests/kms_color.c | 166 ++++++++++++++++++++++++++--------------------
+>>>>    1 file changed, 93 insertions(+), 73 deletions(-)
+>>>>
+>>>> diff --git a/tests/kms_color.c b/tests/kms_color.c
+>>>> index 4b71d3dd3..c3b285b4e 100644
+>>>> --- a/tests/kms_color.c
+>>>> +++ b/tests/kms_color.c
+>>>> @@ -58,6 +58,7 @@
+>>>>     * @0-75:           for 0.75 transparency
+>>>>     * @blue-to-red:    from blue to red
+>>>>     * @green-to-red:   from green to red
+>>>> + * @limited-range:  with identity matrix
+>>>>     * @max:            for maximum transparency
+>>>>     * @negative:       for negative transparency
+>>>>     * @red-to-blue:    from red to blue
+>>>> @@ -623,107 +624,97 @@ static bool test_pipe_ctm(data_t *data,
+>>>>     * This test is currently disabled as the CRC computed on Intel hardware seems
+>>>>     * to include data on the lower bits, this is preventing us to CRC checks.
+>>>>     */
+>>>> -#if 0
+>>>> -static void test_pipe_limited_range_ctm(data_t *data,
+>>>> +static bool test_pipe_limited_range_ctm(data_t *data,
+>>>>    					igt_plane_t *primary)
+>>>>    {
+>>>>    	double limited_result = 235.0 / 255.0;
+>>>> -	static const color_t red_green_blue_limited[] = {
+>>>> +	color_t red_green_blue_limited[] = {
+>>>>    		{ limited_result, 0.0, 0.0 },
+>>>>    		{ 0.0, limited_result, 0.0 },
+>>>> -		{ 0.0, 0.0, limited_result },
+>>>> +		{ 0.0, 0.0, limited_result }
+>>>>    	};
+>>> This whole thing is fundementally broken. We can't generate
+>>> limited range output without using the CSC post offsets,
+>>> which are not exposed via the current CTM uapi.
+>> We do have its equivalent test in kms_color_chamelium
+>> and it seems its passing
+>> https://gfx-ci.igk.intel.com/cibuglog-ng/results/all?query_key=af49bc8e4e7d1c69ce04f9a1196c167456e8344a
+>> Is it wrong?
+> Hmm. Looks like the test has nothing really to do with the
+> CTM (despite the name), and instead if just uses identity CTM
+> and puts the limited range equivalent data directly into the
+> fb. So I guess technically it could sort of work.
 >
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->   tests/intel/i915_fb_tiling.c | 36 +++++++++++++++++++++++-------------
->   1 file changed, 23 insertions(+), 13 deletions(-)
+> For the chamelium version the port will chop off the extra
+> low bits so I guess that explains why it works.
 >
-> diff --git a/tests/intel/i915_fb_tiling.c b/tests/intel/i915_fb_tiling.c
-> index 849e37164..8d95416f7 100644
-> --- a/tests/intel/i915_fb_tiling.c
-> +++ b/tests/intel/i915_fb_tiling.c
-> @@ -32,28 +32,38 @@
->    * Functionality: object tiling
->    * Feature: mapping
->    *
-> - * SUBTEST:
-> + * SUBTEST: basic-x-tiling
->    */
->   
->   IGT_TEST_DESCRIPTION("Object tiling must be fixed after framebuffer creation.");
->   
-> -igt_simple_main
-> +igt_main
->   {
-> -	int drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +	int drm_fd;
->   	struct igt_fb fb;
-> -	int ret;
->   
-> -	igt_require(gem_available_fences(drm_fd) > 0);
-> +	igt_fixture {
-> +		drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		igt_require(gem_available_fences(drm_fd) > 0);
-> +	}
->   
-> -	igt_create_fb(drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
-> -		      I915_FORMAT_MOD_X_TILED, &fb);
-> +	igt_subtest("basic-x-tiling") {
-> +		int ret, ret2;
->   
-> -	ret = __gem_set_tiling(drm_fd, fb.gem_handle, I915_TILING_X, fb.strides[0]);
-> -	igt_assert_eq(ret, 0);
-> +		igt_create_fb(drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
-> +			      I915_FORMAT_MOD_X_TILED, &fb);
->   
-> -	ret = __gem_set_tiling(drm_fd, fb.gem_handle, I915_TILING_NONE, fb.strides[0]);
-> -	igt_assert_eq(ret, -EBUSY);
-> +		ret = __gem_set_tiling(drm_fd, fb.gem_handle, I915_TILING_X, fb.strides[0]);
->   
-> -	igt_remove_fb(drm_fd, &fb);
-> -	drm_close_driver(drm_fd);
-> +		if (!ret)
-> +			ret2 = __gem_set_tiling(drm_fd, fb.gem_handle, I915_TILING_NONE, fb.strides[0]);
-> +
-> +		igt_remove_fb(drm_fd, &fb);
-> +
-> +		igt_assert_eq(ret, 0);
-> +		igt_assert_eq(ret2, -EBUSY);
-> +	}
-> +
-> +	igt_fixture
-> +		drm_close_driver(drm_fd);
->   }
+> The crc version is more tricky:
+> - g4x presuambly won't work because the port color range
+>    bit won't affect the pipe crc
+> - ilk-ivb/vlv/chv won't work because TRANSCONF_COLOR_RANGE_SELECT
+>    doesn't seem to affect the pipe crc either
+> - icl+ uses the output csc for the limited range conversion
+>    so the gamma LUT lsb chopping doesn't do anything, so we may
+>    get some differences in the low bits
+> - hsw-glk maybe could work if we do enable CTM+gamma since then
+>    we'll end up doing the limited range adjustment on the gamma LUT
+>    and thus it can chop off the low bits. If we didn't enable
+>    both CTM and gamma then the limited range conversion would be
+>    done on the pipe CSC and thus it would behave exactly like icl+.
+So, is there anything we can do to fix this test to enable it back or 
+let it be in disabled
+state only?
+>
 
