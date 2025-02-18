@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0FAC021AA
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 16:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28805C021AA
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 16:11:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E19289701;
-	Tue, 18 Feb 2025 16:09:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC34310E413;
+	Tue, 18 Feb 2025 16:11:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iDK+nttF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cEzsdcqY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87E0D89701
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:09:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E48A910E3F9;
+ Tue, 18 Feb 2025 16:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739894947; x=1771430947;
+ t=1739895088; x=1771431088;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=9Kwwbgf4caPxZzIyihj7b9YkN1ZiU7OCjH9b9tedqUw=;
- b=iDK+nttF7VUd1UMKi5uXIGbV1w7cJZpu1kmlK3Io2oKP8bmLfYhPSjBL
- gmsmFRfKwlNSXD4rb7MBsAxkHKQTdSOWMGS8RYGdDtlrGA2oZc6zt7ucc
- dDwWS09ApRNEaykCBzNSyJVKLVg4/eDt2pvwx/xHQ5w7BGbUJ21bvSsqS
- otICubGfVb6JFBjAIaH/utOFZkoN2b10JxCuh9zLm/7HvgtB/rHIfHW9o
- BqFxr7ELz7D64SEEnydN5qTQ/pZ3AVxqxyb+stBjLL9qBJCDDwChXIDvt
- F/fA3JlG6W9xLQZgRF7yEDjI6xKmeRZjataZojTY1WNxlcIcRxJZjXPZ6 A==;
-X-CSE-ConnectionGUID: nhb6KrQcQp2lo9CtsNPYMQ==
-X-CSE-MsgGUID: 5L3teTc/Qzuwh1cVhY0SUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="44359319"
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="44359319"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 08:09:07 -0800
-X-CSE-ConnectionGUID: 3NsP4FAeRG6mbJZnkGc/Rg==
-X-CSE-MsgGUID: YzIrC4ImShiEWZJO81DHUQ==
+ bh=z9t1y5606XwCW04wgX3bWNU/UFg/Zjqx/ZkOtxKm4tk=;
+ b=cEzsdcqY8MQlLYYXVE4pG3mDyupH8zhTUETeW1tvWP16ClF8jKwRWPjR
+ ton9GOl5iQ6Ia/omiJCqPfX53zI/jxuPKm0JXw9NoWsefmfcb3UXBgtPL
+ aOlpM+Datx3ECqaCXt3MENDkCFQPh87xhskCRm5ngkzcNd95xOkgn/2hP
+ ogjHsAAa6JjDt8ZG9v6nXYuBYw/AQcqBJMxaro0V1916vf19DqpRsuBe5
+ oBredrwCmxaob3h0sRPl6vSS4MmUgyUhAdn3pZ78iVWwrGZyQOU3bj6KC
+ 8jHxfup14fBIlTnO8Qx6CYjTTft2CkEBlTJL9BsVCo+wIS+YaQo/DFpP0 w==;
+X-CSE-ConnectionGUID: OSPh0bBMQaqudxLNyBQU/w==
+X-CSE-MsgGUID: Q6OYNc6yTEijqVa30BTsLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40459489"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="40459489"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 08:11:28 -0800
+X-CSE-ConnectionGUID: AUPW1JR3Qd+YaycB9/vXmQ==
+X-CSE-MsgGUID: VQJK3jHySvCbpvUWTZghVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="114405949"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="145343872"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 08:09:06 -0800
-Date: Tue, 18 Feb 2025 17:09:03 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 08:11:26 -0800
+Date: Tue, 18 Feb 2025 17:11:23 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Jordan Justen <jljusten@debian.org>,
- Jordan Justen <jordan.l.justen@intel.com>
-Subject: Re: [PATCH i-g-t] tools: rename lsfacts into igt_facts
-Message-ID: <20250218160903.nypyzr6ureu24evl@kamilkon-desk.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
+ tools: rename lsfacts into igt_facts
+Message-ID: <20250218161123.xndikhqaht63v6xd@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jordan Justen <jljusten@debian.org>,
- Jordan Justen <jordan.l.justen@intel.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20250217133229.104948-1-kamil.konieczny@linux.intel.com>
- <32a9510b-a18b-40c7-8f70-8d59b501df48@linux.intel.com>
- <854f3252-689f-44e3-bd77-b671d2c5fe6a@linux.intel.com>
+ <173980386034.3285559.18258022132010550838@b555e5b46a47>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <854f3252-689f-44e3-bd77-b671d2c5fe6a@linux.intel.com>
+In-Reply-To: <173980386034.3285559.18258022132010550838@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,108 +71,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-02-18 at 08:37:19 +0100, Peter Senna Tschudin wrote:
+Hi igt-dev,
+On 2025-02-17 at 14:51:00 -0000, Patchwork wrote:
+> == Series Details ==
 > 
+> Series: tools: rename lsfacts into igt_facts
+> URL   : https://patchwork.freedesktop.org/series/144952/
+> State : failure
 > 
-> On 18.02.2025 08:32, Peter Senna Tschudin wrote:
-> > On 17.02.2025 14:32, Kamil Konieczny wrote:
-> >> This is a follow up to GitLab issue 168 where name 'power' was
-> >> a little too generic. Similarly, name lsfacts looks also a little
-> >> too generic, so rename it into igt_facts.
-> > 
-> > Would you consider keeping the 'ls' part of the name so that it would
-> > be called 'igt_lsfacts'? The reason is that the tool simply list facts,
-> > while the integration with igt_runner report changes instead of listing
-> > facts.
+> == Summary ==
 > 
-> The '_' is optional, so 'igtlsfacts' is fine too.
+> CI Bug Log - changes from IGT_8235 -> IGTPW_12614
+> ====================================================
 > 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_12614 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12614, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/index.html
 
-I prefer to keep '_' as it was already used in other tools,
-also in intel_ ones.
-
-> > 
-> > May I ask why the lsgpu tool did not get a rename too? Would a rename to
-> > 'igt_lsgpu' help prevent name collisions with system wide tools that have
-> > similar objectives?
-> 
-> Same here, the '_' is optional, so 'igtlsgpu' is fine too.
-> 
-> > 
-> > 
-> >>
-> >> Cc: Jordan Justen <jljusten@debian.org>
-> >> Cc: Jordan Justen <jordan.l.justen@intel.com>
-> >> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> > Acked-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> > Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-
-I am a little confused with both ack and r-b, I will take r-b.
+Unrelated as this is a tool change, no tests nor libs changed.
 
 Regards,
 Kamil
 
-> >> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> >> ---
-> >>  tools/{lsfacts.c => igt_facts.c} | 12 ++++++------
-> >>  tools/meson.build                |  2 +-
-> >>  2 files changed, 7 insertions(+), 7 deletions(-)
-> >>  rename tools/{lsfacts.c => igt_facts.c} (71%)
-> >>
-> >> diff --git a/tools/lsfacts.c b/tools/igt_facts.c
-> >> similarity index 71%
-> >> rename from tools/lsfacts.c
-> >> rename to tools/igt_facts.c
-> >> index bbe77717a..af3ea2a61 100644
-> >> --- a/tools/lsfacts.c
-> >> +++ b/tools/igt_facts.c
-> >> @@ -7,12 +7,12 @@
-> >>  #include "igt_facts.h"
-> >>  
-> >>  /**
-> >> - * SECTION:lsfacts
-> >> - * @short_description: lsfacts
-> >> - * @title: lsfacts
-> >> - * @include: lsfacts.c
-> >> + * SECTION:igt_facts
-> >> + * @short_description: igt_facts
-> >> + * @title: igt_facts
-> >> + * @include: igt_facts.c
-> >>   *
-> >> - * # lsfacts
-> >> + * # igtfacts
-> >>   *
-> >>   * Scan for igt-facts and print them on screen. Indicate if no facts are found.
-> >>   */
-> >> @@ -20,7 +20,7 @@ int main(int argc, char *argv[])
-> >>  {
-> >>  	igt_facts_lists_init();
-> >>  
-> >> -	igt_facts("lsfacts");
-> >> +	igt_facts("igt_facts");
-> >>  
-> >>  	if (igt_facts_are_all_lists_empty())
-> >>  		igt_info("No facts found...\n");
-> >> diff --git a/tools/meson.build b/tools/meson.build
-> >> index f091af380..1dfe1f839 100644
-> >> --- a/tools/meson.build
-> >> +++ b/tools/meson.build
-> >> @@ -12,6 +12,7 @@ foreach prog : tools_progs_noisnt
-> >>  endforeach
-> >>  
-> >>  tools_progs = [
-> >> +	'igt_facts',
-> >>  	'igt_power',
-> >>  	'igt_stats',
-> >>  	'intel_audio_dump',
-> >> @@ -43,7 +44,6 @@ tools_progs = [
-> >>  	'intel_gem_info',
-> >>  	'intel_gvtg_test',
-> >>  	'dpcd_reg',
-> >> -	'lsfacts',
-> >>  	'lsgpu',
-> >>  ]
-> >>  tool_deps = igt_deps
-> > 
 > 
+> Participating hosts (42 -> 40)
+> ------------------------------
+> 
+>   Missing    (2): fi-bsw-nick fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_12614:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-adlp-6:         [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8235/bat-adlp-6/igt@i915_selftest@live.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/bat-adlp-6/igt@i915_selftest@live.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_12614 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-arlh-3:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8235/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>     - bat-mtlp-6:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8235/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+>     - bat-mtlp-9:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8235/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+> 
+>   * igt@kms_pm_rpm@basic-rte:
+>     - bat-rpls-4:         [PASS][9] -> [DMESG-WARN][10] ([i915#13400])
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8235/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_module_load@load:
+>     - bat-mtlp-9:         [DMESG-WARN][11] ([i915#13494]) -> [PASS][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8235/bat-mtlp-9/igt@i915_module_load@load.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/bat-mtlp-9/igt@i915_module_load@load.html
+> 
+>   
+>   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+>   [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+>   [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8235 -> IGTPW_12614
+>   * Linux: CI_DRM_16143 -> CI_DRM_16144
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_16143: 297dc497ff4e957b8a82d4d9f67631e322bdd2a5 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_16144: 2269ae390491a4d5ba7f0b86befde426a9eedd95 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_12614: fcf3a4bab154798c24335cdce60a7f91c5e8ddb3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8235: e7e14eff66bc42329903ee579f019094cf1fdfce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12614/index.html
