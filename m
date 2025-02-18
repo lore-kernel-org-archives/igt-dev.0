@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 493DDC021BE
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3707C021BF
 	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:32:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 110CF10E7C6;
-	Wed, 19 Feb 2025 09:32:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB15610E7BA;
+	Wed, 19 Feb 2025 09:32:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="km8z9F6C";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HykjY+xW";
 	dkim-atps=neutral
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
- [209.85.128.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B13C310E3F4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:32 +0000 (UTC)
-Received: by mail-wm1-f50.google.com with SMTP id
- 5b1f17b1804b1-4398ec2abc2so15424355e9.1
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:32 -0800 (PST)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+ [209.85.128.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 266B310E3F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:19 +0000 (UTC)
+Received: by mail-wm1-f45.google.com with SMTP id
+ 5b1f17b1804b1-43996e95114so5761465e9.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739897431; x=1740502231; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1739897417; x=1740502217; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lzXW1GQm/l9q8TMQblUN8rtjWL0FSVlNiWzUb2V+rDw=;
- b=km8z9F6CrtNQhprKEertXphARU3twaBdinucrVGpEjOBokPYamCI8lwJyDLfjZmlzx
- L8vTsSHJ54kDkRN6lDLgfonXVnjxgnvWM98oz2rvXA9Q9B7F60YAgwTtg+2MUbC9UqG/
- jMXwa+0jsRR+gmhz2muiyEVINnYPY/jCmt/YeBUQ/ZqEzLgsEzI5OGBeZ8nmn2MpFdeE
- jYvMlxv4DkhQkPx+T8CerZuUuyNm7q4d+dYVvu3EKKom7i+noRcekJ8gyCtGffQ3pM0S
- 2xHvxNp0ZQbOcrpJXpdfUKqfHSx5nxshErMUAMPzHSCkoZKyNCzQpajjEjY4fi0JwKQM
- RdFA==
+ bh=szagCwKU/YhJabBrlFpW0k/yz9JbCD5BqOjHxJYBAtA=;
+ b=HykjY+xWS+jdtaadl1+2hlGgiwtHU7ZsUK36H8NmDNGVz3Z/WBSkTIiHRlMRP5ZyQc
+ NZ3tTENOB4T56OaXgRENHQAHxgdwwCtQbKcROs51LhPcX+B/EWRANmgvEvQE0sLQMPks
+ 4yqnWKIvT49Ffhvn92fDRTGenehs2NTsjAhHvvcbc1/rQeMnAt2oHBHYf8UpuzaAlcbw
+ iTngGuBJstNZOhsM+29i7VGXhx2WHAkZOvBfGqNvZ2h48sKXTDKLaRuCZQBOi3HQuGem
+ Pyj6ZdjoxfMH6gavbaX3dRiKqb+A4o7nXYK/uSqSNQ6ylfnhV2JUXDwiwabCU9qvMLzk
+ OmBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739897431; x=1740502231;
+ d=1e100.net; s=20230601; t=1739897417; x=1740502217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lzXW1GQm/l9q8TMQblUN8rtjWL0FSVlNiWzUb2V+rDw=;
- b=Hu1oiXeQRpvsjuW67CZdJTfko4cyFV2m+Vs3JAT/OnG5JdEOVhUIr9/p3sLsCV5v5a
- WMcKsn/l8jm9VEtFSvHmZS+4RV2RgCOTsVPaCUIBwIoY0ToSbFq1jm/gWrMFcxTo2HWG
- M4OKFlUbVP+hDcpJ1XHOKlVEEiWKtWJ/1lAgFmzPEf9mrVzHc7f0nJ8tS0vu82f8zvpQ
- iU8AaD854v+u6A+45MxHLxEd6E4UW4UTa7FCSTMltK3v+SIP7X2H5dYCwmqtCa8z3u+n
- fkVB7XkiND19wj9JWIW8u8TQzuc3kdGebA3YrGxrASRaz+C811bHx+2tnkIqDcugzi8U
- 2pzQ==
-X-Gm-Message-State: AOJu0YxNM8lzjk0ZoOKcMTbEPbdMGHw57eh4dwv4qWej4vbvpV9sQe0W
- dlk1GCiRIKTOHK9KZabXfOPY6/44amwSmsKVWeC+kdu01U0Ppgfn6OL/R8Qj
-X-Gm-Gg: ASbGncuoydpgzdvJnx9Uul+iQ8lkCokvZs7otsgvLPZ19WNVDzDjDP1yMlSDPn85NMM
- xx+iyudVt8vo1WIsatg0Zh+7GXZqRxE5C7Fhep3mEGJEY64PFpwV4TWwDp3LjVfk89UBV2uizEp
- JlWb8BZw+lr7JN+dpS3BVEO6By9Y1zheX1PDsLjgB51Eu6U3aUhambhWjMT1+X7cRRIdXBuJMOU
- cDG/X1v9OyxSzkIHYgBAe+a2kBlN9O8sVVJ1nFqAd6g9j7sbMAAoqHuIqkBjahFczW1qlrRyS3g
- W6QkIolQkjtga8MPTQ==
-X-Google-Smtp-Source: AGHT+IGPvG+kXyEWShCkwq5T/MhacNYV14KVP4CI87Bb5jVL4DVzQD8F2CBt7K734MqavjhiiFB6Zg==
-X-Received: by 2002:a05:600c:4f55:b0:439:95b9:91fc with SMTP id
- 5b1f17b1804b1-43999d8b49dmr3913425e9.12.1739897430622; 
- Tue, 18 Feb 2025 08:50:30 -0800 (PST)
+ bh=szagCwKU/YhJabBrlFpW0k/yz9JbCD5BqOjHxJYBAtA=;
+ b=q7egh5SMrXAFukYCOjWS2Kb3yjrAVPvOSWgcdNPn2RcESzIinIQXqXQeo52qN8FwLj
+ dZIZmXSs5I1Zd/szXyDsuBV1QvhZ0nykRrtZb3ImwqcEJbXTzoMguhFWnY6OnO4hfcim
+ 3ipsTt0K7embD46j6sbUfqlsZUFOgeZM81Dr+f5AdYTgPOyW6IDnww9JBABs9ig9eM+w
+ GPI/xjildOqdvH12iIUYVYkGIkgEnb+Kwao0cZ5U+z/T1ZzBQBTUxA0mGGka1RROegFg
+ nB896AtMEHQbdJUBad2pyq62377I925q1T8SExYYrWWJdrQqE5Dqu9wGHRtfzacf/jTo
+ Jyag==
+X-Gm-Message-State: AOJu0YzkqStMI02hNLPLHEwHptHdNtwtGSipyNzlF3gkpyn0WdpuiSdu
+ /Wx7484aaD1sensnhojLM23AYPy918wjUVsts4kwPzm0w/Bxt9Pb3FmzBj6T
+X-Gm-Gg: ASbGncvhoSBdA5ioH5ysMCOgPlZy7oXLfUfWIQsdI1F0ocIiwpXnNDOYm95lpXNVb+3
+ qv+rR4lwC2jEb1Rv+0x4pvjC5v7vWFV2RvdY2LwO/tKRgONgt2Tl4KH+UsCCtNHFjYOlWlSrKu8
+ 9QOr+Qk8JChh/jJzYzN8THSEokM6DOEm0XzpvFkCwBa0tlYGfOaTePWyJDcSr9U5+jpxoMimB07
+ dPPn9gcTa0xgJtvJeZW7E8WZBRo+xtqile/rkvd4YUjt8dvsYiFYf4whiRprPk6cmunxiTDorbk
+ ljN7xpfFCAsjFmXwbA==
+X-Google-Smtp-Source: AGHT+IHV8m/qa+1pyOk2+AnCWCvXHZKtIAUXp6U1OSqUhlPefn5dRitcVuCvrLaw9nRlWpdvyqg0JQ==
+X-Received: by 2002:adf:e74e:0:b0:38d:d767:364 with SMTP id
+ ffacd0b85a97d-38f33f1c8bamr11314059f8f.13.1739897417233; 
+ Tue, 18 Feb 2025 08:50:17 -0800 (PST)
 Received: from fedora.. ([213.94.27.232]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.30
+ ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 08:50:30 -0800 (PST)
+ Tue, 18 Feb 2025 08:50:16 -0800 (PST)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
- =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t 18/39] lib/vkms: Test attaching encoders to CRTCs
-Date: Tue, 18 Feb 2025 17:49:50 +0100
-Message-ID: <20250218165011.9123-19-jose.exposito89@gmail.com>
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+ Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
+Subject: [PATCH i-g-t 03/39] lib/igt_configfs: Add helper to mount configfs
+Date: Tue, 18 Feb 2025 17:49:35 +0100
+Message-ID: <20250218165011.9123-4-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
@@ -87,157 +88,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helpers to attach and detach encoders and CRTCs and a test checking
-the different valid and invalid cases.
+Add a new helper function to mount configfs. Required to test VKMS
+configuration.
 
+Co-developed-by: Jim Shargo <jshargo@chromium.org>
+Signed-off-by: Jim Shargo <jshargo@chromium.org>
+Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/igt_vkms.c             | 31 ++++++++++++++++++
- lib/igt_vkms.h             |  4 +++
- tests/vkms/vkms_configfs.c | 66 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 101 insertions(+)
+ lib/igt.h          |  1 +
+ lib/igt_configfs.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_configfs.h | 13 +++++++++++
+ lib/meson.build    |  1 +
+ 4 files changed, 72 insertions(+)
+ create mode 100644 lib/igt_configfs.c
+ create mode 100644 lib/igt_configfs.h
 
-diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-index 147234e5b..dba766c28 100644
---- a/lib/igt_vkms.c
-+++ b/lib/igt_vkms.c
-@@ -521,6 +521,37 @@ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
- 	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
- }
- 
+diff --git a/lib/igt.h b/lib/igt.h
+index 58c39e098..173ca70bf 100644
+--- a/lib/igt.h
++++ b/lib/igt.h
+@@ -27,6 +27,7 @@
+ #include "drmtest.h"
+ #include "i915_3d.h"
+ #include "igt_aux.h"
++#include "igt_configfs.h"
+ #include "igt_core.h"
+ #include "igt_debugfs.h"
+ #include "igt_draw.h"
+diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
+new file mode 100644
+index 000000000..cd8674cb5
+--- /dev/null
++++ b/lib/igt_configfs.c
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Google LLC.
++ * Copyright © 2023 Collabora, Ltd.
++ * Copyright © 2024 Red Hat, Inc.
++ */
++
++#include <sys/mount.h>
++
++#include "igt_aux.h"
++#include "igt_configfs.h"
++
 +/**
-+ * igt_vkms_encoder_attach_crtc:
-+ * @dev: Target device
-+ * @encoder_name: Target encoder name
-+ * @crtc_name: Destination CRTC name
++ * SECTION:igt_configfs
++ * @short_description: Support code for configfs features
++ * @title: configfs
++ * @include: igt_configfs.h
 + *
-+ * Attach an encoder to a CRTC. Return true on success and false on error.
++ * This library provides helpers to access configfs features.
 + */
-+bool igt_vkms_encoder_attach_crtc(igt_vkms_t *dev, const char *encoder_name,
-+				  const char *crtc_name)
++
++/*
++ * General configfs helpers
++ */
++
++static const char *__igt_configfs_mount(void)
 +{
-+	return attach_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER,
-+				    encoder_name, VKMS_PIPELINE_ITEM_CRTC,
-+				    crtc_name);
++	if (igt_is_mountpoint("/sys/kernel/config"))
++		return "/sys/kernel/config";
++
++	if (igt_is_mountpoint("/config"))
++		return "/config";
++
++	if (mount("config", "/sys/kernel/config", "configfs", 0, 0))
++		return NULL;
++
++	return "/sys/kernel/config";
 +}
 +
 +/**
-+ * igt_vkms_encoder_detach_crtc:
-+ * @dev: Target device
-+ * @encoder_name: Target encoder name
-+ * @crtc_name: Destination CRTC name
++ * igt_configfs_mount:
 + *
-+ * Detach an encoder from a CRTC. Return true on success and false on error.
++ * This attempts to locate where configfs is mounted on the filesystem,
++ * and if not found, will then try to mount configfs at /sys/kernel/config.
++ *
++ * Returns:
++ * The path to the configfs mount point (e.g. /sys/kernel/config)
 + */
-+bool igt_vkms_encoder_detach_crtc(igt_vkms_t *dev, const char *encoder_name,
-+				  const char *crtc_name)
++const char *igt_configfs_mount(void)
 +{
-+	return detach_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER,
-+				    encoder_name, crtc_name);
-+}
++	static const char *path;
 +
- /**
-  * igt_vkms_device_add_connector:
-  * @dev: Device to add the connector to
-diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-index fc8db268b..0cc09eb90 100644
---- a/lib/igt_vkms.h
-+++ b/lib/igt_vkms.h
-@@ -43,6 +43,10 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
- 					 bool writeback);
- 
- void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
-+bool igt_vkms_encoder_attach_crtc(igt_vkms_t *dev, const char *encoder_name,
-+				  const char *crtc_name);
-+bool igt_vkms_encoder_detach_crtc(igt_vkms_t *dev, const char *encoder_name,
-+				  const char *crtc_name);
- 
- void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
- int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
-diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index e1572d65f..6ac475ff4 100644
---- a/tests/vkms/vkms_configfs.c
-+++ b/tests/vkms/vkms_configfs.c
-@@ -556,6 +556,71 @@ static void test_attach_plane_to_crtc(void)
- 	igt_vkms_device_destroy(dev2);
- }
- 
-+/**
-+ * SUBTEST: attach-encoder-to-crtc
-+ * Description: Check that errors are handled while attaching encoders to CRTCs.
++	if (!path)
++		path = __igt_configfs_mount();
++
++	return path;
++}
+diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
+new file mode 100644
+index 000000000..4cbe9001e
+--- /dev/null
++++ b/lib/igt_configfs.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Google LLC.
++ * Copyright © 2023 Collabora, Ltd.
++ * Copyright © 2024 Red Hat, Inc.
 + */
 +
-+static void test_attach_encoder_to_crtc(void)
-+{
-+	igt_vkms_t *dev1;
-+	igt_vkms_t *dev2;
-+	char plane1[PATH_MAX];
-+	char crtc1[PATH_MAX];
-+	char encoder1[PATH_MAX];
-+	char plane1_type_path[PATH_MAX];
-+	char crtc2[PATH_MAX];
-+	bool ok;
++#ifndef __IGT_CONFIGFS_H__
++#define __IGT_CONFIGFS_H__
 +
-+	dev1 = igt_vkms_device_create("test_attach_encoder_to_crtc_1");
-+	igt_assert(dev1);
++const char *igt_configfs_mount(void);
 +
-+	dev2 = igt_vkms_device_create("test_attach_encoder_to_crtc_2");
-+	igt_assert(dev2);
-+
-+	igt_vkms_device_add_plane(dev1, "plane1");
-+	igt_vkms_device_add_crtc(dev1, "crtc1");
-+	igt_vkms_device_add_encoder(dev1, "encoder1");
-+	igt_vkms_device_add_crtc(dev2, "crtc2");
-+
-+	snprintf(plane1, sizeof(plane1), "%s/planes/plane1", dev1->path);
-+	snprintf(crtc1, sizeof(crtc1), "%s/crtcs/crtc1", dev1->path);
-+	snprintf(encoder1, sizeof(encoder1),
-+		 "%s/encoders/encoder1/possible_crtcs", dev1->path);
-+	snprintf(crtc2, sizeof(crtc2), "%s/crtcs/crtc2", dev2->path);
-+	snprintf(plane1_type_path, sizeof(plane1_type_path),
-+		 "%s/planes/plane1/type", dev2->path);
-+
-+	/* Error: Attach a encoder to a plane */
-+	ok = attach(encoder1, plane1, "plane");
-+	igt_assert_f(!ok, "Attaching encoder1 to plane1 should fail\n");
-+
-+	/* Error: Attach a encoder to a random file */
-+	ok = attach(encoder1, plane1_type_path, "file");
-+	igt_assert_f(!ok, "Attaching encoder1 to a random file should fail\n");
-+
-+	/* Error: Attach a encoder to a CRTC from other device */
-+	ok = attach(encoder1, crtc2, "crtc2");
-+	igt_assert_f(!ok, "Attaching encoder1 to crtc2 should fail\n");
-+
-+	/* OK: Attaching encoder1 to crtc1 */
-+	ok = igt_vkms_encoder_attach_crtc(dev1, "encoder1", "crtc1");
-+	igt_assert_f(ok, "Error attaching plane1 to crtc1\n");
-+
-+	/* Error: Attaching encoder1 to crtc1 twice */
-+	ok = attach(encoder1, crtc1, "crtc1_duplicated");
-+	igt_assert_f(!ok, "Error attaching encoder1 to crtc1 twice should fail");
-+
-+	/* OK: Detaching and attaching again */
-+	ok = igt_vkms_encoder_detach_crtc(dev1, "encoder1", "crtc1");
-+	igt_assert_f(ok, "Error detaching encoder1 from crtc1\n");
-+	ok = igt_vkms_encoder_attach_crtc(dev1, "encoder1", "crtc1");
-+	igt_assert_f(ok, "Error attaching encoder1 to crtc1\n");
-+
-+	igt_vkms_device_destroy(dev1);
-+	igt_vkms_device_destroy(dev2);
-+}
-+
- igt_main
- {
- 	struct {
-@@ -576,6 +641,7 @@ igt_main
- 		{ "connector-default-values", test_connector_default_values },
- 		{ "connector-wrong-values", test_connector_wrong_values },
- 		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
-+		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
- 	};
- 
- 	igt_fixture {
++#endif /* __IGT_CONFIGFS_H__ */
+diff --git a/lib/meson.build b/lib/meson.build
+index 9fffdd3c6..201b1fbb4 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -18,6 +18,7 @@ lib_sources = [
+ 	'i915/i915_crc.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
++	'igt_configfs.c',
+ 	'igt_facts.c',
+ 	'igt_crc.c',
+ 	'igt_debugfs.c',
 -- 
 2.48.1
 
