@@ -4,173 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 143D9C021AD
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 16:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 480BBC021AA
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Feb 2025 16:40:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7F2810E3D4;
-	Tue, 18 Feb 2025 16:39:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB77910E3F4;
+	Tue, 18 Feb 2025 16:40:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oh37cuHt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WJw57rx1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1153010E3D4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:39:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F07E10E3D4
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739896774; x=1771432774;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=yDlWCX/h9DHYrrYFsWurLiaE1U6hK2mFYlO0anZ0BsQ=;
- b=Oh37cuHtqs/oMdDmHGqWmhvoY3iIUpQPamgFe2gfqq0k0HnqBHgACXpo
- liEuNYDuYoWG1M1dgRFQNii+BkHpeJiAKoevkISNFdi47/GBTFG11SCMQ
- mjIx8CL8Exgw6XHGlbZvA9vXUBsXmZLVXnLJndPWarzI30BT3H9rteRMv
- VVVCVaewRY+psnhBZOOJ0jQhncwgiZ3UClLudOci5lJl04EyIhIVzJOEt
- tWIFAc+2D5Z+OviZ/lJTX7PxYCjIGqvRJPmnU3uWtOieNJ9qLgEM8dMvh
- ZEUVQIbNZVs5LqBOllYcNmyR6SalVAgbM2uJawx0mu8UdNTgG9v5MSuxP Q==;
-X-CSE-ConnectionGUID: doNbbX+1SYqxeUOt0S9kqA==
-X-CSE-MsgGUID: RuaubdA/TfiwWC55k1S+ow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51222750"
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="51222750"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 08:39:33 -0800
-X-CSE-ConnectionGUID: NUQXRczwQIunH7t58IYsSw==
-X-CSE-MsgGUID: cS3BbTLNQu2iLMugaFRKSw==
+ t=1739896833; x=1771432833;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=Xs+heuBi9pp1EOBfDMEMeF/PytJJwHEZcSRPnngIHnk=;
+ b=WJw57rx14oDhhOPwKWwPJ6K7yJ0JiooZrkiCW6C1hUqUAUStTVsoh/Or
+ gDO9PjLosS8FQRADudn2RZf2M8y7e5RQBMUaG3lXOV4Fbhlv/jZ6nbHzr
+ L0VKXQLjNtWQwP/4BycRQSor6j5R6F8QXY3ZIn0O17c9RrQ7D964s+2OB
+ D/rMs8ETAdAyZ3yB3pvfSdUQqfy+C3yW6hOE+iv5TdXWSdOLXSKgKvWqz
+ PPiV/xE/ogYsdCBw+8t/iH5y0xfO/ZvriXMyRL0DdKWuNEtTHqZKaUqQq
+ wLPklszrTI+UYYGskcn0KH+as2JeEXU8DDK+D0v+1vHun/3jDPLC5IU0M w==;
+X-CSE-ConnectionGUID: FkVk6T5RS0yKDAizQ26i/g==
+X-CSE-MsgGUID: tycdF2NLSzusIlM2lwArDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51243988"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; d="scan'208";a="51243988"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 08:40:33 -0800
+X-CSE-ConnectionGUID: ldjs8PwgT6+AHmiUBh5EiQ==
+X-CSE-MsgGUID: YHY81BbHQWCa+cHaV61rVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="151661237"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 08:39:33 -0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119088927"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 08:40:32 -0800
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 18 Feb 2025 08:39:32 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.2.1544.14; Tue, 18 Feb 2025 08:40:32 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 18 Feb 2025 08:39:32 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.174)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.2.1544.14 via Frontend Transport; Tue, 18 Feb 2025 08:40:32 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.49) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 18 Feb 2025 08:39:32 -0800
+ 15.1.2507.44; Tue, 18 Feb 2025 08:40:31 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J7qoGTzahwkJvPHtnOPjwWHgnPFPm93Lv0PDCRH5pdxH2Wa4WnXMaM9d2yab8AbmeJaIeS2tJwUDJ/ZMmsnC/kck8tqg4N66p6hmMR3RwJugDscqqzn04GQe1+Fo+jY53HmF+yaNinMcP3ZAv0TrrL3PYD0/SXLzimbxzn6YhNC7eexo7lnczzpkCmnWettAmc8wxWBjxSRq3nv6rmic7Hk7H0Ljz8VEve68KsaaaenpjDjjwcz5SFwi3vmAzJRx0JO4Yt7qqa9D5KBtm1NOYd34FepVFhyYDOKOaqqsRpiqomZpw6V2qhWYEooL97cSlO32lGMC/HyLvd36mk7b5g==
+ b=ewTbYsjE2dxwqf1rlQF6bTxNj3D0hekE+YiXusKHdwqHEPBcrUFptwDLfMfI3U1bO/mMQOUHInAwcTBsZpodwvXYlhFcQ97h8UztA65UL3ViL97nCQirhaib3YaOXqSz01sW7Al+f+xBM984m3AUcjcp1BlQ/nsqLXbag1KEOU0IvLg/x+mIHOqT60X/J3ZeqG03onC36i1RDvo6VhMqFGpTxJJSoEAHbiX02e80AlyIb5OQb3Nr6DLrKEW3oAWS/1zsR6hlaK4yHm/GLodRhu0IAUptBWAPVDVlELjXp+4GbSxbXDjere0JqvCaHXPZI61BMKwmJl7SjwocNT6sag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aLBzuG6JbW8drqWdaP0+uX2eIb6rySkvQMG5J2AXFB8=;
- b=Ch7+nweRYSlRyXYB+RoCyYpOiyyjF33eM6u7BEfa/Zr7H3QIGa9D/gbJ2Tp0xq4rMBGFDULMOHtAvmDcA4x1z23QvnyIvzqBFCPdNhSzpLSiY2jpXQGIg17kcSKK49TS8t/oBb9aW6iCHLsWnxElgKeB/VufxHI6Sy//+FzOG5KLuR99Z+FhLeCUrG6AZOyzp32OP+7LwBVjTMD5wpg5JLncfF2l9bOLE1dbiC7RVZWd+YmprmqsCFHfteYKgF9IONCWczuLiDdIei82UAN1OiAanC1zYzSEG8p3vocerCd2kMBfO+kK9If49LLGFDqigPUsjdQDuP+4BcIvMIVS0Q==
+ bh=+vOSRx093UfGj7/67cpVGWQsOgT1/3AMji+THGZim6w=;
+ b=SwfcV0p5/ZPmv9Vbv1fGJMKvHs11Hf44VQsKVtT/R2lvhRIRPt0T3ORLQWIZvmymJ6fOTUd8N8kM2n2PKVTu+hJ88puq2pLcqTHGQO6wRovJ8XkLsc1M/m5cO8+e+3bERk7/J562Osqlmb2bwDZ3c6ZMcm8W/C3mo7fYR6F6ZG18ea11rWvvoQ0gEVuMGEFmETqUp8sbWyFImvIrl3c1VEpcQ7XSwMk5ukcgIl1GcPxA760X5W3D2JnvNa1BKEymcSM3G7do4X0Pgf1yMF+lVggTNJlZ1cO6mZT/FPXzQSSrbafMLivx+WlGes3vSvIab6wXWuezVxUcr+BpPAeaUw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from MW3PR11MB4731.namprd11.prod.outlook.com (2603:10b6:303:2f::8)
- by BL3PR11MB6388.namprd11.prod.outlook.com (2603:10b6:208:3b8::17) with
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
+ by DM6PR11MB4530.namprd11.prod.outlook.com (2603:10b6:5:2a4::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Tue, 18 Feb
- 2025 16:38:58 +0000
-Received: from MW3PR11MB4731.namprd11.prod.outlook.com
- ([fe80::3ea7:b5f0:2f72:c615]) by MW3PR11MB4731.namprd11.prod.outlook.com
- ([fe80::3ea7:b5f0:2f72:c615%4]) with mapi id 15.20.8445.017; Tue, 18 Feb 2025
- 16:38:58 +0000
-From: "Zeng, Oak" <oak.zeng@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Thomas.Hellstrom@linux.intel.com" <Thomas.Hellstrom@linux.intel.com>,
- "Brost, Matthew" <matthew.brost@intel.com>, "Konieczny, Kamil"
- <kamil.konieczny@intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>, "Vivi, Rodrigo"
- <rodrigo.vivi@intel.com>
-Subject: RE: [i-g-t v2 2/4] lib/xe/xe_util: Introduce helper functions
-Thread-Topic: [i-g-t v2 2/4] lib/xe/xe_util: Introduce helper functions
-Thread-Index: AQHbgdKNRraRh6sU0Emvcn6R+IaYKLNNORdg
-Date: Tue, 18 Feb 2025 16:38:57 +0000
-Message-ID: <MW3PR11MB4731087A0BBBA655D0FC44D492FA2@MW3PR11MB4731.namprd11.prod.outlook.com>
-References: <20250214215920.282425-1-oak.zeng@intel.com>
- <20250214215920.282425-3-oak.zeng@intel.com>
- <20250218065831.zdxx3aqmdnorzo4l@zkempczy-mobl2>
-In-Reply-To: <20250218065831.zdxx3aqmdnorzo4l@zkempczy-mobl2>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW3PR11MB4731:EE_|BL3PR11MB6388:EE_
-x-ms-office365-filtering-correlation-id: f5b32f96-466d-4790-1834-08dd503abdda
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?5YOv6kgRh2fgeSrJjBFSMa7quOGw+47TY/bnKZbYJyTHB1xuyB3hmVj8RE37?=
- =?us-ascii?Q?Fg0osA/0vM5evVRgwhJ2ggMZTqLWCIkYhqaF4/ZL4Y238XUrKf/rWltO/Zd2?=
- =?us-ascii?Q?56zWT8pQZxlCGz+KHw/UO0F12gD4TJXNE9T5xcYYFd6564LuFKqlfFoi2lzI?=
- =?us-ascii?Q?JV1tpzs9IWpqBFwOgPxioPuNUFd64j0j0EaBTph2K8t3ToIx7vThkH1NNK62?=
- =?us-ascii?Q?H2E1+x38YwJnJLoplsbuH2ODubHdqWFkNMWWxAEEh3bFDQUUoVp6x56AYVIP?=
- =?us-ascii?Q?sLEIUmv7h7ZVlmUB45zqC9jk2Mfaj6J4+VNzv0lLqQTGkimnKOCJqe+rZTn8?=
- =?us-ascii?Q?2m7dzU3PcMrYykvYIoOS5VAd1up1D8/Osi+VzuH17TkRVwGiMs027ZYjfQP0?=
- =?us-ascii?Q?AE4Iqw8CQ8I1XycmgEhrsa3UWHxQ4FfKS4zi8P2W81av3J4uPMKVZvrfnJl0?=
- =?us-ascii?Q?Ib9V2svIUh+5MN7CLbbmoPM+wLa8L7c0WfjTPQncxwO6ey50df0b46BKQJpc?=
- =?us-ascii?Q?OECEegPu+QRTASKnBVezoovcA44f1aIIBBQYV6NTG7c/2nnsGX1d3qrpKY8+?=
- =?us-ascii?Q?0qXmri9eNk3eSmSnhOBglyNTrB0pXXux0Bp+DWqAU8W4zKBjm6HeD1xZztSj?=
- =?us-ascii?Q?xs7ElGnHA+Lm2mv7jDA41Z/HJvizgWaWZRZdST8gU7LSvmfOm3tQbSTexL3M?=
- =?us-ascii?Q?scE/ML3R3OJeVry/0JPP0rhNkpkvFi7mgWDEVHqLm0USE0zwY24HbDhiJ0Le?=
- =?us-ascii?Q?sW2nwOTUzBAn77SSqF3UaLRtqacAC3oSoyCTfttkzmxxI/oej5IiE6vXDkNh?=
- =?us-ascii?Q?1MhSPGwWeWghcd+fO2ir93JWRmAp7JPwBpWbIGHRglzugJV00fhFySuUOTSf?=
- =?us-ascii?Q?6UubYLIt7U46rckx+RhEcWSIzg5WogSToMpWJsAwXLT3BBo9joU9mOj56xvS?=
- =?us-ascii?Q?vy2S6inW796FEjgNDFcNCzBB8fRog86EPV9m10NmZcJXckBvxLSFqWgRyjCX?=
- =?us-ascii?Q?qgypOO8rLnmvYQWqn1dWgl7x+1fHLPAAGJLF1MfE8XykxUYD9cnHsvjsfqMu?=
- =?us-ascii?Q?AGEM4umvYFRbVRJ+SymnMQaf0j+ywCAfPG7RqXjkPeZWCgbvYb7God+FXvNO?=
- =?us-ascii?Q?9oT737TKF9LxjU53Xf+0fGGA7ov68rmswwukVWR/qNe5+1lz75XpH7/S34VR?=
- =?us-ascii?Q?0pnoTg/25+DEw/6UrQnPBVp/arhrmCIX9FZyuGScAEsiqorpNg4FBznavkD6?=
- =?us-ascii?Q?2ZFVgO+O+b+jvR0Qxd3zzgJXY8+OUbnJ5VqSKCch0x1mH+dHIWcerleGYCqU?=
- =?us-ascii?Q?ITrUQQ4BAODgqcXmp+/CihnhNpP+cahpVJ6HgrkbZeWEq99zfVcv8/JutQl/?=
- =?us-ascii?Q?1LddWUcjf9kGpfidYGKhowxpwJ7M5Tm9rn1Ko3x48wD+VYrgZ4MseelQmQWg?=
- =?us-ascii?Q?cgUkc3AyedGwUuJYb8u8Fq3D168b2pLe?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR11MB4731.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Eiu5VwKOtcp4yDb2vC+ZXtjf6BlbLUijFTp4ycC5Vo5uexQJ6ftwbjRFs6Ek?=
- =?us-ascii?Q?dPBwoco8Qg844w9WvwomCuceGT87ACHgXRQjYJHdyPtQzQxJaS7YBt7M8TTB?=
- =?us-ascii?Q?KGDN0DXUo5LbJmC9JUeHD0rqCyBOKKk0Pg8k4TjYv3FXH/2d8VIsM2UySWI7?=
- =?us-ascii?Q?z3q2XZbYSk0VrerJpDGmqCy10C+l+OR7Vgmxr1tdDa7mySqFWifxpoWxwNcK?=
- =?us-ascii?Q?fRbotCRp5rtP2ueGeif6bfHEX5VFfMKNzrHjPjhDZJcgsZzrL+ic6piq5kd8?=
- =?us-ascii?Q?aEby6vVPl8/8tBUdONXlKdyu1PPWuylojx1hQkIghIWsDeVeUyvUbAI19LUB?=
- =?us-ascii?Q?Hskg9sH+5ZuJd+djJb8ZwvWARokQsUvOta2e5gFBjQqLJNr175qJO9Roj3JY?=
- =?us-ascii?Q?PvlG0B6LBvk04gHAn1pDW+sSdrOZ4vzixBX6IDtZekmft7zFzjQNzLBPMHvD?=
- =?us-ascii?Q?Se+HjUJOwqqXdSp2JDs3pW2kBroD76UJYzwhCdf/e/QgHHnpRUKh0RC1r64f?=
- =?us-ascii?Q?UKjybmJOwCjEBHFH1dE6figQFajcTdWOCO8byLTUeEA6VQLt97mdSIOhLwuu?=
- =?us-ascii?Q?cO+IHdctOkH6WVdDFD+9CYL1Lj1oMj+sVFc/UpKBqVM6Qh2/zopJSZyZ6vik?=
- =?us-ascii?Q?ouwgcSEZl9FkN4gcDlGa13NbaYIfyzScHQ11ee+jNDi0bWTv72rQZlizPGX9?=
- =?us-ascii?Q?9ghW40QO68RTkU2kDAqVoAbZP32iF5FF3F0UACv2c02T1EishYi4Ne36tusZ?=
- =?us-ascii?Q?zrzEc0wWt7cUzgh8AsXiiK1YBhudq/RQjoHXe0DP4ZsCWRY5SNsoZ5ifdVLY?=
- =?us-ascii?Q?cbrNG/tUsBQPEzal5VvjyC7LQnLHQpYYjoFS1GZvPZuXfzhSX0YB3MfcDDRe?=
- =?us-ascii?Q?T6QFkuQGdaKyd06YCgbifPaiJorLXbJNFKCDsaX/jAbGw45BBtuccObbAWc2?=
- =?us-ascii?Q?6Ft3zzs43t9QE37jlakpwjFsnNEwt4SKg8HsSGVQe/a85Vjx6YOdB+9qtEx9?=
- =?us-ascii?Q?FgghQrk/N+GdwJyM+WpW29iXa/FfY23ILHxUMFQ0HksrlD/pKxvE2F1hw9ga?=
- =?us-ascii?Q?LDlDBmt6CiRzBRg6VL94+wxPT43cq1N9MnknLHNT2vVbs6zMSctTI9Ykh7bk?=
- =?us-ascii?Q?NTZ2HDnKYfjSu4HItlMGyHtIOUVIaYistVxL0nZHv9ZUHqv0/aGmR9enN4x1?=
- =?us-ascii?Q?G51oE4liMzz5R0IUKlb2FObscx899dk/wXvM+9281OMKZgMRxNsOf+W1FN+M?=
- =?us-ascii?Q?aJanPdv+PZSRIsozRq93Vhy1dthz8yLCPpm45USBM/iEzwzYKq14ube816nK?=
- =?us-ascii?Q?nKLUfzsbxVKu+b2LyuO7UmnR9wBt7MOnYXrq16XkRiTgbDIElOcC6bhzeov5?=
- =?us-ascii?Q?xV8alWp8RfGWga6rv1yCzMUOJuXkiDLtgwYh/eoxC7hgiZEu0aebh5XSLEys?=
- =?us-ascii?Q?ID0zS+0NoZxO6shIZN3TlLIBQNVqZET3jzw5pc/Detpsl3s+t+cZTxPh8sjp?=
- =?us-ascii?Q?Jy4DUqJApa5ofpulWuz53B8NMFMnkxZKWhJ8mVaJJqiBB2OPr4DBbjLJU5NT?=
- =?us-ascii?Q?B2Q97bQ4DQKpn+qGM8E=3D?=
+ 2025 16:40:12 +0000
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::5461:fa8c:58b8:e10d%5]) with mapi id 15.20.8445.017; Tue, 18 Feb 2025
+ 16:40:12 +0000
+Date: Tue, 18 Feb 2025 17:40:03 +0100
+From: Francois Dugast <francois.dugast@intel.com>
+To: Michal Wajdeczko <michal.wajdeczko@intel.com>
+CC: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 4/4] tests/intel/xe_fault_injection: Inject errors
+ during xe_guc_ct_send_recv & xe_guc_mmio_send_recv.
+Message-ID: <Z7S346fd46gL9uIA@fdugast-desk>
+References: <20250207072902.12582-1-satyanarayana.k.v.p@intel.com>
+ <20250207072902.12582-5-satyanarayana.k.v.p@intel.com>
+ <Z7SPn9Kstq7TKErm@fdugast-desk>
+ <d1ee88cd-bcbe-4840-9e0a-4d9c71b8fe1e@intel.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <d1ee88cd-bcbe-4840-9e0a-4d9c71b8fe1e@intel.com>
+Organization: Intel Corporation
+X-ClientProxiedBy: ZR2P278CA0002.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:50::7) To CY8PR11MB7828.namprd11.prod.outlook.com
+ (2603:10b6:930:78::8)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|DM6PR11MB4530:EE_
+X-MS-Office365-Filtering-Correlation-Id: bcd68d81-0bb7-400f-e877-08dd503ae9de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?q+dr4G1t6gO1pF1zTwPOU8AKKFae8FPnws+GSQzrPRxFo/nyLiVpUk1VsH9j?=
+ =?us-ascii?Q?B5kKO61qIuNLrmQbKrSYSNwLptGMHlm5JCXFlLTeULDhewzqwMLqWko2Uxgw?=
+ =?us-ascii?Q?EwvoClH/bkb3NY1S3X2etuE97yCjOCunaeJPsUDsGhA7hYXdYdGq8iVniSn4?=
+ =?us-ascii?Q?P7/5+xXhtOA/Enu9u1RlsUDWbXrH6chmhPIsMEKjKYLJLhsL4PDj1Q771Bcr?=
+ =?us-ascii?Q?WgwIJ3M+1rZjpTXr/eq6lH+d4AeqWk66gyBKR3alMQFBdtFo1khMzp/UOgpo?=
+ =?us-ascii?Q?MGWJa5/n20qgaPt6I5p7wvqo2moH45mP/DVfobDqe3lkJN8U/3eIzoq2KztE?=
+ =?us-ascii?Q?YFpoRz5AqtJv2ObgvK7DXWR1aHDTqUo+QQhQCoUOyZwdy0sBrWYMcrxcbB/h?=
+ =?us-ascii?Q?EEsFqGfX7aFV8YCEbm+MtSrXLkHAw16l4bFi4L0JgwJRr0DnyXUjhVitCl2c?=
+ =?us-ascii?Q?5JjQkCtnEi9n7QVd2UWThPcjSrhQoi70Amj/AWdpLEMednLSny2B7l5F0SjS?=
+ =?us-ascii?Q?w2fbJc21xI69VIFKPiatkQ//gBQ1Pzvt5OwHA7rv8k9eSZMQZsiQHZY6naGH?=
+ =?us-ascii?Q?foSdw1d6kHme94z24XgNxQxMRwVTkCJ7Rnko9Lvb0LCyIqcmyLA2b0CSE2Kw?=
+ =?us-ascii?Q?BUmH1ICnf6bNOv864/jrt1x9Lh08zHvB44IfppZBziq4UA/YMTIS1nxxV1AV?=
+ =?us-ascii?Q?jDoc/n4tJmuB+J62/lrWJcay+lPph9j92QYHViwvEYfN+qbBHBBb+b7TKjkM?=
+ =?us-ascii?Q?xJIyU5unZvYsB12NaOTAKzKeiFCp8PKbY9kRTiYVLSGsPtib4Qtvv6vivc+N?=
+ =?us-ascii?Q?o1JzQQlCDh16kDrwfEETLH6ffcL2XLgKLFb3ydw4pGj9qZsdTwt1mhQkzAjG?=
+ =?us-ascii?Q?zA5FjpsHuziUn3rX561QxHpDJHW8dxthjkTJGKfmVPEitiY+YOx6KRJo+dQD?=
+ =?us-ascii?Q?ulivnNIHoiPkxrrIfpeE6XhSAni94kPbj8ABjt5jcfXtBkLS81oaPun6DuXq?=
+ =?us-ascii?Q?uuNO8ZrqdpgDK6xNLjDiJLdDg7z9gfesx1NWYDToN0Ctp1DyeZ06uUeHJJwU?=
+ =?us-ascii?Q?AqPuCMeHexIFD658Y+jyQpcMVMeRl6ZoFVRk0f1ra+0G2jt/FLeOGlg1I7w+?=
+ =?us-ascii?Q?NParnXsB3Bghr/mHwqUBJipVzo23XB/fFxzbK1yxxjATcpFgSur5qv6hYW4f?=
+ =?us-ascii?Q?QCsF0UsweM3CDwKXT35h8RksOxzxbeH5aqU2S0fuVUGmposEOz5utkpZDvhk?=
+ =?us-ascii?Q?mhylex9/3X/w3mjhUNU56kfguSMNDu0j0Z/GFB/Z1lhuUAEQE6xlULjERAig?=
+ =?us-ascii?Q?M8vpiOzWYB5q3f/aRhUNWo/xpv4MQ8dsgRDoY/pCfDgAm9OMeaa3MYVM4ltf?=
+ =?us-ascii?Q?1V9LKgVI73LJcVSWnPZWic0FcaIV?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6jdgU8ogpgVXk3XRTmWp8on9cb2J3/xk2EKWmxDHthZpyil9eMA/ZaOyPw+r?=
+ =?us-ascii?Q?/eY072ZoLqwjYOU/hsdrxgQCeoVPBp26PFwnOdLd80sUZ4xpHs9mTx5yRKE4?=
+ =?us-ascii?Q?1Bd27fdmzKfmSexofhP2yI6ptTxj+lRVzRQOTkVPC1JxZ6Ghi60gFJzMNLAT?=
+ =?us-ascii?Q?yy/TiDdTLf4rBeExuyMwuIb++b1MHJQTkQfZhUJjP89z1byVvjIWavu90ZwM?=
+ =?us-ascii?Q?eLf0AjBP2ep9fuOtUnkGaFLGCunOs3pkIx9/ZbUaAE6GjPeOwekAx8Nd7tN8?=
+ =?us-ascii?Q?uqcZGV2gyrbW805aoeyk3m46MAUSF2jSwOL2Xjv6Phdmh/zTkOt37EFtltXa?=
+ =?us-ascii?Q?hsTqNAD+h53CDvvYD8WDUvexzRxvXb9FPut2Ogkx+I0BGQcCsxjyGQbB6svr?=
+ =?us-ascii?Q?XJctOdCsc5TO9CqXqp0wuK2Gkw9to0qh38oNhhlk/2BeDkGhUrgJWIKEW/rm?=
+ =?us-ascii?Q?Ec9gfUPpqAT3wyjF2raPbOpYXukzsZi5LreGkNxMVlAW+fdqhm+098nDqFx1?=
+ =?us-ascii?Q?l4TGlt4/vLsZhnnqtmgodC+StWeTrLDZR+iRbSD2mqOlR05tpLj4NkpGM/xX?=
+ =?us-ascii?Q?Z77U99XI61oyHvnTy1lI4OB+3FwHPYxtKqPVKyLZJELtU3FWJZwld0GtR3m/?=
+ =?us-ascii?Q?+ecY2irQfPsv6RzYu9aAhkNw5Xv2nvKeyGc7qfKFQf51cLpyJMcS6AnHV5Xa?=
+ =?us-ascii?Q?B35feM8I+b5+qRJHzX0eXkveURKVUc09omub2o+A305X/zto8SKuJsY3e2OU?=
+ =?us-ascii?Q?yjCAY41W40HoS+fcVdiU2nPG7sMbAE3gy8Un2Yc5xzSg4wKxecVFJIcSXrOi?=
+ =?us-ascii?Q?h3hiPr9Kecl0VMp0YW1gbyKOvwnpMXixs7cCSn40ToPI0AdAHwrvafnHy/Ip?=
+ =?us-ascii?Q?hGvnV8jCFeRgFmrQE6BbWGosi5DWTtUJR9aK+F4k/LqNPkrO8ZoPb+taH7SN?=
+ =?us-ascii?Q?SLKic8PD8qdbS8c5HdPPOQ+9k+XgaHpxJfizvUgmHr/datiCBEZO7I4vJXZ8?=
+ =?us-ascii?Q?m50q+/64WLGhsGjjLpWegNxyfTgkPT4HrWqC7k2KZaLNuKb1Yd5VgB5vqSW4?=
+ =?us-ascii?Q?GcuXZSIlinkYysr7HWmMLauvxICVICnmsTyD2qHm6hDGJ9zrcYY1zwA9jE50?=
+ =?us-ascii?Q?4Ukd6UA7G15IJcw3vk3uMEVNz8XSoK11MSh1I3LyeXFQ4MOEZFKnDyVDJGWa?=
+ =?us-ascii?Q?CFhsOLoQCbIz1dat3ijWLKk0kQr1Jt0Pin9f1kkUTIFsw5bv2gNkKvziQk/K?=
+ =?us-ascii?Q?9mi8LnECVeC50LqEoltUED/cg7ChIgTH7Thz3Df7E8pIUe3EC33adjTkefEg?=
+ =?us-ascii?Q?q6/TuOEXmSCHP7tGIXjPxXlEoHffyGun9kJ8jQYD0EmqjEXUhSB6kI7YYyFl?=
+ =?us-ascii?Q?E/fzIpj2ANhLTeHcj74GWVE+cA/o8t/XeklcnUoD/3asPwKd2+ZEoumemmFG?=
+ =?us-ascii?Q?HgBvkB6Enkb/tiR1iByMU3cKCL3mnLGyHiFPPG5sbKbGaRAuSZEUMpbENtUk?=
+ =?us-ascii?Q?yk6MuLU3rg1XVl9PUItHHlHRUcrEC9o7V8JDYyiC+eJ1BLOJbf2AEAP+uclU?=
+ =?us-ascii?Q?4TIzZx9FsXoBYFsQYhxyFHNU85BhYq5/IRciYPFTChYM5xwlW4RRlZ7mKikn?=
+ =?us-ascii?Q?Pw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcd68d81-0bb7-400f-e877-08dd503ae9de
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR11MB4731.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5b32f96-466d-4790-1834-08dd503abdda
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2025 16:38:57.9439 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tWTI+QLfnR3If1omugkhh92JPSEpWKQbpEWufP5MGhSVPuUH7XDqGRWiJ4t49HYsVoQgAqHl9cqkfBP5M4mZgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6388
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 16:40:12.0226 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3RtRapaLNsRV9hc3rWa0C2zOuedg4QqSVUkAD/wIM34NMfjX9ALyiP2kGByESSjx8M7rer3p6rHZZYws/shPpI5uqg3FMYbiY1Zw3FvqQbo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4530
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -187,393 +181,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
+On Tue, Feb 18, 2025 at 03:06:27PM +0100, Michal Wajdeczko wrote:
+> 
+> 
+> On 18.02.2025 14:48, Francois Dugast wrote:
+> > On Fri, Feb 07, 2025 at 12:59:02PM +0530, Satyanarayana K V P wrote:
+> 
+> >> +
+> >> +	/* Get the iteration count from environment */
+> >> +	iter = get_fault_inject_iter();
+> >> +	iter_start = iter ? : 0;
+> >> +	iter_end = iter ? iter + 1 : INJECT_ITERATIONS;
+> >> +	for (int i = iter_start; i < iter_end; i++) {
+> >> +		fault_params->space = i;
+> >> +		setup_injection_fault(fault_params);
+> >> +		inject_fault_probe(fd, pci_slot, function_name);
+> >> +	}
+> > 
+> > This loop is specific to the guc test, it is not present for other tests.
+> > What is different about this test, why do we need to inject a fault at a
+> > given iteration?
+> > 
+> > In case IGT_FAULT_INJECT_ITERATION is not set, why running
+> > inject_fault_probe() 100 times instead of just once like with existing
+> > tests during probe?
+> > 
+> 
+> Because all xe_init() kind of functions are called just once during
+> driver probe, so it is sufficient to fail first/all calls to them.
+> 
+> OTOH driver communicates with the GuC multiple times, and the real
+> failure can happen at different call, hence the need to inject failure
+> in GuC communication functions, like guc_mmio_send() or guc_ct_send(),
+> but it can't be just first call or all calls, but we need to be able to
+> select specific iteration to fail.
+> 
+> Only with that approach we can provide sufficient coverage of the driver
+> probe related to GuC.
+> 
+> Michal
 
-> -----Original Message-----
-> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
-> Sent: February 18, 2025 1:59 AM
-> To: Zeng, Oak <oak.zeng@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Thomas.Hellstrom@linux.intel.com;
-> Brost, Matthew <matthew.brost@intel.com>; Konieczny, Kamil
-> <kamil.konieczny@intel.com>; Dixit, Ashutosh
-> <ashutosh.dixit@intel.com>; Heikkila, Juha-pekka <juha-
-> pekka.heikkila@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Subject: Re: [i-g-t v2 2/4] lib/xe/xe_util: Introduce helper functions
->=20
-> On Fri, Feb 14, 2025 at 04:59:18PM -0500, Oak Zeng wrote:
-> > From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> >
-> > Introduce helper functions for buffer creation, binding,
-> > destruction and command submission etc. With those helpers,
-> > writing a xe igt test will be much easier, which will be
-> > showed in a coming example.
-> >
-> > v2: use to_user_pointer to cast a pointer (Kamil)
-> >     s/insert_store/xe_insert_store (Kamil)
-> >     s/cmdbuf_fill_func_t/xe_cmdbuf_fill_func_t (Kamil)
-> >
-> > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> > Signed-off-by: Oak Zeng <oak.zeng@intel.com>
-> > Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> > ---
-> >  lib/xe/xe_util.c | 201
-> +++++++++++++++++++++++++++++++++++++++++++++++
-> >  lib/xe/xe_util.h |  33 ++++++++
-> >  2 files changed, 234 insertions(+)
-> >
-> > diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-> > index 06b378ce0..fcb904ce7 100644
-> > --- a/lib/xe/xe_util.c
-> > +++ b/lib/xe/xe_util.c
-> > @@ -13,6 +13,207 @@
-> >  #include "xe/xe_query.h"
-> >  #include "xe/xe_util.h"
-> >
-> > +/**
-> > + * __xe_submit_cmd:
-> > + * @cmdbuf Pointer to the command buffer structure
-> > + *
-> > + * Submits a command buffer to the GPU, waits for its completion,
-> and verifies
-> > + * the user fence value
-> > + *
-> > + * Return: The result of waiting for the user fence value
-> > + */
-> > +int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf)
-> > +{
-> > +	int64_t timeout =3D NSEC_PER_SEC;
-> > +	int ret;
-> > +
-> > +	struct drm_xe_sync sync[1] =3D {
-> > +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> > +			.flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> > +			.timeline_value =3D USER_FENCE_VALUE,
-> > +			.addr =3D
-> xe_cmdbuf_exec_ufence_gpuva(cmdbuf),},
-> > +	};
-> > +	struct drm_xe_exec exec =3D {
-> > +		.num_batch_buffer =3D 1,
-> > +		.num_syncs =3D 1,
-> > +		.syncs =3D to_user_pointer(&sync),
-> > +		.exec_queue_id =3D cmdbuf->exec_queue,
-> > +		.address =3D cmdbuf->gpu_addr,
-> > +	};
-> > +
-> > +	xe_exec(cmdbuf->fd, &exec);
-> > +	ret =3D __xe_wait_ufence(cmdbuf->fd,
-> xe_cmdbuf_exec_ufence_cpuva(cmdbuf),
-> > +			       USER_FENCE_VALUE, cmdbuf-
-> >exec_queue, &timeout);
-> > +	/* Reset the fence so next fence wait won't return
-> immediately */
-> > +	memset(xe_cmdbuf_exec_ufence_cpuva(cmdbuf), 0,
-> UFENCE_LENGTH);
-> > +	return ret;
-> > +}
-> > +
-> > +/**
-> > + * xe_submit_cmd:
-> > + * @cmdbuf Pointer to the command buffer structure
-> > + *
-> > + * Wrapper function to submit a command buffer and assert its
-> successful
-> > + * execution.
-> > + */
-> > +void xe_submit_cmd(struct xe_buffer *cmdbuf)
-> > +{
-> > +	int64_t ret;
-> > +
-> > +	ret =3D __xe_submit_cmd(cmdbuf);
-> > +	igt_assert_eq(ret, 0);
-> > +}
-> > +
-> > +/**
-> > + *xe_create_buffer:
-> > + * @buffer Pointer to the xe_buffer structure containing buffer
-> details.
-> > + *
-> > + * Creates a buffer, maps it to both CPU and GPU address spaces,
-> and binds it
-> > + * to a virtual memory (VM) space.
-> > + */
-> > +void xe_create_buffer(struct xe_buffer *buffer)
-> > +{
-> > +	struct drm_xe_sync sync[1] =3D {
-> > +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> > +		  .flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> > +		  .timeline_value =3D USER_FENCE_VALUE },
-> > +	};
-> > +
-> > +	buffer->bind_queue =3D xe_bind_exec_queue_create(buffer-
-> >fd,
-> > +						       buffer->vm, 0);
-> > +	buffer->bind_ufence =3D
-> aligned_alloc(xe_get_default_alignment(buffer->fd),
-> > +					    PAGE_ALIGN_UFENCE);
-> > +	sync->addr =3D to_user_pointer(buffer->bind_ufence);
-> > +
-> > +
-> > +	/* create and bind the buffer->bo */
-> > +	buffer->bo =3D xe_bo_create(buffer->fd, 0, buffer->size,
-> > +				  buffer->placement, buffer->flag);
-> > +	buffer->cpu_addr =3D xe_bo_map(buffer->fd, buffer->bo,
-> buffer->size);
-> > +	xe_vm_bind_async(buffer->fd, buffer->vm, buffer-
-> >bind_queue,
-> > +			 buffer->bo, 0, buffer->gpu_addr,
-> > +			 buffer->size, sync, 1);
-> > +
-> > +	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
-> > +		       USER_FENCE_VALUE, buffer->bind_queue,
-> NSEC_PER_SEC);
-> > +	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
-> > +}
-> > +
-> > +/**
-> > + * xe_destroy_buffer:
-> > + * @buffer Pointer to the xe_buffer structure containing buffer
-> details
-> > + *
-> > + * Destroys a buffer created by xe_create_buffer and releases
-> associated
-> > + * resources.
-> > + */
-> > +void xe_destroy_buffer(struct xe_buffer *buffer)
-> > +{
-> > +	struct drm_xe_sync sync[1] =3D {
-> > +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> > +		  .flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> > +		  .timeline_value =3D USER_FENCE_VALUE },
-> > +	};
-> > +	sync->addr =3D to_user_pointer(buffer->bind_ufence);
-> > +
-> > +	xe_vm_unbind_async(buffer->fd, buffer->vm, buffer-
-> >bind_queue,
-> > +			   0, buffer->gpu_addr, buffer->size, sync, 1);
-> > +	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
-> > +		       USER_FENCE_VALUE, buffer->bind_queue,
-> NSEC_PER_SEC);
-> > +	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
-> > +
-> > +	munmap(buffer->cpu_addr, buffer->size);
-> > +	gem_close(buffer->fd, buffer->bo);
-> > +
-> > +	free(buffer->bind_ufence);
-> > +	xe_exec_queue_destroy(buffer->fd, buffer->bind_queue);
-> > +}
-> > +
-> > +/**
-> > + * xe_insert_store:
-> > + * @batch Pointer to the batch buffer where commands will be
-> inserted.
-> > + * @dst_va Destination virtual address to store the value.
-> > + * @val Value to be stored.
-> > + *
-> > + * Inserts a MI_STORE_DWORD_IMM_GEN4 command into a
-> batch buffer, which stores
-> > + * an immediate value to a given destination virtual address.
-> > + */
-> > +void xe_insert_store(uint32_t *batch, uint64_t dst_va, uint32_t
-> val)
-> > +{
-> > +	int i =3D 0;
-> > +
-> > +	batch[i] =3D MI_STORE_DWORD_IMM_GEN4;
-> > +	batch[++i] =3D dst_va;
-> > +	batch[++i] =3D dst_va >> 32;
-> > +	batch[++i] =3D val;
-> > +	batch[++i] =3D MI_BATCH_BUFFER_END;
->=20
-> What BBE is doing here? Function name is confusing, you can't
-> glued this with something else. I would suggest to at least
-> return index of last written dword, to allow adding other
-> commands to same batch (I mean passing &batch[last_index]
-> to other functions).
+Makes sense, thanks for clarifying.
 
-Good point. I agree the interface should allow appending multiple
-Commands to one batch buffer. It will make this library more flexible.
-Here is what I plan to do:
-
-1) remove the BBE from above xe_insert_store function. This basically
-Leave the command buffer open to add more command
-2) introduce a new class xe_cmd_buffer, inherit from xe_buffer. Xe_cmd_buff=
-er
-Has a private member to store the last_index. Obviously last_index doesn't =
-belong
-To xe_buffer. Plus xec_queue also doesn't belong to xe_buffer, only belong =
-to=20
-Xe_cmd_buffer. This give us enough reason to create new xe_cmd_buffer class=
-.
-3) reparameter/repurpose the xe_create_cmdbuf function: only create buffer =
-and
-Initialize class members, but not fill commands to command buffer yet.
-4) introduce separate interface to stuff commands to command buffer
-5) introduce separate interface to close command buffer by add a BBE comman=
-d
-To the end of command buffer.
-
-With this refactor, we do requires extra codes in writing a test. With the =
-current
-Interface, we can create and fill command buffer calling one API. With abov=
-e refactor
-We would need call 3 APIs (create_cmd_buffer, fill_cmd_buffer, close_cmd_bu=
-ffer).
-But the new approach does look more flexible.
-
-I will implement above. Please let me know whether this is a ideal plan for=
- you.
-
-Thanks for the review Zbigniew!
-
-Oak
-
->=20
-> --
-> Zbigniew
->=20
-> > +}
-> > +
-> > +/**
-> > + * xe_create_cmdbuf:
-> > + * @cmd_buf Pointer to the xe_buffer structure representing the
-> command buffer.
-> > + * @fill_func Pointer to the function that fills the command buffer.
-> > + * @dst_va Virtual address of the memory location where val need
-> to store.
-> > + * @val Value to be written to the memory locations.
-> > + * @eci Pointer to the engine class instance for execution.
-> > + *
-> > + * Creates a command buffer, fills it with commands using the
-> provided fill
-> > + * function, and sets up the execution queue for submission.
-> > + */
-> > +void xe_create_cmdbuf(struct xe_buffer *cmd_buf,
-> xe_cmdbuf_fill_func_t fill_func,
-> > +		      uint64_t dst_va, uint32_t val,
-> > +		      struct drm_xe_engine_class_instance *eci)
-> > +{
-> > +	/*
-> > +	 * make some room for a exec_ufence, which will be used to
-> sync the
-> > +	 * submission of this command....
-> > +	 */
-> > +	cmd_buf->size =3D xe_bb_size(cmd_buf->fd,
-> > +				   cmd_buf->size +
-> PAGE_ALIGN_UFENCE);
-> > +	xe_create_buffer(cmd_buf);
-> > +	cmd_buf->exec_queue =3D xe_exec_queue_create(cmd_buf-
-> >fd,
-> > +						   cmd_buf->vm, eci,
-> 0);
-> > +	fill_func(cmd_buf->cpu_addr, dst_va, val);
-> > +}
-> > +
-> > +/**
-> > + * xe_destroy_cmdbuf:
-> > + * @cmd_buf Pointer to the xe_buffer structure representing the
-> command buffer.
-> > + *
-> > + * Destroys a command buffer created by xe_create_cmdbuf and
-> releases
-> > + * associated resources.
-> > + */
-> > +void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf)
-> > +{
-> > +	xe_exec_queue_destroy(cmd_buf->fd, cmd_buf-
-> >exec_queue);
-> > +	xe_destroy_buffer(cmd_buf);
-> > +}
-> > +
-> > +/**
-> > + * xe_cmdbuf_exec_ufence_gpuva:
-> > + * @cmd_buf Pointer to the xe_buffer structure representing the
-> command buffer.
-> > + *
-> > + * Returns the GPU virtual address of the execution user fence
-> located at the
-> > + * end of the command buffer.
-> > + */
-> > +uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer
-> *cmd_buf)
-> > +{
-> > +	/* the last 8 bytes of the cmd buffer is used as ufence */
-> > +	return (uint64_t)cmd_buf->gpu_addr + cmd_buf->size -
-> UFENCE_LENGTH;
-> > +}
-> > +
-> > +/**
-> > + * xe_cmdbuf_exec_ufence_cpuva:
-> > + * @cmd_buf Pointer to the xe_buffer structure representing the
-> command buffer.
-> > + *
-> > + * Returns the CPU virtual address of the execution user fence
-> located at the
-> > + * end of the command buffer.
-> > + */
-> > +uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer
-> *cmd_buf)
-> > +{
-> > +	/* the last 8 bytes of the cmd buffer is used as ufence */
-> > +	return cmd_buf->cpu_addr + cmd_buf->size -
-> UFENCE_LENGTH;
-> > +}
-> > +
-> >  static bool __region_belongs_to_regions_type(struct
-> drm_xe_mem_region *region,
-> >  					     uint32_t
-> *mem_regions_type,
-> >  					     int num_regions)
-> > diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-> > index 06ebd3c2a..df3d81801 100644
-> > --- a/lib/xe/xe_util.h
-> > +++ b/lib/xe/xe_util.h
-> > @@ -14,6 +14,39 @@
-> >
-> >  #include "xe_query.h"
-> >
-> > +#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-> > +#define PAGE_ALIGN_UFENCE	4096
-> > +#define UFENCE_LENGTH		8
-> > +
-> > +struct xe_buffer {
-> > +	void *cpu_addr;
-> > +	uint64_t gpu_addr;
-> > +	/*the user fence used to vm bind this buffer*/
-> > +	uint64_t *bind_ufence;
-> > +	uint64_t size;
-> > +	uint32_t flag;
-> > +	uint32_t vm;
-> > +	uint32_t bo;
-> > +	uint32_t placement;
-> > +	uint32_t bind_queue;
-> > +	/*only a cmd buffer has a exec queue*/
-> > +	uint32_t exec_queue;
-> > +	int fd;
-> > +	bool is_userptr;
-> > +};
-> > +
-> > +typedef void (*xe_cmdbuf_fill_func_t) (uint32_t *batch, uint64_t
-> dst_gpu_va, uint32_t val);
-> > +void xe_create_buffer(struct xe_buffer *buffer);
-> > +void xe_create_cmdbuf(struct xe_buffer *cmd_buf,
-> xe_cmdbuf_fill_func_t fill_func,
-> > +		uint64_t dst_va, uint32_t val, struct
-> drm_xe_engine_class_instance *eci);
-> > +uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer
-> *cmd_buf);
-> > +uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer
-> *cmd_buf);
-> > +void xe_insert_store(uint32_t *batch, uint64_t dst_va, uint32_t
-> val);
-> > +void xe_submit_cmd(struct xe_buffer *cmdbuf);
-> > +int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf);
-> > +void xe_destroy_buffer(struct xe_buffer *buffer);
-> > +void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf);
-> > +
-> >  #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
-> >  	(xe_region_class(fd, region) =3D=3D
-> DRM_XE_MEM_REGION_CLASS_SYSMEM)
-> >  #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
-> > --
-> > 2.26.3
-> >
+Francois
