@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08059C021B6
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A0F8C021B9
 	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 09:31:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B599210E7A8;
-	Wed, 19 Feb 2025 09:31:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0171D10E7AC;
+	Wed, 19 Feb 2025 09:31:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lDS7rPP4";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="VmR9tp2k";
 	dkim-atps=neutral
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
- [209.85.128.48])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4E7410E3F4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:22 +0000 (UTC)
-Received: by mail-wm1-f48.google.com with SMTP id
- 5b1f17b1804b1-439846bc7eeso15505735e9.3
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:22 -0800 (PST)
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+ [209.85.221.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D6CE10E3F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 16:50:45 +0000 (UTC)
+Received: by mail-wr1-f46.google.com with SMTP id
+ ffacd0b85a97d-38f22fe889aso4553492f8f.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2025 08:50:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739897421; x=1740502221; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1739897443; x=1740502243; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SpuQa0ayDhEe1R3ufN45fKnJyOQFn90Fc5DDLAu5G8g=;
- b=lDS7rPP45CU3sFFG/Qp6X28aOcCjcxD+9EZ4uVSn+x6q/6HblPdwkAoemJlGHyea4I
- FcW1q5oEjv8vGc8gYG7K2W2ERU+2dIbs11BpiM0nWk4kGKAHB4pyBT8XkSiJOHHCMeme
- bqf5wOJ6/MJxggfQ3/AYqHqjczX2YCw2pAW/fzwhaEkmgfTi9uCyRhOobTkJwI4XtvZK
- MptgQhgQ47movGu6Q8ACRim+CXaOruzYgvWJ5Lyejrj2P3Gn1AvXMNwfBsyHjIn4Z8g9
- Fe9UxGcdcreDpyWyFS/JbfqLYjjlO/gDZmnfrkcrZomeikrINlXd6E3en5X7RCdrNen+
- hJdQ==
+ bh=f1JYipLr3l9eAGr9hrZcY2LpPvWmyYkbM/tn8nJDlz0=;
+ b=VmR9tp2ksHv8vAVtSC86G9bhLY8CgW1gR3PsguyA9bJi8fuf8tGJMPVa1gL9H7mG7y
+ pAJYPY/YQ6MRkyFXvYCicN9eR+yJuLwk9V6EhJ9ADhFa+GKi59ZxOEOR7jNt5o7gm8f0
+ 8cZOf3iGyvmWNS1wZfn5zGM8JoHI6fTmDxf5xvdLF6IEiVTH8EbWyai7DD75lwvRdSOt
+ MB2OYnHhsR7iFTP47SyNYTmiKe7etCRknvywSOx3uaqvbLKLkFriiS/WNCix3v0Sf2JF
+ aCAbKxnBda9nSPQrSO8aWtooh0TU5itbyCIcUlRJo1noDu6iHKJHv7oTi8mKwUs3IMXp
+ r/vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739897421; x=1740502221;
+ d=1e100.net; s=20230601; t=1739897443; x=1740502243;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SpuQa0ayDhEe1R3ufN45fKnJyOQFn90Fc5DDLAu5G8g=;
- b=j5mtUXj6v9oomo8b8ux85dbM5diHT3naLL49niDJ8lM8uDoCI0zJHbozjnBb3jHS0w
- wIoAGLpF/VK2+Tsl0IsgPUPdEVSoY2n3MDZFF0M8XmIbQ4SqAi5wx5w2nQHYsAs/98ME
- czZBC/BbSka6gNCoWxyEW1TZNORTS1Q60aFVlTiEJaA9FSQ3wATVnR9cWAaQps2W6okn
- UN1XqNA1XQO0RT2XCYo83OUKf13frcaXz2i3uRXRpRC22mhyR+c9XIHAxupQ2ridI1nU
- Q2t9z2Td1zpJPWIqEeSKCC9PwTBN8qfy3ylwGG8Mun9ZiD+ei/nI8qVj53c/noPvMQwm
- mWhA==
-X-Gm-Message-State: AOJu0Yx4D+ZdJCpTFoYVgI2shVm93PIBfgaX4nh9swNRwcyCfXpgy2rR
- mTA6fkogQItHae1KAY/+DuhGtTZT5cpQRz7RLuqhZNG+1Wdt0WqOWxW3WrBE
-X-Gm-Gg: ASbGncvQwXl7Nq7W6W/93151YEaMCNmdzz01+MaevvJzEQ+Y2qdVNKzN2llgLNb4pqn
- dx7WwKaSgW4u7mjnNw+dWzx5VBDQCdKGhA48vXrAAKpyGSsD7AEa9Gqku8EGcWyyhzdDYior2Rz
- Vf9Sc0LVYjXjUHkg09KFwz4OE2O7hX+XzF0j7RoXsfDgx4CeICKVEzPNzcUjm4GHODMXj9MDLcf
- mbliSjO+JCqip7/7NXfp5ZNYklRbZ40C9Zsy+LYl67bgIoGH95FTRQC6UiiKTsmzSlRyFTvXYDF
- HU8iRH9RjRkgREWNNQ==
-X-Google-Smtp-Source: AGHT+IE8QjN2s3U/fftJcK23sr2tknmGgaZcoL/of36kAuTAS215+8RLU69JqLFiKsWZQPQNUyhVNQ==
-X-Received: by 2002:a5d:5f8c:0:b0:38f:3e8d:dd42 with SMTP id
- ffacd0b85a97d-38f587f3f3emr129125f8f.53.1739897420942; 
- Tue, 18 Feb 2025 08:50:20 -0800 (PST)
+ bh=f1JYipLr3l9eAGr9hrZcY2LpPvWmyYkbM/tn8nJDlz0=;
+ b=ffSF0/IG90mx3RIiF/ZGtrBf09vXY+Q1DNWK97F3SotIIaSoh12iH8KcpGgps8Wf8w
+ HZ040nGkESigPxUlJhB4RTOhPOcM/zzcLMTWDu0Gcwf2MIaK4oPTtUL6I65MN4Cds2GU
+ 9cSdG5HXEmupyH8US8MMBP0qmyBxQ/I5/nHG0sUYw8+ESeku9kIH7FMWVb6ZTJ81HUhV
+ 8dspqdLSRE/+zteER9kKVrSdrzqMJ746YB/K7NldW0+xX6hPhwV0aGTudM+pGrrpokwG
+ eC+Pgqk0WCamcH5ahyp7cvA5r/4PVWc4UyJZRN8+k/9ooZ+bNetp/VrqxpOOk+UCttor
+ dtxQ==
+X-Gm-Message-State: AOJu0Yzrc0Pe0cfSgtFlfnwEePOdG2OI1Qu1Y/9oxF3sy+QPs2urIrQ9
+ gnqSHkz581wOTZl59J3X2qT/BcAztiqAwyq8b1tb2mSXL3EUjub3t+GOi2yO
+X-Gm-Gg: ASbGncvyWGc8yuqNR2Ij+CO+LiX8n9PjQc1nD3ndnUxxNsz5eJcZWqP2emQsgmrXdNo
+ GBsrFIoDrMr6uJZUvtAjFG3m1EURwryC0Q3RuV8r1n7fRynkzEbJcwIXuwLCbg0m/Rpu05aAajt
+ dguMsJf7hPFA6W9/8zXPl6PddJf6YR61gNz5wioo+oxvANRN1dy1yyRpyohtPqGQ3B6BuuGtk9u
+ IXWmlPaLzzr2xWvS3rE5E+AKadiw2fBsom9iF3ZgD/uyiqvAzrkDTumqG8TPC4BHX6SVkZ6wQKb
+ i6qoUs+2C32y9zERzQ==
+X-Google-Smtp-Source: AGHT+IF/DMiwz6vtFd2XMpp0cqyY6FrkFDxfrkZtQDoMnTPjaUCoTUlF8FpLhM1vELurziR8rrSqfA==
+X-Received: by 2002:a05:6000:1568:b0:38f:43c8:f766 with SMTP id
+ ffacd0b85a97d-38f43c8fb55mr10445859f8f.31.1739897443363; 
+ Tue, 18 Feb 2025 08:50:43 -0800 (PST)
 Received: from fedora.. ([213.94.27.232]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.20
+ ffacd0b85a97d-38f258ddbbdsm15582024f8f.37.2025.02.18.08.50.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 08:50:20 -0800 (PST)
+ Tue, 18 Feb 2025 08:50:42 -0800 (PST)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t 07/39] lib/vkms: Test plane default files
-Date: Tue, 18 Feb 2025 17:49:39 +0100
-Message-ID: <20250218165011.9123-8-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t 31/39] tests/vkms_configfs: Test adding an encoder
+ without possible CRTCs
+Date: Tue, 18 Feb 2025 17:50:03 +0100
+Message-ID: <20250218165011.9123-32-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
@@ -87,137 +88,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper to create a plane and a test checking that the default
-files and directories are created.
+Try to enable a VKMS device with an encoder without possible CRTCs and
+test that it fails.
 
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/igt_vkms.c             | 52 ++++++++++++++++++++++++++++++++++++++
- lib/igt_vkms.h             |  2 ++
- tests/vkms/vkms_configfs.c | 33 ++++++++++++++++++++++++
- 3 files changed, 87 insertions(+)
+ tests/vkms/vkms_configfs.c | 44 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-index 1fdfb09f7..a7b395a71 100644
---- a/lib/igt_vkms.c
-+++ b/lib/igt_vkms.c
-@@ -24,6 +24,13 @@
- #define VKMS_ROOT_DIR_NAME		"vkms"
- #define VKMS_FILE_ENABLED		"enabled"
- 
-+enum vkms_pipeline_item {
-+	VKMS_PIPELINE_ITEM_PLANE,
-+	VKMS_PIPELINE_ITEM_CRTC,
-+	VKMS_PIPELINE_ITEM_ENCODER,
-+	VKMS_PIPELINE_ITEM_CONNECTOR,
-+};
-+
- /**
-  * SECTION:igt_vkms
-  * @short_description: Helpers to create and configure VKMS devices
-@@ -93,6 +100,39 @@ static void write_bool(const char *path, bool value)
- 	write_int(path, value ? 1 : 0);
- }
- 
-+static const char *get_pipeline_item_dir_name(enum vkms_pipeline_item item)
-+{
-+	switch (item) {
-+	case VKMS_PIPELINE_ITEM_PLANE:
-+		return "planes";
-+	case VKMS_PIPELINE_ITEM_CRTC:
-+		return "crtcs";
-+	case VKMS_PIPELINE_ITEM_ENCODER:
-+		return "encoders";
-+	case VKMS_PIPELINE_ITEM_CONNECTOR:
-+		return "connectors";
-+	}
-+
-+	igt_assert(!"Cannot be reached: Unknown VKMS pipeline item type");
-+}
-+
-+static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
-+			      const char *name)
-+{
-+	const char *item_dir_name;
-+	char path[PATH_MAX];
-+	int ret;
-+
-+	item_dir_name = get_pipeline_item_dir_name(item);
-+	snprintf(path, sizeof(path), "%s/%s/%s", dev->path, item_dir_name,
-+		 name);
-+
-+	ret = mkdir(path, 0777);
-+	igt_assert_f(ret == 0,
-+		     "Unable to mkdir directory '%s'. Got errno=%d (%s)\n",
-+		     path, errno, strerror(errno));
-+}
-+
- /**
-  * igt_require_vkms_configfs:
-  *
-@@ -269,3 +309,15 @@ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
- 
- 	write_bool(path, enabled);
- }
-+
-+/**
-+ * igt_vkms_device_add_plane:
-+ * @dev: Device to add the plane to
-+ * @name: Plane name
-+ *
-+ * Add a new plane to the VKMS device.
-+ */
-+void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
-+{
-+	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
-+}
-diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-index dab51852a..9e16ae7eb 100644
---- a/lib/igt_vkms.h
-+++ b/lib/igt_vkms.h
-@@ -29,4 +29,6 @@ void igt_vkms_destroy_all_devices(void);
- bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
- void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
- 
-+void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
-+
- #endif /* __IGT_VKMS_H__ */
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index 79023359a..ec334641f 100644
+index 8f1f46f90..11ed6dbcb 100644
 --- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -170,6 +170,38 @@ static void test_device_wrong_values(void)
+@@ -1235,6 +1235,49 @@ static void test_enable_too_many_encoders(void)
  	igt_vkms_device_destroy(dev);
  }
  
 +/**
-+ * SUBTEST: plane-default-files
-+ * Description: Test that creating a plane creates the default files and
-+ *              directories.
++ * SUBTEST: enable-encoder-no-crtcs
++ * Description: Try to enable a VKMS device with an encoder without possible
++ *              CRTCs and test that it fails.
 + */
 +
-+static void test_plane_default_files(void)
++static void test_enable_encoder_no_crtcs(void)
 +{
 +	igt_vkms_t *dev;
-+	char path[PATH_MAX];
 +
-+	const char *files[] = {
-+		"type",
++	igt_vkms_config_t cfg = {
++		.device_name = __func__,
++		.planes = {
++			{
++				.name = "plane0",
++				.type = DRM_PLANE_TYPE_PRIMARY,
++				.possible_crtcs = { "crtc0" },
++			},
++		},
++		.crtcs = {
++			{ .name = "crtc0" },
++		},
++		.encoders = {
++			{ .name = "encoder0", .possible_crtcs = {} },
++		},
++		.connectors = {
++			{
++				.name = "connector0",
++				.possible_encoders = { "encoder0" },
++			},
++		},
 +	};
 +
-+	const char *dirs[] = {
-+		"possible_crtcs",
-+	};
-+
-+	dev = igt_vkms_device_create(__func__);
++	dev = igt_vkms_device_create_from_config(&cfg);
 +	igt_assert(dev);
 +
-+	igt_vkms_device_add_plane(dev, "plane0");
-+
-+	snprintf(path, sizeof(path), "%s/planes/plane0", dev->path);
-+	assert_default_files(path,
-+			     files, ARRAY_SIZE(files),
-+			     dirs, ARRAY_SIZE(dirs));
++	igt_vkms_device_set_enabled(dev, true);
++	igt_assert(!igt_vkms_device_is_enabled(dev));
++	igt_assert(!device_exists(__func__));
 +
 +	igt_vkms_device_destroy(dev);
 +}
@@ -225,11 +150,11 @@ index 79023359a..ec334641f 100644
  igt_main
  {
  	struct {
-@@ -179,6 +211,7 @@ igt_main
- 		{ "device-default-files", test_device_default_files },
- 		{ "device-default-values", test_device_default_values },
- 		{ "device-wrong-values", test_device_wrong_values },
-+		{ "plane-default-files", test_plane_default_files },
+@@ -1268,6 +1311,7 @@ igt_main
+ 		{ "enable-too-many-crtcs", test_enable_too_many_crtcs },
+ 		{ "enable-no-encoders", test_enable_no_encoders },
+ 		{ "enable-too-many-encoders", test_enable_too_many_encoders },
++		{ "enable-encoder-no-crtcs", test_enable_encoder_no_crtcs },
  	};
  
  	igt_fixture {
