@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F606C021AA
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Feb 2025 23:50:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73B2EC021B0
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 00:35:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF47410E8B7;
-	Wed, 19 Feb 2025 23:50:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1909E10E098;
+	Thu, 20 Feb 2025 00:35:39 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C120410E8B7;
- Wed, 19 Feb 2025 23:50:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C23E10E098;
+ Thu, 20 Feb 2025 00:35:38 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4859881252252412770=="
+ boundary="===============1161639423276630418=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_VF_detection_and_skip_d?=
- =?utf-8?q?evcoredump_checks_on_VFs?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tools/intel=5Freg=3A_Add_--?=
+ =?utf-8?q?pci-slot_option_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Feb 2025 23:50:51 -0000
-Message-ID: <174000905178.4187148.16440870503275830873@b555e5b46a47>
+Date: Thu, 20 Feb 2025 00:35:38 -0000
+Message-ID: <174001173837.32715.17998916713221302729@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250219115314.180382-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250219115314.180382-1-marcin.bernatowicz@linux.intel.com>
+References: <20250219121050.71831-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250219121050.71831-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4859881252252412770==
+--===============1161639423276630418==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add VF detection and skip devcoredump checks on VFs
-URL   : https://patchwork.freedesktop.org/series/145071/
+Series: tools/intel_reg: Add --pci-slot option (rev2)
+URL   : https://patchwork.freedesktop.org/series/144206/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8239_BAT -> XEIGTPW_12636_BAT
+CI Bug Log - changes from XEIGT_8240_BAT -> XEIGTPW_12637_BAT
 ====================================================
 
 Summary
@@ -71,27 +71,46 @@ Participating hosts (8 -> 8)
 
   No changes in participating hosts
 
+Known issues
+------------
 
-Changes
--------
+  Here are the changes found in XEIGTPW_12637_BAT that come from known issues:
 
-  No changes found
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_vm@shared-pde-page:
+    - bat-adlp-vf:        [PASS][1] -> [DMESG-WARN][2] ([Intel XE#3970])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/bat-adlp-vf/igt@xe_vm@shared-pde-page.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/bat-adlp-vf/igt@xe_vm@shared-pde-page.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_intel_bb@render@render-linear-256:
+    - bat-adlp-vf:        [DMESG-WARN][3] ([Intel XE#3970]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
+
+  
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8239 -> IGTPW_12636
+  * IGT: IGT_8240 -> IGTPW_12637
 
-  IGTPW_12636: a990cc4e33b21e3c129b153cdf33f1ac09b4cba7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8239: f058a041a6b7b7643246a92b7f1ff5d4e22a926f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12637: 8bb0f4666cbeb80bf4139a6bfb9e1580e22450bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8240: aa097b2264d0eae71f718791f83097d979ddf8b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-2692-e19eb43c82480789a93ce0c452e22bbd851b93c6: e19eb43c82480789a93ce0c452e22bbd851b93c6
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12636/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/index.html
 
---===============4859881252252412770==
+--===============1161639423276630418==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +130,47 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add VF detection and skip devcoredump checks on VFs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145071/">https://patchwork.freedesktop.org/series/145071/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tools/intel_reg: Add --pci-slot option (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144206/">https://patchwork.freedesktop.org/series/144206/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12636/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12636/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8239_BAT -&gt; XEIGTPW_12636_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8240_BAT -&gt; XEIGTPW_12637_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (8 -&gt; 8)</h2>
 <p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12637_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_vm@shared-pde-page:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/bat-adlp-vf/igt@xe_vm@shared-pde-page.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/bat-adlp-vf/igt@xe_vm@shared-pde-page.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_intel_bb@render@render-linear-256:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8239 -&gt; IGTPW_12636</li>
+<li>IGT: IGT_8240 -&gt; IGTPW_12637</li>
 </ul>
-<p>IGTPW_12636: a990cc4e33b21e3c129b153cdf33f1ac09b4cba7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8239: f058a041a6b7b7643246a92b7f1ff5d4e22a926f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_12637: 8bb0f4666cbeb80bf4139a6bfb9e1580e22450bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8240: aa097b2264d0eae71f718791f83097d979ddf8b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-2692-e19eb43c82480789a93ce0c452e22bbd851b93c6: e19eb43c82480789a93ce0c452e22bbd851b93c6</p>
 
 </body>
 </html>
 
---===============4859881252252412770==--
+--===============1161639423276630418==--
