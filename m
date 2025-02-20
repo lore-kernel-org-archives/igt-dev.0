@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A6B9C021AD
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 08:08:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A12A4C021AD
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 08:09:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 296E910E181;
-	Thu, 20 Feb 2025 08:08:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D6C610E181;
+	Thu, 20 Feb 2025 08:09:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGAVLuh2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BxI+xy0t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9249E10E181
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 08:08:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 894B210E181
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 08:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740038882; x=1771574882;
+ t=1740038998; x=1771574998;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=H6kcg/iDQfSO8OA7pntCEkSWSz5sYOXMZz4qDL6TsQI=;
- b=JGAVLuh2RUkl/0jIi/HpPWuZiVZ/Of/wE6P7DGIa+oIXHAqBSoamoFJ9
- uSmtGr2qqfWN0wJ1+FK55klGr2KlE4fD69fW/vvctLXzgjd2FtxCyBJbE
- pj6iep7hfMmhlGSr+WCeTjLEo/BkxnkV0jJvmvJWMxGaov9zIdwDhXyxC
- rOD27Cg7ZSFLFyF66fxwkD5ZGRyfCoKs2WkkjKaUbSa3sxzbE1hJBO7i/
- m05uCmO8wHGNpjuE/IJiUE27G13vdgVl7fgqP6k6RWXFgssdSW7HYNTqy
- tL59iwrFzpI6wneEfVuKBwEgA2iAZoNqE1NgwL+wJfVxoJvLeaZbBHmKV Q==;
-X-CSE-ConnectionGUID: asl0lYdlTz2OuqOYP3d8yA==
-X-CSE-MsgGUID: 3b72/Jg0TNidp5RBYFXpiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40943365"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="40943365"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 00:08:01 -0800
-X-CSE-ConnectionGUID: c51QK+fwR/eT94c1wCkJqw==
-X-CSE-MsgGUID: KtZpmiz7Sb2Vfn4Y8Sqb5Q==
+ bh=zna/saEHQnTC37tZY95l8KBXSU3CWE0EXvJiTHuj/D0=;
+ b=BxI+xy0tlrrhETAM0k/FKN6R+0KtMLWtKQmJ+DwyKueP8T+32bjQfupo
+ /BMdZv2+d7u43RQokTYmtHzvPmE81EW0l8UzYcJibtZ2UGXVGqnvXPcvF
+ AqTGd6EQPciC7NuMOByS6aVE+d/n/pI7sHWZEqdX70WHvmLEV57Tlpcyk
+ tBr2oV70xMI1GOpUdN26koky+G3a7nUOv6QMz7lXhWl7AQk75oaq6eNCo
+ AokbZ+KATIP48u0f5cPp77BAtzLIzkk6r8stNMve9yNKMt4NN1Cwr/fqb
+ RNZuFMY7Wtjm6YcHpe5gYtD4qxcIiWCFkg2dVbDSpPd3sAMZ9vPFctAWi w==;
+X-CSE-ConnectionGUID: gn7cgAR/TWirpuoUgJvISg==
+X-CSE-MsgGUID: bbX6p6YiQV2rI0/C7Z/mzg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40672767"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="40672767"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 00:09:57 -0800
+X-CSE-ConnectionGUID: W1CM78oWTtWfKqgzookMsA==
+X-CSE-MsgGUID: 6X720y0bSOqSGZkSpVxS7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="152162157"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="119908480"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.190])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 00:07:59 -0800
-Date: Thu, 20 Feb 2025 09:07:56 +0100
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 00:09:56 -0800
+Date: Thu, 20 Feb 2025 09:09:52 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_compute_preempt.c: Reduced
- child count for PTL
-Message-ID: <20250220080756.wrplw54a7gutwvai@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t 4/5] lib/intel_chipset.h: Add macro for PTL device id
+Message-ID: <20250220080952.zgwmkxxmskx5dckc@zkempczy-mobl2>
 References: <20250217081854.3219791-1-priyanka.dandamudi@intel.com>
- <20250217081854.3219791-6-priyanka.dandamudi@intel.com>
+ <20250217081854.3219791-5-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250217081854.3219791-6-priyanka.dandamudi@intel.com>
+In-Reply-To: <20250217081854.3219791-5-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,46 +70,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 17, 2025 at 08:18:54AM +0000, priyanka.dandamudi@intel.com wrote:
+On Mon, Feb 17, 2025 at 08:18:53AM +0000, priyanka.dandamudi@intel.com wrote:
 > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Preemption is not happening for long kernel when child count is beyond
-> 50 in PTL for compute-preempt-many test and its failing user fence.
-> So, reduced child count for PTL.
+> Add macro for PTL which helps for the tests to check for the platform.
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-> 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  tests/intel/xe_compute_preempt.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+>  lib/intel_chipset.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index 5319dee7b..d4c243c16 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -64,8 +64,16 @@ igt_main
->  				continue;
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index c93ad9f75..2f6bf788a 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -209,6 +209,7 @@ void intel_check_pch(void);
+>  #define IS_PONTEVECCHIO(devid)	(intel_get_device_info(devid)->is_pontevecchio)
+>  #define IS_LUNARLAKE(devid)	(intel_get_device_info(devid)->is_lunarlake)
+>  #define IS_BATTLEMAGE(devid)	(intel_get_device_info(devid)->is_battlemage)
+> +#define IS_PANTHERLAKE(devid)  (intel_get_device_info(devid)->is_pantherlake)
 >  
->  			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class)) {
-> +				uint16_t dev_id = intel_get_drm_devid(xe);
-> +				int child_count;
-> +
-> +				if (IS_PANTHERLAKE(dev_id))
-> +					child_count = 50;
-> +				else
-> +					child_count = 100;
-> +
->  				test_compute_preempt(xe, hwe, false);
-> -				igt_fork(child, 100)
-> +				igt_fork(child, child_count)
->  					test_compute_preempt(xe, hwe, false);
->  				igt_waitchildren();
->  			}
+>  #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+>  
 > -- 
 > 2.34.1
 > 
