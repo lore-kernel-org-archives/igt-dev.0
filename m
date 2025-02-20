@@ -4,184 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD54CC021AD
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 07:00:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F5DAC021AD
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 07:15:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05A7C10E8D7;
-	Thu, 20 Feb 2025 07:00:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C1D910E0AD;
+	Thu, 20 Feb 2025 07:15:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BXa7RGly";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zkg95Izf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8213610E8D7
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 07:00:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0531910E0AD
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 07:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740034852; x=1771570852;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=lHJcv9s3Ok9kCZHXOILX656G0V0mh+GEF2nVky5pVnk=;
- b=BXa7RGly8MtBCF07cTLfkFYaAz92kKPS2wncD07e/PCnTUMMJxIsCJpd
- wh7OekP6SjuB5Me44TbDLTo8eXXVh6jYv4C50y9kY6unAF8oKqJDrmHYd
- OjtZR75UshlEeFR1DOxHyBmCYgvGlSrqKHDDaBlM9NnSCM/7x23s3yuVj
- X6oDfni69ksXa/YqIAVv92bEJ+gfe+RCblcc77DUkvn82VKBv0b7z5WmA
- 5sD3kve0jQnNMqQwFZ9Y/9JOfjpiCOeXh7pOxonYtXMsPTorhZM9pDfwT
- 4HcrY5mEG2oEaIxjyYqIub96Y79RpEjlXz9hfJYLy1S1cKKjhKUgae6K7 A==;
-X-CSE-ConnectionGUID: ka45xTA5TQCYqrAvnGcFGQ==
-X-CSE-MsgGUID: 4I3OZOucR2aleIUIw7zIlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="51782120"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="51782120"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 23:00:25 -0800
-X-CSE-ConnectionGUID: y9epiE1HQvyxGw7NR99CLw==
-X-CSE-MsgGUID: UFi0KAg3Tf2xiGTFpS0e0A==
+ t=1740035720; x=1771571720;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=F5LoaAfWnLWFhfubbwMSEhqrvu1O3DPBD5vjdp0BXxc=;
+ b=Zkg95IzfSM/tQtJ8TfBlXRoya5G3GRKYXCgF7/Omn+vjHpj1n8Phxyu2
+ i9jnECHgdjeIzcl7iQ1HUAx6B9+3sCPET7jSoezZgNhCr8SDXX9jNSwsn
+ i2Ojg12gca8F2rsEGxsvRlZyVrmutiqpGU2vKE2++4oSNKeFeQCjuNLyF
+ UdCKwl14JX2ULntMlVZ714gd7xOqrIw0mcHZN8YTI0xzMbJ6C/EKX3Sag
+ +bxJB6zgIsB4AAKxy58CSsZG1zKcC7SnEu/9bmvc5vVnly95xsonq1hfR
+ v9/oFLp0hS2TIi4dJBTa63LnU/gZ82GaUDLHQmgqH53geae7m69n151hs g==;
+X-CSE-ConnectionGUID: GbMUCruBRCyF1rY41GyWlQ==
+X-CSE-MsgGUID: WTisr6RyT1+9ixyWTs6eew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="41059153"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="41059153"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2025 23:15:20 -0800
+X-CSE-ConnectionGUID: DCKCjZkwQuyTJ9uGX94scg==
+X-CSE-MsgGUID: XpKJaVcIRO+MorDeOaPcMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120176080"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 23:00:23 -0800
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.14; Wed, 19 Feb 2025 23:00:22 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 19 Feb 2025 23:00:22 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.177)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 19 Feb 2025 23:00:12 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lL6JcJrKrNrG+3wmUB9YaTs3wxQrg3f5osnJ/2AdenchmMNLg4TqQOf/+ScaTwRHsANhtCu85/JQ77lpuk1cx+QWjhvAwZ8pjsODKdiHyPcWDJ+z8paP5buCBKobnQqQ7Dt1H6QyKdXPd4D7cTOtnrslEBfCabc9ULB1DXE/0kkiuB47wPK1SrcjviVglXPg2UFac8a6JKZD9zlC2u8nGVGAvrFWOxpKJAyUIfRqGg2yeU4Pkt2EsjWj0oUAslT745jyipRBAHPoW1b3jkgf2UQ0667UebBUdVoaQ1qSfWFxfghcaxNW2M1hi/C4okFYrJXa0ayoKOQQGm7kGp9fLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=09/g3KxAD6G/HDVGHWvhbZdd06L03GE53I5INc24Sx0=;
- b=mados2Mk9XdIsdNBWP1hjGEW5ZyZrT/j2iRgEcX5UZvdITlQALQs8I2UKJs+S1hopP/tF+VqXDJvmIFUCihZ9sHJM6mca5X7y9ylkw0JPo5roRslAQGsWo/AjSq1MtMtac/yaLi9Cyq1E/yxylRamEMEU8lEeOSWDM5hTwyjJbizsc5jyAjiZVDZ8VUnozf1qUZbFyGuyQaM0OFNRAo8QOO518CWiTB/LvFyusOu57Xrih4k3wm5vsl9iUU4yJwx0aG4aL5PkX9ZnLhO6AcJL7mlq0WPISQT/ZM8+mzc//WyIxRrOyei5CRWs/UUzFk1bgg06EgIv+s6w9Gmwu+3fA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by SJ0PR11MB5070.namprd11.prod.outlook.com (2603:10b6:a03:2d5::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Thu, 20 Feb
- 2025 07:00:09 +0000
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::4a36:b210:9d85:d13b]) by PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::4a36:b210:9d85:d13b%6]) with mapi id 15.20.8445.017; Thu, 20 Feb 2025
- 07:00:09 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: "Wheeler, Daniel" <Daniel.Wheeler@amd.com>, "Nikula, Jani"
- <jani.nikula@intel.com>, "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "B S, Karthik" <karthik.b.s@intel.com>, "Joshi, Kunal1"
- <kunal1.joshi@intel.com>, "Lattannavar, Sameer"
- <sameer.lattannavar@intel.com>, Bhanuprakash Modem
- <bhanuprakash.modem@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Subject: RE: [PATCH i-g-t] tests/kms_cursor_legacy: Reduce debug loglevel
- dynamically
-Thread-Topic: [PATCH i-g-t] tests/kms_cursor_legacy: Reduce debug loglevel
- dynamically
-Thread-Index: AQHbcUS8Dnt3WWmwDUO3/cDxIV+RgLNAuacAgAAM+wCADg7wAIABEZ7g
-Date: Thu, 20 Feb 2025 07:00:09 +0000
-Message-ID: <PH7PR11MB6053DBE332C4F17F19B72C55E7C42@PH7PR11MB6053.namprd11.prod.outlook.com>
-References: <20250128052825.424586-1-pranay.samala@intel.com>
- <abf8b026-20b6-4566-9823-bb558deb97a7@amd.com> <877c5x4wrv.fsf@intel.com>
- <DS0PR12MB6534D129E88682D6235797089CC52@DS0PR12MB6534.namprd12.prod.outlook.com>
-In-Reply-To: <DS0PR12MB6534D129E88682D6235797089CC52@DS0PR12MB6534.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=61518c5a-4f53-4440-9d09-002242c8db3c;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open Source;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-02-19T14:38:47Z;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Tag=10, 0, 1, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|SJ0PR11MB5070:EE_
-x-ms-office365-filtering-correlation-id: 0c0d540e-d6ce-4dd4-1b10-08dd517c36f4
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?/t9C34ncdeXFO9N844fEa6VwT2F+b34vpqx8fQl8sj+kJAAYLg7z+0XfCT+H?=
- =?us-ascii?Q?jywfK4aU4cIypv4Is0mL5t2XA4PtEgtR4MqCsnEyGVQFa1nqPIEKmd92DtJi?=
- =?us-ascii?Q?bcyH1oIPh8wpRVWwRp6KD+e69lWvn8qGMhdR2aG5RU6WDkUMbpj3UKKzy4fG?=
- =?us-ascii?Q?ZEiJJDLEqCL7/teRWkZ5/OUQhWmmXxTTkwItYufksSM3g/vrvjcY8x2jH2hz?=
- =?us-ascii?Q?Th6/Zjuu8UF+F2TLnCny6TOmBCudEi3iscQ+rLgQ9PIT7ZkW9S8pZ/YE7fYY?=
- =?us-ascii?Q?4il/HUIOJC62yoYYhU2bG4gxuM6W2iQjEMESvOe6KBuA9iaVegJTp/dm+Q2R?=
- =?us-ascii?Q?fc9p5UniwNwgATyrdqsHp4syO0ZMUlcIZ7R96/BvPFO2+OzyWOz+STwOkyOP?=
- =?us-ascii?Q?jXh7Kxts8FOBVvyj7lqpK6k7XwLTpPHAoMMjKzdBckCKzULkggsDlcqHMCtv?=
- =?us-ascii?Q?rn3cNflYGt+ZBJcFv8ykiWe1OEON+TI368j/9606+3BPkuYqPXcLBSnhwOBT?=
- =?us-ascii?Q?LmQDg0DYWjTUjeRR6pspluB5a0L+9avAcoBz5HRKPa/YcIudWRf5Ryi9+ZYZ?=
- =?us-ascii?Q?aPddFfpgqCK2k4Vfg5CqwIwBBNZmLErqUr3D6wHrzSrHMB6gL37a22OkbZeM?=
- =?us-ascii?Q?JYtasRtJ0HspXFZMQGTUk2qUcgyuq1p7Rh7S4Dv3PGYzaPhrnI/KAzqLVTR6?=
- =?us-ascii?Q?ybMoJMbIZAvR9IOhKBd59Op2D79eq70TRHAG8ksJMKEE/+Q8s6qjv4qJa66z?=
- =?us-ascii?Q?Vd2/KMhort58UImOVHJWAwUCvtezs2BmvUXmV3Im/ruOZl7e8RUKIr44X+5e?=
- =?us-ascii?Q?WOQNN2dF+8KXL4tIVdMBubToLnurCZhPoorIXyKLwX8fGQ3VzOv8di9BNHgf?=
- =?us-ascii?Q?v8gLDb65AXun6DKRRfUrIbcEGHL6J7J3fOycumIvBhPg1g7ilJLcdmMTPh2E?=
- =?us-ascii?Q?Qvoh/RfYzHIPvE4Z+HH8AUzsZnZwSjes0oOxkZBw+PV02mRpQf9QXCbTeaGA?=
- =?us-ascii?Q?1eGljVQxsrSHEKusZlHnnn8NScvy7uCmSP97u80k2W9QRvclKl3MxCMa35j4?=
- =?us-ascii?Q?J3pMtMvgMWx/lB3FoGF/MHU2teNCkvIsYIcC+vZ5xA2HBeqOscpjjn6SNouW?=
- =?us-ascii?Q?pmlIZjaSwoUPUd3HsgZsielGwRJ+swoMOrP8oaWGx8DSjnM6WobIvxnuvo/J?=
- =?us-ascii?Q?f5xUVOCltuxZLHCHV2BwWFUU15F4JgqyKTeYMkHskXg/7a1wpwryhF06ru6t?=
- =?us-ascii?Q?IjtArBKfkpt0wBi8PZ7GTXcdMKahAkdL3mgGhXJWs/DcbDyTLCtA+IkFzyyu?=
- =?us-ascii?Q?MLFmhG2CygnXCKLUhOiN8cx8UA+jHYW/0RirsqfOezIpE+JovfSMZ9DwWEMx?=
- =?us-ascii?Q?lnAxufGpP8BnFnza3rp0TAE3lCsf?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?A8zYJzqEdPecn/XppNjsxfCfMFb6MdhfEKknOdb9L6FoSNhEYWoT0zL+sXPU?=
- =?us-ascii?Q?eJRA76YCfl6g4D4Vk9FFpfufBL9C6pAR4b0Kcb8QNdgiUlxiuHVkSBbq7q0z?=
- =?us-ascii?Q?/Uce4Vu5WaF4QdiVfPpcg6XOgdVR85DHNnwM9bZ8HdpIfNQO2R99h4V1RSYP?=
- =?us-ascii?Q?WJV8FS5Wn5C7r1AB2zCEo5LtKPhuqL6msK1vI53GbjT0K46KYKaQSFTYb0G4?=
- =?us-ascii?Q?eo8/w09x8iqvc6SgQCXoe0o96H+Ht+w/FZBEIAXpf2iXBtKbhKL9ZV+I4zyN?=
- =?us-ascii?Q?cHyxKvYCFW4FHlDiM9j91VToIzlPyB2eTDII1waoF3rOip/szOYZKhNFRV8H?=
- =?us-ascii?Q?3bZJ0DF47XlcsgzxgWPanvqWWMHEW0cVaoFnP3IfTDMvQ8UbUb8zOaJdo+nm?=
- =?us-ascii?Q?0jIIteT5RTGlMABawJgjzgAaYBJutPzLmXFRvJQZyaUbGF7TonutQ5RShGbm?=
- =?us-ascii?Q?IokOwxJZZifnQpGWEkAOnCiZ397bTCsHRUcufDuG43GuH07TbZow3jVRTuYq?=
- =?us-ascii?Q?q5OFBKv/SXzmswbREDV0B+5FM1vAJbUT2Fy3v7P8nP9DX2gell9zwaCkU6xy?=
- =?us-ascii?Q?c0EPhiB81wjHf9cXMgWvw7COwRY3i9KqX4N4XX3U6J7r1Si5H0k4qZ09aF+j?=
- =?us-ascii?Q?xrqhaVwvXiWx4I/lUL9qb9hNRUWcFF9/GcwPzSfjSyS9avCyybaU0ID3hAl3?=
- =?us-ascii?Q?ZKoI8WX/fhmgu5QygRbo0FHLYN3nia9cFXw910fohp711p8rC7cKkUdqNce+?=
- =?us-ascii?Q?d9nawNzYVPKm6PtSaz4yM2ZOd9Xn3DGCp+Lei1PPcP2vcC+b0Kgg/qCb0qNH?=
- =?us-ascii?Q?pHAtObFlDjRI1Km2UjKgCn2bQR8XY4+d+rxsmbLyrbkWfkXZFfrR+KnvZ3vi?=
- =?us-ascii?Q?Nvm2R14tJFRRnsySmHNOAzZQbVA481SJD1u1cUdxL2BCgNEWyTKW0RBYrhju?=
- =?us-ascii?Q?9MNGt8ABfSBVj2PEaH4H+i4Qe1nota1K2CTV1BYeWgO+4m7N1+bRo+ILgodA?=
- =?us-ascii?Q?zC5dLeRCBd/0RbnF02VjAWvllOMJa9yJMd5OW+F95aUkvb37YivKz4w+rhyx?=
- =?us-ascii?Q?v8SXek/ujmeojJkcykK3nJ3TbAps3UfOP0L2RZYjHK2x29dLs4gpWOYIjw9B?=
- =?us-ascii?Q?8wVAwv9xqo2Iuf4rM3N9zhiorc9jn1jsurQSWAZ9PpvXpGJ07+29zSUy18Gg?=
- =?us-ascii?Q?gSNb+2iV2+Jne6MR/eLVb1G/sHp+FkRuukiaYRQiwqTCwelHj4FJcGal2nie?=
- =?us-ascii?Q?ApR/VEBN9J3HX1TGkJ5tctzcycrx0k2kOXbM8i8dGcGwp7+M1pr9+CFKkY/O?=
- =?us-ascii?Q?cUw8tg4RYUGn19GAuog8Y3OM0NhnFcpVFxchHZLGeL3IWS+PUvhWH2q54yR+?=
- =?us-ascii?Q?d8i0YlW2NxnnUO6IDJX70FYj0R356P8lzLcq0nvD1xiIBEpb793BEqK82Oiq?=
- =?us-ascii?Q?Zh8GpE0BBjn3//NiAx+jqqqSFxiifpQOUZRl0s7CJwtiu27TqMc+S1djLoSp?=
- =?us-ascii?Q?W6y5cO3vxBHuQtNhf+jmO1nWKx5zWTKuR2/RSBrW9r4g+r13HqRFP2Pl2R2H?=
- =?us-ascii?Q?05/oMZMEwnrSGANpvHM9Lq6C7lNnwd56TM0nCPRP?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="114939624"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.190])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2025 23:15:17 -0800
+Date: Thu, 20 Feb 2025 08:15:13 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Oak Zeng <oak.zeng@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Thomas.Hellstrom@linux.intel.com,
+ matthew.brost@intel.com, kamil.konieczny@intel.com,
+ ashutosh.dixit@intel.com, juha-pekka.heikkila@intel.com,
+ rodrigo.vivi@intel.com
+Subject: Re: [i-g-t v3 2/4] lib/xe/xe_util: Introduce helper functions
+Message-ID: <20250220071513.m2ciqo4a36wdjhdy@zkempczy-mobl2>
+References: <20250218235755.360264-1-oak.zeng@intel.com>
+ <20250218235755.360264-3-oak.zeng@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c0d540e-d6ce-4dd4-1b10-08dd517c36f4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2025 07:00:09.6046 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dqw/fgKImeSZAB1rDbyPQrsaDcPlHzB2JUbnfNbxoDgvJxtVrlGkf3/3OPFjD75SkJLm0h0Ye39ZK5NPV6TQZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5070
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218235755.360264-3-oak.zeng@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,164 +72,419 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi All,
+On Tue, Feb 18, 2025 at 06:57:53PM -0500, Oak Zeng wrote:
+> From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> 
+> Introduce helper functions for buffer creation, binding,
+> destruction and command submission etc. With those helpers,
+> writing a xe igt test will be much easier, which will be
+> showed in a coming example.
+> 
+> v2: use to_user_pointer to cast a pointer (Kamil)
+>     s/insert_store/xe_insert_store (Kamil)
+>     s/cmdbuf_fill_func_t/xe_cmdbuf_fill_func_t (Kamil)
+> v3: refactor command buffer fill interface (Zbigniew)
+> 
+> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> ---
+>  lib/xe/xe_util.c | 239 +++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/xe/xe_util.h |  47 ++++++++++
+>  2 files changed, 286 insertions(+)
+> 
+> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+> index 06b378ce0..891316ecd 100644
+> --- a/lib/xe/xe_util.c
+> +++ b/lib/xe/xe_util.c
+> @@ -13,6 +13,245 @@
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+>  
+> +/**
+> + * xe_cmdbuf_exec_ufence_gpuva:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + *
+> + * Returns the GPU virtual address of the execution user fence located at the
+> + * end of the command buffer.
+> + */
+> +static uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	/* the last 8 bytes of the cmd buffer is used as ufence */
+> +	return cmdbuf->buf.gpu_addr + cmdbuf->buf.size - UFENCE_LENGTH;
 
-Thanks for pointing that out. I'll float a fix for this issue.
+I think instead of hardcoding 8 as length of the fence you should use
+sizeof() of timeline_value from drm_xe_sync.
 
-Regards,
-Pranay.
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_exec_ufence_cpuva:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + *
+> + * Returns the CPU virtual address of the execution user fence located at the
+> + * end of the command buffer.
+> + */
+> +static void *xe_cmdbuf_exec_ufence_cpuva(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	/* the last 8 bytes of the cmd buffer is used as ufence */
+> +	return (char *)cmdbuf->buf.cpu_addr + cmdbuf->buf.size - UFENCE_LENGTH;
+> +}
+> +
+> +
+> +/**
+> + * __xe_submit_cmd:
+> + * @cmdbuf Pointer to the command buffer structure
+> + *
+> + * Submits a command buffer to the GPU, waits for its completion, and verifies
+> + * the user fence value
+> + *
+> + * Return: The result of waiting for the user fence value
+> + */
+> +int64_t __xe_submit_cmd(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	int64_t timeout = NSEC_PER_SEC;
+> +	int ret;
+> +
 
-> -----Original Message-----
-> From: Wheeler, Daniel <Daniel.Wheeler@amd.com>
-> Sent: Wednesday, February 19, 2025 8:09 PM
-> To: Nikula, Jani <jani.nikula@intel.com>; Li, Sun peng (Leo)
-> <Sunpeng.Li@amd.com>; Samala, Pranay <pranay.samala@intel.com>; igt-
-> dev@lists.freedesktop.org
-> Cc: B S, Karthik <karthik.b.s@intel.com>; Joshi, Kunal1 <kunal1.joshi@int=
-el.com>;
-> Lattannavar, Sameer <sameer.lattannavar@intel.com>; Bhanuprakash Modem
-> <bhanuprakash.modem@intel.com>; Kamil Konieczny
-> <kamil.konieczny@linux.intel.com>; Juha-Pekka Heikkila
-> <juhapekka.heikkila@gmail.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com=
->
-> Subject: RE: [PATCH i-g-t] tests/kms_cursor_legacy: Reduce debug loglevel
-> dynamically
->=20
-> [Public]
->=20
-> Hey just checking  in to see if there has been any movement on this one. =
-I'm still
-> having to revert it from my local IGT repo or my runs take three times as=
- long to
-> complete/logs end up 10,000 times larger than they should be.
->=20
-> Thank you,
->=20
-> Dan Wheeler
-> Sr. Technologist  |  AMD
-> SW Display
-> -------------------------------------------------------------------------=
--------------------------
-> ----------------
-> 1 Commerce Valley Dr E, Thornhill, ON L3T 7X6 Facebook |  Twitter |  amd.=
-com
->=20
->=20
-> -----Original Message-----
-> From: Jani Nikula <jani.nikula@intel.com>
-> Sent: Monday, February 10, 2025 10:58 AM
-> To: Li, Sun peng (Leo) <Sunpeng.Li@amd.com>; Pranay Samala
-> <pranay.samala@intel.com>; igt-dev@lists.freedesktop.org
-> Cc: karthik.b.s@intel.com; kunal1.joshi@intel.com;
-> sameer.lattannavar@intel.com; Wheeler, Daniel <Daniel.Wheeler@amd.com>;
-> Bhanuprakash Modem <bhanuprakash.modem@intel.com>; Kamil Konieczny
-> <kamil.konieczny@linux.intel.com>; Juha-Pekka Heikkila
-> <juhapekka.heikkila@gmail.com>; Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Subject: Re: [PATCH i-g-t] tests/kms_cursor_legacy: Reduce debug loglevel
-> dynamically
->=20
-> On Mon, 10 Feb 2025, Leo Li <sunpeng.li@amd.com> wrote:
-> > Hi Pranay,
-> >
-> > This change can also increase log verbosity; we observe this with amdgp=
-u.
-> > Details inline.
-> >
-> > On 2025-01-28 00:28, Pranay Samala wrote:
-> >> This test is getting killed due to exceeding disk usage limit on CI
-> >> environment because its logging to many logs.
-> >>
-> >> So dynamically reducing the debug log level to 10.
-> >>
-> >> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> >> ---
-> >>   tests/kms_cursor_legacy.c | 11 +++++++++++
-> >>   1 file changed, 11 insertions(+)
-> >>
-> >> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> >> index 1f082df2d..533972cd4 100644
-> >> --- a/tests/kms_cursor_legacy.c
-> >> +++ b/tests/kms_cursor_legacy.c
-> >> @@ -40,6 +40,7 @@
-> >>   #include "igt_psr.h"
-> >>   #include "igt_rand.h"
-> >>   #include "igt_stats.h"
-> >> +#include "igt_sysfs.h"
-> >>
-> >>   /**
-> >>    * SUBTEST: %s-%s
-> >> @@ -1840,6 +1841,7 @@ igt_main
-> >>      };
-> >>
-> >>      igt_fixture {
-> >> +            int dir, current_log_level;
-> >>              display.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
-> >>              kmstest_set_vt_graphics_mode();
-> >>
-> >> @@ -1850,6 +1852,15 @@ igt_main
-> >>               * fetch is enabled, so switching PSR1 for this whole tes=
-t.
-> >>               */
-> >>              intel_psr2_restore =3D
-> >> i915_psr2_sel_fetch_to_psr1(display.drm_fd,
-> >> NULL);
-> >> +
-> >> +            dir =3D igt_sysfs_drm_module_params_open();
-> >> +            if (dir >=3D 0) {
-> >> +                    current_log_level =3D igt_drm_debug_level_get(dir=
-);
-> >> +                    close(dir);
-> >> +
-> >> +                    if (current_log_level > 10)
-> >> +                            igt_drm_debug_level_update(10);
-> >
-> > Isn't the DRM debug mask a bitmask?
-> > https://elixir.bootlin.com/linux/v6.13.1/source/include/drm/drm_print.
-> > h#L97
-> >
-> > So setting 10 isn't guaranteed to reduce verbosity, depending on how
-> > the DRM driver uses the various drm_* debug prints.
->=20
-> Ugh. Yes.
->=20
-> > What is guaranteed to reduce verbosity is to unset unwanted bits.
-> > Maybe that is the better approach?
-> >
-> > For example, instead of
-> > `if (current_log_level > 10)`,
-> >
-> > Do
-> >
-> > `igt_drm_debug_level_update(current_log_level & !(DRM_UT_CORE | ...);`
->=20
-> Ditto for commit a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing deb=
-ug
-> loglevel dynamically"). It got to v6 and nobody noticed?
->=20
-> Ditto for commit 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustme=
-nt of
-> debug log level") adding the whole thing. It should not be referred to as=
- "level"
-> because it has nothing to do with "level". It also makes no sense to prin=
-t it out in
-> decimal; hex makes more sense.
->=20
->=20
-> BR,
-> Jani.
->=20
->=20
-> >
-> > Thanks,
-> > Leo
-> >
-> >> +            }
-> >>      }
-> >>
-> >>      igt_describe("Test checks how many cursor updates we can fit betw=
-een
-> vblanks "
-> >
->=20
-> --
-> Jani Nikula, Intel
+You should assert if cmdbuf is null.
+
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +			.timeline_value = USER_FENCE_VALUE,
+> +			.addr = xe_cmdbuf_exec_ufence_gpuva(cmdbuf),},
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(sync),
+> +		.exec_queue_id = cmdbuf->exec_queue,
+> +		.address = cmdbuf->buf.gpu_addr,
+> +	};
+> +
+> +	xe_exec(cmdbuf->buf.fd, &exec);
+
+This might assert, shouldn't it be sth like:
+
+ret = __xe_exec(...);
+if (ret)
+	return ret;
+
+xe_submit_cmd() is asserting, so it might assert from both
+reasons - unsuccessful exec or unsuccessful wait.
+
+My personal preference is to not assert in underscore functions
+giving caller chance to handle errors. Only exception is to
+checking input parameters.
+
+> +	ret = __xe_wait_ufence(cmdbuf->buf.fd,
+> +			       (uint64_t *)xe_cmdbuf_exec_ufence_cpuva(cmdbuf),
+> +			       USER_FENCE_VALUE, cmdbuf->exec_queue, &timeout);
+> +	/* Reset the fence so the exec ufence can be reused */
+> +	memset((char *)xe_cmdbuf_exec_ufence_cpuva(cmdbuf), 0, UFENCE_LENGTH);
+
+Cosmetic, please add line before return.
+
+> +	return ret;
+> +}
+> +
+> +/**
+> + * xe_submit_cmd:
+> + * @cmdbuf Pointer to the command buffer structure
+> + *
+> + * Wrapper function to submit a command buffer and assert its successful
+> + * execution.
+> + */
+> +void xe_submit_cmd(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	int64_t ret;
+> +
+
+Assert if cmdbuf is not null.
+
+> +	ret = __xe_submit_cmd(cmdbuf);
+> +	igt_assert_eq(ret, 0);
+> +}
+> +
+> +/**
+> + *xe_create_buffer:
+> + * @buffer Pointer to the xe_buf structure containing buffer details.
+> + *
+> + * Creates a buffer, maps it to both CPU and GPU address spaces, and binds it
+> + * to a virtual memory (VM) space.
+> + */
+> +void xe_create_buffer(struct xe_buf *buffer)
+> +{
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		  .timeline_value = USER_FENCE_VALUE },
+> +	};
+> +
+
+Ditto.
+
+This function should check if all necessary fields are set in buffer
+structure before proceed - fd, vm, size, placement.
+Calling this function on not properly initialized buffer likely will
+lead to segfault.
+
+> +	buffer->bind_queue = xe_bind_exec_queue_create(buffer->fd,
+> +						       buffer->vm, 0);
+> +	buffer->bind_ufence = aligned_alloc(xe_get_default_alignment(buffer->fd),
+> +					    PAGE_ALIGN_UFENCE);
+> +	sync->addr = to_user_pointer(buffer->bind_ufence);
+> +
+> +
+
+Unnecessary double newline.
+
+> +	/* create and bind the buffer->bo */
+> +	buffer->bo = xe_bo_create(buffer->fd, 0, buffer->size,
+> +				  buffer->placement, buffer->flag);
+> +	buffer->cpu_addr = xe_bo_map(buffer->fd, buffer->bo, buffer->size);
+> +	xe_vm_bind_async(buffer->fd, buffer->vm, buffer->bind_queue,
+> +			 buffer->bo, 0, buffer->gpu_addr,
+> +			 buffer->size, sync, 1);
+> +
+> +	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
+> +		       USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
+> +	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
+> +}
+> +
+> +/**
+> + * xe_destroy_buffer:
+> + * @buffer Pointer to the xe_buf structure containing buffer details
+> + *
+> + * Destroys a buffer created by xe_create_buffer and releases associated
+> + * resources.
+> + */
+> +void xe_destroy_buffer(struct xe_buf *buffer)
+> +{
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		  .timeline_value = USER_FENCE_VALUE },
+> +	};
+
+Assert if buffer is null
+
+> +	sync->addr = to_user_pointer(buffer->bind_ufence);
+> +
+> +	xe_vm_unbind_async(buffer->fd, buffer->vm, buffer->bind_queue,
+> +			   0, buffer->gpu_addr, buffer->size, sync, 1);
+> +	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
+> +		       USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
+> +	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
+> +
+> +	munmap(buffer->cpu_addr, buffer->size);
+> +	gem_close(buffer->fd, buffer->bo);
+> +
+> +	free(buffer->bind_ufence);
+> +	xe_exec_queue_destroy(buffer->fd, buffer->bind_queue);
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_insert_store:
+> + * @cmdbuf: command buffer where commands will be inserted.
+> + * @dst_va Destination virtual address to store the value.
+> + * @val Value to be stored.
+> + *
+> + * Inserts a MI_STORE_DWORD_IMM_GEN4 command into a command  buffer, which stores
+> + * an immediate value to a given destination virtual address.
+> + */
+> +void xe_cmdbuf_insert_store(struct xe_cmdbuf *cmdbuf,
+> +			    uint64_t dst_va, uint32_t val)
+> +{
+> +	uint32_t *batch = cmdbuf->buf.cpu_addr;
+> +
+> +	igt_assert(!cmdbuf->closed);
+
+You may check if cmdbuf->write_index + length of store-dword (4 dwords).
+As xe_bb_size() adds additional page you won't overwrite memory, just
+assert due to lack of space for BBE.
+
+> +
+> +	batch[cmdbuf->write_index++] = MI_STORE_DWORD_IMM_GEN4;
+> +	batch[cmdbuf->write_index++] = dst_va;
+> +	batch[cmdbuf->write_index++] = dst_va >> 32;
+> +	batch[cmdbuf->write_index++] = val;
+> +
+> +	/* Leaves at least one dword for MI_BATCH_BUFFER_END */
+> +	igt_assert(cmdbuf->write_index <= cmdbuf->cmd_size/sizeof(uint32_t) - 2);
+> +}
+> +
+> +/**
+> + * xe_create_cmdbuf:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + * @eci Pointer to the engine class instance for execution.
+> + *
+> + * Creates a command buffer, fills it with commands using the provided fill
+> + * function, and sets up the execution queue for submission.
+> + */
+> +void xe_create_cmdbuf(struct xe_cmdbuf *cmdbuf,
+> +		       struct drm_xe_engine_class_instance *eci)
+> +{
+> +	struct xe_buf *buf = &cmdbuf->buf;
+> +	/*
+> +	 * make some room for a exec_ufence, which will be used to sync the
+> +	 * submission of this command....
+> +	 */
+> +	buf->size = xe_bb_size(buf->fd,
+> +			       cmdbuf->cmd_size + PAGE_ALIGN_UFENCE);
+> +	xe_create_buffer(buf);
+> +	cmdbuf->exec_queue = xe_exec_queue_create(buf->fd, buf->vm, eci, 0);
+> +	cmdbuf->write_index = 0;
+> +	cmdbuf->closed = false;
+> +}
+> +
+> +/**
+> + * xe_fill_cmdbuf:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + * @fill_func Pointer to the function that fills the command buffer.
+> + * @dst_gpu_va Destination GPU virtual address to store the value.
+> + * @val Value to be stored.
+> + *
+> + * Fills the command buffer with commands using the provided fill function.
+> + */
+> +void xe_fill_cmdbuf(struct xe_cmdbuf *cmdbuf,
+> +			xe_cmdbuf_fill_func_t fill_func,
+> +			uint64_t dst_gpu_va, uint32_t val)
+> +{
+> +	igt_assert(!cmdbuf->closed);
+> +	fill_func(cmdbuf, dst_gpu_va, val);
+
+I don't like this function and I vote for it's removal. You should
+just operate directly on cmdbuf (it already have everything you need).
+xe_cmdbuf_fill_func_t is not generic (limited to gpu_va/val) so what's
+for defining it?
+
+So instead:
+
+	xe_create_cmdbuf(&cmdbuf, eci);
+	xe_fill_cmdbuf(&cmdbuf, xe_cmdbuf_insert_store,
+		       dst_buf.gpu_addr, 0xc0ffee);
+	xe_close_cmdbuf(&cmdbuf);
+	xe_submit_cmd(&cmdbuf);
+
+I would imagine:
+
+	xe_create_cmdbuf(&cmdbuf, eci);
+	xe_cmdbuf_insert_store(&cmdbuf, dst_buf.gpu_addr, 0xc0ffee);
+	xe_cmdbuf_insert_bbe(&cmdbuf, ...)
+	xe_submit_cmd(&cmdbuf);
+
+Any additional commands might be added by generic calls:
+
+	xe_cmdbuf_insert_dw(&cmdbuf, 0xc0de);
+	xe_cmdbuf_insert_dw(&cmdbuf, 0xc0de2);
+
+You may even drop xe_cmdbuf_insert_bbe() by:
+
+	xe_cmdbuf_insert_dw(&cmdbuf, MI_BATCH_BUFFER_END);
+
+
+> +}
+> +
+> +/**
+> + * xe_close_cmdbuf:
+> + * @cmdbuf command buffer to be closed.
+> + *
+> + * After this function is called, no more commands can be added to the
+> + * command buffer.
+> + */
+> +void xe_close_cmdbuf(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	uint32_t *batch = cmdbuf->buf.cpu_addr;
+> +
+> +	igt_assert(!cmdbuf->closed);
+> +	batch[cmdbuf->write_index++] = MI_BATCH_BUFFER_END;
+> +	cmdbuf->closed = true;
+
+Please drop this function. You don't need to keep any logic
+regarding if buffer has bbe or not.
+
+--
+Zbigniew
+
+> +	igt_assert(cmdbuf->write_index <= cmdbuf->cmd_size/sizeof(uint32_t) - 1);
+> +}
+> +
+> +/**
+> + * xe_destroy_cmdbuf:
+> + * @cmdbuf Pointer to the xe_buf structure representing the command buffer.
+> + *
+> + * Destroys a command buffer created by xe_create_cmdbuf and releases
+> + * associated resources.
+> + */
+> +void xe_destroy_cmdbuf(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	xe_exec_queue_destroy(cmdbuf->buf.fd, cmdbuf->exec_queue);
+> +	xe_destroy_buffer(&cmdbuf->buf);
+> +}
+> +
+>  static bool __region_belongs_to_regions_type(struct drm_xe_mem_region *region,
+>  					     uint32_t *mem_regions_type,
+>  					     int num_regions)
+> diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+> index 06ebd3c2a..26321f957 100644
+> --- a/lib/xe/xe_util.h
+> +++ b/lib/xe/xe_util.h
+> @@ -14,6 +14,53 @@
+>  
+>  #include "xe_query.h"
+>  
+> +#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> +#define PAGE_ALIGN_UFENCE	4096
+> +#define UFENCE_LENGTH		8
+> +
+> +struct xe_buf {
+> +	void *cpu_addr;
+> +	uint64_t gpu_addr;
+> +	/*the user fence used to vm bind this buffer*/
+> +	uint64_t *bind_ufence;
+> +	uint64_t size;
+> +	uint32_t flag;
+> +	uint32_t vm;
+> +	uint32_t bo;
+> +	uint32_t placement;
+> +	uint32_t bind_queue;
+> +	int fd;
+> +	bool is_userptr;
+> +};
+> +
+> +struct xe_cmdbuf {
+> +	struct xe_buf buf;
+> +	/* command size in bytes, not including exec_ufence */
+> +	uint64_t cmd_size;
+> +	uint32_t exec_queue;
+> +	/* Dword index to writ to command buffer */
+> +	uint32_t write_index;
+> +	bool closed;
+> +};
+> +
+> +typedef void (*xe_cmdbuf_fill_func_t) (struct xe_cmdbuf *cmdbuf,
+> +				       uint64_t dst_gpu_va, uint32_t val);
+> +
+> +void xe_create_buffer(struct xe_buf *buffer);
+> +void xe_destroy_buffer(struct xe_buf *buffer);
+> +
+> +void xe_create_cmdbuf(struct xe_cmdbuf *cmdbuf,
+> +		      struct drm_xe_engine_class_instance *eci);
+> +void xe_fill_cmdbuf(struct xe_cmdbuf *cmdbuf,
+> +			xe_cmdbuf_fill_func_t fill_func,
+> +			uint64_t dst_gpu_va, uint32_t val);
+> +void xe_close_cmdbuf(struct xe_cmdbuf *cmdbuf);
+> +void xe_cmdbuf_insert_store(struct xe_cmdbuf *cmdbuf, uint64_t dst_va,
+> +			    uint32_t val);
+> +void xe_submit_cmd(struct xe_cmdbuf *cmdbuf);
+> +int64_t __xe_submit_cmd(struct xe_cmdbuf *cmdbuf);
+> +void xe_destroy_cmdbuf(struct xe_cmdbuf *cmdbuf);
+> +
+>  #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
+>  	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_SYSMEM)
+>  #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
+> -- 
+> 2.26.3
+> 
