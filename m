@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59ECAC021B1
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 13:01:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BECF3C021B1
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 14:13:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B0F310E971;
-	Thu, 20 Feb 2025 13:01:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 73EBF10E967;
+	Thu, 20 Feb 2025 14:13:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wc1UyLTo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NIenipkO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FC4010E960
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 13:01:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6C3210E967
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 14:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740056481; x=1771592481;
+ t=1740060805; x=1771596805;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=tfa8HafWcWxqVha/igKDjLAQnGIRu/pN2PKn8oCl8sE=;
- b=Wc1UyLTo4xxD1BJUM2tWrBWeb3oMgHHIuWxOGfr912tH5VLoaPDeQotN
- dNoM6ICcxqc6CkKGcwDbHYrr65fthdxqLA36dEtePLCpaRE7MUqgvSC4K
- GJIl8D3ioR1ZOQqpikzD7xQe5OIqjSQ4VOm7ixg3cWr4oZVk8D7sEkq0d
- DQFHMX9YlAasVgEGgk3TTiAx7AJ906X4ZgeJHYUA+AasuFGmGSumZW2La
- k1/WuFrgm3XjbK7Qiiu65yy8+ypahoOZnQp7JCCsVdsz6/3ILBoawNCBl
- qRmQk9SAtAaNr28PW3aqySSF+VxB9H9nyQfGPRvWFwuRlZwg4mlIINCts A==;
-X-CSE-ConnectionGUID: bvajq2NyRBCxrkBGBZKeVA==
-X-CSE-MsgGUID: gc130tqSTC+YFB9VnKl0og==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44749334"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="44749334"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 05:01:21 -0800
-X-CSE-ConnectionGUID: QECoYwuOTMu0os/o6+qxEQ==
-X-CSE-MsgGUID: votF835zTHWZwoz0j5TzEw==
+ bh=tDQIUf5L9j9anPXIBXMDKr1SKccoTeXjBuLw6g8AbBU=;
+ b=NIenipkOm3Xx+12O7+LEoF5GnZY/v8jdIki9/IEFdgyTH5MaLtnHMGbs
+ fN2yS22z8QjG1e/D/74uuhk619dUoNudybCXOqDmPoxue4RskUggwXBIQ
+ BUtixUZ0QFAoMSwLXdYMbdvULmz+ak60TNtpHEKF+3cluEatBgOYl7QEt
+ 4k8ujgB51jxc+wcR4tzKtCaaO63gYRvyICv1fEEYZCFmx4Ap0rFevyxxf
+ GvJC7eyAsMxDUoSTjTytrnTqqsGSYoG2nbdPfhWPRFJOpGcwLQuuhDuPu
+ PDq4CFZ+tWekUJ/aDRKspvrpnrxbs56F+h9Ih0i77t1Ot5qFWhRYuB5r2 g==;
+X-CSE-ConnectionGUID: 5AVCWU1qTpiBpWlDr/iBmA==
+X-CSE-MsgGUID: UybTm3PhR6y8TeAcrA3ikg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40708683"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="40708683"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 06:13:24 -0800
+X-CSE-ConnectionGUID: YeS4avL8RRWSWw9HFlohmw==
+X-CSE-MsgGUID: qcNioJRgQT2xJU48y7cQCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="152232528"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.116.136])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 05:01:19 -0800
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120276952"
+Received: from slindbla-desk.ger.corp.intel.com (HELO
+ vgovind2-mobl3.intel.com) ([10.245.246.224])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 06:13:22 -0800
+From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t] tests/xe_oa: Skip when no OA units available
-Date: Thu, 20 Feb 2025 14:01:05 +0100
-Message-Id: <20250220130105.756157-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+Cc: vinod.govindapillai@intel.com, swati2.sharma@intel.com, jeevan.b@intel.com,
+ jani.saarinen@intel.com
+Subject: [PATCH i-g-t v1] tests/intel/kms_dirty-fb: update modifier based on
+ display version for fbc
+Date: Thu, 20 Feb 2025 16:13:10 +0200
+Message-ID: <20250220141310.229053-1-vinod.govindapillai@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,30 +69,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check to ensure at least one OA unit is available before
-proceeding with the tests. This prevents unnecessary failures on
-devices that do not support OA units.
+FBC on display version 8 below supports only I915_FORMAT_MOD_X_TILED
+modifier. So update the FBC specific tests based on this restriction,
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- tests/intel/xe_oa.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/intel/kms_dirtyfb.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 0242fd594..6abf44128 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -4852,6 +4852,7 @@ igt_main
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index f2bdd4546..e0fd84ade 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -58,6 +58,7 @@ typedef struct {
+ 	int debugfs_fd;
+ 	igt_display_t display;
+ 	drmModeModeInfo *mode;
++	uint64_t modifier;
+ 	igt_output_t *output;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	enum pipe pipe;
+@@ -238,7 +239,7 @@ static void prepare(data_t *data)
  
- 		/* See xe_query_oa_units_new() */
- 		igt_require(xe_dev->oa_units);
-+		igt_require(xe_dev->oa_units->num_oa_units);
- 		oau = nth_oa_unit(drm_fd, 0);
+ 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+ 			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    data->modifier, 0.0, 1.0, 0.0,
+ 			    &data->fbs[0]);
  
- 		devid = intel_get_drm_devid(drm_fd);
+ 	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
+@@ -260,7 +261,7 @@ static void prepare(data_t *data)
+ 
+ 	igt_create_color_fb(data->drm_fd,  data->mode->hdisplay,
+ 			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    data->modifier, 0.0, 1.0, 0.0,
+ 			    &data->fbs[1]);
+ 	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
+ 			 data->rendercopy ? IGT_DRAW_RENDER : IGT_DRAW_BLT,
+@@ -268,8 +269,8 @@ static void prepare(data_t *data)
+ 			 data->fbs[1].height, 0xFF);
+ 
+ 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+-			     data->mode->vdisplay, DRM_FORMAT_XRGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    data->modifier, 0.0, 1.0, 0.0,
+ 			    &data->fbs[2]);
+ 
+ 	igt_plane_set_fb(primary, &data->fbs[2]);
+@@ -386,6 +387,13 @@ igt_main
+ 					igt_skip_on_f((IS_BATTLEMAGE(data.devid) && data.feature == FEATURE_FBC),
+ 						       "FBC isn't supported on BMG\n");
+ 
++					/* FBC Disp_ver 8 and below supports only I915_FORMAT_MOD_X_TILED */
++					if (data.feature == FEATURE_FBC &&
++					    intel_display_ver(intel_get_drm_devid(data.drm_fd) <= 8))
++						data.modifier = I915_FORMAT_MOD_X_TILED;
++					else
++						data.modifier = DRM_FORMAT_MOD_LINEAR;
++
+ 					if (!check_support(&data))
+ 						continue;
+ 
 -- 
-2.31.1
+2.43.0
 
