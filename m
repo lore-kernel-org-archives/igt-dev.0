@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEF8CC021B0
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 08:07:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A6B9C021AD
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 08:08:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A4B910E181;
-	Thu, 20 Feb 2025 08:07:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 296E910E181;
+	Thu, 20 Feb 2025 08:08:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nh031mQa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGAVLuh2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C13B10E181
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 08:07:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9249E10E181
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 08:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740038839; x=1771574839;
+ t=1740038882; x=1771574882;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=oxXPatVIpHi49vOirT9nepM3tNAA9IyP/V78dBH0NEM=;
- b=nh031mQajCbl2TKrIerNRjcm7Liz4gdxBI3SyyAHj2s2ovJGSJC20FL0
- Ka1R2W3Ie+17xwJG2GimqeI7j5eqMTEm5JE6sln+nKkJKLH6QIdL281kp
- AAxobh3SuiyJCupTihDIBL3gmp42z8zicdV6WlhYi9j5iVjCd0rxoisOi
- zitLsNDwg0TaH2yzl5VyNwBUKKCSc2EQ1N9/Nn2w8ynxgjoSMjlXDBsMx
- jky9T2tNFZRyafE+nYWC/x+V9T8NKryCzsnfLImN3/sEHfNho9fCzwuJr
- 1zpGBlrjfmn2CJRkbUCkDUdQ2GAuMFTtv0zegFesk0Sz9UbvFUm5BQXrz Q==;
-X-CSE-ConnectionGUID: zuparTg/TkCvj2eX4Ua8tQ==
-X-CSE-MsgGUID: li0+Reu1Q5qfcN7ot8nRWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40036614"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="40036614"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 00:07:19 -0800
-X-CSE-ConnectionGUID: Xkuug0HvQo6LQXEqww0UEw==
-X-CSE-MsgGUID: o0gqnPmjR6+6/Avu/2jTTQ==
+ bh=H6kcg/iDQfSO8OA7pntCEkSWSz5sYOXMZz4qDL6TsQI=;
+ b=JGAVLuh2RUkl/0jIi/HpPWuZiVZ/Of/wE6P7DGIa+oIXHAqBSoamoFJ9
+ uSmtGr2qqfWN0wJ1+FK55klGr2KlE4fD69fW/vvctLXzgjd2FtxCyBJbE
+ pj6iep7hfMmhlGSr+WCeTjLEo/BkxnkV0jJvmvJWMxGaov9zIdwDhXyxC
+ rOD27Cg7ZSFLFyF66fxwkD5ZGRyfCoKs2WkkjKaUbSa3sxzbE1hJBO7i/
+ m05uCmO8wHGNpjuE/IJiUE27G13vdgVl7fgqP6k6RWXFgssdSW7HYNTqy
+ tL59iwrFzpI6wneEfVuKBwEgA2iAZoNqE1NgwL+wJfVxoJvLeaZbBHmKV Q==;
+X-CSE-ConnectionGUID: asl0lYdlTz2OuqOYP3d8yA==
+X-CSE-MsgGUID: 3b72/Jg0TNidp5RBYFXpiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40943365"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="40943365"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 00:08:01 -0800
+X-CSE-ConnectionGUID: c51QK+fwR/eT94c1wCkJqw==
+X-CSE-MsgGUID: KtZpmiz7Sb2Vfn4Y8Sqb5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="115638823"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="152162157"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.190])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 00:07:17 -0800
-Date: Thu, 20 Feb 2025 09:07:15 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 00:07:59 -0800
+Date: Thu, 20 Feb 2025 09:07:56 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 3/5] tests/xe_compute: Update documentation
-Message-ID: <20250220080715.kxnnfnxnglwzba5r@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_compute_preempt.c: Reduced
+ child count for PTL
+Message-ID: <20250220080756.wrplw54a7gutwvai@zkempczy-mobl2>
 References: <20250217081854.3219791-1-priyanka.dandamudi@intel.com>
- <20250217081854.3219791-4-priyanka.dandamudi@intel.com>
+ <20250217081854.3219791-6-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250217081854.3219791-4-priyanka.dandamudi@intel.com>
+In-Reply-To: <20250217081854.3219791-6-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,62 +71,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 17, 2025 at 08:18:52AM +0000, priyanka.dandamudi@intel.com wrote:
+On Mon, Feb 17, 2025 at 08:18:54AM +0000, priyanka.dandamudi@intel.com wrote:
 > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> PTL support is added for compute and compute_preempt tests. Update the GPU
-> requirement field.
-> 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Preemption is not happening for long kernel when child count is beyond
+> 50 in PTL for compute-preempt-many test and its failing user fence.
+> So, reduced child count for PTL.
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-> ---
->  tests/intel/xe_compute.c         | 2 +-
->  tests/intel/xe_compute_preempt.c | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-> index 62beb24dc..558b46eba 100644
-> --- a/tests/intel/xe_compute.c
-> +++ b/tests/intel/xe_compute.c
-> @@ -164,7 +164,7 @@ test_compute_kernel_with_ccs_mode(int num_gt)
->  /**
->   * SUBTEST: compute-square
->   * Sub-category: Compute square tests
-> - * GPU requirement: TGL, PVC, LNL
-> + * GPU requirement: TGL, PVC, LNL, PTL
->   * Description:
->   *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
->   *	for an input dataset..
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/intel/xe_compute_preempt.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
 > diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index 7ce5c595a..5319dee7b 100644
+> index 5319dee7b..d4c243c16 100644
 > --- a/tests/intel/xe_compute_preempt.c
 > +++ b/tests/intel/xe_compute_preempt.c
-> @@ -20,17 +20,17 @@
+> @@ -64,8 +64,16 @@ igt_main
+>  				continue;
 >  
->  /**
->   * SUBTEST: compute-preempt
-> - * GPU requirement: LNL
-> + * GPU requirement: LNL, PTL
->   * Description:
->   *      Exercise compute walker mid thread preemption scenario
->   *
->   * SUBTEST: compute-preempt-many
-> - * GPU requirement: LNL
-> + * GPU requirement: LNL, PTL
->   * Description:
->   *      Exercise multiple walker mid thread preemption scenario
->   *
->   * SUBTEST: compute-threadgroup-preempt
-> - * GPU requirement: LNL
-> + * GPU requirement: LNL, PTL
->   * Description:
->   *      Exercise compute walker threadgroup preemption scenario
->   */
+>  			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class)) {
+> +				uint16_t dev_id = intel_get_drm_devid(xe);
+> +				int child_count;
+> +
+> +				if (IS_PANTHERLAKE(dev_id))
+> +					child_count = 50;
+> +				else
+> +					child_count = 100;
+> +
+>  				test_compute_preempt(xe, hwe, false);
+> -				igt_fork(child, 100)
+> +				igt_fork(child, child_count)
+>  					test_compute_preempt(xe, hwe, false);
+>  				igt_waitchildren();
+>  			}
 > -- 
 > 2.34.1
 > 
