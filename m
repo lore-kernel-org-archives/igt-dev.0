@@ -4,54 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9418FC021B2
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 10:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C0BEC021B1
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 10:47:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4EA4310E919;
-	Thu, 20 Feb 2025 10:36:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B553710E937;
+	Thu, 20 Feb 2025 10:47:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aUiGS6g3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RY3xJfxU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 792F310E919
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 10:36:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8373110E937
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2025 10:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740047806; x=1771583806;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=zVI0f0+3Fogb7vIBhzlH5vyMjoUdLE3QzZSBU5Gs8+A=;
- b=aUiGS6g3N6uuW6IGAVtDQWdp7kFQ9wLh6oCKkL3Bl5Kl2kyEAetocV5/
- sb+XOhAf6NGGFLKYB1kJ7XJ8Zh6e1lwKXB1/lAbI6apQHMRwvwqPCFZBb
- zR2YaXyBVA4FUn7Vl49Nho4W2n+aCURtO0iXRFdmyPWI2dEydtrv2VdVB
- O7QWngMObtk4ugnOFTq2lNpGSkRtVZvZL1Pu0F14C7dTlrQQpH0Ot5iUi
- rcKHb4/TcM7kmLeDv2O3Z0pMp7kUDg7RvzC4yv6eITFWnC4eBpLo8yNGw
- W1nTJ2vShbobp9fUy2ptP0o7NsAZVgFi9BoxZgipZaTMyls0jkm8zUo9K A==;
-X-CSE-ConnectionGUID: 6p7Rmop1TXa3zV0qSqKylg==
-X-CSE-MsgGUID: xLoLp3qJTMGRcW3QXsGE/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="28416297"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="28416297"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 02:36:46 -0800
-X-CSE-ConnectionGUID: wSbEV23lTBS6c1wKY7bmkw==
-X-CSE-MsgGUID: GExqxOroSF6tCfDzf4u4xA==
+ t=1740048441; x=1771584441;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=WM1lK1uvUsskYxY8LB46ReRWkwQjOVTxY6PZOHBtNPc=;
+ b=RY3xJfxUlOnvbkDRVEy+K7EReDsQpo1mIYnYelFGGo+wkkOomMDwZDsq
+ iSFLBPc7B/7yC0NYfoI1YKB/gbFFbe/DURe+n8ocUeTF8jbIwB+E2LeCZ
+ afbbNo0gGJ+VfPf3ONl26idwY0IfoAxL4Q1zxS2AKgfooZ/s/PKYpgD6c
+ Pu4O3IguZchDwb01Rmh7XH6fRyjeQXqxbyMQV0uXuwOm+NqazP5pH8RLj
+ 1EI41MrvkksA9ICodXUeC3YLb6hxfhHFvf4eSZG37vYk66B+FbUW6WZ/h
+ RxyY+Ykww5eMfeBkbJy7UoG3AyRXKY7cNGUjodvAPUjFg+p5pR9NEe3Vj A==;
+X-CSE-ConnectionGUID: sLig0X0IQu64YfYsyyW9dA==
+X-CSE-MsgGUID: C6z8lpFLTEWcYMu13ns3hA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52253634"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="52253634"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 02:47:20 -0800
+X-CSE-ConnectionGUID: lcW9ney7QAaC2qDNqYfjhg==
+X-CSE-MsgGUID: 24goch0AQbON2lwJeyJ0jQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="115900169"
-Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
- lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
- by orviesa008.jf.intel.com with ESMTP; 20 Feb 2025 02:36:45 -0800
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/kms_display_modes: Remove negative test for
- extended display
-Date: Thu, 20 Feb 2025 16:06:40 +0530
-Message-ID: <20250220103640.44879-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="119983226"
+Received: from amiszcza-mobl.ger.corp.intel.com (HELO [10.245.116.18])
+ ([10.245.116.18])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 02:47:18 -0800
+Message-ID: <d0d157b6-5334-4b7d-8371-6e3dd79d7ea7@linux.intel.com>
+Date: Thu, 20 Feb 2025 11:47:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tools/intel_reg: Add --pci-slot option
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?B?xYF1a2FzeiDFgWFndW5h?= <lukasz.laguna@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20250219121050.71831-1-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
+In-Reply-To: <20250219121050.71831-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,201 +75,240 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This negative test was crated to validate ENOSPC when two 2k-4k or 4k-4k
-monitors connected through MST to cover bandwidth issue in MST config.
+On 19.02.2025 13:10, Kamil Konieczny wrote:
+> From: Łukasz Łaguna <lukasz.laguna@intel.com>
+>
+> Add device selection by PCI slot with new option
+>
+> --pci-slot <domain>:<bus>:<device>[.<func>]
+>
+> Examples:
+>
+> intel_reg dump --pci-slot 0000:01:00.0
+> intel_reg dump --pci-slot=0:8c:0
+> intel_reg --pci-slot 0:8c:0 read 0x138108
+>
+> This should help in multi-GPU scenario when someone uses two or
+> more discrete GPUs. Also while at this update copyright years.
+>
+> v1: address review comments from Jani (Kamil)
+> v2: address review - added =BDF in help (Adam)
+>    removed refactored code, add helper info when option is not
+>    used, renamed function checking PCI card and improved
+>    printed info (Krzysztof)
+>    remove --help from commands arrary as unrelated change (Kamil)
+>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Łukasz Łaguna <lukasz.laguna@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>
+> This is a re-work of Lukasz Laguna patch from
+> https://patchwork.freedesktop.org/series/131155/
+> ("tools/intel_reg: add possibility to select device")
+>
+> Example usage on two dGPU:
+> sudo ./intel_reg --pci-slot 0000:8c:00.0 read 0x00138108
+>                                      (0x00138108): 0xf4e57b26
+> sudo ./intel_reg --pci-slot 0000:87:00.0 read 0x00138108
+>                                      (0x00138108): 0xf4162825
+>
+> ---
+>   man/intel_reg.rst |  5 ++-
+>   tools/intel_reg.c | 90 ++++++++++++++++++++++++++++++++++++++++++++++-
+>   2 files changed, 93 insertions(+), 2 deletions(-)
+>
+> diff --git a/man/intel_reg.rst b/man/intel_reg.rst
+> index 059d8834a..64e4fa57f 100644
+> --- a/man/intel_reg.rst
+> +++ b/man/intel_reg.rst
+> @@ -9,7 +9,7 @@ Intel graphics register multitool
+>   :Author: Jani Nikula <jani.nikula@intel.com>
+>   :Date: 2016-03-01
+>   :Version: |PACKAGE_STRING|
+> -:Copyright: 2015-2016 Intel Corporation
+> +:Copyright: 2015-2025 Intel Corporation
+>   :Manual section: |MANUAL_SECTION|
+>   :Manual group: |MANUAL_GROUP|
+>   
+> @@ -56,6 +56,9 @@ Some options are global, and some specific to commands.
+>       Pretend to be PCI ID DEVID. Useful with MMIO bar snapshots from other
+>       machines.
+>   
+> +--pci-slot <domain>:<bus>:<device>[.<func>]
+> +    Find Intel GPU by PCI slot. Useful with multi-GPU hardware.
+> +
+>   --spec=PATH
+>       Read register spec from directory or file specified by PATH; see REGISTER
+>       SPEC DEFINITIONS below for details. This option implies --decode.
+> diff --git a/tools/intel_reg.c b/tools/intel_reg.c
+> index bb1ab2889..49afe91c0 100644
+> --- a/tools/intel_reg.c
+> +++ b/tools/intel_reg.c
+> @@ -39,6 +39,7 @@
+>   #include "intel_chipset.h"
+>   
+>   #include "intel_reg_spec.h"
+> +#include "igt_device_scan.h"
+>   
+>   
+>   #ifdef HAVE_SYS_IO_H
+> @@ -89,6 +90,13 @@ struct config {
+>   	int verbosity;
+>   };
+>   
+> +struct igt_pci_slot {
+> +	int domain;
+> +	int bus;
+> +	int dev;
+> +	int func;
+> +};
+> +
+>   /* port desc must have been set */
+>   static int set_reg_by_addr(struct config *config, struct reg *reg,
+>   			   uint32_t addr)
+> @@ -1055,6 +1063,9 @@ static int intel_reg_help(struct config *config, int argc, char *argv[])
+>   	printf(" --devid=DEVID  Specify PCI device ID for --mmio=FILE\n");
+>   	printf(" --decode       Decode registers. Implied by commands that require it\n");
+>   	printf(" --all          Decode registers for all known platforms. Implies --decode\n");
+> +	printf(" --pci-slot=BDF Decode registers for platform described by PCI slot\n"
+> +	       "		<domain>:<bus>:<device>[.<func>]\n"
+> +	       "                When this option is not provided use first matched Intel GPU\n");
+>   	printf(" --binary       Binary dump registers\n");
+>   	printf(" --verbose      Increase verbosity\n");
+>   	printf(" --quiet        Reduce verbosity\n");
+> @@ -1164,6 +1175,62 @@ builtin:
+>   	return config->regcount;
+>   }
+>   
+> +static int parse_pci_slot_name(struct igt_pci_slot *st, const char *slot_name)
+> +{
+> +	st->domain = 0;
+> +	st->bus = 0;
+> +	st->dev = 0;
+> +	st->func = 0;
+> +
+> +	return sscanf(slot_name, "%x:%x:%x.%x", &st->domain, &st->bus, &st->dev, &st->func);
+> +}
+> +
+> +static bool is_intel_card_valid(struct pci_device *pci_dev)
+> +{
+> +	if (!pci_dev) {
+> +		fprintf(stderr, "PCI card not found\n");
+> +		return false;
+> +	}
+> +
+> +	if (pci_device_probe(pci_dev) != 0) {
+> +		fprintf(stderr, "Couldn't probe PCI card\n");
+> +		return false;
+> +	}
+> +
+> +	if (pci_dev->vendor_id != 0x8086) {
+> +		fprintf(stderr, "PCI card is non-Intel\n");
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static bool find_dev_from_slot(struct pci_device **pci_dev, char *opt_slot)
+> +{
+> +	struct igt_pci_slot bdf;
+> +	bool ret;
+> +
+> +	if (parse_pci_slot_name(&bdf, opt_slot) < 3) {
+> +		fprintf(stderr, "Cannot decode PCI slot from '%s'\n", opt_slot);
+> +		return false;
+> +	}
+> +
+> +	if (pci_system_init() != 0) {
+> +		fprintf(stderr, "Couldn't initialize PCI system\n");
+> +		return false;
+> +	}
+> +
+> +	igt_devices_scan();
+> +	*pci_dev = pci_device_find_by_slot(bdf.domain, bdf.bus, bdf.dev, bdf.func);
+> +	ret = is_intel_card_valid(*pci_dev);
+> +	igt_devices_free();
+> +
+> +	if (!ret)
+> +		fprintf(stderr, "Cannot find PCI card given by slot '%s'\n", opt_slot);
+> +
+> +	return ret;
+> +}
+> +
+>   enum opt {
+>   	OPT_UNKNOWN = '?',
+>   	OPT_END = -1,
+> @@ -1173,6 +1240,7 @@ enum opt {
+>   	OPT_POST,
+>   	OPT_DECODE,
+>   	OPT_ALL,
+> +	OPT_SLOT,
+>   	OPT_BINARY,
+>   	OPT_SPEC,
+>   	OPT_VERBOSE,
+> @@ -1184,6 +1252,7 @@ int main(int argc, char *argv[])
+>   {
+>   	int ret, i, index;
+>   	char *endp;
+> +	char *opt_slot = NULL;
+>   	enum opt opt;
+>   	const struct command *command = NULL;
+>   	struct config config = {
+> @@ -1208,6 +1277,7 @@ int main(int argc, char *argv[])
+>   		/* options specific to read, dump and decode */
+>   		{ "decode",	no_argument,		NULL,	OPT_DECODE },
+>   		{ "all",	no_argument,		NULL,	OPT_ALL },
+> +		{ "pci-slot",	required_argument,	NULL,	OPT_SLOT },
+>   		{ "binary",	no_argument,		NULL,	OPT_BINARY },
+>   		{ 0 }
+>   	};
+> @@ -1257,6 +1327,14 @@ int main(int argc, char *argv[])
+>   		case OPT_DECODE:
+>   			config.decode = true;
+>   			break;
+> +		case OPT_SLOT:
+> +			opt_slot = strdup(optarg);
+> +			if (!opt_slot) {
+> +				fprintf(stderr, "strdup: %s\n",
+> +					strerror(errno));
+> +				return EXIT_FAILURE;
+> +			}
+> +			break;
+>   		case OPT_BINARY:
+>   			config.binary = true;
+>   			break;
+> @@ -1298,7 +1376,14 @@ int main(int argc, char *argv[])
+>   			fprintf(stderr, "--devid without --mmio\n");
+>   			return EXIT_FAILURE;
+>   		}
+> -		config.pci_dev = intel_get_pci_device();
+> +
+> +		if (opt_slot) {
+> +			if (!find_dev_from_slot(&config.pci_dev, opt_slot))
+> +				return EXIT_FAILURE;
+> +		} else {
+> +			config.pci_dev = intel_get_pci_device();
+> +		}
+> +
+>   		config.devid = config.pci_dev->device_id;
+>   	}
+>   
+> @@ -1327,5 +1412,8 @@ int main(int argc, char *argv[])
+>   	if (config.fd >= 0)
+>   		close(config.fd);
+>   
+> +	if (opt_slot)
+> +		free(opt_slot);
+> +
+>   	return ret;
+>   }
 
-But it will not helpfult to handle current bandwidth which are
-DisplayPort (DP) 1.4 supports a total bandwidth of 4 × 8.1 Gbps.
-
-However, with DP 2.1, the bandwidth allocation strategy has
-significantly changed to 4 × 20 Gbps of available bandwidth.
-This provides significantly greater display capabilities
-w.r.t bandwidth.
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_display_modes.c | 135 --------------------------------------
- 1 file changed, 135 deletions(-)
-
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index e41c60cc0..668456f43 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -40,87 +40,16 @@
-  * Description: Test for validating display extended mode with a pair of connected
-  *              displays
-  * Functionality: kms_core
-- *
-- * SUBTEST: mst-extended-mode-negative
-- * Description: Negative test for validating display extended mode with a pair
-- *		of connected 2k-4k or 4k-4k displays.
-- * Functionality: kms_core, mst
-  */
- 
--#define HDISPLAY_4K	3840
--#define VDISPLAY_4K	2160
--
- IGT_TEST_DESCRIPTION("Test Display Modes");
- 
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
--	drmModeModeInfo mode_mst[2];
--	igt_output_t *mst_output[2];
- 	int n_pipes;
- } data_t;
- 
--/* Get higher mode supported by panel. */
--static drmModeModeInfo *get_highres_mode(igt_output_t *output)
--{
--	drmModeConnector *connector = output->config.connector;
--	drmModeModeInfo *highest_mode = NULL;
--
--	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
--	highest_mode = &connector->modes[0];
--
--	return highest_mode;
--}
--
--/* Get the 4k or less then 4k mode of connected panel. */
--static drmModeModeInfo *get_mode(igt_output_t *output)
--{
--	int j;
--	drmModeModeInfo *required_mode = NULL;
--	drmModeConnector *connector = output->config.connector;
--
--	required_mode = igt_output_get_mode(output);
--	if (required_mode->vdisplay <= VDISPLAY_4K &&
--	    required_mode->hdisplay <= HDISPLAY_4K) {
--		return required_mode;
--	}
--
--	/* If default mode not 4k or less than 4k mode, then sort modes and check for it. */
--	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
--	for (j = 0; j < connector->count_modes; j++) {
--		if (connector->modes[j].vdisplay <= VDISPLAY_4K &&
--		    connector->modes[j].hdisplay <= HDISPLAY_4K) {
--			required_mode = &connector->modes[j];
--			break;
--		}
--	}
--
--	return required_mode;
--}
--
--static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
--{
--	int connector_id;
--	static int prev_connector_id;
--
--	connector_id = igt_get_dp_mst_connector_id(output);
--	if (connector_id < 0)
--		return false;
--
--	/*
--	 * Discarding outputs of other DP MST topology.
--	 * Testing only on outputs on the topology we got previously
--	 */
--	if (i == 0) {
--		prev_connector_id = connector_id;
--	} else {
--		if (connector_id != prev_connector_id)
--			return false;
--	}
--
--	return true;
--}
--
- static void run_extendedmode_basic(data_t *data,
- 				   enum pipe pipe1, igt_output_t *output1,
- 				   enum pipe pipe2, igt_output_t *output2)
-@@ -274,46 +203,8 @@ static void run_extendedmode_test(data_t *data) {
- 	}
- }
- 
--static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
--{
--	struct igt_fb fbs[2];
--	igt_display_t *display = &data->display;
--	igt_plane_t *plane[2];
--	int ret;
--
--	igt_display_reset(display);
--
--	igt_output_set_pipe(data->mst_output[0], pipe1);
--	igt_output_set_pipe(data->mst_output[1], pipe2);
--
--	igt_create_color_fb(data->drm_fd, data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay,
--			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
--	igt_create_color_fb(data->drm_fd, data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay,
--			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
--
--	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
--	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane[0], &fbs[0]);
--	igt_fb_set_size(&fbs[0], plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
--	igt_plane_set_size(plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
--
--	igt_plane_set_fb(plane[1], &fbs[1]);
--	igt_fb_set_size(&fbs[1], plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
--	igt_plane_set_size(plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
--
--	igt_output_override_mode(data->mst_output[0], &data->mode_mst[0]);
--	igt_output_override_mode(data->mst_output[1], &data->mode_mst[1]);
--
--	igt_require(intel_pipe_output_combo_valid(display));
--	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
--	igt_assert(ret != 0 && errno == ENOSPC);
--}
--
- igt_main
- {
--	int dp_mst_outputs = 0, count = 0;
--	enum pipe pipe1, pipe2;
- 	igt_output_t *output;
- 	data_t data;
- 
-@@ -328,9 +219,6 @@ igt_main
- 				igt_info("Skipping joiner output %s", output->name);
- 				continue;
- 			}
--			data.mst_output[count++] = output;
--			if (output_is_dp_mst(&data, output, dp_mst_outputs))
--				dp_mst_outputs++;
- 		}
- 	}
- 
-@@ -338,29 +226,6 @@ igt_main
- 	igt_subtest_with_dynamic("extended-mode-basic")
- 		run_extendedmode_test(&data);
- 
--	igt_describe("Negative test for validating display extended mode with a pair of connected "
--		     "2k-4k or 4k-4k displays");
--	igt_subtest_with_dynamic("mst-extended-mode-negative") {
--		igt_require_f(dp_mst_outputs > 1, "MST not found more then one\n");
--
--		memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), sizeof(drmModeModeInfo));
--		memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[1]),
--				sizeof(drmModeModeInfo));
--		igt_require_f((data.mode_mst[1].hdisplay >= HDISPLAY_4K &&
--			       data.mode_mst[1].vdisplay >= VDISPLAY_4K), "4k panel not found\n");
--
--		for_each_pipe(&data.display, pipe1) {
--			for_each_pipe(&data.display, pipe2) {
--				if (pipe1 == pipe2)
--					continue;
--
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe1),
--					      kmstest_pipe_name(pipe2))
--					run_extendedmode_negative(&data, pipe1, pipe2);
--			}
--		}
--	}
--
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 	}
--- 
-2.43.0
+LGTM,
+Reviewed-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 
