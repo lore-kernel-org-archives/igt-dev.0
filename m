@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A9EC021B1
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 20:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF17BC021B1
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Feb 2025 20:37:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE58010E9DB;
-	Thu, 20 Feb 2025 20:30:43 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62C1710E9DB;
- Thu, 20 Feb 2025 20:30:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2556178980976315788=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7067610E9DB;
+	Thu, 20 Feb 2025 20:37:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BECViYlC";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AFF310E10E;
+ Thu, 20 Feb 2025 20:37:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740083869; x=1771619869;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xmeMAleT2mvuWgxsLOhdcoC+j4V4DG5uaSwrr9S/Kbs=;
+ b=BECViYlC5DClX3ET8JLibKDlCY6zAMfg/wJ3mu5Lw/AyCe4QROes47OJ
+ yRe+SLJ/4UI3MrIOAs0x+lSR5mhzv0wyYCFisO1c24hJQRdl55cQgotTQ
+ 4zi7NmA2C+T6vRierytmQ+M2LHlWp6NsgDUxPKtqX1K/uCxuYVU7DGQdE
+ 2w11Mtkpv72nFd3Aywl4qZyRlOBuToMMdYS4SMlaCoQVAfNcPaF9jOQvf
+ cIWafXaCvJRWdP8/2lpBlJlAhx+7rYpDHTpxpHxhEEs14YdKCOVAuSG9r
+ CM0dPjvjEjn2xR2IrRNm99fC28yO0cgQZ3SS+euX2lBF521htRqqt1c0B Q==;
+X-CSE-ConnectionGUID: 6srxCMXxSBOFqiBjbdaZCg==
+X-CSE-MsgGUID: o0rAUDOTT26wnx0xvKg9mw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44802250"
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; d="scan'208";a="44802250"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 12:37:48 -0800
+X-CSE-ConnectionGUID: TLQkhNCKRoKOBgjLJ/IK4A==
+X-CSE-MsgGUID: CP3qIAGJR/mxJQD2p9Db9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="152351543"
+Received: from dut4086lnl.fm.intel.com ([10.105.10.90])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2025 12:37:48 -0800
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com, jonathan.cavitt@intel.com,
+ joonas.lahtinen@linux.intel.com, tvrtko.ursulin@igalia.com,
+ lucas.demarchi@intel.com, matthew.brost@intel.com,
+ dri-devel@lists.freedesktop.org, simona.vetter@ffwll.ch
+Subject: [PATCH] tests/intel/xe_query: Add per drm client reset stats tests
+Date: Thu, 20 Feb 2025 20:37:47 +0000
+Message-ID: <20250220203747.130371-1-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_RFC_tests/intel/kms=5Ffro?=
- =?utf-8?q?ntbuffer=5Ftracking=3A_Introduce_plane-fbc-dr_test_=28rev10=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Feb 2025 20:30:42 -0000
-Message-ID: <174008344239.279509.3073502335845067403@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250220185803.1995791-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250220185803.1995791-1-santhosh.reddy.guddati@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,198 +65,444 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2556178980976315788==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add tests that exercise the xe reset stats query.  The current tests
+simply output the result of the tests and assert that the reset and ban
+counters properly increment.
 
-== Series Details ==
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+---
+ include/drm-uapi/xe_drm.h |  50 ++++++
+ tests/intel/xe_query.c    | 339 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 389 insertions(+)
 
-Series: RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev10)
-URL   : https://patchwork.freedesktop.org/series/138218/
-State : failure
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 08e263b3b2..e4f2f0d2a6 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -700,6 +700,7 @@ struct drm_xe_device_query {
+ #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
+ #define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+ #define DRM_XE_DEVICE_QUERY_OA_UNITS		8
++#define DRM_XE_DEVICE_QUERY_RESET_STATS		10
+ 	/** @query: The type of data to query */
+ 	__u32 query;
+ 
+@@ -1729,6 +1730,55 @@ struct drm_xe_oa_stream_info {
+ 	__u64 reserved[3];
+ };
+ 
++#define MAX_BAN_COUNT	50
++/**
++ * struct drm_xe_exec_queue_ban - Per drm client exec queue ban info returned
++ * from @DRM_XE_DEVICE_QUERY_RESET_STATS query.  Includes the exec queue ID and
++ * all associated pagefault information, if relevant.
++ */
++struct drm_xe_exec_queue_ban {
++	/** @exec_queue_id: ID of banned exec queue */
++	__u32 exec_queue_id;
++	/**
++	 * @pf_found: whether or not the ban is associated with a pagefault.
++	 * If not, all pagefault data will default to 0 and will not be relevant.
++	 */
++	__u8 pf_found;
++	/** @access_type: access type of associated pagefault */
++	__u8 access_type;
++	/** @fault_type: fault type of associated pagefault */
++	__u8 fault_type;
++	/** @vfid: VFID of associated pagefault */
++	__u8 vfid;
++	/** @asid: ASID of associated pagefault */
++	__u32 asid;
++	/** @pdata: PDATA of associated pagefault */
++	__u16 pdata;
++	/** @engine_class: engine class of associated pagefault */
++	__u8 engine_class;
++	/** @engine_instance: engine instance of associated pagefault */
++	__u8 engine_instance;
++	/** @fault_addr: faulted address of associated pagefault */
++	__u64 fault_addr;
++};
++
++/**
++ * struct drm_xe_query_reset_stats - Per drm client reset stats query.
++ */
++struct drm_xe_query_reset_stats {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++	/** @reset_count: Number of times the drm client has observed an engine reset */
++	__u64 reset_count;
++	/** @ban_count: number of exec queue bans saved by the drm client */
++	__u64 ban_count;
++	/**
++	 * @ban_list: flexible array of struct drm_xe_exec_queue_ban, reporting all
++	 * observed exec queue bans on the drm client.
++	 */
++	struct drm_xe_exec_queue_ban ban_list[];
++};
++
+ #if defined(__cplusplus)
+ }
+ #endif
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 1566680e7a..cb4ebd8d6a 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -1077,6 +1077,342 @@ static void test_query_oa_units(int fd)
+ 	}
+ }
+ 
++/**
++ * The reset stats query will report -EOPNOTSUPP if the kernel is
++ * configured without CONFIG_PROC_FS.  Check this before running
++ * any tests on this query.
++ */
++static bool
++query_reset_stats_supported(int fd)
++{
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_RESET_STATS,
++		.size = 0,
++		.data = 0,
++	};
++	int ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
++
++	if (ret)
++		igt_assert(ret == -EOPNOTSUPP);
++	return !ret;
++}
++
++/**
++ * SUBTEST: query-reset-stats
++ * Description: Display fields for reset stats query
++ *
++ * SUBTEST: multigpu-query-reset-stats
++ * Description: Display fields for reset stats query for all GPU devices
++ * Sub-category: MultiGPU
++ */
++static void test_query_reset_stats(int fd)
++{
++	struct drm_xe_query_reset_stats *qrs;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_RESET_STATS,
++		.size = 0,
++		.data = 0,
++	};
++	struct drm_xe_exec_queue_ban *ban;
++
++	igt_skip_on(!query_reset_stats_supported(fd));
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qrs = malloc(query.size);
++	igt_assert(qrs);
++
++	query.data = to_user_pointer(qrs);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	igt_info("reset count: %lld\n", qrs->reset_count);
++	igt_info("ban count: %lld\n", qrs->ban_count);
++
++	for (int i = 0; i < qrs->ban_count; i++) {
++		ban = &qrs->ban_list[i];
++
++		igt_info("-------------------------------\n");
++		igt_info("exec queue ban %d\n", i);
++		igt_info("-------------------------------\n");
++		igt_info("exec_queue_id: %d\n", ban->exec_queue_id);
++		if (!ban->pf_found) {
++			igt_info("no associated pagefault\n");
++			continue;
++		}
++		igt_info("pagefault associated:\n");
++		igt_info("\tASID: %d\n"
++			 "\tVFID: %d\n"
++			 "\tPDATA: 0x%04x\n"
++			 "\tFaulted Address: 0x%08x%08x\n"
++			 "\tFaultType: %d\n"
++			 "\tAccessType: %d\n"
++			 "\tEngineClass: %d %s\n"
++			 "\tEngineInstance: %d\n",
++			 ban->asid, ban->vfid, ban->pdata,
++			 upper_32_bits(ban->fault_addr),
++			 lower_32_bits(ban->fault_addr),
++			 ban->fault_type, ban->access_type,
++			 ban->engine_class,
++			 xe_engine_class_string(ban->engine_class),
++			 ban->engine_instance);
++	}
++
++	free(qrs);
++}
++
++/**
++ * SUBTEST: query-reset-stats-reset
++ * Description: Assert reset stats query tracks reset count
++ *
++ * SUBTEST: multigpu-query-reset-stats-reset
++ * Description: Assert reset stats query tracks reset count for all GPU devices
++ * Sub-category: MultiGPU
++ */
++static void
++test_query_reset_stats_reset(int fd)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_query_reset_stats *qrs;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_RESET_STATS,
++		.size = 0,
++		.data = 0,
++	};
++	u64 resets1, resets2;
++
++	igt_skip_on(!query_reset_stats_supported(fd));
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qrs = malloc(query.size);
++	igt_assert(qrs);
++
++	query.data = to_user_pointer(qrs);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	resets1 = qrs->reset_count;
++	free(qrs);
++
++	query.size = 0;
++	query.data = 0;
++
++	xe_for_each_engine(fd, hwe)
++		xe_force_gt_reset_sync(fd, hwe->gt_id);
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qrs = malloc(query.size);
++	igt_assert(qrs);
++
++	query.data = to_user_pointer(qrs);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	resets2 = qrs->reset_count;
++	free(qrs);
++
++	igt_assert_lt(resets1, resets2);
++}
++
++static void gen_pf(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	uint32_t vm;
++	uint64_t addr = 0x1a0000;
++	uint64_t sync_addr = 0x101a0000;
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(sync),
++	};
++	uint32_t exec_queues[1];
++	uint32_t bind_exec_queues[1];
++	size_t bo_size, sync_size;
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint64_t vm_sync;
++		uint32_t data;
++	} *data;
++	uint64_t *exec_sync;
++	int i, b;
++	int map_fd = -1;
++	int n_exec_queues = 1;
++	int n_execs = 64;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
++			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	bo_size = sizeof(*data) * n_execs;
++	bo_size = xe_bb_size(fd, bo_size);
++	sync_size = sizeof(*exec_sync) * n_execs;
++	sync_size = xe_bb_size(fd, sync_size);
++
++#define	MAP_ADDRESS	0x00007fadeadbe000
++	data = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
++		    PROT_WRITE, MAP_SHARED | MAP_FIXED |
++		    MAP_ANONYMOUS, -1, 0);
++	igt_assert(data != MAP_FAILED);
++	memset(data, 0, bo_size);
++
++#define EXEC_SYNC_ADDRESS	0x00007fbdeadbe000
++	exec_sync = mmap((void *)EXEC_SYNC_ADDRESS, sync_size, PROT_READ | PROT_WRITE,
++			MAP_SHARED | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
++	igt_assert(exec_sync != MAP_FAILED);
++	memset(exec_sync, 0, sync_size);
++
++	for (i = 0; i < n_exec_queues; i++) {
++		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		bind_exec_queues[i] = 0;
++	}
++
++	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	xe_vm_bind_userptr_async(fd, vm, bind_exec_queues[0],
++				 to_user_pointer(data), addr,
++				 bo_size, sync, 1);
++
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++		       bind_exec_queues[0], NSEC_PER_SEC);
++	data[0].vm_sync = 0;
++
++	xe_vm_bind_userptr_async(fd, vm, bind_exec_queues[0],
++				 to_user_pointer(exec_sync), sync_addr,
++				 sync_size, sync, 1);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++		       bind_exec_queues[0], NSEC_PER_SEC);
++	data[0].vm_sync = 0;
++
++	for (i = 0; i < n_execs; i++) {
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = addr + batch_offset;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = addr + sdi_offset;
++		int e = i % n_exec_queues;
++
++		b = 0;
++
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++		sync[0].addr = sync_addr + (char *)&exec_sync[i] - (char *)exec_sync;
++
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = batch_addr;
++		xe_exec(fd, &exec);
++
++		if (i + 1 != n_execs) {
++			/*
++			 * Wait for exec completion and check data as
++			 * userptr will likely change to different
++			 * physical memory on next mmap call triggering
++			 * an invalidate.
++			 */
++			xe_wait_ufence(fd, &exec_sync[i],
++				       USER_FENCE_VALUE, exec_queues[e],
++				       NSEC_PER_SEC);
++			igt_assert_eq(data[i].data, 0xc0ffee);
++			data = mmap((void *)MAP_ADDRESS, bo_size,
++				    PROT_READ | PROT_WRITE, MAP_SHARED |
++				    MAP_FIXED | MAP_ANONYMOUS, -1, 0);
++			igt_assert(data != MAP_FAILED);
++		}
++	}
++
++	for (i = n_execs - 1; i < n_execs; i++) {
++		int64_t timeout = NSEC_PER_SEC;
++
++		igt_assert_eq(__xe_wait_ufence(fd, &exec_sync[i], USER_FENCE_VALUE,
++					       exec_queues[i % n_exec_queues], &timeout), 0);
++	}
++
++	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	data[0].vm_sync = 0;
++	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, sync_addr, sync_size,
++			   sync, 1);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++		       bind_exec_queues[0], NSEC_PER_SEC);
++	data[0].vm_sync = 0;
++	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
++			   sync, 1);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++		       bind_exec_queues[0], NSEC_PER_SEC);
++
++	for (i = 0; i < n_exec_queues; i++) {
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++		if (bind_exec_queues[i])
++			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
++	}
++
++	munmap(exec_sync, sync_size);
++	xe_vm_destroy(fd, vm);
++	if (map_fd != -1)
++		close(map_fd);
++}
++
++/**
++ * SUBTEST: query-reset-stats-bans
++ * Description: Assert reset stats query tracks exec queue bans
++ *
++ * SUBTEST: multigpu-query-reset-stats-bans
++ * Description: Assert reset stats query tracks exec queue bans for all GPU devices
++ * Sub-category: MultiGPU
++ */
++static void
++test_query_reset_stats_bans(int fd)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_query_reset_stats *qrs;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_RESET_STATS,
++		.size = 0,
++		.data = 0,
++	};
++	u64 bans1, bans2;
++
++	igt_skip_on(!query_reset_stats_supported(fd));
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qrs = malloc(query.size);
++	igt_assert(qrs);
++
++	query.data = to_user_pointer(qrs);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	bans1 = qrs->ban_count;
++	free(qrs);
++
++	query.size = 0;
++	query.data = 0;
++
++	xe_for_each_engine(fd, hwe)
++		gen_pf(fd, hwe);
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qrs = malloc(query.size);
++	igt_assert(qrs);
++
++	query.data = to_user_pointer(qrs);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	bans2 = qrs->ban_count;
++	free(qrs);
++
++	/**
++	 * There is a limit to the number of bans that can be saved to the
++	 * ban list, so if that limit was already reached before now, assert
++	 * the list did not get any smaller.
++	 */
++	if (bans1 == MAX_BAN_COUNT)
++		igt_assert_eq(bans1, bans2);
++	else
++		igt_assert_lt(bans1, bans2);
++}
++
+ igt_main
+ {
+ 	const struct {
+@@ -1094,6 +1430,9 @@ igt_main
+ 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
+ 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
+ 		{ "query-oa-units", test_query_oa_units },
++		{ "query-reset-stats", test_query_reset_stats },
++		{ "query-reset-stats-reset", test_query_reset_stats_reset },
++		{ "query-reset-stats-bans", test_query_reset_stats_bans },
+ 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
+ 		{ "query-invalid-query", test_query_invalid_query },
+ 		{ "query-invalid-size", test_query_invalid_size },
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8245 -> IGTPW_12644
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_12644 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12644, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/index.html
-
-Participating hosts (44 -> 42)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-pnv-d510 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12644:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2] +132 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12644 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-2:          [PASS][3] -> [ABORT][4] ([i915#12919] / [i915#13503])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/bat-twl-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-twl-2:          [PASS][5] -> [ABORT][6] ([i915#12919])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8245 -> IGTPW_12644
-  * Linux: CI_DRM_16164 -> CI_DRM_16165
-
-  CI-20190529: 20190529
-  CI_DRM_16164: 8554d5b7b4fded481a85ab11d75eeb97443450e2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16165: 2c2b141845ce906e187d4aa4fee06bcd9d517415 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12644: 12644
-  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/index.html
-
---===============2556178980976315788==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev10)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138218/">https://patchwork.freedesktop.org/series/138218/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8245 -&gt; IGTPW_12644</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_12644 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12644, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/index.html</p>
-<h2>Participating hosts (44 -&gt; 42)</h2>
-<p>Missing    (2): fi-snb-2520m fi-pnv-d510 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12644:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@late_gt_pm:<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> +132 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12644 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/bat-twl-2/igt@i915_selftest@live@gt_engines.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12644/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8245 -&gt; IGTPW_12644</li>
-<li>Linux: CI_DRM_16164 -&gt; CI_DRM_16165</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16164: 8554d5b7b4fded481a85ab11d75eeb97443450e2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16165: 2c2b141845ce906e187d4aa4fee06bcd9d517415 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12644: 12644<br />
-  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2556178980976315788==--
