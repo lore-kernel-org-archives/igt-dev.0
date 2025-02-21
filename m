@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69732C021B4
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 00:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 397E3C021B2
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 00:26:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2114510E9FC;
-	Fri, 21 Feb 2025 00:26:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB86310E9FF;
+	Fri, 21 Feb 2025 00:26:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G6HOS9tf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LGUWWnik";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E035810E9FC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46E0A10E9F9
  for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 00:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740097576; x=1771633576;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ernZvxtV77Xy8k3Ga9d1ecaj7dFDGTPdShTzWlbpZdY=;
- b=G6HOS9tfCcOW6cD/4bwnbqxQtjAnsHm6+aqOISPQkWC8xiTuDHY7E+sJ
- gYDBKuazx0qYesUMku3G/rqPWny4xcgYqOmpUqjyCsVAEpLZE5AV2vXk8
- BRGuSzxQDMr/TDw1vLCjIsd5TCarkEMa1PgP4qFRXu5ONjVVjuWLFVOB/
- uWgLPHk7gtzJwARIV33eUlVTR4D5Hvd9/euiU1C6VDq2E6dtdU8yOfNWI
- tg2NMvLbPwfXuW6lwLIh5TO7JfnuP5BbcShgxO9xBYgHsCRT30rsuZh2h
- AdBZ8mnhmVUqwA33cEyMXx96MEoiJ5/GUPfqUmyBO3//lBS7a78XEPBBO w==;
-X-CSE-ConnectionGUID: pI/jx6fcTWGLrvXvrFBs6Q==
-X-CSE-MsgGUID: CY3b3ZWQQxW7yQo3bHp6Kg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44548839"
-X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; d="scan'208";a="44548839"
+ t=1740097575; x=1771633575;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=B2BTyPPnpDkGPljdeLBVEzUf6phcgbHmqGFyPs2gbb0=;
+ b=LGUWWnikvET0nIl6DosZgXIIBY1zi6NiCM3en3afV2yOQ8xDXLWqKnNO
+ U1h5Jc3AE4nfy4NukyHDdEHRpQWyQEtuodrbr5Soo4ymogNR19ZlfirO+
+ u4HvHh+mf7dAOPCCrnb7o6RoBQX0BRJCc4cepHgg8VsiZQwWxTfpxT8T7
+ m8TnmrsbpSyoOI2zwCzrMCMeONHSNPY5y07uwRbVJLaQJ59irQRA8hBZ1
+ K2LnWwlKREqcfqLjgDhRFCsPt6oZrWlgGXpYPM/KwHtC5PcxVQFEBU9nj
+ S4+OfiQBaKN5fgvo3D/sFUHncKdakjjUbZgJdqB0QjUnnC5AMcGKewTGv w==;
+X-CSE-ConnectionGUID: 3WZ4B0jFStKuItjwfGQr/g==
+X-CSE-MsgGUID: tZIVQgbOS6eo6jvdMkTpNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44548837"
+X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; d="scan'208";a="44548837"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Feb 2025 16:26:15 -0800
-X-CSE-ConnectionGUID: jYI9fkQxSDWBqAoqF+mOcQ==
-X-CSE-MsgGUID: nRWxF4D3TEmSyCOFoOG6uA==
+X-CSE-ConnectionGUID: JfxYClxhSrG9LE9rtyxkJg==
+X-CSE-MsgGUID: PpyRiNgvQ4CMqpbsUyIqUQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; d="scan'208";a="115408280"
+X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; d="scan'208";a="115408277"
 Received: from szeng-desk.jf.intel.com ([10.165.21.160])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Feb 2025 16:26:14 -0800
@@ -47,12 +47,10 @@ Cc: Thomas.Hellstrom@linux.intel.com, matthew.brost@intel.com,
  kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
  ashutosh.dixit@intel.com, juha-pekka.heikkila@intel.com,
  rodrigo.vivi@intel.com
-Subject: [i-g-t v4 1/4] lib/xe: Fix a comment error
-Date: Thu, 20 Feb 2025 19:41:59 -0500
-Message-Id: <20250221004202.369505-2-oak.zeng@intel.com>
+Subject: [i-g-t v4 0/4] xe: Test scratch page under fault mode
+Date: Thu, 20 Feb 2025 19:41:58 -0500
+Message-Id: <20250221004202.369505-1-oak.zeng@intel.com>
 X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20250221004202.369505-1-oak.zeng@intel.com>
-References: <20250221004202.369505-1-oak.zeng@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,27 +68,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The timeout value of __xe_wait_ufence returns the
-remaining time, not elapsed time. Fix it.
+This series intoduces a subtest for Xe to test scratch page under fault
+mode.
 
-Signed-off-by: Oak Zeng <oak.zeng@intel.com>
----
- lib/xe/xe_ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It also includes some helper functions to make the test easier.
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 6d8388918..028102aa2 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -496,7 +496,7 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
-  *
-  * Function compares @value with memory pointed by @addr until they are equal.
-  *
-- * Returns (in @timeout), the elapsed time in nanoseconds if user fence was
-+ * Returns (in @timeout), the remaining time in nanoseconds if user fence was
-  * signalled. Returns 0 on success, -errno of ioctl on error.
-  */
- int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+Today most of igt tests use one single function to perform multiple
+subtests. flags are used to control the behavior of the test. While
+this is a good way to write efficient tests, it also makes the test
+difficult to maintain, especially when we add more and more subtests
+into single test function.
+
+This patch series introduces some helper functions with which we can
+write more readable tests. This is illustrated in patch 4 of this series.
+
+Note the intention of this patch series is not to replace the existing
+igt tests, but to provide an alternative way to write simple tests.
+
+Bommu Krishnaiah (1):
+  lib/xe/xe_util: Introduce helper functions
+
+Oak Zeng (3):
+  lib/xe: Fix a comment error
+  tests/intel/xe_vm: Exclude invalid_flags tests from LNL and BMG
+  tests/intel/xe_exec_fault_mode: Test scratch page under fault mode
+
+ lib/xe/xe_ioctl.c                |   2 +-
+ lib/xe/xe_util.c                 | 228 +++++++++++++++++++++++++++++++
+ lib/xe/xe_util.h                 |  39 ++++++
+ tests/intel/xe_exec_fault_mode.c |  69 ++++++++++
+ tests/intel/xe_vm.c              |  47 +++++--
+ 5 files changed, 369 insertions(+), 16 deletions(-)
+
 -- 
 2.26.3
 
