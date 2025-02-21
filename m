@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C60C021AA
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 09:04:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25EC6C021AA
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 09:25:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8390910EA40;
-	Fri, 21 Feb 2025 09:04:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE21A10E23B;
+	Fri, 21 Feb 2025 09:25:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GsX0Do98";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jSj+MAjd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95ED410EA3F;
- Fri, 21 Feb 2025 09:04:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18A5210E22C
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 09:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740128667; x=1771664667;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Gu43Ecq/hIjFTOJCa7dLT0HSRWFqrCWsRpmCtJ7lAxA=;
- b=GsX0Do98hSYyDvPV1q/EuDC2CNMvxEaef7t5XqMczLeKWUA0F/doLfoQ
- ZqGD4jhrvr3MUzlXAdYO0s+GZbPhVgXSRnBwXWpODVfnzOBGNhg78gQgk
- dmQTMyuVCZ3xkQ6El1T3I/41tT64J5Jv6+K2TGddatV90lHaPjjJslQ7F
- 4t4bo8Tp9DixpqU5P7/woGkiLIMazUmxILVnf1iaKzMGpfSLKNGfxft4t
- GwN8lyAQbLW0aGP3NdEKBMxcb7eBGbAsrVaDUgbcb7eF+XrjhU+soWT1Q
- OGIZrChPqfOKOIIEbisbc4fJNNSzPfZL+z7g6gy+hLk/k1j3wJaJkXFTw g==;
-X-CSE-ConnectionGUID: CPc6MYorQFiKqU3ucjJBsA==
-X-CSE-MsgGUID: 28xQPYDgT+uqFQ/MduAOQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41147363"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41147363"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 01:04:27 -0800
-X-CSE-ConnectionGUID: mx1M6D4HRoy2uegk5QICCQ==
-X-CSE-MsgGUID: D/In/PEQTMySqQqtdble/A==
+ t=1740129906; x=1771665906;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=nPYCqSkPuRBkd8aFi9TyeliI+WINkeFYvKkM8OjmM0g=;
+ b=jSj+MAjduCYooqkGCfsMm1dS5ejIpMdF0gYZq4YoXRii9jov3TOfYaVV
+ 1TVL8eYC7fN9c/s+vjAK+Xkh4Ny1dr6nSx6BeNtxIgG1PUGEaPLA8+nj1
+ pba+wI2kZY/5lupDaIW22x1YdIOabFm2RpqMylauMmVkupwTwe9X4pBaz
+ KblpZ6l5/GLRxpgKAfSVsfiKIyTALJlPxU0p6slLTIqc1Akcmrr2KQ/6u
+ Or3bk+L33dbqAyGybW2z+JgLrCwyw5uv+wG1MaxMXgINwZzK3mVijHJgA
+ +SZY+j80TB9bkVjK4OGsSC9z9jQP4fae0w4EICzQN8wYgtv6X3JqL2Y+j w==;
+X-CSE-ConnectionGUID: TWOC12zoRyqB+rA/KaQNVQ==
+X-CSE-MsgGUID: yfjW4gcvTEmE0hylpPFnZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44857909"
+X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="44857909"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 01:25:05 -0800
+X-CSE-ConnectionGUID: 3B8bnad8Rl+YVbJHMz+gpg==
+X-CSE-MsgGUID: ECzAHBO8QsWUniN80T7YTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="115143749"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 01:04:26 -0800
-Date: Fri, 21 Feb 2025 10:04:09 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="146188419"
+Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
+ lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
+ by orviesa002.jf.intel.com with ESMTP; 21 Feb 2025 01:25:02 -0800
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- tools/intel_reg: Add --pci-slot option (rev2)
-Message-ID: <20250221090409.vjrfd6vz3rz66isu@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20250219121050.71831-1-kamil.konieczny@linux.intel.com>
- <174009275333.297946.7137604893102913240@b555e5b46a47>
+Cc: jeevan.b@intel.com,
+	Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_display_modes: Remove negative test for
+ extended display
+Date: Fri, 21 Feb 2025 14:55:00 +0530
+Message-ID: <20250221092500.15215-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250220103640.44879-1-mohammed.thasleem@intel.com>
+References: <20250220103640.44879-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <174009275333.297946.7137604893102913240@b555e5b46a47>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,106 +70,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-02-20 at 23:05:53 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tools/intel_reg: Add --pci-slot option (rev2)
-> URL   : https://patchwork.freedesktop.org/series/144206/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8240_full -> XEIGTPW_12637_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_12637_full absolutely need to be
->   verified manually.
+This negative test was crated to validate ENOSPC when two 2k-4k or 4k-4k
+monitors connected through MST to cover bandwidth issue in MST config.
 
-Unrelated to tools change, no test nor lib changed.
+But it will not helpfult to handle current bandwidth which are
+DisplayPort (DP) 1.4 supports a total bandwidth of 4 × 8.1 Gbps.
 
-Regards,
-Kamil
+However, with DP 2.1, the bandwidth allocation strategy has
+significantly changed to 4 × 20 Gbps of available bandwidth.
+This provides significantly greater display capabilities
+w.r.t bandwidth.
 
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_12637_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 4)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_12637_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs-cc:
->     - shard-dg2-set2:     NOTRUN -> [DMESG-WARN][1]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/shard-dg2-466/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs-cc.html
-> 
->   * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d:
->     - shard-dg2-set2:     [PASS][2] -> [INCOMPLETE][3] +1 other test incomplete
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/shard-dg2-464/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d.html
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/shard-dg2-463/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d.html
-> 
->   * igt@xe_live_ktest@xe_dma_buf:
->     - shard-bmg:          [PASS][4] -> [SKIP][5]
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/shard-bmg-8/igt@xe_live_ktest@xe_dma_buf.html
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/shard-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs:
->     - shard-dg2-set2:     [DMESG-WARN][6] ([Intel XE#4330]) -> [DMESG-WARN][7]
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/shard-dg2-432/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs.html
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/shard-dg2-434/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs.html
-> 
->   * igt@kms_cdclk@mode-transition-all-outputs:
->     - shard-dg2-set2:     [SKIP][8] ([Intel XE#314]) -> [FAIL][9]
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/shard-dg2-434/igt@kms_cdclk@mode-transition-all-outputs.html
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/shard-dg2-464/igt@kms_cdclk@mode-transition-all-outputs.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_12637_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@kms_async_flips@async-flip-suspend-resume@pipe-d-dp-4:
->     - shard-dg2-set2:     [PASS][10] -> [DMESG-WARN][11] ([Intel XE#4330]) +23 other tests dmesg-warn
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8240/shard-dg2-466/igt@kms_async_flips@async-flip-suspend-resume@pipe-d-dp-4.html
->    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/shard-dg2-435/igt@kms_async_flips@async-flip-suspend-resume@pipe-d-dp-4.html
+v2: Fix compilation issue.
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_display_modes.c | 109 +-------------------------------------
+ 1 file changed, 1 insertion(+), 108 deletions(-)
+
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index 117f82325..e12d08f8d 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -40,64 +40,17 @@
+  * Description: Test for validating display extended mode with a pair of connected
+  *              displays
+  * Functionality: kms_core
+- *
+- * SUBTEST: mst-extended-mode-negative
+- * Description: Negative test for validating display extended mode with a pair
+- *		of connected 2k-4k or 4k-4k displays.
+- * Functionality: kms_core, mst
+  */
  
-...cut...
+-#define HDISPLAY_4K	3840
+-#define VDISPLAY_4K	2160
+-
+ IGT_TEST_DESCRIPTION("Test Display Modes");
+ 
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
+-	drmModeModeInfo mode_mst[2];
+ 	igt_output_t *mst_output[2];
+ 	int n_pipes;
+ } data_t;
+ 
+-/* Get higher mode supported by panel. */
+-static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+-{
+-	drmModeConnector *connector = output->config.connector;
+-	drmModeModeInfo *highest_mode = NULL;
+-
+-	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+-	highest_mode = &connector->modes[0];
+-
+-	return highest_mode;
+-}
+-
+-/* Get the 4k or less then 4k mode of connected panel. */
+-static drmModeModeInfo *get_mode(igt_output_t *output)
+-{
+-	int j;
+-	drmModeModeInfo *required_mode = NULL;
+-	drmModeConnector *connector = output->config.connector;
+-
+-	required_mode = igt_output_get_mode(output);
+-	if (required_mode->vdisplay <= VDISPLAY_4K &&
+-	    required_mode->hdisplay <= HDISPLAY_4K) {
+-		return required_mode;
+-	}
+-
+-	/* If default mode not 4k or less than 4k mode, then sort modes and check for it. */
+-	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+-	for (j = 0; j < connector->count_modes; j++) {
+-		if (connector->modes[j].vdisplay <= VDISPLAY_4K &&
+-		    connector->modes[j].hdisplay <= HDISPLAY_4K) {
+-			required_mode = &connector->modes[j];
+-			break;
+-		}
+-	}
+-
+-	return required_mode;
+-}
+-
+ static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
+ {
+ 	int connector_id;
+@@ -110,7 +63,7 @@ static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
+ 	/*
+ 	 * Discarding outputs of other DP MST topology.
+ 	 * Testing only on outputs on the topology we got previously
+-	 */
++	*/
+ 	if (i == 0) {
+ 		prev_connector_id = connector_id;
+ 	} else {
+@@ -274,46 +227,9 @@ static void run_extendedmode_test(data_t *data) {
+ 	}
+ }
+ 
+-static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
+-{
+-	struct igt_fb fbs[2];
+-	igt_display_t *display = &data->display;
+-	igt_plane_t *plane[2];
+-	int ret;
+-
+-	igt_display_reset(display);
+-
+-	igt_output_set_pipe(data->mst_output[0], pipe1);
+-	igt_output_set_pipe(data->mst_output[1], pipe2);
+-
+-	igt_create_color_fb(data->drm_fd, data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay,
+-			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
+-	igt_create_color_fb(data->drm_fd, data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay,
+-			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
+-
+-	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
+-	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
+-
+-	igt_plane_set_fb(plane[0], &fbs[0]);
+-	igt_fb_set_size(&fbs[0], plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
+-	igt_plane_set_size(plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
+-
+-	igt_plane_set_fb(plane[1], &fbs[1]);
+-	igt_fb_set_size(&fbs[1], plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
+-	igt_plane_set_size(plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
+-
+-	igt_output_override_mode(data->mst_output[0], &data->mode_mst[0]);
+-	igt_output_override_mode(data->mst_output[1], &data->mode_mst[1]);
+-
+-	igt_require(intel_pipe_output_combo_valid(display));
+-	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+-	igt_assert(ret != 0 && errno == ENOSPC);
+-}
+-
+ igt_main
+ {
+ 	int dp_mst_outputs = 0, count = 0;
+-	enum pipe pipe1, pipe2;
+ 	igt_output_t *output;
+ 	data_t data;
+ 
+@@ -340,29 +256,6 @@ igt_main
+ 		run_extendedmode_test(&data);
+ 	}
+ 
+-	igt_describe("Negative test for validating display extended mode with a pair of connected "
+-		     "2k-4k or 4k-4k displays");
+-	igt_subtest_with_dynamic("mst-extended-mode-negative") {
+-		igt_require_f(dp_mst_outputs > 1, "MST not found more then one\n");
+-
+-		memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), sizeof(drmModeModeInfo));
+-		memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[1]),
+-				sizeof(drmModeModeInfo));
+-		igt_require_f((data.mode_mst[1].hdisplay >= HDISPLAY_4K &&
+-			       data.mode_mst[1].vdisplay >= VDISPLAY_4K), "4k panel not found\n");
+-
+-		for_each_pipe(&data.display, pipe1) {
+-			for_each_pipe(&data.display, pipe2) {
+-				if (pipe1 == pipe2)
+-					continue;
+-
+-				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe1),
+-					      kmstest_pipe_name(pipe2))
+-					run_extendedmode_negative(&data, pipe1, pipe2);
+-			}
+-		}
+-	}
+-
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 	}
+-- 
+2.43.0
 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_8240 -> IGTPW_12637
-> 
->   IGTPW_12637: 8bb0f4666cbeb80bf4139a6bfb9e1580e22450bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8240: aa097b2264d0eae71f718791f83097d979ddf8b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-2692-e19eb43c82480789a93ce0c452e22bbd851b93c6: e19eb43c82480789a93ce0c452e22bbd851b93c6
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12637/index.html
