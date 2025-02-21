@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9191AC021AA
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C089CC021B5
 	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 06:00:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2C10010E0E8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B71410EA21;
 	Fri, 21 Feb 2025 06:00:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VccGBF5Q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HKsn2sr7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 363D110E0E8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 183A410E997
  for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 06:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1740117621; x=1771653621;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PLIAYq1ixVJO7pMU5aGOX7iVLdHD4ec7O/B2UHJmTZs=;
- b=VccGBF5QWm26ZaeqV2s0JFUPEG4PZ1kLLMXjBIaoXeUO2zVmzCo4i1MI
- akow+n51doNwIwspDkXr76A8K0F11a2QmpRssUBMzNNFiYG/pvSJIjAsV
- rF9Xrr3TkF4mVgJstsV2x8JnjgYKtyvlQ/FlhvwKDQGnEQ+NrKSS4CFz4
- roANv9hDjNA+W+HnKXD1bQMjItLRptxaUmWEqybxjlMcTUyl9o5ebxwvC
- i7NhrsCbqGbf8GcLnLiVwzKUlFZYEL9m1pRYFBwfVQGA+xt1Ug+EMlHlQ
- dQw3ok15MosKF6qbpsP0myTLpcd3YgZ262xYK1TO0TatvjNRPhMvDyTMW A==;
-X-CSE-ConnectionGUID: xz+zFeZBRwKloFP2bBq5eg==
-X-CSE-MsgGUID: cOA2gIuTRJm7jo6SQYLX+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="28520836"
-X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; d="scan'208";a="28520836"
+ bh=/4vlXB6jlm9Xp8pK3z8HRUtiwiWELRfjcFdlejnLY5I=;
+ b=HKsn2sr7TriKkHqJMtR8nq9IS2teeS1T8eFANTc8OiaTM4jnDgiAisG/
+ I0Y0PZ0I9b9xW+6n7kw/qzz2y5KhEaFARRQZSLUHtyFAPPfW/R2DP6AXb
+ DBJuoGclKbMayDMhhnR09AH9kRjoRQPyz2F1ZBkIIn7hi5RBolO5NRBfE
+ HNRFooUQh+Vw2xREzA2HjcmW1SorUnzmrBvr3OrfPd8vRd2a+Fy8LhGq1
+ qcYgV7j4uVnMWfZnCq5vUv478+QmZNh7Q4cO1adWBCUpEZoMcuO97c63S
+ ZPSfakxtH8hs5ONbqBhWCsxwqmmbgD7HHH0AJwIkOEE80uun+QlbPtLMF g==;
+X-CSE-ConnectionGUID: AWc3TNLURPeiCgNrHGXwkw==
+X-CSE-MsgGUID: OrAKvJz1QZahIPPEwAjjLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="28520835"
+X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; d="scan'208";a="28520835"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Feb 2025 22:00:20 -0800
-X-CSE-ConnectionGUID: 0VgMptHQSy6pBWNmtOWdIw==
-X-CSE-MsgGUID: H61ZzBdTT1S3dlD41g4CYw==
+X-CSE-ConnectionGUID: 0kLUkX+XRpiN9gRQ8Prbuw==
+X-CSE-MsgGUID: 0LiqtmHlQU25aQOSBluuMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="146173899"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="146173894"
 Received: from ifwibot07.gar.corp.intel.com (HELO
  rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 22:00:16 -0800
+ 20 Feb 2025 22:00:14 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: arun.r.murthy@intel.com, karthik.b.s@intel.com,
  chaitanya.kumar.borah@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/kms_async_flips: use in_formats_async for
- async modifiers
-Date: Fri, 21 Feb 2025 11:26:47 +0530
-Message-Id: <20250221055647.2014355-3-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 1/2] lib/igt_kms: Add support to retrieve async
+ modifiers and formats
+Date: Fri, 21 Feb 2025 11:26:46 +0530
+Message-Id: <20250221055647.2014355-2-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250221055647.2014355-1-santhosh.reddy.guddati@intel.com>
 References: <20250221055647.2014355-1-santhosh.reddy.guddati@intel.com>
@@ -71,86 +71,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for dynamic plane and modifiers in async flip with modifiers
+This patch introduces async_blob_data to handle asynchronous format
+modifiers.Processes asynchronous format modifiers and update plane's
+format and modifiers.
 
-V2: Improve run_test_with_modifiers to set data formats based on async
-    formats.
-    Update make_fb to use data formats instead of hard coded format
+Handles 'IN_FORMATS_ASYNC' property.
+
+V2: Add new fields async_formats and reset idx.
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/kms_async_flips.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ lib/igt_kms.c | 46 +++++++++++++++++++++++++++++++++++++++++++++-
+ lib/igt_kms.h |  8 +++++++-
+ 2 files changed, 52 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 4a72be7b5..38fc2ced4 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -126,6 +126,7 @@ typedef struct {
- 	bool allow_fail;
- 	struct buf_ops *bops;
- 	bool atomic_path;
-+	unsigned int plane_format;
- } data_t;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0ba1afb08..8623235a9 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -701,6 +701,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+ 	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
+ 	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
+ 	[IGT_PLANE_SIZE_HINTS] = "SIZE_HINTS",
++	[IGT_PLANE_IN_FORMATS_ASYNC] = "IN_FORMATS_ASYNC",
+ };
  
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -197,7 +198,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+@@ -5724,11 +5725,14 @@ static int igt_count_plane_format_mod(const struct drm_format_modifier_blob *blo
  
- 	rec_width = width / (NUM_FBS * 2);
- 
--	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-+	igt_create_color_fb(data->drm_fd, width, height, data->plane_format,
- 			    data->modifier, 0.0, 0.0, 0.5, fb);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
-@@ -718,17 +719,34 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane)
  {
- 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
- 		test_init(data);
-+		static int j;
+-	const struct drm_format_modifier_blob *blob_data;
++	const struct drm_format_modifier_blob *blob_data, *async_blob_data;
++	const struct drm_format_modifier *async_modifiers;
+ 	drmModePropertyBlobPtr blob;
+ 	uint64_t blob_id;
+ 	int idx = 0;
+ 	int count;
++	int async_count;
++	const uint32_t *async_formats;
  
--		for (int i = 0; i < data->plane->format_mod_count; i++) {
--			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
-+		for (int i = 0; i < data->plane->async_format_mod_count; i++) {
-+
-+			/* Check if the format is already tested */
-+			bool format_already_tested = false;
-+
-+			for ( ; j < i; j++) {
-+				if (data->plane->async_formats[j] == data->plane->async_formats[i] &&
-+				    data->plane->async_formats[j] != data->plane->async_modifiers[i]) {
-+					format_already_tested = true;
-+					j = i+1;
-+					break;
-+				}
-+			}
-+
-+			if (format_already_tested)
- 				continue;
- 
- 			data->allow_fail = true;
--			data->modifier = data->plane->modifiers[i];
-+			data->modifier = data->plane->async_modifiers[i];
-+			data->plane_format = data->plane->async_formats[i];
-+
- 
--			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
-+			igt_dynamic_f("pipe-%s-%s-%s-%s", kmstest_pipe_name(data->pipe),
- 				      data->output->name,
--				      igt_fb_modifier_name(data->modifier)) {
-+				      igt_fb_modifier_name(data->modifier),
-+				      igt_format_str(data->plane_format)) {
- 				      /*
- 				       * FIXME: joiner+async flip is busted currently in KMD.
- 				       * Remove this check once the issues are fixed in KMD.
-@@ -761,6 +779,7 @@ igt_main
- 
- 		if (is_intel_device(data.drm_fd))
- 			data.bops = buf_ops_create(data.drm_fd);
-+		data.plane_format = DRM_FORMAT_XRGB8888;
+ 	if (!igt_plane_has_prop(plane, IGT_PLANE_IN_FORMATS)) {
+ 		drmModePlanePtr p = plane->drm_plane;
+@@ -5788,6 +5792,46 @@ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane
  	}
  
- 	igt_describe("Verify the async flip functionality and the fps during async flips");
+ 	igt_assert_eq(idx, plane->format_mod_count);
++
++	if (!igt_plane_has_prop(plane, IGT_PLANE_IN_FORMATS_ASYNC))
++		return;
++
++	blob_id = igt_plane_get_prop(plane, IGT_PLANE_IN_FORMATS_ASYNC);
++	blob = drmModeGetPropertyBlob(display->drm_fd, blob_id);
++
++	if (!blob)
++		return;
++
++	async_blob_data = (const struct drm_format_modifier_blob *)blob->data;
++	async_count = igt_count_plane_format_mod(async_blob_data);
++
++	if (!async_count)
++		return;
++
++	plane->async_format_mod_count = async_count;
++	plane->async_modifiers = calloc(async_count, sizeof(plane->async_modifiers[0]));
++	igt_assert(plane->async_modifiers);
++
++	plane->async_formats = calloc(async_count, sizeof(plane->async_formats[0]));
++	igt_assert(plane->async_formats);
++
++	idx = 0;
++	for (int i = 0; i < async_blob_data->count_modifiers; i++) {
++		for (int j = 0; j < 64; j++) {
++			async_modifiers = modifiers_ptr(async_blob_data);
++			async_formats = formats_ptr(async_blob_data);
++
++			if (!(async_modifiers[i].formats & (1ULL << j)))
++				continue;
++
++			plane->async_formats[idx] = async_formats[async_modifiers[i].offset + j];
++			plane->async_modifiers[idx] = async_modifiers[i].modifier;
++			idx++;
++			igt_assert_lte(idx, plane->async_format_mod_count);
++		}
++	}
++
++	igt_assert_eq(idx, plane->async_format_mod_count);
+ }
+ 
+ /**
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 7227f0b0e..7bc5fc06c 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -365,7 +365,8 @@ enum igt_atomic_plane_properties {
+        IGT_PLANE_HOTSPOT_X,
+        IGT_PLANE_HOTSPOT_Y,
+        IGT_PLANE_SIZE_HINTS,
+-       IGT_NUM_PLANE_PROPS
++       IGT_PLANE_IN_FORMATS_ASYNC,
++       IGT_NUM_PLANE_PROPS,
+ };
+ 
+ /**
+@@ -438,6 +439,10 @@ typedef struct igt_plane {
+ 	uint64_t *modifiers;
+ 	uint32_t *formats;
+ 	int format_mod_count;
++
++	uint64_t *async_modifiers;
++	uint32_t *async_formats;
++	int async_format_mod_count;
+ } igt_plane_t;
+ 
+ /*
+@@ -1273,5 +1278,6 @@ int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
+ void igt_reset_link_params(int drm_fd, igt_output_t *output);
+ int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
+ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
++bool igt_get_supported_async_modifier(igt_plane_t *plane);
+ 
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.25.1
 
