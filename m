@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F4BC021B5
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F1FEC021B6
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:52:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C460A10EAFF;
-	Fri, 21 Feb 2025 16:52:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C246710EB02;
+	Fri, 21 Feb 2025 16:52:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jkxThfGF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nd8neetd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4E1C10EB0A
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 16:52:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0CA810EB02
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 16:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740156770; x=1771692770;
+ t=1740156773; x=1771692773;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qfT331cRLfpp1/t2OAdOpCB/rX/rwTaQd8LWl5wqGbc=;
- b=jkxThfGF5yktErCS9Xxn3RhUxMpPC+XpddZMSLjROMRa7ZOOpwawY+HJ
- 9M6h6I/onVdBvN5eH2ovCA3lznFJ6vc3tnBXRqIJUocXKWRF0WP13faPF
- T2ZykQ6O0zduogwtbxG1XxCQ6M4kRXOQumwgAJniDp5JlVO2fFH4Blr/a
- G3ZNTI2J9HFRP0DgNAa2db4Gf+InJJ5OezXx9ekvvoTVL2JZHyLdCm+A/
- Vu+9xOuG4EbqHKfJvYUMopCxxI/Jo7dYYcCoOmf0EEwhnaQJRv8szIRPd
- y5gpaMMuhvmZTd/agpTolGOc1tiJ/IH/aGFASzX3yKz2QT7ke4bI2xYkc g==;
-X-CSE-ConnectionGUID: UbW5qIZgQMWMFppXhwaRrA==
-X-CSE-MsgGUID: hUOwaPYVRveNgCp82+Mzlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41186748"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41186748"
+ bh=lJhKUpZqsK/K96lXryp8qwNrGUzrQMCW8qbtPaGmcK8=;
+ b=Nd8neetdSCfYWrOvLepAyopX1brk9coEEXRftyYn4hFMRfsz3o75TcuV
+ 1ngKWPAwjCNYGa9nVPCO5sJWi1gQHuONePWmCGVzw1Iotxrdk3ycOYdqv
+ EoOaE85hoEIjs1VtQKYMFhrD7GrtogFyzNH9po9CsqbAEtoZdWIBpza6o
+ ttzK0CSZn2H6zbbDHJAE9eG8ZMOK1+ygMfwyQ9+e/y7M87/Z9q/wFUE/P
+ lEcLp4BYFlp9Up5cYZAbkVvgt/TIUCS8fG3itqYh1amsAFQsWdBGen7gl
+ rGMfrrs/A2VKBOeUuTWAwK2vWt1FSq7pde7X6LWZScgqjyc5Npuel+FAv Q==;
+X-CSE-ConnectionGUID: urLWZRkKQhGi/V95Tbsuvw==
+X-CSE-MsgGUID: c79XL7CxS7aVtDogZb2m7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41186751"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41186751"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 08:52:50 -0800
-X-CSE-ConnectionGUID: UA49l8hKRGabfsGLaVxNBA==
-X-CSE-MsgGUID: w2kxZYoqTb6EaBPgqQpMMQ==
+ 21 Feb 2025 08:52:53 -0800
+X-CSE-ConnectionGUID: fYqHI8IfT8qNpHuAqbe5Vg==
+X-CSE-MsgGUID: LcNehzrSQ2mv9KXc8RQnag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="120517612"
+X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="120517627"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 08:52:49 -0800
+ 21 Feb 2025 08:52:52 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 08/11] tests/kms_sharpness_filter: Add invalid subtests
-Date: Fri, 21 Feb 2025 22:27:46 +0530
-Message-Id: <20250221165749.460347-9-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 10/11] lib/igt_core: Add igt_dynamic_subtest_name()
+Date: Fri, 21 Feb 2025 22:27:48 +0530
+Message-Id: <20250221165749.460347-11-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250221165749.460347-1-swati2.sharma@intel.com>
 References: <20250221165749.460347-1-swati2.sharma@intel.com>
@@ -69,310 +69,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add invalid subtests:
--invalid filter with scaler: enable scaler on 2 planes and attempt
-			     to enable casf
--invalid filter with plane: enable 2 NV12 planes and attempt
-			    to enable casf
--invalid plane with filter: enable 1 NV12 plane and casf, then attempt
-			    to enable a 2nd NV12 plane
--invalid filter with scaling mode: enable scaling_mode property and attempt
-				   to enable casf
-
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_sharpness_filter.c | 181 +++++++++++++++++++++++++++++++++--
- 1 file changed, 175 insertions(+), 6 deletions(-)
+ lib/igt_core.c | 11 +++++++++++
+ lib/igt_core.h |  1 +
+ 2 files changed, 12 insertions(+)
 
-diff --git a/tests/kms_sharpness_filter.c b/tests/kms_sharpness_filter.c
-index 3451a9db4..630b2c41c 100644
---- a/tests/kms_sharpness_filter.c
-+++ b/tests/kms_sharpness_filter.c
-@@ -57,6 +57,30 @@
-  * SUBTEST: filter-scaler-downscale
-  * Description: Verify content adaptive sharpness filter with 1 plane scaler enabled during downscaling.
-  * Functionality: casf, scaling
-+ *
-+ * SUBTEST: invalid-filter-with-scaler
-+ * Description: Negative check for content adaptive sharpness filter
-+ * 		when 2 plane scalers have already been enabled and
-+ * 		attempt is made to enable sharpness filter.
-+ * Functionality: casf, scaling
-+ *
-+ * SUBTEST: invalid-filter-with-plane
-+ * Description: Negative check for content adaptive sharpness filter
-+ * 		when 2 NV12 planes have already been enabled and attempt is
-+ * 		made to enable the sharpness filter.
-+ * Functionality: casf, plane
-+ *
-+ * SUBTEST: invalid-plane-with-filter
-+ * Description: Negative check for content adaptive sharpness filter
-+ * 		when 1 NV12 plane and sharpness filter have already been enabled
-+ * 		and attempt is made to enable the second NV12 plane.
-+ * Functionality: casf, plane
-+ *
-+ * SUBTEST: invalid-filter-with-scaling-mode
-+ * Description: Negative check for content adaptive sharpness filter
-+ *              when scaling mode is already enabled and attempt is made to enable
-+ *              sharpness filter.
-+ * Functionality: casf, scaling
- */
- 
- IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
-@@ -77,9 +101,15 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
- #define MAX_PIXELS_FOR_3_TAP_FILTER	(1920 * 1080)
- #define MAX_PIXELS_FOR_5_TAP_FILTER	(3840 * 2160)
- #define NROUNDS				10
--
-+#define INVALID_TEST ((type == TEST_INVALID_FILTER_WITH_SCALER) \
-+		   || (type == TEST_INVALID_FILTER_WITH_PLANE) \
-+		   || (type == TEST_INVALID_PLANE_WITH_FILTER) \
-+		   || (type == TEST_INVALID_FILTER_WITH_SCALING_MODE))
- #define SET_PLANES ((type == TEST_FILTER_UPSCALE) \
--		||  (type == TEST_FILTER_DOWNSCALE))
-+		||  (type == TEST_FILTER_DOWNSCALE) \
-+		||  (type == TEST_INVALID_FILTER_WITH_SCALER) \
-+		||  (type == TEST_INVALID_FILTER_WITH_PLANE) \
-+		||  (type == TEST_INVALID_FILTER_WITH_SCALING_MODE))
- 
- enum test_type {
- 	TEST_FILTER_BASIC,
-@@ -93,6 +123,10 @@ enum test_type {
- 	TEST_FILTER_SUSPEND,
- 	TEST_FILTER_UPSCALE,
- 	TEST_FILTER_DOWNSCALE,
-+	TEST_INVALID_FILTER_WITH_SCALER,
-+	TEST_INVALID_FILTER_WITH_PLANE,
-+	TEST_INVALID_PLANE_WITH_FILTER,
-+	TEST_INVALID_FILTER_WITH_SCALING_MODE,
- };
- 
- const int filter_strength_list[] = {
-@@ -125,6 +159,11 @@ static const igt_rotation_t rotations[] = {
- 	IGT_ROTATION_0,
- 	IGT_ROTATION_180,
- };
-+static const uint32_t scaling_modes[] = {
-+	DRM_MODE_SCALE_FULLSCREEN,
-+	DRM_MODE_SCALE_CENTER,
-+	DRM_MODE_SCALE_ASPECT,
-+};
- 
- typedef struct {
- 	int drm_fd;
-@@ -142,6 +181,7 @@ typedef struct {
- 	const char *modifier_name;
- 	uint32_t format;
- 	igt_rotation_t rotation;
-+	uint32_t scaling_mode;
- } data_t;
- 
- static void set_filter_strength_on_pipe(data_t *data)
-@@ -151,6 +191,12 @@ static void set_filter_strength_on_pipe(data_t *data)
- 				data->filter_strength);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index b95db1b25..c6b17fd35 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -1588,6 +1588,17 @@ const char *igt_subtest_name(void)
+ 	return in_subtest;
  }
  
-+static bool has_scaling_mode(igt_output_t *output)
++/**
++ * igt_dynamic_subtest_name:
++ *
++ * Returns: The name of the currently executed dynamic subtest or NULL if called from
++ * outside a dynamic subtest block.
++ */
++const char *igt_dynamic_subtest_name(void)
 +{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE) &&
-+	       igt_output_get_prop(output, IGT_CONNECTOR_SCALING_MODE);
++	return in_dynamic_subtest;
 +}
 +
- static void paint_image(igt_fb_t *fb)
- {
- 	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
-@@ -185,10 +231,12 @@ static void cleanup_fbs(data_t *data)
+ /**
+  * igt_only_list_subtests:
+  *
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 0f2af950b..45170e215 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -380,6 +380,7 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name);
+ 	__igt_dynamic_f(igt_unique(__tmpchar), f)
  
- static void set_planes(data_t *data, enum test_type type)
- {
-+	int ret;
- 	drmModeModeInfo *mode = data->mode;
- 	igt_output_t *output = data->output;
+ const char *igt_subtest_name(void);
++const char *igt_dynamic_subtest_name(void);
+ bool igt_only_list_subtests(void);
  
- 	data->plane[1] = igt_output_get_plane(output, 1);
-+	data->plane[2] = igt_output_get_plane(output, 2);
- 
- 	if (type == TEST_FILTER_UPSCALE) {
- 		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[1]);
-@@ -201,6 +249,46 @@ static void set_planes(data_t *data, enum test_type type)
- 		igt_plane_set_fb(data->plane[1], &data->fb[1]);
- 		igt_plane_set_size(data->plane[1], mode->hdisplay * 0.75, mode->vdisplay * 0.75);
- 	}
-+
-+	if (type == TEST_INVALID_FILTER_WITH_SCALER) {
-+		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[1]);
-+		setup_fb(data->drm_fd, 20, 20, data->format, data->modifier, &data->fb[2]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_fb(data->plane[2], &data->fb[2]);
-+		igt_plane_set_size(data->plane[1], mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(data->plane[2], mode->hdisplay, mode->vdisplay);
-+	}
-+
-+	if (type == TEST_INVALID_FILTER_WITH_PLANE) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[2]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_fb(data->plane[2], &data->fb[2]);
-+	}
-+
-+	if (type == TEST_INVALID_PLANE_WITH_FILTER) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+	}
-+
-+	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE) {
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[1]);
-+		setup_fb(data->drm_fd, 640, 480, data->format, data->modifier, &data->fb[2]);
-+		igt_plane_set_fb(data->plane[1], &data->fb[1]);
-+		igt_plane_set_fb(data->plane[2], &data->fb[2]);
-+
-+		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		igt_assert_eq(ret, 0);
-+
-+		mode->hdisplay = 640;
-+		mode->vdisplay = 480;
-+
-+		igt_output_override_mode(data->output, mode);
-+		igt_plane_set_fb(data->plane[2], NULL);
-+		igt_plane_set_fb(data->plane[1], &data->fb[2]);
-+
-+		igt_output_set_prop_value(data->output, IGT_CONNECTOR_SCALING_MODE, data->scaling_mode);
-+	}
- }
- 
- static void cleanup(data_t *data)
-@@ -277,15 +365,21 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 			igt_skip("No requested rotation on pipe %s\n", kmstest_pipe_name(data->pipe_id));
- 	}
- 
-+	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
-+		igt_require_f(has_scaling_mode(output), "No connecter scaling mode found on %s\n", output->name);
-+
- 	if (SET_PLANES)
- 		set_planes(data, type);
- 
- 	set_filter_strength_on_pipe(data);
- 
--	if (data->filter_strength != 0)
-+	if (!INVALID_TEST && data->filter_strength != 0)
- 		igt_debug("Sharpened image should be observed for filter strength > 0\n");
- 
--	ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
-+		ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
-+	else
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 
- 	if (type == TEST_FILTER_DPMS || type == TEST_FILTER_SUSPEND) {
- 		pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
-@@ -299,7 +393,7 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 					   DRM_MODE_DPMS_OFF);
- 		kmstest_set_connector_dpms(data->drm_fd,
- 					   output->config.connector,
--					   DRM_MODE_DPMS_ON);
-+						   DRM_MODE_DPMS_ON);
- 	}
- 
- 	if (type == TEST_FILTER_SUSPEND)
-@@ -318,7 +412,18 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 		igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 			      "Scaling op not supported, cdclk limits might be exceeded.\n");
- 
--	igt_assert_eq(ret, 0);
-+	if (type == TEST_INVALID_PLANE_WITH_FILTER) {
-+		data->plane[3] = igt_output_get_plane(data->output, 3);
-+		setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, data->format, data->modifier, &data->fb[3]);
-+		igt_plane_set_fb(data->plane[3], &data->fb[3]);
-+
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+	}
-+
-+	if (INVALID_TEST)
-+		igt_assert_eq(ret, -EINVAL);
-+	else
-+		igt_assert_eq(ret, 0);
- 
- 	/* clean-up */
- 	igt_pipe_crc_free(pipe_crc);
-@@ -419,6 +524,18 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
- 			case TEST_FILTER_DOWNSCALE:
- 				snprintf(name, sizeof(name), "-downscale");
- 				break;
-+			case TEST_INVALID_FILTER_WITH_SCALER:
-+				snprintf(name, sizeof(name), "-invalid-filter-with-scaler");
-+				break;
-+			case TEST_INVALID_FILTER_WITH_PLANE:
-+				snprintf(name, sizeof(name), "-invalid-filter-with-plane");
-+				break;
-+			case TEST_INVALID_PLANE_WITH_FILTER:
-+				snprintf(name, sizeof(name), "-invalid-plane-with-filter");
-+				break;
-+			case TEST_INVALID_FILTER_WITH_SCALING_MODE:
-+				snprintf(name, sizeof(name), "-invalid-filter-with-scaling-mode-%s", kmstest_scaling_mode_str(data->scaling_mode));
-+				break;
- 			default:
- 				igt_assert(0);
- 			}
-@@ -597,6 +714,58 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 		run_sharpness_filter_test(&data, TEST_FILTER_DOWNSCALE);
- 	}
- 
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when 2 plane scalers have already been enabled and "
-+		     "attempt is made to enable sharpness filter.");
-+	igt_subtest_with_dynamic("invalid-filter-with-scaler") {
-+		data.modifier = DRM_FORMAT_MOD_LINEAR;
-+		data.rotation = IGT_ROTATION_0;
-+		data.format = DRM_FORMAT_XRGB8888;
-+		data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALER);
-+	}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when 2 NV12 planes have already been enabled and attempt is "
-+		     "made to enable the sharpness filter.");
-+	igt_subtest_with_dynamic("invalid-filter-with-plane") {
-+		data.modifier = DRM_FORMAT_MOD_LINEAR;
-+		data.rotation = IGT_ROTATION_0;
-+		data.format = DRM_FORMAT_NV12;
-+		data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_PLANE);
-+	}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when 1 NV12 plane and sharpness filter have already been enabled "
-+		     "and attempt is made to enable the second NV12 plane.");
-+	igt_subtest_with_dynamic("invalid-plane-with-filter") {
-+		data.modifier = DRM_FORMAT_MOD_LINEAR;
-+		data.rotation = IGT_ROTATION_0;
-+		data.format = DRM_FORMAT_NV12;
-+		data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		run_sharpness_filter_test(&data, TEST_INVALID_PLANE_WITH_FILTER);
-+	}
-+
-+	igt_describe("Negative check for content adaptive sharpness filter "
-+		     "when scaling mode is already enabled and attempt is made "
-+		     "to enable sharpness filter.");
-+	igt_subtest_with_dynamic("invalid-filter-with-scaling-mode") {
-+		data.modifier = DRM_FORMAT_MOD_LINEAR;
-+		data.rotation = IGT_ROTATION_0;
-+		data.format = DRM_FORMAT_XRGB8888;
-+		data.filter_strength = MID_FILTER_STRENGTH;
-+
-+		for (int k = 0; k < ARRAY_SIZE(scaling_modes); k++) {
-+			data.scaling_mode = scaling_modes[k];
-+
-+			run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALING_MODE);
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
+ void __igt_subtest_group_save(int *, int *);
 -- 
 2.25.1
 
