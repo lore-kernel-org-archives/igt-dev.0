@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DDB7C021B3
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E248C021B3
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:35:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E29DF892EA;
-	Fri, 21 Feb 2025 16:33:19 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82BFA892EA;
- Fri, 21 Feb 2025 16:33:18 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1415056077556529801=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 03BD210EAFB;
+	Fri, 21 Feb 2025 16:35:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hgNnMWUL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15B5A10EAB7
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 16:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740155758; x=1771691758;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=jWMnAvRG9lyuOVibZuP/NMSbCQltoNqE398+cjEg2R0=;
+ b=hgNnMWULyZp88aF0xOcbLOeH3y3ywonSUJoOqkOv+MpGtVi+BdClQ9HV
+ WP723OkTNEV2RSZpRGZC7W7wfXw9EosN41T5O1m3MdL0S2A5NYl4zUdkS
+ GXQMcIb6lkqiHTXzMNB1FD6kKe9xBWz+KFJ2yui+fnW1OOV3MXUgZ0eJr
+ s2AsZvdaBjV+huHOumhSaeHxHuG2xuwseAuFT5HwNEyyTvnvZdEgD6kz/
+ cvLmpVJslgtQHewZYNpXGQruuMcF9egu9i2C9CY0u3SRYCDwNnoR9yknI
+ yuXHwy9x3t3hg/7t+soYxxttAZ5Wifx7f1kL7XXHREr/6hkxp2SuQ1VlQ Q==;
+X-CSE-ConnectionGUID: GhSz7S63Q4C7uYQ6DQze6w==
+X-CSE-MsgGUID: 0JTJufDbR5eIeYaJ0xkFMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="51970064"
+X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="51970064"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 08:35:58 -0800
+X-CSE-ConnectionGUID: ItM+QaGkQUC2r2QtdCigNw==
+X-CSE-MsgGUID: zOQ0S/zbQoW+bTM7i9JLAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120649983"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 08:35:56 -0800
+Date: Fri, 21 Feb 2025 17:35:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
+ santhosh.reddy.guddati@intel.com
+Subject: Re: [PATCH i-g-t v3 4/5] lib/igt_core: Enhance __igt_fopen_data to
+ support additional directories
+Message-ID: <20250221163554.ofcxk27okvei6vat@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
+ santhosh.reddy.guddati@intel.com
+References: <20250218215349.1063788-1-ramanaidu.naladala@intel.com>
+ <20250218215349.1063788-5-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_xe=3A_Test_scratch_page_u?=
- =?utf-8?q?nder_fault_mode_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Oak Zeng" <oak.zeng@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 21 Feb 2025 16:33:18 -0000
-Message-ID: <174015559852.512567.12512694409609989915@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250221155336.378911-1-oak.zeng@intel.com>
-In-Reply-To: <20250221155336.378911-1-oak.zeng@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250218215349.1063788-5-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,148 +71,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1415056077556529801==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Naladala,
+On 2025-02-19 at 03:23:48 +0530, Naladala Ramanaidu wrote:
+> Add an additional parameter for the image directory. Refactor the
+> function to use an array of directories to iterate through, reducing
+> redundancy.
+> 
+> v2: Fix review comments.   (Santhosh, Kamil)
+> v3: Update env variable name. (Kamil)
+> 
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  lib/igt_core.c | 31 +++++++++++++++----------------
+>  lib/igt_core.h |  6 +++---
+>  2 files changed, 18 insertions(+), 19 deletions(-)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 407f7b551..20162ff55 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -3305,27 +3305,26 @@ void igt_reset_timeout(void)
+>  	igt_set_timeout(0, NULL);
+>  }
+>  
 
-== Series Details ==
+You touch lib function so while you are at this please
+add description.
 
-Series: xe: Test scratch page under fault mode (rev4)
-URL   : https://patchwork.freedesktop.org/series/144907/
-State : success
+> -FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
+> -		       const char* filename)
+> +FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
+> +		       const char *igt_imgdir, const char *filename)
+>  {
+>  	char path[PATH_MAX];
+>  	FILE *fp;
+> -
+> -	snprintf(path, sizeof(path), "%s/%s", igt_datadir, filename);
+> -	fp = fopen(path, "r");
+> -	if (!fp) {
+> -		snprintf(path, sizeof(path), "%s/%s", igt_srcdir, filename);
+> -		fp = fopen(path, "r");
+> -	}
+> -	if (!fp) {
+> -		snprintf(path, sizeof(path), "./%s", filename);
+> -		fp = fopen(path, "r");
+> +	size_t i;
 
-== Summary ==
+Remove this var.
 
-CI Bug Log - changes from IGT_8245 -> IGTPW_12649
-====================================================
+> +	const char *dirs[] = {igt_datadir, igt_srcdir, igt_imgdir,
+> +			      getenv("IGT_DATA_PATH"), "./data"};
+> +
+> +	for (i = 0; i < ARRAY_SIZE(dirs); i++) {
 
-Summary
--------
+Use: for (int i = 0; ...) {
 
-  **SUCCESS**
+> +		if (dirs[i]) {
+> +			snprintf(path, sizeof(path), "%s/%s", dirs[i], filename);
+> +			fp = fopen(path, "r");
+> +			if (fp)
+> +				return fp;
 
-  No regressions found.
+Use 'break;' instead, so no changes below around igt_critical
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html
+Rest looks good,
 
-Participating hosts (44 -> 41)
-------------------------------
+Regards,
+Kamil
 
-  Missing    (3): fi-rkl-11600 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12649 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-2:          [PASS][1] -> [ABORT][2] ([i915#12919] / [i915#13503])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-twl-2:          [PASS][3] -> [ABORT][4] ([i915#12919])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live@gt_engines.html
-
-  
-  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
-  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8245 -> IGTPW_12649
-  * Linux: CI_DRM_16164 -> CI_DRM_16167
-
-  CI-20190529: 20190529
-  CI_DRM_16164: 8554d5b7b4fded481a85ab11d75eeb97443450e2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16167: a22ac320a08377d760e73fa530c27782f0b68b6d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12649: 271236dac27a9991d20fdd105fd5a93d48901912 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html
-
---===============1415056077556529801==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe: Test scratch page under fault mode (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144907/">https://patchwork.freedesktop.org/series/144907/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8245 -&gt; IGTPW_12649</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html</p>
-<h2>Participating hosts (44 -&gt; 41)</h2>
-<p>Missing    (3): fi-rkl-11600 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12649 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live@gt_engines.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8245 -&gt; IGTPW_12649</li>
-<li>Linux: CI_DRM_16164 -&gt; CI_DRM_16167</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16164: 8554d5b7b4fded481a85ab11d75eeb97443450e2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16167: a22ac320a08377d760e73fa530c27782f0b68b6d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12649: 271236dac27a9991d20fdd105fd5a93d48901912 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1415056077556529801==--
+> +		}
+>  	}
+>  
+> -	if (!fp)
+> -		igt_critical("Could not open data file \"%s\": %m\n", filename);
+> -
+> -	return fp;
+> +	igt_critical("Could not open data file \"%s\": %m\n", filename);
+> +	return NULL;
+>  }
+>  
+>  static void log_output(int *fd, enum igt_log_level level)
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index f0ba1a381..05134a104 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -1456,8 +1456,8 @@ static inline uint32_t igt_seconds_elapsed(struct timespec *start)
+>  
+>  void igt_reset_timeout(void);
+>  
+> -FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
+> -		       const char* filename);
+> +FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
+> +		       const char *igt_imgdir, const char *filename);
+>  /**
+>   * igt_fopen_data:
+>   * @filename: filename to open.
+> @@ -1466,7 +1466,7 @@ FILE *__igt_fopen_data(const char* igt_srcdir, const char* igt_datadir,
+>   * then from build directory, and finally from current directory.
+>   */
+>  #define igt_fopen_data(filename) \
+> -	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, filename)
+> +	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, IGT_IMGDIR, filename)
+>  
+>  int igt_system(const char *command);
+>  int igt_system_quiet(const char *command);
+> -- 
+> 2.43.0
+> 
