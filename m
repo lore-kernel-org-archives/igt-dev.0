@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B745C021B3
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F73C021B5
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:52:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E824410EB04;
-	Fri, 21 Feb 2025 16:52:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AFA610EB06;
+	Fri, 21 Feb 2025 16:52:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PPfo3/R0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j1Ivn2kY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33B3B10EB02
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 16:52:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 39F7010EB0A
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 16:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740156772; x=1771692772;
+ t=1740156775; x=1771692775;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tkllUd9wAYO2eHaRIOd7A8BDKdzLptGFL3Y+wd2RSoQ=;
- b=PPfo3/R0VH4PdhaEgQwJuUI482gvnf6OmrelPXIoEDjEJDuXV4rJdHdi
- DcYJ1WHLv/QmKcHhepgcZCwy+Nr/IJGn2lyHYmY43WXjurXnkpF4s6oSA
- Wg7u91GgTfT0uYxl9dziJiop7gVtvjCO8XPEit1xDHwoJAPXBGhOaBeUo
- aFRyXJ0Nwcs/GxopYd50V1/RwztTJ7jsA3Hhx01iUhfPmx382457DLNno
- DMC6TQ4uqtW9VYX8kZKh/aOHX2m076I257Dp0xkkVq7J5M8gW5w6kh+o6
- VtQYvimTInfZFzKuzl7LdJW6B3dizvNhj1/AGNvFCT2SDcRXOszMgllGi Q==;
-X-CSE-ConnectionGUID: H439wZYDTGWonRgQCAWyQg==
-X-CSE-MsgGUID: rx380NBLRueqKjVNDHW0Vw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41186750"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41186750"
+ bh=PdxjoLDLSa70KdMnKZ8TqXk/7mvChg4TvKQTBU32CyU=;
+ b=j1Ivn2kYPsMHChbhVlT6y2Fu0FCNMrrlBfltBF2tGxcf+LJpp7wJUo+I
+ xC8gHAZjSUp/4GTdkSUNF1oLv9CTD4dxSNe+WG4JX1lMBCdtD19Tf0SDG
+ fCCphprU9KvM75Tervkftm/Jff8N5iwTzzm0i7taXWFaYG8x462EpOkYk
+ 9UOvXbHOVEsZHo1JTGXN99VD+rbdq/S0tsYgfvdy6ddRZD6TpFH8jVmll
+ dYIt//H2jtsNG3PVjv0G1dfX3CiRJZVPtZFMe7V8qQWzNzZo8A/dW0wUa
+ TW6V764ZPYBiYCFvlNBWTS00k8AyBX5kuTslsEPur9swGbgS3kZdoVxDR w==;
+X-CSE-ConnectionGUID: NRy1xTQgSiO6F+GePHjAEQ==
+X-CSE-MsgGUID: /CnCkZaWTdSauJAXVQudFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41186752"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41186752"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 08:52:52 -0800
-X-CSE-ConnectionGUID: 4QAxDuH9QryjYLzwZ86/Vw==
-X-CSE-MsgGUID: TL97yuglQVm70oNcout21A==
+ 21 Feb 2025 08:52:55 -0800
+X-CSE-ConnectionGUID: PvdM3NAIR2iH6GHpnQwhTw==
+X-CSE-MsgGUID: GLAT8py7QKi38Pxn1JTZZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="120517620"
+X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="120517635"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 08:52:50 -0800
+ 21 Feb 2025 08:52:53 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,
- v3 09/11] tests/chamelium/kms_chamelium_sharpness_filter: Add basic
- test
-Date: Fri, 21 Feb 2025 22:27:47 +0530
-Message-Id: <20250221165749.460347-10-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 11/11] lib/igt_frame: Use igt_dynamic_subtest_name()
+Date: Fri, 21 Feb 2025 22:27:49 +0530
+Message-Id: <20250221165749.460347-12-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250221165749.460347-1-swati2.sharma@intel.com>
 References: <20250221165749.460347-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,289 +69,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new chamelium based sharpness test. Basic test is added where
-we have tried comparing frame dump of unsharped and sharped image.
-After, sharpness filter is applied its expected both frame dumps
-will be different.
-
-v2: -removed MIN/MAX_FILTER_STRENGTH (Ankit)
-    -fixed alignment (Ankit)
-    -removed commit with fb_ref (Ankit)
-    -set data->pipe_id (Ankit)
-    -removed disable_filter_strength_on_pipe()
-    -fixed CRASH
-    -fixed assert condition
-v3: -minor fixes
+For dumped images, print dynamic subtest name too.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- .../kms_chamelium_sharpness_filter.c          | 236 ++++++++++++++++++
- tests/meson.build                             |   2 +
- 2 files changed, 238 insertions(+)
- create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
+ lib/igt_frame.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_sharpness_filter.c b/tests/chamelium/kms_chamelium_sharpness_filter.c
-new file mode 100644
-index 000000000..70903b5f8
---- /dev/null
-+++ b/tests/chamelium/kms_chamelium_sharpness_filter.c
-@@ -0,0 +1,236 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms chamelium sharpness filter
-+ * Category: Display
-+ * Description: Test to validate content adaptive sharpness filter using Chamelium
-+ * Driver requirement: xe
-+ * Functionality: chamelium, casf
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+/**
-+ * SUBTEST: filter-basic
-+ * Description: Verify basic content adaptive sharpness filter.
-+ */
-+
-+IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter using Chamelium");
-+
-+#define MID_FILTER_STRENGTH		128
-+
-+typedef struct {
-+	int drm_fd;
-+	enum pipe pipe_id;
-+	struct igt_fb fb, fb_ref;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int filter_strength;
-+	struct chamelium *chamelium;
-+	struct chamelium_port **ports;
-+	int port_count;
-+} data_t;
-+
-+static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
-+{
-+	bool ret = true;
-+
-+	igt_output_set_pipe(data->output, pipe);
-+	if (!intel_pipe_output_combo_valid(&data->display))
-+		ret = false;
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
-+static void set_filter_strength_on_pipe(data_t *data)
-+{
-+	igt_pipe_set_prop_value(&data->display, data->pipe_id,
-+				IGT_CRTC_SHARPNESS_STRENGTH,
-+				data->filter_strength);
-+}
-+
-+static void paint_image(igt_fb_t *fb)
-+{
-+	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
-+	int img_x, img_y, img_w, img_h;
-+	const char *file = "1080p-left.png";
-+
-+	img_x = img_y = 0;
-+	img_w = fb->width;
-+	img_h = fb->height;
-+
-+	igt_paint_image(cr, file, img_x, img_y, img_w, img_h);
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
-+static void setup_fb(int fd, int width, int height, uint32_t format,
-+		     uint64_t modifier, struct igt_fb *fb)
-+{
-+	int fb_id;
-+
-+	fb_id = igt_create_fb(fd, width, height, format, modifier, fb);
-+	igt_assert(fb_id);
-+
-+	paint_image(fb);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fb);
-+	igt_remove_fb(data->drm_fd, &data->fb_ref);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_output_override_mode(data->output, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static bool test_t(data_t *data, igt_plane_t *primary,
-+		   struct chamelium_port *port)
-+{
-+	struct chamelium_frame_dump *dump;
-+	drmModeModeInfo *mode;
-+	int height, width;
-+	bool ret = false;
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	mode = igt_output_get_mode(data->output);
-+	height = mode->hdisplay;
-+	width = mode->vdisplay;
-+
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb_ref);
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
-+
-+	igt_plane_set_fb(data->primary, &data->fb);
-+	set_filter_strength_on_pipe(data);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_debug("Reading frame dumps from Chamelium...\n");
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	dump = chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	ret = chamelium_frame_match_or_dump(data->chamelium, port,
-+					    dump, &data->fb_ref,
-+					    CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(dump);
-+	cleanup(data);
-+
-+	return ret;
-+}
-+
-+static int test_setup(data_t *data, enum pipe p)
-+{
-+	igt_pipe_t *pipe;
-+	int i = 0;
-+
-+	igt_display_reset(&data->display);
-+
-+	pipe = &data->display.pipes[p];
-+	igt_require(pipe->n_planes >= 0);
-+
-+	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(data->primary);
-+
-+	/*
-+	 * Prefer to run this test on HDMI connector if its connected, since on DP we
-+	 * sometimes face DP FSM issue
-+	 */
-+        for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+		for (i = 0; i < data->port_count; i++) {
-+			if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-+			     data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
-+			     strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
-+				return i;
-+		}
-+	}
-+
-+	for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+		for (i = 0; i < data->port_count; i++) {
-+			if (strcmp(data->output->name,
-+				   chamelium_port_get_name(data->ports[i])) == 0)
-+				return i;
-+		}
-+	}
-+
-+	return -1;
-+}
-+
-+static void test_sharpness_filter(data_t *data,  enum pipe p)
-+{
-+	int port_idx = test_setup(data, p);
-+
-+	igt_require(port_idx >= 0);
-+	igt_require(igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_SHARPNESS_STRENGTH));
-+
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
-+
-+	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
-+		igt_assert_f((test_t(data, data->primary, data->ports[port_idx]) == 1), "No sharpness observed.\n");
-+}
-+
-+static void
-+run_sharpness_filter_test(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	enum pipe pipe;
-+
-+	igt_describe("Verify basic content adaptive sharpness filter.");
-+	igt_subtest_with_dynamic("filter-basic") {
-+		for_each_pipe(display, pipe) {
-+			data->filter_strength = MID_FILTER_STRENGTH;
-+			test_sharpness_filter(data, pipe);
-+		}
-+	}
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+
-+		igt_chamelium_allow_fsm_handling = false;
-+
-+		/* we need to initalize chamelium after igt_display_require */
-+		data.chamelium = chamelium_init(data.drm_fd, &data.display);
-+		igt_require(data.chamelium);
-+
-+		data.ports = chamelium_get_ports(data.chamelium,
-+						 &data.port_count);
-+
-+		if (!data.port_count)
-+			igt_skip("No ports connected\n");
-+		/*
-+		 * We don't cause any harm by plugging
-+		 * discovered ports, just incase they are not plugged
-+		 * we currently skip in test_setup
-+		 */
-+		for(int i = 0; i < data.port_count; i++)
-+			chamelium_plug(data.chamelium, data.ports[i]);
-+
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	run_sharpness_filter_test(&data);
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index aac3b4e10..09f7ed24b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -345,6 +345,7 @@ chamelium_progs = [
- 	'kms_chamelium_edid',
- 	'kms_chamelium_frames',
- 	'kms_chamelium_hpd',
-+	'kms_chamelium_sharpness_filter',
- ]
+diff --git a/lib/igt_frame.c b/lib/igt_frame.c
+index 45523a79f..ff3597718 100644
+--- a/lib/igt_frame.c
++++ b/lib/igt_frame.c
+@@ -63,19 +63,22 @@ static void igt_write_frame_to_png(cairo_surface_t *surface, int fd,
+ 	char path[PATH_MAX];
+ 	const char *test_name;
+ 	const char *subtest_name;
++	const char *dynamic_subtest_name;
+ 	cairo_status_t status;
+ 	int index;
  
- test_deps = [ igt_deps ]
-@@ -370,6 +371,7 @@ extra_sources = {
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
-+	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_dp_linktrain_fallback': [
-            join_paths ('intel', 'kms_mst_helper.c'),
-            join_paths ('intel', 'kms_dsc_helper.c') ],
+ 	test_name = igt_test_name();
+ 	subtest_name = igt_subtest_name();
++	dynamic_subtest_name = igt_dynamic_subtest_name();
+ 
+ 	if (suffix)
+-		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.png",
+-			 igt_frame_dump_path, test_name, subtest_name, qualifier,
+-			 suffix);
++		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s-%s.png",
++			 igt_frame_dump_path, test_name, subtest_name,
++			 dynamic_subtest_name,  qualifier, suffix);
+ 	else
+-		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.png",
+-			 igt_frame_dump_path, test_name, subtest_name, qualifier);
++		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.png",
++			 igt_frame_dump_path, test_name, subtest_name,
++			 dynamic_subtest_name, qualifier);
+ 
+ 	igt_debug("Dumping %s frame to %s...\n", qualifier, path);
+ 
+@@ -110,6 +113,7 @@ void igt_write_compared_frames_to_png(cairo_surface_t *reference,
+ 	char *id;
+ 	const char *test_name;
+ 	const char *subtest_name;
++	const char *dynamic_subtest_name;
+ 	char path[PATH_MAX];
+ 	int fd = -1;
+ 
+@@ -120,13 +124,16 @@ void igt_write_compared_frames_to_png(cairo_surface_t *reference,
+ 
+ 	test_name = igt_test_name();
+ 	subtest_name = igt_subtest_name();
++	dynamic_subtest_name = igt_dynamic_subtest_name();
+ 
+ 	if (id)
+-		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.txt",
+-			 igt_frame_dump_path, test_name, subtest_name, id);
++		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.txt",
++			 igt_frame_dump_path, test_name, subtest_name,
++			 dynamic_subtest_name, id);
+ 	else
+-		snprintf(path, PATH_MAX, "%s/frame-%s-%s.txt",
+-			 igt_frame_dump_path, test_name, subtest_name);
++		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.txt",
++			 igt_frame_dump_path, test_name, subtest_name,
++			 dynamic_subtest_name);
+ 
+ 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+ 	igt_assert(fd >= 0);
 -- 
 2.25.1
 
