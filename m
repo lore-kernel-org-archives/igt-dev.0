@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEFB8C021B6
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:52:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFB83C021B3
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:52:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7366510EAFF;
-	Fri, 21 Feb 2025 16:52:21 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3DD3E10EAFF;
- Fri, 21 Feb 2025 16:52:20 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6967569002378040789=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9ED4510EB02;
+	Fri, 21 Feb 2025 16:52:39 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HNGSN15j";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E68410EAFF
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 16:52:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740156758; x=1771692758;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=oP46TuBm4v7aUZaFlnsNkkM0RNorV0km8wPt05QTFmM=;
+ b=HNGSN15jfUHCWrsbtdxLH6dA5EXC/jo9n+nzNRqGuU+Eb4byFztFXiSl
+ lvLOVPfG3jwSIxYCEgzGi4Ml3VTnshYXm3MzcTnJLHSVOXvraeZ7VHJjo
+ sOZQ7KKdJFCMXys8wY9WNvcR5hHIQ+LWvmQTCERme5XHQgSXDGm55HbQU
+ bCl6qs+TXfPQeJtB/pAab/+bD9MOajwDzijrMi47GSetBRdLolFLeq070
+ wgFsqM/bNRwGjARhxToLn2bAegQmmoZTSPPzxCFX3yey/rv5OBacXTfDb
+ fXQsNFZmChvJMH5OTLxdgn/UbgnMoaFC5JRgDu7EMbQtocfQIyO2eeQqu A==;
+X-CSE-ConnectionGUID: 2hXWaGOATL60wpU1luyW+A==
+X-CSE-MsgGUID: cKThfF5qRqS4p6IyR4o33g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41186728"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41186728"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 08:52:37 -0800
+X-CSE-ConnectionGUID: GO9LB7CpR8upty3lnPzMXg==
+X-CSE-MsgGUID: HIlGJIaDRJut9zCkzI1XPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="120517557"
+Received: from dut2122ptlh.iind.intel.com (HELO
+ linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 08:52:36 -0800
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com,
+	Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 00/11] Add new test to validate adaptive sharpness filter
+Date: Fri, 21 Feb 2025 22:27:38 +0530
+Message-Id: <20250221165749.460347-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe=3A_Test_scratch_page_und?=
- =?utf-8?q?er_fault_mode_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Oak Zeng" <oak.zeng@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 21 Feb 2025 16:52:20 -0000
-Message-ID: <174015674024.522877.3682286158426719869@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250221155336.378911-1-oak.zeng@intel.com>
-In-Reply-To: <20250221155336.378911-1-oak.zeng@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,162 +64,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6967569002378040789==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+New test is added to validate adaptive sharpness filter on
+LNL platform. Pipe scaler is repurposed to perform a portion
+of this work. This means pipe scaling will be unavailable while
+the sharpening function is being used. The other scaler can be
+used for plane scaler.
 
-== Series Details ==
+In this series, attempt is made to validate adaptive sharpness
+solution which helps in improving the image quality. For this new
+CRTC property is added. The user can set this property with desired
+sharpness strength value with 0-255. A value of 1 representing
+minimum sharpening strength and 255 representing maximum
+sharpness strength. A strength value of 0 means no sharpening or
+sharpening feature disabled.
 
-Series: xe: Test scratch page under fault mode (rev4)
-URL   : https://patchwork.freedesktop.org/series/144907/
-State : success
+KMD: https://patchwork.freedesktop.org/series/138754/
 
-== Summary ==
+Swati Sharma (11):
+  lib/igt_kms: Add "sharpness strength" as crtc property
+  lib/igt_kms: Add func() to return scaling mode name string
+  tests/kms_sharpness_filter: Add adaptive sharpness basic filter tests
+  tests/kms_sharpness_filter: Add toggle subtest
+  tests/kms_sharpness_filter: Add filter-tap subtest
+  tests/kms_sharpness_filter: Add dpms/suspend subtests
+  tests/kms_sharpness_filter: Add scaler subtests
+  tests/kms_sharpness_filter: Add invalid subtests
+  tests/chamelium/kms_chamelium_sharpness_filter: Add basic test
+  lib/igt_core: Add igt_dynamic_subtest_name()
+  lib/igt_frame: Use igt_dynamic_subtest_name()
 
-CI Bug Log - changes from XEIGT_8245_BAT -> XEIGTPW_12649_BAT
-====================================================
+ lib/igt_core.c                                |  11 +
+ lib/igt_core.h                                |   1 +
+ lib/igt_frame.c                               |  25 +-
+ lib/igt_kms.c                                 |  23 +
+ lib/igt_kms.h                                 |   2 +
+ .../kms_chamelium_sharpness_filter.c          | 236 ++++++
+ tests/kms_sharpness_filter.c                  | 773 ++++++++++++++++++
+ tests/meson.build                             |   3 +
+ 8 files changed, 1065 insertions(+), 9 deletions(-)
+ create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
+ create mode 100644 tests/kms_sharpness_filter.c
 
-Summary
--------
+-- 
+2.25.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12649_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_dma_buf:
-    - bat-bmg-2:          [PASS][1] -> [SKIP][2] ([Intel XE#4322]) +2 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-bmg-1:          [PASS][3] -> [SKIP][4] ([Intel XE#4322]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html
-    - bat-lnl-1:          [PASS][5] -> [SKIP][6] ([Intel XE#4322]) +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-lnl-1/igt@xe_live_ktest@xe_migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-lnl-1/igt@xe_live_ktest@xe_migrate.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-lnl-1:          [SKIP][7] ([Intel XE#2229]) -> [SKIP][8] ([Intel XE#4322])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-lnl-1/igt@xe_live_ktest@xe_bo.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-lnl-1/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#4322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322
-
-
-Build changes
--------------
-
-  * IGT: IGT_8245 -> IGTPW_12649
-  * Linux: xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2 -> xe-2698-a22ac320a08377d760e73fa530c27782f0b68b6d
-
-  IGTPW_12649: 271236dac27a9991d20fdd105fd5a93d48901912 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2: 8554d5b7b4fded481a85ab11d75eeb97443450e2
-  xe-2698-a22ac320a08377d760e73fa530c27782f0b68b6d: a22ac320a08377d760e73fa530c27782f0b68b6d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/index.html
-
---===============6967569002378040789==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe: Test scratch page under fault mode (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144907/">https://patchwork.freedesktop.org/series/144907/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8245_BAT -&gt; XEIGTPW_12649_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12649_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_dma_buf:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-bmg-2/igt@xe_live_ktest@xe_dma_buf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-bmg-1/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>) +2 other tests skip</li>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-lnl-1/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-lnl-1/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-lnl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12649/bat-lnl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8245 -&gt; IGTPW_12649</li>
-<li>Linux: xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2 -&gt; xe-2698-a22ac320a08377d760e73fa530c27782f0b68b6d</li>
-</ul>
-<p>IGTPW_12649: 271236dac27a9991d20fdd105fd5a93d48901912 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2: 8554d5b7b4fded481a85ab11d75eeb97443450e2<br />
-  xe-2698-a22ac320a08377d760e73fa530c27782f0b68b6d: a22ac320a08377d760e73fa530c27782f0b68b6d</p>
-
-</body>
-</html>
-
---===============6967569002378040789==--
