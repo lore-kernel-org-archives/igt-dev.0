@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25EC6C021AA
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 09:25:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0999C021AA
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 10:04:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE21A10E23B;
-	Fri, 21 Feb 2025 09:25:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jSj+MAjd";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18A5210E22C
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2025 09:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740129906; x=1771665906;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nPYCqSkPuRBkd8aFi9TyeliI+WINkeFYvKkM8OjmM0g=;
- b=jSj+MAjduCYooqkGCfsMm1dS5ejIpMdF0gYZq4YoXRii9jov3TOfYaVV
- 1TVL8eYC7fN9c/s+vjAK+Xkh4Ny1dr6nSx6BeNtxIgG1PUGEaPLA8+nj1
- pba+wI2kZY/5lupDaIW22x1YdIOabFm2RpqMylauMmVkupwTwe9X4pBaz
- KblpZ6l5/GLRxpgKAfSVsfiKIyTALJlPxU0p6slLTIqc1Akcmrr2KQ/6u
- Or3bk+L33dbqAyGybW2z+JgLrCwyw5uv+wG1MaxMXgINwZzK3mVijHJgA
- +SZY+j80TB9bkVjK4OGsSC9z9jQP4fae0w4EICzQN8wYgtv6X3JqL2Y+j w==;
-X-CSE-ConnectionGUID: TWOC12zoRyqB+rA/KaQNVQ==
-X-CSE-MsgGUID: yfjW4gcvTEmE0hylpPFnZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44857909"
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="44857909"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 01:25:05 -0800
-X-CSE-ConnectionGUID: 3B8bnad8Rl+YVbJHMz+gpg==
-X-CSE-MsgGUID: ECzAHBO8QsWUniN80T7YTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="146188419"
-Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
- lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
- by orviesa002.jf.intel.com with ESMTP; 21 Feb 2025 01:25:02 -0800
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t v2] tests/kms_display_modes: Remove negative test for
- extended display
-Date: Fri, 21 Feb 2025 14:55:00 +0530
-Message-ID: <20250221092500.15215-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250220103640.44879-1-mohammed.thasleem@intel.com>
-References: <20250220103640.44879-1-mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65BD210E194;
+	Fri, 21 Feb 2025 10:04:14 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E67FD10E194;
+ Fri, 21 Feb 2025 10:04:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6378393897076391194=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fdisplay=5Fmodes?=
+ =?utf-8?q?=3A_Remove_negative_test_for_extended_display_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 21 Feb 2025 10:04:13 -0000
+Message-ID: <174013225393.440796.137379248112635371@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250220103640.44879-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250220103640.44879-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,182 +37,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This negative test was crated to validate ENOSPC when two 2k-4k or 4k-4k
-monitors connected through MST to cover bandwidth issue in MST config.
+--===============6378393897076391194==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-But it will not helpfult to handle current bandwidth which are
-DisplayPort (DP) 1.4 supports a total bandwidth of 4 × 8.1 Gbps.
+== Series Details ==
 
-However, with DP 2.1, the bandwidth allocation strategy has
-significantly changed to 4 × 20 Gbps of available bandwidth.
-This provides significantly greater display capabilities
-w.r.t bandwidth.
+Series: tests/kms_display_modes: Remove negative test for extended display (rev2)
+URL   : https://patchwork.freedesktop.org/series/145161/
+State : success
 
-v2: Fix compilation issue.
+== Summary ==
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_display_modes.c | 109 +-------------------------------------
- 1 file changed, 1 insertion(+), 108 deletions(-)
+CI Bug Log - changes from XEIGT_8245_BAT -> XEIGTPW_12648_BAT
+====================================================
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 117f82325..e12d08f8d 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -40,64 +40,17 @@
-  * Description: Test for validating display extended mode with a pair of connected
-  *              displays
-  * Functionality: kms_core
-- *
-- * SUBTEST: mst-extended-mode-negative
-- * Description: Negative test for validating display extended mode with a pair
-- *		of connected 2k-4k or 4k-4k displays.
-- * Functionality: kms_core, mst
-  */
- 
--#define HDISPLAY_4K	3840
--#define VDISPLAY_4K	2160
--
- IGT_TEST_DESCRIPTION("Test Display Modes");
- 
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
--	drmModeModeInfo mode_mst[2];
- 	igt_output_t *mst_output[2];
- 	int n_pipes;
- } data_t;
- 
--/* Get higher mode supported by panel. */
--static drmModeModeInfo *get_highres_mode(igt_output_t *output)
--{
--	drmModeConnector *connector = output->config.connector;
--	drmModeModeInfo *highest_mode = NULL;
--
--	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
--	highest_mode = &connector->modes[0];
--
--	return highest_mode;
--}
--
--/* Get the 4k or less then 4k mode of connected panel. */
--static drmModeModeInfo *get_mode(igt_output_t *output)
--{
--	int j;
--	drmModeModeInfo *required_mode = NULL;
--	drmModeConnector *connector = output->config.connector;
--
--	required_mode = igt_output_get_mode(output);
--	if (required_mode->vdisplay <= VDISPLAY_4K &&
--	    required_mode->hdisplay <= HDISPLAY_4K) {
--		return required_mode;
--	}
--
--	/* If default mode not 4k or less than 4k mode, then sort modes and check for it. */
--	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
--	for (j = 0; j < connector->count_modes; j++) {
--		if (connector->modes[j].vdisplay <= VDISPLAY_4K &&
--		    connector->modes[j].hdisplay <= HDISPLAY_4K) {
--			required_mode = &connector->modes[j];
--			break;
--		}
--	}
--
--	return required_mode;
--}
--
- static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
- {
- 	int connector_id;
-@@ -110,7 +63,7 @@ static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
- 	/*
- 	 * Discarding outputs of other DP MST topology.
- 	 * Testing only on outputs on the topology we got previously
--	 */
-+	*/
- 	if (i == 0) {
- 		prev_connector_id = connector_id;
- 	} else {
-@@ -274,46 +227,9 @@ static void run_extendedmode_test(data_t *data) {
- 	}
- }
- 
--static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
--{
--	struct igt_fb fbs[2];
--	igt_display_t *display = &data->display;
--	igt_plane_t *plane[2];
--	int ret;
--
--	igt_display_reset(display);
--
--	igt_output_set_pipe(data->mst_output[0], pipe1);
--	igt_output_set_pipe(data->mst_output[1], pipe2);
--
--	igt_create_color_fb(data->drm_fd, data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay,
--			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
--	igt_create_color_fb(data->drm_fd, data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay,
--			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
--
--	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
--	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane[0], &fbs[0]);
--	igt_fb_set_size(&fbs[0], plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
--	igt_plane_set_size(plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
--
--	igt_plane_set_fb(plane[1], &fbs[1]);
--	igt_fb_set_size(&fbs[1], plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
--	igt_plane_set_size(plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
--
--	igt_output_override_mode(data->mst_output[0], &data->mode_mst[0]);
--	igt_output_override_mode(data->mst_output[1], &data->mode_mst[1]);
--
--	igt_require(intel_pipe_output_combo_valid(display));
--	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
--	igt_assert(ret != 0 && errno == ENOSPC);
--}
--
- igt_main
- {
- 	int dp_mst_outputs = 0, count = 0;
--	enum pipe pipe1, pipe2;
- 	igt_output_t *output;
- 	data_t data;
- 
-@@ -340,29 +256,6 @@ igt_main
- 		run_extendedmode_test(&data);
- 	}
- 
--	igt_describe("Negative test for validating display extended mode with a pair of connected "
--		     "2k-4k or 4k-4k displays");
--	igt_subtest_with_dynamic("mst-extended-mode-negative") {
--		igt_require_f(dp_mst_outputs > 1, "MST not found more then one\n");
--
--		memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), sizeof(drmModeModeInfo));
--		memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[1]),
--				sizeof(drmModeModeInfo));
--		igt_require_f((data.mode_mst[1].hdisplay >= HDISPLAY_4K &&
--			       data.mode_mst[1].vdisplay >= VDISPLAY_4K), "4k panel not found\n");
--
--		for_each_pipe(&data.display, pipe1) {
--			for_each_pipe(&data.display, pipe2) {
--				if (pipe1 == pipe2)
--					continue;
--
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe1),
--					      kmstest_pipe_name(pipe2))
--					run_extendedmode_negative(&data, pipe1, pipe2);
--			}
--		}
--	}
--
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 	}
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12648_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#4322]) +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3970]) +1 other test dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#4322])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#4322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8245 -> IGTPW_12648
+  * Linux: xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2 -> xe-2697-773b5639a9ff0a33feccb29de7f2d852c6d7f221
+
+  IGTPW_12648: 12648
+  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2: 8554d5b7b4fded481a85ab11d75eeb97443450e2
+  xe-2697-773b5639a9ff0a33feccb29de7f2d852c6d7f221: 773b5639a9ff0a33feccb29de7f2d852c6d7f221
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/index.html
+
+--===============6378393897076391194==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_display_modes: Remove negative test for extended display (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145161/">https://patchwork.freedesktop.org/series/145161/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8245_BAT -&gt; XEIGTPW_12648_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12648_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@render:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8245/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12648/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8245 -&gt; IGTPW_12648</li>
+<li>Linux: xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2 -&gt; xe-2697-773b5639a9ff0a33feccb29de7f2d852c6d7f221</li>
+</ul>
+<p>IGTPW_12648: 12648<br />
+  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2695-8554d5b7b4fded481a85ab11d75eeb97443450e2: 8554d5b7b4fded481a85ab11d75eeb97443450e2<br />
+  xe-2697-773b5639a9ff0a33feccb29de7f2d852c6d7f221: 773b5639a9ff0a33feccb29de7f2d852c6d7f221</p>
+
+</body>
+</html>
+
+--===============6378393897076391194==--
