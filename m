@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1012FC021B7
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 15:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DDB7C021B3
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Feb 2025 16:33:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B4C110EACC;
-	Fri, 21 Feb 2025 15:54:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EQUPcnXK";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8D8710EAC9;
- Fri, 21 Feb 2025 15:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740153258; x=1771689258;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2GM9VgOPos4phqkalJB74EWdm75V8sdJk+DMXLCJV2I=;
- b=EQUPcnXKY+DqVJpQEzoOeSjPK3c85bTVVCudK97w5azQJb1+ch2ApQKh
- /9uNzMc05nr5CtOEXBygdfi2ugSF3OCGRQxrgxXFz7PeVti+FfMb39KnB
- OFYgj/Q418aJxE3S5WcWD7/aBwkO+4qqpgyEvG2QumWB2gj8GvkZREoXI
- WIPBJW1AQgXsRVkdHZXA+NhJcIyiUbFSzg9her2Y98klhKx6HZVtnS4zH
- xhRO10sL6nfmzkOjLPSzs6bxlX09YNAbqxRWHYqPm8oJd7iBDH2AocUqV
- slwYoCbaD4FS+VJL4V2cTmOWo5NhzuaV7Iasj0Hb3Zs99U+gajBrguhel g==;
-X-CSE-ConnectionGUID: gl9Cu+NsREaX3XhHwx6hBw==
-X-CSE-MsgGUID: uj04zdTRSYic2autl5BrCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="51190878"
-X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; d="scan'208";a="51190878"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 07:54:18 -0800
-X-CSE-ConnectionGUID: k4+x0/cLQvGaN4nQ9f+AHQ==
-X-CSE-MsgGUID: LtaI7y+1TzmdshoJkOgfiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="152595576"
-Received: from dut4432lnl.fm.intel.com ([10.105.10.105])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 07:54:18 -0800
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com, jonathan.cavitt@intel.com,
- joonas.lahtinen@linux.intel.com, tvrtko.ursulin@igalia.com,
- lucas.demarchi@intel.com, matthew.brost@intel.com,
- dri-devel@lists.freedesktop.org, simona.vetter@ffwll.ch,
- kamil.konieczny@linux.intel.com
-Subject: [PATCH 4/4] tests/intel/xe_query: Exercise ban count in reset stats
-Date: Fri, 21 Feb 2025 15:54:14 +0000
-Message-ID: <20250221155414.13961-5-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250221155414.13961-1-jonathan.cavitt@intel.com>
-References: <20250221155414.13961-1-jonathan.cavitt@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E29DF892EA;
+	Fri, 21 Feb 2025 16:33:19 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82BFA892EA;
+ Fri, 21 Feb 2025 16:33:18 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1415056077556529801=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_xe=3A_Test_scratch_page_u?=
+ =?utf-8?q?nder_fault_mode_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Oak Zeng" <oak.zeng@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 21 Feb 2025 16:33:18 -0000
+Message-ID: <174015559852.512567.12512694409609989915@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250221155336.378911-1-oak.zeng@intel.com>
+In-Reply-To: <20250221155336.378911-1-oak.zeng@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,237 +37,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the reset stats query tests to exercise the ban count value.
-Assert that the ban count increases when a pagefault occurs.
+--===============1415056077556529801==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
----
- tests/intel/xe_query.c | 202 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 202 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 1a9a583a9a..cb4ebd8d6a 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -1212,6 +1212,207 @@ test_query_reset_stats_reset(int fd)
- 	igt_assert_lt(resets1, resets2);
- }
- 
-+static void gen_pf(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	uint32_t vm;
-+	uint64_t addr = 0x1a0000;
-+	uint64_t sync_addr = 0x101a0000;
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		  .timeline_value = USER_FENCE_VALUE },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	uint32_t exec_queues[1];
-+	uint32_t bind_exec_queues[1];
-+	size_t bo_size, sync_size;
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint64_t vm_sync;
-+		uint32_t data;
-+	} *data;
-+	uint64_t *exec_sync;
-+	int i, b;
-+	int map_fd = -1;
-+	int n_exec_queues = 1;
-+	int n_execs = 64;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	bo_size = sizeof(*data) * n_execs;
-+	bo_size = xe_bb_size(fd, bo_size);
-+	sync_size = sizeof(*exec_sync) * n_execs;
-+	sync_size = xe_bb_size(fd, sync_size);
-+
-+#define	MAP_ADDRESS	0x00007fadeadbe000
-+	data = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
-+		    PROT_WRITE, MAP_SHARED | MAP_FIXED |
-+		    MAP_ANONYMOUS, -1, 0);
-+	igt_assert(data != MAP_FAILED);
-+	memset(data, 0, bo_size);
-+
-+#define EXEC_SYNC_ADDRESS	0x00007fbdeadbe000
-+	exec_sync = mmap((void *)EXEC_SYNC_ADDRESS, sync_size, PROT_READ | PROT_WRITE,
-+			MAP_SHARED | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(exec_sync != MAP_FAILED);
-+	memset(exec_sync, 0, sync_size);
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		bind_exec_queues[i] = 0;
-+	}
-+
-+	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-+	xe_vm_bind_userptr_async(fd, vm, bind_exec_queues[0],
-+				 to_user_pointer(data), addr,
-+				 bo_size, sync, 1);
-+
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-+		       bind_exec_queues[0], NSEC_PER_SEC);
-+	data[0].vm_sync = 0;
-+
-+	xe_vm_bind_userptr_async(fd, vm, bind_exec_queues[0],
-+				 to_user_pointer(exec_sync), sync_addr,
-+				 sync_size, sync, 1);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-+		       bind_exec_queues[0], NSEC_PER_SEC);
-+	data[0].vm_sync = 0;
-+
-+	for (i = 0; i < n_execs; i++) {
-+		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-+		uint64_t batch_addr = addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
-+		uint64_t sdi_addr = addr + sdi_offset;
-+		int e = i % n_exec_queues;
-+
-+		b = 0;
-+
-+		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data[i].batch[b++] = sdi_addr;
-+		data[i].batch[b++] = sdi_addr >> 32;
-+		data[i].batch[b++] = 0xc0ffee;
-+		data[i].batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		sync[0].addr = sync_addr + (char *)&exec_sync[i] - (char *)exec_sync;
-+
-+		exec.exec_queue_id = exec_queues[e];
-+		exec.address = batch_addr;
-+		xe_exec(fd, &exec);
-+
-+		if (i + 1 != n_execs) {
-+			/*
-+			 * Wait for exec completion and check data as
-+			 * userptr will likely change to different
-+			 * physical memory on next mmap call triggering
-+			 * an invalidate.
-+			 */
-+			xe_wait_ufence(fd, &exec_sync[i],
-+				       USER_FENCE_VALUE, exec_queues[e],
-+				       NSEC_PER_SEC);
-+			igt_assert_eq(data[i].data, 0xc0ffee);
-+			data = mmap((void *)MAP_ADDRESS, bo_size,
-+				    PROT_READ | PROT_WRITE, MAP_SHARED |
-+				    MAP_FIXED | MAP_ANONYMOUS, -1, 0);
-+			igt_assert(data != MAP_FAILED);
-+		}
-+	}
-+
-+	for (i = n_execs - 1; i < n_execs; i++) {
-+		int64_t timeout = NSEC_PER_SEC;
-+
-+		igt_assert_eq(__xe_wait_ufence(fd, &exec_sync[i], USER_FENCE_VALUE,
-+					       exec_queues[i % n_exec_queues], &timeout), 0);
-+	}
-+
-+	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-+	data[0].vm_sync = 0;
-+	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, sync_addr, sync_size,
-+			   sync, 1);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-+		       bind_exec_queues[0], NSEC_PER_SEC);
-+	data[0].vm_sync = 0;
-+	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
-+			   sync, 1);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-+		       bind_exec_queues[0], NSEC_PER_SEC);
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+		if (bind_exec_queues[i])
-+			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
-+	}
-+
-+	munmap(exec_sync, sync_size);
-+	xe_vm_destroy(fd, vm);
-+	if (map_fd != -1)
-+		close(map_fd);
-+}
-+
-+/**
-+ * SUBTEST: query-reset-stats-bans
-+ * Description: Assert reset stats query tracks exec queue bans
-+ *
-+ * SUBTEST: multigpu-query-reset-stats-bans
-+ * Description: Assert reset stats query tracks exec queue bans for all GPU devices
-+ * Sub-category: MultiGPU
-+ */
-+static void
-+test_query_reset_stats_bans(int fd)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct drm_xe_query_reset_stats *qrs;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_RESET_STATS,
-+		.size = 0,
-+		.data = 0,
-+	};
-+	u64 bans1, bans2;
-+
-+	igt_skip_on(!query_reset_stats_supported(fd));
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	qrs = malloc(query.size);
-+	igt_assert(qrs);
-+
-+	query.data = to_user_pointer(qrs);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	bans1 = qrs->ban_count;
-+	free(qrs);
-+
-+	query.size = 0;
-+	query.data = 0;
-+
-+	xe_for_each_engine(fd, hwe)
-+		gen_pf(fd, hwe);
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	qrs = malloc(query.size);
-+	igt_assert(qrs);
-+
-+	query.data = to_user_pointer(qrs);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	bans2 = qrs->ban_count;
-+	free(qrs);
-+
-+	/**
-+	 * There is a limit to the number of bans that can be saved to the
-+	 * ban list, so if that limit was already reached before now, assert
-+	 * the list did not get any smaller.
-+	 */
-+	if (bans1 == MAX_BAN_COUNT)
-+		igt_assert_eq(bans1, bans2);
-+	else
-+		igt_assert_lt(bans1, bans2);
-+}
-+
- igt_main
- {
- 	const struct {
-@@ -1231,6 +1432,7 @@ igt_main
- 		{ "query-oa-units", test_query_oa_units },
- 		{ "query-reset-stats", test_query_reset_stats },
- 		{ "query-reset-stats-reset", test_query_reset_stats_reset },
-+		{ "query-reset-stats-bans", test_query_reset_stats_bans },
- 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
- 		{ "query-invalid-query", test_query_invalid_query },
- 		{ "query-invalid-size", test_query_invalid_size },
--- 
-2.43.0
+Series: xe: Test scratch page under fault mode (rev4)
+URL   : https://patchwork.freedesktop.org/series/144907/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8245 -> IGTPW_12649
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html
+
+Participating hosts (44 -> 41)
+------------------------------
+
+  Missing    (3): fi-rkl-11600 fi-snb-2520m bat-adls-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12649 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-2:          [PASS][1] -> [ABORT][2] ([i915#12919] / [i915#13503])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-twl-2:          [PASS][3] -> [ABORT][4] ([i915#12919])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live@gt_engines.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live@gt_engines.html
+
+  
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8245 -> IGTPW_12649
+  * Linux: CI_DRM_16164 -> CI_DRM_16167
+
+  CI-20190529: 20190529
+  CI_DRM_16164: 8554d5b7b4fded481a85ab11d75eeb97443450e2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16167: a22ac320a08377d760e73fa530c27782f0b68b6d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12649: 271236dac27a9991d20fdd105fd5a93d48901912 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html
+
+--===============1415056077556529801==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe: Test scratch page under fault mode (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144907/">https://patchwork.freedesktop.org/series/144907/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8245 -&gt; IGTPW_12649</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/index.html</p>
+<h2>Participating hosts (44 -&gt; 41)</h2>
+<p>Missing    (3): fi-rkl-11600 fi-snb-2520m bat-adls-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12649 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8245/bat-twl-2/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12649/bat-twl-2/igt@i915_selftest@live@gt_engines.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8245 -&gt; IGTPW_12649</li>
+<li>Linux: CI_DRM_16164 -&gt; CI_DRM_16167</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16164: 8554d5b7b4fded481a85ab11d75eeb97443450e2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16167: a22ac320a08377d760e73fa530c27782f0b68b6d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12649: 271236dac27a9991d20fdd105fd5a93d48901912 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8245: 822e95b2560133bc21aa3065f70d7148f23f87cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1415056077556529801==--
