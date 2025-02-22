@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F3E1C021B3
-	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 03:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7D2C021B2
+	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 03:32:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D44310EB62;
-	Sat, 22 Feb 2025 03:17:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4909A10E004;
+	Sat, 22 Feb 2025 03:32:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oAnlopGz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="crY75ndA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9A3410EB62
- for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 03:17:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB03310E004
+ for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 03:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740194265; x=1771730265;
+ t=1740195127; x=1771731127;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=Zo5mc+sTT8rozMdOab+IXjUhgQQGHQUQZkcF62Pk8g8=;
- b=oAnlopGzALGsRVjCWHIXPj8/ni9LG3KTJIJpfMT9FmfVdAhiV9mQKq7y
- GtxzCAsBkBv9mnm8mP5JGh/HYCpV4B4TUZJqjnnS3iIjAZHOI7k9YLBFm
- 7jklyHSdX1vSQQop8qZ2ZYEdOdQRWuEkU7hiPa4yRsjbTZfS2yYqqlyGU
- MlsG94wRCp3lBYpYdusTEaLfIHvQzHQX2+Lj7Wi1EY5rSL+ZL1mUE74dk
- HKKrCqy+6BYY16xUMvW9qelltU3d1kcg3VRuVGRo4P4JDYx60woYyRMBx
- a+19tz/UVLrQUPbDLnhoqPviqlBwgQZovEwSH7WyU95t7BdzC4JnjQMwC w==;
-X-CSE-ConnectionGUID: vgypA3V/QCuElDeH9MqRJw==
-X-CSE-MsgGUID: 1dW/FNqGTky6YQ3uaQQtnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="66389661"
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="66389661"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 19:17:44 -0800
-X-CSE-ConnectionGUID: RmOU4dlCTNyDVKpoPZHArQ==
-X-CSE-MsgGUID: yhqvWiZ5SOiFtP3Smt7owA==
+ bh=Cicpr3JLfdpMPG13B/8pnIj8c1JGsP9AcHoXeG0rSEE=;
+ b=crY75ndATrLi/u/EE3WfJYs1/JNP2PHYDPUaFsi1uy/kFB7PN71n0Omd
+ JVQF1y0rUXnt6buE92mvO9O8p+9R79VMnjV+aqH21TZXYULqXQ0bhyu5V
+ LoLZbbCn9cogNshM7T000MroKSnA9S2xk0smwxF0jEQwnmfv3TkB3g8aM
+ P5Ln+zWqguovLlW8u7Rb7TsB5BScg2dYOahD8B2wNHHJ84DXZQs0u288C
+ ZMcnPETYSHMJynrAufxy7dQ53aZz1Xko/0bcs9+maRmtXEcsD7O/5wNCS
+ 7NN4GHtxGYTG05rRQoRts3yQNcy1UlPL8B0jGWR3yP4sFHqIJvrhUGoaI Q==;
+X-CSE-ConnectionGUID: Rn9w9zg8SQyK8bmiyL29OA==
+X-CSE-MsgGUID: n3jD/S3OS/e6U+DDFiwvcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="40943064"
+X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="40943064"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 19:32:06 -0800
+X-CSE-ConnectionGUID: S0rPQgZKRGaM+/ULmteMSQ==
+X-CSE-MsgGUID: Z3ELNH9kSs2DKrp9Q+ppEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116040075"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119657509"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 19:17:44 -0800
-Date: Fri, 21 Feb 2025 19:17:43 -0800
-Message-ID: <85frk6y8fc.wl-ashutosh.dixit@intel.com>
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 19:32:06 -0800
+Date: Fri, 21 Feb 2025 19:32:05 -0800
+Message-ID: <85eczqy7re.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 13/13] tests/intel/xe_oa: Set boundaries for OA exponent
- test
-In-Reply-To: <20250215010628.1639986-14-umesh.nerlige.ramappa@intel.com>
-References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
- <20250215010628.1639986-14-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH 12/13] tests/intel/xe_oa: Fix mmio_trigger_reports testing
+In-Reply-To: <20250215010628.1639986-13-umesh.nerlige.ramappa@intel.com>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>	<20250215010628.1639986-13-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,51 +70,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 14 Feb 2025 17:06:28 -0800, Umesh Nerlige Ramappa wrote:
+On Fri, 14 Feb 2025 17:06:27 -0800, Umesh Nerlige Ramappa wrote:
 >
-> Define min and max oa exponents for the oa exponent test
+> The MI_STORE command needs modification to set the right amount of dwords. While
+> at it, set the default exponent and add a render_copy check.
 
-so that they can be set differently on slow platforms.
+What is the second sentence here referring to, please fix:
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->  tests/intel/xe_oa.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  tests/intel/xe_oa.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index d44832a8a..22ff3f20d 100644
+> index ff1b873d5..d44832a8a 100644
 > --- a/tests/intel/xe_oa.c
 > +++ b/tests/intel/xe_oa.c
-> @@ -321,6 +321,8 @@ static size_t default_oa_buffer_size;
->  static struct intel_mmio_data mmio_data;
->  static igt_render_copyfunc_t render_copy;
->  static uint32_t rc_width, rc_height;
-> +static uint32_t max_oa_exponent;
-> +static uint32_t min_oa_exponent;
->  static uint32_t buffer_fill_size;
->  static uint32_t num_buf_sizes;
+> @@ -3688,7 +3688,7 @@ emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
+>  {
+>	intel_bb_add_intel_buf(ibb, dst, true);
 >
-> @@ -1109,6 +1111,8 @@ init_sys_info(void)
->
->	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
->
-> +	min_oa_exponent = 5;
-> +	max_oa_exponent = 20;
->	rc_width = 1920;
->	rc_height = 1080;
->	buffer_fill_size = SZ_16M;
-> @@ -1710,7 +1714,7 @@ static void test_oa_exponents(const struct drm_xe_engine_class_instance *hwe)
->	 * test can fail due to buffer overflows if it wasn't possible to
->	 * keep up, so we don't start from an exponent of zero...
->	 */
-> -	for (int exponent = 5; exponent < 20; exponent++) {
-> +	for (int exponent = min_oa_exponent; exponent < max_oa_exponent; exponent++) {
->		uint64_t properties[] = {
->			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
->
+> -	intel_bb_out(ibb, MI_STORE_REGISTER_MEM | 2);
+> +	intel_bb_out(ibb, MI_STORE_REGISTER_MEM_GEN8);
+>	intel_bb_out(ibb, reg);
+>	intel_bb_emit_reloc(ibb, dst->handle,
+>			    I915_GEM_DOMAIN_INSTRUCTION,
 > --
 > 2.34.1
 >
