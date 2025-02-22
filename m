@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23B6FC021B3
-	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 00:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE0F1C021B3
+	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 00:24:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBE4F10E0E9;
-	Sat, 22 Feb 2025 00:18:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6076810E0E9;
+	Sat, 22 Feb 2025 00:24:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kO5+1+GD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fYQFfjEE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4674810E0E9
- for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 00:18:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B6A310E0E9
+ for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 00:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740183519; x=1771719519;
+ t=1740183871; x=1771719871;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=cRk0zXSHIQGwf7z0xg3lybYumTuUE/SQHinLJvMwAUE=;
- b=kO5+1+GDkrQJXx4IaqveA1c2nWwD8hRRqiwU23X4qaZOY8w4yXDVlf99
- iUZIG+WUF+PT3teUbyCWpVUg4kkfVJsfRDd+CfSmoxHMD2hywtfhjGMY1
- Kd0hUft2h5kVrm3yvmAXVZh39jRXUZkJwDS7v9/lfc0P+2u5CXvN2s1ZZ
- 1gfzOd0pVgIZZQ4tbPGFNl8Kt8nMuwveF1Vqfdsrmv1G6/86BbmlqE3Zn
- /2YiLy3Iiv4Sm+iXwi/xzKQKmCTjhO0GBDrgkMP77q9hm5SCZXvwKCJ41
- bohjcAIgJIq/DNJsqCTzL0wc4dv0EgqTZQcBhPRzyGqyAASvhwij4rsJR Q==;
-X-CSE-ConnectionGUID: wP1OkRh1STqWeJqQc02K9Q==
-X-CSE-MsgGUID: i9wHdkdXRg6uUrYAmsAbvA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="44927023"
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="44927023"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 16:18:39 -0800
-X-CSE-ConnectionGUID: C5xmaWMlSpOIcAMsXHiffQ==
-X-CSE-MsgGUID: 7HS55RQoQZWLcHNfQfPJdw==
+ bh=Fjm5sJNsXHvyvARKTMe4otKmCtYPGsX7OW0aDSJTaYk=;
+ b=fYQFfjEEwYNHOQFjBicNtanaTwYPmfpQCOCY//6cqiUgYCuMFnks2//1
+ qClrgk/lFRl+IJ2QA53dDrHSPWtbtfLF3vA+DOWkGu2aJFlDr+j+p1InU
+ MnMm+Z9g3cVCj7jrdoyTbUZJxsuC3cC1eqRkh6PWQDpE/bS+JrQq+u6Mw
+ DyWWDulI8IuRWGzrYmSZZzFM5VBkGXcaUO/x0UG1uJ09v4X02MbBECZro
+ 2qQ973n9/DJ00Bekj5uCvv2Tp8VoYmpaRnWuWzhDyfy+em/lONO921qT2
+ lwLYHpph24CxWzlkzosvaGmZy0FOLhMoXDRMhPPiwDUycf1KSwBInKxz2 g==;
+X-CSE-ConnectionGUID: VyTVeXOBT4CjEJyB5lTunA==
+X-CSE-MsgGUID: Qq7EyBK1SWe1KRecinhHbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="44796221"
+X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="44796221"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 16:24:31 -0800
+X-CSE-ConnectionGUID: MjlVngemSGi0TwC4Xzq9aA==
+X-CSE-MsgGUID: setn8m0QTByC7tN31sSicQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="115706779"
+X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="116037719"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 16:18:38 -0800
-Date: Fri, 21 Feb 2025 16:18:38 -0800
-Message-ID: <85h64momqp.wl-ashutosh.dixit@intel.com>
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 16:24:30 -0800
+Date: Fri, 21 Feb 2025 16:24:30 -0800
+Message-ID: <85frk6omgx.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: <igt-dev@lists.freedesktop.org>, <kamil.konieczny@linux.intel.com>,
- <lucas.demarchi@intel.com>, <adrinael@adrinael.net>
-Subject: Re: [PATCH i-g-t v2] lib/igt_core: Add ftrace logs at test boundaries
-In-Reply-To: <20250221223823.2336228-1-umesh.nerlige.ramappa@intel.com>
-References: <20250221223823.2336228-1-umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t CI run 03/14] tests/intel/xe_oa: Rename
+ oa_exp_1_millisec to oa_exponent_default
+In-Reply-To: <20250218202812.1679653-4-umesh.nerlige.ramappa@intel.com>
+References: <20250218202812.1679653-1-umesh.nerlige.ramappa@intel.com>
+ <20250218202812.1679653-4-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,49 +72,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 21 Feb 2025 14:38:23 -0800, Umesh Nerlige Ramappa wrote:
+On Tue, 18 Feb 2025 12:28:01 -0800, Umesh Nerlige Ramappa wrote:
 >
-> When looking at kernel ftrace output, it would really help to see the
-> test start/exit boundaries.
+> Rename the global exponent to default so it can be used in different
+> modes.
 >
-> v2: Fix copy paste error
-
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->  lib/igt_core.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  tests/intel/xe_oa.c | 34 +++++++++++++++++-----------------
+>  1 file changed, 17 insertions(+), 17 deletions(-)
 >
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index b95db1b25..9702a9417 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -1324,6 +1324,7 @@ out:
->	if (!igt_only_list_subtests()) {
->		bind_fbcon(false);
->		igt_kmsg(KMSG_INFO "%s: executing\n", command_str);
-> +		igt_trace("%s: executing\n", command_str);
->		print_version();
->		igt_srandom();
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 9c74315df..e7d6ac5af 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -299,7 +299,7 @@ static uint32_t devid;
+>  static struct drm_xe_engine_class_instance default_hwe;
 >
-> @@ -1528,6 +1529,7 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
+>  static struct intel_xe_perf *intel_xe_perf;
+> -static uint64_t oa_exp_1_millisec;
+> +static uint64_t oa_exponent_default;
+>  static size_t default_oa_buffer_size;
+>  static struct intel_mmio_data mmio_data;
+>  static igt_render_copyfunc_t render_copy;
+> @@ -514,7 +514,7 @@ static size_t get_default_oa_buffer_size(int fd)
+>		/* OA unit configuration */
+>		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
+>		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
+> -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
+> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+
+My suggestion here would be to (a) either rename this to
+oa_exponent_default_1ms, or alternatively, (b) to rename the period
+argument of max_oa_exponent_for_period_lte() to period_ns. So it's clear
+from the code, without having to guess, what the value of the default
+exponent is.
+
+>	};
+>	struct intel_xe_oa_open_prop param = {
+>		.num_properties = ARRAY_SIZE(properties) / 2,
+> @@ -1089,7 +1089,7 @@ init_sys_info(void)
 >
->	igt_kmsg(KMSG_INFO "%s: starting subtest %s\n",
->		 command_str, subtest_name);
-> +	igt_trace("%s: starting subtest %s\n", command_str, subtest_name);
->	_subtest_starting_message(_SUBTEST_TYPE_NORMAL, subtest_name);
+>	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
 >
->	_igt_log_buffer_reset();
-> @@ -1681,6 +1683,8 @@ __noreturn static void exit_subtest(const char *result)
->				igt_time_elapsed(thentime, &now));
->	igt_kmsg(KMSG_INFO "%s: finished subtest %s, %s\n",
->		 command_str, *subtest_name, result);
-> +	igt_trace("%s: finished subtest %s, %s\n",
-> +		  command_str, *subtest_name, result);
->
->	igt_terminate_spins();
->
-> --
-> 2.34.1
->
+> -	oa_exp_1_millisec = max_oa_exponent_for_period_lte(1000000);
+> +	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
