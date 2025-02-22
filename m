@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE0F1C021B3
-	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 00:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03EC5C021B3
+	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 00:29:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6076810E0E9;
-	Sat, 22 Feb 2025 00:24:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 848B910E193;
+	Sat, 22 Feb 2025 00:29:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fYQFfjEE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mJBSEag4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B6A310E0E9
- for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 00:24:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 268D110E0E9
+ for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 00:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740183871; x=1771719871;
+ t=1740184142; x=1771720142;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=Fjm5sJNsXHvyvARKTMe4otKmCtYPGsX7OW0aDSJTaYk=;
- b=fYQFfjEEwYNHOQFjBicNtanaTwYPmfpQCOCY//6cqiUgYCuMFnks2//1
- qClrgk/lFRl+IJ2QA53dDrHSPWtbtfLF3vA+DOWkGu2aJFlDr+j+p1InU
- MnMm+Z9g3cVCj7jrdoyTbUZJxsuC3cC1eqRkh6PWQDpE/bS+JrQq+u6Mw
- DyWWDulI8IuRWGzrYmSZZzFM5VBkGXcaUO/x0UG1uJ09v4X02MbBECZro
- 2qQ973n9/DJ00Bekj5uCvv2Tp8VoYmpaRnWuWzhDyfy+em/lONO921qT2
- lwLYHpph24CxWzlkzosvaGmZy0FOLhMoXDRMhPPiwDUycf1KSwBInKxz2 g==;
-X-CSE-ConnectionGUID: VyTVeXOBT4CjEJyB5lTunA==
-X-CSE-MsgGUID: Qq7EyBK1SWe1KRecinhHbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="44796221"
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="44796221"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 16:24:31 -0800
-X-CSE-ConnectionGUID: MjlVngemSGi0TwC4Xzq9aA==
-X-CSE-MsgGUID: setn8m0QTByC7tN31sSicQ==
+ bh=Y/E1XUEXuoR2W4VyD8wEv+hf0M09oYjRjxNy4cnHe0E=;
+ b=mJBSEag4OD4dgaYCS2U1zpMsYjbJpvQ1mzkCyoSCnu3S9XKThRQOA3Jt
+ sQYIEgdLWi7k/MZkCaQ7+MraN4hO3LQNF4YWd0yijMGFlOq7AbjEIi+49
+ DMOLl80s/E7X8wTLW3AsbpFKdroUoXCENSv9ETSIB6uw1qgAlnbfL76ph
+ h0+Y3XBJonwabEbkQeXW/2v/po+x3xhC5tRUIeKijIRmdMakPEm2dLG2i
+ xFObILhqWNctJPEBDAgJxOSoD0tlFRU/6frcv3Z4ZSK49jcd+3XuVUatQ
+ qn13uPhiMaPKXvPoP4Rh0lA49B7zAQDLgD0+JrOaY5O6DNbkzWasb11ia Q==;
+X-CSE-ConnectionGUID: 94hv5QTARKa0IZ1HfK8Gaw==
+X-CSE-MsgGUID: KrI0wvIJT2uLKAMRwtgLyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="58565502"
+X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="58565502"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 16:29:01 -0800
+X-CSE-ConnectionGUID: f4uj4zYfSr+tNSRF+bTsVA==
+X-CSE-MsgGUID: hlHS0QAfSq67Zbbl9vE00w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="116037719"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120757168"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 16:24:30 -0800
-Date: Fri, 21 Feb 2025 16:24:30 -0800
-Message-ID: <85frk6omgx.wl-ashutosh.dixit@intel.com>
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 16:29:02 -0800
+Date: Fri, 21 Feb 2025 16:29:00 -0800
+Message-ID: <85eczqom9f.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t CI run 03/14] tests/intel/xe_oa: Rename
- oa_exp_1_millisec to oa_exponent_default
-In-Reply-To: <20250218202812.1679653-4-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t CI run 04/14] tests/intel/xe_oa: Use default
+ exponent for some tests
+In-Reply-To: <20250218202812.1679653-5-umesh.nerlige.ramappa@intel.com>
 References: <20250218202812.1679653-1-umesh.nerlige.ramappa@intel.com>
- <20250218202812.1679653-4-umesh.nerlige.ramappa@intel.com>
+ <20250218202812.1679653-5-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,48 +72,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 18 Feb 2025 12:28:01 -0800, Umesh Nerlige Ramappa wrote:
+On Tue, 18 Feb 2025 12:28:02 -0800, Umesh Nerlige Ramappa wrote:
 >
-> Rename the global exponent to default so it can be used in different
-> modes.
+> Use the default exponent for below tests:
 >
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> ---
->  tests/intel/xe_oa.c | 34 +++++++++++++++++-----------------
->  1 file changed, 17 insertions(+), 17 deletions(-)
->
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 9c74315df..e7d6ac5af 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -299,7 +299,7 @@ static uint32_t devid;
->  static struct drm_xe_engine_class_instance default_hwe;
->
->  static struct intel_xe_perf *intel_xe_perf;
-> -static uint64_t oa_exp_1_millisec;
-> +static uint64_t oa_exponent_default;
->  static size_t default_oa_buffer_size;
->  static struct intel_mmio_data mmio_data;
->  static igt_render_copyfunc_t render_copy;
-> @@ -514,7 +514,7 @@ static size_t get_default_oa_buffer_size(int fd)
->		/* OA unit configuration */
->		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
->		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-> -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+> oa-tlb-validate
+> short-reads
+> stress-open-close
+> mmio-triggered-reports
 
-My suggestion here would be to (a) either rename this to
-oa_exponent_default_1ms, or alternatively, (b) to rename the period
-argument of max_oa_exponent_for_period_lte() to period_ns. So it's clear
-from the code, without having to guess, what the value of the default
-exponent is.
+Why? Let's add a reason in the commit message, for all the patches, even
+if, in this case, it might be "because it doesn't matter what exponent is
+used".
 
->	};
->	struct intel_xe_oa_open_prop param = {
->		.num_properties = ARRAY_SIZE(properties) / 2,
-> @@ -1089,7 +1089,7 @@ init_sys_info(void)
->
->	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
->
-> -	oa_exp_1_millisec = max_oa_exponent_for_period_lte(1000000);
-> +	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
+Because these tests were ported from i915 I myself don't quite understand
+why some of these tests do what the do. So it will help if we could
+document why we are making the changes we are making, and, when needed,
+what the effect of the changes is going to be.
+
+Thanks.
+--
+Ashutosh
