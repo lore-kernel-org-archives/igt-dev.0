@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA0F4C021B2
-	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 03:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E8E9C021B2
+	for <igt-dev@archiver.kernel.org>; Sat, 22 Feb 2025 03:39:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91D0D10E081;
-	Sat, 22 Feb 2025 03:37:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D08FD10E081;
+	Sat, 22 Feb 2025 03:39:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ELxju1An";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nsEl+Lao";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 183D710E081
- for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 03:37:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1478210E081
+ for <igt-dev@lists.freedesktop.org>; Sat, 22 Feb 2025 03:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740195475; x=1771731475;
+ t=1740195592; x=1771731592;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=xavYLV481kMKnNHoEoNfdx4n1GU2hwwfqqbAKSnvYqE=;
- b=ELxju1AncRQKMoTnLRn2U68E5SvTVt0AmmjF5DzyEcZ9eFHBAoFaLGVi
- QiWDz1zoSOT8sr3uZ2HtjiuEhsq+vOP2Ocum1++3iczWBVq3li/UEF/KK
- LqZlFZ6l0WlkJQgwM53sL3SfvcJnyUPdq1yMyN+PrhsP3jDTJ7Ph6jBWq
- UjaOHB6BjFt7CR+iGTxbXKjqQQdqgmpK4nC9m/5xD0ckJP94/fiyU9a/J
- rQEPHcG9uSvyXxH1pRcSq5KdjsmixsQUA0aXLjy8jKBn65lj+2ldhVyWc
- K18CymwpcnCwdtMXc2Cu7qT9BfJni/vXxzhJzJFu9Hgi35hvntR26AsAd g==;
-X-CSE-ConnectionGUID: wHFDSD9VTw68f//f82j++g==
-X-CSE-MsgGUID: eTSw0d7mSOC7GCMvoHx5bg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="44935247"
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="44935247"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 19:37:55 -0800
-X-CSE-ConnectionGUID: q/wCqrg5QqWjZsv1A/Vzgg==
-X-CSE-MsgGUID: O+x6EWSHR9iMRn0SyysNcQ==
+ bh=TwhPB6R0Hhk6SWET0hRifk/GZyuXeWshwk0y9+g8Yu8=;
+ b=nsEl+LaoOoHt5PH5ZN1f8FWfgKpdEx9sGkMeV7Rv7qY/BkfxxQiwEiDF
+ 2E8jSfP8NHO1H1jecaIeJWvTCRTamt2ThXa4leGSnJILW0cE0Znh3yVJ8
+ cIW+jDJzNNMftDR9ATHMcYzhQ6u0LKvxYfq1foOi9tqZajhKpTdE7fSLS
+ QWzrCuOccEBszRw1IodjW646RjAvUX3UrNZb48fdEwgqRHvPdTJ1/WAwy
+ ee6is7OhQVWMxMJrWliG8FxJ3c7VfQdO6Mo2sYk3zuJwAOtNt/nxTu7OD
+ NLx5T4PLaIiabkZZYWmJAtPrPSINk8shHSlY9U1ddjIMRtf4rGiVUZh1A Q==;
+X-CSE-ConnectionGUID: RnShkU3eQxCaV6l8W+/qfQ==
+X-CSE-MsgGUID: RZE5kXDsR4akTSFcL8MzGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41226323"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41226323"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 19:39:51 -0800
+X-CSE-ConnectionGUID: Iu71hhAZSZ+6t3rr6WLXRA==
+X-CSE-MsgGUID: MWo/MOTjQ0qe2j/hR2qsPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="116172409"
+X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; d="scan'208";a="138770993"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 19:37:54 -0800
-Date: Fri, 21 Feb 2025 19:37:54 -0800
-Message-ID: <85bjuuy7hp.wl-ashutosh.dixit@intel.com>
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 19:39:51 -0800
+Date: Fri, 21 Feb 2025 19:39:50 -0800
+Message-ID: <85a5aey7eh.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 04/13] tests/intel/xe_oa: Use default exponent for some
- tests
-In-Reply-To: <858qpyog22.wl-ashutosh.dixit@intel.com>
-References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
- <20250215010628.1639986-5-umesh.nerlige.ramappa@intel.com>
- <858qpyog22.wl-ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t CI run 04/14] tests/intel/xe_oa: Use default
+ exponent for some tests
+In-Reply-To: <Z7keftB8DVM8lGCe@orsosgc001>
+References: <20250218202812.1679653-1-umesh.nerlige.ramappa@intel.com>
+ <20250218202812.1679653-5-umesh.nerlige.ramappa@intel.com>
+ <85eczqom9f.wl-ashutosh.dixit@intel.com>
+ <Z7kcYel9BWtxBmoc@orsosgc001>
+ <85bjuuolkt.wl-ashutosh.dixit@intel.com>
+ <Z7keftB8DVM8lGCe@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,23 +76,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 21 Feb 2025 18:43:01 -0800, Dixit, Ashutosh wrote:
+On Fri, 21 Feb 2025 16:46:54 -0800, Umesh Nerlige Ramappa wrote:
 >
-> On Fri, 14 Feb 2025 17:06:19 -0800, Umesh Nerlige Ramappa wrote:
-> >
-> > Use the default exponent for below tests:
-> >
-> > oa-tlb-validate
-> > short-reads
-> > stress-open-close
-> > mmio-triggered-reports
->
-> Please see discussion on this patch in the CI series here:
->
-> https://patchwork.freedesktop.org/series/145042/
-
-This is that discussion:
-
+> On Fri, Feb 21, 2025 at 04:43:46PM -0800, Dixit, Ashutosh wrote:
+> > On Fri, 21 Feb 2025 16:37:53 -0800, Umesh Nerlige Ramappa wrote:
+> >>
+> >> On Fri, Feb 21, 2025 at 04:29:00PM -0800, Dixit, Ashutosh wrote:
+> >> > On Tue, 18 Feb 2025 12:28:02 -0800, Umesh Nerlige Ramappa wrote:
+> >> >>
+> >> >> Use the default exponent for below tests:
+> >> >>
+> >> >> oa-tlb-validate
+> >> >> short-reads
+> >> >> stress-open-close
+> >> >> mmio-triggered-reports
+> >> >
 > >> > Why? Let's add a reason in the commit message, for all the patches, even
 > >> > if, in this case, it might be "because it doesn't matter what exponent is
 > >> > used".
@@ -124,106 +125,9 @@ This is that discussion:
 > Either should be fine. Both series are identical except that the CI one
 > forces 128MB buffer-size test and also runs on DG2.
 
-Just fix up the commit message to include the "why":
+I went ahead and copied this discussion into the original series and also
+added the R-b there so that they can be picked up from a single place.
 
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
-
-
->
->
-> >
-> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> > ---
-> >  tests/intel/xe_oa.c | 16 ++++++----------
-> >  1 file changed, 6 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index e7d6ac5af..7e40e9257 100644
-> > --- a/tests/intel/xe_oa.c
-> > +++ b/tests/intel/xe_oa.c
-> > @@ -2316,7 +2316,6 @@ num_valid_reports_captured(struct intel_xe_oa_open_prop *param,
-> >  static void
-> >  test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
-> >  {
-> > -	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
-> >	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-> >	uint64_t properties[] = {
-> >		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> > @@ -2324,7 +2323,7 @@ test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
-> >
-> >		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-> >		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-> > -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> >		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-> >		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-> >	};
-> > @@ -2342,14 +2341,14 @@ test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
-> >	 */
-> >	duration = 5LL * NSEC_PER_SEC;
-> >	num_reports1 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
-> > -	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-> > +	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent_default);
-> >	igt_debug("expected num reports = %d\n", num_expected_reports);
-> >	igt_debug("actual num reports = %d\n", num_reports1);
-> >	igt_assert(num_reports1 > 0.95 * num_expected_reports);
-> >
-> >	duration = 5LL * NSEC_PER_SEC;
-> >	num_reports2 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
-> > -	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-> > +	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent_default);
-> >	igt_debug("expected num reports = %d\n", num_expected_reports);
-> >	igt_debug("actual num reports = %d\n", num_reports2);
-> >	igt_assert(num_reports2 > 0.95 * num_expected_reports);
-> > @@ -2738,7 +2737,6 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
-> >  static void
-> >  test_short_reads(void)
-> >  {
-> > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
-> >	uint64_t properties[] = {
-> >		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> >
-> > @@ -2748,7 +2746,7 @@ test_short_reads(void)
-> >		/* OA unit configuration */
-> >		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-> >		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-> > -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> >	};
-> >	struct intel_xe_oa_open_prop param = {
-> >		.num_properties = ARRAY_SIZE(properties) / 2,
-> > @@ -3464,7 +3462,6 @@ test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
-> >	load_helper_run(HIGH);
-> >
-> >	igt_until_timeout(2) {
-> > -		int oa_exponent = 5; /* 5 micro seconds */
-> >		uint64_t properties[] = {
-> >			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> >
-> > @@ -3476,7 +3473,7 @@ test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
-> >			/* OA unit configuration */
-> >			DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-> >			DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-> > -			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-> > +			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> >			DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-> >			DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-> >		};
-> > @@ -3990,12 +3987,11 @@ static void
-> >  __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-> >  {
-> >	struct intel_xe_perf_metric_set *test_set = default_test_set;
-> > -	int oa_exponent = max_oa_exponent_for_period_lte(2 * NSEC_PER_SEC);
-> >	uint64_t properties[] = {
-> >		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-> >		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-> >		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-> > -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> >		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-> >	};
-> >	struct intel_xe_oa_open_prop param = {
-> > --
-> > 2.34.1
-> >
+Thanks.
+--
+Ashutosh
