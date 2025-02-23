@@ -4,181 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 031B9C021B2
-	for <igt-dev@archiver.kernel.org>; Sun, 23 Feb 2025 12:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB07C021B2
+	for <igt-dev@archiver.kernel.org>; Sun, 23 Feb 2025 12:12:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C57010E29B;
-	Sun, 23 Feb 2025 12:03:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FCA210E0CA;
+	Sun, 23 Feb 2025 12:12:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R3ldX90L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cGhUvgSy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC32210E29B
- for <igt-dev@lists.freedesktop.org>; Sun, 23 Feb 2025 12:03:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C2C910E0CA
+ for <igt-dev@lists.freedesktop.org>; Sun, 23 Feb 2025 12:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740312180; x=1771848180;
+ t=1740312766; x=1771848766;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=s+alT1p1SevBZzXJRg/h163Z8AvErmSkPVL8Gw6/x54=;
- b=R3ldX90L4byKj7HNwok0G8nGACZQiXOZPvAmZHnAIuE0eabZ5RA4MEPf
- oh2mlD25606yk+2ZslQXwYKDNHhNK6V8P52E/D9SX4uYcMcuSH2yhCLhW
- dZhNdc7vt1OJlS2o8D0l6KBubW6ae2+/uc28fdSkvMg/Jaz1BN7CaHG7G
- AVxUbEf/SzTqynishy15pieAtty3nez70otvmFm3SdVX57d2JbFs0UoGj
- 8Qr6U7iJfs7exB3SutQbpR9MXstxHUz/gcf/u88WH81LTOeuqkPQtzoP6
- c2y4P/ZEzoDDeStqIJ5r1BSR5DRaACYw4ICyIXTTSMilAHk1NCSxaQELf g==;
-X-CSE-ConnectionGUID: wqFlFIYARgaqUGg5KcQRiw==
-X-CSE-MsgGUID: PULJr1+kTXCcSkNGMCem8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="44729778"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="44729778"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2025 04:02:55 -0800
-X-CSE-ConnectionGUID: d9/l00VPRWilhhe1X3j4pA==
-X-CSE-MsgGUID: iq19GrySTH6zcXaIqEWFIg==
+ bh=Ss3/DwIHTmj6gHH54CYGODFgoWJftLVrGCkukseTmLI=;
+ b=cGhUvgSyq/XOn+MECYY03Va/oHHieIh4PGF+6KFVNDdW3wfVAxYgAD9C
+ OY+UtaBXA1IqmaB4EZsdkWbpwOrhVxaGVmagsKU5q8ZwU8muKmePqh/gs
+ uOumybrXME0O7X4BJYKfJwjLY7un/L+9cJurYlsySEsLLzx7lgSYubdUt
+ lduFdoG49AoPMlnvHztEPJHBvpH0QRqTCro2oHXKC0XtR+YvmVhh+F2L+
+ 2TDCgeD9u5RvLGbxGTqndtObEVeVy9DjJDDiD3mxpyI04uHJySsddJAKh
+ 6EVHSJK2zUCl3MQRg2/Rd38QStjFV2hpX0iwfL0BsqNAwUT/XrtBXGPw1 w==;
+X-CSE-ConnectionGUID: MBzRsHLDT4Wh3/+0VACDpA==
+X-CSE-MsgGUID: qq795EB8RruHTdIdMlKTNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="52065945"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="52065945"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2025 04:12:42 -0800
+X-CSE-ConnectionGUID: BkRc5H05Qw6ydNsufp4cFg==
+X-CSE-MsgGUID: Mks+kLc5Rb2KpE+1to3JBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116296454"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 23 Feb 2025 04:02:55 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Sun, 23 Feb 2025 04:02:52 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="146711258"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2025 04:12:42 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Sun, 23 Feb 2025 04:02:52 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
+ 15.2.1544.14; Sun, 23 Feb 2025 04:12:41 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Sun, 23 Feb 2025 04:12:41 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Sun, 23 Feb 2025 04:01:48 -0800
+ 15.1.2507.44; Sun, 23 Feb 2025 04:12:39 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U981Jb3QOX+r8FjsBSG8GMdeqUe7oDsSL6KLc+ziqncP7lCuGlzS1uu1W4B0M5Wz37smdgB1AKP7DB3S8mzDh/U6mE0b8PuUxnZahht9l0nxoywNDtbG6lWgtwhMC+VOBmh92F88cSoVcToW1kZUeva6YqodeHDIEa4/u8fFgKV3vKdLyeO02fewocRI9zVw+oRHFhQB5j8uGEXB3bp3F4MoeHBoN86hq+M4Fnicum+36lsH8hnxzuZzDp6xE+iIcGbVoQTvNg/YM9kXoPmKent0KHlbjVkXzbqSckcPkRtL41+v7dshnI6APaSpuZZN9HmWqz2W2PnllsrTIgVpGQ==
+ b=hBwrVmn9YMGuHnskgO/OV2m94kBasHXTiQVTkuTF1SS/rpDwa7USkMN1DRmKu7uBMoCYtdjMeiR0FuhXoIkuz6c3gchKeBOQBrqBU6tHgwL4GfAKTJ+NRPYvAb693DegGD3yrFu02EVzLef/jJUH12UGI39H3HxQMh0dLO7aHytZtZm/bcQb7qUvnAslvr4ZUQDxsulrL2dwS0mgHePj0XPp1rkvxEkBlbCWnZF2KPdF7zwpxgb+ByzRs4OwRaPxruXeo0qYTJk63m21ratVZNUjBTP+GgWi822p7gAe0dVLCtklM/MXpHPmAfDdBZMbmv5hda6Kch3gflrzSmmlTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YzabQHu+l73xj3vSl5wtVvGq/dJooupCzfKE+OcnxLI=;
- b=aDXmrJG9Kkv0mZqTH+sO6HGfYAmn3egU/xkqMUf5eD+CZjU6kzLCA2glqZ7Oso8H1/5JeST2WinKoHYPLejm/GokpSWRhM7BZoYBOEVhlT/JHbhsaNZ7ERrPOeQQBpZvRfralzT+3fusirkJfd81K5snhldzXF9bhvcVI3xWolalNUH/v1r87cWQXL4w/06JR1Ivg+tW91I7kEMFt18EdMVwBBPuzmiI/G3+j44mwmfz2BP7Rliez9IeVfqxANqeNNHd9rYYv+uXPTlfUy1/Oyn0ZIISzQ8xD2bvAPdhsW58ZiWmcYHiPt4prHwc0PluszaN2yWykiqM6NlyhSJXHg==
+ bh=Rps3PUb5MJ109tJbWeE4ggMaheRe9U4HP8W/XY1fUq4=;
+ b=kL/n9oiKjeeRykd9kEv1lPypyvTw57hWmbpWkkOhofHKVzjkuJlGZxyTd6yuBonep1aZEpHsBIn73+msc6EWVAlELbi9GMbaSLDczfO2eF+8Z9larXQPdj4M4t/p/WZe0XPjSvXr8BkBYayVMrBMObeNU0mfpjr2QRwDqR+Pauway/kIR8Dff6Pcy2w70FJfcswingTSizX1Zf2titybcdP2nIgl3AzRoZg0aX3qhWPWmKDFheS0OLSA0pFpfksN18nfuPn9PYB89JpqhZLZHm9GTRcNJzuUQE4Bs5kWJt2nWUADF1j3DmTJYWU2NrDpNOPjQGl2qLfcKel5mCat+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by DM4PR11MB7279.namprd11.prod.outlook.com (2603:10b6:8:109::8) with
+ by SJ0PR11MB6814.namprd11.prod.outlook.com (2603:10b6:a03:483::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Sun, 23 Feb
- 2025 12:01:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Sun, 23 Feb
+ 2025 12:11:52 +0000
 Received: from DM4PR11MB5341.namprd11.prod.outlook.com
  ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
  ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8466.016; Sun, 23 Feb 2025
- 12:01:42 +0000
-Message-ID: <d6c2eb7c-1253-453d-8f6a-6ca4c097eba3@intel.com>
-Date: Sun, 23 Feb 2025 17:31:36 +0530
+ 12:11:52 +0000
+Message-ID: <f14e0202-7f5c-4d31-a420-ed0d02f0694c@intel.com>
+Date: Sun, 23 Feb 2025 17:41:46 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/5] lib/igt_kms: Add func() to read and parse cdclk
- debugfs
+Subject: Re: [PATCH i-g-t 0/5] tests/intel/kms_cdclk: Refactor mode setting
+ and CD clock verification
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20250217213531.402162-1-swati2.sharma@intel.com>
- <20250217213531.402162-2-swati2.sharma@intel.com>
 Content-Language: en-US
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20250217213531.402162-2-swati2.sharma@intel.com>
+In-Reply-To: <20250217213531.402162-1-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA1P287CA0001.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:35::14) To DM4PR11MB5341.namprd11.prod.outlook.com
+X-ClientProxiedBy: MAXPR01CA0107.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::25) To DM4PR11MB5341.namprd11.prod.outlook.com
  (2603:10b6:5:390::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|DM4PR11MB7279:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9cd533c-f586-4684-96d6-08dd5401d645
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|SJ0PR11MB6814:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee57bee7-8930-4730-ebda-08dd540341db
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Rk4wd2syclg5aG1qbW1lYlV5cVlGN2x5T0txdk0yeDlqRElFTGNlWllrUC9k?=
- =?utf-8?B?UElvN3JTQWVHWmRUcDczUkhRNjA0NmQzSFlIT055Uld3TjVlMDc4R2VjNjY0?=
- =?utf-8?B?MDlBRjRZSitVbmJZS2xOeTlpWFlkOXo1TlR5VXdJc05aQnhQUldsWjBBVnNP?=
- =?utf-8?B?c2preFZaVUdIMjV1S2Q2TW1EUUdLczVYYzBPa2ttd2xYQ0hoQVdXbUo4Vys4?=
- =?utf-8?B?bzFuS2cvaGFrNzY3TldwTGtLa01XdXVTZWUvNFZLZHhPQ0dnaUNWSE1SUUxz?=
- =?utf-8?B?VVlBZU0rSzRSQ201TzNwYkpXMDAxdzlQWDdLb3AzK09JRzQ1Ull3cURXK0Mw?=
- =?utf-8?B?eStjZVA0dEMyaVl0MXJUV1prdDVxZGU3ZDJ2UzQ4Unc1VUhsTlNwWFZKUmhx?=
- =?utf-8?B?TkNBTjJKeU9DalRYa0cySklPNm9zQmFKS25QcWFtUmJDY2JIWm1sdWtzd1lJ?=
- =?utf-8?B?L1FkTWRhMEZIWGxGN2tPRjUvczlONlFZTGZjMC80Y1hRalBORy9XRVp3aVdj?=
- =?utf-8?B?L0RaNTNEVDFPcFBTeTJYWmhDMlB3N0xIWElldkxNU3N6a1pHOXRicEdBZWV5?=
- =?utf-8?B?N2ZoM1p4QjF0d2c2cUJPR3c2a2FyYitjZ3QyNzRmMHhKakNCNE85d2FUNE1G?=
- =?utf-8?B?Wmpndy83cEV6QjVIUjlHQU55b1p2S2d5Y1VKMlgwaWtsMm5uU0YrY05vNlpO?=
- =?utf-8?B?VG5XNG5QQkZJRkpHcnVWRGlPa2pGakhaVU5HMWFLSkhsL3VZRnlaZ1Y2c1lQ?=
- =?utf-8?B?RjMySHQwcE1XcHpObHpXRGxLQzJNaE5DNXQ2ZDFXUXpCMjZLY2RyWHNBM1Ju?=
- =?utf-8?B?cGduV2h0QkViYmxmZVZDNVFWcnIxeVAzVk1wR0c4cXBDaGgzN2RXY3BYaWYw?=
- =?utf-8?B?UlYwdHhMRXZIYVdqM251OHkwWWxITkNuNkR4TGRqRXFiM043cmtsRnFsNlNu?=
- =?utf-8?B?TXVRRytlQTFEZDhCbHhWZHFlUnlOYTZNdGJLRkZwTzc0SWYxN1llYjg1ZjJI?=
- =?utf-8?B?elF1N0xJZlJHM0RsV1VkUFJ0N0wyWXRsaC9rOXkzbHc4LzAyYXY1RGpWL0FM?=
- =?utf-8?B?Rlp0SXQxakRUZlRmMDNhakFhVW1kQWs0SjhJdmFIOWFwOFkzbng3RWNQWjdH?=
- =?utf-8?B?Z3p0WG02ZlVEUUIwVERIVHVCMEo0RWxjTGxDdjgreDBVZE01QjExZnZ5dTMw?=
- =?utf-8?B?anZRZFgyR2huL3oyQXRoR2NTbVczdmtzTy9TV1VWTXV3WXNXSTRaQXBhZnZt?=
- =?utf-8?B?VWdwOEJZNUtoclhORUk4aGQ4VHRpUnVaZldZd2dRS0RrcG1JUCtFZnFvTUJl?=
- =?utf-8?B?UlBFLzQ1ZnRicDUxTWZCTXRXcEZHbFhkVkNjTVFXY3dYSjBXMlUzblRJb3FZ?=
- =?utf-8?B?akZ6T1JLZi9NRDlva3R4S0dCdnVRNVlXdm5Hb2tvVEdUSzcwSG1EeloycmRJ?=
- =?utf-8?B?VjkzQkZoZUxGNWVud0E2S3NkaE90dCtNSStuUFRueEM1a3piS3lTNUZxaUx5?=
- =?utf-8?B?eHQ2SVhnMlhuRFMxR1hmbTZxcUczTU9VSGpFdHA4QmoyelU2RHRtVmFmVEls?=
- =?utf-8?B?WVZMTFVCWmJEd2hGTHFPWjhrMy9nZm9MNmc3dzdUaWtRVjhpVVh6RUxUalRI?=
- =?utf-8?B?N2l0V0gyZkVLM2FoTXZJM09qLzJFWVp5UTBRK1cveGtrb3RxczBDUlJZYW4w?=
- =?utf-8?B?SDNqclYzZjROYkVwSUJUZWs4VHhka1E5YXhqQyt6Nmc0YTJCeCtFTTNneGZU?=
- =?utf-8?B?eEk5ajVsOGRhUWR6c0FPTkNBT0dIU1Y5SDlLSStHNTBZSDd0dytOTDNpb1ZP?=
- =?utf-8?B?UkFORnFQZnA0eWt2SGJiVjFrdGJFd1BIU0JmZUQydVJrbWdiVmsvdXlOV2VN?=
- =?utf-8?Q?SeGpdJER1PqrN?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RVl2NWtXWnBVeGNaVWdHZHdoODYwaXlZaW11d3BkOUhqZ0tuV2pjTDN5WC9U?=
+ =?utf-8?B?SGJJUGVoRlIzcWJnQkZXTVdzTUU3WUZrRzh6dnhDOVhBZ1lzTXJGbkx2Qm12?=
+ =?utf-8?B?L2p5R0xRVitQRW8wUVd0WEtCQzJwUWRUM0dUL1dJbmpPQnA2bldCY3F1QUNS?=
+ =?utf-8?B?UE93QzR6cGVjY25iL0RpOU54d3V0YllPS3ViZWdhUTFRTVRzSVN2NG52K0Y1?=
+ =?utf-8?B?QVdoVUdtV00wV1dkUlRTSmFOK2lhalVpdnc4VUZQYkdiOUlUZUR2UVFiSlVI?=
+ =?utf-8?B?V0dZREJmYU9ZZXdncm5xakFPRE8zMkJJR1JpU1NpZm9ZRG1La21xSHBYWWwz?=
+ =?utf-8?B?SGIzaS9tdTQ5NlNlcjY5MGlTNGY0NUF2SHhSR2JsaWN0Y3dxcFpqam1tMEFB?=
+ =?utf-8?B?VXBoNVd5S3g0ODMydXFyR2hQN0V5TGRWWkFFQTQ3c05hQWk3QnlDTUVwb3Ux?=
+ =?utf-8?B?cmdGTlJ5ZEhyMDNCSTdMOVpnQk1USWU4R1VHVVdCSjEzeUVGaTNUbzZjeTkr?=
+ =?utf-8?B?dG96bFptSzFnRXoyc3ZKYXk1VVFmMjhJbk1RYTNNV2ZtT2hSL2pvT1hQUDdw?=
+ =?utf-8?B?THRnZGFTRFZDRGJybkNDeEJuSUxERGJhVkE0WGJrMVdhK0FDNU1SZTZ6eGp1?=
+ =?utf-8?B?TUdocTN3YitIOENodW1UbEtoR0JMZU5QcXRZTUlBUjlHZS9FaG14eUJ1TUNj?=
+ =?utf-8?B?SEROTS82MEtLOVd3c3VyU3lrSnNpNzJ1RDNTS3h5eEdPL05pUG51bFBFWHBv?=
+ =?utf-8?B?RjF0ZExGdlRDSTNiZU9mcExvVkRZSVRmNFFxQW01SG5RN3N3QkxIRzFHZFZ0?=
+ =?utf-8?B?UTdrYlRVU0ZNYlVpNldNSXZnRWdsVmp5VE1wWmx0bXJLdDUxckNsRkU3b1ZP?=
+ =?utf-8?B?UjNlc0xSRitRd2lIdFF1T2txcWFYU29nSFpXazBZOEh1T1BiaGpiM1VESGJk?=
+ =?utf-8?B?S25WZzJzNXRNODNicm51S3JQUktTV1pjVU9Yem5URDJYTjUvOEVSZmdJQUhG?=
+ =?utf-8?B?NUZLT2prYVZ2VzBPemxDaWtibnhiTHNDNXZvQWdPTXIrYUxLdXVkVDlyOVdS?=
+ =?utf-8?B?RXFCaEFKSGxHcWR2eTVBZWl3N3RWSGJuUjludlJVblk0d1dscVplWVFLZTFa?=
+ =?utf-8?B?N2ZzWGIwNlBiN0d5M0JKK0hvNmFEa2NYODF0djNEbGJnWVNnb2I1VktTK0lX?=
+ =?utf-8?B?ZW1aWUFXZjhQNVhBemFaT1gxeVRTMVh3UTBHangwZFp5QmJNZExnWVcvTTBP?=
+ =?utf-8?B?b2xEc3BBaFRFNXVFWFY2SE5seXhyNGJiZFV0Q013Vm1YQkpFekFSSWxsaWpI?=
+ =?utf-8?B?cG9tbm1iUTEzRmUzZlBSdXVLMnl6R1ZkVmVKN2FxMEpTdlNORHl5VWp3ZE10?=
+ =?utf-8?B?MGtPQ3FCeTJ2QTl5NHk2S2paL3F1K2llQzdTekY4VzZraVdpMDNlSk5QME1C?=
+ =?utf-8?B?MHVPSXl2cHkyTmpENDFSK2Z1S2xJdEc4TVJQdXJrTlpYTnB0VnkxNmhGbHZS?=
+ =?utf-8?B?UTN5a3NnWGN5bXhJdDlEbG5SSm5La0swWnJrQnVNUmEzclNMS3BuVXVBRk5J?=
+ =?utf-8?B?MmczNXlYVmxmYzhMd0Fxby81b2ZWc3grR3JJSTlhUDhuc2NoTUx5ZlQ1cld0?=
+ =?utf-8?B?NVJOOE1Kc2g2OFBDbExPZisxd3M2MUZRellUVzFYbnUwT1plK2pBTE92YVEx?=
+ =?utf-8?B?WjlVTlZwcWcyS2d6bU1qWDNsQzNmWVByY05JMFBBdmg0OGVTTXBFNkdsMmpl?=
+ =?utf-8?B?Y2NZQUlVS0dkaWxNV0d1Rmx4TVlPQ2NvNHlKblhiYWZUcDc1bEJYZFJtV1N3?=
+ =?utf-8?B?eThTWkdONlhCUmhKSDI5OXJQQUJCMEl2UXErV3ArSmIxQzVDU2FSVEJCNHJt?=
+ =?utf-8?Q?4r6SW202XZGXn?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QnRhMnJnaXovUG5PUzN3akIvdThZWXc4OWN0dmxqQXZIL2lqcXA3TkwyeEFC?=
- =?utf-8?B?NzRqTU1VcXNvMDJPK2FGZG0yNUxxQzkwQXNnTHFhKzNSN3AwQUZpOEo3TEs1?=
- =?utf-8?B?VTFYMTY0Qmxndzg1NFA5TnR6dVdZaThzZmI4eUVvNlBLUjRPMVBRVVNKdE5z?=
- =?utf-8?B?cGVNYWhjRkU0ZnV5UEZ2SmVxMU03blAvSjFFQ2orR0NidVREc0RjNWZYTzlQ?=
- =?utf-8?B?TkRpK3V6TlIwTERqUllJeUJadERRSjNmTWN4bmtWNHNWV0lQdUEwc2JtRnNW?=
- =?utf-8?B?ZzdyZkk1MkJUREtyTENlRVRCY2Q1aThndGFObEF3T3ZCdU9nNXRPLy9jOExZ?=
- =?utf-8?B?WTRWM0lQVElyb0xneTFQMkRmTU5hNm82K0FGam9zQ0JDb2Jqei92ZUdmb05B?=
- =?utf-8?B?cVM3ajJHQ3kvb0QzKzlxNUovZzBHWXJJS2RiMHNCTUpBOXpRYWVwWHg1VFJV?=
- =?utf-8?B?ZkoyZ3pFM2lDTml6YTJTNGZOUWUzN0FrajhBOWZlZWhlbkVPbFVGMDVGdzc5?=
- =?utf-8?B?ajdLMFp3dDBHN2V2dGVVU0VkdTRhdnRLcmhyQm9hZXlyZ2s2aFNaVFQwY2k4?=
- =?utf-8?B?c0lSZWl1aGxxNVBhVHB0Y0RxQWdmRm5uVTFrSEF3eXoxRGl4dFBaQ1hDM0h0?=
- =?utf-8?B?aWpoVDZObXlVYkhIdTRRdjB2bC9qcXF1eXZXT2t2SzJoSFF6OXBjUlU5bk1r?=
- =?utf-8?B?eDdWSHk2S1BudWR2ei9WcDZmTkNXSGh4QW9TL1ZQWUxQUy9MSTBFekxXVDRN?=
- =?utf-8?B?Zjdnb01GbDBkeDdQcDJiSnYvZDE5c29LVk5vK3psQlNqTjFFRzlnQngvNE5T?=
- =?utf-8?B?TFlsQms4aEJrcWNMRTM0aVdBQ0Qrd3pUSm9kY2I1a2N2VGxCK2Q5ZkpYUkVl?=
- =?utf-8?B?bWFWeEpKVG5vQW5ycTMxd0s2ZlVianZkd292QzRkWmhPNUJPaFg1NElGcGJB?=
- =?utf-8?B?MWJqNGo3Y21XN3o3QXRocUluZk1qSlM4OVBES1d6NytHRk0vdDNueVpPVzMx?=
- =?utf-8?B?aWVsdGdnWVBnQmdIT3BPK2xONFMwaEhZUWxJQkJqNEc2WmJCYVJSbVI0ZnZs?=
- =?utf-8?B?RWx1OWM5UGtkdDUxaFNGaXFLbzJaOUR4V0RFQUlEOTNIengvN0VjMTlqYmNa?=
- =?utf-8?B?bEZRWXdpRC9mNHhHeThkSlB4ajRRL1F0MEh2K0RyRGpOdnYzeXFTUW5iOUlz?=
- =?utf-8?B?U3o0YXE4NTNkbHpURVRaQlNkcXVxS0QyeWdDdVpaYkg2UnRydEdwTWplUkJi?=
- =?utf-8?B?WnBqbmViUGxPS0VXZ2dDTjNjY1FtSnRGRGJtSi96ZEhQNkdsZHNPVFV6YWZZ?=
- =?utf-8?B?aE1kb0EweTdEWUFQeWFQM2FCcU9zalViQmNZWXY3TUNRZmZYUlJRZmN3RXVq?=
- =?utf-8?B?NC9kYXBKTlg4aUNadmJMNkc4VTN4L2JsT1dDRXgvdmpYUTJCNHpnK01ITEhU?=
- =?utf-8?B?VVJFZmxkdHVqWFBXK0hkZkVzbjMzT2RRcWdsa0ZKRmpkZldtcEl3WFR5UUxE?=
- =?utf-8?B?TFVkd3BiVTJTMHh6eUd4WGRuL2VJN0UrVHZXTHphcnBhWERkTFR1a2tvMFhL?=
- =?utf-8?B?elRiOEdrTzlvMXlGaWY1cHpuSHN3K3dUUFJPZ0c1ZmFidFY5VWhYRlA0N2JB?=
- =?utf-8?B?NmVZMk51K3VlUURseXViZ2s1ZUU4T01PVVBiaC9ZU05IT1MvcHpDam5LZ3d6?=
- =?utf-8?B?OWxDdC9XY1JPV0JLdFVabFFMTDVFOVhHb1h0STdiR3RycTRnV0dmaDRPSkg2?=
- =?utf-8?B?TS85RnpqVlh6TTI4UDY5aGNsSi9LVitGQWl2U1h5cEx0QWZjWU90TGJrd3pW?=
- =?utf-8?B?WU1YNS91eHI3Z2c0VTh6bGJXNjMyUmltMThtSjc3SWhUOHBsajVlNEVKSWRF?=
- =?utf-8?B?U21QUml0amRLSEc3TzVWN0pQWldxWFpwVUVLTVFyNTVWZ0xuREpkZHlqeisr?=
- =?utf-8?B?dkZwQzgvamFVL0M1RlRxblpESUVVOUVpSk9yRTgwZDVLQjlYY2dUNDg4OE56?=
- =?utf-8?B?MExla3VNVExGUlpwMzRQS25CdDlVU0RXNU9rcytyYnlLbjZiQVRNTGhUeGR3?=
- =?utf-8?B?Vnl1UlZYOGgyMWUzbFZyZzhmcTlhbEdoZXlOdE95K3pLUVJRZ04wZWY5c3VO?=
- =?utf-8?B?UUl3MzFhMEViMm1kRlVLV2RrRVNibzdPTUtwbnAwRzlCTXk1UXJWVGtRYzFD?=
- =?utf-8?B?d1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9cd533c-f586-4684-96d6-08dd5401d645
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OHpwYXc0WTVqdEtNWWxDWmVhTW9qckNFV1E0YmhpalEyUVpTa1pnTlQvZ25u?=
+ =?utf-8?B?QXlZdnZiQTFjZEp0TzFrbnExc0QydEhmTmRFYmNCdGdWU2ZzOUlxTkdqYlVV?=
+ =?utf-8?B?cWk5ajRzZ1pZeXR1cng3RURKQVR0UmV6NDJmNi9POWpxbUV0a1ozQlNpdXJH?=
+ =?utf-8?B?WWN4NWc5b0l1K2UwZnd5RkxVd2k0czRweTRyalA2OS95bU03WGV0U2FqNTFM?=
+ =?utf-8?B?MDlnLzNIam1IL3VvNDFHT0xjbWxkRmJjdFp2UnhBQllRUk5LRGRLbitPYWwv?=
+ =?utf-8?B?c1c0YzBHcWc2NThyVXF2MVNtUGovaDRQSnMvdjJBYXdZb2RXaG8wWjNsOE1C?=
+ =?utf-8?B?RDJ2S1B5TFlVOWFmQ3k1NlVKNWlpT3ZYMTRxa0NyckVuelJIZUx5NjI5OUxy?=
+ =?utf-8?B?WWJWVUNxQnVmZnZHZU03U1k0VGQyT2lQZnZMWWZpMGpHc0VZRHlYTEY1UzJw?=
+ =?utf-8?B?NHg2MzEzNlRHeVNFTFdPNEdMV2c2S0h4ejRqQmVtdDlVZmJmNTNGVm45ZVB6?=
+ =?utf-8?B?NG5vNEh3cGwzMWpCQ1k1dVpkd0RMYTE3ZmhJcjRBS3E5K1ZQVWxNb1B5ZXVt?=
+ =?utf-8?B?OUkxZm1JdHFCRkl2bjl2a282Rm4yMUh6RG5YTGNkUU0wYUxwK1UrWU1OcDRZ?=
+ =?utf-8?B?clgxTHJ1M3IraUZWT0J5NTBnUWZaVzE3OE9uZ0NPZmU3OEVMbnN5SFo5RElu?=
+ =?utf-8?B?cW5icjdCMjh1V1dGZWNwMlFaM2MyeHZ6OWZmTHYzS2U3WXc2ZjltSWFlM2Zv?=
+ =?utf-8?B?Wms0Kzl2dW9zdSsxejNoWVZIamwzaG5nbnF0bjJvNkFNcGpkKzBqRSswOVJD?=
+ =?utf-8?B?cnlKajV5amxLdGw3d2F0U0FYZFp2UEo1YTFMdlkwQ3N5MFB4Zzd2V1FMdkZP?=
+ =?utf-8?B?OG1kZVgrK0VTcXpBYmMzNzZhbUI1dHgwM2tnclF3cWVkS1NNRCs3Z2dROUps?=
+ =?utf-8?B?SkJqV291TDFpRm9EK2NjcVVsd1VtZEZkNHhHTUNRU0VubGZqUXE0MjZnN2xB?=
+ =?utf-8?B?UFM0TDQzSW5YMU5sWUtON3B3amxlVzdwVURFbjI4NU1GbW9xeVdscllkTnZF?=
+ =?utf-8?B?d090bUxESTNtZGxDS0tvVHVlMG43azlraFR3eStsck5vdVlOQzlaQWN6c2Jx?=
+ =?utf-8?B?MHlad0VvUFdCZFNPZ01VVVRjWXcyNFZKdXdEVmFVLy93Ym1wRWoxVTAvUTZp?=
+ =?utf-8?B?bUZScUQwcTF2WUFGTmJZVEF1Y2Jna2tOd2RlRzVaRmNRZThYZU9sQUxwZnQ4?=
+ =?utf-8?B?Q2pDSkpTUTlyTlVLUzg4VHI5eUk1d3g0b3dXMi9yaDdvOGw2NHlYOGlwaVps?=
+ =?utf-8?B?V0dJaWo1YUZDeWJnQkl3c0lTUTZTdmlYYUZMaWVpM08xSW0rRUtEclpLYXQz?=
+ =?utf-8?B?djNYSU9pN0JhQ1hSY0NLWUNMV0V1VndPTUpCcUdwYTJOcmpKOUYrbDlRMGxx?=
+ =?utf-8?B?ZW9hSEZBV2x3dWdUVDNKWEhER0x5cjVPaGF6cUU4empWOS8wanZydit4L2t6?=
+ =?utf-8?B?dmJJbWVmRU1LVzBudTNtdzgvL2VhMVpma2MyYmVOcXYvUlJzRnBFRjR6bng2?=
+ =?utf-8?B?cnhpNkg2bmpVWUVNTXcwTzgxSXhmYjVJdUdodWdhRlNJNXJZY1dmNWlpRUVz?=
+ =?utf-8?B?My9wbVpYNXF0YmF4ZnBpS1huQ3pUOSt4M05CWmhUSkxibWEzZzlJYVpDZFJS?=
+ =?utf-8?B?TXpqY0J5NDlCcWRYeHRaaFJzQkVZZzBDT0RXbWZvQ2U5MmdNRkgwN2l1VGg2?=
+ =?utf-8?B?MEpjczJmMXRPM2FKUkFLTmZDSnNwZjVROUljelFTMjV3YlZHbTk3ZkZlUk5U?=
+ =?utf-8?B?ZEVFRDZhbDhaZExuU005WHpYOHBwVEVpVkd5eUpWL21LcGRRSUJvZHFaQVRJ?=
+ =?utf-8?B?dXhQTXVrM3gvSHRBOEVESmZvZEp4VVhVRlM2c2VTZXlrVURsREFDa3Uxaldt?=
+ =?utf-8?B?S2p1eFBuajh4clBXbFBZOFdxbUV1bE9xa0Jrc2xzS3o3N0tWWkZqY0VIRGJ3?=
+ =?utf-8?B?Tkw5bGptUTBRQXdpMXNCY05NRGZaaTlNQlBlZ1pScFR3d29EL1g2MDVzTXNU?=
+ =?utf-8?B?dFRCSUtNbCtMN21RdzMzQnlWc2Z4YW5YcDZGWU9mVmZ5N2QrMHpkaG4vckZ5?=
+ =?utf-8?B?Y3VXN1BlYVlwbVBqeGpnRVNMWXExNGRBbU12YTg2NXdqdVg5ZDRPVThNZFY0?=
+ =?utf-8?B?SEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee57bee7-8930-4730-ebda-08dd540341db
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2025 12:01:42.6546 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2025 12:11:52.6152 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FPF9Xu7pKs7dZo8wRw8XNySN6BARKHOmR0FAB2t7Wq1et6n0kv45Hyp5EH7r1YZqlYG7Bawn10sEhOEJ5UbDDWv/v5sRVwXV/pTaKrVMzxI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7279
+X-MS-Exchange-CrossTenant-UserPrincipalName: TMMAkCajmLuu8YAjJHU+O3qRz5B4fiLdM+fZ3bEREy/WvAOYNhjbkUpMuI4wycuEkWErbj1jhCPQ3DODPxQ53XXCRVWk7NiHqwV0oMmwyus=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6814
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -197,281 +196,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 2/18/2025 3:05 AM, Swati Sharma wrote:
-> Add a common function to read and parse CDCLK information from
-> the debugfs interface. The function retrieves the current CD
-> clock frequency, maximum CD clock frequency, and maximum pixel
-> clock frequency by parsing the contents of:
+> Based on the review comments received, add highres and lowres
+> functions to lib and made corresponding changes in the lib.
+> On top, broken initial patches into smaller patches to better
+> review.
 >
-> 	/sys/kernel/debug/dri/0/i915_cdclk_info
->
-> Example content:
-> 	Current CD clock frequency: 268800 kHz
-> 	Max CD clock frequency: 652800 kHz
-> 	Max pixel clock frequency: 1305600 kHz
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   lib/igt_kms.c           | 76 ++++++++++++++++++++++++++++++-----------
->   lib/igt_kms.h           |  2 ++
->   tests/intel/kms_cdclk.c | 46 ++++---------------------
->   3 files changed, 65 insertions(+), 59 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 0ba1afb08..9d49095d5 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6303,29 +6303,20 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   	return false;
->   }
->   
-> -/**
-> - * igt_get_max_dotclock:
-> - * @fd: A drm file descriptor
-> - *
-> - * Get the Max pixel clock frequency from intel specific debugfs
-> - * "i915_frequency_info".
-> - *
-> - * Returns: Max supported pixel clock frequency.
-> - */
-> -int igt_get_max_dotclock(int fd)
-> +static int read_and_parse_cdclk_debugfs(int fd, const char *check_str)
->   {
->   	char buf[4096];
->   	char *s;
-> -	int dir, res, max_dotclock = 0;
-> +	int dir, res, clk = 0;
->   	drmModeRes *resources;
->   
->   	if (!is_intel_device(fd))
-> -		return max_dotclock;
-> +		return 0;
->   
-> -	/* If there is no display, then no point to check for dotclock. */
-> +	/* If there is no display, then no point to check further. */
->   	resources = drmModeGetResources(fd);
->   	if (!resources)
-> -		return max_dotclock;
-> +		return 0;
->   
->   	drmModeFreeResources(resources);
->   
-> @@ -6346,14 +6337,61 @@ int igt_get_max_dotclock(int fd)
->   
->   	igt_require(res > 0);
->   
-> -	igt_assert(s = strstr(buf, "Max pixel clock frequency:"));
-> -	igt_assert_eq(sscanf(s, "Max pixel clock frequency: %d kHz", &max_dotclock), 1);
-> +	igt_assert(s = strstr(buf, check_str));
-> +	s += strlen(check_str);
-> +	igt_assert_eq(sscanf(s, "%d kHz", &clk), 1);
-> +
-> +	return clk;
-> +}
-> +
-> +/**
-> + * igt_get_max_dotclock:
-> + * @fd: A drm file descriptor
-> + *
-> + * Get the Max pixel clock frequency from intel specific debugfs
-> + * "i915_frequency_info"/"i915_cdclk_info".
-> + *
-> + * Returns: Max supported pixel clock frequency, otherwise 0.
-> + */
-> +int igt_get_max_dotclock(int fd)
-> +{
-> +	int max_dotclock = read_and_parse_cdclk_debugfs(fd, "Max pixel clock frequency:");
->   
->   	/* 100 Mhz to 5 GHz seem like reasonable values to expect */
-> -	igt_assert_lt(max_dotclock, 5000000);
-> -	igt_assert_lt(100000, max_dotclock);
-> +	if (max_dotclock > 0) {
-> +		igt_assert_lt(max_dotclock, 5000000);
-> +		igt_assert_lt(100000, max_dotclock);
-> +	}
-> +
-> +	return max_dotclock > 0 ? max_dotclock : 0;
-> +}
->   
-> -	return max_dotclock;
-> +/**
-> + * igt_get_max_cdclk:
-> + * @fd: A drm file descriptor
-> + *
-> + * Get the max CD clock frequency from intel specific debugfs
-> + * "i915_frequency_info"/"i915_cdclk_info".
-> + *
-> + * Returns: Max supported CD clk frequency.
+> Swati Sharma (5):
+>    lib/igt_kms: Add func() to read and parse cdclk debugfs
+>    lib/igt_kms: Add highres() and lowres() func
+>    tests/intel/kms_cdclk: Add conditions to filter valid outputs
+>    tests/intel/kms_cdclk: Introduce set_mode()
+>    tests/intel/kms_cdclk: Use igt_get_max_cdclk()
 
-Otherwise returns 0.
+Minor changes suggested in Patch#1.
 
-
-> + */
-> +int igt_get_max_cdclk(int fd)
-> +{
-> +	return read_and_parse_cdclk_debugfs(fd, "Max CD clock frequency:");
-> +}
-> +
-> +/**
-> + * igt_get_current_cdclk:
-> + * @fd: A drm file descriptor
-> + *
-> + * Get the current CD clock frequency from intel specific debugfs
-> + * "i915_frequency_info"/"i915_cdclk_info".
-> + *
-> + * Returns: Current supported CD clock frequency.
-
-Drop 'supported'. Add : Otherwise returns 0.
-
-This looks good now. With above minor things addressed, this is:
+Series looks good to me.
 
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
 
-> + */
-> +int igt_get_current_cdclk(int fd)
-> +{
-> +	return read_and_parse_cdclk_debugfs(fd, "Current CD clock frequency:");
->   }
->   
->   /**
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 7227f0b0e..d4731af9c 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1242,6 +1242,8 @@ void igt_sort_connector_modes(drmModeConnector *connector,
->   bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   		igt_output_t *output, int bpc);
->   int igt_get_max_dotclock(int fd);
-> +int igt_get_max_cdclk(int fd);
-> +int igt_get_current_cdclk(int fd);
->   bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock);
->   bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   			  int max_dotclock, drmModeModeInfo *mode);
-> diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-> index 382b3e9d1..b89b2f345 100644
-> --- a/tests/intel/kms_cdclk.c
-> +++ b/tests/intel/kms_cdclk.c
-> @@ -63,7 +63,6 @@ enum {
->   
->   typedef struct {
->   	int drm_fd;
-> -	int debugfs_fd;
->   	uint32_t devid;
->   	igt_display_t display;
->   } data_t;
-> @@ -76,34 +75,6 @@ static bool hardware_supported(data_t *data)
->   	return false;
->   }
->   
-> -static int get_current_cdclk_freq(int debugfs_fd)
-> -{
-> -	int cdclk_freq_current;
-> -	char buf[1024];
-> -	char *start_loc;
-> -	int res;
-> -
-> -	/*
-> -	 * Display specific clock frequency info is moved to i915_cdclk_info,
-> -	 * On older kernels if this debugfs is not found, fallback to read from
-> -	 * i915_frequency_info.
-> -	 *
-> -	 * FIXME: As of now, XE debugfs is still using i915 namespace, once the
-> -	 * Kernel changes are landed, update this to use the XE specific debugfs.
-> -	 */
-> -	res = igt_debugfs_simple_read(debugfs_fd, "i915_cdclk_info",
-> -				      buf, sizeof(buf));
-> -	if (res <= 0)
-> -		res = igt_debugfs_simple_read(debugfs_fd, "i915_frequency_info",
-> -					      buf, sizeof(buf));
-> -	igt_require(res > 0);
-> -
-> -	igt_assert(start_loc = strstr(buf, "Current CD clock frequency: "));
-> -	igt_assert_eq(sscanf(start_loc, "Current CD clock frequency: %d", &cdclk_freq_current), 1);
-> -
-> -	return cdclk_freq_current;
-> -}
-> -
->   static __u64 get_mode_data_rate(drmModeModeInfo *mode)
->   {
->   	__u64 data_rate = (__u64)mode->hdisplay * (__u64)mode->vdisplay * (__u64)mode->vrefresh;
-> @@ -168,7 +139,6 @@ static void do_cleanup_display(igt_display_t *dpy)
->   static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *output)
->   {
->   	igt_display_t *display = &data->display;
-> -	int debugfs_fd = data->debugfs_fd;
->   	int cdclk_ref, cdclk_new;
->   	struct igt_fb fb;
->   	igt_plane_t *primary;
-> @@ -197,11 +167,11 @@ static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *outpu
->   
->   		/* downscaling */
->   		igt_plane_set_size(primary, ((fb.width * scaling) / 100), ((fb.height * scaling) / 100));
-> -		cdclk_ref = get_current_cdclk_freq(debugfs_fd);
-> +		cdclk_ref = igt_get_current_cdclk(data->drm_fd);
->   		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->   		if (ret != -EINVAL) {
->   			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -			cdclk_new = get_current_cdclk_freq(debugfs_fd);
-> +			cdclk_new = igt_get_current_cdclk(data->drm_fd);
->   			igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
->   
->   			/* cdclk should bump */
-> @@ -221,7 +191,6 @@ static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *outpu
->   static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *output)
->   {
->   	igt_display_t *display = &data->display;
-> -	int debugfs_fd = data->debugfs_fd;
->   	int cdclk_ref, cdclk_new;
->   	struct igt_fb fb;
->   	igt_plane_t *primary;
-> @@ -251,13 +220,13 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
->   	igt_output_override_mode(output, mode_lo);
->   	igt_plane_set_fb(primary, &fb);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
-> +	cdclk_ref = igt_get_current_cdclk(data->drm_fd);
->   
->   	/* switch to higher resolution */
->   	igt_output_override_mode(output, mode_hi);
->   	igt_plane_set_fb(primary, &fb);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	cdclk_new = get_current_cdclk_freq(debugfs_fd);
-> +	cdclk_new = igt_get_current_cdclk(data->drm_fd);
->   	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
->   
->   	/* cdclk should bump */
-> @@ -272,7 +241,6 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
->   static void test_mode_transition_on_all_outputs(data_t *data)
->   {
->   	igt_display_t *display = &data->display;
-> -	int debugfs_fd = data->debugfs_fd;
->   	drmModeModeInfo *mode, *mode_hi, *mode_lo;
->   	igt_output_t *output;
->   	int valid_outputs = 0;
-> @@ -330,7 +298,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
->   	}
->   
->   	igt_display_commit2(display, COMMIT_ATOMIC);
-> -	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
-> +	cdclk_ref = igt_get_current_cdclk(data->drm_fd);
->   
->   	j = 0;
->   	for_each_connected_output(display, output) {
-> @@ -354,7 +322,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
->   	}
->   
->   	igt_display_commit2(display, COMMIT_ATOMIC);
-> -	cdclk_new = get_current_cdclk_freq(debugfs_fd);
-> +	cdclk_new = igt_get_current_cdclk(data->drm_fd);
->   	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
->   
->   	/* cdclk should bump */
-> @@ -394,8 +362,6 @@ igt_main
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->   		igt_require(data.drm_fd >= 0);
-> -		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-> -		igt_require(data.debugfs_fd);
->   		kmstest_set_vt_graphics_mode();
->   		data.devid = intel_get_drm_devid(data.drm_fd);
->   		igt_require_f(hardware_supported(&data),
+>
+>   lib/igt_kms.c             | 110 ++++++++++++++++----
+>   lib/igt_kms.h             |   4 +
+>   tests/intel/kms_cdclk.c   | 207 +++++++++++++++-----------------------
+>   tests/intel/kms_dsc.c     |  14 +--
+>   tests/kms_display_modes.c |  14 +--
+>   5 files changed, 177 insertions(+), 172 deletions(-)
+>
