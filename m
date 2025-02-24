@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CCDC021A4
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 21:31:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DECA6C021A4
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 21:33:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 241C710E364;
-	Mon, 24 Feb 2025 21:31:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 724A610E413;
+	Mon, 24 Feb 2025 21:33:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bVN4iACy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gcqJj1j0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2342C10E364
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 21:31:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71E2610E413
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 21:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740432662; x=1771968662;
+ t=1740432820; x=1771968820;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
  bh=FwkXjZIfVghL5kRfZsWTx3rHqOlnJAEonLIGQafTK5g=;
- b=bVN4iACyrkv6AOmakhVM2PnvzqRV+gx0ssljD1HRfKma/DT+vifZDUH7
- vsfDQLbVmEn/Q7/jGuOzZ24ZfFSA8b4ABpEMXQ8GtPQWD48WVhHgIB2/4
- 5/7qVMpWq+W/NmyvcAJyPOXPBg25gZWwnAFh2FqzAoMkV4aEIDK5/cT8V
- WIvbQjCDPo3e+/ktehkIn6ahFtkJmWnNeD5mFk1++iTVCRqTvO1Md3YFK
- LstE+1E6gZ4E/wJGHhPlK/wdFo3VHqD7bQYogy0dPRtXcTadQyqBts2rh
- +oON79lSn7LV/JmJX77fHs7mmtLWsJMn+czI5JRYalDogT0dDl8lhuR8D g==;
-X-CSE-ConnectionGUID: G8w0VpkISHuPBffO0/6Mwg==
-X-CSE-MsgGUID: vNNByd8zTLWSGzoS1pFC5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41331712"
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="41331712"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 13:31:02 -0800
-X-CSE-ConnectionGUID: cy88tcu9RwabVFP2bEKJ0w==
-X-CSE-MsgGUID: vcdeDr3+T9Sy++whF6aL/Q==
+ b=gcqJj1j0Zxfi49Llpdn7W4lcDFKvd0vN9P5+P2fJ1++cWB/khXqSLAEF
+ AbK258i5Nz1wf6/OiniReSS3PAMpUMIpAT0mHNxIN8jcdSllvPxiWXRcP
+ A82Bu2wN2iZULOzai4hZ8ebHnIIfPAFYRWn7xSeIaLdfr1pIdcRAlLQTq
+ eNxzHCcxDz6SPt3Da+SCgo+j9bGCPFOQtTT3zDFEdNYKFkVlbXPNPnnyG
+ +zKvNuRSKob6iv3Tu7CTW4plcJm+82dWL42wEpaaqlUWtqDbK17u5zaSK
+ dvtw3yyMtBelz1xhj2gZBfAcYEg4FZdHTrlFYMa/quRT5BIBTKzQne8I7 g==;
+X-CSE-ConnectionGUID: i1GEAoJcRZeyqDz6WXoCtw==
+X-CSE-MsgGUID: /6n8WXXyRBSVtfBmmMLHmw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41347078"
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="41347078"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 13:33:35 -0800
+X-CSE-ConnectionGUID: PlUouLlbS2G1vZ9K1clRAg==
+X-CSE-MsgGUID: MNYu9Vh3RCqdZAh7FahEVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="147058590"
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="147015962"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 13:31:01 -0800
-Date: Mon, 24 Feb 2025 13:31:01 -0800
-Message-ID: <85r03njai2.wl-ashutosh.dixit@intel.com>
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 13:33:35 -0800
+Date: Mon, 24 Feb 2025 13:33:35 -0800
+Message-ID: <85plj7jads.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t CI run 07/14] tests/intel/xe_oa: Simplify the
- buffer-fill test
-In-Reply-To: <20250218202812.1679653-8-umesh.nerlige.ramappa@intel.com>
-References: <20250218202812.1679653-1-umesh.nerlige.ramappa@intel.com>	<20250218202812.1679653-8-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH 07/13] tests/intel/xe_oa: Simplify the buffer-fill test
+In-Reply-To: <20250215010628.1639986-8-umesh.nerlige.ramappa@intel.com>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>	<20250215010628.1639986-8-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
