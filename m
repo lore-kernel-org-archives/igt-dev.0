@@ -4,181 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EB9CC021A4
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 13:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A99C021A4
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:41:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D36C610E44B;
-	Mon, 24 Feb 2025 13:42:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76C1410E3C1;
+	Mon, 24 Feb 2025 14:41:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VZE3mqig";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FFUCLkYp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A24F810E20F
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 10:41:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C44A10E3C1
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740393689; x=1771929689;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=MpfmxE90PsqHjjec4MhDH1ttm6OaNyNpW6AFh4tgfcw=;
- b=VZE3mqigrnevHoOKUnWQtoEcU+OlC3tvisAOC4tVq4nM43Qtvcz3jHB8
- 2uBemOEM0Q4phpHz4/cXVVLlN4g/3MDtpI5+PQ9UYq/Avv9b4EEeQXMfD
- 5Rx5hYpKzovSz0s5w7kb+SB/ZdulN3Qs50xnQROI2DN1pMtAJvKj9FK1y
- mb/+BdVdDxtGijXmxXTR1O80CMfzfVaG82hCbmOTlLONOIxmjvwx9NFOw
- 3bWHNBt0XE4vXgs8ccHbYlxBPU4hj+jM9sGjgfXxxOUMNRibSEY1c3BVi
- pfDrnWgkRKMMVxYSucdVjjL8HHCzQWkBl1gmYLZ9bPODYEwTYOuPZg/v5 w==;
-X-CSE-ConnectionGUID: xUZ9KN/ERQSXxxz1G/yn1g==
-X-CSE-MsgGUID: K3ytsvZdTuiJYTncIFCekg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="58559093"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="58559093"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 02:41:28 -0800
-X-CSE-ConnectionGUID: LOA15oQJThGPUjy/dEKQ2g==
-X-CSE-MsgGUID: TGljZFc2S8uHuc9t8hjJEQ==
+ t=1740408072; x=1771944072;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=20irlWmOl8/BotziBLOrD9GSA3L5kUY32HthRK5W1o4=;
+ b=FFUCLkYp9yOpwg1CuNEY6pmtPId0Jt1PqU/61jD7ObKeggSa5riycIDy
+ EH9vJNgNUB3ytpL16FBGnFQv57sR7Xk8dlFWZBLBzhVOZ60GurRRvFv53
+ YvoKtjOpztbHMRxhDoqXlhkdKLnYo5xh/PVluSpZqp5uW0foz5zVEWrNJ
+ /4nj9kazHJkYCO+A6A++TW1MKexIT2qbbNDTDWJqlae19XxB0KDyEt1BE
+ 3L+3Y2zJNWdyQ/tAaIeIALD5mNMXgbjbA2qNnJXNaGM5Y9PPqch8NfnjL
+ ITKR8UZO+qDk2iRF3MTdW1sAVyQv7PXXRZLXJptbki2+xXUBbs6gOrdzp w==;
+X-CSE-ConnectionGUID: qfgNj33jSqa3BXZlJgAavA==
+X-CSE-MsgGUID: PW5bebEeSSuCTq9/kyS5/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="58711493"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="58711493"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 06:41:06 -0800
+X-CSE-ConnectionGUID: vDyktd22SYqrC+dgheZb0A==
+X-CSE-MsgGUID: d3tUhRtIRP683zpNWR8y7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="146874123"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 24 Feb 2025 02:41:27 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 24 Feb 2025 02:41:26 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Mon, 24 Feb 2025 02:41:26 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.175)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 24 Feb 2025 02:41:25 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yZZOFQF9Z9rE90SFawolBm0GYfIhIHl6Pn3uBeHGVaXhlBnyr9rNB3SwoXaqfSwYdIPCojvE2nBtiYEbbg8n0yK/jPOFduTOtLirB4TmITO5hIbXshzadE/T4RR4U60aEr56jU0/qbzdQ2LxWy4RXxSzkoXGM36ZfazUxhhB82dnDcBKQyloDtW+Jo//2Lasn6oxNAUZBbR0WyTZi5ae3JxcEscv6j4ohAmcD4HZx/abGorcypa3B1ZC8jr/8wsD0sblGGKnfyEZVf4UBUs7REAcVj12WisuV8BqeGU4oxJAaREo3bKhHnDkkuDvFlZY7YjWSe9WbW/PFofZsFICwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iwzzRhoHLScmCTsmb9VRrVVBfe4AHMWRgfWaOiZp4jk=;
- b=wtC/e317OJPtS226I3LO/XWpq83zwFAVKluu2tTooYOKvGtyp1ELirzkoReGuAMXfrsV+VX4cMDQbz78VGK7SiQZx88hRoxKAIfunj33fQc7CWaqgP2W79mDw+zHofYqGKHxihkyRhbajv27nf50P3g8dIDn1dJZSLSGjzraecdvQUMRaA/ey6FqzkmLPiNtds//GpytHSCb2mYdnadppQ8dXQTFzZDSEBsQSY3JhYVF6gtk0JsYOik352brErNzCrRQSiTy0qq0kta1PdEXeLx3rKibwRX2INhwio04J9VgC9nycCJrely68fDh91a3iORsUMoIqPLn0HPhe6svSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com (2603:10b6:303:6c::15)
- by BL4PR11MB8800.namprd11.prod.outlook.com (2603:10b6:208:5a7::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
- 2025 10:41:19 +0000
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::4610:6d6c:9af6:2548]) by CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::4610:6d6c:9af6:2548%5]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
- 10:41:18 +0000
-Date: Mon, 24 Feb 2025 10:41:10 +0000
-From: Krzysztof Karas <krzysztof.karas@intel.com>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v2] lib/igt_core: Add ftrace logs at test boundaries
-Message-ID: <yqq7fmt5wlznb2znqcfrtn62qoci5hpteuqmgspqfxl6qzgdue@od4r56ryjayo>
-"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
-References: <20250221223823.2336228-1-umesh.nerlige.ramappa@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20250221223823.2336228-1-umesh.nerlige.ramappa@intel.com>
-X-ClientProxiedBy: ZR2P278CA0078.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:65::13) To CO1PR11MB5057.namprd11.prod.outlook.com
- (2603:10b6:303:6c::15)
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120200556"
+Received: from nemesa.iind.intel.com ([10.190.239.22])
+ by fmviesa003.fm.intel.com with ESMTP; 24 Feb 2025 06:41:05 -0800
+From: Nemesa Garg <nemesa.garg@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Nemesa Garg <nemesa.garg@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_plane: Add test to validate odd panning
+Date: Mon, 24 Feb 2025 20:07:07 +0530
+Message-Id: <20250224143707.2594265-1-nemesa.garg@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5057:EE_|BL4PR11MB8800:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1fac8fa-e66c-4f62-7af4-08dd54bfc5a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TXhJMnlvYVRxWWFPN3ptM244RFEzYUFKQkJicHprd0c3dlh1eVJxR0x4UFJR?=
- =?utf-8?B?VTdiWThuMGhhdlkvUk0rdGRQa2ZvUmw2YndPTHh4bzhKeldOU2tkRFBkVE13?=
- =?utf-8?B?L1QyNERLZTZ0ZGFJYWhDelZ3dXhTQW52S1F3emJTZkdLTzBjNnVyeHFLVmZG?=
- =?utf-8?B?WDZhaC96OFAwUndYNU5QWWtFSEdTMERGTHkzdlNSSjdtZVcwL1RvdFF3eHpK?=
- =?utf-8?B?SzlUOHg1VTFNYzdWaURGelA2Lys0YWFkbDdOVVhxa1BwMldDVVJ4YU9CMnBJ?=
- =?utf-8?B?Z25GQmp1aERsbXdJNjh1UjgwaWZFYTlWdFJBYkxTbWpLYmpLL2xaN3YzYnA4?=
- =?utf-8?B?bmN2NkI5S1B4d0duVC9UbXlMY2NEREdkL2JxWkdxL2RtOXNMMGNQNElTQmp4?=
- =?utf-8?B?bXVKdGRPNXNlQkgydlE1MUM2WCtvUis5akp1TVB1QnhEM2Uwczl3RTE5eEhW?=
- =?utf-8?B?ejBaZG52Wkhma3RVSWpZYm8wOStacVVFUjlvczNyVjRUSUpqTCtqcDNJdnJF?=
- =?utf-8?B?UEFIV3ViTkR1d1ZhSXZJVjg2YmUvOEpHdzRLNkdTeXc4WEhsek1aWHJJTXkz?=
- =?utf-8?B?clJxb1Z5RlU1cEM1ZnRXaTd6MXY5dDcxMDlCSzdCL25oNjdPWGdDb3lqbk8w?=
- =?utf-8?B?aFdjNzV3eS92bUpJT1luUHd3SnlaL3FucnFIUlF4MnE4aXIxcnNOU0llbzdm?=
- =?utf-8?B?Y3czWjU5YmRvdFNkd24rQXB4ZzA2d0dqSFEzSjNxcEFZczVHdWRRQ215K0hs?=
- =?utf-8?B?T1ZXNlBlVkdaYnFpTUhQYzZJcXNzVWV2cDZ3MUQwYjVyQlcwS0U5d2xNVXNR?=
- =?utf-8?B?U1dFU1h6ekN0K3JGKzM2QnN1MHR5RTFaZFlzM2ZIWFVJTWdZVjlQaGxEcFZH?=
- =?utf-8?B?bFBtTDhNQU9rZmhycFdZMVpOaTFZR3dTNVFlZ0VGVHdmNThPQjVneXZJVUt3?=
- =?utf-8?B?UWVSU3ZKK1IrMnN4QUdTbU9ZcnVnaUpxbWx5STlCdFo2eUFaekdwUHZNV1Rw?=
- =?utf-8?B?enZJOEk5eXhJcmlCWExqYTU3WmczaFpTQk84dWpVNTVmMnY3blRRTHdFRi9L?=
- =?utf-8?B?alBuSWQ4SGRkMWpETllsYTk0ZEJETHVPNVdBRXZoWitZTHdBWU04UG95aGlN?=
- =?utf-8?B?eXl3U2x6MXl0eVNVZlZxQnRNYkY1K3lpb25oN0dqOEdLSFhnQ215VlhYYWpI?=
- =?utf-8?B?NHZQb0tuWmpUbVJ5TXc0MzdNWUZBem92VXVDbWh0bEI3aHlNTEZ4ZkJwa2xM?=
- =?utf-8?B?RG5UVmRoMDJtUzdQL1g2QXNPOU9MSjJYTk1hRWNheENkZEdTdy9KU2pLaHRG?=
- =?utf-8?B?aDk4c0x4U3pGZlZzUXRsakdoS3dMbmQ0S1RwaWEvaUtmUWFwVlBEZVUxbWRk?=
- =?utf-8?B?dEozS01vUnRiSTQyNTB3UGpmQUpCSENvQmR6dW9laHdwVEVIT2w0WEtPT0ZS?=
- =?utf-8?B?aXNnQmdpMjdVbWdHaVdSU3MyTjllTEhOVitINHFiK3JOVFpNamtjbHhhV2tp?=
- =?utf-8?B?cEVMclBveFo0Tk4xZW01c3RSdWg0Y0ZCcTc2NUlMVmM5OVozNHk1cG4zNlNJ?=
- =?utf-8?B?aDRLMWVISWdxc2FoRUdDT2d0dlB2czRqWXVCRzZjK0VYem1sYlJUMVBwektx?=
- =?utf-8?B?N0NrZkZSQ1N6bTkvcG9Jdm9rdmxDUFQ2SlRKck9RNWFhQzI2YmpiRmpUMkQ2?=
- =?utf-8?B?WC9LYUgxNWY3MVZ4eWNERGpzOEJoSTN6eFpwRGFiVmNhK0wwMkM3ZVJFbWE2?=
- =?utf-8?B?Ui9TdlV5eGl2cVl1blROMzdzYXBTVnhtUUx6TG9IemZqbTRGUXljRkFPait4?=
- =?utf-8?B?MFplMS9tUm5uWE8wcDlQMFFmMTVYWWtucnlaRU9RZ2lpY01FdStzbVZ0STV1?=
- =?utf-8?Q?Ecw8zu4zJ/x+8?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR11MB5057.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VVZWaVRsMGoyQ3RqZHQ0UkZlek5nMFk3OFdpd3JycU1Pb3FOejNJNC9RK3E5?=
- =?utf-8?B?MmJhTDRENER0bERBekx4bmE3WXBJRDV5MDhSYTN3bkxaSHVvVmQzWktOOEh4?=
- =?utf-8?B?NDJjYjBuQjhjczhxT0dOYzY5Y3NvU0xjelBRdmtNYlhWay9vOWRmc2Q0RlFn?=
- =?utf-8?B?Vk42NU5rdWplcHdMSDJXUXVrYjM5Tjc4dk1yYWcwQ21YUU5iTGYyYUlrMzlJ?=
- =?utf-8?B?UXBxdzlVaWloNnBsYjV5bTVSeFJON1FEQnJIQ2orbXJMS29yQWxMN3lFZERH?=
- =?utf-8?B?c2hvV3pheHhGQ1BMUzFmL1Z5aHdvTzhwdnhkSkxMaWZFUmpOcU45YlI0SUF0?=
- =?utf-8?B?aW5xSEhHOTN1elh5WW11RzhSOHlNYk1DYlFYb3dyZjVnY0FWM3NrSEQ5aWx1?=
- =?utf-8?B?aVVQek5pdUx2WmVPTWtDVm44b1lnTFRIQThVYUlKamxmY1FzOUdBVEd6RTZO?=
- =?utf-8?B?elR0ZzREcjZ2NUFjb1BwSW9tVEVoejNsQzdTSytRa25WWFVRQ0pobGNwRkZ0?=
- =?utf-8?B?NEV3dUVkU0t3OEoxQnpsQkxzaXZvWFZMT0l6VSsvS0tGZ3UwSDkyL1lKWHVX?=
- =?utf-8?B?Zyt2dnN1M3V5cElGRFk4NXJ1bldOU2lzL1Jhc0s4THN5SW40MnpVc29hRUdp?=
- =?utf-8?B?d1VxRlRHSG5PeHhnelkxc3RaSG9uZk9VNTRsZlR1WkFXOHJjSU8xZy9vUExY?=
- =?utf-8?B?dEcrWWkrZzEwM0xZR0l0blFGRUU4WEVXUFErVURwSHNBTTJzYVYzTzNWZmxm?=
- =?utf-8?B?RS9SRytnUzZXbmFWdDVrcW0xMVltU1p2RHlZQUJweEE1Rk15eldPRFpOTEZm?=
- =?utf-8?B?UVB2dDkxUDZySTU3VzY2QTlyRkdxNUEybWJRRnlJeVZuYVZZQ2NWaTNYYnk4?=
- =?utf-8?B?ZVozQjRyaDcxL3h6aFJnWTRhWWFzVWxFSnY0OWFLVkc2R2xwUmlwOXhvUEI3?=
- =?utf-8?B?N1NzNHFpNTJ4MTlhdXp4c3dYTkZKd3dLRm1aaDE3YXE2UCtxYzBVRHNQT2lZ?=
- =?utf-8?B?VFdwRnA5Q2srRm8wb2J4SE9WTVh6YWgwZ1pueFdpN01EVUY5RFNxL2hGbmpa?=
- =?utf-8?B?QmNneGVyM01UbUJzaUtDaUNoaC9yYWVwU2tpQXFzYmtqNmxodGhiNmVNMUFO?=
- =?utf-8?B?M2x6WWZxL2Y5Ly9vRXFnZnZZek9tdFZoRUgxUExHMVVyVHRZVnJxQzJzejhv?=
- =?utf-8?B?SHB3VG9SWE1UVlppUXpTVFNzZThkV3lqRTVmOVBWcEJVbXJlQUkzOGgwdGUr?=
- =?utf-8?B?dno2ZHZ3bFJpTzFjR2dRd1lqRnNFMVhTaksvbER5dDBYUFVOSnJmUnFwZFl2?=
- =?utf-8?B?eXBxb3NxOVdyK09mYndhQjVWMXZLRjdOK0hhUVlpeXRHVERlcjdyRlgrV2Rt?=
- =?utf-8?B?M3FHQUJzQzZqT0NqMERMS0I0blZ3YSt1aWFCUDl0ZXV5OW55MHhHTitvVThn?=
- =?utf-8?B?bDdGMmtSZGFiYWhwZ2hzYUpZL1hDQ08wV20rRlpNWG82ZHZ6Z2NRVE5hdnJl?=
- =?utf-8?B?YzAxSTQ5NTFrbW1MR1ZuSmpsY2VKYm1qSTl4dUQrNjE5QU4za2dzN2lZODYz?=
- =?utf-8?B?T3JCYWJKR083bmJyZ2NJU0tkY1JJaTVzdXlOdy9QUGdrbk1GbWZwSG5ZVnM5?=
- =?utf-8?B?VUpUWHdlNituZ1VHUVRJM3Z6TG1HUlF1Zk9wazRxUllJenk3bm5LWWs2SjlC?=
- =?utf-8?B?cFR2QXJvbjd4V3VEQ0JsbnVzMlNKdDRDZnhZZ1lvNUE5cjBwTkpkRERMTVNv?=
- =?utf-8?B?T2w4OHRqdWdUaGVCV0Q0NjlQc2t2dlNteGE2YU1HdGhZV24rdEN0RWljbGk1?=
- =?utf-8?B?cmpxenFyQk1Qenl5UHl2UGljTXo2NXY3REdCeFk1RHM1Z0RjSjJUVTlhRCt3?=
- =?utf-8?B?NVZsWm45TXQ1OHhuKzgzdGozcHpmTFJMUEdFeCtSUmdpVUdtTC9oTmRTZ3Q5?=
- =?utf-8?B?eUJHc283MExjYStYMm9NVktPZnN1WThzZ0pPSDNkbUgrZG9LR25nWEZLeUQ1?=
- =?utf-8?B?TnZBMHorVFRjbDdLWHVOaTZ5V3RORTAwT3l2dWdabFlHVXRFRWd1bFhGbUlW?=
- =?utf-8?B?ZkJqcFZ2MTBNTlRVOVZvWlRPcXpuczdyZVZlVk5wK3J2a29raFM0Rk85bk5a?=
- =?utf-8?B?dVRNNFJqZlVPY01KOU5oQVVXWXp2d3Mra1BESDBLd2hReTlxUERPWEpPdDNu?=
- =?utf-8?B?elE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1fac8fa-e66c-4f62-7af4-08dd54bfc5a6
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5057.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 10:41:18.9344 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /lujXZ8SzUxttPPnb7tkZ4C0xRotZjDqxVzSG/B/bNeTIZ4UCAMR7s609x0MMJHIGzkZpTYS7hY+LwsC56X1SlHr4ZTNhBrgxgUFYyyxUHU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR11MB8800
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -194,23 +64,161 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Umesh,
+This feature creates a NV12 plane having two framebuffers
+and moving it to odd position and then do continous flip
+along with the change in the width of framebuffer.
+This is to check whether panning at odd position is
+supported or not.
 
-> When looking at kernel ftrace output, it would really help to see the
-> test start/exit boundaries.
-> 
-> v2: Fix copy paste error
->
+v2: Add test in kms_plane.[Swati]
 
-[...]
+Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
+---
+ tests/kms_plane.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 103 insertions(+)
 
-> +	igt_trace("%s: finished subtest %s, %s\n",
-> +		  command_str, *subtest_name, result);
-You could fit this on one line.
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index b9bf025bd..8490cfabc 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -88,6 +88,15 @@
+  * @format-source-clamping:          with source clamping
+  */
+ 
++/**
++ * SUBTEST: odd-panning
++ * Description: Verify that odd panning in horizontal direction for planar format
++ * Driver requirement: i915, xe
++ * Functionality: kms_odd_pan
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ */
++
+ /*
+  * Throw away enough lsbs in pixel formats tests
+  * to get a match despite some differences between
+@@ -100,6 +109,9 @@
+ #define CRTC_RESTRICT_CNT	2
+ #define SIM_CRTC_RESTRICT_CNT	1
+ 
++#define PLANE_WIDTH 810
++#define PLANE_HEIGHT 590
++
+ typedef struct {
+ 	float red;
+ 	float green;
+@@ -121,6 +133,8 @@ typedef struct {
+ 	uint32_t crop;
+ 	bool extended;
+ 	unsigned int flags;
++	igt_plane_t **plane;
++	struct igt_fb *fb;
+ } data_t;
+ 
+ static bool all_pipes;
+@@ -1330,6 +1344,91 @@ static bool is_pipe_limit_reached(int count)
+ 		return count >= CRTC_RESTRICT_CNT && !all_pipes;
+ }
+ 
++static void
++prepare_planes(igt_display_t *display, const enum pipe pipe_id,
++	       igt_output_t *output)
++{
++	igt_plane_t *primary;
++	struct igt_fb primary_fb_1, primary_fb_2;
++	unsigned int fb_id_1, fb_id_2;
++	int j = 0, ret;
++
++	igt_output_set_pipe(output, pipe_id);
++
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++	fb_id_1 = igt_create_pattern_fb(display->drm_fd,
++					800, 590,
++					DRM_FORMAT_NV12,
++					DRM_FORMAT_MOD_LINEAR,
++					&primary_fb_1);
++
++	fb_id_2 = igt_create_pattern_fb(display->drm_fd,
++					800, 590,
++					DRM_FORMAT_NV12,
++					DRM_FORMAT_MOD_LINEAR,
++					&primary_fb_2);
++
++	igt_assert(fb_id_1);
++	igt_assert(fb_id_2);
++
++	igt_plane_set_fb(primary, &primary_fb_1);
++
++	igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
++	igt_plane_set_position(primary, -501, 200);
++
++	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	do {
++		if (j % 2 == 0) {
++			igt_plane_set_fb(primary, &primary_fb_1);
++			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
++			ret = igt_display_try_commit_atomic(display, 0, NULL);
++		} else {
++			igt_plane_set_fb(primary, &primary_fb_2);
++			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
++			ret = igt_display_try_commit_atomic(display, 0, NULL);
++		}
++		j++;
++	} while (j < 20);
++
++	igt_assert_eq(ret, -22);
++
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_try_commit2(display, COMMIT_ATOMIC);
++
++	igt_remove_fb(display->drm_fd, &primary_fb_1);
++	igt_remove_fb(display->drm_fd, &primary_fb_2);
++}
++
++static void run_test_pan(igt_display_t *display, const enum pipe pipe_id,
++			 igt_output_t *output)
++{
++	prepare_planes(display, pipe_id, output);
++}
++
++static void run_test_odd_pan(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	enum pipe pipe;
++	igt_output_t *output;
++
++	for_each_pipe_with_valid_output(display, pipe, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, pipe);
++		if (!intel_pipe_output_combo_valid(display))
++			continue;
++
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
++			run_test_pan(display, pipe, output);
++
++		if (pipe == 0)
++			break;
++	}
++}
++
+ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+ {
+ 	enum pipe pipe;
+@@ -1408,6 +1507,10 @@ run_tests_for_pipe_plane(data_t *data)
+ 		run_test(data, dynamic_test_handler);
+ 	}
+ 
++	igt_describe("verify whether odd panning is supported or not");
++	igt_subtest_with_dynamic("odd-panning")
++		run_test_odd_pan(data);
++
+ 	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
+ 	igt_subtest_f("planar-pixel-format-settings")
+ 		test_planar_settings(data);
+-- 
+2.25.1
 
-Apart from that LGTM:
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-
-Best Regards,
-Krzysztof
-  
