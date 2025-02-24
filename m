@@ -4,49 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A99C021A4
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:41:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6852C021BB
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:47:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76C1410E3C1;
-	Mon, 24 Feb 2025 14:41:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 655D610E3C1;
+	Mon, 24 Feb 2025 14:47:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FFUCLkYp";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XTbX9MJu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C44A10E3C1
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:41:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9E4D10E3EA
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740408072; x=1771944072;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=20irlWmOl8/BotziBLOrD9GSA3L5kUY32HthRK5W1o4=;
- b=FFUCLkYp9yOpwg1CuNEY6pmtPId0Jt1PqU/61jD7ObKeggSa5riycIDy
- EH9vJNgNUB3ytpL16FBGnFQv57sR7Xk8dlFWZBLBzhVOZ60GurRRvFv53
- YvoKtjOpztbHMRxhDoqXlhkdKLnYo5xh/PVluSpZqp5uW0foz5zVEWrNJ
- /4nj9kazHJkYCO+A6A++TW1MKexIT2qbbNDTDWJqlae19XxB0KDyEt1BE
- 3L+3Y2zJNWdyQ/tAaIeIALD5mNMXgbjbA2qNnJXNaGM5Y9PPqch8NfnjL
- ITKR8UZO+qDk2iRF3MTdW1sAVyQv7PXXRZLXJptbki2+xXUBbs6gOrdzp w==;
-X-CSE-ConnectionGUID: qfgNj33jSqa3BXZlJgAavA==
-X-CSE-MsgGUID: PW5bebEeSSuCTq9/kyS5/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="58711493"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="58711493"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:41:06 -0800
-X-CSE-ConnectionGUID: vDyktd22SYqrC+dgheZb0A==
-X-CSE-MsgGUID: d3tUhRtIRP683zpNWR8y7g==
+ t=1740408450; x=1771944450;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=AYVHqhPjjFmj2fP916FRyydp95HExSoW6zdWcaY7fog=;
+ b=XTbX9MJudyel1gw84lubbEHeeqHLEfER6B/JDzixYMzuS5+QHyXKoaE9
+ Gmz/7CTFqpZatBY3GjRePEd/62GSh9StKtb+0eX+HTTi2lum6Qoa9qeeQ
+ cVa7R5UpFDKzssky5D7Onv5MJZrtYrV8nYXM6oLfhg08fh+dBlVenYLHW
+ XcRJV8YfjNgVIUJPULeDbvwy5GBwEnrEr+N0pLbAnwJ+H1TSrhM1XdmjY
+ XISCEV8qVPZzZtn5qYAD055gtL8vun9byIr8uUN8i3vYhffBpmWjIenrX
+ jrsqUjkbPNhaUfykqorJjHwByKCq17Dx9vUU1xhylMSONHBJPR5Qus2dd w==;
+X-CSE-ConnectionGUID: bJWi07r8SXK5ik65+TNJKw==
+X-CSE-MsgGUID: rZEsEMWlSNuJ1fTw6WmS9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51793296"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="51793296"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 06:47:28 -0800
+X-CSE-ConnectionGUID: MQ8xF8pPRgyRucOYaRpfdg==
+X-CSE-MsgGUID: sOgVF2bPSvS6QaJutBZioQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120200556"
-Received: from nemesa.iind.intel.com ([10.190.239.22])
- by fmviesa003.fm.intel.com with ESMTP; 24 Feb 2025 06:41:05 -0800
-From: Nemesa Garg <nemesa.garg@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="120689966"
+Received: from dprybysh-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.246.122])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 06:47:26 -0800
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Nemesa Garg <nemesa.garg@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_plane: Add test to validate odd panning
-Date: Mon, 24 Feb 2025 20:07:07 +0530
-Message-Id: <20250224143707.2594265-1-nemesa.garg@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: zbigniew.kempczynski@intel.com, Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t,
+ v2 5/6] lib/intel_compute: Give option to skip results check
+Date: Mon, 24 Feb 2025 15:46:13 +0100
+Message-ID: <20250224144705.1019940-6-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250224144705.1019940-1-francois.dugast@intel.com>
+References: <20250224144705.1019940-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,161 +69,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This feature creates a NV12 plane having two framebuffers
-and moving it to odd position and then do continous flip
-along with the change in the width of framebuffer.
-This is to check whether panning at odd position is
-supported or not.
+This is useful when using a custom compute kernel which produces
+different results than the default one (square) and when those
+results should be ignored because they are not the purpose of the
+test.
 
-v2: Add test in kms_plane.[Swati]
-
-Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/kms_plane.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
+ lib/intel_compute.c | 15 ++++++++++-----
+ lib/intel_compute.h |  2 ++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index b9bf025bd..8490cfabc 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -88,6 +88,15 @@
-  * @format-source-clamping:          with source clamping
-  */
- 
-+/**
-+ * SUBTEST: odd-panning
-+ * Description: Verify that odd panning in horizontal direction for planar format
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_odd_pan
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
- /*
-  * Throw away enough lsbs in pixel formats tests
-  * to get a match despite some differences between
-@@ -100,6 +109,9 @@
- #define CRTC_RESTRICT_CNT	2
- #define SIM_CRTC_RESTRICT_CNT	1
- 
-+#define PLANE_WIDTH 810
-+#define PLANE_HEIGHT 590
-+
- typedef struct {
- 	float red;
- 	float green;
-@@ -121,6 +133,8 @@ typedef struct {
- 	uint32_t crop;
- 	bool extended;
- 	unsigned int flags;
-+	igt_plane_t **plane;
-+	struct igt_fb *fb;
- } data_t;
- 
- static bool all_pipes;
-@@ -1330,6 +1344,91 @@ static bool is_pipe_limit_reached(int count)
- 		return count >= CRTC_RESTRICT_CNT && !all_pipes;
- }
- 
-+static void
-+prepare_planes(igt_display_t *display, const enum pipe pipe_id,
-+	       igt_output_t *output)
-+{
-+	igt_plane_t *primary;
-+	struct igt_fb primary_fb_1, primary_fb_2;
-+	unsigned int fb_id_1, fb_id_2;
-+	int j = 0, ret;
-+
-+	igt_output_set_pipe(output, pipe_id);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	fb_id_1 = igt_create_pattern_fb(display->drm_fd,
-+					800, 590,
-+					DRM_FORMAT_NV12,
-+					DRM_FORMAT_MOD_LINEAR,
-+					&primary_fb_1);
-+
-+	fb_id_2 = igt_create_pattern_fb(display->drm_fd,
-+					800, 590,
-+					DRM_FORMAT_NV12,
-+					DRM_FORMAT_MOD_LINEAR,
-+					&primary_fb_2);
-+
-+	igt_assert(fb_id_1);
-+	igt_assert(fb_id_2);
-+
-+	igt_plane_set_fb(primary, &primary_fb_1);
-+
-+	igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
-+	igt_plane_set_position(primary, -501, 200);
-+
-+	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	do {
-+		if (j % 2 == 0) {
-+			igt_plane_set_fb(primary, &primary_fb_1);
-+			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
-+			ret = igt_display_try_commit_atomic(display, 0, NULL);
-+		} else {
-+			igt_plane_set_fb(primary, &primary_fb_2);
-+			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
-+			ret = igt_display_try_commit_atomic(display, 0, NULL);
-+		}
-+		j++;
-+	} while (j < 20);
-+
-+	igt_assert_eq(ret, -22);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_try_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_remove_fb(display->drm_fd, &primary_fb_1);
-+	igt_remove_fb(display->drm_fd, &primary_fb_2);
-+}
-+
-+static void run_test_pan(igt_display_t *display, const enum pipe pipe_id,
-+			 igt_output_t *output)
-+{
-+	prepare_planes(display, pipe_id, output);
-+}
-+
-+static void run_test_odd_pan(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	enum pipe pipe;
-+	igt_output_t *output;
-+
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, pipe);
-+		if (!intel_pipe_output_combo_valid(display))
-+			continue;
-+
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+			run_test_pan(display, pipe, output);
-+
-+		if (pipe == 0)
-+			break;
-+	}
-+}
-+
- static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
- {
- 	enum pipe pipe;
-@@ -1408,6 +1507,10 @@ run_tests_for_pipe_plane(data_t *data)
- 		run_test(data, dynamic_test_handler);
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 04fb83321..4818c0ff7 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -753,7 +753,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 		if (output != expected_output)
+ 			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
+ 				  i, input, output, expected_output);
+-		igt_assert_eq(output, expected_output);
++		if (!user || (user && !user->skip_results_check))
++			igt_assert_eq(output, expected_output);
  	}
  
-+	igt_describe("verify whether odd panning is supported or not");
-+	igt_subtest_with_dynamic("odd-panning")
-+		run_test_odd_pan(data);
-+
- 	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
- 	igt_subtest_f("planar-pixel-format-settings")
- 		test_planar_settings(data);
+ 	bo_execenv_unbind(&execenv, bo_dict, BO_DICT_ENTRIES);
+@@ -1033,7 +1034,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 		if (output != expected_output)
+ 			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
+ 				  i, input, output, expected_output);
+-		igt_assert_eq(output, expected_output);
++		if (!user || (user && !user->skip_results_check))
++			igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
+@@ -1243,7 +1245,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 		if (output != expected_output)
+ 			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
+ 				  i, input, output, expected_output);
+-		igt_assert_eq(output, expected_output);
++		if (!user || (user && !user->skip_results_check))
++			igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
+@@ -1609,7 +1612,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 		if (output != expected_output)
+ 			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
+ 				  i, input, output, expected_output);
+-		igt_assert_eq(output, expected_output);
++		if (!user || (user && !user->skip_results_check))
++			igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
+@@ -1701,7 +1705,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 		if (output != expected_output)
+ 			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
+ 				  i, input, output, expected_output);
+-		igt_assert_eq(output, expected_output);
++		if (!user || (user && !user->skip_results_check))
++			igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index 3f6d0bb1d..dc0fe2ec2 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -53,6 +53,8 @@ struct user_execenv {
+ 	const unsigned char *kernel;
+ 	/** @kernel_size: size of the custom kernel, if provided */
+ 	unsigned int kernel_size;
++	/** @skip_results_check: do not verify correctness of the results if true */
++	bool skip_results_check;
+ };
+ 
+ extern const struct intel_compute_kernels intel_compute_square_kernels[];
 -- 
-2.25.1
+2.43.0
 
