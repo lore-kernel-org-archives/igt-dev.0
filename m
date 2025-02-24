@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E07C021A4
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 12:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28243C021A4
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 12:10:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0016810E372;
-	Mon, 24 Feb 2025 12:08:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB11810E29E;
+	Mon, 24 Feb 2025 12:10:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mNrFuOqT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PSJvoilB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 885D010E372;
- Mon, 24 Feb 2025 12:08:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0342810E29E;
+ Mon, 24 Feb 2025 12:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740398903; x=1771934903;
+ t=1740399012; x=1771935012;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=5kqoJD8Gi9u0L65ANix/s20kfvpIakTqC6teu08klB4=;
- b=mNrFuOqTu5WHqAdZ3DNe3c+aPpxwPrNdISAqcRrj3wPYFlP3AGyOMXKX
- WwPzo7C+PUNibFEJQnQztP32Bk72qHcChzN4iUo4WVSnloPhiWf6kNJrm
- kElYrzrkt5Ujgnktv2zmATxp4fq4cQ8Yq67BYOg1uGYvFqtzMauQT/J1W
- L9lMj0NStor47mXDz+DvTQvQa61wf//NVNb0H1ICI6JwL7qTwTQ89q6ZW
- YuXL/kvvdTVY7NTFfEoFj/BQpwojnb1gFCf5r1yPOuV4eSCumz13+Ohr/
- L82hEcchfuS8emiItib7Y5IFqYpYstp+dTzbyrrvZyUeDGyjDW4i5SHr1 A==;
-X-CSE-ConnectionGUID: WoNDplDFRZiGnf/D+INviw==
-X-CSE-MsgGUID: 67XNdT6bQdSM3krqM10p1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="52550657"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="52550657"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 04:08:23 -0800
-X-CSE-ConnectionGUID: NE10EcH7QIi3+jxoi67wvg==
-X-CSE-MsgGUID: hW5kfsybQWm7CuWkI7Lkrg==
+ bh=qN5SjtQ4UmtM3PWf3A1oEgi4RmT9ttBHOoQ6GpxwpNY=;
+ b=PSJvoilB03jcUijBEXITPUSfWNxz6CtuC+yo0Eg2SdZ+rQoP7xDV4mnT
+ St7l4EZLlcHwZLmNXyGv2mq/I6TK7aGNC5WNywdS4W+VIGyU1icfs2AnS
+ cCN7PFKjpxUhyOhL6QpdzhTEGHls0XTPK03lbCXdx7fbup1u6I2RYCi1Q
+ 34nQ+IaHQzXPRcVxhch9SSnM/Ffgdv7ylavGPjovCpnnDU5V32RhUhc4T
+ WwHn4j8g7CKhbZS3ORB/wNLv4A/JyGI9MEBdZDuYMMAFh/IFv+DLLghrD
+ +nmG9pSn8sxWCjGF3xeOvmKiwDsa222HPa4/5VZGwZhEQUTfXlDSUJa5f A==;
+X-CSE-ConnectionGUID: V6PAaG8UQvSar/kGECjQ7A==
+X-CSE-MsgGUID: ht+PYaprRzGCorsbt9BSYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41165592"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="41165592"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 04:10:03 -0800
+X-CSE-ConnectionGUID: rIHiLJGPT1SigI4rGfYQVg==
+X-CSE-MsgGUID: KXOAU7RDS/WnO8hT3BmClQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121312818"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="139275177"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 04:08:22 -0800
-Date: Mon, 24 Feb 2025 13:08:19 +0100
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 04:10:01 -0800
+Date: Mon, 24 Feb 2025 13:09:59 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVy?= =?utf-8?Q?e?= for
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
  lib/igt_core: Add ftrace logs at test boundaries (rev2)
-Message-ID: <20250224120819.lvaoo6t3rv7yxzlp@kamilkon-desk.igk.intel.com>
+Message-ID: <20250224120959.u3fkk5ck2u6rujk2@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  I915-ci-infra@lists.freedesktop.org
 References: <20250221223823.2336228-1-umesh.nerlige.ramappa@intel.com>
- <174018905888.626109.17040306311515802458@b555e5b46a47>
+ <174023151766.756096.938364433313045379@b555e5b46a47>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <174018905888.626109.17040306311515802458@b555e5b46a47>
+In-Reply-To: <174023151766.756096.938364433313045379@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,7 +75,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2025-02-22 at 01:50:58 -0000, Patchwork wrote:
+On 2025-02-22 at 13:38:37 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: lib/igt_core: Add ftrace logs at test boundaries (rev2)
@@ -84,7 +84,7 @@ On 2025-02-22 at 01:50:58 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from CI_DRM_16169_full -> IGTPW_12653_full
+> CI Bug Log - changes from XEIGT_8246_full -> XEIGTPW_12653_full
 > ====================================================
 > 
 > Summary
@@ -92,16 +92,22 @@ On 2025-02-22 at 01:50:58 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_12653_full absolutely need to be
+>   Serious unknown changes coming with XEIGTPW_12653_full absolutely need to be
 >   verified manually.
+
+Unrelated,
+
+Regards,
+Kamil
+
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12653_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in XEIGTPW_12653_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/index.html
+>   
 > 
-> Participating hosts (10 -> 10)
+> Participating hosts (4 -> 4)
 > ------------------------------
 > 
 >   No changes in participating hosts
@@ -109,54 +115,32 @@ On 2025-02-22 at 01:50:58 -0000, Patchwork wrote:
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_12653_full:
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12653_full:
 > 
-
-Unrelated, no need for rerun.
-
-Regards,
-Kamil
-
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@core_setmaster@master-drop-set-shared-fd:
->     - shard-tglu:         [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16169/shard-tglu-3/igt@core_setmaster@master-drop-set-shared-fd.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-tglu-2/igt@core_setmaster@master-drop-set-shared-fd.html
+>   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-dp-4 (NEW):
+>     - shard-dg2-set2:     NOTRUN -> [INCOMPLETE][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12653/shard-dg2-466/igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-dp-4.html
 > 
->   * igt@gem_exec_suspend@basic-s4-devices:
->     - shard-glk:          NOTRUN -> [ABORT][3] +1 other test abort
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-glk6/igt@gem_exec_suspend@basic-s4-devices.html
+>   * igt@kms_flip@2x-plain-flip-fb-recreate@ab-hdmi-a2-dp2:
+>     - shard-dg2-set2:     NOTRUN -> [FAIL][2] +2 other tests fail
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12653/shard-dg2-432/igt@kms_flip@2x-plain-flip-fb-recreate@ab-hdmi-a2-dp2.html
 > 
->   * igt@gem_tiled_swapping@non-threaded:
->     - shard-glk:          NOTRUN -> [FAIL][4]
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-glk6/igt@gem_tiled_swapping@non-threaded.html
+>   * igt@kms_sequence@get-busy:
+>     - shard-bmg:          [PASS][3] -> [INCOMPLETE][4] +1 other test incomplete
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8246/shard-bmg-5/igt@kms_sequence@get-busy.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12653/shard-bmg-3/igt@kms_sequence@get-busy.html
 > 
->   * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@ab-vga1-hdmi-a1:
->     - shard-snb:          [PASS][5] -> [FAIL][6] +1 other test fail
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16169/shard-snb1/igt@kms_flip@2x-flip-vs-blocking-wf-vblank@ab-vga1-hdmi-a1.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-snb2/igt@kms_flip@2x-flip-vs-blocking-wf-vblank@ab-vga1-hdmi-a1.html
+>   
+> #### Warnings ####
 > 
->   * igt@kms_flip@plain-flip-fb-recreate-interruptible:
->     - shard-tglu:         [PASS][7] -> [FAIL][8] +1 other test fail
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16169/shard-tglu-7/igt@kms_flip@plain-flip-fb-recreate-interruptible.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-tglu-6/igt@kms_flip@plain-flip-fb-recreate-interruptible.html
-> 
->   * igt@kms_flip@plain-flip-ts-check@a-edp1:
->     - shard-mtlp:         NOTRUN -> [FAIL][9] +1 other test fail
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-mtlp-5/igt@kms_flip@plain-flip-ts-check@a-edp1.html
-> 
->   * igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1:
->     - shard-mtlp:         [PASS][10] -> [FAIL][11] +2 other tests fail
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16169/shard-mtlp-6/igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1.html
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-mtlp-1/igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1.html
-> 
->   * igt@perf_pmu@module-unload:
->     - shard-dg1:          [PASS][12] -> [INCOMPLETE][13]
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16169/shard-dg1-18/igt@perf_pmu@module-unload.html
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-dg1-17/igt@perf_pmu@module-unload.html
+>   * igt@xe_pm@s4-multiple-execs:
+>     - shard-bmg:          [ABORT][5] ([Intel XE#4268]) -> [ABORT][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8246/shard-bmg-5/igt@xe_pm@s4-multiple-execs.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12653/shard-bmg-5/igt@xe_pm@s4-multiple-execs.html
 > 
 >   
 > #### Suppressed ####
@@ -164,53 +148,386 @@ Kamil
 >   The following results come from untrusted machines, tests, or statuses.
 >   They do not affect the overall result.
 > 
->   * {igt@kms_dp_link_training@non-uhbr-mst}:
->     - shard-tglu:         NOTRUN -> [SKIP][14]
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-tglu-10/igt@kms_dp_link_training@non-uhbr-mst.html
->     - shard-mtlp:         NOTRUN -> [SKIP][15]
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-mtlp-8/igt@kms_dp_link_training@non-uhbr-mst.html
->     - shard-dg2:          NOTRUN -> [SKIP][16]
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-dg2-11/igt@kms_dp_link_training@non-uhbr-mst.html
->     - shard-rkl:          NOTRUN -> [SKIP][17]
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-rkl-1/igt@kms_dp_link_training@non-uhbr-mst.html
->     - shard-dg1:          NOTRUN -> [SKIP][18]
->    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-dg1-18/igt@kms_dp_link_training@non-uhbr-mst.html
-> 
->   * {igt@kms_dp_link_training@uhbr-mst}:
->     - shard-tglu-1:       NOTRUN -> [SKIP][19]
->    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-tglu-1/igt@kms_dp_link_training@uhbr-mst.html
+>   * {igt@kms_dp_link_training@non-uhbr-sst}:
+>     - shard-dg2-set2:     NOTRUN -> [SKIP][7]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12653/shard-dg2-464/igt@kms_dp_link_training@non-uhbr-sst.html
 > 
 >   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between XEIGT_8246_full and XEIGTPW_12653_full:
+> 
+
+No new series was introduced by this change.
+
+> ### New IGT tests (84) ###
+> 
+>   * igt@kms_ccs@bad-aux-stride-yf-tiled-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-aux-stride-yf-tiled-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-aux-stride-yf-tiled-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-aux-stride-yf-tiled-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-a-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-b-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-b-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-c-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-c-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-d-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs@pipe-d-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-rc-ccs-cc@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-rc-ccs-cc@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs-cc@pipe-a-hdmi-a-6:
+>     - Statuses : 1 dmesg-warn(s)
+>     - Exec time: [4.53] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs-cc@pipe-b-hdmi-a-6:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.01] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-6:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.01] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs-cc@pipe-d-hdmi-a-6:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.01] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [1.26] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.00] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.00] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.00] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-a-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-a-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-b-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-b-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-c-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-c-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-d-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs@pipe-d-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-gen12-rc-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-gen12-rc-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-gen12-rc-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-y-tiled-gen12-rc-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-a-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-a-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-b-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-b-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-c-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-c-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-d-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-d-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-4-tiled-mtl-rc-ccs-cc@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-4-tiled-mtl-rc-ccs-cc@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-4-tiled-mtl-rc-ccs-cc@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-a-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-a-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-b-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-b-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-c-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-d-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs@pipe-d-hdmi-a-6:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [3.39] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-rc-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.69] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.69] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-rc-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.68] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-mc-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-mc-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-mc-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-rc-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-rc-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs-cc@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs-cc@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs-cc@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs-cc@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-dp-4:
+>     - Statuses : 1 incomplete(s)
+>     - Exec time: [4.64] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.78] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-b-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.81] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.79] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-d-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.76] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-a-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-b-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-c-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-d-dp-4:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc@pipe-a-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc@pipe-b-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc@pipe-c-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc@pipe-d-hdmi-a-2:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   
+> 
 > Known issues
 > ------------
 > 
->   Here are the changes found in IGTPW_12653_full that come from known issues:
+>   Here are the changes found in XEIGTPW_12653_full that come from known issues:
 > 
 > ### IGT changes ###
 > 
 > #### Issues hit ####
 > 
->   * igt@api_intel_bb@object-reloc-keep-cache:
->     - shard-dg2:          NOTRUN -> [SKIP][20] ([i915#8411])
->    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/shard-dg2-11/igt@api_intel_bb@object-reloc-keep-cache.html
-> 
 
 ...cut...
 
+>   [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+>   [i915#3804]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3804
+> 
 > 
 > Build changes
 > -------------
 > 
->   * CI: CI-20190529 -> None
 >   * IGT: IGT_8246 -> IGTPW_12653
->   * Piglit: piglit_4509 -> None
+>   * Linux: xe-2699-3ef8736446933ce5e8ccbec2f85922ca1ed3b706 -> xe-2700-f2a2bd676bde0942c9dfe5c55d54eec298260f88
 > 
->   CI-20190529: 20190529
->   CI_DRM_16169: f2a2bd676bde0942c9dfe5c55d54eec298260f88 @ git://anongit.freedesktop.org/gfx-ci/linux
 >   IGTPW_12653: 3efafa60fb8776bad333092fb6b26f80434d41be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 >   IGT_8246: 2670886863d5821273146d7f94cdd3c8e3a4fe0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+>   xe-2699-3ef8736446933ce5e8ccbec2f85922ca1ed3b706: 3ef8736446933ce5e8ccbec2f85922ca1ed3b706
+>   xe-2700-f2a2bd676bde0942c9dfe5c55d54eec298260f88: f2a2bd676bde0942c9dfe5c55d54eec298260f88
 > 
 > == Logs ==
 > 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12653/index.html
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12653/index.html
