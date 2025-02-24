@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 610CDC021BC
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:47:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5967C021BB
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:47:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8E7710E3EE;
-	Mon, 24 Feb 2025 14:47:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7688010E3F6;
+	Mon, 24 Feb 2025 14:47:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AS6+t1YW";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifABsmmq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB88E10E3C1
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:47:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A347E10E3DE
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740408448; x=1771944448;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=NuzxqVkVnklWhUJtutoK1jwzAdVkvxg5coSBnmyHZZw=;
- b=AS6+t1YWuO2j3HhdHRZnzh1cdRP3sT5CSFcKXSfBWHKKrhF8CtmAXHwV
- HZArsL6bD+bUtxn9jz92ktqXqhDtfWKwniTl9V6xKzcBuT91dQEHu07Vp
- w79/EV29ebFiHnqu1FcodhDmYvrUtmM+BW3FB3HKG5DQYp9loxC1X7pxz
- ED2rAjBAA2aUlXkRpzAc3cmBZKzfQHpwPrL/hT5cKv37CxsB8SefrrmAe
- qGWn3emeaIdE++Bz5DFY9tdKlu/G4dA3yCqHMTW05dlV5bdnA2eySRuaM
- 3zBHT4wDe16SjwlSc2VBSMuWtzwsfBkl8LI8+JruEcD61ewxib2iMIF4S w==;
-X-CSE-ConnectionGUID: O+Hi2Hq3QBCPRNvjXbwuSw==
-X-CSE-MsgGUID: NXNZtLsBTsmnyXO/3W4k4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51793276"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="51793276"
+ t=1740408450; x=1771944450;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ty3JYNreL9K1LF42t+FF4gCDWqyh1aUk0xoW1tMGxq8=;
+ b=ifABsmmqAk7mynnMG5VJs24ubguQXnu5jVGfabSa/NUivo3YkJ8nNIkf
+ R/fpZv993tZizb/UVf6wnt4PUSiMvHROmS96HGIZFCZaXm4wGu9NvFn8d
+ CzqoIPge5yQdCrR6/Hl5uH880PoRB1xGGBmRgOTydNDV1ah1WYJd9kpfY
+ iVdArQmpZ8sac6c55GTVCU1Sv/7YgHwClhrloL40wEezOwjQzFO/me8I3
+ AR74fF8/sehjFH80PAKUuWRMovm/8ShR83fClBeIqtBFIs3sUuVFhqeYb
+ 5tVEBlkGjpYOkDFxmjLRupwfdCYqXyIBn9ASK2PGbna0VNpdiSyqGafxh g==;
+X-CSE-ConnectionGUID: qPKvWoC0R0awPEVJGljIzw==
+X-CSE-MsgGUID: m3JPWlECTMadsdlzfvqvRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51793285"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="51793285"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:47:20 -0800
-X-CSE-ConnectionGUID: AHJhqSqBTXuG5j5ci4CNfQ==
-X-CSE-MsgGUID: N3dEG0SQRomJOGHYlUMOpA==
+ 24 Feb 2025 06:47:23 -0800
+X-CSE-ConnectionGUID: PdrR8ymbTA2JtScglFvq0Q==
+X-CSE-MsgGUID: QzCfjy9AQpe9zxX1i1uqnA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="120689942"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="120689950"
 Received: from dprybysh-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.246.122])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:47:18 -0800
+ 24 Feb 2025 06:47:21 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, Francois Dugast <francois.dugast@intel.com>
 Subject: [PATCH i-g-t,
- v2 0/6] Prepare lib/intel_compute for SVM/system allocator
-Date: Mon, 24 Feb 2025 15:46:08 +0100
-Message-ID: <20250224144705.1019940-1-francois.dugast@intel.com>
+ v2 2/6] lib/intel_compute: Rename variables for input and output data
+Date: Mon, 24 Feb 2025 15:46:10 +0100
+Message-ID: <20250224144705.1019940-3-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250224144705.1019940-1-francois.dugast@intel.com>
+References: <20250224144705.1019940-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,28 +69,304 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series provides a series of changes to give more control to the
-user of lib/intel_compute when executing a compute kernel. This will
-help to test corner cases requiring a specific execution environment
-as well as to test the system allocator from the compute kernel
-context.
+Use more explicit names to make development and debugging easier.
 
-v2: Add patch 1/6, rebase others on top of it, improve documentation
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ lib/intel_compute.c | 143 ++++++++++++++++++++++++--------------------
+ 1 file changed, 77 insertions(+), 66 deletions(-)
 
-Francois Dugast (6):
-  lib/intel_compute: Make loop count a parameter
-  lib/intel_compute: Rename variables for input and output data
-  lib/intel_compute: Allow the user to provide a vm
-  lib/intel_compute: Allow the user to provide a custom compute kernel
-  lib/intel_compute: Give option to skip results check
-  lib/intel_compute: Allow the user to provide input and output buffers
-
- lib/intel_compute.c       | 291 +++++++++++++++++++++++---------------
- lib/intel_compute.h       |  31 +++-
- tests/intel/gem_compute.c |   2 +-
- tests/intel/xe_compute.c  |   4 +-
- 4 files changed, 212 insertions(+), 116 deletions(-)
-
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index b698bf77d..9cca4a629 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -695,7 +695,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 		  .name = "batch" },
+ 	};
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 	uint16_t devid = intel_get_drm_devid(fd);
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+@@ -711,10 +711,12 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
+ 			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
+ 
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
++
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	if (IS_DG1(devid))
+ 		dg1_compute_exec_compute(bo_dict[6].data,
+@@ -732,13 +734,14 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, BO_DICT_ENTRIES);
+@@ -976,7 +979,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 		  .name = "batch" },
+ 	};
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -991,10 +994,12 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
++
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xehp_compute_exec_compute(bo_dict[8].data,
+ 				  ADDR_GENERAL_STATE_BASE,
+@@ -1007,13 +1012,14 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
+@@ -1184,7 +1190,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 		  .name = "batch" },
+ 	};
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -1196,10 +1202,12 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 
+-	dinput = (float *)bo_dict[2].data;
++	input_data = (float *) bo_dict[2].data;
++	output_data = (float *) bo_dict[3].data;
+ 	srand(time(NULL));
++
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xehpc_compute_exec_compute(bo_dict[5].data,
+ 				   ADDR_GENERAL_STATE_BASE,
+@@ -1212,13 +1220,14 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[3].data)[i];
+-		f2 = ((float *) bo_dict[2].data)[i];
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
+@@ -1541,7 +1550,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	};
+ 
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -1557,11 +1566,12 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xelpg_compute_exec_compute(bo_dict[8].data,
+ 				   ADDR_GENERAL_STATE_BASE,
+@@ -1574,15 +1584,14 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f %f\n", i, f1, f2 * f2, f2);
+-
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
+@@ -1631,7 +1640,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	};
+ 
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -1646,11 +1655,12 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xe2lpg_compute_exec_compute(bo_dict[8].data,
+ 				  ADDR_GENERAL_STATE_BASE,
+@@ -1664,14 +1674,14 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
+@@ -1869,7 +1879,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 
+ 	struct bo_dict_entry bo_dict_short[XE2_BO_PREEMPT_DICT_ENTRIES];
+ 	struct bo_execenv execenv_short, execenv_long;
+-	float *dinput;
++	float *input_data, *output_data;
+ 	unsigned int long_kernel_loop_count;
+ 	struct drm_xe_sync sync_long = {
+ 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+@@ -1952,16 +1962,17 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	xehp_create_surface_state(bo_dict_short[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+-	dinput = (float *)bo_dict_long[4].data;
++	input_data = (float *) bo_dict_long[4].data;
++	output_data = (float *) bo_dict_short[5].data;
+ 	srand(time(NULL));
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+-	dinput = (float *)bo_dict_short[4].data;
++	input_data = (float *) bo_dict_short[4].data;
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xe2lpg_compute_exec_compute(bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
+ 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
+@@ -1991,14 +2002,14 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	gem_close(fd, bo_short);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict_short[5].data)[i];
+-		f2 = ((float *) bo_dict_short[4].data)[i];
+-
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
 -- 
 2.43.0
 
