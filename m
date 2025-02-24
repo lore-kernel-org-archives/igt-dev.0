@@ -4,170 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 703DDC021A4
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 18:17:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51FFCC021BB
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 19:31:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D6BF10E48F;
-	Mon, 24 Feb 2025 18:17:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 060BC10E4F0;
+	Mon, 24 Feb 2025 19:31:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HHCCQu3o";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="FvkSQvev";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C80010E48F
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 18:17:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740421074; x=1771957074;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=81pKhm07tNubCvinoCuO6VjCLF2kb68jqywmDFMDaIc=;
- b=HHCCQu3oIEiPhLzbCgcAQEmymOg4qNBjzYW3HlvMSQsKZTbo/HL5AUr6
- ZTkMi40JVoa7NN7n1c+ygJDsu4ez6Qzg4AuwGTMyCZ9rSY9NTSd8J9yCL
- H7kYZB9zcxJ7bcDX9k5rZg7RU3OR71itvTmdBi5AarGGU0MTGcCLn7Fl+
- CgMUjRFWav4mZE/f6lZVHRu1+Pf2lfVBrIczfyBLoM3eruD7JbFscBW4r
- OvNJaGoldHDsS51L6Fgfix3LhL2uV3IlJuqx0n9dNhg4srB78PLXvWMuk
- OW61+c47iuBIwhExuW+MtLyCARK2smAzmbb+Vh+j54N162mhodd6esW9U Q==;
-X-CSE-ConnectionGUID: 2VJGlfvETk6Q13is0sL2rg==
-X-CSE-MsgGUID: nBlmHqZHR5eHlz4HYbAtkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40380884"
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="40380884"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 10:17:54 -0800
-X-CSE-ConnectionGUID: zkbCDmzTTYeD7aDZUCG4wA==
-X-CSE-MsgGUID: DojZftIyQ6mgRMSO0Qznag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="116632753"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 10:17:53 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 24 Feb 2025 10:17:53 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 24 Feb 2025 10:17:53 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 24 Feb 2025 10:17:53 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8D1110E4F0
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 19:31:25 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lSV4Q98VMPCmILUGGEf9fVw3gPEpk0kDluNxUBCAOlIXidEsDlFdbHiB8uQ4dBAhe0eyE10qntALjzJ965ZpWrv8wLIqKmENdIRu3mAw/u59P+DiKAovIF9IZx1bI0Uq+uVGe/t/IMIX8S4jReSdd7jbxQPg3qCnRuc2aTSDeuQ8AhlOau7YDn0DWlvvpv/mnNNQTU929U0xLX8LbNBFNIMfTLK+5e/xamfuq8mDbKzBul+FZTpfQMTWGMG5oRA1hSNvlP5xrAVWnv8vjuc9mS0MltT4uvIr8Twl0Mm9wucldNqmLZwPbm8Rr3abk3Q5obzzHxZ0dzBtkhu3/NYJTw==
+ b=rngi4cxO5MHWenGIIcr5OxFkIkUWYIsQBQayhbRhpIbb48PMnNZvBy1WohzRRYNTHAa4563R603DVENmfPaG4VsfeaDOWqaSrRI0grM0yrJh4Vp/G9K+yL/lw26D2JoOdouO4aC8cswIksux3Uxmb7NRey6VxHUo1VtGASbHBdMVnjILxhxpMAlnEVwmmY0B1wPFa4bvhLqYXPK6S4iPeqOxdGYtkt1UUkg5lsV+VafO+KLWV7JRrwma7fQbLME04bPBKBYE//Ow95RzcfiluLb7Hmf4DEGDFE5rPSk3XvxbZWwQ47vypfGkInjezCQq64iYNm1S505vT6lUxNslzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dY/UIEVilv8d+j9voXQZXUMivuF9m29ZgRijwVxgLjA=;
- b=qrjsBkAcjlyOElq0JPYryXa94EVE+fUFFrOWNONnesbdKI+cpDi2ENXw3o2lSozZUmWPNlA5ruzwtQa2/cPfvYJ1MmdFZfT4CdVWaHq9Edk2OnG0yoSJ3+LDaFz0mdEKd2S7qCRfdvInxG5SoAwsHsSdw5tLDg8cETQju8LNJ2mqD1UWTXwPjRuan3KI/SsujdHnO5FhBF9L4KSR1u4Ibygxoprcx6AySH3kY4mJ7YpIGxbCqNmkYejEYmkr1reGPf7IQYRME1AYSkg5UE5PjAQIT32KNt2DVQSgzuo7U3ZCcR3oCbmGELK1GRk/jor0iThZfQqtJxHcRfOTac22qQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by DS0PR11MB8232.namprd11.prod.outlook.com (2603:10b6:8:15d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Mon, 24 Feb
- 2025 18:17:47 +0000
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::4a36:b210:9d85:d13b]) by PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::4a36:b210:9d85:d13b%6]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
- 18:17:47 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: "Garg, Nemesa" <nemesa.garg@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Garg, Nemesa" <nemesa.garg@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/kms_plane: Add test to validate odd
- panning
-Thread-Topic: [PATCH i-g-t] tests/intel/kms_plane: Add test to validate odd
- panning
-Thread-Index: AQHbhsov5KPBvLYoTUSYsiq9/6LvorNWuelw
-Date: Mon, 24 Feb 2025 18:17:46 +0000
-Message-ID: <PH7PR11MB60531DA3E79BD2C8C4401375E7C02@PH7PR11MB6053.namprd11.prod.outlook.com>
-References: <20250224143707.2594265-1-nemesa.garg@intel.com>
-In-Reply-To: <20250224143707.2594265-1-nemesa.garg@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|DS0PR11MB8232:EE_
-x-ms-office365-filtering-correlation-id: 04ef3abe-c654-423b-4686-08dd54ff8a40
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|38070700018|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?BqloELtz3wsGfbbe98c/PLJ/YPLelh6xR/MC7lwXKv97qglvtRWG6AsuRWte?=
- =?us-ascii?Q?F4pZA9hQheMaEZ03c+YaBnCGrGNVm9qHWotT2F6Jw/nS74gfPSxVQH8soYDV?=
- =?us-ascii?Q?W8sL0q9bxnhbRLfXEd405ghU7UCTJ5q4erxljlgLupVoNh7COztCEg8Ky54e?=
- =?us-ascii?Q?IZhWAP2/CXhbeUllEjf1rvgHefxbsUOA5nH/T9U0k+ZjfN3f8Bgf9R9YA6VG?=
- =?us-ascii?Q?Ix39cQRI0y8E0+R40uK1ipO1M2NSH5k31TvlHlYLZ27SNs5cB72/EjgQiCXB?=
- =?us-ascii?Q?W8b4hdk5yNqLo9xJaUuiT5uGhEIq4PC70PRuz85HJoxZpnQXSqbBgk9ZVvOD?=
- =?us-ascii?Q?YrS2gSnKh6kA+dN4tVv17SV0ZuyyzAjCrYkk+kX90URr0yja373e6dRj7RcC?=
- =?us-ascii?Q?wJ96sboUMn6S5iwCySe55lWiB9qYPCavuNzqOluJ2gkuPCvzvngnQso5YViF?=
- =?us-ascii?Q?9W3CR8sIhrng/Mj3uiNvoJvGwN9duJZqjLly0FTGNeVB4fRV0YgkbnKsNn4C?=
- =?us-ascii?Q?nXZUhF2JBJzqQ57A8L1WTzJalBUeu0VeOZiuFMupXMkZxuPRm5alTPlwFhWs?=
- =?us-ascii?Q?TQaCOpeCR+wGJrTuaLLdxYzASV/GLy6ccxNDrg1HcTSY9kiIwBZTqgtYG+QB?=
- =?us-ascii?Q?CCLmg+bseLU4hIOl24IAerxfqVeWMZrJ8QHhraPdOBwNNwxSScQ7BX0XylmS?=
- =?us-ascii?Q?meqJ4hSKywI8H2Cyh9zHYBekagnt3nXWLzYcqEndNq6wA7FpcKO9hfXyBAGl?=
- =?us-ascii?Q?TOwohwsW1UNjsHlQc4KUl2zp33QIRPvWIwzmwSuAiHEW1uN1b6ApN6ODdoAH?=
- =?us-ascii?Q?/pWNhXXUW12EMfcV454+XGaYscy56UPoe0In1Sec2UdNbWOU8huQOE/mQYhA?=
- =?us-ascii?Q?ie2OhM3+CAVVD5qyAqd5x8K02dqaYazy5rHSL+3bhE4Bs/6lWESTJP2qR6ST?=
- =?us-ascii?Q?Hz81QNtGtwCmQOQ4uOjPNBdJNP/1WYV+D7ZmqMT61SyCjBaVqY9uoMaYHlGi?=
- =?us-ascii?Q?kTY6fQdwA1J7KBI7hmc3xvGieMEY7Nzk7/+eo2iqBsuSsnkgRIxiJS1WK+p0?=
- =?us-ascii?Q?QYjxORrvMSWhUXJkazqGe7rCrwPPJW4/z5NVOQaRYN6B2QrZNORMLNRI7eTO?=
- =?us-ascii?Q?HABdV3KH6pqqFCVzlHIPCnIFn8lSlOf5rg23iqiTTUoN2Mlue4HmVvrxWKuD?=
- =?us-ascii?Q?4F+6O7I5NF8dExqjpkPjiAKyei8Ux/2Zxn4YcZbX0jNrlnbNoz6MD6mEcKHQ?=
- =?us-ascii?Q?xRzHPRx1Brk/58o78cFls4qxtqaIugkIBvOxMGIj1bl9/HB1n+7nuJm2fqaF?=
- =?us-ascii?Q?DQIzISPqAVViw+m67HyoppI6vpFEgnoDemcDXI2zpSfQ/jPk/RdIsvOM1DBc?=
- =?us-ascii?Q?w4ng6Q8laRs09FbfxORJNEh8ek3dhBVoKOYOj+5FA4Dr0vU/N1goibWZKOLu?=
- =?us-ascii?Q?0h3IIx0LJHDohT/nKJ8eOT9hA+4vshTB?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018)(7053199007); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5dDHOml1+pQMsmmF6HiVLP9n+JrqjAxc3OmgBp7IZ/HOUYGYMnEZYMKjq4cK?=
- =?us-ascii?Q?ti0DFe/NwzwpTR66h2/yIZbUVBPZctf7hZpk6xMgSUD6Uc1KKrhkuPqL/myy?=
- =?us-ascii?Q?P6gemyEsdMyTWd61yHcer9Wk3Y08w5C+XwlC1PxMIHgCDLlXttUsKJH0O+W7?=
- =?us-ascii?Q?LhTRCzuJeM2YFe0cjiaQvycZAgPQp19cvg44YeZ6n4blkjc9k1bfFId3qFtx?=
- =?us-ascii?Q?+UK/Bzi/QBJVSrIjFLG2p2PsVilSurvHAbTHuYSFX4vuPVKnahnLgh2+IJtl?=
- =?us-ascii?Q?e/4re20c5Xz+OgxNzJoADRAQ9qlQwo2AiLUeTvpf5Mlz0+B+D2Vp73ScSdHp?=
- =?us-ascii?Q?CQNnRS45uWwYTs6S+psjm11oNeJkE1IUWzKttZXeM+c3U2Lr7bxm0BlFV9EE?=
- =?us-ascii?Q?2eNOz6raibm5h7PM5SUAfYgYIRAHhAaZwYtuolfFvl5FKF4I2O6Q/LcjCkgK?=
- =?us-ascii?Q?7aIJV8RmCztcEr3EyIbJjc46LXYRUirydvz8IzkhW2p3HMRJYKBtTaLgixA1?=
- =?us-ascii?Q?xIoZAL/F8kjhPgXR8l87Xl9hg2wTwNeim0e/i2SksSMyLFUOJi0AvHylfPcu?=
- =?us-ascii?Q?H3Xn8mDKvCMq0+DLZ5KMHmA6v2SCSykzse6sfNqwbGdhzOpzgGXXrXCL0DEN?=
- =?us-ascii?Q?1zP/jXHMuqhm53ZNh3kZoaXRvx/WdOPHGcd9gDUE41ypqP40nwj+HcLd/8dI?=
- =?us-ascii?Q?tZO/Sh6WNMJOlZax/wDUdlPa6GbRqKdxUF4fPIR2Sj3RkGJZI4Ld+kiIC2jD?=
- =?us-ascii?Q?sklaqkJE1lBiDTzjsXxASHSzaf2RYVW9RRLWk8EgHesFfUYxh5Xwy4MYPHOk?=
- =?us-ascii?Q?HX+pDXk7Bj2cl0Vwdkl2kyciEpGOpRhA0LdSrK2Jb/ihYJM/Npo4GKby/xJa?=
- =?us-ascii?Q?C+k8RR45TwBCx7Pj64yvYUqhM+vTuTzGb5/Zm0i72JxMdc7lxrvmgEx0HdeC?=
- =?us-ascii?Q?VxIC81trM7/Kc2IUCtq1Jnba3D/e9Ifm8lrLy4kptSNefKPGZ17mAeKSWm8p?=
- =?us-ascii?Q?wo6CxN47ETjYRCkqDkQ0ip95IwXabKJePUX/xzpuXvIZTJVMpWBQUdUQZDCA?=
- =?us-ascii?Q?XlzeN+LlsONGpF/G2oKP6BKLpWKXiWUit4slXE90STUUp2vHRSSg6yCKe9qF?=
- =?us-ascii?Q?j5Pqk6tCzDs3BE4hF1jOSBJxiSR/0f1LcDLBaws5a2bmp1b8ny9hvfgTIWwN?=
- =?us-ascii?Q?tI4Ho17j/fYQh8OoyMv5R4fcqVkBlvFCWFTbQcT6Ap//EyJnHeH0UG3wPHXY?=
- =?us-ascii?Q?peRVRbyy4tgHDBaCZ/LD8EYk8PnMxLPJ1aGefMvKGYhptYHxui9WvcPsZthY?=
- =?us-ascii?Q?2kw/rdLKFD94AychTHmzb8lkVNdXRo8qbxXws3/MwtLfrzw0uCmN/kBC9cBR?=
- =?us-ascii?Q?OveJEPRhm2ckV2+BlcB1/gNnKAd8PoEObMb4CXmC84coW86jeEybO7aCIjzp?=
- =?us-ascii?Q?Wfdt1Vuj99iM7VmvoU6RIvVqNbERmFWCxrPo4P6Yk+TQsu0OkToj9ckDIMLL?=
- =?us-ascii?Q?9fo/qhDOUZm6ePKZdNqNiSMlekZCtf5v1v/I+YLaHBJn0YRzt4sfuHUAh2eF?=
- =?us-ascii?Q?/PIDVj7Wq2YD+ZBA3KAaA2iyVurj1EH8xah26thF?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ bh=6LXMjqkjlcFdNeT3AfzcU67pqbPuwRKywpeQdSWI6KE=;
+ b=ScQhFHhVR2IIn4JDAyq/pAQ3gfhcPXZB9yEL9+FVaD928A6Iv6L2nSA57qRLJrheYC0InJiSxHj+facITKUmRyg8b+LFVNF9SK3NaQ26qcgdEw/y/aYBF3130jHRt9wv54A5kzv5VWW7zI6cQoMyMsjKg8lBO17Q8/4rXANK3AjcCycr341KRpIen0/Z8ClBi87G/LKcY8Cb5gqEE37CoR60M362aHhisADQyJcptlRnGBMcvxXl/Epcp6l0XCSX8PBToev08z6wI1B8Seb7uEJLRddcLxAz2jeK+ypceVToXUUlzaSBVsFCjRIrMIiYJJMZcJNPNl0uADS6jTEgTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6LXMjqkjlcFdNeT3AfzcU67pqbPuwRKywpeQdSWI6KE=;
+ b=FvkSQvevksWD2wl3rMjssPBHF6nl5Uhg3AnyCnB+UzZBY38jxOrdVaX2jakHREqI9dt0nl0hTNqmZqZrT2vXYFHWB6XKVMBNs72cQ1CLugdMw61f8D5PJbLJhmDsPL/vTi6NPtg22TOf0Ihqfer5LyHCuezWT4QMjN3Kgzz+AFc=
+Received: from BL1PR13CA0207.namprd13.prod.outlook.com (2603:10b6:208:2be::32)
+ by PH7PR12MB5902.namprd12.prod.outlook.com (2603:10b6:510:1d6::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
+ 2025 19:31:06 +0000
+Received: from BN3PEPF0000B06E.namprd21.prod.outlook.com
+ (2603:10b6:208:2be:cafe::b5) by BL1PR13CA0207.outlook.office365.com
+ (2603:10b6:208:2be::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.16 via Frontend Transport; Mon,
+ 24 Feb 2025 19:31:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B06E.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8511.0 via Frontend Transport; Mon, 24 Feb 2025 19:31:06 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Feb
+ 2025 13:31:03 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Feb
+ 2025 13:31:02 -0600
+Received: from AB350-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 24 Feb 2025 13:30:56 -0600
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: "Jesse.zhang@amd.com" <Jesse.zhang@amd.com>, Vitaly Prosyak
+ <vitaly.prosyak@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Alexander Deucher <alexander.deucher@amd.com>, Jesse Zhang
+ <jesse.zhang@amd.com>
+Subject: [PATCH] lib/amdgpu: Add support for page queues in amd_deadlock
+Date: Mon, 24 Feb 2025 14:30:52 -0500
+Message-ID: <20250224193052.43323-1-vitaly.prosyak@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04ef3abe-c654-423b-4686-08dd54ff8a40
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 18:17:46.8783 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cV83VcccZFRBTSyJhfJopk3mFzjENV/8eRDD4r7YuPwLvyUrKNOP3hirUSqLg+4xe8egLgSNuvrr9RAiyD83Fw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8232
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06E:EE_|PH7PR12MB5902:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0945eb10-5d1b-4092-41d5-08dd5509c857
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|82310400026|1800799024|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?61+eSAV2wT1iSsuRhtxVOgcOwFk7NEIPHL2EPLIq+qJy4PqVEJgt8zxnio9Z?=
+ =?us-ascii?Q?3lzwJ0xaNqwQzVC8hl+4y69hCRbU3EwHuEvc8LpzKSbS7GNzM5GxSBWnwIWq?=
+ =?us-ascii?Q?N7EzR+BeBQEJ6qDR9Tiq97ICTGrnehj3Jni7P3txUTkgJNpeJeWI9i5jnznT?=
+ =?us-ascii?Q?ug6OAGUQOw24T1/mlGLuAO9GWRzBTbhTC4JqEChc2UDi79Ejhc0DCwCgZEoP?=
+ =?us-ascii?Q?wnO9pwoiyLLPHtWQsOWhq6UVfl16y9hzTRlftBi4L6zNhOn0NbPxUAYDteFL?=
+ =?us-ascii?Q?MjoPdj1xlAZObDhDNRncNqVpjFxB5amzCFf0pMIJLyXEhQu3IVXpYX+AK6sv?=
+ =?us-ascii?Q?2P24fQYDRqJ9AisADnEaVYZ3M+4ZOavCzvIjY5cw1cCIetN9bI94NfArcUFG?=
+ =?us-ascii?Q?yo8Lrvz1Mot8uIjO0HAAyQBt91uYLOSUM9fad4sq5mEEC9QHYtrEMBLmFV02?=
+ =?us-ascii?Q?eO780MwG9boysl1fdbpfNweNbMnBfYSHQtImbiP5jh8ev45VPh4m0/2L5ekX?=
+ =?us-ascii?Q?8NA/0eXz+1XMzRGzeA24mwnhB31gB+NOCWrMkqQ+LGXgf+JnMIgA56jPn15v?=
+ =?us-ascii?Q?tH0tC2Wb+9WlB6qvXkAdU1lfzPnXDEhecollifXTjQ61K0SNhxHs5IeSF06r?=
+ =?us-ascii?Q?k25KmjI5A2o+dH7C1YV6PfXP2VuuBJ2byI6kPpUm1ShNKFt21NakNjaV4Z8D?=
+ =?us-ascii?Q?Jek4qQPrTSn3FzA8C3CbH1znSO52hdEv50uYSl5FJ9gH724hYgqK5xPoOwwu?=
+ =?us-ascii?Q?Fo3DwukAxZfP+AXhTV4+D3nTm7Q0zFOBQYASv8nFI230R/X/be9DVODCSKEW?=
+ =?us-ascii?Q?Yo5O492xjIDXu37stru8Ob0YRLrbj3O1kCJBOSUpjIm91qNBcPWWKCvHG2TZ?=
+ =?us-ascii?Q?sGvSExt0USe0a4zRwbcs2jtHUAC9yUAQKCB1l9xDMFbh7QUAmjMyFfe8yqcE?=
+ =?us-ascii?Q?BNo6Fe9XFLB/1PmN9qPvt6gjMFhoiXtffTXeIJf5PjAW+9AbzlAKIAWzh1Ya?=
+ =?us-ascii?Q?VYj+HycvXCzJBILSiBe6TdkmduA23AZmkbpO+LovjFuPY20IW0x7zwa/TDPb?=
+ =?us-ascii?Q?yqFDECunoTzc7ZhgBNXUNKlYYpm61QnnyXs7B5eF5S4nPdlX27VK/+Wzx23l?=
+ =?us-ascii?Q?ViKNlVW7KZ+9IIgn+UbFYY11YipZJq7ekFpq7WxTAOD4mqVBDwgzNr4hdp+m?=
+ =?us-ascii?Q?9TbxgHqZpZnc+6LhuPRmL684oKBEHdxo7OvUTuEYte0jmsJnU+OGXxU3aWUa?=
+ =?us-ascii?Q?DDmePA/v3gH9hTaW9TsATIddaQUwwc0exoXv9cnxalyy2eYO4krbn5mv59SZ?=
+ =?us-ascii?Q?eOXUvsxVmyOx1KKGtCR+eDECqg+0jTdohdQ+CjQDB5HdQnuqzUkjeceOpP6m?=
+ =?us-ascii?Q?jP4/ipFyzkt2dm4Jfw8xAgYUSEROqxGzSy6TXNXtV0b67NZ49XS+hX8ImDiI?=
+ =?us-ascii?Q?SXdcRtp5UsGO88O/8dBCSSyF1LG41akrGpRpoWV8UUMVTwgjXY+FdQSu3jFX?=
+ =?us-ascii?Q?kG028sNTVthIPiY=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 19:31:06.0238 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0945eb10-5d1b-4092-41d5-08dd5509c857
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B06E.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5902
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -183,189 +138,257 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nemesa,
+From: "Jesse.zhang@amd.com" <Jesse.zhang@amd.com>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Nemesa
-> Garg
-> Sent: Monday, February 24, 2025 8:07 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Garg, Nemesa <nemesa.garg@intel.com>
-> Subject: [PATCH i-g-t] tests/intel/kms_plane: Add test to validate odd pa=
-nning
-There is no kms_plane test in tests/intel/ dir.
-Change subject to tests/kms_plane: and continue it.
->=20
-> This feature creates a NV12 plane having two framebuffers and moving it t=
-o odd
-> position and then do continous flip along with the change in the width of
-> framebuffer.
-> This is to check whether panning at odd position is supported or not.
->=20
-> v2: Add test in kms_plane.[Swati]
->=20
-> Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
-> ---
->  tests/kms_plane.c | 103
-> ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 103 insertions(+)
->=20
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c index b9bf025bd..8490c=
-fabc
-> 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -88,6 +88,15 @@
->   * @format-source-clamping:          with source clamping
->   */
->=20
-> +/**
-> + * SUBTEST: odd-panning
-> + * Description: Verify that odd panning in horizontal direction for
-> +planar format
-> + * Driver requirement: i915, xe
-> + * Functionality: kms_odd_pan
-I think plane_odd_pan will work. No need of kms
-Correct me if I am wrong.
+This commit enhances deadlock handling by adding support
+for page queues and refining the logic for enabling and
+disabling scheduling rings.
 
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + */
-> +
->  /*
->   * Throw away enough lsbs in pixel formats tests
->   * to get a match despite some differences between @@ -100,6 +109,9 @@
->  #define CRTC_RESTRICT_CNT	2
->  #define SIM_CRTC_RESTRICT_CNT	1
->=20
-> +#define PLANE_WIDTH 810
-> +#define PLANE_HEIGHT 590
-> +
->  typedef struct {
->  	float red;
->  	float green;
-> @@ -121,6 +133,8 @@ typedef struct {
->  	uint32_t crop;
->  	bool extended;
->  	unsigned int flags;
-> +	igt_plane_t **plane;
-> +	struct igt_fb *fb;
-I think you are not using these anywhere in code.
-Remove it if not planning to use further.
+1. New Function is_support_page_queue:
+   - Checks for the existence of page queue files for a given
+     IP block type and PCI address.
 
->  } data_t;
->=20
->  static bool all_pipes;
-> @@ -1330,6 +1344,91 @@ static bool is_pipe_limit_reached(int count)
->  		return count >=3D CRTC_RESTRICT_CNT && !all_pipes;  }
->=20
-> +static void
-> +prepare_planes(igt_display_t *display, const enum pipe pipe_id,
-> +	       igt_output_t *output)
-> +{
-> +	igt_plane_t *primary;
-> +	struct igt_fb primary_fb_1, primary_fb_2;
-> +	unsigned int fb_id_1, fb_id_2;
-> +	int j =3D 0, ret;
-> +
-> +	igt_output_set_pipe(output, pipe_id);
-> +
-> +	primary =3D igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	fb_id_1 =3D igt_create_pattern_fb(display->drm_fd,
-> +					800, 590,
-> +					DRM_FORMAT_NV12,
-> +					DRM_FORMAT_MOD_LINEAR,
-> +					&primary_fb_1);
-> +
-> +	fb_id_2 =3D igt_create_pattern_fb(display->drm_fd,
-> +					800, 590,
-> +					DRM_FORMAT_NV12,
-> +					DRM_FORMAT_MOD_LINEAR,
-> +					&primary_fb_2);
-> +
-> +	igt_assert(fb_id_1);
-> +	igt_assert(fb_id_2);
-> +
-> +	igt_plane_set_fb(primary, &primary_fb_1);
-> +
-> +	igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
-> +	igt_plane_set_position(primary, -501, 200);
-> +
-> +	ret =3D igt_display_try_commit_atomic(display,
-> +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +	do {
-> +		if (j % 2 =3D=3D 0) {
-> +			igt_plane_set_fb(primary, &primary_fb_1);
-> +			igt_plane_set_size(primary, PLANE_WIDTH - j,
-> PLANE_HEIGHT);
-> +			ret =3D igt_display_try_commit_atomic(display, 0, NULL);
-> +		} else {
-> +			igt_plane_set_fb(primary, &primary_fb_2);
-> +			igt_plane_set_size(primary, PLANE_WIDTH - j,
-> PLANE_HEIGHT);
-> +			ret =3D igt_display_try_commit_atomic(display, 0, NULL);
-> +		}
-> +		j++;
-> +	} while (j < 20);
-> +
-> +	igt_assert_eq(ret, -22);
-> +
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_try_commit2(display, COMMIT_ATOMIC);
-> +
-> +	igt_remove_fb(display->drm_fd, &primary_fb_1);
-> +	igt_remove_fb(display->drm_fd, &primary_fb_2); }
-> +
-> +static void run_test_pan(igt_display_t *display, const enum pipe pipe_id=
-,
-> +			 igt_output_t *output)
-> +{
-> +	prepare_planes(display, pipe_id, output); }
-Why are we calling this prepare_planes function in run_test_pan function?
-Just to ensure pipe_id remain constant?
+2. Updated amdgpu_wait_memory_helper:
+   - Adjusts scheduling ring logic based on page queue support.
+   - Calls is_support_page_queue to determine page queue availability.
+   - Enables two rings (SDMA GFX queue and page queue) if supported.
 
-Regards,
-Pranay.
-> +
-> +static void run_test_odd_pan(data_t *data) {
-> +	igt_display_t *display =3D &data->display;
-> +	enum pipe pipe;
-> +	igt_output_t *output;
-> +
-> +	for_each_pipe_with_valid_output(display, pipe, output) {
-> +		igt_display_reset(display);
-> +
-> +		igt_output_set_pipe(output, pipe);
-> +		if (!intel_pipe_output_combo_valid(display))
-> +			continue;
-> +
-> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> igt_output_name(output))
-> +			run_test_pan(display, pipe, output);
-> +
-> +		if (pipe =3D=3D 0)
-> +			break;
-> +	}
-> +}
-> +
->  static void run_test(data_t *data, void (*test)(data_t *, enum pipe))  {
->  	enum pipe pipe;
-> @@ -1408,6 +1507,10 @@ run_tests_for_pipe_plane(data_t *data)
->  		run_test(data, dynamic_test_handler);
->  	}
->=20
-> +	igt_describe("verify whether odd panning is supported or not");
-> +	igt_subtest_with_dynamic("odd-panning")
-> +		run_test_odd_pan(data);
-> +
->  	igt_describe("verify planar settings for pixel format are accepted or
-> rejected correctly");
->  	igt_subtest_f("planar-pixel-format-settings")
->  		test_planar_settings(data);
-> --
-> 2.25.1
+3. Similar Updates to Other Functions:
+    - Applies consistent page queue handling in
+      bad_access_ring_helper and amdgpu_hang_sdma_ring_helper.
+    - Ensures uniform logic across all relevant helper functions.
+
+V2: Move is_support_page_queue into the amd_ip_block file to
+    allow other test cases to access this function,
+    and rephrase the commit message (Vitaly)
+
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alexander Deucher <alexander.deucher@amd.com>
+
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ lib/amdgpu/amd_deadlock_helpers.c | 70 ++++++++++++++++++++++++-------
+ lib/amdgpu/amd_ip_blocks.c        | 27 ++++++++++++
+ lib/amdgpu/amd_ip_blocks.h        |  3 ++
+ 3 files changed, 85 insertions(+), 15 deletions(-)
+
+diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+index d7bf0e111..c8a48930e 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.c
++++ b/lib/amdgpu/amd_deadlock_helpers.c
+@@ -179,16 +179,19 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+ 	FILE *fp;
+ 	char cmd[1024];
+ 	char buffer[128];
+-	long sched_mask = 0;
++	uint64_t sched_mask = 0, ring_id;
+ 	struct drm_amdgpu_info_hw_ip info;
+-	uint32_t ring_id, prio;
++	uint32_t  prio;
+ 	char sysfs[125];
++	bool support_page;
+ 
+ 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
+ 	igt_assert_eq(r, 0);
+ 	if (!info.available_rings)
+ 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
+ 
++	support_page = is_support_page_queue(ip_type, pci);
++
+ 	if (ip_type == AMD_IP_GFX)
+ 		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
+ 			pci->domain, pci->bus, pci->device, pci->function);
+@@ -215,7 +218,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+ 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
+ 	}
+ 
+-	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
++	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id += 1) {
+ 		/* check sched is ready is on the ring. */
+ 		if (!((1 << ring_id) & sched_mask))
+ 			continue;
+@@ -239,9 +242,20 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+ 		}
+ 
+ 		if (sched_mask > 1) {
+-			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+-						0x1 << ring_id, sysfs);
+-			igt_info("Disable other rings, keep only ring: %d enabled, cmd: %s\n", ring_id, cmd);
++			/* If page queues are supported, run with
++			 * multiple queues(sdma gfx queue + page queue)
++			 */
++			if (support_page) {
++				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
++							0x3 << ring_id, sysfs);
++				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
++				ring_id++;
++
++			} else {
++				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
++							0x1 << ring_id, sysfs);
++				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
++			}
+ 			r = system(cmd);
+ 			igt_assert_eq(r, 0);
+ 		}
+@@ -411,16 +425,18 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+ 	FILE *fp;
+ 	char cmd[1024];
+ 	char buffer[128];
+-	long sched_mask = 0;
++	uint64_t sched_mask = 0, ring_id;
+ 	struct drm_amdgpu_info_hw_ip info;
+-	uint32_t ring_id, prio;
++	uint32_t prio;
+ 	char sysfs[125];
++	bool support_page;
+ 
+ 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
+ 	igt_assert_eq(r, 0);
+ 	if (!info.available_rings)
+ 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
+ 
++	support_page = is_support_page_queue(ip_type, pci);
+ 	if (ip_type == AMD_IP_GFX)
+ 		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
+ 			pci->domain, pci->bus, pci->device, pci->function);
+@@ -447,7 +463,7 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+ 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
+ 	}
+ 
+-	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
++	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id++) {
+ 		/* check sched is ready is on the ring. */
+ 		if (!((1 << ring_id) & sched_mask))
+ 			continue;
+@@ -471,9 +487,20 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+ 		}
+ 
+ 		if (sched_mask > 1) {
+-			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
++			/* If page queues are supported, run with
++			 * multiple queues(sdma gfx queue + page queue)
++			 */
++			if (support_page) {
++				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
++						0x3 << ring_id, sysfs);
++				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
++				ring_id++;
++			} else {
++				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 						0x1 << ring_id, sysfs);
+-			igt_info("Disable other rings, keep only ring: %d enabled, cmd: %s\n", ring_id, cmd);
++				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
++			}
++
+ 			r = system(cmd);
+ 			igt_assert_eq(r, 0);
+ 		}
+@@ -496,16 +523,17 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
+ 	FILE *fp;
+ 	char cmd[1024];
+ 	char buffer[128];
+-	long sched_mask = 0;
++	uint64_t sched_mask = 0, ring_id;
+ 	struct drm_amdgpu_info_hw_ip info;
+-	uint32_t ring_id;
+ 	char sysfs[125];
++	bool support_page;
+ 
+ 	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_DMA, 0, &info);
+ 	igt_assert_eq(r, 0);
+ 	if (!info.available_rings)
+ 		igt_info("SKIP ... as there's no ring for the sdma\n");
+ 
++	support_page = is_support_page_queue(AMDGPU_HW_IP_DMA, pci);
+ 	snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_sdma_sched_mask",
+ 			pci->domain, pci->bus, pci->device, pci->function);
+ 	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
+@@ -522,14 +550,26 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
+ 	} else
+ 		sched_mask = 1;
+ 
+-	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
++	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id++) {
+ 		/* check sched is ready is on the ring. */
+ 		if (!((1 << ring_id) & sched_mask))
+ 			continue;
+ 
+ 		if (sched_mask > 1) {
+-			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
++			/* If page queues are supported, run with
++			 * multiple queues(sdma gfx queue + page queue)
++			 */
++			if (support_page) {
++				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
++						0x3 << ring_id, sysfs);
++				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
++				ring_id++;
++			} else {
++				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 						0x1 << ring_id, sysfs);
++				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
++			}
++
+ 			r = system(cmd);
+ 			igt_assert_eq(r, 0);
+ 		}
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 7c71a8952..4eaf639b3 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <fcntl.h>
++#include <glob.h>
+ 
+ #include "amd_memory.h"
+ #include "amd_ip_blocks.h"
+@@ -1132,3 +1133,29 @@ int get_pci_addr_from_fd(int fd, struct pci_addr *pci)
+ 
+ 	return 0;
+ }
++
++/*
++ * Function to check if page queue files exist for a given IP block type and PCI address
++ */
++bool is_support_page_queue(enum amd_ip_block_type ip_type, const struct pci_addr *pci)
++{
++	glob_t glob_result;
++	int ret;
++	char search_pattern[1024];
++
++	/* If the IP type is not SDMA, return false */
++	if (ip_type != AMD_IP_DMA)
++		return false;
++
++	/* Construct the search pattern for the page queue files */
++	snprintf(search_pattern, sizeof(search_pattern) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_ring_page*",
++		pci->domain, pci->bus, pci->device, pci->function);
++
++	/* Use glob to find files matching the pattern */
++	ret = glob(search_pattern, GLOB_NOSORT, NULL, &glob_result);
++	/* Free the memory allocated by glob */
++	globfree(&glob_result);
++
++	/* Return true if files matching the pattern were found, otherwise return false */
++	return (ret == 0 && glob_result.gl_pathc > 0);
++}
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 595b2b16b..fc9df6c78 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -237,4 +237,7 @@ is_reset_enable(enum amd_ip_block_type ip_type, uint32_t reset_type, const struc
+ 
+ int
+ get_pci_addr_from_fd(int fd, struct pci_addr *pci);
++
++bool
++is_support_page_queue(enum amd_ip_block_type ip_type, const struct pci_addr *pci);
+ #endif
+-- 
+2.34.1
 
