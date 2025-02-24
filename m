@@ -4,123 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD46C021B3
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 07:23:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40CF8C021B5
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 07:38:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 149E010E07A;
-	Mon, 24 Feb 2025 07:23:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA67210E07A;
+	Mon, 24 Feb 2025 07:38:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="2nBzQTvP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lO7gF50w";
 	dkim-atps=neutral
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D621210E07A
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 07:23:27 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BB7PYqYcyx8BWk0uPOSmzU9ypRnBjfxkrDgDpwT6Us1dP9NXFU3yXkmIb1tSJAaeYppumHPldHgETLoImpdN8CXkfo1NqzTLCCIWGavL5zhQYJzPEdWrQB9LPoIfPCTzYKdPCNvW9tdYrAPFZxPlwzL0q+gQ0QHgrTrsAVpCtvtiZiCX6r+hg3orBxXGxksNJXX0vo9hSClQT6f20/ysiMZ70D/2R76MFHoCGeoYiWb8u/10jchpHboCxSOLxAkA9VfbSO4oDvOO/0OrQ3BlyJMDuCncz4SBLfbamxikChPvPjnhJiGNeAOgDzPxOaR7Jo7Uqh4PV5bfTUN8VrL8mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z/UWwLDKN/DzHfd10xt4m4af7Qvzmo6JMgocySS5W8I=;
- b=IWCa6p6jHIawY15fCfeXjnkqTauDwRH4gK1k8o1x8N+LN8uVZVIk2ZzG1+mGsV1SWqhKTF1pQdG5mQ1PkktQZNVGa0/wgA9FtL8BbzRItF73K7/ROLSNfQiNQhoDzhxk4URIg/jUZFYv9D9NbX8ABt3XKtKXHfGV+SVLW6RI5Ci4JCnyfYXW822pTkEaxHP/I07wJW1SWWK+WmOA8jC8Xum+RWHvevmkaHfideruPfv7o8eIcvJBAciCqd+FJcKeJVUpwBqHVfM0eGVeETi4vzzRcsYFOkvmAzz8+DRQaEfg6W6ijMU4scw/Si7vKNPBNl+6x10HEp4Cc38Xvj4XVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z/UWwLDKN/DzHfd10xt4m4af7Qvzmo6JMgocySS5W8I=;
- b=2nBzQTvPaOR7UUMP/sR134lfztEyc/QR7G/K6P7h86nkI/fh9Pqd1Q1jwLGjYjSgBYoF0y3OzwvXzMMoyVSMZJIis7Z0j/epV/kDXKQ23tkPSSmSueG3BXVGR6qEhEwMF/tfb1eUmhS2R9tPCLfc6qk8tYE3V8Knckqxi8yTqpI=
-Received: from DM6PR11CA0032.namprd11.prod.outlook.com (2603:10b6:5:190::45)
- by SN7PR12MB8818.namprd12.prod.outlook.com (2603:10b6:806:34b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Mon, 24 Feb
- 2025 07:23:19 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:5:190:cafe::2d) by DM6PR11CA0032.outlook.office365.com
- (2603:10b6:5:190::45) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.20 via Frontend Transport; Mon,
- 24 Feb 2025 07:23:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8466.11 via Frontend Transport; Mon, 24 Feb 2025 07:23:19 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Feb
- 2025 01:23:18 -0600
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Feb
- 2025 01:23:18 -0600
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Mon, 24 Feb 2025 01:23:17 -0600
-From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t] lib/amdgpu: ad support for page queues in amd_deadlock
-Date: Mon, 24 Feb 2025 15:23:16 +0800
-Message-ID: <20250224072316.4117581-1-jesse.zhang@amd.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 355B910E07A
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 07:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740382736; x=1771918736;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=hM6YPgs4gOoTnDVqctcYlaOwF/U/w+EzSDGoNPBCDXc=;
+ b=lO7gF50wdKkhUjmHWquMo575LYYmompIK6HO125K5Tdr1TzAn8IYy1Ls
+ 756MzcDtq/O1tD5C+5fgLUO50+/9MA3wZEx7skehJejMoNFdZLbvaNH4F
+ N8T5QfkKWF/MWNo+gIqCocXLcVLexwxvBVFjmAZaJgcqXmrXIKmBZd6Lk
+ 2d3+mdoE64Ue2u1sJLNnKcIJz7KpFT2OIpdMM5oElcr6uZ0hO/hyE98Ix
+ W1RPfSjRr9O9gWajJOaurTU8e2/8RJXosb/uOHRIeHKQ+qp6kItQG89jT
+ 3l9N5jwCqGEtjwjCZzNunFjG7N/owG2rQ7DRe+2SB7+JKcl5wT0ekKM1x Q==;
+X-CSE-ConnectionGUID: m14PgF60T2qDwNSUHOn6tw==
+X-CSE-MsgGUID: dZZFSPxrSuiXHnImUyEBig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="28724386"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="28724386"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2025 23:38:55 -0800
+X-CSE-ConnectionGUID: mLkWDHDNScG6rhsUIPA92w==
+X-CSE-MsgGUID: h4r7/1AJQZC94r+5NsRymw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="120957895"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.118])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2025 23:38:52 -0800
+Date: Mon, 24 Feb 2025 08:38:49 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Oak Zeng <oak.zeng@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Thomas.Hellstrom@linux.intel.com,
+ matthew.brost@intel.com, kamil.konieczny@intel.com,
+ ashutosh.dixit@intel.com, juha-pekka.heikkila@intel.com,
+ rodrigo.vivi@intel.com
+Subject: Re: [i-g-t v5 2/4] lib/xe/xe_util: Introduce helper functions
+Message-ID: <20250224073849.5ynerzjolpw2xzxz@zkempczy-mobl2>
+References: <20250221155336.378911-1-oak.zeng@intel.com>
+ <20250221155336.378911-3-oak.zeng@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|SN7PR12MB8818:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95c1742e-fe03-47f8-bd5e-08dd54a41d0b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|82310400026|1800799024|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?p6rrxVJQ9i/zbl0+7lJxTTcL8gBTeMcd5MjMLe5ynptRjSmQwJaNWG6qRb/q?=
- =?us-ascii?Q?3N/JhNESK+lr/GRacvkZS3XEvWWHsY2/cojCRZCr0Z/NfV9aJPFKoypDUYPt?=
- =?us-ascii?Q?2nR1t7HM/3L7g29HX4IaMtDHSHEtr+oykZMzsqEZ+U212rhR7Q25Pjf5H/Bb?=
- =?us-ascii?Q?vn+PRWDhi6FN7zpORjXbaqhlrBB10nGh5RjvvHSChb0COO9vCx6mAQYXMFKx?=
- =?us-ascii?Q?gQRvOdWEsjD6Ig5olqDG/c7Z5PtHOfH2zYDw7ykkL5XnFKKMM3YAra5wKqVC?=
- =?us-ascii?Q?DRuZqktA9kqexjJ62BZRdX31OHs4d9FEH9HJSZDsshRV4ZrmASw0R1sZ6mPv?=
- =?us-ascii?Q?DL5Z4IsucQqTbgTThxlMjk9pmdpZNQ99DlCpTZGhNxL9QGzWAWZ0lopo8h6y?=
- =?us-ascii?Q?N7QVC++ssNuZOFJDlItjit92qCOaB/R3kWg06GDMDukPf6cxXaoUkZrkethR?=
- =?us-ascii?Q?Ueb1+aYhLZAU5fE1DWKSpw6WqrNXDxly7Iw+BSsG+pfVuk8rKZpvjN5Dftfh?=
- =?us-ascii?Q?AQPESwdZ96s0m5yc8Zi8QepnwAatkdykca4/M1McEwSQFEBJlI/f1YflDNHj?=
- =?us-ascii?Q?kFzBCUfUYR6KjYSz8ZDrfwBKR+SvSGYqw11YIMlDY9G2H5EZ1/Yx/4iyKrT/?=
- =?us-ascii?Q?FNA073yV6AjDnuTrRObMKBImN7cHAUQZfbYLEMCJFyGsh8lBHTtLFfFvxNYk?=
- =?us-ascii?Q?Th+DOP+UnbkBSIpvgGCR02iEELMKBtYU0/JuJ14btg+K1uOn2tICrH4S8QED?=
- =?us-ascii?Q?WCyrh8nGubhgIfLMaaVeZMfkUc7M9c+z1GzwU3kOJikIAw26Oe7Vff9ILRnM?=
- =?us-ascii?Q?EsfxLm6bRe5gdf2MFeA8kgAZGIKUVTN6dFuAzIeZtJrKCXLdbhuVikalnO63?=
- =?us-ascii?Q?RaGbZMTo8lF5g6UvJcM0PUxAec7C9VDpx+XXvV+z+APBoW2S15tbi8XVy3PE?=
- =?us-ascii?Q?n+mMbehffLpb5djwKov1Ns+Qgzpy4I77lzUWInyQrQT8r39kGF+lm/TVb1BY?=
- =?us-ascii?Q?/nUCKrNYrcj9V5Tncnw+nQ3NOnTucKFTxft0Pic4pPmWZ14+vcvi3MYXGR+q?=
- =?us-ascii?Q?LNt9zuj+xhwztxZEBALV/kvaMGt6mmnB7X30RNCILL/QignPbqwOvBVGGSZK?=
- =?us-ascii?Q?TIsBMo8hqHy8YfOt+6urkY5Pvrae8lOQHMocme0GcqSwY9kIeBFG8rXjZHBu?=
- =?us-ascii?Q?znfmXWowwmPSyfNKtvpYxnvHq23I/5UIyh2kOagX3RemaMHH1Zb9ZXFlFymY?=
- =?us-ascii?Q?f9GP1Km9yDsjXFrcy+KLVp6fKPlGPkPkRpCIUHIsTyMAhSpVxw7sFVUaZMe+?=
- =?us-ascii?Q?sdOTkXwuACInGXUdH8jxafejFzYJiutpVopyDGlEJtimdYACiTNBZ8V0DD50?=
- =?us-ascii?Q?Doj99lse1INq8FohkZuOpUcqqFnvT/RE0PN3dOgfmghlF4H8tDNyIqrEBLi5?=
- =?us-ascii?Q?dcQ8pthJjZc+r+MLrAl2T6GlVzWT805Lcw2tCFKBF2Zr0wLLVEG3ZA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 07:23:19.4219 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95c1742e-fe03-47f8-bd5e-08dd54a41d0b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017095.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8818
+In-Reply-To: <20250221155336.378911-3-oak.zeng@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,231 +73,349 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit introduces enhancements to the deadlock to handle
-page queues and modify the logic for enabling/disabling scheduling rings.
+On Fri, Feb 21, 2025 at 10:53:34AM -0500, Oak Zeng wrote:
+> From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> 
+> Introduce helper functions for buffer creation, binding,
+> destruction and command submission etc. With those helpers,
+> writing a xe igt test will be much easier, which will be
+> showed in a coming example.
+> 
+> v2: use to_user_pointer to cast a pointer (Kamil)
+>     s/insert_store/xe_insert_store (Kamil)
+>     s/cmdbuf_fill_func_t/xe_cmdbuf_fill_func_t (Kamil)
+> v3: refactor command buffer fill interface (Zbigniew)
+> v4: add more asserts, check function parameters, drop
+>     function xe_fill_cmdbuf, xe_close_cmdbuf etc (Zbigniew)
+> v5: more assert, function name, cosmetic changes (Zbigniew)
+> 
+> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> ---
+>  lib/xe/xe_util.c | 239 +++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/xe/xe_util.h |  39 ++++++++
+>  2 files changed, 278 insertions(+)
+> 
+> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+> index 06b378ce0..3dda32ebb 100644
+> --- a/lib/xe/xe_util.c
+> +++ b/lib/xe/xe_util.c
+> @@ -13,6 +13,245 @@
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+>  
+> +#define UFENCE_LENGTH		sizeof(((struct drm_xe_sync *)0)->timeline_value)
+> +
+> +/**
+> + * xe_cmdbuf_exec_ufence_gpuva:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + *
+> + * Returns the GPU virtual address of the execution user fence located at the
+> + * end of the command buffer.
+> + */
+> +static uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	igt_assert(cmdbuf);
+> +
+> +	return cmdbuf->buf.gpu_addr + cmdbuf->buf.size - UFENCE_LENGTH;
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_exec_ufence_cpuva:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + *
+> + * Returns the CPU virtual address of the execution user fence located at the
+> + * end of the command buffer.
+> + */
+> +static void *xe_cmdbuf_exec_ufence_cpuva(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	igt_assert(cmdbuf);
+> +
+> +	return (char *)cmdbuf->buf.cpu_addr + cmdbuf->buf.size - UFENCE_LENGTH;
+> +}
+> +
+> +/**
+> + *xe_buffer_create:
+> + * @buffer Pointer to the xe_buffer structure containing buffer details.
+> + *
+> + * Creates a buffer, maps it to both CPU and GPU address spaces.
+> + */
+> +int xe_buffer_create(struct xe_buffer *buffer)
+> +{
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		  .timeline_value = USER_FENCE_VALUE },
+> +	};
+> +
+> +	igt_assert(buffer);
+> +
+> +	if (buffer->fd < 0)
+> +		return -EINVAL;
+> +
+> +	if (buffer->size == 0)
+> +		return -EINVAL;
+> +
+> +	if (!(buffer->placement & all_memory_regions(buffer->fd)))
+> +		return -EINVAL;
+> +
+> +	buffer->bind_queue = xe_bind_exec_queue_create(buffer->fd,
+> +						       buffer->vm, 0);
+> +	buffer->bind_ufence = aligned_alloc(xe_get_default_alignment(buffer->fd),
+> +					    PAGE_ALIGN_UFENCE);
+> +	sync->addr = to_user_pointer(buffer->bind_ufence);
+> +
+> +	/* create and bind the buffer->bo */
+> +	buffer->bo = xe_bo_create(buffer->fd, 0, buffer->size,
+> +				  buffer->placement, buffer->flag);
+> +	buffer->cpu_addr = xe_bo_map(buffer->fd, buffer->bo, buffer->size);
+> +	xe_vm_bind_async(buffer->fd, buffer->vm, buffer->bind_queue,
+> +			 buffer->bo, 0, buffer->gpu_addr,
+> +			 buffer->size, sync, 1);
+> +
+> +	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
+> +		       USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
+> +	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * xe_buffer_destroy:
+> + * @buffer Pointer to the xe_buffer structure containing buffer details
+> + *
+> + * Destroys a buffer created by xe_buffer_create and releases associated
+> + * resources.
+> + */
+> +void xe_buffer_destroy(struct xe_buffer *buffer)
+> +{
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		  .timeline_value = USER_FENCE_VALUE },
+> +	};
+> +
+> +	igt_assert(buffer);
+> +
+> +	sync->addr = to_user_pointer(buffer->bind_ufence);
+> +	xe_vm_unbind_async(buffer->fd, buffer->vm, buffer->bind_queue,
+> +			   0, buffer->gpu_addr, buffer->size, sync, 1);
+> +	xe_wait_ufence(buffer->fd, buffer->bind_ufence,
+> +		       USER_FENCE_VALUE, buffer->bind_queue, NSEC_PER_SEC);
+> +	memset(buffer->bind_ufence, 0, PAGE_ALIGN_UFENCE);
+> +
+> +	munmap(buffer->cpu_addr, buffer->size);
+> +	gem_close(buffer->fd, buffer->bo);
+> +
+> +	free(buffer->bind_ufence);
+> +	xe_exec_queue_destroy(buffer->fd, buffer->bind_queue);
+> +}
+> +
+> +/**
+> + * __xe_cmdbuf_submit:
+> + * @cmdbuf Pointer to the command buffer structure
+> + *
+> + * Submits a command buffer to the GPU, waits for its completion, and verifies
+> + * the user fence value
+> + *
+> + * Return: The result of waiting for the user fence value
+> + */
+> +int64_t __xe_cmdbuf_submit(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	int64_t timeout = NSEC_PER_SEC;
+> +	int ret;
+> +
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +			.timeline_value = USER_FENCE_VALUE,
+> +			.addr = xe_cmdbuf_exec_ufence_gpuva(cmdbuf),},
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(sync),
+> +		.exec_queue_id = cmdbuf->exec_queue,
+> +		.address = cmdbuf->buf.gpu_addr,
+> +	};
+> +
+> +	igt_assert(cmdbuf);
+> +
+> +	ret = __xe_exec(cmdbuf->buf.fd, &exec);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = __xe_wait_ufence(cmdbuf->buf.fd,
+> +			       (uint64_t *)xe_cmdbuf_exec_ufence_cpuva(cmdbuf),
+> +			       USER_FENCE_VALUE, cmdbuf->exec_queue, &timeout);
+> +	/* Reset the fence so the exec ufence can be reused */
+> +	memset((char *)xe_cmdbuf_exec_ufence_cpuva(cmdbuf), 0, UFENCE_LENGTH);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_submit:
+> + * @cmdbuf Pointer to the command buffer structure
+> + *
+> + * Wrapper function to submit a command buffer and assert its successful
+> + * execution.
+> + */
+> +void xe_cmdbuf_submit(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	igt_assert(cmdbuf);
+> +	igt_assert_eq(__xe_cmdbuf_submit(cmdbuf), 0);
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_insert_store:
+> + * @cmdbuf: command buffer where commands will be inserted.
+> + * @dst_va Destination virtual address to store the value.
+> + * @val Value to be stored.
+> + *
+> + * Inserts a MI_STORE_DWORD_IMM_GEN4 command into a command  buffer, which stores
+> + * an immediate value to a given destination virtual address.
+> + */
+> +void xe_cmdbuf_insert_store(struct xe_cmdbuf *cmdbuf,
+> +			    uint64_t dst_va, uint32_t val)
+> +{
+> +	uint32_t *batch = cmdbuf->buf.cpu_addr;
+> +
+> +	igt_assert(cmdbuf);
+> +	/* Leaves at least one dword for MI_BATCH_BUFFER_END */
+> +	igt_assert(cmdbuf->write_index + 4 <=
+> +		   cmdbuf->cmd_size/sizeof(uint32_t) - 1);
+> +
+> +	batch[cmdbuf->write_index++] = MI_STORE_DWORD_IMM_GEN4;
+> +	batch[cmdbuf->write_index++] = dst_va;
+> +	batch[cmdbuf->write_index++] = dst_va >> 32;
+> +	batch[cmdbuf->write_index++] = val;
+> +}
+> +
+> +void xe_cmdbuf_insert_bbe(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	uint32_t *batch = cmdbuf->buf.cpu_addr;
+> +
+> +	igt_assert(cmdbuf);
+> +	igt_assert(cmdbuf->write_index <= cmdbuf->cmd_size/sizeof(uint32_t) - 1);
+> +
+> +	batch[cmdbuf->write_index++] = MI_BATCH_BUFFER_END;
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_create:
+> + * @cmdbuf Pointer to the xe_cmdbuf structure representing the command buffer.
+> + * @eci Pointer to the engine class instance for execution.
+> + *
+> + * Creates a command buffer, fills it with commands using the provided fill
+> + * function, and sets up the execution queue for submission.
+> + */
+> +void xe_cmdbuf_create(struct xe_cmdbuf *cmdbuf,
+> +		       struct drm_xe_engine_class_instance *eci)
+> +{
+> +	struct xe_buffer *buf = &cmdbuf->buf;
+> +
+> +	igt_assert(cmdbuf);
+> +
+> +	/*
+> +	 * make some room for a exec_ufence, which will be used to sync the
+> +	 * submission of this command....
+> +	 */
+> +	buf->size = xe_bb_size(buf->fd,
+> +			       cmdbuf->cmd_size + PAGE_ALIGN_UFENCE);
+> +	xe_buffer_create(buf);
+> +	cmdbuf->exec_queue = xe_exec_queue_create(buf->fd, buf->vm, eci, 0);
+> +	cmdbuf->write_index = 0;
+> +}
+> +
+> +/**
+> + * xe_cmdbuf_destroy:
+> + * @cmdbuf Pointer to the xe_buffer structure representing the command buffer.
+> + *
+> + * Destroys a command buffer created by xe_cmdbuf_create and releases
+> + * associated resources.
+> + */
+> +void xe_cmdbuf_destroy(struct xe_cmdbuf *cmdbuf)
+> +{
+> +	igt_assert(cmdbuf);
+> +
+> +	xe_exec_queue_destroy(cmdbuf->buf.fd, cmdbuf->exec_queue);
+> +	xe_buffer_destroy(&cmdbuf->buf);
+> +}
+> +
+>  static bool __region_belongs_to_regions_type(struct drm_xe_mem_region *region,
+>  					     uint32_t *mem_regions_type,
+>  					     int num_regions)
+> diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+> index 06ebd3c2a..ec0062a8d 100644
+> --- a/lib/xe/xe_util.h
+> +++ b/lib/xe/xe_util.h
+> @@ -14,6 +14,45 @@
+>  
+>  #include "xe_query.h"
+>  
+> +#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> +#define PAGE_ALIGN_UFENCE	4096
 
-- New Function `is_support_page_queue`:
-  - Checks if page queue files exist for a given IP block type and PCI address.
+You may use SZ_4K as we have defined it in igt_sizes.h but this
+is just a nit, not a blocker.
 
-- Modify `amdgpu_wait_memory_helper`:
-  - Updates the logic for enabling/disabling scheduling rings based on whether page queues are supported.
-  - Calls `is_support_page_queue` to check if page queues are supported.
-  - If page queues are supported, enables two rings (sdma gfx queue and page queue).
+Code looks good to me, I just only realized you keep separate
+bind queue/fence for each xe_buffer (to reuse them in destroy
+path).
 
-- Similar Modifications in Other Functions:
-  - Applies similar logic to handle page queues in `bad_access_ring_helper` and `amdgpu_hang_sdma_ring_helper`.
-  - Ensures consistency across different helper functions, maintaining the same logic for handling page queues.
+Please remove versioning (v2-v5) from final commit message.
+I think it is not needed - we may use b4 -l for merging so it
+will add link to the review email thread.
 
- Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
- Cc: Christian Koenig <christian.koenig@amd.com>
- Cc: Alexander Deucher <alexander.deucher@amd.com>
+From me:
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
----
- lib/amdgpu/amd_deadlock_helpers.c | 96 ++++++++++++++++++++++++++-----
- 1 file changed, 81 insertions(+), 15 deletions(-)
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index d7bf0e111..3463653a7 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -10,6 +10,7 @@
- #include <unistd.h>
- #include <pthread.h>
- #include <signal.h>
-+#include <glob.h>
- #include "amd_memory.h"
- #include "amd_deadlock_helpers.h"
- #include "lib/amdgpu/amd_command_submission.h"
-@@ -26,6 +27,31 @@ struct thread_param {
- static int
- use_uc_mtype = 1;
- 
-+/* Function to check if page queue files exist for a given IP block type and PCI address */
-+static bool
-+is_support_page_queue(enum amd_ip_block_type ip_type, const struct pci_addr *pci)
-+{
-+	glob_t glob_result;
-+	int ret;
-+	char search_pattern[1024];
-+
-+	/* If the IP type is not SDMA, return false */
-+	if (ip_type != AMD_IP_DMA)
-+		return false;
-+
-+	/* Construct the search pattern for the page queue files */
-+	snprintf(search_pattern, sizeof(search_pattern) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_ring_page*",
-+		pci->domain, pci->bus, pci->device, pci->function);
-+
-+	/* Use glob to find files matching the pattern */
-+	ret = glob(search_pattern, GLOB_NOSORT, NULL, &glob_result);
-+	/* Free the memory allocated by glob */
-+	globfree(&glob_result);
-+
-+	/* Return true if files matching the pattern were found, otherwise return false */
-+	return (ret == 0 && glob_result.gl_pathc > 0);
-+}
-+
- static void*
- write_mem_address(void *data)
- {
-@@ -179,16 +205,19 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 	FILE *fp;
- 	char cmd[1024];
- 	char buffer[128];
--	long sched_mask = 0;
-+	uint64_t sched_mask = 0, ring_id;
- 	struct drm_amdgpu_info_hw_ip info;
--	uint32_t ring_id, prio;
-+	uint32_t  prio;
- 	char sysfs[125];
-+	bool support_page;
- 
- 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
- 	igt_assert_eq(r, 0);
- 	if (!info.available_rings)
- 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
- 
-+	support_page = is_support_page_queue(ip_type, pci);
-+
- 	if (ip_type == AMD_IP_GFX)
- 		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
- 			pci->domain, pci->bus, pci->device, pci->function);
-@@ -215,7 +244,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
- 	}
- 
--	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
-+	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id += 1) {
- 		/* check sched is ready is on the ring. */
- 		if (!((1 << ring_id) & sched_mask))
- 			continue;
-@@ -239,9 +268,20 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 		}
- 
- 		if (sched_mask > 1) {
--			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
--						0x1 << ring_id, sysfs);
--			igt_info("Disable other rings, keep only ring: %d enabled, cmd: %s\n", ring_id, cmd);
-+			/* If page queues are supported, run with
-+			 * multiple queues(sdma gfx queue + page queue)
-+			 */
-+			if (support_page) {
-+				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
-+							0x3 << ring_id, sysfs);
-+				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
-+				ring_id++;
-+
-+			} else {
-+				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
-+							0x1 << ring_id, sysfs);
-+				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
-+			}
- 			r = system(cmd);
- 			igt_assert_eq(r, 0);
- 		}
-@@ -411,16 +451,18 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 	FILE *fp;
- 	char cmd[1024];
- 	char buffer[128];
--	long sched_mask = 0;
-+	uint64_t sched_mask = 0, ring_id;
- 	struct drm_amdgpu_info_hw_ip info;
--	uint32_t ring_id, prio;
-+	uint32_t prio;
- 	char sysfs[125];
-+	bool support_page;
- 
- 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
- 	igt_assert_eq(r, 0);
- 	if (!info.available_rings)
- 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
- 
-+	support_page = is_support_page_queue(ip_type, pci);
- 	if (ip_type == AMD_IP_GFX)
- 		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
- 			pci->domain, pci->bus, pci->device, pci->function);
-@@ -447,7 +489,7 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
- 	}
- 
--	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
-+	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id++) {
- 		/* check sched is ready is on the ring. */
- 		if (!((1 << ring_id) & sched_mask))
- 			continue;
-@@ -471,9 +513,20 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 		}
- 
- 		if (sched_mask > 1) {
--			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
-+			/* If page queues are supported, run with
-+			 * multiple queues(sdma gfx queue + page queue)
-+			 */
-+			if (support_page) {
-+				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
-+						0x3 << ring_id, sysfs);
-+				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
-+				ring_id++;
-+			} else {
-+				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 						0x1 << ring_id, sysfs);
--			igt_info("Disable other rings, keep only ring: %d enabled, cmd: %s\n", ring_id, cmd);
-+				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
-+			}
-+
- 			r = system(cmd);
- 			igt_assert_eq(r, 0);
- 		}
-@@ -496,16 +549,17 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
- 	FILE *fp;
- 	char cmd[1024];
- 	char buffer[128];
--	long sched_mask = 0;
-+	uint64_t sched_mask = 0, ring_id;
- 	struct drm_amdgpu_info_hw_ip info;
--	uint32_t ring_id;
- 	char sysfs[125];
-+	bool support_page;
- 
- 	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_DMA, 0, &info);
- 	igt_assert_eq(r, 0);
- 	if (!info.available_rings)
- 		igt_info("SKIP ... as there's no ring for the sdma\n");
- 
-+	support_page = is_support_page_queue(AMDGPU_HW_IP_DMA, pci);
- 	snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_sdma_sched_mask",
- 			pci->domain, pci->bus, pci->device, pci->function);
- 	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
-@@ -522,14 +576,26 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
- 	} else
- 		sched_mask = 1;
- 
--	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
-+	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id++) {
- 		/* check sched is ready is on the ring. */
- 		if (!((1 << ring_id) & sched_mask))
- 			continue;
- 
- 		if (sched_mask > 1) {
--			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
-+			/* If page queues are supported, run with
-+			 * multiple queues(sdma gfx queue + page queue)
-+			 */
-+			if (support_page) {
-+				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
-+						0x3 << ring_id, sysfs);
-+				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
-+				ring_id++;
-+			} else {
-+				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 						0x1 << ring_id, sysfs);
-+				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
-+			}
-+
- 			r = system(cmd);
- 			igt_assert_eq(r, 0);
- 		}
--- 
-2.25.1
+--
+Zbigniew
 
+> +
+> +struct xe_buffer {
+> +	void *cpu_addr;
+> +	uint64_t gpu_addr;
+> +	/*the user fence used to vm bind this buffer*/
+> +	uint64_t *bind_ufence;
+> +	uint64_t size;
+> +	uint32_t flag;
+> +	uint32_t vm;
+> +	uint32_t bo;
+> +	uint32_t placement;
+> +	uint32_t bind_queue;
+> +	int fd;
+> +	bool is_userptr;
+> +};
+> +
+> +struct xe_cmdbuf {
+> +	struct xe_buffer buf;
+> +	/* command size in bytes, not including exec_ufence */
+> +	uint64_t cmd_size;
+> +	uint32_t exec_queue;
+> +	/* Dword index to writ to command buffer */
+> +	uint32_t write_index;
+> +};
+> +
+> +int xe_buffer_create(struct xe_buffer *buffer);
+> +void xe_buffer_destroy(struct xe_buffer *buffer);
+> +
+> +void xe_cmdbuf_create(struct xe_cmdbuf *cmdbuf,
+> +		      struct drm_xe_engine_class_instance *eci);
+> +void xe_cmdbuf_insert_store(struct xe_cmdbuf *cmdbuf, uint64_t dst_va,
+> +			    uint32_t val);
+> +void xe_cmdbuf_insert_bbe(struct xe_cmdbuf *cmdbuf);
+> +void xe_cmdbuf_submit(struct xe_cmdbuf *cmdbuf);
+> +int64_t __xe_cmdbuf_submit(struct xe_cmdbuf *cmdbuf);
+> +void xe_cmdbuf_destroy(struct xe_cmdbuf *cmdbuf);
+> +
+>  #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
+>  	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_SYSMEM)
+>  #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
+> -- 
+> 2.26.3
+> 
