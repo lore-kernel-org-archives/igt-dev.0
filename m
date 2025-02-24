@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49CE0C021BE
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF92C021BC
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Feb 2025 14:47:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEF2710E3E8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A4E510E3DE;
 	Mon, 24 Feb 2025 14:47:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ldNN8SAr";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GwrV8uUa";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8471A10E3DD
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:47:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0260010E3C1
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2025 14:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740408449; x=1771944449;
+ t=1740408450; x=1771944450;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qWQGixiyl6rhnwzh4a/4j2waDjOekJQfr0dXM3SKGSw=;
- b=ldNN8SAr07nIOi5a4w/ehrqzQrl6Buoe70AFNm3N1jlXOjPMVWmF1ZiN
- r5esZESfBt8LjP4k42Z9OjUr87946JDNc0E/edgFPZYwfKBU+woH+IkaI
- y7Heb6auAyOewGCL5c0joU0PeVBH04JBPi5pzPa7tEjBdqOCd3xa06jPy
- FzXWBARkJUG1eXpxcQ20b0p+ZufKOx5fjnU+c36/AAKiUIOqP1qr6xAEO
- KKld6thV6sNQq/OWY9TGRRrizwQHAJYZSrvxfAl/Lr7/CexHMCKgmjYj0
- 4HIheEXRNQTK+KsoisldE0Gb1Ejlp5uXgImVqH7IXEVSM67VamjlQKZhc A==;
-X-CSE-ConnectionGUID: Bpl6YAVaQ+mcXx1x3L42zQ==
-X-CSE-MsgGUID: KZHAunaNTWe0qVVnP1eOLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51793280"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="51793280"
+ bh=j7ICcjIXdpGRRb4V3MIML1q+1abwfY/RAIAWo2qXUEo=;
+ b=GwrV8uUaWPj3B6jmhGva/x7rQEJ258Urmi/sWNdgGk3E9noMTleeBtGN
+ FBewhC5I1zka0ScXTPMO1veqZTotJZLyQD5V2nmdlNLUPzpLS7OVNAuVI
+ X5CeYBvK722oQLuFMqxhQ/EmLJn0ua/JTFe5ATzPwLQzSXMENjl+oOPBQ
+ Syc00L1ErGd4ZUdOeUx24pS7qqQnpcBtWzrdutyTO2pEIr04Jxk7GRMbH
+ lH13yaK6uGk/qny1/CN6C5LzlfBZhHyiq1ZhJkkqtJ7pmcUZwb4yLTj7w
+ P6K82kl3Nn65TqbICOVV59wrrYn7f3dfQ/G+Gz2HK9oKpQAGg/aEtE5Mr g==;
+X-CSE-ConnectionGUID: R3ffWf+MRSqPj4ALXvQ8KQ==
+X-CSE-MsgGUID: 1bfIEOo0QXOWmvpbRzXGLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51793302"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="51793302"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:47:21 -0800
-X-CSE-ConnectionGUID: XTWwHKDUT4WV2nCudSFtHA==
-X-CSE-MsgGUID: wvOvdUZITRCM8/dy5JxJyw==
+ 24 Feb 2025 06:47:29 -0800
+X-CSE-ConnectionGUID: q5rEqv+vROuemaEeh1bxNg==
+X-CSE-MsgGUID: +slcbixGQ6unC4daxLi+5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="120689945"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="120689973"
 Received: from dprybysh-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.246.122])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:47:20 -0800
+ 24 Feb 2025 06:47:28 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t,v2 1/6] lib/intel_compute: Make loop count a parameter
-Date: Mon, 24 Feb 2025 15:46:09 +0100
-Message-ID: <20250224144705.1019940-2-francois.dugast@intel.com>
+Subject: [PATCH i-g-t,
+ v2 6/6] lib/intel_compute: Allow the user to provide input and output
+ buffers
+Date: Mon, 24 Feb 2025 15:46:14 +0100
+Message-ID: <20250224144705.1019940-7-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224144705.1019940-1-francois.dugast@intel.com>
 References: <20250224144705.1019940-1-francois.dugast@intel.com>
@@ -68,130 +70,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The loop count was previously hardcoded as 0x400 in *create_indirect_data()
-functions. Turn it into a parameterized value that gets used during the
-batch buffer generation so that the function user can specify the count.
+Allow the user to create and provide the buffers to be used as input
+and as output of the compute kernel. This allows special handling as
+well as read/write from outside the compute library. Support is
+limited to xe2lpg.
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_compute.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ lib/intel_compute.c | 32 ++++++++++++++++++++++++--------
+ lib/intel_compute.h |  2 ++
+ 2 files changed, 26 insertions(+), 8 deletions(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index f46de1074..b698bf77d 100644
+index 4818c0ff7..cb9561946 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -293,7 +293,8 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
- static void create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 				 uint64_t addr_input,
- 				 uint64_t addr_output,
--				 uint32_t end_value)
-+				 uint32_t end_value,
-+				 unsigned int loop_count)
- {
- 	uint32_t val = 0;
- 	int b = 0, curr = 0;
-@@ -313,7 +314,7 @@ static void create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
+@@ -1665,6 +1665,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
  
--	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = loop_count;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -708,7 +709,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
- 	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
--			     IS_DG1(devid) ? 0x200 : 0x40);
-+			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
+ 	struct bo_execenv execenv;
+ 	float *input_data, *output_data;
++	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
++	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
  
- 	dinput = (float *)bo_dict[4].data;
- 	srand(time(NULL));
-@@ -746,7 +747,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_create(fd, &execenv, eci, user);
  
- static void xehp_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 				      uint64_t addr_input,
--				      uint64_t addr_output)
-+				      uint64_t addr_output,
-+				      unsigned int loop_count)
- {
- 	int b = 0;
- 
-@@ -754,7 +756,7 @@ static void xehp_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_input >> 32;
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
--	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = loop_count;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -986,7 +988,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
- 
- 	dinput = (float *)bo_dict[4].data;
-@@ -1020,7 +1022,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 
- static void xehpc_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 				       uint64_t addr_input,
--				       uint64_t addr_output)
-+				       uint64_t addr_output,
-+				       unsigned int loop_count)
- {
- 	int b = 0;
- 
-@@ -1036,7 +1039,7 @@ static void xehpc_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_input >> 32;
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
--	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = loop_count;
- 	addr_bo_buffer_batch[b++] = 0x00000400;
- 	addr_bo_buffer_batch[b++] = 0x00000001;
- 	addr_bo_buffer_batch[b++] = 0x00000001;
-@@ -1191,7 +1194,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_bind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
+@@ -1675,16 +1677,24 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
  
  	memcpy(bo_dict[0].data, kernel, size);
--	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 
- 	dinput = (float *)bo_dict[2].data;
- 	srand(time(NULL));
-@@ -1551,7 +1554,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 
  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+-	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+-	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+-	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
++	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
++	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
++	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
  
- 	dinput = (float *)bo_dict[4].data;
-@@ -1640,7 +1643,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+-	input_data = (float *) bo_dict[4].data;
+-	output_data = (float *) bo_dict[5].data;
+-	srand(time(NULL));
++	if (user && user->input_addr) {
++		input_data = (float *) user->input_addr;
++	} else {
++		input_data = (float *) bo_dict[4].data;
++		srand(time(NULL));
  
- 	dinput = (float *)bo_dict[4].data;
-@@ -1946,7 +1949,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+-	for (int i = 0; i < SIZE_DATA; i++)
+-		input_data[i] = rand() / (float)RAND_MAX;
++		for (int i = 0; i < SIZE_DATA; i++)
++			input_data[i] = rand() / (float)RAND_MAX;
++	}
++
++	if (user && user->output_addr)
++		output_data = (float *) user->output_addr;
++	else
++		output_data = (float *) bo_dict[5].data;
  
- 	create_dynamic_state(bo_dict_short[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict_short[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 	xehp_create_surface_state(bo_dict_short[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 	xe2lpg_compute_exec_compute(bo_dict[8].data,
+ 				  ADDR_GENERAL_STATE_BASE,
+@@ -1802,6 +1812,12 @@ static bool __run_intel_compute_kernel(int fd,
+ 		return false;
+ 	}
  
- 	dinput = (float *)bo_dict_long[4].data;
++	if (user && (user->input_addr || user->output_addr) &&
++	    intel_compute_batches[batch].compute_exec != xe2lpg_compute_exec) {
++		igt_debug("GPU version 0x%x does not support user input/output buffers\n", ip_ver);
++		return false;
++	}
++
+ 	/* If the user provides a kernel, use it */
+ 	if (user && user->kernel) {
+ 		kernel = user->kernel;
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index dc0fe2ec2..edc17b894 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -55,6 +55,8 @@ struct user_execenv {
+ 	unsigned int kernel_size;
+ 	/** @skip_results_check: do not verify correctness of the results if true */
+ 	bool skip_results_check;
++	uint64_t input_addr;
++	uint64_t output_addr;
+ };
+ 
+ extern const struct intel_compute_kernels intel_compute_square_kernels[];
 -- 
 2.43.0
 
