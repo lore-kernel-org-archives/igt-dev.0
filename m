@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 481D1C021B6
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 00:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32708C021A4
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 02:54:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04ACB10E50B;
-	Tue, 25 Feb 2025 00:32:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE8C310E060;
+	Tue, 25 Feb 2025 02:54:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k9sneyZL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bDjeAEbP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD36110E0A8
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 00:32:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2A6C10E060
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 02:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740443521; x=1771979521;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ewmtOhhcz4CaQ5MjgvvHuaLvjcY27qPZJpjYT5pF2Cc=;
- b=k9sneyZLo+q/PdQz716GarjneuGuyioh6YO6DllHttYR9xT2WFdcUHsV
- RKTDYAzg92vYs3he0nnC/Vdi2hBYhNqZdFIAcRE7BL+4jcSrI6tvwOEJG
- MpOeiNJrdAaGNkZdW8juK9FzcusUE+iPgckxhdEFvGogJlJN8Ac0v9rmX
- R8CJN1X38AK5GQcVRog00+CV0mr7iqZJg9QLG2VRZhkHd+7p9Hr5sAOnl
- jiWYq8+EK2CfJKdizrHIg5/AC6iw39mdYl3hspFiwWIDyJdyRlZ4CoiNZ
- jAOp6u0For17Hn85eRdegpWxXpTvhLnJZ+QsaFpONFiXh4wzXPGSKPWtF w==;
-X-CSE-ConnectionGUID: DFIbGFPEQji0s2kMh5IHZg==
-X-CSE-MsgGUID: pWqFGTnuSAWkx4lUe1xHXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51863675"
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="51863675"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 16:32:01 -0800
-X-CSE-ConnectionGUID: LT39wk0qT8y6Xn+FDXxSxQ==
-X-CSE-MsgGUID: sqEWfCt3Ro+YODBkCjj7rA==
+ t=1740452084; x=1771988084;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=fVZe66LWdB6VZ+hNL1JwZLstL+yZFEqXlAi7xyR5vQM=;
+ b=bDjeAEbPQeNknJJFO6jgwtTptYsVrPoDyRasDKXbBMc2up0FG9oAIgBK
+ Qh+woiqkHSCpNXFaKmRXozXajqmZNmPa7/vJIYwenjyP2X2SbIMmntUOO
+ vIhGVEwf2BoT705J09d6GlIULpHIIfI/5jSI+EHqMwN3CHoiFJu8vkT+y
+ Bb0QJ0tyWPGrv4Xv1e7X0dqGMkVnDazUax73h61q/2gH/s77lFrSEHHdz
+ UDljb5CNq/fDN7UJGovwQ2L4sRDkwi3jnNhD+7myiDEjW2vMPwK38YOZj
+ psziZcWN/ZlhMfb09YoSAMBlijnRQsFrH2jzTiklwBJWmrZJwSEt1i0e0 A==;
+X-CSE-ConnectionGUID: vqQl4PSbRse9bszE5B8+8Q==
+X-CSE-MsgGUID: Ok40lt7lTv2R7qJ4JVONUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="52642770"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="52642770"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 18:54:44 -0800
+X-CSE-ConnectionGUID: Sil3rIl6TkS6IwizRXucZg==
+X-CSE-MsgGUID: 4xvxTbgfR/2w+nMFM8QfEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="120840153"
-Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 16:32:01 -0800
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: [PATCH i-g-t v4 7/7] tests/intel/xe_pxp: Test encrypted FBs
-Date: Mon, 24 Feb 2025 16:31:38 -0800
-Message-ID: <20250225003140.2738645-8-daniele.ceraolospurio@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250225003140.2738645-1-daniele.ceraolospurio@intel.com>
-References: <20250225003140.2738645-1-daniele.ceraolospurio@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="116883781"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 18:54:43 -0800
+Date: Mon, 24 Feb 2025 18:54:42 -0800
+Message-ID: <85ikoyka31.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH 10/13] tests/intel/xe_oa: Rewrite enable-disable test
+In-Reply-To: <85ldtukgro.wl-ashutosh.dixit@intel.com>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>	<20250215010628.1639986-11-umesh.nerlige.ramappa@intel.com>	<85ldtukgro.wl-ashutosh.dixit@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,355 +70,207 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-PXP allows a user to send an encrypted BO to the display HW without
-having to decode it. The driver needs however to tell the HW that the
-BO is encrypted, otherwise it won't be displayed correctly. Furthermore,
-if PXP is terminated before the FB is displayed, we expect to see a black
-screen instead of what's in the BO.
+On Mon, 24 Feb 2025 16:30:19 -0800, Dixit, Ashutosh wrote:
+>
+> On Fri, 14 Feb 2025 17:06:25 -0800, Umesh Nerlige Ramappa wrote:
+> >
+> > Keep it simple and just check if enable/disable is working correctly
+> > using mmio.
+> >
+> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > ---
+> >  tests/intel/xe_oa.c | 129 +++++---------------------------------------
+> >  1 file changed, 13 insertions(+), 116 deletions(-)
+> >
+> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> > index ee87b7338..c6c1c2358 100644
+> > --- a/tests/intel/xe_oa.c
+> > +++ b/tests/intel/xe_oa.c
+> > @@ -2534,21 +2534,13 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
+> >  static void
+> >  test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+> >  {
+> > -	/* ~5 micro second period */
+> > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+> > -	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> >	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> > -	uint64_t fmt = test_set->perf_oa_format;
+> >	uint64_t properties[] = {
+> >		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> > -
+> > -		/* Include OA reports in samples */
+> >		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+> > -
+> > -		/* OA unit configuration */
+> >		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+> > -		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+> > -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+> > +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+> >		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+> >		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+> >	};
+> > @@ -2556,123 +2548,28 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+> >		.num_properties = ARRAY_SIZE(properties) / 2,
+> >		.properties_ptr = to_user_pointer(properties),
+> >	};
+> > -	size_t report_size = get_oa_format(fmt).size;
+> > -	int buf_size = 65536 * report_size;
+> > -	uint8_t *buf = malloc(buf_size);
+> > -	int n_full_oa_reports = default_oa_buffer_size / report_size;
+> > -	uint64_t fill_duration = n_full_oa_reports * oa_period;
+> > -	uint32_t *last_periodic_report = malloc(report_size);
+> > -
+> > -	load_helper_init();
+> > -	load_helper_run(HIGH);
+> > +	u32 oacontrol;
+> >
+> >	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+> >          set_fd_flags(stream_fd, O_CLOEXEC);
+> >
+> > -	for (int i = 0; i < 5; i++) {
+> > -		int len;
+> > -		uint32_t n_periodic_reports;
+> > -		uint64_t first_timestamp = 0, last_timestamp = 0;
+> > -		u32 oa_status;
+> > -
+> > -		/* Giving enough time for an overflow might help catch whether
+> > -		 * the OA unit has been enabled even if the driver might at
+> > -		 * least avoid copying reports while disabled.
+> > -		 */
+> > -		nanosleep(&(struct timespec){ .tv_sec = 0,
+> > -					      .tv_nsec = fill_duration * 1.25 },
+> > -			  NULL);
+> > -
+> > -		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
+> > -		       (errno == EINTR || errno == EIO))
+> > -			;
+> > -
+> > -		igt_assert_eq(len, -1);
+> > -		igt_assert_eq(errno, EINVAL);
+> > -
+> > -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> > +#define OAG_OACONTROL	(0xdaf4)
+> > +#define  OAG_OACONTROL_OA_COUNTER_ENABLE	(1 << 0)
+> >
+> > -		nanosleep(&(struct timespec){ .tv_sec = 0,
+> > -					      .tv_nsec = fill_duration / 2 },
+> > -			NULL);
+> > -
+> > -		n_periodic_reports = 0;
+> > -
+> > -		/* Because of the race condition between notification of new
+> > -		 * reports and reports landing in memory, we need to rely on
+> > -		 * timestamps to figure whether we've read enough of them.
+> > -		 */
+> > -		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
+> > -
+> > -			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
+> > -				;
+> > -			if (errno == EIO) {
+> > -				oa_status = get_stream_status(stream_fd);
+> > -				igt_debug("oa_status %#x\n", oa_status);
+> > -				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
+> > -				continue;
+> > -			}
+> > -			igt_assert_neq(len, -1);
+> > -
+> > -			for (int offset = 0; offset < len; offset += report_size) {
+> > -				uint32_t *report = (void *) (buf + offset);
+> > -
+> > -				if (first_timestamp == 0)
+> > -					first_timestamp = oa_timestamp(report, fmt);
+> > -				last_timestamp = oa_timestamp(report, fmt);
+> > -
+> > -				igt_debug(" > report ts=%"PRIx64""
+> > -					  " ts_delta_last_periodic=%s%"PRIu64""
+> > -					  " is_timer=%i ctx_id=0x%8x\n",
+> > -					  oa_timestamp(report, fmt),
+> > -					  oa_report_is_periodic(report) ? " " : "*",
+> > -					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
+> > -					  oa_report_is_periodic(report),
+> > -					  oa_report_get_ctx_id(report));
+> > -
+> > -				if (oa_report_is_periodic(report)) {
+> > -					memcpy(last_periodic_report, report, report_size);
+> > -
+> > -					/* We want to measure only the periodic reports,
+> > -					 * ctx-switch might inflate the content of the
+> > -					 * buffer and skew or measurement.
+> > -					 */
+> > -					n_periodic_reports++;
+> > -				}
+> > -			}
+> > -		}
+> > -
+> > -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
+> > -
+> > -		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
+> > -
+> > -		igt_debug("%f < %zu < %f\n",
+> > -			  report_size * n_full_oa_reports * 0.45,
+> > -			  n_periodic_reports * report_size,
+> > -			  report_size * n_full_oa_reports * 0.55);
+> > -
+> > -		igt_assert((n_periodic_reports * report_size) >
+> > -			   (report_size * n_full_oa_reports * 0.45));
+> > -		igt_assert((n_periodic_reports * report_size) <
+> > -			   report_size * n_full_oa_reports * 0.55);
+> > +	intel_register_access_init(&mmio_data,
+> > +				   igt_device_get_pci_device(drm_fd), 0);
+> >
+> > +	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
+> > +	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 0);
+> >
+> > -		/* It's considered an error to read a stream while it's disabled
+> > -		 * since it would block indefinitely...
+> > -		 */
+> > -		len = read(stream_fd, buf, buf_size);
+> > +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> >
+> > -		igt_assert_eq(len, -1);
+> > -		igt_assert_eq(errno, EINVAL);
+> > -	}
+> > +	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
+> >
+> > -	free(last_periodic_report);
+> > -	free(buf);
+> > +	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 1);
+> >
+> > +	intel_register_access_fini(&mmio_data);
+> >	__perf_close(stream_fd);
+> > -
+> > -	load_helper_stop();
+> > -	load_helper_fini();
+>
+> The sync tests actually change the config on an open OA stream. However
+> they do it without disable-enable. We could add disable-enable there, but
+> still those tests only check for the syncs to signal. And the syncs signal
+> after a delay after the OA config is applied, not when disable/enable
+> completes, so those tests wouldn't check for enable/disable.
+>
+> At least here we have some basic testing of enable disable. So this is:
+>
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-We can test both these flows by by displaying the expected image from a
-non-encrypted FB and and making sure that the CRC match when we display
-the encrypted FB.
+Actually, I want to question the "wisdom" of bypassing the uapi and
+verifying something by this sideband method or direct register reads,
+clever though that method is.
 
-v2: move igt_require calls inside the subtest
-v3: move repeated code to an helper (Alan)
+So for example, another way to simplify this test is:
 
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
----
- tests/intel/xe_pxp.c | 268 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 261 insertions(+), 7 deletions(-)
+1. Disable the stream and check that read() returns -EINVAL
+2. Re-enable the stream and read() a single report
 
-diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-index 18f582370..1165f0785 100644
---- a/tests/intel/xe_pxp.c
-+++ b/tests/intel/xe_pxp.c
-@@ -27,8 +27,8 @@ IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated
-  * Test category: functionality test
-  */
- 
--static int __pxp_bo_create(int fd, uint32_t vm, uint64_t size,
--			   uint32_t session_type, uint32_t *handle)
-+static int __pxp_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
-+			   uint32_t session_type, uint32_t flags, uint32_t *handle)
- {
- 	struct drm_xe_ext_set_property ext = {
- 		.base.next_extension = 0,
-@@ -38,7 +38,7 @@ static int __pxp_bo_create(int fd, uint32_t vm, uint64_t size,
- 	};
- 	int ret = 0;
- 
--	if (__xe_bo_create(fd, vm, size, system_memory(fd), 0, &ext, handle)) {
-+	if (__xe_bo_create(fd, vm, size, placement, flags, &ext, handle)) {
- 		ret = -errno;
- 		errno = 0;
- 	}
-@@ -50,7 +50,19 @@ static uint32_t pxp_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t type)
- {
- 	uint32_t handle;
- 
--	igt_assert_eq(__pxp_bo_create(fd, vm, size, type, &handle), 0);
-+	igt_assert_eq(__pxp_bo_create(fd, vm, size, system_memory(fd), type, 0, &handle), 0);
-+
-+	return handle;
-+}
-+
-+static uint32_t pxp_bo_create_display(int fd, uint32_t vm, uint64_t size, uint32_t type)
-+{
-+	uint32_t handle;
-+
-+	igt_assert_eq(__pxp_bo_create(fd, vm, size, vram_if_possible(fd, 0), type,
-+				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM |
-+				      DRM_XE_GEM_CREATE_FLAG_SCANOUT,
-+				      &handle), 0);
- 
- 	return handle;
- }
-@@ -166,18 +178,18 @@ static void test_pxp_bo_alloc(int fd, bool pxp_supported)
- 	int ret;
- 
- 	/* BO creation with DRM_XE_PXP_TYPE_NONE must always succeed */
--	ret = __pxp_bo_create(fd, 0, 4096, DRM_XE_PXP_TYPE_NONE, &bo);
-+	ret = __pxp_bo_create(fd, 0, 4096, system_memory(fd), DRM_XE_PXP_TYPE_NONE, 0, &bo);
- 	igt_assert_eq(ret, 0);
- 	gem_close(fd, bo);
- 
- 	/* BO creation with DRM_XE_PXP_TYPE_HWDRM must only succeed if PXP is supported */
--	ret = __pxp_bo_create(fd, 0, 4096, DRM_XE_PXP_TYPE_HWDRM, &bo);
-+	ret = __pxp_bo_create(fd, 0, 4096, system_memory(fd), DRM_XE_PXP_TYPE_HWDRM, 0, &bo);
- 	igt_assert_eq(ret, pxp_supported ? 0 : -ENODEV);
- 	if (!ret)
- 		gem_close(fd, bo);
- 
- 	/* BO creation with an invalid type must always fail */
--	ret = __pxp_bo_create(fd, 0, 4096, 0xFF, &bo);
-+	ret = __pxp_bo_create(fd, 0, 4096, system_memory(fd), 0xFF, 0, &bo);
- 	igt_assert_eq(ret, -EINVAL);
- }
- 
-@@ -808,6 +820,225 @@ static void test_pxp_optout(int fd)
- 	__test_pxp_stale_bo_bind(fd, PXP_TERMINATION_IRQ, false);
- }
- 
-+static void setup_fb(int fd, igt_fb_t *pxp_fb, int width, int height, uint32_t size)
-+{
-+	/* create an FB using a PXP BO */
-+	igt_init_fb(pxp_fb, fd, width, height,
-+		    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+		    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
-+
-+	igt_calc_fb_size(pxp_fb);
-+
-+	pxp_fb->gem_handle = pxp_bo_create_display(fd, 0, size, DRM_XE_PXP_TYPE_HWDRM);
-+
-+	do_or_die(__kms_addfb(pxp_fb->fd, pxp_fb->gem_handle,
-+			pxp_fb->width, pxp_fb->height,
-+			pxp_fb->drm_format, pxp_fb->modifier,
-+			pxp_fb->strides, pxp_fb->offsets, pxp_fb->num_planes, DRM_MODE_FB_MODIFIERS,
-+			&pxp_fb->fb_id));
-+}
-+
-+static void setup_protected_fb_from_ref(int fd, igt_fb_t *ref_fb, igt_fb_t *pxp_fb,
-+					uint32_t q, uint32_t vm)
-+{
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	igt_render_copyfunc_t render_copy;
-+
-+	render_copy = igt_get_render_copyfunc(intel_get_drm_devid(fd));
-+	igt_assert(render_copy);
-+
-+	bops = buf_ops_create(fd);
-+	igt_assert(bops);
-+
-+	/* create an FB using a PXP BO */
-+	setup_fb(fd, pxp_fb, ref_fb->width, ref_fb->height, ref_fb->size);
-+
-+	/* copy the contents of ref_fb into the pxp BO */
-+	srcbuf = igt_fb_create_intel_buf(fd, bops, ref_fb, "ref_fb");
-+	dstbuf = igt_fb_create_intel_buf(fd, bops, pxp_fb, "pxp_fb");
-+	intel_buf_set_pxp(dstbuf, true);
-+
-+	ibb = intel_bb_create_with_context(fd, q, vm, NULL, 4096);
-+	igt_assert(ibb);
-+	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, DRM_XE_PXP_HWDRM_DEFAULT_SESSION);
-+
-+	render_copy(ibb, srcbuf, 0, 0, pxp_fb->width, pxp_fb->height, dstbuf, 0, 0);
-+	intel_bb_sync(ibb);
-+
-+	/* make sure the contents of the BOs don't match */
-+	igt_assert_neq(bocmp(fd, pxp_fb->gem_handle, ref_fb->gem_handle, pxp_fb->size), 0);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	intel_buf_destroy(dstbuf);
-+	buf_ops_destroy(bops);
-+}
-+
-+static void commit_fb(igt_display_t *display, igt_plane_t *plane, igt_fb_t *fb, drmModeModeInfo *mode)
-+{
-+	igt_plane_set_fb(plane, fb);
-+	igt_fb_set_size(fb, plane, mode->hdisplay, mode->vdisplay);
-+	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+}
-+
-+static void compare_crcs(int fd, igt_display_t *display, igt_fb_t *ref_fb, igt_fb_t *pxp_fb)
-+{
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *plane;
-+	igt_pipe_t *pipe;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t ref_crc, new_crc;
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[output->pending_pipe];
-+		pipe_crc = igt_pipe_crc_new(fd, pipe->pipe,
-+					    IGT_PIPE_CRC_SOURCE_AUTO);
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(pipe->pipe, output));
-+		igt_output_set_pipe(output, pipe->pipe);
-+
-+		commit_fb(display, plane, ref_fb, mode);
-+		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-+
-+		commit_fb(display, plane, pxp_fb, mode);
-+		igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
-+
-+		igt_assert_crc_equal(&ref_crc, &new_crc);
-+
-+		/*
-+		 * Testing with one pipe-output combination is sufficient.
-+		 * So break the loop.
-+		 */
-+		break;
-+	}
-+}
-+
-+/**
-+ * SUBTEST: display-pxp-fb
-+ * Description: Test that an encrypted fb is displayed correctly by comparing
-+ *              its CRCs with the ones generated by a non-encrypted FB
-+ *              containing the same image
-+ */
-+
-+static void test_display_pxp_fb(int fd, igt_display_t *display)
-+{
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_fb_t ref_fb, pxp_fb;
-+	igt_plane_t *plane;
-+	igt_pipe_t *pipe;
-+	int width = 0, height = 0, i = 0;
-+	uint32_t q;
-+	uint32_t vm;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	q = create_pxp_rcs_queue(fd, vm); /* start the PXP session */
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+
-+		width = max_t(int, width, mode->hdisplay);
-+		height = max_t(int, height, mode->vdisplay);
-+	}
-+
-+	igt_create_color_fb(fd, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    0, 1, 0, &ref_fb);
-+
-+	/* Do a modeset on all outputs */
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[i];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(i, output));
-+		igt_output_set_pipe(output, i);
-+
-+		commit_fb(display, plane, &ref_fb, mode);
-+
-+		i++;
-+	}
-+
-+	/* Create an encrypted FB with the same contents as ref_fb */
-+	setup_protected_fb_from_ref(fd, &ref_fb, &pxp_fb, q, vm);
-+
-+	/* Flip both FBs and make sure the CRCs match */
-+	compare_crcs(fd, display, &ref_fb, &pxp_fb);
-+
-+	igt_remove_fb(fd, &ref_fb);
-+	igt_remove_fb(fd, &pxp_fb);
-+	xe_exec_queue_destroy(fd, q);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: display-black-pxp-fb
-+ * Description: Test that an invalid encrypted fb is correctly converted to a
-+ *              black screen by comparing its CRCs with the ones generated by a
-+ *              non-encrypted FB filled with black
-+ */
-+
-+static void test_display_black_pxp_fb(int fd, igt_display_t *display)
-+{
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_fb_t ref_fb, pxp_fb;
-+	igt_plane_t *plane;
-+	igt_pipe_t *pipe;
-+	int width = 0, height = 0, i = 0;
-+	uint32_t q;
-+	uint32_t vm;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	q = create_pxp_rcs_queue(fd, vm); /* start the PXP session */
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+
-+		width = max_t(int, width, mode->hdisplay);
-+		height = max_t(int, height, mode->vdisplay);
-+	}
-+
-+	/* create a black fb */
-+	igt_create_color_fb(fd, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    0, 0, 0, &ref_fb);
-+
-+	/* Do a modeset on all outputs */
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[i];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(i, output));
-+		igt_output_set_pipe(output, i);
-+
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		i++;
-+	}
-+
-+	/* Create an fb filled with a non-black color */
-+	setup_fb(fd, &pxp_fb, ref_fb.width, ref_fb.height, ref_fb.size);
-+	fill_bo_content(fd, pxp_fb.gem_handle, pxp_fb.size, TSTSURF_INITCOLOR1);
-+
-+	/* invalidate the BO */
-+	trigger_termination(fd, PXP_TERMINATION_IRQ);
-+
-+	/* Flip both FBs and make sure the CRCs match */
-+	compare_crcs(fd, display, &ref_fb, &pxp_fb);
-+
-+	igt_remove_fb(fd, &ref_fb);
-+	igt_remove_fb(fd, &pxp_fb);
-+	xe_exec_queue_destroy(fd, q);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- static void require_pxp(bool pxp_supported)
- {
- 	igt_require_f(pxp_supported, "PXP not supported\n");
-@@ -820,6 +1051,12 @@ static void require_pxp_render(bool pxp_supported, uint32_t devid)
- 		      "No rendercopy found for devid=%x\n", devid);
- }
- 
-+static void require_display(int xe_fd, igt_display_t *display)
-+{
-+	igt_require_pipe_crc(xe_fd);
-+	igt_display_require(display, xe_fd);
-+}
-+
- static void run_termination_test(int fd, enum termination_type type,
- 				 void (*test)(int fd, enum termination_type type))
- {
-@@ -923,6 +1160,23 @@ igt_main
- 		}
- 	}
- 
-+	igt_subtest_group {
-+		igt_display_t display;
-+
-+		igt_describe("Test the flip of PXP objects to display");
-+		igt_subtest("display-pxp-fb") {
-+			require_display(xe_fd, &display);
-+			require_pxp_render(pxp_supported, devid);
-+			test_display_pxp_fb(xe_fd, &display);
-+		}
-+
-+		igt_subtest("display-black-pxp-fb") {
-+			require_display(xe_fd, &display);
-+			require_pxp_render(pxp_supported, devid);
-+			test_display_black_pxp_fb(xe_fd, &display);
-+		}
-+	}
-+
- 	igt_fixture {
- 		close(xe_fd);
- 	}
--- 
-2.43.0
+So why not do just that?
 
+Fine we verify the register bit here, but the uapi is more than the
+register bit. Verifying the uapi as indicated above verifies that
+re-enabling the stream actually returns valid data, which is more than the
+register bit and of which the register bit is a subset.
+
+So not sure.
+
+Thanks.
+--
+Ashutosh
