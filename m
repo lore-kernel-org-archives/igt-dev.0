@@ -4,160 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82FC5C021B2
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 22:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97CBC021B2
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 22:52:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 308A610E810;
-	Tue, 25 Feb 2025 22:47:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 803DA10E810;
+	Tue, 25 Feb 2025 22:52:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="WxJzHNcI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TiT+uNod";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2084.outbound.protection.outlook.com [40.107.243.84])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 06E7F10E810
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 22:47:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E9D910E810
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 22:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740523928; x=1772059928;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=ulG/nQ8zlCpabFeU2B8CqxPwtnHDp+9aIEBT0C33tJw=;
+ b=TiT+uNodlLJ0+ZYo20Z7jhraLC4mPHl9Flyk4J1QrZKSQHmifsw0yDw+
+ 8mHzd9Pm0LjpvDUR6edtCL8tZzV4pzcaw8U5Ul80JjJCPz2pJzVl3e4U8
+ w4X1O6qjFyc1kO0V2J2oYdgGlgLsH/NpuJP78ZqTZAXkCqkRmQqrhqrRk
+ tv+wQuxkLYzKJWmm8JRbdQppVgb11SyfocERE4wRx1rUBQvlqHqsp72pG
+ pdoRrj3KEZqlvxs8TI04tZmKQmEU2VADBZW+QHrz8sqdioe8UXcmUW51q
+ HYXecibhgUtKNCN4R4fPuQKTZutY72i7Xui/7/zADdxrr11FTevy4I3ob A==;
+X-CSE-ConnectionGUID: Sgdw5qjjRcWNvEJUEKgxUg==
+X-CSE-MsgGUID: O3rzzUlNRYyKN+zyCZDCOg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="40536535"
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; d="scan'208";a="40536535"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2025 14:52:03 -0800
+X-CSE-ConnectionGUID: Mls2SHdiRoeaghk/jGj0pg==
+X-CSE-MsgGUID: cJNJBpzRTkKrdgdZKswonw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; d="scan'208";a="116304546"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 25 Feb 2025 14:52:02 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 25 Feb 2025 14:52:00 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 25 Feb 2025 14:52:00 -0800
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.44) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 25 Feb 2025 14:51:59 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wGkPwBzK1InKcM+B/X0vkNFhaqbQe9Rkc4LKf/B6nQMD5UD897KOuOOH0hG+tn4p/N4fqBc4DstErMvE9lDfiedo3bFc0jLEOSlpDGK4VcPuy4N3aPy2nPb1TOzHoYn5sb20uJGtfnQo+8zTpMQedRiwa3bBqIm9262yrzmCEw4dXgJccEBCgwVPSq/ZCOGjtGQfW8p/qUWxof+IyHzGQNUPPUghfDEDu0WjR01z+N8l/zoHdC0/77EzrfSgmf7dyN4ZcC/pANlIUgcEHhDAYs6wM04dBQmSOJB9amwdxea9vgSGwgfBUNB5OJbvBpfEO5UaoGFHpkCDPn1GPcYfVQ==
+ b=yNRP4W0xoB9v/HLaL+cmparHhSTnhHv8q0McXYTUz//GgB581LUV4ebTfT1JysL0YhFXMln3KQoPUSx5w4TkogEUVE3f1+Tcy5q92dlSKqGBUx0KEL0rS/cclxlT/3fCQm5uM2jZDweHDZtJaxoMXmDet54crfWuHWqf+7mWffImuM0Cl4lSYiYor+Ri0PXViliLJJvofdMCFOh5BcHkCcPrgXyqwcDNvJiYyR4vs3UqVuvqzQ3N7ylH6hQPsAz9m+ICpoXYI3uXvv4pgA1MhufIt/93pM77mnDqeOAV37ElP596geCGx4YguEk2ZXYz+NmQXfzSbrLuGnM5OGr7yg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UVkURHhzgu0clwOGOApYn3IPphN6EXmEDJ5HyMv7v0U=;
- b=IW22/eHApDHmgwI0Agi18cAPw8/YR6cHrmuGbMTDix6kWHgUF5WSeH3Bx2PHZ2uSfDABN1arwoDPwjnVF21DoGPIlpE2CoZthU5e18ju/QEkrwHPm7S0Fh6JaTrZNwTqsTorttyJDeucjmwJgeCqdTIr9v/UccZeAr4R7P/tDwZZiUIZClqu7uuji3CBJEN8XnQevaeOSLIG+ohMhtMqakT2zzT0N3kmU5M+NOtnTxue8nB+JFDPzVnQVmudnizqH7nz+R5u1WM9ppOQENHoBavC5GrqooMbDgZ3v/dKK4ye4fdrSidCGkVsrOeBaRanSXc/a4BvCThVRS8s/92C5g==
+ bh=CC9IRLdTVfMVLcPBK/lQQ2g2FKZ2U5PmXM2qdN4Cn+M=;
+ b=HsDgyfUa1b9YeBOkfATAtoDokNtEOXvZJuzNYSUeDQDNh+xB+rqPaEMtIh/Tdx0ouVjhWa/wepcWJh3XD5OB6Z+afZqK0UGmsKkybEhMKdivpXclFMFC9ZV9axXvbuabGlDhtCf3euEkQQisxCYOph2tByBzdVohlPxTAFM+PTLtVlBmSb7VMZmU+H6brAAtMDJP5ZRxFypqHG11shHPwI6LwAjf4B4/pjWFllAAh5R0n6LpXf0jJnhku/HAODEAtGFzABRDGotX14tGDZ09HjVMDkqP2svNh9Etgm8jjuJdprI1P+AXHpptBOnf/pjYqzYXc1F+GrcUTX8ocn4ynQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UVkURHhzgu0clwOGOApYn3IPphN6EXmEDJ5HyMv7v0U=;
- b=WxJzHNcILeIlSYLdD+33IVl/zISI92gpirQsh6Cswc2Je+J0WWP7fktIUQhyOTHdyMecvRfHdgbXexYDhztvLnPuyxEXl1hbQi5viXLKts9Fz7utMt6cpCoxNxINdkv8HmOG9bB841vub5GxEBCAVGkMO13k9rIBgvdma79lq/8=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
- by SN7PR12MB7298.namprd12.prod.outlook.com (2603:10b6:806:2ae::19) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
+ by SA1PR11MB8491.namprd11.prod.outlook.com (2603:10b6:806:3ac::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Tue, 25 Feb
- 2025 22:47:45 +0000
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2ed6:28e6:241e:7fc1]) by DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2ed6:28e6:241e:7fc1%4]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 22:47:45 +0000
-Message-ID: <0138a6e0-8e3a-467a-b6c6-41244bd1737c@amd.com>
-Date: Tue, 25 Feb 2025 15:47:41 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/kms_async_flips: Create subtest for overlay
- planes
-To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
- vitaly prosyak <vprosyak@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Jeevan B <jeevan.b@intel.com>, kernel-dev@igalia.com,
- Harry Wentland <harry.wentland@amd.com>
-References: <20241216202427.76168-1-andrealmeid@igalia.com>
- <20250219103703.2hbadorsyh5ezd3e@kamilkon-desk.igk.intel.com>
- <5b88ea25-c9a6-4025-8f9b-34e1b213e258@amd.com>
- <78c0bb06-fb95-443c-a16c-9478daa11562@igalia.com>
- <a8fc5cef-5ccf-486d-b401-f587e500746d@amd.com>
- <41966687-e25e-42eb-a6b3-fba5d6c85e16@amd.com>
- <96660957-4656-4a48-9df0-bf62f7aa5433@igalia.com>
- <ebe71668-236c-4f6d-bcf3-82b8c2c63d02@amd.com>
- <4c03e73f-e110-41b7-995f-b81857546d8c@igalia.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <4c03e73f-e110-41b7-995f-b81857546d8c@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CY5PR13CA0089.namprd13.prod.outlook.com
- (2603:10b6:930:a::26) To DM4PR12MB8476.namprd12.prod.outlook.com
- (2603:10b6:8:17e::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.18; Tue, 25 Feb
+ 2025 22:51:42 +0000
+Received: from DS0PR11MB7408.namprd11.prod.outlook.com
+ ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
+ ([fe80::6387:4b73:8906:7543%4]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
+ 22:51:42 +0000
+Date: Tue, 25 Feb 2025 14:51:39 -0800
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH 06/13] tests/intel/xe_oa: Rewrite the polling small buf
+ test
+Message-ID: <Z75Je+fEOfZEBpiT@orsosgc001>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>
+ <20250215010628.1639986-7-umesh.nerlige.ramappa@intel.com>
+ <85o6yrjab8.wl-ashutosh.dixit@intel.com>
+ <85frk2k5tb.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <85frk2k5tb.wl-ashutosh.dixit@intel.com>
+X-ClientProxiedBy: MW4PR03CA0097.namprd03.prod.outlook.com
+ (2603:10b6:303:b7::12) To DS0PR11MB7408.namprd11.prod.outlook.com
+ (2603:10b6:8:136::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|SN7PR12MB7298:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5734068a-2e78-46e6-ec96-08dd55ee6b4b
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|SA1PR11MB8491:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36308b82-bf07-47f6-be18-08dd55eef8cd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SkduYXl0UkFkbkFPL1RTWis4eE5zL2FiYkZtUWNGdVNzb203djZyVDdKUUJG?=
- =?utf-8?B?dCtCSEJRczZDb1kvVnNqbU5YQ1dsdmlhM3FpUnI3Ry9VaGVmVk5QSkhmZWpT?=
- =?utf-8?B?K0xQSFMyUTFxbG5ac0ROWXhseDNDTGs5N2xOZGp1ZjB6bGdieTVwNzBqR21a?=
- =?utf-8?B?UHVCU2ZIUmJFbzN6Y3ovU3hVeENNMVp6dzRvbHpVcE5pL25yd05YWVFVSVJY?=
- =?utf-8?B?dm12ZWlkalZnRnNWakpoMkRIeW5FaitGb2RRcHRRU295aEhjeXowayswUjVN?=
- =?utf-8?B?MUppZERLS2FYb0NoZjRoWmIzQnRWUjFjcUdmdmEyV1gwM2RmQW5VOHZnWWMy?=
- =?utf-8?B?SERCUU55ZEZOSTJyMWRZRWNaVUFSNnQ5TitLNlZDNzV0VDNJRjBSb2hZR1ZB?=
- =?utf-8?B?WjZHZDcxOEJuN3FnTnVBZ1VtOWtnektpZDlGeHVmU0ViNUJlMmpId1VzTzc0?=
- =?utf-8?B?a1dRekp5L2tUR2xia2lFUVB6RHowemxxMVJ3ditmZ041YTlvaUxNZllsMTIw?=
- =?utf-8?B?SlFRN1dvRUxQRTdMb1ZMbHdOaVBCQWF0dGNWaHdVVjYyeUdyMnhuUFp1MWs5?=
- =?utf-8?B?cFd2eDNrYU5aN0ZSODdHcEVzd2llUkpOZWdHNHlkL3lKelJWM0U4V0hOdm5K?=
- =?utf-8?B?a1JCaTlWekxtSTZ3V3E0VGt2WUdpYVhLYmQ1WGU0cERTczBCcHpRSkhtTERu?=
- =?utf-8?B?d21pN2ZPRUt5NGp1Y2lwc2c0bTNIeERkY05YaHkyempYMVl5Wnp5eExLNWk0?=
- =?utf-8?B?Vzg3TGNaVE9OK1FWTXRBejhkR0hMTEdiMkJPeFFaVEFtZmxFcnEwNExJOUUw?=
- =?utf-8?B?MjNSUDNrVWxHcGpLRnZ1emp5d1puZW5leW5SVmVURmVrV2R5WFE3SC83d1Ni?=
- =?utf-8?B?T3pRUWs1SjVsODZYVjRaa0Ivb0o1NUpVS0VnUHVaRnVWZk9JQ0wybklBRTl4?=
- =?utf-8?B?ajhHWXFGaEp5UkRlSUk3RktuRHlidUZ4NjdaYkpTZDAwNjRtbXF5OVJqaXcv?=
- =?utf-8?B?eE9GWncwOUFOVUxnbzJpRDlTd0JoSk4vbE5samN6T3JXOFpxczFTZEVHR2Qv?=
- =?utf-8?B?UkFBRHp2TUcwd0psWDFSSUs5NmhRdWU0SVd2TGZiVTEraTVQdVlLR01NbHVx?=
- =?utf-8?B?N3p4c295SkNlWTJ4SUZZYUwwWGovc1N4VjlwMDNvMEtxTjJGUlIybFp4L3Zy?=
- =?utf-8?B?MjM3WnpnNnVDUGFsT2w1U2tYdEhDWDVCQURZR2JYRkwrTUkwc3Y5UU9HQW5Z?=
- =?utf-8?B?NE15eXEvWW5nRm5iQUN4aFdBRmFKRlZQNjYrNWdleVRsdVJzY01WUS9PZEZU?=
- =?utf-8?B?ZTgzNElIMHhVMnRrU3dkQjROV3UzeXM2aXpNY1I1Qmpsa2k1M3VLRTNoSktK?=
- =?utf-8?B?ckc4d0p1NkJISkcvUnNkSGgyVzZlZWFZakkwOUVPSGhOZmVCb2g2c3gwdSsx?=
- =?utf-8?B?WjFyNTN6Skwzd1JQb3VvUTkyWm9TUWV4RE1pVFh5UFl0d0FUdFFtZHBsSFBQ?=
- =?utf-8?B?dWZGamh2SG5SSWJvL1BLbGREY1F1cnpFMEFNeFFaQjBZaU9yUkR1ZFUzSEU5?=
- =?utf-8?B?UklOb1FMZ2VQSjYvUnZPVEo0eEVpSDBValdUZ0J6cURlS1lKRHFEUjFKVHhY?=
- =?utf-8?B?U1N0NWxqRjlSUks2Nk9nb21HUFQ3MkFMVm1GSkR2ZWg5WHZYSTd0a0lWdGJl?=
- =?utf-8?B?MzFlYUhnYTQvZms1Q215WWl4bUVXbEVIaEhMY2xzTXBpNjlhc2tmd0xteTJP?=
- =?utf-8?B?K3I0MW5XUEdoZ1AreHhsM050SVVpWXhzbEhnWER0K3RBampVeHBZMXM4Rnkr?=
- =?utf-8?B?Y0Jsa254SmZMU21aKzZ2dmU1b3ZGTXdTVDJCM2YxdVNJbVBWdXpXYXhmQ0l1?=
- =?utf-8?Q?iym+NJKXRObI9?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WUJhK3VSNWNzTS9jbWc3REMwVWhFcEdkdUlGTEdXZGdXK0llV3FJTzllRTBG?=
+ =?utf-8?B?TG9oMUpRSDFFRWFPR1pob3ZxODFsM00zTWxPSy9VOEU4R0NGUEYvTXdsWVYx?=
+ =?utf-8?B?RFhObko0aEJqaE9SbFhCem5HVXVucXAwaUpPSllMRXc3TytqOEx0bUU5SXRn?=
+ =?utf-8?B?RGh0VGNGZ2FhaWJBUkZnYnJOU3NPeVhrall0eGYzNVNjNEJDU3NKblk1Slli?=
+ =?utf-8?B?cUtHM0wwN2JCTFlzK0FScTVrRTVldE5hMnRqWEt4NEVIS2xZTThicHphdmFC?=
+ =?utf-8?B?SW8yVUhZNU02akUvQWlLU3VLT0F2cWdrOG5jMkpUb2JVRXBXd1ljcTZQUi85?=
+ =?utf-8?B?MnJ6RXJDbjRISDdOTXFPbkcrZW14eW54a05rRGxXcTk1UzA0Q0IxYmp0KzNG?=
+ =?utf-8?B?NXV6cjdnNUJDNzhrenU5WndUQzVpUHlDelNZdEZ3NFp6cWU4azN6UWJSd0kr?=
+ =?utf-8?B?NmhoV2dRNzh1NXNGbGUwdnZ0Z0NBRjgvbnkwZnh5OVVCL29kRGd5YlJVemxU?=
+ =?utf-8?B?cTNqRTNiSnJkZFlVaTZQM1g3Ukd3K0xHZyswSzdraEoveGhXQkFQODFXbVY0?=
+ =?utf-8?B?ZStwaGRoTTJZaWNUMk5zMXZHek9jRlh2SFdmQkxSRjVzbVFyK0pFUGQxKzBn?=
+ =?utf-8?B?N2lvVmVXWEpHaThZeWQ0enpSUWZHb1lOeXU5bWhJSTEvRThuemlDNTFaVTcx?=
+ =?utf-8?B?V0dWVDlUaGRFSWFROWpVcjlQYjZ0OEttRnVidEdEY1FaR1R1ZEZFUFpLZWxq?=
+ =?utf-8?B?OTA3VDk0cUtqTkd3YVN3V3l1M0Q4UUpDT055UmlJT1lMamZYbEczQkc1S0Vy?=
+ =?utf-8?B?dkh3Z0hFbVlkR0ZUTmp3bjZONHY1NG1VZm5aVWdIai9tSEVaeXhTb3NKcGVB?=
+ =?utf-8?B?NEkxcDVRVm54L0FEU1dpcEUvcmx5Ykd6V1JzUGpoWVAzQWVhUldOU1d0K2tT?=
+ =?utf-8?B?OWpEZVlacTRybnlCc0srbmJyZWJ4akJsOVJSb2tuUXJvM2hDa1FGaUNRbjE5?=
+ =?utf-8?B?WXBwWDFiYVRpZTUvVzZ6TkJJd3p0b0VEYlMwblRCbFkxcFJrQnprZjM4ZGpl?=
+ =?utf-8?B?T2FjSnE5UHREZlF4bkpTVm9VQ1lNdGVSOTZmNGpDQ1dwY2drWjh1aFVzWVU4?=
+ =?utf-8?B?RThkZDhucHJlYWk0NVZzdzlKbzdvMHVjTVp1WGlvOW1vTVpCU2xNYmVQUFFC?=
+ =?utf-8?B?OHE3czZUZzQ0aWFqUkxBanF0NHc2cjljUnZ0ZERhdklXK2RXSXIvbXc4YmJZ?=
+ =?utf-8?B?NXVadTVQR2o3eWNkSUYxZFhMYmg2T3FoZG5GWjUyN2FLK0JvMFdxd3EyOXFn?=
+ =?utf-8?B?UEZSUThzR0xwejZMOHFoanR5ZlV4Z0FxK3VMWkoveG9ITi8va1FjUnBOS3p4?=
+ =?utf-8?B?bW0weVBXUUhoSDByVHNLSElLb0huSVUyd2hxSjlrNVVOeTZSUGtWa1krZTU4?=
+ =?utf-8?B?SW5jZXBqbnZ6NFY0WkxyNDY0KzQ4Q1FBKzkwTlduOUFBd21JRkJucUpRcStS?=
+ =?utf-8?B?L3BudkhYTkVkZ1p3WWNVTnZtTVpDeHliUjN5ZCtzK0NDemM2RklZWFQ1Ukpo?=
+ =?utf-8?B?SDFOSUNVMS9GUGRqbTVqeFFLd0NLbk8xaEVtbEl0ZXd2bU5PYjhvc2IwN2t6?=
+ =?utf-8?B?NlhIaUNGcWhWVUNHcStDcy9YUHN3YWFsTDE4Q0syYmtkY1VBR0RsN05TTW0x?=
+ =?utf-8?B?UXV3QXpxaEdpS1RSRmZjbTVuZlh1c3hyZFB5QVdjTlZFWkZXU1JLS2E1VU5p?=
+ =?utf-8?B?UjYxSndBQm1BUkpWZGNVL3ViQnBoUXIrRk9mZ1IyODY3U1FYbSthNURrakNn?=
+ =?utf-8?B?SC9xd3hwV2I4NlF4NXk1R1J3Q1NIZWlyTW1IdmR3Wm5FcGlNaW5ab2dOVGZ1?=
+ =?utf-8?Q?t44fbE2/H2TwY?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Qng5bjBZWHhiRFB3YU1xUkp1eVZHck42TFJCaFU0RG0va01iSXdrbHA0S0Fz?=
- =?utf-8?B?ZmhXOVo1Rzc0amNPQ3dRRGtLUTByaUttaHFCYjNnZ28weUtvQ0VmeURweTBm?=
- =?utf-8?B?bkFHQ3FlSW1hdnJBanJXd09SVi9DL0w0cE1FNERlQ3R5d0ZTaU03aDFDUXVo?=
- =?utf-8?B?VlB5dG55cjhISGJIb3dFNThGRmNONmNZdXNoU1dPUHk4QzdVOUVqTlR0bmgx?=
- =?utf-8?B?amYybm9BbkppOHdCMjhnS2JxaUk5b210am5HcUlWNTBpb1hJU1pmbnQ0ak1i?=
- =?utf-8?B?Y0J6SVNOeEU0OUcxRVRxbHlhcXY1Q2hhR3NucWp0L29TREV2dGxkRmFHOWVC?=
- =?utf-8?B?bkpOcUFsUlBwREVZbnFRK0tnYWpDcXp4ejhzQmxWazRQOThxOXZ4NTdmUHpM?=
- =?utf-8?B?YzJIUzFjeGJicWNJQlJQQ3c0TEFJOGhDekRWTVhDVll2WHU5dWlKNVN5RG81?=
- =?utf-8?B?SGgwYTdaeUQrcjFLTENtWkFZVFRJN3dtcXV5cFhUb1pUK05LMkpXYzdKWDZn?=
- =?utf-8?B?SmhsSWRSV2RNRE5IZHRDN0YyMW90ZUV0ak5zTzJOOURncVFGYi9DdDdZVngy?=
- =?utf-8?B?SXFmNWI5MzZGQWlDUEpDTzY2eHNxaDdQMit6MWdacmd1K0JCV1FiRWt1ejdq?=
- =?utf-8?B?T0xHczJURXNZYjlEbzNsOUZ4d3lQSHNYc3lRZDZoMnVDQUlJdnlwMWdxenZa?=
- =?utf-8?B?MkxycU5IR2RxdmVCOU9vaGFzQW1oUkdSMEtVdWkvczYrOUo1c3BwdUMrWUxM?=
- =?utf-8?B?MXpERFFCbG5sZWpRbmdzRDBEZXZOWmt4Nk5QaDdKTmV4Zk5aTXo3dEpOUEto?=
- =?utf-8?B?RVVtbG52czF1a3VaRnJJK2pkUDRYZkw1a0dwWXZlc1BuODdXb3VzcGhsWDlj?=
- =?utf-8?B?TlIxMnhBUWIxdi9pbzJUVFhic0ZUTGorZWZQWlR2aUZUbzNGYysraWFFSEJS?=
- =?utf-8?B?QnJkcm11WDRYNmhtTUlCZ0NVNCtIMnFpdldTbXdlZGE5czhScmdIUk9Qcy9M?=
- =?utf-8?B?enNsZXNuRGRwMjkyQjRqejVpbmpKdkpOSU5NOWdvQkNhcGs5VHc5WnQ0WEo2?=
- =?utf-8?B?Ry8xTmdHMVZGK0hFU2RYa2t3QldyWWR1VXdrUDU0NHJMaTBFWnpGRjNaa2dy?=
- =?utf-8?B?V0dTblp1enFycTNoQnZrREZoRy9DUVNGNU40a0RYQjJlclZ3cVBhV2Y2cUZX?=
- =?utf-8?B?WDBrSks3UXdxLzJiN05xQ0xGMW5hZkVoWG1CVXp1NXQ4Q1JCd202ejhCTUFv?=
- =?utf-8?B?YVcwaC9ZQWJVYzl1TkkxampFT1VoMEJKR200NTcxc29PL2JaUlJma2oyaExU?=
- =?utf-8?B?NStBQkdJVFJNKzRScm9wTDgwTHFjd2l3d3lwZHg0MUs5Y2pxN0xZVmh5bWJ3?=
- =?utf-8?B?d1lrUkJxS3U1d2h0SVJFUzg5TnhCdkdreHVyajdpWjB3dWQ3eTdKNGtvMktF?=
- =?utf-8?B?RDdWdDVVK3hNb2dKSC9Vek1qWmdJcjlUYVl6UUJVekdUUjZxc3J6MzhRUkxT?=
- =?utf-8?B?OG1YNzdMZFg3eWZoMWg2eHRlakVNQnN0ZVFzeWJXMDRPTUxpNC83bE5LdGxs?=
- =?utf-8?B?TzNXOTR1cENqbTdWUnkwUEJDOVRRRFRYT1hlaVRWVWRiUnpXaktvTk9Rb2Zl?=
- =?utf-8?B?eGNZbC9JelNLOGZRREJqNHNmUDVOZU1IdjJkQUsxZ2xIUmJ6Rk1DTXF4dmdQ?=
- =?utf-8?B?Z29SK0tmTlFGK05sdmsxT3o4ZHk2cFJoS1lFc3FqMzZCRlQ2djloOC9ubzdQ?=
- =?utf-8?B?Y0FmSFBjSDlVTktoQXFNcy9ZcUdEZjVzWXpUd3RlV2h6cUVaT2RvdllVcDBW?=
- =?utf-8?B?dzJtOEVKS01LU1NoMk9GSW1TQlViUDdvcHZaZ0tTb1YwUlVHMWFyaFlTRjdl?=
- =?utf-8?B?eVlvaHhkOENZNWRzTkdaU2ppdzdYS0lhd0ErbEtzamtGNWNKT0hIbXFkRnYw?=
- =?utf-8?B?T1puejdIVnFzOHNZYUNUeTBFQ0M2Y3c0bWRrUmcrYmZpYVdtZFhpMWdVeTYz?=
- =?utf-8?B?U1dCWTJHdldvQzBYWS82SmQ4Z2xjNkZKRHdZY1NvZDFUQ091Q2QrQ2h0K0Fu?=
- =?utf-8?B?cEJaL2JtbXJpSWtuaTRMckozSHhLWGhnMEVSTmFoMlNBejAxMGZ6NTk4WmNI?=
- =?utf-8?Q?3+gGkUARI698KCquft04yFlTM?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5734068a-2e78-46e6-ec96-08dd55ee6b4b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGQ2SENWRGUrRlRuS1VPWTNpdlh5QkRraEd2T2hudUw4amVjR3djSm13aEE1?=
+ =?utf-8?B?amo1REo0bTROanZWSllpZTlPMFJNTTlPTUpDSDZoTThYbVVNSWxrYnJEcXJ5?=
+ =?utf-8?B?TC8rREZIQ1ZWZWRRd1p1RkhTVnh5UmtMSy9DVzdoaDJpUDM3Yk9CQzVUbmFx?=
+ =?utf-8?B?cS83N1R6TVliTU12Mm12MU1MQXVMN0tDZnpRdkM0SlZUYVNUR2lVQk5oOGwv?=
+ =?utf-8?B?ZkdJQ0d0blJ5L1Q3bU5yaDdLN2wrYmRGOUdLU0lEZkMweUtRVEU4SUt4ZmlB?=
+ =?utf-8?B?SE5jY3ZvVWg0cHVzR1VSRGJQeWVnQXRIVElENzdyNWVkSWNaQ2FJVjNINnRN?=
+ =?utf-8?B?c29jcm14WUxpOFVqTTN4eEZ2QzFCN3FNd3lZTlEvdHhaQW41bTF1bEFpdStS?=
+ =?utf-8?B?SHpjaGM5cjZ4VER0b1BUMmhiN3laaTF4RU5RZHJzQ0Z5VG85MzlEYzE4OGpu?=
+ =?utf-8?B?Y0R4REtVeDFMbTJxcXJYSU4zZ05iS0RFSG5aKzBwTyt3S0ZUT1Z5YWFwZzhB?=
+ =?utf-8?B?eTZ5dlNLQXZqWTdQdDlaY2tSazVrT3VrdEZ4bHlKdlo4ZVgreFFLODRIVW5H?=
+ =?utf-8?B?VE9mbjBnYVZ2TVlMR1V5TFc5NEtibFc4K1BXNlFFdXRlbkp0dml0cGRCMjdC?=
+ =?utf-8?B?bG9IeUVQNUl1aTBKOStpRXBwM0dKVHhBbnNBelpZM25QRUZydU9oSEgvNlh5?=
+ =?utf-8?B?bW9UV25rTzc2UWtPUjhudUNNblZjNGtyQVMxdGduaHUwMTdWNlQxUTNEbEUy?=
+ =?utf-8?B?Nk1zNXZGZGhnSUJ2SXh4MnZpOTlDakE0ZUpNamx2Ky80czRyNWRiQjQrZDZv?=
+ =?utf-8?B?SFFxWXk3a01tR0ZhdCtoL2lqV0Fwc3NsaHRTSnBpMWp4YWpqSlE4NXI0V2pZ?=
+ =?utf-8?B?ZWh5b0FxdG53dnhPZHArazZTaDZNL1JEd2VPTmx2WU8xNHdJeml6L2dlbGdF?=
+ =?utf-8?B?UUl5SEYzanJVaFV0OWh2MFVEdlgzblczL1FMOUJEUHI1L1lIQ2t2WWhVQmsz?=
+ =?utf-8?B?c2R2MVBDWnN5SGUrQVRSQzNsRmNucjJ2MU50VHFpTHFNNFpkMTdjcmhGcHgw?=
+ =?utf-8?B?aDM4TitFdUpRYUJyWHZ1MkVacXVjZGMrSXY4NU5ucmorQ1pqVGZ5eEZGakVC?=
+ =?utf-8?B?VERaYW1vaVpLcms5VVBJdXRmMy9oK2lFbmg4Y0NUd21TWW0yMlA0MVZveTZW?=
+ =?utf-8?B?VWNEVXhZQTQwdkFuSDJFamJsVDVGelhMUm44ZGRHWTRqM0RySFNBcDhYKzhl?=
+ =?utf-8?B?cm14elB2VDRsSXIrQkEvNE8wcHA2dDJDK0hncDlOSHUwNnNPTkYxb29CRDN5?=
+ =?utf-8?B?YlRFVjYxRmM2N0dia1FiUzZQcjdnc3Z4TDF2OHpBd0FrMld2THVPQkFvRjI5?=
+ =?utf-8?B?ZTB6eElvN1NVc2prc3NtWGlBMm0rcGFzSDFWZldqRFFpYU1sV1Y3c0JHZ1dn?=
+ =?utf-8?B?bFdLRnF0MmhwcDIxNkptRTZUNXdMa0JwZncxcGpVOWtYUXFzZjdkVUZENmxD?=
+ =?utf-8?B?YTNWQzZ6K255ZnNmdnlKNjRjRU5qSE1jNXZuQ05iQ0FQL2NCdGJ4SHJTWTRl?=
+ =?utf-8?B?elI1WExUMHA3a2tnaGZkVy9Fb2tuOWRzcWMyZDZvVDFSRFNoSE9zWXQ0MXBL?=
+ =?utf-8?B?Rk41bEJnMTdseWd6T05oSEFDNmlqSDI0cng5WjJaSnA5QnIzZ01OcnV3YTI3?=
+ =?utf-8?B?TUs0OSs3ajF3dHJ2dDNoTHQ0ZkViZXZjQWxPQWdyb0taRmp0Tjc1SEhHaVRk?=
+ =?utf-8?B?Y3pwV3lHZWpBanFOSXFpcTA2R2VhbnlVVnZJMk50YlV5eWhxTVdmcU9NVDd2?=
+ =?utf-8?B?YkJGdWhzaW1oRlpaNWdWNVBNelJCNjhHeWxhU09oeTVOL2FZcHBISWhxeXFB?=
+ =?utf-8?B?dXR4bEFpemY0ZVV4aXFSTkRHR095RWZtYm9oMmtXTWI2RysvSjNsdlVVVHpK?=
+ =?utf-8?B?T0laOVJCZEI0OGg2Tk9KY214cWZRMUJJNnVBeGZacmdZRDhTa3YvVERsSE9r?=
+ =?utf-8?B?WDd1d2dQVUVidVZySzdRZW1CaGVTYVEybXlCaEcwaHNKK0FUYVduUFFlU1Ev?=
+ =?utf-8?B?VDlJeTd2RVJFZHZ0alFKT1hHWjFkZDRob1FaT1lrd1dHdUZjZHBFSVFCV3Q1?=
+ =?utf-8?B?RWtydjhrQ2QvZzdXUExIdmJ5VUNoZGN6TnQ1M2VlTlgxUVpEVWo5Vi90ak9K?=
+ =?utf-8?Q?r/sT8laeAvOUpV2Od7bXATw=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36308b82-bf07-47f6-be18-08dd55eef8cd
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 22:47:44.9669 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 22:51:42.3214 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mZ8QJXP9vgFdtTOkZKamQWzkWXVreclQzQyjMHoGB6zREihXuwihGmxGejR3QlHmc9s9io1zCePogOfFEOON/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7298
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1jPYUJgATpzLD3eDis2LbDy9xmTSffejmP46iyOdt0FCu8yLCepMOeivAjOWqKroJ56Ina7qJPNCyVkyZRma3rSyWA8Tr4ZIWifo+zkGJtA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8491
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -173,582 +196,235 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Mon, Feb 24, 2025 at 08:26:56PM -0800, Dixit, Ashutosh wrote:
+>On Mon, 24 Feb 2025 14:56:05 -0800, Umesh Nerlige Ramappa wrote:
+>>
+>> On Mon, Feb 24, 2025 at 12:11:37PM -0800, Dixit, Ashutosh wrote:
+>> > On Tue, 18 Feb 2025 12:28:04 -0800, Umesh Nerlige Ramappa wrote:
+>> >>
+>> >
+>> > Hi Umesh,
+>> >
+>> >> Use mmio reads as a side-channel to determine if reports are available
+>> >> and ensure that poll will return with POLLIN set. Then provide a small
+>> >> buffer to force ENOSPC error. Then poll with a timeout of 0 to check if
+>> >> POLLIN is still set.
+>> >
+>> > Will need a reason for doing this here. But see below.
+>> >
+>> >>
+>> >> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> >> ---
+>> >>  tests/intel/xe_oa.c | 64 +++++++++++++++++++++++++--------------------
+>> >>  1 file changed, 35 insertions(+), 29 deletions(-)
+>> >>
+>> >> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+>> >> index aaf92308a..5792ffec2 100644
+>> >> --- a/tests/intel/xe_oa.c
+>> >> +++ b/tests/intel/xe_oa.c
+>> >> @@ -2216,7 +2216,6 @@ static void test_polling(uint64_t requested_oa_period,
+>> >>   */
+>> >>  static void test_polling_small_buf(void)
+>> >>  {
+>> >> -	int oa_exponent = max_oa_exponent_for_period_lte(40 * 1000); /* 40us */
+>> >>	uint64_t properties[] = {
+>> >>		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+>> >>
+>> >> @@ -2226,50 +2225,57 @@ static void test_polling_small_buf(void)
+>> >>		/* OA unit configuration */
+>> >>		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
+>> >>		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
+>> >> -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+>> >> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+>> >>		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+>> >>	};
+>> >>	struct intel_xe_oa_open_prop param = {
+>> >>		.num_properties = ARRAY_SIZE(properties) / 2,
+>> >>		.properties_ptr = to_user_pointer(properties),
+>> >>	};
+>> >> -	uint32_t test_duration = 80 * 1000 * 1000;
+>> >> -	int sample_size = get_oa_format(default_test_set->perf_oa_format).size;
+>> >> -	int n_expected_reports = test_duration / oa_exponent_to_ns(oa_exponent);
+>> >> -	int n_expect_read_bytes = n_expected_reports * sample_size;
+>> >> -	struct timespec ts = {};
+>> >> -	int n_bytes_read = 0;
+>> >> -	uint32_t n_polls = 0;
+>> >> +	int report_size = get_oa_format(default_test_set->perf_oa_format).size;
+>> >> +	u32 oa_tail, prev_tail;
+>> >> +	struct pollfd pollfd;
+>> >> +	uint8_t buf[10];
+>> >> +	int ret, i = 0;
+>> >> +
+>> >> +	intel_register_access_init(&mmio_data,
+>> >> +				   igt_device_get_pci_device(drm_fd), 0);
+>> >>
+>> >>	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+>> >>	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
+>> >> -	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+>> >> -
+>> >> -	while (igt_nsec_elapsed(&ts) < test_duration) {
+>> >> -		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
+>> >>
+>> >> -		ppoll(&pollfd, 1, NULL, NULL);
+>> >> -		if (pollfd.revents & POLLIN) {
+>> >> -			uint8_t buf[1024];
+>> >> -			int ret;
+>> >> +#define OAG_OATAILPTR	(0xdb04)
+>> >> +	/* Save the current tail */
+>> >> +	prev_tail = oa_tail = intel_register_read(&mmio_data, OAG_OATAILPTR);
+>> >>
+>> >> -			ret = read(stream_fd, buf, sizeof(buf));
+>> >> -			if (ret >= 0)
+>> >> -				n_bytes_read += ret;
+>> >> -		}
+>> >> +	/* Kickstart the capture */
+>> >> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+>> >>
+>> >> -		n_polls++;
+>> >> +	/* Wait for 5 reports */
+>> >
+>> > Wait for 5 reports or 10 ms ?
+>> >
+>> >
+>> >> +	while ((oa_tail - prev_tail) < (5 * report_size)) {
+>> >> +		usleep(1000);
+>> >> +		oa_tail = intel_register_read(&mmio_data, OAG_OATAILPTR);
+>> >> +		if (i++ > 10)
+>> >
+>> > So on slow platforms we might not get any reports in 10 ms? The idea here
+>> > should be to not have any timing dependence? So if we want to wait for 5
+>> > reports, just wait for 5 reports?
+>>
+>> Oh, I think the loop was stuck while debugging something, so had added a
+>> counter to bail out in 10 iterations. I will remove that. We only need to
+>> wait for 5 reports.
+>
+>Ok.
+>
+>>
+>> >
+>> > We tried doing this for the mmap OA buffer: see
+>> > mmap_wait_for_periodic_reports(), the function waits indefinitely.
+>>
+>> You mean this:
+>>
+>> while (num_periodic_reports < n) {
+>>	usleep(4 * n * period_us);
+>>	num_periodic_reports = 0;
+>>	for (reports = (uint32_t *)oa_vaddr;
+>>	     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
+>>	     reports += get_oa_format(fmt).size) {
+>>		num_periodic_reports++;
+>>	}
+>> }
+>>
+>> Well.. if your reports start coming in fast enough, then you would just
+>> spin in the inner for loop. Maybe break the inner for loop when
+>> num_periodic_reports >= n;
+>
+>Ok, but I was just pointing out that this sort of code is beginning to get
+>in. Sai Teja did this.
+>
+>>
+>> >
+>> > So if this is done I am not sure if the intel_register_read() approach is
+>> > needed (but I didn't think of doing that :). But I guess we can use it to
+>> > see when there are N reports available.
+>> >
+>> > Longer term it would be nice to have a centralized function
+>> > wait_for_n_reports(int n) or something like that which different tests can
+>> > use.
+>>
+>> Agree, except that some tests will read the actual reports, while others
+>> just want to take a peek at how many reports are available without reading
+>> them. Since mmap is also a feature under test, I took the easier
+>> approach. We can always refine it if we find something better.
+>
+>Can have similar peek_for_n_reports(n), which would have to use your
+>register read method.
+>
+>>
+>> >
+>> >> +			break;
+>> >>	}
+>> >>
+>> >> -	igt_info("Read %d expected %d (%.2f%% of the expected number), polls=%u\n",
+>> >> -		 n_bytes_read, n_expect_read_bytes,
+>> >> -		 n_bytes_read * 100.0f / n_expect_read_bytes,
+>> >> -		 n_polls);
+>> >> +	intel_register_access_fini(&mmio_data);
+>> >>
+>> >> -	__perf_close(stream_fd);
+>> >> +	/* Just read one report and expect ENOSPC */
+>> >> +	pollfd.fd = stream_fd;
+>> >> +	pollfd.events = POLLIN;
+>> >> +	poll(&pollfd, 1, 1000);
+>> >> +	igt_assert(pollfd.revents & POLLIN);
+>> >
+>> > Is the assumption here that the kernel timer is firing every 5 ms (so if
+>> > we've waited for 10 ms POLLIN must be set since the timer is firing every 5
+>> > ms)? I am not sure if that 5 ms is uapi. Or is it? Actually I was thinking
+>> > of changing that 5 ms time or changing the timer to a delayed work.
+>>
+>> But here I am waiting 1000ms in the poll above. That should be sufficient
+>> for POLLIN  to be set. If not, we could set the timeout to a large value (a
+>> few seconds).
+>
+>Oh ok, sorry I missed the 1000 ms.
+>
+>>
+>> >
+>> >> +	errno = 0;
+>> >> +	ret = read(stream_fd, buf, sizeof(buf));
+>> >> +	igt_assert_eq(ret, -1);
+>> >> +	igt_assert_eq(errno, ENOSPC);
+>> >
+>> > This part looks ok, it's uapi.
+>> >
+>>
+>> Note:
+>> ENOSPC is returned only if the buffer is small enough that not even one
+>> report will fit in. Initially I had a 600 byte buffer, but I did not get
+>> ENOSPC. Instead I got 576 in ret which I think is the correct behavior.
+>
+>OK.
+>
+>> >>
+>> >> -	igt_assert(abs(n_expect_read_bytes - n_bytes_read) <
+>> >> -		   0.20 * n_expect_read_bytes);
+>> >> +	/* Poll with 0 timeout and expect POLLIN flag to be set */
+>> >> +	poll(&pollfd, 1, 0);
+>> >> +	igt_assert(pollfd.revents & POLLIN);
+>> >> +
+>> >> +	__perf_close(stream_fd);
+>> >
+>> > How about just reading N reports using a small buffer for this test,
+>> > however long it takes? N can 5 or 10.
+>>
+>> Not sure I understand. You mean at this stage of the test, read 5/10
+>> reports? OR just alter the entire test somehow to do something different?
+>>
+>> I thought the test was specifically testing that POLLIN is still set after
+>> an ENOSPC error, so I have written it for that case alone. The 0 timeout
+>> will bypass the wait in the poll so that we only get the state of POLLIN.
+>
+>The original test, as I see it, seems to be just doing a lot of regular
+>reads with a small buffer (1K instead of 16 MB say).
+>
+>But what you are doing here is also probably ok/better than the
+>original. Let me think some more about it.
 
+Just a heads up, I think prev_tail should be read after oa_stream is 
+enabled, because BUFFER/TAIL/HEAD is configured on enable. Maybe I will 
+read the prev_tail after enabling OA or something like that.
 
-On 2/25/25 15:01, André Almeida wrote:
-> Hi Alex,
-> 
-> Em 25/02/2025 18:40, Alex Hung escreveu:
->>
->>
->> On 2/25/25 13:16, André Almeida wrote:
->>> Hi Alex,
->>>
->>> Thanks for testing it.
->>>
->>> Em 25/02/2025 16:06, Alex Hung escreveu:
->>>>
->>>> We don't have a CI to test individual IGT patches so I tested this 
->>>> patch on an APU and dGPU with kms_async_flips
->>>
->>> [...]
->>>
->>>>
->>>>
->>>> If I run overlay-atomic alone (i.e., --run-subtest overlay-atomic), 
->>>> overlay-atomic fails as below (partial outputs only). Is this an 
->>>> expected result? Does overlay-atomic need to run along with other 
->>>> subtests?
->>>>
->>>
->>> This is not the expected result, I tried to reproduce here but it 
->>> worked fine. Tested on Steam Deck, rebased on current igt master 
->>> (commit 6cdff4099c6c95e):
->>
->> I also have IGT rebased to current commit (same as yours)
->>
->> db3a185f3 (HEAD -> master) tests/kms_async_flips: Create subtest for 
->> overlay planes
->> 6cdff4099 (origin/master, origin/HEAD) lib/i915/fbc: fbc psr combo 
->> support update for xe3
->>
->> The kernels I tried are
->> - 6.11.0-18-generic (from Ubuntu's current)
->> - 6.12.0 from amd-staging-drm-next
->>
-> 
-> The changes required for this tested can't be found in any of those 
-> branches. They are in after the tag drm-misc-next-2025-02-20 ("drm-misc- 
-> next for v6.15") and this is the patchset:
-> 
-> https://lore.kernel.org/lkml/20250127-tonyk-async_flip- 
-> v12-2-0f7f8a8610d3@igalia.com/
-> 
-> So now the mistery is not about why this test fails, but why it succeeds 
-> in the first place :) I will have a look using an older kernel to see if 
-> I can figure that out, thanks!
-> 
+In the long run, I might just use the whitelisted TAIL reg to do that, 
+so that it's part of the uapi and will hopefully work the way I want it 
+to. Right now taking the path of least resistance..
 
-I applied the two patches on top of amd-staging-drm-next:
-	drm/amdgpu: Enable async flip on overlay planes
-	drm/atomic: Let drivers decide which planes to async flip
-
-The results are the same, i.e. SUCCESS when running kms_async_flips, and 
-FAIL when running overlay-atomic alone but with different error messages 
-(see below). I can tell the patterns on screen are different.
-
-
-IGT-Version: 1.30-gdcb53a091 (x86_64) (Linux: 6.12.0-99-custom x86_64)
-Using IGT_SRANDOM=1740523111 for randomisation
-Opened device: /dev/dri/card1
-Starting subtest: overlay-atomic
-Starting dynamic subtest: pipe-A-eDP-1
-(kms_async_flips:3133) CRITICAL: Test assertion failure function 
-test_async_flip, file ../tests/kms_async_flips.c:384:
-(kms_async_flips:3133) CRITICAL: Failed assertion: (fps / 1000) > 
-(data->refresh_rate * MIN_FLIPS_PER_FRAME)
-(kms_async_flips:3133) CRITICAL: Last errno: 38, Function not implemented
-(kms_async_flips:3133) CRITICAL: FPS should be significantly higher than 
-the refresh rate
-Stack trace:
-   #0 ../lib/igt_core.c:2055 __igt_fail_assert()
-   #1 ../tests/kms_async_flips.c:384 test_async_flip()
-   #2 ../tests/kms_async_flips.c:728 run_test.constprop.0()
-   #3 ../tests/kms_async_flips.c:840 __igt_unique____real_main773()
-   #4 ../tests/kms_async_flips.c:773 main()
-   #5 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
-   #6 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-   #7 [_start+0x25]
-Dynamic subtest pipe-A-eDP-1 failed.
-
-
-
->>>
->>> sudo ./build/tests/kms_async_flips --run-subtest overlay-atomic
->>> IGT-Version: 1.30-g19c7e62ea (x86_64) (Linux: 6.14.0-rc4-00318- 
->>> g72d0af4accd9 x86_64)
->>> Using IGT_SRANDOM=1740513273 for randomisation
->>> Opened device: /dev/dri/card0
->>> Starting subtest: overlay-atomic
->>> Starting dynamic subtest: pipe-A-eDP-1
->>> Dynamic subtest pipe-A-eDP-1: SUCCESS (2.124s)
->>> Starting dynamic subtest: pipe-B-eDP-1
->>> Dynamic subtest pipe-B-eDP-1: SUCCESS (2.101s)
->>> Starting dynamic subtest: pipe-C-eDP-1
->>> Dynamic subtest pipe-C-eDP-1: SUCCESS (2.101s)
->>> Starting dynamic subtest: pipe-D-eDP-1
->>> Dynamic subtest pipe-D-eDP-1: SUCCESS (2.101s)
->>> Subtest overlay-atomic: SUCCESS (8.950s)
->>>
->>> However, I saw this type of error before where the first flip is 
->>> refused with -EINVAL. That usually happens because we can't change 
->>> most of plane properties with the DRM_MODE_PAGE_FLIP_ASYNC flag and 
->>> the previous state was somewhat different from the one that we want 
->>> to present now, so we need to do a sync flip to modeset, and then do 
->>> the async ones.
->>>
->>> Is there anything particular from your setup so I can try to 
->>> reproduce here? I see that you have more than one card attached, what 
->>> did you run prior to the test on that card?
->>
->> I tried on phoenix APU and dGPU Radeon RX 6800/6800 XT, and both of 
->> them have the same results.
->>
->>>
->>> Alternatively, adding the following lines in the begining of 
->>> test_async_flip() should force a DRM_MODE_ATOMIC_ALLOW_MODESET and 
->>> allow the next page flips:
->>>
->>> igt_plane_set_fb(data->overlay_plane, &data->bufs[0]);
->>> igt_display_try_commit_atomic(&data->display, 
->>> DRM_MODE_ATOMIC_ALLOW_MODESET, data);
->>>
->>
->> Like the below changes? It doesn't fix the error messages for me, and 
->> I saw some SIGSEGV.
->>
->> --- a/tests/kms_async_flips.c
->> +++ b/tests/kms_async_flips.c
->> @@ -326,6 +326,9 @@ static void test_async_flip(data_t *data)
->>          struct timeval start, end, diff;
->>          int suspend_time = RUN_TIME / 2;
->>
->> +       igt_plane_set_fb(data->overlay_plane, &data->bufs[0]);
->> +       igt_display_try_commit_atomic(&data->display, 
->> DRM_MODE_ATOMIC_ALLOW_MODESET, data);
->> +
->>          igt_display_commit2(&data->display, data->display.is_atomic ? 
->> COMMIT_ATOMIC : COMMIT_LEGACY);
->>
->>
->>
->> If either alternate-sync-async-flip or alternate-sync-async-flip- 
->> atomic is run before overlay-atomic, overlay-atomic will SUCCESS 
->> (tested on phoenix APU)
->>
->> Cheers,
->> Alex Hung
->>
->>> Thanks,
->>>       André
->>>
->>>> IGT-Version: 1.30-g8fee6d12c (x86_64) (Linux: 6.11.0-18-generic x86_64)
->>>> Using IGT_SRANDOM=1740510058 for randomisation
->>>> Opened device: /dev/dri/card1
->>>> Starting subtest: overlay-atomic
->>>> Starting dynamic subtest: pipe-A-DP-1
->>>> (kms_async_flips:3180096) CRITICAL: Test assertion failure function 
->>>> test_async_flip, file ../tests/kms_async_flips.c:361:
->>>> (kms_async_flips:3180096) CRITICAL: Failed assertion: ret == 0
->>>> (kms_async_flips:3180096) CRITICAL: Last errno: 22, Invalid argument
->>>> (kms_async_flips:3180096) CRITICAL: error: -22 != 0
->>>> Stack trace:
->>>> Dynamic subtest pipe-A-DP-1 failed.
->>>> **** DEBUG ****
->>>> (kms_async_flips:3180096) DEBUG: Test requirement passed: ! 
->>>> (is_joiner_mode(data->drm_fd, data->output))
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=1, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=2, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=3, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=4, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=5, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=6, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=7, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(width=3440, height=1440, 
->>>> format=XR24(0x34325258), modifier=0x0, size=0)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: 
->>>> igt_create_fb_with_bo_size(handle=8, pitch=13824)
->>>> (kms_async_flips:3180096) ioctl_wrappers-DEBUG: Test requirement 
->>>> passed: igt_has_fb_modifiers(fd)
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_fb-DEBUG: Test requirement passed: 
->>>> cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.0: 
->>>> plane_set_fb(151)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.0: 
->>>> plane_set_size (3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.0: 
->>>> fb_set_position(0,0)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.0: 
->>>> fb_set_size(3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.0: 
->>>> plane_set_size (3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> plane_set_fb(151)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> plane_set_size (3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> fb_set_position(0,0)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> fb_set_size(3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> plane_set_size (3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: commit {
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: Pipe A: Setting property 
->>>> "MODE_ID" to 0x96/150
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: Pipe A: Setting property 
->>>> "ACTIVE" to 0x1/1
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: A.0, fb 151
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "SRC_X" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "SRC_Y" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "SRC_W" to 0xd700000/225443840
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "SRC_H" to 0x5a00000/94371840
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "CRTC_W" to 0xd70/3440
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "CRTC_H" to 0x5a0/1440
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "FB_ID" to 0x97/151
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "CRTC_ID" to 0x5b/91
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "COLOR_ENCODING" to 0x1/1
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.0: Setting property 
->>>> "COLOR_RANGE" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: A.2, fb 151
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_X" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_Y" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_W" to 0xd700000/225443840
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_H" to 0x5a00000/94371840
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "CRTC_W" to 0xd70/3440
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "CRTC_H" to 0x5a0/1440
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "FB_ID" to 0x97/151
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "CRTC_ID" to 0x5b/91
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: B.0, fb 0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane B.0: Setting property 
->>>> "COLOR_ENCODING" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane B.0: Setting property 
->>>> "COLOR_RANGE" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: C.0, fb 0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane C.0: Setting property 
->>>> "COLOR_ENCODING" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane C.0: Setting property 
->>>> "COLOR_RANGE" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: D.0, fb 0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane D.0: Setting property 
->>>> "COLOR_ENCODING" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane D.0: Setting property 
->>>> "COLOR_RANGE" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: E.0, fb 0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane E.0: Setting property 
->>>> "COLOR_ENCODING" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane E.0: Setting property 
->>>> "COLOR_RANGE" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: F.0, fb 0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane F.0: Setting property 
->>>> "COLOR_ENCODING" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane F.0: Setting property 
->>>> "COLOR_RANGE" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     DP-1: 
->>>> preparing atomic, pipe: A
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: DP-1: Setting property 
->>>> "CRTC_ID" to 0x5b/91
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: }
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> plane_set_fb(154)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> plane_set_size (3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> fb_set_position(0,0)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: A.2: 
->>>> fb_set_size(3440x1440)
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: commit {
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display:     populating 
->>>> plane data: A.2, fb 154
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_X" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_Y" to 0x0/0
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_W" to 0xd700000/225443840
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "SRC_H" to 0x5a00000/94371840
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "CRTC_W" to 0xd70/3440
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "CRTC_H" to 0x5a0/1440
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "FB_ID" to 0x9a/154
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: plane A.2: Setting property 
->>>> "CRTC_ID" to 0x5b/91
->>>> (kms_async_flips:3180096) igt_kms-DEBUG: display: }
->>>> (kms_async_flips:3180096) CRITICAL: Test assertion failure function 
->>>> test_async_flip, file ../tests/kms_async_flips.c:361:
->>>> (kms_async_flips:3180096) CRITICAL: Failed assertion: ret == 0
->>>> (kms_async_flips:3180096) CRITICAL: Last errno: 22, Invalid argument
->>>> (kms_async_flips:3180096) CRITICAL: error: -22 != 0
->>>> (kms_async_flips:3180096) igt_core-INFO: Stack trace:
->>>> ****  END  ****
->>>> Dynamic subtest pipe-A-DP-1: FAIL (0.227s)
->>>>
->>>>
->>>>
->>>>>
->>>>>>
->>>>>> Thanks!
->>>>>>
->>>>>>> Vitaly
->>>>>>>
->>>>>>>> Please add to Cc Vitaly from AMD:
->>>>>>>> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>>>>>>>
->>>>>>>> Also add Jeevan here:
->>>>>>>> Cc: Jeevan B <jeevan.b@intel.com>
->>>>>>>>
->>>>>>>> Regards,
->>>>>>>> Kamil
->>>>>>>>
->>>>>>>>> Signed-off-by: André Almeida <andrealmeid@igalia.com>
->>>>>>>>> ---
->>>>>>>>> v2: Add test description for GitLab compilation
->>>>>>>>> ---
->>>>>>>>>    tests/kms_async_flips.c | 45 +++++++++++++++++++++++++++++++ 
->>>>>>>>> + + + +++----
->>>>>>>>>    1 file changed, 41 insertions(+), 4 deletions(-)
->>>>>>>>>
->>>>>>>>> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
->>>>>>>>> index 4a72be7b5..dd0907d50 100644
->>>>>>>>> --- a/tests/kms_async_flips.c
->>>>>>>>> +++ b/tests/kms_async_flips.c
->>>>>>>>> @@ -89,6 +89,9 @@
->>>>>>>>>     *
->>>>>>>>>     * SUBTEST: async-flip-suspend-resume
->>>>>>>>>     * Description: Verify the async flip functionality with 
->>>>>>>>> suspend and resume cycle
->>>>>>>>> + *
->>>>>>>>> + * SUBTEST: overlay-atomic
->>>>>>>>> + * Description: Verify overlay planes with async flips in 
->>>>>>>>> atomic API
->>>>>>>>>     */
->>>>>>>>>    #define CURSOR_POS 128
->>>>>>>>> @@ -109,12 +112,14 @@ typedef struct {
->>>>>>>>>        uint32_t crtc_id;
->>>>>>>>>        uint32_t refresh_rate;
->>>>>>>>>        struct igt_fb bufs[NUM_FBS];
->>>>>>>>> +    struct igt_fb bufs_overlay[NUM_FBS];
->>>>>>>>>        igt_display_t display;
->>>>>>>>>        igt_output_t *output;
->>>>>>>>>        unsigned long flip_timestamp_us;
->>>>>>>>>        double flip_interval;
->>>>>>>>>        uint64_t modifier;
->>>>>>>>>        igt_plane_t *plane;
->>>>>>>>> +    igt_plane_t *overlay_plane;
->>>>>>>>>        igt_pipe_crc_t *pipe_crc;
->>>>>>>>>        igt_crc_t ref_crc;
->>>>>>>>>        int flip_count;
->>>>>>>>> @@ -126,6 +131,7 @@ typedef struct {
->>>>>>>>>        bool allow_fail;
->>>>>>>>>        struct buf_ops *bops;
->>>>>>>>>        bool atomic_path;
->>>>>>>>> +    bool overlay_path;
->>>>>>>>>    } data_t;
->>>>>>>>>    static void flip_handler(int fd_, unsigned int sequence, 
->>>>>>>>> unsigned int tv_sec,
->>>>>>>>> @@ -226,6 +232,8 @@ static void test_init(data_t *data)
->>>>>>>>>        igt_output_set_pipe(data->output, data->pipe);
->>>>>>>>>        data->plane = igt_output_get_plane_type(data->output, 
->>>>>>>>> DRM_PLANE_TYPE_PRIMARY);
->>>>>>>>> +    if (data->overlay_path)
->>>>>>>>> +        data->overlay_plane = igt_output_get_plane_type(data- 
->>>>>>>>> >output, DRM_PLANE_TYPE_OVERLAY);
->>>>>>>>>    }
->>>>>>>>>    static void test_init_fbs(data_t *data)
->>>>>>>>> @@ -246,16 +254,27 @@ static void test_init_fbs(data_t *data)
->>>>>>>>>            prev_modifier = data->modifier;
->>>>>>>>>            if (data->bufs[0].fb_id) {
->>>>>>>>> -            for (i = 0; i < NUM_FBS; i++)
->>>>>>>>> +            for (i = 0; i < NUM_FBS; i++) {
->>>>>>>>>                    igt_remove_fb(data->drm_fd, &data->bufs[i]);
->>>>>>>>> +                if (data->overlay_path)
->>>>>>>>> +                    igt_remove_fb(data->drm_fd, &data- 
->>>>>>>>> >bufs_overlay[i]);
->>>>>>>>> +            }
->>>>>>>>>            }
->>>>>>>>> -        for (i = 0; i < NUM_FBS; i++)
->>>>>>>>> +        for (i = 0; i < NUM_FBS; i++) {
->>>>>>>>>                make_fb(data, &data->bufs[i], width, height, i);
->>>>>>>>> +            if (data->overlay_path)
->>>>>>>>> +                make_fb(data, &data->bufs_overlay[i], width, 
->>>>>>>>> height, i);
->>>>>>>>> +        }
->>>>>>>>>        }
->>>>>>>>>        igt_plane_set_fb(data->plane, &data->bufs[0]);
->>>>>>>>>        igt_plane_set_size(data->plane, width, height);
->>>>>>>>> +
->>>>>>>>> +    if (data->overlay_path) {
->>>>>>>>> +        igt_plane_set_fb(data->overlay_plane, &data->bufs[0]);
->>>>>>>>> +        igt_plane_set_size(data->overlay_plane, width, height);
->>>>>>>>> +    }
->>>>>>>>>    }
->>>>>>>>>    static bool async_flip_needs_extra_frame(data_t *data)
->>>>>>>>> @@ -283,12 +302,17 @@ static bool 
->>>>>>>>> async_flip_needs_extra_frame(data_t *data)
->>>>>>>>>    static int perform_flip(data_t *data, int frame, int flags)
->>>>>>>>>    {
->>>>>>>>>        int ret;
->>>>>>>>> +    igt_plane_t *plane;
->>>>>>>>> +    struct igt_fb *bufs;
->>>>>>>>> +
->>>>>>>>> +    plane = data->overlay_path ? data->overlay_plane : data- 
->>>>>>>>> >plane;
->>>>>>>>> +    bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
->>>>>>>>>        if (!data->atomic_path) {
->>>>>>>>>            ret = drmModePageFlip(data->drm_fd, data->crtc_id,
->>>>>>>>> -                      data->bufs[frame % NUM_FBS].fb_id, 
->>>>>>>>> flags, data);
->>>>>>>>> +                     bufs[frame % NUM_FBS].fb_id, flags, data);
->>>>>>>>>        } else {
->>>>>>>>> -        igt_plane_set_fb(data->plane, &data->bufs[frame % 
->>>>>>>>> NUM_FBS]);
->>>>>>>>> +        igt_plane_set_fb(plane, &data->bufs[frame % NUM_FBS]);
->>>>>>>>>            ret = igt_display_try_commit_atomic(&data->display, 
->>>>>>>>> flags, data);
->>>>>>>>>        }
->>>>>>>>> @@ -772,6 +796,7 @@ igt_main
->>>>>>>>>            igt_subtest_with_dynamic("async-flip-with-page-flip- 
->>>>>>>>> events") {
->>>>>>>>>                data.alternate_sync_async = false;
->>>>>>>>>                data.atomic_path = false;
->>>>>>>>> +            data.overlay_path = false;
->>>>>>>>>                if (is_intel_device(data.drm_fd))
->>>>>>>>>                    run_test_with_modifiers(&data, 
->>>>>>>>> test_async_flip);
->>>>>>>>>                else
->>>>>>>>> @@ -783,6 +808,7 @@ igt_main
->>>>>>>>>            igt_subtest_with_dynamic("async-flip-with-page-flip- 
->>>>>>>>> events-atomic") {
->>>>>>>>>                data.alternate_sync_async = false;
->>>>>>>>>                data.atomic_path = true;
->>>>>>>>> +            data.overlay_path = false;
->>>>>>>>>                if (is_intel_device(data.drm_fd))
->>>>>>>>>                    run_test_with_modifiers(&data, 
->>>>>>>>> test_async_flip);
->>>>>>>>>                else
->>>>>>>>> @@ -793,6 +819,7 @@ igt_main
->>>>>>>>>            igt_subtest_with_dynamic("alternate-sync-async-flip") {
->>>>>>>>>                data.alternate_sync_async = true;
->>>>>>>>>                data.atomic_path = false;
->>>>>>>>> +            data.overlay_path = false;
->>>>>>>>>                run_test(&data, test_async_flip);
->>>>>>>>>            }
->>>>>>>>> @@ -800,7 +827,17 @@ igt_main
->>>>>>>>>            igt_subtest_with_dynamic("alternate-sync-async-flip- 
->>>>>>>>> atomic") {
->>>>>>>>>                data.alternate_sync_async = true;
->>>>>>>>>                data.atomic_path = true;
->>>>>>>>> +            data.overlay_path = false;
->>>>>>>>> +            run_test(&data, test_async_flip);
->>>>>>>>> +        }
->>>>>>>>> +
->>>>>>>>> +        igt_describe("Verify overlay planes with async flips 
->>>>>>>>> in atomic API");
->>>>>>>>> +        igt_subtest_with_dynamic("overlay-atomic") {
->>>>>>>>> +            igt_require(is_amdgpu_device(data.drm_fd));
->>>>>>>>> +            data.atomic_path = true;
->>>>>>>>> +            data.overlay_path = true;
->>>>>>>>>                run_test(&data, test_async_flip);
->>>>>>>>> +            data.overlay_path = false;
->>>>>>>>>            }
->>>>>>>>>            igt_describe("Verify that the async flip timestamp 
->>>>>>>>> does not "
->>>>>>>>> -- 
->>>>>>>>> 2.47.1
->>>>>>>>>
->>>>
->>>>
->>>
->>
->>
-> 
-
+Thanks,
+Umesh
+>
+>Thanks.
+>--
+>Ashutosh
