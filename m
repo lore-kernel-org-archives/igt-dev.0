@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB918C021B2
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 04:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA9DC021B2
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 04:31:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B37610E108;
-	Tue, 25 Feb 2025 04:27:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD98710E108;
+	Tue, 25 Feb 2025 04:31:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pi7WEG0N";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ROn2ucZ7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3632B10E108
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 04:26:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E301210E108
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 04:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740457619; x=1771993619;
+ t=1740457861; x=1771993861;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=HKUJD043sDIG25s8mItWxsWLz2tPvGbXM9jDW57vBoE=;
- b=Pi7WEG0NluhA25Qej61VZvzhEoVnWGRzzjZK3QfLObJGpF/s0FrsOKSm
- pW4G1rRGlv4sXu32pjJQ/ADDO7po6enWca8o4uFCsxxxO6/ebBaWVH9VU
- 3cQJcm92oEc+y92NMvEis0JUhf9WKmPQvLIXh3ZV/GLkiXKQNmrlHVrBk
- o7bG74eufuY9n1vWHxvAcBQ3mn6X5y4n67WRhvEmUi8j08/ATP1pa5Jtv
- tOCy//oFq8Z1tnbeSdydkfA3StMDl8pb4QfhaOO/m1OpLxMJUwe2zRCWl
- sAaoamjlN+9gPqmw37fnsuGXY66P71zke5rPFfn5s20nkl875Cfhbap96 w==;
-X-CSE-ConnectionGUID: b+oA/fEaSuWrZu6tNkLF5g==
-X-CSE-MsgGUID: wAoXmoQKQ9+8JqiIhFtzYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41091010"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="41091010"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ bh=3/2WnuGQO4/F4x393kIkMp5mLyRBg7GlqKEey8PeKqk=;
+ b=ROn2ucZ7d4tDhpFqb/pDkHVeMB+CVcCIa+2JAb4fobZq2teNQ5uNdRLZ
+ jmRpQKvCLDw3GcxUwD+7XIe9TrjhraXfWA5IUXeu5H3P5jluZWsc4BQNS
+ Jzy+EPv7qlcap2dAagCsSIxFohTtIyOHeDfZwfUR+fGCEjpC6mto1qhA+
+ /eW+/epGnqvMBNBpdBwq+PL1Wki0KgcXCmvFLWDrv/M33RZSUhAXU003y
+ 7YO6c7TTGYqjYvnyoxSeJOR3fPOR89eBWyUtg6hqXz0jMmoQQzAaOTIcQ
+ /NwZQukn4U8OEKSdzJkDGzVa9dOI91RCxvrErVFRnMccjR3kSB7iTT9K1 Q==;
+X-CSE-ConnectionGUID: HpyXkU8pRZyTIZpXOapJ6w==
+X-CSE-MsgGUID: d1PKabiAQlG59ngdX0YZaw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41091426"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="41091426"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 20:26:57 -0800
-X-CSE-ConnectionGUID: NbgQebvGTty5KVjXtPtx0A==
-X-CSE-MsgGUID: wC4LjxYJTHSAT7fz5CyAKw==
+ 24 Feb 2025 20:30:49 -0800
+X-CSE-ConnectionGUID: +BnfGGn8SKefxp3+xAmvJw==
+X-CSE-MsgGUID: +puZ+OqAQ8aj7IYWXWmy5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="147153185"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="116768336"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 20:26:56 -0800
-Date: Mon, 24 Feb 2025 20:26:56 -0800
-Message-ID: <85frk2k5tb.wl-ashutosh.dixit@intel.com>
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 20:30:43 -0800
+Date: Mon, 24 Feb 2025 20:30:42 -0800
+Message-ID: <85eczmk5n1.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 06/13] tests/intel/xe_oa: Rewrite the polling small buf
- test
-In-Reply-To: <85o6yrjab8.wl-ashutosh.dixit@intel.com>
-References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>	<20250215010628.1639986-7-umesh.nerlige.ramappa@intel.com>	<85o6yrjab8.wl-ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t CI run 06/14] tests/intel/xe_oa: Rewrite the polling
+ small buf test
+In-Reply-To: <Z70IfY6tpJkNJiuf@orsosgc001>
+References: <Z7z5BV5HbeWP9+CV@orsosgc001>
+	<Z70IfY6tpJkNJiuf@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,223 +72,222 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 24 Feb 2025 14:56:05 -0800, Umesh Nerlige Ramappa wrote:
->
-> On Mon, Feb 24, 2025 at 12:11:37PM -0800, Dixit, Ashutosh wrote:
-> > On Tue, 18 Feb 2025 12:28:04 -0800, Umesh Nerlige Ramappa wrote:
-> >>
-> >
-> > Hi Umesh,
-> >
-> >> Use mmio reads as a side-channel to determine if reports are available
-> >> and ensure that poll will return with POLLIN set. Then provide a small
-> >> buffer to force ENOSPC error. Then poll with a timeout of 0 to check if
-> >> POLLIN is still set.
-> >
-> > Will need a reason for doing this here. But see below.
-> >
-> >>
-> >> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> >> ---
-> >>  tests/intel/xe_oa.c | 64 +++++++++++++++++++++++++--------------------
-> >>  1 file changed, 35 insertions(+), 29 deletions(-)
-> >>
-> >> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> >> index aaf92308a..5792ffec2 100644
-> >> --- a/tests/intel/xe_oa.c
-> >> +++ b/tests/intel/xe_oa.c
-> >> @@ -2216,7 +2216,6 @@ static void test_polling(uint64_t requested_oa_period,
-> >>   */
-> >>  static void test_polling_small_buf(void)
-> >>  {
-> >> -	int oa_exponent = max_oa_exponent_for_period_lte(40 * 1000); /* 40us */
-> >>	uint64_t properties[] = {
-> >>		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> >>
-> >> @@ -2226,50 +2225,57 @@ static void test_polling_small_buf(void)
-> >>		/* OA unit configuration */
-> >>		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-> >>		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-> >> -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-> >> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> >>		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-> >>	};
-> >>	struct intel_xe_oa_open_prop param = {
-> >>		.num_properties = ARRAY_SIZE(properties) / 2,
-> >>		.properties_ptr = to_user_pointer(properties),
-> >>	};
-> >> -	uint32_t test_duration = 80 * 1000 * 1000;
-> >> -	int sample_size = get_oa_format(default_test_set->perf_oa_format).size;
-> >> -	int n_expected_reports = test_duration / oa_exponent_to_ns(oa_exponent);
-> >> -	int n_expect_read_bytes = n_expected_reports * sample_size;
-> >> -	struct timespec ts = {};
-> >> -	int n_bytes_read = 0;
-> >> -	uint32_t n_polls = 0;
-> >> +	int report_size = get_oa_format(default_test_set->perf_oa_format).size;
-> >> +	u32 oa_tail, prev_tail;
-> >> +	struct pollfd pollfd;
-> >> +	uint8_t buf[10];
-> >> +	int ret, i = 0;
-> >> +
-> >> +	intel_register_access_init(&mmio_data,
-> >> +				   igt_device_get_pci_device(drm_fd), 0);
-> >>
-> >>	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-> >>	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-> >> -	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-> >> -
-> >> -	while (igt_nsec_elapsed(&ts) < test_duration) {
-> >> -		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
-> >>
-> >> -		ppoll(&pollfd, 1, NULL, NULL);
-> >> -		if (pollfd.revents & POLLIN) {
-> >> -			uint8_t buf[1024];
-> >> -			int ret;
-> >> +#define OAG_OATAILPTR	(0xdb04)
-> >> +	/* Save the current tail */
-> >> +	prev_tail = oa_tail = intel_register_read(&mmio_data, OAG_OATAILPTR);
-> >>
-> >> -			ret = read(stream_fd, buf, sizeof(buf));
-> >> -			if (ret >= 0)
-> >> -				n_bytes_read += ret;
-> >> -		}
-> >> +	/* Kickstart the capture */
-> >> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-> >>
-> >> -		n_polls++;
-> >> +	/* Wait for 5 reports */
-> >
-> > Wait for 5 reports or 10 ms ?
-> >
-> >
-> >> +	while ((oa_tail - prev_tail) < (5 * report_size)) {
-> >> +		usleep(1000);
-> >> +		oa_tail = intel_register_read(&mmio_data, OAG_OATAILPTR);
-> >> +		if (i++ > 10)
-> >
-> > So on slow platforms we might not get any reports in 10 ms? The idea here
-> > should be to not have any timing dependence? So if we want to wait for 5
-> > reports, just wait for 5 reports?
->
-> Oh, I think the loop was stuck while debugging something, so had added a
-> counter to bail out in 10 iterations. I will remove that. We only need to
-> wait for 5 reports.
+On Mon, 24 Feb 2025 16:02:05 -0800, Umesh Nerlige Ramappa wrote:
+> 
 
-Ok.
 
->
-> >
-> > We tried doing this for the mmap OA buffer: see
-> > mmap_wait_for_periodic_reports(), the function waits indefinitely.
->
-> You mean this:
->
-> while (num_periodic_reports < n) {
->	usleep(4 * n * period_us);
->	num_periodic_reports = 0;
->	for (reports = (uint32_t *)oa_vaddr;
->	     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
->	     reports += get_oa_format(fmt).size) {
->		num_periodic_reports++;
->	}
-> }
->
-> Well.. if your reports start coming in fast enough, then you would just
-> spin in the inner for loop. Maybe break the inner for loop when
-> num_periodic_reports >= n;
+Hi Umesh,
 
-Ok, but I was just pointing out that this sort of code is beginning to get
-in. Sai Teja did this.
-
->
-> >
-> > So if this is done I am not sure if the intel_register_read() approach is
-> > needed (but I didn't think of doing that :). But I guess we can use it to
-> > see when there are N reports available.
-> >
-> > Longer term it would be nice to have a centralized function
-> > wait_for_n_reports(int n) or something like that which different tests can
-> > use.
->
-> Agree, except that some tests will read the actual reports, while others
-> just want to take a peek at how many reports are available without reading
-> them. Since mmap is also a feature under test, I took the easier
-> approach. We can always refine it if we find something better.
-
-Can have similar peek_for_n_reports(n), which would have to use your
-register read method.
-
->
-> >
-> >> +			break;
-> >>	}
-> >>
-> >> -	igt_info("Read %d expected %d (%.2f%% of the expected number), polls=%u\n",
-> >> -		 n_bytes_read, n_expect_read_bytes,
-> >> -		 n_bytes_read * 100.0f / n_expect_read_bytes,
-> >> -		 n_polls);
-> >> +	intel_register_access_fini(&mmio_data);
-> >>
-> >> -	__perf_close(stream_fd);
-> >> +	/* Just read one report and expect ENOSPC */
-> >> +	pollfd.fd = stream_fd;
-> >> +	pollfd.events = POLLIN;
-> >> +	poll(&pollfd, 1, 1000);
-> >> +	igt_assert(pollfd.revents & POLLIN);
-> >
-> > Is the assumption here that the kernel timer is firing every 5 ms (so if
-> > we've waited for 10 ms POLLIN must be set since the timer is firing every 5
-> > ms)? I am not sure if that 5 ms is uapi. Or is it? Actually I was thinking
-> > of changing that 5 ms time or changing the timer to a delayed work.
->
-> But here I am waiting 1000ms in the poll above. That should be sufficient
-> for POLLIN  to be set. If not, we could set the timeout to a large value (a
-> few seconds).
-
-Oh ok, sorry I missed the 1000 ms.
-
->
-> >
-> >> +	errno = 0;
-> >> +	ret = read(stream_fd, buf, sizeof(buf));
-> >> +	igt_assert_eq(ret, -1);
-> >> +	igt_assert_eq(errno, ENOSPC);
-> >
-> > This part looks ok, it's uapi.
-> >
->
-> Note:
-> ENOSPC is returned only if the buffer is small enough that not even one
-> report will fit in. Initially I had a 600 byte buffer, but I did not get
-> ENOSPC. Instead I got 576 in ret which I think is the correct behavior.
-
-OK.
-
-> >>
-> >> -	igt_assert(abs(n_expect_read_bytes - n_bytes_read) <
-> >> -		   0.20 * n_expect_read_bytes);
-> >> +	/* Poll with 0 timeout and expect POLLIN flag to be set */
-> >> +	poll(&pollfd, 1, 0);
-> >> +	igt_assert(pollfd.revents & POLLIN);
-> >> +
-> >> +	__perf_close(stream_fd);
-> >
-> > How about just reading N reports using a small buffer for this test,
-> > however long it takes? N can 5 or 10.
->
-> Not sure I understand. You mean at this stage of the test, read 5/10
-> reports? OR just alter the entire test somehow to do something different?
->
-> I thought the test was specifically testing that POLLIN is still set after
-> an ENOSPC error, so I have written it for that case alone. The 0 timeout
-> will bypass the wait in the poll so that we only get the state of POLLIN.
-
-The original test, as I see it, seems to be just doing a lot of regular
-reads with a small buffer (1K instead of 16 MB say).
-
-But what you are doing here is also probably ok/better than the
-original. Let me think some more about it.
+You seem to have responded twice on the CI series. I have responded on this
+on the original series. Let's keep to the original series if possible. I am
+monitoring the R-b's etc. there.
 
 Thanks.
 --
 Ashutosh
+
+
+> On Mon, Feb 24, 2025 at 02:56:05PM -0800, Umesh Nerlige Ramappa wrote:
+> > On Mon, Feb 24, 2025 at 12:11:37PM -0800, Dixit, Ashutosh wrote:
+> >> On Tue, 18 Feb 2025 12:28:04 -0800, Umesh Nerlige Ramappa wrote:
+> >>> 
+> >> 
+> >> Hi Umesh,
+> >> 
+> >>> Use mmio reads as a side-channel to determine if reports are available
+> >>> and ensure that poll will return with POLLIN set. Then provide a small
+> >>> buffer to force ENOSPC error. Then poll with a timeout of 0 to check if
+> >>> POLLIN is still set.
+> >> 
+> >> Will need a reason for doing this here. But see below.
+> >> 
+> >>> 
+> >>> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> >>> ---
+> >>> tests/intel/xe_oa.c | 64 +++++++++++++++++++++++++--------------------
+> >>> 1 file changed, 35 insertions(+), 29 deletions(-)
+> >>> 
+> >>> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> >>> index aaf92308a..5792ffec2 100644
+> >>> --- a/tests/intel/xe_oa.c
+> >>> +++ b/tests/intel/xe_oa.c
+> >>> @@ -2216,7 +2216,6 @@ static void test_polling(uint64_t requested_oa_period,
+> >>>  */
+> >>> static void test_polling_small_buf(void)
+> >>> {
+> >>> -	int oa_exponent = max_oa_exponent_for_period_lte(40 * 1000); /* 40us */
+> >>> 	uint64_t properties[] = {
+> >>> 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> >>> 
+> >>> @@ -2226,50 +2225,57 @@ static void test_polling_small_buf(void)
+> >>> 		/* OA unit configuration */
+> >>> 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
+> >>> 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
+> >>> -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+> >>> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+> >>> 		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+> >>> 	};
+> >>> 	struct intel_xe_oa_open_prop param = {
+> >>> 		.num_properties = ARRAY_SIZE(properties) / 2,
+> >>> 		.properties_ptr = to_user_pointer(properties),
+> >>> 	};
+> >>> -	uint32_t test_duration = 80 * 1000 * 1000;
+> >>> -	int sample_size = get_oa_format(default_test_set->perf_oa_format).size;
+> >>> -	int n_expected_reports = test_duration / oa_exponent_to_ns(oa_exponent);
+> >>> -	int n_expect_read_bytes = n_expected_reports * sample_size;
+> >>> -	struct timespec ts = {};
+> >>> -	int n_bytes_read = 0;
+> >>> -	uint32_t n_polls = 0;
+> >>> +	int report_size = get_oa_format(default_test_set->perf_oa_format).size;
+> >>> +	u32 oa_tail, prev_tail;
+> >>> +	struct pollfd pollfd;
+> >>> +	uint8_t buf[10];
+> >>> +	int ret, i = 0;
+> >>> +
+> >>> +	intel_register_access_init(&mmio_data,
+> >>> +				   igt_device_get_pci_device(drm_fd), 0);
+> >>> 
+> >>> 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+> >>> 	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
+> >>> -	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> >>> -
+> >>> -	while (igt_nsec_elapsed(&ts) < test_duration) {
+> >>> -		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
+> >>> 
+> >>> -		ppoll(&pollfd, 1, NULL, NULL);
+> >>> -		if (pollfd.revents & POLLIN) {
+> >>> -			uint8_t buf[1024];
+> >>> -			int ret;
+> >>> +#define OAG_OATAILPTR	(0xdb04)
+> >>> +	/* Save the current tail */
+> >>> +	prev_tail = oa_tail = intel_register_read(&mmio_data, OAG_OATAILPTR);
+> >>> 
+> >>> -			ret = read(stream_fd, buf, sizeof(buf));
+> >>> -			if (ret >= 0)
+> >>> -				n_bytes_read += ret;
+> >>> -		}
+> >>> +	/* Kickstart the capture */
+> >>> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> >>> 
+> >>> -		n_polls++;
+> >>> +	/* Wait for 5 reports */
+> >> 
+> >> Wait for 5 reports or 10 ms ?
+> >> 
+> >> 
+> >>> +	while ((oa_tail - prev_tail) < (5 * report_size)) {
+> >>> +		usleep(1000);
+> >>> +		oa_tail = intel_register_read(&mmio_data, OAG_OATAILPTR);
+> >>> +		if (i++ > 10)
+> >> 
+> >> So on slow platforms we might not get any reports in 10 ms? The idea here
+> >> should be to not have any timing dependence? So if we want to wait for 5
+> >> reports, just wait for 5 reports?
+> 
+> Oh, I think the loop was stuck while debugging something, so had added a
+> counter to bail out in 10 iterations. I will remove that. We only need to
+> wait for 5 reports.
+> 
+> >> 
+> >> We tried doing this for the mmap OA buffer: see
+> >> mmap_wait_for_periodic_reports(), the function waits indefinitely.
+> 
+> You mean this:
+> 
+> while (num_periodic_reports < n) {
+> 	usleep(4 * n * period_us);
+> 	num_periodic_reports = 0;
+> 	for (reports = (uint32_t *)oa_vaddr;
+> 	     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
+> 	     reports += get_oa_format(fmt).size) {
+> 		num_periodic_reports++;
+> 	}
+> }
+> 
+> Well.. if your reports start coming in fast enough, then you would just
+> spin in the inner for loop. Maybe break the inner for loop when
+> num_periodic_reports >= n;
+> 
+> >> 
+> >> So if this is done I am not sure if the intel_register_read() approach is
+> >> needed (but I didn't think of doing that :). But I guess we can use it to
+> >> see when there are N reports available.
+> >> 
+> >> Longer term it would be nice to have a centralized function
+> >> wait_for_n_reports(int n) or something like that which different tests can
+> >> use.
+> 
+> Agree, except that some tests will read the actual reports, while others
+> ust want to take a peek at how many reports are available without reading
+> them. Since mmap is also a feature under test, I took the easier
+> approach. We can always refine it if we find something better.
+> > 
+> >> 
+> >>> +			break;
+> >>> 	}
+> >>> 
+> >>> -	igt_info("Read %d expected %d (%.2f%% of the expected number), polls=%u\n",
+> >>> -		 n_bytes_read, n_expect_read_bytes,
+> >>> -		 n_bytes_read * 100.0f / n_expect_read_bytes,
+> >>> -		 n_polls);
+> >>> +	intel_register_access_fini(&mmio_data);
+> >>> 
+> >>> -	__perf_close(stream_fd);
+> >>> +	/* Just read one report and expect ENOSPC */
+> >>> +	pollfd.fd = stream_fd;
+> >>> +	pollfd.events = POLLIN;
+> >>> +	poll(&pollfd, 1, 1000);
+> >>> +	igt_assert(pollfd.revents & POLLIN);
+> >> 
+> >> Is the assumption here that the kernel timer is firing every 5 ms (so if
+> >> we've waited for 10 ms POLLIN must be set since the timer is firing every 5
+> >> ms)? I am not sure if that 5 ms is uapi. Or is it? Actually I was thinking
+> 
+> But here I am waiting 1000ms in the poll above. That should be sufficient
+> for POLLIN  to be set. If not, we could set the timeout to a large value (a
+> few seconds).
+> 
+> >> 
+> >>> +	errno = 0;
+> >>> +	ret = read(stream_fd, buf, sizeof(buf));
+> >>> +	igt_assert_eq(ret, -1);
+> >>> +	igt_assert_eq(errno, ENOSPC);
+> >> 
+> >> This part looks ok, it's uapi.
+> >> 
+> 
+> Note:
+> ENOSPC is returned only if the buffer is small enough that not even one
+> report will fit in. Initially I had a 600 byte buffer, but I did not get
+> ENOSPC. Instead I got 576 in ret which I think is the correct behavior.
+> 
+> >>> 
+> >>> -	igt_assert(abs(n_expect_read_bytes - n_bytes_read) <
+> >>> -		   0.20 * n_expect_read_bytes);
+> >>> +	/* Poll with 0 timeout and expect POLLIN flag to be set */
+> >>> +	poll(&pollfd, 1, 0);
+> >>> +	igt_assert(pollfd.revents & POLLIN);
+> >>> +
+> >>> +	__perf_close(stream_fd);
+> >> 
+> >> How about just reading N reports using a small buffer for this test,
+> >> however long it takes? N can 5 or 10.
+> 
+> Not sure I understand. You mean at this stage of the test, read 5/10
+> reports? OR just alter the entire test somehow to do something different?
+> 
+> I thought the test was specifically testing that POLLIN is still set after
+> an ENOSPC error, so I have written it for that case alone. The 0 timeout
+> will bypass the wait in the poll so that we only get the state of POLLIN.
+> 
+> Thanks,
+> Umesh
+> 
+> 
+> >> 
+> >> Thanks.
+> >> --
+> >> Ashutosh
+> >> 
+> >> PS: how about separating out the patches which currently have R-b into a
+> >> separate series and merging them first?
