@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FEFC021B8
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 06:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7D21C021B8
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 07:24:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1D8810E58C;
-	Tue, 25 Feb 2025 06:52:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7814B10E173;
+	Tue, 25 Feb 2025 07:24:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="maEVMVsl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lt0nYB1i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6897E10E590
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 06:52:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B47110E173
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 07:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740466334; x=1772002334;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=F928U0NTfShk3ugKUljlQ7lIkXyOM5es+CjGdg/PkmI=;
- b=maEVMVsl927K4ro59MPcVp5nuJXxI4OKoc3PUnLsjU9+VLxiLWeD1XWg
- lvE44CROAUuxc9dSQhMCh4BqrvbpBuxOdlJiWxNOYysI3zUPoIs7HxKbz
- deIX35Oo1Bu5GlarGU/qeIqubRyBYXYsWEGxxQSDPPyKKSYgVJZXqyFvc
- HrmgZEzd5gTeCZT4/Duap6yiPhJx3fZjVKZCU8NiaJ+TtNrWsOjJH07gk
- lxvJjLN2TInATqbNBBcUEXlTDpwHsb6tUYNcO2uqFMUgWjEQCm5rxO14R
- MYu6V9IhdH+RLlrFuw7qNVuFBw+AcpRUrPiD9O6bFir18f1uOGfFnTBQU w==;
-X-CSE-ConnectionGUID: ZRj33+OGRRCQFlej6tXd1g==
-X-CSE-MsgGUID: oAIHydXFQ/6fZjKJ9blzHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40442898"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="40442898"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 22:52:14 -0800
-X-CSE-ConnectionGUID: lrcNoxiZSnuRVC7PdQ6qUg==
-X-CSE-MsgGUID: yPK42nqDRiKEp+RPEvx/Aw==
+ t=1740468273; x=1772004273;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=V2f7CcljzB5svabBOh/vGl84b7u4mhMtnk139TKAjf4=;
+ b=Lt0nYB1iwS0FU73hDRJiYdvQuTHXSHRsz0lG3IW8IG5rz2+/nMDqnmdF
+ e8LFGZsFCFJAjmXTwZIMPrPy8Yw1YQ4cf2rKrcwOxq+LnU/NlQ7piCl1n
+ 4u4b7WVLI2y2EBwuGETcAjPiko+35o+SZ4d12nzkQCpxkqcPYSrSyk8Mv
+ chT5K8zJo9dqYna5EG4Ls2czDuGff4GxQHnCSahxJPqrBzcHmazHyygh7
+ Laoko0xrCt1DR9khcRkqOoqLyoL/oiChMzXkTKKU0sRjiF37cx6TL9vEg
+ xcreEHRzt5raGUyU7mkTbYCM4fBlQ7ItZwVuMpvN9z0SxGJgNFUZW8D63 Q==;
+X-CSE-ConnectionGUID: 8taR7SUrSlO1/+yGRj/l7w==
+X-CSE-MsgGUID: VZAUr/KrSZKJftjw02RR7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="52257950"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="52257950"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 23:24:32 -0800
+X-CSE-ConnectionGUID: iBtFSVOnTeeCUHr/Aeo4SQ==
+X-CSE-MsgGUID: gRf4iJnRTPWMmNFs4RjFNQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120399757"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 22:52:13 -0800
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com
-Subject: [PATCH i-g-t v4 3/3] tests/intel/xe_pmu: Add idle engine activity
- tests
-Date: Tue, 25 Feb 2025 12:43:11 +0530
-Message-ID: <20250225071311.2333393-4-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250225071311.2333393-1-riana.tauro@intel.com>
-References: <20250225071311.2333393-1-riana.tauro@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116792975"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by orviesa007.jf.intel.com with ESMTP; 24 Feb 2025 23:24:31 -0800
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	francois.dugast@intel.com
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH v3] tests/intel/xe_fault_injection: Inject errors during exec
+ queue create IOCTL
+Date: Tue, 25 Feb 2025 13:04:04 +0530
+Message-Id: <20250225073404.252344-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,108 +66,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add two tests to validate engine activity counters
-(engine-active-ticks, engine-total-ticks) when idle and
-trailing idle (workload is ended before reading counters)
+Use the fault injection infrastructure to make targeted internal KMD
+functions fail when executing xe_exec_queue_create_ioctl()
+so that more code paths are tested, such as error handling and unwinding.
+include xe_exec_queue_create_bind only for VM_BIND engine class.
+xe_exec_queue_destroy_ioctl() and
+xe_exec_queue_get_property_ioctl() are not considered as there is
+no unwinding code to test with fault injection.
 
-v2: add trailing idle test
-    rename busy to load (Umesh)
-
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- tests/intel/xe_pmu.c | 39 +++++++++++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 6 deletions(-)
+ tests/intel/xe_fault_injection.c | 50 ++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 692cc986f..4584fc7d3 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -21,6 +21,10 @@
- #include "xe/xe_spin.h"
- 
- #define SLEEP_DURATION 2 /* in seconds */
-+/* flag masks */
-+#define TEST_LOAD		BIT(0)
-+#define TEST_TRAILING_IDLE	BIT(1)
-+
- const double tolerance = 0.1;
- 
- #define test_each_engine(test, fd, hwe) \
-@@ -122,11 +126,17 @@ static uint64_t get_event_config(int xe, unsigned int gt, struct drm_xe_engine_c
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 7ae941367..f25ad9b27 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -185,6 +185,37 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+ 	injection_list_do(INJECTION_LIST_REMOVE, function_name);
  }
  
- /**
-+ * SUBTEST: engine-activity-idle
-+ * Description: Test to validate engine activity shows no load when idle
++/**
++ * SUBTEST: exec-queue-create-fail-%s
++ * Description: inject an error in function %arg[1] used in exec queue create IOCTL to make it fail
++ * Functionality: fault
 + *
-+ * SUBTEST: engine-activity-load-idle
-+ * Description: Test to validate engine activity with full load followed by trailing idle
-+ *
-  * SUBTEST: engine-activity-load
-  * Description: Test to validate engine activity stats by running a workload and
-  *              reading engine active ticks and engine total ticks PMU counters
-  */
--static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
-+static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
++ * arg[1]:
++ * @xe_exec_queue_create:                 xe_exec_queue_create
++ * @xe_hw_engine_group_add_exec_queue:    xe_hw_engine_group_add_exec_queue
++ * @xe_vm_add_compute_exec_queue:         xe_vm_add_compute_exec_queue
++ * @xe_exec_queue_create_bind:            xe_exec_queue_create_bind
++ */
++static void
++exec_queue_create_fail(int fd, struct drm_xe_engine_class_instance *instance,
++		const char function_name[], unsigned int flags)
++{
++	uint32_t exec_queue_id;
++	uint32_t vm = xe_vm_create(fd, flags, 0);
++	/* sanity check */
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
++	xe_exec_queue_destroy(fd, exec_queue_id);
++
++	ignore_faults_in_dmesg(function_name);
++	injection_list_do(INJECTION_LIST_ADD, function_name);
++	set_retval(function_name, INJECT_ERRNO);
++	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id) != 0);
++	injection_list_do(INJECTION_LIST_REMOVE, function_name);
++
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
++	xe_exec_queue_destroy(fd, exec_queue_id);
++}
++
+ static int
+ simple_vm_create(int fd, unsigned int flags)
  {
- 	uint64_t config, engine_active_ticks, engine_total_ticks, before[2], after[2];
- 	struct xe_cork *cork = NULL;
-@@ -140,14 +150,20 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
- 	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
+@@ -283,6 +314,7 @@ vm_bind_fail(int fd, const char function_name[])
+ igt_main
+ {
+ 	int fd;
++	struct drm_xe_engine_class_instance *hwe;
+ 	char pci_slot[NAME_MAX];
+ 	const struct section {
+ 		const char *name;
+@@ -318,6 +350,14 @@ igt_main
+ 		{ }
+ 	};
  
- 	vm = xe_vm_create(fd, 0, 0);
--	cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
--	xe_cork_sync_start(fd, cork);
++	const struct section exec_queue_create_fail_functions[] = {
++		{ "xe_exec_queue_create", 0 },
++		{ "xe_hw_engine_group_add_exec_queue", 0 },
++		{ "xe_vm_add_compute_exec_queue", DRM_XE_VM_CREATE_FLAG_LR_MODE },
++		{ "xe_exec_queue_create_bind", 0 },
++		{ }
++	};
 +
-+	if (flags & TEST_LOAD) {
-+		cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
-+		xe_cork_sync_start(fd, cork);
-+	}
- 
- 	pmu_read_multi(pmu_fd[0], 2, before);
- 	usleep(SLEEP_DURATION * USEC_PER_SEC);
-+	if (flags & TEST_TRAILING_IDLE)
-+		xe_cork_sync_end(fd, cork);
- 	pmu_read_multi(pmu_fd[0], 2, after);
- 
--	xe_cork_sync_end(fd, cork);
-+	if ((flags & TEST_LOAD) && !cork->ended)
-+		xe_cork_sync_end(fd, cork);
- 
- 	engine_active_ticks = after[0] - before[0];
- 	engine_total_ticks = after[1] - before[1];
-@@ -165,7 +181,10 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
- 	close(pmu_fd[0]);
- 	close(pmu_fd[1]);
- 
--	assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
-+	if (flags & TEST_LOAD)
-+		assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
-+	else
-+		igt_assert(!engine_active_ticks);
- }
- 
- /**
-@@ -222,9 +241,17 @@ igt_main
- 			test_gt_c6_idle(fd, gt);
- 	}
- 
-+	igt_describe("Validate there is no engine activity when idle");
-+	test_each_engine("engine-activity-idle", fd, eci)
-+		engine_activity(fd, eci, 0);
-+
-+	igt_describe("Validate engine activity with load and trailing idle");
-+	test_each_engine("engine-activity-load-idle", fd, eci)
-+		engine_activity(fd, eci, TEST_LOAD | TEST_TRAILING_IDLE);
-+
- 	igt_describe("Validate engine activity with workload");
- 	test_each_engine("engine-activity-load", fd, eci)
--		engine_activity(fd, eci);
-+		engine_activity(fd, eci, TEST_LOAD);
- 
  	igt_fixture {
- 		close(fd);
+ 		igt_require(fail_function_injection_enabled());
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -333,6 +373,16 @@ igt_main
+ 		igt_subtest_f("vm-bind-fail-%s", s->name)
+ 			vm_bind_fail(fd, s->name);
+ 
++	for (const struct section *s = exec_queue_create_fail_functions; s->name; s++)
++		igt_subtest_f("exec-queue-create-fail-%s", s->name)
++			xe_for_each_engine(fd, hwe) {
++				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VM_BIND &&
++						strcmp(s->name, "xe_exec_queue_create_bind"))
++					exec_queue_create_fail(fd, hwe, s[3].name, s[3].flags);
++				else if (strcmp(s->name, "xe_exec_queue_create_bind"))
++					exec_queue_create_fail(fd, hwe, s->name, s->flags);
++			}
++
+ 	igt_fixture {
+ 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
+ 	}
 -- 
-2.47.1
+2.34.1
 
