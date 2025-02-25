@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C3B8C021B2
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 06:52:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FEFC021B8
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 06:52:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 28D4D10E583;
-	Tue, 25 Feb 2025 06:52:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C1D8810E58C;
+	Tue, 25 Feb 2025 06:52:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ayHnrf7w";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="maEVMVsl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A8CC10E589
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 06:52:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6897E10E590
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 06:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740466333; x=1772002333;
+ t=1740466334; x=1772002334;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RXveuHNPkvb6nfV1buP9SKNKnc3qH8XeKyjm/xdSfG0=;
- b=ayHnrf7worK3WlPIz6aB//hLeJ8Go2RMs0QDzQwSs+F2MWXJ9C7C9W4p
- lh2k0d7r4r9+XZNdj9E+xQSyQM0+xkic0Sf0UcxrImMLjChmW/W2n6leK
- bHBTNJIQn0IxV+YehL4wtGxjPi6nhzIpMjXae8FgJj7tCGbN0mCNM078Q
- vZrEFLTJVc7rDMDCJIOowhubLnHE+UXqaW1c0cfDthPNmqJ0TbBxMbW86
- wPC93kt3UQMvZwDhqVicFhMDYpzphtWAoy/vmwSY4JbkVriU7vazA4R/i
- jDczFgorR1nB9gqVg0m7dCFZkYMvTuNIy7qWlZ2nbU4oED63oXejZX9d/ g==;
-X-CSE-ConnectionGUID: FgNwLE0EQ56F5qwfc9SSvw==
-X-CSE-MsgGUID: kKI/0JsNTSWZt428sn4AAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40442895"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="40442895"
+ bh=F928U0NTfShk3ugKUljlQ7lIkXyOM5es+CjGdg/PkmI=;
+ b=maEVMVsl927K4ro59MPcVp5nuJXxI4OKoc3PUnLsjU9+VLxiLWeD1XWg
+ lvE44CROAUuxc9dSQhMCh4BqrvbpBuxOdlJiWxNOYysI3zUPoIs7HxKbz
+ deIX35Oo1Bu5GlarGU/qeIqubRyBYXYsWEGxxQSDPPyKKSYgVJZXqyFvc
+ HrmgZEzd5gTeCZT4/Duap6yiPhJx3fZjVKZCU8NiaJ+TtNrWsOjJH07gk
+ lxvJjLN2TInATqbNBBcUEXlTDpwHsb6tUYNcO2uqFMUgWjEQCm5rxO14R
+ MYu6V9IhdH+RLlrFuw7qNVuFBw+AcpRUrPiD9O6bFir18f1uOGfFnTBQU w==;
+X-CSE-ConnectionGUID: ZRj33+OGRRCQFlej6tXd1g==
+X-CSE-MsgGUID: oAIHydXFQ/6fZjKJ9blzHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40442898"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="40442898"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 22:52:13 -0800
-X-CSE-ConnectionGUID: gnaa9o0JQRCER5AIBYRqRA==
-X-CSE-MsgGUID: pRZSXC4RTeC270PrTS6f7Q==
+ 24 Feb 2025 22:52:14 -0800
+X-CSE-ConnectionGUID: lrcNoxiZSnuRVC7PdQ6qUg==
+X-CSE-MsgGUID: yPK42nqDRiKEp+RPEvx/Aw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120399754"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120399757"
 Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 22:52:12 -0800
+ 24 Feb 2025 22:52:13 -0800
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com
-Subject: [PATCH i-g-t v4 2/3] tests/intel/xe_pmu: Add PMU test to validate
- engine activity stats
-Date: Tue, 25 Feb 2025 12:43:10 +0530
-Message-ID: <20250225071311.2333393-3-riana.tauro@intel.com>
+Subject: [PATCH i-g-t v4 3/3] tests/intel/xe_pmu: Add idle engine activity
+ tests
+Date: Tue, 25 Feb 2025 12:43:11 +0530
+Message-ID: <20250225071311.2333393-4-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250225071311.2333393-1-riana.tauro@intel.com>
 References: <20250225071311.2333393-1-riana.tauro@intel.com>
@@ -68,228 +68,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to validate engine activity by reading PMU counters
-(engine-active-ticks, engine-total-ticks) when running
-workload on every engine
+Add two tests to validate engine activity counters
+(engine-active-ticks, engine-total-ticks) when idle and
+trailing idle (workload is ended before reading counters)
 
-v2: rename busy to active
-    add assert to format events (Umesh)
-    add a helper macro
-
-v3: initialize config (Umesh)
+v2: add trailing idle test
+    rename busy to load (Umesh)
 
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_pmu.c | 130 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 110 insertions(+), 20 deletions(-)
+ tests/intel/xe_pmu.c | 39 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 33 insertions(+), 6 deletions(-)
 
 diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index d408d0f99..692cc986f 100644
+index 692cc986f..4584fc7d3 100644
 --- a/tests/intel/xe_pmu.c
 +++ b/tests/intel/xe_pmu.c
-@@ -12,24 +12,23 @@
-  * Test category: Functional tests
-  */
- 
--#include <fcntl.h>
--#include <limits.h>
--#include <time.h>
--#include <errno.h>
--#include <dirent.h>
--#include <string.h>
--#include <sys/time.h>
--
- #include "igt.h"
--#include "igt_device.h"
- #include "igt_perf.h"
- #include "igt_sysfs.h"
- 
- #include "xe/xe_gt.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_spin.h"
+@@ -21,6 +21,10 @@
+ #include "xe/xe_spin.h"
  
  #define SLEEP_DURATION 2 /* in seconds */
++/* flag masks */
++#define TEST_LOAD		BIT(0)
++#define TEST_TRAILING_IDLE	BIT(1)
++
  const double tolerance = 0.1;
  
-+#define test_each_engine(test, fd, hwe) \
-+	igt_subtest_with_dynamic(test) \
-+		xe_for_each_engine(fd, hwe) \
-+			igt_dynamic_f("engine-%s%d", xe_engine_class_string(hwe->engine_class), \
-+				      hwe->engine_instance)
-+
- static int open_pmu(int xe, uint64_t config)
- {
- 	int fd;
-@@ -41,6 +40,17 @@ static int open_pmu(int xe, uint64_t config)
- 	return fd;
+ #define test_each_engine(test, fd, hwe) \
+@@ -122,11 +126,17 @@ static uint64_t get_event_config(int xe, unsigned int gt, struct drm_xe_engine_c
  }
  
-+static int open_group(int xe, uint64_t config, int group)
-+{
-+	int fd;
-+
-+	fd = igt_perf_open_group(xe_perf_type_id(xe), config, group);
-+	igt_skip_on(fd < 0 && errno == ENODEV);
-+	igt_assert(fd >= 0);
-+
-+	return fd;
-+}
-+
- static uint64_t __pmu_read_single(int fd, uint64_t *ts)
+ /**
++ * SUBTEST: engine-activity-idle
++ * Description: Test to validate engine activity shows no load when idle
++ *
++ * SUBTEST: engine-activity-load-idle
++ * Description: Test to validate engine activity with full load followed by trailing idle
++ *
+  * SUBTEST: engine-activity-load
+  * Description: Test to validate engine activity stats by running a workload and
+  *              reading engine active ticks and engine total ticks PMU counters
+  */
+-static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
++static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
  {
- 	uint64_t data[2];
-@@ -52,6 +62,19 @@ static uint64_t __pmu_read_single(int fd, uint64_t *ts)
- 	return data[0];
- }
+ 	uint64_t config, engine_active_ticks, engine_total_ticks, before[2], after[2];
+ 	struct xe_cork *cork = NULL;
+@@ -140,14 +150,20 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
+ 	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
  
-+static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
-+{
-+	uint64_t buf[2 + num];
-+	unsigned int i;
+ 	vm = xe_vm_create(fd, 0, 0);
+-	cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
+-	xe_cork_sync_start(fd, cork);
 +
-+	igt_assert_eq(read(fd, buf, sizeof(buf)), sizeof(buf));
-+
-+	for (i = 0; i < num; i++)
-+		val[i] = buf[2 + i];
-+
-+	return buf[1];
-+}
-+
- static unsigned long read_idle_residency(int fd, int gt)
- {
- 	unsigned long residency = 0;
-@@ -65,23 +88,86 @@ static unsigned long read_idle_residency(int fd, int gt)
- 	return residency;
- }
- 
--static uint64_t get_event_config(int xe, unsigned int gt, char *event)
-+static uint64_t add_format_config(const char *xe_device, const char *format, uint64_t val)
- {
- 	int ret;
--	char xe_device[100];
--	uint64_t pmu_config;
- 	uint32_t shift;
-+	uint64_t config;
-+
-+	ret = perf_event_format(xe_device, format, &shift);
-+	igt_assert(ret >= 0);
-+	config = val << shift;
-+
-+	return config;
-+}
-+
-+static uint64_t get_event_config(int xe, unsigned int gt, struct drm_xe_engine_class_instance *eci,
-+				 const char *event)
-+{
-+	char xe_device[100];
-+	uint64_t pmu_config = 0;
-+	int ret;
- 
- 	xe_perf_device(xe, xe_device, sizeof(xe_device));
- 	ret = perf_event_config(xe_device, event, &pmu_config);
- 	igt_assert(ret >= 0);
--	ret = perf_event_format(xe_device, "gt", &shift);
--	igt_assert(ret >= 0);
--	pmu_config |= (uint64_t)gt << shift;
-+	pmu_config |= add_format_config(xe_device, "gt", gt);
-+
-+	if (eci) {
-+		pmu_config |= add_format_config(xe_device, "engine_class", eci->engine_class);
-+		pmu_config |= add_format_config(xe_device, "engine_instance", eci->engine_instance);
++	if (flags & TEST_LOAD) {
++		cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
++		xe_cork_sync_start(fd, cork);
 +	}
  
- 	return pmu_config;
+ 	pmu_read_multi(pmu_fd[0], 2, before);
+ 	usleep(SLEEP_DURATION * USEC_PER_SEC);
++	if (flags & TEST_TRAILING_IDLE)
++		xe_cork_sync_end(fd, cork);
+ 	pmu_read_multi(pmu_fd[0], 2, after);
+ 
+-	xe_cork_sync_end(fd, cork);
++	if ((flags & TEST_LOAD) && !cork->ended)
++		xe_cork_sync_end(fd, cork);
+ 
+ 	engine_active_ticks = after[0] - before[0];
+ 	engine_total_ticks = after[1] - before[1];
+@@ -165,7 +181,10 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
+ 	close(pmu_fd[0]);
+ 	close(pmu_fd[1]);
+ 
+-	assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
++	if (flags & TEST_LOAD)
++		assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
++	else
++		igt_assert(!engine_active_ticks);
  }
  
-+/**
-+ * SUBTEST: engine-activity-load
-+ * Description: Test to validate engine activity stats by running a workload and
-+ *              reading engine active ticks and engine total ticks PMU counters
-+ */
-+static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	uint64_t config, engine_active_ticks, engine_total_ticks, before[2], after[2];
-+	struct xe_cork *cork = NULL;
-+	uint32_t vm;
-+	int pmu_fd[2];
-+
-+	config = get_event_config(fd, eci->gt_id, eci, "engine-active-ticks");
-+	pmu_fd[0] = open_group(fd, config, -1);
-+
-+	config = get_event_config(fd, eci->gt_id, eci, "engine-total-ticks");
-+	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	cork = xe_cork_create_opts(fd, eci, vm, 1, 1);
-+	xe_cork_sync_start(fd, cork);
-+
-+	pmu_read_multi(pmu_fd[0], 2, before);
-+	usleep(SLEEP_DURATION * USEC_PER_SEC);
-+	pmu_read_multi(pmu_fd[0], 2, after);
-+
-+	xe_cork_sync_end(fd, cork);
-+
-+	engine_active_ticks = after[0] - before[0];
-+	engine_total_ticks = after[1] - before[1];
-+
-+	igt_debug("Engine active ticks:  after %ld, before %ld delta %ld\n", after[0], before[0],
-+		  engine_active_ticks);
-+	igt_debug("Engine total ticks: after %ld, before %ld delta %ld\n", after[1], before[1],
-+		  engine_total_ticks);
-+
-+	if (cork)
-+		xe_cork_destroy(fd, cork);
-+
-+	xe_vm_destroy(fd, vm);
-+
-+	close(pmu_fd[0]);
-+	close(pmu_fd[1]);
-+
-+	assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
-+}
-+
  /**
-  * SUBTEST: gt-c6-idle
-  * Description: Basic residency test to validate idle residency
-@@ -91,14 +177,12 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
- {
- 	int pmu_fd;
- 	uint64_t pmu_config;
--	char event[100];
- 	uint64_t ts[2];
- 	unsigned long slept, start, end;
- 	uint64_t val;
- 
- 	/* Get the PMU config for the gt-c6 event */
--	sprintf(event, "gt-c6-residency");
--	pmu_config = get_event_config(xe, gt, event);
-+	pmu_config = get_event_config(xe, gt, NULL, "gt-c6-residency");
- 
- 	pmu_fd = open_pmu(xe, pmu_config);
- 
-@@ -125,16 +209,22 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
- igt_main
- {
- 	int fd, gt;
-+	struct drm_xe_engine_class_instance *eci;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+@@ -222,9 +241,17 @@ igt_main
+ 			test_gt_c6_idle(fd, gt);
  	}
  
- 	igt_describe("Validate PMU gt-c6 residency counters when idle");
--	igt_subtest("gt-c6-idle")
-+	igt_subtest("gt-c6-idle") {
-+		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
- 		xe_for_each_gt(fd, gt)
- 			test_gt_c6_idle(fd, gt);
-+	}
++	igt_describe("Validate there is no engine activity when idle");
++	test_each_engine("engine-activity-idle", fd, eci)
++		engine_activity(fd, eci, 0);
 +
-+	igt_describe("Validate engine activity with workload");
-+	test_each_engine("engine-activity-load", fd, eci)
-+		engine_activity(fd, eci);
++	igt_describe("Validate engine activity with load and trailing idle");
++	test_each_engine("engine-activity-load-idle", fd, eci)
++		engine_activity(fd, eci, TEST_LOAD | TEST_TRAILING_IDLE);
++
+ 	igt_describe("Validate engine activity with workload");
+ 	test_each_engine("engine-activity-load", fd, eci)
+-		engine_activity(fd, eci);
++		engine_activity(fd, eci, TEST_LOAD);
  
  	igt_fixture {
  		close(fd);
