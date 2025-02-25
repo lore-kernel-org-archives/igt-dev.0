@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32708C021A4
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 02:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 355CBC021B8
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 03:53:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE8C310E060;
-	Tue, 25 Feb 2025 02:54:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C03ED10E107;
+	Tue, 25 Feb 2025 03:53:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bDjeAEbP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nk/9tS6q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2A6C10E060
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 02:54:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA3BE10E370
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 03:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740452084; x=1771988084;
+ t=1740455602; x=1771991602;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=fVZe66LWdB6VZ+hNL1JwZLstL+yZFEqXlAi7xyR5vQM=;
- b=bDjeAEbPQeNknJJFO6jgwtTptYsVrPoDyRasDKXbBMc2up0FG9oAIgBK
- Qh+woiqkHSCpNXFaKmRXozXajqmZNmPa7/vJIYwenjyP2X2SbIMmntUOO
- vIhGVEwf2BoT705J09d6GlIULpHIIfI/5jSI+EHqMwN3CHoiFJu8vkT+y
- Bb0QJ0tyWPGrv4Xv1e7X0dqGMkVnDazUax73h61q/2gH/s77lFrSEHHdz
- UDljb5CNq/fDN7UJGovwQ2L4sRDkwi3jnNhD+7myiDEjW2vMPwK38YOZj
- psziZcWN/ZlhMfb09YoSAMBlijnRQsFrH2jzTiklwBJWmrZJwSEt1i0e0 A==;
-X-CSE-ConnectionGUID: vqQl4PSbRse9bszE5B8+8Q==
-X-CSE-MsgGUID: Ok40lt7lTv2R7qJ4JVONUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="52642770"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="52642770"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 18:54:44 -0800
-X-CSE-ConnectionGUID: Sil3rIl6TkS6IwizRXucZg==
-X-CSE-MsgGUID: 4xvxTbgfR/2w+nMFM8QfEA==
+ bh=u6Va4AsEEDwQIT6UnV6UL7ragu1SJuJL/e/F7DuAbWs=;
+ b=nk/9tS6qUKeJAgdTw4iaKOjTU24T42sRo9XZKLXL8RZOadUMwwOoX96f
+ FtEgjVPUbLXp7Eh+dSgcMJt5uS8vaktLlkUcqaABpGYzpN+B2BAfRZgN2
+ x0orZo1ur1jMUbr+6hzDc2H7Vhxo6lQ2r+Q+q1+0bM92p0zevcirwNpxY
+ /U/8N+wRB3P3Ld0PXnKNoTDqCXt0O055nfEulVNQm9HZmTSDBz6jcFL5U
+ HMFynvIPw5xcPUzAgWBtaxoKiteBFHShXuofX09uz7z6/1UGDz5hJ0Y8U
+ xNLuP90rZlc0hGHRyzb7FcBtpbgxZcO/5nvlDYYZId/wfy+WrrXNZ+Or6 Q==;
+X-CSE-ConnectionGUID: xuCe8IcuTFe+SfA7vykDuQ==
+X-CSE-MsgGUID: W8UFYs5ARQSmbp+NU05yHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51459769"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="51459769"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 19:53:22 -0800
+X-CSE-ConnectionGUID: CyDv3noQQHahveLrpQKj0Q==
+X-CSE-MsgGUID: 4Q66xnoqQ763SHTWCQCaBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="116883781"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="147148055"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 18:54:43 -0800
-Date: Mon, 24 Feb 2025 18:54:42 -0800
-Message-ID: <85ikoyka31.wl-ashutosh.dixit@intel.com>
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 19:53:21 -0800
+Date: Mon, 24 Feb 2025 19:53:20 -0800
+Message-ID: <85h64ik7db.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 10/13] tests/intel/xe_oa: Rewrite enable-disable test
-In-Reply-To: <85ldtukgro.wl-ashutosh.dixit@intel.com>
-References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>	<20250215010628.1639986-11-umesh.nerlige.ramappa@intel.com>	<85ldtukgro.wl-ashutosh.dixit@intel.com>
+Subject: Re: [PATCH 11/13] tests/intel/xe_oa: Enable
+ unprivileged-single-ctx-counters and fix it
+In-Reply-To: <20250215010628.1639986-12-umesh.nerlige.ramappa@intel.com>
+References: <20250215010628.1639986-1-umesh.nerlige.ramappa@intel.com>	<20250215010628.1639986-12-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,207 +71,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 24 Feb 2025 16:30:19 -0800, Dixit, Ashutosh wrote:
+On Fri, 14 Feb 2025 17:06:26 -0800, Umesh Nerlige Ramappa wrote:
 >
-> On Fri, 14 Feb 2025 17:06:25 -0800, Umesh Nerlige Ramappa wrote:
-> >
-> > Keep it simple and just check if enable/disable is working correctly
-> > using mmio.
-> >
-> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> > ---
-> >  tests/intel/xe_oa.c | 129 +++++---------------------------------------
-> >  1 file changed, 13 insertions(+), 116 deletions(-)
-> >
-> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index ee87b7338..c6c1c2358 100644
-> > --- a/tests/intel/xe_oa.c
-> > +++ b/tests/intel/xe_oa.c
-> > @@ -2534,21 +2534,13 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
-> >  static void
-> >  test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
-> >  {
-> > -	/* ~5 micro second period */
-> > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
-> > -	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-> >	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-> > -	uint64_t fmt = test_set->perf_oa_format;
-> >	uint64_t properties[] = {
-> >		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> > -
-> > -		/* Include OA reports in samples */
-> >		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-> > -
-> > -		/* OA unit configuration */
-> >		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-> > -		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-> > -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-> > +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> >		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-> >		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-> >	};
-> > @@ -2556,123 +2548,28 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
-> >		.num_properties = ARRAY_SIZE(properties) / 2,
-> >		.properties_ptr = to_user_pointer(properties),
-> >	};
-> > -	size_t report_size = get_oa_format(fmt).size;
-> > -	int buf_size = 65536 * report_size;
-> > -	uint8_t *buf = malloc(buf_size);
-> > -	int n_full_oa_reports = default_oa_buffer_size / report_size;
-> > -	uint64_t fill_duration = n_full_oa_reports * oa_period;
-> > -	uint32_t *last_periodic_report = malloc(report_size);
-> > -
-> > -	load_helper_init();
-> > -	load_helper_run(HIGH);
-> > +	u32 oacontrol;
-> >
-> >	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-> >          set_fd_flags(stream_fd, O_CLOEXEC);
-> >
-> > -	for (int i = 0; i < 5; i++) {
-> > -		int len;
-> > -		uint32_t n_periodic_reports;
-> > -		uint64_t first_timestamp = 0, last_timestamp = 0;
-> > -		u32 oa_status;
-> > -
-> > -		/* Giving enough time for an overflow might help catch whether
-> > -		 * the OA unit has been enabled even if the driver might at
-> > -		 * least avoid copying reports while disabled.
-> > -		 */
-> > -		nanosleep(&(struct timespec){ .tv_sec = 0,
-> > -					      .tv_nsec = fill_duration * 1.25 },
-> > -			  NULL);
-> > -
-> > -		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
-> > -		       (errno == EINTR || errno == EIO))
-> > -			;
-> > -
-> > -		igt_assert_eq(len, -1);
-> > -		igt_assert_eq(errno, EINVAL);
-> > -
-> > -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-> > +#define OAG_OACONTROL	(0xdaf4)
-> > +#define  OAG_OACONTROL_OA_COUNTER_ENABLE	(1 << 0)
-> >
-> > -		nanosleep(&(struct timespec){ .tv_sec = 0,
-> > -					      .tv_nsec = fill_duration / 2 },
-> > -			NULL);
-> > -
-> > -		n_periodic_reports = 0;
-> > -
-> > -		/* Because of the race condition between notification of new
-> > -		 * reports and reports landing in memory, we need to rely on
-> > -		 * timestamps to figure whether we've read enough of them.
-> > -		 */
-> > -		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
-> > -
-> > -			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
-> > -				;
-> > -			if (errno == EIO) {
-> > -				oa_status = get_stream_status(stream_fd);
-> > -				igt_debug("oa_status %#x\n", oa_status);
-> > -				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
-> > -				continue;
-> > -			}
-> > -			igt_assert_neq(len, -1);
-> > -
-> > -			for (int offset = 0; offset < len; offset += report_size) {
-> > -				uint32_t *report = (void *) (buf + offset);
-> > -
-> > -				if (first_timestamp == 0)
-> > -					first_timestamp = oa_timestamp(report, fmt);
-> > -				last_timestamp = oa_timestamp(report, fmt);
-> > -
-> > -				igt_debug(" > report ts=%"PRIx64""
-> > -					  " ts_delta_last_periodic=%s%"PRIu64""
-> > -					  " is_timer=%i ctx_id=0x%8x\n",
-> > -					  oa_timestamp(report, fmt),
-> > -					  oa_report_is_periodic(report) ? " " : "*",
-> > -					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
-> > -					  oa_report_is_periodic(report),
-> > -					  oa_report_get_ctx_id(report));
-> > -
-> > -				if (oa_report_is_periodic(report)) {
-> > -					memcpy(last_periodic_report, report, report_size);
-> > -
-> > -					/* We want to measure only the periodic reports,
-> > -					 * ctx-switch might inflate the content of the
-> > -					 * buffer and skew or measurement.
-> > -					 */
-> > -					n_periodic_reports++;
-> > -				}
-> > -			}
-> > -		}
-> > -
-> > -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
-> > -
-> > -		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
-> > -
-> > -		igt_debug("%f < %zu < %f\n",
-> > -			  report_size * n_full_oa_reports * 0.45,
-> > -			  n_periodic_reports * report_size,
-> > -			  report_size * n_full_oa_reports * 0.55);
-> > -
-> > -		igt_assert((n_periodic_reports * report_size) >
-> > -			   (report_size * n_full_oa_reports * 0.45));
-> > -		igt_assert((n_periodic_reports * report_size) <
-> > -			   report_size * n_full_oa_reports * 0.55);
-> > +	intel_register_access_init(&mmio_data,
-> > +				   igt_device_get_pci_device(drm_fd), 0);
-> >
-> > +	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
-> > +	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 0);
-> >
-> > -		/* It's considered an error to read a stream while it's disabled
-> > -		 * since it would block indefinitely...
-> > -		 */
-> > -		len = read(stream_fd, buf, buf_size);
-> > +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-> >
-> > -		igt_assert_eq(len, -1);
-> > -		igt_assert_eq(errno, EINVAL);
-> > -	}
-> > +	oacontrol = intel_register_read(&mmio_data, OAG_OACONTROL);
-> >
-> > -	free(last_periodic_report);
-> > -	free(buf);
-> > +	igt_assert_eq(oacontrol & OAG_OACONTROL_OA_COUNTER_ENABLE, 1);
-> >
-> > +	intel_register_access_fini(&mmio_data);
-> >	__perf_close(stream_fd);
-> > -
-> > -	load_helper_stop();
-> > -	load_helper_fini();
->
-> The sync tests actually change the config on an open OA stream. However
-> they do it without disable-enable. We could add disable-enable there, but
-> still those tests only check for the syncs to signal. And the syncs signal
-> after a delay after the OA config is applied, not when disable/enable
-> completes, so those tests wouldn't check for enable/disable.
->
-> At least here we have some basic testing of enable disable. So this is:
->
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> unprivileged-single-ctx-counters was hardcoded for a format size of 256
+> bytes. Fix it up for generic format size.
 
-Actually, I want to question the "wisdom" of bypassing the uapi and
-verifying something by this sideband method or direct register reads,
-clever though that method is.
+Great to see this working, thanks for fixing this :)
 
-So for example, another way to simplify this test is:
-
-1. Disable the stream and check that read() returns -EINVAL
-2. Re-enable the stream and read() a single report
-
-So why not do just that?
-
-Fine we verify the register bit here, but the uapi is more than the
-register bit. Verifying the uapi as indicated above verifies that
-re-enabling the stream actually returns valid data, which is more than the
-register bit and of which the register bit is a subset.
-
-So not sure.
-
-Thanks.
---
-Ashutosh
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
