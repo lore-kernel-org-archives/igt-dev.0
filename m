@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72ED7C021A4
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 00:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71671C021B6
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 00:31:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3037E10E366;
-	Tue, 25 Feb 2025 00:31:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3019F10E0C4;
+	Tue, 25 Feb 2025 00:31:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VdNvobNE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PQrmIOAq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCEE010E0A6
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 00:31:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23DB710E0C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 00:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740443514; x=1771979514;
+ t=1740443515; x=1771979515;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YMH5WSPC1JJg32kHc4fjLGj7Q9/Mta/WmVtcfSmN0tE=;
- b=VdNvobNEy8kPoFNzcD7D0qP6DEO5OTNKYedaTnq2oqUwfS8lk0A/szBf
- AmFXk8O4F2bMDg31TwHGerkqhEJKo1L4I1RKphH65qVXhLDhWKq0Af6Z4
- ieX0vmogR3K+rIEfozOCIeUy/yR4OQ12TeXZ0Wp2eU9tz/6/DEtrkmijD
- nY5e6ndmiyUGrEQMmNXl+woSyEm3apd+xE5Dzu+k30JwpvVMJWpJTEAIc
- CPvdirw5qQLV5ZsnRUZ3jGhArGC9dx1h9OKdiGTnyNATZJTdIFkqrgxPa
- gPBSXabBzFQKCLLRp5G5ANq3ayNxtKXVYunIDF5OuemaZD/XdE/s6nX+2 g==;
-X-CSE-ConnectionGUID: NZRLKqooRrSfM9tz9l+vJQ==
-X-CSE-MsgGUID: zE1tldQySb+usK79OHVq9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51863658"
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="51863658"
+ bh=LIGBVBH6uFlyeEvf/rSrjqydLYCj+XOyo2j73UAHCvU=;
+ b=PQrmIOAquTp9fsqIzBnQPW1Y9rYWLbdRE7jQOoa60sfZogxpyvzCIXR/
+ SmOb1jmhA97bAwv6DCjf/nmMQPmQpUzw45bAgLKxSd0ZCgasytkmEIsxo
+ qs5Cc7V6FT3jjdmAqBC/NUmGs1avAS7cPOJ/aOXYOAZyCFVhQsACAFsS8
+ mhbpxHi9gDelk8X+Y+IrbrtLV8suMzgsKadQGEqxXQ/s/KOo86OmMlPIM
+ 1UoeNTXnlRjck/NVuB3xPCNNUu6uI1k1iken7LaQIU8YbmNoYryxGMv4I
+ Q1wULIomSte8gzfkAWvSBdKcfQZglGlmmaPLLa4Vysb3VMYAuvbFa02v/ g==;
+X-CSE-ConnectionGUID: ZQnzKDCSSkKz6x8jdJlrfQ==
+X-CSE-MsgGUID: qmWFfkftQBWwxbbaei3ylw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51863663"
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="51863663"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 16:31:54 -0800
-X-CSE-ConnectionGUID: er+KQpWtT4aaW/Z2U+B1MQ==
-X-CSE-MsgGUID: CBfNIXoxRh2BHJhpSj/YFw==
+ 24 Feb 2025 16:31:55 -0800
+X-CSE-ConnectionGUID: 7e+kqP1uSyKUBVyFRCj+oA==
+X-CSE-MsgGUID: 7yyQNwjaRISFnWomUTsmHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="120840119"
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; d="scan'208";a="120840126"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 16:31:54 -0800
+ 24 Feb 2025 16:31:55 -0800
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
  Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: [PATCH i-g-t v4 3/7] tests/intel/xe_query: Add test for PXP status
- query
-Date: Mon, 24 Feb 2025 16:31:34 -0800
-Message-ID: <20250225003140.2738645-4-daniele.ceraolospurio@intel.com>
+Subject: [PATCH i-g-t v4 4/7] tests/intel/xe_pxp: Add PXP object and queue
+ creation tests
+Date: Mon, 24 Feb 2025 16:31:35 -0800
+Message-ID: <20250225003140.2738645-5-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225003140.2738645-1-daniele.ceraolospurio@intel.com>
 References: <20250225003140.2738645-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,33 +70,176 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new test to exercise the PXP status query.
+PXP support introduces new SET_PROPERTY extensions to both BOs and
+exec_queues to mark them as being used for PXP workloads, so we need to
+test both correct and incorrect usage of those new interfaces.
+
+Since this is the first usage of extensions for BO creation, the
+common BO code has been update to support the extra parameter.
+
+v2: fix memory lead, remove unneeded igt_require (Alan)
 
 Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/intel/xe_query.c | 61 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ lib/xe/xe_ioctl.c     |  14 +--
+ lib/xe/xe_ioctl.h     |   2 +-
+ tests/intel/xe_mmap.c |   1 +
+ tests/intel/xe_pxp.c  | 201 ++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build     |   1 +
+ 5 files changed, 213 insertions(+), 6 deletions(-)
+ create mode 100644 tests/intel/xe_pxp.c
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 1566680e7..0a2ff8d7f 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -1077,6 +1077,66 @@ static void test_query_oa_units(int fd)
- 	}
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 6d8388918..01ab7c758 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -264,7 +264,8 @@ static bool vram_selected(int fd, uint32_t selected_regions)
  }
  
-+/**
-+ * SUBTEST: query-pxp-status
-+ * Description: Display PXP supported types and current status
-+ *
-+ * SUBTEST: multigpu-query-pxp-status
-+ * Description: Display fields for PXP unit query for all Xe devices
-+ * Sub-category: MultiGPU
+ static uint32_t ___xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+-				uint32_t flags, uint16_t cpu_caching, uint32_t *handle)
++				uint32_t flags, uint16_t cpu_caching, void *ext,
++				uint32_t *handle)
+ {
+ 	struct drm_xe_gem_create create = {
+ 		.vm_id = vm,
+@@ -275,6 +276,9 @@ static uint32_t ___xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t pla
+ 	};
+ 	int err;
+ 
++	if (ext)
++		create.extensions = to_user_pointer(ext);
++
+ 	/*
+ 	 * In case vram_if_possible returned system_memory,
+ 	 * visible VRAM cannot be requested through flags
+@@ -292,11 +296,11 @@ static uint32_t ___xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t pla
+ }
+ 
+ uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+-			uint32_t flags, uint32_t *handle)
++			uint32_t flags, void *ext, uint32_t *handle)
+ {
+ 	uint16_t cpu_caching = __xe_default_cpu_caching(fd, placement, flags);
+ 
+-	return ___xe_bo_create(fd, vm, size, placement, flags, cpu_caching, handle);
++	return ___xe_bo_create(fd, vm, size, placement, flags, cpu_caching, ext, handle);
+ }
+ 
+ uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+@@ -304,7 +308,7 @@ uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ {
+ 	uint32_t handle;
+ 
+-	igt_assert_eq(__xe_bo_create(fd, vm, size, placement, flags, &handle), 0);
++	igt_assert_eq(__xe_bo_create(fd, vm, size, placement, flags, NULL, &handle), 0);
+ 
+ 	return handle;
+ }
+@@ -312,7 +316,7 @@ uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ 				uint32_t flags, uint16_t cpu_caching, uint32_t *handle)
+ {
+-	return ___xe_bo_create(fd, vm, size, placement, flags, cpu_caching, handle);
++	return ___xe_bo_create(fd, vm, size, placement, flags, cpu_caching, NULL, handle);
+ }
+ 
+ uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 18cc2b72b..c8a2d81c5 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -67,7 +67,7 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
+ 			    uint32_t num_syncs);
+ void xe_vm_destroy(int fd, uint32_t vm);
+ uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+-			uint32_t flags, uint32_t *handle);
++			uint32_t flags, void *ext, uint32_t *handle);
+ uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ 		      uint32_t flags);
+ uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
+index 72dc16fc7..5fd641075 100644
+--- a/tests/intel/xe_mmap.c
++++ b/tests/intel/xe_mmap.c
+@@ -298,6 +298,7 @@ static void test_small_bar(int fd)
+ 	igt_assert_neq(__xe_bo_create(fd, 0, visible_size + page_size,
+ 				      vram_memory(fd, 0),
+ 				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++				      NULL,
+ 				      &bo),
+ 		       0);
+ 
+diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
+new file mode 100644
+index 000000000..234fa8782
+--- /dev/null
++++ b/tests/intel/xe_pxp.c
+@@ -0,0 +1,201 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
 + */
-+static void test_query_pxp_status(int fd)
++
++#include "igt.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
++/* Note: PXP = "Protected Xe Path" */
++
++/**
++ * TEST: Test PXP functionality
++ * Category: Content protection
++ * Mega feature: PXP
++ * Sub-category: PXP tests
++ * Functionality: Execution of protected content
++ * Test category: functionality test
++ */
++
++static int __pxp_bo_create(int fd, uint32_t vm, uint64_t size,
++			   uint32_t session_type, uint32_t *handle)
 +{
-+	struct drm_xe_query_pxp_status *qpxp;
++	struct drm_xe_ext_set_property ext = {
++		.base.next_extension = 0,
++		.base.name = DRM_XE_GEM_CREATE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_GEM_CREATE_SET_PROPERTY_PXP_TYPE,
++		.value = session_type,
++	};
++	int ret = 0;
++
++	if (__xe_bo_create(fd, vm, size, system_memory(fd), 0, &ext, handle)) {
++		ret = -errno;
++		errno = 0;
++	}
++
++	return ret;
++}
++
++static int __create_pxp_rcs_queue(int fd, uint32_t vm,
++				  uint32_t session_type,
++				  uint32_t *q)
++{
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
++	};
++	struct drm_xe_ext_set_property ext = { 0 };
++	uint64_t ext_ptr = to_user_pointer(&ext);
++
++	ext.base.next_extension = 0,
++	ext.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++	ext.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE,
++	ext.value = session_type;
++
++	return __xe_exec_queue_create(fd, vm, 1, 1, &inst, ext_ptr, q);
++}
++
++static int query_pxp_status(int fd)
++{
++	struct drm_xe_query_pxp_status *pxp_query;
 +	struct drm_xe_device_query query = {
 +		.extensions = 0,
 +		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
@@ -104,58 +248,149 @@ index 1566680e7..0a2ff8d7f 100644
 +	};
 +	int ret;
 +
-+	/*
-+	 * if we run this test on an older kernel that doesn't have the PXP
-+	 * query, the ioctl will return -EINVAL.
-+	 */
-+	errno = 0;
-+	ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+	igt_require(errno != EINVAL);
-+	igt_assert_eq(ret, 0);
++	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
++		return -errno;
 +
-+	/* make sure the returned size is big enough */
-+	igt_assert(query.size >= sizeof(*qpxp));
++	pxp_query = malloc(query.size);
++	igt_assert(pxp_query);
++	memset(pxp_query, 0, query.size);
 +
-+	qpxp = malloc(query.size);
-+	igt_assert(qpxp);
++	query.data = to_user_pointer(pxp_query);
 +
-+	memset(qpxp, 0, query.size);
++	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
++		ret = -errno;
++	else
++		ret = pxp_query->status;
 +
-+	query.data = to_user_pointer(qpxp);
-+	ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+	if (ret == -ENODEV) {
-+		igt_info("PXP not supported\n");
-+		return;
-+	}
++	free(pxp_query);
 +
-+	igt_assert_eq(ret, 0);
-+	igt_assert_neq(qpxp->supported_session_types, 0);
-+
-+	switch (qpxp->status) {
-+	case 0:
-+		igt_info("PXP initialization still in progress\n");
-+		break;
-+	case 1:
-+		igt_info("PXP initialization complete\n");
-+		break;
-+	default:
-+		igt_assert_f(0, "unexpected PXP status %u\n", qpxp->status);
-+	}
-+
-+	igt_info("PXP supported types mask 0x%x\n", qpxp->supported_session_types);
++	return ret;
 +}
 +
- igt_main
- {
- 	const struct {
-@@ -1094,6 +1154,7 @@ igt_main
- 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
- 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
- 		{ "query-oa-units", test_query_oa_units },
-+		{ "query-pxp-status", test_query_pxp_status },
- 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
- 		{ "query-invalid-query", test_query_invalid_query },
- 		{ "query-invalid-size", test_query_invalid_size },
++static bool is_pxp_hw_supported(int fd)
++{
++	int pxp_status;
++	int i = 0;
++
++	/* PXP init completes after driver init, so we might have to wait for it */
++	while (i++ < 50) {
++		pxp_status = query_pxp_status(fd);
++
++		/* -EINVAL means the PXP interface is not available */
++		igt_require(pxp_status != -EINVAL);
++
++		/* -ENODEV means PXP not supported or disabled */
++		if (pxp_status == -ENODEV)
++			return false;
++
++		/* status 1 means pxp is ready */
++		if (pxp_status == 1)
++			return true;
++
++		/*
++		 * 0 means init still in progress, any other remaining state
++		 * is an error
++		 */
++		igt_assert_eq(pxp_status, 0);
++
++		usleep(50*1000);
++	}
++
++	igt_assert_f(0, "PXP failed to initialize within the timeout\n");
++	return false;
++}
++
++/**
++ * SUBTEST: pxp-bo-alloc
++ * Description: Verify PXP bo allocation works as expected
++ */
++static void test_pxp_bo_alloc(int fd, bool pxp_supported)
++{
++	uint32_t bo;
++	int ret;
++
++	/* BO creation with DRM_XE_PXP_TYPE_NONE must always succeed */
++	ret = __pxp_bo_create(fd, 0, 4096, DRM_XE_PXP_TYPE_NONE, &bo);
++	igt_assert_eq(ret, 0);
++	gem_close(fd, bo);
++
++	/* BO creation with DRM_XE_PXP_TYPE_HWDRM must only succeed if PXP is supported */
++	ret = __pxp_bo_create(fd, 0, 4096, DRM_XE_PXP_TYPE_HWDRM, &bo);
++	igt_assert_eq(ret, pxp_supported ? 0 : -ENODEV);
++	if (!ret)
++		gem_close(fd, bo);
++
++	/* BO creation with an invalid type must always fail */
++	ret = __pxp_bo_create(fd, 0, 4096, 0xFF, &bo);
++	igt_assert_eq(ret, -EINVAL);
++}
++
++/**
++ * SUBTEST: pxp-queue-alloc
++ * Description: Verify PXP exec queue creation works as expected
++ */
++static void test_pxp_queue_creation(int fd, bool pxp_supported)
++{
++	uint32_t q;
++	uint32_t vm;
++	int ret;
++
++	vm = xe_vm_create(fd, 0, 0);
++
++	/* queue creation with DRM_XE_PXP_TYPE_NONE must always succeed */
++	ret = __create_pxp_rcs_queue(fd, vm, DRM_XE_PXP_TYPE_NONE, &q);
++	igt_assert_eq(ret, 0);
++	xe_exec_queue_destroy(fd, q);
++
++	/* queue creation with DRM_XE_PXP_TYPE_HWDRM must only succeed if PXP is supported */
++	ret = __create_pxp_rcs_queue(fd, vm, DRM_XE_PXP_TYPE_HWDRM, &q);
++	igt_assert_eq(ret, pxp_supported ? 0 : -ENODEV);
++	if (!ret)
++		xe_exec_queue_destroy(fd, q);
++
++	/* queue creation with an invalid type must always fail */
++	ret = __create_pxp_rcs_queue(fd, vm, 0xFF, &q);
++	igt_assert_eq(ret, -EINVAL);
++
++	xe_vm_destroy(fd, vm);
++}
++
++igt_main
++{
++	int xe_fd = -1;
++	bool pxp_supported = true;
++
++	igt_fixture {
++		xe_fd = drm_open_driver(DRIVER_XE);
++		igt_require(xe_has_engine_class(xe_fd, DRM_XE_ENGINE_CLASS_RENDER));
++		pxp_supported = is_pxp_hw_supported(xe_fd);
++	}
++
++	igt_subtest_group {
++		igt_describe("Verify PXP allocations work as expected");
++		igt_subtest("pxp-bo-alloc")
++		test_pxp_bo_alloc(xe_fd, pxp_supported);
++
++		igt_subtest("pxp-queue-alloc")
++		test_pxp_queue_creation(xe_fd, pxp_supported);
++	}
++
++	igt_fixture {
++		close(xe_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index a0f984b34..9ac7686aa 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -313,6 +313,7 @@ intel_xe_progs = [
+ 	'xe_pm_residency',
+ 	'xe_pmu',
+ 	'xe_prime_self_import',
++	'xe_pxp',
+ 	'xe_query',
+ 	'xe_render_copy',
+ 	'xe_vm',
 -- 
 2.43.0
 
