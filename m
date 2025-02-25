@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8FDDC021B2
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 09:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F8A2C021B6
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Feb 2025 10:00:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A936610E5DD;
-	Tue, 25 Feb 2025 09:23:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0418E10E5E2;
+	Tue, 25 Feb 2025 10:00:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H8IhJ5du";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YUOzJYkD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE75910E5DD
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 09:23:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65DFF10E5E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2025 10:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740475430; x=1772011430;
+ t=1740477617; x=1772013617;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=lVnjFC825fIN8v8Ap4fZmJiJOpsiVnygzUnVeEAxTno=;
- b=H8IhJ5duUbI+t/YZdkbg9meuMJTDA2nz0keoJwUZdQMN2sQzUiQZ8Yf2
- NS5IX1snbcldC9Ry/oWOoS1L9UWgdSKUGBvXFJ0n3NXTpnJygdiLmRKgU
- MVhfBwbUPNpepWhmetZ99Rt4eiAFkG2R9LVVnWpUywYOCHwyLYvn5eVEw
- M9TJupzidxfyFskA3vaKsT5PSLm1jD8lIVs/hGHq/OBvDYgpQNxiBGAGT
- HhPcZMnRImf2I9RlCzFmS8reNAbgEh27+GnT9n5zxEKsU9zkHk83B8hCF
- KL/YvTSbQJkn6rRaNupYCwPrxKrT6DLw6KZZ+zK5IYLqFBG/V6VfaYj1X A==;
-X-CSE-ConnectionGUID: 7P542eCZS6OQKKqlOSo8tA==
-X-CSE-MsgGUID: DYnnEPapSeapEtzWQVg4ow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40508153"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="40508153"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 01:23:50 -0800
-X-CSE-ConnectionGUID: 0P5vbNxES0GsxFkuk977SQ==
-X-CSE-MsgGUID: aQZC4G+rTe6jWpmNczFmCg==
+ bh=6q1Vd5xWYGAmucHuY/OyRTbzkHN3F7hs/T1fb5M0zGA=;
+ b=YUOzJYkD0e+J/PcRi2WwhuuLnM96al6NmB/oMS4rCzxpnM+2c1FxjqDH
+ ZP8IXYhCbyAIr1O4HH4nxuan/4hInPhYbfvwh1cwStjp8weXFMPTOfo3Y
+ 4eYeQ+lkACOT5xuFLTqAn9SeJeDz1hoRY+rtu+Om5xKj4NXifMsQGp8G2
+ RG/tPYJAxhp0EbQUwFXRekws+aSnA5ZU0IkxTgS1myWlxGmvE4rfMq3ot
+ DshxFX1rjONm9ZYlyBgPeoO5qYxXWckzlAecZTq0ZWdd/ZRvt6M0+7vV9
+ HOVyMcPBKWv4WVf1VYoqC0Im9woBBw/4s2DxZKyF0yqwcqYAGMQyjHlXg Q==;
+X-CSE-ConnectionGUID: uQqA+fa7RWuJp8P8L1Yl9Q==
+X-CSE-MsgGUID: Xz0vbKn0QlOQH3mw613uvg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41189124"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="41189124"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2025 02:00:16 -0800
+X-CSE-ConnectionGUID: Mteg2D4tQ4Sp7BzoZZsywg==
+X-CSE-MsgGUID: MrGNker2R2yNWZMoHU9Hkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117262422"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116836533"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.229])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 01:23:48 -0800
-Date: Tue, 25 Feb 2025 10:23:45 +0100
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2025 02:00:14 -0800
+Date: Tue, 25 Feb 2025 11:00:11 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t,v2 2/6] lib/intel_compute: Rename variables for
- input and output data
-Message-ID: <20250225092345.dln6ifvdgk5k3jic@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t,v2 3/6] lib/intel_compute: Allow the user to
+ provide a vm
+Message-ID: <20250225100011.hc2nzfqd4rlyyleu@zkempczy-mobl2>
 References: <20250224144705.1019940-1-francois.dugast@intel.com>
- <20250224144705.1019940-3-francois.dugast@intel.com>
+ <20250224144705.1019940-4-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250224144705.1019940-3-francois.dugast@intel.com>
+In-Reply-To: <20250224144705.1019940-4-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,10 +71,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 24, 2025 at 03:46:10PM +0100, Francois Dugast wrote:
-> Use more explicit names to make development and debugging easier.
+On Mon, Feb 24, 2025 at 03:46:11PM +0100, Francois Dugast wrote:
+> By default the vm used in the compute library is created with default
+> flags and not visible externally. There can be situations where the
+> vm to be used already exists and requires special handling prior to
+> be used by the compute library. Add the possibility for the user to
+> provide such a vm when running a compute kernel. The place holder
+> structure containing the vm can later be extended to include more
+> parameters.
+> 
+> v2: Add documentation for struct user_execenv
 > 
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+
+LGTM,
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
@@ -82,300 +92,305 @@ Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Zbigniew
 
 > ---
->  lib/intel_compute.c | 143 ++++++++++++++++++++++++--------------------
->  1 file changed, 77 insertions(+), 66 deletions(-)
+>  lib/intel_compute.c       | 68 ++++++++++++++++++++++++++-------------
+>  lib/intel_compute.h       | 13 ++++++--
+>  tests/intel/gem_compute.c |  2 +-
+>  tests/intel/xe_compute.c  |  4 +--
+>  4 files changed, 60 insertions(+), 27 deletions(-)
 > 
 > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index b698bf77d..9cca4a629 100644
+> index 9cca4a629..cad932c24 100644
 > --- a/lib/intel_compute.c
 > +++ b/lib/intel_compute.c
-> @@ -695,7 +695,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  		  .name = "batch" },
->  	};
->  	struct bo_execenv execenv;
-> -	float *dinput;
-> +	float *input_data, *output_data;
+> @@ -77,10 +77,13 @@ struct bo_execenv {
+>  	/* i915 part */
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+>  	struct drm_i915_gem_exec_object2 *obj;
+> +
+> +	struct user_execenv *user;
+>  };
+>  
+>  static void bo_execenv_create(int fd, struct bo_execenv *execenv,
+> -			      struct drm_xe_engine_class_instance *eci)
+> +			      struct drm_xe_engine_class_instance *eci,
+> +			      struct user_execenv *user)
+>  {
+>  	igt_assert(execenv);
+>  
+> @@ -89,7 +92,13 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
+>  	execenv->driver = get_intel_driver(fd);
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+> -		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> +		if (user)
+> +			execenv->user = user;
+> +
+> +		if (user && user->vm)
+> +			execenv->vm = user->vm;
+> +		else
+> +			execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+>  
+>  		if (eci) {
+>  			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
+> @@ -116,7 +125,8 @@ static void bo_execenv_destroy(struct bo_execenv *execenv)
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+>  		xe_exec_queue_destroy(execenv->fd, execenv->exec_queue);
+> -		xe_vm_destroy(execenv->fd, execenv->vm);
+> +		if (!execenv->user || !execenv->user->vm)
+> +			xe_vm_destroy(execenv->fd, execenv->vm);
+>  	}
+>  }
+>  
+> @@ -666,10 +676,12 @@ static void dg1_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+>   * @kernel: GPU Kernel binary to be executed
+>   * @size: size of @kernel.
+>   * @eci: Xe engine class instance if device is Xe
+> + * @user: user-provided execution environment
+>   */
+>  static void compute_exec(int fd, const unsigned char *kernel,
+>  			 unsigned int size,
+> -			 struct drm_xe_engine_class_instance *eci)
+> +			 struct drm_xe_engine_class_instance *eci,
+> +			 struct user_execenv *user)
+>  {
+>  #define BO_DICT_ENTRIES 7
+>  	struct bo_dict_entry bo_dict[BO_DICT_ENTRIES] = {
+> @@ -698,7 +710,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
+>  	float *input_data, *output_data;
 >  	uint16_t devid = intel_get_drm_devid(fd);
 >  
->  	bo_execenv_create(fd, &execenv, eci);
-> @@ -711,10 +711,12 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
->  			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
+> -	bo_execenv_create(fd, &execenv, eci);
+> +	bo_execenv_create(fd, &execenv, eci, user);
 >  
-> -	dinput = (float *)bo_dict[4].data;
-> +	input_data = (float *) bo_dict[4].data;
-> +	output_data = (float *) bo_dict[5].data;
->  	srand(time(NULL));
-> +
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
->  
->  	if (IS_DG1(devid))
->  		dg1_compute_exec_compute(bo_dict[6].data,
-> @@ -732,13 +734,14 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> -
-> -		f1 = ((float *) bo_dict[5].data)[i];
-> -		f2 = ((float *) bo_dict[4].data)[i];
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> -		igt_assert(f1 == f2 * f2);
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +				  i, input, output, expected_output);
-> +		igt_assert_eq(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, BO_DICT_ENTRIES);
-> @@ -976,7 +979,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  		  .name = "batch" },
->  	};
+>  	/* Sets Kernel size */
+>  	bo_dict[0].size = ALIGN(size, 0x1000);
+> @@ -948,10 +960,12 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+>   * @kernel: GPU Kernel binary to be executed
+>   * @size: size of @kernel.
+>   * @eci: Xe engine class instance if device is Xe
+> + * @user: user-provided execution environment
+>   */
+>  static void xehp_compute_exec(int fd, const unsigned char *kernel,
+>  			      unsigned int size,
+> -			      struct drm_xe_engine_class_instance *eci)
+> +			      struct drm_xe_engine_class_instance *eci,
+> +			      struct user_execenv *user)
+>  {
+>  #define XEHP_BO_DICT_ENTRIES 9
+>  	struct bo_dict_entry bo_dict[XEHP_BO_DICT_ENTRIES] = {
+> @@ -981,7 +995,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
 >  	struct bo_execenv execenv;
-> -	float *dinput;
-> +	float *input_data, *output_data;
+>  	float *input_data, *output_data;
 >  
->  	bo_execenv_create(fd, &execenv, eci);
+> -	bo_execenv_create(fd, &execenv, eci);
+> +	bo_execenv_create(fd, &execenv, eci, user);
 >  
-> @@ -991,10 +994,12 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
->  	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
->  
-> -	dinput = (float *)bo_dict[4].data;
-> +	input_data = (float *) bo_dict[4].data;
-> +	output_data = (float *) bo_dict[5].data;
->  	srand(time(NULL));
-> +
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
->  
->  	xehp_compute_exec_compute(bo_dict[8].data,
->  				  ADDR_GENERAL_STATE_BASE,
-> @@ -1007,13 +1012,14 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> -
-> -		f1 = ((float *) bo_dict[5].data)[i];
-> -		f2 = ((float *) bo_dict[4].data)[i];
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> -		igt_assert(f1 == f2 * f2);
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +				  i, input, output, expected_output);
-> +		igt_assert_eq(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
-> @@ -1184,7 +1190,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  		  .name = "batch" },
->  	};
+>  	/* Sets Kernel size */
+>  	bo_dict[0].size = ALIGN(size, xe_get_default_alignment(fd));
+> @@ -1168,10 +1182,12 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+>   * @kernel: GPU Kernel binary to be executed
+>   * @size: size of @kernel.
+>   * @eci: Xe engine class instance if device is Xe
+> + * @user: user-provided execution environment
+>   */
+>  static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+>  			       unsigned int size,
+> -			       struct drm_xe_engine_class_instance *eci)
+> +			       struct drm_xe_engine_class_instance *eci,
+> +			       struct user_execenv *user)
+>  {
+>  #define XEHPC_BO_DICT_ENTRIES 6
+>  	struct bo_dict_entry bo_dict[XEHPC_BO_DICT_ENTRIES] = {
+> @@ -1192,7 +1208,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
 >  	struct bo_execenv execenv;
-> -	float *dinput;
-> +	float *input_data, *output_data;
+>  	float *input_data, *output_data;
 >  
->  	bo_execenv_create(fd, &execenv, eci);
+> -	bo_execenv_create(fd, &execenv, eci);
+> +	bo_execenv_create(fd, &execenv, eci, user);
 >  
-> @@ -1196,10 +1202,12 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	memcpy(bo_dict[0].data, kernel, size);
->  	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
->  
-> -	dinput = (float *)bo_dict[2].data;
-> +	input_data = (float *) bo_dict[2].data;
-> +	output_data = (float *) bo_dict[3].data;
->  	srand(time(NULL));
-> +
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
->  
->  	xehpc_compute_exec_compute(bo_dict[5].data,
->  				   ADDR_GENERAL_STATE_BASE,
-> @@ -1212,13 +1220,14 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> -
-> -		f1 = ((float *) bo_dict[3].data)[i];
-> -		f2 = ((float *) bo_dict[2].data)[i];
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> -		igt_assert(f1 == f2 * f2);
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +				  i, input, output, expected_output);
-> +		igt_assert_eq(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
-> @@ -1541,7 +1550,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  	};
->  
+>  	/* Sets Kernel size */
+>  	bo_dict[0].size = ALIGN(size, xe_get_default_alignment(fd));
+> @@ -1517,10 +1533,12 @@ static void xe2_create_indirect_data_inc_kernel(uint32_t *addr_bo_buffer_batch,
+>   * @kernel: GPU Kernel binary to be executed
+>   * @size: size of @kernel.
+>   * @eci: xelpg engine class instance if device is MTL
+> + * @user: user-provided execution environment
+>   */
+>  static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+>  				unsigned int size,
+> -				struct drm_xe_engine_class_instance *eci)
+> +			       struct drm_xe_engine_class_instance *eci,
+> +			       struct user_execenv *user)
+>  {
+>  #define XELPG_BO_DICT_ENTRIES 9
+>  	struct bo_dict_entry bo_dict[XELPG_BO_DICT_ENTRIES] = {
+> @@ -1552,7 +1570,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
 >  	struct bo_execenv execenv;
-> -	float *dinput;
-> +	float *input_data, *output_data;
+>  	float *input_data, *output_data;
 >  
->  	bo_execenv_create(fd, &execenv, eci);
+> -	bo_execenv_create(fd, &execenv, eci);
+> +	bo_execenv_create(fd, &execenv, eci, user);
 >  
-> @@ -1557,11 +1566,12 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
->  	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
->  
-> -	dinput = (float *)bo_dict[4].data;
-> +	input_data = (float *) bo_dict[4].data;
-> +	output_data = (float *) bo_dict[5].data;
->  	srand(time(NULL));
->  
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
->  
->  	xelpg_compute_exec_compute(bo_dict[8].data,
->  				   ADDR_GENERAL_STATE_BASE,
-> @@ -1574,15 +1584,14 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> -
-> -		f1 = ((float *) bo_dict[5].data)[i];
-> -		f2 = ((float *) bo_dict[4].data)[i];
-> -
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f %f\n", i, f1, f2 * f2, f2);
-> -
-> -		igt_assert(f1 == f2 * f2);
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +				  i, input, output, expected_output);
-> +		igt_assert_eq(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-> @@ -1631,7 +1640,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  	};
->  
+>  	/* Sets Kernel size */
+>  	bo_dict[0].size = ALIGN(size, 0x1000);
+> @@ -1604,10 +1622,12 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+>   * @fd: file descriptor of the opened DRM device
+>   * @kernel: GPU Kernel binary to be executed
+>   * @size: size of @kernel.
+> + * @user: user-provided execution environment
+>   */
+>  static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+>  				unsigned int size,
+> -				struct drm_xe_engine_class_instance *eci)
+> +				struct drm_xe_engine_class_instance *eci,
+> +				struct user_execenv *user)
+>  {
+>  #define XE2_BO_DICT_ENTRIES 10
+>  	struct bo_dict_entry bo_dict[XE2_BO_DICT_ENTRIES] = {
+> @@ -1642,7 +1662,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
 >  	struct bo_execenv execenv;
-> -	float *dinput;
-> +	float *input_data, *output_data;
+>  	float *input_data, *output_data;
 >  
->  	bo_execenv_create(fd, &execenv, eci);
+> -	bo_execenv_create(fd, &execenv, eci);
+> +	bo_execenv_create(fd, &execenv, eci, user);
 >  
-> @@ -1646,11 +1655,12 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
->  	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+>  	/* Sets Kernel size */
+>  	bo_dict[0].size = ALIGN(size, 0x1000);
+> @@ -1704,7 +1724,8 @@ static const struct {
+>  	unsigned int ip_ver;
+>  	void (*compute_exec)(int fd, const unsigned char *kernel,
+>  			     unsigned int size,
+> -			     struct drm_xe_engine_class_instance *eci);
+> +			     struct drm_xe_engine_class_instance *eci,
+> +			     struct user_execenv *user);
+>  	uint32_t compat;
+>  } intel_compute_batches[] = {
+>  	{
+> @@ -1750,7 +1771,8 @@ static const struct {
+>  };
 >  
-> -	dinput = (float *)bo_dict[4].data;
-> +	input_data = (float *) bo_dict[4].data;
-> +	output_data = (float *) bo_dict[5].data;
->  	srand(time(NULL));
+>  static bool __run_intel_compute_kernel(int fd,
+> -				       struct drm_xe_engine_class_instance *eci)
+> +				       struct drm_xe_engine_class_instance *eci,
+> +				       struct user_execenv *user)
+>  {
+>  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+>  	unsigned int batch;
+> @@ -1782,14 +1804,14 @@ static bool __run_intel_compute_kernel(int fd,
+>  		return false;
 >  
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
+>  	intel_compute_batches[batch].compute_exec(fd, kernels->kernel,
+> -						  kernels->size, eci);
+> +						  kernels->size, eci, user);
 >  
->  	xe2lpg_compute_exec_compute(bo_dict[8].data,
->  				  ADDR_GENERAL_STATE_BASE,
-> @@ -1664,14 +1674,14 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
+>  	return true;
+>  }
 >  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> -
-> -		f1 = ((float *) bo_dict[5].data)[i];
-> -		f2 = ((float *) bo_dict[4].data)[i];
-> -
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> -		igt_assert(f1 == f2 * f2);
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +				  i, input, output, expected_output);
-> +		igt_assert_eq(output, expected_output);
+> -bool run_intel_compute_kernel(int fd)
+> +bool run_intel_compute_kernel(int fd, struct user_execenv *user)
+>  {
+> -	return __run_intel_compute_kernel(fd, NULL);
+> +	return __run_intel_compute_kernel(fd, NULL, user);
+>  }
+>  
+>  /**
+> @@ -1798,11 +1820,13 @@ bool run_intel_compute_kernel(int fd)
+>   *
+>   * @fd: file descriptor of the opened DRM Xe device
+>   * @eci: Xe engine class instance
+> + * @user: user-provided execution environment
+>   *
+>   * Returns true on success, false otherwise.
+>   */
+>  bool xe_run_intel_compute_kernel_on_engine(int fd,
+> -					   struct drm_xe_engine_class_instance *eci)
+> +					   struct drm_xe_engine_class_instance *eci,
+> +					   struct user_execenv *user)
+>  {
+>  	if (!is_xe_device(fd)) {
+>  		igt_debug("Xe device expected\n");
+> @@ -1821,7 +1845,7 @@ bool xe_run_intel_compute_kernel_on_engine(int fd,
+>  		return false;
 >  	}
 >  
->  	bo_execenv_unbind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
-> @@ -1869,7 +1879,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+> -	return __run_intel_compute_kernel(fd, eci);
+> +	return __run_intel_compute_kernel(fd, eci, user);
+>  }
 >  
->  	struct bo_dict_entry bo_dict_short[XE2_BO_PREEMPT_DICT_ENTRIES];
->  	struct bo_execenv execenv_short, execenv_long;
-> -	float *dinput;
-> +	float *input_data, *output_data;
->  	unsigned int long_kernel_loop_count;
->  	struct drm_xe_sync sync_long = {
->  		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-> @@ -1952,16 +1962,17 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->  	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
->  	xehp_create_surface_state(bo_dict_short[7].data, ADDR_INPUT, ADDR_OUTPUT);
+>  /**
+> @@ -1907,8 +1931,8 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+>  	for (int i = 0; i < XE2_BO_PREEMPT_DICT_ENTRIES; ++i)
+>  		bo_dict_short[i] = bo_dict_long[i];
 >  
-> -	dinput = (float *)bo_dict_long[4].data;
-> +	input_data = (float *) bo_dict_long[4].data;
-> +	output_data = (float *) bo_dict_short[5].data;
->  	srand(time(NULL));
+> -	bo_execenv_create(fd, &execenv_short, eci);
+> -	bo_execenv_create(fd, &execenv_long, eci);
+> +	bo_execenv_create(fd, &execenv_short, eci, NULL);
+> +	bo_execenv_create(fd, &execenv_long, eci, NULL);
 >  
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
+>  	/* Prepare sync object for long */
+>  	bo_size_long = xe_bb_size(fd, bo_size_long);
+> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+> index 3c2cd010c..62e2422c4 100644
+> --- a/lib/intel_compute.h
+> +++ b/lib/intel_compute.h
+> @@ -33,10 +33,19 @@ struct intel_compute_kernels {
+>  	const unsigned char *long_kernel;
+>  };
 >  
-> -	dinput = (float *)bo_dict_short[4].data;
-> +	input_data = (float *) bo_dict_short[4].data;
->  
->  	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +		input_data[i] = rand() / (float)RAND_MAX;
->  
->  	xe2lpg_compute_exec_compute(bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
->  				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
-> @@ -1991,14 +2002,14 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->  	gem_close(fd, bo_short);
->  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> -
-> -		f1 = ((float *) bo_dict_short[5].data)[i];
-> -		f2 = ((float *) bo_dict_short[4].data)[i];
-> -
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> -		igt_assert(f1 == f2 * f2);
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
+> +/**
+> + * struct user_execenv - Container of the user-provided execution environment
+> + */
+> +struct user_execenv {
+> +	/** @vm: use this VM if provided, otherwise create one */
+> +	uint32_t vm;
+> +};
 > +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +				  i, input, output, expected_output);
-> +		igt_assert_eq(output, expected_output);
->  	}
+>  extern const struct intel_compute_kernels intel_compute_square_kernels[];
 >  
->  	for (int i = 0; i < SIZE_DATA; i++) {
+> -bool run_intel_compute_kernel(int fd);
+> -bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
+> +bool run_intel_compute_kernel(int fd, struct user_execenv *user);
+> +bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci,
+> +					   struct user_execenv *user);
+>  bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
+>  				      bool threadgroup_preemption);
+>  #endif	/* INTEL_COMPUTE_H */
+> diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
+> index 97c701bce..ce41cd386 100644
+> --- a/tests/intel/gem_compute.c
+> +++ b/tests/intel/gem_compute.c
+> @@ -27,7 +27,7 @@
+>  static void
+>  test_compute_square(int fd)
+>  {
+> -	igt_require_f(run_intel_compute_kernel(fd), "GPU not supported\n");
+> +	igt_require_f(run_intel_compute_kernel(fd, NULL), "GPU not supported\n");
+>  }
+>  
+>  igt_main
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 558b46eba..21ebc980e 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -146,7 +146,7 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+>  
+>  				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
+>  					 gt, m, hwe->engine_instance);
+> -				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe),
+> +				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL),
+>  					     "Unable to run compute kernel successfully\n");
+>  			}
+>  			drm_close_driver(fd);
+> @@ -174,7 +174,7 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+>  static void
+>  test_compute_square(int fd)
+>  {
+> -	igt_require_f(run_intel_compute_kernel(fd), "GPU not supported\n");
+> +	igt_require_f(run_intel_compute_kernel(fd, NULL), "GPU not supported\n");
+>  }
+>  
+>  igt_main
 > -- 
 > 2.43.0
 > 
