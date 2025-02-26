@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D515EC18E7C
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 11:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D7E6C021BF
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 11:26:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9431F10E1D8;
-	Wed, 26 Feb 2025 11:26:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FCB210E1E9;
+	Wed, 26 Feb 2025 11:26:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zz5tS731";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mWVq4jD7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CAC210E1D8
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 11:26:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40C7F10E1E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 11:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740569180; x=1772105180;
+ t=1740569182; x=1772105182;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c/A/DOwfWFGH9grj3qqZdYpxaJ9gCIgbE7IourNS5T8=;
- b=Zz5tS731rbkjcDJHF2R+O3FXe1D3vxfrZwDe7/3vJWrlnz8/QB0lhrz0
- JPpDKpWMve9QiOqq+jwFeBzPk+7Vc+xYzr+jce+nDTDH2z3I4n/J55M61
- M7e5WGTxKWwMJXmUr5F8t4qHL7TbtS1O7TNNKN5ia0Ia6BYCV/702OX9E
- YUN1zAmT+6nDQxiRo23eEE9TuxM80wIWC0DquFvVA+KtB/pCoJ2QmhlPY
- MRuHfgo8hkjhLYM9tWpxWKL3ZB32cBd5CuPlRuJdBCkyyaaErdgYNmcqi
- o3N4xqMbCoEXZHmoAJt7QgLVfDEIEQirROOR2RJv9ZavqojDAp/1tWznz w==;
-X-CSE-ConnectionGUID: Z9tL/CH6SLGr5S6xNkZk3Q==
-X-CSE-MsgGUID: vZXaQPR1QA+FpgOQ7omnuA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="66781241"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="66781241"
+ bh=upsp1b005Qlp0M3dyulcE3ybMGAsgJ6SaKpdpySznxk=;
+ b=mWVq4jD7MybgHYhFueN/O8tDw3d0Qs/Nu0Y847kNXnRmrRLUcpKNTsDI
+ NA1eCpEC8cxKeoyD8yBXX1qf4L6SIVr93OUuy9Vu2L5UE8+X0pb7cM9H8
+ BBJHYyk28NIf7IsgCmCGVaM+0kc4Px6Mza4yPd0Yu09GBc9BLymPdzCij
+ vKA5+p/y49dfgwmo3/s8YaX4z1hoKqRvjG/7QsbJsW10Z4WmQh9i9XUDW
+ tENSWn9QYWortioMJa86I0CoE4S3ZkRq2bqAGMJ8WuZDSEk0r5YeUoB1i
+ 01J6gBr0AJqC9a/pV3pUXTkglcmy23PAa5Wk1fQwn9mksZspHZHE9x8nj w==;
+X-CSE-ConnectionGUID: 5mYqmHUYQWCK2PrzJduldw==
+X-CSE-MsgGUID: 8p181JdNTE6SVCv0jhzf/w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="66781245"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="66781245"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 03:26:19 -0800
-X-CSE-ConnectionGUID: QkMJiw0zT3ufRopeoOpn1g==
-X-CSE-MsgGUID: F+sfhmsWQ4a5R1Fw4TXneg==
+ 26 Feb 2025 03:26:22 -0800
+X-CSE-ConnectionGUID: Ffk0wjrxQxyH5WVDprGzGA==
+X-CSE-MsgGUID: Qe/yoJ6yToyOqhwuxGY/kw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="117166591"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="117166598"
 Received: from slindbla-desk.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.246.75])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 03:26:15 -0800
+ 26 Feb 2025 03:26:19 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t,v3 1/6] lib/intel_compute: Make loop count a parameter
-Date: Wed, 26 Feb 2025 12:24:02 +0100
-Message-ID: <20250226112532.1332367-2-francois.dugast@intel.com>
+Subject: [PATCH i-g-t,
+ v3 2/6] lib/intel_compute: Rename variables for input and output data
+Date: Wed, 26 Feb 2025 12:24:03 +0100
+Message-ID: <20250226112532.1332367-3-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250226112532.1332367-1-francois.dugast@intel.com>
 References: <20250226112532.1332367-1-francois.dugast@intel.com>
@@ -69,131 +70,305 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The loop count was previously hardcoded as 0x400 in *create_indirect_data()
-functions. Turn it into a parameterized value that gets used during the
-batch buffer generation so that the function user can specify the count.
+Use more explicit names to make development and debugging easier.
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_compute.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ lib/intel_compute.c | 143 ++++++++++++++++++++++++--------------------
+ 1 file changed, 77 insertions(+), 66 deletions(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index f46de1074..b698bf77d 100644
+index b698bf77d..9cca4a629 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -293,7 +293,8 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
- static void create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 				 uint64_t addr_input,
- 				 uint64_t addr_output,
--				 uint32_t end_value)
-+				 uint32_t end_value,
-+				 unsigned int loop_count)
- {
- 	uint32_t val = 0;
- 	int b = 0, curr = 0;
-@@ -313,7 +314,7 @@ static void create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
+@@ -695,7 +695,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 		  .name = "batch" },
+ 	};
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 	uint16_t devid = intel_get_drm_devid(fd);
  
--	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = loop_count;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -708,7 +709,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+ 	bo_execenv_create(fd, &execenv, eci);
+@@ -711,10 +711,12 @@ static void compute_exec(int fd, const unsigned char *kernel,
  	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
--			     IS_DG1(devid) ? 0x200 : 0x40);
-+			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
+ 			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
  
- 	dinput = (float *)bo_dict[4].data;
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
  	srand(time(NULL));
-@@ -746,7 +747,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
++
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
  
- static void xehp_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 				      uint64_t addr_input,
--				      uint64_t addr_output)
-+				      uint64_t addr_output,
-+				      unsigned int loop_count)
- {
- 	int b = 0;
+ 	if (IS_DG1(devid))
+ 		dg1_compute_exec_compute(bo_dict[6].data,
+@@ -732,13 +734,14 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
  
-@@ -754,7 +756,7 @@ static void xehp_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_input >> 32;
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
--	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = loop_count;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -986,7 +988,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, BO_DICT_ENTRIES);
+@@ -976,7 +979,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 		  .name = "batch" },
+ 	};
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -991,10 +994,12 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
  	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
  
- 	dinput = (float *)bo_dict[4].data;
-@@ -1020,7 +1022,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 
- static void xehpc_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 				       uint64_t addr_input,
--				       uint64_t addr_output)
-+				       uint64_t addr_output,
-+				       unsigned int loop_count)
- {
- 	int b = 0;
- 
-@@ -1036,7 +1039,7 @@ static void xehpc_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_input >> 32;
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
--	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = loop_count;
- 	addr_bo_buffer_batch[b++] = 0x00000400;
- 	addr_bo_buffer_batch[b++] = 0x00000001;
- 	addr_bo_buffer_batch[b++] = 0x00000001;
-@@ -1191,7 +1194,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_bind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
- 
- 	memcpy(bo_dict[0].data, kernel, size);
--	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 
- 	dinput = (float *)bo_dict[2].data;
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
  	srand(time(NULL));
-@@ -1551,7 +1554,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
++
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
  
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
- 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 	xehp_compute_exec_compute(bo_dict[8].data,
+ 				  ADDR_GENERAL_STATE_BASE,
+@@ -1007,13 +1012,14 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
  
- 	dinput = (float *)bo_dict[4].data;
-@@ -1640,7 +1643,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
+@@ -1184,7 +1190,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 		  .name = "batch" },
+ 	};
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -1196,10 +1202,12 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
  	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 
+-	dinput = (float *)bo_dict[2].data;
++	input_data = (float *) bo_dict[2].data;
++	output_data = (float *) bo_dict[3].data;
+ 	srand(time(NULL));
++
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xehpc_compute_exec_compute(bo_dict[5].data,
+ 				   ADDR_GENERAL_STATE_BASE,
+@@ -1212,13 +1220,14 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[3].data)[i];
+-		f2 = ((float *) bo_dict[2].data)[i];
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
+@@ -1541,7 +1550,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	};
+ 
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -1557,11 +1566,12 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
  	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
  
- 	dinput = (float *)bo_dict[4].data;
-@@ -1946,7 +1949,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
  
- 	create_dynamic_state(bo_dict_short[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict_short[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xelpg_compute_exec_compute(bo_dict[8].data,
+ 				   ADDR_GENERAL_STATE_BASE,
+@@ -1574,15 +1584,14 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f %f\n", i, f1, f2 * f2, f2);
+-
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
+@@ -1631,7 +1640,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	};
+ 
+ 	struct bo_execenv execenv;
+-	float *dinput;
++	float *input_data, *output_data;
+ 
+ 	bo_execenv_create(fd, &execenv, eci);
+ 
+@@ -1646,11 +1655,12 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+-	dinput = (float *)bo_dict[4].data;
++	input_data = (float *) bo_dict[4].data;
++	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xe2lpg_compute_exec_compute(bo_dict[8].data,
+ 				  ADDR_GENERAL_STATE_BASE,
+@@ -1664,14 +1674,14 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict[5].data)[i];
+-		f2 = ((float *) bo_dict[4].data)[i];
+-
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
+@@ -1869,7 +1879,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 
+ 	struct bo_dict_entry bo_dict_short[XE2_BO_PREEMPT_DICT_ENTRIES];
+ 	struct bo_execenv execenv_short, execenv_long;
+-	float *dinput;
++	float *input_data, *output_data;
+ 	unsigned int long_kernel_loop_count;
+ 	struct drm_xe_sync sync_long = {
+ 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+@@ -1952,16 +1962,17 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
  	xehp_create_surface_state(bo_dict_short[7].data, ADDR_INPUT, ADDR_OUTPUT);
  
- 	dinput = (float *)bo_dict_long[4].data;
+-	dinput = (float *)bo_dict_long[4].data;
++	input_data = (float *) bo_dict_long[4].data;
++	output_data = (float *) bo_dict_short[5].data;
+ 	srand(time(NULL));
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+-	dinput = (float *)bo_dict_short[4].data;
++	input_data = (float *) bo_dict_short[4].data;
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++)
+-		((float *)dinput)[i] = rand() / (float)RAND_MAX;
++		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xe2lpg_compute_exec_compute(bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
+ 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
+@@ -1991,14 +2002,14 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	gem_close(fd, bo_short);
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
+-		float f1, f2;
+-
+-		f1 = ((float *) bo_dict_short[5].data)[i];
+-		f2 = ((float *) bo_dict_short[4].data)[i];
+-
+-		if (f1 != f2 * f2)
+-			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
+-		igt_assert(f1 == f2 * f2);
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++				  i, input, output, expected_output);
++		igt_assert_eq(output, expected_output);
+ 	}
+ 
+ 	for (int i = 0; i < SIZE_DATA; i++) {
 -- 
 2.43.0
 
