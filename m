@@ -4,57 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 542E9C021B8
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 08:10:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE07FC021B8
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 08:36:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1410E10E878;
-	Wed, 26 Feb 2025 08:10:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8756910E88C;
+	Wed, 26 Feb 2025 08:36:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dLMa5Oro";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N5Jv6iS5";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0AAE10E878
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 08:10:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75C2710E88C
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 08:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740557444; x=1772093444;
+ t=1740558961; x=1772094961;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=PfndyA8QC/s1w0erOFBhopovAntkvToDrQFUy4FQklg=;
- b=dLMa5OroP3HUeIA1bKaZmnlj+CY4sGv6MdISZ8hjiJFAxr4hFhDvHriv
- hxs/5kYeoJ+498knT9SVRYi9EAzIpcVrUpJQro088CiBJG7WB+/tAoy5A
- 5kfk+7dIAQntgZOOjH/UHhmKq6gSYWsFr87BmycI1xSqNil0lUbvYDhWm
- 7ycQGYx7h0Rv8A4EOUZdGrQcePDO6+SQeRE4U9HB0UOrrpFtgKs6Q+aSo
- jWFzOjzh16LKKZje9eiqXfouIH/fkf+GLOF3ibIBvzV83hj5O3MxXulLE
- 35qnFx/8+mVQfwMexVLxcLXNT+ekLHBRd1uUDyJgDi72hQeMrNMr+euJp A==;
-X-CSE-ConnectionGUID: az/OVRB2Rd2mNfQ0RvC15g==
-X-CSE-MsgGUID: ZRoQe9SiSf2yOGeNZWP//w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="40571359"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="40571359"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=3+feW8AMa87sllqQfigqrg+0OV8d6OHP6myl4PEzGJ4=;
+ b=N5Jv6iS5jgp16dANLS5yOTCSnk0btwsHjhYb6UHoGA++MBPuvC5Z51MT
+ vGyfHVM4LJuX3GF4aMJ7MH6H5nLu0YFoD6EhHLd/UliTygiLskbmEln/j
+ mmeJ9z5KTM6Sh+YK0IeRP27IZXmbPfpI3V3x+u8KYHmGLsJAgAXnXQXbv
+ Eu6TPHAuOVPXlF1vpbD9S6iCtUbvvU0j/+Z9w9v3XKVCxaw/kM+S1NVoO
+ 1qHM04p2ZNJEuJ95BOZg14MzIIK9QF080joKv2kKy2PF6RTU6YIuT9khW
+ 05/1oHpxT8VnLpozOI/K41uBXE0zTQ4YQwKaRqSb0d/6RC8JCUltkohHK A==;
+X-CSE-ConnectionGUID: 7eI6ucxQSbWNAbEOv3l8Bg==
+X-CSE-MsgGUID: B4C27JtOT6ygPQETS6VmvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="40575122"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="40575122"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 00:10:43 -0800
-X-CSE-ConnectionGUID: 1TzKCq0nTPqW48y+BZ2MWg==
-X-CSE-MsgGUID: fJrAEy3dRSiymnYpXNq7Kg==
+ 26 Feb 2025 00:36:01 -0800
+X-CSE-ConnectionGUID: pi0mU1DCS4GflbdPO29s6A==
+X-CSE-MsgGUID: igevPnrvSnao+9ddgHKR4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="117252358"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117129432"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.62])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 00:10:42 -0800
-Date: Wed, 26 Feb 2025 09:10:39 +0100
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 00:35:57 -0800
+Date: Wed, 26 Feb 2025 09:35:53 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t,v2 6/6] lib/intel_compute: Allow the user to
- provide input and output buffers
-Message-ID: <20250226081039.2f76oh2kv4552d2d@zkempczy-mobl2>
-References: <20250224144705.1019940-1-francois.dugast@intel.com>
- <20250224144705.1019940-7-francois.dugast@intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Christian Koenig <christian.koenig@amd.com>,
+ Alexander Deucher <alexander.deucher@amd.com>,
+ Jesse Zhang <jesse.zhang@amd.com>, Harry Wentland <harry.wentland@amd.com>,
+ kamil.konieczny@linux.intel.com, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH v5 i-g-t 1/2] runner/kmemleak: library to interact with
+ kmemleak
+Message-ID: <20250226083553.vpsdtp4kfjcanbum@zkempczy-mobl2>
+References: <20250225132710.249689-1-peter.senna@linux.intel.com>
+ <20250225132710.249689-2-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250224144705.1019940-7-francois.dugast@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250225132710.249689-2-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,97 +76,671 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 24, 2025 at 03:46:14PM +0100, Francois Dugast wrote:
-> Allow the user to create and provide the buffers to be used as input
-> and as output of the compute kernel. This allows special handling as
-> well as read/write from outside the compute library. Support is
-> limited to xe2lpg.
+On Tue, Feb 25, 2025 at 02:27:09PM +0100, Peter Senna Tschudin wrote:
+> Adds a simple library for interacting with kmemleak and add
+> unit testing for the library. There are two modes intended to
+> integrate with igt_runner:
+> - once: collect kmemleaks after all test completed
+> - each: collect kmemleaks after eachb test completes
 > 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> To use the library include "kmemleak.h", call runner_kmemleak_init()
+> to check if kmemleak is enabled and finally call runner_kmemleak()
+> to collect kmemleaks. runner_kmemleak() expect the following
+> arguments:
+>   - const char *last_test: Name of the last lest or NULL
+>   - int resdirfd: file descriptor of the results directory
+>   - bool kmemleak_each: Are we scanning once or scanning after
+>     each test?
+>   - bool sync: sync after each write?
+> 
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Alexander Deucher <alexander.deucher@amd.com>
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: zbigniew.kempczynski@intel.com
+> Cc: kamil.konieczny@linux.intel.com
+> Cc: ryszard.knop@intel.com
+> Cc: lucas.demarchi@intel.com
+> Cc: katarzyna.piecielska@intel.com
+> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->  lib/intel_compute.c | 32 ++++++++++++++++++++++++--------
->  lib/intel_compute.h |  2 ++
->  2 files changed, 26 insertions(+), 8 deletions(-)
+>  runner/kmemleak.c             | 273 ++++++++++++++++++++++++++++++++++
+>  runner/kmemleak.h             |  16 ++
+>  runner/meson.build            |  11 +-
+>  runner/runner_kmemleak_test.c | 267 +++++++++++++++++++++++++++++++++
+>  4 files changed, 566 insertions(+), 1 deletion(-)
+>  create mode 100644 runner/kmemleak.c
+>  create mode 100644 runner/kmemleak.h
+>  create mode 100644 runner/runner_kmemleak_test.c
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 4818c0ff7..cb9561946 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -1665,6 +1665,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	struct bo_execenv execenv;
->  	float *input_data, *output_data;
-> +	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-> +	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
->  
->  	bo_execenv_create(fd, &execenv, eci, user);
->  
-> @@ -1675,16 +1677,24 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	memcpy(bo_dict[0].data, kernel, size);
->  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> -	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
-> -	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-> +	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-> +	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
->  
-> -	input_data = (float *) bo_dict[4].data;
-> -	output_data = (float *) bo_dict[5].data;
-> -	srand(time(NULL));
-> +	if (user && user->input_addr) {
-> +		input_data = (float *) user->input_addr;
-> +	} else {
-> +		input_data = (float *) bo_dict[4].data;
-> +		srand(time(NULL));
->  
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		input_data[i] = rand() / (float)RAND_MAX;
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			input_data[i] = rand() / (float)RAND_MAX;
-> +	}
+> diff --git a/runner/kmemleak.c b/runner/kmemleak.c
+> new file mode 100644
+> index 000000000..07f68a78f
+> --- /dev/null
+> +++ b/runner/kmemleak.c
+> @@ -0,0 +1,273 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+
+Only few nits - 2025.
+
+> + */
 > +
-> +	if (user && user->output_addr)
-> +		output_data = (float *) user->output_addr;
-> +	else
-> +		output_data = (float *) bo_dict[5].data;
->  
->  	xe2lpg_compute_exec_compute(bo_dict[8].data,
->  				  ADDR_GENERAL_STATE_BASE,
-> @@ -1802,6 +1812,12 @@ static bool __run_intel_compute_kernel(int fd,
->  		return false;
->  	}
->  
-> +	if (user && (user->input_addr || user->output_addr) &&
-> +	    intel_compute_batches[batch].compute_exec != xe2lpg_compute_exec) {
-> +		igt_debug("GPU version 0x%x does not support user input/output buffers\n", ip_ver);
+> +#include <unistd.h>
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +
+> +#include "kmemleak.h"
+> +
+> +/* We can change the path for unit testing, see runner_kmemleak_init() */
+> +static char runner_kmemleak_file[256] = "/sys/kernel/debug/kmemleak";
+> +
+> +#define MAX_WRITE_RETRIES 5
+> +/**
+> + * runner_kmemleak_write - Writes the buffer to the file descriptor retrying when
+> + * possible.
+> + * @fd: The file descriptor to write to.
+> + * @buf: Pointer to the data to write.
+> + * @count: Total number of bytes to write.
+> + *
+> + * Returns the total number of bytes written on success, or -1 on failure.
+> + */
+> +static bool runner_kmemleak_write(int fd, const void *buf, size_t count)
+> +{
+> +	const char *ptr = buf;
+> +	size_t remaining = count;
+> +	ssize_t written;
+> +	int retries = 0;
+> +
+> +	while (remaining > 0) {
+> +		written = write(fd, ptr, remaining);
+> +		if (written > 0) {
+> +			ptr += written;
+> +			remaining -= written;
+> +		} else if (written == -1) {
+> +			if (errno == EINTR || errno == EAGAIN) {
+> +				/* Retry for recoverable errors */
+> +				if (++retries > MAX_WRITE_RETRIES) {
+> +					fprintf(stderr, "%s: Exceeded retry limit\n", __func__);
+> +					return false;
+> +				}
+> +				continue;
+> +			} else {
+> +				/* Log unrecoverable error */
+> +				fprintf(stderr, "%s: unrecoverable write error\n", __func__);
+> +				return false;
+> +			}
+> +		} else if (written == 0) {
+> +			if (++retries > MAX_WRITE_RETRIES) {
+> +				fprintf(stderr, "%s: Exceeded retry limit\n", __func__);
+> +				return false;
+> +			}
+> +		}
+> +	}
+> +	return true;
+> +}
+> +
+> +/**
+> + * runner_kmemleak_cmd:
+> + * @cmd: command to send to kmemleak
+> + *
+> + * Send a command to kmemleak.
+> + *
+> + * Returns: true if sending the command was successful, false otherwise.
+> + */
+> +static bool runner_kmemleak_cmd(const char *cmd)
+> +{
+> +	int fp;
+> +	bool res;
+> +
+> +	fp = open(runner_kmemleak_file, O_RDWR);
+> +	if (!fp)
+> +		return false;
+> +
+> +	res = runner_kmemleak_write(fp, cmd, strlen(cmd));
+> +	close(fp);
+> +
+> +	return res;
+> +}
+> +
+> +/**
+> + * runner_kmemleak_clear:
+> + *
+> + * Trigger an immediate clear on kmemleak.
+> + *
+> + * Returns: true if sending the command to clear was successful, false
+> + * otherwise.
+> + */
+> +static bool runner_kmemleak_clear(void)
+> +{
+> +	return runner_kmemleak_cmd("clear");
+> +}
+> +
+> +/**
+> + * runner_kmemleak_found_leaks:
+> + *
+> + * Check if kmemleak found any leaks by trying to read one byte from the
+> + * kmemleak file.
+> + *
+> + * Returns: true if kmemleak found any leaks, false otherwise.
+> + */
+> +static bool runner_kmemleak_found_leaks(void)
+> +{
+> +	FILE *fp;
+> +	char buf[1];
+> +	size_t rlen;
+> +
+> +	fp = fopen(runner_kmemleak_file, "r");
+> +	if (!fp)
+> +		return false;
+> +
+> +	rlen = fread(buf, 1, 1, fp);
+> +
+> +	if (rlen == 1)
+> +		lseek(fileno(fp), 0, SEEK_SET);
+> +
+> +	fclose(fp);
+> +
+> +	return rlen == 1;
+> +}
+> +
+> +/**
+> + * runner_kmemleak_scan:
+> + *
+> + * Trigger an immediate scan on kmemleak.
+> + *
+> + * Returns: true if leaks are found. False on failure and when no leaks are
+> + * found.
+> + */
+> +static bool runner_kmemleak_scan(void)
+> +{
+> +	if (!runner_kmemleak_cmd("scan"))
+> +		return false;
+> +
+> +	/* kmemleak documentation states that "the memory scanning is only
+> +	 * performed when the /sys/kernel/debug/kmemleak file is read." Read
+> +	 * a byte to trigger the scan now.
+> +	 */
+> +	return runner_kmemleak_found_leaks();
+> +}
+> +
+> +/**
+> + * runner_kmemleak_append_to:
+> + * @last_test: last test name to append to the file
+> + * @resdirfd: file descriptor of the results directory
+> + * @kmemleak_each: Are we scanning once or scanning after each test?
+> + * @sync: sync the kmemleak file often
+> + *
+> + * Append the kmemleak file to the result file adding a header indicating if
+> + * the leaks are for all tests or for a single one.
+> + *
+> + * Returns: true if appending to the file was successful, false otherwise.
+> + */
+> +static bool runner_kmemleak_append_to(const char *last_test, int resdirfd,
+> +				   bool kmemleak_each, bool sync)
+
+Fix indentation of second line.
+
+> +{
+> +	const char *before = "kmemleaks found before running any test\n\n";
+> +	const char *once = "kmemleaks found after running all tests\n";
+> +	int kmemleakfd, resfilefd;
+> +	char buf[4096];
+> +	size_t rlen;
+> +
+> +	kmemleakfd = open(runner_kmemleak_file, O_RDONLY);
+> +	if (kmemleakfd < 0)
+> +		return false;
+> +
+> +	/* Seek back to first byte */
+> +	lseek(kmemleakfd, 0, SEEK_SET);
+> +
+> +	/* Open text file to append */
+> +	resfilefd = openat(resdirfd, KMEMLEAKRESFILENAME,
+> +			   O_RDWR | O_CREAT | O_APPEND, 0666);
+> +	if (!resfilefd) {
+> +		close(kmemleakfd);
 > +		return false;
 > +	}
 > +
->  	/* If the user provides a kernel, use it */
->  	if (user && user->kernel) {
->  		kernel = user->kernel;
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index dc0fe2ec2..edc17b894 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -55,6 +55,8 @@ struct user_execenv {
->  	unsigned int kernel_size;
->  	/** @skip_results_check: do not verify correctness of the results if true */
->  	bool skip_results_check;
-> +	uint64_t input_addr;
-> +	uint64_t output_addr;
+> +	/* This is the header added before the content of the kmemleak file */
+> +	if (kmemleak_each) {
+> +		if (!last_test) {
+> +			runner_kmemleak_write(resfilefd, before, strlen(before));
+> +		} else {
+> +			/* Write \n\n last_test \n to buf */
+> +			snprintf(buf, sizeof(buf),
+> +				 "\n\nkmemleaks found after running %s:\n",
+> +				 last_test);
+> +
+> +			runner_kmemleak_write(resfilefd, buf, strlen(buf));
+> +			memset(buf, 0, sizeof(buf));
+> +		}
+> +	} else {
+> +		runner_kmemleak_write(resfilefd, once, strlen(once));
+> +	}
+> +
+> +	if (sync)
+> +		fsync(resfilefd);
+> +
+> +	while ((rlen = read(kmemleakfd, buf, sizeof(buf))) > 0) {
+> +		if (!runner_kmemleak_write(resfilefd, buf, rlen)) {
+> +			close(resfilefd);
+> +			close(kmemleakfd);
+> +			return false;
+> +		}
+> +		if (sync)
+> +			fsync(resfilefd);
+> +	}
+> +
+> +	close(resfilefd);
+> +	close(kmemleakfd);
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * runner_kmemleak_init:
+> + * @unit_test_kmemleak_file: path to kmemleak file for unit testing
+> + *
+> + * Check if kmemleak is enabled in the kernel, if debugfs is mounted and
+> + * if kmemleak file is present and readable.
+> + *
+> + * Returns: true if kmemleak is enabled, false otherwise.
+> + */
+> +bool runner_kmemleak_init(const char *unit_test_kmemleak_file)
+> +{
+> +	FILE *fp;
+> +
+> +	if (unit_test_kmemleak_file)
+> +		snprintf(runner_kmemleak_file,
+> +			 sizeof(runner_kmemleak_file),
+> +			 "%s",
+> +			 unit_test_kmemleak_file);
+> +
+> +	fp = fopen(runner_kmemleak_file, "r");
+> +	if (!fp)
+> +		return false;
+> +
+> +	fclose(fp);
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * runner_kmemleak:
+> + * @last_test: last test name to append to the file
+> + * @resdirfd: file descriptor of the results directory
+> + * @kmemleak_each: Are we scanning once or scanning after each test?
+> + * @sync: sync the kmemleak file often
+> + *
+> + * This is the main function that should be called when integrating runner_kmemleak
+> + * into igt_runner or elsewhere. There are two flows:
+> + *  - run once: runs only once after all tests are completed
+> + *  - run for each test: runs after every test
+> + *
+> + * Returns: true on success, false otherwise.
+> + */
+> +bool runner_kmemleak(const char *last_test, int resdirfd, bool kmemleak_each,
+> +		  bool sync)
 
-I like this change, but you should introduce this in all pipelines,
-otherwise user passing different address won't see any effect.
+Ditto.
+
+Rest imo looks correct, with above nits fixed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
->  };
+> +{
+> +	/* Scan to collect results */
+> +	if (runner_kmemleak_scan())
+> +		if (!runner_kmemleak_append_to(last_test, resdirfd,
+> +					    kmemleak_each, sync))
+> +			return false;
+> +
+> +	if (kmemleak_each)
+> +		runner_kmemleak_clear();
+> +
+> +	return true;
+> +}
+> diff --git a/runner/kmemleak.h b/runner/kmemleak.h
+> new file mode 100644
+> index 000000000..898234347
+> --- /dev/null
+> +++ b/runner/kmemleak.h
+> @@ -0,0 +1,16 @@
+> +/* SPDX-License-Identifier: MIT
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +#ifndef runner_kmemleak_H
+> +#define runner_kmemleak_H
+> +
+> +#include <stdbool.h>
+> +
+> +bool runner_kmemleak_init(const char *unit_test_kmemleak_file);
+> +bool runner_kmemleak(const char *last_test, int resdirfd, bool kmemleak_each,
+> +		  bool sync);
+> +
+> +#define KMEMLEAKRESFILENAME "kmemleak.txt"
+> +
+> +#endif /* runner_kmemleak_H */
+> diff --git a/runner/meson.build b/runner/meson.build
+> index c62303ce3..765cae39f 100644
+> --- a/runner/meson.build
+> +++ b/runner/meson.build
+> @@ -4,6 +4,7 @@ runnerlib_sources = [ 'settings.c',
+>  		      'job_list.c',
+>  		      'executor.c',
+>  		      'resultgen.c',
+> +		      'kmemleak.c',
+>  		      lib_version,
+>  		    ]
 >  
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
+> @@ -11,8 +12,9 @@ runner_sources = [ 'runner.c' ]
+>  resume_sources = [ 'resume.c' ]
+>  results_sources = [ 'results.c' ]
+>  decoder_sources = [ 'decoder.c' ]
+> -runner_test_sources = [ 'runner_tests.c' ]
+> +runner_test_sources = [ 'runner_tests.c']
+>  runner_json_test_sources = [ 'runner_json_tests.c' ]
+> +runner_kmemleak_test_sources = [ 'runner_kmemleak_test.c' ]
+>  
+>  jsonc = dependency('json-c', required: build_runner)
+>  runner_deps = [jsonc, glib]
+> @@ -74,6 +76,13 @@ if jsonc.found() and build_tests
+>  				      dependencies : [igt_deps, jsonc])
+>  	test('runner_json', runner_json_test, timeout : 300)
+>  
+> +	runner_kmemleak_test = executable('runner_kmemleak_test',
+> +				 runner_kmemleak_test_sources,
+> +				 link_with : runnerlib,
+> +				 install : false,
+> +				 dependencies : [igt_deps])
+> +	test('runner_kmemleak', runner_kmemleak_test, timeout : 300)
+> +
+>  	build_info += 'Build test runner: true'
+>  	if liboping.found()
+>  		build_info += 'Build test runner with oping: true'
+> diff --git a/runner/runner_kmemleak_test.c b/runner/runner_kmemleak_test.c
+> new file mode 100644
+> index 000000000..a519df893
+> --- /dev/null
+> +++ b/runner/runner_kmemleak_test.c
+> @@ -0,0 +1,267 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +#include <ctype.h>
+> +#include <fcntl.h>
+> +#include <stdio.h>
+> +#include <zlib.h>
+> +
+> +#include "igt.h"
+> +#include "kmemleak.h"
+> +
+> +const char *kmemleak_file_example =
+> +"unreferenced object 0xffff888102a2e638 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   00 00 00 00 00 00 00 00 0d 01 a2 00 00 00 00 00  ................\n"
+> +"   f0 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
+> +" backtrace (crc 2df71a7e):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2ed18 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   38 e6 a2 02 81 88 ff ff 0d 11 2d 00 00 00 00 00  8.........-.....\n"
+> +"   f2 7c 03 00 00 c9 ff ff 58 ea a2 02 81 88 ff ff  .|......X.......\n"
+> +" backtrace (crc ec2a8bdc):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2ea58 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   38 e6 a2 02 81 88 ff ff 0d 01 a0 00 00 00 00 00  8...............\n"
+> +"   f6 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
+> +" backtrace (crc f911c0d1):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2e428 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   58 ea a2 02 81 88 ff ff 0d 01 35 00 00 00 00 00  X.........5.....\n"
+> +"   fc 7c 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .|..............\n"
+> +" backtrace (crc cb8aaffd):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2e008 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   28 e4 a2 02 81 88 ff ff 0d 01 2d 00 00 00 00 00  (.........-.....\n"
+> +"   fc 7c 03 00 00 c9 ff ff c8 e2 a2 02 81 88 ff ff  .|..............\n"
+> +" backtrace (crc 7f883e78):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2b9e5>] acpi_ps_get_next_namepath+0x1f5/0x390\n"
+> +"   [<ffffffff81c2cc15>] acpi_ps_parse_loop+0x4a5/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2e2c8 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   28 e4 a2 02 81 88 ff ff 0d 01 73 00 00 00 00 00  (.........s.....\n"
+> +"   00 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
+> +" backtrace (crc 338c016):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2e378 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   c8 e2 a2 02 81 88 ff ff 0d 01 0d 00 00 00 00 00  ................\n"
+> +"   01 7d 03 00 00 c9 ff ff 98 e7 a2 02 81 88 ff ff  .}..............\n"
+> +" backtrace (crc 665fb8a7):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2e798 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   7c8 e2 a2 02 81 88 ff ff 0d 01 98 00 00 00 00 00  ................\n"
+> +"   1b 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
+> +" backtrace (crc b7a23a1c):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170"
+> +"unreferenced object 0xffff888102a2e0b8 (size 80):\n"
+> +" comm \"swapper/0\", pid 1, jiffies 4294672730\n"
+> +" hex dump (first 32 bytes):\n"
+> +"   98 e7 a2 02 81 88 ff ff 0d 01 2d 00 00 00 00 00  ..........-.....\n"
+> +"   1c 7d 03 00 00 c9 ff ff 00 00 00 00 00 00 00 00  .}..............\n"
+> +" backtrace (crc 14d67a9c):\n"
+> +"   [<ffffffff824cd71b>] kmemleak_alloc+0x4b/0x80\n"
+> +"   [<ffffffff814e169b>] kmem_cache_alloc_noprof+0x2ab/0x370\n"
+> +"   [<ffffffff81c2f4dc>] acpi_ps_alloc_op+0xdc/0xf0\n"
+> +"   [<ffffffff81c2d650>] acpi_ps_create_op+0x1c0/0x400\n"
+> +"   [<ffffffff81c2c8dc>] acpi_ps_parse_loop+0x16c/0xa60\n"
+> +"   [<ffffffff81c2e94f>] acpi_ps_parse_aml+0x22f/0x5f0\n"
+> +"   [<ffffffff81c2fa82>] acpi_ps_execute_method+0x152/0x380\n"
+> +"   [<ffffffff81c233ed>] acpi_ns_evaluate+0x31d/0x5e0\n"
+> +"   [<ffffffff81c2a606>] acpi_evaluate_object+0x206/0x490\n"
+> +"   [<ffffffff81bf1202>] __acpi_power_off.isra.0+0x22/0x70\n"
+> +"   [<ffffffff81bf275b>] acpi_turn_off_unused_power_resources+0xbb/0xf0\n"
+> +"   [<ffffffff83867799>] acpi_scan_init+0x119/0x290\n"
+> +"   [<ffffffff8386711a>] acpi_init+0x23a/0x590\n"
+> +"   [<ffffffff81002c71>] do_one_initcall+0x61/0x3d0\n"
+> +"   [<ffffffff837dce32>] kernel_init_freeable+0x3e2/0x680\n"
+> +"   [<ffffffff824ca53b>] kernel_init+0x1b/0x170\n";
+> +
+> +static const char *runner_kmemleak_unit_testing_resdir = "/tmp";
+> +
+> +igt_main
+> +{
+> +	char unit_testing_kmemleak_filepath[256] = "/tmp/runner_kmemleak_test_XXXXXX";
+> +	int written_bytes;
+> +	int resdirfd;
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		/* resdirfd is used by runner_kmemleak() to store results */
+> +		igt_assert(resdirfd = open(runner_kmemleak_unit_testing_resdir,
+> +					   O_DIRECTORY | O_RDONLY));
+> +
+> +		/* Try to delete results file in case of leftovers,
+> +		 * ignoring errors as the file may not exist
+> +		 */
+> +		unlinkat(resdirfd, KMEMLEAKRESFILENAME, 0);
+> +
+> +		/* Creating a fake kmemleak file for unit testing */
+> +		fd = mkstemp(unit_testing_kmemleak_filepath);
+> +		igt_assert(fd >= 0);
+> +
+> +		written_bytes = write(fd, kmemleak_file_example,
+> +				      strlen(kmemleak_file_example));
+> +		igt_assert_eq(written_bytes, strlen(kmemleak_file_example));
+> +
+> +		close(fd);
+> +
+> +		/* Initializing runner_kmemleak with a fake kmemleak file
+> +		 * for unit testing
+> +		 */
+> +		igt_assert(runner_kmemleak_init(unit_testing_kmemleak_filepath));
+> +	}
+> +
+> +	igt_subtest_group {
+> +		igt_subtest("test_runner_kmemleak_once")
+> +			igt_assert(runner_kmemleak(NULL, resdirfd, false, true));
+> +
+> +		igt_subtest("test_runner_kmemleak_each") {
+> +			igt_assert(runner_kmemleak("test_name_1", resdirfd,
+> +						true, false));
+> +			igt_assert(runner_kmemleak("test_name_2", resdirfd,
+> +						true, true));
+> +			igt_assert(runner_kmemleak("test_name_3", resdirfd,
+> +						true, false));
+> +		}
+> +		igt_fixture {
+> +			close(resdirfd);
+> +		}
+> +	}
+> +	igt_fixture
+> +		unlinkat(resdirfd, KMEMLEAKRESFILENAME, 0);
+> +}
 > -- 
-> 2.43.0
+> 2.34.1
 > 
