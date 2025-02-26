@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6EF6C19776
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 10:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA3BC021B8
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 11:26:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 89A5B10E8C0;
-	Wed, 26 Feb 2025 10:45:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 597DD10E1D4;
+	Wed, 26 Feb 2025 11:26:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lVPC+jC1";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kw1lR1He";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA60710E8C0
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 10:45:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5078910E1D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 11:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740566701; x=1772102701;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=W/1skwi7wWmKI78U2HYqqPcYuzErDrjbtnac9z1qQqc=;
- b=lVPC+jC1F3NIc3rQVHz2KvI6U+kdIHfC6NOftZBXVVd+4TobW0uutGS1
- t+yds0J9y6jcEGaZGMDy3PIgqndtc3sr89rgJSZSsHFymmKzWPa8zYAGg
- wLL59gTxc1F+wqIW9sbrLnUu3BOCUV7/W2AsZncedx31pN8ROodyGd8Q9
- dfnTTUrbowrNBUnkcriF2kIOiKEFJWGGXd2gFLiQ/gZF1OS/PeGZ2yeRI
- vkVQPcNuqQx7gPOgUlZS1rw+9B0JeLKgRTFNt+bBXQ7U4Sn9vu5tszQM+
- mxcZ8C8ySptEsc74nqY5nVl2rCtleuVUn+zi62UQ7tOFKQ8koeaioIOsl g==;
-X-CSE-ConnectionGUID: amFkBF+9R4OiGU4BUb9qWw==
-X-CSE-MsgGUID: THpegtiQS0muCr6C491eBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="63870842"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="63870842"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 02:45:01 -0800
-X-CSE-ConnectionGUID: zvHLYQ/LQ0WH9o4IwbuSeQ==
-X-CSE-MsgGUID: ugwqFEzjR6uWJnZsKXixkg==
+ t=1740569175; x=1772105175;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dqehKtJqByzBq4rkE9aHMwNk1OOSu6EhPgLY+g9s8W8=;
+ b=Kw1lR1HelAoISC6fUxPQM6L/fu6FwbUTRZE3d8mce3G1AbIJYhRQDMuT
+ SGLgtJPYbBAXSr10q2MMeya0NP2z+ltOXqXOT2SK8AEEmO+TOuapcSJSy
+ cadhoxxp8WHkwsMJf+m5ASsyxeWGgk+mOU563R+gcnngpIi1PRtS8ZFjr
+ py/f42SsCZTAEDI82Oznqs4PMV9oImKtp2HMhILkYGezbv1WfwrfQjmGY
+ 2GVO38MH5Og2C1Wc+6EWVj0u0hBuovOPLUY58hYc3RFW0MiN+MnYlUngQ
+ BRDd7ftC+pmK5jm+2UjIgRNg86yAz6mf9PLdgJaubjR9GM+wSFZJ/Zv6z w==;
+X-CSE-ConnectionGUID: GS1ina8LTmui90RY6n/iCw==
+X-CSE-MsgGUID: s0altWWaT32kS714V19nJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="66781236"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="66781236"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 03:26:15 -0800
+X-CSE-ConnectionGUID: znJXqDNQQA272B6TwCCcww==
+X-CSE-MsgGUID: OTOhGJQFSOq8cZNM31SBsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="117160383"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO dgrzegor-mobl2..)
- ([10.245.245.30])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 02:45:00 -0800
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="117166586"
+Received: from slindbla-desk.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.246.75])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 03:26:13 -0800
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/xe_eudebug_online: Set VRT
-Date: Wed, 26 Feb 2025 11:44:36 +0100
-Message-Id: <20250226104436.257298-2-dominik.grzegorzek@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250226104436.257298-1-dominik.grzegorzek@intel.com>
-References: <20250226104436.257298-1-dominik.grzegorzek@intel.com>
+Cc: zbigniew.kempczynski@intel.com, Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t,
+ v3 0/6] Prepare lib/intel_compute for SVM/system allocator
+Date: Wed, 26 Feb 2025 12:24:01 +0100
+Message-ID: <20250226112532.1332367-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,28 +67,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Limit number of GRFs used by single thread to utilize all
-possible threads per EU.
+This series provides a series of changes to give more control to the
+user of lib/intel_compute when executing a compute kernel. This will
+help to test corner cases requiring a specific execution environment
+as well as to test the system allocator from the compute kernel
+context.
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/intel/xe_eudebug_online.c | 3 +++
- 1 file changed, 3 insertions(+)
+v2: Add patch 1/6, rebase others on top of it, improve documentation
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 472013fe1..7f36faee1 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -158,6 +158,9 @@ static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
- 
- 	shader = gpgpu_shader_create(fd);
- 
-+	if (shader->gen_ver == 3000)
-+		gpgpu_shader_set_vrt(shader, VRT_96);
-+
- 	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
- 	if (flags & SHADER_BREAKPOINT) {
- 		gpgpu_shader__nop(shader);
+v3: Rework patch 6/6: introduce input/output array address override
+    in all pipelines
+
+Francois Dugast (6):
+  lib/intel_compute: Make loop count a parameter
+  lib/intel_compute: Rename variables for input and output data
+  lib/intel_compute: Allow the user to provide a vm
+  lib/intel_compute: Allow the user to provide a custom compute kernel
+  lib/intel_compute: Give option to skip results check
+  lib/intel_compute: Allow the user to override input and output
+    addresses
+
+ lib/intel_compute.c       | 353 ++++++++++++++++++++++++--------------
+ lib/intel_compute.h       |  33 +++-
+ tests/intel/gem_compute.c |   2 +-
+ tests/intel/xe_compute.c  |   4 +-
+ 4 files changed, 262 insertions(+), 130 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
