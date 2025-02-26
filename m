@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 071F0C18E7C
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 11:26:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61DC7C021BF
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Feb 2025 13:26:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DE5710E1E9;
-	Wed, 26 Feb 2025 11:26:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 038B010E911;
+	Wed, 26 Feb 2025 13:26:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c2LloDFp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kI0cfW0l";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F04910E1D4
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 11:26:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7355310E911
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2025 13:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740569197; x=1772105197;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+YPmSuqD2KshkHwVv/V4SPriZNgRaiDd+mg5eBLGQXY=;
- b=c2LloDFpv+fqe1LkiZ07Ez/f5i4Ss3988A+kRlKLtyIlP7N620MbVpzi
- W7whTVGWmjIRAj8VT1DTTN2My5vLNdsr+fiqkzRvRhdXxkEx0KyoEI364
- 6Rv4Aw5B9LgNRJFIVf8md4o+MzooVKJm4JmQaIq84neHJ2VTYEW8e8igl
- jHG7CF4PtyXAQLKkIA24XeiBfy3zIKfT6r8acBMXerP4P0S9zHjBes2jU
- 2qohPqGlAM8QVdYtVxMmz/zeFmIwVgmVRDPdOhzmtyKAQYuaKf2Xusk2z
- BBVXKbuZXLqY9TbF1EtAm8RH8AkAX/YxdCqRvp4Km+UxDNBX8jpoh3CYQ w==;
-X-CSE-ConnectionGUID: VEPnnMeCT7WJNJKGs4/OWQ==
-X-CSE-MsgGUID: IatHvIBxSn2+z/f3bWrk4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="66781262"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="66781262"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 03:26:37 -0800
-X-CSE-ConnectionGUID: tKdg12tFTmuOQyXvZmMhgQ==
-X-CSE-MsgGUID: dvXsC1H5Sr+xF/2/6I0KMg==
+ t=1740576394; x=1772112394;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=TxNu9kOhTxrCZX3YnuSYH1MIPSpCIY+NZtGkP3BCbqs=;
+ b=kI0cfW0lcPS/29jSvFT2cFW5FaljyNx97Y+eiN+7uzi598zvFSdPZndD
+ ZMk42m26ojRatatuOpEFpILdz2WvSBBSwUg8UnqmkeJ1Hv6KchM7lzZGV
+ y5DuvPjpbNrlT8brbza2Ericoqzr6j4XjzJNmn8922oohgeFoO2AFaS84
+ zUyVnSV92VnxhXqz0bXm7g3ZB5VOoB/qbjOOX8dgLnU486BDrDxP1t1Qw
+ Ur06JHPtbu4ujB8+rJKyXoG0uCV93emybIZs6sG2g0aPflzJ6w+80+Q+X
+ J+V1/XBCzCK8M/oAlzwe/MY6Xenhsg88OqiQW/U9JW4YDwixK4Ip09Wkm A==;
+X-CSE-ConnectionGUID: ayscB/b9S0OGJ45xPrSnnQ==
+X-CSE-MsgGUID: q2Mvx+yGRiah2mewPacbzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="41296437"
+X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; d="scan'208";a="41296437"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 05:26:29 -0800
+X-CSE-ConnectionGUID: vF1LESKWT96bh14DqDLwIA==
+X-CSE-MsgGUID: XOi9+S0ZS+qLEZK2UNesyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; d="scan'208";a="117166621"
-Received: from slindbla-desk.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.246.75])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 03:26:31 -0800
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; d="scan'208";a="147522868"
+Received: from hedwards-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.96.245])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 05:26:25 -0800
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com, Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t,
- v3 6/6] lib/intel_compute: Allow the user to override input and
- output addresses
-Date: Wed, 26 Feb 2025 12:24:07 +0100
-Message-ID: <20250226112532.1332367-7-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250226112532.1332367-1-francois.dugast@intel.com>
-References: <20250226112532.1332367-1-francois.dugast@intel.com>
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ christian.koenig@amd.com, alexander.deucher@amd.com, jesse.zhang@amd.com,
+ harry.wentland@amd.com, zbigniew.kempczynski@intel.com,
+ kamil.konieczny@linux.intel.com, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com,
+ jonathan.cavitt@intel.com
+Subject: [PATCH v6 i-g-t 0/2] Integrate kmemleak scans in igt_runner
+Date: Wed, 26 Feb 2025 14:25:50 +0100
+Message-Id: <20250226132552.41294-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,241 +72,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The user can specify custom GPU addresses to be used for the input and
-output arrays, otherwise default values will be used. If a compatible
-VM is also provided in user_execenv, the user can even create its own
-arrays and pass their addresses in user_execenv, for example with SVM.
+This patch series introduces a library to interact with the Linux kernel's
+kmemleak feature and integrates it into igt_runner. If kmemleaks are
+detected, they will be saved in the igt_runner results directory in a file
+named kmemleak.txt.
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- lib/intel_compute.c | 124 +++++++++++++++++++++++++++++++-------------
- lib/intel_compute.h |   4 ++
- 2 files changed, 91 insertions(+), 37 deletions(-)
+During testing, the size of the kmemleak.txt file varied significantly.
+Larger files, up to 2 MB, were observed when running i915-BAT on a Tiger
+Lake DUT. Conversely, smaller files, typically under 100 KB, were generated
+when running Xe BAT on the same DUT.
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 4818c0ff7..a789755b7 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -708,6 +708,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	};
- 	struct bo_execenv execenv;
- 	float *input_data, *output_data;
-+	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-+	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 	uint16_t devid = intel_get_drm_devid(fd);
- 
- 	bo_execenv_create(fd, &execenv, eci, user);
-@@ -719,16 +721,24 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 
- 	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
--	create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
-+	create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-+	create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
- 			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
- 
--	input_data = (float *) bo_dict[4].data;
--	output_data = (float *) bo_dict[5].data;
--	srand(time(NULL));
-+	if (user && user->input_addr) {
-+		input_data = (float *) user->input_addr;
-+	} else {
-+		input_data = (float *) bo_dict[4].data;
-+		srand(time(NULL));
- 
--	for (int i = 0; i < SIZE_DATA; i++)
--		input_data[i] = rand() / (float)RAND_MAX;
-+		for (int i = 0; i < SIZE_DATA; i++)
-+			input_data[i] = rand() / (float)RAND_MAX;
-+	}
-+
-+	if (user && user->output_addr)
-+		output_data = (float *) user->output_addr;
-+	else
-+		output_data = (float *) bo_dict[5].data;
- 
- 	if (IS_DG1(devid))
- 		dg1_compute_exec_compute(bo_dict[6].data,
-@@ -995,6 +1005,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	};
- 	struct bo_execenv execenv;
- 	float *input_data, *output_data;
-+	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-+	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
-@@ -1005,16 +1017,24 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 
- 	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
--	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
--	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-+	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-+	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
--	input_data = (float *) bo_dict[4].data;
--	output_data = (float *) bo_dict[5].data;
--	srand(time(NULL));
-+	if (user && user->input_addr) {
-+		input_data = (float *) user->input_addr;
-+	} else {
-+		input_data = (float *) bo_dict[4].data;
-+		srand(time(NULL));
- 
--	for (int i = 0; i < SIZE_DATA; i++)
--		input_data[i] = rand() / (float)RAND_MAX;
-+		for (int i = 0; i < SIZE_DATA; i++)
-+			input_data[i] = rand() / (float)RAND_MAX;
-+	}
-+
-+	if (user && user->output_addr)
-+		output_data = (float *) user->output_addr;
-+	else
-+		output_data = (float *) bo_dict[5].data;
- 
- 	xehp_compute_exec_compute(bo_dict[8].data,
- 				  ADDR_GENERAL_STATE_BASE,
-@@ -1209,6 +1229,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	};
- 	struct bo_execenv execenv;
- 	float *input_data, *output_data;
-+	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-+	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
-@@ -1218,14 +1240,22 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_bind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
- 
- 	memcpy(bo_dict[0].data, kernel, size);
--	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
-+	xehpc_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr, SIZE_DATA);
- 
--	input_data = (float *) bo_dict[2].data;
--	output_data = (float *) bo_dict[3].data;
--	srand(time(NULL));
-+	if (user && user->input_addr) {
-+		input_data = (float *) user->input_addr;
-+	} else {
-+		input_data = (float *) bo_dict[2].data;
-+		srand(time(NULL));
- 
--	for (int i = 0; i < SIZE_DATA; i++)
--		input_data[i] = rand() / (float)RAND_MAX;
-+		for (int i = 0; i < SIZE_DATA; i++)
-+			input_data[i] = rand() / (float)RAND_MAX;
-+	}
-+
-+	if (user && user->output_addr)
-+		output_data = (float *) user->output_addr;
-+	else
-+		output_data = (float *) bo_dict[3].data;
- 
- 	xehpc_compute_exec_compute(bo_dict[5].data,
- 				   ADDR_GENERAL_STATE_BASE,
-@@ -1572,6 +1602,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 
- 	struct bo_execenv execenv;
- 	float *input_data, *output_data;
-+	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-+	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
-@@ -1583,16 +1615,24 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	memcpy(bo_dict[0].data, kernel, size);
- 
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
--	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
--	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-+	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-+	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
--	input_data = (float *) bo_dict[4].data;
--	output_data = (float *) bo_dict[5].data;
--	srand(time(NULL));
-+	if (user && user->input_addr) {
-+		input_data = (float *) user->input_addr;
-+	} else {
-+		input_data = (float *) bo_dict[4].data;
-+		srand(time(NULL));
- 
--	for (int i = 0; i < SIZE_DATA; i++)
--		input_data[i] = rand() / (float)RAND_MAX;
-+		for (int i = 0; i < SIZE_DATA; i++)
-+			input_data[i] = rand() / (float)RAND_MAX;
-+	}
-+
-+	if (user && user->output_addr)
-+		output_data = (float *) user->output_addr;
-+	else
-+		output_data = (float *) bo_dict[5].data;
- 
- 	xelpg_compute_exec_compute(bo_dict[8].data,
- 				   ADDR_GENERAL_STATE_BASE,
-@@ -1665,6 +1705,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 
- 	struct bo_execenv execenv;
- 	float *input_data, *output_data;
-+	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-+	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
-@@ -1675,16 +1717,24 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 
- 	memcpy(bo_dict[0].data, kernel, size);
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
--	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
--	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
--	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-+	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-+	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
--	input_data = (float *) bo_dict[4].data;
--	output_data = (float *) bo_dict[5].data;
--	srand(time(NULL));
-+	if (user && user->input_addr) {
-+		input_data = (float *) user->input_addr;
-+	} else {
-+		input_data = (float *) bo_dict[4].data;
-+		srand(time(NULL));
- 
--	for (int i = 0; i < SIZE_DATA; i++)
--		input_data[i] = rand() / (float)RAND_MAX;
-+		for (int i = 0; i < SIZE_DATA; i++)
-+			input_data[i] = rand() / (float)RAND_MAX;
-+	}
-+
-+	if (user && user->output_addr)
-+		output_data = (float *) user->output_addr;
-+	else
-+		output_data = (float *) bo_dict[5].data;
- 
- 	xe2lpg_compute_exec_compute(bo_dict[8].data,
- 				  ADDR_GENERAL_STATE_BASE,
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index dc0fe2ec2..9abef3084 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -55,6 +55,10 @@ struct user_execenv {
- 	unsigned int kernel_size;
- 	/** @skip_results_check: do not verify correctness of the results if true */
- 	bool skip_results_check;
-+	/** @input_addr: override default address of the input array if provided */
-+	uint64_t input_addr;
-+	/** @output_addr: override default address of the output array if provided */
-+	uint64_t output_addr;
- };
- 
- extern const struct intel_compute_kernels intel_compute_square_kernels[];
+Large files often contain numerous false positives, with the e1000 driver
+being a frequent source of noise. The time required for the Linux kernel to
+complete a kmemleak scan ranges from 5 to 60 seconds.  This variability can
+cause igt_runner to slow down by a factor of 4 when using the -keach
+option.
+
+Transient leaks are a common phenomenon but are mostly undetected by the
+current version of this library. A typical transient leak occurs when
+pointers are reused, such as in linked lists. For example, if 10 calls to
+kmalloc are made, storing the address in the same variable and freeing only
+the final allocation, the previous 9 allocations become transient leaks.
+These leaks will go undetected unless the kernel thread performs continuous
+scanning.
+
+To enable continuous scanning:
+ # echo scan=1 > /sys/kernel/debug/kmemleak
+
+This configures the kmemleak kernel thread to scan the memory continuously
+with 1 second pauses. While this may increase the likelihood of detecting
+transient leaks, it can significantly impact system performance. In most
+cases, the igt_runner slowdown remains in the 4x range, but the kernel
+thread will consume 100% of a CPU core, as observed with tools like top.
+
+When using scan=1, transient leaks that exist during an active scan will be
+detected. However, detection remains non-deterministic due to timing. It is
+recommended to reset the scan interval to the default value of 600 seconds
+after completing your tests.
+
+v6:
+ - Update copyright year to 2025
+ - Remove double newline from runner/executor.c
+ - Fix indentation issues caused by renaming igt_kmemleak* to runner_kmemleak*
+
+v5:
+ - move the code from lib/ to runner/
+ - rename igt_* to runner_*
+ - replace calls to igt_info() with calls to fprintf(stderr, ...)
+ - #includes on kmemleak.c:
+   - remove #include "igt_core.h"
+   - sort includes aplhabetically
+ - refacor the if statement for handling the optional argument to -k
+ - changed where 'k::' is located inside the string for getopt_long()
+ - fix one ident error
+ - use two separate assignments instead of making two at the same time
+ - replaced two calls to errf() by a single call with a multiline string
+ - commit message: explain the changes to runner unit testing
+
+v4:
+ - Cleaned-up CC list
+ - Fixed typo in patch numbering
+ - Fixed Reviewed-by tag
+ - Reintroduced ',' after "results-path". It was removed by accident
+ - Changed unit testing for calling igt_kmemleak() with and without sync.
+
+v3:
+ - Removed '>' from the end of one of the email addresses in the cc list
+ - Removed email addresses that no longer exist
+
+v2:
+ - Pass igt_kmemleak_sync as a function variable to igt_kmemleak instead of
+   keeping it stored as a global variable
+ - igt_kmemleak_found_leaks(): Remove call to fseek() after close()
+ - igt_kmemleak_write(): Increase retry counter when writing 0 bytes
+ - igt_kmemleak_write(): change type to bool
+ - Unit Testing: Move the call to igt_kmemleak_init() to a fixture.
+ - igt_kmemleak_append_to(): Add brackets to the if statement for improved
+   readability
+
+Cc: christian.koenig@amd.com
+Cc: alexander.deucher@amd.com
+Cc: jesse.zhang@amd.com
+Cc: harry.wentland@amd.com
+Cc: zbigniew.kempczynski@intel.com
+Cc: kamil.konieczny@linux.intel.com
+Cc: ryszard.knop@intel.com
+Cc: lucas.demarchi@intel.com
+Cc: katarzyna.piecielska@intel.com
+Cc: jonathan.cavitt@intel.com
+
+Peter Senna Tschudin (2):
+  runner/kmemleak: library to interact with kmemleak
+  runner/executor: Integrate igt_kmemleak scans
+
+ runner/executor.c             |  26 +++-
+ runner/kmemleak.c             | 273 ++++++++++++++++++++++++++++++++++
+ runner/kmemleak.h             |  16 ++
+ runner/meson.build            |  11 +-
+ runner/runner_kmemleak_test.c | 267 +++++++++++++++++++++++++++++++++
+ runner/runner_tests.c         |  13 +-
+ runner/settings.c             |  31 +++-
+ runner/settings.h             |   2 +
+ 8 files changed, 634 insertions(+), 5 deletions(-)
+ create mode 100644 runner/kmemleak.c
+ create mode 100644 runner/kmemleak.h
+ create mode 100644 runner/runner_kmemleak_test.c
+
 -- 
-2.43.0
+2.34.1
 
