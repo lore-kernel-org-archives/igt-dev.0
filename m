@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB91DC19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:14:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B91DC19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 93A5310EADC;
-	Thu, 27 Feb 2025 13:14:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC7E510EADE;
+	Thu, 27 Feb 2025 13:14:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ANKk6oT4";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="eiMY99zY";
 	dkim-atps=neutral
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
  [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7083710E1C6
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:53 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1FC5120575;
- Thu, 27 Feb 2025 13:14:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5090C10EADE
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:58 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E74E320575;
+ Thu, 27 Feb 2025 13:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740662092;
+ t=1740662097;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=oWFXzqpYJlHEdyRRdCc9pTAhxysbhIbRx7JVUHebIl0=;
- b=ANKk6oT4lIwja+o//mVNLXFnqwEfCt0bkEqbHW08gyUpMmu/jwbZrt10cjM5Tg97Vf1Pqj
- h/tWL1NOSGYTzsyRTsWf6ocnwksYLp/ujwj2mS1QqoAyCs7+jtmUxD+6rx9gGFzPjOKECd
- e8vmCmChAi+bMPib6T2IjGRuPMN8ak3xeSDGOXQNXq0g2aEUVMQz6mu0QyY09Yd6iBjMbR
- aU0lQBHvbNoB8ieEFOmZS8bH9NrR1RW1k1YlWIBR9yRHbWduNgvn6SbtcBsMSnipR4Qw+u
- cn/4k0Yms3eCiElIr9qbrzpVGnyuxY2HNOh8dnHuQXIcdo1H0lqM7TF8E4CXSA==
-Message-ID: <f4130bca-629f-417b-9a1e-e01d38aeaea2@bootlin.com>
-Date: Thu, 27 Feb 2025 14:14:52 +0100
+ bh=/dysUht2+Jio5gxQay+5j5N50KRLRKRBl4ojZO3Ww0Y=;
+ b=eiMY99zYlaq5ESk3dLaU+656NnBKA4LqZHp46PgHBUnplBL9823xtBEtQgU2wrNru2SeFT
+ 6fslfCB90qYc72059Aub49Vq6TIdmeeqcJbwSrseuhX+nsQ++SII3VI4Z4bIHnFAVgRNrX
+ 1QZFWPXE5NMku6LtAlqsY8+4rxqrASWy8bYzIp0tm2obWUIKN0P1ImK49GP/jham5YAsoS
+ 5aaVIXZKv4aAD4CO+/yUP6lZKfOL/lAK//RMDijFUVpIOPP4xoZVFdwKjLaNbRKrXeA1hW
+ ftleS8GsiA+2gsza3Tkun50MLL4FnpGAWlRNdSlpzmS9EVQLvh3F1rRyoII0Bg==
+Message-ID: <b1c2d838-4a94-4369-ba36-0d1a9f5de199@bootlin.com>
+Date: Thu, 27 Feb 2025 14:14:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 13/39] lib/vkms: Test encoder default files
+Subject: Re: [PATCH i-g-t 09/39] lib/vkms: Test plane invalid values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-14-jose.exposito89@gmail.com>
+ <20250218165011.9123-10-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -95,7 +95,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-14-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-10-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -120,91 +120,130 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Add a helper to create a encoder and a test checking that the default
-> files and directories are created.
+> For a VKMS plane, it is only possible to set invalid values in the plane
+> type.
+> 
+> Test that setting wrong values fails and that the plane is not
+> accidentally changed.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 > ---
->   lib/igt_vkms.c             | 12 ++++++++++++
->   lib/igt_vkms.h             |  2 ++
->   tests/vkms/vkms_configfs.c | 29 +++++++++++++++++++++++++++++
->   3 files changed, 43 insertions(+)
+>   lib/igt_vkms.c             | 25 +++++++++++++++++++
+>   lib/igt_vkms.h             |  1 +
+>   tests/vkms/vkms_configfs.c | 51 ++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 77 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index d881a2417..299891377 100644
+> index 5cfe5123c..ca6f37975 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -416,3 +416,15 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+> @@ -340,3 +340,28 @@ int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name)
 >   
->   	write_bool(path, writeback);
+>   	return read_int(path);
 >   }
 > +
 > +/**
-> + * igt_vkms_device_add_encoder:
-> + * @dev: Device to add the encoder to
-> + * @name: Encoder name
+> + * igt_vkms_plane_set_type:
+> + * @dev: Device the plane belongs to
+> + * @name: Plane name
+> + * @type: DRM_PLANE_TYPE_OVERLAY, DRM_PLANE_TYPE_PRIMARY or
+> + * DRM_PLANE_TYPE_CURSOR
 > + *
-> + * Add a new encoder to the VKMS device.
+> + * Set a new type for the plane
 > + */
-> +void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
+> +void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type)
 > +{
-> +	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
+> +	char path[PATH_MAX];
+> +
+> +	if (type != DRM_PLANE_TYPE_OVERLAY &&
+> +	    type != DRM_PLANE_TYPE_PRIMARY &&
+> +	    type != DRM_PLANE_TYPE_CURSOR)
+> +		igt_assert(!"Cannot be reached: Unknown plane type");
+> +
+> +	snprintf(path, sizeof(path), "%s/%s/%s/%s", dev->path,
+> +		 get_pipeline_item_dir_name(VKMS_PIPELINE_ITEM_PLANE), name,
+> +		 VKMS_FILE_PLANE_TYPE);
+> +
+> +	write_int(path, type);
+
+It can fail silently, see my comment on 05/39.
+
 > +}
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index cb0278544..b4b048c6d 100644
+> index dd06d8f5b..283be5699 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -38,4 +38,6 @@ bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
->   void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
->   					 bool writeback);
+> @@ -31,5 +31,6 @@ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
 >   
-> +void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
-> +
+>   void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
+>   int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
+> +void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
+>   
 >   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index af42e364d..753ea2d85 100644
+> index a3fa60762..d607b1a5a 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -345,6 +345,34 @@ static void test_crtc_wrong_values(void)
+> @@ -222,6 +222,56 @@ static void test_plane_default_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: encoder-default-files
-> + * Description: Test that creating a encoder creates the default files and
-> + *              directories.
+> + * SUBTEST: plane-wrong-values
+> + * Description: Check that setting unexpected values doesn't work.
 > + */
 > +
-> +static void test_encoder_default_files(void)
+> +static void test_plane_wrong_values(void)
 > +{
+> +	struct invalid_value invalid_type_values[] = {
+> +		{ "", 0 },
+> +		{ "\0", 1 },
+> +		{ "-1", 2 },
+> +		{ "4", 1 },
+> +		{ "primary", 8 },
+> +		{ "overlay", 8 },
+> +	};
 > +	igt_vkms_t *dev;
 > +	char path[PATH_MAX];
+> +	int fd;
+> +	int ret;
 > +
-> +	const char *dirs[] = {
-> +		"possible_crtcs",
-> +	};
-> +
+> +	/* Create a device with a primary plane */
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
-> +	igt_vkms_device_add_encoder(dev, "encoder0");
+> +	igt_vkms_device_add_plane(dev, "plane0");
+> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_PRIMARY);
+> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
+> +		      DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	snprintf(path, sizeof(path), "%s/planes/plane0/type", dev->path);
 
-I maybe found a solution for the duplication of path generation, can the 
-igt_vkms_device_add_* return the path of the object?
+I am not a big fan of duplicating the path generation here and in 
+igt_vkms_plane_set_type. But OTOH, I don't see how to do better, so:
 
-To avoid malloc/free, you can simply add an optional pointer "path":
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
-void igt_vkms_device_add_encoder(dev, name, path, max_len) {
-	if (path)
-		igt_assert_le(snprintf(path, max_len, "....", ...),
-				max_len);
-	[...]
-}
+> +
+> +	/* Test invalid values for "type" */
+> +	for (int i = 0; i < ARRAY_SIZE(invalid_type_values); i++) {
+> +		struct invalid_value v = invalid_type_values[i];
+> +
+> +		fd = open(path, O_WRONLY);
+> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
+> +
+> +		ret = write(fd, v.value, v.size);
+> +		igt_assert(ret <= 0);
 
-> +	snprintf(path, sizeof(path), "%s/encoders/encoder0", dev->path);
-> +	assert_default_files(path,
-> +			     NULL, 0,
-> +			     dirs, ARRAY_SIZE(dirs));
+As in a previous patch, can you add some information about the fail 
+(value and path).
+
+> +
+> +		close(fd);
+> +	}
+> +
+> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
+> +		      DRM_PLANE_TYPE_PRIMARY);
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -212,11 +251,11 @@ void igt_vkms_device_add_encoder(dev, name, path, max_len) {
 >   igt_main
 >   {
 >   	struct {
-> @@ -360,6 +388,7 @@ igt_main
->   		{ "crtc-default-files", test_crtc_default_files },
->   		{ "crtc-default-values", test_crtc_default_values },
->   		{ "crtc-wrong-values", test_crtc_wrong_values },
-> +		{ "encoder-default-files", test_encoder_default_files },
+> @@ -233,6 +283,7 @@ igt_main
+>   		{ "device-wrong-values", test_device_wrong_values },
+>   		{ "plane-default-files", test_plane_default_files },
+>   		{ "plane-default-values", test_plane_default_values },
+> +		{ "plane-wrong-values", test_plane_wrong_values },
 >   	};
 >   
 >   	igt_fixture {
