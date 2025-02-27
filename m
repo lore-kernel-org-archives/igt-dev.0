@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2B3AC1B0FF
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 14:54:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E7B9C19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:00:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6AB9B10EB20;
-	Thu, 27 Feb 2025 14:54:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B7F610EB1A;
+	Thu, 27 Feb 2025 15:00:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YWtfxbmm";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="hKf8aj9c";
 	dkim-atps=neutral
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DB4510EB0C
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 14:54:22 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 48DC944308;
- Thu, 27 Feb 2025 14:54:20 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC34B10EB1A
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:00:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5D4F1441A4;
+ Thu, 27 Feb 2025 15:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740668061;
+ t=1740668408;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=dEGQH8Y3lQGIj9d0ltcM7K9PYhD54EatOm1tr1JFjLQ=;
- b=YWtfxbmmzfWPv3y3yUry6cbd2lWF6kQt08rT0K44WfewMubEFDdbK4Tj+FKrSJPo3GFCq+
- 8PKdhB/VfLSm+4ojYq8klkb5CMEDzKeXYPsh86hLFrWvYQWDjc5xmUXRc61TgQbOLjBHOE
- yU+0CEA0hOeoYwbo/Y71P+fF+csNTZG4bKY3tT1TatzgnC674lGcp46e8oyha6MnQCNag3
- +sx9Q1uI7spZw0OCBw5hhycdQLpMIZqeFrDOc/9S6EaXvtkJ2xyEXNh9Svi3n/8uCGsbLD
- +qf+3nR9AqLrsFPqHrKhZDYXf9Igka2QzO3M2Lq8fVqHtK3PFGuXmqsLYv8YXg==
-Message-ID: <f3198e42-92d7-45e2-8e0e-95836d705d22@bootlin.com>
-Date: Thu, 27 Feb 2025 15:54:19 +0100
+ bh=dFCfAgb8jHZgFMHnqTkIG6DsfitFkIKPIalhGbnTkvQ=;
+ b=hKf8aj9c1eSDh48QDktA3DxAw0caMalpzqk0fHT/D9ayClcFFs1EPY0siMUOX3AxP6T8+D
+ BNqDlB4ZXxnhBChjHgSejy7U2v3jFqyI6cv0Oa1z2/lBqNFLJHCUVZTgVyes5kyt4U31lW
+ svWZ0K/1EUg4dYT34qpgD30E1XUI9dPlhMrJJtv2Ji6BXUt55PJGG+8d+/SizRMJXvt2xm
+ CuQvAH7FnQZWc6S3Qr2KebjETLbsMG7rnFN7KYlu52Hmo1aehDf/G9foCbraTMd7W3pvZs
+ eMXdcBRHOEwKBLsOkfXXAiApNZv/ylxzF8iM1MLJFoXgpJ1fJgXT2yOTG28Y1w==
+Message-ID: <dbc363ef-5d4e-4df1-910a-fbf02e0616b3@bootlin.com>
+Date: Thu, 27 Feb 2025 16:00:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 23/39] tests/vkms_configfs: Test not adding a
- primary plane
+Subject: Re: [PATCH i-g-t 24/39] tests/vkms_configfs: Test adding multiple
+ primary planes
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-24-jose.exposito89@gmail.com>
+ <20250218165011.9123-25-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -96,12 +96,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-24-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-25-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuvdetgeevkefhiedugfekveejieeiveeigeeiveduffehfffhgeffffetheekgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuvdetgeevkefhiedugfekveejieeiveeigeeiveduffehfffhgeffffetheekgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -121,7 +121,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Try to enable a VKMS device without a primary plane for one of its
+> Try to enable a VKMS device with multiple primary planes for one of its
 > CRTCs and test that it fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
@@ -129,24 +129,24 @@ Le 18/02/2025 à 17:49, José Expósito a écrit :
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 51 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 51 insertions(+)
+>   tests/vkms/vkms_configfs.c | 56 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 56 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 7df9bda01..fa20a364f 100644
+> index fa20a364f..c93ebadb3 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -839,6 +839,56 @@ static void test_enable_too_many_planes(void)
+> @@ -889,6 +889,61 @@ static void test_enable_no_primary_plane(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-no-primary-plane
-> + * Description: Try to enable a VKMS device without a primary plane for one of
-> + *              its CRTCs and test that it fails.
+> + * SUBTEST: enable-multiple-primary-planes
+> + * Description: Try to enable a VKMS device with multiple primary planes for one
+> + *              of its CRTCs and test that it fails.
 > + */
 > +
-> +static void test_enable_no_primary_plane(void)
+> +static void test_enable_multiple_primary_planes(void)
 > +{
 > +	igt_vkms_t *dev;
 > +
@@ -160,7 +160,12 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +			},
 > +			{
 > +				.name = "plane1",
-> +				.type = DRM_PLANE_TYPE_CURSOR,
+> +				.type = DRM_PLANE_TYPE_PRIMARY,
+> +				.possible_crtcs = { "crtc1" },
+> +			},
+> +			{
+> +				.name = "plane2",
+> +				.type = DRM_PLANE_TYPE_PRIMARY,
 > +				.possible_crtcs = { "crtc1" },
 > +			},
 > +		},
@@ -193,11 +198,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -864,6 +914,7 @@ igt_main
->   		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
+> @@ -915,6 +970,7 @@ igt_main
 >   		{ "enable-no-planes", test_enable_no_planes },
 >   		{ "enable-too-many-planes", test_enable_too_many_planes },
-> +		{ "enable-no-primary-plane", test_enable_no_primary_plane },
+>   		{ "enable-no-primary-plane", test_enable_no_primary_plane },
+> +		{ "enable-multiple-primary-planes", test_enable_multiple_primary_planes },
 >   	};
 >   
 >   	igt_fixture {
