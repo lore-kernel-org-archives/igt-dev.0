@@ -4,55 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4F1DC1B0FF
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 10:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E823CC021BE
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 10:27:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9735A10EA92;
-	Thu, 27 Feb 2025 10:19:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AECA410EA89;
+	Thu, 27 Feb 2025 10:27:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mh/YVkry";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WUEzVau9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFF0F10EA89
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 10:19:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3EBF10EA89
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 10:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740651585; x=1772187585;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0t3cc2VDe8xW6kKYNNijMFvSltD5Ow7+arlKBC/xbyA=;
- b=Mh/YVkry8SEX0rJPD1nFGL+UPmBpbI+U9NA/TzEslJs0sfRWqabwrlle
- 7hwC5TrEAWNUUQrV/vFb7syaTjGLgz6dhU4ea2OJ8KWPcmZrkjAVLwOZV
- la/SqI6HZRfvtP8CwJK3vgSC2fB88+JrkA99Vs74w6kNflAsHQy9hxaVu
- HYkDRovKX1WFa15IaqqHYwwA4cCWoGQAbuaU9jN9vG4J70qv7Kr8r377Y
- dgLsutD7qY4wN1Z5fTwp9t4oDrTFO9BjaX2Nea9O32qy2AS7icwbHVb8W
- EgcU12r/zQZCGRSgj7Poo8R1CUd58evzE1HJcMhF6XqoSW7U1KibsNSb0 w==;
-X-CSE-ConnectionGUID: vgyfOOAeTeSVXvlqV4rGNw==
-X-CSE-MsgGUID: SvXVbTQdSxSK9ZkrhUOrmw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="45185586"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="45185586"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2025 02:19:45 -0800
-X-CSE-ConnectionGUID: mlAabsQ2RCiYSSmrx5TRzg==
-X-CSE-MsgGUID: CWlQEah5Rn26sbPn8qSuVA==
+ t=1740652075; x=1772188075;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=yPVO9TtmwYF+WXU1CS1IF6UUc35JwsYvp7PQMELcavc=;
+ b=WUEzVau9/ehFQtrCKUsyrH8+4AG2zlZlYOfhioAVbY+nAXBFk+5JwZ5N
+ 9WCdrkArfpYLiw1n/2W5o8WhGcm9NIFMKLfjyFfn87cGbw59lCr7YSvAY
+ fn/D7ExYKOmi0WQXnJxsWkb4rY5I/XvLybPdbViMHYXxOT7/u7oeiXONJ
+ ybJVgc2BEDANWHSw8rnsu2vjLZgMKKgSXxBmqxazrS3ZwAZKWZvVONGhu
+ bm7/AsinJ5LmtteKhLhvteuTG1l3YtwlRpDdMM14Z1PoxgdvK57PXlDaL
+ xCbSDOIZ/U1NaeYL4ZB3tgGb4P2CinRREmFqIHWEWNvvwrku2yZ592RVA g==;
+X-CSE-ConnectionGUID: gbTYLXXgQJqBf3lu5wAQmQ==
+X-CSE-MsgGUID: ZvNFxRXaRbeB4zTAOObSgw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="66905803"
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="66905803"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2025 02:27:55 -0800
+X-CSE-ConnectionGUID: dsxEXo1SRMGYnBSqtH8BBA==
+X-CSE-MsgGUID: NdRRYQVWTo63ORNvZEjAzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="122230167"
-Received: from mviannax-mobl.amr.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.80.7])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2025 02:19:44 -0800
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH v7 i-g-t 3/3] scripts/run-tests.sh: Add support to kmemleak
- reports and igt_facts
-Date: Thu, 27 Feb 2025 11:18:53 +0100
-Message-Id: <20250227101853.361504-4-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250227101853.361504-1-peter.senna@linux.intel.com>
-References: <20250227101853.361504-1-peter.senna@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121108134"
+Received: from mviannax-mobl.amr.corp.intel.com (HELO [10.245.80.7])
+ ([10.245.80.7])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2025 02:27:52 -0800
+Message-ID: <c4c07559-0bd7-4d77-a890-309b3f772359@linux.intel.com>
+Date: Thu, 27 Feb 2025 11:27:50 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib/amd: add memleak functions
+To: vitaly prosyak <vprosyak@amd.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ Alexander Deucher <alexander.deucher@amd.com>,
+ Jesse Zhang <jesse.zhang@amd.com>, Harry Wentland <harry.wentland@amd.com>
+References: <20250218114341.122653-1-vitaly.prosyak@amd.com>
+ <20250219104149.npgbvmtr5vikkkhr@kamilkon-desk.igk.intel.com>
+ <93281b6c-1ae1-426e-aae7-46974d355532@amd.com>
+ <20250226090958.32igx6wiy4svxw3h@zkempczy-mobl2>
+ <9c5d27e4-12b2-4597-97cd-da72bc07d1dc@linux.intel.com>
+ <20250226100926.2qkfqmrm4e5qsunb@zkempczy-mobl2>
+ <1ec35fc8-92a5-4e69-a562-142745f59659@linux.intel.com>
+ <2a494d9e-d771-4bd6-b328-517b7cc7dc50@amd.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <2a494d9e-d771-4bd6-b328-517b7cc7dc50@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,63 +82,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Updates scripts/run-tests.sh to include the following options:
+Hello again Vitaly,
 
- -f:        enable igt_facts on igt_runner
- -K <mode>: Linux Kernel kmemleak reports
-            - once: run a kmemleak scan after all tests
-            - each: run a kmemleak scan after each test
+[...]
 
-These options are simply relayed to igt_runner.
+> Hi Peter,
+> 
+> Thanks for the update! I really appreciate the effort you’ve put into making the approach more global and vendor-agnostic—great work!
+> 
+> It would be incredibly useful to have both --kmemleak options available (for the entire test list and individual tests).
+> 
+> Could you kindly provide guidance on how to add these options (-konce or -keach) to igt-runner? For example, how should I modify the following commands to include them?
+> 
+> sudo ./scripts/run-tests.sh -t -v /home/vprosyak/src/igt-gpu-tools/build/tests/amd/amd_basic  
 
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- scripts/run-tests.sh | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+I’ve sent another revision of the patch that updates scripts/run-tests.sh,
+adding the -K option. This allows you to run tests like this:
 
-diff --git a/scripts/run-tests.sh b/scripts/run-tests.sh
-index 082ebaa5a..1fb9be478 100755
---- a/scripts/run-tests.sh
-+++ b/scripts/run-tests.sh
-@@ -132,9 +132,13 @@ print_help() {
- 	echo "  -P              store code coverage results per each test. Should be"
- 	echo "                  used together with -k option"
- 	echo "  -d              download Piglit to $ROOT/piglit"
-+	echo "  -f              enable igt_facts on igt_runner"
- 	echo "  -h              display this help message"
- 	echo "  -k <kernel_dir> Linux Kernel source code directory used to generate code"
- 	echo "                  coverage builds."
-+	echo "  -K <mode>       Linux Kernel kmemleak reports"
-+	echo "                   - once: run a kmemleak scan after all tests"
-+	echo "                   - each: run a kmemleak scan after each test"
- 	echo "  -l              list all available tests"
- 	echo "  -r <directory>  store the results in directory"
- 	echo "                  (default: $RESULTS)"
-@@ -160,12 +164,14 @@ print_help() {
- 	echo "Useful patterns for test filtering are described in the API documentation."
- }
- 
--while getopts ":c:dhk:lPr:st:T:vx:Rnpb:m:" opt; do
-+while getopts ":c:dfhk:K:lPr:st:T:vx:Rnpb:m:" opt; do
- 	case $opt in
- 		c) COV_ARGS="$COV_ARGS --collect-code-cov --collect-script $OPTARG " ;;
- 		d) download_piglit; exit ;;
-+		f) IGT_FACTS="-f" ;;
- 		h) print_help; exit ;;
- 		k) IGT_KERNEL_TREE="$OPTARG" ;;
-+		K) KMEMLEAK="--kmemleak=$OPTARG" ;;
- 		l) LIST_TESTS="true" ;;
- 		P) COV_ARGS="$COV_ARGS --coverage-per-test"; COV_PER_TEST=1 ;;
- 		r) RESULTS="$OPTARG" ;;
-@@ -256,7 +262,7 @@ if [ "x$RESUME_RUN" != "x" ]; then
- 	execute_runner 1 $RESUME $RESUME_ARGS $COV_ARGS "$RESULTS"
- else
- 	mkdir -p "$RESULTS"
--	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER --prune-mode $PRUNE_MODE
-+	execute_runner 1 $RUNNER $RUN_ARGS -o $IGT_FACTS $KMEMLEAK -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER --prune-mode $PRUNE_MODE
- fi
- 
- if [ "$SUMMARY" = "html" ]; then
--- 
-2.34.1
+sudo ./scripts/run-tests.sh -K each -t -v /home/vprosyak/src/igt-gpu-tools/build/tests/amd/amd_basic
 
+> 
+> or
+> 
+> sudo ./scripts/run-tests.sh -v -T /home/infra/igt/custom.testlist  
+
+Same here:
+
+sudo ./scripts/run-tests.sh -v -K each -T /home/infra/igt/custom.testlist
+
+You can find the patch here: https://patchwork.freedesktop.org/series/143996/
+
+Would you be open to reviewing the new patch and sending your Reviewed-by
+once you think it’s ready? That would help speed up the merge process.
+
+Let me know if I can assist in any way.
+
+Cheers,
+
+Peter
