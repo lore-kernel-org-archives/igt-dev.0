@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B21C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED7F2C19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31D8410E369;
-	Thu, 27 Feb 2025 13:12:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A745110EAD7;
+	Thu, 27 Feb 2025 13:12:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WXlWe+EC";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="J+BPoMRV";
 	dkim-atps=neutral
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
  [217.70.183.201])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD3DF10E369
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:43 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6BC8B443E4;
- Thu, 27 Feb 2025 13:12:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F0CD10EAD7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:48 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B0BFC443E4;
+ Thu, 27 Feb 2025 13:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740661962;
+ t=1740661967;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uly+GoeCSTRa02HhTWPBZ6qaYbl7/Yr5d4J7vV8QV+I=;
- b=WXlWe+EC4v6x03vfayV5gDIyXdpP2C8nSrwry6Jc2y/zpNuUIIZkCclTyMKQLqgBDH/gA/
- yGwvWnloFdrUE8CR4EdgyLh2LbodZ8Ho7QTvcLvo1+AnfjQpBqEfKZftEBQeB3L4tAmvHr
- zsg61DQQIJW9s3zS3KsZoNPvkWOVXyMtVh7R7AZOudBV5y+HDq6Fex1+ytMirtd3w8HoMa
- JcdU+kI3li9yL3KJNIk5Y95EEimRgwGiCqcuIKus7GJWgaU1UL1wWzHaSHcYcuxCuxkv4A
- mQigWmer5ZRwQPJBTlaPnc1IiI2oadMGlZVEdgagHfGJXHg1CJ0yFNbd4K8AHg==
-Message-ID: <cf3d8f55-b7b0-4440-a0bf-003a921488c1@bootlin.com>
-Date: Thu, 27 Feb 2025 14:12:42 +0100
+ bh=bPmbwHrRtLzYex/3cj/ZYYeASNZsDzyfm2Zoy9590ec=;
+ b=J+BPoMRVuWzA2tLTN8QfsXqpjLiThYvTYY7NurYGPV8THjEFr6+/fgI/OUqFZQTSGGQRdR
+ u7ks+P4umpUANizgDcyAMNCwEuegOWozBKNSaH1wMdYWO3YIRVMiwqmLDWyO7l1ZIAIql5
+ ZDk5bsEigQzF8l8Un2KVHzRqV1O3xNAC6XTIX/CXgkoSs78Na1gZ4RRJsWOVBTZgBdYpq+
+ rENpOHRojSRs3yBKkRtngfhQxCmruxx5c5OVOUWVIuXCufbFOXXQdoyEAe/RAqQ/WXcvua
+ uK7xTwytHvkLB8XOBn8g/JCaJRW+w6TGHj/kGvNTaWoF8dKCmHW2VOy/9+lRww==
+Message-ID: <0d0f0367-7c60-4f18-bd94-18db713b530e@bootlin.com>
+Date: Thu, 27 Feb 2025 14:12:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 16/39] lib/vkms: Test plane connector invalid values
+Subject: Re: [PATCH i-g-t 11/39] lib/vkms: Test CRTC default values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-17-jose.exposito89@gmail.com>
+ <20250218165011.9123-12-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -95,7 +95,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-17-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-12-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -120,124 +120,87 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> For a VKMS connector, it is only possible to set invalid values in the
-> connector status.
-> 
-> Test that setting wrong values fails and that the connector is not
-> accidentally changed.
+> Add a helper to get the CRTC writeback status and test that the default
+> value is set when a new CRTC is created.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
 > ---
->   lib/igt_vkms.c             | 26 +++++++++++++++++++
->   lib/igt_vkms.h             |  2 ++
->   tests/vkms/vkms_configfs.c | 52 ++++++++++++++++++++++++++++++++++++++
->   3 files changed, 80 insertions(+)
+>   lib/igt_vkms.c             | 19 +++++++++++++++++++
+>   lib/igt_vkms.h             |  1 +
+>   tests/vkms/vkms_configfs.c | 20 ++++++++++++++++++++
+>   3 files changed, 40 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index 6780d36da..f5e193a1c 100644
+> index a7dad43e2..4021f9aea 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -459,3 +459,29 @@ int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name)
+> @@ -24,6 +24,7 @@
+>   #define VKMS_ROOT_DIR_NAME		"vkms"
+>   #define VKMS_FILE_ENABLED		"enabled"
+>   #define VKMS_FILE_PLANE_TYPE		"type"
+> +#define VKMS_FILE_CRTC_WRITEBACK	"writeback"
 >   
->   	return read_int(path);
+>   enum vkms_pipeline_item {
+>   	VKMS_PIPELINE_ITEM_PLANE,
+> @@ -377,3 +378,21 @@ void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name)
+>   {
+>   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CRTC, name);
 >   }
 > +
 > +/**
-> + * igt_vkms_connector_set_status:
-> + * @dev: Device the connector belongs to
-> + * @name: Connector name
-> + * @type: DRM_MODE_CONNECTED, DRM_MODE_DISCONNECTED or
-> + * DRM_MODE_UNKNOWNCONNECTION
+> + * igt_vkms_crtc_is_writeback_enabled:
+> + * @dev: Device the CRTC belongs to
+> + * @name: CRTC name
 > + *
-> + * Set a new status for the connector
+> + * Indicate whether a VKMS CRTC writeback connector is enabled or not.
 > + */
-> +void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
-> +				   int status)
+> +bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name)
 > +{
 > +	char path[PATH_MAX];
 > +
-> +	if (status != DRM_MODE_CONNECTED &&
-> +	    status != DRM_MODE_DISCONNECTED &&
-> +	    status != DRM_MODE_UNKNOWNCONNECTION)
-> +		igt_assert(!"Cannot be reached: Unknown connector status");
-> +
 > +	snprintf(path, sizeof(path), "%s/%s/%s/%s", dev->path,
-> +		 get_pipeline_item_dir_name(VKMS_PIPELINE_ITEM_CONNECTOR), name,
-> +		 VKMS_FILE_CONNECTOR_STATUS);
+> +		 get_pipeline_item_dir_name(VKMS_PIPELINE_ITEM_CRTC), name,
+> +		 VKMS_FILE_CRTC_WRITEBACK);
 > +
-> +	write_int(path, status);
+> +	return read_bool(path);
 > +}
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index d0a148242..50f42aa4b 100644
+> index 7f70f92d3..59f6a9775 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -42,5 +42,7 @@ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
+> @@ -34,5 +34,6 @@ int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
+>   void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
 >   
->   void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
->   int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
-> +void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
-> +				   int status);
+>   void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name);
+> +bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
 >   
 >   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index b8c97e20d..ea84d9f82 100644
+> index 398232c03..95779d336 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -425,6 +425,57 @@ static void test_connector_default_values(void)
+> @@ -300,6 +300,25 @@ static void test_crtc_default_files(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: connector-wrong-values
-> + * Description: Check that setting unexpected values doesn't work.
+> + * SUBTEST: crtc-default-values
+> + * Description: Check that the default values for the CRTC are correct.
 > + */
 > +
-> +static void test_connector_wrong_values(void)
+> +static void test_crtc_default_values(void)
 > +{
-> +	struct invalid_value invalid_status_values[] = {
-> +		{ "", 0 },
-> +		{ "\0", 1 },
-> +		{ "-1", 2 },
-> +		{ "0", 1 },
-> +		{ "4", 1 },
-> +		{ "connected", 10 },
-> +	};
 > +	igt_vkms_t *dev;
-> +	char path[PATH_MAX];
-> +	int fd;
-> +	int ret;
 > +
-> +	/* Create a device with a disconnected connector */
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
-> +	igt_vkms_device_add_connector(dev, "connector0");
-> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_DISCONNECTED);
-> +	igt_assert_eq(igt_vkms_connector_get_status(dev, "connector0"),
-> +		      DRM_MODE_DISCONNECTED);
-
-Can you also test the allowed values? Maybe in another test. Same for 
-plane type.
-
+> +	igt_vkms_device_add_crtc(dev, "crtc0");
 > +
-> +	snprintf(path, sizeof(path), "%s/connectors/connector0/status",
-> +		 dev->path);
-> +
-> +	/* Test invalid values for "status" */
-> +	for (int i = 0; i < ARRAY_SIZE(invalid_status_values); i++) {
-> +		struct invalid_value v = invalid_status_values[i];
-> +
-> +		fd = open(path, O_WRONLY);
-> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
-> +
-> +		ret = write(fd, v.value, v.size);
-> +		igt_assert(ret <= 0);
-> +
-> +		close(fd);
-> +	}
-> +
-> +	igt_assert_eq(igt_vkms_connector_get_status(dev, "connector0"),
-> +		      DRM_MODE_DISCONNECTED);
+> +	igt_assert(!igt_vkms_crtc_is_writeback_enabled(dev, "crtc0"));
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -245,11 +208,11 @@ plane type.
 >   igt_main
 >   {
 >   	struct {
-> @@ -443,6 +494,7 @@ igt_main
->   		{ "encoder-default-files", test_encoder_default_files },
->   		{ "connector-default-files", test_connector_default_files },
->   		{ "connector-default-values", test_connector_default_values },
-> +		{ "connector-wrong-values", test_connector_wrong_values },
+> @@ -313,6 +332,7 @@ igt_main
+>   		{ "plane-default-values", test_plane_default_values },
+>   		{ "plane-wrong-values", test_plane_wrong_values },
+>   		{ "crtc-default-files", test_crtc_default_files },
+> +		{ "crtc-default-values", test_crtc_default_values },
 >   	};
 >   
 >   	igt_fixture {
