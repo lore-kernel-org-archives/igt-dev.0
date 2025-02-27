@@ -4,45 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A46C021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BFBC021BE
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0244810E1C1;
-	Thu, 27 Feb 2025 13:06:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C35B010E352;
+	Thu, 27 Feb 2025 13:11:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="B/TXCWar";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="HIDoBO+/";
 	dkim-atps=neutral
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B5F910E1C1
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:06:30 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 29437444EF;
- Thu, 27 Feb 2025 13:06:27 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
+ [217.70.183.193])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 541A010E352
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:11:54 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3FC52442D1;
+ Thu, 27 Feb 2025 13:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740661589;
+ t=1740661912;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Zt5qfJg8315Xskhrsx3EUmmWD/7u4Pz8hCy8pvI6100=;
- b=B/TXCWarPdIfgvq0RJRNSplQTbp2yTIZcJEEUmm935QUtGDZHytgR4Dd+PfHiHZf4LZYpW
- IM5qTCnxb+v98i48JCFtKwvWF5+Lr4a6mAVOkLjx4wzHHZ+ivP6NcmFoydhomiG0LR9jdK
- J3acR5756p8maYsuZ6Qd/970HplEMUmGQBAdrQsuHr+P2ooU0zQeICVpy50oh9I50srkIe
- Jdd/pvGdRakFRk9+flzsy21gAB/JxC8d1W+S/inkugl3R4SVtomGMZEGV2NDE/BUYv1H6Y
- 1uaqFsANCwFq49PUpAlSOfA9ZQIErYGghoHOa8AucI3RZaIuW4AyBvUwSD3NGg==
-Message-ID: <182edaeb-959a-42f2-bdfd-8fc860fbfe07@bootlin.com>
-Date: Thu, 27 Feb 2025 14:06:23 +0100
+ bh=KeygoYGVuEzGlW6vXlK2K7HdRbPf4hrkblSjBi04W2Q=;
+ b=HIDoBO+/5wk1a49VmMnT4+14W4T8VOccbWRarwUCytnheEYhdbXBgusCr8gOo9wHQJI1WK
+ 6K0BfsF9BatvAL0E903gCw19mqpp7aULHv8jfT/j25JpB6FP51Br3/sDXS520fgkRfvd9e
+ eOXMCtA7+tcu4IOb5F2gpk9DrTCh+7XimPPgsO2jZQSJnV8SkhTyvppAXIgTobaHNLAJC7
+ hHl5cnTYIxQQfX4Kgz40y0OZUkXG7ORwikLyssc7gK8rm92/DtVbeD3OV4E98bqsGSolhI
+ ulNE8AuFrlN9d5Gbhf058JYt2JJf5Z7EFe6RAVnJ3meymoZ26JD23CJ0eKFfKg==
+Message-ID: <f681618f-43b3-4e5a-8bf9-c54bdf464df4@bootlin.com>
+Date: Thu, 27 Feb 2025 14:11:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 20/39] tests/vkms_configfs: Test enablement without
- pipeline items
-To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-21-jose.exposito89@gmail.com>
-Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t 00/39] VKMS configfs tests
+To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250218165011.9123-1-jose.exposito89@gmail.com>
+Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
  5K81kIWbtQX91pD/wH5UapRF4kwMXTAqof8+m3XfYcEDVG31Kf8QkJTG/gLBi1UfJgGBahbY
@@ -97,13 +94,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-21-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedviedvvefhjedtvdevkedthfelueevgfffudeftdejleefgfevjeeiveehudfggfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopehgrhgvghhkhheslhhinhhug
- ihfohhunhgurghtihhonhdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeiffekgeeuieefvdehiedtueeiieffhefgueekueehleeileeffeetudfhfedufeenucffohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -123,150 +119,113 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> It shouldn't be possible to enable a device without creating and
-> attaching its pipeline items.
+> Hi everyone,
 > 
-> Test that the device is not enabled and also that no actual device was
-> created using libdrm.
+> This series add tests for the VKMS + configfs work Louis Chauvet and I are doing
+> in the kernel.
 > 
-> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-> ---
->   tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 60 insertions(+)
+> This new functionality allows to configure one or more VKMS instances without
+> having to reload the driver using configfs.
 > 
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index dc3dbe80d..87d660fff 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -108,6 +108,42 @@ static bool attach(const char *src_path, const char *dst_path,
->   	return ret == 0;
->   }
->   
-> +static drmDevicePtr find_device(const char *name, drmDevicePtr *devices,
-> +				int n_devices)
-> +{
-> +	drmDevicePtr dev;
-> +	const char *dev_name;
-> +
-> +	for (int i = 0; i < n_devices; i++) {
-> +		dev = devices[i];
-> +
-> +		if (!(dev->available_nodes & BIT(DRM_NODE_PRIMARY)))
-> +			continue;
-> +
-> +		if (dev->bustype != DRM_BUS_PLATFORM)
-> +			continue;
+> For more details, have a look to the kernel patchset and the documentation in
+> "vkms.rst" (not merged yet).
+> 
+> There was a previous attempt to implement this tests [1] and I kept copyright
+> were required.
+> 
+> Best wishes,
+> José Expósito
+> 
 
-Hummm, I think this may have issues with the change proposed by Greg in 
-[1], I don't know how the drmDevicePtr should look like with the new 
-faux_device struct.
+Hi José,
 
-The declaration in xf86drm.h is:
+Thanks a lot for this series, it will be very useful to ensure that the 
+UAPI of vkms does not change.
 
-typedef struct _drmDevice {
-     char **nodes; /* DRM_NODE_MAX sized array */
-     int available_nodes; /* DRM_NODE_* bitmask */
-     int bustype;
-     union {
-         drmPciBusInfoPtr pci;
-         drmUsbBusInfoPtr usb;
-         drmPlatformBusInfoPtr platform;
-         drmHost1xBusInfoPtr host1x;
-     } businfo;
-     union {
-         drmPciDeviceInfoPtr pci;
-         drmUsbDeviceInfoPtr usb;
-         drmPlatformDeviceInfoPtr platform;
-         drmHost1xDeviceInfoPtr host1x;
-     } deviceinfo;
-} drmDevice, *drmDevicePtr;
+I really like that you tested both "stuff that should work" (create a 
+device, planes...) and "stuff that should not work" (can't change the 
+status of planes...)
 
-But if vkms/vgem switch to faux_device, all users will break,
+Unfortunatly, the last tests, maybe it is an issue on my side. Can you 
+share a git repo that contains a kernel that pass the tests on your machine?
 
-But with faux_device integration, everything using it with VKMS will break.
+Thanks,
+Louis Chauvet
 
-Isn't this a breakage of the UAPI? The vkms devices are currently in 
-"platform_bus", but if we change it to faux_device, it will be on a 
-"faux_bus".
 
-[1]: https://lore.kernel.org/all/2025021029-snout-swivel-9a45@gregkh/
-
-(not for the patch itself, but the comment just above, that may apply 
-for vgem_drv too, I will reply to [1] to have the comment at the right 
-place)
-+CC: Thomas Zimmerman
-+CC: Greg Kroah-Hartman
-
-> +
-> +		dev_name = dev->businfo.platform->fullname;
-> +		if (strncmp(name, dev_name, strlen(name)) == 0)
-> +			return dev;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static bool device_exists(const char *name)
-> +{
-> +	drmDevicePtr devices[64];
-> +	int n_devices;
-> +	bool exists;
-> +
-> +	n_devices = drmGetDevices(devices, ARRAY_SIZE(devices));
-> +	exists = !!find_device(name, devices, n_devices);
-> +	drmFreeDevices(devices, n_devices);
-> +
-> +	return exists;
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -689,6 +725,29 @@ static void test_attach_connector_to_encoder(void)
->   	igt_vkms_device_destroy(dev2);
->   }
->   
-> +/**
-> + * SUBTEST: enable-no-pipeline-items
-> + * Description: Try to enable a VKMS device without adding any pipeline items
-> + *              and test that it fails.
-> + */
-> +
-> +static void test_enable_no_pipeline_items(void)
-> +{
-> +	igt_vkms_t *dev;
-> +
-> +	dev = igt_vkms_device_create(__func__);
-> +	igt_assert(dev);
-> +
-> +	/* Try to enable it and check that the device is not set as enabled */
-> +	igt_vkms_device_set_enabled(dev, true);
-> +	igt_assert(!igt_vkms_device_is_enabled(dev));
-> +
-> +	/* Check that no actual device was created*/
-> +	igt_assert(!device_exists(__func__));
-
-I think to properly validate that no new device were created, we need to 
-have another test "working configuration" where we can confirm that the 
-configfs name is the same as the device name.
-
-> +	igt_vkms_device_destroy(dev);
-> +}
-> +
->   igt_main
->   {
->   	struct {
-> @@ -711,6 +770,7 @@ igt_main
->   		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
->   		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
->   		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
-> +		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
->   	};
->   
->   	igt_fixture {
+> [1] https://lists.freedesktop.org/archives/igt-dev/2023-September/060717.html
+> 
+> José Expósito (39):
+>    lib/drmtest: Add VKMS as a known driver type
+>    lib/igt_debugfs: Move is_mountpoint() to igt_aux
+>    lib/igt_configfs: Add helper to mount configfs
+>    lib/vkms: Add minimal VKMS library and test device default files
+>    lib/vkms: Allow to enable/disable VKMS devices
+>    tests/vkms_configfs: Test device invalid values
+>    lib/vkms: Test plane default files
+>    lib/vkms: Test plane default values
+>    lib/vkms: Test plane invalid values
+>    lib/vkms: Test CRTC default files
+>    lib/vkms: Test CRTC default values
+>    lib/vkms: Test CRTC invalid values
+>    lib/vkms: Test encoder default files
+>    lib/vkms: Test connector default files
+>    lib/vkms: Test connector default values
+>    lib/vkms: Test plane connector invalid values
+>    lib/vkms: Test attaching planes to CRTCs
+>    lib/vkms: Test attaching encoders to CRTCs
+>    lib/vkms: Test attaching connectors to encoders
+>    tests/vkms_configfs: Test enablement without pipeline items
+>    lib/vkms: Create VKMS device from static config
+>    tests/vkms_configfs: Test adding too many planes
+>    tests/vkms_configfs: Test not adding a primary plane
+>    tests/vkms_configfs: Test adding multiple primary planes
+>    tests/vkms_configfs: Test adding multiple cursor planes
+>    tests/vkms_configfs: Test adding a plane without possible CRTCs
+>    tests/vkms_configfs: Test enabling a device without CRTCs
+>    tests/vkms_configfs: Test enabling a device with too many CRTCs
+>    tests/vkms_configfs: Test enabling a device without encoders
+>    tests/vkms_configfs: Test enabling a device with too many encoders
+>    tests/vkms_configfs: Test adding an encoder without possible CRTCs
+>    tests/vkms_configfs: Test adding a CRTC without encoders
+>    tests/vkms_configfs: Test enabling a device without connectors
+>    tests/vkms_configfs: Test enabling a device with too many connectors
+>    lib/vkms: Test changing enabled device planes
+>    lib/vkms: Test changing enabled device CRTCs
+>    lib/vkms: Test changing enabled device encoders
+>    lib/vkms: Test changing enabled device connectors
+>    tests/vkms_configfs: Test connector hot-plug
+> 
+>   docs/testplan/meson.build        |    7 +-
+>   lib/drmtest.c                    |   18 +
+>   lib/drmtest.h                    |    8 +-
+>   lib/igt.h                        |    1 +
+>   lib/igt_aux.c                    |   25 +
+>   lib/igt_aux.h                    |    2 +
+>   lib/igt_configfs.c               |   57 +
+>   lib/igt_configfs.h               |   13 +
+>   lib/igt_debugfs.c                |   29 +-
+>   lib/igt_vkms.c                   |  794 +++++++++++++
+>   lib/igt_vkms.h                   |  109 ++
+>   lib/meson.build                  |    2 +
+>   meson.build                      |    8 +
+>   tests/meson.build                |    2 +
+>   tests/vkms/meson.build           |   13 +
+>   tests/vkms/vkms_configfs.c       | 1884 ++++++++++++++++++++++++++++++
+>   tests/vkms/vkms_test_config.json |   72 ++
+>   17 files changed, 3013 insertions(+), 31 deletions(-)
+>   create mode 100644 lib/igt_configfs.c
+>   create mode 100644 lib/igt_configfs.h
+>   create mode 100644 lib/igt_vkms.c
+>   create mode 100644 lib/igt_vkms.h
+>   create mode 100644 tests/vkms/meson.build
+>   create mode 100644 tests/vkms/vkms_configfs.c
+>   create mode 100644 tests/vkms/vkms_test_config.json
+> 
 
 -- 
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
+
 
