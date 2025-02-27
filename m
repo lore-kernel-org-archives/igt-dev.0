@@ -4,77 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB5E2C021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 10:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C27C1B087
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 10:57:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 87A6E10EA66;
-	Thu, 27 Feb 2025 10:53:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 23BBB10EA93;
+	Thu, 27 Feb 2025 10:57:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cAaw7/DZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mBpBxbN4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E194C10EA66
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 10:53:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74CC010EA8D;
+ Thu, 27 Feb 2025 10:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740653620; x=1772189620;
+ t=1740653861; x=1772189861;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=u8LdJVWY/FMhjjUJSrVTolYEHixOIkAzTtHbw7SyqsI=;
- b=cAaw7/DZO3Rzzl/QM7aagTt+TPwPb4/wHOvm2POmEg/raWazMt6n0jzq
- Zhq47lFiHB3KMn1xjUK7PFfk9pvgTvA3tf7uqqezAU14A1PpSn2mTmFqp
- dURad7m5MC0fSmAx64cgmlWYF4UhT6RoXoSLN1XPiyzAk12CcmxVP3+NH
- 1xE8XuNqBTqhyOv4k5HGHdD5DCPjIqso4VP/G28hJOipEjrW7ap3TkXLl
- 7LyjgblOXc5y9ZVcdzSxvcEehWt/VAiDW4KpwiE4D9t2kpsrkW1FycCvM
- gbr+tH/5msP5+a73+c7kotYMLp3z9cB/KN1bv22Vl/uoE0kSx2229hkmy A==;
-X-CSE-ConnectionGUID: k+LBGD4SQQGNPJB/vQZEZg==
-X-CSE-MsgGUID: YCUy52vLTN605cUywa34Eg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="45188302"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="45188302"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2025 02:53:40 -0800
-X-CSE-ConnectionGUID: 11SU++Z8SDWqw5LR+/VOuQ==
-X-CSE-MsgGUID: +4T7Nx9OQTWJJBxAkQTs2g==
+ mime-version:in-reply-to;
+ bh=hdWSz6kdeiKFaEnrVuM7MSEL1JxrQdoSbETUUo5g8IY=;
+ b=mBpBxbN4YswUJ7ybJsxelVCzfTLVszWpvx9QiB+E3lktdgbCX9efDZw+
+ KFzSQxnkBks4CgwT/6TrckfbmZJU+jyqf0rlDW+Y0UesOYsHye2szUUxl
+ qXS5DRnPsnH1YhkoqlvzV/9ZAH/JYYQmmEbtyv/+zPI2zCubv2y384NAn
+ 0DM//wshU5CUJV0ALg+1xwWJ89izgxYZEwOsnSQFAtJzBVr+HzgUcXcKQ
+ xSn9ReKrQeoV5UMTpL9tt8jRMUpJ2pWY7JzLbwlC9jpWcuYfQ673In1Zf
+ xnsVrMAMiiWX2bcjPAstZNvHfeUt4R8XqiIG2s+pQhkP2r+idPAkr2L/6 Q==;
+X-CSE-ConnectionGUID: SFh1LRY0Qpywh92aHXsF9A==
+X-CSE-MsgGUID: Gvn+h2IMQgqdChcLst8WQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="52176287"
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="52176287"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2025 02:57:40 -0800
+X-CSE-ConnectionGUID: b+/G5Fj1SZu6l68iDANY3Q==
+X-CSE-MsgGUID: yj01cShLR2Wi/lt6zcjw2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="154174635"
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="121926932"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2025 02:53:38 -0800
-Date: Thu, 27 Feb 2025 11:53:14 +0100
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 02:57:39 -0800
+Date: Thu, 27 Feb 2025 11:57:36 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: vitaly prosyak <vprosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- Alexander Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>, Harry Wentland <harry.wentland@amd.com>
-Subject: Re: [PATCH] lib/amd: add memleak functions
-Message-ID: <20250227105314.uuyemk5zhnjonr7r@kamilkon-desk.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_sta?=
+ =?utf-8?Q?rting_wit?= =?utf-8?Q?h?= [i-g-t,1/2] lib/syncobj: Make running
+ under Valgrind quiet
+Message-ID: <20250227105736.mfszr7xkbmx3ygi4@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- vitaly prosyak <vprosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- Alexander Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>,
- Harry Wentland <harry.wentland@amd.com>
-References: <20250218114341.122653-1-vitaly.prosyak@amd.com>
- <20250219104149.npgbvmtr5vikkkhr@kamilkon-desk.igk.intel.com>
- <93281b6c-1ae1-426e-aae7-46974d355532@amd.com>
- <20250226090958.32igx6wiy4svxw3h@zkempczy-mobl2>
- <9c5d27e4-12b2-4597-97cd-da72bc07d1dc@linux.intel.com>
- <20250226100926.2qkfqmrm4e5qsunb@zkempczy-mobl2>
- <1ec35fc8-92a5-4e69-a562-142745f59659@linux.intel.com>
- <2a494d9e-d771-4bd6-b328-517b7cc7dc50@amd.com>
- <dc46ac89-04da-49eb-be06-ce700d9c780e@linux.intel.com>
+ igt-dev@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20250225124454.1976-1-tvrtko.ursulin@igalia.com>
+ <174063814648.2601346.6022084386360518790@b555e5b46a47>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dc46ac89-04da-49eb-be06-ce700d9c780e@linux.intel.com>
+In-Reply-To: <174063814648.2601346.6022084386360518790@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,78 +75,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-02-27 at 10:08:10 +0100, Peter Senna Tschudin wrote:
+Hi igt-dev,
+On 2025-02-27 at 06:35:46 -0000, Patchwork wrote:
+> == Series Details ==
 > 
+> Series: series starting with [i-g-t,1/2] lib/syncobj: Make running under Valgrind quiet
+> URL   : https://patchwork.freedesktop.org/series/145403/
+> State : failure
 > 
-> On 27.02.2025 06:08, vitaly prosyak wrote:
-> [...]
+> == Summary ==
 > 
-> Hi Vataly,
+> CI Bug Log - changes from IGT_8249 -> IGTPW_12665
+> ====================================================
 > 
-> Thank you for your message.
+> Summary
+> -------
 > 
-> > Hi Peter,
-> > 
-> > Thanks for the update! I really appreciate the effort you’ve put into making the approach more global and vendor-agnostic—great work!
-> > 
-> > It would be incredibly useful to have both --kmemleak options available (for the entire test list and individual tests).
-> > 
-> > Could you kindly provide guidance on how to add these options (-konce or -keach) to igt-runner? For example, how should I modify the following commands to include them?
+>   **FAILURE**
 > 
-> The kmemleak patch has not been merged yet. If you'd like to try it before it
-> gets merged, you can find the patches here:
-> 
-> https://patchwork.freedesktop.org/series/143996/
-> 
-> Regarding the kmemleak integration, I apologize for any confusion in the
-> discussion. The intended usage is as follows:
->  - Create a test list that includes only the tests you want kmemleak to
->    scan.
->  - Pass the -keach option to igt_runner.
-> 
-> > 
-> > sudo ./scripts/run-tests.sh -t -v /home/vprosyak/src/igt-gpu-tools/build/tests/amd/amd_basic
-> 
-> I'm assuming this script calls igt_runner. If so, please add -keach as an
-> additional command-line argument to igt_runner.
-> 
+>   Serious unknown changes coming with IGTPW_12665 absolutely need to be
+>   verified manually.
 
-This is igt script and you can find it in igt sources.
-One way would be to extend it to accept -k option,
-the other to extend igtrc reading in runner/resume.
-Or both.
+Unrelated to a change, please file bugs and re-run.
 
 Regards,
 Kamil
 
-> Once the patch is merged, this will enable igt_runner to generate a file
-> named kmemleak.txt in the results directory. The file will include entries
-> like:
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12665, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
->  "kmemleaks found after running test@name"
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/index.html
 > 
-> to separate different scans within the same file.
+> Participating hosts (44 -> 44)
+> ------------------------------
 > 
-> Additionally, you can modify your test list to include only the tests you
-> want kmemleak to scan. This is where I unintentionally added noise to
-> the discussion.
+>   No changes in participating hosts
 > 
-> Since you can create a custom test list and use it with -keach, there is
-> no need to extend the kmemleak library to support a separate test list.
+> Possible new issues
+> -------------------
 > 
-> > 
-> > or
-> > 
-> > sudo ./scripts/run-tests.sh -v -T /home/infra/igt/custom.testlist  
-> > 
-> > Thanks again for your great work and support!
+>   Here are the unknown changes that may have been introduced in IGTPW_12665:
 > 
-> Happy to help, let me know if you need anything else!
+> ### IGT changes ###
 > 
-> Peter
+> #### Possible regressions ####
 > 
-> > 
-> > Vitaly
-> >> [...]
+>   * igt@i915_module_load@load:
+>     - bat-twl-1:          [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_module_load@load.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-twl-1/igt@i915_module_load@load.html
 > 
+>   * igt@i915_selftest@live@reset:
+>     - bat-adlp-11:        [PASS][3] -> [ABORT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-adlp-11/igt@i915_selftest@live@reset.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-adlp-11/igt@i915_selftest@live@reset.html
+> 
+>   * igt@i915_selftest@live@slpc:
+>     - bat-twl-1:          NOTRUN -> [INCOMPLETE][5]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-twl-1/igt@i915_selftest@live@slpc.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_12665 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-adlp-11:        [PASS][6] -> [ABORT][7] ([i915#13696])
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-adlp-11/igt@i915_selftest@live.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-adlp-11/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@reset:
+>     - bat-twl-2:          [PASS][8] -> [ABORT][9] ([i915#12919] / [i915#13503]) +1 other test abort
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-2/igt@i915_selftest@live@reset.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-twl-2/igt@i915_selftest@live@reset.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_module_load@load:
+>     - bat-mtlp-9:         [DMESG-WARN][10] ([i915#13494]) -> [PASS][11]
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-mtlp-9/igt@i915_module_load@load.html
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-mtlp-9/igt@i915_module_load@load.html
+> 
+>   * igt@i915_selftest@live@execlists:
+>     - bat-twl-1:          [INCOMPLETE][12] -> [PASS][13]
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_selftest@live@execlists.html
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-twl-1/igt@i915_selftest@live@execlists.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-twl-1:          [INCOMPLETE][14] -> [INCOMPLETE][15] ([i915#13761])
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_selftest@live.html
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/bat-twl-1/igt@i915_selftest@live.html
+> 
+>   
+>   [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+>   [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+>   [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
+>   [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
+>   [i915#13761]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8249 -> IGTPW_12665
+>   * Linux: CI_DRM_16189 -> CI_DRM_16190
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_16189: 1afde926204e64fbc8e4e98aef49f8c56228bf70 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_16190: 8541a64154cd8b9c07977dedc1d22883f43279a0 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_12665: 12665
+>   IGT_8249: 8cb34f260a285ff7eaa3d79cf71f0a4960e4c890 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12665/index.html
