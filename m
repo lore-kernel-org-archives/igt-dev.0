@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F958C021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 07:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC247C1B087
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 07:49:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D236B10EA4E;
-	Thu, 27 Feb 2025 07:30:25 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cVPFp/Bj";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B68110EA4E
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 07:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740641424; x=1772177424;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=cSWmvttW6r//u436ZWEfTYOdx8yBGlaAvzTv3MMAyKQ=;
- b=cVPFp/BjUSIloxN2v3Yetv5pB+8qvQqK/JRDFepbAvvP7pMPk9UqEQzv
- cwIStwO1qFsQfRWSk6BDbRZuTsIy3A2e5oKzCJSrwNmg+9CiIre66KymC
- /XIKXqjkF+QirVZYqJB1OuqgJIc82esD8WDvaB9HuvF9oCI0PmRTRZO+4
- gkC3ytieofqnBjwkAdBcwb9oZ5zdEABGVCkBSw45TRykiRIE3ghX/lSrB
- eTPiikbMofsp/0rGyYqEghnFX6wxWcE6SDq+VSjXdME5fb+IhIbYCmfG0
- 1CRWptGH2tIY9IQ82pBMoTHwfT4A9gob1kvEB1Lsbu/d/G4Fq1aHjuM7V Q==;
-X-CSE-ConnectionGUID: Wi30RneIS9C96ICnYgJMyA==
-X-CSE-MsgGUID: v90PO7XxTB6QKmfpYyLXNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="41219619"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="41219619"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 23:30:24 -0800
-X-CSE-ConnectionGUID: WI2gQ/xzRqWIEdOUYS6ZXw==
-X-CSE-MsgGUID: 03VosMCrQkSgODwV38urNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="121877635"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.246.171])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 23:30:22 -0800
-Date: Thu, 27 Feb 2025 08:30:19 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t,v3 6/6] lib/intel_compute: Allow the user to
- override input and output addresses
-Message-ID: <20250227073019.tslf7drsdzer3rux@zkempczy-mobl2>
-References: <20250226112532.1332367-1-francois.dugast@intel.com>
- <20250226112532.1332367-7-francois.dugast@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68E3010EA4E;
+	Thu, 27 Feb 2025 07:49:21 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61B5310E041;
+ Thu, 27 Feb 2025 07:49:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5729790175235210177=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250226112532.1332367-7-francois.dugast@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_FBC_Dirty_Rectangle_t?=
+ =?utf-8?q?ests_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Feb 2025 07:49:20 -0000
+Message-ID: <174064256038.2620205.4425642712333797735@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250226050033.2399357-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250226050033.2399357-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,253 +37,222 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Feb 26, 2025 at 12:24:07PM +0100, Francois Dugast wrote:
-> The user can specify custom GPU addresses to be used for the input and
-> output arrays, otherwise default values will be used. If a compatible
-> VM is also provided in user_execenv, the user can even create its own
-> arrays and pass their addresses in user_execenv, for example with SVM.
-> 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+--===============5729790175235210177==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM but lets wait for CI:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: Add FBC Dirty Rectangle tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/145408/
+State : success
 
---
-Zbigniew
+== Summary ==
 
-> ---
->  lib/intel_compute.c | 124 +++++++++++++++++++++++++++++++-------------
->  lib/intel_compute.h |   4 ++
->  2 files changed, 91 insertions(+), 37 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 4818c0ff7..a789755b7 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -708,6 +708,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  	};
->  	struct bo_execenv execenv;
->  	float *input_data, *output_data;
-> +	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-> +	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
->  	uint16_t devid = intel_get_drm_devid(fd);
->  
->  	bo_execenv_create(fd, &execenv, eci, user);
-> @@ -719,16 +721,24 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  
->  	memcpy(bo_dict[0].data, kernel, size);
->  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> -	create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
-> +	create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-> +	create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
->  			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
->  
-> -	input_data = (float *) bo_dict[4].data;
-> -	output_data = (float *) bo_dict[5].data;
-> -	srand(time(NULL));
-> +	if (user && user->input_addr) {
-> +		input_data = (float *) user->input_addr;
-> +	} else {
-> +		input_data = (float *) bo_dict[4].data;
-> +		srand(time(NULL));
->  
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		input_data[i] = rand() / (float)RAND_MAX;
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			input_data[i] = rand() / (float)RAND_MAX;
-> +	}
-> +
-> +	if (user && user->output_addr)
-> +		output_data = (float *) user->output_addr;
-> +	else
-> +		output_data = (float *) bo_dict[5].data;
->  
->  	if (IS_DG1(devid))
->  		dg1_compute_exec_compute(bo_dict[6].data,
-> @@ -995,6 +1005,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  	};
->  	struct bo_execenv execenv;
->  	float *input_data, *output_data;
-> +	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-> +	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
->  
->  	bo_execenv_create(fd, &execenv, eci, user);
->  
-> @@ -1005,16 +1017,24 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  
->  	memcpy(bo_dict[0].data, kernel, size);
->  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> -	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
-> -	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-> +	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-> +	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
->  
-> -	input_data = (float *) bo_dict[4].data;
-> -	output_data = (float *) bo_dict[5].data;
-> -	srand(time(NULL));
-> +	if (user && user->input_addr) {
-> +		input_data = (float *) user->input_addr;
-> +	} else {
-> +		input_data = (float *) bo_dict[4].data;
-> +		srand(time(NULL));
->  
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		input_data[i] = rand() / (float)RAND_MAX;
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			input_data[i] = rand() / (float)RAND_MAX;
-> +	}
-> +
-> +	if (user && user->output_addr)
-> +		output_data = (float *) user->output_addr;
-> +	else
-> +		output_data = (float *) bo_dict[5].data;
->  
->  	xehp_compute_exec_compute(bo_dict[8].data,
->  				  ADDR_GENERAL_STATE_BASE,
-> @@ -1209,6 +1229,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	};
->  	struct bo_execenv execenv;
->  	float *input_data, *output_data;
-> +	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-> +	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
->  
->  	bo_execenv_create(fd, &execenv, eci, user);
->  
-> @@ -1218,14 +1240,22 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_bind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
->  
->  	memcpy(bo_dict[0].data, kernel, size);
-> -	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
-> +	xehpc_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr, SIZE_DATA);
->  
-> -	input_data = (float *) bo_dict[2].data;
-> -	output_data = (float *) bo_dict[3].data;
-> -	srand(time(NULL));
-> +	if (user && user->input_addr) {
-> +		input_data = (float *) user->input_addr;
-> +	} else {
-> +		input_data = (float *) bo_dict[2].data;
-> +		srand(time(NULL));
->  
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		input_data[i] = rand() / (float)RAND_MAX;
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			input_data[i] = rand() / (float)RAND_MAX;
-> +	}
-> +
-> +	if (user && user->output_addr)
-> +		output_data = (float *) user->output_addr;
-> +	else
-> +		output_data = (float *) bo_dict[3].data;
->  
->  	xehpc_compute_exec_compute(bo_dict[5].data,
->  				   ADDR_GENERAL_STATE_BASE,
-> @@ -1572,6 +1602,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	struct bo_execenv execenv;
->  	float *input_data, *output_data;
-> +	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-> +	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
->  
->  	bo_execenv_create(fd, &execenv, eci, user);
->  
-> @@ -1583,16 +1615,24 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  	memcpy(bo_dict[0].data, kernel, size);
->  
->  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> -	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
-> -	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-> +	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-> +	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
->  
-> -	input_data = (float *) bo_dict[4].data;
-> -	output_data = (float *) bo_dict[5].data;
-> -	srand(time(NULL));
-> +	if (user && user->input_addr) {
-> +		input_data = (float *) user->input_addr;
-> +	} else {
-> +		input_data = (float *) bo_dict[4].data;
-> +		srand(time(NULL));
->  
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		input_data[i] = rand() / (float)RAND_MAX;
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			input_data[i] = rand() / (float)RAND_MAX;
-> +	}
-> +
-> +	if (user && user->output_addr)
-> +		output_data = (float *) user->output_addr;
-> +	else
-> +		output_data = (float *) bo_dict[5].data;
->  
->  	xelpg_compute_exec_compute(bo_dict[8].data,
->  				   ADDR_GENERAL_STATE_BASE,
-> @@ -1665,6 +1705,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	struct bo_execenv execenv;
->  	float *input_data, *output_data;
-> +	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
-> +	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
->  
->  	bo_execenv_create(fd, &execenv, eci, user);
->  
-> @@ -1675,16 +1717,24 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	memcpy(bo_dict[0].data, kernel, size);
->  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> -	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
-> -	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
-> +	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr, SIZE_DATA);
-> +	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
->  
-> -	input_data = (float *) bo_dict[4].data;
-> -	output_data = (float *) bo_dict[5].data;
-> -	srand(time(NULL));
-> +	if (user && user->input_addr) {
-> +		input_data = (float *) user->input_addr;
-> +	} else {
-> +		input_data = (float *) bo_dict[4].data;
-> +		srand(time(NULL));
->  
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		input_data[i] = rand() / (float)RAND_MAX;
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			input_data[i] = rand() / (float)RAND_MAX;
-> +	}
-> +
-> +	if (user && user->output_addr)
-> +		output_data = (float *) user->output_addr;
-> +	else
-> +		output_data = (float *) bo_dict[5].data;
->  
->  	xe2lpg_compute_exec_compute(bo_dict[8].data,
->  				  ADDR_GENERAL_STATE_BASE,
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index dc0fe2ec2..9abef3084 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -55,6 +55,10 @@ struct user_execenv {
->  	unsigned int kernel_size;
->  	/** @skip_results_check: do not verify correctness of the results if true */
->  	bool skip_results_check;
-> +	/** @input_addr: override default address of the input array if provided */
-> +	uint64_t input_addr;
-> +	/** @output_addr: override default address of the output array if provided */
-> +	uint64_t output_addr;
->  };
->  
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
-> -- 
-> 2.43.0
-> 
+CI Bug Log - changes from IGT_8249 -> IGTPW_12667
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/index.html
+
+Participating hosts (44 -> 44)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12667 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - fi-bsw-n3050:       [PASS][1] -> [DMESG-FAIL][2] ([i915#12435]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/fi-bsw-n3050/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/fi-bsw-n3050/igt@i915_selftest@live.html
+    - bat-twl-2:          [PASS][3] -> [INCOMPLETE][4] ([i915#12445] / [i915#13761] / [i915#13776])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-2/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gem_migrate:
+    - bat-twl-2:          [PASS][5] -> [INCOMPLETE][6] ([i915#12445])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-2/igt@i915_selftest@live@gem_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-2/igt@i915_selftest@live@gem_migrate.html
+
+  * igt@i915_selftest@live@ring_submission:
+    - bat-twl-1:          NOTRUN -> [ABORT][7] ([i915#12919])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-1/igt@i915_selftest@live@ring_submission.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-rplp-1:         [PASS][8] -> [INCOMPLETE][9] ([i915#9413]) +1 other test incomplete
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-rplp-1/igt@i915_selftest@live@workarounds.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-rplp-1/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - bat-twl-1:          [INCOMPLETE][10] ([i915#13776]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_selftest@live@execlists.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-1/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [DMESG-FAIL][12] ([i915#12061]) -> [PASS][13] +1 other test pass
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [INCOMPLETE][14] ([i915#13776]) -> [ABORT][15] ([i915#12919] / [i915#13503])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_selftest@live.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-1/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
+  [i915#13761]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761
+  [i915#13776]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8249 -> IGTPW_12667
+  * Linux: CI_DRM_16189 -> CI_DRM_16190
+
+  CI-20190529: 20190529
+  CI_DRM_16189: 1afde926204e64fbc8e4e98aef49f8c56228bf70 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16190: 8541a64154cd8b9c07977dedc1d22883f43279a0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12667: 12667
+  IGT_8249: 8cb34f260a285ff7eaa3d79cf71f0a4960e4c890 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/index.html
+
+--===============5729790175235210177==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add FBC Dirty Rectangle tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145408/">https://patchwork.freedesktop.org/series/145408/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8249 -&gt; IGTPW_12667</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/index.html</p>
+<h2>Participating hosts (44 -&gt; 44)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12667 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/fi-bsw-n3050/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/fi-bsw-n3050/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a>) +1 other test dmesg-fail</li>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761">i915#13761</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_migrate:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-2/igt@i915_selftest@live@gem_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-2/igt@i915_selftest@live@gem_migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@ring_submission:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-1/igt@i915_selftest@live@ring_submission.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-rplp-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-rplp-1/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-1/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8249/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12667/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8249 -&gt; IGTPW_12667</li>
+<li>Linux: CI_DRM_16189 -&gt; CI_DRM_16190</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16189: 1afde926204e64fbc8e4e98aef49f8c56228bf70 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16190: 8541a64154cd8b9c07977dedc1d22883f43279a0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12667: 12667<br />
+  IGT_8249: 8cb34f260a285ff7eaa3d79cf71f0a4960e4c890 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5729790175235210177==--
