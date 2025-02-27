@@ -4,41 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BFBC021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E4EC021BE
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C35B010E352;
-	Thu, 27 Feb 2025 13:11:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F0CB410EAEA;
+	Thu, 27 Feb 2025 13:12:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="HIDoBO+/";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AVmsayKC";
 	dkim-atps=neutral
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 541A010E352
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:11:54 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3FC52442D1;
- Thu, 27 Feb 2025 13:11:52 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
+ [217.70.183.199])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8D8410EAEA
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:18 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 697DF43289;
+ Thu, 27 Feb 2025 13:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740661912;
+ t=1740661936;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KeygoYGVuEzGlW6vXlK2K7HdRbPf4hrkblSjBi04W2Q=;
- b=HIDoBO+/5wk1a49VmMnT4+14W4T8VOccbWRarwUCytnheEYhdbXBgusCr8gOo9wHQJI1WK
- 6K0BfsF9BatvAL0E903gCw19mqpp7aULHv8jfT/j25JpB6FP51Br3/sDXS520fgkRfvd9e
- eOXMCtA7+tcu4IOb5F2gpk9DrTCh+7XimPPgsO2jZQSJnV8SkhTyvppAXIgTobaHNLAJC7
- hHl5cnTYIxQQfX4Kgz40y0OZUkXG7ORwikLyssc7gK8rm92/DtVbeD3OV4E98bqsGSolhI
- ulNE8AuFrlN9d5Gbhf058JYt2JJf5Z7EFe6RAVnJ3meymoZ26JD23CJ0eKFfKg==
-Message-ID: <f681618f-43b3-4e5a-8bf9-c54bdf464df4@bootlin.com>
-Date: Thu, 27 Feb 2025 14:11:51 +0100
+ bh=g174i32zNW5v7oD0yhiRpoWJ92IPkWRaWgbcoIQYC4w=;
+ b=AVmsayKCVNhvSKCbJLgLBY2qJxJ8VR92/WNOq+sL4AYEpdc1eHpiharzS2Rphhor7BBgcM
+ TYuwRrVrpC1qIcwgHGYyrbR/LFsmeYnAHAMcVmY2CMqeN6tGfhNxRm6O1v0NZkDUsF2IIb
+ 9XNLFefWTatTr1Xul58zq10nTxkWnLLKTBcDsQ2u8xCtA9ZDNoPcnTa6xC2Xjs3rakeI0T
+ pT9pz3Du8Yl1xJAKyMYE4eWzDvgouaNLJUCvi+VNzRYOZt5RlcCrJ23rpgcamR6QFEqaXP
+ s039LH6uiMxPgNsI2QO2O8ZUfeYPxGEyaYOGxRdOBuzVeKn59X8KGx8BU6i19w==
+Message-ID: <5a65a7b8-269f-4017-bf2f-5e1601336a1b@bootlin.com>
+Date: Thu, 27 Feb 2025 14:12:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 00/39] VKMS configfs tests
+Subject: Re: [PATCH i-g-t 01/39] lib/drmtest: Add VKMS as a known driver type
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
+Cc: Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
+ <20250218165011.9123-2-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -94,12 +96,13 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-1-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-2-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeiffekgeeuieefvdehiedtueeiieffhefgueekueehleeileeffeetudfhfedufeenucffohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
+ gdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -119,109 +122,94 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Hi everyone,
+> As we are going to add VKMS specific tests, allow to check if it is
+> available.
 > 
-> This series add tests for the VKMS + configfs work Louis Chauvet and I are doing
-> in the kernel.
+> Co-developed-by: Jim Shargo <jshargo@chromium.org>
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+> Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+> ---
+>   lib/drmtest.c | 18 ++++++++++++++++++
+>   lib/drmtest.h |  8 ++++++--
+>   2 files changed, 24 insertions(+), 2 deletions(-)
 > 
-> This new functionality allows to configure one or more VKMS instances without
-> having to reload the driver using configfs.
-> 
-> For more details, have a look to the kernel patchset and the documentation in
-> "vkms.rst" (not merged yet).
-> 
-> There was a previous attempt to implement this tests [1] and I kept copyright
-> were required.
-> 
-> Best wishes,
-> José Expósito
-> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 436b6de78..2cc6e0c29 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -971,3 +971,21 @@ void igt_require_xe(int fd)
+>   {
+>   	igt_require(is_xe_device(fd));
+>   }
+> +
+> +void igt_require_vkms(void)
+> +{
+> +	/*
+> +	 * Since VKMS can create and destroy virtual drivers at will, instead
+> +	 * look to make sure the driver is installed.
+> +	 */
+> +	struct stat s = {};
+> +	int ret;
+> +	const char *vkms_module_dir = "/sys/module/vkms";
+> +
+> +	ret = stat(vkms_module_dir, &s);
+> +
+> +	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
+> +		      vkms_module_dir, ret, strerror(ret));
+> +	igt_require_f(S_ISDIR(s.st_mode),
+> +		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
+> +}
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 27e5a18e2..1b57e49ec 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -54,15 +54,18 @@ int __get_drm_device_name(int fd, char *name, int name_size);
+>   #define DRIVER_PANFROST	(1 << 5)
+>   #define DRIVER_MSM	(1 << 6)
+>   #define DRIVER_XE	(1 << 7)
+> -#define DRIVER_VMWGFX   (1 << 8)
+> +#define DRIVER_VKMS	(1 << 8)
+> +#define DRIVER_VMWGFX	(1 << 9)
 
-Hi José,
+Is it normal to change the DRIVER_VMWGFX value?
 
-Thanks a lot for this series, it will be very useful to ensure that the 
-UAPI of vkms does not change.
+I also found the `module` list in drmtest.c that use this value, I think 
+this list is used to do the proper `modprobe` during a open_driver().
 
-I really like that you tested both "stuff that should work" (create a 
-device, planes...) and "stuff that should not work" (can't change the 
-status of planes...)
+Maybe you can use it, so you will be able to do:
 
-Unfortunatly, the last tests, maybe it is an issue on my side. Can you 
-share a git repo that contains a kernel that pass the tests on your machine?
+	drm_load_module(DRIVER_VKMS); // (If I understand correctly, this fails 
+silently)
+	igt_require_vkms();
 
-Thanks,
-Louis Chauvet
+And future tests requiring a vkms device will be able to do:
 
+	open_driver(DRIVER_VKMS);
 
-> [1] https://lists.freedesktop.org/archives/igt-dev/2023-September/060717.html
-> 
-> José Expósito (39):
->    lib/drmtest: Add VKMS as a known driver type
->    lib/igt_debugfs: Move is_mountpoint() to igt_aux
->    lib/igt_configfs: Add helper to mount configfs
->    lib/vkms: Add minimal VKMS library and test device default files
->    lib/vkms: Allow to enable/disable VKMS devices
->    tests/vkms_configfs: Test device invalid values
->    lib/vkms: Test plane default files
->    lib/vkms: Test plane default values
->    lib/vkms: Test plane invalid values
->    lib/vkms: Test CRTC default files
->    lib/vkms: Test CRTC default values
->    lib/vkms: Test CRTC invalid values
->    lib/vkms: Test encoder default files
->    lib/vkms: Test connector default files
->    lib/vkms: Test connector default values
->    lib/vkms: Test plane connector invalid values
->    lib/vkms: Test attaching planes to CRTCs
->    lib/vkms: Test attaching encoders to CRTCs
->    lib/vkms: Test attaching connectors to encoders
->    tests/vkms_configfs: Test enablement without pipeline items
->    lib/vkms: Create VKMS device from static config
->    tests/vkms_configfs: Test adding too many planes
->    tests/vkms_configfs: Test not adding a primary plane
->    tests/vkms_configfs: Test adding multiple primary planes
->    tests/vkms_configfs: Test adding multiple cursor planes
->    tests/vkms_configfs: Test adding a plane without possible CRTCs
->    tests/vkms_configfs: Test enabling a device without CRTCs
->    tests/vkms_configfs: Test enabling a device with too many CRTCs
->    tests/vkms_configfs: Test enabling a device without encoders
->    tests/vkms_configfs: Test enabling a device with too many encoders
->    tests/vkms_configfs: Test adding an encoder without possible CRTCs
->    tests/vkms_configfs: Test adding a CRTC without encoders
->    tests/vkms_configfs: Test enabling a device without connectors
->    tests/vkms_configfs: Test enabling a device with too many connectors
->    lib/vkms: Test changing enabled device planes
->    lib/vkms: Test changing enabled device CRTCs
->    lib/vkms: Test changing enabled device encoders
->    lib/vkms: Test changing enabled device connectors
->    tests/vkms_configfs: Test connector hot-plug
-> 
->   docs/testplan/meson.build        |    7 +-
->   lib/drmtest.c                    |   18 +
->   lib/drmtest.h                    |    8 +-
->   lib/igt.h                        |    1 +
->   lib/igt_aux.c                    |   25 +
->   lib/igt_aux.h                    |    2 +
->   lib/igt_configfs.c               |   57 +
->   lib/igt_configfs.h               |   13 +
->   lib/igt_debugfs.c                |   29 +-
->   lib/igt_vkms.c                   |  794 +++++++++++++
->   lib/igt_vkms.h                   |  109 ++
->   lib/meson.build                  |    2 +
->   meson.build                      |    8 +
->   tests/meson.build                |    2 +
->   tests/vkms/meson.build           |   13 +
->   tests/vkms/vkms_configfs.c       | 1884 ++++++++++++++++++++++++++++++
->   tests/vkms/vkms_test_config.json |   72 ++
->   17 files changed, 3013 insertions(+), 31 deletions(-)
->   create mode 100644 lib/igt_configfs.c
->   create mode 100644 lib/igt_configfs.h
->   create mode 100644 lib/igt_vkms.c
->   create mode 100644 lib/igt_vkms.h
->   create mode 100644 tests/vkms/meson.build
->   create mode 100644 tests/vkms/vkms_configfs.c
->   create mode 100644 tests/vkms/vkms_test_config.json
-> 
+>   
+>   /*
+>    * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+>    * with vgem as well as a supported driver, you can end up with a
+>    * near-100% skip rate if you don't explicitly specify the device,
+>    * depending on device-load ordering.
+> + *
+> + * Exclude VKMS to prefer hardware drivers.
+>    */
+> -#define DRIVER_ANY 	~(DRIVER_VGEM)
+> +#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
+>   
+>   /*
+>    * Compile friendly enum for i915/xe.
+> @@ -135,6 +138,7 @@ void igt_require_i915(int fd);
+>   void igt_require_nouveau(int fd);
+>   void igt_require_vc4(int fd);
+>   void igt_require_xe(int fd);
+> +void igt_require_vkms(void);
+>   
+>   bool is_amdgpu_device(int fd);
+>   bool is_i915_device(int fd);
 
 -- 
 Louis Chauvet, Bootlin
