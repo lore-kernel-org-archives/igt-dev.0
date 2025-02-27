@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A716C19F32
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 14:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2B3AC1B0FF
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 14:54:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34C1310EB0C;
-	Thu, 27 Feb 2025 14:53:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AB9B10EB20;
+	Thu, 27 Feb 2025 14:54:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="O5+CWc8e";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YWtfxbmm";
 	dkim-atps=neutral
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58A1F10EB0C
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 14:53:52 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 175D84315F;
- Thu, 27 Feb 2025 14:53:44 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DB4510EB0C
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 14:54:22 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 48DC944308;
+ Thu, 27 Feb 2025 14:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740668025;
+ t=1740668061;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8vjUTMWaWgonpT2RoSkf5CPuE0obN5ZfQTYNBEVhhr8=;
- b=O5+CWc8e5vC+y6odB6TWrVcvJzmfPSPMJKew7KczpdJ7crZpOqlTyBly2LYQTViZMN3IU5
- SFG63dau0OvducgWrcYi0DSWydKuZpo269DN8dhrkesAKcHHBzFE8WpBbQe4bAXCmoEmU+
- N9PSdBweQRZFFr3ILUg3/NIm771Ej9f3UAYay89rwFySANd9CYla4kBaQ8xYfs50vl5nsX
- AXJYfubg/MShLxQOvebciahaLIgugmpYt3tWKp98zbVTehefH0tdTb+BICO1RtRKJLNNJM
- 864p04KM2Y6Az3NQQcs57ZJnDFuVFm3ekaIwA6u1FfKxU0cNLqgz3iY96GOSaQ==
-Message-ID: <a88e30c4-9af0-4d92-bbd7-426e41250937@bootlin.com>
-Date: Thu, 27 Feb 2025 15:53:44 +0100
+ bh=dEGQH8Y3lQGIj9d0ltcM7K9PYhD54EatOm1tr1JFjLQ=;
+ b=YWtfxbmmzfWPv3y3yUry6cbd2lWF6kQt08rT0K44WfewMubEFDdbK4Tj+FKrSJPo3GFCq+
+ 8PKdhB/VfLSm+4ojYq8klkb5CMEDzKeXYPsh86hLFrWvYQWDjc5xmUXRc61TgQbOLjBHOE
+ yU+0CEA0hOeoYwbo/Y71P+fF+csNTZG4bKY3tT1TatzgnC674lGcp46e8oyha6MnQCNag3
+ +sx9Q1uI7spZw0OCBw5hhycdQLpMIZqeFrDOc/9S6EaXvtkJ2xyEXNh9Svi3n/8uCGsbLD
+ +qf+3nR9AqLrsFPqHrKhZDYXf9Igka2QzO3M2Lq8fVqHtK3PFGuXmqsLYv8YXg==
+Message-ID: <f3198e42-92d7-45e2-8e0e-95836d705d22@bootlin.com>
+Date: Thu, 27 Feb 2025 15:54:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 22/39] tests/vkms_configfs: Test adding too many
- planes
+Subject: Re: [PATCH i-g-t 23/39] tests/vkms_configfs: Test not adding a
+ primary plane
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-23-jose.exposito89@gmail.com>
+ <20250218165011.9123-24-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -96,7 +96,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-23-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-24-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -121,37 +121,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> The kernel references pipeline items with 32 bit bitmaks, therefore,
-> adding more than 31 items causes an overflow.
-> 
-> Make sure that this limit is handled correctly.
+> Try to enable a VKMS device without a primary plane for one of its
+> CRTCs and test that it fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 53 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 53 insertions(+)
+>   tests/vkms/vkms_configfs.c | 51 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 51 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 47cfa475f..7df9bda01 100644
+> index 7df9bda01..fa20a364f 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -787,6 +787,58 @@ static void test_enable_no_planes(void)
+> @@ -839,6 +839,56 @@ static void test_enable_too_many_planes(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-too-many-planes
-> + * Description: Try to enable a VKMS device with too many planes and test that
-> + *              it fails.
+> + * SUBTEST: enable-no-primary-plane
+> + * Description: Try to enable a VKMS device without a primary plane for one of
+> + *              its CRTCs and test that it fails.
 > + */
 > +
-> +static void test_enable_too_many_planes(void)
+> +static void test_enable_no_primary_plane(void)
 > +{
 > +	igt_vkms_t *dev;
-> +	char plane_names[VKMS_MAX_PIPELINE_ITEMS][8];
 > +
 > +	igt_vkms_config_t cfg = {
 > +		.device_name = __func__,
@@ -161,28 +158,27 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +				.type = DRM_PLANE_TYPE_PRIMARY,
 > +				.possible_crtcs = { "crtc0" },
 > +			},
+> +			{
+> +				.name = "plane1",
+> +				.type = DRM_PLANE_TYPE_CURSOR,
+> +				.possible_crtcs = { "crtc1" },
+> +			},
 > +		},
 > +		.crtcs = {
 > +			{ .name = "crtc0" },
+> +			{ .name = "crtc1" },
 > +		},
 > +		.encoders = {
 > +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
+> +			{ .name = "encoder1", .possible_crtcs = { "crtc1" } },
 > +		},
 > +		.connectors = {
 > +			{
 > +				.name = "connector0",
-> +				.possible_encoders = { "encoder0" },
+> +				.possible_encoders = { "encoder0", "encoder1" },
 > +			},
 > +		},
 > +	};
-> +
-> +	for (int n = 1; n < 32; n++) {
-> +		snprintf(plane_names[n], sizeof(plane_names[n]), "plane%d", n);
-> +		cfg.planes[n] = (igt_vkms_plane_config_t){
-> +			.name = plane_names[n],
-> +			.possible_crtcs = { "crtc0" },
-> +		};
-> +	}
 > +
 > +	dev = igt_vkms_device_create_from_config(&cfg);
 > +	igt_assert(dev);
@@ -197,11 +193,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -811,6 +863,7 @@ igt_main
->   		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
+> @@ -864,6 +914,7 @@ igt_main
 >   		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
 >   		{ "enable-no-planes", test_enable_no_planes },
-> +		{ "enable-too-many-planes", test_enable_too_many_planes },
+>   		{ "enable-too-many-planes", test_enable_too_many_planes },
+> +		{ "enable-no-primary-plane", test_enable_no_primary_plane },
 >   	};
 >   
 >   	igt_fixture {
