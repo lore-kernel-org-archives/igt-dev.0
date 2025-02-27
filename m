@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE303C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB91DC19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:14:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B27110EAD7;
-	Thu, 27 Feb 2025 13:14:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93A5310EADC;
+	Thu, 27 Feb 2025 13:14:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="CyAgJSpJ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ANKk6oT4";
 	dkim-atps=neutral
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
  [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 938FC10EAD7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:48 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 93C2520576;
- Thu, 27 Feb 2025 13:14:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7083710E1C6
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:53 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1FC5120575;
+ Thu, 27 Feb 2025 13:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740662086;
+ t=1740662092;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KThNhO7HpX3W7XG80UKM2IeUWPa8v3keY5ju3Nd2GK8=;
- b=CyAgJSpJTCl2+p4W94+GmApNT7m7IdeRFpt/fqG7z3qGvU+9LD0KQGEosUhkEz4TNBZ+r3
- hr3GopYDYbiUd8yuO3OJJJJfWFvbVeQ+5m0dN/BI/BYpD7enXrvqD6K5pkGNrBLFknESOR
- nawgT9Z1qEH7JVldtFQAJiR6vFlN+dY1bth4Peo4WEa20+c/VO+bgigkUUsLrXHXUhStkt
- saB7ImXp14K6usKSyckozrYeXE3IS1QzeLG2lKWM5mavtTzhgPvPvBxVnEVVc2mYoqYTe7
- qgRFHlbJEnhVhT2IzdRls6hl5jlvHZ1Nd/gs4VLruy8rzY42DR7Cs6/B27iVuw==
-Message-ID: <b8cc4499-ef71-4475-b559-32d0d0793980@bootlin.com>
-Date: Thu, 27 Feb 2025 14:14:46 +0100
+ bh=oWFXzqpYJlHEdyRRdCc9pTAhxysbhIbRx7JVUHebIl0=;
+ b=ANKk6oT4lIwja+o//mVNLXFnqwEfCt0bkEqbHW08gyUpMmu/jwbZrt10cjM5Tg97Vf1Pqj
+ h/tWL1NOSGYTzsyRTsWf6ocnwksYLp/ujwj2mS1QqoAyCs7+jtmUxD+6rx9gGFzPjOKECd
+ e8vmCmChAi+bMPib6T2IjGRuPMN8ak3xeSDGOXQNXq0g2aEUVMQz6mu0QyY09Yd6iBjMbR
+ aU0lQBHvbNoB8ieEFOmZS8bH9NrR1RW1k1YlWIBR9yRHbWduNgvn6SbtcBsMSnipR4Qw+u
+ cn/4k0Yms3eCiElIr9qbrzpVGnyuxY2HNOh8dnHuQXIcdo1H0lqM7TF8E4CXSA==
+Message-ID: <f4130bca-629f-417b-9a1e-e01d38aeaea2@bootlin.com>
+Date: Thu, 27 Feb 2025 14:14:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 06/39] tests/vkms_configfs: Test device invalid
- values
+Subject: Re: [PATCH i-g-t 13/39] lib/vkms: Test encoder default files
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-7-jose.exposito89@gmail.com>
+ <20250218165011.9123-14-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -96,12 +95,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-7-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-14-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -121,106 +120,91 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> For a VKMS device, it is only possible to set invalid values in two
-> places:
-> 
-> - The device name: The "vkms" name is reserved for the default device
->    created by the driver.
-> - The device enabled status: It should only accept boolean values.
-> 
-> Test that setting wrong values fails and that the device is not
-> accidentally enabled.
+> Add a helper to create a encoder and a test checking that the default
+> files and directories are created.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 > ---
->   tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 60 insertions(+)
+>   lib/igt_vkms.c             | 12 ++++++++++++
+>   lib/igt_vkms.h             |  2 ++
+>   tests/vkms/vkms_configfs.c | 29 +++++++++++++++++++++++++++++
+>   3 files changed, 43 insertions(+)
 > 
+> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+> index d881a2417..299891377 100644
+> --- a/lib/igt_vkms.c
+> +++ b/lib/igt_vkms.c
+> @@ -416,3 +416,15 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+>   
+>   	write_bool(path, writeback);
+>   }
+> +
+> +/**
+> + * igt_vkms_device_add_encoder:
+> + * @dev: Device to add the encoder to
+> + * @name: Encoder name
+> + *
+> + * Add a new encoder to the VKMS device.
+> + */
+> +void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
+> +{
+> +	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
+> +}
+> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+> index cb0278544..b4b048c6d 100644
+> --- a/lib/igt_vkms.h
+> +++ b/lib/igt_vkms.h
+> @@ -38,4 +38,6 @@ bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
+>   void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+>   					 bool writeback);
+>   
+> +void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
+> +
+>   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 6c7d0310c..79023359a 100644
+> index af42e364d..753ea2d85 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -24,6 +24,11 @@
->   #include "igt.h"
->   #include "igt_vkms.h"
->   
-> +struct invalid_value {
-> +	const char *value;
-> +	int size;
-> +};
-> +
->   static void assert_default_files(const char *path,
->   				 const char **files, size_t n_files,
->   				 const char **dirs, size_t n_dirs)
-> @@ -63,6 +68,32 @@ static void assert_default_files(const char *path,
->   	}
->   }
->   
-> +static void assert_wrong_bool_values(const char *path)
-> +{
-> +	struct invalid_value invalid_bool_values[] = {
-> +		{ "", 0 },
-> +		{ "\0", 1 },
-> +		{ "-1", 2 },
-> +		{ "2", 1 },
-> +		{ "o", 1 },
-> +		{ "invalid", 8 },
-> +	};
-> +	int fd;
-> +	int ret;
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(invalid_bool_values); i++) {
-> +		struct invalid_value v = invalid_bool_values[i];
-> +
-> +		fd = open(path, O_WRONLY);
-> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
-> +
-> +		ret = write(fd, v.value, v.size);
-> +		igt_assert(ret <= 0);
-
-Can you add some information about the attempted value:
-
-	"Invalid success write of %s in the file %s", v.value, path
-
-> +
-> +		close(fd);
-> +	}
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -111,6 +142,34 @@ static void test_device_default_values(void)
+> @@ -345,6 +345,34 @@ static void test_crtc_wrong_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: device-wrong-values
-> + * Description: Check that setting unexpected values doesn't work.
+> + * SUBTEST: encoder-default-files
+> + * Description: Test that creating a encoder creates the default files and
+> + *              directories.
 > + */
 > +
-> +static void test_device_wrong_values(void)
+> +static void test_encoder_default_files(void)
 > +{
 > +	igt_vkms_t *dev;
 > +	char path[PATH_MAX];
 > +
-> +	/* It is not possible to create devices named "vkms" to avoid clashes
-> +	 * with the default device created by VKMS
-> +	 */
-> +	dev = igt_vkms_device_create("vkms");
-> +	igt_assert(!dev);
+> +	const char *dirs[] = {
+> +		"possible_crtcs",
+> +	};
 > +
-> +	/* Test invalid values for "enabled" */
 > +	dev = igt_vkms_device_create(__func__);
-
-Good idea to name the device from the function!
-
 > +	igt_assert(dev);
 > +
-> +	snprintf(path, sizeof(path), "%s/enabled", dev->path);
-> +
-> +	assert_wrong_bool_values(path);
-> +	igt_assert(!igt_vkms_device_is_enabled(dev));
+> +	igt_vkms_device_add_encoder(dev, "encoder0");
+
+I maybe found a solution for the duplication of path generation, can the 
+igt_vkms_device_add_* return the path of the object?
+
+To avoid malloc/free, you can simply add an optional pointer "path":
+
+void igt_vkms_device_add_encoder(dev, name, path, max_len) {
+	if (path)
+		igt_assert_le(snprintf(path, max_len, "....", ...),
+				max_len);
+	[...]
+}
+
+> +	snprintf(path, sizeof(path), "%s/encoders/encoder0", dev->path);
+> +	assert_default_files(path,
+> +			     NULL, 0,
+> +			     dirs, ARRAY_SIZE(dirs));
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -228,11 +212,11 @@ Good idea to name the device from the function!
 >   igt_main
 >   {
 >   	struct {
-> @@ -119,6 +178,7 @@ igt_main
->   	} tests[] = {
->   		{ "device-default-files", test_device_default_files },
->   		{ "device-default-values", test_device_default_values },
-> +		{ "device-wrong-values", test_device_wrong_values },
+> @@ -360,6 +388,7 @@ igt_main
+>   		{ "crtc-default-files", test_crtc_default_files },
+>   		{ "crtc-default-values", test_crtc_default_values },
+>   		{ "crtc-wrong-values", test_crtc_wrong_values },
+> +		{ "encoder-default-files", test_encoder_default_files },
 >   	};
 >   
 >   	igt_fixture {
