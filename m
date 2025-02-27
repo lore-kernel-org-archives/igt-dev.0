@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A3CC021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE303C19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:14:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34FEB10E369;
-	Thu, 27 Feb 2025 13:14:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B27110EAD7;
+	Thu, 27 Feb 2025 13:14:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="moHo2Wfk";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="CyAgJSpJ";
 	dkim-atps=neutral
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EEFF10E369
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:41 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7E7B1441D1;
- Thu, 27 Feb 2025 13:14:39 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
+ [217.70.183.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 938FC10EAD7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:48 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 93C2520576;
+ Thu, 27 Feb 2025 13:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740662079;
+ t=1740662086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=0ZQs/l4JYDSyEBVURZU1+fjtlbd9ICOAACkUqIKUjlw=;
- b=moHo2WfkCYRJzgS4XWujubINZa+ELyf9sCl0Bz6bWbHhtZ63UmFUmt3FFk8ndMcZbCXwN2
- +tLsdv3a2NrS06Ub14/bRADKpt8cII9Y46eLThLcIEZ40PPPPo4Esm4Kacx2UuDj7qyvM6
- /jqpoXAj9WwFoWBaIuYLUpIVjqkNQrIUfFgx8kGM244PIQIuejUTgZKPC2byoCvKsFKmON
- ega+TA7d50NCzIcKwZzw53/XnpJzYvja6aL3vwmO1wuLNmTRyUm9dd4GMMDGwGES7CwsvL
- bY8vgyqJ48rwrzlOOxgjAGyr+wTUAL7kLw/uDww47IPK6ljXc1VrEm0IyWfhMw==
-Message-ID: <7af4322f-9443-48d4-8106-e79dc89be9e0@bootlin.com>
-Date: Thu, 27 Feb 2025 14:14:39 +0100
+ bh=KThNhO7HpX3W7XG80UKM2IeUWPa8v3keY5ju3Nd2GK8=;
+ b=CyAgJSpJTCl2+p4W94+GmApNT7m7IdeRFpt/fqG7z3qGvU+9LD0KQGEosUhkEz4TNBZ+r3
+ hr3GopYDYbiUd8yuO3OJJJJfWFvbVeQ+5m0dN/BI/BYpD7enXrvqD6K5pkGNrBLFknESOR
+ nawgT9Z1qEH7JVldtFQAJiR6vFlN+dY1bth4Peo4WEa20+c/VO+bgigkUUsLrXHXUhStkt
+ saB7ImXp14K6usKSyckozrYeXE3IS1QzeLG2lKWM5mavtTzhgPvPvBxVnEVVc2mYoqYTe7
+ qgRFHlbJEnhVhT2IzdRls6hl5jlvHZ1Nd/gs4VLruy8rzY42DR7Cs6/B27iVuw==
+Message-ID: <b8cc4499-ef71-4475-b559-32d0d0793980@bootlin.com>
+Date: Thu, 27 Feb 2025 14:14:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 03/39] lib/igt_configfs: Add helper to mount configfs
+Subject: Re: [PATCH i-g-t 06/39] tests/vkms_configfs: Test device invalid
+ values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
-Cc: Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-4-jose.exposito89@gmail.com>
+ <20250218165011.9123-7-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -96,13 +96,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-4-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-7-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
- gdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -122,132 +121,121 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Add a new helper function to mount configfs. Required to test VKMS
-> configuration.
+> For a VKMS device, it is only possible to set invalid values in two
+> places:
 > 
-> Co-developed-by: Jim Shargo <jshargo@chromium.org>
-> Signed-off-by: Jim Shargo <jshargo@chromium.org>
-> Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
-> Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+> - The device name: The "vkms" name is reserved for the default device
+>    created by the driver.
+> - The device enabled status: It should only accept boolean values.
+> 
+> Test that setting wrong values fails and that the device is not
+> accidentally enabled.
+> 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
 > ---
->   lib/igt.h          |  1 +
->   lib/igt_configfs.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_configfs.h | 13 +++++++++++
->   lib/meson.build    |  1 +
->   4 files changed, 72 insertions(+)
->   create mode 100644 lib/igt_configfs.c
->   create mode 100644 lib/igt_configfs.h
+>   tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 60 insertions(+)
 > 
-> diff --git a/lib/igt.h b/lib/igt.h
-> index 58c39e098..173ca70bf 100644
-> --- a/lib/igt.h
-> +++ b/lib/igt.h
-> @@ -27,6 +27,7 @@
->   #include "drmtest.h"
->   #include "i915_3d.h"
->   #include "igt_aux.h"
-> +#include "igt_configfs.h"
->   #include "igt_core.h"
->   #include "igt_debugfs.h"
->   #include "igt_draw.h"
-> diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
-> new file mode 100644
-> index 000000000..cd8674cb5
-> --- /dev/null
-> +++ b/lib/igt_configfs.c
-> @@ -0,0 +1,57 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Google LLC.
-> + * Copyright © 2023 Collabora, Ltd.
-> + * Copyright © 2024 Red Hat, Inc.
-> + */
+> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+> index 6c7d0310c..79023359a 100644
+> --- a/tests/vkms/vkms_configfs.c
+> +++ b/tests/vkms/vkms_configfs.c
+> @@ -24,6 +24,11 @@
+>   #include "igt.h"
+>   #include "igt_vkms.h"
+>   
+> +struct invalid_value {
+> +	const char *value;
+> +	int size;
+> +};
 > +
-> +#include <sys/mount.h>
-> +
-> +#include "igt_aux.h"
-> +#include "igt_configfs.h"
-> +
-> +/**
-> + * SECTION:igt_configfs
-> + * @short_description: Support code for configfs features
-> + * @title: configfs
-> + * @include: igt_configfs.h
-> + *
-> + * This library provides helpers to access configfs features.
-> + */
-> +
-> +/*
-> + * General configfs helpers
-> + */
-> +
-> +static const char *__igt_configfs_mount(void)
+>   static void assert_default_files(const char *path,
+>   				 const char **files, size_t n_files,
+>   				 const char **dirs, size_t n_dirs)
+> @@ -63,6 +68,32 @@ static void assert_default_files(const char *path,
+>   	}
+>   }
+>   
+> +static void assert_wrong_bool_values(const char *path)
 > +{
-> +	if (igt_is_mountpoint("/sys/kernel/config"))
-> +		return "/sys/kernel/config";
+> +	struct invalid_value invalid_bool_values[] = {
+> +		{ "", 0 },
+> +		{ "\0", 1 },
+> +		{ "-1", 2 },
+> +		{ "2", 1 },
+> +		{ "o", 1 },
+> +		{ "invalid", 8 },
+> +	};
+> +	int fd;
+> +	int ret;
 > +
-> +	if (igt_is_mountpoint("/config"))
-> +		return "/config";
+> +	for (int i = 0; i < ARRAY_SIZE(invalid_bool_values); i++) {
+> +		struct invalid_value v = invalid_bool_values[i];
 > +
-> +	if (mount("config", "/sys/kernel/config", "configfs", 0, 0))
-> +		return NULL;
+> +		fd = open(path, O_WRONLY);
+> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
 > +
-> +	return "/sys/kernel/config";
+> +		ret = write(fd, v.value, v.size);
+> +		igt_assert(ret <= 0);
+
+Can you add some information about the attempted value:
+
+	"Invalid success write of %s in the file %s", v.value, path
+
+> +
+> +		close(fd);
+> +	}
 > +}
 > +
+>   /**
+>    * SUBTEST: device-default-files
+>    * Description: Test that creating a VKMS device creates the default files and
+> @@ -111,6 +142,34 @@ static void test_device_default_values(void)
+>   	igt_vkms_device_destroy(dev);
+>   }
+>   
 > +/**
-> + * igt_configfs_mount:
-> + *
-> + * This attempts to locate where configfs is mounted on the filesystem,
-> + * and if not found, will then try to mount configfs at /sys/kernel/config.
-> + *
-> + * Returns:
-> + * The path to the configfs mount point (e.g. /sys/kernel/config)
+> + * SUBTEST: device-wrong-values
+> + * Description: Check that setting unexpected values doesn't work.
 > + */
-> +const char *igt_configfs_mount(void)
+> +
+> +static void test_device_wrong_values(void)
 > +{
-> +	static const char *path;
+> +	igt_vkms_t *dev;
+> +	char path[PATH_MAX];
 > +
-> +	if (!path)
-> +		path = __igt_configfs_mount();
+> +	/* It is not possible to create devices named "vkms" to avoid clashes
+> +	 * with the default device created by VKMS
+> +	 */
+> +	dev = igt_vkms_device_create("vkms");
+> +	igt_assert(!dev);
 > +
-> +	return path;
+> +	/* Test invalid values for "enabled" */
+> +	dev = igt_vkms_device_create(__func__);
+
+Good idea to name the device from the function!
+
+> +	igt_assert(dev);
+> +
+> +	snprintf(path, sizeof(path), "%s/enabled", dev->path);
+> +
+> +	assert_wrong_bool_values(path);
+> +	igt_assert(!igt_vkms_device_is_enabled(dev));
+> +
+> +	igt_vkms_device_destroy(dev);
 > +}
-> diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
-> new file mode 100644
-> index 000000000..4cbe9001e
-> --- /dev/null
-> +++ b/lib/igt_configfs.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2023 Google LLC.
-> + * Copyright © 2023 Collabora, Ltd.
-> + * Copyright © 2024 Red Hat, Inc.
-> + */
 > +
-> +#ifndef __IGT_CONFIGFS_H__
-> +#define __IGT_CONFIGFS_H__
-> +
-> +const char *igt_configfs_mount(void);
-> +
-> +#endif /* __IGT_CONFIGFS_H__ */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 9fffdd3c6..201b1fbb4 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -18,6 +18,7 @@ lib_sources = [
->   	'i915/i915_crc.c',
->   	'igt_collection.c',
->   	'igt_color_encoding.c',
-> +	'igt_configfs.c',
->   	'igt_facts.c',
->   	'igt_crc.c',
->   	'igt_debugfs.c',
+>   igt_main
+>   {
+>   	struct {
+> @@ -119,6 +178,7 @@ igt_main
+>   	} tests[] = {
+>   		{ "device-default-files", test_device_default_files },
+>   		{ "device-default-values", test_device_default_values },
+> +		{ "device-wrong-values", test_device_wrong_values },
+>   	};
+>   
+>   	igt_fixture {
 
 -- 
 Louis Chauvet, Bootlin
