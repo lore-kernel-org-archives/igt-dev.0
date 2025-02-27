@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED7F2C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A3CC021BE
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:14:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A745110EAD7;
-	Thu, 27 Feb 2025 13:12:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34FEB10E369;
+	Thu, 27 Feb 2025 13:14:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="J+BPoMRV";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="moHo2Wfk";
 	dkim-atps=neutral
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F0CD10EAD7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:48 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B0BFC443E4;
- Thu, 27 Feb 2025 13:12:47 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EEFF10E369
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:14:41 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7E7B1441D1;
+ Thu, 27 Feb 2025 13:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740661967;
+ t=1740662079;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=bPmbwHrRtLzYex/3cj/ZYYeASNZsDzyfm2Zoy9590ec=;
- b=J+BPoMRVuWzA2tLTN8QfsXqpjLiThYvTYY7NurYGPV8THjEFr6+/fgI/OUqFZQTSGGQRdR
- u7ks+P4umpUANizgDcyAMNCwEuegOWozBKNSaH1wMdYWO3YIRVMiwqmLDWyO7l1ZIAIql5
- ZDk5bsEigQzF8l8Un2KVHzRqV1O3xNAC6XTIX/CXgkoSs78Na1gZ4RRJsWOVBTZgBdYpq+
- rENpOHRojSRs3yBKkRtngfhQxCmruxx5c5OVOUWVIuXCufbFOXXQdoyEAe/RAqQ/WXcvua
- uK7xTwytHvkLB8XOBn8g/JCaJRW+w6TGHj/kGvNTaWoF8dKCmHW2VOy/9+lRww==
-Message-ID: <0d0f0367-7c60-4f18-bd94-18db713b530e@bootlin.com>
-Date: Thu, 27 Feb 2025 14:12:47 +0100
+ bh=0ZQs/l4JYDSyEBVURZU1+fjtlbd9ICOAACkUqIKUjlw=;
+ b=moHo2WfkCYRJzgS4XWujubINZa+ELyf9sCl0Bz6bWbHhtZ63UmFUmt3FFk8ndMcZbCXwN2
+ +tLsdv3a2NrS06Ub14/bRADKpt8cII9Y46eLThLcIEZ40PPPPo4Esm4Kacx2UuDj7qyvM6
+ /jqpoXAj9WwFoWBaIuYLUpIVjqkNQrIUfFgx8kGM244PIQIuejUTgZKPC2byoCvKsFKmON
+ ega+TA7d50NCzIcKwZzw53/XnpJzYvja6aL3vwmO1wuLNmTRyUm9dd4GMMDGwGES7CwsvL
+ bY8vgyqJ48rwrzlOOxgjAGyr+wTUAL7kLw/uDww47IPK6ljXc1VrEm0IyWfhMw==
+Message-ID: <7af4322f-9443-48d4-8106-e79dc89be9e0@bootlin.com>
+Date: Thu, 27 Feb 2025 14:14:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 11/39] lib/vkms: Test CRTC default values
+Subject: Re: [PATCH i-g-t 03/39] lib/igt_configfs: Add helper to mount configfs
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
+Cc: Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-12-jose.exposito89@gmail.com>
+ <20250218165011.9123-4-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -95,12 +96,13 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-12-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-4-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
+ gdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -120,102 +122,132 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Add a helper to get the CRTC writeback status and test that the default
-> value is set when a new CRTC is created.
+> Add a new helper function to mount configfs. Required to test VKMS
+> configuration.
 > 
+> Co-developed-by: Jim Shargo <jshargo@chromium.org>
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+> Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   lib/igt_vkms.c             | 19 +++++++++++++++++++
->   lib/igt_vkms.h             |  1 +
->   tests/vkms/vkms_configfs.c | 20 ++++++++++++++++++++
->   3 files changed, 40 insertions(+)
+>   lib/igt.h          |  1 +
+>   lib/igt_configfs.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_configfs.h | 13 +++++++++++
+>   lib/meson.build    |  1 +
+>   4 files changed, 72 insertions(+)
+>   create mode 100644 lib/igt_configfs.c
+>   create mode 100644 lib/igt_configfs.h
 > 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index a7dad43e2..4021f9aea 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -24,6 +24,7 @@
->   #define VKMS_ROOT_DIR_NAME		"vkms"
->   #define VKMS_FILE_ENABLED		"enabled"
->   #define VKMS_FILE_PLANE_TYPE		"type"
-> +#define VKMS_FILE_CRTC_WRITEBACK	"writeback"
->   
->   enum vkms_pipeline_item {
->   	VKMS_PIPELINE_ITEM_PLANE,
-> @@ -377,3 +378,21 @@ void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name)
->   {
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CRTC, name);
->   }
+> diff --git a/lib/igt.h b/lib/igt.h
+> index 58c39e098..173ca70bf 100644
+> --- a/lib/igt.h
+> +++ b/lib/igt.h
+> @@ -27,6 +27,7 @@
+>   #include "drmtest.h"
+>   #include "i915_3d.h"
+>   #include "igt_aux.h"
+> +#include "igt_configfs.h"
+>   #include "igt_core.h"
+>   #include "igt_debugfs.h"
+>   #include "igt_draw.h"
+> diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
+> new file mode 100644
+> index 000000000..cd8674cb5
+> --- /dev/null
+> +++ b/lib/igt_configfs.c
+> @@ -0,0 +1,57 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
+> + */
+> +
+> +#include <sys/mount.h>
+> +
+> +#include "igt_aux.h"
+> +#include "igt_configfs.h"
 > +
 > +/**
-> + * igt_vkms_crtc_is_writeback_enabled:
-> + * @dev: Device the CRTC belongs to
-> + * @name: CRTC name
+> + * SECTION:igt_configfs
+> + * @short_description: Support code for configfs features
+> + * @title: configfs
+> + * @include: igt_configfs.h
 > + *
-> + * Indicate whether a VKMS CRTC writeback connector is enabled or not.
+> + * This library provides helpers to access configfs features.
 > + */
-> +bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name)
+> +
+> +/*
+> + * General configfs helpers
+> + */
+> +
+> +static const char *__igt_configfs_mount(void)
 > +{
-> +	char path[PATH_MAX];
+> +	if (igt_is_mountpoint("/sys/kernel/config"))
+> +		return "/sys/kernel/config";
 > +
-> +	snprintf(path, sizeof(path), "%s/%s/%s/%s", dev->path,
-> +		 get_pipeline_item_dir_name(VKMS_PIPELINE_ITEM_CRTC), name,
-> +		 VKMS_FILE_CRTC_WRITEBACK);
+> +	if (igt_is_mountpoint("/config"))
+> +		return "/config";
 > +
-> +	return read_bool(path);
+> +	if (mount("config", "/sys/kernel/config", "configfs", 0, 0))
+> +		return NULL;
+> +
+> +	return "/sys/kernel/config";
 > +}
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 7f70f92d3..59f6a9775 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -34,5 +34,6 @@ int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
->   void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
->   
->   void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name);
-> +bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
->   
->   #endif /* __IGT_VKMS_H__ */
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 398232c03..95779d336 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -300,6 +300,25 @@ static void test_crtc_default_files(void)
->   	igt_vkms_device_destroy(dev);
->   }
->   
+> +
 > +/**
-> + * SUBTEST: crtc-default-values
-> + * Description: Check that the default values for the CRTC are correct.
+> + * igt_configfs_mount:
+> + *
+> + * This attempts to locate where configfs is mounted on the filesystem,
+> + * and if not found, will then try to mount configfs at /sys/kernel/config.
+> + *
+> + * Returns:
+> + * The path to the configfs mount point (e.g. /sys/kernel/config)
+> + */
+> +const char *igt_configfs_mount(void)
+> +{
+> +	static const char *path;
+> +
+> +	if (!path)
+> +		path = __igt_configfs_mount();
+> +
+> +	return path;
+> +}
+> diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
+> new file mode 100644
+> index 000000000..4cbe9001e
+> --- /dev/null
+> +++ b/lib/igt_configfs.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
 > + */
 > +
-> +static void test_crtc_default_values(void)
-> +{
-> +	igt_vkms_t *dev;
+> +#ifndef __IGT_CONFIGFS_H__
+> +#define __IGT_CONFIGFS_H__
 > +
-> +	dev = igt_vkms_device_create(__func__);
-> +	igt_assert(dev);
+> +const char *igt_configfs_mount(void);
 > +
-> +	igt_vkms_device_add_crtc(dev, "crtc0");
-> +
-> +	igt_assert(!igt_vkms_crtc_is_writeback_enabled(dev, "crtc0"));
-> +
-> +	igt_vkms_device_destroy(dev);
-> +}
-> +
->   igt_main
->   {
->   	struct {
-> @@ -313,6 +332,7 @@ igt_main
->   		{ "plane-default-values", test_plane_default_values },
->   		{ "plane-wrong-values", test_plane_wrong_values },
->   		{ "crtc-default-files", test_crtc_default_files },
-> +		{ "crtc-default-values", test_crtc_default_values },
->   	};
->   
->   	igt_fixture {
+> +#endif /* __IGT_CONFIGFS_H__ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 9fffdd3c6..201b1fbb4 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -18,6 +18,7 @@ lib_sources = [
+>   	'i915/i915_crc.c',
+>   	'igt_collection.c',
+>   	'igt_color_encoding.c',
+> +	'igt_configfs.c',
+>   	'igt_facts.c',
+>   	'igt_crc.c',
+>   	'igt_debugfs.c',
 
 -- 
 Louis Chauvet, Bootlin
