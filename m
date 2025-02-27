@@ -4,43 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E4EC021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75231C021BE
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0CB410EAEA;
-	Thu, 27 Feb 2025 13:12:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3270B10EAE7;
+	Thu, 27 Feb 2025 13:12:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AVmsayKC";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="jjBcOTVc";
 	dkim-atps=neutral
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
  [217.70.183.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8D8410EAEA
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:18 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 697DF43289;
- Thu, 27 Feb 2025 13:12:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D37710EAD7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:22 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7BF6F43289;
+ Thu, 27 Feb 2025 13:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740661936;
+ t=1740661941;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=g174i32zNW5v7oD0yhiRpoWJ92IPkWRaWgbcoIQYC4w=;
- b=AVmsayKCVNhvSKCbJLgLBY2qJxJ8VR92/WNOq+sL4AYEpdc1eHpiharzS2Rphhor7BBgcM
- TYuwRrVrpC1qIcwgHGYyrbR/LFsmeYnAHAMcVmY2CMqeN6tGfhNxRm6O1v0NZkDUsF2IIb
- 9XNLFefWTatTr1Xul58zq10nTxkWnLLKTBcDsQ2u8xCtA9ZDNoPcnTa6xC2Xjs3rakeI0T
- pT9pz3Du8Yl1xJAKyMYE4eWzDvgouaNLJUCvi+VNzRYOZt5RlcCrJ23rpgcamR6QFEqaXP
- s039LH6uiMxPgNsI2QO2O8ZUfeYPxGEyaYOGxRdOBuzVeKn59X8KGx8BU6i19w==
-Message-ID: <5a65a7b8-269f-4017-bf2f-5e1601336a1b@bootlin.com>
-Date: Thu, 27 Feb 2025 14:12:13 +0100
+ bh=uwZK9dnH34RXCMQidsflhpIEud8tGi2CMy5Foyp3uEk=;
+ b=jjBcOTVc+0UrIEklmxeCMQdHlPLwGVTazz1rUiniDuBZz5CqxiAMUoCSVK1v4OxL7pE5hO
+ YcbhN3J+D4tijKHf9Bcbjr2/UmDe+AN75K9xzGb8tIppxW5bAWs/6CzmnrqDz38y9Ov69e
+ 1MNqRIfEjext6RR/RpRFfU3NfZOjlNj2WOdJmzEVdvhcj8BOew3ZW3JWsKOGTR12MlYaYx
+ MHK4yYq7aP3k+sPyC3Ui7MlhNg+Q8Jo3sv331/3XQIert3vTraKvAa1zFRxsLY1SPlPnP7
+ 5NpymsY/99Z6k94UjgV7ZV3y+AUwpagdvTNEB+j9625g4tejlEOO1ArISeTYGQ==
+Message-ID: <f065b924-ef0a-43d7-ab74-6502c86cdd1e@bootlin.com>
+Date: Thu, 27 Feb 2025 14:12:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 01/39] lib/drmtest: Add VKMS as a known driver type
+Subject: Re: [PATCH i-g-t 02/39] lib/igt_debugfs: Move is_mountpoint() to
+ igt_aux
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-2-jose.exposito89@gmail.com>
+ <20250218165011.9123-3-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -96,12 +97,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-2-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-3-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
  gdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -122,8 +123,10 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> As we are going to add VKMS specific tests, allow to check if it is
-> available.
+> Rename is_mountpoint() to igt_is_mountpoint() and make it available in
+> igt_aux.h/c.
+> 
+> Refactor, no functional change.
 > 
 > Co-developed-by: Jim Shargo <jshargo@chromium.org>
 > Signed-off-by: Jim Shargo <jshargo@chromium.org>
@@ -131,85 +134,117 @@ Le 18/02/2025 à 17:49, José Expósito a écrit :
 > Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 > ---
->   lib/drmtest.c | 18 ++++++++++++++++++
->   lib/drmtest.h |  8 ++++++--
->   2 files changed, 24 insertions(+), 2 deletions(-)
+>   lib/igt_aux.c     | 25 +++++++++++++++++++++++++
+>   lib/igt_aux.h     |  2 ++
+>   lib/igt_debugfs.c | 29 ++---------------------------
+>   3 files changed, 29 insertions(+), 27 deletions(-)
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 436b6de78..2cc6e0c29 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -971,3 +971,21 @@ void igt_require_xe(int fd)
->   {
->   	igt_require(is_xe_device(fd));
+> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+> index f5bf48da6..d8f1f6982 100644
+> --- a/lib/igt_aux.c
+> +++ b/lib/igt_aux.c
+> @@ -1374,6 +1374,31 @@ static bool get_process_ids(struct igt_process *prcs)
+>   	return prcs->tid != 0;
 >   }
-> +
-> +void igt_require_vkms(void)
+>   
+
+As this become a public function, maybe you can add some doc:
+
+/**
+   * igt_is_mountpoint() - Check if a path is a mounted filesystem
+   * @path: Root directory to test
+   *
+   * Returns: true if @path is the root of a mounted filesystem
+   */
+
+With this kind of doc:
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
+> +bool igt_is_mountpoint(const char *path)
 > +{
-> +	/*
-> +	 * Since VKMS can create and destroy virtual drivers at will, instead
-> +	 * look to make sure the driver is installed.
-> +	 */
-> +	struct stat s = {};
-> +	int ret;
-> +	const char *vkms_module_dir = "/sys/module/vkms";
+> +	char buf[strlen(path) + 4];
+> +	struct stat st;
+> +	dev_t dev;
 > +
-> +	ret = stat(vkms_module_dir, &s);
+> +	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
+> +	if (stat(buf, &st))
+> +		return false;
 > +
-> +	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
-> +		      vkms_module_dir, ret, strerror(ret));
-> +	igt_require_f(S_ISDIR(s.st_mode),
-> +		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
+> +	if (!S_ISDIR(st.st_mode))
+> +		return false;
+> +
+> +	dev = st.st_dev;
+> +
+> +	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
+> +	if (stat(buf, &st))
+> +		return false;
+> +
+> +	if (!S_ISDIR(st.st_mode))
+> +		return false;
+> +
+> +	return dev != st.st_dev;
 > +}
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 27e5a18e2..1b57e49ec 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -54,15 +54,18 @@ int __get_drm_device_name(int fd, char *name, int name_size);
->   #define DRIVER_PANFROST	(1 << 5)
->   #define DRIVER_MSM	(1 << 6)
->   #define DRIVER_XE	(1 << 7)
-> -#define DRIVER_VMWGFX   (1 << 8)
-> +#define DRIVER_VKMS	(1 << 8)
-> +#define DRIVER_VMWGFX	(1 << 9)
-
-Is it normal to change the DRIVER_VMWGFX value?
-
-I also found the `module` list in drmtest.c that use this value, I think 
-this list is used to do the proper `modprobe` during a open_driver().
-
-Maybe you can use it, so you will be able to do:
-
-	drm_load_module(DRIVER_VKMS); // (If I understand correctly, this fails 
-silently)
-	igt_require_vkms();
-
-And future tests requiring a vkms device will be able to do:
-
-	open_driver(DRIVER_VKMS);
-
+> +
+>   /**
+>    * igt_is_process_running:
+>    * @comm: Name of process in the form found in /proc/pid/comm (limited to 15
+> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+> index bfd83adca..e8a1788b2 100644
+> --- a/lib/igt_aux.h
+> +++ b/lib/igt_aux.h
+> @@ -314,6 +314,8 @@ double igt_stop_siglatency(struct igt_mean *result);
 >   
->   /*
->    * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
->    * with vgem as well as a supported driver, you can end up with a
->    * near-100% skip rate if you don't explicitly specify the device,
->    * depending on device-load ordering.
-> + *
-> + * Exclude VKMS to prefer hardware drivers.
+>   bool igt_allow_unlimited_files(void);
+>   
+> +bool igt_is_mountpoint(const char *path);
+> +
+>   int igt_is_process_running(const char *comm);
+>   int igt_terminate_process(int sig, const char *comm);
+>   void igt_lsof(const char *dpath);
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index 8ac215a76..210a9cea0 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -67,37 +67,12 @@
+>    * General debugfs helpers
 >    */
-> -#define DRIVER_ANY 	~(DRIVER_VGEM)
-> +#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
 >   
->   /*
->    * Compile friendly enum for i915/xe.
-> @@ -135,6 +138,7 @@ void igt_require_i915(int fd);
->   void igt_require_nouveau(int fd);
->   void igt_require_vc4(int fd);
->   void igt_require_xe(int fd);
-> +void igt_require_vkms(void);
+> -static bool is_mountpoint(const char *path)
+> -{
+> -	char buf[strlen(path) + 4];
+> -	struct stat st;
+> -	dev_t dev;
+> -
+> -	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
+> -	if (stat(buf, &st))
+> -		return false;
+> -
+> -	if (!S_ISDIR(st.st_mode))
+> -		return false;
+> -
+> -	dev = st.st_dev;
+> -
+> -	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
+> -	if (stat(buf, &st))
+> -		return false;
+> -
+> -	if (!S_ISDIR(st.st_mode))
+> -		return false;
+> -
+> -	return dev != st.st_dev;
+> -}
+> -
+>   static const char *__igt_debugfs_mount(void)
+>   {
+> -	if (is_mountpoint("/sys/kernel/debug"))
+> +	if (igt_is_mountpoint("/sys/kernel/debug"))
+>   		return "/sys/kernel/debug";
 >   
->   bool is_amdgpu_device(int fd);
->   bool is_i915_device(int fd);
+> -	if (is_mountpoint("/debug"))
+> +	if (igt_is_mountpoint("/debug"))
+>   		return "/debug";
+>   
+>   	if (mount("debug", "/sys/kernel/debug", "debugfs", 0, 0))
 
 -- 
 Louis Chauvet, Bootlin
