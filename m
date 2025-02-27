@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06AB4C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77B6C021BE
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B5AFA10E1C6;
-	Thu, 27 Feb 2025 13:15:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8802610EAD7;
+	Thu, 27 Feb 2025 13:15:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="C9TGDG58";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="csREaBzf";
 	dkim-atps=neutral
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
  [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0F8B10E1C6
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:15:02 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8835A20578;
- Thu, 27 Feb 2025 13:15:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BD4510EAD7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:15:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 397582057B;
+ Thu, 27 Feb 2025 13:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740662101;
+ t=1740662108;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ERn4R62CQG0JrkLi5HgyIF+L7TYG+KTRwFh/G325+Xo=;
- b=C9TGDG58Yleu2cBCU6lPZTTMCZ3CJxIJZ/0TEgu+tufC2xCP5YvGlmqOGI0zkYwcJdKg81
- ibAUJjqN0QPujm7i+jxopQtO+4Sz16H/tNk5DnJm65EQaoQo4IX2Bl81fkPslidaEoY0BF
- 65u8lyOaG0EuUvWCPhK2gsk23gCCHBdEmfdLeJh/0YE2ZT52LNhEJLjthHTjaOrord4Nba
- NAFs04qGZvWFNHUVwLG8094vJ5W4aiLo1oOPkei7/IKsVZf1g8nD/NEOZaQzr1T5DnIrlw
- 0jgz9tINBQ3Zv5Jq8gMtz4bHkdQw4rAJj85m795++JrN0JtZasHfm9RzdFVFfw==
-Message-ID: <afb75323-b874-470d-b059-ad500ad1008a@bootlin.com>
-Date: Thu, 27 Feb 2025 14:15:01 +0100
+ bh=HL0ai70Ap6hURl2xU+aP7frsD0f7sj+9Snc1AIEAVQU=;
+ b=csREaBzfwc5RsJBd8NVPyqjU9PVi5dINUIIXVKXeWcamCk2eTQNjFTl/5PAE2R3Lp5ysck
+ vzVhDTxe0/yQSM11OTikxOs5s9QgYp78DQH1mCuTvWxtfypYT6csm1p0YqHh7hwlegNU4r
+ C8WtmWNsTmDVBs2/XXYAfxuDV2ekkJG2zIUuzqxkKT0vorNbHH/8u+tP4LxAZ9/LCZmgnZ
+ YX+K3e5ZfoDjQSukZbUuT24CBqDO3tvGbVhxtNzCBXEKbms3kcjP1oF3BCjyCxrEVK6T2H
+ VumZUgeentKXR3PBNNHfQX69okJ2uzCt5k+zSQKd6vkfLWASI1iOq2aQOav5wg==
+Message-ID: <c9722b0e-8f24-4014-b103-de9191ea7c02@bootlin.com>
+Date: Thu, 27 Feb 2025 14:15:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 17/39] lib/vkms: Test attaching planes to CRTCs
+Subject: Re: [PATCH i-g-t 08/39] lib/vkms: Test plane default values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-18-jose.exposito89@gmail.com>
+ <20250218165011.9123-9-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -95,12 +95,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-18-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-9-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -120,268 +120,100 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Add helpers to attach and detach planes and CRTCs and a test checking
-> the different valid and invalid cases.
+> Add a helper to get the plane type and test that the default type is set
+> when a new plane is created.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
 > ---
->   lib/igt_vkms.c             | 91 ++++++++++++++++++++++++++++++++++++++
->   lib/igt_vkms.h             |  4 ++
->   tests/vkms/vkms_configfs.c | 81 +++++++++++++++++++++++++++++++++
->   3 files changed, 176 insertions(+)
+>   lib/igt_vkms.c             | 19 +++++++++++++++++++
+>   lib/igt_vkms.h             |  1 +
+>   tests/vkms/vkms_configfs.c | 21 +++++++++++++++++++++
+>   3 files changed, 41 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index f5e193a1c..147234e5b 100644
+> index a7b395a71..5cfe5123c 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -119,6 +119,22 @@ static const char *get_pipeline_item_dir_name(enum vkms_pipeline_item item)
->   	igt_assert(!"Cannot be reached: Unknown VKMS pipeline item type");
->   }
+> @@ -23,6 +23,7 @@
 >   
-> +static const char *get_attach_dir_name(enum vkms_pipeline_item item)
-> +{
-> +	switch (item) {
-> +	case VKMS_PIPELINE_ITEM_PLANE:
-> +		return "possible_crtcs";
-> +	case VKMS_PIPELINE_ITEM_ENCODER:
-> +		return "possible_crtcs";
-> +	case VKMS_PIPELINE_ITEM_CONNECTOR:
-> +		return "possible_encoders";
-> +	default:
-> +		break;
-> +	}
-> +
-> +	igt_assert(!"Cannot be reached: Unknown VKMS attach directory name");
-> +}
-> +
->   static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
->   			      const char *name)
+>   #define VKMS_ROOT_DIR_NAME		"vkms"
+>   #define VKMS_FILE_ENABLED		"enabled"
+> +#define VKMS_FILE_PLANE_TYPE		"type"
+>   
+>   enum vkms_pipeline_item {
+>   	VKMS_PIPELINE_ITEM_PLANE,
+> @@ -321,3 +322,21 @@ void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
 >   {
-> @@ -136,6 +152,51 @@ static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
->   		     path, errno, strerror(errno));
+>   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
 >   }
->   
-> +static bool attach_pipeline_item(igt_vkms_t *dev,
-> +				 enum vkms_pipeline_item src_item,
-> +				 const char *src_item_name,
-> +				 enum vkms_pipeline_item dst_item,
-> +				 const char *dst_item_name)
-> +{
-> +	char src_path[PATH_MAX];
-> +	char dst_path[PATH_MAX];
-> +	const char *src_dir_name;
-> +	const char *attach_dir_name;
-> +	const char *dst_dir_name;
-> +	int ret;
-> +
-> +	src_dir_name = get_pipeline_item_dir_name(src_item);
-> +	attach_dir_name = get_attach_dir_name(src_item);
-> +	snprintf(src_path, sizeof(src_path), "%s/%s/%s/%s/%s", dev->path,
-> +		 src_dir_name, src_item_name, attach_dir_name, dst_item_name);
-
-The more I read those functions, the more I think my proposition of 
-having full path for pipeline item is better than having only its name.
-
-Or maybe, to avoid the duplication a macro could help:
-
-	#define ITEM_FMT "%s/%s/%s"
-	#define ITEM_ARGS(dev, src_item, src_item_name) (dev), 
-get_pipeline_item_dir_name((src_item)), (src_item_name)
-
-I don't see major drawbacks for both of my proposition, so take what you 
-think is better.
-
-> +
-> +	dst_dir_name = get_pipeline_item_dir_name(dst_item);
-> +	snprintf(dst_path, sizeof(dst_path), "%s/%s/%s", dev->path,
-> +		 dst_dir_name, dst_item_name);
-> +
-> +	ret = symlink(dst_path, src_path);
-> +	return ret == 0;
-
-Why this function has a return value? For all the other 
-igt_vkms_device_* functions, they return void, and do assertions to stop 
-the test if it fails.
-
-> +}
-> +
-> +static bool detach_pipeline_item(igt_vkms_t *dev,
-> +				 enum vkms_pipeline_item src_item,
-> +				 const char *src_item_name,
-> +				 const char *dst_item_name)
-> +{
-> +	char link_path[PATH_MAX];
-> +	const char *src_dir_name;
-> +	const char *attach_dir_name;
-> +	int ret;
-> +
-> +	src_dir_name = get_pipeline_item_dir_name(src_item);
-> +	attach_dir_name = get_attach_dir_name(src_item);
-> +	snprintf(link_path, sizeof(link_path), "%s/%s/%s/%s/%s", dev->path,
-> +		 src_dir_name, src_item_name, attach_dir_name, dst_item_name);
-> +
-> +	ret = unlink(link_path);
-> +	return ret == 0;
-> +}
-> +
->   /**
->    * igt_require_vkms_configfs:
->    *
-> @@ -368,6 +429,36 @@ void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type)
->   	write_int(path, type);
->   }
->   
-> +/**
-> + * igt_vkms_plane_attach_crtc:
-> + * @dev: Target device
-> + * @plane_name: Target plane name
-> + * @crtc_name: Destination CRTC name
-> + *
-> + * Attach a plane to a CRTC. Return true on success and false on error.
-> + */
-> +bool igt_vkms_plane_attach_crtc(igt_vkms_t *dev, const char *plane_name,
-> +				const char *crtc_name)
-> +{
-> +	return attach_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, plane_name,
-> +				    VKMS_PIPELINE_ITEM_CRTC, crtc_name);
-> +}
 > +
 > +/**
-> + * igt_vkms_plane_detach_crtc:
-> + * @dev: Target device
-> + * @plane_name: Target plane name
-> + * @crtc_name: Destination CRTC name
+> + * igt_vkms_plane_get_type:
+> + * @dev: Device the plane belongs to
+> + * @name: Plane name
 > + *
-> + * Detach a plane from a CRTC. Return true on success and false on error.
+> + * Return the plane type.
 > + */
-> +bool igt_vkms_plane_detach_crtc(igt_vkms_t *dev, const char *plane_name,
-> +				const char *crtc_name)
+> +int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name)
 > +{
-> +	return detach_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, plane_name,
-> +				    crtc_name);
-> +}
+> +	char path[PATH_MAX];
 > +
->   /**
->    * igt_vkms_device_add_crtc:
->    * @dev: Device to add the CRTC to
+> +	snprintf(path, sizeof(path), "%s/%s/%s/%s", dev->path,
+> +		 get_pipeline_item_dir_name(VKMS_PIPELINE_ITEM_PLANE), name,
+> +		 VKMS_FILE_PLANE_TYPE);
+> +
+> +	return read_int(path);
+> +}
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 50f42aa4b..fc8db268b 100644
+> index 9e16ae7eb..dd06d8f5b 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -32,6 +32,10 @@ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
->   void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
->   int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
->   void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
-> +bool igt_vkms_plane_attach_crtc(igt_vkms_t *dev, const char *plane_name,
-> +				const char *crtc_name);
-> +bool igt_vkms_plane_detach_crtc(igt_vkms_t *dev, const char *plane_name,
-> +				const char *crtc_name);
+> @@ -30,5 +30,6 @@ bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
+>   void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
 >   
->   void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name);
->   bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
+>   void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
+> +int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
+>   
+>   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index ea84d9f82..e1572d65f 100644
+> index ec334641f..a3fa60762 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -94,6 +94,20 @@ static void assert_wrong_bool_values(const char *path)
->   	}
->   }
->   
-> +static bool attach(const char *src_path, const char *dst_path,
-> +		   const char *link_name)
-> +{
-> +	char link_path[PATH_MAX];
-> +	int ret;
-> +
-> +	ret = snprintf(link_path, sizeof(link_path), "%s/%s", src_path, link_name);
-> +	igt_assert(ret >= 0 && ret < sizeof(link_path));
-> +
-> +	ret = symlink(dst_path, link_path);
-> +
-> +	return ret == 0;
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -476,6 +490,72 @@ static void test_connector_wrong_values(void)
+> @@ -202,6 +202,26 @@ static void test_plane_default_files(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: attach-plane-to-crtc
-> + * Description: Check that errors are handled while attaching planes to CRTCs.
+> + * SUBTEST: plane-default-values
+> + * Description: Check that the default values for the plane are correct.
 > + */
 > +
-> +static void test_attach_plane_to_crtc(void)
+> +static void test_plane_default_values(void)
 > +{
-> +	igt_vkms_t *dev1;
-> +	igt_vkms_t *dev2;
-> +	char plane1[PATH_MAX];
-> +	char crtc1[PATH_MAX];
-> +	char connector1[PATH_MAX];
-> +	char crtc2[PATH_MAX];
-> +	char dev2_enabled_path[PATH_MAX];
-> +	bool ok;
+> +	igt_vkms_t *dev;
 > +
-> +	dev1 = igt_vkms_device_create("test_attach_plane_to_crtc_1");
-> +	igt_assert(dev1);
+> +	dev = igt_vkms_device_create(__func__);
+> +	igt_assert(dev);
 > +
-> +	dev2 = igt_vkms_device_create("test_attach_plane_to_crtc_2");
-> +	igt_assert(dev2);
+> +	igt_vkms_device_add_plane(dev, "plane0");
 > +
-> +	igt_vkms_device_add_plane(dev1, "plane1");
-> +	igt_vkms_device_add_crtc(dev1, "crtc1");
-> +	igt_vkms_device_add_connector(dev1, "connector1");
-> +	igt_vkms_device_add_crtc(dev2, "crtc2");
+> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
+> +		      DRM_PLANE_TYPE_OVERLAY);
 > +
-> +	snprintf(plane1, sizeof(plane1), "%s/planes/plane1/possible_crtcs",
-> +		 dev1->path);
-> +	snprintf(crtc1, sizeof(crtc1), "%s/crtcs/crtc1", dev1->path);
-> +	snprintf(connector1, sizeof(connector1), "%s/connectors/connector1",
-> +		 dev1->path);
-> +	snprintf(crtc2, sizeof(crtc2), "%s/crtcs/crtc2", dev2->path);
-> +	snprintf(dev2_enabled_path, sizeof(dev2_enabled_path), "%s/enabled",
-> +		 dev2->path);
-> +
-> +	/* Error: Attach a plane to a connector */
-> +	ok = attach(plane1, connector1, "connector");
-> +	igt_assert_f(!ok, "Attaching plane1 to connector1 should fail\n");
-> +
-> +	/* Error: Attach a plane to a random file */
-> +	ok = attach(plane1, dev2_enabled_path, "file");
-> +	igt_assert_f(!ok, "Attaching plane1 to a random file should fail\n");
-> +
-> +	/* Error: Attach a plane to a CRTC from other device */
-> +	ok = attach(plane1, crtc2, "crtc2");
-> +	igt_assert_f(!ok, "Attaching plane1 to crtc2 should fail\n");
-> +
-> +	/* OK: Attaching plane1 to crtc1 */
-> +	ok = igt_vkms_plane_attach_crtc(dev1, "plane1", "crtc1");
-> +	igt_assert_f(ok, "Error attaching plane1 to crtc1\n");
-> +
-> +	/* Error: Attaching plane1 to crtc1 twice */
-> +	ok = attach(plane1, crtc1, "crtc1_duplicated");
-> +	igt_assert_f(!ok, "Error attaching plane1 to crtc1 twice should fail");
-> +
-> +	/* OK: Detaching and attaching again */
-> +	ok = igt_vkms_plane_detach_crtc(dev1, "plane1", "crtc1");
-> +	igt_assert_f(ok, "Error detaching plane1 from crtc1\n");
-> +	ok = igt_vkms_plane_attach_crtc(dev1, "plane1", "crtc1");
-> +	igt_assert_f(ok, "Error attaching plane1 to crtc1\n");
-> +
-> +	igt_vkms_device_destroy(dev1);
-> +	igt_vkms_device_destroy(dev2);
+> +	igt_vkms_device_destroy(dev);
 > +}
 > +
 >   igt_main
 >   {
 >   	struct {
-> @@ -495,6 +575,7 @@ igt_main
->   		{ "connector-default-files", test_connector_default_files },
->   		{ "connector-default-values", test_connector_default_values },
->   		{ "connector-wrong-values", test_connector_wrong_values },
-> +		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
+> @@ -212,6 +232,7 @@ igt_main
+>   		{ "device-default-values", test_device_default_values },
+>   		{ "device-wrong-values", test_device_wrong_values },
+>   		{ "plane-default-files", test_plane_default_files },
+> +		{ "plane-default-values", test_plane_default_values },
 >   	};
 >   
 >   	igt_fixture {
