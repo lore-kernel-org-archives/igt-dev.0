@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77B6C021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25E8C19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8802610EAD7;
-	Thu, 27 Feb 2025 13:15:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8262A10E1C6;
+	Thu, 27 Feb 2025 13:15:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="csREaBzf";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Wd5s4Yx0";
 	dkim-atps=neutral
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
  [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BD4510EAD7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:15:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 397582057B;
- Thu, 27 Feb 2025 13:15:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6F7810E369
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:15:14 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8F4172057D;
+ Thu, 27 Feb 2025 13:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740662108;
+ t=1740662113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=HL0ai70Ap6hURl2xU+aP7frsD0f7sj+9Snc1AIEAVQU=;
- b=csREaBzfwc5RsJBd8NVPyqjU9PVi5dINUIIXVKXeWcamCk2eTQNjFTl/5PAE2R3Lp5ysck
- vzVhDTxe0/yQSM11OTikxOs5s9QgYp78DQH1mCuTvWxtfypYT6csm1p0YqHh7hwlegNU4r
- C8WtmWNsTmDVBs2/XXYAfxuDV2ekkJG2zIUuzqxkKT0vorNbHH/8u+tP4LxAZ9/LCZmgnZ
- YX+K3e5ZfoDjQSukZbUuT24CBqDO3tvGbVhxtNzCBXEKbms3kcjP1oF3BCjyCxrEVK6T2H
- VumZUgeentKXR3PBNNHfQX69okJ2uzCt5k+zSQKd6vkfLWASI1iOq2aQOav5wg==
-Message-ID: <c9722b0e-8f24-4014-b103-de9191ea7c02@bootlin.com>
-Date: Thu, 27 Feb 2025 14:15:07 +0100
+ bh=fm5/DdSW8epp6G6Y6yuysuLzDk4e6yRuplB3oLYJ6p8=;
+ b=Wd5s4Yx02od7tKlnpzE/lUc040J8SIuv18zNYWjhrrHY9NXVBKduyHGnSWVPYG/MG3tSe6
+ get8lxPcePOPl5FX6Ej+Y96tZYUt01bm8tCkCOBtrArbknALYjV+QA0WRei2iCx4tn3LXU
+ wyV8klLRjZnNPVg1Qni8vUvYXg7XA3Izw+yqDpmMV77Uyi04VcvCnRfUs1R3/iHEu57Cbb
+ HYS5f2ZuRBQpMxojRERVqMYwJjdHqqcDpgK+1xqegHpesX648FefEZRNbvL507F+9KhKPD
+ Bg/iXxiiof05oCeLX/dTPxm6NpntL807aa+nqMWytdLieBRbXZGSnSx3HhRB0w==
+Message-ID: <45d3dd60-2bc7-4d22-8524-6117b25ec2bd@bootlin.com>
+Date: Thu, 27 Feb 2025 14:15:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 08/39] lib/vkms: Test plane default values
+Subject: Re: [PATCH i-g-t 07/39] lib/vkms: Test plane default files
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-9-jose.exposito89@gmail.com>
+ <20250218165011.9123-8-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -95,12 +95,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-9-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-8-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -120,88 +120,144 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Add a helper to get the plane type and test that the default type is set
-> when a new plane is created.
+> Add a helper to create a plane and a test checking that the default
+> files and directories are created.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
 > ---
->   lib/igt_vkms.c             | 19 +++++++++++++++++++
->   lib/igt_vkms.h             |  1 +
->   tests/vkms/vkms_configfs.c | 21 +++++++++++++++++++++
->   3 files changed, 41 insertions(+)
+>   lib/igt_vkms.c             | 52 ++++++++++++++++++++++++++++++++++++++
+>   lib/igt_vkms.h             |  2 ++
+>   tests/vkms/vkms_configfs.c | 33 ++++++++++++++++++++++++
+>   3 files changed, 87 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index a7b395a71..5cfe5123c 100644
+> index 1fdfb09f7..a7b395a71 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -23,6 +23,7 @@
->   
+> @@ -24,6 +24,13 @@
 >   #define VKMS_ROOT_DIR_NAME		"vkms"
 >   #define VKMS_FILE_ENABLED		"enabled"
-> +#define VKMS_FILE_PLANE_TYPE		"type"
 >   
->   enum vkms_pipeline_item {
->   	VKMS_PIPELINE_ITEM_PLANE,
-> @@ -321,3 +322,21 @@ void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
->   {
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
+> +enum vkms_pipeline_item {
+> +	VKMS_PIPELINE_ITEM_PLANE,
+> +	VKMS_PIPELINE_ITEM_CRTC,
+> +	VKMS_PIPELINE_ITEM_ENCODER,
+> +	VKMS_PIPELINE_ITEM_CONNECTOR,
+> +};
+> +
+>   /**
+>    * SECTION:igt_vkms
+>    * @short_description: Helpers to create and configure VKMS devices
+> @@ -93,6 +100,39 @@ static void write_bool(const char *path, bool value)
+>   	write_int(path, value ? 1 : 0);
+>   }
+>   
+> +static const char *get_pipeline_item_dir_name(enum vkms_pipeline_item item)
+> +{
+> +	switch (item) {
+> +	case VKMS_PIPELINE_ITEM_PLANE:
+> +		return "planes";
+> +	case VKMS_PIPELINE_ITEM_CRTC:
+> +		return "crtcs";
+> +	case VKMS_PIPELINE_ITEM_ENCODER:
+> +		return "encoders";
+> +	case VKMS_PIPELINE_ITEM_CONNECTOR:
+> +		return "connectors";
+> +	}
+> +
+> +	igt_assert(!"Cannot be reached: Unknown VKMS pipeline item type");
+> +}
+> +
+> +static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
+> +			      const char *name)
+> +{
+> +	const char *item_dir_name;
+> +	char path[PATH_MAX];
+> +	int ret;
+> +
+> +	item_dir_name = get_pipeline_item_dir_name(item);
+> +	snprintf(path, sizeof(path), "%s/%s/%s", dev->path, item_dir_name,
+> +		 name);
+
+Again, it costs nothing to add a check igt_assert_le(snprintf, 
+PATH_MAX). Same for all the snprintf in other patches.
+
+For the rest of the patches (8..39), my R-by are valid with or without 
+this change.
+
+> +
+> +	ret = mkdir(path, 0777);
+> +	igt_assert_f(ret == 0,
+> +		     "Unable to mkdir directory '%s'. Got errno=%d (%s)\n",
+> +		     path, errno, strerror(errno));
+> +}
+> +
+>   /**
+>    * igt_require_vkms_configfs:
+>    *
+> @@ -269,3 +309,15 @@ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
+>   
+>   	write_bool(path, enabled);
 >   }
 > +
 > +/**
-> + * igt_vkms_plane_get_type:
-> + * @dev: Device the plane belongs to
+> + * igt_vkms_device_add_plane:
+> + * @dev: Device to add the plane to
 > + * @name: Plane name
 > + *
-> + * Return the plane type.
+> + * Add a new plane to the VKMS device.
 > + */
-> +int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name)
+> +void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
 > +{
-> +	char path[PATH_MAX];
-> +
-> +	snprintf(path, sizeof(path), "%s/%s/%s/%s", dev->path,
-> +		 get_pipeline_item_dir_name(VKMS_PIPELINE_ITEM_PLANE), name,
-> +		 VKMS_FILE_PLANE_TYPE);
-> +
-> +	return read_int(path);
+> +	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
 > +}
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 9e16ae7eb..dd06d8f5b 100644
+> index dab51852a..9e16ae7eb 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -30,5 +30,6 @@ bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
+> @@ -29,4 +29,6 @@ void igt_vkms_destroy_all_devices(void);
+>   bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
 >   void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
 >   
->   void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
-> +int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
->   
+> +void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
+> +
 >   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index ec334641f..a3fa60762 100644
+> index 79023359a..ec334641f 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -202,6 +202,26 @@ static void test_plane_default_files(void)
+> @@ -170,6 +170,38 @@ static void test_device_wrong_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: plane-default-values
-> + * Description: Check that the default values for the plane are correct.
+> + * SUBTEST: plane-default-files
+> + * Description: Test that creating a plane creates the default files and
+> + *              directories.
 > + */
 > +
-> +static void test_plane_default_values(void)
+> +static void test_plane_default_files(void)
 > +{
 > +	igt_vkms_t *dev;
+> +	char path[PATH_MAX];
+> +
+> +	const char *files[] = {
+> +		"type",
+> +	};
+> +
+> +	const char *dirs[] = {
+> +		"possible_crtcs",
+> +	};
 > +
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
 > +	igt_vkms_device_add_plane(dev, "plane0");
 > +
-> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
-> +		      DRM_PLANE_TYPE_OVERLAY);
+> +	snprintf(path, sizeof(path), "%s/planes/plane0", dev->path);
+> +	assert_default_files(path,
+> +			     files, ARRAY_SIZE(files),
+> +			     dirs, ARRAY_SIZE(dirs));
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -209,11 +265,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -212,6 +232,7 @@ igt_main
+> @@ -179,6 +211,7 @@ igt_main
+>   		{ "device-default-files", test_device_default_files },
 >   		{ "device-default-values", test_device_default_values },
 >   		{ "device-wrong-values", test_device_wrong_values },
->   		{ "plane-default-files", test_plane_default_files },
-> +		{ "plane-default-values", test_plane_default_values },
+> +		{ "plane-default-files", test_plane_default_files },
 >   	};
 >   
 >   	igt_fixture {
@@ -222,5 +278,6 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
+
 
 
