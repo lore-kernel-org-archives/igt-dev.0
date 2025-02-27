@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E7B9C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:00:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B19E3C19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:00:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B7F610EB1A;
-	Thu, 27 Feb 2025 15:00:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 71D8D10EB0F;
+	Thu, 27 Feb 2025 15:00:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="hKf8aj9c";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bNg31sAb";
 	dkim-atps=neutral
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC34B10EB1A
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:00:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5D4F1441A4;
- Thu, 27 Feb 2025 15:00:08 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 546BE10EB0F
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:00:40 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8E6FD43233;
+ Thu, 27 Feb 2025 15:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740668408;
+ t=1740668438;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=dFCfAgb8jHZgFMHnqTkIG6DsfitFkIKPIalhGbnTkvQ=;
- b=hKf8aj9c1eSDh48QDktA3DxAw0caMalpzqk0fHT/D9ayClcFFs1EPY0siMUOX3AxP6T8+D
- BNqDlB4ZXxnhBChjHgSejy7U2v3jFqyI6cv0Oa1z2/lBqNFLJHCUVZTgVyes5kyt4U31lW
- svWZ0K/1EUg4dYT34qpgD30E1XUI9dPlhMrJJtv2Ji6BXUt55PJGG+8d+/SizRMJXvt2xm
- CuQvAH7FnQZWc6S3Qr2KebjETLbsMG7rnFN7KYlu52Hmo1aehDf/G9foCbraTMd7W3pvZs
- eMXdcBRHOEwKBLsOkfXXAiApNZv/ylxzF8iM1MLJFoXgpJ1fJgXT2yOTG28Y1w==
-Message-ID: <dbc363ef-5d4e-4df1-910a-fbf02e0616b3@bootlin.com>
-Date: Thu, 27 Feb 2025 16:00:08 +0100
+ bh=8AhxjIROaZHtDmGAiBXpuwv4H38bcbhKHCRXDeSBtkI=;
+ b=bNg31sAbF/73z1EmQbuquxJWeklEgk686RCBeyOTWcWEHLtgrWpqpugFssQev4nmB6EHTo
+ vsnelmMeXreYZsxA+3qHhmeX0hPFzW7kCkPci8rCQcfq6J2Xa+kzGXMjSe1mD4CZzblucX
+ VLaPx1m34u+qfgqDZ/3voT0SEwCpKq9vfJ2/065Qxnpu5iZzJD198fpr22tINg/C3icjIy
+ elfGlbbabtgbTqdvetvsMQKXyuaWE9nwFM7YshNbF+cQpQDWqCsGFG72GWcfBz4o9NJo2F
+ gheyQA4uLZ1HBuqDNQJToH0gyTzeZmemIvWXqcwXN0UyhI/T1FTnJk/ayeW1xQ==
+Message-ID: <5a505659-aef2-4344-bbbc-cc8df3aa7a10@bootlin.com>
+Date: Thu, 27 Feb 2025 16:00:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 24/39] tests/vkms_configfs: Test adding multiple
- primary planes
+Subject: Re: [PATCH i-g-t 25/39] tests/vkms_configfs: Test adding multiple
+ cursor planes
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-25-jose.exposito89@gmail.com>
+ <20250218165011.9123-26-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -96,7 +96,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-25-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-26-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -121,7 +121,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Try to enable a VKMS device with multiple primary planes for one of its
+> Try to enable a VKMS device with multiple cursor planes for one of its
 > CRTCs and test that it fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
@@ -129,24 +129,24 @@ Le 18/02/2025 à 17:49, José Expósito a écrit :
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 56 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 56 insertions(+)
+>   tests/vkms/vkms_configfs.c | 61 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 61 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index fa20a364f..c93ebadb3 100644
+> index c93ebadb3..dcd0bb5ec 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -889,6 +889,61 @@ static void test_enable_no_primary_plane(void)
+> @@ -944,6 +944,66 @@ static void test_enable_multiple_primary_planes(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-multiple-primary-planes
-> + * Description: Try to enable a VKMS device with multiple primary planes for one
+> + * SUBTEST: enable-multiple-cursor-planes
+> + * Description: Try to enable a VKMS device with multiple cursor planes for one
 > + *              of its CRTCs and test that it fails.
 > + */
 > +
-> +static void test_enable_multiple_primary_planes(void)
+> +static void test_enable_multiple_cursor_planes(void)
 > +{
 > +	igt_vkms_t *dev;
 > +
@@ -165,7 +165,12 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +			},
 > +			{
 > +				.name = "plane2",
-> +				.type = DRM_PLANE_TYPE_PRIMARY,
+> +				.type = DRM_PLANE_TYPE_CURSOR,
+> +				.possible_crtcs = { "crtc1" },
+> +			},
+> +			{
+> +				.name = "plane3",
+> +				.type = DRM_PLANE_TYPE_CURSOR,
 > +				.possible_crtcs = { "crtc1" },
 > +			},
 > +		},
@@ -198,11 +203,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -915,6 +970,7 @@ igt_main
->   		{ "enable-no-planes", test_enable_no_planes },
+> @@ -971,6 +1031,7 @@ igt_main
 >   		{ "enable-too-many-planes", test_enable_too_many_planes },
 >   		{ "enable-no-primary-plane", test_enable_no_primary_plane },
-> +		{ "enable-multiple-primary-planes", test_enable_multiple_primary_planes },
+>   		{ "enable-multiple-primary-planes", test_enable_multiple_primary_planes },
+> +		{ "enable-multiple-cursor-planes", test_enable_multiple_cursor_planes },
 >   	};
 >   
 >   	igt_fixture {
