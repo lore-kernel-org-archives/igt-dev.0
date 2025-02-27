@@ -4,105 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 752F1C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 14:30:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25FA9C19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 14:33:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1544610EAF7;
-	Thu, 27 Feb 2025 14:30:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="OSvH1oXJ";
-	dkim-atps=neutral
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45E9D10EB10
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 14:30:32 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 45F2D4426F;
- Thu, 27 Feb 2025 14:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740666629;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vqBET5VbZIJLsoBKlHZeg+kxjvgO0vNhzCOYkmioloo=;
- b=OSvH1oXJ/E8K1SXdZbKw7EL4oSks9oBgz2IUi+ig8FvYs8g/BNjdYTKCXAWpzPfB6+xaVd
- x2yWSQXW4IcXx01W49RAY9Ou6T6up7EuHUvBm1NKHHjPUA8JtKjTaHCTb/ApM2GrhDt4Ga
- +zV46X4JaujBZxq6ZZmTe4/smklVKsvXn15CVk29ht1W+G+2PUxH6BlgPlq/Ae2SqwKYH9
- MBGefSHZfQpl5/K1khg5lSJhj8/h4/G+Kbk7y8oFkbVSZQrTlliHpVxBHm4OwhnbyX6M/c
- s3FFJODXdfBtrculwZ4/ZCXsjq+QwNgiZiMRyFHY5imHVN1er5d0iikEdDCybw==
-Message-ID: <a87aaeec-ffda-4ebb-a5f6-c06906bd26c5@bootlin.com>
-Date: Thu, 27 Feb 2025 15:30:28 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id D672110EAF7;
+	Thu, 27 Feb 2025 14:33:28 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50D0410EAF7;
+ Thu, 27 Feb 2025 14:33:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3679387720827343991=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 21/39] lib/vkms: Create VKMS device from static
- config
-To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- igt-dev@lists.freedesktop.org
-References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-22-jose.exposito89@gmail.com>
-Content-Language: en-US
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
- 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
-In-Reply-To: <20250218165011.9123-22-jose.exposito89@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeejudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuvdetgeevkefhiedugfekveejieeiveeigeeiveduffehfffhgeffffetheekgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
-X-GND-Sasl: louis.chauvet@bootlin.com
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2C1/2=5D_lib=3A_Add_variable_registers_per_thread_=28VRT=29_?=
+ =?utf-8?q?setup?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Feb 2025 14:33:27 -0000
+Message-ID: <174066680731.2721256.17414529706000075999@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250226104436.257298-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20250226104436.257298-1-dominik.grzegorzek@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,258 +38,279 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============3679387720827343991==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] lib: Add variable registers per thread (VRT) setup
+URL   : https://patchwork.freedesktop.org/series/145474/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8250 -> IGTPW_12670
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12670 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12670, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/index.html
+
+Participating hosts (43 -> 44)
+------------------------------
+
+  Additional (1): bat-jsl-4 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12670:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@fbdev@eof:
+    - fi-bsw-nick:        [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/fi-bsw-nick/igt@fbdev@eof.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/fi-bsw-nick/igt@fbdev@eof.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12670 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-rpls-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#13400])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [PASS][5] -> [DMESG-WARN][6] ([i915#13494])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-mtlp-9/igt@i915_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-mtlp-9/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live:
+    - bat-arls-5:         [PASS][7] -> [DMESG-FAIL][8] ([i915#13725]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arls-5/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arls-5/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [INCOMPLETE][13] ([i915#12904]) -> [PASS][14] +1 other test pass
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [ABORT][15] ([i915#12919] / [i915#13503]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-twl-1/igt@i915_selftest@live.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-twl-1/igt@i915_selftest@live.html
+    - fi-skl-6600u:       [INCOMPLETE][17] ([i915#12445]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/fi-skl-6600u/igt@i915_selftest@live.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/fi-skl-6600u/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@ring_submission:
+    - bat-twl-1:          [ABORT][19] ([i915#12919]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-twl-1/igt@i915_selftest@live@ring_submission.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-twl-1/igt@i915_selftest@live@ring_submission.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [DMESG-FAIL][21] ([i915#12061]) -> [PASS][22] +1 other test pass
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
+  [i915#13725]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13725
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
 
 
-Le 18/02/2025 à 17:49, José Expósito a écrit :
-> In order to make the process of creating new VKMS devices as simple as
-> possible and in a declarative way, create a set of structures
-> representing a VKMS device configuration and a function that reads them
-> and applies the configuration.
-> 
-> In addition, add a test using this new function that checks that
-> creating a device without planes fails.
-> 
-> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-> ---
->   lib/igt_vkms.c             | 88 ++++++++++++++++++++++++++++++++++++++
->   lib/igt_vkms.h             | 43 +++++++++++++++++++
->   tests/vkms/vkms_configfs.c | 40 +++++++++++++++++
->   3 files changed, 171 insertions(+)
-> 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index 1fcb93c94..4c44efec9 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -253,6 +253,94 @@ igt_vkms_t *igt_vkms_device_create(const char *name)
->   	return dev;
->   }
->   
-> +/**
-> + * igt_vkms_device_create_from_config:
-> + * @cfg: Device configuration
-> + *
-> + * Create a VKMS device and set all the parameters specified by the
-> + * configuration.
-> + */
-> +igt_vkms_t *igt_vkms_device_create_from_config(igt_vkms_config_t *cfg)
-> +{
-> +	igt_vkms_t *dev;
-> +	igt_vkms_plane_config_t *plane;
-> +	igt_vkms_crtc_config_t *crtc;
-> +	igt_vkms_encoder_config_t *encoder;
-> +	igt_vkms_connector_config_t *connector;
-> +	const char *name;
-> +	int n, i;
-> +
-> +	igt_debug("Creating device from configuration:\n");
-> +	igt_debug("\t- Device name: %s\n", cfg->device_name);
-> +
-> +	dev = igt_vkms_device_create(cfg->device_name);
-> +	if (!dev)
-> +		return NULL;
-> +
-> +	for (n = 0; (crtc = &cfg->crtcs[n])->name; n++) {
-> +		igt_debug("\t- CRTC %d:\n", n);
-> +		igt_debug("\t\t- name: %s\n", crtc->name);
-> +		igt_debug("\t\t- writeback: %d\n", crtc->writeback);
-> +
-> +		igt_vkms_device_add_crtc(dev, crtc->name);
-> +		igt_vkms_crtc_set_writeback_enabled(dev, crtc->name,
-> +						    crtc->writeback);
-> +	}
-> +
-> +	for (n = 0; (plane = &cfg->planes[n])->name; n++) {
-> +		igt_debug("\t- Plane %d:\n", n);
-> +		igt_debug("\t\t- name: %s\n", plane->name);
-> +		igt_debug("\t\t- type: %d\n", plane->type);
-> +		igt_debug("\t\t- possible_crtcs:\n");
-> +
-> +		igt_vkms_device_add_plane(dev, plane->name);
-> +		igt_vkms_plane_set_type(dev, plane->name, plane->type);
-> +
-> +		for (i = 0; (name = plane->possible_crtcs[i]); i++) {
-> +			igt_debug("\t\t\t- %s\n", name);
-> +
-> +			igt_vkms_plane_attach_crtc(dev, plane->name, name);
-> +		}
-> +	}
-> +
-> +	for (n = 0; (encoder = &cfg->encoders[n])->name; n++) {
-> +		igt_debug("\t- Encoder %d:\n", n);
-> +		igt_debug("\t\t- name: %s\n", encoder->name);
-> +		igt_debug("\t\t- possible_crtcs:\n");
-> +
-> +		igt_vkms_device_add_encoder(dev, encoder->name);
-> +
-> +		for (i = 0; (name = encoder->possible_crtcs[i]); i++) {
-> +			igt_debug("\t\t\t- %s\n", name);
-> +
-> +			igt_vkms_encoder_attach_crtc(dev, encoder->name, name);
-> +		}
-> +	}
-> +
-> +	for (n = 0; (connector = &cfg->connectors[n])->name; n++) {
-> +		if (connector->status == 0)
-> +			connector->status = DRM_MODE_CONNECTED;
-> +
-> +		igt_debug("\t- Connector %d:\n", n);
-> +		igt_debug("\t\t- name: %s\n", connector->name);
-> +		igt_debug("\t\t- status: %d\n", connector->status);
-> +		igt_debug("\t\t- possible_encoders:\n");
-> +
-> +		igt_vkms_device_add_connector(dev, connector->name);
-> +		igt_vkms_connector_set_status(dev, connector->name,
-> +					      connector->status);
-> +
-> +		for (i = 0; (name = connector->possible_encoders[i]); i++) {
-> +			igt_debug("\t\t\t- %s\n", name);
-> +
-> +			igt_vkms_connector_attach_encoder(dev, connector->name,
-> +							  name);
-> +		}
-> +	}
-> +
-> +	return dev;
-> +}
-> +
->   static int detach_pipeline_items(const char *path, const struct stat *info,
->   				 const int typeflag, struct FTW *pathinfo)
->   {
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 1ef62125f..79edabe81 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -10,6 +10,8 @@
->   
->   #include <stdbool.h>
->   
-> +#define VKMS_MAX_PIPELINE_ITEMS	40
-> +
->   /**
->    * igt_vkms_t:
->    * @path: VKMS root directory inside configfs mounted directory
-> @@ -20,9 +22,50 @@ typedef struct igt_vkms {
->   	char *path;
->   } igt_vkms_t;
->   
-> +typedef struct igt_vkms_crtc_config {
-> +	const char *name;
-> +	bool writeback; /* Default: false */
-> +} igt_vkms_crtc_config_t;
-> +
-> +typedef struct igt_vkms_plane_config {
-> +	const char *name;
-> +	int type; /* Default: DRM_PLANE_TYPE_OVERLAY */
-> +	const char *possible_crtcs[VKMS_MAX_PIPELINE_ITEMS];
-> +} igt_vkms_plane_config_t;
-> +
-> +typedef struct igt_vkms_encoder_config {
-> +	const char *name;
-> +	const char *possible_crtcs[VKMS_MAX_PIPELINE_ITEMS];
-> +} igt_vkms_encoder_config_t;
-> +
-> +typedef struct igt_vkms_connector_config {
-> +	const char *name;
-> +	int status; /* Default: DRM_MODE_CONNECTED */
-> +	const char *possible_encoders[VKMS_MAX_PIPELINE_ITEMS];
-> +} igt_vkms_connector_config_t;
-> +
-> +/**
-> + * igt_vkms_config_t:
-> + * @device_name: Device name
-> + * @planes: NULL terminated list of plane configurations
-> + * @crtcs: NULL terminated list of CRTC configurations
-> + * @encoders: NULL terminated list of encoders configurations
-> + * @connectors: NULL terminated list of connector configurations
-> + *
-> + * Structure used to create a VKMS device from a static configuration.
-> + */
-> +typedef struct igt_vkms_config {
-> +	const char *device_name;
-> +	igt_vkms_plane_config_t planes[VKMS_MAX_PIPELINE_ITEMS];
-> +	igt_vkms_crtc_config_t crtcs[VKMS_MAX_PIPELINE_ITEMS];
-> +	igt_vkms_encoder_config_t encoders[VKMS_MAX_PIPELINE_ITEMS];
-> +	igt_vkms_connector_config_t connectors[VKMS_MAX_PIPELINE_ITEMS];
-> +} igt_vkms_config_t;
-> +
->   void igt_require_vkms_configfs(void);
->   
->   igt_vkms_t *igt_vkms_device_create(const char *name);
-> +igt_vkms_t *igt_vkms_device_create_from_config(igt_vkms_config_t *cfg);
->   void igt_vkms_device_destroy(igt_vkms_t *dev);
->   void igt_vkms_destroy_all_devices(void);
->   
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 87d660fff..47cfa475f 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -748,6 +748,45 @@ static void test_enable_no_pipeline_items(void)
->   	igt_vkms_device_destroy(dev);
->   }
->   
-> +/**
-> + * SUBTEST: enable-no-planes
-> + * Description: Try to enable a VKMS device without adding planes and test that
-> + *              it fails.
-> + */
-> +
-> +static void test_enable_no_planes(void)
-> +{
-> +	igt_vkms_t *dev;
-> +
-> +	igt_vkms_config_t cfg = {
-> +		.device_name = __func__,
-> +		.planes = { {} },
-> +		.crtcs = {
-> +			{ .name = "crtc0" },
-> +			{ .name = "crtc1" },
-> +		},
-> +		.encoders = {
-> +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
-> +			{ .name = "encoder1", .possible_crtcs = { "crtc1" } },
-> +		},
-> +		.connectors = {
-> +			{
-> +				.name = "connector0",
-> +				.possible_encoders = { "encoder0", "encoder1" },
-> +			},
-> +		},
-> +	};
-> +
-> +	dev = igt_vkms_device_create_from_config(&cfg);
-> +	igt_assert(dev);
-> +
-> +	igt_vkms_device_set_enabled(dev, true);
+Build changes
+-------------
 
-I just though about it, maybe it could be nice to have a 
-/my-vkms/config-valid, that returns the status of the current configuration.
-No need to add it to your current vkms-configfs series, I can do it later.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8250 -> IGTPW_12670
+  * Linux: CI_DRM_16190 -> CI_DRM_16193
 
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+  CI-20190529: 20190529
+  CI_DRM_16190: 8541a64154cd8b9c07977dedc1d22883f43279a0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16193: 1a52d296ec3278de76f33064361b059a152c3fc3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12670: 12670
+  IGT_8250: 43a53635da9a5ecb1a9ca189cb15df2c0b78bd38 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-> +	igt_assert(!igt_vkms_device_is_enabled(dev));
-> +	igt_assert(!device_exists(__func__));
-> +
-> +	igt_vkms_device_destroy(dev);
-> +}
-> +
->   igt_main
->   {
->   	struct {
-> @@ -771,6 +810,7 @@ igt_main
->   		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
->   		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
->   		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
-> +		{ "enable-no-planes", test_enable_no_planes },
->   	};
->   
->   	igt_fixture {
+== Logs ==
 
--- 
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/index.html
 
+--===============3679387720827343991==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib: Add variable registers per thread (VRT) setup</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145474/">https://patchwork.freedesktop.org/series/145474/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8250 -&gt; IGTPW_12670</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12670 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12670, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/index.html</p>
+<h2>Participating hosts (43 -&gt; 44)</h2>
+<p>Additional (1): bat-jsl-4 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12670:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@fbdev@eof:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/fi-bsw-nick/igt@fbdev@eof.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/fi-bsw-nick/igt@fbdev@eof.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12670 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arls-5/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arls-5/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13725">i915#13725</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/fi-skl-6600u/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/fi-skl-6600u/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@ring_submission:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-twl-1/igt@i915_selftest@live@ring_submission.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-twl-1/igt@i915_selftest@live@ring_submission.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8250/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12670/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8250 -&gt; IGTPW_12670</li>
+<li>Linux: CI_DRM_16190 -&gt; CI_DRM_16193</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16190: 8541a64154cd8b9c07977dedc1d22883f43279a0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16193: 1a52d296ec3278de76f33064361b059a152c3fc3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12670: 12670<br />
+  IGT_8250: 43a53635da9a5ecb1a9ca189cb15df2c0b78bd38 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3679387720827343991==--
