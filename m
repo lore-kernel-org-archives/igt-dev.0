@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16069C19F2E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:05:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AAD7C19F32
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:05:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C51C210EB15;
-	Thu, 27 Feb 2025 15:05:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2B67610EB24;
+	Thu, 27 Feb 2025 15:05:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NoLUWWH4";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bMSwbhw1";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B832610EB15
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:05:25 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2B21A43C67;
- Thu, 27 Feb 2025 15:05:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0488110EB21
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:05:28 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9F58943233;
+ Thu, 27 Feb 2025 15:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740668724;
+ t=1740668727;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=HVfyic8vT/YW9o9z6ayAgDMGn/iCUOoy1V7FkrhHpXA=;
- b=NoLUWWH4Eka08U4j+xY9Y2EuduQEzXop2tMAiWH9HInjePmRbAb+fSP5OcVpa/f6XfbJdG
- yCF1MAChO4KUGhRRZv2q/60bdLpRLYdiDkR5Fktel10x5MAoeTf5ZRA8kJIYqjS10fl8oU
- KaUOnpUtlkPa6mhT5IE6Y0zRZgd+WZQeS2uRvSjicmWCdryJXQ9T/chy8vfXemBvcmFvzg
- 9Kcnhyqsgu9TovP4myExQ8QRxX8USFg5dY4plE7Drj7DZt93yw1CbhQoe4oIaT659S5Oyn
- FfLsh6Kn1gN40Pk9GB5l7Neb2JGf0fPHSqyLRmJx6aGkJdAXYyVs2m/cX7uYmw==
-Message-ID: <798b353b-6e33-4823-acc8-b225f229343b@bootlin.com>
-Date: Thu, 27 Feb 2025 16:05:23 +0100
+ bh=dNwS66NVQho6oZ9UvUdaitkRPzzVB38bcxdImbxkVjo=;
+ b=bMSwbhw1mbxhcf+a+Wi/nBYFLUoFtfntXxkRFwZ3fgOeg2df3INTmzqwJYu/YdyK0Wmsah
+ d4EA5BmIKbPuB0dy9/4FtPOZuqZ6onyeBQsbEFdXCTwwrsFwCtEoi4CraJeAPRig1XPwL8
+ pCYlVp1swPQrFqUqTMoJeUwdrXUb4BsXoZbYSu1trhY2W4NNk/UwYdwswo0M5lNPhf05ep
+ RvZjF4q0qjAro+ODBydzaqiBd9RBiC8XsyYSlTDf+INkat6muiQ29AgwL7pYJPOZ6MejOp
+ 6e8RlDcAChEX1zdIwotKQcEYe5COAWMMHAgJNUvetAIY9l3WYx2c15UMFEoMjw==
+Message-ID: <32853706-d804-4ce9-8267-19a94fe8d11c@bootlin.com>
+Date: Thu, 27 Feb 2025 16:05:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 30/39] tests/vkms_configfs: Test enabling a device
- with too many encoders
+Subject: Re: [PATCH i-g-t 29/39] tests/vkms_configfs: Test enabling a device
+ without encoders
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-31-jose.exposito89@gmail.com>
+ <20250218165011.9123-30-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -96,7 +96,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-31-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-30-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -121,35 +121,31 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:50, José Expósito a écrit :
-> Try to enable a VKMS device with too many encoders and test that it
+> Try to enable a VKMS device without adding encoders and test that it
 > fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-
-Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
-
 > ---
->   tests/vkms/vkms_configfs.c | 51 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 51 insertions(+)
+>   tests/vkms/vkms_configfs.c | 42 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 42 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index ffbc3b133..8f1f46f90 100644
+> index eb6ebfba1..ffbc3b133 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -1185,6 +1185,56 @@ static void test_enable_no_encoders(void)
+> @@ -1144,6 +1144,47 @@ static void test_enable_too_many_crtcs(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-too-many-encoders
-> + * Description: Try to enable a VKMS device with too many encoders and test that
-> + *              it fails.
+> + * SUBTEST: enable-no-encoders
+> + * Description: Try to enable a VKMS device without adding encoders and test
+> + *              that it fails.
 > + */
 > +
-> +static void test_enable_too_many_encoders(void)
+> +static void test_enable_no_encoders(void)
 > +{
 > +	igt_vkms_t *dev;
-> +	char encoder_names[VKMS_MAX_PIPELINE_ITEMS][10];
 > +
 > +	igt_vkms_config_t cfg = {
 > +		.device_name = __func__,
@@ -163,22 +159,17 @@ Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
 > +		.crtcs = {
 > +			{ .name = "crtc0" },
 > +		},
-> +		.encoders = {},
+> +		.encoders = { {} },
+
+Is this empty item normal?
+
 > +		.connectors = {
 > +			{
 > +				.name = "connector0",
-> +				.possible_encoders = { "encoder0" },
+> +				.possible_encoders = {},
 > +			},
 > +		},
 > +	};
-> +
-> +	for (int n = 0; n < 32; n++) {
-> +		snprintf(encoder_names[n], sizeof(encoder_names[n]), "encoder%d", n);
-> +		cfg.encoders[n] = (igt_vkms_encoder_config_t){
-> +			.name = encoder_names[n],
-> +			.possible_crtcs = { "crtc0" }
-> +		};
-> +	}
 > +
 > +	dev = igt_vkms_device_create_from_config(&cfg);
 > +	igt_assert(dev);
@@ -193,11 +184,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -1217,6 +1267,7 @@ igt_main
+> @@ -1175,6 +1216,7 @@ igt_main
+>   		{ "enable-plane-no-crtcs", test_enable_plane_no_crtcs },
 >   		{ "enable-no-crtcs", test_enable_no_crtcs },
 >   		{ "enable-too-many-crtcs", test_enable_too_many_crtcs },
->   		{ "enable-no-encoders", test_enable_no_encoders },
-> +		{ "enable-too-many-encoders", test_enable_too_many_encoders },
+> +		{ "enable-no-encoders", test_enable_no_encoders },
 >   	};
 >   
 >   	igt_fixture {
