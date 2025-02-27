@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75231C021BE
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C141EC19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:12:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3270B10EAE7;
-	Thu, 27 Feb 2025 13:12:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FCB910E369;
+	Thu, 27 Feb 2025 13:12:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="jjBcOTVc";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="gg3GlkxI";
 	dkim-atps=neutral
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
  [217.70.183.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D37710EAD7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:22 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7BF6F43289;
- Thu, 27 Feb 2025 13:12:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAF3610EAD7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:12:29 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8135444217;
+ Thu, 27 Feb 2025 13:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740661941;
+ t=1740661948;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uwZK9dnH34RXCMQidsflhpIEud8tGi2CMy5Foyp3uEk=;
- b=jjBcOTVc+0UrIEklmxeCMQdHlPLwGVTazz1rUiniDuBZz5CqxiAMUoCSVK1v4OxL7pE5hO
- YcbhN3J+D4tijKHf9Bcbjr2/UmDe+AN75K9xzGb8tIppxW5bAWs/6CzmnrqDz38y9Ov69e
- 1MNqRIfEjext6RR/RpRFfU3NfZOjlNj2WOdJmzEVdvhcj8BOew3ZW3JWsKOGTR12MlYaYx
- MHK4yYq7aP3k+sPyC3Ui7MlhNg+Q8Jo3sv331/3XQIert3vTraKvAa1zFRxsLY1SPlPnP7
- 5NpymsY/99Z6k94UjgV7ZV3y+AUwpagdvTNEB+j9625g4tejlEOO1ArISeTYGQ==
-Message-ID: <f065b924-ef0a-43d7-ab74-6502c86cdd1e@bootlin.com>
-Date: Thu, 27 Feb 2025 14:12:20 +0100
+ bh=xfs+j2IrC4lU5EtKlTI/X51D9EQw40xWUJwCkUBXCPY=;
+ b=gg3GlkxIGLKTuC4dKRSQl/fmL2b8VDX6Yi83N0jdgL6DqLbI1rplEEl71ExK2uKzFXfk2R
+ zKspXJ/o8Zs95DZKpgy7BcBNFAzSKFdSJTbAqKvLBoP3bWRdr7qDShFhw4Hk/lmewsKrjB
+ 5mxB03Ob4/6tctyJZmAb6NbllCY/xTvdEtlEw5iNrAQM3tK4shLW3y0KFA3d/ffhJg3w7r
+ THSmj4YlGBN4qI7W4pVfr2S4l0D3ZypiNvCb8RWSI/OyRAp48/1UHBb+pdhKTWbraTRorW
+ bcuNKNdsICgqQAXRiymQbpIx/Rg11vrBDM/se/1HYno0JDMcFgdPHyXN+AnZag==
+Message-ID: <b13690de-4b8b-4079-99b5-a23b89f50a01@bootlin.com>
+Date: Thu, 27 Feb 2025 14:12:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 02/39] lib/igt_debugfs: Move is_mountpoint() to
- igt_aux
+Subject: Re: [PATCH i-g-t 04/39] lib/vkms: Add minimal VKMS library and test
+ device default files
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-3-jose.exposito89@gmail.com>
+ <20250218165011.9123-5-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -97,12 +97,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-3-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-5-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepjhhoshgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepjhhshhgrrhhgohestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepmhgrrhhiuhhsrdhvlhgrugestgholhhlrggsohhrr
  gdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -123,10 +123,15 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Rename is_mountpoint() to igt_is_mountpoint() and make it available in
-> igt_aux.h/c.
+> Create a library containing helpers for creating VKMS devices and
+> configuring them dynamically using configfs.
+> For the moment, add the minimal number of helpers to be able to start
+> testing VKMS's configfs support: Create device, destroy device and
+> destroy all devices.
 > 
-> Refactor, no functional change.
+> Also, include the simplest possible test using those helpers (checking
+> the device's default files) and the scaffolding required to generate
+> the documentation.
 > 
 > Co-developed-by: Jim Shargo <jshargo@chromium.org>
 > Signed-off-by: Jim Shargo <jshargo@chromium.org>
@@ -134,117 +139,606 @@ Le 18/02/2025 à 17:49, José Expósito a écrit :
 > Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 > ---
->   lib/igt_aux.c     | 25 +++++++++++++++++++++++++
->   lib/igt_aux.h     |  2 ++
->   lib/igt_debugfs.c | 29 ++---------------------------
->   3 files changed, 29 insertions(+), 27 deletions(-)
+>   docs/testplan/meson.build        |   7 +-
+>   lib/igt_vkms.c                   | 191 +++++++++++++++++++++++++++++++
+>   lib/igt_vkms.h                   |  27 +++++
+>   lib/meson.build                  |   1 +
+>   meson.build                      |   8 ++
+>   tests/meson.build                |   2 +
+>   tests/vkms/meson.build           |  13 +++
+>   tests/vkms/vkms_configfs.c       | 122 ++++++++++++++++++++
+>   tests/vkms/vkms_test_config.json |  72 ++++++++++++
+>   9 files changed, 441 insertions(+), 2 deletions(-)
+>   create mode 100644 lib/igt_vkms.c
+>   create mode 100644 lib/igt_vkms.h
+>   create mode 100644 tests/vkms/meson.build
+>   create mode 100644 tests/vkms/vkms_configfs.c
+>   create mode 100644 tests/vkms/vkms_test_config.json
 > 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index f5bf48da6..d8f1f6982 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -1374,6 +1374,31 @@ static bool get_process_ids(struct igt_process *prcs)
->   	return prcs->tid != 0;
->   }
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index 5560347f1..9e22f4c7d 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -11,6 +11,7 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+>   xe_test_config = join_paths(source_root, 'tests', 'intel', 'xe_test_config.json')
+>   kms_test_config = join_paths(source_root, 'tests', 'intel', 'kms_test_config.json')
+>   i915_test_config = join_paths(source_root, 'tests', 'intel', 'i915_test_config.json')
+> +vkms_test_config = join_paths(source_root, 'tests', 'vkms', 'vkms_test_config.json')
 >   
-
-As this become a public function, maybe you can add some doc:
-
-/**
-   * igt_is_mountpoint() - Check if a path is a mounted filesystem
-   * @path: Root directory to test
-   *
-   * Returns: true if @path is the root of a mounted filesystem
-   */
-
-With this kind of doc:
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
-> +bool igt_is_mountpoint(const char *path)
+>   check_testlist = []
+>   kms_check_testlist = []
+> @@ -37,12 +38,14 @@ if build_xe
+>   	test_dict = {
+>   		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+>   		'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
+> -		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> +		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
+> +		'vkms_tests': { 'input': vkms_test_config, 'extra_args': check_testlist }
+>   	    }
+>   else
+>   	test_dict = {
+>   	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+> -	      'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist }
+> +	      'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
+> +	      'vkms_tests': { 'input': vkms_test_config, 'extra_args': check_testlist }
+>   	    }
+>   endif
+>   
+> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+> new file mode 100644
+> index 000000000..8cea94901
+> --- /dev/null
+> +++ b/lib/igt_vkms.c
+> @@ -0,0 +1,191 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
+> + */
+> +
+> +#include <dirent.h>
+> +#include <errno.h>
+> +#include <string.h>
+> +
+> +#include <ftw.h>
+> +#include <linux/limits.h>
+> +#include <sys/stat.h>
+> +
+> +#include "igt.h"
+> +#include "igt_vkms.h"
+> +
+> +#define VKMS_ROOT_DIR_NAME		"vkms"
+> +
+> +/**
+> + * SECTION:igt_vkms
+> + * @short_description: Helpers to create and configure VKMS devices
+> + * @title: VKMS
+> + * @include: igt_vkms.h
+> + *
+> + * Helpers for creating VKMS devices and configuring them dynamically.
+> + *
+> + * First, create a VKMS device, next, add pipeline items (planes, CRTCs,
+> + * encoders, CRTCs and connectors) compose the pipeline by attaching each item
+> + * using the _attach_ functions and finally, enable the VKMS device.
+> + */
+> +
+> +static const char *mount_vkms_configfs(void)
 > +{
-> +	char buf[strlen(path) + 4];
-> +	struct stat st;
-> +	dev_t dev;
+> +	static char vkms_root_path[PATH_MAX];
+> +	const char *configfs_path;
 > +
-> +	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
-> +	if (stat(buf, &st))
-> +		return false;
+> +	configfs_path = igt_configfs_mount();
+> +	igt_assert_f(configfs_path, "Error mounting configfs");
 > +
-> +	if (!S_ISDIR(st.st_mode))
-> +		return false;
+> +	snprintf(vkms_root_path, sizeof(vkms_root_path), "%s/%s", configfs_path,
+> +		 VKMS_ROOT_DIR_NAME);
+
+As in PATCH 02/39, maybe you can add a check:
+
+	igt_assert_lt(snprintf(...), sizeof(vkms_root_path));
+
 > +
-> +	dev = st.st_dev;
-> +
-> +	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
-> +	if (stat(buf, &st))
-> +		return false;
-> +
-> +	if (!S_ISDIR(st.st_mode))
-> +		return false;
-> +
-> +	return dev != st.st_dev;
+> +	return vkms_root_path;
 > +}
 > +
->   /**
->    * igt_is_process_running:
->    * @comm: Name of process in the form found in /proc/pid/comm (limited to 15
-> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> index bfd83adca..e8a1788b2 100644
-> --- a/lib/igt_aux.h
-> +++ b/lib/igt_aux.h
-> @@ -314,6 +314,8 @@ double igt_stop_siglatency(struct igt_mean *result);
->   
->   bool igt_allow_unlimited_files(void);
->   
-> +bool igt_is_mountpoint(const char *path);
+> +/**
+> + * igt_require_vkms_configfs:
+> + *
+> + * Require that VKMS supports configfs configuration.
+> + */
+> +void igt_require_vkms_configfs(void)
+> +{
+> +	const char *vkms_root_path;
+> +	DIR *dir;
 > +
->   int igt_is_process_running(const char *comm);
->   int igt_terminate_process(int sig, const char *comm);
->   void igt_lsof(const char *dpath);
-> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-> index 8ac215a76..210a9cea0 100644
-> --- a/lib/igt_debugfs.c
-> +++ b/lib/igt_debugfs.c
-> @@ -67,37 +67,12 @@
->    * General debugfs helpers
->    */
+> +	vkms_root_path = mount_vkms_configfs();
+> +
+> +	dir = opendir(vkms_root_path);
+> +	igt_require(dir);
+> +	if (dir)
+> +		closedir(dir);
+> +}
+> +
+> +/**
+> + * igt_vkms_device_create:
+> + * @name: VKMS device name
+> + *
+> + * Create a directory in the ConfigFS VKMS root directory, where the entire
+> + * pipeline will be configured.
+> + */
+> +igt_vkms_t *igt_vkms_device_create(const char *name)
+> +{
+> +	igt_vkms_t *dev;
+> +	const char *vkms_root_path;
+> +	size_t path_len;
+> +	DIR *dir;
+> +	int ret;
+> +
+> +	dev = calloc(1, sizeof(*dev));
+> +
+> +	vkms_root_path = mount_vkms_configfs();
+> +
+> +	path_len = strlen(vkms_root_path) + strlen(name) + 2;
+> +	dev->path = malloc(path_len);
+> +	snprintf(dev->path, path_len, "%s/%s", vkms_root_path, name);
+> +
+> +	dir = opendir(dev->path);
+> +	if (dir) {
+
+Can we add some debug logging here? I think it is important to quickly 
+know if a device is reused or not.
+
+> +		closedir(dir);
+> +	} else {
+> +		ret = mkdir(dev->path, 0777);
+> +		if (ret != 0) {
+> +			free(dev->path);
+> +			free(dev);
+> +			dev = NULL;
+> +		}
+> +	}
+> +
+> +	return dev;
+> +}
+> +
+> +static int detach_pipeline_items(const char *path, const struct stat *info,
+> +				 const int typeflag, struct FTW *pathinfo)
+> +{
+> +	/* Level 4 are the links in the possible_* directories */
+
+Can you add an example path to clarify this comment? Same for other 
+usage of pathinfo->level
+
+	/*
+	 * Level 4 are the links in the possible_* directories
+	 * i.e: vkms/<DEV>/<OBJECT>/<POSSIBLE_*>/*
+	 */
+
+Can we also log the unlinked files?
+
+> +	if (pathinfo->level == 4 && typeflag == FTW_SL)
+> +		return unlink(path);
+> +
+> +	/* Ignore the other files, they are removed by remove_pipeline_items */
+> +	return 0;
+> +}
+> +
+> +static int remove_pipeline_items(const char *path, const struct stat *info,
+> +				 const int typeflag, struct FTW *pathinfo)
+> +{
+> +	/* Level 0 is the device root directory */
+> +	if (pathinfo->level == 0)
+> +		return rmdir(path);
+> +
+> +	/* Level 2 directories are the pipeline items */
+> +	if (pathinfo->level == 2 && typeflag == FTW_DP)
+> +		return rmdir(path);
+
+Can we log the deleted files? I think it can be useful because 
+igt_vkms_device_destroy only prints the root directory, not which file 
+we fail to remove.
+
+> +
+> +	/* Ignore the other files, they are removed by VKMS */
+> +	return 0;
+> +}
+> +
+> +static int remove_device_dir(igt_vkms_t *dev)
+> +{
+> +	int ret;
+> +
+> +	ret = nftw(dev->path, detach_pipeline_items, 64, FTW_DEPTH | FTW_PHYS);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = nftw(dev->path, remove_pipeline_items, 64, FTW_DEPTH | FTW_PHYS);
+> +	return ret;
+> +}
+> +
+> +/**
+> + * igt_vkms_device_destroy:
+> + * @dev: Device to destroy
+> + *
+> + * Remove and free the VKMS device.
+> + */
+> +void igt_vkms_device_destroy(igt_vkms_t *dev)
+> +{
+> +	int ret;
+> +
+> +	igt_assert(dev);
+> +
+> +	ret = remove_device_dir(dev);
+> +	igt_assert_f(ret == 0,
+> +		     "Unable to rmdir device directory '%s'. Got errno=%d (%s)\n",
+> +		     dev->path, errno, strerror(errno));
+> +
+> +	free(dev->path);
+> +	free(dev);
+> +}
+> +
+> +/**
+> + * igt_vkms_destroy_all_devices:
+> + *
+> + * Remove all VKMS devices created via configfs.
+> + */
+> +void igt_vkms_destroy_all_devices(void)
+> +{
+> +	igt_vkms_t *dev;
+> +	const char *vkms_root_path;
+> +	DIR *dir;
+> +	struct dirent *ent;
+> +
+> +	vkms_root_path = mount_vkms_configfs();
+> +	dir = opendir(vkms_root_path);
+> +	igt_assert_f(dir, "VKMS configfs directory not available at '%s'. "
+> +		     "Got errno=%d (%s)\n", vkms_root_path, errno,
+> +		     strerror(errno));
+> +
+> +	while ((ent = readdir(dir)) != NULL) {
+> +		if (strcmp(ent->d_name, ".") == 0 ||
+> +		    strcmp(ent->d_name, "..") == 0)
+> +			continue;
+> +
+> +		dev = igt_vkms_device_create(ent->d_name);
+> +		igt_vkms_device_destroy(dev);
+> +	}
+> +
+> +	closedir(dir);
+> +}
+> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+> new file mode 100644
+> index 000000000..48c48f296
+> --- /dev/null
+> +++ b/lib/igt_vkms.h
+> @@ -0,0 +1,27 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
+> + */
+> +
+> +#ifndef __IGT_VKMS_H__
+> +#define __IGT_VKMS_H__
+> +
+> +/**
+> + * igt_vkms_t:
+> + * @path: VKMS root directory inside configfs mounted directory
+> + *
+> + * A struct representing a VKMS device.
+> + */
+> +typedef struct igt_vkms {
+> +	char *path;
+> +} igt_vkms_t;
+> +
+> +void igt_require_vkms_configfs(void);
+> +
+> +igt_vkms_t *igt_vkms_device_create(const char *name);
+> +void igt_vkms_device_destroy(igt_vkms_t *dev);
+> +void igt_vkms_destroy_all_devices(void);
+> +
+> +#endif /* __IGT_VKMS_H__ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 201b1fbb4..8e0b4b7e3 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -50,6 +50,7 @@ lib_sources = [
+>   	'igt_types.c',
+>   	'igt_vec.c',
+>   	'igt_vgem.c',
+> +	'igt_vkms.c',
+>   	'igt_x86.c',
+>   	'instdone.c',
+>   	'intel_allocator.c',
+> diff --git a/meson.build b/meson.build
+> index 2f663dc03..aec49152b 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -287,6 +287,7 @@ msmdir = join_paths(libexecdir, 'msm')
+>   panfrostdir = join_paths(libexecdir, 'panfrost')
+>   v3ddir = join_paths(libexecdir, 'v3d')
+>   vc4dir = join_paths(libexecdir, 'vc4')
+> +vkmsdir = join_paths(libexecdir, 'vkms')
+>   vmwgfxdir = join_paths(libexecdir, 'vmwgfx')
+>   mandir = get_option('mandir')
+>   pkgconfigdir = join_paths(libdir, 'pkgconfig')
+> @@ -348,6 +349,12 @@ if get_option('use_rpath')
+>   	endforeach
+>   	vc4_rpathdir = join_paths(vc4_rpathdir, libdir)
 >   
-> -static bool is_mountpoint(const char *path)
-> -{
-> -	char buf[strlen(path) + 4];
-> -	struct stat st;
-> -	dev_t dev;
-> -
-> -	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
-> -	if (stat(buf, &st))
-> -		return false;
-> -
-> -	if (!S_ISDIR(st.st_mode))
-> -		return false;
-> -
-> -	dev = st.st_dev;
-> -
-> -	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
-> -	if (stat(buf, &st))
-> -		return false;
-> -
-> -	if (!S_ISDIR(st.st_mode))
-> -		return false;
-> -
-> -	return dev != st.st_dev;
-> -}
-> -
->   static const char *__igt_debugfs_mount(void)
->   {
-> -	if (is_mountpoint("/sys/kernel/debug"))
-> +	if (igt_is_mountpoint("/sys/kernel/debug"))
->   		return "/sys/kernel/debug";
+> +	vkms_rpathdir = '$ORIGIN'
+> +	foreach p : vkmsdir.split('/')
+> +		vkms_rpathdir = join_paths(vkms_rpathdir, '..')
+> +	endforeach
+> +	vkms_rpathdir = join_paths(vkms_rpathdir, libdir)
+> +
+>   	vmwgfx_rpathdir = '$ORIGIN'
+>   	foreach p : vmwgfxdir.split('/')
+>   		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
+> @@ -361,6 +368,7 @@ else
+>   	panfrost_rpathdir = ''
+>   	v3d_rpathdir = ''
+>   	vc4_rpathdir = ''
+> +	vkms_rpathdir = ''
+>   	vmwgfx_rpathdir = ''
+>   endif
 >   
-> -	if (is_mountpoint("/debug"))
-> +	if (igt_is_mountpoint("/debug"))
->   		return "/debug";
+> diff --git a/tests/meson.build b/tests/meson.build
+> index f8a0ab836..b2ec1361d 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -474,6 +474,8 @@ subdir('v3d')
 >   
->   	if (mount("debug", "/sys/kernel/debug", "debugfs", 0, 0))
+>   subdir('vc4')
+>   
+> +subdir('vkms')
+> +
+>   subdir('vmwgfx')
+>   
+>   gen_testlist = find_program('generate_testlist.sh')
+> diff --git a/tests/vkms/meson.build b/tests/vkms/meson.build
+> new file mode 100644
+> index 000000000..e55ba32ba
+> --- /dev/null
+> +++ b/tests/vkms/meson.build
+> @@ -0,0 +1,13 @@
+> +vkms_progs = [
+> +	'vkms_configfs',
+> +]
+> +vkms_deps = test_deps
+> +
+> +foreach prog : vkms_progs
+> +	test_executables += executable(prog, prog + '.c',
+> +				       dependencies : vkms_deps,
+> +				       install_dir : vkmsdir,
+> +				       install_rpath : vkms_rpathdir,
+> +				       install : true)
+> +	test_list += join_paths('vkms', prog)
+> +endforeach
+> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+> new file mode 100644
+> index 000000000..441c39a47
+> --- /dev/null
+> +++ b/tests/vkms/vkms_configfs.c
+> @@ -0,0 +1,122 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
+> + */
+> +
+> +/**
+> + * TEST: Tests for VKMS configfs support.
+> + * Category: Display
+> + * Mega feature: General Display Features
+> + * Sub-category: uapi
+> + * Functionality: vkms,configfs
+> + * Test category: functionality test
+> + */
+> +
+> +#include <dirent.h>
+> +#include <string.h>
+> +
+> +#include <linux/limits.h>
+> +#include <sys/stat.h>
+> +
+> +#include "drmtest.h"
+> +#include "igt.h"
+> +#include "igt_vkms.h"
+> +
+> +static void assert_default_files(const char *path,
+> +				 const char **files, size_t n_files,
+> +				 const char **dirs, size_t n_dirs)
+> +{
+> +	DIR *dir;
+> +	struct dirent *ent;
+> +	int total = 0;
+> +
+> +	/* Check that the number of files/directories matches the expected.
+> +	 * Plus 2 because of "." and "..".
+> +	 */
+> +	dir = opendir(path);
+> +	igt_assert(dir);
+> +	while ((ent = readdir(dir)) != NULL)
+> +		total++;
+
+Can we simply skip "." and ".." as you did in 
+igt_vkms_destroy_all_devices? This way we don't have this "magic" +2
+
+> +	igt_assert_eq(total, n_dirs + n_files + 2);
+> +	closedir(dir);
+> +
+> +	/* Check that the files/directories are present */
+> +	for (int i = 0; i < n_files; i++) {
+> +		char file_path[PATH_MAX];
+> +		struct stat buf;
+> +
+> +		snprintf(file_path, sizeof(file_path), "%s/%s", path, files[i]);
+> +
+> +		igt_assert_eq(stat(file_path, &buf), 0);
+
+Can you transform this igt_assert_eq into:
+
+	igt_assert_f(stat(...) == 0, "File %s does not exists\n", file_path)
+
+So it is easier to know exactly the fail reason
+
+> +	}
+> +
+> +	for (int i = 0; i < n_dirs; i++) {
+> +		char dir_path[PATH_MAX];
+> +
+> +		snprintf(dir_path, sizeof(dir_path), "%s/%s", path, dirs[i]);
+
+Ditto
+
+Thanks,
+Louis Chauvet
+
+> +		dir = opendir(dir_path);
+> +		igt_assert(dir);
+> +		closedir(dir);
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: device-default-files
+> + * Description: Test that creating a VKMS device creates the default files and
+> + *              directories.
+> + */
+> +
+> +static void test_device_default_files(void)
+> +{
+> +	igt_vkms_t *dev;
+> +
+> +	const char *files[] = {
+> +		"enabled",
+> +	};
+> +
+> +	const char *dirs[] = {
+> +		"planes",
+> +		"crtcs",
+> +		"encoders",
+> +		"connectors",
+> +	};
+> +
+> +	dev = igt_vkms_device_create(__func__);
+> +	igt_assert(dev);
+> +
+> +	assert_default_files(dev->path,
+> +			     files, ARRAY_SIZE(files),
+> +			     dirs, ARRAY_SIZE(dirs));
+> +
+> +	igt_vkms_device_destroy(dev);
+> +}
+> +
+> +igt_main
+> +{
+> +	struct {
+> +		const char *name;
+> +		void (*fn)(void);
+> +	} tests[] = {
+> +		{ "device-default-files", test_device_default_files },
+> +	};
+> +
+> +	igt_fixture {
+> +		igt_require_vkms();
+> +		igt_require_vkms_configfs();
+> +		igt_vkms_destroy_all_devices();
+> +	}
+> +
+> +	for (int i = 0; i < ARRAY_SIZE(tests); i++) {
+> +		igt_subtest(tests[i].name)
+> +			tests[i].fn();
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_require_vkms();
+> +		igt_require_vkms_configfs();
+> +		igt_vkms_destroy_all_devices();
+> +	}
+> +}
+> diff --git a/tests/vkms/vkms_test_config.json b/tests/vkms/vkms_test_config.json
+> new file mode 100644
+> index 000000000..4e84e184a
+> --- /dev/null
+> +++ b/tests/vkms/vkms_test_config.json
+> @@ -0,0 +1,72 @@
+> +{
+> +    "description": "JSON file to be used to parse VKMS documentation",
+> +    "name": "Tests for VKMS Driver",
+> +    "drivers": [ "vkms" ],
+> +    "files": [ "*.c" ],
+> +    "fields": {
+> +        "Run type": {
+> +            "_properties_": {
+> +                "mandatory": true
+> +            },
+> +            "Category": {
+> +                "_properties_": {
+> +                    "description": "Contains the major group for the tested functionality 'Display'"
+> +                },
+> +                "Mega feature": {
+> +                    "_properties_": {
+> +                        "mandatory": true,
+> +                        "description": "Contains the mega feature for end to end use case"
+> +                    },
+> +                    "Sub-category": {
+> +                        "_properties_": {
+> +                            "mandatory": true,
+> +                            "description": "Contains the technical feature/functionality"
+> +                        },
+> +                        "Functionality": {
+> +                            "_properties_": {
+> +                                "mandatory": true,
+> +                                "description": "Groups page table tests on buckets containing more detailed functionality"
+> +                            },
+> +                            "Feature": {
+> +                                "_properties_": {
+> +                                    "description": "Describes the lowest level feature bucket"
+> +                                }
+> +                            }
+> +                        }
+> +                    }
+> +                }
+> +            }
+> +        },
+> +        "Test category": {
+> +            "_properties_": {
+> +                "description": "Defines the test category. Usually used at subtest level."
+> +            }
+> +        },
+> +        "Test requirement": {
+> +            "_properties_": {
+> +                "description": "Defines Kernel parameters required for the test to run"
+> +            }
+> +        },
+> +        "Issue": {
+> +            "_properties_": {
+> +                "description": "If the test is used to solve an issue, point to the URL containing the issue."
+> +            }
+> +        },
+> +        "Depends on": {
+> +            "_properties_": {
+> +                "description": "List other subtests that are required to not be skipped before calling this one."
+> +            }
+> +        },
+> +        "TODO": {
+> +            "_properties_": {
+> +                "description": "Point to known missing features at the test or subtest."
+> +            }
+> +        },
+> +        "Description": {
+> +            "_properties_": {
+> +                "mandatory": true,
+> +                "description": "Provides a description for the test/subtest."
+> +            }
+> +        }
+> +    }
+> +}
+
 
 -- 
 Louis Chauvet, Bootlin
