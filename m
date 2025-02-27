@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2798C19F32
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3052DC19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 13:15:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 98D3A10E369;
-	Thu, 27 Feb 2025 13:15:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE43710EAE6;
+	Thu, 27 Feb 2025 13:15:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ATAXh9uZ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="CW+W0c/+";
 	dkim-atps=neutral
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
  [217.70.183.197])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFCAB10EAED
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:15:21 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7282544298;
- Thu, 27 Feb 2025 13:15:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58F9610EADE
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 13:15:26 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 09295442F7;
+ Thu, 27 Feb 2025 13:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740662120;
+ t=1740662125;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=YZqP+aMUOzf2mFda48WKL2TW9LQ0WWcjCRFfr6DoCx4=;
- b=ATAXh9uZUiySXvVixlwih+G8iDbOFq+/ARxkfmpyGLRYkzieCb8lWQPiT38RJwc7QsfUb8
- MFM3bkyF+BdcA50BSHYAcgWWGcMKx33XJO4W2c5fqzBymcuU4pv9kTgV1L+7PHj1yVnIS+
- ztaG3FzlUAx7zQvFPzozU3u+S1+g1JfYU/MrAGxnoH8+RWoek7RQU4gsWoqOsWS+mSSpSs
- j17O0grFUpy03d9YfxviuYzExc5Vh6p4x4doEivdrCAkNELG9q1+aR2MDvWiEyaAg1tSoL
- 1DcF4yqLNnPGLU6JpEzX+9uZdYtHgVqERzknh3ajmaYbdhQCfhxP/qghrTWzEg==
-Message-ID: <95d8bc6b-818e-4045-8fa3-166e688f5cb5@bootlin.com>
-Date: Thu, 27 Feb 2025 14:15:20 +0100
+ bh=FHYOXZNxy/JTMH+9TcYCx2gUYqlsy3jK2GDwpvNCDkg=;
+ b=CW+W0c/+9t7lrUIgRpwMUQaxHQqZ+DJHkcYNJj0Qw6gWZ0q6jUZw2CRF5XI6hStgtWAAdF
+ e2J+QPeeC2Y04R0OCXlrt1VFnC7w2MwwFIbAlRbFIFKwn/6Y4V5nWaNCEBCJM26L9pDLWw
+ EZlT412+S6oCsfxM8fe3xWzwp9SX8jGw6etG0hOvftOEcsB8RetBCc13qTNTBBENjS7TqX
+ eEk6GyfB4/ffgsHag3fZN0YYNSfUp8Ow3riNF1ZLsQDiaVc5YARizkbZLm6/n/9oQ4EKog
+ OtZOJPabmmRIzVcijNDGWgieoDxFmhdJEtYnEafnIKsGql/cNUBI/9EN2bHDFw==
+Message-ID: <7042dc20-e43e-44bd-be8a-56ffa787daee@bootlin.com>
+Date: Thu, 27 Feb 2025 14:15:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 05/39] lib/vkms: Allow to enable/disable VKMS devices
+Subject: Re: [PATCH i-g-t 10/39] lib/vkms: Test CRTC default files
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-6-jose.exposito89@gmail.com>
+ <20250218165011.9123-11-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -95,12 +95,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-6-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-11-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -120,188 +120,82 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:49, José Expósito a écrit :
-> Add helper to enable, disable and check the enabled status of a VKMS
-> device and add a test to ensure that the default value is correctly set.
+> Add a helper to create a CRTC and a test checking that the default
+> files and directories are created.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
 > ---
->   lib/igt_vkms.c             | 80 ++++++++++++++++++++++++++++++++++++++
->   lib/igt_vkms.h             |  5 +++
->   tests/vkms/vkms_configfs.c | 18 +++++++++
->   3 files changed, 103 insertions(+)
+>   lib/igt_vkms.c             | 12 ++++++++++++
+>   lib/igt_vkms.h             |  2 ++
+>   tests/vkms/vkms_configfs.c | 29 +++++++++++++++++++++++++++++
+>   3 files changed, 43 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index 8cea94901..1fdfb09f7 100644
+> index ca6f37975..a7dad43e2 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -7,7 +7,12 @@
+> @@ -365,3 +365,15 @@ void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type)
 >   
->   #include <dirent.h>
->   #include <errno.h>
-> +#include <fcntl.h>
-> +#include <stddef.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
->   #include <string.h>
-> +#include <unistd.h>
->   
->   #include <ftw.h>
->   #include <linux/limits.h>
-> @@ -17,6 +22,7 @@
->   #include "igt_vkms.h"
->   
->   #define VKMS_ROOT_DIR_NAME		"vkms"
-> +#define VKMS_FILE_ENABLED		"enabled"
->   
->   /**
->    * SECTION:igt_vkms
-> @@ -45,6 +51,48 @@ static const char *mount_vkms_configfs(void)
->   	return vkms_root_path;
->   }
->   
-> +static int read_int(const char *path)
-> +{
-> +	FILE *file;
-> +	int value;
-> +	int ret;
-> +
-> +	file = fopen(path, "r");
-> +	igt_assert_f(file, "Error opening '%s'\n", path);
-> +
-> +	ret = fscanf(file, "%d", &value);
-> +	fclose(file);
-> +	igt_assert_f(ret == 1, "Error reading integer from '%s'\n", path);
-> +
-> +	return value;
-> +}
-> +
-> +static bool read_bool(const char *path)
-> +{
-> +	int ret;
-> +
-> +	ret = read_int(path);
-> +
-> +	return !!ret;
-> +}
-> +
-> +static void write_int(const char *path, int value)
-> +{
-> +	FILE *file;
-> +
-> +	file = fopen(path, "w");
-> +	igt_assert_f(file, "Error opening '%s'\n", path);
-> +
-> +	fprintf(file, "%d", value);
-
-No check about the result of fprintf? This may hide some strange issues.
-
-And in 09/39, the function igt_vkms_plane_set_type is broken because of 
-this, it can fails silently.
-
-> +
-> +	fclose(file);
-> +}
-> +
-> +static void write_bool(const char *path, bool value)
-> +{
-> +	write_int(path, value ? 1 : 0);
-> +}
-> +
->   /**
->    * igt_require_vkms_configfs:
->    *
-> @@ -151,6 +199,8 @@ void igt_vkms_device_destroy(igt_vkms_t *dev)
->   
->   	igt_assert(dev);
->   
-> +	igt_vkms_device_set_enabled(dev, false);
-> +
->   	ret = remove_device_dir(dev);
->   	igt_assert_f(ret == 0,
->   		     "Unable to rmdir device directory '%s'. Got errno=%d (%s)\n",
-> @@ -189,3 +239,33 @@ void igt_vkms_destroy_all_devices(void)
->   
->   	closedir(dir);
+>   	write_int(path, type);
 >   }
 > +
 > +/**
-> + * igt_vkms_device_is_enabled:
-> + * @dev: The device to check
+> + * igt_vkms_device_add_crtc:
+> + * @dev: Device to add the CRTC to
+> + * @name: CRTC name
 > + *
-> + * Indicate whether a VKMS device is enabled or not.
+> + * Add a new CRTC to the VKMS device.
 > + */
-> +bool igt_vkms_device_is_enabled(igt_vkms_t *dev)
+> +void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name)
 > +{
-> +	char path[PATH_MAX];
-> +
-> +	snprintf(path, sizeof(path), "%s/%s", dev->path, VKMS_FILE_ENABLED);
-
-As nothing garantee that dev->path is shorter than PATH_MAX, can you add 
-a simple check:
-
-igt_assert_le(snprintf(...), PATH_MAX);
-
-> +	return read_bool(path);
-> +}
-> +
-> +/**
-> + * igt_vkms_device_set_enabled:
-> + * @dev: Device to enable or disable
-> + *
-> + * Enable or disable a VKMS device.
-> + */
-> +void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
-> +{
-> +	char path[PATH_MAX];
-> +
-> +	snprintf(path, sizeof(path), "%s/%s", dev->path, VKMS_FILE_ENABLED);
-
-Ditto
-
-> +	write_bool(path, enabled);
+> +	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CRTC, name);
 > +}
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 48c48f296..dab51852a 100644
+> index 283be5699..7f70f92d3 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -8,6 +8,8 @@
->   #ifndef __IGT_VKMS_H__
->   #define __IGT_VKMS_H__
+> @@ -33,4 +33,6 @@ void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
+>   int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
+>   void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
 >   
-> +#include <stdbool.h>
-> +
->   /**
->    * igt_vkms_t:
->    * @path: VKMS root directory inside configfs mounted directory
-> @@ -24,4 +26,7 @@ igt_vkms_t *igt_vkms_device_create(const char *name);
->   void igt_vkms_device_destroy(igt_vkms_t *dev);
->   void igt_vkms_destroy_all_devices(void);
->   
-> +bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
-> +void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
+> +void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name);
 > +
 >   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 441c39a47..6c7d0310c 100644
+> index d607b1a5a..398232c03 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -94,6 +94,23 @@ static void test_device_default_files(void)
+> @@ -272,6 +272,34 @@ static void test_plane_wrong_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: device-default-values
-> + * Description: Check that the default values for the device are correct.
+> + * SUBTEST: crtc-default-files
+> + * Description: Test that creating a CRTC creates the default files and
+> + *              directories.
 > + */
 > +
-> +static void test_device_default_values(void)
+> +static void test_crtc_default_files(void)
 > +{
 > +	igt_vkms_t *dev;
+> +	char path[PATH_MAX];
+> +
+> +	const char *files[] = {
+> +		"writeback",
+> +	};
 > +
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
-> +	igt_assert(!igt_vkms_device_is_enabled(dev));
+> +	igt_vkms_device_add_crtc(dev, "crtc0");
+> +
+> +	snprintf(path, sizeof(path), "%s/crtcs/crtc0", dev->path);
+> +	assert_default_files(path,
+> +			     files, ARRAY_SIZE(files),
+> +			     NULL, 0);
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -309,11 +203,11 @@ Ditto
 >   igt_main
 >   {
 >   	struct {
-> @@ -101,6 +118,7 @@ igt_main
->   		void (*fn)(void);
->   	} tests[] = {
->   		{ "device-default-files", test_device_default_files },
-> +		{ "device-default-values", test_device_default_values },
+> @@ -284,6 +312,7 @@ igt_main
+>   		{ "plane-default-files", test_plane_default_files },
+>   		{ "plane-default-values", test_plane_default_values },
+>   		{ "plane-wrong-values", test_plane_wrong_values },
+> +		{ "crtc-default-files", test_crtc_default_files },
 >   	};
 >   
 >   	igt_fixture {
@@ -322,6 +216,5 @@ Ditto
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
-
 
 
