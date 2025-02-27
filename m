@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59648C19F32
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D4EAC19F2E
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Feb 2025 15:15:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1826910E244;
-	Thu, 27 Feb 2025 15:15:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF18A10E05E;
+	Thu, 27 Feb 2025 15:15:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="me4vHAhN";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="FjD9Y0Tl";
 	dkim-atps=neutral
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41CAB10E244
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:15:30 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E3F392057A;
- Thu, 27 Feb 2025 15:15:28 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 171CE10E244
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2025 15:15:43 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 833A84440D;
+ Thu, 27 Feb 2025 15:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740669329;
+ t=1740669342;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=zkT4Ni/t29reR90aaJm74/rwyFMdTItU2zXIpw5X3Ac=;
- b=me4vHAhNvGPxpBzYhRWB3vI6sP7nlKMfk4MGIa62yCaKQIw6yKe8GFVAmTya2jxvlgYmQ/
- Nu26Y3ux8Mjsjv9qWE0uhEycFXbMbmd2Nodh0NRD+oBqIGcHNNdO8fIrKKhYiEXMFvIYST
- x192IZEIoy/+PZPSeLRGKyO3QSFH/TzEMUmrU8Trf3dlNlTZVKy28MlPC3SxHoxW/2mAoe
- tUkCbMw7SbYUbqn5eA7wstyUDpKy2Icq/C9IqHWTyakMZqlgpsvqu7j0YFXfNFqGw3Wei8
- LbAW2b+c815CHvSnGq8MfSlFpSYHOKjXwhkbcxT63eLLpvWx3PFCfRrw0I/YIw==
-Message-ID: <e8bf94c4-a4fe-4fd7-839c-908a923535d3@bootlin.com>
-Date: Thu, 27 Feb 2025 16:15:28 +0100
+ bh=RuPxB/cfEWwqmKye/xPtiIa6SPy6KkbLDyDKaI5uSHc=;
+ b=FjD9Y0Tl26XA83/vvEhbsq7v0nvJG4XcsToqFOLndZnBZJhHeUkWYmTtXoe26D17HSi5cY
+ wq/anak2/L8+4mq1SK9BJqgiqGc8R46wrViNKpve0nYkV7eNLoMmVvRwDtgwUWt7TqV5bx
+ 9dQqj9Lr0X14YUyoOXULIhEze9BL2MzvKC453ZML0dgjNM+eKB2E3PhLgnT6fL+ueW6Oax
+ ZrKpW/hkyZ1LpUkwgXiPGtPNCzwWV3+Lt0pY6ESpiaElWyzAb307o1M3xgrdqLiGhplpQF
+ d4yds2zyw3IQcDXcmcFoCeTP2cj2fAVA/wrid/lEaY2Q+rFLCk5ZbJdDWFaAaQ==
+Message-ID: <b48fe647-1dbd-4c1f-b0d9-bd95a9e15779@bootlin.com>
+Date: Thu, 27 Feb 2025 16:15:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 33/39] tests/vkms_configfs: Test enabling a device
- without connectors
+Subject: Re: [PATCH i-g-t 34/39] tests/vkms_configfs: Test enabling a device
+ with too many connectors
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-34-jose.exposito89@gmail.com>
+ <20250218165011.9123-35-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -96,12 +96,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-34-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-35-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeektdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuvdetgeevkefhiedugfekveejieeiveeigeeiveduffehfffhgeffffetheekgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeektdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuvdetgeevkefhiedugfekveejieeiveeigeeiveduffehfffhgeffffetheekgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -121,34 +121,35 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:50, José Expósito a écrit :
-> Enable a VKMS device without adding connectors and test that it is
-> created with the specified configuration.
+> Try to enable a VKMS device with too many connectors and test that it
+> fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 39 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 39 insertions(+)
+>   tests/vkms/vkms_configfs.c | 49 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 49 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index e003e0ca0..3ad3df584 100644
+> index 3ad3df584..5a5f85ef3 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -1328,6 +1328,44 @@ static void test_enable_crtc_no_encoder(void)
+> @@ -1366,6 +1366,54 @@ static void test_enable_no_connectors(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-no-connectors
-> + * Description: Try to enable a VKMS device without adding connectors and test
+> + * SUBTEST: enable-too-many-connectors
+> + * Description: Try to enable a VKMS device with too many connectors and test
 > + *              that it fails.
 > + */
 > +
-> +static void test_enable_no_connectors(void)
+> +static void test_enable_too_many_connectors(void)
 > +{
 > +	igt_vkms_t *dev;
+> +	char connector_names[VKMS_MAX_PIPELINE_ITEMS][12];
 > +
 > +	igt_vkms_config_t cfg = {
 > +		.device_name = __func__,
@@ -156,7 +157,7 @@ Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
 > +			{
 > +				.name = "plane0",
 > +				.type = DRM_PLANE_TYPE_PRIMARY,
-> +				.possible_crtcs = { "crtc0"},
+> +				.possible_crtcs = { "crtc0" },
 > +			},
 > +		},
 > +		.crtcs = {
@@ -165,8 +166,17 @@ Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
 > +		.encoders = {
 > +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
 > +		},
-> +		.connectors = { },
+> +		.connectors = {},
 > +	};
+> +
+> +	for (int n = 0; n < 32; n++) {
+> +		snprintf(connector_names[n], sizeof(connector_names[n]),
+> +			 "connector%d", n);
+> +		cfg.connectors[n] = (igt_vkms_connector_config_t){
+> +			.name = connector_names[n],
+> +			.possible_encoders = { "encoder0" }
+> +		};
+> +	}
 > +
 > +	dev = igt_vkms_device_create_from_config(&cfg);
 > +	igt_assert(dev);
@@ -181,11 +191,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@boolin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -1363,6 +1401,7 @@ igt_main
->   		{ "enable-too-many-encoders", test_enable_too_many_encoders },
+> @@ -1402,6 +1450,7 @@ igt_main
 >   		{ "enable-encoder-no-crtcs", test_enable_encoder_no_crtcs },
 >   		{ "enable-crtc-no-encoder", test_enable_crtc_no_encoder },
-> +		{ "enable-no-connectors", test_enable_no_connectors },
+>   		{ "enable-no-connectors", test_enable_no_connectors },
+> +		{ "enable-too-many-connectors", test_enable_too_many_connectors },
 >   	};
 >   
 >   	igt_fixture {
