@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE096C19776
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 08:51:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D585C282CD
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 08:51:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B00E010E1B9;
-	Fri, 28 Feb 2025 08:51:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD1CF10E26B;
+	Fri, 28 Feb 2025 08:51:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="X/N0e0p5";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="SPro42wY";
 	dkim-atps=neutral
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
  [217.70.183.201])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FE7710E1B9
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 08:51:49 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0137744440;
- Fri, 28 Feb 2025 08:51:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED3E410EC1D
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 08:51:51 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9A4C144445;
+ Fri, 28 Feb 2025 08:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1740732708;
+ t=1740732710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=LuP53naMorp8VXaF7JKW9fg10fI21qMio7aDRLg7O8s=;
- b=X/N0e0p57Db57xqRb3/+5qf18UwrXlX5eOZ15zkOzgSFgoPwT7ybHAuJKWVEuCUjHxmkG8
- 6TONBvwrc/Q9i6HbHY2Pyoy6NwjMSfHSVQGfoKaSwNmM33vb9XBTCMqsvsedDS4WA5rfoB
- MHUNykMQLMB1zB56Asp5Zhh5qeS40ELk/I2M8LPR+4EReF5aGX8OBV5dFKeMZXXW245rjK
- ejlH5nyJd0QcJ6ZXVDSnEhN9vynhWTNb1O0gkj32Iii434OIl8JsBrXj8mh4J7NzWQLD80
- +M+P55av8TyXpPIT2YXhQ+jFkqOOMFl0FiiACCxCkcfoVkmxZQHPvnNxBZi/uw==
-Message-ID: <65677f97-dd40-48ef-bd64-ce8e468c0518@bootlin.com>
-Date: Fri, 28 Feb 2025 09:51:47 +0100
+ bh=A8tmeoHZa+XQNETz+chk6MeSjK2A9Qm39dV6H/Mczz8=;
+ b=SPro42wYHxinvz+bxHWdGPgQYmLnJ0J2UwcClqaI8SsEUI7zpq0v8P3EQS5z3aNvlv66kw
+ Z5cFCiGkX+ISyuawBwnTjZfBerqOnrXG2nmGi1TmhrIs+dR/VECc5SfT65mI4W6iO3ljU2
+ epqTUtJYlq2Ks9mrwGayo9ZxKU/Fp8Q2EIFl6VpAqdojeQtkGuPFztD1LHPQUbB26Rqzcd
+ TnwmAjbRlZ+F4AUWj7HKBBgP5rXxdsJ3Ep+XDRkJ170QzxkOJkYOw9AK/Iv7gcqonFAwae
+ SsiOW6/fPkR+h+63p20ApbS5k9FQjHMIU0ToKapImfqL+Yf9eq8M13fVDGx6Mg==
+Message-ID: <4aecf9ec-1092-40ae-9b7c-a5abc2c4557f@bootlin.com>
+Date: Fri, 28 Feb 2025 09:51:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t 35/39] lib/vkms: Test changing enabled device planes
+Subject: Re: [PATCH i-g-t 39/39] tests/vkms_configfs: Test connector hot-plug
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 References: <20250218165011.9123-1-jose.exposito89@gmail.com>
- <20250218165011.9123-36-jose.exposito89@gmail.com>
+ <20250218165011.9123-40-jose.exposito89@gmail.com>
 Content-Language: en-US
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
  5K81kIWbtQX91pD/wH5UapRF4kwMXTAqof8+m3XfYcEDVG31Kf8QkJTG/gLBi1UfJgGBahbY
@@ -95,12 +95,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250218165011.9123-36-jose.exposito89@gmail.com>
+In-Reply-To: <20250218165011.9123-40-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekleelhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfhfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghffhiefgueekleetieehjeefffeiudfgtdehteekvdetjeetvdfhffetteevueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekleelhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuvdetgeevkefhiedugfekveejieeiveeigeeiveduffehfffhgeffffetheekgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrgh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -120,200 +120,32 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 18/02/2025 à 17:50, José Expósito a écrit :
-> Test that, once a VKMS device is enabled, the plane values can't change
-> and that deleting it or the attached CRTCs doesn't change the VKMS
-> device.
-> 
-> Add a function that performs a basic validation checking that the
-> device created matches the expected one.
+> Test that, once a VKMS device is enabled, the connectors can be
+> hot-plugged and hot-unplugged.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-
-The next tests don't pass on my VM, can you share details on your setup? 
-(kernel branch, architecture)
-
 > ---
->   lib/igt_vkms.c             |  27 +++++++
->   lib/igt_vkms.h             |   1 +
->   tests/vkms/vkms_configfs.c | 147 +++++++++++++++++++++++++++++++++++++
->   3 files changed, 175 insertions(+)
+>   tests/vkms/vkms_configfs.c | 84 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 84 insertions(+)
 > 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index 4c44efec9..3dab7a823 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -152,6 +152,21 @@ static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
->   		     path, errno, strerror(errno));
->   }
->   
-> +static bool remove_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
-> +				 const char *name)
-> +{
-> +	const char *item_dir_name;
-> +	char path[PATH_MAX];
-> +	int ret;
-> +
-> +	item_dir_name = get_pipeline_item_dir_name(item);
-> +	snprintf(path, sizeof(path), "%s/%s/%s", dev->path, item_dir_name,
-> +		 name);
-> +
-> +	ret = rmdir(path);
-> +	return ret == 0;
-> +}
-> +
->   static bool attach_pipeline_item(igt_vkms_t *dev,
->   				 enum vkms_pipeline_item src_item,
->   				 const char *src_item_name,
-> @@ -474,6 +489,18 @@ void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
->   }
->   
-> +/**
-> + * igt_vkms_device_remove_plane:
-> + * @dev: Device to remove the plane from
-> + * @name: Plane name
-> + *
-> + * Remove an existing plane from the VKMS device.
-> + */
-> +bool igt_vkms_device_remove_plane(igt_vkms_t *dev, const char *name)
-> +{
-> +	return remove_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
-> +}
-> +
->   /**
->    * igt_vkms_plane_get_type:
->    * @dev: Device the plane belongs to
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 79edabe81..03f9cb339 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -73,6 +73,7 @@ bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
->   void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
->   
->   void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
-> +bool igt_vkms_device_remove_plane(igt_vkms_t *dev, const char *name);
->   int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
->   void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
->   bool igt_vkms_plane_attach_crtc(igt_vkms_t *dev, const char *plane_name,
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 5a5f85ef3..066911715 100644
+> index 47a6a81ff..16922b62b 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -144,6 +144,89 @@ static bool device_exists(const char *name)
->   	return exists;
->   }
->   
-> +static void assert_device_config(igt_vkms_config_t *cfg)
-> +{
-> +	drmDevicePtr devices[64];
-> +	drmDevicePtr dev;
-> +	drmModeResPtr res;
-> +	drmModePlaneResPtr plane_res;
-> +	drmModeConnectorPtr connector_res;
-> +	igt_vkms_crtc_config_t *crtc;
-> +	igt_vkms_connector_config_t *connector;
-> +	int n_devices;
-> +	int n_planes = 0;
-> +	int n_crtcs = 0;
-> +	int n_encoders = 0;
-> +	int n_connectors = 0;
-> +	int n_connector_status_cfg[4] = {0};
-> +	int n_connector_status_drm[4] = {0};
-> +	int fd;
-> +
-> +	n_devices = drmGetDevices(devices, ARRAY_SIZE(devices));
-> +
-> +	dev = find_device(cfg->device_name, devices, n_devices);
-> +	igt_assert_f(dev, "Device '%s' not found\n", cfg->device_name);
-> +
-> +	fd = open(dev->nodes[DRM_NODE_PRIMARY], O_RDONLY);
-> +	igt_assert_f(fd >= 0, "Error opening device '%s' at path '%s'\n",
-> +		     cfg->device_name, dev->nodes[DRM_NODE_PRIMARY]);
-> +	igt_assert_f(!drmSetClientCap(fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1),
-> +		     "Error setting DRM_CLIENT_CAP_UNIVERSAL_PLANES\n");
-> +	igt_assert_f(!drmSetClientCap(fd, DRM_CLIENT_CAP_ATOMIC, 1),
-> +		     "Error setting DRM_CLIENT_CAP_ATOMIC\n");
-> +	igt_assert_f(!drmSetClientCap(fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1),
-> +		     "Error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
-> +
-> +	res = drmModeGetResources(fd);
-> +	igt_assert_f(res, "Error getting resources\n");
-> +	plane_res = drmModeGetPlaneResources(fd);
-> +	igt_assert_f(plane_res, "Error getting plane resources\n");
-> +
-> +	for (int n = 0; (&cfg->planes[n])->name; n++)
-> +		n_planes++;
-> +
-> +	for (int n = 0; (crtc = &cfg->crtcs[n])->name; n++) {
-> +		n_crtcs++;
-> +
-> +		if (crtc->writeback) {
-> +			n_encoders++;
-> +			n_connectors++;
-> +			n_connector_status_cfg[DRM_MODE_UNKNOWNCONNECTION]++;
-> +		}
-> +	}
-> +
-> +	for (int n = 0; (&cfg->encoders[n])->name; n++)
-> +		n_encoders++;
-> +
-> +	for (int n = 0; (connector = &cfg->connectors[n])->name; n++) {
-> +		n_connectors++;
-> +		n_connector_status_cfg[connector->status]++;
-> +	}
-> +
-> +	for (int n = 0; n < res->count_connectors; n++) {
-> +		connector_res = drmModeGetConnectorCurrent(fd,
-> +							   res->connectors[n]);
-> +		n_connector_status_drm[connector_res->connection]++;
-> +		drmModeFreeConnector(connector_res);
-> +	}
-
-I think the main issue here is something I already observed: you need to 
-force probe the connector status (and in this test you really want to do 
-it), so you should use `drmModeGetConnector`.
-
-I just tested, it seems to work, except for the last test about 
-connector hotplug (see my review).
-
-> +
-> +	igt_assert_eq(n_planes, plane_res->count_planes);
-> +	igt_assert_eq(n_crtcs, res->count_crtcs);
-> +	igt_assert_eq(n_encoders, res->count_encoders);
-> +	igt_assert_eq(n_connectors, res->count_connectors);
-> +	igt_assert_eq(n_connector_status_cfg[DRM_MODE_CONNECTED],
-> +		      n_connector_status_drm[DRM_MODE_CONNECTED]);
-> +	igt_assert_eq(n_connector_status_cfg[DRM_MODE_DISCONNECTED],
-> +		      n_connector_status_drm[DRM_MODE_DISCONNECTED]);
-> +	igt_assert_eq(n_connector_status_cfg[DRM_MODE_UNKNOWNCONNECTION],
-> +		      n_connector_status_drm[DRM_MODE_UNKNOWNCONNECTION]);
-
-^ Fails on those asserts
-
-> +
-> +	drmModeFreePlaneResources(plane_res);
-> +	drmModeFreeResources(res);
-> +	close(fd);
-> +	drmFreeDevices(devices, n_devices);
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -1414,6 +1497,69 @@ static void test_enable_too_many_connectors(void)
+> @@ -1738,6 +1738,89 @@ static void test_enabled_connector_cannot_change(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enabled-plane-cannot-change
-> + * Description: Test that, once a VKMS device is enabled, the plane values can't
-> + *              change and that deleting it or the attached CRTCs doesn't change
-> + *              the VKMS device.
+> + * SUBTEST: enabled-connector-hot-plug
+> + * Description: Test that, once a VKMS device is enabled, the connectors can be
+> + *              hot-plugged and unplugged.
 > + */
 > +
-> +static void test_enabled_plane_cannot_change(void)
+> +static void test_enabled_connector_hot_plug(void)
 > +{
 > +	igt_vkms_t *dev;
+> +	drmModeConnection status;
 > +
 > +	igt_vkms_config_t cfg = {
 > +		.device_name = __func__,
@@ -330,8 +162,22 @@ connector hotplug (see my review).
 > +			},
 > +		},
 > +		.crtcs = {
-> +			{ .name = "crtc0" },
-> +			{ .name = "crtc1" },
+> +			{ .name = "crtc0", .writeback = true },
+> +			{ .name = "crtc1", .writeback = true },
+
+This test fails because of:
+- the reason I presented in 35/39
+- writeback=true creates two more connectors, which break your function 
+assert_device_config.
+
+Dirty fix (that work): remove writeback=true
+Correct fix: correct the assert_device_config function to count how much 
+writeback connectors are expected
+
+Thanks a lot for all of those tests, straightforward to understand!
+
+Louis Chauvet
+
 > +		},
 > +		.encoders = {
 > +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
@@ -340,7 +186,13 @@ connector hotplug (see my review).
 > +		.connectors = {
 > +			{
 > +				.name = "connector0",
-> +				.possible_encoders = { "encoder0", "encoder1" },
+> +				.status = DRM_MODE_DISCONNECTED,
+> +				.possible_encoders = { "encoder0" },
+> +			},
+> +			{
+> +				.name = "connector1",
+> +				.status = DRM_MODE_DISCONNECTED,
+> +				.possible_encoders = { "encoder1" },
 > +			},
 > +		},
 > +	};
@@ -352,16 +204,30 @@ connector hotplug (see my review).
 > +	igt_assert(igt_vkms_device_is_enabled(dev));
 > +	assert_device_config(&cfg);
 > +
-> +	/* Try to change values */
-> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_OVERLAY);
-> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
-> +		      DRM_PLANE_TYPE_PRIMARY);
+> +	/* Connect both connectors */
+> +	cfg.connectors[0].status = DRM_MODE_CONNECTED;
+> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_CONNECTED);
+> +	status = igt_vkms_connector_get_status(dev, "connector0");
+> +	igt_assert_eq(status, DRM_MODE_CONNECTED);
+> +	assert_device_config(&cfg);
 > +
-> +	igt_assert(!igt_vkms_plane_attach_crtc(dev, "plane0", "crtc1"));
+> +	cfg.connectors[1].status = DRM_MODE_CONNECTED;
+> +	igt_vkms_connector_set_status(dev, "connector1", DRM_MODE_CONNECTED);
+> +	status = igt_vkms_connector_get_status(dev, "connector1");
+> +	igt_assert_eq(status, DRM_MODE_CONNECTED);
+> +	assert_device_config(&cfg);
 > +
-> +	/* Deleting pipeline items doesn't affect the device */
-> +	igt_assert(igt_vkms_plane_detach_crtc(dev, "plane0", "crtc0"));
-> +	igt_assert(igt_vkms_device_remove_plane(dev, "plane0"));
+> +	/* Set one to unknown connection and disconnect the other one */
+> +	cfg.connectors[0].status = DRM_MODE_UNKNOWNCONNECTION;
+> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_UNKNOWNCONNECTION);
+> +	status = igt_vkms_connector_get_status(dev, "connector0");
+> +	igt_assert_eq(status, DRM_MODE_UNKNOWNCONNECTION);
+> +	assert_device_config(&cfg);
+> +
+> +	cfg.connectors[1].status = DRM_MODE_DISCONNECTED;
+> +	igt_vkms_connector_set_status(dev, "connector1", DRM_MODE_DISCONNECTED);
+> +	status = igt_vkms_connector_get_status(dev, "connector1");
+> +	igt_assert_eq(status, DRM_MODE_DISCONNECTED);
 > +	assert_device_config(&cfg);
 > +
 > +	igt_vkms_device_destroy(dev);
@@ -370,11 +236,11 @@ connector hotplug (see my review).
 >   igt_main
 >   {
 >   	struct {
-> @@ -1451,6 +1597,7 @@ igt_main
->   		{ "enable-crtc-no-encoder", test_enable_crtc_no_encoder },
->   		{ "enable-no-connectors", test_enable_no_connectors },
->   		{ "enable-too-many-connectors", test_enable_too_many_connectors },
-> +		{ "enabled-plane-cannot-change", test_enabled_plane_cannot_change },
+> @@ -1779,6 +1862,7 @@ igt_main
+>   		{ "enabled-crtc-cannot-change", test_enabled_crtc_cannot_change },
+>   		{ "enabled-encoder-cannot-change", test_enabled_encoder_cannot_change },
+>   		{ "enabled-connector-cannot-change", test_enabled_connector_cannot_change },
+> +		{ "enabled-connector-hot-plug", test_enabled_connector_hot_plug },
 >   	};
 >   
 >   	igt_fixture {
@@ -383,5 +249,4 @@ connector hotplug (see my review).
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
-
 
