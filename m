@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78699C282C5
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 23:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B109C282C5
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 23:36:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 577B510E0C1;
-	Fri, 28 Feb 2025 23:06:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA3E210E0C1;
+	Fri, 28 Feb 2025 23:36:52 +0000 (UTC)
 Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AD7910E0C1;
- Fri, 28 Feb 2025 23:06:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 093F610E0C1;
+ Fri, 28 Feb 2025 23:36:51 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7654879306379413270=="
+ boundary="===============5216462911984264086=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_single_engine_busyness_?=
- =?utf-8?q?stats_in_GPUTOP_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_runner=3A_Parse_results_har?=
+ =?utf-8?q?der_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Soham Purkait" <soham.purkait@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Feb 2025 23:06:32 -0000
-Message-ID: <174078399223.3346449.13715275526191978293@b555e5b46a47>
+Date: Fri, 28 Feb 2025 23:36:51 -0000
+Message-ID: <174078581103.3346449.13484556184972756085@b555e5b46a47>
 X-Patchwork-Hint: ignore
-References: <20250228141810.1417657-1-soham.purkait@intel.com>
-In-Reply-To: <20250228141810.1417657-1-soham.purkait@intel.com>
+References: <20250228171519.49523-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250228171519.49523-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7654879306379413270==
+--===============5216462911984264086==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add single engine busyness stats in GPUTOP (rev4)
-URL   : https://patchwork.freedesktop.org/series/143086/
+Series: runner: Parse results harder (rev2)
+URL   : https://patchwork.freedesktop.org/series/145520/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8255_BAT -> XEIGTPW_12685_BAT
+CI Bug Log - changes from XEIGT_8255_BAT -> XEIGTPW_12686_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8255 -> IGTPW_12685
+  * IGT: IGT_8255 -> IGTPW_12686
   * Linux: xe-2736-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c -> xe-2738-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c
 
-  IGTPW_12685: cb668941c1b9e5928ae07be65941f77e661b70fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_12686: 12686
   IGT_8255: 4ef742fae97d2f4af680f9e29f7ea45920f939b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-2736-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c: ca9d01b66c70413a62a1a28fbf8709d2e8440c1c
   xe-2738-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c: ca9d01b66c70413a62a1a28fbf8709d2e8440c1c
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12685/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12686/index.html
 
---===============7654879306379413270==
+--===============5216462911984264086==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add single engine busyness stats in GPUTOP (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/143086/">https://patchwork.freedesktop.org/series/143086/</a></td></tr>
+<tr><td><b>Series:</b></td><td>runner: Parse results harder (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145520/">https://patchwork.freedesktop.org/series/145520/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12685/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12685/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12686/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12686/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8255_BAT -&gt; XEIGTPW_12685_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8255_BAT -&gt; XEIGTPW_12686_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8255 -&gt; IGTPW_12685</li>
+<li>IGT: IGT_8255 -&gt; IGTPW_12686</li>
 <li>Linux: xe-2736-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c -&gt; xe-2738-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c</li>
 </ul>
-<p>IGTPW_12685: cb668941c1b9e5928ae07be65941f77e661b70fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_12686: 12686<br />
   IGT_8255: 4ef742fae97d2f4af680f9e29f7ea45920f939b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-2736-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c: ca9d01b66c70413a62a1a28fbf8709d2e8440c1c<br />
   xe-2738-ca9d01b66c70413a62a1a28fbf8709d2e8440c1c: ca9d01b66c70413a62a1a28fbf8709d2e8440c1c</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============7654879306379413270==--
+--===============5216462911984264086==--
