@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C1FC19776
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 05:04:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DCFC19776
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 05:08:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F06C10EBFC;
-	Fri, 28 Feb 2025 05:04:46 +0000 (UTC)
-Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7481B10EBFC;
- Fri, 28 Feb 2025 05:04:45 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4069093838442894586=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBFEE10EBFC;
+	Fri, 28 Feb 2025 05:08:19 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n46gjqzX";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08A2310EBFC
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 05:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740719298; x=1772255298;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MhTIWSK1U1XiXWaQZgVfAjvd+ImrVzNVT/ctm4fqQBg=;
+ b=n46gjqzXg+7jMgrIb20QJVggz8T8OEOEzgE09XIxKDVSTW8zVB8dIUQR
+ 0m3NoHGVlm1ffFAxFGf986gqIMJMa4KNN8cUCmq0ILx3UQcTc60rN2dZT
+ C0bhTdDVdz236vdXgy4QlKup3bCsuDZFSAdpuY9B7vMMmzRblu3jUCc3z
+ VPO/PbbE5pjAdkEZVLRp+ffK4YVtObr73QWlFkV/urivLSAtRZrqkcUtF
+ rNGDEkoGl7tzC3Abqf/LglI3dlZiP66oHdb7aHegNuLNNPCVVqhcc2yXm
+ cxvOS1la6H+OTm2wvdHONKSlxQYOR93vr7Qwt33DB8ZJPW1iNEK0F6796 Q==;
+X-CSE-ConnectionGUID: 2lmn1MOsQZmGOW50b3pWzA==
+X-CSE-MsgGUID: k/Ihlo5HQ8+d6OVripGMOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="53048690"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="53048690"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2025 21:08:08 -0800
+X-CSE-ConnectionGUID: fIEiUt8IRZmyCfFgBan/WA==
+X-CSE-MsgGUID: zToqMktWRcyWoIuAmhi3Bg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,321,1732608000"; d="scan'208";a="117905187"
+Received: from unknown (HELO sinjan-Super-Server.iind.intel.com)
+ ([10.190.239.39])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2025 21:08:05 -0800
+From: Karthik Poosa <karthik.poosa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, katarzyna.piecielska@intel.com,
+ jari.tahvanainen@intel.com, ramadevi.gandi@intel.com,
+ rodrigo.vivi@intel.com, kamil.konieczny@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel: Update sub-category of Xe power
+ management tests
+Date: Fri, 28 Feb 2025 10:37:57 +0530
+Message-Id: <20250228050757.2081043-1-karthik.poosa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_fixes_for_test_kms=5Fdp=5Fl?=
- =?utf-8?q?ink=5Ftraining?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Feb 2025 05:04:45 -0000
-Message-ID: <174071908547.3053194.1851119047185884835@b555e5b46a47>
-X-Patchwork-Hint: ignore
-References: <20250227123039.2933330-1-kunal1.joshi@intel.com>
-In-Reply-To: <20250227123039.2933330-1-kunal1.joshi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,160 +67,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4069093838442894586==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Change sub-category of below tests from Power management tests to below:
+ * tests/intel/xe_gt_freq.c to Frequency management tests.
+ * tests/intel/xe_pm.c to Suspend-resume tests.
+ * tests/intel/xe_pm_residency.c to GT C-states and idle residency tests.
 
-== Series Details ==
+v2: Modify sub-category as per review comments. (Rodrigo)
 
-Series: fixes for test kms_dp_link_training
-URL   : https://patchwork.freedesktop.org/series/145576/
-State : success
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+---
+ tests/intel/xe_gt_freq.c      | 2 +-
+ tests/intel/xe_pm.c           | 2 +-
+ tests/intel/xe_pm_residency.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index 1fb6d2b53..843144ad2 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -7,7 +7,7 @@
+  * TEST: Test Xe GT frequency request functionality
+  * Category: Core
+  * Mega feature: Power management
+- * Sub-category: Power management tests
++ * Sub-category: Frequency management tests
+  * Functionality: frequency request
+  * Test category: functionality test
+  */
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index c2026474d..19b0d5ef7 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -7,7 +7,7 @@
+  * TEST: Check Power Management functionality
+  * Category: Core
+  * Mega feature: Power management
+- * Sub-category: Power management tests
++ * Sub-category: Suspend-resume tests
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 3432077cc..d1c25e944 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -7,7 +7,7 @@
+  * TEST: Test gtidle properties
+  * Category: Core
+  * Mega feature: Power management
+- * Sub-category: Power management tests
++ * Sub-category: GT C-states and idle residency tests
+  * Functionality: GT C States
+  * Test category: functionality test
+  */
+-- 
+2.25.1
 
-CI Bug Log - changes from XEIGT_8251_BAT -> XEIGTPW_12679_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12679_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-adlp-vf:        [PASS][1] -> [SKIP][2] ([Intel XE#4322]) +1 other test skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
-
-  * igt@xe_vm@bind-execqueues-independent:
-    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3970])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html
-
-  
-#### Warnings ####
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][6] ([Intel XE#4322])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-  [Intel XE#4322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_8251 -> IGTPW_12679
-  * Linux: xe-2725-2a3ff290a74cd6294c39faafae2f6033694f1176 -> xe-2730-873b1a50bb4394e95332cfa611aa6463de6b7cb0
-
-  IGTPW_12679: 12679
-  IGT_8251: f0b66883398b4a07bb8fcaa3663a2140129d9a58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2725-2a3ff290a74cd6294c39faafae2f6033694f1176: 2a3ff290a74cd6294c39faafae2f6033694f1176
-  xe-2730-873b1a50bb4394e95332cfa611aa6463de6b7cb0: 873b1a50bb4394e95332cfa611aa6463de6b7cb0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/index.html
-
---===============4069093838442894586==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>fixes for test kms_dp_link_training</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145576/">https://patchwork.freedesktop.org/series/145576/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8251_BAT -&gt; XEIGTPW_12679_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12679_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_vm@bind-execqueues-independent:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12679/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4322">Intel XE#4322</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8251 -&gt; IGTPW_12679</li>
-<li>Linux: xe-2725-2a3ff290a74cd6294c39faafae2f6033694f1176 -&gt; xe-2730-873b1a50bb4394e95332cfa611aa6463de6b7cb0</li>
-</ul>
-<p>IGTPW_12679: 12679<br />
-  IGT_8251: f0b66883398b4a07bb8fcaa3663a2140129d9a58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2725-2a3ff290a74cd6294c39faafae2f6033694f1176: 2a3ff290a74cd6294c39faafae2f6033694f1176<br />
-  xe-2730-873b1a50bb4394e95332cfa611aa6463de6b7cb0: 873b1a50bb4394e95332cfa611aa6463de6b7cb0</p>
-
-</body>
-</html>
-
---===============4069093838442894586==--
