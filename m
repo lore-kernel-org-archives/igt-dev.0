@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2047C282C1
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 15:54:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B23C282C1
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 15:55:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 61D9A10ECE0;
-	Fri, 28 Feb 2025 15:54:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 62FD110E035;
+	Fri, 28 Feb 2025 15:55:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="COet3LPB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aVAJjVzT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8416E10ECE0;
- Fri, 28 Feb 2025 15:54:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FD1A10E035
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 15:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740758047; x=1772294047;
+ t=1740758128; x=1772294128;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=MWJX5G4yMCmpRhOMq+nbJmR7MIwCgVRcmV2tzU/eYSg=;
- b=COet3LPBxPS6PM5DDFQkyJmP10Vg/asoWwWX7qUQjB4fiPg9gOfEwx4c
- ckYI3pb2+9JfhBcSUGhbq4cmxAW3Tf+riZ7KARdA5+5ncUU95YdpXOoGk
- Bp9yPQEHL10g0czdNF23sa8jTSfur6ZcpWjDe4P2C/1sYd6n5fMv+TueS
- mvw3au31INOc/Bv7iwzvXs6oyQstVJiFMniRci2UEmgkr5Y/7NQs+vb93
- Ga4vHOHXWazU1WfOFUqjbjneBsNxUCPnGWYlBdVIDFOv8gV7pfIPzhmZR
- +m56m3mgpieuYP3dETfl4lUx1kQOjQbvl6k+nEGfNOWV8mV27FnkpCz7l A==;
-X-CSE-ConnectionGUID: VtzoVgr+THergYRHYAt4og==
-X-CSE-MsgGUID: Au41j2ioRd2aCnwq31iQ0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="41818617"
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="41818617"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 07:54:05 -0800
-X-CSE-ConnectionGUID: g3pYf1g+TrqlUyo8a0/CtA==
-X-CSE-MsgGUID: jl7M/0blS46kvcngm/PNyQ==
+ bh=dkfLO3Ab/Gt0raKG8BKv0o4Jt7ohoT2xuhRnmLYvitU=;
+ b=aVAJjVzToI9GToeLz8Q5Ge5/zM0svRCcwUvyQmrQPryrbHxgxtH55Jce
+ sYDB6f4qPmZPpEfhKwYDUM0QjXJxhvF2sCbKzGPEpdG3YnmCmwy28MTE8
+ 2GpHK1YEPZokGi3hVUA0f4MNxMBIAJ1QSkZwpXopv5KwBF7LeUbXwkFms
+ xgpUUt4f6K6oT+23NxaBDARHF3KQRA4CJLt4qLrUUyc74pgCBDlPL2OgJ
+ bQtLiWdpJQykgQaevEztWkMiKji3ZO+SyoAlyuKxcXcOLga13QJ9xMy7K
+ WPMJdCo01yVhXbC4W6RL1ZEGnozzv2B5UC0zFwzfhqVLwGat3iKDvf0uA g==;
+X-CSE-ConnectionGUID: SZXmaijvROeBVilFyZotog==
+X-CSE-MsgGUID: EEDeEMflQme/ZQTCSOla5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="40931242"
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="40931242"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2025 07:55:28 -0800
+X-CSE-ConnectionGUID: Nsz7mUBCTIWfZXSHyf2miQ==
+X-CSE-MsgGUID: N/4Dy81iSWKKKCG/ouPh8w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118282898"
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="117868435"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 07:54:02 -0800
-Date: Fri, 28 Feb 2025 16:53:58 +0100
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 07:55:27 -0800
+Date: Fri, 28 Feb 2025 16:55:25 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- runner: Parse results harder
-Message-ID: <20250228155358.xrcj3mtaqvvfp45h@kamilkon-desk.igk.intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/2] lib/syncobj: Make running under Valgrind quiet
+Message-ID: <20250228155525.vz7inqh3rytnvtwe@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20250226193328.132817-1-kamil.konieczny@linux.intel.com>
- <174074036946.3189672.4722311932605274854@b555e5b46a47>
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250225124454.1976-1-tvrtko.ursulin@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <174074036946.3189672.4722311932605274854@b555e5b46a47>
+In-Reply-To: <20250225124454.1976-1-tvrtko.ursulin@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,120 +70,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-02-28 at 10:59:29 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Tvrtko,
+On 2025-02-25 at 12:44:53 +0000, Tvrtko Ursulin wrote:
+> Explicitly initialise ioctl arguments so Valgrind can know we are not
+> passing in uninitialised memory to the kernel.
 > 
-> Series: runner: Parse results harder
-> URL   : https://patchwork.freedesktop.org/series/145520/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_16198_full -> IGTPW_12673_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_12673_full absolutely need to be
->   verified manually.
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/igt_syncobj.c | 21 ++++++---------------
+>  1 file changed, 6 insertions(+), 15 deletions(-)
 
-Unrelated to change in igt_runner
+Both applied, thanks!
 
 Regards,
 Kamil
 
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12673_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/index.html
+> diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
+> index a53393bd7245..5a1226b6e19d 100644
+> --- a/lib/igt_syncobj.c
+> +++ b/lib/igt_syncobj.c
+> @@ -197,14 +197,12 @@ int
+>  syncobj_wait_err(int fd, uint32_t *handles, uint32_t count,
+>  		 uint64_t abs_timeout_nsec, uint32_t flags)
+>  {
+> -	struct drm_syncobj_wait wait;
+> +	struct drm_syncobj_wait wait = { };
+>  
+>  	wait.handles = to_user_pointer(handles);
+>  	wait.timeout_nsec = abs_timeout_nsec;
+>  	wait.count_handles = count;
+>  	wait.flags = flags;
+> -	wait.first_signaled = 0;
+> -	wait.pad = 0;
+>  
+>  	return __syncobj_wait(fd, &wait);
+>  }
+> @@ -227,15 +225,13 @@ syncobj_wait(int fd, uint32_t *handles, uint32_t count,
+>  	     uint64_t abs_timeout_nsec, uint32_t flags,
+>  	     uint32_t *first_signaled)
+>  {
+> -	struct drm_syncobj_wait wait;
+> +	struct drm_syncobj_wait wait = { };
+>  	int ret;
+>  
+>  	wait.handles = to_user_pointer(handles);
+>  	wait.timeout_nsec = abs_timeout_nsec;
+>  	wait.count_handles = count;
+>  	wait.flags = flags;
+> -	wait.first_signaled = 0;
+> -	wait.pad = 0;
+>  
+>  	ret = __syncobj_wait(fd, &wait);
+>  	if (ret == -ETIME)
+> @@ -356,7 +352,7 @@ __syncobj_timeline_wait(int fd, uint32_t *handles, uint64_t *points,
+>  			int64_t timeout_nsec, unsigned flags,
+>  			uint32_t *first_signaled)
+>  {
+> -	struct drm_syncobj_timeline_wait args;
+> +	struct drm_syncobj_timeline_wait args = { };
+>  	int ret;
+>  
+>  	args.handles = to_user_pointer(handles);
+> @@ -364,8 +360,6 @@ __syncobj_timeline_wait(int fd, uint32_t *handles, uint64_t *points,
+>  	args.timeout_nsec = timeout_nsec;
+>  	args.count_handles = num_handles;
+>  	args.flags = flags;
+> -	args.first_signaled = 0;
+> -	args.pad = 0;
+>  
+>  	ret = igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT, &args);
+>  	if (ret < 0) {
+> @@ -424,13 +418,12 @@ static int
+>  __syncobj_timeline_query(int fd, uint32_t *handles, uint64_t *points,
+>  			 uint32_t handle_count)
+>  {
+> -	struct drm_syncobj_timeline_array args;
+> +	struct drm_syncobj_timeline_array args = { };
+>  	int ret;
+>  
+>  	args.handles = to_user_pointer(handles);
+>  	args.points = to_user_pointer(points);
+>  	args.count_handles = handle_count;
+> -	args.flags = 0;
+>  
+>  	ret = igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_QUERY, &args);
+>  	if (ret) {
+> @@ -464,7 +457,7 @@ __syncobj_transfer(int fd,
+>  		   uint32_t handle_src, uint64_t point_src,
+>  		   uint32_t flags)
+>  {
+> -	struct drm_syncobj_transfer args;
+> +	struct drm_syncobj_transfer args = { };
+>  	int ret;
+>  
+>  	args.src_handle = handle_src;
+> @@ -472,7 +465,6 @@ __syncobj_transfer(int fd,
+>  	args.src_point = point_src;
+>  	args.dst_point = point_dst;
+>  	args.flags = flags;
+> -	args.pad = 0;
+>  	ret = igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_TRANSFER, &args);
+>  	if (ret) {
+>  		ret = -errno;
+> @@ -548,14 +540,13 @@ int
+>  __syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
+>  		  int ev_fd)
+>  {
+> -	struct drm_syncobj_eventfd args;
+> +	struct drm_syncobj_eventfd args = { };
+>  	int ret;
+>  
+>  	args.handle = handle;
+>  	args.flags = flags;
+>  	args.point = point;
+>  	args.fd = ev_fd;
+> -	args.pad = 0;
+>  
+>  	ret = igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_EVENTFD, &args);
+>  	if (ret) {
+> -- 
+> 2.48.0
 > 
-> Participating hosts (10 -> 9)
-> ------------------------------
-> 
->   Missing    (1): shard-glk-0 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_12673_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_exec_suspend@basic-s4-devices:
->     - shard-glk:          NOTRUN -> [ABORT][1] +1 other test abort
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-glk2/igt@gem_exec_suspend@basic-s4-devices.html
-> 
->   * igt@gem_mmap_gtt@close-race:
->     - shard-snb:          [PASS][2] -> [INCOMPLETE][3]
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16198/shard-snb1/igt@gem_mmap_gtt@close-race.html
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-snb1/igt@gem_mmap_gtt@close-race.html
-> 
->   * igt@kms_vblank@ts-continuation-suspend@pipe-a-hdmi-a-2:
->     - shard-rkl:          [PASS][4] -> [INCOMPLETE][5] +1 other test incomplete
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16198/shard-rkl-1/igt@kms_vblank@ts-continuation-suspend@pipe-a-hdmi-a-2.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-rkl-5/igt@kms_vblank@ts-continuation-suspend@pipe-a-hdmi-a-2.html
-> 
->   * igt@perf_pmu@all-busy-check-all:
->     - shard-dg2-9:        NOTRUN -> [ABORT][6]
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-dg2-9/igt@perf_pmu@all-busy-check-all.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_12673_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@object-reloc-keep-cache:
->     - shard-rkl:          NOTRUN -> [SKIP][7] ([i915#8411]) +1 other test skip
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-rkl-5/igt@api_intel_bb@object-reloc-keep-cache.html
->     - shard-dg1:          NOTRUN -> [SKIP][8] ([i915#8411])
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-dg1-18/igt@api_intel_bb@object-reloc-keep-cache.html
->     - shard-mtlp:         NOTRUN -> [SKIP][9] ([i915#8411])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-mtlp-1/igt@api_intel_bb@object-reloc-keep-cache.html
-> 
->   * igt@api_intel_bb@object-reloc-purge-cache:
->     - shard-dg2:          NOTRUN -> [SKIP][10] ([i915#8411]) +2 other tests skip
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-dg2-5/igt@api_intel_bb@object-reloc-purge-cache.html
-> 
-
-...cut...
-
->   * igt@drm_fdinfo@all-busy-check-all:
->     - shard-dg2-9:        NOTRUN -> [SKIP][11] ([i915#8414])
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/shard-dg2-9/igt@drm_fdinfo@all-busy-check-all.html
-> 
-
-...cut...
-
->   [i915#9917]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9917
->   [i915#9934]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8251 -> IGTPW_12673
->   * Piglit: piglit_4509 -> None
-> 
->   CI-20190529: 20190529
->   CI_DRM_16198: e03a2fbda18fa9e3df6fc7bb0c6359f0ccddf9d4 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_12673: 12673
->   IGT_8251: f0b66883398b4a07bb8fcaa3663a2140129d9a58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12673/index.html
