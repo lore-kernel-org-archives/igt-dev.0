@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A785AC282D0
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 14:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9997BC19776
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 14:54:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 615F310ECBE;
-	Fri, 28 Feb 2025 14:21:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XYANosgT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C582210ECBE
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 14:21:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740752467; x=1772288467;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=h+VUv3GTN49XmwmiwNhTiRPgzx3nRSMmAWglBe2Bf5w=;
- b=XYANosgTm1k6Qg7tCz5E/PzBi9bwxyXJisDkFnWrBuQNUoBasEzJsIA8
- 711ocpUtKcFNrZtn+5v3VlO4Vu35H4dyEE57jn2cStnn8WNrQ7AeyQt6m
- dM/67ArT8ridAFLH0B+/+GUHN5ORCm94UlvV1rHap3++o82LyykBep8Ru
- aTHzC92PYpO9ufTMV/fZ3q1oGg/zUkdO/VdZovGANpH1YzkAqRjOOWx2A
- xw/HBWu54M9NJGJ9yICr0ROEH5snjru0BK65lkZUYi+g9LHyJSLaf3Q4+
- CxVz50FR9Fk8nKx1RSAi/JddxXcl3DAibv97jnTKQMnU4AaNN5rNGVyus g==;
-X-CSE-ConnectionGUID: 6Q+7lB4XT6KtcF/4YhboPg==
-X-CSE-MsgGUID: jJfdfSPCQIyD3Ms1aJvGSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="51885205"
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="51885205"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 06:21:07 -0800
-X-CSE-ConnectionGUID: guqF6AoUTMyh2Ee/MekOrQ==
-X-CSE-MsgGUID: p9JuwAW9QfK0cPyaUBzq6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="121955044"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 06:21:05 -0800
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- soham.purkait@intel.com, jonathan.ming.jun.lui@intel.com
-Subject: [PATCH i-g-t v3 4/4] Enable support for multiple GPUs and instances
-Date: Fri, 28 Feb 2025 19:48:10 +0530
-Message-Id: <20250228141810.1417657-5-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250228141810.1417657-1-soham.purkait@intel.com>
-References: <20250228141810.1417657-1-soham.purkait@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B47710ECCE;
+	Fri, 28 Feb 2025 14:54:39 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E63F10ECCE;
+ Fri, 28 Feb 2025 14:54:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2743789209295650552=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmulti=5F?=
+ =?utf-8?q?tile=3A_Multi-Tile_support_in_IGT_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Feb 2025 14:54:38 -0000
+Message-ID: <174075447803.3251867.11756044176412288920@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250228092251.15170-1-nishit.sharma@intel.com>
+In-Reply-To: <20250228092251.15170-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,366 +37,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-v2 : fix for refactoring GPUTOP into a
-     vendor-agnostic tool (Lucas)
+--===============2743789209295650552==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v3 : New year included in copyright (Kamil, Riana)
-     Removed caps in function name (Riana)
-     Struct for driver specific operations (Riana)
-     Headers in alphabetical order (Kamil, Riana)
+== Series Details ==
 
----
- tools/{ => gputop}/gputop.c | 203 ++++++++++++++++++++++++++++--------
- tools/gputop/meson.build    |   6 ++
- tools/meson.build           |   6 +-
- 3 files changed, 166 insertions(+), 49 deletions(-)
- rename tools/{ => gputop}/gputop.c (71%)
- create mode 100644 tools/gputop/meson.build
+Series: tests/intel/xe_multi_tile: Multi-Tile support in IGT (rev4)
+URL   : https://patchwork.freedesktop.org/series/144187/
+State : success
 
-diff --git a/tools/gputop.c b/tools/gputop/gputop.c
-similarity index 71%
-rename from tools/gputop.c
-rename to tools/gputop/gputop.c
-index 43b01f566..23014de17 100644
---- a/tools/gputop.c
-+++ b/tools/gputop/gputop.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: MIT
- /*
-- * Copyright © 2023 Intel Corporation
-+ * Copyright © 2023-2025 Intel Corporation
-  */
- 
- #include <assert.h>
-@@ -14,66 +14,96 @@
- #include <math.h>
- #include <poll.h>
- #include <signal.h>
-+#include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <sys/sysmacros.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
- #include <sys/types.h>
--#include <unistd.h>
- #include <termios.h>
--#include <sys/sysmacros.h>
--#include <stdbool.h>
-+#include <unistd.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_drm_clients.h"
- #include "igt_drm_fdinfo.h"
-+#include "igt_perf.h"
- #include "igt_profiling.h"
--#include "drmtest.h"
--
--enum utilization_type {
--	UTILIZATION_TYPE_ENGINE_TIME,
--	UTILIZATION_TYPE_TOTAL_CYCLES,
-+#include "xe_gputop.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * Supported Drivers
-+ *
-+ * Adhere to the following requirements
-+ * when implementing support for the
-+ * new driver:
-+ * @drivers: Update drivers[] with
-+ * driver string.
-+ * @total_count: Update NUM_DRIVER with
-+ * the total number of supported drivers.
-+ * @operations: Update the respective
-+ * operations of the new driver:
-+ * populate_device_instances,
-+ * discover_engines,
-+ * pmu_init,
-+ * pmu_sample,
-+ * print_engines
-+ * @devices: Update devices[] array
-+ * of type "struct gputop_device" with
-+ * the initial values.
-+ */
-+static const char * const drivers[] = {
-+	"xe",
-+    /*Keep the last one as NULL*/
-+	NULL
- };
- 
--static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
-+/**
-+ * Number of supported drivers needs to be adjusted
-+ * as per the letgth of the drivers[] array.
-+ */
-+#define NUM_DRIVER 1
- 
--#define ANSI_HEADER "\033[7m"
--#define ANSI_RESET "\033[0m"
-+/**
-+ * Supported operations on driver instances.
-+ * Update the oprs[] array for
-+ * each individual driver specific function.
-+ * Maintain the sequence as per drivers[] array.
-+ */
-+struct device_operations oprs[NUM_DRIVER] = {
-+	{
-+		xe_populate_device_instances,
-+		xe_discover_engines,
-+		xe_pmu_init,
-+		xe_pmu_sample,
-+		xe_print_engines
-+	}
-+};
- 
--static void n_spaces(const unsigned int n)
--{
--	unsigned int i;
-+/*
-+ * devices[] array of type
-+ * struct gputop_device
-+ */
-+struct gputop_device devices[] = {
-+	{false, 0, NULL}
-+};
- 
--	for (i = 0; i < n; i++)
--		putchar(' ');
--}
-+enum utilization_type {
-+	UTILIZATION_TYPE_ENGINE_TIME,
-+	UTILIZATION_TYPE_TOTAL_CYCLES,
-+};
- 
--static void print_percentage_bar(double percent, int max_len)
-+static int find_driver(struct igt_device_card *card)
- {
--	int bar_len, i, len = max_len - 1;
--	const int w = 8;
--
--	len -= printf("|%5.1f%% ", percent);
--
--	/* no space left for bars, do what we can */
--	if (len < 0)
--		len = 0;
--
--	bar_len = ceil(w * percent * len / 100.0);
--	if (bar_len > w * len)
--		bar_len = w * len;
--
--	for (i = bar_len; i >= w; i -= w)
--		printf("%s", bars[w]);
--	if (i)
--		printf("%s", bars[i]);
--
--	len -= (bar_len + (w - 1)) / w;
--	n_spaces(len);
--
--	putchar('|');
-+	for (int i = 0; drivers[i]; i++) {
-+		if (strcmp(drivers[i], card->driver) == 0)
-+			return i;
-+	}
-+	return -1;
- }
- 
- static int
-@@ -333,6 +363,7 @@ static void clrscr(void)
- struct gputop_args {
- 	long n_iter;
- 	unsigned long delay_usec;
-+	char *device;
- };
- 
- static void help(void)
-@@ -343,16 +374,18 @@ static void help(void)
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
- 	       "\t-n, --iterations =NUMBER  number of executions\n"
-+	       "\t-D, --device              Device filter"
- 	       , program_invocation_short_name);
- }
- 
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- {
--	static const char cmdopts_s[] = "hn:d:";
-+	static const char cmdopts_s[] = "hn:d:D:";
- 	static const struct option cmdopts[] = {
- 	       {"help", no_argument, 0, 'h'},
- 	       {"delay", required_argument, 0, 'd'},
- 	       {"iterations", required_argument, 0, 'n'},
-+	       {"device", required_argument, 0, 'D'},
- 	       { }
- 	};
- 
-@@ -360,6 +393,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 	memset(args, 0, sizeof(*args));
- 	args->n_iter = -1;
- 	args->delay_usec = 2 * USEC_PER_SEC;
-+	args->device = NULL;
- 
- 	for (;;) {
- 		int c, idx = 0;
-@@ -383,6 +417,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 				return -1;
- 			}
- 			break;
-+		case 'D':
-+			args->device = optarg;
-+			break;
- 		case 'h':
- 			help();
- 			return 0;
-@@ -422,6 +459,76 @@ int main(int argc, char **argv)
- 	n = args.n_iter;
- 	period_us = args.delay_usec;
- 
-+	igt_devices_scan();
-+
-+	if (args.device) {
-+		struct igt_device_card *card = calloc(1, sizeof(struct igt_device_card));
-+
-+		if (!igt_device_card_match(args.device, card)) {
-+			printf("No device found for the filter\n"
-+				"Showing for all devices\n");
-+				free(card);
-+		} else {
-+			int driver_no = find_driver(card);
-+
-+			if (driver_no < 0) {
-+				fprintf(stderr, "The driver %s could not be found.", card->driver);
-+				exit(EXIT_FAILURE);
-+			}
-+
-+			devices[driver_no].driver_present = true;
-+			devices[driver_no].len = 1;
-+			devices[driver_no].instances =
-+				calloc(1, sizeof(struct xe_gputop));
-+			xe_gputop_init(devices[driver_no].instances,
-+				       card
-+					);
-+			goto explore_devices;
-+		}
-+	}
-+
-+	for (int i = 0; drivers[i]; i++)
-+		oprs[i].populate_device_instances(devices + i);
-+
-+explore_devices:
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		if (devices[i].driver_present) {
-+			for (int j = 0; j < devices[i].len; j++) {
-+				if (!oprs[i].discover_engines(devices[i].instances + j)) {
-+					fprintf(stderr,
-+						"Failed to discover engines! (%s)\n",
-+						strerror(errno));
-+					return EXIT_FAILURE;
-+				}
-+				ret = oprs[i].pmu_init(devices[i].instances + j);
-+
-+				if (ret) {
-+					fprintf(stderr,
-+						"Failed to initialize PMU! (%s)\n",
-+						strerror(errno));
-+					if (errno == EACCES && geteuid())
-+						fprintf(stderr,
-+							"\n"
-+							"When running as a normal user CAP_PERFMON is required to access performance\n"
-+							"monitoring. See \"man 7 capabilities\", \"man 8 setcap\", or contact your\n"
-+							"distribution vendor for assistance.\n"
-+							"\n"
-+							"More information can be found at 'Perf events and tool security' document:\n"
-+							"https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
-+
-+					igt_devices_free();
-+					return EXIT_FAILURE;
-+				}
-+			}
-+		}
-+	}
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+			oprs[i].pmu_sample(devices[i].instances + j);
-+	}
-+
- 	clients = igt_drm_clients_init(NULL);
- 	if (!clients)
- 		exit(1);
-@@ -442,7 +549,7 @@ int main(int argc, char **argv)
- 
- 	while ((n != 0) && !stop_top) {
- 		struct igt_drm_client *c, *prevc = NULL;
--		int i, engine_w = 0, lines = 0;
-+		int k, engine_w = 0, lines = 0;
- 
- 		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
- 		igt_drm_clients_sort(clients, client_cmp);
-@@ -450,6 +557,14 @@ int main(int argc, char **argv)
- 		update_console_size(&con_w, &con_h);
- 		clrscr();
- 
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++) {
-+				oprs[i].pmu_sample(devices[i].instances + j);
-+				lines = oprs[i].print_engines(devices[i].instances + j,
-+							 lines, con_w, con_h);
-+			}
-+		}
-+
- 		if (!clients->num_clients) {
- 			const char *msg = " (No GPU clients yet. Start workload to see stats)";
- 
-@@ -457,7 +572,7 @@ int main(int argc, char **argv)
- 			       (int)(con_w - strlen(msg) - 1), msg);
- 		}
- 
--		igt_for_each_drm_client(clients, c, i) {
-+		igt_for_each_drm_client(clients, c, k) {
- 			assert(c->status != IGT_DRM_CLIENT_PROBE);
- 			if (c->status != IGT_DRM_CLIENT_ALIVE)
- 				break; /* Active clients are first in the array. */
-diff --git a/tools/gputop/meson.build b/tools/gputop/meson.build
-new file mode 100644
-index 000000000..0512ac3d6
---- /dev/null
-+++ b/tools/gputop/meson.build
-@@ -0,0 +1,6 @@
-+gputop_src = [ 'gputop.c', 'common_gputop.c', 'xe_gputop.c']
-+executable('gputop', sources : gputop_src,
-+           install : true,
-+           install_rpath : bindir_rpathdir,
-+           dependencies : [igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],
-+	   install: true)
-diff --git a/tools/meson.build b/tools/meson.build
-index 1dfe1f839..44c127c01 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -68,11 +68,6 @@ if libudev.found()
- 		   install : true)
- endif
- 
--executable('gputop', 'gputop.c',
--           install : true,
--           install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
--
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
-@@ -121,3 +116,4 @@ endif
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
-+subdir('gputop')
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8253 -> IGTPW_12682
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/index.html
+
+Participating hosts (44 -> 44)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12682 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [ABORT][3] ([i915#12919] / [i915#13503]) -> [INCOMPLETE][4] ([i915#13761] / [i915#13776])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-1/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-1/igt@i915_selftest@live.html
+    - bat-twl-2:          [ABORT][5] ([i915#12919] / [i915#13503]) -> [INCOMPLETE][6] ([i915#12445] / [i915#13761] / [i915#13776])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-2/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-twl-2:          [ABORT][7] ([i915#12919] / [i915#13503]) -> [INCOMPLETE][8] ([i915#12445])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-2/igt@i915_selftest@live@reset.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-2/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@ring_submission:
+    - bat-twl-1:          [ABORT][9] ([i915#12919]) -> [INCOMPLETE][10] ([i915#13761] / [i915#13776])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-1/igt@i915_selftest@live@ring_submission.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-1/igt@i915_selftest@live@ring_submission.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#12919]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919
+  [i915#13503]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503
+  [i915#13761]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761
+  [i915#13776]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8253 -> IGTPW_12682
+
+  CI-20190529: 20190529
+  CI_DRM_16202: 4e4a83bc30b77bb710641f0b43e6098bd04c5044 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12682: 47aaae98f00671cf94fba7284ce5cf2cda890ed7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8253: b747eebcc6f4b6729ae171490e52725e9fb13b89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/index.html
+
+--===============2743789209295650552==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_multi_tile: Multi-Tile support in IGT (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144187/">https://patchwork.freedesktop.org/series/144187/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8253 -&gt; IGTPW_12682</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/index.html</p>
+<h2>Participating hosts (44 -&gt; 44)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12682 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761">i915#13761</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>)</li>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761">i915#13761</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13503">i915#13503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-2/igt@i915_selftest@live@reset.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@ring_submission:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8253/bat-twl-1/igt@i915_selftest@live@ring_submission.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12919">i915#12919</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12682/bat-twl-1/igt@i915_selftest@live@ring_submission.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761">i915#13761</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8253 -&gt; IGTPW_12682</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16202: 4e4a83bc30b77bb710641f0b43e6098bd04c5044 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12682: 47aaae98f00671cf94fba7284ce5cf2cda890ed7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8253: b747eebcc6f4b6729ae171490e52725e9fb13b89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2743789209295650552==--
