@@ -4,68 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E5EAC282C1
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 15:23:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3785C282C6
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 15:52:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 08EF010ECEA;
-	Fri, 28 Feb 2025 15:23:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B053E10ECE5;
+	Fri, 28 Feb 2025 15:52:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dK3i7FbO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="igdBfWrY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 779DE10ECD4
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 15:23:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7344710ECE0;
+ Fri, 28 Feb 2025 15:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740756216; x=1772292216;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=8HiTngU8iAoaZzfM68ZZzz1wocJpxx4euiPuyyKv8tc=;
- b=dK3i7FbOl5/iFE2MB0MQwI2gGLzejkAurtlfY1duRHtT9zcxdr0yPnhu
- VpOUWlTcDqDY4372Lfv5WKy1SaNDn9X65rlaDxX2ee3rAMwmaG7E8XmDq
- yi1gXMsBfVqyo5KSJWvy2rRA61bUgm2jECJk7WE20T3myuwFOQjssXl3a
- EmsH9tZqFvu9RH58IvqgaDWxNU7hnb6nFNU9KZukZ8XMws6eXUhrANmZ6
- aKGz3ZT+AW/fweGp2Jwc3e0jg/MvEtbCqcsQt1gH6QpntSi0I4FQ4tQkA
- InMsKFC0SLZVramaZwbLUQae/9kpyEScWHJJR1hUo3TL5JnbLuKb+/l+1 g==;
-X-CSE-ConnectionGUID: 1c/fy0qwQ3W666K5JevZxg==
-X-CSE-MsgGUID: bwzCwFh4QLS+IXwar4Sz7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="45606541"
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="45606541"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 07:23:36 -0800
-X-CSE-ConnectionGUID: kBKauksuQh+sLEevL1LZUQ==
-X-CSE-MsgGUID: miBBIYsGR/mJSyv0HxRj5A==
+ t=1740757961; x=1772293961;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ro6pRZIJ1rKqIRQpCKiCafiCxds2xXgEXeA3v6k/300=;
+ b=igdBfWrY9haFgeoL6v5+ZTSWAVVbmMj+2IGuwry5bAAIiKdBat29u8qz
+ p3pHiba4bbwgNRovCIdYW88GuJFXnoWkkd5LyLRZ9RDMCW1yfTUlDTMUS
+ Xy9vYSzqA0/PfspxyfwZG7Ddcd+/J9dCleEFyO/8GmhfNx2SMy0yif+8T
+ ZJWKekg85w9ZiGWZ8Kjna1HaSC++GZYCrZT3vdmn5+/kD5WngP6cTjNOW
+ 3edeHgEV4T3aPrGL5L+QIr+XPKhQhVV5GaRuOce6lAhQInnYwR5+g8ceB
+ 2dhQHDWpoOjXlh+4aCNPJMLdIyWClAnvYE68gey1Dajo378ReBWWF88T0 Q==;
+X-CSE-ConnectionGUID: 8gyJGCxCTBKCAxqvrfnSFQ==
+X-CSE-MsgGUID: IXi6sJucQBuiU1osMRpVLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="45470572"
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="45470572"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2025 07:52:41 -0800
+X-CSE-ConnectionGUID: FjTVydUmR6GK7nGEnB85Yw==
+X-CSE-MsgGUID: aHPOW0F4RzONm4IaI0VNnQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="117862579"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO [10.245.246.7])
- ([10.245.246.7])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 07:23:34 -0800
-Message-ID: <791cabcb-2222-4040-a39c-c7e8bda833c0@intel.com>
-Date: Fri, 28 Feb 2025 16:23:31 +0100
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="122506185"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 07:52:39 -0800
+Date: Fri, 28 Feb 2025 16:52:36 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
+ runner: Parse results harder
+Message-ID: <20250228155236.2q3s2yqza5gdilml@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20250226193328.132817-1-kamil.konieczny@linux.intel.com>
+ <174072007130.3059894.6239757602478443620@b555e5b46a47>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 2/2] tests/intel/xe_eudebug: Add subtests for
- eudebug/SR-IOV exclusion
-To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
- "marcin.bernatowicz@linux.intel.com" <marcin.bernatowicz@linux.intel.com>,
- "Laguna, Lukasz" <lukasz.laguna@intel.com>,
- "mika.kuoppala@linux.intel.com" <mika.kuoppala@linux.intel.com>,
- "Wajdeczko, Michal" <Michal.Wajdeczko@intel.com>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-References: <20250220145912.37735-1-christoph.manszewski@intel.com>
- <20250220145912.37735-3-christoph.manszewski@intel.com>
- <00ca857a63b73fe8dccc4ca1afde3d5bb140098b.camel@intel.com>
-Content-Language: en-US
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <00ca857a63b73fe8dccc4ca1afde3d5bb140098b.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <174072007130.3059894.6239757602478443620@b555e5b46a47>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,223 +71,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dominik,
-
-On 27.02.2025 17:39, Grzegorzek, Dominik wrote:
-> On Thu, 2025-02-20 at 15:59 +0100, Christoph Manszewski wrote:
->> Eudebug is not supported in PF mode with VFs enabled and in VF mode.
->> Provide subtests to ensure that:
->>    1. enabling eudebug is not permitted in PF mode with VFs enabled
->>    2. eudebug sysfs toggle is not available in VF mode
->>    3. enabling VFs is not permitted when eudebug is enabled
->>
->> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
->> ---
->>   tests/intel/xe_eudebug.c       |   2 +
->>   tests/intel/xe_eudebug_sriov.c | 153 +++++++++++++++++++++++++++++++++
->>   tests/meson.build              |   1 +
->>   3 files changed, 156 insertions(+)
->>   create mode 100644 tests/intel/xe_eudebug_sriov.c
->>
->> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
->> index 76870805c..3eedd543d 100644
->> --- a/tests/intel/xe_eudebug.c
->> +++ b/tests/intel/xe_eudebug.c
->> @@ -20,7 +20,9 @@
->>   #include <sys/prctl.h>
->>   
->>   #include "igt.h"
->> +#include "igt_sysfs.h"
->>   #include "intel_pat.h"
->> +#include "lib/igt_sriov_device.h"
->>   #include "lib/igt_syncobj.h"
->>   #include "xe/xe_eudebug.h"
->>   #include "xe/xe_ioctl.h"
->> diff --git a/tests/intel/xe_eudebug_sriov.c b/tests/intel/xe_eudebug_sriov.c
->> new file mode 100644
->> index 000000000..e82dff98a
->> --- /dev/null
->> +++ b/tests/intel/xe_eudebug_sriov.c
->> @@ -0,0 +1,153 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2025 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Test EU Debugger and SR-IOV interaction
->> + * Category: Core
->> + * Mega feature: EUdebug/SR-IOV
->> + * Sub-category: EUdebug tests
->> + * Functionality: EU Debugger framework
->> + * Test category: functionality test
->> + */
->> +
->> +#include "igt.h"
->> +#include "igt_sysfs.h"
->> +#include "lib/igt_sriov_device.h"
->> +#include "xe/xe_eudebug.h"
->> +
->> +static bool has_enable_eudebug_attr(int fd, unsigned int vf_num)
-> I know it is just a nitpicking, but may it be has_vf_enable_eudebug_attr? Easier to read.
-
-Ok
-
->> +{
->> +	char path[PATH_MAX];
->> +	int sysfs;
->> +	bool ret;
->> +
->> +	igt_assert(vf_num > 0);
->> +
->> +	sysfs = igt_sysfs_open(fd);
->> +	igt_assert_fd(sysfs);
->> +	/* vf_num is 1-based, but virtfn is 0-based */
->> +	snprintf(path, sizeof(path), "device/virtfn%u/enable_eudebug", vf_num - 1);
->> +	ret = igt_sysfs_has_attr(sysfs, path);
->> +	close(sysfs);
->> +
->> +	return ret;
->> +}
->> +
->> +/**
->> + * SUBTEST: deny-eudebug
->> + * Description:
->> + *	Check that eudebug toggle is not available for VFs, and that enabling
->> + *	eudebug with VFs enabled is not permitted.
->> + */
->> +static void test_deny_eudebug(int fd)
->> +{
->> +	unsigned int num_vfs = igt_sriov_get_total_vfs(fd);
->> +	bool eudebug_enable = true;
->> +	bool err = false;
->> +	int ret = 0;
->> +
->> +	igt_debug("Testing %u VFs\n", num_vfs);
->> +
->> +	xe_eudebug_enable(fd, false);
->> +	igt_sriov_enable_driver_autoprobe(fd);
->> +	igt_sriov_enable_vfs(fd, num_vfs);
->> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(fd));
->> +
->> +	for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
->> +		if (!igt_sriov_is_vf_drm_driver_probed(fd, vf_num)) {
->> +			igt_debug("VF%u probe failed\n", vf_num);
->> +			err = true;
->> +		} else if (has_enable_eudebug_attr(fd, vf_num)) {
->> +			igt_debug("VF%u has enable_eudebug attribute\n", vf_num);
->> +			err = true;
->> +		}
->> +	}
->> +
->> +	igt_assert(!err);
->> +
->> +	ret = __xe_eudebug_enable_getset(fd, NULL, &eudebug_enable);
->> +	igt_assert_eq(ret, -1);
->> +	igt_assert_eq(errno, EPERM);
-> Its quite late to read errno, isn't it?
->> +}
->> +
->> +/**
->> + * SUBTEST: deny-sriov
->> + * Description:
->> + *	Check that VFs cannot be enabled when eudebug is enabled.
->> + */
->> +static void test_deny_sriov(int fd)
->> +{
->> +	unsigned int num_vfs = igt_sriov_get_total_vfs(fd);
->> +	bool ret = false;
->> +	int sysfs = 0;
->> +
->> +	igt_debug("Testing %u VFs\n", num_vfs);
->> +
->> +	igt_sriov_disable_vfs(fd);
->> +	igt_assert_eq(0, igt_sriov_get_enabled_vfs(fd));
->> +	xe_eudebug_enable(fd, true);
->> +
->> +	sysfs = igt_sysfs_open(fd);
->> +	igt_assert_fd(sysfs);
->> +
->> +	ret = __igt_sysfs_set_u32(sysfs, "device/sriov_numvfs", num_vfs);
->> +	close(sysfs);
->> +
->> +	igt_assert_eq(ret, false);
->> +	igt_assert_eq(errno, EPERM);
-> Like above. Check errno right away after set.
-> I would use even igt_sysfs_printf which returns -errno directly.
-
-Makes sense, I will fix that.
-
-Thanks,
-Christoph
-
+Hi igt-dev,
+On 2025-02-28 at 05:21:11 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Regards,
-> Dominik
->> +}
->> +
->> +static void restore_initial_driver_state(int fd, bool eudebug_enabled, bool vf_autoprobe)
->> +{
->> +	bool abort = false;
->> +
->> +	igt_sriov_disable_vfs(fd);
->> +	if (igt_sriov_get_enabled_vfs(fd) > 0) {
->> +		igt_debug("Failed to disable VF(s)\n");
->> +		abort = true;
->> +	}
->> +
->> +	vf_autoprobe ? igt_sriov_enable_driver_autoprobe(fd) :
->> +		       igt_sriov_disable_driver_autoprobe(fd);
->> +	if (vf_autoprobe != igt_sriov_is_driver_autoprobe_enabled(fd)) {
->> +		igt_debug("Failed to restore sriov_drivers_autoprobe value\n");
->> +		abort = true;
->> +	}
->> +
->> +	if (__xe_eudebug_enable_getset(fd, NULL, &eudebug_enabled) < 0) {
->> +		igt_debug("Failed to restore eudebug state\n");
->> +		abort = true;
->> +	}
->> +
->> +	/* abort to avoid execution of next tests with invalid driver state */
->> +	igt_abort_on_f(abort, "Failed to restore initial driver state\n");
->> +}
->> +
->> +igt_main
->> +{
->> +	bool eudebug_enabled;
->> +	bool vf_autoprobe;
->> +	int fd;
->> +
->> +	igt_fixture {
->> +		fd = drm_open_driver(DRIVER_XE);
->> +		igt_require(igt_sriov_is_pf(fd));
->> +		igt_require(igt_sriov_vfs_supported(fd));
->> +		igt_require(igt_sriov_get_enabled_vfs(fd) == 0);
->> +		igt_require(__xe_eudebug_enable_getset(fd, &eudebug_enabled, NULL) == 0);
->> +		vf_autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
->> +	}
->> +
->> +	igt_subtest("deny-eudebug")
->> +		test_deny_eudebug(fd);
->> +
->> +	igt_subtest("deny-sriov")
->> +		test_deny_sriov(fd);
->> +
->> +	igt_fixture {
->> +		restore_initial_driver_state(fd, eudebug_enabled, vf_autoprobe);
->> +		close(fd);
->> +	}
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index a0f984b34..30d067c24 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -332,6 +332,7 @@ intel_xe_eudebug_progs = [
->>   	'xe_eudebug',
->>   	'xe_exec_sip_eudebug',
->>   	'xe_eudebug_online',
->> +	'xe_eudebug_sriov',
->>   ]
->>   
->>   if build_xe_eudebug
+> Series: runner: Parse results harder
+> URL   : https://patchwork.freedesktop.org/series/145520/
+> State : failure
 > 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8251_full -> XEIGTPW_12673_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_12673_full absolutely need to be
+>   verified manually.
+
+Unrelated to change in igt_runner.
+
+Regards,
+Kamil
+
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_12673_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12673_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_flip@2x-plain-flip-ts-check-interruptible@ac-hdmi-a2-dp2:
+>     - shard-dg2-set2:     NOTRUN -> [FAIL][1] +1 other test fail
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12673/shard-dg2-432/igt@kms_flip@2x-plain-flip-ts-check-interruptible@ac-hdmi-a2-dp2.html
+> 
+>   * igt@kms_pm_rpm@modeset-stress-extra-wait:
+>     - shard-bmg:          [PASS][2] -> [DMESG-WARN][3]
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/shard-bmg-4/igt@kms_pm_rpm@modeset-stress-extra-wait.html
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12673/shard-bmg-2/igt@kms_pm_rpm@modeset-stress-extra-wait.html
+>     - shard-dg2-set2:     [PASS][4] -> [DMESG-WARN][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8251/shard-dg2-436/igt@kms_pm_rpm@modeset-stress-extra-wait.html
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12673/shard-dg2-463/igt@kms_pm_rpm@modeset-stress-extra-wait.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_12673_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@intel_hwmon@hwmon-read:
+>     - shard-lnl:          NOTRUN -> [SKIP][6] ([Intel XE#1125])
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12673/shard-lnl-7/igt@intel_hwmon@hwmon-read.html
+> 
+
+...cut...
+
+>   [Intel XE#944]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/944
+>   [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_8251 -> IGTPW_12673
+>   * Linux: xe-2725-2a3ff290a74cd6294c39faafae2f6033694f1176 -> xe-2729-e03a2fbda18fa9e3df6fc7bb0c6359f0ccddf9d4
+> 
+>   IGTPW_12673: 12673
+>   IGT_8251: f0b66883398b4a07bb8fcaa3663a2140129d9a58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-2725-2a3ff290a74cd6294c39faafae2f6033694f1176: 2a3ff290a74cd6294c39faafae2f6033694f1176
+>   xe-2729-e03a2fbda18fa9e3df6fc7bb0c6359f0ccddf9d4: e03a2fbda18fa9e3df6fc7bb0c6359f0ccddf9d4
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12673/index.html
