@@ -4,64 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB89C282C1
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 17:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6883FC282C6
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 17:15:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8F30510ED0A;
-	Fri, 28 Feb 2025 17:08:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1885510ED0E;
+	Fri, 28 Feb 2025 17:15:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UuFQBmvD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kA4jWuMz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7985110ED0A
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 17:08:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA77010ED0E
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 17:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740762506; x=1772298506;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=GYyI3Nc+Iomod9vTuev6oNhTKBzQGaqr9hCBIgcUhR8=;
- b=UuFQBmvDDk/rnU+nnBkwcUUGFM4/Qb0wBX8gJazWVizXyRgiFkgeUh0Q
- Qq+EE5ssFfF/mGeMciOiW3/e6jInsWJmLxmzDfYXcbbtOkscj6+Z930Sh
- DHPVf+Zp0/wqhCxmX6mKQhdDMroQVzOPe4+VYLrluzF0zR583UsJ4r5fW
- 6XiD5kGXcpJnH3rh0xQ7OZ2JE+2P0kRpIUiTMqSwCtXeD8KpI9F7mlJj1
- V1jIWSoKpP/p0regBZf7oyoHZlM1sDdzCsMIGXGUzVykLGrOBFC1ZYLe+
- 7doRGzmMLuN2JkUBqrLPveIYyB0SfP7+CNzSxwBiLfwwCgSz2w8L0x7FV g==;
-X-CSE-ConnectionGUID: Aysb5gQaQLyYz4Vo6YEIxw==
-X-CSE-MsgGUID: N5DEAxCxR3Wm20udognrBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="53107666"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="53107666"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 09:08:26 -0800
-X-CSE-ConnectionGUID: nc7ssPxGSmO9N5KC1m7Uow==
-X-CSE-MsgGUID: k7mEofJjQCeHL8trniogsg==
+ t=1740762927; x=1772298927;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=JH84KIgRWBL6hwQi0zEM100KiFWEFPNZaUU51kDEzFU=;
+ b=kA4jWuMzZ/zf/hMFk6IdVTjmQOwACUcZHge7a68rcxhL2qHLZwC1yISr
+ 0pwqVc0Vo2qdAziQD0tmquidSNc6ryFoTIE+wFcqzzuXs0ahbND3j1aEB
+ MxkY1tTg6xMQ1ywgvXeTvDrQEiMLWNNhdNIPbUA5IRPM2ALVql1B+HMYA
+ xzurcA5fnaFt7GyVx2c2/L/pSgX4RmUVKcyFmT/f4ZtYdo0rQ4fsRIH3q
+ IZlQAPlOE9Ze7Jb49BDT1D378uqw75/+H4OOMCLiN1Is19Cp6mg9W91JW
+ aWuQ3yYvzvrPEU5ssdppoa982JOI4bV/2TuALmvBubEIaz0MZl0sRB1ml w==;
+X-CSE-ConnectionGUID: mPrKPcsXR0678MA18G5EqA==
+X-CSE-MsgGUID: vrtkr5AfReWXml+LtWrp4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="44515286"
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="44515286"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2025 09:15:26 -0800
+X-CSE-ConnectionGUID: o5vhlVMYTSyhIeWdi02QVg==
+X-CSE-MsgGUID: b0a3D2LHTsi2cGHOdMvHWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="148197508"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 09:08:25 -0800
-Date: Fri, 28 Feb 2025 18:08:10 +0100
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121516508"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.147])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2025 09:15:24 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Knop, Ryszard" <ryszard.knop@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "adrinael@adrinael.net" <adrinael@adrinael.net>,
- "De Marchi, Lucas" <lucas.demarchi@intel.com>,
- "Musial, Ewelina" <ewelina.musial@intel.com>
-Subject: Re: [PATCH i-g-t] runner: Parse results harder
-Message-ID: <20250228170810.iej7vh5fjqsuwhsl@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Knop, Ryszard" <ryszard.knop@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "adrinael@adrinael.net" <adrinael@adrinael.net>,
- "De Marchi, Lucas" <lucas.demarchi@intel.com>,
- "Musial, Ewelina" <ewelina.musial@intel.com>
-References: <20250226193328.132817-1-kamil.konieczny@linux.intel.com>
- <b15104046ffbc5fb09d439aed03c0256a8027c03.camel@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+Subject: [PATCH i-g-t] runner: Parse results harder
+Date: Fri, 28 Feb 2025 18:15:19 +0100
+Message-ID: <20250228171519.49523-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b15104046ffbc5fb09d439aed03c0256a8027c03.camel@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,246 +70,221 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Knop,,
-On 2025-02-27 at 16:37:18 +0000, Knop, Ryszard wrote:
-> On Wed, 2025-02-26 at 20:33 +0100, Kamil Konieczny wrote:
-> >   Sometimes an error happens in kernel or in test that leaves
-> > output files in corrupted or incorrect state. While runner or
-> > resume will just move on to executing next test, when generating
-> > results it could end up with no results.json
-> > 
-> >   Try processing outputs a little more persistently and use any
-> > output file left there, even if only dmesg.txt. Also, when no
-> > useful output files were present, instead of breaking out add
-> > notrun.
-> > 
-> >   Inform about processing results for each test so a problem
-> > could be spotted more easily.
-> > 
-> > Cc: Ewelina Musial <ewelina.musial@intel.com>
-> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > Cc: Petri Latvala <adrinael@adrinael.net>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  runner/executor.c  | 21 +++++++++++++++++++++
-> >  runner/executor.h  |  1 +
-> >  runner/resultgen.c | 45 ++++++++++++++++++++++++++++++---------------
-> >  3 files changed, 52 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/runner/executor.c b/runner/executor.c
-> > index 2abb18732..96b8b5057 100644
-> > --- a/runner/executor.c
-> > +++ b/runner/executor.c
-> > @@ -576,6 +576,27 @@ bool open_output_files(int dirfd, int *fds, bool write)
-> >  	return true;
-> >  }
-> >  
-> > +/**
-> > + * open_output_files_rdonly:
-> > + * @dirfd: fd of output directory with err.txt, dmesg.txt and other files
-> > + * @fds: array for fd's of opened output files
-> > + *
-> > + * Tries to open output files in read-only mode and saves file descriptors
-> > + * in fds arrray.
-> > + *
-> > + * Returns: true if all files opened, false otherwise
-> > + */
-> > +bool open_output_files_rdonly(int dirfd, int *fds)
-> > +{
-> > +	bool ret = true;
-> > +
-> > +	for (int i = 0; i < _F_LAST; i++)
-> > +		if ((fds[i] = openat(dirfd, filenames[i], O_RDONLY)) < 0)
-> > +			ret = false; /* Remember failure */
-> 
-> If succesful, open/openat will return -1 and set errno to the real
-> error. You can set `fds[i] = -errno` to let the function users know
-> what happened with a given descriptor.
-> 
+  Sometimes an error happens in kernel or in test that leaves
+output files in corrupted or incorrect state. While runner or
+resume will just move on to executing next test, when generating
+results it could end up with no results.json
 
-Good point, I will do this.
+  Try processing outputs a little more persistently and use any
+output file left there, even if only dmesg.txt. Also, when no
+useful output files were present, instead of breaking out add
+notrun.
 
-> > +
-> > +	return ret;
-> > +}
-> > +
-> >  void close_outputs(int *fds)
-> >  {
-> >  	int i;
-> > diff --git a/runner/executor.h b/runner/executor.h
-> > index ab6a0c176..56c7323a8 100644
-> > --- a/runner/executor.h
-> > +++ b/runner/executor.h
-> > @@ -26,6 +26,7 @@ enum {
-> >  };
-> >  
-> >  bool open_output_files(int dirfd, int *fds, bool write);
-> > +bool open_output_files_rdonly(int dirfd, int *fds);
-> >  void close_outputs(int *fds);
-> >  
-> >  /*
-> > diff --git a/runner/resultgen.c b/runner/resultgen.c
-> > index 0d3a569cf..b50c417e3 100644
-> > --- a/runner/resultgen.c
-> > +++ b/runner/resultgen.c
-> > @@ -2176,12 +2176,26 @@ static bool parse_test_directory(int dirfd,
-> >  {
-> >  	int fds[_F_LAST];
-> >  	struct subtest_list subtests = {};
-> > -	bool status = true;
-> >  	int commsparsed;
-> >  
-> > -	if (!open_output_files(dirfd, fds, false)) {
-> > -		fprintf(stderr, "Error opening output files\n");
-> > -		return false;
-> > +	if (!open_output_files_rdonly(dirfd, fds)) {
-> > +		struct stat statbuf;
-> > +		size_t sz = 0;
-> 
-> This function does not care about the size, just if any non-empty file
-> was found. Use a bool like in open_output_files_rdonly.
-> 
+  Inform about processing results for each test so a problem
+could be spotted more easily.
 
-You are right, I will change it to bool.
+v2: removed ')' from 'notrun\n)' (Kamil)
+ using bool var, added more prints about errors (Ryszard)
 
-> > +
-> > +		for (int i = 0; i < _F_LAST; ++i) {
-> > +			if (fds[i] > 0 && !fstat(fds[i], &statbuf) && statbuf.st_size != 0)
-> > +				sz = statbuf.st_size;
-> 
-> To make debugging easier, if there's a problem with a given file, print
-> its name and the discovered issue in this loop, something like:
-> 
-> ```c
-> if (fds[i] < 0) {
->   fprintf(stderr, "Err: %s: open failed: %s\n",
->           filenames[i], strerror(-fds[i]));
+Cc: Ewelina Musial <ewelina.musial@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/executor.c  | 31 ++++++++++++++++++++++
+ runner/executor.h  |  2 ++
+ runner/resultgen.c | 66 +++++++++++++++++++++++++++++++++++-----------
+ 3 files changed, 84 insertions(+), 15 deletions(-)
 
-I will add this.
+diff --git a/runner/executor.c b/runner/executor.c
+index 2abb18732..2040f0f33 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -576,6 +576,29 @@ bool open_output_files(int dirfd, int *fds, bool write)
+ 	return true;
+ }
+ 
++/**
++ * open_output_files_rdonly:
++ * @dirfd: fd of output directory with err.txt, dmesg.txt and other files
++ * @fds: array for fd's of opened output files
++ *
++ * Tries to open output files in read-only mode and saves file descriptors
++ * in fds arrray.
++ *
++ * Returns: true if all files opened, false otherwise
++ */
++bool open_output_files_rdonly(int dirfd, int *fds)
++{
++	bool ret = true;
++
++	for (int i = 0; i < _F_LAST; i++)
++		if ((fds[i] = openat(dirfd, filenames[i], O_RDONLY)) < 0) {
++			fds[i] = -errno;
++			ret = false; /* Remember failure */
++		}
++
++	return ret;
++}
++
+ void close_outputs(int *fds)
+ {
+ 	int i;
+@@ -585,6 +608,14 @@ void close_outputs(int *fds)
+ 	}
+ }
+ 
++const char *get_out_filename(int fid)
++{
++	if (fid >= 0 && fid < _F_LAST)
++		return filenames[fid];
++
++	return "output-filename-index-error";
++}
++
+ /* Returns the number of bytes written to disk, or a negative number on error */
+ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
+ {
+diff --git a/runner/executor.h b/runner/executor.h
+index ab6a0c176..3b1cabcf5 100644
+--- a/runner/executor.h
++++ b/runner/executor.h
+@@ -26,7 +26,9 @@ enum {
+ };
+ 
+ bool open_output_files(int dirfd, int *fds, bool write);
++bool open_output_files_rdonly(int dirfd, int *fds);
+ void close_outputs(int *fds);
++const char *get_out_filename(int fid);
+ 
+ /*
+  * Initialize execute_state object to a state where it's ready to
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 0d3a569cf..df4be69a6 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -2176,12 +2176,47 @@ static bool parse_test_directory(int dirfd,
+ {
+ 	int fds[_F_LAST];
+ 	struct subtest_list subtests = {};
+-	bool status = true;
+ 	int commsparsed;
+ 
+-	if (!open_output_files(dirfd, fds, false)) {
+-		fprintf(stderr, "Error opening output files\n");
+-		return false;
++	if (!open_output_files_rdonly(dirfd, fds)) {
++		struct stat statbuf;
++		size_t fsizes[_F_LAST]; /* checks for both comm and out/err empty */
++		int fst_err;
++		bool valid_out_files = false;
++
++		for (int i = 0; i < _F_LAST; ++i) {
++			fsizes[i] = 0;
++			if (fds[i] > 0) {
++				fst_err = fstat(fds[i], &statbuf);
++				if (!fst_err)
++					fsizes[i] = statbuf.st_size;
++				else
++					fprintf(stderr, "results: %s: stats failed: %s\n",
++						get_out_filename(i), strerror(fst_err));
++			} else {
++				fprintf(stderr, "results: %s: open failed: %s\n",
++					get_out_filename(i), strerror(-fds[i]));
++			}
++		}
++
++		if (fsizes[_F_SOCKET] || fsizes[_F_OUT] || fsizes[_F_ERR] ||
++		    fsizes[_F_DMESG])
++			valid_out_files = true;
++		else
++			valid_out_files = false;
++
++		if (!valid_out_files) {
++			/* no output saved in any file */
++			fprintf(stderr, "results: no valid output files\n");
++			close_outputs(fds);
++
++			return false;
++		}
++
++		if (!fsizes[_F_SOCKET] && !fsizes[_F_OUT] && !fsizes[_F_ERR])
++			fprintf(stderr, "results: comms/err/out empty, using only dmesg\n");
++
++		fprintf(stderr, "results: missing few output file(s)\n");
+ 	}
+ 
+ 	/*
+@@ -2191,8 +2226,6 @@ static bool parse_test_directory(int dirfd,
+ 	commsparsed = fill_from_comms(fds[_F_SOCKET], entry, &subtests, results);
+ 	if (commsparsed == COMMSPARSE_ERROR) {
+ 		fprintf(stderr, "Error parsing output files (comms)\n");
+-		status = false;
+-		goto parse_output_end;
+ 	}
+ 
+ 	if (commsparsed == COMMSPARSE_EMPTY) {
+@@ -2200,20 +2233,17 @@ static bool parse_test_directory(int dirfd,
+ 		 * fill_from_journal fills the subtests struct and
+ 		 * adds timeout results where applicable.
+ 		 */
+-		fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
++		if (fds[_F_JOURNAL] > 0)
++			fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
+ 
+ 		if (!fill_from_output(fds[_F_OUT], entry->binary, "out", &subtests, results->tests) ||
+ 		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
+ 			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
+-			status = false;
+-			goto parse_output_end;
+ 		}
+ 	}
+ 
+ 	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
+ 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
+-		status = false;
+-		goto parse_output_end;
+ 	}
+ 
+ 	override_results(entry->binary, &subtests, results->tests);
+@@ -2221,11 +2251,10 @@ static bool parse_test_directory(int dirfd,
+ 
+ 	add_to_totals(entry->binary, &subtests, results);
+ 
+- parse_output_end:
+ 	close_outputs(fds);
+ 	free_subtests(&subtests);
+ 
+-	return status;
++	return true;
+ }
+ 
+ static void try_add_notrun_results(const struct job_list_entry *entry,
+@@ -2359,14 +2388,21 @@ struct json_object *generate_results_json(int dirfd)
+ 		char name[16];
+ 
+ 		snprintf(name, 16, "%zd", i);
++		fprintf(stderr, "results: parsing output: %s/ for test: %s\n",
++			name, job_list.entries[i].binary);
+ 		if ((testdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0) {
++			if (settings.log_level >= LOG_LEVEL_NORMAL)
++				fprintf(stderr, "results: no output, setting notrun\n");
++
+ 			try_add_notrun_results(&job_list.entries[i], &settings, &results);
+ 			continue;
+ 		}
+ 
+ 		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
+-			close(testdirfd);
+-			return NULL;
++			if (settings.log_level >= LOG_LEVEL_NORMAL)
++				fprintf(stderr, "results: no useful output, setting notrun\n");
++
++			try_add_notrun_results(&job_list.entries[i], &settings, &results);
+ 		}
+ 		close(testdirfd);
+ 	}
+-- 
+2.48.1
 
->   continue;
-> }
-> 
-> if (!fstat(fds[i], &statbuf)) {
-
-imho this is redundand and should not happen when a file was
-opened but as I already check it let it be, I will add this.
-
->   fprintf(stderr, "Err: %s: stat failed: %s\n",
->           filenames[i], strerror(errno));
->   continue;
-> }
-> 
-> if (statbuf.st_size == 0) {
->   fprintf(stderr, "Err: %s: file empty\n", filenames[i]);
->   continue;
-> }
-
-But this one is not a bug, igt_runner have two modes now,
-comms and no-comms and then one of these two groups of files
-comms or err/out will be empty, so no point to clobber output
-with it. The only abnormality is when no files comms/err/out
-are there then yes I could notify about it.
-
-> 
-> valid_file_found = true;
-> ```
-> 
-> This way whoever debugs result generation issues can easily figure out
-> if they have a broken results tree, wrong permissions or whatever else.
-> 
-
-I agree, it is better to notify about what errors were spotted,
-I will add this.
-
-Regards,
-Kamil
-
-> > +		}
-> > +
-> > +		if (sz == 0) {
-> > +			/* no output saved in any file */
-> > +			fprintf(stderr, "results: Error opening output files\n");
-> > +			close_outputs(fds);
-> > +
-> > +			return false;
-> > +		}
-> > +
-> > +		fprintf(stderr, "results: Missing few output file(s)\n");
-> >  	}
-> >  
-> >  	/*
-> > @@ -2191,8 +2205,6 @@ static bool parse_test_directory(int dirfd,
-> >  	commsparsed = fill_from_comms(fds[_F_SOCKET], entry, &subtests, results);
-> >  	if (commsparsed == COMMSPARSE_ERROR) {
-> >  		fprintf(stderr, "Error parsing output files (comms)\n");
-> > -		status = false;
-> > -		goto parse_output_end;
-> >  	}
-> >  
-> >  	if (commsparsed == COMMSPARSE_EMPTY) {
-> > @@ -2200,20 +2212,17 @@ static bool parse_test_directory(int dirfd,
-> >  		 * fill_from_journal fills the subtests struct and
-> >  		 * adds timeout results where applicable.
-> >  		 */
-> > -		fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
-> > +		if (fds[_F_JOURNAL] > 0)
-> > +			fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
-> >  
-> >  		if (!fill_from_output(fds[_F_OUT], entry->binary, "out", &subtests, results->tests) ||
-> >  		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
-> >  			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
-> > -			status = false;
-> > -			goto parse_output_end;
-> >  		}
-> >  	}
-> >  
-> >  	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
-> >  		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
-> > -		status = false;
-> > -		goto parse_output_end;
-> >  	}
-> >  
-> >  	override_results(entry->binary, &subtests, results->tests);
-> > @@ -2221,11 +2230,10 @@ static bool parse_test_directory(int dirfd,
-> >  
-> >  	add_to_totals(entry->binary, &subtests, results);
-> >  
-> > - parse_output_end:
-> >  	close_outputs(fds);
-> >  	free_subtests(&subtests);
-> >  
-> > -	return status;
-> > +	return true;
-> >  }
-> >  
-> >  static void try_add_notrun_results(const struct job_list_entry *entry,
-> > @@ -2359,14 +2367,21 @@ struct json_object *generate_results_json(int dirfd)
-> >  		char name[16];
-> >  
-> >  		snprintf(name, 16, "%zd", i);
-> > +		fprintf(stderr, "results: parsing output: %s/ for test: %s\n",
-> > +			name, job_list.entries[i].binary);
-> >  		if ((testdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0) {
-> > +			if (settings.log_level >= LOG_LEVEL_NORMAL)
-> > +				fprintf(stderr, "results: no output, setting notrun\n)");
-> > +
-> >  			try_add_notrun_results(&job_list.entries[i], &settings, &results);
-> >  			continue;
-> >  		}
-> >  
-> >  		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
-> > -			close(testdirfd);
-> > -			return NULL;
-> > +			if (settings.log_level >= LOG_LEVEL_NORMAL)
-> > +				fprintf(stderr, "results: no useful output, setting notrun\n");
-> > +
-> > +			try_add_notrun_results(&job_list.entries[i], &settings, &results);
-> >  		}
-> >  		close(testdirfd);
-> >  	}
-> 
-> LGTM for the rest.
-> 
-> Thanks, Ryszard
