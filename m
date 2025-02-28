@@ -4,165 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 386D5C282D1
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 16:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB89C282C1
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Feb 2025 17:08:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E994410E07C;
-	Fri, 28 Feb 2025 16:59:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F30510ED0A;
+	Fri, 28 Feb 2025 17:08:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XlSfT2nb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UuFQBmvD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E276910E055
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 16:59:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7985110ED0A
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2025 17:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740761979; x=1772297979;
+ t=1740762506; x=1772298506;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=Mi1iLLZ8w4v6sGDhY0zSBQjglNienAMuwHtanNgVy4g=;
- b=XlSfT2nbuJGjblhOSlDe7dIaAmPdFCbRzKF1lj8vKViU9mKsMFCnFXKX
- eX1KZl0hvLeWGs8dzVZbg3HoPOzYmWrHebFdk+C94kOFe/mju6t+ndUEV
- Dee1v/kGxA0k5zBh+GHCyOys0upl7NbgfojkE2cyfP1EgcjxMiG82D6Td
- HYu0NLVxfu8wvyRE5yrn6F7EspMr8YgMDdMa2l7Kfzs7I+JVSP5CDAtWe
- SbeuTBLP+LyKYVxRB+9n+95xF9V/gCF+nDKUZEruMLFf2KPe3HZojIEpT
- LCCHf2GUO/vpd/cLVMzTclt21g7AZb4U4n1SGa63sVshrLRdWLp/9SSUf Q==;
-X-CSE-ConnectionGUID: 2NGce+SATC6MeEwQRp7spg==
-X-CSE-MsgGUID: bwnpowlcSbOb/yh3kcIJhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="53106283"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="53106283"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ mime-version:in-reply-to;
+ bh=GYyI3Nc+Iomod9vTuev6oNhTKBzQGaqr9hCBIgcUhR8=;
+ b=UuFQBmvDDk/rnU+nnBkwcUUGFM4/Qb0wBX8gJazWVizXyRgiFkgeUh0Q
+ Qq+EE5ssFfF/mGeMciOiW3/e6jInsWJmLxmzDfYXcbbtOkscj6+Z930Sh
+ DHPVf+Zp0/wqhCxmX6mKQhdDMroQVzOPe4+VYLrluzF0zR583UsJ4r5fW
+ 6XiD5kGXcpJnH3rh0xQ7OZ2JE+2P0kRpIUiTMqSwCtXeD8KpI9F7mlJj1
+ V1jIWSoKpP/p0regBZf7oyoHZlM1sDdzCsMIGXGUzVykLGrOBFC1ZYLe+
+ 7doRGzmMLuN2JkUBqrLPveIYyB0SfP7+CNzSxwBiLfwwCgSz2w8L0x7FV g==;
+X-CSE-ConnectionGUID: Aysb5gQaQLyYz4Vo6YEIxw==
+X-CSE-MsgGUID: N5DEAxCxR3Wm20udognrBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="53107666"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="53107666"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 08:59:39 -0800
-X-CSE-ConnectionGUID: 0ndPyCFCS3CApR+99+JJMw==
-X-CSE-MsgGUID: +8w+HzReShar/NdSehziSQ==
+ 28 Feb 2025 09:08:26 -0800
+X-CSE-ConnectionGUID: nc7ssPxGSmO9N5KC1m7Uow==
+X-CSE-MsgGUID: k7mEofJjQCeHL8trniogsg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="154553830"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2025 08:59:39 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 28 Feb 2025 08:59:37 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Fri, 28 Feb 2025 08:59:37 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.46) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 28 Feb 2025 08:59:36 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AHt0ZY4uF4DfX9TZdXaFZfeLw05K49se2SsFU917xfsm51imUwqIn8lLRI7thuXpaQ9C/z/K4KQO9MwuXt8FPSleCnxa7++vhE/Fw6WmwlHOXwO5cRUJEGMOJgoOaPEpmYCvqZ80CvTsGcQoNce7IyhB57OTAxS6izNLI01le1/7PhMHRA27MIBVs+iA4v8NyrpsmyjuiAZYazsE0QsRAgPgM4WQdGagYHArjlom78n7mbwTD4ENmoB3HQ4kYj6aUVKI4E+sDYI0XD5db9++qzbyyTO3mk62ypi68dwZUTzMR5cDa4kk7H9gs0iAdeSuJycCFzrL5QG9p2DY0rU9Vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A+w+oBgv7ACNMKIjgBF/jKZOmH91IHKjkaxx9un1Tt4=;
- b=lvlq5c4oXDE7AlFvbqHt/Mdu63u0Hk8FaBpJV71k/HZUOIvVzFiA8BNi3wd6nzDlCC2bcW64sVRKUdFBr8G28IV6/Sz/aRdH3X5pp278EbWNZORPdgO6XtmcVv/GpX/XTERIfHKsPPtr6Rt9wuhkx4ckxomqkHyfvfdJBSmBAKrh3Ssiwz1JyF4x07WXFP1tGiYEQGVfFO4jqkyD2UOy22ol0Q6eVIwpP9KaUml6amwujB2wCIv0y4Trj2+R9GM6MvxuvRzKMY3edmWwHnLpHbbqa59l+MresvN2gPkpkCCEGd2eimL7G7+vSHJYZyiiBgiq6hf5+HCJ7XzhjnWVUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by CH3PR11MB7914.namprd11.prod.outlook.com (2603:10b6:610:12c::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Fri, 28 Feb
- 2025 16:58:52 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44%3]) with mapi id 15.20.8489.018; Fri, 28 Feb 2025
- 16:58:52 +0000
-Date: Fri, 28 Feb 2025 10:58:49 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <riana.tauro@intel.com>,
- <vinay.belgaumkar@intel.com>, <anshuman.gupta@intel.com>,
- <rodrigo.vivi@intel.com>, <jonathan.ming.jun.lui@intel.com>
-Subject: Re: [PATCH i-g-t v3 1/4] Enable finding all IGT devices for xe driver
-Message-ID: <5h737eoyjjlafkbkp2vcef4ah6jp627ki5aw5p7b3std36bzjr@bargwsr4zvwv>
-References: <20250228141810.1417657-1-soham.purkait@intel.com>
- <20250228141810.1417657-2-soham.purkait@intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250228141810.1417657-2-soham.purkait@intel.com>
-X-ClientProxiedBy: MW2PR2101CA0010.namprd21.prod.outlook.com
- (2603:10b6:302:1::23) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; d="scan'208";a="148197508"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 09:08:25 -0800
+Date: Fri, 28 Feb 2025 18:08:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Knop, Ryszard" <ryszard.knop@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "adrinael@adrinael.net" <adrinael@adrinael.net>,
+ "De Marchi, Lucas" <lucas.demarchi@intel.com>,
+ "Musial, Ewelina" <ewelina.musial@intel.com>
+Subject: Re: [PATCH i-g-t] runner: Parse results harder
+Message-ID: <20250228170810.iej7vh5fjqsuwhsl@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Knop, Ryszard" <ryszard.knop@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "adrinael@adrinael.net" <adrinael@adrinael.net>,
+ "De Marchi, Lucas" <lucas.demarchi@intel.com>,
+ "Musial, Ewelina" <ewelina.musial@intel.com>
+References: <20250226193328.132817-1-kamil.konieczny@linux.intel.com>
+ <b15104046ffbc5fb09d439aed03c0256a8027c03.camel@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CH3PR11MB7914:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94da625e-e567-4b7e-131d-08dd58192da2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?YvqfoEbY9e0LO9/5soFKVOTRz5sLNBeAIdvzgLVeNt3t2vAfgAWBBNgkmsI0?=
- =?us-ascii?Q?vOZdqL7sNa1luxn7hUWM98adskHvotrkAdf+2VDpeJvJG6L61/+q31bMrXCq?=
- =?us-ascii?Q?UI28Fg8qpeD9wLtd7lzKYbmoTQC3BF52OWis87wyCV4Uv6V8Ehk75cpOMyeI?=
- =?us-ascii?Q?Ha4rGUdyqYSP5TMDrdTMg7avu/s9xgWp49rV8+VbmwQcYJPEIkL95tCc4MPT?=
- =?us-ascii?Q?gkkoq8jm7XMxI7XikVoGD0vpIOUhekruwVlAHvw0ABI2trp4NDXm0Q8lF/8E?=
- =?us-ascii?Q?V9ydBei+kT5nY0OdDg+A3BBdCsH0N3Ah1Ro7YIj7cNAvqxDXtFlQNV40l//P?=
- =?us-ascii?Q?cTuc4a3plS6NTbRJPy6+Z9KGP4nBbgdAe+NESrtYDs15OAxgDB1zVJl2PRAS?=
- =?us-ascii?Q?ULgTp1hoFU0ZdNWK3Bjwp+TfX0zmIH5AoWXW1YsqC/JOiCymrvcOY3NM31gu?=
- =?us-ascii?Q?p4yb8+TeX+xzTQ/GiSXFLS1cpD8D+yInXrdPqARoeOBkPki/6Yd4NDrPBKOw?=
- =?us-ascii?Q?80y7xGZhFGuJzkkXrW6rTZvcoHBgXH70ZmgZHuZwqqPk3wzuicWJl92HjcMx?=
- =?us-ascii?Q?lGYySpglPsmODV9hoIzgZlFyL4iMZhggaj9+xtUXk9HlQngJtVeiZqOdyIYU?=
- =?us-ascii?Q?JewtMWoSwEXFuhkg+dioOWkX6I1KwgQf6DKeJ57JLGgw0Oqd3o2yFRPcigxp?=
- =?us-ascii?Q?8V4HgKxpBIuXF8Sc5NYifMflo7PXcEd2lVI4wAbVtiJSrkcOxinCs6V9xEnv?=
- =?us-ascii?Q?FnruQ1ZrEvC+KDQn6sCJ5QNk7wAEvr7n7lSXHPdvGkKp71MPeO1QEtN7r52c?=
- =?us-ascii?Q?SKImjAeHTd30kXAAfBA/8+ZAO5g65QNa9QWyvgovhKbzK5PvELVDWzsvvnFi?=
- =?us-ascii?Q?4snKY9p6AQvxfVa29soguaf27XmXa/QXr3i3BPHD+F512IFnks3X8aneXfbU?=
- =?us-ascii?Q?IGHc/mfamAOcckofIilG8h1wMZJ+fpTrTdIZjHCzAMOiIj0sSZcfxZjTqISe?=
- =?us-ascii?Q?Rjl8zFJb74W4dafKqy8Q4qKMo7WLrhYnbZyaCjDSBJx86JGNec9+FToXLh6L?=
- =?us-ascii?Q?YTruF4Ftjtv4LEWoBfiJJ/9N1EbFGPJr8/OYvDIuFIL5YFY+E6DgvEtehjiO?=
- =?us-ascii?Q?PONZMMhQqOMeVXNGb8dxW03LvBi/BE5Ep6yRgvXt6iMey3I2HERZLj1q6y/4?=
- =?us-ascii?Q?gymsZdKfVpyIR9FGa7C6Ixg1+uj2ByQ5ykOGZk59NIibhT+4YkiYtOvbPWPE?=
- =?us-ascii?Q?NjE6tjBwBWbxJBsHkVPuHyI1uOEl61/hZK4xWe3Aeo+tj4bmLW17jw/L1HtM?=
- =?us-ascii?Q?D5MAwqJiXq1qnpkLdPxsZL1p+E0VA5vkYncH+gZizSwT1wrZ83KqTQ3dkMdF?=
- =?us-ascii?Q?7PxsRwIftYviIiVzHtZ4ucEEcYrT?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ZjC6kJzEQh9wMYkzIu4r4F2F3El/MS7lx7h0Zx4GKa0NGkmkP/zuedCs/RRK?=
- =?us-ascii?Q?LfQa70rgPcVDYL9m+IJslAwv9EU1ukc6pllINTQNUynE7KhOhXjvzgzgmfVn?=
- =?us-ascii?Q?Vv/A0ilY/7q6JnMqWPp/6h44LVL7o3rwAAOef4Z14kHKTrMZltPpFW1Al4Um?=
- =?us-ascii?Q?CqMaDW5WtJly68jqdG92yPppdc8wGXiZbX25Az1iW/ldEKxkH0fQgSRxRXRP?=
- =?us-ascii?Q?PZYV1OczWaUrguoOhu5D0xD16F1s2LFxiDJaxeK8sQrt+dih2GZlkyp8izp8?=
- =?us-ascii?Q?vSWyMhp3OkGhP0ZvuPwYdmXBS3W2AL6YhT0ulDBjpfAHySkx18ewfOvW9WdL?=
- =?us-ascii?Q?9KQ4NWFZdbAqnL8oZMF9IwqASsc5PxMEQR5beuSaxstZ7IqqyrQN/V657T3l?=
- =?us-ascii?Q?PzPvFitV0rsQeh1rZs02Iw8zsGlNnZd3lBGfTIhTSIoU70iNmV43oa/IRw4X?=
- =?us-ascii?Q?UfhkwOHxxH5zx1gpvTXbPLzDXgHDlHZPE+sWmVz+jJ3kYAiQP6EN7EJJSOeo?=
- =?us-ascii?Q?uIyhzH5DrqkfEh6Llbef5kGf/wqHDDxjUVxn4ibdwPvbC2/4+RQFKEYaL/Zh?=
- =?us-ascii?Q?/VTLZXjDE6D0JoRN1I+k3hWu75fZgA32ZYumxxKIMuExDOpCvYg5DlRCoTBO?=
- =?us-ascii?Q?gxyt9Q0onvo3uDP4jG7/Ub5uNak6deFk8TVKoJnNDbFA0KWa1T7mG/7h8uBv?=
- =?us-ascii?Q?aeOfbKNzTr/slV7NjiFneugbup/hUaz8g+zp8w6j5Pb4uIyr8QpMnCp6UFbu?=
- =?us-ascii?Q?XkSTRCmGIXr3owDYk96wi1PhsjFBXvli6qrlzBUFwctLfXcPmp7qI+qr1m0J?=
- =?us-ascii?Q?4Y9fUKup5DG7whBfdk5KPqOy4YSVrp+xs2CfDAokzyXjRsS4ImlpKOBpWbLN?=
- =?us-ascii?Q?3SN2VC6POmbCJYZfgMQbRNenBE/JDxes8cJ3MkMA5lzs3O8ZTk47NBdD8Yhz?=
- =?us-ascii?Q?Xr/wVBCZVspdGh4CLrE7AHQgEbt76LFgMlfv2wsnb2R+fVj/riQM689wOS9i?=
- =?us-ascii?Q?1Gmmv7RGDMMy9hryN2Bsu74XOVQWxAYSS8rSDOxD+asgK1iDePeA7/+sZ3wC?=
- =?us-ascii?Q?Ur2InoqzJEQ+7XH5NQ96ekm1TYm1Ut3JKvpUgTSVRdOyXK2qP18dHrMjih3/?=
- =?us-ascii?Q?cLoFlPFtKa7zNxcYSkW+SEX7HoKi2iOAg1oy8yvLQXheF9Br61WY6O6oM3Vt?=
- =?us-ascii?Q?AT3YjTIswHxAMAsQNg6CMmIWvUvFEFSP2emwY8Vh4wD8STzeT2oU4DbKUj75?=
- =?us-ascii?Q?F6SDqLWKwxUaF/OC1C6E+f2TnRKTfQszSv/Q8//9XXBELrJ/oUtvM0c9CTWn?=
- =?us-ascii?Q?ZLoQYbGSTO8QNiPnNZQ6Q8jLAXh6awmUxIVDK+vX7A7OnVF8i55F0nZzofCA?=
- =?us-ascii?Q?vYoVW4jf0/ZWc2Es3eNq56KwAJv+EonAWw0HjU0FQG7C8LW2DRvjUCzfhQfI?=
- =?us-ascii?Q?MhgT99HNmkFQCsbdWHSOZZf5CFyR5wX6HGlCkEcgnULQB8aPfsad6FnyqwUH?=
- =?us-ascii?Q?Efre1i3+2HrHGp1hGnR/KEBxIDr1lJ7uiAAF/GaMtR1NdRos8JpR8o2uJnF8?=
- =?us-ascii?Q?FrkR74Sfkz4b26H8AfV8ZuYYiy6lD7OflaX9USoUsJfKXCXwrJAwBE4ourhG?=
- =?us-ascii?Q?QQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94da625e-e567-4b7e-131d-08dd58192da2
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 16:58:52.3103 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9SCzgSC+HYvfrq5fCOGw/er1x41j/DFMQLyODdYla12ONwVi5+/FPGL0S5j/jO0X/9NtxP7MjKJ1aCnSWavD/tLVbf+AzXlHVqXb/YWgfCk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7914
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b15104046ffbc5fb09d439aed03c0256a8027c03.camel@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -178,196 +77,246 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Feb 28, 2025 at 07:48:07PM +0530, Soham Purkait wrote:
->v2 : fix for refactoring GPUTOP into a
->     vendor-agnostic tool (Lucas)
+Hi Knop,,
+On 2025-02-27 at 16:37:18 +0000, Knop, Ryszard wrote:
+> On Wed, 2025-02-26 at 20:33 +0100, Kamil Konieczny wrote:
+> >   Sometimes an error happens in kernel or in test that leaves
+> > output files in corrupted or incorrect state. While runner or
+> > resume will just move on to executing next test, when generating
+> > results it could end up with no results.json
+> > 
+> >   Try processing outputs a little more persistently and use any
+> > output file left there, even if only dmesg.txt. Also, when no
+> > useful output files were present, instead of breaking out add
+> > notrun.
+> > 
+> >   Inform about processing results for each test so a problem
+> > could be spotted more easily.
+> > 
+> > Cc: Ewelina Musial <ewelina.musial@intel.com>
+> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> > Cc: Ryszard Knop <ryszard.knop@intel.com>
+> > Cc: Petri Latvala <adrinael@adrinael.net>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  runner/executor.c  | 21 +++++++++++++++++++++
+> >  runner/executor.h  |  1 +
+> >  runner/resultgen.c | 45 ++++++++++++++++++++++++++++++---------------
+> >  3 files changed, 52 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/runner/executor.c b/runner/executor.c
+> > index 2abb18732..96b8b5057 100644
+> > --- a/runner/executor.c
+> > +++ b/runner/executor.c
+> > @@ -576,6 +576,27 @@ bool open_output_files(int dirfd, int *fds, bool write)
+> >  	return true;
+> >  }
+> >  
+> > +/**
+> > + * open_output_files_rdonly:
+> > + * @dirfd: fd of output directory with err.txt, dmesg.txt and other files
+> > + * @fds: array for fd's of opened output files
+> > + *
+> > + * Tries to open output files in read-only mode and saves file descriptors
+> > + * in fds arrray.
+> > + *
+> > + * Returns: true if all files opened, false otherwise
+> > + */
+> > +bool open_output_files_rdonly(int dirfd, int *fds)
+> > +{
+> > +	bool ret = true;
+> > +
+> > +	for (int i = 0; i < _F_LAST; i++)
+> > +		if ((fds[i] = openat(dirfd, filenames[i], O_RDONLY)) < 0)
+> > +			ret = false; /* Remember failure */
+> 
+> If succesful, open/openat will return -1 and set errno to the real
+> error. You can set `fds[i] = -errno` to let the function users know
+> what happened with a given descriptor.
+> 
 
-Sorry, but I think the abstraction here is not there yet. I'm commenting
-more below.
+Good point, I will do this.
 
->
->v3 : Separate commit for lib (Kamil)
->
->---
-> lib/igt_device_scan.c | 97 +++++++++++++++++++++++++++++++++++++++++++
-> lib/igt_device_scan.h |  3 ++
-> 2 files changed, 100 insertions(+)
->
->diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
->index 711bedc5c..bdbe09761 100644
->--- a/lib/igt_device_scan.c
->+++ b/lib/igt_device_scan.c
->@@ -774,6 +774,10 @@ __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
-> 		safe_strncpy(card->render, dev->drm_render,
-> 			     sizeof(card->render));
->
->+	if (dev->driver != NULL)
->+		safe_strncpy(card->driver, dev->driver,
->+			     sizeof(card->driver));
->+
-> 	if (dev->pci_slot_name != NULL)
-> 		safe_strncpy(card->pci_slot_name, dev->pci_slot_name,
-> 			     sizeof(card->pci_slot_name));
->@@ -820,6 +824,99 @@ static bool __find_first_intel_card_by_driver_name(struct igt_device_card *card,
-> 	return false;
+> > +
+> > +	return ret;
+> > +}
+> > +
+> >  void close_outputs(int *fds)
+> >  {
+> >  	int i;
+> > diff --git a/runner/executor.h b/runner/executor.h
+> > index ab6a0c176..56c7323a8 100644
+> > --- a/runner/executor.h
+> > +++ b/runner/executor.h
+> > @@ -26,6 +26,7 @@ enum {
+> >  };
+> >  
+> >  bool open_output_files(int dirfd, int *fds, bool write);
+> > +bool open_output_files_rdonly(int dirfd, int *fds);
+> >  void close_outputs(int *fds);
+> >  
+> >  /*
+> > diff --git a/runner/resultgen.c b/runner/resultgen.c
+> > index 0d3a569cf..b50c417e3 100644
+> > --- a/runner/resultgen.c
+> > +++ b/runner/resultgen.c
+> > @@ -2176,12 +2176,26 @@ static bool parse_test_directory(int dirfd,
+> >  {
+> >  	int fds[_F_LAST];
+> >  	struct subtest_list subtests = {};
+> > -	bool status = true;
+> >  	int commsparsed;
+> >  
+> > -	if (!open_output_files(dirfd, fds, false)) {
+> > -		fprintf(stderr, "Error opening output files\n");
+> > -		return false;
+> > +	if (!open_output_files_rdonly(dirfd, fds)) {
+> > +		struct stat statbuf;
+> > +		size_t sz = 0;
+> 
+> This function does not care about the size, just if any non-empty file
+> was found. Use a bool like in open_output_files_rdonly.
+> 
+
+You are right, I will change it to bool.
+
+> > +
+> > +		for (int i = 0; i < _F_LAST; ++i) {
+> > +			if (fds[i] > 0 && !fstat(fds[i], &statbuf) && statbuf.st_size != 0)
+> > +				sz = statbuf.st_size;
+> 
+> To make debugging easier, if there's a problem with a given file, print
+> its name and the discovered issue in this loop, something like:
+> 
+> ```c
+> if (fds[i] < 0) {
+>   fprintf(stderr, "Err: %s: open failed: %s\n",
+>           filenames[i], strerror(-fds[i]));
+
+I will add this.
+
+>   continue;
 > }
->
->+/*
->+ * Iterate over all igt_devices array and find all discrete/integrated card.
->+ * @card: double pointer to igt_device_card structure, containing
->+ * an array of igt_device_card structure upon successful return.
->+ */
->+static int __find_all_intel_card_by_driver_name(struct igt_device_card **card,
->+						bool want_discrete, const char *drv_name)
->+{
->+	int count = 0;
->+	struct igt_device *dev;
->+	int is_integrated;
->+	struct igt_device_card *tmp;
->+	struct igt_device_card *crd =
->+		(struct igt_device_card *)calloc(1, sizeof(struct igt_device_card));
->+
->+	igt_assert(drv_name);
->+	memset(card, 0, sizeof(*card));
->+
->+	igt_list_for_each_entry(dev, &igt_devs.all, link) {
->+		if (!is_pci_subsystem(dev) || strcmp(dev->driver, drv_name))
->+			continue;
->+
->+		is_integrated = !strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
->+				PCI_SLOT_NAME_SIZE);
->+
->+		if (want_discrete && !is_integrated) {
->+			__copy_dev_to_card(dev, (crd + count));
->+			count++;
->+			tmp = realloc(crd, sizeof(struct igt_device_card) * (1 + count));
->+			if (!tmp) {
->+				free(crd);
->+				return -1;
->+			}
->+			crd = tmp;
->+
->+		} else if (!want_discrete && is_integrated) {
->+			__copy_dev_to_card(dev, (crd + count));
->+			count++;
->+			tmp = realloc(crd, sizeof(struct igt_device_card) * (1 + count));
->+			if (!tmp) {
->+				free(crd);
->+				return -1;
->+			}
->+			crd = tmp;
->+		}
->+	}
->+	if (count == 0) {
->+		free(crd);
->+		return 0;
->+	}
->+
->+	*card = crd;
->+	return count;
->+}
->+
->+/**
->+ * igt_device_find_all_xe_integrated_card
->+ * @card: double pointer to igt_device_card structure
->+ *
->+ * Iterate over all igt_devices array and find only xe integrated
->+ * cards and populate an array of igt_device_card structure upon
->+ * successful return.
->+ * card will be updated with the pointer to the array of
->+ * igt_device_card structure only if at least a single such device
->+ * is found.
->+ *
->+ * Returns: number of integrated xe device is found.
->+ */
->+int igt_device_find_all_xe_integrated_card(struct igt_device_card **card)
->+{
->+	igt_assert(card);
->+	return __find_all_intel_card_by_driver_name(card, false, "xe");
->+}
->+
->+/**
->+ * igt_device_find_all_xe_discrete_card
->+ * @card: double pointer to igt_device_card structure
->+ *
->+ * Iterate over all igt_devices array and find only xe discrete
->+ * cards and populate an array of igt_device_card structure upon
->+ * successful return.
->+ * card will be updated with the pointer to the array of
->+ * igt_device_card structure only if at least a single such device
->+ * is found.
->+ *
->+ * Returns: number of discrete xe device is found.
->+ */
->+int igt_device_find_all_xe_discrete_card(struct igt_device_card **card)
->+{
->+	igt_assert(card);
->+	return __find_all_intel_card_by_driver_name(card, true, "xe");
->+}
->+
-> bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
-> {
-> 	igt_assert(card);
->diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
->index 92741fe3c..25d3c462f 100644
->--- a/lib/igt_device_scan.h
->+++ b/lib/igt_device_scan.h
->@@ -59,6 +59,7 @@ struct igt_device_card {
-> 	char subsystem[NAME_MAX];
-> 	char card[NAME_MAX];
-> 	char render[NAME_MAX];
->+	char driver[NAME_MAX];
+> 
+> if (!fstat(fds[i], &statbuf)) {
 
-For me this is the only part in this patch that should exist (together
-with the patch above that is populating it).
+imho this is redundand and should not happen when a file was
+opened but as I already check it let it be, I will add this.
 
-IMO we shouldn't really add igt_device_find_all_{driver}_{type}_card()
-functions. Imagine supporting 10 drivers. Are we going to create
-(internal) APIs for everything?
+>   fprintf(stderr, "Err: %s: stat failed: %s\n",
+>           filenames[i], strerror(errno));
+>   continue;
+> }
+> 
+> if (statbuf.st_size == 0) {
+>   fprintf(stderr, "Err: %s: file empty\n", filenames[i]);
+>   continue;
+> }
 
-I think it's better to use a composition strategy. For that you only
-need to add the driver name in igt_device_card, i.e. what this part is
-doing. When you enumerate the gpu devices, it saves the driver name. The
-callers then decide what to do with the enumerated devices.  If a
-"filter while enumerating" strategy is what you want, then you could add
-a match callback or match criteria. Example: igt_device_card_match()
-already implements the latter - filtering by driver could be added if
-it's not already there.
+But this one is not a bug, igt_runner have two modes now,
+comms and no-comms and then one of these two groups of files
+comms or err/out will be empty, so no point to clobber output
+with it. The only abnormality is when no files comms/err/out
+are there then yes I could notify about it.
 
-If you are doing a long-running application like gputop, you'd likely
-call igt_devices_scan() then walk the list to check what drivers you
-have and do special things for each of them. You shouldn't really call
-"find all i915 discrete cards" + "find all xe discrete cards" + "find
-all foobar cards connected via usbc with display active", etc.  Handling
-device disconnects would be nice to have too, but at least we shouldn't
-crash.
+> 
+> valid_file_found = true;
+> ```
+> 
+> This way whoever debugs result generation issues can easily figure out
+> if they have a broken results tree, wrong permissions or whatever else.
+> 
 
-Looking at patches 3 and 4, I'm not sure why you are separating the
-lists for integrated/discrete if then later you do
+I agree, it is better to notify about what errors were spotted,
+I will add this.
 
-        count_int = igt_device_find_all_xe_integrated_card(&card_int);
-        count_dis = igt_device_find_all_xe_discrete_card(&card_dis);
+Regards,
+Kamil
 
-and do the same thing for both.
-
-
-Lucas De Marchi
-
-
-
-
-> 	char pci_slot_name[PCI_SLOT_NAME_SIZE+1];
-> 	uint16_t pci_vendor, pci_device;
-> };
->@@ -92,6 +93,8 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
-> bool igt_device_find_integrated_card(struct igt_device_card *card);
-> bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
-> bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
->+int igt_device_find_all_xe_integrated_card(struct igt_device_card **card);
->+int igt_device_find_all_xe_discrete_card(struct igt_device_card **card);
-> char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
-> int igt_open_card(struct igt_device_card *card);
-> int igt_open_render(struct igt_device_card *card);
->-- 
->2.34.1
->
+> > +		}
+> > +
+> > +		if (sz == 0) {
+> > +			/* no output saved in any file */
+> > +			fprintf(stderr, "results: Error opening output files\n");
+> > +			close_outputs(fds);
+> > +
+> > +			return false;
+> > +		}
+> > +
+> > +		fprintf(stderr, "results: Missing few output file(s)\n");
+> >  	}
+> >  
+> >  	/*
+> > @@ -2191,8 +2205,6 @@ static bool parse_test_directory(int dirfd,
+> >  	commsparsed = fill_from_comms(fds[_F_SOCKET], entry, &subtests, results);
+> >  	if (commsparsed == COMMSPARSE_ERROR) {
+> >  		fprintf(stderr, "Error parsing output files (comms)\n");
+> > -		status = false;
+> > -		goto parse_output_end;
+> >  	}
+> >  
+> >  	if (commsparsed == COMMSPARSE_EMPTY) {
+> > @@ -2200,20 +2212,17 @@ static bool parse_test_directory(int dirfd,
+> >  		 * fill_from_journal fills the subtests struct and
+> >  		 * adds timeout results where applicable.
+> >  		 */
+> > -		fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
+> > +		if (fds[_F_JOURNAL] > 0)
+> > +			fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
+> >  
+> >  		if (!fill_from_output(fds[_F_OUT], entry->binary, "out", &subtests, results->tests) ||
+> >  		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
+> >  			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
+> > -			status = false;
+> > -			goto parse_output_end;
+> >  		}
+> >  	}
+> >  
+> >  	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
+> >  		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
+> > -		status = false;
+> > -		goto parse_output_end;
+> >  	}
+> >  
+> >  	override_results(entry->binary, &subtests, results->tests);
+> > @@ -2221,11 +2230,10 @@ static bool parse_test_directory(int dirfd,
+> >  
+> >  	add_to_totals(entry->binary, &subtests, results);
+> >  
+> > - parse_output_end:
+> >  	close_outputs(fds);
+> >  	free_subtests(&subtests);
+> >  
+> > -	return status;
+> > +	return true;
+> >  }
+> >  
+> >  static void try_add_notrun_results(const struct job_list_entry *entry,
+> > @@ -2359,14 +2367,21 @@ struct json_object *generate_results_json(int dirfd)
+> >  		char name[16];
+> >  
+> >  		snprintf(name, 16, "%zd", i);
+> > +		fprintf(stderr, "results: parsing output: %s/ for test: %s\n",
+> > +			name, job_list.entries[i].binary);
+> >  		if ((testdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0) {
+> > +			if (settings.log_level >= LOG_LEVEL_NORMAL)
+> > +				fprintf(stderr, "results: no output, setting notrun\n)");
+> > +
+> >  			try_add_notrun_results(&job_list.entries[i], &settings, &results);
+> >  			continue;
+> >  		}
+> >  
+> >  		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
+> > -			close(testdirfd);
+> > -			return NULL;
+> > +			if (settings.log_level >= LOG_LEVEL_NORMAL)
+> > +				fprintf(stderr, "results: no useful output, setting notrun\n");
+> > +
+> > +			try_add_notrun_results(&job_list.entries[i], &settings, &results);
+> >  		}
+> >  		close(testdirfd);
+> >  	}
+> 
+> LGTM for the rest.
+> 
+> Thanks, Ryszard
