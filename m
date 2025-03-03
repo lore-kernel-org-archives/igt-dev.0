@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A488C28B20
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE684C28B23
 	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 23:15:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1418D10E4F5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 44B0110E4F7;
 	Mon,  3 Mar 2025 23:15:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R+jkQuVn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hn99dViP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F05D010E2EB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 23:15:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D69B10E2EB
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 23:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741043708; x=1772579708;
+ t=1741043709; x=1772579709;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Gfwk48Yx3Nszr+6fh4IaU/WwwuntzUTQrDlRxiAQtlA=;
- b=R+jkQuVnsAYyKfIyTNozvjGwiTsX85evedwEL1/jhG5YHkmk6sI+/XEA
- 0AuwexinZke9Bo/FJJ+romRfFdGF56TRMtslvQ6HKDO1tm4wyR/HWeDKn
- B+4OAq6GgayS2sk2z5lmVDLeKnTouoR1mJn/cNzZjmJS+rPcI32+xRJ32
- M0Qv67SxZ/KgmzKNRgShlXDCC0/erAVP2EOgTdygjkU3mnEhcIqS+Si8C
- AOPeiw2zm6o+H9V7lXBQRoqAV8Zwq3VP5I/61du/XVhRjeLwIpQrUj5zB
- cyfgTGmQR4JmNCghZbbOD7ZpyctuWCY5DPetNYIrczjoWeNxVyMnO+C3/ g==;
-X-CSE-ConnectionGUID: utmOg/sSQmW1WG/rs/3Lnw==
-X-CSE-MsgGUID: oPXI00MBQPCTgdkH7yFF6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41793046"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="41793046"
+ bh=O/2lQopaAuRrRSCmUPHoODO9HJ/B0hzviBH0+/Gneuk=;
+ b=Hn99dViP/Hk25WxURkyWj0YHYPMUF2d5Nakjrxl8wKsnHfs3AKCUSsWL
+ GmYyQaWFNdunqEaQKYGpes1p7JEvUnqyDa/dViFgfz3d00JQVX3Jplrmp
+ 14i8Eg4QVhTcHwDHWpCLW3iLv+MFuUeURp5zMe9eWOEscy1xuo/Bi5Fot
+ GnF+qAb/uuI93BNGp6qgryzygJebut1BurjguW+/znnApWPQ1hFsFfAfT
+ VfpfrDd+ttAleY7nwcCZBBilr2bTCF2H7bFUx0EpF8AJ7By6VBfLclvn9
+ UVVXoFF3aA/EJd15denK3Ls+ls5h9lNYX8SzNu4w49RPa0RsDvVfHXiUh A==;
+X-CSE-ConnectionGUID: 93oNg3iSTcqxdZ3KAwOtNA==
+X-CSE-MsgGUID: TldbJqYTQXyoUQ8vXVSChA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41793050"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="41793050"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 15:15:08 -0800
-X-CSE-ConnectionGUID: Wul9TzsySSOhMfBCMAzcaQ==
-X-CSE-MsgGUID: RJbemy6cTtCahnEV66qgYQ==
+ 03 Mar 2025 15:15:09 -0800
+X-CSE-ConnectionGUID: qPKo37aoQ964SWhvEdo6KQ==
+X-CSE-MsgGUID: WnDYwVFsQ6ezuDq1FKXpeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118716706"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118716718"
 Received: from dut4463arlhx.fm.intel.com ([10.105.10.25])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Mar 2025 15:15:08 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t v2 08/14] tests/intel/xe_oa: Simplify the buffer-fill
- test
-Date: Mon,  3 Mar 2025 15:14:56 -0800
-Message-Id: <20250303231502.135720-9-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 11/14] tests/intel/xe_oa: Rewrite enable-disable test
+Date: Mon,  3 Mar 2025 15:14:59 -0800
+Message-Id: <20250303231502.135720-12-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
 References: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
@@ -68,60 +67,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Simplify the buffer-fill test for quicker runs on slow platforms.
+Keep it simple and just check if enable/disable is working correctly
+using the read call and existing uapi.
 
-We only want to test that the BUFFER OVERFLOW status is set when we do
-not read the OA stream data in time. To do so, keeping reading zero
-bytes of data until you hit a buffer overflow.
-
-v2:
-- Add reason to the commit msg
-- Drop 'wraparound' from test description
-- s/disable/disabled
-- drop unnecessary double-bang for int to bool conversion
-- Fix regression in test execution time
+v2: Drop mmio and use the value returned in read (Ashutosh)
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 128 +++++++++-----------------------------------
- 1 file changed, 24 insertions(+), 104 deletions(-)
+ tests/intel/xe_oa.c | 140 ++++++++------------------------------------
+ 1 file changed, 24 insertions(+), 116 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index dd16b39a9..3b9f13d9e 100644
+index 9c10a8fd2..47c4a1fdb 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -304,6 +304,7 @@ static size_t default_oa_buffer_size;
- static struct intel_mmio_data mmio_data;
- static igt_render_copyfunc_t render_copy;
- static uint32_t rc_width, rc_height;
-+static uint32_t buffer_fill_size;
- 
- static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
- {
-@@ -1092,6 +1093,7 @@ init_sys_info(void)
- 
- 	rc_width = 1920;
- 	rc_height = 1080;
-+	buffer_fill_size = SZ_16M;
- 	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
- 
- 	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
-@@ -2352,7 +2354,7 @@ test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
- 
- /**
-  * SUBTEST: buffer-fill
-- * Description: Test filling, wraparound and overflow of OA buffer
-+ * Description: Test filling and overflow of OA buffer
-  */
+@@ -2524,145 +2524,53 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
  static void
- test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
-@@ -2373,123 +2375,41 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
+ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+ {
+-	/* ~5 micro second period */
+-	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+-	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
++	uint32_t num_reports = 5;
+ 	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+ 	uint64_t fmt = test_set->perf_oa_format;
+ 	uint64_t properties[] = {
+ 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+-
+-		/* Include OA reports in samples */
+ 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+-
+-		/* OA unit configuration */
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
  		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
- 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+-		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+ 		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
  		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_fill_size,
++		DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS, num_reports,
  	};
  	struct intel_xe_oa_open_prop param = {
  		.num_properties = ARRAY_SIZE(properties) / 2,
@@ -130,54 +114,45 @@ index dd16b39a9..3b9f13d9e 100644
 -	size_t report_size = get_oa_format(fmt).size;
 -	int buf_size = 65536 * report_size;
 -	uint8_t *buf = malloc(buf_size);
--	int len;
 -	int n_full_oa_reports = default_oa_buffer_size / report_size;
 -	uint64_t fill_duration = n_full_oa_reports * oa_period;
 -	uint32_t *last_periodic_report = malloc(report_size);
-+	char *buf = malloc(1024);
-+	bool overflow_seen;
- 	u32 oa_status;
-+	int len;
- 
--	igt_assert(fill_duration < 1000000000);
 -
-+	igt_debug("oa_period %s\n", pretty_print_oa_period(oa_period));
+-	load_helper_init();
+-	load_helper_run(HIGH);
++	size_t format_size = get_oa_format(fmt).size;
++	uint8_t buf[num_reports * format_size];
++	struct pollfd pollfd;
++	int ret;
+ 
  	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
          set_fd_flags(stream_fd, O_CLOEXEC);
  
 -	for (int i = 0; i < 5; i++) {
--		bool overflow_seen;
+-		int len;
 -		uint32_t n_periodic_reports;
--		uint32_t first_timestamp = 0, last_timestamp = 0;
+-		uint64_t first_timestamp = 0, last_timestamp = 0;
+-		u32 oa_status;
 -
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
--
+-		/* Giving enough time for an overflow might help catch whether
+-		 * the OA unit has been enabled even if the driver might at
+-		 * least avoid copying reports while disabled.
+-		 */
 -		nanosleep(&(struct timespec){ .tv_sec = 0,
 -					      .tv_nsec = fill_duration * 1.25 },
 -			  NULL);
--again:
--		oa_status = 0;
--		while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
+-
+-		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
+-		       (errno == EINTR || errno == EIO))
 -			;
 -
--		if (errno == EIO) {
--			oa_status = get_stream_status(stream_fd);
--			igt_debug("oa_status %#x\n", oa_status);
--			overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
--			igt_assert_eq(overflow_seen, true);
--			goto again;
--		}
--		igt_assert_neq(len, -1);
--
--		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
--
--		igt_debug("fill_duration = %"PRIu64"ns, oa_exponent = %u\n",
--			  fill_duration, oa_exponent);
+-		igt_assert_eq(len, -1);
+-		igt_assert_eq(errno, EINVAL);
 -
 -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
 -
 -		nanosleep(&(struct timespec){ .tv_sec = 0,
--					.tv_nsec = fill_duration / 2 },
+-					      .tv_nsec = fill_duration / 2 },
 -			NULL);
 -
 -		n_periodic_reports = 0;
@@ -188,39 +163,39 @@ index dd16b39a9..3b9f13d9e 100644
 -		 */
 -		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
 -
--			igt_debug("dts=%u elapsed=%"PRIu64" duration=%"PRIu64"\n",
--				  last_timestamp - first_timestamp,
--				  (last_timestamp - first_timestamp) * oa_period,
--				  fill_duration / 2);
--again_1:
--			oa_status = 0;
 -			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
 -				;
 -			if (errno == EIO) {
 -				oa_status = get_stream_status(stream_fd);
 -				igt_debug("oa_status %#x\n", oa_status);
 -				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
--				goto again_1;
+-				continue;
 -			}
 -			igt_assert_neq(len, -1);
 -
 -			for (int offset = 0; offset < len; offset += report_size) {
 -				uint32_t *report = (void *) (buf + offset);
 -
--				igt_debug(" > report ts=%"PRIu64""
--					  " ts_delta_last_periodic=%"PRIu64" is_timer=%i ctx_id=%8x nb_periodic=%u\n",
--					  oa_timestamp(report, fmt),
--					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
--					  oa_report_is_periodic(report),
--					  oa_report_get_ctx_id(report),
--					  n_periodic_reports);
--
 -				if (first_timestamp == 0)
 -					first_timestamp = oa_timestamp(report, fmt);
 -				last_timestamp = oa_timestamp(report, fmt);
 -
+-				igt_debug(" > report ts=%"PRIx64""
+-					  " ts_delta_last_periodic=%s%"PRIu64""
+-					  " is_timer=%i ctx_id=0x%8x\n",
+-					  oa_timestamp(report, fmt),
+-					  oa_report_is_periodic(report) ? " " : "*",
+-					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
+-					  oa_report_is_periodic(report),
+-					  oa_report_get_ctx_id(report));
+-
 -				if (oa_report_is_periodic(report)) {
 -					memcpy(last_periodic_report, report, report_size);
+-
+-					/* We want to measure only the periodic reports,
+-					 * ctx-switch might inflate the content of the
+-					 * buffer and skew or measurement.
+-					 */
 -					n_periodic_reports++;
 -				}
 -			}
@@ -228,39 +203,55 @@ index dd16b39a9..3b9f13d9e 100644
 -
 -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
 -
--		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-+	/* OA buffer is disabled, we do not expect any error status */
-+	oa_status = get_stream_status(stream_fd);
-+	overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
-+	igt_assert_eq(overflow_seen, 0);
- 
+-		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
+-
 -		igt_debug("%f < %zu < %f\n",
 -			  report_size * n_full_oa_reports * 0.45,
 -			  n_periodic_reports * report_size,
 -			  report_size * n_full_oa_reports * 0.55);
+-
+-		igt_assert((n_periodic_reports * report_size) >
+-			   (report_size * n_full_oa_reports * 0.45));
+-		igt_assert((n_periodic_reports * report_size) <
+-			   report_size * n_full_oa_reports * 0.55);
+-
++	errno = 0;
++	ret = read(stream_fd, buf, sizeof(buf));
++	igt_assert_eq(ret, -1);
++	igt_assert_eq(errno, EINVAL);
+ 
+-		/* It's considered an error to read a stream while it's disabled
+-		 * since it would block indefinitely...
+-		 */
+-		len = read(stream_fd, buf, buf_size);
 +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
  
--		igt_assert(n_periodic_reports * report_size >
--			   report_size * n_full_oa_reports * 0.45);
--		igt_assert(n_periodic_reports * report_size <
--			   report_size * n_full_oa_reports * 0.55);
-+	errno = 0;
-+	/* Read 0 bytes repeatedly until you see an EIO */
-+	while ((len = read(stream_fd, buf, 0)) == -1 && (errno == EINTR || errno == ENOSPC)) {
-+		usleep(100);
- 	}
-+	igt_assert_eq(len, -1);
-+	igt_assert_eq(errno, EIO);
+-		igt_assert_eq(len, -1);
+-		igt_assert_eq(errno, EINVAL);
+-	}
++	/*
++	 * Wait for number of reports specified in
++	 * DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS
++	 */
++	pollfd.fd = stream_fd;
++	pollfd.events = POLLIN;
++	poll(&pollfd, 1, -1);
++	igt_assert(pollfd.revents & POLLIN);
  
 -	free(last_periodic_report);
 -	free(buf);
-+	/* Ensure buffer overflowed */
-+	oa_status = get_stream_status(stream_fd);
-+	overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
-+	igt_assert(overflow_seen);
++	/* Ensure num_reports can be read */
++	while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 && errno == EINTR)
++		;
++	igt_assert_eq(ret, sizeof(buf));
  
  	__perf_close(stream_fd);
+-
+-	load_helper_stop();
+-	load_helper_fini();
  }
+ 
+ /**
 -- 
 2.34.1
 
