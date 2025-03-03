@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60A90C282C6
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 19:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40DDC282C6
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 19:11:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EDF8810E4BB;
-	Mon,  3 Mar 2025 19:11:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6538210E4C2;
+	Mon,  3 Mar 2025 19:11:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ddsxXc9I";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oELtmBP8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD0E910E4BB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 19:11:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53DB610E4C2
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 19:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741029091; x=1772565091;
+ t=1741029101; x=1772565101;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=cIMU+flNvJWJINoPo6AYwruUL1gtJ31fIxvfh3D+keY=;
- b=ddsxXc9IsKEk35E77zAL1CTyH9zlRSOyKsvehsDxn2kXQpFl7kExCNRa
- SRLaf2bKWEUvu+9alNX6ZGW9K63+sIilR+wvnJZnq6CbaJ3rbJkylZuMC
- jDdJy905md+kq2oOAfP02dwTob4tNPZpFnVOWKgFzRZZmZbDEv4ybG4YN
- F2UuUxVHLhgvMTYY3pFbul4jYQ+ucCFPsBuLFsM/ZX99LvyN5P3oz+ewr
- sJylgFwSNuItggxjl5g+wIg9YGvgqYs4yHP3j7lXHP8drxgntnW+mSPho
- /LgbagAesXz69UoyT1yJN+f7CV0dWTkHy+yeilPKzoXR4+VTnByW/Ccr0 A==;
-X-CSE-ConnectionGUID: guJwLcl5Tm2he6xWKz3tNA==
-X-CSE-MsgGUID: WVCCvCRuQhyeoUsQh+uMgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52558614"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="52558614"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 11:11:31 -0800
-X-CSE-ConnectionGUID: OHR559fpRZKs1C2cKSXr/w==
-X-CSE-MsgGUID: X5u0nKgnQ9OPSGFpnNiaAA==
+ bh=i/iexKu/UJrr4h5tZfKXJb3dhfGPxZd5qOoXncwtohY=;
+ b=oELtmBP8CQ1jZD1rhJsbvbv0qiKG3jrpXxLqA6N6QfJ/0fyFjx5DaZCS
+ o3wvRGFBS5aXnq0Q6NJW7ZBHP44SCUzWAMwDQpwCNl3sQlBOWkn9u2AXY
+ omxlE/AWoorXNv53lKpZ4WMMG5nvVdCVrdYjDCyWzYAi/TvI1o+jGWs6o
+ 7vepSXesIsp845FB3M7bUonjusMKRxqoUU7LozV8I+wVq0kKhiOkOCwmd
+ 3oItoMk9wGjYm92oLVbv0HAoxYfNfZHTFldKEFNEeWTqvBMfz7YexlvtF
+ ZSYJ1CaQo4se2X7N7gfO4HOFrwGKKozkvon2sJThly4kmP6qLPbN9RSTS w==;
+X-CSE-ConnectionGUID: +cahiI4XQDmc1dqOEUn9/Q==
+X-CSE-MsgGUID: b0CLVONqQBW75hJYRYgu4A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="59469837"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="59469837"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 11:11:41 -0800
+X-CSE-ConnectionGUID: Rc+M4t/9Q0efBGdjRHTUPw==
+X-CSE-MsgGUID: qUklEm8NT/CA/iiNDmpPGQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="155319276"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="118829675"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 11:11:30 -0800
-Date: Mon, 03 Mar 2025 11:11:29 -0800
-Message-ID: <85frju53q6.wl-ashutosh.dixit@intel.com>
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 11:11:40 -0800
+Date: Mon, 03 Mar 2025 11:11:40 -0800
+Message-ID: <85ecze53pv.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Harish Chegondi <harish.chegondi@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v2 2/2] tests/intel/xe_eu_stall: Add tests for EU
- stall sampling
-In-Reply-To: <97b6c6425406e966c8831aec0d26ef6d53c8b4dd.1739901972.git.harish.chegondi@intel.com>
-References: <cover.1739901972.git.harish.chegondi@intel.com>	<97b6c6425406e966c8831aec0d26ef6d53c8b4dd.1739901972.git.harish.chegondi@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/2] drm-uapi/xe: Sync with EU stall sampling
+ uapi updates
+In-Reply-To: <7b245549e606629e860b258fe037f47df480fc72.1739901972.git.harish.chegondi@intel.com>
+References: <cover.1739901972.git.harish.chegondi@intel.com>	<7b245549e606629e860b258fe037f47df480fc72.1739901972.git.harish.chegondi@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,27 +71,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 18 Feb 2025 10:21:27 -0800, Harish Chegondi wrote:
+On Tue, 18 Feb 2025 10:21:26 -0800, Harish Chegondi wrote:
 >
-> +const char *help_str =  "  --event_count | -e\t\tPoll event report count\n"
-> +			"  --gt_id | -g\t\tGT ID for the GT to sample EU stalls\n"
-> +			"  --output | -o\t\tOutput file to write EU stall data\n"
-> +			"  --rate | -r\t\tSampling rate in GPU cycles\n"
-> +			"  --user_buf_sz | -u\t\tUser buffer size\n"
-> +			"  --workload | -w\t\tWorkload to run\n";
+> Align with the following commits:
+> ("drm/xe/uapi: Introduce API for EU stall sampling")
+> ("drm/xe/uapi: Add a device query to get EU stall sampling information")
+
+I have merged the EU xe_drm.h changes so this patch can be dropped.
+
+>
+> Link: https://patchwork.freedesktop.org/series/144609/
+> Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 74 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 74 insertions(+)
+>
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 08e263b3b..f143f2e65 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -700,6 +700,7 @@ struct drm_xe_device_query {
+>  #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
+>  #define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+>  #define DRM_XE_DEVICE_QUERY_OA_UNITS		8
+> +#define DRM_XE_DEVICE_QUERY_EU_STALL		10
+>	/** @query: The type of data to query */
+>	__u32 query;
+>
+> @@ -1397,6 +1398,8 @@ struct drm_xe_wait_user_fence {
+>  enum drm_xe_observation_type {
+>	/** @DRM_XE_OBSERVATION_TYPE_OA: OA observation stream type */
+>	DRM_XE_OBSERVATION_TYPE_OA,
+> +	/** @DRM_XE_OBSERVATION_TYPE_EU_STALL: EU stall sampling observation stream type */
+> +	DRM_XE_OBSERVATION_TYPE_EU_STALL,
+>  };
+>
+>  /**
+> @@ -1729,6 +1732,77 @@ struct drm_xe_oa_stream_info {
+>	__u64 reserved[3];
+>  };
+>
+> +/**
+> + * enum drm_xe_eu_stall_property_id - EU stall sampling input property ids.
+> + *
+> + * These properties are passed to the driver at open as a chain of
+> + * @drm_xe_ext_set_property structures with @property set to these
+> + * properties' enums and @value set to the corresponding values of these
+> + * properties. @drm_xe_user_extension base.name should be set to
+> + * @DRM_XE_EU_STALL_EXTENSION_SET_PROPERTY.
+> + *
+> + * With the file descriptor obtained from open, user space must enable
+> + * the EU stall stream fd with @DRM_XE_OBSERVATION_IOCTL_ENABLE before
+> + * calling read(). EIO errno from read() indicates HW dropped data
+> + * due to full buffer.
+> + */
+> +enum drm_xe_eu_stall_property_id {
+> +#define DRM_XE_EU_STALL_EXTENSION_SET_PROPERTY		0
+> +	/**
+> +	 * @DRM_XE_EU_STALL_PROP_GT_ID: @gt_id of the GT on which
+> +	 * EU stall data will be captured.
+> +	 */
+> +	DRM_XE_EU_STALL_PROP_GT_ID = 1,
 > +
-> +static struct option long_options[] = {
-> +	{"event_count", 0, 0, 'e'},
-> +	{"gt_id", 0, 0, 'g'},
-> +	{"output", 0, 0, 'o'},
-> +	{"rate", 0, 0, 'r'},
-> +	{"user_buf_sz", 0, 0, 'u'},
-> +	{"workload", 0, 0, 'w'},
-> +	{ NULL, 0, 0, 0 }
-
-The tests should probably be extended in the future by iterating over some
-of these parameters (such as user buffer size, sampling rate, event
-count). But this is good patch is good enough starting point, so this is
-now:
-
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> +	/**
+> +	 * @DRM_XE_EU_STALL_PROP_SAMPLE_RATE: Sampling rate in
+> +	 * GPU cycles from @sampling_rates in struct @drm_xe_query_eu_stall
+> +	 */
+> +	DRM_XE_EU_STALL_PROP_SAMPLE_RATE,
+> +
+> +	/**
+> +	 * @DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS: Minimum number of
+> +	 * EU stall data reports to be present in the kernel buffer
+> +	 * before unblocking poll or read that is blocked.
+> +	 */
+> +	DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS,
+> +};
+> +
+> +/**
+> + * struct drm_xe_query_eu_stall - Information about EU stall sampling.
+> + *
+> + * If a query is made with a struct @drm_xe_device_query where .query
+> + * is equal to @DRM_XE_DEVICE_QUERY_EU_STALL, then the reply uses
+> + * struct @drm_xe_query_eu_stall in .data.
+> + */
+> +struct drm_xe_query_eu_stall {
+> +	/** @extensions: Pointer to the first extension struct, if any */
+> +	__u64 extensions;
+> +
+> +	/** @capabilities: EU stall capabilities bit-mask */
+> +	__u64 capabilities;
+> +#define DRM_XE_EU_STALL_CAPS_BASE		(1 << 0)
+> +
+> +	/** @record_size: size of each EU stall data record */
+> +	__u64 record_size;
+> +
+> +	/** @per_xecore_buf_size: internal per XeCore buffer size */
+> +	__u64 per_xecore_buf_size;
+> +
+> +	/** @reserved: Reserved */
+> +	__u64 reserved[5];
+> +
+> +	/** @num_sampling_rates: Number of sampling rates in @sampling_rates array */
+> +	__u64 num_sampling_rates;
+> +
+> +	/**
+> +	 * @sampling_rates: Flexible array of sampling rates
+> +	 * sorted in the fastest to slowest order.
+> +	 * Sampling rates are specified in GPU clock cycles.
+> +	 */
+> +	__u64 sampling_rates[];
+> +};
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
+> --
+> 2.48.1
+>
