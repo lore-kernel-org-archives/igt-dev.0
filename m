@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF2D3C282D2
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC41C282C6
 	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 23:15:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C7E610E4F0;
-	Mon,  3 Mar 2025 23:15:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 606B910E4F1;
+	Mon,  3 Mar 2025 23:15:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oHSQO0yE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gsslmu7x";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 965FC10E0A0
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 23:15:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F05610E4F1
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 23:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741043708; x=1772579708;
+ t=1741043709; x=1772579709;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=c3DF0VHWKQPUucfMWbGzY1+CxhszLbAVVxVWDSILY+M=;
- b=oHSQO0yE+hsO2lQFZaVdd5WUMuURU1dUjCYV3fRDffDznEq1XukyxbvD
- 2jVddZUL3Gn6GV4vH4LB2+T8tP0hchwQR0JqF5ZuaLKli1qhOzpuH4Krg
- MV8tnqcz4FnKJ5rzU4K4sRMEUkGF2mhd3aej5/feI03r4cIn0tsxORIQv
- H/Emmg7jxZk2xb3H8qDuq+Du+JpmXd3d6Uohq49MvbrihAf/nc0ndJTYR
- Kqz4zAQCSPIkXpxofXvUbBMj8OOfY4QnWQ5PfzUrWsWxD0fO+HeVYC2ZR
- +6tvbD07M3A8njZM1wSeCTrk/7Z/fVAQHEl9nCrGq1l8d3KFTy8dbqUGW A==;
-X-CSE-ConnectionGUID: K87jh9s/SS6ECyeeavIY7Q==
-X-CSE-MsgGUID: jwNVkrqtSQyminRfb97+6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41793042"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="41793042"
+ bh=Ft2m1kOATr/7h7+8Ql66vAPrimqwB4hX7yJoXUWZPts=;
+ b=Gsslmu7xgdZkdjACWMiOGWjiCWr/V8L7fuZ+X9d8IEHINhZJ3rhqndzU
+ o7GxVt+9DVLK0CcR+NTnh7HtuNr3VDnymshvz7fhMQBbPkJBYYOvNbxjF
+ NgFfNK890psYvkXMilIRZ1NPdp1ofMUXa22zIuEI3SlMnA4En1kGXSo/w
+ /Zot3alY1Yjbh5Q9EzfZtGW2XOEYvD/2uYy8hoBvQHD374E4Piv71Z554
+ tg6sKwJe6SwSg07WIanMKHTt8RdNRK/XtvPir3MN5tBImSBGxtBIOL5iq
+ Qqgwb3IYWAHMJgW37OSvKLhH8Iks3KyJWPEiAI5kIrFg1BO3Q+XFrGbyT w==;
+X-CSE-ConnectionGUID: hZC80iFhTpu2aUCPS2j/Hg==
+X-CSE-MsgGUID: p/Laa9IDRUipbzEIirVlqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41793051"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="41793051"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 15:15:08 -0800
-X-CSE-ConnectionGUID: hsbIqhBwTjKcdlsk++zaEQ==
-X-CSE-MsgGUID: Hn+B/G3MQz27AhGFhJpOHw==
+ 03 Mar 2025 15:15:09 -0800
+X-CSE-ConnectionGUID: wHbcpGz/QJOL9FdyoGX0rQ==
+X-CSE-MsgGUID: LZAUvZkaSGCv19qRLDdkYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118716697"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118716722"
 Received: from dut4463arlhx.fm.intel.com ([10.105.10.25])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 15:15:07 -0800
+ 03 Mar 2025 15:15:09 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t v2 06/14] tests/intel/xe_oa: Use same render copy width
- and height across tests
-Date: Mon,  3 Mar 2025 15:14:54 -0800
-Message-Id: <20250303231502.135720-7-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 12/14] tests/intel/xe_oa: Enable
+ unprivileged-single-ctx-counters and fix it
+Date: Mon,  3 Mar 2025 15:15:00 -0800
+Message-Id: <20250303231502.135720-13-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
 References: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
@@ -68,169 +68,195 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the same width and height for render copy frame to make execution
-times uniform across tests.
-
-v2: Update commit message (Ashutosh)
+unprivileged-single-ctx-counters was hardcoded for a format size of 256
+bytes. Fix it up for generic format size.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ tests/intel/xe_oa.c | 93 +++++++++++++++++++++++----------------------
+ 1 file changed, 48 insertions(+), 45 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 7889adf1e..08406ca5c 100644
+index 47c4a1fdb..ca2faa555 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -303,6 +303,7 @@ static uint64_t oa_exponent_default;
- static size_t default_oa_buffer_size;
- static struct intel_mmio_data mmio_data;
- static igt_render_copyfunc_t render_copy;
-+static uint32_t rc_width, rc_height;
- 
- static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
- {
-@@ -1089,6 +1090,8 @@ init_sys_info(void)
- 
- 	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
- 
-+	rc_width = 1920;
-+	rc_height = 1080;
- 	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
- 
- 	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
-@@ -1608,7 +1611,7 @@ static void load_helper_run(enum load load)
- 
- 		while (!lh.exit) {
- 			render_copy(lh.ibb,
--				    &lh.src, 0, 0, 1920, 1080,
-+				    &lh.src, 0, 0, rc_width, rc_height,
- 				    &lh.dst, 0, 0);
- 
- 			intel_bb_sync(lh.ibb);
-@@ -1645,8 +1648,8 @@ static void load_helper_init(void)
- 
- 	lh.ibb = intel_bb_create_with_context(drm_fd, lh.context_id, lh.vm, NULL, BATCH_SZ);
- 
--	scratch_buf_init(lh.bops, &lh.dst, 1920, 1080, 0);
--	scratch_buf_init(lh.bops, &lh.src, 1920, 1080, 0);
-+	scratch_buf_init(lh.bops, &lh.dst, rc_width, rc_height, 0);
-+	scratch_buf_init(lh.bops, &lh.src, rc_width, rc_height, 0);
- }
- 
- static void load_helper_fini(void)
-@@ -3112,8 +3115,6 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	uint64_t delta_ts64, delta_oa32;
- 	uint64_t delta_ts64_ns, delta_oa32_ns;
- 	uint64_t delta_delta;
--	int width = 800;
--	int height = 600;
- #define INVALID_CTX_ID 0xffffffff
- 	uint32_t ctx0_id = INVALID_CTX_ID;
- 	uint32_t ctx1_id = INVALID_CTX_ID;
-@@ -3125,8 +3126,8 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	bops = buf_ops_create(drm_fd);
- 
- 	for (int i = 0; i < ARRAY_SIZE(src); i++) {
--		scratch_buf_init(bops, &src[i], width, height, 0xff0000ff);
--		scratch_buf_init(bops, &dst[i], width, height, 0x00ff00ff);
-+		scratch_buf_init(bops, &src[i], rc_width, rc_height, 0xff0000ff);
-+		scratch_buf_init(bops, &dst[i], rc_width, rc_height, 0x00ff00ff);
- 	}
- 
- 	vm = xe_vm_create(drm_fd, 0, 0);
-@@ -3139,7 +3140,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 
- 	/* Submit some early, unmeasured, work to the context we want */
- 	render_copy(ibb0,
--		    &src[0], 0, 0, width, height,
-+		    &src[0], 0, 0, rc_width, rc_height,
- 		    &dst[0], 0, 0);
- 
- 	/* Initialize the context parameter to the perf open ioctl here */
-@@ -3175,7 +3176,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 
- 	/* This is the work/context that is measured for counter increments */
- 	render_copy(ibb0,
--		    &src[0], 0, 0, width, height,
-+		    &src[0], 0, 0, rc_width, rc_height,
- 		    &dst[0], 0, 0);
- 	intel_bb_flush_render(ibb0);
- 
-@@ -3200,11 +3201,11 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	 * context1
- 	 */
- 	render_copy(ibb1,
--		    &src[1], 0, 0, width, height,
-+		    &src[1], 0, 0, rc_width, rc_height,
- 		    &dst[1], 0, 0);
- 
- 	render_copy(ibb1,
--		    &src[2], 0, 0, width, height,
-+		    &src[2], 0, 0, rc_width, rc_height,
- 		    &dst[2], 0, 0);
- 	intel_bb_flush_render(ibb1);
- 
-@@ -3325,7 +3326,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	igt_debug("n samples written = %"PRIu64"/%"PRIu64" (%ix%i)\n",
- 		  accumulator.deltas[2 + 21],
- 		  accumulator.deltas[2 + 26],
--		  width, height);
-+		  rc_width, rc_height);
- 	accumulator_print(&accumulator, "filtered");
- 
- 	/* Verify that the work actually happened by comparing the src
-@@ -3334,7 +3335,7 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	buf_map(drm_fd, &src[0], false);
- 	buf_map(drm_fd, &dst[0], false);
- 
--	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * width * height);
-+	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * rc_width * rc_height);
- 	intel_buf_unmap(&src[0]);
- 	intel_buf_unmap(&dst[0]);
- 
-@@ -3350,9 +3351,9 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
- 	/* Check that this test passed. The test measures the number of 2x2
- 	 * samples written to the render target using the counter A26. For
- 	 * OAR, this counter will only have increments relevant to this specific
--	 * context. The value equals the width * height of the rendered work.
-+	 * context. The value equals the rc_width * rc_height of the rendered work.
- 	 */
--	igt_assert_eq(accumulator.deltas[2 + 26], width * height);
-+	igt_assert_eq(accumulator.deltas[2 + 26], rc_width * rc_height);
- 
-  skip_check:
- 	/* Clean up */
-@@ -4006,8 +4007,6 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
- 	uint32_t context, vm;
--	int height = 600;
--	int width = 800;
- 	uint8_t *buf;
+@@ -2962,6 +2962,16 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	struct accumulator accumulator = {
+ 		.format = fmt
+ 	};
++	uint32_t ctx_id_offset, counter_offset, dst_buf_size;
++	struct oa_format format = get_oa_format(fmt);
++
++	if (format.report_hdr_64bit) {
++		ctx_id_offset = 4;
++		counter_offset = 8;
++	} else {
++		ctx_id_offset = 2;
++		counter_offset = 4;
++	}
  
  	bops = buf_ops_create(drm_fd);
-@@ -4019,8 +4018,8 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 	memset(dst_buf->ptr, 0, 4096);
+ 
+@@ -2990,25 +3000,29 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	stream_fd = __perf_open(drm_fd, &param, false);
+         set_fd_flags(stream_fd, O_CLOEXEC);
+ 
+-	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
++#define FOUR_REPORTS (4 * format.size)
++#define BO_REPORT_OFFSET(_r) (_r * format.size)
++
++#define FOUR_TIMESTAMPS (4 * 8)
++#define BO_TIMESTAMP_OFFSET(_r) (FOUR_REPORTS + (_r * 8))
++
++	dst_buf_size = FOUR_REPORTS + FOUR_TIMESTAMPS;
++	dst_buf = intel_buf_create(bops, dst_buf_size, 1, 8, 64,
+ 				   I915_TILING_NONE,
+ 				   I915_COMPRESSION_NONE);
+ 
+ 	/* Set write domain to cpu briefly to fill the buffer with 80s */
+ 	buf_map(drm_fd, dst_buf, true /* write enable */);
+-	memset(dst_buf->ptr, 0x80, 2048);
+-	memset((uint8_t *) dst_buf->ptr + 2048, 0, 2048);
++	memset(dst_buf->ptr, 0, dst_buf_size);
++	memset(dst_buf->ptr, 0x80, FOUR_REPORTS);
  	intel_buf_unmap(dst_buf);
  
--	scratch_buf_init(bops, &src, width, height, 0xff0000ff);
--	scratch_buf_init(bops, &dst, width, height, 0x00ff00ff);
-+	scratch_buf_init(bops, &src, rc_width, rc_height, 0xff0000ff);
-+	scratch_buf_init(bops, &dst, rc_width, rc_height, 0x00ff00ff);
+ 	/* Submit an mi-rpc to context0 before measurable work */
+-#define BO_TIMESTAMP_OFFSET0 1024
+-#define BO_REPORT_OFFSET0 0
+-#define BO_REPORT_ID0 0xdeadbeef
+ 	emit_stall_timestamp_and_rpc(ibb0,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET0,
+-				     BO_REPORT_OFFSET0,
+-				     BO_REPORT_ID0);
++				     BO_TIMESTAMP_OFFSET(0),
++				     BO_REPORT_OFFSET(0),
++				     0xdeadbeef);
+ 	intel_bb_flush_render(ibb0);
  
- 	vm = xe_vm_create(drm_fd, 0, 0);
- 	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-@@ -4039,7 +4038,7 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
+ 	/* Remove intel_buf from ibb0 added implicitly in rendercopy */
+@@ -3026,14 +3040,11 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	 * all zeroes, since the counters will only increment for the
+ 	 * context passed to perf open ioctl
+ 	 */
+-#define BO_TIMESTAMP_OFFSET2 1040
+-#define BO_REPORT_OFFSET2 512
+-#define BO_REPORT_ID2 0x00c0ffee
+ 	emit_stall_timestamp_and_rpc(ibb1,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET2,
+-				     BO_REPORT_OFFSET2,
+-				     BO_REPORT_ID2);
++				     BO_TIMESTAMP_OFFSET(2),
++				     BO_REPORT_OFFSET(2),
++				     0x00c0ffee);
+ 	intel_bb_flush_render(ibb1);
  
- 	if (render_copy)
- 		render_copy(ibb,
--			    &src, 0, 0, width, height,
-+			    &src, 0, 0, rc_width, rc_height,
- 			    &dst, 0, 0);
+ 	/* Submit two copies on the other context to avoid a false
+@@ -3050,28 +3061,22 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	intel_bb_flush_render(ibb1);
  
- 	emit_mmio_triggered_report(ibb, 0xc0ffee22);
+ 	/* Submit an mi-rpc to context1 after all work */
+-#define BO_TIMESTAMP_OFFSET3 1048
+-#define BO_REPORT_OFFSET3 768
+-#define BO_REPORT_ID3 0x01c0ffee
+ 	emit_stall_timestamp_and_rpc(ibb1,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET3,
+-				     BO_REPORT_OFFSET3,
+-				     BO_REPORT_ID3);
++				     BO_TIMESTAMP_OFFSET(3),
++				     BO_REPORT_OFFSET(3),
++				     0x01c0ffee);
+ 	intel_bb_flush_render(ibb1);
+ 
+ 	/* Remove intel_buf from ibb1 added implicitly in rendercopy */
+ 	intel_bb_remove_intel_buf(ibb1, dst_buf);
+ 
+ 	/* Submit an mi-rpc to context0 after all measurable work */
+-#define BO_TIMESTAMP_OFFSET1 1032
+-#define BO_REPORT_OFFSET1 256
+-#define BO_REPORT_ID1 0xbeefbeef
+ 	emit_stall_timestamp_and_rpc(ibb0,
+ 				     dst_buf,
+-				     BO_TIMESTAMP_OFFSET1,
+-				     BO_REPORT_OFFSET1,
+-				     BO_REPORT_ID1);
++				     BO_TIMESTAMP_OFFSET(1),
++				     BO_REPORT_OFFSET(1),
++				     0xbeefbeef);
+ 	intel_bb_flush_render(ibb0);
+ 	intel_bb_sync(ibb0);
+ 	intel_bb_sync(ibb1);
+@@ -3091,33 +3096,32 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	report0_32 = dst_buf->ptr;
+ 	igt_assert_eq(report0_32[0], 0xdeadbeef);
+ 	igt_assert(oa_timestamp(report0_32, fmt));
+-	ctx0_id = report0_32[2];
++	ctx0_id = report0_32[ctx_id_offset];
+ 	igt_debug("MI_RPC(start) CTX ID: %u\n", ctx0_id);
+-	dump_report(report0_32, 64, "report0_32");
++	dump_report(report0_32, format.size / 4, "report0_32");
+ 
+-	report1_32 = report0_32 + 64;
++	report1_32 = report0_32 + format.size / 4;
+ 	igt_assert_eq(report1_32[0], 0xbeefbeef);
+ 	igt_assert(oa_timestamp(report1_32, fmt));
+-	ctx1_id = report1_32[2];
++	ctx1_id = report1_32[ctx_id_offset];
+ 	igt_debug("CTX ID1: %u\n", ctx1_id);
+-	dump_report(report1_32, 64, "report1_32");
++	dump_report(report1_32, format.size / 4, "report1_32");
+ 
+ 	/* Verify that counters in context1 are all zeroes */
+-	report2_32 = report0_32 + 128;
++	report2_32 = report1_32 + format.size / 4;
+ 	igt_assert_eq(report2_32[0], 0x00c0ffee);
+ 	igt_assert(oa_timestamp(report2_32, fmt));
+-	dump_report(report2_32, 64, "report2_32");
+-	igt_assert_eq(0, memcmp(&report2_32[4],
+-				(uint8_t *) dst_buf->ptr + 2048,
+-				240));
++	dump_report(report2_32, format.size / 4, "report2_32");
+ 
+-	report3_32 = report0_32 + 192;
++	report3_32 = report2_32 + format.size / 4;
+ 	igt_assert_eq(report3_32[0], 0x01c0ffee);
+ 	igt_assert(oa_timestamp(report3_32, fmt));
+-	dump_report(report3_32, 64, "report3_32");
+-	igt_assert_eq(0, memcmp(&report3_32[4],
+-				(uint8_t *) dst_buf->ptr + 2048,
+-				240));
++	dump_report(report3_32, format.size / 4, "report3_32");
++
++	for (int k = counter_offset; k < format.size / 4; k++) {
++		igt_assert_f(report2_32[k] == 0, "Failed counter %d check\n", k);
++		igt_assert_f(report3_32[k] == 0, "Failed counter %d check\n", k);
++	}
+ 
+ 	/* Accumulate deltas for counters - A0, A21 and A26 */
+ 	memset(accumulator.deltas, 0, sizeof(accumulator.deltas));
+@@ -3136,8 +3140,8 @@ static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
+ 	 * the OA report timestamps should be almost identical but
+ 	 * allow a 500 nanoseconds margin.
+ 	 */
+-	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET0);
+-	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET1);
++	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET(0));
++	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET(1));
+ 
+ 	igt_debug("ts_timestamp64 0 = %"PRIu64"\n", timestamp0_64);
+ 	igt_debug("ts_timestamp64 1 = %"PRIu64"\n", timestamp1_64);
+@@ -4783,7 +4787,6 @@ igt_main
+ 
+ 		igt_subtest_with_dynamic("unprivileged-single-ctx-counters") {
+ 			igt_require_f(render_copy, "no render-copy function\n");
+-			igt_require(intel_graphics_ver(devid) < IP_VER(20, 0));
+ 			__for_one_render_engine(hwe)
+ 				test_single_ctx_render_target_writes_a_counter(hwe);
+ 		}
 -- 
 2.34.1
 
