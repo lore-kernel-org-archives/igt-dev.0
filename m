@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86037C282E3
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 23:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54424C282EC
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 23:15:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0184D10E4EE;
-	Mon,  3 Mar 2025 23:15:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 06D5F10E4F2;
+	Mon,  3 Mar 2025 23:15:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Iy/eX0/s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SJAduEOs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A77910E4EB
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D56410E2EB
  for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 23:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741043708; x=1772579708;
+ t=1741043709; x=1772579709;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=PA9ZtIJDJnAO3444yA/I4/03GtlEt3T5WSDkSa6e9o8=;
- b=Iy/eX0/s68WeFFm/DqiSk9FZA8j1SrM/f5AkMayal6TFCaxrnhEpS4NP
- N+b2G26ddQV8cGUKuPKWl9wc3zW/3+IfqO9we053oBsJQ+3gxUp0KZWeF
- MQjCg6oQLCU4MBL+1ik58RnPLt4JgeGuZONTuAYtRM5sIEI6z65Nd1moe
- +E7cpKNDF+85VQUTn+k85yh6Bju8rvIviqj8ETsKP2g/Pgd43PqmfV3T3
- i0kqC4ggdCDfIrDfIwCRCOb16KR9TrPhpQOr2vY7ViS9U0cWiFskJ5Qez
- 2n9824IcQ4uxJTityC104HBfUt/fouBeD5Y1oyF1K6xbruwqxjD9Aiolk w==;
-X-CSE-ConnectionGUID: +eh2JfVhSnqAK44OTh59Iw==
-X-CSE-MsgGUID: eJ0SR441QtCswX1bqAy2WQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41793048"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="41793048"
+ bh=znUiZux+2w1I9qU+GsgEHrA4Bsxki5FzCguQ6spOSpU=;
+ b=SJAduEOsWPdNxdLa60s7IuZwLxUk6llPbtzAVzuYSz/iOzwfhpER7ZSn
+ CDmFxK0hBGRRcEYWqsYBs2oFq2W1fLT75YBi7PXT+vRnZxxXqYGHNK5vt
+ wu5+eWuxNOVsADyUw5BoBC2ZxZSIs+iEp+9DG85XmYP6sJANF2dzDNG2Z
+ 4PiUD1wf644WDnp7xyGQwykBcfyBNIKBI/kUyveU340nE6qQkvpg7wO5+
+ 6PZgYYDHayNePMV5IzIaQIY2Y0iisBGfM9rwxNTduRKEup/xcoEgzZlzh
+ A0bHr7FleOo/cdSy9Pzk6pdWs8Z+LMyypnofS/i49aOD4xnXmBxw5MN/Y A==;
+X-CSE-ConnectionGUID: C3qiVk7USzaQxa8nCFR4Aw==
+X-CSE-MsgGUID: tKvjqEySR5ObDy+Wg2SOsA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41793049"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="41793049"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Mar 2025 15:15:08 -0800
-X-CSE-ConnectionGUID: Xhj8iCUjT06iW5S5ATUWbA==
-X-CSE-MsgGUID: abNCRBUxRDWzMaNGbndCdQ==
+X-CSE-ConnectionGUID: T7xMsj+CREK43mx1QmqE/w==
+X-CSE-MsgGUID: o9UEkU4iTNySV3zcUGM+yQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118716711"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118716715"
 Received: from dut4463arlhx.fm.intel.com ([10.105.10.25])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Mar 2025 15:15:08 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t v2 09/14] tests/intel/xe_oa: Use default buffer size for
- non-zero reason
-Date: Mon,  3 Mar 2025 15:14:57 -0800
-Message-Id: <20250303231502.135720-10-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 10/14] tests/intel/xe_oa: Test oa buffer sizes
+Date: Mon,  3 Mar 2025 15:14:58 -0800
+Message-Id: <20250303231502.135720-11-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
 References: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
@@ -68,47 +67,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use a default buffer size for non-zero-reason for and strip
-out testing buffer size in the same test.
+Introduce oa buffer size test separately. Pick a random valid buffer
+size for the test.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ tests/intel/xe_oa.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 3b9f13d9e..206e3e617 100644
+index 206e3e617..9c10a8fd2 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -2437,7 +2437,7 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
- 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
- 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
- 		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
--		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, oa_buffer_size,
-+		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, oa_buffer_size ?: buffer_fill_size
- 	};
- 	struct intel_xe_oa_open_prop param = {
- 		.num_properties = ARRAY_SIZE(properties) / 2,
-@@ -4796,15 +4796,9 @@ igt_main
+@@ -93,6 +93,23 @@ struct accumulator {
+ 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
+ };
+ 
++struct oa_buf_size {
++	char name[12];
++	uint32_t size;
++} buf_sizes[] = {
++	{ "128K", SZ_128K },
++	{ "256K", SZ_256K },
++	{ "512K", SZ_512K },
++	{ "1M", SZ_1M },
++	{ "2M", SZ_2M },
++	{ "4M", SZ_4M },
++	{ "8M", SZ_8M },
++	{ "16M", SZ_16M },
++	{ "32M", SZ_32M },
++	{ "64M", SZ_64M },
++	{ "128M", SZ_128M },
++};
++
+ /* OA unit types */
+ enum {
+ 	OAG,
+@@ -305,6 +322,7 @@ static struct intel_mmio_data mmio_data;
+ static igt_render_copyfunc_t render_copy;
+ static uint32_t rc_width, rc_height;
+ static uint32_t buffer_fill_size;
++static uint32_t num_buf_sizes;
+ 
+ static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
+ {
+@@ -1094,6 +1112,7 @@ init_sys_info(void)
+ 	rc_width = 1920;
+ 	rc_height = 1080;
+ 	buffer_fill_size = SZ_16M;
++	num_buf_sizes = ARRAY_SIZE(buf_sizes);
+ 	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
+ 
+ 	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
+@@ -4796,6 +4815,17 @@ igt_main
  		__for_one_hwe_in_oag(hwe)
  			test_buffer_fill(hwe);
  
--	igt_subtest_with_dynamic("non-zero-reason") {
--		if (oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE) {
--			__for_one_hwe_in_oag_w_arg(hwe, "16M")
--				test_non_zero_reason(hwe, SZ_16M);
--		} else {
--			__for_one_hwe_in_oag_w_arg(hwe, "default")
--				test_non_zero_reason(hwe, 0);
--		}
--	}
-+	igt_subtest_with_dynamic("non-zero-reason")
-+		__for_one_hwe_in_oag(hwe)
-+			test_non_zero_reason(hwe, 0);
- 
- 	igt_subtest("disabled-read-error")
- 		test_disabled_read_error();
++	/**
++	 * SUBTEST: buffer-size
++	 * Description: Test various OA buffer sizes
++	 */
++	igt_subtest_with_dynamic("buffer-size") {
++		long k = random() % num_buf_sizes;
++
++		__for_one_hwe_in_oag_w_arg(hwe, buf_sizes[k].name)
++			test_non_zero_reason(hwe, buf_sizes[k].size);
++	}
++
+ 	igt_subtest_with_dynamic("non-zero-reason")
+ 		__for_one_hwe_in_oag(hwe)
+ 			test_non_zero_reason(hwe, 0);
 -- 
 2.34.1
 
