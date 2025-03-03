@@ -4,65 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C14F6C282CD
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 15:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0F1C282CD
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 17:10:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5128B10E474;
-	Mon,  3 Mar 2025 15:44:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 59AD110E4AF;
+	Mon,  3 Mar 2025 17:10:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FEa4NTfx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VeSawlX3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 925E910E474
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 15:44:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78EEF10E4AF
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 17:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741016696; x=1772552696;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=x6coorVORpUU4ZcMOXfQbja055NIwxfxDOVwe4eTIDc=;
- b=FEa4NTfxeoxo549sns++BlyoulbYL4Fw4asb08x9wcmJ/+lug94IkK12
- 2WtI7oqZnptX9G0LDqrYJ2aBsnrxyw3GD2IjSPaq5UoetxhJkx9sTRWVP
- ezjnr6TZ2hC7kKqs6ZqWWIzZYanK1yDiFHEpzCJ03pgYQ8MqAGhnLa6Fj
- 4DnNrMs5WLgPuPVW1B86nyE0W03YROuALAIDoQ05eoBPyEKiYeCDis28U
- jvFRC7J8U0IoMdzOX4Od5oL0rEA78Wj8Bpx10UyEwE2JECGu9OlX1Reca
- K90/acT/LMJOr48bJ1E/liQUyXxNrzQLUQ+tKGqYdcdf3uLII/Wf02P69 Q==;
-X-CSE-ConnectionGUID: qOXend7NQsG3meeNhofdmQ==
-X-CSE-MsgGUID: QvCkqe9VQ/qWQiY75sbMJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="59308385"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="59308385"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 07:44:55 -0800
-X-CSE-ConnectionGUID: +4L/J+cAT5KTlHOjmpLIBQ==
-X-CSE-MsgGUID: tcW8XARTT9eqhOR94/oRLg==
+ t=1741021836; x=1772557836;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=yMNtWebZqwBm1Htr34wTdwBw3HK1cnPYp8y8NG20yaA=;
+ b=VeSawlX3Y5QQyxmoQgVXMna47vJ+FMIjyYG5X0z5oRqePHSU6medjR+m
+ yygmNQSvZfLUTKFJMHsvPotk0SZWHwItYRaEUqtJXKJnvltojD9pcRl3X
+ X5PT5mU2CfsoZIJ2nnOllthOLsJOniCaCxkJR7SFsdIE8oPiajYsTf+IL
+ zoaGG3Xvwg+NACQ8Zps8bigSRkfAp9W1vuEu0pdOmftaWEattLglAHyh2
+ Lm2IDN5luxRz/i+KCbGxJAukliJdIvETHUFO+jHoQQ30LpvPaLkX1apXJ
+ EkAzAhq3fucP3cKfn3njKP0Q7dK/4PMAczz9/NX3WwtCIPT95IsnnvVh5 Q==;
+X-CSE-ConnectionGUID: IT69zCn8RUeG4RyBdjFCiw==
+X-CSE-MsgGUID: Jyb27/p5TxO+Kc2ZKZtaHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52544372"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="52544372"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 09:10:35 -0800
+X-CSE-ConnectionGUID: g5FLVDUJQomEtp2yC0X8Pg==
+X-CSE-MsgGUID: 6ba2XdZ9ToG4ucNx5Ta/CA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="122186281"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.3.119])
- ([10.246.3.119])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 07:44:52 -0800
-Message-ID: <3bb27413-e2c5-4553-9992-f2505ec5c2ad@linux.intel.com>
-Date: Mon, 3 Mar 2025 16:44:49 +0100
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="155276914"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.30])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 09:10:32 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+Subject: [PATCH v3 i-g-t] runner: Parse results harder
+Date: Mon,  3 Mar 2025 18:10:29 +0100
+Message-ID: <20250303171029.70318-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_sriov_device: Add intel_is_vf_device
- helper
-To: "Laguna, Lukasz" <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- =?UTF-8?Q?Micha=C5=82_Wajdeczko?= <michal.wajdeczko@intel.com>,
- =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
- =?UTF-8?Q?Piotr_Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- Tomasz Lis <tomasz.lis@intel.com>
-References: <20250219115314.180382-1-marcin.bernatowicz@linux.intel.com>
- <20250219115314.180382-2-marcin.bernatowicz@linux.intel.com>
- <316c9106-cecf-4682-a28d-64951be3dde4@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <316c9106-cecf-4682-a28d-64951be3dde4@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -79,89 +69,217 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+  Sometimes an error happens in kernel or in test that leaves
+output files in corrupted or incorrect state. While runner or
+resume will just move on to executing next test, when generating
+results it could end up with no results.json
 
+  Try processing outputs a little more persistently and use any
+output file left there, even if only dmesg.txt. Also, when no
+useful output files were present, instead of breaking out add
+notrun.
 
-On 3/3/2025 9:20 AM, Laguna, Lukasz wrote:
-> 
-> On 2/19/2025 12:53, Marcin Bernatowicz wrote:
->> Introduce intel_is_vf_device helper to determine whether a given device
->> is a Virtual Function (VF). The function reads the VF_CAPABILITY_REGISTER
->> and checks if the least significant bit is set to identify VF device.
->>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
->> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
->> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
->> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
->> Cc: Michał Winiarski <michal.winiarski@intel.com>
->> Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
->> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
->> Cc: Tomasz Lis <tomasz.lis@intel.com>
->> ---
->>   lib/igt_sriov_device.c | 26 ++++++++++++++++++++++++++
->>   lib/igt_sriov_device.h |  1 +
->>   2 files changed, 27 insertions(+)
->>
->> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
->> index 2b83cd43c..ffa996d6b 100644
->> --- a/lib/igt_sriov_device.c
->> +++ b/lib/igt_sriov_device.c
->> @@ -14,6 +14,7 @@
->>   #include "igt_device.h"
->>   #include "igt_sriov_device.h"
->>   #include "igt_sysfs.h"
->> +#include "intel_io.h"
->>   #include "xe/xe_query.h"
->>   /**
->> @@ -464,3 +465,28 @@ bool igt_sriov_device_reset(int pf, unsigned int 
->> vf_num)
->>       return ret;
->>   }
->> +
->> +/**
->> + * intel_is_vf_device - Check if device is VF
->> + * @device: device file descriptor
->> + *
->> + * Determines if a device is a Virtual Function (VF)
->> + * by reading VF_CAPABILITY_REGISTER. If the least
->> + * significant bit is set the device is VF.
->> + *
->> + * Return:
->> + * True if device is VF, false otherwise.
->> + */
->> +bool intel_is_vf_device(int fd)
->> +{
->> +#define VF_CAP_REG        0x1901f8
->> +    struct intel_mmio_data mmio_data;
->> +    uint32_t value;
->> +
->> +    intel_register_access_init(&mmio_data, 
->> igt_device_get_pci_device(fd), false);
->> +    value = intel_register_read(&mmio_data, VF_CAP_REG);
->> +    intel_register_access_fini(&mmio_data);
->> +    igt_require((value & ~1) == 0);
-> 
-> Is it really needed?
+  Inform about processing results for each test so a problem
+could be spotted more easily.
 
-This should protect against 0xFFFFFFFF reads.
+v2: removed ')' from 'notrun\n)' (Kamil)
+ using bool var, added more prints about errors (Ryszard)
+v3: reused open_for_reading, removed bool var (Krzysztof)
+ closing only positive fds[] in close_outputs(), checking
+ file sizes also if all opens succeeded (Kamil)
 
-> 
->> +
->> +    return (value & 1) != 0;
-> 
-> just return value & 1 ?
-> 
->> +}
->> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
->> index 2b6acb6d7..912449086 100644
->> --- a/lib/igt_sriov_device.h
->> +++ b/lib/igt_sriov_device.h
->> @@ -33,6 +33,7 @@ void igt_sriov_unbind_vf_drm_driver(int pf, unsigned 
->> int vf_num);
->>   int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
->>   bool igt_sriov_device_reset_exists(int pf, unsigned int vf_num);
->>   bool igt_sriov_device_reset(int pf, unsigned int vf_num);
->> +bool intel_is_vf_device(int device);
->>   /**
->>    * __is_valid_range - Helper to check VF range is valid
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/executor.c  | 34 ++++++++++++++++++++++++++++-
+ runner/executor.h  |  2 ++
+ runner/resultgen.c | 53 ++++++++++++++++++++++++++++++++++------------
+ 3 files changed, 74 insertions(+), 15 deletions(-)
+
+diff --git a/runner/executor.c b/runner/executor.c
+index 2abb18732..cdf970514 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -576,15 +576,47 @@ bool open_output_files(int dirfd, int *fds, bool write)
+ 	return true;
+ }
+ 
++/**
++ * open_output_files_rdonly:
++ * @dirfd: fd of output directory with err.txt, dmesg.txt and other files
++ * @fds: array for fd's of opened output files
++ *
++ * Tries to open output files in read-only mode and saves file descriptors
++ * in fds arrray.
++ *
++ * Returns: true if all files opened, false otherwise
++ */
++bool open_output_files_rdonly(int dirfd, int *fds)
++{
++	bool ret = true;
++
++	for (int i = 0; i < _F_LAST; i++)
++		if ((fds[i] = open_for_reading(dirfd, filenames[i])) < 0) {
++			fds[i] = -errno;
++			ret = false; /* Remember failure */
++		}
++
++	return ret;
++}
++
+ void close_outputs(int *fds)
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < _F_LAST; i++) {
+-		close(fds[i]);
++		if (fds[i] > 0)
++			close(fds[i]);
+ 	}
+ }
+ 
++const char *get_out_filename(int fid)
++{
++	if (fid >= 0 && fid < _F_LAST)
++		return filenames[fid];
++
++	return "output-filename-index-error";
++}
++
+ /* Returns the number of bytes written to disk, or a negative number on error */
+ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
+ {
+diff --git a/runner/executor.h b/runner/executor.h
+index ab6a0c176..3b1cabcf5 100644
+--- a/runner/executor.h
++++ b/runner/executor.h
+@@ -26,7 +26,9 @@ enum {
+ };
+ 
+ bool open_output_files(int dirfd, int *fds, bool write);
++bool open_output_files_rdonly(int dirfd, int *fds);
+ void close_outputs(int *fds);
++const char *get_out_filename(int fid);
+ 
+ /*
+  * Initialize execute_state object to a state where it's ready to
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 0d3a569cf..ebafe7665 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -2176,14 +2176,38 @@ static bool parse_test_directory(int dirfd,
+ {
+ 	int fds[_F_LAST];
+ 	struct subtest_list subtests = {};
+-	bool status = true;
+ 	int commsparsed;
++	struct stat statbuf;
++	size_t fsizes[_F_LAST]; /* checks for both comm and out/err empty */
++	int fst_err;
++
++	open_output_files_rdonly(dirfd, fds);
++	for (int i = 0; i < _F_LAST; ++i) {
++		fsizes[i] = 0;
++		if (fds[i] > 0) {
++			fst_err = fstat(fds[i], &statbuf);
++			if (!fst_err)
++				fsizes[i] = statbuf.st_size;
++			else
++				fprintf(stderr, "results: %s: stats failed: %s\n",
++					get_out_filename(i), strerror(errno));
++		} else {
++			fprintf(stderr, "results: %s: open failed: %s\n",
++				get_out_filename(i), strerror(-fds[i]));
++		}
++	}
++
++	if (!fsizes[_F_SOCKET] && !fsizes[_F_OUT] && !fsizes[_F_ERR] &&
++	    !fsizes[_F_DMESG]) {
++		fprintf(stderr, "results: no valid output files\n");
++		close_outputs(fds);
+ 
+-	if (!open_output_files(dirfd, fds, false)) {
+-		fprintf(stderr, "Error opening output files\n");
+ 		return false;
+ 	}
+ 
++	if (!fsizes[_F_SOCKET] && !fsizes[_F_OUT] && !fsizes[_F_ERR])
++		fprintf(stderr, "results: comms/err/out empty, using only dmesg\n");
++
+ 	/*
+ 	 * Get test output from socket comms if it exists, otherwise
+ 	 * parse stdout/stderr
+@@ -2191,8 +2215,6 @@ static bool parse_test_directory(int dirfd,
+ 	commsparsed = fill_from_comms(fds[_F_SOCKET], entry, &subtests, results);
+ 	if (commsparsed == COMMSPARSE_ERROR) {
+ 		fprintf(stderr, "Error parsing output files (comms)\n");
+-		status = false;
+-		goto parse_output_end;
+ 	}
+ 
+ 	if (commsparsed == COMMSPARSE_EMPTY) {
+@@ -2200,20 +2222,17 @@ static bool parse_test_directory(int dirfd,
+ 		 * fill_from_journal fills the subtests struct and
+ 		 * adds timeout results where applicable.
+ 		 */
+-		fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
++		if (fds[_F_JOURNAL] > 0)
++			fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
+ 
+ 		if (!fill_from_output(fds[_F_OUT], entry->binary, "out", &subtests, results->tests) ||
+ 		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
+ 			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
+-			status = false;
+-			goto parse_output_end;
+ 		}
+ 	}
+ 
+ 	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
+ 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
+-		status = false;
+-		goto parse_output_end;
+ 	}
+ 
+ 	override_results(entry->binary, &subtests, results->tests);
+@@ -2221,11 +2240,10 @@ static bool parse_test_directory(int dirfd,
+ 
+ 	add_to_totals(entry->binary, &subtests, results);
+ 
+- parse_output_end:
+ 	close_outputs(fds);
+ 	free_subtests(&subtests);
+ 
+-	return status;
++	return true;
+ }
+ 
+ static void try_add_notrun_results(const struct job_list_entry *entry,
+@@ -2359,14 +2377,21 @@ struct json_object *generate_results_json(int dirfd)
+ 		char name[16];
+ 
+ 		snprintf(name, 16, "%zd", i);
++		fprintf(stderr, "results: parsing output: %s/ for test: %s\n",
++			name, job_list.entries[i].binary);
+ 		if ((testdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0) {
++			if (settings.log_level >= LOG_LEVEL_NORMAL)
++				fprintf(stderr, "results: no output, setting notrun\n");
++
+ 			try_add_notrun_results(&job_list.entries[i], &settings, &results);
+ 			continue;
+ 		}
+ 
+ 		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
+-			close(testdirfd);
+-			return NULL;
++			if (settings.log_level >= LOG_LEVEL_NORMAL)
++				fprintf(stderr, "results: no useful output, setting notrun\n");
++
++			try_add_notrun_results(&job_list.entries[i], &settings, &results);
+ 		}
+ 		close(testdirfd);
+ 	}
+-- 
+2.48.1
 
