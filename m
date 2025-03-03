@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7793C282CD
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 19:09:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60A90C282C6
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Mar 2025 19:11:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7006110E3CE;
-	Mon,  3 Mar 2025 19:09:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDF8810E4BB;
+	Mon,  3 Mar 2025 19:11:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KrdRnqMv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ddsxXc9I";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A87410E3CE
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 19:09:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD0E910E4BB
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Mar 2025 19:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741028941; x=1772564941;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ns8+s73YyKChW8sBy3n9RwsB/q3wgwJpMGiIGxpTbkY=;
- b=KrdRnqMvvVCR8bcnngamMvupgA0dQpMDD+tcLbf24meBXKM38GoduRMT
- RZdAEsrI9iM5j1wi6mgV5wO66EuxsI27oMBxAXZ8gUR9kjlqaD6L0rnlJ
- 5OK35j3zfDmsTPwZ5W/nAf/MVc//3eT3FqFxjOSySrIf4mXAW4iE85zdf
- U2TZk0i9J0Hmypas4wpnDR640Vw6kv983wiP3z8in1oSgqiymbBKbbTQ0
- hm5tf5VpfTUDLPUeqrqoKP5OjmOIzZ19v0k6ZSf4BW8fB9Zdbjffe9/s9
- Pc9Bx0LOkfyaXA3KsnPk3WIuLgiKS63n16Pr6Y3fkkJsBsoZlEkLcDXwD Q==;
-X-CSE-ConnectionGUID: vfjouvyIQ6CuJsa8rbVAPQ==
-X-CSE-MsgGUID: hsJhWJrNRjKRj4L7T/r2Gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52558292"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="52558292"
+ t=1741029091; x=1772565091;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=cIMU+flNvJWJINoPo6AYwruUL1gtJ31fIxvfh3D+keY=;
+ b=ddsxXc9IsKEk35E77zAL1CTyH9zlRSOyKsvehsDxn2kXQpFl7kExCNRa
+ SRLaf2bKWEUvu+9alNX6ZGW9K63+sIilR+wvnJZnq6CbaJ3rbJkylZuMC
+ jDdJy905md+kq2oOAfP02dwTob4tNPZpFnVOWKgFzRZZmZbDEv4ybG4YN
+ F2UuUxVHLhgvMTYY3pFbul4jYQ+ucCFPsBuLFsM/ZX99LvyN5P3oz+ewr
+ sJylgFwSNuItggxjl5g+wIg9YGvgqYs4yHP3j7lXHP8drxgntnW+mSPho
+ /LgbagAesXz69UoyT1yJN+f7CV0dWTkHy+yeilPKzoXR4+VTnByW/Ccr0 A==;
+X-CSE-ConnectionGUID: guJwLcl5Tm2he6xWKz3tNA==
+X-CSE-MsgGUID: WVCCvCRuQhyeoUsQh+uMgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52558614"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208";a="52558614"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 11:09:00 -0800
-X-CSE-ConnectionGUID: ALisg6GQSGabDAX93eCYng==
-X-CSE-MsgGUID: uwM7TBS9SCCGmxHegOMxyg==
+ 03 Mar 2025 11:11:31 -0800
+X-CSE-ConnectionGUID: OHR559fpRZKs1C2cKSXr/w==
+X-CSE-MsgGUID: X5u0nKgnQ9OPSGFpnNiaAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="155318336"
-Received: from black.fi.intel.com ([10.237.72.28])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 11:08:57 -0800
-Date: Mon, 3 Mar 2025 21:08:54 +0200
-From: Raag Jadav <raag.jadav@intel.com>
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: lucas.demarchi@intel.com, matthew.d.roper@intel.com,
- igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com
-Subject: Re: [PATCH i-g-t v1] tests/intel/xe_gt_freq: Use spinner for
- throttle test
-Message-ID: <Z8X-RlXkv2BcLQIM@black.fi.intel.com>
-References: <20250303095712.274097-1-raag.jadav@intel.com>
- <Z8XpTaoQDn8_K2Ao@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8XpTaoQDn8_K2Ao@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="155319276"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 11:11:30 -0800
+Date: Mon, 03 Mar 2025 11:11:29 -0800
+Message-ID: <85frju53q6.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Harish Chegondi <harish.chegondi@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2 2/2] tests/intel/xe_eu_stall: Add tests for EU
+ stall sampling
+In-Reply-To: <97b6c6425406e966c8831aec0d26ef6d53c8b4dd.1739901972.git.harish.chegondi@intel.com>
+References: <cover.1739901972.git.harish.chegondi@intel.com>	<97b6c6425406e966c8831aec0d26ef6d53c8b4dd.1739901972.git.harish.chegondi@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,78 +71,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 03, 2025 at 12:39:25PM -0500, Rodrigo Vivi wrote:
-> On Mon, Mar 03, 2025 at 03:27:12PM +0530, Raag Jadav wrote:
-> > Since throttling requires running workload on GPU, make use of spinner
-> > to get consistent results from throttle API test.
-> > 
-> > Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> > ---
-> >  tests/intel/xe_gt_freq.c | 32 +++++++++++++++++++++++++-------
-> >  1 file changed, 25 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> > index 1fb6d2b53..b501c62db 100644
-> > --- a/tests/intel/xe_gt_freq.c
-> > +++ b/tests/intel/xe_gt_freq.c
-> > @@ -36,6 +36,12 @@
-> >   */
-> >  #define SLPC_FREQ_LATENCY_US 100000
-> >  
-> > +enum spin_test {
-> > +	SPIN_THROTTLE,
-> > +	SPIN_FIXED_FREQ,
-> > +	SPIN_RANGE_FREQ,
-> > +};
-> > +
-> >  static int set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
-> >  {
-> >  	int ret = -EAGAIN;
-> > @@ -352,7 +358,7 @@ static void test_reset(int fd, int gt_id, int cycles)
-> >  	}
-> >  }
-> >  
-> > -static void test_spin(int fd, struct drm_xe_engine_class_instance *eci, bool fixed)
-> > +static void test_spin(int fd, struct drm_xe_engine_class_instance *eci, enum spin_test test)
-> >  {
-> >  	struct drm_xe_sync sync[2] = {
-> >  		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> > @@ -406,10 +412,17 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci, bool fix
-> >  	igt_info("Running on GT %d Engine %s:%d\n", eci->gt_id,
-> >  		 xe_engine_class_string(eci->engine_class), eci->engine_instance);
-> >  
-> > -	if (fixed)
-> > +	switch (test) {
-> > +	case SPIN_THROTTLE:
-> > +		test_throttle_basic_api(fd, eci->gt_id);
-> > +		break;
-> > +	case SPIN_FIXED_FREQ:
-> >  		test_freq_fixed(fd, eci->gt_id, false);
-> > -	else
-> > +		break;
-> > +	case SPIN_RANGE_FREQ:
-> >  		test_freq_range(fd, eci->gt_id, false);
-> > +		break;
-> > +	};
-> >  
-> >  	xe_spin_end(spin);
-> >  
-> > @@ -454,8 +467,13 @@ igt_main
-> >  	}
-> >  
-> >  	igt_subtest("throttle_basic_api") {
-> > -		xe_for_each_gt(fd, gt)
-> > -			test_throttle_basic_api(fd, gt);
-> > +		xe_for_each_gt(fd, gt) {
-> > +			xe_for_each_engine(fd, hwe) {
-> > +				if (hwe->gt_id != gt)
-> > +					continue;
-> > +				test_spin(fd, hwe, SPIN_THROTTLE);
-> 
-> I honestly doubt that any of these very basic and small batches
-> we have in these tests will ever cause the GT to be really throttled.
+On Tue, 18 Feb 2025 10:21:27 -0800, Harish Chegondi wrote:
+>
+> +const char *help_str =  "  --event_count | -e\t\tPoll event report count\n"
+> +			"  --gt_id | -g\t\tGT ID for the GT to sample EU stalls\n"
+> +			"  --output | -o\t\tOutput file to write EU stall data\n"
+> +			"  --rate | -r\t\tSampling rate in GPU cycles\n"
+> +			"  --user_buf_sz | -u\t\tUser buffer size\n"
+> +			"  --workload | -w\t\tWorkload to run\n";
+> +
+> +static struct option long_options[] = {
+> +	{"event_count", 0, 0, 'e'},
+> +	{"gt_id", 0, 0, 'g'},
+> +	{"output", 0, 0, 'o'},
+> +	{"rate", 0, 0, 'r'},
+> +	{"user_buf_sz", 0, 0, 'u'},
+> +	{"workload", 0, 0, 'w'},
+> +	{ NULL, 0, 0, 0 }
 
-Agree, but this way we can atleast hope for consistent behaviour from
-hardware while we scan through multiple entries.
+The tests should probably be extended in the future by iterating over some
+of these parameters (such as user buffer size, sampling rate, event
+count). But this is good patch is good enough starting point, so this is
+now:
 
-Raag
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
