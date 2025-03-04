@@ -4,51 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7AB7C282C6
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 13:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F1FEC021B8
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 15:04:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91FBA10E319;
-	Tue,  4 Mar 2025 13:48:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30EBC10E612;
+	Tue,  4 Mar 2025 15:04:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AgQ3vxaj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fxnB9AK7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8ED5B10E319
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 13:48:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51EB310E612
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 15:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741096095; x=1772632095;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=g3iAXiK2k1aTX3sM7zsvI1RSIO6Sss06rqoS3MnO/SI=;
- b=AgQ3vxajvUfpO0GbEF82JutBrsIxeK7KgWZS6zwhSox3BHSrQT2mjygC
- GO95s/rSr4Fb/XGKunbBJaCPOBzCq2YwBIh+YZvd4OATApWvoazW8wCH8
- 9bqa/F4AGbt1DchUIA8yuk5jAekEpLABtOLzjwIxNe1z+NJ5WyulR2xbI
- 3yi7ZEkQ2ICoAJxWVNk2gogQXRe2sQMEv2oDjYxN4xyHxODEp8keU12xI
- yLgMACAFwXcb6/r+i96KLGV0pIStUoUuMilbubfPI4KXgtDhnT+ojjrVx
- YGg5mMmrA4OnUvEcuCzNbQHGRFGe2ctJ6UbB/74Wsy7vj9GciKkt4ay99 g==;
-X-CSE-ConnectionGUID: 1fBi3TqeREGbwkKkreuRUg==
-X-CSE-MsgGUID: +jDSeuHwQwO+lLE45yUi/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41909917"
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="41909917"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 05:48:10 -0800
-X-CSE-ConnectionGUID: UNvl1VceR7yDsuGZxFiBLg==
-X-CSE-MsgGUID: ctPBF2aCQeilp2ops86McA==
+ t=1741100671; x=1772636671;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=j5sGUKlWNbIaGKgkjYXkQtF4PtqDNIif4PLQEoOFjZw=;
+ b=fxnB9AK7KnUtIxDtfsq7EiU1+Xn3NwEQJDcjfiMkFPKj26oiYU7qomJ4
+ SS6wTsvTjb7VcWoM+kaaTXoGGYs3qhuIDBltjFzXSl4AIOv4sZ3t+y5NE
+ BTqkE/+0LOadjIb0DNdbQnt2fPZbsmwQPrPVxRYQs4yqp5b5tqSbe4Llm
+ +SrzY4pyQjDAhTKUcjjJtFSY6hLg6Cc6VCDkfZ8T9tdTtQp9mfn0BUFDH
+ +NCn1gdYCrzupgVKy4b5dep8BVjTXHMD8/Lx5WtRbhOlu0fqdczLPw4md
+ GcPHyQOUCY3rOOoyRTpSp/50rPHHjX25SsPh4RopaAqQnMjj7/ylbVJHq g==;
+X-CSE-ConnectionGUID: r8nc8qlmSkKLGs1Kbi/xFw==
+X-CSE-MsgGUID: mARJ+/17RhS0eP6uoNeIlQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41270267"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="41270267"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 07:04:31 -0800
+X-CSE-ConnectionGUID: 3/8B/NJ4RNKrrPaFKEZobw==
+X-CSE-MsgGUID: cek16/pPSmWUyvliZcdc6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="123571243"
-Received: from nemesa.iind.intel.com ([10.190.239.22])
- by orviesa005.jf.intel.com with ESMTP; 04 Mar 2025 05:48:09 -0800
-From: Nemesa Garg <nemesa.garg@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Nemesa Garg <nemesa.garg@intel.com>
-Subject: [PATCH i-g-t v3] tests/kms_plane: Add test to validate odd panning
-Date: Tue,  4 Mar 2025 19:13:58 +0530
-Message-Id: <20250304134358.333765-1-nemesa.garg@intel.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="123005914"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 07:04:31 -0800
+Date: Tue, 04 Mar 2025 07:04:30 -0800
+Message-ID: <85bjug6dmp.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2 11/14] tests/intel/xe_oa: Rewrite enable-disable
+ test
+In-Reply-To: <87bjuhty74.wl-ashutosh.dixit@intel.com>
+References: <20250303231502.135720-1-umesh.nerlige.ramappa@intel.com>
+ <20250303231502.135720-12-umesh.nerlige.ramappa@intel.com>
+ <87bjuhty74.wl-ashutosh.dixit@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,147 +73,208 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This feature creates a NV12 plane having two framebuffers
-and moving it to odd position and then do continous flip
-along with the change in the width of framebuffer.
-This is to check whether panning at odd position is
-supported or not.
+On Mon, 03 Mar 2025 16:51:43 -0800, Dixit, Ashutosh wrote:
+>
+> On Mon, 03 Mar 2025 15:14:59 -0800, Umesh Nerlige Ramappa wrote:
+> >
+> > Keep it simple and just check if enable/disable is working correctly
+> > using the read call and existing uapi.
+> >
+> > v2: Drop mmio and use the value returned in read (Ashutosh)
+>
+> Thanks for changing this.
+>
+> >
+> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  tests/intel/xe_oa.c | 140 ++++++++------------------------------------
+> >  1 file changed, 24 insertions(+), 116 deletions(-)
+> >
+> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> > index 9c10a8fd2..47c4a1fdb 100644
+> > --- a/tests/intel/xe_oa.c
+> > +++ b/tests/intel/xe_oa.c
+> > @@ -2524,145 +2524,53 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
+> >  static void
+> >  test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+> >  {
+> > -	/* ~5 micro second period */
+> > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+> > -	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> > +	uint32_t num_reports = 5;
+> >	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> >	uint64_t fmt = test_set->perf_oa_format;
+> >	uint64_t properties[] = {
+> >		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> > -
+> > -		/* Include OA reports in samples */
+> >		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+> > -
+> > -		/* OA unit configuration */
+> >		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+> >		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+> > -		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+> >		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+> >		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+> > +		DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS, num_reports,
+> >	};
+> >	struct intel_xe_oa_open_prop param = {
+> >		.num_properties = ARRAY_SIZE(properties) / 2,
+> >		.properties_ptr = to_user_pointer(properties),
+> >	};
+> > -	size_t report_size = get_oa_format(fmt).size;
+> > -	int buf_size = 65536 * report_size;
+> > -	uint8_t *buf = malloc(buf_size);
+> > -	int n_full_oa_reports = default_oa_buffer_size / report_size;
+> > -	uint64_t fill_duration = n_full_oa_reports * oa_period;
+> > -	uint32_t *last_periodic_report = malloc(report_size);
+> > -
+> > -	load_helper_init();
+> > -	load_helper_run(HIGH);
+> > +	size_t format_size = get_oa_format(fmt).size;
+> > +	uint8_t buf[num_reports * format_size];
+> > +	struct pollfd pollfd;
+> > +	int ret;
+> >
+> >	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+> >          set_fd_flags(stream_fd, O_CLOEXEC);
+>
+> Doesn't make a difference to the test, but to reduce confusion, I'm
+> wondering if we should change this to 'O_CLOEXEC | O_NONBLOCK' since we
+> have introduced poll() here?
+>
+> Also, there seem to be spaces here rather than tabs.
 
-v2: Add test in kms_plane.[Swati]
-v3: Remove extra parameters[Pranay]
+If you fix this, just fix it up at the time of merging and make sure the
+patch compiles, no need to post a new version I think.
 
-Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
----
- tests/kms_plane.c | 95 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
-
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index b9bf025bd..95d98cc46 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -88,6 +88,15 @@
-  * @format-source-clamping:          with source clamping
-  */
- 
-+/**
-+ * SUBTEST: odd-panning
-+ * Description: Verify that odd panning in horizontal direction for planar format
-+ * Driver requirement: i915, xe
-+ * Functionality: plane, panning
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
- /*
-  * Throw away enough lsbs in pixel formats tests
-  * to get a match despite some differences between
-@@ -100,6 +109,9 @@
- #define CRTC_RESTRICT_CNT	2
- #define SIM_CRTC_RESTRICT_CNT	1
- 
-+#define PLANE_WIDTH 810
-+#define PLANE_HEIGHT 590
-+
- typedef struct {
- 	float red;
- 	float green;
-@@ -1330,6 +1342,85 @@ static bool is_pipe_limit_reached(int count)
- 		return count >= CRTC_RESTRICT_CNT && !all_pipes;
- }
- 
-+static void
-+prepare_planes_panning(igt_display_t *display, const enum pipe pipe_id,
-+	       igt_output_t *output)
-+{
-+	igt_plane_t *primary;
-+	struct igt_fb primary_fb_1, primary_fb_2;
-+	unsigned int fb_id_1, fb_id_2;
-+	int j = 0, ret;
-+
-+	igt_output_set_pipe(output, pipe_id);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	fb_id_1 = igt_create_pattern_fb(display->drm_fd,
-+					800, 590,
-+					DRM_FORMAT_NV12,
-+					DRM_FORMAT_MOD_LINEAR,
-+					&primary_fb_1);
-+
-+	fb_id_2 = igt_create_pattern_fb(display->drm_fd,
-+					800, 590,
-+					DRM_FORMAT_NV12,
-+					DRM_FORMAT_MOD_LINEAR,
-+					&primary_fb_2);
-+
-+	igt_assert(fb_id_1);
-+	igt_assert(fb_id_2);
-+
-+	igt_plane_set_fb(primary, &primary_fb_1);
-+
-+	igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
-+	igt_plane_set_position(primary, -501, 200);
-+
-+	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	do {
-+		if (j % 2 == 0) {
-+			igt_plane_set_fb(primary, &primary_fb_1);
-+			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
-+			ret = igt_display_try_commit_atomic(display, 0, NULL);
-+		} else {
-+			igt_plane_set_fb(primary, &primary_fb_2);
-+			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
-+			ret = igt_display_try_commit_atomic(display, 0, NULL);
-+		}
-+		j++;
-+	} while (j < 20);
-+
-+	igt_assert_eq(ret, -22);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_try_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_remove_fb(display->drm_fd, &primary_fb_1);
-+	igt_remove_fb(display->drm_fd, &primary_fb_2);
-+}
-+
-+static void run_test_odd_pan(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	enum pipe pipe;
-+	igt_output_t *output;
-+
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, pipe);
-+		if (!intel_pipe_output_combo_valid(display))
-+			continue;
-+
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+			prepare_planes_panning(display, pipe, output);
-+
-+		if (pipe == 0)
-+			break;
-+	}
-+}
-+
- static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
- {
- 	enum pipe pipe;
-@@ -1408,6 +1499,10 @@ run_tests_for_pipe_plane(data_t *data)
- 		run_test(data, dynamic_test_handler);
- 	}
- 
-+	igt_describe("verify whether odd panning is supported or not");
-+	igt_subtest_with_dynamic("odd-panning")
-+		run_test_odd_pan(data);
-+
- 	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
- 	igt_subtest_f("planar-pixel-format-settings")
- 		test_planar_settings(data);
--- 
-2.25.1
-
+>
+> > -	for (int i = 0; i < 5; i++) {
+> > -		int len;
+> > -		uint32_t n_periodic_reports;
+> > -		uint64_t first_timestamp = 0, last_timestamp = 0;
+> > -		u32 oa_status;
+> > -
+> > -		/* Giving enough time for an overflow might help catch whether
+> > -		 * the OA unit has been enabled even if the driver might at
+> > -		 * least avoid copying reports while disabled.
+> > -		 */
+> > -		nanosleep(&(struct timespec){ .tv_sec = 0,
+> > -					      .tv_nsec = fill_duration * 1.25 },
+> > -			  NULL);
+> > -
+> > -		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
+> > -		       (errno == EINTR || errno == EIO))
+> > -			;
+> > -
+> > -		igt_assert_eq(len, -1);
+> > -		igt_assert_eq(errno, EINVAL);
+> > -
+> > -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> > -
+> > -		nanosleep(&(struct timespec){ .tv_sec = 0,
+> > -					      .tv_nsec = fill_duration / 2 },
+> > -			NULL);
+> > -
+> > -		n_periodic_reports = 0;
+> > -
+> > -		/* Because of the race condition between notification of new
+> > -		 * reports and reports landing in memory, we need to rely on
+> > -		 * timestamps to figure whether we've read enough of them.
+> > -		 */
+> > -		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
+> > -
+> > -			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
+> > -				;
+> > -			if (errno == EIO) {
+> > -				oa_status = get_stream_status(stream_fd);
+> > -				igt_debug("oa_status %#x\n", oa_status);
+> > -				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
+> > -				continue;
+> > -			}
+> > -			igt_assert_neq(len, -1);
+> > -
+> > -			for (int offset = 0; offset < len; offset += report_size) {
+> > -				uint32_t *report = (void *) (buf + offset);
+> > -
+> > -				if (first_timestamp == 0)
+> > -					first_timestamp = oa_timestamp(report, fmt);
+> > -				last_timestamp = oa_timestamp(report, fmt);
+> > -
+> > -				igt_debug(" > report ts=%"PRIx64""
+> > -					  " ts_delta_last_periodic=%s%"PRIu64""
+> > -					  " is_timer=%i ctx_id=0x%8x\n",
+> > -					  oa_timestamp(report, fmt),
+> > -					  oa_report_is_periodic(report) ? " " : "*",
+> > -					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
+> > -					  oa_report_is_periodic(report),
+> > -					  oa_report_get_ctx_id(report));
+> > -
+> > -				if (oa_report_is_periodic(report)) {
+> > -					memcpy(last_periodic_report, report, report_size);
+> > -
+> > -					/* We want to measure only the periodic reports,
+> > -					 * ctx-switch might inflate the content of the
+> > -					 * buffer and skew or measurement.
+> > -					 */
+> > -					n_periodic_reports++;
+> > -				}
+> > -			}
+> > -		}
+> > -
+> > -		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
+> > -
+> > -		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
+> > -
+> > -		igt_debug("%f < %zu < %f\n",
+> > -			  report_size * n_full_oa_reports * 0.45,
+> > -			  n_periodic_reports * report_size,
+> > -			  report_size * n_full_oa_reports * 0.55);
+> > -
+> > -		igt_assert((n_periodic_reports * report_size) >
+> > -			   (report_size * n_full_oa_reports * 0.45));
+> > -		igt_assert((n_periodic_reports * report_size) <
+> > -			   report_size * n_full_oa_reports * 0.55);
+> > -
+> > +	errno = 0;
+> > +	ret = read(stream_fd, buf, sizeof(buf));
+> > +	igt_assert_eq(ret, -1);
+> > +	igt_assert_eq(errno, EINVAL);
+> >
+> > -		/* It's considered an error to read a stream while it's disabled
+> > -		 * since it would block indefinitely...
+> > -		 */
+> > -		len = read(stream_fd, buf, buf_size);
+> > +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> >
+> > -		igt_assert_eq(len, -1);
+> > -		igt_assert_eq(errno, EINVAL);
+> > -	}
+> > +	/*
+> > +	 * Wait for number of reports specified in
+> > +	 * DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS
+> > +	 */
+> > +	pollfd.fd = stream_fd;
+> > +	pollfd.events = POLLIN;
+> > +	poll(&pollfd, 1, -1);
+> > +	igt_assert(pollfd.revents & POLLIN);
+> >
+> > -	free(last_periodic_report);
+> > -	free(buf);
+> > +	/* Ensure num_reports can be read */
+> > +	while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 && errno == EINTR)
+> > +		;
+> > +	igt_assert_eq(ret, sizeof(buf));
+> >
+> >	__perf_close(stream_fd);
+> > -
+> > -	load_helper_stop();
+> > -	load_helper_fini();
+> >  }
+> >
+> >  /**
+> > --
+> > 2.34.1
+> >
