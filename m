@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CFCDC282C6
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 00:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 931BDC282C6
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 00:28:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A12810E4EF;
-	Tue,  4 Mar 2025 00:17:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4882210E4EF;
+	Tue,  4 Mar 2025 00:28:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bf535fDF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jtsp2gMO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29A5810E4EF
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 00:17:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E129510E4EF
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 00:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741047449; x=1772583449;
+ t=1741048089; x=1772584089;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=muKtp8nMcxMFgyORJ5KqCIyJyI0Xb6I+DTtTLixU41E=;
- b=bf535fDFm4oV73JkdF3n1ZKgTEcMUGPPCwlGD8zu3ykx2/O798io7ei0
- x3WRIbA9UrecNkAMpSfNdCcKwmUKxYEU4I1g/iCfOtDxTksknQPv4eiSm
- ENajjCJ8Y69SkQzwwkqgi9wTzVi0kP1gj3UF9nTfak712Z2slhHrmdYqx
- HVsxm+fbJvI3iVbRLzJfT09QOfLllSJvfCkY0/9NOl7XBHU5DWtX13XGc
- wNQveHkvSBYiO81MZZvq1DamClIW/qIaZohADuwXEDqYLE3gD7jTioFmK
- XjaI+Y6ezd+YCFX9Vj0Fn8+JG3NLqgr/TNOr6V9NBjVUPcFZXhcVmx7pU g==;
-X-CSE-ConnectionGUID: 1iNIjB7JT6C0l48Mb2I9pQ==
-X-CSE-MsgGUID: bKnaM8PUSoaEsWNChHdPew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41655773"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; d="scan'208";a="41655773"
+ bh=0hB8Qm7/+0INDxYNUcS/rZa+z9whMPuxNS1ZAbbHGDQ=;
+ b=Jtsp2gMOJXoVLQ409P3pKzc6GCfcCIIHTNXjjQ0SJrsXE5ohOjSM12/E
+ C6V0YOVADeEoUrm068Mnc0i6umHDhlF26ZH/3uwklatSINmEnll7dka0i
+ GccyOXHsH7j+7B7ewTQUt93hqQq9Oo8n/auUVWYtQuylhk62AghpsZfMy
+ 695kodaewHfZgQbJPPF2H4PCrZlL1aFA+n/X6AgDvmIz5DeR3vfQVWbpj
+ LtqJLq8fFIZvUMCHcXrEsVIuvxGrvCHqgwj0oSkree9tf9PIjCY9Utmrj
+ VNYdMOXodmEzFXWJeF1DsGIYIpyFYA6PFbSHu/ghFfqdJIHrYVkHpIX6x A==;
+X-CSE-ConnectionGUID: BuVXj2WqQwGTSWdSCn+y1A==
+X-CSE-MsgGUID: enUvSeFiSYa1IZq4VqksxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41974648"
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; d="scan'208";a="41974648"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 16:17:29 -0800
-X-CSE-ConnectionGUID: BRj3NChJTzCxEvz/m5c4QQ==
-X-CSE-MsgGUID: OGK9boPDSYiK8jpcq73wkQ==
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 16:28:09 -0800
+X-CSE-ConnectionGUID: PUcuS6X2SVymtBZ10LUO9Q==
+X-CSE-MsgGUID: /uzMUb77RpORm4L5+3ch0Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118050308"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118053085"
 Received: from peggykes-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.209.91])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 16:17:29 -0800
-Date: Mon, 03 Mar 2025 16:17:28 -0800
-Message-ID: <87eczdtzs7.wl-ashutosh.dixit@intel.com>
+ 03 Mar 2025 16:28:09 -0800
+Date: Mon, 03 Mar 2025 16:28:08 -0800
+Message-ID: <87cyextzaf.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
@@ -74,21 +74,24 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Mon, 03 Mar 2025 15:14:56 -0800, Umesh Nerlige Ramappa wrote:
 >
-> Simplify the buffer-fill test for quicker runs on slow platforms.
+>  static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
+>  {
+> @@ -1092,6 +1093,7 @@ init_sys_info(void)
 >
-> We only want to test that the BUFFER OVERFLOW status is set when we do
-> not read the OA stream data in time. To do so, keeping reading zero
-> bytes of data until you hit a buffer overflow.
->
-> v2:
-> - Add reason to the commit msg
-> - Drop 'wraparound' from test description
-> - s/disable/disabled
-> - drop unnecessary double-bang for int to bool conversion
-> - Fix regression in test execution time
+>	rc_width = 1920;
+>	rc_height = 1080;
+> +	buffer_fill_size = SZ_16M;
 
-OK, reverted to the original 5 us exponent which fixed the execution time.
+Sorry, missed this earlier. Note that there is a default_oa_buffer_size,
+just below. Can we use that or we need this new buffer_fill_size variable?
 
+The kernel will return a constant default_oa_buffer_size of 16 M (at least
+for now).
+
+We can fix this later too if needed, so not need to spin a new version for
+now for this. We can do this if we see any other reason for a new version,
+till now doesn't look like it.
+
+>	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
 >
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
