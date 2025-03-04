@@ -4,61 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86A6BC282D6
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 16:20:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53101C021B8
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 16:32:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CF0510E08E;
-	Tue,  4 Mar 2025 16:20:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7105B10E389;
+	Tue,  4 Mar 2025 16:32:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cARBPLad";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KUtefLaW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4F5710E08E
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 16:20:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4D6710E389
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 16:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741105258; x=1772641258;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ynAZXIFxIZVE3Qd7Lt5ZWNmAcXxT19PewEIIqCj35Xg=;
- b=cARBPLadRJSYuzmQU2GWgZ2qlsk/xqyz6k5rf3l/Dy7F6EhN9uFxM8CF
- czEu4IDeswNYqXFB3HQEZnEkonVXxKrlHPRMhjgPDY3Gk7JCSW/YWq7ze
- uXinjdlU9hgKUaCXrneMA9ALTdMESVXfXTFffDNhYy6MzmoiRJLT2OyH2
- s9kuuSr5zg77mP8HkiShlewx+G6FQuTW57VI0lkHhOUywwOk91ZocHSkG
- mv2v4UW+68Pvpgxj7AdDFMH0N2EEhCkR8s9GyAAcA41D2MBq8aLCwhkzF
- FxtEe+eHhoTWRlVasaDQwFByxOZwuLu6kTWHUhhc7zizqNnFEBX5pfMqN w==;
-X-CSE-ConnectionGUID: ZJuJkn4BTUyQZZ/d2zL5iA==
-X-CSE-MsgGUID: L14oHfMYRI66WnEdN93KVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="59444717"
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="59444717"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 08:20:57 -0800
-X-CSE-ConnectionGUID: vzmyCGMERP+m3QzOu7EWxg==
-X-CSE-MsgGUID: jy1NspEPRIyC2p3yjcjXVA==
+ t=1741105971; x=1772641971;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IMBZ9kqi393mCLKcLm5JfEoMYbLNRp9pczjCPDG94gU=;
+ b=KUtefLaW2Zfrz9fagp7zjB0ccq73yH+oV3Y8Gm/t2bkEq/BZQ+f+F4ah
+ X6bYfKYRYMVzo6jzzMVkqcDhPz/ZRoz4x9CTMu51sVCyLisNHFop+lT6N
+ yKNIck94o13r7X+l0/JVTpvPiPUIQma/9tDheL6t2tzRSFEfPU1njC5To
+ L2YzhfweiYrlLvTfi5SMxWUtC+tqyJFcUbQcHVCQrgl+SJllbcneilTlf
+ LyQRVpVspvNKnnA+qfJNGMWW27l4FpNwnRRYbIi4B69qqkFbcrkTLyAJ0
+ S719f3xt11e9Bpx6+piEKyAC2KjwgiDfoOZKSev0vwd/7lfQogisquusu w==;
+X-CSE-ConnectionGUID: Cq3LmRPqQDmy+cGBK61lbQ==
+X-CSE-MsgGUID: sEiii5u0TOOTwFtsQlowAQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41746051"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="41746051"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 08:32:51 -0800
+X-CSE-ConnectionGUID: DxwxDhweRHOPa+wQ6h+fqA==
+X-CSE-MsgGUID: macL0z2/TUKlgWqMtkfPUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="149205919"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 08:20:56 -0800
-Date: Tue, 4 Mar 2025 17:20:40 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t] lib/intel_compute: Compare floats with
- igt_assert_eq_double()
-Message-ID: <20250304162040.tv4aryzcudeux6zj@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- igt-dev@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250304113909.279579-1-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="118146822"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
+ ([10.245.246.218])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 08:32:47 -0800
+From: Christoph Manszewski <christoph.manszewski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, 
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Michal Wajdeczko <michal.wajdeczko@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v3 0/2] Ensure that SR-IOV and eudebug are exclusive for
+ Xe
+Date: Tue,  4 Mar 2025 17:32:25 +0100
+Message-Id: <20250304163227.49986-1-christoph.manszewski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250304113909.279579-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,80 +76,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Francois,
-On 2025-03-04 at 12:39:09 +0100, Francois Dugast wrote:
-> Using igt_assert_eq() to compare floats was incorrect and led to
-> false positives, replace it with the appropriate assert.
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  lib/intel_compute.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 4818c0ff7..dd9c83c9c 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -754,7 +754,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
->  				  i, input, output, expected_output);
->  		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq(output, expected_output);
-> +			igt_assert_eq_double(output, expected_output);
+Ensure that VF provisioning and eudebug enabling is exclusive by
+returning EPERM on an attempt to enable one of those features while
+the other is already enabled. Check that enable_eudebug sysfs entry
+is not present when the driver is loaded in VF mode.
 
-Technically they are floats but this should be ok, so
+Since eudebug KMD side is still in the upstream review phase, the related
+kernel side change can be found here:
+https://gitlab.freedesktop.org/miku/kernel/-/commit/bf0257ae834f48aaf34425dda0fd0ab5bb71bd19
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+v2:
+ - move subtests into dedicated 'xe_eudebug_sriov' test (Kamil)
 
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, BO_DICT_ENTRIES);
-> @@ -1035,7 +1035,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
->  				  i, input, output, expected_output);
->  		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq(output, expected_output);
-> +			igt_assert_eq_double(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
-> @@ -1246,7 +1246,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
->  				  i, input, output, expected_output);
->  		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq(output, expected_output);
-> +			igt_assert_eq_double(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
-> @@ -1613,7 +1613,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
->  				  i, input, output, expected_output);
->  		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq(output, expected_output);
-> +			igt_assert_eq_double(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
-> @@ -1706,7 +1706,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
->  				  i, input, output, expected_output);
->  		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq(output, expected_output);
-> +			igt_assert_eq_double(output, expected_output);
->  	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
-> @@ -2048,7 +2048,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->  		if (output != expected_output)
->  			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
->  				  i, input, output, expected_output);
-> -		igt_assert_eq(output, expected_output);
-> +		igt_assert_eq_double(output, expected_output);
->  	}
->  
->  	for (int i = 0; i < SIZE_DATA; i++) {
-> -- 
-> 2.43.0
-> 
+v3:
+ - remove leftover includes from 'xe_eudebug.c' (Dominik P.)
+ - use igt_sysfs_printf to get latest errno value (Dominik G.)
+
+Christoph Manszewski (2):
+  lib/xe_eudebug: Export __xe_eudebug_enable_getset
+  tests/intel/xe_eudebug: Add subtests for eudebug/SR-IOV exclusion
+
+ lib/xe/xe_eudebug.c            |  15 +++-
+ lib/xe/xe_eudebug.h            |   1 +
+ tests/intel/xe_eudebug_sriov.c | 148 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 4 files changed, 163 insertions(+), 2 deletions(-)
+ create mode 100644 tests/intel/xe_eudebug_sriov.c
+
+-- 
+2.34.1
+
