@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2069FC021B8
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 09:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0819C021B8
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 10:03:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE5AA10E54B;
-	Tue,  4 Mar 2025 09:49:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bWos3mRL";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AACE910E54B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 09:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741081762; x=1772617762;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fYs3qEY68mGPVLyObmxaWxcur6rROe1FzdAfvmvm6KQ=;
- b=bWos3mRLGTyqAiV253DJ3LvgHXqGunwqwoxCnG3g2mQDgxVyFMKpejPo
- 0mrxFgdb0NVVIF1osRY3teNQmiATFgFSOpDOILXsvJ/RTMN2z2ZY4dtOO
- kTawYzVuauSxJ5+/Cs4GaeUxhCr3Aaohz1SGamT8TUeGurrAhEyO+Jqry
- 6e6/TmiVfsDSKn8XIcY3JELspzEa+nWqSCdGcu0QgtAC99kw1IQe5lW1o
- GhlzMmu/Xh78owFcPwM06MFUKtUwHhR5H9QwXX930aEG8QwKQjYcoIsB5
- Fh7BSRTVH14Fg0fyMLMey0hxe8vUNfDyLlNb7XFDy3Pp8HTYWaPfKaGHc A==;
-X-CSE-ConnectionGUID: DeS6MZxoTSOz3gD4xGgpBw==
-X-CSE-MsgGUID: V1p1pcU+QEC5pRqqEQC2Lw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="53385800"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; d="scan'208";a="53385800"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 01:49:19 -0800
-X-CSE-ConnectionGUID: EsqV2svYQsK1IW+N/lGp6A==
-X-CSE-MsgGUID: WnLZ/KATRie/8rBP5smXlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="122449668"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 01:49:15 -0800
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
- michal.wajdeczko@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_pmu: Add function engine activity test
-Date: Tue,  4 Mar 2025 15:40:19 +0530
-Message-ID: <20250304101019.3274493-1-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 602F310E556;
+	Tue,  4 Mar 2025 10:03:02 +0000 (UTC)
+Received: from b555e5b46a47 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45D5C10E556;
+ Tue,  4 Mar 2025 10:03:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0070458496264799159=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel=3A_Update_sub?=
+ =?utf-8?q?-category_of_Xe_power_management_tests_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik Poosa" <karthik.poosa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 04 Mar 2025 10:03:01 -0000
+Message-ID: <174108258127.479656.6440862058923690@b555e5b46a47>
+X-Patchwork-Hint: ignore
+References: <20250228050757.2081043-1-karthik.poosa@intel.com>
+In-Reply-To: <20250228050757.2081043-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,161 +37,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to validate per-function engine activity by
-running cork on all functions simulatenously
+--===============0070458496264799159==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/xe_pmu.c | 89 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 85 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 4584fc7d3..5a93d581a 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -14,6 +14,7 @@
- 
- #include "igt.h"
- #include "igt_perf.h"
-+#include "igt_sriov_device.h"
- #include "igt_sysfs.h"
- 
- #include "xe/xe_gt.h"
-@@ -106,7 +107,7 @@ static uint64_t add_format_config(const char *xe_device, const char *format, uin
- }
- 
- static uint64_t get_event_config(int xe, unsigned int gt, struct drm_xe_engine_class_instance *eci,
--				 const char *event)
-+				 int function, const char *event)
- {
- 	char xe_device[100];
- 	uint64_t pmu_config = 0;
-@@ -122,6 +123,9 @@ static uint64_t get_event_config(int xe, unsigned int gt, struct drm_xe_engine_c
- 		pmu_config |= add_format_config(xe_device, "engine_instance", eci->engine_instance);
- 	}
- 
-+	if (function != -1)
-+		pmu_config |= add_format_config(xe_device, "function", function);
-+
- 	return pmu_config;
- }
- 
-@@ -143,10 +147,10 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, un
- 	uint32_t vm;
- 	int pmu_fd[2];
- 
--	config = get_event_config(fd, eci->gt_id, eci, "engine-active-ticks");
-+	config = get_event_config(fd, eci->gt_id, eci, -1, "engine-active-ticks");
- 	pmu_fd[0] = open_group(fd, config, -1);
- 
--	config = get_event_config(fd, eci->gt_id, eci, "engine-total-ticks");
-+	config = get_event_config(fd, eci->gt_id, eci, -1, "engine-total-ticks");
- 	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
- 
- 	vm = xe_vm_create(fd, 0, 0);
-@@ -187,6 +191,75 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, un
- 		igt_assert(!engine_active_ticks);
- }
- 
-+/**
-+ * SUBTEST: fn-engine-activity-load
-+ * Description: Test to validate engine activity by running load on all functions simultaneously
-+ */
-+static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
-+{
-+	uint64_t config, engine_active_ticks, engine_total_ticks;
-+	int num = num_fns + 1;
-+	uint64_t after[2 * num], before[2 * num], pmu_fd[2 * num];
-+	struct pmu_function {
-+		struct xe_cork *cork;
-+		uint32_t vm;
-+		int fd;
-+	} fn[num];
-+	int i, idx = 0;
-+
-+	pmu_fd[0] = -1;
-+	for (i = 0; i < num; i++) {
-+		config = get_event_config(fd, eci->gt_id, eci, i, "engine-active-ticks");
-+		pmu_fd[idx] = open_group(fd, config, pmu_fd[0]);
-+
-+		config = get_event_config(fd, eci->gt_id, eci, i, "engine-total-ticks");
-+		pmu_fd[idx + 1] = open_group(fd, config, pmu_fd[0]);
-+
-+		if (i > 0)
-+			fn[i].fd = igt_sriov_open_vf_drm_device(fd, i);
-+		else
-+			fn[i].fd = fd;
-+
-+		fn[i].vm = xe_vm_create(fn[i].fd, 0, 0);
-+		fn[i].cork = xe_cork_create_opts(fn[i].fd, eci, fn[i].vm, 1, 1);
-+		xe_cork_sync_start(fn[i].fd, fn[i].cork);
-+
-+		idx += 2;
-+	}
-+
-+	pmu_read_multi(pmu_fd[0], 2 * num, before);
-+	usleep(SLEEP_DURATION * USEC_PER_SEC);
-+	pmu_read_multi(pmu_fd[0], 2 * num, after);
-+
-+	idx = 0;
-+	for (i = 0; i < num; i++) {
-+		xe_cork_sync_end(fn[i].fd, fn[i].cork);
-+
-+		engine_active_ticks = after[idx] - before[idx];
-+		engine_total_ticks = after[idx + 1] - before[idx + 1];
-+
-+		igt_debug("Engine active ticks:  after %ld, before %ld delta %ld\n", after[idx],
-+			  before[idx], engine_active_ticks);
-+		igt_debug("Engine total ticks: after %ld, before %ld delta %ld\n", after[idx + 1],
-+			  before[idx + 1], engine_total_ticks);
-+
-+		if (fn[i].cork)
-+			xe_cork_destroy(fn[i].fd, fn[i].cork);
-+
-+		xe_vm_destroy(fn[i].fd, fn[i].vm);
-+
-+		close(pmu_fd[idx]);
-+		close(pmu_fd[idx + 1]);
-+
-+		if (i > 0)
-+			close(fn[i].fd);
-+
-+		assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
-+
-+		idx += 2;
-+	}
-+}
-+
- /**
-  * SUBTEST: gt-c6-idle
-  * Description: Basic residency test to validate idle residency
-@@ -201,7 +274,7 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
- 	uint64_t val;
- 
- 	/* Get the PMU config for the gt-c6 event */
--	pmu_config = get_event_config(xe, gt, NULL, "gt-c6-residency");
-+	pmu_config = get_event_config(xe, gt, NULL, -1, "gt-c6-residency");
- 
- 	pmu_fd = open_pmu(xe, pmu_config);
- 
-@@ -253,6 +326,14 @@ igt_main
- 	test_each_engine("engine-activity-load", fd, eci)
- 		engine_activity(fd, eci, TEST_LOAD);
- 
-+	igt_describe("Validate per-function engine activity");
-+	test_each_engine("fn-engine-activity-load", fd, eci) {
-+		int num_fns = igt_sriov_get_enabled_vfs(fd);
-+
-+		igt_require(igt_sriov_is_pf(fd) && num_fns);
-+		engine_activity_fn(fd, eci, num_fns);
-+	}
-+
- 	igt_fixture {
- 		close(fd);
- 	}
--- 
-2.47.1
+Series: tests/intel: Update sub-category of Xe power management tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/144806/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8251 -> IGTPW_12681
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12681 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-dg2-9:          [PASS][1] -> [ABORT][2] ([i915#13465] / [i915#13571])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-dg2-9/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-dg2-9/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [PASS][3] -> [INCOMPLETE][4] ([i915#12904]) +1 other test incomplete
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [PASS][5] -> [INCOMPLETE][6] ([i915#13761] / [i915#13776]) +1 other test incomplete
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-twl-1/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-twl-1/igt@i915_selftest@live.html
+    - fi-tgl-1115g4:      [PASS][7] -> [DMESG-FAIL][8] ([i915#12435]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-tgl-1115g4/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-tgl-1115g4/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [PASS][9] -> [DMESG-WARN][10] ([i915#13735]) +132 other tests dmesg-warn
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+    - bat-adlp-11:        [PASS][13] -> [INCOMPLETE][14] ([i915#12445] / [i915#9413]) +1 other test incomplete
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-adlp-11/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-adlp-11/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - fi-bsw-n3050:       [PASS][15] -> [DMESG-WARN][16] ([i915#13736]) +1 other test dmesg-warn
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-9:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13465]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13465
+  [i915#13571]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#13736]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13736
+  [i915#13761]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761
+  [i915#13776]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8251 -> IGTPW_12681
+  * Linux: CI_DRM_16194 -> CI_DRM_16199
+
+  CI-20190529: 20190529
+  CI_DRM_16194: 2a3ff290a74cd6294c39faafae2f6033694f1176 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16199: 873b1a50bb4394e95332cfa611aa6463de6b7cb0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12681: 12681
+  IGT_8251: f0b66883398b4a07bb8fcaa3663a2140129d9a58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/index.html
+
+--===============0070458496264799159==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel: Update sub-category of Xe power management tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144806/">https://patchwork.freedesktop.org/series/144806/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8251 -&gt; IGTPW_12681</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12681 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-dg2-9/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-dg2-9/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13465">i915#13465</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571">i915#13571</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-twl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13761">i915#13761</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13776">i915#13776</a>) +1 other test incomplete</li>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-tgl-1115g4/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-tgl-1115g4/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +132 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-adlp-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-adlp-11/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13736">i915#13736</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8251/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12681/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8251 -&gt; IGTPW_12681</li>
+<li>Linux: CI_DRM_16194 -&gt; CI_DRM_16199</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16194: 2a3ff290a74cd6294c39faafae2f6033694f1176 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16199: 873b1a50bb4394e95332cfa611aa6463de6b7cb0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12681: 12681<br />
+  IGT_8251: f0b66883398b4a07bb8fcaa3663a2140129d9a58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0070458496264799159==--
