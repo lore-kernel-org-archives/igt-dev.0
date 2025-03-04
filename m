@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E93C8C021B8
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 18:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C488C021B8
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Mar 2025 18:57:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABA6110E693;
-	Tue,  4 Mar 2025 18:57:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D9AD10E695;
+	Tue,  4 Mar 2025 18:57:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TkE763W6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="msrWEnGG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 941D610E693
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 18:57:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BF9510E695
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Mar 2025 18:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741114623; x=1772650623;
+ t=1741114628; x=1772650628;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=fbzU365jkR1vMpOtIVoYY4Yra02Zr/vrowZIOvIRL8I=;
- b=TkE763W6ZNk8FVgMQHJGovma3jr7YYWtQCMKoL6jAq06FEVK7S/HTnBt
- VY5tCJfCkxY2hXtngoE7mIgn/P3JCrHE3xScfTZEFRH6ZWF4KtWAIw67t
- /CbOYXhUx3ZmkwiCePzNIT98Kv0jkhpqPYcPptWLzyDL4VjMeGtqKfZN+
- X5i14EgTGGARujcrSO/gjV06+5RkSFjMIKtID8fbP8djF5OTQCsR44Wbd
- 7+L45mBkfP8netj6Voze9t/vl8i9KAn6esrh4wDvl8gik/Itj0lTW/7SH
- SahO3qsopML7WO/uTqPo4elR3u30XNZjgvEiLGPm1L9PMaBzzPyiEE5Rk g==;
-X-CSE-ConnectionGUID: 0q8d08YPQiWDKSwbXoMOag==
-X-CSE-MsgGUID: r3elYgzpQvaUewmq2yv73A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53453133"
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="53453133"
+ bh=EgV+vs7rv6vCfKGkKFnfOwVpvTARvxA+tzbVAeBHVdM=;
+ b=msrWEnGGou1dMCr/KKicoGMPRLiQ9O6W40+bqiqWCzOgZ4cSTw09MzJm
+ 1+wZZBsPTalgL2Oa02r+OVCp9OAY8puueDdIYpFQoc2s9Nur7PKIIQ0cH
+ 4/l1kR0YPTy4943jAJgbS7na6v8P26IDX+e8Np2PlaeKw/qQxD72obK0c
+ H7PTvOvD2oylEHKROW2ACWBieO0jcLg92AR1xtRT4fd0nmHblftr3AFtu
+ iftB4lcVb/1PmnQ0uuB7oc1gKB8aFEUCTjvnLs4Dwpkmcu+G+rvOtdpiz
+ NDxzUwRgmr80ZLXKzAktyDaHZwUC1vsBpXXmhLIf6fztLVpKrmCBN53lX g==;
+X-CSE-ConnectionGUID: 8dne0zwxRbi6QpJbg4iP1g==
+X-CSE-MsgGUID: kPggJzwiTxuI/sLgn6nYSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53453149"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="53453149"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 10:57:02 -0800
-X-CSE-ConnectionGUID: NSkRzOA6TJ213JRqAEZhBg==
-X-CSE-MsgGUID: OptLFsoGQwOEslAfvlmy/Q==
+ 04 Mar 2025 10:57:08 -0800
+X-CSE-ConnectionGUID: s2diPhBbRvO2qYQvoAY6Mg==
+X-CSE-MsgGUID: XqTcyXxQR4ScsY2ncJxL9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="118284304"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="118284324"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.246.17.221])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 10:57:00 -0800
+ 04 Mar 2025 10:57:06 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -49,10 +49,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>,
  Lukasz Laguna <lukasz.laguna@intel.com>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/xe_drm_fdinfo: Group utilization tests
- and skip when no utilization data
-Date: Tue,  4 Mar 2025 19:56:39 +0100
-Message-Id: <20250304185640.1333849-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_drm_fdinfo: Fail
+ basic_engine_utilization if no utilization data
+Date: Tue,  4 Mar 2025 19:56:40 +0100
+Message-Id: <20250304185640.1333849-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250304185640.1333849-1-marcin.bernatowicz@linux.intel.com>
 References: <20250304185640.1333849-1-marcin.bernatowicz@linux.intel.com>
@@ -73,11 +73,9 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Wrap all utilization-related subtests in an igt_subtest_group and add
-a fixture that ensures utilization data is available before running
-them.
-
-Link: https://lore.kernel.org/r/20250205191644.2550879-1-marcin.bernatowicz@linux.intel.com
+Replace igt_require with igt_assert to enforce that num_engines is
+nonzero rather than skipping the test. This ensures the test fails
+explicitly if engine utilization data is missing.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
@@ -85,149 +83,22 @@ Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 122 ++++++++++++++++++++----------------
- 1 file changed, 67 insertions(+), 55 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 7330b4330..d18fe10d8 100644
+index d18fe10d8..ddf6efb2b 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -735,10 +735,6 @@ igt_main
- 	igt_subtest("basic-mem")
- 		basic_memory(xe);
+@@ -367,7 +367,7 @@ static void basic_engine_utilization(int xe)
+ 				   ARRAY_SIZE(engine_map), NULL, 0);
+ 	igt_assert_f(ret != 0, "failed with err:%d\n", errno);
+ 	igt_assert(!strcmp(info.driver, "xe"));
+-	igt_require(info.num_engines);
++	igt_assert(info.num_engines);
+ }
  
--	igt_describe("Check if basic fdinfo content is present for engine utilization");
--	igt_subtest("basic-utilization")
--		basic_engine_utilization(xe);
--
- 	igt_describe("Create and compare total and resident memory consumption by client");
- 	igt_subtest("mem-total-resident")
- 		mem_total_resident(xe);
-@@ -751,57 +747,73 @@ igt_main
- 	igt_subtest("mem-active")
- 		mem_active(xe, xe_engine(xe, 0));
- 
--	igt_subtest("utilization-single-idle")
--		xe_for_each_engine(xe, hwe)
--			utilization_single(xe, hwe, 0);
--
--	igt_subtest("utilization-single-full-load")
--		xe_for_each_engine(xe, hwe)
--			utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
--
--	igt_subtest("utilization-single-full-load-isolation")
--		xe_for_each_engine(xe, hwe)
--			utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
--
--	igt_subtest("utilization-single-full-load-destroy-queue")
--		xe_for_each_engine(xe, hwe)
--			utilization_single_destroy_queue(xe, hwe);
--
--	igt_subtest("utilization-others-idle")
--		xe_for_each_engine(xe, hwe)
--			utilization_others_idle(xe, hwe);
--
--	igt_subtest("utilization-others-full-load")
--		xe_for_each_engine(xe, hwe)
--			utilization_others_full_load(xe, hwe);
--
--	igt_subtest("utilization-all-full-load")
--		utilization_all_full_load(xe);
--
--
--	for (const struct section *s = sections; s->name; s++) {
--		igt_subtest_f("%s-utilization-single-idle", s->name)
--			xe_for_each_gt(xe, gt)
--				xe_for_each_engine_class(class)
--					utilization_multi(xe, gt, class, s->flags);
--
--		igt_subtest_f("%s-utilization-single-full-load", s->name)
--			xe_for_each_gt(xe, gt)
--				xe_for_each_engine_class(class)
--					utilization_multi(xe, gt, class,
--							  s->flags |
--							  TEST_BUSY |
--							  TEST_TRAILING_IDLE);
--
--		igt_subtest_f("%s-utilization-single-full-load-isolation",
--			      s->name)
--			xe_for_each_gt(xe, gt)
--				xe_for_each_engine_class(class)
--					utilization_multi(xe, gt, class,
--							  s->flags |
--							  TEST_BUSY |
--							  TEST_TRAILING_IDLE |
--							  TEST_ISOLATION);
-+	igt_subtest_group {
-+		igt_fixture {
-+			struct drm_client_fdinfo info = { };
-+
-+			igt_require(igt_parse_drm_fdinfo(xe, &info, engine_map,
-+							 ARRAY_SIZE(engine_map),
-+							 NULL, 0));
-+			igt_require(info.num_engines);
-+		}
-+
-+		igt_describe("Check if basic fdinfo content is present for engine utilization");
-+		igt_subtest("basic-utilization")
-+			basic_engine_utilization(xe);
-+
-+		igt_subtest("utilization-single-idle")
-+			xe_for_each_engine(xe, hwe)
-+				utilization_single(xe, hwe, 0);
-+
-+		igt_subtest("utilization-single-full-load")
-+			xe_for_each_engine(xe, hwe)
-+				utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+
-+		igt_subtest("utilization-single-full-load-isolation")
-+			xe_for_each_engine(xe, hwe)
-+				utilization_single(xe, hwe,
-+						   TEST_BUSY |
-+						   TEST_TRAILING_IDLE |
-+						   TEST_ISOLATION);
-+
-+		igt_subtest("utilization-single-full-load-destroy-queue")
-+			xe_for_each_engine(xe, hwe)
-+				utilization_single_destroy_queue(xe, hwe);
-+
-+		igt_subtest("utilization-others-idle")
-+			xe_for_each_engine(xe, hwe)
-+				utilization_others_idle(xe, hwe);
-+
-+		igt_subtest("utilization-others-full-load")
-+			xe_for_each_engine(xe, hwe)
-+				utilization_others_full_load(xe, hwe);
-+
-+		igt_subtest("utilization-all-full-load")
-+			utilization_all_full_load(xe);
-+
-+		for (const struct section *s = sections; s->name; s++) {
-+			igt_subtest_f("%s-utilization-single-idle", s->name)
-+				xe_for_each_gt(xe, gt)
-+					xe_for_each_engine_class(class)
-+						utilization_multi(xe, gt, class, s->flags);
-+
-+			igt_subtest_f("%s-utilization-single-full-load", s->name)
-+				xe_for_each_gt(xe, gt)
-+					xe_for_each_engine_class(class)
-+						utilization_multi(xe, gt, class,
-+								  s->flags |
-+								  TEST_BUSY |
-+								  TEST_TRAILING_IDLE);
-+
-+			igt_subtest_f("%s-utilization-single-full-load-isolation", s->name)
-+				xe_for_each_gt(xe, gt)
-+					xe_for_each_engine_class(class)
-+						utilization_multi(xe, gt, class,
-+								  s->flags |
-+								  TEST_BUSY |
-+								  TEST_TRAILING_IDLE |
-+								  TEST_ISOLATION);
-+		}
- 	}
- 
- 	igt_fixture {
+ static void
 -- 
 2.31.1
 
