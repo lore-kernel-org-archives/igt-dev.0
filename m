@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF771C28B22
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 13:58:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75353C19F32
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 13:58:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C44610E2AC;
-	Wed,  5 Mar 2025 13:58:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3661810E2B0;
+	Wed,  5 Mar 2025 13:58:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T5XciVo4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iKIHejsN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48C1C10E2AC
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 13:58:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 888D110E2B0
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 13:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741183116; x=1772719116;
+ t=1741183117; x=1772719117;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yKAFWDSSk2GNcArizZJ+9IkYt0UskRydsbzEcuztH4E=;
- b=T5XciVo4x5DrRtXJtdYC7mnTvWljdBTO0fr8fD5CB27tvu4hKwKa8/rO
- 5E64LsZmjswMwHa8OTSpYKLzLoiTl9oduWyERtPZ0MUUF0mzhfM9HwdTx
- JJXBbZKBBITUAPRzecEt9xHE47ugSgVnQiIiLeil0Q+kSqr68TDAj+PEy
- SHXey/fpGxVu9NgAG/HH0ZMSq/SabPKQ2gImv626bv98OFYKPpf56UleG
- Z5aUhIirT6Adtad/psCyZ4cb8o8ZtEu0WXeHLOzDL6o4LoXE+kJNS66rm
- 3jxpFSJH7umx/vXJDcTpOB9kAc/2WL8p7UHz/+fT1gLBMA/R5plxToDDW w==;
-X-CSE-ConnectionGUID: 5+0tzF7iRl2KUhUkgs30PA==
-X-CSE-MsgGUID: JWwd9VcdTbGeFiEW3DJbWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52350137"
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="52350137"
+ bh=x9SCgo/ICwCh+BMuKjnklMUk91l0QC1Xd4XXgVwhjVQ=;
+ b=iKIHejsN6ow9Ocg9DJBEohiSomoGzcFBRFTqtUudJCDu48UEhNGg3ms1
+ 04qRH5kML/oQReboTslmCiK2QHYOTz/sm2pRP1K/Ti/U30ETwr8uXxbGW
+ +Eqik3jHLg9y9q5am73dgnC9KWD/S/FTXwjpv+kJccRqMKZL4P1pR8fsS
+ OclP7AhswAuUQoa1UwcN041wThyBjb2odty02KkNjqnXoib332JKodGub
+ b/ESkxjBD/CUGtw1BSDa/7rnVvsmlmslSn0ddaAKVzUFEK3YchNHWRrHu
+ c6wo4iuQoslF5vjAevX8C1RVVCS4ojMQ9UMqdZAO1UnOlZeNfFYe6ocT/ w==;
+X-CSE-ConnectionGUID: 50jA6L09Sg6PG4BPBWeTtg==
+X-CSE-MsgGUID: sg8uzW1cTDWOliOrwG/qug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52350142"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="52350142"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 05:58:36 -0800
-X-CSE-ConnectionGUID: dy4VxmSnTs6NLjxZFKPNsQ==
-X-CSE-MsgGUID: uIWYNfSlQECT8zCIg1qHdA==
+ 05 Mar 2025 05:58:37 -0800
+X-CSE-ConnectionGUID: CmXWb079SSqKoNqZctJ6pw==
+X-CSE-MsgGUID: Cl/7nNz0ScyquGU5XZ+Cjg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="118517114"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="118517117"
 Received: from lfiedoro-mobl.ger.corp.intel.com (HELO fdugast-desk.intel.com)
  ([10.245.246.38])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 05:58:35 -0800
+ 05 Mar 2025 05:58:36 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 1/5] lib/intel_blt: Promote blt_bo_copy()
-Date: Wed,  5 Mar 2025 14:57:56 +0100
-Message-ID: <20250305135821.37517-2-francois.dugast@intel.com>
+Subject: [PATCH i-g-t 2/5] lib/intel_blt: Allow forcing multiple runs in
+ blt_mem_copy()
+Date: Wed,  5 Mar 2025 14:57:57 +0100
+Message-ID: <20250305135821.37517-3-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250305135821.37517-1-francois.dugast@intel.com>
 References: <20250305135821.37517-1-francois.dugast@intel.com>
@@ -68,141 +69,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This function abstracts copy with mem blt. Move it to the library so
-that it can be also be used elsewhere without code duplication.
+Allowing to run the same copy multiple times presents no functional
+advantage but it can be used to keep the copy functions busy longer
+while other tests are being performed.
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_blt.c             | 53 +++++++++++++++++++++++++++++++++++++
- lib/intel_blt.h             |  3 +++
- tests/intel/xe_copy_basic.c | 36 +------------------------
- 3 files changed, 57 insertions(+), 35 deletions(-)
+ lib/intel_blt.c | 34 +++++++++++++++++++---------------
+ lib/intel_blt.h |  3 ++-
+ 2 files changed, 21 insertions(+), 16 deletions(-)
 
 diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index b2fb3151e..84318a557 100644
+index 84318a557..315a2e145 100644
 --- a/lib/intel_blt.c
 +++ b/lib/intel_blt.c
-@@ -1903,6 +1903,59 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
- 	return ret;
+@@ -1815,10 +1815,10 @@ void blt_mem_init(int fd, struct blt_mem_data *mem)
+ 	mem->driver = get_intel_driver(fd);
  }
  
-+/**
-+ * blt_bo_copy:
-+ * @fd: drm fd
-+ * @src_handle: handle of the source BO
-+ * @dst_handle: handle of the destination BO
-+ * @ctx: intel_ctx_t context
-+ * @size: BO size
-+ * @width: width
-+ * @height: height
-+ * @region: memory region
-+ *
-+ * Copy BO with mem blit from @src_handle into @dst_handle.
-+ */
-+void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
-+		 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
-+{
-+	struct blt_mem_data mem = {};
-+	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
-+	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint8_t src_mocs = intel_get_uc_mocs_index(fd);
-+	uint8_t dst_mocs = src_mocs;
-+	uint32_t bb;
-+	int result;
-+
-+	bb = xe_bo_create(fd, 0, bb_size, region, 0);
-+
-+	blt_mem_init(fd, &mem);
-+	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
-+			   region, src_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
-+			   COMPRESSION_DISABLED);
-+	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
-+			   region, dst_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
-+			   COMPRESSION_DISABLED);
-+	mem.src.ptr = xe_bo_map(fd, src_handle, size);
-+	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
-+
-+	blt_set_batch(&mem.bb, bb, bb_size, region);
-+	igt_assert(mem.src.width == mem.dst.width);
-+
-+	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
-+	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
-+
-+	intel_allocator_bind(ahnd, 0, 0);
-+	munmap(mem.src.ptr, size);
-+	munmap(mem.dst.ptr, size);
-+	gem_close(fd, bb);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination differ\n");
-+}
-+
- static void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
- 			     uint8_t fill_data)
+-static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem)
++static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem, int ncopies)
  {
+ 	uint64_t dst_offset, src_offset;
+-	int i;
++	int i, j;
+ 	uint32_t *batch;
+ 	uint32_t optype;
+ 
+@@ -1831,16 +1831,18 @@ static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *
+ 	optype = mem->src.type == M_MATRIX ? 1 << 17 : 0;
+ 
+ 	i = 0;
+-	batch[i++] = MEM_COPY_CMD | optype;
+-	batch[i++] = mem->src.width - 1;
+-	batch[i++] = mem->src.height - 1;
+-	batch[i++] = mem->src.pitch - 1;
+-	batch[i++] = mem->dst.pitch - 1;
+-	batch[i++] = src_offset;
+-	batch[i++] = src_offset << 32;
+-	batch[i++] = dst_offset;
+-	batch[i++] = dst_offset << 32;
+-	batch[i++] = mem->src.mocs_index << MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
++	for (j = 0; j < ncopies; j++) {
++		batch[i++] = MEM_COPY_CMD | optype;
++		batch[i++] = mem->src.width - 1;
++		batch[i++] = mem->src.height - 1;
++		batch[i++] = mem->src.pitch - 1;
++		batch[i++] = mem->dst.pitch - 1;
++		batch[i++] = src_offset;
++		batch[i++] = src_offset << 32;
++		batch[i++] = dst_offset;
++		batch[i++] = dst_offset << 32;
++		batch[i++] = mem->src.mocs_index << MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
++	}
+ 	batch[i++] = MI_BATCH_BUFFER_END;
+ 
+ 	munmap(batch, mem->bb.size);
+@@ -1853,6 +1855,7 @@ static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *
+  * @e: blitter engine for @ctx
+  * @ahnd: allocator handle
+  * @blt: blitter data for mem-copy.
++ * @ncopies: how many times copy is run, > 1 can be used to stress the copy function
+  *
+  * Function does mem blit between @src and @dst described in @blt object.
+  *
+@@ -1862,7 +1865,8 @@ static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *
+ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+ 		 const struct intel_execution_engine2 *e,
+ 		 uint64_t ahnd,
+-		 const struct blt_mem_data *mem)
++		 const struct blt_mem_data *mem,
++		 int ncopies)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf = {};
+ 	struct drm_i915_gem_exec_object2 obj[3] = {};
+@@ -1875,7 +1879,7 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+ 					  0, mem->dst.pat_index);
+ 	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, 0);
+ 
+-	emit_blt_mem_copy(fd, ahnd, mem);
++	emit_blt_mem_copy(fd, ahnd, mem, ncopies);
+ 
+ 	if (mem->driver == INTEL_DRIVER_XE) {
+ 		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+@@ -1944,7 +1948,7 @@ void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_c
+ 	blt_set_batch(&mem.bb, bb, bb_size, region);
+ 	igt_assert(mem.src.width == mem.dst.width);
+ 
+-	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
++	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, 1);
+ 	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
+ 
+ 	intel_allocator_bind(ahnd, 0, 0);
 diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 5d6191ac9..4357d70eb 100644
+index 4357d70eb..217cade02 100644
 --- a/lib/intel_blt.h
 +++ b/lib/intel_blt.h
-@@ -271,6 +271,9 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+@@ -269,7 +269,8 @@ void blt_mem_init(int fd, struct blt_mem_data *mem);
+ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+ 			 const struct intel_execution_engine2 *e,
  			 uint64_t ahnd,
- 			 const struct blt_mem_data *mem);
+-			 const struct blt_mem_data *mem);
++			 const struct blt_mem_data *mem,
++			 int ncopies);
  
-+void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
-+		 uint32_t size, uint32_t width, uint32_t height, uint32_t region);
-+
- int blt_mem_set(int fd, const intel_ctx_t *ctx,
- 			const struct intel_execution_engine2 *e, uint64_t ahnd,
- 			const struct blt_mem_data *mem, uint8_t fill_data);
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index a43842e39..458106b0b 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -44,41 +44,7 @@ static void
- mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
- 	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
- {
--	struct blt_mem_data mem = {};
--	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
--	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
--						  INTEL_ALLOCATOR_SIMPLE,
--						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
--	uint8_t src_mocs = intel_get_uc_mocs_index(fd);
--	uint8_t dst_mocs = src_mocs;
--	uint32_t bb;
--	int result;
--
--	bb = xe_bo_create(fd, 0, bb_size, region, 0);
--
--	blt_mem_init(fd, &mem);
--	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
--			   region, src_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
--			   COMPRESSION_DISABLED);
--	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
--			   region, dst_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
--			   COMPRESSION_DISABLED);
--	mem.src.ptr = xe_bo_map(fd, src_handle, size);
--	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
--
--	blt_set_batch(&mem.bb, bb, bb_size, region);
--	igt_assert(mem.src.width == mem.dst.width);
--
--	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
--	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
--
--	intel_allocator_bind(ahnd, 0, 0);
--	munmap(mem.src.ptr, size);
--	munmap(mem.dst.ptr, size);
--	gem_close(fd, bb);
--	put_ahnd(ahnd);
--
--	igt_assert_f(!result, "source and destination differ\n");
-+	blt_bo_copy(fd, src_handle, dst_handle, ctx, size, width, height, region);
- }
- 
- /**
+ void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
+ 		 uint32_t size, uint32_t width, uint32_t height, uint32_t region);
 -- 
 2.43.0
 
