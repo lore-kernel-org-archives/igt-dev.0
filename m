@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B03FC28B22
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 13:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2FCC282EC
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 13:58:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A23810E733;
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECFD410E76F;
 	Wed,  5 Mar 2025 13:58:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HerFgOhB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mj4ghPDw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3F4110E723
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 13:58:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20B9B10E723
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 13:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741183119; x=1772719119;
+ t=1741183120; x=1772719120;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=to2Vw6NK7+XLvJonQHV3egc+h6DpCJfuQbj1uDY4nIY=;
- b=HerFgOhBpVIvmBI/OO/eioR6K+LXhps4PNJERMqKwBpjp/rCzeHJ1FlQ
- 8JKlOcf+k1zvsgpwJPU7ed0jV8Eg/x64h6/t13hwaAayES+Z5queTIH6Q
- mYR4m0o9Ex9mr9N1BxGyDHYFKzmgw5dNwaWDkgr1JSICUUwDtxUzopuI4
- RP+RgrL+XrS9ZSdC4Jv4egFFzERLknb7PS1VwW91EP0F7iKyMvyJPcI4J
- Xbv3kN4qPDpZ00k/NY+pfOVcrt7+zhnqUyEf0nodZuISxBTjsSGkO6s3d
- u2VOz1xUDQfdsVtj4PwNM3C8drufuLbaXzvNwokHUZutgneRw/RYp/1IO g==;
-X-CSE-ConnectionGUID: R0AHnLkSRwapPUYnToPKtg==
-X-CSE-MsgGUID: Gk9m8r5+QaOjJbxVOC8fAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52350145"
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="52350145"
+ bh=6JD9bHx/Pr+R34o64hgOJpNXM1EfYQadSKcTSl2dELE=;
+ b=Mj4ghPDwlClpCc7neUU6NoEzd65xvEfyrwNynH96Fxekp1ELsf4/TsSb
+ /tN00DvBaAK1ol1JuR/Gql+RbbUrsb4TfZz4n2IMaTA6PdmWk0L6aU5jy
+ vNR+fqf4mMMnVYa/4wAXTpeV0+55ORU1r43t7a2PNfrl8VPr1Z4fgeJ8T
+ HBhzrl7PswfxC4AX4k4+HEmqLSw9P6Dxf/WELT/0sRd+3YpO3Ei7wxwRN
+ zwxB6E6fDp18EHn8GYeIxJl466as+s+cWAdFrunVPESCdbK43D+CSp6zf
+ /3MGHUsecF/U1gf9sm3W9TRDvHtTtflTLmEvAaI7cHhD+4MuexiGZAAqZ g==;
+X-CSE-ConnectionGUID: GbySw9RdTfyFcB3GDZqAoA==
+X-CSE-MsgGUID: ixbJfA7uQ3+/ezwCbs1udg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52350152"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="52350152"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 05:58:39 -0800
-X-CSE-ConnectionGUID: 4xIoDmXIRUq+IgrdLkt8Tw==
-X-CSE-MsgGUID: /rC++u4MRmOmaoBcGKdmVg==
+ 05 Mar 2025 05:58:40 -0800
+X-CSE-ConnectionGUID: yKv2VqHaTdG5rtoE7dZMhA==
+X-CSE-MsgGUID: 5oy/7PuyR8WMchG802S1fw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="118517121"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="118517124"
 Received: from lfiedoro-mobl.ger.corp.intel.com (HELO fdugast-desk.intel.com)
  ([10.245.246.38])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 05:58:37 -0800
+ 05 Mar 2025 05:58:38 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 3/5] lib/intel_blt: Use blt_mem_copy() to stress copy
- functions
-Date: Wed,  5 Mar 2025 14:57:58 +0100
-Message-ID: <20250305135821.37517-4-francois.dugast@intel.com>
+Subject: [PATCH i-g-t 4/5] tests/intel/xe_render_copy: Expose render duration
+Date: Wed,  5 Mar 2025 14:57:59 +0100
+Message-ID: <20250305135821.37517-5-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250305135821.37517-1-francois.dugast@intel.com>
 References: <20250305135821.37517-1-francois.dugast@intel.com>
@@ -69,71 +68,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The new blt_mem_copy() argument ncopies is handed over to the
-underlying function blt_bo_copy() which actually runs the copy, so
-that the caller of blt_mem_copy() can use a higher level function
-to stress the hardware copy function.
+If the argument duration_ns is provided (not NULL), render() writes
+into it the duration of the rendering execution, which is only a part
+of the overall function. It can be used to observe the relative change
+of rendering duration under various hardware stressing conditions.
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_blt.c             | 5 +++--
- lib/intel_blt.h             | 2 +-
- tests/intel/xe_copy_basic.c | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ tests/intel/xe_render_copy.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 315a2e145..5cdf1ea8d 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1917,11 +1917,12 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-  * @width: width
-  * @height: height
-  * @region: memory region
-+ * @ncopies: how many times copy is run, > 1 can be used to stress the copy function
-  *
-  * Copy BO with mem blit from @src_handle into @dst_handle.
-  */
- void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
--		 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
-+		 uint32_t size, uint32_t width, uint32_t height, uint32_t region, int ncopies)
+diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
+index ffe5f7ef1..2125e0667 100644
+--- a/tests/intel/xe_render_copy.c
++++ b/tests/intel/xe_render_copy.c
+@@ -260,7 +260,8 @@ static const char * const testname[] = {
+ 
+ static int render(struct buf_ops *bops, uint32_t tiling,
+ 		  uint32_t width, uint32_t height,
+-		  enum render_copy_testtype testtype)
++		  enum render_copy_testtype testtype,
++		  uint64_t *duration_ns)
  {
- 	struct blt_mem_data mem = {};
- 	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
-@@ -1948,7 +1949,7 @@ void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_c
- 	blt_set_batch(&mem.bb, bb, bb_size, region);
- 	igt_assert(mem.src.width == mem.dst.width);
+ 	struct intel_bb *ibb;
+ 	struct intel_buf src, dst, final, grfs;
+@@ -271,6 +272,7 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	int compression = testtype == COPY_FULL_COMPRESSED ? I915_COMPRESSION_RENDER :
+ 							     I915_COMPRESSION_NONE;
+ 	bool is_compressed;
++	struct timespec tv;
+ 	struct posrc {
+ 		uint32_t x0, y0;
+ 		uint32_t x1, y1;
+@@ -329,6 +331,8 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	render_copy = igt_get_render_copyfunc(devid);
+ 	igt_assert(render_copy);
  
--	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, 1);
-+	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, ncopies);
- 	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
++	if (duration_ns)
++		igt_gettime(&tv);
+ 	switch (testtype) {
+ 	case COPY_SQUARE:
+ 	case COPY_VSTRIPES:
+@@ -404,6 +408,8 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	}
  
- 	intel_allocator_bind(ahnd, 0, 0);
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 217cade02..86681f1dd 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -273,7 +273,7 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
- 			 int ncopies);
+ 	intel_bb_sync(ibb);
++	if (duration_ns)
++		*duration_ns = igt_nsec_elapsed(&tv);
+ 	intel_bb_destroy(ibb);
  
- void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
--		 uint32_t size, uint32_t width, uint32_t height, uint32_t region);
-+		 uint32_t size, uint32_t width, uint32_t height, uint32_t region, int ncopies);
- 
- int blt_mem_set(int fd, const intel_ctx_t *ctx,
- 			const struct intel_execution_engine2 *e, uint64_t ahnd,
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 458106b0b..20926cbb7 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -44,7 +44,7 @@ static void
- mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
- 	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
- {
--	blt_bo_copy(fd, src_handle, dst_handle, ctx, size, width, height, region);
-+	blt_bo_copy(fd, src_handle, dst_handle, ctx, size, width, height, region, 1);
- }
- 
- /**
+ 	if (write_png) {
+@@ -491,7 +497,7 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+ 				tiling_name = blt_tiling_name(tiling);
+ 				tiling = blt_tile_to_i915_tile(tiling);
+ 				igt_dynamic_f("render-%s-%ux%u", tiling_name, surfwidth, surfheight)
+-					render(bops, tiling, surfwidth, surfheight, id);
++					render(bops, tiling, surfwidth, surfheight, id, NULL);
+ 			}
+ 		}
+ 	}
 -- 
 2.43.0
 
