@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B176FC282DE
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 17:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B564C19F32
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 19:30:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 659CF897AC;
-	Wed,  5 Mar 2025 17:58:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B80D610E2A9;
+	Wed,  5 Mar 2025 19:30:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RzWXtgEr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hu61mcUu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E0D5897AC
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 17:58:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C79BB10E2A9
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 19:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741197504; x=1772733504;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=PUvTNHmhCK2IxX2fesOLjf6mbD/oPAGk2S+yA6dy/+U=;
- b=RzWXtgEr3JfrybTbZedBCPk99RjX6Qb4LrJ5NEjOKJ9ue4XnF3RcAFNV
- bh43sYjhv+ZQeAjw23ZynBPV/NizCW+4wYXFYV+lsJq4BzuVuOT3otGX8
- NpMMKFWh12OgAl6SOC++c41mXUhwWcmCUa5TJ9KIwEV6INPlIgrBRABiQ
- 6/9q0mrQ3xPKcf+7ZRgUzoTwBkaF47/UCH+YKMNsDdLXy8Oe9XF3Nr47T
- nus6E8plM1gE9vAENSlFasPUgvt99ne//BhwHMMnR4NiIH17cUKPg1zyV
- wvGXMKzhyTWBffVFXjuwmkNVqx03gOTmwD4VIg9ceAQZYtzCPBXbDaw+i A==;
-X-CSE-ConnectionGUID: JGwCn1/ISASyKp45hq5N0Q==
-X-CSE-MsgGUID: oxhHtpFvS/OiS3Ylx0aNEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52381688"
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="52381688"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 09:58:24 -0800
-X-CSE-ConnectionGUID: VZY+fvkgR2yzLRIdH3yLOw==
-X-CSE-MsgGUID: cZSAB/UcRby7Ub2WViii4g==
+ t=1741203058; x=1772739058;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=vMR1Vkyq/wnm1jypXgX30WRudvsMIzE2O0h4H/Pqy/8=;
+ b=hu61mcUug64zmSFFvxoSipbrUyMFFabIXBdgEPvGyNGKKbKsi+iIvYY7
+ 2c5pR78l1e4+KK32zIk/cM3+n7IWRMaq0xuZFmnTeCWnMhnzCg5dsZN+N
+ /HVsbNeiZHyNE8Z0ll1hPp84hwQoGGu1ynWVHAtZi0+rJ1XRtYEhEYWv2
+ MFMMvoRuAOsaybfZEDWJcR9jygTaoDy4BIaNoRrWeN6W9akY+FkWvKOCd
+ VA/We3Y0oubFXwTNNW8HcwjC+i9FqCNG6M3urrNhnu0oX/pz1XFauR9bt
+ 7K5LUTS0d94cwpQ77nLnQ4+9MbFImDx8/vocek3PXHMC9Dxf44Z87YuZD Q==;
+X-CSE-ConnectionGUID: /8/99t2OQIakaVPHqoIaZA==
+X-CSE-MsgGUID: LfYL70s0TqC5Af5nZnWKIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53584499"
+X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="53584499"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 11:30:43 -0800
+X-CSE-ConnectionGUID: /+Np6Ej2SMOZfA181Iy74A==
+X-CSE-MsgGUID: +DUiQtRlTny5hswd1W0tNg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="149701108"
-Received: from ba_tws-123.gar.corp.intel.com (HELO
- spottumu-desk.iind.intel.com) ([10.190.216.156])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 09:58:22 -0800
-From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: sai.teja.pottumuttu@intel.com, ashutosh.dixit@intel.com,
- umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_oa: Don't limit oa-formats to render
- engine
-Date: Wed,  5 Mar 2025 23:25:57 +0530
-Message-Id: <20250305175557.2245712-1-sai.teja.pottumuttu@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="118586214"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 11:30:33 -0800
+Date: Wed, 5 Mar 2025 20:30:14 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH v3 i-g-t] runner: Parse results harder
+Message-ID: <20250305193014.jrb6z4wjnd7gnil6@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250303171029.70318-1-kamil.konieczny@linux.intel.com>
+ <w7oziq7mhwv7r6bpfcox2rb7icbwyqmphdjpf7guf5t7qj7mpy@oplkrucp2skl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <w7oziq7mhwv7r6bpfcox2rb7icbwyqmphdjpf7guf5t7qj7mpy@oplkrucp2skl>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,27 +71,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-oa-formats test need not be limited to render engine only. Extend
-it to use any engine using __for_one_hwe_in_oag macro instead.
+Hi Krzysztof,
+On 2025-03-04 at 09:41:20 +0000, Krzysztof Karas wrote:
+> Hi Kamil,
+> 
+> >   Sometimes an error happens in kernel or in test that leaves
+> > output files in corrupted or incorrect state. While runner or
+> > resume will just move on to executing next test, when generating
+> > results it could end up with no results.json
+> > 
+> >   Try processing outputs a little more persistently and use any
+> > output file left there, even if only dmesg.txt. Also, when no
+> > useful output files were present, instead of breaking out add
+> > notrun.
+> > 
+> >   Inform about processing results for each test so a problem
+> > could be spotted more easily.
+> > 
+> > v2: removed ')' from 'notrun\n)' (Kamil)
+> >  using bool var, added more prints about errors (Ryszard)
+> > v3: reused open_for_reading, removed bool var (Krzysztof)
+> >  closing only positive fds[] in close_outputs(), checking
+> >  file sizes also if all opens succeeded (Kamil)
+> 
+> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+> 
+> Best Regards,
+> Krzysztof
 
-Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
----
- tests/intel/xe_oa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you for review, unfortunatly this didn't pass checks:
+meson test -C build
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index a72def0fe..81f2a7e0c 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -4717,7 +4717,7 @@ igt_main
- 		test_missing_sample_flags();
- 
- 	igt_subtest_with_dynamic("oa-formats")
--		__for_one_render_engine(hwe)
-+		__for_one_hwe_in_oag(hwe)
- 			test_oa_formats(hwe);
- 
- 	igt_subtest("invalid-oa-exponent")
--- 
-2.34.1
+see results in gitlab for v3:
+https://patchwork.freedesktop.org/series/145520/#rev3
+
+I sent v4 but after more checks and more code reading I wrote
+new revision today and will send v5 soon, please check and
+review.
+
+Regards,
+Kamil
 
