@@ -4,55 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D038BC282E3
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 09:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F02C282D3
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 09:24:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9019410E721;
-	Wed,  5 Mar 2025 09:08:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2E7210E26A;
+	Wed,  5 Mar 2025 09:24:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V4uqwdGN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="maSp9FOC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13BDC10E721
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 09:08:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 545E810E26A
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 09:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741165700; x=1772701700;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ofVhnvO5+aHYfqwRmLhPalqQ3j2AXB0zqAiMGEuc6DM=;
- b=V4uqwdGN1lpyBrUv0AzhFhli2V7CERUTUElJy6i/9xuMelb+eqy7L/RW
- 37QaxEa+BiRl6H7bENOySwFDCSnGxZe0W1+9X1HP6WTGwdJV+l35Sio2M
- LpeIyuY98xtE8bAljMwy0EALV7k9TmGqznxrrxa+3gA8bc2OGcgSHZGpK
- 7EYn419ZucQRh9mPngNHhNzgJ4xHZlV2S9hTvzZuHkIhneCe1PeMxja5D
- 9GpAzErHv6O/2rh/ej8PslQBchEWqU9dPrhct8FNrHyaopKP2y72Krgst
- pbfsjFfpRAn1aDcs+w2FXN+ZRpMkzu2qIuc3Eg/VPsTLs/be5i25tUsU0 g==;
-X-CSE-ConnectionGUID: YwB3iJNIT5esvIUlBEii0Q==
-X-CSE-MsgGUID: kRANFOFFRmOu8NrhxDfN0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="44925849"
-X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="44925849"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 01:08:20 -0800
-X-CSE-ConnectionGUID: 9mgfIb6lTk2URpanQIckrg==
-X-CSE-MsgGUID: Rg0QH4vvQTW2Z/s1ULgT6A==
+ t=1741166640; x=1772702640;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=glisKwBXHnWN0DsoIeLX8XNwiIWjX7+MLvM+tg+64t0=;
+ b=maSp9FOC2cKeGF+1RHW01sip+mmMohoQeAc0uXdKaaCyyhVrMe4WG5dQ
+ 3Lom1Dq5No1i5t9kHyFLkvvrveieZILSM63YNnA+BcgfF1Zc+kPeE2xUI
+ Fsp2N9SULHx9dWULUbuWKjSFDmyRrYXN242qqUJY6n8jjzpXS3riixVYH
+ O/HrO6etlkCtWO7qBaTSBWbKEHWy0zCQB94aXyRGXu+JYsyPzIHGfmFFp
+ Jv4Q3vrgXe5DlGweWPC+BLewJD1oBuZ4QtyKrWoZfOb5fnTPpCjk29NGK
+ dSUYndsjb5JEu5FmVEVQvDRfT5vVA4Px3wckdRY+D2Zjlu2mONYAfLKWS g==;
+X-CSE-ConnectionGUID: vD7WRN69QayKqA+vDGzCfg==
+X-CSE-MsgGUID: hr3sAiSvQbqm8QXC2Jha/w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="42008630"
+X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="42008630"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 01:23:59 -0800
+X-CSE-ConnectionGUID: Ueybk7aUQCuLGwhVuGdngQ==
+X-CSE-MsgGUID: WUAhg5BKS5KveK+appb35A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="123651042"
-Received: from lfiedoro-mobl.ger.corp.intel.com (HELO fdugast-desk.intel.com)
- ([10.245.246.38])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 01:08:18 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_render_copy: Render under copy stress
-Date: Wed,  5 Mar 2025 10:06:15 +0100
-Message-ID: <20250305090743.16894-6-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250305090743.16894-1-francois.dugast@intel.com>
-References: <20250305090743.16894-1-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="123233442"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 01:23:59 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 5 Mar 2025 01:23:58 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 5 Mar 2025 01:23:58 -0800
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.46) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 5 Mar 2025 01:23:58 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dp5ajW/pDqPvJMr3uRYdkwKIOeF2qCgd5SvnOZ81gA+CEjTikgMMtfc1VID2EKwxyWSbf7bzII5FBYn8GdYXlVk8HJTaaXxhmOhAkI1JxLyr9MAZcBBzB0uh3F185xjK7GCAlkcIzeUWdToR/zWY7d26w1Zbq3KWD7IFM7+MbDEwq0oZB+zexFGhFPqakYe4rc5OuIbYFUAcrfmh53LxI1wFXZDzYitHdmuKNiRFgIy81H3bVju9NSY/bEPKHOzhK+t8a2Mcb8oDwMyVnFqYYm9AhkG5Azp4w1uU6tLLlCDO8QSTYx7OM4Mo+ZvBbLonM7+fsy4Dju+PwGLiuim/8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mckcX5ctaqxTiklnlAYVtg16cLqVgQ4ooMG7gUMZeRA=;
+ b=e2gSlJ0u1uPDr/ykPULpge0yOnW5ReCEkRJ2xYMDLmUAY/Ibm0Q/BmFNMXHZ/uzCUD47YJmaE9lbAvSNzgL6T3T+WaPEOCc1qlV1I8cf5DgAZVjS6GN0t9DbSw0jRjRPmjIsbTIjvyraaw1Gn+ndZWgAf40cVRJEqAZal/pBAxhmtKFf8v4/rlWTtP0uDTrfKBDwKOiGdc0mQOJ5d3d9IAfRgNT3ekCauFBt4JhavKZuzgsoA1x5zFLZFJWlxJPoz2aOMXZ0TvrP08W+lBEvigQPyWLfOwbrs+0l+ONf/Xdb/mXz+Kc+8//ooNvliN8F+kmIsz5u0qvb1tGquSBGww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DS0PR11MB7264.namprd11.prod.outlook.com (2603:10b6:8:13b::5) by
+ SJ0PR11MB4976.namprd11.prod.outlook.com (2603:10b6:a03:2d7::5) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8511.16; Wed, 5 Mar 2025 09:23:56 +0000
+Received: from DS0PR11MB7264.namprd11.prod.outlook.com
+ ([fe80::d250:d70b:55aa:5ff7]) by DS0PR11MB7264.namprd11.prod.outlook.com
+ ([fe80::d250:d70b:55aa:5ff7%5]) with mapi id 15.20.8511.017; Wed, 5 Mar 2025
+ 09:23:55 +0000
+From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
+To: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>, Marcin Bernatowicz
+ <marcin.bernatowicz@linux.intel.com>, Mika Kuoppala
+ <mika.kuoppala@linux.intel.com>, "Laguna, Lukasz" <lukasz.laguna@intel.com>,
+ "Wajdeczko, Michal" <Michal.Wajdeczko@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
+Subject: RE: [PATCH i-g-t v3 2/2] tests/intel/xe_eudebug: Add subtests for
+ eudebug/SR-IOV exclusion
+Thread-Topic: [PATCH i-g-t v3 2/2] tests/intel/xe_eudebug: Add subtests for
+ eudebug/SR-IOV exclusion
+Thread-Index: AQHbjSMeUX/jrgj7m0Cy3mem8pJPybNkRbkQ
+Date: Wed, 5 Mar 2025 09:23:55 +0000
+Message-ID: <DS0PR11MB7264C66EFC3C0935835FC954D9CB2@DS0PR11MB7264.namprd11.prod.outlook.com>
+References: <20250304163227.49986-1-christoph.manszewski@intel.com>
+ <20250304163227.49986-3-christoph.manszewski@intel.com>
+In-Reply-To: <20250304163227.49986-3-christoph.manszewski@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR11MB7264:EE_|SJ0PR11MB4976:EE_
+x-ms-office365-filtering-correlation-id: db2dfd98-20e8-40fc-8abd-08dd5bc77401
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|38070700018|7053199007; 
+x-microsoft-antispam-message-info: =?iso-8859-2?Q?ekRWgtDHaoOLqwMnZN4lNTMtihXPwk3DoSmqrp9t916dom4cTAlzmBPN42?=
+ =?iso-8859-2?Q?H9XjJLaV3gLKWcDpCnfMJVx6t+7j3Dzz2CDyX5GwerZjqzoUg32/kc6JvZ?=
+ =?iso-8859-2?Q?KhjvULQ+GnCPkfrMcrLWpI/hxrvk5xLzN6/AM+2zWoGqAh4GfZ9KqjBQd9?=
+ =?iso-8859-2?Q?Ok/+RsdyBdyQsImAUoHndpL0mh83tUPzd8MtXTRQBBbfiPTZCWO/ZERlIA?=
+ =?iso-8859-2?Q?ZeHvLIk6ZXAZIv4qgYYDrqSQbW404VqOtyl0SxaT2dMj9VsKJUsu9NBqa+?=
+ =?iso-8859-2?Q?WealcE7u0j7OtN8FLb3SiD9ayLmcR8M/fEFBnQCaEjFm81HdfHgQjb90JF?=
+ =?iso-8859-2?Q?888cZGNnK8rCAUIXQXQi+ViWM1d7PxuEpMhFzhcJn1J1yAYbm3S1YlZyuA?=
+ =?iso-8859-2?Q?4d6FbaV+3sfgewp3RDLwQK32BmDNykGcBjVxGgezgQmBGhocLC+MrpnY0Z?=
+ =?iso-8859-2?Q?zIkZXIodYZOJp5WFxFALW28aNKY+0zF1jlLAguybDXbE23LXe3H3ol/dna?=
+ =?iso-8859-2?Q?RMmxHZpw1UgJ/6GMFQ6ztpmGFtf/72SkOJCsSvMIB20Q8TRHG02edE+gkT?=
+ =?iso-8859-2?Q?8nDgggHJNnlJ0ghGKpQrdA1WCdrUSRn9Q3II0FQTU+moGg+nriW9c2V2wU?=
+ =?iso-8859-2?Q?rgsQNIeF/doXCANh/cLTGq1I5dNLLVBegiJh510LLSMoiY02sDzRWmVGkL?=
+ =?iso-8859-2?Q?HAhnN62sy0GBZQ3Vhd/6dpTTh3ao8KAn/5cV2xK8dKo3rMFpizfHfoG5ry?=
+ =?iso-8859-2?Q?CDM2dHzu0YLJSDJ0MqMk6gSAB5D4kX4rX6dbZuH7BaK9g0vaeBT/xjs0Lu?=
+ =?iso-8859-2?Q?wNfHtepEfr6kgWjoozPh0fPwPnVNrZeUKryGMh15O8+Z1Mqxaf8WudnQ01?=
+ =?iso-8859-2?Q?El3YRl4Cuu1ODYEAsGbzfot88L+DGPbL9JxHk0O6uzxvbNf54LXjj7E49q?=
+ =?iso-8859-2?Q?+2dGR982YJUeu/XLj34OBwLznUTjw9TQlu0opejjPiUCIu31fdMzFs25S/?=
+ =?iso-8859-2?Q?la64iSYWHhR/xyRKdrF5beHdbOn6ujDqpFMB4/LdwhaPjbFhC86lzAuRgk?=
+ =?iso-8859-2?Q?I2OByNNumqiGrILL0CoOx9m+42eWQbOK9jeVP29nTe614MCrkhdl2B9OWz?=
+ =?iso-8859-2?Q?jtub53Wj7ZBlPuaTD0Z+hxA1UPOdp8r36/ZMa2ZmeeWT0C0vJUVIUBPeXc?=
+ =?iso-8859-2?Q?CtV4RB9mdIU4dqR2d1hYi9dg42Jw+HscK+pgP8Qg3yZet/eHGeARxpXKGk?=
+ =?iso-8859-2?Q?dpNsiKrOOunZAyQfnnvKd7G2tO8fUTbfvH161JmB34FwgJzPlbXpa0CKDN?=
+ =?iso-8859-2?Q?Hl9xbfZJebsqdFiED0f3d/HBWIOdtgUIdbjfDjcbWwgJKKq5iLFQss45Bi?=
+ =?iso-8859-2?Q?GPNpA9a9xjyFfjzkZFbaKhS4xvuGLBzdFb5hyHw2g/Vk6kAAEAW1NT9Z+R?=
+ =?iso-8859-2?Q?NWX+Kf1HrEqHBhg3HMu7YUw+1LzB/9ZHIiP0HW6aAwy4GK6GVUBSIapFS7?=
+ =?iso-8859-2?Q?P5WV0vQJTvSZOJ6rsHLWY4?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7264.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(38070700018)(7053199007); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?hmNKC21dqqhfXkErJvBVQhTqUypTI1PiOtFvOagLZk7749sek21Tt4rJEY?=
+ =?iso-8859-2?Q?gIGk4rDnDCA2tUPzuNtnMa0WcqY4o0hye1D1w8w8hF6G7bda5eYagHICQy?=
+ =?iso-8859-2?Q?19X/vFjGXnHh7nDvPnJGS2a+DbRxz5L7O6eEByEm8aW3h6O4x4sGfzb9qs?=
+ =?iso-8859-2?Q?Oo28Kjlvd+d/X/48qJ6GBKu1VQAQtf8z9Qjcx0uvsQyBp+sGZS9J2f/lPl?=
+ =?iso-8859-2?Q?MgIkQGGt4ic2KMh9Ydsb/ZFcfg2N74FFLTB6o34EYqbWnJ3ZoMQMWtDNo6?=
+ =?iso-8859-2?Q?x2q0NVFSEcQi+byAjue17jb4jJRYaRREIkZ5dBERKhecIiew5LsY5wJVF2?=
+ =?iso-8859-2?Q?PD/ssoUo3dEfMK4PRM6z+l0ejCPj1tNFxX9KLqaVhyWjcXqDMwcD4L2Lvh?=
+ =?iso-8859-2?Q?EvGtuF4LQ+Nu+QVG3h1rHvSnZEgU8sLpzsAnAlru7DpGqkTeRzpiiY1CoV?=
+ =?iso-8859-2?Q?3l5dHH9/L77+1BFIBdDQWA48HWOrI3O/xri/16yXdqjLZOg7YDRcCLA1O6?=
+ =?iso-8859-2?Q?lq/fa3LAzgLZXr1xTPoWshXwYcTwnCrcHbkQYL8g8pQIaMuF9IvOznahlr?=
+ =?iso-8859-2?Q?Xpmr4ZKJohEfLAD57bYza/J0RmOCAh6DS1mW5g/tZprjBxaXQHv+EVpZ4b?=
+ =?iso-8859-2?Q?Cm9A9M3joEVMIvC1B1bcZj6qW+abYnV/a1KEZduAI2Nu6LLPY12F5PoQJ7?=
+ =?iso-8859-2?Q?D/5xqltBrtkXUwF3WJTPDF3kmWOudsEH2V6XtbPGJ12byrxaVOx7UUKiPB?=
+ =?iso-8859-2?Q?Z/OXHpXrynaMLak9Nnj+vnwaNxPHjQaF17UfxLe9Z33q4wL8OmjcbllWoO?=
+ =?iso-8859-2?Q?jKL5ru7lJJG2pOnraGoMlpvW+1UBPHh6nCFcZ3aswg0Srlqi90U+If9sxw?=
+ =?iso-8859-2?Q?OKP4gwlcNTQd616BiHS1CB/8Yh0BjAAo1DAQyMr9p654H9OFsd/JV7oM+U?=
+ =?iso-8859-2?Q?0/VOwswZfjOTpCMx8Mw1iD75Zpgf5B50xMRYFAqShXhzwJQaWUlT3/KVrx?=
+ =?iso-8859-2?Q?1INhDkSJls9qV659JGG5ZDvn4d1KkDKB1yNR/T3t/hwfxaEbErjGv6tJrz?=
+ =?iso-8859-2?Q?dMmZC3HH2leJm583yVVh4m9dkS9fa92pB0lcFV9USBFO5ibAPG/L8GVybS?=
+ =?iso-8859-2?Q?U8nmOpg1KCopY95mhixxOJ9yhlko4rCXz+alS6GzJem2KkOnaVTLAH1dmC?=
+ =?iso-8859-2?Q?RB6pcjhZHai85lYoCluS6uDQD6LUOS6OeFhLM5EXkGw6c92X6rPn6zGTpZ?=
+ =?iso-8859-2?Q?xZjmJO8FFEpsJMGLI7hW55kboHaz1VqQzDREVBYR/sNpzHWWHCahhHXsO9?=
+ =?iso-8859-2?Q?1u1zqxI86X2JcahNDJWQZryXAaCto7xzFiRrOG9PNDc13HLJn/3iWMOync?=
+ =?iso-8859-2?Q?V/HbEcdQ9CYko9v8+sMOOY/2SVQmTgmzOBaz9JHCQtKqyVdGuPqZf8rFwN?=
+ =?iso-8859-2?Q?1MTdaKZ4sYK2BYPTNY4JggQd+yqxBGCTZ+SAseFUhLrXib+PB3watj4g83?=
+ =?iso-8859-2?Q?jyD7DLt3CuqYhkv6PmvKl9B0RWdQQRJMAMcWVH7EOeAzQwUq7vThJvtJGy?=
+ =?iso-8859-2?Q?qvMZzqHX5AmWaNs7AvdePE8gSgjp7/zxzDxENrOoZuaFX4XbTB18HF9BR6?=
+ =?iso-8859-2?Q?y31FGeD601gQckzG3E13cozTT7FamIPUFSWTqfIK6oMcH5CDZ2iP3jpQ?=
+ =?iso-8859-2?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7264.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db2dfd98-20e8-40fc-8abd-08dd5bc77401
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2025 09:23:55.9095 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZxlqykEZ1S7m7rlKL4H0VElcXA0ecU5yN5DxTyHESEd3lHw4j6XUwZ+f6vCVw5GOIRDuw7C61FDpZ8MWXrbuQdB1aOwyycPhz1FeligngIsKxLItUQpplCqo1xV+X70E
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4976
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,260 +191,215 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-These new tests are meant to observe the impact of stressing the copy
-engines with multiple copy jobs on a rendering job running in parallel.
+LGTM,
+Reviewed-by: Dominik Karol Pi=B1tkowski <dominik.karol.piatkowski@intel.com=
+>
 
-Add the following tests:
-* "render-stress-0-copies"
-* "render-stress-1-copies"
-* "render-stress-2-copies"
-* "render-stress-4-copies"
-* "render-stress-16-copies"
-
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_render_copy.c | 202 +++++++++++++++++++++++++++++++++++
- 1 file changed, 202 insertions(+)
-
-diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
-index 2125e0667..03d7986bf 100644
---- a/tests/intel/xe_render_copy.c
-+++ b/tests/intel/xe_render_copy.c
-@@ -14,6 +14,7 @@
- #include "intel_bufops.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_util.h"
- 
- /**
-  * TEST: Copy memory using 3d engine
-@@ -438,6 +439,188 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 	return fails;
- }
- 
-+/**
-+ * TEST: Render while stressing copy functions
-+ * Category: Core
-+ * Mega feature: Render
-+ * Sub-category: 3d
-+ * Functionality: copy
-+ * Test category: stress test
-+ *
-+ * SUBTEST: render-stress-%s-copies
-+ * Description: Render while running %arg[1] parallel copies per supported engine
-+ *
-+ * arg[1]:
-+ * @0: 0 parallel copies
-+ * @1: 1 parallel copies
-+ * @2: 2 parallel copies
-+ * @4: 4 parallel copies
-+ * @16: 16 parallel copies
-+ */
-+
-+/*
-+ * Copy parameters
-+ */
-+#define COPY_SIZE		SZ_16M
-+#define COPY_N_SEQ_BLT_MEM	200
-+#define COPY_MAX_THREADS	64
-+
-+/*
-+ * Render parameters
-+ */
-+#define RENDER_TEST_TYPE	COPY_FULL
-+#define RENDER_TILING		T_LINEAR
-+#define RENDER_ITERATIONS	50
-+
-+static void stress_copy(int fd, uint32_t size, uint32_t region,
-+			struct drm_xe_engine_class_instance *hwe, int ncopies)
-+{
-+	uint32_t src_handle, dst_handle, vm, exec_queue, src_size;
-+	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
-+	intel_ctx_t *ctx;
-+
-+	src_handle = xe_bo_create(fd, 0, bo_size, region, 0);
-+	dst_handle = xe_bo_create(fd, 0, bo_size, region, 0);
-+	vm = xe_vm_create(fd, 0, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-+	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-+
-+	src_size = bo_size;
-+
-+	blt_bo_copy(fd, src_handle, dst_handle, ctx, src_size, size, 1, region, ncopies);
-+
-+	gem_close(fd, src_handle);
-+	gem_close(fd, dst_handle);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
-+	free(ctx);
-+}
-+
-+typedef struct {
-+	int fd;
-+	uint32_t size;
-+	uint32_t region;
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t ncopies;
-+} data_thread_stress_copy;
-+
-+static void *run_thread_stress_copy(void *arg)
-+{
-+	data_thread_stress_copy *data = (data_thread_stress_copy *)arg;
-+
-+	stress_copy(data->fd, data->size, data->region, data->hwe, data->ncopies);
-+	pthread_exit(NULL);
-+}
-+
-+static void data_thread_stress_copy_init(data_thread_stress_copy *data, int fd)
-+{
-+	data->fd = fd;
-+	data->size = COPY_SIZE;
-+	data->ncopies = COPY_N_SEQ_BLT_MEM;
-+}
-+
-+typedef struct {
-+	int fd;
-+	uint32_t render_width;
-+	uint32_t render_height;
-+	uint32_t render_tiling;
-+	enum render_copy_testtype render_testtype;
-+	uint32_t iterations;
-+	uint64_t duration_total;
-+	uint64_t duration_min;
-+	uint64_t duration_max;
-+} data_thread_render;
-+
-+static void *run_thread_render(void *arg)
-+{
-+	data_thread_render *data = (data_thread_render *)arg;
-+	struct buf_ops *bops;
-+
-+	bops = buf_ops_create(data->fd);
-+
-+	for (int i = 0; i < data->iterations; i++) {
-+		uint64_t duration;
-+
-+		render(bops, data->render_tiling, data->render_width, data->render_height,
-+		       data->render_testtype, &duration);
-+		data->duration_total += duration;
-+		if (duration < data->duration_min)
-+			data->duration_min = duration;
-+		if (duration > data->duration_max)
-+			data->duration_max = duration;
-+	}
-+
-+	pthread_exit(NULL);
-+}
-+
-+static void data_thread_render_init(data_thread_render *data, int fd)
-+{
-+	data->fd = fd;
-+	data->duration_total = 0;
-+	data->duration_min = -1;
-+	data->duration_max = 0;
-+	data->render_width = WIDTH;
-+	data->render_height = HEIGHT;
-+	data->render_tiling = RENDER_TILING;
-+	data->render_testtype = RENDER_TEST_TYPE;
-+	data->iterations = RENDER_ITERATIONS;
-+}
-+
-+static bool has_copy_function(struct drm_xe_engine_class_instance *hwe)
-+{
-+	return hwe->engine_class == DRM_XE_ENGINE_CLASS_COPY;
-+}
-+
-+static void render_stress_copy(int fd, struct igt_collection *set,
-+			       uint32_t nparallel_copies_per_engine)
-+{
-+	struct igt_collection *regions;
-+	struct drm_xe_engine_class_instance *hwe;
-+	data_thread_stress_copy data_stress_copy[COPY_MAX_THREADS];
-+	pthread_t threads_stress_copy[COPY_MAX_THREADS];
-+	int count_threads_stress_copy = 0;
-+
-+	data_thread_render data_render;
-+	pthread_t thread_render;
-+
-+	data_thread_render_init(&data_render, fd);
-+	igt_assert(pthread_create(&thread_render,
-+				  NULL,
-+				  run_thread_render,
-+				  &data_render) == 0);
-+
-+	for_each_variation_r(regions, 1, set) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (!has_copy_function(hwe))
-+				continue;
-+
-+			for (int i = 0; i < nparallel_copies_per_engine; i++) {
-+				data_thread_stress_copy_init(
-+					&data_stress_copy[count_threads_stress_copy], fd);
-+				data_stress_copy[count_threads_stress_copy].region =
-+					igt_collection_get_value(regions, 0);
-+				data_stress_copy[count_threads_stress_copy].hwe = hwe;
-+				igt_assert(pthread_create(
-+						   &threads_stress_copy[count_threads_stress_copy],
-+						   NULL,
-+						   run_thread_stress_copy,
-+						   &data_stress_copy[count_threads_stress_copy])
-+					   == 0);
-+				count_threads_stress_copy++;
-+				igt_assert_lt(count_threads_stress_copy, COPY_MAX_THREADS);
-+			}
-+		}
-+	}
-+
-+	for (int i = 0; i < count_threads_stress_copy; i++)
-+		pthread_join(threads_stress_copy[i], NULL);
-+	pthread_join(thread_render, NULL);
-+
-+	igt_info("Render duration: avg = %ld ns, min = %ld ns, max = %ld ns\n",
-+		 data_render.duration_total / data_render.iterations,
-+		 data_render.duration_min, data_render.duration_max);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -478,11 +661,25 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
- 	struct buf_ops *bops;
- 	const char *tiling_name;
- 	int tiling;
-+	struct igt_collection *set;
-+	const struct section {
-+		const char *name;
-+		unsigned int nparallel_copies_per_engine;
-+	} sections[] = {
-+		{ "0", 0 },
-+		{ "1", 1 },
-+		{ "2", 2 },
-+		{ "4", 4 },
-+		{ "16", 16 },
-+		{ NULL },
-+	};
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
- 		bops = buf_ops_create(xe);
- 		srand(time(NULL));
-+		set = xe_get_memory_region_set(xe,
-+					       DRM_XE_MEM_REGION_CLASS_SYSMEM);
- 	}
- 
- 	for (int id = 0; id <= COPY_FULL_COMPRESSED; id++) {
-@@ -502,6 +699,11 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
-+	for (const struct section *s = sections; s->name; s++)
-+		igt_subtest_f("render-stress-%s-copies", s->name) {
-+			render_stress_copy(xe, set, s->nparallel_copies_per_engine);
-+		}
-+
- 	igt_fixture {
- 		buf_ops_destroy(bops);
- 		drm_close_driver(xe);
--- 
-2.43.0
+> -----Original Message-----
+> From: Manszewski, Christoph <christoph.manszewski@intel.com>
+> Sent: Tuesday, March 4, 2025 5:32 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Piatkowski, Dominik Karol <dominik.karol.piatkowski@intel.com>;
+> Grzegorzek, Dominik <dominik.grzegorzek@intel.com>; Marcin Bernatowicz
+> <marcin.bernatowicz@linux.intel.com>; Mika Kuoppala
+> <mika.kuoppala@linux.intel.com>; Laguna, Lukasz
+> <lukasz.laguna@intel.com>; Wajdeczko, Michal
+> <Michal.Wajdeczko@intel.com>; Kamil Konieczny
+> <kamil.konieczny@linux.intel.com>; Manszewski, Christoph
+> <christoph.manszewski@intel.com>
+> Subject: [PATCH i-g-t v3 2/2] tests/intel/xe_eudebug: Add subtests for
+> eudebug/SR-IOV exclusion
+>=20
+> Eudebug is not supported in PF mode with VFs enabled and in VF mode.
+> Provide subtests to ensure that:
+>   1. enabling eudebug is not permitted in PF mode with VFs enabled
+>   2. eudebug sysfs toggle is not available in VF mode
+>   3. enabling VFs is not permitted when eudebug is enabled
+>=20
+> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+> ---
+>  tests/intel/xe_eudebug_sriov.c | 148
+> +++++++++++++++++++++++++++++++++
+>  tests/meson.build              |   1 +
+>  2 files changed, 149 insertions(+)
+>  create mode 100644 tests/intel/xe_eudebug_sriov.c
+>=20
+> diff --git a/tests/intel/xe_eudebug_sriov.c b/tests/intel/xe_eudebug_srio=
+v.c
+> new file mode 100644
+> index 000000000..eb13981bc
+> --- /dev/null
+> +++ b/tests/intel/xe_eudebug_sriov.c
+> @@ -0,0 +1,148 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright C 2025 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Test EU Debugger and SR-IOV interaction
+> + * Category: Core
+> + * Mega feature: EUdebug/SR-IOV
+> + * Sub-category: EUdebug tests
+> + * Functionality: EU Debugger framework
+> + * Test category: functionality test
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_sysfs.h"
+> +#include "lib/igt_sriov_device.h"
+> +#include "xe/xe_eudebug.h"
+> +
+> +static bool has_vf_enable_eudebug_attr(int fd, unsigned int vf_num)
+> +{
+> +	char path[PATH_MAX];
+> +	int sysfs;
+> +	bool ret;
+> +
+> +	igt_assert(vf_num > 0);
+> +
+> +	sysfs =3D igt_sysfs_open(fd);
+> +	igt_assert_fd(sysfs);
+> +	/* vf_num is 1-based, but virtfn is 0-based */
+> +	snprintf(path, sizeof(path), "device/virtfn%u/enable_eudebug",
+> vf_num - 1);
+> +	ret =3D igt_sysfs_has_attr(sysfs, path);
+> +	close(sysfs);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * SUBTEST: deny-eudebug
+> + * Description:
+> + *	Check that eudebug toggle is not available for VFs, and that enabling
+> + *	eudebug with VFs enabled is not permitted.
+> + */
+> +static void test_deny_eudebug(int fd)
+> +{
+> +	unsigned int num_vfs =3D igt_sriov_get_total_vfs(fd);
+> +	bool err =3D false;
+> +	int sysfs;
+> +
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	xe_eudebug_enable(fd, false);
+> +	igt_sriov_enable_driver_autoprobe(fd);
+> +	igt_sriov_enable_vfs(fd, num_vfs);
+> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(fd));
+> +
+> +	for (int vf_num =3D 1; vf_num <=3D num_vfs; ++vf_num) {
+> +		if (!igt_sriov_is_vf_drm_driver_probed(fd, vf_num)) {
+> +			igt_debug("VF%u probe failed\n", vf_num);
+> +			err =3D true;
+> +		} else if (has_vf_enable_eudebug_attr(fd, vf_num)) {
+> +			igt_debug("VF%u has enable_eudebug attribute\n",
+> vf_num);
+> +			err =3D true;
+> +		}
+> +	}
+> +
+> +	igt_assert(!err);
+> +
+> +	sysfs =3D igt_sysfs_open(fd);
+> +	igt_assert_fd(sysfs);
+> +	igt_assert_eq(igt_sysfs_printf(sysfs, "device/enable_eudebug", "1"), -
+> EPERM);
+> +	close(sysfs);
+> +}
+> +
+> +/**
+> + * SUBTEST: deny-sriov
+> + * Description:
+> + *	Check that VFs cannot be enabled when eudebug is enabled.
+> + */
+> +static void test_deny_sriov(int fd)
+> +{
+> +	unsigned int num_vfs =3D igt_sriov_get_total_vfs(fd);
+> +	int sysfs =3D 0;
+> +
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	igt_sriov_disable_vfs(fd);
+> +	igt_assert_eq(0, igt_sriov_get_enabled_vfs(fd));
+> +	xe_eudebug_enable(fd, true);
+> +
+> +	sysfs =3D igt_sysfs_open(fd);
+> +	igt_assert_fd(sysfs);
+> +	igt_assert_eq(igt_sysfs_printf(sysfs, "device/sriov_numvfs", "%u",
+> num_vfs), -EPERM);
+> +	close(sysfs);
+> +}
+> +
+> +static void restore_initial_driver_state(int fd, bool eudebug_enabled, b=
+ool
+> vf_autoprobe)
+> +{
+> +	bool abort =3D false;
+> +
+> +	igt_sriov_disable_vfs(fd);
+> +	if (igt_sriov_get_enabled_vfs(fd) > 0) {
+> +		igt_debug("Failed to disable VF(s)\n");
+> +		abort =3D true;
+> +	}
+> +
+> +	vf_autoprobe ? igt_sriov_enable_driver_autoprobe(fd) :
+> +		       igt_sriov_disable_driver_autoprobe(fd);
+> +	if (vf_autoprobe !=3D igt_sriov_is_driver_autoprobe_enabled(fd)) {
+> +		igt_debug("Failed to restore sriov_drivers_autoprobe
+> value\n");
+> +		abort =3D true;
+> +	}
+> +
+> +	if (__xe_eudebug_enable_getset(fd, NULL, &eudebug_enabled) < 0) {
+> +		igt_debug("Failed to restore eudebug state\n");
+> +		abort =3D true;
+> +	}
+> +
+> +	/* abort to avoid execution of next tests with invalid driver state */
+> +	igt_abort_on_f(abort, "Failed to restore initial driver state\n");
+> +}
+> +
+> +igt_main
+> +{
+> +	bool eudebug_enabled;
+> +	bool vf_autoprobe;
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd =3D drm_open_driver(DRIVER_XE);
+> +		igt_require(igt_sriov_is_pf(fd));
+> +		igt_require(igt_sriov_vfs_supported(fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(fd) =3D=3D 0);
+> +		igt_require(__xe_eudebug_enable_getset(fd,
+> &eudebug_enabled, NULL) =3D=3D 0);
+> +		vf_autoprobe =3D igt_sriov_is_driver_autoprobe_enabled(fd);
+> +	}
+> +
+> +	igt_subtest("deny-eudebug")
+> +		test_deny_eudebug(fd);
+> +
+> +	igt_subtest("deny-sriov")
+> +		test_deny_sriov(fd);
+> +
+> +	igt_fixture {
+> +		restore_initial_driver_state(fd, eudebug_enabled,
+> vf_autoprobe);
+> +		close(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 711eb899a..a2db178fb 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -333,6 +333,7 @@ intel_xe_eudebug_progs =3D [
+>  	'xe_eudebug',
+>  	'xe_exec_sip_eudebug',
+>  	'xe_eudebug_online',
+> +	'xe_eudebug_sriov',
+>  ]
+>=20
+>  if build_xe_eudebug
+> --
+> 2.34.1
 
