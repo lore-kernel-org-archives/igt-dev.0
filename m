@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B5D0C19F32
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 19:31:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF6C6C19F32
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 23:40:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C429210E2A9;
-	Wed,  5 Mar 2025 19:31:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A126410E856;
+	Wed,  5 Mar 2025 23:40:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DppbVD1Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DyT//TaR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A2EE10E2A9
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 19:31:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC77A10E0D9
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 23:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741203111; x=1772739111;
+ t=1741218011; x=1772754011;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=A+gh6Im5EvEGjaoS2bfx6T3rQUOfdzmUBmbrttlPo4s=;
- b=DppbVD1YSApgDMO5ey4xejUguKvw35hh9IETPH0aXbUQdht+b1bJa06k
- 2mtfsaAptJJ9JNLUOhgFFHaCZecdaL5fVjXen0pGSO7ODtDg69abaCy9Z
- HuOH34O3XyT923AdTTAYtm8dWBUfNnX8yA4FGA4ORO8CpLVTl74ExKLh6
- jBWa2gq6iJP1szbX5IoIkAKj08xS8O5BxiskkIb84HdTkiLaD7oElOKgJ
- +/JOoYxkiSAr3jT8vR0Vo7zllqQCCM6rcR080aULmJLiPLWFX29cefDuO
- G32C2JGnYwHUWCiVUN/EAlbl5U6fVpHFXr2CMqkr4fDoFE1RQ9Qiecho1 w==;
-X-CSE-ConnectionGUID: uF3IkC5eS3OO29w+oqUnBw==
-X-CSE-MsgGUID: 2yuNs2e5SDGytvXnsrv5bA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53584571"
-X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="53584571"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 11:31:51 -0800
-X-CSE-ConnectionGUID: j1CoLP/FTzi79cLAC6mSVg==
-X-CSE-MsgGUID: 0tPX9F5uSYe8/PVHwpHMZg==
+ bh=aydG167Xd801ZBPqV8fBTzhH6YsdOUkf7UM/Ir4l6wY=;
+ b=DyT//TaRJj/qjpSPdhhYRBiWhSbn34TXXOmUw2emhsBbsSKYFZ7T0RkO
+ a7RO7IaGh59ylH6FypQK5/OlELaI+dAbWooJQ8imU/RjDcbdO4eGnsM7n
+ tuZoy+1C76o71cOVJfSH+Y+WfplWqj9Qjqcs0J1/PBuaJpjNRBYY6mjwH
+ SiJe13dgkW3fSVeceUKY2mv9h1p42mu7F/VsbWy1m9nqsz7Ej6TSe6iOq
+ 9iQ/T7Gp35eEKQdnmRrVSXEUDMI4Hlcx6oTEZQTCYR+VXOjSPY3iUHD4b
+ rQwDQCc6hnEJhqwbfJxpJmFughHoYdfx4KDlUEYX6oC+BzI0ZKzdoWyZb g==;
+X-CSE-ConnectionGUID: s5KysAhPQh6UhRIuN0egFA==
+X-CSE-MsgGUID: fH0e4U0YS4mCuAf/NI0uvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41917097"
+X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="41917097"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 15:40:11 -0800
+X-CSE-ConnectionGUID: C/Rh5UvHTYmdst9x+5n4Cg==
+X-CSE-MsgGUID: 2cbSKQwxQ5u2R9Gv/Z3F6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="118586362"
-Received: from dneilan-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.78])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 11:31:48 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="118849497"
+Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 15:40:11 -0800
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Petri Latvala <adrinael@adrinael.net>
-Subject: [PATCH i-g-t v5] runner: Parse results harder
-Date: Wed,  5 Mar 2025 20:31:37 +0100
-Message-ID: <20250305193137.295162-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.48.1
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ John Harrison <John.C.Harrison@Intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: [PATCH i-g-t v5 0/6] Xe: Add tests for PXP 
+Date: Wed,  5 Mar 2025 15:39:41 -0800
+Message-ID: <20250305233951.3488609-1-daniele.ceraolospurio@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,233 +67,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sometimes an error happens in kernel or in test that leaves
-output files in corrupted or incorrect state. While runner or
-resume will just move on to executing next test, when generating
-results it could end up with no results.json
+Given that PXP introduces new interfaces and behaviors, we need to
+update existing IGTs and add new ones to cover all the new scenarios.
 
-  Try processing outputs a little more persistently and use any
-output file left there, even if only dmesg.txt. Also, when no
-useful output files were present, instead of breaking out add
-notrun.
+Minor changes have been done to common functions to propagate the
+PXP info and error returns.
 
-  Inform about processing results for each test so a problem
-could be spotted more easily.
+v3: part of the v2 series has been split off and merged (see [1]) to
+allow the kernel side to be merged without IGT failures. This is rebased
+on top of that and addresses the review comments on v2 on the remaining
+patches.
 
-v2: removed ')' from 'notrun\n)' (Kamil)
- using bool var, added more prints about errors (Ryszard)
-v3: reused open_for_reading, removed bool var (Krzysztof)
- closing only positive fds[] in close_outputs(), checking
- file sizes also if all opens succeeded (Kamil)
-v4: reverting to v2 and addresing review comments (Krzysztof)
- closing only already opened file, drop early return when empty
- output files as this changes run status (Kamil)
-v5: reverting to returning false after any out/err/dmesg output
- is missing, simplified later checks and printed logs, fixed
- closing outputs (Kamil)
+v4: fix termination test fixtures
 
-Cc: Ewelina Musial <ewelina.musial@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
-For results checks compile igt with runner and then run
-meson test -C build
+v5: turn off display before running the RPM test, add documentation to
+lib functions
 
- runner/executor.c  | 34 +++++++++++++++++++++++++-
- runner/executor.h  |  2 ++
- runner/resultgen.c | 61 ++++++++++++++++++++++++++++++++++------------
- 3 files changed, 81 insertions(+), 16 deletions(-)
+[1] https://patchwork.freedesktop.org/series/144158/
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 2abb18732..6cfe523a2 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -576,15 +576,47 @@ bool open_output_files(int dirfd, int *fds, bool write)
- 	return true;
- }
- 
-+/**
-+ * open_output_files_rdonly:
-+ * @dirfd: fd of output directory with err.txt, dmesg.txt and other files
-+ * @fds: array for fd's of opened output files
-+ *
-+ * Tries to open output files in read-only mode and saves file descriptors
-+ * in fds arrray.
-+ *
-+ * Returns: true if all files opened, false otherwise
-+ */
-+bool open_output_files_rdonly(int dirfd, int *fds)
-+{
-+	bool ret = true;
-+
-+	for (int i = 0; i < _F_LAST; i++)
-+		if ((fds[i] = open_for_reading(dirfd, filenames[i])) < 0) {
-+			fds[i] = -errno;
-+			ret = false; /* Remember failure */
-+		}
-+
-+	return ret;
-+}
-+
- void close_outputs(int *fds)
- {
- 	int i;
- 
- 	for (i = 0; i < _F_LAST; i++) {
--		close(fds[i]);
-+		if (fds[i] >= 0)
-+			close(fds[i]);
- 	}
- }
- 
-+const char *get_out_filename(int fid)
-+{
-+	if (fid >= 0 && fid < _F_LAST)
-+		return filenames[fid];
-+
-+	return "output-filename-index-error";
-+}
-+
- /* Returns the number of bytes written to disk, or a negative number on error */
- static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
- {
-diff --git a/runner/executor.h b/runner/executor.h
-index ab6a0c176..3b1cabcf5 100644
---- a/runner/executor.h
-+++ b/runner/executor.h
-@@ -26,7 +26,9 @@ enum {
- };
- 
- bool open_output_files(int dirfd, int *fds, bool write);
-+bool open_output_files_rdonly(int dirfd, int *fds);
- void close_outputs(int *fds);
-+const char *get_out_filename(int fid);
- 
- /*
-  * Initialize execute_state object to a state where it's ready to
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 0d3a569cf..c96aa6741 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -2176,12 +2176,42 @@ static bool parse_test_directory(int dirfd,
- {
- 	int fds[_F_LAST];
- 	struct subtest_list subtests = {};
--	bool status = true;
- 	int commsparsed;
- 
--	if (!open_output_files(dirfd, fds, false)) {
--		fprintf(stderr, "Error opening output files\n");
--		return false;
-+	if (!open_output_files_rdonly(dirfd, fds)) {
-+		struct stat statbuf;
-+		size_t fsizes[_F_LAST]; /* checks for both comm and out/err empty */
-+		int fst_err;
-+
-+		for (int i = 0; i < _F_LAST; ++i) {
-+			fsizes[i] = 0;
-+			if (fds[i] > 0) {
-+				fst_err = fstat(fds[i], &statbuf);
-+				if (!fst_err)
-+					fsizes[i] = statbuf.st_size;
-+				else
-+					fprintf(stderr, "results: %s: stats failed: %s\n",
-+						get_out_filename(i), strerror(fst_err));
-+			} else {
-+				fprintf(stderr, "results: %s: open failed: %s\n",
-+					get_out_filename(i), strerror(-fds[i]));
-+			}
-+		}
-+
-+		/* out/err/dmesg.txt should exist, otherwise there was crash */
-+		if (fds[_F_OUT] < 0 || fds[_F_ERR] < 0 || fds[_F_DMESG] < 0) {
-+			fprintf(stderr, "results: missing output file(s)\n");
-+			close_outputs(fds);
-+
-+			return false;
-+		}
-+
-+		if (!fsizes[_F_SOCKET] && !fsizes[_F_OUT] && !fsizes[_F_ERR]) {
-+			if (!fsizes[_F_DMESG])
-+				fprintf(stderr, "results: empty output files\n");
-+			else
-+				fprintf(stderr, "results: comms/err/out empty, using only dmesg\n");
-+		}
- 	}
- 
- 	/*
-@@ -2191,8 +2221,6 @@ static bool parse_test_directory(int dirfd,
- 	commsparsed = fill_from_comms(fds[_F_SOCKET], entry, &subtests, results);
- 	if (commsparsed == COMMSPARSE_ERROR) {
- 		fprintf(stderr, "Error parsing output files (comms)\n");
--		status = false;
--		goto parse_output_end;
- 	}
- 
- 	if (commsparsed == COMMSPARSE_EMPTY) {
-@@ -2200,20 +2228,17 @@ static bool parse_test_directory(int dirfd,
- 		 * fill_from_journal fills the subtests struct and
- 		 * adds timeout results where applicable.
- 		 */
--		fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
-+		if (fds[_F_JOURNAL] > 0)
-+			fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
- 
- 		if (!fill_from_output(fds[_F_OUT], entry->binary, "out", &subtests, results->tests) ||
- 		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
- 			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
--			status = false;
--			goto parse_output_end;
- 		}
- 	}
- 
- 	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
- 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
--		status = false;
--		goto parse_output_end;
- 	}
- 
- 	override_results(entry->binary, &subtests, results->tests);
-@@ -2221,11 +2246,10 @@ static bool parse_test_directory(int dirfd,
- 
- 	add_to_totals(entry->binary, &subtests, results);
- 
-- parse_output_end:
- 	close_outputs(fds);
- 	free_subtests(&subtests);
- 
--	return status;
-+	return true;
- }
- 
- static void try_add_notrun_results(const struct job_list_entry *entry,
-@@ -2359,14 +2383,21 @@ struct json_object *generate_results_json(int dirfd)
- 		char name[16];
- 
- 		snprintf(name, 16, "%zd", i);
-+		fprintf(stderr, "results: parsing output: %s/ for test: %s\n",
-+			name, job_list.entries[i].binary);
- 		if ((testdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0) {
-+			if (settings.log_level >= LOG_LEVEL_NORMAL)
-+				fprintf(stderr, "results: no output, setting notrun\n");
-+
- 			try_add_notrun_results(&job_list.entries[i], &settings, &results);
- 			continue;
- 		}
- 
- 		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
--			close(testdirfd);
--			return NULL;
-+			if (settings.log_level >= LOG_LEVEL_NORMAL)
-+				fprintf(stderr, "results: no useful output, setting notrun\n");
-+
-+			try_add_notrun_results(&job_list.entries[i], &settings, &results);
- 		}
- 		close(testdirfd);
- 	}
+Daniele Ceraolo Spurio (6):
+  tests/intel/xe_vm: Update invalid flag subtest with valid PXP flag
+  tests/intel/xe_query: Add test for PXP status query
+  tests/intel/xe_pxp: Add PXP object and queue creation tests
+  tests/intel/xe_pxp: Test PXP submissions
+  tests/intel/xe_pxp: Termination tests
+  tests/intel/xe_pxp: Test encrypted FBs
+
+ lib/intel_batchbuffer.c |   62 +-
+ lib/intel_batchbuffer.h |    1 +
+ lib/xe/xe_ioctl.c       |   49 +-
+ lib/xe/xe_ioctl.h       |    4 +-
+ tests/intel/xe_mmap.c   |    1 +
+ tests/intel/xe_pxp.c    | 1222 +++++++++++++++++++++++++++++++++++++++
+ tests/intel/xe_query.c  |   61 ++
+ tests/intel/xe_vm.c     |   23 +
+ tests/meson.build       |    1 +
+ 9 files changed, 1403 insertions(+), 21 deletions(-)
+ create mode 100644 tests/intel/xe_pxp.c
+
 -- 
-2.48.1
+2.43.0
 
