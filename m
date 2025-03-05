@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9554DC19F32
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 04:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B60C19F32
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 05:01:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9005F10E0BF;
-	Wed,  5 Mar 2025 04:56:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C26010E0BF;
+	Wed,  5 Mar 2025 05:01:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FcQF7Jp6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MgjElonh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5992C10E0BF
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 04:56:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EE5C10E0BF
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 05:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741150581; x=1772686581;
+ t=1741150908; x=1772686908;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=/PHMAVfDV3kdfh4l6O7mVKNA7u268oJ6YClVYiE9tCQ=;
- b=FcQF7Jp6aramocFupDefmQpk3529UxQH7dtJSXoyuIBjYer6Lv/WocNa
- StNtpXCwdh/PZP09jSarzPbznQXeR3JWBft+FeF2xv3DrIUennHXPwuiJ
- z8xmJCIwWwoXLvqRULuAzcwviPbu5p2J6TVv7eC2T61aadyc01Iib3eyB
- Hm/rzJTIGfNUtPzIdW5AoFs9TFYGTdH7QW0mc6XiWu/CaFsDhs9Bg2/rt
- Mz0Au00PdTKa2+hnOR0j6vWUdtRVjxnX09f8LRQXOOBvHIH9q3PUWR37i
- bS0L3aNhwPDbabQf9R/sAOGHzfown4HpUJF3OjRROtxmZGcSoDhtVnOCc Q==;
-X-CSE-ConnectionGUID: WtFHZt0RSB+/Zs4thVX/FQ==
-X-CSE-MsgGUID: Yj7lNl49QJKdtB0V7YbAbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="59508314"
-X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="59508314"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 20:56:21 -0800
-X-CSE-ConnectionGUID: pZi0Tfy9T1yyIYG4TPV7KA==
-X-CSE-MsgGUID: Sglc5Q2UQxmO17v28sbNKw==
+ bh=kjzAX41cio0SqR6qxjFRlnuGvJQ7rajWiBe/+uVWq8s=;
+ b=MgjElonhKE0+3A/zN6qzfN2+MgU44AIXPuY+FkcXi001kZ6ZMfQHPwD+
+ 30pm4N6nqhUQAY45D6bYOPvoTe7Y56bzTMDQwhQ7w9omhFW/uMcgaOQsS
+ 14+tlDhpBrtJp/vHsqgQwLNR6HIhVoU4/WxlMovKjUeJwNCnNAHRlMu0t
+ F7Ninkh7T+Tpyv1DaW5eIhs9z8nlCYEH4AEdThsIaNNTma2BJ3lofBkqS
+ PJCINNkDBAu/7S3UEEhunNxUvKAo10IZUO3yZbFVHfDYGl5fRSl1YALcK
+ kGQBg7caaSznTShg79NQ+jEnRiTsALtkVv5ipUztdL8MfQxiDIiaUqezN g==;
+X-CSE-ConnectionGUID: 5NxEN2NIRDawRdr31paKKA==
+X-CSE-MsgGUID: UDtbNKLKRnuCozspNEUQJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="46021780"
+X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="46021780"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 21:01:48 -0800
+X-CSE-ConnectionGUID: h6Wiuf+UR7+0Z9T2KjYMWQ==
+X-CSE-MsgGUID: 7Up+0SOsS7K/yttOI9X6dQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119086493"
+X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; d="scan'208";a="118594329"
 Received: from vanisiub-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.83.50])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2025 20:56:21 -0800
-Date: Tue, 04 Mar 2025 20:56:20 -0800
-Message-ID: <878qpkt6rv.wl-ashutosh.dixit@intel.com>
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 21:01:48 -0800
+Date: Tue, 04 Mar 2025 21:01:47 -0800
+Message-ID: <877c54t6is.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_oa: Do not discard single
- reports in oa-formats
-In-Reply-To: <20250305005716.168646-2-umesh.nerlige.ramappa@intel.com>
-References: <20250305005716.168646-1-umesh.nerlige.ramappa@intel.com>	<20250305005716.168646-2-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_oa: Enable OA tests for
+ simulation
+In-Reply-To: <20250305005716.168646-3-umesh.nerlige.ramappa@intel.com>
+References: <20250305005716.168646-1-umesh.nerlige.ramappa@intel.com>	<20250305005716.168646-3-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,62 +71,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 04 Mar 2025 16:57:15 -0800, Umesh Nerlige Ramappa wrote:
+On Tue, 04 Mar 2025 16:57:16 -0800, Umesh Nerlige Ramappa wrote:
 >
-> Internally the test is expecting a single read call to return at least
-> two reports. If two reports are not read, the logic retries from the
-> beginning. This can easily fail if each read just returns one report.
-
-OK, you mean 1000 reads each returning just one report.
-
-> In essence, many reports are available, but the logic causes test to
-> fail.  Instead, count and use every report read when waiting for two
-> reports to be available.
+> Simulation runs are slow, so account for that by modifying the scope of
+> the tests.
+>
+> - Set parameters specific to simulation during init.
+> - Skip tests that are heavily reliant on timing and that only test SW
+>   functionality.
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->  tests/intel/xe_oa.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  tests/intel/xe_oa.c | 32 ++++++++++++++++++++++++--------
+>  1 file changed, 24 insertions(+), 8 deletions(-)
 >
 > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index dd71683928bd..e5744d830d39 100644
+> index e5744d830d39..06d324159211 100644
 > --- a/tests/intel/xe_oa.c
 > +++ b/tests/intel/xe_oa.c
-> @@ -1314,13 +1314,14 @@ read_2_oa_reports(int format_id,
->	int max_reports = default_oa_buffer_size / format_size;
->	int buf_size = format_size * max_reports * 1.5;
->	uint8_t *buf = malloc(buf_size);
-> +	ssize_t len = 0;
->	int n = 0;
+> @@ -1111,13 +1111,25 @@ init_sys_info(void)
 >
->	for (int i = 0; i < 1000; i++) {
->		u32 oa_status = 0;
-> -		ssize_t len;
-> +		int ret;
+>	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
 >
-> -		while ((len = read(stream_fd, buf, buf_size)) < 0 && errno == EINTR)
-> +		while ((ret = read(stream_fd, buf + len, buf_size)) < 0 && errno == EINTR)
+> -	min_oa_exponent = 5;
+> -	max_oa_exponent = 20;
+> -	rc_width = 1920;
+> -	rc_height = 1080;
+> -	buffer_fill_size = SZ_16M;
+> -	num_buf_sizes = ARRAY_SIZE(buf_sizes);
+> -	oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
+> +	if (igt_run_in_simulation()) {
+> +		igt_debug("SIMULATION run\n");
+> +		min_oa_exponent = 5;
+> +		max_oa_exponent = 10;
+> +		rc_width = 64;
+> +		rc_height = 36;
+> +		buffer_fill_size = SZ_128K;
+> +		num_buf_sizes = 3;
+> +		oa_exponent_default = max_oa_exponent_for_period_lte(1000);
+> +	} else {
+> +		igt_debug("HW run\n");
+> +		min_oa_exponent = 5;
+> +		max_oa_exponent = 20;
+> +		rc_width = 1920;
+> +		rc_height = 1080;
+> +		buffer_fill_size = SZ_16M;
+> +		num_buf_sizes = ARRAY_SIZE(buf_sizes);
+> +		oa_exponent_default = max_oa_exponent_for_period_lte(1000000);
+> +	}
 
-Probably never hit this but maybe 'buf_size - len' ? Otherwise:
+Just a question here: what execution time (allowed by CI) are we assuming
+for these simulation specific params?
+
+>
+>	default_oa_buffer_size = get_default_oa_buffer_size(drm_fd);
+>	igt_debug("default_oa_buffer_size: %zu\n", default_oa_buffer_size);
+> @@ -4758,6 +4770,7 @@ igt_main
+>			test_enable_disable(hwe);
+>
+>	igt_subtest_with_dynamic("blocking") {
+> +		igt_require(!igt_run_in_simulation());
+>		__for_one_hwe_in_oag(hwe)
+>			test_blocking(40 * 1000 * 1000 /* 40ms oa period */,
+>				      false /* set_kernel_hrtimer */,
+> @@ -4766,6 +4779,7 @@ igt_main
+>	}
+>
+>	igt_subtest_with_dynamic("polling") {
+> +		igt_require(!igt_run_in_simulation());
+>		__for_one_hwe_in_oag(hwe)
+>			test_polling(40 * 1000 * 1000 /* 40ms oa period */,
+>				     false /* set_kernel_hrtimer */,
+> @@ -4805,8 +4819,10 @@ igt_main
+>		igt_subtest("oa-unit-exclusive-stream-exec-q")
+>			test_oa_unit_exclusive_stream(false);
+>
+> -		igt_subtest("oa-unit-concurrent-oa-buffer-read")
+> +		igt_subtest("oa-unit-concurrent-oa-buffer-read") {
+> +			igt_require(!igt_run_in_simulation());
+>			test_oa_unit_concurrent_oa_buffer_read();
+> +		}
+
+I am assuming all remaining tests either (a) pass in simulation, or, (b)
+have legitimate failures there which need fixing. This is great news:
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
->			;
->		if (errno == EIO) {
->			oa_status = get_stream_status(stream_fd);
-> @@ -1328,9 +1329,10 @@ read_2_oa_reports(int format_id,
->			continue;
->		}
+>	}
 >
-> -		igt_assert(len > 0);
-> -		igt_debug("read %d bytes\n", (int)len);
-> +		igt_assert(ret > 0);
-> +		igt_debug("read %d bytes\n", (int)ret);
->
-> +		len += ret;
->		/* Need at least 2 reports */
->		if (len < 2 * format_size)
->			continue;
+>	igt_subtest("rc6-disable") {
 > --
 > 2.45.2
 >
