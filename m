@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF6C6C19F32
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 23:40:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FD90C28B22
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 23:40:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A126410E856;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A122010E0D9;
 	Wed,  5 Mar 2025 23:40:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DyT//TaR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MhujK9Uf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC77A10E0D9
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 23:40:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E11610E856
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 23:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741218011; x=1772754011;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=aydG167Xd801ZBPqV8fBTzhH6YsdOUkf7UM/Ir4l6wY=;
- b=DyT//TaRJj/qjpSPdhhYRBiWhSbn34TXXOmUw2emhsBbsSKYFZ7T0RkO
- a7RO7IaGh59ylH6FypQK5/OlELaI+dAbWooJQ8imU/RjDcbdO4eGnsM7n
- tuZoy+1C76o71cOVJfSH+Y+WfplWqj9Qjqcs0J1/PBuaJpjNRBYY6mjwH
- SiJe13dgkW3fSVeceUKY2mv9h1p42mu7F/VsbWy1m9nqsz7Ej6TSe6iOq
- 9iQ/T7Gp35eEKQdnmRrVSXEUDMI4Hlcx6oTEZQTCYR+VXOjSPY3iUHD4b
- rQwDQCc6hnEJhqwbfJxpJmFughHoYdfx4KDlUEYX6oC+BzI0ZKzdoWyZb g==;
-X-CSE-ConnectionGUID: s5KysAhPQh6UhRIuN0egFA==
-X-CSE-MsgGUID: fH0e4U0YS4mCuAf/NI0uvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41917097"
-X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="41917097"
+ t=1741218013; x=1772754013;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=jRZn+TgiruiqEdO12/wZVXMKZOxrXjJh4f78WWpdb/g=;
+ b=MhujK9UfpDOQ5FftSsXgFrShV3zCbNbsKkD7iDxAiXyocn4Y0jcWIrCW
+ zF4tSE9md9gQeQNde0o47MIS6NTqvZvhv+V+zA1LYPNbjgC+Ha/KYVPKS
+ Lvg3IrjKA3ZOaABqZs+ioLFKt2uCoJlaOwRxAcxO7L+rjgaf/n3Yl1Pum
+ IOwqMVChkWxDnpGSkcoIQd5tN6x7Ldjc13pcwAQos7HtrIhiJiYXtWwHy
+ xCkXQMW+dod/5hXhj8nO+2TppyTdwigCcarWhkIhExje2JUvBpmjhAGIH
+ /te+O3sYIB3wMAuFCPRPWfGmWkO53ndhhCqt6DpMZGxdoLUrNOckCuNue g==;
+X-CSE-ConnectionGUID: puzrGRa8TxSKzlO22FZyzA==
+X-CSE-MsgGUID: IPlzaY4cRGCSr6rK5UuE8Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41917102"
+X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="41917102"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 15:40:11 -0800
-X-CSE-ConnectionGUID: C/Rh5UvHTYmdst9x+5n4Cg==
-X-CSE-MsgGUID: 2cbSKQwxQ5u2R9Gv/Z3F6Q==
+ 05 Mar 2025 15:40:13 -0800
+X-CSE-ConnectionGUID: LXn6o/hoSveiU4+oPeL6SA==
+X-CSE-MsgGUID: YRYZqeRjRaOZ3zBWXSF/AA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="118849497"
+X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; d="scan'208";a="118849511"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 15:40:11 -0800
+ 05 Mar 2025 15:40:13 -0800
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>,
  Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: [PATCH i-g-t v5 0/6] Xe: Add tests for PXP 
-Date: Wed,  5 Mar 2025 15:39:41 -0800
-Message-ID: <20250305233951.3488609-1-daniele.ceraolospurio@intel.com>
+Subject: [PATCH i-g-t v5 1/6] tests/intel/xe_vm: Update invalid flag subtest
+ with valid PXP flag
+Date: Wed,  5 Mar 2025 15:39:42 -0800
+Message-ID: <20250305233951.3488609-2-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250305233951.3488609-1-daniele.ceraolospurio@intel.com>
+References: <20250305233951.3488609-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,46 +69,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Given that PXP introduces new interfaces and behaviors, we need to
-update existing IGTs and add new ones to cover all the new scenarios.
+The invalid flag subtest also checks all the valid flags, so add the new
+PXP flag to it.
 
-Minor changes have been done to common functions to propagate the
-PXP info and error returns.
+v2: only test the new flag if the kernel supports it.
+v3: rebase on the split of the update on the first invalid flag number
+to its own patch.
 
-v3: part of the v2 series has been split off and merged (see [1]) to
-allow the kernel side to be merged without IGT failures. This is rebased
-on top of that and addresses the review comments on v2 on the remaining
-patches.
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com> #v2
+---
+ tests/intel/xe_vm.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-v4: fix termination test fixtures
-
-v5: turn off display before running the RPM test, add documentation to
-lib functions
-
-[1] https://patchwork.freedesktop.org/series/144158/
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-
-Daniele Ceraolo Spurio (6):
-  tests/intel/xe_vm: Update invalid flag subtest with valid PXP flag
-  tests/intel/xe_query: Add test for PXP status query
-  tests/intel/xe_pxp: Add PXP object and queue creation tests
-  tests/intel/xe_pxp: Test PXP submissions
-  tests/intel/xe_pxp: Termination tests
-  tests/intel/xe_pxp: Test encrypted FBs
-
- lib/intel_batchbuffer.c |   62 +-
- lib/intel_batchbuffer.h |    1 +
- lib/xe/xe_ioctl.c       |   49 +-
- lib/xe/xe_ioctl.h       |    4 +-
- tests/intel/xe_mmap.c   |    1 +
- tests/intel/xe_pxp.c    | 1222 +++++++++++++++++++++++++++++++++++++++
- tests/intel/xe_query.c  |   61 ++
- tests/intel/xe_vm.c     |   23 +
- tests/meson.build       |    1 +
- 9 files changed, 1403 insertions(+), 21 deletions(-)
- create mode 100644 tests/intel/xe_pxp.c
-
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index fdf74c114..5a04835fa 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -2173,6 +2173,22 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++static bool pxp_interface_supported(int fd)
++{
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
++		.size = 0,
++		.data = 0,
++	};
++	int ret = 0;
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
++		ret = -errno;
++
++	return ret != -EINVAL;
++}
++
+ /**
+  * SUBTEST: bind-flag-invalid
+  * Functionality: bind
+@@ -2220,6 +2236,13 @@ static void bind_flag_invalid(int fd)
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 	syncobj_reset(fd, &sync[0].handle, 1);
+ 
++	if (pxp_interface_supported(fd)) {
++		bind.bind.flags = DRM_XE_VM_BIND_FLAG_CHECK_PXP;
++		igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++		syncobj_reset(fd, &sync[0].handle, 1);
++	}
++
+ 	bind.bind.flags = DRM_XE_VM_BIND_FLAG_NULL;
+ 	bind.bind.obj = 0;
+ 	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
 -- 
 2.43.0
 
