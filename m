@@ -4,68 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FABFC282DE
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 14:41:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B5E9C282DE
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Mar 2025 15:21:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FDCF892E0;
-	Wed,  5 Mar 2025 14:40:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0389B10E4FD;
+	Wed,  5 Mar 2025 15:21:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="JvxselUK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yjuh+AE1";
 	dkim-atps=neutral
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com
- [209.85.216.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB6E0892E0
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 14:40:19 +0000 (UTC)
-Received: by mail-pj1-f45.google.com with SMTP id
- 98e67ed59e1d1-2ff04f36fd2so5874802a91.1
- for <igt-dev@lists.freedesktop.org>; Wed, 05 Mar 2025 06:40:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741185619; x=1741790419; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Qjekr/OVRa0RD53/VpHweqwm9ST10nT7z50/JGD/aew=;
- b=JvxselUK9YNmueoLVZpMxiaCyE2U+QKtpGzECpARuLYZVNDMwOMJrxRQJTxraYBThA
- IJxJ9303Yy4u1zwD4Ox8o7lMFlVDYpgJXmcTjET8jChg8aRzuSQ7z2pRnpzjxQlVq8Uy
- 7arpr6VPHcs+qAh9M2sZtvo3Qt65yFb7lhX/teKqP4KnLRkYKTIdCvMNmDCI/zq/m/iq
- 0RFWkL7nXtioG5gedXYkQJZiwmEPvnHNtoTD1nCA8GVVmueekGHreGQn9UH1XB0+FrMg
- ukXmtdIOMV58Zq3CFmhkz1APUvvDW4gDv9bBkWCn1m0PjemTtQ94eWxKlWohk0sIh/3b
- vaAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741185619; x=1741790419;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Qjekr/OVRa0RD53/VpHweqwm9ST10nT7z50/JGD/aew=;
- b=dUEPbTIdYDxJhkfrO/jW8Sa8hTmDW2IN8HSkhG3kuqzEfY48wMhvrFSm1ZuS7TtweT
- fOpJm1foTMY/zZFE3si93xRV+C1TT6PqrUKCTas0DfPNswBWLD/pEXR88qCdnMaxaulZ
- UT7J+i6w0AH2dmKaoybv6w/DjQm5/oEw2IXrnktHtYL+bFHna5crjRA90ZCm/3WZEV+d
- 3HrhvVR8n8TyM+p4Cqf4cIlUoEEmAtwyH5yLu2RQASt6SRVJ5HtvZxuAGtnoSHnIpft6
- iyFXD1VF1d6NOH0XxXce1u98XXeVZ5MtqY5mHSxhhbfhxKNEgCrBeiS7Dw9iiQvOPYsy
- HxwQ==
-X-Gm-Message-State: AOJu0YwEFCmpAtGryJfASLJKL1UcKcSFQzkhd2hPFn1u7xwQO1wK5A4H
- vSFwggoIex/GHNxDVGM6moZp5ZlqsgUwDtPwwYEr0pBGGd1ljrCsiLrSXWWyP3XLyOMlXe/pPE5
- aE74c4nM28xNVapOKvpTIlBZZwyN7vTxbGMs=
-X-Gm-Gg: ASbGnctYMt1Kq2VEjCEfmsAxNhNofCA8gjlRE4TUBwk/bc4Lw7yeUgEj9EPz7PfMaZU
- M+zGmt9GXG0jV51SxK4/XZexK/sgmvpg0FH7/IW7zMvdS7D28HN3qYYyt/wJ21pOckWB5s/wnvn
- 2/6/ux1sq1UVMxf2TTFLd64Rb9dH1D
-X-Google-Smtp-Source: AGHT+IEQLpQlUYX/Sz71yfwcApKNDyR5MWHxxjeRRCqWogHeu4Rt+Gf7H/8pv2SvKMt/XCtqvEx25EThEhTwStBz5ak=
-X-Received: by 2002:a05:6a00:cc7:b0:736:5725:59b4 with SMTP id
- d2e1a72fcca58-73682b5a0b6mr5805474b3a.3.1741185619139; Wed, 05 Mar 2025
- 06:40:19 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 786C410E4FD
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Mar 2025 15:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741188062; x=1772724062;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VUNHsmheOECm9jGaWJhmFL6o51nQgsx8/DkHJX+rv9c=;
+ b=Yjuh+AE16FQ9CrIAaZS/dgptBZ/Pf6cdgLrugN/5c1Noga6jdlZo01lN
+ 9cE+V3gOTsE6TEX7VAgKSaTeaRFroa7UJB/q//TsxpBLc++4JU8MjbfWl
+ 2zcs67z9kvC4YmHhstBOJXOJKWg5s54UO4KK+YqE38wQd1IcHLBwfapU7
+ Klbkf8b3ETvR5ugq5cA66FiXhLsHURi/FabOxfcOgQTvN1y85ukw1TuII
+ yLIyciaBkSslk6UD0Nttey2j+ZPCm+OGjWMVofsg60y2eON5kCukOQK7/
+ zXAqacF0GW41cPv+VpuJNUaWOjVHq/a5FmoauivlnDuU9xBExWWNGu2WW w==;
+X-CSE-ConnectionGUID: c+ELjAn8S/OZiHubRVYJKA==
+X-CSE-MsgGUID: LxPUGhrTTriUyUrroQO4tg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29737635"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="29737635"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 07:20:56 -0800
+X-CSE-ConnectionGUID: FlcPuPMuTqCaHEM8qgRIIQ==
+X-CSE-MsgGUID: D03it/TiSeW9AsMHWV/N9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; d="scan'208";a="118733290"
+Received: from nemesa.iind.intel.com ([10.190.239.22])
+ by fmviesa007.fm.intel.com with ESMTP; 05 Mar 2025 07:20:54 -0800
+From: Nemesa Garg <nemesa.garg@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Nemesa Garg <nemesa.garg@intel.com>
+Subject: [PATCH i-g-t v4] tests/kms_plane: Add test to validate odd panning
+Date: Wed,  5 Mar 2025 20:47:08 +0530
+Message-Id: <20250305151708.874294-1-nemesa.garg@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20250303110235.15976-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20250303110235.15976-1-ville.syrjala@linux.intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 5 Mar 2025 16:40:07 +0200
-X-Gm-Features: AQ5f1JrcUKC8lrPCE3VlBb-SlzMQKT1ZcNKjyXpxY_MAWVUZvLudoC2NTc2JZ0w
-Message-ID: <CAJ=qYWRt0KPS_SGhRRWou+iBzAttLZxRnStEeS5NMkQB-zXWoQ@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] tests/intel/kms_draw_crc: Skip formats not
- supported by the plane
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +64,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+This feature creates a NV12 plane having two framebuffers
+and moving it to odd position and then do continous flip
+along with the change in the width of framebuffer.
+This is to check whether panning at odd position is
+supported or not.
 
-On Mon, Mar 3, 2025 at 1:02=E2=80=AFPM Ville Syrjala
-<ville.syrjala@linux.intel.com> wrote:
->
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->
-> The test only checks igt_display_has_format_mod() before
-> deciding to test a specific format. But that doesn't
-> mean the actual plane supports that format. Also check
-> for that once we know which plane to use.
->
-> Should turn the fp16 failures into skips on IVB because it
-> doesn't have fp16 support on the primary plane.
->
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> ---
->  tests/intel/kms_draw_crc.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
-> index 9c350853cfd9..62c6c64be710 100644
-> --- a/tests/intel/kms_draw_crc.c
-> +++ b/tests/intel/kms_draw_crc.c
-> @@ -158,6 +158,8 @@ static void get_method_crc(enum igt_draw_method metho=
-d, uint32_t drm_format,
->
->         primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIM=
-ARY);
->
-> +       igt_require(igt_plane_has_format_mod(primary, drm_format, modifie=
-r));
-> +
->         igt_create_fb(drm_fd, mode->hdisplay, mode->vdisplay,
->                       drm_format, modifier, &fb);
->         igt_plane_set_fb(primary, &fb);
-> --
-> 2.45.3
->
+v2: Add test in kms_plane.[Swati]
+v3: Remove extra parameters[Pranay]
+v4: Add a break condition in loop
+
+Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
+---
+ tests/kms_plane.c | 99 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
+
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index b9bf025bd..e4555e932 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -88,6 +88,15 @@
+  * @format-source-clamping:          with source clamping
+  */
+ 
++/**
++ * SUBTEST: odd-panning
++ * Description: Verify that odd panning in horizontal direction for planar format
++ * Driver requirement: i915, xe
++ * Functionality: plane, panning
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ */
++
+ /*
+  * Throw away enough lsbs in pixel formats tests
+  * to get a match despite some differences between
+@@ -100,6 +109,9 @@
+ #define CRTC_RESTRICT_CNT	2
+ #define SIM_CRTC_RESTRICT_CNT	1
+ 
++#define PLANE_WIDTH 810
++#define PLANE_HEIGHT 590
++
+ typedef struct {
+ 	float red;
+ 	float green;
+@@ -1330,6 +1342,89 @@ static bool is_pipe_limit_reached(int count)
+ 		return count >= CRTC_RESTRICT_CNT && !all_pipes;
+ }
+ 
++static void
++prepare_planes_panning(igt_display_t *display, const enum pipe pipe_id,
++	       igt_output_t *output)
++{
++	igt_plane_t *primary;
++	struct igt_fb primary_fb_1, primary_fb_2;
++	unsigned int fb_id_1, fb_id_2;
++	int j = 0, ret;
++
++	igt_output_set_pipe(output, pipe_id);
++
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++	fb_id_1 = igt_create_pattern_fb(display->drm_fd,
++					800, 590,
++					DRM_FORMAT_NV12,
++					DRM_FORMAT_MOD_LINEAR,
++					&primary_fb_1);
++
++	fb_id_2 = igt_create_pattern_fb(display->drm_fd,
++					800, 590,
++					DRM_FORMAT_NV12,
++					DRM_FORMAT_MOD_LINEAR,
++					&primary_fb_2);
++
++	igt_assert(fb_id_1);
++	igt_assert(fb_id_2);
++
++	igt_plane_set_fb(primary, &primary_fb_1);
++
++	igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
++	igt_plane_set_position(primary, -501, 200);
++
++	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	do {
++		if (j % 2 == 0) {
++			igt_plane_set_fb(primary, &primary_fb_1);
++			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
++			ret = igt_display_try_commit_atomic(display, 0, NULL);
++			if (ret == -22)
++				break;
++		} else {
++			igt_plane_set_fb(primary, &primary_fb_2);
++			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
++			ret = igt_display_try_commit_atomic(display, 0, NULL);
++			if (ret == -22)
++				break;
++		}
++		j++;
++	} while (j < 20);
++
++	igt_assert_eq(ret, -22);
++
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_try_commit2(display, COMMIT_ATOMIC);
++
++	igt_remove_fb(display->drm_fd, &primary_fb_1);
++	igt_remove_fb(display->drm_fd, &primary_fb_2);
++}
++
++static void run_test_odd_pan(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	enum pipe pipe;
++	igt_output_t *output;
++
++	for_each_pipe_with_valid_output(display, pipe, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, pipe);
++		if (!intel_pipe_output_combo_valid(display))
++			continue;
++
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
++			prepare_planes_panning(display, pipe, output);
++
++		if (pipe == 0)
++			break;
++	}
++}
++
+ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+ {
+ 	enum pipe pipe;
+@@ -1408,6 +1503,10 @@ run_tests_for_pipe_plane(data_t *data)
+ 		run_test(data, dynamic_test_handler);
+ 	}
+ 
++	igt_describe("verify whether odd panning is supported or not");
++	igt_subtest_with_dynamic("odd-panning")
++		run_test_odd_pan(data);
++
+ 	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
+ 	igt_subtest_f("planar-pixel-format-settings")
+ 		test_planar_settings(data);
+-- 
+2.34.1
+
