@@ -4,55 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9836FC282DE
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 19:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 455ACC282DE
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 19:01:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4ADE810EA7E;
-	Thu,  6 Mar 2025 19:01:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F01AE10E09C;
+	Thu,  6 Mar 2025 19:01:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="icP9CjA+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k1cy3eln";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4D8410E09C
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 19:01:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 440A710EA7F
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 19:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741287690; x=1772823690;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FH31V33Pme4fP2TeYmTTMqQuq0WUxsCf4Dwl2APW2s0=;
- b=icP9CjA+Ld7ogG6IIW5I6rC7k+ByEB7rM9eFj591lQNr0XmjExY37HCf
- XMUEq+9UvygWLZ6cg2y022ohkpgQSZ4q8/+ZamSNeYM50rG8BFvyxZtlh
- Yi7FGbKehnb58dTDxRQTVZMaHRU5ywCcUuhzvqFeQ7guSXKjTxHpj9Y1A
- 9jJ8YepbXYvJNg9QOXxDIZJb7WoJm58heUanQIr5ejRdQD0l7+e+dhgSz
- wOXL1hXT9at9z/cHEEv/U2uF4cj53f5V8KTX4ZpWHhXjPJNXdMn8JkfA7
- yHZ9WXogLFLDAZ9g5QwF2GikxYTxzwQy+/qFyrvRJTAVgogIG3/aMNsgb w==;
-X-CSE-ConnectionGUID: 8N+6MXRJTxuLWSmO7dEV+g==
-X-CSE-MsgGUID: Q3GwWB7LS4W/b0jdjxitiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="52959762"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="52959762"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 11:01:29 -0800
-X-CSE-ConnectionGUID: izkT9exTQbW40NIsteEI2Q==
-X-CSE-MsgGUID: Y/bcvoGzTaiU8UMVBLM82w==
+ t=1741287697; x=1772823697;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=zwHiXIq8knPWbknTYrMTPJnxHm0lgKtHKHDlk8KpIUw=;
+ b=k1cy3elnwsiFAchfkMAxJDvNy64Y8b9yzuF3PH86NXBzJGPYcL8FcnfC
+ efVokDyjep5hVhiNfEIpKeIwGOth2DnGxpZrYP8yyV8hxTYTHZmVK/Yqf
+ uM3AmXiQTvJfKB4GxN/yvP59S646Iw9gw1CL1vqD5tNQz9bx5fMj5pgJO
+ ZwKxHXnqw9tKTEsaF/b3AqduZrzQQKNFT01Q+PYCV/ifLNCPqeuencfQO
+ BQhBrp2dGUJN+koj7ZlL/E5II0QU8wO2Qn4/p22OdWGRJ9btwzGwxqHEM
+ 0hkYLyfrIMPs7Vwc7plCmicv56BKu1C6BVU67jf1owPo5LaLjWKQ9TdFN A==;
+X-CSE-ConnectionGUID: NRlCUvT9QVuvVcoCZwGmvQ==
+X-CSE-MsgGUID: dbxUsmGQSHCxlHcIuN/T4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="67693662"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="67693662"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 11:01:37 -0800
+X-CSE-ConnectionGUID: 8hpCjf3CRym/h2A4WrQvwA==
+X-CSE-MsgGUID: bz8oLJtEQ+2swB0Y/G02Yg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120025514"
-Received: from unknown (HELO anirban-Z690I-A-ULTRA-PLUS.iind.intel.com)
- ([10.190.216.83])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 11:01:28 -0800
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: sk.anirban@intel.com
-Subject: [i-g-t,v3,2/2] HAX: Add rc6-idle tests to fast feedback list
-Date: Fri,  7 Mar 2025 00:29:44 +0530
-Message-Id: <20250306185944.2581304-3-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250306185944.2581304-1-sk.anirban@intel.com>
-References: <20250306185944.2581304-1-sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="123705156"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 11:01:35 -0800
+Date: Thu, 6 Mar 2025 20:01:18 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_dp_link_training: Add missing
+ DRIVER_XE
+Message-ID: <20250306190118.3wr3rgk4yg2htzn4@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>
+References: <20250306152552.1620737-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250306152552.1620737-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,25 +73,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add pm_rc6_residency-rc6@idle to i915-fast-feedback
+Hi Marcin,
+On 2025-03-06 at 16:25:52 +0100, Marcin Bernatowicz wrote:
+> Commit d7bccece44dd ("tests/intel/kms_dp_link_training: Restrict to Intel
+> GPUs") missed adding DRIVER_XE. Ensure both DRIVER_INTEL and DRIVER_XE
+> are set to properly restrict the test to Intel GPUs.
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Kunal Joshi <kunal1.joshi@intel.com>
+> Cc: Arun R Murthy <arun.r.murthy@intel.com>
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thank you.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..f37dbf769 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -51,6 +51,7 @@ igt@gem_tiled_fence_blits@basic
- igt@gem_tiled_pread_basic
- igt@gem_wait@busy@all-engines
- igt@gem_wait@wait@all-engines
-+igt@i915_pm_rc6_residency@rc6-idle
- igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
--- 
-2.34.1
+Regards,
+Kamil
 
+> ---
+>  tests/intel/kms_dp_link_training.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
+> index 7d3848b94..3df7b6562 100644
+> --- a/tests/intel/kms_dp_link_training.c
+> +++ b/tests/intel/kms_dp_link_training.c
+> @@ -335,7 +335,7 @@ igt_main
+>  	data_t data = {};
+>  
+>  	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>  		data.devid = intel_get_drm_devid(data.drm_fd);
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_display_require(&data.display, data.drm_fd);
+> -- 
+> 2.31.1
+> 
