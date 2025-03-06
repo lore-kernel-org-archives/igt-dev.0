@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B64F8C28B23
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 03:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA21C282D1
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 03:44:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D919F10E0EC;
-	Thu,  6 Mar 2025 03:44:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9B5A10E0FD;
+	Thu,  6 Mar 2025 03:44:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nZSUYGS4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DXuMWTP7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A700A10E0D8
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 03:44:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38B1110E0FD
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 03:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741232659; x=1772768659;
+ t=1741232661; x=1772768661;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HUzjJw7HlQeDA9/JdFYMCTLXWDWEVOs154AmwFl97p0=;
- b=nZSUYGS4jjigFlL1Pwc4jtc5nT5moetQOCxUvsQhLUzp8NLjRQQFPVbU
- VnkD43wVHN8v8mzVEQWPa5FsG3u9/vSFDQ2MWN36KVYb1SaI6zfILI8DM
- 4Xec6kajbC+HLnO/VN1WE6nsJGf+0+3MOGXhauRrDu6CLxz7H3yJzTjBd
- jyD3Go1NfKiS6ZoS2Yr4TqiZU4zeY1POfqwXmaz1HA3cevREiHU66/IgK
- P1LCmykF2jMj5sRy2SDabPs5HMBYGY6RQpu6G9uwBqPVFlR+jso7oYBgU
- 10LJoQOU3JL4JvhYt5UtNN6Sjk24/dkXpymP+bbnlATLos7jN73BkDK7T g==;
-X-CSE-ConnectionGUID: 3aXMAA1AQZO1MRS/6DyDYw==
-X-CSE-MsgGUID: W/NUjjCyTDe2EF4Id7vi1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="64673558"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="64673558"
+ bh=bmh4x8FT4wDiczP5whAkJafQcnFDc8SVcyiSYZzMYQA=;
+ b=DXuMWTP7v75lvtAmBhcCp2o2Ufk00jORd2bpaODQ4Eyv0XbAI/+0mP7k
+ R9D38iEH8RRHUhPjPo/byCm63lWkmBz+L5FWWt/5/Qgao9QIILybMEqPI
+ VQ9xvNGJTjeqbAw+T2kpVXz/KVCb2YJWBHbe5TqdV6egzcwmRwXKtoZgH
+ vKAQnXgBdIqCupOib1NkhwQ7j0PrQjVYNojF8kbLhgUF1vOq1zCajGcym
+ NrIPMAAPCVEUTOTHbTeZaoptB7sc8jVfMVHTx/reAWDnej5AgxV9GNBgw
+ SmxnNRtjgqOQVmhrqh2sLZhFodFQFzzLSH1vceyAzxosnomv90yG4I7yw Q==;
+X-CSE-ConnectionGUID: Le6sHqmcQoCWK6HnJ0BF+A==
+X-CSE-MsgGUID: tm7U/RjsTtaRs5K0r93mGw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="64673560"
+X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="64673560"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 19:44:19 -0800
-X-CSE-ConnectionGUID: XJBlPGRiQJuFkZCGcg1v1g==
-X-CSE-MsgGUID: gQaQ4k6wRbqFHEmBoGPrTw==
+ 05 Mar 2025 19:44:21 -0800
+X-CSE-ConnectionGUID: pIdm259aTpe8Lz5DeIKSSQ==
+X-CSE-MsgGUID: 1PQeIfIEST6Wbqf7+xFN9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119403306"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119403317"
 Received: from ifwibot07.gar.corp.intel.com (HELO
  rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 19:44:16 -0800
+ 05 Mar 2025 19:44:18 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, ramanaidu.naladala@intel.com, jouni.hogander@intel.com,
  kunal1.joshi@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1 1/3] tests/intel/kms_psr: Skip PSR test on joiner
- outputs
-Date: Thu,  6 Mar 2025 09:09:50 +0530
-Message-Id: <20250306033953.2519156-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1 2/3] tests/intel/kms_psr2_sf: Skip PSR2 sf test on
+ joiner
+Date: Thu,  6 Mar 2025 09:09:51 +0530
+Message-Id: <20250306033953.2519156-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250306033953.2519156-1-santhosh.reddy.guddati@intel.com>
 References: <20250306033953.2519156-1-santhosh.reddy.guddati@intel.com>
@@ -71,101 +71,187 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Skip the PSR test on joiner outputs as joiner cannot be used with PSR.
+Joiner cannot be used along with PSR2. skip the selective fetch test
+on the joiner outputs.
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/intel/kms_psr.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ tests/intel/kms_psr2_sf.c | 78 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 124d7be18..c930e3872 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -838,6 +838,11 @@ igt_main
- 			igt_subtest_with_dynamic_f("%s%sbasic", append_fbc_subtest[y],
- 						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
-+					if (is_joiner_mode(data.drm_fd, output)) {
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 16acff4cd..b9e1e5219 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -1284,6 +1284,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
 +						igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								igt_output_name(output));
++							  igt_output_name(data.output));
 +						continue;
 +					}
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
- 						continue;
-@@ -855,6 +860,11 @@ igt_main
- 			igt_subtest_with_dynamic_f("%s%sno-drrs", append_fbc_subtest[y],
- 						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
-+					if (is_joiner_mode(data.drm_fd, output)) {
-+						igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								  igt_output_name(output));
-+						continue;
-+					}
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
- 						continue;
-@@ -878,6 +888,11 @@ igt_main
- 					igt_skip_on(is_xe_device(data.drm_fd) &&
- 						    (op == MMAP_CPU || op == MMAP_GTT));
- 					for_each_connected_output(&data.display, output) {
-+						if (is_joiner_mode(data.drm_fd, output)) {
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 					run_dynamic_test_damage_areas(data, i, coexist_features);
+ 				}
+@@ -1309,6 +1315,12 @@ igt_main
+ 						if (!check_psr_mode_supported(&data, psr_status[z]))
+ 							continue;
+ 
++						if (is_joiner_mode(data.drm_fd, outputs[i])) {
 +							igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								  igt_output_name(output));
++								  igt_output_name(data.output));
 +							continue;
 +						}
- 						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 								      data.op_psr_mode, output))
- 							continue;
-@@ -902,6 +917,11 @@ igt_main
- 					igt_skip_on(is_xe_device(data.drm_fd) &&
- 						    (op == MMAP_CPU || op == MMAP_GTT));
- 					for_each_connected_output(&data.display, output) {
-+						if (is_joiner_mode(data.drm_fd, output)) {
-+							igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								  igt_output_name(output));
-+							continue;
-+						}
- 						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 								      data.op_psr_mode, output))
- 							continue;
-@@ -924,6 +944,11 @@ igt_main
- 					igt_skip_on(is_xe_device(data.drm_fd) &&
- 						    (op == MMAP_CPU || op == MMAP_GTT));
- 					for_each_connected_output(&data.display, output) {
-+						if (is_joiner_mode(data.drm_fd, output)) {
-+							igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								  igt_output_name(output));
-+							continue;
-+						}
- 						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 								      data.op_psr_mode, output))
- 							continue;
-@@ -944,6 +969,11 @@ igt_main
- 			igt_subtest_with_dynamic_f("%s%sdpms", append_fbc_subtest[y],
- 						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
-+					if (is_joiner_mode(data.drm_fd, output)) {
++
+ 						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 						run_dynamic_test_damage_areas(data, i,
+ 									      coexist_features);
+@@ -1335,6 +1347,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
 +						igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								  igt_output_name(output));
++							  igt_output_name(data.output));
 +						continue;
 +					}
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 					run_dynamic_test_damage_areas(data, i, coexist_features);
+ 				}
+@@ -1357,6 +1375,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
  						continue;
-@@ -966,6 +996,11 @@ igt_main
- 			igt_subtest_with_dynamic_f("%s%ssuspend", append_fbc_subtest[y],
- 						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
-+					if (is_joiner_mode(data.drm_fd, output)) {
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
 +						igt_info("%s supports joiner mode, can't test PSR + joiner\n",
-+								  igt_output_name(output));
++							  igt_output_name(data.output));
 +						continue;
 +					}
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1379,6 +1403,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
  						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1401,6 +1431,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1423,6 +1459,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1446,6 +1488,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					run_plane_move(data, i, coexist_features);
+ 				}
+ 			}
+@@ -1467,6 +1515,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1489,6 +1543,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1510,6 +1570,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 					run_dynamic_test(data, i, coexist_features);
+ 				}
+@@ -1533,6 +1599,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 					run_dynamic_test_damage_areas(data, i, coexist_features);
+ 				}
+@@ -1558,6 +1630,12 @@ igt_main
+ 					if (!check_psr_mode_supported(&data, psr_status[z]))
+ 						continue;
+ 
++					if (is_joiner_mode(data.drm_fd, data.output)) {
++						igt_info("%s supports joiner mode, can't test PSR2 + joiner\n",
++							  igt_output_name(data.output));
++						continue;
++					}
++
+ 					run_plane_update_continuous(data, i, coexist_features);
+ 				}
+ 			}
 -- 
 2.34.1
 
