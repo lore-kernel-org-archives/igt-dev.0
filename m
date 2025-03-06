@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8870AC282D1
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 07:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 596E7C282D1
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 07:42:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24D5310E848;
-	Thu,  6 Mar 2025 07:36:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KPTiGAWb";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E61C10E848
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 07:36:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741246606; x=1772782606;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=izVmnlbb3bDEym/Mfoa1KzkyL4MyGVu5AWyUfseC1Tw=;
- b=KPTiGAWbKcZlQ/V+nBS9v3mzxIaypu48e1y2vYA3T5xXn8z0u5UTpRzH
- CmdqZPmOS9oB5O3bMPG3nQhs2ln9IhbWaBtIuKO4miyb+gqacFaorRe2a
- MlRsHzjYR6NNenO/l4vD0ZjJjPvaQmpPPUklIt+RayC6AkQ2PQv//unxh
- qVxbsIb9LwzgTcbMHO5sYapS40y54ZpKBQN8ZPgfeiYRsKg7tQQ3KlU0/
- q0On008Vds3k+nMYBpMm7HmDNTDAc9YzCnDUvD/XbF0gmDJuXbF7jXpzv
- 2TQBJ0EjVSCwn3UzCMDUlisi1dpkD7dfrx/wLN8kt5BQ1lkmVUJ0uGMMP Q==;
-X-CSE-ConnectionGUID: uzwVdRpgQPeD1DFcRcx7VA==
-X-CSE-MsgGUID: aJXZ7CQNQHm2uE5pZgWjhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52878283"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="52878283"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 23:36:45 -0800
-X-CSE-ConnectionGUID: Bm/Oe3pXRmaz1TiBlqqgqw==
-X-CSE-MsgGUID: XdzBKca4Sj6fhbQSKLTKRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="119121923"
-Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 23:36:44 -0800
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@linux.intel.com, michal.wajdeczko@intel.com,
- lukasz.laguna@intel.com
-Subject: [PATCH i-g-t] tests/xe_sriov_scheduling: pf-priority subtest
-Date: Thu,  6 Mar 2025 08:36:39 +0100
-Message-Id: <20250306073639.3180-1-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.40.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C0F310E90B;
+	Thu,  6 Mar 2025 07:42:32 +0000 (UTC)
+Received: from 64e06c682a23 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA7A910E90B;
+ Thu,  6 Mar 2025 07:42:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1798323911582009989=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_runner=3A_Parse_results_har?=
+ =?utf-8?q?der_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 06 Mar 2025 07:42:30 -0000
+Message-ID: <174124695075.66239.7001315723136920587@64e06c682a23>
+X-Patchwork-Hint: ignore
+References: <20250305193137.295162-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250305193137.295162-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,150 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a subtest to verify that PF gets scheduling priority over other VFs
-running the same workload when configured with HIGH priority.
+--===============1798323911582009989==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The verification is done by measuring the time PF takes to complete the
-workload. This duration should match the workload time as PF should not
-be preempted by VFs until it finishes its work.
+== Series Details ==
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com
----
- tests/intel/xe_sriov_scheduling.c | 111 ++++++++++++++++++++++++++++++
- 1 file changed, 111 insertions(+)
+Series: runner: Parse results harder (rev5)
+URL   : https://patchwork.freedesktop.org/series/145520/
+State : success
 
-diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-index 89cdd8750..60d55688c 100644
---- a/tests/intel/xe_sriov_scheduling.c
-+++ b/tests/intel/xe_sriov_scheduling.c
-@@ -714,6 +714,105 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
- 	igt_sriov_disable_vfs(pf_fd);
- }
- 
-+/**
-+ * SUBTEST: pf-priority
-+ * Description:
-+ *   Check that PF gets scheduling priority over other VFs running
-+ *   the same workload when configured with HIGH priority.
-+ */
-+static void pf_priority(int pf_fd, unsigned int num_vfs, const struct subm_opts *opts)
-+{
-+	struct subm_set set_ = {}, *set = &set_;
-+	uint8_t vf_ids[num_vfs + 1 /*PF*/];
-+	uint32_t job_timeout_ms = sysfs_get_job_timeout_ms(pf_fd, &xe_engine(pf_fd, 0)->instance);
-+	struct vf_sched_params vf_sched_params = prepare_vf_sched_params(num_vfs + 1, 1,
-+									 job_timeout_ms, opts);
-+	struct job_sched_params job_sched_params;
-+	unsigned int gt;
-+
-+	job_sched_params.sched_params = vf_sched_params;
-+	job_sched_params.duration_ms = 1000;
-+	job_sched_params.num_repeats = 1;
-+
-+	igt_info("eq=%ums pt=%uus duration=%ums repeats=%d num_vfs=%d job_timeout=%ums\n",
-+		 job_sched_params.sched_params.exec_quantum_ms,
-+		 job_sched_params.sched_params.preempt_timeout_us,
-+		 job_sched_params.duration_ms, job_sched_params.num_repeats,
-+		 num_vfs + 1, job_timeout_ms);
-+
-+	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
-+		    &(struct init_vf_ids_opts){ .shuffle = true,
-+						.shuffle_pf = true });
-+	xe_sriov_require_default_scheduling_attributes(pf_fd);
-+	/* enable VFs */
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	/* set scheduling params (PF and VFs) */
-+	set_vfs_scheduling_params(pf_fd, num_vfs, &job_sched_params.sched_params);
-+	/* probe VF */
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+	for (int vf = 1; vf <= num_vfs; ++vf)
-+		igt_sriov_bind_vf_drm_driver(pf_fd, vf);
-+	/* configure PF with high scheduling priority */
-+	xe_for_each_gt(pf_fd, gt)
-+		xe_sriov_set_sched_priority(pf_fd, 0, gt, XE_SRIOV_SCHED_PRIORITY_HIGH);
-+
-+	/* init subm_set */
-+	subm_set_alloc_data(set, num_vfs + 1 /*PF*/);
-+	subm_set_init_sync_method(set, opts->sync_method);
-+
-+	for (int n = 0; n < set->ndata; ++n) {
-+		int vf_fd =
-+			vf_ids[n] ?
-+				igt_sriov_open_vf_drm_device(pf_fd, vf_ids[n]) :
-+				drm_reopen_driver(pf_fd);
-+
-+		igt_assert_fd(vf_fd);
-+		set->data[n].opts = opts;
-+		subm_init(&set->data[n].subm, vf_fd, vf_ids[n], 0,
-+			  xe_engine(vf_fd, 0)->instance);
-+		subm_workload_init(&set->data[n].subm,
-+				   &(struct subm_work_desc){
-+					.duration_ms = job_sched_params.duration_ms,
-+					.preempt = true,
-+					.repeats = job_sched_params.num_repeats });
-+		igt_stats_init_with_size(&set->data[n].stats.samples,
-+					 set->data[n].subm.work.repeats);
-+		if (set->sync_method == SYNC_BARRIER)
-+			set->data[n].barrier = &set->barrier;
-+	}
-+
-+	/* dispatch spinners, wait for results */
-+	subm_set_dispatch_and_wait_threads(set);
-+
-+	/* verify results */
-+	for (int n = 0; n < set->ndata; ++n) {
-+		struct subm_stats *stats = &set->data[n].stats;
-+		uint64_t elapsed_ms = (stats->end_timestamp - stats->start_timestamp) /
-+				      NSEC_PER_MSEC;
-+		uint64_t expected_ms = set->data[n].subm.vf_num ?
-+				       job_sched_params.duration_ms * (1 + num_vfs) :
-+				       job_sched_params.duration_ms;
-+
-+		igt_debug("[%s] elapsed_ms: %lu, expected_ms: %lu\n",
-+			  set->data[n].subm.id, elapsed_ms, expected_ms);
-+
-+		if (set->data[n].subm.vf_num)
-+			continue;
-+
-+		igt_assert_f(check_within_epsilon(elapsed_ms, expected_ms, opts->outlier_treshold),
-+			     "[%s] workload duration: %lu ms not within +-%.0f%% of expected=%lu ms\n",
-+			     set->data[n].subm.id, elapsed_ms, opts->outlier_treshold * 100, expected_ms);
-+	}
-+
-+	/* cleanup */
-+	subm_set_fini(set);
-+	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
-+	xe_for_each_gt(pf_fd, gt)
-+		xe_sriov_set_sched_priority(pf_fd, 0, gt, XE_SRIOV_SCHED_PRIORITY_LOW);
-+	igt_sriov_disable_vfs(pf_fd);
-+}
-+
- static struct subm_opts subm_opts = {
- 	.sync_method = SYNC_BARRIER,
- 	.outlier_treshold = 0.1,
-@@ -804,6 +903,18 @@ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
- 				nonpreempt_engine_resets(pf_fd, vf, &subm_opts);
- 	}
- 
-+	igt_describe("Check PF gets priority over other VFs when configured with HIGH priority");
-+	igt_subtest_with_dynamic("pf-priority") {
-+		if (extended_scope)
-+			for_each_sriov_num_vfs(pf_fd, vf)
-+				igt_dynamic_f("numvfs-%d", vf)
-+					pf_priority(pf_fd, vf, &subm_opts);
-+
-+		for_random_sriov_vf(pf_fd, vf)
-+			igt_dynamic("numvfs-random")
-+				pf_priority(pf_fd, vf, &subm_opts);
-+	}
-+
- 	igt_fixture {
- 		set_vfs_scheduling_params(pf_fd, igt_sriov_get_total_vfs(pf_fd),
- 					  &(struct vf_sched_params){});
--- 
-2.40.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8262_BAT -> XEIGTPW_12713_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12713_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#4491]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8262/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12713/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  
+  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8262 -> IGTPW_12713
+
+  IGTPW_12713: 12713
+  IGT_8262: 8262
+  xe-2763-3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c: 3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12713/index.html
+
+--===============1798323911582009989==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>runner: Parse results harder (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145520/">https://patchwork.freedesktop.org/series/145520/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12713/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12713/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8262_BAT -&gt; XEIGTPW_12713_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12713_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xelp@render:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8262/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12713/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8262 -&gt; IGTPW_12713</li>
+</ul>
+<p>IGTPW_12713: 12713<br />
+  IGT_8262: 8262<br />
+  xe-2763-3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c: 3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c</p>
+
+</body>
+</html>
+
+--===============1798323911582009989==--
