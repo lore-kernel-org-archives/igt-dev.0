@@ -4,58 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A9DC282EC
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 10:47:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E51BC282D1
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 10:56:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 85AC289135;
-	Thu,  6 Mar 2025 10:47:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F288E10E8C1;
+	Thu,  6 Mar 2025 10:56:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a8LyP/aj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FkLr6NG9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57CA489135;
- Thu,  6 Mar 2025 10:47:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E6FF10E8C1
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 10:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741258039; x=1772794039;
+ t=1741258572; x=1772794572;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=IP7XZDb1VjAyeZsMj/dXOE2EaHcZnQCEtbqhU5tUjFs=;
- b=a8LyP/aj8hDa7b97G1hbV3f4NI5d2VWN2t9Qjz7i9vXVeyDtQhw43/uW
- M5gLSdqCxSb3jJkP+7LabJVtcNkhlJ2aSBkixlOL2zJhlym1yMcBErW6G
- qbifRXYG5NtqJFnG4Osrc0yBtCW5smCdCZ6myKjy4Jz7fb0STfyaagRg3
- LSCKaw0t/3RZ5poKLiO+tsa+jPQNdFSS1r+jm66zOpoC2ldKwyltKnNZg
- qeLNmhf6HbQTdlOVuO92JcQFmUqdAD2PpFE16OG6lgxcULp39lXG7kjJn
- ANSkg7WCRmBzAqNike/bG6xyA+pL6pchm1r998gCwuECT4X9WjyZPv+4W g==;
-X-CSE-ConnectionGUID: SeDzEq6mQxaE5/37ZzMJsg==
-X-CSE-MsgGUID: mMVNWnrBQXWFZPGrQJJVpQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53245123"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="53245123"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 02:47:19 -0800
-X-CSE-ConnectionGUID: ZqMwYbwDTvuRn4lG6x5xhA==
-X-CSE-MsgGUID: pdi3I6q+Q16eZ8PFxMo1cg==
+ bh=lIdSg20ppZtBrUugyORMSg2ZEG38SqoyD2mLp3BG52A=;
+ b=FkLr6NG9aL6mXdjS8ZE7YQl4sCfjMP5Lx88ltW0mK9Yr73v3Y0a8EPEo
+ oT4vJZSxGhiw85D6rZxmHAzI1ueMrFz8iRygrE6NK4/803ZZ9lo63Y/8x
+ qu0G3XIHqpFUiMQsvIXrO2vJBRwfuWdnPXh5H90jAHWlnrqOo5zliKXIP
+ OichA2e26kVYJN8t13la983/goc+Sree0JyObXRFZRHItCSWT8Ulq7AAx
+ vGbEMh5MGO+/mfFK3paT9xJoYEmSHr2Edgch1mLBFS4gJZXUsq3vF22VE
+ 91iifMlNtMTWFBATxF9xou+/YQRtIrKvMjB3dpl95XihXJIgOw+1wJ//d w==;
+X-CSE-ConnectionGUID: ncT18N+6RvaFeSyg/4COig==
+X-CSE-MsgGUID: kA6DNSvzQJmupIA0lTUswQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29845440"
+X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="29845440"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 02:56:11 -0800
+X-CSE-ConnectionGUID: 0waV0jmUTN+Ma5Zi64slng==
+X-CSE-MsgGUID: SMVtxIHjT1OABUxO35pRcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="119487106"
+X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="118800000"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:47:17 -0800
-Date: Thu, 6 Mar 2025 11:47:01 +0100
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 02:56:08 -0800
+Date: Thu, 6 Mar 2025 11:56:06 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- runner: Parse results harder (rev5)
-Message-ID: <20250306104701.an763qx6kdkgy44b@kamilkon-desk.igk.intel.com>
+To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_drm_fdinfo: Group utilization
+ tests and skip when no utilization data
+Message-ID: <20250306105606.ctufackrn2promhy@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20250305193137.295162-1-kamil.konieczny@linux.intel.com>
- <174125708249.66954.15652324430336917724@64e06c682a23>
+ "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+References: <20250304185640.1333849-1-marcin.bernatowicz@linux.intel.com>
+ <20250304185640.1333849-2-marcin.bernatowicz@linux.intel.com>
+ <20250305121514.tojpbo7jlwbwcqt3@kamilkon-desk.igk.intel.com>
+ <609f3be5-d1f7-427b-b7ee-c7065c4a50d2@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <174125708249.66954.15652324430336917724@64e06c682a23>
+In-Reply-To: <609f3be5-d1f7-427b-b7ee-c7065c4a50d2@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,106 +82,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-03-06 at 10:31:22 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Bernatowicz,,
+On 2025-03-05 at 17:31:43 +0100, Bernatowicz, Marcin wrote:
 > 
-> Series: runner: Parse results harder (rev5)
-> URL   : https://patchwork.freedesktop.org/series/145520/
-> State : failure
 > 
-> == Summary ==
+> On 3/5/2025 1:15 PM, Kamil Konieczny wrote:
+> > Hi Marcin,
+> > On 2025-03-04 at 19:56:39 +0100, Marcin Bernatowicz wrote:
+> > > Wrap all utilization-related subtests in an igt_subtest_group and add
+> > > a fixture that ensures utilization data is available before running
+> > > them.
+> > > 
+> > > Link: https://lore.kernel.org/r/20250205191644.2550879-1-marcin.bernatowicz@linux.intel.com
+> > > 
+> > > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> > > Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> > > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> > > Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> > > Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > > ---
+> > >   tests/intel/xe_drm_fdinfo.c | 122 ++++++++++++++++++++----------------
+> > >   1 file changed, 67 insertions(+), 55 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+> > > index 7330b4330..d18fe10d8 100644
+> > > --- a/tests/intel/xe_drm_fdinfo.c
+> > > +++ b/tests/intel/xe_drm_fdinfo.c
+> > > @@ -735,10 +735,6 @@ igt_main
+> > >   	igt_subtest("basic-mem")
+> > >   		basic_memory(xe);
+> > > -	igt_describe("Check if basic fdinfo content is present for engine utilization");
+> > > -	igt_subtest("basic-utilization")
+> > > -		basic_engine_utilization(xe);
+> > > -
+> > >   	igt_describe("Create and compare total and resident memory consumption by client");
+> > >   	igt_subtest("mem-total-resident")
+> > >   		mem_total_resident(xe);
+> > > @@ -751,57 +747,73 @@ igt_main
+> > [...]
+> > 
+> > > +	igt_subtest_group {
+> > > +		igt_fixture {
+> > > +			struct drm_client_fdinfo info = { };
+> > > +
+> > > +			igt_require(igt_parse_drm_fdinfo(xe, &info, engine_map,
+> > > +							 ARRAY_SIZE(engine_map),
+> > > +							 NULL, 0));
+> > 
+> > Problem with require placed here is that it will trigger also
+> > for all other test outside of group. That will clobber output.
 > 
-> CI Bug Log - changes from IGT_8262_full -> IGTPW_12713_full
-> ====================================================
+> Does it mean the igt_subtest_group is deprecated and the description
+> no more valid ?
 > 
-> Summary
-> -------
+> "
+> /**
+>  * igt_subtest_group:
 > 
->   **FAILURE**
+> ...
 > 
->   Serious unknown changes coming with IGTPW_12713_full absolutely need to be
->   verified manually.
+> * This macro allows to group together a set of #igt_fixture and #igt_subtest
+>  * clauses. If any common setup in a fixture fails, only the subtests in
+> this
+>  * group will fail or skip. Subtest groups can be arbitrarily nested.
+> "
+> 
 
-Unrelated to change in igt_results, no need for re-run.
+Well, you could group it to show logical part, use fixtures in them
+for opening/closing files, just do not use igt_require as it should
+be used only in first global fixture in igt_main, not in following
+ones.
+
+> > 
+> > > +			igt_require(info.num_engines);
+> > 
+> > Both these should be placed in each subtest wrapped in function
+> > (see below) but imho this looks like a global requires at begin
+> > of a test? Or am I missing something?
+> > 
+> > > +		}
+> > > +
+> > 
+> > Create function like:
+> > 
+> > void require_utilization(int xe, ... engine_map)
+> > {
+> > 	struct drm_client_fdinfo info = { };
+> > 
+> > 	igt_require(igt_parse_drm_fdinfo(xe, &info, engine_map,
+> > 					 ARRAY_SIZE(engine_map),
+> > 					 NULL, 0));
+> > 	igt_require(info.num_engines);
+> > }
+> > 
+> > and use it in each utulization subtest like:
+> > 
+> > 	igt_describe("Check if basic fdinfo content is present for engine utilization");
+> > 	igt_subtest("basic-utilization") {
+> > 		require_utilization(xe);
+> > 		basic_engine_utilization(xe);
+> > 	}
+> 
+> That is the repetition I wanted to avoid ;)
+
+I agree it looks like repetition but it is better to have it.
+With require in fixture you could ancounter failure logs with
+unrelated message like 'require X fails'.
+
+Other solution would be to create a speparate test for these
+tests.
 
 Regards,
 Kamil
 
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12713_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/index.html
+> ---
+> marcin
 > 
-> Participating hosts (10 -> 10)
-> ------------------------------
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > +		igt_describe("Check if basic fdinfo content is present for engine utilization");
+> > > +		igt_subtest("basic-utilization")
+> > > +			basic_engine_utilization(xe);
+> > > +
+> > 
+> > [...]
+> > 
 > 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_12713_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_compute@compute-square:
->     - shard-mtlp:         NOTRUN -> [FAIL][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/shard-mtlp-8/igt@gem_compute@compute-square.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_psr@pr-sprite-blt:
->     - shard-snb:          [SKIP][2] -> [ABORT][3]
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8262/shard-snb6/igt@kms_psr@pr-sprite-blt.html
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/shard-snb2/igt@kms_psr@pr-sprite-blt.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_12713_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@object-reloc-keep-cache:
->     - shard-rkl:          NOTRUN -> [SKIP][4] ([i915#8411]) +1 other test skip
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/shard-rkl-3/igt@api_intel_bb@object-reloc-keep-cache.html
-> 
->   * igt@device_reset@unbind-cold-reset-rebind:
->     - shard-dg2-9:        NOTRUN -> [SKIP][5] ([i915#11078])
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/shard-dg2-9/igt@device_reset@unbind-cold-reset-rebind.html
-> 
->   * igt@drm_fdinfo@most-busy-check-all@bcs0:
->     - shard-dg2:          NOTRUN -> [SKIP][6] ([i915#8414]) +7 other tests skip
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/shard-dg2-7/igt@drm_fdinfo@most-busy-check-all@bcs0.html
-> 
->   * igt@drm_fdinfo@virtual-busy-hang:
->     - shard-dg2-9:        NOTRUN -> [SKIP][7] ([i915#8414])
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/shard-dg2-9/igt@drm_fdinfo@virtual-busy-hang.html
-> 
-
-...cut...
-
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8262 -> IGTPW_12713
-> 
->   CI-20190529: 20190529
->   CI_DRM_16231: 3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_12713: 12713
->   IGT_8262: 8262
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12713/index.html
