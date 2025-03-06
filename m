@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3725FC282D1
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 09:55:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FAFC28B22
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 09:55:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBFC410E157;
-	Thu,  6 Mar 2025 09:55:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5DE310E928;
+	Thu,  6 Mar 2025 09:55:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ANk/R82j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WLz9rXMr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC81910E157
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 09:55:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6100F10E928
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 09:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741254907; x=1772790907;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=CtEYp7WjYKswuAZ7xgDbaDUn+Knv6m4TqUvJYLFZDuQ=;
- b=ANk/R82jLWZjBOcqWNcQ8wQj2HP9g13V3Z3gD+4VdUQK272lG12y3PyP
- uqRA7U3Ddlf4jKL6jH4u2zwBTxvi+Q8ERHmYIyqOWLE+8Mu0ccbrBYMVI
- v0PDtT5dRQ9IulYfT8QQXeVoZ/MEPEts5GS9G3YtmxnV0gTt6iHUYIbpr
- ABS1R0Lkuumm+VytI+C9XKIaUAAGskqlghl1WLWy6nameuDJGVhK5tA84
- O1hXwlL7hI3rPUqNguZuF2qS9ynBNwLIpKJT4+kleZI3k3bYZXmYES6Nk
- LYUMgt5jc1RNyNtoN6nCRRcl2eUydQYYtebREWrCYWM6UMmEX149fo6/K Q==;
-X-CSE-ConnectionGUID: CPm4+8+rRraxd5CDBAu11w==
-X-CSE-MsgGUID: xfZwn2qYSfqdB/6qSV4j2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29839189"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="29839189"
+ t=1741254909; x=1772790909;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=XqTls7Db11CAaQGAZEsufWG4mQjSsvtw02+YS48PEUM=;
+ b=WLz9rXMrER5k0g/wN556K/wHvJfDZkLiAUK4EunWF7Hjn2nlHUJ8cdWz
+ kSexk1w5PvN4r6tzzhR2fYhjbIHpM95p/N2t/+OMwnWUXGwNpGhzQrom1
+ qtlD0oFQlnw6uRY/3BJZrj/H+xqSVrNgN/RiztptPAdgJHcZb9faN6Wg/
+ F8HUFkXm4TqW8G77P4ok4pxgAWsN6RW4qzR2hHNwFRPAT/y5kG3zxUm3S
+ u+kN7asbnMHWN5hZD3ynhYgdLUljn1aQJjYYsLg/p5y3bNNTXKOIyFL+j
+ 7m1fUKpRzBp8HOvivLN01O02SgzIaHnqLR1TFdExDthY0XEPWgbVxldES w==;
+X-CSE-ConnectionGUID: 0S20htX1Rz2EKHoLQn1VMQ==
+X-CSE-MsgGUID: smaZuFHCTRaMG+MQlhSO6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29839191"
+X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="29839191"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 01:55:07 -0800
-X-CSE-ConnectionGUID: jcBmNJ4BRBC25rB6GSki6Q==
-X-CSE-MsgGUID: /L9Ues0hT7yGJGRSSFfQuQ==
+ 06 Mar 2025 01:55:09 -0800
+X-CSE-ConnectionGUID: tv3H2u+aTKS5dBoERc79kg==
+X-CSE-MsgGUID: 0owFhHjLTsi/V/IW0XUngg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="119160847"
+X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; d="scan'208";a="119160886"
 Received: from labhost1.iind.intel.com ([10.190.230.69])
- by fmviesa008.fm.intel.com with ESMTP; 06 Mar 2025 01:55:06 -0800
+ by fmviesa008.fm.intel.com with ESMTP; 06 Mar 2025 01:55:07 -0800
 From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH i-g-t v3 0/6] tests/intel/xe_fault_injection: Inject errors
- during xe_guc_ct_send_recv() xe_guc_mmio_send_recv()
-Date: Thu,  6 Mar 2025 15:40:35 +0530
-Message-Id: <20250306101041.26827-1-satyanarayana.k.v.p@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t v3 1/6] lib/igt_sysfs: Add support for device unbinding
+Date: Thu,  6 Mar 2025 15:40:36 +0530
+Message-Id: <20250306101041.26827-2-satyanarayana.k.v.p@intel.com>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20250306101041.26827-1-satyanarayana.k.v.p@intel.com>
+References: <20250306101041.26827-1-satyanarayana.k.v.p@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,43 +69,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the kernel fault injection infrastructure to test error handling of xe
-at probe time when error is injected for functions xe_guc_mmio_send_recv()
-and xe_guc_ct_send_recv().
+It does not harm anything when we try to unbind a device which
+is already unbinded. We do not want to throw assertion when
+the device is already unbinded.
 
-Error can be injected using:
-igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv
-igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv
+Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+---
+ lib/igt_sysfs.c | 4 ++++
+ lib/igt_sysfs.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-Introduce an environment variable IGT_FAULT_INJECT_ITERATION using which,
-an error can be injected at specific function call. If the environment is
-not exported, an error will be injected in every possible function call
-starting from first up to the max number of iteration defined by
-INJECT_ITERATIONS, currently hardcoded as 100.
-
-Error will be injected only once for all init functions. This envronment
-variable takes effect only for xe_guc_mmio_send_recv() & xe_guc_ct_send_recv()
-functions as of now (can be expanded to other functions in future).
-
-
-Satyanarayana K V P (6):
-  lib/igt_sysfs: Add support for device unbinding
-  tests/intel/xe_fault_injection: Make setup_injection_fault()
-    programmable.
-  tests/intel/xe_fault_injection: Add helper to start injecting fault
-    after x iterations
-  tests/intel/xe_fault_injection: Inject errors during
-    xe_guc_ct_send_recv & xe_guc_mmio_send_recv.
-  tests/intel/xe_fault_injection: Try to unbind the device after error
-    injection
-  tests/intel/xe_fault_injection: Do not assert for probe_guc_fail_*
-    functions.
-
- lib/igt_sysfs.c                  |   4 ++
- lib/igt_sysfs.h                  |   1 +
- tests/intel/xe_fault_injection.c | 111 ++++++++++++++++++++++++++++---
- 3 files changed, 107 insertions(+), 9 deletions(-)
-
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 2e4c2ee63..3fffaf96b 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -1509,6 +1509,10 @@ int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_acti
+ 		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
+ 		close(sysfs);
+ 		break;
++	case XE_SYSFS_DRIVER_TRY_UNBIND:
++		igt_sysfs_set(sysfs, "unbind", pci_slot);
++		close(sysfs);
++		break;
+ 	case XE_SYSFS_DRIVER_REBIND:
+ 		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
+ 
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 86345f3d1..cc4971e70 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -187,6 +187,7 @@ enum xe_sysfs_driver_action {
+ 	XE_SYSFS_DRIVER_BIND,
+ 	XE_SYSFS_DRIVER_TRY_BIND,
+ 	XE_SYSFS_DRIVER_UNBIND,
++	XE_SYSFS_DRIVER_TRY_UNBIND,
+ 	XE_SYSFS_DRIVER_REBIND,
+ };
+ 
 -- 
 2.35.3
 
