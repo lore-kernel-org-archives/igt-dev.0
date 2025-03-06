@@ -4,71 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326D4C282D1
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 12:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60DEDC282D1
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Mar 2025 12:46:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAE9510E8D7;
-	Thu,  6 Mar 2025 12:32:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E6F6D10E960;
+	Thu,  6 Mar 2025 12:46:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TyVG32Oe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eq/Y8L0T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CB8D10E8D7
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Mar 2025 12:32:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8DD710E195;
+ Thu,  6 Mar 2025 12:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741264368; x=1772800368;
+ t=1741265208; x=1772801208;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=W/ZnyuCD8iJms7j3f3zvZqPe3bM8hyD8MrnF2dSvOu4=;
- b=TyVG32Oe9eujsxdTppeXPIZhBrjmLnXhNo23YVisar0kaNm3Th1MAKXt
- e/tnpVJ8QqRcloAP4/UeQrydRO0eN6dcYkwnBDijNYEy6YYzykT7JU0LW
- 3e2vchisuyKW59ftdpTfsQDDfY9T1OM180KLx7Ozp67y+FUO4YtyJiG/b
- BxqYEOcIRFB0YEb28wX9yskB6W1HIBSODgrH1ELwS6Tuzh9taoMAGzuoi
- RlN4oD4aQ92OPanufFmPE20XIjIUFWJbUrnmO2yRvim5AcAl5B0iRvQXl
- LsJLYl7Nayy+tzffs7y9bVYVBkbKLcVBXr5NveSuvenWRaZv6OqUjGhdn w==;
-X-CSE-ConnectionGUID: C3tNNobYSx+ZBeBJQG2hOg==
-X-CSE-MsgGUID: YhJ8wj63Qt+MOD7BwAYQ9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="42510122"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="42510122"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 04:32:47 -0800
-X-CSE-ConnectionGUID: 8Hs2d88hQ76/C0KZVkgJuw==
-X-CSE-MsgGUID: fmcQcI9UTTeNupzZiAwrHg==
+ mime-version:in-reply-to;
+ bh=HxuMgljKh2kcNk1QyqYLFGfbbV1FS95zahqhI+dkb5Q=;
+ b=eq/Y8L0T3M0j9Ux/6oJu4DVDaZH6o5GFXfrIbR0w+lyENjnRXxqnhTdu
+ xeUK5R7oBu/R7pkstZbxxLDgB+wsHCWl7vlO7swTEt5BUH65tpTiaAdgx
+ 61VkFDEVYKhIOl8uzSRFgTsGq20+p+JyUG+3JDHVIfYJQh0DIoXhHrXlq
+ Z40Ju9SHOo1AzLuv366nmC2HM4CXR9NuKrGmxPCUS2dgaV+6Z2Db7cVWL
+ fxQtaquV4nh2bJczpxhv2fvbXrrNovyPit4Gwrgt3pM33To3gMiY8ZFRU
+ qI/r6JR9dbDjguHQiDWT64wKC+0295w6I8uBESOIu2zoiyEQ8Sj0AAUbT g==;
+X-CSE-ConnectionGUID: uYXkJ2grTnKQtnuCLurt9w==
+X-CSE-MsgGUID: T4m4hUndTy+v0HvO0tcO0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46196022"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="46196022"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 04:46:46 -0800
+X-CSE-ConnectionGUID: zLT+EtLRTM6jbALPV4uIeA==
+X-CSE-MsgGUID: zYJJaT47RaimJ5DxP0nT4g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="123170219"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="119020386"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 04:32:44 -0800
-Date: Thu, 6 Mar 2025 13:32:29 +0100
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 04:46:44 -0800
+Date: Thu, 6 Mar 2025 13:46:42 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, christian.koenig@amd.com,
- alexander.deucher@amd.com, jesse.zhang@amd.com,
- harry.wentland@amd.com, zbigniew.kempczynski@intel.com,
- ryszard.knop@intel.com, lucas.demarchi@intel.com,
- katarzyna.piecielska@intel.com,
- Jonathan Cavitt <jonathan.cavitt@intel.com>, vitaly.prosyak@amd.com
-Subject: Re: [PATCH v7 i-g-t 1/3] runner/kmemleak: library to interact with
- kmemleak
-Message-ID: <20250306123229.bmy6fhk7nojrs2wg@kamilkon-desk.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests=2Fint?=
+ =?utf-8?B?ZWwva21zX2RyYXdfY3Jj?= =?utf-8?Q?=3A?= Skip formats not supported
+ by the plane (rev2)
+Message-ID: <20250306124642.56w4n7qprftsehqp@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- igt-dev@lists.freedesktop.org, christian.koenig@amd.com,
- alexander.deucher@amd.com, jesse.zhang@amd.com,
- harry.wentland@amd.com, zbigniew.kempczynski@intel.com,
- ryszard.knop@intel.com, lucas.demarchi@intel.com,
- katarzyna.piecielska@intel.com,
- Jonathan Cavitt <jonathan.cavitt@intel.com>, vitaly.prosyak@amd.com
-References: <20250227101853.361504-1-peter.senna@linux.intel.com>
- <20250227101853.361504-2-peter.senna@linux.intel.com>
- <9290bd2c-7e90-45a6-879e-1e0f25192a43@linux.intel.com>
+ igt-dev@lists.freedesktop.org,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20250303110235.15976-1-ville.syrjala@linux.intel.com>
+ <174124640088.66194.17505003073098760028@64e06c682a23>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9290bd2c-7e90-45a6-879e-1e0f25192a43@linux.intel.com>
+In-Reply-To: <174124640088.66194.17505003073098760028@64e06c682a23>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,58 +75,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-02-28 at 08:04:30 +0100, Peter Senna Tschudin wrote:
+Hi igt-dev,
+On 2025-03-06 at 07:33:20 -0000, Patchwork wrote:
+> == Series Details ==
 > 
+> Series: tests/intel/kms_draw_crc: Skip formats not supported by the plane (rev2)
+> URL   : https://patchwork.freedesktop.org/series/145712/
+> State : failure
 > 
-> On 27.02.2025 11:18, Peter Senna Tschudin wrote:
-> > Adds a simple library for interacting with kmemleak and add
-> > unit testing for the library. There are two modes intended to
-> > integrate with igt_runner:
-> > - once: collect kmemleaks after all test completed
-> > - each: collect kmemleaks after eachb test completes
-> > 
-> > To use the library include "kmemleak.h", call runner_kmemleak_init()
-> > to check if kmemleak is enabled and finally call runner_kmemleak()
-> > to collect kmemleaks. runner_kmemleak() expect the following
-> > arguments:
-> >   - const char *last_test: Name of the last lest or NULL
-> >   - int resdirfd: file descriptor of the results directory
-> >   - bool kmemleak_each: Are we scanning once or scanning after
-> >     each test?
-> >   - bool sync: sync after each write?
-> > 
-> > Cc: christian.koenig@amd.com
-> > Cc: alexander.deucher@amd.com
-> > Cc: jesse.zhang@amd.com
-> > Cc: harry.wentland@amd.com
-> > Cc: zbigniew.kempczynski@intel.com
-> > Cc: kamil.konieczny@linux.intel.com
-> > Cc: ryszard.knop@intel.com
-> > Cc: lucas.demarchi@intel.com
-> > Cc: katarzyna.piecielska@intel.com
-> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8262_full -> XEIGTPW_12705_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **WARNING**
+> 
+>   Minor unknown changes coming with XEIGTPW_12705_full need to be verified
+>   manually.
 
-A note to Peter for future reference: please send such r-b
-additions with at least a word or two why and from where
-it comes, give a link to lore.kernel.org or to patchwork
-so you will make my work easy and do not require from me
-to search your other mailing threads.
-
-You could also remind about it a maintainer to add this at merge
-or send new release with this added, then an explanation will
-naturally appear in release notes in cover letter.
+Unrelated.
 
 Regards,
 Kamil
 
-> > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> > ---
-> >  runner/kmemleak.c             | 273 ++++++++++++++++++++++++++++++++++
-> >  runner/kmemleak.h             |  16 ++
-> >  runner/meson.build            |  11 +-
-> >  runner/runner_kmemleak_test.c | 267 +++++++++++++++++++++++++++++++++
-[...]
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_12705_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12705_full:
+> 
+> ### IGT changes ###
+> 
+> #### Warnings ####
+> 
+>   * igt@xe_eudebug_sriov@deny-eudebug:
+>     - shard-dg2-set2:     [SKIP][1] ([Intel XE#4208]) -> [SKIP][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8262/shard-dg2-433/igt@xe_eudebug_sriov@deny-eudebug.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12705/shard-dg2-463/igt@xe_eudebug_sriov@deny-eudebug.html
+> 
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between XEIGT_8262_full and XEIGTPW_12705_full:
+> 
+> ### New IGT tests (1) ###
+> 
+>   * igt@xe_oa@buffer-size@ccs-0-128m:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.83] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_12705_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@core_getversion@all-cards:
+>     - shard-dg2-set2:     [PASS][3] -> [FAIL][4] ([Intel XE#4284])
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8262/shard-dg2-464/igt@core_getversion@all-cards.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12705/shard-dg2-433/igt@core_getversion@all-cards.html
+> 
 
+...cut...
+
+>   [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+>   [i915#2575]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2575
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_8262 -> IGTPW_12705
+> 
+>   IGTPW_12705: 12705
+>   IGT_8262: 8262
+>   xe-2763-3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c: 3ccfd8016ad8283ecef0dfcf0e4f2132ade9bf4c
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12705/index.html
