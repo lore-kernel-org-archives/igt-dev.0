@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D314DC282D1
-	for <igt-dev@archiver.kernel.org>; Sun,  9 Mar 2025 08:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE094C282D1
+	for <igt-dev@archiver.kernel.org>; Sun,  9 Mar 2025 10:03:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6753B10E205;
-	Sun,  9 Mar 2025 08:55:28 +0000 (UTC)
-Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F4A110E205;
- Sun,  9 Mar 2025 08:55:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7142575118918663473=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61CA610E327;
+	Sun,  9 Mar 2025 10:03:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JwSQebDL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FAA110E35A
+ for <igt-dev@lists.freedesktop.org>; Sun,  9 Mar 2025 10:03:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741514587; x=1773050587;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xw9MArUrAnsK7milfnWZdApqt806tS6gy9m49D3wtoU=;
+ b=JwSQebDLmRIw7ivENg2aiSmPfbISL8h+nouAxHRhPOoXNbkN+MeYH6BK
+ 1MeThFdwGCojG4IsR6Pe7DMI9boPJZ6fWHoYsjGiuM5GDBQnY2hPNT6nZ
+ e3N9qMqCDq2A0ajdqFnaXcQJDN73azr+TqtMNM8wEPStgIPksVr4PBUe5
+ It9dkmcUUy59d9baiRMSKNLpP+p/cIHjO9i199GRJHTocFf9+FyZl8p5B
+ 3iNbVgehq+Qz0q04SBl1Oj7d/MJFAl6JslADKtEFZGv/xw95+1xj8cmw2
+ TYvncS38LDCrOpRja55dQ3Z1/vHr+msN6YHMQVRKhRKLo7lh+iUIaYMsL A==;
+X-CSE-ConnectionGUID: YlRe8mABToOta435MlnZdg==
+X-CSE-MsgGUID: 4CgGGRKuR4GP6r3kdxYGBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="53158177"
+X-IronPort-AV: E=Sophos;i="6.14,234,1736841600"; d="scan'208";a="53158177"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2025 03:03:05 -0700
+X-CSE-ConnectionGUID: c5FT/YsQQ+q8Fw6/zarhoA==
+X-CSE-MsgGUID: mdlPzfuCTMSBaNNGyo34EA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120250581"
+Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
+ lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
+ by orviesa007.jf.intel.com with ESMTP; 09 Mar 2025 03:03:03 -0700
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pm_dc: Remove PkgC dependecy to
+ validate deep-pkgc test
+Date: Sun,  9 Mar 2025 15:33:01 +0530
+Message-ID: <20250309100301.41405-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Fdc?=
- =?utf-8?q?=3A_Add_log_information_to_dc5_psr_test_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Sun, 09 Mar 2025 08:55:26 -0000
-Message-ID: <174151052638.8495.402559540866750079@18a75f3d1eae>
-X-Patchwork-Hint: ignore
-References: <20250226065202.84015-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20250226065202.84015-1-mohammed.thasleem@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,184 +63,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7142575118918663473==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+PkgC counter was removed from MTL onwards, so an alternative counter was
+used to validate deep pkgC tests. With the new KMD changes, a dedicated DC6
+debugfs entry counter has been created to validate these tests,
+allowing for the removal of the existing alternative counter code.
 
-== Series Details ==
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel/kms_pm_dc.c | 27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
-Series: tests/intel/kms_pm_dc: Add log information to dc5 psr test (rev2)
-URL   : https://patchwork.freedesktop.org/series/145456/
-State : success
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index b4f30a37d..b47a65f1a 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -617,22 +617,7 @@ static int has_panels_without_dc_support(igt_display_t *display)
+ 	return external_panel;
+ }
+ 
+-static unsigned int read_pkgc_counter(int debugfs_root_fd)
+-{
+-	char buf[4096];
+-	char *str;
+-	int len;
+-
+-	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
+-	igt_skip_on_f(len < 0, "PKGC state file not found\n");
+-	buf[len] = '\0';
+-	str = strstr(buf, "Package C10");
+-	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
+-
+-	return get_dc_counter(str);
+-}
+-
+-static void test_deep_pkgc_state(data_t *data)
++static void test_deep_pkgc_state(data_t *data, int dc_target)
+ {
+ 	unsigned int pre_val = 0, cur_val = 0;
+ 	time_t start = time(NULL);
+@@ -694,7 +679,7 @@ static void test_deep_pkgc_state(data_t *data)
+ 	igt_display_commit(&data->display);
+ 	/* Wait for the vblank to sync the frame time */
+ 	igt_wait_for_vblank_count(data->drm_fd, data->display.pipes[pipe].crtc_offset, 1);
+-	pre_val = read_pkgc_counter(data->debugfs_root_fd);
++	pre_val = read_dc_counter(data->debugfs_fd, dc_target);
+ 	/* Add a half-frame delay to ensure the flip occurs when the frame is active. */
+ 	usleep(delay * 0.5);
+ 
+@@ -703,8 +688,8 @@ static void test_deep_pkgc_state(data_t *data)
+ 		igt_plane_set_fb(primary, flip ? &data->fb_rgb : &data->fb_rgr);
+ 		igt_display_commit(&data->display);
+ 
+-		igt_wait((cur_val = read_pkgc_counter(data->debugfs_root_fd)) > pre_val,
+-						      (delay * 2), (5 * MSEC));
++		igt_wait((cur_val = read_dc_counter(data->debugfs_fd, dc_target)) > pre_val,
++						    (delay * 2), (5 * MSEC));
+ 		if (cur_val > pre_val) {
+ 			pkgc_flag = true;
+ 			break;
+@@ -712,7 +697,7 @@ static void test_deep_pkgc_state(data_t *data)
+ 	}
+ 
+ 	cleanup_dc3co_fbs(data);
+-	igt_assert_f(pkgc_flag, "PKGC10 is not achieved.\n");
++	igt_assert_f(pkgc_flag, "Deep pkgc state is not achieved.\n");
+ }
+ 
+ static void kms_poll_state_restore(int sig)
+@@ -787,7 +772,7 @@ igt_main
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+ 			      "PC8+ residencies not supported\n");
+ 		igt_require(intel_display_ver(data.devid) >= 20);
+-		test_deep_pkgc_state(&data);
++		test_deep_pkgc_state(&data, CHECK_DC6);
+ 	}
+ 
+ 	igt_describe("This test validates display engine entry to DC5 state "
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8265 -> IGTPW_12730
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/index.html
-
-Participating hosts (44 -> 42)
-------------------------------
-
-  Missing    (2): fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12730 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@guc:
-    - bat-adlp-6:         [PASS][1] -> [ABORT][2] ([i915#13696]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-adlp-6/igt@i915_selftest@live@guc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-adlp-6/igt@i915_selftest@live@guc.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-8/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arls-5:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8265 -> IGTPW_12730
-  * Linux: CI_DRM_16246 -> CI_DRM_16247
-
-  CI-20190529: 20190529
-  CI_DRM_16246: f811577f424491a57b1e8669bde62998227d6907 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16247: 23e0800ae0844e14894062d767edd6d50cab35f7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12730: 12730
-  IGT_8265: bfefe166535d69ca10d32e6ba0093260df21ee3d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/index.html
-
---===============7142575118918663473==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Add log information to dc5 psr test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145456/">https://patchwork.freedesktop.org/series/145456/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8265 -&gt; IGTPW_12730</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/index.html</p>
-<h2>Participating hosts (44 -&gt; 42)</h2>
-<p>Missing    (2): fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12730 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@guc:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-adlp-6/igt@i915_selftest@live@guc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-adlp-6/igt@i915_selftest@live@guc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696">i915#13696</a>) +1 other test abort</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12730/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8265 -&gt; IGTPW_12730</li>
-<li>Linux: CI_DRM_16246 -&gt; CI_DRM_16247</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16246: f811577f424491a57b1e8669bde62998227d6907 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16247: 23e0800ae0844e14894062d767edd6d50cab35f7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12730: 12730<br />
-  IGT_8265: bfefe166535d69ca10d32e6ba0093260df21ee3d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7142575118918663473==--
