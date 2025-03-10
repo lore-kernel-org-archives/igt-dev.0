@@ -4,64 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5F9C282DE
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Mar 2025 07:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F39C282DE
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Mar 2025 08:19:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F114C10E274;
-	Mon, 10 Mar 2025 07:07:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D0DB10E039;
+	Mon, 10 Mar 2025 08:19:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PY+uaVN+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jghfDxOb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D3EF10E274
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Mar 2025 07:07:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B641710E039
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Mar 2025 08:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741590441; x=1773126441;
+ t=1741594748; x=1773130748;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=+LfgiKU8EpJFfDUEXmGYcjU7we8t06F53ji5RKc18M4=;
- b=PY+uaVN+xwWBzEr68DIe62ysQLFm5IsTHYgsNZyh8/CCa5V0vE2QHA/K
- eadBo/I6SLUtre/kIC1xL68X2YTjf6QMLUPnJydsDjz0pAzLUkyqouxva
- 0Yu1J5AJDJI2RIrKct1e9bGoMHojM+jcgXks3H3Orqi0koSXOlVpCUueB
- +VXbTmhrbkVQ2XF9mN5T2ML0lEpXAb9PzxEsgD8A9SNkwTFTi9Jk0iDvJ
- xTMFmMicCaHxrSuoy+MziOD+ULpCf20wtzxleIcrDNvweeytvWMf9nfaw
- A8cz6hDZTXKw57x+DvLZxcUUqtjiZJldvk4A+Ix2uDowXQc8UjC+C+IOm Q==;
-X-CSE-ConnectionGUID: MOtimMGdQXCdmjCO5dnoYw==
-X-CSE-MsgGUID: 63NDq2nKRKW/8QSwdRszIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="60122992"
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="60122992"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 00:07:21 -0700
-X-CSE-ConnectionGUID: koiAFnQoQzq+8Vh2IrFkmA==
-X-CSE-MsgGUID: tUqlmy9NRaqfekBgz9WbYg==
+ bh=9IxORRH+X5gRFgL0kx86xlvBZVc9bO6slg+3AdeqrWU=;
+ b=jghfDxObOZ6Y93xvYnf45Z5XrZpFMZs3+IiR6JgiFyvc58dJVOoVqlXT
+ 76/OF1WYYAz+wsxsNTye0/Ep7Kl373Tf/+D3T304wRU0S9lR93BfjTmMK
+ xpWzu23td0Q7+KoVEYr8yp9QpYX9fy5vDh4U6LX2dvEbbcrGEwup3J6vB
+ vwGLS6oXxPSzAWlHmT62dU3YJK/OfXMGUkAchIA08H0vbmBMR1N2ozxSU
+ Z4HAJXNHUWet18TR45FzQ+vxDZkD5Bzb346Wk5KG30pEZ1HoquejK9rFQ
+ 2MU50QxhLdsCVbvCMqcNos7ahfwpVlQXtsKc+WNPq76jTk1CGqfu95ZBG A==;
+X-CSE-ConnectionGUID: I5uSFawTQ0239BbiNYHxWA==
+X-CSE-MsgGUID: zhRI7od4Sq6u2NoLIGeryw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="45370635"
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="45370635"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2025 01:19:06 -0700
+X-CSE-ConnectionGUID: IEn1Pvc1TMOYY2y85tq9iQ==
+X-CSE-MsgGUID: +bRM4AylSimHexyEeBIbcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="120064503"
-Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
- ([10.245.118.0])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 00:07:18 -0700
-Message-ID: <58d922a6-d24e-4b2c-a3da-1de97e2b065c@linux.intel.com>
-Date: Mon, 10 Mar 2025 08:07:09 +0100
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="119856920"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.116.143])
+ ([10.245.116.143])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2025 01:19:05 -0700
+Message-ID: <97374906-44cb-4535-a736-10788938f02e@linux.intel.com>
+Date: Mon, 10 Mar 2025 09:19:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 i-g-t 3/3] scripts/run-tests.sh: Add support to
- kmemleak and igt_facts
-To: vitaly prosyak <vprosyak@amd.com>, igt-dev@lists.freedesktop.org
-Cc: vitaly.prosyak@amd.com, christian.koenig@amd.com,
- alexander.deucher@amd.com, jesse.zhang@amd.com, harry.wentland@amd.com,
- zbigniew.kempczynski@intel.com, kamil.konieczny@linux.intel.com,
- ryszard.knop@intel.com, lucas.demarchi@intel.com,
- katarzyna.piecielska@intel.com
-References: <20250307093426.90479-1-peter.senna@linux.intel.com>
- <20250307093426.90479-4-peter.senna@linux.intel.com>
- <0ed20d8c-532f-43f2-ac16-82866b641670@amd.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_pm: Add a check for power management
+ capability
+To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+References: <20250306190621.260153-1-jakub1.kolakowski@intel.com>
 Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <0ed20d8c-532f-43f2-ac16-82866b641670@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250306190621.260153-1-jakub1.kolakowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,23 +73,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vitaly,
 
-On 10.03.2025 04:07, vitaly prosyak wrote:
-> Hi Peter,
+
+On 3/6/2025 8:06 PM, Jakub Kolakowski wrote:
+> Add a check for power management capability of device tested. Currently
+> if test is started on configuration that does not support the PM
+> capability it doesn't skip, instead depending on test it may fail, abort
+> or timeout.
+> With this change test will skip with a clear message why it did.
 > 
-> Version 8 of your three patches looks good to me. However, I haven't tested them locally.
-> Let me know if you’d like us to run them locally ( not CI)
-
-I ran local tests before sending the patches, so I’m confident there are no major issues.
-That said, if you’re able to test them locally as well, it would help confirm that
-everything is working as expected. I’d appreciate it if you could run the tests.
-
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> ---
+>   tests/intel/xe_pm.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
 > 
-> Thanks for the improvements!
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index c2026474d..049596ebc 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -17,6 +17,7 @@
+>   
+>   #include "igt.h"
+>   #include "lib/igt_device.h"
+> +#include "lib/igt_pci.h"
+>   #include "lib/igt_pm.h"
+>   #include "lib/igt_sysfs.h"
+>   #include "lib/igt_syncobj.h"
+> @@ -38,6 +39,8 @@
+>   #define PREFETCH (0x1 << 1)
+>   #define UNBIND_ALL (0x1 << 2)
+>   
+> +#define PCI_PM_CAP_ID 0x01
+> +
+>   enum mem_op {
+>   	READ,
+>   	WRITE,
+> @@ -779,6 +782,7 @@ igt_main
+>   	device_t device;
+>   	uint32_t d3cold_allowed;
+>   	int sysfs_fd;
+> +	int offset;
+>   
+>   	const struct s_state {
+>   		const char *name;
+> @@ -812,6 +816,11 @@ igt_main
+>   		device.fd_xe = drm_open_driver(DRIVER_XE);
+>   		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+>   		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
+> +
+> +		/* Make sure power management capability is present for device being tested */
+> +		offset = find_pci_cap_offset(device.pci_root, PCI_PM_CAP_ID);
+> +		igt_require_f(offset > 0, "PCI power management capability not found\n");
+> +
 
-Thank you for reviewing the patches!
+Shouldn't this requirement apply only to D-states?
 
-Peter
+>   		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
+>   
+>   		/* Always perform initial once-basic exec checking for health */
 
-[...]
