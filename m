@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC0E3C282DE
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 00:33:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4046C282DE
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 00:36:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0564A10E4F1;
-	Tue, 11 Mar 2025 00:33:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 941E810E4F1;
+	Tue, 11 Mar 2025 00:36:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VF3bC0cE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WMgH84kZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29E2A10E4F1
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 00:33:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACC9F10E4F1
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 00:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741653226; x=1773189226;
+ t=1741653366; x=1773189366;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=QQ7DYX75phFEokoIoYF0uTzfBZrTvhKAvHAT9Ar7U0Y=;
- b=VF3bC0cEZde79P7wgdlmKWjAj6qVo7Rw+bjQYgBfyxIuiZIh/lMOpU+t
- MxbxTO3rsvFFMketGK1ZPzOsUbLQSmszAiy8iw1ch/oK716adG3hnHj9O
- O3OUEHy5cxhJJCNzJ5Xx/b1jUoapSjGJ4eqLxHhaUYg/MGGeCtWw7oE4T
- TM5bN9CSLL1wVYtWKGRDEhquwZ4w3Yw6LnPLMobU+88KULKTE9qIHCReT
- 1CPkZbyeppaUgjUfbSokVtIkWrRAEfkDXsk47ZKYlWEGsRdp2MiL7eIXF
- F/MNmsjVXe1DRr11oFaCkKmc5EcQJs/ci8hmOwxLRk/irlCSGI+QspwRl Q==;
-X-CSE-ConnectionGUID: S6h1jw5OTuWn/dc0Oe/g1Q==
-X-CSE-MsgGUID: DPXy28ngQ6WdzY+NVzU4tw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42584993"
-X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; d="scan'208";a="42584993"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 17:33:45 -0700
-X-CSE-ConnectionGUID: I0GQw6l8SbyvduF3f4PGqg==
-X-CSE-MsgGUID: APxlyJGISYWVDHUk0ttFnA==
+ bh=eOY8WZGCtSrvkLyyxwZce9aIFJxi37BideuiIW7qTNk=;
+ b=WMgH84kZtseUhGkwKFizhg0Wwsw6KvoEwoBF3oCadMZMqwPGTWBFQvMG
+ 7vR6eyd3Ho9FDu9ViNCqxLJIYyLKpgL8r8YWulFxZzRkQpcfC4JOgs0SM
+ iDTO/Ji8IZDePKIfmTMWSZMdhIqsC6juhONMBspnSJdyhf0jY1u2Ar6A3
+ nIf3pozujZZnJ0L/kea6P3dCJzz1HNLdRDgZ2GSXHAWk1HGoDTu/Hg1lo
+ w9IUqFBNXch+eSe0XShjcm2HWV4skor6ReRm8gfCvtgQRU/zk1QMIdMk+
+ +Pf+T0NXkM9eAOF/l6EITozDn4bHVW9e/rfDePQ/X+/MR4aXE6ntVMeY5 A==;
+X-CSE-ConnectionGUID: TXTVk3u7Q9ebA+2PJ8x4Qw==
+X-CSE-MsgGUID: MuV/wAQ3T4GtxrZ7yHvvWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42860753"
+X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; d="scan'208";a="42860753"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2025 17:36:06 -0700
+X-CSE-ConnectionGUID: yQdK+LiwRT2dewXPGbSKeg==
+X-CSE-MsgGUID: 2baKJoFIQ3q1Mo8lc8Gluw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; d="scan'208";a="125201529"
+X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; d="scan'208";a="119874011"
 Received: from aagwai-mobl2.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.124.141.85])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 17:33:45 -0700
-Date: Mon, 10 Mar 2025 17:33:43 -0700
-Message-ID: <871pv44d94.wl-ashutosh.dixit@intel.com>
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2025 17:36:05 -0700
+Date: Mon, 10 Mar 2025 17:36:04 -0700
+Message-ID: <87zfhs2ykr.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Oak Zeng <oak.zeng@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [i-g-t v6 3/4] tests/intel/xe_vm: Exclude invalid_flags tests
- from LNL and BMG
-In-Reply-To: <20250224174010.594192-4-oak.zeng@intel.com>
+Subject: Re: [i-g-t v6 1/4] lib/xe: Fix a comment error
+In-Reply-To: <8734fk4eo8.wl-ashutosh.dixit@intel.com>
 References: <20250224174010.594192-1-oak.zeng@intel.com>
- <20250224174010.594192-4-oak.zeng@intel.com>
+ <20250224174010.594192-2-oak.zeng@intel.com>
+ <8734fk4eo8.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,106 +72,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 24 Feb 2025 09:40:09 -0800, Oak Zeng wrote:
+On Mon, 10 Mar 2025 17:03:03 -0700, Dixit, Ashutosh wrote:
 >
-> Due to a fix of out of bound prefetch issue, we now allow scratch
-> page coexist with fault mode on LNL and BMG, thus exclude those
-> tests on such HW.
+> On Mon, 24 Feb 2025 09:40:07 -0800, Oak Zeng wrote:
+> >
+> > The timeout value of __xe_wait_ufence returns the
+> > remaining time, not elapsed time. Fix it.
+> >
+> > Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+> > ---
+> >  lib/xe/xe_ioctl.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> > index 6d8388918..028102aa2 100644
+> > --- a/lib/xe/xe_ioctl.c
+> > +++ b/lib/xe/xe_ioctl.c
+> > @@ -496,7 +496,7 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+> >   *
+> >   * Function compares @value with memory pointed by @addr until they are equal.
+> >   *
+> > - * Returns (in @timeout), the elapsed time in nanoseconds if user fence was
+> > + * Returns (in @timeout), the remaining time in nanoseconds if user fence was
+>
+> But the code in xe_wait_user_fence_ioctl() in the kernel is:
+>
+>	args->timeout -= ktime_to_ns(ktime_sub(ktime_get(), start));
+>
+> Which seems to be the elapsed, not the remaining time?
 
-Instead of making all these changes in this patch, isn't it cleaner to
-include the platform check for DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE in
-invalid_flag() itself?
-
-Also is it just LNL and BMG, or other future platforms too? In that case
-instead of using IS_LUNARLAKE() kind of macros, use intel_graphics_ver()
-checks, so we don't need to keep adding a new patch/check for each
-platform.
+Sorry, I missed the '-=', so you are right, it is the remaing time. So
+let's change the comment in xe_wait_ufence() too.
 
 >
-> Signed-off-by: Oak Zeng <oak.zeng@intel.com>
-> ---
->  tests/intel/xe_vm.c | 47 ++++++++++++++++++++++++++++++---------------
->  1 file changed, 32 insertions(+), 15 deletions(-)
+> Also, if this patch is correct, then let's change for xe_wait_ufence() too.
 >
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 0730dd3d3..834e0afd7 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -2349,6 +2349,7 @@ igt_main
->	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
->	uint64_t bind_size;
->	int fd;
-> +	uint16_t dev_id;
->	const struct section {
->		const char *name;
->		int bo_n_pages;
-> @@ -2441,23 +2442,28 @@ igt_main
->		{ NULL },
->	};
+> >   * signalled. Returns 0 on success, -errno of ioctl on error.
+> >   */
+> >  int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > --
+> > 2.26.3
 >
-> -        const struct vm_create_section {
-> -                const char *name;
-> -                __u32 flags;
-> -        } xe_vm_create_invalid_flags[] = {
-> -                { "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-> -                { "xe_vm_create_scratch_fault",
-> -                        DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-> -                        DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-> -                { "xe_vm_create_scratch_fault_lr",
-> -                        ~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> -                        DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-> -                        DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
-> -                { }
-> -        };
-> +	const struct vm_create_section {
-> +		const char *name;
-> +		__u32 flags;
-> +	} xe_vm_create_invalid_flags1[] = {
-> +		{ "xe_vm_create_fault", DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-> +		{ }
-> +	};
-> +
-> +	const struct vm_create_section xe_vm_create_invalid_flags2[] = {
-> +		{ "xe_vm_create_scratch_fault",
-> +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-> +			DRM_XE_VM_CREATE_FLAG_FAULT_MODE },
-> +		{ "xe_vm_create_scratch_fault_lr",
-> +			~(DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE |
-> +			DRM_XE_VM_CREATE_FLAG_FAULT_MODE) },
-> +		{ }
-> +	};
->
->	igt_fixture {
->		fd = drm_open_driver(DRIVER_XE);
-> +		dev_id = intel_get_drm_devid(fd);
->
->		xe_for_each_engine(fd, hwe)
->			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY) {
-> @@ -2715,11 +2721,22 @@ igt_main
->		}
->	}
->
-> -	for (const struct vm_create_section *s = xe_vm_create_invalid_flags; s->name; s++) {
-> +	for (const struct vm_create_section *s = xe_vm_create_invalid_flags1;
-> +	     s->name; s++) {
->		igt_subtest_f("invalid-flag-%s", s->name)
->			invalid_flag(fd, s->flags);
->	}
->
-> +	for (const struct vm_create_section *s = xe_vm_create_invalid_flags2;
-> +	     s->name; s++) {
-> +		igt_subtest_f("invalid-flag-%s", s->name) {
-> +			igt_skip_on_f(IS_LUNARLAKE(dev_id) ||
-> +				      IS_BATTLEMAGE(dev_id),
-> +				      "Skip test on this platform\n");
-> +			invalid_flag(fd, s->flags);
-> +		}
-> +	}
-> +
->	igt_subtest("invalid-extensions")
->		invalid_extensions(fd);
->
-> --
-> 2.26.3
->
+> Need to update your git too, though not for this patch :/
