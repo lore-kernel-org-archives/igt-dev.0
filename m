@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1187C28B30
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 13:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04F0C282EC
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 13:55:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65A0910E200;
-	Tue, 11 Mar 2025 13:55:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6862F10E5B4;
+	Tue, 11 Mar 2025 13:55:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ixJO5UOw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VVmKv5n6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76FCA10E1FD
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 13:55:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8442710E252
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 13:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741701354; x=1773237354;
+ t=1741701356; x=1773237356;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EtvhxC9A5bvahg031pEthRaChf+nG2aik/d0JW0J1U8=;
- b=ixJO5UOw0DXRENCPzSmNupNDt8Q2CHktQfgpFlEmxQqdN3EKtu3btyoR
- BffzBc0J3GbPrWkuf/4uxEz0uSPlxZGW+1wXIRUb28MaTPBahH+lJRKbj
- G0bfj4iXi9CDreeyyA/1DZUSbz2iSzk4uxnyI7DwpGCof1uSQ1PAwFb4i
- Vbxb0vLCENfGxjM8K7P5ExlqeUY4+hOEiIkip+gz23apYjNGSqLUPfo68
- I/jVVOEiQirD10haUeRADYdgLvSD7daltXq4fiJDqrRSIxJgpU7/HaNoc
- +JESA4Nxb7HUxrAtwDP2Ly+7sm2Umy7iDvJX8heXM7746dlTM1USu51M3 A==;
-X-CSE-ConnectionGUID: UsvXzB/BQLyJox2447dlsg==
-X-CSE-MsgGUID: Vhm5SJXpSrKCyQt/Nr9bWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42616258"
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="42616258"
+ bh=kpb+ZXWtgiU/J7J5ZuaYVlII3ubBX5tlek774PbIr5Q=;
+ b=VVmKv5n6pNeiN1NdCDEISYiIRI1Uh1O+Xw2BH8LONijyYxfm3bOoJYYx
+ icWjDVhzgUvjTZYYpV4PPLtqN7JXJiYLy522qNv2ZvRtynyrK1meqZqGm
+ ZJQI7Cdu+mpq5E7xNGlRAqt/SNAqI3CfgHpeh82SceOok1/MbDAJqFoPm
+ ssqgV2VhdVcc/CEcXMnXj6TBwuIkD/arWhOQH3QqIYz1SHnoWJYoRlkgu
+ yGXzziAj4WYUpTHi441PBfo6Ya6BzyvYB3yp3vOUMLwKke3s1GyUOFB8L
+ Pqbnyo3YSJJMfrf0s17pS86HgVtAsjL5ztb302CODfau/wQEVL3uFjs6s g==;
+X-CSE-ConnectionGUID: eRwDQ4ryTLmG3LsYqURNlQ==
+X-CSE-MsgGUID: 7Capei71TCuWYnNq4AWtJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42616261"
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="42616261"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 06:55:54 -0700
-X-CSE-ConnectionGUID: x09HLd3xTkWGEyKZP1FwoQ==
-X-CSE-MsgGUID: EOTj8KTwRJiS/Lw1JaCYkw==
+ 11 Mar 2025 06:55:56 -0700
+X-CSE-ConnectionGUID: 2Vfw6FqkQJmzE4FHSlfKmw==
+X-CSE-MsgGUID: Q+vI6wiGQK2giOaCsObmkA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="151131523"
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="151131528"
 Received: from fdefranc-mobl3.ger.corp.intel.com (HELO
  dpiatkow-mobl1.mshome.net) ([10.245.246.177])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 06:55:53 -0700
+ 11 Mar 2025 06:55:55 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -51,9 +51,10 @@ Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
  Mika Kuoppala <mika.kuoppala@linux.intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v2 i-g-t 1/3] lib/eudebug: Make debugger thread SIGINTable
-Date: Tue, 11 Mar 2025 14:55:27 +0100
-Message-Id: <20250311135529.5425-2-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v2 i-g-t 2/3] lib/eudebug: Fix xe_eudebug_client_stop corner
+ case
+Date: Tue, 11 Mar 2025 14:55:28 +0100
+Message-Id: <20250311135529.5425-3-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250311135529.5425-1-dominik.karol.piatkowski@intel.com>
 References: <20250311135529.5425-1-dominik.karol.piatkowski@intel.com>
@@ -75,51 +76,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Due to the fact that `pthread_kill(thread, SIGINT)` results in SIGINTing
-all of the threads - including main thread - by default, testcases that
-send SIGINT to debugger thread are crashing.
+After `token_signal(c->p_in, CLIENT_STOP, c->pid)`, the client is
+expected to end its work and exit. By the time the waitpid() is called,
+the client process may be gone already, resulting in a failed assert.
 
-Introduce SIGINT signal handler for debugger thread to fix this.
-
-v2: Initialize sigaction (Mika)
+Fix it by skipping the assert in case of errno being ECHILD, meaning
+the process already exited.
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 Reviewed-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 ---
- lib/xe/xe_eudebug.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ lib/xe/xe_eudebug.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 1205d945b..558882914 100644
+index 558882914..b17efa2d0 100644
 --- a/lib/xe/xe_eudebug.c
 +++ b/lib/xe/xe_eudebug.c
-@@ -1050,6 +1050,11 @@ xe_eudebug_read_event(int fd, struct drm_xe_eudebug_event *event)
- 	return ret;
- }
- 
-+static void terminate_debugger(int sig)
-+{
-+	pthread_exit(NULL);
-+}
-+
- static void *debugger_worker_loop(void *data)
+@@ -1450,12 +1450,16 @@ void xe_eudebug_client_stop(struct xe_eudebug_client *c)
  {
- 	uint8_t buf[MAX_EVENT_SIZE];
-@@ -1060,9 +1065,14 @@ static void *debugger_worker_loop(void *data)
- 		.revents = 0,
- 	};
- 	int timeout_ms = 100, ret;
-+	struct sigaction sa = { 0 };
+ 	if (c->pid) {
+ 		int waitstatus;
++		int ret;
  
- 	igt_assert(d->master_fd >= 0);
+ 		xe_eudebug_client_wait_done(c);
  
-+	igt_assert_eq(sigaction(SIGINT, NULL, &sa), 0);
-+	sa.sa_handler = terminate_debugger;
-+	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
+ 		token_signal(c->p_in, CLIENT_STOP, c->pid);
+-		igt_assert_eq(waitpid(c->pid, &waitstatus, 0),
+-			      c->pid);
++		ret = waitpid(c->pid, &waitstatus, 0);
++		/* process may be gone already */
++		if (!(ret == -1 && errno == ECHILD))
++			igt_assert_eq(ret, c->pid);
 +
- 	do {
- 		p.fd = d->fd;
- 		ret = poll(&p, 1, timeout_ms);
+ 		c->pid = 0;
+ 	}
+ }
 -- 
 2.34.1
 
