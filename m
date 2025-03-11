@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F2BC28B2E
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 04:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECE7C28B2E
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 05:23:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8213810E04A;
-	Tue, 11 Mar 2025 04:30:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bhA7ByH+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E511410E04A
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 04:30:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741667419; x=1773203419;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xfJyjXh/sTkMBBIxwUG0D4zkzL1EdYKUuJrz3PRSQss=;
- b=bhA7ByH+IiIHhczrBZfTRHGnialACpPl2hYp4aFA1r9ltYeRs7g/YrLf
- deG8rArT+qOxHMtNLzfRgO80SGalnpR4aojXYRaJyQpHeOq9dH9ua45St
- mhTM1BtP3L/lEBTvhYKy604dXmQp+P7CxUWcwC90V+U5Ewjegd1RRalgk
- qDogPMWVqrQJOxLfBAbMV87B8RT2lcASuPKSSci1xieHQ0iAZSZZkeOxh
- D7rFEtSW2vkABQZoE4lblYtJBGT0BN/BtXSo1nc51Zwku2uHnXuGVpnZh
- iEp4+F9uyh8/ZUJ4okVQmE0ACJyS9iVti6pcd8+QiXcGAAGU8y4cV54Og w==;
-X-CSE-ConnectionGUID: 4JvrS9/2QnacLWpN0TCFgg==
-X-CSE-MsgGUID: N7vvV4wyTOuYRRbMTAf8vw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="53316776"
-X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; d="scan'208";a="53316776"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 21:30:11 -0700
-X-CSE-ConnectionGUID: Sk5Rs5TmScmkW9rzUIjbQg==
-X-CSE-MsgGUID: wiF46ARfR2KepVppvMzF9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; d="scan'208";a="120413681"
-Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 21:30:10 -0700
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: shekhar.chauhan@intel.com,
-	juha-pekka.heikkila@intel.com
-Subject: [PATCH v2] tests/kms_cursor_crc.: Test async cursor crc
-Date: Tue, 11 Mar 2025 10:00:02 +0530
-Message-Id: <20250311043002.127979-1-shekhar.chauhan@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id A41D510E0C3;
+	Tue, 11 Mar 2025 05:23:12 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9226B10E0C3;
+ Tue, 11 Mar 2025 05:23:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4010680822255052897=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcursor=5Fcrc=2E?=
+ =?utf-8?q?=3A_Test_async_cursor_crc_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Shekhar Chauhan" <shekhar.chauhan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Mar 2025 05:23:11 -0000
+Message-ID: <174167059159.16728.6382598909292837141@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250311043002.127979-1-shekhar.chauhan@intel.com>
+In-Reply-To: <20250311043002.127979-1-shekhar.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,202 +37,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Check if cursor IOCTLs are behaving in timely manner via CRC.
-Test CRC of the display with 2 cursors, separated by a vblank and a
-sleep so that the drawing of the cursors only happens when the screen is
-active and then compare the CRC of the two cases. This helps validates
-that there is no tearing when doing cursor changes midframe. Test
-consists of two subtests, one for checking the timely change and the
-second test also adds changing position into the first test.
+--===============4010680822255052897==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Trim down the description.
+== Series Details ==
 
-Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
----
- tests/kms_cursor_crc.c | 139 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+Series: tests/kms_cursor_crc.: Test async cursor crc (rev2)
+URL   : https://patchwork.freedesktop.org/series/146062/
+State : success
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 7c6f61f55..e3de107c8 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -100,6 +100,16 @@
-  * @max-size:              Max supported size
-  */
- 
-+/**
-+ * SUBTEST: async-cursor-crc-framebuffer-change
-+ * Description: Validate cursor IOCTLs tearing via framebuffer changes and CRC.
-+ */
-+
-+/**
-+ * SUBTEST: async-cursor-crc-position-change
-+ * Description: Similar to async-cursor-change, but this test changes position.
-+ */
-+
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate cursor plane functionality. "
-    "The test will position the cursor plane either fully onscreen, "
-@@ -123,6 +133,11 @@ enum cursor_buffers {
- 	MAXCURSORBUFFER
- };
- 
-+enum cursor_change {
-+	FIRSTIMAGE,
-+	SECONDIMAGE
-+};
-+
- typedef struct {
- 	int x;
- 	int y;
-@@ -151,6 +166,7 @@ typedef struct {
- 	double alpha;
- 	int vblank_wait_count; /* because of msm */
- 	cursorarea oldcursorarea[MAXCURSORBUFFER];
-+	struct igt_fb timed_fb[2];
- } data_t;
- 
- static bool extended;
-@@ -674,6 +690,78 @@ static void test_cursor_transparent(data_t *data)
- 	data->alpha = 1.0;
- }
- 
-+static void do_timed_cursor_fb_change(data_t *data, enum cursor_change change)
-+{
-+	if (change == FIRSTIMAGE) {
-+		igt_plane_set_fb(data->cursor, &data->timed_fb[0]);
-+		igt_plane_set_position(data->cursor,
-+				       data->left + data->cursor_max_w - 10,
-+				       data->bottom - data->cursor_max_h - 10);
-+	} else {
-+		igt_plane_set_fb(data->cursor, &data->timed_fb[1]);
-+	}
-+}
-+
-+static void do_timed_cursor_fb_pos_change(data_t *data, enum cursor_change change)
-+{
-+	if (change == FIRSTIMAGE) {
-+		igt_plane_set_fb(data->cursor, &data->timed_fb[0]);
-+		igt_plane_set_position(data->cursor,
-+				       data->left + data->cursor_max_w - 10,
-+				       data->bottom - data->cursor_max_h - 10);
-+	} else {
-+		igt_plane_set_position(data->cursor,
-+				       data->left + data->cursor_max_w + 20,
-+				       data->bottom - data->cursor_max_h + 20);
-+	}
-+}
-+
-+static void timed_cursor_changes(data_t *data, void (changefunc)(data_t *, enum cursor_change))
-+{
-+	igt_crc_t crc1, crc2;
-+
-+	data->cursor = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_CURSOR);
-+	changefunc(data, FIRSTIMAGE);
-+
-+	igt_display_commit(&data->display);
-+
-+	/* Extra vblank wait is because nonblocking cursor ioctl */
-+	igt_wait_for_vblank_count(data->drm_fd,
-+				  data->display.pipes[data->pipe].crtc_offset,
-+				  data->vblank_wait_count);
-+
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc1);
-+
-+	/* get the screen refresh rate, then wait for vblank, and
-+	 * wait for 1/5 of time of screen refresh and change image.
-+	 * change it mid screen to validate that the change happens
-+	 * at the end of the current frame.
-+	 */
-+	usleep(1.0f / data->refresh / 5.0f * 1e6);
-+
-+	changefunc(data, SECONDIMAGE);
-+	igt_display_commit(&data->display);
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc2);
-+
-+	igt_assert_crc_equal(&crc1, &crc2);
-+
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc2);
-+
-+	/* check next frame will be different as expected*/
-+	igt_assert_f(igt_find_crc_mismatch(&crc1, &crc2, NULL),
-+		     "crc values were not supposing to match!\n");
-+}
-+
-+static void test_crc_cursors(data_t *data)
-+{
-+	timed_cursor_changes(data, do_timed_cursor_fb_change);
-+}
-+
-+static void test_crc_pos_cursors(data_t *data)
-+{
-+	timed_cursor_changes(data, do_timed_cursor_fb_pos_change);
-+}
-+
- static void test_cursor_opaque(data_t *data)
- {
- 	data->alpha = 1.0;
-@@ -1013,6 +1101,57 @@ static void run_tests_on_pipe(data_t *data)
- 	}
- 
- 	igt_fixture {
-+		igt_create_color_fb(data->drm_fd, data->cursor_max_w, data->cursor_max_h,
-+				DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+				1.f, 1.f, 1.f, &data->timed_fb[0]);
-+
-+		igt_create_color_fb(data->drm_fd, data->cursor_max_w, data->cursor_max_h,
-+				DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+				1.f, 0.f, 0.f, &data->timed_fb[1]);
-+	}
-+
-+	igt_describe("Validate CRC with two cursors");
-+	igt_subtest_with_dynamic("async-cursor-crc-framebuffer-change") {
-+		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
-+			data->pipe = pipe;
-+
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+					  kmstest_pipe_name(pipe),
-+					  data->output->name)
-+				run_test(data, test_crc_cursors,
-+					  data->cursor_max_w, data->cursor_max_h);
-+		}
-+	}
-+
-+	igt_describe("Validate CRC with two cursors and cursor position change");
-+	igt_subtest_with_dynamic("async-cursor-crc-position-change") {
-+		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
-+			data->pipe = pipe;
-+
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+					  kmstest_pipe_name(pipe),
-+					  data->output->name)
-+				run_test(data, test_crc_pos_cursors,
-+					  data->cursor_max_w, data->cursor_max_h);
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_remove_fb(data->drm_fd, &data->timed_fb[0]);
-+		igt_remove_fb(data->drm_fd, &data->timed_fb[1]);
-+
- 		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
- 	}
- 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8270_BAT -> XEIGTPW_12741_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12741_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small-cm:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html
+
+  * igt@xe_exec_fault_mode@twice-rebind:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#2229])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#977])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][6] ([Intel XE#2838] / [Intel XE#979])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#979])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_vm@bind-execqueues-independent:
+    - bat-adlp-vf:        [ABORT][8] ([Intel XE#4491]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8270/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8270 -> IGTPW_12741
+  * Linux: xe-2789-714f93e4c086c6e07187597bd446752f5f65b544 -> xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034
+
+  IGTPW_12741: 12741
+  IGT_8270: 49751c5c11723262ec66e564c76503f74a9fa831 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2789-714f93e4c086c6e07187597bd446752f5f65b544: 714f93e4c086c6e07187597bd446752f5f65b544
+  xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034: 003c44ec0b7d86569bd13d4a810ee24176c3d034
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/index.html
+
+--===============4010680822255052897==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc.: Test async cursor crc (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146062/">https://patchwork.freedesktop.org/series/146062/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8270_BAT -&gt; XEIGTPW_12741_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12741_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small-cm:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-rebind:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_vm@bind-execqueues-independent:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8270/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12741/bat-adlp-vf/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8270 -&gt; IGTPW_12741</li>
+<li>Linux: xe-2789-714f93e4c086c6e07187597bd446752f5f65b544 -&gt; xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034</li>
+</ul>
+<p>IGTPW_12741: 12741<br />
+  IGT_8270: 49751c5c11723262ec66e564c76503f74a9fa831 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2789-714f93e4c086c6e07187597bd446752f5f65b544: 714f93e4c086c6e07187597bd446752f5f65b544<br />
+  xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034: 003c44ec0b7d86569bd13d4a810ee24176c3d034</p>
+
+</body>
+</html>
+
+--===============4010680822255052897==--
