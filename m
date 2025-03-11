@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 698A4C28B2E
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 08:48:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBACFC28B2E
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 08:49:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2403310E544;
-	Tue, 11 Mar 2025 08:48:11 +0000 (UTC)
-Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED4C310E53A;
- Tue, 11 Mar 2025 08:48:09 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4747730942149826068=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAAC310E530;
+	Tue, 11 Mar 2025 08:49:21 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JK8dUf+p";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E120610E530
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 08:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741682961; x=1773218961;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=ALDo69bF+aqlDylZORwqoq6SVsQY1AG54Pt8AigUOr4=;
+ b=JK8dUf+pK+oAycQW0dtWrb4cjyhYEzpjBim1gauNMzViX9cIXj6O7GjR
+ TIJ7UIQIIAqyOI908JjW797RZrj8jtcHC6dnuTc2t+/c+Qbr8/k2erQg8
+ aPEPrJ/yIZ4MG/zE2iR0S23EVHFxQyZKGJkmd88mG0p48tJXJxrTjxW32
+ 2S/qS7w3w0qKoXJKJfFfioa1WQI6Hn5m++SzZEp/q/vCE4W56t6QnD74d
+ aiFlJVrMkczAu7XFSwWXDycZHYzhrWz9QR5JjKNkgGPuEO9kIF2wgGrYw
+ PTwyFOhJWdnHIiqil6EoYzqNw4yKrJeISEtragU703xq2JoT9ljlzjhdb g==;
+X-CSE-ConnectionGUID: WuNZQ+vBTc2tnizudiYyxg==
+X-CSE-MsgGUID: v30hUHkgQw2NgHJiR6LJZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42741446"
+X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; d="scan'208";a="42741446"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2025 01:49:20 -0700
+X-CSE-ConnectionGUID: L6Zsp+PSQVSuGQy2MbSI+w==
+X-CSE-MsgGUID: XLwxVCvgRmKsVUokqwobTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; d="scan'208";a="120178618"
+Received: from carterle-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.184])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2025 01:49:17 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com, Leo Li
+ <sunpeng.li@amd.com>, Uma Shankar <uma.shankar@intel.com>, Ramanaidu
+ Naladala <ramanaidu.naladala@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_sysfs: Update DRM debug severity
+ handling to use bitmask for verbosity control
+In-Reply-To: <20250310171539.273699-2-pranay.samala@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250310171539.273699-1-pranay.samala@intel.com>
+ <20250310171539.273699-2-pranay.samala@intel.com>
+Date: Tue, 11 Mar 2025 10:49:14 +0200
+Message-ID: <87ikoggdf9.fsf@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Fhotplug?=
- =?utf-8?q?=3A_Check_the_suspend_state_after_resume_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tom Chung" <chiahsuan.chung@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Mar 2025 08:48:09 -0000
-Message-ID: <174168288996.17369.507226222063638737@18a75f3d1eae>
-X-Patchwork-Hint: ignore
-References: <20250311081457.2396-1-chiahsuan.chung@amd.com>
-In-Reply-To: <20250311081457.2396-1-chiahsuan.chung@amd.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +70,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4747730942149826068==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, 10 Mar 2025, Pranay Samala <pranay.samala@intel.com> wrote:
+> This approach ensures precise control by modifying
+> specific bits in the DRM debug mask.
+>
+> Updated the DRM debug severity logic to use bitwise
+> operations to unset unwanted bits in the debug mask.
+> The function now only sets the bits that are passed,
+> allowing for more granular control over the logging output.
 
-== Series Details ==
+Please don't call it "severity" when drm debug is about "category".
 
-Series: tests/amdgpu/amd_hotplug: Check the suspend state after resume (rev2)
-URL   : https://patchwork.freedesktop.org/series/146067/
-State : success
+You can't say one category is more "severe" than another.
 
-== Summary ==
+>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Kunal Joshi <kunal1.joshi@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Ramanaidu Naladala <ramanaidu.naladala@intel.com>
+> Cc: Sameer Lattannavar <sameer.lattannavar@intel.com>
+>
+> Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> ---
+>  lib/igt_sysfs.c | 54 ++++++++++++++++++++++++++-----------------------
+>  lib/igt_sysfs.h | 19 ++++++++++++++---
+>  2 files changed, 45 insertions(+), 28 deletions(-)
+>
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index 2e4c2ee63..2a3cb68e4 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -443,69 +443,71 @@ int igt_sysfs_drm_module_params_open(void)
+>  	return open(path, O_RDONLY);
+>  }
+>  
+> -static int log_level = -1;
+> +static int log_severity = -1;
+>  
+>  /**
+> - * igt_drm_debug_level_get:
+> + * igt_drm_debug_severity_get:
+>   *
+> - * This reads the current debug log level of the machine on
+> + * This reads the current debug log severity of the machine on
+>   * which the test is currently executing.
+>   *
+>   * Returns:
+> - * The current log level, or -1 on error.
+> + * The current log severity, or -1 on error.
+>   */
+> -int igt_drm_debug_level_get(int dir)
+> +int igt_drm_debug_severity_get(int dir)
+>  {
+>  	char buf[20];
+>  
+> -	if (log_level >= 0)
+> -		return log_level;
+> +	if (log_severity >= 0)
+> +		return log_severity;
+>  
+> -	if (igt_sysfs_read(dir, "debug", buf, sizeof(buf) - 1) < 0)
+> +	if (igt_sysfs_read(dir, "debug", buf, sizeof(buf)) < 0)
+>  		return -1;
+>  
+>  	return atoi(buf);
+>  }
+>  
+>  /**
+> - * igt_drm_debug_level_reset:
+> + * igt_drm_debug_severity_reset:
+>   *
+> - * This modifies the current debug log level of the machine
+> + * This modifies the current debug log severity of the machine
+>   * to the default value post-test.
+>   *
+>   */
+> -void igt_drm_debug_level_reset(void)
+> +void igt_drm_debug_severity_reset(void)
+>  {
+>  	char buf[20];
+>  	int dir;
+>  
+> -	if (log_level < 0)
+> +	if (log_severity < 0)
+>  		return;
+>  
+>  	dir = igt_sysfs_drm_module_params_open();
+>  	if (dir < 0)
+>  		return;
+>  
+> -	igt_debug("Resetting DRM debug level to %d\n", log_level);
+> -	snprintf(buf, sizeof(buf), "%d", log_level);
+> +	igt_debug("Resetting DRM debug severity to 0x%x\n", log_severity);
+> +	snprintf(buf, sizeof(buf), "%d", log_severity);
+>  	igt_assert(igt_sysfs_set(dir, "debug", buf));
+>  
+>  	close(dir);
+>  }
+>  
+> -static void igt_drm_debug_level_reset_exit_handler(int sig)
+> +static void igt_drm_debug_severity_reset_exit_handler(int sig)
+>  {
+> -	igt_drm_debug_level_reset();
+> +	igt_drm_debug_severity_reset();
+>  }
+>  
+>  /**
+> - * igt_drm_debug_level_update:
+> - * @debug_level: new debug level to set
+> + * igt_drm_debug_severity_update:
+> + * @debug_severity: new debug severity to set
+>   *
+> - * This modifies the current drm debug log level to the new value.
+> + * This modifies the current drm debug log severity to the new value.
+>   */
+> -void igt_drm_debug_level_update(unsigned int new_log_level)
+> +
+> +void igt_drm_debug_severity_update(enum drm_debug_category category_to_set)
 
-CI Bug Log - changes from XEIGT_8270_BAT -> XEIGTPW_12743_BAT
-====================================================
+This should accept a mask instead of a single category, and the function
+and parameter naming should reflect that.
 
-Summary
--------
+>  {
+> +	unsigned int new_log_severity;
+>  	char buf[20];
+>  	int dir;
+>  
+> @@ -513,14 +515,16 @@ void igt_drm_debug_level_update(unsigned int new_log_level)
+>  	if (dir < 0)
+>  		return;
+>  
+> -	log_level = igt_drm_debug_level_get(dir);
+> -	if (log_level < 0) {
+> +	log_severity = igt_drm_debug_severity_get(dir);
+> +	if (log_severity < 0) {
+>  		close(dir);
+>  		return;
+>  	}
 
-  **SUCCESS**
+This doesn't seem to handle nested updates. The reset will put this back
+to the previous value, not the original value.
 
-  No regressions found.
+>  
+> -	igt_debug("Setting DRM debug level to %d\n", new_log_level);
+> -	snprintf(buf, sizeof(buf), "%d", new_log_level);
+> +	new_log_severity = category_to_set;
+> +
+> +	igt_debug("Setting DRM debug severity to 0x%x\n", new_log_severity);
+> +	snprintf(buf, sizeof(buf), "%d", new_log_severity);
+>  	igt_assert(igt_sysfs_set(dir, "debug", buf));
+>  
+>  	close(dir);
+> @@ -529,7 +533,7 @@ void igt_drm_debug_level_update(unsigned int new_log_level)
+>  	 * TODO: Check whether multiple exit handlers will get installed,
+>  	 * if we call this api multiple times
+>  	 */
+> -	igt_install_exit_handler(igt_drm_debug_level_reset_exit_handler);
+> +	igt_install_exit_handler(igt_drm_debug_severity_reset_exit_handler);
+>  }
+>  
+>  /**
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 86345f3d1..c2e15320d 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -143,9 +143,22 @@ void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
+>  void bind_fbcon(bool enable);
+>  void fbcon_blink_enable(bool enable);
+>  
+> -void igt_drm_debug_level_update(unsigned int new_log_level);
+> -void igt_drm_debug_level_reset(void);
+> -int igt_drm_debug_level_get(int dir);
+> +enum drm_debug_category {
+> +	DRM_UT_CORE      = 1 << 0,
+> +	DRM_UT_DRIVER    = 1 << 1,
+> +	DRM_UT_KMS       = 1 << 2,
+> +	DRM_UT_PRIME     = 1 << 3,
+> +	DRM_UT_ATOMIC    = 1 << 4,
+> +	DRM_UT_VBL       = 1 << 5,
+> +	DRM_UT_STATE     = 1 << 6,
+> +	DRM_UT_LEASE     = 1 << 7,
+> +	DRM_UT_DP        = 1 << 8,
+> +	DRM_UT_DRMRES    = 1 << 9,
+> +};
+> +
+> +void igt_drm_debug_severity_update(enum drm_debug_category category_to_set);
+> +void igt_drm_debug_severity_reset(void);
+> +int igt_drm_debug_severity_get(int dir);
+>  int igt_sysfs_drm_module_params_open(void);
+>  
+>  /**
 
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12743_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind:
-    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#4491])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8270/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12743/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind.html
-
-  
-  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
-
-
-Build changes
--------------
-
-  * IGT: IGT_8270 -> IGTPW_12743
-  * Linux: xe-2789-714f93e4c086c6e07187597bd446752f5f65b544 -> xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034
-
-  IGTPW_12743: 12743
-  IGT_8270: 49751c5c11723262ec66e564c76503f74a9fa831 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2789-714f93e4c086c6e07187597bd446752f5f65b544: 714f93e4c086c6e07187597bd446752f5f65b544
-  xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034: 003c44ec0b7d86569bd13d4a810ee24176c3d034
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12743/index.html
-
---===============4747730942149826068==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_hotplug: Check the suspend state after resume (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146067/">https://patchwork.freedesktop.org/series/146067/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12743/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12743/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8270_BAT -&gt; XEIGTPW_12743_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12743_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8270/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12743/bat-adlp-vf/igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8270 -&gt; IGTPW_12743</li>
-<li>Linux: xe-2789-714f93e4c086c6e07187597bd446752f5f65b544 -&gt; xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034</li>
-</ul>
-<p>IGTPW_12743: 12743<br />
-  IGT_8270: 49751c5c11723262ec66e564c76503f74a9fa831 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2789-714f93e4c086c6e07187597bd446752f5f65b544: 714f93e4c086c6e07187597bd446752f5f65b544<br />
-  xe-2793-003c44ec0b7d86569bd13d4a810ee24176c3d034: 003c44ec0b7d86569bd13d4a810ee24176c3d034</p>
-
-</body>
-</html>
-
---===============4747730942149826068==--
+-- 
+Jani Nikula, Intel
