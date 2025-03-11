@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E8BC28B2F
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 17:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0571CC28B2F
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 18:38:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8FF310E64D;
-	Tue, 11 Mar 2025 17:12:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD08510E25B;
+	Tue, 11 Mar 2025 18:38:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z+0AQGuf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bdSAIjUd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1AF9010E64D
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 17:12:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98C1A10E25B
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 18:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741713137; x=1773249137;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=KLY60c8d/1SMU7oW37u068VYzKj5IEx/+JOpzGoa33Y=;
- b=Z+0AQGufte71yZCFtqd0Zc/LsHIYBk7xsFCtuKv3EcPnU7bJPQ3AOHbV
- ToDAh8KY3umaJGqeMVKU2eaXWUGoAE4CxgkMwmXBhKLDxmDBGLwBQbeBB
- Vl1veTKXy1NqrffUW5s3Cag5sIYMcg3l3uFYInss4VkOGmW6sQOfaEE8V
- 7slQz0tiiX4oTuxRcGVqkKWbDkNIonfJp443oJv6CpkBIJs1tBrDReJOl
- KnHKCUy9PLMz1AVVT4pjKdQVmHFvwMo7+SZEaKNuJWn7t+GLLk0V68GDF
- /5xvrwGQt6gzIKHtqEcoFPg9TQU/TgfL87Y1pc5oqrY1AaJl99E/p4oPc Q==;
-X-CSE-ConnectionGUID: g3seRALDTq+Umjgosp3syg==
-X-CSE-MsgGUID: Ma9IHLwrSrSIs21cOuFC3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="60312224"
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="60312224"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 10:12:17 -0700
-X-CSE-ConnectionGUID: qYzyLE92TdObiS6OApSnuA==
-X-CSE-MsgGUID: 9k7EUkbtS5GJd9ZtnBp7QQ==
+ t=1741718329; x=1773254329;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/v1QrSnhhp2Bhm7Xjwvh+sz7Xl/zuxHj630Yv5yx7kk=;
+ b=bdSAIjUdwQpkpGtv2enobPEpRDCYXL3RbYRm8kxw6fXy5ulDIytiosCH
+ SpianlegqQAR1FK0lQBRGxBIs5yYPgXe80j6j57kIwKsmlTNADp0z/8fb
+ L6fHsqm865knt595aJocQSEv9HbgBUtOg9+6kqmg9Iwu/GCLyGvleS79b
+ p6PSmYnbNLxtbMw74YnIezUXc4+ZRlNgMMftRvOnmiPjZRX0MDIoezOjE
+ aL4o/tYI5Zcil/d7xhnvSBAdmYdPUFQ3g1vyhzxeW49PCyywVkWWmr8eQ
+ ytMVP4Dl1kvHgQHr8YPe1mriTMAiseWbZfu6WZsFqzmJCtzCXIqeh/sJu A==;
+X-CSE-ConnectionGUID: ZupMmxUMQo+/YEmQqHds3A==
+X-CSE-MsgGUID: 1+g2Xu6URCefE69cZI7P/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="53767135"
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="53767135"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2025 11:38:49 -0700
+X-CSE-ConnectionGUID: eHaKCI1BQj2CorRyPLim/A==
+X-CSE-MsgGUID: R7FVuQR9RJ633cyk3p7JcA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="120325728"
-Received: from tmistat-dev.igk.intel.com ([10.211.135.226])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 10:12:14 -0700
-From: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="151205893"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2025 11:38:48 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_pm: Add a check for power management
- capability
-Date: Tue, 11 Mar 2025 17:01:44 +0000
-Message-Id: <20250311170144.602535-3-jakub1.kolakowski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250311170144.602535-1-jakub1.kolakowski@intel.com>
-References: <20250311170144.602535-1-jakub1.kolakowski@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ Riana Tauro <riana.tauro@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: Test some early probe
+ functions
+Date: Tue, 11 Mar 2025 11:38:33 -0700
+Message-ID: <20250311183833.1199190-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,94 +68,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check for power management capability of device tested in tests
-related to D-states. Currently if test is started on configuration
-that does not support the PM capability it doesn't skip, instead
-depending on test it may fail, abort or timeout.
-With this change test will skip with a clear message why it did.
-
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Test-with: https://lore.kernel.org/intel-xe/20250311-fix-survivability-v2-0-729ce081155e@intel.com/
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_pm.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tests/intel/xe_fault_injection.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index c2026474d..25fc7bc9f 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -854,6 +854,8 @@ igt_main
- 
- 		for (const struct d_state *d = d_states; d->name; d++) {
- 			igt_subtest_f("%s-%s-basic-exec", s->name, d->name) {
-+				igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 				igt_assert(setup_d3(device, d->state));
- 				test_exec(device, 1, 2, s->state, NO_RPM, 0);
- 				cleanup_d3(device);
-@@ -870,18 +872,24 @@ igt_main
- 
- 	for (const struct d_state *d = d_states; d->name; d++) {
- 		igt_subtest_f("%s-basic", d->name) {
-+			igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 			igt_assert(setup_d3(device, d->state));
- 			igt_assert(in_d3(device, d->state));
- 			cleanup_d3(device);
- 		}
- 
- 		igt_subtest_f("%s-basic-exec", d->name) {
-+			igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 			igt_assert(setup_d3(device, d->state));
- 			test_exec(device, 1, 1, NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
- 		}
- 
- 		igt_subtest_f("%s-multiple-execs", d->name) {
-+			igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 			igt_assert(setup_d3(device, d->state));
- 			test_exec(device, 16, 32, NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
-@@ -890,6 +898,8 @@ igt_main
- 		igt_describe_f("Validate mmap memory mappings with system region,"
- 			       "when device along with parent bridge in %s", d->name);
- 		igt_subtest_f("%s-mmap-system", d->name) {
-+			igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 			igt_assert(setup_d3(device, d->state));
- 			test_mmap(device, system_memory(device.fd_xe), 0,
- 				  READ, d->state);
-@@ -903,6 +913,8 @@ igt_main
- 		igt_subtest_f("%s-mmap-vram", d->name) {
- 			int delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
- 
-+			igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 			/* Give some auto suspend delay to validate rpm active during page fault */
- 			igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
- 			igt_assert(setup_d3(device, d->state));
-@@ -919,6 +931,8 @@ igt_main
- 
- 		igt_describe_f("Validate the contents of mocs registers over %s state", d->name);
- 		igt_subtest_f("%s-mocs", d->name) {
-+			igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 			igt_assert(setup_d3(device, d->state));
- 			test_mocs_suspend_resume(device, NO_SUSPEND, d->state);
- 			cleanup_d3(device);
-@@ -928,6 +942,8 @@ igt_main
- 	igt_describe("Validate whether card is limited to d3hot,"
- 		     "if vram used > vram threshold");
- 	igt_subtest("vram-d3cold-threshold") {
-+		igt_require_f(igt_is_pm_supported(device.pci_root),
-+								"PCI power management capability not found\n");
- 		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
- 		igt_install_exit_handler(vram_d3cold_threshold_restore);
- 		test_vram_d3cold_threshold(device, sysfs_fd);
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 5409d19a6..abe224cdf 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -160,11 +160,14 @@ static void set_retval(const char function_name[], long long retval)
+  * arg[1]:
+  * @wait_for_lmem_ready:	wait_for_lmem_ready
+  * @xe_device_create:		xe_device_create
++ * @xe_device_probe_early:	xe_device_probe_early
+  * @xe_ggtt_init_early:		xe_ggtt_init_early
+  * @xe_guc_ads_init:		xe_guc_ads_init
+  * @xe_guc_ct_init:		xe_guc_ct_init
+  * @xe_guc_log_init:		xe_guc_log_init
+  * @xe_guc_relay_init:		xe_guc_relay_init
++ * @xe_mmio_probe_early:	xe_mmio_probe_early
++ * @xe_pcode_probe_early:	xe_pcode_probe_early
+  * @xe_pm_init_early:		xe_pm_init_early
+  * @xe_sriov_init:		xe_sriov_init
+  * @xe_tile_init_early:		xe_tile_init_early
+@@ -325,11 +328,14 @@ igt_main
+ 	} probe_fail_functions[] = {
+ 		{ "wait_for_lmem_ready" },
+ 		{ "xe_device_create" },
++		{ "xe_device_probe_early" },
+ 		{ "xe_ggtt_init_early" },
+ 		{ "xe_guc_ads_init" },
+ 		{ "xe_guc_ct_init" },
+ 		{ "xe_guc_log_init" },
+ 		{ "xe_guc_relay_init" },
++		{ "xe_mmio_probe_early" },
++		{ "xe_pcode_probe_early" },
+ 		{ "xe_pm_init_early" },
+ 		{ "xe_sriov_init" },
+ 		{ "xe_tile_init_early" },
 -- 
-2.34.1
+2.48.1
 
