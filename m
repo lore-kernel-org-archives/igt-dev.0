@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A909C28B30
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 13:56:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9CA6C28B2E
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Mar 2025 14:21:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C471810E5B5;
-	Tue, 11 Mar 2025 13:55:59 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D8JGyLLC";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61FD810E5B3
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Mar 2025 13:55:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741701358; x=1773237358;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/5rxUiJ9QwzNZaoEnbgv6wy3qE36FEcBSQqy5Sx7w6U=;
- b=D8JGyLLClbkKHXscbuoTdrZABWkVlPcUCtH8tWLspstwHk5udT5UFvSg
- NUwftX3xzlrRBQ/A9SEBWVXJINsco9rB6g6Vi62K0FTvTKRBj06rE9D8a
- 7slts1MCPMFvU2ChMaiKQ88wgjOxG9wR91nZew6bWrvHt+xV1ofwSEeR7
- VRvpuopPyUhcRdY0qmTH35TCtScs7idWSFpWDQCyf73TDl3dRGKZ8+wH/
- WdkqUEIXxz6z61QCNhfaG9e3oNkHSe2FnLJ4fs+xbdVxPygN4knBv1VQg
- 2nwhC9SCKlsGMq+AXw1ZGQnjbb1HJK1ri4MrtvSDDyIKq3wh9KWtmNJOd g==;
-X-CSE-ConnectionGUID: KbS/EPzhSziQyZbfd2qEAg==
-X-CSE-MsgGUID: AoBYzkfFQgSpfzlgJDdt6Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42616262"
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="42616262"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 06:55:58 -0700
-X-CSE-ConnectionGUID: cV2oqyu3SWm3scCd4MhJFg==
-X-CSE-MsgGUID: UPEewggcQIGQtLGCml3fIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="151131532"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO
- dpiatkow-mobl1.mshome.net) ([10.245.246.177])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 06:55:57 -0700
-From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v2 i-g-t 3/3] tests/xe_eudebug_online: Add
- set-breakpoint-sigint-debugger test
-Date: Tue, 11 Mar 2025 14:55:29 +0100
-Message-Id: <20250311135529.5425-4-dominik.karol.piatkowski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250311135529.5425-1-dominik.karol.piatkowski@intel.com>
-References: <20250311135529.5425-1-dominik.karol.piatkowski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70C3410E5B2;
+	Tue, 11 Mar 2025 14:21:53 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14E3F10E5B2;
+ Tue, 11 Mar 2025 14:21:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5510624105665183404=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/i915/pm=5Frc6=5Fres?=
+ =?utf-8?q?idency=3A_Replace_waitboost_with_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Mar 2025 14:21:52 -0000
+Message-ID: <174170291208.18880.5458280380485000763@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250306185944.2581304-1-sk.anirban@intel.com>
+In-Reply-To: <20250306185944.2581304-1-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,133 +37,229 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test that sends SIGINT to the debugger thread with random timing
-and checks if nothing breaks, exercising the scenario multiple times.
+--===============5510624105665183404==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Count correctly timed SIGINTs and assert that they happened (Mika)
+== Series Details ==
 
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- tests/intel/xe_eudebug_online.c | 96 +++++++++++++++++++++++++++++++++
- 1 file changed, 96 insertions(+)
+Series: tests/i915/pm_rc6_residency: Replace waitboost with (rev5)
+URL   : https://patchwork.freedesktop.org/series/141759/
+State : success
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 472013fe1..0ec1f2156 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -1506,6 +1506,98 @@ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instan
- 	online_debug_data_destroy(data);
- }
- 
-+/**
-+ * SUBTEST: set-breakpoint-sigint-debugger
-+ * Description:
-+ *	A variant of set-breakpoint that sends SIGINT to the debugger thread with random timing
-+ *	and checks if nothing breaks, exercising the scenario multiple times.
-+ */
-+static void test_set_breakpoint_online_sigint_debugger(int fd,
-+						       struct drm_xe_engine_class_instance *hwe,
-+						       int flags)
-+{
-+	struct xe_eudebug_session *s;
-+	struct online_debug_data *data;
-+	struct timespec ts = { };
-+	int loop_count = 0;
-+	uint64_t sleep_time;
-+	uint64_t set_breakpoint_time;
-+	uint64_t max_sleep_time;
-+	uint64_t events_max = 0;
-+	int sigints_during_test = 0;
-+
-+	/*
-+	 * Measure the average time required for basic set-breakpoint variant,
-+	 * so sleep_time range is correct.
-+	 */
-+	igt_nsec_elapsed(&ts);
-+	for (int i = 0; i < 10; i++)
-+		test_set_breakpoint_online(fd, hwe, SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
-+	set_breakpoint_time = igt_nsec_elapsed(&ts) / (NSEC_PER_MSEC / USEC_PER_MSEC) / 10;
-+	igt_info("Average set-breakpoint execution time: %" PRIu64 " us\n", set_breakpoint_time);
-+	max_sleep_time = set_breakpoint_time * 11 / 10;
-+	igt_info("Maximum sleep_time: %" PRIu64 " us\n", max_sleep_time);
-+
-+	ts = (struct timespec) { };
-+	igt_nsec_elapsed(&ts);
-+
-+	while (igt_seconds_elapsed(&ts) < 60) {
-+		uint64_t event_count;
-+
-+		sleep_time = rand() % max_sleep_time;
-+		igt_debug("Loop %d: SIGINT after %" PRIu64 " us\n", ++loop_count, sleep_time);
-+
-+		data = online_debug_data_create(hwe);
-+		s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-+		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-+						open_trigger);
-+		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-+						exec_queue_trigger);
-+		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM,
-+						vm_open_trigger);
-+		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-+						create_metadata_trigger);
-+		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-+						ufence_ack_set_bp_trigger);
-+		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-+						eu_attention_resume_trigger);
-+
-+		igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
-+		xe_eudebug_debugger_start_worker(s->debugger);
-+		igt_assert_eq(READ_ONCE(s->debugger->event_count), 0);
-+		xe_eudebug_client_start(s->client);
-+
-+		/* Sample max events without SIGINT */
-+		if (loop_count == 1)
-+			xe_eudebug_client_wait_done(s->client);
-+		else
-+			usleep(sleep_time);
-+
-+		event_count = READ_ONCE(s->debugger->event_count);
-+		if (event_count > events_max)
-+			events_max = event_count;
-+		else if (event_count > 0 && event_count < events_max)
-+			sigints_during_test++;
-+
-+		igt_assert_eq(pthread_kill(s->debugger->worker_thread, SIGINT), 0);
-+		close(s->debugger->fd);
-+
-+		igt_assert_eq(READ_ONCE(s->debugger->worker_state), DEBUGGER_WORKER_ACTIVE);
-+		WRITE_ONCE(s->debugger->worker_state, DEBUGGER_WORKER_INACTIVE);
-+
-+		xe_eudebug_client_wait_done(s->client);
-+
-+		xe_eudebug_event_log_print(s->debugger->log, true);
-+		xe_eudebug_event_log_print(s->client->log, true);
-+
-+		xe_eudebug_session_destroy(s);
-+		online_debug_data_destroy(data);
-+	}
-+
-+	igt_info("%d correctly timed SIGINTs in %d loops\n", sigints_during_test, loop_count);
-+	igt_assert_lt(0, sigints_during_test);
-+}
-+
- /**
-  * SUBTEST: pagefault-read
-  * Description:
-@@ -2426,6 +2518,10 @@ igt_main
- 	test_gt_render_or_compute("set-breakpoint", fd, hwe)
- 		test_set_breakpoint_online(fd, hwe, SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
- 
-+	test_gt_render_or_compute("set-breakpoint-sigint-debugger", fd, hwe)
-+		test_set_breakpoint_online_sigint_debugger(fd, hwe,
-+							   SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
-+
- 	test_gt_render_or_compute("breakpoint-not-in-debug-mode", fd, hwe)
- 		test_basic_online(fd, hwe, SHADER_BREAKPOINT | DISABLE_DEBUG_MODE);
- 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8265 -> IGTPW_12725
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12725 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [PASS][1] -> [DMESG-WARN][2] ([i915#13494])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-9/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-mtlp-9/igt@i915_module_load@load.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle:
+    - fi-tgl-1115g4:      NOTRUN -> [WARN][3] ([i915#13790] / [i915#2681]) +4 other tests warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-tgl-1115g4/igt@i915_pm_rc6_residency@rc6-idle.html
+    - fi-bsw-n3050:       NOTRUN -> [ABORT][4] ([i915#13895]) +1 other test abort
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-bsw-n3050/igt@i915_pm_rc6_residency@rc6-idle.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0:
+    - fi-ilk-650:         NOTRUN -> [SKIP][5] +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-ilk-650/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][6] +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-blb-e6850/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+    - fi-bsw-nick:        NOTRUN -> [ABORT][7] ([i915#13895]) +1 other test abort
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-bsw-nick/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+    - fi-pnv-d510:        NOTRUN -> [SKIP][8] +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-pnv-d510/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+    - bat-apl-1:          NOTRUN -> [ABORT][9] ([i915#13895]) +1 other test abort
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-apl-1/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][10] +2 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-elk-e7500/igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-adlp-6:         [PASS][11] -> [ABORT][12] ([i915#13696]) +1 other test abort
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-adlp-6/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-adlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14] +1 other test pass
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-8/igt@i915_selftest@live.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arls-5:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][19] ([i915#12061]) -> [PASS][20] +1 other test pass
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+  [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
+  [i915#13790]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13790
+  [i915#13895]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13895
+  [i915#2681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2681
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8265 -> IGTPW_12725
+
+  CI-20190529: 20190529
+  CI_DRM_16246: f811577f424491a57b1e8669bde62998227d6907 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12725: 12725
+  IGT_8265: bfefe166535d69ca10d32e6ba0093260df21ee3d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/index.html
+
+--===============5510624105665183404==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/pm_rc6_residency: Replace waitboost with (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141759/">https://patchwork.freedesktop.org/series/141759/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8265 -&gt; IGTPW_12725</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12725 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-tgl-1115g4/igt@i915_pm_rc6_residency@rc6-idle.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13790">i915#13790</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2681">i915#2681</a>) +4 other tests warn</li>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-bsw-n3050/igt@i915_pm_rc6_residency@rc6-idle.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13895">i915#13895</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-ilk-650/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html">SKIP</a> +2 other tests skip</li>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-blb-e6850/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html">SKIP</a> +1 other test skip</li>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-bsw-nick/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13895">i915#13895</a>) +1 other test abort</li>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-pnv-d510/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html">SKIP</a> +1 other test skip</li>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-apl-1/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13895">i915#13895</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0:</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/fi-elk-e7500/igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-adlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-adlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696">i915#13696</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8265/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12725/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8265 -&gt; IGTPW_12725</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16246: f811577f424491a57b1e8669bde62998227d6907 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12725: 12725<br />
+  IGT_8265: bfefe166535d69ca10d32e6ba0093260df21ee3d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5510624105665183404==--
