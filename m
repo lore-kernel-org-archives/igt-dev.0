@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A3F2C28B2E
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 07:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0EEEC28B2E
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 07:19:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BDCD10E0F9;
-	Wed, 12 Mar 2025 07:07:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ljj6Gw6e";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5157210E0F9
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 07:07:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741763262; x=1773299262;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=5e1CWKrKUCucHALYydgyHtQik8ymmfnWJ4xlZt9MjAg=;
- b=ljj6Gw6ezMp4FDncHXOAccJE0YmD9gLk2iGQpD3UHiVfK7e05LQTIfwc
- GnNhSMEjBvzwZlpMyIif4JcsQW99hPlfVeFMl3D2QuGvC/weaCwnsvrP1
- ZZBlQJKQ4EuvwRFi9qQ04uVTJN5p+ykv7UmYJd03LC+IZh4peMarnILvh
- ejmdH23NoWc63an5ZCn1fCBzQeboxNVKBOaTLaZYBJ+QnAZs0k2Qd2bTz
- cW6OMNMWauf51Lk1xzOrybgRgxPcf70PtfvV1/nLocBIgfodb8Aakk26F
- ZaH8pUMeXXSAepvkxE44yT2Q0XX0qtqVIIJpzcdm4w01rPaGJLHNKPgj7 Q==;
-X-CSE-ConnectionGUID: NYU/SXjFQxW7VDIO/deG2w==
-X-CSE-MsgGUID: OUZiOWBBRrmfYrIFT412ag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42961162"
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; d="scan'208";a="42961162"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2025 00:07:42 -0700
-X-CSE-ConnectionGUID: EqITFJJ2Qa+nDL1nNH6MCw==
-X-CSE-MsgGUID: ay29h/jmSOiH8ciSdNlg7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; d="scan'208";a="157746133"
-Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2025 00:07:41 -0700
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com,
-	Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3] tests/kms_plane_multiple: Add dual display subtest
-Date: Wed, 12 Mar 2025 12:38:21 +0530
-Message-ID: <20250312070821.610143-1-karthik.b.s@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BBF510E737;
+	Wed, 12 Mar 2025 07:19:10 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7E2710E737;
+ Wed, 12 Mar 2025 07:19:09 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4097126385763442254=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fmodule?=
+ =?utf-8?q?=5Fload=3A_Do_not_skip_on_snd_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 12 Mar 2025 07:19:09 -0000
+Message-ID: <174176394951.23074.5779316317900128590@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250311195339.1206647-1-lucas.demarchi@intel.com>
+In-Reply-To: <20250311195339.1206647-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,427 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add 2x subtest to verify MPO use case simulataneously on two
-display configurations.
+--===============4097126385763442254==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
-- Update the test to use all the modifiers (Jeevan)
+== Series Details ==
 
-v3:
-- Add modifier support check before starting dynamic subtests
+Series: tests/intel/i915_module_load: Do not skip on snd (rev2)
+URL   : https://patchwork.freedesktop.org/series/146170/
+State : success
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_plane_multiple.c | 235 +++++++++++++++++++++++++++++--------
- 1 file changed, 186 insertions(+), 49 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index eda300b06..1e100a5bc 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -55,6 +55,18 @@
-  * @x:           x-tiling
-  * @y:           y-tiling
-  * @yf:          yf-tiling
-+ *
-+ * SUBTEST: 2x-tiling-%s
-+ * Description: Check that the kernel handles atomic updates of multiple planes
-+ *		simultaneously committed on 2 displays.
-+ *
-+ * arg[1]:
-+ *
-+ * @none:	 no-tiling
-+ * @4:           4-tiling
-+ * @x:           x-tiling
-+ * @y:           y-tiling
-+ * @yf:          yf-tiling
-  */
- 
- IGT_TEST_DESCRIPTION("Test atomic mode setting with multiple planes.");
-@@ -73,10 +85,10 @@ typedef struct {
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
--	igt_crc_t ref_crc;
--	igt_pipe_crc_t *pipe_crc;
--	igt_plane_t **plane;
--	struct igt_fb *fb;
-+	igt_crc_t ref_crc1, ref_crc2;
-+	igt_pipe_crc_t *pipe_crc1, *pipe_crc2;
-+	igt_plane_t **plane1, **plane2;
-+	struct igt_fb *fb1, *fb2;
- } data_t;
- 
- /* Command line parameters. */
-@@ -95,14 +107,14 @@ struct {
-  */
- static void test_init(data_t *data, enum pipe pipe, int n_planes)
- {
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
-+	data->pipe_crc1 = igt_pipe_crc_new(data->drm_fd, pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
--	data->plane = calloc(n_planes, sizeof(*data->plane));
--	igt_assert_f(data->plane != NULL, "Failed to allocate memory for planes\n");
-+	data->plane1 = calloc(n_planes, sizeof(*data->plane1));
-+	igt_assert_f(data->plane1 != NULL, "Failed to allocate memory for planes\n");
- 
--	data->fb = calloc(n_planes, sizeof(struct igt_fb));
--	igt_assert_f(data->fb != NULL, "Failed to allocate memory for FBs\n");
-+	data->fb1 = calloc(n_planes, sizeof(struct igt_fb));
-+	igt_assert_f(data->fb1 != NULL, "Failed to allocate memory for FBs\n");
- }
- 
- static void test_fini(data_t *data, igt_output_t *output, int n_planes)
-@@ -110,21 +122,21 @@ static void test_fini(data_t *data, igt_output_t *output, int n_planes)
- 	/* reset the constraint on the pipe */
- 	igt_output_set_pipe(output, PIPE_ANY);
- 
--	igt_pipe_crc_free(data->pipe_crc);
--	data->pipe_crc = NULL;
-+	igt_pipe_crc_free(data->pipe_crc1);
-+	data->pipe_crc1 = NULL;
- 
--	free(data->plane);
--	data->plane = NULL;
-+	free(data->plane1);
-+	data->plane1 = NULL;
- 
--	free(data->fb);
--	data->fb = NULL;
-+	free(data->fb1);
-+	data->fb1 = NULL;
- 
- 	igt_display_reset(&data->display);
- }
- 
- static void
--get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
--	      color_t *color, uint64_t modifier)
-+get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe, igt_pipe_crc_t *pipe_crc,
-+	      color_t *color, igt_plane_t **plane, uint64_t modifier, igt_crc_t *ref_crc)
- {
- 	drmModeModeInfo *mode;
- 	igt_plane_t *primary;
-@@ -134,7 +146,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	igt_output_set_pipe(output, pipe);
- 
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	data->plane[primary->index] = primary;
-+	plane[primary->index] = primary;
- 
- 	mode = igt_output_get_mode(output);
- 
-@@ -142,21 +154,21 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 			    DRM_FORMAT_XRGB8888,
- 			    modifier,
- 			    color->red, color->green, color->blue,
--			    &data->fb[primary->index]);
-+			    &data->fb1[primary->index]);
- 
--	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
-+	igt_plane_set_fb(plane[primary->index], &data->fb1[primary->index]);
- 
- 	ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 	igt_skip_on(ret != 0);
- 
--	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
-+	igt_pipe_crc_collect_crc(pipe_crc, ref_crc);
- }
- 
- static void
- create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo *mode,
- 			    color_t *color, int *rect_x, int *rect_y,
- 			    int *rect_w, int *rect_h, uint64_t modifier,
--			    int max_planes)
-+			    int max_planes, igt_fb_t *fb)
- {
- 	unsigned int fb_id;
- 	cairo_t *cr;
-@@ -168,16 +180,16 @@ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo
- 			      mode->hdisplay, mode->vdisplay,
- 			      DRM_FORMAT_XRGB8888,
- 			      modifier,
--			      &data->fb[primary->index]);
-+			      &fb[primary->index]);
- 	igt_assert(fb_id);
- 
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[primary->index]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &fb[primary->index]);
- 	igt_paint_color(cr, rect_x[0], rect_y[0],
- 			mode->hdisplay, mode->vdisplay,
- 			color->red, color->green, color->blue);
- 
- 	for (int i = 0; i < max_planes; i++) {
--		if (data->plane[i]->type == DRM_PLANE_TYPE_PRIMARY)
-+		if (data->plane1[i]->type == DRM_PLANE_TYPE_PRIMARY)
- 			continue;
- 		igt_paint_color(cr, rect_x[i], rect_y[i],
- 				rect_w[i], rect_h[i], 0.0, 0.0, 0.0);
-@@ -188,8 +200,8 @@ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo
- 
- 
- static void
--prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
--	       uint64_t modifier, int max_planes, igt_output_t *output)
-+prepare_planes(data_t *data, enum pipe pipe_id, color_t *color, igt_plane_t **plane,
-+	       uint64_t modifier, int max_planes, igt_output_t *output, igt_fb_t *fb)
- {
- 	drmModeModeInfo *mode;
- 	igt_pipe_t *pipe;
-@@ -249,15 +261,14 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
- 		 * Here is made assumption primary plane will have
- 		 * index zero.
- 		 */
--		igt_plane_t *plane = igt_output_get_plane(output, suffle[i]);
- 		uint32_t plane_format;
- 		uint64_t plane_modifier;
- 
--		data->plane[i] = plane;
-+		plane[i] = igt_output_get_plane(output, suffle[i]);
- 
--		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-+		if (plane[i]->type == DRM_PLANE_TYPE_PRIMARY)
- 			continue;
--		else if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+		else if (plane[i]->type == DRM_PLANE_TYPE_CURSOR)
- 			size[i] = SIZE_CURSOR;
- 		else
- 			size[i] = SIZE_PLANE;
-@@ -265,10 +276,12 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
- 		x[i] = rand() % (mode->hdisplay - size[i]);
- 		y[i] = rand() % (mode->vdisplay - size[i]);
- 
--		plane_format = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
--		plane_modifier = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_LINEAR : modifier;
-+		plane_format = plane[i]->type == DRM_PLANE_TYPE_CURSOR ?
-+						 DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
-+		plane_modifier = plane[i]->type == DRM_PLANE_TYPE_CURSOR ?
-+						   DRM_FORMAT_MOD_LINEAR : modifier;
- 
--		igt_skip_on(!igt_plane_has_format_mod(plane, plane_format,
-+		igt_skip_on(!igt_plane_has_format_mod(plane[i], plane_format,
- 						      plane_modifier));
- 
- 		igt_create_color_fb(data->drm_fd,
-@@ -276,17 +289,17 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
- 				    plane_format,
- 				    plane_modifier,
- 				    color->red, color->green, color->blue,
--				    &data->fb[i]);
-+				    &fb[i]);
- 
--		igt_plane_set_position(data->plane[i], x[i], y[i]);
--		igt_plane_set_fb(data->plane[i], &data->fb[i]);
-+		igt_plane_set_position(plane[i], x[i], y[i]);
-+		igt_plane_set_fb(plane[i], &fb[i]);
- 	}
- 
- 	/* primary plane */
--	data->plane[primary->index] = primary;
-+	plane[primary->index] = primary;
- 	create_fb_for_mode_position(data, output, mode, color, x, y,
--				    size, size, modifier, max_planes);
--	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
-+				    size, size, modifier, max_planes, &fb[primary->index]);
-+	igt_plane_set_fb(plane[primary->index], &fb[primary->index]);
- 	free((void*)x);
- 	free((void*)y);
- 	free((void*)size);
-@@ -332,12 +345,13 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 
- 	test_init(data, pipe, n_planes);
- 
--	get_reference_crc(data, output, pipe, &blue, modifier);
-+	get_reference_crc(data, output, pipe, data->pipe_crc1, &blue,
-+			  data->plane1, modifier, &data->ref_crc1);
- 
- 	/* Find out how many planes are allowed simultaneously */
- 	do {
- 		c++;
--		prepare_planes(data, pipe, &blue, modifier, c, output);
-+		prepare_planes(data, pipe, &blue, data->plane1, modifier, c, output, data->fb1);
- 		err = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 
- 		for_each_plane_on_pipe(&data->display, pipe, plane)
-@@ -347,7 +361,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
- 		for (int x = 0; x < c; x++)
--			igt_remove_fb(data->drm_fd, &data->fb[x]);
-+			igt_remove_fb(data->drm_fd, &data->fb1[x]);
- 	} while (!err && c < n_planes);
- 
- 	if (err)
-@@ -361,14 +375,14 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	while (i < iterations || loop_forever) {
- 
- 		/* randomize planes and set up the holes */
--		prepare_planes(data, pipe, &blue, modifier, c, output);
-+		prepare_planes(data, pipe, &blue, data->plane1, modifier, c, output, data->fb1);
- 
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
--		igt_pipe_crc_start(data->pipe_crc);
-+		igt_pipe_crc_start(data->pipe_crc1);
- 
--		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
--		igt_assert_crc_equal(&data->ref_crc, &crc);
--		igt_pipe_crc_stop(data->pipe_crc);
-+		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc1, &crc);
-+		igt_assert_crc_equal(&data->ref_crc1, &crc);
-+		igt_pipe_crc_stop(data->pipe_crc1);
- 
- 		for_each_plane_on_pipe(&data->display, pipe, plane)
- 			igt_plane_set_fb(plane, NULL);
-@@ -377,7 +391,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
- 		for (int x = 0; x < c; x++)
--			igt_remove_fb(data->drm_fd, &data->fb[x]);
-+			igt_remove_fb(data->drm_fd, &data->fb1[x]);
- 
- 		i++;
- 	}
-@@ -400,6 +414,115 @@ test_plane_position(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t
- 					n_planes, modifier);
- }
- 
-+static void test_init_2_display(data_t *data, enum pipe pipe1, enum pipe pipe2)
-+{
-+	data->pipe_crc1 = igt_pipe_crc_new(data->drm_fd, pipe1,
-+					   IGT_PIPE_CRC_SOURCE_AUTO);
-+	data->pipe_crc2 = igt_pipe_crc_new(data->drm_fd, pipe2,
-+					   IGT_PIPE_CRC_SOURCE_AUTO);
-+
-+	data->plane1 = calloc(2, sizeof(*data->plane1));
-+	igt_assert_f(data->plane1 != NULL, "Failed to allocate memory for planes\n");
-+
-+	data->plane2 = calloc(2, sizeof(*data->plane2));
-+	igt_assert_f(data->plane2 != NULL, "Failed to allocate memory for planes\n");
-+
-+	data->fb1 = calloc(2, sizeof(struct igt_fb));
-+	igt_assert_f(data->fb1 != NULL, "Failed to allocate memory for FBs\n");
-+
-+	data->fb2 = calloc(2, sizeof(struct igt_fb));
-+	igt_assert_f(data->fb2 != NULL, "Failed to allocate memory for FBs\n");
-+}
-+
-+static void test_fini_2_display(data_t *data)
-+{
-+	igt_pipe_crc_stop(data->pipe_crc1);
-+	igt_pipe_crc_stop(data->pipe_crc2);
-+
-+	igt_display_reset(&data->display);
-+}
-+
-+static void test_plane_position_2_display(data_t *data, enum pipe pipe1, enum pipe pipe2,
-+					  igt_output_t *output1, igt_output_t *output2,
-+					  uint64_t modifier)
-+{
-+	color_t blue  = { 0.0f, 0.0f, 1.0f };
-+	igt_crc_t crc1, crc2;
-+
-+	test_init_2_display(data, pipe1, pipe2);
-+	get_reference_crc(data, output1, pipe1, data->pipe_crc1, &blue,
-+			  data->plane1, DRM_FORMAT_MOD_LINEAR, &data->ref_crc1);
-+	get_reference_crc(data, output2, pipe2, data->pipe_crc2, &blue,
-+			  data->plane2, DRM_FORMAT_MOD_LINEAR, &data->ref_crc2);
-+
-+	prepare_planes(data, pipe1, &blue, data->plane1,
-+		       modifier, 2, output1, data->fb1);
-+	prepare_planes(data, pipe2, &blue, data->plane2,
-+		       modifier, 2, output2, data->fb2);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_pipe_crc_start(data->pipe_crc1);
-+	igt_pipe_crc_start(data->pipe_crc2);
-+
-+	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc1, &crc1);
-+	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc2, &crc2);
-+
-+	igt_assert_crc_equal(&data->ref_crc1, &crc1);
-+	igt_assert_crc_equal(&data->ref_crc2, &crc2);
-+}
-+
-+#define for_each_connected_output_local(display, output)		\
-+	for (int j__ = 0;  assert(igt_can_fail()), j__ < (display)->n_outputs; j__++)	\
-+		for_each_if((((output) = &(display)->outputs[j__]), \
-+			      igt_output_is_connected((output))))
-+
-+#define for_each_valid_output_on_pipe_local(display, pipe, output) \
-+	for_each_connected_output_local((display), (output)) \
-+		for_each_if(igt_pipe_connector_valid((pipe), (output)))
-+
-+static void run_2_display_test(data_t *data, uint64_t modifier)
-+{
-+	enum pipe pipe1, pipe2;
-+	igt_output_t *output1, *output2;
-+	igt_display_t *display = &data->display;
-+
-+	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
-+		return;
-+
-+	igt_display_reset(display);
-+
-+	for_each_pipe(display, pipe1) {
-+		for_each_valid_output_on_pipe(display, pipe1, output1) {
-+			for_each_pipe(display, pipe2) {
-+				if (pipe1 == pipe2)
-+					continue;
-+
-+				for_each_valid_output_on_pipe_local(display, pipe2, output2) {
-+					if (output1 == output2)
-+						continue;
-+
-+					igt_display_reset(display);
-+
-+					igt_output_set_pipe(output1, pipe1);
-+					igt_output_set_pipe(output2, pipe2);
-+
-+					if (!intel_pipe_output_combo_valid(display))
-+						continue;
-+
-+					igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
-+						       kmstest_pipe_name(pipe1), output1->name,
-+						       kmstest_pipe_name(pipe2), output2->name)
-+						test_plane_position_2_display(data, pipe1, pipe2,
-+									      output1, output2,
-+									      modifier);
-+
-+					test_fini_2_display(data);
-+				}
-+			}
-+		}
-+	}
-+}
-+
- static void run_test(data_t *data, uint64_t modifier)
- {
- 	enum pipe pipe;
-@@ -503,6 +626,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 			run_test(&data, subtests[i].modifier);
- 	}
- 
-+	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-+		igt_subtest_with_dynamic_f("2x-%s", subtests[i].name) {
-+			int valid_outputs = 0;
-+			igt_output_t *output;
-+
-+			for_each_connected_output(&data.display, output)
-+				valid_outputs++;
-+
-+			igt_require(valid_outputs > 1);
-+
-+			run_2_display_test(&data, subtests[i].modifier);
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8271_BAT -> XEIGTPW_12752_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8271 -> IGTPW_12752
+  * Linux: xe-2797-eb17816e52395a403aa0b447aa0befa9d2f86dd5 -> xe-2798-aba848f9b752cf51474c0c3b1abcf0f572f774dc
+
+  IGTPW_12752: 12752
+  IGT_8271: 8271
+  xe-2797-eb17816e52395a403aa0b447aa0befa9d2f86dd5: eb17816e52395a403aa0b447aa0befa9d2f86dd5
+  xe-2798-aba848f9b752cf51474c0c3b1abcf0f572f774dc: aba848f9b752cf51474c0c3b1abcf0f572f774dc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12752/index.html
+
+--===============4097126385763442254==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/i915_module_load: Do not skip on snd (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146170/">https://patchwork.freedesktop.org/series/146170/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12752/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12752/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8271_BAT -&gt; XEIGTPW_12752_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8271 -&gt; IGTPW_12752</li>
+<li>Linux: xe-2797-eb17816e52395a403aa0b447aa0befa9d2f86dd5 -&gt; xe-2798-aba848f9b752cf51474c0c3b1abcf0f572f774dc</li>
+</ul>
+<p>IGTPW_12752: 12752<br />
+  IGT_8271: 8271<br />
+  xe-2797-eb17816e52395a403aa0b447aa0befa9d2f86dd5: eb17816e52395a403aa0b447aa0befa9d2f86dd5<br />
+  xe-2798-aba848f9b752cf51474c0c3b1abcf0f572f774dc: aba848f9b752cf51474c0c3b1abcf0f572f774dc</p>
+
+</body>
+</html>
+
+--===============4097126385763442254==--
