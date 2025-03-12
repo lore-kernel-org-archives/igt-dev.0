@@ -4,67 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 682F6C28B28
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 12:13:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8951C28B28
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 12:42:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F25BE10E77A;
-	Wed, 12 Mar 2025 12:13:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FA5810E16B;
+	Wed, 12 Mar 2025 12:42:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jF8buMu3";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="YctQbzio";
 	dkim-atps=neutral
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com
- [209.85.216.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55CB710E77A
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 12:13:26 +0000 (UTC)
-Received: by mail-pj1-f46.google.com with SMTP id
- 98e67ed59e1d1-2feb867849fso10145168a91.3
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 05:13:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741781606; x=1742386406; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8cEoKTRFDitgsACFLEbXISvdU44VYFQlG0Fo4vMl1uo=;
- b=jF8buMu3DP9zo4sX+rfyJDV4iZThXfmJF48Q0Muft/jL448zLpBkej1LljsEoIxlV3
- fcPrByKmwjy42ST4KShvasxDqvqY790QpPLMtkDYJsc1TCk+o+ZVc8bXqlHC0Y/0fl35
- JwvFpsmr5vLXJ1QZ/iFCZp3hBniru83E7u9Ijj4H8BL6qRFI0XHW/PPlgHDgJ7b4zR0y
- mPWrtrfWRXsA1TQuY3hxry2ukYQ/Z8Gsq3zVv1xProzAuWY8i9piMu7dLgcrOC14jxaB
- zRHm+ioyRkqn/aOMLp4wqdUbckvRR6Bl1r2YsTcwDpFoK2VjDUO5Kuh3g3MJlQWugAbw
- 4gjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741781606; x=1742386406;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8cEoKTRFDitgsACFLEbXISvdU44VYFQlG0Fo4vMl1uo=;
- b=qoa7zeFr17TkZnUijyjNyk3KGzou1FjPLFessYOEs8xFXnV/lSFob9cVj9XW+atUfg
- C+3dky//Ro5QAltjwUahLDuBU9ZfM35Pc3f4giZMHTitZfGsoGyz6Wk0vPCoPMEZerby
- dclnYu8H+l9xILfkJxbYPZ6m+bd94X1uLy19byTMaQY+Ciertb7MyP5T+Sv7NH4P26xD
- yZKY/dbARh5WvuxDXN+kZ/j6eIVUp4PZ9O6icHXclvQHbjK4xx9oeVO5uWV82rRpKRZU
- SgDiEGjU5ZnQKKmNF9GqFT/q3xmyk0tsSLTUERNYmvzXGeU5kQLVd9xSMMpMgfzTeWsU
- KRfw==
-X-Gm-Message-State: AOJu0YxhpLiOYSi8D+LZayjfQepeoFVLcI9BScb9RkBYeIZs0FebSKT6
- z4wHuEwd/VdKPF4pDbBwJYffMHcYWYdxLucc4IonBWlr/vOcLNHQVsoQD+kHoJTsCDv3p/Ogvmp
- 1lWYX5TKTNOaK5b6hYr9CjrP+rmg=
-X-Gm-Gg: ASbGncuZBOoJAT3bOKEMfzHjYyAq8MmeO5+V0GMb7IXo4CoB6sISFYViIJYpEhm4kWC
- eZEO4INbGjw/yGlCTOkIEszn0LxuXMn/1D4GdjhULbIZamvD3rxsl+pZTpaIxHrHgE39NdXg3S4
- kVexxZrWbYON9yJEOsZk7zQmzeaFtN
-X-Google-Smtp-Source: AGHT+IEozwqJ88iacao9ICQtrUHXQO5QMyiccoxucgo3N/vWnraT6PTUpxBicmjdQQ8MiAiPEC/gs4qcSfS1TIMrRCs=
-X-Received: by 2002:a17:90b:1b4d:b0:2ef:31a9:95c6 with SMTP id
- 98e67ed59e1d1-2ff7ce90226mr33983592a91.14.1741781605772; Wed, 12 Mar 2025
- 05:13:25 -0700 (PDT)
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAE1210E13F;
+ Wed, 12 Mar 2025 12:42:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+ Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=kWVfsuDpw6uxgKagtN2pEi9Rh7jCHfnuGvo+PgFyszA=; b=YctQbzioHMRTZWoMlkxjCu1gAR
+ W9h/YmewEvdFiSE4wVP+zCwhIwCTbvG0IXMxKCiS3WaSgsF0OgPDhcJ4xsXXbT3ngJEeN7riFFl7R
+ JIONliKXAGdjvYc83BhxLZ6J4WP/KEf3YHgzQ4NVhIXhgq9J/3EDbCPSpH85H4lOjIBOCWUDzwnbe
+ QVm+hINpzMqo7onWEv53er+V97lhhUJT2bnlmn91C0JrL6R83mwOBdSrGJGHWiWyHyn5O4BREBsvr
+ Ksf6amfQku4UUdnygSRJ/rP/BNbuia8zYmpq90AuPlzc2Uksn6HgKTOouSszGgIShaqv/FXjK6zS8
+ mXfCvElw==;
+Received: from [90.241.98.187] (helo=localhost)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1tsLQ2-007cWX-HE; Wed, 12 Mar 2025 13:42:48 +0100
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: intel-xe@lists.freedesktop.org,
+	igt-dev@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_sync_file: Exercise sync file access
+ post queue destruction
+Date: Wed, 12 Mar 2025 12:42:44 +0000
+Message-ID: <20250312124245.83254-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.48.0
 MIME-Version: 1.0
-References: <20250311195339.1206647-1-lucas.demarchi@intel.com>
-In-Reply-To: <20250311195339.1206647-1-lucas.demarchi@intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 12 Mar 2025 14:13:18 +0200
-X-Gm-Features: AQ5f1JrH9nySRCgh3TLUsytcpS8T6DcDlvvTf58JNTyf7SgfcGkNwTildu004pw
-Message-ID: <CAJ=qYWQeWje-GF5b59kjBCJ5EqBQkjo8yyhE-k8BhPtyjziYdg@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] tests/intel/i915_module_load: Do not skip on snd
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,38 +63,208 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+A new test to roughly simulate the VK CTS suite where
+dEQP-VK.wsi.android.swapchain.render.* is hitting an use after free when a
+sync file is accessed after the xe submission queue has been destroyed.
 
-On Tue, Mar 11, 2025 at 9:54=E2=80=AFPM Lucas De Marchi
-<lucas.demarchi@intel.com> wrote:
->
-> The fact that snd_hda_* is loaded doesn't mean i915 is. It used to be
-> the case that loading e.g. snd_hda_intel would load i915 because of a
-> request_module("i915") in the kernel. However that changed in
-> commit e6d0c13e9f46 ("ALSA: hda: i915: Remove extra argument from
-> snd_hdac_i915_init").
->
-> Drop the snd_* modules from unwanted_drivers.
->
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  tests/intel/i915_module_load.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_loa=
-d.c
-> index b3752a19c..2047d1886 100644
-> --- a/tests/intel/i915_module_load.c
-> +++ b/tests/intel/i915_module_load.c
-> @@ -368,8 +368,6 @@ igt_main
->                 const char * unwanted_drivers[] =3D {
->                         "i915",
->                         "intel-gtt",
-> -                       "snd_hda_intel",
-> -                       "snd_hdmi_lpe_audio",
->                         NULL
->                 };
->
-> --
-> 2.48.1
->
+Abbreviated KASAN report:
+
+ [IGT] xe_sync_file: starting subtest sync_file_race
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in drm_sched_fence_get_timeline_name+0xa1/0xb0 [gpu_sched]
+ Read of size 8 at addr ffff888126726020 by task xe_sync_file/2931
+ ...
+ Call Trace:
+  <TASK>
+  kasan_report+0xeb/0x130
+  drm_sched_fence_get_timeline_name+0xa1/0xb0 [gpu_sched]
+  sync_file_ioctl+0x3cb/0xb00
+ ...
+ Allocated by task 2931:
+  __kmalloc_cache_noprof+0x1c2/0x410
+  guc_exec_queue_init+0x1a8/0x1240 [xe]
+  xe_exec_queue_create+0xe72/0x13b0 [xe]
+  xe_exec_queue_create_ioctl+0x10d9/0x1770 [xe]
+  drm_ioctl_kernel+0x179/0x300
+  drm_ioctl+0x58f/0xcf0
+  xe_drm_ioctl+0xe8/0x140 [xe]
+ ...
+ Freed by task 1689:
+  kfree+0x106/0x3e0
+  __guc_exec_queue_fini_async+0x144/0x2d0 [xe]
+  process_one_work+0x610/0xdf0
+  worker_thread+0x7c8/0x14b0
+
+Without KASAN this of course turns into a plain null pointer dereference.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ tests/intel/xe_sync_file.c | 139 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build          |   1 +
+ 2 files changed, 140 insertions(+)
+ create mode 100644 tests/intel/xe_sync_file.c
+
+diff --git a/tests/intel/xe_sync_file.c b/tests/intel/xe_sync_file.c
+new file mode 100644
+index 000000000000..3b8e93315be8
+--- /dev/null
++++ b/tests/intel/xe_sync_file.c
+@@ -0,0 +1,139 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Google, Inc.
++ */
++
++/**
++ * TEST: Tests for sync file functionality
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: CMD submission
++ * Functionality: fences
++ */
++
++#include "igt.h"
++#include "sync_file.h"
++
++#include "lib/igt_syncobj.h"
++#include "lib/intel_reg.h"
++
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++static int sync_file_get_status(int sync_file)
++{
++	struct sync_fence_info fence = { };
++	struct sync_file_info info = {
++		.num_fences = 1,
++		.sync_fence_info = to_user_pointer(&fence),
++	};
++
++	do_ioctl(sync_file, SYNC_IOC_FILE_INFO, &info);
++	igt_assert_eq(info.num_fences, 1);
++
++	igt_debug("'%s'/'%s' = %d\n",
++		  fence.driver_name, fence.obj_name, fence.status);
++
++	return fence.status;
++}
++
++/**
++ * SUBTEST: sync_file_race
++ * Description: Check that we can safely query an exported sync file fd
++ * Test category: functionality test
++ */
++static void test_race(int xe, struct drm_xe_engine_class_instance *eci)
++{
++	uint32_t vm, bo, syncobj, bind_syncobj, *batch;
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		},
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		},
++	};
++	const uint32_t bbend = MI_BATCH_BUFFER_END;
++	struct drm_xe_exec exec = {
++		.address = 0x100000,
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++	int sync_fence;
++	size_t size;
++
++	vm = xe_vm_create(xe, 0, 0);
++
++	size = xe_bb_size(xe, sizeof(bbend));
++	bo = xe_bo_create(xe, vm, size, vram_if_possible(xe, eci->gt_id),
++			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++
++	batch = xe_bo_map(xe, bo, size);
++	*batch = bbend;
++
++	exec.exec_queue_id  = xe_exec_queue_create(xe, vm, eci, 0);
++
++	syncobj = syncobj_create(xe, 0);
++	bind_syncobj = syncobj_create(xe, 0);
++
++	sync[0].handle = bind_syncobj;
++	xe_vm_bind_async(xe, vm, 0, bo, 0, exec.address, size, sync, 1);
++
++	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++	sync[0].handle = bind_syncobj;
++	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	sync[1].handle = syncobj;
++	xe_exec(xe, &exec);
++
++	/* Export a sync file fence. */
++	sync_fence = syncobj_handle_to_fd(xe, sync[1].handle,
++					  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
++
++	igt_assert(syncobj_wait(xe, &syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert(syncobj_wait(xe, &bind_syncobj, 1, INT64_MAX, 0, NULL));
++
++	igt_assert_eq(sync_file_get_status(sync_fence), 1);
++
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	syncobj_reset(xe, &sync[0].handle, 1);
++	xe_vm_unbind_async(xe, vm, 0, 0, exec.address, size, sync, 1);
++	igt_assert(syncobj_wait(xe, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	syncobj_destroy(xe, syncobj);
++	xe_exec_queue_destroy(xe, exec.exec_queue_id);
++
++	munmap(batch, size);
++	gem_close(xe, bo);
++
++	syncobj_destroy(xe, bind_syncobj);
++	xe_vm_destroy(xe, vm);
++
++	/* Give any delayed freeing time to run. */
++	sleep(1);
++
++	/* This should still work and not crash the kernel. */
++	igt_assert_eq(sync_file_get_status(sync_fence), 1);
++
++	close(sync_fence);
++}
++
++igt_main
++{
++	struct drm_xe_engine_class_instance *eci;
++	int xe;
++
++	igt_fixture
++		xe = drm_open_driver(DRIVER_XE);
++
++	igt_subtest("sync_file_race") {
++		xe_for_each_engine(xe, eci) {
++			test_race(xe, eci);
++			break;
++		}
++	}
++
++	igt_fixture
++		drm_close_driver(xe);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 33dffad31723..95d94dfde28e 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -318,6 +318,7 @@ intel_xe_progs = [
+ 	'xe_spin_batch',
+ 	'xe_sriov_auto_provisioning',
+ 	'xe_sriov_flr',
++	'xe_sync_file',
+ 	'xe_sysfs_defaults',
+ 	'xe_sysfs_preempt_timeout',
+ 	'xe_sysfs_scheduler',
+-- 
+2.48.0
+
