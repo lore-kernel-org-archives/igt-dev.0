@@ -4,57 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 641B5C28B28
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 11:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 682F6C28B28
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 12:13:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C72A10E6EF;
-	Wed, 12 Mar 2025 11:28:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F25BE10E77A;
+	Wed, 12 Mar 2025 12:13:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ChQmqHQJ";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jF8buMu3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E04A610E6EF
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 11:28:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741778935; x=1773314935;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=wV3rzE6DP2+VuLIVM3DHLPs66QfT90YDfk98HpYHfKw=;
- b=ChQmqHQJaIqJseRDIIuKw4kg2tWtlU97rsMr4b7aOjiRjfl+31bksfwl
- UYobiKFPgttyu11Gudb4DRmwaDYH2EspSmdg7F5/QkExJRjzHMTv7WGnq
- OlVCZBAUO8c9UHMW7vGcAa/jBCzwGSG4aQHmrJjQ/18w1t2YfpgkrM36J
- 6rpCwKhsrXeEpts9Q61fO3z5hdiAfA1KlFLfJkvCW9LPca87KTLEfDhp/
- BVVNbTbAU1aC+Y2cQaq0S0YO/izXT/AMVnLeSpfPFu1G7qlnG1BvLxdRl
- U36aubSOKbK2bMJwa2XVBBs/24ibf7VbrJ+W3uoxhi50ZPdUaZsPvPE7r A==;
-X-CSE-ConnectionGUID: N76vuMKgT4K6GVBiOQ3Yuw==
-X-CSE-MsgGUID: Ocff4lE/Sein7lYwMDz81w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="53493265"
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; d="scan'208";a="53493265"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2025 04:28:54 -0700
-X-CSE-ConnectionGUID: ig2yipIXQXW1ToCjdSh/6w==
-X-CSE-MsgGUID: ikv+6/TISkOdZcM5PBaJHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; d="scan'208";a="125797890"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orviesa005.jf.intel.com with SMTP; 12 Mar 2025 04:28:52 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 12 Mar 2025 13:28:51 +0200
-Date: Wed, 12 Mar 2025 13:28:51 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com
-Subject: Re: [PATCH v2] tests/kms_cursor_crc.: Test async cursor crc
-Message-ID: <Z9Fv8w9qmnBS4i7a@intel.com>
-References: <20250311043002.127979-1-shekhar.chauhan@intel.com>
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com
+ [209.85.216.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55CB710E77A
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 12:13:26 +0000 (UTC)
+Received: by mail-pj1-f46.google.com with SMTP id
+ 98e67ed59e1d1-2feb867849fso10145168a91.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 05:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1741781606; x=1742386406; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8cEoKTRFDitgsACFLEbXISvdU44VYFQlG0Fo4vMl1uo=;
+ b=jF8buMu3DP9zo4sX+rfyJDV4iZThXfmJF48Q0Muft/jL448zLpBkej1LljsEoIxlV3
+ fcPrByKmwjy42ST4KShvasxDqvqY790QpPLMtkDYJsc1TCk+o+ZVc8bXqlHC0Y/0fl35
+ JwvFpsmr5vLXJ1QZ/iFCZp3hBniru83E7u9Ijj4H8BL6qRFI0XHW/PPlgHDgJ7b4zR0y
+ mPWrtrfWRXsA1TQuY3hxry2ukYQ/Z8Gsq3zVv1xProzAuWY8i9piMu7dLgcrOC14jxaB
+ zRHm+ioyRkqn/aOMLp4wqdUbckvRR6Bl1r2YsTcwDpFoK2VjDUO5Kuh3g3MJlQWugAbw
+ 4gjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741781606; x=1742386406;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8cEoKTRFDitgsACFLEbXISvdU44VYFQlG0Fo4vMl1uo=;
+ b=qoa7zeFr17TkZnUijyjNyk3KGzou1FjPLFessYOEs8xFXnV/lSFob9cVj9XW+atUfg
+ C+3dky//Ro5QAltjwUahLDuBU9ZfM35Pc3f4giZMHTitZfGsoGyz6Wk0vPCoPMEZerby
+ dclnYu8H+l9xILfkJxbYPZ6m+bd94X1uLy19byTMaQY+Ciertb7MyP5T+Sv7NH4P26xD
+ yZKY/dbARh5WvuxDXN+kZ/j6eIVUp4PZ9O6icHXclvQHbjK4xx9oeVO5uWV82rRpKRZU
+ SgDiEGjU5ZnQKKmNF9GqFT/q3xmyk0tsSLTUERNYmvzXGeU5kQLVd9xSMMpMgfzTeWsU
+ KRfw==
+X-Gm-Message-State: AOJu0YxhpLiOYSi8D+LZayjfQepeoFVLcI9BScb9RkBYeIZs0FebSKT6
+ z4wHuEwd/VdKPF4pDbBwJYffMHcYWYdxLucc4IonBWlr/vOcLNHQVsoQD+kHoJTsCDv3p/Ogvmp
+ 1lWYX5TKTNOaK5b6hYr9CjrP+rmg=
+X-Gm-Gg: ASbGncuZBOoJAT3bOKEMfzHjYyAq8MmeO5+V0GMb7IXo4CoB6sISFYViIJYpEhm4kWC
+ eZEO4INbGjw/yGlCTOkIEszn0LxuXMn/1D4GdjhULbIZamvD3rxsl+pZTpaIxHrHgE39NdXg3S4
+ kVexxZrWbYON9yJEOsZk7zQmzeaFtN
+X-Google-Smtp-Source: AGHT+IEozwqJ88iacao9ICQtrUHXQO5QMyiccoxucgo3N/vWnraT6PTUpxBicmjdQQ8MiAiPEC/gs4qcSfS1TIMrRCs=
+X-Received: by 2002:a17:90b:1b4d:b0:2ef:31a9:95c6 with SMTP id
+ 98e67ed59e1d1-2ff7ce90226mr33983592a91.14.1741781605772; Wed, 12 Mar 2025
+ 05:13:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250311043002.127979-1-shekhar.chauhan@intel.com>
-X-Patchwork-Hint: comment
+References: <20250311195339.1206647-1-lucas.demarchi@intel.com>
+In-Reply-To: <20250311195339.1206647-1-lucas.demarchi@intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Wed, 12 Mar 2025 14:13:18 +0200
+X-Gm-Features: AQ5f1JrH9nySRCgh3TLUsytcpS8T6DcDlvvTf58JNTyf7SgfcGkNwTildu004pw
+Message-ID: <CAJ=qYWQeWje-GF5b59kjBCJ5EqBQkjo8yyhE-k8BhPtyjziYdg@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/intel/i915_module_load: Do not skip on snd
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,35 +80,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Mar 11, 2025 at 10:00:02AM +0530, Shekhar Chauhan wrote:
-> +	/* get the screen refresh rate, then wait for vblank, and
-> +	 * wait for 1/5 of time of screen refresh and change image.
-> +	 * change it mid screen to validate that the change happens
-> +	 * at the end of the current frame.
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-The legacy cursor uapi doesn't specify whether the cursor updates
-are synchronized to vblank or not. So this is testing for
-hardware/driver specific behaviour.
-
-> +	 */
-> +	usleep(1.0f / data->refresh / 5.0f * 1e6);
-> +
-> +	changefunc(data, SECONDIMAGE);
-> +	igt_display_commit(&data->display);
-> +	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc2);
-> +
-> +	igt_assert_crc_equal(&crc1, &crc2);
-> +
-> +	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc2);
-> +
-> +	/* check next frame will be different as expected*/
-> +	igt_assert_f(igt_find_crc_mismatch(&crc1, &crc2, NULL),
-> +		     "crc values were not supposing to match!\n");
-
-This could fail due to a false positive. If you really want to test
-for CRC inequality I think you'd first have to make sure such an
-inequality actually exists.
-
--- 
-Ville Syrjälä
-Intel
+On Tue, Mar 11, 2025 at 9:54=E2=80=AFPM Lucas De Marchi
+<lucas.demarchi@intel.com> wrote:
+>
+> The fact that snd_hda_* is loaded doesn't mean i915 is. It used to be
+> the case that loading e.g. snd_hda_intel would load i915 because of a
+> request_module("i915") in the kernel. However that changed in
+> commit e6d0c13e9f46 ("ALSA: hda: i915: Remove extra argument from
+> snd_hdac_i915_init").
+>
+> Drop the snd_* modules from unwanted_drivers.
+>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  tests/intel/i915_module_load.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_loa=
+d.c
+> index b3752a19c..2047d1886 100644
+> --- a/tests/intel/i915_module_load.c
+> +++ b/tests/intel/i915_module_load.c
+> @@ -368,8 +368,6 @@ igt_main
+>                 const char * unwanted_drivers[] =3D {
+>                         "i915",
+>                         "intel-gtt",
+> -                       "snd_hda_intel",
+> -                       "snd_hdmi_lpe_audio",
+>                         NULL
+>                 };
+>
+> --
+> 2.48.1
+>
