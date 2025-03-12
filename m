@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C86C28B28
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 06:26:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A3F2C28B2E
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Mar 2025 07:07:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA97A10E6D8;
-	Wed, 12 Mar 2025 06:26:03 +0000 (UTC)
-Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8364010E6D7;
- Wed, 12 Mar 2025 06:26:03 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1415749578059023472=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1BDCD10E0F9;
+	Wed, 12 Mar 2025 07:07:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ljj6Gw6e";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5157210E0F9
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Mar 2025 07:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741763262; x=1773299262;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5e1CWKrKUCucHALYydgyHtQik8ymmfnWJ4xlZt9MjAg=;
+ b=ljj6Gw6ezMp4FDncHXOAccJE0YmD9gLk2iGQpD3UHiVfK7e05LQTIfwc
+ GnNhSMEjBvzwZlpMyIif4JcsQW99hPlfVeFMl3D2QuGvC/weaCwnsvrP1
+ ZZBlQJKQ4EuvwRFi9qQ04uVTJN5p+ykv7UmYJd03LC+IZh4peMarnILvh
+ ejmdH23NoWc63an5ZCn1fCBzQeboxNVKBOaTLaZYBJ+QnAZs0k2Qd2bTz
+ cW6OMNMWauf51Lk1xzOrybgRgxPcf70PtfvV1/nLocBIgfodb8Aakk26F
+ ZaH8pUMeXXSAepvkxE44yT2Q0XX0qtqVIIJpzcdm4w01rPaGJLHNKPgj7 Q==;
+X-CSE-ConnectionGUID: NYU/SXjFQxW7VDIO/deG2w==
+X-CSE-MsgGUID: OUZiOWBBRrmfYrIFT412ag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42961162"
+X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; d="scan'208";a="42961162"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2025 00:07:42 -0700
+X-CSE-ConnectionGUID: EqITFJJ2Qa+nDL1nNH6MCw==
+X-CSE-MsgGUID: ay29h/jmSOiH8ciSdNlg7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; d="scan'208";a="157746133"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2025 00:07:41 -0700
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jeevan.b@intel.com,
+	Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v3] tests/kms_plane_multiple: Add dual display subtest
+Date: Wed, 12 Mar 2025 12:38:21 +0530
+Message-ID: <20250312070821.610143-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fmodule?=
- =?utf-8?q?=5Fload=3A_Do_not_skip_on_snd?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Mar 2025 06:26:03 -0000
-Message-ID: <174176076352.22931.13260171730967942658@18a75f3d1eae>
-X-Patchwork-Hint: ignore
-References: <20250311195339.1206647-1-lucas.demarchi@intel.com>
-In-Reply-To: <20250311195339.1206647-1-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,399 +63,427 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1415749578059023472==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add 2x subtest to verify MPO use case simulataneously on two
+display configurations.
 
-== Series Details ==
+v2:
+- Update the test to use all the modifiers (Jeevan)
 
-Series: tests/intel/i915_module_load: Do not skip on snd
-URL   : https://patchwork.freedesktop.org/series/146170/
-State : success
+v3:
+- Add modifier support check before starting dynamic subtests
 
-== Summary ==
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/kms_plane_multiple.c | 235 +++++++++++++++++++++++++++++--------
+ 1 file changed, 186 insertions(+), 49 deletions(-)
 
-CI Bug Log - changes from IGT_8271 -> IGTPW_12751
-====================================================
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index eda300b06..1e100a5bc 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -55,6 +55,18 @@
+  * @x:           x-tiling
+  * @y:           y-tiling
+  * @yf:          yf-tiling
++ *
++ * SUBTEST: 2x-tiling-%s
++ * Description: Check that the kernel handles atomic updates of multiple planes
++ *		simultaneously committed on 2 displays.
++ *
++ * arg[1]:
++ *
++ * @none:	 no-tiling
++ * @4:           4-tiling
++ * @x:           x-tiling
++ * @y:           y-tiling
++ * @yf:          yf-tiling
+  */
+ 
+ IGT_TEST_DESCRIPTION("Test atomic mode setting with multiple planes.");
+@@ -73,10 +85,10 @@ typedef struct {
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
+-	igt_crc_t ref_crc;
+-	igt_pipe_crc_t *pipe_crc;
+-	igt_plane_t **plane;
+-	struct igt_fb *fb;
++	igt_crc_t ref_crc1, ref_crc2;
++	igt_pipe_crc_t *pipe_crc1, *pipe_crc2;
++	igt_plane_t **plane1, **plane2;
++	struct igt_fb *fb1, *fb2;
+ } data_t;
+ 
+ /* Command line parameters. */
+@@ -95,14 +107,14 @@ struct {
+  */
+ static void test_init(data_t *data, enum pipe pipe, int n_planes)
+ {
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	data->pipe_crc1 = igt_pipe_crc_new(data->drm_fd, pipe,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+-	data->plane = calloc(n_planes, sizeof(*data->plane));
+-	igt_assert_f(data->plane != NULL, "Failed to allocate memory for planes\n");
++	data->plane1 = calloc(n_planes, sizeof(*data->plane1));
++	igt_assert_f(data->plane1 != NULL, "Failed to allocate memory for planes\n");
+ 
+-	data->fb = calloc(n_planes, sizeof(struct igt_fb));
+-	igt_assert_f(data->fb != NULL, "Failed to allocate memory for FBs\n");
++	data->fb1 = calloc(n_planes, sizeof(struct igt_fb));
++	igt_assert_f(data->fb1 != NULL, "Failed to allocate memory for FBs\n");
+ }
+ 
+ static void test_fini(data_t *data, igt_output_t *output, int n_planes)
+@@ -110,21 +122,21 @@ static void test_fini(data_t *data, igt_output_t *output, int n_planes)
+ 	/* reset the constraint on the pipe */
+ 	igt_output_set_pipe(output, PIPE_ANY);
+ 
+-	igt_pipe_crc_free(data->pipe_crc);
+-	data->pipe_crc = NULL;
++	igt_pipe_crc_free(data->pipe_crc1);
++	data->pipe_crc1 = NULL;
+ 
+-	free(data->plane);
+-	data->plane = NULL;
++	free(data->plane1);
++	data->plane1 = NULL;
+ 
+-	free(data->fb);
+-	data->fb = NULL;
++	free(data->fb1);
++	data->fb1 = NULL;
+ 
+ 	igt_display_reset(&data->display);
+ }
+ 
+ static void
+-get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+-	      color_t *color, uint64_t modifier)
++get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe, igt_pipe_crc_t *pipe_crc,
++	      color_t *color, igt_plane_t **plane, uint64_t modifier, igt_crc_t *ref_crc)
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+@@ -134,7 +146,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	data->plane[primary->index] = primary;
++	plane[primary->index] = primary;
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -142,21 +154,21 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 			    DRM_FORMAT_XRGB8888,
+ 			    modifier,
+ 			    color->red, color->green, color->blue,
+-			    &data->fb[primary->index]);
++			    &data->fb1[primary->index]);
+ 
+-	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
++	igt_plane_set_fb(plane[primary->index], &data->fb1[primary->index]);
+ 
+ 	ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+ 	igt_skip_on(ret != 0);
+ 
+-	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
++	igt_pipe_crc_collect_crc(pipe_crc, ref_crc);
+ }
+ 
+ static void
+ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo *mode,
+ 			    color_t *color, int *rect_x, int *rect_y,
+ 			    int *rect_w, int *rect_h, uint64_t modifier,
+-			    int max_planes)
++			    int max_planes, igt_fb_t *fb)
+ {
+ 	unsigned int fb_id;
+ 	cairo_t *cr;
+@@ -168,16 +180,16 @@ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo
+ 			      mode->hdisplay, mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+ 			      modifier,
+-			      &data->fb[primary->index]);
++			      &fb[primary->index]);
+ 	igt_assert(fb_id);
+ 
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[primary->index]);
++	cr = igt_get_cairo_ctx(data->drm_fd, &fb[primary->index]);
+ 	igt_paint_color(cr, rect_x[0], rect_y[0],
+ 			mode->hdisplay, mode->vdisplay,
+ 			color->red, color->green, color->blue);
+ 
+ 	for (int i = 0; i < max_planes; i++) {
+-		if (data->plane[i]->type == DRM_PLANE_TYPE_PRIMARY)
++		if (data->plane1[i]->type == DRM_PLANE_TYPE_PRIMARY)
+ 			continue;
+ 		igt_paint_color(cr, rect_x[i], rect_y[i],
+ 				rect_w[i], rect_h[i], 0.0, 0.0, 0.0);
+@@ -188,8 +200,8 @@ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo
+ 
+ 
+ static void
+-prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+-	       uint64_t modifier, int max_planes, igt_output_t *output)
++prepare_planes(data_t *data, enum pipe pipe_id, color_t *color, igt_plane_t **plane,
++	       uint64_t modifier, int max_planes, igt_output_t *output, igt_fb_t *fb)
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_pipe_t *pipe;
+@@ -249,15 +261,14 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+ 		 * Here is made assumption primary plane will have
+ 		 * index zero.
+ 		 */
+-		igt_plane_t *plane = igt_output_get_plane(output, suffle[i]);
+ 		uint32_t plane_format;
+ 		uint64_t plane_modifier;
+ 
+-		data->plane[i] = plane;
++		plane[i] = igt_output_get_plane(output, suffle[i]);
+ 
+-		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
++		if (plane[i]->type == DRM_PLANE_TYPE_PRIMARY)
+ 			continue;
+-		else if (plane->type == DRM_PLANE_TYPE_CURSOR)
++		else if (plane[i]->type == DRM_PLANE_TYPE_CURSOR)
+ 			size[i] = SIZE_CURSOR;
+ 		else
+ 			size[i] = SIZE_PLANE;
+@@ -265,10 +276,12 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+ 		x[i] = rand() % (mode->hdisplay - size[i]);
+ 		y[i] = rand() % (mode->vdisplay - size[i]);
+ 
+-		plane_format = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
+-		plane_modifier = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_LINEAR : modifier;
++		plane_format = plane[i]->type == DRM_PLANE_TYPE_CURSOR ?
++						 DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
++		plane_modifier = plane[i]->type == DRM_PLANE_TYPE_CURSOR ?
++						   DRM_FORMAT_MOD_LINEAR : modifier;
+ 
+-		igt_skip_on(!igt_plane_has_format_mod(plane, plane_format,
++		igt_skip_on(!igt_plane_has_format_mod(plane[i], plane_format,
+ 						      plane_modifier));
+ 
+ 		igt_create_color_fb(data->drm_fd,
+@@ -276,17 +289,17 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+ 				    plane_format,
+ 				    plane_modifier,
+ 				    color->red, color->green, color->blue,
+-				    &data->fb[i]);
++				    &fb[i]);
+ 
+-		igt_plane_set_position(data->plane[i], x[i], y[i]);
+-		igt_plane_set_fb(data->plane[i], &data->fb[i]);
++		igt_plane_set_position(plane[i], x[i], y[i]);
++		igt_plane_set_fb(plane[i], &fb[i]);
+ 	}
+ 
+ 	/* primary plane */
+-	data->plane[primary->index] = primary;
++	plane[primary->index] = primary;
+ 	create_fb_for_mode_position(data, output, mode, color, x, y,
+-				    size, size, modifier, max_planes);
+-	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
++				    size, size, modifier, max_planes, &fb[primary->index]);
++	igt_plane_set_fb(plane[primary->index], &fb[primary->index]);
+ 	free((void*)x);
+ 	free((void*)y);
+ 	free((void*)size);
+@@ -332,12 +345,13 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 
+ 	test_init(data, pipe, n_planes);
+ 
+-	get_reference_crc(data, output, pipe, &blue, modifier);
++	get_reference_crc(data, output, pipe, data->pipe_crc1, &blue,
++			  data->plane1, modifier, &data->ref_crc1);
+ 
+ 	/* Find out how many planes are allowed simultaneously */
+ 	do {
+ 		c++;
+-		prepare_planes(data, pipe, &blue, modifier, c, output);
++		prepare_planes(data, pipe, &blue, data->plane1, modifier, c, output, data->fb1);
+ 		err = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		for_each_plane_on_pipe(&data->display, pipe, plane)
+@@ -347,7 +361,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		for (int x = 0; x < c; x++)
+-			igt_remove_fb(data->drm_fd, &data->fb[x]);
++			igt_remove_fb(data->drm_fd, &data->fb1[x]);
+ 	} while (!err && c < n_planes);
+ 
+ 	if (err)
+@@ -361,14 +375,14 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 	while (i < iterations || loop_forever) {
+ 
+ 		/* randomize planes and set up the holes */
+-		prepare_planes(data, pipe, &blue, modifier, c, output);
++		prepare_planes(data, pipe, &blue, data->plane1, modifier, c, output, data->fb1);
+ 
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-		igt_pipe_crc_start(data->pipe_crc);
++		igt_pipe_crc_start(data->pipe_crc1);
+ 
+-		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
+-		igt_assert_crc_equal(&data->ref_crc, &crc);
+-		igt_pipe_crc_stop(data->pipe_crc);
++		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc1, &crc);
++		igt_assert_crc_equal(&data->ref_crc1, &crc);
++		igt_pipe_crc_stop(data->pipe_crc1);
+ 
+ 		for_each_plane_on_pipe(&data->display, pipe, plane)
+ 			igt_plane_set_fb(plane, NULL);
+@@ -377,7 +391,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		for (int x = 0; x < c; x++)
+-			igt_remove_fb(data->drm_fd, &data->fb[x]);
++			igt_remove_fb(data->drm_fd, &data->fb1[x]);
+ 
+ 		i++;
+ 	}
+@@ -400,6 +414,115 @@ test_plane_position(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t
+ 					n_planes, modifier);
+ }
+ 
++static void test_init_2_display(data_t *data, enum pipe pipe1, enum pipe pipe2)
++{
++	data->pipe_crc1 = igt_pipe_crc_new(data->drm_fd, pipe1,
++					   IGT_PIPE_CRC_SOURCE_AUTO);
++	data->pipe_crc2 = igt_pipe_crc_new(data->drm_fd, pipe2,
++					   IGT_PIPE_CRC_SOURCE_AUTO);
++
++	data->plane1 = calloc(2, sizeof(*data->plane1));
++	igt_assert_f(data->plane1 != NULL, "Failed to allocate memory for planes\n");
++
++	data->plane2 = calloc(2, sizeof(*data->plane2));
++	igt_assert_f(data->plane2 != NULL, "Failed to allocate memory for planes\n");
++
++	data->fb1 = calloc(2, sizeof(struct igt_fb));
++	igt_assert_f(data->fb1 != NULL, "Failed to allocate memory for FBs\n");
++
++	data->fb2 = calloc(2, sizeof(struct igt_fb));
++	igt_assert_f(data->fb2 != NULL, "Failed to allocate memory for FBs\n");
++}
++
++static void test_fini_2_display(data_t *data)
++{
++	igt_pipe_crc_stop(data->pipe_crc1);
++	igt_pipe_crc_stop(data->pipe_crc2);
++
++	igt_display_reset(&data->display);
++}
++
++static void test_plane_position_2_display(data_t *data, enum pipe pipe1, enum pipe pipe2,
++					  igt_output_t *output1, igt_output_t *output2,
++					  uint64_t modifier)
++{
++	color_t blue  = { 0.0f, 0.0f, 1.0f };
++	igt_crc_t crc1, crc2;
++
++	test_init_2_display(data, pipe1, pipe2);
++	get_reference_crc(data, output1, pipe1, data->pipe_crc1, &blue,
++			  data->plane1, DRM_FORMAT_MOD_LINEAR, &data->ref_crc1);
++	get_reference_crc(data, output2, pipe2, data->pipe_crc2, &blue,
++			  data->plane2, DRM_FORMAT_MOD_LINEAR, &data->ref_crc2);
++
++	prepare_planes(data, pipe1, &blue, data->plane1,
++		       modifier, 2, output1, data->fb1);
++	prepare_planes(data, pipe2, &blue, data->plane2,
++		       modifier, 2, output2, data->fb2);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	igt_pipe_crc_start(data->pipe_crc1);
++	igt_pipe_crc_start(data->pipe_crc2);
++
++	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc1, &crc1);
++	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc2, &crc2);
++
++	igt_assert_crc_equal(&data->ref_crc1, &crc1);
++	igt_assert_crc_equal(&data->ref_crc2, &crc2);
++}
++
++#define for_each_connected_output_local(display, output)		\
++	for (int j__ = 0;  assert(igt_can_fail()), j__ < (display)->n_outputs; j__++)	\
++		for_each_if((((output) = &(display)->outputs[j__]), \
++			      igt_output_is_connected((output))))
++
++#define for_each_valid_output_on_pipe_local(display, pipe, output) \
++	for_each_connected_output_local((display), (output)) \
++		for_each_if(igt_pipe_connector_valid((pipe), (output)))
++
++static void run_2_display_test(data_t *data, uint64_t modifier)
++{
++	enum pipe pipe1, pipe2;
++	igt_output_t *output1, *output2;
++	igt_display_t *display = &data->display;
++
++	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
++		return;
++
++	igt_display_reset(display);
++
++	for_each_pipe(display, pipe1) {
++		for_each_valid_output_on_pipe(display, pipe1, output1) {
++			for_each_pipe(display, pipe2) {
++				if (pipe1 == pipe2)
++					continue;
++
++				for_each_valid_output_on_pipe_local(display, pipe2, output2) {
++					if (output1 == output2)
++						continue;
++
++					igt_display_reset(display);
++
++					igt_output_set_pipe(output1, pipe1);
++					igt_output_set_pipe(output2, pipe2);
++
++					if (!intel_pipe_output_combo_valid(display))
++						continue;
++
++					igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
++						       kmstest_pipe_name(pipe1), output1->name,
++						       kmstest_pipe_name(pipe2), output2->name)
++						test_plane_position_2_display(data, pipe1, pipe2,
++									      output1, output2,
++									      modifier);
++
++					test_fini_2_display(data);
++				}
++			}
++		}
++	}
++}
++
+ static void run_test(data_t *data, uint64_t modifier)
+ {
+ 	enum pipe pipe;
+@@ -503,6 +626,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			run_test(&data, subtests[i].modifier);
+ 	}
+ 
++	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
++		igt_subtest_with_dynamic_f("2x-%s", subtests[i].name) {
++			int valid_outputs = 0;
++			igt_output_t *output;
++
++			for_each_connected_output(&data.display, output)
++				valid_outputs++;
++
++			igt_require(valid_outputs > 1);
++
++			run_2_display_test(&data, subtests[i].modifier);
++		}
++	}
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
+-- 
+2.43.0
 
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_12751 need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12751, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12751:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - bat-apl-1:          [SKIP][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-apl-1/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-apl-1/igt@i915_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12751 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735]) +131 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_auth@basic-auth:
-    - fi-bsw-nick:        [DMESG-WARN][5] ([i915#13736]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-bsw-nick/igt@core_auth@basic-auth.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-bsw-nick/igt@core_auth@basic-auth.html
-
-  * igt@i915_module_load@load:
-    - fi-bsw-n3050:       [SKIP][7] -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-bsw-n3050/igt@i915_module_load@load.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-bsw-n3050/igt@i915_module_load@load.html
-    - bat-arlh-2:         [SKIP][9] ([i915#11346]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arlh-2/igt@i915_module_load@load.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arlh-2/igt@i915_module_load@load.html
-    - fi-rkl-11600:       [SKIP][11] ([i915#13896]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-rkl-11600/igt@i915_module_load@load.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-rkl-11600/igt@i915_module_load@load.html
-    - bat-arlh-3:         [SKIP][13] ([i915#13896]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arlh-3/igt@i915_module_load@load.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arlh-3/igt@i915_module_load@load.html
-    - fi-pnv-d510:        [SKIP][15] -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-pnv-d510/igt@i915_module_load@load.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-pnv-d510/igt@i915_module_load@load.html
-    - bat-dg1-7:          [SKIP][17] ([i915#13896]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg1-7/igt@i915_module_load@load.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg1-7/igt@i915_module_load@load.html
-    - bat-dg2-13:         [SKIP][19] ([i915#13896]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-13/igt@i915_module_load@load.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-13/igt@i915_module_load@load.html
-    - fi-glk-j4005:       [SKIP][21] -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-glk-j4005/igt@i915_module_load@load.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-glk-j4005/igt@i915_module_load@load.html
-    - bat-adlp-9:         [SKIP][23] ([i915#13896]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adlp-9/igt@i915_module_load@load.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adlp-9/igt@i915_module_load@load.html
-    - bat-rpls-4:         [SKIP][25] ([i915#13896]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-rpls-4/igt@i915_module_load@load.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-rpls-4/igt@i915_module_load@load.html
-    - bat-twl-1:          [SKIP][27] ([i915#13896]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-twl-1/igt@i915_module_load@load.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-twl-1/igt@i915_module_load@load.html
-    - bat-arls-5:         [SKIP][29] ([i915#13896]) -> [PASS][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arls-5/igt@i915_module_load@load.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arls-5/igt@i915_module_load@load.html
-    - bat-rplp-1:         [SKIP][31] ([i915#13896]) -> [PASS][32]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-rplp-1/igt@i915_module_load@load.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-rplp-1/igt@i915_module_load@load.html
-    - fi-tgl-1115g4:      [SKIP][33] ([i915#13896]) -> [PASS][34]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-tgl-1115g4/igt@i915_module_load@load.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-tgl-1115g4/igt@i915_module_load@load.html
-    - {bat-jsl-4}:        [SKIP][35] ([i915#13896]) -> [PASS][36]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-4/igt@i915_module_load@load.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-4/igt@i915_module_load@load.html
-    - fi-cfl-guc:         [SKIP][37] -> [PASS][38]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-guc/igt@i915_module_load@load.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-guc/igt@i915_module_load@load.html
-    - bat-mtlp-6:         [SKIP][39] ([i915#13896]) -> [PASS][40]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-6/igt@i915_module_load@load.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-6/igt@i915_module_load@load.html
-    - bat-dg2-9:          [SKIP][41] ([i915#13896]) -> [PASS][42]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-9/igt@i915_module_load@load.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-9/igt@i915_module_load@load.html
-    - bat-adlp-11:        [SKIP][43] ([i915#13896]) -> [PASS][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adlp-11/igt@i915_module_load@load.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adlp-11/igt@i915_module_load@load.html
-    - bat-dg1-6:          [SKIP][45] ([i915#13896]) -> [PASS][46]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg1-6/igt@i915_module_load@load.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg1-6/igt@i915_module_load@load.html
-    - fi-ilk-650:         [SKIP][47] -> [PASS][48]
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-ilk-650/igt@i915_module_load@load.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-ilk-650/igt@i915_module_load@load.html
-    - fi-blb-e6850:       [SKIP][49] -> [PASS][50]
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-blb-e6850/igt@i915_module_load@load.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-blb-e6850/igt@i915_module_load@load.html
-    - bat-adlp-6:         [SKIP][51] ([i915#13896]) -> [PASS][52]
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adlp-6/igt@i915_module_load@load.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adlp-6/igt@i915_module_load@load.html
-    - bat-jsl-3:          [SKIP][53] ([i915#13896]) -> [PASS][54]
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-3/igt@i915_module_load@load.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-3/igt@i915_module_load@load.html
-    - bat-twl-2:          [SKIP][55] ([i915#13896]) -> [PASS][56]
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-twl-2/igt@i915_module_load@load.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-twl-2/igt@i915_module_load@load.html
-    - bat-dg2-11:         [SKIP][57] ([i915#13896]) -> [PASS][58]
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-11/igt@i915_module_load@load.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-11/igt@i915_module_load@load.html
-    - fi-cfl-8700k:       [SKIP][59] -> [PASS][60]
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-8700k/igt@i915_module_load@load.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-8700k/igt@i915_module_load@load.html
-    - bat-dg2-14:         [SKIP][61] ([i915#13896]) -> [PASS][62]
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-14/igt@i915_module_load@load.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-14/igt@i915_module_load@load.html
-    - fi-bsw-nick:        [SKIP][63] -> [PASS][64]
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-bsw-nick/igt@i915_module_load@load.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-bsw-nick/igt@i915_module_load@load.html
-    - bat-kbl-2:          [SKIP][65] -> [PASS][66]
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-kbl-2/igt@i915_module_load@load.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-kbl-2/igt@i915_module_load@load.html
-    - bat-mtlp-9:         [SKIP][67] ([i915#13896]) -> [PASS][68]
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-9/igt@i915_module_load@load.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-9/igt@i915_module_load@load.html
-    - bat-arls-6:         [SKIP][69] ([i915#13896]) -> [PASS][70]
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arls-6/igt@i915_module_load@load.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arls-6/igt@i915_module_load@load.html
-    - fi-hsw-4770:        [SKIP][71] -> [PASS][72]
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-hsw-4770/igt@i915_module_load@load.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-hsw-4770/igt@i915_module_load@load.html
-    - fi-ivb-3770:        [SKIP][73] -> [PASS][74]
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-ivb-3770/igt@i915_module_load@load.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-ivb-3770/igt@i915_module_load@load.html
-    - bat-mtlp-8:         [SKIP][75] ([i915#13896]) -> [PASS][76]
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-8/igt@i915_module_load@load.html
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-8/igt@i915_module_load@load.html
-    - fi-kbl-guc:         [SKIP][77] -> [PASS][78]
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-kbl-guc/igt@i915_module_load@load.html
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-kbl-guc/igt@i915_module_load@load.html
-    - bat-adls-6:         [SKIP][79] ([i915#13896]) -> [PASS][80]
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adls-6/igt@i915_module_load@load.html
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adls-6/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live:
-    - bat-jsl-3:          [INCOMPLETE][81] ([i915#12445] / [i915#13241]) -> [PASS][82]
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-3/igt@i915_selftest@live.html
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-3/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@hugepages:
-    - bat-jsl-3:          [INCOMPLETE][83] ([i915#12445]) -> [PASS][84]
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-3/igt@i915_selftest@live@hugepages.html
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-3/igt@i915_selftest@live@hugepages.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [DMESG-FAIL][85] ([i915#12061]) -> [PASS][86] +1 other test pass
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - fi-cfl-8109u:       [SKIP][87] -> [DMESG-WARN][88] ([i915#13735])
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-8109u/igt@i915_module_load@load.html
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-8109u/igt@i915_module_load@load.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
-  [i915#13241]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13241
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#13736]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13736
-  [i915#13896]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8271 -> IGTPW_12751
-  * Linux: CI_DRM_16265 -> CI_DRM_16266
-
-  CI-20190529: 20190529
-  CI_DRM_16265: eb17816e52395a403aa0b447aa0befa9d2f86dd5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16266: aba848f9b752cf51474c0c3b1abcf0f572f774dc @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12751: 12751
-  IGT_8271: 8271
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/index.html
-
---===============1415749578059023472==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/i915_module_load: Do not skip on snd</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146170/">https://patchwork.freedesktop.org/series/146170/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8271 -&gt; IGTPW_12751</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_12751 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12751, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12751:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-apl-1/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-apl-1/igt@i915_module_load@load.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12751 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@late_gt_pm:<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +131 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_auth@basic-auth:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-bsw-nick/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13736">i915#13736</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-bsw-nick/igt@core_auth@basic-auth.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-bsw-n3050/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-bsw-n3050/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arlh-2/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arlh-2/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-rkl-11600/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-rkl-11600/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arlh-3/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arlh-3/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-pnv-d510/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-pnv-d510/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg1-7/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg1-7/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-dg2-13:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-13/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-13/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-glk-j4005/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-glk-j4005/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adlp-9/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adlp-9/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-rpls-4/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-rpls-4/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-twl-1/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-twl-1/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arls-5/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arls-5/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-rplp-1/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-rplp-1/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-tgl-1115g4/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-tgl-1115g4/igt@i915_module_load@load.html">PASS</a></li>
-<li>{bat-jsl-4}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-4/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-4/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-guc/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-guc/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-6/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-6/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-9/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-9/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adlp-11/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adlp-11/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg1-6/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg1-6/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-ilk-650/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-ilk-650/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-blb-e6850/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-blb-e6850/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adlp-6/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adlp-6/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-3/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-3/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-twl-2/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-twl-2/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-11/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-11/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-8700k/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-8700k/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-dg2-14/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-dg2-14/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-bsw-nick/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-bsw-nick/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-kbl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-kbl-2/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-kbl-2/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-9/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-arls-6/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-arls-6/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-hsw-4770/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-hsw-4770/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-ivb-3770/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-ivb-3770/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-8/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-8/igt@i915_module_load@load.html">PASS</a></li>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-kbl-guc/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-kbl-guc/igt@i915_module_load@load.html">PASS</a></li>
-<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-adls-6/igt@i915_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13896">i915#13896</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-adls-6/igt@i915_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-3/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13241">i915#13241</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-3/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hugepages:</p>
-<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-jsl-3/igt@i915_selftest@live@hugepages.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-jsl-3/igt@i915_selftest@live@hugepages.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8271/fi-cfl-8109u/igt@i915_module_load@load.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12751/fi-cfl-8109u/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8271 -&gt; IGTPW_12751</li>
-<li>Linux: CI_DRM_16265 -&gt; CI_DRM_16266</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16265: eb17816e52395a403aa0b447aa0befa9d2f86dd5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16266: aba848f9b752cf51474c0c3b1abcf0f572f774dc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12751: 12751<br />
-  IGT_8271: 8271</p>
-
-</body>
-</html>
-
---===============1415749578059023472==--
