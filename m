@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53AF0C282DE
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 14:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA99BC282DE
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 14:34:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0704B10E8B6;
-	Thu, 13 Mar 2025 14:32:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9708D10E1DD;
+	Thu, 13 Mar 2025 14:34:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oKx1EEuZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eA3v062f";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A9A610E8B6
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 14:32:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 045D610E1DD
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 14:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741876320; x=1773412320;
+ t=1741876447; x=1773412447;
  h=message-id:subject:from:to:date:in-reply-to:references:
  content-transfer-encoding:mime-version;
  bh=biJ9+U2JQYupyeigpLnhpJUfhtEge0CisZ1LzLUn49c=;
- b=oKx1EEuZxnyWmqtG12NjVU4EWXh/DJ5RE1xMIxZIhEvHNIxxBNpKspio
- 1LAso861UMUFCpdn11/OMZC7MQOFLBHcjfBIBUe0ypADVsEEFHv3wbkXW
- SDGQ4TsRazjab3nQXjfIJE/xYtQG8cv7uQi8r5duOm9Tz0arjDMr+154D
- OnKPPH036VD8OggyZON4IlQpKdpXIurc9om6HIVXMwfb2rlL7yl52V+Wj
- ugncyEqm0Gozq+g12vh40uhsA96/lBW96WDP6lwaTk2jhIcJRDMKNWy93
- stTosMVVbaBfbt+MVQIP3pazfNbARKe4p2tzpvS6E2wWztpaJcOeIsQDK w==;
-X-CSE-ConnectionGUID: zo/SahigQca2c4ftAdea9Q==
-X-CSE-MsgGUID: M25sn6tDRZ2EJymTDErsLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="46898746"
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="46898746"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2025 07:31:58 -0700
-X-CSE-ConnectionGUID: izJA8O8AQgWws0hD25Y8sw==
-X-CSE-MsgGUID: 4cWZCS/vQT6L6mGUFQf4fg==
+ b=eA3v062fYzm6Pe384pU3pwe8vUIDvwlxQDI1R/VUrU51EENJqvJwv+zS
+ 4g2GNs0RpRD2vNd7v24RsOFYAICbVRFp7vOxrA3LT/ZZ6JqZc0QM7zFJs
+ V+/NMzBzS1lW0PfpWfuGWYyNYrQIbiXuvLtzn9oVFyx/xTvvqjT2KUIYG
+ /aEIjnKANil2b6NhOFsOutt3bw3fR1uM7tgVMrQn+IDrkMNPjBNWCnSvK
+ twfhgviAIy5sVIDmVcn+/2kurvYDjtSKLQMHZD3jaLf2kRtSZynaE2yCC
+ t43N1X1LkDNVGYNkIvmRqWSNTytgnLoYA0uQRHyfA1NKo5e17Br5Jg+uB Q==;
+X-CSE-ConnectionGUID: oS8bz1vFQY25xiGmzmeViw==
+X-CSE-MsgGUID: cy3zJLpHRKmc37Y0LMlK4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="53647680"
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="53647680"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2025 07:34:06 -0700
+X-CSE-ConnectionGUID: dcFa52KJRWmPgqq1G2h2vA==
+X-CSE-MsgGUID: hWtGkU9XShuFpTiJRUSALQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="158123315"
+X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; d="scan'208";a="125148790"
 Received: from dprybysh-mobl.ger.corp.intel.com (HELO [10.245.246.144])
  ([10.245.246.144])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2025 07:31:57 -0700
-Message-ID: <5614d4018345ac4923513f3936665e7a451d6124.camel@linux.intel.com>
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2025 07:34:06 -0700
+Message-ID: <7a1bb4a792618d5e48d628240992360d024354a6.camel@linux.intel.com>
 Subject: Re: [PATCH i-g-t 04/11] lib/intel_compute: Use common constant for
  binding table size
 From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
 To: Francois Dugast <francois.dugast@intel.com>, igt-dev@lists.freedesktop.org
-Date: Thu, 13 Mar 2025 15:31:54 +0100
+Date: Thu, 13 Mar 2025 15:34:03 +0100
 In-Reply-To: <20250311152321.16497-5-francois.dugast@intel.com>
 References: <20250311152321.16497-1-francois.dugast@intel.com>
  <20250311152321.16497-5-francois.dugast@intel.com>
