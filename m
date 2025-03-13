@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B587BC35FF4
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31590C35FF3
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4049810E8FF;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D730410E900;
 	Thu, 13 Mar 2025 17:33:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="G4XGMUm6";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="PydGxL41";
 	dkim-atps=neutral
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
- [209.85.221.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7600F10E8FF
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+ [209.85.128.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3803210E8FF
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:28 +0000 (UTC)
-Received: by mail-wr1-f43.google.com with SMTP id
- ffacd0b85a97d-391342fc0b5so1061252f8f.3
+Received: by mail-wm1-f50.google.com with SMTP id
+ 5b1f17b1804b1-43948021a45so11134515e9.1
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1741887206; x=1742492006; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k9ctsAPhxpAq3WFWnNyU+W+4LtaY96WVPTgTp83rcRI=;
- b=G4XGMUm6//QPD7kb6VerG/Pf4d/X5Bjhx35jhCCMTEM5N8vfjocspye1qW/ytZWblm
- aNVetYuc+FwXR52miOA/y5P5dVjVJONhldxtqlm+Kh/njftT1TJ07sR6yWrKibGVa6gO
- DwsBfSrmG9hD8qeUSWElcvY6SfeFBTUdp9W3gzxZbj3P7m/O83YIW+moNWwhjDh9Ir5i
- a+FXIMuVL8ZujMju+7+sMHNUGmEJdcWK+7KvVtNbwoJ6xgKD8FZPeS5+Bl7m6h73BeTS
- iLCIyyeTlBoLGyFRyUtVpjcLYUZVcfx6LSn//m611MTYMX49Gv5K4MWcaQymRdPM+X2I
- hMaA==
+ bh=ZlNPS1b4v3s4UBRnKLOnf7IudGKo7Zv0u6hSE+GnKNM=;
+ b=PydGxL41PrkR6fDM8sg0a1Xq8X8C9d+kFXNAgykvZChFBuinWgGXDEaxXFFMr/6mkF
+ fI9X6m0XNaOhkQVzsqKoOVA9i6eyMh7LjujJcHq3R65GKZ2Lel6tT282oHgKE5Lc2JSn
+ N7aN6st8tZ2Xw6W6LeOh6UJEuVvJ8B6uOQF3WGkt820wy/cGt6yL5fHs3IVALgz0He/o
+ gv+Gk32q1Ubm93tbHZZQZpcXm3/lozgQLvQUyeHnj1WNhSsHo6t7WTmV1iMYsGm3tjWE
+ zw3x4trRDAVUdaH5XbnGm338FpiW4rBKIhI1aXuEM327lqKJWWL03baCSgWW8X0NOk0E
+ 2ung==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1741887206; x=1742492006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k9ctsAPhxpAq3WFWnNyU+W+4LtaY96WVPTgTp83rcRI=;
- b=epd1NLC11vlzXSfL0AcVc0bQEM+uOgUaHUPOev/4p8HJwtZRz7YjKyGYjAQCD7Oq0V
- MCwAqYdkQRg5t5Fj7ng6o21lA3t5jCw3odt+zFa/r3g8AYLWv9fsP2uDCBFqO0Tf2QYU
- +WiAvbjxGOk2L36PZEWY9uMGsJsGc6qbabQl4+mWebLJl50Qshs7LKvT4U/e9+Iqk9X3
- DWOY1UBFuuNFEyzGsrSY0EimJ/Op4i2uMSfwlcBqRKZkgrlg7/dBtvUygD9XRM2aPSNT
- YAXkyfwaGh+DBfRlAz4Q0Kr6c4GQynNI16VT0KhE2ntlL0NKrJJAseGSJoAnYIQX7HoG
- lR/A==
-X-Gm-Message-State: AOJu0YyBMZhv5lyLCsIVAO7udsnG/9GPxpStLvTZ3wKYpiC2TXQhlJ8L
- Ys6hqfxPyIJ8Yvi8S9tYGHwxF47pQntELIpNdNmk1QO/cUwR+Juw+Qu6sjxX
-X-Gm-Gg: ASbGnct1Bdl6kYazt9mROaxd8Ny7IKpi3Z9+mow79+UY/7I1Gd8WXZR7DL4y7/J+6FJ
- BeuxfjRmsDQnz28Dpdnbq+rKfCtrOhRIeVG1/awCYtMMHvlxVtBw65HxAKO0RxnCv9Rwe4X0OnN
- Xh9WfNlSocxxSzS2FoK+XKAwuRfNHEwymZMbJhQ05/tRYZprao4/rXvO94wVDB6icSXT1m4LXmB
- pteKtNyW4BUpDIkep/SAOkhUVeTsKGmM8UPE1RkmsdycwXjOk7IlMbMijuEQzL8GzkAWm7tVQf7
- bhy5t70xr4am1JPKiLBCJrsIXiKqUSBwAO3C5LvOo5gQ
-X-Google-Smtp-Source: AGHT+IEU1ThdDHtd4YHKqIK/5NmHfSCUFhSU7BwgS39adNgqQx/cqde9t0snpVKC1xCCG+Y7rFluPg==
-X-Received: by 2002:a5d:47c1:0:b0:392:bf8:fc96 with SMTP id
- ffacd0b85a97d-396c1c20619mr310307f8f.4.1741887206429; 
- Thu, 13 Mar 2025 10:33:26 -0700 (PDT)
+ bh=ZlNPS1b4v3s4UBRnKLOnf7IudGKo7Zv0u6hSE+GnKNM=;
+ b=sB/0CPtvJtwDpSr9AYUObnBpnCMS4ZYUMDqRyiyY5AJHhZZZldC4R7Bh3mxKgWxHpi
+ 6PIg9unpDtBtZGpiDaj8LvwIYLcqnJA6QgFoFdqLlgXq6oQWYnlHJWVK1B+7yTYDQZK1
+ aelf3C/v1MFVLYRJcmD7T+uXSeGwPgGMY63W2ivG7f7qp6aGraSOhUtYnycjfi28xLsv
+ ywG9yXu3EuFQeX0famMc8S1MAuoHtCDOdJih8GDEYJfplD1bHEIPniEaH/zceVBqHvkU
+ bG/kg3OJA9RiIeYNJGcRfdGD8lR7N2jEkb/GmZAA3nE875rZ5582bgGzYJOAKz8OvMEF
+ Su9g==
+X-Gm-Message-State: AOJu0YzjyMyU+2rRhYRvpZCIbqdeSQMVoegSr1mftK8zxQAyNx4W9rsu
+ ftc7ysg4aVkUtf8a8+40YwsJcZUBTOfT3QoBgkpEkFRz+aogbj8U9vUp5jWV
+X-Gm-Gg: ASbGncsa3yS55JOEFwneD65WR4ImLeIdudgrhvEGN33j9IRwamreHHxPg7Q6ka7xCFs
+ dALWHOLLsFP0EoLHoaQxAMWY28aWzOp1n2Liww2J2Kuui6ROtbGsehziKgdKkSc9prjfW4LuodT
+ iYY5sjco4vX1dY/oZFCeHAdR4CrXr7ihiJRpFXbS8FhwIp+E+kEy5uLLf4HV4MPcCkOxlvpsxKL
+ WVwWJ9y0bsgX7LGucY1HVQme1VIA6eN8MONHcEQd5TzXAkKm/B1nS71ocMD4gGg+VYdLVhN5E+V
+ +KDCdAYLRRNhgotsIFD5ocorcYZ3J3BOyhtzb2SWhNoh+1wkOo5J0tQ=
+X-Google-Smtp-Source: AGHT+IG4ngMcjB6y6b9+AqxgyiUpCEJSFMiWhjiR4MRIay84mmM7PgOdCCWiDqrn/Z4HThPhYZC/9g==
+X-Received: by 2002:a05:600c:4204:b0:43d:9f2:6274 with SMTP id
+ 5b1f17b1804b1-43d1d9c5836mr4825695e9.14.1741887205758; 
+ Thu, 13 Mar 2025 10:33:25 -0700 (PDT)
 Received: from fedora.. ([94.73.34.87]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.25
+ 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 10:33:26 -0700 (PDT)
+ Thu, 13 Mar 2025 10:33:24 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
  Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
-Subject: [PATCH i-g-t v2 03/43] lib/igt_configfs: Add helper to mount configfs
-Date: Thu, 13 Mar 2025 18:32:38 +0100
-Message-ID: <20250313173318.5818-4-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v2 02/43] lib/igt_debugfs: Move is_mountpoint() to
+ igt_aux
+Date: Thu, 13 Mar 2025 18:32:37 +0100
+Message-ID: <20250313173318.5818-3-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313173318.5818-1-jose.exposito89@gmail.com>
 References: <20250313173318.5818-1-jose.exposito89@gmail.com>
@@ -87,8 +88,10 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new helper function to mount configfs. Required to test VKMS
-configuration.
+Rename is_mountpoint() to igt_is_mountpoint() and make it available in
+igt_aux.h/c.
+
+Refactor, no functional change.
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Co-developed-by: Jim Shargo <jshargo@chromium.org>
@@ -97,120 +100,110 @@ Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
 Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/igt.h          |  1 +
- lib/igt_configfs.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_configfs.h | 13 +++++++++++
- lib/meson.build    |  1 +
- 4 files changed, 72 insertions(+)
- create mode 100644 lib/igt_configfs.c
- create mode 100644 lib/igt_configfs.h
+ lib/igt_aux.c     | 31 +++++++++++++++++++++++++++++++
+ lib/igt_aux.h     |  2 ++
+ lib/igt_debugfs.c | 29 ++---------------------------
+ 3 files changed, 35 insertions(+), 27 deletions(-)
 
-diff --git a/lib/igt.h b/lib/igt.h
-index 58c39e098..173ca70bf 100644
---- a/lib/igt.h
-+++ b/lib/igt.h
-@@ -27,6 +27,7 @@
- #include "drmtest.h"
- #include "i915_3d.h"
- #include "igt_aux.h"
-+#include "igt_configfs.h"
- #include "igt_core.h"
- #include "igt_debugfs.h"
- #include "igt_draw.h"
-diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
-new file mode 100644
-index 000000000..cd8674cb5
---- /dev/null
-+++ b/lib/igt_configfs.c
-@@ -0,0 +1,57 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Google LLC.
-+ * Copyright © 2023 Collabora, Ltd.
-+ * Copyright © 2024 Red Hat, Inc.
-+ */
-+
-+#include <sys/mount.h>
-+
-+#include "igt_aux.h"
-+#include "igt_configfs.h"
-+
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index f5bf48da6..2905824a5 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -1374,6 +1374,37 @@ static bool get_process_ids(struct igt_process *prcs)
+ 	return prcs->tid != 0;
+ }
+ 
 +/**
-+ * SECTION:igt_configfs
-+ * @short_description: Support code for configfs features
-+ * @title: configfs
-+ * @include: igt_configfs.h
++ * igt_is_mountpoint() - Check if a path is a mounted filesystem
++ * @path: Root directory to test
 + *
-+ * This library provides helpers to access configfs features.
++ * Returns: true if @path is the root of a mounted filesystem
 + */
-+
-+/*
-+ * General configfs helpers
-+ */
-+
-+static const char *__igt_configfs_mount(void)
++bool igt_is_mountpoint(const char *path)
 +{
-+	if (igt_is_mountpoint("/sys/kernel/config"))
-+		return "/sys/kernel/config";
++	char buf[strlen(path) + 4];
++	struct stat st;
++	dev_t dev;
 +
-+	if (igt_is_mountpoint("/config"))
-+		return "/config";
++	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
++	if (stat(buf, &st))
++		return false;
 +
-+	if (mount("config", "/sys/kernel/config", "configfs", 0, 0))
-+		return NULL;
++	if (!S_ISDIR(st.st_mode))
++		return false;
 +
-+	return "/sys/kernel/config";
++	dev = st.st_dev;
++
++	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
++	if (stat(buf, &st))
++		return false;
++
++	if (!S_ISDIR(st.st_mode))
++		return false;
++
++	return dev != st.st_dev;
 +}
 +
-+/**
-+ * igt_configfs_mount:
-+ *
-+ * This attempts to locate where configfs is mounted on the filesystem,
-+ * and if not found, will then try to mount configfs at /sys/kernel/config.
-+ *
-+ * Returns:
-+ * The path to the configfs mount point (e.g. /sys/kernel/config)
-+ */
-+const char *igt_configfs_mount(void)
-+{
-+	static const char *path;
+ /**
+  * igt_is_process_running:
+  * @comm: Name of process in the form found in /proc/pid/comm (limited to 15
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index bfd83adca..e8a1788b2 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -314,6 +314,8 @@ double igt_stop_siglatency(struct igt_mean *result);
+ 
+ bool igt_allow_unlimited_files(void);
+ 
++bool igt_is_mountpoint(const char *path);
 +
-+	if (!path)
-+		path = __igt_configfs_mount();
-+
-+	return path;
-+}
-diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
-new file mode 100644
-index 000000000..4cbe9001e
---- /dev/null
-+++ b/lib/igt_configfs.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Google LLC.
-+ * Copyright © 2023 Collabora, Ltd.
-+ * Copyright © 2024 Red Hat, Inc.
-+ */
-+
-+#ifndef __IGT_CONFIGFS_H__
-+#define __IGT_CONFIGFS_H__
-+
-+const char *igt_configfs_mount(void);
-+
-+#endif /* __IGT_CONFIGFS_H__ */
-diff --git a/lib/meson.build b/lib/meson.build
-index d01c90df9..b595b9979 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -18,6 +18,7 @@ lib_sources = [
- 	'i915/i915_crc.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
-+	'igt_configfs.c',
- 	'igt_facts.c',
- 	'igt_crc.c',
- 	'igt_debugfs.c',
+ int igt_is_process_running(const char *comm);
+ int igt_terminate_process(int sig, const char *comm);
+ void igt_lsof(const char *dpath);
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 8ac215a76..210a9cea0 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -67,37 +67,12 @@
+  * General debugfs helpers
+  */
+ 
+-static bool is_mountpoint(const char *path)
+-{
+-	char buf[strlen(path) + 4];
+-	struct stat st;
+-	dev_t dev;
+-
+-	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
+-	if (stat(buf, &st))
+-		return false;
+-
+-	if (!S_ISDIR(st.st_mode))
+-		return false;
+-
+-	dev = st.st_dev;
+-
+-	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
+-	if (stat(buf, &st))
+-		return false;
+-
+-	if (!S_ISDIR(st.st_mode))
+-		return false;
+-
+-	return dev != st.st_dev;
+-}
+-
+ static const char *__igt_debugfs_mount(void)
+ {
+-	if (is_mountpoint("/sys/kernel/debug"))
++	if (igt_is_mountpoint("/sys/kernel/debug"))
+ 		return "/sys/kernel/debug";
+ 
+-	if (is_mountpoint("/debug"))
++	if (igt_is_mountpoint("/debug"))
+ 		return "/debug";
+ 
+ 	if (mount("debug", "/sys/kernel/debug", "debugfs", 0, 0))
 -- 
 2.48.1
 
