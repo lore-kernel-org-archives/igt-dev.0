@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C1FC282DE
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 14:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA739C282DE
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 14:49:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE71010E21B;
-	Thu, 13 Mar 2025 14:45:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CFB310E8E1;
+	Thu, 13 Mar 2025 14:49:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jH+1jamX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XW4k1S02";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DA1010E21B
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 14:45:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F11210E8D8
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 14:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741877146; x=1773413146;
+ t=1741877343; x=1773413343;
  h=message-id:subject:from:to:date:in-reply-to:references:
  content-transfer-encoding:mime-version;
- bh=LlcF7a0RILc8xnMhJ06V/ct2f78ZcPUTBwqEr6kJH08=;
- b=jH+1jamX8wEN54dIQGTmJ3IuDDrvHErt1IcrQO4eHLu8IJzHi2LJwfqP
- zwwpaAwAK0Ehgu8SFjAPQJKc1LyFd/sqCzUxk0U16o+LSdBxteGFsqijP
- dtR5ZNmv1WVUKZG8Tr9NVZ76RHKnbYx99xno3wwdsoVb90KDiHxbCMd0e
- nPz1uQY+exk3SW0TiXGSC1j3qAb5djBq1xwqVUWNgSK4svnk8d5yqdkLs
- RnB7PMrcTtXlT0wqcSJfs7L+IvfVtLZTCVkvAD7WA0jVa+41+SWDg61qs
- IHtAOnHnvshyoyQtMivvGLffwK8Zdue/ii8AtlQh38Y43iPNMi9U2y5Yh g==;
-X-CSE-ConnectionGUID: 9xQrsB2KSeandYfVBgn24w==
-X-CSE-MsgGUID: sFVFIMQORhmNoP1auGbVoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="43128093"
-X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; d="scan'208";a="43128093"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2025 07:45:46 -0700
-X-CSE-ConnectionGUID: s9qMVOfeS1Cq63KZ45Xiuw==
-X-CSE-MsgGUID: DJWRGq5VQEaH5mZF6SKanQ==
+ bh=oMJE3c1IAF64nNXzlRnKzmNuOL2STn4XngahP2htCdU=;
+ b=XW4k1S0275LbINRmT/sHLP++4sgRrFqsahQOb9lnitRd7OEjFq80Zy1v
+ WCmQkbZtCFCa+LFcXGEsMmxgVh1Ujvg9UL+8OqwLfZ9EP0VAoFCEAUTBY
+ K6qnSfBUNoYZ5dhMRYtmUN3xTW1RsGEC76gdd0M38zP91/2eRkaW/bIKb
+ VYTpgDgsiqm9YQeYggB19m4bRcFlNmbP/3pqKR4oiE0owaT4zYMXzzA7n
+ dnaGv2sG/44HVonLzIL8+h42RFRzpVLSP1YL3A1b2iH2y6c1dKCwpTZAg
+ MS21336mITf0c0FYvRRVaeV2zVeR4rPsk9WQai0MrrU/+OPzeGlG7Kbd5 g==;
+X-CSE-ConnectionGUID: vytoqkVYRl2o/02TGppOZQ==
+X-CSE-MsgGUID: D+Se3qaFQdCKGQen/oIyxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="30589913"
+X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; d="scan'208";a="30589913"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2025 07:48:08 -0700
+X-CSE-ConnectionGUID: OrIhChawT4epid3h/si6Sw==
+X-CSE-MsgGUID: JnnyroqhSNe1wcZUNDUUFg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; d="scan'208";a="125599315"
+X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; d="scan'208";a="120930386"
 Received: from dprybysh-mobl.ger.corp.intel.com (HELO [10.245.246.144])
  ([10.245.246.144])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2025 07:45:44 -0700
-Message-ID: <019906f715d1fe5a090502c4cc630016391f937b.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t 08/11] lib/intel_compute: Relocate input and
- output objects
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2025 07:48:06 -0700
+Message-ID: <4edd2330ffc8c9f800f2c8fdd234060ffe6d4623.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t 09/11] lib/intel_compute: Fix enqueued local size
+ in xehp
 From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
 To: Francois Dugast <francois.dugast@intel.com>, igt-dev@lists.freedesktop.org
-Date: Thu, 13 Mar 2025 15:45:42 +0100
-In-Reply-To: <20250311152321.16497-9-francois.dugast@intel.com>
+Date: Thu, 13 Mar 2025 15:48:04 +0100
+In-Reply-To: <20250311152321.16497-10-francois.dugast@intel.com>
 References: <20250311152321.16497-1-francois.dugast@intel.com>
- <20250311152321.16497-9-francois.dugast@intel.com>
+ <20250311152321.16497-10-francois.dugast@intel.com>
 Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,53 +71,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 2025-03-11 at 16:21 +0100, Francois Dugast wrote:
-> Move those objects after other objects and add space between them to
-> make it possible to increase their dimension without overlapping
-> between input and output.
->=20
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-
-> ---
-> =C2=A0lib/intel_compute.c | 20 ++++++++++----------
-> =C2=A01 file changed, 10 insertions(+), 10 deletions(-)
->=20
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 364388e20..7a2e04b10 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -37,20 +37,20 @@
-> =C2=A0#define ADDR_SYNC			0x010000ULL
-> =C2=A0#define ADDR_SYNC2			0x020000ULL
-> =C2=A0#define ADDR_BATCH			0x100000ULL
-> -#define ADDR_INPUT			0x200000ULL
-> -#define ADDR_OUTPUT			0x300000ULL
-> -#define ADDR_SURFACE_STATE_BASE		0x400000ULL
-> -#define ADDR_DYNAMIC_STATE_BASE		0x500000ULL
-> -#define ADDR_INDIRECT_OBJECT_BASE	0x600000ULL
-> +#define ADDR_INPUT			0x40000000ULL
-> +#define ADDR_OUTPUT			0x80000000ULL
-> +#define ADDR_SURFACE_STATE_BASE		0x200000ULL
-> +#define ADDR_DYNAMIC_STATE_BASE		0x300000ULL
-> +#define ADDR_INDIRECT_OBJECT_BASE	0x400000ULL
-> =C2=A0#define ADDR_BINDING_TABLE		(ADDR_SURFACE_STATE_BASE +
-> OFFSET_BINDING_TABLE)
-> -#define OFFSET_INDIRECT_DATA_START	0x5D0000ULL
-> -#define OFFSET_KERNEL			0x5E0000ULL
-> +#define OFFSET_INDIRECT_DATA_START	0x3D0000ULL
-> +#define OFFSET_KERNEL			0x3E0000ULL
-> =C2=A0
-> -#define ADDR_GENERAL_STATE_BASE		0x8000000ULL
-> -#define ADDR_INSTRUCTION_STATE_BASE	0xa000000ULL
-> +#define ADDR_GENERAL_STATE_BASE		0x6000000ULL
-> +#define ADDR_INSTRUCTION_STATE_BASE	0x8000000ULL
-> =C2=A0#define OFFSET_BINDING_TABLE		0x10000
-> =C2=A0
-> -#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0xb000000ULL
-> +#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x9000000ULL
-> =C2=A0#define OFFSET_STATE_SIP			0xFFFF0000
-> =C2=A0
-> =C2=A0#define
-> USER_FENCE_VALUE			0xdeadbeefdeadbeefull
+T24gVHVlLCAyMDI1LTAzLTExIGF0IDE2OjIxICswMTAwLCBGcmFuY29pcyBEdWdhc3Qgd3JvdGU6
+Cj4gQWNjb3JkaW5nIHRvIHRoZSBtZXRhZGF0YSBvZiB0aGUgY29tcHV0ZSBrZXJuZWwgdXNlZCBm
+b3IgdGhpcyB0ZXN0LAo+IHRoZQo+IGVucXVldWVkX2xvY2FsX3NpemUgY29tZXMgYXQgb2Zmc2V0
+IDUyLCByaWdodCBhZnRlciB0aGUgdmFsdWUgb2YgdGhlCj4gImNvdW50IiBhcmd1bWVudC4gRml4
+IGl0IGFuZCBhZGQgY29tbWVudHMgZm9yIGNsYXJpdHkuCj4gCj4gUmVsZXZhbnQgcGFydCBvZiB0
+aGUga2VybmVsIG1ldGFkYXRhOgo+IAo+IMKgwqDCoMKgwqAgLSBhcmdfdHlwZTrCoMKgwqDCoMKg
+wqDCoCBhcmdfYnlwb2ludGVyCj4gwqDCoMKgwqDCoMKgwqAgb2Zmc2V0OsKgwqDCoMKgwqDCoMKg
+wqDCoCAzMgo+IMKgwqDCoMKgwqDCoMKgIHNpemU6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA4Cj4g
+wqDCoMKgwqDCoMKgwqAgYXJnX2luZGV4OsKgwqDCoMKgwqDCoCAwCj4gwqDCoMKgwqDCoMKgwqAg
+YWRkcm1vZGU6wqDCoMKgwqDCoMKgwqAgc3RhdGVsZXNzCj4gwqDCoMKgwqDCoMKgwqAgYWRkcnNw
+YWNlOsKgwqDCoMKgwqDCoCBnbG9iYWwKPiDCoMKgwqDCoMKgwqDCoCBhY2Nlc3NfdHlwZTrCoMKg
+wqDCoCByZWFkd3JpdGUKPiDCoMKgwqDCoMKgIC0gYXJnX3R5cGU6wqDCoMKgwqDCoMKgwqAgYXJn
+X2J5cG9pbnRlcgo+IMKgwqDCoMKgwqDCoMKgIG9mZnNldDrCoMKgwqDCoMKgwqDCoMKgwqAgNDAK
+PiDCoMKgwqDCoMKgwqDCoCBzaXplOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgOAo+IMKgwqDCoMKg
+wqDCoMKgIGFyZ19pbmRleDrCoMKgwqDCoMKgwqAgMQo+IMKgwqDCoMKgwqDCoMKgIGFkZHJtb2Rl
+OsKgwqDCoMKgwqDCoMKgIHN0YXRlbGVzcwo+IMKgwqDCoMKgwqDCoMKgIGFkZHJzcGFjZTrCoMKg
+wqDCoMKgwqAgZ2xvYmFsCj4gwqDCoMKgwqDCoMKgwqAgYWNjZXNzX3R5cGU6wqDCoMKgwqAgcmVh
+ZHdyaXRlCj4gwqDCoMKgwqDCoCAtIGFyZ190eXBlOsKgwqDCoMKgwqDCoMKgIGFyZ19ieXZhbHVl
+Cj4gwqDCoMKgwqDCoMKgwqAgb2Zmc2V0OsKgwqDCoMKgwqDCoMKgwqDCoCA0OAo+IMKgwqDCoMKg
+wqDCoMKgIHNpemU6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA0Cj4gwqDCoMKgwqDCoMKgwqAgYXJn
+X2luZGV4OsKgwqDCoMKgwqDCoCAyCj4gwqDCoMKgwqDCoCAtIGFyZ190eXBlOsKgwqDCoMKgwqDC
+oMKgIGVucXVldWVkX2xvY2FsX3NpemUKPiDCoMKgwqDCoMKgwqDCoCBvZmZzZXQ6wqDCoMKgwqDC
+oMKgwqDCoMKgIDUyCj4gwqDCoMKgwqDCoMKgwqAgc2l6ZTrCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IDEyCj4gCj4gU2lnbmVkLW9mZi1ieTogRnJhbmNvaXMgRHVnYXN0IDxmcmFuY29pcy5kdWdhc3RA
+aW50ZWwuY29tPgpSZXZpZXdlZC1ieTogVGhvbWFzIEhlbGxzdHLDtm0gPHRob21hcy5oZWxsc3Ry
+b21AbGludXguaW50ZWwuY29tPgoKPiAtLS0KPiDCoGxpYi9pbnRlbF9jb21wdXRlLmMgfCA2ICsr
+Ky0tLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkK
+PiAKPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2NvbXB1dGUuYyBiL2xpYi9pbnRlbF9jb21wdXRl
+LmMKPiBpbmRleCA3YTJlMDRiMTAuLmY1YjNhODhmMCAxMDA2NDQKPiAtLS0gYS9saWIvaW50ZWxf
+Y29tcHV0ZS5jCj4gKysrIGIvbGliL2ludGVsX2NvbXB1dGUuYwo+IEBAIC03ODEsMTIgKzc4MSwx
+MiBAQCBzdGF0aWMgdm9pZCB4ZWhwX2NyZWF0ZV9pbmRpcmVjdF9kYXRhKHVpbnQzMl90Cj4gKmFk
+ZHJfYm9fYnVmZmVyX2JhdGNoLAo+IMKgCWFkZHJfYm9fYnVmZmVyX2JhdGNoW2IrK10gPSBhZGRy
+X291dHB1dCAmIDB4ZmZmZmZmZmY7Cj4gwqAJYWRkcl9ib19idWZmZXJfYmF0Y2hbYisrXSA9IGFk
+ZHJfb3V0cHV0ID4+IDMyOwo+IMKgCWFkZHJfYm9fYnVmZmVyX2JhdGNoW2IrK10gPSBsb29wX2Nv
+dW50Owo+ICsJYWRkcl9ib19idWZmZXJfYmF0Y2hbYisrXSA9IDB4MDAwMDA0MDA7IC8vIEVucXVl
+dWVkIGxvY2FsCj4gc2l6ZSBYCj4gKwlhZGRyX2JvX2J1ZmZlcl9iYXRjaFtiKytdID0gMHgwMDAw
+MDAwMTsgLy8gRW5xdWV1ZWQgbG9jYWwKPiBzaXplIFkKPiArCWFkZHJfYm9fYnVmZmVyX2JhdGNo
+W2IrK10gPSAweDAwMDAwMDAxOyAvLyBFbnF1ZXVlZCBsb2NhbAo+IHNpemUgWgo+IMKgCWFkZHJf
+Ym9fYnVmZmVyX2JhdGNoW2IrK10gPSAweDAwMDAwMDAwOwo+IMKgCWFkZHJfYm9fYnVmZmVyX2Jh
+dGNoW2IrK10gPSAweDAwMDAwMDAwOwo+IMKgCWFkZHJfYm9fYnVmZmVyX2JhdGNoW2IrK10gPSAw
+eDAwMDAwMDAwOwo+IC0JYWRkcl9ib19idWZmZXJfYmF0Y2hbYisrXSA9IDB4MDAwMDA0MDA7Cj4g
+LQlhZGRyX2JvX2J1ZmZlcl9iYXRjaFtiKytdID0gMHgwMDAwMDAwMTsKPiAtCWFkZHJfYm9fYnVm
+ZmVyX2JhdGNoW2IrK10gPSAweDAwMDAwMDAxOwo+IMKgCWFkZHJfYm9fYnVmZmVyX2JhdGNoW2Ir
+K10gPSAweDAwMDAwMDAwOwo+IMKgCWFkZHJfYm9fYnVmZmVyX2JhdGNoW2IrK10gPSAweDAwMDAw
+MDAwOwo+IMKgCWFkZHJfYm9fYnVmZmVyX2JhdGNoW2IrK10gPSAweDAwMDAwMDAwOwoK
 
