@@ -4,67 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A780C282DE
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B587BC35FF4
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DAA410E8FD;
-	Thu, 13 Mar 2025 17:33:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4049810E8FF;
+	Thu, 13 Mar 2025 17:33:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="V7cDUkOz";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="G4XGMUm6";
 	dkim-atps=neutral
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
- [209.85.128.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6238C10E257
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:26 +0000 (UTC)
-Received: by mail-wm1-f44.google.com with SMTP id
- 5b1f17b1804b1-43cf3192f3bso11572205e9.1
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:26 -0700 (PDT)
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
+ [209.85.221.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7600F10E8FF
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:28 +0000 (UTC)
+Received: by mail-wr1-f43.google.com with SMTP id
+ ffacd0b85a97d-391342fc0b5so1061252f8f.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741887204; x=1742492004; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=U4VcOhAh6Xgw6FxvVUfGYbGsUc0O9IdkJSNTyDhxLq0=;
- b=V7cDUkOzAuycpRSX/SLOyQ3FBdbbwwHlX3kGIjdnE/kBcRrHUgJ3PVebBOciJiAmPd
- PpMWPgs9c7J/hK9cOb7CPVDlUOW7pDEG4++y3rqTJgbeXnvEiccqKu7uqgCEHbHRY1VH
- WwweuDTYm47/R4OvET0BHK1k2JLeNU/v/EggOlM484+2SMZ8B4jF90mK+jvh3lC8DBUZ
- PD8CUAg4vpVjPmXbzbMcsw6GW7fam6QDskpbKy95ZEoUUuvNVYf9oe7gKm89hBZh8Idl
- KwNLABrEgCiU929FEIC9EnCrR0ubZuAqizo8yiZEp+NG4jqG+6lzt22DKm5fEuEJhsNV
- nV+w==
+ d=gmail.com; s=20230601; t=1741887206; x=1742492006; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k9ctsAPhxpAq3WFWnNyU+W+4LtaY96WVPTgTp83rcRI=;
+ b=G4XGMUm6//QPD7kb6VerG/Pf4d/X5Bjhx35jhCCMTEM5N8vfjocspye1qW/ytZWblm
+ aNVetYuc+FwXR52miOA/y5P5dVjVJONhldxtqlm+Kh/njftT1TJ07sR6yWrKibGVa6gO
+ DwsBfSrmG9hD8qeUSWElcvY6SfeFBTUdp9W3gzxZbj3P7m/O83YIW+moNWwhjDh9Ir5i
+ a+FXIMuVL8ZujMju+7+sMHNUGmEJdcWK+7KvVtNbwoJ6xgKD8FZPeS5+Bl7m6h73BeTS
+ iLCIyyeTlBoLGyFRyUtVpjcLYUZVcfx6LSn//m611MTYMX49Gv5K4MWcaQymRdPM+X2I
+ hMaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741887204; x=1742492004;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=U4VcOhAh6Xgw6FxvVUfGYbGsUc0O9IdkJSNTyDhxLq0=;
- b=E6Ja38P9lBnvp1qfbxCYrN53OKpiq6E4oNVkMad6tQ8iZymy8jaCoW9Tz7Z/TbpDZV
- W1V7aEoM+NN7pFZoB1q1473yGA5ueTUN7yjHnb4dECsaKC0eCB5tb6z6j7CHklIqDU9X
- ZmL364laga7G2HRK5NB/irEn2Mce6ZER2KpZSpZ//+Mh9yg5Jv0nKRcTBAok29fT0QFa
- qm90smxXfDPQeWCPHuYaCGorJt5870gFfnEF+cp7KxEyeEwoZBW5D36RH9L+rMw4M4Lr
- YPVpAobvNUgyPmnVqH5G0yDczAeMiSh50UlwIf/l3bEdB5jnxefwyjLtLrd4BX87JTqv
- olZg==
-X-Gm-Message-State: AOJu0YwK//ScsCQukjMGlGHVOhXwxmp+U92+uA2VEOCWvcjTdXx71bub
- W+sRhnCVuj81URqpQIe1lQkRdojjEOyYa9H2Qlym2PrBNfCHdrezuUUFkNBi
-X-Gm-Gg: ASbGncv33DOkn0bjRTIPTZsKnk1hKKZKnLNLr9X/Mu51Ho9rMXB3/wj0IWoMOd5IM5k
- fQZiodg9tynmxQWEKNd3GrNS/2okMp9ycJ/MpMafp2FpCICnlsox6jn2145GbnIAhiV2MvUX7zR
- UfHM19Wp7r2Epm9kQhWy+V4v1IiXnoy4F1v3SwZg6Jghla43KFRRR+8y3zsHsxVjKTSBFB12w59
- 6aYwc7NJoFCurd3RsiIDefov0GvK5+nYQIQJyibl2ebWxSwaZ+5zeFT1ewjbnYK76IcrPrcv1Lh
- kuOTl5P/Eny+Fk0le8puuXb/7QfLeFhn4P9zMcjv2k0U
-X-Google-Smtp-Source: AGHT+IGqvS18SRgxQF6s7qU+5JIytzXARuyiG4HcTNZxsSVFUQPwJtquTsc1en5EDBkO8vadW24QsQ==
-X-Received: by 2002:a05:600c:4e8f:b0:43d:83a:417d with SMTP id
- 5b1f17b1804b1-43d1d8c191dmr5422805e9.12.1741887203762; 
- Thu, 13 Mar 2025 10:33:23 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1741887206; x=1742492006;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=k9ctsAPhxpAq3WFWnNyU+W+4LtaY96WVPTgTp83rcRI=;
+ b=epd1NLC11vlzXSfL0AcVc0bQEM+uOgUaHUPOev/4p8HJwtZRz7YjKyGYjAQCD7Oq0V
+ MCwAqYdkQRg5t5Fj7ng6o21lA3t5jCw3odt+zFa/r3g8AYLWv9fsP2uDCBFqO0Tf2QYU
+ +WiAvbjxGOk2L36PZEWY9uMGsJsGc6qbabQl4+mWebLJl50Qshs7LKvT4U/e9+Iqk9X3
+ DWOY1UBFuuNFEyzGsrSY0EimJ/Op4i2uMSfwlcBqRKZkgrlg7/dBtvUygD9XRM2aPSNT
+ YAXkyfwaGh+DBfRlAz4Q0Kr6c4GQynNI16VT0KhE2ntlL0NKrJJAseGSJoAnYIQX7HoG
+ lR/A==
+X-Gm-Message-State: AOJu0YyBMZhv5lyLCsIVAO7udsnG/9GPxpStLvTZ3wKYpiC2TXQhlJ8L
+ Ys6hqfxPyIJ8Yvi8S9tYGHwxF47pQntELIpNdNmk1QO/cUwR+Juw+Qu6sjxX
+X-Gm-Gg: ASbGnct1Bdl6kYazt9mROaxd8Ny7IKpi3Z9+mow79+UY/7I1Gd8WXZR7DL4y7/J+6FJ
+ BeuxfjRmsDQnz28Dpdnbq+rKfCtrOhRIeVG1/awCYtMMHvlxVtBw65HxAKO0RxnCv9Rwe4X0OnN
+ Xh9WfNlSocxxSzS2FoK+XKAwuRfNHEwymZMbJhQ05/tRYZprao4/rXvO94wVDB6icSXT1m4LXmB
+ pteKtNyW4BUpDIkep/SAOkhUVeTsKGmM8UPE1RkmsdycwXjOk7IlMbMijuEQzL8GzkAWm7tVQf7
+ bhy5t70xr4am1JPKiLBCJrsIXiKqUSBwAO3C5LvOo5gQ
+X-Google-Smtp-Source: AGHT+IEU1ThdDHtd4YHKqIK/5NmHfSCUFhSU7BwgS39adNgqQx/cqde9t0snpVKC1xCCG+Y7rFluPg==
+X-Received: by 2002:a5d:47c1:0:b0:392:bf8:fc96 with SMTP id
+ ffacd0b85a97d-396c1c20619mr310307f8f.4.1741887206429; 
+ Thu, 13 Mar 2025 10:33:26 -0700 (PDT)
 Received: from fedora.. ([94.73.34.87]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.23
+ 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 10:33:23 -0700 (PDT)
+ Thu, 13 Mar 2025 10:33:26 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
- =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v2 00/43] VKMS configfs tests
-Date: Thu, 13 Mar 2025 18:32:35 +0100
-Message-ID: <20250313173318.5818-1-jose.exposito89@gmail.com>
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+ Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
+Subject: [PATCH i-g-t v2 03/43] lib/igt_configfs: Add helper to mount configfs
+Date: Thu, 13 Mar 2025 18:32:38 +0100
+Message-ID: <20250313173318.5818-4-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250313173318.5818-1-jose.exposito89@gmail.com>
+References: <20250313173318.5818-1-jose.exposito89@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -83,118 +87,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi everyone,
+Add a new helper function to mount configfs. Required to test VKMS
+configuration.
 
-This series add tests for the VKMS + configfs work Louis Chauvet and I are doing
-in the kernel.
-
-This new functionality allows to configure one or more VKMS instances without
-having to reload the driver using configfs.
-
-For more details, have a look to the kernel patchset and the documentation in
-"vkms.rst" (not merged yet). [1]
-
-There was a previous attempt to implement this tests [2] and I kept copyright
-were required.
-
-Massive thank you to Louis Chauvet who is doing a fenomenal work reviewing this
-(very long) series of patches.
-
-Best wishes,
-José Expósito
-
-[1] https://lore.kernel.org/dri-devel/20250307163353.5896-1-jose.exposito89@gmail.com/T/
-[2] https://lists.freedesktop.org/archives/igt-dev/2023-September/060717.html
-
-Changes in v2:
-  - Applied review comments by Louis Chauvet:
-    - Added missing references to DRIVER_VKMS in drmtest.c
-    - Loading vkms with drm_load_module(DRIVER_VKMS) in igt_fixture 
-    - Documented igt_is_mountpoint()
-    - Checked the return value of snprintf() and fprintf()
-    - Removed unnecessary empty items ({ {} }) in items in igt_vkms_config_t
-    - Added new tests testing the valid values for planes, CRTCs and connectors
-    - Remove code duplication generating configfs paths by adding helpers
-  - Using udev instead of drmGetDevices() to find VKMS devices in a new patch
-    "lib/igt_device_scan: Allow to find device by name". This change is required
-    to support the faux bus. See:
-    https://lists.freedesktop.org/archives/igt-dev/2025-February/086510.html
-  - Rebased on the latest "master"
-  - Link to v1: https://lists.freedesktop.org/archives/igt-dev/2025-February/086071.html
-
-José Expósito (43):
-  lib/drmtest: Add VKMS as a known driver type
-  lib/igt_debugfs: Move is_mountpoint() to igt_aux
-  lib/igt_configfs: Add helper to mount configfs
-  lib/vkms: Add minimal VKMS library and test device default files
-  lib/vkms: Allow to enable/disable VKMS devices
-  tests/vkms_configfs: Test device invalid values
-  lib/vkms: Test plane default files
-  lib/vkms: Test plane default values
-  lib/vkms: Test plane invalid values
-  tests/vkms_configfs: Test plane valid values
-  lib/vkms: Test CRTC default files
-  lib/vkms: Test CRTC default values
-  lib/vkms: Test CRTC invalid values
-  tests/vkms_configfs: Test CRTC valid values
-  lib/vkms: Test encoder default files
-  lib/vkms: Test connector default files
-  lib/vkms: Test connector default values
-  lib/vkms: Test connector invalid values
-  tests/vkms_configfs: Test connector valid values
-  lib/vkms: Test attaching planes to CRTCs
-  lib/vkms: Test attaching encoders to CRTCs
-  lib/vkms: Test attaching connectors to encoders
-  lib/igt_device_scan: Allow to find device by sysname
-  tests/vkms_configfs: Test enablement without pipeline items
-  lib/vkms: Create VKMS device from static config
-  tests/vkms_configfs: Test adding too many planes
-  tests/vkms_configfs: Test not adding a primary plane
-  tests/vkms_configfs: Test adding multiple primary planes
-  tests/vkms_configfs: Test adding multiple cursor planes
-  tests/vkms_configfs: Test adding a plane without possible CRTCs
-  tests/vkms_configfs: Test enabling a device without CRTCs
-  tests/vkms_configfs: Test enabling a device with too many CRTCs
-  tests/vkms_configfs: Test enabling a device without encoders
-  tests/vkms_configfs: Test enabling a device with too many encoders
-  tests/vkms_configfs: Test adding an encoder without possible CRTCs
-  tests/vkms_configfs: Test adding a CRTC without encoders
-  tests/vkms_configfs: Test enabling a device without connectors
-  tests/vkms_configfs: Test enabling a device with too many connectors
-  lib/vkms: Test changing enabled device planes
-  lib/vkms: Test changing enabled device CRTCs
-  lib/vkms: Test changing enabled device encoders
-  lib/vkms: Test changing enabled device connectors
-  tests/vkms_configfs: Test connector hot-plug
-
- docs/testplan/meson.build        |    7 +-
- lib/drmtest.c                    |   21 +
- lib/drmtest.h                    |    6 +-
- lib/igt.h                        |    1 +
- lib/igt_aux.c                    |   31 +
- lib/igt_aux.h                    |    2 +
- lib/igt_configfs.c               |   57 +
- lib/igt_configfs.h               |   13 +
- lib/igt_debugfs.c                |   29 +-
- lib/igt_device_scan.c            |   22 +
- lib/igt_device_scan.h            |    2 +
- lib/igt_vkms.c                   | 1004 +++++++++++++++
- lib/igt_vkms.h                   |  132 ++
- lib/meson.build                  |    2 +
- meson.build                      |    8 +
- tests/meson.build                |    2 +
- tests/vkms/meson.build           |   13 +
- tests/vkms/vkms_configfs.c       | 1963 ++++++++++++++++++++++++++++++
- tests/vkms/vkms_test_config.json |   72 ++
- 19 files changed, 3357 insertions(+), 30 deletions(-)
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Co-developed-by: Jim Shargo <jshargo@chromium.org>
+Signed-off-by: Jim Shargo <jshargo@chromium.org>
+Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+---
+ lib/igt.h          |  1 +
+ lib/igt_configfs.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_configfs.h | 13 +++++++++++
+ lib/meson.build    |  1 +
+ 4 files changed, 72 insertions(+)
  create mode 100644 lib/igt_configfs.c
  create mode 100644 lib/igt_configfs.h
- create mode 100644 lib/igt_vkms.c
- create mode 100644 lib/igt_vkms.h
- create mode 100644 tests/vkms/meson.build
- create mode 100644 tests/vkms/vkms_configfs.c
- create mode 100644 tests/vkms/vkms_test_config.json
 
+diff --git a/lib/igt.h b/lib/igt.h
+index 58c39e098..173ca70bf 100644
+--- a/lib/igt.h
++++ b/lib/igt.h
+@@ -27,6 +27,7 @@
+ #include "drmtest.h"
+ #include "i915_3d.h"
+ #include "igt_aux.h"
++#include "igt_configfs.h"
+ #include "igt_core.h"
+ #include "igt_debugfs.h"
+ #include "igt_draw.h"
+diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
+new file mode 100644
+index 000000000..cd8674cb5
+--- /dev/null
++++ b/lib/igt_configfs.c
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Google LLC.
++ * Copyright © 2023 Collabora, Ltd.
++ * Copyright © 2024 Red Hat, Inc.
++ */
++
++#include <sys/mount.h>
++
++#include "igt_aux.h"
++#include "igt_configfs.h"
++
++/**
++ * SECTION:igt_configfs
++ * @short_description: Support code for configfs features
++ * @title: configfs
++ * @include: igt_configfs.h
++ *
++ * This library provides helpers to access configfs features.
++ */
++
++/*
++ * General configfs helpers
++ */
++
++static const char *__igt_configfs_mount(void)
++{
++	if (igt_is_mountpoint("/sys/kernel/config"))
++		return "/sys/kernel/config";
++
++	if (igt_is_mountpoint("/config"))
++		return "/config";
++
++	if (mount("config", "/sys/kernel/config", "configfs", 0, 0))
++		return NULL;
++
++	return "/sys/kernel/config";
++}
++
++/**
++ * igt_configfs_mount:
++ *
++ * This attempts to locate where configfs is mounted on the filesystem,
++ * and if not found, will then try to mount configfs at /sys/kernel/config.
++ *
++ * Returns:
++ * The path to the configfs mount point (e.g. /sys/kernel/config)
++ */
++const char *igt_configfs_mount(void)
++{
++	static const char *path;
++
++	if (!path)
++		path = __igt_configfs_mount();
++
++	return path;
++}
+diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
+new file mode 100644
+index 000000000..4cbe9001e
+--- /dev/null
++++ b/lib/igt_configfs.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Google LLC.
++ * Copyright © 2023 Collabora, Ltd.
++ * Copyright © 2024 Red Hat, Inc.
++ */
++
++#ifndef __IGT_CONFIGFS_H__
++#define __IGT_CONFIGFS_H__
++
++const char *igt_configfs_mount(void);
++
++#endif /* __IGT_CONFIGFS_H__ */
+diff --git a/lib/meson.build b/lib/meson.build
+index d01c90df9..b595b9979 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -18,6 +18,7 @@ lib_sources = [
+ 	'i915/i915_crc.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
++	'igt_configfs.c',
+ 	'igt_facts.c',
+ 	'igt_crc.c',
+ 	'igt_debugfs.c',
 -- 
 2.48.1
 
