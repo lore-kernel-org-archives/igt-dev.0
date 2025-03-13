@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F196C35FF4
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42ECC282DE
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9239610E90F;
-	Thu, 13 Mar 2025 17:33:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99C0610E913;
+	Thu, 13 Mar 2025 17:33:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HT5u8mtd";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="aTN9EcmO";
 	dkim-atps=neutral
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
- [209.85.128.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F28A510E90B
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:36 +0000 (UTC)
-Received: by mail-wm1-f49.google.com with SMTP id
- 5b1f17b1804b1-43d0359b1fcso8985205e9.0
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:36 -0700 (PDT)
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+ [209.85.128.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ED5A10E910
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:39 +0000 (UTC)
+Received: by mail-wm1-f50.google.com with SMTP id
+ 5b1f17b1804b1-4394036c0efso8673245e9.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741887215; x=1742492015; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1741887217; x=1742492017; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O6u7EVw4kJljnHJrPuRZa5OnxxO4Hmtg63s72Uc7ob0=;
- b=HT5u8mtdbVZb4RkZRcXap5eq4By/SzdIq2yBaklb+7Yl6VqkKilK8FTgUFDfAlG7te
- sRMi2GDqVkcingfv7y/IiT5owcplRQlF/mSNewwX3qs/UqLM4LW7NzxNxXzZgugH/b5X
- 6glZTTS1lwb1CYdNcvwulbWlCOJwiEkzMgrJeGKidk5I6gRyQTOIfslf5JPlanm/t8AL
- TXI27c5jNt7HFA8fcTPQgw45+JuAn3vEodu6LQfEVmWx2o1f4zR6eDEN6q4l3FYnKwIR
- NdQSp/pSopJOKMj1giMswXvqKpHctHIU0yu8emuWS50V1jUk1k00xKVLD3O8Ewgd6Vzm
- XnfQ==
+ bh=Z1TRMrfi8zZGBrJtuN6gTOQBjkbd7U43eUTt6I61u/8=;
+ b=aTN9EcmOdzo8VgnVBYZa50JIiYcUuI2aW3+1dq1QBGLLgoG7k9dVyk/DLhUEz/hWPK
+ afDpotk6SNiq5RiZX7NZdYQc1B8pZODyLgawc7N+TH/5v5DWfou46zW+bfBkM6+I+sOd
+ UMbnFSzesDJ/1Q25C/otihmqWbvdSoPsoM91t3udEkndgwUIhmGcX+Pyu8nD1ih8OfiB
+ FQTutLY8etNIeAIO/h80sWV9AJCG3B0vYeuAuoI/Bqcy76Dk974o1LeSP92MAC5m4bLJ
+ GQomKdFf0aJf4keAoxsxB1Ao5tK7vujyZsTy0lqZTdsNk3pB2ad+rKV7S+zYUBcFdFpP
+ SSlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741887215; x=1742492015;
+ d=1e100.net; s=20230601; t=1741887217; x=1742492017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O6u7EVw4kJljnHJrPuRZa5OnxxO4Hmtg63s72Uc7ob0=;
- b=lAXgUD/CHqS8vvxWGsP0kMkplNLJkkdyEP2Q5ZgVaUxBSt0Huviy16DVVkNkKyU7mW
- wGxEHNvtRpCG0P9DBxV9tISwYx1x2SNV2jZM5E+ASw/ndYvcma6botPrLEBlbUmmPQ16
- z75oboae90HWR9KdmMU1H3DIaTzEW/AxLhv7XrNWnLsMc1zdGCmZPg8Uw7g7h3CDZk8P
- I906CWk0HRt5dRgkOjNL1FYest6sYHjoZMPK6WXx2bgLrRHFxa2/EUuooNUcOswjjuRK
- RNm8vqf0I2H3veToL38/3lMa5d22cYqtQksYjomHYrGgSWRQestAg2kNE6AVOuXOq0xq
- VHrg==
-X-Gm-Message-State: AOJu0YwlwzeCZzImS6qE/MLMlW53fxGpPgpX+z860hYoB/4pJNfupUpK
- 7fHlf09Iv49wnw/w7LvbkXHM8gcovf2rpU2Ev67i/Qdnoe01zGHekUqBAEGy
-X-Gm-Gg: ASbGncvP3ZVmgCecQNZ26RrYc4PDgAePBY0bWLry1pzYVCmQn0GBRQB9SGgina9oe9F
- LHtf44rrwEude20w+wamC63gRJWyKd7Jxt43+1ptNMfTa4MJGOJ9tu1cmHrLE/XH7lhZHQIWkO+
- Io3/DDTTqSw2QetSNhoZvA5wn+mo0RypW1QNYvEte76wL1Y8MGrJoiRi/lZ0Zyz3oSy9v03YrJl
- wbp3REjpqDQSMPOXq+4ExnxlF7E9Df+1L0G14xYj3ABV2gBkXTh9R0xHowcuLXKe3WsJjiJFPOa
- VeHMmnGp3v2Wz5EoKd9D6RpFRgzgYtlbZWMqyKnwyg9F
-X-Google-Smtp-Source: AGHT+IEMtbd8UfOrTd/b6YVmE9i00yQ2O+Zk5atq2aCRaDACFx3mHjtPhNuCJMqWekDRvLDjHN84kw==
-X-Received: by 2002:a05:600c:420b:b0:43b:4829:8067 with SMTP id
- 5b1f17b1804b1-43d1806c066mr25549855e9.6.1741887215052; 
- Thu, 13 Mar 2025 10:33:35 -0700 (PDT)
+ bh=Z1TRMrfi8zZGBrJtuN6gTOQBjkbd7U43eUTt6I61u/8=;
+ b=rq/GUwUqBZTbllvrEv7PlJbJhlz7io1SZsh/nIrjql290PDdbmwPM/iNEQAKo6UlU0
+ OD7NkQl4E5AIPvPrm5g2rQAxz5pKVGdaRK6QwElru3K8YMFRa1LFsK6lBYMmt8B/S8ty
+ WFX+AQ0fCkbbjqHmusL+6eJnfhLj01uwo0Jy4bLF3BnKCbYkJ6kI9lcRkNc1eqiYY0+R
+ M1umovbn3z+WDj03NqS1+k6IyeQezI2n1cD6LeYWLA5AMzwIHxJFGBKZeE2NL7hrXxry
+ GRPC1Fa2SAt445bdPgoRDoq8H3ZATRvoNIZ1e/4vsSlgBTHnny5bvLvoa0jgybXZdfpo
+ L4Mg==
+X-Gm-Message-State: AOJu0Yy/m52tffeamHKynHbihc5/U40fGjNf6y9ZROUsb5iJqQ3FlZrG
+ bK5kSN0QpXXpVPAA3W32jlHAixuG/K/SMxQGOMt3ME1fHpKkUxQrp6iwpXqB
+X-Gm-Gg: ASbGnculn/nOAdSSgDsCyFBYV5CEjpryzpdxTk9zugV6mkQzAZkHWFoplMALpNNgbvJ
+ zR6lyIfWPtn2UD0nZzw3yLhFRXQOVXHKEdGYmsB1R76a80ygrZJusEM9nGAnYpdEPcphAeHEsKu
+ PCL4Q8kVUgtZxPTGQUztnc4DZyYN21x05KNjHf5fUweYboga8Iym5+ZBCTKolWCCC1ayF06WT3M
+ xLfajts9pZAGEUhprBNmaJCWtVrvyOukMcxX/B/pTRAF+hlJLDqKciZygbWZvOpV+DGwHmDRJFn
+ WG7wy4zq461iTbrJq6Vlq4BCjmSmH+/wwYnaikPf4cKI
+X-Google-Smtp-Source: AGHT+IHbDXPkJ7NV/b27taK3fDH1WLvvsfwcsrhLUyhZ77HoZjUhwL4y6qsBKpKJzhvjcKT+DtZuzg==
+X-Received: by 2002:a05:600c:1c0f:b0:43c:fc04:6d34 with SMTP id
+ 5b1f17b1804b1-43d1d8e7e77mr3560915e9.20.1741887217326; 
+ Thu, 13 Mar 2025 10:33:37 -0700 (PDT)
 Received: from fedora.. ([94.73.34.87]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.33
+ 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 10:33:33 -0700 (PDT)
+ Thu, 13 Mar 2025 10:33:36 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v2 12/43] lib/vkms: Test CRTC default values
-Date: Thu, 13 Mar 2025 18:32:47 +0100
-Message-ID: <20250313173318.5818-13-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v2 15/43] lib/vkms: Test encoder default files
+Date: Thu, 13 Mar 2025 18:32:50 +0100
+Message-ID: <20250313173318.5818-16-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313173318.5818-1-jose.exposito89@gmail.com>
 References: <20250313173318.5818-1-jose.exposito89@gmail.com>
@@ -86,115 +86,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper to get the CRTC writeback status and test that the default
-value is set when a new CRTC is created.
+Add a helper to create a encoder and a test checking that the default
+files and directories are created.
 
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/igt_vkms.c             | 33 +++++++++++++++++++++++++++++++++
- lib/igt_vkms.h             |  3 +++
- tests/vkms/vkms_configfs.c | 20 ++++++++++++++++++++
- 3 files changed, 56 insertions(+)
+ lib/igt_vkms.c             | 27 +++++++++++++++++++++++++++
+ lib/igt_vkms.h             |  4 ++++
+ tests/vkms/vkms_configfs.c | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 60 insertions(+)
 
 diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-index e780e4af2..0c3c9812a 100644
+index 0a14f9af7..ed28adf9b 100644
 --- a/lib/igt_vkms.c
 +++ b/lib/igt_vkms.c
-@@ -24,6 +24,7 @@
- #define VKMS_ROOT_DIR_NAME		"vkms"
- #define VKMS_FILE_ENABLED		"enabled"
- #define VKMS_FILE_PLANE_TYPE		"type"
-+#define VKMS_FILE_CRTC_WRITEBACK	"writeback"
- 
- enum vkms_pipeline_item {
- 	VKMS_PIPELINE_ITEM_PLANE,
-@@ -241,6 +242,22 @@ void igt_vkms_get_crtc_path(igt_vkms_t *dev, const char *name, char *path,
- 	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_CRTC, name, path, len);
+@@ -258,6 +258,21 @@ void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
+ 				    VKMS_FILE_CRTC_WRITEBACK, path, len);
  }
  
 +/**
-+ * igt_vkms_get_crtc_writeback_path:
-+ * @dev: Device containing the CRTC
-+ * @name: CRTC name
++ * igt_vkms_get_encoder_path:
++ * @dev: Device containing the encoder
++ * @name: Encoder name
 + * @path: Output path
 + * @len: Maximum @path length
 + *
-+ * Returns the CRTC "writeback" file path.
++ * Returns the encoder path.
 + */
-+void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
-+				      char *path, size_t len)
++void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
++			       size_t len)
 +{
-+	get_pipeline_item_file_path(dev, VKMS_PIPELINE_ITEM_CRTC, name,
-+				    VKMS_FILE_CRTC_WRITEBACK, path, len);
++	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_ENCODER, name, path, len);
 +}
 +
  /**
   * igt_vkms_device_create:
   * @name: VKMS device name
-@@ -476,3 +493,19 @@ void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name)
- {
- 	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CRTC, name);
+@@ -527,3 +542,15 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+ 
+ 	write_bool(path, writeback);
  }
 +
 +/**
-+ * igt_vkms_crtc_is_writeback_enabled:
-+ * @dev: Device the CRTC belongs to
-+ * @name: CRTC name
++ * igt_vkms_device_add_encoder:
++ * @dev: Device to add the encoder to
++ * @name: Encoder name
 + *
-+ * Indicate whether a VKMS CRTC writeback connector is enabled or not.
++ * Add a new encoder to the VKMS device.
 + */
-+bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name)
++void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
 +{
-+	char path[PATH_MAX];
-+
-+	igt_vkms_get_crtc_writeback_path(dev, name, path, sizeof(path));
-+
-+	return read_bool(path);
++	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
 +}
 diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-index d44131407..23c0560f8 100644
+index 90cfde77a..aa6ff513d 100644
 --- a/lib/igt_vkms.h
 +++ b/lib/igt_vkms.h
-@@ -29,6 +29,8 @@ void igt_vkms_get_plane_type_path(igt_vkms_t *dev, const char *name, char *path,
- 				  size_t len);
- void igt_vkms_get_crtc_path(igt_vkms_t *dev, const char *name, char *path,
+@@ -31,6 +31,8 @@ void igt_vkms_get_crtc_path(igt_vkms_t *dev, const char *name, char *path,
  			    size_t len);
-+void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
-+				      char *path, size_t len);
+ void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
+ 				      char *path, size_t len);
++void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
++			       size_t len);
  
  igt_vkms_t *igt_vkms_device_create(const char *name);
  void igt_vkms_device_destroy(igt_vkms_t *dev);
-@@ -42,5 +44,6 @@ int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
- void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
+@@ -48,4 +50,6 @@ bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
+ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+ 					 bool writeback);
  
- void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name);
-+bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
- 
++void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
++
  #endif /* __IGT_VKMS_H__ */
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index ab15f29f9..7f0e07121 100644
+index 860a06f41..8939ef611 100644
 --- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -338,6 +338,25 @@ static void test_crtc_default_files(void)
+@@ -406,6 +406,34 @@ static void test_crtc_valid_values(void)
  	igt_vkms_device_destroy(dev);
  }
  
 +/**
-+ * SUBTEST: crtc-default-values
-+ * Description: Check that the default values for the CRTC are correct.
++ * SUBTEST: encoder-default-files
++ * Description: Test that creating a encoder creates the default files and
++ *              directories.
 + */
 +
-+static void test_crtc_default_values(void)
++static void test_encoder_default_files(void)
 +{
 +	igt_vkms_t *dev;
++	char path[PATH_MAX];
++
++	const char *dirs[] = {
++		"possible_crtcs",
++	};
 +
 +	dev = igt_vkms_device_create(__func__);
 +	igt_assert(dev);
 +
-+	igt_vkms_device_add_crtc(dev, "crtc0");
++	igt_vkms_device_add_encoder(dev, "encoder0");
++	igt_vkms_get_encoder_path(dev, "encoder0", path, sizeof(path));
 +
-+	igt_assert(!igt_vkms_crtc_is_writeback_enabled(dev, "crtc0"));
++	assert_default_files(path,
++			     NULL, 0,
++			     dirs, ARRAY_SIZE(dirs));
 +
 +	igt_vkms_device_destroy(dev);
 +}
@@ -202,11 +197,11 @@ index ab15f29f9..7f0e07121 100644
  igt_main
  {
  	struct {
-@@ -352,6 +371,7 @@ igt_main
- 		{ "plane-wrong-values", test_plane_wrong_values },
- 		{ "plane-valid-values", test_plane_valid_values },
- 		{ "crtc-default-files", test_crtc_default_files },
-+		{ "crtc-default-values", test_crtc_default_values },
+@@ -423,6 +451,7 @@ igt_main
+ 		{ "crtc-default-values", test_crtc_default_values },
+ 		{ "crtc-wrong-values", test_crtc_wrong_values },
+ 		{ "crtc-valid-values", test_crtc_valid_values },
++		{ "encoder-default-files", test_encoder_default_files },
  	};
  
  	igt_fixture {
