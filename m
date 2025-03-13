@@ -4,69 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72AABC28B28
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0F05C35FF3
 	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27D6A10E901;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 53B8510E905;
 	Thu, 13 Mar 2025 17:33:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="enJUsB9H";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="YvA1GKJX";
 	dkim-atps=neutral
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
- [209.85.128.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09A3F10E901
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:30 +0000 (UTC)
-Received: by mail-wm1-f50.google.com with SMTP id
- 5b1f17b1804b1-43d04ea9d9aso8772605e9.3
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:29 -0700 (PDT)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
+ [209.85.128.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D122110E901
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:31 +0000 (UTC)
+Received: by mail-wm1-f42.google.com with SMTP id
+ 5b1f17b1804b1-4394a823036so11786585e9.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741887208; x=1742492008; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1741887210; x=1742492010; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bo14efGggh1KMbt1RwLzDwQ/rsBTRypJZNT/eJUIki4=;
- b=enJUsB9HVKd6akbdTdyY0TGgRWa28QByLlS8gyteaLtAa6O3u9/wJl0diT8nFKfcLl
- DYOOCv4/v67RuU6qzVZh0ZD/s1jbO+H4PI0T0glgDluO/sVfr7pA6iOFtMfR9lcPni2C
- KWSRz6YV66aS2BOi4vm1elUCttXNVywITLbrb7oHJUvnmCCWbBDfuArW873KjtSCWqio
- 2YOzBKwnZt084Mmq8f1y9NyjAlfvIbVIeVO+2ZFgV24sE6KgTz7aGehWLK1BWhIPzPLD
- pAalpjD+unIbI7OCjxEpe+LArsFnWkXtV+JjcVf59GIOsHi2LkvQQtr0cUWq9dO2r8WT
- gxdw==
+ bh=nNEb2tm/hHymq8gtJsZqPySwWY9TaE5FtzIGyf3b94g=;
+ b=YvA1GKJXED11NVdWuv9jgAL0n9ceHiUYDE8pCrbSmVFFWxoNGQPql0O1MgkgalZG4v
+ 3Lu2fTNp5lvc4jxwIXuM19Vk6l6+UM5GEJTBGtDWYkZQgbQ1qAG9YIeEQMxOJQ0RVDVq
+ jd8Wli86dhj2wtQbrYRziqS0Hv/6n+njj3uO+XDw3Rd1C9M8EHmyJJHa79Ru55kjuv1B
+ R0e4PIDeKMm5UEmS3geRXpskofXIU8qUG7AhbAf2Nx5AGZI8L8ar/8+y526oDCVvuBKc
+ VPpUgF5muAuL4ozaBqDtmxN4e7hfXYetM05wekhJlvig/N+FRQZW6/5aPdwnwOAg87Eh
+ fBWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741887208; x=1742492008;
+ d=1e100.net; s=20230601; t=1741887210; x=1742492010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bo14efGggh1KMbt1RwLzDwQ/rsBTRypJZNT/eJUIki4=;
- b=mhUF49fZWhO3C4NVhGS0zHP++SZuoJLsy2pXDoUOoNrvVxNVf2bXpJy18Az1Yo1c52
- GxQ/Y7tHLFoCMhWH5azvB4SiCj/pZFxf3FLCoDh1VGbD49lwmSStuulfCvUqALI3IFDQ
- ZtVXHBSWKnIeVeP4rmIOuAp1V3UAZxhg8mfrqOC7xIzSeuVMNmCM7pcM+azmG48sv1dj
- 91oNEbQACLNEolzTtjD0ev+uTYvZIjRni9Gqy0/UVG54I0gNiVSSK/qs8EmvUXbFarxG
- rUo5ksfY9sILsSFNs0DKkBdGTLmJKloHPcOHOjEgLzeqlJGgvjqKQCzHzZFn1PbpoDK7
- y0mw==
-X-Gm-Message-State: AOJu0Yx/a8rvdj7P0x1C1wJZL8TnwMo+fVasM1N5D91DBsG17d6zj7CW
- BkHLBXZ9+4UHuICi2AAasQbYqjGUDCZy6+NR0hJpS38SxQkx30/1NWyJvvZz
-X-Gm-Gg: ASbGncuj1q0hYWAE27v/8f/JJMwJCOqaP+NaryO6olzembUUCMhe6A2RrmokhGT3iKA
- rLcpX0sv/ceDoBAtSM6jJpb66M76SaxO9YF0qwdsnTrtbaocf8giwIhhWoByDGe0FkJWbI6xxiH
- mfGeSgiJzHfgRSTa+auqgHahDyJ8altPDL3ILkNdE+PxtrY+ZOyGc52ckp5Pi37EtUau3+f9nO1
- ZjBNJyoZnEslW2HNh2+x2N8i0Xch8Plp9jkaCJ95TDryuabMto5LgE6D5kT/BOZp4T06Pi4rakG
- hZyhX/DuVlfaFvPORJm1zOkZlQKzkbVuAnixtLF/fxod3PZzYdSwH80=
-X-Google-Smtp-Source: AGHT+IH137re1n4e4a6uTP6/SYBPLDog5Fk+Vj+P7bbq7rlPy14vfDlf0WiNyBSKsgNzbj82+l8pew==
-X-Received: by 2002:a05:600c:19cf:b0:43d:47e:3205 with SMTP id
- 5b1f17b1804b1-43d1d89d198mr6175445e9.11.1741887207615; 
- Thu, 13 Mar 2025 10:33:27 -0700 (PDT)
+ bh=nNEb2tm/hHymq8gtJsZqPySwWY9TaE5FtzIGyf3b94g=;
+ b=Ffg3qQ7NEJMbDmPvNxfpgg/pKF8/WCzM6BtcJFKTTfyQUn3HqDLX9pEAj/JAHUs5Q5
+ 0liRiFaqbXDI368z1IoxPuBsgsuGBo19RtLMOq3nKSMzdQYIq0C56LgD0JXo587Cxcnv
+ 5M5hMC+pKE7zkVTMjEOnHLWzHRIEnYKSPHnlQXo5aV9kkzFNuJ7jrGhPth3GQskBRlYF
+ gvPHbn6h4GRUsfB2Yc5hTIbA/wOUAcCSdkgshZVtDx/Swo2eQIsrDCiLnILep2dy/iIu
+ ZbnRb92x/5btiCA/8WdRVKgFoHODbSF6sqCzwxW7nZ0/l5WDfCGF8bwCGcBIELqhbh8C
+ vDwA==
+X-Gm-Message-State: AOJu0YwZz5L2uX5PNl6ttPcYisrYZbmy0dpzJ6qKZqZ8LCa3Rs/lKTLz
+ xW/Mh7exXXXAZLx+UwJ116BgHmpH1nydazV6RgTzxCcL3WrA2/E5mhzRUqPH
+X-Gm-Gg: ASbGncuVrSESb7r59/b59A3IB+XbL6pMhhSrspWuKfThzkOXHBl510c8y/bKrpfv2ml
+ gFrdqYI6uwPRcuXrqSvCQ2MekBHvAkgtQzXNFMhdvCLrzSsgQxfQOE70swWwtPALCAgxcg+gtMA
+ hie1mWgTZAFznJXg+cNV7WRSb2xPsHw8GVFeRN0NiMA/T7xUBhgaN9zzlm2/4M90L1tI4r/7qMV
+ ar1MH1ldwBkd6mq3no1tih9BGUAfo9bflysocq/XsxCrYyJgcoBWgOHEc8vtDRfe2JX0YeICsaU
+ ce5w+sCl5S/9U2vvfvRzztWxsFhWP/E6h0dAX9MCDNpJ
+X-Google-Smtp-Source: AGHT+IH8pOGU1it9lDw39gkSbCFABYRtPEOT0+nK3ZBZrWqa3k4tU1538VgotTRcPBMA3egdt1vz2g==
+X-Received: by 2002:a05:600c:45d3:b0:43c:f78d:82eb with SMTP id
+ 5b1f17b1804b1-43d01be665amr128637785e9.15.1741887209903; 
+ Thu, 13 Mar 2025 10:33:29 -0700 (PDT)
 Received: from fedora.. ([94.73.34.87]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.26
+ 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 10:33:26 -0700 (PDT)
+ Thu, 13 Mar 2025 10:33:29 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
- =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
- Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
-Subject: [PATCH i-g-t v2 04/43] lib/vkms: Add minimal VKMS library and test
- device default files
-Date: Thu, 13 Mar 2025 18:32:39 +0100
-Message-ID: <20250313173318.5818-5-jose.exposito89@gmail.com>
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v2 07/43] lib/vkms: Test plane default files
+Date: Thu, 13 Mar 2025 18:32:42 +0100
+Message-ID: <20250313173318.5818-8-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313173318.5818-1-jose.exposito89@gmail.com>
 References: <20250313173318.5818-1-jose.exposito89@gmail.com>
@@ -88,606 +86,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create a library containing helpers for creating VKMS devices and
-configuring them dynamically using configfs.
-For the moment, add the minimal number of helpers to be able to start
-testing VKMS's configfs support: Create device, destroy device and
-destroy all devices.
+Add a helper to create a plane and a test checking that the default
+files and directories are created.
 
-Also, include the simplest possible test using those helpers (checking
-the device's default files) and the scaffolding required to generate
-the documentation.
-
-Co-developed-by: Jim Shargo <jshargo@chromium.org>
-Signed-off-by: Jim Shargo <jshargo@chromium.org>
-Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
-Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- docs/testplan/meson.build        |   7 +-
- lib/igt_vkms.c                   | 207 +++++++++++++++++++++++++++++++
- lib/igt_vkms.h                   |  27 ++++
- lib/meson.build                  |   1 +
- meson.build                      |   8 ++
- tests/meson.build                |   2 +
- tests/vkms/meson.build           |  13 ++
- tests/vkms/vkms_configfs.c       | 132 ++++++++++++++++++++
- tests/vkms/vkms_test_config.json |  72 +++++++++++
- 9 files changed, 467 insertions(+), 2 deletions(-)
- create mode 100644 lib/igt_vkms.c
- create mode 100644 lib/igt_vkms.h
- create mode 100644 tests/vkms/meson.build
- create mode 100644 tests/vkms/vkms_configfs.c
- create mode 100644 tests/vkms/vkms_test_config.json
+ lib/igt_vkms.c             | 76 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_vkms.h             |  4 ++
+ tests/vkms/vkms_configfs.c | 33 +++++++++++++++++
+ 3 files changed, 113 insertions(+)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 5560347f1..9e22f4c7d 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -11,6 +11,7 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
- xe_test_config = join_paths(source_root, 'tests', 'intel', 'xe_test_config.json')
- kms_test_config = join_paths(source_root, 'tests', 'intel', 'kms_test_config.json')
- i915_test_config = join_paths(source_root, 'tests', 'intel', 'i915_test_config.json')
-+vkms_test_config = join_paths(source_root, 'tests', 'vkms', 'vkms_test_config.json')
- 
- check_testlist = []
- kms_check_testlist = []
-@@ -37,12 +38,14 @@ if build_xe
- 	test_dict = {
- 		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
- 		'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
--		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
-+		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
-+		'vkms_tests': { 'input': vkms_test_config, 'extra_args': check_testlist }
- 	    }
- else
- 	test_dict = {
- 	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
--	      'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist }
-+	      'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
-+	      'vkms_tests': { 'input': vkms_test_config, 'extra_args': check_testlist }
- 	    }
- endif
- 
 diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-new file mode 100644
-index 000000000..fa41f741e
---- /dev/null
+index 1fd00afd7..1f90e1569 100644
+--- a/lib/igt_vkms.c
 +++ b/lib/igt_vkms.c
-@@ -0,0 +1,207 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Google LLC.
-+ * Copyright © 2023 Collabora, Ltd.
-+ * Copyright © 2024 Red Hat, Inc.
-+ */
+@@ -24,6 +24,13 @@
+ #define VKMS_ROOT_DIR_NAME		"vkms"
+ #define VKMS_FILE_ENABLED		"enabled"
+ 
++enum vkms_pipeline_item {
++	VKMS_PIPELINE_ITEM_PLANE,
++	VKMS_PIPELINE_ITEM_CRTC,
++	VKMS_PIPELINE_ITEM_ENCODER,
++	VKMS_PIPELINE_ITEM_CONNECTOR,
++};
 +
-+#include <dirent.h>
-+#include <errno.h>
-+#include <string.h>
-+
-+#include <ftw.h>
-+#include <linux/limits.h>
-+#include <sys/stat.h>
-+
-+#include "igt.h"
-+#include "igt_vkms.h"
-+
-+#define VKMS_ROOT_DIR_NAME		"vkms"
-+
-+/**
-+ * SECTION:igt_vkms
-+ * @short_description: Helpers to create and configure VKMS devices
-+ * @title: VKMS
-+ * @include: igt_vkms.h
-+ *
-+ * Helpers for creating VKMS devices and configuring them dynamically.
-+ *
-+ * First, create a VKMS device, next, add pipeline items (planes, CRTCs,
-+ * encoders, CRTCs and connectors) compose the pipeline by attaching each item
-+ * using the _attach_ functions and finally, enable the VKMS device.
-+ */
-+
-+static const char *mount_vkms_configfs(void)
+ /**
+  * SECTION:igt_vkms
+  * @short_description: Helpers to create and configure VKMS devices
+@@ -97,6 +104,48 @@ static void write_bool(const char *path, bool value)
+ 	write_int(path, value ? 1 : 0);
+ }
+ 
++static const char *get_pipeline_item_dir_name(enum vkms_pipeline_item item)
 +{
-+	static char vkms_root_path[PATH_MAX];
-+	const char *configfs_path;
-+	int ret;
-+
-+	configfs_path = igt_configfs_mount();
-+	igt_assert_f(configfs_path, "Error mounting configfs");
-+
-+	ret = snprintf(vkms_root_path, sizeof(vkms_root_path), "%s/%s",
-+		       configfs_path, VKMS_ROOT_DIR_NAME);
-+	igt_assert(ret >= 0 && ret < sizeof(vkms_root_path));
-+
-+	return vkms_root_path;
-+}
-+
-+/**
-+ * igt_require_vkms_configfs:
-+ *
-+ * Require that VKMS supports configfs configuration.
-+ */
-+void igt_require_vkms_configfs(void)
-+{
-+	const char *vkms_root_path;
-+	DIR *dir;
-+
-+	vkms_root_path = mount_vkms_configfs();
-+
-+	dir = opendir(vkms_root_path);
-+	igt_require(dir);
-+	if (dir)
-+		closedir(dir);
-+}
-+
-+/**
-+ * igt_vkms_device_create:
-+ * @name: VKMS device name
-+ *
-+ * Create a directory in the ConfigFS VKMS root directory, where the entire
-+ * pipeline will be configured.
-+ */
-+igt_vkms_t *igt_vkms_device_create(const char *name)
-+{
-+	igt_vkms_t *dev;
-+	const char *vkms_root_path;
-+	size_t path_len;
-+	DIR *dir;
-+	int ret;
-+
-+	dev = calloc(1, sizeof(*dev));
-+
-+	vkms_root_path = mount_vkms_configfs();
-+
-+	path_len = strlen(vkms_root_path) + strlen(name) + 2;
-+	dev->path = malloc(path_len);
-+	ret = snprintf(dev->path, path_len, "%s/%s", vkms_root_path, name);
-+	igt_assert(ret >= 0 && ret < path_len);
-+
-+	dir = opendir(dev->path);
-+	if (dir) {
-+		igt_debug("Device at path %s already exists\n", dev->path);
-+		closedir(dir);
-+	} else {
-+		ret = mkdir(dev->path, 0777);
-+		if (ret != 0) {
-+			free(dev->path);
-+			free(dev);
-+			dev = NULL;
-+		}
++	switch (item) {
++	case VKMS_PIPELINE_ITEM_PLANE:
++		return "planes";
++	case VKMS_PIPELINE_ITEM_CRTC:
++		return "crtcs";
++	case VKMS_PIPELINE_ITEM_ENCODER:
++		return "encoders";
++	case VKMS_PIPELINE_ITEM_CONNECTOR:
++		return "connectors";
 +	}
 +
-+	return dev;
++	igt_assert(!"Cannot be reached: Unknown VKMS pipeline item type");
 +}
 +
-+static int detach_pipeline_items(const char *path, const struct stat *info,
-+				 const int typeflag, struct FTW *pathinfo)
++static void get_pipeline_item_path(igt_vkms_t *dev,
++				   enum vkms_pipeline_item item,
++				   const char *name, char *path, size_t len)
 +{
-+	/*
-+	 * Level 4 are the links in the possible_* directories:
-+	 * vkms/<dev>/<pipeline items>/<pipeline item>/<possible_*>/<links>
-+	 */
-+	if (pathinfo->level == 4 && typeflag == FTW_SL) {
-+		igt_debug("Detaching pipeline item %s\n", path);
-+		return unlink(path);
-+	}
-+
-+	/* Ignore the other files, they are removed by remove_pipeline_items */
-+	return 0;
-+}
-+
-+static int remove_pipeline_items(const char *path, const struct stat *info,
-+				 const int typeflag, struct FTW *pathinfo)
-+{
-+	/* Level 0 is the device root directory: vkms/<dev> */
-+	if (pathinfo->level == 0) {
-+		igt_debug("Removing pipeline item %s\n", path);
-+		return rmdir(path);
-+	}
-+
-+	/*
-+	 * Level 2 directories are the pipeline items:
-+	 * vkms/<dev>/<pipeline items>/<pipeline item>
-+	 */
-+	if (pathinfo->level == 2 && typeflag == FTW_DP) {
-+		igt_debug("Removing pipeline item %s\n", path);
-+		return rmdir(path);
-+	}
-+
-+	/* Ignore the other files, they are removed by VKMS */
-+	return 0;
-+}
-+
-+static int remove_device_dir(igt_vkms_t *dev)
-+{
++	const char *item_dir_name;
 +	int ret;
 +
-+	ret = nftw(dev->path, detach_pipeline_items, 64, FTW_DEPTH | FTW_PHYS);
-+	if (ret)
-+		return ret;
-+
-+	ret = nftw(dev->path, remove_pipeline_items, 64, FTW_DEPTH | FTW_PHYS);
-+	return ret;
++	item_dir_name = get_pipeline_item_dir_name(item);
++	ret = snprintf(path, len, "%s/%s/%s", dev->path, item_dir_name, name);
++	igt_assert(ret >= 0 && ret < len);
 +}
 +
-+/**
-+ * igt_vkms_device_destroy:
-+ * @dev: Device to destroy
-+ *
-+ * Remove and free the VKMS device.
-+ */
-+void igt_vkms_device_destroy(igt_vkms_t *dev)
++static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
++			      const char *name)
 +{
++	char path[PATH_MAX];
 +	int ret;
 +
-+	igt_assert(dev);
++	get_pipeline_item_path(dev, item, name, path, sizeof(path));
 +
-+	ret = remove_device_dir(dev);
++	ret = mkdir(path, 0777);
 +	igt_assert_f(ret == 0,
-+		     "Unable to rmdir device directory '%s'. Got errno=%d (%s)\n",
-+		     dev->path, errno, strerror(errno));
-+
-+	free(dev->path);
-+	free(dev);
++		     "Unable to mkdir directory '%s'. Got errno=%d (%s)\n",
++		     path, errno, strerror(errno));
 +}
 +
+ /**
+  * igt_require_vkms_configfs:
+  *
+@@ -131,6 +180,21 @@ void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len)
+ 	igt_assert(ret >= 0 && ret < len);
+ }
+ 
 +/**
-+ * igt_vkms_destroy_all_devices:
++ * igt_vkms_get_plane_path:
++ * @dev: Device containing the plane
++ * @name: Plane name
++ * @path: Output path
++ * @len: Maximum @path length
 + *
-+ * Remove all VKMS devices created via configfs.
++ * Returns the plane path.
 + */
-+void igt_vkms_destroy_all_devices(void)
++void igt_vkms_get_plane_path(igt_vkms_t *dev, const char *name, char *path,
++			     size_t len)
 +{
-+	igt_vkms_t *dev;
-+	const char *vkms_root_path;
-+	DIR *dir;
-+	struct dirent *ent;
++	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_PLANE, name, path, len);
++}
 +
-+	vkms_root_path = mount_vkms_configfs();
-+	dir = opendir(vkms_root_path);
-+	igt_assert_f(dir, "VKMS configfs directory not available at '%s'. "
-+		     "Got errno=%d (%s)\n", vkms_root_path, errno,
-+		     strerror(errno));
+ /**
+  * igt_vkms_device_create:
+  * @name: VKMS device name
+@@ -303,3 +367,15 @@ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
+ 
+ 	write_bool(path, enabled);
+ }
 +
-+	while ((ent = readdir(dir)) != NULL) {
-+		if (strcmp(ent->d_name, ".") == 0 ||
-+		    strcmp(ent->d_name, "..") == 0)
-+			continue;
-+
-+		dev = igt_vkms_device_create(ent->d_name);
-+		igt_vkms_device_destroy(dev);
-+	}
-+
-+	closedir(dir);
++/**
++ * igt_vkms_device_add_plane:
++ * @dev: Device to add the plane to
++ * @name: Plane name
++ *
++ * Add a new plane to the VKMS device.
++ */
++void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
++{
++	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
 +}
 diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-new file mode 100644
-index 000000000..48c48f296
---- /dev/null
+index d3741b6ee..9062cc42f 100644
+--- a/lib/igt_vkms.h
 +++ b/lib/igt_vkms.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Google LLC.
-+ * Copyright © 2023 Collabora, Ltd.
-+ * Copyright © 2024 Red Hat, Inc.
-+ */
-+
-+#ifndef __IGT_VKMS_H__
-+#define __IGT_VKMS_H__
-+
-+/**
-+ * igt_vkms_t:
-+ * @path: VKMS root directory inside configfs mounted directory
-+ *
-+ * A struct representing a VKMS device.
-+ */
-+typedef struct igt_vkms {
-+	char *path;
-+} igt_vkms_t;
-+
-+void igt_require_vkms_configfs(void);
-+
-+igt_vkms_t *igt_vkms_device_create(const char *name);
-+void igt_vkms_device_destroy(igt_vkms_t *dev);
-+void igt_vkms_destroy_all_devices(void);
-+
-+#endif /* __IGT_VKMS_H__ */
-diff --git a/lib/meson.build b/lib/meson.build
-index b595b9979..2b45faa2e 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -50,6 +50,7 @@ lib_sources = [
- 	'igt_types.c',
- 	'igt_vec.c',
- 	'igt_vgem.c',
-+	'igt_vkms.c',
- 	'igt_x86.c',
- 	'instdone.c',
- 	'intel_allocator.c',
-diff --git a/meson.build b/meson.build
-index 6a580bd7e..4661d02a1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -287,6 +287,7 @@ msmdir = join_paths(libexecdir, 'msm')
- panfrostdir = join_paths(libexecdir, 'panfrost')
- v3ddir = join_paths(libexecdir, 'v3d')
- vc4dir = join_paths(libexecdir, 'vc4')
-+vkmsdir = join_paths(libexecdir, 'vkms')
- vmwgfxdir = join_paths(libexecdir, 'vmwgfx')
- mandir = get_option('mandir')
- pkgconfigdir = join_paths(libdir, 'pkgconfig')
-@@ -348,6 +349,12 @@ if get_option('use_rpath')
- 	endforeach
- 	vc4_rpathdir = join_paths(vc4_rpathdir, libdir)
+@@ -23,6 +23,8 @@ typedef struct igt_vkms {
+ void igt_require_vkms_configfs(void);
  
-+	vkms_rpathdir = '$ORIGIN'
-+	foreach p : vkmsdir.split('/')
-+		vkms_rpathdir = join_paths(vkms_rpathdir, '..')
-+	endforeach
-+	vkms_rpathdir = join_paths(vkms_rpathdir, libdir)
+ void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len);
++void igt_vkms_get_plane_path(igt_vkms_t *dev, const char *name, char *path,
++			     size_t len);
+ 
+ igt_vkms_t *igt_vkms_device_create(const char *name);
+ void igt_vkms_device_destroy(igt_vkms_t *dev);
+@@ -31,4 +33,6 @@ void igt_vkms_destroy_all_devices(void);
+ bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
+ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
+ 
++void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
 +
- 	vmwgfx_rpathdir = '$ORIGIN'
- 	foreach p : vmwgfxdir.split('/')
- 		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
-@@ -361,6 +368,7 @@ else
- 	panfrost_rpathdir = ''
- 	v3d_rpathdir = ''
- 	vc4_rpathdir = ''
-+	vkms_rpathdir = ''
- 	vmwgfx_rpathdir = ''
- endif
- 
-diff --git a/tests/meson.build b/tests/meson.build
-index 2f5406523..0817be190 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -483,6 +483,8 @@ subdir('v3d')
- 
- subdir('vc4')
- 
-+subdir('vkms')
-+
- subdir('vmwgfx')
- 
- gen_testlist = find_program('generate_testlist.sh')
-diff --git a/tests/vkms/meson.build b/tests/vkms/meson.build
-new file mode 100644
-index 000000000..e55ba32ba
---- /dev/null
-+++ b/tests/vkms/meson.build
-@@ -0,0 +1,13 @@
-+vkms_progs = [
-+	'vkms_configfs',
-+]
-+vkms_deps = test_deps
-+
-+foreach prog : vkms_progs
-+	test_executables += executable(prog, prog + '.c',
-+				       dependencies : vkms_deps,
-+				       install_dir : vkmsdir,
-+				       install_rpath : vkms_rpathdir,
-+				       install : true)
-+	test_list += join_paths('vkms', prog)
-+endforeach
+ #endif /* __IGT_VKMS_H__ */
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-new file mode 100644
-index 000000000..b942cec64
---- /dev/null
+index 16e5f6725..1ac85d8f9 100644
+--- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -0,0 +1,132 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Google LLC.
-+ * Copyright © 2023 Collabora, Ltd.
-+ * Copyright © 2024 Red Hat, Inc.
-+ */
-+
+@@ -179,6 +179,38 @@ static void test_device_wrong_values(void)
+ 	igt_vkms_device_destroy(dev);
+ }
+ 
 +/**
-+ * TEST: Tests for VKMS configfs support.
-+ * Category: Display
-+ * Mega feature: General Display Features
-+ * Sub-category: uapi
-+ * Functionality: vkms,configfs
-+ * Test category: functionality test
-+ */
-+
-+#include <dirent.h>
-+#include <string.h>
-+
-+#include <linux/limits.h>
-+#include <sys/stat.h>
-+
-+#include "drmtest.h"
-+#include "igt.h"
-+#include "igt_vkms.h"
-+
-+static void assert_default_files(const char *path,
-+				 const char **files, size_t n_files,
-+				 const char **dirs, size_t n_dirs)
-+{
-+	DIR *dir;
-+	struct dirent *ent;
-+	int total = 0;
-+	int ret;
-+
-+	/* Check that the number of files/directories matches the expected */
-+	dir = opendir(path);
-+	igt_assert(dir);
-+	while ((ent = readdir(dir)) != NULL) {
-+		if (strcmp(ent->d_name, ".") == 0 ||
-+		    strcmp(ent->d_name, "..") == 0)
-+			continue;
-+
-+		total++;
-+	}
-+	igt_assert_eq(total, n_dirs + n_files);
-+	closedir(dir);
-+
-+	/* Check that the files/directories are present */
-+	for (int i = 0; i < n_files; i++) {
-+		char file_path[PATH_MAX];
-+		struct stat buf;
-+
-+		ret = snprintf(file_path, sizeof(file_path), "%s/%s", path,
-+			       files[i]);
-+		igt_assert(ret >= 0 && ret < sizeof(file_path));
-+
-+		igt_assert_f(stat(file_path, &buf) == 0,
-+			     "File %s does not exists\n", file_path);
-+	}
-+
-+	for (int i = 0; i < n_dirs; i++) {
-+		char dir_path[PATH_MAX];
-+
-+		ret = snprintf(dir_path, sizeof(dir_path), "%s/%s", path,
-+			       dirs[i]);
-+		igt_assert(ret >= 0 && ret < sizeof(dir_path));
-+
-+		dir = opendir(dir_path);
-+		igt_assert_f(dir, "Directory %s does not exists\n", dir_path);
-+		closedir(dir);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: device-default-files
-+ * Description: Test that creating a VKMS device creates the default files and
++ * SUBTEST: plane-default-files
++ * Description: Test that creating a plane creates the default files and
 + *              directories.
 + */
 +
-+static void test_device_default_files(void)
++static void test_plane_default_files(void)
 +{
 +	igt_vkms_t *dev;
++	char path[PATH_MAX];
 +
 +	const char *files[] = {
-+		"enabled",
++		"type",
 +	};
 +
 +	const char *dirs[] = {
-+		"planes",
-+		"crtcs",
-+		"encoders",
-+		"connectors",
++		"possible_crtcs",
 +	};
 +
 +	dev = igt_vkms_device_create(__func__);
 +	igt_assert(dev);
 +
-+	assert_default_files(dev->path,
++	igt_vkms_device_add_plane(dev, "plane0");
++	igt_vkms_get_plane_path(dev, "plane0", path, sizeof(path));
++
++	assert_default_files(path,
 +			     files, ARRAY_SIZE(files),
 +			     dirs, ARRAY_SIZE(dirs));
 +
 +	igt_vkms_device_destroy(dev);
 +}
 +
-+igt_main
-+{
-+	struct {
-+		const char *name;
-+		void (*fn)(void);
-+	} tests[] = {
-+		{ "device-default-files", test_device_default_files },
-+	};
-+
-+	igt_fixture {
-+		drm_load_module(DRIVER_VKMS);
-+		igt_require_vkms();
-+		igt_require_vkms_configfs();
-+		igt_vkms_destroy_all_devices();
-+	}
-+
-+	for (int i = 0; i < ARRAY_SIZE(tests); i++) {
-+		igt_subtest(tests[i].name)
-+			tests[i].fn();
-+	}
-+
-+	igt_fixture {
-+		igt_require_vkms();
-+		igt_require_vkms_configfs();
-+		igt_vkms_destroy_all_devices();
-+	}
-+}
-diff --git a/tests/vkms/vkms_test_config.json b/tests/vkms/vkms_test_config.json
-new file mode 100644
-index 000000000..4e84e184a
---- /dev/null
-+++ b/tests/vkms/vkms_test_config.json
-@@ -0,0 +1,72 @@
-+{
-+    "description": "JSON file to be used to parse VKMS documentation",
-+    "name": "Tests for VKMS Driver",
-+    "drivers": [ "vkms" ],
-+    "files": [ "*.c" ],
-+    "fields": {
-+        "Run type": {
-+            "_properties_": {
-+                "mandatory": true
-+            },
-+            "Category": {
-+                "_properties_": {
-+                    "description": "Contains the major group for the tested functionality 'Display'"
-+                },
-+                "Mega feature": {
-+                    "_properties_": {
-+                        "mandatory": true,
-+                        "description": "Contains the mega feature for end to end use case"
-+                    },
-+                    "Sub-category": {
-+                        "_properties_": {
-+                            "mandatory": true,
-+                            "description": "Contains the technical feature/functionality"
-+                        },
-+                        "Functionality": {
-+                            "_properties_": {
-+                                "mandatory": true,
-+                                "description": "Groups page table tests on buckets containing more detailed functionality"
-+                            },
-+                            "Feature": {
-+                                "_properties_": {
-+                                    "description": "Describes the lowest level feature bucket"
-+                                }
-+                            }
-+                        }
-+                    }
-+                }
-+            }
-+        },
-+        "Test category": {
-+            "_properties_": {
-+                "description": "Defines the test category. Usually used at subtest level."
-+            }
-+        },
-+        "Test requirement": {
-+            "_properties_": {
-+                "description": "Defines Kernel parameters required for the test to run"
-+            }
-+        },
-+        "Issue": {
-+            "_properties_": {
-+                "description": "If the test is used to solve an issue, point to the URL containing the issue."
-+            }
-+        },
-+        "Depends on": {
-+            "_properties_": {
-+                "description": "List other subtests that are required to not be skipped before calling this one."
-+            }
-+        },
-+        "TODO": {
-+            "_properties_": {
-+                "description": "Point to known missing features at the test or subtest."
-+            }
-+        },
-+        "Description": {
-+            "_properties_": {
-+                "mandatory": true,
-+                "description": "Provides a description for the test/subtest."
-+            }
-+        }
-+    }
-+}
+ igt_main
+ {
+ 	struct {
+@@ -188,6 +220,7 @@ igt_main
+ 		{ "device-default-files", test_device_default_files },
+ 		{ "device-default-values", test_device_default_values },
+ 		{ "device-wrong-values", test_device_wrong_values },
++		{ "plane-default-files", test_plane_default_files },
+ 	};
+ 
+ 	igt_fixture {
 -- 
 2.48.1
 
