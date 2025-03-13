@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B51C282DE
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F200C35FF6
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7DE6D10E90B;
-	Thu, 13 Mar 2025 17:33:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1ECD610E912;
+	Thu, 13 Mar 2025 17:33:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="YTBhXgES";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="bt6t4hjv";
 	dkim-atps=neutral
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
- [209.85.221.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2949B10E90B
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:49 +0000 (UTC)
-Received: by mail-wr1-f47.google.com with SMTP id
- ffacd0b85a97d-390effd3e85so1097551f8f.0
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:49 -0700 (PDT)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
+ [209.85.128.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8384510E916
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:47 +0000 (UTC)
+Received: by mail-wm1-f48.google.com with SMTP id
+ 5b1f17b1804b1-43cfdc2c8c9so8562915e9.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741887227; x=1742492027; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1741887226; x=1742492026; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QzEcL7PrZ8Ts/hDjeu1mgrFA9Nr9xMYAobiPyeDwO+s=;
- b=YTBhXgESkWsYo82nmZPSaJU3+zxzfxnT/2JaVzAZhbmkuPrLyjpWBuTFk29VvXstPZ
- w5lUkoT21viXTDw9BYhYls3jLWaYJyz7Ovrpkd/wZKNbJVklfAU/4lV8UVUbNdPEu9jU
- ceO/FZi1h2NBD7bJcYiNZt3iEAaHnOaoYMHU4a21HXIQBuk0u9N4MDvaUcVL/yFArwfr
- ygcUHl7bOGB4dDIJi9VZoKeVKTKisOYfQEMb4I5xdwSyXCIO2E72yNdQTT6sSEMKzmU1
- dARTRzkXU+kBd0ReAflUSIyDZGsN8fGt/4xttBg/k3mK4T+uImYA/R00GlYuF7pPvF3s
- Rzvw==
+ bh=lVNIWABRDtUWsvmgsLUyWyBLZTFKSVmF2Wl8hYHRgXY=;
+ b=bt6t4hjvqXjE0QB5uDu2zJkmmelWxS4m+GJPM7VYH4M8Nn+R1eDGLKFOasivoxphcZ
+ 2zz9dXU0p+ckuBSs7b+EnZtOMYRxf40TYLxOoRJ3HOlgDL9XkO0opVjTeEd9tZ4b4ym7
+ wSWLdu2BE4liPpO+eCmAOO9mbt00FOwhouvBz1geCB9nClpFPRdnyugJLaCSK20rNb+G
+ DuzFDakknZxAiPiYgAwmP1Obw63mtmf63Smth/yVbCOozX6gozXEq54vC01QB8+4zRQT
+ 7ReJsDCBFgkblJSSsjg8FlX5RkBxZcO6TvjIYWpqzomBSq/HZgREDSkU+6yl8N6lta5e
+ 35GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741887227; x=1742492027;
+ d=1e100.net; s=20230601; t=1741887226; x=1742492026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QzEcL7PrZ8Ts/hDjeu1mgrFA9Nr9xMYAobiPyeDwO+s=;
- b=xD3xnIEBM3bbsOWI0G8RZPyMBSAWiucCNC59fUy+jvZFHhZgTOrn6DKwE7O56ts86Y
- JwTwUmxNkAqPlqcNrk0sfYr3zAVusSQtSBm9PVzhtfvN3TJ8kSnpzdubizBmg7wTUjSF
- xthMmyB+k2DAvh85G5cu/xE8xsNWM1XRa6ao2giE6Y0bTZMkIjab4ZkH9eT0pNsi3lKa
- PE3MVNce4uD7MnigJD5b82s7/pQskiF/3kKNsFSX0q3AHn+zFMrTXZyQVTmPDA5tddLQ
- 3TS4H8ncKlg/xp4uTV1fmBbAAotK6j+ICeJF6havkt4y4MwE073TUiOHjB3gL2880VMb
- vTgQ==
-X-Gm-Message-State: AOJu0YyTFxjM1Je091PJx8wq1eO4Iwp236pAnlpLQ+nEtZFPaCiDuXJX
- kgKUgSBjICtXfFrTPcAHkqWXp2PCYnXSElCbO1imxMocq9zri3IFhrbwlEMP
-X-Gm-Gg: ASbGnctFnFMeaMt+j1bt5UyJ/rXpeaaaaHSW8HSrEXVVyjVjqxl7sV0IvTW7E0I6RjC
- 1qw7Ql0Wj2TJ7TOfLK15t/hII9DK17V2XsRgPZ3Q+n+KPWy0V0X++kR3tsuwna//waXhma3/TZ9
- zFYFRju5qEjCeu1vprDfFuXzZkowJwxTVjQwKsaNUyWhUDpfDmZ2aSXc7oUG9HH8hNjV9pvR0x8
- Wwy8TjlLrh+JqyDJGWcd0c7T0KA+5I/lPa9W2JLbnth2J0lNjrddkM9/IglX67WnNadz/j8FRTA
- Bo2B6DNrZOWzmyQD0UiGRQ2gF/01LSwpD9ndbmZ2TC6+
-X-Google-Smtp-Source: AGHT+IHn7CnMUsDW44SNWGcc14xbz0UOV4HN8GEkmTM9zFZAt9q3KYVJqJKJSnTsmOpsrxQy+9o4Fw==
-X-Received: by 2002:a5d:6d8a:0:b0:391:46a6:f0db with SMTP id
- ffacd0b85a97d-396c3837fa2mr424103f8f.37.1741887226706; 
- Thu, 13 Mar 2025 10:33:46 -0700 (PDT)
+ bh=lVNIWABRDtUWsvmgsLUyWyBLZTFKSVmF2Wl8hYHRgXY=;
+ b=q6wLGabB+hTJdI+4qkQ79c5J/2TOk+pos4VBfj7Oc3SD+I7qshxQCqRawZZ9S2oiiy
+ 8/SH6x4qGqYs+Yess1BsPvZ9ntTzXY05Yimnzw4dVl3J4/Ec3DHhMahm9wHs1HoxUDNK
+ QH1IP1MfoXgiQ9sm5GGtx8twZkUd0TSZdGbdMvQM3vf7T9Xyj4ToWbeMFmZFDe9e5CTj
+ QaTWKCrAyxxvh62OHntnhcRzo1Hb046eJwINdJfKf8zbqQokjzOvrfXVas0Rxl9DJpYA
+ 0MU4pu4KpYQ1xDDgknD6wRps07mkU9mpk6dIygknqOutFycq/epCOEXeLKJx8StE9yqt
+ U9Bg==
+X-Gm-Message-State: AOJu0YzODueY2dlfkkGSRKF9eDukT43T2mGyWVj+kMMLKQ/2l2zzu3Wm
+ MP1l77IoOW62pIHaa6EqmztPrys10XdobFB/aEtfqH7l+vIifn0o3YIy/VAw
+X-Gm-Gg: ASbGnct8lJa5wRI/sBJog421+9Fvl95KGZLPS+oKoaP+CwXHAU8NHQXJLVkug8PmgeH
+ 5hYYrJ3oFdm7cuX4rGYOgTvq7hfigBGRMpCUMaNV26IrPSNTVoX24byT8zHvjwwigWGzKSyG77i
+ 66z6JuN0j6i4VDzNTkZcX8ysAb9HqTtUv2R+gzlMQDn+u/evAJ6HHbkoIJ1RwFgulrwO04jPOkZ
+ TZJg+f5gvZ5UMr6v1oWMEBfZwojnJkWXvR1BVr17ar5TyXl11AoDNYfAronOXnMWwwEY/3G8FnM
+ XfoRNrM4ySnZzbHnrEfBhyxY29DhIPuKNJtSdrI4QnIm
+X-Google-Smtp-Source: AGHT+IGz5cFcZ5OHGgCa2w4Z78ipBcseVnPLaMI+7XpZnKEkjT6jIeiOshVMttlx7MUumkYc/pKqAg==
+X-Received: by 2002:a5d:5f47:0:b0:391:231b:8e0d with SMTP id
+ ffacd0b85a97d-396c345bb64mr466299f8f.39.1741887225734; 
+ Thu, 13 Mar 2025 10:33:45 -0700 (PDT)
 Received: from fedora.. ([94.73.34.87]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.45
+ 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 10:33:46 -0700 (PDT)
+ Thu, 13 Mar 2025 10:33:44 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v2 24/43] tests/vkms_configfs: Test enablement without
- pipeline items
-Date: Thu, 13 Mar 2025 18:32:59 +0100
-Message-ID: <20250313173318.5818-25-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v2 23/43] lib/igt_device_scan: Allow to find device by
+ sysname
+Date: Thu, 13 Mar 2025 18:32:58 +0100
+Message-ID: <20250313173318.5818-24-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313173318.5818-1-jose.exposito89@gmail.com>
 References: <20250313173318.5818-1-jose.exposito89@gmail.com>
@@ -87,88 +87,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It shouldn't be possible to enable a device without creating and
-attaching its pipeline items.
+The VKMS driver allows to create multiple devices handled by the same
+driver but with a different sysname.
 
-Test that the device is not enabled and also that no actual device was
-created using libdrm.
+In order to differentiate between them, allow to find devices by
+sysname.
 
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- tests/vkms/vkms_configfs.c | 39 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ lib/igt_device_scan.c | 22 ++++++++++++++++++++++
+ lib/igt_device_scan.h |  2 ++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index c36a795d6..c2cb9dbc0 100644
---- a/tests/vkms/vkms_configfs.c
-+++ b/tests/vkms/vkms_configfs.c
-@@ -22,6 +22,7 @@
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 711bedc5c..5cbd347a3 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -231,6 +231,7 @@ struct igt_device {
+ 	char *subsystem;
+ 	char *syspath;
+ 	char *devnode;
++	char *sysname;
  
- #include "drmtest.h"
- #include "igt.h"
-+#include "igt_device_scan.h"
- #include "igt_vkms.h"
+ 	/* /dev/dri/... paths */
+ 	char *drm_card;
+@@ -664,6 +665,7 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev,
+ 	idev->syspath = strdup_nullsafe(udev_device_get_syspath(dev));
+ 	idev->subsystem = strdup_nullsafe(udev_device_get_subsystem(dev));
+ 	idev->devnode = strdup_nullsafe(udev_device_get_devnode(dev));
++	idev->sysname = strdup_nullsafe(udev_device_get_sysname(dev));
  
- struct invalid_value {
-@@ -117,6 +118,20 @@ static bool attach(const char *src_path, const char *dst_path,
- 	return ret == 0;
+ 	if (idev->devnode && strstr(idev->devnode, "/dev/dri/card"))
+ 		idev->drm_card = strdup(idev->devnode);
+@@ -2059,6 +2061,26 @@ bool igt_device_card_match_pci(const char *filter,
+        return __igt_device_card_match(filter, card, true);
  }
  
-+static bool find_device(const char *name, struct igt_device_card *card)
++bool igt_device_find_card_by_sysname(const char *sysname,
++				     struct igt_device_card *card)
 +{
-+	igt_devices_scan();
++	struct igt_device *dev;
 +
-+	return igt_device_find_card_by_sysname(name, card);
-+}
++	igt_assert(card);
++	igt_assert(sysname);
 +
-+static bool device_exists(const char *name)
-+{
-+	struct igt_device_card card;
++	memset(card, 0, sizeof(*card));
 +
-+	return find_device(name, &card);
++	igt_list_for_each_entry(dev, &igt_devs.all, link) {
++		if (strcmp(dev->sysname, sysname) == 0) {
++			__copy_dev_to_card(dev, card);
++			return true;
++		}
++	}
++
++	return false;
 +}
 +
  /**
-  * SUBTEST: device-default-files
-  * Description: Test that creating a VKMS device creates the default files and
-@@ -774,6 +789,29 @@ static void test_attach_connector_to_encoder(void)
- 	igt_vkms_device_destroy(dev2);
- }
- 
-+/**
-+ * SUBTEST: enable-no-pipeline-items
-+ * Description: Try to enable a VKMS device without adding any pipeline items
-+ *              and test that it fails.
-+ */
-+
-+static void test_enable_no_pipeline_items(void)
-+{
-+	igt_vkms_t *dev;
-+
-+	dev = igt_vkms_device_create(__func__);
-+	igt_assert(dev);
-+
-+	/* Try to enable it and check that the device is not set as enabled */
-+	igt_vkms_device_set_enabled(dev, true);
-+	igt_assert(!igt_vkms_device_is_enabled(dev));
-+
-+	/* Check that no actual device was created*/
-+	igt_assert(!device_exists(__func__));
-+
-+	igt_vkms_device_destroy(dev);
-+}
-+
- igt_main
- {
- 	struct {
-@@ -799,6 +837,7 @@ igt_main
- 		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
- 		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
- 		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
-+		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
- 	};
- 
- 	igt_fixture {
+  * igt_device_get_pretty_name
+  * @card: pointer to igt_device_card struct
+diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+index 92741fe3c..2a61777b0 100644
+--- a/lib/igt_device_scan.h
++++ b/lib/igt_device_scan.h
+@@ -92,6 +92,8 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+ bool igt_device_find_integrated_card(struct igt_device_card *card);
+ bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
+ bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
++bool igt_device_find_card_by_sysname(const char *sysname,
++				     struct igt_device_card *card);
+ char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
+ int igt_open_card(struct igt_device_card *card);
+ int igt_open_render(struct igt_device_card *card);
 -- 
 2.48.1
 
