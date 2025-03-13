@@ -4,69 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31590C35FF3
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 366E9C282DE
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 17:33:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D730410E900;
-	Thu, 13 Mar 2025 17:33:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB85B10E903;
+	Thu, 13 Mar 2025 17:33:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="PydGxL41";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="l2PK5mUo";
 	dkim-atps=neutral
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
- [209.85.128.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3803210E8FF
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:28 +0000 (UTC)
-Received: by mail-wm1-f50.google.com with SMTP id
- 5b1f17b1804b1-43948021a45so11134515e9.1
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:28 -0700 (PDT)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+ [209.85.128.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D31D10E901
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 17:33:30 +0000 (UTC)
+Received: by mail-wm1-f45.google.com with SMTP id
+ 5b1f17b1804b1-43cf58eea0fso8320125e9.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741887206; x=1742492006; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1741887209; x=1742492009; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZlNPS1b4v3s4UBRnKLOnf7IudGKo7Zv0u6hSE+GnKNM=;
- b=PydGxL41PrkR6fDM8sg0a1Xq8X8C9d+kFXNAgykvZChFBuinWgGXDEaxXFFMr/6mkF
- fI9X6m0XNaOhkQVzsqKoOVA9i6eyMh7LjujJcHq3R65GKZ2Lel6tT282oHgKE5Lc2JSn
- N7aN6st8tZ2Xw6W6LeOh6UJEuVvJ8B6uOQF3WGkt820wy/cGt6yL5fHs3IVALgz0He/o
- gv+Gk32q1Ubm93tbHZZQZpcXm3/lozgQLvQUyeHnj1WNhSsHo6t7WTmV1iMYsGm3tjWE
- zw3x4trRDAVUdaH5XbnGm338FpiW4rBKIhI1aXuEM327lqKJWWL03baCSgWW8X0NOk0E
- 2ung==
+ bh=9BwRoA7oTRcT6JM6li4ksH93g/lzuGyrL47Y1tS2mqU=;
+ b=l2PK5mUoHmcO9h/FWXil4GRQ/LeowQbWqR90wgC8beTKAEWEhfqSxHFNmBmaj30cQT
+ 4bmFNHAR7UzfPpPqNXViUyPeeUENQmssYOIF9GSwDk42t+SrtX/MZJ+GQgGLeGcSz47O
+ dnHZveu0wry4rVFsahVdVn0m02PwDASBcZQkF3JabNIBOlhJuKgjPDvir8klNHK5VrZ7
+ Rgb7uYKQ4gjHo619X3mFuZkAuHORKvKlBThvRqC5y+czwGyZE1GI50n+ze9NbOjkak44
+ nzGjK1lDbwGDoz2mmph0d6dsavdFXz4PdUg15QOeUAL90Sn7oaXvAGe8n3JiJ/YvyG93
+ czuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741887206; x=1742492006;
+ d=1e100.net; s=20230601; t=1741887209; x=1742492009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZlNPS1b4v3s4UBRnKLOnf7IudGKo7Zv0u6hSE+GnKNM=;
- b=sB/0CPtvJtwDpSr9AYUObnBpnCMS4ZYUMDqRyiyY5AJHhZZZldC4R7Bh3mxKgWxHpi
- 6PIg9unpDtBtZGpiDaj8LvwIYLcqnJA6QgFoFdqLlgXq6oQWYnlHJWVK1B+7yTYDQZK1
- aelf3C/v1MFVLYRJcmD7T+uXSeGwPgGMY63W2ivG7f7qp6aGraSOhUtYnycjfi28xLsv
- ywG9yXu3EuFQeX0famMc8S1MAuoHtCDOdJih8GDEYJfplD1bHEIPniEaH/zceVBqHvkU
- bG/kg3OJA9RiIeYNJGcRfdGD8lR7N2jEkb/GmZAA3nE875rZ5582bgGzYJOAKz8OvMEF
- Su9g==
-X-Gm-Message-State: AOJu0YzjyMyU+2rRhYRvpZCIbqdeSQMVoegSr1mftK8zxQAyNx4W9rsu
- ftc7ysg4aVkUtf8a8+40YwsJcZUBTOfT3QoBgkpEkFRz+aogbj8U9vUp5jWV
-X-Gm-Gg: ASbGncsa3yS55JOEFwneD65WR4ImLeIdudgrhvEGN33j9IRwamreHHxPg7Q6ka7xCFs
- dALWHOLLsFP0EoLHoaQxAMWY28aWzOp1n2Liww2J2Kuui6ROtbGsehziKgdKkSc9prjfW4LuodT
- iYY5sjco4vX1dY/oZFCeHAdR4CrXr7ihiJRpFXbS8FhwIp+E+kEy5uLLf4HV4MPcCkOxlvpsxKL
- WVwWJ9y0bsgX7LGucY1HVQme1VIA6eN8MONHcEQd5TzXAkKm/B1nS71ocMD4gGg+VYdLVhN5E+V
- +KDCdAYLRRNhgotsIFD5ocorcYZ3J3BOyhtzb2SWhNoh+1wkOo5J0tQ=
-X-Google-Smtp-Source: AGHT+IG4ngMcjB6y6b9+AqxgyiUpCEJSFMiWhjiR4MRIay84mmM7PgOdCCWiDqrn/Z4HThPhYZC/9g==
-X-Received: by 2002:a05:600c:4204:b0:43d:9f2:6274 with SMTP id
- 5b1f17b1804b1-43d1d9c5836mr4825695e9.14.1741887205758; 
- Thu, 13 Mar 2025 10:33:25 -0700 (PDT)
+ bh=9BwRoA7oTRcT6JM6li4ksH93g/lzuGyrL47Y1tS2mqU=;
+ b=Ky3SfZsfhcW+7tosiidva3NwQx66khTkMtrofVmUv6SLtUNaa/KNGVvQXUHeGRwqdi
+ w/in0yxdJSeREPMCE3zn4nwf+ZgM8Zg9/Q82o4RmgGnN3pSVYfF1d2ADJeEQfeBkxU2a
+ 6n85cub5Fb3zwTbu2UB6l2VK1P6BsQvTywR3qd1NtZoRT/ixCeNj9n3oGo6yGcLhb7WZ
+ vmlYWilzyJA07pJCbWLgeRDrrZGmJqZeC3zXIQ6yGwoW0Boz0NGzeJM83NCu7OFUw/X7
+ jKyR1E3dZRtS7s/LEGEtbC59o8hn1dUi1NLLVRttkpoTClLAOcwg3SH9UnYZSam8bE3q
+ kFJQ==
+X-Gm-Message-State: AOJu0YyFT8dQuE6oxvjotC7zJS7fqJXe1kgFyIomrLnGMrkEXXR0PUoN
+ 29mXRy8kz9V3X/lRPJYmFUO3ibaM9u1RfXiDOSot0gZzmxiq3ihjGtOr8oIY
+X-Gm-Gg: ASbGncs0S7ahuQ6EP+e1nVay/iM3dcSGKeB+1/4q8+m/5gey+iTYDQ1cQi7VYMBBhNG
+ qt1Hk2+tdafOgemidsEUfjT5ae1o4iC+JOnwBL2m3+HevLn4hRZzrrrL3jxDoovlDOOJPzWzRDF
+ JyRU3rR3M0xnYLLHOg7N741B0wQVun49AaVf8u3GwsqguJKcltfyu0XeFax0TgD1grCAE3E22O2
+ 9MiOOjdEeXh/tw9fbBAH2UGKtaJypa1Lavt9O93KXTU5DO3y6pSHcl60JX/TTXYUFCjtaxPqFA7
+ XAJwkVl8Syas+LLetwykLYB58j1DkAS9QAfAX/ZLSYAq
+X-Google-Smtp-Source: AGHT+IGPVHVwsscHHrFAxII1OoxX/RIzSkQHxtpPaqkSKaWRHT0kZljWKn41ehptZlfUGXqJxEKh7Q==
+X-Received: by 2002:a05:600c:5599:b0:43c:fa24:8721 with SMTP id
+ 5b1f17b1804b1-43d0ac5266dmr59258045e9.17.1741887208316; 
+ Thu, 13 Mar 2025 10:33:28 -0700 (PDT)
 Received: from fedora.. ([94.73.34.87]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.24
+ 5b1f17b1804b1-43d18a2aab1sm27172625e9.31.2025.03.13.10.33.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 10:33:24 -0700 (PDT)
+ Thu, 13 Mar 2025 10:33:27 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com,
- =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
- Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
-Subject: [PATCH i-g-t v2 02/43] lib/igt_debugfs: Move is_mountpoint() to
- igt_aux
-Date: Thu, 13 Mar 2025 18:32:37 +0100
-Message-ID: <20250313173318.5818-3-jose.exposito89@gmail.com>
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v2 05/43] lib/vkms: Allow to enable/disable VKMS devices
+Date: Thu, 13 Mar 2025 18:32:40 +0100
+Message-ID: <20250313173318.5818-6-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313173318.5818-1-jose.exposito89@gmail.com>
 References: <20250313173318.5818-1-jose.exposito89@gmail.com>
@@ -88,122 +86,221 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename is_mountpoint() to igt_is_mountpoint() and make it available in
-igt_aux.h/c.
+Add helper to enable, disable and check the enabled status of a VKMS
+device and add a test to ensure that the default value is correctly set.
 
-Refactor, no functional change.
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Co-developed-by: Jim Shargo <jshargo@chromium.org>
-Signed-off-by: Jim Shargo <jshargo@chromium.org>
-Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
-Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/igt_aux.c     | 31 +++++++++++++++++++++++++++++++
- lib/igt_aux.h     |  2 ++
- lib/igt_debugfs.c | 29 ++---------------------------
- 3 files changed, 35 insertions(+), 27 deletions(-)
+ lib/igt_vkms.c             | 98 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_vkms.h             |  7 +++
+ tests/vkms/vkms_configfs.c | 18 +++++++
+ 3 files changed, 123 insertions(+)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index f5bf48da6..2905824a5 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -1374,6 +1374,37 @@ static bool get_process_ids(struct igt_process *prcs)
- 	return prcs->tid != 0;
+diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+index fa41f741e..1fd00afd7 100644
+--- a/lib/igt_vkms.c
++++ b/lib/igt_vkms.c
+@@ -7,7 +7,12 @@
+ 
+ #include <dirent.h>
+ #include <errno.h>
++#include <fcntl.h>
++#include <stddef.h>
++#include <stdio.h>
++#include <stdlib.h>
+ #include <string.h>
++#include <unistd.h>
+ 
+ #include <ftw.h>
+ #include <linux/limits.h>
+@@ -17,6 +22,7 @@
+ #include "igt_vkms.h"
+ 
+ #define VKMS_ROOT_DIR_NAME		"vkms"
++#define VKMS_FILE_ENABLED		"enabled"
+ 
+ /**
+  * SECTION:igt_vkms
+@@ -47,6 +53,50 @@ static const char *mount_vkms_configfs(void)
+ 	return vkms_root_path;
  }
  
-+/**
-+ * igt_is_mountpoint() - Check if a path is a mounted filesystem
-+ * @path: Root directory to test
-+ *
-+ * Returns: true if @path is the root of a mounted filesystem
-+ */
-+bool igt_is_mountpoint(const char *path)
++static int read_int(const char *path)
 +{
-+	char buf[strlen(path) + 4];
-+	struct stat st;
-+	dev_t dev;
++	FILE *file;
++	int value;
++	int ret;
 +
-+	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
-+	if (stat(buf, &st))
-+		return false;
++	file = fopen(path, "r");
++	igt_assert_f(file, "Error opening '%s'\n", path);
 +
-+	if (!S_ISDIR(st.st_mode))
-+		return false;
++	ret = fscanf(file, "%d", &value);
++	fclose(file);
++	igt_assert_f(ret == 1, "Error reading integer from '%s'\n", path);
 +
-+	dev = st.st_dev;
++	return value;
++}
 +
-+	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
-+	if (stat(buf, &st))
-+		return false;
++static bool read_bool(const char *path)
++{
++	int ret;
 +
-+	if (!S_ISDIR(st.st_mode))
-+		return false;
++	ret = read_int(path);
 +
-+	return dev != st.st_dev;
++	return !!ret;
++}
++
++static void write_int(const char *path, int value)
++{
++	FILE *file;
++	int ret;
++
++	file = fopen(path, "w");
++	igt_assert_f(file, "Error opening '%s'\n", path);
++
++	ret = fprintf(file, "%d", value);
++	igt_assert_f(ret >= 0, "Error writing to '%s'\n", path);
++
++	fclose(file);
++}
++
++static void write_bool(const char *path, bool value)
++{
++	write_int(path, value ? 1 : 0);
 +}
 +
  /**
-  * igt_is_process_running:
-  * @comm: Name of process in the form found in /proc/pid/comm (limited to 15
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index bfd83adca..e8a1788b2 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -314,6 +314,8 @@ double igt_stop_siglatency(struct igt_mean *result);
+  * igt_require_vkms_configfs:
+  *
+@@ -65,6 +115,22 @@ void igt_require_vkms_configfs(void)
+ 		closedir(dir);
+ }
  
- bool igt_allow_unlimited_files(void);
- 
-+bool igt_is_mountpoint(const char *path);
++/**
++ * igt_vkms_get_device_enabled_path:
++ * @dev: Device to get the enabled path from
++ * @path: Output path
++ * @len: Maximum @path length
++ *
++ * Returns the device "enabled" file path.
++ */
++void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len)
++{
++	int ret;
 +
- int igt_is_process_running(const char *comm);
- int igt_terminate_process(int sig, const char *comm);
- void igt_lsof(const char *dpath);
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 8ac215a76..210a9cea0 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -67,37 +67,12 @@
-  * General debugfs helpers
-  */
++	ret = snprintf(path, len, "%s/%s", dev->path, VKMS_FILE_ENABLED);
++	igt_assert(ret >= 0 && ret < len);
++}
++
+ /**
+  * igt_vkms_device_create:
+  * @name: VKMS device name
+@@ -167,6 +233,8 @@ void igt_vkms_device_destroy(igt_vkms_t *dev)
  
--static bool is_mountpoint(const char *path)
--{
--	char buf[strlen(path) + 4];
--	struct stat st;
--	dev_t dev;
--
--	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
--	if (stat(buf, &st))
--		return false;
--
--	if (!S_ISDIR(st.st_mode))
--		return false;
--
--	dev = st.st_dev;
--
--	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
--	if (stat(buf, &st))
--		return false;
--
--	if (!S_ISDIR(st.st_mode))
--		return false;
--
--	return dev != st.st_dev;
--}
--
- static const char *__igt_debugfs_mount(void)
+ 	igt_assert(dev);
+ 
++	igt_vkms_device_set_enabled(dev, false);
++
+ 	ret = remove_device_dir(dev);
+ 	igt_assert_f(ret == 0,
+ 		     "Unable to rmdir device directory '%s'. Got errno=%d (%s)\n",
+@@ -205,3 +273,33 @@ void igt_vkms_destroy_all_devices(void)
+ 
+ 	closedir(dir);
+ }
++
++/**
++ * igt_vkms_device_is_enabled:
++ * @dev: The device to check
++ *
++ * Indicate whether a VKMS device is enabled or not.
++ */
++bool igt_vkms_device_is_enabled(igt_vkms_t *dev)
++{
++	char path[PATH_MAX];
++
++	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
++
++	return read_bool(path);
++}
++
++/**
++ * igt_vkms_device_set_enabled:
++ * @dev: Device to enable or disable
++ *
++ * Enable or disable a VKMS device.
++ */
++void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
++{
++	char path[PATH_MAX];
++
++	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
++
++	write_bool(path, enabled);
++}
+diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+index 48c48f296..d3741b6ee 100644
+--- a/lib/igt_vkms.h
++++ b/lib/igt_vkms.h
+@@ -8,6 +8,8 @@
+ #ifndef __IGT_VKMS_H__
+ #define __IGT_VKMS_H__
+ 
++#include <stdbool.h>
++
+ /**
+  * igt_vkms_t:
+  * @path: VKMS root directory inside configfs mounted directory
+@@ -20,8 +22,13 @@ typedef struct igt_vkms {
+ 
+ void igt_require_vkms_configfs(void);
+ 
++void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len);
++
+ igt_vkms_t *igt_vkms_device_create(const char *name);
+ void igt_vkms_device_destroy(igt_vkms_t *dev);
+ void igt_vkms_destroy_all_devices(void);
+ 
++bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
++void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
++
+ #endif /* __IGT_VKMS_H__ */
+diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+index b942cec64..aa7cd9e4e 100644
+--- a/tests/vkms/vkms_configfs.c
++++ b/tests/vkms/vkms_configfs.c
+@@ -103,6 +103,23 @@ static void test_device_default_files(void)
+ 	igt_vkms_device_destroy(dev);
+ }
+ 
++/**
++ * SUBTEST: device-default-values
++ * Description: Check that the default values for the device are correct.
++ */
++
++static void test_device_default_values(void)
++{
++	igt_vkms_t *dev;
++
++	dev = igt_vkms_device_create(__func__);
++	igt_assert(dev);
++
++	igt_assert(!igt_vkms_device_is_enabled(dev));
++
++	igt_vkms_device_destroy(dev);
++}
++
+ igt_main
  {
--	if (is_mountpoint("/sys/kernel/debug"))
-+	if (igt_is_mountpoint("/sys/kernel/debug"))
- 		return "/sys/kernel/debug";
+ 	struct {
+@@ -110,6 +127,7 @@ igt_main
+ 		void (*fn)(void);
+ 	} tests[] = {
+ 		{ "device-default-files", test_device_default_files },
++		{ "device-default-values", test_device_default_values },
+ 	};
  
--	if (is_mountpoint("/debug"))
-+	if (igt_is_mountpoint("/debug"))
- 		return "/debug";
- 
- 	if (mount("debug", "/sys/kernel/debug", "debugfs", 0, 0))
+ 	igt_fixture {
 -- 
 2.48.1
 
