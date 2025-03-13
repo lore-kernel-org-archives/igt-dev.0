@@ -4,61 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 288A7C282DE
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 10:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBBF1C282DE
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Mar 2025 10:59:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D762510E834;
-	Thu, 13 Mar 2025 10:33:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97B7B10E838;
+	Thu, 13 Mar 2025 10:59:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mwmSRXG7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PcA9IG+F";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 642B110E834
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:33:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F3BD10E838
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Mar 2025 10:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741862006; x=1773398006;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=HfDajoL3BAuewPydVnwdfCoo1eYw/BAHaWg/VCjdLfk=;
- b=mwmSRXG7+mVw8CBywYT3mrY6SskgYd1U+i+juCigiP3WdzwwfcNpLyoq
- KnB5L4P1DW+3ja8zwzNrPyBAMWDNpqEMaT2PfAlR5YLPAE+bbBW5L+bXn
- jk1S/Ar48M4z6F54kc4t4+RTTAsZzNiTVIS5eiop/eRg0kKJ+pNnOX8By
- 7BkNKuUyDC+KdphGUXb5GW0eqs7yb91JLR7ADl2gOBWGeveyNFf/Qk35V
- LWj4tE0oV3z8TqoGYCIYemIoiNT4jAvxwHIP72H6TlY2Yf8/snnxc6zyv
- l3Hue3MnhfWw2vqEovu/8jT43Wk59tPb9mnh3mHD5LJlSjWMXb0x+x4Cx A==;
-X-CSE-ConnectionGUID: nEOchYGHSGiLj8L9ednGFw==
-X-CSE-MsgGUID: CPTP2scKRhKqu8YD93dDjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="43103399"
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="43103399"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2025 03:33:26 -0700
-X-CSE-ConnectionGUID: DffDlxgvQLaDgbqXGCeNLQ==
-X-CSE-MsgGUID: mAhe86C/TRiaAWceohMSBQ==
+ t=1741863544; x=1773399544;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=RF+yMzEul+aR+KLcjRHwkRSKBP79HLs9jOIhlEdtKZ0=;
+ b=PcA9IG+FtmfcwiKv4wnbR+gIREQF+wQWY04AOlUJ8k9CsP7jTgbrZwXu
+ x+l4Yxc6P3bvpGDIN0+OsXeqOaWx6UNid28HhT2qecV/UFAa1gjioDEQ9
+ pIZk5+5tQC7I1+DrielLK4UkFtQcwL8FlpjwtGAPWigDF+yKr90cw43rm
+ FvV2vO5YljgTVXENnnpAILDcPM3C+rbOOP7s4z/rYseOP8S98X60Jv0Wj
+ g2EvUsDN/mkD9mrClfZbiXeK5/++pN45yeMj/v9dbKIZ/wZlz6fPDO321
+ 9gKWhMwFSCqfeU0DbuIPvOYoz4Zq3UGh4VS0wROI22slJAz7U0SwhsdQB w==;
+X-CSE-ConnectionGUID: m/rN8mQDRzeH/yxDFl/2ZQ==
+X-CSE-MsgGUID: vOZTYUDPSASt2wRI6foryw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="43076718"
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="43076718"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2025 03:59:01 -0700
+X-CSE-ConnectionGUID: f78boOGxSzOm07wSDGCMtQ==
+X-CSE-MsgGUID: McMICEXqTYOPZTQf0Jg8Uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="120904510"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.3.119])
- ([10.246.3.119])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2025 03:33:24 -0700
-Message-ID: <c4cfe888-24e0-44d2-b8d8-f30a32e447cb@linux.intel.com>
-Date: Thu, 13 Mar 2025 11:33:22 +0100
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; d="scan'208";a="151762171"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 03:58:58 -0700
+Date: Thu, 13 Mar 2025 11:58:43 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
+ christian.koenig@amd.com, alexander.deucher@amd.com,
+ jesse.zhang@amd.com, harry.wentland@amd.com,
+ zbigniew.kempczynski@intel.com, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com
+Subject: Re: [PATCH i-g-t] runner/kmemleak: Remove unnecessary lseek() calls
+Message-ID: <20250313105843.pcqi7rfn3ffefvs5@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
+ christian.koenig@amd.com, alexander.deucher@amd.com,
+ jesse.zhang@amd.com, harry.wentland@amd.com,
+ zbigniew.kempczynski@intel.com, ryszard.knop@intel.com,
+ lucas.demarchi@intel.com, katarzyna.piecielska@intel.com
+References: <20250310200220.233045-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_pm: Add a check for power
- management capability
-To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-References: <20250311170144.602535-1-jakub1.kolakowski@intel.com>
- <20250311170144.602535-3-jakub1.kolakowski@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250311170144.602535-3-jakub1.kolakowski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250310200220.233045-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,98 +78,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-On 3/11/2025 6:01 PM, Jakub Kolakowski wrote:
-> Add a check for power management capability of device tested in tests
-> related to D-states. Currently if test is started on configuration
-> that does not support the PM capability it doesn't skip, instead
-> depending on test it may fail, abort or timeout.
-> With this change test will skip with a clear message why it did.
+Hi Peter,
+On 2025-03-10 at 21:02:20 +0100, Peter Senna Tschudin wrote:
+> Earlier versions of the code performed multiple read operations on the
+> kmemleak file without closing and reopening the file descriptor. To
+> handle this, lseek() was used to reset the read position.
 > 
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> However, the current implementation no longer requires these lseek()
+> calls, as the redundant read operations have been removed. This commit
+> eliminates the leftover lseek() calls that are now unnecessary.
+> 
+> Cc: vitaly.prosyak@amd.com
+> Cc: christian.koenig@amd.com
+> Cc: alexander.deucher@amd.com
+> Cc: jesse.zhang@amd.com
+> Cc: harry.wentland@amd.com
+> Cc: zbigniew.kempczynski@intel.com
+> Cc: kamil.konieczny@linux.intel.com
+> Cc: ryszard.knop@intel.com
+> Cc: lucas.demarchi@intel.com
+> Cc: katarzyna.piecielska@intel.com
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->   tests/intel/xe_pm.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
+>  runner/kmemleak.c | 9 ---------
+>  1 file changed, 9 deletions(-)
 > 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index c2026474d..25fc7bc9f 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -854,6 +854,8 @@ igt_main
->   
->   		for (const struct d_state *d = d_states; d->name; d++) {
->   			igt_subtest_f("%s-%s-basic-exec", s->name, d->name) {
-> +				igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
-
-Can we move the check to setup_d3 to avoid duplication ?
-
->   				igt_assert(setup_d3(device, d->state));
->   				test_exec(device, 1, 2, s->state, NO_RPM, 0);
->   				cleanup_d3(device);
-> @@ -870,18 +872,24 @@ igt_main
->   
->   	for (const struct d_state *d = d_states; d->name; d++) {
->   		igt_subtest_f("%s-basic", d->name) {
-> +			igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   			igt_assert(setup_d3(device, d->state));
->   			igt_assert(in_d3(device, d->state));
->   			cleanup_d3(device);
->   		}
->   
->   		igt_subtest_f("%s-basic-exec", d->name) {
-> +			igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   			igt_assert(setup_d3(device, d->state));
->   			test_exec(device, 1, 1, NO_SUSPEND, d->state, 0);
->   			cleanup_d3(device);
->   		}
->   
->   		igt_subtest_f("%s-multiple-execs", d->name) {
-> +			igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   			igt_assert(setup_d3(device, d->state));
->   			test_exec(device, 16, 32, NO_SUSPEND, d->state, 0);
->   			cleanup_d3(device);
-> @@ -890,6 +898,8 @@ igt_main
->   		igt_describe_f("Validate mmap memory mappings with system region,"
->   			       "when device along with parent bridge in %s", d->name);
->   		igt_subtest_f("%s-mmap-system", d->name) {
-> +			igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   			igt_assert(setup_d3(device, d->state));
->   			test_mmap(device, system_memory(device.fd_xe), 0,
->   				  READ, d->state);
-> @@ -903,6 +913,8 @@ igt_main
->   		igt_subtest_f("%s-mmap-vram", d->name) {
->   			int delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
->   
-> +			igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   			/* Give some auto suspend delay to validate rpm active during page fault */
->   			igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
->   			igt_assert(setup_d3(device, d->state));
-> @@ -919,6 +931,8 @@ igt_main
->   
->   		igt_describe_f("Validate the contents of mocs registers over %s state", d->name);
->   		igt_subtest_f("%s-mocs", d->name) {
-> +			igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   			igt_assert(setup_d3(device, d->state));
->   			test_mocs_suspend_resume(device, NO_SUSPEND, d->state);
->   			cleanup_d3(device);
-> @@ -928,6 +942,8 @@ igt_main
->   	igt_describe("Validate whether card is limited to d3hot,"
->   		     "if vram used > vram threshold");
->   	igt_subtest("vram-d3cold-threshold") {
-> +		igt_require_f(igt_is_pm_supported(device.pci_root),
-> +								"PCI power management capability not found\n");
->   		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
->   		igt_install_exit_handler(vram_d3cold_threshold_restore);
->   		test_vram_d3cold_threshold(device, sysfs_fd);
-
+> diff --git a/runner/kmemleak.c b/runner/kmemleak.c
+> index e1bfb65ba..e52bc12d5 100644
+> --- a/runner/kmemleak.c
+> +++ b/runner/kmemleak.c
+> @@ -116,9 +116,6 @@ static bool runner_kmemleak_found_leaks(void)
+>  
+>  	rlen = read(fd, buf, 1);
+>  
+> -	if (rlen == 1)
+> -		lseek(fd, 0, SEEK_SET);
+> -
+>  	close(fd);
+>  
+>  	return rlen == 1;
+> @@ -169,12 +166,6 @@ static bool runner_kmemleak_append_to(const char *last_test, int resdirfd,
+>  	if (kmemleakfd < 0)
+>  		return false;
+>  
+> -	/* Seek back to first byte */
+> -	if (lseek(kmemleakfd, 0, SEEK_SET) == (off_t)-1) {
+> -		close(kmemleakfd);
+> -		return false;
+> -	}
+> -
+>  	/* Open text file to append */
+>  	resfilefd = openat(resdirfd, KMEMLEAK_RESFILENAME,
+>  			   O_RDWR | O_CREAT | O_APPEND, 0666);
+> -- 
+> 2.34.1
+> 
