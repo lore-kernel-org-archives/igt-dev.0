@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ABB5C282EC
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 08:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D191C282EC
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 08:48:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D228710E378;
-	Fri, 14 Mar 2025 08:46:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30A0D10E97E;
+	Fri, 14 Mar 2025 08:48:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gHADD7dH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RKff/hj+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10E6110E378
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 08:46:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB88D10E115
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 08:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741942018; x=1773478018;
+ t=1741942135; x=1773478135;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=xLx/ap6V2eIyeZbgq6L3BpFkfxzdfH/4h1fy98OoHw4=;
- b=gHADD7dHpzjB9Bc0rOU6qiImfpLErzoIY6Hb+GjzWUKbM5tmj4epell3
- ITLmGM/E960H18cXVBsR4iCVoKSLtUE3M5IXxxCsRQIi517cL0WnmwtxX
- NOiFmpYCcdD+lYCnGc5uYZ405ihCJ1au/vfsttrP9aPEb6UVJYf4B24cA
- iqzdfbdK1kSoosDRxhnR0e5Vo09V7DCuz+Z7PHBj0+1jaRA4ML9WIdo6K
- LReq8RZPryHkv9mZaply3MBVCtSz2kJGOQ1IO4G+Ptw8yZMUI81nxoqc7
- Qi9prkbC8GS4pkTg9jd80R7Fbg+eQvLu3mSE4PSd+FPmkQbAWCwgNxzgg g==;
-X-CSE-ConnectionGUID: YyqWPKUQRR+SBSCQbzRGjA==
-X-CSE-MsgGUID: B7P8LW29Sh+an3dKZz44JQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="68452304"
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="68452304"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ bh=l7eFO9UTxpvJATQOSARx4ZMSQOSzROh0xOnoIp701oY=;
+ b=RKff/hj+cT8WmuDGi9FZokaDJbAGAJibIrYf+ivAQy4Xjb4u5s0sKKBO
+ 1TlMTaiTSEdA9P2HAkjN6bLzbARU3CI+TVMmX1Y+QIiphb08evV70ORZ6
+ 4BQyVcd0D9fisS36jQZSh6vXhOhjRIbKXF/h/R69Ao5ewB2GqOsErqHUm
+ XuHA9k6xr84uk1YDsVlscl6eEAYbMs7m147twaQHoRd02HomN0PXWMxeD
+ VBvtT5AqiFdhiiaUGKhx0F9fvGU6rC0Li+KaWcEyQH6HkD9O10qwmhTfr
+ 4AthEEesd3ulLq6Klm83BBtXFK9Q+6bWNmO5wG+c+rXZhljdMQps7lLHn Q==;
+X-CSE-ConnectionGUID: 1IJtNODzTxiSmEC5FeqKLA==
+X-CSE-MsgGUID: /whingHGRPChprL/zjhLRg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="68452740"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="68452740"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2025 01:46:57 -0700
-X-CSE-ConnectionGUID: YzvuyeEpSbqqv70tiXpayw==
-X-CSE-MsgGUID: b9xBlJeCQcmFg78jx2405A==
+ 14 Mar 2025 01:48:55 -0700
+X-CSE-ConnectionGUID: BO6qlRb6SAaERGSmu0RH8g==
+X-CSE-MsgGUID: uVXmjNQ0TmCIVTEmTxFD3Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="126270840"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 14 Mar 2025 01:46:57 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="121206815"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 14 Mar 2025 01:48:55 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 14 Mar 2025 01:46:56 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Fri, 14 Mar 2025 01:46:56 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.1.2507.44; Fri, 14 Mar 2025 01:48:54 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 14 Mar 2025 01:46:56 -0700
+ 15.2.1544.14 via Frontend Transport; Fri, 14 Mar 2025 01:48:54 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.171)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 14 Mar 2025 01:48:53 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MrXluln2MCT6G86/eOzQAz2IaUyXAtZO6XTwwG5nX6HlAN1pBMXdsb0x6YwlxziTePBBI1rUWwsOivDYVf/AKRfHjDF/KGb0zDdb9UaEe6+z/sQRZeQyEAi7FCkX5tMNFjeaUhtnVOHIvbh4PRcUHCfCgERpCr/k4T/UzgHoxjAVGqtYtjmjD/HN2Ukt1gs95LiMBKYVdgXdFMuIcwwBGOjhKtG9WEWlWSaB6UtWoTnHLNti1y42SDExnXjnIsPlNS58m00nZPlC+/8pQ65DFOkXLQoj5+fNAN95OiqSjSp6OoWJY3S5ynZB/x2/vajutsbxMHKPDzEkhTrdEcxUCA==
+ b=UfGyXf80PrFdCNM614wX1y7DvyJeIFJRI2klEcCIkPKGXZAPyaMsRTfCB0CRI12Xd+W9npjOHHAO5Rt1L4kUKdqxt3C6thdPHuPXEnmFQPLE7DbURoz5wLWIBOInNHAUnSPIshN1AuA4sdiPdRkZhJft/hTuNdUBe7ulzFza7LqdcDqAXMdNEfx4xCofMGXlQZxy20FNr7AjOXAoe9KwunZVGb8BtpxZjm14n2nMzIKI8NvrSj2Krak/8R3TkFYvcf0xwh1ewrrYoluqDDHotayTPeqv+O4ZFONzeuNy4LCYmF+23FiFbmehHHY1ztsiptdr165IgjH/AC0plh2wVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IjHZUe7LpWL60goaYWyyt4AlcsOPVVui3CNWiSZhUW4=;
- b=rtQJNQJnFo4/tbPlePfAnn7pqGERwzNKuVTgFQfKaBm+WveUMTrm0Nz6tYrPKF+8NSJ2at76s3WRC9tbJbnINlxbUdVA9LnOuJNmsuZvosY7wxSjwQRBfJa1MXaASZE/N1NfmHxGiud7WKPSALnFxJaGEs1ZthUgroXVIXNtlGc8uv/rCfY4QNWxnw2mhbZYe2uvQoY8TnOZutRnP6TXYTSyVbIAw1/CNSe1+nfH67ANVxsP7XKUzH0pqGscNrsiHUIzLWJB/8auYsoW27rJIKqF4hfvil2UomfNX9rVxYxlLN9Xo2gE5djARByQCXZ0yYSzNAEBhNuxCo974vFaRA==
+ bh=PaFZra+uD/nn7x7pPboeAmcGh2D+k653GBiBz5aey8A=;
+ b=NM1n4lXNFwzebX74WYmftBLP+XmR4n6qRYPtBuKmXuKYpEJZU2Ca0mZ3XRHVZNL8iIwMzKnGP+uT137QRl6WqMPfwzqVaScj88Vo9i25X9/y/aGLAg2Ua3uasdsIGSGRSBKDCoCpiKrDHwrgIBI4bYgu1xVqyf3mUOc6qhWR4Gcr7zaEx8e+coaFrZz+Or3+ITz8AhsIM9G81NBs1pWYKB4uQnk4gi9MtO3MiE6MZfZpM79Xp5NLIBwGe6Y7gM5EiUQtQlEy7kdbQrGx8hmRz2LWgx9udKSo0InvECkz8LMaEKaMlljTJWQF0a+E3r/PPXX1+DcTPUttKgNRV/7p6w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,114 +69,112 @@ Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
  by PH7PR11MB5765.namprd11.prod.outlook.com (2603:10b6:510:139::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.28; Fri, 14 Mar
- 2025 08:46:54 +0000
+ 2025 08:48:10 +0000
 Received: from CH0PR11MB5690.namprd11.prod.outlook.com
  ([fe80::6b98:f467:da49:e062]) by CH0PR11MB5690.namprd11.prod.outlook.com
  ([fe80::6b98:f467:da49:e062%6]) with mapi id 15.20.8511.026; Fri, 14 Mar 2025
- 08:46:53 +0000
-Message-ID: <dad47720-0fb7-4ed7-a8b2-f7c5445c46dc@intel.com>
-Date: Fri, 14 Mar 2025 14:16:47 +0530
+ 08:48:10 +0000
+Message-ID: <c93beaf8-f888-4473-82da-7e956346e3e9@intel.com>
+Date: Fri, 14 Mar 2025 14:18:04 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/kms_test_config: Add mandatory
- fields
+Subject: Re: [PATCH i-g-t 1/2] tests/kms: Align test documentation
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20250312092654.567154-1-swati2.sharma@intel.com>
- <20250312092654.567154-2-swati2.sharma@intel.com>
 Content-Language: en-US
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20250312092654.567154-2-swati2.sharma@intel.com>
+In-Reply-To: <20250312092654.567154-1-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0099.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:af::7) To CH0PR11MB5690.namprd11.prod.outlook.com
+X-ClientProxiedBy: MAXPR01CA0106.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::24) To CH0PR11MB5690.namprd11.prod.outlook.com
  (2603:10b6:610:ed::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|PH7PR11MB5765:EE_
-X-MS-Office365-Filtering-Correlation-Id: 893971da-9377-4d4e-ef0f-08dd62d4c4a8
+X-MS-Office365-Filtering-Correlation-Id: 60e0d417-a71e-4dce-740e-08dd62d4f29d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?V1ZReXVZVkp6NWN2RzJKUWlpRWFLSUhiU1B2eGFvT25nSmF2eFZpT1R4a1pG?=
- =?utf-8?B?cW5ueTh6NnVkWUtLSjk0Z3dHbTdXbENmdXJqcTJoN1o2OWZod2lNZkN3d2x2?=
- =?utf-8?B?dStJTVFHdjlCKzJPbCtLSGJzbWliVENqSllFcWdhN1JRR2dxei84NzRrQ3ZT?=
- =?utf-8?B?NmlKZ1IzQ2ROTTZ2UUFRVmpDWlRsUVBUaVVQbzhCMTFFK1I4cHVJdXowNEwv?=
- =?utf-8?B?V2dPa01EejJiVXpndEtsK3VhRXJHWkZodVZWWlhNZVo5cDVtSXZxL3RmTUVG?=
- =?utf-8?B?WTlEM2lIQ2p2NU96QVBNbC8rTUhMelF3K1MxUjhzQ1JTRVhOK3haUGl6NGkx?=
- =?utf-8?B?THZwNGFJSVFlZlNGNGNFWEZQM2FpY2ZNYUpYOGE2Z0ZVeGxhVUlhYXZ3ckR1?=
- =?utf-8?B?eTFwTnBIVHdidVdNU2dnamM4TjVwR2tSZ0Nidk1qTVhhS0JVdlRjTHVGNlpK?=
- =?utf-8?B?YWU4WExldml3QzVaMllrYmxnbUF3cUo4YXEwT05ndEhOTmxaZUl3RlE3cVR2?=
- =?utf-8?B?MmRpeG9qZkpXYlZ1ZDBtdWRCeU5kemJzSFI2UHZBRC9vaElteHVTbWNROXpa?=
- =?utf-8?B?ZUJqNWNjR3plRHoyQnFlSWtkWDM5MzA5bnN2Wnc2Mkl6VitVTDdWb2d2Sktt?=
- =?utf-8?B?V2ZCSDZHMk9lbFp6UzExNjhCSWszcjJpbTU0c0hmalkxU3dCbGNvbm94L0xU?=
- =?utf-8?B?VjVudjI5UWZVQWplamhZSVNTTFJlZDB5eWx1cWpiWU9neGhVY0VkVyt1dkd0?=
- =?utf-8?B?ZjJUR25hOVRwRk1oTWJ1OGZVT0RyZkpqRkp5SEcvekNHRlEvTkNKU2VnNHZj?=
- =?utf-8?B?TjAvZjc3TkxNRjl4K1NON3psWVMxb3ZZYkRQOEorYlMyeHVSeFR3eE1jczQr?=
- =?utf-8?B?cWRFR3oya2cyZVBhMTdBN3AxZTdRdU9kNW1yQ3NwempkTWRSb2djcUhoN1Vn?=
- =?utf-8?B?Y04wZVRteXl3TVpLalhTNzVBRThlWHVjd0FDOEcyNTdMOXBuMVp0MWV5U0lx?=
- =?utf-8?B?MXhhT1dsbWFJMFJqQXJiMVBjUngyRVB5aUJZODViL2lEK3BZemNBeHdiR0dJ?=
- =?utf-8?B?VytTdjUrc0ZzM1dOOE1ocDBBOThWTDJFSkVzeWJ1dVBQY1BBN2pPRU5sdFVr?=
- =?utf-8?B?VC9sRkkxcFl0ejF1ZnJ0ZVkvdnZJcjZteE51c1RxRUFOOXZnSmdhRHR1eHlh?=
- =?utf-8?B?RDloaTdyY2xSeVFIRExkZSt5aEErc0lPckF3RXFMNUMzSXFkOVNSN3VvTkNZ?=
- =?utf-8?B?NE1sTmxUdlIvbkpuTmxkUzYwZENtd2xuWTF4akNKcVJIUU15eGJLeEhseVo1?=
- =?utf-8?B?NURqblZzZ0N5SHI2NitycGRJaisrUWlwSUdPSDFCajBpci9BZzFzUHZYODNh?=
- =?utf-8?B?d2RBeTRBTE9pclpBN05xSFpyWXg2Skt6ZDV4TzJSSCt3Zld0NzcyUVRqMzF0?=
- =?utf-8?B?b0Q2ZHREdDRPNXlqTllvQ3NuRUNUVU4vSlZxS2FPc1Q2bTFRV0pPQnR0bFlQ?=
- =?utf-8?B?TGV2b2JaRmx1Ukg1WnZ0RTladG40Y2ZYdmpTNnhoc0xmWkNUSUl5RWgwbHhW?=
- =?utf-8?B?aDg5dkRDSUF2TTRLTnZqdzlINFordlpUQ1JCb08xRGFrL3pya2lmajdHa0tx?=
- =?utf-8?B?ZGVwb05jbWNvWWdQb2VLZ1prT2NHaDlEbVBaNGNFQ3dua1hKbi9ZYk9mM1lH?=
- =?utf-8?B?NDhRR0lnR1N5V3kvWTZ0dlVRcXFuM2tXeUNJWU1CZ1lOdmszWkdFbDRhMXBs?=
- =?utf-8?B?NkZQOE41TWMyY25ab283NCs5NGFHbWZScTVqemc4VlF2MC9rMkV6RzRuT3RG?=
- =?utf-8?B?ZTZRbDJJdCtZeEtBL3E0SGhzRWI5NTNqcFgzeEpaN05EU2hFdFVyb0RQUTFz?=
- =?utf-8?Q?iJ40ub7DJx3Y5?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?V0NwUFdOdDgyU1BaRUZTZTR5SEdrNEFhaFI4ZFJhZEZoZGxDM3I4L1YybmQy?=
+ =?utf-8?B?TGVSV0t0OVZ5NmVqdDltTW5XWVpzK201alR4cC9FWGN0c2pLSlNCZ0dJQjdw?=
+ =?utf-8?B?ZTZuSHI3RWRneFllOUlEOGw0RVQ2UklzeXM3OTh0MEhicnpmRVVLZ3U0MUJS?=
+ =?utf-8?B?TzZqMHU1d0tJa0xNd3VnUHZWYnlKcklCMzNnUkR4OEhFNlNpVThtQ29VejF2?=
+ =?utf-8?B?MTV1YTd1U0NCdkJNWVV5QUpzbmp3cTB0R3JDT2RQMk05a0JOelQvVU85UjUr?=
+ =?utf-8?B?ZklwMWRScmhhbXF1a0p3SXlaNGFJVklkQkNuVmg2QnZjNy9iUEsvVkxJZS9K?=
+ =?utf-8?B?bi9RQ3Fkc0FzN1p0V2dHanlaSFo4RGtYOTFGSENuMWZsN2x3d3hiMXVpdUhl?=
+ =?utf-8?B?Qm5KZUQ3NWxxZ2g2SVZ3R3Vpa0xxMmxRL09nN09EdUN1UzlUaDFkcldhaXcv?=
+ =?utf-8?B?bVNoT1F1cS9zdCt0MFlGRlQvbFhQOUk5akc0Y1ovZi96TUdtZXoraTZ1VVp1?=
+ =?utf-8?B?cUhBY0R4aCt4V2Z1NVpqMjVFQUQ2TDZlTmxGZW5mUmxobEFXa2RiZUMvQVBa?=
+ =?utf-8?B?dmVSYmdzQlo0d3E1RHRLRFFnSDdTQjdpVk5BMjRiclFJQkR2amlXZWZJK2Nw?=
+ =?utf-8?B?aHQwOGpCdDBXbStCazNmMjdSRlU2SHpIZktSV1V2dlZ4b0dyTDNnZHYwM2Mv?=
+ =?utf-8?B?dGg3UVd4bEV2V0J4K1pKSHNkeHFRTU00RWVwWTB1L2luU1FTdEhMRmMxalpi?=
+ =?utf-8?B?aUdvZzgxSHU4eXZ2OUVkSTR2eTB4NUFpWGdWS0Izbm9rYzVzeHVGbDdmSWtL?=
+ =?utf-8?B?Z25WNThGb2lQMVo3S256Q0lSSHp6dENETHlPK20wUTd1QXVaOWd1eEJPZ3pm?=
+ =?utf-8?B?MDRid1ZzUkp1d25lVFlHcU1IU3RRMWVmWTZSN0pIR3Rkak5vRVljdWRod3Ra?=
+ =?utf-8?B?OU5KelVEUEZnTUNaU2J4S3pHdmJNcTFnaDVsdVhJOG5XRE1nMVZxMzhKTW5x?=
+ =?utf-8?B?UXZmU1M5TTRrMHFoZlJiWjJNTXI1Y3RGTzc4VFFyRnZCVzgzaFFiK3FWT2x6?=
+ =?utf-8?B?bUNnWDZvS2JPTEdOMlZXRjU1bzdvTkNBdG9oSnRBa0NBUWZKdXhDd25TdmtU?=
+ =?utf-8?B?d0grais4cmRrWkl6V3BWaDk2aUkwNFJ2MWhVNVZMMHhwMGEycU9JaU93c0d2?=
+ =?utf-8?B?ZElUTjlXcmFndXpJU1NrSVRBQXduU3BJNm8vbnhpVkVmcGFYZnlNQ0ZTdVlV?=
+ =?utf-8?B?UnNzWlRHVVRRdExHZ01GZDEvak5Qd05MNkNXaERVc2R4aXBEZi83YXZIeHRr?=
+ =?utf-8?B?K0tnUmhzS3BMZnNhOVhhYkFuZ1hqakcweWZ6YW5FbGpmeEVsMWY1Zzdib2dr?=
+ =?utf-8?B?djNTRnZxNEN0T05VTVB4Y2VjZWpDVUFOWDJvdnVOTHdISkJMcWdXQ3llYjNZ?=
+ =?utf-8?B?c1UwSzFLNFdBS3BQWElpb2FmTi9yczZSNGlBTitwdUZWcGQ4eCtMcU5KYy95?=
+ =?utf-8?B?bUZ3OGtVL3NqRFpBbmNoSHpXM1FrQmsvbTdOVEMrZm0wMGFRMmZ2RUM5VFBm?=
+ =?utf-8?B?a0VaYS9OeS84L2VaZ1BQY2sxYUpWU0RuQXlWc3lWK0Y3L3FZamM1Y0lvbXdN?=
+ =?utf-8?B?Q1QxZjVmc1NkN2FOWXZSamhPYkYzbmFtLzIraUFUeDR5VndwaUtEVHR1bTdk?=
+ =?utf-8?B?OVNsMkFSaDdOVWY5Q09MNEZJOTlrMlptaytMaUg0MmNCVmFCNTVXOVE0bFlY?=
+ =?utf-8?B?eVplUU0yL0dvU2FJR2ZzUlUxMk5BN0F3TG1mcGtSR1dxanlSOXhyL0VaRllJ?=
+ =?utf-8?B?aFRlbmpPUVZQc1F1SmZleElxNVNLdzBsZFhCZ0xQUWdQVTByc1h2RjgwM001?=
+ =?utf-8?Q?x7ZGgynDpjauP?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MmxGd0ViR2RpY3Z0MlRLcEVySVNDNTd5RFJuZmJaRkFkR0ZSSytiWHVWbmtV?=
- =?utf-8?B?Mi8wdU5XUEdmL1g0WVFaUmZpT2ZsWjRnYnZjWjFxdEZnbGhZR2FRQ3FScDBj?=
- =?utf-8?B?REhRU2tOVkJjSkhXQTEvSk9UMG5EbVNSc0IzVnBVbTdRSXhUMWJDYldjWFN2?=
- =?utf-8?B?MU9rQjJ4WlJTdzBEam03Y0E3Rm5VYmhkbGVBazB0NlVWYUltWGJJZnpDNnpC?=
- =?utf-8?B?RzFybWtiNzJueVc1TU5ibmgrbW81WmVkWS9TcFl1WXFUSEIzY29lUTZxYWQr?=
- =?utf-8?B?V1VQNGpDYTRhM1MydjU1QU5KQmpyVnhld1k3b3VSaGdhMkJtUEZLN2RWazRm?=
- =?utf-8?B?czhhdmF6ejFFNUtIRjEvSkFUSkU2WU93WDNKc2s2TGxVc1AzcXFjOG40SSt3?=
- =?utf-8?B?ZmFBL3FTV29Xb05vSGZqTGQ4K084UDBGaUJuREJoQUlBQkJJMmROeWhpZGVy?=
- =?utf-8?B?NjEweWFFT0tUNUtIMHJ6NWlzN2NqUCtxNWN3RHRrYjI0dHhRdTFVR3l2VXhR?=
- =?utf-8?B?M3ZtcnhlOE9kSmtvdXJyUWtDS3kwYXRmdi81REJPc0JrMTRzdkU5WmpwUEQ3?=
- =?utf-8?B?Mzlnanp3eHFDV0g3TnI1eFRJdTJPYWk3cDFJWGl4cTFmR3FzQTBCWU9SS1NR?=
- =?utf-8?B?OWNiZXZPa2s0YWFNZkoxVXIreGd2b3VNdFhFNGNiMEwrN09zMWRzdXQ2eXU5?=
- =?utf-8?B?eXdiYnV0RTN4dlVLbnFNa2pWUjVFZHFxY2ZxV2MvZVZVQTBDVENGUUM3Y2oy?=
- =?utf-8?B?VlVxZFR6S2I1eVJObktiTmh5MTdHUjY4YjYzUTJtN2grQlVXQnUyS3NGRTlq?=
- =?utf-8?B?RzMvVzY4dDBIWlBSeVEvNW1GR1NQVUVSWFF1WkZ1UGZUQVJIQXBHbno4TFcz?=
- =?utf-8?B?bGRwZFpNdmY5elc3V0F2anNDYVBYT0ZmLzdVdHM3bDZmUzRqOWpRTkpzUnFP?=
- =?utf-8?B?Szh6N1pPNHBHSXYwU3FFa2pzSU5ueWxzZ2hTR0VqU0MrWm1MV25obVpUbzVL?=
- =?utf-8?B?dFdxTTRiK2N4dG1JcTRET1phQlBDUzRMaE1RVEZ5MnZUQjc2OUhmMHlLZjFD?=
- =?utf-8?B?UGNrcGVXRkFPT0Y0OGZ5eU5ITGF3cmwxRjFXb3BBZFBja3ZZRjR4WUluK2xN?=
- =?utf-8?B?WklwVUk5U3E5ZGw3MkIyZG5qTTN6c0NZVVF1K1J4c3RNbXgrTTV4RlNSSVVo?=
- =?utf-8?B?dk9MY0Z5dThoWldOVzhWekZBYmlzdFZKY1lscXV0WllmbHdma2pueURtUTdM?=
- =?utf-8?B?b0M3LzFxcTNpekN4TnRKL3hJdXllbXMyOXZ1Q0l3dUtYenJPaDVpc2pnRmpt?=
- =?utf-8?B?ZnM0d3hBNnpQUmlPWDAvZUJKVU9SckFDQ0lmNW9BdTl2a2twQ1JhNmw1NlRl?=
- =?utf-8?B?K2pqMFM3cy8rNVpBc0haSnZvcG9vWGltdlRFTWtpMFhza1pDOElreXpQcDBD?=
- =?utf-8?B?KzFXSGw1aGg3WHJEOC9LYXY5OW1aRnU3NGZOc1Q2UmdCcDRHUmF3UnFKODhm?=
- =?utf-8?B?aGhpZFZzbVgyTzk2NEFIQmRURzl2NmdWc1hES2MwelhvcnZpU3hKNFFWYXYy?=
- =?utf-8?B?Yk9saVgraCt2YkZvRHNBSFgrSkRnOHVkMHk3MlE4S2FnY1p5Zlc4WWFOQ01Z?=
- =?utf-8?B?L3RDQ1hGZm9kUjNLc3MwY2FiNnJWVm9neWM0Y2w0eGw0V25lMHRSSk5jSWZa?=
- =?utf-8?B?L3ZLMElueDVBTmUxYzh4ajNNTmk0dXpyVHBrd0gvOVRIbWE1TVBaakgrNnlr?=
- =?utf-8?B?bm5RQmFOZk5sOGxHTVpzSTZYdTlhK0VjeGwwTkxhUUp3VUtRSE5MMHlNS0Yv?=
- =?utf-8?B?Q3FZTmFaUXVhTjlLbTVENHRja2ROa1BIQ3FuOHR2QVdNTFJ2THhDbFVOKzln?=
- =?utf-8?B?VWo2aXhjSHR5Z3JYTDRlMFdUSy8vSkJlKzJsMWd6NkJqVWszaDBZLzRvS2Nn?=
- =?utf-8?B?b0dFWk45YjVaNlZ1MWd2aDlBVVJpT1BUWFpzbklVdHRCRFdpMWFCTi93Tlpq?=
- =?utf-8?B?WFIvZk9tNUNDeVVrdlgzZVBwVjJQU0taZDNGdFk3cThBWURyQXhyQXFhbjZx?=
- =?utf-8?B?SDd2U1FldkVaRDdPcTB6VE1ObUE5eDh2Rk5GZlZoUzB2OWZKMkFJZ1VKa2R5?=
- =?utf-8?Q?VNWyYdwqnAqlIoAVqnSp6GWZD?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 893971da-9377-4d4e-ef0f-08dd62d4c4a8
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T1BGcUhGTmY0aWNDenlHYWorNzhBUVNQamtiV3JweGxBcTZiQTFURGdCSGNQ?=
+ =?utf-8?B?cVo4TmpRUk80WFpzeGowQ1FCRTc4bmVCbTlJQUdQejZzSDNubitQUGJ2NzZ0?=
+ =?utf-8?B?Y2grTG40UEw5czAxczJVSHRYWUtwbjBiRnlaU3YvZVBDWTNzcjF6MlNCc0hB?=
+ =?utf-8?B?S0Q2eGtuTnYwNjhJR1RRUk90L3JEVTZMTUY3OVhFTXlOOEIxeXR4bFpUSExX?=
+ =?utf-8?B?Z2huOTVONTRBN1hnWTlBQVlMTisxS04zYkNaN1VsYStTK2R1VGhQdmhqYi9H?=
+ =?utf-8?B?SDdRN2tjdnozN2krSGFaTXpVTWVlSnlOZWg0cll1Q0VZREp2aGxROFFKMXNo?=
+ =?utf-8?B?UXlTc2Q2VWc5eGdhdnlPQjh6d1grVWNUY1JKVUJWa1UxY3hQYmxxSHNMR0ky?=
+ =?utf-8?B?Q1ZCYzFkcDdjUjd3bkZGTFBWZ3FkQ0VjQnplVmRyYytDNHBOcHM0ODBlWmpo?=
+ =?utf-8?B?b2c4MEF5djMza05zT2NGck9va29CMnFFek1aa0RWeXJud1VtcnhRTGwxTHJK?=
+ =?utf-8?B?a2c4RDdMZzZKQ3B5TFZwN3F0RzV6OCtlaXU5VWRRL2hxU1E3QmVkK3ljZFFi?=
+ =?utf-8?B?ZkpuODkrdWJEb0RKK2c2THZkaGdOeHdqcUpjSkQzWmpIeWs2REJpOGlucUVn?=
+ =?utf-8?B?TzNqVTVLNmlrTWNHRmQ5SUc2SFZvVXQzcTJjRmp6VVNKWGtFK2k1aUVPU0Zk?=
+ =?utf-8?B?WUhKajdJQUZ0dUg1bkNKR2E4QlFwODdYU0RrNmpvQVEvVVZ6TEhCSHJRb3Q3?=
+ =?utf-8?B?M3ZSZk9TdXZGWWtSZHg5aTVZYTJSNGhpbFhRSllFSW5mSGR6eHA4SEZYL2ll?=
+ =?utf-8?B?a0l3eWZQQUdxQ3pqdXVyaHg5UGRXZ1g1WkZ2b01oSWkrbWN1citFbGp1UWc4?=
+ =?utf-8?B?V0RQNGV2R0tGZWhRQnIyaHNLYlpWaHFJYjI1RjA5ZmMvekpjSkRRWWhZZGsx?=
+ =?utf-8?B?NWwvSDB5TGRsclFWclZFRTVEWUEzTHRXeWczcER0azNYVlBxRjUwc3YrZGpI?=
+ =?utf-8?B?UEV0eHRVbERKQlB5SnJhNVlSeVc5Y0JNY21jcGNyRkViTnl3NXJMeEhNUUx0?=
+ =?utf-8?B?eXRjeVQwa1ZnWFl6QkNFeW5iRmZzdmpTU28vb0pTN3BMY3o3YzI0Qy9DeGts?=
+ =?utf-8?B?d0IxUXJaZ0Q4cnN6eVZaUjFSeXk3cFZRNG9ndGZZczljS1F2MVhtWE0wQkRT?=
+ =?utf-8?B?N2o2QVQ4Q21wVUlBTTI3TWU4VGdVWC93R1RZYTZFajM1ZHNwbkhHcW1henI1?=
+ =?utf-8?B?R2NSd2t4SlpXb09YZ3FJdVUwSEZPOGF1cjdCQm82c3pjS1NJcG1kOU5oa3hi?=
+ =?utf-8?B?YVJoUWc3VU81aXJHT2ZJWUVsdEVieW8yQ20wbkU3L0VhSHRrWEtSSlJFRjhj?=
+ =?utf-8?B?Vm9vSDNhT1d6SnBvYncwQzVMK0tWSklCUUpzb3VrL01QU3JLUlhvWW1hWXh4?=
+ =?utf-8?B?cHNVRXVXdGdLdjd1a3N3bjd2QTRETWRRWjNpb3RoblozbmlFSUFDTmR1Sjlu?=
+ =?utf-8?B?QTlpTTMwOGJ0YVBOcVZzZVNYOG9FRk41Y0NHV1dOZnhnRzY2RG0vSkdWNzlt?=
+ =?utf-8?B?WXpsUkZSd3I3d0h5bW1oM3RMQ05vZUFIM09ENDNmZ0pqR0RHUWc4MVBlb2gz?=
+ =?utf-8?B?eDhhN1pGV0w2eUY5UmNWLzVmd0w1c2hDcUdselUzSW55N0VCQ0wxSDlMTFdK?=
+ =?utf-8?B?UStHSUpCOVpPaDRxQU9JL2VnZ28yU3lrcndjVDlkMG9TTUUyN2kxMldGMXZ3?=
+ =?utf-8?B?SmZWMGpFOXFHR3k5WWhpa29wSDA4emlrZEdqRDlXNkRnbkp1VkdJRnRRMVVP?=
+ =?utf-8?B?UDh3Vy9yU1RjMFFmVGxLbVE0QlpHcHBaRllpVGtjajM5SllRMmI4MFJZLytI?=
+ =?utf-8?B?WDlxRjYrbTNUR0VDUHlDUTNIb0F2THBuUlVVZWtpSGVtcUMrUWRiS0tyYXJx?=
+ =?utf-8?B?L1M2aEdYdGh1NEI4V3lXTFZQT2RPUVlXL2ZoYjFrSkx1NWJGOTBqcHI4eVZR?=
+ =?utf-8?B?QUUxb1dtamlycHJpUmNyQTRiZWxLc1g4RDB2bTY4WWEzODRXMnM5UCtmZkI3?=
+ =?utf-8?B?RkppUW5xWGRnWFI5T1EyVFMzZlZKWm90RDU4eUh5V0ZldDU0Y3IrbkNxRTZN?=
+ =?utf-8?Q?WEd5oOKw1lQ25fmgoUtTbdRNk?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60e0d417-a71e-4dce-740e-08dd62d4f29d
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 08:46:53.2182 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 08:48:10.3522 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8jUOqZU4n4zG0VFtuofYFNnag1XBD/nQSHaojXg223AGsneLGp3d7oNlkm1T+WYJRlJh8KZ6+LTTsWIc2vdr7g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6P2r6txQW9sagnIUELKESSh7Kt5UZWUw1tbi9fvaWLB6oGI8hJ8KtOHpPJhivxYPOSclZxG1Ki3DfzsYNErN2g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5765
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -196,66 +194,433 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 3/12/2025 2:56 PM, Swati Sharma wrote:
-> To maintain consistency across all KMS test documentation, lets
-> make few fields mandatory.
-> Let's follow the following pattern
+> Formatting of test documentation in few KMS tests differs from
+> the established pattern.
 >
 > 	/**
-> 	  * TEST: <test name>
-> 	  * Category: Display
-> 	  * Description: <test description>
-> 	  * Driver requirement: <i915/xe/i915, xe>
-> 	  * Mega feature: <mega feature name>
-> 	  *
-> 	  * SUBTEST: <subtest name>
-> 	  * Description: <subtest description>
+> 	 * TEST:
+> 	 * Category:
+> 	 * Description:
+> 	 * Driver requirement:
+> 	 * Mega feature:
+> 	 *
+> 	 * SUBTEST:
+> 	 * Description:
 > 	 */
-> TODO: Upstream documentation for mega feature
-
-Hi Swati,
-
-Since we're making mega feature mandatory in this patch, wouldn't it be 
-good to have the documentation for mega feature as part of the same 
-series and getting them merged together?
-
-Thanks,
-Karthik.B.S
+>
+> Also there is no need to duplicate documentation fields in subtests
+> if Category/Driver requirement/Mega feature are same for subtest
+> as for whole binary.
 >
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/intel/kms_test_config.json | 4 ++++
->   1 file changed, 4 insertions(+)
+>   tests/intel/kms_fb_coherency.c    | 4 ++--
+>   tests/intel/kms_fbcon_fbt.c       | 3 +--
+>   tests/intel/kms_fence_pin_leak.c  | 4 ++--
+>   tests/intel/kms_flip_tiling.c     | 4 ++--
+>   tests/intel/kms_mmap_write_crc.c  | 4 ++--
+>   tests/intel/kms_pipe_stress.c     | 3 ++-
+>   tests/intel/kms_pm_dc.c           | 1 +
+>   tests/intel/kms_pm_lpsp.c         | 2 +-
+>   tests/intel/kms_psr_stress_test.c | 3 +++
+>   tests/intel/kms_pwrite_crc.c      | 4 ++--
+>   tests/kms_3d.c                    | 4 ++--
+>   tests/kms_atomic_transition.c     | 3 +++
+>   tests/kms_concurrent.c            | 4 ++--
+>   tests/kms_dp_aux_dev.c            | 4 ++--
+>   tests/kms_flip_event_leak.c       | 4 ++--
+>   tests/kms_multipipe_modeset.c     | 4 ++--
+>   tests/kms_sysfs_edid_timing.c     | 4 ++--
+>   tests/kms_tv_load_detect.c        | 4 ++--
+>   tests/testdisplay.c               | 4 ++--
+>   19 files changed, 37 insertions(+), 30 deletions(-)
 >
-> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-> index e11c7f4fe..aeb16a94b 100644
-> --- a/tests/intel/kms_test_config.json
-> +++ b/tests/intel/kms_test_config.json
-> @@ -28,10 +28,12 @@
->               },
->               "Category": {
->                   "_properties_": {
-> +		    "mandatory": true,
->                       "description": "Contains the major group for the tested functionality 'Display'"
->                   },
->                   "Mega feature": {
->                       "_properties_": {
-> +			"mandatory": true,
->                           "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
->                       },
->                       "Functionality": {
-> @@ -44,6 +46,7 @@
->           },
->           "Driver requirement": {
->               "_properties_": {
-> +		"mandatory": true,
->                   "description": "Describes any Driver specific requrirement, like i915/xe."
->               }
->           },
-> @@ -59,6 +62,7 @@
->   	},
->           "Description": {
->               "_properties_": {
-> +		"mandatory": true,
->                   "description": "Provides a description for the test/subtest."
->               }
->           }
+> diff --git a/tests/intel/kms_fb_coherency.c b/tests/intel/kms_fb_coherency.c
+> index c5338568d..573037db1 100644
+> --- a/tests/intel/kms_fb_coherency.c
+> +++ b/tests/intel/kms_fb_coherency.c
+> @@ -7,6 +7,8 @@
+>    * TEST: kms_fb_coherency
+>    * Category: Display
+>    * Description: Exercise coherency of future scanout buffer objects
+> + * Mega feature: General Display Features
+> + * Driver requirement: i915, xe
+>    */
+>   
+>   #include <errno.h>
+> @@ -23,8 +25,6 @@
+>    * Description: Use display controller CRC hardware to validate (non)coherency
+>    *		of memset operations on future scanout buffer objects
+>    *		mmapped with different mmap methods and different caching modes.
+> - * Mega feature: General Display Features
+> - * Driver requirement: i915, xe
+>    */
+>   
+>   typedef struct {
+> diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
+> index 160f475f2..fedacec94 100644
+> --- a/tests/intel/kms_fbcon_fbt.c
+> +++ b/tests/intel/kms_fbcon_fbt.c
+> @@ -30,6 +30,7 @@
+>    * Description: Test the relationship between fbcon and the frontbuffer tracking
+>    *              infrastructure.
+>    * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -44,12 +45,10 @@
+>    * SUBTEST: fbc
+>    * Description: Test the relationship between fbcon and the frontbuffer tracking
+>    *              infrastructure with fbc enabled.
+> - * Mega feature: General Display Features
+>    *
+>    * SUBTEST: fbc-suspend
+>    * Description: Suspend test to validate  the relationship between fbcon and the
+>    *              frontbuffer tracking infrastructure with fbc enabled.
+> - * Mega feature: General Display Features
+>    *
+>    * SUBTEST: psr
+>    * Description: Test the relationship between fbcon and the frontbuffer tracking
+> diff --git a/tests/intel/kms_fence_pin_leak.c b/tests/intel/kms_fence_pin_leak.c
+> index ed064aba0..4c1ac2653 100644
+> --- a/tests/intel/kms_fence_pin_leak.c
+> +++ b/tests/intel/kms_fence_pin_leak.c
+> @@ -26,6 +26,8 @@
+>    * TEST: kms fence pin leak
+>    * Category: Display
+>    * Description: Exercises full ppgtt fence pin_count leak in the kernel.
+> + * Driver requirement: i915
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include <errno.h>
+> @@ -40,8 +42,6 @@
+>   /**
+>    * SUBTEST:
+>    * Description: Along with the modeset, validate fence pin_count leakage.
+> - * Driver requirement: i915
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Exercises full ppgtt fence pin_count leak in the "
+> diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
+> index 3880534a7..ff9ad1229 100644
+> --- a/tests/intel/kms_flip_tiling.c
+> +++ b/tests/intel/kms_flip_tiling.c
+> @@ -28,6 +28,8 @@
+>    * TEST: kms flip tiling
+>    * Category: Display
+>    * Description: Test page flips and tiling scenarios
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include <errno.h>
+> @@ -40,8 +42,6 @@
+>   /**
+>    * SUBTEST: flip-change-tiling
+>    * Description: Check pageflip between modifiers
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Test page flips and tiling scenarios");
+> diff --git a/tests/intel/kms_mmap_write_crc.c b/tests/intel/kms_mmap_write_crc.c
+> index 24b5c70f2..ddc5ed63e 100644
+> --- a/tests/intel/kms_mmap_write_crc.c
+> +++ b/tests/intel/kms_mmap_write_crc.c
+> @@ -29,6 +29,8 @@
+>    * Category: Display
+>    * Description: Use the display CRC support to validate mmap write to an already
+>    *              uncached future scanout buffer.
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include <errno.h>
+> @@ -48,8 +50,6 @@
+>   /**
+>    * SUBTEST: main
+>    * Description: Tests that caching mode has become UC/WT and flushed using mmap write
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION(
+> diff --git a/tests/intel/kms_pipe_stress.c b/tests/intel/kms_pipe_stress.c
+> index 5ac3ea7d2..296c93b58 100644
+> --- a/tests/intel/kms_pipe_stress.c
+> +++ b/tests/intel/kms_pipe_stress.c
+> @@ -21,10 +21,11 @@
+>   #include "xe/xe_query.h"
+>   /**
+>    * TEST: kms pipe stress
+> + * Category: Display
+>    * Description: Stress test how gpu and cpu behaves if maximum amount of
+>    *              planes, cpu and gpu utilization is achieved in order to reveal
+>    *              possible bandwidth/watermark and similar problems.
+> - * Category: Display
+> + * Driver requirement: i915, xe
+>    * Mega feature: General Display Features
+>    *
+>    * SUBTEST: stress-xrgb8888-untiled
+> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+> index 50473321a..cdac469e4 100644
+> --- a/tests/intel/kms_pm_dc.c
+> +++ b/tests/intel/kms_pm_dc.c
+> @@ -27,6 +27,7 @@
+>    * Category: Display
+>    * Description: Tests to validate display power DC states.
+>    * Driver requirement: i915, xe
+> + * Mega feature: Display Power Management
+>    */
+>   
+>   #include <errno.h>
+> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+> index 7ebff1062..771dc4134 100644
+> --- a/tests/intel/kms_pm_lpsp.c
+> +++ b/tests/intel/kms_pm_lpsp.c
+> @@ -28,6 +28,7 @@
+>    * TEST: kms pm lpsp
+>    * Category: Display
+>    * Description: These tests validates display Low Power Single Pipe configurations
+> + * Driver requirement: i915, xe
+>    * Mega feature: Display Power Management
+>    */
+>   
+> @@ -43,7 +44,6 @@
+>   /**
+>    * SUBTEST: kms-lpsp
+>    * Description: This test validates lpsp on all connected outputs on low power pipes
+> - * Driver requirement: i915, xe
+>    *
+>    * SUBTEST: screens-disabled
+>    * Description: This test validates lpsp while all crtc are disabled
+> diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
+> index 89dd377da..cc8155a75 100644
+> --- a/tests/intel/kms_psr_stress_test.c
+> +++ b/tests/intel/kms_psr_stress_test.c
+> @@ -2,6 +2,9 @@
+>   /**
+>    * TEST: kms psr stress test
+>    * Category: Display
+> + * Description: This test mixes page flips and frontbuffer writes in primary and overlay
+> + *              planes and expects that PSR stays active after each subtest without
+> + *              any warnings or underruns.
+>    * Driver requirement: i915, xe
+>    * Mega feature: PSR
+>    */
+> diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+> index b40a423b1..981d7b38e 100644
+> --- a/tests/intel/kms_pwrite_crc.c
+> +++ b/tests/intel/kms_pwrite_crc.c
+> @@ -26,6 +26,8 @@
+>    * TEST: kms pwrite crc
+>    * Category: Display
+>    * Description: Test to validate pwrite buffer using the display CRC
+> + * Driver requirement: i915
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -39,8 +41,6 @@
+>    * SUBTEST:
+>    * Description: Use the display CRC support to validate pwrite to an already
+>    *              uncached future scanout buffer.
+> - * Driver requirement: i915
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION(
+> diff --git a/tests/kms_3d.c b/tests/kms_3d.c
+> index bdbf389b4..31242c5f5 100644
+> --- a/tests/kms_3d.c
+> +++ b/tests/kms_3d.c
+> @@ -26,6 +26,8 @@
+>    * TEST: kms 3d
+>    * Category: Display
+>    * Description: Tests 3D mode setting.
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -34,8 +36,6 @@
+>   /**
+>    * SUBTEST:
+>    * Description: Tests 3D mode setting.
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Tests 3D mode setting.");
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> index 0342af206..2b64424ce 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -24,6 +24,9 @@
+>   /**
+>    * TEST: kms atomic transition
+>    * Category: Display
+> + * Description: This is a stress test, to ensure that all combinations of
+> + * 		atomic transitions work correctly. For i915/xe this will mainly be a
+> + * 		stress test on watermark calculations.
+>    * Driver requirement: i915, xe
+>    * Mega feature: General Display Features
+>    */
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 86e9eae67..4f16f8b89 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -27,6 +27,8 @@
+>    * Category: Display
+>    * Description: Test atomic mode setting concurrently with multiple planes and
+>    *              screen resolution
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -36,8 +38,6 @@
+>    * SUBTEST: multi-plane-atomic-lowres
+>    * Description: Test atomic mode setting concurrently with multiple planes and
+>    *              screen resolution.
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Test atomic mode setting concurrently with multiple planes and screen resolution");
+> diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
+> index 24cfdcb68..e74902111 100644
+> --- a/tests/kms_dp_aux_dev.c
+> +++ b/tests/kms_dp_aux_dev.c
+> @@ -26,6 +26,8 @@
+>    * TEST: kms dp aux dev
+>    * Category: Display
+>    * Description: Test that /dev/drm_dp_aux reads work
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "config.h"
+> @@ -41,8 +43,6 @@
+>   /**
+>    * SUBTEST:
+>    * Description: Test that /dev/drm_dp_aux reads work
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Test that /dev/drm_dp_aux reads work");
+> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+> index 56d5128b8..71b58b4df 100644
+> --- a/tests/kms_flip_event_leak.c
+> +++ b/tests/kms_flip_event_leak.c
+> @@ -26,6 +26,8 @@
+>    * TEST: kms flip event leak
+>    * Category: Display
+>    * Description: Test to validate flip event leak
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -43,8 +45,6 @@
+>    *              page flip event when the fd is closed before the flip has
+>    *              completed. The test itself won't fail even if the kernel leaks
+>    *              the event, but the resulting dmesg WARN will indicate a failure.
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   typedef struct {
+> diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
+> index 84c2c58f8..69dc62e38 100644
+> --- a/tests/kms_multipipe_modeset.c
+> +++ b/tests/kms_multipipe_modeset.c
+> @@ -28,6 +28,8 @@
+>    * TEST: kms multipipe modeset
+>    * Category: Display
+>    * Description: Test simultaneous modeset on all the supported pipes
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -36,8 +38,6 @@
+>    * SUBTEST: basic-max-pipe-crc-check
+>    * Description: Verify if simultaneous modesets on all the supported pipes is
+>    *              successful. Validate using CRC verification
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Test simultaneous modeset on all the supported pipes");
+> diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
+> index b77ebc3d6..bb900d709 100644
+> --- a/tests/kms_sysfs_edid_timing.c
+> +++ b/tests/kms_sysfs_edid_timing.c
+> @@ -25,6 +25,8 @@
+>    * TEST: kms sysfs edid timing
+>    * Category: Display
+>    * Description: Test to check the time it takes to reprobe each connector.
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -41,8 +43,6 @@
+>    *              if the mean time it takes to reprobe one connector is too long.
+>    *              Additionally, make sure that the mean time for all connectors is
+>    *              not too long.
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   #define THRESHOLD_PER_CONNECTOR		150
+> diff --git a/tests/kms_tv_load_detect.c b/tests/kms_tv_load_detect.c
+> index a6dbb8823..03d0729ae 100644
+> --- a/tests/kms_tv_load_detect.c
+> +++ b/tests/kms_tv_load_detect.c
+> @@ -26,6 +26,8 @@
+>    * TEST: kms tv load detect
+>    * Category: Display
+>    * Description: Test to check tv load detection.
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "igt.h"
+> @@ -33,8 +35,6 @@
+>   /**
+>    * SUBTEST: load-detect
+>    * Description: Check tv load detection works correctly.
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Check tv load detection works correctly.");
+> diff --git a/tests/testdisplay.c b/tests/testdisplay.c
+> index d498eb04c..5131750ce 100644
+> --- a/tests/testdisplay.c
+> +++ b/tests/testdisplay.c
+> @@ -50,6 +50,8 @@
+>    * TEST: testdisplay
+>    * Category: Display
+>    * Description: Tests basic display functionality.
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+>    */
+>   
+>   #include "config.h"
+> @@ -80,8 +82,6 @@
+>    * SUBTEST:
+>    * Description: This test is intended for testing of display functionality like
+>    *              modeset, clone modes, test patterns & pixel generators etc..
+> - * Driver requirement: i915, xe
+> - * Mega feature: General Display Features
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Tests basic display functionality.");
