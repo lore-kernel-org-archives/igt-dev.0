@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AADEC35FF6
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 14:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93D9C282EC
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 14:59:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1DAB10EA0A;
-	Fri, 14 Mar 2025 14:59:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C2BA10EA0B;
+	Fri, 14 Mar 2025 14:59:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YfVR0vYb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R7vPt4Tu";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD05110EA04
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 14:59:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9195510EA0A
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 14:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741964371; x=1773500371;
+ t=1741964374; x=1773500374;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=8LmYE6CCpomZxpFys/fw28gc5yWaP2RDjTLD1gBfqmA=;
- b=YfVR0vYbfJDQzSOn1MQq4iS4uJcK3ObvvDbIKZr5endZhje5ihqbBFrQ
- xkWBlXDFWIhcpfrTtOlQk6dd1fBiwjwAjFp/JMBgYQmF5hrGnLV50GSEQ
- GgObfuf98AUoTFb/sBfP8RKUJGg0rlas38qrhK/WgZf1cyXLDCGNfjcKm
- J8C0JJnVzw/5rwO2G81j+yk+YzNIR9bAhsJPvp6ia+BUE8CGCgLrP/JXW
- S5uiXALaB6PQIbqfbx7C4QNMs5XKWmSrWpqaTUuSgJXUzz9rkdnQF99Gv
- 0R5b969ad35Nhyhq1vlSfAGM6y8q+UwtFpNqneWzhwjFZB+rG8kwjnlKg A==;
-X-CSE-ConnectionGUID: CZGwV6CbSYO/RXPucP6rYg==
-X-CSE-MsgGUID: NjxpCQ2YRduM/6A6y20uaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11373"; a="43025081"
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="43025081"
+ bh=PVSYC0qG+B4O3ETt6Fzip8XQC2KeXmqhyHw5wVCjiUk=;
+ b=R7vPt4TuMj5OjXjYJIDF9n5LY0P9lJOREmzTYvQLdUd87Iq/+8oKy1UK
+ DX2CEGFgq/mNvQyJ9zgRrAh55MFDJKSWmV/0AsOLNginr+JuIaWR30XmB
+ JwZbDtFye9LJNBoBfsKhcDR7D24oArzpePh1WYGmkv7zNqrqALiMziwjA
+ dbccAi3cpO+s6Md7vURs917+WVUXoN4vSQR5eOFNNFjzRiu9vh/EFoTXT
+ bFu44LEeFjpg3vEHzBEDkOPBicmX5tMQmK7reCCB9fiJ64Uh41LX0EFKy
+ lfHtwTb5Pe9DcufvGfK2iY34bZzYBLSrFjywxJvyR6z16P4hUXs69G0tm g==;
+X-CSE-ConnectionGUID: 9EjsyEDrRd22mEvMLjWBig==
+X-CSE-MsgGUID: WTosemCcThCw+FvsvAtMjg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11373"; a="43025090"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="43025090"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2025 07:59:31 -0700
-X-CSE-ConnectionGUID: U4b8xZW1SGyrMLw60cS8lA==
-X-CSE-MsgGUID: 3K6jRzhjTH2OxgVQHn+MSw==
+ 14 Mar 2025 07:59:33 -0700
+X-CSE-ConnectionGUID: 2cFgh90hQ5CC5gY294eU7A==
+X-CSE-MsgGUID: f7EGSVanRTK6McYMNato0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="126178694"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="126178704"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2025 07:59:29 -0700
+ 14 Mar 2025 07:59:32 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Fri, 14 Mar 2025 15:59:09 +0100
-Subject: [PATCH 2/4] scripts/generate_iga64_codes: make script less chatty
+Date: Fri, 14 Mar 2025 15:59:11 +0100
+Subject: [PATCH 4/4] scripts/generate_iga64_codes: remove parenthesis
+ around ARG macro body
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-iga64_misc-v1-2-b2d1337b808d@intel.com>
+Message-Id: <20250314-iga64_misc-v1-4-b2d1337b808d@intel.com>
 References: <20250314-iga64_misc-v1-0-b2d1337b808d@intel.com>
 In-Reply-To: <20250314-iga64_misc-v1-0-b2d1337b808d@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -55,18 +56,18 @@ Cc: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1786;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1077;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=8LmYE6CCpomZxpFys/fw28gc5yWaP2RDjTLD1gBfqmA=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBn1ERNPjqMd8R905bKdRDcINZKxdYAh4ok8pQvkpBc
- jp5tAA6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZ9RETQAKCRAjYrKT3hD91804DA
- C032pmrLBtRV77NANvTFaAIE8+vEiomb+5NfE5IpHM9csSFeqkSRlFnI9IsI5Tb2xzXFzKJXFBdmsK
- 5m/j0EPfrM2Vj+A4KFk26UgegT6ukveRvQhHzLyznpxxEgC7WBUftXMTwHtWxp6mkdnAClVfEHeboJ
- Ve19R6YZBq5nQhgSQg4RfeFgOU3aY3UfNlcoQDPqxgFjoQyIzOMvlvZ5TJY57tHmQ6Zr2dhRzDt6WE
- FlX9kJl9uVcs1zDo2asLvOgddSoRiYcEA+MoRPAPf4Fjz62+XDnSS2YNA0c0Lk7PTViW7NAUYO3m3N
- E7vkztzH/LCrb7EffzYGgQ/W441naDbfWLlZ2gx4xuuSn8XfvImBqf1iOsZZ/JISElNa5Z3WBp71uU
- P/B76qB9NH6IgpbNmWocHRFUuzzSiohsIq42XGx7sJXAtpA8kymlXVnakquabDCa9qANcsyVoofJ78
- fN69ujaoCecziHQsXbznL3ZSdA/7wYu44Ky5CvbNa7eqo=
+ bh=PVSYC0qG+B4O3ETt6Fzip8XQC2KeXmqhyHw5wVCjiUk=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBn1EROHqJanD159vH1ui0M+sowFk1QGWYyF0z7Ktvf
+ JK4usk6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZ9RETgAKCRAjYrKT3hD91+XKC/
+ 4oNZb/hgXcIJs5JVkY2eC/w2GGoz1AqKnFLvEdLlf8IOOt9Qmt/a8otjFKtNSang/jin3fwBAnNFra
+ GPMfPoRQWnczOznymnFL8FvYW2O/lClA1H1hyau4tFCVhfHPbgnRaBcDISkN6tD7ttumhkRXoMl5fg
+ Op/3xKb7GNzCnjgUByQ4QsSyG2SmPu9a7EVG2v0FZfzK/kuA9skDSvGUzMIVXP6KCgBSQAVaN4YfWX
+ 6TPhkYekvD6ZbsamEhJ3SEJqkNeOz+kdRwIWAqjxZWlrK+34Pei14rfMjGAiCu/K0csNX7xabQdElY
+ EcK6+VPvKPMHzFkDdI7LSGknIUZpxSk7dAXao0Gq/RN0Th6fRD4IMUoslIbab57BaAsVa9RNnL3N/7
+ jyzhgOcYftANLv7xRcLe7BKKbxfAvtGHggvSCE4FdshJ86cus/29Y/0tZPXemBnVze0BI/Guuo7G5G
+ rf7Fcib4BNRPyVJooqhW39Gf5dHP5j9UtFsaOw8MH6F+U=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -84,41 +85,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Script generated three redundant lines per compilation.
+Parenthesis around macro body were added to follow C conventions.
+For newer platforms they are not allowed in such context.
+For iga64 they do not change anything and can be omited.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- scripts/generate_iga64_codes | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ scripts/generate_iga64_codes | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
-index 3f207e9ff1a8..16bdc6fd6d0f 100755
+index bfef0e5c2853..1675ffe639b3 100755
 --- a/scripts/generate_iga64_codes
 +++ b/scripts/generate_iga64_codes
-@@ -96,7 +96,7 @@ compile_iga64() {
+@@ -92,7 +92,7 @@ EOF
+ # Compiles assembly to binary representation sent to stdout.
+ compile_iga64() {
+     cmd="cpp -P - -o $WD/$asm_name.$gen_name.asm"
+-    cmd+=" -DGEN_VER=$gen_ver -D'ARG(n)=($IGA64_ARG0 + (n))' -imacros $IGT_SRCDIR/lib/iga64_macros.h"
++    cmd+=" -DGEN_VER=$gen_ver -D'ARG(n)=$IGA64_ARG0 + n' -imacros $IGT_SRCDIR/lib/iga64_macros.h"
      eval "$cmd" <<<"$asm_body" || die "cpp error for $asm_name.$gen_name\ncmd: $cmd"
      cmd="iga64 -Xauto-deps -Wall -p=$gen_name"
      cmd+=" $WD/$asm_name.$gen_name.asm"
--    warn "$cmd"
-+    [ -n "$SHOW_CMD" ] && warn "$cmd"
-     eval "$cmd" || die "iga64 error for $asm_name.$gen_name\ncmd: $cmd"
- }
- 
-@@ -110,13 +110,12 @@ for asm in "${ASMS[@]}"; do
-     for gen in $GEN_VERSIONS; do
-         gen_ver="${gen%%:*}"
-         gen_name="${gen#*:}"
--        warn "Generating $asm_code for platform $gen_name"
-         # Verify generated code will not contain IGA64_ARGs.
-         for d in $(IGA64_ARG0=0 compile_iga64 | hexdump -v -e '1/4 "0x%08x\n"'); do
-             (( (d & IGA64_ARG_MASK) == IGA64_ARG0 )) || continue
-             die "Assembly for $asm_name.$gen_name contains instruction which compiles to $d, conflicts with IGA64_ARG0/mask $IGA64_ARG0/$IGA64_ARG_MASK\ncmd: $cmd"
-         done
--        compile_iga64 > "$WD/$asm_name.$gen_name.bin" || die "Cannot write to $WD/$asm_name.$gen_name.bin"
-+        SHOW_CMD=1 compile_iga64 > "$WD/$asm_name.$gen_name.bin" || die "Cannot write to $WD/$asm_name.$gen_name.bin"
-         code="$(hexdump -v -e '"\t\t" 4/4 "0x%08x, " "\n"' $WD/$asm_name.$gen_name.bin)"
-         [ -z "$cur_code" ] && cur_code="$code"
-         [ "$cur_code" != "$code" ] && {
 
 -- 
 2.34.1
