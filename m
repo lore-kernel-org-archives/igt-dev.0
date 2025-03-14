@@ -4,165 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A629DC282EC
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 14:19:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48F26C35FF1
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 14:46:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5995810E30F;
-	Fri, 14 Mar 2025 14:19:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0003110EA00;
+	Fri, 14 Mar 2025 14:46:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G7C68U/o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HfHSIZOx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FB8E10E30F
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 14:19:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 417B910EA00
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 14:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741961977; x=1773497977;
+ t=1741963577; x=1773499577;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=Q0p9uB9Lp8abVsLBwH+V4UKMMSY8W00A9pcA29cz3ng=;
- b=G7C68U/oEqk8cBI0VUocw2Z0g6QK3RWn4znEdPOWTmW++HkJV81uoC7+
- UlWhp/sa7zHjXJCFbBG2cPVxEiT0pFabU7nRzTq/ON4Hbz0T70uMSTeCL
- lvDARmithdxzdjsNCjzs+oobOUGcGZUWUjuFBXiiJgHpv7LTM3V5w9iMS
- KHbvibsG/r7M3bg1idjpmu2i6Rt/FZiVrnHyPu2QX+gXHmMtTH6uJTnjD
- r/FCwS9NGE5mhYIOVtZNfCfd39ZFF0EeyJka2Ptg+TORuhm6fxytkAFXn
- b8ThtfVQ0Y9kEup2keH0lQkH3F9HTk+X85IT9S6HRAvRrBuw1b68yOQSl Q==;
-X-CSE-ConnectionGUID: JXUa5MMtQEK4ipqrz4WnmQ==
-X-CSE-MsgGUID: Sf2eByw+SC6l9JV4Ytao7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11373"; a="60512929"
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="60512929"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2025 07:19:37 -0700
-X-CSE-ConnectionGUID: ssEI2XMDS8S0sBpIX4C7bQ==
-X-CSE-MsgGUID: UpPq5UnhQWOZFWyvXJcg+A==
+ bh=h+GlBOyIOhTQzI5Qt4VNUJgFVvEiSaWHEvXppf/h8Wg=;
+ b=HfHSIZOx5oToLnuPVd6z/dNWh3AlVT/40sverecdB4cmJM4blhaNfmlS
+ HwYQIrGcG3JVb08Lx6VvrQtYtIU2b0w9PM309+BFurPAkVO/hUTa2gHqk
+ zRvr5A2gpfRFtW59FkW+99/71o5GbbjxhLqjdXhkbaoJObtfP0hwaf2qt
+ QvhKJ3GXhE5gmsT2KNETSuNJlIBM2T1tAjZAlRFpcWYBu9F0hO5iLfx1m
+ NFmObGuulfRRXNVCwShZl3wZ7mTx/3s08SJrhA5AfOurlVJ4UvsvgULtI
+ M+x98MbOr13x96BFKwFivJlapSfEZNSMNysDs0gH7Pdu4aLc/rJ/spKzT w==;
+X-CSE-ConnectionGUID: 8+2UkJO3TGSi+RcUyBOvXQ==
+X-CSE-MsgGUID: 276CMBJPSy27vnjmaEb2kg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11373"; a="42981339"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="42981339"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2025 07:46:16 -0700
+X-CSE-ConnectionGUID: GCx5HZHDSVy3xXRqwd3oqg==
+X-CSE-MsgGUID: fy1U4cD3RSqK4CKJf37XfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="126344666"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 14 Mar 2025 07:19:37 -0700
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="158452910"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2025 07:46:17 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 14 Mar 2025 07:19:36 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Fri, 14 Mar 2025 07:19:36 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.173)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.2.1544.14; Fri, 14 Mar 2025 07:46:16 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 14 Mar 2025 07:19:34 -0700
+ 15.2.1544.14 via Frontend Transport; Fri, 14 Mar 2025 07:46:16 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.44) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 14 Mar 2025 07:46:16 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TAL+PaSkwBFx0//s0CSSaJb0KN6/nimEK6XdItiFLMHAe8dpQI+Z3tSnY3EtYsGi9w8eIV78X9OlwQBrfitV/a3dOVLnbZAIin5auNgeknDNJuY8lBU2t0vXRbGGPRpBA1sFvw3kjKgwwXnIh6MFQvzyqJOjl7N/d5wxxp5BUdkVOn0aXmdWlHS9Bat7cYwYuKFo26nZN3yovFiV2EbQW8USTan1+j2qXuuJrygBAUySvi/hLCjbuQu8zvfC/bM7ThsUX+YKrtdPOrphxiAnWeRHtwPui3a3bwuQpCjZUNeaeTJ6/O0Aw19L6efxiOrh07njKjiaFj5VMmC9XaGLLw==
+ b=fiF61x58//Fsff/dNkh7sSWxkSBIx9PmLqQv3MzI1Rxi8HuuIOUBrcGKdKwxl2T30p7R9XQVL86LXEGiQ0ezlaLSlz+mbIpJHQBbcnmlaE0fHAEWDcksCXMiBzU+XNkKTL395EE0U3qHJk7KgV3wksYpNcFhkHkeX0XzDaMXvnD+pBTGAdRfmZCH8pYxae4DYVAUIRQWsWcd8pV/46PUwG84DgYwzJekZGcrPkNDrdUIHtz9lTwVXgLDmEnzLHach2ob2WQmTiuyscjhcXw4jvT64ttJnBrZvMbNGd4yxUjib00XGLs1kz9a4T+1voS6jQ7bYAF+0NZUI0nGf+HGpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EMbs2CeFA7NQgwdfb5yznD4XaXBkrahnAvHxQnCU7cw=;
- b=yIzG8gnGRMF/l33p9RrnHb1LBeR5kviZ+mlfJFP3A/ifF3N52nAnDMqZyqiZNaRrndmMA7deq6VH+c4+E8/I5hiCD7Xbb7WmLXrATMCRx+egelcsg+4qCsAgW/6NTtz7NmpH4TExD7R+EACowzq1AwFMSiHQV1V7tvDR/umalfjl1jiQRzqCv2lviX3SjItfMCv8XcC2QRcfmcBb2YSwE+ZJuQucZ56EYkYpiOcMdI73h2YKC17eqEVowUqoqA5Yps6NL7YEsZyvxUYorZ4yojvL/MD1/nHxBO+Y+tQppYufJDhu8xo2Iei6B4TrsboCjgSeRJkSG2y/dI+Ome3Wng==
+ bh=eONSv8OPoiGclTRepbj4TxSURCDwLTeyMWwDzGyx34w=;
+ b=aa95xw0t47ruopIhfDsFsrRfWiDHFf10Fg1tLBKUhPgPLm7vrReY1UG7jnYR/J07iw/OBuNnLh15/FV5UOELcainFO6tjD4A4ZYiaFcC3CE/4kcgzwlRP9HYuoIEbEWP+ItV5lgBzlR5ZyDTdhuaimR8RrBvvyZmAG8Bl8Bs2TAyL97Rt+0GG90w8Tl2DcJ5iLtV9NsyZq8rL780WGME+FSxn64lDslk0C8KAQk3CoX4eVwkKcOG0+kk+jc2mBqbzn8BCMtQGrbdR5jwNom51pvHXZJzIN55bs/s/0hz+ruCl67pGIt6Bhptg5CV/RdSr3eB/0oZI9JdDXP54oGFgg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by CY8PR11MB7777.namprd11.prod.outlook.com (2603:10b6:930:71::14)
+ by MW5PR11MB5930.namprd11.prod.outlook.com (2603:10b6:303:1a1::16)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.28; Fri, 14 Mar
- 2025 14:19:33 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Fri, 14 Mar
+ 2025 14:46:14 +0000
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44%3]) with mapi id 15.20.8534.027; Fri, 14 Mar 2025
- 14:19:33 +0000
-Date: Fri, 14 Mar 2025 09:19:30 -0500
+ 14:46:14 +0000
+Date: Fri, 14 Mar 2025 09:46:11 -0500
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, Satyanarayana K V P
  <satyanarayana.k.v.p@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kmod: Allow igt_kmod_unbind() on a
- specific device
-Message-ID: <ws4gvntawwjz7u56ltgkrotur3tfwfdq3muekmtxb5ukekd46u@n33gdlohxnx2>
+Subject: Re: [PATCH i-g-t 2/2] lib/igt_sysfs: Remove XE_SYSFS_DRIVER_UNBIND
+Message-ID: <ymljpacghshws4qbudrqmpp55sssjxggqevubeavimavqzgshn@575dnsxfj5d3>
 X-Patchwork-Hint: comment
 References: <20250314095701.581686-1-francois.dugast@intel.com>
- <20250314095701.581686-2-francois.dugast@intel.com>
+ <20250314095701.581686-3-francois.dugast@intel.com>
 Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250314095701.581686-2-francois.dugast@intel.com>
-X-ClientProxiedBy: MW4PR03CA0071.namprd03.prod.outlook.com
- (2603:10b6:303:b6::16) To CY5PR11MB6139.namprd11.prod.outlook.com
+In-Reply-To: <20250314095701.581686-3-francois.dugast@intel.com>
+X-ClientProxiedBy: MW4PR03CA0056.namprd03.prod.outlook.com
+ (2603:10b6:303:8e::31) To CY5PR11MB6139.namprd11.prod.outlook.com
  (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CY8PR11MB7777:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12a7329d-0084-464f-5c32-08dd63033dd0
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|MW5PR11MB5930:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4aeedd5b-2c63-4ab0-6392-08dd6306f820
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?VBiC0MPY5n6GTaSd3DArTsIeKFX5Uv09PldKu6tY6lrCY0Y1bmbSFmrpcVWw?=
- =?us-ascii?Q?jgUhsgPzR9WkER9aba/ko4DbegBKyVeTenzp0BPwBvpf78vMuKIID2HNDRLw?=
- =?us-ascii?Q?kFqAdFh3XoLAxNunVHmg1HDz0D2BAEPEVssry11K8ypK9LgteghKZ644AqaR?=
- =?us-ascii?Q?zfL9HV17IYWgX8OgU82aCSDyUSfKUsGse0WlBnltr+kAC7pI0nKnJrb/cPn0?=
- =?us-ascii?Q?t7KQae/HZX5YO+4cj9L0ee7I/WDIh+oILcV/DK5p6/d3DIsE1EAI21IC4Xmr?=
- =?us-ascii?Q?7ZbkBUM0MmEOC5utWGaAD0rI+sBYuXYJkQ9EXXmU5Rm547Pl/pvgMigKEVCH?=
- =?us-ascii?Q?+ly61mqBVoUjkIp5Tf/+/uZpN9rsEf2zi8YYB7b0tx1Rk2t6LOmssqCOhVRr?=
- =?us-ascii?Q?LxmkCNK6miXHYaAL3SnDvt3CqmUoYi0zPR257w66wRj58nheCbR+D4OiZE9L?=
- =?us-ascii?Q?uDbi/5rw+EYUvTATSJOVnaclZSL0p6B/kC5SOv1HGupiNkY8XCV64aF57vCM?=
- =?us-ascii?Q?iie+KCLBKl6nJkvxurhSNqNJQd7AIOf0A5UN66LAPoD7Qhaq4ouDH3kB+2lQ?=
- =?us-ascii?Q?UeIx/HQZ3mCLcGD59FC6iPnyiR0NEMGgWotaSkUkrunamnJ9MoleP8wr5RGg?=
- =?us-ascii?Q?pCXXwQkkQPpuuvNoDa8g30B0M02/KtFU+IuIrSIMQHUgRAM5IwRkmCO9VTF8?=
- =?us-ascii?Q?malH3xm8TVs4wz0Qj1XD4XrqgKHtuQPkt/cXAr/byWZbXopvKpAJPBYR9llH?=
- =?us-ascii?Q?L0+To/oUbMLHSTqN+tEdQ8LSM/4goWS5vAoSQOgmuJyw0GvieScdLOmGkwYU?=
- =?us-ascii?Q?97tK/6kmpzi3U/XIr1jZ9l0aQxHrm9DNs5SwtKnUKeI0xvX2s1f0yGNM+njR?=
- =?us-ascii?Q?6n+At/kakeiTMxvs28Vw+Mr+h5q2YS5gyPOD2yPOO4D8iqpk7GHerhSya4Ik?=
- =?us-ascii?Q?/F+lHGIWGQzCrddIrlrtQm1WH6Hvs3diwwbLQtI++KhLNCIQx5WmWHA6lRCk?=
- =?us-ascii?Q?Z4jSt72cvSRRI0M79h4nHFrabDoIl32Jogocu7LeFbATyjpvUR+HmkMNcro5?=
- =?us-ascii?Q?uoUusIrGy9FBfdC/og4HSfhQ44MI+skoUB1mtVhnwtjSYiTUDpczAj0nxban?=
- =?us-ascii?Q?EHhNmRx6Fj19MTKmsnYaFkf8dqnKiqqvh5wvPv2LJD2rxAtN8m8b65U7SQ5W?=
- =?us-ascii?Q?0SzByy2rgXI1K8L9wgB5N15An4dHh78N3RLtxE34n7s968ugqLwYsb2Oxcgi?=
- =?us-ascii?Q?6j3bsjctzSsSKIn/sjta7qxbU8qkeHXANQjePIMkIw1kO0Du/Anda0WDug2r?=
- =?us-ascii?Q?PyRNnaPJ0Qqn8DLaCmtO+mvUTQ/iPCmrMfr3HGCnfimp3LooHv6oVQhptqDs?=
- =?us-ascii?Q?HAkY+DB+Pa5dwdUstD9xN8ZSVHCX?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?EsS5TWiA7wn1+IiE3OfAMZ17VKpBWPW6WhrS/7dvn4xnlkKp7w5Kn8u//dQb?=
+ =?us-ascii?Q?qYB8D8to7uKRrMJr20FDFp81241XJpn4Jxd7q3lsGGmbTTLiO2hg+4OPVLTG?=
+ =?us-ascii?Q?Acc+7PQVOiTMd2bBs9zpjtI3lRKxcRkdHw9jhCa3fE0O6gE5ge5KX9wdVOXL?=
+ =?us-ascii?Q?azo1TZNCuBnOBxZqvYjsmEdG/mojRjQ1JfXQw8E1qk3qDDe6nZxvutMSJZIT?=
+ =?us-ascii?Q?OYJYndtncU0BBu670dZBgy1M3SMFOi4KBOD4ACRuKPGsrWTXGAte8vAv7gKE?=
+ =?us-ascii?Q?RGo9/NPkuBiBUQtlTPM2nVXaC06ZhbJdstGFdGLfVjZs73EnrkHYFUc371mY?=
+ =?us-ascii?Q?JD2pPqYsJmSlEmZGkPeIsRqrwEnmP7O00ziexFnfbPVjIuPdwORwCLiydecG?=
+ =?us-ascii?Q?pFkpiEuQcMbXDUh3B3rxsJFJ8a6Z/ot5WtzloBXJhfGEc3D1k+6SeEtiGflA?=
+ =?us-ascii?Q?TWEBpE9zDhwDN7e1+b6cACdWfJAg2O7U/nUxgu96gEDWF0zFBsLSFDuYgmjW?=
+ =?us-ascii?Q?DVI3oMKfAs1WVmdcrbXR6t4x57U8FtEm9xRB6J10B8XHQLoZC5qugtty0PF3?=
+ =?us-ascii?Q?6fQinvY94jn/2XLXAYXjsYiqCOzPrwOeC8aDBTf3YMuc+MZgsj9Bejku+Y+r?=
+ =?us-ascii?Q?eB4+BtiKJvDBSIY9jvAdRF8nfuAr3jGtFR5hyd3nL2o8j66SZlVznaZIXPJ6?=
+ =?us-ascii?Q?smq4pZWag0FxOdKj7ILad72sgqpA/nB6kNHFF9FRKosv9dhblWjxdOn/YvBF?=
+ =?us-ascii?Q?FCUQBRgYgL/7dUSywQwmSoCCCPZHpoEhS02zt8r3LL/1vKeCNjXTlQgzSbmd?=
+ =?us-ascii?Q?MbEntq5P7lF5PAHf05kgrGK/L/nu3Yg5sw7Buz6o1WOCX36ZILqPzPrQkACz?=
+ =?us-ascii?Q?gLEmaPfADSra3CGvRY9cLGUEIuMqd+v711aIZYyh2ZDoNrFz0aeqEBuHlw1Z?=
+ =?us-ascii?Q?3Fe0rFAjKH3Qd0pfA7h9lmHhE+MZZ3WOJLsCQ9jdjir7FEZcHB5WE58+pUWX?=
+ =?us-ascii?Q?fZQXfxcPE4lHsD6QsN5SjL10mqpaUYTbo1pL9/JNpDIck+f5lw1+7BE9mAKG?=
+ =?us-ascii?Q?zKwaCCfvHTMT/td+kPbgiYuLrFfLmzVZt1o0Cx3WEmR64CmiFpi1AbGcGVls?=
+ =?us-ascii?Q?r7wKwxWCIcZkU7YX7Vy54lTWnPBP4ij2txQ5EagPanyktX14wCGaEPYKPVF8?=
+ =?us-ascii?Q?Eq68Gn8kWc3Lagmr6g3XnuYxdoM2EDONFXsIF1K94linRQ02wz3Kk4wLYVxh?=
+ =?us-ascii?Q?SI9Alo58/UKKZn8tjliBJ1ulVsiKPrvds7YV8cSE6aKF60WkoXhU5zuPt1wq?=
+ =?us-ascii?Q?v4lhbF6Ni1CGl68VsouyG0xdR0CNkV3OCuxuhsCWZkPqjhOVaChNWD9/KUpo?=
+ =?us-ascii?Q?KnXJ/cCr5zY25clPMjXSr2Wwh2oT?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?26C8jPMmHFj4upRGd6/GGBPOhcJ8zTsjhqPA4ChfTOUom4XtQw2qYxDx24TN?=
- =?us-ascii?Q?9vJCq1OxmkMHNAmGXvlEmhsJw5F4lUfJL/gnpog/gKpqiBQ87faW3H5yVqNg?=
- =?us-ascii?Q?lOWy7H8GodvR1qobx0NZikX8c8zQs1GrffavxOutkLx5S2V0PgNe6f+WG1rh?=
- =?us-ascii?Q?KhvYUGXiAsqfp0N1mlFZerv2xG4+xskDZ6kmmeQa+fmaMMdM68OhRrb3JmZM?=
- =?us-ascii?Q?DATalQuo+UkoX1WaTIR0L3aMaUNjYbBPnRL8YqyPSv1LxRX1I5tGlzezlzFC?=
- =?us-ascii?Q?owLaS16tiPT84KPV1NfvsialnwvyqAWBrZa6Jlwt1+qvC3gPBbPk0juWLX1P?=
- =?us-ascii?Q?V/R0VAYhtXLXUSA9LWA5uB9gVEWVVtY3yBnmH8tSSVXeqU2qrvX73GWHHle3?=
- =?us-ascii?Q?n3CZXzXfQ75lrnhAzHP8s6yAxX4RY2MixRyv6xwSYt8P+DIadOMCv+CsRwlR?=
- =?us-ascii?Q?T2E1Mrwz3P1TeNN3bgaD7Ky3P28ppjlJ9JL4E6y5t6kNcvaQLV3/M8G3tyNd?=
- =?us-ascii?Q?8DPyayvpmr33KfyHlTqfztiV3zTYiiGGkaC4RBw6l9i9caT9+M1fmRZkFX1j?=
- =?us-ascii?Q?v+fsrS5oVnp+zVQwDeI8Q33/mhLl+Ol7H7Kvbkqm6+FG694GTOLo0aF35n8z?=
- =?us-ascii?Q?et75WojB6GTWm6Btg2/5Y2AWO6mdq1pKiQRwYK6mNlFebcKy9RBRa7eTc0am?=
- =?us-ascii?Q?I+BItfX/jkFLpb/uYQ0R5BwVI0supMsnPHAm7R00C5lgKevgrmQzHbtH2b14?=
- =?us-ascii?Q?lw512LzgEob0Gx5+H3M2BcWK9n95Jc4sukwQL1AzlVLelHrZeI428oC/+f40?=
- =?us-ascii?Q?+lmp9zuoNuVJY64NaYZ7jWwFiNimg1INm6saBmMQMuO9EGKHxZKyG/a5t9Ny?=
- =?us-ascii?Q?0qgSBqLtco9071QFyZ2tpbQxa+6lmS+3rZwbc+dDz1zFmrrEtKBYzu+dYkqu?=
- =?us-ascii?Q?sICLAadgq02ifSZ7WaZRPYSOW4Vtasa49Om4iKAYxitDNAbQBnUARpD1Wbza?=
- =?us-ascii?Q?4ylg1tY8gHP7UBdxM1goFcm0k9khHesD/inMG3zKVklXKPoU6XMu4P2C//vX?=
- =?us-ascii?Q?cz7zjUEzsXSelkIQRFBUVzP8vWAr1skpQnRN393DafTsHMy3YoxafBhiimkB?=
- =?us-ascii?Q?/8YKput/jTrBLr0k41oHWaowm4epkxbkRq0v9dCxysMO2spgVjt6xWQM7x/0?=
- =?us-ascii?Q?bZl66VMQbG+9XUo2TrN8ItARHif/of7zpGoagB12QYqMGuxnWSgzIyBILvxZ?=
- =?us-ascii?Q?7rWRyokGcvQKNfbbbeAyDwq4sH0wg4UKBQt3bD22T1y1zvUKadLl38TRMf7+?=
- =?us-ascii?Q?iemrndxIsHpSpiEYCaKY+tidedwlrFF6hZyTrKcyO+MrC9vjHOrii2ljJb98?=
- =?us-ascii?Q?IaV5SkTdMRjcvo5BzteCkwesjRYdtRe2QDrYR7ow93RZ2vOvIyHWscawSY23?=
- =?us-ascii?Q?rjWIvWwgV+NuG3KwhBA6+zfAzZn4AJC0fENO9GzGVNX40ttR4Qt8yP5pmXoo?=
- =?us-ascii?Q?cu6G52v5+9SwvMmB8vciJHGKX01bvZC9XkTeIZOY7ijOuqOBkW3Lbj5bxvT5?=
- =?us-ascii?Q?mGR0J7bp82e1cWU2W2ZcdO1F5Jmumsc78ag7+5efTElO/d/qPRmsX7hC+5fB?=
- =?us-ascii?Q?IQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12a7329d-0084-464f-5c32-08dd63033dd0
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mYxxFI8eqZZCNqeiP4Oc+W9RTQhEpILx+lxkmQHmXruqNPFRR2L17lGSqVdn?=
+ =?us-ascii?Q?/xpZ3AiKv8xMfoNu3M9bahq+iC/xVPqu0CH+Ki1N++ASaYI8dMMNh/2BvEqD?=
+ =?us-ascii?Q?x+kCGKr+G664pgD8XgVAryvclbyyagNFv8nVMbcWyN7rX4RuGoRsT49rPgLw?=
+ =?us-ascii?Q?zw48PGn8n7hcJffHPk5NpqgMwqpu0i+G74RrsjwLWnX3wvofzuEn4mvxOAgl?=
+ =?us-ascii?Q?D8vTi7OYJJmqbLRMiBReSJfA44D3vmX5gjOgMWHng1aD6DmXrixiSBpBIVYO?=
+ =?us-ascii?Q?a/GRgCTRgKQvijRnaFsZJhEcN9IHKG3nrpeUH2QkKSXfW5LNcVYTDtF1nbc9?=
+ =?us-ascii?Q?vURfm03ALjMf4WDzSEHVdmoh3O8qOvIiUiTostZfu1lOOyn/q/fAOJB2F+Km?=
+ =?us-ascii?Q?LdEdOkD8OCy0GuwXQEQ6T2M/zs5bf9hxvCeDBomfyPxVMJ4oX0q4AmWb5IcB?=
+ =?us-ascii?Q?u/HuaSrwU8E+3Ni+YULde+it/E5/CnXWLL0OmOKm/3MC3lQsF18zmcc78MZy?=
+ =?us-ascii?Q?9pY0PIkgKP5x6OxGuk/t+ixRsCpKUqLgBtH9EFIJrTdWUsu389dvEcaP2642?=
+ =?us-ascii?Q?BJPNZhFhEGBYnFnw5TgkPYxkHm33zBCoaIY6RP5pxrCfDJdinMI67j+wByRM?=
+ =?us-ascii?Q?zGM3AwphSPQxRb1cbfl9cgVWoCYFZsQV1AaPgJJdnaeXvGXCHKwVe79jMJaY?=
+ =?us-ascii?Q?AOxa2kH8nNALtdF8o5XUdsq/o4gb03Cc4XJR6d0vVE9SVoaW1NaxX4jy6leC?=
+ =?us-ascii?Q?dzvtoYLfaWEIWbOK/c9oirJ9V6uXsF89YA/tNbs93aVA4CzYsWWs9EkFY+V9?=
+ =?us-ascii?Q?MimTCy881PCdrEowBn6DH+guQQ7klmbZcMy0UM+Xdtb91he9t52LREM6HWuq?=
+ =?us-ascii?Q?btAVFn0BTEYi+WruKFmm+Odk+ya8BHMPCLrO1Jrn4o6T3c3D1BHoic1DLQqT?=
+ =?us-ascii?Q?8ZDQtEZrAaFWOm7iwGURAliwVF5EugKB2SaDJAC2g9Mrkf2YlEliCvN/yVar?=
+ =?us-ascii?Q?d7wHGJ/GJllzbwkO78fUPxh0DoKy9xn9j7LrsYw3CFH155f4MHqyRbuRKiaj?=
+ =?us-ascii?Q?tVofgjKNaJSP2EsLOf8k+Z80pTqo8dfuAgb6h9lJs8VGRHlTBpMqtRNTo8i9?=
+ =?us-ascii?Q?FpAXKXKnqUu/DF66fqi26RH19+2Gx7FxZ22HAtheMXE/eL6mogXCwqjMd5VS?=
+ =?us-ascii?Q?/8mWYhGVfLpvG03HQ1jQehV1Z85MDHBgTmKk+ODyVZTqnq9jold1a0MKC87z?=
+ =?us-ascii?Q?6nw8HWggYshkeAlrp3oL33BOX3GSioP+3nGY2/op0+AtPtsx7KKzY78Ww8bE?=
+ =?us-ascii?Q?Wpgd6MzTO6QMEy02w/WhDa/Uy9KG1ogALI3WhvPXE9ZKh8ryEzL+FS4ikrvw?=
+ =?us-ascii?Q?ipCgbyPhhabrAWpEY1BHeDjpyO2iYXIRGtwQOrJwXF9G4J/UGlCSWp8YIrtb?=
+ =?us-ascii?Q?MRUc0TSXJt6yYefiywBo8ZR69LfFGoX2i4Qe+Jh/sOX6nkOb69EjZzDzj1z2?=
+ =?us-ascii?Q?p26bo5ncDKwn9XqOxBslwatcELcWTqrohwpM7Bvvu/Ea4ngViENFoiOKrUyZ?=
+ =?us-ascii?Q?tOBNJSiwbcTpkA98YF+edr5Oll99vTBoUwoU6nTp4OfgoM5V4v/0EAD7j4rf?=
+ =?us-ascii?Q?tQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4aeedd5b-2c63-4ab0-6392-08dd6306f820
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 14:19:33.1467 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 14:46:14.2451 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2wUNgvwQb/HUzOZbQNv+hl79D93YaOMv3kwQpCM3tXA44c09t7AafFOI1fCJAFaQAlUwvlZ0r4CL8mldygYfu31YJXm1ssfmw/b9PnDZO9o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7777
+X-MS-Exchange-CrossTenant-UserPrincipalName: xJSCU8sd1FgYlkrKBAqeOJUl9Quw1m7sKZZaS6EoFtB9TjjPmpFw0vb82mvdaGnVT5iW1qJ3Z8KbdRjAI275Y/m1zQE/W/uzAON8fBXvjcc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5930
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -179,97 +178,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 14, 2025 at 10:55:04AM +0100, Francois Dugast wrote:
->It can be that multiple devices are bound but we want to unbind only
->one of them. Add an optional parameter so specificy which device.
+On Fri, Mar 14, 2025 at 10:55:05AM +0100, Francois Dugast wrote:
+>xe_sysfs_driver_do() will be removed. The XE_SYSFS_DRIVER_UNBIND can
+>already be removed because a proper alternative is already in place,
+>so use it.
 >
 >Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 >Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 >Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 >---
-> lib/igt_kmod.c | 15 ++++++++++-----
-> lib/igt_kmod.h |  2 +-
-> 2 files changed, 11 insertions(+), 6 deletions(-)
+> lib/igt_sysfs.c                  | 4 ----
+> lib/igt_sysfs.h                  | 1 -
+> tests/intel/xe_fault_injection.c | 2 +-
+> 3 files changed, 1 insertion(+), 6 deletions(-)
 >
->diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
->index 524c1a632..f00f7dd15 100644
->--- a/lib/igt_kmod.c
->+++ b/lib/igt_kmod.c
->@@ -633,7 +633,7 @@ int __igt_intel_driver_unload(char **who, const char *driver)
-> 	}
+>diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+>index 2e4c2ee63..a76af54eb 100644
+>--- a/lib/igt_sysfs.c
+>+++ b/lib/igt_sysfs.c
+>@@ -1505,10 +1505,6 @@ int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_acti
+> 		igt_sysfs_set(sysfs, "bind", pci_slot);
+> 		close(sysfs);
+> 		break;
+>-	case XE_SYSFS_DRIVER_UNBIND:
+>-		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
+>-		close(sysfs);
+>-		break;
+> 	case XE_SYSFS_DRIVER_REBIND:
+> 		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
 >
-> 	if (igt_kmod_is_loaded(driver)) {
->-		igt_kmod_unbind(driver);
->+		igt_kmod_unbind(driver, NULL);
+>diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+>index 86345f3d1..5bc733168 100644
+>--- a/lib/igt_sysfs.h
+>+++ b/lib/igt_sysfs.h
+>@@ -186,7 +186,6 @@ int xe_sysfs_engine_open(int xe_device, int gt, int class);
+> enum xe_sysfs_driver_action {
+> 	XE_SYSFS_DRIVER_BIND,
+> 	XE_SYSFS_DRIVER_TRY_BIND,
+>-	XE_SYSFS_DRIVER_UNBIND,
+> 	XE_SYSFS_DRIVER_REBIND,
+> };
 >
-> 		ret = igt_kmod_unload(driver);
-> 		if (ret) {
->@@ -647,10 +647,14 @@ int __igt_intel_driver_unload(char **who, const char *driver)
-> 	return 0;
-> }
+>diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+>index 5409d19a6..6307e0277 100644
+>--- a/tests/intel/xe_fault_injection.c
+>+++ b/tests/intel/xe_fault_injection.c
+>@@ -394,7 +394,7 @@ igt_main
+> 					exec_queue_create_fail(fd, hwe, s->name, s->flags);
 >
->-/*
->+/**
->+ * igt_kmod_unbind:
->+ *
->  * Unbind driver from devices. Currently supports only PCI bus
->+ * @mod_name: name of the module to unbind
->+ * @pci_device: if provided, unbind only this device, otherwise unbind all devices
->  */
->-int igt_kmod_unbind(const char *mod_name)
->+int igt_kmod_unbind(const char *mod_name, const char *pci_device)
-> {
-> 	char path[PATH_MAX];
-> 	struct dirent *de;
->@@ -671,7 +675,8 @@ int igt_kmod_unbind(const char *mod_name)
-> 		int devfd;
-> 		bool ret;
->
->-		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
->+		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]) ||
->+		    (pci_device && strcmp(pci_device, de->d_name) != 0))
+> 	igt_fixture {
+>-		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
+>+		igt_kmod_unbind("xe", pci_slot);
 
-nit: I'd prefer to keep this in a separate `if` to make it easier to
-read as the reason to continue is very different, i.e.:
+I think this was wrong before... for this test we don't want to unbind
+with the fd still open. So this should be:
 
-		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
-			continue;
+		drm_close_driver(fd);
+		igt_kmod_unbind("xe", pci_slot);
 
-		if (pci_device && strcmp(pci_device, de->d_name) != 0))
-			continue;
+But also, I'm not sure what happens with these 3 fixtures we
+have in this test. When are they executed?
 
-other than that, lgtm.
-
-	Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-
-thanks
 Lucas De Marchi
-
-> 			continue;
->
-> 		devfd = openat(dirfd(dir), de->d_name, O_RDONLY | O_CLOEXEC);
->@@ -718,7 +723,7 @@ igt_intel_driver_unload(const char *driver)
->
-> int igt_xe_driver_unload(void)
-> {
->-	igt_kmod_unbind("xe");
->+	igt_kmod_unbind("xe", NULL);
->
-> 	igt_kmod_unload("xe");
-> 	if (igt_kmod_is_loaded("xe"))
->diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
->index 193b95627..170a8df9d 100644
->--- a/lib/igt_kmod.h
->+++ b/lib/igt_kmod.h
->@@ -36,7 +36,7 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
-> int igt_kmod_load(const char *mod_name, const char *opts);
-> int igt_kmod_unload(const char *mod_name);
->
->-int igt_kmod_unbind(const char *mod_name);
->+int igt_kmod_unbind(const char *mod_name, const char *pci_device);
->
-> int igt_audio_driver_unload(char **whom);
->
->-- 
->2.43.0
->
