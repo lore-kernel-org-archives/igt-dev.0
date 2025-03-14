@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2337C282EC
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 10:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86B48C282EC
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Mar 2025 11:37:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7B95A10E9C1;
-	Fri, 14 Mar 2025 10:57:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B2CD10E9D9;
+	Fri, 14 Mar 2025 11:37:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jFZ7pigV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X5OgcyGn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 355E910E9C1
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 10:57:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B558510E9D9
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Mar 2025 11:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741949827; x=1773485827;
+ t=1741952223; x=1773488223;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=sFzDVhMsR9cjoELlt76R13LF52odi01A06gvyKG57Cw=;
- b=jFZ7pigVg+T00EoLp/rA4RDxr3KzYJtZ6G1WXBJvNjodcueKQI8vx9TY
- GXKjb8mtNiPsXaiIr1TbgrE+aQbwrUBeYuSltnr8vSt7D7sQe75nwGM2p
- CDk5gltvjHJdla1UxW3RN7+AvEGIjDQ6cDiFmS3JhHFQjAJ2M4fQcHs9I
- eO/jCFxAYspeVBJIW0YuTHb9p3JpssyEUAGjeWJpLpR/I/VsVXq+nraIN
- vkTcY0U7QblALVl+tyXO/aVT16eOSY3M2us5w2GtRpE6O1PcouIjTIyDV
- zOS0zsJLRJox8nYS0a36bABX1e90i8DlJxmSmPhbfhbREP+lzxpQD/gxZ w==;
-X-CSE-ConnectionGUID: U8ME2Q3dSbiyIcFa5HmDlg==
-X-CSE-MsgGUID: Ldk9JvnTR5GItMrUAGIubw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="54467583"
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="54467583"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2025 03:57:07 -0700
-X-CSE-ConnectionGUID: YpFqvqbaTCKhsuJg6actmA==
-X-CSE-MsgGUID: c0pWAxPGRyOkB+PrePi2dA==
+ bh=EMWYcYl8/Y9DihGhauydFZR51ucE4SNM/zsxOU+rnL8=;
+ b=X5OgcyGnjuMVFoYv/dhISd8GrjhWdieW8VRV83OF0o8mOZLMNV/+YkYr
+ NdColDnya7z96ve7CiAN2AzECaTH6bOLj6gxLkKSwQxxI6CT968+SBe+N
+ yXCSgrTgXFKWUGLk33bwHNLmgvYJT+3mS0OLylIQ7grUaEg/9u0wuJbp/
+ YGOA26GzXqEahlSNJMqrZHBJ/RcTFrU5C83grz7BGYVJV46JOc/tTXZT2
+ 9v2voJzYVld0FaM5I3QVNvHNqU70DwZy7VU61/dnHx8aNQPkov6XE+Mef
+ DpNSuSA4HqVvCuw8p8U5saJOwZmHQEPrwYtZDUE1zT4mCNnr/avnj1kD/ g==;
+X-CSE-ConnectionGUID: D8E98PL2RgCOOgEniG3aQw==
+X-CSE-MsgGUID: GbhRuABPRaWtpqRRjwP8iQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="60497483"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="60497483"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2025 04:37:02 -0700
+X-CSE-ConnectionGUID: ftOSRtQcS+2z+5qQwWFU6g==
+X-CSE-MsgGUID: asw1SqqyQBKmJ253i4Irzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="120959414"
-Received: from dprybysh-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.246.175])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2025 03:57:05 -0700
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; d="scan'208";a="126293464"
+Received: from tmistat-dev.igk.intel.com ([10.211.135.226])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2025 04:37:00 -0700
+From: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: Add test for
- xe_hw_engine_class_sysfs
-Date: Fri, 14 Mar 2025 11:56:57 +0100
-Message-ID: <20250314105657.637898-1-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t v2 0/2] Add a check for power management PCI capability
+Date: Fri, 14 Mar 2025 11:27:30 +0000
+Message-Id: <20250314112732.795523-1-jakub1.kolakowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,58 +69,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test-with: https://lore.kernel.org/intel-xe/20250314105050.636983-1-francois.dugast@intel.com/
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_fault_injection.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+This patch series is introducing a helper for checking the presence of
+power management PCI capability and it utilizes this new helper in
+xe_pm tests that are related to D-states.
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 6307e0277..09b85afb4 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -158,19 +158,20 @@ static void set_retval(const char function_name[], long long retval)
-  * Functionality: fault
-  *
-  * arg[1]:
-- * @wait_for_lmem_ready:	wait_for_lmem_ready
-- * @xe_device_create:		xe_device_create
-- * @xe_ggtt_init_early:		xe_ggtt_init_early
-- * @xe_guc_ads_init:		xe_guc_ads_init
-- * @xe_guc_ct_init:		xe_guc_ct_init
-- * @xe_guc_log_init:		xe_guc_log_init
-- * @xe_guc_relay_init:		xe_guc_relay_init
-- * @xe_pm_init_early:		xe_pm_init_early
-- * @xe_sriov_init:		xe_sriov_init
-- * @xe_tile_init_early:		xe_tile_init_early
-- * @xe_uc_fw_init:		xe_uc_fw_init
-- * @xe_wa_init:			xe_wa_init
-- * @xe_wopcm_init:		xe_wopcm_init
-+ * @wait_for_lmem_ready:		wait_for_lmem_ready
-+ * @xe_add_hw_engine_class_defaults:	xe_add_hw_engine_class_defaults
-+ * @xe_device_create:			xe_device_create
-+ * @xe_ggtt_init_early:			xe_ggtt_init_early
-+ * @xe_guc_ads_init:			xe_guc_ads_init
-+ * @xe_guc_ct_init:			xe_guc_ct_init
-+ * @xe_guc_log_init:			xe_guc_log_init
-+ * @xe_guc_relay_init:			xe_guc_relay_init
-+ * @xe_pm_init_early:			xe_pm_init_early
-+ * @xe_sriov_init:			xe_sriov_init
-+ * @xe_tile_init_early:			xe_tile_init_early
-+ * @xe_uc_fw_init:			xe_uc_fw_init
-+ * @xe_wa_init:				xe_wa_init
-+ * @xe_wopcm_init:			xe_wopcm_init
-  */
- static void
- inject_fault_probe(int fd, char pci_slot[], const char function_name[])
-@@ -324,6 +325,7 @@ igt_main
- 		unsigned int flags;
- 	} probe_fail_functions[] = {
- 		{ "wait_for_lmem_ready" },
-+		{ "xe_add_hw_engine_class_defaults" },
- 		{ "xe_device_create" },
- 		{ "xe_ggtt_init_early" },
- 		{ "xe_guc_ads_init" },
+Introduce igt_has_pci_pm_capability(), a helper function to check
+whether a PCI device supports the PCI Power Management (PM) capability.
+With this helper one can make sure the capability is present on device
+under test before proceeding with any actions related to PM.
+
+Add a check for power management capability of device tested in tests
+related to D3 states. Currently if test is started on configuration
+that does not support the PM capability it doesn't skip, instead
+depending on test it may fail, abort or timeout.
+With this change test will skip with a clear message why it did.
+
+v2:
+- moved check for PCI PM capability to setup_d3() to avoid duplication
+- edited commit messages of both patches
+- changed description of helper function to indicate it is PCI capability
+- changed name of helper function to igt_has_pci_pm_capability()
+- shortened body of new helper without changing its functionality
+
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+
+Jakub Kolakowski (2):
+  lib/igt_pm: Introduce helper to check for PM capability
+  tests/intel/xe_pm: Add a check for power management capability
+
+ lib/igt_pm.c        | 18 ++++++++++++++++++
+ lib/igt_pm.h        |  1 +
+ tests/intel/xe_pm.c |  4 ++++
+ 3 files changed, 23 insertions(+)
+
 -- 
-2.43.0
+2.34.1
 
