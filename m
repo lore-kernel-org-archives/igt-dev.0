@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E86C35FF3
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Mar 2025 17:50:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93CDDC282EC
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Mar 2025 18:02:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E33EC10E43B;
-	Mon, 17 Mar 2025 17:50:55 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C154Rl3u";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE8AE10E43B
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Mar 2025 17:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742233855; x=1773769855;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7cx8RzHOlT5UTmvlyinEXp2FQZKs1sGrZGxmIKpUnag=;
- b=C154Rl3u3bA85iPOLTToCRUGg7G3M04E1z7CnHJXbC+gERwffosbOiWf
- WXYcuFtd5fIs+0ViBrKrdzQAFYKGXO06gv1PiShcZCemx1oi9Cs/0KTX1
- +fE79adZWpEJrO6kuziwM84pD1TNAoxRkU/cY7aWNRhw2eV0sO/NQQlOe
- oae3eb0dtLACbxvdJCo7pnEFGfrzVdc+K4tvGOr6a5rldYWRgTnC7ymi0
- 8+GzA/4xdGX6yi2j6XMeKLGx0r+4hBSVI7o7t9cVZ0ihiJ+ISUOKNkyXk
- bLP4+qPwiiXnO4ujRqkvov1pJJWf7UvxQ3WOpGVjkDpaHx4d6R3rWbsQY g==;
-X-CSE-ConnectionGUID: Aht2z1nHQ52qfaFDX054tw==
-X-CSE-MsgGUID: lEPNY3cLQ4+mDX8VRAkI6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="60878809"
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="60878809"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 10:50:55 -0700
-X-CSE-ConnectionGUID: Dihvo57QRy+qecxN97EaBA==
-X-CSE-MsgGUID: iR/oRQvGTduDRu5z63aO1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="121959347"
-Received: from tmistat-dev.igk.intel.com ([10.211.135.226])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 10:50:53 -0700
-From: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t v3 2/2] tests/intel/xe_pm: Add a check for power
- management capability
-Date: Mon, 17 Mar 2025 17:41:34 +0000
-Message-Id: <20250317174134.991555-3-jakub1.kolakowski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250317174134.991555-1-jakub1.kolakowski@intel.com>
-References: <20250317174134.991555-1-jakub1.kolakowski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30FE010E1A3;
+	Mon, 17 Mar 2025 18:02:11 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B79EE10E053;
+ Mon, 17 Mar 2025 18:02:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0070179183202218456=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Foa=3A_Keep?=
+ =?utf-8?q?_OA_user_buffer_size_dynamic?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sai Teja Pottumuttu" <sai.teja.pottumuttu@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 17 Mar 2025 18:02:10 -0000
+Message-ID: <174223453072.44217.11111367022998422136@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250317173028.3186378-1-sai.teja.pottumuttu@intel.com>
+In-Reply-To: <20250317173028.3186378-1-sai.teja.pottumuttu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,37 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check for power management capability of device tested in tests
-related to D3 states. Currently if test is started on configuration
-that does not support the PM capability it doesn't skip, instead
-depending on test it may fail, abort or timeout.
-With this change test will skip with a clear message why it did.
+--===============0070179183202218456==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
----
- tests/intel/xe_pm.c | 3 +++
- 1 file changed, 3 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index c2026474d..f3bfab50e 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -146,6 +146,9 @@ static void vram_d3cold_threshold_restore(int sig)
- 
- static bool setup_d3(device_t device, enum igt_acpi_d_state state)
- {
-+	igt_require_f(igt_has_pci_pm_capability(device.pci_root),
-+		      "PCI power management capability not found\n");
-+
- 	dpms_on_off(device, DRM_MODE_DPMS_OFF);
- 
- 	/*
--- 
-2.34.1
+Series: tests/intel/xe_oa: Keep OA user buffer size dynamic
+URL   : https://patchwork.freedesktop.org/series/146407/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8276_BAT -> XEIGTPW_12788_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12788_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_vm@shared-pde2-page:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#4491])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12788/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html
+
+  
+  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8276 -> IGTPW_12788
+
+  IGTPW_12788: 12788
+  IGT_8276: 8276
+  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12788/index.html
+
+--===============0070179183202218456==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_oa: Keep OA user buffer size dynamic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146407/">https://patchwork.freedesktop.org/series/146407/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12788/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12788/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8276_BAT -&gt; XEIGTPW_12788_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12788_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_vm@shared-pde2-page:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12788/bat-adlp-vf/igt@xe_vm@shared-pde2-page.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8276 -&gt; IGTPW_12788</li>
+</ul>
+<p>IGTPW_12788: 12788<br />
+  IGT_8276: 8276<br />
+  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c</p>
+
+</body>
+</html>
+
+--===============0070179183202218456==--
