@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FF3C28B28
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Mar 2025 10:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB9E1C282EC
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Mar 2025 10:30:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ADE3D10E0C4;
-	Mon, 17 Mar 2025 10:01:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5902510E101;
+	Mon, 17 Mar 2025 10:30:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B47j9xlK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PH7D7DkC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C39210E0C4
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Mar 2025 10:01:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 749AA10E0EF
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Mar 2025 10:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742205674; x=1773741674;
+ t=1742207412; x=1773743412;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=nqsP8pI7kwiHCOB9QOwJgVkG1lpbAHg6/v6tX+4ppWw=;
- b=B47j9xlKJS/l0trMcIEz1c4v77j8DGw1lgZEOA+zVQyFDQoVsAy+BGG4
- 1511a9Bl5dDd1eSqviJeL6Q28tmJrFRSa3TKU/q0I8o6EreUCPArgYWBt
- qn4Efqq6sWfKMGFMwye6KfPVy2i1awLV/ssKpe4Yo/m+U4VorGXLv9gSI
- ypMhqYEKYzy0WZTSF9vrdh5CpeGL8b29Lcf7a4XIrkBTHZgiD4rz/jpz1
- 3MZcZMerKXFcMdmXAJ4n4CfcbT1jnJ06sHEmwaCOuLyUtAmaSBVlEEXx0
- mcRt/i9zD3HbB/1CNOJlKLCZCDjpqoGrCsbTwFxPQya3OGtTqthwJHL/K Q==;
-X-CSE-ConnectionGUID: WqbiXaFMRmGsx5I3BOo1tw==
-X-CSE-MsgGUID: kZ9MpA0gRzKaUWkk7P1pyw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11375"; a="47187923"
-X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; d="scan'208";a="47187923"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 03:01:09 -0700
-X-CSE-ConnectionGUID: yqpZRx0sSeKiODBQBdSAbg==
-X-CSE-MsgGUID: N31b4do6Q4ac3ZL/LB/FiA==
+ bh=iptC0ocOeoO0B+VbF14Vodd9GfdLD8aTL6MrA1tWIv4=;
+ b=PH7D7DkCM/UFDr0NoYhlrVD042FTFK11xLSKIeUiVGoeDsev3+y41feP
+ xXdnanKmJEL4aqIw5rhxf7POJck9PsaNtO2k45ebFqflssDTSdWA06kqG
+ /G7vEc1iIbrypHAbNWsLC2oZVUT/876+d4o+7AufaaAo8Xvdmmn1k8UcQ
+ /283zrtjKzTtW6+3soYLaNfsGBku5ShkTEBPBo5RyFA70v86G18an0JAA
+ KA0L+IrFei80Mln04Lx6x6NF9vEggdDA9LIYS4Lk0vXddikrHCe9xTXGH
+ Kj/vDGHq4Jl5Mitfc3K5PozkdTuSO5q9onb+RVOE3kh+X/tbVjxUGLBsp Q==;
+X-CSE-ConnectionGUID: xlD7Tr4dQPiPK4hgox7ojA==
+X-CSE-MsgGUID: AH51cDGgSHyTS/OAhQ3dHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11375"; a="54291264"
+X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; d="scan'208";a="54291264"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2025 03:30:12 -0700
+X-CSE-ConnectionGUID: itw68klIS5GIqYx5cwgnLw==
+X-CSE-MsgGUID: 12mTYqcRT1ibTyUT+6FaJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; d="scan'208";a="121699434"
+X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; d="scan'208";a="121619885"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.7])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 03:01:08 -0700
-Date: Mon, 17 Mar 2025 11:01:08 +0100
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2025 03:30:10 -0700
+Date: Mon, 17 Mar 2025 11:30:09 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Subject: Re: [PATCH i-g-t] lib/intel_allocator_simple: Prevent deadlock due
  to log mutex contention
-Message-ID: <20250317100108.sleq5vnqe3pw2ftr@zkempczy-mobl2>
+Message-ID: <20250317103009.ygosappssb5iolc7@zkempczy-mobl2>
 References: <20250314115444.293063-1-mika.kuoppala@linux.intel.com>
  <20250317065215.oaw2cnj7zmty3zra@zkempczy-mobl2>
  <87h63sknu5.fsf@mkuoppal-desk>
@@ -77,56 +78,28 @@ On Mon, Mar 17, 2025 at 11:28:50AM +0200, Mika Kuoppala wrote:
 
 <cut>
 
-> Here is the proper callstack to be the last one:
-> 
-> #0  __libc_msgrcv (msgflg=0, msgtyp=<optimized out>, msgsz=64, msgp=0x7fff266abf50, msqid=11) at ../sysdeps/unix/sysv/linux/msgrcv.c:26
-> #1  __libc_msgrcv (msqid=11, msgp=msgp@entry=0x7fff266abf50, msgsz=msgsz@entry=64, msgtyp=41811, msgflg=msgflg@entry=0) at ../sysdeps/unix/sysv/linux/msgrcv.c:22
-> #2  0x00007f7195c7cbe5 in msgqueue_recv_resp (channel=<optimized out>, response=0x7fff266ac090) at ../lib/intel_allocator_msgchannel.c:162
-> #3  0x00007f7195c7ac94 in recv_resp (response=0x7fff266ac090, tid=<optimized out>, msgchan=0x7f7195d5b380 <msgqueue_channel>) at ../lib/intel_allocator.c:209
-> #4  send_req_recv_resp (response=0x7fff266ac090, request=0x7fff266ac0b0, msgchan=0x7f7195d5b380 <msgqueue_channel>) at ../lib/intel_allocator.c:458
-> #5  handle_request (req=req@entry=0x7fff266ac0b0, resp=resp@entry=0x7fff266ac090) at ../lib/intel_allocator.c:729
-> #6  0x00007f7195c7bce3 in intel_allocator_close (allocator_handle=263) at ../lib/intel_allocator.c:1088
-> #7  0x00007f7195c82cfe in intel_bb_destroy (ibb=ibb@entry=0x556bef15c4d0) at ../lib/intel_batchbuffer.c:1319
-> #8  0x0000556bbde692b7 in run_online_client (c=c@entry=0x556bef15b480) at ../tests/intel/xe_eudebug_online.c:1147
-> #9  0x00007f7195ceb8e9 in xe_eudebug_client_create (master_fd=master_fd@entry=3, work=work@entry=0x556bbde68de0 <run_online_client>, flags=flags@entry=16777216, data=data@entry=0x7f7195c00000)
->     at ../lib/xe/xe_eudebug.c:1421
-> #10 0x00007f7195cec0ad in xe_eudebug_session_create (fd=fd@entry=3, work=work@entry=0x556bbde68de0 <run_online_client>, flags=flags@entry=16777216,
->     test_private=test_private@entry=0x7f7195c00000) at ../lib/xe/xe_eudebug.c:1590
-> #11 0x0000556bbde6bfc1 in test_set_breakpoint_online_sigint_debugger (flags=16777216, hwe=0x556bef159ce8, fd=3) at ../tests/intel/xe_eudebug_online.c:1554
-> #12 __igt_unique____real_main2500 () at ../tests/intel/xe_eudebug_online.c:2525
-> #13 0x0000556bbde6704d in main (argc=<optimized out>, argv=<optimized
-> #out>) at ../tests/intel/xe_eudebug_online.c:2500
-> 
-> But indeed, this does not yet explain why wouldn't the handle_request()
-> manage to get the log mutex, manage to send response to the client and
-> make it proceed from intel_allocator_close().
-> 
-> I try to repro if I could figure out why they are waiting on the same
-> futex without progress.
-> 
-> Thanks for taking a look and sorry for confusion with the cutpaste.
-> -Mika
-> 
+> >> Here are the stacks for the deadlock:
+> >> 
+> >> 0  futex_wait (private=0, expected=2, futex_word=0x7f7195d5ff80 <log_buffer_mutex>) at ../sysdeps/nptl/futex-internal.h:146
 
-I'm going to check the msgqueue code, for me this looks suspicious as
-we stuck on msgrcv. BTW it's weird we stuck on locking log_buffer_mutex
-on the other thread.
+Only one scenario comes to my mind at the moment, it should be
+investigated. What if:
 
-Do you observe this issue as well if you compile IGT with 'debug'
-instead of 'debugrelease' in meson.build?
+1. main process creates a thread, this thread enters igt_log()
+   and grabs the lock - this might be intel_allocator code which
+   for multi-process is a dedicated thread which acts a server
+   for children (msgqueue send/recv allocation requests).
+
+2. main process calls fork(). What if this happens during
+   allocator called igt_log() and grabbed the lock. Forking
+   will copy locked mutex to child process and any call to
+   igt_log() in it deadlocks as this log_buffer_mutex is already
+   locked.
 
 --
 Zbigniew
 
-> 
-> >
-> > --
-> > Zbigniew
-> >
-> >> 
-> >> Here are the stacks for the deadlock:
-> >> 
-> >> 0  futex_wait (private=0, expected=2, futex_word=0x7f7195d5ff80 <log_buffer_mutex>) at ../sysdeps/nptl/futex-internal.h:146
+
 > >> 1  __GI___lll_lock_wait (futex=futex@entry=0x7f7195d5ff80 <log_buffer_mutex>, private=0) at ./nptl/lowlevellock.c:49
 > >> 2  0x00007f7195898002 in lll_mutex_lock_optimized (mutex=0x7f7195d5ff80 <log_buffer_mutex>) at ./nptl/pthread_mutex_lock.c:48
 > >> 3  ___pthread_mutex_lock (mutex=mutex@entry=0x7f7195d5ff80 <log_buffer_mutex>) at ./nptl/pthread_mutex_lock.c:93
