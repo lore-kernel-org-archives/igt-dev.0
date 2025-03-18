@@ -4,57 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FD19C28B28
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 09:54:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0632C282EC
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 10:16:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 150D910E360;
-	Tue, 18 Mar 2025 09:54:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64ACC10E461;
+	Tue, 18 Mar 2025 10:16:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J0bAQ5B9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PBCzZwzf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A183010E0A4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 09:54:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FCE810E461
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 10:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742291672; x=1773827672;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FfXjj5INS06dojWjzxfpPpMCuTJxdXPSbyG/ovhcTpQ=;
- b=J0bAQ5B9azli6HtVTIv7sRzlHlQFmH4Or8mVSskUzFFkGiMdmF0nQT1q
- YL9IoV6pDOGylZ0W10KX+HborPi6BSrHFIbTZMI76CTVvj5ahqwER2Mch
- aSVMPc5y+2MdZh39oIq2N38iR8zZxYRBWMDvqJ6IIqRCFkPlbP0slD8GA
- ltEwpcrKewLCwhiLtNuT2xTnFlVdO09eL9mf4zYDWMaH1t2ZBjSC3464N
- nRUGJ9GVkct979Ni4cPDogybbt8i3I4PKJ46DLsWqxiWUn/qaxmv+gpYg
- ndv0gVTyWzCtRo0HeLU0Zzze7mtFFaoDVkhbvyL5OeDE5jWR/RQ9skAwp w==;
-X-CSE-ConnectionGUID: GwXVzmRBSqCdXw5JqwjKYw==
-X-CSE-MsgGUID: kfugE4ZpRQayBMnBJ+24OQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="42671275"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="42671275"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 02:54:32 -0700
-X-CSE-ConnectionGUID: aSvTa1RCQi69JWXUIYkfsw==
-X-CSE-MsgGUID: ghscRFY8SU6K/80xz2A6zw==
+ t=1742292969; x=1773828969;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Bb9wT0mvkU3vHgBf08xVx0cu0CHZ+Fj0wx0qq63yW70=;
+ b=PBCzZwzfVYfO3UF9mtd9ay6cuVXOrh1HZixIB24r7/oxjXbsIQFo6EB3
+ JZSN+e8ZnzHmhsmnb1wsJpuC39hWuBYtYa4YD424TFzWRB3w0GWB48coh
+ cirgolriiXJltc415F3M2jOgk/SDu2InHA6JEUyIQwKmsTOtc9qepIL2k
+ b1yzEDYX7LklN8L2xYG9ZgtkFU/ViLJKpNcTF/qRXIpZBZMcSJjnrJ0KZ
+ HWYe4z7eVIUU6Tp9NGLpfvIsRf84VJ59wnPb6BOnlf0+JSDZLUmWU9n2U
+ jAoiX0EEASIKqw09CXmyAT6VGGv6Ck0BBJCmA19HnG/CKI//Qx6Kx5vnY Q==;
+X-CSE-ConnectionGUID: tFuI1XnVSzG4y/lne8SUiQ==
+X-CSE-MsgGUID: CUx9fOBuRDCQ7snLo6eOUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="43339191"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="43339191"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 03:16:08 -0700
+X-CSE-ConnectionGUID: sb96OLqESdmzXDGNxhMosw==
+X-CSE-MsgGUID: +pPCw1Z6T7yRsuRcqfVXyw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="121944398"
-Received: from unknown (HELO friendship7-home.clients.intel.com)
- ([10.245.252.104])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 02:54:30 -0700
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>, rodrigo.vivi@intel.com,
- katarzyna.piecielska@intel.com
-Subject: [PATCH i-g-t 1/1] tests/intel/xe_debugfs: Add tests to read all
- debugfs and sysfs files
-Date: Tue, 18 Mar 2025 10:53:50 +0100
-Message-Id: <20250318095350.57133-2-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250318095350.57133-1-peter.senna@linux.intel.com>
-References: <20250318095350.57133-1-peter.senna@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127403447"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.80.52])
+ ([10.245.80.52])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 03:16:07 -0700
+Message-ID: <6de7d748-d09e-4259-bc44-06d9f3d9f22e@linux.intel.com>
+Date: Tue, 18 Mar 2025 11:16:03 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/xe_pm: Add a check for power
+ management capability
+To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+References: <20250317174134.991555-1-jakub1.kolakowski@intel.com>
+ <20250317174134.991555-3-jakub1.kolakowski@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250317174134.991555-3-jakub1.kolakowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,144 +74,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The existing tests/intel/debugfs_test.c scans and reads all relevant
-files from sysfs and debugfs, but it is specific to i915, leaving a gap
-for Xe.
 
-A similar test exists for Xe in tests/intel/xe_debugfs.c, but it has two
-gaps compared to the i915 counterpart:
- - It lacks sysfs file testing.
- - It does not attempt to read all debugfs files.
 
-This commit addresses these gaps by adding two new tests to
-tests/intel/xe_debugfs.c:
- - sysfs_read_all_entries
- - debugfs_read_all_entries
+On 3/17/2025 6:41 PM, Jakub Kolakowski wrote:
+> Add a check for power management capability of device tested in tests
+> related to D3 states. Currently if test is started on configuration
+> that does not support the PM capability it doesn't skip, instead
+> depending on test it may fail, abort or timeout.
+> With this change test will skip with a clear message why it did.
+> 
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> ---
+>   tests/intel/xe_pm.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index c2026474d..f3bfab50e 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -146,6 +146,9 @@ static void vram_d3cold_threshold_restore(int sig)
+>   
+>   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
+>   {
+> +	igt_require_f(igt_has_pci_pm_capability(device.pci_root),
 
-Both tests use the function read_and_discard_sysfs_entries(), which was
-copied from tests/intel/debugfs_test.c.
+Is device.pci_root correct ?
 
-Cc: rodrigo.vivi@intel.com
-Cc: katarzyna.piecielska@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- tests/intel/xe_debugfs.c | 88 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 87 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index ec8b0d0b5..0b468c4d4 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -235,15 +235,90 @@ static int opt_handler(int option, int option_index, void *input)
- 	return IGT_OPT_HANDLER_SUCCESS;
- }
- 
-+/**
-+ * SUBTEST: sysfs_read_all_entries
-+ * Description: Read all entries from sysfs path.
-+ *
-+ * SUBTEST: debugfs_read_all_entries
-+ * Description: Read all entries from debugfs path.
-+ */
-+static void read_and_discard_sysfs_entries(int path_fd, int indent)
-+{
-+	struct dirent *dirent;
-+	DIR *dir;
-+	char tabs[8];
-+	int i;
-+
-+	igt_assert(indent < sizeof(tabs) - 1);
-+
-+	for (i = 0; i < indent; i++)
-+		tabs[i] = '\t';
-+	tabs[i] = '\0';
-+
-+	dir = fdopendir(path_fd);
-+	if (!dir)
-+		return;
-+
-+	while ((dirent = readdir(dir))) {
-+		if (!strcmp(dirent->d_name, ".") ||
-+		    !strcmp(dirent->d_name, ".."))
-+			continue;
-+
-+		if (dirent->d_type == DT_DIR) {
-+			int sub_fd;
-+
-+			sub_fd = openat(path_fd, dirent->d_name,
-+					O_RDONLY | O_DIRECTORY);
-+			if (sub_fd < 0)
-+				continue;
-+
-+			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
-+			read_and_discard_sysfs_entries(sub_fd, indent + 1);
-+			close(sub_fd);
-+		} else if (dirent->d_type == DT_REG) {
-+			char buf[512];
-+			int sub_fd;
-+			ssize_t ret;
-+
-+			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
-+			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
-+			igt_set_timeout(5, "reading sysfs entry");
-+
-+			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
-+			if (sub_fd == -1) {
-+				igt_debug("%sCould not open file \"%s\" with error: %m\n",
-+					  tabs, dirent->d_name);
-+				continue;
-+			}
-+
-+			do {
-+				ret = read(sub_fd, buf, sizeof(buf));
-+			} while (ret == sizeof(buf));
-+
-+			if (ret == -1)
-+				igt_debug("%sCould not read file \"%s\" with error: %m\n",
-+					  tabs, dirent->d_name);
-+
-+			igt_reset_timeout();
-+			close(sub_fd);
-+		}
-+	}
-+	closedir(dir);
-+}
-+
- igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
- 	char devnode[PATH_MAX];
- 	int fd;
- 	int gt;
-+	int debugfs;
-+	int sysfs;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
- 		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
-+		debugfs = igt_debugfs_dir(fd);
-+		sysfs = igt_sysfs_open(fd);
- 	}
- 
- 	igt_subtest("base") {
-@@ -263,6 +338,17 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		test_forcewake(fd);
- 	}
- 
--	igt_fixture
-+	igt_describe("Read all entries from sysfs path.");
-+	igt_subtest("sysfs_read_all_entries")
-+		read_and_discard_sysfs_entries(sysfs, 0);
-+
-+	igt_describe("Read all entries from debugfs path.");
-+	igt_subtest("debugfs_read_all_entries")
-+		read_and_discard_sysfs_entries(debugfs, 0);
-+
-+	igt_fixture {
-+		close(sysfs);
-+		close(debugfs);
- 		drm_close_driver(fd);
-+	}
- }
--- 
-2.34.1
+> +		      "PCI power management capability not found\n");
+> +
+>   	dpms_on_off(device, DRM_MODE_DPMS_OFF);
+>   
+>   	/*
 
