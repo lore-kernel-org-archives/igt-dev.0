@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2B50C28B28
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 15:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77D9C282EC
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 15:55:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6AB7210E14C;
-	Tue, 18 Mar 2025 15:46:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nwxhnGa1";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B87110E14C
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 15:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742312802; x=1773848802;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xZJUARbM9RGuBtPuJ7ovzAL8B2WFJSEyV6jQQfCr16k=;
- b=nwxhnGa1smZdxpbTz5aMGGUWrvxuoaPpVvvXn2h2ZDx4PxAMm5ouu2tf
- ad7a9wTILDoCNv21hl28DtJTj8/8BtM4vS4u0SFkasTEa1ATDG+d1gTCF
- YZHNM9TsVIdk/hS6DRtb4GQtM13tiQHBd/vlgHoyhrEuUoF5cFa06NxPe
- YSLRxsgAE2NWHWUlYLJ6AlunV1c/hKNFK5+GQKsrClZ9dGeajtxgQ+Rbw
- 1NkuIs9vcBNvMytCQwcUYmvz6kRJADXrTGBQ9VTwTHZjqr/p/Fu1GmI1/
- pP2EELZ4l4H3EpCrOVuEUC7UvvnTqlYQsHCG7NDeKoEjpMu7zhpB+nLEW g==;
-X-CSE-ConnectionGUID: DsKy765bSIWWLsaDNhqh4w==
-X-CSE-MsgGUID: k3sQs/YlTbyDN3+zfndX8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="65924615"
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="65924615"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 08:46:39 -0700
-X-CSE-ConnectionGUID: kqkSiIrYQE6jOK9SuSjeRw==
-X-CSE-MsgGUID: YYMuVV8YS8Cbb8rAr2FUug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="159460969"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 08:46:37 -0700
-Date: Tue, 18 Mar 2025 16:46:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com
-Subject: Re: [PATCH <i-g-t> v1 1/2] Add support for xe in runtime pm
-Message-ID: <20250318154618.miv5mukkp2svfnwz@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Soham Purkait <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com
-References: <20250317082823.1631744-1-soham.purkait@intel.com>
- <20250317082823.1631744-2-soham.purkait@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8080110E4AF;
+	Tue, 18 Mar 2025 15:55:25 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC59A10E14C;
+ Tue, 18 Mar 2025 15:55:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7002138841069950095=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250317082823.1631744-2-soham.purkait@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Add_a_check_for_power_man?=
+ =?utf-8?q?agement_PCI_capability_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jakub Kolakowski" <jakub1.kolakowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 18 Mar 2025 15:55:24 -0000
+Message-ID: <174231332483.49196.6060494628977756076@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250318150108.1055169-1-jakub1.kolakowski@intel.com>
+In-Reply-To: <20250318150108.1055169-1-jakub1.kolakowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,116 +37,233 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
-On 2025-03-17 at 13:58:22 +0530, Soham Purkait wrote:
-> Add support for runtime power management
-> for Xe driver along with existing i915
-> support
-> 
-> v1 :  Updated references from "i915" to
->       "generic GPU driver" to include support
->       for the xe driver, ensuring clarity and
->       consistency
-> 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->  tools/intel_pm_rpm.c | 28 ++++++++++++++++------------
->  1 file changed, 16 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> index 08c25ca8a..8c4778e4f 100644
-> --- a/tools/intel_pm_rpm.c
-> +++ b/tools/intel_pm_rpm.c
-> @@ -35,7 +35,7 @@
->  #include "igt_pm.h"
->  
->  #define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
-> -#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
-> +#define SET_AUTOSUSPEND_DELAY (1 << 1)
->  
->  typedef struct {
->  	int drm_fd;
-> @@ -47,8 +47,8 @@ typedef struct {
->  const char *help_str =
->  	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
->  	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
-> -	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
-> -	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
-> +	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set GPU driver's"
-> +	"  autosuspend delay. Use --setup-d3cold=auto-delay as optional argument.\n"
->  	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
->  static struct option long_options[] = {
->  	{"disable-display-wait", 0, 0, 'd'},
-> @@ -80,14 +80,14 @@ static void disable_all_displays(data_t *data)
->  static void
->  setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
->  {
-> -	struct pci_device *root, *i915;
-> +	struct pci_device *root, *gpu_device;
->  
->  	root = igt_device_get_pci_root_port(data->drm_fd);
->  	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
->  		igt_pm_enable_pci_card_runtime_pm(root, NULL);
-> -	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
-> -		i915 = igt_device_get_pci_device(data->drm_fd);
-> -		igt_pm_enable_pci_card_runtime_pm(root, i915);
-> +	} else if (setup_d3cold == SET_AUTOSUSPEND_DELAY) {
-> +		gpu_device = igt_device_get_pci_device(data->drm_fd);
-> +		igt_pm_enable_pci_card_runtime_pm(root, gpu_device);
->  	}
->  
->  	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
-> @@ -151,7 +151,8 @@ int main(int argc, char *argv[])
->  			goto exit;
->  		}
->  	} else {
-> -		if (!igt_device_find_first_i915_discrete_card(&card)) {
-> +		if (!igt_device_find_first_i915_discrete_card(&card) &&
-> +		    !igt_device_find_first_xe_discrete_card(&card)) {
->  			igt_warn("No discrete gpu found\n");
->  			ret = EXIT_FAILURE;
->  			goto exit;
-> @@ -169,8 +170,8 @@ int main(int argc, char *argv[])
->  			break;
->  		case 's':
->  			if (optarg) {
-> -				if (!strcmp(optarg, "i915-auto-delay")) {
-> -					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
-> +				if (!strcmp(optarg, "auto-delay")) {
-> +					setup_d3cold = SET_AUTOSUSPEND_DELAY;
->  				} else	{
->  					usage(argv[0]);
->  					ret = EXIT_SUCCESS;
-> @@ -203,7 +204,7 @@ int main(int argc, char *argv[])
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&data.display, data.drm_fd);
->  
-> -		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
-> +		/* GPU driver disables RPM in case DMC is not loaded on kms supported cards */
->  		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
->  			igt_warn("dmc fw is not loaded, no runtime pm\n");
->  			ret = EXIT_FAILURE;
-> @@ -215,7 +216,10 @@ int main(int argc, char *argv[])
->  		igt_setup_runtime_pm(data.drm_fd);
->  		disable_all_displays(&data);
->  		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
-> -			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-> +			if (!strcmp("i915", card.driver))
-> +				__igt_debugfs_dump(data.drm_fd,
-> +						   "i915_runtime_pm_status",
-> +						   IGT_LOG_INFO);
+--===============7002138841069950095==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Dump this also fo xe driver.
+== Series Details ==
 
-Regards,
-Kamil
+Series: Add a check for power management PCI capability (rev5)
+URL   : https://patchwork.freedesktop.org/series/146157/
+State : failure
 
->  			ret = EXIT_FAILURE;
->  			goto exit;
->  		}
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8276 -> IGTPW_12792
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12792 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12792, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/index.html
+
+Participating hosts (43 -> 42)
+------------------------------
+
+  Additional (2): fi-kbl-7567u fi-pnv-d510 
+  Missing    (3): bat-mtlp-8 bat-atsm-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12792:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12792 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests:
+    - fi-pnv-d510:        NOTRUN -> [INCOMPLETE][3] ([i915#12904]) +1 other test incomplete
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-pnv-d510/igt@dmabuf@all-tests.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@i915_module_load@reload:
+    - bat-adls-6:         [PASS][6] -> [ABORT][7] ([i915#13571])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-adls-6/igt@i915_module_load@reload.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/bat-adls-6/igt@i915_module_load@reload.html
+
+  * igt@kms_chamelium_edid@hdmi-edid-read:
+    - bat-dg2-13:         [PASS][8] -> [DMESG-WARN][9] ([i915#13733])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][10] +11 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-kbl-7567u/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][11] +33 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html
+
+  
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13571]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571
+  [i915#13733]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13733
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8276 -> IGTPW_12792
+
+  CI-20190529: 20190529
+  CI_DRM_16293: a958e31a81b3267201c85b6f171419586afa792c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12792: 12792
+  IGT_8276: 8276
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/index.html
+
+--===============7002138841069950095==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add a check for power management PCI capability (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146157/">https://patchwork.freedesktop.org/series/146157/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8276 -&gt; IGTPW_12792</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12792 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12792, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/index.html</p>
+<h2>Participating hosts (43 -&gt; 42)</h2>
+<p>Additional (2): fi-kbl-7567u fi-pnv-d510 <br />
+  Missing    (3): bat-mtlp-8 bat-atsm-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12792:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_hdmi_inject@inject-audio:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12792 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-pnv-d510/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-adls-6/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/bat-adls-6/igt@i915_module_load@reload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571">i915#13571</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_edid@hdmi-edid-read:</p>
+<ul>
+<li>bat-dg2-13:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13733">i915#13733</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-kbl-7567u/igt@kms_dsc@dsc-basic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12792/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> +33 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8276 -&gt; IGTPW_12792</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16293: a958e31a81b3267201c85b6f171419586afa792c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12792: 12792<br />
+  IGT_8276: 8276</p>
+
+</body>
+</html>
+
+--===============7002138841069950095==--
