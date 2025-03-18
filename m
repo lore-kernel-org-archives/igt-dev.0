@@ -4,62 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 450E4C282EC
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 16:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC98FC28B28
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 16:33:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED54310E4B0;
-	Tue, 18 Mar 2025 16:05:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 603EC10E1E9;
+	Tue, 18 Mar 2025 16:33:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TxDQPm/l";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G4WMrkfe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7182310E4AC
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 16:05:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3A2210E1E9
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 16:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742313941; x=1773849941;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=P87PNU4Pgqa8fV1tWbNVhssO3pfr5ZFsIVhTZRVaQQk=;
- b=TxDQPm/loUeUYjCTj3sRHDy1XKXQgHyyqJiv3dXH9CX+t5K603pWvtAV
- tSdCNFilD9qPE3ixDoAhE5lU/ZNgwjdQ0dU0/eqoTijgtrzT3cKxHXvfU
- i4Yg+QrENZn4PSaRlULtpjHDnU7kk2UDFbzRMbC4bUsZ/l5GMM8jjS9kv
- +bAlglPAZB+XmHl0eKw5i2HiGjUCZl4OjJD+aV/1LkbNLUbdV/Xv6vgRq
- SLsoSknd3jF4Cpz9wvF2/+8l5riFygH/w45LvH5fyKcB23jl/Rom/ocNw
- dtZd0Xrw65CPTCZwA8+bk6O/Le9Nu2c4U5sOG4A9sDn3gfyl3W8f/UQAr A==;
-X-CSE-ConnectionGUID: x1A0Pb20TNeuPPEdMP/vMg==
-X-CSE-MsgGUID: w5CMLv+9RZWCUX36v8RZcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="68816428"
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="68816428"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 09:05:41 -0700
-X-CSE-ConnectionGUID: j4SSp/HUQ/qr5Uef8tIH5w==
-X-CSE-MsgGUID: dvPdu6GVSQuEBWg5RCKBaw==
+ t=1742315622; x=1773851622;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=ydZCCChruJr86WZhd6bbeGHytsh/y/H2sXA3euQXTf4=;
+ b=G4WMrkfeV0ln/jf2S5gus4ERXfR/Kmfr4GNy2RWwsd+otJuivQBuE0mf
+ vBvyt1lQ0TThNktbVZJU6hF6g6KwkTGIXkip5OF44+9eI8/Maocjc1WTX
+ ohRIjRrXf2Wi9AEFhkW9g35xwccS3J71OQKwHurX57iJOfbmDSIENFOhE
+ ogIDK+/Ix5hjX2G8kHyEMJ2F24BuHnuMA+zcYZzd0wRFrxOuGitWvTWzR
+ mRm3Yu19rsrFqVd3y+z97SFgcqurHVD1/Y4l5mOZoTg3qiPHJn1cforUh
+ 4IMgmnwbrrdKyHK7wnr97LWdqMMGDu+0FM472GLZc/GOXRXB8h+6OkU75 w==;
+X-CSE-ConnectionGUID: YlCevL2vRIO3u2+6/cnHqQ==
+X-CSE-MsgGUID: weL4BJKZTky8Un4I9BVCKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43204561"
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="43204561"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 09:33:42 -0700
+X-CSE-ConnectionGUID: SUY08hQeQCeZuZ7aNHwjUw==
+X-CSE-MsgGUID: O+r+Xg7xSsyii1qXUeBUUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="123058835"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 09:05:39 -0700
-Date: Tue, 18 Mar 2025 17:05:36 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com
-Subject: Re: [PATCH <i-g-t> v1 1/2] Add support for xe in runtime pm
-Message-ID: <20250318160536.4vgtyjghu6ewvkp3@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Soham Purkait <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com
-References: <20250317082823.1631744-1-soham.purkait@intel.com>
- <20250317082823.1631744-2-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="153166463"
+Received: from saswiest-mobl1.ger.corp.intel.com (HELO [10.245.80.210])
+ ([10.245.80.210])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 09:33:39 -0700
+Message-ID: <93896d26-27f7-494a-b469-6e9f4f9e28de@linux.intel.com>
+Date: Tue, 18 Mar 2025 17:33:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250317082823.1631744-2-soham.purkait@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/1] tests/intel/xe_debugfs: Add tests to read all
+ debugfs and sysfs files
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, rodrigo.vivi@intel.com,
+ katarzyna.piecielska@intel.com
+References: <20250318095350.57133-1-peter.senna@linux.intel.com>
+ <20250318095350.57133-2-peter.senna@linux.intel.com>
+ <20250318155618.aca5jdkn62qzp3hg@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250318155618.aca5jdkn62qzp3hg@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,116 +74,198 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
-On 2025-03-17 at 13:58:22 +0530, Soham Purkait wrote:
+Hi Kamil,
 
-one more thing, add prefix 'tools/intel_pm_rpm: ' in subject,
-also change '<i-g-t>' into 'i-g-t' and s/xe/Xe/ so it will be:
+Please see my comments bellow.
 
-[PATCH i-g-t v1 1/2] tools/intel_pm_rpm: Add support for Xe in runtime pm
+On 18.03.2025 16:56, Kamil Konieczny wrote:
+> Hi Peter,
+> On 2025-03-18 at 10:53:50 +0100, Peter Senna Tschudin wrote:
+>> The existing tests/intel/debugfs_test.c scans and reads all relevant
+>> files from sysfs and debugfs, but it is specific to i915, leaving a gap
+>> for Xe.
+>>
+>> A similar test exists for Xe in tests/intel/xe_debugfs.c, but it has two
+> 
+> Please do not write out full path nor test name, it is in
+> subject, no need for repeating.
 
-Regards,
-Kamil
+Will fix it.
 
-> Add support for runtime power management
-> for Xe driver along with existing i915
-> support
 > 
-> v1 :  Updated references from "i915" to
->       "generic GPU driver" to include support
->       for the xe driver, ensuring clarity and
->       consistency
+>> gaps compared to the i915 counterpart:
+>>  - It lacks sysfs file testing.
+>>  - It does not attempt to read all debugfs files.
+>>
+>> This commit addresses these gaps by adding two new tests to
+>> tests/intel/xe_debugfs.c:
+>>  - sysfs_read_all_entries
+>>  - debugfs_read_all_entries
 > 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->  tools/intel_pm_rpm.c | 28 ++++++++++++++++------------
->  1 file changed, 16 insertions(+), 12 deletions(-)
+> Both test names should have minus as separator, so s/_/-/g
 > 
-> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> index 08c25ca8a..8c4778e4f 100644
-> --- a/tools/intel_pm_rpm.c
-> +++ b/tools/intel_pm_rpm.c
-> @@ -35,7 +35,7 @@
->  #include "igt_pm.h"
->  
->  #define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
-> -#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
-> +#define SET_AUTOSUSPEND_DELAY (1 << 1)
->  
->  typedef struct {
->  	int drm_fd;
-> @@ -47,8 +47,8 @@ typedef struct {
->  const char *help_str =
->  	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
->  	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
-> -	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
-> -	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
-> +	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set GPU driver's"
-> +	"  autosuspend delay. Use --setup-d3cold=auto-delay as optional argument.\n"
->  	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
->  static struct option long_options[] = {
->  	{"disable-display-wait", 0, 0, 'd'},
-> @@ -80,14 +80,14 @@ static void disable_all_displays(data_t *data)
->  static void
->  setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
->  {
-> -	struct pci_device *root, *i915;
-> +	struct pci_device *root, *gpu_device;
->  
->  	root = igt_device_get_pci_root_port(data->drm_fd);
->  	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
->  		igt_pm_enable_pci_card_runtime_pm(root, NULL);
-> -	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
-> -		i915 = igt_device_get_pci_device(data->drm_fd);
-> -		igt_pm_enable_pci_card_runtime_pm(root, i915);
-> +	} else if (setup_d3cold == SET_AUTOSUSPEND_DELAY) {
-> +		gpu_device = igt_device_get_pci_device(data->drm_fd);
-> +		igt_pm_enable_pci_card_runtime_pm(root, gpu_device);
->  	}
->  
->  	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
-> @@ -151,7 +151,8 @@ int main(int argc, char *argv[])
->  			goto exit;
->  		}
->  	} else {
-> -		if (!igt_device_find_first_i915_discrete_card(&card)) {
-> +		if (!igt_device_find_first_i915_discrete_card(&card) &&
-> +		    !igt_device_find_first_xe_discrete_card(&card)) {
->  			igt_warn("No discrete gpu found\n");
->  			ret = EXIT_FAILURE;
->  			goto exit;
-> @@ -169,8 +170,8 @@ int main(int argc, char *argv[])
->  			break;
->  		case 's':
->  			if (optarg) {
-> -				if (!strcmp(optarg, "i915-auto-delay")) {
-> -					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
-> +				if (!strcmp(optarg, "auto-delay")) {
-> +					setup_d3cold = SET_AUTOSUSPEND_DELAY;
->  				} else	{
->  					usage(argv[0]);
->  					ret = EXIT_SUCCESS;
-> @@ -203,7 +204,7 @@ int main(int argc, char *argv[])
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&data.display, data.drm_fd);
->  
-> -		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
-> +		/* GPU driver disables RPM in case DMC is not loaded on kms supported cards */
->  		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
->  			igt_warn("dmc fw is not loaded, no runtime pm\n");
->  			ret = EXIT_FAILURE;
-> @@ -215,7 +216,10 @@ int main(int argc, char *argv[])
->  		igt_setup_runtime_pm(data.drm_fd);
->  		disable_all_displays(&data);
->  		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
-> -			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-> +			if (!strcmp("i915", card.driver))
-> +				__igt_debugfs_dump(data.drm_fd,
-> +						   "i915_runtime_pm_status",
-> +						   IGT_LOG_INFO);
->  			ret = EXIT_FAILURE;
->  			goto exit;
->  		}
-> -- 
-> 2.34.1
+> - sysfs-read-all-entries
+> - debugfs-read-all-entries
+
+Will fix this one too.
+
 > 
+>>
+>> Both tests use the function read_and_discard_sysfs_entries(), which was
+>> copied from tests/intel/debugfs_test.c.
+> 
+> You also do not need to translate code from C into words,
+> all this is in patch itself so imho drop this paragraph.
+
+The actual value here is the confession that I am copying and pasting the
+function from elsewhere. In the cover letter I redeem myself a bit stating
+that I will move the cloned code to lib/.
+
+> 
+> Btw this looks pretty generic, maybe move all this into
+> core_sysfs test?
+
+You are correct in the sense that it is generic. What I am doing is
+extending the existing test xe_debugfs in the same way the i915
+counterpart works. May I ask what is your suggestion here?
+
+In the cover letter I explain what I want to do for cleaning up the
+mess a bit. The reason to send this first is to close the gap and
+give us time to cleanup things properly.
+
+I am not sure to understand what you want me to do here.
+
+Thanks,
+
+Peter
+
+> 
+> Regards,
+> Kamil
+> 
+>>
+>> Cc: rodrigo.vivi@intel.com
+>> Cc: katarzyna.piecielska@intel.com
+>> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+>> ---
+>>  tests/intel/xe_debugfs.c | 88 +++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 87 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+>> index ec8b0d0b5..0b468c4d4 100644
+>> --- a/tests/intel/xe_debugfs.c
+>> +++ b/tests/intel/xe_debugfs.c
+>> @@ -235,15 +235,90 @@ static int opt_handler(int option, int option_index, void *input)
+>>  	return IGT_OPT_HANDLER_SUCCESS;
+>>  }
+>>  
+>> +/**
+>> + * SUBTEST: sysfs_read_all_entries
+>> + * Description: Read all entries from sysfs path.
+>> + *
+>> + * SUBTEST: debugfs_read_all_entries
+>> + * Description: Read all entries from debugfs path.
+>> + */
+>> +static void read_and_discard_sysfs_entries(int path_fd, int indent)
+>> +{
+>> +	struct dirent *dirent;
+>> +	DIR *dir;
+>> +	char tabs[8];
+>> +	int i;
+>> +
+>> +	igt_assert(indent < sizeof(tabs) - 1);
+>> +
+>> +	for (i = 0; i < indent; i++)
+>> +		tabs[i] = '\t';
+>> +	tabs[i] = '\0';
+>> +
+>> +	dir = fdopendir(path_fd);
+>> +	if (!dir)
+>> +		return;
+>> +
+>> +	while ((dirent = readdir(dir))) {
+>> +		if (!strcmp(dirent->d_name, ".") ||
+>> +		    !strcmp(dirent->d_name, ".."))
+>> +			continue;
+>> +
+>> +		if (dirent->d_type == DT_DIR) {
+>> +			int sub_fd;
+>> +
+>> +			sub_fd = openat(path_fd, dirent->d_name,
+>> +					O_RDONLY | O_DIRECTORY);
+>> +			if (sub_fd < 0)
+>> +				continue;
+>> +
+>> +			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
+>> +			read_and_discard_sysfs_entries(sub_fd, indent + 1);
+>> +			close(sub_fd);
+>> +		} else if (dirent->d_type == DT_REG) {
+>> +			char buf[512];
+>> +			int sub_fd;
+>> +			ssize_t ret;
+>> +
+>> +			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
+>> +			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
+>> +			igt_set_timeout(5, "reading sysfs entry");
+>> +
+>> +			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
+>> +			if (sub_fd == -1) {
+>> +				igt_debug("%sCould not open file \"%s\" with error: %m\n",
+>> +					  tabs, dirent->d_name);
+>> +				continue;
+>> +			}
+>> +
+>> +			do {
+>> +				ret = read(sub_fd, buf, sizeof(buf));
+>> +			} while (ret == sizeof(buf));
+>> +
+>> +			if (ret == -1)
+>> +				igt_debug("%sCould not read file \"%s\" with error: %m\n",
+>> +					  tabs, dirent->d_name);
+>> +
+>> +			igt_reset_timeout();
+>> +			close(sub_fd);
+>> +		}
+>> +	}
+>> +	closedir(dir);
+>> +}
+>> +
+>>  igt_main_args("", long_options, help_str, opt_handler, NULL)
+>>  {
+>>  	char devnode[PATH_MAX];
+>>  	int fd;
+>>  	int gt;
+>> +	int debugfs;
+>> +	int sysfs;
+>>  
+>>  	igt_fixture {
+>>  		fd = drm_open_driver(DRIVER_XE);
+>>  		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+>> +		debugfs = igt_debugfs_dir(fd);
+>> +		sysfs = igt_sysfs_open(fd);
+>>  	}
+>>  
+>>  	igt_subtest("base") {
+>> @@ -263,6 +338,17 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>>  		test_forcewake(fd);
+>>  	}
+>>  
+>> -	igt_fixture
+>> +	igt_describe("Read all entries from sysfs path.");
+>> +	igt_subtest("sysfs_read_all_entries")
+>> +		read_and_discard_sysfs_entries(sysfs, 0);
+>> +
+>> +	igt_describe("Read all entries from debugfs path.");
+>> +	igt_subtest("debugfs_read_all_entries")
+>> +		read_and_discard_sysfs_entries(debugfs, 0);
+>> +
+>> +	igt_fixture {
+>> +		close(sysfs);
+>> +		close(debugfs);
+>>  		drm_close_driver(fd);
+>> +	}
+>>  }
+>> -- 
+>> 2.34.1
+>>
+
