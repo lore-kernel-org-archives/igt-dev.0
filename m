@@ -4,65 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A5AC282EC
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 16:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8D7AC282EC
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 21:38:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E6F8710E23B;
-	Tue, 18 Mar 2025 16:54:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 80C5110E4D1;
+	Tue, 18 Mar 2025 21:38:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YSR2P5dH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iZHVPOzp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A03E210E23B
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 16:54:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E965F10E4D1
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 21:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742316882; x=1773852882;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=XDQ7ZvL9wxe3+GCa2gaV1AvcUI9/ifMPnpCarZJZly4=;
- b=YSR2P5dHLBZfLBTAJcJrZdlUZmMuvcIMA+Wxo4+Xfocdv3IvVozgqyE/
- P8fTLyII1fN4I3hHnUK3ZyeZpAdKy/f3e8sdRB5DrTioa6xQ7eVHZYLlE
- Ln+0OceEztiCJ0wr2b6mRDjFKFW70wF8ywbV3Y+tVSm4xpJko8yuMaUnj
- wwlwnpMsk+AWXbYRSHWjhQ62I42vxQsrbv0FkWP/ZokaydvAKmSa6mj7z
- SB+nCCfEgnGPhrrrcbFDiYQ2RaAzmWC88tBLHuVgLhEAolSyWNbyh+IEY
- zyKOq+RJAbOnpJUcW62uKJzoUbRvyqowkPsgqFcL3Q0Qfi+Jl3t61tUYD w==;
-X-CSE-ConnectionGUID: hBYbPPbXSziJqP0Qcyqjiw==
-X-CSE-MsgGUID: 5DvMtr6CRyOmmZIY9Pctuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="68823089"
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="68823089"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 09:54:42 -0700
-X-CSE-ConnectionGUID: K1cU4jRWQVOyqm7EXz/Jlw==
-X-CSE-MsgGUID: FqJ4kLy2RZ2vwiDUIyACTg==
+ t=1742333927; x=1773869927;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uuWGTzpqxo5zFzjrAzjDm3b2psV/hRJyW++FyuA9uKU=;
+ b=iZHVPOzpB4+Twz7kSDUbNXcO4sPoaDd3Bc6SC5WWEZour3s+9rCwRRNF
+ GZSkcAWgz3J+b0ckrb84PE2W6Ez87P+fgiaUUPRjhCGW9vwl61mOTE9KC
+ GTr0Fo9dAMNxICFmlZDgrE8/sVCuWVJM5/zn6ChoKQRzxa0yj8P+OPKGh
+ M5F2Ghjuzw/wWXZMfUXr/JwcEx2aKw9FHesr/64KUvobXFXc4l49v3QRw
+ 4VKb9+4mDk0BodKbSh2hoV/pUakvumYUuygSLs4997vT4nL/kyQ4pWHQK
+ BK/OqEN1jdbqEYH1oMiI1qtDvBvAkTpAfdpN5BOMDLoao6/OdCu39o2HT A==;
+X-CSE-ConnectionGUID: ylpFhoMWQZmjjL5dsFveyw==
+X-CSE-MsgGUID: 83M+ZzxHSEOejmQb4IrIhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43419139"
+X-IronPort-AV: E=Sophos;i="6.14,258,1736841600"; d="scan'208";a="43419139"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 14:38:46 -0700
+X-CSE-ConnectionGUID: 54qMiy/AS0+2UU8ojW1VpQ==
+X-CSE-MsgGUID: 2srKM/EgRim0qyHV/O7YQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="122051631"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 09:54:40 -0700
-Date: Tue, 18 Mar 2025 17:54:38 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: Re: [PATCH i-g-t v4 1/2] lib/igt_pm: Introduce helper to check for
- PM capability
-Message-ID: <20250318165438.kmm6kun3scsbhn3y@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-References: <20250318150108.1055169-1-jakub1.kolakowski@intel.com>
- <20250318150108.1055169-2-jakub1.kolakowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,258,1736841600"; d="scan'208";a="127429152"
+Received: from saswiest-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.80.210])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 14:38:44 -0700
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ kamil.konieczny@linux.intel.com, katarzyna.piecielska@intel.com,
+ rodrigo.vivi@intel.com
+Subject: [PATCH i-g-t] tests/intel/intel_kernelfs: Unified testing for sysfs
+ and debugfs
+Date: Tue, 18 Mar 2025 22:37:55 +0100
+Message-Id: <20250318213755.366638-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250318150108.1055169-2-jakub1.kolakowski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,80 +70,509 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jakub,
-On 2025-03-18 at 15:01:07 +0000, Jakub Kolakowski wrote:
-> Introduce igt_has_pci_pm_capability(), a helper function to check
-> whether a PCI device supports the PCI Power Management (PM) capability.
-> With this helper one can make sure the capability is present on device
-> under test before proceeding with any actions related to PM.
-> 
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+The new test intel_kernelfs is designed to replace both debugfs_test and
+xe_debugfs. intel_kernelfs:
+ - Covers i915 and Xe
+ - Test sysfs by trying to read all entries
+ - Test debugs by trying to read all entries
+ - Test Xe-specific debugfs files
+ - Complete list of tests: intel-sysfs-read-all-entries,
+   intel-debugfs-read-all-entries,
+   intel-debugfs-read-all-entries-display-on,
+   intel-debugfs-read-all-entries-display-off, xe-base, xe-gt,
+   xe-forcewake
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: kamil.konieczny@linux.intel.com
+Cc: katarzyna.piecielska@intel.com
+Cc: rodrigo.vivi@intel.com
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ tests/intel/intel_kernelfs.c | 463 +++++++++++++++++++++++++++++++++++
+ tests/meson.build            |   1 +
+ 2 files changed, 464 insertions(+)
+ create mode 100644 tests/intel/intel_kernelfs.c
 
-> ---
->  lib/igt_pm.c | 19 ++++++++++++++++++-
->  lib/igt_pm.h |  1 +
->  2 files changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index 1a5d9c42b..7f9cbd69a 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -40,10 +40,11 @@
->  #include <dirent.h>
->  
->  #include "drmtest.h"
-> +#include "igt_aux.h"
->  #include "igt_device_scan.h"
->  #include "igt_kms.h"
-> +#include "igt_pci.h"
->  #include "igt_pm.h"
-> -#include "igt_aux.h"
->  #include "igt_sysfs.h"
->  
->  /**
-> @@ -81,6 +82,7 @@ enum {
->  #define MAX_POLICY_STRLEN	strlen(MAX_PERFORMANCE_STR)
->  /* Root Port bus can have max 32 dev and each dev can have max 8 func */
->  #define MAX_PCI_DEVICES		256
-> +#define PCI_PM_CAP_ID 0x01
->  int8_t *__sata_pm_policies;
->  int __scsi_host_cnt;
->  
-> @@ -1470,3 +1472,18 @@ void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val)
->  	igt_require(igt_sysfs_has_attr(gtfd, "slpc_ignore_eff_freq"));
->  	igt_sysfs_set_u32(gtfd, "slpc_ignore_eff_freq", val);
->  }
-> +
-> +/**
-> + * igt_has_pci_pm_capability:
-> + * @pci_dev: PCI device struct
-> + *
-> + * Returns: true if the device has PCI Power Management capability, false otherwise.
-> + */
-> +bool igt_has_pci_pm_capability(struct pci_device *pci_dev)
-> +{
-> +	int offset;
-> +
-> +	offset = find_pci_cap_offset(pci_dev, PCI_PM_CAP_ID);
-> +
-> +	return (offset > 0);
-> +}
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index 6b428f53e..c73972f2a 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -97,5 +97,6 @@ uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
->  uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
->  int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
->  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
-> +bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
->  
->  #endif /* IGT_PM_H */
-> -- 
-> 2.34.1
-> 
+diff --git a/tests/intel/intel_kernelfs.c b/tests/intel/intel_kernelfs.c
+new file mode 100644
+index 000000000..6528838af
+--- /dev/null
++++ b/tests/intel/intel_kernelfs.c
+@@ -0,0 +1,463 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <dirent.h>
++#include <fcntl.h>
++
++#include "i915/gem.h"
++#include "igt.h"
++#include "igt_sysfs.h"
++#include "xe/xe_query.h"
++
++struct {
++	bool warn_on_not_hit;
++} opt = { 0 };
++
++/**
++ * TEST: debugfs test
++ * Description: Read entries from debugfs, and sysfs paths.
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: debugfs
++ * Feature: core
++ * Test category: uapi
++ *
++ * SUBTEST: intel-debugfs-read-all-entries
++ * Description: Read all entries from debugfs path validating debugfs entries
++ *
++ * SUBTEST: intel-debugfs-read-all-entries-display-off
++ * Description: Read all debugfs entries with display off.
++ *
++ * SUBTEST: intel-debugfs-read-all-entries-display-on
++ * Description: Read all debugfs entries with display on.
++ *
++ * SUBTEST: intel-sysfs-read-all-entries
++ * Description: Read all entries from sysfs path validating debugfs entries
++ *
++ */
++
++IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
++
++static void read_and_discard_sysfs_entries(int path_fd, int indent)
++{
++	struct dirent *dirent;
++	DIR *dir;
++	char tabs[8];
++	int i;
++
++	igt_assert(indent < sizeof(tabs) - 1);
++
++	for (i = 0; i < indent; i++)
++		tabs[i] = '\t';
++	tabs[i] = '\0';
++
++	dir = fdopendir(path_fd);
++	if (!dir)
++		return;
++
++	while ((dirent = readdir(dir))) {
++		if (!strcmp(dirent->d_name, ".") ||
++		    !strcmp(dirent->d_name, ".."))
++			continue;
++
++		if (dirent->d_type == DT_DIR) {
++			int sub_fd;
++
++			sub_fd = openat(path_fd, dirent->d_name,
++					O_RDONLY | O_DIRECTORY);
++			if (sub_fd < 0)
++				continue;
++
++			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
++			read_and_discard_sysfs_entries(sub_fd, indent + 1);
++			close(sub_fd);
++		} else if (dirent->d_type == DT_REG) {
++			char buf[512];
++			int sub_fd;
++			ssize_t ret;
++
++			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
++			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
++			igt_set_timeout(5, "reading sysfs entry");
++
++			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
++			if (sub_fd == -1) {
++				igt_debug("%sCould not open file \"%s\" with error: %m\n",
++					  tabs, dirent->d_name);
++				continue;
++			}
++
++			do {
++				ret = read(sub_fd, buf, sizeof(buf));
++			} while (ret == sizeof(buf));
++
++			if (ret == -1)
++				igt_debug("%sCould not read file \"%s\" with error: %m\n",
++					  tabs, dirent->d_name);
++
++			igt_reset_timeout();
++			close(sub_fd);
++		}
++	}
++	closedir(dir);
++}
++
++static void kms_tests(int fd, int debugfs)
++{
++	igt_display_t display;
++	struct igt_fb fb[IGT_MAX_PIPES];
++	enum pipe pipe;
++	int ret;
++
++	igt_fixture
++		igt_display_require(&display, fd);
++
++	igt_subtest("intel-debugfs-read-all-entries-display-on") {
++		/* try to light all pipes */
++retry:
++		for_each_pipe(&display, pipe) {
++			igt_output_t *output;
++
++			for_each_valid_output_on_pipe(&display, pipe, output) {
++				igt_plane_t *primary;
++				drmModeModeInfo *mode;
++
++				if (output->pending_pipe != PIPE_NONE)
++					continue;
++
++				igt_output_set_pipe(output, pipe);
++				primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++				mode = igt_output_get_mode(output);
++				igt_create_pattern_fb(display.drm_fd,
++						      mode->hdisplay, mode->vdisplay,
++						      DRM_FORMAT_XRGB8888,
++						      DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
++
++				/* Set a valid fb as some debugfs like to
++				 * inspect it on a active pipe
++				 */
++				igt_plane_set_fb(primary, &fb[pipe]);
++				break;
++			}
++		}
++
++		if (display.is_atomic)
++			ret = igt_display_try_commit_atomic(&display,
++					DRM_MODE_ATOMIC_TEST_ONLY |
++					DRM_MODE_ATOMIC_ALLOW_MODESET,
++					NULL);
++		else
++			ret = igt_display_try_commit2(&display, COMMIT_LEGACY);
++
++		if (ret) {
++			igt_output_t *output;
++			bool found = igt_override_all_active_output_modes_to_fit_bw(&display);
++
++			igt_require_f(found, "No valid mode combo found.\n");
++
++			for_each_connected_output(&display, output)
++				igt_output_set_pipe(output, PIPE_NONE);
++
++			goto retry;
++		}
++
++		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++
++		read_and_discard_sysfs_entries(debugfs, 0);
++	}
++
++	igt_subtest("intel-debugfs-read-all-entries-display-off") {
++		igt_output_t *output;
++		igt_plane_t *plane;
++
++		for_each_connected_output(&display, output)
++			igt_output_set_pipe(output, PIPE_NONE);
++
++		for_each_pipe(&display, pipe)
++			for_each_plane_on_pipe(&display, pipe, plane)
++				igt_plane_set_fb(plane, NULL);
++
++		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++
++		read_and_discard_sysfs_entries(debugfs, 0);
++	}
++
++	igt_fixture
++		igt_display_fini(&display);
++}
++
++static int xe_validate_entries(int fd, const char *add_path,
++			       const char * const str_val[], int str_cnt)
++{
++	int i;
++	int hit;
++	int found = 0;
++	int not_found = 0;
++	DIR *dir;
++	struct dirent *de;
++	char path[PATH_MAX];
++
++	if (!igt_debugfs_path(fd, path, sizeof(path)))
++		return -1;
++
++	strcat(path, add_path);
++	dir = opendir(path);
++	if (!dir)
++		return -1;
++
++	while ((de = readdir(dir))) {
++		if (de->d_name[0] == '.')
++			continue;
++		hit = 0;
++		for (i = 0; i < str_cnt; i++) {
++			if (!strcmp(str_val[i], de->d_name)) {
++				hit = 1;
++				break;
++			}
++		}
++		if (hit) {
++			found++;
++		} else if (opt.warn_on_not_hit) {
++			not_found++;
++			igt_warn("no test for: %s/%s\n", path, de->d_name);
++		}
++	}
++	closedir(dir);
++	return 0;
++}
++
++/**
++ * SUBTEST: xe-base
++ * Description: Check if various debugfs devnodes exist and test reading them
++ */
++static void
++test_xe_base(int fd, struct drm_xe_query_config *config)
++{
++	uint16_t devid = intel_get_drm_devid(fd);
++	static const char * const expected_files[] = {
++		"gt0",
++		"gt1",
++		"stolen_mm",
++		"gtt_mm",
++		"vram0_mm",
++		"forcewake_all",
++		"info",
++		"gem_names",
++		"clients",
++		"name"
++	};
++	char reference[4096];
++	int val = 0;
++
++	igt_assert(config);
++	sprintf(reference, "devid 0x%llx",
++			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
++	igt_assert(igt_debugfs_search(fd, "info", reference));
++
++	sprintf(reference, "revid %lld",
++			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
++	igt_assert(igt_debugfs_search(fd, "info", reference));
++
++	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
++		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
++
++	igt_assert(igt_debugfs_search(fd, "info", reference));
++
++	if (intel_gen(devid) < 20) {
++		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
++		case 48:
++			val = 3;
++			break;
++		case 57:
++			val = 4;
++			break;
++		}
++
++		sprintf(reference, "vm_max_level %d", val);
++		igt_assert(igt_debugfs_search(fd, "info", reference));
++	}
++
++	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
++	igt_assert(igt_debugfs_search(fd, "info", reference));
++
++	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
++
++	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
++	igt_debugfs_dump(fd, "gtt_mm");
++
++	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
++		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
++		igt_debugfs_dump(fd, "vram0_mm");
++	}
++
++	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
++		igt_debugfs_dump(fd, "stolen_mm");
++
++	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
++	igt_debugfs_dump(fd, "clients");
++
++	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
++	igt_debugfs_dump(fd, "gem_names");
++
++	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
++}
++
++/**
++ * SUBTEST: xe-gt
++ * Description: Check all gt debugfs devnodes
++ * TODO: add support for ``force_reset`` entries
++ */
++static void
++test_xe_gt(int fd, int gt_id)
++{
++	char name[256];
++	static const char * const expected_files[] = {
++		"uc",
++		"steering",
++		"topology",
++		"sa_info",
++		"hw_engines",
++		"pat",
++		"mocs",
++//		"force_reset"
++		"ggtt",
++		"register-save-restore",
++		"workarounds",
++		"default_lrc_rcs",
++		"default_lrc_ccs",
++		"default_lrc_bcs",
++		"default_lrc_vcs",
++		"default_lrc_vecs",
++		"hwconfig"
++
++	};
++	static const char * const expected_files_uc[] = {
++		"huc_info",
++		"guc_log",
++		"guc_info",
++//		"guc_ct_selftest"
++	};
++
++	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
++		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
++		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
++		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
++			continue;
++		igt_debugfs_dump(fd, name);
++	}
++
++	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
++		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
++		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
++		igt_debugfs_dump(fd, name);
++	}
++
++	sprintf(name, "/gt%d", gt_id);
++	xe_validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
++
++	sprintf(name, "/gt%d/uc", gt_id);
++	xe_validate_entries(fd, name, expected_files_uc, ARRAY_SIZE(expected_files_uc));
++}
++
++/**
++ * SUBTEST: xe-forcewake
++ * Description: Check forcewake debugfs devnode
++ */
++static void
++test_xe_forcewake(int fd)
++{
++	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
++
++	igt_assert_neq(handle, -1);
++	close(handle);
++}
++
++const char *help_str =
++	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
++
++struct option long_options[] = {
++	{ "--warn-not-hit", no_argument, NULL, 'w'},
++	{ 0, 0, 0, 0 }
++};
++
++static int opt_handler(int option, int option_index, void *input)
++{
++	switch (option) {
++	case 'w':
++		opt.warn_on_not_hit = true;
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++igt_main_args("", long_options, help_str, opt_handler, NULL)
++{
++	int debugfs;
++	char devnode[PATH_MAX];
++	int fd = -1;
++	int gt;
++	enum intel_driver driver;
++	int sysfs;
++
++	igt_fixture {
++		fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
++		driver = get_intel_driver(fd);
++
++		debugfs = igt_debugfs_dir(fd);
++		sysfs = igt_sysfs_open(fd);
++
++		kmstest_set_vt_graphics_mode();
++
++		if (driver == INTEL_DRIVER_I915)
++			igt_require_gem(fd);
++		else if (driver == INTEL_DRIVER_XE)
++			__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
++	}
++
++	igt_describe("Read all entries from sysfs path.");
++	igt_subtest("intel-sysfs-read-all-entries")
++		read_and_discard_sysfs_entries(sysfs, 0);
++	igt_describe("Read all entries from debugfs path.");
++	igt_subtest("intel-debugfs-read-all-entries")
++		read_and_discard_sysfs_entries(debugfs, 0);
++
++	igt_describe("Read all debugfs entries with display on/off.");
++	igt_subtest_group
++		kms_tests(fd, debugfs);
++
++	igt_fixture
++		igt_skip_on_f(driver != INTEL_DRIVER_XE, "No Xe card found.\n");
++
++	igt_subtest_group {
++		igt_describe("Check if various debugfs devnodes exist and test reading them.");
++		igt_subtest("xe-base") {
++			test_xe_base(fd, xe_config(fd));
++		}
++
++		igt_describe("Check all gt debugfs devnodes");
++		igt_subtest("xe-gt") {
++			xe_for_each_gt(fd, gt) {
++				snprintf(devnode, sizeof(devnode), "gt%d", gt);
++				igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
++				test_xe_gt(fd, gt);
++			}
++		}
++
++		igt_describe("Check forcewake debugfs devnode");
++		igt_subtest("xe-forcewake") {
++			test_xe_forcewake(fd);
++		}
++	}
++
++	igt_fixture {
++		close(sysfs);
++		close(debugfs);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 2f5406523..c98bd45ff 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -83,6 +83,7 @@ test_progs = [
+ intel_i915_xe_progs = [
+ 	'api_intel_allocator',
+ 	'intel_hwmon',
++	'intel_kernelfs',
+ ]
+ 
+ intel_i915_progs = [
+-- 
+2.34.1
+
