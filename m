@@ -4,63 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F37ABC282EC
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 15:59:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 450E4C282EC
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Mar 2025 16:05:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A819F10E4AC;
-	Tue, 18 Mar 2025 15:59:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED54310E4B0;
+	Tue, 18 Mar 2025 16:05:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WB8Zz8GF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TxDQPm/l";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E36B10E4AC
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 15:59:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7182310E4AC
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Mar 2025 16:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742313576; x=1773849576;
+ t=1742313941; x=1773849941;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=hhbC5icKqJwcbzi5VC1z7diTfOa7H8SZRiGgs1rLzcU=;
- b=WB8Zz8GFZKyRkBZ3rrmj95GfB3gmNBgmjHfXPmPgMg4G+vZyrofIfryS
- jpXoMy89qXjW3w69Tv41b1dEseN6ccFkx71mfoXYQvs5FheKZlZL136kH
- lNUbbfbulMhpQ3Je+m3cBTGeidn9Lu5bISEVYaHFsinmvfayYD7pwuqal
- 3v+06PEm0jxatUMUO0EH9yQ1Pa/QJpL+Z6X3E8O9dyqqQsPzLXkWef1qJ
- yfK6nIX6hItgbKK8/1+Ymcw0K0Ng/4Bpvvp18fo7G4lWtVN5aEEPKceIi
- 2oUrJ4ZG1yw0u4NeCQNPS4ZnKE43cZctjnhVtu8PObNk6D/UwA8ebt/wH g==;
-X-CSE-ConnectionGUID: tB2rl7jSSy+j+2kbFnIjbg==
-X-CSE-MsgGUID: L4VLpx9vR0WbnG1RRrwD9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="47351028"
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="47351028"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 08:59:35 -0700
-X-CSE-ConnectionGUID: uxnyTDQpTZyHtyqOZ6aTew==
-X-CSE-MsgGUID: K+nOKxBVSTaWT2tLOZeV0w==
+ mime-version:in-reply-to;
+ bh=P87PNU4Pgqa8fV1tWbNVhssO3pfr5ZFsIVhTZRVaQQk=;
+ b=TxDQPm/loUeUYjCTj3sRHDy1XKXQgHyyqJiv3dXH9CX+t5K603pWvtAV
+ tSdCNFilD9qPE3ixDoAhE5lU/ZNgwjdQ0dU0/eqoTijgtrzT3cKxHXvfU
+ i4Yg+QrENZn4PSaRlULtpjHDnU7kk2UDFbzRMbC4bUsZ/l5GMM8jjS9kv
+ +bAlglPAZB+XmHl0eKw5i2HiGjUCZl4OjJD+aV/1LkbNLUbdV/Xv6vgRq
+ SLsoSknd3jF4Cpz9wvF2/+8l5riFygH/w45LvH5fyKcB23jl/Rom/ocNw
+ dtZd0Xrw65CPTCZwA8+bk6O/Le9Nu2c4U5sOG4A9sDn3gfyl3W8f/UQAr A==;
+X-CSE-ConnectionGUID: x1A0Pb20TNeuPPEdMP/vMg==
+X-CSE-MsgGUID: w5CMLv+9RZWCUX36v8RZcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="68816428"
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="68816428"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 09:05:41 -0700
+X-CSE-ConnectionGUID: j4SSp/HUQ/qr5Uef8tIH5w==
+X-CSE-MsgGUID: dvPdu6GVSQuEBWg5RCKBaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="122269890"
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; d="scan'208";a="123058835"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 08:59:35 -0700
-Date: Tue, 18 Mar 2025 16:59:32 +0100
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 09:05:39 -0700
+Date: Tue, 18 Mar 2025 17:05:36 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
-Subject: Re: [PATCH i-g-t v2] lib/igt_core: reinitialize log_buffer_mutex in
- child process
-Message-ID: <20250318155932.iloobswwne3msoif@kamilkon-desk.igk.intel.com>
+To: Soham Purkait <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ vinay.belgaumkar@intel.com, anshuman.gupta@intel.com,
+ lucas.demarchi@intel.com, rodrigo.vivi@intel.com
+Subject: Re: [PATCH <i-g-t> v1 1/2] Add support for xe in runtime pm
+Message-ID: <20250318160536.4vgtyjghu6ewvkp3@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
-References: <20250317113146.560156-1-zbigniew.kempczynski@intel.com>
+ Soham Purkait <soham.purkait@intel.com>,
+ igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ vinay.belgaumkar@intel.com, anshuman.gupta@intel.com,
+ lucas.demarchi@intel.com, rodrigo.vivi@intel.com
+References: <20250317082823.1631744-1-soham.purkait@intel.com>
+ <20250317082823.1631744-2-soham.purkait@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250317113146.560156-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20250317082823.1631744-2-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,41 +75,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2025-03-17 at 12:31:46 +0100, Zbigniew Kempczyński wrote:
-> For multi-process scenario intel-allocator is dedicated thread which
-> handles clients (children processes) allocations. Main thread which
-> spawns children may hit point of time where allocator thread locked
-> some mutex. One of it is log_buffer_mutex used in igt_log(). Children
-> which would try to call igt_info/warn/debug() family will stuck as
-> this mutex is already locked.
-> 
-> Reinitialize this mutex in igt_fork() to avoid deadlocks in allocator
-> scenarios.
-> 
-> Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-> Cc: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Hi Soham,
+On 2025-03-17 at 13:58:22 +0530, Soham Purkait wrote:
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+one more thing, add prefix 'tools/intel_pm_rpm: ' in subject,
+also change '<i-g-t>' into 'i-g-t' and s/xe/Xe/ so it will be:
 
+[PATCH i-g-t v1 1/2] tools/intel_pm_rpm: Add support for Xe in runtime pm
+
+Regards,
+Kamil
+
+> Add support for runtime power management
+> for Xe driver along with existing i915
+> support
+> 
+> v1 :  Updated references from "i915" to
+>       "generic GPU driver" to include support
+>       for the xe driver, ensuring clarity and
+>       consistency
+> 
+> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 > ---
->  lib/igt_core.c | 1 +
->  1 file changed, 1 insertion(+)
+>  tools/intel_pm_rpm.c | 28 ++++++++++++++++------------
+>  1 file changed, 16 insertions(+), 12 deletions(-)
 > 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 9702a94177..c19689a51e 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -2600,6 +2600,7 @@ bool __igt_fork(void)
->  		test_child = true;
->  		pthread_mutex_init(&print_mutex, NULL);
->  		pthread_mutex_init(&ahnd_map_mutex, NULL);
-> +		pthread_mutex_init(&log_buffer_mutex, NULL);
->  		ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
->  		child_pid = getpid();
->  		child_tid = -1;
+> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+> index 08c25ca8a..8c4778e4f 100644
+> --- a/tools/intel_pm_rpm.c
+> +++ b/tools/intel_pm_rpm.c
+> @@ -35,7 +35,7 @@
+>  #include "igt_pm.h"
+>  
+>  #define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
+> -#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
+> +#define SET_AUTOSUSPEND_DELAY (1 << 1)
+>  
+>  typedef struct {
+>  	int drm_fd;
+> @@ -47,8 +47,8 @@ typedef struct {
+>  const char *help_str =
+>  	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
+>  	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
+> -	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
+> -	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
+> +	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set GPU driver's"
+> +	"  autosuspend delay. Use --setup-d3cold=auto-delay as optional argument.\n"
+>  	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
+>  static struct option long_options[] = {
+>  	{"disable-display-wait", 0, 0, 'd'},
+> @@ -80,14 +80,14 @@ static void disable_all_displays(data_t *data)
+>  static void
+>  setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
+>  {
+> -	struct pci_device *root, *i915;
+> +	struct pci_device *root, *gpu_device;
+>  
+>  	root = igt_device_get_pci_root_port(data->drm_fd);
+>  	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
+>  		igt_pm_enable_pci_card_runtime_pm(root, NULL);
+> -	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
+> -		i915 = igt_device_get_pci_device(data->drm_fd);
+> -		igt_pm_enable_pci_card_runtime_pm(root, i915);
+> +	} else if (setup_d3cold == SET_AUTOSUSPEND_DELAY) {
+> +		gpu_device = igt_device_get_pci_device(data->drm_fd);
+> +		igt_pm_enable_pci_card_runtime_pm(root, gpu_device);
+>  	}
+>  
+>  	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
+> @@ -151,7 +151,8 @@ int main(int argc, char *argv[])
+>  			goto exit;
+>  		}
+>  	} else {
+> -		if (!igt_device_find_first_i915_discrete_card(&card)) {
+> +		if (!igt_device_find_first_i915_discrete_card(&card) &&
+> +		    !igt_device_find_first_xe_discrete_card(&card)) {
+>  			igt_warn("No discrete gpu found\n");
+>  			ret = EXIT_FAILURE;
+>  			goto exit;
+> @@ -169,8 +170,8 @@ int main(int argc, char *argv[])
+>  			break;
+>  		case 's':
+>  			if (optarg) {
+> -				if (!strcmp(optarg, "i915-auto-delay")) {
+> -					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
+> +				if (!strcmp(optarg, "auto-delay")) {
+> +					setup_d3cold = SET_AUTOSUSPEND_DELAY;
+>  				} else	{
+>  					usage(argv[0]);
+>  					ret = EXIT_SUCCESS;
+> @@ -203,7 +204,7 @@ int main(int argc, char *argv[])
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_display_require(&data.display, data.drm_fd);
+>  
+> -		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
+> +		/* GPU driver disables RPM in case DMC is not loaded on kms supported cards */
+>  		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
+>  			igt_warn("dmc fw is not loaded, no runtime pm\n");
+>  			ret = EXIT_FAILURE;
+> @@ -215,7 +216,10 @@ int main(int argc, char *argv[])
+>  		igt_setup_runtime_pm(data.drm_fd);
+>  		disable_all_displays(&data);
+>  		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
+> -			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
+> +			if (!strcmp("i915", card.driver))
+> +				__igt_debugfs_dump(data.drm_fd,
+> +						   "i915_runtime_pm_status",
+> +						   IGT_LOG_INFO);
+>  			ret = EXIT_FAILURE;
+>  			goto exit;
+>  		}
 > -- 
 > 2.34.1
 > 
