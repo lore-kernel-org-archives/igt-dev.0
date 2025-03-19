@@ -4,186 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8523C35FFA
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Mar 2025 15:00:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49F08C35FFA
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Mar 2025 17:56:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 58F5410E516;
-	Wed, 19 Mar 2025 15:00:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E614810E164;
+	Wed, 19 Mar 2025 17:56:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AvQ5UbI1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NOU5y4t5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48D0A10E516
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Mar 2025 15:00:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E551C10E05E
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Mar 2025 17:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742396439; x=1773932439;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=XqH+2BP/NedjR/flP9qX24tglGqDjBzoIOSsLxCU5qk=;
- b=AvQ5UbI1XPRZCkYZ60//2K+RRDT1ezqTGHLIVTeVNySun/WkzLBTOoVi
- 6TNW+Aa0OeuVbF+hrL3p0m+KsR2Nx+UyDzSD53TIJdleAXUWoo5sCqXaa
- Zn9JAWKfawaqnnKjxyJ8txGPK651puN2bsEyjnAln9ooneP+Ws+tM2/+N
- J8+Ig/snDIGIn0M7oTPg2sN0Y10XFEC+bEbyNh8jCugOPG7sqU+pGJuK1
- np82+Boxm2r8PKAO1UYECXl1q/laPoo/GNKHDg759ddGkaYi7NSjQrejk
- EOvQdVYAE/GO2ufHjg2TZQOI84BF/Ge3VRpNsvDEUtox8DouoJYcjOuRV Q==;
-X-CSE-ConnectionGUID: HKb2dg7zS5yUpRX+2BsLnw==
-X-CSE-MsgGUID: prjW5vvXSJqyzPl9F+urbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="68945199"
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="68945199"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2025 08:00:39 -0700
-X-CSE-ConnectionGUID: go+OE69tRhGvScsqzdXa+g==
-X-CSE-MsgGUID: k+OmVLzXSOukTb/5E4Wwjw==
+ t=1742407015; x=1773943015;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=NyNtIpnKp8Rmw8GARyM1Ug/Dz7eT7YRuEIn/ICETKPQ=;
+ b=NOU5y4t5WsovAbcsO2bEzL1SAbJPIx62HC6p0KQAHJ4sluRCn6p4NPoC
+ flRMTkGAnd3W2tmt3EgZg3VZva3dmuiD+zslJxpp0nU/IyLbEfDVJkD3N
+ mUJ+SoHus0TX21sKqKbdgwXYstGkOfZjdCDsfFqspZGyy9UTJo8gbOzx0
+ YbaySNpIZXPkKOtSx1hCNGvIkySoAmNx5qXnqIwCaxnORYnGS5uYdKNGl
+ 2JCGlOB7WZeYHCPACGV3akwJo4RxN9eIWmNr5ZkYCENmPu7UuJt5dG9Yu
+ yWY6yItI0nEvbqalOFw4v/LA801RESQNfBioMhw3co9SecpPfJqvWhemg g==;
+X-CSE-ConnectionGUID: 1dD0e1T+RzmmUvVALPBtXQ==
+X-CSE-MsgGUID: ORTM3SYKQHigwOJGtqNBPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="43533725"
+X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="43533725"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2025 10:56:20 -0700
+X-CSE-ConnectionGUID: qZcenyfhTXehwQSTEXnr0w==
+X-CSE-MsgGUID: JMK133nZS9+NP5RKrdywWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="123397698"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 19 Mar 2025 08:00:23 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="122726843"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2025 10:56:20 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 19 Mar 2025 08:00:22 -0700
+ 15.2.1544.14; Wed, 19 Mar 2025 10:56:04 -0700
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 19 Mar 2025 08:00:22 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 19 Mar 2025 10:56:04 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.175)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 19 Mar 2025 08:00:20 -0700
+ 15.1.2507.44; Wed, 19 Mar 2025 10:55:55 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iQokhpb582kPmHGmU9FVfADvlgrT0N1/CS8QpiD3lfAPf5fWEe95JIjTtb6OpWIBKcOutXjulbELsG664E4JXvZTLMn3x3WIB82iS2kOfaAjMUMOyIVdl3fuJfGr1NffrjLhpM932vbddhbMrFhJWdY5mbxpBRpx1ynQ/lhWVZy1TvRVJVhSYQqMxsDx7XEj+meXS9HXsnArZp27YE8wG5pW6YRK3sLqeU4bON2lg6Ggr4G29ABAjIfHg76sD/AvvEsuBoJGxhptYSq0C4VzADLxVQbYj1ej39BCjNJ1hmQ2NT4w60BBjAeytd3mITqixtzRHONrlX+0kWgK6+xZnQ==
+ b=pjm9zSI3B75AkG3dIdAkl8U6ELJs3TpZbSVQci434uY9XGAZoffYub3BCzZCpp01BWJJN+DDiQFbkIrsy24MHyzRzcCswwg55cEYpZQmY0MXoWlNLUq5esF3V5EOuz6K82VqkeqMMkcISiT3PgS7lS1gmgMfWO/vNSQBbClMgQ0kQhAt9d8L7da6QgwI8oizx/ure6/3SaQKDG9kLYRvWvpCjcnWrYlAI8063EcJqOuG7kyr1XKDsVdVV8a4uf/fY3SSvd1WE6DDGPDLrsOjhj9jCvULP1xRVsbZKFYTBzjkPo9N6zyWFkhXdRFla60iddC3hu39rDWzebXl58q66w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9IeHRXI/9Ymus8q3IJThOUUVLzj8z92Ts5ISGtxpGUg=;
- b=JIQKzUtm9fkbFq0BkwhsQR2vikSnIfD6enUrUhmVknIku9sFtjpqzI4StNSBmYro4+954B6miIhYscvbU2LUdlvcYvrw+a8+nnkL87BGv7xQYGS0T0m1Lg3JsKBfj1WikD+OQBWzmv4pD75MqwV8Xmp2wzB4dYcRL0udmaYv5A+CCmnBuJfyIJLMGv5wxAIMGcJX9W7hyrO+zAOQMoY56KWgW8u6dxAl/3Ks47pWDRNhlU51hqD2jJK07e/w5BiNA5aHtgLjBRH5o/hFxtxiy1kHAZdQJXbfPhw0pdQ69KCSQOvX6jYfg4343Jt55WQWVNs3B8pCWNAo+DWlnf4sEA==
+ bh=a+ONITOvpF/GPhxAIUewlh+afeU+h92e4d0GezfkMVM=;
+ b=s9hBro6ICo7AWzyiEXM0cY+7qxN3OAOiySc41d2/EnXYyYOez5dNmzaM7XMSL59VM9jEIrqLlRzaktu8JM2rXMCV6a+m+VMRNqw/8FGu354KTovkw0YiWTEU53F69kwv1Vq/YR7adLBZTwAKNHvOI8seAvvU4/w2G9D3/9O/X0gFOmSW/z3kxTaKHmzx7sj6qb/qkStXKdDjUxxyDWEFrtlekMPN0EiFfRYK9ruapTIHJgkU4qkWOrD4eGyUW1EHAkMnSJ0NxfhZchbdWNDSAEKHsky3IG0hZ8SkK8PlZAufpl9JiHE3rWHyYMUUZ6rSxDCCvSHJV8BfLKuEfI8Wmg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ SJ0PR11MB5167.namprd11.prod.outlook.com (2603:10b6:a03:2d9::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.34; Wed, 19 Mar
+ 2025 17:55:26 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba%6]) with mapi id 15.20.8534.034; Wed, 19 Mar 2025
+ 17:55:26 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t v3] tests/kms_plane_multiple: Add dual display
+ subtest
+Thread-Topic: [PATCH i-g-t v3] tests/kms_plane_multiple: Add dual display
+ subtest
+Thread-Index: AQHbkx13GNj9aKn1okioIF4/XOd66bN6yFqA
+Date: Wed, 19 Mar 2025 17:55:26 +0000
+Message-ID: <DM4PR11MB63129F52EA5D4D281908569990D92@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20250312070821.610143-1-karthik.b.s@intel.com>
+In-Reply-To: <20250312070821.610143-1-karthik.b.s@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5703.namprd11.prod.outlook.com (2603:10b6:8:22::5) by
- CY8PR11MB7106.namprd11.prod.outlook.com (2603:10b6:930:52::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8534.34; Wed, 19 Mar 2025 14:59:36 +0000
-Received: from DM8PR11MB5703.namprd11.prod.outlook.com
- ([fe80::f734:e507:3083:e454]) by DM8PR11MB5703.namprd11.prod.outlook.com
- ([fe80::f734:e507:3083:e454%4]) with mapi id 15.20.8534.034; Wed, 19 Mar 2025
- 14:59:36 +0000
-Message-ID: <337176d1-41f4-481e-b81e-0f818f45a4ba@intel.com>
-Date: Wed, 19 Mar 2025 20:29:29 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 2/2] tests/intel/xe_pm: Add a check for power
- management capability
-Content-Language: en-GB
-To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>, "Jakub
- Kolakowski" <jakub1.kolakowski@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: Adam Miszczak <adam.miszczak@linux.intel.com>, Lukasz Laguna
- <lukasz.laguna@intel.com>, "Gupta, Anshuman" <anshuman.gupta@intel.com>
-References: <20250318150108.1055169-1-jakub1.kolakowski@intel.com>
- <20250318150108.1055169-3-jakub1.kolakowski@intel.com>
- <30298e71-5dc6-477a-b3ef-73f0996b9e35@intel.com>
- <5c0a4a66-8e05-4f14-acc0-96487cc43590@linux.intel.com>
-From: "Poosa, Karthik" <karthik.poosa@intel.com>
-In-Reply-To: <5c0a4a66-8e05-4f14-acc0-96487cc43590@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA1P287CA0001.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:35::14) To DM8PR11MB5703.namprd11.prod.outlook.com
- (2603:10b6:8:22::5)
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|SJ0PR11MB5167:EE_
+x-ms-office365-filtering-correlation-id: d87fb22d-4f66-46db-3399-08dd670f3afb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?5fJuib0kT4lAdveXejsmJWTO250VE5nj6Z/673PaPyF+rAad03XlEquESMYs?=
+ =?us-ascii?Q?SCnpIxsL0mSPSGh9EQO/anvaBY9rCC2gzUlNF0iw8vlnOm8ncLQw9CuA0npq?=
+ =?us-ascii?Q?FIop331i0bLIqNwPOPw/dgiZOJY1GtNeJHzZeBNYeDWaKyOjszGnREd4HAtO?=
+ =?us-ascii?Q?DsJNkS7io8SVSLzU6hceKws2j9yJamjWkJjXZFFPVmI4L80RBhp/Wu33KSvo?=
+ =?us-ascii?Q?amgHpDxT+VFmyk2eiv9nvGMgnWeiOjPb880Hrf6fcslaCY2GMtQ8hb7x2mN/?=
+ =?us-ascii?Q?CExqcMJxRcp57MtsCkM6vTt+OdAhoNMTlzqExjifO8D2aJxwIrJJHp5qraZw?=
+ =?us-ascii?Q?5vKW4r6r8INkFy+sTmzgelVNeNoBC0LOcyu1D96FoeqcskbLHJdoeRqI2xgk?=
+ =?us-ascii?Q?ig8qKBH0tMZeTo4aEqkKYYXbd2W1oYL/i3kyzUpgvRzmo1/ar8WOgeidxVyQ?=
+ =?us-ascii?Q?UepABfL8iaI8h3dyJum1hwBJDyEnfNaGelFTJJg85svJO+Zt/4/tCBi4K2yH?=
+ =?us-ascii?Q?sou0vAdW24NJoCyhUK/Bse7Rr5TPwS3CmgEqYNyG/ymp9zl/MYHKNfaDOyg7?=
+ =?us-ascii?Q?WcbrF9gA/P+C4e3bzGDCw3vX56OEVoEbKDpe3wtx296wdb8tgeitrJpBRxz7?=
+ =?us-ascii?Q?GqjTIBUNSXZfTGcfkgnm02AG9fZUeHR09+aLu2fbmq3PL6rEM1XYw31LnSPM?=
+ =?us-ascii?Q?FlxXsyzSsTgo0guMcegD9KSA5qyv/8g7YngvUVc/U+O891UmN7B+A/82J0kj?=
+ =?us-ascii?Q?2pKnLtKmxOQsspM+18lx/J5VR8oP7ZrLp8dM9baxizOfUBDi9LdO1aYojEmq?=
+ =?us-ascii?Q?/TL2zcQI+u+YwvNE2hSCPen0iLzqmRRuCWy6BTDFBJPwODN3/Gc2UQRb92mw?=
+ =?us-ascii?Q?OeoVQp/vMftp2dxo5kE1hsMrIsn6UVZDtF9xqZHEKPaLpFzctC47ugDrsFnF?=
+ =?us-ascii?Q?4s+UiavvfF6YaAMLvd4kulgPpFRQve/MMt5KbKbKlPq0iQ4KBR5rVmcvami8?=
+ =?us-ascii?Q?gLTJmtnh+JuUckZe56U3yINbZ2LcpefALmPl9vywXO7B8GCDlrU4ElnCLw4B?=
+ =?us-ascii?Q?c8E2ObJhCjMkQCs+/6Co4HAv9mMTPcF3MGHKiVhGhbRCmcsPxCB4feB9pXYP?=
+ =?us-ascii?Q?7Zj1Y0pyCyOvG8U1L9uZ25mKYmNF6DKwoHlumqlC3Lj2EtvCzHAqruBkWWM6?=
+ =?us-ascii?Q?/hIY13wAkGy0cfESmaUG3HRc+Ces/bCjtWgIvIQJP6BDFybSjuv4EzFyZu+b?=
+ =?us-ascii?Q?ldIp3nmqDSZYwUqDBj0SxTnd6c1/UdI3hHYnoRC9vsPp/OlKHZO5vx4josud?=
+ =?us-ascii?Q?OKlrfAgTz400m8b61lp/IhzspANepfk5tnNE64ubYRrqeAinmpexGFc2wgq8?=
+ =?us-ascii?Q?xonEgSCKz+w4jNaXM4Okml5Ks07yxjFMnNUo5SuYgZ5+R+JhhM8AFl3SxvlS?=
+ =?us-ascii?Q?GEdoBwNymrQ5A9l9rKjSPDjDqEcELAsF?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007)(38070700018); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?bchw8AYLr4ZF/+H645T8itSJFWaKzElreiAKBCUrqI9JwiY0loZLkxMYcnI4?=
+ =?us-ascii?Q?YRojfqgojpk8olTlWKboG3fgQliIlcHBkrN3J6KVJDlyXE3DK3uG2HuXT0wv?=
+ =?us-ascii?Q?JeXmdlLaYyL/VGk8F2zr4z4HxC5ygcMzXJIDX7nwQ5STNcJlOxbNr9Uf430F?=
+ =?us-ascii?Q?e23PXuwkZsyH0bstk/bXknLfisFN6eyZru7Qpm/YaHEinxlJ/NvMrC5MxCOZ?=
+ =?us-ascii?Q?LibyRsg93jvuePrtoUBBnYbZAKxSMHxJCTG+b1k9lNQzdHcOclDEslOfDwsN?=
+ =?us-ascii?Q?2endMp84wCNUZpTTx1bnOBktZJKUgKajZAbYkntRkl41DJr3XeaOklDZBCpw?=
+ =?us-ascii?Q?Hy+GjP6zvp2NUawmceSLHe3VlfVSi04q1NNG9rbmrHgK8HJmxcBN603fFumW?=
+ =?us-ascii?Q?UVzYa2bvDHeY2k9HppcGgb324Mcrvr+1lCru9wbwx0IJwjf2UhxmEfnMtSTN?=
+ =?us-ascii?Q?jtyB077iftZsLmvATk/79XX9c8QRSgeMtv/GeZmihPzeEx8vmZHxGR/VtsUJ?=
+ =?us-ascii?Q?/QuAh9Xwor6LBVkSj6Bx+diWe2Ig6pq0L1vdZzMzkL4+17Pvw5cPdNStFR68?=
+ =?us-ascii?Q?j84oxLYePlxrDw4cuYmedRB3mqNY9JoguRE6JJiwIet5NFIxmx6mr36PLqo7?=
+ =?us-ascii?Q?aSrR/I+FajA1ET4lAutd0Fe0ZDyCCtEK8MrmB/x9elYhGQYaAfh8d3zeL7vN?=
+ =?us-ascii?Q?TZhdRDsGvqK4aA9oVdAC16BR72H/ekJBEQE52pj4D1WQ/3eG2w76F49pDIdj?=
+ =?us-ascii?Q?bvcJKCe/jZqpjBfHKzn6Eg9iGtiMTMLAdIkb03Abac9AlsOZWyjk3X5WlyKO?=
+ =?us-ascii?Q?uFx/y1t1doz9EIUlHouHPqH8oxucHy1x1+a7ktoCJdMqvkKUV+i86X8NDWj9?=
+ =?us-ascii?Q?+q4RAmmF7J3/4i3arSDgPWRGk3EI0+fPA/nwWMVwP3yjWtDpTR9heeRZ1/tg?=
+ =?us-ascii?Q?M9/OPcUP99taoD7jmXlA2G2mTRseEyqc5dSfeCkJ7cb4h1shAVmRfBElbDYD?=
+ =?us-ascii?Q?pInL8PVBbKyesOf3YY87gXGDB5jtlPE/Ok+2OK2/qzhCEB3ZwEjLeRG9ni9R?=
+ =?us-ascii?Q?kY9qNGHWwun+ZLmHhji6qC/IpV1BBdByOO0R8Y980tQ1tSByjDpQWoZHx8q6?=
+ =?us-ascii?Q?zPHASqK0VNzp9ybLj3n1Mp0qb/nJu2wQhI1eRVdGRShHwXed7MfPYagJYNib?=
+ =?us-ascii?Q?fuiuku/cpoXwWOebNzQNIdkEk5q2+dDJeoCFa+wQAByJB6WOEw7Ypa8nuN0f?=
+ =?us-ascii?Q?jzvx6M1QDnXWS+2tekt+sWxoNQEX6tx2MgpvNnEeZnzrez80DPVmcJ9ptHax?=
+ =?us-ascii?Q?9JR7f7wOAH3xh4GJGxMaZ41TQEUSan/Dr5Wqsyz05Wvp3a+lzjTYStDCW+/Z?=
+ =?us-ascii?Q?WWuPD/SHhtJH8/+E9zQ5kmQ5RUis9mbzEwIvy/4fa/j3NCiUYepMgyso1AMx?=
+ =?us-ascii?Q?yQri3Hod5GiCt0Xdw7wc8oe5PGaljvqYFX74gOw3yMnUrTe3bdHbwPv3FxB6?=
+ =?us-ascii?Q?jl/W61OrwZBnwq9VGKQYUxLYogXd6UxRFB17wy/T1/HZi5VkQaATvq8AGxIQ?=
+ =?us-ascii?Q?w4neAe/tf4IiwHQVVXs=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5703:EE_|CY8PR11MB7106:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65cb0632-437c-43ad-8d22-08dd66f6aa84
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aE1KM0VzRURYUzdOVkxkclJsOXpwUm9UbTVnYnFCTXRrZW9OZ1drbGhkVU5G?=
- =?utf-8?B?Y1JFWXJEQ1BNVlhjUDdyV2xabjdHdkV2bmpLQTBrdll6cXlKT25KcHNvZzBR?=
- =?utf-8?B?OVk3dUNQZUIraTFlblJCL3htQmtaSkdlRTVxU2tOSHc5TWlvWHhsaUZ5bVZB?=
- =?utf-8?B?WDREN1hyKzZLLzZVcU9iY0NMNi84bG9pOE1kZ0dLbVI1NFNjeXZHVGRZQmpG?=
- =?utf-8?B?RDdsNkxsZ1RQTlN2WmE1QzNaQ3ZrMUVNZVplWVNEUXVYNHBJVit5ckd4aXVQ?=
- =?utf-8?B?aC9hSFVKTEdqQnpkR0szclAyaDRiTWh6TkVHaThQSFpsM1JNRGt3QnZKQmFC?=
- =?utf-8?B?QVVLTDVwTjBWa0xKYXdWNCtCVmRBd1p6NGc4dTJ4N0lBVW1jQ1dIMDdBczNN?=
- =?utf-8?B?dmhXajZ6VGx2a2IzWXZ3enYwTjduQ0Z2NVppUXlOSHJrYXEyajZiVHhlYklE?=
- =?utf-8?B?Ym5XSWd5TmxKMzJoTTgwZEoxWVlneWpIMlA5VytGUzRPM3JZNEJjRU1hcU1D?=
- =?utf-8?B?bmJsejJGM2RrYnFMbE9sRGoyaDBJMW1iN1Yrc3RaTHF4RmM2T0prV2xraWRW?=
- =?utf-8?B?SHM4Y0tqQU1nSHlKVU5MQ3MvbFR0TVpnblo4Wmp6YmdVdjZWSkVFVVErRTdK?=
- =?utf-8?B?Y2pnU0JUQWdsNlh5MmRGUkFyWFd4cldMR2JIbVJHeEM1RE1pVnRuanN3MmRO?=
- =?utf-8?B?UWpiTG9sTHdyQ1h3ZFBwbnlHanBYbXAycTRxTGFpTXI1Zk1KNWxHTGFSbWhB?=
- =?utf-8?B?U2tTcDNjQ0NzVmhNeTdtMEV4WnZjUThZT1pjZ25EMlVrQzJBaHM1NmQxN1pk?=
- =?utf-8?B?Ym1SM05sQWRMODJGL1lvdVRtSi95WGhueGROWitWZVRZdHhOSS9Hci9ndTZw?=
- =?utf-8?B?cHJGWkc5NGcxN3ROOEJHc0tJa255dzgrYUhDY0FkUGxUOXV4YnN6NWlFNk5E?=
- =?utf-8?B?STdkWi9Pc1dLcEJVbFpyWWg4eUZDMGJHK3N4STNldWw5SURYSFBWTElXRnVw?=
- =?utf-8?B?dXdPVjNnRXBtc01kOWZLNkRyb1NlVVJVNnI2cDRXNkJlTHJCQ3NuK0JuZEFt?=
- =?utf-8?B?TUlKZEVxS3Njd0NoNFRYc0NpR3UrYkRMYzZ2d25qZXY2OFR5ZjJuNlA1NDI1?=
- =?utf-8?B?djdZQW1VS0tzZk0xbUpYaDRpL1hoajRCZTFiNWh2c1FZcng4QWtaaE1VL29z?=
- =?utf-8?B?MmxzcTBkOTIzK2czN3BRWGlQUmw3Snh3Wlo4NDNzbWt3OHcxa0NWaTg3K0dC?=
- =?utf-8?B?WlVvbW11UnZ5ckhPZHFlVTRZeEJtMzhoYkZETG1Oa0pDaHNyc1FtM1h6Qity?=
- =?utf-8?B?andSRFI4TUxEdjl6QmQvTHhTVW5LTmlweU1kbFp3eWExazFDa29DTVl1Y2E2?=
- =?utf-8?B?RTRqVjVRL3pSQmtVcmRRMkVtemE4Y1VkWmFCZjZYOGZjYzdTVVQ2OE5CZFJ4?=
- =?utf-8?B?MS9TUERJbzZqdlM1c3FxR3pEVGd4a1ZDd1JlYUs0ODlTd0FXczJIQ0RwcnEx?=
- =?utf-8?B?eVRpS0FoOS9iUFgzb1B6ODFGblNXL3AzVFZSRHc4empSZGtmaHBhVDAzcmNa?=
- =?utf-8?B?UkxPa1JNemJXT2pTZE9XeW1nd3AwWGJybTRpSzJockdhNUVFWHFKVUFEY1FM?=
- =?utf-8?B?Qk54SjJQbU5DdUEzVFQ1dFhmN2ZGcndjOWNmTFhObnlOd1dBZGpON0laa01s?=
- =?utf-8?B?REd1WHNxaGF0ak9FMEFmY0EyR2JabmRDLzUxRTkxVVczUEovR2c5MmRQY3Ew?=
- =?utf-8?B?Nm51YmNocHJXSCtUK1dESUxBeTRNTi9ITTVOU0lFcDFOUzExbTFnZWFLaUhv?=
- =?utf-8?B?NDhVTW1TczdjUXdMaXVXVXBEbmlQMWlwUW5BR0ErNldjRXVuMWJHMk9DODZF?=
- =?utf-8?Q?T0ppMEkDZkEOU?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5703.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SzhpYy9DMnI5eGIrZXpiVWtRWXcwQ3I3N0tNdlIyN2tLRXZ2eDBlMjlOLy82?=
- =?utf-8?B?QWswbDYxNyswSGZ2aUhNdU8wNG9mU01PL2JLenNRbmhRd0QzemQ1dFBpMTFH?=
- =?utf-8?B?ZjlWT0luQ1EyUWhDQ0pRWkdVZCtjRDRmSWJrQllyQVNjYUh0R3BScU9xd0dv?=
- =?utf-8?B?N1UzdEdqL0RHckNUVE5XQzYvaG1zWEZLQmRBNmRsNG9aSjZwTFJBNllHYml2?=
- =?utf-8?B?cDlxdEo5SVl0RDBWbWhxZ0Yzam82bm9wUGxiSEpPRjlWU0ZjSlJ3TTRzZTlh?=
- =?utf-8?B?dVBQZU5JZzdtSFUvOC9GY2ZBdEZmSXdGWFFTUlBiOHdsYm91Vk9NOUtEUTFB?=
- =?utf-8?B?Tmh5dzJZbTcrVW9HT2ZwR0hXNS80cjl1SVBRNWJMTnRKK01pbEhmazhxSEp1?=
- =?utf-8?B?aHYrZGlZUDRZbHhDaW9QQXhqa213cDdJa3hTU3dJMjBZbGlvVEM4cjJGRzFI?=
- =?utf-8?B?amErbVZGOGp3dGxQR1UwYjErdnBnQkhOVnowNU5qbUsrekI4UnVFQVUwL2d0?=
- =?utf-8?B?TU5uZS9SK1NEZ1haNXBCMzhWcDdLVnU1RU1rR2g0OWhVUUIzUkxveUZNUC9j?=
- =?utf-8?B?d3VMSlhrbDFIbkw5dm9JQkw1UCtvRFBWaWVMSGxhR3pRQ3JpTVBZZXRsbUgw?=
- =?utf-8?B?MGtJQ3ZhbC94aUVXYjJOMERFeEwrWTNHTGxKRlljU2Uyc0J0L2RFSWp3MHor?=
- =?utf-8?B?N04rQjdmZkl6bUtVZzV5ODRET1ZkMGo1Tk44cWZTSzU1b2xEMFdWSXY2dU1C?=
- =?utf-8?B?NXNxeE5BcC9QOFdkT25ld3dYMTd2bXJTSjhZOXNpZG14Z1FXTHp3Zks3VzRB?=
- =?utf-8?B?cXlRZWJ2WEVyTUxyZVc3L0pyNGtjM2dldmM2WHFYZjk2U3Jqa084WTBQYWNy?=
- =?utf-8?B?TWxxMjNiMGxVRUxlK3dqU2tta000akJwRk01a2tCUytPN01tQTB4bTNvbEwx?=
- =?utf-8?B?WG5nTGhVZXowQlp3bDJ0UHk0MWliZExOdE1CNGpNbWcyOWJWclJzQzErTisr?=
- =?utf-8?B?WW90Y3hveWRpWHN6d3JTY2VMKzVENnNZMFdieFo2czE4VTh1bVpBelRHcnNk?=
- =?utf-8?B?MmRkSkJVYmZvR3h5ZXRTU3NQZEMwY1VVYTlmSCtKVHdvRE1lcjd0aW03dE5Y?=
- =?utf-8?B?emlmcSt4VEtLWXpmYUF3eXhGeVlpUTZQc2VROE9TK2JNR2RVTUhtU1pxcGFn?=
- =?utf-8?B?cXF6M0g2L1NrUVA1TUhEanMrS2VLcmxVNG53UVJMSTg2NllsRnFVUW1lYzBw?=
- =?utf-8?B?c0VXK1dYOVFNdSttSWVXYk9VZEtEbGo5NGhSU25ZMHVybG9SRkoyVTh1Yk5M?=
- =?utf-8?B?Y3RCbm1Na01NbmFqNDh3Z0sxVm5kUUZwMzZkazVjcXRjVmJ3SXJxeHU5K0FW?=
- =?utf-8?B?RGNYNjBpRFpiYjJsWXpDamZ3dHo4eXk1ZWNraW1FWTdObjJhaEJiRGFZOWM2?=
- =?utf-8?B?TEZ5Yy9HaGV0bkRVc3laeU90NDV0clY5UDJMRlkweDN5L2FzY3BLbnhEa3Bh?=
- =?utf-8?B?TitqZGYwTkdvY0FDV2pseTMyNzR5Q2pGUE5RdVZTRVZPM0kvbmtDL2g5ZE51?=
- =?utf-8?B?WG1aQnBYK2lKemxJQ3NPSFJFazU0TlFXUHY0LzBuR0ZQNlZ0RkRIRmtOaU0v?=
- =?utf-8?B?RTF4bFkzV0Z6RWE3TEZZWkF1UkpvWWJoMGlGTVdFUHkrbmZubFMxWkZCdGh3?=
- =?utf-8?B?RE13SlFja0RyczFWcjBwRk5VRHhsRDdkSFpEdTFac1FYSXkrUGpNTnZWSHNx?=
- =?utf-8?B?VGlkNTRBeHRKSDMwVm5UVm9mS1p2anc0MU1uNXVxb3BQOXVJVHE5MXA3MnUx?=
- =?utf-8?B?THBmc2pJMjdoQ3BJdG9yZTR0VE1jT0hSbStZdDY5WVFvOFphLzdobFJOMSt5?=
- =?utf-8?B?b2ZoZ2w3aEVPNEhyVlRVYXVXQU9VN0lCQVpCVGlDL3EvRnFxWTBsUEVwU0l4?=
- =?utf-8?B?aHJOdGwyTjFzSzJQbEUyeXdSVVNkMkZzR2RqRGVBNFZEYTZ4YjZtSGlyUXQy?=
- =?utf-8?B?TWpydVJra2QrK1FMeEhBWURMT0hveWx1SlFPZFJFQis5ait4TWZpWDBTWThE?=
- =?utf-8?B?cy9Ma3huSm9ReWh0UzhPUi85RWJFeEpHMGhFWHV2RmdYaFRqc3NhMkxOdWlv?=
- =?utf-8?B?L09pb0czejdPUHpiMjVvVzdodnB3ajJZK2tRRU1PcHdkN3VQUkZtM3Z6MTJR?=
- =?utf-8?B?TGc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65cb0632-437c-43ad-8d22-08dd66f6aa84
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5703.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2025 14:59:36.6553 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LolwhN+6aMdb1829M81M+xOSN03DPPtan4ly8V47qb1IlfPq5eJ4Y7NWam3wlsXV/RXz3J+Qhc+fkOxUe0Di5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7106
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d87fb22d-4f66-46db-3399-08dd670f3afb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2025 17:55:26.7947 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IIbMXvnzgfSCcs9ONCecfngzcASX8tfUo8tFpGUuag5KZ6XBpnm8sAX00GqY/nW9WSh57LLZcQB9CxZ+2Aw6oA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5167
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -200,65 +182,499 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+> -----Original Message-----
+> From: B S, Karthik <karthik.b.s@intel.com>
+> Sent: Wednesday, March 12, 2025 12:38 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: B, Jeevan <jeevan.b@intel.com>; B S, Karthik <karthik.b.s@intel.com>
+> Subject: [PATCH i-g-t v3] tests/kms_plane_multiple: Add dual display subt=
+est
+>=20
+> Add 2x subtest to verify MPO use case simulataneously on two display
+> configurations.
+>=20
+> v2:
+> - Update the test to use all the modifiers (Jeevan)
+>=20
+> v3:
+> - Add modifier support check before starting dynamic subtests
+>=20
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/kms_plane_multiple.c | 235 +++++++++++++++++++++++++++++------
+> --
+>  1 file changed, 186 insertions(+), 49 deletions(-)
+>=20
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c inde=
+x
+> eda300b06..1e100a5bc 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -55,6 +55,18 @@
+>   * @x:           x-tiling
+>   * @y:           y-tiling
+>   * @yf:          yf-tiling
+> + *
+> + * SUBTEST: 2x-tiling-%s
+> + * Description: Check that the kernel handles atomic updates of multiple
+> planes
+> + *		simultaneously committed on 2 displays.
+> + *
+> + * arg[1]:
+> + *
+> + * @none:	 no-tiling
+> + * @4:           4-tiling
+> + * @x:           x-tiling
+> + * @y:           y-tiling
+> + * @yf:          yf-tiling
+>   */
+>=20
+>  IGT_TEST_DESCRIPTION("Test atomic mode setting with multiple planes.");
+> @@ -73,10 +85,10 @@ typedef struct {  typedef struct {
+>  	int drm_fd;
+>  	igt_display_t display;
+> -	igt_crc_t ref_crc;
+> -	igt_pipe_crc_t *pipe_crc;
+> -	igt_plane_t **plane;
+> -	struct igt_fb *fb;
+> +	igt_crc_t ref_crc1, ref_crc2;
+> +	igt_pipe_crc_t *pipe_crc1, *pipe_crc2;
+> +	igt_plane_t **plane1, **plane2;
+> +	struct igt_fb *fb1, *fb2;
+>  } data_t;
+>=20
+>  /* Command line parameters. */
+> @@ -95,14 +107,14 @@ struct {
+>   */
+>  static void test_init(data_t *data, enum pipe pipe, int n_planes)  {
+> -	data->pipe_crc =3D igt_pipe_crc_new(data->drm_fd, pipe,
+> +	data->pipe_crc1 =3D igt_pipe_crc_new(data->drm_fd, pipe,
+>  					  IGT_PIPE_CRC_SOURCE_AUTO);
+>=20
+> -	data->plane =3D calloc(n_planes, sizeof(*data->plane));
+> -	igt_assert_f(data->plane !=3D NULL, "Failed to allocate memory for
+> planes\n");
+> +	data->plane1 =3D calloc(n_planes, sizeof(*data->plane1));
+> +	igt_assert_f(data->plane1 !=3D NULL, "Failed to allocate memory for
+> +planes\n");
+>=20
+> -	data->fb =3D calloc(n_planes, sizeof(struct igt_fb));
+> -	igt_assert_f(data->fb !=3D NULL, "Failed to allocate memory for FBs\n")=
+;
+> +	data->fb1 =3D calloc(n_planes, sizeof(struct igt_fb));
+> +	igt_assert_f(data->fb1 !=3D NULL, "Failed to allocate memory for
+> +FBs\n");
+>  }
+>=20
+>  static void test_fini(data_t *data, igt_output_t *output, int n_planes) =
+@@ -
+> 110,21 +122,21 @@ static void test_fini(data_t *data, igt_output_t *outpu=
+t,
+> int n_planes)
+>  	/* reset the constraint on the pipe */
+>  	igt_output_set_pipe(output, PIPE_ANY);
+>=20
+> -	igt_pipe_crc_free(data->pipe_crc);
+> -	data->pipe_crc =3D NULL;
+> +	igt_pipe_crc_free(data->pipe_crc1);
+> +	data->pipe_crc1 =3D NULL;
+>=20
+> -	free(data->plane);
+> -	data->plane =3D NULL;
+> +	free(data->plane1);
+> +	data->plane1 =3D NULL;
+>=20
+> -	free(data->fb);
+> -	data->fb =3D NULL;
+> +	free(data->fb1);
+> +	data->fb1 =3D NULL;
+>=20
+>  	igt_display_reset(&data->display);
+>  }
+I think we need to free resources related to second display like above.=20
 
-On 19-03-2025 13:44, Bernatowicz, Marcin wrote:
->
->
-> On 3/19/2025 9:05 AM, Poosa, Karthik wrote:
->>
->> On 18-03-2025 20:31, Jakub Kolakowski wrote:
->>> Add a check for power management capability of device tested in tests
->>> related to D3 states. Currently if test is started on configuration
->>> that does not support the PM capability it doesn't skip, instead
->>> depending on test it may fail, abort or timeout.
->>> With this change test will skip with a clear message why it did.
->>>
->>> Cc: Adam Miszczak<adam.miszczak@linux.intel.com>
->>> Cc: Lukasz Laguna<lukasz.laguna@intel.com>
->>> Cc: Marcin Bernatowicz<marcin.bernatowicz@linux.intel.com>
->>> Signed-off-by: Jakub Kolakowski<jakub1.kolakowski@intel.com>
->>> ---
->>>   tests/intel/xe_pm.c | 3 +++
->>>   1 file changed, 3 insertions(+)
->>>
->>> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
->>> index c2026474d..70f0613fb 100644
->>> --- a/tests/intel/xe_pm.c
->>> +++ b/tests/intel/xe_pm.c
->>> @@ -146,6 +146,9 @@ static void vram_d3cold_threshold_restore(int sig)
->>>   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->>>   {
->>> +    igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
->>> +              "PCI power management capability not found\n");
->>
->> Hi Jakub,
->>
->> As per PCIe Base spec, all PCI Express Functions are required to 
->> support PCI Power Management Capability.
->>
->> Only legacy PCI devices wouldn't have it.
->>
->> Can you share details of failures without this capability.
->>
->> All Xe supported GPUs are PCIe complaint, this check may not be 
->> needed at all.
->
-> This happens for runs with Virtual Function (VF) passed to Virtual 
-> Machine (VM).
->
-> "9.6 SR-IOV Power Management
-> This section defines the PCI Express SR-IOV power management 
-> capabilities and protocols.
-> The Power Management Capability is required for PFs as described in 
-> Chapter 5 .
-> For VFs, the Power Management Capability is optional."
->
-> -- 
-> marcin
-Okay, LGTM then.
-Reviewed-by: Karthik Poosa <karthik.poosa@intel.com>
->>
->>> +
->>>       dpms_on_off(device, DRM_MODE_DPMS_OFF);
->>>       /*
->
+Apart from these LGTM.=20
+>=20
+>  static void
+> -get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+> -	      color_t *color, uint64_t modifier)
+> +get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+> igt_pipe_crc_t *pipe_crc,
+> +	      color_t *color, igt_plane_t **plane, uint64_t modifier,
+> +igt_crc_t *ref_crc)
+>  {
+>  	drmModeModeInfo *mode;
+>  	igt_plane_t *primary;
+> @@ -134,7 +146,7 @@ get_reference_crc(data_t *data, igt_output_t
+> *output, enum pipe pipe,
+>  	igt_output_set_pipe(output, pipe);
+>=20
+>  	primary =3D igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_PRIMARY);
+> -	data->plane[primary->index] =3D primary;
+> +	plane[primary->index] =3D primary;
+>=20
+>  	mode =3D igt_output_get_mode(output);
+>=20
+> @@ -142,21 +154,21 @@ get_reference_crc(data_t *data, igt_output_t
+> *output, enum pipe pipe,
+>  			    DRM_FORMAT_XRGB8888,
+>  			    modifier,
+>  			    color->red, color->green, color->blue,
+> -			    &data->fb[primary->index]);
+> +			    &data->fb1[primary->index]);
+>=20
+> -	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary-
+> >index]);
+> +	igt_plane_set_fb(plane[primary->index], &data->fb1[primary-
+> >index]);
+>=20
+>  	ret =3D igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+>  	igt_skip_on(ret !=3D 0);
+>=20
+> -	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
+> +	igt_pipe_crc_collect_crc(pipe_crc, ref_crc);
+>  }
+>=20
+>  static void
+>  create_fb_for_mode_position(data_t *data, igt_output_t *output,
+> drmModeModeInfo *mode,
+>  			    color_t *color, int *rect_x, int *rect_y,
+>  			    int *rect_w, int *rect_h, uint64_t modifier,
+> -			    int max_planes)
+> +			    int max_planes, igt_fb_t *fb)
+>  {
+>  	unsigned int fb_id;
+>  	cairo_t *cr;
+> @@ -168,16 +180,16 @@ create_fb_for_mode_position(data_t *data,
+> igt_output_t *output, drmModeModeInfo
+>  			      mode->hdisplay, mode->vdisplay,
+>  			      DRM_FORMAT_XRGB8888,
+>  			      modifier,
+> -			      &data->fb[primary->index]);
+> +			      &fb[primary->index]);
+>  	igt_assert(fb_id);
+>=20
+> -	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb[primary->index]);
+> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &fb[primary->index]);
+>  	igt_paint_color(cr, rect_x[0], rect_y[0],
+>  			mode->hdisplay, mode->vdisplay,
+>  			color->red, color->green, color->blue);
+>=20
+>  	for (int i =3D 0; i < max_planes; i++) {
+> -		if (data->plane[i]->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> +		if (data->plane1[i]->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+>  			continue;
+>  		igt_paint_color(cr, rect_x[i], rect_y[i],
+>  				rect_w[i], rect_h[i], 0.0, 0.0, 0.0); @@ -188,8
+> +200,8 @@ create_fb_for_mode_position(data_t *data, igt_output_t
+> *output, drmModeModeInfo
+>=20
+>=20
+>  static void
+> -prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+> -	       uint64_t modifier, int max_planes, igt_output_t *output)
+> +prepare_planes(data_t *data, enum pipe pipe_id, color_t *color, igt_plan=
+e_t
+> **plane,
+> +	       uint64_t modifier, int max_planes, igt_output_t *output,
+> +igt_fb_t *fb)
+>  {
+>  	drmModeModeInfo *mode;
+>  	igt_pipe_t *pipe;
+> @@ -249,15 +261,14 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  		 * Here is made assumption primary plane will have
+>  		 * index zero.
+>  		 */
+> -		igt_plane_t *plane =3D igt_output_get_plane(output, suffle[i]);
+>  		uint32_t plane_format;
+>  		uint64_t plane_modifier;
+>=20
+> -		data->plane[i] =3D plane;
+> +		plane[i] =3D igt_output_get_plane(output, suffle[i]);
+>=20
+> -		if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> +		if (plane[i]->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+>  			continue;
+> -		else if (plane->type =3D=3D DRM_PLANE_TYPE_CURSOR)
+> +		else if (plane[i]->type =3D=3D DRM_PLANE_TYPE_CURSOR)
+>  			size[i] =3D SIZE_CURSOR;
+>  		else
+>  			size[i] =3D SIZE_PLANE;
+> @@ -265,10 +276,12 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  		x[i] =3D rand() % (mode->hdisplay - size[i]);
+>  		y[i] =3D rand() % (mode->vdisplay - size[i]);
+>=20
+> -		plane_format =3D data->plane[i]->type =3D=3D
+> DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 :
+> DRM_FORMAT_XRGB8888;
+> -		plane_modifier =3D data->plane[i]->type =3D=3D
+> DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_LINEAR : modifier;
+> +		plane_format =3D plane[i]->type =3D=3D DRM_PLANE_TYPE_CURSOR
+> ?
+> +						 DRM_FORMAT_ARGB8888 :
+> DRM_FORMAT_XRGB8888;
+> +		plane_modifier =3D plane[i]->type =3D=3D
+> DRM_PLANE_TYPE_CURSOR ?
+> +
+> DRM_FORMAT_MOD_LINEAR : modifier;
+>=20
+> -		igt_skip_on(!igt_plane_has_format_mod(plane,
+> plane_format,
+> +		igt_skip_on(!igt_plane_has_format_mod(plane[i],
+> plane_format,
+>  						      plane_modifier));
+>=20
+>  		igt_create_color_fb(data->drm_fd,
+> @@ -276,17 +289,17 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  				    plane_format,
+>  				    plane_modifier,
+>  				    color->red, color->green, color->blue,
+> -				    &data->fb[i]);
+> +				    &fb[i]);
+>=20
+> -		igt_plane_set_position(data->plane[i], x[i], y[i]);
+> -		igt_plane_set_fb(data->plane[i], &data->fb[i]);
+> +		igt_plane_set_position(plane[i], x[i], y[i]);
+> +		igt_plane_set_fb(plane[i], &fb[i]);
+>  	}
+>=20
+>  	/* primary plane */
+> -	data->plane[primary->index] =3D primary;
+> +	plane[primary->index] =3D primary;
+>  	create_fb_for_mode_position(data, output, mode, color, x, y,
+> -				    size, size, modifier, max_planes);
+> -	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary-
+> >index]);
+> +				    size, size, modifier, max_planes,
+> &fb[primary->index]);
+> +	igt_plane_set_fb(plane[primary->index], &fb[primary->index]);
+>  	free((void*)x);
+>  	free((void*)y);
+>  	free((void*)size);
+> @@ -332,12 +345,13 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>=20
+>  	test_init(data, pipe, n_planes);
+>=20
+> -	get_reference_crc(data, output, pipe, &blue, modifier);
+> +	get_reference_crc(data, output, pipe, data->pipe_crc1, &blue,
+> +			  data->plane1, modifier, &data->ref_crc1);
+>=20
+>  	/* Find out how many planes are allowed simultaneously */
+>  	do {
+>  		c++;
+> -		prepare_planes(data, pipe, &blue, modifier, c, output);
+> +		prepare_planes(data, pipe, &blue, data->plane1, modifier, c,
+> output,
+> +data->fb1);
+>  		err =3D igt_display_try_commit2(&data->display,
+> COMMIT_ATOMIC);
+>=20
+>  		for_each_plane_on_pipe(&data->display, pipe, plane) @@ -
+> 347,7 +361,7 @@ test_plane_position_with_output(data_t *data, enum pipe
+> pipe,
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>=20
+>  		for (int x =3D 0; x < c; x++)
+> -			igt_remove_fb(data->drm_fd, &data->fb[x]);
+> +			igt_remove_fb(data->drm_fd, &data->fb1[x]);
+>  	} while (!err && c < n_planes);
+>=20
+>  	if (err)
+> @@ -361,14 +375,14 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  	while (i < iterations || loop_forever) {
+>=20
+>  		/* randomize planes and set up the holes */
+> -		prepare_planes(data, pipe, &blue, modifier, c, output);
+> +		prepare_planes(data, pipe, &blue, data->plane1, modifier, c,
+> output,
+> +data->fb1);
+>=20
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> -		igt_pipe_crc_start(data->pipe_crc);
+> +		igt_pipe_crc_start(data->pipe_crc1);
+>=20
+> -		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> >pipe_crc, &crc);
+> -		igt_assert_crc_equal(&data->ref_crc, &crc);
+> -		igt_pipe_crc_stop(data->pipe_crc);
+> +		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> >pipe_crc1, &crc);
+> +		igt_assert_crc_equal(&data->ref_crc1, &crc);
+> +		igt_pipe_crc_stop(data->pipe_crc1);
+>=20
+>  		for_each_plane_on_pipe(&data->display, pipe, plane)
+>  			igt_plane_set_fb(plane, NULL);
+> @@ -377,7 +391,7 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>=20
+>  		for (int x =3D 0; x < c; x++)
+> -			igt_remove_fb(data->drm_fd, &data->fb[x]);
+> +			igt_remove_fb(data->drm_fd, &data->fb1[x]);
+>=20
+>  		i++;
+>  	}
+> @@ -400,6 +414,115 @@ test_plane_position(data_t *data, enum pipe pipe,
+> igt_output_t *output, uint64_t
+>  					n_planes, modifier);
+>  }
+>=20
+> +static void test_init_2_display(data_t *data, enum pipe pipe1, enum
+> +pipe pipe2) {
+> +	data->pipe_crc1 =3D igt_pipe_crc_new(data->drm_fd, pipe1,
+> +					   IGT_PIPE_CRC_SOURCE_AUTO);
+> +	data->pipe_crc2 =3D igt_pipe_crc_new(data->drm_fd, pipe2,
+> +					   IGT_PIPE_CRC_SOURCE_AUTO);
+> +
+> +	data->plane1 =3D calloc(2, sizeof(*data->plane1));
+> +	igt_assert_f(data->plane1 !=3D NULL, "Failed to allocate memory for
+> +planes\n");
+> +
+> +	data->plane2 =3D calloc(2, sizeof(*data->plane2));
+> +	igt_assert_f(data->plane2 !=3D NULL, "Failed to allocate memory for
+> +planes\n");
+> +
+> +	data->fb1 =3D calloc(2, sizeof(struct igt_fb));
+> +	igt_assert_f(data->fb1 !=3D NULL, "Failed to allocate memory for
+> +FBs\n");
+> +
+> +	data->fb2 =3D calloc(2, sizeof(struct igt_fb));
+> +	igt_assert_f(data->fb2 !=3D NULL, "Failed to allocate memory for
+> +FBs\n"); }
+> +
+> +static void test_fini_2_display(data_t *data) {
+> +	igt_pipe_crc_stop(data->pipe_crc1);
+> +	igt_pipe_crc_stop(data->pipe_crc2);
+> +
+> +	igt_display_reset(&data->display);
+> +}
+> +
+> +static void test_plane_position_2_display(data_t *data, enum pipe pipe1,
+> enum pipe pipe2,
+> +					  igt_output_t *output1, igt_output_t
+> *output2,
+> +					  uint64_t modifier)
+> +{
+> +	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
+> +	igt_crc_t crc1, crc2;
+> +
+> +	test_init_2_display(data, pipe1, pipe2);
+> +	get_reference_crc(data, output1, pipe1, data->pipe_crc1, &blue,
+> +			  data->plane1, DRM_FORMAT_MOD_LINEAR, &data-
+> >ref_crc1);
+> +	get_reference_crc(data, output2, pipe2, data->pipe_crc2, &blue,
+> +			  data->plane2, DRM_FORMAT_MOD_LINEAR, &data-
+> >ref_crc2);
+> +
+> +	prepare_planes(data, pipe1, &blue, data->plane1,
+> +		       modifier, 2, output1, data->fb1);
+> +	prepare_planes(data, pipe2, &blue, data->plane2,
+> +		       modifier, 2, output2, data->fb2);
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +	igt_pipe_crc_start(data->pipe_crc1);
+> +	igt_pipe_crc_start(data->pipe_crc2);
+> +
+> +	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc1,
+> &crc1);
+> +	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc2,
+> +&crc2);
+> +
+> +	igt_assert_crc_equal(&data->ref_crc1, &crc1);
+> +	igt_assert_crc_equal(&data->ref_crc2, &crc2); }
+> +
+> +#define for_each_connected_output_local(display, output)		\
+> +	for (int j__ =3D 0;  assert(igt_can_fail()), j__ < (display)->n_outputs=
+;
+> j__++)	\
+> +		for_each_if((((output) =3D &(display)->outputs[j__]), \
+> +			      igt_output_is_connected((output))))
+> +
+> +#define for_each_valid_output_on_pipe_local(display, pipe, output) \
+> +	for_each_connected_output_local((display), (output)) \
+> +		for_each_if(igt_pipe_connector_valid((pipe), (output)))
+> +
+> +static void run_2_display_test(data_t *data, uint64_t modifier) {
+> +	enum pipe pipe1, pipe2;
+> +	igt_output_t *output1, *output2;
+> +	igt_display_t *display =3D &data->display;
+> +
+> +	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
+> modifier))
+> +		return;
+> +
+> +	igt_display_reset(display);
+> +
+> +	for_each_pipe(display, pipe1) {
+> +		for_each_valid_output_on_pipe(display, pipe1, output1) {
+> +			for_each_pipe(display, pipe2) {
+> +				if (pipe1 =3D=3D pipe2)
+> +					continue;
+> +
+> +				for_each_valid_output_on_pipe_local(display,
+> pipe2, output2) {
+> +					if (output1 =3D=3D output2)
+> +						continue;
+> +
+> +					igt_display_reset(display);
+> +
+> +					igt_output_set_pipe(output1, pipe1);
+> +					igt_output_set_pipe(output2, pipe2);
+> +
+> +					if
+> (!intel_pipe_output_combo_valid(display))
+> +						continue;
+> +
+> +					igt_dynamic_f("pipe-%s-%s-pipe-%s-
+> %s",
+> +
+> kmstest_pipe_name(pipe1), output1->name,
+> +
+> kmstest_pipe_name(pipe2), output2->name)
+> +
+> 	test_plane_position_2_display(data, pipe1, pipe2,
+> +
+> output1, output2,
+> +
+> modifier);
+> +
+> +					test_fini_2_display(data);
+> +				}
+> +			}
+> +		}
+> +	}
+> +}
+> +
+>  static void run_test(data_t *data, uint64_t modifier)  {
+>  	enum pipe pipe;
+> @@ -503,6 +626,20 @@ igt_main_args("", long_options, help_str,
+> opt_handler, NULL)
+>  			run_test(&data, subtests[i].modifier);
+>  	}
+>=20
+> +	for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
+> +		igt_subtest_with_dynamic_f("2x-%s", subtests[i].name) {
+> +			int valid_outputs =3D 0;
+> +			igt_output_t *output;
+> +
+> +			for_each_connected_output(&data.display, output)
+> +				valid_outputs++;
+> +
+> +			igt_require(valid_outputs > 1);
+> +
+> +			run_2_display_test(&data, subtests[i].modifier);
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+>  		drm_close_driver(data.drm_fd);
+> --
+> 2.43.0
+
