@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D109C35FFA
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Mar 2025 22:26:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D40C35FFA
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Mar 2025 22:53:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DFC0C10E2C0;
-	Wed, 19 Mar 2025 22:26:03 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i5YO1voA";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41A4B10E25D
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Mar 2025 22:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742423159; x=1773959159;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=PnE66ge1Sv/C5NrbbxjIeC3hSUfWA4I78aBnv2jXAUM=;
- b=i5YO1voAQv572h5UmJjy+OTzSRCn244uDikJKfuxvkwSfdMBEYF/elRV
- 2NoL6f3KwGseZRePcGwp9DLKYxY9eNY9IL8Vi84IQi1SpnR5LfHPwCJul
- r66CDjjd5hk8eHnS24CHTgr6qK3SVjCIHOxgFAI+rvul7YdtfAq3wL9Fw
- LHmdY0y+cI5t2rIYZnwko3Mvc7y8vve2/mr5AMXjfTEb2vjoTTvXaWbG5
- WcRVNVGgO+2qV74kPuTr9V60j85LgWdG2jqxiZt4gnEyqeXBPJR3Ul+K9
- F4zl0SPm/zmxoKOcbmEqrs4nfAaEm04dRK9bvQgT32Cuu20PV3sK5vPAr g==;
-X-CSE-ConnectionGUID: fy7CZUYGQYeLacqDVYUlGA==
-X-CSE-MsgGUID: x/mK0qVhT1migVlArqx1hw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="43510774"
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="43510774"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2025 15:25:58 -0700
-X-CSE-ConnectionGUID: OC12eWn0S1mgBFSXjwaSWw==
-X-CSE-MsgGUID: VbI6hsTRQT2geoq9HPUmhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="122540394"
-Received: from szeng-desk.jf.intel.com ([10.165.21.160])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2025 15:25:58 -0700
-From: Oak Zeng <oak.zeng@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ashutosh.dixit@intel.com, matthew.brost@intel.com,
- zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com
-Subject: [i-g-t v7 0/4] xe: Test scratch page under fault mode
-Date: Wed, 19 Mar 2025 18:42:27 -0400
-Message-Id: <20250319224231.1909393-1-oak.zeng@intel.com>
-X-Mailer: git-send-email 2.26.3
+	by gabe.freedesktop.org (Postfix) with ESMTP id 85F8B10E096;
+	Wed, 19 Mar 2025 22:53:14 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F0C210E090;
+ Wed, 19 Mar 2025 22:53:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0774504818992956412=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe=3A_Test_scratch_page_und?=
+ =?utf-8?q?er_fault_mode_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Oak Zeng" <oak.zeng@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 19 Mar 2025 22:53:13 -0000
+Message-ID: <174242479355.56155.16198379573554149025@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250319224231.1909393-1-oak.zeng@intel.com>
+In-Reply-To: <20250319224231.1909393-1-oak.zeng@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,42 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series intoduces a subtest for Xe to test scratch page under fault
-mode.
+--===============0774504818992956412==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It also includes some helper functions to make the test easier.
+== Series Details ==
 
-Today most of igt tests use one single function to perform multiple
-subtests. flags are used to control the behavior of the test. While
-this is a good way to write efficient tests, it also makes the test
-difficult to maintain, especially when we add more and more subtests
-into single test function.
+Series: xe: Test scratch page under fault mode (rev6)
+URL   : https://patchwork.freedesktop.org/series/144907/
+State : success
 
-This patch series introduces some helper functions with which we can
-write more readable tests. This is illustrated in patch 4 of this series.
+== Summary ==
 
-Note the intention of this patch series is not to replace the existing
-igt tests, but to provide an alternative way to write simple tests.Bommu Krishnaiah (1):
-  lib/xe/xe_util: Introduce helper functions
+CI Bug Log - changes from XEIGT_8276_BAT -> XEIGTPW_12799_BAT
+====================================================
 
-Bommu Krishnaiah (1):
-  lib/xe/xe_util: Introduce helper functions
+Summary
+-------
 
-Oak Zeng (3):
-  lib/xe: Fix a comment error
-  tests/intel/xe_exec_fault_mode: Test scratch page under fault mode
-  tests/intel/xe_vm: Allow scratch page under fault mode on LNL and BMG
+  **SUCCESS**
 
- lib/xe/xe_ioctl.c                |   4 +-
- lib/xe/xe_util.c                 | 239 +++++++++++++++++++++++++++++++
- lib/xe/xe_util.h                 |  39 +++++
- tests/intel/xe_exec_fault_mode.c |  68 +++++++++
- tests/intel/xe_vm.c              |   7 +
- 5 files changed, 355 insertions(+), 2 deletions(-)
+  No regressions found.
 
--- 
-2.26.3
+  
 
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12799_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_intel_bb@intel-bb-blit-y:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#4491])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12799/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html
+
+  
+  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8276 -> IGTPW_12799
+
+  IGTPW_12799: 12799
+  IGT_8276: 8276
+  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12799/index.html
+
+--===============0774504818992956412==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe: Test scratch page under fault mode (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144907/">https://patchwork.freedesktop.org/series/144907/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12799/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12799/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8276_BAT -&gt; XEIGTPW_12799_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12799_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_intel_bb@intel-bb-blit-y:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12799/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8276 -&gt; IGTPW_12799</li>
+</ul>
+<p>IGTPW_12799: 12799<br />
+  IGT_8276: 8276<br />
+  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c</p>
+
+</body>
+</html>
+
+--===============0774504818992956412==--
