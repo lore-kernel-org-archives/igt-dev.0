@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44386C35FFA
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Mar 2025 12:42:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A96EC35FFA
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Mar 2025 12:46:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED67310E353;
-	Wed, 19 Mar 2025 12:42:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D26010E4F3;
+	Wed, 19 Mar 2025 12:46:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dS82bHil";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V4OJRpdX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F00CC10E353
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Mar 2025 12:42:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B673510E4F3
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Mar 2025 12:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742388143; x=1773924143;
+ t=1742388401; x=1773924401;
  h=message-id:subject:from:to:date:in-reply-to:references:
  content-transfer-encoding:mime-version;
- bh=PX5nijf7fILngOe9gNfwk4wdWs0vgEvAkgf1dr/yJ48=;
- b=dS82bHilwppkdjbnA4dOPF8CWn6tGEk1KKquPh8m73u2999w2y/ex239
- JIqPXIBbxLrCtOX6sYdACUFXYy4OuGR8sqbGUbxCyR0M90S9lykWARIN6
- dudPCxNXYl7ILqbsU03fTXL2Qy/KUWwOzXNj9/AmbW1MRZOeNRzmP4Cb4
- KMUkMzMg5oHdEZG+3i9M4hiHNfoEuoYCdAOyrITrSzsF1BUANlGYrfwSb
- SHAq2E41ddVvE0tzjdHQ4b+yWufppTM9Jd2yBWwLSNcVOObPoYOOD/jcQ
- 9nA88wULVgaWR6n9/Hh6mV7OHZCCVXVvDZfwfl26L4QGzbHOiadgKhFqP w==;
-X-CSE-ConnectionGUID: WuvnljIEQGyCmi/zrjO5LQ==
-X-CSE-MsgGUID: pAXveDyWSO2YO366wLd+WA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="43590331"
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="43590331"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2025 05:42:23 -0700
-X-CSE-ConnectionGUID: PLgdBiAFSMG+oZ+pbMKj9g==
-X-CSE-MsgGUID: glcibiYFSqi0owtnjWBP2Q==
+ bh=RnWvLnC9yqWUMF0WsYTp2JhD/T12iey1DJkDd/G1QQ4=;
+ b=V4OJRpdXUjXK/qtUKzeZo2ajaFyBJK3BtKIUCON5+YhywF5U3tqPv5Ax
+ rUA6U994imavry+ZQX090tML4R92KwOps35PtZwYEMloqSCKhyVGfLTwm
+ dSM4L/O9KEg4rHKKkrNYtG3vgu6wjLnLIrjra0gryI0IHIGccfslDKUz4
+ w7GvhUT6MzNHYcdcteonojrYzsG2/x1i4SoD+hOvP+seA2TrW/PVcorWG
+ VTtSX9Peks8zcZ+3M+D7xclyiE14H1SqZpbhNL/LImOhuHNjZsvSAA310
+ AuZsC6X5p5eoNO5wg9twDXriri9KEiaq+8AW6qItIjsOloLpW4mjm8CEv g==;
+X-CSE-ConnectionGUID: UcHxfX4cR4mzohofX8fZpQ==
+X-CSE-MsgGUID: 52JAxt+jT7W6/FZFEGYF8Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="43496579"
+X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="43496579"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2025 05:46:40 -0700
+X-CSE-ConnectionGUID: EEQayLm3Tciz3oL7pDdHAg==
+X-CSE-MsgGUID: FJcREwHGT1ivzm6nm5tacw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="123541153"
+X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; d="scan'208";a="123356277"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.246.26])
  ([10.245.246.26])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2025 05:42:21 -0700
-Message-ID: <56fc4f363cbcd2fdf21e6db0074e15e86177621f.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t 2/5] lib/intel_blt: Allow forcing multiple runs in
- blt_mem_copy()
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2025 05:46:37 -0700
+Message-ID: <64ae230cc3358e1c750bc5749aa3f3bbeaba6092.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t 3/5] lib/intel_blt: Use blt_mem_copy() to stress
+ copy functions
 From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
 To: Francois Dugast <francois.dugast@intel.com>, igt-dev@lists.freedesktop.org
-Date: Wed, 19 Mar 2025 13:42:19 +0100
-In-Reply-To: <20250305090743.16894-3-francois.dugast@intel.com>
+Date: Wed, 19 Mar 2025 13:46:32 +0100
+In-Reply-To: <20250305090743.16894-4-francois.dugast@intel.com>
 References: <20250305090743.16894-1-francois.dugast@intel.com>
- <20250305090743.16894-3-francois.dugast@intel.com>
+ <20250305090743.16894-4-francois.dugast@intel.com>
 Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -72,129 +72,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Wed, 2025-03-05 at 10:06 +0100, Francois Dugast wrote:
-> Allowing to run the same copy multiple times presents no functional
-> advantage but it can be used to keep the copy functions busy longer
-> while other tests are being performed.
+> The new blt_mem_copy() argument ncopies is handed over to the
+> underlying function blt_bo_copy() which actually runs the copy,
+
+Hmm. I'm confused by this commit message. Isn't it blt_mem_copy() that
+actually performs the copy?
+
+>  so
+> that the caller of blt_mem_copy() can use a higher level function
+> to stress the hardware copy function.
 >=20
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-
+Otherwise LGTM.
+/Thomas
 
 > ---
-> =C2=A0lib/intel_blt.c | 34 +++++++++++++++++++---------------
-> =C2=A0lib/intel_blt.h |=C2=A0 3 ++-
-> =C2=A02 files changed, 21 insertions(+), 16 deletions(-)
+> =C2=A0lib/intel_blt.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 5 +++--
+> =C2=A0lib/intel_blt.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+> =C2=A0tests/intel/xe_copy_basic.c | 2 +-
+> =C2=A03 files changed, 5 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 84318a557..315a2e145 100644
+> index 315a2e145..5cdf1ea8d 100644
 > --- a/lib/intel_blt.c
 > +++ b/lib/intel_blt.c
-> @@ -1815,10 +1815,10 @@ void blt_mem_init(int fd, struct blt_mem_data
-> *mem)
-> =C2=A0	mem->driver =3D get_intel_driver(fd);
-> =C2=A0}
-> =C2=A0
-> -static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct
-> blt_mem_data *mem)
-> +static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct
-> blt_mem_data *mem, int ncopies)
-> =C2=A0{
-> =C2=A0	uint64_t dst_offset, src_offset;
-> -	int i;
-> +	int i, j;
-> =C2=A0	uint32_t *batch;
-> =C2=A0	uint32_t optype;
-> =C2=A0
-> @@ -1831,16 +1831,18 @@ static void emit_blt_mem_copy(int fd,
-> uint64_t ahnd, const struct blt_mem_data *
-> =C2=A0	optype =3D mem->src.type =3D=3D M_MATRIX ? 1 << 17 : 0;
-> =C2=A0
-> =C2=A0	i =3D 0;
-> -	batch[i++] =3D MEM_COPY_CMD | optype;
-> -	batch[i++] =3D mem->src.width - 1;
-> -	batch[i++] =3D mem->src.height - 1;
-> -	batch[i++] =3D mem->src.pitch - 1;
-> -	batch[i++] =3D mem->dst.pitch - 1;
-> -	batch[i++] =3D src_offset;
-> -	batch[i++] =3D src_offset << 32;
-> -	batch[i++] =3D dst_offset;
-> -	batch[i++] =3D dst_offset << 32;
-> -	batch[i++] =3D mem->src.mocs_index << MEM_COPY_MOCS_SHIFT |
-> mem->dst.mocs_index;
-> +	for (j =3D 0; j < ncopies; j++) {
-> +		batch[i++] =3D MEM_COPY_CMD | optype;
-> +		batch[i++] =3D mem->src.width - 1;
-> +		batch[i++] =3D mem->src.height - 1;
-> +		batch[i++] =3D mem->src.pitch - 1;
-> +		batch[i++] =3D mem->dst.pitch - 1;
-> +		batch[i++] =3D src_offset;
-> +		batch[i++] =3D src_offset << 32;
-> +		batch[i++] =3D dst_offset;
-> +		batch[i++] =3D dst_offset << 32;
-> +		batch[i++] =3D mem->src.mocs_index <<
-> MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
-> +	}
-> =C2=A0	batch[i++] =3D MI_BATCH_BUFFER_END;
-> =C2=A0
-> =C2=A0	munmap(batch, mem->bb.size);
-> @@ -1853,6 +1855,7 @@ static void emit_blt_mem_copy(int fd, uint64_t
-> ahnd, const struct blt_mem_data *
-> =C2=A0 * @e: blitter engine for @ctx
-> =C2=A0 * @ahnd: allocator handle
-> =C2=A0 * @blt: blitter data for mem-copy.
+> @@ -1917,11 +1917,12 @@ int blt_mem_copy(int fd, const intel_ctx_t
+> *ctx,
+> =C2=A0 * @width: width
+> =C2=A0 * @height: height
+> =C2=A0 * @region: memory region
 > + * @ncopies: how many times copy is run, > 1 can be used to stress
 > the copy function
 > =C2=A0 *
-> =C2=A0 * Function does mem blit between @src and @dst described in @blt
-> object.
-> =C2=A0 *
-> @@ -1862,7 +1865,8 @@ static void emit_blt_mem_copy(int fd, uint64_t
-> ahnd, const struct blt_mem_data *
-> =C2=A0int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> =C2=A0		 const struct intel_execution_engine2 *e,
-> =C2=A0		 uint64_t ahnd,
-> -		 const struct blt_mem_data *mem)
-> +		 const struct blt_mem_data *mem,
-> +		 int ncopies)
+> =C2=A0 * Copy BO with mem blit from @src_handle into @dst_handle.
+> =C2=A0 */
+> =C2=A0void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
+> const intel_ctx_t *ctx,
+> -		 uint32_t size, uint32_t width, uint32_t height,
+> uint32_t region)
+> +		 uint32_t size, uint32_t width, uint32_t height,
+> uint32_t region, int ncopies)
 > =C2=A0{
-> =C2=A0	struct drm_i915_gem_execbuffer2 execbuf =3D {};
-> =C2=A0	struct drm_i915_gem_exec_object2 obj[3] =3D {};
-> @@ -1875,7 +1879,7 @@ int blt_mem_copy(int fd, const intel_ctx_t
-> *ctx,
-> =C2=A0					=C2=A0 0, mem->dst.pat_index);
-> =C2=A0	bb_offset =3D get_offset(ahnd, mem->bb.handle, mem->bb.size,
-> 0);
-> =C2=A0
-> -	emit_blt_mem_copy(fd, ahnd, mem);
-> +	emit_blt_mem_copy(fd, ahnd, mem, ncopies);
-> =C2=A0
-> =C2=A0	if (mem->driver =3D=3D INTEL_DRIVER_XE) {
-> =C2=A0		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> @@ -1944,7 +1948,7 @@ void blt_bo_copy(int fd, uint32_t src_handle,
+> =C2=A0	struct blt_mem_data mem =3D {};
+> =C2=A0	uint64_t bb_size =3D xe_bb_size(fd, SZ_4K);
+> @@ -1948,7 +1949,7 @@ void blt_bo_copy(int fd, uint32_t src_handle,
 > uint32_t dst_handle, const intel_c
 > =C2=A0	blt_set_batch(&mem.bb, bb, bb_size, region);
 > =C2=A0	igt_assert(mem.src.width =3D=3D mem.dst.width);
 > =C2=A0
-> -	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
-> +	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, 1);
+> -	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, 1);
+> +	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, ncopies);
 > =C2=A0	result =3D memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
 > =C2=A0
 > =C2=A0	intel_allocator_bind(ahnd, 0, 0);
 > diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 4357d70eb..217cade02 100644
+> index 217cade02..86681f1dd 100644
 > --- a/lib/intel_blt.h
 > +++ b/lib/intel_blt.h
-> @@ -269,7 +269,8 @@ void blt_mem_init(int fd, struct blt_mem_data
-> *mem);
-> =C2=A0int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> =C2=A0			 const struct intel_execution_engine2 *e,
-> =C2=A0			 uint64_t ahnd,
-> -			 const struct blt_mem_data *mem);
-> +			 const struct blt_mem_data *mem,
-> +			 int ncopies);
+> @@ -273,7 +273,7 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> =C2=A0			 int ncopies);
 > =C2=A0
 > =C2=A0void blt_bo_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
 > const intel_ctx_t *ctx,
-> =C2=A0		 uint32_t size, uint32_t width, uint32_t height,
+> -		 uint32_t size, uint32_t width, uint32_t height,
 > uint32_t region);
+> +		 uint32_t size, uint32_t width, uint32_t height,
+> uint32_t region, int ncopies);
+> =C2=A0
+> =C2=A0int blt_mem_set(int fd, const intel_ctx_t *ctx,
+> =C2=A0			const struct intel_execution_engine2 *e,
+> uint64_t ahnd,
+> diff --git a/tests/intel/xe_copy_basic.c
+> b/tests/intel/xe_copy_basic.c
+> index 458106b0b..20926cbb7 100644
+> --- a/tests/intel/xe_copy_basic.c
+> +++ b/tests/intel/xe_copy_basic.c
+> @@ -44,7 +44,7 @@ static void
+> =C2=A0mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const
+> intel_ctx_t *ctx,
+> =C2=A0	 uint32_t size, uint32_t width, uint32_t height, uint32_t
+> region)
+> =C2=A0{
+> -	blt_bo_copy(fd, src_handle, dst_handle, ctx, size, width,
+> height, region);
+> +	blt_bo_copy(fd, src_handle, dst_handle, ctx, size, width,
+> height, region, 1);
+> =C2=A0}
+> =C2=A0
+> =C2=A0/**
 
