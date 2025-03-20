@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFDEC28B30
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Mar 2025 11:31:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D4D7C28B30
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Mar 2025 11:33:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C665110E206;
-	Thu, 20 Mar 2025 11:31:30 +0000 (UTC)
-Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4074610E206;
- Thu, 20 Mar 2025 11:31:29 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5651617230252828828=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E429B8981D;
+	Thu, 20 Mar 2025 11:33:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YmHcsEtU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60D5710E601
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Mar 2025 11:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742470432; x=1774006432;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=c7SNF80+FklbRuw5L2kiFm+kOEA8jc8c9CXr+x++Lww=;
+ b=YmHcsEtUPS15pBkgkLT3l1hFFUgZiO8EswfT3GTQoHRsbYT0yV16SOW0
+ ZgTEiobu5gcRRNh6g9IKBdFmyUPld422kxbzNAFoSdBVui8Qv0uZoZbO2
+ MtuiCwdofixtWiA1nmMsmHzZp8E3HHCFM930jiSKNuShrGitD0DAdB+Jj
+ oO7YtHW1Ko46u5M8Pe39eCF5hOimT+Vuo05ugEBsQyoP46fH7Jn+LdxaL
+ Awe9M5V26wQWYYW0CZu3Ak+mb8M2q2cbR/YEB1gz9BowM/PmoCrKQErrF
+ IBvIB0PzSWdZbSsEQ12g5Xkxt+h0VNgLTOhyNCtaFOJGY1JbOfZldW88E Q==;
+X-CSE-ConnectionGUID: xe3pBABERIeR3xvvLGzaTw==
+X-CSE-MsgGUID: ni9IcTAHTgulk9yryLY1Ag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="43828700"
+X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; d="scan'208";a="43828700"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2025 04:33:52 -0700
+X-CSE-ConnectionGUID: xqCKF7M+R12pRhIqJeLUdA==
+X-CSE-MsgGUID: 508lMDXXTAKJgcCaME/r0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; d="scan'208";a="122788852"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2025 04:33:50 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com, suraj.kandpal@intel.com,
+ kamil.konieczny@intel.com, jani.nikula@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 1/1] tools/intel_hdcp: Introduce intel_hdcp tool
+Date: Thu, 20 Mar 2025 16:58:35 +0530
+Message-Id: <20250320112835.2652365-2-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250320112835.2652365-1-santhosh.reddy.guddati@intel.com>
+References: <20250320112835.2652365-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/i915/fbc=3A_Disable_FBC?=
- =?utf-8?q?_in_case_of_selective_update_in_xe2lpd?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Mar 2025 11:31:29 -0000
-Message-ID: <174247028925.57365.11246643469558836814@18a75f3d1eae>
-X-Patchwork-Hint: ignore
-References: <20250320110908.175867-1-vinod.govindapillai@intel.com>
-In-Reply-To: <20250320110908.175867-1-vinod.govindapillai@intel.com>
+Content-Type: text/plain; charset=a
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,233 +68,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5651617230252828828==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a new HDCP tool for self-testing and easy deployment
+to client machines. This tool helps diagnose issues,
+determining whether the problem lies in the driver or user space.
 
-== Series Details ==
+The current changes include tool skeleton and get hdcp info
+on the connected outputs.
 
-Series: lib/i915/fbc: Disable FBC in case of selective update in xe2lpd
-URL   : https://patchwork.freedesktop.org/series/146525/
-State : success
+V2:
+ - Update copyright to use SPDX (Jani Nikula).
+ - Replace use of igt_* with fprintf and minimise usage of igt wrappers
+   wherever possible (Kamil).
+ - Consolidate HDCP version info and connector dump , remove redundant
+   code and comments (Santhosh).
 
-== Summary ==
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tools/intel_hdcp.c | 153 +++++++++++++++++++++++++++++++++++++++++++++
+ tools/meson.build  |   1 +
+ 2 files changed, 154 insertions(+)
+ create mode 100644 tools/intel_hdcp.c
 
-CI Bug Log - changes from XEIGT_8276_BAT -> XEIGTPW_12802_BAT
-====================================================
+diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
+new file mode 100644
+index 000000000..91d32ebf4
+--- /dev/null
++++ b/tools/intel_hdcp.c
+@@ -0,0 +1,153 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <fcntl.h>
++#include <stdio.h>
++
++#include "igt.h"
++
++#define MAX_HDCP_BUF_LEN	5000
++typedef struct data {
++	int fd;
++	igt_display_t display;
++	struct igt_fb red, green;
++	int height, width;
++} data_t;
++
++/* TODO: Implement the actual HDCP enabling logic here
++ * Steps:
++ * 1. Open the appropriate debugfs file for the connector.
++ * 2. Enable HDCP on the output using connector properties
++ *    IGT_CONNECTOR_CONTENT_PROTECTION and IGT_CONNECTOR_HDCP_CONTENT_TYPE.
++ * 3. Check the status to ensure HDCP is enabled.
++ */
++static void enable_hdcp(void)
++{
++	fprintf(stderr, "TODO: Enable HDCP\n");
++}
++
++/* TODO: Implement the actual HDCP disabling logic here */
++static void disable_hdcp(void)
++{
++	fprintf(stderr, "TODO: Disable HDCP\n");
++}
++
++static const char *get_hdcp_version(int fd, char *connector_name)
++{
++	char buf[MAX_HDCP_BUF_LEN];
++	int ret;
++
++	ret = igt_debugfs_connector_dir(fd, connector_name, O_RDONLY);
++	if (ret < 0) {
++		fprintf(stderr, "Failed to open connector directory\n");
++		return NULL;
++	}
++
++	if (is_intel_device(fd))
++		igt_debugfs_simple_read(ret, "i915_hdcp_sink_capability", buf, sizeof(buf));
++	else
++		igt_debugfs_simple_read(ret, "hdcp_sink_capability", buf, sizeof(buf));
++
++	close(ret);
++	if (strstr(buf, "HDCP1.4") && strstr(buf, "HDCP2.2"))
++		return "HDCP1.4 and HDCP2.2";
++	else if (strstr(buf, "HDCP1.4"))
++		return "HDCP1.4";
++	else if (strstr(buf, "HDCP2.2"))
++		return "HDCP2.2";
++	else
++		return "No HDCP support";
++}
++
++static void get_hdcp_info(data_t *data)
++{
++	char *output_name;
++	drmModeRes *res = drmModeGetResources(data->fd);
++
++	if (!res) {
++		fprintf(stderr, "Failed to get DRM resources\n");
++		return;
++	}
++
++	fprintf(stderr, "Connectors:\n");
++	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
++	for (int i = 0; i < res->count_connectors; i++) {
++		drmModeConnector *c;
++
++		c = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
++
++		if (!c)
++			continue;
++
++		asprintf(&output_name, "%s-%d",
++					kmstest_connector_type_str(c->connector_type),
++					c->connector_type_id);
++
++		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
++				 c->connector_id, c->encoder_id,
++				 kmstest_connector_status_str(c->connection),
++				 kmstest_connector_type_str(c->connector_type),
++				 get_hdcp_version(data->fd, output_name));
++
++		drmModeFreeConnector(c);
++	}
++
++	drmModeFreeResources(res);
++}
++
++static void print_usage(void)
++{
++	fprintf(stderr, "Usage: intel_hdcp [OPTIONS]\n");
++	fprintf(stderr, "Options:\n");
++	fprintf(stderr, "-i,	--info		Get HDCP Information\n");
++	fprintf(stderr, "-e,	--enable	Enable HDCP on the output\n");
++	fprintf(stderr, "-d,	--disable	Disable HDCP on the specific output\n");
++	fprintf(stderr, "-h,	--help		Display this help message\n");
++}
++
++static void test_init(data_t *data)
++{
++	data->fd = __drm_open_driver(DRIVER_ANY);
++	if (data->fd < 0) {
++		fprintf(stderr, "Failed to open DRM driver\n");
++		exit(EXIT_FAILURE);
++	}
++	igt_display_require(&data->display, data->fd);
++	igt_display_require_output(&data->display);
++}
++
++int main(int argc, char **argv)
++{
++	data_t data;
++	int option;
++	static const char optstr[] = "hied";
++	struct option long_opts[] = {
++		{"help",	no_argument,	NULL, 'h'},
++		{"info",	no_argument,	NULL, 'i'},
++		{"enable",	no_argument,	NULL, 'e'},
++		{"disable",	no_argument,	NULL, 'd'},
++		{NULL,		0,		NULL,  0 }
++	};
++
++	test_init(&data);
++
++	while ((option = getopt_long(argc, argv, optstr, long_opts, NULL)) != -1) {
++		switch (option) {
++		case 'i':
++			get_hdcp_info(&data);
++			break;
++		case 'e':
++			enable_hdcp();
++			break;
++		case 'd':
++			disable_hdcp();
++			break;
++		case 'h':
++		default:
++			print_usage();
++			break;
++		}
++	}
++}
+diff --git a/tools/meson.build b/tools/meson.build
+index de866c392..8185ba160 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -30,6 +30,7 @@ tools_progs = [
+ 	'intel_gpu_time',
+ 	'intel_gtt',
+ 	'intel_guc_logger',
++	'intel_hdcp',
+ 	'intel_infoframes',
+ 	'intel_lid',
+ 	'intel_opregion_decode',
+-- 
+2.34.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 8)
-------------------------------
-
-  Missing    (1): bat-pvc-2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12802_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small-cm:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html
-
-  * igt@xe_exec_fault_mode@twice-rebind:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#2229])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#977])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][6] ([Intel XE#2838] / [Intel XE#979])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#979])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-adlp-vf:        [ABORT][8] ([Intel XE#4491]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelp@blt:
-    - bat-adlp-vf:        [ABORT][10] -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html
-
-  * igt@xe_pat@pat-index-xelp@render:
-    - bat-adlp-vf:        [DMESG-WARN][12] -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
-
-  
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8276 -> IGTPW_12802
-
-  IGTPW_12802: 12802
-  IGT_8276: 8276
-  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/index.html
-
---===============5651617230252828828==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/i915/fbc: Disable FBC in case of selective update in xe2lpd</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146525/">https://patchwork.freedesktop.org/series/146525/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8276_BAT -&gt; XEIGTPW_12802_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 8)</h2>
-<p>Missing    (1): bat-pvc-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12802_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small-cm:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-rebind:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp@blt:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp@render:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12802/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8276 -&gt; IGTPW_12802</li>
-</ul>
-<p>IGTPW_12802: 12802<br />
-  IGT_8276: 8276<br />
-  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c</p>
-
-</body>
-</html>
-
---===============5651617230252828828==--
