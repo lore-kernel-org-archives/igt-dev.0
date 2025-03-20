@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D19AFC28B30
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Mar 2025 09:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E3BBC28B30
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Mar 2025 09:32:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8CC5410E18B;
-	Thu, 20 Mar 2025 09:08:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lzsnUcOE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A37E10E18B
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Mar 2025 09:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742461687; x=1773997687;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=oqanEQ5TWuU6bHHkYNzzLVVmfnPiv+bXMZQqLa+N3i4=;
- b=lzsnUcOE3zwnwVI7eHOUmbjmgMImTRq8gke9sirwp64NCySjl07NT+7z
- 0YIDAEZSmvEOYAM7wa42Ip6ToTYH8GOGALd96ESp82E5WmrOj5Kjox4Fo
- syhvS9dKhoJ7NFkmCiO8jv27IJvxV2NvR0YDqlsN39sGgqdy4OQT3DQ/C
- F/H4gRSHcLjuQezv97/PUYiwlcyVXwAaPBIF7oT/XhpV012B3naKSqqlG
- eufWi4EdqR9veqOi+ZjJX8QJkXiAzysDiBUd633bpN8iV0a5YHV2pOUeh
- ao/QEq4n30t27Wlboe1YDVZyAD4yRwz7ujWTWVCkDltWWgSgKrYc7N8q2 g==;
-X-CSE-ConnectionGUID: 86Ukxm4bTgyGWUBSQAWAoQ==
-X-CSE-MsgGUID: UggPagPMSjazZhLklb+Tsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="47457147"
-X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; d="scan'208";a="47457147"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2025 02:08:07 -0700
-X-CSE-ConnectionGUID: m4PGJjAfQJ6calEdjxzBnw==
-X-CSE-MsgGUID: 2fccTs87TYeAD8YHAzH+KA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; d="scan'208";a="123493633"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa010.fm.intel.com with ESMTP; 20 Mar 2025 02:08:04 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v2 2/2] tests/kms: Simplify DRM debug mask update
-Date: Thu, 20 Mar 2025 14:37:55 +0530
-Message-Id: <20250320090755.482723-3-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250320090755.482723-1-pranay.samala@intel.com>
-References: <20250320090755.482723-1-pranay.samala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 209F910E38E;
+	Thu, 20 Mar 2025 09:32:21 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A81DE10E158;
+ Thu, 20 Mar 2025 09:32:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6606065329796629539=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Refactor_DRM_Debug_Severity?=
+ =?utf-8?q?_Handling_for_enhanced_precision_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 20 Mar 2025 09:32:20 -0000
+Message-ID: <174246314068.56934.6238990825345577773@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250320090755.482723-1-pranay.samala@intel.com>
+In-Reply-To: <20250320090755.482723-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,225 +37,233 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This fixes directly sends the debug mask to be updated.
-User can use bitmask option during execution and update
-it as per the requirement. If user doesn't passes any
-mask during the execution then it will update the debug
-mask as 0x4 and at the end of the test, exit handler will
-set the debug mask to the original value.
+--===============6606065329796629539==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Implementated to allow flexible bitmask usage during execution. (Jani)
+== Series Details ==
 
-Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
-Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
-Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/intel/kms_dp_linktrain_fallback.c | 40 ++++++++++++++++++-------
- tests/kms_atomic_transition.c           | 25 +++++++++-------
- tests/kms_cursor_legacy.c               | 38 ++++++++++++++++-------
- 3 files changed, 72 insertions(+), 31 deletions(-)
+Series: Refactor DRM Debug Severity Handling for enhanced precision (rev2)
+URL   : https://patchwork.freedesktop.org/series/146093/
+State : success
 
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index 6a872efd2..f827b9479 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -608,12 +608,33 @@ static bool run_dsc_sst_fallaback_test(data_t *data)
- 	return ran;
- }
- 
--igt_main
-+static unsigned int parse_bitmask;
-+static unsigned int def_mask = 0x4;
-+
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+	case 'b':
-+		parse_bitmask = strtoul(optarg, NULL, 16);
-+		break;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const struct option long_opts[] = {
-+	{ .name = "bitmask", .has_arg = true, .val = 'b', },
-+	{}
-+};
-+
-+static const char help_str[] =
-+	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
-+
-+igt_main_args("", long_opts, help_str, opt_handler, NULL)
- {
- 	data_t data = {};
- 
- 	igt_fixture {
--		int dir, current_log_level;
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL |
- 						     DRIVER_XE);
- 		kmstest_set_vt_graphics_mode();
-@@ -621,18 +642,17 @@ igt_main
- 		igt_display_require_output(&data.display);
- 		for_each_pipe(&data.display, data.pipe)
- 			data.n_pipes++;
--		dir = igt_sysfs_drm_module_params_open();
--		if (dir >= 0) {
--			current_log_level = igt_drm_debug_level_get(dir);
--			close(dir);
--
--			if (current_log_level > 10)
--				igt_drm_debug_level_update(10);
--		}
- 		/*
- 		 * Some environments may have environment
- 		 * variable set to ignore long hpd, disable it for this test
- 		 */
-+
-+		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
-+		if (parse_bitmask)
-+			igt_drm_debug_mask_update(parse_bitmask);
-+		else
-+			igt_drm_debug_mask_update(def_mask);
-+
- 		igt_assert_f(igt_ignore_long_hpd(data.drm_fd, false),
- 			     "Unable to disable ignore long hpd\n");
- 	}
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 0342af206..9973ff263 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -1093,6 +1093,9 @@ static bool pipe_output_combo_valid(igt_display_t *display,
- 	return ret;
- }
- 
-+static unsigned int parse_bitmask;
-+static unsigned int def_mask = 0x4;
-+
- static int opt_handler(int opt, int opt_index, void *_data)
- {
- 	data_t *data = _data;
-@@ -1101,6 +1104,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
- 	case 'e':
- 		data->extended = true;
- 		break;
-+	case 'b':
-+		parse_bitmask = strtoul(optarg, NULL, 16);
-+		break;
- 	}
- 
- 	return IGT_OPT_HANDLER_SUCCESS;
-@@ -1108,11 +1114,13 @@ static int opt_handler(int opt, int opt_index, void *_data)
- 
- static const struct option long_opts[] = {
- 	{ .name = "extended", .has_arg = false, .val = 'e', },
-+	{ .name = "bitmask", .has_arg = true, .val = 'b', },
- 	{}
- };
- 
- static const char help_str[] =
--	"  --extended\t\tRun the extended tests\n";
-+	"  --extended\t\tRun the extended tests\n"
-+	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
- 
- static data_t data;
- 
-@@ -1171,8 +1179,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	int pipe_count = 0;
- 
- 	igt_fixture {
--		int dir, current_log_level;
--
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
- 		kmstest_set_vt_graphics_mode();
-@@ -1185,14 +1191,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		for_each_connected_output(&data.display, output)
- 			count++;
- 
--		dir = igt_sysfs_drm_module_params_open();
--		if (dir >= 0) {
--			current_log_level = igt_drm_debug_level_get(dir);
--			close(dir);
--
--			if (current_log_level > 10)
--				igt_drm_debug_level_update(10);
--		}
-+		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
-+		if (parse_bitmask)
-+			igt_drm_debug_mask_update(parse_bitmask);
-+		else
-+			igt_drm_debug_mask_update(def_mask);
- 	}
- 
- 	igt_describe("Check toggling of primary plane with vblank");
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 44f031e7b..2985e4852 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1823,7 +1823,29 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
- 	igt_remove_fb(display->drm_fd, &cursor_fb);
- }
- 
--igt_main
-+static unsigned int parse_bitmask;
-+static unsigned int def_mask = 0x4;
-+
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+	case 'b':
-+		parse_bitmask = strtoul(optarg, NULL, 16);
-+		break;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const struct option long_opts[] = {
-+	{ .name = "bitmask", .has_arg = true, .val = 'b', },
-+	{}
-+};
-+
-+static const char help_str[] =
-+	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
-+
-+igt_main_args("", long_opts, help_str, opt_handler, NULL)
- {
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	igt_display_t display = { .drm_fd = -1 };
-@@ -1839,7 +1861,6 @@ igt_main
- 	};
- 
- 	igt_fixture {
--		int dir, current_log_level;
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 
-@@ -1851,14 +1872,11 @@ igt_main
- 		 */
- 		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
- 
--		dir = igt_sysfs_drm_module_params_open();
--		if (dir >= 0) {
--			current_log_level = igt_drm_debug_level_get(dir);
--			close(dir);
--
--			if (current_log_level > 10)
--				igt_drm_debug_level_update(10);
--		}
-+		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
-+		if (parse_bitmask)
-+			igt_drm_debug_mask_update(parse_bitmask);
-+		else
-+			igt_drm_debug_mask_update(def_mask);
- 	}
- 
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8276_BAT -> XEIGTPW_12800_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-pvc-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12800_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small-cm:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html
+
+  * igt@xe_exec_fault_mode@twice-rebind:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#2229])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#977])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][6] ([Intel XE#2838] / [Intel XE#979])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#979])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-adlp-vf:        [ABORT][8] ([Intel XE#4491]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelp@blt:
+    - bat-adlp-vf:        [ABORT][10] -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [DMESG-WARN][12] -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#4491]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8276 -> IGTPW_12800
+
+  IGTPW_12800: 12800
+  IGT_8276: 8276
+  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/index.html
+
+--===============6606065329796629539==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Refactor DRM Debug Severity Handling for enhanced precision (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146093/">https://patchwork.freedesktop.org/series/146093/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8276_BAT -&gt; XEIGTPW_12800_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12800_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small-cm:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-rebind:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4491">Intel XE#4491</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@blt:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelp@blt.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@render:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8276/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12800/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8276 -&gt; IGTPW_12800</li>
+</ul>
+<p>IGTPW_12800: 12800<br />
+  IGT_8276: 8276<br />
+  xe-2825-a958e31a81b3267201c85b6f171419586afa792c: a958e31a81b3267201c85b6f171419586afa792c</p>
+
+</body>
+</html>
+
+--===============6606065329796629539==--
