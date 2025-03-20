@@ -4,72 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C0EDC36000
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Mar 2025 11:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFC0C28B30
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Mar 2025 11:53:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A02B810E603;
-	Thu, 20 Mar 2025 11:52:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nWWEfkkB";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 119EF10E603
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Mar 2025 11:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742471573; x=1774007573;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=snvv3gzx2Ezt1Vulq1PlM4YnsAGAo7Spo6VjSkbnNlw=;
- b=nWWEfkkBhkgLQd8awjvtXjpC8H+ldNRPNIR6tsMiOlEC0KlYzltNn14d
- SNYyhBExqoEWQt3IsIT02Dr7HzmixSV7fwnJQ2ujhLemnuksVKfx/6MbV
- 4LOg9wQCccHr38nBwvFZw4UCzw4IiC2mCDQsNrqwEwniM07ZiMa/AStwt
- BCFiTyFJSIDyH0yqTzXMLNH0MbO54tIssaDLGpQKVqqCA+v4rzJMls9rH
- hxvIugGX6NIDayin3ntiDjV6kCa4V3iRlxxVScxdahW9a1td978ahWgDb
- 3V3xtBCTVHIv7feeAPk4232l1C1Xel98C6v4AbaG5y83/XThgynwH1HP/ g==;
-X-CSE-ConnectionGUID: vGLTCltwRIu/32VuwU0Rsg==
-X-CSE-MsgGUID: aHsTa088QT22YbJ+Wnmdrw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="55074418"
-X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; d="scan'208";a="55074418"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2025 04:52:52 -0700
-X-CSE-ConnectionGUID: e7FzrJvsSWe+lH28khqfRg==
-X-CSE-MsgGUID: 7DTy3CR5REeZ8AXDsQjLLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; d="scan'208";a="124009583"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2025 04:52:50 -0700
-Date: Thu, 20 Mar 2025 12:52:33 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-Cc: "Poosa, Karthik" <karthik.poosa@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Subject: Re: [PATCH i-g-t v4 2/2] tests/intel/xe_pm: Add a check for power
- management capability
-Message-ID: <20250320115233.rivlffn6cpqumxde@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
- "Poosa, Karthik" <karthik.poosa@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- "Gupta, Anshuman" <anshuman.gupta@intel.com>
-References: <20250318150108.1055169-1-jakub1.kolakowski@intel.com>
- <20250318150108.1055169-3-jakub1.kolakowski@intel.com>
- <30298e71-5dc6-477a-b3ef-73f0996b9e35@intel.com>
- <5c0a4a66-8e05-4f14-acc0-96487cc43590@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF0CC10E603;
+	Thu, 20 Mar 2025 11:53:16 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C76710E603;
+ Thu, 20 Mar 2025 11:53:16 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5656994308673389366=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5c0a4a66-8e05-4f14-acc0-96487cc43590@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/i915/fbc=3A_Disable_F?=
+ =?utf-8?q?BC_in_case_of_selective_update_in_xe2lpd?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 20 Mar 2025 11:53:16 -0000
+Message-ID: <174247159630.57426.14160533120838473726@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250320110908.175867-1-vinod.govindapillai@intel.com>
+In-Reply-To: <20250320110908.175867-1-vinod.govindapillai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,80 +37,204 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Bernatowicz,,
-On 2025-03-19 at 09:14:14 +0100, Bernatowicz, Marcin wrote:
-> 
-> 
-> On 3/19/2025 9:05 AM, Poosa, Karthik wrote:
-> > 
-> > On 18-03-2025 20:31, Jakub Kolakowski wrote:
-> > > Add a check for power management capability of device tested in tests
-> > > related to D3 states. Currently if test is started on configuration
-> > > that does not support the PM capability it doesn't skip, instead
-> > > depending on test it may fail, abort or timeout.
-> > > With this change test will skip with a clear message why it did.
-> > > 
-> > > Cc: Adam Miszczak<adam.miszczak@linux.intel.com>
-> > > Cc: Lukasz Laguna<lukasz.laguna@intel.com>
-> > > Cc: Marcin Bernatowicz<marcin.bernatowicz@linux.intel.com>
-> > > Signed-off-by: Jakub Kolakowski<jakub1.kolakowski@intel.com>
-> > > ---
-> > >   tests/intel/xe_pm.c | 3 +++
-> > >   1 file changed, 3 insertions(+)
-> > > 
-> > > diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> > > index c2026474d..70f0613fb 100644
-> > > --- a/tests/intel/xe_pm.c
-> > > +++ b/tests/intel/xe_pm.c
-> > > @@ -146,6 +146,9 @@ static void vram_d3cold_threshold_restore(int sig)
-> > >   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
-> > >   {
-> > > +    igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
-> > > +              "PCI power management capability not found\n");
-> > 
-> > Hi Jakub,
-> > 
-> > As per PCIe Base spec, all PCI Express Functions are required to support
-> > PCI Power Management Capability.
-> > 
-> > Only legacy PCI devices wouldn't have it.
-> > 
-> > Can you share details of failures without this capability.
-> > 
-> > All Xe supported GPUs are PCIe complaint, this check may not be needed
-> > at all.
-> 
-> This happens for runs with Virtual Function (VF) passed to Virtual Machine
-> (VM).
-> 
-> "9.6 SR-IOV Power Management
-> This section defines the PCI Express SR-IOV power management capabilities
-> and protocols.
-> The Power Management Capability is required for PFs as described in Chapter
-> 5 .
-> For VFs, the Power Management Capability is optional."
+--===============5656994308673389366==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Can we add this explanation as a comment in code?
-imho one sentence like:
+== Series Details ==
 
-PCIe power management is mandatory for real hardware devices,
-for SR-IOV VFs it is optional.
+Series: lib/i915/fbc: Disable FBC in case of selective update in xe2lpd
+URL   : https://patchwork.freedesktop.org/series/146525/
+State : success
 
-or something like that?
+== Summary ==
 
-Regards,
-Kamil
+CI Bug Log - changes from IGT_8276 -> IGTPW_12802
+====================================================
 
-> 
-> --
-> marcin
-> 
-> > 
-> > 
-> > > +
-> > >       dpms_on_off(device, DRM_MODE_DPMS_OFF);
-> > >       /*
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/index.html
+
+Participating hosts (43 -> 43)
+------------------------------
+
+  Additional (2): fi-kbl-7567u fi-pnv-d510 
+  Missing    (2): bat-atsm-1 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12802 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests:
+    - fi-pnv-d510:        NOTRUN -> [INCOMPLETE][1] ([i915#12904]) +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-pnv-d510/igt@dmabuf@all-tests.html
+
+  * igt@gem_exec_parallel@engines:
+    - bat-rpls-4:         [PASS][2] -> [DMESG-WARN][3] ([i915#13400]) +1 other test dmesg-warn
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-rpls-4/igt@gem_exec_parallel@engines.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/bat-rpls-4/igt@gem_exec_parallel@engines.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][6] +11 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-kbl-7567u/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][7] +33 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-6:         [SKIP][8] ([i915#3555] / [i915#3840]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-adlp-6/igt@kms_dsc@dsc-basic.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/bat-adlp-6/igt@kms_dsc@dsc-basic.html
+
+  
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8276 -> IGTPW_12802
+
+  CI-20190529: 20190529
+  CI_DRM_16293: a958e31a81b3267201c85b6f171419586afa792c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12802: 12802
+  IGT_8276: 8276
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/index.html
+
+--===============5656994308673389366==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/i915/fbc: Disable FBC in case of selective update in xe2lpd</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146525/">https://patchwork.freedesktop.org/series/146525/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8276 -&gt; IGTPW_12802</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/index.html</p>
+<h2>Participating hosts (43 -&gt; 43)</h2>
+<p>Additional (2): fi-kbl-7567u fi-pnv-d510 <br />
+  Missing    (2): bat-atsm-1 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12802 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-pnv-d510/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_parallel@engines:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-rpls-4/igt@gem_exec_parallel@engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/bat-rpls-4/igt@gem_exec_parallel@engines.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-kbl-7567u/igt@kms_dsc@dsc-basic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> +33 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8276/bat-adlp-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12802/bat-adlp-6/igt@kms_dsc@dsc-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8276 -&gt; IGTPW_12802</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16293: a958e31a81b3267201c85b6f171419586afa792c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12802: 12802<br />
+  IGT_8276: 8276</p>
+
+</body>
+</html>
+
+--===============5656994308673389366==--
