@@ -4,66 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 858BCC36002
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 18:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D51C36002
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 18:39:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C22710E81A;
-	Fri, 21 Mar 2025 18:28:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF0C810E80B;
+	Fri, 21 Mar 2025 18:39:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W+tlRqm5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e78ab84U";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5BB110E81A
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 18:28:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B2E110E80B
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 18:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742581715; x=1774117715;
+ t=1742582378; x=1774118378;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=PM6y0PIaSwCLiKVTP5cfl6fqPdHwVIssFkfgRZ/ozsk=;
- b=W+tlRqm5EeT/3i1faQYvFaqzb0pnUTybeocBM1ay0sXPJc8yw1zov5qq
- iBmyvfbRP8PCefNz1i1PwPFXUDPgfNUGy4yd0tJOSanNTEOh/SOcQNml7
- 89r21xrLNs0uqAyZwYWKEBHImclD7KABdHa0oUlzvC/qgSFXN8/CMeBYg
- UxFl5/VlHTrruu0Xm0JRqvMSynchg56jNE2DnKgcw57Qmt27/Y3HVqnVs
- fDDA2YcbhxUZWvY+4ns8gdouNBiVYRD9DrYPdah4o25tQoWMEJYzsrgfO
- /z+2HUGJ/FmI5TZaPQ57KKaCMm/soqlN2G6eidjRVvY3VEHJc3cbJug4p Q==;
-X-CSE-ConnectionGUID: YWw6J40ySjS51L0XnKP2eA==
-X-CSE-MsgGUID: oG38Gt6fRUCeZKMhrHrXpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="55243071"
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="55243071"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 11:28:34 -0700
-X-CSE-ConnectionGUID: au5R3IrkSYO6/XKcZmH4AQ==
-X-CSE-MsgGUID: gqHKZgnSQVCchPR/HtoMqA==
+ bh=A/31Q10IVUbEEe6Z+eK3syBZ3O/fhnDmDImSHF5T+ec=;
+ b=e78ab84UkPmJFE84ue2qd57ONT2uKhJlD6yr5LQq//KeWXvWfHQp1OCR
+ y68yrGKgtV9DTTKTNXwJRVM05EUZZ01ZVit1K7I2qZgFKEHimxKkVl7lS
+ sht0DlCMntMQ2/Ttw6MFCMHyz41HkZ16wkClpwR/TzWfz8u4nrzTN3wCO
+ qiHtK8Q7mjH2zHV5OkUFnzHSsyQpxHbruWvNobTRrWlUt2vZaO75ROPqz
+ 3mApIAZthfhVfxVn1KcQloRpCKGa3FiWMw2ngnsqbV/XV+Z84RqYY7Hyt
+ EvZiQRCEdvq1hYlIAOiWOrQVw40yjPDoyB+Z5CmHKjzgB187BkiyCn+s0 g==;
+X-CSE-ConnectionGUID: T1X3RCPtReOFzneGlLQndg==
+X-CSE-MsgGUID: PxSjf9TKSMmEU5WlHnt5ww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="54853722"
+X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="54853722"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 11:39:38 -0700
+X-CSE-ConnectionGUID: Sg4jcZK5R++ZaHbMt3R+ww==
+X-CSE-MsgGUID: OCnQZ9tOQX6YZij5oDSYmQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="123183533"
+X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="128154067"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 11:28:33 -0700
-Date: Fri, 21 Mar 2025 19:28:20 +0100
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 11:39:36 -0700
+Date: Fri, 21 Mar 2025 19:39:34 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Pawel Sikora <pawel.sikora@linux.intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
- Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t v3 1/1] lib/igt_core: capture logs for child
- processes
-Message-ID: <20250321182820.akmp3ip4pznbsx5s@kamilkon-desk.igk.intel.com>
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Matthew Brost <matthew.brost@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xm_vm: add coverage for userptr THP
+Message-ID: <20250321183934.5xhmg6gxzf2xdl6o@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Pawel Sikora <pawel.sikora@linux.intel.com>,
+ Matthew Auld <matthew.auld@intel.com>,
  igt-dev@lists.freedesktop.org,
- Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <20250321120344.737080-1-pawel.sikora@linux.intel.com>
- <20250321120344.737080-2-pawel.sikora@linux.intel.com>
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Matthew Brost <matthew.brost@intel.com>
+References: <20250320153659.161002-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250321120344.737080-2-pawel.sikora@linux.intel.com>
+In-Reply-To: <20250320153659.161002-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,74 +75,141 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pawel,
-On 2025-03-21 at 13:03:44 +0100, Pawel Sikora wrote:
-> This change addresses the issue of missing logs for child
-> processes in the IGT runner.
-> 
-> The '_igt_log_buffer_dump()' function is now called before
-> exiting child processes, ensuring that logs are properly
-> captured and not lost when IGT fails and child processes
-> dump logs before exiting.
-> 
-> v2: Make the dump conditional based on active comms (Kamil)
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2178
-> 
+Hi Matthew,
+On 2025-03-20 at 15:36:59 +0000, Matthew Auld wrote:
 
-Remove empty line here.
+Add here a full description of shortcut THP, like:
 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Pawel Sikora <pawel.sikora@linux.intel.com>
+Add coverage for userptr Transparent Huge Pages.
+
+> In particular we are missing something to test partially mapping a
+> huge-page, including being misaligned, such that the mm start and end
+> address don't sit on the huge-page boundary.
+> 
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
 > ---
->  lib/igt_core.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  tests/intel/xe_vm.c | 55 +++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 51 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index c19689a51..512d88437 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -296,6 +296,7 @@ static bool in_fixture = false;
->  static bool test_with_subtests = false;
->  static bool in_atexit_handler = false;
->  static bool show_ftrace = false;
-> +static bool has_comms = false;
->  static enum {
->  	CONT = 0, SKIP, FAIL
->  } skip_subtests_henceforth = CONT;
-> @@ -1905,11 +1906,17 @@ void igt_fail(int exitcode)
->  		failed_one = true;
->  	}
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index fdf74c114..4b5fbe9f3 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -1281,6 +1281,7 @@ test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
+>  #define LARGE_BIND_FLAG_MISALIGNED	(0x1 << 0)
+>  #define LARGE_BIND_FLAG_SPLIT		(0x1 << 1)
+>  #define LARGE_BIND_FLAG_USERPTR		(0x1 << 2)
+> +#define LARGE_BIND_FLAG_USERPTR_THP	(0x1 << 3)
 >  
-> -	/* Silent exit, parent will do the yelling. */
-> +	/* If igt_runner uses comms, it could grab each child's logs without
-> +	 * them interleaving in stdout/stderr. */
+>  /**
+>   * SUBTEST: %s-%ld
+> @@ -1312,6 +1313,9 @@ test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
+>   * @large-userptr-split-binds: large-userptr-split-binds
+>   * @large-userptr-misaligned-binds: large-userptr-misaligned-binds
+>   * @large-userptr-split-misaligned-binds: large-userptr-split-misaligned-binds
+> + * @large-userptr-thp-split-binds: large-userptr-split-binds with thp
 
-I just realised that there is another _child exit after if(!has_comms)...
-What about dropping those runner_connected() if's and just dump it
-unconditionally here? Let the user cope with non-runner runs?
-So imho we could have new comment like above and here:
+Here describe in full, so s/thp/transparent huge pages/
 
-	_igt_log_buffer_dump();
+> + * @large-userptr-thp-misaligned-binds: large-userptr-misaligned-binds with thp
 
-What is you opinion Zbigniew?
+Same here.
+
+> + * @large-userptr-thp-split-misaligned-binds: large-userptr-split-misaligned-binds with thp
+
+Same here.
+
+>   *
+>   * arg[2].values: 2097152, 4194304, 8388608, 16777216, 33554432
+>   * arg[2].values: 67108864, 134217728, 268435456, 536870912, 1073741824
+> @@ -1363,7 +1367,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  		.num_syncs = 2,
+>  		.syncs = to_user_pointer(sync),
+>  	};
+> -	size_t bo_size_prefetch, padding;
+> +	size_t bo_size_prefetch, padding, map_padding = 0;
+>  	uint64_t addr = 0x1ull << 30, base_addr = 0x1ull << 30;
+>  	uint32_t vm;
+>  	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
+> @@ -1387,8 +1391,23 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  
+>  	if (flags & LARGE_BIND_FLAG_USERPTR) {
+>  		bo_size_prefetch = xe_bb_size(fd, bo_size);
+> -		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
+> -		igt_assert(map);
+> +
+> +		if (flags & LARGE_BIND_FLAG_USERPTR_THP) {
+> +			/* Ensure we try to partially map a huge-page! */
+
+Same here, also imho no need for '!':
+s/map a huge-page!/map a transparent huge page/
 
 Regards,
 Kamil
 
-> +	has_comms = runner_connected();
-> +	if (has_comms)
-> +		_igt_log_buffer_dump();
+> +			if (flags & LARGE_BIND_FLAG_MISALIGNED)
+> +				map_padding = xe_get_default_alignment(fd);
 > +
->  	if (test_child)
->  		exit(exitcode);
+> +			map = aligned_alloc(xe_get_default_alignment(fd),
+> +					    bo_size_prefetch + map_padding * 2);
+> +			igt_assert(map);
+> +			madvise(map, bo_size_prefetch + map_padding * 2,
+> +				MADV_HUGEPAGE);
+> +			map += map_padding;
+> +		} else {
+> +			map = aligned_alloc(xe_get_default_alignment(fd),
+> +					    bo_size_prefetch);
+> +			igt_assert(map);
+> +		}
+>  	} else {
+>  		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
+>  			    xe_visible_vram_size(fd, 0));
+> @@ -1500,7 +1519,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  		munmap(map, bo_size);
+>  		gem_close(fd, bo);
+>  	} else {
+> -		free(map);
+> +		free(map - map_padding);
+>  	}
+>  	xe_vm_destroy(fd, vm);
+>  }
+> @@ -2620,6 +2639,34 @@ igt_main
+>  						 LARGE_BIND_FLAG_USERPTR);
+>  				break;
+>  			}
+> +		igt_subtest_f("large-userptr-thp-split-binds-%lld",
+> +			      (long long)bind_size)
+> +			xe_for_each_engine(fd, hwe) {
+> +				test_large_binds(fd, hwe, 4, 16, bind_size,
+> +						 LARGE_BIND_FLAG_SPLIT |
+> +						 LARGE_BIND_FLAG_USERPTR |
+> +						 LARGE_BIND_FLAG_USERPTR_THP);
+> +				break;
+> +			}
+> +		igt_subtest_f("large-userptr-thp-misaligned-binds-%lld",
+> +			      (long long)bind_size)
+> +			xe_for_each_engine(fd, hwe) {
+> +				test_large_binds(fd, hwe, 4, 16, bind_size,
+> +						 LARGE_BIND_FLAG_MISALIGNED |
+> +						 LARGE_BIND_FLAG_USERPTR |
+> +						 LARGE_BIND_FLAG_USERPTR_THP);
+> +				break;
+> +			}
+> +		igt_subtest_f("large-userptr-thp-split-misaligned-binds-%lld",
+> +			      (long long)bind_size)
+> +			xe_for_each_engine(fd, hwe) {
+> +				test_large_binds(fd, hwe, 4, 16, bind_size,
+> +						 LARGE_BIND_FLAG_SPLIT |
+> +						 LARGE_BIND_FLAG_MISALIGNED |
+> +						 LARGE_BIND_FLAG_USERPTR |
+> +						 LARGE_BIND_FLAG_USERPTR_THP);
+> +				break;
+> +			}
+>  	}
 >  
-> -	_igt_log_buffer_dump();
-> +	if (!has_comms)
-> +		_igt_log_buffer_dump();
->  
->  	if (test_multi_fork_child)
->  		exit(exitcode);
+>  	bind_size = (0x1ull << 21) + (0x1ull << 20);
 > -- 
-> 2.34.1
+> 2.48.1
 > 
