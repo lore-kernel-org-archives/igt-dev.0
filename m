@@ -4,185 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0326C28B30
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 03:26:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8010C35FF3
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 04:01:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9502D10E6EA;
-	Fri, 21 Mar 2025 03:26:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76E0D10E010;
+	Fri, 21 Mar 2025 04:01:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YrdW63S0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iD1PvKeQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0AC110E6EA
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 03:26:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F1C510E010
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 04:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742527608; x=1774063608;
- h=message-id:date:from:subject:to:cc:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=9AhqJfZFi0TcvX8R6WOpmv6IQru0LapQgPs+ltRsFq8=;
- b=YrdW63S03SmQunDUXAWQ1mB2NeG5iL2ravPdH2hV/9hvDkLDgUGz3Zxs
- mXUaUd52VLNiiJJ9UlYvCkBh8wYpVk1lwbTdHwySaCDpQxrSRcIVaEalG
- vOk3jdIX6VwfxGEmCqp1ThAQfMFx1hO1pQOLoTixgnfi9tBPaekQw45wX
- n/OH25xEOYdusWeM7sOkuYCuLJuOY+RabuLIdSneVxaBavXGtMeG8yqNG
- XSMZm7trUP9uiLxdFFL7+O2fPQ6G9qqh4Ef4nU0pdjeNfrswtYUCU2asD
- gmjFtM4vhZucSmYkMg5PCCm2JO4f0T42hSn/hBcjihegY1stpaD89PLNF g==;
-X-CSE-ConnectionGUID: BbqY5DZHQAqC9O2snQ/q2A==
-X-CSE-MsgGUID: mlq2caCHRy2LzhD74L015A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="31374676"
-X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="31374676"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2025 20:26:48 -0700
-X-CSE-ConnectionGUID: bD19auALR9KU64xZda4LBA==
-X-CSE-MsgGUID: HiH6CYpuSYGL/9hpHyE0Jw==
+ t=1742529668; x=1774065668;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=DCPp1GE0wmeO7wR6Vw8qOyb3T/AGhfmqxnb+ZfjhB5M=;
+ b=iD1PvKeQD+SG2JlOjifVcPQbcPui1rJXfcFovVbqUxKjhkuaVDiKF0iY
+ acxuaEpB2SrFGew4BOJ1BtrHJ+IhmduBlhT4i3xakcTAN1eNXT1LS+hZ8
+ HYKz7QumDWzLSBjmnuFgdzEgWbIFQegYHWZHwRm7EMHSpkQIViSa08E8f
+ cOwx2h1aX1OHyuX7GG9JkUIyYk/EELI4GkpYRFKrh9N1I39h6KkNEsh+T
+ EPHPYw1BxL1puGhpKGp0Amz+uARviOK2IIKys7UgrCg2kaGxiwqn8OqgV
+ uYLz2uefo9rzY2xFmFcifHrpWmOCOSqyuk5Oej6UFvcxzwq7LBltTrTlo A==;
+X-CSE-ConnectionGUID: qhHhqbfHRnOBZTV88g3NtQ==
+X-CSE-MsgGUID: 2NuPEfRzRROOLv7PkwJnNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="54005757"
+X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="54005757"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2025 21:01:03 -0700
+X-CSE-ConnectionGUID: SO8LoKWDQmmiWc+Tuu+xgg==
+X-CSE-MsgGUID: h+YbGOQbR+m4TtMcEG90SA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="123303187"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Mar 2025 20:26:48 -0700
+X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="128399970"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2025 21:01:02 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 20 Mar 2025 20:26:47 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 20 Mar 2025 21:01:01 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 20 Mar 2025 20:26:47 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.48) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.2.1544.14 via Frontend Transport; Thu, 20 Mar 2025 21:01:01 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.42) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 20 Mar 2025 20:26:47 -0700
+ 15.1.2507.44; Thu, 20 Mar 2025 21:00:59 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CL3EpWXqAHHm3nOk7tu7rE+o7COk78n8s54GfSi71FAc0SdAjtBlJtuxIxU9BFBkhxtgXdzT4p2XqArx2ICkZqE5zNsj2G8p/4r0VSrlBtV6/+8PSUzAst5DY6XbWeEIuskmjoLa5115sJ5DljW0Xpv8sR7SRA0pCo+1zjh2snw0cVCoEatpobasL52rh+uAVCW+9oWZSG4JKiP37C0yhho3kV/W3/Kp0rhMA2tJ6FK8ye/kd9vKRLgSACc7IAwYxRsmdiJXwwrvdxF3BVa3jLYMxqb0aQ0Uz8bPAEs/sJC99WyOnDMJu50sNUfHLQMFrV5YXq9dr9xoTKzBnGDcig==
+ b=IBF/ntm1uW81SaMPEtXf+CdLWvX3PxuQDqLcGCPAhDpkl0y/ZoEUWquHxnfLR/vpMldTHwF1LB//UsCJeBh+4uytL5C3o27B26IDon+eqX2xVEAgynSpZWuCjbSchih2uLJhLkZapFcjYD/2iGsoLJD2W2ZwuPpINP/1Wp/V2GmQ9V4E5AE1U5HrNrsJlu3E3etvM+6kM3O0NvTbX16Fs6HJLFqfr1KROQOjy3mFVzWSJ9oOZwirffE3s3BHRIhmP3+jex4cIxF9wyjkEYcJnSyeQxjmoN2bo2n375otIYDZXNz25T/oL1XEQMEWVuoLsxNEsjAWgLe4kyQL3DMIFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eoCD2GitsE/VHVGO8I4nChSBCOJPFwzmHc49Fxi1v6c=;
- b=UmTu+OkqR5/Qx4vROkzn0f83pxq9BnA2MBrhQhrl1CgN97Z+kdcwPyGrSvINJ3h8YjsMecskCAM4xfw8zrKZNzGx0/XBjsN+rX+92ZOsmvTcQb/FXVF70NALlLSkcXWvePWFk9MzBthp5zui4YQ3UGXw1tFq7mbiE0zYYDAHtPO0/uGsfSrfoi+GwUQLY9X/vaQK2fHFlzxB2M3DGVA4DN8dQwkJNjdoX7JePajLplY3tE7PSyBtcDkoTl5lXrE2x3Fz2spSaubmVDvaS8153qK2kxlekS6f1iq83nuG3eN0wF7rjYzJZ4VjmOsIXjVSGG8/NxcDgz5QYXPNHI1fjg==
+ bh=MT7SFKei8XhM5ZxOHdw254kmcdrhyagO6ZDCfUVSYQE=;
+ b=Wul2T/rKVT16wDC2QgoOfkGqfQ1J4UcJKO5y+djxviWkA13dlCXPvjeO5NoSeXL46VW92mLU2OdDIx4iUHTLD+39YpucmSJfPoyE4dhWS5ezXf9tBdiBW1uE+5Evp7KfgCqPnTj9+QEphtKPEey5yOuZUVSxTseV32FS3DTWPFfVw9/CJg+6Kzv3We6KY3msEWtzEiR7NV3CPTnYh+WlzFXkCWO8MRbP0+77MHg2vdzTHdnqmToTAD60VevUXY83SIRZ8NYPXMLC4ecgQtTVlQ/gfGarBToMxi0xTaGmT9n4HqWbo6vf0eEZ740hIgRkLkShedcdokSgqfKKzAWfyw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
- by DM6PR11MB4739.namprd11.prod.outlook.com (2603:10b6:5:2a0::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.36; Fri, 21 Mar
- 2025 03:26:46 +0000
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::36d3:6033:a101:f961]) by CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::36d3:6033:a101:f961%4]) with mapi id 15.20.8534.034; Fri, 21 Mar 2025
- 03:26:45 +0000
-Message-ID: <1b8ae83f-f818-4dae-98c8-fc9a8730028f@intel.com>
-Date: Fri, 21 Mar 2025 08:56:37 +0530
-User-Agent: Mozilla Thunderbird
-From: "Purkait, Soham" <soham.purkait@intel.com>
-Subject: Re: [PATCH <i-g-t> v4 3/4] tools/gputop/xe_gputop: Add gputop support
- for xe specific devices
-To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>,
- <vinay.belgaumkar@intel.com>
-CC: <anshuman.gupta@intel.com>, <lucas.demarchi@intel.com>,
- <rodrigo.vivi@intel.com>, <jonathan.ming.jun.lui@intel.com>
-References: <20250313062154.1601701-1-soham.purkait@intel.com>
- <20250313062154.1601701-4-soham.purkait@intel.com>
- <4f538b63-5919-4f76-afbb-523df00b3bfa@intel.com>
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ CYYPR11MB8331.namprd11.prod.outlook.com (2603:10b6:930:bd::21) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8534.36; Fri, 21 Mar 2025 04:00:57 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba%6]) with mapi id 15.20.8534.034; Fri, 21 Mar 2025
+ 04:00:57 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t v4] tests/kms_plane_multiple: Add dual display
+ subtest
+Thread-Topic: [PATCH i-g-t v4] tests/kms_plane_multiple: Add dual display
+ subtest
+Thread-Index: AQHbmYNfKiC0aSmc9027s3bcvmYvnrN8+IDw
+Date: Fri, 21 Mar 2025 04:00:57 +0000
+Message-ID: <DM4PR11MB6312AE1FE0530B1BB726523C90DB2@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20250320103243.823164-1-karthik.b.s@intel.com>
+In-Reply-To: <20250320103243.823164-1-karthik.b.s@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <4f538b63-5919-4f76-afbb-523df00b3bfa@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MAXP287CA0010.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::21) To CH3PR11MB8706.namprd11.prod.outlook.com
- (2603:10b6:610:1d1::22)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|CYYPR11MB8331:EE_
+x-ms-office365-filtering-correlation-id: 65d90b73-1947-484f-2c82-08dd682cfc28
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?M0wSiRTgcEM4uuKtDuf4HqCOCfQCdDJQ9WnH3tZ2XIv9zxH6yLAW61uW/IQA?=
+ =?us-ascii?Q?t5pi4XPbjbLKyV8cXpm/SfAync/GuU47ej6i94xZz/KtjmkOhepnXzRAaAbn?=
+ =?us-ascii?Q?5V4+OKfVGaMFDrAEerb3khNW9f2iAKeAZaMjg6QFnWx5eg5KrnWOAq/nj8ae?=
+ =?us-ascii?Q?18zlWV4BkSxNZiNCKTA4GO0ZW3lMMSuhA4EbMeWqRKJ+nU4AwS8ZE+mf2Vao?=
+ =?us-ascii?Q?K2ZPmxLEeT5y2IylS9AwZruQno7whIf11UqE+9D042eodsP9fztKNxgxCgoJ?=
+ =?us-ascii?Q?tNPvunbkSEB6tKDtP4cdYk86D5rf2qfM0v65aq7fW1/pdOpuv5uHp5kKMIbo?=
+ =?us-ascii?Q?rJgzsyCLd1G5ORMVOg8w5ngc5bW9UUCloYT+5RfEBilEDqIh0qowiNef1NU1?=
+ =?us-ascii?Q?8o8qKd7+d1o/sr+cPoNGMp30KgUM0Jt6TdsFHyZs1fqF5RLToBkATH5bmPLW?=
+ =?us-ascii?Q?5f9UHZMgSwZMb7fyVg0lGeJwHDBnqy88UUIOEvob/n8PU68tnnJyP7KkbnSd?=
+ =?us-ascii?Q?Hv8EITzOy+uIDJTZXbRoi23sLJOxC1oBYy+pGeD09xPQggJZfFkrRQZv6eyU?=
+ =?us-ascii?Q?kSldlBGatDNCOP0IaZtldFuNi92StWUGSrk+H8E6fxuEfIs4RT1E8tgDEuU9?=
+ =?us-ascii?Q?OjZ0FOLfABdFbKWB226zal16mGODdsddSB2rd9nG1Zi1QpB3ghJFKLMNiBzH?=
+ =?us-ascii?Q?AC6WaqYHwMvAllmkKWiiyJ1Vou0Cztmp+ZgYw9cYgPz8q+xZFxL+3HDZHBrV?=
+ =?us-ascii?Q?+Xmpt6ULV7hrIWbhVQ5PySXqT/SeaqcVAqpcBHpqe3Bg6ZYyKsB3dz6wHZkB?=
+ =?us-ascii?Q?+zfrDllsrhHzLk/TxEL0CAQ8NBsRP5z0yp2te0NyyO9uL7ft84C4CZ2yL3oj?=
+ =?us-ascii?Q?kVdKktux2874dNGtyL1A1aIXpc3O1+AZR23xiyaB7x48Edd63ukf8n9SscEL?=
+ =?us-ascii?Q?Jr+Hm/kbnN9JOBrsy3ikbDCLTPP9TAnCVuuBciIl8YmH977aMnZAXKVgIY9v?=
+ =?us-ascii?Q?qlAL/CvnK3tLHh8SGOPmYkkbcLj7iJQ+QVwYTAebp6cE8bfXVdzb2iTLFZ8U?=
+ =?us-ascii?Q?gIEYVaD7m8EE5zYyS2nH2GqX4dETtHjsOFzagARwH6Kp7Y+y4Om8WqOjYe/2?=
+ =?us-ascii?Q?E135ayMBY3x/isJ1HSWZfgbxysHltvLWnrOsBuKa+pNLABj+499nmGoeJTx5?=
+ =?us-ascii?Q?DEhH9ECRYvSXaJJ/zgodo8F8EpUgQy290gehhz6FUXPVcshVEctAzRi2OB+n?=
+ =?us-ascii?Q?pJy4ZIWyYU+4Z0UrzvXwaHFHxDGTcnWWbLR/dWyy6Jvk6kJfyzM8HFHnMElE?=
+ =?us-ascii?Q?rXuTvcybyXPAM4W4t/CiJAtGm97S4VXXrS8Gee1QlBQuVFWD1v/q5EC4FDmP?=
+ =?us-ascii?Q?nOA8l0JZl8dS40ivmee732Nba51CP82HICp4yNrRMp/AnZ3fD1cqfEkcm9GP?=
+ =?us-ascii?Q?IgucKLZHatDq90qdgWbUVtrrh3+mJNBf?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700018); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?CsRmC7HlXA9PDX/ctElJHNV55BAv6nHvmtbWvBei9OnnOoOUhKKv4XjS94/7?=
+ =?us-ascii?Q?bkStnjX94K2V8ikr4hRA2H1FX7BMUnDJOHo2+uevk5P4q5H38Kjgw4Q/uBcT?=
+ =?us-ascii?Q?q5qbaVMtQzMIFLkYWWDrwUNtSxmMMrKlfNN4TAQqGZzBKlQdjS59W6GgdmNN?=
+ =?us-ascii?Q?Z1PI0URq5e03U7+WU5fAGs7dMVicYU3fKTWEU/1oVFLRHbJVqhfnfuide1Mj?=
+ =?us-ascii?Q?lijGvsEDXGBuzM1u7y/smWTulq9/J6IrPpsGLj45FXpSdlz3LTFSvriHJ1DL?=
+ =?us-ascii?Q?edqm5pveks2kb6qP9i1NwY3PnD0tkpYxrFZ6VNg2LPlHeDMJlm2T8SAOLnAz?=
+ =?us-ascii?Q?t5Ik9VJnCKdZOzJS9Ii98VB4brPHmziwTX8m6J0yPExv3e4DR3HB3V5AWM2y?=
+ =?us-ascii?Q?RWIEM9REA/6+YJ/BtyIdJwYA+HYl8cStzEkMjdTjZW+SGOESdjtKDQc2RfLq?=
+ =?us-ascii?Q?jfFqvq0z3rKttDhVl7p88lQI8XtTq3slkbHGvv8HlzYEv77+4nMUqxD0kN+A?=
+ =?us-ascii?Q?Rx5Hvnk+0OhA46cL1aEW6AXZgdDiSCPwpDeA64ZaNR+ShtcPXrhygLRvug+O?=
+ =?us-ascii?Q?1Vqj766bVo1ecYmkpcSeDKzmyEH/Q+JVcgX7w520WTndK45XodN9RdQNqRvD?=
+ =?us-ascii?Q?uTMI3UjMJOzpFqGyBFfldEQ+Z0VqIG3IDu9stv6Nbt48XJH4OBeNxFB9JY8h?=
+ =?us-ascii?Q?eeKLg9O5VAnMYeuhESm9KmHXmPFU7rWCW8Yc2pdxOq70FPvPbp7oWddWtTVq?=
+ =?us-ascii?Q?53hiMPImycHYf0aCu1SMzWSp7XQvnIBPCI/vd1eYmwqemy8dpzioov2+KDhW?=
+ =?us-ascii?Q?PqO571SIoETigN2STaxA/ViWdwPb/WK1LN2aD6DiXmuXiK1Gw1tGCuOtbKhX?=
+ =?us-ascii?Q?gc7UEBFC2/hcaAN1pEqmC6m5nbydY6KkyNtyoxXNXMBuQPJlz5VUiiOn1JXR?=
+ =?us-ascii?Q?6MJ8WxrXJm9m4daM2Rf40SExWZtwtSdpYa58kh4kM9+pdRbUUwzEekf6K7tF?=
+ =?us-ascii?Q?PG9iOnfhYpgTqXInNs90ciI6syHVBtWmU84MToSReKK/pF5wxUqttOA3Rcog?=
+ =?us-ascii?Q?/MFNRFVtzxh1HNRPULTgTYZZCWehhF+SA8Hm161fTyJHoRoYwxKuvoylYY5c?=
+ =?us-ascii?Q?PLS4ucEeiiszwLNCmgCrbc+KPDhOdH9DA8aeMJD9vEJOSx3DpGjgdvgxzXbm?=
+ =?us-ascii?Q?HbhwxJ3gRTkLS0QW1hSxBScM8iwtU5k962aMuybaoTktoirt0nu+z6K2UOvb?=
+ =?us-ascii?Q?h67kl466+ShOQqdBjEATJnIeqb5YHFd3Mdo5dwz+h8/zUthSYGF6tHS8LgtZ?=
+ =?us-ascii?Q?XwhDIBRgpCtwKdhc4eu0/5q1GOjE3UfaoxEXFeC8V26VU7J+AkBNo/RY4q04?=
+ =?us-ascii?Q?EvjlMWgHJfBFgORz3Ripd89Dlh+3hyr5ewMHo985XJM5/C3era4P+b0ZaWq6?=
+ =?us-ascii?Q?gd/xc0aL7f0E+77EcGBFX4Yygl4/CiE+/sQ5HC+keGaNZcLSa4rmk0Ec7qB8?=
+ =?us-ascii?Q?8boq9kOUlzrCm/Ac6H5+Zxeat5fi8vV1CWRkPMnwgeXh6GgW9QHNn6E++oNV?=
+ =?us-ascii?Q?4lMhUbbKiELXgvuP6pU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|DM6PR11MB4739:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73baa899-e996-41fe-f0f4-08dd6828352f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?bm9EM1Z5c0tmVWxMNWpNNEE4UlZYbnFZNGoyZDAyOXBwVjhLYmg2dFFVRTdl?=
- =?utf-8?B?WUZKNmovYVpyeTBLZE9SSm45RVdPNmtqUkkvUVNhbjF4azVVSCtsTDB2dFIw?=
- =?utf-8?B?MEhCY3NnUThEYVVyWUJDcTR0cGE0ZjhCc3FhVUg3UHJUb2RJaFZEa0RRNHVa?=
- =?utf-8?B?VlE0dWZEMVRnQXp1bW9JUFlXTGx1cDg3b292OXBldDBvN1J1VVlLZTBUUkxI?=
- =?utf-8?B?Y0RnSFdnUXRna0dFZG14ZlZmVmcrVjFWd1JtQTl4VGxoTS81NG5NRURpbElE?=
- =?utf-8?B?QnpEVExSOEhZTXlTa2RUdmFGUXgxa0wrRVNyR2puTkFhb29sV1d6MlhpZzRu?=
- =?utf-8?B?SzZWRFBKb3Q1WHc1OUpnNGJqbnBzTllqRkQwbmhkc1cyT1dvMGxRVmZOazlK?=
- =?utf-8?B?Zi85Z2ZPWmhFUjBqb1hxN2VvblN0b2xvZHBSRVFiUm9NaXgwT1NtNk5YOG52?=
- =?utf-8?B?aVlPYzR3ZGtkc0ZZcmpuc29sYnEwNmRPYUFEZ0o0ajNmazhaRFBBN2RTZEgx?=
- =?utf-8?B?M2w3Yk51eVFUVEJIK0pOUUgxdnhzZEYra2lFWjlIYkJzcWtuVTVLOVlHMFVi?=
- =?utf-8?B?Y2R2TlJ0TGZUQUVZZ1dnb2oydjl2YmFVbnhOSlMvTUdJelZzVHdBS2l2RHZy?=
- =?utf-8?B?bWZXRUlyM3YyTXQ5dDFVMGRVOWlaN2djMFJuNk1ERGg1VE8ybCt4V3FsMFJW?=
- =?utf-8?B?MjVsQWc1RjJFUVBsL0JUMjJVZ0hjS3FEMDV6L0NxUUxBVG55RTlDZUJCNXVP?=
- =?utf-8?B?MFBKN0swUklBUGVLTEoxdm5PRGhLTkNQNHVpRTZKQjFuejBDRy85VE5OZTZX?=
- =?utf-8?B?SkVXb2hYd0lPVVhnVFRaYVRxb1B5T0MrdnBsdDFyaDFWWk10dlpPdDdrWHVG?=
- =?utf-8?B?QUVIN00zWUN0eitNN0J6Zm5td2RRem1JbWFIZ1BVUnlrM1Y0SThZcFo1MXo2?=
- =?utf-8?B?MmdvTkV5ck1URmRUdUpmQjVET0pOdmpaYzRFVGl0Y1BTM0N5UlJzenFSdEp5?=
- =?utf-8?B?bEFWTGlSVG5sbkVuZDBkZXhPby85ZkUzWU0yV3dKdnNnVXhwSGFXSktXRUto?=
- =?utf-8?B?WVNhWHM0SXFadjl3ejk3em5zc0dBUnMzaEYxRHJhNjI5VkRHbDRKeHdZcyto?=
- =?utf-8?B?OGt0dTBYV2Z5dHpUSnMrRUlVQStGclhTUlEyKzBLM1NuUW85dytIV0w5QzNx?=
- =?utf-8?B?cTJjWXpScFloNXdWUTloWG5Lcnc2ODZEdlJ4VTM4NW0xNXBYM01CT0xtTnlO?=
- =?utf-8?B?TFI5YWV3TCtHMnlpWC9uZ1M2QkMrQXRIVnprMWQ1WFc1S1ZUTmRiZWNSak1E?=
- =?utf-8?B?OTR0anhZU0owSlpqRUtLMTJuaHlnM25sWkc4MnE2eWpLMHgvb0RoVHRKMzh3?=
- =?utf-8?B?VEVhQmtJSi9VZTFxU3Qwc0wrTXFZdmhyM0xkaEZpRnVGR2ZNT0J3MThUNzVI?=
- =?utf-8?B?T1hxa2lha1NqQmc4NUpqWVVmZktBR1FjWGdSclJMcWxXaXV6UXU3eDE0dHp4?=
- =?utf-8?B?NHh4NEVOa1Q1SGJ1cHF0NzVvbE1TMzBBQmExdDcvd0J6bUZkaG9BMWpwaE1W?=
- =?utf-8?B?Z2ZyWUtqYU9kSVprcm0yQ3NlczJVRkR4aGVSWE05U2lYRjh3UFUra3d0TUZ4?=
- =?utf-8?B?aTYybVN2N3hVUEd4ODl5d3FFcjFWWXBvVkVIampZQVlSN09XRG8wbVhlRWdH?=
- =?utf-8?B?WXRkUWFxN3dvZmxqYUZJTzM2TkdsU21jNHQ5Z1BaS0xzWldOd00wZGhJNnd5?=
- =?utf-8?B?RnhDZHBpUWVPN3JWRXVTMnowU1VKdmhYbVYwb2NOdjV4dXVaS1g1N0kveWxh?=
- =?utf-8?B?cTNieDQ2T21FalJ0T2lONE44MjFWMm9YR2h1MVRVWG94Z2NIMXJTRyt2Wjgw?=
- =?utf-8?Q?x7hd1KkgCfgUz?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YjRkSVJQdHFvUjNrbjd0R3p3SlRyZ05aT0NSSE9yRWI1Nm1aRDAwamN5aEk3?=
- =?utf-8?B?SUhkMk5UN0V6RGI5LzBjMFJHOXBqcTZRZnlYZnpVTVZaSkg1aVAvdE0yYlBi?=
- =?utf-8?B?Y200a3hFTkJXMDhZZ3NOaUFZU1J3anFPenN5SzJ0UzM0cDN6RDhBVGFVYmFk?=
- =?utf-8?B?c1NCL1FUZWFrcnY1UU1nR1hlVzd6RlhDclIvSEJHYlppZDJsM2xpRFZtYzFL?=
- =?utf-8?B?RjF3Y3dRTUtNRC91VWhkVjlwbUhNVTNUdDFzclFVQ0lPODVNcWxsa0U1aGRy?=
- =?utf-8?B?d2E1TDE1bWVBZTc3MVE0ZUFReUpWdm05aTI0ZGNJa3hOOHdqY3pJT2xFSzlz?=
- =?utf-8?B?QWMzL2hDc0Y2UDlZb2JETmNGbWIybU9nYzZpRW9aQ0NiNGhSM3IxVDB3aFRm?=
- =?utf-8?B?WTAzcWpscnNWWXdGODBkYjhaaHRiaGhiWTVhOU1hdkcwU1hkOWpWK3pVZTZU?=
- =?utf-8?B?VTV5blZQdTFLWVE1S05LMGRRTGVRb2RySXRvWlJDLzI2VSt6SkZ5dFdydHhp?=
- =?utf-8?B?a3ArY3Q3dWYwNlUvWlhsM0lJcVdTbkV4aTZIMzBTQUVNdnZyNFRNbi9zb2xX?=
- =?utf-8?B?VlJlNzZoSDZVZUNhR1pTeXNuOEg2TjRLNU1YOVloaW10cGZkdU9ST0NPRE1B?=
- =?utf-8?B?cXEzb09CWXZZM3EvblZVNmxTUHQ0c2Z2aFhzQXhkNzMwMkFsUmhsWkRsOUQx?=
- =?utf-8?B?bjBjakRzdDdPOUszRTMxMTJ6ZkFTbHFId216bE14ODZadlY4emVWV0RjalRy?=
- =?utf-8?B?RGxIa041ZnNMM1BUMjZrQVZLNjd5cVR3eTY3eTVCbEZnNEcrZ3AxRFFmZkJJ?=
- =?utf-8?B?bndKOFpSL2NjMEJLc1c5Q1Flb0hEV2tVVW5UWHpWc1RXMjJsUzBqODJSQVll?=
- =?utf-8?B?bmZMTWQzUnJsZ2FSdk9ITjdUZXptR0F1dVo5TmpKcURHek9PVm9RYzVvQnNw?=
- =?utf-8?B?WDhXbUV4QXN2c2RmRzZ1NTFVTHRDK0Jld3dhVm95Y2JZY3pvendMK040bktW?=
- =?utf-8?B?dHFMd29XNDVWUWMvTC9lQlNLL1FGREo5ZG8rZHJjRTRXT1AzMlgrWDNYVE96?=
- =?utf-8?B?RzFFY0NzYkhhQlZZakFMZTJxclU3R3ZmaGdXK2wyUUVKMzZiS0VHTXFpcE5t?=
- =?utf-8?B?MWxIMmFneTJ4bEl0ZHY3a2MxNllGYk5nK3UrSXpEYkxxaHBOL2gxd2RMa2Vm?=
- =?utf-8?B?UytWSGRGUnZqeFB1cmtnL0FuQS8rM2JCK3FBaFFheDYvRVVFQ3RmY1REZThC?=
- =?utf-8?B?a29mTkFva2hsUS9tcHQ3em9adkZtaTZITEpoS3BpZC9vUVNKK0s5YVcrUHZw?=
- =?utf-8?B?RlhuL0I2ZlNnaUw1b0JEM1BTVjcyZTE3bmVTWng3OFJnSjg5QUc5bkcxU3ZP?=
- =?utf-8?B?YkhlWGZQYXBvZXZaQTdvS0pwMUxOT3lCdFNUeCtxSDJZTXVuV3RzWGpzejVz?=
- =?utf-8?B?MEYwRWdadmFQZnM5UzhTSzJHMUZvK0txTGRBaHJ1dmU1R05TcjBSeDNuLzZR?=
- =?utf-8?B?NnRBMlY0WDI1OHZ3ZFJXYjJNSUJiNUJ4aWx3NUxycVlrbEpUUWpsS1RicHFB?=
- =?utf-8?B?a0xBSS90WDVDN2NrVzJNZG52TzVWTEl0MmEzOHBFR0g2RjRNUzVLeGNhTGZS?=
- =?utf-8?B?WW1uSGtLV2F3Nm8vaHJQdjBkWityck51cFU5dWRqOUVNZmtNZURMZlQ0QzF5?=
- =?utf-8?B?MHRSVVJCclBlYzE2VFJGTnlyS09EL2l0Zks5VFlURXBBaTZwU2ZibDh6ZmpK?=
- =?utf-8?B?UjFVbldZK2pqSmpiK1c3c0pjM1Z0dmo2ZEJUclpTcSsxWmpxVEg1VTFzNG1P?=
- =?utf-8?B?Q0xRNWpXeVU1VGp5YXpnLy9vdnk2OTlRaGg2RzNPOVVoMUpUSllUUjBHOEJy?=
- =?utf-8?B?R0s3dVArc1R0MDZNSVpLMUs5ZTREbnR4OU9LTWV5aTYwRzk0UkRxMjU4OU56?=
- =?utf-8?B?bDdDQTFLbkRxb29GQk0xWlk2c2VBNXhQOEIwWVAzNUlGR2RSSU9La2N1SFE4?=
- =?utf-8?B?enRRMlFzdEtoTWhWejRiVXVDN1FBR2lrcENIUHAwejc3cVF2TWxWTFJwRmls?=
- =?utf-8?B?Nno1YUJDR1ROZlI4cWRZaG51Nnh0VXYrOHI1WWdUVjlGeEpaNXdJMndPR29M?=
- =?utf-8?B?RjVjK25QaTdCT2ZxZnoyV0JLamxueWhSMlVOb3pWOXMrN3JYSm4xTlhxa2Mv?=
- =?utf-8?B?emc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73baa899-e996-41fe-f0f4-08dd6828352f
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2025 03:26:45.8599 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: n5DqkmIxtNxqLHmRCftH0QIlgghMHbjblOLv6vCi1Fots1z8rSgQfgbDg5r3rn+MuK88MrhPBWeDYLmJpDXhJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4739
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65d90b73-1947-484f-2c82-08dd682cfc28
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2025 04:00:57.4759 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UcH+4RuVXLASO4TgER/4mjlYvZgaeyLSBNF9rKrVNHtsRhrNnR+AAdqPDtkjkkAQ2tRYwukKu2Xrt+rTv6BbSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR11MB8331
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -199,555 +182,533 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Riana,
+LGTM.
 
-On 14-03-2025 10:27, Riana Tauro wrote:
-> Hi Soham
->
-> Replace busy-ticks with engine-active-ticks and total-ticks with 
-> engine-total-ticks to keep it consistent.
->
-> Replace all occurences of busy with active in the series.
->
-> On 3/13/2025 11:51 AM, Soham Purkait wrote:
->>      Add gputop support for xe-specific devices. Separate
->> driver-specific code into respective source files.
->>
->> v2 : fix for refactoring GPUTOP into a
->>       vendor-agnostic tool (Lucas)
->>
->> v3 : Separate commit (Kamil)
->>
->> v4 : Headers in alphabetical order
->>       Engines memory allocation at
->>       the beginning all at once
->>       Removed PMU normalization (Riana)
->>
->> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
->> ---
->>   tools/gputop/xe_gputop.c | 372 +++++++++++++++++++++++++++++++++++++++
->>   tools/gputop/xe_gputop.h |  73 ++++++++
->>   2 files changed, 445 insertions(+)
->>   create mode 100644 tools/gputop/xe_gputop.c
->>   create mode 100644 tools/gputop/xe_gputop.h
->>
->> diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
->> new file mode 100644
->> index 000000000..4137bb771
->> --- /dev/null
->> +++ b/tools/gputop/xe_gputop.c
->> @@ -0,0 +1,372 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/*
->> + * Copyright © 2025 Intel Corporation
->> + */
->> +
->> +#include "xe_gputop.h"
->> +
->> +#define engine_ptr(engines, n) (&(engines)->engine + (n))
->> +
->> +static void __update_sample(struct xe_pmu_counter *counter, uint64_t 
->> val)
->> +{
->> +    counter->val.prev = counter->val.cur;
->> +    counter->val.cur = val;
->> +}
->> +
->> +static void update_sample(struct xe_pmu_counter *counter, uint64_t 
->> *val)
->> +{
->> +    if (counter->present)
-> presence of fd should be enough. present is not required.
-> The __update contents can be moved to same function
-In order to maintain the sanctity, I believe this approach is more 
-aligned with the IGT implementation.
->> +        __update_sample(counter, val[counter->idx]);
->> +}
->> +
->> +static const char *class_display_name(unsigned int class)
->> +{
->> +    switch (class) {
->> +    case DRM_XE_ENGINE_CLASS_RENDER:
->> +        return "Render/3D";
->> +    case DRM_XE_ENGINE_CLASS_COPY:
->> +        return "Blitter";
->> +    case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
->> +        return "Video";
->> +    case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
->> +        return "VideoEnhance";
->> +    case DRM_XE_ENGINE_CLASS_COMPUTE:
->> +        return "Compute";
->> +    default:
->> +        return "[unknown]";
->> +    }
->> +}
->> +
->> +static inline void *clean_up(void *engines)
->> +{
->> +    if (engines)
->> +        free(engines);
->> +
->> +    return NULL;
->> +}
->> +
->> +static char *pmu_name(struct igt_device_card *card)
->> +{
->> +    int card_fd;
->> +    char device[30];
->> +    char *path;
->> +
->> +    if (strlen(card->card))
->> +        card_fd = igt_open_card(card);
->> +    else if (strlen(card->render))
->> +        card_fd = igt_open_render(card);
->> +
->> +    if (card_fd == -1)
->> +        return NULL;
->> +
->> +    xe_perf_device(card_fd, device, sizeof(device));
->> +    path = strdup(device);
-> needs a free while cleanup
->> +    close(card_fd);
->> +    return path;
->> +}
->> +
->> +static int _open_pmu(uint64_t type, unsigned int *cnt, struct 
->> xe_pmu_counter *pmu, int *fd)
->> +{
->> +    int fd__ = igt_perf_open_group(type, pmu->config, *fd);
->> +
->> +    if (fd__ >= 0) {
->> +        if (*fd == -1)
->> +            *fd = fd__;
->> +        pmu->present = true;
->> +        pmu->idx = (*cnt)++;
->> +    }
->> +
->> +    return fd__;
->> +}
->> +
->> +void xe_gputop_init(struct xe_gputop *obj,
->> +            struct igt_device_card *card)
->> +{
->> +    obj->pmu_device = pmu_name(card);
->> +    if (!obj->pmu_device) {
->> +        fprintf(stderr, "%s : pmu_device path returned NULL", 
->> card->pci_slot_name);
->> +        exit(EXIT_FAILURE);
->> +    }
->> +    obj->card = card;
->> +}
->> +
->> +static int pmu_format_shift(int xe, const char *name)
->> +{
->> +    uint32_t start;
->> +    int format;
->> +    char device[80];
->> +
->> +    format = perf_event_format(xe_perf_device(xe, device, 
->> sizeof(device)),
->> +                   name, &start);
->> +    if (format)
->> +        return 0;
->> +
->> +    return start;
->> +}
->> +
->> +static int engine_cmp(const void *__a, const void *__b)
->> +{
->> +    const struct xe_engine *a = (struct xe_engine *)__a;
->> +    const struct xe_engine *b = (struct xe_engine *)__b;
->> +
->> +    if (a->drm_xe_engine.engine_class != b->drm_xe_engine.engine_class)
->> +        return a->drm_xe_engine.engine_class - 
->> b->drm_xe_engine.engine_class;
->> +    else
->> +        return a->drm_xe_engine.engine_instance - 
->> b->drm_xe_engine.engine_instance;
->> +}
->> +
->> +void *xe_discover_engines(const void *obj)
->> +{
->> +    struct igt_device_card *card = ((struct xe_gputop *)obj)->card;
->> +    struct xe_engines *engines;
->> +    int ret = 0;
->> +    char device[30];
->> +    struct drm_xe_engine_class_instance *hwe;
->> +    int card_fd;
->> +
->> +    if (!card || !strlen(card->card) || !strlen(card->render))
->> +        return NULL;
->> +
->> +    if (strlen(card->card)) {
->> +        card_fd = igt_open_card(card);
->> +    } else if (strlen(card->render)) {
->> +        card_fd = igt_open_render(card);
->> +    } else {
->> +        fprintf(stderr, "Failed to detect device!\n");
->> +        return clean_up(engines);
->> +    }
->> +    xe_device_get(card_fd);
->> +    engines = malloc(sizeof(struct xe_engines) +
->> +             xe_number_engines(card_fd) * sizeof(struct xe_engine));
-> why additional? 
-While allocating xe_engines, xe_engine space also needs to get allocated.
->
->> +    if (!engines)
->> +        return NULL;
->> +
->> +    memset(engines, 0, sizeof(struct xe_engines) +
->> +           xe_number_engines(card_fd) * sizeof(struct xe_engine));
->> +
->> +    engines->num_engines = 0;
->> +    engines->device = ((struct xe_gputop *)obj)->pmu_device;
->> +    xe_for_each_engine(card_fd, hwe) {
->> +        uint64_t engine_class, engine_instance, gt_shift, param_config;
->> +        struct xe_engine *engine;
->> +
->> +        engine = engine_ptr(engines, engines->num_engines);
->> +        gt_shift = pmu_format_shift(card_fd, "gt");
->> +        engine_class = pmu_format_shift(card_fd, "engine_class");
->> +        engine_instance = pmu_format_shift(card_fd, "engine_instance");
->> +        param_config = (uint64_t)hwe->gt_id << gt_shift | 
->> hwe->engine_class << engine_class
->> +            | hwe->engine_instance << engine_instance;
-> This function does pmu specific initialization too. discover_engines 
-> is not the right name.
-> you could move pmu specific initialization to pmu_init or rename this 
-> function
-Here engine specific discoveries is being performed so the name, while 
-strictly maintaining PMU specific initialization is not possible
-due to the underline implementation But It could encourage other driver 
-to maintain the same structure, while keeping
-it vendor agnostic.
->> +
->> +        engine->drm_xe_engine = *hwe;
->> +
->> +        ret = perf_event_config(xe_perf_device(card_fd, device, 
->> sizeof(device)),
->> +                    "engine-active-ticks", &engine->busy_ticks.config);
->> +        if (ret < 0)
->> +            break;
->> +
->> +        engine->busy_ticks.config |= param_config;
->> +
->> +        ret = perf_event_config(xe_perf_device(card_fd, device, 
->> sizeof(device)),
->> +                    "engine-total-ticks", &engine->total_ticks.config);
->> +        if (ret < 0)
->> +            break;
->> +
->> +        engine->total_ticks.config |= param_config;
->> +
->> +        if (engine->busy_ticks.config == -1 || 
->> engine->total_ticks.config == -1) {
->> +            ret = ENOENT;
->> +            break;
->> +        }
->> +
->> +        ret = asprintf(&engine->display_name, "%s/%u",
->> + class_display_name(engine->drm_xe_engine.engine_class),
->> +                   engine->drm_xe_engine.engine_instance);
->> +
->> +        if (ret <= 0) {
->> +            ret = errno;
->> +            break;
->> +        }
->> +        ret = asprintf(&engine->short_name, "%s/%u",
->> + xe_engine_class_short_string(engine->drm_xe_engine.engine_class),
->> +                   engine->drm_xe_engine.engine_instance);
->> +
->> +        if (ret <= 0) {
->> +            ret = errno;
->> +            break;
->> +        }
->> +
->> +        engines->num_engines++;
->> +    }
->> +
->> +    if (!ret) {
->> +        errno = ret;
->> +        return clean_up(engines);
->> +    }
->> +
->> +    qsort(engine_ptr(engines, 0), engines->num_engines,
->> +          sizeof(struct xe_engine), engine_cmp);
->> +
->> +    ((struct xe_gputop *)obj)->eng_obj = engines;
->> +
->> +    return engines;
->> +}
->> +
->> +static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
->> +{
->> +    uint64_t buf[2 + num];
->> +    unsigned int i;
->> +    ssize_t len;
->> +
->> +    memset(buf, 0, sizeof(buf));
->> +
->> +    len = read(fd, buf, sizeof(buf));
->> +    assert(len == sizeof(buf));
->> +
->> +    for (i = 0; i < num; i++)
->> +        val[i] = buf[2 + i];
->> +
->> +    return buf[1];
->> +}
->> +
->> +void xe_pmu_sample(const void *obj)
->> +{
->> +    struct xe_engines *engines = ((struct xe_gputop *)obj)->eng_obj;
->> +    const int num_val = engines->num_counters;
-> this can be num_engines * 2.
-> can remove this
->> +    uint64_t val[2 + num_val];
->> +    unsigned int i;
->> +
->> +    engines->ts.prev = engines->ts.cur;
->> +    engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
-> This is unnecessary
->> +
->> +    for (i = 0; i < engines->num_engines; i++) {
->> +        struct xe_engine *engine = engine_ptr(engines, i);
->> +
->> +        update_sample(&engine->busy_ticks, val);
->> +        update_sample(&engine->total_ticks, val);
->> +    }
->> +}
->> +
->> +int xe_pmu_init(const void *obj)
->> +{
->> +    struct xe_engines *engines = ((struct xe_gputop *)obj)->eng_obj;
->> +    unsigned int i;
->> +    int fd;
->> +    struct xe_engine *engine;
->> +    uint64_t type = igt_perf_type_id(engines->device);
->> +
->> +    engines->fd = -1;
->> +    engines->num_counters = 0;
-> you can use a local variable here
-It is being used in xe_pmu_sample as well.
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 
+> -----Original Message-----
+> From: B S, Karthik <karthik.b.s@intel.com>
+> Sent: Thursday, March 20, 2025 4:03 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: B, Jeevan <jeevan.b@intel.com>; B S, Karthik <karthik.b.s@intel.com>
+> Subject: [PATCH i-g-t v4] tests/kms_plane_multiple: Add dual display subt=
+est
+>=20
+> Add 2x subtest to verify MPO use case simulataneously on two display
+> configurations.
+>=20
+> v2:
+> - Update the test to use all the modifiers (Jeevan)
+>=20
+> v3:
+> - Add modifier support check before starting dynamic subtests
+>=20
+> v4:
+> - Use n_planes instead of hardcoded values
+> - Free the displays resources after the subtest (Jeevan)
+>=20
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/kms_plane_multiple.c | 259 ++++++++++++++++++++++++++++++----
+> ---
+>  1 file changed, 210 insertions(+), 49 deletions(-)
+>=20
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c inde=
+x
+> eda300b06..775c9fa0f 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -55,6 +55,18 @@
+>   * @x:           x-tiling
+>   * @y:           y-tiling
+>   * @yf:          yf-tiling
+> + *
+> + * SUBTEST: 2x-tiling-%s
+> + * Description: Check that the kernel handles atomic updates of multiple
+> planes
+> + *		simultaneously committed on 2 displays.
+> + *
+> + * arg[1]:
+> + *
+> + * @none:	 no-tiling
+> + * @4:           4-tiling
+> + * @x:           x-tiling
+> + * @y:           y-tiling
+> + * @yf:          yf-tiling
+>   */
+>=20
+>  IGT_TEST_DESCRIPTION("Test atomic mode setting with multiple planes.");
+> @@ -73,10 +85,10 @@ typedef struct {  typedef struct {
+>  	int drm_fd;
+>  	igt_display_t display;
+> -	igt_crc_t ref_crc;
+> -	igt_pipe_crc_t *pipe_crc;
+> -	igt_plane_t **plane;
+> -	struct igt_fb *fb;
+> +	igt_crc_t ref_crc1, ref_crc2;
+> +	igt_pipe_crc_t *pipe_crc1, *pipe_crc2;
+> +	igt_plane_t **plane1, **plane2;
+> +	struct igt_fb *fb1, *fb2;
+>  } data_t;
+>=20
+>  /* Command line parameters. */
+> @@ -95,14 +107,14 @@ struct {
+>   */
+>  static void test_init(data_t *data, enum pipe pipe, int n_planes)  {
+> -	data->pipe_crc =3D igt_pipe_crc_new(data->drm_fd, pipe,
+> +	data->pipe_crc1 =3D igt_pipe_crc_new(data->drm_fd, pipe,
+>  					  IGT_PIPE_CRC_SOURCE_AUTO);
+>=20
+> -	data->plane =3D calloc(n_planes, sizeof(*data->plane));
+> -	igt_assert_f(data->plane !=3D NULL, "Failed to allocate memory for
+> planes\n");
+> +	data->plane1 =3D calloc(n_planes, sizeof(*data->plane1));
+> +	igt_assert_f(data->plane1 !=3D NULL, "Failed to allocate memory for
+> +planes\n");
+>=20
+> -	data->fb =3D calloc(n_planes, sizeof(struct igt_fb));
+> -	igt_assert_f(data->fb !=3D NULL, "Failed to allocate memory for FBs\n")=
+;
+> +	data->fb1 =3D calloc(n_planes, sizeof(struct igt_fb));
+> +	igt_assert_f(data->fb1 !=3D NULL, "Failed to allocate memory for
+> +FBs\n");
+>  }
+>=20
+>  static void test_fini(data_t *data, igt_output_t *output, int n_planes) =
+@@ -
+> 110,21 +122,21 @@ static void test_fini(data_t *data, igt_output_t *outpu=
+t,
+> int n_planes)
+>  	/* reset the constraint on the pipe */
+>  	igt_output_set_pipe(output, PIPE_ANY);
+>=20
+> -	igt_pipe_crc_free(data->pipe_crc);
+> -	data->pipe_crc =3D NULL;
+> +	igt_pipe_crc_free(data->pipe_crc1);
+> +	data->pipe_crc1 =3D NULL;
+>=20
+> -	free(data->plane);
+> -	data->plane =3D NULL;
+> +	free(data->plane1);
+> +	data->plane1 =3D NULL;
+>=20
+> -	free(data->fb);
+> -	data->fb =3D NULL;
+> +	free(data->fb1);
+> +	data->fb1 =3D NULL;
+>=20
+>  	igt_display_reset(&data->display);
+>  }
+>=20
+>  static void
+> -get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+> -	      color_t *color, uint64_t modifier)
+> +get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+> igt_pipe_crc_t *pipe_crc,
+> +	      color_t *color, igt_plane_t **plane, uint64_t modifier,
+> +igt_crc_t *ref_crc)
+>  {
+>  	drmModeModeInfo *mode;
+>  	igt_plane_t *primary;
+> @@ -134,7 +146,7 @@ get_reference_crc(data_t *data, igt_output_t
+> *output, enum pipe pipe,
+>  	igt_output_set_pipe(output, pipe);
+>=20
+>  	primary =3D igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_PRIMARY);
+> -	data->plane[primary->index] =3D primary;
+> +	plane[primary->index] =3D primary;
+>=20
+>  	mode =3D igt_output_get_mode(output);
+>=20
+> @@ -142,21 +154,21 @@ get_reference_crc(data_t *data, igt_output_t
+> *output, enum pipe pipe,
+>  			    DRM_FORMAT_XRGB8888,
+>  			    modifier,
+>  			    color->red, color->green, color->blue,
+> -			    &data->fb[primary->index]);
+> +			    &data->fb1[primary->index]);
+>=20
+> -	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary-
+> >index]);
+> +	igt_plane_set_fb(plane[primary->index], &data->fb1[primary-
+> >index]);
+>=20
+>  	ret =3D igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+>  	igt_skip_on(ret !=3D 0);
+>=20
+> -	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
+> +	igt_pipe_crc_collect_crc(pipe_crc, ref_crc);
+>  }
+>=20
+>  static void
+>  create_fb_for_mode_position(data_t *data, igt_output_t *output,
+> drmModeModeInfo *mode,
+>  			    color_t *color, int *rect_x, int *rect_y,
+>  			    int *rect_w, int *rect_h, uint64_t modifier,
+> -			    int max_planes)
+> +			    int max_planes, igt_fb_t *fb)
+>  {
+>  	unsigned int fb_id;
+>  	cairo_t *cr;
+> @@ -168,16 +180,16 @@ create_fb_for_mode_position(data_t *data,
+> igt_output_t *output, drmModeModeInfo
+>  			      mode->hdisplay, mode->vdisplay,
+>  			      DRM_FORMAT_XRGB8888,
+>  			      modifier,
+> -			      &data->fb[primary->index]);
+> +			      &fb[primary->index]);
+>  	igt_assert(fb_id);
+>=20
+> -	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb[primary->index]);
+> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &fb[primary->index]);
+>  	igt_paint_color(cr, rect_x[0], rect_y[0],
+>  			mode->hdisplay, mode->vdisplay,
+>  			color->red, color->green, color->blue);
+>=20
+>  	for (int i =3D 0; i < max_planes; i++) {
+> -		if (data->plane[i]->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> +		if (data->plane1[i]->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+>  			continue;
+>  		igt_paint_color(cr, rect_x[i], rect_y[i],
+>  				rect_w[i], rect_h[i], 0.0, 0.0, 0.0); @@ -188,8
+> +200,8 @@ create_fb_for_mode_position(data_t *data, igt_output_t
+> *output, drmModeModeInfo
+>=20
+>=20
+>  static void
+> -prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+> -	       uint64_t modifier, int max_planes, igt_output_t *output)
+> +prepare_planes(data_t *data, enum pipe pipe_id, color_t *color, igt_plan=
+e_t
+> **plane,
+> +	       uint64_t modifier, int max_planes, igt_output_t *output,
+> +igt_fb_t *fb)
+>  {
+>  	drmModeModeInfo *mode;
+>  	igt_pipe_t *pipe;
+> @@ -249,15 +261,14 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  		 * Here is made assumption primary plane will have
+>  		 * index zero.
+>  		 */
+> -		igt_plane_t *plane =3D igt_output_get_plane(output, suffle[i]);
+>  		uint32_t plane_format;
+>  		uint64_t plane_modifier;
+>=20
+> -		data->plane[i] =3D plane;
+> +		plane[i] =3D igt_output_get_plane(output, suffle[i]);
+>=20
+> -		if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> +		if (plane[i]->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+>  			continue;
+> -		else if (plane->type =3D=3D DRM_PLANE_TYPE_CURSOR)
+> +		else if (plane[i]->type =3D=3D DRM_PLANE_TYPE_CURSOR)
+>  			size[i] =3D SIZE_CURSOR;
+>  		else
+>  			size[i] =3D SIZE_PLANE;
+> @@ -265,10 +276,12 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  		x[i] =3D rand() % (mode->hdisplay - size[i]);
+>  		y[i] =3D rand() % (mode->vdisplay - size[i]);
+>=20
+> -		plane_format =3D data->plane[i]->type =3D=3D
+> DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 :
+> DRM_FORMAT_XRGB8888;
+> -		plane_modifier =3D data->plane[i]->type =3D=3D
+> DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_LINEAR : modifier;
+> +		plane_format =3D plane[i]->type =3D=3D DRM_PLANE_TYPE_CURSOR
+> ?
+> +						 DRM_FORMAT_ARGB8888 :
+> DRM_FORMAT_XRGB8888;
+> +		plane_modifier =3D plane[i]->type =3D=3D
+> DRM_PLANE_TYPE_CURSOR ?
+> +
+> DRM_FORMAT_MOD_LINEAR : modifier;
+>=20
+> -		igt_skip_on(!igt_plane_has_format_mod(plane,
+> plane_format,
+> +		igt_skip_on(!igt_plane_has_format_mod(plane[i],
+> plane_format,
+>  						      plane_modifier));
+>=20
+>  		igt_create_color_fb(data->drm_fd,
+> @@ -276,17 +289,17 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  				    plane_format,
+>  				    plane_modifier,
+>  				    color->red, color->green, color->blue,
+> -				    &data->fb[i]);
+> +				    &fb[i]);
+>=20
+> -		igt_plane_set_position(data->plane[i], x[i], y[i]);
+> -		igt_plane_set_fb(data->plane[i], &data->fb[i]);
+> +		igt_plane_set_position(plane[i], x[i], y[i]);
+> +		igt_plane_set_fb(plane[i], &fb[i]);
+>  	}
+>=20
+>  	/* primary plane */
+> -	data->plane[primary->index] =3D primary;
+> +	plane[primary->index] =3D primary;
+>  	create_fb_for_mode_position(data, output, mode, color, x, y,
+> -				    size, size, modifier, max_planes);
+> -	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary-
+> >index]);
+> +				    size, size, modifier, max_planes,
+> &fb[primary->index]);
+> +	igt_plane_set_fb(plane[primary->index], &fb[primary->index]);
+>  	free((void*)x);
+>  	free((void*)y);
+>  	free((void*)size);
+> @@ -332,12 +345,13 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>=20
+>  	test_init(data, pipe, n_planes);
+>=20
+> -	get_reference_crc(data, output, pipe, &blue, modifier);
+> +	get_reference_crc(data, output, pipe, data->pipe_crc1, &blue,
+> +			  data->plane1, modifier, &data->ref_crc1);
+>=20
+>  	/* Find out how many planes are allowed simultaneously */
+>  	do {
+>  		c++;
+> -		prepare_planes(data, pipe, &blue, modifier, c, output);
+> +		prepare_planes(data, pipe, &blue, data->plane1, modifier, c,
+> output,
+> +data->fb1);
+>  		err =3D igt_display_try_commit2(&data->display,
+> COMMIT_ATOMIC);
+>=20
+>  		for_each_plane_on_pipe(&data->display, pipe, plane) @@ -
+> 347,7 +361,7 @@ test_plane_position_with_output(data_t *data, enum pipe
+> pipe,
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>=20
+>  		for (int x =3D 0; x < c; x++)
+> -			igt_remove_fb(data->drm_fd, &data->fb[x]);
+> +			igt_remove_fb(data->drm_fd, &data->fb1[x]);
+>  	} while (!err && c < n_planes);
+>=20
+>  	if (err)
+> @@ -361,14 +375,14 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  	while (i < iterations || loop_forever) {
+>=20
+>  		/* randomize planes and set up the holes */
+> -		prepare_planes(data, pipe, &blue, modifier, c, output);
+> +		prepare_planes(data, pipe, &blue, data->plane1, modifier, c,
+> output,
+> +data->fb1);
+>=20
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> -		igt_pipe_crc_start(data->pipe_crc);
+> +		igt_pipe_crc_start(data->pipe_crc1);
+>=20
+> -		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> >pipe_crc, &crc);
+> -		igt_assert_crc_equal(&data->ref_crc, &crc);
+> -		igt_pipe_crc_stop(data->pipe_crc);
+> +		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> >pipe_crc1, &crc);
+> +		igt_assert_crc_equal(&data->ref_crc1, &crc);
+> +		igt_pipe_crc_stop(data->pipe_crc1);
+>=20
+>  		for_each_plane_on_pipe(&data->display, pipe, plane)
+>  			igt_plane_set_fb(plane, NULL);
+> @@ -377,7 +391,7 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>=20
+>  		for (int x =3D 0; x < c; x++)
+> -			igt_remove_fb(data->drm_fd, &data->fb[x]);
+> +			igt_remove_fb(data->drm_fd, &data->fb1[x]);
+>=20
+>  		i++;
+>  	}
+> @@ -400,6 +414,139 @@ test_plane_position(data_t *data, enum pipe pipe,
+> igt_output_t *output, uint64_t
+>  					n_planes, modifier);
+>  }
+>=20
+> +static void test_init_2_display(data_t *data, enum pipe pipe1, enum
+> +pipe pipe2, int n_planes) {
+> +	data->pipe_crc1 =3D igt_pipe_crc_new(data->drm_fd, pipe1,
+> +					   IGT_PIPE_CRC_SOURCE_AUTO);
+> +	data->pipe_crc2 =3D igt_pipe_crc_new(data->drm_fd, pipe2,
+> +					   IGT_PIPE_CRC_SOURCE_AUTO);
+> +
+> +	data->plane1 =3D calloc(n_planes, sizeof(*data->plane1));
+> +	igt_assert_f(data->plane1 !=3D NULL, "Failed to allocate memory for
+> +planes\n");
+> +
+> +	data->plane2 =3D calloc(n_planes, sizeof(*data->plane2));
+> +	igt_assert_f(data->plane2 !=3D NULL, "Failed to allocate memory for
+> +planes\n");
+> +
+> +	data->fb1 =3D calloc(n_planes, sizeof(struct igt_fb));
+> +	igt_assert_f(data->fb1 !=3D NULL, "Failed to allocate memory for
+> +FBs\n");
+> +
+> +	data->fb2 =3D calloc(n_planes, sizeof(struct igt_fb));
+> +	igt_assert_f(data->fb2 !=3D NULL, "Failed to allocate memory for
+> +FBs\n"); }
+> +
+> +static void test_fini_2_display(data_t *data) {
+> +	igt_pipe_crc_stop(data->pipe_crc1);
+> +	igt_pipe_crc_stop(data->pipe_crc2);
+> +
+> +	igt_pipe_crc_free(data->pipe_crc1);
+> +	igt_pipe_crc_free(data->pipe_crc2);
+> +	data->pipe_crc1 =3D NULL;
+> +	data->pipe_crc2 =3D NULL;
+> +
+> +	free(data->plane1);
+> +	free(data->plane2);
+> +	data->plane1 =3D NULL;
+> +	data->plane2 =3D NULL;
+> +
+> +	free(data->fb1);
+> +	free(data->fb2);
+> +	data->fb1 =3D NULL;
+> +	data->fb2 =3D NULL;
+> +
+> +	igt_display_reset(&data->display);
+> +}
+> +
+> +static void test_plane_position_2_display(data_t *data, enum pipe pipe1,
+> enum pipe pipe2,
+> +					  igt_output_t *output1, igt_output_t
+> *output2,
+> +					  uint64_t modifier)
+> +{
+> +	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
+> +	igt_crc_t crc1, crc2;
+> +	int n_planes =3D opt.all_planes ?
+> +		       data->display.pipes[0].n_planes : DEFAULT_N_PLANES;
+> +
+> +	/*
+> +	 * Note: We could use the dynamic way of calculating the maximum
+> planes here
+> +	 * like we've on single display subtest but this consumes a lot of extr=
+a
+> time
+> +	 * with the number of dynamic subtests in this case. So keeping
+> n_planes to the
+> +	 * default value. This might need to be tweaked if we see any bw
+> related failures.
+> +	 */
+> +
+> +	test_init_2_display(data, pipe1, pipe2, n_planes);
+> +	get_reference_crc(data, output1, pipe1, data->pipe_crc1, &blue,
+> +			  data->plane1, DRM_FORMAT_MOD_LINEAR, &data-
+> >ref_crc1);
+> +	get_reference_crc(data, output2, pipe2, data->pipe_crc2, &blue,
+> +			  data->plane2, DRM_FORMAT_MOD_LINEAR, &data-
+> >ref_crc2);
+> +
+> +	prepare_planes(data, pipe1, &blue, data->plane1,
+> +		       modifier, 2, output1, data->fb1);
+> +	prepare_planes(data, pipe2, &blue, data->plane2,
+> +		       modifier, 2, output2, data->fb2);
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +	igt_pipe_crc_start(data->pipe_crc1);
+> +	igt_pipe_crc_start(data->pipe_crc2);
+> +
+> +	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc1,
+> &crc1);
+> +	igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc2,
+> +&crc2);
+> +
+> +	igt_assert_crc_equal(&data->ref_crc1, &crc1);
+> +	igt_assert_crc_equal(&data->ref_crc2, &crc2); }
+> +
+> +#define for_each_connected_output_local(display, output)		\
+> +	for (int j__ =3D 0;  assert(igt_can_fail()), j__ < (display)->n_outputs=
+;
+> j__++)	\
+> +		for_each_if((((output) =3D &(display)->outputs[j__]), \
+> +			      igt_output_is_connected((output))))
+> +
+> +#define for_each_valid_output_on_pipe_local(display, pipe, output) \
+> +	for_each_connected_output_local((display), (output)) \
+> +		for_each_if(igt_pipe_connector_valid((pipe), (output)))
+> +
+> +static void run_2_display_test(data_t *data, uint64_t modifier) {
+> +	enum pipe pipe1, pipe2;
+> +	igt_output_t *output1, *output2;
+> +	igt_display_t *display =3D &data->display;
+> +
+> +	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
+> modifier))
+> +		return;
+> +
+> +	igt_display_reset(display);
+> +
+> +	for_each_pipe(display, pipe1) {
+> +		for_each_valid_output_on_pipe(display, pipe1, output1) {
+> +			for_each_pipe(display, pipe2) {
+> +				if (pipe1 =3D=3D pipe2)
+> +					continue;
+> +
+> +				for_each_valid_output_on_pipe_local(display,
+> pipe2, output2) {
+> +					if (output1 =3D=3D output2)
+> +						continue;
+> +
+> +					igt_display_reset(display);
+> +
+> +					igt_output_set_pipe(output1, pipe1);
+> +					igt_output_set_pipe(output2, pipe2);
+> +
+> +					if
+> (!intel_pipe_output_combo_valid(display))
+> +						continue;
+> +
+> +					igt_dynamic_f("pipe-%s-%s-pipe-%s-
+> %s",
+> +
+> kmstest_pipe_name(pipe1), output1->name,
+> +
+> kmstest_pipe_name(pipe2), output2->name)
+> +
+> 	test_plane_position_2_display(data, pipe1, pipe2,
+> +
+> output1, output2,
+> +
+> modifier);
+> +
+> +					test_fini_2_display(data);
+> +				}
+> +			}
+> +		}
+> +	}
+> +}
+> +
+>  static void run_test(data_t *data, uint64_t modifier)  {
+>  	enum pipe pipe;
+> @@ -503,6 +650,20 @@ igt_main_args("", long_options, help_str,
+> opt_handler, NULL)
+>  			run_test(&data, subtests[i].modifier);
+>  	}
+>=20
+> +	for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
+> +		igt_subtest_with_dynamic_f("2x-%s", subtests[i].name) {
+> +			int valid_outputs =3D 0;
+> +			igt_output_t *output;
+> +
+> +			for_each_connected_output(&data.display, output)
+> +				valid_outputs++;
+> +
+> +			igt_require(valid_outputs > 1);
+> +
+> +			run_2_display_test(&data, subtests[i].modifier);
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+>  		drm_close_driver(data.drm_fd);
+> --
+> 2.43.0
 
-Thanks,
-Soham
-
->> +
-> why is 0 outside, Can't it be moved in the for loop
->> +    engine = engine_ptr(engines, 0);
->> +    fd = _open_pmu(type, &engines->num_counters, 
->> &engine->busy_ticks, &engines->fd);
->> +    if (fd < 0)
->> +        return -1;
->> +    fd = _open_pmu(type, &engines->num_counters, 
->> &engine->total_ticks, &engines->fd);
->> +    if (fd < 0)
->> +        return -1;
->> +
->> +    for (i = 1; i < engines->num_engines; i++) {
->> +        engine = engine_ptr(engines, i);
->> +        fd = _open_pmu(type, &engines->num_counters, 
->> &engine->busy_ticks, &engines->fd);
->> +        if (fd < 0)
->> +            return -1;
->> +        fd = _open_pmu(type, &engines->num_counters, 
->> &engine->total_ticks, &engines->fd);
->> +        if (fd < 0)
->> +            return -1;
->> +    }
->> +    return 0;
->> +}
->> +
->> +static double pmu_calc_total(struct xe_pmu_pair *p)
-> %s/pmu_calc_total/pmu_total_ticks
-> or calc_total_ticks
->> +{
->> +    double v;
->> +
->> +    v = p->cur - p->prev;
->> +    return v;
->> +}
->> +
->> +static double pmu_calc(struct xe_pmu_pair *p, double total_tick)
-> %s/total tick/total ticks
->> +{
->> +    double bz = p->cur - p->prev;
-> use friendly names
-> active ticks
->
-> I think you can move total ticks also here. pass two pairs and 
-> calculate in same function
->> +    double total;
->> +
->> +    total = (bz * 100) / total_tick;
->> +    return total;
->> +}
->> +
->> +static int
->> +print_device_description(const void *obj, int lines, int w, int h)
->> +{
->> +    char *desc;
->> +    int len;
->> +
->> +    len = asprintf(&desc, "DRIVER: %s || BDF: %s",
->> +               ((struct xe_gputop *)obj)->card->driver,
->> +               ((struct xe_gputop *)obj)->card->pci_slot_name);
->> +
->> +    printf("\033[7m%s%*s\033[0m\n",
->> +           desc,
->> +           (int)(w - len), " ");
->> +    lines++;
->> +    free(desc);
->> +    return lines;
->> +}
->> +
->> +static int
->> +print_engines_header(struct xe_engines *engines,
->> +             int lines, int con_w, int con_h)
->> +{
->> +    const char *a;
->> +
->> +    for (unsigned int i = 0;
->> +         i < engines->num_engines && lines < con_h;
->> +         i++) {
->> +        struct xe_engine *engine = engine_ptr(engines, i);
->> +
->> +        if (!engine->num_counters)
->> +            continue;
->> +
->> +        a = "            ENGINES   BUSY  ";
->> +
->> +        printf("\033[7m%s%*s\033[0m\n",
->> +               a,
->> +               (int)(con_w - strlen(a)), " ");
->> +        lines++;
->> +
->> +        break;
->> +    }
->> +
->> +    return lines;
->> +}
->> +
->> +static int
->> +print_engine(struct xe_engines *engines, unsigned int i,
->> +         int lines, int con_w, int con_h)
->> +{
->> +    struct xe_engine *engine = engine_ptr(engines, i);
->> +    double total_tick = pmu_calc_total(&engine->total_ticks.val);
->> +    double percentage = pmu_calc(&engine->busy_ticks.val, total_tick);
->> +
->> +    printf("%*s", (int)(strlen("            ENGINES")), 
->> engine->display_name);
->> +    print_percentage_bar(percentage, con_w - strlen("            
->> ENGINES"));
->> +    printf("\n");
->> +
->> +    return ++lines;
->> +}
->> +
->> +int xe_print_engines(const void *obj, int lines, int w, int h)
->> +{
->> +    struct xe_engines *show = ((struct xe_gputop *)obj)->eng_obj;
->> +
->> +    lines = print_device_description(obj, lines, w, h);
->> +
->> +    lines = print_engines_header(show, lines, w,  h);
->> +
->> +    for (unsigned int i = 0; i < show->num_engines && lines < h; i++)
->> +        lines = print_engine(show, i, lines, w, h);
->> +
->> +    lines = print_engines_footer(lines, w, h);
->> +
->> +    return lines;
->> +}
->> +
->> diff --git a/tools/gputop/xe_gputop.h b/tools/gputop/xe_gputop.h
->> new file mode 100644
->> index 000000000..1f23b2ed0
->> --- /dev/null
->> +++ b/tools/gputop/xe_gputop.h
->> @@ -0,0 +1,73 @@
->> +/* SPDX-License-Identifier: MIT
->> + *
->> + * Copyright © 2025 Intel Corporation
->> + */
->> +
->> +#ifndef __XE_GPUTOP_H__
->> +#define __XE_GPUTOP_H__
->> +
->> +#include <dirent.h>
->> +
->> +#include "igt_device_scan.h"
->> +#include "igt_perf.h"
->> +#include "utils.h"
->> +#include "xe/xe_query.h"
->> +
->> +struct xe_pmu_pair {
->> +    uint64_t cur;
->> +    uint64_t prev;
->> +};
->> +
->> +struct xe_pmu_counter {
->> +    uint64_t type;
->> +    uint64_t config;
->> +    unsigned int idx;
->> +    struct xe_pmu_pair val;
->> +    bool present;
->> +};
->> +
->> +struct xe_engine {
->> +    const char *name;
->> +    char *display_name;
->> +    char *short_name;
->> +    struct drm_xe_engine_class_instance drm_xe_engine;
->> +    unsigned int num_counters;
-> didn't find initialization. needed?
->> +    struct xe_pmu_counter busy_ticks;
->> +    struct xe_pmu_counter total_ticks;
->> +};
->> +
->> +struct xe_engines {
->> +    unsigned int num_engines;
->> +    unsigned int num_classes;
-> not used
->> +    unsigned int num_counters;
->> +    DIR *root;
->> +    int fd;
->> +    struct xe_pmu_pair ts;
-> can be removed
->> +    bool discrete;
-> not used
->> +    char *device;
->> +    int num_gts;
-> not used
->> +
->> +    /* Do not edit below this line.
->> +     * This structure is reallocated every time a new engine is
->> +     * found and size is increased by sizeof (engine).
->> +     */
-> This comment can be removed
->
-> Thanks
-> Riana
->> +    struct xe_engine engine;
->> +
->> +};
->> +
->> +struct xe_gputop {
->> +    char *pmu_device;
->> +    struct igt_device_card *card;
->> +    struct xe_engines *eng_obj;
->> +};
->> +
->> +void xe_gputop_init(struct xe_gputop *obj,
->> +            struct igt_device_card *card);
->> +
->> +void xe_populate_device_instances(struct gputop_device *dv);
->> +void *xe_discover_engines(const void *obj);
->> +void xe_pmu_sample(const void *obj);
->> +int xe_pmu_init(const void *obj);
->> +int xe_print_engines(const void *obj, int lines, int w, int h);
->> +
->> +#endif /* __XE_GPUTOP_H__ */
->
