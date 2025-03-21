@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FAFBC36000
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 18:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C445C36002
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 18:54:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC52E10E81C;
-	Fri, 21 Mar 2025 18:50:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cd65f4ZY";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D03910E81C
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 18:50:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742583006; x=1774119006;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=eFIlV2I01owWCG4139gZVF//stZUeGRw9akTg7P+6lA=;
- b=cd65f4ZYgkONO6UwCF7F45SoDL4RJH7BDWIAUqUwMdC1jZFFzDwjvWjo
- XzqM3WuH5jIwh4XJmio9KS2d78EqYMXDAxzaB7cnLHGdvsqDJTR+Jt7x1
- Odx4mFEm3+Tgm07VfDjHnbuJY0aSnLkZYYveoIwUN3Jh7IMIJVfLlhtlM
- RZsVXXq45R4v+IZIUfDZOl+mi+8w526vASSyFMSdxda7i2jOGlXFwfYGu
- 2hBxoYJApMYgMaUMMoFN3x+6FfU0sYwPdH48uwFyDVm30tMzjVq4zz1el
- Y2Ysp+XGazoRIz1mC2WYlzv0ozobuplzoONL+332CcqjFFev8HXwtqaWs Q==;
-X-CSE-ConnectionGUID: +v6U/o6hRES2oy2VzROImw==
-X-CSE-MsgGUID: 02erxpa7R4ee+j7A+3V2kQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="43786577"
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="43786577"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 11:50:06 -0700
-X-CSE-ConnectionGUID: KL6501YuSTKodnYjXb+0Sw==
-X-CSE-MsgGUID: N1K5IL5gRcKiTAeGVscZvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="128538549"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 11:50:04 -0700
-Date: Fri, 21 Mar 2025 19:50:02 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- jari.tahvanainen@intel.com
-Subject: Re: [PATCH i-g-t v2] scripts/test_list: Do not stop the build
- process if documantion fails
-Message-ID: <20250321185002.73kzuscjdahh37fe@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com, jari.tahvanainen@intel.com
-References: <20250320140508.825945-1-karthik.b.s@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1AF8510E08D;
+	Fri, 21 Mar 2025 18:54:56 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E55C10E821;
+ Fri, 21 Mar 2025 18:54:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3908734241786589082=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250320140508.825945-1-karthik.b.s@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_engine_activity_tests_f?=
+ =?utf-8?q?or_functions_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 21 Mar 2025 18:54:54 -0000
+Message-ID: <174258329438.65892.14817248141983919655@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250321110958.3557106-1-riana.tauro@intel.com>
+In-Reply-To: <20250321110958.3557106-1-riana.tauro@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,68 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Karthik,
-On 2025-03-20 at 19:35:08 +0530, Karthik B S wrote:
+--===============3908734241786589082==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-small nit in subject:
+== Series Details ==
 
-> Do not stop the build process if documantion fails
------------------------------------^^^^^^^^^^^
-s/documantion/documentation/
+Series: Add engine activity tests for functions (rev2)
+URL   : https://patchwork.freedesktop.org/series/146186/
+State : success
 
-What about also shortening it a bit?
+== Summary ==
 
-scripts/test_list: Do not stop the build if documentation fails
+CI Bug Log - changes from XEIGT_8278_BAT -> XEIGTPW_12811_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> Current approach stops whole build process on a case that there is mistake
-> on documentation. Let's have entry on logs instead and continue.
-> 
-> Small fix also related multiline data e.g. on Description part.
-> 
-> Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  scripts/test_list.py | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 867d28400..5f1b4218b 100644
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -1399,7 +1399,7 @@ class TestList:
->  
->                  # Handle multi-line field contents
->                  if current_field:
-> -                    match = re.match(r'\s+(.*)', file_line)
-> +                    match = re.match(r'(.*)', file_line)
->                      if match:
->                          if handle_section == 'test':
->                              dic = self.doc[current_test]
-> @@ -1408,7 +1408,7 @@ class TestList:
->  
->                          if dic[current_field] != '':
->                              dic[current_field] += " "
-> -                        dic[current_field] += match.group(1)
-> +                        dic[current_field] += match.group(1).strip()
->                          continue
->  
->                  # Handle multi-line argument contents
-> @@ -1427,7 +1427,7 @@ class TestList:
->                      continue
->  
->                  file_line.rstrip(r"\n")
-> -                sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
-> +                printf(f"{fname}:{file_ln + 1}: Warning: unrecognized line. Need to add field at %s?\n\t==> %s" %
->                           (config_origin, file_line))
->  
->      def show_subtests(self, sort_field):
-> -- 
-> 2.43.0
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8278 -> IGTPW_12811
+
+  IGTPW_12811: 12811
+  IGT_8278: b6673db372bd8987f65948d3a97f8dcd2ef42b01 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2833-74f632d1bd3b90ed79883361ca25f1225c0aee58: 74f632d1bd3b90ed79883361ca25f1225c0aee58
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12811/index.html
+
+--===============3908734241786589082==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add engine activity tests for functions (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146186/">https://patchwork.freedesktop.org/series/146186/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12811/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12811/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8278_BAT -&gt; XEIGTPW_12811_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8278 -&gt; IGTPW_12811</li>
+</ul>
+<p>IGTPW_12811: 12811<br />
+  IGT_8278: b6673db372bd8987f65948d3a97f8dcd2ef42b01 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2833-74f632d1bd3b90ed79883361ca25f1225c0aee58: 74f632d1bd3b90ed79883361ca25f1225c0aee58</p>
+
+</body>
+</html>
+
+--===============3908734241786589082==--
