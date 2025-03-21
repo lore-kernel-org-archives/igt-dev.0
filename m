@@ -4,57 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F683C36000
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 17:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 858BCC36002
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 18:28:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2DCA10E7FD;
-	Fri, 21 Mar 2025 17:53:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C22710E81A;
+	Fri, 21 Mar 2025 18:28:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hCy9BhR1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W+tlRqm5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8C5110E7FD
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 17:53:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5BB110E81A
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 18:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742579589; x=1774115589;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HY2v9SIu5PIeAp5+BhdIZWilr4thnQqDFPaT2sCV7Gg=;
- b=hCy9BhR1ZyyoYVgMZpJygrRCoTOKBUGdbreb/62bwtoYJS9V0qzDjwCU
- 0SXIfZDiiEXUa+HXCYh+9w4FVpRGVFvLVv9VV+ZnUb4DgbOkXcmmk/LsP
- A1KcbwLxl2aA6J9rxBTaXeqkPlUFztb9H5juB5TYKC6/rTkqtWEZlwrEv
- +RrRbn85u+Rc36w0Zp2L6sAvY+GW5ap3RLu8Bo1cru3gGvswa52tLitIz
- RI7cToGeshCQ86Lszl+C3Rz94TjeahIBSf/bFkkU0a0HBvjrfNn8wbRgI
- R5xBTrzhznCLQlCWbEVJ4BxQSJ21sDmwR/ej6QmAv0eaGLAA1wn/4nYt5 w==;
-X-CSE-ConnectionGUID: Mw5p0aKaS0i5aU5FURkuhg==
-X-CSE-MsgGUID: Anj8a/OOS8uhtoqpzSNoIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="43018722"
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="43018722"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 10:53:09 -0700
-X-CSE-ConnectionGUID: Q8ZdJOzqRhmOhHOPCvjPZw==
-X-CSE-MsgGUID: 4cfrEFsESA6AxSnZ0B83og==
+ t=1742581715; x=1774117715;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=PM6y0PIaSwCLiKVTP5cfl6fqPdHwVIssFkfgRZ/ozsk=;
+ b=W+tlRqm5EeT/3i1faQYvFaqzb0pnUTybeocBM1ay0sXPJc8yw1zov5qq
+ iBmyvfbRP8PCefNz1i1PwPFXUDPgfNUGy4yd0tJOSanNTEOh/SOcQNml7
+ 89r21xrLNs0uqAyZwYWKEBHImclD7KABdHa0oUlzvC/qgSFXN8/CMeBYg
+ UxFl5/VlHTrruu0Xm0JRqvMSynchg56jNE2DnKgcw57Qmt27/Y3HVqnVs
+ fDDA2YcbhxUZWvY+4ns8gdouNBiVYRD9DrYPdah4o25tQoWMEJYzsrgfO
+ /z+2HUGJ/FmI5TZaPQ57KKaCMm/soqlN2G6eidjRVvY3VEHJc3cbJug4p Q==;
+X-CSE-ConnectionGUID: YWw6J40ySjS51L0XnKP2eA==
+X-CSE-MsgGUID: oG38Gt6fRUCeZKMhrHrXpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="55243071"
+X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="55243071"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 11:28:34 -0700
+X-CSE-ConnectionGUID: au5R3IrkSYO6/XKcZmH4AQ==
+X-CSE-MsgGUID: gqHKZgnSQVCchPR/HtoMqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="124241954"
-Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
- lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
- by fmviesa009.fm.intel.com with ESMTP; 21 Mar 2025 10:53:07 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>
-Subject: [PATCH i-g-t v4] tests/intel/kms_pm_dc: Add skip logic and logging
- for DC5 psr test
-Date: Fri, 21 Mar 2025 23:22:59 +0530
-Message-ID: <20250321175259.20603-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250226065202.84015-1-mohammed.thasleem@intel.com>
-References: <20250226065202.84015-1-mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="123183533"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 11:28:33 -0700
+Date: Fri, 21 Mar 2025 19:28:20 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Pawel Sikora <pawel.sikora@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/1] lib/igt_core: capture logs for child
+ processes
+Message-ID: <20250321182820.akmp3ip4pznbsx5s@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Pawel Sikora <pawel.sikora@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+References: <20250321120344.737080-1-pawel.sikora@linux.intel.com>
+ <20250321120344.737080-2-pawel.sikora@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250321120344.737080-2-pawel.sikora@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,61 +79,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Prior to Gen12, Pipe A is required to run the DC5 transaction,
-ensuring low power operation. In display versions greater than 12,
-either Pipe A or Pipe B can be used for the DC5 transaction,
-providing flexibility in pipe selection
+Hi Pawel,
+On 2025-03-21 at 13:03:44 +0100, Pawel Sikora wrote:
+> This change addresses the issue of missing logs for child
+> processes in the IGT runner.
+> 
+> The '_igt_log_buffer_dump()' function is now called before
+> exiting child processes, ensuring that logs are properly
+> captured and not lost when IGT fails and child processes
+> dump logs before exiting.
+> 
+> v2: Make the dump conditional based on active comms (Kamil)
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2178
+> 
 
-However, display version 20 specifically requires Pipe A.
-Additionally, for Battlemage and DG2 devices, only Pipe A is
-required due to specific hardware constraints. To enforce these
-conditions, skip logic and logging have been added, ensuring that
-tests are only executed when the appropriate pipes are selected.
+Remove empty line here.
 
-v2: Updated subject title and discription.
-    Add Gen checks for low power pipe selection. (Santosh)
-v3: Add check for bmg and dg2 for Pipe A also other checks for Pipe A
-    and B. (Gustavo)
-v4: Update logic style. (Gustavo)
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Pawel Sikora <pawel.sikora@linux.intel.com>
+> ---
+>  lib/igt_core.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index c19689a51..512d88437 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -296,6 +296,7 @@ static bool in_fixture = false;
+>  static bool test_with_subtests = false;
+>  static bool in_atexit_handler = false;
+>  static bool show_ftrace = false;
+> +static bool has_comms = false;
+>  static enum {
+>  	CONT = 0, SKIP, FAIL
+>  } skip_subtests_henceforth = CONT;
+> @@ -1905,11 +1906,17 @@ void igt_fail(int exitcode)
+>  		failed_one = true;
+>  	}
+>  
+> -	/* Silent exit, parent will do the yelling. */
+> +	/* If igt_runner uses comms, it could grab each child's logs without
+> +	 * them interleaving in stdout/stderr. */
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
----
- tests/intel/kms_pm_dc.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I just realised that there is another _child exit after if(!has_comms)...
+What about dropping those runner_connected() if's and just dump it
+unconditionally here? Let the user cope with non-runner runs?
+So imho we could have new comment like above and here:
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 50473321a..4b2464c24 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -145,13 +145,26 @@ static void set_output_on_pipe_b(data_t *data)
- 
- static void setup_output(data_t *data)
- {
-+	int disp_ver = intel_display_ver(data->devid);
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
-+	bool is_low_power;
- 	enum pipe pipe;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
- 		drmModeConnectorPtr c = output->config.connector;
- 
-+		if (disp_ver >= 13) {
-+			if (disp_ver == 20 || IS_BATTLEMAGE(data->devid) || IS_DG2(data->devid))
-+				is_low_power = (pipe == PIPE_A);
-+			else
-+				is_low_power = (pipe == PIPE_A || pipe == PIPE_B);
-+		} else {
-+			is_low_power = (pipe == PIPE_A);
-+		}
-+
-+		igt_skip_on_f(!is_low_power, "Low power pipe was not selected for the DC5 transaction.\n");
-+
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
- 
--- 
-2.43.0
+	_igt_log_buffer_dump();
 
+What is you opinion Zbigniew?
+
+Regards,
+Kamil
+
+> +	has_comms = runner_connected();
+> +	if (has_comms)
+> +		_igt_log_buffer_dump();
+> +
+>  	if (test_child)
+>  		exit(exitcode);
+>  
+> -	_igt_log_buffer_dump();
+> +	if (!has_comms)
+> +		_igt_log_buffer_dump();
+>  
+>  	if (test_multi_fork_child)
+>  		exit(exitcode);
+> -- 
+> 2.34.1
+> 
