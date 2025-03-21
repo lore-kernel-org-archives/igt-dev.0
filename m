@@ -4,61 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 430B8C35FFF
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 10:37:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F5DEC35FFF
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 10:48:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1E0C10E787;
-	Fri, 21 Mar 2025 10:37:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 05B0610E0BC;
+	Fri, 21 Mar 2025 10:48:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Um1il7C7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cX+2wv5V";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F238E10E787
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 10:37:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B43810E0BC
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 10:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742553460; x=1774089460;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=3Izjh/PCfcexcB/tFjuaWx3TKLzFMU2sfletgzq2pv4=;
- b=Um1il7C7rEyi8CjG7dCjbK4FnBbFj1+q+EQawPyG6T5vzhBEppPWk65N
- 0HLPiUk8Qaqsj7mwRiUjrAOVfzc7crHcPbjyv5JCS5R6Sax4G1ANTe/zO
- NydfyVHwz53IwLOY4rcLXzduV0NRUzu5mAOdCk8bkf6mzf9RPWOYSks+F
- Kz6wIs1cs8QTIDB0OE+QC0cIBbDDOiOSU0LtzIu92unZkMGdEZNHWHYFh
- dZ4Jd54dOO2GC0cg4qFznDmBU0gBDSwqPhLFYeSdjiaCXug7KShgioH0v
- +Z1CsVjLPUIjYQujdGuNszRzNbPncXgcm4MYMt060vPJS2kIKlFMhL0SX w==;
-X-CSE-ConnectionGUID: xY/TENL8R8KRG7B14Wm3eA==
-X-CSE-MsgGUID: zyV99XTXQS2qlfV0x0DFQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43741984"
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="43741984"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 03:37:39 -0700
-X-CSE-ConnectionGUID: 4X1IAvlnTRuwEaZJ01Esfw==
-X-CSE-MsgGUID: OvHqPze9RpOvv1QhuyDB6A==
+ t=1742554114; x=1774090114;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=q59+fLtWrw2yZBYmsKkLyZERjFg1bpIOy6vmMQYdLig=;
+ b=cX+2wv5VfELO0CauDTc3Amp6fWtrObbjh7dw+3/fYbj1+NAmVhdxE03t
+ IDByJ/DEP9kuZlZC2LOkCD6jZg1PPHDEefOSfduBJJF/nk6AodQnuqtEp
+ Wuv6bS13H9O4ztgW5TDfbiqwRQ628y7c5T7GeaP3krFx/xp2+PeJslnw6
+ gzCObufmb9khFgDXJGhCVV3V6oW//DwPUFBYBBNrT+yV5MtK9SOA/GC2n
+ JjZK4Cmny5xbjkygp/5iPnisNRmuQKGK87kyN2QbQW6U74IKka0pnVLHi
+ GaiuJlL/gijIE6fP79jiNuWYhWJZh6bTzIkrj7SzOw4iKr6YFhKy/ckNe Q==;
+X-CSE-ConnectionGUID: 9RJ9ATR5TYy3NXZcAr9Mzw==
+X-CSE-MsgGUID: CJVSVFGJTJWIeVnSvUGH7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43980308"
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="43980308"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 03:48:32 -0700
+X-CSE-ConnectionGUID: pmyKQk8HQNmBuKV0n0io+w==
+X-CSE-MsgGUID: YjujvT8aTgu4xA7BvOL5cQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="154373725"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.254.149])
- ([10.245.254.149])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 03:37:38 -0700
-Message-ID: <79c4c702-5a90-4e6c-8814-0cf9ef27f512@linux.intel.com>
-Date: Fri, 21 Mar 2025 11:37:35 +0100
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="123542901"
+Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 03:48:30 -0700
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
+ umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
+ michal.wajdeczko@intel.com, satyanarayana.k.v.p@intel.com
+Subject: [PATCH i-g-t v3 0/3] Add engine activity tests for functions
+Date: Fri, 21 Mar 2025 16:39:55 +0530
+Message-ID: <20250321110958.3557106-1-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 5/5] tests/intel/xe_fault_injection: Do not
- assert if the captured error is not same as injected error.
-To: Francois Dugast <francois.dugast@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- =?UTF-8?Q?Micha=C5=82_Wajdeczko?= <michal.wajdeczko@intel.com>
-References: <20250219073445.31423-1-satyanarayana.k.v.p@intel.com>
- <20250219073445.31423-6-satyanarayana.k.v.p@intel.com>
- <Z8g7K-Mvf5yGptuK@fdugast-desk>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <Z8g7K-Mvf5yGptuK@fdugast-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,77 +67,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add engine activity tests for PF and VF's. Provision the PF and VF's
+with execution quantum and sched policy and run workload on functions.
 
+Add two tests
 
-On 3/5/2025 12:53 PM, Francois Dugast wrote:
-> On Wed, Feb 19, 2025 at 01:04:45PM +0530, Satyanarayana K V P wrote:
->> In the current implementation, test asserts if the captured error is not same as
->> injected error. It is a possible that the error received is translated to other
->> error which can be returned to application.
->>
->> Try to unbind the device at the end of inject_fault_probe() as this can be
->> executed in a loop if IGT_FAULT_INJECT_ITERATION environment variable is set.
->>
->> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
->> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
->> Cc: Francois Dugast <francois.dugast@intel.com>
->> ---
->>   tests/intel/xe_fault_injection.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
->> index cf0337733..82e338965 100644
->> --- a/tests/intel/xe_fault_injection.c
->> +++ b/tests/intel/xe_fault_injection.c
->> @@ -227,8 +227,8 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
->>   	injection_list_do(INJECTION_LIST_ADD, function_name);
->>   	set_retval(function_name, INJECT_ERRNO);
->>   	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
->> -	igt_assert_eq(-errno, INJECT_ERRNO);
->>   	injection_list_do(INJECTION_LIST_REMOVE, function_name);
->> +	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_UNBIND);
-> 
-> Those should be 2 separate patches.
-> 
-> 1. Try driver unbind after fault injection during probe
-> 2. Accept returned error different than injected one
-> 
-> I am fine with 1. as it is, just the one line.
-> 
-> However removing the assert in 2. is not acceptable. This assert *IS*
-> the real test performed for existing fault injection tests. If we
-> remove it then we will not be able to detect when probing does not
-> behave as expected in case of failure.
+all-fn-engine-activity-load : Run workload on all functions
+simultaneously and validate that all engines are equally
+and fully loaded.
 
-@Francois, What is recommended on successful probe? Should we treat
-successful probe as not an error ?
-That happens when error injected function is not called at all (ex. 
-xe_wopcm_init, xe_guc_log_init, xe_guc_ads_init on VF probe)
+fn-engine-activity-load: Run workload on one function at a time
+with sched_if_idle set to false
 
-	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
-	err = -errno;
-	injection_list_do(INJECTION_LIST_REMOVE, function_name);
-	if (err)
-		igt_assert_eq(err, INJECT_ERRNO);
-	else
-		/* do additional checks like simple_workload or too complex for this 
-test? */
-		igt_kmod_unbind("xe", pci_slot);
+fn-engine-activity-sched-if-idle: Run workload on one function at a time
+with sched_if_idle set to true. Validate functions use execution quantum
+when idle
 
---
-marcin
+Riana Tauro (3):
+  tests/intel/xe_pmu: move xe perf device to fixture
+  tests/intel/xe_pmu: Add engine activity test for all functions
+  tests/intel/xe_pmu: Add a test to validate engine activity on a
+    function
 
-> 
-> We need a more flexible solution to your problem, such as adding one
-> parameter to inject_fault_probe() with the expected returned error
-> code.
-> 
-> Francois
-> 
->>   }
->>   
->>   /**
->> -- 
->> 2.35.3
->>
+ tests/intel/xe_pmu.c | 234 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 224 insertions(+), 10 deletions(-)
+
+-- 
+2.47.1
 
