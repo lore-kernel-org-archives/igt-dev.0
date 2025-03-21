@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C3F2C36005
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 17:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F683C36000
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 17:53:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04D8110E7F1;
-	Fri, 21 Mar 2025 17:33:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2DCA10E7FD;
+	Fri, 21 Mar 2025 17:53:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l9duzpdr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hCy9BhR1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D673910E7F1
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 17:33:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8C5110E7FD
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 17:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742578398; x=1774114398;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=7QRRWZHXQe8VKQe15k0wrSCfj8Qw8BjwHpUVPP0D+gY=;
- b=l9duzpdrx8skWeTWjhmi1bY+BWGYDFIZHeKRGLMUh+lHSWCBW9aLRMIh
- 16cPMtJ+zlEXD/3R/fDFxtOq8SMnYvFbUsFNyNBbRcmttj+IQPq4JFgFi
- S6aiI6TxILxLZ0eePee3lRCeSk91NocX/ogWcz/LlB4WC4SJdUl/dGA5E
- UAF20kDsbsS9fIK/lsbeK5hgeLF46fokMhEoxAxqq4C81UATG24j4f79z
- SAGumisIRz2h2/FEM06KuiVsTx1mnsKCACB2Vn4Ov9ZLJn/kX78kGV16m
- V9Uj+lBPQvhLW1qbU0dw4HWAdvor32/pHGz1cVpLFtO61PmquRurxHTwD Q==;
-X-CSE-ConnectionGUID: KlR0szSTTgO8UZKycjV+sA==
-X-CSE-MsgGUID: WUe/enu3TXisG7ubqyKajw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="66316332"
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="66316332"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 10:33:17 -0700
-X-CSE-ConnectionGUID: Qj1m98OoTze+tNGigHoSpg==
-X-CSE-MsgGUID: GNWPrr/NQQ693RK7uaK3yA==
+ t=1742579589; x=1774115589;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=HY2v9SIu5PIeAp5+BhdIZWilr4thnQqDFPaT2sCV7Gg=;
+ b=hCy9BhR1ZyyoYVgMZpJygrRCoTOKBUGdbreb/62bwtoYJS9V0qzDjwCU
+ 0SXIfZDiiEXUa+HXCYh+9w4FVpRGVFvLVv9VV+ZnUb4DgbOkXcmmk/LsP
+ A1KcbwLxl2aA6J9rxBTaXeqkPlUFztb9H5juB5TYKC6/rTkqtWEZlwrEv
+ +RrRbn85u+Rc36w0Zp2L6sAvY+GW5ap3RLu8Bo1cru3gGvswa52tLitIz
+ RI7cToGeshCQ86Lszl+C3Rz94TjeahIBSf/bFkkU0a0HBvjrfNn8wbRgI
+ R5xBTrzhznCLQlCWbEVJ4BxQSJ21sDmwR/ej6QmAv0eaGLAA1wn/4nYt5 w==;
+X-CSE-ConnectionGUID: Mw5p0aKaS0i5aU5FURkuhg==
+X-CSE-MsgGUID: Anj8a/OOS8uhtoqpzSNoIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="43018722"
+X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="43018722"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 10:53:09 -0700
+X-CSE-ConnectionGUID: Q8ZdJOzqRhmOhHOPCvjPZw==
+X-CSE-MsgGUID: 4cfrEFsESA6AxSnZ0B83og==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="154464099"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by fmviesa001.fm.intel.com with ESMTP; 21 Mar 2025 10:33:14 -0700
-From: Raag Jadav <raag.jadav@intel.com>
-To: lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- heikki.krogerus@linux.intel.com
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH i-g-t v1] tests/intel/xe_pm: Introduce i2c subtests
-Date: Fri, 21 Mar 2025 23:02:05 +0530
-Message-Id: <20250321173205.40076-1-raag.jadav@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.14,265,1736841600"; d="scan'208";a="124241954"
+Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
+ lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
+ by fmviesa009.fm.intel.com with ESMTP; 21 Mar 2025 10:53:07 -0700
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t v4] tests/intel/kms_pm_dc: Add skip logic and logging
+ for DC5 psr test
+Date: Fri, 21 Mar 2025 23:22:59 +0530
+Message-ID: <20250321175259.20603-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250226065202.84015-1-mohammed.thasleem@intel.com>
+References: <20250226065202.84015-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,141 +70,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce subtests for i2c adapter which is used to control on-board
-OEM sensors on selected devices. This will test D3hot/D3cold transition
-after i2c adapter access for the devices that support it.
+Prior to Gen12, Pipe A is required to run the DC5 transaction,
+ensuring low power operation. In display versions greater than 12,
+either Pipe A or Pipe B can be used for the DC5 transaction,
+providing flexibility in pipe selection
 
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+However, display version 20 specifically requires Pipe A.
+Additionally, for Battlemage and DG2 devices, only Pipe A is
+required due to specific hardware constraints. To enforce these
+conditions, skip logic and logging have been added, ensuring that
+tests are only executed when the appropriate pipes are selected.
+
+v2: Updated subject title and discription.
+    Add Gen checks for low power pipe selection. (Santosh)
+v3: Add check for bmg and dg2 for Pipe A also other checks for Pipe A
+    and B. (Gustavo)
+v4: Update logic style. (Gustavo)
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- tests/intel/xe_pm.c | 95 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+ tests/intel/kms_pm_dc.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 19b0d5ef7..233e63d17 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -11,12 +11,18 @@
-  * Test category: functionality test
-  */
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 50473321a..4b2464c24 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -145,13 +145,26 @@ static void set_output_on_pipe_b(data_t *data)
  
-+#include <dirent.h>
- #include <limits.h>
- #include <fcntl.h>
- #include <string.h>
-+#include <sys/ioctl.h>
-+
-+#include <linux/i2c-dev.h>
-+#include <linux/i2c.h>
- 
- #include "igt.h"
- #include "lib/igt_device.h"
-+#include "lib/igt_kmod.h"
- #include "lib/igt_pm.h"
- #include "lib/igt_sysfs.h"
- #include "lib/igt_syncobj.h"
-@@ -774,6 +780,88 @@ static void test_mocs_suspend_resume(device_t device, enum igt_suspend_state s_s
- 	}
- }
- 
-+static int find_i2c_index(device_t device, int sysfs_fd)
-+{
-+	int adapter_fd, i2c_index = -1;
-+	struct dirent *dirent;
-+	char adapter[32];
-+	DIR *dir;
-+
-+	/* Make sure the /dev/i2c-* files exist */
-+	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
-+
-+	snprintf(adapter, sizeof(adapter) - 1, "%s.%hu", "device/i2c_designware",
-+		 (device.pci_xe->bus << 8) | (device.pci_xe->dev));
-+	adapter_fd = openat(sysfs_fd, adapter, O_RDONLY);
-+	igt_require_fd(adapter_fd);
-+
-+	dir = fdopendir(adapter_fd);
-+	igt_assert(dir);
-+
-+	/* Find the i2c device node index */
-+	while ((dirent = readdir(dir))) {
-+		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
-+			sscanf(dirent->d_name, "i2c-%d", &i2c_index);
-+			break;
-+		}
-+	}
-+
-+	closedir(dir);
-+	close(adapter_fd);
-+	return i2c_index;
-+}
-+
-+/**
-+ * SUBTEST: %s-i2c
-+ * Description:
-+ * 	Validate whether the device is able to suspend after i2c adapter access.
-+ * Functionality: pm-d3
-+ * GPU requirements: D3 feature should be supported
-+ *
-+ * arg[1]:
-+ *
-+ * @d3hot:	d3hot
-+ * @d3cold:	d3cold
-+ */
-+static bool i2c_test(device_t device, int sysfs_fd)
-+{
-+	/* AMC slave details */
-+	uint8_t addr = 0x40, reg = 0x0, buf;
-+	int i2c_index, i2c_fd;
-+	char i2c_dev[16];
-+	struct i2c_msg msgs[] = {
-+		{
-+			.addr = addr,
-+			.flags = 0,
-+			.len = sizeof(reg),
-+			.buf = &reg,
-+		}, {
-+			.addr = addr,
-+			.flags = I2C_M_RD,
-+			.len = sizeof(buf),
-+			.buf = &buf,
-+		}
-+	};
-+	struct i2c_rdwr_ioctl_data msgset = {
-+		.msgs = msgs,
-+		.nmsgs = ARRAY_SIZE(msgs),
-+	};
-+
-+	i2c_index = find_i2c_index(device, sysfs_fd);
-+	igt_assert(i2c_index >= 0);
-+
-+	snprintf(i2c_dev, sizeof(i2c_dev) - 1, "/dev/i2c-%hhd", i2c_index);
-+	i2c_fd = open(i2c_dev, O_RDWR);
-+	igt_assert_fd(i2c_fd);
-+
-+	/* Perform an i2c transaction to trigger adapter wake */
-+	igt_info("Accessing slave 0x%hhx on %s\n", addr, i2c_dev);
-+	igt_assert(igt_ioctl(i2c_fd, I2C_RDWR, &msgset) >= 0);
-+
-+	close(i2c_fd);
-+	return true;
-+}
-+
- igt_main
+ static void setup_output(data_t *data)
  {
- 	device_t device;
-@@ -881,6 +969,13 @@ igt_main
- 			cleanup_d3(device);
- 		}
++	int disp_ver = intel_display_ver(data->devid);
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
++	bool is_low_power;
+ 	enum pipe pipe;
  
-+		igt_subtest_f("%s-i2c", d->name) {
-+			igt_assert(setup_d3(device, d->state));
-+			igt_assert(i2c_test(device, sysfs_fd));
-+			igt_assert(in_d3(device, d->state));
-+			cleanup_d3(device);
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+ 		drmModeConnectorPtr c = output->config.connector;
+ 
++		if (disp_ver >= 13) {
++			if (disp_ver == 20 || IS_BATTLEMAGE(data->devid) || IS_DG2(data->devid))
++				is_low_power = (pipe == PIPE_A);
++			else
++				is_low_power = (pipe == PIPE_A || pipe == PIPE_B);
++		} else {
++			is_low_power = (pipe == PIPE_A);
 +		}
 +
- 		igt_subtest_f("%s-multiple-execs", d->name) {
- 			igt_assert(setup_d3(device, d->state));
- 			test_exec(device, 16, 32, NO_SUSPEND, d->state, 0);
++		igt_skip_on_f(!is_low_power, "Low power pipe was not selected for the DC5 transaction.\n");
++
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
+ 
 -- 
-2.34.1
+2.43.0
 
