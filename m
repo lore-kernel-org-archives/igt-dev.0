@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 715ECC35FFF
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 09:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F52C35FFF
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 10:07:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2747410E764;
-	Fri, 21 Mar 2025 09:53:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9621410E76F;
+	Fri, 21 Mar 2025 10:07:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mhxpAW/t";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BmAuo3BD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2304710E764
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 09:53:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DF1C10E76F
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 10:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742550796; x=1774086796;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=A9gTw9oirAFcafuWPH0IUKw1LAxLS4yA2QgalPu2EAY=;
- b=mhxpAW/t47U894bOy1zrWNosZt0xyWsOi40LQw4gDnkau3RbUcic2fG+
- f6GKrERFRQoLicDc2mdkg29H3+EExjwdr64RnZO0ltFPfkqvalTOpfHXQ
- jxQicO0h36tdTPiAGwpgc3bpSLO+fFvsiihpVQwFMEmXPo63IIJo2BGkY
- auMSwRiI5pwFNiGjEBIadNF0VMg4ZWUVhgMp7kkLnHeRrxw7af6rzD+n0
- Wr/0+n2fKVpqcdiM3rAe62L3TdIyK83HlwQcalPA5R/+AZdN5NTBkQRHG
- 9aOJbaiWQFRFN45/RsqRG2yad5xg6NdJKgeF0g6iOipdnm4UC6H7qU623 A==;
-X-CSE-ConnectionGUID: j1xwxLHLRh+txxIg7V/t1A==
-X-CSE-MsgGUID: cD3GMCQbRaOPuVafldyVag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="42976575"
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="42976575"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 02:53:16 -0700
-X-CSE-ConnectionGUID: Lbv1nGhsRyGpHaNakUKlYQ==
-X-CSE-MsgGUID: pEqoMADSTla/zMC6sKyFJA==
+ t=1742551665; x=1774087665;
+ h=date:from:to:subject:message-id:references:mime-version:
+ in-reply-to; bh=l5QsGlFnD5V7XmMP+d78RgVttvfxLpJQwJtVq8Pd4bE=;
+ b=BmAuo3BDErZRvtQ8Dy9YbSVM9rU52+eexLRlTkaP3h7bQO45wo89diBK
+ T53gs9l0PXkomvr1bR9Geq+arfK/8ljHBzgcLKxDaY/1y7ns42+YFRPz1
+ EyIB6mjPpalwUVw1wir/sdDMy6SvKKoJauFQwz8ztM0Yx9ELCXW6VJ6mn
+ OGwoDxVnFplMDKRj4neV3w0rnZybIbepu8b+E2ckSos1ju4HrSb+Nx8do
+ +59GI719y9eIp9s3W/ZLoJuaDGpMvwYo7aZefusSLEWTFYFvSLG2L3+iM
+ a3PLNixPbK6I7yUPy6VfW23IzgqFbAkI0sCLymjyUZz8KxO4SLmSDZ/Gl w==;
+X-CSE-ConnectionGUID: VuAmbTmeTPK4kTgFI3RI2A==
+X-CSE-MsgGUID: k9zkdMzPR5yFgSxiAzcyaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43739043"
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="43739043"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 03:07:40 -0700
+X-CSE-ConnectionGUID: LpGomxpyTui2AnxLZU8IiQ==
+X-CSE-MsgGUID: xPPRFE1EStGjsia2AWZr9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="128187490"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.254.149])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 02:53:14 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: Injection list clear at
- exit
-Date: Fri, 21 Mar 2025 10:53:06 +0100
-Message-Id: <20250321095306.798153-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="128416872"
+Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
+ localhost) ([10.245.245.40])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 03:07:38 -0700
+Date: Fri, 21 Mar 2025 11:07:34 +0100
+From: Pawel Sikora <pawel.sikora@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t 1/1] lib/igt_core: capture logs for child processes
+Message-ID: <20250321100734.2wknvctzt2i33rfx@pawelsik-desk>
+References: <20250313125004.3881354-1-pawel.sikora@linux.intel.com>
+ <20250313125004.3881354-2-pawel.sikora@linux.intel.com>
+ <20250317163907.lrhtwmbakoq3m65k@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250317163907.lrhtwmbakoq3m65k@kamilkon-desk.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,44 +72,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reintroduce clearing of the injection list as an exit handler to ensure
-fault injections are properly cleaned up.
+On Mon, Mar 17, 2025 at 05:39:07PM +0100, Kamil Konieczny wrote:
+> Hi Pawel,
+> On 2025-03-13 at 13:50:04 +0100, Pawel Sikora wrote:
+> > This change addresses the issue of missing logs for child
+> > processes in the IGT runner.
+> > 
+> > The '_igt_log_buffer_dump()' function is now called before
+> > exiting child processes, ensuring that logs are properly
+> > captured and not lost when IGT fails and child processes
+> > dump logs before exiting.
+> > 
+> > Signed-off-by: Pawel Sikora <pawel.sikora@linux.intel.com>
+> > ---
+> >  lib/igt_core.c | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/lib/igt_core.c b/lib/igt_core.c
+> > index 9702a9417..33e5ca7cd 100644
+> > --- a/lib/igt_core.c
+> > +++ b/lib/igt_core.c
+> > @@ -1905,12 +1905,11 @@ void igt_fail(int exitcode)
+> >  		failed_one = true;
+> >  	}
+> >  
+> > -	/* Silent exit, parent will do the yelling. */
+> > +	_igt_log_buffer_dump();
+> > +
+> 
+> Can it be a conditional? As I remember this was a problem with
+> logs line interleaving one with another and it was solved by
+> igt_runner using comms, so I propose to use this only when comms
+> are active, see 8a3dc4020 lib/igt_core: Send logs to runner with comms
+> 
+> For example:
+> 	/* If igt_runner uses comms it could grab each childs logs
+> 	 * without them interleaving in stdout/stderr.
+> 	 */
+> 	has_comms = runner_connected();
+> 	if (has_comms)
+> 		_igt_log_buffer_dump();
+> 
+>   	if (test_child)
+>   		exit(exitcode);
+> 
+> 	if (!has_comms)
+> 		_igt_log_buffer_dump();
+> 
+> This will fix it for igt_runner with comms, leaving old behaviour
+> when no comms were used.
+> This is suggestion, if you do not like it at least add a comment
+> why was it added there.
+> 
+> Also I add Petri to Cc.
+> 
 
-Fixes: c0b2d9202f78 ("tests/intel/xe_fault_injection: Use igt_sysfs helpers")
+Seems fine to me. Will check it and add in v2.
 
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- tests/intel/xe_fault_injection.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Regards,
+Pawel
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 5409d19a6..1bd0f51a3 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -137,6 +137,12 @@ static void setup_injection_fault(void)
- 	close(dir);
- }
- 
-+static void cleanup_injection_fault(int sig)
-+{
-+	/* If nothing specified (‘’) injection list is cleared */
-+	injection_list_do(INJECTION_LIST_ADD, "");
-+}
-+
- static void set_retval(const char function_name[], long long retval)
- {
- 	char path[96];
-@@ -371,6 +377,7 @@ igt_main
- 		fd = drm_open_driver(DRIVER_XE);
- 		igt_device_get_pci_slot_name(fd, pci_slot);
- 		setup_injection_fault();
-+		igt_install_exit_handler(cleanup_injection_fault);
- 	}
- 
- 	for (const struct section *s = vm_create_fail_functions; s->name; s++)
--- 
-2.31.1
-
+> Regards,
+> Kamil
+> 
+> >  	if (test_child)
+> >  		exit(exitcode);
+> >  
+> > -	_igt_log_buffer_dump();
+> > -
+> >  	if (test_multi_fork_child)
+> >  		exit(exitcode);
+> >  
+> > -- 
+> > 2.34.1
+> > 
