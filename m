@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4BAC35FFF
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 09:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 715ECC35FFF
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 09:53:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64FC010E758;
-	Fri, 21 Mar 2025 09:21:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2747410E764;
+	Fri, 21 Mar 2025 09:53:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c3PW3dgc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mhxpAW/t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1B8610E758
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 09:21:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2304710E764
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 09:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742548887; x=1774084887;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=8BlA3D2gqSYJ300RFWJ1NXfzLWF2uiIbx1ugm+OFsAM=;
- b=c3PW3dgcLCvHzVzEfaxzHF3udOmTeddy/0m1QprQ1sTKq4bATrNI0Sjo
- 7z3qYfjJj0zu5j+1sPnJj/s/MEFwMQYlUicPz04UlBq8XSkGZ0clzvt0+
- 9/i8qzTIuhQXmUjNy86DK4hqm+K0zGNkhHXEKHkqKZLsayApUy1QuAFCk
- fw+HkI72eHG1/vl9wSLqb4aEf/KKGl05DxAyeAHjDlT0RGZ63WJA1j0W4
- vMSjYRGfqEVF2p9LTGZoJD9FUIi/lQrjzCq3TQn9nfKg+F98PBjetb2oJ
- zOIAjoGJskfvuTvn3LBvq7IdF/gMITBL//aPLJRItvdsYBRP4eYxBj3LG g==;
-X-CSE-ConnectionGUID: E5SqsaQ5Qr2TMjXgMmFYNg==
-X-CSE-MsgGUID: cyveeD4kSAS2tqAkd3xsoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43821330"
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="43821330"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 02:21:27 -0700
-X-CSE-ConnectionGUID: fJ9ehcrmSfyRbPf02rr9UA==
-X-CSE-MsgGUID: wWkFV8vqTKSZcW7mYBq3/w==
+ t=1742550796; x=1774086796;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=A9gTw9oirAFcafuWPH0IUKw1LAxLS4yA2QgalPu2EAY=;
+ b=mhxpAW/t47U894bOy1zrWNosZt0xyWsOi40LQw4gDnkau3RbUcic2fG+
+ f6GKrERFRQoLicDc2mdkg29H3+EExjwdr64RnZO0ltFPfkqvalTOpfHXQ
+ jxQicO0h36tdTPiAGwpgc3bpSLO+fFvsiihpVQwFMEmXPo63IIJo2BGkY
+ auMSwRiI5pwFNiGjEBIadNF0VMg4ZWUVhgMp7kkLnHeRrxw7af6rzD+n0
+ Wr/0+n2fKVpqcdiM3rAe62L3TdIyK83HlwQcalPA5R/+AZdN5NTBkQRHG
+ 9aOJbaiWQFRFN45/RsqRG2yad5xg6NdJKgeF0g6iOipdnm4UC6H7qU623 A==;
+X-CSE-ConnectionGUID: j1xwxLHLRh+txxIg7V/t1A==
+X-CSE-MsgGUID: cD3GMCQbRaOPuVafldyVag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="42976575"
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="42976575"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 02:53:16 -0700
+X-CSE-ConnectionGUID: Lbv1nGhsRyGpHaNakUKlYQ==
+X-CSE-MsgGUID: pEqoMADSTla/zMC6sKyFJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="123323214"
-Received: from lnl-rocket-lake-client-platform.iind.intel.com (HELO
- lnl-Tiger-Lake-Client-Platform.iind.intel.com) ([10.145.169.162])
- by orviesa010.jf.intel.com with ESMTP; 21 Mar 2025 02:21:26 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="128187490"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.254.149])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 02:53:14 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v3] tests/intel/kms_pm_dc: Add skip logic and logging
- for DC5 psr test
-Date: Fri, 21 Mar 2025 14:51:20 +0530
-Message-ID: <20250321092120.85206-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250226065202.84015-1-mohammed.thasleem@intel.com>
-References: <20250226065202.84015-1-mohammed.thasleem@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: Injection list clear at
+ exit
+Date: Fri, 21 Mar 2025 10:53:06 +0100
+Message-Id: <20250321095306.798153-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,49 +71,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Prior to Gen12, Pipe A is required to run the DC5 transaction,
-ensuring low power operation. In display versions greater than 12,
-either Pipe A or Pipe B can be used for the DC5 transaction,
-providing flexibility in pipe selection
+Reintroduce clearing of the injection list as an exit handler to ensure
+fault injections are properly cleaned up.
 
-However, display version 20 specifically requires Pipe A.
-Additionally, for Battlemage and DG2 devices, only Pipe A is
-required due to specific hardware constraints. To enforce these
-conditions, skip logic and logging have been added, ensuring that
-tests are only executed when the appropriate pipes are selected.
+Fixes: c0b2d9202f78 ("tests/intel/xe_fault_injection: Use igt_sysfs helpers")
 
-v2: Updated subject title and discription.
-    Add Gen checks for low power pipe selection. (Santosh)
-v3: Add check for bmg and dg2 for Pipe A also other checks for Pipe A
-    and B. (Gustavo)
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- tests/intel/kms_pm_dc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/intel/xe_fault_injection.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 50473321a..b23c13363 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -148,10 +148,16 @@ static void setup_output(data_t *data)
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	int disp_ver = intel_display_ver(data->devid);
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 5409d19a6..1bd0f51a3 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -137,6 +137,12 @@ static void setup_injection_fault(void)
+ 	close(dir);
+ }
  
- 	for_each_pipe_with_valid_output(display, pipe, output) {
- 		drmModeConnectorPtr c = output->config.connector;
- 
-+		igt_skip_on_f(((IS_BATTLEMAGE(data->devid) || IS_DG2(data->devid)) && pipe != PIPE_A) ||
-+			      (disp_ver <= 12 && pipe != PIPE_A) || (disp_ver == 20 && pipe != PIPE_A) ||
-+			      (disp_ver > 12 && disp_ver != 20 && !(pipe == PIPE_A || pipe == PIPE_B)),
-+			       "Low power pipe was not selected for the DC5 transaction.\n");
++static void cleanup_injection_fault(int sig)
++{
++	/* If nothing specified (‘’) injection list is cleared */
++	injection_list_do(INJECTION_LIST_ADD, "");
++}
 +
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
+ static void set_retval(const char function_name[], long long retval)
+ {
+ 	char path[96];
+@@ -371,6 +377,7 @@ igt_main
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		igt_device_get_pci_slot_name(fd, pci_slot);
+ 		setup_injection_fault();
++		igt_install_exit_handler(cleanup_injection_fault);
+ 	}
  
+ 	for (const struct section *s = vm_create_fail_functions; s->name; s++)
 -- 
-2.43.0
+2.31.1
 
