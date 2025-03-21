@@ -4,59 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F52C35FFF
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 10:07:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 430B8C35FFF
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Mar 2025 10:37:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9621410E76F;
-	Fri, 21 Mar 2025 10:07:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1E0C10E787;
+	Fri, 21 Mar 2025 10:37:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BmAuo3BD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Um1il7C7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DF1C10E76F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 10:07:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F238E10E787
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Mar 2025 10:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742551665; x=1774087665;
- h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=l5QsGlFnD5V7XmMP+d78RgVttvfxLpJQwJtVq8Pd4bE=;
- b=BmAuo3BDErZRvtQ8Dy9YbSVM9rU52+eexLRlTkaP3h7bQO45wo89diBK
- T53gs9l0PXkomvr1bR9Geq+arfK/8ljHBzgcLKxDaY/1y7ns42+YFRPz1
- EyIB6mjPpalwUVw1wir/sdDMy6SvKKoJauFQwz8ztM0Yx9ELCXW6VJ6mn
- OGwoDxVnFplMDKRj4neV3w0rnZybIbepu8b+E2ckSos1ju4HrSb+Nx8do
- +59GI719y9eIp9s3W/ZLoJuaDGpMvwYo7aZefusSLEWTFYFvSLG2L3+iM
- a3PLNixPbK6I7yUPy6VfW23IzgqFbAkI0sCLymjyUZz8KxO4SLmSDZ/Gl w==;
-X-CSE-ConnectionGUID: VuAmbTmeTPK4kTgFI3RI2A==
-X-CSE-MsgGUID: k9zkdMzPR5yFgSxiAzcyaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43739043"
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="43739043"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ t=1742553460; x=1774089460;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=3Izjh/PCfcexcB/tFjuaWx3TKLzFMU2sfletgzq2pv4=;
+ b=Um1il7C7rEyi8CjG7dCjbK4FnBbFj1+q+EQawPyG6T5vzhBEppPWk65N
+ 0HLPiUk8Qaqsj7mwRiUjrAOVfzc7crHcPbjyv5JCS5R6Sax4G1ANTe/zO
+ NydfyVHwz53IwLOY4rcLXzduV0NRUzu5mAOdCk8bkf6mzf9RPWOYSks+F
+ Kz6wIs1cs8QTIDB0OE+QC0cIBbDDOiOSU0LtzIu92unZkMGdEZNHWHYFh
+ dZ4Jd54dOO2GC0cg4qFznDmBU0gBDSwqPhLFYeSdjiaCXug7KShgioH0v
+ +Z1CsVjLPUIjYQujdGuNszRzNbPncXgcm4MYMt060vPJS2kIKlFMhL0SX w==;
+X-CSE-ConnectionGUID: xY/TENL8R8KRG7B14Wm3eA==
+X-CSE-MsgGUID: zyV99XTXQS2qlfV0x0DFQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43741984"
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="43741984"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 03:07:40 -0700
-X-CSE-ConnectionGUID: LpGomxpyTui2AnxLZU8IiQ==
-X-CSE-MsgGUID: xPPRFE1EStGjsia2AWZr9w==
+ 21 Mar 2025 03:37:39 -0700
+X-CSE-ConnectionGUID: 4X1IAvlnTRuwEaZJ01Esfw==
+X-CSE-MsgGUID: OvHqPze9RpOvv1QhuyDB6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="128416872"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- localhost) ([10.245.245.40])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2025 03:07:38 -0700
-Date: Fri, 21 Mar 2025 11:07:34 +0100
-From: Pawel Sikora <pawel.sikora@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t 1/1] lib/igt_core: capture logs for child processes
-Message-ID: <20250321100734.2wknvctzt2i33rfx@pawelsik-desk>
-References: <20250313125004.3881354-1-pawel.sikora@linux.intel.com>
- <20250313125004.3881354-2-pawel.sikora@linux.intel.com>
- <20250317163907.lrhtwmbakoq3m65k@kamilkon-desk.igk.intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; d="scan'208";a="154373725"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.254.149])
+ ([10.245.254.149])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2025 03:37:38 -0700
+Message-ID: <79c4c702-5a90-4e6c-8814-0cf9ef27f512@linux.intel.com>
+Date: Fri, 21 Mar 2025 11:37:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250317163907.lrhtwmbakoq3m65k@kamilkon-desk.igk.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 5/5] tests/intel/xe_fault_injection: Do not
+ assert if the captured error is not same as injected error.
+To: Francois Dugast <francois.dugast@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ =?UTF-8?Q?Micha=C5=82_Wajdeczko?= <michal.wajdeczko@intel.com>
+References: <20250219073445.31423-1-satyanarayana.k.v.p@intel.com>
+ <20250219073445.31423-6-satyanarayana.k.v.p@intel.com>
+ <Z8g7K-Mvf5yGptuK@fdugast-desk>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <Z8g7K-Mvf5yGptuK@fdugast-desk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,77 +75,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 17, 2025 at 05:39:07PM +0100, Kamil Konieczny wrote:
-> Hi Pawel,
-> On 2025-03-13 at 13:50:04 +0100, Pawel Sikora wrote:
-> > This change addresses the issue of missing logs for child
-> > processes in the IGT runner.
-> > 
-> > The '_igt_log_buffer_dump()' function is now called before
-> > exiting child processes, ensuring that logs are properly
-> > captured and not lost when IGT fails and child processes
-> > dump logs before exiting.
-> > 
-> > Signed-off-by: Pawel Sikora <pawel.sikora@linux.intel.com>
-> > ---
-> >  lib/igt_core.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > index 9702a9417..33e5ca7cd 100644
-> > --- a/lib/igt_core.c
-> > +++ b/lib/igt_core.c
-> > @@ -1905,12 +1905,11 @@ void igt_fail(int exitcode)
-> >  		failed_one = true;
-> >  	}
-> >  
-> > -	/* Silent exit, parent will do the yelling. */
-> > +	_igt_log_buffer_dump();
-> > +
-> 
-> Can it be a conditional? As I remember this was a problem with
-> logs line interleaving one with another and it was solved by
-> igt_runner using comms, so I propose to use this only when comms
-> are active, see 8a3dc4020 lib/igt_core: Send logs to runner with comms
-> 
-> For example:
-> 	/* If igt_runner uses comms it could grab each childs logs
-> 	 * without them interleaving in stdout/stderr.
-> 	 */
-> 	has_comms = runner_connected();
-> 	if (has_comms)
-> 		_igt_log_buffer_dump();
-> 
->   	if (test_child)
->   		exit(exitcode);
-> 
-> 	if (!has_comms)
-> 		_igt_log_buffer_dump();
-> 
-> This will fix it for igt_runner with comms, leaving old behaviour
-> when no comms were used.
-> This is suggestion, if you do not like it at least add a comment
-> why was it added there.
-> 
-> Also I add Petri to Cc.
-> 
 
-Seems fine to me. Will check it and add in v2.
 
-Regards,
-Pawel
-
-> Regards,
-> Kamil
+On 3/5/2025 12:53 PM, Francois Dugast wrote:
+> On Wed, Feb 19, 2025 at 01:04:45PM +0530, Satyanarayana K V P wrote:
+>> In the current implementation, test asserts if the captured error is not same as
+>> injected error. It is a possible that the error received is translated to other
+>> error which can be returned to application.
+>>
+>> Try to unbind the device at the end of inject_fault_probe() as this can be
+>> executed in a loop if IGT_FAULT_INJECT_ITERATION environment variable is set.
+>>
+>> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+>> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+>> Cc: Francois Dugast <francois.dugast@intel.com>
+>> ---
+>>   tests/intel/xe_fault_injection.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+>> index cf0337733..82e338965 100644
+>> --- a/tests/intel/xe_fault_injection.c
+>> +++ b/tests/intel/xe_fault_injection.c
+>> @@ -227,8 +227,8 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+>>   	injection_list_do(INJECTION_LIST_ADD, function_name);
+>>   	set_retval(function_name, INJECT_ERRNO);
+>>   	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
+>> -	igt_assert_eq(-errno, INJECT_ERRNO);
+>>   	injection_list_do(INJECTION_LIST_REMOVE, function_name);
+>> +	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_UNBIND);
 > 
-> >  	if (test_child)
-> >  		exit(exitcode);
-> >  
-> > -	_igt_log_buffer_dump();
-> > -
-> >  	if (test_multi_fork_child)
-> >  		exit(exitcode);
-> >  
-> > -- 
-> > 2.34.1
-> > 
+> Those should be 2 separate patches.
+> 
+> 1. Try driver unbind after fault injection during probe
+> 2. Accept returned error different than injected one
+> 
+> I am fine with 1. as it is, just the one line.
+> 
+> However removing the assert in 2. is not acceptable. This assert *IS*
+> the real test performed for existing fault injection tests. If we
+> remove it then we will not be able to detect when probing does not
+> behave as expected in case of failure.
+
+@Francois, What is recommended on successful probe? Should we treat
+successful probe as not an error ?
+That happens when error injected function is not called at all (ex. 
+xe_wopcm_init, xe_guc_log_init, xe_guc_ads_init on VF probe)
+
+	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
+	err = -errno;
+	injection_list_do(INJECTION_LIST_REMOVE, function_name);
+	if (err)
+		igt_assert_eq(err, INJECT_ERRNO);
+	else
+		/* do additional checks like simple_workload or too complex for this 
+test? */
+		igt_kmod_unbind("xe", pci_slot);
+
+--
+marcin
+
+> 
+> We need a more flexible solution to your problem, such as adding one
+> parameter to inject_fault_probe() with the expected returned error
+> code.
+> 
+> Francois
+> 
+>>   }
+>>   
+>>   /**
+>> -- 
+>> 2.35.3
+>>
+
