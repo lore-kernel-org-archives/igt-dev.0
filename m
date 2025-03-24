@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 975A1C3600B
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 15:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8089AC36002
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 16:19:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48F4410E495;
-	Mon, 24 Mar 2025 15:30:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34ABE10E3EE;
+	Mon, 24 Mar 2025 16:19:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VxLTJdU4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="friJYlqF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93D4010E494
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 15:30:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A03710E3EE
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 16:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742830240; x=1774366240;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/soXVkJjFC4v/Vt24N+CmuwG6h5Fug9s93D1sLzK6Ic=;
- b=VxLTJdU4vJgCyaAdaMzzd67dqssFcy/2fc10KOYvhJrhoo4P7xvfw3Am
- IowYsuY9pYgCO2l6ERXNEH90lxiAJZLYtCHY6SV85WBSJGi9yFETlsaIn
- zylzaE8nuz1RfkgLdcEY2fdXtUncJkkxdrz+E89NDDES46xzVnqyYto7G
- gKxu8L/bRRpkwiL5+nfzJ4C/g9o2x4xYSKH0h8yHAySgfjDAz0EZ0YaLJ
- WCpvytnU+w6rTJhoA0XiEbQ31pyKZWwlOQx1yBGYDJwQWJnJPOBZTFogP
- d6yu7V5sIB31ozyil7WcudUbHTZ1VmAbJ6SiNy0JG9FenaXcDTyc1JkY8 w==;
-X-CSE-ConnectionGUID: VLGtdz7HSLO18Aih+4y5ag==
-X-CSE-MsgGUID: XGbB8FiyRrSVbVokwo2o8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="47825172"
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="47825172"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 08:30:39 -0700
-X-CSE-ConnectionGUID: j85tH9T+RgKNJBlT3XL1iw==
-X-CSE-MsgGUID: WlF54nltSfSpde9W/sJ4vw==
+ t=1742833141; x=1774369141;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tssUkkmmqQJWnZ7cIaU+6wiVyhMcLQSibm4EADfqLuQ=;
+ b=friJYlqFF65o+vbKPU5CN/Tdm+TCJqLLl5KTxINIXcBKIMWTaoT7z8nt
+ gd1jKdvZSnnbI+dxZTjfVLdmfMs+oTu8P9/zej3nZlnM6MoYC8ym5TVTQ
+ 72fJmoLk6iyVYb6aFJdXuL+SavYh/uP41uZg1ApiP54C/FS0s/fibCVBX
+ yJhN7mweIB3xci/NGPhrwNSMXaFct05ewad2746EziF1D/XpPotVy5rGy
+ GBxOM8E8oc0zXl+QKheu00ZPMt3HD27c4vqOPA3pvKc+5jOvppw59W9N/
+ KPiWCuXo4NkDp6JIHO0LLT3PbnK8FVEagtDm9JD249LL1zhBirzXgewrk w==;
+X-CSE-ConnectionGUID: gBcwRhqETmWMymT7KLJZ6A==
+X-CSE-MsgGUID: 2YV7vUrNSY2T9pBn511GzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="46793493"
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="46793493"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2025 09:19:01 -0700
+X-CSE-ConnectionGUID: HJk7KP2uT1OjsaVNv7+kMQ==
+X-CSE-MsgGUID: qTavwgqyQk2gCVP3roUk6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="129143299"
-Received: from lfiedoro-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.246.72])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 08:30:38 -0700
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="125046445"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2025 09:18:59 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 2/2] lib/igt_sysfs: Remove XE_SYSFS_DRIVER_UNBIND
-Date: Mon, 24 Mar 2025 16:27:54 +0100
-Message-ID: <20250324153023.2493741-3-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250324153023.2493741-1-francois.dugast@intel.com>
-References: <20250324153023.2493741-1-francois.dugast@intel.com>
+Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
+ chaitanya.kumar.borah@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_async_flips: Add psr async flip subtest
+Date: Mon, 24 Mar 2025 21:43:19 +0530
+Message-Id: <20250324161319.2691351-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,60 +68,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_sysfs_driver_do() will be removed. The XE_SYSFS_DRIVER_UNBIND can
-already be removed because a proper alternative is already in place,
-so use it.
+Add a new subtest to verify async flips does not cause PSR exit.
+Enable PSR and execute async flips to verify system remains in
+PSR mode after async flips.
 
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/igt_sysfs.c                  | 4 ----
- lib/igt_sysfs.h                  | 1 -
- tests/intel/xe_fault_injection.c | 2 +-
- 3 files changed, 1 insertion(+), 6 deletions(-)
+ tests/kms_async_flips.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 2e4c2ee63..a76af54eb 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -1505,10 +1505,6 @@ int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_acti
- 		igt_sysfs_set(sysfs, "bind", pci_slot);
- 		close(sysfs);
- 		break;
--	case XE_SYSFS_DRIVER_UNBIND:
--		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
--		close(sysfs);
--		break;
- 	case XE_SYSFS_DRIVER_REBIND:
- 		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index da426f753..cf6b63b3e 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -85,6 +85,9 @@
+  *
+  * SUBTEST: async-flip-suspend-resume
+  * Description: Verify the async flip functionality with suspend and resume cycle
++ *
++ * SUBTEST: psr-async-flip
++ * Description: Verify that async flips do not cause PSR exit
+  */
  
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 86345f3d1..5bc733168 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -186,7 +186,6 @@ int xe_sysfs_engine_open(int xe_device, int gt, int class);
- enum xe_sysfs_driver_action {
- 	XE_SYSFS_DRIVER_BIND,
- 	XE_SYSFS_DRIVER_TRY_BIND,
--	XE_SYSFS_DRIVER_UNBIND,
- 	XE_SYSFS_DRIVER_REBIND,
- };
+ #define CURSOR_POS 128
+@@ -102,6 +105,7 @@ IGT_TEST_DESCRIPTION("Test asynchronous page flips.");
  
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 1bd0f51a3..4708c5d99 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -401,7 +401,7 @@ igt_main
- 					exec_queue_create_fail(fd, hwe, s->name, s->flags);
+ typedef struct {
+ 	int drm_fd;
++	int debugfs_fd;
+ 	uint32_t crtc_id;
+ 	uint32_t refresh_rate;
+ 	struct igt_fb bufs[NUM_FBS];
+@@ -740,6 +744,33 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ 	}
+ }
+ 
++static bool psr_wait_entry_if_enabled(data_t *data)
++{
++	igt_skip_on_f(!is_psr_enable_possible(data->drm_fd, PSR_MODE_1),
++		      "enable_psr modparam doesn't allow PSR mode 1\n");
++
++	return psr_wait_entry(data->debugfs_fd, PSR_MODE_1, data->output);
++}
++
++static void test_psr_async_flip(data_t *data)
++{
++	if (!psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, data->output))
++		igt_skip("PSR mode 1 is not supported on this output\n");
++
++	psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL);
++	igt_display_commit(&data->display);
++
++	/* Confirm PSR entry before starting async flips */
++	igt_assert_f(psr_wait_entry_if_enabled(data),
++			 "PSR is not enabled before async flip test\n");
++
++	test_async_flip(data);
++
++	/* Confirm PSR is still active after async flips */
++	igt_assert_f(psr_wait_entry_if_enabled(data),
++			 "PSR is not enabled after async flip test\n");
++}
++
+ static data_t data;
+ 
+ igt_main
+@@ -748,6 +779,7 @@ igt_main
  
  	igt_fixture {
--		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
-+		igt_kmod_unbind("xe", pci_slot);
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+@@ -896,6 +928,12 @@ igt_main
+ 		run_test(&data, test_async_flip);
  	}
  
- 	for (const struct section *s = probe_fail_functions; s->name; s++)
++	igt_describe("Verify that async flips do not cause PSR exit");
++	igt_subtest_with_dynamic("psr-async-flip") {
++		data.atomic_path = false;
++		run_test(&data, test_psr_async_flip);
++	}
++
+ 	igt_fixture {
+ 		for (i = 0; i < NUM_FBS; i++)
+ 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
 -- 
-2.43.0
+2.34.1
 
