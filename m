@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FD8C36002
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 11:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A161C36002
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 11:02:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C28310E247;
-	Mon, 24 Mar 2025 11:00:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 01A7610E247;
+	Mon, 24 Mar 2025 11:02:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lDB4Oiq5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CNDeIgEQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CE5F10E247;
- Mon, 24 Mar 2025 11:00:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9151C10E247;
+ Mon, 24 Mar 2025 11:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742814029; x=1774350029;
+ t=1742814148; x=1774350148;
  h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=qfxBUZ+GvApiRUkYQhPPEN3aRwRAk+5DCkFcWdQ7Xdo=;
- b=lDB4Oiq527kEoIYGlUOmbeKUVd1OQvxabj+jdoX0UEQ3VAry/NsvFd2J
- oTHzyP1DbvKa34IIHief1/LU4cm2qW+BQdLyR7G5YwN2EQodXiOmh7y2v
- h17inioXYNvBnclCOHsVoHExWEp56VAP2mAkju8RlZUvRcDcQ9tSpFBkh
- JJHGVa4DgT7mgSE4jB+7YcI7KMeD8tQrkNZWIS1Qk3q33TN63JYdNS5lL
- kn+PjUtd6+tXSMNHgJw65FcPKK/DaMzPBjuKn6YzBeGalem76VizOx6Yi
- r8eHASpGCOBIMV7Hh27luAWeQanbmwBGXEcP+DIpEZWXPjgc8tmYwwhiO w==;
-X-CSE-ConnectionGUID: mylu3uTcSYOASYndKgwbuA==
-X-CSE-MsgGUID: xKno5G4MQnWF4rUvrVF/Bw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="54676223"
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="54676223"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 04:00:29 -0700
-X-CSE-ConnectionGUID: 9HFugjooTrClaKUmHBdLHg==
-X-CSE-MsgGUID: fcJSFZjnTWKvUQb52xT8cw==
+ in-reply-to; bh=D+Afau5mCcYpCmeJK+Nx1E7M9rDnrZHg4o+vxWC8tXg=;
+ b=CNDeIgEQH7Ior8jNpyoycqe45z7qkcKTu3a6D19witHWwZpSZFPhfld7
+ T2jrVkj8FeI54AstHXzIq5YSyGa7i/XYtCV77giDsY6CfuU1TnVmwJzfb
+ SatjsbXLNRvDAsu8qSvUxDzgj6/UPr/+OAiyRGXGUM45O0T9R/qabSY6z
+ nlR6N6SS/oZOOdFLaezX/l+sZx1R81VbYl67vjixlexbrTiZmz2G7yXGl
+ 2ZR2Dhl2nGTI3lkzTceetQZLNm0kLGzJdy1lRxEj21X63Tt+UTxoYkBRR
+ R2m22eqik8kOHvPZETKSwv0m85o9bfaIRT4pFHv1ZW4A/xDZBbX/M48sv A==;
+X-CSE-ConnectionGUID: ha6oks3CT9e6Hk5fj4mwzw==
+X-CSE-MsgGUID: R13eMMcfS6myfmEnOC8+Xg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="44026283"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="44026283"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2025 04:02:26 -0700
+X-CSE-ConnectionGUID: wVkHveNKT8aAs6qIDmCVaw==
+X-CSE-MsgGUID: QpgbkNgQQV2z/ccdN43KNA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="124024048"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="123740210"
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.245.228])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 04:00:27 -0700
-Date: Mon, 24 Mar 2025 12:00:12 +0100
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2025 04:02:26 -0700
+Date: Mon, 24 Mar 2025 12:02:23 +0100
 From: Pawel Sikora <pawel.sikora@linux.intel.com>
 To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVy?= =?utf-8?Q?e?= for
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
  lib/igt_core: capture logs for child processes (rev4)
-Message-ID: <20250324110012.llo2qrnuaqqggbxe@pawelsik-desk>
+Message-ID: <20250324110223.tbd5se32w3xlr6oq@pawelsik-desk>
 References: <20250321120344.737080-1-pawel.sikora@linux.intel.com>
- <174260451131.66435.3086604280866089528@18a75f3d1eae>
+ <174259529391.65891.15339581543553862467@18a75f3d1eae>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <174260451131.66435.3086604280866089528@18a75f3d1eae>
+In-Reply-To: <174259529391.65891.15339581543553862467@18a75f3d1eae>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,7 +70,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi I915,
 
-On Sat, Mar 22, 2025 at 12:48:31AM -0000, Patchwork wrote:
+On Fri, Mar 21, 2025 at 10:14:53PM -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: lib/igt_core: capture logs for child processes (rev4)
@@ -79,7 +79,7 @@ On Sat, Mar 22, 2025 at 12:48:31AM -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from CI_DRM_16301_full -> IGTPW_12812_full
+> CI Bug Log - changes from XEIGT_8278_full -> XEIGTPW_12812_full
 > ====================================================
 > 
 > Summary
@@ -87,47 +87,42 @@ On Sat, Mar 22, 2025 at 12:48:31AM -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_12812_full absolutely need to be
+>   Serious unknown changes coming with XEIGTPW_12812_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_12812_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in XEIGTPW_12812_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12812/index.html
+>   
 > 
-> Participating hosts (9 -> 10)
+> Participating hosts (4 -> 4)
 > ------------------------------
 > 
->   Additional (1): shard-glk-0 
+>   No changes in participating hosts
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_12812_full:
+>   Here are the unknown changes that may have been introduced in XEIGTPW_12812_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_flip@flip-vs-blocking-wf-vblank:
->     - shard-snb:          [PASS][1] -> [FAIL][2] +1 other test fail
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16301/shard-snb2/igt@kms_flip@flip-vs-blocking-wf-vblank.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12812/shard-snb6/igt@kms_flip@flip-vs-blocking-wf-vblank.html
+>   * igt@kms_async_flips@async-flip-with-page-flip-events-atomic:
+>     - shard-bmg:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8278/shard-bmg-4/igt@kms_async_flips@async-flip-with-page-flip-events-atomic.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12812/shard-bmg-1/igt@kms_async_flips@async-flip-with-page-flip-events-atomic.html
 > 
->   * igt@kms_flip@flip-vs-blocking-wf-vblank@a-edp1:
->     - shard-mtlp:         [PASS][3] -> [FAIL][4] +1 other test fail
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16301/shard-mtlp-1/igt@kms_flip@flip-vs-blocking-wf-vblank@a-edp1.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12812/shard-mtlp-8/igt@kms_flip@flip-vs-blocking-wf-vblank@a-edp1.html
+>   * igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:
+>     - shard-lnl:          NOTRUN -> [ABORT][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12812/shard-lnl-7/igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p.html
 > 
->   * igt@kms_flip@flip-vs-blocking-wf-vblank@b-dp4:
->     - shard-dg2:          [PASS][5] -> [FAIL][6] +2 other tests fail
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16301/shard-dg2-10/igt@kms_flip@flip-vs-blocking-wf-vblank@b-dp4.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12812/shard-dg2-10/igt@kms_flip@flip-vs-blocking-wf-vblank@b-dp4.html
-> 
->   * igt@kms_flip@wf_vblank-ts-check-interruptible@b-hdmi-a1:
->     - shard-tglu:         NOTRUN -> [FAIL][7] +1 other test fail
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12812/shard-tglu-7/igt@kms_flip@wf_vblank-ts-check-interruptible@b-hdmi-a1.html
+>   * igt@kms_plane_alpha_blend@constant-alpha-mid:
+>     - shard-dg2-set2:     [PASS][4] -> [INCOMPLETE][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8278/shard-dg2-466/igt@kms_plane_alpha_blend@constant-alpha-mid.html
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12812/shard-dg2-434/igt@kms_plane_alpha_blend@constant-alpha-mid.html
 > 
 
 Unrelated to my change.
