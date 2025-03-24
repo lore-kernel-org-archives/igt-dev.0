@@ -4,184 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD38C36002
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 17:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CC9EC36002
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 18:17:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4A25C10E4A2;
-	Mon, 24 Mar 2025 17:27:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1056D10E4AC;
+	Mon, 24 Mar 2025 18:17:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K1YrxrnD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LGQUUQTw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81E3B10E4A2
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 17:27:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA32D10E4AC
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 18:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742837236; x=1774373236;
+ t=1742840247; x=1774376247;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=uTt7JVUOb2+b8n9Jq7uk+V7kepVFQA6300eIfa9CDoQ=;
- b=K1YrxrnDGFNl3Nn20SYQP3cdfu4SM5yI6ImVbixbwdIfqRCUVBJIKy2I
- zVGVcu0en/c3EuZhc6v/oKoPuY2r7Mw0Iim71UQzHv47uREWGGqxqPrvO
- gx3wQuaOMN/SACgpn6MufDyz7fXhH+kb3rwYZRSM+H4GYG3NOzEGxiWG/
- jiozLupTWaVNOUq5xBAti/qfxGb84yFWv06WxGi6Xq2LfJA2eItn82aTs
- 3IqkiJD1muaMt/V5P8cYv6b7ZsT48L9iljraxR4YGKzgmkMfeUWHYSAkH
- bSi5nYpcWcWfXyohbRi6KOxN1VoTVjJr5soekQ65hDbLP5aCmX5CSx3bI w==;
-X-CSE-ConnectionGUID: HfCVn4/VTiuY4+KzvDD4VA==
-X-CSE-MsgGUID: t5nVJsxWTb+Ob1Qpn0YxAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="44074457"
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="44074457"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 10:27:15 -0700
-X-CSE-ConnectionGUID: OaMPi81zRPWF1lHaMt+QgQ==
-X-CSE-MsgGUID: B7JLzSZKTR+12Ra8Qm1AJg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=U15mTzCV+pC5cmQT+xdwJgmjG8lLpFu/S2jts0BREe8=;
+ b=LGQUUQTwCthQIKT9aPrWgYJYOJhZsQTrehtURyXFcNYDK6QGA9IZx0js
+ dXrY2WJwSRZcNRPn8sd2MiCsLVID1jR8SMTm0bW5w9fzTnGPKODOzPpLW
+ NpOMVyKgnio2CTBrllCh+2W0jGip9XK9EqH6G9o86hbZqCDYA40nRiLze
+ TqXKxYyKyiLPheBzdMB8dK593oLatEH2VuB2RbAMY1SOJDiVRzyejvjgS
+ vn/QPirZZ4R5ZIT0HCzhAYG39wESavaVLqsDJc9luenEFfGsTS/TH6eMy
+ 9M2FcW++wFqCTdONM9BNsm5KOViq6eSHyyIvCIvYSMrxIcDnN+0fLYgVq Q==;
+X-CSE-ConnectionGUID: Y5AXBNR2TmmUqMzCDviJoQ==
+X-CSE-MsgGUID: pyi8y4+sT8aJnq1nmqePDQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="54728839"
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="54728839"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2025 11:17:27 -0700
+X-CSE-ConnectionGUID: 89TSHZfsQmOBuWSxwv3alg==
+X-CSE-MsgGUID: 27LD1K3rQk+wW3xTm1f1OQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="147310489"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 10:27:15 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 24 Mar 2025 10:27:14 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 24 Mar 2025 10:27:14 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.46) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 24 Mar 2025 10:27:14 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M9dksJRvcbHwMEqpzaoWRyb0fB85JmjVpz21qVwGU+LEPMs7j82rQDjqQfg9Eihd0ryP9zWdqJlCMEoVc2Ho+iUn+AVBYO7mG0htwXrgiWrMI/GOyN3nra1YQnaFPFHhbM0lbF3nE1Fm4ZS75OP9u44HaSXT8c/nSmdN017U7jOgd28uXFi1lUGnzNpLS8M0S596m/fR7sugpyurQY5YX4u9Kbm6cfpO+CZTApAcZ0oWPCwLfcUrytCnU8ylJAGc3Yi8tRZ2uvn7GrilsssmgMpsOvejRJ4RAWD6Of0nfH9ldpyuwomIQ+AlmA31el/LiBsrqigD7IREZo6ZDvVG0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/Hw/hjEkuEUq3IZxZpliepmG1LRehHxqQN67E3qLqec=;
- b=a6hJcsMBmFRpArfdNtVu15UcP1UERgvnz7i8ZBJHhuMKZvlMpvFncSGEkemZNbCGujHVvAoDugC2+OJOGVYx0DS8AfAOFCY6vm1Gs79M+OYxlkmxn4mYhT/NbAtVpCW0eARf2zIjN+lVZCLGlhFjtDiwCmRtWZH9eIyDBp3lbJKZ/WcL6XAkBvUO/aVYyyBQq/zujZZ+JcTRS8cVIGh693UF+c2m/YPT2m9/kh2AeHZcC5UgNZj09Wmu2JtetB9/e+yOfKOJwRFpqTNuDmUAFtCMRl2HgZ4YwEpmLSgDI+TPLzOUqrvsBbUtHCCChx4TviL08uvsxG+nQYNjY69T4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
- by SN7PR11MB7706.namprd11.prod.outlook.com (2603:10b6:806:32c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 17:27:12 +0000
-Received: from DS0PR11MB7408.namprd11.prod.outlook.com
- ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
- ([fe80::6387:4b73:8906:7543%4]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
- 17:27:12 +0000
-Date: Mon, 24 Mar 2025 10:27:09 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Riana Tauro <riana.tauro@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <anshuman.gupta@intel.com>,
- <lucas.demarchi@intel.com>, <michal.wajdeczko@intel.com>,
- <satyanarayana.k.v.p@intel.com>
-Subject: Re: [PATCH i-g-t v3 3/3] tests/intel/xe_pmu: Add a test to validate
- engine activity on a function
-Message-ID: <Z+GV7RgTM1WProWR@soc-5CG1426VCC.clients.intel.com>
-References: <20250321110958.3557106-1-riana.tauro@intel.com>
- <20250321110958.3557106-4-riana.tauro@intel.com>
- <Z93RKX27VZA4sYR8@soc-5CG1426VCC.clients.intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Z93RKX27VZA4sYR8@soc-5CG1426VCC.clients.intel.com>
-X-ClientProxiedBy: MW4PR03CA0209.namprd03.prod.outlook.com
- (2603:10b6:303:b8::34) To DS0PR11MB7408.namprd11.prod.outlook.com
- (2603:10b6:8:136::15)
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; d="scan'208";a="124907480"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 11:17:24 -0700
+Date: Mon, 24 Mar 2025 19:17:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Poosa, Karthik" <karthik.poosa@intel.com>
+Cc: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Subject: Re: [PATCH i-g-t v4 2/2] tests/intel/xe_pm: Add a check for power
+ management capability
+Message-ID: <20250324181710.ksj44kgbsnahc66y@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Poosa, Karthik" <karthik.poosa@intel.com>,
+ "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>
+References: <20250318150108.1055169-1-jakub1.kolakowski@intel.com>
+ <20250318150108.1055169-3-jakub1.kolakowski@intel.com>
+ <30298e71-5dc6-477a-b3ef-73f0996b9e35@intel.com>
+ <5c0a4a66-8e05-4f14-acc0-96487cc43590@linux.intel.com>
+ <337176d1-41f4-481e-b81e-0f818f45a4ba@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|SN7PR11MB7706:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3ff9ddc-3382-4919-f01a-08dd6af91cac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TWNYMnZvRU0xK1dtZ2NJQlpJY0V4TzB5ck5KUm13eERSTThqTU1vTWNLNURB?=
- =?utf-8?B?aWMvOVA2eEpJR1JJMXZpUU02SDlXd2tldFIyWVVVQXRMQUdYcVRZWDRUbXNI?=
- =?utf-8?B?OVhYMWR3Wkp2dWRIY2Z5SDMxN1Vld3pWSEc4V0o2ZzJNQzZzTzI2YnRPK2c3?=
- =?utf-8?B?ZitDMkZVOElpQ0pnV1Nic2xZcVRjY05HUFRjVU51eXR2czVBWUFPaWtEYTNZ?=
- =?utf-8?B?Y0hiVGJqV2RGbk5wbGlsZ2ZBYlBMRTRPTnoxb0FvS0xJMXJyak5EOUlUaVpP?=
- =?utf-8?B?Wkl1cTFFL2RhaUFJUnRXUWk0SlpOYWNIb1RuRk1NcXY1dVFXZlhKdzhHcUpo?=
- =?utf-8?B?Y2xDYjFFUnh5NFpEZG1JMENzVkpOOUsxUkpkVEhHMERENHVXTHFKTDVHRlhr?=
- =?utf-8?B?Sjh2ZG1HeG5GcE5LRC9VdktEQzY0a3BhTXVOQ0lGWHh2TnFSTDlhTHd6ODNk?=
- =?utf-8?B?NFcrSk5ZVXVlRTR4aE1rbytSNmxDNWFnV1BoS0crZ1I1K1N2UHJzNkxKWDMz?=
- =?utf-8?B?S1BOalRWNkpTQm9uZ2lIQitaSW1zaGtJT2xKakZSNFVCZSs3YkRnRFQ2UnVz?=
- =?utf-8?B?TVZGcWdWSEFnY0pYTW9XUzAxVlgzNEREWEdDSGpBOWl4RWdBcDFLTlJRbklT?=
- =?utf-8?B?NWZvM0dySWtKSWRiem5MK2cvZXFvakxTd1Jtd29hc1pnd2IrMXpIU250eUNL?=
- =?utf-8?B?NEpMajh6SDFwL0lzU1Z6MFFGeTJRNkE2SDZ2cFM3RStKV2hoS0E5dUJHUThx?=
- =?utf-8?B?SUZNYU1xTFU4NTVyd1JvUktzdWdIT1dPQW4rRFJxT20weFoyRXpuOGpGSEFW?=
- =?utf-8?B?eDNPY2JRaVYvdkcveDIrb3BQNklnK2paUDUyWGFkWUc0Wm1EQWhnTGh3UFJP?=
- =?utf-8?B?ZGNMTWVMaVAzaXY5eTBsUVFOTnB5M3NKWVdsSGF0dHdxMkNwS1IwNkhkZk5J?=
- =?utf-8?B?enFKTzNHRFdlZ3hreXVEajB1WEVaSWNvRFRkTTZZYmEwY3M5YTZhSHZyQmFk?=
- =?utf-8?B?cnlOSUF1S1VSUitWTzVPREZxSWlBaEZCZ0M1WXc1cUl2RkFFL3VybW5UdTNN?=
- =?utf-8?B?cnlwYVhpbWhwOHpTSDVTY0VncmNoNkZmZFJRaWRuMDhxQzczZmFreUlKYkRO?=
- =?utf-8?B?UEhlT0x3a2IzT3pNWkIrTGsreTkrQTZadnR4QnVra3RDRXdkL0xrYkJoMDdM?=
- =?utf-8?B?VnBadEw0clRYUjhpZG5ZVStsQmY1ZitGOUJIUGl5TVVKOExobmdxNEQ4QUc0?=
- =?utf-8?B?cUdxTTU0TXZpd3ZKZXl0bnhva3pTNCtVQjRlSEE0a0xvWHNGeEFva3dVTWto?=
- =?utf-8?B?QytJc3BOcFpwKzJqZHRhUUJwUFU3VS96c3RVaEt1eVlMMkNRZ2tpNlBHZFV4?=
- =?utf-8?B?RGZoN1ZZbklmeGd5Q3lwOE1MOUpLZ0tpV21vMlpsKzJId0g2NXlodE1YU3Uv?=
- =?utf-8?B?SURQWDEwbU04aDluZDBUbStnWjZpbDc1Q2NQZ1EvdGVEK2FFeURzZkpaTnRu?=
- =?utf-8?B?bnRLRzA2ZHFWanBvNUtRWTJ5d2xtanFEQ2pnc3psL042azIyczhJMW9pY1Ay?=
- =?utf-8?B?b3hhaXJDelNmRjJoenl4cndGaFhkK0VMNUVleitNRTdCZ3JsVW14eTBQV25s?=
- =?utf-8?B?Qzl4Wmdic1d6amorVmVYcTFFdW5qMDhyK2g4KzlQa2krbUk2ZkJQcGIyZDB4?=
- =?utf-8?B?N3ZneloyY1p3eXpZZWdKMXk1b21WQlZ3WkxlNlhLRWlPQkpqSnJ4YW1mVXAz?=
- =?utf-8?B?VjNJUkFFek9uTis2ZkJOaEU4QVB2bWIyWUJGQTZ6RnhMVEgxVGhtLzlEa1Jy?=
- =?utf-8?B?LzczMnRHZnBsYWtlT1NhdlVNL2dDWGtJaWRSdGFOYmZoN05ieUdnakpIVnB2?=
- =?utf-8?Q?dvQtIYTz1ff4Z?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZG1kMDVtOEpBTlE2bWw4cEVrdlNtNGt1NmswaHlMSVVwUnJMajlEOEJTT0l4?=
- =?utf-8?B?a0pVM0cxcHo3cEJKZ1ZPKzhTck1hN3VHdVJHWmwrK0RPeUxiZnN3bWNmTzR6?=
- =?utf-8?B?KzZKN0QzS3JIc01lSUxuZkpxZEJsTkJFZ25yT3J2SldXWUFYdTBYK2tlcm4v?=
- =?utf-8?B?d3dPMHVUTUVhUGNYalFYWE9LZ0N1cy9aeHQrMk50RHBrNWJLcmNLUjBEVTAx?=
- =?utf-8?B?WmxPcWF6SjVhUU5CendDeHUyZytXZGtrOUxMd01nQlE3eWJCa0JSRHN3V2hE?=
- =?utf-8?B?RTlLalpDQndTWG5ZS05tbGdxU0NPK1hjOHFUN0wvVjJRSHE3dE9XSlo0TXJ0?=
- =?utf-8?B?eVdrMU9sS1pheW9sUG9YUUlhNUsvekxndXZWaVppVzc4YlJySjRIM3pFUkxq?=
- =?utf-8?B?bzhhUlZSOXA2YnNHczUwUDcvYSt5WlVCWWc5OCs4R3hUNnptZDNHdlk3Tzky?=
- =?utf-8?B?eTJ1Z2hNNnFEWXpUMHh1bEI0aThUUTNFMk1xUGRwSnlNaUVUcFVWdjBoeHE2?=
- =?utf-8?B?QjJuMHA5N3VOeWFWenN6OHBic2Nrb0hDbm5LcG01NUkzbzEvMmtLSkFyTVN4?=
- =?utf-8?B?Z1J0Yjc1b3kzbTdtcjBwMXRYRGkxdS84S2txL0c0cElDZE1tRnBpR3hXT2tp?=
- =?utf-8?B?ZVhuMjVPb2QzblU0d21wNDVRRHlHUGVPdG5xQ2g4MUJrbVhKOEV2UENJMGZ2?=
- =?utf-8?B?TTFVWk5OWWJaOTU5aWdjVVVMMHBqbGNraGJwQWttc0JiM3hxdjdZanpYVVFN?=
- =?utf-8?B?cmJxZkx4UFNhWXhPanZRbU5rZVZrTXRvelpIZ2dXTDJ5RXhHMWhNczFsRWt6?=
- =?utf-8?B?R0orUmxCVGppNjI4M2d1SFN4eERiNGF0SFBXdDR4T1J6dVRMSE4vcU9LSTc5?=
- =?utf-8?B?TDFTRkxuQTh5RWxac2tOaExuUFpLMTlhZ3pINi9xR3lCQ3hDT1cvOXBwcC9L?=
- =?utf-8?B?clR4SkJlalFWc0x3YjdIRkx1QTdZZDRJdS81ZHoyL05WVk9NQndCU0RyODRa?=
- =?utf-8?B?MDZBN2FFa1BVa1A1SjhkT2YvalBKRG4vWW5Vb2t6MHhDa1VBR212RXBKMVM4?=
- =?utf-8?B?UW1nanRvWTk3dzEvR0gxdlNjUTJGdDV2a3QrY3lUOTVhQmw1Tk8wUkRVSFBK?=
- =?utf-8?B?OXJidFlUV2I4UU5HS2MrOTdodlVEeUhmOHNycDEzTitjVWh2YkJoVGRNUUpI?=
- =?utf-8?B?c2kzcm9lR01IZzYyWU95aTVRYjJORy9XK2VtUVlTNW5VUDRsZ2ptcEppVHJI?=
- =?utf-8?B?NHp3bmJ1d3RWUkRRR3pUWnBIeU8ycm1HN0R5VlYxU2lLRXgyMUZPOWhobG4r?=
- =?utf-8?B?RnZJZ3VNU003NFZuVlFYNXdqdmNLSUtGKzZTd1NBVTJoOXhPOUd6YjJ1dnNT?=
- =?utf-8?B?bGhoSlhUdjZGTXRnRm9leFo1T1BYMEpGOE1uQlgrY0FBN3k3TUY5U004MnpW?=
- =?utf-8?B?bDZpNnQ0NWU1N2J1YjgxTGdDYUR1WnVnaXV0OWpzYitLMWFMcDgwTXZiQnFB?=
- =?utf-8?B?T2xldGIzN1lBL0lTK3lERzVleGRldnJBWDc3LzhLNGF4TjVuZ0VndHM2L0xC?=
- =?utf-8?B?aFEzam1YamtLU01xNjhBQVZpeGZkek5aMHZSdHVocG5wN2paZUE3VTdxM1dz?=
- =?utf-8?B?Uk4wWjJyYklqVWwxVUhwZjY3WnIyeU1YaUVTZE83Nlk3UTIxU2dMcXZPR1Vz?=
- =?utf-8?B?Njk3aTBxREhqS25mWk5OUDBFbDUraGZySW1mdTc5YzEzbUxKcTFRUEkvbWx1?=
- =?utf-8?B?eUt0SUlFczJGL2crNStaeHRXL3p6c0kvSGY1d2FFVm5mYWFVR3NkSnQvWjFn?=
- =?utf-8?B?RmNGNGN1QkZFMW0ybjc5WU5Wcll6WDZmV0xnSUdzZEV1QTFhSTMyMCthVlhP?=
- =?utf-8?B?TS9zNzZWdjUxZU9LUXQxZFd2dU1lYmRVQUYxcDdsRmtqRnFMLzVlQWg3b2E3?=
- =?utf-8?B?K1I0RnIvMW5GSWVYU2NVTm9oRGJpcFNlZER3cWVZOEZmR1V3THF2Vmx2SEo0?=
- =?utf-8?B?NC9UdnNTdTBHRDhNbG1jVFp0YXZCU0hDeWZEL1BZN055VUpPblZka3pRMWlY?=
- =?utf-8?B?ckU2UytkSFJiMmcrSE9xd0V2Qis1OU43WEs3Q2RiVmEvMXc2UXRWUk1HTWFI?=
- =?utf-8?B?TFBHQjhvN2tDWlJ0WW1nRjRjRXY4SmcrR3c4dU85M0liVjNTVTdiM2ZEcUNs?=
- =?utf-8?Q?UaHSQDU0x4SQcjmPjocBaoM=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3ff9ddc-3382-4919-f01a-08dd6af91cac
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 17:27:11.9043 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UskmybIKxdHeXbmSSmoU1mmKOJF4Ut30xPvBp/fT9SolQbbhH05DV3/og0Fvt4lU077rWn6+ZEaDNLQzy8qftwCrQFvv1vxhxUXdJo2Rxsk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7706
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <337176d1-41f4-481e-b81e-0f818f45a4ba@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,150 +86,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 21, 2025 at 01:50:49PM -0700, Umesh Nerlige Ramappa wrote:
->On Fri, Mar 21, 2025 at 04:39:58PM +0530, Riana Tauro wrote:
->>Add two tests to run workload on one function at a time with different
->>scheduling policies. If sched-if-idle is set to true, then the functions
->>use the execution quantum even if idle
->>
->>v2: add additional test for sched if idle (Umesh)
->>
->>Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->>---
->>tests/intel/xe_pmu.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
->>1 file changed, 85 insertions(+)
->>
->>diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
->>index 9a1f9b39e..5aa3ea332 100644
->>--- a/tests/intel/xe_pmu.c
->>+++ b/tests/intel/xe_pmu.c
->>@@ -29,6 +29,7 @@
->>
->>const double tolerance = 0.1;
->>static char xe_device[NAME_MAX];
->>+static int total_exec_quantum;
->>
->>#define test_each_engine(test, fd, hwe) \
->>	igt_subtest_with_dynamic(test) \
->>@@ -262,6 +263,76 @@ static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *
->>	}
->>}
->>
->>+/**
->>+ * SUBTEST: fn-engine-activity-load
->>+ * Description: Test to validate engine activity by running load on a function
->>+ *
->>+ * SUBTEST: fn-engine-activity-sched-if-idle
->>+ * Description: Test to validate engine activity by running load on a function
->>+ */
->>+static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci, int function)
->>+{
->>+	uint64_t config, engine_active_ticks, engine_total_ticks, before[2], after[2];
->>+	double busy_percent, exec_quantum_ratio;
->>+	struct xe_cork *cork = NULL;
->>+	int pmu_fd[2], fn_fd;
->>+	bool sched_if_idle;
->>+	uint32_t vm;
->>+
->>+	if (function > 0) {
->>+		fn_fd = igt_sriov_open_vf_drm_device(fd, function);
->>+		igt_assert_fd(fn_fd);
->>+	} else {
->>+		fn_fd = fd;
->>+	}
->>+
->>+	config = get_event_config_fn(eci->gt_id, function, eci, "engine-active-ticks");
->>+	pmu_fd[0] = open_group(fd, config, -1);
->>+
->>+	config = get_event_config_fn(eci->gt_id, function, eci, "engine-total-ticks");
->>+	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
->>+
->>+	vm = xe_vm_create(fn_fd, 0, 0);
->>+	cork = xe_cork_create_opts(fn_fd, eci, vm, 1, 1);
->>+	xe_cork_sync_start(fn_fd, cork);
->>+
->>+	pmu_read_multi(pmu_fd[0], 2, before);
->>+	usleep(SLEEP_DURATION * USEC_PER_SEC);
->>+	pmu_read_multi(pmu_fd[0], 2, after);
->>+
->>+	xe_cork_sync_end(fn_fd, cork);
->>+
->>+	engine_active_ticks = after[0] - before[0];
->>+	engine_total_ticks = after[1] - before[1];
->>+
->>+	igt_debug("[%d] Engine active ticks: after %ld, before %ld delta %ld\n", function,
->>+		  after[0], before[0], engine_active_ticks);
->>+	igt_debug("[%d] Engine total ticks: after %ld, before %ld delta %ld\n", function,
->>+		  after[1], before[1], engine_total_ticks);
->>+
->>+	busy_percent = (double)engine_active_ticks / engine_total_ticks;
->>+	exec_quantum_ratio = (double)total_exec_quantum / xe_sriov_get_exec_quantum_ms(fd, function, eci->gt_id);
->>+
->>+	igt_debug("Percent %lf\n", busy_percent * 100);
->>+
->>+	if (cork)
->>+		xe_cork_destroy(fn_fd, cork);
->>+
->>+	xe_vm_destroy(fn_fd, vm);
->>+
->>+	close(pmu_fd[0]);
->>+	close(pmu_fd[1]);
->>+
->>+	if (function > 0)
->>+		close(fn_fd);
->>+
->>+	sched_if_idle = xe_sriov_get_sched_if_idle(fd, eci->gt_id);
->>+	if (sched_if_idle)
->>+		assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
->>+	else
->>+		assert_within_epsilon(busy_percent, exec_quantum_ratio, tolerance);
->>+}
->
->Test looks good. With the comments in Patch 2 addressed, this is:
+Hi Poosa,,
+On 2025-03-19 at 20:29:29 +0530, Poosa, Karthik wrote:
+> 
+> On 19-03-2025 13:44, Bernatowicz, Marcin wrote:
+> > 
+> > 
+> > On 3/19/2025 9:05 AM, Poosa, Karthik wrote:
+> > > 
+> > > On 18-03-2025 20:31, Jakub Kolakowski wrote:
+> > > > Add a check for power management capability of device tested in tests
+> > > > related to D3 states. Currently if test is started on configuration
+> > > > that does not support the PM capability it doesn't skip, instead
+> > > > depending on test it may fail, abort or timeout.
+> > > > With this change test will skip with a clear message why it did.
+> > > > 
+> > > > Cc: Adam Miszczak<adam.miszczak@linux.intel.com>
+> > > > Cc: Lukasz Laguna<lukasz.laguna@intel.com>
+> > > > Cc: Marcin Bernatowicz<marcin.bernatowicz@linux.intel.com>
+> > > > Signed-off-by: Jakub Kolakowski<jakub1.kolakowski@intel.com>
 
-As is,
+Applied with a comment added in first commit:
+For SR-IOV VFs (Virtual Functions) the Power Management Capability
+is optional.
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Thank you for a fix.
 
-Thanks,
-Umesh
->
->Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->
->Thanks,
->Umesh
->>+
->>/**
->> * SUBTEST: gt-c6-idle
->> * Description: Basic residency test to validate idle residency
->>@@ -324,6 +395,8 @@ static unsigned int enable_and_provision_vfs(int fd)
->>	for (vf = 1; vf <= num_vfs; vf++)
->>		igt_sriov_bind_vf_drm_driver(fd, vf);
->>
->>+	total_exec_quantum = pf_exec_quantum + (num_vfs * vf_exec_quantum);
->>+
->>	return num_vfs;
->>}
->>
->>@@ -371,6 +444,18 @@ igt_main
->>		test_each_engine("all-fn-engine-activity-load", fd, eci)
->>			engine_activity_all_fn(fd, eci, num_fns);
->>
->>+		igt_describe("Validate per-function engine activity");
->>+		test_each_engine("fn-engine-activity-load", fd, eci)
->>+			for (int fn = 0; fn < num_fns; fn++)
->>+				engine_activity_fn(fd, eci, fn);
->>+
->>+		igt_describe("Validate per-function engine activity when sched-if-idle is set");
->>+		test_each_engine("fn-engine-activity-sched-if-idle", fd, eci) {
->>+			xe_sriov_set_sched_if_idle(fd, eci->gt_id, 1);
->>+			for (int fn = 0; fn < num_fns; fn++)
->>+				engine_activity_fn(fd, eci, fn);
->>+		}
->>+
->>		igt_fixture {
->>			igt_sriov_disable_vfs(fd);
->>			/* abort to avoid execution of next tests with enabled VFs */
->>-- 
->>2.47.1
->>
+Regards,
+Kamil
+
+> > > > ---
+> > > >   tests/intel/xe_pm.c | 3 +++
+> > > >   1 file changed, 3 insertions(+)
+> > > > 
+> > > > diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> > > > index c2026474d..70f0613fb 100644
+> > > > --- a/tests/intel/xe_pm.c
+> > > > +++ b/tests/intel/xe_pm.c
+> > > > @@ -146,6 +146,9 @@ static void vram_d3cold_threshold_restore(int sig)
+> > > >   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
+> > > >   {
+> > > > +    igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
+> > > > +              "PCI power management capability not found\n");
+> > > 
+> > > Hi Jakub,
+> > > 
+> > > As per PCIe Base spec, all PCI Express Functions are required to
+> > > support PCI Power Management Capability.
+> > > 
+> > > Only legacy PCI devices wouldn't have it.
+> > > 
+> > > Can you share details of failures without this capability.
+> > > 
+> > > All Xe supported GPUs are PCIe complaint, this check may not be
+> > > needed at all.
+> > 
+> > This happens for runs with Virtual Function (VF) passed to Virtual
+> > Machine (VM).
+> > 
+> > "9.6 SR-IOV Power Management
+> > This section defines the PCI Express SR-IOV power management
+> > capabilities and protocols.
+> > The Power Management Capability is required for PFs as described in
+> > Chapter 5 .
+> > For VFs, the Power Management Capability is optional."
+> > 
+> > -- 
+> > marcin
+> Okay, LGTM then.
+> Reviewed-by: Karthik Poosa <karthik.poosa@intel.com>
+> > > 
+> > > > +
+> > > >       dpms_on_off(device, DRM_MODE_DPMS_OFF);
+> > > >       /*
+> > 
