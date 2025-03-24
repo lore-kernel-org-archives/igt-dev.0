@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86F01C36002
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 07:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC404C36002
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 08:08:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4785F10E1B6;
-	Mon, 24 Mar 2025 07:19:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eW+IoFuf";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AE9810E1B6
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 07:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742800776; x=1774336776;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xBlVXXWiMEzFWluWpVUBhE381HDz/H3Wf3MFVbL8FMg=;
- b=eW+IoFuf1dTGBeggVO2GGljIQYc1eR0nSOsIeum2B18dZIVg1ivFG22z
- Coadp/3BPYNpPUg1Bfzl+0BCjTYprNDHwjMn4qrapGYkHjMztRKX0pu6R
- I1IwuL0lrX3d362Rkva85B/LFI6lfw2R/Jud78GzZNDfTWJWrx38OFhUE
- ornjYaoWhacsBTfjb3sLbINlpHYgpK5IelRwHwYaGN2XtE6eBw5ACve0+
- bebCSeKuIDVRZlCRC+5Wx2DdGJe0BCmOtWLM4YNfJs8Z4NVUXjgOiz8/m
- 3OulwRARapteSB4se+WaI1cDpuA4QgKcnEin0c9YbVWRrv7sqLDBdrIh+ w==;
-X-CSE-ConnectionGUID: XiDMlOrgTii3S8VeYO6QEQ==
-X-CSE-MsgGUID: nqu7V/IMQhuYWjlHyKxkPQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="44172475"
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="44172475"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 00:19:32 -0700
-X-CSE-ConnectionGUID: w58DJ9UjQLixTqENZnuvGA==
-X-CSE-MsgGUID: XH5bf0IESKa00dF3u1HsJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="128113976"
-Received: from unknown (HELO nakshtra-System-Product-Name.iind.intel.com)
- ([10.190.238.69])
- by fmviesa003.fm.intel.com with ESMTP; 24 Mar 2025 00:19:30 -0700
-From: nakshtra.goyal@intel.com
-To: igt-dev@lists.freedesktop.org,
-	ramadevi.gandi@intel.com
-Cc: francois.dugast@intel.com, sai.teja.pottumuttu@intel.com,
- ashutosh.dixit@intel.com, umesh.nerlige.ramappa@intel.com
-Subject: [PATCH v4 i-g-t] tests/intel/xe_fault_injection: Inject errors during
- observation IOCTL
-Date: Mon, 24 Mar 2025 12:49:18 +0530
-Message-Id: <20250324071918.3119445-1-nakshtra.goyal@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6461910E219;
+	Mon, 24 Mar 2025 08:08:58 +0000 (UTC)
+Received: from 18a75f3d1eae (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7286110E226;
+ Mon, 24 Mar 2025 08:08:56 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2404977359244462667=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5F?=
+ =?utf-8?q?injection=3A_Inject_errors_during_observation_IOCTL_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nakshtra.goyal@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 24 Mar 2025 08:08:56 -0000
+Message-ID: <174280373646.70583.1344072219471141964@18a75f3d1eae>
+X-Patchwork-Hint: ignore
+References: <20250324071918.3119445-1-nakshtra.goyal@intel.com>
+In-Reply-To: <20250324071918.3119445-1-nakshtra.goyal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,147 +37,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nakshtra Goyal <nakshtra.goyal@intel.com>
+--===============2404977359244462667==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Use the fault injection infrastructure to make targeted internal KMD
-functions fail when executing xe_observation_ioctl()
-so that more code paths are tested, such as error handling and unwinding.
+== Series Details ==
 
-v1: Adding remove config at end of test , Adding igt_sysfs into igt_assert
-so test fails if sysfs read fails (Sai Teja)
+Series: tests/intel/xe_fault_injection: Inject errors during observation IOCTL (rev4)
+URL   : https://patchwork.freedesktop.org/series/145531/
+State : success
 
-v2: Run sysfs check before creating config to destroy prev. config if
-present, add one check before creating new config after destroying old
-one (Sai Teja)
+== Summary ==
 
-Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
----
- tests/intel/xe_fault_injection.c | 62 +++++++++++++++++++++++++++++++-
- tests/meson.build                |  1 +
- 2 files changed, 62 insertions(+), 1 deletion(-)
+CI Bug Log - changes from IGT_8278 -> IGTPW_12817
+====================================================
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 5409d19a6..bc117ae40 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -21,6 +21,7 @@
- #include "lib/intel_pat.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_oa.h"
- 
- #define INJECT_ERRNO	-ENOMEM
- #define BO_ADDR		0x1a0000
-@@ -314,10 +315,57 @@ vm_bind_fail(int fd, const char function_name[])
- 	igt_assert_eq(simple_vm_bind(fd, vm), 0);
- }
- 
-+/**
-+ * SUBTEST: oa-add-config-fail-%s
-+ * Description: inject an error in function %arg[1] used in oa add config IOCTL to make it fail
-+ * Functionality: fault
-+ *
-+ * arg[1]:
-+ * @xe_oa_alloc_regs:		xe_oa_alloc_regs
-+ */
-+static void
-+oa_add_config_fail(int fd, int sysfs, int devid, const char function_name[])
-+{
-+	char path[512];
-+	uint64_t config_id;
-+#define SAMPLE_MUX_REG (intel_graphics_ver(devid) >= IP_VER(20, 0) ?	\
-+			0x13000 /* PES* */ : 0x9888 /* NOA_WRITE */)
-+
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+
-+	/* Destroy previous configuration if present */
-+	if (igt_sysfs_scanf(sysfs, path, "%"PRIu64, &config_id) == 1)
-+		igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG,
-+							&config_id), 0);
-+
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+
-+	igt_assert_lt(0, intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_ADD_CONFIG, &config));
-+	igt_assert(igt_sysfs_scanf(sysfs, path, "%"PRIu64, &config_id) == 1);
-+	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG, &config_id), 0);
-+
-+	ignore_faults_in_dmesg(function_name);
-+	injection_list_do(INJECTION_LIST_ADD, function_name);
-+	set_retval(function_name, INJECT_ERRNO);
-+	igt_assert_lt(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_ADD_CONFIG, &config), 0);
-+	injection_list_do(INJECTION_LIST_REMOVE, function_name);
-+
-+	igt_assert_lt(0, intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_ADD_CONFIG, &config));
-+	igt_assert(igt_sysfs_scanf(sysfs, path, "%"PRIu64, &config_id) == 1);
-+	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG, &config_id), 0);
-+}
-+
- igt_main
- {
--	int fd;
-+	int fd, sysfs;
- 	struct drm_xe_engine_class_instance *hwe;
-+	static uint32_t devid;
- 	char pci_slot[NAME_MAX];
- 	const struct section {
- 		const char *name;
-@@ -366,9 +414,16 @@ igt_main
- 		{ }
- 	};
- 
-+	const struct section oa_add_config_fail_functions[] = {
-+		{ "xe_oa_alloc_regs"},
-+		{ }
-+	};
-+
- 	igt_fixture {
- 		igt_require(fail_function_injection_enabled());
- 		fd = drm_open_driver(DRIVER_XE);
-+		devid = intel_get_drm_devid(fd);
-+		sysfs = igt_sysfs_open(fd);
- 		igt_device_get_pci_slot_name(fd, pci_slot);
- 		setup_injection_fault();
- 	}
-@@ -393,6 +448,10 @@ igt_main
- 				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VM_BIND)
- 					exec_queue_create_fail(fd, hwe, s->name, s->flags);
- 
-+	for (const struct section *s = oa_add_config_fail_functions; s->name; s++)
-+		igt_subtest_f("oa-add-config-fail-%s", s->name)
-+			oa_add_config_fail(fd, sysfs, devid, s->name);
-+
- 	igt_fixture {
- 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
- 	}
-@@ -402,6 +461,7 @@ igt_main
- 			inject_fault_probe(fd, pci_slot, s->name);
- 
- 	igt_fixture {
-+		close(sysfs);
- 		drm_close_driver(fd);
- 		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
- 	}
-diff --git a/tests/meson.build b/tests/meson.build
-index 2f5406523..c4a9093c4 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -401,6 +401,7 @@ extra_dependencies = {
- 	'perf_pmu':  [ lib_igt_perf ],
- 	'sw_sync': [ libatomic ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+	'xe_fault_injection': [ lib_igt_xe_oa ],
- }
- 
- test_executables = []
--- 
-2.34.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/index.html
+
+Participating hosts (42 -> 42)
+------------------------------
+
+  Additional (1): fi-skl-6600u 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12817 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_selftest@live:
+    - bat-adlp-9:         [PASS][3] -> [INCOMPLETE][4] ([i915#9413]) +1 other test incomplete
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-adlp-9/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-adlp-9/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][9] +9 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/fi-skl-6600u/igt@kms_dsc@dsc-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-9:         [DMESG-FAIL][10] ([i915#12061]) -> [PASS][11] +1 other test pass
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8278 -> IGTPW_12817
+  * Linux: CI_DRM_16300 -> CI_DRM_16304
+
+  CI-20190529: 20190529
+  CI_DRM_16300: 74f632d1bd3b90ed79883361ca25f1225c0aee58 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16304: 7d069b67cc189960e10c80efd1c301f29a677265 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12817: 8a4d4df1645c0e8a830fa686a151a81f9839b8c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8278: b6673db372bd8987f65948d3a97f8dcd2ef42b01 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/index.html
+
+--===============2404977359244462667==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Inject errors during observation IOCTL (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145531/">https://patchwork.freedesktop.org/series/145531/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8278 -&gt; IGTPW_12817</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/index.html</p>
+<h2>Participating hosts (42 -&gt; 42)</h2>
+<p>Additional (1): fi-skl-6600u <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12817 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-adlp-9/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-adlp-9/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/fi-skl-6600u/igt@kms_dsc@dsc-basic.html">SKIP</a> +9 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8278/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12817/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8278 -&gt; IGTPW_12817</li>
+<li>Linux: CI_DRM_16300 -&gt; CI_DRM_16304</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16300: 74f632d1bd3b90ed79883361ca25f1225c0aee58 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16304: 7d069b67cc189960e10c80efd1c301f29a677265 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12817: 8a4d4df1645c0e8a830fa686a151a81f9839b8c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8278: b6673db372bd8987f65948d3a97f8dcd2ef42b01 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2404977359244462667==--
