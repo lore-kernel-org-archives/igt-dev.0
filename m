@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56E6AC3600C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA286C36008
 	for <igt-dev@archiver.kernel.org>; Mon, 24 Mar 2025 09:04:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0DF8E10E095;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6164310E1BE;
 	Mon, 24 Mar 2025 09:04:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lYH26gm6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a5jp2rzU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33AC510E081
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 09:04:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8662010E095
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Mar 2025 09:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742807069; x=1774343069;
+ t=1742807070; x=1774343070;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zCwbHUc2b8gmDQnHB+uHU70GKD3ZR7DdO8W4+RZBDbU=;
- b=lYH26gm6TuARhep26jWaBzvc4QJ8hzxkV6pEGfswS4prNlfUvIg6hTNA
- C6LoipYzaSVXZCF1wYPNaAqfWXyOwyiVUgeojNVGLCcoxNTQwOgCMPkRg
- b3QrgX/z/z2jSDH5bArSm5WJxXzIHM5H2qL9cP0G4a4lPnWOT4ICozlV/
- tFHEIfhhbBZ3/cINbTJ3Ek5c5UmYvUh7irxjEhDVi1Kg5EgyNTQZ381cp
- T3sHegVygESw6S3sLb9QOXefdQmBDFy5ZIJJ0sdcc/827UFl7lRX1C0n+
- 6/8UG4Am2uu29HohYVXNyIDqBd6LOY+LH+s/Fmp0w20ZgFU9oQPa4BmQ5 A==;
-X-CSE-ConnectionGUID: Us2NSHcvQdelNEvIVe6iLg==
-X-CSE-MsgGUID: txD48p2oTwe7jksM30rH3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="54999667"
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="54999667"
+ bh=bnY2M9amPcHtBYxBdnxdwYqk0ajk8YCyHDRSP2rtX1w=;
+ b=a5jp2rzUVEPXJJPXwGcQ7gJBNsKhdCBzZ1ztHqZOpWfzGcrpRr2BHlik
+ M4WnWts9ImPCM44RftrzM4l6BAUEYAGsjPpoPH/2tVcIjYxSID3BTpwcV
+ eG7bOc7Qq6E/dro/nNlkh3qGNDWulgbLV3m+NmQ0uUBXfaW8Qs4z2GKIX
+ sx7VQ1WU1iEHq0S+z1eOXoLE4eaPCLeRjgagIs+8O6oTBMpG8Pg451o2Z
+ ZtJZyqJdLBWCb0y9wgJRDi2xM8ZmDl+GFAhb9T6gPHYRAy4JWw9D+1lS6
+ NgXiIZVDzJ7IL6oXZ60szuaVyJ9JzvyO2wi7QWWz+sNAw+srtVP8OzIaM w==;
+X-CSE-ConnectionGUID: KDVFQ/cxR3mVRSviGuHhHg==
+X-CSE-MsgGUID: kHN9ruZgT/eOBfZt2Cvxvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="54999673"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="54999673"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 02:04:29 -0700
-X-CSE-ConnectionGUID: NgucfYipQfigJGaaCtXesA==
-X-CSE-MsgGUID: Is3rK3b/RlmBjdXhXhe8Wg==
+ 24 Mar 2025 02:04:30 -0700
+X-CSE-ConnectionGUID: H1Mf4xd2TUaSbpCWPLgd6w==
+X-CSE-MsgGUID: O513G6pQT3uHwZlZ67PUxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="129097359"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="129097371"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 02:04:27 -0700
+ 24 Mar 2025 02:04:28 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 1/3] lib/igt_chamelium: Add
- chamelium_frame_match_or_dump_frame_pair()
-Date: Mon, 24 Mar 2025 14:39:47 +0530
-Message-Id: <20250324090949.614233-2-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: Fix
+ ctm-limited-range subtest
+Date: Mon, 24 Mar 2025 14:39:48 +0530
+Message-Id: <20250324090949.614233-3-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250324090949.614233-1-swati2.sharma@intel.com>
 References: <20250324090949.614233-1-swati2.sharma@intel.com>
@@ -69,103 +69,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add chamelium_frame_match_or_dump_frame_pair() to compare frame
-dumps captured from chamelium.
+Test is fixed, now we take chamelium capture after setting output
+to full and limited range and then compare frame dumps.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_chamelium.c | 60 +++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_chamelium.h |  6 +++++
- 2 files changed, 66 insertions(+)
+ tests/chamelium/kms_chamelium_color.c | 50 +++++++++++++++------------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 620fbbf7d..44a169b29 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -2070,6 +2070,66 @@ bool chamelium_frame_match_or_dump(struct chamelium *chamelium,
- 	return match;
- }
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index 68611ec6a..355047ed6 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -352,9 +352,10 @@ static bool test_pipe_limited_range_ctm(data_t *data,
+ 	gamma_lut_t *degamma_linear, *gamma_linear;
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode = data->mode;
+-	struct igt_fb fb_modeset, fb, fbref;
+-	struct chamelium_frame_dump *frame_limited;
+-	int fb_id, fb_modeset_id, fbref_id;
++	struct igt_fb fb_modeset, fb;
++	struct chamelium_frame_dump *frame_limited, *frame_full;
++	int fb_id, fb_modeset_id;
++	igt_crc_t *reference_crc;
+ 	bool ret = false;
  
-+/**
-+ * chamelium_frame_match_or_dump:
-+ * @chamelium: The chamelium instance the frame dump belongs to
-+ * @frame0: The chamelium reference frame dump to match
-+ * @frame1: The chamelium capture frame dump to match
-+ * @reference_crc: CRC of chamelium reference frame
-+ * @check: the type of frame matching check to use
-+ *
-+ * Returns bool that the provided captured frame matches the reference
-+ * frame from the framebuffer. If they do not, this saves the reference
-+ * and captured frames to a png file.
-+ */
-+bool chamelium_frame_match_or_dump_frame_pair(struct chamelium *chamelium,
-+					      struct chamelium_port *port,
-+					      const struct chamelium_frame_dump *frame0,
-+					      const struct chamelium_frame_dump *frame1,
-+					      igt_crc_t *reference_crc,
-+					      enum chamelium_check check)
-+{
-+	cairo_surface_t *reference;
-+	cairo_surface_t *capture;
-+	igt_crc_t *capture_crc;
-+	bool match;
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
+@@ -380,21 +381,13 @@ static bool test_pipe_limited_range_ctm(data_t *data,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+-
+-	fbref_id = igt_create_fb(data->drm_fd,
+-				 mode->hdisplay,
+-				 mode->vdisplay,
+-				 DRM_FORMAT_XRGB8888,
+-				 DRM_FORMAT_MOD_LINEAR,
+-				 &fbref);
+-	igt_assert(fbref_id);
+-
+ 	igt_plane_set_fb(primary, &fb_modeset);
+ 
+ 	set_degamma(data, primary->pipe, degamma_linear);
+ 	set_gamma(data, primary->pipe, gamma_linear);
+ 	set_ctm(primary->pipe, ctm);
+ 
++	/* Set the output into full range. */
+ 	igt_output_set_prop_value(output,
+ 				  IGT_CONNECTOR_BROADCAST_RGB,
+ 				  BROADCAST_RGB_FULL);
+@@ -402,11 +395,28 @@ static bool test_pipe_limited_range_ctm(data_t *data,
+ 	igt_plane_set_fb(primary, &fb);
+ 	igt_display_commit(&data->display);
+ 
++	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++	frame_full =
++		chamelium_read_captured_frame(data->chamelium, 0);
 +
-+	/* Grab the captured reference frame from chamelium */
-+	reference = convert_frame_dump_argb32(frame0);
++	/* Chamelium calculates the CRC for the most recent
++	 * captured frame; that's why CRC of the reference frame
++	 * is captured here.
++	 */
++	reference_crc = chamelium_get_crc_for_area(data->chamelium, port, 0, 0, 0, 0);
++	igt_assert(reference_crc);
 +
-+	/* Grab the captured frame from chamelium */
-+	capture = convert_frame_dump_argb32(frame1);
+ 	/* Set the output into limited range. */
+ 	igt_output_set_prop_value(output,
+ 				  IGT_CONNECTOR_BROADCAST_RGB,
+ 				  BROADCAST_RGB_16_235);
+ 	paint_rectangles(data, mode, red_green_blue_full, &fb);
++	igt_plane_set_fb(primary, &fb);
++	igt_display_commit(&data->display);
 +
-+	switch (check) {
-+	case CHAMELIUM_CHECK_ANALOG:
-+		match = igt_check_analog_frame_match(reference, capture);
-+		break;
-+	case CHAMELIUM_CHECK_CHECKERBOARD:
-+		match = igt_check_checkerboard_frame_match(reference, capture);
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+
-+	if (!match && igt_frame_dump_is_enabled()) {
-+		/* Get the captured frame CRC from the Chamelium. */
-+		capture_crc = chamelium_get_crc_for_area(chamelium, port, 0, 0,
-+							 0, 0);
-+		igt_assert(capture_crc);
-+
-+		compared_frames_dump(reference, capture, reference_crc,
-+				     capture_crc);
-+
-+		free(reference_crc);
-+		free(capture_crc);
-+	}
-+
-+	cairo_surface_destroy(reference);
-+	cairo_surface_destroy(capture);
-+
-+	return match;
-+}
-+
- /**
-  * chamelium_analog_frame_crop:
-  * @chamelium: The Chamelium instance to use
-diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-index d979de4a2..140d52c95 100644
---- a/lib/igt_chamelium.h
-+++ b/lib/igt_chamelium.h
-@@ -257,6 +257,12 @@ bool chamelium_frame_match_or_dump(struct chamelium *chamelium,
- 				   const struct chamelium_frame_dump *frame,
- 				   struct igt_fb *fb,
- 				   enum chamelium_check check);
-+bool chamelium_frame_match_or_dump_frame_pair(struct chamelium *chamelium,
-+					      struct chamelium_port *port,
-+					      const struct chamelium_frame_dump *frame0,
-+					      const struct chamelium_frame_dump *frame1,
-+					      igt_crc_t *reference_crc,
-+					      enum chamelium_check check);
- void chamelium_crop_analog_frame(struct chamelium_frame_dump *dump, int width,
- 				 int height);
- void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
++	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++	frame_limited =
++		chamelium_read_captured_frame(data->chamelium, 0);
+ 
+ 	/* And reset.. */
+ 	igt_output_set_prop_value(output,
+@@ -414,18 +424,12 @@ static bool test_pipe_limited_range_ctm(data_t *data,
+ 				  BROADCAST_RGB_FULL);
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+-	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
+-	frame_limited =
+-		chamelium_read_captured_frame(data->chamelium, 0);
+-
+ 
+-	/* Verify that the framebuffer reference of the software
+-	 * computed output is equal to the frame dump of the CTM
+-	 * matrix transformation output.
+-	 */
+-	ret = chamelium_frame_match_or_dump(data->chamelium, port,
+-					    frame_limited, &fbref,
+-					    CHAMELIUM_CHECK_ANALOG);
++	/* Verify frame dumps are equal. */
++	ret = chamelium_frame_match_or_dump_frame_pair(data->chamelium, port,
++						       frame_full, frame_limited,
++						       reference_crc,
++						       CHAMELIUM_CHECK_ANALOG);
+ 
+ 	free_lut(gamma_linear);
+ 	free_lut(degamma_linear);
 -- 
 2.25.1
 
