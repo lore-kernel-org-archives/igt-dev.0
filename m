@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BCE8C3DA4A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 490D5C35FFC
 	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 12:22:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7AA310E556;
+	by gabe.freedesktop.org (Postfix) with ESMTP id CFD3110E54F;
 	Tue, 25 Mar 2025 12:22:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GEK6zGPU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sxc2X4FH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C668110E54F
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 12:22:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFD4510E54F
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 12:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742905325; x=1774441325;
+ t=1742905323; x=1774441323;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FsSLeZ15/xJqmL7xWiDPg6Fd+8AocQPLk2KojB7fQpY=;
- b=GEK6zGPUkDOynPvYlnpDFjTlLUaopm05dVI5R2bymXz4rDq7f243OrJD
- VnkHiDdc+NWKPPspF2gD+TfRZfCtxHUnGkeqM3aNMcU09aiSmktjOxO03
- w1V+imHtyVjwTcAyhGN5q1yQgEf3/dEqcLzB2FSZEVqjdDUvg7RenqmnM
- dUpc0L3sX/634z+1UqBha65OO5V+weHxB3XPL1+bLuhW71rio/udp7s/1
- bN22TmtIcvaX4NuxRbJJdAiTK6R4LIhQprFupvBBFgv5C4Ft1QhXrgP1J
- HcpYmJMRbIAJ9c2ShX6Q/kQJnlsnslRga8fkJ7o6d8RUjz0Nlag5DxWpk Q==;
-X-CSE-ConnectionGUID: AX66DUoNT2SyxslIAVlsHA==
-X-CSE-MsgGUID: 5JvbQthtS/+yoba0R1ww+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="48022639"
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="48022639"
+ bh=d/xZS2ZGVWQjhpym6ZHD7gvSsGuMisNZOfOLN4IKuB4=;
+ b=Sxc2X4FH/0WqfzLOTq68yvdkHYy7T3xzAkWF6A52oc8cGHKRDjGGu2es
+ 56ijVnG16tIX4ySIYmx6cuQdRRIUxrg0YzxBiEHH/R47Dx5p16y+4PW8x
+ JLPuuWqcICIqcg4/trd9D9qpZf6t6uJsekX65/quWeYgjB3X04LcvJl69
+ qyUw/DWD3JyBpbCxRFReHFXHdeH+YU9IdtV0nJ8FR0krucaLCH+9W85wU
+ HUEInEhqXSHVOajYJLzHoxiArKKi1j6vDLtSoMldXg6NUNTo3K2bB7oKP
+ 6EueSO9hMYfu0B+bKy9wty43len/1H0jbMKIibORBIDroFR/tEL+bwRXf g==;
+X-CSE-ConnectionGUID: cVTXYz+ZQl+OszPhRUshpQ==
+X-CSE-MsgGUID: 9rvAcKpOS1WNwYnNGmVxLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="48022634"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="48022634"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 05:22:04 -0700
-X-CSE-ConnectionGUID: PniVJwjTRTyHLGJ8ZJmnVw==
-X-CSE-MsgGUID: Uyk0jHtnTMmL+FuVG6m4Ag==
+ 25 Mar 2025 05:22:02 -0700
+X-CSE-ConnectionGUID: qzoeDbG8Rja+gSDMu3PKwg==
+X-CSE-MsgGUID: 90VC5Ss0S66hoYWyrOfWbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="124391611"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="124391577"
 Received: from ifwibot07.gar.corp.intel.com (HELO
  rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 05:22:02 -0700
+ 25 Mar 2025 05:22:00 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
  chaitanya.kumar.borah@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v7 3/4] tests/kms_async_flips: Add test for all async
- format modifiers
-Date: Tue, 25 Mar 2025 17:46:24 +0530
-Message-Id: <20250325121625.2718374-4-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v7 2/4] tests/kms_async_flips: use in_formats_async for
+ async modifiers
+Date: Tue, 25 Mar 2025 17:46:23 +0530
+Message-Id: <20250325121625.2718374-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250325121625.2718374-1-santhosh.reddy.guddati@intel.com>
 References: <20250325121625.2718374-1-santhosh.reddy.guddati@intel.com>
@@ -71,136 +71,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new subtest to iterate through all the supported async format
-modifier pair and perform async flips.
+Utilise IN_FORMATS_ASYNC property exposed to get the list of
+async supported modifier/format pair and improve the test coverage by
+iterating through all the supported modifier format pairs.
+
+V2: Improve run_test_with_modifiers to set data formats based on async
+    formats.
+    Update make_fb to use data formats instead of hard coded format
+
+V3: Update commit message, remove complicated iterations (Chaitanya)
+
+V4: Reduce the format+modifier combinations to reduce time needed to
+    execute the tests. (Chaitanya)
+
+V5: Remove unnecessary check for reduced formats. (Chaitanya)
+
+V6: Introduce new test for all formats and modifiers, executing only one
+    flip to reduce overall time.
+    Update test_with_modifiers to use async modifiers and formats X8888.
+
+V7: split the newly added subtest to separate commit and add condition
+    to skip the test if async format modifiers are not available. Also
+    remove data->fail as it is not needed with the new support (Chaitanya)
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/kms_async_flips.c | 90 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 88 insertions(+), 2 deletions(-)
+ tests/kms_async_flips.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
 diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 369318368..1fdd13b99 100644
+index da426f753..369318368 100644
 --- a/tests/kms_async_flips.c
 +++ b/tests/kms_async_flips.c
-@@ -316,7 +316,7 @@ static void test_async_flip(data_t *data)
- 	do {
- 		int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
+@@ -36,6 +36,7 @@
+ #include "igt.h"
+ #include "igt_aux.h"
+ #include "igt_psr.h"
++#include "igt_vec.h"
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+ #include <poll.h>
+@@ -85,6 +86,9 @@
+  *
+  * SUBTEST: async-flip-suspend-resume
+  * Description: Verify the async flip functionality with suspend and resume cycle
++ *
++ * SUBTEST: async-flip-with-all-modifiers-formats
++ * Description: Verify the async flip functionality with all supported modifiers and formats
+  */
  
--		if (data->alternate_sync_async) {
-+		if (data->alternate_sync_async || data->async_mod_formats) {
- 			flags &= ~DRM_MODE_PAGE_FLIP_ASYNC;
+ #define CURSOR_POS 128
+@@ -122,8 +126,15 @@ typedef struct {
+ 	bool allow_fail;
+ 	struct buf_ops *bops;
+ 	bool atomic_path;
++	unsigned int plane_format;
++	bool async_mod_formats;
+ } data_t;
  
- 			ret = perform_flip(data, frame, flags);
-@@ -360,7 +360,7 @@ static void test_async_flip(data_t *data)
++struct format_mod {
++	uint64_t modifier;
++	uint32_t format;
++};
++
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+ 			 unsigned int tv_usec, void *_data)
+ {
+@@ -193,7 +204,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+ 
+ 	rec_width = width / (NUM_FBS * 2);
+ 
+-	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
++	igt_create_color_fb(data->drm_fd, width, height, data->plane_format,
+ 			    data->modifier, 0.0, 0.0, 0.5, fb);
+ 
+ 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+@@ -348,10 +359,19 @@ static void test_async_flip(data_t *data)
+ 			data->suspend_resume = false;
  			igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
  		}
++
++		/* Reduce test execution for all formats and modifiers. One flip should suffice */
++		if (data->async_mod_formats) {
++			igt_assert_f(ret == 0, "Async flip failed with %s modifier and %s format",
++				     igt_fb_modifier_name(data->modifier),
++				     igt_format_str(data->plane_format));
++			break;
++		}
++
+ 		frame++;
+ 	} while (diff.tv_sec < RUN_TIME);
  
--		/* Reduce test execution for all formats and modifiers. One flip should suffice */
-+		/* Reduce test execution for all formats and modifiers.*/
- 		if (data->async_mod_formats) {
- 			igt_assert_f(ret == 0, "Async flip failed with %s modifier and %s format",
- 				     igt_fb_modifier_name(data->modifier),
-@@ -730,6 +730,87 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 	}
- }
+-	if (!data->alternate_sync_async) {
++	if (!data->alternate_sync_async && !data->async_mod_formats) {
+ 		fps = frame * 1000 / RUN_TIME;
+ 		igt_assert_f((fps / 1000) > (data->refresh_rate * MIN_FLIPS_PER_FRAME),
+ 			     "FPS should be significantly higher than the refresh rate\n");
+@@ -715,12 +735,14 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+ 		test_init(data);
  
-+static bool skip_async_format_mod(data_t *data,
-+			    uint32_t format, uint64_t modifier,
-+			    struct igt_vec *tested_formats)
-+{
-+	/* igt doesn't know how to sw generate UBWC: */
-+	if (is_msm_device(data->drm_fd) &&
-+	    modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
-+		return true;
-+
-+	/* VEBOX just hangs with an actual 10bpc format */
-+	if (igt_fb_is_gen12_mc_ccs_modifier(modifier) &&
-+	    igt_reduce_format(format) == DRM_FORMAT_XRGB2101010)
-+		return true;
-+
-+	/* test each format "class" only once in non-extended tests */
-+	struct format_mod rf = {
-+		.format = igt_reduce_format(format),
-+		.modifier = modifier,
-+	};
-+
-+	if (igt_vec_index(tested_formats, &rf) >= 0)
-+		return true;
-+
-+	igt_vec_push(tested_formats, &rf);
-+
-+	return false;
-+}
-+
-+static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data_t *))
-+{
-+	struct igt_vec tested_formats;
-+
-+	igt_vec_init(&tested_formats, sizeof(struct format_mod));
-+
-+	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		test_init(data);
-+
-+		igt_assert_f(data->plane->async_format_mod_count > 0,
-+			     "No async format/modifier supported\n");
+-		for (int i = 0; i < data->plane->format_mod_count; i++) {
++		igt_require_f(data->plane->async_format_mod_count > 0,
++			      "No async format/modifier supported\n");
 +
 +		for (int i = 0; i < data->plane->async_format_mod_count; i++) {
-+			struct format_mod f = {
-+				.format = data->plane->async_formats[i],
-+				.modifier = data->plane->async_modifiers[i],
-+			};
-+
-+			if (skip_async_format_mod(data, f.format, f.modifier, &tested_formats)) {
-+				igt_debug("Skipping format " IGT_FORMAT_FMT " / modifier "
-+					   IGT_MODIFIER_FMT " on %s.%u\n",
-+					   IGT_FORMAT_ARGS(f.format),
-+					   IGT_MODIFIER_ARGS(f.modifier),
-+					   kmstest_pipe_name(data->pipe),
-+					   data->plane->index);
-+				continue;
-+			}
-+
-+			data->modifier = f.modifier;
-+			data->plane_format = f.format;
-+			data->async_mod_formats = true;
-+
-+			igt_dynamic_f("pipe-%s-%s-%s-%s", kmstest_pipe_name(data->pipe),
-+				      data->output->name,
-+				      igt_fb_modifier_name(data->modifier),
-+				      igt_format_str(data->plane_format)) {
-+				      /*
-+				       * FIXME: joiner+async flip is busted currently in KMD.
-+				       * Remove this check once the issues are fixed in KMD.
-+				       */
-+				      igt_skip_on_f(is_joiner_mode(data->drm_fd,
-+								   data->output),
-+						    "Skipping, async flip not supported "
-+						    "on joiner mode\n");
-+				      test_init_fbs(data);
-+				      test(data);
-+			}
-+		}
-+	}
-+
-+	igt_vec_fini(&tested_formats);
-+}
-+
- static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
- {
- 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-@@ -919,6 +1000,11 @@ igt_main
- 		run_test(&data, test_async_flip);
+ 			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
+ 				continue;
+ 
+-			data->allow_fail = true;
+-			data->modifier = data->plane->modifiers[i];
++			data->modifier = data->plane->async_modifiers[i];
+ 
+ 			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
+ 				      data->output->name,
+@@ -757,6 +779,7 @@ igt_main
+ 
+ 		if (is_intel_device(data.drm_fd))
+ 			data.bops = buf_ops_create(data.drm_fd);
++		data.plane_format = DRM_FORMAT_XRGB8888;
  	}
  
-+	igt_describe("Verify async flip with all supported modifier and format combinations");
-+	igt_subtest_with_dynamic("async-flip-with-all-modifiers-formats") {
-+		run_test_with_async_format_modifiers(&data, test_async_flip);
-+	}
-+
- 	igt_fixture {
- 		for (i = 0; i < NUM_FBS; i++)
- 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+ 	igt_describe("Verify the async flip functionality and the fps during async flips");
 -- 
 2.34.1
 
