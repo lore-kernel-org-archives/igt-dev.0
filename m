@@ -4,163 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B03F9C36008
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 09:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBFEDC35FFC
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 10:16:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5EB3A10E38E;
-	Tue, 25 Mar 2025 09:58:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 77EB110E064;
+	Tue, 25 Mar 2025 10:16:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GJALOryO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bRaZ+gEC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3D8C10E38E
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 09:58:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF0A210E064
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 10:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742896710; x=1774432710;
- h=from:to:subject:date:message-id:mime-version;
- bh=V627M2FRci7z+4gW7lZEa5u8z8DiCVP0Ql0ya0s/f5U=;
- b=GJALOryO4HySr1IS/mxmm/qukz3KbCvo2bFKCQmasLZfS+I5KkQ7/HWW
- 83fSVgs0ZDa3Dgb3v2j/aC9SFfRXmmoxOHJtIIki6vRjkV+ZytUvZmbau
- liWrXjzCiOCXjJDhMOkkCu65lgJ5v/K7ClaO7ouGgJkGJKTU6QI5HYb1T
- 609/W1FVEpv6bWHOByAFcMnhdldNpgQ3Cl77Uie6TE90VkfYnbb8NdbXC
- mjCFkgDO5cxFX5vRnzvfEI8ZjljX3Dx/HPzXRzeAKhZzoAMTPxnwAt73i
- SSWuqHuNk+x53dMJsjmKf1xKInCvIsjxRmI5evoB4WnbSnW56Y1C5YAmx Q==;
-X-CSE-ConnectionGUID: FBBmCxUWTkCLlThRTU7Ejw==
-X-CSE-MsgGUID: 2LIIESoBTBmYDFGYsZzSgw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="47917010"
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208,217";a="47917010"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 02:58:06 -0700
-X-CSE-ConnectionGUID: D8m53WoPSxmp/ZSJw88dRw==
-X-CSE-MsgGUID: LRCkkjMJSKmR7u3K83eZIg==
+ t=1742897799; x=1774433799;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=w+BcbIIzeqsOE/s+zh9KxLQuHczbyfZGu948PpPv3Bo=;
+ b=bRaZ+gECyL4+jhEU7R+6wWHcpxr+NRh74U685pZ9MwB6u1o8IUjbq8RM
+ EfGxKjR7q3W3XSuDD+askAbjpurvdmlx/2B5itLAawpKHoEiLYPCgSxW/
+ meZUEXTkcFGOcU7rD0rAvZuFWU9sh/2jEH70y9ETfuaiMIQYed2fbpImJ
+ WQIP6WGuw5D/VQshhuAyrQq+fcAXMJMoJ2JKWbU7wt6ufVH0vOsfUc7Da
+ NS1MDowBASO94ApkHO8DUlcI1DWFBjhTOCsGWz79knuTO1Jzmko8X/GNr
+ phgPw1bOfrK3iTpHy1U3e6v+RIWY/9itYmD/7gj9RgJHGEkaVHFJh9TOx Q==;
+X-CSE-ConnectionGUID: 9s5e+ml0QhG6dcRqU2NIkw==
+X-CSE-MsgGUID: R6zsEn4hTZiZEZzG1S08Bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="44024560"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="44024560"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2025 03:16:39 -0700
+X-CSE-ConnectionGUID: 5fxXW06NQuit+l8t4emHlQ==
+X-CSE-MsgGUID: +m3x0Ex4R62ejzB7BUiedQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
- d="scan'208,217";a="124360272"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 25 Mar 2025 02:58:06 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 25 Mar 2025 02:58:05 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 25 Mar 2025 02:58:05 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 25 Mar 2025 02:58:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=myRe1NowjoLypWIpLuOQSPzJBK70x14gT2Pw/cJKCk+BlF84UqskXjSeRWcXglEsRlAmtSeSnl5Ufc2biGaUyOwXM5F/aG3WQSsYgemNwPeYxtX1rtQ2/Pkd8miw4glYluQ5hRIZKEzkZfWpjMBk3e0Cz1EYpyUnNGXMJSRD9g5iycWw0kuCz+ihFPRHG2HUh+CIDul3KfA7rlH+B0yfydDDkinWdgaW6s8driIwX7UBMsh0nfbyr1HIOZZ6S9vx2WquKw5LcCTrd2r44HriE5y/AmteAIstjtWuicaSzIlAPU6EA2SgXnfraXpdpgy4YiJHvxj11f13z19Wb4RCoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ecOeqo8epjKbKTSbuTiH44OcmGOBxdd2EyojUJMVN1U=;
- b=ocHrErW71OmY6xQ1Im4Y+FEp5gQHStY5uZWcCgwbcjhAKEDJOVlxFlrPuuP9rNsIBga8Wco7LvuT77rOeA3YVE7mbSy5kQaY6FGF2++h9s/NBcBxrr05l4siC32Knp6l28yPp5Pii9LEDrMYZ+9PwXYXDWRfP95axI4uD4bvMZaFLfWhfE7R9D7dWAPOfpBdZck51YHMn27Diugjf9Oy5QWUquaRm6g8nioUGh9z2zinaTjGM9syPnmX271DDumxGAmOxifdejfSXL1levzHCIPxBr1qoEynKHfDCJLWufpPzfICqzCpHdUFJzHwCP0dFUcPH0MiwqpTvaenSz4Bhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB5910.namprd11.prod.outlook.com (2603:10b6:303:189::5)
- by BL1PR11MB5285.namprd11.prod.outlook.com (2603:10b6:208:309::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Tue, 25 Mar
- 2025 09:57:35 +0000
-Received: from MW4PR11MB5910.namprd11.prod.outlook.com
- ([fe80::9b12:3de0:79aa:a1fe]) by MW4PR11MB5910.namprd11.prod.outlook.com
- ([fe80::9b12:3de0:79aa:a1fe%5]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
- 09:57:34 +0000
-From: "Thomas, Sobin" <sobin.thomas@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Please review for code coverage changes
-Thread-Topic: Please review for code coverage changes
-Thread-Index: AdudbCgvmfJhDgsTQR6yLbDqaC647Q==
-Date: Tue, 25 Mar 2025 09:57:34 +0000
-Message-ID: <MW4PR11MB591077C1CEF3B4DA63EF5C7D94A72@MW4PR11MB5910.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB5910:EE_|BL1PR11MB5285:EE_
-x-ms-office365-filtering-correlation-id: 503507cc-0c81-449c-fe4f-08dd6b8377b2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|13003099007|8096899003|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?03C7ZzBAMYB4ajm8OHD/8wz2ZgJ9OAfu5MEFVKBbjx6dsPushg1UWqPKgmWX?=
- =?us-ascii?Q?H83S1cjimp2r9GQ4QExH5maIMpkz3uejOhWG8f8iIUiH/hAFQLxP7xg73+U4?=
- =?us-ascii?Q?EwQ/z0cxljtvdTeafR97DDz7G+ddcTn+L+6s2cRymAcWz1f8xbsS9XOagVl0?=
- =?us-ascii?Q?4CFS8bxqEA3HOYSPTGTuU57UDlbTuB33taFPO/5O6AJteHE2Xbvur6eC3Y9n?=
- =?us-ascii?Q?pLg/IibnZ0qWmatjyLpg64m4QsYW7+aDIHqj+CBTlo92tf/qJMrzymL2bep9?=
- =?us-ascii?Q?I4LPYeONhp+cRJbBwjdcxIcG7/vJJWsZGW7GldTSXbWIPB0jFLs4UQvpz2TE?=
- =?us-ascii?Q?XB8EbWlWdYLWxWdyBKLQ/RzGOa0IpZ4lqQ1AG0LYKtHqvi1tqLa6Xp8kUgbP?=
- =?us-ascii?Q?dBk2jVlaWQ8AWRKBgFM6OL5JccCsNzL6Wx9VvrJgmwvvXqvqKfNR+L49cuxQ?=
- =?us-ascii?Q?LgWzMXKrdNTW+dnesbgJ0e2KPuhuVRlio/+B/2QtAzc4MNVzUv1cA7OPnd1O?=
- =?us-ascii?Q?htVIcXZKib1shOa6vDoLiH55Yh2X6s4tEFCp2KddX35EeYRBsEsAqMjQF2F1?=
- =?us-ascii?Q?422jYbXzvWAfZI/XaQsyF4FVSYp55mErGYJefPGIu8ZB1pCM+ZMJRxRRagS4?=
- =?us-ascii?Q?Z5oBv6k7oVgYEivX4BJJMzURiZ4j4al1kSlBWSY4OacwpydetihH9x7x+T0F?=
- =?us-ascii?Q?GKFclkmOC8oiq7vz1QJ4cdrB+paExp2HR42KlsViztoFvJMoMbHHieFXFTBp?=
- =?us-ascii?Q?B8zWwDG03h7wBe+60RHaujdiZlM9NnXYzTos6tsnwDY/NPMglskIXJX0uOFY?=
- =?us-ascii?Q?zecd6VdXn8ooTNMPtIImrhDjZGtz3CT8XFYyrXrJjS7yKKKzLfPH00TDhn4D?=
- =?us-ascii?Q?oOo40CLZoymNnYlZi69nT2naq5dSaiLwm7CLsVvFvf9AEvbTdk9rJOR/senc?=
- =?us-ascii?Q?ZsR/hc8T6+pDkIoAIqEl7xuRf8NBPHeqfBodNt7S2f7OtOFyWenCAWpWmhT5?=
- =?us-ascii?Q?7xM3NnzLLn34b9n/dDP6JIyEl2mf4vPH36lVLR3yRH0F24zNKXCpGqLwKLso?=
- =?us-ascii?Q?Mv6HzMqqC0T/NEQJTDaEijxXRQCh8NhDoVcPk5u8hLCho9ZlwF6zNojeZAJg?=
- =?us-ascii?Q?+lA9EkQTqZHvheBpoSnKXk2p/8IFIT3lWtTC+bglHsvsEmdTbUDW3EA3SuIc?=
- =?us-ascii?Q?dxS8K2HVi4q0X6cmFqnOFZVIynE6xKcgzYDOtG0rhTqusx/3+3sZhN9r1uGo?=
- =?us-ascii?Q?ABVrJ8onRW+LOWEMjXMjzgRLsOj+T33vYpILvoZWkVsqppMbguOgsHDzfzyu?=
- =?us-ascii?Q?QlWn6g6EqnQ4EYZ7jqIzt5AXOY5qDL5kePL9HHc09G/u6SFMZyQu6lEgKkkm?=
- =?us-ascii?Q?G4ESl/mO2p8FglSpRFCc4tlORdyy?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB5910.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(13003099007)(8096899003)(38070700018);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8MVl1z+qd/HHXssaJtdjx6zTafx5zVNOzRU6HjsLzadbcs+di2MwMz2Zix0E?=
- =?us-ascii?Q?qDocwl+sMNLrLMIeUDZEK6izDurlMGBiMCEAFHc00F7jZ3GBRFmmzifp0fcR?=
- =?us-ascii?Q?aHFpkbs01bdefNWJOiMOhKz+p5xUOksndb66CfNr/18kV3KTUNta6aBnAGtd?=
- =?us-ascii?Q?IErtwBhq/d+22hArLBp/UayWsAyCK9qgDaSrxatseSVXwaSPVGWl/VjlllqT?=
- =?us-ascii?Q?vHTyzLnUv5JuE7LLxX7I4uiD9+77ItMEMuxkxKtOWls77qpGQVUTmNIGGMsd?=
- =?us-ascii?Q?4WqvDOmn/d9XpT18xFaQGFlDsuaguoL1w/q+gZZtGsgQYIXSYNot9dekSJ0c?=
- =?us-ascii?Q?nOoz02ZweR1bFyjIOXb3NbHE089uPVnVzjfBAIXjrdStyASa8boR7FcOPnkp?=
- =?us-ascii?Q?XMO0qWsgC/qGiGqYkvO1O691zfJ7kwwyo29wVj4eseONqyNiyYSCy0cyzBH2?=
- =?us-ascii?Q?LRSGOotRGrkKXnvqOjckx6QVqhJ6C66JgojNR0yn9knG6q8PCMES/GW6qe/l?=
- =?us-ascii?Q?sRTJlGM9S0ZxjJ6MKhajmfSXgDm0j+P4R55FAXygAtW9a7ae5tJDQT/daZY4?=
- =?us-ascii?Q?Nj2TcHBZZfW+ajsAki1S3ZvrfQdt1GO9hAk9vVk9i+witUiHjH2n47acGP2R?=
- =?us-ascii?Q?Qf/3ZTVnGVO6M/663Jen832xJ94KgwPZVoI2fYffDBkLbRwUMYumjIrFHDoK?=
- =?us-ascii?Q?NeVPvhzBCR1Vwppoi/TTHbBW8SRx3hkF7tTYoBLlIeiXTBA8FyrCvFTXV9fv?=
- =?us-ascii?Q?S7HSQ8tAYnV7TcEmLKkji/8S1s+rO7eWbdWDZzJ/hfk9GgliQ4ofJ+cFmpnw?=
- =?us-ascii?Q?bgRUwE95Qq4XjKVcU0WuWAmc1frkPAus6MVh4vGZOsESJ8iU2iIZSwWDu2nr?=
- =?us-ascii?Q?K7XeDcPAINbHEEQB77mImMZ3lKcTYDmxBhJtUQtityhar4kSbxH3UXhk3/tx?=
- =?us-ascii?Q?7czxMpOSTHmDKd0g/MuMw0pp6rfJXRgpj26D++5hzVAXnh31fJIJ3+guyQmK?=
- =?us-ascii?Q?TnIAd7DMvJpkbFWaApQIEHeTtzYR6ylcg8VieYsqSCZoOZe1ioOQZ7fwAyDB?=
- =?us-ascii?Q?cjTJW74CqmgzhsubIa/PPq8eSu+oFH1Y3TWQFuHTqktOaICcj8BVTvjKoW6f?=
- =?us-ascii?Q?OAksesclZr++++hhX37TI7klA4bwEutZqd9ZD2lRmUaZdnif/LQB3Y073Vyh?=
- =?us-ascii?Q?Qx8WCCfhpmHu55xpoiNU+rs76TrCrhXE5UYhLShm9uZ94VinTtSnZDGw5tav?=
- =?us-ascii?Q?Enfj92I5iKl5IUXzu/TwrXSEBELTQuw8ft0saD332tecjCcB1Rw3Onk7nY0D?=
- =?us-ascii?Q?RUf+WvB6NcdZAXzjGrgNFLYf846Mkcm2T8v/erbxj7JTnb+lGsWeDekqAbvx?=
- =?us-ascii?Q?cwDTSnmHac8Pj4TJSOivX7Fj7uwdwfpH5bvUfuldzMl9obp59J7/VyI8ukIg?=
- =?us-ascii?Q?BWpjzI3KJIX5DDWxjJWt7+qaoWXn7rYxanRl22K4uJDHaA1a3Am2IHCcf003?=
- =?us-ascii?Q?cCOOS7a3cby4VLn9vR2gdBuBhX1cVsTZeJ/lf9G9A+ObnhtwQyHWhMbNP1mE?=
- =?us-ascii?Q?6yy7F/h1CFfV0kDViq5zlUI51Kq/tNuRvqvMtE2E?=
-Content-Type: multipart/alternative;
- boundary="_000_MW4PR11MB591077C1CEF3B4DA63EF5C7D94A72MW4PR11MB5910namp_"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="129152578"
+Received: from artdev273.igk.intel.com ([172.28.176.8])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2025 03:16:38 -0700
+From: Jan Sokolowski <jan.sokolowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t 1/1] tests/intel/xe_*: Add missing test documentation
+Date: Tue, 25 Mar 2025 10:15:44 +0000
+Message-Id: <20250325101544.178430-1-jan.sokolowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5910.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 503507cc-0c81-449c-fe4f-08dd6b8377b2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2025 09:57:34.9493 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JMopmmcLWqWYsns8OsHaxLeAw3B7+fURSgAHRQOzei1c4OJ87Hg8+2hiw+dxzraeY+9iHWUKoA1sJL5VWx/OwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5285
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -176,95 +65,524 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_MW4PR11MB591077C1CEF3B4DA63EF5C7D94A72MW4PR11MB5910namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Add missing Mega features, Sub-categories and Functionality
+tags to various eu debug tests.
 
-Hi All,
+Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+---
+ tests/intel/xe_eudebug.c          | 77 ++++++++++++++++++++++++++++---
+ tests/intel/xe_eudebug_online.c   | 42 +++++++++++++++++
+ tests/intel/xe_eudebug_sriov.c    |  6 +++
+ tests/intel/xe_exec_sip_eudebug.c | 12 +++++
+ 4 files changed, 130 insertions(+), 7 deletions(-)
 
-Please review this change
+diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+index 76870805c..bf9178a67 100644
+--- a/tests/intel/xe_eudebug.c
++++ b/tests/intel/xe_eudebug.c
+@@ -28,6 +28,8 @@
+ 
+ /**
+  * SUBTEST: sysfs-toggle
++ * Sub-category: EUdebug framework
++ * Functionality: enable
+  * Description:
+  *	Exercise the debugger enable/disable sysfs toggle logic
+  */
+@@ -542,6 +544,8 @@ static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect *
+ 
+ /**
+  * SUBTEST: basic-connect
++ * Sub-category: EUdebug framework
++ * Functionality: attach
+  * Description:
+  *	Exercise XE_EUDEBUG_CONNECT ioctl with passing
+  *	valid and invalid params.
+@@ -622,6 +626,8 @@ static void switch_user(__uid_t uid, __gid_t gid)
+ 
+ /**
+  * SUBTEST: connect-user
++ * Sub-category: EUdebug framework
++ * Functionality: attach
+  * Description:
+  *	Verify unprivileged XE_EUDEBUG_CONNECT ioctl.
+  *	Check:
+@@ -758,6 +764,8 @@ static void test_connect_user(int fd)
+ 
+ /**
+  * SUBTEST: basic-close
++ * Sub-category: EUdebug framework
++ * Functionality: attach
+  * Description:
+  *	Test whether eudebug can be reattached after closure.
+  */
+@@ -786,6 +794,8 @@ static void test_close(int fd)
+ 
+ /**
+  * SUBTEST: basic-read-event
++ * Sub-category: EUdebug framework
++ * Functionality: events
+  * Description:
+  *	Synchronously exercise eu debugger event polling and reading.
+  */
+@@ -881,50 +891,69 @@ static void test_read_event(int fd)
+ 
+ /**
+  * SUBTEST: basic-client
++ * Sub-category: EUdebug framework
++ * Functionality: attach
+  * Description:
+  *	Attach the debugger to process which opens and closes xe drm client.
+  *
+  * SUBTEST: basic-client-th
++ * Sub-category: EUdebug framework
++ * Functionality: attach
+  * Description:
+  *	Create client basic resources (vms) in multiple threads
+  *
+  * SUBTEST: multiple-sessions
++ * Sub-category: EUdebug framework
++ * Functionality: multisessions
+  * Description:
+  *	Simultaneously attach many debuggers to many processes.
+  *	Each process opens and closes xe drm client and creates few resources.
+  *
+- * SUBTEST: basic-%s
++ * SUBTEST: basic-exec-queues
++ * Sub-category: EUdebug framework
++ * Functionality: exec queues events
+  * Description:
+- *	Attach the debugger to process which creates and destroys a few %arg[1].
++ *	Attach the debugger to process which creates and destroys a few exec-queues.
++ *
++ * SUBTEST: basic-vms
++ * Sub-category: EUdebug framework
++ * Functionality: VM events
++ * Description:
++ *	Attach the debugger to process which creates and destroys a few vms.
+  *
+  * SUBTEST: basic-vm-bind
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs synchronous vm bind
+  *	and vm unbind.
+  *
+  * SUBTEST: basic-vm-bind-vm-destroy
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs vm bind, and destroys
+  *	the vm without unbinding. Make sure that we don't get unbind events.
+  *
+  * SUBTEST: basic-vm-bind-extended
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs bind, bind array, rebind,
+  *	partial unbind, unbind and unbind all operations.
+  *
+  * SUBTEST: multigpu-basic-client
++ * Sub-category: EUdebug framework
++ * Functionality: attach multiGPU
+  * Description:
+  *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
+  *
+  * SUBTEST: multigpu-basic-client-many
++ * Sub-category: EUdebug framework
++ * Functionality: attach multiGPU
+  * Description:
+  *	Simultaneously attach many debuggers to many processes on all Xe devices.
+  *	Each process opens and closes xe drm client and creates few resources.
+- *
+- * arg[1]:
+- *
+- * @vms: vms
+- * @exec-queues: exec queues
+  */
+ 
+ static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
+@@ -951,22 +980,30 @@ static void test_basic_sessions(int fd, unsigned int flags, int count, bool matc
+ 
+ /**
+  * SUBTEST: basic-vm-bind-discovery
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs vm-bind before attaching
+  *	and check if the discovery process reports it.
+  *
+  * SUBTEST: basic-vm-bind-metadata-discovery
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs vm-bind with metadata attached
+  *	before attaching and check if the discovery process reports it.
+  *
+  * SUBTEST: basic-vm-bind-vm-destroy-discovery
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs vm bind, and destroys
+  *	the vm without unbinding before attaching. Make sure that we don't get
+  *	any bind/unbind and vm create/destroy events.
+  *
+  * SUBTEST: basic-vm-bind-extended-discovery
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Attach the debugger to a process that performs bind, bind array, rebind,
+  *	partial unbind, and unbind all operations before attaching. Ensure that
+@@ -1077,6 +1114,8 @@ static void run_discovery_client(struct xe_eudebug_client *c)
+ 
+ /**
+  * SUBTEST: discovery-%s
++ * Sub-category: EUdebug framework
++ * Functionality: event discovery
+  * Description: Race discovery against %arg[1] and the debugger dettach.
+  *
+  * arg[1]:
+@@ -1562,12 +1601,16 @@ static void vm_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: basic-vm-access
++ * Sub-category: EUdebug framework
++ * Functionality: VM access
+  * Description:
+  *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
+  *      vm fd, concerning many different offsets inside the vm,
+  *      and many virtual addresses of the vm_bound object.
+  *
+  * SUBTEST: basic-vm-access-userptr
++ * Sub-category: EUdebug framework
++ * Functionality: VM access
+  * Description:
+  *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
+  *      vm fd, concerning many different offsets inside the vm,
+@@ -1713,11 +1756,15 @@ static void vm_trigger_access_parameters(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: basic-vm-access-parameters
++ * Sub-category: EUdebug framework
++ * Functionality: VM access
+  * Description:
+  *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage
+  *      with bo backing storage.
+  *
+  * SUBTEST: basic-vm-access-parameters-userptr
++ * Sub-category: EUdebug framework
++ * Functionality: VM access
+  * Description:
+  *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage
+  *      with userptr backing storage.
+@@ -1845,6 +1892,8 @@ static void metadata_read_on_vm_bind_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: read-metadata
++ * Sub-category: EUdebug framework
++ * Functionality: metadata
+  * Description:
+  *      Exercise DRM_XE_EUDEBUG_IOCTL_READ_METADATA and debug metadata create|destroy events.
+  */
+@@ -1857,6 +1906,8 @@ static void test_metadata_read(int fd, unsigned int flags, int num_clients)
+ 
+ /**
+  * SUBTEST: attach-debug-metadata
++ * Sub-category: EUdebug framework
++ * Functionality: metadata
+  * Description:
+  *      Read debug metadata when vm_bind has it attached.
+  */
+@@ -2073,19 +2124,27 @@ static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
+ 
+ /**
+  * SUBTEST: basic-vm-bind-ufence
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *      Give user fence in application and check if ufence ack works
+  *
+  * SUBTEST: basic-vm-bind-ufence-delay-ack
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Give user fence in application and check if delayed ufence ack works
+  *
+  * SUBTEST: basic-vm-bind-ufence-reconnect
++ * Sub-category: EUdebug framework
++ * Functionality: VM bind event
+  * Description:
+  *	Give user fence in application, hold it, drop the debugger connection and check if anything
+  *	breaks. Expect that held acks are released when connection is dropped.
+  *
+  * SUBTEST: basic-vm-bind-ufence-sigint-client
++ * Sub-category: EUdebug framework
++ * Functionality: SIGINT
+  * Description:
+  *	Give user fence in application, hold it, send SIGINT to client and check if anything breaks.
+  */
+@@ -2395,6 +2454,8 @@ static void vm_bind_clear_ack_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: vm-bind-clear
++ * Sub-category: EUdebug framework
++ * Functionality: memory access
+  * Description:
+  *      Check that fresh buffers we vm_bind into the ppGTT are always clear.
+  */
+@@ -2610,6 +2671,8 @@ static void vma_ufence_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: vma-ufence
++ * Sub-category: EUdebug framework
++ * Functionality: check ufence blocking
+  * Description:
+  *      Intercept vm bind after receiving ufence event, then access target vm and write to it.
+  *      Then check on client side if the write was successful.
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index 84ba748c1..c4409f8a5 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -1430,21 +1430,29 @@ static void pagefault_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: basic-breakpoint
++ * Sub-category: EUdebug online
++ * Functionality: EU attention event
+  * Description:
+  *	Check whether KMD sends attention events
+  *	for workload in debug mode stopped on breakpoint.
+  *
+  * SUBTEST: breakpoint-not-in-debug-mode
++ * Sub-category: EUdebug online
++ * Functionality: EU attention event
+  * Description:
+  *	Check whether KMD resets the GPU when it spots an attention
+  *	coming from workload not in debug mode.
+  *
+  * SUBTEST: stopped-thread
++ * Sub-category: EUdebug online
++ * Functionality: EU attention event
+  * Description:
+  *	Hits breakpoint on runalone workload and
+  *	reads attention for fixed time.
+  *
+  * SUBTEST: resume-%s
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Resumes stopped on a breakpoint workload
+  *	with granularity of %arg[1].
+@@ -1479,6 +1487,8 @@ static void test_basic_online(int fd, struct drm_xe_engine_class_instance *hwe,
+ 
+ /**
+  * SUBTEST: set-breakpoint
++ * Sub-category: EUdebug online
++ * Functionality: dynamic breakpoint
+  * Description:
+  *	Checks for attention after setting a dynamic breakpoint in the ufence event.
+  */
+@@ -1603,11 +1613,15 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
+ 
+ /**
+  * SUBTEST: pagefault-read
++ * Sub-category: EUdebug online
++ * Functionality: page faults
+  * Description:
+  *     Check whether KMD sends pagefault event for workload in debug mode that
+  *     triggers a read pagefault.
+  *
+  * SUBTEST: pagefault-write
++ * Sub-category: EUdebug online
++ * Functionality: page faults
+  * Description:
+  *     Check whether KMD sends pagefault event for workload in debug mode that
+  *     triggers a write pagefault.
+@@ -1646,6 +1660,8 @@ static void test_pagefault_online(int fd, struct drm_xe_engine_class_instance *h
+ 
+ /**
+  * SUBTEST: preempt-breakpoint
++ * Sub-category: EUdebug online
++ * Functionality: EUdebug preemption timeout
+  * Description:
+  *	Verify that eu debugger disables preemption timeout to
+  *	prevent reset of workload stopped on breakpoint.
+@@ -1691,6 +1707,8 @@ static void test_preemption(int fd, struct drm_xe_engine_class_instance *hwe)
+ 
+ /**
+  * SUBTEST: reset-with-attention
++ * Sub-category: EUdebug online
++ * Functionality: EUdebug preemption timeout
+  * Description:
+  *	Check whether GPU is usable after resetting with attention raised
+  *	(stopped on breakpoint) by running the same workload again.
+@@ -1728,12 +1746,16 @@ static void test_reset_with_attention_online(int fd, struct drm_xe_engine_class_
+ 
+ /**
+  * SUBTEST: interrupt-all
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Schedules EU workload which should last about a few seconds, then
+  *	interrupts all threads, checks whether attention event came, and
+  *	resumes stopped threads back.
+  *
+  * SUBTEST: interrupt-all-set-breakpoint
++ * Sub-category: EUdebug online
++ * Functionality: dynamic breakpoint
+  * Description:
+  *	Schedules EU workload which should last about a few seconds, then
+  *	interrupts all threads, once attention event come it sets breakpoint on
+@@ -1815,12 +1837,16 @@ static void reset_debugger_log(struct xe_eudebug_debugger *d)
+ 
+ /**
+  * SUBTEST: interrupt-other-debuggable
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Schedules EU workload in runalone mode with never ending loop, while
+  *	it is not under debug, tries to interrupt all threads using the different
+  *	client attached to debugger.
+  *
+  * SUBTEST: interrupt-other
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Schedules EU workload with a never ending loop and, while it is not
+  *	configured for debugging, tries to interrupt all threads using the client
+@@ -1909,6 +1935,8 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
+ 
+ /**
+  * SUBTEST: tdctl-parameters
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Schedules EU workload which should last about a few seconds, then
+  *	checks negative scenarios of EU_THREADS ioctl usage, interrupts all threads,
+@@ -2061,6 +2089,8 @@ static void eu_attention_debugger_detach_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: interrupt-reconnect
++ * Sub-category: EUdebug online
++ * Functionality: reopen connection
+  * Description:
+  *	Schedules EU workload which should last about a few seconds,
+  *	interrupts all threads and detaches debugger when attention is
+@@ -2134,12 +2164,16 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
+ 
+ /**
+  * SUBTEST: single-step
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Schedules EU workload with 16 nops after breakpoint, then single-steps
+  *	through the shader, advances all threads each step, checking if all
+  *	threads advanced every step.
+  *
+  * SUBTEST: single-step-one
++ * Sub-category: EUdebug online
++ * Functionality: EU control
+  * Description:
+  *	Schedules EU workload with 16 nops after breakpoint, then single-steps
+  *	through the shader, advances one thread each step, checking if one
+@@ -2191,6 +2225,8 @@ static void eu_attention_debugger_ndetach_trigger(struct xe_eudebug_debugger *d,
+ 
+ /**
+  * SUBTEST: debugger-reopen
++ * Sub-category: EUdebug online
++ * Functionality: reopen connection
+  * Description:
+  *	Check whether the debugger is able to reopen the connection and
+  *	capture the events of already running client.
+@@ -2221,6 +2257,8 @@ static void test_debugger_reopen(int fd, struct drm_xe_engine_class_instance *hw
+ 
+ /**
+  * SUBTEST: writes-caching-%s-bb-%s-target-%s
++ * Sub-category: EUdebug online
++ * Functionality: cache coherency
+  * Description:
+  *	Write incrementing values to 2-page-long target surface, poisoning the data one breakpoint
+  *	before each write instruction and restoring it when the poisoned instruction breakpoint
+@@ -2346,12 +2384,16 @@ static uint64_t timespecs_diff_us(struct timespec *ts1, struct timespec *ts2)
+ 
+ /**
+  * SUBTEST: breakpoint-many-sessions-single-tile
++ * Sub-category: EUdebug online
++ * Functionality: multisession
+  * Description:
+  *	Schedules EU workload with preinstalled breakpoint on every compute engine
+  *	available on the tile. Checks if the contexts hit breakpoint in sequence
+  *	and resumes them.
+  *
+  * SUBTEST: breakpoint-many-sessions-tiles
++ * Sub-category: EUdebug online
++ * Functionality: multisession multiTile
+  * Description:
+  *	Schedules EU workload with preinstalled breakpoint on selected compute
+  *      engines, with one per tile. Checks if each context hit breakpoint and
+diff --git a/tests/intel/xe_eudebug_sriov.c b/tests/intel/xe_eudebug_sriov.c
+index eb13981bc..4f20a3e49 100644
+--- a/tests/intel/xe_eudebug_sriov.c
++++ b/tests/intel/xe_eudebug_sriov.c
+@@ -37,6 +37,9 @@ static bool has_vf_enable_eudebug_attr(int fd, unsigned int vf_num)
+ 
+ /**
+  * SUBTEST: deny-eudebug
++ * Mega feature: EUdebug
++ * Sub-category: EUdebug framework
++ * Functionality: EU debug and SR-IOV
+  * Description:
+  *	Check that eudebug toggle is not available for VFs, and that enabling
+  *	eudebug with VFs enabled is not permitted.
+@@ -74,6 +77,9 @@ static void test_deny_eudebug(int fd)
+ 
+ /**
+  * SUBTEST: deny-sriov
++ * Mega feature: EUdebug
++ * Sub-category: EUdebug framework
++ * Functionality: EU debug and SR-IOV
+  * Description:
+  *	Check that VFs cannot be enabled when eudebug is enabled.
+  */
+diff --git a/tests/intel/xe_exec_sip_eudebug.c b/tests/intel/xe_exec_sip_eudebug.c
+index c317112b4..e5b8ba418 100644
+--- a/tests/intel/xe_exec_sip_eudebug.c
++++ b/tests/intel/xe_exec_sip_eudebug.c
+@@ -217,22 +217,34 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+ 
+ /**
+  * SUBTEST: wait-writesip-nodebug
++ * Sub-category: EUdebug HW
++ * Functionality: EU debugger SIP interaction
+  * Description: verify that we don't enter SIP after wait with debugging disabled.
+  *
+  * SUBTEST: breakpoint-writesip-nodebug
++ * Sub-category: EUdebug HW
++ * Functionality: EU debugger SIP interaction
+  * Description: verify that we don't enter SIP after hitting breakpoint in shader
+  *		when debugging is disabled.
+  *
+  * SUBTEST: breakpoint-writesip
++ * Sub-category: EUdebug HW
++ * Functionality: EU debugger SIP interaction
+  * Description: Test that we enter SIP after hitting breakpoint in shader.
+  *
+  * SUBTEST: breakpoint-writesip-twice
++ * Sub-category: EUdebug HW
++ * Functionality: EU debugger SIP interaction
+  * Description: Test twice that we enter SIP after hitting breakpoint in shader.
+  *
+  * SUBTEST: breakpoint-waitsip
++ * Sub-category: EUdebug HW
++ * Functionality: EU debugger SIP interaction
+  * Description: Test that we reset after seeing the attention without the debugger.
+  *
+  * SUBTEST: breakpoint-waitsip-heavy
++ * Sub-category: EUdebug HW
++ * Functionality: EU debugger SIP interaction
+  * Description:
+  *	Test that we reset after seeing the attention from heavy SIP, that resembles
+  *	the production one, without the debugger.
+-- 
+2.34.1
 
-Fault injection test code added for coverage of below APIs (ebe816d2) * Com=
-mits * sobintho / igt-gpu-tools * GitLab<https://gitlab.freedesktop.org/sob=
-intho/igt-gpu-tools/-/commit/ebe816d2047d39a363c5e1dcd9ae3128efbaf417>
-
-This change is added for code coverage for the VLK https://jira.devtools.in=
-tel.com/browse/VLK-70385
-
-Regards
-Sobin Thomas
-
-
-
---_000_MW4PR11MB591077C1CEF3B4DA63EF5C7D94A72MW4PR11MB5910namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Aptos;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:12.0pt;
-	font-family:"Aptos",sans-serif;
-	mso-ligatures:standardcontextual;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#467886;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Aptos",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#467886" vlink=3D"#96607D" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hi All,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Please review this change<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><a href=3D"https://gitlab.freedesktop.org/sobintho/i=
-gt-gpu-tools/-/commit/ebe816d2047d39a363c5e1dcd9ae3128efbaf417">Fault injec=
-tion test code added for coverage of below APIs (ebe816d2) &middot; Commits=
- &middot; sobintho / igt-gpu-tools &middot; GitLab</a><o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">This change is added for code coverage for the VLK <=
-a href=3D"https://jira.devtools.intel.com/browse/VLK-70385">
-https://jira.devtools.intel.com/browse/VLK-70385</a><o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Regards<o:p></o:p></p>
-<p class=3D"MsoNormal">Sobin Thomas<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
-
---_000_MW4PR11MB591077C1CEF3B4DA63EF5C7D94A72MW4PR11MB5910namp_--
