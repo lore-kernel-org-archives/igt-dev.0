@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CAC6C36008
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 19:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93233C3600B
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 19:09:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01BE310E5D6;
-	Tue, 25 Mar 2025 19:09:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48AD610E5DD;
+	Tue, 25 Mar 2025 19:09:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="XjDKNjag";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="U1ZSInps";
 	dkim-atps=neutral
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com
- [209.85.214.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 295F310E5D6
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 19:09:06 +0000 (UTC)
-Received: by mail-pl1-f171.google.com with SMTP id
- d9443c01a7336-223fd89d036so124293285ad.1
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 12:09:06 -0700 (PDT)
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
+ [209.85.214.169])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9255C10E5DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 19:09:09 +0000 (UTC)
+Received: by mail-pl1-f169.google.com with SMTP id
+ d9443c01a7336-223fd89d036so124294175ad.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 12:09:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742929745; x=1743534545; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1742929749; x=1743534549; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NQmVpd5yYDrahCGMWPQYYvXXDggLiOOMJ21CD/MGbgY=;
- b=XjDKNjagbf1CJNKWF679wNjMKkhHPQ6xDUF1YPv/SZMIPeZA5vHYJ4silSCfiInrxU
- UFp1HdP951HiU7qsJI1RBFuxC5whdc9PmYyzbtGSNsEIC+JyDCJI+hO07fwrMyxgCSjB
- XYZKGkaGH+xwR6C/fyFTY85h2AxW2A0hQLBUd/IKsm9e5mKx/casvt6UTu3+zENp3zh3
- YQfLq685G1PcRGtAY1090Zgh0w/mQsir8WTlVsR9TuUiJ9ij+FhcpkaiaRDPkRnrQ7V5
- 6NvT3SYVNpJJJsEW7qRNiNCTYX6uqO4YZSgbsrTfYN3IRi45yz6q6vzBxMPsCI1jgtix
- /3Sg==
+ bh=QNNQItU9S6AV5OVuqN1bd7OkU+iqu3Nd/zGUIQokFQ4=;
+ b=U1ZSInpsj7Gp1y9DvKzZ2SZOvhXKF68J3wMWA76QzYL3gFGmsHj1p8rL8wyc//U9+M
+ uXCntLmyA0/PXz4GV3yv8fSQ4oUdEk2U+K2a+8ooz3z/FAp/F/MsCxB8sIJZ5qefX3Pc
+ ZaAr5bsvNIwlYayB7+EJrrPioa2uA0bWGHqH7ZfSHH0M3gu8SXq/svgBJdbWUnsx1WtY
+ MySlmBITo8AlW6QljJGc3gGl/hgKG46dxWXEPH88Yvv5/8Kf6YJwUsA00J9Bm+gKE94q
+ sBOraWx9PZ90grkkLA3enacvijLARywXLWFzIwTAMsv26osNumHpKAW5uRP7zzzezvHc
+ Ex8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742929745; x=1743534545;
+ d=1e100.net; s=20230601; t=1742929749; x=1743534549;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NQmVpd5yYDrahCGMWPQYYvXXDggLiOOMJ21CD/MGbgY=;
- b=qmeWArMFHZY3Ep6FGcof13MPfQuvMatVE2UntMMAcWai73fk/y1qZ7EsPYCiZf8SgK
- R0hxK23Dvqq+sn3a94dduP3yaVJ3WAtdoXj8fQOCsmI2HtOJrxCBeStCAaET/i78iXWl
- N8SVaC5CE+jC/9K4CuX3aAzJY7zTU01MRZybbLbDnhAULXXIZ1lAo7SW3u99NKDFcAP1
- QMinKzsjbCSwzLNXc0J45QPdCtFJh/cjT6W9Lh4lWxNuEObv4Xr7G9EX+1PO263HvNkc
- Zv4n6j7/tfW/wEmtUENJ5Ue954weyYhSHGs5aC5W/IN2kLmqvZlRfZksNC8MRGuRbU6y
- NB9Q==
-X-Gm-Message-State: AOJu0Yzm1CHT17qWWhxBXq3GXcNfqLe/HsyqeV7jM+cQzKOg4AJCcXjf
- Imp2d4haMZ7UcUcFrpCxPd3ZdayPzoBrFPNCvyFpj0WM1j9/uA7t0bsMw1aoy9w=
-X-Gm-Gg: ASbGncvrvGKqSJSl6iKUDB8BLDqxsHs8RWxUbVe0Go90Ei8CvvjeDl2/armgHLvo80d
- wQArxdej7hb1asY1iVx3+uYlSz2QS6KSybkzszkcljCVJUFR81lUD3bmiizamnXIaHvTM9jwz9J
- zyLxEUl0q2pA6bgLeuyb4yNSH/wwHCxozAUcWpF3P/HTHnPXjXt/h76XzhtmS4tkxnvhhvG6lff
- ltkfXoXfAxqRhFg+k30cHzmpRNagIypp53CccLKA/G0gW0NNfcwK2s5ATTp6sCxXODitXZQg59k
- chhntsFpodkE1MWG2Z1ziqh+4xOCnRG6CmFbe9B25nzeErjxh/0u2g==
-X-Google-Smtp-Source: AGHT+IG6Lxrcs73981Bp3YnQHgGscy/Zio4nSmO4Cpp+p99yo/dWnLPYvUASFa7sda4xWtHOMXPCpw==
-X-Received: by 2002:a17:902:e886:b0:227:eb61:34b8 with SMTP id
- d9443c01a7336-227eb615177mr28289375ad.25.1742929745303; 
- Tue, 25 Mar 2025 12:09:05 -0700 (PDT)
+ bh=QNNQItU9S6AV5OVuqN1bd7OkU+iqu3Nd/zGUIQokFQ4=;
+ b=bXVqnbjdvvjku9PLg7i0C9GlQtI4gGFapAFrt34Kt3R10RoeqWFNfWzrVBPSkDydRG
+ FdmnILGZ7iwFFfwBfuAA0bKuKl768KKYXf7k3dxd+z+QPm+JSb15cL0kkwpinbwD4HrH
+ 6uhRmc7L2HoKbk5yokpf6NZQ1P23p6VgMs4HcxAk8v043+FF5zUSWezcpjyYz3TRmAco
+ PRimAW0WoyRiSLen7qvl+wyQLkvYnqLq0uKmoNWgn6SPneTH27XtuqtPszZBhucl+HbT
+ fM+tYQZXryEZXgKAnFkuXroycAEFWvtFfZNCPnT8BTkddH7Gg0y5rHtMAkvH6JOSrT91
+ L7GA==
+X-Gm-Message-State: AOJu0Yx6TH/6zc5n3IcGJJKcR0BpT+7a0XF0ZlFxgLwzABxhTPVFREKH
+ 7V/XSuWMdL5LznhwIpprrYi+m3HUhDsF65mxq+kr9JDEqq01prJbKlmYYc3z49M=
+X-Gm-Gg: ASbGncsUF650Ynm9ODC5L+kdev2tCB07Fs7NmnZKwCOQ3sccwaNb5kbPWcfcMdT+sR5
+ lIT9k8SsoKG3gOWFLFZGqYZA5A0KNLVJ6UcS75CjLZ88E4NAKtz/b7ukAIAhAdr/Th11OdMKjWA
+ AFUS08ON6B/JluoVCd31Uu0flzKJ6ALPgsB7kHxBAI6EXNr/DOs1Tf1zMoHzxEUwQqaroAju10t
+ TQDehHkEkFwKp3j4+3gXyKWjFYVv5ez25fBRLloX71qRfrUoiwKS3qqOM/n21u3qCVl2wHz3YJv
+ 8PgwRlSp7pIB/2ueivlW+LjHM58KMHwUePObzvPTeOTh7BiuXF0UTA==
+X-Google-Smtp-Source: AGHT+IGlm03zJnVUeBrGPGTMK7Iy3TT0lKz8ONXDLYqU/EWCknyfb8ooxHwT/7p7eFTNvP+5pH1udw==
+X-Received: by 2002:a17:902:f550:b0:224:26f2:97d6 with SMTP id
+ d9443c01a7336-22780db4699mr326815275ad.28.1742929748761; 
+ Tue, 25 Mar 2025 12:09:08 -0700 (PDT)
 Received: from localhost ([134.134.137.72]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-227811bd195sm94126415ad.132.2025.03.25.12.09.04
+ d9443c01a7336-22780f395f4sm94536525ad.9.2025.03.25.12.09.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 12:09:05 -0700 (PDT)
+ Tue, 25 Mar 2025 12:09:08 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 4/7] lib/intel_batchbuffer: move engine class selection
- to helper
-Date: Tue, 25 Mar 2025 21:08:36 +0200
-Message-ID: <20250325190839.1984723-4-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 5/7] lib/intel_batchbuffer/xe: add bb exec path to use
+ specific engine and gt
+Date: Tue, 25 Mar 2025 21:08:37 +0200
+Message-ID: <20250325190839.1984723-5-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250325190839.1984723-1-juhapekka.heikkila@gmail.com>
 References: <20250325190839.1984723-1-juhapekka.heikkila@gmail.com>
@@ -85,74 +85,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-move engine class selection to helper to avoid duplicate code
+Add __xe_bb_exec path to use specific engine/class/gt
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_batchbuffer.c | 43 ++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 20 deletions(-)
+ lib/intel_batchbuffer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index baf34a837..0c21ff77a 100644
+index 0c21ff77a..d337c56cf 100644
 --- a/lib/intel_batchbuffer.c
 +++ b/lib/intel_batchbuffer.c
-@@ -2432,6 +2432,27 @@ static void update_offsets(struct intel_bb *ibb,
+@@ -2469,7 +2469,12 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 	igt_assert_eq(ibb->xe_bound, false);
  
- #define LINELEN 76
+ 	if (ibb->ctx) {
+-		engine_id = ibb->ctx;
++		unsigned short class = get_engine_class(ibb->fd, flags);
++		engine_id = xe_exec_queue_create_class_gt(ibb->fd,
++							  ibb->vm_id,
++							  class,
++							  ibb->ctx);
++		ibb->engine_id = engine_id;
+ 	} else if (ibb->last_engine != engine) {
+ 		struct drm_xe_engine_class_instance inst = { };
  
-+static unsigned short get_engine_class(int fd, uint64_t flags)
-+{
-+	switch (flags & I915_EXEC_RING_MASK) {
-+	case I915_EXEC_DEFAULT:
-+	case I915_EXEC_BLT:
-+		return DRM_XE_ENGINE_CLASS_COPY;
-+	case I915_EXEC_BSD:
-+		return DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-+	case I915_EXEC_RENDER:
-+		if (xe_has_engine_class(fd, DRM_XE_ENGINE_CLASS_RENDER))
-+			return DRM_XE_ENGINE_CLASS_RENDER;
-+		else
-+			return DRM_XE_ENGINE_CLASS_COMPUTE;
-+	case I915_EXEC_VEBOX:
-+		return DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-+		break;
-+	default:
-+		igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
-+	}
-+}
-+
- static int
- __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- {
-@@ -2455,26 +2476,8 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 		inst.engine_instance =
- 			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
- 
--		switch (flags & I915_EXEC_RING_MASK) {
--		case I915_EXEC_DEFAULT:
--		case I915_EXEC_BLT:
--			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
--			break;
--		case I915_EXEC_BSD:
--			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
--			break;
--		case I915_EXEC_RENDER:
--			if (xe_has_engine_class(ibb->fd, DRM_XE_ENGINE_CLASS_RENDER))
--				inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
--			else
--				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
--			break;
--		case I915_EXEC_VEBOX:
--			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
--			break;
--		default:
--			igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
--		}
-+		inst.engine_class = get_engine_class(ibb->fd, flags);
-+		
- 		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
- 
- 		if (ibb->engine_id)
 -- 
 2.45.2
 
