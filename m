@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C47C3C36005
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 21:02:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A51DBC36008
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 21:02:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FB9C10E5FE;
-	Tue, 25 Mar 2025 21:02:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56D4210E600;
+	Tue, 25 Mar 2025 21:02:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PBV0WvxH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E453Vr2q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25CD510E5FE
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 21:02:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF72610E600
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 21:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742936531; x=1774472531;
+ t=1742936533; x=1774472533;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Wi+WGHEsDQ0FP6mzMxwRth9jQXk/bs5idLbs8dXNHfk=;
- b=PBV0WvxH/DIDcizzLYJUSKfqtMkPqFcd/gXNZf7MfJDK44f438cKeQbu
- g4ovIUjgZPc5sCMFE7AWWkG5I9ah9aVvmFWjnld8YtXDqueCfwXXr7HhG
- yy9eYnkXafcXlTFppjG54h5f+EW/fwbdPzybGz7ERh79Nlvo8o+RFVxQe
- 47PmaRHcf+l+9zgy4h8x9yOLCbzyESK7P5hc2Z0hO8MQ8Qq9H44R6lioh
- Mg+78meP2b1dOzYDU4RBrYuPBfpjoZIW++M3ROFfDVD9R8gfK4aSFvpiC
- l/4vLnx24lpaik84m4/OCxk7GXcq3ovf7oNaCwuRwJGPuLAbxXgSRNkAX Q==;
-X-CSE-ConnectionGUID: 0uKsjH6qSRykWFIm2i6t6A==
-X-CSE-MsgGUID: ljUy3mscTVqa96nMUdlndA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="55584500"
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="55584500"
+ bh=VB0xLpp4SQYOe7dvxSKAtGl7t90iruQIKfl+79S3IjY=;
+ b=E453Vr2qFoa8FhZwh5bGUJceKmWGhBPfkxKXEcC9sZOlyH1BQA9FzQc5
+ p6Jl8ilcpzIa5HKxGwkOePts1yNe/atRWxYvnym2CwrLgNOX/HeyANLg0
+ E8dt+FYy0G1MdPP+tWzYN7AtQgVVeRzI9Ni8NkfthkCuguXvNeLg8Emsu
+ 6QLa5VqtztspRaaQGtJQJzdK8EAd7zSQePDj3bCxP5rlSbBXtUh/nED8i
+ un8o8AFLCb/7kyx+3IXJeQUxyyyGadgusIFZHXTqewvPnL0rVCbHHFqMg
+ v70oLTRRNOVq3vlKkntPNM506n0oQ+F9KgCPXg0VgxkxoLoin85+8uZdN A==;
+X-CSE-ConnectionGUID: isNkNSW5RpCNEJFq51uH6g==
+X-CSE-MsgGUID: kCc7MWabTsmK4Q0MKhgltg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="55584501"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="55584501"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 14:02:11 -0700
-X-CSE-ConnectionGUID: 8lrsZ1nkRlCaxmut23Ubeg==
-X-CSE-MsgGUID: 9Ybe9rlCROm82DTUKJ6i6A==
+ 25 Mar 2025 14:02:13 -0700
+X-CSE-ConnectionGUID: LV37K2dvQF2khurKI9iDdw==
+X-CSE-MsgGUID: JRVy3qZHQqCqMNuwfybsnw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="129164684"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="129164694"
 Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
  ([10.190.238.65])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 14:02:09 -0700
+ 25 Mar 2025 14:02:11 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@intel.com, swati2.sharma@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v4 2/5] runner/settings: Constify absolute_path parameter
-Date: Wed, 26 Mar 2025 02:31:43 +0530
-Message-ID: <20250325210146.3338454-3-ramanaidu.naladala@intel.com>
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v4 3/5] runner/settings: Add function to set
+ IGT_DATA_PATH environment variable
+Date: Wed, 26 Mar 2025 02:31:44 +0530
+Message-ID: <20250325210146.3338454-4-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250325210146.3338454-1-ramanaidu.naladala@intel.com>
 References: <20250325210146.3338454-1-ramanaidu.naladala@intel.com>
@@ -70,45 +70,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make absolute_path a const char*, this ensures the input path
-remains unmodified, enhancing code safety and clarity.
+Add environment variable to obtain absolute path for PNG files
+at runtime.
 
-v2: Update commit subject.  (kamil)
-v3: Update commit message.  (Kamil)
+v2: Fix review comments. (Kamil)
+v3: Fix review comments. (kamil)
+V4: Fix review comments. (kamil)
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- runner/settings.c | 2 +-
- runner/settings.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ runner/settings.c | 22 ++++++++++++++++++++++
+ runner/settings.h |  1 +
+ 2 files changed, 23 insertions(+)
 
 diff --git a/runner/settings.c b/runner/settings.c
-index 1d34c5bfe..1ccf345d9 100644
+index 1ccf345d9..94c95f26e 100644
 --- a/runner/settings.c
 +++ b/runner/settings.c
-@@ -590,7 +590,7 @@ static char *_basename(const char *path)
- 	return tmpname;
+@@ -612,6 +612,21 @@ char *absolute_path(const char *path)
+ 	return result;
  }
  
--char *absolute_path(char *path)
-+char *absolute_path(const char *path)
++int set_tests_datadir(void)
++{
++	const char *datapath = "../share/igt-gpu-tools";
++	char *abpath;
++
++	abpath = absolute_path(datapath);
++
++	if (getenv("IGT_DATA_PATH") == NULL)
++		return setenv("IGT_DATA_PATH", abpath, 1);
++
++	return 0;
++}
++
++
++
+ static char *bin_path(char *fname)
  {
- 	char *result = NULL;
- 	char *base, *dir;
+ 	char *path, *p;
+@@ -654,6 +669,10 @@ void init_settings(struct settings *settings)
+ {
+ 	memset(settings, 0, sizeof(*settings));
+ 	IGT_INIT_LIST_HEAD(&settings->env_vars);
++
++	if (set_tests_datadir())
++		fprintf(stderr, "Data dir path not set\n");
++
+ 	igt_vec_init(&settings->hook_strs, sizeof(char *));
+ }
+ 
+@@ -671,6 +690,9 @@ void clear_settings(struct settings *settings)
+ 	free_hook_strs(&settings->hook_strs);
+ 	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
+ 
++	if (getenv("IGT_DATA_PATH") != NULL)
++		unsetenv("IGT_DATA_PATH");
++
+ 	init_settings(settings);
+ }
+ 
 diff --git a/runner/settings.h b/runner/settings.h
-index 1f0b85318..30743fc40 100644
+index 30743fc40..cbcf624b0 100644
 --- a/runner/settings.h
 +++ b/runner/settings.h
-@@ -142,7 +142,7 @@ bool parse_options(int argc, char **argv,
- bool validate_settings(struct settings *settings);
+@@ -156,5 +156,6 @@ bool serialize_settings(struct settings *settings);
  
- /* TODO: Better place for this */
--char *absolute_path(char *path);
-+char *absolute_path(const char *path);
+ bool read_settings_from_file(struct settings *settings, FILE* f);
+ bool read_settings_from_dir(struct settings *settings, int dirfd);
++int set_tests_datadir(void);
  
- /**
-  * serialize_settings:
+ #endif
 -- 
 2.43.0
 
