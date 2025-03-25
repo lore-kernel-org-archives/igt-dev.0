@@ -4,178 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55D22C35FFC
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 09:02:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2A98C35FFC
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 09:04:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04DBB10E51D;
-	Tue, 25 Mar 2025 09:02:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 58D7F10E520;
+	Tue, 25 Mar 2025 09:04:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jnjg+y8j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V2Ljpw5u";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC8C110E51D
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 09:02:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85AEF10E520
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 09:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742893361; x=1774429361;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=wLbrt8+QNxFPORBWoL3DpcQbEWexJWVzlGlCTbP9wS8=;
- b=jnjg+y8jMT/2PtwNtLsOOzrGkkXXvvpZ0o55wKZxv89ID6bNTPlKfReX
- wRVEcnMvGm1TTE1Xhxhg8lLZTFwK+ejSH1Ra0lN22MkBvCmbfQR0iYyvC
- 2LjpGI6esfWNXUFV8TvmnQ0Cw1lMtdBfyA8JRKChhSf9cMiC4G+LSFZXS
- 3ML/+5UcPqHLq3hJg7XLhPq2Fvgou2hZ9BuU2f0AwWH+VjLeEQEn9z+VY
- +KPWyKBrWB9rY+xwJJ+4ALG5c1clKKT9oZVY3RNru0R9VxDpl6nZnSjFC
- Gv3ANHAA8aKXYP6UMLMQsYJqP0VH4pm9wbRMjk76WgxEfNyP1CwZ7KdyX Q==;
-X-CSE-ConnectionGUID: ZFEu1l07T9KmgUFX8QUdUg==
-X-CSE-MsgGUID: AUU9S0AuTOa0LOrtaUvAlQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="44050399"
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="44050399"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 02:02:40 -0700
-X-CSE-ConnectionGUID: FwZFuv7KTPOI8FnWpCLMOw==
-X-CSE-MsgGUID: TsjgnK84TVK/RTBvV3bInw==
+ t=1742893491; x=1774429491;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=w9gU/mFD5w3K1nnzlarsRmHK+6wE5SPYDFR0dfZwLow=;
+ b=V2Ljpw5uYlspydvfTDK5ZoGw0vOH7YhbnqXpUl56VL+IdVdwVJ6bWtSx
+ kx44V08gVciEg4g8O6YysJDuaVTzBUJUioVvck5J0rXQu9EYE1d3lc4F4
+ onDQGBYROmkkwQYdzaClKdWjPvhWW34URZaGKNyCCmqm32V3yZaFUzGx4
+ pXTCn7el0j8f4s+RRXbI+AJOqJcuCesGjFBxfRIjzJNbC9QQDV0FPBviD
+ aASltb6QJICraepmZVbi8LdPJ+XO7GA/vJTBDKVbqOaTEa4EBMXnQjf3m
+ vQVfyeAiepAVFqd/i9yZQp9EBPoHcf4OvrlnuqXYtLdh4bGrz1+ZKxkBZ w==;
+X-CSE-ConnectionGUID: AtlYc1keRDWRTfaX6ANAVg==
+X-CSE-MsgGUID: M+EpJk08SLine3cvPy3uMw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="43286296"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="43286296"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2025 02:04:50 -0700
+X-CSE-ConnectionGUID: b/llxq1GSHWwlIxcq0+LOg==
+X-CSE-MsgGUID: SrHtoyEkSliwKT/e30a9Gg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="124284929"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 25 Mar 2025 02:02:40 -0700
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; d="scan'208";a="124345760"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2025 02:04:51 -0700
 Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 25 Mar 2025 02:02:39 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.2.1544.14; Tue, 25 Mar 2025 02:04:49 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
  orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Tue, 25 Mar 2025 02:02:39 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.172)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.44 via Frontend Transport; Tue, 25 Mar 2025 02:04:49 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.47) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 25 Mar 2025 02:02:39 -0700
+ 15.1.2507.44; Tue, 25 Mar 2025 02:04:49 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O4UjJoU3hFcUZMTUQZKOvNKuHffiefW+wCjPJzfTcczrV2MSNwgDDpHHbGgXlzwKA9sBAoaniVhS+Yr4TyGIHYRllb95i4bNExjtNZlat0JSpnwlv2Zd3L7m1ccU9MKs5SQhothjiQoK/KXG4/pemQ4HKm2KV7UrVJoDgk52+vLNIfMaUHqGAQeo9Fu99Vsicw6ufe79eZlpxXrLHQZbi6pO87mas0AVxMQL3lm99vGn/5oyzSRVk7RJtgvg4ewNK1a8cPbL7jFGS3RaZLASnZfuK+LuPgOFVU/ZvhfoEWFIO+SuvQnmn/I+d81YHwE/fNiB3Cs9c1J7mX3KKv/bzg==
+ b=sOaIAS8I4JIjJG45T+ShgI0FCzd0e843IAwNnaFF2dZiN4cNBDAIbNJSXLYB0OWQoiYuGLzEl919SJUqOvSikI8mULT1sCzjhZkZFcH5QgbZ1MigHCfJXNIfK4ekgQfUTzzzZY152o8VX45XGd8scIMQ1McS8+JCh5Ya314buluqZVqEeFb3yqPvGuBCvd7u3FAURrzHI6/X1rMarQhL1RgqjoCltcz0mm7LQ21aHNZIzglBuBCuL33h2wwCfxVMkFxN1QNraVJbQ5G6r4qRkWeo93aBIkigAkacUek1H+AsRGzzenMUs7fjm9wmhtiepurZ17jNHp2zjIf1tEsaZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A3pE/2WB2NQeohLUtrn3vFC9/VpcljrT36dDYVR1+5k=;
- b=Qm1Ke298PGAg7rz8ROghY76uqyYyVjM10dQnp7Bq/oU1QjAqH86pS0b3/NJbTr9Q0F7ss/s98sCM5c6o0HYmla7OL0PL8QOBX4gJ0p5zeuOj6fN8Z3Hibza2BbreMQXDoM9RDx+/Cr4YlILJFqbn924nJatGtYsE2A9nTytMGaF1oQgYTIhfdf7KEOc8q/ZVW6I/kZG6u1PWBdk4YAoPSWLpHBOuaOeYcHzCamPzS3qs6WkhjUeus6k/GG7vzboEI0lyZfNuhAyuYz0zLvTq2trXpgBuvasm0OvR6xQhffkwhcvwfLJtrCMNtF5NNAnZyhRVfMRHvXDp75VMglvcMw==
+ bh=FR2BKOBHsVe06KWxqJ+neEmPS5K8pyQNqLOItBwZiow=;
+ b=TlZd58UV/yMfvrUNRlpCjXqESA+tluscU14PSkvOwrfwns6xnVMv+RBwQj890rj57bYfbPuilriiWuKaZUPM7hqRrjECEi4Py4UovG3A+opiiEKZzWYgI11kx1/xdAo0eDJS+NWIdwqon71dQIPiw76GQq54um96BmOJzrOV4/dczVwR7kJEVhtbNtS+k/x9XsjpPF8fdW4B1XVS6lRMM+/QPf74LUHUk6CcTO2RS+ilBEOsiwQC/RiH9NFeK8xg1fokD7lv4JeB2HAlvowZlqr8euJOGjlSb862+1+43BnTGFkPkRTmSCjyhuclW39JDaNwDfByuxovXGpgi+Wryw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by CO1PR11MB4980.namprd11.prod.outlook.com (2603:10b6:303:98::23)
+Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
+ by IA1PR11MB7679.namprd11.prod.outlook.com (2603:10b6:208:3f1::5)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Tue, 25 Mar
- 2025 09:02:10 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372%5]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
- 09:02:09 +0000
-Message-ID: <424d20b6-b8b8-4e1c-9967-35f065e67c1b@intel.com>
-Date: Tue, 25 Mar 2025 14:32:05 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4] tests/kms_plane: Add test to validate odd panning
-To: Nemesa Garg <nemesa.garg@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20250305151708.874294-1-nemesa.garg@intel.com>
+ 2025 09:04:47 +0000
+Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
+ ([fe80::21c3:4b36:8cc5:b525]) by SJ1PR11MB6129.namprd11.prod.outlook.com
+ ([fe80::21c3:4b36:8cc5:b525%5]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
+ 09:04:47 +0000
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Murthy, Arun R" <arun.r.murthy@intel.com>, "B S, Karthik"
+ <karthik.b.s@intel.com>
+Subject: RE: [PATCH i-g-t v6 2/2] tests/kms_async_flips: use in_formats_async
+ for async modifiers
+Thread-Topic: [PATCH i-g-t v6 2/2] tests/kms_async_flips: use in_formats_async
+ for async modifiers
+Thread-Index: AQHbmJCT7or+x07b1kGD7DwPnXQj/bODkVpQ
+Date: Tue, 25 Mar 2025 09:04:46 +0000
+Message-ID: <SJ1PR11MB612923FA9865BF1965B45B6CB9A72@SJ1PR11MB6129.namprd11.prod.outlook.com>
+References: <20250319052905.2624650-1-santhosh.reddy.guddati@intel.com>
+ <20250319052905.2624650-3-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250319052905.2624650-3-santhosh.reddy.guddati@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20250305151708.874294-1-nemesa.garg@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0055.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::11) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ1PR11MB6129:EE_|IA1PR11MB7679:EE_
+x-ms-office365-filtering-correlation-id: 533bdfb9-d925-43f2-0ea7-08dd6b7c1779
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|38070700018|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?TUmFTgmBLqIZYTkfgM8BhRGvuk24yObuFZsB3n/M8RjWdLTZRtQaV0oCX2/D?=
+ =?us-ascii?Q?m5JNKduIStr90ASZyTq5PeXWorgQYt5KBQI/TdiLrwQdEFg5mHA1hK3v8Zru?=
+ =?us-ascii?Q?CrpeGf4JsxHcdK+IHQJ83Pp95bsjU8Dwt7BGtaU0/UA57BLVsFWCyR7pmMj+?=
+ =?us-ascii?Q?xqP8MZRflCtHz8Xm3B7KEbOJD+1hXb1DraOiZKPu62puag7QuYdMjVSLUzhg?=
+ =?us-ascii?Q?QqUMWvnFFi6FNEkZjR7h4jLIv82AbwE2w26HBCoWW1Ay7gwDgZ6/FzedSbxO?=
+ =?us-ascii?Q?6E5WGqppOQCWkeKGl1PefHOfCe5DAfxUCjZxSpIwdCv3Xem4K7aaoX9i9vPT?=
+ =?us-ascii?Q?XTtZ7KRg475QRI+Er+1q7GU/K3LQQsoTT0PilnE/vCkBshS8/SzfhoZ+HEe5?=
+ =?us-ascii?Q?QTX/DKnR4CY/He2l05/hTmm1xDohRakEc7Ir0QhC1P2LYcgmwtc9Eu91IV+E?=
+ =?us-ascii?Q?9zpaNqTf9NJUiy6ITejzaRBv5SsPqXP+XiBiVdFwR0nn/yjTZ/BFG5eYcxfn?=
+ =?us-ascii?Q?MmMIrHzA808V3pzcdvnASfJZ0iwov+8gFzfkMqeWK+QIMNvWizDvouso7ywa?=
+ =?us-ascii?Q?Q+RtpNErdW/ni5vNMAmSnKXZGdEkwAnD44b0pJOnsEUaTWyS9U32iG7dVcQO?=
+ =?us-ascii?Q?3DtsY40euaxgMdRjsg+UohTwEemGf16Nas4gwjt+UzNnmMTvn+bmnouhuwZi?=
+ =?us-ascii?Q?NzPsWf474Ne/NTvVzqnwR7FT3vS0eYbiUc/qZzc1JbmnkiyoPBuZ0kEdRnGF?=
+ =?us-ascii?Q?rRHM1hbeZtsThAEn4ldYcCVeWpq7Uydte/YTpXZ0/lw4SsV++DfVrZp2/Tdq?=
+ =?us-ascii?Q?3ewz2T2Tm3eSWP9hoIWgMTLjIZNZCmjxiOojDW2Do92XJgsTKKGvKJr4ShEE?=
+ =?us-ascii?Q?gHqStlw4Wky3Hx9kRkVVwCJWoaj4fXOId0+RJipw5biBKcITn8hFLxXTbfJk?=
+ =?us-ascii?Q?He3XynkKY68e6DxuFbkctut3fbEbK5M5V/WhYtbcso6ZzVzIEXCXsENjzNSu?=
+ =?us-ascii?Q?L99LzvelUcZ678vjqrXqoL0bVXwGZ2lG5VSOulkU137mL+XRqm85VoZZt6h6?=
+ =?us-ascii?Q?3UlI0csAYutJJtfxPbqkmiST+WxJhX7dVz1vPdLXj0Gc+7TzZpHK04VylJQy?=
+ =?us-ascii?Q?ZTKEtgzj9p1EssbRCz4KdmE+my6eb9CJwvsY2b3PCzfpU2C5Iou+i/+S9h6k?=
+ =?us-ascii?Q?QtIu9qKrln7v2P9+1+SJEn+MdunXzcck1F3Cv6YJ/s5ngswHf4V9/9MA+NFP?=
+ =?us-ascii?Q?3vn2kjVG4NHa2zgCbq19onNFv9v+WTGyLlsIkZovbVTMqBhVZyent+l6UOm/?=
+ =?us-ascii?Q?cl6fhFoM8rIQfhv6MiPoPnWQlOJ547VwwPgotBFV2JM5Q8dXUQm4ONJf0mrC?=
+ =?us-ascii?Q?DpR81gNaShbt+J/17xF74ez0kB2ltgmDLhJ07efjI19+4sedJQ=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ1PR11MB6129.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(38070700018)(7053199007); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?BYGC2G2a449rQ1KW8jnstQKB4IbmRYHDqpFLGKxNOXZ+uiVcX+0OV2kM+AEk?=
+ =?us-ascii?Q?2W2d4Aw2pKCA+avql0FwtU3gixxjvMBhAv6E2AdtSJZNYNZQcGaXhtBTYZfB?=
+ =?us-ascii?Q?SQRMZAAOfHds9wP9HQ+T860CZ+Kzvcu02kuxCE8cgcVGZyoEJCk+T4WAnzW0?=
+ =?us-ascii?Q?oEdjLGuwHdgyOiocI0Q67LyggOCucotj0e3Q0LIgxvwTx2kZDNtZr2HOHDlm?=
+ =?us-ascii?Q?ZJDUFbQ37TiV/PhnRtJQw85deRktYfSpQaN3efzmhjmIYQ/Pb6DrvrB8WH/k?=
+ =?us-ascii?Q?z7OaLM868w9iiapL14o+20vocz8cLCAE72k9mfczDr7ngA/3NEnVfu4seR+N?=
+ =?us-ascii?Q?GdGnyGdl2A1KdimhCebQf6YIqWGbP1JxZlYcGVwQbuW9e5Tg+o9Ab3JrEkDF?=
+ =?us-ascii?Q?xQ7elRdHEICup26FIWEye0nzj0+okC+jCEMU+3Ih2m7l0UrTfFeq7GX6RDhc?=
+ =?us-ascii?Q?2rkbqRfwAs1B6AuHWW/7d7u1X6onetLaoVmwGwWwZU9qHGjRMCzHzGs1MlrB?=
+ =?us-ascii?Q?cK1XOTU7o0hwLQMfq2A1+r1G89Fyu0WxJcqBZ/Je089KTTU4jx4PWU8lZxCh?=
+ =?us-ascii?Q?TiXspqEVee6GCIceFBZMG0xUWwr65zmThUdoN9ya9nEDx+T/+Z0+mza5sxvh?=
+ =?us-ascii?Q?O7Wddk89lcwUA43KxNJgwJfCBYs342TbiJ+pQfCHvNF99mc1phPnWGPI/+lJ?=
+ =?us-ascii?Q?UqpZSZx3gaG30vvtNfZbgYMFSy0s1syIUSwvkOLKZEwT10zM9HSKhhrMm/1i?=
+ =?us-ascii?Q?cb7paRMuwhyaMYqrCmAtqBJvLChC3b1DOeKPcgQ+bnbXjkJ5paphNZ5E65L5?=
+ =?us-ascii?Q?a0DcOVOoA19Zv+JX1sflkQgLV60i51GyKI/ZjfXc8+jZYFkpI8MDpASZdxym?=
+ =?us-ascii?Q?MGS77nOMzZUV8rfzYGNp15Fnx52ajLfljpW39/vnNsh0IDDI9JBDvZUS/kGZ?=
+ =?us-ascii?Q?j6yKXwdQLX+dWGkeKESMiUTNagc3HdqMNNvKF19mGzq83MT3/rwjFQmKsLVz?=
+ =?us-ascii?Q?iycTtg53FXuE0HiEUQOGGB4tU1kIk4rqjkhF5TnzRZ7iSE2+i7waDTCrwFIo?=
+ =?us-ascii?Q?NU6lBJdcYn0A3+k5dSaIZbWbaCfSzNxeTjHemP4Fss53bMtjsL5lsmdj1pjc?=
+ =?us-ascii?Q?iahGygi6hlo/JwsO8D4U2wmVYs3xsHCIeWDGCqTm060Pel212yAjkxIqv5Wx?=
+ =?us-ascii?Q?XIo/iXLhj780p7oAS0ZWiWiRPl8YeARmzck+6BMHPhMfZypk7z/mK9r9f2JU?=
+ =?us-ascii?Q?L5Yan2MRvDNIUCZIwLmvkZs4fnhnd+uBbiLjUlV/QOZDVLEE+SsiF9pt8LVt?=
+ =?us-ascii?Q?s4Ny53SVwPiqVZr1Phh8JWomKWH+8pmI0olSm0/XMkQ7YmshBWMIFpWT/iFQ?=
+ =?us-ascii?Q?3+NueFlfbxiZ9on/SIF7Q8WjGOOQ4vJes93cb1Ad5YJNWW8tpeusLtxb6Edy?=
+ =?us-ascii?Q?rn2XBp7lIsI8tD1iWH+7vgf8G++RYJaiIAV8icgUPdbw6vkvHVYB7mi5FUNH?=
+ =?us-ascii?Q?suPeX8ei6k2vKZ9PifMefRhw2Hah1s9oWHqTsG/0T9cJ86OO5hglSsl+4e/F?=
+ =?us-ascii?Q?b4CoLrKfELS0B70XJ2hhI2vqmwu8dSFyBHKY9JirXTK0uzCHDwpN3b89KwOz?=
+ =?us-ascii?Q?kQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|CO1PR11MB4980:EE_
-X-MS-Office365-Filtering-Correlation-Id: 203d5042-74ee-48fe-d567-08dd6b7bb99a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?T3ZFQTlMTXVoWVJHL0h1bUdNNDAvWXZSVjQxTmNWenFIOU1LUXpqSG1tNEFp?=
- =?utf-8?B?TjF0UVFZMGlyUUp6SVp5b05ESWlDY0dJalNwOE90OVBaNEhUWVpxc1dhcmVY?=
- =?utf-8?B?ZWl3SENlQnozVnN6UXpvOHdHY3gxZ05EVllBd3Njd0E3K1FWZ2ZGTVRyR1dE?=
- =?utf-8?B?SldaQUVQSlNpcnRldHZkc2hMeWlOZmJKV2hsNEFPbkgvSmRuZDBjQmdPT2NE?=
- =?utf-8?B?dS9sM0xlUlk4OHBEcTM4c3VQdEFrNnpNeUNqZjhNN2tILytBS21UTk5rZDM4?=
- =?utf-8?B?WS9JU2lINWNLTURSbmc3ZFR3UklJV0RhRXhUZUZ5RHBMOUV3Q3VWS2h0REF2?=
- =?utf-8?B?THVtSHl5cnQ1M3gxRGpnbFhoSThmS3EvR3UrOWdUVHVHQnRwMU5ZVU5OaGJW?=
- =?utf-8?B?UjAzRXFhT01zZ0tQQS9mMENEdE85UXl0L1gwZ1ROUXJERHBGb2ZNVlQ4dzF0?=
- =?utf-8?B?OFd1T3pkWlYzb2EzdUErQ2pyS0tTN0FSVzM5R0xqWVJwL2VFbnZtRFlyREhH?=
- =?utf-8?B?TTJ0OC9EeWVva240dFZEc2k4S3N1TGNsNy95MDYrc2c3azBZRFVjQ25CVmQ0?=
- =?utf-8?B?cmJodDRHTS94OVBOckYyVjlQR0hkU1daQWxsL1ZZRDRNc2dYM0FjTWlTMVkv?=
- =?utf-8?B?dUsrNHc3dERxanpHMnRoL2MyQXZPMDZqNkVJeGJyaFg3TzBNZlNOVHMrM0Nq?=
- =?utf-8?B?ZE4zNWl3eG10SmxKSERPaUxRZEhtZVhPNGprREptbUtiUndqQXZ4ZVJoRFVV?=
- =?utf-8?B?RmJubzVQRGRlZlZwZEs2dWNabUhBRTVZNUZzSXN6MjFjbUVxTS9kM3FNc0Qw?=
- =?utf-8?B?dzdwYUpQOHhKVTlnVkJJUi9VTXlXSHAwSjZ6TkxYU3hFSlU4S25DMUFvOHd1?=
- =?utf-8?B?QytET0Z6NmpxajFsc05VNHhkTFp3M2ZLSlJKUUsrQmE1N2NwaVpSQWJHL3Fm?=
- =?utf-8?B?QkpHSC92SmpJemluUHJaSHpwZVZGZEV4ZVAzR1MvUS9pbDRQL0U4K054aXJK?=
- =?utf-8?B?WHprMjVLOTlTQlliSFJCSlp6cTEyOTJBVU5jSEpPc1MvbGFzVFRBNEp6dFow?=
- =?utf-8?B?cHBsRlFZRTFJejZHK0greE44RitiVGtHcWV0RmttV0lOWjk2aWpabllleFpv?=
- =?utf-8?B?NS9Kam9qRytablNUNVRYUDJFaGhQR2lZODFlQW5mV3VOV3ZaU2FEempOem5s?=
- =?utf-8?B?YlNMNGg2Rms2RGxRTGJweSsvSHNWRUdxUE1vRmwyL0U5cXMveUI1bjZPRS83?=
- =?utf-8?B?TUY0dFRuSUFxMHpYelZPT29VYjBSd1NOM0tIa3ovU2cxWW9pc1hIWkxhaWdP?=
- =?utf-8?B?Vm5URGVvSHVxTzliRStmZ3RZMFBqVGYwaFd0QjVNZXBXc2NEeUlQU3ZXOUVB?=
- =?utf-8?B?WVhCTllzQ2FsNUF4QlNtcHNWeFY3cDJycDFGTVJkVnlWM0pqU1VhUmwvaUFz?=
- =?utf-8?B?NGpxRXhmQ1ZneVpabkRySHhIanJlbmt0cngwUE5CRTBCemJ0NE45T1dGaHZr?=
- =?utf-8?B?VHV2clpwSWF2T3dVeXNFSVFCa2NjMnVmK2U0ekorZzRaT0RFM3dZR211bXZK?=
- =?utf-8?B?QXlKZEhiSXZPSG1yakVPT2h0bnorbXpnQXovNHloeUpCMTR4SU1xYkJGc1Vi?=
- =?utf-8?B?SWtpd2VyMmMxNUN6anRCYWs1QUZTdUdycTBJbGpRcU91ZVR2L1c4QlhQZmlY?=
- =?utf-8?B?T1RDQzhBQnE0anczdzlVd1BzQkRSakliSlkyWFBkRWVxNk5CLzc1VE0wRjY4?=
- =?utf-8?B?WVhQYXJmc3A1ZVhISUFUU1VRNGNJUUtJRXBaZjZHVDhwWnplR3lydmJlbndq?=
- =?utf-8?B?VEFkT3FGZGhRQUF0VVpkZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UUtvQTh1dC9YUXpMdDhWT0NDT2h2RXF0WlRyUDl3NW9RU0g0UlhjWEdUODRH?=
- =?utf-8?B?RGNXcURnSW1iZVhqVWJJZHovQW44QlBYSlZCQ2Z4cHFHZWVsMkFEenhaT05r?=
- =?utf-8?B?U28vOUNkaDAvTFdBTjhwNjVQVVVWSytIa25pK25nM3d5d1k2b2lxbERQbVV6?=
- =?utf-8?B?ODdZNGszZ25aRXVDL0FVc2R2U1lxdDhlWnc0NGJsbDFjZTVyR3pUblo1VkNt?=
- =?utf-8?B?ZTRIaHZhYUg4dU9nT3JOai9XL3FTTFpjOVd3MDJ0d2dya1cxYnZ4eXRZcERv?=
- =?utf-8?B?Z0RVWlRRZDd1VStuQWdhcnpZTXBxbTA2TkNGYks4RWVDNTNOVTdneGdJdlFY?=
- =?utf-8?B?NnV0QkVIODR4S08zMURqUGlDL29QbE5sazhYSlp6REd5NkhuczltZ2ZTNVFG?=
- =?utf-8?B?ZUk2Y0xQZ0pZK1M1eFhFS1phc3E0NUVpTDhZTkJIcDNCOHdPbFowWVJFQVpy?=
- =?utf-8?B?QXFxa0tYL2IwOGsvREo4aUtoSkVYSkZ5SWRLTzI2dDBhczU1VGdtZzRSRmIx?=
- =?utf-8?B?QlI3UTZvT2xpb1dPNkZpTmMvVlljbitFbjl0OVg5UE5tZDI2SnlIWFRMdzNz?=
- =?utf-8?B?aEgyZkpuT0hJVVJZOTMyZVErS3FFeWVZaEN2YWRyQzlZS253TGJmSE1YQzlp?=
- =?utf-8?B?ZXlUb1BVMjJOZ0hFSnN3UTFHdDRGU2hjSGd0YnBGM0tBT2MydnhHRFQzYUNt?=
- =?utf-8?B?dnJhTjVuUC8rVUhIQmZQNXZ0d3BESjBnV2dIeHo2cWhTS2Z5UUE0dVM2Z0V2?=
- =?utf-8?B?Q1RWUUU4WDN4aThYWWJGd0Zna0o5SXJTMm5XNXFrWUlHTU1zbXVWd1Rpb1hq?=
- =?utf-8?B?S2wzSnljd0Jaa0llMlkxK0xuNE9lbEc3NDZrNXU5LzdwZjB1d3RzaXdKZHRS?=
- =?utf-8?B?ZXFXZGk1OE5YdUhEcE1rL1p1aDVyNkE1a2hoNnFGM01FVGQrMVJZQjF4OGR0?=
- =?utf-8?B?eTczdGpScmN0Qm1haTg4UzVFcitVS0lYdTRoOHl6ZThJR3FPRUFNaXpaMk1U?=
- =?utf-8?B?UHBTckdmSGR6RXdDbGJwVlNraXZmZklBVjBGd0k1aXNkM0NUelNwc2RRMU9h?=
- =?utf-8?B?d3BheGE1Ykt5SytrcVA5RGErN2hpYU96ak5LOFRVWUlwK2IwYjlJYTRKSUJq?=
- =?utf-8?B?dGR2SXJ3Tkw2UjA3VDJjbWZ6TXFMTlYzc01RNUViVUp5aEVnRzBjWDMwVXU4?=
- =?utf-8?B?cDk2ejd1YWx1QkFhdXc1WU94dE15enNTUmdxV2NJTEM2bUlZR2wzc2dPa3ZV?=
- =?utf-8?B?UFhMOGJ1ako2K1hVNW9EZUpNUDFBMXA0aXc1MUMvRUkrRmdoakUvTnVoV1dv?=
- =?utf-8?B?aEI3eFlnOElNVUk4TUd3MzN2bXB3dVBrL2tOSWZmRFlmcnZjZHlqN3BmVlpU?=
- =?utf-8?B?Q0NZU3F6QWRReTdQS2N1Y2NzZ1pLTnI5aUNhMnBNTlpLZEU1aGJVMFNqYXZX?=
- =?utf-8?B?UmJKR2hmNUZFVXlCUUo4RVZnNHMxWjdEZ0s2OVd3c3MwaGhua2NLK3AwNGFn?=
- =?utf-8?B?elBjQWN6bU1LZ0pqVnRGdm95by80R3JGSXF4eE55bkZ6Z1U4WXU2aGVKTlc2?=
- =?utf-8?B?N3V4TjJIWmlldUt3c1BxZjh5bG9DaU8vOU5obmx0SDY0eFRvcW1zeWhQS0tJ?=
- =?utf-8?B?cDlQT1BNME1xRnZHbHhCZWhaaGtBenpVa0pUc3U3NGxob05CRFlwZUNPclFC?=
- =?utf-8?B?bUdhcURpenZVVkl0dFVnODN0UUlTcU1zNkpmcVpmNUVaWUpUVHkwbWZLNHJQ?=
- =?utf-8?B?RUxERkI4UzkwQ0tONGNIblpqUnJGQVY5VFJwbmJlRlhsblZKdXdGQUlYYWxv?=
- =?utf-8?B?bzA0aFRpNkNvbllIMW5udld4eXVJaDJ0cXRQd2p6SUs2YzRpbUxWc3VYb3Uw?=
- =?utf-8?B?UFhuSUZWeWViQkVmSlRwNnZmaUZwVk1hNjcvYk9DSTFQb0cwbE03cW5pTnI0?=
- =?utf-8?B?cXpoTHYrU1hkVnRzNmw4aGN2V21WbThRZWh5ZFE2ODdkd1NzREhaUld4T002?=
- =?utf-8?B?alVhWmNtajJDMi85aEVtZzV4VGFZbjV2bVZ3Q0VpNGRiendOUGJ1ZldYS0ZN?=
- =?utf-8?B?VTFVM2ZuSVEwS0NHYXpwaFRtUXFHdUJiNzRzY3Z0bzJWODlSQjVBb2dRQndx?=
- =?utf-8?B?bDZMYVd6ckVUWGVDQ1RaZkx6RGREanlzVU1mbTIybnhKRzRyNzZNb0NhS05J?=
- =?utf-8?B?QUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 203d5042-74ee-48fe-d567-08dd6b7bb99a
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 09:02:09.9023 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JBsvvsLQLMKp/5XlSMaWGxljUr6OXaPnQ3WyTTCH9eML9V8dcHNqpvAmdUhShv7c8x2Wm+DM3+tB6881ZsXLfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4980
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 533bdfb9-d925-43f2-0ea7-08dd6b7c1779
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2025 09:04:46.9792 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: b8yC016FXrchjbL+el+RgZthhLwj9WtYn6HB+ofixVffuDTt+hrp1wNOFQQrvvouY/xmooEBSNB+fLi7HyXzLwb8n54ckIEi2DXxDKaToG0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7679
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -192,159 +185,306 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nemesa
 
-Test seems to be failing on LNL 
-https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12780/shards-all.html?testfilter=odd-panning
-Please check.
 
-On 05-03-2025 08:47 pm, Nemesa Garg wrote:
-> This feature creates a NV12 plane having two framebuffers
-> and moving it to odd position and then do continous flip
-> along with the change in the width of framebuffer.
-> This is to check whether panning at odd position is
-> supported or not.
->
-> v2: Add test in kms_plane.[Swati]
-> v3: Remove extra parameters[Pranay]
-> v4: Add a break condition in loop
->
-> Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
+> -----Original Message-----
+> From: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>
+> Sent: Wednesday, March 19, 2025 10:59 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Murthy, Arun R <arun.r.murthy@intel.com>; B S, Karthik
+> <karthik.b.s@intel.com>; Borah, Chaitanya Kumar
+> <chaitanya.kumar.borah@intel.com>; Reddy Guddati, Santhosh
+> <santhosh.reddy.guddati@intel.com>
+> Subject: [PATCH i-g-t v6 2/2] tests/kms_async_flips: use in_formats_async=
+ for
+> async modifiers
+>=20
+> Utilise IN_FORMATS_ASYNC property exposed to get the list of async
+> supported modifier/format pair and improve the test coverage by iterating
+> through all the supported modifier format pairs.
+>=20
+> V2: Improve run_test_with_modifiers to set data formats based on async
+>     formats.
+>     Update make_fb to use data formats instead of hard coded format
+>=20
+> V3: Update commit message, remove complicated iterations (Chaitanya)
+>=20
+> V4: Reduce the format+modifier combinations to reduce time needed to
+>     execute the tests. (Chaitanya)
+>=20
+> V5: Remove unnecessary check for reduced formats. (Chaitanya)
+>=20
+> V6: Introduce new test for all formats and modifiers, executing only one
+>     flip to reduce overall time.
+>     Update test_with_modifiers to use async modifiers and formats X8888.
+>=20
+> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->   tests/kms_plane.c | 99 +++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 99 insertions(+)
->
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index b9bf025bd..e4555e932 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -88,6 +88,15 @@
->    * @format-source-clamping:          with source clamping
->    */
->   
-> +/**
-> + * SUBTEST: odd-panning
-> + * Description: Verify that odd panning in horizontal direction for planar format
-> + * Driver requirement: i915, xe
-> + * Functionality: plane, panning
-> + * Mega feature: General Display Features
-We have dropped Test category and Functionality. Please remove them from 
-documentation.
-> + * Test category: functionality test
-> + */
+>  tests/kms_async_flips.c | 116 ++++++++++++++++++++++++++++++++++++++-
+> -
+>  1 file changed, 112 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c index
+> da426f753..165900e09 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -36,6 +36,7 @@
+>  #include "igt.h"
+>  #include "igt_aux.h"
+>  #include "igt_psr.h"
+> +#include "igt_vec.h"
+>  #include <sys/ioctl.h>
+>  #include <sys/time.h>
+>  #include <poll.h>
+> @@ -85,6 +86,9 @@
+>   *
+>   * SUBTEST: async-flip-suspend-resume
+>   * Description: Verify the async flip functionality with suspend and res=
+ume
+> cycle
+> + *
+> + * SUBTEST: async-flip-with-all-modifiers-formats
+> + * Description: Verify the async flip functionality with all supported
+> + modifiers and formats
+>   */
+>=20
+>  #define CURSOR_POS 128
+> @@ -122,8 +126,15 @@ typedef struct {
+>  	bool allow_fail;
+>  	struct buf_ops *bops;
+>  	bool atomic_path;
+> +	unsigned int plane_format;
+> +	bool async_mod_formats;
+>  } data_t;
+>=20
+> +struct format_mod {
+> +	uint64_t modifier;
+> +	uint32_t format;
+> +};
 > +
->   /*
->    * Throw away enough lsbs in pixel formats tests
->    * to get a match despite some differences between
-> @@ -100,6 +109,9 @@
->   #define CRTC_RESTRICT_CNT	2
->   #define SIM_CRTC_RESTRICT_CNT	1
->   
-> +#define PLANE_WIDTH 810
-> +#define PLANE_HEIGHT 590
+>  static void flip_handler(int fd_, unsigned int sequence, unsigned int tv=
+_sec,
+>  			 unsigned int tv_usec, void *_data)
+>  {
+> @@ -193,7 +204,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+>=20
+>  	rec_width =3D width / (NUM_FBS * 2);
+>=20
+> -	igt_create_color_fb(data->drm_fd, width, height,
+> DRM_FORMAT_XRGB8888,
+> +	igt_create_color_fb(data->drm_fd, width, height, data->plane_format,
+>  			    data->modifier, 0.0, 0.0, 0.5, fb);
+>=20
+>  	cr =3D igt_get_cairo_ctx(data->drm_fd, fb); @@ -348,10 +359,19 @@
+> static void test_async_flip(data_t *data)
+>  			data->suspend_resume =3D false;
+>=20
+> 	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> SUSPEND_TEST_NONE);
+>  		}
 > +
->   typedef struct {
->   	float red;
->   	float green;
-> @@ -1330,6 +1342,89 @@ static bool is_pipe_limit_reached(int count)
->   		return count >= CRTC_RESTRICT_CNT && !all_pipes;
->   }
->   
-> +static void
-> +prepare_planes_panning(igt_display_t *display, const enum pipe pipe_id,
-> +	       igt_output_t *output)
-> +{
-> +	igt_plane_t *primary;
-> +	struct igt_fb primary_fb_1, primary_fb_2;
-> +	unsigned int fb_id_1, fb_id_2;
-> +	int j = 0, ret;
-> +
-> +	igt_output_set_pipe(output, pipe_id);
-> +
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	fb_id_1 = igt_create_pattern_fb(display->drm_fd,
-> +					800, 590,
-> +					DRM_FORMAT_NV12,
-> +					DRM_FORMAT_MOD_LINEAR,
-> +					&primary_fb_1);
-> +
-> +	fb_id_2 = igt_create_pattern_fb(display->drm_fd,
-> +					800, 590,
-> +					DRM_FORMAT_NV12,
-> +					DRM_FORMAT_MOD_LINEAR,
-> +					&primary_fb_2);
-> +
-> +	igt_assert(fb_id_1);
-> +	igt_assert(fb_id_2);
-> +
-> +	igt_plane_set_fb(primary, &primary_fb_1);
-> +
-> +	igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
-> +	igt_plane_set_position(primary, -501, 200);
-> +
-> +	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +	do {
-> +		if (j % 2 == 0) {
-> +			igt_plane_set_fb(primary, &primary_fb_1);
-> +			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
-> +			ret = igt_display_try_commit_atomic(display, 0, NULL);
-> +			if (ret == -22)
-> +				break;
-> +		} else {
-> +			igt_plane_set_fb(primary, &primary_fb_2);
-> +			igt_plane_set_size(primary, PLANE_WIDTH - j, PLANE_HEIGHT);
-> +			ret = igt_display_try_commit_atomic(display, 0, NULL);
-> +			if (ret == -22)
-> +				break;
-> +		}
-> +		j++;
-> +	} while (j < 20);
-> +
-> +	igt_assert_eq(ret, -22);
-> +
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_try_commit2(display, COMMIT_ATOMIC);
-> +
-> +	igt_remove_fb(display->drm_fd, &primary_fb_1);
-> +	igt_remove_fb(display->drm_fd, &primary_fb_2);
-> +}
-> +
-> +static void run_test_odd_pan(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	enum pipe pipe;
-> +	igt_output_t *output;
-> +
-> +	for_each_pipe_with_valid_output(display, pipe, output) {
-> +		igt_display_reset(display);
-> +
-> +		igt_output_set_pipe(output, pipe);
-> +		if (!intel_pipe_output_combo_valid(display))
-> +			continue;
-> +
-> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-> +			prepare_planes_panning(display, pipe, output);
-> +
-> +		if (pipe == 0)
+> +		/* Reduce test execution for all formats and modifiers. One
+> flip should suffice */
+
+We will need to flip at least twice because Intel HW converts the first asy=
+nc to sync.
+
+So we have to add data->async_mod_formats to the code that does the extra f=
+lip.
+
+                int flags =3D DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP=
+_EVENT;
+
+-               if (data->alternate_sync_async) {
++               if (data->alternate_sync_async || data->async_mod_formats) =
+{
+                        flags &=3D ~DRM_MODE_PAGE_FLIP_ASYNC;
+
+
+
+> +		if (data->async_mod_formats) {
+> +			igt_assert_f(ret =3D=3D 0, "Async flip failed with %s
+> modifier and %s format",
+> +				     igt_fb_modifier_name(data->modifier),
+> +				     igt_format_str(data->plane_format));
 > +			break;
-> +	}
+> +		}
+> +
+>  		frame++;
+>  	} while (diff.tv_sec < RUN_TIME);
+>=20
+> -	if (!data->alternate_sync_async) {
+> +	if (!data->alternate_sync_async && !data->async_mod_formats) {
+>  		fps =3D frame * 1000 / RUN_TIME;
+>  		igt_assert_f((fps / 1000) > (data->refresh_rate *
+> MIN_FLIPS_PER_FRAME),
+>  			     "FPS should be significantly higher than the refresh
+> rate\n"); @@ -710,17 +730,99 @@ static void run_test(data_t *data, void
+> (*test)(data_t *))
+>  	}
+>  }
+>=20
+> +static bool skip_async_format_mod(data_t *data,
+> +			    uint32_t format, uint64_t modifier,
+> +			    struct igt_vec *tested_formats)
+> +{
+> +	/* igt doesn't know how to sw generate UBWC: */
+> +	if (is_msm_device(data->drm_fd) &&
+> +	    modifier =3D=3D DRM_FORMAT_MOD_QCOM_COMPRESSED)
+> +		return true;
+> +
+> +	/* VEBOX just hangs with an actual 10bpc format */
+> +	if (igt_fb_is_gen12_mc_ccs_modifier(modifier) &&
+> +	    igt_reduce_format(format) =3D=3D DRM_FORMAT_XRGB2101010)
+> +		return true;
+> +
+> +	/* test each format "class" only once in non-extended tests */
+> +	struct format_mod rf =3D {
+> +		.format =3D igt_reduce_format(format),
+> +		.modifier =3D modifier,
+> +	};
+> +
+> +	if (igt_vec_index(tested_formats, &rf) >=3D 0)
+> +		return true;
+> +
+> +	igt_vec_push(tested_formats, &rf);
+> +
+> +	return false;
 > +}
 > +
->   static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
->   {
->   	enum pipe pipe;
-> @@ -1408,6 +1503,10 @@ run_tests_for_pipe_plane(data_t *data)
->   		run_test(data, dynamic_test_handler);
->   	}
->   
-> +	igt_describe("verify whether odd panning is supported or not");
-> +	igt_subtest_with_dynamic("odd-panning")
-> +		run_test_odd_pan(data);
+> +static void run_test_with_async_format_modifiers(data_t *data, void
+> +(*test)(data_t *)) {
+> +	struct igt_vec tested_formats;
 > +
->   	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
->   	igt_subtest_f("planar-pixel-format-settings")
->   		test_planar_settings(data);
+> +	igt_vec_init(&tested_formats, sizeof(struct format_mod));
+> +
+> +	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
+> >output) {
+> +		test_init(data);
+> +		for (int i =3D 0; i < data->plane->async_format_mod_count; i++) {
+> +			struct format_mod f =3D {
+> +				.format =3D data->plane->async_formats[i],
+> +				.modifier =3D data->plane->async_modifiers[i],
+> +			};
+> +
+> +			if (skip_async_format_mod(data, f.format, f.modifier,
+> &tested_formats)) {
+> +				igt_debug("Skipping format "
+> IGT_FORMAT_FMT " / modifier "
+> +					   IGT_MODIFIER_FMT " on %s.%u\n",
+> +					   IGT_FORMAT_ARGS(f.format),
+> +					   IGT_MODIFIER_ARGS(f.modifier),
+> +					   kmstest_pipe_name(data->pipe),
+> +					   data->plane->index);
+> +				continue;
+> +			}
+> +
+> +			/* C8 format is only supported with legacy LUT,
+> skipping it */
+> +			if (f.format =3D=3D DRM_FORMAT_C8)
+> +				continue;
+
+We can remove this as kernel is not advertising it anymore.
+
+https://patchwork.freedesktop.org/patch/643629/?series=3D140935&rev=3D9
+
+> +
+> +			data->allow_fail =3D true;
+
+We should not need this anymore as we have the exact list of modifiers we s=
+upport.
+
+Worthy checking if we need this for other tests too.
+
+> +			data->modifier =3D f.modifier;
+> +			data->plane_format =3D f.format;
+> +			data->async_mod_formats =3D true;
+> +
+> +			igt_dynamic_f("pipe-%s-%s-%s-%s",
+> kmstest_pipe_name(data->pipe),
+> +				      data->output->name,
+> +				      igt_fb_modifier_name(data->modifier),
+> +				      igt_format_str(data->plane_format)) {
+> +				      /*
+> +				       * FIXME: joiner+async flip is busted
+> currently in KMD.
+> +				       * Remove this check once the issues are
+> fixed in KMD.
+> +				       */
+> +				      igt_skip_on_f(is_joiner_mode(data-
+> >drm_fd,
+> +								   data-
+> >output),
+> +						    "Skipping, async flip not
+> supported "
+> +						    "on joiner mode\n");
+> +				      test_init_fbs(data);
+> +				      test(data);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_vec_fini(&tested_formats);
+> +}
+> +
+>  static void run_test_with_modifiers(data_t *data, void (*test)(data_t *)=
+)  {
+>  	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
+> >output) {
+>  		test_init(data);
+>=20
+> -		for (int i =3D 0; i < data->plane->format_mod_count; i++) {
+> +		for (int i =3D 0; i < data->plane-> async_format_mod_count; i++) {
+>  			if (data->plane->formats[i] !=3D
+> DRM_FORMAT_XRGB8888)
+>  				continue;
+>=20
+>  			data->allow_fail =3D true;
+> -			data->modifier =3D data->plane->modifiers[i];
+> +			data->modifier =3D data->plane->async_modifiers[i];
+>=20
+>  			igt_dynamic_f("pipe-%s-%s-%s",
+> kmstest_pipe_name(data->pipe),
+>  				      data->output->name,
+> @@ -757,6 +859,7 @@ igt_main
+>=20
+>  		if (is_intel_device(data.drm_fd))
+>  			data.bops =3D buf_ops_create(data.drm_fd);
+> +		data.plane_format =3D DRM_FORMAT_XRGB8888;
+>  	}
+>=20
+>  	igt_describe("Verify the async flip functionality and the fps during
+> async flips"); @@ -896,6 +999,11 @@ igt_main
+>  		run_test(&data, test_async_flip);
+>  	}
+>=20
+> +	igt_describe("Verify async flip with all supported modifier and format
+> combinations");
+> +	igt_subtest_with_dynamic("async-flip-with-all-modifiers-formats") {
+> +		run_test_with_async_format_modifiers(&data,
+> test_async_flip);
+> +	}
+> +
+>  	igt_fixture {
+>  		for (i =3D 0; i < NUM_FBS; i++)
+>  			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+
+
+Now to some over-all design. First of all, let's separate out the changes a=
+ffecting existing tests and the ones that adds a new test.
+
+In addition to that, since we expect this property available for all intel =
+devices, we should trigger a failure if the property is not present.
+
+Also, we don't really have a fallback if the variables like async_format_mo=
+d_count are not initialized.
+
+Regards
+
+Chaitanya
+
+
+
+> --
+> 2.34.1
 
