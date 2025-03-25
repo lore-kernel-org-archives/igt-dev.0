@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 826EAC3600B
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 17:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BBB5C3600D
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 17:24:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 334C410E5C9;
-	Tue, 25 Mar 2025 17:24:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35EBA10E5D1;
+	Tue, 25 Mar 2025 17:24:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GGL8yIJ+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NPqmNxcn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3701B10E5C7
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 17:24:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24CB110E5C7
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 17:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742923494; x=1774459494;
+ t=1742923496; x=1774459496;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CHFih7WLkMd6BbvsEwAAcYtW7zvnnS7MiaCyF46GNiY=;
- b=GGL8yIJ+56xy0evycVpdcF3tsuoNrg6+NMiQKFtIBJrV//Nn1DI/lNow
- IdSJiu+8c3ZLdCIf0Wb+BrIbR6Mw7Y3GYsxVvSwqFR+SlE8Jb+7NGKQ7X
- 9eK0yHcwY2OmI/4QPyMp06+pZ6B8q8pFLTn4mfmFlYqLLtLIRQLFfvt80
- C5FZYhXUwsxjsu9rT3ltCeKRNUVlkkEp8eltVcwE7bFEKJ+/uaAooIxTp
- ifo2fu6IjmYOZS2Ig+Fx5u8Jr9z3Lri+zYeiX/XnejMtBG6eDsQkUOW8m
- QKHbeNCHV6vB9nx/K6UGNGaGc4AWOdtqqJQVtWA2z/7VdQHj/2P/r/g7K Q==;
-X-CSE-ConnectionGUID: dH6vZFIaS/+OJg/uzsZI9w==
-X-CSE-MsgGUID: cETjKy9oSJSyc+qLCNOs+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44197759"
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="44197759"
+ bh=TXMllhXv9GwMFiDSipYGqNvlcEG6FEZ30xzlUf1jGxU=;
+ b=NPqmNxcnSZeLOXE3KpHITE/mEiBW5DZP15v2ufH2J1Ioev8z3lZt+Gg6
+ qd1Aj3UrtxNsfXun2BKeFuHEj19OdOuCZuqvxzhw9PgW2m8feRjG9eyxW
+ ELcSf0z0TfnURHkCEWwaveIEShAo3yoaBjk8NE7j5MdoZ6Oluv9u7/ydf
+ 8V9XENigHRCDKmZ94BL/BVJ0tOjqSbfoJzkb4ukEWsxQEVFtG0q8ymrRF
+ DGug8FhkDNtKL9i6SDUkbrmrlYvuRBpOEld8laVHENaFUDCFb+NoFQ5IW
+ dM2xEKqCMSjs/Ebwfb2LtPfdipwX7JWKJnh+l4LzK5/PhRrnK7QjI6tMo g==;
+X-CSE-ConnectionGUID: T3VmicopTEadHnzODTw7ww==
+X-CSE-MsgGUID: AtGvzu8oQoa70CqvAhFDWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44197762"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="44197762"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 10:24:54 -0700
-X-CSE-ConnectionGUID: VDLJlT7oS2WyEOoh12+sQQ==
-X-CSE-MsgGUID: kme0OCRDTHCymRTZWvmPeA==
+ 25 Mar 2025 10:24:56 -0700
+X-CSE-ConnectionGUID: WRwIWavPQi2By3K7Qhq4sw==
+X-CSE-MsgGUID: Ds6c9heRTwCpj7kyAWzu6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="129288067"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="129288074"
 Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 10:24:52 -0700
+ 25 Mar 2025 10:24:54 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v4 2/3] tests/intel/xe_pmu: Add engine activity test for
- all functions
-Date: Tue, 25 Mar 2025 23:16:21 +0530
-Message-ID: <20250325174622.155975-3-riana.tauro@intel.com>
+Subject: [PATCH i-g-t v4 3/3] tests/intel/xe_pmu: Add a test to validate
+ engine activity on a function
+Date: Tue, 25 Mar 2025 23:16:22 +0530
+Message-ID: <20250325174622.155975-4-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325174622.155975-1-riana.tauro@intel.com>
 References: <20250325174622.155975-1-riana.tauro@intel.com>
@@ -69,223 +69,134 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Provision and enable 2 VFs with execution quantum and scheduling policy
-set. Add a test that runs workload on all functions simultaneously and
-validates that all engines are equally and fully loaded for the
-entire execution quantum of the function
+Add two tests to run workload on one function at a time with different
+scheduling policies. If sched-if-idle is set to true, then the functions
+use the execution quantum even if idle
 
-v2: add a different function for function config
-    add function details to log
-    move pmu_fd to struct
-    enable and provision VF's (Umesh)
-
-v3: split patches
-    move exec_quantum to variables
-    skip test if vfs are already provisioned
-    fix assert (Umesh)
-
-v4: move provisioning to single function (Umesh)
+v2: add additional test for sched if idle (Umesh)
 
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_pmu.c | 143 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 143 insertions(+)
+ tests/intel/xe_pmu.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
 diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index f0959abe2..66b21472c 100644
+index 66b21472c..175bbf374 100644
 --- a/tests/intel/xe_pmu.c
 +++ b/tests/intel/xe_pmu.c
-@@ -14,11 +14,13 @@
- 
- #include "igt.h"
- #include "igt_perf.h"
-+#include "igt_sriov_device.h"
- #include "igt_sysfs.h"
- 
- #include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_spin.h"
-+#include "xe/xe_sriov_provisioning.h"
- 
- #define SLEEP_DURATION 2 /* in seconds */
- /* flag masks */
-@@ -27,6 +29,7 @@
- 
+@@ -30,6 +30,7 @@
  const double tolerance = 0.1;
  static char xe_device[NAME_MAX];
-+static bool autoprobe;
+ static bool autoprobe;
++static int total_exec_quantum;
  
  #define test_each_engine(test, fd, hwe) \
  	igt_subtest_with_dynamic(test) \
-@@ -124,6 +127,12 @@ static uint64_t get_event_config(unsigned int gt, struct drm_xe_engine_class_ins
- 	return pmu_config;
- }
- 
-+static uint64_t get_event_config_fn(unsigned int gt, int function,
-+				    struct drm_xe_engine_class_instance *eci, const char *event)
-+{
-+	return get_event_config(gt, eci, event) | add_format_config("function", function);
-+}
-+
- /**
-  * SUBTEST: engine-activity-idle
-  * Description: Test to validate engine activity shows no load when idle
-@@ -187,6 +196,77 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, un
- 		igt_assert(!engine_active_ticks);
+@@ -267,6 +268,76 @@ static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *
+ 	}
  }
  
 +/**
-+ * SUBTEST: all-fn-engine-activity-load
-+ * Description: Test to validate engine activity by running load on all functions simultaneously
++ * SUBTEST: fn-engine-activity-load
++ * Description: Test to validate engine activity by running load on a function
++ *
++ * SUBTEST: fn-engine-activity-sched-if-idle
++ * Description: Test to validate engine activity by running load on a function
 + */
-+static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
++static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci, int function)
 +{
-+	uint64_t config, engine_active_ticks, engine_total_ticks;
-+	uint64_t after[2 * num_fns], before[2 * num_fns];
-+	struct pmu_function {
-+		struct xe_cork *cork;
-+		uint32_t vm;
-+		uint64_t pmu_fd[2];
-+		int fd;
-+	} fn[num_fns];
-+	struct pmu_function *f;
-+	int i;
++	uint64_t config, engine_active_ticks, engine_total_ticks, before[2], after[2];
++	double busy_percent, exec_quantum_ratio;
++	struct xe_cork *cork = NULL;
++	int pmu_fd[2], fn_fd;
++	bool sched_if_idle;
++	uint32_t vm;
 +
-+	fn[0].pmu_fd[0] = -1;
-+	for (i = 0; i < num_fns; i++) {
-+		f = &fn[i];
-+
-+		config = get_event_config_fn(eci->gt_id, i, eci, "engine-active-ticks");
-+		f->pmu_fd[0] = open_group(fd, config, fn[0].pmu_fd[0]);
-+
-+		config = get_event_config_fn(eci->gt_id, i, eci, "engine-total-ticks");
-+		f->pmu_fd[1] = open_group(fd, config, fn[0].pmu_fd[0]);
-+
-+		if (i > 0)
-+			f->fd = igt_sriov_open_vf_drm_device(fd, i);
-+		else
-+			f->fd = fd;
-+
-+		igt_assert_fd(f->fd);
-+
-+		f->vm = xe_vm_create(f->fd, 0, 0);
-+		f->cork = xe_cork_create_opts(f->fd, eci, f->vm, 1, 1);
-+		xe_cork_sync_start(f->fd, f->cork);
++	if (function > 0) {
++		fn_fd = igt_sriov_open_vf_drm_device(fd, function);
++		igt_assert_fd(fn_fd);
++	} else {
++		fn_fd = fd;
 +	}
 +
-+	pmu_read_multi(fn[0].pmu_fd[0], 2 * num_fns, before);
++	config = get_event_config_fn(eci->gt_id, function, eci, "engine-active-ticks");
++	pmu_fd[0] = open_group(fd, config, -1);
++
++	config = get_event_config_fn(eci->gt_id, function, eci, "engine-total-ticks");
++	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
++
++	vm = xe_vm_create(fn_fd, 0, 0);
++	cork = xe_cork_create_opts(fn_fd, eci, vm, 1, 1);
++	xe_cork_sync_start(fn_fd, cork);
++
++	pmu_read_multi(pmu_fd[0], 2, before);
 +	usleep(SLEEP_DURATION * USEC_PER_SEC);
-+	pmu_read_multi(fn[0].pmu_fd[0], 2 * num_fns, after);
++	pmu_read_multi(pmu_fd[0], 2, after);
 +
-+	for (i = 0; i < num_fns; i++) {
-+		int idx = i * 2;
++	xe_cork_sync_end(fn_fd, cork);
 +
-+		f = &fn[i];
-+		xe_cork_sync_end(f->fd, f->cork);
-+		engine_active_ticks = after[idx] - before[idx];
-+		engine_total_ticks = after[idx + 1] - before[idx + 1];
++	engine_active_ticks = after[0] - before[0];
++	engine_total_ticks = after[1] - before[1];
 +
-+		igt_debug("[%d] Engine active ticks: after %ld, before %ld delta %ld\n", i,
-+			  after[idx], before[idx], engine_active_ticks);
-+		igt_debug("[%d] Engine total ticks: after %ld, before %ld delta %ld\n", i,
-+			  after[idx + 1], before[idx + 1], engine_total_ticks);
++	igt_debug("[%d] Engine active ticks: after %ld, before %ld delta %ld\n", function,
++		  after[0], before[0], engine_active_ticks);
++	igt_debug("[%d] Engine total ticks: after %ld, before %ld delta %ld\n", function,
++		  after[1], before[1], engine_total_ticks);
 +
-+		if (f->cork)
-+			xe_cork_destroy(f->fd, f->cork);
++	busy_percent = (double)engine_active_ticks / engine_total_ticks;
++	exec_quantum_ratio = (double)total_exec_quantum / xe_sriov_get_exec_quantum_ms(fd, function, eci->gt_id);
 +
-+		xe_vm_destroy(f->fd, f->vm);
++	igt_debug("Percent %lf\n", busy_percent * 100);
 +
-+		close(f->pmu_fd[0]);
-+		close(f->pmu_fd[1]);
++	if (cork)
++		xe_cork_destroy(fn_fd, cork);
 +
-+		if (i > 0)
-+			close(f->fd);
++	xe_vm_destroy(fn_fd, vm);
 +
++	close(pmu_fd[0]);
++	close(pmu_fd[1]);
++
++	if (function > 0)
++		close(fn_fd);
++
++	sched_if_idle = xe_sriov_get_sched_if_idle(fd, eci->gt_id);
++	if (sched_if_idle)
 +		assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
-+	}
++	else
++		assert_within_epsilon(busy_percent, exec_quantum_ratio, tolerance);
 +}
 +
  /**
   * SUBTEST: gt-c6-idle
   * Description: Basic residency test to validate idle residency
-@@ -225,6 +305,55 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
- 	close(pmu_fd);
+@@ -333,6 +404,8 @@ static unsigned int enable_and_provision_vfs(int fd)
+ 	for (vf = 1; vf <= num_vfs; vf++)
+ 		igt_sriov_bind_vf_drm_driver(fd, vf);
+ 
++	total_exec_quantum = pf_exec_quantum + (num_vfs * vf_exec_quantum);
++
+ 	return num_vfs;
  }
  
-+static unsigned int enable_and_provision_vfs(int fd)
-+{
-+	unsigned int gt, num_vfs;
-+	int pf_exec_quantum = 64, vf_exec_quantum = 32, vf;
-+
-+	igt_require(igt_sriov_is_pf(fd));
-+	igt_require(igt_sriov_get_enabled_vfs(fd) == 0);
-+	autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
-+
-+	/* Enable VF's */
-+	igt_sriov_disable_driver_autoprobe(fd);
-+	igt_sriov_enable_vfs(fd, 2);
-+	num_vfs = igt_sriov_get_enabled_vfs(fd);
-+	igt_require(num_vfs == 2);
-+
-+	/* Set 32ms for VF execution quantum and 64ms for PF execution quantum */
-+	xe_for_each_gt(fd, gt) {
-+		xe_sriov_set_sched_if_idle(fd, gt, 0);
-+		for (int fn = 0; fn <= num_vfs; fn++)
-+			xe_sriov_set_exec_quantum_ms(fd, fn, gt, fn ? vf_exec_quantum :
-+						     pf_exec_quantum);
-+	}
-+
-+	/* probe VFs */
-+	igt_sriov_enable_driver_autoprobe(fd);
-+	for (vf = 1; vf <= num_vfs; vf++)
-+		igt_sriov_bind_vf_drm_driver(fd, vf);
-+
-+	return num_vfs;
-+}
-+
-+static void disable_vfs(int fd)
-+{
-+	unsigned int gt;
-+
-+	xe_for_each_gt(fd, gt)
-+		xe_sriov_set_sched_if_idle(fd, gt, 0);
-+
-+	igt_sriov_disable_vfs(fd);
-+	/* abort to avoid execution of next tests with enabled VFs */
-+	igt_abort_on_f(igt_sriov_get_enabled_vfs(fd) > 0,
-+		       "Failed to disable VF(s)");
-+	autoprobe ? igt_sriov_enable_driver_autoprobe(fd) :
-+		    igt_sriov_disable_driver_autoprobe(fd);
-+
-+	igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(fd),
-+		       "Failed to restore sriov_drivers_autoprobe value\n");
-+}
-+
- igt_main
- {
- 	int fd, gt;
-@@ -254,6 +383,20 @@ igt_main
- 	test_each_engine("engine-activity-load", fd, eci)
- 		engine_activity(fd, eci, TEST_LOAD);
+@@ -393,6 +466,18 @@ igt_main
+ 		test_each_engine("all-fn-engine-activity-load", fd, eci)
+ 			engine_activity_all_fn(fd, eci, num_fns);
  
-+	igt_subtest_group {
-+		unsigned int num_fns;
++		igt_describe("Validate per-function engine activity");
++		test_each_engine("fn-engine-activity-load", fd, eci)
++			for (int fn = 0; fn < num_fns; fn++)
++				engine_activity_fn(fd, eci, fn);
 +
-+		igt_fixture
-+			num_fns = enable_and_provision_vfs(fd) + 1;
++		igt_describe("Validate per-function engine activity when sched-if-idle is set");
++		test_each_engine("fn-engine-activity-sched-if-idle", fd, eci) {
++			xe_sriov_set_sched_if_idle(fd, eci->gt_id, 1);
++			for (int fn = 0; fn < num_fns; fn++)
++				engine_activity_fn(fd, eci, fn);
++		}
 +
-+		igt_describe("Validate engine activity on all functions");
-+		test_each_engine("all-fn-engine-activity-load", fd, eci)
-+			engine_activity_all_fn(fd, eci, num_fns);
-+
-+		igt_fixture
-+			disable_vfs(fd);
-+	}
-+
- 	igt_fixture {
- 		close(fd);
+ 		igt_fixture
+ 			disable_vfs(fd);
  	}
 -- 
 2.47.1
