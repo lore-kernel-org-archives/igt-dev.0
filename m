@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3707C36008
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 20:02:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4FFAC3600D
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 20:02:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B02210E058;
-	Tue, 25 Mar 2025 20:02:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B81810E5EB;
+	Tue, 25 Mar 2025 20:02:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KPC5I00L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BEqCb4Ck";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE1E210E058
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 20:02:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CE0E10E5EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 20:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742932950; x=1774468950;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=TdBNqn4JnnsCefoW8zo2YvtbqIvZJN7iwK6cVGY9zJk=;
- b=KPC5I00LsGiTbadDKsG4RviV2BnSXL3KdxMgdc5gorArPuXN8LDMwEm4
- Em9Nnej4nMGmntl8kfCo69dhooN7QeRggEXNx17ETERdp+JGsR4h0O+sC
- b+Pirh8GrtE1w3zY6+f5H6/2j2Pm+DOTWARL1cV9AqqgL7CVjTFCEJc1n
- xguCCjx6tKNXLBX6fACWzBG7m2eP6Ahux4TTOfXJPw/pEM9vZlJiVIrXj
- VJ22o0+4koSVAMZsmqK8k1F77/nrqe1NjuRfPMJgCfQ9k9GeFkCxa6GpL
- YOWEh2qeCgQd57+do8PPg/3mxZJrX5//kYlaz6H2CWZ4Ekxuj2d3iepji Q==;
-X-CSE-ConnectionGUID: LS7d0eUvSLKhxnwsvZw0dA==
-X-CSE-MsgGUID: TFL4jWF+TBaQKnqG/sYCIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="55565026"
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="55565026"
+ t=1742932951; x=1774468951;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=5RpJwpybctUUxsBLDu+DMykUXrXsDUwYm9CyfEAbEbo=;
+ b=BEqCb4CkdU2xaBJjxtSp9fJfuYiWKnU44zfCrXydo64X704n+DWQudfM
+ 3VC6kOtYCEm/i8pmC+j8EyZ3Z0wXKcvMKNFwa/KnjaAAQuLoPBc5S20SY
+ 9UJvACd6NbSEer/1vIyWCEz4X0wU78bbTIT/u0EBi1SRSSP++TvY7eU60
+ ngJBBaLma6aeFc8tU7zcteMo23Wgpz5GHnEsMnhC4v8Y9Ix2yl0JYQC+1
+ Qj7xa2mZkaS9aZiFN8GZE1+Rl737H8nmub2FAzifk8PkLpRAsh669Bbxv
+ a98zCI3otnV2G7e7E8QyWMvFgD9HAv8Bs8pwVYpab9rhiEDcJG3lHTkop g==;
+X-CSE-ConnectionGUID: R6kx832cRgeEZ2zhWTUsCg==
+X-CSE-MsgGUID: gPcZP4A+SrewV+/Kjh7pTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="55565033"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="55565033"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 13:02:29 -0700
-X-CSE-ConnectionGUID: w93Uo9DtQoqkbe2RV8jzVw==
-X-CSE-MsgGUID: 6OmOCfbGQu2sp/QlZXF7OA==
+ 25 Mar 2025 13:02:31 -0700
+X-CSE-ConnectionGUID: ZyqUP8XWRdqAn2xGrvaiMw==
+X-CSE-MsgGUID: ftDmVvrZSfWvssRvKJVK+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="124201692"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="124201696"
 Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
  ([10.190.238.65])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2025 13:02:28 -0700
+ 25 Mar 2025 13:02:30 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mitulkumar.ajitkumar.golani@intel.com, kunal1.joshi@intel.com,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v2 0/2] Fix VRR multi display issue
-Date: Wed, 26 Mar 2025 01:32:07 +0530
-Message-ID: <20250325200209.3329037-1-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v2 1/2] tests/kms_vrr: Fix vrr multi-display issue
+Date: Wed, 26 Mar 2025 01:32:08 +0530
+Message-ID: <20250325200209.3329037-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250325200209.3329037-1-ramanaidu.naladala@intel.com>
+References: <20250325200209.3329037-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,18 +69,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-when use multi display config test is consider only first display
-config for vrr test.
+Ensure consistent output timing by changeing the conditional logic.
 
-Naladala Ramanaidu (2):
-  tests/kms_vrr: Fix vrr multi-display issue
-  HAX patch do not merge
+v2: Updat logic to set the default rate to the midpoint
+    if unspecified or out of VRR range.
 
- tests/intel-ci/fast-feedback.testlist    | 174 +-------------
- tests/intel-ci/xe-fast-feedback.testlist | 278 +----------------------
- tests/kms_vrr.c                          |  11 +-
- 3 files changed, 21 insertions(+), 442 deletions(-)
+Closes : https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4227
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/kms_vrr.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index c4bb30f6a..fd05ebc89 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -324,12 +324,19 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	int num_painted_fbs;
+ 
+ 	mode = *igt_output_get_mode(output);
++	data->range = get_vrr_range(data, output);
+ 
+ 	data->vtest_ns.min = igt_kms_frame_time_from_vrefresh(data->range.min);
+ 	data->vtest_ns.max = igt_kms_frame_time_from_vrefresh(data->range.max);
+ 
+-	/* If unspecified on the command line, default rate to the midpoint */
+-	if (data->vtest_ns.rate_ns == 0) {
++	/*
++	 * If unspecified on the command line or out of VRR range,
++	 * default rate to the midpoint.
++	 *
++	 */
++	if ((data->vtest_ns.rate_ns == 0) ||
++	    (data->vtest_ns.rate_ns < data->vtest_ns.min) ||
++	    (data->vtest_ns.rate_ns > data->vtest_ns.max)) {
+ 		range_t *range = &data->range;
+ 		data->vtest_ns.rate_ns = igt_kms_frame_time_from_vrefresh(
+ 						(range->min + range->max) / 2);
 -- 
 2.43.0
 
