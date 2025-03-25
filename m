@@ -4,70 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D67C3600B
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 19:09:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4C2C36008
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Mar 2025 19:16:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17C9410E5E0;
-	Tue, 25 Mar 2025 19:09:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AAA310E5DF;
+	Tue, 25 Mar 2025 19:16:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="CsqqKWoh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MoqOQl7/";
 	dkim-atps=neutral
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com
- [209.85.214.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 116BF10E5DF
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 19:09:17 +0000 (UTC)
-Received: by mail-pl1-f172.google.com with SMTP id
- d9443c01a7336-2241053582dso48783745ad.1
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 12:09:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742929756; x=1743534556; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TI3Tv5wgZflkqQ0nASkZw82BwZdiWCO05jWSispvOhs=;
- b=CsqqKWoh+9xzvcupRlVQA9ca0CVUQb9io0p1SUn16ry2UzO9t9tDMM561x3ZX5MtwS
- MEnZ27QjBzUAAjDphVvO15J0TjByM1zH5WZgm8pyHVkRHbT6AIJdN6ADUObjWJgCZ8vA
- cfcNKhqZSHDTxr/IHyxSbg3d9rKTGtpFCqU8r+4/ZKgu57UsC/55SWi4oz9YsPNw9rqT
- Zk9o4wjApAljJFp7hFKLtoK5UoJ0Q2++aGK2hPB/by1oW15ftNKcXCuxietppxJMOzt5
- Sqt53JYzQ/YJlGU23kQD6EQVb1PelCd/fEDNxp8IqOpKRPnGCVXl1G7CXeXB0Rn+V9wT
- 2FEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742929756; x=1743534556;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TI3Tv5wgZflkqQ0nASkZw82BwZdiWCO05jWSispvOhs=;
- b=WQkkztDgZv2oqmcakLFp6xXt03u6KFeachdgdR96NtqRnTkXVKQlSTXCa1L4Jz6gId
- I4TQvJUsVYsEUelB7nZy3Z86WAc8aWcuQAm6XFIKF+oTk8HWSzdkIsvsbFkCBJekrsqz
- o7KsdTRUI/crwY8DqmJV/9A7jjdpcSXnzBYcWImcNUeOKiOa7t3AADiFi9w0lnwFmJ4N
- BoBSiLtWXGQ2Zuu/hm4g7eO75U3lHBfD0Xn94M8YyTAwmk3BPyPNXp+VGPVizJdEqpr6
- jgxU4Etse0tfQ292O9AWWxuuMaa/3nfIYywi6j9k50NUb0HD8H4z6eVJHpvb2lpphBek
- GINg==
-X-Gm-Message-State: AOJu0YwquwmOxe0EE/PWnCErSbzATTYTWjn/gA3yYypJ0TQCBcGlR8t4
- vGkxU0FPIt9wA8aA+6dmtkq7YVjhvsP406FQikDwemiOPlc+0vS/h1aLSxfJH+k=
-X-Gm-Gg: ASbGncsBf+mddFlqi1kwW72JrMCVhTJP01LDQmiuhrGHOqZPE1eY+dobIjg4SyGFyP1
- ygKHUAd05sYzkcdnHTcpoTyLjEehZkOXet3CAk5pTMYqbF2aWBNh+aHE/fCd1vKNW2UnJJrg/qc
- J78B+DLa7DMH46hwqd1Px5PIBGKROJkN/KEcJzUN7QgYMARmfv52VSz/2bF/DUGWpANe8p/avJD
- V8iDy2qXcdDvIlFzlLzRbk5Mlt0tc8hAXUD39M6OAFVcrn7au72q+sWvu0i+lOy8mEEJmc7MIJd
- THqIr4E+mahMTkYRuzu/2SCmt1Z61fN9AUcAotD75QXrpdxsIw==
-X-Google-Smtp-Source: AGHT+IEhTRPFhesTbEkpE9lIMWCf1YIvNrJClZFsr+MeyD6TwYoep3yGe+NMjhCscCfEzmXMXiREFQ==
-X-Received: by 2002:a05:6a20:9151:b0:1f3:47d6:aa05 with SMTP id
- adf61e73a8af0-1fe42c6bce5mr33599683637.0.1742929756313; 
- Tue, 25 Mar 2025 12:09:16 -0700 (PDT)
-Received: from localhost ([192.55.55.46]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af8a2a5b402sm8133586a12.75.2025.03.25.12.09.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 12:09:16 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 7/7] lib/igt_fb: on Intel force Vebox copy on yuv formats
-Date: Tue, 25 Mar 2025 21:08:39 +0200
-Message-ID: <20250325190839.1984723-7-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250325190839.1984723-1-juhapekka.heikkila@gmail.com>
-References: <20250325190839.1984723-1-juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD5E710E5DF
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Mar 2025 19:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742930161; x=1774466161;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cxA7X+TL+c0tIMqUX+B5N8ifRokcco0x5P0r5R5iuhI=;
+ b=MoqOQl7/HZvut5YRqFcvK966z2nZswqxtliEHwguF03qZwxTf0mvzIGN
+ 1CUhIsNkYgUyEfX19ZB31qU1uCk2FjI4EgygWC1AUgj/pVwINMIJrwljz
+ qbQlLaTs4GCDRCyoqL0z+EFgtzHakodS7HdLAf87XVrBlxHQ7hBp99odE
+ HLbIe6Qlz6HSxsNsVu3/jwhXT13xNzHWQ3UugkXbdps1nUaog50iW4XgE
+ c8sB3k10O9YUCTL9UCYTDvbDUpiGjld87/YA5djVY8VUpejVaZDkDTU5K
+ Tf4F6enpwm9fYB0ERWe4U8SA3wn6zH/FOZ0iVuMXyEDL91oxL/Ajwuxu1 g==;
+X-CSE-ConnectionGUID: KydoT0z2QUmaJHJ3GD40Qg==
+X-CSE-MsgGUID: DNEaqoftQ06pQnkBOm53fw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="69558659"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="69558659"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2025 12:16:00 -0700
+X-CSE-ConnectionGUID: Mc3MZR3YRxuCNf50jveY/Q==
+X-CSE-MsgGUID: P0fNDHOTThit/0kZjJyotA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; d="scan'208";a="147657217"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2025 12:15:58 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ vinay.belgaumkar@intel.com, krzysztof.karas@intel.com,
+ zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com
+Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
+ soham.purkait@intel.com, jonathan.ming.jun.lui@intel.com
+Subject: [PATCH <i-g-t> v5 0/4] Add per-device engine activity stats in GPUTOP
+Date: Wed, 26 Mar 2025 00:42:26 +0530
+Message-Id: <20250325191230.1822979-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -84,74 +69,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is to test Vebox engine along with other engines
+   Add per-device engine activity stat support in GPUTOP.
+This leverages the PMU interface to display the activity of
+engine instances for the array of requested or all devices.
+    This patch refactors GPUTOP to be vendor-agnostic, 
+laying the groundwork for future support of multiple 
+GPU vendors.
+    Currently, GPUTOP supports GPUs with Xe driver only
+and can monitor the engine activities of multiple GPU
+devices simultaneously through abstracting vendor 
+specific code into a common interface and implementing 
+vendor-neutral APIs for monitoring.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+DRIVER: xe || BDF: 0000:00:02.0
+ENGINES         BUSY
+Render/3D/0   | 96.5% ███████████████████████████████████████ |
+Blitter/0     | 91.6% █████████████████████████████████████   |
+Video/0       | 56.2% ███████████████████████████             |
+VideoEnhance/0| 97.7% ████████████████████████████████████████|
+Compute/0     | 48.5% ███████████████████████                 |
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index a09eb00a3..918a90d86 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2520,6 +2520,14 @@ static bool block_copy_ok(const struct igt_fb *fb)
- 					       fb_tile_to_blt_tile(fb->modifier));
- }
- 
-+static bool use_vebox_copy(const struct igt_fb *src_fb,
-+	const struct igt_fb *dst_fb)
-+{
-+	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
-+		igt_format_is_yuv(src_fb->drm_format) ||
-+		igt_format_is_yuv(dst_fb->drm_format);
-+}
-+
- static bool ccs_needs_enginecopy(const struct igt_fb *fb)
- {
- 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
-@@ -2548,6 +2556,12 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	    is_xe_device(fb->fd))
- 		return false;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return false;
-+
- 	if (is_xe_device(fb->fd))
- 		return true;
- 
-@@ -2588,6 +2602,12 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 	if (ccs_needs_enginecopy(fb))
- 		return true;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return true;
-+
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 		fb->modifier == I915_FORMAT_MOD_X_TILED;
- }
-@@ -2798,15 +2818,6 @@ static void fini_buf(struct intel_buf *buf)
- 	intel_buf_destroy(buf);
- }
- 
--static bool use_vebox_copy(const struct igt_fb *src_fb,
--			   const struct igt_fb *dst_fb)
--{
--
--	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
--	       igt_format_is_yuv(src_fb->drm_format) ||
--	       igt_format_is_yuv(dst_fb->drm_format);
--}
--
- /**
-  * copy_with_engine:
-  * @blit: context for the copy operation
+Soham Purkait (4):
+  lib/igt_device_scan: Enable finding all IGT devices for a specific driver
+  tools/gputop/utils: Add gputop utility functions common to all drivers
+  tools/gputop/xe_gputop: Add gputop support for xe specific devices
+  tools/gputop/gputop: Enable support for multiple GPUs and instances
+
+ lib/igt_device_scan.c       | 177 ++++++++++++++++-
+ lib/igt_device_scan.h       |  12 ++
+ tools/{ => gputop}/gputop.c | 235 +++++++++++++++++++----
+ tools/gputop/meson.build    |   6 +
+ tools/gputop/utils.c        |  51 +++++
+ tools/gputop/utils.h        |  62 ++++++
+ tools/gputop/xe_gputop.c    | 368 ++++++++++++++++++++++++++++++++++++
+ tools/gputop/xe_gputop.h    |  68 +++++++
+ tools/meson.build           |   6 +-
+ 9 files changed, 934 insertions(+), 51 deletions(-)
+ rename tools/{ => gputop}/gputop.c (66%)
+ create mode 100644 tools/gputop/meson.build
+ create mode 100644 tools/gputop/utils.c
+ create mode 100644 tools/gputop/utils.h
+ create mode 100644 tools/gputop/xe_gputop.c
+ create mode 100644 tools/gputop/xe_gputop.h
+
 -- 
-2.45.2
+2.34.1
 
