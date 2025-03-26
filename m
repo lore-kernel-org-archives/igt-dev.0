@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22140C36008
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 15:45:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76DACC36008
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 15:58:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C92EE10E6FB;
-	Wed, 26 Mar 2025 15:45:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0061110E715;
+	Wed, 26 Mar 2025 15:58:12 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAB1E10E6FB;
- Wed, 26 Mar 2025 15:45:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85F5910E715;
+ Wed, 26 Mar 2025 15:58:10 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============9080657153692435877=="
+ boundary="===============1268335437146454072=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fpsr=3A_Fix_PSR_ac?=
- =?utf-8?q?tive_check_for_DisplayPort_connectors_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/igt=5Fpsr=3A_Fix_PSR_?=
+ =?utf-8?q?active_check_for_DisplayPort_connectors_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Mar 2025 15:45:12 -0000
-Message-ID: <174300391289.5929.8011740046304893824@e6b6f09ec485>
+Date: Wed, 26 Mar 2025 15:58:10 -0000
+Message-ID: <174300469054.5903.15942803389837103736@e6b6f09ec485>
 X-Patchwork-Hint: ignore
 References: <20250320215642.3175042-1-ramanaidu.naladala@intel.com>
 In-Reply-To: <20250320215642.3175042-1-ramanaidu.naladala@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9080657153692435877==
+--===============1268335437146454072==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,98 +50,87 @@ Content-Transfer-Encoding: 7bit
 
 Series: lib/igt_psr: Fix PSR active check for DisplayPort connectors (rev4)
 URL   : https://patchwork.freedesktop.org/series/146563/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8288_BAT -> XEIGTPW_12844_BAT
+CI Bug Log - changes from IGT_8288 -> IGTPW_12844
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_12844 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12844, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (9 -> 9)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/index.html
+
+Participating hosts (42 -> 41)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): fi-snb-2520m 
 
-Known issues
-------------
+Possible new issues
+-------------------
 
-  Here are the changes found in XEIGTPW_12844_BAT that come from known issues:
+  Here are the unknown changes that may have been introduced in IGTPW_12844:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Possible regressions ####
 
-  * igt@xe_evict@evict-beng-small-cm:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html
-
-  * igt@xe_exec_fault_mode@twice-rebind:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#2229])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#977])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][6] ([Intel XE#2838] / [Intel XE#979])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#979])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html
+  * igt@i915_selftest@live:
+    - bat-apl-1:          [PASS][1] -> [ABORT][2] +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-apl-1/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/bat-apl-1/igt@i915_selftest@live.html
 
   
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12844 that come from known issues:
+
+### IGT changes ###
+
 #### Possible fixes ####
 
-  * igt@xe_vm@shared-pte-page:
-    - bat-adlp-vf:        [ABORT][8] ([Intel XE#3970]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8288/bat-adlp-vf/igt@xe_vm@shared-pte-page.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_vm@shared-pte-page.html
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-n3050:       [INCOMPLETE][3] ([i915#12904]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [DMESG-WARN][5] ([i915#13494]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-mtlp-9/igt@i915_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/bat-mtlp-9/igt@i915_module_load@load.html
 
   
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8288 -> IGTPW_12844
 
+  CI-20190529: 20190529
+  CI_DRM_16321: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_12844: 12844
   IGT_8288: 8288
-  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/index.html
 
---===============9080657153692435877==
+--===============1268335437146454072==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -163,83 +152,63 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>lib/igt_psr: Fix PSR active check for DisplayPort connectors (rev4)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146563/">https://patchwork.freedesktop.org/series/146563/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8288_BAT -&gt; XEIGTPW_12844_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8288 -&gt; IGTPW_12844</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12844_BAT that come from known issues:</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12844 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12844, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12844:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Possible regressions</h4>
 <ul>
-<li>
-<p>igt@xe_evict@evict-beng-small-cm:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-rebind:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-apl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/bat-apl-1/igt@i915_selftest@live.html">ABORT</a> +1 other test abort</li>
 </ul>
 </li>
 </ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12844 that come from known issues:</p>
+<h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@xe_vm@shared-pte-page:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8288/bat-adlp-vf/igt@xe_vm@shared-pte-page.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12844/bat-adlp-vf/igt@xe_vm@shared-pte-page.html">PASS</a></li>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12844/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8288 -&gt; IGTPW_12844</li>
 </ul>
-<p>IGTPW_12844: 12844<br />
-  IGT_8288: 8288<br />
-  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16321: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12844: 12844<br />
+  IGT_8288: 8288</p>
 
 </body>
 </html>
 
---===============9080657153692435877==--
+--===============1268335437146454072==--
