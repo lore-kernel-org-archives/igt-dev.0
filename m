@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE09C36008
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 20:14:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41EEC3600E
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 20:27:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D926C10E785;
-	Wed, 26 Mar 2025 20:14:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7689910E789;
+	Wed, 26 Mar 2025 20:27:58 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9356B10E785;
- Wed, 26 Mar 2025 20:14:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8644F10E789;
+ Wed, 26 Mar 2025 20:27:57 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3025049621561549885=="
+ boundary="===============3882217341905673603=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/xe=5Ffault=5Fi?=
- =?utf-8?q?njection=3A_Use_separate_functions?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/perf=5Fpmu=3A_?=
+ =?utf-8?q?Remove_invalid=5Finit_test_for_cpu?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Mar 2025 20:14:25 -0000
-Message-ID: <174302006559.7595.5055068554343419364@e6b6f09ec485>
+Date: Wed, 26 Mar 2025 20:27:57 -0000
+Message-ID: <174302087754.7609.11186779661428508460@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250325135114.747316-1-lucas.demarchi@intel.com>
-In-Reply-To: <20250325135114.747316-1-lucas.demarchi@intel.com>
+References: <20250325135906.755368-1-lucas.demarchi@intel.com>
+In-Reply-To: <20250325135906.755368-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +41,26 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3025049621561549885==
+--===============3882217341905673603==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_fault_injection: Use separate functions
-URL   : https://patchwork.freedesktop.org/series/146740/
+Series: tests/intel/perf_pmu: Remove invalid_init test for cpu
+URL   : https://patchwork.freedesktop.org/series/146741/
 State : failure
 
 == Summary ==
 
-ERROR: The runconfig 'XEIGTPW_12830_full' does not exist in the database
+ERROR: The runconfig 'XEIGTPW_12831_full' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12830/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12831/index.html
 
---===============3025049621561549885==
+--===============3882217341905673603==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,18 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Use separate functions</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146740/">https://patchwork.freedesktop.org/series/146740/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/perf_pmu: Remove invalid_init test for cpu</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146741/">https://patchwork.freedesktop.org/series/146741/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12830/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12830/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12831/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12831/index.html</a></td></tr>
 
 </table>
 
 
-    <p>ERROR: The runconfig 'XEIGTPW_12830_full' does not exist in the database</p>
+    <p>ERROR: The runconfig 'XEIGTPW_12831_full' does not exist in the database</p>
 
 </body>
 </html>
 
---===============3025049621561549885==--
+--===============3882217341905673603==--
