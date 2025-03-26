@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB3EC36008
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 12:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6519BC36008
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 12:42:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B252E10E134;
-	Wed, 26 Mar 2025 12:25:20 +0000 (UTC)
-Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54B9810E134;
- Wed, 26 Mar 2025 12:25:19 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5268521148884111565=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0014910E12F;
+	Wed, 26 Mar 2025 12:42:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aqOM8Peb";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 317FF10E12F
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Mar 2025 12:42:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742992936; x=1774528936;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dRPRt8xPWf+3oM4V4D85ka7QJTic8E4paRLkt0O9TXM=;
+ b=aqOM8PebMvIePY1VWmF4ZMfE943mVSn1+Br7c2X363ve04IMQhrdSTME
+ qpXCXN9jKIrJk9D8F4gRPg8ZdXoh3tYpPsgd8t6e301yHhSuFfCkNuHTc
+ oDJqCqm7l/lxifja9QHwZlU33KK/06u6LkVYPschxBInHGUcFPHFR/FTD
+ g18i44noY6HrGKxVudcSrDncgRW4tMbio1koTSq3243e0/3B/HmZ76mZs
+ IFCSl9VWxf29QpBPbbjcV54rzaJvdItlPp1cQRS8scCrjos/TKJxFOomD
+ j2WpBNmpY6ut2hk5NA282zZohdYe403cBT2a43swkayuptQWSxA0vNLxZ A==;
+X-CSE-ConnectionGUID: 9fYjc5EtR+SN69Hi+S1MjQ==
+X-CSE-MsgGUID: QMLgGkDzSba4KiOSlLXWvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44200864"
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="44200864"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 05:42:16 -0700
+X-CSE-ConnectionGUID: vzS3Fni/Sx+WEw6XUrhJEg==
+X-CSE-MsgGUID: R6lvY+ijSIiALKkYyDbCCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="125680621"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.246.3.13])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 05:42:13 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Michal Wajdeczko <Michal.Wajdeczko@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Subject: [PATCH v2 i-g-t] tests/intel-ci/xe-sriov-vm.blocklist.txt: Blocklist
+ for SR-IOV VM runs
+Date: Wed, 26 Mar 2025 13:42:03 +0100
+Message-Id: <20250326124203.222643-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_lib/dsc=3A_use_intel=5Fdis?=
- =?utf-8?q?play=5Fcaps_instead_of_i915=5Fdisplay=5Fcapabilities?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Mar 2025 12:25:19 -0000
-Message-ID: <174299191934.5149.16109543549434133165@e6b6f09ec485>
-X-Patchwork-Hint: ignore
-References: <20250325130842.1821042-1-jani.nikula@intel.com>
-In-Reply-To: <20250325130842.1821042-1-jani.nikula@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,61 +70,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5268521148884111565==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This file contains tests that are not applicable for QEMU Virtual Machine
+(VM) runs. It extends xe.blocklist.txt and should be kept as minimal as
+possible.
 
-== Series Details ==
+v2: Added igt@xe_css@suspend-resume.
+    Removed inaccessible reference. (Lukasz)
 
-Series: lib/dsc: use intel_display_caps instead of i915_display_capabilities
-URL   : https://patchwork.freedesktop.org/series/146736/
-State : failure
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/intel-ci/xe-sriov-vm.blocklist.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+ create mode 100644 tests/intel-ci/xe-sriov-vm.blocklist.txt
 
-== Summary ==
+diff --git a/tests/intel-ci/xe-sriov-vm.blocklist.txt b/tests/intel-ci/xe-sriov-vm.blocklist.txt
+new file mode 100644
+index 000000000..06ed60b52
+--- /dev/null
++++ b/tests/intel-ci/xe-sriov-vm.blocklist.txt
+@@ -0,0 +1,8 @@
++##################################################################
++# Block list for VM runs
++##################################################################
++#
++# rtcwake does not wake the VM from s2idle
++#
++igt@xe_pm@s2idle.*
++igt@xe_ccs@suspend-resume
+-- 
+2.31.1
 
-ERROR: The runconfig 'XEIGTPW_12829_full' does not exist in the database
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12829/index.html
-
---===============5268521148884111565==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/dsc: use intel_display_caps instead of i915_display_capabilities</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146736/">https://patchwork.freedesktop.org/series/146736/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12829/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12829/index.html</a></td></tr>
-
-</table>
-
-
-    <p>ERROR: The runconfig 'XEIGTPW_12829_full' does not exist in the database</p>
-
-</body>
-</html>
-
---===============5268521148884111565==--
