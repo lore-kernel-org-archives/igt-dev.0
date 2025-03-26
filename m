@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C888C36008
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 12:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ECF1C36008
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 12:07:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A0FA10E036;
-	Wed, 26 Mar 2025 12:02:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D571210E6B3;
+	Wed, 26 Mar 2025 12:07:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DKII/y1c";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mH/m1MTS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29FAB10E036
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Mar 2025 12:02:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3486210E6B3
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Mar 2025 12:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742990542; x=1774526542;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=EAFsbsNj/AT0rzmZv0lqX6msEyTMVOCQP209F9xSkqk=;
- b=DKII/y1cSgs1sa7qCuqu9bJO4epX3EP5+kMoDCaJYxIwlxkFI4vMWmpD
- SCABSOd8sX8BoBlsTSzA9nvm+SlF623RlWS+/BShTcxzc5nNYWXqqE4AK
- T60JxNFaiTg7eg0M3SY490lVx3amIkwarI/xeahyi2s9eeMrerNOUb8Ee
- VHAd5QWR+t6rRzcCjOFzZoZRJRvvI4m1tYtuNOpKMAijan9KgJx+gw6MY
- 8tMbP7u/BvQRr2Kayu86IciOBA84n0aTHNghnq4yaGq0AcmkYFRYSCRcu
- kyPMdrbdC42pFV5LS/VJB4Rz7+DGV89s9yeM2wQdkxWoZp6WcRnG+1LIX w==;
-X-CSE-ConnectionGUID: HQuDe48wRGWVSaXXbjBAXg==
-X-CSE-MsgGUID: 2Jj6PMLDT+ehSga/JpPHsA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44161517"
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="44161517"
+ t=1742990838; x=1774526838;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=XgQT88OXpqRMoUBr/0bmYKS9AqrXl0k+ifAFvQ+COqQ=;
+ b=mH/m1MTSSdN5Vs9z4zGzNX8uxFDiN+QNRfi/P/9gzoSwBntCL4SR6bh3
+ c0Z7jyGyX8ty4TBRGfqKhPhPFMb1LL5H6KGb832HkqZ5cRXPuSpSI8JKI
+ B8UlwYfPNrfofmQtoAXaREOhqcvJxupfzmi4FBQ+um5aAANeFmIMbFS8E
+ jjngiGtRKkeKim9nvoePXnE+AE3+U1zlKhCzL1K/F20/QV0xmgu7dHaZE
+ zgCmMUFzutYFEB2yPJY9mnFgz4R9kCY3Zc7OQlATDv+9VT6j7fgBs6CBG
+ LuLG1KQBWtzBIN+nYka3d6+SeGDseQg2a8HlEimuUf2ZsdQpAnF8HU2T7 Q==;
+X-CSE-ConnectionGUID: zyRa1w35Sr+KAbqLZ45YwQ==
+X-CSE-MsgGUID: vcSPo3yCSFudyCBzlQXrnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44162008"
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="44162008"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 05:02:22 -0700
-X-CSE-ConnectionGUID: TCPp8jW/S2eX8iYxox7eQQ==
-X-CSE-MsgGUID: escSqPsRSzqFZX94P2a+PA==
+ 26 Mar 2025 05:07:13 -0700
+X-CSE-ConnectionGUID: 2CUrL3gGTASoyWPmWa09Bw==
+X-CSE-MsgGUID: 7zmJtXs3TLyRj7mH3Q0J8A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="155754744"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.246.3.13])
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="155756675"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO fdugast-desk.intel.com)
+ ([10.245.246.187])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 05:02:20 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+ 26 Mar 2025 05:07:11 -0700
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Michal Wajdeczko <Michal.Wajdeczko@intel.com>
-Subject: [PATCH i-g-t] tests/intel-ci/xe-sriov-vm.blocklist.txt: Blocklist for
- SR-IOV VM runs
-Date: Wed, 26 Mar 2025 13:02:14 +0100
-Message-Id: <20250326120214.180586-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+Cc: Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t,v3 1/5] lib/xe/xe_util: Promote xe_blt_mem_copy()
+Date: Wed, 26 Mar 2025 13:02:56 +0100
+Message-ID: <20250326120623.124595-2-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250326120623.124595-1-francois.dugast@intel.com>
+References: <20250326120623.124595-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,33 +68,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This file contains tests that are not applicable for QEMU Virtual Machine
-(VM) runs. It extends xe.blocklist.txt and should be kept as minimal as
-possible.
+This function abstracts copy with mem blt. Move it to xe_util so
+that it can be also be used elsewhere without code duplication.
 
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel-ci/xe-sriov-vm.blocklist.txt | 7 +++++++
- 1 file changed, 7 insertions(+)
- create mode 100644 tests/intel-ci/xe-sriov-vm.blocklist.txt
+ lib/xe/xe_util.c            | 55 +++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_util.h            |  3 ++
+ tests/intel/xe_copy_basic.c | 36 +-----------------------
+ 3 files changed, 59 insertions(+), 35 deletions(-)
 
-diff --git a/tests/intel-ci/xe-sriov-vm.blocklist.txt b/tests/intel-ci/xe-sriov-vm.blocklist.txt
-new file mode 100644
-index 000000000..e55fcd3f8
---- /dev/null
-+++ b/tests/intel-ci/xe-sriov-vm.blocklist.txt
-@@ -0,0 +1,7 @@
-+##################################################################
-+# Block list for VM runs
-+##################################################################
-+#
-+# VLK-69956 - rtcwake does not wake the VM from s2idle
-+#
-+igt@xe_pm@s2idle.*
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 06b378ce0..ba23bd7d8 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -7,6 +7,8 @@
+ #include "igt_core.h"
+ #include "igt_syncobj.h"
+ #include "igt_sysfs.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
+ #include "intel_pat.h"
+ 
+ #include "xe/xe_ioctl.h"
+@@ -275,3 +277,56 @@ uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
+ 
+ 	return div64_u64_round_up(nsec * refclock, NSEC_PER_SEC);
+ }
++
++/**
++ * xe_blt_mem_copy:
++ * @fd: drm fd
++ * @src_handle: handle of the source BO
++ * @dst_handle: handle of the destination BO
++ * @ctx: intel_ctx_t context
++ * @size: BO size
++ * @width: width
++ * @height: height
++ * @region: memory region
++ *
++ * Copy BO with mem blit from @src_handle into @dst_handle.
++ */
++void xe_blt_mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
++		     uint32_t size, uint32_t width, uint32_t height, uint32_t region)
++{
++	struct blt_mem_data mem = {};
++	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
++	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
++						  INTEL_ALLOCATOR_SIMPLE,
++						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint8_t src_mocs = intel_get_uc_mocs_index(fd);
++	uint8_t dst_mocs = src_mocs;
++	uint32_t bb;
++	int result;
++
++	bb = xe_bo_create(fd, 0, bb_size, region, 0);
++
++	blt_mem_init(fd, &mem);
++	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
++			   region, src_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
++			   COMPRESSION_DISABLED);
++	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
++			   region, dst_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
++			   COMPRESSION_DISABLED);
++	mem.src.ptr = xe_bo_map(fd, src_handle, size);
++	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
++
++	blt_set_batch(&mem.bb, bb, bb_size, region);
++	igt_assert(mem.src.width == mem.dst.width);
++
++	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
++	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
++
++	intel_allocator_bind(ahnd, 0, 0);
++	munmap(mem.src.ptr, size);
++	munmap(mem.dst.ptr, size);
++	gem_close(fd, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination differ\n");
++}
+diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+index 06ebd3c2a..550c62101 100644
+--- a/lib/xe/xe_util.h
++++ b/lib/xe/xe_util.h
+@@ -49,4 +49,7 @@ void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
+ 
+ uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t ns);
+ 
++void xe_blt_mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
++		     uint32_t size, uint32_t width, uint32_t height, uint32_t region);
++
+ #endif /* XE_UTIL_H */
+diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+index a43842e39..b7cee6f62 100644
+--- a/tests/intel/xe_copy_basic.c
++++ b/tests/intel/xe_copy_basic.c
+@@ -44,41 +44,7 @@ static void
+ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
+ 	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
+ {
+-	struct blt_mem_data mem = {};
+-	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
+-	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
+-						  INTEL_ALLOCATOR_SIMPLE,
+-						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+-	uint8_t src_mocs = intel_get_uc_mocs_index(fd);
+-	uint8_t dst_mocs = src_mocs;
+-	uint32_t bb;
+-	int result;
+-
+-	bb = xe_bo_create(fd, 0, bb_size, region, 0);
+-
+-	blt_mem_init(fd, &mem);
+-	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
+-			   region, src_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
+-			   COMPRESSION_DISABLED);
+-	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
+-			   region, dst_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
+-			   COMPRESSION_DISABLED);
+-	mem.src.ptr = xe_bo_map(fd, src_handle, size);
+-	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
+-
+-	blt_set_batch(&mem.bb, bb, bb_size, region);
+-	igt_assert(mem.src.width == mem.dst.width);
+-
+-	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
+-	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
+-
+-	intel_allocator_bind(ahnd, 0, 0);
+-	munmap(mem.src.ptr, size);
+-	munmap(mem.dst.ptr, size);
+-	gem_close(fd, bb);
+-	put_ahnd(ahnd);
+-
+-	igt_assert_f(!result, "source and destination differ\n");
++	xe_blt_mem_copy(fd, src_handle, dst_handle, ctx, size, width, height, region);
+ }
+ 
+ /**
 -- 
-2.31.1
+2.43.0
 
