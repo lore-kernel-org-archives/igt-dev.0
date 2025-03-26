@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 705A6C36008
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 21:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A412C36008
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 22:05:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1211C10E75C;
-	Wed, 26 Mar 2025 21:52:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1DB9C10E06F;
+	Wed, 26 Mar 2025 22:05:33 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0B6310E73C;
- Wed, 26 Mar 2025 21:52:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD58610E06F;
+ Wed, 26 Mar 2025 22:05:31 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7990049947153369486=="
+ boundary="===============3473985357828128207=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Fix_VRR_multi_display_issu?=
- =?utf-8?q?e_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Update_image_assets_=28rev?=
+ =?utf-8?q?5=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Mar 2025 21:52:37 -0000
-Message-ID: <174302595771.7776.8816161351117845307@e6b6f09ec485>
+Date: Wed, 26 Mar 2025 22:05:31 -0000
+Message-ID: <174302673176.7784.14414211402710133994@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250325200209.3329037-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20250325200209.3329037-1-ramanaidu.naladala@intel.com>
+References: <20250325210146.3338454-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250325210146.3338454-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +41,26 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7990049947153369486==
+--===============3473985357828128207==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Fix VRR multi display issue (rev2)
-URL   : https://patchwork.freedesktop.org/series/146070/
+Series: Update image assets (rev5)
+URL   : https://patchwork.freedesktop.org/series/141539/
 State : failure
 
 == Summary ==
 
-ERROR: The runconfig 'XEIGTPW_12837_full' does not exist in the database
+ERROR: The runconfig 'XEIGTPW_12838_full' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12837/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12838/index.html
 
---===============7990049947153369486==
+--===============3473985357828128207==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,18 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Fix VRR multi display issue (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146070/">https://patchwork.freedesktop.org/series/146070/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Update image assets (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141539/">https://patchwork.freedesktop.org/series/141539/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12837/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12837/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12838/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12838/index.html</a></td></tr>
 
 </table>
 
 
-    <p>ERROR: The runconfig 'XEIGTPW_12837_full' does not exist in the database</p>
+    <p>ERROR: The runconfig 'XEIGTPW_12838_full' does not exist in the database</p>
 
 </body>
 </html>
 
---===============7990049947153369486==--
+--===============3473985357828128207==--
