@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05FE6C36008
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 23:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DA99C36008
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Mar 2025 23:44:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 50C6610E793;
-	Wed, 26 Mar 2025 23:44:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E310710E79D;
+	Wed, 26 Mar 2025 23:44:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="FiG0nEPn";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="rnmX67h5";
 	dkim-atps=neutral
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2085.outbound.protection.outlook.com [40.107.100.85])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53A0910E79D
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Mar 2025 23:44:14 +0000 (UTC)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2053.outbound.protection.outlook.com [40.107.94.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20A1D10E79E
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Mar 2025 23:44:25 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VRangYiaY8vOGpQzYYG2ilRy4yn4YEaTbq/y2y/hFjykLrVeP39yySYJeyJaofHCGIR6HFWzdsfptJEBgXEGYxE2BQ6k5tgFz7Q06YAceG3fRqUVQK0s5Li4Fe5Bx9rM3bMR+DNAVsCiErcqvk+oUuVwleWLphgpdvRuSXRzkRvWBL86urBGPjmEapMps8/MHDwow/3ICwbdeshXwEAYaotC1lbZMEPO5jqBGed7KGOJIZ74DfF7qQ/rOC5oPIzEg75LyuD0Tf9u7wocvFEGml4RHmtkwC1Tmh8Ir2VloS7j6rl7oCwjKvVrr3HtVzhiEwPWrsSWMcKdyMrurGTajA==
+ b=sBMmP/hyENP86T5WuEbH9aWBAL8d3d0x4zuwFmoC77vtPURdRakOtUx/nGFKeq7nQttWhnvo++w97DjwuRqgIWyakiAMHVYDY6250RBGsHzT/YumX84TD8B01tZ55LTdDWfDXSkXLsCyyX2AGIcJfSFhqMixn16FEI/DQ7rx8A8NMgjAWpAv3Rq7jIIAAt6F4S+0V2LPp7APepY87uSpF8i/eUwTMj0IDqVXxHqWNjbkyKj6xbPNEut1U7L3YrfOqpG40H/YUQ3Yb1lHrR04o21bviO0HL9TZB5Qu4zyENo82HaoVOQm1WfeqdRDPf4xSkpXk/p5Asf4X/fWu1QX6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9XYBApRkzUBldpQN9qeiAs506ZGuz4JSer2IOsfXOk4=;
- b=COE19WQ2zMtt4OaWPVfHbgta9xpTpZVJETRjVm7qaOi2dv1TS+wBk0ZIRw7pLmTXf29vlkN2ICnnS8fiyarhuv+RtQhW8BOI8JJQp43bEz/8AEiGILj9zfa5I+5vDpIeqhj2tPrG6O1TnHGTxdig5ztk3ERQCz6lMMbJN07R8OutG29mv6wdr/HK77ACs4t7rG/lcQeCLsECOtCNkQ7WcNg9CyxlfF1LYbnINTtLiYIlGN6Ti3PmJSy1aNseP14KDHU9K5nAamWbOTHRVhQfdSngQCPChlbskYUlRCDe+urgGNNw/qOmGleaDwdp4mtxeCTdVt+VjuzfhXEmfZ6Jbw==
+ bh=LiWiNAgRUFHVRzvTZawtB+myI8z3A4h708jRiCwKGHs=;
+ b=IdC6+aYCHmI1GE+APLXbkoVqUtg0QjN+iiMfm6YMf5PkFmPWfCFpLmVHDtgxUI0+sW+b7eu1zyfQ1iyNIfFEKqJjf1EZrf7mGWCX18YD3uS3dJzHHURfbgKqY8nT7Lg6d+Ki0TRcX9IB9DgriAOHjoHLkmOFI31OtwyxDsFi0/XrVcCVdHGvJbQ3N2WsOYfctwOUxPGDfrwL0xzeedp43acSd0RuqIlXao/nGvexygmht7aEmFtiQgTxqABcaaIBWQ4vtJwbpzP7S2+AIFo8j/kOEe9EUe3Snoukyw9C+y50v6t9h5pe7T8ZSbTtXC8dSIw+BZEjyj9KPKXDNT+FGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9XYBApRkzUBldpQN9qeiAs506ZGuz4JSer2IOsfXOk4=;
- b=FiG0nEPn98cnmjZTTw9MqWrSoYHqdzOon0dCiC8+gNUtKzgnlsZkkhqbrYx1N4wAlQ1/YIEXcSuOt7gi69T2Jew/tQF39vcIqqJvpdWzmXNddTA5UEetNkb4SklDUTyFyi6XA7cNuY3eI57kbLZ112WZ0L6tc7Rvit7NQw8N8uk=
-Received: from BL1PR13CA0125.namprd13.prod.outlook.com (2603:10b6:208:2bb::10)
- by MW4PR12MB6684.namprd12.prod.outlook.com (2603:10b6:303:1ee::22)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=LiWiNAgRUFHVRzvTZawtB+myI8z3A4h708jRiCwKGHs=;
+ b=rnmX67h54YmFiUM8T+YLMmfKKyMcbOnd6clfr1hqWZdDquyOyYm4Kprj85b/9YSauzqnIGrNXTsuW8nyWX95CwUeYuWRVzcb2OzqgdJX5WqMmmWDFSOY69f6/T3oWmtmFVKQvFT6bK2Ut5AytmtLMaKFTECrnkuS7VvPRVf1cAs=
+Received: from BL1PR13CA0404.namprd13.prod.outlook.com (2603:10b6:208:2c2::19)
+ by CH1PPF73CDB1C12.namprd12.prod.outlook.com
+ (2603:10b6:61f:fc00::615) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 26 Mar
- 2025 23:44:10 +0000
-Received: from BL6PEPF0001AB4E.namprd04.prod.outlook.com
- (2603:10b6:208:2bb:cafe::ba) by BL1PR13CA0125.outlook.office365.com
- (2603:10b6:208:2bb::10) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 23:44:21 +0000
+Received: from BL6PEPF0001AB4D.namprd04.prod.outlook.com
+ (2603:10b6:208:2c2:cafe::2e) by BL1PR13CA0404.outlook.office365.com
+ (2603:10b6:208:2c2::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8583.26 via Frontend Transport; Wed,
- 26 Mar 2025 23:44:09 +0000
+ 26 Mar 2025 23:44:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,20 +48,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB4E.mail.protection.outlook.com (10.167.242.72) with Microsoft
+ BL6PEPF0001AB4D.mail.protection.outlook.com (10.167.242.71) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8534.20 via Frontend Transport; Wed, 26 Mar 2025 23:44:08 +0000
+ 15.20.8534.20 via Frontend Transport; Wed, 26 Mar 2025 23:44:20 +0000
 Received: from smtp.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Mar
- 2025 18:44:08 -0500
+ 2025 18:44:20 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>, <alex.hung@amd.com>
 CC: <harry.wentland@amd.com>
-Subject: [PATCH V7 23/37] tests/kms_colorop: Set wide [13,
- 13] bracket for comparison on amdgpu
-Date: Wed, 26 Mar 2025 17:35:55 -0600
-Message-ID: <20250326233609.2980110-24-alex.hung@amd.com>
+Subject: [PATCH V7 24/37] lib/igt_color: Add PQ variants for 0-1 and 0-125
+ range
+Date: Wed, 26 Mar 2025 17:35:56 -0600
+Message-ID: <20250326233609.2980110-25-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250326233609.2980110-1-alex.hung@amd.com>
 References: <20250326233609.2980110-1-alex.hung@amd.com>
@@ -73,52 +73,52 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4E:EE_|MW4PR12MB6684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 738b891b-5893-4f23-f893-08dd6cc01a7a
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4D:EE_|CH1PPF73CDB1C12:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15d46a3f-8f09-4d89-82df-08dd6cc0219c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|82310400026|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?14yVe2VyXEcON+ydJjTR8BXHH01vYoCwD5Cvj+j0Is6zX65h3j8sHy9zrUHg?=
- =?us-ascii?Q?H6Br1YfNSi/2GzEIb1yctaR8tKh9TF7HDeUH29ZfZSZ9y8IrNbqwWnZpREE3?=
- =?us-ascii?Q?fko+3AA45xg+tBZojSC8qZR7ArkJcfcHeE5w+P0ILB8nqVeVrnzQutKIkY6y?=
- =?us-ascii?Q?BY+Se8XjcetDTPDu4TVJC519bv4Nt7gsepkIZAZdZq/MDprZ0ZVEPKLy3FsA?=
- =?us-ascii?Q?srMC++GCVrvV6gVh/QPjGg0Ia59WwfxAXY3XYvMPn1AZuhupT+QagZNxHpa6?=
- =?us-ascii?Q?6wEgP4IBT7ltjCfS/X0/BKLQAjTB73WvRTlPYnKtfEyBLBGsbeoqBb1+lNnR?=
- =?us-ascii?Q?EHTunWhjJthfzvSoxtqsQt1Fhxd9TcNluo2kJa8QbpGXX0CV+P3b2OH82xT5?=
- =?us-ascii?Q?kh+4MbYUhiy0OvbZ3t0kmWSEj/Xs0ks47vHl16blEa8Ke3bJgL5iWQh9Ni09?=
- =?us-ascii?Q?TiFtBt9QkuYAnMErScNGO9V5UZVf9IAVxvL52WRR627lBDcPX38E6IE/+4Ij?=
- =?us-ascii?Q?P1p6AzlC7TrI+ja9Ox0FLLiM6sTuph5WbqwwvXpy0zX/Qvv6N01T7z6odv29?=
- =?us-ascii?Q?q+AyfS2YTzDSjDl8PM7LRQqq0mvRBrWfM5cJ7xg0xdfmiHO/Lrt77v+2r+ly?=
- =?us-ascii?Q?iicpq0jdpzlV4jXaIInyLEHDF6Bdz94POSpkyVeYn8+9nxByW86adIO9BcbX?=
- =?us-ascii?Q?iOL9ZJlM8ih8z1Tq1ppSWcK3UcHB/jGXR8sn/mRHnNur2XnfTnmPcRp/MKmX?=
- =?us-ascii?Q?a/DtKypVyu7AYV+cEiG6bRX0HhXzbqGj/Cl+JYSDPa7AXsINkVT43DL6n0HR?=
- =?us-ascii?Q?a9CNwbwVRpOx+eLQWaFKl4hrAOQv8q2a5vFMUwE/n1A9iIJDc0Nwf2KE+rCA?=
- =?us-ascii?Q?7Y9la8PyX2DkdL4qrDMRo8gNm1uAKNu3bXk2OJbZ2u3UiDSco6GxJ1/X1Hkr?=
- =?us-ascii?Q?a3nFxasY2x5K86TpxiDdwUWj2zBKVTG++97bavqODiOlCOAtqMsVtaC5IF1g?=
- =?us-ascii?Q?ezcF8Gmlvdup9qvTerxE/ZgP4CQe5qfa1col9tXW5fne616B9D2ujrg4M4PM?=
- =?us-ascii?Q?yEcBlcUTbFLNb2F0DcsiyuFs0DcJIhMmcadFFkSTQffxiOnzbRyKwTAqzXMx?=
- =?us-ascii?Q?pPpeduwW3XBfvAMBCI3Zu5Zcu0Mw79jiQj1Y8js6f0fldUeVtBtgABE1vsH7?=
- =?us-ascii?Q?WMNeR1W/C0GFFsCXa7jaj10Lo6p2wSwI2Hs+1Dyd8kSpo+Y4BBNPgLstALCD?=
- =?us-ascii?Q?TZ8e+nhQjKWbvztyVE38idR5WvM4M0pXnHcmVpK4YYx081iO2v6jef/YTDCJ?=
- =?us-ascii?Q?pxEZY4WGtcwHz0eU3koCF++3ABWv1wZo92tdsu+MBiG9/97GgfO3ik2+JIdu?=
- =?us-ascii?Q?IA1IMN7wLarywZj8zHlV0bXEp0r3NxwgEqIRoz98hDDjCa8BZVungP1C5Gkw?=
- =?us-ascii?Q?TW55IqwJDT7V4we1fAm35siSYEjT9ERsyZBmqMNIXrr97VjZyg1YFMQoFClf?=
- =?us-ascii?Q?aWIfNmcMWnh2eNZSQUOp0erWmH0ZbjS3hm+7?=
+ ARA:13230040|36860700013|376014|82310400026|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?huE4tRnbw+3dxLugEiugk8AVbxTrCr4yfFvN65GMr/8ZO5GWF3nPIj8zuQkG?=
+ =?us-ascii?Q?3yADD1cspiH/z9w95mRfOMFY3NvvIpHALZ8qnEZW2zKM/UrzLd1Weyp4piww?=
+ =?us-ascii?Q?Lg1KGdS7BZFlkIicMmG1vwYams9r+f/+BKjIFxvj1EO2B7Hp7jYAyh3ry1jH?=
+ =?us-ascii?Q?ES/uS1v9bj4C+RSfLtzFJTKt7LVhbvzu9LnzrFzmseVFMd/XnblK+GSjCTL2?=
+ =?us-ascii?Q?Ko8/2tynYxKBD7VYXNsAi+i+iagQNZ09hytmZYGlNpK88ZAuTbyLQj1+4jB/?=
+ =?us-ascii?Q?dSH+3cWTG35j6Rd3QAOb9ZchUFN92Yld7iMo1TNQh0fNBlIeqww+ix9MhKOe?=
+ =?us-ascii?Q?pin1lS0GbeDHZwfwYC+Ce66mh5F22pHe0JpuXtG3bfUs+KcjvUJHcJOYN562?=
+ =?us-ascii?Q?S3AKKr0hrjf6P/VawWmYNdD5ZP48uSXnsKeIYX+Gnc37MRvQkhljTdZS2lxT?=
+ =?us-ascii?Q?U9wK29XK4lr0aZYC+z7gDvjokAuxn5bjBlfHG0UXtQcyLpCH/xxtCqistI0P?=
+ =?us-ascii?Q?w17nh50P+F2LvzezoFdzW2/2xZ/fe7rS1ynA0AkiCcLkCRUVXupJL9StCzI2?=
+ =?us-ascii?Q?ktb5iX7HLfcLT1FpU6FQC3YDg0oxltxWJCjF3eTgxvzTTkOLBJP4+IeGb1Yi?=
+ =?us-ascii?Q?ua0rlBuOepLZJK2tLPqTsOXeegalUY/W/Wpn3cxpjyf9hCBexcpG/eCKreEt?=
+ =?us-ascii?Q?uPvBO+7uhnF73d6elAYU4A/S+YfvEy+yKhWyoRVLvZbnK2FMD8Fu7cx8NDPN?=
+ =?us-ascii?Q?zowahrQEopcELDdxTY8Jwsp2eNZFJF2WNyXAtfVEw9ldAo0UH76ryA2MYGHo?=
+ =?us-ascii?Q?JBFguSup6nbxrhbqY0bXSx+zK8EtgqRGiWuco+R4kVSg3b0G7FZjGFOcmWkX?=
+ =?us-ascii?Q?HMWWpGcF5JwLXumc9npFWBOzfqHrKJ3Cv4eepgcSlfpfeV0Poe87/GGeexKa?=
+ =?us-ascii?Q?w59tqE/dfFoea9DrWARqgo+/tfcH5Lj0CEh15anageJCwx9KvsnCj4/RK7Je?=
+ =?us-ascii?Q?g5AxZhAzXDnZGO/RtA79DkLIKn7TtsCiMPBUQyTJPbBL0Sd8nT75WD7SmBhC?=
+ =?us-ascii?Q?0ukeMrJ2haNeMDmlui0vWCD5npnbubUlMJsZEBgQyHxvgob1AbgcsywbmXDe?=
+ =?us-ascii?Q?Y4nnOPTv6RAPimZfdSQ5AwhrtPyQYywdB74lROtuHG2zGadP7N19sREBR5u0?=
+ =?us-ascii?Q?FtyyRKaULFUBm8F8ACXeRp4VEP35rwkCTwT8uN7TZ3D7g3923N9rbH0yu1NM?=
+ =?us-ascii?Q?DFdRNF1Jr/PsYjABoUcQg4eRE7ApjGHoDVzq/3A4JvMDUE4DzjVZTd6B48Fd?=
+ =?us-ascii?Q?rspMXNwxEnOs7EyPeV5qqQcBh9Nr2bmrKOuKV/lhKXt2fDzme9jtcaYVyd7T?=
+ =?us-ascii?Q?3ZEGLOkA8xvJmePHUr+/hL2mCI8EL55Ndk5t8o4cXsQtjCsiNFXFRC7ZiJBP?=
+ =?us-ascii?Q?BJkrJ53R3jFbEaKttLA2eYnTDlLBhXXJAuH+Oe1QPZm5vpcmiH641J5KepO8?=
+ =?us-ascii?Q?46LSnf3vHmXJxDA=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
+ SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 23:44:08.9796 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 738b891b-5893-4f23-f893-08dd6cc01a7a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 23:44:20.9435 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15d46a3f-8f09-4d89-82df-08dd6cc0219c
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4E.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4D.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6684
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF73CDB1C12
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,31 +136,163 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Harry Wentland <harry.wentland@amd.com>
 
-Setting a fairly wide delta for now, to pass tests. Note that since
-tests run with 10 bpc surfaces on amdgpu a wider bracket isn't
-unreasonable. Still, this should be investigated to reduce the
-delta.
+Add PQ SW transforms. The most obvious to do the PQ EOTF
+is to transform [0.0, 1.0] non-linear values to [0.0, 1.0]
+linear values, and same in the inverse. So we add transforms
+that do this.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Some HW (like AMD's) has scaling baked into the PQ EOTF
+and will scale [0.0, 1.0] non-linear values to [0.0, 125.0]
+linear values when applying the PQ EOTF. The inverse will
+take [0.0, 125.0] linear values and output [0.0, 1.0]
+linear values. We're adding a transform that can handle
+this variant as well.
+
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Co-developed-by: Harry Wentland <harry.wentland@amd.com>
 ---
- tests/kms_colorop.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/igt_color.c | 79 +++++++++++++++++++++++++++++++++++++++++++------
+ lib/igt_color.h | 13 ++++++++
+ 2 files changed, 83 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 3fa799e7c..659fe63a5 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -354,6 +354,8 @@ static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
+diff --git a/lib/igt_color.c b/lib/igt_color.c
+index 43179a17e..0926385f4 100644
+--- a/lib/igt_color.c
++++ b/lib/igt_color.c
+@@ -20,6 +20,13 @@ static float clamp(float val, float min, float max)
+ 	return ((val < min) ? min : ((val > max) ? max : val));
+ }
+ 
++static void igt_color_multiply(igt_pixel_t *pixel, float multiplier)
++{
++	pixel->r *= multiplier;
++	pixel->g *= multiplier;
++	pixel->b *= multiplier;
++}
++
+ static float igt_color_tf_eval_unclamped(const struct igt_color_tf *fn, float x)
  {
- 	if (is_vkms_device(in->fd))
- 		return igt_cmp_fb_pixels(in, out, 1, 1);
-+	if (is_amdgpu_device(in->fd))
-+		return igt_cmp_fb_pixels(in, out, 13, 13);
- 	else
- 		/*
- 		 * By default we'll look for a [0, 0] bracket. We can then
+ 	if (x < fn->d)
+@@ -51,24 +58,78 @@ static void tf_inverse(const struct igt_color_tf *fn, struct igt_color_tf *inv)
+ 	}
+ }
+ 
+-void igt_color_srgb_inv_eotf(igt_pixel_t *pixel)
++static float pq_eval(const struct igt_color_tf_pq *pq, float x)
+ {
+-	struct igt_color_tf inv;
++	return powf(fmaxf(pq->A + pq->B * powf(x, pq->C), 0)
++		       / (pq->D + pq->E * powf(x, pq->C)),
++			    pq->F);
++}
+ 
+-	tf_inverse(&srgb_eotf, &inv);
++static void pq_inv(struct igt_color_tf_pq *inv)
++{
++	inv->A = -pq_eotf.A;
++	inv->B = pq_eotf.D;
++	inv->C = 1.0f / pq_eotf.F;
++	inv->D = pq_eotf.B;
++	inv->E = -pq_eotf.E;
++	inv->F = 1.0f / pq_eotf.C;
++}
+ 
+-	pixel->r = igt_color_tf_eval(&inv, pixel->r);
+-	pixel->g = igt_color_tf_eval(&inv, pixel->g);
+-	pixel->b = igt_color_tf_eval(&inv, pixel->b);
++static void igt_color_tf(igt_pixel_t *pixel, const struct igt_color_tf *tf)
++{
++	pixel->r = igt_color_tf_eval(tf, pixel->r);
++	pixel->g = igt_color_tf_eval(tf, pixel->g);
++	pixel->b = igt_color_tf_eval(tf, pixel->b);
+ }
+ 
++static void igt_color_inv_tf(igt_pixel_t *pixel, const struct igt_color_tf *tf)
++{
++	struct igt_color_tf inv;
++
++	tf_inverse(tf, &inv);
++	igt_color_tf(pixel, &inv);
++}
+ 
++static void tf_pq(igt_pixel_t *pixel, const struct igt_color_tf_pq *pq)
++{
++	pixel->r = pq_eval(pq, pixel->r);
++	pixel->g = pq_eval(pq, pixel->g);
++	pixel->b = pq_eval(pq, pixel->b);
++}
+ 
+ void igt_color_srgb_eotf(igt_pixel_t *pixel)
+ {
+-	pixel->r = igt_color_tf_eval(&srgb_eotf, pixel->r);
+-	pixel->g = igt_color_tf_eval(&srgb_eotf, pixel->g);
+-	pixel->b = igt_color_tf_eval(&srgb_eotf, pixel->b);
++	igt_color_tf(pixel, &srgb_eotf);
++}
++
++void igt_color_srgb_inv_eotf(igt_pixel_t *pixel)
++{
++	igt_color_inv_tf(pixel, &srgb_eotf);
++}
++
++void igt_color_pq_eotf(igt_pixel_t *pixel)
++{
++	tf_pq(pixel, &pq_eotf);
++}
++
++void igt_color_pq_inv_eotf(igt_pixel_t *pixel)
++{
++	struct igt_color_tf_pq inv;
++
++	pq_inv(&inv);
++	tf_pq(pixel, &inv);
++}
++
++void igt_color_pq_125_eotf(igt_pixel_t *pixel)
++{
++	igt_color_pq_eotf(pixel);
++	igt_color_multiply(pixel, 125.0f);
++}
++
++void igt_color_pq_125_inv_eotf(igt_pixel_t *pixel)
++{
++	igt_color_multiply(pixel, 1/125.0f);
++	igt_color_pq_inv_eotf(pixel);
+ }
+ 
+ static void igt_color_apply_3x4_ctm(igt_pixel_t *pixel, const igt_matrix_3x4_t *matrix)
+diff --git a/lib/igt_color.h b/lib/igt_color.h
+index d218550f6..a97383fab 100644
+--- a/lib/igt_color.h
++++ b/lib/igt_color.h
+@@ -19,8 +19,15 @@ struct igt_color_tf {
+     float g, a,b,c,d,e,f;
+ };
+ 
++struct igt_color_tf_pq {
++	float A, B, C, D, E, F, G;
++};
++
++
+ const struct igt_color_tf srgb_eotf = {2.4f, (float)(1/1.055), (float)(0.055/1.055), (float)(1/12.92), 0.04045f, 0, 0};
+ 
++const struct igt_color_tf_pq pq_eotf = {-107/128.0f, 1.0f, 32/2523.0f, 2413/128.0f, -2392/128.0f, 8192/1305.0f };
++
+ typedef struct igt_pixel {
+ 	float r;
+ 	float g;
+@@ -104,6 +111,12 @@ void igt_colorop_set_ctm_3x4(igt_display_t *display,
+ void igt_color_srgb_inv_eotf(igt_pixel_t *pixel);
+ void igt_color_srgb_eotf(igt_pixel_t *pixel);
+ 
++void igt_color_pq_inv_eotf(igt_pixel_t *pixel);
++void igt_color_pq_eotf(igt_pixel_t *pixel);
++
++void igt_color_pq_125_inv_eotf(igt_pixel_t *pixel);
++void igt_color_pq_125_eotf(igt_pixel_t *pixel);
++
+ void igt_color_ctm_3x4_50_desat(igt_pixel_t *pixel);
+ void igt_color_ctm_3x4_overdrive(igt_pixel_t *pixel);
+ void igt_color_ctm_3x4_oversaturate(igt_pixel_t *pixel);
 -- 
 2.43.0
 
