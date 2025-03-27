@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFC7C3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 11:36:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FC8EC3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 11:49:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D87810E8AE;
-	Thu, 27 Mar 2025 11:36:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7B9A10E31A;
+	Thu, 27 Mar 2025 11:49:53 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33ACF10E8AE;
- Thu, 27 Mar 2025 11:36:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58B5D10E31A;
+ Thu, 27 Mar 2025 11:49:52 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8271165084235170354=="
+ boundary="===============8799954390512212303=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/perf=5Fpmu=3A_?=
- =?utf-8?q?Remove_invalid=5Finit_test_for_cpu_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Support_for_IN=5FFORMATS=5F?=
+ =?utf-8?q?ASYNC_plane_property?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Mar 2025 11:36:42 -0000
-Message-ID: <174307540220.11461.13207812475789693612@e6b6f09ec485>
+Date: Thu, 27 Mar 2025 11:49:52 -0000
+Message-ID: <174307619236.10488.18430787984320286092@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250325135906.755368-1-lucas.demarchi@intel.com>
-In-Reply-To: <20250325135906.755368-1-lucas.demarchi@intel.com>
+References: <20250327090851.2740672-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250327090851.2740672-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +41,68 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8271165084235170354==
+--===============8799954390512212303==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/perf_pmu: Remove invalid_init test for cpu (rev2)
-URL   : https://patchwork.freedesktop.org/series/146741/
-State : failure
+Series: Support for IN_FORMATS_ASYNC plane property
+URL   : https://patchwork.freedesktop.org/series/146853/
+State : success
 
 == Summary ==
 
-ERROR: The runconfig 'XEIGTPW_12845_FULL' does not exist in the database
+CI Bug Log - changes from XEIGT_8289_BAT -> XEIGTPW_12855_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 8)
+------------------------------
+
+  Missing    (1): bat-pvc-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12855_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_intel_bb@render@render-linear-256:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#3970]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8289/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12855/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
+
+  
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8289 -> IGTPW_12855
+
+  IGTPW_12855: 12855
+  IGT_8289: 8289
+  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12845/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12855/index.html
 
---===============8271165084235170354==
+--===============8799954390512212303==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,18 +122,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/perf_pmu: Remove invalid_init test for cpu (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146741/">https://patchwork.freedesktop.org/series/146741/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>Support for IN_FORMATS_ASYNC plane property</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146853/">https://patchwork.freedesktop.org/series/146853/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12845/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12845/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12855/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12855/index.html</a></td></tr>
 
 </table>
 
 
-    <p>ERROR: The runconfig 'XEIGTPW_12845_FULL' does not exist in the database</p>
+    <h1>CI Bug Log - changes from XEIGT_8289_BAT -&gt; XEIGTPW_12855_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12855_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_intel_bb@render@render-linear-256:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8289/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12855/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8289 -&gt; IGTPW_12855</li>
+</ul>
+<p>IGTPW_12855: 12855<br />
+  IGT_8289: 8289<br />
+  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8</p>
 
 </body>
 </html>
 
---===============8271165084235170354==--
+--===============8799954390512212303==--
