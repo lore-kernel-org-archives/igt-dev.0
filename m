@@ -4,183 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69965C3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 05:56:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E69C3600C
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 06:02:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FAEE10E852;
-	Thu, 27 Mar 2025 05:56:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF11A10E049;
+	Thu, 27 Mar 2025 06:02:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ln6Wz6Aj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fPrWSdNB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26ED210E857
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 05:56:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63BCF10E049
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 06:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743055011; x=1774591011;
+ t=1743055339; x=1774591339;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=bGDCsqFzIT854pfM0W8uN+TdIjg4RZCuIYfD4AeN6iU=;
- b=ln6Wz6AjxbDm5eg/xX81ZUA9uDSSEdSKn2O7S6BaGXyu5dlqgI8Q4NrU
- +BM3pUbEt14aVEYwECfCQG4LtbSsS34+Q/nvdRasaUa+qn0QuZmc79CY1
- EQi40c3wFzhyo0ocd+DJ0M91xmcLoRhfW7E6hDVJ6wTGqbGUsZ9d2B7EJ
- A3pDTwvezpgWVqW6X1nJm3cPTniYKh1fTWQk8dgA6+tO4LS89BLdfe9Q/
- HsZloqn3Iduvqz25TEcWSmtkI/+ac1CbHw8+FHSiRLUJlLGIjZP5q3Cfp
- NNzQdI6q+V3yDEclGhVnCdxNrf+kIwIOXa/5ep5BgeOIB8ClrpswKWo+h A==;
-X-CSE-ConnectionGUID: z+i8bQx/SzGEDt8ORoJ2uw==
-X-CSE-MsgGUID: NZmw1xYYReiBXHxDllaotg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44259461"
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="44259461"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 22:56:51 -0700
-X-CSE-ConnectionGUID: GmJ3VqTpTaitzScBqRBT5A==
-X-CSE-MsgGUID: Jstws/fGTlugTiMY4mLzXQ==
+ bh=eCn3rIEdZyUHm97WpYomlwvusZNn2JVSL3LKELQ6UKM=;
+ b=fPrWSdNBjlFKuUm15/n9NkZPw2eqrsA9MxYOKVyFbSv/EGYOJ1iLPlbR
+ BxtQW0Avq/gFad5ygH0Uie/uasAzvERHEYBUd/5HsN6pTNC+f4JBNg1Hi
+ SUwe4YlwugYC7CMtIRKrlemQOIfoZ9aLZcI2D3rGU+SeafjMWB4+OYbuU
+ LAIqxT/sgs2ztFhve4mjOvpM1LYF+MSc/YUHZTxO9yZVn2GbYuSj2fnwu
+ XUmVO/Ke1AxjQcrBxhUqMi8huSbQUKPzqrj4edZsEJdzUFRwNxPKf/weP
+ r+p8nNJPrWksF7En+2cAObBjU14LWn5y2oZyeYN7mW6qT1FxRxfipaZ3x g==;
+X-CSE-ConnectionGUID: 0ukoGDdaRs+3lJG7o0YAEg==
+X-CSE-MsgGUID: 590iqZqASda5gsZ3Av8J6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="43613597"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="43613597"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 23:02:19 -0700
+X-CSE-ConnectionGUID: 4ieMBuc9TL29CQbOzIHhcQ==
+X-CSE-MsgGUID: 62gmi56lSC6vfDXm3uvF9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="125239584"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="156035311"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 22:56:50 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 23:02:19 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.14; Wed, 26 Mar 2025 22:56:49 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 26 Mar 2025 22:56:49 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.47) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 26 Mar 2025 22:56:49 -0700
+ 15.2.1544.14; Wed, 26 Mar 2025 23:02:18 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 26 Mar 2025 23:02:18 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.44) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 26 Mar 2025 23:02:17 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ug8eIWY0p3AdbZp8tYIPuCneXKks3d+NqlyGgScqRBgX0SKsZFx2I9nkjLNPvD30orLbP3XXMY9Vc35qVSu9CWBZbL/DlIuoIDBI8nS7x991gNUT0Wr37PfzHADSg4ONu+F2aO9c0H07kyKQnYyU6IdfoU+YjfY4e2VRmq54lqkwmhjr6Vs24eVQI5p3zEnDPMqL6WBjDry5VkS2PWThG3vFGCNZlYPzvmHq1EYu6nJRswduA0f9hufAuuXPqScKe+bs7cPgkmhapUElIYv7g0ZENRwzD4r435HYoXG0XadyjoeYeyMpx3ui9vyNy/L9bQfW7Do/+hkvM178Va8oDQ==
+ b=cXkldnGqcr/XQOypOYWritidmVvFzhyf98Lt91xu2Dnm9ie44Q7D9rc411maJ9dQs5QgVi4nNTLqOIGN6CmT0iiK67/sfXNWSepf0wVPvym77mzFJaNmGqBLLXUksjXsm4//niMV8ATY1HKRQCnJMpFphZvU7W5cyK2EpYj4nhKI6HsJZ+Vgbtvl5T5/Q6KfR8dP7knWPes+Yk0Yaw16x63No+dyZKtdZC3V8OhEnl38chXGhi/BG3Gyd95YPkivA9bZYd3NfBASFv9CYoATg+I8Ap4QyKHlxR6HTP09WjdSQ2CwdxnmKyB1R/7HBUxxdSXXJfr+g/qb8yaHQvD1ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QhRwiByEsXPgP+aNMpgZeQV+RKKthNrGcIjiM3YRBmQ=;
- b=p6pRpRvoYvVLGUo4hrAov4hYYUtMhGX0Rfxr5Z30MC7HGTJ8hR0WFKcZVCGVbAsEEBtAySMDw2CMJbalG3zE/OZyBR4pHl04SI3fSFwCUYOorXRWCR0EBrYid4znABYaBtPXnlmTZTFU1aRrMdThHCRcEN4B6xuv9rNSzdbiOzg7FhhTVC2QtHVQNVhv9M+Euu3aGDKqFWI9PcIZ4CPZEtwbQw1FoUxPhVAROm+aw9da3LdFXSYIZ7Txy7Dn68iByolL5Hs0gx3XrWpF4tFra38cOZgde13gDX5NjSl+EWZF9koJ77nq9OQylEgKCvqg0UIynxF5JME30xTw54RDtw==
+ bh=7NX+dEqAT2gYcoIcD1YkCbHVSLnpLJ6Zbikd9v6T1X0=;
+ b=VfChAnqGdU7eTW7JAMMGJzvR6GaW4WO4FVocMpb7wd/dF0mzptqgvHtAqyJ5wN0NU2sdvOvHZ4u9HZFdUhnrFCPKcqPdhuQF74NXSGZyPMTtRUs4/w47AtGPvML4O6TAtxow4ShbJhgzgfe3y7/e8LqJdMMxpC2+izV5JxBhAEv3NccLnQn1ZCUHeSx+lbbEa6BoynLyjIIj/xyhQq72FbsXisTNLlwgVtXuTI5J609jjtfOgcPqPkkBvualkiIXK5NPWWuMIpDR0OluayCnDROVLMFWo6eo4mSNh7EyTIs8HJLyXeO2yHZ0k+wgUQhbMmXTah2lkrZZ3x5+rmcdSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by MN6PR11MB8146.namprd11.prod.outlook.com (2603:10b6:208:470::9)
+ by PH8PR11MB6830.namprd11.prod.outlook.com (2603:10b6:510:22e::9)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 27 Mar
- 2025 05:56:48 +0000
+ 2025 06:02:15 +0000
 Received: from BL1PR11MB5979.namprd11.prod.outlook.com
  ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
  ([fe80::b0f6:fbc:94be:2372%5]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
- 05:56:48 +0000
-Message-ID: <01f935cc-7b22-4722-bd74-9621d806703d@intel.com>
-Date: Thu, 27 Mar 2025 11:26:43 +0530
+ 06:02:15 +0000
+Message-ID: <ab6a02b9-6e9f-47c1-81b0-c79695ac649d@intel.com>
+Date: Thu, 27 Mar 2025 11:32:09 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/3] lib/igt_chamelium: Add
- chamelium_frame_match_or_dump_frame_pair()
+Subject: Re: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: Fix
+ ctm-limited-range subtest
 To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 References: <20250324090949.614233-1-swati2.sharma@intel.com>
- <20250324090949.614233-2-swati2.sharma@intel.com>
- <SJ1PR11MB61292493C9C6D0F30ACAA8E9B9A62@SJ1PR11MB6129.namprd11.prod.outlook.com>
+ <20250324090949.614233-3-swati2.sharma@intel.com>
+ <SJ1PR11MB6129F103D9C4D5B18B4CD941B9A12@SJ1PR11MB6129.namprd11.prod.outlook.com>
 Content-Language: en-US
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <SJ1PR11MB61292493C9C6D0F30ACAA8E9B9A62@SJ1PR11MB6129.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6129F103D9C4D5B18B4CD941B9A12@SJ1PR11MB6129.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0021.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:b8::9) To BL1PR11MB5979.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0037.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:81::7) To BL1PR11MB5979.namprd11.prod.outlook.com
  (2603:10b6:208:386::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|MN6PR11MB8146:EE_
-X-MS-Office365-Filtering-Correlation-Id: b820174f-0ad1-44e9-6639-08dd6cf42950
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|PH8PR11MB6830:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fe07205-82d2-4ce7-d944-08dd6cf4ec45
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eXh1Qzh2ZVdjU0RxRG11TzM1WDI5eWZhSzRzaFJHOGRBQUZCZ0RZTy9acHcr?=
- =?utf-8?B?MWIrK09GWEVaT0NrcXVrcnBxeksvVDdLc0M4L0ZXdDNtWE9JVGtFQVZEZkxZ?=
- =?utf-8?B?R1F3TkpiMmlZQ1MvM2ZEdFhRMUI0YzdIQWVGUm9BeFU1MmZIWjlvZVhZUldq?=
- =?utf-8?B?YmkyUFI1MTNBT1UvWnF4THlmWnFGSFRpbXd4QTF2T3NtMzU0a0dGSHl3cXNX?=
- =?utf-8?B?TDRIMnU2eEpoT0FraHFmTVgwR3VHYWg4dGQyN2MyY0FSbmZTMDlGbUFBVi82?=
- =?utf-8?B?Ri9jRFVOV3RQNlU0bzZ5ZUVFbXp1ZGNXWXJPNVdKRmRuWGtPb3gxaUVFbU1n?=
- =?utf-8?B?cmxXS3pKZjBxSjFoUkZIQmxyUjE1ZWpHbmg4MTY3SXlEMlYvM09NTks5TFAr?=
- =?utf-8?B?bks5REtXU2Q4MUlLOVRWaE1aTHpjSml0S21rQ3lPTFpic3ZZM21qa1VPSHQ0?=
- =?utf-8?B?cHNpWnhSZmFZWWk0SGlJdWlTa2t0ZXNIVHVFK284aHBCc3FxN2VwVXlGL2ZM?=
- =?utf-8?B?YXFveWwycUU1NlZqdS85c1VBa2RLYXF0WTVlSU1UUXJQa09BZ3EzOUR2Vk05?=
- =?utf-8?B?MUxXbHlIczM5dzhzWmZwYmhmUm11cnZaVXhRblVBckFZRmtSTGNJU0cvMmlk?=
- =?utf-8?B?U1BSdUM0UEFOajJrMDF5ZnQ3T2NGVThyYXZISXZqZStuS3piVDFQY1RLL3RG?=
- =?utf-8?B?Y2RKUzRUMFZJWmJiV0lNWjRjM2FmUmlMcjdUa2g4NXJpLzRPSnQvQjEyYktK?=
- =?utf-8?B?S1BIV0F2MlRMdjVrZTN0bFhpRWpmY2w5NnBmYjRjRVMvVTdBQStrZUVwZW9y?=
- =?utf-8?B?M0d6ZXpDM2QwY0lTYkFzS2NnVE5VZzdxdFJvVHZydkdlKzB3NkJZR0czaVpW?=
- =?utf-8?B?YWxwMHBHZWxvRHJxZUlQalA3WlNGMDg3dlNEYnp2bG8xQStPUTBKV1lnVDRl?=
- =?utf-8?B?Q1dFaEQ1dUlYNUxRZWNxWjVwSVdiU2hGdUxDNUZIYWNmOWNITU5KeHRTRHBv?=
- =?utf-8?B?MHA1R2tvNExsTnBkaXd2Rm9pK2htQ2dIQy9GWGZYamwwNVZnVWw1b1BXUUdn?=
- =?utf-8?B?NEJoL21hWHRJanVySlUvcW1QOFprcHZpZkpsQW5POHoyY3A5SnZSbzZOb3cx?=
- =?utf-8?B?Q2xWeERRR2JmUWdFT0ZyL0FaV0w3bGhvcXpnU09RdVVGYzloaGU0TmRLVVlt?=
- =?utf-8?B?dVE3MTZJcUtBMmZYUW1oTWdvNkdtR2FoZDhicnpCNTUvUjBBR1VSRFAwMmdG?=
- =?utf-8?B?SmMrRlo0QlJjN2lzQVNSVWM5NHVYWTlOUlVFTDd3dStISHNab2xTbytrS3Z2?=
- =?utf-8?B?ZG13T0thWkNyMW5LV2pZYUc1QXk1Y0VEeUlOMzBzdHVKamx6WGpMVHYxRlRF?=
- =?utf-8?B?NlZzSXFtWkNXcStGY1dxZWw3bjJ3S0hlcW5tTnhIQUhNVnJWZlB2Z2FWVFR1?=
- =?utf-8?B?dlcxT09FWnQraTNZUjN0a0RxMnJxVzJmb0c2dXkyaGx4SjUvSjhrTTlmNlhY?=
- =?utf-8?B?b1Rac1piaWdSeGE2Q2hPSG55K0ZlMHQ1My96Y1ZJSkFBUjByZjRBNWxvRTl1?=
- =?utf-8?B?SXFLV2JWU29PZHhhUnZ5TWFxeVorWHJiTFh1UlVQZ0lJV0ZOWUI4L2Nla0tl?=
- =?utf-8?B?b2NtZUVyTzhRem1wcWg2YkxtS0twbmRZQU1RVGNiVXZtYjg2YmdJd2dXSDlu?=
- =?utf-8?B?dWxMOElCT25BRWRRVzdGQ2tBZHhaeWJ5c3FMMHR2WEpUcVV5dHg3MGpMd210?=
- =?utf-8?B?eVlCdi8raXNPL1BrSlg3SmU1RUZQRzBhVHpBbjdxeGdTSFZwUnUwaU9saVRU?=
- =?utf-8?B?Zmd2Q2Y3SlFTcGo0aFovQkllWHN5VzZiYWNDR1JkRExnSGhhbit5Y28xRTQv?=
- =?utf-8?Q?L1ZgE0EKK45Uq?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bkgxQzhwTDBuZFZaS09HMENvd3dibzc3TUlJR1lEVUNlMVhHZzVKYW1Dby83?=
+ =?utf-8?B?Q2xnWWdSOTVrZlRVWitLaWpweUhSR2RqWTZxTlp1Mng1MXR3Z1pmYnE0SVFJ?=
+ =?utf-8?B?SHFZK1pSaGdZdXRpRm9kclA4Q0RwTVhmUDhkNUZJRHQ5QTM4dm9MazBtSmpE?=
+ =?utf-8?B?RlJ1Tm03RW9GeExBZCt6UWV2am52OEhtVFJmc2JDSkVkS1htamN6YzI4N2VN?=
+ =?utf-8?B?R2poamNXbmFWanJIem9CMm92UHhJTXZVc20rNHNyNC9JKzdOWHg1eGRERXEy?=
+ =?utf-8?B?Zi9tTHVWeElvdExmOUxxb3R2cFNFM2xLbXRzdjR6aDVlTTZLMSthMG9UVzc1?=
+ =?utf-8?B?UWpYT3Jidnh4Y0g2NTlFTjhkY3NERW1pNWU4R29zbmpKcDBEbVZZQk5rdUkx?=
+ =?utf-8?B?RElEOU1Qa1RUSFhJM2ZLMUFndExsb0gzWWZXZHEvb3dzemtZOTl3Q2ZqcEFx?=
+ =?utf-8?B?emo1dlA0d0VaTmJhbUJwbjFOWHFML1QvOUt4UlFEQWdCQXZYVnhwTDk0dEI4?=
+ =?utf-8?B?TXVnejN3TWJuUUhzNWhuY2p5VnhacEhra2pCdDJLU3ZjNnB5ejcwbFd5QWpI?=
+ =?utf-8?B?NW55bHhjRTI3djI0MDZHK0MyeUs1M1p1cHFsQU4vTFdCdE5DMmp5UzkyZnNy?=
+ =?utf-8?B?MGhXOVc0QWZla2xITkVOcmtkbys0V3FWOXhHRisxY25saTNZMXFTZTRNWllJ?=
+ =?utf-8?B?REhwaEZMK1dvbUdrU25CQmsvQ1kyakJENFk5Z2NDT0VBeXRranZEam5iVlNH?=
+ =?utf-8?B?ZkNrbXhPV3VNY0U3NGtXRGtUb3JZSjMzS2VBKzJlNzR6ODRGMytXaTUyd0RM?=
+ =?utf-8?B?aVV2dFBRMHlocXIvMVNzZEZBNDV2d044MGFCTDdEU1g1cVZQc0h6V2ROa1Yv?=
+ =?utf-8?B?cGMrRUozbkp4Nks0VjcvWDhXVW5ubStrNDdUSnVxb3gwNmk1emJzWi9KUm1y?=
+ =?utf-8?B?UUlmVmdyMVRqaGtyRXlWMjNkdUdtblRmZ1NuRVo3K3Vqa2N2Mm56NFAzcUpW?=
+ =?utf-8?B?c1VnMm5nSVQwSmxJTkVEYkd6c1JpMVpDZzBuNUROKzlzWk9aUXBKaVA3bkZI?=
+ =?utf-8?B?OGZTOHlQN3BDMG4zYWlYWVFYK29rZ3dXOVpmdmdLczJ1eEJ4WXVXK0RTN2VC?=
+ =?utf-8?B?Tm8waWMxQ1lyTjNsT2N2Q1Jxc2FTSkVtSUhGdStOTTZubHc1djB0eWJSa1cr?=
+ =?utf-8?B?RXk1NzNZUllDRnFsRzJRaTc0WW9GNkx3c3U4MnRlOCtpV2xoUnY3WXN0U2tW?=
+ =?utf-8?B?cXhiMU1vOFZxTlNtRkxyZkIxcDZXVGYxN1NpOGpJMElpMkZWbnMwU3pWbUI0?=
+ =?utf-8?B?MnpYSVpDM0FxOXU5T3Q4N0VOcE1GKzBKcS8xSEFhT0I5YjZGMDdyT3lsaTNG?=
+ =?utf-8?B?Vkp4UlpQRDFPeDZvZk5xNUx0NFBDb2xNS1RvRHpiUStDNkxhd0JRamNTRzVj?=
+ =?utf-8?B?YXBsMGpVUVBaY2RzOEN2S2wzTXNuTmJyR3hrcldIS3JKVTlyWWFld21sYTlP?=
+ =?utf-8?B?U1Z0MFZQMzJmbzNmbS93TFZ6czZTSjd0eWFFK0dCNkdza3NvdFNYanU1MUU3?=
+ =?utf-8?B?cklCbzl6ZEdnL2tzT0Q5M2o0TVJLMXozTkhLbU1jdUlqcVBWUkNiTSs3ek9o?=
+ =?utf-8?B?bTl4NzZ2YjVqaTl0UjdoR2tUWThyempjM1ZEVGlrSmFZRUkxbndCWkZ1R0xB?=
+ =?utf-8?B?S0Q4L1RuUzRWOXE3LzhSOG9hKzlqVTR5ZjgycmNOUWlZWXViUXBjTjFpdFFW?=
+ =?utf-8?B?eDRUd2U3Und1eGt1cndHRk9hRGRqSmFCYVc3Z0pHaEdhTzFyYW5XUDAzTW9m?=
+ =?utf-8?B?Q2hCY0Y0RnpwWnIzZ2drbXNYQUJSL2JQS1hPWkdseWRxaVlPMlhudGxhd00y?=
+ =?utf-8?Q?WNPidkvbiDTTg?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(1800799024)(366016)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVBCT2pmRVMwUHFqTlNBUWlxcUIvMkgvcTlpRkZxVXdFNUp6TTZENmpTSWJM?=
- =?utf-8?B?MU5oYldPWUtFTzB3VWFMbkRxRCsxOFVsNTdYMHhwbTF6dWVwaXRZS01vZ0tN?=
- =?utf-8?B?cWpHL2lDVWFzQWhObnRTcy9OV3hrY1JLSmt5aDRZYVBZNFpVaVhUc0JZME9X?=
- =?utf-8?B?TnBwZkZYMGFuc3orVjFjRU5RR1NHRVBKSFhRYytQQ1BNV2JLUjRxMnIxWkF1?=
- =?utf-8?B?Q2h2REFjQUJTSCt6TEN2cGpNTklzbm9ZKzdoWFV0Rk4wT0tIRG55VlgrUXV1?=
- =?utf-8?B?aGNBWGF4Mml5VGtnOTNFb3BVcW1CT3NQeXk5eEQvZVlhVjcrSHJ6VmlpVGkw?=
- =?utf-8?B?TUhuZW1mWWFhcXVaa0lBVitYeHZzRittM2p5OTNIWXJvWk1aclFKMVdLOFBw?=
- =?utf-8?B?b2Q4WFFSV3dUQVNwZmVDV3Jud2E3UzErTjJzQm1mWVNjTTNWeExDNGFpSWZr?=
- =?utf-8?B?cVc0TmRIalNPcnZOalljMG1LUXZkUVBSNkRGQkFkV1BnZm9sT2NJSGZtMnpr?=
- =?utf-8?B?NmQ4cFEva3hRV0Q5UWhuSEtWa3NybmtsdGg4V0xuZ3NVc1lIWkJVdzIrdmJI?=
- =?utf-8?B?VXk2YllnTXhTdHo3M3hmdjZoandzbTVNb3lmZ0MwemMvaXRrNXVOVElvOVRF?=
- =?utf-8?B?RWxuVXM5ZVZzaVJrTjVrL3BZaXpCMDJVTHg4dTV3SFl2NjRxMURBdEw3MHh0?=
- =?utf-8?B?S29ZMDM5NFoxcUZHalkyZTIvS3pGYjRBejRZeUU2eCtpQ3Q4L2ExUi9wZFdK?=
- =?utf-8?B?S2lIa20zSFBYZ2FQeFhHL1VubFJnMEREOS9nVmNrN3psQjY0Z2NncWNhYVU0?=
- =?utf-8?B?WHZwQWZYc3VqREk4aUFzQXVlSmVJQVZtQ1I3K2N2ZG45bVdudTFBWFZUUmFx?=
- =?utf-8?B?Z3lpYUllUDRObWVJY0ZyTDBQZVBJWnRLbW9RSjRwUHRkYTlWOGViUHVqdXVp?=
- =?utf-8?B?bHRXNmNSekYyUjI1RkYvbUxYU0F4TFJ3U2k1S1ZUeFcwdkNPcm9OL3N5UzNn?=
- =?utf-8?B?NlVFVmlTRktCMmx5Z01vdFJJSHBIQjVwZjA5Q2VVRzhBclZrMTNkZWZZVElU?=
- =?utf-8?B?WUdMUjlUdldFNW1wNDFWQStWSlQxbWYzdm9Dak50SXp0VVhXYkthK05panlM?=
- =?utf-8?B?UDFyWDVOU2R0Mk1DMTlBenFPRDdtNVBkd2FwTGhncjRaYmJQMmVodndxSm1a?=
- =?utf-8?B?Tyt0TUZyVER3UFlvVGlvZEJwSmE2ajBxZ1BucVlZeHhhTzNoNUhUK21zd0Rq?=
- =?utf-8?B?NlZwalRWUW9BUlprdlZpeGFRakpsbENCZnFyNFdRZmx1YnFZWWVCUWc5Y28x?=
- =?utf-8?B?VzBWNUdQMGlxdVdTTjJlOWZGeEhabFJBMzhMK0ZEOGZJbGNrZU1Gc2h2T1Fu?=
- =?utf-8?B?Wmd2L3ZYekx4SWVzMXhKMllRSVlaVXN3a29DNUdUUndXaUwzRnpQRkhhVEFP?=
- =?utf-8?B?SFJnRnlhRHlTT2ZUZjluSDV1ai8raUhzSHQ3K0dReDZLK0tCQ21leGhFd0Vw?=
- =?utf-8?B?Ny9keWE2RkZMQkdCanZFNEJObWtiVWJocTNUS1B4OWtCWjBzd2UxU0k2YUpi?=
- =?utf-8?B?citXYzNDZGViQmNyUmZjeEF3VkMrUUVtV05TZ3I0NUd2LzRPcXZ3NzZQeS8y?=
- =?utf-8?B?WFZyS2pkZ2VWN0VhSG52SzYyZTFSN0FqOEM3WHNWelRBTnlMaGV5Wml2cldW?=
- =?utf-8?B?eDVyclRwbjBidWZxOHhWTkVmemtxeU5YTXp6QisxQzJleUp4TFNjSkVpUE44?=
- =?utf-8?B?c0lYbGkyeGRFZXJxTFBxUytWVjN0QzZCY1QxdExGL2hxQ2Y3K1ZDZXJTcEhT?=
- =?utf-8?B?cFJ5b0JWUTlhazdwcXNGelh0WnhLdTY5eDF3QmE5Yk1lTmduVXNWVGZibVhm?=
- =?utf-8?B?SmUxNFM0N0hSeDVOMzUxMmloNEhKY1NxREZZOEpoWXpzcW4vcWYxN3NwTFRE?=
- =?utf-8?B?K2RlWHhoWG5JTlVKSEsvWkxOajI5ZTVqVkU0ZStMWmo0SkxSWUJZOWppdXFP?=
- =?utf-8?B?WThOamhsWUw5eTVsQlRlbzZRbFVYKy9JR1RCOEFGREtocU9tYW5Bd2hpaEdp?=
- =?utf-8?B?UzIxTFVVdWRkdXVERDRsWTZndTNoeGx4OFo1ZHdEZlJKcHpTYkpaNE01Ykt6?=
- =?utf-8?B?U09CS0Y5aWw3TXdZTXNURnJLNE5FeUNCVDNjUHB2MWdiOVlmY0hVeE01dEMw?=
- =?utf-8?B?R2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b820174f-0ad1-44e9-6639-08dd6cf42950
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ek5UT2lqN0pIdlpUdzV0ZC9qMnJLTVhRZkVsNTJDcWFSL21rbEREZHRxSS9r?=
+ =?utf-8?B?Z1VwRnI4VEdSS2p3R2RBdjJGVi85bFpickJiQUxaOWNuVkVVNllLVUZUQzNs?=
+ =?utf-8?B?d3F1dllydlFxQUlVT2J4SjRiS3VlTjlhZ3RvbEF3Z2FiMjlBU05MOE54eks4?=
+ =?utf-8?B?cUlFVTl4TU9vcEFxenhkTUFHQTQ3aEJsWnhQSEx3VFpGbUFXVThBYmJVd2xX?=
+ =?utf-8?B?YSswcE1hcnVJVnNyd0NvSEpFOTdqaDlhNkE0b01hRUFOMXF1Z0tpSktDY21P?=
+ =?utf-8?B?RDEwRXdtOUpqZ3B0YnI4SmNSQ21QMDBHdHlibnVMSHZ2bS95Z0s3WTlheTBZ?=
+ =?utf-8?B?cVNBaXRKOUlaUnlnRnUvL0toRGVZTG43cEpjYXJuN2NhUEs0Nk4wMTMxeFZ0?=
+ =?utf-8?B?eXRST1RIUkMzeUhXbDJPR1d6eGFYbHhMUVp1NXJsOERCSDA5WjVtbTg0Y3RN?=
+ =?utf-8?B?bTZ4MmVQc3A5S1VCUGcyMjNDRzd5U0dBZ2haN2J0ckxRQlcrUXRaRXVsaS9D?=
+ =?utf-8?B?eHBUdkJ5eWlJei9IanphYTJkRkJ4bmNBS09xZWxlaktiTG14SHVBSzBjeTMv?=
+ =?utf-8?B?Ukx0YUFnK0YrSEoyTzBvTjh6a01OeE5PenpKR0dnTm5VRk83T3U3M3BCZzAy?=
+ =?utf-8?B?NEEwYnNRZWZsZkk2ZXJ0U0xuQTkyR09ZekphakhOV1p1ckxzSWZZWE1TVmxr?=
+ =?utf-8?B?Tm0xUlU5VldDRDE2TUJKc0I1amVuQ0JQVE9HVlVPSC85aEV0d3FyOGN3T2po?=
+ =?utf-8?B?aVloVjNQM2pZNmRuVXFRdTVZNjJLWldNUmNEQ3VOQXhDYitMNVlOeVZGTExs?=
+ =?utf-8?B?dElZYnIreTUwMHRwNnpHb2F2VEFDSU9PTjFUcE4xbHV5NGpOQUZKUEVKOHZ0?=
+ =?utf-8?B?L1dHNDYwbUZMUGoreEVndFY5NFZqTHdYTTg1VkVjS2hmS0FKdGZQVHR6V0tw?=
+ =?utf-8?B?Y3dFWm50UG4raXBrSlNaOFl0WEpDUDNCQ3dpY2dINUg5NUExdHdrS01rMGZh?=
+ =?utf-8?B?clVKbUhOTlZUMnFHazAwR0lRZWtBQk42eE8veDhvVmdKdWRhaHVCQlRiOHpO?=
+ =?utf-8?B?enpDU2lLTlJrdlg0WS9VL20yYjc4bXdQelQrd0JXQVNNemlSM3I4ZDZvbDBj?=
+ =?utf-8?B?ci9hKzZjcnJObnljNWNNMzhkYXR1V1ZGdG5JSjluRUl4N0t4Ykp2ZDBlZVFn?=
+ =?utf-8?B?aExucVRiWWhyWWJXcEE0OHFrd3lVbUhaWUszMUp1bnBjQTV5RnZZRVdrZWpD?=
+ =?utf-8?B?WHVVdlN4Y0U2a3Y2eVY2c3c1YmxNeXNFYVhxQ3k1elNDK1A3ZXJ5cXhlVE84?=
+ =?utf-8?B?T2hVRm8xNkhSbDNHdnk1cjExU2k5NmQ3aEN2RVN2THhtclNab2RFdEMwQ3Ri?=
+ =?utf-8?B?bVpQZFhtcGVsSHA3b3VRT2tPa0RKWkMvanduU0JuaEVNRFBKTEVRSGxRWGtJ?=
+ =?utf-8?B?MzNrZHh5VmxOVFNKQ3krS0JBSVdOZm9FUUpDZi9CS0htOE9LdWEwNmZYOWdZ?=
+ =?utf-8?B?bnJrbzd4VjlDZk9vMVJlUDdsL2szQjdJRjBWV1FLUnVmblVsRFBjUzZlNHJR?=
+ =?utf-8?B?ZVBhRlpxbytTWGhRbFJEVzlFaGpmejdTUDBKeVUrL2o2RXMyZUdoaVNRQm5N?=
+ =?utf-8?B?emhzR0VPWkk5cDBjazFMTFdGSFJ0RlUyRXMzUnc5SkNTbDh2dDhkaDlZV0tm?=
+ =?utf-8?B?RWtURjUrRHlyOWg4VDFJdG5uQUI0TS9JYkJHV01FNVFIOXUwYzlPOTY4NWdG?=
+ =?utf-8?B?NkFQanUrSDhHUHVjOUVHMG9PNjNMS0s0K2F0VVV5VXNzOHl3QXBDY3FyK3ZG?=
+ =?utf-8?B?TE1UVVlYanI2NDVnQkdnVGowbHZWQXplR0t0OEF1b0hIenRoRG42QVJNVlA2?=
+ =?utf-8?B?QmszVXpHeXN3a2FRUkdQajRKdFVVSWJ3MVFsaktNWXVlSW5lTmF3UnVkcm91?=
+ =?utf-8?B?U3hKcWxtVDZaSVRZdXlOanl4UTJkR1d4SXVYK1NGV09SME5YT0EzQm5iNEht?=
+ =?utf-8?B?S0NsdmVHL0lRM3dURWI0MnRjMHdzdFVhbXl5VHYwdGlxcVNTNGNEYnJpK0Vo?=
+ =?utf-8?B?am9PTUx3MHZYK3JMaVFxMVNPdXB3UDBOVDdKV1BWQ0tsTDBJVHROUGpiNFZ4?=
+ =?utf-8?B?Y2hnalJ6bTVQOFhYWEhmWmt6dVVhdzRDU2lERytCTERGeEV4OFlwckhDam5L?=
+ =?utf-8?B?WEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fe07205-82d2-4ce7-d944-08dd6cf4ec45
 X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 05:56:48.1413 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 06:02:15.1866 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mvhxwxdws842njaa1Iue11F+cSsalj8Lg+1JgsCpDVxfKs76nsmUo8vZrNpe7hMQSoTppF/+LRrmXKV2iRGXjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8146
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1Qg3MjfsTsmUFo6f/djCIKQzwpH9JS5oB2zdfGNA8c/aeSADJJRITldu/dCB9oXhJaGvdazXshmU/RXjqPYAOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6830
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -197,11 +197,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Chaitanya,
-Thankyou for the review. Please find my comments inline.
 
-On 26-03-2025 05:53 pm, Borah, Chaitanya Kumar wrote:
-> Hello Swati,
+On 27-03-2025 10:57 am, Borah, Chaitanya Kumar wrote:
 >
 >> -----Original Message-----
 >> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
@@ -209,146 +206,130 @@ On 26-03-2025 05:53 pm, Borah, Chaitanya Kumar wrote:
 >> Sent: Monday, March 24, 2025 2:40 PM
 >> To: igt-dev@lists.freedesktop.org
 >> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
->> Subject: [PATCH i-g-t 1/3] lib/igt_chamelium: Add
->> chamelium_frame_match_or_dump_frame_pair()
+>> Subject: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: Fix ctm-
+>> limited-range subtest
 >>
->> Add chamelium_frame_match_or_dump_frame_pair() to compare frame
->> dumps captured from chamelium.
->>
+>> Test is fixed, now we take chamelium capture after setting output to full and
+>> limited range and then compare frame dumps.
+> We should add some details on the steps we are taking during the test.
+Sure, will add in next rev.
 >> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 >> ---
->>   lib/igt_chamelium.c | 60
->> +++++++++++++++++++++++++++++++++++++++++++++
->>   lib/igt_chamelium.h |  6 +++++
->>   2 files changed, 66 insertions(+)
+>>   tests/chamelium/kms_chamelium_color.c | 50 +++++++++++++++------------
+>>   1 file changed, 27 insertions(+), 23 deletions(-)
 >>
->> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c index
->> 620fbbf7d..44a169b29 100644
->> --- a/lib/igt_chamelium.c
->> +++ b/lib/igt_chamelium.c
->> @@ -2070,6 +2070,66 @@ bool chamelium_frame_match_or_dump(struct
->> chamelium *chamelium,
->>   	return match;
->>   }
+>> diff --git a/tests/chamelium/kms_chamelium_color.c
+>> b/tests/chamelium/kms_chamelium_color.c
+>> index 68611ec6a..355047ed6 100644
+>> --- a/tests/chamelium/kms_chamelium_color.c
+>> +++ b/tests/chamelium/kms_chamelium_color.c
+>> @@ -352,9 +352,10 @@ static bool test_pipe_limited_range_ctm(data_t
+>> *data,
+>>   	gamma_lut_t *degamma_linear, *gamma_linear;
+>>   	igt_output_t *output = data->output;
+>>   	drmModeModeInfo *mode = data->mode;
+>> -	struct igt_fb fb_modeset, fb, fbref;
+>> -	struct chamelium_frame_dump *frame_limited;
+>> -	int fb_id, fb_modeset_id, fbref_id;
+>> +	struct igt_fb fb_modeset, fb;
+>> +	struct mechamelium_fra_dump *frame_limited, *frame_full;
+>> +	int fb_id, fb_modeset_id;
+>> +	igt_crc_t *reference_crc;
+>>   	bool ret = false;
 >>
->> +/**
->> + * chamelium_frame_match_or_dump:
->> + * @chamelium: The chamelium instance the frame dump belongs to
->> + * @frame0: The chamelium reference frame dump to match
->> + * @frame1: The chamelium capture frame dump to match
->> + * @reference_crc: CRC of chamelium reference frame
->> + * @check: the type of frame matching check to use
->> + *
->> + * Returns bool that the provided captured frame matches the reference
->> + * frame from the framebuffer. If they do not, this saves the reference
->> + * and captured frames to a png file.
->> + */
->> +bool chamelium_frame_match_or_dump_frame_pair(struct chamelium
->> *chamelium,
->> +					      struct chamelium_port *port,
->> +					      const struct
->> chamelium_frame_dump *frame0,
->> +					      const struct
->> chamelium_frame_dump *frame1,
->> +					      igt_crc_t *reference_crc,
-> The asymmetry in the arguments (reference_crc and not capture_crc) is bother me a bit.
-hmm..chamelium can compute CRC of the last captured frame, thats why 
-computed ref CRC and passed it as an
-argument. As far as symmetry is concerned; will compute CRC of both ref 
-and capture frame in test and pass as
-an argument. Will it work?
->
-> ...
->
->> +					      enum chamelium_check check)
->> +{
->> +	cairo_surface_t *reference;
->> +	cairo_surface_t *capture;
->> +	igt_crc_t *capture_crc;
->> +	bool match;
+>>   	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
+>> @@ -380,21 +381,13 @@ static bool test_pipe_limited_range_ctm(data_t
+>> *data,
+>>   				      DRM_FORMAT_MOD_LINEAR,
+>>   				      &fb_modeset);
+> We don't seem to use/commit this frame buffer at all.
+hmm, can be removed.
+>>   	igt_assert(fb_modeset_id);
+>> -
+>> -	fbref_id = igt_create_fb(data->drm_fd,
+>> -				 mode->hdisplay,
+>> -				 mode->vdisplay,
+>> -				 DRM_FORMAT_XRGB8888,
+>> -				 DRM_FORMAT_MOD_LINEAR,
+>> -				 &fbref);
+>> -	igt_assert(fbref_id);
+>> -
+>>   	igt_plane_set_fb(primary, &fb_modeset);
+>>
+>>   	set_degamma(data, primary->pipe, degamma_linear);
+>>   	set_gamma(data, primary->pipe, gamma_linear);
+>>   	set_ctm(primary->pipe, ctm);
+>>
+>> +	/* Set the output into full range. */
+>>   	igt_output_set_prop_value(output,
+>>   				  IGT_CONNECTOR_BROADCAST_RGB,
+>>   				  BROADCAST_RGB_FULL);
+>> @@ -402,11 +395,28 @@ static bool test_pipe_limited_range_ctm(data_t
+>> *data,
+>>   	igt_plane_set_fb(primary, &fb);
+>>   	igt_display_commit(&data->display);
+>>
+>> +	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
+>> +	frame_full =
+>> +		chamelium_read_captured_frame(data->chamelium, 0);
 >> +
->> +	/* Grab the captured reference frame from chamelium */
->> +	reference = convert_frame_dump_argb32(frame0);
+>> +	/* Chamelium calculates the CRC for the most recent
+>> +	 * captured frame; that's why CRC of the reference frame
+>> +	 * is captured here.
+>> +	 */
+>> +	reference_crc = chamelium_get_crc_for_area(data->chamelium, port,
+>> 0, 0, 0, 0);
+>> +	igt_assert(reference_crc);
 >> +
->> +	/* Grab the captured frame from chamelium */
->> +	capture = convert_frame_dump_argb32(frame1);
+>>   	/* Set the output into limited range. */
+>>   	igt_output_set_prop_value(output,
+>>   				  IGT_CONNECTOR_BROADCAST_RGB,
+>>   				  BROADCAST_RGB_16_235);
+>>   	paint_rectangles(data, mode, red_green_blue_full, &fb);
+>> +	igt_plane_set_fb(primary, &fb);
+>> +	igt_display_commit(&data->display);
 >> +
->> +	switch (check) {
->> +	case CHAMELIUM_CHECK_ANALOG:
->> +		match = igt_check_analog_frame_match(reference, capture);
->> +		break;
->> +	case CHAMELIUM_CHECK_CHECKERBOARD:
->> +		match = igt_check_checkerboard_frame_match(reference,
->> capture);
->> +		break;
->> +	default:
->> +		igt_assert(false);
->> +	}
->> +
->> +	if (!match && igt_frame_dump_is_enabled()) {
->> +		/* Get the captured frame CRC from the Chamelium. */
->> +		capture_crc = chamelium_get_crc_for_area(chamelium, port,
->> 0, 0,
->> +							 0, 0);
-> Does this mean that chamelium should be displaying the image when this comparison is done?
-> If so, It will defeat the purpose of using the frame dump for comparison.
-Frame dump comparison is already done before. Here we are just computing 
-CRCs.
->
->
->> +		igt_assert(capture_crc);
->> +
->> +		compared_frames_dump(reference, capture, reference_crc,
->> +				     capture_crc);
-> Since compared_frames_dump() calculates the crc if not passed by the caller we should let it.
-> That way we can remove the need of passing the reference_crc to this helper. (and also not calculate capture_crc)
-Like mentioned before, chamelium captures CRC of last captured frame. 
-SO, in test we need to compute CRC just after
-capture and then pass both ref and capture CRC as arg.
+>> +	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
+>> +	frame_limited =
+>> +		chamelium_read_captured_frame(data->chamelium, 0);
+> I hope chamelium takes care that it doesn't retrieve the frame captured using the earlier chamelium_capture()
+Yes, chamelium capture() api discards previous capture and capture new 
+frame.
 >
 > Regards
 >
 > Chaitanya
 >
 >
+>>   	/* And reset.. */
+>>   	igt_output_set_prop_value(output,
+>> @@ -414,18 +424,12 @@ static bool test_pipe_limited_range_ctm(data_t
+>> *data,
+>>   				  BROADCAST_RGB_FULL);
+>>   	igt_plane_set_fb(primary, NULL);
+>>   	igt_output_set_pipe(output, PIPE_NONE);
+>> -	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
+>> -	frame_limited =
+>> -		chamelium_read_captured_frame(data->chamelium, 0);
+>> -
+>>
+>> -	/* Verify that the framebuffer reference of the software
+>> -	 * computed output is equal to the frame dump of the CTM
+>> -	 * matrix transformation output.
+>> -	 */
+>> -	ret = chamelium_frame_match_or_dump(data->chamelium, port,
+>> -					    frame_limited, &fbref,
+>> -					    CHAMELIUM_CHECK_ANALOG);
+>> +	/* Verify frame dumps are equal. */
+>> +	ret = chamelium_frame_match_or_dump_frame_pair(data-
+>>> chamelium, port,
+>> +						       frame_full, frame_limited,
+>> +						       reference_crc,
 >> +
->> +		free(reference_crc);
->> +		free(capture_crc);
->> +	}
->> +
->> +	cairo_surface_destroy(reference);
->> +	cairo_surface_destroy(capture);
->> +
->> +	return match;
->> +}
->> +
->>   /**
->>    * chamelium_analog_frame_crop:
->>    * @chamelium: The Chamelium instance to use diff --git
->> a/lib/igt_chamelium.h b/lib/igt_chamelium.h index d979de4a2..140d52c95
->> 100644
->> --- a/lib/igt_chamelium.h
->> +++ b/lib/igt_chamelium.h
->> @@ -257,6 +257,12 @@ bool chamelium_frame_match_or_dump(struct
->> chamelium *chamelium,
->>   				   const struct chamelium_frame_dump
->> *frame,
->>   				   struct igt_fb *fb,
->>   				   enum chamelium_check check);
->> +bool chamelium_frame_match_or_dump_frame_pair(struct chamelium
->> *chamelium,
->> +					      struct chamelium_port *port,
->> +					      const struct
->> chamelium_frame_dump *frame0,
->> +					      const struct
->> chamelium_frame_dump *frame1,
->> +					      igt_crc_t *reference_crc,
->> +					      enum chamelium_check check);
->>   void chamelium_crop_analog_frame(struct chamelium_frame_dump *dump,
->> int width,
->>   				 int height);
->>   void chamelium_destroy_frame_dump(struct chamelium_frame_dump
->> *dump);
+>> CHAMELIUM_CHECK_ANALOG);
+>>
+>>   	free_lut(gamma_linear);
+>>   	free_lut(degamma_linear);
 >> --
 >> 2.25.1
 
