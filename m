@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 293EFC3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 10:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 316D6C3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 10:56:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D282410E89F;
-	Thu, 27 Mar 2025 10:47:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D9D4110E8AC;
+	Thu, 27 Mar 2025 10:56:35 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01F5E10E89F;
- Thu, 27 Mar 2025 10:47:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E19E910E8AC;
+ Thu, 27 Mar 2025 10:56:34 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3592703572079630114=="
+ boundary="===============4122242283754189897=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/i915/fbc=3A_update_fbc_?=
- =?utf-8?q?support_based_on_psr_mode_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel-ci/xe-sriov-vm?=
+ =?utf-8?q?=2Eblocklist=2Etxt=3A_Blocklist_for_SR-IOV_VM_runs_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Mar 2025 10:47:12 -0000
-Message-ID: <174307243200.10488.10291075013132923522@e6b6f09ec485>
+Date: Thu, 27 Mar 2025 10:56:34 -0000
+Message-ID: <174307299492.11097.10108556899680016145@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250327080358.559968-1-vinod.govindapillai@intel.com>
-In-Reply-To: <20250327080358.559968-1-vinod.govindapillai@intel.com>
+References: <20250326124203.222643-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250326124203.222643-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,57 +41,26 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3592703572079630114==
+--===============4122242283754189897==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/i915/fbc: update fbc support based on psr mode (rev2)
-URL   : https://patchwork.freedesktop.org/series/146845/
-State : success
+Series: tests/intel-ci/xe-sriov-vm.blocklist.txt: Blocklist for SR-IOV VM runs (rev2)
+URL   : https://patchwork.freedesktop.org/series/146800/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8289_BAT -> XEIGTPW_12853_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8289 -> IGTPW_12853
-
-  IGTPW_12853: 12853
-  IGT_8289: 8289
-  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8
+ERROR: The runconfig 'XEIGTPW_12843_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12843/index.html
 
---===============3592703572079630114==
+--===============4122242283754189897==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/i915/fbc: update fbc support based on psr mode (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146845/">https://patchwork.freedesktop.org/series/146845/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel-ci/xe-sriov-vm.blocklist.txt: Blocklist for SR-IOV VM runs (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146800/">https://patchwork.freedesktop.org/series/146800/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12843/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12843/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8289_BAT -&gt; XEIGTPW_12853_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8289 -&gt; IGTPW_12853</li>
-</ul>
-<p>IGTPW_12853: 12853<br />
-  IGT_8289: 8289<br />
-  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8</p>
+    <p>ERROR: The runconfig 'XEIGTPW_12843_FULL' does not exist in the database</p>
 
 </body>
 </html>
 
---===============3592703572079630114==--
+--===============4122242283754189897==--
