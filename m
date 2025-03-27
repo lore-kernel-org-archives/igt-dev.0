@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBBDBC3600C
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 17:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D30FBC3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 17:42:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7090810E2CA;
-	Thu, 27 Mar 2025 17:35:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B6DC10E130;
+	Thu, 27 Mar 2025 17:42:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I4G/roYw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AwVdIFF0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C39010E2CA
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 17:35:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10BDE10E130
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 17:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743096954; x=1774632954;
+ t=1743097341; x=1774633341;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=ogOoeeYYqYPMK2I12ClZRQVfN7+C8JkiXq8keqyxTZs=;
- b=I4G/roYwJW4tCuEyyMte1gHfdP3KSSQsTm7hepfy1QjvkZOaga1CgJHI
- 2/PVBBQyW1CXaRi3eTJ0Tl40yvqrqWTBXU7k4+ljn5/tohox0BYCufau2
- H7M8ZD/4IA00D6Xo50abzDpXNygbNjPxedayE1BiwXUl6T7mycRJBzRI/
- RK6S98X2ujk4uC3UgQ2GWE2Q8bm6OVSGELEoWbbK08LipUwvLcNLK18HL
- 66cW2n8WrhtT6jGOWvGDxHmQydYxaVtiQDRoOy5jbJGiIac7SVGyWkPTx
- YidBe2ZC81v0XsB5/yrmv2MSIHCSln3cvWWLgs4RT9bS33d92PIVFhKdP A==;
-X-CSE-ConnectionGUID: 3hAavdkzSbqMOjIwNApY1Q==
-X-CSE-MsgGUID: +BxVrfjmSrqQdfQQP0MiMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="69807529"
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="69807529"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 10:35:54 -0700
-X-CSE-ConnectionGUID: T4hkd5voSeKNbz/tfsM4tQ==
-X-CSE-MsgGUID: U/tg6XMsRe2ykNnXj5qhSA==
+ bh=f7zg8AxqeWV8JWue34tsGerO58fAw4XepyoGML4JOok=;
+ b=AwVdIFF0w2ssDLyFxom3mf2MwReGlkcK+bx3YkPmbvSPlaAAJuwErjEj
+ q4ZuZTJ5yQycqETHV7LGS39ylM9j4lBK/clbhS4AhkDJUloCzsESD0Xpx
+ 1UwbnFQDur8Q8cO2I/6QW1/NQsCqzpihVTs5z0df6XSM52kAp8QkpFwX7
+ 7tvs81Ms90IKGKIxJ69xdmAGdkdy0DGQurU607oLCFwsUHZoGa7sNGu6w
+ ZjaN/Q1VDm7+3oEsFUQCvtXcsC0XRg6tjDP5vrmhd16Hzg8F1IhDEBN9l
+ NRUuject2uxtkefBt41PvHw6XvIrP3I9D1cKK/HwyMM2dBJQWOEaaJyp3 A==;
+X-CSE-ConnectionGUID: EGZK9dn7SBOE9Dc1KxBAXw==
+X-CSE-MsgGUID: pUvFFObOTqqB3OtFQSlTGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44632582"
+X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="44632582"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2025 10:42:20 -0700
+X-CSE-ConnectionGUID: Kfsqrzq8QjO84lxiHqJsBg==
+X-CSE-MsgGUID: P32pBI/xSv2i5I9zb3+sWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="148392607"
+X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="125721953"
 Received: from ileong-mobl1.gar.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.91.160])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 10:35:54 -0700
-Date: Thu, 27 Mar 2025 10:35:52 -0700
-Message-ID: <87a596idfr.wl-ashutosh.dixit@intel.com>
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2025 10:42:20 -0700
+Date: Thu, 27 Mar 2025 10:42:19 -0700
+Message-ID: <878qoqid50.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Harish Chegondi <harish.chegondi@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH 1/1] tests/intel/xe_eu_stall: Add invalid input tests for
  EU stall sampling
-In-Reply-To: <b11a8dcb7191270ac55a6ac4ddab89ed03a31f90.1743067979.git.harish.chegondi@intel.com>
-References: <b11a8dcb7191270ac55a6ac4ddab89ed03a31f90.1743067979.git.harish.chegondi@intel.com>
+In-Reply-To: <87a596idfr.wl-ashutosh.dixit@intel.com>
+References: <b11a8dcb7191270ac55a6ac4ddab89ed03a31f90.1743067979.git.harish.chegondi@intel.com>	<87a596idfr.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,127 +71,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 27 Mar 2025 02:35:10 -0700, Harish Chegondi wrote:
+On Thu, 27 Mar 2025 10:35:52 -0700, Dixit, Ashutosh wrote:
 >
-> Add tests to verify that invalid inputs fail the tests
+> On Thu, 27 Mar 2025 02:35:10 -0700, Harish Chegondi wrote:
+> >
+> > Add tests to verify that invalid inputs fail the tests
+> >
+> > Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+> > ---
+> >  tests/intel/xe_eu_stall.c | 64 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 64 insertions(+)
+> >
+> > diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
+> > index 964bb7c91..8f892a9ae 100644
+> > --- a/tests/intel/xe_eu_stall.c
+> > +++ b/tests/intel/xe_eu_stall.c
+> > @@ -19,6 +19,15 @@
+> >   *
+> >   * SUBTEST: unprivileged-access
+> >   * Description: Verify unprivileged open of a EU stall data stream fd
+> > + *
+> > + * SUBTEST: invalid-gt-id
+> > + * Description: Verify that invalid input GT ID fails the test
+> > + *
+> > + * SUBTEST: invalid-sampling-rate
+> > + * Description: Verify that invalid input sampling rate fails the test
+> > + *
+> > + * SUBTEST: invalid-event-report-count
+> > + * Description: Verify that invalid input event report count fails the test
+> >   */
+> >
+> >  #include <fcntl.h>
+> > @@ -33,6 +42,9 @@
+> >
+> >  #define OBSERVATION_PARANOID	"/proc/sys/dev/xe/observation_paranoid"
+> >
+> > +#define NUM_DATA_ROWS(SIZE)	((SIZE) >> 6)
 >
-> Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
-> ---
->  tests/intel/xe_eu_stall.c | 64 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 64 insertions(+)
+> What is SIZE?
+
+Sorry, don't use all caps for args.
+
 >
-> diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-> index 964bb7c91..8f892a9ae 100644
-> --- a/tests/intel/xe_eu_stall.c
-> +++ b/tests/intel/xe_eu_stall.c
-> @@ -19,6 +19,15 @@
->   *
->   * SUBTEST: unprivileged-access
->   * Description: Verify unprivileged open of a EU stall data stream fd
-> + *
-> + * SUBTEST: invalid-gt-id
-> + * Description: Verify that invalid input GT ID fails the test
-> + *
-> + * SUBTEST: invalid-sampling-rate
-> + * Description: Verify that invalid input sampling rate fails the test
-> + *
-> + * SUBTEST: invalid-event-report-count
-> + * Description: Verify that invalid input event report count fails the test
->   */
+> > +
+> > +#define MAX_SUBSLICES		64
 >
->  #include <fcntl.h>
-> @@ -33,6 +42,9 @@
+> What is a SUBSLICE? Is it a XeCore?
 >
->  #define OBSERVATION_PARANOID	"/proc/sys/dev/xe/observation_paranoid"
+> >  #define NUM_ITERS_GPGPU_FILL	100
+> >  #define DEFAULT_NUM_REPORTS	1
+> >  #define DEFAULT_SAMPLE_RATE	(251 * 4)
+> > @@ -283,6 +295,46 @@ static void set_fd_flags(int fd, int flags)
+> >	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
+> >  }
+> >
+> > +/*
+> > + * Verify that tests with invalid arguments fail.
+> > + */
+> > +static void test_invalid_arguments(int drm_fd, uint8_t gt_id, uint32_t rate, uint32_t num_reports)
+> > +{
+> > +	uint64_t properties[] = {
+> > +		DRM_XE_EU_STALL_PROP_GT_ID, gt_id,
+> > +		DRM_XE_EU_STALL_PROP_SAMPLE_RATE, rate,
+> > +		DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS, num_reports,
+> > +	};
+> > +
+> > +	struct xe_eu_stall_open_prop props = {
+> > +		.num_properties = ARRAY_SIZE(properties) / 2,
+> > +		.properties_ptr = to_user_pointer(properties),
+> > +	};
+> > +
+> > +	xe_eu_stall_ioctl_err(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props, EINVAL);
+> > +}
+> > +
+> > +static void test_invalid_gt_id(int fd)
+> > +{
+> > +	test_invalid_arguments(fd, 255,
+> > +				   DEFAULT_SAMPLE_RATE,
+> > +				   DEFAULT_NUM_REPORTS);
+> > +}
+> > +
+> > +static void test_invalid_sampling_rate(int fd)
+> > +{
+> > +	test_invalid_arguments(fd, p_gt_id,
 >
-> +#define NUM_DATA_ROWS(SIZE)	((SIZE) >> 6)
-
-What is SIZE?
-
-> +
-> +#define MAX_SUBSLICES		64
-
-What is a SUBSLICE? Is it a XeCore?
-
->  #define NUM_ITERS_GPGPU_FILL	100
->  #define DEFAULT_NUM_REPORTS	1
->  #define DEFAULT_SAMPLE_RATE	(251 * 4)
-> @@ -283,6 +295,46 @@ static void set_fd_flags(int fd, int flags)
->	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
->  }
+> Instead of using p_gt_id, maybe just use 0 here. Sometime p_* are used,
+> sometimes DEFAUL_* are used, it's annoying.
 >
-> +/*
-> + * Verify that tests with invalid arguments fail.
-> + */
-> +static void test_invalid_arguments(int drm_fd, uint8_t gt_id, uint32_t rate, uint32_t num_reports)
-> +{
-> +	uint64_t properties[] = {
-> +		DRM_XE_EU_STALL_PROP_GT_ID, gt_id,
-> +		DRM_XE_EU_STALL_PROP_SAMPLE_RATE, rate,
-> +		DRM_XE_EU_STALL_PROP_WAIT_NUM_REPORTS, num_reports,
-> +	};
-> +
-> +	struct xe_eu_stall_open_prop props = {
-> +		.num_properties = ARRAY_SIZE(properties) / 2,
-> +		.properties_ptr = to_user_pointer(properties),
-> +	};
-> +
-> +	xe_eu_stall_ioctl_err(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props, EINVAL);
-> +}
-> +
-> +static void test_invalid_gt_id(int fd)
-> +{
-> +	test_invalid_arguments(fd, 255,
-> +				   DEFAULT_SAMPLE_RATE,
-> +				   DEFAULT_NUM_REPORTS);
-> +}
-> +
-> +static void test_invalid_sampling_rate(int fd)
-> +{
-> +	test_invalid_arguments(fd, p_gt_id,
-
-Instead of using p_gt_id, maybe just use 0 here. Sometime p_* are used,
-sometimes DEFAUL_* are used, it's annoying.
-
-For example, at the top of the file where the global's are defined, why is
-p_rate not assigned to DEFAULT_SAMPLE_RATE?
-
-> +				   (251 * 10),
-> +				   DEFAULT_NUM_REPORTS);
-> +}
-> +
-> +static void test_invalid_event_report_count(int fd)
-> +{
-> +	test_invalid_arguments(fd, p_gt_id,
-> +				   DEFAULT_SAMPLE_RATE,
-> +				   (NUM_DATA_ROWS(512 * 1024) * MAX_SUBSLICES) + 1);
-
-Also the indentation is off. Things should be aligned to the opening '('.
-
-> +}
-> +
->  static inline void enable_paranoid(void)
->  {
->	write_u64_file(OBSERVATION_PARANOID, 1);
-> @@ -615,6 +667,18 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
->	igt_subtest("unprivileged-access")
->		test_non_privileged_access(drm_fd);
+> For example, at the top of the file where the global's are defined, why is
+> p_rate not assigned to DEFAULT_SAMPLE_RATE?
 >
-> +	igt_describe("Verify that invalid input GT ID fails the test");
-> +	igt_subtest("invalid-gt-id")
-> +		test_invalid_gt_id(drm_fd);
-> +
-> +	igt_describe("Verify that invalid input sampling rate fails the test");
-> +	igt_subtest("invalid-sampling-rate")
-> +		test_invalid_sampling_rate(drm_fd);
-> +
-> +	igt_describe("Verify that invalid input event report count fails the test");
-> +	igt_subtest("invalid-event-report-count")
-> +		test_invalid_event_report_count(drm_fd);
-> +
->	igt_fixture {
->		if (output)
->			fclose(output);
-> --
-> 2.48.1
+> > +				   (251 * 10),
+
+Why brackets?
+
+> > +				   DEFAULT_NUM_REPORTS);
+> > +}
+> > +
+> > +static void test_invalid_event_report_count(int fd)
+> > +{
+> > +	test_invalid_arguments(fd, p_gt_id,
+> > +				   DEFAULT_SAMPLE_RATE,
+> > +				   (NUM_DATA_ROWS(512 * 1024) * MAX_SUBSLICES) + 1);
 >
+> Also the indentation is off. Things should be aligned to the opening '('.
+
+Also why brackets.
+
+>
+> > +}
+> > +
+> >  static inline void enable_paranoid(void)
+> >  {
+> >	write_u64_file(OBSERVATION_PARANOID, 1);
+> > @@ -615,6 +667,18 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
+> >	igt_subtest("unprivileged-access")
+> >		test_non_privileged_access(drm_fd);
+> >
+> > +	igt_describe("Verify that invalid input GT ID fails the test");
+> > +	igt_subtest("invalid-gt-id")
+> > +		test_invalid_gt_id(drm_fd);
+> > +
+> > +	igt_describe("Verify that invalid input sampling rate fails the test");
+> > +	igt_subtest("invalid-sampling-rate")
+> > +		test_invalid_sampling_rate(drm_fd);
+> > +
+> > +	igt_describe("Verify that invalid input event report count fails the test");
+> > +	igt_subtest("invalid-event-report-count")
+> > +		test_invalid_event_report_count(drm_fd);
+> > +
+> >	igt_fixture {
+> >		if (output)
+> >			fclose(output);
+> > --
+> > 2.48.1
+> >
