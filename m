@@ -4,171 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D95AC3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 05:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69965C3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 05:56:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E44F710E049;
-	Thu, 27 Mar 2025 05:30:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FAEE10E852;
+	Thu, 27 Mar 2025 05:56:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Flf3QZ5X";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ln6Wz6Aj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AC1610E049
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 05:30:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26ED210E857
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 05:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743053419; x=1774589419;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=YFYR0w5X+DA8xTJuHGEa2b/cvTuv8Bwd9h+lmfykGqQ=;
- b=Flf3QZ5XyZiB2a0wq4ldx7BO4cHza+csIPbO/AehUYY+fEIBmyBcO3vO
- xd3iLBEZPsNJDlWAdT/geyA8S6Vd52+zv+n1IQo46bBcv463nVP24HY3b
- YOXB1Sq0kacfQZcJbRW2Tzcl7NjQkT+OLjqnD6bh7As91D724QIfrbjCy
- g5YyNkJYUbqcMTdqCOv4E3CuoHZl5cofHq1tD35qQ1fNxP0txsprQr6cQ
- gGRyFtb8T73ZlCiA9HjuX66Ag2VPf16sBsYnav1YO4gCF2huYP6efSbsl
- ed1kmKR+sSVKT7KmpfJjNoU6CjVkSQTqh3g9jQs0sBFOIE/qMFJUlNXYP Q==;
-X-CSE-ConnectionGUID: rJdm54CKTPiW+rFjj5BrbA==
-X-CSE-MsgGUID: 8j0RwBGpTMKVnGOfgVhkAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48155549"
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="48155549"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 22:30:19 -0700
-X-CSE-ConnectionGUID: WkqqfpvSTqi+5UxlvYU43A==
-X-CSE-MsgGUID: F1z+JA3wT6mvutPEBDO4eA==
+ t=1743055011; x=1774591011;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=bGDCsqFzIT854pfM0W8uN+TdIjg4RZCuIYfD4AeN6iU=;
+ b=ln6Wz6AjxbDm5eg/xX81ZUA9uDSSEdSKn2O7S6BaGXyu5dlqgI8Q4NrU
+ +BM3pUbEt14aVEYwECfCQG4LtbSsS34+Q/nvdRasaUa+qn0QuZmc79CY1
+ EQi40c3wFzhyo0ocd+DJ0M91xmcLoRhfW7E6hDVJ6wTGqbGUsZ9d2B7EJ
+ A3pDTwvezpgWVqW6X1nJm3cPTniYKh1fTWQk8dgA6+tO4LS89BLdfe9Q/
+ HsZloqn3Iduvqz25TEcWSmtkI/+ac1CbHw8+FHSiRLUJlLGIjZP5q3Cfp
+ NNzQdI6q+V3yDEclGhVnCdxNrf+kIwIOXa/5ep5BgeOIB8ClrpswKWo+h A==;
+X-CSE-ConnectionGUID: z+i8bQx/SzGEDt8ORoJ2uw==
+X-CSE-MsgGUID: NZmw1xYYReiBXHxDllaotg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44259461"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="44259461"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 22:56:51 -0700
+X-CSE-ConnectionGUID: GmJ3VqTpTaitzScBqRBT5A==
+X-CSE-MsgGUID: Jstws/fGTlugTiMY4mLzXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="124825428"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 26 Mar 2025 22:30:18 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="125239584"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 22:56:50 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 26 Mar 2025 22:30:18 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.1544.14; Wed, 26 Mar 2025 22:56:49 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 26 Mar 2025 22:56:49 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.47) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 26 Mar 2025 22:30:18 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 26 Mar 2025 22:30:17 -0700
+ 15.1.2507.44; Wed, 26 Mar 2025 22:56:49 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qybn+E4PdC6TzTG/fM6kGAgqcde7M+5Yy6F3J/Y2VtFa66jQg/Ldv4LoQ6TdDIA/S/51enhvHdy+gDirLaFxr8/91+yZpwqrjCGL+kawlowyJtDScLDntZ/st4xhvSIFFv6uYkuSm38+mx/4LW4kD3ERMHn7aOnRwzNwDYOTCFlk50DSyRQnlolbcTeyCsjuIf/zoU2W/i3gAyNNuhI1Ewm57Dn5u5uUUObNTzK9bZembpTs2HfslCSluCU21mGo9Xy/vZQXzUouY7YkoPGwCr4nBRglE9YRaIJl73Um+wYvpJzXSZctXlmOGGvu+9kq/jUn9/wAdA9AaEf9/Cn5CQ==
+ b=Ug8eIWY0p3AdbZp8tYIPuCneXKks3d+NqlyGgScqRBgX0SKsZFx2I9nkjLNPvD30orLbP3XXMY9Vc35qVSu9CWBZbL/DlIuoIDBI8nS7x991gNUT0Wr37PfzHADSg4ONu+F2aO9c0H07kyKQnYyU6IdfoU+YjfY4e2VRmq54lqkwmhjr6Vs24eVQI5p3zEnDPMqL6WBjDry5VkS2PWThG3vFGCNZlYPzvmHq1EYu6nJRswduA0f9hufAuuXPqScKe+bs7cPgkmhapUElIYv7g0ZENRwzD4r435HYoXG0XadyjoeYeyMpx3ui9vyNy/L9bQfW7Do/+hkvM178Va8oDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZsxtuKdM/hGV8pu5rXOLBCUBfHH+9PV55UtLMJyTEpY=;
- b=wTXNdO1oGPppuNuGwZonlu2YpmmlpUX9o1puHaqVGynT/RiRpGKzyoUSc43yKdDn/F+vTZzDLegi9SNyHcdXtV9zXbW+cBpbkj7+F8/CJQ1PDzedju8ToxidI8eLTe+oNLIXGQQg6Eaw0yIqG7jl4Z9ZlVUyn8VSzjT+JYBhXaNR6Kos2JKqqBcKnsXA0ejnsQBIjWQxUaKZwmMjZnwjBKHu6iNZsfP8oh3LK0PmcAgFXzrwQu1lIp3T9sLi3QVUFrc4DOHkOO4FANKyGnjPXHlXMH3PthZFoENHoZtgY82QEfE7aN8/7WkAR7pReyPK4j1CxRYo0ByZfyxv2omQFg==
+ bh=QhRwiByEsXPgP+aNMpgZeQV+RKKthNrGcIjiM3YRBmQ=;
+ b=p6pRpRvoYvVLGUo4hrAov4hYYUtMhGX0Rfxr5Z30MC7HGTJ8hR0WFKcZVCGVbAsEEBtAySMDw2CMJbalG3zE/OZyBR4pHl04SI3fSFwCUYOorXRWCR0EBrYid4znABYaBtPXnlmTZTFU1aRrMdThHCRcEN4B6xuv9rNSzdbiOzg7FhhTVC2QtHVQNVhv9M+Euu3aGDKqFWI9PcIZ4CPZEtwbQw1FoUxPhVAROm+aw9da3LdFXSYIZ7Txy7Dn68iByolL5Hs0gx3XrWpF4tFra38cOZgde13gDX5NjSl+EWZF9koJ77nq9OQylEgKCvqg0UIynxF5JME30xTw54RDtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
- by CH0PR11MB8142.namprd11.prod.outlook.com (2603:10b6:610:18c::19)
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
+ by MN6PR11MB8146.namprd11.prod.outlook.com (2603:10b6:208:470::9)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 27 Mar
- 2025 05:30:15 +0000
-Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
- ([fe80::21c3:4b36:8cc5:b525]) by SJ1PR11MB6129.namprd11.prod.outlook.com
- ([fe80::21c3:4b36:8cc5:b525%5]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
- 05:30:15 +0000
-From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ 2025 05:56:48 +0000
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372%5]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
+ 05:56:48 +0000
+Message-ID: <01f935cc-7b22-4722-bd74-9621d806703d@intel.com>
+Date: Thu, 27 Mar 2025 11:26:43 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/3] lib/igt_chamelium: Add
+ chamelium_frame_match_or_dump_frame_pair()
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: Set
- rgb_full to 1.0
-Thread-Topic: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: Set
- rgb_full to 1.0
-Thread-Index: AQHbnJvO7e4aqcBVPUusvbrt/cQmRrOGeLDw
-Date: Thu, 27 Mar 2025 05:30:15 +0000
-Message-ID: <SJ1PR11MB61291F5C807B02197236476AB9A12@SJ1PR11MB6129.namprd11.prod.outlook.com>
 References: <20250324090949.614233-1-swati2.sharma@intel.com>
- <20250324090949.614233-4-swati2.sharma@intel.com>
-In-Reply-To: <20250324090949.614233-4-swati2.sharma@intel.com>
-Accept-Language: en-US
+ <20250324090949.614233-2-swati2.sharma@intel.com>
+ <SJ1PR11MB61292493C9C6D0F30ACAA8E9B9A62@SJ1PR11MB6129.namprd11.prod.outlook.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6129:EE_|CH0PR11MB8142:EE_
-x-ms-office365-filtering-correlation-id: e09ef6fc-716c-4f61-3010-08dd6cf07439
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|38070700018|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?ebDnqw9x7ASz0m6hqOr+YBG0jvG5ZiKdKm15qYEZQXa6+qFK4XTlFACGHOqz?=
- =?us-ascii?Q?ubgEloLK1djeC10r4a9JrV2J2QrundYUz/d5h8l//wPM0lBbuwejqJryT8wL?=
- =?us-ascii?Q?CmzA59oqBACZUCVtYUYwQNbO7mnF+wjfjbK3AShTke9kGolNcaJGPCqaE+FV?=
- =?us-ascii?Q?hltZZIoO5NDZ42f3waMBpcmm469YswP0DrQSjv1A/d/4bN4UzxPheWxPuJ2c?=
- =?us-ascii?Q?aYnKbrQjI7hrYW193QQILrzymrEFfakWtuk9ccwRSRCnJYPXZ4bZZNGw0grT?=
- =?us-ascii?Q?bI3QlKdEbtqaEpoZ0uSJWbmTecOHsOGmw7WEugC+OjpCrpBiHKTQFtm0CHyb?=
- =?us-ascii?Q?CBT/xNofHYiZCZLVEh+ZuJ4j8vcQ78KUgs9BSS6ORN2zndIddu7abEoLM1qp?=
- =?us-ascii?Q?BGuE5cj7RolKIqUnKnffetHcfdjOxt+VUOK4dxmYQ2QtgykE2phCPkuTFJba?=
- =?us-ascii?Q?YciWf7YF5v+f/Wn4Aph3JlnkQoSwleWlBslNF+t20Oiq4+Yq30ABmT0+HIvB?=
- =?us-ascii?Q?r073/8U0HnjStibE4WvXtvGTwS271ZtjdJBCGhO8PvuWkTTItSK1cVraz/IC?=
- =?us-ascii?Q?4oMvb/Q/s35Mnh4At+EX3Tx2TV0b/7juTi8+0jQW82trEw4jc1uhAxjxmERe?=
- =?us-ascii?Q?+ajamkNjUrvzgpv9AMOeTEn2lWh1eyYj4xpIrcn8FgMl78FLiEdJZE8uOuhR?=
- =?us-ascii?Q?OTROGvxdc/p15zC6NWw/QNxaSb0mGA4QS40XP+Dz4FCqKwC3DEhJWIE/ikZf?=
- =?us-ascii?Q?AHmFQehbnnUpDt50bEgZoLg/9kHAofHPNN1Zgpe5//44XkyRFfbMpPjAd9iR?=
- =?us-ascii?Q?+/p2QWwmnjWO4wrn9rq9OQ4k1/X+6aAM/RTy1lQx6+XNuoPpyc+8wng4vtlI?=
- =?us-ascii?Q?mb6an2ugHXY/uRg5vTCqQ68KCdoDgFffgWFfyRcJMHwtubOikQqNaRIXDw4y?=
- =?us-ascii?Q?kodpUzHq5arLsyEHVT0wH/+mVEHisbX+OpKG2PEGedQSGPccWlHE4xi3kpE1?=
- =?us-ascii?Q?d3pioCKzByNXGjXCwoSOCgvFIiyHEEF6xcehwOHxYSHoTOZbpS65hXv/xT2R?=
- =?us-ascii?Q?88sUpqUmb8lfOZ5cD4dxLj7eMDPq2EnqxP8MLFPeN5V5o9teJYX51TILqwAR?=
- =?us-ascii?Q?Z4Ul5yCgV6v0p9X5xa/nNGk8C6J7RdH4qbs64ylVuBgL0uCnOtQnoMU12Wym?=
- =?us-ascii?Q?2B1nnCHEmfyCgJYX3yqXxCSF9UMQy7lxYFWRw85932CGZ/Gq29CvmpnmRdMz?=
- =?us-ascii?Q?UvYRKkrBKi/L/PQGpS5sa/4khKpRfkDH/N3HpRb2e7+1eUiwMGykK/Bl+lIU?=
- =?us-ascii?Q?sOkR/RgSe/lHxfoUzsPppkLu2LilqZqs1vmTs+A9K2ECBdi528ePMsLFe+lz?=
- =?us-ascii?Q?Gi9f/RAc67n3Ip4oYzKkEPJM/nPgVujZjYkcjgFezIOmCuREckOUrp8ux10z?=
- =?us-ascii?Q?PQAf3ut6bc7j1ATfI8h0Mxx8KDXLG61t?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ1PR11MB6129.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700018)(7053199007); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?AoreO5H0WGPTZV6OOa1VyumtqlkB8al/UClIlr/qkMxCeeBtfvGNQWPJPINP?=
- =?us-ascii?Q?zp/HRPPX+FYltLXcXtkKQVl3aD38jZEoRCCU5UxXUsodJ/ItqW0a8IVmtHZN?=
- =?us-ascii?Q?OmwcbFWJBk1c0QdasyrcNK2xsXOEQ/WxoGHz3ahlILC+2D2EWVIxoO5ZVHg4?=
- =?us-ascii?Q?GJdEXNEBy9Au6IWFGtp82yCCT/GzZ6MIe+rhHLVQxBuqJwKHHmExfar28AWT?=
- =?us-ascii?Q?aMU/XBa2qdfosDOe1YjjdQywZ4x1sO1X2fS0TliKKZpmjjrSlid2wJsMqmiv?=
- =?us-ascii?Q?JoGXAFGMIHgLp4gYrmv7fgmaQxnysgIzyXmnEEKVJ0kO4bS1Ea7sSlQwfVN0?=
- =?us-ascii?Q?RmU+tPxHYLudmp/iMgSk0QtirRUjercwBnboqPq4PRc01s6jsq7ufzDEaKnP?=
- =?us-ascii?Q?rBGwvVKlCye4amVT+f4trU579y+5lr3fnBDoxLL9S/7/gSMKMqi0XnGHz80v?=
- =?us-ascii?Q?zugE0EqoXHqCxNssiMpzYHtpgtRCDgxq5EF9WK/h6rHw+yp4idhPeWGLEbGb?=
- =?us-ascii?Q?AEzAVef9lzkhcN7bCcKWkJOG+8S6MnClyveimgBjnvbOvNPaneBzxMcCC1jA?=
- =?us-ascii?Q?PuCQQE4Nkqb5SoYnQuyws/aAqS9riRlPcbl+Y3t47+/KojWRze1FI6QIro7e?=
- =?us-ascii?Q?+LCMuBjV+72Xazbe3zc78YWDpzjKpf2fmOK4U8S5pa2VWTsD0So9BFsUjctS?=
- =?us-ascii?Q?Xqyryo8QZCA50skw3TxI0TXJuFUJhqTz36Q7syNwcyNXqCg80XhqoyR4/VqK?=
- =?us-ascii?Q?kh9nE5wk3tWMDafysg7jHMnhcrUMBcDpahBWDt+e/xYYC9j4aaCPP5yMLxBh?=
- =?us-ascii?Q?cE939EziIXNVEyj97IsWeGEj6eSXXuzsycopVdj5HWj9U4oq5fHdOE+k8paB?=
- =?us-ascii?Q?XTT14AkX7rTogUfzTQGavIymUstAyUaEb10LJ/AWq1zoVRPfcQZ7HWOYL7x3?=
- =?us-ascii?Q?WIMqC2Hzy/h4yzjOQrHe7OQTZCEH1wJ/ScL2sDCTHZxzIKPpqAfIN5Iex+if?=
- =?us-ascii?Q?7C+OXYfntpTL1FQUEORmhSK33swckSRhXqXuukqrTiM5iK1uvmD13Wu3BU0b?=
- =?us-ascii?Q?0O99nsExpSelfw/46rDIzc2hRpmtQJUbQsrq3lAsbUV6e7OnRHZLNrL/F/V5?=
- =?us-ascii?Q?7x5gFHYUyhlL1dk7zLqdAMxhG3QqTZUk6zH7Um9v2SSArHuc1Vihl4b120eN?=
- =?us-ascii?Q?vqFz0Rh/6dhbHR2BcFc8oVvHmB9O2AhlPGbq4tGnaGgVyaZFfRxl2NbFrb6O?=
- =?us-ascii?Q?G5e4HVdB3iHYUEqyww6tbKkRw18lQOmgNa1QgQHuwOEo2t41Gp0NnPjaKR9u?=
- =?us-ascii?Q?Y+vOP9R78uo2SP28gsesJrEO9aeeOmOLm4LLR8c5tNlfFwmvl3K8qIFtOPji?=
- =?us-ascii?Q?fb1AZfBN5hNRNj8lZb7Q3qagIqdicTaVI21ySwsmytuQNTOWl56BjATzZAsm?=
- =?us-ascii?Q?Y6I8G86kHeSyCMiThcle9un/SV/zwtB6it2p6QP7/oZxe7SowRvAIWwQFhth?=
- =?us-ascii?Q?nYcY663dMR3BSh8Bz8D7P+VTZ3DaQND/erc6TJN0nVW6iclEBog1cQ2BFKKi?=
- =?us-ascii?Q?I7xVJy79nO6/rohL9lC6bBogpcec4b1FybHYLZaWwAVeOKvWPFkct42vzlHn?=
- =?us-ascii?Q?HQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <SJ1PR11MB61292493C9C6D0F30ACAA8E9B9A62@SJ1PR11MB6129.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0021.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::9) To BL1PR11MB5979.namprd11.prod.outlook.com
+ (2603:10b6:208:386::9)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|MN6PR11MB8146:EE_
+X-MS-Office365-Filtering-Correlation-Id: b820174f-0ad1-44e9-6639-08dd6cf42950
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eXh1Qzh2ZVdjU0RxRG11TzM1WDI5eWZhSzRzaFJHOGRBQUZCZ0RZTy9acHcr?=
+ =?utf-8?B?MWIrK09GWEVaT0NrcXVrcnBxeksvVDdLc0M4L0ZXdDNtWE9JVGtFQVZEZkxZ?=
+ =?utf-8?B?R1F3TkpiMmlZQ1MvM2ZEdFhRMUI0YzdIQWVGUm9BeFU1MmZIWjlvZVhZUldq?=
+ =?utf-8?B?YmkyUFI1MTNBT1UvWnF4THlmWnFGSFRpbXd4QTF2T3NtMzU0a0dGSHl3cXNX?=
+ =?utf-8?B?TDRIMnU2eEpoT0FraHFmTVgwR3VHYWg4dGQyN2MyY0FSbmZTMDlGbUFBVi82?=
+ =?utf-8?B?Ri9jRFVOV3RQNlU0bzZ5ZUVFbXp1ZGNXWXJPNVdKRmRuWGtPb3gxaUVFbU1n?=
+ =?utf-8?B?cmxXS3pKZjBxSjFoUkZIQmxyUjE1ZWpHbmg4MTY3SXlEMlYvM09NTks5TFAr?=
+ =?utf-8?B?bks5REtXU2Q4MUlLOVRWaE1aTHpjSml0S21rQ3lPTFpic3ZZM21qa1VPSHQ0?=
+ =?utf-8?B?cHNpWnhSZmFZWWk0SGlJdWlTa2t0ZXNIVHVFK284aHBCc3FxN2VwVXlGL2ZM?=
+ =?utf-8?B?YXFveWwycUU1NlZqdS85c1VBa2RLYXF0WTVlSU1UUXJQa09BZ3EzOUR2Vk05?=
+ =?utf-8?B?MUxXbHlIczM5dzhzWmZwYmhmUm11cnZaVXhRblVBckFZRmtSTGNJU0cvMmlk?=
+ =?utf-8?B?U1BSdUM0UEFOajJrMDF5ZnQ3T2NGVThyYXZISXZqZStuS3piVDFQY1RLL3RG?=
+ =?utf-8?B?Y2RKUzRUMFZJWmJiV0lNWjRjM2FmUmlMcjdUa2g4NXJpLzRPSnQvQjEyYktK?=
+ =?utf-8?B?S1BIV0F2MlRMdjVrZTN0bFhpRWpmY2w5NnBmYjRjRVMvVTdBQStrZUVwZW9y?=
+ =?utf-8?B?M0d6ZXpDM2QwY0lTYkFzS2NnVE5VZzdxdFJvVHZydkdlKzB3NkJZR0czaVpW?=
+ =?utf-8?B?YWxwMHBHZWxvRHJxZUlQalA3WlNGMDg3dlNEYnp2bG8xQStPUTBKV1lnVDRl?=
+ =?utf-8?B?Q1dFaEQ1dUlYNUxRZWNxWjVwSVdiU2hGdUxDNUZIYWNmOWNITU5KeHRTRHBv?=
+ =?utf-8?B?MHA1R2tvNExsTnBkaXd2Rm9pK2htQ2dIQy9GWGZYamwwNVZnVWw1b1BXUUdn?=
+ =?utf-8?B?NEJoL21hWHRJanVySlUvcW1QOFprcHZpZkpsQW5POHoyY3A5SnZSbzZOb3cx?=
+ =?utf-8?B?Q2xWeERRR2JmUWdFT0ZyL0FaV0w3bGhvcXpnU09RdVVGYzloaGU0TmRLVVlt?=
+ =?utf-8?B?dVE3MTZJcUtBMmZYUW1oTWdvNkdtR2FoZDhicnpCNTUvUjBBR1VSRFAwMmdG?=
+ =?utf-8?B?SmMrRlo0QlJjN2lzQVNSVWM5NHVYWTlOUlVFTDd3dStISHNab2xTbytrS3Z2?=
+ =?utf-8?B?ZG13T0thWkNyMW5LV2pZYUc1QXk1Y0VEeUlOMzBzdHVKamx6WGpMVHYxRlRF?=
+ =?utf-8?B?NlZzSXFtWkNXcStGY1dxZWw3bjJ3S0hlcW5tTnhIQUhNVnJWZlB2Z2FWVFR1?=
+ =?utf-8?B?dlcxT09FWnQraTNZUjN0a0RxMnJxVzJmb0c2dXkyaGx4SjUvSjhrTTlmNlhY?=
+ =?utf-8?B?b1Rac1piaWdSeGE2Q2hPSG55K0ZlMHQ1My96Y1ZJSkFBUjByZjRBNWxvRTl1?=
+ =?utf-8?B?SXFLV2JWU29PZHhhUnZ5TWFxeVorWHJiTFh1UlVQZ0lJV0ZOWUI4L2Nla0tl?=
+ =?utf-8?B?b2NtZUVyTzhRem1wcWg2YkxtS0twbmRZQU1RVGNiVXZtYjg2YmdJd2dXSDlu?=
+ =?utf-8?B?dWxMOElCT25BRWRRVzdGQ2tBZHhaeWJ5c3FMMHR2WEpUcVV5dHg3MGpMd210?=
+ =?utf-8?B?eVlCdi8raXNPL1BrSlg3SmU1RUZQRzBhVHpBbjdxeGdTSFZwUnUwaU9saVRU?=
+ =?utf-8?B?Zmd2Q2Y3SlFTcGo0aFovQkllWHN5VzZiYWNDR1JkRExnSGhhbit5Y28xRTQv?=
+ =?utf-8?Q?L1ZgE0EKK45Uq?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVBCT2pmRVMwUHFqTlNBUWlxcUIvMkgvcTlpRkZxVXdFNUp6TTZENmpTSWJM?=
+ =?utf-8?B?MU5oYldPWUtFTzB3VWFMbkRxRCsxOFVsNTdYMHhwbTF6dWVwaXRZS01vZ0tN?=
+ =?utf-8?B?cWpHL2lDVWFzQWhObnRTcy9OV3hrY1JLSmt5aDRZYVBZNFpVaVhUc0JZME9X?=
+ =?utf-8?B?TnBwZkZYMGFuc3orVjFjRU5RR1NHRVBKSFhRYytQQ1BNV2JLUjRxMnIxWkF1?=
+ =?utf-8?B?Q2h2REFjQUJTSCt6TEN2cGpNTklzbm9ZKzdoWFV0Rk4wT0tIRG55VlgrUXV1?=
+ =?utf-8?B?aGNBWGF4Mml5VGtnOTNFb3BVcW1CT3NQeXk5eEQvZVlhVjcrSHJ6VmlpVGkw?=
+ =?utf-8?B?TUhuZW1mWWFhcXVaa0lBVitYeHZzRittM2p5OTNIWXJvWk1aclFKMVdLOFBw?=
+ =?utf-8?B?b2Q4WFFSV3dUQVNwZmVDV3Jud2E3UzErTjJzQm1mWVNjTTNWeExDNGFpSWZr?=
+ =?utf-8?B?cVc0TmRIalNPcnZOalljMG1LUXZkUVBSNkRGQkFkV1BnZm9sT2NJSGZtMnpr?=
+ =?utf-8?B?NmQ4cFEva3hRV0Q5UWhuSEtWa3NybmtsdGg4V0xuZ3NVc1lIWkJVdzIrdmJI?=
+ =?utf-8?B?VXk2YllnTXhTdHo3M3hmdjZoandzbTVNb3lmZ0MwemMvaXRrNXVOVElvOVRF?=
+ =?utf-8?B?RWxuVXM5ZVZzaVJrTjVrL3BZaXpCMDJVTHg4dTV3SFl2NjRxMURBdEw3MHh0?=
+ =?utf-8?B?S29ZMDM5NFoxcUZHalkyZTIvS3pGYjRBejRZeUU2eCtpQ3Q4L2ExUi9wZFdK?=
+ =?utf-8?B?S2lIa20zSFBYZ2FQeFhHL1VubFJnMEREOS9nVmNrN3psQjY0Z2NncWNhYVU0?=
+ =?utf-8?B?WHZwQWZYc3VqREk4aUFzQXVlSmVJQVZtQ1I3K2N2ZG45bVdudTFBWFZUUmFx?=
+ =?utf-8?B?Z3lpYUllUDRObWVJY0ZyTDBQZVBJWnRLbW9RSjRwUHRkYTlWOGViUHVqdXVp?=
+ =?utf-8?B?bHRXNmNSekYyUjI1RkYvbUxYU0F4TFJ3U2k1S1ZUeFcwdkNPcm9OL3N5UzNn?=
+ =?utf-8?B?NlVFVmlTRktCMmx5Z01vdFJJSHBIQjVwZjA5Q2VVRzhBclZrMTNkZWZZVElU?=
+ =?utf-8?B?WUdMUjlUdldFNW1wNDFWQStWSlQxbWYzdm9Dak50SXp0VVhXYkthK05panlM?=
+ =?utf-8?B?UDFyWDVOU2R0Mk1DMTlBenFPRDdtNVBkd2FwTGhncjRaYmJQMmVodndxSm1a?=
+ =?utf-8?B?Tyt0TUZyVER3UFlvVGlvZEJwSmE2ajBxZ1BucVlZeHhhTzNoNUhUK21zd0Rq?=
+ =?utf-8?B?NlZwalRWUW9BUlprdlZpeGFRakpsbENCZnFyNFdRZmx1YnFZWWVCUWc5Y28x?=
+ =?utf-8?B?VzBWNUdQMGlxdVdTTjJlOWZGeEhabFJBMzhMK0ZEOGZJbGNrZU1Gc2h2T1Fu?=
+ =?utf-8?B?Wmd2L3ZYekx4SWVzMXhKMllRSVlaVXN3a29DNUdUUndXaUwzRnpQRkhhVEFP?=
+ =?utf-8?B?SFJnRnlhRHlTT2ZUZjluSDV1ai8raUhzSHQ3K0dReDZLK0tCQ21leGhFd0Vw?=
+ =?utf-8?B?Ny9keWE2RkZMQkdCanZFNEJObWtiVWJocTNUS1B4OWtCWjBzd2UxU0k2YUpi?=
+ =?utf-8?B?citXYzNDZGViQmNyUmZjeEF3VkMrUUVtV05TZ3I0NUd2LzRPcXZ3NzZQeS8y?=
+ =?utf-8?B?WFZyS2pkZ2VWN0VhSG52SzYyZTFSN0FqOEM3WHNWelRBTnlMaGV5Wml2cldW?=
+ =?utf-8?B?eDVyclRwbjBidWZxOHhWTkVmemtxeU5YTXp6QisxQzJleUp4TFNjSkVpUE44?=
+ =?utf-8?B?c0lYbGkyeGRFZXJxTFBxUytWVjN0QzZCY1QxdExGL2hxQ2Y3K1ZDZXJTcEhT?=
+ =?utf-8?B?cFJ5b0JWUTlhazdwcXNGelh0WnhLdTY5eDF3QmE5Yk1lTmduVXNWVGZibVhm?=
+ =?utf-8?B?SmUxNFM0N0hSeDVOMzUxMmloNEhKY1NxREZZOEpoWXpzcW4vcWYxN3NwTFRE?=
+ =?utf-8?B?K2RlWHhoWG5JTlVKSEsvWkxOajI5ZTVqVkU0ZStMWmo0SkxSWUJZOWppdXFP?=
+ =?utf-8?B?WThOamhsWUw5eTVsQlRlbzZRbFVYKy9JR1RCOEFGREtocU9tYW5Bd2hpaEdp?=
+ =?utf-8?B?UzIxTFVVdWRkdXVERDRsWTZndTNoeGx4OFo1ZHdEZlJKcHpTYkpaNE01Ykt6?=
+ =?utf-8?B?U09CS0Y5aWw3TXdZTXNURnJLNE5FeUNCVDNjUHB2MWdiOVlmY0hVeE01dEMw?=
+ =?utf-8?B?R2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b820174f-0ad1-44e9-6639-08dd6cf42950
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e09ef6fc-716c-4f61-3010-08dd6cf07439
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2025 05:30:15.3802 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RAE7LlDn+vNrdn12FzrJqXAvNrbWgnHM9NKYOJmbP88dQII8gJ/TXst3juBTB1u+mWi0TgVp6u0kcYLLdSqQ8x4Y1GqFfhifnO1UCbLFajA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB8142
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 05:56:48.1413 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mvhxwxdws842njaa1Iue11F+cSsalj8Lg+1JgsCpDVxfKs76nsmUo8vZrNpe7hMQSoTppF/+LRrmXKV2iRGXjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8146
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -185,55 +197,158 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Chaitanya,
+Thankyou for the review. Please find my comments inline.
 
-
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
-> Sharma
-> Sent: Monday, March 24, 2025 2:40 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: Set
-> rgb_full to 1.0
->=20
-> Set red_green_blue_full[] to 1.0 instead of 0.5
->=20
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/chamelium/kms_chamelium_color.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/chamelium/kms_chamelium_color.c
-> b/tests/chamelium/kms_chamelium_color.c
-> index 355047ed6..4088e2eb7 100644
-> --- a/tests/chamelium/kms_chamelium_color.c
-> +++ b/tests/chamelium/kms_chamelium_color.c
-> @@ -342,9 +342,9 @@ static bool test_pipe_limited_range_ctm(data_t
-> *data,
->  		{ 0.0, 0.0, limited_result }
->  	};
->  	color_t red_green_blue_full[] =3D {
-> -		{ 0.5, 0.0, 0.0 },
-> -		{ 0.0, 0.5, 0.0 },
-> -		{ 0.0, 0.0, 0.5 }
-> +		{ 1.0, 0.0, 0.0 },
-> +		{ 0.0, 1.0, 0.0 },
-> +		{ 0.0, 0.0, 1.0 }
-
-This looks good but I think it also makes sense to convert the 0s in the li=
-mited  range matrix to 16/255.
-That should represent actual limited range of 16-235.
-
-Also perhaps this should be part of the previous patch? Because it is impor=
-tant for the test to actually work.
-
-Regards
-
-Chaitanya
-
->  	};
->  	double ctm[] =3D { 1.0, 0.0, 0.0,
->  			0.0, 1.0, 0.0,
-> --
-> 2.25.1
+On 26-03-2025 05:53 pm, Borah, Chaitanya Kumar wrote:
+> Hello Swati,
+>
+>> -----Original Message-----
+>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
+>> Sharma
+>> Sent: Monday, March 24, 2025 2:40 PM
+>> To: igt-dev@lists.freedesktop.org
+>> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+>> Subject: [PATCH i-g-t 1/3] lib/igt_chamelium: Add
+>> chamelium_frame_match_or_dump_frame_pair()
+>>
+>> Add chamelium_frame_match_or_dump_frame_pair() to compare frame
+>> dumps captured from chamelium.
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   lib/igt_chamelium.c | 60
+>> +++++++++++++++++++++++++++++++++++++++++++++
+>>   lib/igt_chamelium.h |  6 +++++
+>>   2 files changed, 66 insertions(+)
+>>
+>> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c index
+>> 620fbbf7d..44a169b29 100644
+>> --- a/lib/igt_chamelium.c
+>> +++ b/lib/igt_chamelium.c
+>> @@ -2070,6 +2070,66 @@ bool chamelium_frame_match_or_dump(struct
+>> chamelium *chamelium,
+>>   	return match;
+>>   }
+>>
+>> +/**
+>> + * chamelium_frame_match_or_dump:
+>> + * @chamelium: The chamelium instance the frame dump belongs to
+>> + * @frame0: The chamelium reference frame dump to match
+>> + * @frame1: The chamelium capture frame dump to match
+>> + * @reference_crc: CRC of chamelium reference frame
+>> + * @check: the type of frame matching check to use
+>> + *
+>> + * Returns bool that the provided captured frame matches the reference
+>> + * frame from the framebuffer. If they do not, this saves the reference
+>> + * and captured frames to a png file.
+>> + */
+>> +bool chamelium_frame_match_or_dump_frame_pair(struct chamelium
+>> *chamelium,
+>> +					      struct chamelium_port *port,
+>> +					      const struct
+>> chamelium_frame_dump *frame0,
+>> +					      const struct
+>> chamelium_frame_dump *frame1,
+>> +					      igt_crc_t *reference_crc,
+> The asymmetry in the arguments (reference_crc and not capture_crc) is bother me a bit.
+hmm..chamelium can compute CRC of the last captured frame, thats why 
+computed ref CRC and passed it as an
+argument. As far as symmetry is concerned; will compute CRC of both ref 
+and capture frame in test and pass as
+an argument. Will it work?
+>
+> ...
+>
+>> +					      enum chamelium_check check)
+>> +{
+>> +	cairo_surface_t *reference;
+>> +	cairo_surface_t *capture;
+>> +	igt_crc_t *capture_crc;
+>> +	bool match;
+>> +
+>> +	/* Grab the captured reference frame from chamelium */
+>> +	reference = convert_frame_dump_argb32(frame0);
+>> +
+>> +	/* Grab the captured frame from chamelium */
+>> +	capture = convert_frame_dump_argb32(frame1);
+>> +
+>> +	switch (check) {
+>> +	case CHAMELIUM_CHECK_ANALOG:
+>> +		match = igt_check_analog_frame_match(reference, capture);
+>> +		break;
+>> +	case CHAMELIUM_CHECK_CHECKERBOARD:
+>> +		match = igt_check_checkerboard_frame_match(reference,
+>> capture);
+>> +		break;
+>> +	default:
+>> +		igt_assert(false);
+>> +	}
+>> +
+>> +	if (!match && igt_frame_dump_is_enabled()) {
+>> +		/* Get the captured frame CRC from the Chamelium. */
+>> +		capture_crc = chamelium_get_crc_for_area(chamelium, port,
+>> 0, 0,
+>> +							 0, 0);
+> Does this mean that chamelium should be displaying the image when this comparison is done?
+> If so, It will defeat the purpose of using the frame dump for comparison.
+Frame dump comparison is already done before. Here we are just computing 
+CRCs.
+>
+>
+>> +		igt_assert(capture_crc);
+>> +
+>> +		compared_frames_dump(reference, capture, reference_crc,
+>> +				     capture_crc);
+> Since compared_frames_dump() calculates the crc if not passed by the caller we should let it.
+> That way we can remove the need of passing the reference_crc to this helper. (and also not calculate capture_crc)
+Like mentioned before, chamelium captures CRC of last captured frame. 
+SO, in test we need to compute CRC just after
+capture and then pass both ref and capture CRC as arg.
+>
+> Regards
+>
+> Chaitanya
+>
+>
+>> +
+>> +		free(reference_crc);
+>> +		free(capture_crc);
+>> +	}
+>> +
+>> +	cairo_surface_destroy(reference);
+>> +	cairo_surface_destroy(capture);
+>> +
+>> +	return match;
+>> +}
+>> +
+>>   /**
+>>    * chamelium_analog_frame_crop:
+>>    * @chamelium: The Chamelium instance to use diff --git
+>> a/lib/igt_chamelium.h b/lib/igt_chamelium.h index d979de4a2..140d52c95
+>> 100644
+>> --- a/lib/igt_chamelium.h
+>> +++ b/lib/igt_chamelium.h
+>> @@ -257,6 +257,12 @@ bool chamelium_frame_match_or_dump(struct
+>> chamelium *chamelium,
+>>   				   const struct chamelium_frame_dump
+>> *frame,
+>>   				   struct igt_fb *fb,
+>>   				   enum chamelium_check check);
+>> +bool chamelium_frame_match_or_dump_frame_pair(struct chamelium
+>> *chamelium,
+>> +					      struct chamelium_port *port,
+>> +					      const struct
+>> chamelium_frame_dump *frame0,
+>> +					      const struct
+>> chamelium_frame_dump *frame1,
+>> +					      igt_crc_t *reference_crc,
+>> +					      enum chamelium_check check);
+>>   void chamelium_crop_analog_frame(struct chamelium_frame_dump *dump,
+>> int width,
+>>   				 int height);
+>>   void chamelium_destroy_frame_dump(struct chamelium_frame_dump
+>> *dump);
+>> --
+>> 2.25.1
 
