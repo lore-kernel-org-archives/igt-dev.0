@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F1DC3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 17:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A941C3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 17:23:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09F1C10E0E0;
-	Thu, 27 Mar 2025 17:21:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F293210E0E0;
+	Thu, 27 Mar 2025 17:23:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hfACjqqC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ivAAywAe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B55DB10E0E0
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 17:21:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C4D210E0E0
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 17:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743096072; x=1774632072;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=us7/+7RQT+1dN1rTltn27oYiAdK6N5XEmJXFa+NfqL0=;
- b=hfACjqqC2gWByp5B+znlXZc96jTKrHCgYfFnt3AVYzkzf6iFrS7uF9EZ
- FLuHqvbFB4QELme8mHXtA/PT/GQZ4XQZHJtn1m1CZvYPD6ThQD4JFI0DQ
- Pvzy6dhYXZAEzrfxyllsKsJXaELS5gjN6GOjMai5IkVDCw/W7GjQrLc7J
- aIka+AR4c8bBSKB0Wa/7UVd0gohi/cWyogJY+Orl9VXTHiilE0Z13lnKW
- jFH4NQyoXf7qtudm079XtvN+sEPKc3g9ys7j2AY6zImOZ+EpLPdbDPcYf
- aO2KgU1RwGd4R43Sk/+eRjZfl963aqBW8gdbHxwgiOL2zY7hSzE2vNOsv Q==;
-X-CSE-ConnectionGUID: oh2zV/9ZTa21WDUiqcto5w==
-X-CSE-MsgGUID: sSC6UyozQgWP7i9yOwUg1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="61976582"
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="61976582"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 10:20:54 -0700
-X-CSE-ConnectionGUID: aPkhkpcfSwmIRAs/aPAVQg==
-X-CSE-MsgGUID: M5VBoMFzSFygeA88/EtmEw==
+ t=1743096193; x=1774632193;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=3AbJrQvN0GmLLuSOwU/55kh3kQTbEEs3aagFFYrmHqY=;
+ b=ivAAywAeGkR1kVnbsGTCvR9dIx3K0hslnTLy5gbmalRgqdDnHLKcjheA
+ 78j20CUvSxbTxOKHfo+VVvPIeF3F0GZOHrM1pb6qKDkKcwzs48OCEnl0j
+ vHiPZP3M7Q7GB5ZDReGBdcSc9iJU1ke9Hgd/OteMkRAGhfMGVOLXN8xYI
+ aZY8xmFx2ZKy7dKkenRwKroIFNNoiYodxz4NI3Wo19MgWMsCjNHXy+RDv
+ kE33K9XZ2+zCAhOM+mMgOD+3KeQpACcfwek/RgOmOV56GzNLWyLSgFlKr
+ 7VkvhCoDUyoDKW6fiQctUalFbPlHF2Wzxm5M6sx3smI8Cm8GgzJfqX9l1 Q==;
+X-CSE-ConnectionGUID: uCksdJk4R4SOlSwAIVYfaw==
+X-CSE-MsgGUID: V00qjPQ4T9ec7LOZwPuipQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44362028"
+X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="44362028"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2025 10:23:13 -0700
+X-CSE-ConnectionGUID: wV8mVLSrRMiAYUXC27cXLw==
+X-CSE-MsgGUID: 7L7EI7/0SAusVO89Irm/4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="125430651"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.254.149])
- ([10.245.254.149])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 10:20:52 -0700
-Message-ID: <c14bae2c-4bf8-4806-8561-efdb878242fa@linux.intel.com>
-Date: Thu, 27 Mar 2025 18:20:49 +0100
+X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; d="scan'208";a="156148857"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 10:23:11 -0700
+Date: Thu, 27 Mar 2025 18:23:08 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Thomas, Sobin" <sobin.thomas@intel.com>
+Cc: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Konieczny, Kamil" <kamil.konieczny@intel.com>
+Subject: Re: [PATCH 1/1] Added tests to handle error string conditions in
+ xe_sysfs_scheduler.c
+Message-ID: <20250327172308.gmr6ypoynx2og6hm@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Thomas, Sobin" <sobin.thomas@intel.com>,
+ "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Konieczny, Kamil" <kamil.konieczny@intel.com>
+References: <20250326180312.1808192-1-sobin.thomas@intel.com>
+ <20250326180312.1808192-2-sobin.thomas@intel.com>
+ <DS0PR11MB7264DD43F8D5B99A837E3FA0D9A12@DS0PR11MB7264.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 i-g-t] tests/intel-ci/xe-sriov-vm.blocklist.txt:
- Blocklist for SR-IOV VM runs
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Adam Miszczak
- <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Michal Wajdeczko <Michal.Wajdeczko@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-References: <20250326124203.222643-1-marcin.bernatowicz@linux.intel.com>
- <20250327170341.uyqvv6jni77qjmc2@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250327170341.uyqvv6jni77qjmc2@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DS0PR11MB7264DD43F8D5B99A837E3FA0D9A12@DS0PR11MB7264.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,73 +77,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Piatkowski,,
+On 2025-03-27 at 08:15:35 +0000, Piatkowski, Dominik Karol wrote:
+> Hi Sobin,
+> 
+> > -----Original Message-----
+> > From: Thomas, Sobin <sobin.thomas@intel.com>
+> > Sent: Wednesday, March 26, 2025 7:03 PM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Konieczny, Kamil <kamil.konieczny@intel.com>; Piatkowski, Dominik Karol
+> > <dominik.karol.piatkowski@intel.com>
+> > Subject: [PATCH 1/1] Added tests to handle error string conditions in
+> > xe_sysfs_scheduler.c
+> 
+> Just like in cover letter, please fix the subject for future submissions.
+> 
+> > 
+> > From: "Thomas, Sobin" <sobin.thomas@intel.com>
+> 
+> "From" field shouldn't be here.
+> 
+> The patch is missing commit description. Please fix it.
 
-
-On 3/27/2025 6:03 PM, Kamil Konieczny wrote:
-> Hi Marcin,
-> On 2025-03-26 at 13:42:03 +0100, Marcin Bernatowicz wrote:
->> This file contains tests that are not applicable for QEMU Virtual Machine
->> (VM) runs. It extends xe.blocklist.txt and should be kept as minimal as
->> possible.
-> 
-> Do this apply to all suspend related tests? I see only two added,
-> but grep gives:
-> 
-> grep -A2 igt_system_suspend tests/intel/xe*c
-> 
-> tests/intel/xe_pm_residency.c
-> tests/intel/xe_gt_freq.c
-
-Those should be already SKIPs in VM due to missing sysfs attributes.
+Well, sometimes you can use 'From:' - what is important it should be
+the same as s-o-b below.
 
 > 
->>
->> v2: Added igt@xe_css@suspend-resume.
->>      Removed inaccessible reference. (Lukasz)
->>
->> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
->> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
->> Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
->> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->> ---
->>   tests/intel-ci/xe-sriov-vm.blocklist.txt | 8 ++++++++
->>   1 file changed, 8 insertions(+)
->>   create mode 100644 tests/intel-ci/xe-sriov-vm.blocklist.txt
->>
->> diff --git a/tests/intel-ci/xe-sriov-vm.blocklist.txt b/tests/intel-ci/xe-sriov-vm.blocklist.txt
->> new file mode 100644
->> index 000000000..06ed60b52
->> --- /dev/null
->> +++ b/tests/intel-ci/xe-sriov-vm.blocklist.txt
->> @@ -0,0 +1,8 @@
->> +##################################################################
->> +# Block list for VM runs
->> +##################################################################
->> +#
->> +# rtcwake does not wake the VM from s2idle
->> +#
->> +igt@xe_pm@s2idle.*
->> +igt@xe_ccs@suspend-resume
+> > 
+> > Signed-off-by: Thomas, Sobin <sobin.thomas@intel.com>
 > 
-> This last could be:
-> igt@xe_.*@suspend.*
+> I believe the formatting we use for name and surname inside tags is "Sobin Thomas".
 > 
 
-To be more precise, we are interested in SUSPEND_STATE_FREEZE.
-Let's keep it as is for now.
+There should be no ',' chars, imho just set it up globally:
 
-Thanks for feedback
---
-marcin
+git config --global user.name "FIRST_NAME LAST_NAME"
 
-> Up to you.
->
-> Regards,
-> Kamil
+or if your culture uses LAST_NAME in first place:
+
+git config --global user.name "LAST_NAME FIRST_NAME"
+
+Up to you, once set please keep it.
+
+Regards,
+Kamil
+
+> > ---
+> >  tests/intel/xe_sysfs_scheduler.c | 23 +++++++++++++++++++++++
+> >  1 file changed, 23 insertions(+)
+> > 
+> > diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
+> > index 4fc764f82..a0eaad5ab 100644
+> > --- a/tests/intel/xe_sysfs_scheduler.c
+> > +++ b/tests/intel/xe_sysfs_scheduler.c
+> > @@ -10,6 +10,11 @@
+> >   * Sub-category: SysMan tests
+> >   * Functionality: scheduler control interface
+> >   *
+> > + * SUBTEST: %s-invalid-string
+> > + * Description: Test to check if %s arg[1] schedule parameter checks for
+> > + * min max values.
 > 
->> -- 
->> 2.31.1
->>
+> You need to indent this line, or build will fail.
+> 
+> > + * Test category: Negative string test
+> > + *
+> >   * SUBTEST: %s-invalid
+> >   * Description: Test to check if %s arg[1] schedule parameter rejects any
+> >   *		unrepresentable intervals.
+> > @@ -121,6 +126,23 @@ static void test_min_max(int xe, int engine, const
+> > char **property,
+> >  	igt_assert_eq(set, default_max);
+> >  }
+> > 
+> > +static void test_invalid_string(int xe, int engine, const char **property,
+> > +                         uint16_t class, int gt)
+> 
+> Please use tabs to indent code where possible (unless it's less than one tab worth of spaces after tabs for correct alignment).
+> 
+> > +{
+> > +	unsigned int saved, set;
+> > +	char invalid_input[] = "999abc"; //Intentionally passing wrong string
+> 
+> I think this comment is redundant.
+> 
+> > +
+> > +	for(int i=0;i<3;i++) {
+> 
+> There are missing spaces inside this statement. Please format it.
+> 
+> > +		igt_assert(igt_sysfs_scanf(engine,property[i],"%u",&saved) ==
+> > 1);
+> 
+> Same here.
+> 
+> > +		igt_info("Initial %s:%u\n",property[i],saved);
+> 
+> And here.
+> 
+> > +		igt_sysfs_printf(engine, property[i], "%s", invalid_input);
+> > +		igt_sysfs_scanf(engine,property[i],"%u",&set);
+> 
+> And here.
+> 
+> > +		igt_assert_eq(set,saved);
+> 
+> And here.
+> 
+> > +		igt_info("Property %s correctly rejected input
+> > %s\n",property[i],invalid_input);
+> 
+> And here.
+> 
+> Also, it would be a good idea to check return values of igt_sysfs_printf/igt_sysfs_scanf, for example checking if igt_sysfs_printf failed (returned negative value) - as I assume we expect it to fail. If second igt_sysfs_scanf fails, and we won't know about it, we will deal with uninitialized values, and that will be a headache of its own.
+> 
+> Thanks,
+> Dominik Karol
+> 
+> > +	}
+> > +}
+> > +
+> > +
+> >  #define MAX_GTS 8
+> >  igt_main
+> >  {
+> > @@ -130,6 +152,7 @@ igt_main
+> >  	} tests[] = {
+> >  		{ "invalid", test_invalid },
+> >  		{ "min-max", test_min_max },
+> > +		{ "invalid-string", test_invalid_string },
+> >  		{ }
+> >  	};
+> > 
+> > --
+> > 2.34.1
+> 
