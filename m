@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91170C3600B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB8C7C36012
 	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 14:51:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37F8310E8F5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 584F210E8F9;
 	Thu, 27 Mar 2025 14:51:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z16LLQV9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GOT6BCt6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5026510E8E3
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDD8010E8E3
  for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 14:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743087077; x=1774623077;
+ t=1743087078; x=1774623078;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2r8+ED7trg65HFR2obEBPvIzkjejjb5THjvL6QxLXeU=;
- b=Z16LLQV9oOAUsuiai301Mp5SG7bOXIpxX5JILpjFXZr2cTApFPb32axz
- N9XzEg3DNUbkbk2RqtxmIncVTfacVGqYYGjp5cGZ7bEFB/1nznP9m/JnA
- Lqc51mQnISThZSKoOkspLVFEspSwgJAYxhydTaCoaBSLn0hghl9Td/5ou
- QhWbsUY8t6b4uzILMUxBM/CIT7Dj4BmbAajWg5ORqkd6OlIXx7P4PGa2n
- W3XajlUJyMET/NpfNGlnX3v3cZWqnAV3m2ZEUKkQAQOPCqtwbiKQHTYyN
- KLbVvsi2l92zI21M+kyrGWjkHNdaJTjl/YX8fzXReKxPBLpbx6bpOuUbd g==;
-X-CSE-ConnectionGUID: 18mTPCOfQISPnfNRdPIFow==
-X-CSE-MsgGUID: Eigb+f2VQ3eYzsO2QRd9OA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44313156"
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="44313156"
+ bh=E4zbM16pui6j/b4GQ/9XLTi62k9AETcJqR5veYdnYgI=;
+ b=GOT6BCt6xex0l7CUSql0OvpCHnYmn+yJraB7v+mUKD7LpU5YTD2uZ8eF
+ kWZg0wnE0pY0jpcNokoexY4JxlEWRLY/2zjOjhrgjlWLMRwA0/j4Tyl/T
+ nv947rvdQ4gowU/jeOqa/bxz1cxBq8uQ5ClAGFiPUsnuXV2wzUA1pjhxz
+ CrBFysrEWv/mPLc1Rr2aXuEfwcRfpHW/FkaomU4KN+WkAHr+0CgG0XPH4
+ unD99YePILK6MqSJnj7WWADelhvwczhqDIQQihq9bt3QRdLC7VBBXbWGC
+ oIIYpnUWrbH4fWj77k5Z0eBWihPViE5JpWxueUZXiTaCfJL5MDpWZ1yoM g==;
+X-CSE-ConnectionGUID: DeDBdXNLSo2ODV4dzRQi9A==
+X-CSE-MsgGUID: ejyO9ZHfQBGL42jGrd+l6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44313157"
+X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="44313157"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 07:51:17 -0700
-X-CSE-ConnectionGUID: TAjwk6aiSN6KDKXzJYgthg==
-X-CSE-MsgGUID: Oul2QSP7S3eWTlpMBCHrcg==
+ 27 Mar 2025 07:51:18 -0700
+X-CSE-ConnectionGUID: hdpjxq8WQ3+ZbASF3RXz0A==
+X-CSE-MsgGUID: NWs5glxxQWab7GgdhY4N/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="129861572"
+X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="129861582"
 Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 07:51:17 -0700
+ 27 Mar 2025 07:51:18 -0700
 From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: [PATCH i-g-t v6 4/6] tests/intel/xe_pxp: Test PXP submissions
-Date: Thu, 27 Mar 2025 07:50:58 -0700
-Message-ID: <20250327145101.722032-5-daniele.ceraolospurio@intel.com>
+ Alan Previn <alan.previn.teres.alexis@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v6 5/6] tests/intel/xe_pxp: Termination tests
+Date: Thu, 27 Mar 2025 07:50:59 -0700
+Message-ID: <20250327145101.722032-6-daniele.ceraolospurio@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250327145101.722032-1-daniele.ceraolospurio@intel.com>
 References: <20250327145101.722032-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,437 +70,736 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The render supports PXP usage via rendercopy. We can use this to test
-that a user is able to correctly encrypt their data. In particular, we
-cover these 2 scenarios:
-
-1) copy from clear to encrypted - we expect the dest buffer to not match
-   the src one due to the encryption.
-
-2) copy from encrypted to encrypted = we expect the 2 BOs to match since
-   they hold the same data encrypted with the same key.
-
-Note that the clear to clear copy is already covered by the
-xe_render_copy test, while encrypted to clear is obviously not a
-supported case.
-
-Since the render_copy uses the intel_batchbuffer helpers, those helpers
-have been updated to support vm bind of protected objects.
+There are several events that can cause the PXP key to be invalidated
+and trigger a PXP termination (suspend, PXP termination irq). After a
+termination, we expect the key to be different and the raw encrypted
+data to change for the same source data.
+Additionally, all PXP objects are invalidated during a termination and
+can no longer be used in submission or kept mapped to VMs; we therefore
+need to test both the execution and bind ioctls to make sure they work
+as expected after a termination.
 
 v2: move igt_require calls inside the subtest
-v3: Better comments for rsvd1 overload, rename variables for clarity,
-updated commit msg.
+v3: block rpm for tests trying a different type of termination, rework
+invalid bind test to try a new vm as well (Alan)
+v4: move file open and igt_require() inside the subtest (Kamil)
+v5: add documentation for new helpers (Kamil), turn off display in RPM
+tests.
 
 Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- lib/intel_batchbuffer.c |  37 ++++--
- tests/intel/xe_pxp.c    | 272 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 301 insertions(+), 8 deletions(-)
+ lib/intel_batchbuffer.c |  25 +-
+ lib/intel_batchbuffer.h |   1 +
+ lib/xe/xe_ioctl.c       |  35 ++-
+ lib/xe/xe_ioctl.h       |   2 +
+ tests/intel/xe_pxp.c    | 504 +++++++++++++++++++++++++++++++++++++++-
+ 5 files changed, 554 insertions(+), 13 deletions(-)
 
 diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 091ff649b..f5ba7f788 100644
+index f5ba7f788..f7569e768 100644
 --- a/lib/intel_batchbuffer.c
 +++ b/lib/intel_batchbuffer.c
-@@ -1337,8 +1337,19 @@ void intel_bb_destroy(struct intel_bb *ibb)
- 	free(ibb);
- }
+@@ -2433,9 +2433,26 @@ static void update_offsets(struct intel_bb *ibb,
  
+ #define LINELEN 76
+ 
+-static int
+-__xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
 +/*
-+ * Since we re-use drm_i915_gem_exec_object2 to store details about the object
-+ * for submission to Xe, we don't have dedicated fields for the info needed for
-+ * binding the object, so we store it into rsvd1. The data is stores as follows:
-+ *   Bits 63-12: Objects size in multiples of SZ_4K (i.e. size / SZ_4K)
-+ *   Bits 9-11: Unused
-+ *   Bit 8: Object protected
-+ *   Bits 0-7: Pat index
++ * __xe_bb_exec:
++ * @ibb: pointer to intel_bb
++ * @flags: I915_EXEC_* flags used to select the engine to submit to (internally
++ * converted to DRM_XE_ENGINE_* ones)
++ * @sync: if true wait for execbuf completion, otherwise caller is responsible
++ * to wait for completion
++ *
++ * Submits the intel_bb to HW. If an exec_queue was provided during the creation
++ * of the intel_bb, it will be used for the submission; otherwise, a new
++ * exec_queue will be created targeting the engine specified in the flags. The
++ * exec_queue created in the latter case will be saved internally and re-used
++ * for subsequent submissions to the same engine, but it will be replaced if the
++ * intel_bb is re-submitted to a different engine.
++ *
++ * Returns: 0 on success, otherwise errno.
 + */
- #define XE_OBJ_SIZE(rsvd1) ((rsvd1) & ~(SZ_4K-1))
--#define XE_OBJ_PAT_IDX(rsvd1) ((rsvd1) & (SZ_4K-1))
-+#define XE_OBJ_PAT_IDX(rsvd1) ((rsvd1) & (0xFF))
-+#define XE_OBJ_PXP_BIT (0x100)
-+#define XE_OBJ_PXP(rsvd1) ((rsvd1) & (XE_OBJ_PXP_BIT))
- 
- static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
- 						   uint32_t op, uint32_t flags,
-@@ -1360,6 +1371,9 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
- 
- 		ops->op = op;
- 		ops->flags = flags;
-+
-+		if (XE_OBJ_PXP(objects[i]->rsvd1))
-+			ops->flags |= DRM_XE_VM_BIND_FLAG_CHECK_PXP;
- 		ops->obj_offset = 0;
- 		ops->addr = objects[i]->offset;
- 		ops->range = XE_OBJ_SIZE(objects[i]->rsvd1);
-@@ -1750,7 +1764,7 @@ static void __remove_from_objects(struct intel_bb *ibb,
- static struct drm_i915_gem_exec_object2 *
- __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 		      uint64_t offset, uint64_t alignment, uint8_t pat_index,
--		      bool write)
-+		      bool protected, bool write)
++int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
  {
- 	struct drm_i915_gem_exec_object2 *object;
++	int ret = 0;
+ 	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
+ 	uint32_t engine_id;
+ 	struct drm_xe_sync syncs[2] = {
+@@ -2512,12 +2529,12 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 	ibb->engine_syncobj = syncobj_create(ibb->fd, 0);
+ 	syncs[1].handle = ibb->engine_syncobj;
  
-@@ -1827,17 +1841,24 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 		object->alignment = alignment;
- 		object->rsvd1 = size;
- 		igt_assert(!XE_OBJ_PAT_IDX(object->rsvd1));
-+		igt_assert(!XE_OBJ_PXP(object->rsvd1));
+-	xe_exec_sync(ibb->fd, engine_id, ibb->batch_offset, syncs, 2);
++	ret = xe_exec_sync_failable(ibb->fd, engine_id, ibb->batch_offset, syncs, 2);
  
- 		if (pat_index == DEFAULT_PAT_INDEX)
- 			pat_index = intel_get_pat_idx_wb(ibb->fd);
+ 	if (sync)
+ 		intel_bb_sync(ibb);
  
- 		/*
--		 * XXX: For now encode the pat_index in the first few bits of
--		 * rsvd1. intel_batchbuffer should really stop using the i915
--		 * drm_i915_gem_exec_object2 to encode VMA placement
--		 * information on xe...
-+		 * XXX: For now encode the pat_index and whether the bo is
-+		 * protected in the first few bits of rsvd1 (8 bits for the
-+		 * pat and 1 bit for the flag, see comment above
-+		 * xe_alloc_bind_ops for the full map).
-+		 * intel_batchbuffer should really stop using the i915
-+		 * drm_i915_gem_exec_object2 to encode VMA placement information
-+		 * on xe...
- 		 */
- 		object->rsvd1 |= pat_index;
-+
-+		if (protected)
-+			object->rsvd1 |= XE_OBJ_PXP_BIT;
- 	}
- 
- 	return object;
-@@ -1850,7 +1871,7 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 	struct drm_i915_gem_exec_object2 *obj = NULL;
- 
- 	obj = __intel_bb_add_object(ibb, handle, size, offset,
--				    alignment, DEFAULT_PAT_INDEX, write);
-+				    alignment, DEFAULT_PAT_INDEX, false, write);
- 	igt_assert(obj);
- 
- 	return obj;
-@@ -1914,7 +1935,7 @@ __intel_bb_add_intel_buf(struct intel_bb *ibb, struct intel_buf *buf,
- 
- 	obj = __intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
- 				    buf->addr.offset, alignment, buf->pat_index,
--				    write);
-+				    buf->is_protected, write);
- 	igt_assert(obj);
- 	buf->addr.offset = obj->offset;
- 
-diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-index 094f235c8..cfb89e31e 100644
---- a/tests/intel/xe_pxp.c
-+++ b/tests/intel/xe_pxp.c
-@@ -4,6 +4,10 @@
-  */
- 
- #include "igt.h"
-+#include "intel_batchbuffer.h"
-+#include "intel_bufops.h"
-+#include "intel_mocs.h"
-+#include "intel_pat.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -39,6 +43,15 @@ static int __pxp_bo_create(int fd, uint32_t vm, uint64_t size,
- 	return ret;
+-	return 0;
++	return ret;
  }
  
-+static uint32_t pxp_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t type)
-+{
-+	uint32_t handle;
-+
-+	igt_assert_eq(__pxp_bo_create(fd, vm, size, type, &handle), 0);
-+
-+	return handle;
+ static int
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 2b53058ff..d0a7c8dc7 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -508,6 +508,7 @@ void intel_bb_dump_cache(struct intel_bb *ibb);
+ 
+ void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 		   uint64_t flags, bool sync);
++int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync);
+ 
+ uint64_t intel_bb_get_object_offset(struct intel_bb *ibb, uint32_t handle);
+ bool intel_bb_object_offset_to_buf(struct intel_bb *ibb, struct intel_buf *buf);
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 01ab7c758..fb8c4aef1 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -462,8 +462,20 @@ void xe_exec(int fd, struct drm_xe_exec *exec)
+ 	igt_assert_eq(__xe_exec(fd, exec), 0);
+ }
+ 
+-void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+-		  struct drm_xe_sync *sync, uint32_t num_syncs)
++/**
++ * xe_exec_sync_failable:
++ * @fd: xe device fd
++ * @exec_queue: exec_queue id
++ * @addr: address of the batch to execute within the VM used by the exec_queue
++ * @sync: array of drm_xe_sync structs to be used in the exec
++ * @num_syncs: number of entries in the sync array
++ *
++ * Calls the DRM_IOCTL_XE_EXEC ioctl using the provided information.
++ *
++ * Returns 0 on success, -errno of ioctl on error.
++ */
++int xe_exec_sync_failable(int fd, uint32_t exec_queue, uint64_t addr,
++			  struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	struct drm_xe_exec exec = {
+ 		.exec_queue_id = exec_queue,
+@@ -473,7 +485,24 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+ 		.num_batch_buffer = 1,
+ 	};
+ 
+-	igt_assert_eq(__xe_exec(fd, &exec), 0);
++	return __xe_exec(fd, &exec);
 +}
 +
- static int __create_pxp_rcs_queue(int fd, uint32_t vm,
- 				  uint32_t session_type,
- 				  uint32_t *q)
-@@ -57,6 +70,17 @@ static int __create_pxp_rcs_queue(int fd, uint32_t vm,
- 	return __xe_exec_queue_create(fd, vm, 1, 1, &inst, ext_ptr, q);
++/**
++ * xe_exec_sync:
++ * @fd: xe device fd
++ * @exec_queue: exec_queue id
++ * @addr: address of the batch to execute within the VM used by the exec_queue
++ * @sync: array of drm_xe_sync structs to be used in the exec
++ * @num_syncs: number of entries in the sync array
++ *
++ * Calls the DRM_IOCTL_XE_EXEC ioctl using the provided information. Asserts on
++ * failure.
++ */
++void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
++		  struct drm_xe_sync *sync, uint32_t num_syncs)
++{
++	igt_assert_eq(xe_exec_sync_failable(fd, exec_queue, addr, sync, num_syncs), 0);
  }
  
-+static uint32_t create_pxp_rcs_queue(int fd, uint32_t vm)
+ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index c8a2d81c5..9bdf73b2b 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -91,6 +91,8 @@ int __xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs);
++int xe_exec_sync_failable(int fd, uint32_t exec_queue, uint64_t addr,
++		  struct drm_xe_sync *sync, uint32_t num_syncs);
+ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		     uint32_t exec_queue, int64_t *timeout);
+diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
+index cfb89e31e..737ebe8ab 100644
+--- a/tests/intel/xe_pxp.c
++++ b/tests/intel/xe_pxp.c
+@@ -3,7 +3,10 @@
+  * Copyright © 2024-2025 Intel Corporation
+  */
+ 
++#include <fcntl.h>
++
+ #include "igt.h"
++#include "igt_syncobj.h"
+ #include "intel_batchbuffer.h"
+ #include "intel_bufops.h"
+ #include "intel_mocs.h"
+@@ -81,6 +84,15 @@ static uint32_t create_pxp_rcs_queue(int fd, uint32_t vm)
+ 	return q;
+ }
+ 
++static uint32_t create_regular_rcs_queue(int fd, uint32_t vm)
 +{
-+	uint32_t q;
-+	int err;
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
++	};
 +
-+	err = __create_pxp_rcs_queue(fd, vm, DRM_XE_PXP_TYPE_HWDRM, &q);
-+	igt_assert_eq(err, 0);
-+
-+	return q;
++	return xe_exec_queue_create(fd, vm, &inst, 0);
 +}
 +
  static int query_pxp_status(int fd)
  {
  	struct drm_xe_query_pxp_status *pxp_query;
-@@ -175,6 +199,242 @@ static void test_pxp_queue_creation(int fd, bool pxp_supported)
+@@ -338,15 +350,25 @@ static void pxp_rendercopy(int fd, uint32_t q, uint32_t vm, uint32_t copy_size,
+ 	buf_ops_destroy(bops);
+ }
+ 
+-/**
+- * SUBTEST: regular-src-to-pxp-dest-rendercopy
+- * Description: copy from a regular BO to a PXP one and verify the encryption
+- */
+-static void test_render_regular_src_to_pxp_dest(int fd)
++static void copy_bo_cpu(int fd, uint32_t bo, uint32_t *dst, uint32_t size)
++{
++	uint32_t *src_ptr;
++
++	src_ptr = xe_bo_mmap_ext(fd, bo, size, PROT_READ);
++
++	memcpy(dst, src_ptr, size);
++
++	igt_assert_eq(munmap(src_ptr, size), 0);
++}
++
++static void __test_render_regular_src_to_pxp_dest(int fd, uint32_t *outpixels, int outsize)
+ {
+ 	uint32_t vm, srcbo, dstbo;
+ 	uint32_t q;
+ 
++	if (outpixels)
++		igt_assert_lte(TSTSURF_SIZE, outsize);
++
+ 	vm = xe_vm_create(fd, 0, 0);
+ 
+ 	/*
+@@ -362,12 +384,24 @@ static void test_render_regular_src_to_pxp_dest(int fd)
+ 
+ 	check_bo_color(fd, dstbo, TSTSURF_SIZE, TSTSURF_FILLCOLOR1, false);
+ 
++	if (outpixels)
++		copy_bo_cpu(fd, dstbo, outpixels, TSTSURF_SIZE);
++
+ 	gem_close(fd, srcbo);
+ 	gem_close(fd, dstbo);
+ 	xe_exec_queue_destroy(fd, q);
  	xe_vm_destroy(fd, vm);
  }
  
-+static void fill_bo_content(int fd, uint32_t bo, uint32_t size, uint8_t initcolor)
-+{
-+	uint32_t *ptr;
-+
-+	ptr = xe_bo_mmap_ext(fd, bo, size, PROT_READ|PROT_WRITE);
-+
-+	/* read and count all dword matches till size */
-+	memset(ptr, initcolor, size);
-+
-+	igt_assert(munmap(ptr, size) == 0);
-+}
-+
-+static void __check_bo_color(int fd, uint32_t bo, uint32_t size, uint32_t color, bool should_match)
-+{
-+	uint64_t comp;
-+	uint64_t *ptr;
-+	int i, num_matches = 0;
-+
-+	comp = color;
-+	comp = comp | (comp << 32);
-+
-+	ptr =  xe_bo_mmap_ext(fd, bo, size, PROT_READ);
-+
-+	igt_assert_eq(size % sizeof(uint64_t), 0);
-+
-+	for (i = 0; i < (size / sizeof(uint64_t)); i++)
-+		if (ptr[i] == comp)
-+			++num_matches;
-+
-+	if (should_match)
-+		igt_assert_eq(num_matches, (size / sizeof(uint64_t)));
-+	else
-+		igt_assert_eq(num_matches, 0);
-+}
-+
-+static void check_bo_color(int fd, uint32_t bo, uint32_t size, uint8_t color, bool should_match)
-+{
-+	uint32_t comp;
-+
-+	/*
-+	 * We memset the buffer using a u8 color value. However, this is too
-+	 * small to ensure the encrypted data does not accidentally match it,
-+	 * so we scale it up to a bigger size.
-+	 */
-+	comp = color;
-+	comp = comp | (comp << 8) | (comp << 16) | (comp << 24);
-+
-+	return __check_bo_color(fd, bo, size, comp, should_match);
-+}
-+
-+static uint32_t __bo_create_and_fill(int fd, uint32_t vm, bool protected,
-+				     uint32_t size, uint8_t init_color)
-+{
-+	uint32_t bo;
-+
-+	if (protected)
-+		bo = pxp_bo_create(fd, vm, size, DRM_XE_PXP_TYPE_HWDRM);
-+	else
-+		bo = xe_bo_create(fd, vm, size, system_memory(fd), 0);
-+
-+	fill_bo_content(fd, bo, size, init_color);
-+
-+	return bo;
-+}
-+
-+static uint32_t pxp_bo_create_and_fill(int fd, uint32_t vm, uint32_t size,
-+				       uint8_t init_color)
-+{
-+	return __bo_create_and_fill(fd, vm, true, size, init_color);
-+}
-+
-+static uint32_t regular_bo_create_and_fill(int fd, uint32_t vm, uint32_t size,
-+					   uint8_t init_color)
-+{
-+	return __bo_create_and_fill(fd, vm, false, size, init_color);
-+}
-+
-+static struct intel_buf *buf_create(int fd, struct buf_ops *bops, uint32_t handle,
-+				    int width, int height, int bpp, uint64_t size)
-+{
-+	igt_assert(handle);
-+	igt_assert(size);
-+	return intel_buf_create_full(bops, handle, width, height, bpp, 0,
-+				     I915_TILING_NONE, 0, size, 0,
-+				     system_memory(fd),
-+				     DEFAULT_PAT_INDEX, DEFAULT_MOCS_INDEX);
-+}
-+
-+/* Rendering tests surface attributes */
-+#define TSTSURF_WIDTH		64
-+#define TSTSURF_HEIGHT		64
-+#define TSTSURF_BYTESPP		4
-+#define TSTSURF_STRIDE		(TSTSURF_WIDTH * TSTSURF_BYTESPP)
-+#define TSTSURF_SIZE		(TSTSURF_STRIDE * TSTSURF_HEIGHT)
-+#define TSTSURF_INITCOLOR1  0xAA
-+#define TSTSURF_FILLCOLOR1  0x55
-+#define TSTSURF_INITCOLOR2  0x33
-+
-+static void pxp_rendercopy(int fd, uint32_t q, uint32_t vm, uint32_t copy_size,
-+			   uint32_t srcbo, bool src_pxp, uint32_t dstbo, bool dst_pxp)
-+{
-+	igt_render_copyfunc_t render_copy;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+
-+	/*
-+	 * we use the defined width and height below, which only works if the BO
-+	 * size is TSTSURF_SIZE
-+	 */
-+	igt_assert_eq(copy_size, TSTSURF_SIZE);
-+
-+	render_copy = igt_get_render_copyfunc(fd);
-+	igt_assert(render_copy);
-+
-+	bops = buf_ops_create(fd);
-+	igt_assert(bops);
-+
-+	ibb = intel_bb_create_with_context(fd, q, vm, NULL, 4096);
-+	igt_assert(ibb);
-+	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, DRM_XE_PXP_HWDRM_DEFAULT_SESSION);
-+
-+	dstbuf = buf_create(fd, bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+			    TSTSURF_BYTESPP * 8, TSTSURF_SIZE);
-+	intel_buf_set_pxp(dstbuf, dst_pxp);
-+
-+	srcbuf = buf_create(fd, bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+			    TSTSURF_BYTESPP * 8, TSTSURF_SIZE);
-+	intel_buf_set_pxp(srcbuf, src_pxp);
-+
-+	render_copy(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	intel_bb_sync(ibb);
-+
-+	intel_buf_destroy(srcbuf);
-+	intel_buf_destroy(dstbuf);
-+	intel_bb_destroy(ibb);
-+	buf_ops_destroy(bops);
-+}
-+
 +/**
 + * SUBTEST: regular-src-to-pxp-dest-rendercopy
 + * Description: copy from a regular BO to a PXP one and verify the encryption
 + */
 +static void test_render_regular_src_to_pxp_dest(int fd)
 +{
-+	uint32_t vm, srcbo, dstbo;
-+	uint32_t q;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+
-+	/*
-+	 * Perform a protected render operation but only label the dest as
-+	 * protected. After rendering, the content should be encrypted.
-+	 */
-+	q = create_pxp_rcs_queue(fd, vm);
-+
-+	srcbo = regular_bo_create_and_fill(fd, vm, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+	dstbo = pxp_bo_create_and_fill(fd, vm, TSTSURF_SIZE, TSTSURF_INITCOLOR1);
-+
-+	pxp_rendercopy(fd, q, vm, TSTSURF_SIZE, srcbo, false, dstbo, true);
-+
-+	check_bo_color(fd, dstbo, TSTSURF_SIZE, TSTSURF_FILLCOLOR1, false);
-+
-+	gem_close(fd, srcbo);
-+	gem_close(fd, dstbo);
-+	xe_exec_queue_destroy(fd, q);
-+	xe_vm_destroy(fd, vm);
++	__test_render_regular_src_to_pxp_dest(fd, NULL, 0);
 +}
 +
-+static int bocmp(int fd, uint32_t bo1, uint32_t bo2, uint32_t size)
+ static int bocmp(int fd, uint32_t bo1, uint32_t bo2, uint32_t size)
+ {
+ 	uint32_t *ptr1, *ptr2;
+@@ -429,21 +463,456 @@ static void test_render_pxp_protsrc_to_protdest(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
+-static void require_pxp_render(int fd, bool pxp_supported)
++#define PS_OP_TAG_LOW 0x1234fed0
++#define PS_OP_TAG_HI 0x5678cbaf
++static void emit_pipectrl(struct intel_bb *ibb, struct intel_buf *fenceb)
 +{
-+	uint32_t *ptr1, *ptr2;
-+	int ret;
++	uint32_t pipe_ctl_flags = 0;
 +
-+	ptr1 = xe_bo_mmap_ext(fd, bo1, size, PROT_READ);
-+	ptr2 = xe_bo_mmap_ext(fd, bo2, size, PROT_READ);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(2));
++	intel_bb_out(ibb, pipe_ctl_flags);
 +
-+	ret = memcmp(ptr1, ptr2, size);
++	pipe_ctl_flags = (PIPE_CONTROL_FLUSH_ENABLE |
++			  PIPE_CONTROL_CS_STALL |
++			  PIPE_CONTROL_QW_WRITE);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(6));
++	intel_bb_out(ibb, pipe_ctl_flags);
 +
-+	igt_assert_eq(munmap(ptr1, size), 0);
-+	igt_assert_eq(munmap(ptr2, size), 0);
++	intel_bb_emit_reloc(ibb, fenceb->handle, 0, I915_GEM_DOMAIN_COMMAND, 0,
++			    fenceb->addr.offset);
++	intel_bb_out(ibb, PS_OP_TAG_LOW);
++	intel_bb_out(ibb, PS_OP_TAG_HI);
++	intel_bb_out(ibb, MI_NOOP);
++	intel_bb_out(ibb, MI_NOOP);
++}
++
++static void assert_pipectl_storedw_done(int fd, uint32_t bo)
++{
++	uint32_t *ptr;
++
++	ptr = xe_bo_mmap_ext(fd, bo, 4096, PROT_READ|PROT_WRITE);
++	igt_assert_eq(ptr[0], PS_OP_TAG_LOW);
++	igt_assert_eq(ptr[1], PS_OP_TAG_HI);
++
++	igt_assert(munmap(ptr, 4096) == 0);
++}
++
++static int submit_flush_store_dw(int fd, uint32_t q, bool q_is_pxp, uint32_t vm,
++				 uint32_t dst, bool dst_is_pxp)
++{
++	struct intel_buf *dstbuf;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	int ret = 0;
++
++	bops = buf_ops_create(fd);
++	igt_assert(bops);
++
++	ibb = intel_bb_create_with_context(fd, q, vm, NULL, 4096);
++	igt_assert(ibb);
++	intel_bb_set_pxp(ibb, q_is_pxp, DISPLAY_APPTYPE, DRM_XE_PXP_HWDRM_DEFAULT_SESSION);
++
++	dstbuf = buf_create(fd, bops, dst, 256, 4, 32, 4096);
++	intel_buf_set_pxp(dstbuf, dst_is_pxp);
++
++	intel_bb_ptr_set(ibb, 0);
++	intel_bb_add_intel_buf(ibb, dstbuf, true);
++	emit_pipectrl(ibb, dstbuf);
++	intel_bb_emit_bbe(ibb);
++	ret = __xe_bb_exec(ibb, 0, false);
++	if (ret == 0)
++		ret = intel_bb_sync(ibb);
++	if (ret == 0)
++		assert_pipectl_storedw_done(fd, dst);
++
++	intel_buf_destroy(dstbuf);
++	intel_bb_destroy(ibb);
++	buf_ops_destroy(bops);
 +
 +	return ret;
 +}
 +
++static void trigger_pxp_debugfs_forced_teardown(int xe_fd)
++{
++	char str[32];
++	int ret;
++	int fd;
++
++	fd = igt_debugfs_dir(xe_fd);
++	igt_assert(fd >= 0);
++	ret = igt_debugfs_simple_read(fd, "pxp/terminate", str, 32);
++	igt_assert_f(ret >= 0, "Can't open pxp termination debugfs\n");
++
++	/* give the kernel time to handle the termination */
++	sleep(1);
++}
++
++enum termination_type {
++	PXP_TERMINATION_IRQ,
++	PXP_TERMINATION_RPM,
++	PXP_TERMINATION_SUSPEND
++};
++
++static void trigger_termination(int fd, enum termination_type type)
++{
++	switch (type) {
++	case PXP_TERMINATION_IRQ:
++		trigger_pxp_debugfs_forced_teardown(fd);
++		break;
++	case PXP_TERMINATION_RPM:
++		igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++		break;
++	case PXP_TERMINATION_SUSPEND:
++		igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
++		break;
++	}
++}
++
 +/**
-+ * SUBTEST: pxp-src-to-pxp-dest-rendercopy
-+ * Description: copy between 2 PXP BOs and verify the encryption
++ * SUBTEST: pxp-termination-key-update-post-termination-irq
++ * Description: Verify key is changed after a termination irq
 + */
 +
-+static void test_render_pxp_protsrc_to_protdest(int fd)
++/**
++ * SUBTEST: pxp-termination-key-update-post-suspend
++ * Description: Verify key is changed after a suspend/resume cycle
++ */
++
++/**
++ * SUBTEST: pxp-termination-key-update-post-rpm
++ * Description: Verify key is changed after a runtime suspend/resume cycle
++ */
++
++static void test_pxp_teardown_keychange(int fd, enum termination_type type)
 +{
-+	uint32_t vm, srcbo, dstbo, dstbo2;
-+	uint32_t q;
++	uint32_t *encrypted_data_before;
++	uint32_t *encrypted_data_after;
++	int matched_after_keychange = 0, loop = 0;
++
++	encrypted_data_before = malloc(TSTSURF_SIZE);
++	encrypted_data_after = malloc(TSTSURF_SIZE);
++	igt_assert(encrypted_data_before && encrypted_data_after);
++
++	__test_render_regular_src_to_pxp_dest(fd, encrypted_data_before, TSTSURF_SIZE);
++
++	trigger_termination(fd, type);
++
++	__test_render_regular_src_to_pxp_dest(fd, encrypted_data_after, TSTSURF_SIZE);
++
++	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
++		if (encrypted_data_before[loop] == encrypted_data_after[loop])
++			++matched_after_keychange;
++		++loop;
++	}
++	igt_assert_eq(matched_after_keychange, 0);
++
++	free(encrypted_data_before);
++	free(encrypted_data_after);
++}
++
++static void pxp_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t addr,
++			     uint64_t size, uint32_t op)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = syncobj_create(fd, 0),
++	};
++
++	__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, size, op,
++			    DRM_XE_VM_BIND_FLAG_CHECK_PXP, &sync, 1, 0, 0);
++
++	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
++	syncobj_destroy(fd, sync.handle);
++}
++
++/**
++ * SUBTEST: pxp-stale-bo-bind-post-termination-irq
++ * Description: verify that VM bind on a stale BO (due to a termination irq) is rejected.
++ */
++
++/**
++ * SUBTEST: pxp-stale-bo-bind-post-suspend
++ * Description: verify that VM bind on a stale BO (due to a suspend/resume cycle)
++ *              is rejected.
++ */
++
++/**
++ * SUBTEST: pxp-stale-bo-bind-post-rpm
++ * Description: verify that VM bind on a stale BO (due to a runtime suspend/resume
++ *              cycle) is rejected.
++ */
++
++static void __test_pxp_stale_bo_bind(int fd, enum termination_type type, bool pxp)
++{
++	uint32_t vm, q;
++	uint32_t bo;
++	uint32_t flags = pxp ? DRM_XE_VM_BIND_FLAG_CHECK_PXP : 0;
++	int ret;
++
++	vm = xe_vm_create(fd, 0, 0);
++	q = create_pxp_rcs_queue(fd, vm); /* start PXP session */
++
++	bo = pxp_bo_create(fd, 0, 4096, DRM_XE_PXP_TYPE_HWDRM);
++
++	/* map the BO to the VM to make sure it works */
++	pxp_vm_bind_sync(fd, vm, bo, 0, 4096, DRM_XE_VM_BIND_OP_MAP);
++
++	xe_exec_queue_destroy(fd, q);
++	trigger_termination(fd, type);
++
++	/* map of a stale PXP BO must fail if (and only if) the CHECK_PXP flag is set */
++	ret = __xe_vm_bind(fd, vm, 0, bo, 0, 0, 4096, DRM_XE_VM_BIND_OP_MAP,
++			   flags, NULL, 0, 0, DEFAULT_PAT_INDEX, 0);
++	igt_assert_eq(ret, pxp ? -ENOEXEC : 0);
++
++	/* unmap must always work */
++	pxp_vm_bind_sync(fd, vm, bo, 0, 0, DRM_XE_VM_BIND_OP_UNMAP_ALL);
++
++	xe_vm_destroy(fd, vm);
++
++	/* mapping on a brand new vm should have the same behavior */
++	vm = xe_vm_create(fd, 0, 0);
++	ret = __xe_vm_bind(fd, vm, 0, bo, 0, 0, 4096, DRM_XE_VM_BIND_OP_MAP,
++			   flags, NULL, 0, 0, DEFAULT_PAT_INDEX, 0);
++	igt_assert_eq(ret, pxp ? -ENOEXEC : 0);
++
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
++static void test_pxp_stale_bo_bind(int fd, enum termination_type type)
++{
++	__test_pxp_stale_bo_bind(fd, type, true);
++}
++
++static uint32_t create_and_bind_simple_pxp_batch(int fd, uint32_t vm,
++						 uint32_t size, uint64_t addr)
++{
++	uint32_t bo;
++	uint32_t *map;
++
++	bo = pxp_bo_create(fd, vm, 4096, DRM_XE_PXP_TYPE_HWDRM);
++	pxp_vm_bind_sync(fd, vm, bo, addr, size, DRM_XE_VM_BIND_OP_MAP);
++
++	map = xe_bo_map(fd, bo, 4096);
++	*map = MI_BATCH_BUFFER_END;
++	munmap(map, 4096);
++
++	return bo;
++}
++
++/**
++ * SUBTEST: pxp-stale-bo-exec-post-termination-irq
++ * Description: verify that a submission using VM with a mapped stale BO (due to
++ *              a termination irq) is rejected.
++ */
++
++/**
++ * SUBTEST: pxp-stale-bo-exec-post-suspend
++ * Description: verify that a submission using VM with a mapped stale BO (due to
++ *              a suspend/resume cycle) is rejected.
++ */
++
++/**
++ * SUBTEST: pxp-stale-bo-exec-post-rpm
++ * Description: verify that a submission using VM with a mapped stale BO (due to
++ *              a runtime suspend/resume cycle) is rejected.
++ */
++
++static void __test_pxp_stale_bo_exec(int fd, enum termination_type type, bool pxp)
++{
++	uint32_t vm, q;
++	uint32_t bo;
++	int expected;
 +
 +	vm = xe_vm_create(fd, 0, 0);
 +
++	q = create_pxp_rcs_queue(fd, vm); /* start a PXP session */
++	bo = create_and_bind_simple_pxp_batch(fd, vm, 4096, 0);
++
++	xe_exec_queue_destroy(fd, q);
++	trigger_termination(fd, type);
++
++	/* create a clean queue using the VM with the invalid object mapped in */
++	if (pxp) {
++		q = create_pxp_rcs_queue(fd, vm);
++		expected = -ENOEXEC;
++	} else {
++		q = create_regular_rcs_queue(fd, vm);
++		expected = 0;
++	}
++
++	igt_assert_eq(xe_exec_sync_failable(fd, q, 0, NULL, 0), expected);
++
++	/* now make sure we can unmap the stale BO and have a clean exec after */
++	if (pxp) {
++		pxp_vm_bind_sync(fd, vm, 0, 0, 4096, DRM_XE_VM_BIND_OP_UNMAP);
++		gem_close(fd, bo);
++
++		bo = create_and_bind_simple_pxp_batch(fd, vm, 4096, 0);
++		igt_assert_eq(xe_exec_sync_failable(fd, q, 0, NULL, 0), 0);
++	}
++
++	xe_exec_queue_destroy(fd, q);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
++static void test_pxp_stale_bo_exec(int fd, enum termination_type type)
++{
++	__test_pxp_stale_bo_exec(fd, type, true);
++}
++
++/**
++ * SUBTEST: pxp-stale-queue-post-termination-irq
++ * Description: verify that submissions on a stale queue (due to a termination
++ *              irq) are cancelled
++ */
++
++/**
++ * SUBTEST: pxp-stale-queue-post-suspend
++ * Description: verify that submissions on a stale queue (due to a suspend/resume
++ *              cycle) are cancelled
++ */
++
++static void test_pxp_stale_queue_execution(int fd, enum termination_type type)
++{
++	uint32_t vm, q;
++	uint32_t dstbo;
++
++	vm = xe_vm_create(fd, 0, 0);
 +	q = create_pxp_rcs_queue(fd, vm);
 +
-+	/*
-+	 * Copy from a regular src to a PXP dst to get a buffer with a
-+	 * valid encryption.
-+	 */
-+	srcbo = regular_bo_create_and_fill(fd, vm, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+	dstbo = pxp_bo_create_and_fill(fd, vm, TSTSURF_SIZE, TSTSURF_INITCOLOR1);
++	dstbo = regular_bo_create_and_fill(fd, vm, 4096, 0);
 +
-+	pxp_rendercopy(fd, q, vm, TSTSURF_SIZE, srcbo, false, dstbo, true);
++	igt_assert_eq(submit_flush_store_dw(fd, q, true, vm, dstbo, false), 0);
 +
-+	check_bo_color(fd, dstbo, TSTSURF_SIZE, TSTSURF_FILLCOLOR1, false);
++	trigger_termination(fd, type);
 +
-+	/*
-+	 * Reuse prior dst as the new-src and create dst2 as the new-dest.
-+	 * After the rendering, we should find no difference in content since
-+	 * both new-src and new-dest are labelled as encrypted. HW should read
-+	 * and decrypt new-src, perform the copy and re-encrypt with the same
-+	 * key when going into new-dest
-+	 */
-+	dstbo2 = pxp_bo_create_and_fill(fd, vm, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	/* when we execute an invalid queue we expect the job to be canceled */
++	igt_assert_eq(submit_flush_store_dw(fd, q, true, vm, dstbo, false), -ECANCELED);
 +
-+	pxp_rendercopy(fd, q, vm, TSTSURF_SIZE, dstbo, true, dstbo2, true);
-+
-+	igt_assert_eq(bocmp(fd, dstbo, dstbo2, TSTSURF_SIZE), 0);
-+
-+	gem_close(fd, srcbo);
 +	gem_close(fd, dstbo);
-+	gem_close(fd, dstbo2);
 +	xe_exec_queue_destroy(fd, q);
 +	xe_vm_destroy(fd, vm);
 +}
 +
++/**
++ * SUBTEST: pxp-optout
++ * Description: verify that submssions with stale objects/queues are not blocked
++ *              if the user does not opt-in to the PXP checks.
++ */
++static void test_pxp_optout(int fd)
++{
++	__test_pxp_stale_bo_exec(fd, PXP_TERMINATION_IRQ, false);
++	__test_pxp_stale_bo_bind(fd, PXP_TERMINATION_IRQ, false);
++}
++
++static void require_pxp(bool pxp_supported)
+ {
+ 	igt_require_f(pxp_supported, "PXP not supported\n");
++}
++
 +static void require_pxp_render(int fd, bool pxp_supported)
 +{
-+	igt_require_f(pxp_supported, "PXP not supported\n");
-+	igt_require_f(igt_get_render_copyfunc(fd), "No rendercopy found\n");
++	require_pxp(pxp_supported);
+ 	igt_require_f(igt_get_render_copyfunc(fd), "No rendercopy found\n");
+ }
+ 
++static void dpms_on_off(int fd, drmModeResPtr res, int mode)
++{
++	int i;
++
++	if (!res)
++		return;
++
++	for (i = 0; i < res->count_connectors; i++) {
++		drmModeConnector *connector =
++			drmModeGetConnectorCurrent(fd, res->connectors[i]);
++
++		if (!connector)
++			continue;
++
++		if (connector->connection == DRM_MODE_CONNECTED)
++			kmstest_set_connector_dpms(fd, connector, mode);
++
++		drmModeFreeConnector(connector);
++	}
++}
++
++static void setup_rpm(int fd, drmModeResPtr res)
++{
++	igt_require(igt_setup_runtime_pm(fd));
++
++	dpms_on_off(fd, res, DRM_MODE_DPMS_OFF);
++}
++
++static void restore_rpm(int fd, drmModeResPtr res)
++{
++	dpms_on_off(fd, res, DRM_MODE_DPMS_ON);
++
++	igt_restore_runtime_pm();
++}
++
++static void run_termination_test(int fd, enum termination_type type, drmModeResPtr res,
++				 void (*test)(int fd, enum termination_type type))
++{
++	int fw_handle;
++
++	if (type != PXP_TERMINATION_RPM) {
++		/* avoid rpm entry for non-rpm tests */
++		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
++		igt_require(fw_handle >= 0);
++	} else {
++		setup_rpm(fd, res);
++	}
++
++	test(fd, type);
++
++	if (type != PXP_TERMINATION_RPM)
++		close(fw_handle);
++	else
++		restore_rpm(fd, res);
++}
++
++static void termination_tests(int fd, bool pxp_supported, drmModeResPtr res,
++			      enum termination_type type, const char *tag)
++{
++	igt_subtest_f("pxp-termination-key-update-post-%s", tag) {
++		require_pxp_render(fd, pxp_supported);
++		run_termination_test(fd, type, res, test_pxp_teardown_keychange);
++	}
++
++	igt_subtest_f("pxp-stale-bo-bind-post-%s", tag) {
++		require_pxp(pxp_supported);
++		run_termination_test(fd, type, res, test_pxp_stale_bo_bind);
++	}
++
++	igt_subtest_f("pxp-stale-bo-exec-post-%s", tag) {
++		require_pxp(pxp_supported);
++		run_termination_test(fd, type, res, test_pxp_stale_bo_exec);
++	}
++
++	/* An active PXP queue holds an RPM ref, so we can't test RPM with it */
++	if (type != PXP_TERMINATION_RPM)
++		igt_subtest_f("pxp-stale-queue-post-%s", tag) {
++			require_pxp(pxp_supported);
++			run_termination_test(fd, type, res, test_pxp_stale_queue_execution);
++		}
 +}
 +
  igt_main
  {
  	int xe_fd = -1;
-@@ -195,6 +455,18 @@ igt_main
- 			test_pxp_queue_creation(xe_fd, pxp_supported);
+ 	bool pxp_supported = true;
++	drmModeResPtr res;
+ 
+ 	igt_fixture {
+ 		xe_fd = drm_open_driver(DRIVER_XE);
+ 		igt_require(xe_has_engine_class(xe_fd, DRM_XE_ENGINE_CLASS_RENDER));
+ 		pxp_supported = is_pxp_hw_supported(xe_fd);
++		res = drmModeGetResources(xe_fd);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -467,7 +936,30 @@ igt_main
+ 		}
  	}
  
 +	igt_subtest_group {
-+		igt_describe("Verify protected render operations:");
-+		igt_subtest("regular-src-to-pxp-dest-rendercopy") {
-+			require_pxp_render(xe_fd, pxp_supported);
-+			test_render_regular_src_to_pxp_dest(xe_fd);
-+		}
-+		igt_subtest("pxp-src-to-pxp-dest-rendercopy") {
-+			require_pxp_render(xe_fd, pxp_supported);
-+			test_render_pxp_protsrc_to_protdest(xe_fd);
++		const struct mode {
++			enum termination_type type;
++			const char *tag;
++		} modes[] = {
++			{ PXP_TERMINATION_IRQ, "termination-irq" },
++			{ PXP_TERMINATION_SUSPEND, "suspend" },
++			{ PXP_TERMINATION_RPM, "rpm" },
++			{ 0, NULL }
++		};
++
++		igt_describe("Verify teardown management");
++
++		for (const struct mode *m = modes; m->tag; m++)
++			termination_tests(xe_fd, pxp_supported, res, m->type, m->tag);
++
++		igt_subtest("pxp-optout") {
++			require_pxp(pxp_supported);
++			test_pxp_optout(xe_fd);
 +		}
 +	}
 +
  	igt_fixture {
++		drmModeFreeResources(res);
  		close(xe_fd);
  	}
+ }
 -- 
 2.43.0
 
