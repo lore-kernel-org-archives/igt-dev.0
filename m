@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BABAC3600C
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 08:04:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC52C3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 08:13:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B569610E872;
-	Thu, 27 Mar 2025 08:04:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SVGTm3fJ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A92110E872
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 08:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743062661; x=1774598661;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3f3PI/3BcMowr6YnJDxTsYNp5mf6Lg4F+vi/KWFx/fM=;
- b=SVGTm3fJRT//WjecIxU/uGXrTzGKMIWKapiMp635XOn6zWxEy7F7U4EC
- JvcvNikChL+63ZYMN7wHepnEJDPeoynuOtFUmZZUZ8zhOAodwgntSEGSV
- xvQgu7hRr26+JHHenFDHpJyTcKldlkCj9N3Bt+IpgAL1Sco6oDx1p6ArA
- 0NBfa2W3PCZsxPunhPVjIDui4B5Pv6jfidCK2zrTj3MfznoWnWOuDsRnJ
- hwsb8jV4EhfoTcKXxsJBdVrmhahahBnHYQpv/Eti5rP9pG5FyUHGh5s/a
- 1yGesQn1Gmz+mtkWK7VNyIOGa/X7gxn8DR46s13fv+ojE/bbvdxhs5utu w==;
-X-CSE-ConnectionGUID: c5zmC64QSpS6dMCwXOshuA==
-X-CSE-MsgGUID: CGZiqjZhTu+9hulPFWetLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="55745387"
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="55745387"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 01:04:21 -0700
-X-CSE-ConnectionGUID: M5amJ5gkTL+IXQvlK6/vwA==
-X-CSE-MsgGUID: ZDbTAEAXQ+2aNr8u7pMOoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="130165703"
-Received: from carterle-desk.ger.corp.intel.com (HELO
- vgovind2-mobl3.intel.com) ([10.245.246.8])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 01:04:18 -0700
-From: Vinod Govindapillai <vinod.govindapillai@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, jouni.hogander@intel.com,
- jeevan.b@intel.com, jani.saarinen@intel.com
-Subject: [PATCH i-g-t v3 2/2] lib/i915/fbc: update fbc support based on psr
- mode
-Date: Thu, 27 Mar 2025 10:03:58 +0200
-Message-ID: <20250327080358.559968-3-vinod.govindapillai@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250327080358.559968-1-vinod.govindapillai@intel.com>
-References: <20250327080358.559968-1-vinod.govindapillai@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E3F9110E875;
+	Thu, 27 Mar 2025 08:13:14 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC07F10E874;
+ Thu, 27 Mar 2025 08:13:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7015606224865145601=="
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_test/amdgpu=3A_add_user_q?=
+ =?utf-8?q?ueue_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Mar 2025 08:13:13 -0000
+Message-ID: <174306319370.10488.16814607039141884776@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250327071744.412284-1-jesse.zhang@amd.com>
+In-Reply-To: <20250327071744.412284-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,179 +37,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Combination of fbc and psr modes (psr1, psr2 and pr) depends on
-display version. Consolidate this fbc combination check into
-one place and update the relevent tests to use this consolidated
-function
+--===============7015606224865145601==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
----
- lib/i915/intel_fbc.c      | 47 ++++++++++++++++++++++++++++++---------
- lib/i915/intel_fbc.h      |  4 +++-
- tests/intel/kms_psr.c     | 10 ++++++---
- tests/intel/kms_psr2_sf.c |  9 +++++---
- 4 files changed, 52 insertions(+), 18 deletions(-)
+== Series Details ==
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index 3971e4920..a8ded0a59 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -6,6 +6,7 @@
- #include <fcntl.h>
- 
- #include "igt.h"
-+#include "igt_psr.h"
- 
- #include "intel_fbc.h"
- 
-@@ -156,22 +157,46 @@ bool intel_fbc_plane_size_supported(int fd, uint32_t width, uint32_t height)
- }
- 
- /**
-- * intel_fbc_psr_combo_supported
-+ * intel_fbc_supported_for_psr_mode
-  *
-- * @fd: fd of the device
-+ * @disp_ver: Display version
-+ * @mode: psr mode
-  *
-- * FBC PSR combination support depends on the display version.
-+ * FBC and PSR1/PSR2/PR combination support depends on the display version.
-  *
-  * Returns:
-- * true if FBC and PSR can be enabled together in a platform
-+ * true if FBC and the given PSR mode can be enabled together in a platform
-  */
--bool intel_fbc_psr_combo_supported(int device)
-+bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode)
- {
--	int ver = intel_display_ver(intel_get_drm_devid(device));
--
--	/* In Xe3 FBC PSR combo not supported because of FBC dirty rect */
--	if (ver >= 20 && ver < 30)
--		return true;
-+	bool fbc_supported = true;
-+
-+	switch(mode) {
-+	case PSR_MODE_1:
-+		/* TODO: Update this to exclude MTL C0 onwards from this list */
-+		if (disp_ver >= 12 && disp_ver <= 14)
-+			fbc_supported = false;
-+		break;
-+	case PSR_MODE_2:
-+	case PSR_MODE_2_SEL_FETCH:
-+	case PSR_MODE_2_ET:
-+	case PR_MODE_SEL_FETCH:
-+	case PR_MODE_SEL_FETCH_ET:
-+		/*
-+		 * FBC is not supported if PSR2 is enabled in display version 12 to 14.
-+		 * According to the xe2lpd+ requirements, display driver need to
-+		 * implement a selection logic between FBC and PSR2/Panel Replay selective
-+		 * update based on dirty region threshold. Until that is implemented,
-+		 * keep FBC disabled if PSR2/PR selective update is on.
-+		 *
-+		 * TODO: Update this based on the selection logic in the driver
-+		 */
-+		fbc_supported = false;
-+		break;
-+	case PR_MODE:
-+	default:
-+		break;
-+	}
- 
--	return false;
-+	return fbc_supported;
- }
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index 0abd18478..fcafe6049 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -11,11 +11,13 @@
- #define intel_fbc_enable(device) igt_set_module_param_int(device, "enable_fbc", 1)
- #define intel_fbc_disable(device) igt_set_module_param_int(device, "enable_fbc", 0)
- 
-+enum psr_mode;
-+
- bool intel_fbc_supported_on_chipset(int device, enum pipe pipe);
- bool intel_fbc_wait_until_enabled(int device, enum pipe pipe);
- bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
- void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
- bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
--bool intel_fbc_psr_combo_supported(int device);
-+bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode);
- 
- #endif
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index a83d90194..1fdb565fa 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -781,6 +781,8 @@ igt_main
- 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
- 	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
- 	igt_output_t *output;
-+	bool fbc_chipset_support;
-+	int disp_ver;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-@@ -790,15 +792,17 @@ igt_main
- 		data.bops = buf_ops_create(data.drm_fd);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require_f(output_supports_psr(&data), "Sink does not support PSR/PSR2/PR\n");
--		if (intel_fbc_supported_on_chipset(data.drm_fd, pipe) &&
--		    intel_fbc_psr_combo_supported(data.drm_fd))
--			data.fbc_flag = true;
-+		disp_ver = intel_display_ver(data.devid);
-+		fbc_chipset_support = intel_fbc_supported_on_chipset(data.drm_fd, pipe);
- 	}
- 
- 	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
- 		data.op_fbc_mode = fbc_status[y];
- 		for (z = 0; z < ARRAY_SIZE(modes); z++) {
- 			data.op_psr_mode = modes[z];
-+			data.fbc_flag = fbc_chipset_support &&
-+					intel_fbc_supported_for_psr_mode(disp_ver,
-+									 data.op_psr_mode);
- 
- 			igt_describe("Basic check for psr if it is detecting changes made "
- 				     "in planes");
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 4c9847692..68842b020 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -1190,6 +1190,8 @@ igt_main
- 		"pr-"
- 	};
- 	int psr_status[] = {PSR_MODE_2, PR_MODE_SEL_FETCH};
-+	bool fbc_chipset_support;
-+	int disp_ver;
- 
- 	igt_fixture {
- 		drmModeResPtr res;
-@@ -1200,9 +1202,8 @@ igt_main
- 
- 		display_init(&data);
- 
--		if (intel_fbc_supported_on_chipset(data.drm_fd, data.pipe) &&
--		    intel_fbc_psr_combo_supported(data.drm_fd))
--			data.fbc_flag = true;
-+		disp_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
-+		fbc_chipset_support = intel_fbc_supported_on_chipset(data.drm_fd, data.pipe);
- 
- 		data.damage_area_count = MAX_DAMAGE_AREAS;
- 		data.primary_format = DRM_FORMAT_XRGB8888;
-@@ -1240,6 +1241,8 @@ igt_main
- 
- 			data.op_fbc_mode = fbc_status[y];
- 			data.psr_mode = psr_status[z];
-+			data.fbc_flag = fbc_chipset_support &&
-+					intel_fbc_supported_for_psr_mode(disp_ver, data.psr_mode);
- 
- 			/* Verify primary plane selective fetch */
- 			igt_describe("Test that selective fetch works on primary plane");
--- 
-2.43.0
+Series: test/amdgpu: add user queue test
+URL   : https://patchwork.freedesktop.org/series/146842/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8288 -> IGTPW_12851
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12851 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12851, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12851:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] +78 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12851 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][5] ([i915#13735]) -> [PASS][6] +132 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8288 -> IGTPW_12851
+
+  CI-20190529: 20190529
+  CI_DRM_16321: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12851: 12851
+  IGT_8288: 8288
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/index.html
+
+--===============7015606224865145601==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/amdgpu: add user queue test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146842/">https://patchwork.freedesktop.org/series/146842/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8288 -&gt; IGTPW_12851</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12851 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12851, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12851:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> +78 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12851 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@late_gt_pm:<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8288/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12851/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +132 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8288 -&gt; IGTPW_12851</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16321: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12851: 12851<br />
+  IGT_8288: 8288</p>
+
+</body>
+</html>
+
+--===============7015606224865145601==--
