@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A7DC3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 05:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D95AC3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 05:30:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECEA510E049;
-	Thu, 27 Mar 2025 05:28:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E44F710E049;
+	Thu, 27 Mar 2025 05:30:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jvSzlSwW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Flf3QZ5X";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B58C010E049
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 05:28:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AC1610E049
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 05:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743053289; x=1774589289;
+ t=1743053419; x=1774589419;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=inGfTS3sY5GDXWl7GTs39cOTb1Uk+4QWhJf4S5JO9Xw=;
- b=jvSzlSwWexy6FWT1ctAML1MUYawXOk35fzcTNtt6Th5KepQ2K4u+Q+qw
- TMDU4nPkfx7f7lXsUWQqv6+TAofzUg5cQV9dhfDvxo+E6685Rz8yylmny
- z8n4esiOmoeUSsmm4eM6j7a+AKD1a3ID0XUBJgkSgx7bp3IrhtSpQO8ry
- EjVEpTYR9gSDp2pbRl8aQXlSNRfk7hJTZqVbUByvJee2wtkbIC4IPLN1U
- pvrsmw937Mpolma7Td3uBxiC5fc4mgEmngh7YZesQmbjFg2ywBEAOLYlE
- HwgzeOo1/+ZdrkQQFDWp2H9eOYTwgS8gvqlMQoCMLzMvXisRSsyQhqWHo w==;
-X-CSE-ConnectionGUID: cvJYB62MRYCKEuwPtdClng==
-X-CSE-MsgGUID: xw2WM1LMTP6bzu6AuYoArg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48155427"
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="48155427"
+ bh=YFYR0w5X+DA8xTJuHGEa2b/cvTuv8Bwd9h+lmfykGqQ=;
+ b=Flf3QZ5XyZiB2a0wq4ldx7BO4cHza+csIPbO/AehUYY+fEIBmyBcO3vO
+ xd3iLBEZPsNJDlWAdT/geyA8S6Vd52+zv+n1IQo46bBcv463nVP24HY3b
+ YOXB1Sq0kacfQZcJbRW2Tzcl7NjQkT+OLjqnD6bh7As91D724QIfrbjCy
+ g5YyNkJYUbqcMTdqCOv4E3CuoHZl5cofHq1tD35qQ1fNxP0txsprQr6cQ
+ gGRyFtb8T73ZlCiA9HjuX66Ag2VPf16sBsYnav1YO4gCF2huYP6efSbsl
+ ed1kmKR+sSVKT7KmpfJjNoU6CjVkSQTqh3g9jQs0sBFOIE/qMFJUlNXYP Q==;
+X-CSE-ConnectionGUID: rJdm54CKTPiW+rFjj5BrbA==
+X-CSE-MsgGUID: 8j0RwBGpTMKVnGOfgVhkAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48155549"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="48155549"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 22:28:05 -0700
-X-CSE-ConnectionGUID: SqDC/JuARuKYm4pdGCVpwQ==
-X-CSE-MsgGUID: PEg7kygsSiyq/Oi3kZFLbw==
+ 26 Mar 2025 22:30:19 -0700
+X-CSE-ConnectionGUID: WkqqfpvSTqi+5UxlvYU43A==
+X-CSE-MsgGUID: F1z+JA3wT6mvutPEBDO4eA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="124824914"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="124825428"
 Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 26 Mar 2025 22:28:05 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ 26 Mar 2025 22:30:18 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 26 Mar 2025 22:28:04 -0700
+ 15.1.2507.44; Wed, 26 Mar 2025 22:30:18 -0700
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 26 Mar 2025 22:28:04 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.172)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 26 Mar 2025 22:28:03 -0700
+ 15.2.1544.14 via Frontend Transport; Wed, 26 Mar 2025 22:30:18 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 26 Mar 2025 22:30:17 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C2UxzaiuygXEYhggDVZ4svl9KX8c8uw8D+uvLCqsnAqmULvrzUYSZk893utebVIouIcOecy3Wntm6tEbulIPRk1jANYt+JNlPqBmuAOeELUDwecbk0L2bsB0/JXhKAMV4I0hkFVzXgYPmCsn0Q9X4J6SviOgK5OsFsuGcO2fd+ykKz0Z86PCaTHpDSRdPU9bC7ngw/Ajw9Xhp5i/1K27L2XsUdEEh7fChni1sNIByXijnwXTRCPX3E+rF16Ov0wGmXsEwM2ckcNUAaGJ1BMU7/1MBd7gHQibKI3XY2AzJ4mZJsOi+tmB3dUMeVstmY4LePtrfgsYJiK87Kkn+6b3tQ==
+ b=Qybn+E4PdC6TzTG/fM6kGAgqcde7M+5Yy6F3J/Y2VtFa66jQg/Ldv4LoQ6TdDIA/S/51enhvHdy+gDirLaFxr8/91+yZpwqrjCGL+kawlowyJtDScLDntZ/st4xhvSIFFv6uYkuSm38+mx/4LW4kD3ERMHn7aOnRwzNwDYOTCFlk50DSyRQnlolbcTeyCsjuIf/zoU2W/i3gAyNNuhI1Ewm57Dn5u5uUUObNTzK9bZembpTs2HfslCSluCU21mGo9Xy/vZQXzUouY7YkoPGwCr4nBRglE9YRaIJl73Um+wYvpJzXSZctXlmOGGvu+9kq/jUn9/wAdA9AaEf9/Cn5CQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Rf5JIwR/U+hEkn8VBPJnv8ofiODRmWKrbHl91L2PQJk=;
- b=JU6tr4/XfiMp3xG6SXUDyi+XFdD6vsZ/b2sHAo6dlWnSlVg/rMbJ/BjUibgoM0yvlltUby4d+KODQml2xLcgGWd1kLzoveOvFJe5WnF6AHHfrRg0eKVgB682CdTkEYZ8wWYSvveWlbKTNJxznIjk957foSFYcIhQ17DcbRbFZtKxh/OUiJfOpikkv3YV/HGLoS8Ms484aVMaVGvHH/XHMDOy2iyjA61bmFIXBLJ0sFhRxoA4bde3R+scINGsR/rm3CcxthU6ZVf5a+zg2rR/h/xH/qbuR4f0asiLPcyvRQGPyri2GWMxNGbPRrwMEviZBoqNqPbHKifi+9yvWIFsSA==
+ bh=ZsxtuKdM/hGV8pu5rXOLBCUBfHH+9PV55UtLMJyTEpY=;
+ b=wTXNdO1oGPppuNuGwZonlu2YpmmlpUX9o1puHaqVGynT/RiRpGKzyoUSc43yKdDn/F+vTZzDLegi9SNyHcdXtV9zXbW+cBpbkj7+F8/CJQ1PDzedju8ToxidI8eLTe+oNLIXGQQg6Eaw0yIqG7jl4Z9ZlVUyn8VSzjT+JYBhXaNR6Kos2JKqqBcKnsXA0ejnsQBIjWQxUaKZwmMjZnwjBKHu6iNZsfP8oh3LK0PmcAgFXzrwQu1lIp3T9sLi3QVUFrc4DOHkOO4FANKyGnjPXHlXMH3PthZFoENHoZtgY82QEfE7aN8/7WkAR7pReyPK4j1CxRYo0ByZfyxv2omQFg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
- by DS0PR11MB7830.namprd11.prod.outlook.com (2603:10b6:8:f2::21) with
- Microsoft SMTP Server (version=TLS1_2,
+ by CH0PR11MB8142.namprd11.prod.outlook.com (2603:10b6:610:18c::19)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 27 Mar
- 2025 05:27:21 +0000
+ 2025 05:30:15 +0000
 Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
  ([fe80::21c3:4b36:8cc5:b525]) by SJ1PR11MB6129.namprd11.prod.outlook.com
  ([fe80::21c3:4b36:8cc5:b525%5]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
- 05:27:21 +0000
+ 05:30:15 +0000
 From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
 To: "Sharma, Swati2" <swati2.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: Fix
- ctm-limited-range subtest
-Thread-Topic: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: Fix
- ctm-limited-range subtest
-Thread-Index: AQHbnJvLg77NRGL6b0+nZDpveYeGprOGd6ew
-Date: Thu, 27 Mar 2025 05:27:20 +0000
-Message-ID: <SJ1PR11MB6129F103D9C4D5B18B4CD941B9A12@SJ1PR11MB6129.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: Set
+ rgb_full to 1.0
+Thread-Topic: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: Set
+ rgb_full to 1.0
+Thread-Index: AQHbnJvO7e4aqcBVPUusvbrt/cQmRrOGeLDw
+Date: Thu, 27 Mar 2025 05:30:15 +0000
+Message-ID: <SJ1PR11MB61291F5C807B02197236476AB9A12@SJ1PR11MB6129.namprd11.prod.outlook.com>
 References: <20250324090949.614233-1-swati2.sharma@intel.com>
- <20250324090949.614233-3-swati2.sharma@intel.com>
-In-Reply-To: <20250324090949.614233-3-swati2.sharma@intel.com>
+ <20250324090949.614233-4-swati2.sharma@intel.com>
+In-Reply-To: <20250324090949.614233-4-swati2.sharma@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -93,82 +93,82 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6129:EE_|DS0PR11MB7830:EE_
-x-ms-office365-filtering-correlation-id: 0597e839-cce5-4bae-f211-08dd6cf00c46
+x-ms-traffictypediagnostic: SJ1PR11MB6129:EE_|CH0PR11MB8142:EE_
+x-ms-office365-filtering-correlation-id: e09ef6fc-716c-4f61-3010-08dd6cf07439
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?bCT3YlxbNb2sWbVsdFJyWZh/u1ELzsMIh9czLImZT3Lbvx78Rws+pacr7Aym?=
- =?us-ascii?Q?MUMIV5vHNG+yDRLqk3ycEE3jtoR0pqajk+vgrWR/BGBaGhaTpI9/jc6UVvfn?=
- =?us-ascii?Q?n2a3vtfn8vSwh66O6BfKGvMIT2X+VWOjHJl930THk1cX/dnaDR/ApEboK+ae?=
- =?us-ascii?Q?BB1JzPGFjcWgA57zZ/fyhHQ1sjlqce7BBYxM3cqDnedA8P5ZG1FCk/mPC4oR?=
- =?us-ascii?Q?Nq/3tcTE6Ba9serH/rlWRnsoPNLo4qKFMiS89fsssZVSB1OSDJwCxVJzVZBQ?=
- =?us-ascii?Q?Nf6QeBB62jJrXGqJsZpRqgWcPygb8z1MNDF0zh4WL8h9/JEPJH6Dj/FL9wie?=
- =?us-ascii?Q?beg6NtjOSztc3uCpnBNXkkeJ8gM90SH1GTrLh+RPJlfKc2lJnmDW5d7ddd+p?=
- =?us-ascii?Q?TFZkpThaid1aG2t3hJpxmJuS78N4u93yhV/j74eqAnJF3z42/yPk7jHMSdL9?=
- =?us-ascii?Q?XaFPmXSZhSd/ZRG881NRUL2U9YqZiMopvpOreNaeqVw3X35v8KQ1X6959L8+?=
- =?us-ascii?Q?m/qYYUNMwULzlRszyN77UeR5c7RkZ5f3sQLhbLp2kQTajfC0cYQD7c10+2qR?=
- =?us-ascii?Q?1m8h7RuMoINEqIg0w/LIL4/+3TCcI4c2BVO+Di+JOp1OHTA+iikqj/4D2Q0b?=
- =?us-ascii?Q?lerbc8+C2F6Xb9vVzHz4wEpge4tcOUm6g5FaXqvQYeTCGzEW7FXsX2uyqQ2L?=
- =?us-ascii?Q?7hf/4vkjb1FJewoe5bBMuzndm3WCSK4uitjR7exMWGcnFu0kZqcZi2xMkmGv?=
- =?us-ascii?Q?L4tGbkWHWgNEWU1bTBdLRBcghPBzvo1awhLKgHTkSmfvmXf0AWLgPfs8KBtl?=
- =?us-ascii?Q?kn3OlbHoAW2nSlnJgzU4FCJNFsrYi9LYUCuQIXgX4CNmFbcJAHF2FGTrNh2K?=
- =?us-ascii?Q?KXYTFcvwfEBqBzdimdfkksOkMZ3j7HcMUP6YgpWDUe+lmpQwCbPUJrqqEMpn?=
- =?us-ascii?Q?+11XmCtqJgVn8uNRo8Tj8NG2Clqyv6fV/OXEVpgu6z28R3WQKhiaA/P5TwfY?=
- =?us-ascii?Q?BuNzIBcToxXHIeMYb0b7aOfGvatMrIom8zFn5pSdu0NMEAVBfcrX0XIAw5do?=
- =?us-ascii?Q?RtxhFx5miXJ+XD8qSQSCcD7dHuANsfw5+JFi3IXSepDaC8BxGCSIpW5z7ikm?=
- =?us-ascii?Q?tylRz87qM+Z1+KHKjChZEPdXAKlLwsse2cQAR37kaRQgravW99GSIh9HNoCg?=
- =?us-ascii?Q?0TFhvdgE8e6LfoB7eTO+H9eYL1g4QvMF1Saoos5jOn6ePWZwL73F/6wH+uyb?=
- =?us-ascii?Q?atfk4eweJXIhJMyDKDjwbDsBUnVwA9L/q0pGzaIwjHEOJzURU/nYeliiwHp7?=
- =?us-ascii?Q?6tiXvPj5IJbfQ5xzdkhKQRGmyg+gbehAoyCZkOXTtR06jX5rLwV1vNeplVwr?=
- =?us-ascii?Q?siV1gt3MZyowAKjcuqXZzqDqvoxS7/tfa1wnsm3gw43E5W1mq2ylLCRu0Gce?=
- =?us-ascii?Q?NMAUKAyWFzdD4iCuY0G72XqIQ9BUtOtM?=
+ ARA:13230040|376014|1800799024|366016|38070700018|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?ebDnqw9x7ASz0m6hqOr+YBG0jvG5ZiKdKm15qYEZQXa6+qFK4XTlFACGHOqz?=
+ =?us-ascii?Q?ubgEloLK1djeC10r4a9JrV2J2QrundYUz/d5h8l//wPM0lBbuwejqJryT8wL?=
+ =?us-ascii?Q?CmzA59oqBACZUCVtYUYwQNbO7mnF+wjfjbK3AShTke9kGolNcaJGPCqaE+FV?=
+ =?us-ascii?Q?hltZZIoO5NDZ42f3waMBpcmm469YswP0DrQSjv1A/d/4bN4UzxPheWxPuJ2c?=
+ =?us-ascii?Q?aYnKbrQjI7hrYW193QQILrzymrEFfakWtuk9ccwRSRCnJYPXZ4bZZNGw0grT?=
+ =?us-ascii?Q?bI3QlKdEbtqaEpoZ0uSJWbmTecOHsOGmw7WEugC+OjpCrpBiHKTQFtm0CHyb?=
+ =?us-ascii?Q?CBT/xNofHYiZCZLVEh+ZuJ4j8vcQ78KUgs9BSS6ORN2zndIddu7abEoLM1qp?=
+ =?us-ascii?Q?BGuE5cj7RolKIqUnKnffetHcfdjOxt+VUOK4dxmYQ2QtgykE2phCPkuTFJba?=
+ =?us-ascii?Q?YciWf7YF5v+f/Wn4Aph3JlnkQoSwleWlBslNF+t20Oiq4+Yq30ABmT0+HIvB?=
+ =?us-ascii?Q?r073/8U0HnjStibE4WvXtvGTwS271ZtjdJBCGhO8PvuWkTTItSK1cVraz/IC?=
+ =?us-ascii?Q?4oMvb/Q/s35Mnh4At+EX3Tx2TV0b/7juTi8+0jQW82trEw4jc1uhAxjxmERe?=
+ =?us-ascii?Q?+ajamkNjUrvzgpv9AMOeTEn2lWh1eyYj4xpIrcn8FgMl78FLiEdJZE8uOuhR?=
+ =?us-ascii?Q?OTROGvxdc/p15zC6NWw/QNxaSb0mGA4QS40XP+Dz4FCqKwC3DEhJWIE/ikZf?=
+ =?us-ascii?Q?AHmFQehbnnUpDt50bEgZoLg/9kHAofHPNN1Zgpe5//44XkyRFfbMpPjAd9iR?=
+ =?us-ascii?Q?+/p2QWwmnjWO4wrn9rq9OQ4k1/X+6aAM/RTy1lQx6+XNuoPpyc+8wng4vtlI?=
+ =?us-ascii?Q?mb6an2ugHXY/uRg5vTCqQ68KCdoDgFffgWFfyRcJMHwtubOikQqNaRIXDw4y?=
+ =?us-ascii?Q?kodpUzHq5arLsyEHVT0wH/+mVEHisbX+OpKG2PEGedQSGPccWlHE4xi3kpE1?=
+ =?us-ascii?Q?d3pioCKzByNXGjXCwoSOCgvFIiyHEEF6xcehwOHxYSHoTOZbpS65hXv/xT2R?=
+ =?us-ascii?Q?88sUpqUmb8lfOZ5cD4dxLj7eMDPq2EnqxP8MLFPeN5V5o9teJYX51TILqwAR?=
+ =?us-ascii?Q?Z4Ul5yCgV6v0p9X5xa/nNGk8C6J7RdH4qbs64ylVuBgL0uCnOtQnoMU12Wym?=
+ =?us-ascii?Q?2B1nnCHEmfyCgJYX3yqXxCSF9UMQy7lxYFWRw85932CGZ/Gq29CvmpnmRdMz?=
+ =?us-ascii?Q?UvYRKkrBKi/L/PQGpS5sa/4khKpRfkDH/N3HpRb2e7+1eUiwMGykK/Bl+lIU?=
+ =?us-ascii?Q?sOkR/RgSe/lHxfoUzsPppkLu2LilqZqs1vmTs+A9K2ECBdi528ePMsLFe+lz?=
+ =?us-ascii?Q?Gi9f/RAc67n3Ip4oYzKkEPJM/nPgVujZjYkcjgFezIOmCuREckOUrp8ux10z?=
+ =?us-ascii?Q?PQAf3ut6bc7j1ATfI8h0Mxx8KDXLG61t?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SJ1PR11MB6129.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(38070700018); DIR:OUT;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700018)(7053199007); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Zg67TnERY1eoFcDeEyGynZE/skgYAZgLSOZOUXXAFy5nEBv9nDpbdVyA7QXn?=
- =?us-ascii?Q?dLiWA8W/RYUdUAK81Px8Lh60073IPF2noJGdzrhUb7aWoBhvup0cabaYOpba?=
- =?us-ascii?Q?i9YYPk6sKWJEtU0bSg1HIX5B/xIt4Zm4qIUg0uCck4et76jkiijbnMSP4rk+?=
- =?us-ascii?Q?eAyo6bYmDOdMb4JVLClV4AI2K/uzM8Ao89y7fAQ2oTDNpdP45fOO53w1+Qjd?=
- =?us-ascii?Q?HQgp8aeYHSBtHXGU/r8GbjtB1S/beWLrHnIdci6KxA5XPKybOSpRTDKNQZ39?=
- =?us-ascii?Q?Wsda9JcUPSp6im+Dp5AiUTQqwW25n0TbflYCTeE+w/TSA3g0JxngUEIcJApE?=
- =?us-ascii?Q?i4ioV01P/9ioLtAtzwRr/RUmIs7GaeI7V1elWu6PtxwM9MFVEvY5ZCTPBFNL?=
- =?us-ascii?Q?LgXlXW1wArYihMiWW0nSuMaAbt1SgIaJrhjkRNR0uJyjLKNmvyey5zEDqsOY?=
- =?us-ascii?Q?ZCEkHRR60N9ZsQckzNsdEqNl2LxGlKqwbqawLJyf29uUpDNnQ1NEphrtdFsN?=
- =?us-ascii?Q?8Twrtf5XF2IICC7CjuzqYGllaZzNMdve4yjZJFcLcI551TuUIB450/nawDdi?=
- =?us-ascii?Q?zt3R/qj/CAXcYHtz6ssV+4FLTtig4upu5jq6dAkdmyy0glhSIwE0tLWR7528?=
- =?us-ascii?Q?yklyMCseTZc/j44zKnRw/lGCLfgT+ON5OjCsUqgvnBzlTEeTgVcLP0uZzQ9M?=
- =?us-ascii?Q?tap6dzWN6KOfUn0kyDs1MhBKWG+Alez+av9/eyTegtUEIpa9fLCuYHWd52bk?=
- =?us-ascii?Q?nWu+giTZvOVaG481NHmNJ30qNu/41fpSsRaqYrIWr7nrdIUuBV03QIFy41b7?=
- =?us-ascii?Q?SclPFjlPvjI5kXQ/9aJjupOO6weXeMR+n4IX2+Khs9UmxaKYgSebJrZLtpT/?=
- =?us-ascii?Q?YgxEdL06aeCGChiqnztTYQHLDum7aZGmd2OWu6q8RRurVV2YY3M60Ba8SQ2h?=
- =?us-ascii?Q?z+/SqcKnGWVwSBMQ/bglQPuQMWMcxqEn/F6A7DaY5BMFloclBPPokcTgSHbX?=
- =?us-ascii?Q?JThsHNEfRR/JR8zNY+M/Hk38rIgwM3cJYWud2GdSlylFmdAHjqeIC96ZL6oD?=
- =?us-ascii?Q?pOHcCkvfaXO0wBIQ7ErbBCKQ8GKkBN1UelhOWymKm5pQGweaTt3zg1oMewd1?=
- =?us-ascii?Q?NrNxAvpq9Ftmt1IUUSm5q7QOcCvFhwzptSMyASFfS2bKnFLsIca4oPVhD4tl?=
- =?us-ascii?Q?At2GIwR1JCIq4hBVvBOlyD5fVZg6xDsyeJm50o/G3uvHHuD88p6O2PYnBAj6?=
- =?us-ascii?Q?s26nAzxthWmWumiud5BVpsmav6YN9dabJnZsbeaAPQQxFm4nDtpKmlxUYXzJ?=
- =?us-ascii?Q?luhMKMBvyZzKX1vaOuS28J7R261t+OzxaHL4sNjNk9EmkQlyAGvcg1mCi4a1?=
- =?us-ascii?Q?P1WIzPGQnRks2pFtJVViC+rkTT/niHLOOGCccbtMA8lnQkJtBONw+msKrLLz?=
- =?us-ascii?Q?D9crl7xdz00HTFbLgpuu0VElY9dSrXqb7qf9XzFLdzmrn7N7XcBBe9SCVgS+?=
- =?us-ascii?Q?dXjv0PhwR8B6dKj83UyGahUXxZ13GeoXa999jBczybYeh9N62GJchmMvSON3?=
- =?us-ascii?Q?JaVEra1iynqxbdvQI3CyXBWDFSOdSfEZc/ckevk1X7D/+e/E2N9rH7RmxFWP?=
- =?us-ascii?Q?Yw=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?AoreO5H0WGPTZV6OOa1VyumtqlkB8al/UClIlr/qkMxCeeBtfvGNQWPJPINP?=
+ =?us-ascii?Q?zp/HRPPX+FYltLXcXtkKQVl3aD38jZEoRCCU5UxXUsodJ/ItqW0a8IVmtHZN?=
+ =?us-ascii?Q?OmwcbFWJBk1c0QdasyrcNK2xsXOEQ/WxoGHz3ahlILC+2D2EWVIxoO5ZVHg4?=
+ =?us-ascii?Q?GJdEXNEBy9Au6IWFGtp82yCCT/GzZ6MIe+rhHLVQxBuqJwKHHmExfar28AWT?=
+ =?us-ascii?Q?aMU/XBa2qdfosDOe1YjjdQywZ4x1sO1X2fS0TliKKZpmjjrSlid2wJsMqmiv?=
+ =?us-ascii?Q?JoGXAFGMIHgLp4gYrmv7fgmaQxnysgIzyXmnEEKVJ0kO4bS1Ea7sSlQwfVN0?=
+ =?us-ascii?Q?RmU+tPxHYLudmp/iMgSk0QtirRUjercwBnboqPq4PRc01s6jsq7ufzDEaKnP?=
+ =?us-ascii?Q?rBGwvVKlCye4amVT+f4trU579y+5lr3fnBDoxLL9S/7/gSMKMqi0XnGHz80v?=
+ =?us-ascii?Q?zugE0EqoXHqCxNssiMpzYHtpgtRCDgxq5EF9WK/h6rHw+yp4idhPeWGLEbGb?=
+ =?us-ascii?Q?AEzAVef9lzkhcN7bCcKWkJOG+8S6MnClyveimgBjnvbOvNPaneBzxMcCC1jA?=
+ =?us-ascii?Q?PuCQQE4Nkqb5SoYnQuyws/aAqS9riRlPcbl+Y3t47+/KojWRze1FI6QIro7e?=
+ =?us-ascii?Q?+LCMuBjV+72Xazbe3zc78YWDpzjKpf2fmOK4U8S5pa2VWTsD0So9BFsUjctS?=
+ =?us-ascii?Q?Xqyryo8QZCA50skw3TxI0TXJuFUJhqTz36Q7syNwcyNXqCg80XhqoyR4/VqK?=
+ =?us-ascii?Q?kh9nE5wk3tWMDafysg7jHMnhcrUMBcDpahBWDt+e/xYYC9j4aaCPP5yMLxBh?=
+ =?us-ascii?Q?cE939EziIXNVEyj97IsWeGEj6eSXXuzsycopVdj5HWj9U4oq5fHdOE+k8paB?=
+ =?us-ascii?Q?XTT14AkX7rTogUfzTQGavIymUstAyUaEb10LJ/AWq1zoVRPfcQZ7HWOYL7x3?=
+ =?us-ascii?Q?WIMqC2Hzy/h4yzjOQrHe7OQTZCEH1wJ/ScL2sDCTHZxzIKPpqAfIN5Iex+if?=
+ =?us-ascii?Q?7C+OXYfntpTL1FQUEORmhSK33swckSRhXqXuukqrTiM5iK1uvmD13Wu3BU0b?=
+ =?us-ascii?Q?0O99nsExpSelfw/46rDIzc2hRpmtQJUbQsrq3lAsbUV6e7OnRHZLNrL/F/V5?=
+ =?us-ascii?Q?7x5gFHYUyhlL1dk7zLqdAMxhG3QqTZUk6zH7Um9v2SSArHuc1Vihl4b120eN?=
+ =?us-ascii?Q?vqFz0Rh/6dhbHR2BcFc8oVvHmB9O2AhlPGbq4tGnaGgVyaZFfRxl2NbFrb6O?=
+ =?us-ascii?Q?G5e4HVdB3iHYUEqyww6tbKkRw18lQOmgNa1QgQHuwOEo2t41Gp0NnPjaKR9u?=
+ =?us-ascii?Q?Y+vOP9R78uo2SP28gsesJrEO9aeeOmOLm4LLR8c5tNlfFwmvl3K8qIFtOPji?=
+ =?us-ascii?Q?fb1AZfBN5hNRNj8lZb7Q3qagIqdicTaVI21ySwsmytuQNTOWl56BjATzZAsm?=
+ =?us-ascii?Q?Y6I8G86kHeSyCMiThcle9un/SV/zwtB6it2p6QP7/oZxe7SowRvAIWwQFhth?=
+ =?us-ascii?Q?nYcY663dMR3BSh8Bz8D7P+VTZ3DaQND/erc6TJN0nVW6iclEBog1cQ2BFKKi?=
+ =?us-ascii?Q?I7xVJy79nO6/rohL9lC6bBogpcec4b1FybHYLZaWwAVeOKvWPFkct42vzlHn?=
+ =?us-ascii?Q?HQ=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0597e839-cce5-4bae-f211-08dd6cf00c46
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2025 05:27:20.9825 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e09ef6fc-716c-4f61-3010-08dd6cf07439
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2025 05:30:15.3802 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8d2bTch+VPC5NblBKCPSrIAMUdNOX/E0YNJ4nlB4SjrrvmnP1oeoikysUCUDSwikHeFdlfl1Avq7IdQ4vkgS1N3txh3ZDNiQXpjptppvUkI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7830
+X-MS-Exchange-CrossTenant-userprincipalname: RAE7LlDn+vNrdn12FzrJqXAvNrbWgnHM9NKYOJmbP88dQII8gJ/TXst3juBTB1u+mWi0TgVp6u0kcYLLdSqQ8x4Y1GqFfhifnO1UCbLFajA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB8142
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -193,136 +193,47 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 > Sent: Monday, March 24, 2025 2:40 PM
 > To: igt-dev@lists.freedesktop.org
 > Cc: Sharma, Swati2 <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: Fix ctm-
-> limited-range subtest
+> Subject: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: Set
+> rgb_full to 1.0
 >=20
-> Test is fixed, now we take chamelium capture after setting output to full=
- and
-> limited range and then compare frame dumps.
-
-We should add some details on the steps we are taking during the test.
-
+> Set red_green_blue_full[] to 1.0 instead of 0.5
 >=20
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/chamelium/kms_chamelium_color.c | 50 +++++++++++++++------------
->  1 file changed, 27 insertions(+), 23 deletions(-)
+>  tests/chamelium/kms_chamelium_color.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >=20
 > diff --git a/tests/chamelium/kms_chamelium_color.c
 > b/tests/chamelium/kms_chamelium_color.c
-> index 68611ec6a..355047ed6 100644
+> index 355047ed6..4088e2eb7 100644
 > --- a/tests/chamelium/kms_chamelium_color.c
 > +++ b/tests/chamelium/kms_chamelium_color.c
-> @@ -352,9 +352,10 @@ static bool test_pipe_limited_range_ctm(data_t
+> @@ -342,9 +342,9 @@ static bool test_pipe_limited_range_ctm(data_t
 > *data,
->  	gamma_lut_t *degamma_linear, *gamma_linear;
->  	igt_output_t *output =3D data->output;
->  	drmModeModeInfo *mode =3D data->mode;
-> -	struct igt_fb fb_modeset, fb, fbref;
-> -	struct chamelium_frame_dump *frame_limited;
-> -	int fb_id, fb_modeset_id, fbref_id;
-> +	struct igt_fb fb_modeset, fb;
-> +	struct chamelium_frame_dump *frame_limited, *frame_full;
-> +	int fb_id, fb_modeset_id;
-> +	igt_crc_t *reference_crc;
->  	bool ret =3D false;
->=20
->  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
-> @@ -380,21 +381,13 @@ static bool test_pipe_limited_range_ctm(data_t
-> *data,
->  				      DRM_FORMAT_MOD_LINEAR,
->  				      &fb_modeset);
+>  		{ 0.0, 0.0, limited_result }
+>  	};
+>  	color_t red_green_blue_full[] =3D {
+> -		{ 0.5, 0.0, 0.0 },
+> -		{ 0.0, 0.5, 0.0 },
+> -		{ 0.0, 0.0, 0.5 }
+> +		{ 1.0, 0.0, 0.0 },
+> +		{ 0.0, 1.0, 0.0 },
+> +		{ 0.0, 0.0, 1.0 }
 
-We don't seem to use/commit this frame buffer at all.
+This looks good but I think it also makes sense to convert the 0s in the li=
+mited  range matrix to 16/255.
+That should represent actual limited range of 16-235.
 
-
->  	igt_assert(fb_modeset_id);
-> -
-> -	fbref_id =3D igt_create_fb(data->drm_fd,
-> -				 mode->hdisplay,
-> -				 mode->vdisplay,
-> -				 DRM_FORMAT_XRGB8888,
-> -				 DRM_FORMAT_MOD_LINEAR,
-> -				 &fbref);
-> -	igt_assert(fbref_id);
-> -
->  	igt_plane_set_fb(primary, &fb_modeset);
->=20
->  	set_degamma(data, primary->pipe, degamma_linear);
->  	set_gamma(data, primary->pipe, gamma_linear);
->  	set_ctm(primary->pipe, ctm);
->=20
-> +	/* Set the output into full range. */
->  	igt_output_set_prop_value(output,
->  				  IGT_CONNECTOR_BROADCAST_RGB,
->  				  BROADCAST_RGB_FULL);
-> @@ -402,11 +395,28 @@ static bool test_pipe_limited_range_ctm(data_t
-> *data,
->  	igt_plane_set_fb(primary, &fb);
->  	igt_display_commit(&data->display);
->=20
-> +	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-> +	frame_full =3D
-> +		chamelium_read_captured_frame(data->chamelium, 0);
-> +
-> +	/* Chamelium calculates the CRC for the most recent
-> +	 * captured frame; that's why CRC of the reference frame
-> +	 * is captured here.
-> +	 */
-> +	reference_crc =3D chamelium_get_crc_for_area(data->chamelium, port,
-> 0, 0, 0, 0);
-> +	igt_assert(reference_crc);
-> +
->  	/* Set the output into limited range. */
->  	igt_output_set_prop_value(output,
->  				  IGT_CONNECTOR_BROADCAST_RGB,
->  				  BROADCAST_RGB_16_235);
->  	paint_rectangles(data, mode, red_green_blue_full, &fb);
-> +	igt_plane_set_fb(primary, &fb);
-> +	igt_display_commit(&data->display);
-> +
-> +	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-> +	frame_limited =3D
-> +		chamelium_read_captured_frame(data->chamelium, 0);
-
-I hope chamelium takes care that it doesn't retrieve the frame captured usi=
-ng the earlier chamelium_capture()
+Also perhaps this should be part of the previous patch? Because it is impor=
+tant for the test to actually work.
 
 Regards
 
 Chaitanya
 
-
->=20
->  	/* And reset.. */
->  	igt_output_set_prop_value(output,
-> @@ -414,18 +424,12 @@ static bool test_pipe_limited_range_ctm(data_t
-> *data,
->  				  BROADCAST_RGB_FULL);
->  	igt_plane_set_fb(primary, NULL);
->  	igt_output_set_pipe(output, PIPE_NONE);
-> -	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-> -	frame_limited =3D
-> -		chamelium_read_captured_frame(data->chamelium, 0);
-> -
->=20
-> -	/* Verify that the framebuffer reference of the software
-> -	 * computed output is equal to the frame dump of the CTM
-> -	 * matrix transformation output.
-> -	 */
-> -	ret =3D chamelium_frame_match_or_dump(data->chamelium, port,
-> -					    frame_limited, &fbref,
-> -					    CHAMELIUM_CHECK_ANALOG);
-> +	/* Verify frame dumps are equal. */
-> +	ret =3D chamelium_frame_match_or_dump_frame_pair(data-
-> >chamelium, port,
-> +						       frame_full, frame_limited,
-> +						       reference_crc,
-> +
-> CHAMELIUM_CHECK_ANALOG);
->=20
->  	free_lut(gamma_linear);
->  	free_lut(degamma_linear);
+>  	};
+>  	double ctm[] =3D { 1.0, 0.0, 0.0,
+>  			0.0, 1.0, 0.0,
 > --
 > 2.25.1
 
