@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 353B1C3600E
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 07:46:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC032C3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 07:46:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E06E310E861;
-	Thu, 27 Mar 2025 07:46:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6184310E865;
+	Thu, 27 Mar 2025 07:46:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DQe5yHIq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eBfVZZNA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68E9810E861
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 07:46:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 226F410E865
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 07:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743061604; x=1774597604;
+ t=1743061609; x=1774597609;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=3f3PI/3BcMowr6YnJDxTsYNp5mf6Lg4F+vi/KWFx/fM=;
- b=DQe5yHIqRjRBKAx+Q4OGmW3U8E5nHQJXqWGJSBG4w/hrMLjrjnGIzEsx
- KgMErh1KQRJ+71pQOrl1nj9wa92gmSgOFGjodGvHQ6pvBcfFLoV8NapGN
- MKlrMexEcrvvr0rGUXDgDE74lHBrcL0ZB0veMzNsBW7hL4UY2reaYT4We
- oA/Z5x49ObQ60DZXyIwJtC1RXaD4w3nbTC6jB/ialgZ/zHn+8wi/rF3c0
- QhHDzh0lrQXGP5ZuFzmB5WONO4kzYB6aUvmkS430N1Bl4pfKioe9nsF0u
- 0dQLWO4HDNXMjXYUqQtL+YAgJnWKyJqfK4Ksdnx35w6XhC21ZJME84S9A Q==;
-X-CSE-ConnectionGUID: 7WHd8VS3Q4+aEXRmimTowA==
-X-CSE-MsgGUID: of6SVPMtR8q2ukJY547aXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="31979911"
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="31979911"
+ b=eBfVZZNAIrQ9OxGfRUfi6GmXQ2ixHu/xKSi1gLmG20ZNV529AWuXVFVB
+ IKO4rfS//HdSphblb24jTEjfdH85SlM9CkvdS79N5anQG8tr9DjRnhCB+
+ uc/5Zcr2MBSbs+cIMg4trwOaN/kTtesFwIKv4erEPU9kbFgX2sqU467+0
+ lOaWAoi+RQpFBG0P2fbkB1OQ4ShIboAgqNQgA78PLLBNL19+KrF3/LdYn
+ nfz///2D9wyzv3BTekbQkmMhSrbbqNJz5UvM7VSONFMn80KFhupTsjdnC
+ HnWTAY8qQ2+G2+kYzbLpuoq+kLQ496tDdAQnXRmiJykWJ0vVitfk4H/Z8 Q==;
+X-CSE-ConnectionGUID: Sp5fhrZASg2QYkxCw7258w==
+X-CSE-MsgGUID: u9UpCxUbTGiV3ySgCH9lZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="31979916"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="31979916"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 00:46:43 -0700
-X-CSE-ConnectionGUID: ptHFJycoSIS2Y7s4jUUUyw==
-X-CSE-MsgGUID: np7U287bSwqWp1J3GsfTZQ==
+ 27 Mar 2025 00:46:49 -0700
+X-CSE-ConnectionGUID: Q4WDndILRD+q5fzQPX8oeg==
+X-CSE-MsgGUID: bTB3U3V+TgGMMdvtGIZ7Gg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="162288288"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="162288296"
 Received: from carterle-desk.ger.corp.intel.com (HELO
  vgovind2-mobl3.intel.com) ([10.245.246.8])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 00:46:41 -0700
+ 27 Mar 2025 00:46:46 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, jouni.hogander@intel.com,
  jeevan.b@intel.com, jani.saarinen@intel.com
-Subject: [PATCH i-g-t v2 1/1] lib/i915/fbc: update fbc support based on psr
+Subject: [PATCH i-g-t v2 2/2] lib/i915/fbc: update fbc support based on psr
  mode
-Date: Thu, 27 Mar 2025 09:46:20 +0200
-Message-ID: <20250327074621.559200-3-vinod.govindapillai@intel.com>
+Date: Thu, 27 Mar 2025 09:46:21 +0200
+Message-ID: <20250327074621.559200-4-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250327074621.559200-1-vinod.govindapillai@intel.com>
 References: <20250327074621.559200-1-vinod.govindapillai@intel.com>
