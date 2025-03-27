@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA7CC3600B
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 11:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E59EC3600B
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Mar 2025 11:21:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB76A10E32E;
-	Thu, 27 Mar 2025 11:06:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MzzYA5kF";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 095BD10E32E
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Mar 2025 11:06:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743073614; x=1774609614;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=BtzUVSLlxfptxsElAn7HGen1Ri5AdUXop/1CpWzv3ao=;
- b=MzzYA5kFPM441Kt5iC/8vVY83igkAerBo4EXn1Ib5Y38DpSmDbcEvJvB
- CYeEVabir8gw6oAoVdMH7XX0wXbJnEib8TIlrHxATRDOF4uyRKsDF9GHB
- 4L88Lbr0zMaMGdR6xpQswLJrvNesO9LYxam+AktHMwDuDYC2fgA3jXEAp
- NiBQ0V78jK7dLW23bVMZxX0fhf26QzIEZYzI0hXEyXBxj0jT33owd4aVr
- x6YFuhWbdeksomhhYyLHxmXP//UpSnNOlSu96sB/Lwse/G39rME9gmHWv
- S8rU9SuaA8KOZk5a7CZg8cmXxbRVm7irpD+wE7lur/slVghO9jhZGuIS5 w==;
-X-CSE-ConnectionGUID: lBpqFpbPSwS/FgQD1LL62Q==
-X-CSE-MsgGUID: n9szK9/8T+ufig0BgE+WhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48055210"
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="48055210"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 04:06:53 -0700
-X-CSE-ConnectionGUID: pG+UooguT5uu1dls1XE9sQ==
-X-CSE-MsgGUID: 5smOggQIQuyyzwrAWL9nBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; d="scan'208";a="129261805"
-Received: from kbrylows-mobl6.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.96.173])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 04:06:51 -0700
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t] man/lsgpu: Add man page for lsgpu
-Date: Thu, 27 Mar 2025 12:06:16 +0100
-Message-Id: <20250327110616.59257-1-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 474FF10E31E;
+	Thu, 27 Mar 2025 11:21:53 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F3E210E31E;
+ Thu, 27 Mar 2025 11:21:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1002384069345477389=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Bucketize_refresh_rate_tole?=
+ =?utf-8?q?rance?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mitul Golani" <mitulkumar.ajitkumar.golani@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Mar 2025 11:21:52 -0000
+Message-ID: <174307451212.10488.16235300004370008176@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250327084027.622793-1-mitulkumar.ajitkumar.golani@intel.com>
+In-Reply-To: <20250327084027.622793-1-mitulkumar.ajitkumar.golani@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,126 +37,210 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds a man page for lsgpu.
+--===============1002384069345477389==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: kamil.konieczny@linux.intel.com
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/172
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- man/lsgpu.rst   | 88 +++++++++++++++++++++++++++++++++++++++++++++++++
- man/meson.build |  1 +
- 2 files changed, 89 insertions(+)
- create mode 100644 man/lsgpu.rst
+== Series Details ==
 
-diff --git a/man/lsgpu.rst b/man/lsgpu.rst
-new file mode 100644
-index 000000000..d67437fc3
---- /dev/null
-+++ b/man/lsgpu.rst
-@@ -0,0 +1,88 @@
-+.. SPDX-License-Identifier: MIT
-+=====
-+lsgpu
-+=====
-+
-+-------------------------------------------------------------
-+List and inspect GPUs by scanning the PCI bus, DRM, and sysfs
-+-------------------------------------------------------------
-+.. include:: defs.rst
-+:Author: IGT Developers <igt-dev@lists.freedesktop.org>
-+:Date: 2025-03-27
-+:Version: |PACKAGE_STRING|
-+:Copyright: 2009,2011,2012,2016,2018,2019,2020,2023,2024,2025 Intel Corporation
-+:Manual section: |MANUAL_SECTION|
-+:Manual group: |MANUAL_GROUP|
-+
-+SYNOPSIS
-+========
-+
-+**lsgpu** [*OPTIONS*]
-+
-+DESCRIPTION
-+===========
-+
-+**lsgpu** is part of the **igt-gpu-tools** suite, and it is designed to assist in GPU enumeration and debugging. **lsgpu**  is a command-line tool for listing and inspecting GPUs available on the system. It scans the PCI bus, DRM subsystem, and sysfs to gather information about detected GPU devices and their properties.
-+
-+By default, **lsgpu** displays a list of GPUs along with basic details. The tool supports additional options to print detailed properties and sysfs attributes, apply filters to select specific devices, and verify access permissions to GPU nodes.
-+
-+Filtering can be performed using the -d or --device option, allowing users to match GPUs based on vendor, PCI attributes, or other criteria. When a filter is applied, only the first matching device is displayed.
-+
-+Additionally, **lsgpu** attempts to open the corresponding DRM device nodes (/dev/dri/cardX, /dev/dri/renderDX) to check for access permissions. It follows the IGT variable search order for selecting the target device:
-+
-+1. The **--device** option, if provided
-+2. The **IGT_DEVICE** environment variable, if set
-+3. The **.igtrc** configuration file (Common::Device setting), if neither of the above is specified
-+
-+OPTIONS
-+=======
-+
-+-h, --help
-+    Show help text.
-+
-+-n, --numeric
-+    Print vendor/device as hex
-+
-+-c, --codename
-+    Print codename instead pretty device name
-+
-+-s, --print-simple
-+    Print simple (legacy) device details
-+
-+-p, --print-details
-+    Print devices with details
-+
-+-P, --pci-scan
-+    Print PCI GPU devices
-+
-+-v, --list-vendors
-+    List recognized vendors
-+
-+-l, --list-filter-types
-+    List registered device filters types
-+
-+-d, --device <filter>
-+    Apply a device filter (e.g. 'pci:vendor=Intel,device=discrete,card=0'). Can be used multiple times.
-+
-+-V, --version
-+    Print version information and exit
-+
-+Default print mode options
-+--------------------------
-+
-+These options are only valid when using the default printout mode:
-+
-+--drm
-+    Default: Print DRM filters for each device
-+
-+--sysfs
-+    Print sysfs filters for each device
-+
-+--pci
-+    Print PCI filters for each device
-+
-+
-+REPORTING BUGS
-+==============
-+
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues
-diff --git a/man/meson.build b/man/meson.build
-index 00264a21f..5c976c5d0 100644
---- a/man/meson.build
-+++ b/man/meson.build
-@@ -17,6 +17,7 @@ manpages = [
- 	'intel_upload_blit_large_map',
- 	'intel_upload_blit_small',
- 	'intel_vbt_decode',
-+	'lsgpu',
- ]
- 
- defs_rst = configure_file(input : 'defs.rst.in',
--- 
-2.34.1
+Series: Bucketize refresh rate tolerance
+URL   : https://patchwork.freedesktop.org/series/146850/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8289_BAT -> XEIGTPW_12854_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_12854_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12854_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_12854_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_vrr@flipline@pipe-a-edp-1:
+    - bat-lnl-1:          NOTRUN -> [FAIL][1] +4 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-lnl-1/igt@kms_vrr@flipline@pipe-a-edp-1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12854_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_vrr@flip-basic:
+    - bat-bmg-2:          NOTRUN -> [SKIP][2] ([Intel XE#3419]) +5 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-bmg-2/igt@kms_vrr@flip-basic.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][3] ([Intel XE#1499]) +5 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-bmg-1/igt@kms_vrr@flip-basic.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#455]) +5 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-adlp-7/igt@kms_vrr@flip-basic.html
+    - bat-lnl-2:          NOTRUN -> [SKIP][5] ([Intel XE#2235]) +5 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-lnl-2/igt@kms_vrr@flip-basic.html
+
+  * igt@kms_vrr@flip-basic-fastset:
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#1024]) +5 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-pvc-2/igt@kms_vrr@flip-basic-fastset.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#455]) +5 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-dg2-oem2/igt@kms_vrr@flip-basic-fastset.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#1024]) +5 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-atsm-2/igt@kms_vrr@flip-basic-fastset.html
+
+  * igt@kms_vrr@flip-suspend:
+    - bat-lnl-1:          NOTRUN -> [FAIL][9] ([Intel XE#1855]) +4 other tests fail
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-lnl-1/igt@kms_vrr@flip-suspend.html
+
+  * igt@kms_vrr@flipline:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][10] ([Intel XE#2463]) +5 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-adlp-vf/igt@kms_vrr@flipline.html
+
+  
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#1499]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499
+  [Intel XE#1855]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1855
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8289 -> IGTPW_12854
+
+  IGTPW_12854: 12854
+  IGT_8289: 8289
+  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/index.html
+
+--===============1002384069345477389==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Bucketize refresh rate tolerance</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146850/">https://patchwork.freedesktop.org/series/146850/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8289_BAT -&gt; XEIGTPW_12854_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12854_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12854_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12854_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_vrr@flipline@pipe-a-edp-1:<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-lnl-1/igt@kms_vrr@flipline@pipe-a-edp-1.html">FAIL</a> +4 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12854_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_vrr@flip-basic:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-bmg-2/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +5 other tests skip</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-bmg-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499">Intel XE#1499</a>) +5 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-adlp-7/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +5 other tests skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-lnl-2/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic-fastset:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-pvc-2/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +5 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-dg2-oem2/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +5 other tests skip</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-atsm-2/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-suspend:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-lnl-1/igt@kms_vrr@flip-suspend.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1855">Intel XE#1855</a>) +4 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flipline:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12854/bat-adlp-vf/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>) +5 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8289 -&gt; IGTPW_12854</li>
+</ul>
+<p>IGTPW_12854: 12854<br />
+  IGT_8289: 8289<br />
+  xe-2854-14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8: 14c330bc015ded4a1f1dd1f5aeb8617077aaa7e8</p>
+
+</body>
+</html>
+
+--===============1002384069345477389==--
