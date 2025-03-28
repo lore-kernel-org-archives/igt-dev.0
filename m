@@ -4,54 +4,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D91EC28B20
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 08:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D01CC28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 08:24:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5444F10E063;
-	Fri, 28 Mar 2025 08:20:14 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eNM77LaM";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1316D10E063
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 08:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743150013; x=1774686013;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fGoAbryr+iBeygDgQrkzPorDIlJ70b6KA/gBMemWiIM=;
- b=eNM77LaMGedYpQjGD17dsaQp7i6CX+VDlyCtGEOn8rlIB0OESvqlsDga
- 1aBLx8v1Rl6aFY3175jJETflXYr5KjOLHmMvHJihhGoOh2yCsP7NLfxhN
- qG9SQg02o4vJM2+45HAVvd8xz4pQ9u1VEx21bTtjyqfa7tqIq2aSzsVcD
- iDNoXo5OyYOmCfS0/q+ZNeIHJ8R4GfIoBgWdYIAmoW5AFf/qksYjp/DGW
- QqAnkWvHpPNtOqEG6Uw0GdI3gGoqP2fejpMsKKWQ/EfGqgpObBGFfpucn
- qkAEd+4p0NOcHrspNIo4BSNOzxMI2k2pNmTJlKxfz1FjNPnHhFZ1HmQDZ Q==;
-X-CSE-ConnectionGUID: aolkjxEpTWCkGn9sVrWQkg==
-X-CSE-MsgGUID: mKDVWSqpSoGlqwtjUAqrLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48378883"
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="48378883"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 01:20:12 -0700
-X-CSE-ConnectionGUID: X8bLagKaQ5yHAqS7lQlG/w==
-X-CSE-MsgGUID: YknrY4pSToqUuQIJHAVT8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="125900108"
-Received: from artdev273.igk.intel.com ([172.28.176.8])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 01:20:11 -0700
-From: Jan Sokolowski <jan.sokolowski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4FF6310E99B;
+	Fri, 28 Mar 2025 08:24:30 +0000 (UTC)
+Received: from rtg-sunil-navi33.amd.com (unknown [165.204.156.251])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CD3F10E2F3
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 08:24:29 +0000 (UTC)
+Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
+ 52S8OPDh1469919; Fri, 28 Mar 2025 13:54:25 +0530
+Received: (from sunil@localhost)
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 52S8OP7W1469918;
+ Fri, 28 Mar 2025 13:54:25 +0530
+From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t 1/1] tests/intel/xe_exec_sip_eudebug: disable some tests
- on VF
-Date: Fri, 28 Mar 2025 08:19:16 +0000
-Message-Id: <20250328081916.251987-1-jan.sokolowski@intel.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Sunil Khatri <sunil.khatri@amd.com>
+Subject: [PATCH v3 02/19] drm-uapi/amdgpu: sync with drm-next
+Date: Fri, 28 Mar 2025 13:53:59 +0530
+Message-Id: <20250328082416.1469810-2-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250328082416.1469810-1-sunil.khatri@amd.com>
+References: <20250328082416.1469810-1-sunil.khatri@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,40 +47,159 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Tests wait-writesip-nodebug and breakpoint-writesip-nodebug
-were found to be incompatible with SR-IOV functionality, and
-should only be available to run if on PF.
+Sync with drm-next commit ("866fc4f7e772c4a397f9459754ed1b1872b3a3c6")
 
-Disable these tests if ran on VF.
+Added support of UAPI for user queue secure semaphore.
+The semaphore is used to synchronize between the caller and
+the gpu hw and user wait for the semaphore.
 
-Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 ---
- tests/intel/xe_exec_sip_eudebug.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/drm-uapi/amdgpu_drm.h | 117 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
-diff --git a/tests/intel/xe_exec_sip_eudebug.c b/tests/intel/xe_exec_sip_eudebug.c
-index c317112b4..26b3f9176 100644
---- a/tests/intel/xe_exec_sip_eudebug.c
-+++ b/tests/intel/xe_exec_sip_eudebug.c
-@@ -22,6 +22,7 @@
- #include "xe/xe_eudebug.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "lib/igt_sriov_device.h"
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index d780e1f2a..fed39c9b4 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -55,6 +55,8 @@ extern "C" {
+ #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
+ #define DRM_AMDGPU_SCHED		0x15
+ #define DRM_AMDGPU_USERQ		0x16
++#define DRM_AMDGPU_USERQ_SIGNAL		0x17
++#define DRM_AMDGPU_USERQ_WAIT		0x18
  
- #define WIDTH 64
- #define HEIGHT 64
-@@ -316,6 +317,7 @@ igt_main
- 		igt_fixture {
- 			was_enabled = xe_eudebug_enable(fd, false);
- 			igt_require(!xe_eudebug_debugger_available(fd));
-+			igt_skip_on(intel_is_vf_device(fd));
- 		}
+ #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
+ #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
+@@ -73,6 +75,8 @@ extern "C" {
+ #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
+ #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
+ #define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
++#define DRM_IOCTL_AMDGPU_USERQ_SIGNAL	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_SIGNAL, struct drm_amdgpu_userq_signal)
++#define DRM_IOCTL_AMDGPU_USERQ_WAIT	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_WAIT, struct drm_amdgpu_userq_wait)
  
- 		test_render_and_compute("wait-writesip-nodebug", fd, eci)
+ /**
+  * DOC: memory domains
+@@ -442,6 +446,119 @@ struct drm_amdgpu_userq_mqd_compute_gfx11 {
+ 	__u64   eop_va;
+ };
+ 
++/* userq signal/wait ioctl */
++struct drm_amdgpu_userq_signal {
++	/**
++	 * @queue_id: Queue handle used by the userq fence creation function
++	 * to retrieve the WPTR.
++	 */
++	__u32	queue_id;
++	__u32	pad;
++	/**
++	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
++	 * job to be signaled.
++	 */
++	__u64	syncobj_handles;
++	/**
++	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
++	 * @syncobj_handles.
++	 */
++	__u64	num_syncobj_handles;
++	/**
++	 * @bo_read_handles: The list of BO handles that the submitted user queue job
++	 * is using for read only. This will update BO fences in the kernel.
++	 */
++	__u64	bo_read_handles;
++	/**
++	 * @bo_write_handles: The list of BO handles that the submitted user queue job
++	 * is using for write only. This will update BO fences in the kernel.
++	 */
++	__u64	bo_write_handles;
++	/**
++	 * @num_bo_read_handles: A count that represents the number of read BO handles in
++	 * @bo_read_handles.
++	 */
++	__u32	num_bo_read_handles;
++	/**
++	 * @num_bo_write_handles: A count that represents the number of write BO handles in
++	 * @bo_write_handles.
++	 */
++	__u32	num_bo_write_handles;
++};
++
++struct drm_amdgpu_userq_fence_info {
++	/**
++	 * @va: A gpu address allocated for each queue which stores the
++	 * read pointer (RPTR) value.
++	 */
++	__u64	va;
++	/**
++	 * @value: A 64 bit value represents the write pointer (WPTR) of the
++	 * queue commands which compared with the RPTR value to signal the
++	 * fences.
++	 */
++	__u64	value;
++};
++
++struct drm_amdgpu_userq_wait {
++	/**
++	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	syncobj_handles;
++	/**
++	 * @syncobj_timeline_handles: The list of timeline syncobj handles submitted by
++	 * the user queue job to get the va/value pairs at given @syncobj_timeline_points.
++	 */
++	__u64	syncobj_timeline_handles;
++	/**
++	 * @syncobj_timeline_points: The list of timeline syncobj points submitted by the
++	 * user queue job for the corresponding @syncobj_timeline_handles.
++	 */
++	__u64	syncobj_timeline_points;
++	/**
++	 * @bo_read_handles: The list of read BO handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	bo_read_handles;
++	/**
++	 * @bo_write_handles: The list of write BO handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	bo_write_handles;
++	/**
++	 * @num_syncobj_timeline_handles: A count that represents the number of timeline
++	 * syncobj handles in @syncobj_timeline_handles.
++	 */
++	__u16	num_syncobj_timeline_handles;
++	/**
++	 * @num_fences: This field can be used both as input and output. As input it defines
++	 * the maximum number of fences that can be returned and as output it will specify
++	 * how many fences were actually returned from the ioctl.
++	 */
++	__u16	num_fences;
++	/**
++	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
++	 * @syncobj_handles.
++	 */
++	__u32	num_syncobj_handles;
++	/**
++	 * @num_bo_read_handles: A count that represents the number of read BO handles in
++	 * @bo_read_handles.
++	 */
++	__u32	num_bo_read_handles;
++	/**
++	 * @num_bo_write_handles: A count that represents the number of write BO handles in
++	 * @bo_write_handles.
++	 */
++	__u32	num_bo_write_handles;
++	/**
++	 * @out_fences: The field is a return value from the ioctl containing the list of
++	 * address/value pairs to wait for.
++	 */
++	__u64	out_fences;
++};
++
+ /* vm ioctl */
+ #define AMDGPU_VM_OP_RESERVE_VMID	1
+ #define AMDGPU_VM_OP_UNRESERVE_VMID	2
 -- 
-2.34.1
+2.43.0
 
