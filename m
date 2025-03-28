@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D08FDC3600C
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 01:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D3BC3600B
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 02:06:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6AC5710E963;
-	Fri, 28 Mar 2025 01:45:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A21F10E1B1;
+	Fri, 28 Mar 2025 02:06:58 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8AF910E963;
- Fri, 28 Mar 2025 01:45:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C8E310E0C7;
+ Fri, 28 Mar 2025 02:06:57 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1459677898994537292=="
+ boundary="===============8907390564595305681=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_intel-ci/meson=2Ebuild=3A?=
- =?utf-8?q?_Add_missing_xe-sriov-vm=2Eblocklist=2Etxt?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Reduce_scaling_tests_log_si?=
+ =?utf-8?q?ze?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Mar 2025 01:45:01 -0000
-Message-ID: <174312630165.13007.15211070178628838994@e6b6f09ec485>
+Date: Fri, 28 Mar 2025 02:06:57 -0000
+Message-ID: <174312761737.13007.3255402138955302764@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250327170925.705874-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250327170925.705874-1-marcin.bernatowicz@linux.intel.com>
+References: <20250327205301.3400440-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250327205301.3400440-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,102 +41,125 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1459677898994537292==
+--===============8907390564595305681==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: intel-ci/meson.build: Add missing xe-sriov-vm.blocklist.txt
-URL   : https://patchwork.freedesktop.org/series/146887/
-State : success
+Series: Reduce scaling tests log size
+URL   : https://patchwork.freedesktop.org/series/146894/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8291 -> IGTPW_12861
+CI Bug Log - changes from XEIGT_8291_BAT -> XEIGTPW_12862_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_12862_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12862_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/index.html
+  
 
-Participating hosts (40 -> 38)
+Participating hosts (9 -> 9)
 ------------------------------
 
-  Missing    (2): bat-arlh-2 fi-snb-2520m 
+  No changes in participating hosts
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_12862_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] +29 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d:
+    - bat-bmg-1:          NOTRUN -> [SKIP][2] +79 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-bmg-1/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] +59 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c.html
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a:
+    - bat-lnl-1:          NOTRUN -> [SKIP][4] +93 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-lnl-1/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_12861 that come from known issues:
+  Here are the changes found in XEIGTPW_12862_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@core_auth@basic-auth:
-    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#13890])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-adlp-6/igt@core_auth@basic-auth.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-adlp-6/igt@core_auth@basic-auth.html
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:
+    - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#1024]) +44 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-pvc-2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#455]) +19 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html
 
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-cfl-guc:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/fi-cfl-guc/igt@gem_lmem_swapping@verify-random.html
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#2463]) +44 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-adlp-vf/igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers.html
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][4] -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:
+    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#1024]) +44 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-atsm-2/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html
 
-  
-#### Possible fixes ####
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:
+    - bat-lnl-2:          NOTRUN -> [SKIP][9] ([Intel XE#2763]) +179 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html
 
-  * igt@debugfs_test@read_all_entries:
-    - bat-adlp-6:         [DMESG-WARN][6] ([i915#13890]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-adlp-6/igt@debugfs_test@read_all_entries.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-adlp-6/igt@debugfs_test@read_all_entries.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling:
+    - bat-adlp-7:         NOTRUN -> [SKIP][10] ([Intel XE#455]) +39 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling.html
 
-  * igt@i915_module_load@reload:
-    - fi-cfl-guc:         [ABORT][8] ([i915#13571]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/fi-cfl-guc/igt@i915_module_load@reload.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/fi-cfl-guc/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [DMESG-FAIL][10] ([i915#12061]) -> [PASS][11] +1 other test pass
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d:
+    - bat-bmg-2:          NOTRUN -> [SKIP][11] ([Intel XE#2763]) +224 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-bmg-2/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d.html
 
   
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13571]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571
-  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463
+  [Intel XE#2763]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8291 -> IGTPW_12861
-  * Linux: CI_DRM_16330 -> CI_DRM_16333
+  * IGT: IGT_8291 -> IGTPW_12862
+  * Linux: xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874 -> xe-2866-12422ea031abd6ad50e63c8d3b655315ca2fccaa
 
-  CI-20190529: 20190529
-  CI_DRM_16330: 274d97eed4e8376b7a66b8904066baed6a1ae874 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16333: 12422ea031abd6ad50e63c8d3b655315ca2fccaa @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12861: 12861
+  IGTPW_12862: 12862
   IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874: 274d97eed4e8376b7a66b8904066baed6a1ae874
+  xe-2866-12422ea031abd6ad50e63c8d3b655315ca2fccaa: 12422ea031abd6ad50e63c8d3b655315ca2fccaa
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/index.html
 
---===============1459677898994537292==
+--===============8907390564595305681==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -156,80 +179,109 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>intel-ci/meson.build: Add missing xe-sriov-vm.blocklist.txt</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146887/">https://patchwork.freedesktop.org/series/146887/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>Reduce scaling tests log size</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146894/">https://patchwork.freedesktop.org/series/146894/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8291 -&gt; IGTPW_12861</h1>
+    <h1>CI Bug Log - changes from XEIGT_8291_BAT -&gt; XEIGTPW_12862_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): bat-arlh-2 fi-snb-2520m </p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12862_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12862_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12862_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html">SKIP</a> +29 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-bmg-1/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html">SKIP</a> +79 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c.html">SKIP</a> +59 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-lnl-1/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a.html">SKIP</a> +93 other tests skip</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12861 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_12862_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@core_auth@basic-auth:</p>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:</p>
 <ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-adlp-6/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-adlp-6/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>)</li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-pvc-2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +44 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +19 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers:</p>
 <ul>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/fi-cfl-guc/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-adlp-vf/igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2463">Intel XE#2463</a>) +44 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@workarounds:</p>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:</p>
 <ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-adlp-6/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-adlp-6/igt@debugfs_test@read_all_entries.html">PASS</a></li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-atsm-2/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +44 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_module_load@reload:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:</p>
 <ul>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/fi-cfl-guc/igt@i915_module_load@reload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571">i915#13571</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/fi-cfl-guc/igt@i915_module_load@reload.html">PASS</a></li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763">Intel XE#2763</a>) +179 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@workarounds:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling:</p>
 <ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8291/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12861/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +39 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12862/bat-bmg-2/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763">Intel XE#2763</a>) +224 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8291 -&gt; IGTPW_12861</li>
-<li>Linux: CI_DRM_16330 -&gt; CI_DRM_16333</li>
+<li>IGT: IGT_8291 -&gt; IGTPW_12862</li>
+<li>Linux: xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874 -&gt; xe-2866-12422ea031abd6ad50e63c8d3b655315ca2fccaa</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16330: 274d97eed4e8376b7a66b8904066baed6a1ae874 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16333: 12422ea031abd6ad50e63c8d3b655315ca2fccaa @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12861: 12861<br />
-  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_12862: 12862<br />
+  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874: 274d97eed4e8376b7a66b8904066baed6a1ae874<br />
+  xe-2866-12422ea031abd6ad50e63c8d3b655315ca2fccaa: 12422ea031abd6ad50e63c8d3b655315ca2fccaa</p>
 
 </body>
 </html>
 
---===============1459677898994537292==--
+--===============8907390564595305681==--
