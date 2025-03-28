@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D20FC28B20
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 12:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6774FC28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 12:22:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D356210E9FC;
-	Fri, 28 Mar 2025 12:11:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F3A2A10E1A2;
+	Fri, 28 Mar 2025 12:22:34 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D615C10E9F3;
- Fri, 28 Mar 2025 12:11:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F01E10E9FF;
+ Fri, 28 Mar 2025 12:22:33 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4739825256523906961=="
+ boundary="===============5931316627769042830=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_test/amdgpu=3A_add_user_qu?=
- =?utf-8?q?eue_test_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_lib/i915/fbc=3A_update_fbc?=
+ =?utf-8?q?_support_based_on_psr_mode_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Zhang, Jesse(Jie)" <jesse.zhang@amd.com>
+To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Mar 2025 12:11:52 -0000
-Message-ID: <174316391286.14706.13643056065813766275@e6b6f09ec485>
+Date: Fri, 28 Mar 2025 12:22:33 -0000
+Message-ID: <174316455337.14706.16096925569642344460@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250327074032.413014-1-jesse.zhang@amd.com>
-In-Reply-To: <20250327074032.413014-1-jesse.zhang@amd.com>
+References: <20250327080358.559968-1-vinod.govindapillai@intel.com>
+In-Reply-To: <20250327080358.559968-1-vinod.govindapillai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,15 +41,15 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4739825256523906961==
+--===============5931316627769042830==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: test/amdgpu: add user queue test (rev3)
-URL   : https://patchwork.freedesktop.org/series/146842/
+Series: lib/i915/fbc: update fbc support based on psr mode (rev2)
+URL   : https://patchwork.freedesktop.org/series/146845/
 State : failure
 
 == Summary ==
@@ -58,9 +58,9 @@ ERROR: The runconfig 'XEIGT_8289_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12852/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html
 
---===============4739825256523906961==
+--===============5931316627769042830==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,11 +80,11 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>test/amdgpu: add user queue test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146842/">https://patchwork.freedesktop.org/series/146842/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/i915/fbc: update fbc support based on psr mode (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146845/">https://patchwork.freedesktop.org/series/146845/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12852/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12852/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html</a></td></tr>
 
 </table>
 
@@ -94,4 +94,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4739825256523906961==--
+--===============5931316627769042830==--
