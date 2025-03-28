@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17EF5C28B20
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 08:28:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A315C36010
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 08:34:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B89D310E061;
-	Fri, 28 Mar 2025 08:28:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fa6CV5Tp";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43FE510E061
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 08:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743150521; x=1774686521;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=lOsflbruQ5Mn8ukkVhSygFEg0H0xe8W2AimpabEzBnY=;
- b=Fa6CV5Tp4gz5lIabOm+9bjf7c5mh6x5gQHqY4BL+IT6CCqCohadhVzG/
- 8eNRX9qMv9vcypbqB39kzRSf+Tw0VjwEU15ofspEmhJn4XEBLAInooF+y
- 6KR+esVT5vDsL7XbyE6tQIEIGt6A/PLxsPcwNDJiZC5brPBPLBcr1Rdj8
- Y9kC64AC3bkWS/S6n/nQB1m88PJdMlt1SAe5MzTWcb/7Y2I7iQC6M/q5T
- k5g5V97iCkQzyBRJCnQEE/JapDTAZLoCadw2uq1Nr5osoHCITJlBPPU1e
- 8QgNDLfHtGwm29p8azdoDKL6Dxa2I0u8BfazYlfcouvLSBYpgcPaHIhuM Q==;
-X-CSE-ConnectionGUID: fEQPb99vQVOxPFGAPWMqmA==
-X-CSE-MsgGUID: 6TJ4yAYRTXGEnGYK4BkYIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48379561"
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="48379561"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 01:28:41 -0700
-X-CSE-ConnectionGUID: OXhuqABATT+YsYO6RIM9PA==
-X-CSE-MsgGUID: Sd+txT49QyucNd26I5NjEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="125144897"
-Received: from saswiest-mobl1.ger.corp.intel.com (HELO [10.245.80.210])
- ([10.245.80.210])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 01:28:40 -0700
-Message-ID: <113c1b38-2f7f-4967-8767-1ac80747cab9@linux.intel.com>
-Date: Fri, 28 Mar 2025 09:28:36 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 37EDA10E063;
+	Fri, 28 Mar 2025 08:34:40 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A54E610E061;
+ Fri, 28 Mar 2025 08:34:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3891598933690335877=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 i-g-t 1/1] tests/intel/intel_kernelfs: Unify sysfs and
- debugfs testing
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- katarzyna.piecielska@intel.com
-References: <20250318213755.366638-1-peter.senna@linux.intel.com>
- <20250322130316.272087-1-peter.senna@linux.intel.com>
- <20250322130316.272087-2-peter.senna@linux.intel.com>
- <Z-XPoLxOWgUpvIXK@intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <Z-XPoLxOWgUpvIXK@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Reduce_scaling_tests_log_?=
+ =?utf-8?q?size?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Mar 2025 08:34:39 -0000
+Message-ID: <174315087966.14332.8102339588928481874@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250327205301.3400440-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250327205301.3400440-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,588 +37,886 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============3891598933690335877==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Reduce scaling tests log size
+URL   : https://patchwork.freedesktop.org/series/146894/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8291 -> IGTPW_12862
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12862 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12862, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): bat-arlh-2 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12862:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers:
+    - bat-adlp-9:         NOTRUN -> [SKIP][1] +44 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-9/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-d:
+    - bat-dg1-7:          NOTRUN -> [SKIP][2] +73 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-7/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-d.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:
+    - bat-dg2-11:         NOTRUN -> [SKIP][3] +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-11/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-d:
+    - bat-mtlp-9:         NOTRUN -> [SKIP][4] +203 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-d.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] +73 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-tgl-1115g4/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format:
+    - bat-dg2-11:         NOTRUN -> [ABORT][6] +1 other test abort
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-11/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-c:
+    - bat-arlh-3:         NOTRUN -> [SKIP][7] +114 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arlh-3/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-c.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation:
+    - bat-twl-2:          NOTRUN -> [SKIP][8] +70 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-twl-2/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation.html
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-a:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][9] +57 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-rkl-11600/igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-b:
+    - bat-arls-6:         NOTRUN -> [SKIP][10] +69 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-6/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-b.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-b:
+    - bat-dg2-9:          NOTRUN -> [SKIP][11] +39 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-b.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-c:
+    - bat-dg2-14:         NOTRUN -> [SKIP][12] +39 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-c.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d:
+    - bat-rpls-4:         NOTRUN -> [SKIP][13] +63 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b:
+    - bat-adlp-6:         NOTRUN -> [SKIP][14] +89 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b.html
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-d:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][15] +203 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-d.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-a:
+    - bat-rplp-1:         NOTRUN -> [SKIP][16] +44 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rplp-1/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-b:
+    - bat-adls-6:         NOTRUN -> [SKIP][17] +63 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-b.html
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-a:
+    - bat-arls-5:         NOTRUN -> [SKIP][18] +69 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-5/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-a.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12862 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers:
+    - bat-dg1-6:          NOTRUN -> [SKIP][19] ([i915#12247] / [i915#12311] / [i915#8152]) +46 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers.html
+    - bat-adls-6:         NOTRUN -> [SKIP][20] ([i915#9423]) +9 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][21] +44 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-blb-e6850/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][22] +179 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-bsw-n3050/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][23] ([i915#9423]) +4 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][24] ([i915#9423])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-11/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:
+    - fi-ilk-650:         NOTRUN -> [SKIP][25] +134 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-ilk-650/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:
+    - bat-dg2-9:          NOTRUN -> [SKIP][26] ([i915#9423]) +4 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a:
+    - bat-apl-1:          NOTRUN -> [SKIP][27] +63 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-apl-1/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers:
+    - bat-adlp-11:        NOTRUN -> [SKIP][28] ([i915#12504] / [i915#8152]) +23 other tests skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation:
+    - bat-rpls-4:         NOTRUN -> [SKIP][29] ([i915#9423]) +9 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-c:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][30] +179 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-ivb-3770/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-c.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-d:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][31] ([i915#12247] / [i915#8152]) +32 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-d.html
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-c:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][32] +179 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-bsw-nick/igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-c.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers:
+    - bat-adlp-6:         NOTRUN -> [DMESG-WARN][33] ([i915#13890]) +47 other tests dmesg-warn
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-b:
+    - fi-cfl-8109u:       NOTRUN -> [DMESG-WARN][34] ([i915#13890]) +85 other tests dmesg-warn
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-8109u/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-b.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][35] ([i915#8152]) +11 other tests skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-d:
+    - bat-adlp-11:        NOTRUN -> [SKIP][36] ([i915#8152]) +42 other tests skip
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-d.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation:
+    - bat-dg1-7:          NOTRUN -> [SKIP][37] ([i915#3555]) +1 other test skip
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-7/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][38] ([i915#3555] / [i915#9423]) +1 other test skip
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][39] ([i915#3555]) +1 other test skip
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-rkl-11600/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html
+    - bat-adls-6:         NOTRUN -> [SKIP][40] ([i915#3555] / [i915#9423]) +1 other test skip
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][41] ([i915#3555]) +1 other test skip
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-tgl-1115g4/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a:
+    - fi-cfl-guc:         NOTRUN -> [SKIP][42] +65 other tests skip
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-guc/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][43] ([i915#12247]) +134 other tests skip
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a.html
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][44] ([i915#8152] / [i915#9792]) +7 other tests skip
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-d:
+    - bat-dg1-6:          NOTRUN -> [SKIP][45] ([i915#12311] / [i915#8152]) +19 other tests skip
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-d.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25:
+    - bat-mtlp-9:         NOTRUN -> [SKIP][46] ([i915#6953]) +10 other tests skip
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@planes-downscale-factor-0-25.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][47] ([i915#6953] / [i915#9423]) +3 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@planes-downscale-factor-0-25.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][48] ([i915#12247] / [i915#8152] / [i915#9792]) +13 other tests skip
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-b:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][49] +65 other tests skip
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-8109u/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-b.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25:
+    - bat-adls-6:         NOTRUN -> [SKIP][50] ([i915#6953] / [i915#9423]) +3 other tests skip
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][51] ([i915#6953]) +3 other tests skip
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-tgl-1115g4/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][52] ([i915#6953]) +3 other tests skip
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-7/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][53] ([i915#6953]) +3 other tests skip
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-9/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][54] ([i915#6953] / [i915#9423]) +3 other tests skip
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][55] +179 other tests skip
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-x1275/igt@kms_plane_scaling@planes-downscale-factor-0-5.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][56] ([i915#6953] / [i915#8152]) +10 other tests skip
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-downscale-factor-0-5.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][57] ([i915#12247] / [i915#6953] / [i915#8152] / [i915#9792]) +6 other tests skip
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-5.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-a:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][58] +134 other tests skip
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-elk-e7500/igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-a:
+    - bat-dg1-6:          NOTRUN -> [SKIP][59] ([i915#12247] / [i915#12311]) +134 other tests skip
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25:
+    - bat-adlp-6:         NOTRUN -> [SKIP][60] ([i915#6953]) +7 other tests skip
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html
+    - bat-twl-2:          NOTRUN -> [SKIP][61] ([i915#6953]) +8 other tests skip
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-twl-2/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75:
+    - bat-arls-5:         NOTRUN -> [SKIP][62] ([i915#6953]) +9 other tests skip
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-5/igt@kms_plane_scaling@planes-downscale-factor-0-75.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][63] ([i915#12247] / [i915#3558] / [i915#8152] / [i915#9792]) +1 other test skip
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][64] ([i915#3558] / [i915#8152]) +1 other test skip
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][65] ([i915#12247] / [i915#12311] / [i915#3558] / [i915#8152]) +1 other test skip
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20.html
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][66] ([i915#3555] / [i915#8152] / [i915#9792]) +3 other tests skip
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-scaler-unity-scaling.html
+    - bat-mtlp-9:         NOTRUN -> [SKIP][67] ([i915#3555]) +4 other tests skip
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@planes-scaler-unity-scaling.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][68] ([i915#3555] / [i915#8152]) +4 other tests skip
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-scaler-unity-scaling.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][69] ([i915#3555]) +4 other tests skip
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-scaler-unity-scaling.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][70] ([i915#12311] / [i915#3555] / [i915#8152]) +3 other tests skip
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-scaler-unity-scaling.html
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-a:
+    - bat-kbl-2:          NOTRUN -> [SKIP][71] +179 other tests skip
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-kbl-2/igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][72] +65 other tests skip
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-7567u/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][73] +65 other tests skip
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-8700k/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][74] ([i915#6953] / [i915#9423]) +3 other tests skip
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][75] ([i915#6953]) +3 other tests skip
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rplp-1/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-c:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][76] +179 other tests skip
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-hsw-4770/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-c.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][77] ([i915#6953]) +10 other tests skip
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][78] ([i915#12311] / [i915#6953] / [i915#8152]) +3 other tests skip
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][79] ([i915#3555] / [i915#6953]) +4 other tests skip
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][80] ([i915#12311] / [i915#3555] / [i915#6953] / [i915#8152]) +1 other test skip
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][81] ([i915#3555] / [i915#6953] / [i915#8152] / [i915#9792]) +1 other test skip
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][82] ([i915#6953] / [i915#8152] / [i915#9792]) +3 other tests skip
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-upscale-20x20.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25:
+    - bat-adlp-6:         NOTRUN -> [SKIP][83] ([i915#3555])
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][84] ([i915#12247] / [i915#3555] / [i915#8152] / [i915#9792])
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][85] ([i915#3555])
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][86] ([i915#3555] / [i915#9423])
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][87] ([i915#3555])
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rplp-1/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][88] ([i915#3555] / [i915#9423])
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][89] ([i915#12247] / [i915#12311] / [i915#3555] / [i915#8152])
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5:
+    - bat-mtlp-9:         NOTRUN -> [SKIP][90] ([i915#3555] / [i915#6953]) +4 other tests skip
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][91] ([i915#3555] / [i915#6953] / [i915#8152]) +4 other tests skip
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][92] ([i915#12247] / [i915#12311] / [i915#3555] / [i915#6953] / [i915#8152]) +2 other tests skip
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][93] ([i915#12247] / [i915#3555] / [i915#6953] / [i915#8152] / [i915#9792]) +2 other tests skip
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][94] ([i915#3555] / [i915#6953])
+   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][95] +179 other tests skip
+   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-guc/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b:
+    - bat-adlp-11:        NOTRUN -> [SKIP][96] ([i915#12504]) +134 other tests skip
+   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b.html
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75:
+    - bat-arls-6:         NOTRUN -> [SKIP][97] ([i915#6953]) +9 other tests skip
+   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75.html
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][98] ([i915#6953]) +3 other tests skip
+   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-rkl-11600/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25.html
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5:
+    - bat-dg1-6:          NOTRUN -> [SKIP][99] ([i915#12247] / [i915#12311] / [i915#6953] / [i915#8152]) +6 other tests skip
+   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5.html
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][100] +179 other tests skip
+   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-8809g/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a.html
+
+  
+  [i915#12247]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247
+  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
+  [i915#12504]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12504
+  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3558]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3558
+  [i915#6953]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953
+  [i915#8152]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152
+  [i915#9423]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423
+  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
 
 
-On 3/27/2025 11:22 PM, Rodrigo Vivi wrote:
-> On Sat, Mar 22, 2025 at 02:03:16PM +0100, Peter Senna Tschudin wrote:
->> Introduces intel_kernelfs, replacing debugfs_test and xe_debugfs. It
->> organizes tests into separate subgroups for i915 and xe, ensuring only
->> the relevant tests run for each driver.
->>
->> i915 test list:
->>  - i915-sysfs-read-all-entries
->>  - i915-debugfs-read-all-entries
->>  - i915-debugfs-read-all-entries-display-on
->>  - i915-debugfs-read-all-entries-display-off
->>
->> Xe test list:
->>  - xe-sysfs-read-all-entries
->>  - xe-debugfs-read-all-entries
->>  - xe-debugfs-read-all-entries-display-on
->>  - xe-debugfs-read-all-entries-display-off
->>  - xe-debugfs-read-all-entries-display-off
->>  - xe-base
->>  - xe-gt
->>  - xe-forcewake
->>
->> This unification closes testing gaps between i915 and Xe while
->> simplifying code maintenance.
->>
->> Cc: kamil.konieczny@linux.intel.com
->> Cc: rodrigo.vivi@intel.com
->> Cc: katarzyna.piecielska@intel.com
->> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
->> ---
->>
->> v2:
->>  - renamed xe-specific functions with the xe_ prefix
->>  - created two igt_subtest_groups: one for i915 and another for Xe
->>  - prefixed each test with either i915 or xe
->>
->>  tests/intel/intel_kernelfs.c | 500 +++++++++++++++++++++++++++++++++++
->>  tests/meson.build            |   1 +
->>  2 files changed, 501 insertions(+)
->>  create mode 100644 tests/intel/intel_kernelfs.c
->>
->> diff --git a/tests/intel/intel_kernelfs.c b/tests/intel/intel_kernelfs.c
->> new file mode 100644
->> index 000000000..55c83a48a
->> --- /dev/null
->> +++ b/tests/intel/intel_kernelfs.c
->> @@ -0,0 +1,500 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2025 Intel Corporation
->> + */
->> +
->> +#include <dirent.h>
->> +#include <fcntl.h>
->> +
->> +#include "i915/gem.h"
->> +#include "igt.h"
->> +#include "igt_sysfs.h"
->> +#include "xe/xe_query.h"
->> +
->> +struct {
->> +	bool warn_on_not_hit;
->> +} opt = { 0 };
->> +
->> +/**
->> + * TEST: debugfs test
->> + * Description: Read entries from debugfs, and sysfs paths.
->> + * Category: Core
->> + * Mega feature: General Core features
->> + * Sub-category: uapi
->> + * Functionality: debugfs
->> + * Feature: core
->> + * Test category: uapi
->> + *
->> + * SUBTEST: i915-debugfs-read-all-entries
->> + * Description: Read all entries from debugfs path validating debugfs entries
->> + *
->> + * SUBTEST: i915-debugfs-read-all-entries-display-off
->> + * Description: Read all debugfs entries with display off.
->> + *
->> + * SUBTEST: i915-debugfs-read-all-entries-display-on
->> + * Description: Read all debugfs entries with display on.
->> + *
->> + * SUBTEST: i915-sysfs-read-all-entries
->> + * Description: Read all entries from sysfs path validating debugfs entries
->> + *
->> + * SUBTEST: xe-debugfs-read-all-entries
->> + * Description: Read all entries from debugfs path validating debugfs entries
->> + *
->> + * SUBTEST: xe-debugfs-read-all-entries-display-off
->> + * Description: Read all debugfs entries with display off.
->> + *
->> + * SUBTEST: xe-debugfs-read-all-entries-display-on
->> + * Description: Read all debugfs entries with display on.
->> + *
->> + * SUBTEST: xe-sysfs-read-all-entries
->> + * Description: Read all entries from sysfs path validating debugfs entries
->> + *
->> + */
->> +
->> +IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
->> +
->> +static void read_and_discard_sysfs_entries(int path_fd, int indent)
->> +{
->> +	struct dirent *dirent;
->> +	DIR *dir;
->> +	char tabs[8];
->> +	int i;
->> +
->> +	igt_assert(indent < sizeof(tabs) - 1);
->> +
->> +	for (i = 0; i < indent; i++)
->> +		tabs[i] = '\t';
->> +	tabs[i] = '\0';
->> +
->> +	dir = fdopendir(path_fd);
->> +	if (!dir)
->> +		return;
->> +
->> +	while ((dirent = readdir(dir))) {
->> +		if (!strcmp(dirent->d_name, ".") ||
->> +		    !strcmp(dirent->d_name, ".."))
->> +			continue;
->> +
->> +		if (dirent->d_type == DT_DIR) {
->> +			int sub_fd;
->> +
->> +			sub_fd = openat(path_fd, dirent->d_name,
->> +					O_RDONLY | O_DIRECTORY);
->> +			if (sub_fd < 0)
->> +				continue;
->> +
->> +			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
->> +			read_and_discard_sysfs_entries(sub_fd, indent + 1);
->> +			close(sub_fd);
->> +		} else if (dirent->d_type == DT_REG) {
->> +			char buf[512];
->> +			int sub_fd;
->> +			ssize_t ret;
->> +
->> +			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
->> +			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
->> +			igt_set_timeout(5, "reading sysfs entry");
->> +
->> +			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
->> +			if (sub_fd == -1) {
->> +				igt_debug("%sCould not open file \"%s\" with error: %m\n",
->> +					  tabs, dirent->d_name);
->> +				continue;
->> +			}
->> +
->> +			do {
->> +				ret = read(sub_fd, buf, sizeof(buf));
->> +			} while (ret == sizeof(buf));
->> +
->> +			if (ret == -1)
->> +				igt_debug("%sCould not read file \"%s\" with error: %m\n",
->> +					  tabs, dirent->d_name);
->> +
->> +			igt_reset_timeout();
->> +			close(sub_fd);
->> +		}
->> +	}
->> +	closedir(dir);
->> +}
->> +
->> +static void kms_tests(int fd, int debugfs, const char *card_name)
->> +{
->> +	igt_display_t display;
->> +	struct igt_fb fb[IGT_MAX_PIPES];
->> +	enum pipe pipe;
->> +	int ret;
->> +	char test_name[64];
->> +
->> +	igt_fixture
->> +		igt_display_require(&display, fd);
->> +
->> +	snprintf(test_name, sizeof(test_name),
->> +		 "%s-debugfs-read-all-entries-display-on", card_name);
->> +
->> +	igt_subtest(test_name) {
->> +		/* try to light all pipes */
->> +retry:
->> +		for_each_pipe(&display, pipe) {
->> +			igt_output_t *output;
->> +
->> +			for_each_valid_output_on_pipe(&display, pipe, output) {
->> +				igt_plane_t *primary;
->> +				drmModeModeInfo *mode;
->> +
->> +				if (output->pending_pipe != PIPE_NONE)
->> +					continue;
->> +
->> +				igt_output_set_pipe(output, pipe);
->> +				primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +				mode = igt_output_get_mode(output);
->> +				igt_create_pattern_fb(display.drm_fd,
->> +						      mode->hdisplay, mode->vdisplay,
->> +						      DRM_FORMAT_XRGB8888,
->> +						      DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
->> +
->> +				/* Set a valid fb as some debugfs like to
->> +				 * inspect it on a active pipe
->> +				 */
->> +				igt_plane_set_fb(primary, &fb[pipe]);
->> +				break;
->> +			}
->> +		}
->> +
->> +		if (display.is_atomic)
->> +			ret = igt_display_try_commit_atomic(&display,
->> +					DRM_MODE_ATOMIC_TEST_ONLY |
->> +					DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +					NULL);
->> +		else
->> +			ret = igt_display_try_commit2(&display, COMMIT_LEGACY);
->> +
->> +		if (ret) {
->> +			igt_output_t *output;
->> +			bool found = igt_override_all_active_output_modes_to_fit_bw(&display);
->> +
->> +			igt_require_f(found, "No valid mode combo found.\n");
->> +
->> +			for_each_connected_output(&display, output)
->> +				igt_output_set_pipe(output, PIPE_NONE);
->> +
->> +			goto retry;
->> +		}
->> +
->> +		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->> +
->> +		read_and_discard_sysfs_entries(debugfs, 0);
->> +	}
->> +
->> +	snprintf(test_name, sizeof(test_name),
->> +		 "%s-debugfs-read-all-entries-display-off", card_name);
->> +
->> +	igt_subtest(test_name) {
->> +		igt_output_t *output;
->> +		igt_plane_t *plane;
->> +
->> +		for_each_connected_output(&display, output)
->> +			igt_output_set_pipe(output, PIPE_NONE);
->> +
->> +		for_each_pipe(&display, pipe)
->> +			for_each_plane_on_pipe(&display, pipe, plane)
->> +				igt_plane_set_fb(plane, NULL);
->> +
->> +		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->> +
->> +		read_and_discard_sysfs_entries(debugfs, 0);
->> +	}
->> +
->> +	igt_fixture
->> +		igt_display_fini(&display);
->> +}
->> +
->> +static int xe_validate_entries(int fd, const char *add_path,
->> +			       const char * const str_val[], int str_cnt)
->> +{
->> +	int i;
->> +	int hit;
->> +	int found = 0;
->> +	int not_found = 0;
->> +	DIR *dir;
->> +	struct dirent *de;
->> +	char path[PATH_MAX];
->> +
->> +	if (!igt_debugfs_path(fd, path, sizeof(path)))
->> +		return -1;
->> +
->> +	strcat(path, add_path);
->> +	dir = opendir(path);
->> +	if (!dir)
->> +		return -1;
->> +
->> +	while ((de = readdir(dir))) {
->> +		if (de->d_name[0] == '.')
->> +			continue;
->> +		hit = 0;
->> +		for (i = 0; i < str_cnt; i++) {
->> +			if (!strcmp(str_val[i], de->d_name)) {
->> +				hit = 1;
->> +				break;
->> +			}
->> +		}
->> +		if (hit) {
->> +			found++;
->> +		} else if (opt.warn_on_not_hit) {
->> +			not_found++;
->> +			igt_warn("no test for: %s/%s\n", path, de->d_name);
->> +		}
->> +	}
->> +	closedir(dir);
->> +	return 0;
->> +}
->> +
->> +/**
->> + * SUBTEST: xe-base
->> + * Description: Check if various debugfs devnodes exist and test reading them
->> + */
->> +static void
->> +xe_test_base(int fd, struct drm_xe_query_config *config)
->> +{
->> +	uint16_t devid = intel_get_drm_devid(fd);
->> +	static const char * const expected_files[] = {
->> +		"gt0",
->> +		"gt1",
->> +		"stolen_mm",
->> +		"gtt_mm",
->> +		"vram0_mm",
->> +		"forcewake_all",
->> +		"info",
->> +		"gem_names",
->> +		"clients",
->> +		"name"
->> +	};
->> +	char reference[4096];
->> +	int val = 0;
->> +
->> +	igt_assert(config);
->> +	sprintf(reference, "devid 0x%llx",
->> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
->> +	igt_assert(igt_debugfs_search(fd, "info", reference));
->> +
->> +	sprintf(reference, "revid %lld",
->> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
->> +	igt_assert(igt_debugfs_search(fd, "info", reference));
->> +
->> +	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
->> +		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
->> +
->> +	igt_assert(igt_debugfs_search(fd, "info", reference));
->> +
->> +	if (intel_gen(devid) < 20) {
->> +		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
->> +		case 48:
->> +			val = 3;
->> +			break;
->> +		case 57:
->> +			val = 4;
->> +			break;
->> +		}
->> +
->> +		sprintf(reference, "vm_max_level %d", val);
->> +		igt_assert(igt_debugfs_search(fd, "info", reference));
->> +	}
->> +
->> +	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
->> +	igt_assert(igt_debugfs_search(fd, "info", reference));
->> +
->> +	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
->> +
->> +	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
->> +	igt_debugfs_dump(fd, "gtt_mm");
->> +
->> +	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
->> +		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
->> +		igt_debugfs_dump(fd, "vram0_mm");
->> +	}
->> +
->> +	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
->> +		igt_debugfs_dump(fd, "stolen_mm");
->> +
->> +	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
->> +	igt_debugfs_dump(fd, "clients");
->> +
->> +	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
->> +	igt_debugfs_dump(fd, "gem_names");
->> +
->> +	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
->> +}
->> +
->> +/**
->> + * SUBTEST: xe-gt
->> + * Description: Check all gt debugfs devnodes
->> + * TODO: add support for ``force_reset`` entries
->> + */
->> +static void
->> +xe_test_gt(int fd, int gt_id)
->> +{
->> +	char name[256];
->> +	static const char * const expected_files[] = {
->> +		"uc",
->> +		"steering",
->> +		"topology",
->> +		"sa_info",
->> +		"hw_engines",
->> +		"pat",
->> +		"mocs",
->> +//		"force_reset"
->> +		"ggtt",
->> +		"register-save-restore",
->> +		"workarounds",
->> +		"default_lrc_rcs",
->> +		"default_lrc_ccs",
->> +		"default_lrc_bcs",
->> +		"default_lrc_vcs",
->> +		"default_lrc_vecs",
->> +		"hwconfig"
->> +
->> +	};
->> +	static const char * const expected_files_uc[] = {
->> +		"huc_info",
->> +		"guc_log",
->> +		"guc_info",
->> +//		"guc_ct_selftest"
->> +	};
->> +
->> +	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
->> +		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
->> +		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->> +		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
->> +			continue;
->> +		igt_debugfs_dump(fd, name);
->> +	}
->> +
->> +	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
->> +		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
->> +		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
->> +		igt_debugfs_dump(fd, name);
->> +	}
->> +
->> +	sprintf(name, "/gt%d", gt_id);
->> +	xe_validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
->> +
->> +	sprintf(name, "/gt%d/uc", gt_id);
->> +	xe_validate_entries(fd, name, expected_files_uc, ARRAY_SIZE(expected_files_uc));
->> +}
->> +
->> +/**
->> + * SUBTEST: xe-forcewake
->> + * Description: Check forcewake debugfs devnode
->> + */
->> +static void
->> +xe_test_forcewake(int fd)
->> +{
->> +	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
->> +
->> +	igt_assert_neq(handle, -1);
->> +	close(handle);
->> +}
->> +
->> +const char *help_str =
->> +	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
->> +
->> +struct option long_options[] = {
->> +	{ "--warn-not-hit", no_argument, NULL, 'w'},
->> +	{ 0, 0, 0, 0 }
->> +};
->> +
->> +static int opt_handler(int option, int option_index, void *input)
->> +{
->> +	switch (option) {
->> +	case 'w':
->> +		opt.warn_on_not_hit = true;
->> +		break;
->> +	default:
->> +		return IGT_OPT_HANDLER_ERROR;
->> +	}
->> +
->> +	return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +igt_main_args("", long_options, help_str, opt_handler, NULL)
->> +{
->> +	int debugfs = -1;
->> +	char devnode[PATH_MAX];
->> +	int fd = -1;
->> +	int gt;
->> +	int sysfs = -1;
->> +
->> +	igt_subtest_group {
->> +		igt_fixture {
->> +			fd = drm_open_driver_master(DRIVER_INTEL);
->> +			igt_require_gem(fd);
->> +			debugfs = igt_debugfs_dir(fd);
->> +			sysfs = igt_sysfs_open(fd);
->> +
->> +			kmstest_set_vt_graphics_mode();
->> +		}
->> +
->> +		igt_describe("Read all entries from sysfs path.");
->> +		igt_subtest("i915-sysfs-read-all-entries")
->> +			read_and_discard_sysfs_entries(sysfs, 0);
->> +		igt_describe("Read all entries from debugfs path.");
->> +		igt_subtest("i915-debugfs-read-all-entries")
->> +			read_and_discard_sysfs_entries(debugfs, 0);
->> +
->> +		igt_describe("Read all debugfs entries with display on/off.");
->> +		igt_subtest_group
->> +			kms_tests(fd, debugfs, "i915");
->> +
->> +		igt_fixture {
->> +			close(sysfs);
->> +			close(debugfs);
->> +			drm_close_driver(fd);
->> +		}
->> +	}
->> +
->> +	igt_subtest_group {
->> +		igt_fixture {
->> +			fd = drm_open_driver_master(DRIVER_XE);
->> +			__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
->> +			debugfs = igt_debugfs_dir(fd);
->> +			sysfs = igt_sysfs_open(fd);
->> +
->> +			kmstest_set_vt_graphics_mode();
->> +		}
->> +
->> +		igt_describe("Read all entries from sysfs path.");
->> +		igt_subtest("xe-sysfs-read-all-entries")
->> +			read_and_discard_sysfs_entries(sysfs, 0);
->> +		igt_describe("Read all entries from debugfs path.");
->> +		igt_subtest("xe-debugfs-read-all-entries")
->> +			read_and_discard_sysfs_entries(debugfs, 0);
->> +
->> +		igt_describe("Read all debugfs entries with display on/off.");
->> +		igt_subtest_group
->> +			kms_tests(fd, debugfs, "xe");
->> +
->> +		igt_describe("Check if various debugfs devnodes exist and test reading them.");
->> +		igt_subtest("xe-base") {
->> +			xe_test_base(fd, xe_config(fd));
->> +		}
->> +
->> +		igt_describe("Check all gt debugfs devnodes");
->> +		igt_subtest("xe-gt") {
->> +			xe_for_each_gt(fd, gt) {
->> +				snprintf(devnode, sizeof(devnode), "gt%d", gt);
->> +				igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
->> +				xe_test_gt(fd, gt);
->> +			}
->> +		}
->> +
->> +		igt_describe("Check forcewake debugfs devnode");
->> +		igt_subtest("xe-forcewake") {
->> +			xe_test_forcewake(fd);
->> +		}
->> +
->> +		igt_fixture {
->> +			close(sysfs);
->> +			close(debugfs);
->> +			drm_close_driver(fd);
->> +		}
->> +	}
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 2f5406523..c98bd45ff 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -83,6 +83,7 @@ test_progs = [
->>  intel_i915_xe_progs = [
->>  	'api_intel_allocator',
->>  	'intel_hwmon',
->> +	'intel_kernelfs',
-> 
-> The patch looks great, thank you. The only thing that I'm not 100% comfortable with
-> is its name, since kernelfs is not a real thing. perhaps intel_sysfs_debugfs?
-> But I'm also terrible with name so not a blocker.
+Build changes
+-------------
 
-I am open to a diferent name too. The idea of 'kernelfs' is to be a single umbrela
-term for both debugfs and sysfs. But I agree with you in that it can be a third
-name instead of a well meaning umbrela term.
- > Another thing, perhaps we should delete the other tests that this one here is
-> currently replacing?
-For some reason patchwork did not get the cover letter*, but the intention
-is to send a follow-up series that will(copy and paste from cover letter):
- - Remove the redundant hwmon-basic test from debugfs_test, as
-   intel_hwmon already provides full coverage for i915 and Xe.
- - Remove both debugfs_test and xe_debugfs.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8291 -> IGTPW_12862
+  * Linux: CI_DRM_16330 -> CI_DRM_16333
 
-The removal of existing tests impacts external test lists, requiring
-updates that take time. By first addressing the test gap, we ensure
-complete coverage while minimizing disruption. The follow-up series will
-then focus on cleanup for improving long-term maintainability.
+  CI-20190529: 20190529
+  CI_DRM_16330: 274d97eed4e8376b7a66b8904066baed6a1ae874 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16333: 12422ea031abd6ad50e63c8d3b655315ca2fccaa @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12862: 12862
+  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-* - https://lists.freedesktop.org/archives/igt-dev/2025-March/087640.html
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/index.html
+
+--===============3891598933690335877==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Reduce scaling tests log size</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146894/">https://patchwork.freedesktop.org/series/146894/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8291 -&gt; IGTPW_12862</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12862 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12862, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-arlh-2 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12862:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-9/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers.html">SKIP</a> +44 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-d:</p>
+<ul>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-7/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-d.html">SKIP</a> +73 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-11/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html">SKIP</a> +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-d:</p>
+<ul>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-d.html">SKIP</a> +203 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-tgl-1115g4/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c.html">SKIP</a> +73 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-11/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format.html">ABORT</a> +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-c:</p>
+<ul>
+<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arlh-3/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-c.html">SKIP</a> +114 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation:</p>
+<ul>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-twl-2/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation.html">SKIP</a> +70 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-a:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-rkl-11600/igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-a.html">SKIP</a> +57 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-b:</p>
+<ul>
+<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-6/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-b.html">SKIP</a> +69 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-b:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-b.html">SKIP</a> +39 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-c.html">SKIP</a> +39 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html">SKIP</a> +63 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b:</p>
+<ul>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b.html">SKIP</a> +89 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-d:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-d.html">SKIP</a> +203 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rplp-1/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-a.html">SKIP</a> +44 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-b:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-b.html">SKIP</a> +63 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-5/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-a.html">SKIP</a> +69 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12862 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +46 other tests skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-blb-e6850/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html">SKIP</a> +44 other tests skip</li>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-bsw-n3050/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html">SKIP</a> +179 other tests skip</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +4 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-11/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-ilk-650/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html">SKIP</a> +134 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a:</p>
+<ul>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-apl-1/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a.html">SKIP</a> +63 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12504">i915#12504</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +23 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation:</p>
+<ul>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-c:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-ivb-3770/igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-c.html">SKIP</a> +179 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-d:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-c:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-bsw-nick/igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-c.html">SKIP</a> +179 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers:</p>
+<ul>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) +47 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-8109u/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) +85 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-d:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +42 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation:</p>
+<ul>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-7/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +1 other test skip</li>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-rkl-11600/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +1 other test skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-tgl-1115g4/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a:</p>
+<ul>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-guc/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a.html">SKIP</a> +65 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a>) +134 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-d:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +19 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25:</p>
+<ul>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@planes-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +10 other tests skip</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@planes-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-8109u/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-b.html">SKIP</a> +65 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adls-6/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +3 other tests skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-tgl-1115g4/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +3 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-7/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +3 other tests skip</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-9/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +3 other tests skip</li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rpls-4/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-x1275/igt@kms_plane_scaling@planes-downscale-factor-0-5.html">SKIP</a> +179 other tests skip</li>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +10 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-a:</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-elk-e7500/igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-a.html">SKIP</a> +134 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-a:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-a.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +134 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25:</p>
+<ul>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +7 other tests skip</li>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-twl-2/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75:</p>
+<ul>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-5/igt@kms_plane_scaling@planes-downscale-factor-0-75.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3558">i915#3558</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +1 other test skip</li>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3558">i915#3558</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +1 other test skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3558">i915#3558</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-scaler-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +3 other tests skip</li>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@planes-scaler-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +4 other tests skip</li>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-scaler-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +4 other tests skip</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-scaler-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +4 other tests skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-scaler-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-a:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-kbl-2/igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-a.html">SKIP</a> +179 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25:</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-7567u/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html">SKIP</a> +65 other tests skip</li>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-cfl-8700k/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html">SKIP</a> +65 other tests skip</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>) +3 other tests skip</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rplp-1/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-hsw-4770/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-c.html">SKIP</a> +179 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +10 other tests skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-8/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +4 other tests skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +1 other test skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-upscale-20x20.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25:</p>
+<ul>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-14/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>)</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-rplp-1/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg2-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>)</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5:</p>
+<ul>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +4 other tests skip</li>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +4 other tests skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +2 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-mtlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +2 other tests skip</li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-guc/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a.html">SKIP</a> +179 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-adlp-11/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12504">i915#12504</a>) +134 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75:</p>
+<ul>
+<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-arls-6/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-rkl-11600/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/bat-dg1-6/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12247">i915#12247</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8152">i915#8152</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12862/fi-kbl-8809g/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a.html">SKIP</a> +179 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8291 -&gt; IGTPW_12862</li>
+<li>Linux: CI_DRM_16330 -&gt; CI_DRM_16333</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16330: 274d97eed4e8376b7a66b8904066baed6a1ae874 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16333: 12422ea031abd6ad50e63c8d3b655315ca2fccaa @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12862: 12862<br />
+  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3891598933690335877==--
