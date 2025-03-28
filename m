@@ -4,57 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D1CCC36013
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 14:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F28C36011
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 14:28:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 970AE10EA2B;
-	Fri, 28 Mar 2025 14:13:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18C8310EA3D;
+	Fri, 28 Mar 2025 14:28:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QMVnnFG9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MJZotCuC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B921810EA29
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 14:13:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0AB310EA3D
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 14:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743171216; x=1774707216;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=l6m+Qjc+KHqst9mEbxuLKzfGq91OhMwg16nF3a0v4mw=;
- b=QMVnnFG9ydS7AA6kp6/Ll8zVjokWJPGJ9Dv7gKX6LK8gwaSU2pYeBEAb
- 57gTZ1PoBTae4LXo9rhRkmmxGalBvjhpoWnFALV4bLupAUVTEZckcY7Lk
- xWutLWzKd2VrCEzOJ9hDuE58o7iCj3vmvFotQHG2WekMTfbSJVryUBnLe
- 2S1qKAjdLdc+gW2FiIo/AnjbIbiYyNeLuBXTOWYhK/9q4wgUkIPVaDlKp
- +55Yoj6a7Q61zCscbW8FwL3PLyttOdrhqeheOISiB5HHbvC0EJxJ3v9TD
- Fh+mmNOYLYhUu962LUlGi8FvLyFpr30iDYztldspNx6OgZTRHiTTTfsIF Q==;
-X-CSE-ConnectionGUID: jwddX0v2RAmk+HfeG9meXQ==
-X-CSE-MsgGUID: eVjEePDlSGes+eQiNa1rFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11387"; a="67005077"
-X-IronPort-AV: E=Sophos;i="6.14,283,1736841600"; d="scan'208";a="67005077"
+ t=1743172106; x=1774708106;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=AhEJWz3EVirJOGpiW3z3NDhMC5D7iNV1aX1HdTjOOVM=;
+ b=MJZotCuCAQ2MwIUq1C/INNQWbEc3b2r+z9R0fW/ZyfyIMKWKLhr4hpvy
+ mb4G52Tu9QwNoUhSD0riQ0+B/gNdnRQLmFG7e9HCuXvXMNTMp1mr3n+JF
+ EUvgrVcEKsj6vrNlKIyP7cyaloo1OyH0OpET8riS4VLnIFbN2c3bCE5Iz
+ vRR+UmticQuCfSpNndutrTJ11ivYg1DmozsHcPX4w6PRUyAY7V6irdE42
+ FPSwKswJlFTr9+9e3sUBPQVIKVMl4VtXUqOqeeM5lWq4PrrQkN3NF9BmS
+ q14HQn7mpPiIatIdNtaIUq25EZh6SJE/cZEaNTgwWMdBv/Ij8EOOA8MMY g==;
+X-CSE-ConnectionGUID: E4f7tzowTS2Ll95TiyUbWw==
+X-CSE-MsgGUID: CUxdR5HUQ+qyKU0MDK2XMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11387"; a="43691311"
+X-IronPort-AV: E=Sophos;i="6.14,283,1736841600"; d="scan'208";a="43691311"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 07:13:36 -0700
-X-CSE-ConnectionGUID: 8ZnvunxFRM2RnRZ3pVHfsA==
-X-CSE-MsgGUID: fduVEmHUR4Oy3g8LM1p0rQ==
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2025 07:28:25 -0700
+X-CSE-ConnectionGUID: 90eY2i5XTPaMwnLXmeElqg==
+X-CSE-MsgGUID: V9yrY8sLSLSWkZcDTxAc7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,283,1736841600"; d="scan'208";a="156388594"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 07:13:34 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, kamil.konieczny@intel.com
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- soham.purkait@intel.com
-Subject: [PATCH i-g-t v4 2/2] tools/intel_pm_rpm: Add support for xe in
- runtime pm
-Date: Fri, 28 Mar 2025 19:40:00 +0530
-Message-Id: <20250328141000.1847594-3-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250328141000.1847594-1-soham.purkait@intel.com>
-References: <20250328141000.1847594-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,283,1736841600"; d="scan'208";a="156393734"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2025 07:28:24 -0700
+Date: Fri, 28 Mar 2025 15:28:21 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH i-g-t] man/lsgpu: Add man page for lsgpu
+Message-ID: <20250328142821.brica7hjyky6lmuy@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20250327110616.59257-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250327110616.59257-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,116 +73,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for runtime power management
-for Xe driver along with existing i915
-support
+Hi Peter,
+On 2025-03-27 at 12:06:16 +0100, Peter Senna Tschudin wrote:
+> Adds a man page for lsgpu.
 
-v1 :  Updated references from "i915" to
-      "generic GPU driver" to include support
-      for the xe driver, ensuring clarity and
-      consistency
+This looks good but it has an error seen in compilation
+and later on with view. I checked it with:
 
-v2 : Add prefix in commit message (Kamil)
+meson -Dman=enabled build
+ninja -C build
 
-v3 : Add a error or warn statement (Riana)
+man/lsgpu.rst:2: (WARNING/2) Explicit markup ends without a blank line; unexpected unindent.
 
-v4 : Fix for timedout log message (Riana)
+man -l build/man/lsgpu*gz
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+Please fix it (see below) and send v2.
 
----
- tools/intel_pm_rpm.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+> 
 
-diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-index 08c25ca8a..9622f0552 100644
---- a/tools/intel_pm_rpm.c
-+++ b/tools/intel_pm_rpm.c
-@@ -35,7 +35,7 @@
- #include "igt_pm.h"
- 
- #define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
--#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
-+#define SET_AUTOSUSPEND_DELAY (1 << 1)
- 
- typedef struct {
- 	int drm_fd;
-@@ -47,8 +47,8 @@ typedef struct {
- const char *help_str =
- 	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
- 	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
--	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
--	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
-+	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set GPU driver's"
-+	"  autosuspend delay. Use --setup-d3cold=auto-delay as optional argument.\n"
- 	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
- static struct option long_options[] = {
- 	{"disable-display-wait", 0, 0, 'd'},
-@@ -80,14 +80,14 @@ static void disable_all_displays(data_t *data)
- static void
- setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
- {
--	struct pci_device *root, *i915;
-+	struct pci_device *root, *gpu_device;
- 
- 	root = igt_device_get_pci_root_port(data->drm_fd);
- 	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
- 		igt_pm_enable_pci_card_runtime_pm(root, NULL);
--	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
--		i915 = igt_device_get_pci_device(data->drm_fd);
--		igt_pm_enable_pci_card_runtime_pm(root, i915);
-+	} else if (setup_d3cold == SET_AUTOSUSPEND_DELAY) {
-+		gpu_device = igt_device_get_pci_device(data->drm_fd);
-+		igt_pm_enable_pci_card_runtime_pm(root, gpu_device);
- 	}
- 
- 	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
-@@ -151,7 +151,8 @@ int main(int argc, char *argv[])
- 			goto exit;
- 		}
- 	} else {
--		if (!igt_device_find_first_i915_discrete_card(&card)) {
-+		if (!igt_device_find_first_i915_discrete_card(&card) &&
-+		    !igt_device_find_first_xe_discrete_card(&card)) {
- 			igt_warn("No discrete gpu found\n");
- 			ret = EXIT_FAILURE;
- 			goto exit;
-@@ -169,8 +170,8 @@ int main(int argc, char *argv[])
- 			break;
- 		case 's':
- 			if (optarg) {
--				if (!strcmp(optarg, "i915-auto-delay")) {
--					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
-+				if (!strcmp(optarg, "auto-delay")) {
-+					setup_d3cold = SET_AUTOSUSPEND_DELAY;
- 				} else	{
- 					usage(argv[0]);
- 					ret = EXIT_SUCCESS;
-@@ -203,7 +204,7 @@ int main(int argc, char *argv[])
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 
--		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
-+		/* GPU driver disables RPM in case DMC is not loaded on kms supported cards */
- 		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
- 			igt_warn("dmc fw is not loaded, no runtime pm\n");
- 			ret = EXIT_FAILURE;
-@@ -215,7 +216,13 @@ int main(int argc, char *argv[])
- 		igt_setup_runtime_pm(data.drm_fd);
- 		disable_all_displays(&data);
- 		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
--			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-+			if (!strcmp("i915", card.driver))
-+				__igt_debugfs_dump(data.drm_fd,
-+						   "i915_runtime_pm_status",
-+						   IGT_LOG_INFO);
-+			else
-+				igt_log(IGT_LOG_DOMAIN, IGT_LOG_INFO,
-+					"Device not runtime suspended\n");
- 			ret = EXIT_FAILURE;
- 			goto exit;
- 		}
--- 
-2.34.1
++cc Zbigniew
 
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+
+> Cc: kamil.konieczny@linux.intel.com
+> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/172
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> ---
+>  man/lsgpu.rst   | 88 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  man/meson.build |  1 +
+>  2 files changed, 89 insertions(+)
+>  create mode 100644 man/lsgpu.rst
+> 
+> diff --git a/man/lsgpu.rst b/man/lsgpu.rst
+> new file mode 100644
+> index 000000000..d67437fc3
+> --- /dev/null
+> +++ b/man/lsgpu.rst
+> @@ -0,0 +1,88 @@
+> +.. SPDX-License-Identifier: MIT
+
+Add one empty line here, this should fix it.
+
+Regards,
+Kamil
+
+PS. Please update your git to some recent version, 2.34.1 looks old
+compared to 2.49.0
+
+> +=====
+> +lsgpu
+> +=====
+> +
+> +-------------------------------------------------------------
+> +List and inspect GPUs by scanning the PCI bus, DRM, and sysfs
+> +-------------------------------------------------------------
+> +.. include:: defs.rst
+> +:Author: IGT Developers <igt-dev@lists.freedesktop.org>
+> +:Date: 2025-03-27
+> +:Version: |PACKAGE_STRING|
+> +:Copyright: 2009,2011,2012,2016,2018,2019,2020,2023,2024,2025 Intel Corporation
+> +:Manual section: |MANUAL_SECTION|
+> +:Manual group: |MANUAL_GROUP|
+> +
+> +SYNOPSIS
+> +========
+> +
+> +**lsgpu** [*OPTIONS*]
+> +
+> +DESCRIPTION
+> +===========
+> +
+> +**lsgpu** is part of the **igt-gpu-tools** suite, and it is designed to assist in GPU enumeration and debugging. **lsgpu**  is a command-line tool for listing and inspecting GPUs available on the system. It scans the PCI bus, DRM subsystem, and sysfs to gather information about detected GPU devices and their properties.
+> +
+> +By default, **lsgpu** displays a list of GPUs along with basic details. The tool supports additional options to print detailed properties and sysfs attributes, apply filters to select specific devices, and verify access permissions to GPU nodes.
+> +
+> +Filtering can be performed using the -d or --device option, allowing users to match GPUs based on vendor, PCI attributes, or other criteria. When a filter is applied, only the first matching device is displayed.
+> +
+> +Additionally, **lsgpu** attempts to open the corresponding DRM device nodes (/dev/dri/cardX, /dev/dri/renderDX) to check for access permissions. It follows the IGT variable search order for selecting the target device:
+> +
+> +1. The **--device** option, if provided
+> +2. The **IGT_DEVICE** environment variable, if set
+> +3. The **.igtrc** configuration file (Common::Device setting), if neither of the above is specified
+> +
+> +OPTIONS
+> +=======
+> +
+> +-h, --help
+> +    Show help text.
+> +
+> +-n, --numeric
+> +    Print vendor/device as hex
+> +
+> +-c, --codename
+> +    Print codename instead pretty device name
+> +
+> +-s, --print-simple
+> +    Print simple (legacy) device details
+> +
+> +-p, --print-details
+> +    Print devices with details
+> +
+> +-P, --pci-scan
+> +    Print PCI GPU devices
+> +
+> +-v, --list-vendors
+> +    List recognized vendors
+> +
+> +-l, --list-filter-types
+> +    List registered device filters types
+> +
+> +-d, --device <filter>
+> +    Apply a device filter (e.g. 'pci:vendor=Intel,device=discrete,card=0'). Can be used multiple times.
+> +
+> +-V, --version
+> +    Print version information and exit
+> +
+> +Default print mode options
+> +--------------------------
+> +
+> +These options are only valid when using the default printout mode:
+> +
+> +--drm
+> +    Default: Print DRM filters for each device
+> +
+> +--sysfs
+> +    Print sysfs filters for each device
+> +
+> +--pci
+> +    Print PCI filters for each device
+> +
+> +
+> +REPORTING BUGS
+> +==============
+> +
+> +Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues
+> diff --git a/man/meson.build b/man/meson.build
+> index 00264a21f..5c976c5d0 100644
+> --- a/man/meson.build
+> +++ b/man/meson.build
+> @@ -17,6 +17,7 @@ manpages = [
+>  	'intel_upload_blit_large_map',
+>  	'intel_upload_blit_small',
+>  	'intel_vbt_decode',
+> +	'lsgpu',
+>  ]
+>  
+>  defs_rst = configure_file(input : 'defs.rst.in',
+> -- 
+> 2.34.1
+> 
