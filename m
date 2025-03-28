@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83682C28B20
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 06:59:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00EB4C28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 07:11:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2994010E98E;
-	Fri, 28 Mar 2025 06:59:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NHpVJhz9";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEAD910E98E
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 06:59:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743145168; x=1774681168;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=S3/Q+V5kNFcpK/hGAta3WLN+JcZ+efwtMCQ56FvjTjA=;
- b=NHpVJhz9dgDkFnUwThNp3FKPMD3aFwZkJ6fFVhrL9nAp4/drVpZhReqG
- 2NxwrffgD/UsikHC8nyuaJEoHEw6Vl2l+uDR3dNe6EhQCcNaPZFg75FEo
- 8NUY/y6dtpdmTNFRtmDAamoGFZd4I4X0Wwzr15SzNIaXRckHRRLB6tUVa
- d1Jsq5K4fUUMNklRr2roV/Sfm8Dxl8r846HM784bdtmH6+9Z98MKWixXE
- PPQadZNfjO3L3UIL1bLrQM0xa/Fk5sOlGVg6f9iDPLBU4XorIWVpo3+oF
- 3OrSkwnfuqSJoe0LM71jxc2lCz+aZLYI3jdjDJTlWMtPfA8NoFa3sogsW g==;
-X-CSE-ConnectionGUID: PuTYAedJSMujRHMGss8R8w==
-X-CSE-MsgGUID: Tb4MRV6ZRZaoaWP++am4Yg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="62033770"
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="62033770"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 23:59:28 -0700
-X-CSE-ConnectionGUID: 0V/naMiwTAaDhqjelwBqqw==
-X-CSE-MsgGUID: s97WxLWPTaGCqpTHVn3B7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="125167239"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 23:59:25 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, kamil.konieczny@intel.com
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- soham.purkait@intel.com
-Subject: [PATCH i-g-t v3 2/2] tools/intel_pm_rpm: Add support for xe in
- runtime pm
-Date: Fri, 28 Mar 2025 12:25:53 +0530
-Message-Id: <20250328065553.1843028-3-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250328065553.1843028-1-soham.purkait@intel.com>
-References: <20250328065553.1843028-1-soham.purkait@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F36810E98B;
+	Fri, 28 Mar 2025 07:11:01 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F226410E98B;
+ Fri, 28 Mar 2025 07:10:59 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3774657503268752122=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_lib/igt=5Ffb=3A_simulate_i?=
+ =?utf-8?q?915_linear_fb_behavior_on_xe?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Mar 2025 07:10:59 -0000
+Message-ID: <174314585998.13935.10525145440360788446@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250327161323.2330254-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20250327161323.2330254-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,117 +37,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for runtime power management
-for Xe driver along with existing i915
-support
+--===============3774657503268752122==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v1 :  Updated references from "i915" to
-      "generic GPU driver" to include support
-      for the xe driver, ensuring clarity and
-      consistency
+== Series Details ==
 
-v2 : Add prefix in commit message (Kamil)
+Series: lib/igt_fb: simulate i915 linear fb behavior on xe
+URL   : https://patchwork.freedesktop.org/series/146882/
+State : failure
 
-v3 : Add a error or warn statement (Riana)
+== Summary ==
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tools/intel_pm_rpm.c | 33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ERROR: The runconfig 'XEIGTPW_12860_FULL' does not exist in the database
 
-diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-index 08c25ca8a..1647c9086 100644
---- a/tools/intel_pm_rpm.c
-+++ b/tools/intel_pm_rpm.c
-@@ -35,7 +35,7 @@
- #include "igt_pm.h"
- 
- #define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
--#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
-+#define SET_AUTOSUSPEND_DELAY (1 << 1)
- 
- typedef struct {
- 	int drm_fd;
-@@ -47,8 +47,8 @@ typedef struct {
- const char *help_str =
- 	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
- 	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
--	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
--	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
-+	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set GPU driver's"
-+	"  autosuspend delay. Use --setup-d3cold=auto-delay as optional argument.\n"
- 	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
- static struct option long_options[] = {
- 	{"disable-display-wait", 0, 0, 'd'},
-@@ -80,14 +80,14 @@ static void disable_all_displays(data_t *data)
- static void
- setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
- {
--	struct pci_device *root, *i915;
-+	struct pci_device *root, *gpu_device;
- 
- 	root = igt_device_get_pci_root_port(data->drm_fd);
- 	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
- 		igt_pm_enable_pci_card_runtime_pm(root, NULL);
--	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
--		i915 = igt_device_get_pci_device(data->drm_fd);
--		igt_pm_enable_pci_card_runtime_pm(root, i915);
-+	} else if (setup_d3cold == SET_AUTOSUSPEND_DELAY) {
-+		gpu_device = igt_device_get_pci_device(data->drm_fd);
-+		igt_pm_enable_pci_card_runtime_pm(root, gpu_device);
- 	}
- 
- 	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
-@@ -151,7 +151,8 @@ int main(int argc, char *argv[])
- 			goto exit;
- 		}
- 	} else {
--		if (!igt_device_find_first_i915_discrete_card(&card)) {
-+		if (!igt_device_find_first_i915_discrete_card(&card) &&
-+		    !igt_device_find_first_xe_discrete_card(&card)) {
- 			igt_warn("No discrete gpu found\n");
- 			ret = EXIT_FAILURE;
- 			goto exit;
-@@ -169,8 +170,8 @@ int main(int argc, char *argv[])
- 			break;
- 		case 's':
- 			if (optarg) {
--				if (!strcmp(optarg, "i915-auto-delay")) {
--					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
-+				if (!strcmp(optarg, "auto-delay")) {
-+					setup_d3cold = SET_AUTOSUSPEND_DELAY;
- 				} else	{
- 					usage(argv[0]);
- 					ret = EXIT_SUCCESS;
-@@ -203,7 +204,7 @@ int main(int argc, char *argv[])
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 
--		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
-+		/* GPU driver disables RPM in case DMC is not loaded on kms supported cards */
- 		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
- 			igt_warn("dmc fw is not loaded, no runtime pm\n");
- 			ret = EXIT_FAILURE;
-@@ -215,7 +216,15 @@ int main(int argc, char *argv[])
- 		igt_setup_runtime_pm(data.drm_fd);
- 		disable_all_displays(&data);
- 		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
--			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-+			if (!strcmp("i915", card.driver))
-+				__igt_debugfs_dump(data.drm_fd,
-+						   "i915_runtime_pm_status",
-+						   IGT_LOG_INFO);
-+			else
-+				igt_log(IGT_LOG_DOMAIN, IGT_LOG_INFO,
-+					"xe_runtime_pm_status:\n%s\n",
-+					"Timeout waiting for the "
-+					"runtime PM status.\n");
- 			ret = EXIT_FAILURE;
- 			goto exit;
- 		}
--- 
-2.34.1
+== Logs ==
 
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12860/index.html
+
+--===============3774657503268752122==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: simulate i915 linear fb behavior on xe</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146882/">https://patchwork.freedesktop.org/series/146882/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12860/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12860/index.html</a></td></tr>
+
+</table>
+
+
+    <p>ERROR: The runconfig 'XEIGTPW_12860_FULL' does not exist in the database</p>
+
+</body>
+</html>
+
+--===============3774657503268752122==--
