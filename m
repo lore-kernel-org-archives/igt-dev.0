@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6774FC28B20
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 12:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F60C28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 12:33:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F3A2A10E1A2;
-	Fri, 28 Mar 2025 12:22:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 303EF10E1B0;
+	Fri, 28 Mar 2025 12:33:24 +0000 (UTC)
 Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F01E10E9FF;
- Fri, 28 Mar 2025 12:22:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B29C810E1A2;
+ Fri, 28 Mar 2025 12:33:23 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5931316627769042830=="
+ boundary="===============2006093821465695119=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_lib/i915/fbc=3A_update_fbc?=
- =?utf-8?q?_support_based_on_psr_mode_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/xe=5Ffault=5Fi?=
+ =?utf-8?q?njection=3A_Do_not_treat_probe_success_as_error_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
+To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Mar 2025 12:22:33 -0000
-Message-ID: <174316455337.14706.16096925569642344460@e6b6f09ec485>
+Date: Fri, 28 Mar 2025 12:33:23 -0000
+Message-ID: <174316520372.14706.12046557705498094913@e6b6f09ec485>
 X-Patchwork-Hint: ignore
-References: <20250327080358.559968-1-vinod.govindapillai@intel.com>
-In-Reply-To: <20250327080358.559968-1-vinod.govindapillai@intel.com>
+References: <20250327125051.621892-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250327125051.621892-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +41,26 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5931316627769042830==
+--===============2006093821465695119==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/i915/fbc: update fbc support based on psr mode (rev2)
-URL   : https://patchwork.freedesktop.org/series/146845/
+Series: tests/intel/xe_fault_injection: Do not treat probe success as error (rev2)
+URL   : https://patchwork.freedesktop.org/series/146864/
 State : failure
 
 == Summary ==
 
-ERROR: The runconfig 'XEIGT_8289_FULL' does not exist in the database
+ERROR: The runconfig 'XEIGT_8290_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12858/index.html
 
---===============5931316627769042830==
+--===============2006093821465695119==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,18 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/i915/fbc: update fbc support based on psr mode (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146845/">https://patchwork.freedesktop.org/series/146845/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Do not treat probe success as error (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146864/">https://patchwork.freedesktop.org/series/146864/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12853/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12858/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12858/index.html</a></td></tr>
 
 </table>
 
 
-    <p>ERROR: The runconfig 'XEIGT_8289_FULL' does not exist in the database</p>
+    <p>ERROR: The runconfig 'XEIGT_8290_FULL' does not exist in the database</p>
 
 </body>
 </html>
 
---===============5931316627769042830==--
+--===============2006093821465695119==--
