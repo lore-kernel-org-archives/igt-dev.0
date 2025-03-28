@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03E3DC3600C
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 05:12:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69416C28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 05:12:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE8C110E97E;
-	Fri, 28 Mar 2025 05:12:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 21D1F10E982;
+	Fri, 28 Mar 2025 05:12:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gfpoqtl0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cfA/Oihg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB73310E97E
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 05:12:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D062610E982
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 05:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743138745; x=1774674745;
+ t=1743138748; x=1774674748;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7arKvlQmnz8UGSyLbZv3/pw/rpTKusR5f9hT4wLRCdk=;
- b=gfpoqtl0hxPDcIxZMbF6jJ5cHDk5woavwjJH1tawEJABn+d2QiJ83lzG
- 9KFbF5STHpxX/GIbnCrCWvAwAjvTbsnvv+Y5zMInZue73CfN9j+aEAW4z
- DBZrZHvDEL7NOU9Hx57IgbsOcpHOumVfhruWxJ/W/rfRzvay9iDAZM9Pr
- qRjuSe5LJQLFNuskkIl9m8CuMOr7AOcEOkWy2TI7kARYJc3Nepl6GMRVp
- hyn7hzUdLDHnhBPkUTkq42pD/YnElXb92ywGVtDZOYT1F/E5l3+HwhAam
- t0zcnBJ0hmzE1fbncmFPhkH+q/7OFqS0jzWOo7QX2z0gmoPvmI8mO4QfA w==;
-X-CSE-ConnectionGUID: jN3LLEG/SJuDJd8dkHLu+Q==
-X-CSE-MsgGUID: m3TUbu0yQdObUoLpy5iNWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44374813"
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="44374813"
+ bh=T/UC8yynM7vRiio0y+Ei++CXDsZM+cdGYfzKWOVaFO4=;
+ b=cfA/Oihg9amiauZ4T6DinoZiMlh80hrM4zpevt9H9eux0oDAdhVP2Ta1
+ RCVJ7EsnPMzO1IinjnhSZwWT+irFkOJ/jzqbdczDx/2JEMrnkCXnvaNYq
+ IY/8ttExSk2orLdH9fU+XZOPCeC1j/OZDroUkZBO6OVNahkIv3UY4/g3Z
+ ndB6FdKjOh3bglegwPxXhbQVtZPjVcPQjxGeaNqw9DUnV7sRxQFJZXYRo
+ MY4ig/5yAJ6OMxQOpxNRYwH2sSuCSqvuHBYF9nLlEav4N4RwZ9iMB7kNn
+ o+jrwV3zho40RbjGSBfNFdYw7rC+3BFVN1mQICmdlAS+5LbUD6HtjCn/V A==;
+X-CSE-ConnectionGUID: xvbLUAqrQY+h+x0YI0bApA==
+X-CSE-MsgGUID: nxJj+Kq+RlWdFzJO6yXyOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44374816"
+X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="44374816"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 22:12:24 -0700
-X-CSE-ConnectionGUID: V6UC/UWTQBuwnhgGdEZnEQ==
-X-CSE-MsgGUID: G3bFntSIQjGlEDWln6XXxA==
+ 27 Mar 2025 22:12:27 -0700
+X-CSE-ConnectionGUID: nHGk2AVzRHG/OB+r1ta6Aw==
+X-CSE-MsgGUID: dYa1qEE7TESvCKhAvIe1cQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="125098765"
+X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; d="scan'208";a="125098777"
 Received: from mgolanimitul-x299-ud4-pro.iind.intel.com ([10.190.239.114])
- by orviesa009.jf.intel.com with ESMTP; 27 Mar 2025 22:12:23 -0700
+ by orviesa009.jf.intel.com with ESMTP; 27 Mar 2025 22:12:25 -0700
 From: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: uma.shankar@intel.com, ramanaidu.naladala@intel.com,
  mitulkumar.ajitkumar.golani@intel.com, ankit.k.nautiyal@intel.com
-Subject: [PATCH v2 1/2] tests/kms_vrr: Bucketize refresh rate tolerance
-Date: Fri, 28 Mar 2025 10:39:57 +0530
-Message-ID: <20250328050959.659508-2-mitulkumar.ajitkumar.golani@intel.com>
+Subject: [PATCH v2 2/2] HAX patch do not merge
+Date: Fri, 28 Mar 2025 10:39:58 +0530
+Message-ID: <20250328050959.659508-3-mitulkumar.ajitkumar.golani@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250328050959.659508-1-mitulkumar.ajitkumar.golani@intel.com>
 References: <20250328050959.659508-1-mitulkumar.ajitkumar.golani@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,86 +67,484 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reduce false failures while preserving timing accuracy. Introduce
-a small tolerance buffer based on refresh rate which accounts for
-HW/SW latency without compromising validation on HRR panel.
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 
---v2:
-- correct refresh rate criteria.
+HAX patch do not merge
 
 Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 ---
- tests/kms_vrr.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 3 deletions(-)
+ tests/intel-ci/fast-feedback.testlist    | 174 +-------------
+ tests/intel-ci/xe-fast-feedback.testlist | 278 +----------------------
+ 2 files changed, 12 insertions(+), 440 deletions(-)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index c4bb30f6a..c7be37ff8 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -410,6 +410,52 @@ do_flip(data_t *data, igt_fb_t *fb)
- 	igt_reset_timeout();
- }
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..2fd85fdf9 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,171 +1,9 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
  
-+static void
-+calculate_tolerance(uint64_t *threshold_hi, uint64_t *threshold_lo, uint64_t rates_ns)
-+{
-+	uint32_t refresh_rate = NSECS_PER_SEC/rates_ns;
-+
-+	if (refresh_rate < 0)
-+		return;
-+
-+	/*
-+	 * Current IGT implementation follows this sequence:
-+	 * 1. Perform a page flip (`do_flip`).
-+	 * 2. Wait for the flip completion event.
-+	 * 3. Compare the timestamp of the flip completion event with the previous frame’s completion timestamp.
-+	 * 4. Adjust CPU cycle burning based on the relative frame time.
-+	 *
-+	 * If a flip completes too early or too late, it is marked as out of tolerance.
-+	 * As a result, additional CPU cycles are burned to match the `target_ns`.
-+	 * Even if the next frame is on time, the total frame time now includes:
-+	 * Burned CPU cycle time (from the previous frame) + Flip completion event time.
-+	 * This leads to miscalculation, causing **false out-of-range detections**.
-+	 * The impact is more significant on High Refresh Rate (HRR) panels, where: The allowed tolerance
-+	 * window is smaller and more correction time is required. i.e. for 210hz (4.762ms), allowed range is
-+	 * 209hz(4.784ms) to 211hz(4.739ms). This comes just 23 microsecond tolerance, which is much lesser
-+	 * for accounting HW/SW latency, CPU burn cycle latency and correction logic applied in igt for
-+	 * validation.
-+	 *
-+	 * To address this implement a Bucketing Strategy:
-+	 * Provide a small tolerance buffer to allow IGT tests to account for correction. based on range of
-+	 * asked refresh rate. This prevents excessive failures due to minor timing adjustments.
-+	 * Although an imperical number but already IGT is living with that.
-+	 * This also ensures that asked refresh rate is not too off and always catch the real HW/software 
-+	 * latencies.
-+	 */
-+
-+	if (refresh_rate <= 120) {
-+		*threshold_hi = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) + 1);
-+		*threshold_lo = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) - 1);
-+	} else if (refresh_rate >= 120 && refresh_rate <= 240) {
-+		*threshold_hi = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) + 5);
-+		*threshold_lo = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) - 5);
-+	} else {
-+		*threshold_hi = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) + 10);
-+		*threshold_lo = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) - 10);
-+	}
-+}
-+
- /*
-  * Flips at the given rate and measures against the expected value.
-  * Returns the pass rate as a percentage from 0 - 100.
-@@ -439,9 +485,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		else
- 			exp_rate_ns = vtest_ns.max;
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@debugfs_test@basic-hwmon
+-igt@debugfs_test@sysfs
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all-engines
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all-engines
+-igt@gem_wait@wait@all-engines
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-4-tiled
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_dsc@dsc-basic
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_hdmi_inject@inject-audio
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_pm_backlight@basic-brightness
+-igt@kms_pm_rpm@basic-pci-d3-state
+-igt@kms_pm_rpm@basic-rte
+-igt@kms_psr@psr-primary-page-flip
+-igt@kms_psr@psr-cursor-plane-move
+-igt@kms_psr@psr-sprite-plane-onoff
+-igt@kms_psr@psr-primary-mmap-gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all-tests
++igt@kms_vrr@flip-basic
++igt@kms_vrr@flip-basic-fastset
++igt@kms_vrr@flip-dpms
++igt@kms_vrr@flipline
++igt@kms_vrr@flip-suspend
++igt@kms_vrr@max-min
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 0234d3e72..0c34fc4ee 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,275 +1,9 @@
+ # Should be the first test
+ igt@xe_module_load@load
  
--		/* Allow ~1 Hz deviation for different reasons causing delay. */
--		threshold_hi[i] = NSECS_PER_SEC / (((float)NSECS_PER_SEC / exp_rate_ns) + 1);
--		threshold_lo[i] = NSECS_PER_SEC / (((float)NSECS_PER_SEC / exp_rate_ns) - 1);
-+		calculate_tolerance(&threshold_hi[i], &threshold_lo[i], exp_rate_ns);
- 
- 		igt_info("Requested rate[%d]: %"PRIu64" ns, Expected rate between: %"PRIu64" ns to %"PRIu64" ns\n",
- 				i, rates_ns[i], threshold_hi[i], threshold_lo[i]);
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-
+-igt@kms_addfb_basic@addfb25-4-tiled
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_dsc@dsc-basic
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_hdmi_inject@inject-audio
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_prop_blob@basic
+-igt@kms_psr@psr-primary-page-flip
+-igt@kms_psr@psr-cursor-plane-move
+-igt@kms_psr@psr-sprite-plane-onoff
+-igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
+-igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
+-igt@xe_compute@compute-square
+-igt@xe_create@create-execqueues-noleak
+-igt@xe_create@create-execqueues-leak
+-igt@xe_create@create-invalid-mbz
+-igt@xe_create@create-massive-size
+-igt@xe_debugfs@base
+-igt@xe_debugfs@gt
+-igt@xe_debugfs@forcewake
+-igt@xe_dma_buf_sync@export-dma-buf-once-write-sync
+-igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
+-igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync
+-igt@xe_dma_buf_sync@export-dma-buf-once-write-read-sync
+-igt@xe_evict_ccs@evict-overcommit-simple
+-igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
+-igt@xe_exec_atomic@basic-dec-all
+-igt@xe_exec_atomic@basic-inc-all
+-igt@xe_exec_balancer@twice-virtual-basic
+-igt@xe_exec_balancer@no-exec-virtual-basic
+-igt@xe_exec_balancer@twice-cm-virtual-basic
+-igt@xe_exec_balancer@no-exec-cm-virtual-basic
+-igt@xe_exec_balancer@twice-virtual-userptr
+-igt@xe_exec_balancer@twice-cm-virtual-userptr
+-igt@xe_exec_balancer@twice-virtual-rebind
+-igt@xe_exec_balancer@twice-cm-virtual-rebind
+-igt@xe_exec_balancer@twice-virtual-userptr-rebind
+-igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
+-igt@xe_exec_balancer@twice-virtual-userptr-invalidate
+-igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
+-igt@xe_exec_balancer@twice-parallel-basic
+-igt@xe_exec_balancer@no-exec-parallel-basic
+-igt@xe_exec_balancer@twice-parallel-userptr
+-igt@xe_exec_balancer@twice-parallel-rebind
+-igt@xe_exec_balancer@twice-parallel-userptr-rebind
+-igt@xe_exec_balancer@twice-parallel-userptr-invalidate
+-igt@xe_exec_basic@twice-basic
+-igt@xe_exec_basic@no-exec-basic
+-igt@xe_exec_basic@twice-basic-defer-mmap
+-igt@xe_exec_basic@twice-basic-defer-bind
+-igt@xe_exec_basic@twice-userptr
+-igt@xe_exec_basic@twice-rebind
+-igt@xe_exec_basic@twice-userptr-rebind
+-igt@xe_exec_basic@twice-userptr-invalidate
+-igt@xe_exec_basic@no-exec-userptr-invalidate
+-igt@xe_exec_basic@twice-bindexecqueue
+-igt@xe_exec_basic@no-exec-bindexecqueue
+-igt@xe_exec_basic@twice-bindexecqueue-userptr
+-igt@xe_exec_basic@twice-bindexecqueue-rebind
+-igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_compute_mode@twice-basic
+-igt@xe_exec_compute_mode@twice-preempt-fence-early
+-igt@xe_exec_compute_mode@twice-userptr
+-igt@xe_exec_compute_mode@twice-rebind
+-igt@xe_exec_compute_mode@twice-userptr-rebind
+-igt@xe_exec_compute_mode@twice-userptr-invalidate
+-igt@xe_exec_compute_mode@twice-bindexecqueue
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
+-igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_queue_property@invalid-property
+-igt@xe_exec_reset@close-fd-no-exec
+-igt@xe_exec_reset@cm-close-fd-no-exec
+-igt@xe_exec_reset@virtual-close-fd-no-exec
+-igt@xe_exec_store@basic-store
+-igt@xe_gpgpu_fill@basic
+-igt@xe_gt_freq@freq_basic_api
+-igt@xe_gt_freq@freq_fixed_idle
+-igt@xe_gt_freq@freq_range_idle
+-igt@xe_huc_copy@huc_copy
+-igt@xe_intel_bb@add-remove-objects
+-igt@xe_intel_bb@bb-with-allocator
+-igt@xe_intel_bb@blit-reloc
+-igt@xe_intel_bb@blit-simple
+-igt@xe_intel_bb@create-in-region
+-igt@xe_intel_bb@delta-check
+-igt@xe_intel_bb@destroy-bb
+-igt@xe_intel_bb@intel-bb-blit-none
+-igt@xe_intel_bb@intel-bb-blit-x
+-igt@xe_intel_bb@intel-bb-blit-y
+-igt@xe_intel_bb@lot-of-buffers
+-igt@xe_intel_bb@offset-control
+-igt@xe_intel_bb@purge-bb
+-igt@xe_intel_bb@render
+-igt@xe_intel_bb@reset-bb
+-igt@xe_intel_bb@simple-bb
+-igt@xe_intel_bb@simple-bb-ctx
+-igt@xe_mmap@bad-extensions
+-igt@xe_mmap@bad-flags
+-igt@xe_mmap@bad-object
+-igt@xe_mmap@cpu-caching
+-igt@xe_mmap@system
+-igt@xe_mmap@vram
+-igt@xe_mmap@vram-system
+-igt@xe_pm_residency@gt-c6-on-idle
+-igt@xe_prime_self_import@basic-with_one_bo
+-igt@xe_prime_self_import@basic-with_fd_dup
+-#igt@xe_prime_self_import@basic-llseek-size
+-igt@xe_query@query-engines
+-igt@xe_query@query-mem-usage
+-igt@xe_query@query-gt-list
+-igt@xe_query@query-config
+-igt@xe_query@query-hwconfig
+-igt@xe_query@query-topology
+-igt@xe_query@query-invalid-extension
+-igt@xe_query@query-invalid-query
+-igt@xe_query@query-invalid-size
+-igt@xe_spin_batch@spin-basic
+-igt@xe_spin_batch@spin-batch
+-igt@xe_sriov_flr@flr-vf1-clear
+-igt@xe_sysfs_defaults@engine-defaults
+-igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
+-igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
+-igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
+-igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
+-igt@xe_sysfs_scheduler@job_timeout_ms-invalid
+-igt@xe_sysfs_scheduler@job_timeout_ms-min-max
+-#igt@xe_vm@bind-once
+-#igt@xe_vm@scratch
+-igt@xe_vm@shared-pte-page
+-igt@xe_vm@shared-pde-page
+-igt@xe_vm@shared-pde2-page
+-igt@xe_vm@shared-pde3-page
+-igt@xe_vm@bind-execqueues-independent
+-igt@xe_vm@large-split-binds-268435456
+-igt@xe_vm@munmap-style-unbind-one-partial
+-igt@xe_vm@munmap-style-unbind-end
+-igt@xe_vm@munmap-style-unbind-front
+-igt@xe_vm@munmap-style-unbind-userptr-one-partial
+-igt@xe_vm@munmap-style-unbind-userptr-end
+-igt@xe_vm@munmap-style-unbind-userptr-front
+-igt@xe_vm@munmap-style-unbind-userptr-inval-end
+-igt@xe_vm@munmap-style-unbind-userptr-inval-front
+-igt@xe_pat@userptr-coh-none
+-igt@xe_pat@prime-self-import-coh
+-igt@xe_pat@prime-external-import-coh
+-igt@xe_pat@pat-index-all
+-igt@xe_pat@pat-index-xelp
+-igt@xe_pat@pat-index-xehpc
+-igt@xe_pat@pat-index-xelpg
+-igt@xe_pat@pat-index-xe2
+-igt@xe_waitfence@abstime
+-igt@xe_waitfence@engine
+-igt@xe_waitfence@reltime
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-igt@core_hotunplug@unbind-rebind
+-
+-# Run KUnit tests at the end
+-igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit
+-igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit
+-igt@xe_live_ktest@xe_dma_buf
+-igt@xe_live_ktest@xe_migrate
+-
+-# Move fault_mode tests at the end to unblock execution
+-igt@xe_exec_fault_mode@twice-basic
+-igt@xe_exec_fault_mode@many-basic
+-igt@xe_exec_fault_mode@twice-userptr
+-igt@xe_exec_fault_mode@twice-rebind
+-igt@xe_exec_fault_mode@twice-userptr-rebind
+-igt@xe_exec_fault_mode@twice-userptr-invalidate
+-igt@xe_exec_fault_mode@twice-bindexecqueue
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_fault_mode@twice-basic-imm
+-igt@xe_exec_fault_mode@twice-userptr-imm
+-igt@xe_exec_fault_mode@twice-rebind-imm
+-igt@xe_exec_fault_mode@twice-userptr-rebind-imm
+-igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
+-igt@xe_exec_fault_mode@twice-basic-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-prefetch
+-igt@xe_exec_fault_mode@twice-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
+-igt@xe_exec_fault_mode@twice-invalid-fault
+-igt@xe_exec_fault_mode@twice-invalid-userptr-fault
+-igt@xe_exec_threads@threads-basic
+-igt@xe_exec_threads@threads-mixed-basic
+-igt@xe_exec_threads@threads-mixed-shared-vm-basic
+-igt@xe_exec_threads@threads-mixed-fd-basic
+-igt@xe_exec_threads@threads-mixed-userptr-invalidate
+-igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
+-igt@xe_evict@evict-beng-small
+-igt@xe_evict@evict-beng-small-cm
+-igt@xe_evict@evict-beng-small-external
+-igt@xe_evict@evict-beng-small-external-cm
+-igt@xe_evict@evict-beng-small-multi-vm
+-igt@xe_evict@evict-small
+-igt@xe_evict@evict-small-cm
+-igt@xe_evict@evict-small-external
+-igt@xe_evict@evict-small-external-cm
+-igt@xe_evict@evict-small-multi-vm
++igt@kms_vrr@flip-basic
++igt@kms_vrr@flip-basic-fastset
++igt@kms_vrr@flip-dpms
++igt@kms_vrr@flipline
++igt@kms_vrr@flip-suspend
++igt@kms_vrr@max-min
 -- 
 2.48.1
 
