@@ -4,27 +4,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D51CAC36010
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 07:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 864A7C28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 07:59:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 53A8410E992;
-	Fri, 28 Mar 2025 07:45:36 +0000 (UTC)
-Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2D6310E992;
- Fri, 28 Mar 2025 07:45:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0227673595878955432=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4011D10E98C;
+	Fri, 28 Mar 2025 07:59:36 +0000 (UTC)
+X-Greylist: delayed 416 seconds by postgrey-1.36 at gabe;
+ Fri, 28 Mar 2025 07:59:34 UTC
+Received: from rtg-sunil-navi33.amd.com (unknown [165.204.156.251])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AF6E10E98C
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 07:59:34 +0000 (UTC)
+Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
+ 52S7xPRH1462877; Fri, 28 Mar 2025 13:29:25 +0530
+Received: (from sunil@localhost)
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 52S7xPe91462876;
+ Fri, 28 Mar 2025 13:29:25 +0530
+From: Sunil Khatri <sunil.khatri@amd.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Strawbridge@rtg-sunil-navi33.amd.com,
+ Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
+Subject: [PATCH v2 01/19] drm-uapi/amdgpu: sync with drm-next
+Date: Fri, 28 Mar 2025 13:29:05 +0530
+Message-Id: <20250328075923.1462839-1-sunil.khatri@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_support_for_Xe_in_runti?=
- =?utf-8?q?me-pm_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Soham Purkait" <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Mar 2025 07:45:34 -0000
-Message-ID: <174314793472.13935.7028002043637412107@e6b6f09ec485>
-X-Patchwork-Hint: ignore
-References: <20250328065553.1843028-1-soham.purkait@intel.com>
-In-Reply-To: <20250328065553.1843028-1-soham.purkait@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +45,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0227673595878955432==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Sync with drm-next commit ("e0400bf7d91ed477b827a674e5d64406c78ffd48")
 
-== Series Details ==
+This patch introduces new UAPI/IOCTL for usermode graphics
+queue. IGT test cases fill this structure and request
+the graphics driver to add a graphics work queue for it.
+The output of this UAPI is a queue id.
 
-Series: Add support for Xe in runtime-pm (rev4)
-URL   : https://patchwork.freedesktop.org/series/146379/
-State : success
+This UAPI maps the queue into GPU, so the graphics app can start
+submitting work to the queue as soon as the call returns.
 
-== Summary ==
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+---
+ include/drm-uapi/amdgpu_drm.h | 123 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
 
-CI Bug Log - changes from XEIGT_8291_BAT -> XEIGTPW_12868_BAT
-====================================================
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index efe5de6ce..d780e1f2a 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -54,6 +54,7 @@ extern "C" {
+ #define DRM_AMDGPU_VM			0x13
+ #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
+ #define DRM_AMDGPU_SCHED		0x15
++#define DRM_AMDGPU_USERQ		0x16
+ 
+ #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
+ #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
+@@ -71,6 +72,7 @@ extern "C" {
+ #define DRM_IOCTL_AMDGPU_VM		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_VM, union drm_amdgpu_vm)
+ #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
+ #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
++#define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
+ 
+ /**
+  * DOC: memory domains
+@@ -319,6 +321,127 @@ union drm_amdgpu_ctx {
+ 	union drm_amdgpu_ctx_out out;
+ };
+ 
++/* user queue IOCTL operations */
++#define AMDGPU_USERQ_OP_CREATE	1
++#define AMDGPU_USERQ_OP_FREE	2
++
++/*
++ * This structure is a container to pass input configuration
++ * info for all supported userqueue related operations.
++ * For operation AMDGPU_USERQ_OP_CREATE: user is expected
++ *  to set all fields, excep the parameter 'queue_id'.
++ * For operation AMDGPU_USERQ_OP_FREE: the only input parameter expected
++ *  to be set is 'queue_id', eveything else is ignored.
++ */
++struct drm_amdgpu_userq_in {
++	/** AMDGPU_USERQ_OP_* */
++	__u32	op;
++	/** Queue id passed for operation USERQ_OP_FREE */
++	__u32	queue_id;
++	/** the target GPU engine to execute workload (AMDGPU_HW_IP_*) */
++	__u32   ip_type;
++	/**
++	 * @doorbell_handle: the handle of doorbell GEM object
++	 * associated with this userqueue client.
++	 */
++	__u32   doorbell_handle;
++	/**
++	 * @doorbell_offset: 32-bit offset of the doorbell in the doorbell bo.
++	 * Kernel will generate absolute doorbell offset using doorbell_handle
++	 * and doorbell_offset in the doorbell bo.
++	 */
++	__u32   doorbell_offset;
++	__u32 _pad;
++	/**
++	 * @queue_va: Virtual address of the GPU memory which holds the queue
++	 * object. The queue holds the workload packets.
++	 */
++	__u64   queue_va;
++	/**
++	 * @queue_size: Size of the queue in bytes, this needs to be 256-byte
++	 * aligned.
++	 */
++	__u64   queue_size;
++	/**
++	 * @rptr_va : Virtual address of the GPU memory which holds the ring RPTR.
++	 * This object must be at least 8 byte in size and aligned to 8-byte offset.
++	 */
++	__u64   rptr_va;
++	/**
++	 * @wptr_va : Virtual address of the GPU memory which holds the ring WPTR.
++	 * This object must be at least 8 byte in size and aligned to 8-byte offset.
++	 *
++	 * Queue, RPTR and WPTR can come from the same object, as long as the size
++	 * and alignment related requirements are met.
++	 */
++	__u64   wptr_va;
++	/**
++	 * @mqd: MQD (memory queue descriptor) is a set of parameters which allow
++	 * the GPU to uniquely define and identify a usermode queue.
++	 *
++	 * MQD data can be of different size for different GPU IP/engine and
++	 * their respective versions/revisions, so this points to a __u64 *
++	 * which holds IP specific MQD of this usermode queue.
++	 */
++	__u64 mqd;
++	/**
++	 * @size: size of MQD data in bytes, it must match the MQD structure
++	 * size of the respective engine/revision defined in UAPI for ex, for
++	 * gfx11 workloads, size = sizeof(drm_amdgpu_userq_mqd_gfx11).
++	 */
++	__u64 mqd_size;
++};
++
++/* The structure to carry output of userqueue ops */
++struct drm_amdgpu_userq_out {
++	/**
++	 * For operation AMDGPU_USERQ_OP_CREATE: This field contains a unique
++	 * queue ID to represent the newly created userqueue in the system, otherwise
++	 * it should be ignored.
++	 */
++	__u32	queue_id;
++	__u32 _pad;
++};
++
++union drm_amdgpu_userq {
++	struct drm_amdgpu_userq_in in;
++	struct drm_amdgpu_userq_out out;
++};
++
++/* GFX V11 IP specific MQD parameters */
++struct drm_amdgpu_userq_mqd_gfx11 {
++	/**
++	 * @shadow_va: Virtual address of the GPU memory to hold the shadow buffer.
++	 * Use AMDGPU_INFO_IOCTL to find the exact size of the object.
++	 */
++	__u64   shadow_va;
++	/**
++	 * @csa_va: Virtual address of the GPU memory to hold the CSA buffer.
++	 * Use AMDGPU_INFO_IOCTL to find the exact size of the object.
++	 */
++	__u64   csa_va;
++};
++
++/* GFX V11 SDMA IP specific MQD parameters */
++struct drm_amdgpu_userq_mqd_sdma_gfx11 {
++	/**
++	 * @csa_va: Virtual address of the GPU memory to hold the CSA buffer.
++	 * This must be a from a separate GPU object, and use AMDGPU_INFO IOCTL
++	 * to get the size.
++	 */
++	__u64   csa_va;
++};
++
++/* GFX V11 Compute IP specific MQD parameters */
++struct drm_amdgpu_userq_mqd_compute_gfx11 {
++	/**
++	 * @eop_va: Virtual address of the GPU memory to hold the EOP buffer.
++	 * This must be a from a separate GPU object, and use AMDGPU_INFO IOCTL
++	 * to get the size.
++	 */
++	__u64   eop_va;
++};
++
+ /* vm ioctl */
+ #define AMDGPU_VM_OP_RESERVE_VMID	1
+ #define AMDGPU_VM_OP_UNRESERVE_VMID	2
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12868_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_intel_bb@intel-bb-blit-y:
-    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#3970])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8291/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12868/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html
-
-  
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-
-
-Build changes
--------------
-
-  * IGT: IGT_8291 -> IGTPW_12868
-  * Linux: xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874 -> xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0
-
-  IGTPW_12868: 12868
-  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874: 274d97eed4e8376b7a66b8904066baed6a1ae874
-  xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0: f823caa91ed490160b8e87792d3bb26ae3e87de0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12868/index.html
-
---===============0227673595878955432==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add support for Xe in runtime-pm (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146379/">https://patchwork.freedesktop.org/series/146379/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12868/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12868/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8291_BAT -&gt; XEIGTPW_12868_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12868_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_intel_bb@intel-bb-blit-y:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8291/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12868/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-y.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8291 -&gt; IGTPW_12868</li>
-<li>Linux: xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874 -&gt; xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0</li>
-</ul>
-<p>IGTPW_12868: 12868<br />
-  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874: 274d97eed4e8376b7a66b8904066baed6a1ae874<br />
-  xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0: f823caa91ed490160b8e87792d3bb26ae3e87de0</p>
-
-</body>
-</html>
-
---===============0227673595878955432==--
