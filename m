@@ -4,22 +4,20 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 864A7C28B20
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 07:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54F3BC28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 08:04:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4011D10E98C;
-	Fri, 28 Mar 2025 07:59:36 +0000 (UTC)
-X-Greylist: delayed 416 seconds by postgrey-1.36 at gabe;
- Fri, 28 Mar 2025 07:59:34 UTC
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09CB210E98C;
+	Fri, 28 Mar 2025 08:04:13 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AF6E10E98C
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 07:59:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC86410E98C
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 08:04:11 +0000 (UTC)
 Received: from rtg-sunil-navi33.amd.com (localhost [127.0.0.1])
  by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id
- 52S7xPRH1462877; Fri, 28 Mar 2025 13:29:25 +0530
+ 52S846t41464784; Fri, 28 Mar 2025 13:34:06 +0530
 Received: (from sunil@localhost)
- by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 52S7xPe91462876;
- Fri, 28 Mar 2025 13:29:25 +0530
+ by rtg-sunil-navi33.amd.com (8.15.2/8.15.2/Submit) id 52S846pQ1464783;
+ Fri, 28 Mar 2025 13:34:06 +0530
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Alex Deucher <alexander.deucher@amd.com>,
@@ -28,8 +26,8 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
  Strawbridge@rtg-sunil-navi33.amd.com,
  Michael <Michael.Strawbridge@amd.com>, Sunil Khatri <sunil.khatri@amd.com>
 Subject: [PATCH v2 01/19] drm-uapi/amdgpu: sync with drm-next
-Date: Fri, 28 Mar 2025 13:29:05 +0530
-Message-Id: <20250328075923.1462839-1-sunil.khatri@amd.com>
+Date: Fri, 28 Mar 2025 13:33:46 +0530
+Message-Id: <20250328080404.1464740-1-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
