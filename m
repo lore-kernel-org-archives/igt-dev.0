@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F185AC36014
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 10:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B36EC28B20
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Mar 2025 11:03:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AAFB210E9E5;
-	Fri, 28 Mar 2025 10:59:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GfEMLFv6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 619B410E9E3
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Mar 2025 10:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743159592; x=1774695592;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=s3OeRMf2mc2ngNPjE9aHLj5g6UDGhyCWG1y6LcpymXE=;
- b=GfEMLFv6Ow/QsT1QYw5WRyqxQz1bh/x9xN/thzSC9dgxy2LNpUaBgZW6
- siyHz78kJHoHZ7YDEmaeAWzgYKHXRplzGIAgRMP3oM2B3TZSdwTxvj27m
- NxJT+2Hp/SMTNAvgXNNSNkcK6+d2Dw3i5njtYEtrwthzqYMMyCA11FvyM
- x24AKOHdvDqhMwfuieZXV0mxKnzZ2FjumTCSi2rft3fGvbjGr5g3o+hDj
- VmPfBzOKmCA23leRnr6ySpbDrTMGetiqMxyBhGP9G9AX1RfTTDzOicKCY
- HCHXzk5JNAiuJP7JKaWajuev2wVMcN1jwfmMUXf8w5VqlzjgQD9D5sZ92 g==;
-X-CSE-ConnectionGUID: hHIXtJMORAiZ7FJAPQwX2Q==
-X-CSE-MsgGUID: PDRrW1uFTSq/BbkZxMKxnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="55886306"
-X-IronPort-AV: E=Sophos;i="6.14,283,1736841600"; d="scan'208";a="55886306"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2025 03:59:52 -0700
-X-CSE-ConnectionGUID: XDDQdqNPTcmRj7NKIAd8nA==
-X-CSE-MsgGUID: qGJeQmJGSs64qVJnwIrBZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,283,1736841600"; d="scan'208";a="130271409"
-Received: from labhost1.iind.intel.com ([10.190.230.69])
- by orviesa003.jf.intel.com with ESMTP; 28 Mar 2025 03:59:51 -0700
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: lucas.demarchi@intel.com,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v4 3/3] tests/intel/xe_fault_injection: Do not assert
- for probe_guc_fail_* functions.
-Date: Fri, 28 Mar 2025 16:45:32 +0530
-Message-Id: <20250328111532.16620-4-satyanarayana.k.v.p@intel.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250328111532.16620-1-satyanarayana.k.v.p@intel.com>
-References: <20250328111532.16620-1-satyanarayana.k.v.p@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B79E610E9F8;
+	Fri, 28 Mar 2025 11:03:38 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3C1910EA0D;
+ Fri, 28 Mar 2025 11:03:36 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7461757876948693065=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/1=5D_tests/intel/xe=5Fexec=5Fsip=5Feudebug=3A_disable_some?=
+ =?utf-8?q?_tests_on_VF?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Sokolowski" <jan.sokolowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Mar 2025 11:03:36 -0000
+Message-ID: <174315981698.14706.13657703172810617629@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250328081916.251987-1-jan.sokolowski@intel.com>
+In-Reply-To: <20250328081916.251987-1-jan.sokolowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,79 +38,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the current implementation, test asserts if the captured error is not same as
-injected error. It is possible that the error received is translated to other
-error which can be returned to application and in some scenarios driver retries
-in case of failure and so, no error might be captured.
+--===============7461757876948693065==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Considering above cases, added flags to control the assertion after injecting
-error. Test does not assert for probe_guc_fail_* functions as driver some times
-retries in case of failure. The main idea of injecting errors for these guc
-functions is to check the robustness of the driver.
+== Series Details ==
 
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_fault_injection.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Series: series starting with [i-g-t,1/1] tests/intel/xe_exec_sip_eudebug: disable some tests on VF
+URL   : https://patchwork.freedesktop.org/series/146928/
+State : success
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index a49070b4d..a03dd3fbe 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -33,6 +33,11 @@ enum injection_list_action {
- 	INJECTION_LIST_REMOVE,
- };
- 
-+enum assert_flags {
-+	INJECT_ASSERT_ON_FAIL,
-+	INJECT_NOASSERT_ON_FAIL,
-+};
-+
- struct fault_injection_params {
- 	/* @probability: Likelihood of failure injection, in percent. */
- 	uint32_t probability;
-@@ -234,7 +239,7 @@ static void set_retval(const char function_name[], long long retval)
-  * @xe_wopcm_init:		xe_wopcm_init
-  */
- static void
--inject_fault_probe(int fd, char pci_slot[], const char function_name[])
-+inject_fault_probe(int fd, int flags, char pci_slot[], const char function_name[])
- {
- 	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
- 		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
-@@ -243,7 +248,8 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 	injection_list_do(INJECTION_LIST_ADD, function_name);
- 	set_retval(function_name, INJECT_ERRNO);
- 	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
--	igt_assert_eq(-errno, INJECT_ERRNO);
-+	if (flags & INJECT_ASSERT_ON_FAIL)
-+		igt_assert_eq(-errno, INJECT_ERRNO);
- 	injection_list_do(INJECTION_LIST_REMOVE, function_name);
- }
- 
-@@ -270,7 +276,7 @@ static void probe_fail_guc(int fd, char pci_slot[], const char function_name[],
- 	for (int i = iter_start; i < iter_end; i++) {
- 		fault_params->space = i;
- 		setup_injection_fault(fault_params);
--		inject_fault_probe(fd, pci_slot, function_name);
-+		inject_fault_probe(fd, INJECT_NOASSERT_ON_FAIL, pci_slot, function_name);
- 		igt_kmod_unbind("xe", pci_slot);
- 	}
- }
-@@ -557,7 +563,7 @@ igt_main
- 
- 	for (const struct section *s = probe_fail_functions; s->name; s++)
- 		igt_subtest_f("inject-fault-probe-function-%s", s->name)
--			inject_fault_probe(fd, pci_slot, s->name);
-+			inject_fault_probe(fd, INJECT_ASSERT_ON_FAIL, pci_slot, s->name);
- 
-    for (const struct section *s = guc_fail_functions; s->name; s++)
-        igt_subtest_f("probe-fail-guc-%s", s->name) {
--- 
-2.35.3
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8291_BAT -> XEIGTPW_12871_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12871_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_intel_bb@blit-reloc:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#3970])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8291/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12871/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html
+
+  
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8291 -> IGTPW_12871
+  * Linux: xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874 -> xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0
+
+  IGTPW_12871: 12871
+  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874: 274d97eed4e8376b7a66b8904066baed6a1ae874
+  xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0: f823caa91ed490160b8e87792d3bb26ae3e87de0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12871/index.html
+
+--===============7461757876948693065==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/1] tests/intel/xe_exec_sip_eudebug: disable some tests on VF</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146928/">https://patchwork.freedesktop.org/series/146928/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12871/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12871/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8291_BAT -&gt; XEIGTPW_12871_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12871_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_intel_bb@blit-reloc:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8291/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12871/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8291 -&gt; IGTPW_12871</li>
+<li>Linux: xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874 -&gt; xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0</li>
+</ul>
+<p>IGTPW_12871: 12871<br />
+  IGT_8291: a1809bc9d786d9b37a22e3e5e4810c6a0c84480b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2863-274d97eed4e8376b7a66b8904066baed6a1ae874: 274d97eed4e8376b7a66b8904066baed6a1ae874<br />
+  xe-2867-f823caa91ed490160b8e87792d3bb26ae3e87de0: f823caa91ed490160b8e87792d3bb26ae3e87de0</p>
+
+</body>
+</html>
+
+--===============7461757876948693065==--
