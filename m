@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933B9C28B20
-	for <igt-dev@archiver.kernel.org>; Sun, 30 Mar 2025 10:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3767C28B20
+	for <igt-dev@archiver.kernel.org>; Sun, 30 Mar 2025 10:46:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 459A710E105;
-	Sun, 30 Mar 2025 10:29:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6EAD610E105;
+	Sun, 30 Mar 2025 10:46:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ANKVXcg8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ScZ++J0X";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33A7B10E105
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Mar 2025 10:29:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3E8F10E105
+ for <igt-dev@lists.freedesktop.org>; Sun, 30 Mar 2025 10:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743330574; x=1774866574;
+ t=1743331584; x=1774867584;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DT7AlQgaZigR6u1ESfcxF2NZPETjJS3oNex0SEUTnqY=;
- b=ANKVXcg8vdC/npOVuMo9TG8bPo1uylbIH7rvr04aoEYHPIy2OljpvRuV
- 4iosnLOJm3oUAhXfguC8tNRDUAFIp5d4Zsv5nTS48YD2BOnMQ7eKh6/5E
- UJ8o28FYTDm+RUzwcIogwbvlxPPYcnP9UBBQYbO5T/wYDT7sxnNC70F95
- iJje4kTKCKEnUnMevu8bPyxsOI+3E0wk7wpnkD6EnbJ+B7pS7rO+LWprU
- ZPfl8WDnmSFso++TAnuSJLRWRQYk46RHWz3abTs4TCJXIA06lYskRyHPC
- qWro1reJa5EV2Sx0hMLXmC7NsnkMTWKWW6gVoa89xHvXY5dZJ6rtvNRwr g==;
-X-CSE-ConnectionGUID: sHl1hfPzRq+/Ujx/ZCwU9Q==
-X-CSE-MsgGUID: Zpi9fVmqRw+TY3rH45LqQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11388"; a="48422498"
-X-IronPort-AV: E=Sophos;i="6.14,288,1736841600"; d="scan'208";a="48422498"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2025 03:29:33 -0700
-X-CSE-ConnectionGUID: f0AmRgwhQZe5bC1Hvx2p+A==
-X-CSE-MsgGUID: L4XP+BmKToy3rNLOb2ZesA==
+ bh=jkk/kuoWQ7JhAqjv2KTa4Gqm/4PfdtOtzmjaWGMS1zE=;
+ b=ScZ++J0X3xZI+LKRUU5Ki7tHrrYNGfKRKS1NWQy7GJ8ryOo7uWY70e+j
+ o1YqKXVPXq3imfjuk7HZqsDxUOcMKNlsBH8FulCvqQhrZI+SmaJaR+TwA
+ LUlHH/sysfi3BgEcU9VK1jWS27RgZjuUuVvXkRkqIG4FiIicmvSK8JekV
+ Y8SZZJ8fvaDBGf0ZV23vlhQArkW+WZ4hkgaGwoHv6UYck+3mI8UXyzDyn
+ jmf5HYSrF1LF5Mun+ibPONmTFX1EAG7+yLP/vMfTpkc2gMvP8s7FNgVFi
+ fZWklnLB0mzaH8lAMy7p6QS6YX2ORLC6a8pnmy0coJ3myVeiiiHi5BpTE w==;
+X-CSE-ConnectionGUID: jl7NnX0QRz6vFWXdyit8eQ==
+X-CSE-MsgGUID: m7KABZzWRLiZZNtx5wD+vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11388"; a="48300763"
+X-IronPort-AV: E=Sophos;i="6.14,288,1736841600"; d="scan'208";a="48300763"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2025 03:46:22 -0700
+X-CSE-ConnectionGUID: UVqolFECTsGc2e5iIuwozw==
+X-CSE-MsgGUID: kkh9lIGwSyyVXeP80pkDFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,288,1736841600"; d="scan'208";a="131070754"
+X-IronPort-AV: E=Sophos;i="6.14,288,1736841600"; d="scan'208";a="156774451"
 Received: from linux-tiger-lake-client-platform.iind.intel.com ([10.227.88.36])
- by orviesa005.jf.intel.com with ESMTP; 30 Mar 2025 03:29:33 -0700
+ by orviesa002.jf.intel.com with ESMTP; 30 Mar 2025 03:46:21 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: imre.deak@intel.com,
 	Mohammed Thasleem <mohammed.thasleem@intel.com>
 Subject: [PATCH i-g-t v3] tests/intel/kms_pm_dc: Remove PKGC10 dependency to
  validate DC6
-Date: Sun, 30 Mar 2025 15:58:54 +0530
-Message-Id: <20250330102854.35708-1-mohammed.thasleem@intel.com>
+Date: Sun, 30 Mar 2025 16:15:44 +0530
+Message-Id: <20250330104544.41774-1-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250217170809.175276-1-mohammed.thasleem@intel.com>
 References: <20250217170809.175276-1-mohammed.thasleem@intel.com>
@@ -68,7 +68,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-DC6 counter was removed MTL onwards, so pkgc10 counter is used
+DC6 counter was removed MTL onwards, so pkc10 counter is used
 to validated DC6 tests but with the new approach of kmd changes
 created DC6 debugfs entry counter to validated DC6 tests and
 removeing the existing PKGC10 code.
@@ -79,11 +79,11 @@ v3: Remove display version check. (Imre)
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ tests/intel/kms_pm_dc.c | 76 +++++++++--------------------------------
+ 1 file changed, 17 insertions(+), 59 deletions(-)
 
 diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 2491cd1f8..29e5758fc 100644
+index 2491cd1f8..56488083d 100644
 --- a/tests/intel/kms_pm_dc.c
 +++ b/tests/intel/kms_pm_dc.c
 @@ -285,7 +285,13 @@ static uint32_t read_dc_counter(uint32_t debugfs_fd, int dc_flag)
@@ -125,6 +125,92 @@ index 2491cd1f8..29e5758fc 100644
  		break;
  	default:
  		igt_assert_f(0, "Unknown DC counter %d\n", dc_flag);
+@@ -417,20 +429,6 @@ static void test_dc3co_vpb_simulation(data_t *data)
+ 	cleanup_dc3co_fbs(data);
+ }
+ 
+-static void psr_dpms(data_t *data, int mode)
+-{
+-	igt_output_t *output;
+-
+-	for_each_connected_output(&data->display, output) {
+-		drmModeConnectorPtr connector = output->config.connector;
+-
+-		if (connector->connector_type == DRM_MODE_CONNECTOR_eDP)
+-			continue;
+-
+-		kmstest_set_connector_dpms(data->drm_fd, connector, mode);
+-	}
+-}
+-
+ static void test_dc5_retention_flops(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter_before_psr;
+@@ -721,40 +719,6 @@ static void test_deep_pkgc_state(data_t *data)
+ 	igt_assert_f(pkgc_flag, "PKGC10 is not achieved.\n");
+ }
+ 
+-static void test_pkgc_state_dpms(data_t *data)
+-{
+-	unsigned int timeout_sec = 6;
+-	unsigned int prev_value = 0, cur_value = 0;
+-
+-	prev_value = read_pkgc_counter(data->debugfs_root_fd);
+-	setup_dc_dpms(data);
+-	dpms_off(data);
+-	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+-		  timeout_sec * 1000, 100);
+-	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieved.\n");
+-	dpms_on(data);
+-	cleanup_dc_dpms(data);
+-}
+-
+-static void test_pkgc_state_psr(data_t *data)
+-{
+-	unsigned int timeout_sec = 6;
+-	unsigned int prev_value = 0, cur_value = 0;
+-
+-	prev_value = read_pkgc_counter(data->debugfs_root_fd);
+-	setup_output(data);
+-	setup_primary(data);
+-	igt_require(!psr_disabled_check(data->debugfs_fd));
+-	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
+-	psr_dpms(data, DRM_MODE_DPMS_OFF);
+-	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+-		  timeout_sec * 1000, 100);
+-	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieved.\n");
+-	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
+-	psr_dpms(data, DRM_MODE_DPMS_ON);
+-	cleanup_dc_psr(data);
+-}
+-
+ static void kms_poll_state_restore(int sig)
+ {
+ 	int sysfs_fd;
+@@ -818,10 +782,7 @@ igt_main
+ 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+ 			      "PC8+ residencies not supported\n");
+-		if (intel_display_ver(data.devid) >= 14)
+-			test_pkgc_state_psr(&data);
+-		else
+-			test_dc_state_psr(&data, CHECK_DC6);
++		test_dc_state_psr(&data, CHECK_DC6);
+ 	}
+ 
+ 	igt_describe("This test validates display engine entry to PKGC10 state "
+@@ -866,10 +827,7 @@ igt_main
+ 	igt_subtest("dc6-dpms") {
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+ 			      "PC8+ residencies not supported\n");
+-		if (intel_display_ver(data.devid) >= 14)
+-			test_pkgc_state_dpms(&data);
+-		else
+-			test_dc_state_dpms(&data, CHECK_DC6);
++		test_dc_state_dpms(&data, CHECK_DC6);
+ 
+ 	}
+ 
 -- 
 2.34.1
 
