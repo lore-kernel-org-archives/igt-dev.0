@@ -4,61 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E51C36013
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Mar 2025 18:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 203BDC3600B
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Mar 2025 19:12:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2FF6210E478;
-	Mon, 31 Mar 2025 18:06:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9828410E162;
+	Mon, 31 Mar 2025 19:12:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fTA9UpdZ";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="NLo32cXF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F83110E477
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Mar 2025 18:06:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743444379; x=1774980379;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7IEEMbQ6ilmQjoUxQ2un5V9kDHvqTu3bSIAonb5tJ1I=;
- b=fTA9UpdZGt62j4EoRZMnnK318n4YBs5DeeR7hZxQZKrKunvpoRUUZbcz
- xUsx2184sae5lzWX8QqNpcq9cwr11imZtAIe9tRgZ0Da4QRjtorlgDKyk
- MH+o2WZ95RD2Wz2tJF11c5M7KdTFWv4Ph8G95+ummdXjVR+VWZ1HfwQpC
- QC/2F78WtNv5bD0aS2+y7WpfobEVDdee06Wof+NKsM2Lis66ZE24C6JsA
- XFmaEtr9/YzqzmLyE0O885E93V7xUVsg/BtBzVq6ZPULwjv+Zez2xGYPG
- pU7o2P16IxWT2PyQ4efsgSmB2jVwDnHwO/vtfI83GmPQEj54wMkcXssDN g==;
-X-CSE-ConnectionGUID: tmRSaF6WTDWx8lBIZp8gdw==
-X-CSE-MsgGUID: vgUwshsQRRGsmLiX+nK4iQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="56112787"
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; d="scan'208";a="56112787"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2025 11:06:19 -0700
-X-CSE-ConnectionGUID: EvM0wsd3R5usxDupoWT+HA==
-X-CSE-MsgGUID: A//y0JxcTamxfX/WoInBNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; d="scan'208";a="131376248"
-Received: from mstancu-mobl1.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.118.0])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2025 11:06:15 -0700
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- himanshu.girotra@intel.com, aditya.chauhan@intel.com,
- pravalika.gurram@intel.com, sai.gowtham.ch@intel.com,
- ramadevi.gandi@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- kamil.konieczny@linux.intel.com, katarzyna.piecielska@intel.com
-Subject: [PATCH v4 i-g-t 1/1] tests/intel/intel_sysfs_debugfs Unify sysfs and
- debugfs testing
-Date: Mon, 31 Mar 2025 20:05:36 +0200
-Message-ID: <20250331180538.57393-2-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250331180538.57393-1-peter.senna@linux.intel.com>
-References: <20250331180538.57393-1-peter.senna@linux.intel.com>
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2079.outbound.protection.outlook.com [40.107.94.79])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3321010E162
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Mar 2025 19:12:01 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k5COvM9BuLx8SqyYZoQ8i1cqt9d6pwp0jPcsd0GLeVV97fqUZjQdzxmX7rrXjw+UxJY55pND0Hooq7Nz2gmxnSNQYSWMJzG4igD5EvXzhtVcna2pig0xXbzlif9tMEkgrLYGLXsx0EskNDHKtA1UdmEOtJSNHDN1ghe8afCQWGc6/VBC7wQ5Pqewiy0c80K6OitD2dOnBZouUWDcInWvuwSfef7Szw0C3xtc8AmFEDq8eXtOGTdAnFVeVpK4nvvxNKz0RRDvynxCulRdbeq0BjP8nClAGO0N+fBjeNt7pV4ixoxtbZGPnuRxvLKwH2DBUjCcmaEpovUcskvJzKBwPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UPKPCU32G1GeMQPuQpGiqfzDz+BuMS3HHkbMBmOD4xA=;
+ b=iLi3nzUZYVmHuwK4d45/0mKDrP0NNsj5LdrJXF3cxQJ9eFWLysmgD05maocLZ2X4Bye0ScMwhojC6gHbNuoZlgvdz8HxBwzBt2cwcohebbql98MPmcRa5FQn19JdaO++6UHW6SEjLol0/4Parv03NkNm/9wNm3xZpG1dIcbbj7DBWjooYn3nIF/9/KJRMSMlh5+SPQqoZSWCqyZIbSvGQONijx4o6G9O0BQmaBkMO8SaUrAybgK4Z1CG9D65uvDQRjOpf3VRY9HnIuqpd8SjxYkQM8p2DVtoQ6AtN/iAPh/VqFx0C4L0Urhvz/fFu655DuO3Db6xgy/5W2ezv74zxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UPKPCU32G1GeMQPuQpGiqfzDz+BuMS3HHkbMBmOD4xA=;
+ b=NLo32cXFdlGWqS1dk2fhNSxeaGgL47nKKHP0ij9j152gyBR4OwfjgtvgsEPdksCL+eYBjO8rTJShqx0nu9Y20q3/FUOfOxBSmkU4eOVS0J/7+iPR98pcTXV8CNMJbhOydPvV1sLOykmFFT2kBwnG8o52Fh12f5AnI6HwFMm8X9k=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by SJ2PR12MB8881.namprd12.prod.outlook.com (2603:10b6:a03:546::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Mon, 31 Mar
+ 2025 19:11:56 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af%4]) with mapi id 15.20.8534.045; Mon, 31 Mar 2025
+ 19:11:56 +0000
+Content-Type: multipart/alternative;
+ boundary="------------TsTY6pwPDw8qgUEi4wTbMwxL"
+Message-ID: <9c9978cb-0193-447a-935a-2f146a84f9a1@amd.com>
+Date: Mon, 31 Mar 2025 15:11:52 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/19] drm-uapi/amdgpu: sync with drm-next
+To: Sunil Khatri <sunil.khatri@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+References: <20250328082416.1469810-1-sunil.khatri@amd.com>
+ <20250328082416.1469810-2-sunil.khatri@amd.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20250328082416.1469810-2-sunil.khatri@amd.com>
+X-ClientProxiedBy: YT4PR01CA0421.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10b::23) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|SJ2PR12MB8881:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c655f2d-6866-45f7-a107-08dd7087e71e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|8096899003;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dExJWHNGb3Q2eXlyM1gzZ1hzTHdLZXo2clBWL2dpWHVBdXpkYXZDNjNxTlFN?=
+ =?utf-8?B?R3lWbFh0U05hNnRXU2t5ekhHdjliRU9OeGx2NFgrR0Nka2VLdzFEVVhMdWtt?=
+ =?utf-8?B?TUFISU8xalNkK2lyQ1pkcHNjTkRxTDRGeUF1UXVrY25JQnVUZ0ZFTlJDdjN6?=
+ =?utf-8?B?Wk1mdkswcmFCSUYzUUFBOVlERTdNeUxTVFVBSnoyVTJ5UFBvMUxuT1BMaFNE?=
+ =?utf-8?B?TUFBQ3VNV2xCTlh0K1BlMzJONHkybnlZRWc3TzVVcU00dFpUUGM3USs3ZlNP?=
+ =?utf-8?B?Q0ZnTWdaUzVLSXNvdGVyZkZVbjN0eTFLVDFCZUZ2VndBNnZmZUhWRUdHTzFK?=
+ =?utf-8?B?c1lDVjIwYlZDNEwxNjlOV0tvR2h3OFRvK0d1cFE2bHpNLytCemFLZFc5ME9R?=
+ =?utf-8?B?ZUdpNnAwT25tcFpCY1BPbDhKWE1NM3VlL09xVVNnRzdCK1kzWmh1a2lhWm9S?=
+ =?utf-8?B?M0lRUjBMbndDTWdrWHFLWXlTb3lTWFJWUFZweE5lTzY5NFlGbjdKdi9BVGY3?=
+ =?utf-8?B?YzJJcGN3NFJYZzlTeE9QTzZBSVIwbXdYYngyN3ovSUVsais2TnVZZXBCY3VM?=
+ =?utf-8?B?bU5uNlA3OWxDaC8zSnF5U3kyV1FpV1IrOC8zR3pLclVlZXl1alhKMTdNRkZU?=
+ =?utf-8?B?RHBEbmt3MzB5Q1A1RGZIOGozdG4xY243YWcrRGhFdUZtK0JjRkg4OFNtMmxl?=
+ =?utf-8?B?MC8rUzdEQlBGamxkYVpZYjNtbG9mMHk3dzluai8xbUd2L0ZFUTBmZXdRbXVi?=
+ =?utf-8?B?dHNyb1phVzhIUGpqWTh1bWlDeGpsYWJaV1NjNnBSYTViQ3IwbnRBYy9CUmtE?=
+ =?utf-8?B?Q3hMMFh3ZEpvVWtZT2o1YzhXY0FZQkNJUDlLZEQ5bUhHaGxNOUJlTVRxbmwr?=
+ =?utf-8?B?ZkN1eHlVRDNET3VhODU0ZzlVbUFNbjRKblRwNmIyL2VjZGZRSnFIWU5xVzlZ?=
+ =?utf-8?B?cnU0NTQyc0J1WjBub1dJVUdQZjRxMStoZXhEeFdjaFNuRkhnbFhDRnlIUGZw?=
+ =?utf-8?B?cWZMTTBVamFBSy9jLytiQ0lKeUoweHpldTg1cklMbFE3QU1Ubkt6UmJSRWpX?=
+ =?utf-8?B?ZGllK0tVZlFkSytGQ3grVzNMeFNlcDZMM2FzTGJVRzBBRjBScGRrV3YxV2hm?=
+ =?utf-8?B?c1hUelZFdDhDbGZCWklpQk1jRUNrK3pnbjB5bzZEQUh0R0s0QXZJcHVuMW1D?=
+ =?utf-8?B?NDgwSTFuT3RaSm8yTGtHaWt1YkZET0pIcEx6andWTjJrWWF0MXdnZzlxSkFx?=
+ =?utf-8?B?RVdHK0M5aXFHWnRBOUhldlZXbUFUaEt5cHdySzZnTTB3Q2J5aDNkczBCZVZq?=
+ =?utf-8?B?a3NKRFpwc21tendmbW5lU05DM0Y1Z3NubnlTRGNYNjZkNUM3b2U5M0hCLzQy?=
+ =?utf-8?B?KzdjZDBhTHV5TmVLNmR1OFNHL0gvZFdVeFBDSjR5T2hpU0E3QXFoTktpUHhp?=
+ =?utf-8?B?SDNHeEdmQm5iZ1JnMnVxWUR1cHQ3TmRnS2tnZEFmNWd0WDFBaHpOUVZQbVc0?=
+ =?utf-8?B?dnYxdE5SUm9Cc2lPUllEY0Q5b3NrT25WdzM2NnNwRk51RFlucU94ejNnU3gv?=
+ =?utf-8?B?dlpGQVRSY0RWc1JpNWxOcitXVFFFZ1JEaFh2Y3NmYjJ1UnpHdllIcnhOK2RR?=
+ =?utf-8?B?NXZxcStFQ1ZMWEVVMHVVZXdnR1pWckk4ZXZ4RXVmZHJLbTVzVEdUdGcxR0VP?=
+ =?utf-8?B?bEthRHBYWXZmT2JCcVZaWnBKWHhJM1VBTXhJTG9Va3l2TjVtMVluNEhyaUNa?=
+ =?utf-8?B?bjlaVnFuVnJncW8zN2V5T2F4WW5iaVJUSEh4ZXd1OTdRdlVTZjBuRkRYbmZu?=
+ =?utf-8?B?ekpVUjIvQVFER0JjL2c5cDQxM2VBc1ZDVEVUOWl5TERrYUtoUjF1M1JNYzBU?=
+ =?utf-8?B?Y2o0YVRqMkRKUUY0QkpRZ3doVFNkd0cwNHlldXZja1pvazlqNGV2QVM3bGZG?=
+ =?utf-8?Q?HBVxvGabkg0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(8096899003); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d1laNVVubHhyK0Rzc0dzQTBWSUZNRHlXRG1sM29MVTZsZzJCWE9XRlZOemY2?=
+ =?utf-8?B?ejFicWNDV05QckFScVAxNG5sUXpJam92bDQycFB4ZnZnOExnYTdPSUtod1FT?=
+ =?utf-8?B?UWYvdEJPaXl4dkJFZUVCcml0YmRtcTVmYys1M2FYOXpTUDRhNHMwME01UHdS?=
+ =?utf-8?B?S2cyVFR2c21hZUhqNkpmOUdNUFgrWGNvcVd4dnVDK3hzNjgxeU5QMkkzbnFR?=
+ =?utf-8?B?OFpicVQ2UVhmUUxML1hBV29malZmZEdpWUJ4K0N5YVBvZWdNTkE5UDZzdUJs?=
+ =?utf-8?B?ODc4QkY3R0gwVHhzOW9CM0swRFd1d3RGOFBwNzBVMDB6a1FpZDJtTnV2dk5z?=
+ =?utf-8?B?RnVKSjZNOHdnWGRBNUFtSlBKNlVxLzlLc2FRcUlJM2R6Ykcrd2FLWU9ZUkFC?=
+ =?utf-8?B?TG1lZSt2QlkxUnc1VlNBRmFOMnltcDlEaDY2cDBla2ZOa01xZUFhOWlrOXRR?=
+ =?utf-8?B?QTVvdmxaS3pxcXBWWFlVVlpwd2QvU0xhcXBIRmgzSGhwYjVYSzliSXluUFVN?=
+ =?utf-8?B?RTE2WmxrQ3ZkVUdvSHZYTkloZzhYT054ZWVrRzBKeTBFTjRIdWlXWDNKZS9U?=
+ =?utf-8?B?SzdWWERZaHdpYlgrWkE4TXJVQjdHNG03cm1pQXU2WEttb05zNkpTUVI4MHp6?=
+ =?utf-8?B?QVdNenJ6WVAxUGZwN2FTYzhVK00zaVo3U3F2bWIrMHpyTkZzZXZnM1NweUJE?=
+ =?utf-8?B?NkxGSEVycXVjRXRrelN0VUtJcm5MMmlIeFdGSFhaMEJtRWplQ0RieUd1eitN?=
+ =?utf-8?B?VGxvQkZaaHVwWG1pam5mcFIvc2swdFYzL1dvZFY0ZUdRa2cwcG43ekE3R2Vv?=
+ =?utf-8?B?bDRtMUpTb1M4cTI3Szk5TGdqNnZ3VCtKS2ZEalN4STQ5ZzdNSFZteDA3RDlq?=
+ =?utf-8?B?TTV1VlUyYm5PbE9zTjZSanlJY0RZNXp2ejFVQ0JnVWVmWkFYRHYwYkdLV0I3?=
+ =?utf-8?B?bFRkZ25WcHAwdGJuQ0k2UUYxcjFySEx2MG9UZ2ViaGZENDVZbGt0c3VRRlVJ?=
+ =?utf-8?B?NDVNUXBuZmEveWtoVEgzSVNzZzYxdm9EVVV3WFRkSmk4aHF2d2FZTHh1dHB3?=
+ =?utf-8?B?T0hmY3ViOFVBRlhMbEVWMmlTSHIybmZuZFNKWEl0VU1VNEVJVjBpV3JwNnVH?=
+ =?utf-8?B?VXNWSEdqV0NWUFlKaDV5SHkrQ3M4OEpaVW9JRnNxNWdpTzhWMjd5aTVwMXRq?=
+ =?utf-8?B?bllNbEowdm5kSHFoL0hyTmNjWjFFZmd2Ym1IOWg1b3ZNUTRBSWkxb1BBOE1U?=
+ =?utf-8?B?WHd5YnRtTGdxeHFsYjhTLzFQY3RGclY4SXk1UlZrOWEzQURDZ2pucWo1YlJi?=
+ =?utf-8?B?c2YxQ2kwY1VDdFptdlllVzkvbno3WW51eEtjSUhDNVdsMGlYSTczL0t1YUxZ?=
+ =?utf-8?B?aDY5WnNmV0FyNUpNRzdJTFdQdXoxZnBHZ2ppRHAyWjl6NXNiMFJlZEI5QndC?=
+ =?utf-8?B?K29jejNLSHlTakZxOEV0YzNYYTUvQ05wd0lsbVF1eFZ0MnMxK2J3dHZUcXN1?=
+ =?utf-8?B?UWRLSHhjTlVCUWZUMytkNlk5V2grYms3WnpUYU8zVENsdUtkUzEvYU5VbUpZ?=
+ =?utf-8?B?c1ExMTR1NHNPV3BoazdqSUNhN1VUOGV3RmN0Z2JLNngyN1FzWVZpeWtneWFs?=
+ =?utf-8?B?TkFjRHJqdTFPZ2Erbi9jWXJSOTBybmFGSzBEVkMvRVdFdUxuNHV6K3hFbU5q?=
+ =?utf-8?B?VjAzQnk0S0wwTThMaXNzOGtpSklhT0E3VG5sdHloeFowS1VYU2JaV1JTNG9q?=
+ =?utf-8?B?VGdxUW1DZG5FaVc5MW84YUxiNGxydkVyaTZlRWV1UHB4UktlRCtWR1BaWHRP?=
+ =?utf-8?B?SWlEOSttSktVdzBOZWt1dEYvYzgzanRQaUtwTkNOamVoYU4vSzF4RUZtN3lx?=
+ =?utf-8?B?TkNhSGY4QVI0WGlIVkRtSGQ0dUVpMGU5QTlYUDBJb0dNL3MzZ3crMzNJVmFu?=
+ =?utf-8?B?eXR1aThDNXRRSFVweWROVFpIUFQxZWU0OUJ0L2dRMDFoR0UxN3VzSW9OYkNM?=
+ =?utf-8?B?SmJKZXMwQTdCZVJsTGFWekFBTnZmTjM3bGtteXZmRTJVeGNkQ3psbGduNVJr?=
+ =?utf-8?B?cTVHNFBQUmxSWHVITk5IOUVDR2xQV2lFVlBJOGwxVlJ4VEZIY2UrR3M0MERr?=
+ =?utf-8?Q?KqV8D0Gfx1it4K2j4JmASF5pP?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c655f2d-6866-45f7-a107-08dd7087e71e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2025 19:11:55.8959 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fez0o8EoUf8CzvObY3pcvO+SIX7IB8lBwk0rRgeFg22J+A/TH4E9mXHG2d9pqoTy/0e+/EuB01f3i1YwEmTX+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8881
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,573 +165,350 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduces intel_sysfs_debugfs, replacing debugfs_test and xe_debugfs.
-It organizes tests into separate subgroups for i915 and xe, ensuring
-only the relevant tests run for each driver.
+--------------TsTY6pwPDw8qgUEi4wTbMwxL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-i915 test list:
- - i915-sysfs-read-all-entries
- - i915-debugfs-read-all-entries
- - i915-debugfs-read-all-entries-display-on
- - i915-debugfs-read-all-entries-display-off
 
-Xe test list:
- - xe-sysfs-read-all-entries
- - xe-debugfs-read-all-entries
- - xe-debugfs-read-all-entries-display-on
- - xe-debugfs-read-all-entries-display-off
- - xe-base
- - xe-gt
- - xe-forcewake
+On 2025-03-28 04:23, Sunil Khatri wrote:
+> Sync with drm-next commit ("866fc4f7e772c4a397f9459754ed1b1872b3a3c6")
+>
+> Added support of UAPI for user queue secure semaphore.
+> The semaphore is used to synchronize between the caller and
+> the gpu hw and user wait for the semaphore.
+>
+> Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+> ---
+>  include/drm-uapi/amdgpu_drm.h | 117 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 117 insertions(+)
+>
+> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+> index d780e1f2a..fed39c9b4 100644
+> --- a/include/drm-uapi/amdgpu_drm.h
+> +++ b/include/drm-uapi/amdgpu_drm.h
+> @@ -55,6 +55,8 @@ extern "C" {
+>  #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
+>  #define DRM_AMDGPU_SCHED		0x15
+>  #define DRM_AMDGPU_USERQ		0x16
+> +#define DRM_AMDGPU_USERQ_SIGNAL		0x17
+> +#define DRM_AMDGPU_USERQ_WAIT		0x18
+>  
+>  #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
+>  #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
+> @@ -73,6 +75,8 @@ extern "C" {
+>  #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
+>  #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
+>  #define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
+> +#define DRM_IOCTL_AMDGPU_USERQ_SIGNAL	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_SIGNAL, struct drm_amdgpu_userq_signal)
+> +#define DRM_IOCTL_AMDGPU_USERQ_WAIT	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_WAIT, struct drm_amdgpu_userq_wait)
+>  
+>  /**
+>   * DOC: memory domains
+> @@ -442,6 +446,119 @@ struct drm_amdgpu_userq_mqd_compute_gfx11 {
+>  	__u64   eop_va;
+>  };
+>  
+> +/* userq signal/wait ioctl */
+> +struct drm_amdgpu_userq_signal {
+> +	/**
+> +	 * @queue_id: Queue handle used by the userq fence creation function
+> +	 * to retrieve the WPTR.
+> +	 */
+> +	__u32	queue_id;
+> +	__u32	pad;
+> +	/**
+> +	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
+> +	 * job to be signaled.
+> +	 */
 
-This unification closes testing gaps between i915 and Xe while
-simplifying code maintenance.
+I am not sure about the correctness of the 'list of syncobj handles.' If it is a list, the field should be of type |list_head|; if it's an array, it should be |__u64*|, since the next field declares |num_syncobj_handles|. Could you clarify this?
 
-Cc: himanshu.girotra@intel.com
-Cc: aditya.chauhan@intel.com
-Cc: pravalika.gurram@intel.com
-Cc: sai.gowtham.ch@intel.com
-Cc: ramadevi.gandi@intel.com
-Cc: lucas.demarchi@intel.com
-Cc: rodrigo.vivi@intel.com
-Cc: kamil.konieczny@linux.intel.com
-Cc: katarzyna.piecielska@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+There are several fields like this ?
+
+> +	__u64	syncobj_handles;
+> +	/**
+> +	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
+> +	 * @syncobj_handles.
+> +	 */
+> +	__u64	num_syncobj_handles;
+> +	/**
+> +	 * @bo_read_handles: The list of BO handles that the submitted user queue job
+> +	 * is using for read only. This will update BO fences in the kernel.
+> +	 */
+> +	__u64	bo_read_handles;
+> +	/**
+> +	 * @bo_write_handles: The list of BO handles that the submitted user queue job
+> +	 * is using for write only. This will update BO fences in the kernel.
+> +	 */
+> +	__u64	bo_write_handles;
+> +	/**
+> +	 * @num_bo_read_handles: A count that represents the number of read BO handles in
+> +	 * @bo_read_handles.
+> +	 */
+> +	__u32	num_bo_read_handles;
+> +	/**
+> +	 * @num_bo_write_handles: A count that represents the number of write BO handles in
+> +	 * @bo_write_handles.
+> +	 */
+> +	__u32	num_bo_write_handles;
+> +};
+> +
+> +struct drm_amdgpu_userq_fence_info {
+> +	/**
+> +	 * @va: A gpu address allocated for each queue which stores the
+> +	 * read pointer (RPTR) value.
+> +	 */
+> +	__u64	va;
+> +	/**
+> +	 * @value: A 64 bit value represents the write pointer (WPTR) of the
+> +	 * queue commands which compared with the RPTR value to signal the
+> +	 * fences.
+> +	 */
+> +	__u64	value;
+> +};
+> +
+> +struct drm_amdgpu_userq_wait {
+> +	/**
+> +	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
+> +	 * job to get the va/value pairs.
+> +	 */
+> +	__u64	syncobj_handles;
+> +	/**
+> +	 * @syncobj_timeline_handles: The list of timeline syncobj handles submitted by
+> +	 * the user queue job to get the va/value pairs at given @syncobj_timeline_points.
+> +	 */
+> +	__u64	syncobj_timeline_handles;
+> +	/**
+> +	 * @syncobj_timeline_points: The list of timeline syncobj points submitted by the
+> +	 * user queue job for the corresponding @syncobj_timeline_handles.
+> +	 */
+> +	__u64	syncobj_timeline_points;
+> +	/**
+> +	 * @bo_read_handles: The list of read BO handles submitted by the user queue
+> +	 * job to get the va/value pairs.
+> +	 */
+> +	__u64	bo_read_handles;
+> +	/**
+> +	 * @bo_write_handles: The list of write BO handles submitted by the user queue
+> +	 * job to get the va/value pairs.
+> +	 */
+> +	__u64	bo_write_handles;
+> +	/**
+> +	 * @num_syncobj_timeline_handles: A count that represents the number of timeline
+> +	 * syncobj handles in @syncobj_timeline_handles.
+> +	 */
+> +	__u16	num_syncobj_timeline_handles;
+> +	/**
+> +	 * @num_fences: This field can be used both as input and output. As input it defines
+> +	 * the maximum number of fences that can be returned and as output it will specify
+> +	 * how many fences were actually returned from the ioctl.
+> +	 */
+> +	__u16	num_fences;
+> +	/**
+> +	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
+> +	 * @syncobj_handles.
+> +	 */
+> +	__u32	num_syncobj_handles;
+> +	/**
+> +	 * @num_bo_read_handles: A count that represents the number of read BO handles in
+> +	 * @bo_read_handles.
+> +	 */
+> +	__u32	num_bo_read_handles;
+> +	/**
+> +	 * @num_bo_write_handles: A count that represents the number of write BO handles in
+> +	 * @bo_write_handles.
+> +	 */
+> +	__u32	num_bo_write_handles;
+> +	/**
+> +	 * @out_fences: The field is a return value from the ioctl containing the list of
+> +	 * address/value pairs to wait for.
+> +	 */
+> +	__u64	out_fences;
+> +};
+> +
+>  /* vm ioctl */
+>  #define AMDGPU_VM_OP_RESERVE_VMID	1
+>  #define AMDGPU_VM_OP_UNRESERVE_VMID	2
+--------------TsTY6pwPDw8qgUEi4wTbMwxL
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2025-03-28 04:23, Sunil Khatri
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20250328082416.1469810-2-sunil.khatri@amd.com">
+      <pre class="moz-quote-pre" wrap="">Sync with drm-next commit (&quot;866fc4f7e772c4a397f9459754ed1b1872b3a3c6&quot;)
+
+Added support of UAPI for user queue secure semaphore.
+The semaphore is used to synchronize between the caller and
+the gpu hw and user wait for the semaphore.
+
+Signed-off-by: Sunil Khatri <a class="moz-txt-link-rfc2396E" href="mailto:sunil.khatri@amd.com">&lt;sunil.khatri@amd.com&gt;</a>
 ---
-v4:
- - remove the 5 seconds timeout to read each sysfs and debugfs file
+ include/drm-uapi/amdgpu_drm.h | 117 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
-v3:
- - rename test to intel_sysfs_debugfs
- - fix copy paste error on commit message
- - expand Cc list
-
-v2:
- - renamed xe-specific functions with the xe_ prefix
- - created two igt_subtest_groups: one for i915 and another for Xe
- - prefixed each test with either i915 or xe
-
- tests/intel/intel_sysfs_debugfs.c | 498 ++++++++++++++++++++++++++++++
- tests/meson.build                 |   1 +
- 2 files changed, 499 insertions(+)
- create mode 100644 tests/intel/intel_sysfs_debugfs.c
-
-diff --git a/tests/intel/intel_sysfs_debugfs.c b/tests/intel/intel_sysfs_debugfs.c
-new file mode 100644
-index 000000000..6beb94109
---- /dev/null
-+++ b/tests/intel/intel_sysfs_debugfs.c
-@@ -0,0 +1,498 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#include <dirent.h>
-+#include <fcntl.h>
-+
-+#include "i915/gem.h"
-+#include "igt.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_query.h"
-+
-+struct {
-+	bool warn_on_not_hit;
-+} opt = { 0 };
-+
-+/**
-+ * TEST: debugfs test
-+ * Description: Read entries from debugfs, and sysfs paths.
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: uapi
-+ * Functionality: debugfs
-+ * Feature: core
-+ * Test category: uapi
-+ *
-+ * SUBTEST: i915-debugfs-read-all-entries
-+ * Description: Read all entries from debugfs path validating debugfs entries
-+ *
-+ * SUBTEST: i915-debugfs-read-all-entries-display-off
-+ * Description: Read all debugfs entries with display off.
-+ *
-+ * SUBTEST: i915-debugfs-read-all-entries-display-on
-+ * Description: Read all debugfs entries with display on.
-+ *
-+ * SUBTEST: i915-sysfs-read-all-entries
-+ * Description: Read all entries from sysfs path validating debugfs entries
-+ *
-+ * SUBTEST: xe-debugfs-read-all-entries
-+ * Description: Read all entries from debugfs path validating debugfs entries
-+ *
-+ * SUBTEST: xe-debugfs-read-all-entries-display-off
-+ * Description: Read all debugfs entries with display off.
-+ *
-+ * SUBTEST: xe-debugfs-read-all-entries-display-on
-+ * Description: Read all debugfs entries with display on.
-+ *
-+ * SUBTEST: xe-sysfs-read-all-entries
-+ * Description: Read all entries from sysfs path validating debugfs entries
-+ *
-+ */
-+
-+IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
-+
-+static void read_and_discard_sysfs_entries(int path_fd, int indent)
-+{
-+	struct dirent *dirent;
-+	DIR *dir;
-+	char tabs[8];
-+	int i;
-+
-+	igt_assert(indent < sizeof(tabs) - 1);
-+
-+	for (i = 0; i < indent; i++)
-+		tabs[i] = '\t';
-+	tabs[i] = '\0';
-+
-+	dir = fdopendir(path_fd);
-+	if (!dir)
-+		return;
-+
-+	while ((dirent = readdir(dir))) {
-+		if (!strcmp(dirent->d_name, ".") ||
-+		    !strcmp(dirent->d_name, ".."))
-+			continue;
-+
-+		if (dirent->d_type == DT_DIR) {
-+			int sub_fd;
-+
-+			sub_fd = openat(path_fd, dirent->d_name,
-+					O_RDONLY | O_DIRECTORY);
-+			if (sub_fd < 0)
-+				continue;
-+
-+			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
-+			read_and_discard_sysfs_entries(sub_fd, indent + 1);
-+			close(sub_fd);
-+		} else if (dirent->d_type == DT_REG) {
-+			char buf[512];
-+			int sub_fd;
-+			ssize_t ret;
-+
-+			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
-+			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
-+
-+			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
-+			if (sub_fd == -1) {
-+				igt_debug("%sCould not open file \"%s\" with error: %m\n",
-+					  tabs, dirent->d_name);
-+				continue;
-+			}
-+
-+			do {
-+				ret = read(sub_fd, buf, sizeof(buf));
-+			} while (ret == sizeof(buf));
-+
-+			if (ret == -1)
-+				igt_debug("%sCould not read file \"%s\" with error: %m\n",
-+					  tabs, dirent->d_name);
-+
-+			close(sub_fd);
-+		}
-+	}
-+	closedir(dir);
-+}
-+
-+static void kms_tests(int fd, int debugfs, const char *card_name)
-+{
-+	igt_display_t display;
-+	struct igt_fb fb[IGT_MAX_PIPES];
-+	enum pipe pipe;
-+	int ret;
-+	char test_name[64];
-+
-+	igt_fixture
-+		igt_display_require(&display, fd);
-+
-+	snprintf(test_name, sizeof(test_name),
-+		 "%s-debugfs-read-all-entries-display-on", card_name);
-+
-+	igt_subtest(test_name) {
-+		/* try to light all pipes */
-+retry:
-+		for_each_pipe(&display, pipe) {
-+			igt_output_t *output;
-+
-+			for_each_valid_output_on_pipe(&display, pipe, output) {
-+				igt_plane_t *primary;
-+				drmModeModeInfo *mode;
-+
-+				if (output->pending_pipe != PIPE_NONE)
-+					continue;
-+
-+				igt_output_set_pipe(output, pipe);
-+				primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+				mode = igt_output_get_mode(output);
-+				igt_create_pattern_fb(display.drm_fd,
-+						      mode->hdisplay, mode->vdisplay,
-+						      DRM_FORMAT_XRGB8888,
-+						      DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
-+
-+				/* Set a valid fb as some debugfs like to
-+				 * inspect it on a active pipe
-+				 */
-+				igt_plane_set_fb(primary, &fb[pipe]);
-+				break;
-+			}
-+		}
-+
-+		if (display.is_atomic)
-+			ret = igt_display_try_commit_atomic(&display,
-+					DRM_MODE_ATOMIC_TEST_ONLY |
-+					DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					NULL);
-+		else
-+			ret = igt_display_try_commit2(&display, COMMIT_LEGACY);
-+
-+		if (ret) {
-+			igt_output_t *output;
-+			bool found = igt_override_all_active_output_modes_to_fit_bw(&display);
-+
-+			igt_require_f(found, "No valid mode combo found.\n");
-+
-+			for_each_connected_output(&display, output)
-+				igt_output_set_pipe(output, PIPE_NONE);
-+
-+			goto retry;
-+		}
-+
-+		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+		read_and_discard_sysfs_entries(debugfs, 0);
-+	}
-+
-+	snprintf(test_name, sizeof(test_name),
-+		 "%s-debugfs-read-all-entries-display-off", card_name);
-+
-+	igt_subtest(test_name) {
-+		igt_output_t *output;
-+		igt_plane_t *plane;
-+
-+		for_each_connected_output(&display, output)
-+			igt_output_set_pipe(output, PIPE_NONE);
-+
-+		for_each_pipe(&display, pipe)
-+			for_each_plane_on_pipe(&display, pipe, plane)
-+				igt_plane_set_fb(plane, NULL);
-+
-+		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+		read_and_discard_sysfs_entries(debugfs, 0);
-+	}
-+
-+	igt_fixture
-+		igt_display_fini(&display);
-+}
-+
-+static int xe_validate_entries(int fd, const char *add_path,
-+			       const char * const str_val[], int str_cnt)
-+{
-+	int i;
-+	int hit;
-+	int found = 0;
-+	int not_found = 0;
-+	DIR *dir;
-+	struct dirent *de;
-+	char path[PATH_MAX];
-+
-+	if (!igt_debugfs_path(fd, path, sizeof(path)))
-+		return -1;
-+
-+	strcat(path, add_path);
-+	dir = opendir(path);
-+	if (!dir)
-+		return -1;
-+
-+	while ((de = readdir(dir))) {
-+		if (de->d_name[0] == '.')
-+			continue;
-+		hit = 0;
-+		for (i = 0; i < str_cnt; i++) {
-+			if (!strcmp(str_val[i], de->d_name)) {
-+				hit = 1;
-+				break;
-+			}
-+		}
-+		if (hit) {
-+			found++;
-+		} else if (opt.warn_on_not_hit) {
-+			not_found++;
-+			igt_warn("no test for: %s/%s\n", path, de->d_name);
-+		}
-+	}
-+	closedir(dir);
-+	return 0;
-+}
-+
-+/**
-+ * SUBTEST: xe-base
-+ * Description: Check if various debugfs devnodes exist and test reading them
-+ */
-+static void
-+xe_test_base(int fd, struct drm_xe_query_config *config)
-+{
-+	uint16_t devid = intel_get_drm_devid(fd);
-+	static const char * const expected_files[] = {
-+		"gt0",
-+		"gt1",
-+		"stolen_mm",
-+		"gtt_mm",
-+		"vram0_mm",
-+		"forcewake_all",
-+		"info",
-+		"gem_names",
-+		"clients",
-+		"name"
-+	};
-+	char reference[4096];
-+	int val = 0;
-+
-+	igt_assert(config);
-+	sprintf(reference, "devid 0x%llx",
-+			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	sprintf(reference, "revid %lld",
-+			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-+		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
-+
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	if (intel_gen(devid) < 20) {
-+		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
-+		case 48:
-+			val = 3;
-+			break;
-+		case 57:
-+			val = 4;
-+			break;
-+		}
-+
-+		sprintf(reference, "vm_max_level %d", val);
-+		igt_assert(igt_debugfs_search(fd, "info", reference));
-+	}
-+
-+	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
-+
-+	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
-+	igt_debugfs_dump(fd, "gtt_mm");
-+
-+	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
-+		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
-+		igt_debugfs_dump(fd, "vram0_mm");
-+	}
-+
-+	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
-+		igt_debugfs_dump(fd, "stolen_mm");
-+
-+	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
-+	igt_debugfs_dump(fd, "clients");
-+
-+	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
-+	igt_debugfs_dump(fd, "gem_names");
-+
-+	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
-+}
-+
-+/**
-+ * SUBTEST: xe-gt
-+ * Description: Check all gt debugfs devnodes
-+ * TODO: add support for ``force_reset`` entries
-+ */
-+static void
-+xe_test_gt(int fd, int gt_id)
-+{
-+	char name[256];
-+	static const char * const expected_files[] = {
-+		"uc",
-+		"steering",
-+		"topology",
-+		"sa_info",
-+		"hw_engines",
-+		"pat",
-+		"mocs",
-+//		"force_reset"
-+		"ggtt",
-+		"register-save-restore",
-+		"workarounds",
-+		"default_lrc_rcs",
-+		"default_lrc_ccs",
-+		"default_lrc_bcs",
-+		"default_lrc_vcs",
-+		"default_lrc_vecs",
-+		"hwconfig"
-+
-+	};
-+	static const char * const expected_files_uc[] = {
-+		"huc_info",
-+		"guc_log",
-+		"guc_info",
-+//		"guc_ct_selftest"
-+	};
-+
-+	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
-+		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
-+		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-+		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
-+			continue;
-+		igt_debugfs_dump(fd, name);
-+	}
-+
-+	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
-+		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
-+		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-+		igt_debugfs_dump(fd, name);
-+	}
-+
-+	sprintf(name, "/gt%d", gt_id);
-+	xe_validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
-+
-+	sprintf(name, "/gt%d/uc", gt_id);
-+	xe_validate_entries(fd, name, expected_files_uc, ARRAY_SIZE(expected_files_uc));
-+}
-+
-+/**
-+ * SUBTEST: xe-forcewake
-+ * Description: Check forcewake debugfs devnode
-+ */
-+static void
-+xe_test_forcewake(int fd)
-+{
-+	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
-+
-+	igt_assert_neq(handle, -1);
-+	close(handle);
-+}
-+
-+const char *help_str =
-+	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
-+
-+struct option long_options[] = {
-+	{ "--warn-not-hit", no_argument, NULL, 'w'},
-+	{ 0, 0, 0, 0 }
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index d780e1f2a..fed39c9b4 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -55,6 +55,8 @@ extern &quot;C&quot; {
+ #define DRM_AMDGPU_FENCE_TO_HANDLE	0x14
+ #define DRM_AMDGPU_SCHED		0x15
+ #define DRM_AMDGPU_USERQ		0x16
++#define DRM_AMDGPU_USERQ_SIGNAL		0x17
++#define DRM_AMDGPU_USERQ_WAIT		0x18
+ 
+ #define DRM_IOCTL_AMDGPU_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_CREATE, union drm_amdgpu_gem_create)
+ #define DRM_IOCTL_AMDGPU_GEM_MMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_GEM_MMAP, union drm_amdgpu_gem_mmap)
+@@ -73,6 +75,8 @@ extern &quot;C&quot; {
+ #define DRM_IOCTL_AMDGPU_FENCE_TO_HANDLE DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_FENCE_TO_HANDLE, union drm_amdgpu_fence_to_handle)
+ #define DRM_IOCTL_AMDGPU_SCHED		DRM_IOW(DRM_COMMAND_BASE + DRM_AMDGPU_SCHED, union drm_amdgpu_sched)
+ #define DRM_IOCTL_AMDGPU_USERQ		DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ, union drm_amdgpu_userq)
++#define DRM_IOCTL_AMDGPU_USERQ_SIGNAL	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_SIGNAL, struct drm_amdgpu_userq_signal)
++#define DRM_IOCTL_AMDGPU_USERQ_WAIT	DRM_IOWR(DRM_COMMAND_BASE + DRM_AMDGPU_USERQ_WAIT, struct drm_amdgpu_userq_wait)
+ 
+ /**
+  * DOC: memory domains
+@@ -442,6 +446,119 @@ struct drm_amdgpu_userq_mqd_compute_gfx11 {
+ 	__u64   eop_va;
+ };
+ 
++/* userq signal/wait ioctl */
++struct drm_amdgpu_userq_signal {
++	/**
++	 * @queue_id: Queue handle used by the userq fence creation function
++	 * to retrieve the WPTR.
++	 */
++	__u32	queue_id;
++	__u32	pad;
++	/**
++	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
++	 * job to be signaled.
++	 */</pre>
+    </blockquote>
+    <p>I am not sure about the correctness of the 'list of syncobj
+      handles.' If it is a list, the field should be of type <code data-start="165" data-end="176">list_head</code>; if it's an
+      array, it should be <code data-start="209" data-end="217">__u64*</code>,
+      since the next field declares <code data-start="249" data-end="270">num_syncobj_handles</code>. Could you clarify
+      this?</p>
+    <p>There are several fields like this ?<br>
+    </p>
+    <blockquote type="cite" cite="mid:20250328082416.1469810-2-sunil.khatri@amd.com">
+      <pre class="moz-quote-pre" wrap="">
++	__u64	syncobj_handles;
++	/**
++	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
++	 * @syncobj_handles.
++	 */
++	__u64	num_syncobj_handles;
++	/**
++	 * @bo_read_handles: The list of BO handles that the submitted user queue job
++	 * is using for read only. This will update BO fences in the kernel.
++	 */
++	__u64	bo_read_handles;
++	/**
++	 * @bo_write_handles: The list of BO handles that the submitted user queue job
++	 * is using for write only. This will update BO fences in the kernel.
++	 */
++	__u64	bo_write_handles;
++	/**
++	 * @num_bo_read_handles: A count that represents the number of read BO handles in
++	 * @bo_read_handles.
++	 */
++	__u32	num_bo_read_handles;
++	/**
++	 * @num_bo_write_handles: A count that represents the number of write BO handles in
++	 * @bo_write_handles.
++	 */
++	__u32	num_bo_write_handles;
 +};
 +
-+static int opt_handler(int option, int option_index, void *input)
-+{
-+	switch (option) {
-+	case 'w':
-+		opt.warn_on_not_hit = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
++struct drm_amdgpu_userq_fence_info {
++	/**
++	 * @va: A gpu address allocated for each queue which stores the
++	 * read pointer (RPTR) value.
++	 */
++	__u64	va;
++	/**
++	 * @value: A 64 bit value represents the write pointer (WPTR) of the
++	 * queue commands which compared with the RPTR value to signal the
++	 * fences.
++	 */
++	__u64	value;
++};
 +
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
++struct drm_amdgpu_userq_wait {
++	/**
++	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	syncobj_handles;
++	/**
++	 * @syncobj_timeline_handles: The list of timeline syncobj handles submitted by
++	 * the user queue job to get the va/value pairs at given @syncobj_timeline_points.
++	 */
++	__u64	syncobj_timeline_handles;
++	/**
++	 * @syncobj_timeline_points: The list of timeline syncobj points submitted by the
++	 * user queue job for the corresponding @syncobj_timeline_handles.
++	 */
++	__u64	syncobj_timeline_points;
++	/**
++	 * @bo_read_handles: The list of read BO handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	bo_read_handles;
++	/**
++	 * @bo_write_handles: The list of write BO handles submitted by the user queue
++	 * job to get the va/value pairs.
++	 */
++	__u64	bo_write_handles;
++	/**
++	 * @num_syncobj_timeline_handles: A count that represents the number of timeline
++	 * syncobj handles in @syncobj_timeline_handles.
++	 */
++	__u16	num_syncobj_timeline_handles;
++	/**
++	 * @num_fences: This field can be used both as input and output. As input it defines
++	 * the maximum number of fences that can be returned and as output it will specify
++	 * how many fences were actually returned from the ioctl.
++	 */
++	__u16	num_fences;
++	/**
++	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
++	 * @syncobj_handles.
++	 */
++	__u32	num_syncobj_handles;
++	/**
++	 * @num_bo_read_handles: A count that represents the number of read BO handles in
++	 * @bo_read_handles.
++	 */
++	__u32	num_bo_read_handles;
++	/**
++	 * @num_bo_write_handles: A count that represents the number of write BO handles in
++	 * @bo_write_handles.
++	 */
++	__u32	num_bo_write_handles;
++	/**
++	 * @out_fences: The field is a return value from the ioctl containing the list of
++	 * address/value pairs to wait for.
++	 */
++	__u64	out_fences;
++};
 +
-+igt_main_args("", long_options, help_str, opt_handler, NULL)
-+{
-+	int debugfs = -1;
-+	char devnode[PATH_MAX];
-+	int fd = -1;
-+	int gt;
-+	int sysfs = -1;
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			fd = drm_open_driver_master(DRIVER_INTEL);
-+			igt_require_gem(fd);
-+			debugfs = igt_debugfs_dir(fd);
-+			sysfs = igt_sysfs_open(fd);
-+
-+			kmstest_set_vt_graphics_mode();
-+		}
-+
-+		igt_describe("Read all entries from sysfs path.");
-+		igt_subtest("i915-sysfs-read-all-entries")
-+			read_and_discard_sysfs_entries(sysfs, 0);
-+		igt_describe("Read all entries from debugfs path.");
-+		igt_subtest("i915-debugfs-read-all-entries")
-+			read_and_discard_sysfs_entries(debugfs, 0);
-+
-+		igt_describe("Read all debugfs entries with display on/off.");
-+		igt_subtest_group
-+			kms_tests(fd, debugfs, "i915");
-+
-+		igt_fixture {
-+			close(sysfs);
-+			close(debugfs);
-+			drm_close_driver(fd);
-+		}
-+	}
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			fd = drm_open_driver_master(DRIVER_XE);
-+			__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
-+			debugfs = igt_debugfs_dir(fd);
-+			sysfs = igt_sysfs_open(fd);
-+
-+			kmstest_set_vt_graphics_mode();
-+		}
-+
-+		igt_describe("Read all entries from sysfs path.");
-+		igt_subtest("xe-sysfs-read-all-entries")
-+			read_and_discard_sysfs_entries(sysfs, 0);
-+		igt_describe("Read all entries from debugfs path.");
-+		igt_subtest("xe-debugfs-read-all-entries")
-+			read_and_discard_sysfs_entries(debugfs, 0);
-+
-+		igt_describe("Read all debugfs entries with display on/off.");
-+		igt_subtest_group
-+			kms_tests(fd, debugfs, "xe");
-+
-+		igt_describe("Check if various debugfs devnodes exist and test reading them.");
-+		igt_subtest("xe-base") {
-+			xe_test_base(fd, xe_config(fd));
-+		}
-+
-+		igt_describe("Check all gt debugfs devnodes");
-+		igt_subtest("xe-gt") {
-+			xe_for_each_gt(fd, gt) {
-+				snprintf(devnode, sizeof(devnode), "gt%d", gt);
-+				igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
-+				xe_test_gt(fd, gt);
-+			}
-+		}
-+
-+		igt_describe("Check forcewake debugfs devnode");
-+		igt_subtest("xe-forcewake") {
-+			xe_test_forcewake(fd);
-+		}
-+
-+		igt_fixture {
-+			close(sysfs);
-+			close(debugfs);
-+			drm_close_driver(fd);
-+		}
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 2f5406523..ad32773df 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -83,6 +83,7 @@ test_progs = [
- intel_i915_xe_progs = [
- 	'api_intel_allocator',
- 	'intel_hwmon',
-+	'intel_sysfs_debugfs',
- ]
- 
- intel_i915_progs = [
--- 
-2.43.0
+ /* vm ioctl */
+ #define AMDGPU_VM_OP_RESERVE_VMID	1
+ #define AMDGPU_VM_OP_UNRESERVE_VMID	2
+</pre>
+    </blockquote>
+  </body>
+</html>
 
+--------------TsTY6pwPDw8qgUEi4wTbMwxL--
