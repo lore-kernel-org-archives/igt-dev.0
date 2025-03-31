@@ -4,59 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06BB0C3600B
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Mar 2025 13:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6109CC3600B
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Mar 2025 13:36:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B480A10E403;
-	Mon, 31 Mar 2025 13:36:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CBAD10E403;
+	Mon, 31 Mar 2025 13:36:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XD9dAHiA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dS3SoQnz";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 186DE10E403
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Mar 2025 13:36:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7597E10E407
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Mar 2025 13:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743428191; x=1774964191;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=PiSVa6JYE5VrBMhRi9faknqzwJOPVItesarNm/FL0Jk=;
- b=XD9dAHiAHWQbvLmlSlDRu8hX2t4xNpR94ESZqScnj/i735D0F9srDrZC
- mCR9IYqESGv6jJmriL+UmmPBGtof9aXUxvNyeCqbvAVH7YVaikrCOZsOC
- lyFcblquCWkT8d23xSZlUJrPDR1AnPQ8u2lTAC5kfV56lwqHWjvPrF0dt
- wHtD0kuFVBSfGH54fGzQLPjq2kGMcJrybchvzOiDa3GdXJFdN6sHaFOTC
- MEFOcw5LXLAFYbN4rSGHvOzjlGDGs4/m5BZOo6EOoH5OvrTFXDUh223IN
- 8UFvAhv3XW2st3Ss1gOg5rTej080QgUyMufSEKqLqiDHug8Sd2l4t1PRV g==;
-X-CSE-ConnectionGUID: 5nBMY/ebT1q3i+llbWmBFQ==
-X-CSE-MsgGUID: G+Jdmut+RZ2qCU3vUdtMaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="43862907"
-X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; d="scan'208";a="43862907"
+ t=1743428215; x=1774964215;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=xM/LS1jI3qSmORV68rkRx1pQpCVhvZLlBGIW47aw3gw=;
+ b=dS3SoQnzZXdXU6rmeyMEG3Sxrql4ED218Q09UKFB04xiSxH1LD/f4aq9
+ lsTIaABNSXX1crAl0AlorMjQZ5acvTYe24LJBz+V80BJol7WlJu1FX/tl
+ SrIY+l+c+PSwjPQF+7RS09LUsDKDxkxU/dZEWDAHPcQMOvO/c8ALibxGw
+ HbFpfHce4PnNV7AhJ34wY8LY5uwDCPCPv92KMiv+HbEidaiUkRCG62KIY
+ eocwtuWOKFYRePJKvZOYW7E1K3t/jTk8BqpWS1dpjTsyKiZFim5ErB1d/
+ GujUJ38CE596zdIURUqHc+ta2YhTk/mCBDxnWrPSAFtuhSNFwUxEHdo0M Q==;
+X-CSE-ConnectionGUID: 9P4GO/pzRzO2hoaiSo9FRQ==
+X-CSE-MsgGUID: KSmqGuR5Rr6/1yLXm2W3dg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="43862970"
+X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; d="scan'208";a="43862970"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2025 06:36:25 -0700
-X-CSE-ConnectionGUID: C0c1nsVkQEGmMlTx1vMSnA==
-X-CSE-MsgGUID: i7Xgew4dRXCbA92+dgySpA==
+ 31 Mar 2025 06:36:34 -0700
+X-CSE-ConnectionGUID: EEbZ5F2PTDOjA08c1tE1CA==
+X-CSE-MsgGUID: /CCADlAWRLqIzmqDCUqiOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; d="scan'208";a="149267415"
+X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; d="scan'208";a="149267432"
 Received: from oandoniu-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.15])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2025 06:36:24 -0700
+ 31 Mar 2025 06:36:34 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Petri Latvala <adrinael@adrinael.net>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 0/2] CONTRIBUTING: Add subscription info,
- patchwork link and lib guide
-Date: Mon, 31 Mar 2025 15:34:22 +0200
-Message-ID: <20250331133424.35873-1-kamil.konieczny@linux.intel.com>
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 2/2] CONTRIBUTING: Add guide about igt libraries
+Date: Mon, 31 Mar 2025 15:34:24 +0200
+Message-ID: <20250331133424.35873-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250331133424.35873-1-kamil.konieczny@linux.intel.com>
+References: <20250331133424.35873-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -75,28 +72,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add info about subscription for igt-dev mailing list and a link
-to patchwork where sended patches with test status could be seen.
-Also add some general guidelines about libraries.
+Add some general guide about adding new library function and
+a few guides for their usage outside of tests.
 
-v2: rewritten second patch about lib functions
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+---
+ CONTRIBUTING.md | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-
-Kamil Konieczny (2):
-  CONTRIBUTING: Add subscription and patchwork info
-  CONTRIBUTING: Add guide about igt libraries
-
- CONTRIBUTING.md | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 8370451d6..d4efa61f5 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -38,6 +38,34 @@ The Code
+ 
+ [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+ 
++IGT libraries
++-------------
++- Tests and benchmarks are the main usage of IGT libraries, so they
++  could use test specific macros/functions, for example igt_assert,
++  igt_require, igt_skip, igt_info or igt_debug.
++
++- New library function could be written when it will have at least two
++  different users, for example if it could be used by two or more tests.
++  In some cases single user can be accepted, when it is very likely it
++  will be used in future.
++
++- In a new library function():
++  if it uses some of the macros igt_assert/igt_require/igt_skip then
++  consider to write also __function() with the same functionality but
++  without them.
++
++- Libraries and igt_runner
++  Runner should not use lib functions. It is crucial for CI runs so using
++  libraries puts a risk of bringing changes meant for tests which in turn
++  could break runner.
++  Note: You will find places where igt_runner uses lib functions - this will
++  be on ToDo list to be fixed.
++
++- Libraries and tools/
++  Tools should try to not use lib functions. Any abnormal condition should
++  be simply reported by printf or fprintf to stdout/stderr and then tool
++  should exit gracefully. Do not use igt_abort nor igt_assert, igt_print,
++  igt_debug nor other testing/printing macros from igt lib/
+ 
+ Sending Patches
+ ---------------
 -- 
 2.49.0
 
