@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC9B8C36014
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 09:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 366E7C3601A
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 09:20:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8540810E527;
-	Tue,  1 Apr 2025 09:07:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0DD310E060;
+	Tue,  1 Apr 2025 09:20:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jtWPJLsY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KHgq6FjC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA6FB10E527
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 09:07:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 327C910E52F
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 09:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743498470; x=1775034470;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mpnK+DicnwsLO/GavGziGEhC6QyD21ihWn1Ir3z3jOI=;
- b=jtWPJLsYLAHf0q7Af+rXsA7HEq0Ak3pUavoQpm2SoMJLLNCtV6hVkGoO
- YU71/l4dp+qZsRB/PfLd93aHlholqBGzGCVHEKwgD2hEHKsAW0f4dZlNX
- I1iejzvtDrdl/2iCtQWJvTQoB/qf7zPOgyJ0D++kc3xBL0av4VxCACnOw
- XiGDMtzyxasjDyKs0LXXph8rvsbJ1fbJ22/yvZbWnpUiTIFE1OzS7Nlsj
- O3SAARqUv+JhPZzSEcZcFrJnO5zpRESySsMBta5jmngxKmVX/+JxP+fEj
- BB6NKNTahZ7vY1iMv1HQ+LTAxWbcWPRT+NKAElz+prqD7l2W0yW0iFpJQ g==;
-X-CSE-ConnectionGUID: BDWF5k1VTLWRo9wUJSZZUA==
-X-CSE-MsgGUID: bP8Xb3jiR96hEO/dMUG0zQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="62345870"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="62345870"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 02:07:50 -0700
-X-CSE-ConnectionGUID: oI3t+nWzTTKY3BBWjEnw8w==
-X-CSE-MsgGUID: ufjmhDcDQuesCL+TmiJWpQ==
+ t=1743499224; x=1775035224;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jgLyaGBk8b2rk1IWyeEAa9pTGf27sScRP9qK3/jutHY=;
+ b=KHgq6FjCMmDKxQkRUP6XiOgzeI7RUJt3nXNMgGZoH/7/lkXJt2iPYKgQ
+ FCyfY/itirMFFfMhKr4QiuQOE/ujnl6eo5K4UwRcoyYdCds5TsNlB0IC5
+ BDCGOMoK7eCtkLyA8Yja1iIYFGX3wOidx0cr53N3kSWQ91ya6de1bW/0S
+ /8hrfulAp7NZoJcjMbdGhtCgTOt63W3oQcueVIYxsZycOo209xZ5Z0XMR
+ 46RweQGHHp6cw/LYtq4dgGv1QfcdE95U6WtRfpohUkYJHMkaF41FnQxnR
+ ZKUM4UGb2PN6il0FM6uJORGLDT9yZVqyF8U3fOSmgM5vuwCPc8G5hLsz1 Q==;
+X-CSE-ConnectionGUID: WhH5usK9QACYwGx4rILcdw==
+X-CSE-MsgGUID: k1holyQiSByBCSsG8iCCDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="62211740"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="62211740"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2025 02:20:19 -0700
+X-CSE-ConnectionGUID: sWUGzFO4QTmAYXlmtN4EVw==
+X-CSE-MsgGUID: sRCt6HSqSpus/HEKV1dpXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; d="scan'208";a="131539962"
-Received: from artdev273.igk.intel.com ([172.28.176.8])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 02:07:48 -0700
-From: Jan Sokolowski <jan.sokolowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126166447"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by fmviesa006.fm.intel.com with ESMTP; 01 Apr 2025 02:20:16 -0700
+From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/xe_eudebug_online: Implement faultable
- variations of some testcases
-Date: Tue,  1 Apr 2025 09:06:51 +0000
-Message-Id: <20250401090651.298768-3-jan.sokolowski@intel.com>
+Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com,
+ Leo Li <sunpeng.li@amd.com>, Jani Nikula <jani.nikula@intel.com>,
+ Uma Shankar <uma.shankar@intel.com>,
+ Ramanaidu Naladala <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v3 0/5] Refactor DRM Debug Severity Handling for
+Date: Tue,  1 Apr 2025 14:50:10 +0530
+Message-Id: <20250401092015.818465-1-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250401090651.298768-1-jan.sokolowski@intel.com>
-References: <20250401090651.298768-1-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,103 +68,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+This update refactors the debug mask handling in the test framework for
+improved readability and addresses logical inconsistencies. Users can now
+pass a bitmask option during execution, enabling dynamic updates to the
+debug mask. If no bitmask is provided, the default value is set to 0x4.
 
-Implement fault variation of tests, which are accessing the memory via
-debugfd, by creating a vm in FAULT_MODE.
+Additionally, the exit handler has been modified to restore the original
+debug mask after the test completes, ensuring consistency. These changes
+enhance the flexibility and robustness of the DRM debug logic, making it
+easier to control the debug mask throughout the test.
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
----
- tests/intel/xe_eudebug_online.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+v2:
+- Implementated to allow flexible bitmask usage during execution. (Jani)
+- Update the commit message (Jani)
+- Using mask to update instead of a single category (Jani)
+- To handle nested updates, exit_handler is set before the update
+  process (Jani)
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 84ba748c1..a29e5a086 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -38,6 +38,7 @@
- #define TARGET_IN_VRAM			(1 << 13)
- #define SHADER_PAGEFAULT_READ		(1 << 14)
- #define SHADER_PAGEFAULT_WRITE		(1 << 15)
-+#define FAULTABLE_VM			(1 << 16)
- #define TRIGGER_UFENCE_SET_BREAKPOINT	(1 << 24)
- #define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
- #define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
-@@ -1098,7 +1099,8 @@ static void run_online_client(struct xe_eudebug_client *c)
- 							   2 * sizeof(**metadata), metadata[1]);
- 
- 	vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
--	vm_flags |= c->flags & SHADER_PAGEFAULT ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
-+	vm_flags |= c->flags & (SHADER_PAGEFAULT | FAULTABLE_VM) ?
-+			DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
- 
- 	create.vm_id = xe_eudebug_client_vm_create(c, fd, vm_flags, 0);
- 
-@@ -1481,6 +1483,12 @@ static void test_basic_online(int fd, struct drm_xe_engine_class_instance *hwe,
-  * SUBTEST: set-breakpoint
-  * Description:
-  *	Checks for attention after setting a dynamic breakpoint in the ufence event.
-+ *
-+ * SUBTEST: set-breakpoint-faultable
-+ * Sub-category: EUdebug online
-+ * Functionality: dynamic breakpoint with FAULTABLE_VM
-+ * Description:
-+ *	Faultable variation of test set-breakpoint.
-  */
- 
- static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-@@ -1488,6 +1496,8 @@ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instan
- 	struct xe_eudebug_session *s;
- 	struct online_debug_data *data;
- 
-+	igt_require(!(flags & FAULTABLE_VM) || !xe_supports_faults(fd));
-+
- 	data = online_debug_data_create(hwe);
- 	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
- 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-@@ -1739,6 +1749,12 @@ static void test_reset_with_attention_online(int fd, struct drm_xe_engine_class_
-  *	interrupts all threads, once attention event come it sets breakpoint on
-  *	the very next instruction and resumes stopped threads back. It expects
-  *	that every thread hits the breakpoint.
-+ *
-+ * SUBTEST: interrupt-all-set-breakpoint-faultable
-+ * Sub-category: EUdebug online
-+ * Functionality: dynamic breakpoint with FAULTABLE_VM
-+ * Description:
-+ *	Faultable variation of test interrupt-all-set-breakpoint.
-  */
- static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
- {
-@@ -1746,6 +1762,8 @@ static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe,
- 	struct online_debug_data *data;
- 	uint32_t val;
- 
-+	igt_require(!(flags & FAULTABLE_VM) || !xe_supports_faults(fd));
-+
- 	data = online_debug_data_create(hwe);
- 	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
- 
-@@ -2521,6 +2539,9 @@ igt_main
- 	test_gt_render_or_compute("set-breakpoint", fd, hwe)
- 		test_set_breakpoint_online(fd, hwe, SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
- 
-+	test_gt_render_or_compute("set-breakpoint-faultable", fd, hwe)
-+		test_set_breakpoint_online(fd, hwe, SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT | FAULTABLE_VM);
-+
- 	test_gt_render_or_compute("set-breakpoint-sigint-debugger", fd, hwe)
- 		test_set_breakpoint_online_sigint_debugger(fd, hwe,
- 							   SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
-@@ -2563,6 +2584,9 @@ igt_main
- 	test_gt_render_or_compute("interrupt-all-set-breakpoint", fd, hwe)
- 		test_interrupt_all(fd, hwe, SHADER_LOOP | TRIGGER_RESUME_SET_BP);
- 
-+	test_gt_render_or_compute("interrupt-all-set-breakpoint-faultable", fd, hwe)
-+		test_interrupt_all(fd, hwe, SHADER_LOOP | TRIGGER_RESUME_SET_BP | FAULTABLE_VM);
-+
- 	test_gt_render_or_compute("tdctl-parameters", fd, hwe)
- 		test_tdctl_parameters(fd, hwe, SHADER_LOOP);
- 
+v3:
+- Refactored for readability and address logical comment.
+
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Ramanaidu Naladala <ramanaidu.naladala@intel.com>
+Cc: Sameer Lattannavar <sameer.lattannavar@intel.com>
+
+Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
+Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
+Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
+Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
+
+Pranay Samala (5):
+  lib/igt_sysfs: Usage of Original debug mask to read/reset
+  lib/igt_sysfs: Rename debug level APIs/variables to debug mask
+  lib/igt_sysfs: Update new debug mask requested by user
+  tests/kms: Add parse_bitmask support for user
+  lib/igt_sysfs: Move igt_exit_handler into test
+
+ lib/igt_sysfs.c                         | 64 +++++++++++++------------
+ lib/igt_sysfs.h                         |  7 +--
+ tests/intel/kms_dp_linktrain_fallback.c | 38 +++++++++++----
+ tests/kms_atomic_transition.c           | 25 +++++-----
+ tests/kms_cursor_legacy.c               | 38 +++++++++++----
+ 5 files changed, 108 insertions(+), 64 deletions(-)
+
 -- 
 2.34.1
 
