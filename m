@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44501C36010
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 15:17:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84F87C36010
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 15:26:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8A1A10E5D6;
-	Tue,  1 Apr 2025 15:17:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qt/1pVC+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D82410E5D6
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 15:17:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743520662; x=1775056662;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=t2LvG0Imp/LCtE01HbqZ/9wdNdvqD22AZ1eYNKxI73w=;
- b=Qt/1pVC+c3tjjLxKim5+a9Gx7olAqWPsy1Hom7PwixHy+F8Jix9ml3Vj
- d8LyI9yZkjXryezUiHZKRKC8QV/OuivdRrwRGEqaGLVTswf1t2i3bGVsT
- JRmauiFdwtHbXLifdMupddLyWiRSTjxDzQXXJpsd0RN4T1AK2si8/5Fek
- D1x7CCOxCE2uOwCyQxf83O5AodHm41tUYxrlkwExheP+XwzfL9yh4ZNuX
- bsWQHnJWlYrVFf44Hhrx0+cyy4NL5lmheYBaAQW2cZO0Wht3Ikm3/nE2H
- cuXx8/7ILbczFipDjZk5MmGiT1cl90G+jabAqBpssfWT9BFdDV0q5xtjD g==;
-X-CSE-ConnectionGUID: kCONL6zoRVq7bJgKxTrhVw==
-X-CSE-MsgGUID: JKM+YEiZTTea6PPUC6FhUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="67321898"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="67321898"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 08:17:42 -0700
-X-CSE-ConnectionGUID: eE+rAFdpSGOQe7nmUZJdpA==
-X-CSE-MsgGUID: h0jiYazOTcWZfA8lVY/0Tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="131616112"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 08:17:41 -0700
-Date: Tue, 1 Apr 2025 17:17:38 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/intel/perf_pmu: Remove invalid_init test for
- cpu
-Message-ID: <20250401151738.zt2336jng5rsujkv@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250325135906.755368-1-lucas.demarchi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B8D510E5D6;
+	Tue,  1 Apr 2025 15:26:48 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B83910E5D6;
+ Tue,  1 Apr 2025 15:26:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7187569126019685289=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250325135906.755368-1-lucas.demarchi@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Stress_copy_engines_during_?=
+ =?utf-8?q?render_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Francois Dugast" <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 01 Apr 2025 15:26:47 -0000
+Message-ID: <174352120736.23500.13083961617811010770@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250401140510.38142-1-francois.dugast@intel.com>
+In-Reply-To: <20250401140510.38142-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,43 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
-On 2025-03-25 at 06:59:06 -0700, Lucas De Marchi wrote:
-> Passing a CPU other than the cpumask should not be considered invalid.
-> Since our perf-pmu has a system-wide event, it can actually be read from
-> any CPU in the system, not only the one advertised in the cpumask.
-> 
-> See https://lore.kernel.org/all/25bc2cb3-f0ab-4e64-b331-98f52cce9a99@linux.intel.com/
-> and https://lore.kernel.org/all/20240802151643.1691631-3-kan.liang@linux.intel.com/.
+--===============7187569126019685289==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Remove dot from end of www address, with this
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13663
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  tests/intel/perf_pmu.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-> index a5e67ce73..bf43da8db 100644
-> --- a/tests/intel/perf_pmu.c
-> +++ b/tests/intel/perf_pmu.c
-> @@ -1313,10 +1313,6 @@ do { \
->  	ATTR_INIT();
->  	igt_assert_eq(perf_event_open(&attr, 0, 0, -1, 0), -1);
->  	igt_assert_eq(errno, EINVAL);
-> -
-> -	ATTR_INIT();
-> -	igt_assert_eq(perf_event_open(&attr, -1, 1, -1, 0), -1);
-> -	igt_assert_eq(errno, EINVAL);
->  }
->  
->  static void open_invalid(int i915)
-> -- 
-> 2.49.0
-> 
+Series: Stress copy engines during render (rev6)
+URL   : https://patchwork.freedesktop.org/series/145831/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8297_BAT -> XEIGTPW_12898_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8297 -> IGTPW_12898
+  * Linux: xe-2888-204a9be8ec9dd0940fbdaf9180336b156148e201 -> xe-2890-2b5616d699e52553398fd5a2736646ad59716bee
+
+  IGTPW_12898: 12898
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2888-204a9be8ec9dd0940fbdaf9180336b156148e201: 204a9be8ec9dd0940fbdaf9180336b156148e201
+  xe-2890-2b5616d699e52553398fd5a2736646ad59716bee: 2b5616d699e52553398fd5a2736646ad59716bee
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12898/index.html
+
+--===============7187569126019685289==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Stress copy engines during render (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145831/">https://patchwork.freedesktop.org/series/145831/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12898/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12898/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8297_BAT -&gt; XEIGTPW_12898_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8297 -&gt; IGTPW_12898</li>
+<li>Linux: xe-2888-204a9be8ec9dd0940fbdaf9180336b156148e201 -&gt; xe-2890-2b5616d699e52553398fd5a2736646ad59716bee</li>
+</ul>
+<p>IGTPW_12898: 12898<br />
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2888-204a9be8ec9dd0940fbdaf9180336b156148e201: 204a9be8ec9dd0940fbdaf9180336b156148e201<br />
+  xe-2890-2b5616d699e52553398fd5a2736646ad59716bee: 2b5616d699e52553398fd5a2736646ad59716bee</p>
+
+</body>
+</html>
+
+--===============7187569126019685289==--
