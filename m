@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3448AC36010
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 19:09:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E7FC36017
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 19:10:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D927010E0F0;
-	Tue,  1 Apr 2025 19:09:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C67C410E0F0;
+	Tue,  1 Apr 2025 19:10:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L0TLWeyB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bVqtTv4a";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49CD610E0F0
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 19:09:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 220E010E0F0
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 19:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743534541; x=1775070541;
+ t=1743534599; x=1775070599;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/ujBOMDbG3J4Exa7u/yrxOj+B6tRTkBIT3lbbvuT4CY=;
- b=L0TLWeyBTkkJYdTfpOkPo9otS85qJZdTR0PIvQCiUqOPRFHmi7JlId2o
- Vwk+1zA+txf3l19Kly5anARPMDkYDugGlmV36IRPWw3m0j94sR3qiOnKO
- SzTJrD/RIFfUrL65Azw+AXinXeUrJhSubrbGlPjraTr4mB3uFnwDAD3ie
- 6cH3Ir9fH4kMQZBtGbukxK9vbbjjEXcjhlpW0PZdhR9coCzxopQzDNBLd
- yF79NmKIYXaFl2NZ3cVjKBLpSz+hknezg5i+AF6NunB+pkRSoBk3cPm4K
- bbE2G833C9ZleBNtJkdxiTYwnur4eTEv+exRjFOEP7fRJ5xpqS1+jZwA2 A==;
-X-CSE-ConnectionGUID: QkpVWdF4TuKr1Mt1Gv7hCg==
-X-CSE-MsgGUID: jWJME9c6RL6Gdd47ck5XUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="44126674"
-X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; d="scan'208";a="44126674"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 12:09:01 -0700
-X-CSE-ConnectionGUID: P2KQhhE6QRGVLb8BeRIEEA==
-X-CSE-MsgGUID: kruo3epUR8m+WdTyOG5s6A==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=nK8+BYRExk3FAEa3/i+rjtBEdUboHGX4dE7xOb0Ae/k=;
+ b=bVqtTv4aiuxmPZmABNsTswYE9lXhWdSIRQEov1bIrbcpsww9Ga+CG3gz
+ 34p0MLg1iHiUI5Nv7qoUetmbwjFOqAaTEer85hfFy3bwhx5J2h45zQbp6
+ mcqEcKL/oyqmNM62uOExPCy0hQVmR31EfVEzhxKi9Me3siDeakD1i3HCK
+ dUtmLNTQX9BID+kEJAsLCQ7kyNpJif5OyY/1iOsk0Nlr6tM0U38cfuRPA
+ 8HGB4p1Fhx5QwIBjITCkY3aRSEn3fJgIH711TtQwPNHQT98ei8wMRMy6x
+ jDACbey/lMh5rDMb1bJ5TNg1ze5jgcmVf6F7VBD9me7hD8GwkTFPPHv/M A==;
+X-CSE-ConnectionGUID: 88bNyj5LQE2uoeLDTaxGbw==
+X-CSE-MsgGUID: l7IedAQ8TTC6fbDuczBcbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="62276423"
+X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; d="scan'208";a="62276423"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2025 12:09:59 -0700
+X-CSE-ConnectionGUID: NJEvUCl7R4C8JtPTjv5Tuw==
+X-CSE-MsgGUID: inBhFr09SVCaMpO6F1HIHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; d="scan'208";a="126455579"
+X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; d="scan'208";a="126373615"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.192])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 12:08:59 -0700
-Date: Tue, 1 Apr 2025 21:08:56 +0200
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2025 12:09:57 -0700
+Date: Tue, 1 Apr 2025 21:09:54 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t,v4 1/5] lib/intel_blt: Promote MEM_COPY_MOCS_SHIFT
-Message-ID: <20250401190856.g44pgcoyuoil36ux@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t, v4 2/5] lib/xe/xe_spin: Add mem copy capability to
+ spinner
+Message-ID: <20250401190954.bzbl7ynyb4xxjqup@zkempczy-mobl2>
 References: <20250401140510.38142-1-francois.dugast@intel.com>
- <20250401140510.38142-2-francois.dugast@intel.com>
+ <20250401140510.38142-3-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250401140510.38142-2-francois.dugast@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250401140510.38142-3-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,48 +71,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Apr 01, 2025 at 04:00:56PM +0200, Francois Dugast wrote:
-> Move MEM_COPY_MOCS_SHIFT to the header to use it elsewhere without code
-> duplication.
+On Tue, Apr 01, 2025 at 04:00:57PM +0200, Francois Dugast wrote:
+> Add the option to perform a copy while spinning. The existing struct
+> blt_mem_object is reused as it contains the information required for
+> the copy.
 > 
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 > ---
->  lib/intel_blt.c | 1 -
->  lib/intel_blt.h | 1 +
->  2 files changed, 1 insertion(+), 1 deletion(-)
+>  lib/xe/xe_spin.c | 14 ++++++++++++++
+>  lib/xe/xe_spin.h | 19 +++++++++++++++++++
+>  2 files changed, 33 insertions(+)
 > 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index b2fb3151e..16e395c8f 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -21,7 +21,6 @@
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 0de0b1f2e..5a9d51575 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -125,6 +125,20 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+>  		spin->batch[b++] = ticks_delta_addr >> 32;
+>  	}
 >  
->  #define BITRANGE(start, end) (end - start + 1)
->  #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
-> -#define MEM_COPY_MOCS_SHIFT                     25
+> +	if (opts->mem_copy) {
+> +		spin->batch[b++] = MEM_COPY_CMD;
+> +		spin->batch[b++] = opts->mem_copy->src->width - 1;
+> +		spin->batch[b++] = opts->mem_copy->src->height - 1;
+> +		spin->batch[b++] = opts->mem_copy->src->pitch - 1;
+> +		spin->batch[b++] = opts->mem_copy->dst->pitch - 1;
+> +		spin->batch[b++] = opts->mem_copy->src_offset;
+> +		spin->batch[b++] = opts->mem_copy->src_offset << 32;
+> +		spin->batch[b++] = opts->mem_copy->dst_offset;
+> +		spin->batch[b++] = opts->mem_copy->dst_offset << 32;
+> +		spin->batch[b++] = opts->mem_copy->src->mocs_index << MEM_COPY_MOCS_SHIFT |
+> +				   opts->mem_copy->dst->mocs_index;
+> +	}
+> +
+>  	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+>  	spin->batch[b++] = 0;
+>  	spin->batch[b++] = end_addr;
+> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> index 7c95996c3..c4110469b 100644
+> --- a/lib/xe/xe_spin.h
+> +++ b/lib/xe/xe_spin.h
+> @@ -14,6 +14,7 @@
 >  
->  /* Blitter tiling definitions sanity checks */
->  static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 5d6191ac9..d0ee4172d 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -53,6 +53,7 @@
->  #include "intel_cmds_info.h"
+>  #include "xe_query.h"
+>  #include "lib/igt_dummyload.h"
+> +#include "lib/intel_blt.h"
 >  
->  #define CCS_RATIO(fd) (intel_gen(intel_get_drm_devid(fd)) >= 20 ? 512 : 256)
-> +#define MEM_COPY_MOCS_SHIFT                     25
+>  /* Wrapper to integrate with igt_dummyload, aka igt_spin */
+>  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+> @@ -24,11 +25,28 @@ void xe_spin_free(int fd, struct igt_spin *spin);
+>   * engine in which it's exec'ed
+>   */
+>  
+> +/**
+> + * struct xe_spin_mem_copy
+> + * @src: source BLT object
+> + * @dst: destination BLT object
+> + * @src_offset: source offset
+> + * @dst_offset: destination offset
+> + *
+> + * Used to perform memory copy with the spinner.
+> + */
+> +struct xe_spin_mem_copy {
+> +	struct blt_mem_object *src;
+> +	struct blt_mem_object *dst;
+> +	uint64_t src_offset;
+> +	uint64_t dst_offset;
+> +};
+> +
+>  /**
+>   * struct xe_spin_opts
+>   * @addr: offset of spinner within vm
+>   * @preempt: allow spinner to be preempted or not
+>   * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
+> + * @mem_copy: todo
 
-I wondered to rename to XE2_MEM_COPY_MOCS_SHIFT to make it clear
-and distinct from other gpus. But I won't oppose if you keep it
-as it is.
+Just fill it, other things lgtm. With this field filled, the patch is:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
 
 --
 Zbigniew
 
+>   *
+>   * Used to initialize struct xe_spin spinner behavior.
+>   */
+> @@ -37,6 +55,7 @@ struct xe_spin_opts {
+>  	bool preempt;
+>  	uint32_t ctx_ticks;
+>  	bool write_timestamp;
+> +	struct xe_spin_mem_copy *mem_copy;
+>  };
 >  
->  enum blt_color_depth {
->  	CD_8bit,
+>  /* Mapped GPU object */
 > -- 
 > 2.43.0
 > 
