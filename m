@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60C3C36014
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 12:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5023FC36010
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 12:24:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8334410E580;
-	Tue,  1 Apr 2025 12:21:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J6c0nTXe";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C1D110E324
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 12:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743510084; x=1775046084;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PPNI7s60BVzGhFpfifkGScXFxQdMujLu0yQ34Sjxdys=;
- b=J6c0nTXeCl6jNtRPimZYa2qkoH+OxCifpJ7Cl72CrU6EJLPp8EVskeGD
- D4dIO0KHyQOHkd9gaghQpD7rasbGds6ZzzcZe0Xuy6VYfc22am2AasfuE
- PA4RuxbLHz7X2IdaY2N6zqgA65jzvStacdsWYfvy++aCxtZjoB0rNiuG+
- 8DWRiZLS7wBGELqpKjcHCyGblRis+Vfsitxnm+7s090sCbkNG2+wZOyTk
- 6ynmJpitAUn3P9mLC3kZso0pkCjs2rWfbXc2s/KyvThrOVLIJ8P9Xb4Dp
- JMkrBrlnSgnse9FJ2WC4dBwGXNqAtGgdv26BUW5+/yGG+nbGJNWlE7Pt0 A==;
-X-CSE-ConnectionGUID: 30YfbqvNTJmbk9Uu5KT3OQ==
-X-CSE-MsgGUID: BoWjMcopR2OTUkUrbjmBjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="55025485"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="55025485"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 05:21:24 -0700
-X-CSE-ConnectionGUID: UEveLeTtRvGl472kyLKphA==
-X-CSE-MsgGUID: jy4bgobfRBmHnvE4+3SKYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="127186093"
-Received: from gsd-build.iind.intel.com ([10.190.229.173])
- by fmviesa009.fm.intel.com with ESMTP; 01 Apr 2025 05:21:22 -0700
-From: replace_with Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@intel.com,
-	dominik.karol.piatkowski@intel.com
-Subject: [PATCH v1 i-g-t 1/1] tests/intel/xe_fault_injection: Inject fault for
- xe_hw_engine_class_to_str
-Date: Tue,  1 Apr 2025 12:06:57 +0000
-Message-Id: <20250401120657.1829327-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250401120657.1829327-1-sobin.thomas@intel.com>
-References: <20250401120657.1829327-1-sobin.thomas@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0035810E31A;
+	Tue,  1 Apr 2025 12:24:04 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DF9910E31A;
+ Tue,  1 Apr 2025 12:24:04 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6164849529687332020=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Refactor_DRM_Debug_Severi?=
+ =?utf-8?q?ty_Handling_for?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 01 Apr 2025 12:24:04 -0000
+Message-ID: <174351024424.22710.8290908329528968462@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250401092015.818465-1-pranay.samala@intel.com>
+In-Reply-To: <20250401092015.818465-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,41 +37,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sobin Thomas <sobin.thomas@intel.com>
+--===============6164849529687332020==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Use the fault injection infrastructure to make targeted fault injection in
-functions xe_hw_engine_class_to_str and check the error handling in the
-xe_hw_engine_class_sysfs_init() so that more code paths involving error
-handling is tested.
+== Series Details ==
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_fault_injection.c | 2 ++
- 1 file changed, 2 insertions(+)
+Series: Refactor DRM Debug Severity Handling for
+URL   : https://patchwork.freedesktop.org/series/147049/
+State : failure
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 24c114ba7..94c1bbf38 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -173,6 +173,7 @@ static void set_retval(const char function_name[], long long retval)
-  * @xe_guc_ct_init:		xe_guc_ct_init
-  * @xe_guc_log_init:		xe_guc_log_init
-  * @xe_guc_relay_init:		xe_guc_relay_init
-+ * @xe_hw_engine_class_to_str:	xe_hw_engine_class_to_str
-  * @xe_mmio_probe_early:	xe_mmio_probe_early
-  * @xe_pcode_probe_early:	xe_pcode_probe_early
-  * @xe_pm_init_early:		xe_pm_init_early
-@@ -388,6 +389,7 @@ igt_main
- 		{ "xe_guc_ct_init" },
- 		{ "xe_guc_log_init" },
- 		{ "xe_guc_relay_init" },
-+		{ "xe_hw_engine_class_to_str" },
- 		{ "xe_mmio_probe_early" },
- 		{ "xe_pcode_probe_early" },
- 		{ "xe_pm_init_early" },
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8297 -> IGTPW_12893
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12893 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12893, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Additional (1): bat-jsl-4 
+  Missing    (2): bat-arlh-2 fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12893:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-mtlp-8:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-8/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-mtlp-8/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12893 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [PASS][3] -> [INCOMPLETE][4] ([i915#12904]) +1 other test incomplete
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [PASS][5] -> [DMESG-WARN][6] ([i915#13890]) +78 other tests dmesg-warn
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-11:         [DMESG-FAIL][7] ([i915#12061] / [i915#12435]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-11/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-dg2-11/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-11:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
+  [i915#13950]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13950
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8297 -> IGTPW_12893
+  * Linux: CI_DRM_16353 -> CI_DRM_16355
+
+  CI-20190529: 20190529
+  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16355: 9368766ece6c78cc0001f9b53037563fe521f887 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12893: 72bba2d7152f91246842ec2f0782892f80e5b10f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/index.html
+
+--===============6164849529687332020==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Refactor DRM Debug Severity Handling for</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147049/">https://patchwork.freedesktop.org/series/147049/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8297 -&gt; IGTPW_12893</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12893 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12893, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (1): bat-jsl-4 <br />
+  Missing    (2): bat-arlh-2 fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12893:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-8/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-mtlp-8/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12893 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) +78 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-11/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-dg2-11/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12893/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8297 -&gt; IGTPW_12893</li>
+<li>Linux: CI_DRM_16353 -&gt; CI_DRM_16355</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16355: 9368766ece6c78cc0001f9b53037563fe521f887 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12893: 72bba2d7152f91246842ec2f0782892f80e5b10f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6164849529687332020==--
