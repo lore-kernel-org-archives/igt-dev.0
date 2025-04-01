@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3996C36014
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 14:23:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2C21C36010
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 14:27:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AFF3310E0AD;
-	Tue,  1 Apr 2025 14:23:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="drccbGA3";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1094A10E0AD
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 14:23:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743517411; x=1775053411;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=lkx+jPRd6lnRgXMM9FYaoI4re/a85H6QfjGQ2PiogpA=;
- b=drccbGA3DIK+jjXYQW31Ufjdc0Q/9kVi01QMaohMF7e2T5islp1YFYvx
- tSjXRq2drbg+6l+bywelMwCgrCvQK6gttlYj7aDnAoHmSevsW4H0t1uI4
- Jot4M/zJlat2uj0CtpM6RrWaix4rYdME8GrkJUIWeBX4PSMTxeM1gRlEI
- +YPTbz+GfybVhMAZ2DdInX4MeAAORos3mx/Dh4B+5Mzmun9mVKBkw7mzU
- JlJEFxl1DT8c3xkHkyRM1/iz8uKcY0CapS4Ql/BjqmSfgsgVHV0nOx1y3
- dWC92K0Jq7vnFCDgftuJLqvG2GJUOqk3mg1Xo5iYmWIlIFkeKQrz7b2yr w==;
-X-CSE-ConnectionGUID: po+4W/vSRSu+Zyu64NGBXA==
-X-CSE-MsgGUID: bEmLEDgmTnuSOPnOxt1/4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="45015982"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="45015982"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 07:23:03 -0700
-X-CSE-ConnectionGUID: 99BTC9VzRlepc/Z+9sRYpQ==
-X-CSE-MsgGUID: XLdMkK7oSeSumzj/LywjzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="131404516"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 07:22:59 -0700
-Date: Tue, 1 Apr 2025 16:22:43 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] CONTRIBUTING: Add guide about igt libraries
-Message-ID: <20250401142243.th7x75drmii7sdei@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- igt-dev@lists.freedesktop.org,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-References: <20250331133424.35873-1-kamil.konieczny@linux.intel.com>
- <20250331133424.35873-3-kamil.konieczny@linux.intel.com>
- <87o6xh3z6h.wl-ashutosh.dixit@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4FDA210E101;
+	Tue,  1 Apr 2025 14:27:58 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9085A10E101;
+ Tue,  1 Apr 2025 14:27:57 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1755261504437151874=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87o6xh3z6h.wl-ashutosh.dixit@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5F?=
+ =?utf-8?q?injection=3A_Inject_fault_for_xe=5Fhw=5Fengine=5Fclass=5Fto=5Fstr?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "replace_with Sobin Thomas" <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 01 Apr 2025 14:27:57 -0000
+Message-ID: <174351767758.23500.2829115471964273520@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250401120657.1829327-1-sobin.thomas@intel.com>
+In-Reply-To: <20250401120657.1829327-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,86 +37,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dixit,,
-On 2025-03-31 at 10:08:54 -0700, Dixit, Ashutosh wrote:
-> On Mon, 31 Mar 2025 06:34:24 -0700, Kamil Konieczny wrote:
-> >
-> > Add some general guide about adding new library function and
-> > a few guides for their usage outside of tests.
-> >
-> > Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Acked-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> > ---
-> >  CONTRIBUTING.md | 28 ++++++++++++++++++++++++++++
-> >  1 file changed, 28 insertions(+)
-> >
-> > diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-> > index 8370451d6..d4efa61f5 100644
-> > --- a/CONTRIBUTING.md
-> > +++ b/CONTRIBUTING.md
-> > @@ -38,6 +38,34 @@ The Code
-> >
-> >  [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-> >
-> > +IGT libraries
-> > +-------------
-> > +- Tests and benchmarks are the main usage of IGT libraries, so they
-> > +  could use test specific macros/functions, for example igt_assert,
-> > +  igt_require, igt_skip, igt_info or igt_debug.
-> > +
-> > +- New library function could be written when it will have at least two
-> > +  different users, for example if it could be used by two or more tests.
-> > +  In some cases single user can be accepted, when it is very likely it
-> > +  will be used in future.
-> > +
-> > +- In a new library function():
-> > +  if it uses some of the macros igt_assert/igt_require/igt_skip then
-> > +  consider to write also __function() with the same functionality but
-> > +  without them.
-> > +
-> > +- Libraries and igt_runner
-> > +  Runner should not use lib functions. It is crucial for CI runs so using
-> > +  libraries puts a risk of bringing changes meant for tests which in turn
-> > +  could break runner.
-> > +  Note: You will find places where igt_runner uses lib functions - this will
-> > +  be on ToDo list to be fixed.
-> > +
-> > +- Libraries and tools/
-> > +  Tools should try to not use lib functions. Any abnormal condition should
-> > +  be simply reported by printf or fprintf to stdout/stderr and then tool
-> > +  should exit gracefully. Do not use igt_abort nor igt_assert, igt_print,
-> > +  igt_debug nor other testing/printing macros from igt lib/
-> 
-> Not sure about runner, but for tools, I'd rather have shared functions from
-> lib/ rather than duplicating code. So we should be more specific here about
-> which functions tools should not use. Maybe tools should not use 'igt_abort
-> nor igt_assert, igt_print, igt_debug' etc. or even using these might be ok,
-> as long as the tool works as expected?
-> 
-> Or maybe just say here that 'give some thought if you are planning to use
-> IGT lib code in tools, some IGT lib functions might be be appropriate in
-> tools'.
-> 
-> For example previously a lot of extra code was written in i915 perf
-> library, just to avoid using IGT lib/. I changed this approach in xe perf
-> lib and decided to use IGT lib/.
-> 
+--===============1755261504437151874==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You are right, I will rewrite this.
+== Series Details ==
 
-Regards,
-Kamil
+Series: tests/intel/xe_fault_injection: Inject fault for xe_hw_engine_class_to_str
+URL   : https://patchwork.freedesktop.org/series/147060/
+State : success
 
-> 
-> 
-> >
-> >  Sending Patches
-> >  ---------------
-> > --
-> > 2.49.0
-> >
+== Summary ==
+
+CI Bug Log - changes from IGT_8297 -> IGTPW_12896
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/index.html
+
+Participating hosts (42 -> 42)
+------------------------------
+
+  Additional (1): bat-jsl-4 
+  Missing    (1): fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12896 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-n3050:       [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [PASS][3] -> [DMESG-WARN][4] ([i915#13890]) +78 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-14:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-9:          [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
+  [i915#13950]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13950
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8297 -> IGTPW_12896
+  * Linux: CI_DRM_16353 -> CI_DRM_16355
+
+  CI-20190529: 20190529
+  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16355: 9368766ece6c78cc0001f9b53037563fe521f887 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12896: 12896
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/index.html
+
+--===============1755261504437151874==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Inject fault for xe_hw_engine_class_to_str</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147060/">https://patchwork.freedesktop.org/series/147060/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8297 -&gt; IGTPW_12896</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/index.html</p>
+<h2>Participating hosts (42 -&gt; 42)</h2>
+<p>Additional (1): bat-jsl-4 <br />
+  Missing    (1): fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12896 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) +78 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12896/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8297 -&gt; IGTPW_12896</li>
+<li>Linux: CI_DRM_16353 -&gt; CI_DRM_16355</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16355: 9368766ece6c78cc0001f9b53037563fe521f887 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12896: 12896<br />
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1755261504437151874==--
