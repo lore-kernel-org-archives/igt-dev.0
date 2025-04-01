@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3383EC36010
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 19:47:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8EB7C36010
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Apr 2025 21:29:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB36810E668;
-	Tue,  1 Apr 2025 19:47:19 +0000 (UTC)
-Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 415B310E668;
- Tue,  1 Apr 2025 19:47:19 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3779124709807446841=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D6A210E672;
+	Tue,  1 Apr 2025 21:29:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Z05eiGJn";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACD5B10E673
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Apr 2025 21:29:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=ptRdjCT9LYvuJiEdm8af8hjHUUdgZ9A5Mw6xzC9h5v0=; b=Z05eiGJnfBy26H8oyLgVWGg41x
+ AzkUMPxIZCRwlXL0aQ8YjGhfto51fUd3wIij1ZN8zbVmPBhBSMNj3elcT6o+E7eEwPuFiWL9Gnlj+
+ BwyzylZiPOfx+yP0FPwfyy85AM7hikI5IfNo4DY3ZLsSjnIgDZu5Kqh5ECuVBXKYnNzFJOepF88jz
+ Hw2FQTTQeJgQMqYLFR176EtKXBkABa1oI5RBNqMz1RvhWBSa4tOsGGPvBHTwKUdKgfRLcmrRY7NZU
+ SM2Pfrub04/YdiocuV0iyTBT0kB+i21T9tGfxSM/ZrKO/W+kG/uIYNrdM1MyWShDL15kllgUBH02C
+ Zxzh7FHg==;
+Received: from [187.57.129.172] (helo=[192.168.15.100])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1tzjAR-00A1cM-4t; Tue, 01 Apr 2025 23:29:07 +0200
+Message-ID: <97184c27-dfb7-4a98-b10f-0eda33adb740@igalia.com>
+Date: Tue, 1 Apr 2025 18:29:02 -0300
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Xe=3A_Add_tests_for_PXP_?=
- =?utf-8?q?=28rev8=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 01 Apr 2025 19:47:19 -0000
-Message-ID: <174353683925.24812.9739781192536476969@e6b6f09ec485>
-X-Patchwork-Hint: ignore
-References: <20250327145101.722032-1-daniele.ceraolospurio@intel.com>
-In-Reply-To: <20250327145101.722032-1-daniele.ceraolospurio@intel.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v4 3/3] tests/kms_async_flips: Create subtest for overlay
+ planes
+To: Melissa Wen <mwen@igalia.com>
+Cc: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, kernel-dev@igalia.com,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Hung <alex.hung@amd.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>
+References: <20250327221601.19086-1-andrealmeid@igalia.com>
+ <20250327221601.19086-4-andrealmeid@igalia.com>
+ <7puzvifpwz34pzcy5irnurgu3n562tekdrilxx4zx7bcfd3fxt@uemtwqmtru6t>
+Content-Language: en-US
+From: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+In-Reply-To: <7puzvifpwz34pzcy5irnurgu3n562tekdrilxx4zx7bcfd3fxt@uemtwqmtru6t>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,245 +63,183 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3779124709807446841==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Melissa,
 
-== Series Details ==
+Thanks for the review!
 
-Series: Xe: Add tests for PXP (rev8)
-URL   : https://patchwork.freedesktop.org/series/142450/
-State : failure
+Em 29/03/2025 16:25, Melissa Wen escreveu:
+> On 03/27, André Almeida wrote:
+>> amdgpu can perform async flips in overlay planes as well, so create a
+>> test for that.
+>>
+>> Signed-off-by: André Almeida <andrealmeid@igalia.com>
+>> ---
+>>   tests/kms_async_flips.c | 56 ++++++++++++++++++++++++++++++++++++++---
+>>   1 file changed, 52 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+>> index 5c7e1ae13..cc149dea2 100644
+>> --- a/tests/kms_async_flips.c
+>> +++ b/tests/kms_async_flips.c
+>> @@ -85,6 +85,9 @@
+>>    *
+>>    * SUBTEST: async-flip-suspend-resume
+>>    * Description: Verify the async flip functionality with suspend and resume cycle
+>> + *
+>> + * SUBTEST: overlay-atomic
+>> + * Description: Verify overlay planes with async flips in atomic API
+>>    */
+>>   
+>>   #define CURSOR_POS 128
+>> @@ -105,12 +108,14 @@ typedef struct {
+>>   	uint32_t crtc_id;
+>>   	uint32_t refresh_rate;
+>>   	struct igt_fb bufs[NUM_FBS];
+>> +	struct igt_fb bufs_overlay[NUM_FBS];
+>>   	igt_display_t display;
+>>   	igt_output_t *output;
+>>   	unsigned long flip_timestamp_us;
+>>   	double flip_interval;
+>>   	uint64_t modifier;
+>>   	igt_plane_t *plane;
+>> +	igt_plane_t *plane_overlay;
+>>   	igt_pipe_crc_t *pipe_crc;
+>>   	igt_crc_t ref_crc;
+>>   	int flip_count;
+>> @@ -122,6 +127,7 @@ typedef struct {
+>>   	bool allow_fail;
+>>   	struct buf_ops *bops;
+>>   	bool atomic_path;
+>> +	bool overlay_path;
+>>   } data_t;
+>>   
+>>   static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+>> @@ -213,6 +219,18 @@ static void require_atomic_async_cap(data_t *data)
+>>   		      "Skipping, atomic flip async flip not supported");
+>>   }
+>>   
+>> +static void require_overlay_flip_support(data_t *data)
+>> +{
+>> +	struct igt_fb *bufs = data->bufs_overlay;
+>> +	igt_plane_t *plane = data->plane_overlay;
+>> +	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
+>> +
+>> +	igt_plane_set_fb(plane, &bufs[0]);
+> 
+> Running `overlay-atomic` alone, the subtest passes, but running
+> `kmas_async_flip` subtests in a row the `overlay-atomic` fails here in a
+> kernel with overlay async support.
+> 
 
-== Summary ==
+The issue was happening because on test_init_fbs(), there's a `if 
+(prev_output_id != output_id...)` that prevents fbs to be recreated if 
+they are suitable for the next test. That was preventing the creation of 
+the overlay fb in some cases, but I've fixed for the v5.
 
-CI Bug Log - changes from IGT_8297 -> IGTPW_12900
-====================================================
+> I suspect something from previous execution needs a sync flip for
+> setting modes before checking for overlay async support, or there is any
+> other leak from the previous subtest.
+> 
+>> +
+>> +	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
+>> +		      "Async flip for overlay planes not supported\n");
+>> +}
+>> +
+>>   static void test_init(data_t *data)
+>>   {
+>>   	drmModeModeInfo *mode;
+>> @@ -228,12 +246,15 @@ static void test_init(data_t *data)
+>>   	igt_output_set_pipe(data->output, data->pipe);
+>>   
+>>   	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+>> +	if (data->overlay_path)
+>> +		data->plane_overlay = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_OVERLAY);
+>>   }
+>>   
+>>   static void test_finish(data_t *data)
+>>   {
+>>   	data->alternate_sync_async = false;
+>>   	data->atomic_path = false;
+>> +	data->overlay_path = false;
+>>   }
+>>   
+>>   static void test_init_fbs(data_t *data)
+>> @@ -254,16 +275,27 @@ static void test_init_fbs(data_t *data)
+>>   		prev_modifier = data->modifier;
+>>   
+>>   		if (data->bufs[0].fb_id) {
+>> -			for (i = 0; i < NUM_FBS; i++)
+>> +			for (i = 0; i < NUM_FBS; i++) {
+>>   				igt_remove_fb(data->drm_fd, &data->bufs[i]);
+>> +				if (data->overlay_path)
+>> +					igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
+>> +			}
+>>   		}
+>>   
+>> -		for (i = 0; i < NUM_FBS; i++)
+>> +		for (i = 0; i < NUM_FBS; i++) {
+>>   			make_fb(data, &data->bufs[i], width, height, i);
+>> +			if (data->overlay_path)
+>> +				make_fb(data, &data->bufs_overlay[i], width, height, i);
+> These bufs_overlay fbs should be removed when the test finished,
+> together with bufs fbs in the last igt_fixture of the test.
 
-Summary
--------
+Done
 
-  **FAILURE**
+>> +		}
+>>   	}
+>>   
+>>   	igt_plane_set_fb(data->plane, &data->bufs[0]);
+>>   	igt_plane_set_size(data->plane, width, height);
+>> +
+>> +	if (data->overlay_path) {
+>> +		igt_plane_set_fb(data->plane_overlay, &data->bufs[0]);
+> I didn't get why both primary and overlay planes are set to the same
+> bufs[0] fb here, should it be data->bufs_overlay[0] ?
 
-  Serious unknown changes coming with IGTPW_12900 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12900, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+Ops, that was a typo!
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/index.html
+>> +		igt_plane_set_size(data->plane_overlay, width, height);
+>> +	}
+>>   }
+>>   
+>>   static bool async_flip_needs_extra_frame(data_t *data)
+>> @@ -291,12 +323,17 @@ static bool async_flip_needs_extra_frame(data_t *data)
+>>   static int perform_flip(data_t *data, int frame, int flags)
+>>   {
+>>   	int ret;
+>> +	igt_plane_t *plane;
+>> +	struct igt_fb *bufs;
+>> +
+>> +	plane = data->overlay_path ? data->plane_overlay : data->plane;
+>> +	bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
+>>   
+>>   	if (!data->atomic_path) {
+>>   		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+>> -				      data->bufs[frame % NUM_FBS].fb_id, flags, data);
+>> +				     bufs[frame % NUM_FBS].fb_id, flags, data);
+>>   	} else {
+>> -		igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
+>> +		igt_plane_set_fb(plane, &bufs[frame % NUM_FBS]);
+>>   		ret = igt_display_try_commit_atomic(&data->display, flags, data);
+>>   	}
+>>   
+>> @@ -312,6 +349,9 @@ static void test_async_flip(data_t *data)
+>>   
+>>   	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>>   
+>> +	if (data->overlay_path)
+> I wonder if the bufs_overlay fbs should be initialize and set here, after
+> igt_display_commit2, instead of together with bufs fbs in the
+> test_init_fbs()
 
-Participating hosts (42 -> 42)
-------------------------------
+test_init_fbs() is called once for all the tests in a subtest group, 
+require_overlay_flip_support() is called every time a test run. I think 
+it makes more sense to init those buffers just one time per run, like 
+it's done with the other buffers. Let me know what do you think.
 
-  Additional (1): bat-jsl-4 
-  Missing    (1): fi-pnv-d510 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_12900:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-cfl-8700k:       [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-cfl-8700k/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/fi-cfl-8700k/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-rplp-1:         [PASS][3] -> [ABORT][4] +1 other test abort
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_12900 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [PASS][5] -> [INCOMPLETE][6] ([i915#12904]) +1 other test incomplete
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-apl-1/igt@dmabuf@all-tests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - fi-bsw-nick:        [PASS][7] -> [INCOMPLETE][8] ([i915#12904]) +1 other test incomplete
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adlp-6:         [PASS][9] -> [DMESG-WARN][10] ([i915#13890]) +78 other tests dmesg-warn
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14] +1 other test pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
-  [i915#13950]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13950
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8297 -> IGTPW_12900
-  * Linux: CI_DRM_16353 -> CI_DRM_16358
-
-  CI-20190529: 20190529
-  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16358: f370ef549b9746079369aad1ee6ff4c4da972f25 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12900: 12900
-  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/index.html
-
---===============3779124709807446841==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Xe: Add tests for PXP (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/142450/">https://patchwork.freedesktop.org/series/142450/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8297 -&gt; IGTPW_12900</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_12900 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12900, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/index.html</p>
-<h2>Participating hosts (42 -&gt; 42)</h2>
-<p>Additional (1): bat-jsl-4 <br />
-  Missing    (1): fi-pnv-d510 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12900:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-cfl-8700k/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/fi-cfl-8700k/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-rplp-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-rplp-1/igt@i915_selftest@live@workarounds.html">ABORT</a> +1 other test abort</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12900 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) +78 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12900/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8297 -&gt; IGTPW_12900</li>
-<li>Linux: CI_DRM_16353 -&gt; CI_DRM_16358</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16358: f370ef549b9746079369aad1ee6ff4c4da972f25 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12900: 12900<br />
-  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3779124709807446841==--
+>> +		require_overlay_flip_support(data);
+>> +
