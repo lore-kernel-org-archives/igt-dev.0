@@ -4,55 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9933C36017
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 16:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E279C28B20
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 16:32:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D28B10E823;
-	Wed,  2 Apr 2025 16:12:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87B0B10E857;
+	Wed,  2 Apr 2025 16:32:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AVJM1WOs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rmkz7Coq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AFDA10E201
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 16:12:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E444210E856
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 16:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743610357; x=1775146357;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Z/WIhFE/JpEbMADtbbkNjelkrRua8GoeecilWMvNAmk=;
- b=AVJM1WOswmro9/LKZB8aywH6yxsOM7KGVwSBFcD/PIdTCVMsiBghZx+S
- jJ7iJ2YJ4JKj5NxzCcgtgkgJAluSudDiMmhAa6hgYtnihOLtsEQZX4Nxu
- 6p+/nAccZmLtS7UTRHHs184IuCdUn8YCK6D9gaThdqTTCpO6A4fn3qXOw
- E9Spj18TyjmMP05eN+CXK+7gvl1R9pzb9dz1j8zZbvIlRspP2ZUFktYOv
- 4V3jz+sDV0D44WG8OnmFqvd7D21Id8cMIyDQuBGBCneNZfar2qnTOoGgm
- xa8AyJjVfe8dqBmedoIJjTSWyh/bIH7TwpJMH+aFpyg+JIu5QWhs6niTb Q==;
-X-CSE-ConnectionGUID: gZMiHGEHQrmA7dW9KHW+qQ==
-X-CSE-MsgGUID: MWGF/xJ0TzCfX+8wDRsX1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="32594206"
-X-IronPort-AV: E=Sophos;i="6.15,182,1739865600"; d="scan'208";a="32594206"
+ t=1743611544; x=1775147544;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2gOusSiZtfT9gzbEd+QvpHJg+nZESoN57BIj+I2ZVj0=;
+ b=Rmkz7CoqS8xvnGlBD7rXtSUi5fGRkxkdpuW/VQshftveLfARgNwGaIl0
+ KfzTSuGDpX3qg2tXCcMWh+jwJR3VOZeAhoxAK8lE09WQnHdVc+/ahosH6
+ WWcV6Y/8/HX8E+7x8CGlGlg6tj40Txg1NuxK5K8y80g5mc+uaZj5rjV3R
+ xIbzQh96Q52/1DU8zcg6f3yTu4hbhALea3d+PSobfy7/Wgr3/wGof/fqu
+ aGq+FaU7yBfPayz1igez5Y4+AiGnuzO1Zy5NFcvRm9ofGnaJz/NlyLdbK
+ sC7qiM7PRlAzKsJBt+x1e7AC/V7pTNaz5gPoR6uX3ygS78dEhUGWA/zKi Q==;
+X-CSE-ConnectionGUID: Xz2X3G5GS5WTZs8+KZCTEA==
+X-CSE-MsgGUID: wNbvbf7QRnqLlfBQD8EIaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="44884986"
+X-IronPort-AV: E=Sophos;i="6.15,182,1739865600"; d="scan'208";a="44884986"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2025 09:12:23 -0700
-X-CSE-ConnectionGUID: Fyk1EnHkQnSNN+Ar5a373Q==
-X-CSE-MsgGUID: xYydc8kqRRCrMuJBtkMNlQ==
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2025 09:32:15 -0700
+X-CSE-ConnectionGUID: dkdye9w+Qmmx4EDMc3nlbA==
+X-CSE-MsgGUID: oj7JdAYGSa2hCnad0OdC+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,182,1739865600"; d="scan'208";a="126503255"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.233])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2025 09:12:21 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,182,1739865600"; d="scan'208";a="126508863"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by orviesa009.jf.intel.com with ESMTP; 02 Apr 2025 09:32:15 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t v1 2/2] intel-ci/xe: Block more i915 tests in Xe runs
-Date: Wed,  2 Apr 2025 18:12:06 +0200
-Message-ID: <20250402161207.66601-3-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250402161207.66601-1-kamil.konieczny@linux.intel.com>
-References: <20250402161207.66601-1-kamil.konieczny@linux.intel.com>
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH i-g-t 0/4] Added benchmark test cases for xe
+Date: Wed,  2 Apr 2025 22:10:47 +0530
+Message-Id: <20250402164051.671184-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,29 +64,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There was added new generic Intel test intel_sysfs_debugfs
-which checks sysfs and debugfs for both i915 and Xe.
-Lets block i915 ones for Xe runs.
+Pravalika Gurram (4):
+  benchmarks: Measure BLT performance
+  benchmark: Measure allocation time for objects
+  benchmarks: create xe_exec_ctx
+  xe_exec_nop: create xe_exec_nop
 
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel-ci/xe.blocklist.txt | 1 +
- 1 file changed, 1 insertion(+)
+ benchmarks/meson.build   |   4 +
+ benchmarks/xe_blt.c      | 369 +++++++++++++++++++++++++++++++++++++++
+ benchmarks/xe_create.c   | 233 ++++++++++++++++++++++++
+ benchmarks/xe_exec_ctx.c | 332 +++++++++++++++++++++++++++++++++++
+ benchmarks/xe_exec_nop.c | 221 +++++++++++++++++++++++
+ 5 files changed, 1159 insertions(+)
+ create mode 100644 benchmarks/xe_blt.c
+ create mode 100644 benchmarks/xe_create.c
+ create mode 100644 benchmarks/xe_exec_ctx.c
+ create mode 100644 benchmarks/xe_exec_nop.c
 
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index 80ceba9a5..d02d0f73e 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -20,6 +20,7 @@ igt@gen.*
- igt@i915_.*
- igt@perf.*
- igt@sysfs_.*
-+igt@.*@i915.*
- ##################################################################
- # Exclude mock DRM KUnit from IGT, as those already run at build
- # time on Intel CI
 -- 
-2.49.0
+2.34.1
 
