@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4709EC28B20
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 04:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04315C28B20
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 05:23:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C9A3F10E6B4;
-	Wed,  2 Apr 2025 04:32:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XELVEz3S";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EE3110E6B4
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 04:32:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743568358; x=1775104358;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xz1U8iOnUBJ18Z34ho34YXeY8Fw/lkQcFw4xrLKCc/Q=;
- b=XELVEz3SIzCcdnwD2aIR8Y9rplWQv0JqGV0e1au2NptOBH4XUC3Vvw09
- c+KDDLvMP8VOOCp7j6Fstj74VQ4CHGM0DjE3bkQVKchiYYFXzgNs3wp2h
- I2dki69/fOuV8q3GTx/JwbPLE4turyigprId/i+V/itsP/7Cqw0xh61Pd
- uDe3LAbVm3PdrfSBhUOTDr67BPukw2YBxqPWj8+YC2YcKd5Njo2RVJz7I
- kH6ARzoEd+vTIqKIEfVuDSS+fInP2qMiHCkyxixLYlY9Xuf0yKrs67XqH
- 8DJHhUEY0k8U7CiQzEeNlQQoSY/wcFYrRVScZbkpBVNCVAmCmEN5lwHWX A==;
-X-CSE-ConnectionGUID: wFceEmJ5Sn+wAeaMQfWTTA==
-X-CSE-MsgGUID: ZimedgJLQQuSzSfkAoFAUA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="44166315"
-X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; d="scan'208";a="44166315"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 21:32:38 -0700
-X-CSE-ConnectionGUID: ciKll4UbTRK9MeH7Dhwo3Q==
-X-CSE-MsgGUID: EDPm0Fo1T2yHB2C2kMUDmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; d="scan'208";a="131442115"
-Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 21:32:36 -0700
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com,
-	shekhar.chauhan@intel.com
-Subject: [PATCH v5] tests/kms_cursor_crc: Test async changes midframe
-Date: Wed,  2 Apr 2025 10:02:28 +0530
-Message-Id: <20250402043228.404847-1-shekhar.chauhan@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABC7B10E1C9;
+	Wed,  2 Apr 2025 05:23:55 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E56A10E1C9;
+ Wed,  2 Apr 2025 05:23:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3796894641176991738=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fcursor=5Fcrc?=
+ =?utf-8?q?=3A_Test_async_changes_midframe_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Shekhar Chauhan" <shekhar.chauhan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 02 Apr 2025 05:23:54 -0000
+Message-ID: <174357143424.25930.13316160407894079205@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250402043228.404847-1-shekhar.chauhan@intel.com>
+In-Reply-To: <20250402043228.404847-1-shekhar.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,205 +37,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Check if cursor IOCTLs are behaving in timely manner via CRC.
-Test CRC of the display with 2 cursors, separated by a vblank and a
-sleep so that the drawing of the cursors only happens when the screen is
-active and then compare the CRC of the two cases. This helps validates
-that there is no tearing when doing cursor changes midframe. Test
-consists of two subtests, one for checking the timely change and the
-second test also adds changing position into the first test.
+--===============3796894641176991738==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Trim down the description.
-v3: Require Intel device/driver.
-v4: Tweak commit message and test description.
-v5: Move igt_crc_t var to top of func to avoid compiler complain.
+== Series Details ==
 
-Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
----
- tests/kms_cursor_crc.c | 139 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+Series: tests/kms_cursor_crc: Test async changes midframe (rev2)
+URL   : https://patchwork.freedesktop.org/series/146795/
+State : success
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 7c6f61f55..c72d00232 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -100,6 +100,16 @@
-  * @max-size:              Max supported size
-  */
- 
-+/**
-+ * SUBTEST: async-cursor-crc-framebuffer-change
-+ * Description: Validate cursor IOCTLs tearing via framebuffer changes.
-+ */
-+
-+/**
-+ * SUBTEST: async-cursor-crc-position-change
-+ * Description: Validate cursor IOCTLs tearing via cursor position change.
-+ */
-+
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate cursor plane functionality. "
-    "The test will position the cursor plane either fully onscreen, "
-@@ -123,6 +133,11 @@ enum cursor_buffers {
- 	MAXCURSORBUFFER
- };
- 
-+enum cursor_change {
-+	FIRSTIMAGE,
-+	SECONDIMAGE
-+};
-+
- typedef struct {
- 	int x;
- 	int y;
-@@ -151,6 +166,7 @@ typedef struct {
- 	double alpha;
- 	int vblank_wait_count; /* because of msm */
- 	cursorarea oldcursorarea[MAXCURSORBUFFER];
-+	struct igt_fb timed_fb[2];
- } data_t;
- 
- static bool extended;
-@@ -674,6 +690,78 @@ static void test_cursor_transparent(data_t *data)
- 	data->alpha = 1.0;
- }
- 
-+static void do_timed_cursor_fb_change(data_t *data, enum cursor_change change)
-+{
-+	if (change == FIRSTIMAGE) {
-+		igt_plane_set_fb(data->cursor, &data->timed_fb[0]);
-+		igt_plane_set_position(data->cursor,
-+				       data->left + data->cursor_max_w - 10,
-+				       data->bottom - data->cursor_max_h - 10);
-+	} else {
-+		igt_plane_set_fb(data->cursor, &data->timed_fb[1]);
-+	}
-+}
-+
-+static void do_timed_cursor_fb_pos_change(data_t *data, enum cursor_change change)
-+{
-+	if (change == FIRSTIMAGE) {
-+		igt_plane_set_fb(data->cursor, &data->timed_fb[0]);
-+		igt_plane_set_position(data->cursor,
-+				       data->left + data->cursor_max_w - 10,
-+				       data->bottom - data->cursor_max_h - 10);
-+	} else {
-+		igt_plane_set_position(data->cursor,
-+				       data->left + data->cursor_max_w + 20,
-+				       data->bottom - data->cursor_max_h + 20);
-+	}
-+}
-+
-+static void timed_cursor_changes(data_t *data, void (changefunc)(data_t *, enum cursor_change))
-+{
-+	igt_crc_t crc1, crc2;
-+
-+	/* Legacy cursor API does not guarantee that the cursor update happens at vBlank.
-+	 * So, not assuming that this happens across all platforms, the test requires
-+	 * Intel plaforms.
-+	 */
-+	igt_require_intel(data->drm_fd);
-+
-+	data->cursor = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_CURSOR);
-+	changefunc(data, FIRSTIMAGE);
-+
-+	igt_display_commit(&data->display);
-+
-+	/* Extra vblank wait is because nonblocking cursor ioctl */
-+	igt_wait_for_vblank_count(data->drm_fd,
-+				  data->display.pipes[data->pipe].crtc_offset,
-+				  data->vblank_wait_count);
-+
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc1);
-+
-+	/* get the screen refresh rate, then wait for vblank, and
-+	 * wait for 1/5 of time of screen refresh and change image.
-+	 * change it mid screen to validate that the change happens
-+	 * at the end of the current frame.
-+	 */
-+	usleep(1.0f / data->refresh / 5.0f * 1e6);
-+
-+	changefunc(data, SECONDIMAGE);
-+	igt_display_commit(&data->display);
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc2);
-+
-+	igt_assert_crc_equal(&crc1, &crc2);
-+}
-+
-+static void test_crc_cursors(data_t *data)
-+{
-+	timed_cursor_changes(data, do_timed_cursor_fb_change);
-+}
-+
-+static void test_crc_pos_cursors(data_t *data)
-+{
-+	timed_cursor_changes(data, do_timed_cursor_fb_pos_change);
-+}
-+
- static void test_cursor_opaque(data_t *data)
- {
- 	data->alpha = 1.0;
-@@ -1013,6 +1101,57 @@ static void run_tests_on_pipe(data_t *data)
- 	}
- 
- 	igt_fixture {
-+		igt_create_color_fb(data->drm_fd, data->cursor_max_w, data->cursor_max_h,
-+				DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+				1.f, 1.f, 1.f, &data->timed_fb[0]);
-+
-+		igt_create_color_fb(data->drm_fd, data->cursor_max_w, data->cursor_max_h,
-+				DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+				1.f, 0.f, 0.f, &data->timed_fb[1]);
-+	}
-+
-+	igt_describe("Validate CRC with two cursors");
-+	igt_subtest_with_dynamic("async-cursor-crc-framebuffer-change") {
-+		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
-+			data->pipe = pipe;
-+
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+					  kmstest_pipe_name(pipe),
-+					  data->output->name)
-+				run_test(data, test_crc_cursors,
-+					  data->cursor_max_w, data->cursor_max_h);
-+		}
-+	}
-+
-+	igt_describe("Validate CRC with two cursors and cursor position change");
-+	igt_subtest_with_dynamic("async-cursor-crc-position-change") {
-+		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
-+			data->pipe = pipe;
-+
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+					  kmstest_pipe_name(pipe),
-+					  data->output->name)
-+				run_test(data, test_crc_pos_cursors,
-+					  data->cursor_max_w, data->cursor_max_h);
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_remove_fb(data->drm_fd, &data->timed_fb[0]);
-+		igt_remove_fb(data->drm_fd, &data->timed_fb[1]);
-+
- 		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
- 	}
- 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8297 -> IGTPW_12904
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Additional (1): bat-jsl-4 
+  Missing    (2): bat-arlh-2 fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12904 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-9:         [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13950]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13950
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8297 -> IGTPW_12904
+  * Linux: CI_DRM_16353 -> CI_DRM_16361
+
+  CI-20190529: 20190529
+  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16361: 0d2ff6d7ad3b6bf64c5c0e9a921fcfa925029526 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12904: ed7992df24e8ae7cd3c89b1bc6e4489a73963d56 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/index.html
+
+--===============3796894641176991738==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: Test async changes midframe (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146795/">https://patchwork.freedesktop.org/series/146795/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8297 -&gt; IGTPW_12904</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (1): bat-jsl-4 <br />
+  Missing    (2): bat-arlh-2 fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12904 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8297/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12904/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8297 -&gt; IGTPW_12904</li>
+<li>Linux: CI_DRM_16353 -&gt; CI_DRM_16361</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16353: 204a9be8ec9dd0940fbdaf9180336b156148e201 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16361: 0d2ff6d7ad3b6bf64c5c0e9a921fcfa925029526 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12904: ed7992df24e8ae7cd3c89b1bc6e4489a73963d56 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8297: 0a27244ed1972af84c78d68523d5791e596349e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3796894641176991738==--
