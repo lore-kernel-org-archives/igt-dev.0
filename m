@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53143C28B20
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A22C3601A
 	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 11:51:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E37C210E75A;
-	Wed,  2 Apr 2025 11:51:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 727EC10E75B;
+	Wed,  2 Apr 2025 11:51:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X4Xa7Ens";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gQhW4qGD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA7AE10E75A
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 11:51:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E55CA10E75A
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 11:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743594684; x=1775130684;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ymBCOUz3Rwa5lSE+P8kfEB/JmnCkBJm/Dk+7gUviv7M=;
- b=X4Xa7EnsXFkjrMwdrzyTOHruqTNOlT0Dwes9BGfU5FRnQS/xJnEtIZ27
- 0qg25RFs6f+LtpzH++XE4Vy5z8ESUJsVPoVinh2aVgYRrmn7nN9ziGBYI
- Hhf9EmY1dMFZtekvwQs+vfVIsxQC+oIJQHTUzAaLlQHv4ey1ZKCBl1PEO
- EPtIDb3Uws1juP+oNryGTz7vZeC2CjYCEt9B7PiU1KGoZlluHAAth230R
- 05qvmQgwRLfMyiDsJGVUVw0wqkE9VsX6mBXd1Ri9k7K00i5CWi8PplMy9
- FAY/gic0hjEd3mt0lj8k2WO6jFEPf1xfSxzoUf+2WuVUD/1qm9Ovzd8Eq A==;
-X-CSE-ConnectionGUID: rfOIvL+TQdK7PAoyPy8pTQ==
-X-CSE-MsgGUID: 1+g88fmTSSCMAxDMeCSdHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="48743536"
-X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="48743536"
+ t=1743594685; x=1775130685;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=CpVGAF3LzlrG5qbSHlKWKXOXIqRHikyLcHU8pzG8YJY=;
+ b=gQhW4qGD3o64ttKI0cbsMFZ1svBYDlFcpMyjkP06sqKH8f4Ef1RoUk2m
+ r1QJu4j4zg+pCgR4gD4OJ2dy0tUy3khsNVtEejKju/xQQCcd3FbKMXMgd
+ vMyhKxwbXZHHhlzl7WSmIk+T9XdY1rppzMOHv53Z7QsrqqY88uta79v0W
+ 2vJg/sSueoCuqLddW4H26gw0LISKTmqo5haxjpN4kplRM91kYUUGV6qOd
+ w1SED+rC2lRxKLGSJnfXyRn1/tk4BYoMh7nqUclwQk5lRoWlHP1qTeVSR
+ hab7dFI3SiJeZ+bkrCOXOl3ccPv3a77VZsSYbXk2clyBsObnfHEmqirpR w==;
+X-CSE-ConnectionGUID: Is3jvEvbRyKonWcxNrXegg==
+X-CSE-MsgGUID: Q90bbyF2TIi+Hb65eVt/zQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="48743543"
+X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="48743543"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2025 04:51:24 -0700
-X-CSE-ConnectionGUID: IVnSZLdBSzGNF8S2qq+18A==
-X-CSE-MsgGUID: B4aOSSrjQxinRfqfcD2Etg==
+ 02 Apr 2025 04:51:25 -0700
+X-CSE-ConnectionGUID: T9SYBDfLSUag58npgW0hxQ==
+X-CSE-MsgGUID: pQK/XHPSQ+2EhHiRtx4hag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="127184641"
+X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="127184645"
 Received: from carterle-desk.ger.corp.intel.com (HELO fdugast-desk.intel.com)
  ([10.245.246.81])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2025 04:51:22 -0700
+ 02 Apr 2025 04:51:24 -0700
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t,v5 0/5] Stress copy engines during render
-Date: Wed,  2 Apr 2025 13:49:58 +0200
-Message-ID: <20250402115055.156765-1-francois.dugast@intel.com>
+Subject: [PATCH i-g-t,v5 1/5] lib/intel_blt: Promote MEM_COPY_MOCS_SHIFT
+Date: Wed,  2 Apr 2025 13:49:59 +0200
+Message-ID: <20250402115055.156765-2-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250402115055.156765-1-francois.dugast@intel.com>
+References: <20250402115055.156765-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,59 +68,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds new tests to stress the copy engines with multiple jobs
-in parallel, while measuring the impact on the execution duration of a
-rendering job. This has been tested on BMG, where a typical run looks like
-this:
+Move MEM_COPY_MOCS_SHIFT to the header to use it elsewhere without code
+duplication. Add XE2_ prefix to make purpose clearer.
 
-    $ ./build/tests/xe_render_copy --r render-stress-*
-    IGT-Version: 2.0-g9357110dd (x86_64) (Linux: 6.14.0-rc3+ x86_64)
-    Using IGT_SRANDOM=1743593972 for randomisation
-    Opened device: /dev/dri/card0
-    Starting subtest: render-stress-0-copies
-    461 render() loops in 3 seconds
-    Render duration: avg = 3283131 ns, min = 2164366 ns, max = 6409991 ns
-    Subtest render-stress-0-copies: SUCCESS (3.228s)
-    Starting subtest: render-stress-1-copies
-    616 render() loops in 3 seconds
-    Render duration: avg = 2055815 ns, min = 1894560 ns, max = 4476194 ns
-    Subtest render-stress-1-copies: SUCCESS (3.228s)
-    Starting subtest: render-stress-2-copies
-    456 render() loops in 3 seconds
-    Render duration: avg = 3475385 ns, min = 2506288 ns, max = 5031407 ns
-    Subtest render-stress-2-copies: SUCCESS (3.233s)
-    Starting subtest: render-stress-4-copies
-    186 render() loops in 3 seconds
-    Render duration: avg = 10001653 ns, min = 8279572 ns, max = 12589235 ns
-    Subtest render-stress-4-copies: SUCCESS (3.245s)
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ lib/intel_blt.c | 3 +--
+ lib/intel_blt.h | 1 +
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-v3: Rename to xe_blt_mem_copy() and promote to xe_util instead of
-    lib/intel_blt as this is xe-specific
-
-v4: Follow Zbigniew's recommendation and adopt a new approach: the spinner
-    is extended to optionnally perform copies. In the test, rndering only
-    starts when copies are running. It runs for a defined time thanks to
-    igt_until_timeout().
-
-v5: Add XE2_ prefix to MEM_COPY_MOCS_SHIFT to make purpose clearer, fix
-    documentation, use mutex to protect spinner initialization and avoid
-    race
-
-Francois Dugast (5):
-  lib/intel_blt: Promote MEM_COPY_MOCS_SHIFT
-  lib/xe/xe_spin: Add mem copy capability to spinner
-  tests/intel/xe_spin_batch: Add basic test for mem copy from spinner
-  tests/intel/xe_render_copy: Expose render duration
-  tests/intel/xe_render_copy: Add new test for render under copy stress
-
- lib/intel_blt.c              |   3 +-
- lib/intel_blt.h              |   1 +
- lib/xe/xe_spin.c             |  14 +++
- lib/xe/xe_spin.h             |  19 +++
- tests/intel/xe_render_copy.c | 231 ++++++++++++++++++++++++++++++++++-
- tests/intel/xe_spin_batch.c  | 109 ++++++++++++++++-
- 6 files changed, 372 insertions(+), 5 deletions(-)
-
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index b2fb3151e..7010d3ff7 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -21,7 +21,6 @@
+ 
+ #define BITRANGE(start, end) (end - start + 1)
+ #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
+-#define MEM_COPY_MOCS_SHIFT                     25
+ 
+ /* Blitter tiling definitions sanity checks */
+ static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
+@@ -1840,7 +1839,7 @@ static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *
+ 	batch[i++] = src_offset << 32;
+ 	batch[i++] = dst_offset;
+ 	batch[i++] = dst_offset << 32;
+-	batch[i++] = mem->src.mocs_index << MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
++	batch[i++] = mem->src.mocs_index << XE2_MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
+ 	batch[i++] = MI_BATCH_BUFFER_END;
+ 
+ 	munmap(batch, mem->bb.size);
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 5d6191ac9..4bae0b47b 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -53,6 +53,7 @@
+ #include "intel_cmds_info.h"
+ 
+ #define CCS_RATIO(fd) (intel_gen(intel_get_drm_devid(fd)) >= 20 ? 512 : 256)
++#define XE2_MEM_COPY_MOCS_SHIFT                     25
+ 
+ enum blt_color_depth {
+ 	CD_8bit,
 -- 
 2.43.0
 
