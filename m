@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35DEEC36010
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 02:29:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72552C36018
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 02:29:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C72D710E07E;
-	Wed,  2 Apr 2025 02:29:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 11CF210E0F6;
+	Wed,  2 Apr 2025 02:29:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="O+0XnvY8";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="MFM22lEI";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B62E10E07E
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 02:29:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8349910E0F6
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 02:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=Jzw9IfhIGBhhJlkwxzNGMu/JJyZ00sZ+1NJ3ViUlVYk=; b=O+0XnvY8x8c2HgkUlLqDav9DiG
- GPkYnGARBG0zt8MKJQ13YVplrib+m2pb+rwH/Anm59oSoHho9RI3j251N1E6yuf+C/cyyrjgJbteC
- U7dACd2rLo4ncswW/qa++bkG1JZ+eqj94CFbp//gAowH3VV6FVNTvnYEvdTaCqKre5TGXTrmqa25k
- z4aWnM1eLSVfHeNWolV/ahNBzkyphCe/wrbEvb+pHIKXEU+xrCY44AM1p5RpgJeJxSX7IIPL5w3yr
- qDusDOj+GHeUMmwNcfBTSK/KnRviHidSAK9ih6X5IcyUc1aXUgQlOnuJVnYopYYzCqx8ApQlLVrT2
- /nrUnmlg==;
+ bh=ldGjuXeZJGsP4EMWdV57oNkLtVnQ/V2MkqBWPQXmlJo=; b=MFM22lEIhoV4tiKF18cjSs4Jjr
+ zki/u5bJ2cpAuhefN47jCv95eypStRIIec2h1U5G6g9Mh6f+KYasYa3vOg9kUDq/MvSnRpuSm1Dgk
+ dgUJbSWt8NkVu0aPtQteIl1erjyYlETEW24cbV5Ga1G0DFr/c/md2MjdcfLYnhBR3oM232hK/tJZ5
+ 9R439KvdEGx7fBZkzoyoCXyx5Itk1jPIpgjA95TRfDKsXEWO76pL5aphh2uONpXx7IwGuvBWLM4km
+ nYF5ssJeOKh/Cyah1TiX1T2sVXb6SajHeMBmp3AIf6pDNUEPG1pPZjxsycUT5BrTZEZuml5JJCAj0
+ BKt01GdA==;
 Received: from [187.57.129.172] (helo=localhost.localdomain)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1tznr5-00AAa9-Nz; Wed, 02 Apr 2025 04:29:28 +0200
+ id 1tznr8-00AAa9-Bu; Wed, 02 Apr 2025 04:29:30 +0200
 From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
 To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
  Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
- Rodrigo Siqueira <siqueira@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
-Subject: [PATCH v5 0/4] tests/kms_async_flips: Create subtest for overlay
- planes
-Date: Tue,  1 Apr 2025 23:29:18 -0300
-Message-ID: <20250402022922.210495-1-andrealmeid@igalia.com>
+ Rodrigo Siqueira <siqueira@igalia.com>
+Subject: [PATCH v5 1/4] lib/ioctl_wrappers: let the caller handle capability
+ check result
+Date: Tue,  1 Apr 2025 23:29:19 -0300
+Message-ID: <20250402022922.210495-2-andrealmeid@igalia.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250402022922.210495-1-andrealmeid@igalia.com>
+References: <20250402022922.210495-1-andrealmeid@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -62,51 +62,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patchset creates a subtest for overlay planes. This is supported by amdgpu
-and is merged in the kernel:
+From: Melissa Wen <mwen@igalia.com>
 
-https://lore.kernel.org/lkml/173948734065.719858.7405160715916126757.b4-ty@linaro.org/
+Rework igt_has_drm_cap to just check if a DRM capability is supported
+and let the called decide what to do from this check. It prevents the
+test fails because of an assert done when it's called in
+igt_subtest_with_dynamics.
 
-v5:
- - Added a new patch "lib/ioctl_wrappers: let the caller handle capability check
-   result" by Melissa Wen
- - This patch solved an issue that the test was exiting instead of skipping when
-   the driver did not support ATOMIC_ASYNC_PAGE_FLIP
- - test_finish() is now called test_init_ops() and is called in the beginning of
-   every test. This was done because some asserts prevented the test to reach
-   the final of the run_test() function.
- - Fixed a typo to correctly set the overlay fb to the overlay plane
- - Added code to remove the overlay fb by the end of the test
- - Fixed a bug that test_init_fbs() was skipping the fb creation for overlay
-   planes
- - Fixed require_overlay_flip_support() by changing the fb to be flipped with
-   the async flip
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+---
+ lib/ioctl_wrappers.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-v4:
- - Created a patch to check for DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP, so drivers
- without support for it, skips instead of failing (Melissa)
- - Encapsulated all test paths options into a function to easy maintenance (Melissa)
- - Brought back test description for GitLab compilation
-
-v3:
- - Fixed a bug that was mixing `alternate_sync_async = true` with the overlay path
- - Refactored how the test parameters are being set/unset (patch 1/2)
- - Fixed a bug where a primary buffer was being used with an overlay plane
-
-v2: Add test description for GitLab compilation
-
-André Almeida (3):
-  tests/kms_async_flips: Check for atomic async flip cap
-  kms_async_flips: Refactor data options
-  tests/kms_async_flips: Create subtest for overlay planes
-
-Melissa Wen (1):
-  lib/ioctl_wrappers: let the caller handle capability check result
-
- lib/ioctl_wrappers.c    |   8 +--
- tests/kms_async_flips.c | 112 +++++++++++++++++++++++++++++++++++-----
- 2 files changed, 102 insertions(+), 18 deletions(-)
-
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 146973f0d..15eeb9aa4 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1292,10 +1292,10 @@ int __kms_addfb(int fd, uint32_t handle,
+  */
+ bool igt_has_drm_cap(int fd, uint64_t capability)
+ {
+-	struct drm_get_cap cap = { .capability = capability };
+-
+-	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
+-	return cap.value;
++	uint64_t value;
++	if (drmGetCap(fd, capability, &value))
++		return false;
++	return value ? true : false;
+ }
+ 
+ /**
 -- 
 2.49.0
 
